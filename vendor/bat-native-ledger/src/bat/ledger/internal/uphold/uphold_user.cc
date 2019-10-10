@@ -53,7 +53,7 @@ void UpholdUser::Get(
       headers,
       "",
       "",
-      ledger::URL_METHOD::GET,
+      ledger::UrlMethod::GET,
       user_callback);
 }
 

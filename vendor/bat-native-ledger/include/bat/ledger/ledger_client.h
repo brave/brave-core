@@ -35,13 +35,6 @@ LEDGER_EXPORT enum LogLevel {
   LOG_RESPONSE = 6
 };
 
-LEDGER_EXPORT enum URL_METHOD {
-  GET = 0,
-  PUT = 1,
-  POST = 2,
-  PATCH = 3
-};
-
 class LEDGER_EXPORT LogStream {
  public:
   virtual ~LogStream() = default;
@@ -180,7 +173,7 @@ class LEDGER_EXPORT LedgerClient {
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& contentType,
-      const ledger::URL_METHOD method,
+      const ledger::UrlMethod method,
       ledger::LoadURLCallback callback) = 0;
 
   virtual void SavePendingContribution(

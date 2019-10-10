@@ -13,7 +13,7 @@
 namespace confirmations {
 
 // backwards compat for now
-using URLRequestMethod = ::ledger::URL_METHOD;
+using URLRequestMethod = ::ledger::UrlMethod;
 using Result = ::ledger::Result;
 const auto SUCCESS = ::ledger::Result::LEDGER_OK;
 const auto FAILED = ::ledger::Result::LEDGER_ERROR;

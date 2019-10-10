@@ -61,7 +61,7 @@ void PublisherServerList::Download(
       headers,
       "",
       "",
-      ledger::URL_METHOD::GET,
+      ledger::UrlMethod::GET,
       download_callback);
 }
 

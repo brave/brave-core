@@ -92,7 +92,7 @@ void UpholdAuthorization::Authorize(
       headers,
       payload,
       "application/x-www-form-urlencoded",
-      ledger::URL_METHOD::POST,
+      ledger::UrlMethod::POST,
       auth_callback);
 }
 

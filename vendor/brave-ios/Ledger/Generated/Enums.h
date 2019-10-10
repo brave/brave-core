@@ -35,9 +35,3 @@ typedef NS_ENUM(NSInteger, BATPublisherExclude) {
   BATPublisherExcludeExcluded = 1,
   BATPublisherExcludeIncluded = 2
 } NS_SWIFT_NAME(PublisherExclude);
-
-typedef NS_ENUM(NSInteger, BATURLMethod) {
-  BATURLMethodGet = 0,
-  BATURLMethodPut = 1,
-  BATURLMethodPost = 2
-} NS_SWIFT_NAME(URLMethod);

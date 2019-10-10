@@ -260,3 +260,10 @@ enum ReportType {
   TIP_RECURRING = 4,
   TIP = 5,
 };
+
+enum UrlMethod {
+  GET = 0,
+  PUT = 1,
+  POST = 2,
+  PATCH = 3
+};

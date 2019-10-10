@@ -132,7 +132,7 @@ void Uphold::FetchBalance(
       headers,
       "",
       "",
-      ledger::URL_METHOD::GET,
+      ledger::UrlMethod::GET,
       balance_callback);
 }
 

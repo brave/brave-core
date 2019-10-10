@@ -120,7 +120,7 @@ void Recover::ContinueRecover(
       std::vector<std::string>(),
       "",
       "",
-      ledger::URL_METHOD::GET,
+      ledger::UrlMethod::GET,
       std::move(on_load));
 }
 
@@ -150,7 +150,7 @@ void Recover::RecoverWalletPublicKeyCallback(
                             std::move(callback));
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)WALLET_PROPERTIES + recoveryId, PREFIX_V2),
-      std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, on_recover);
+      std::vector<std::string>(), "", "", ledger::UrlMethod::GET, on_recover);
 }
 
 void Recover::RecoverWalletCallback(

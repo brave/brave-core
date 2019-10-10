@@ -295,7 +295,7 @@ void PhaseTwo::PrepareBatch(
       std::vector<std::string>(),
       "",
       "",
-      ledger::URL_METHOD::GET,
+      ledger::UrlMethod::GET,
       callback);
 }
 
@@ -586,7 +586,7 @@ void PhaseTwo::VoteBatch() {
       std::vector<std::string>(),
       payload,
       "application/json; charset=utf-8",
-      ledger::URL_METHOD::POST,
+      ledger::UrlMethod::POST,
       callback);
 }
 

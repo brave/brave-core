@@ -584,7 +584,7 @@ void YouTube::FetchDataFromUrl(
                    std::vector<std::string>(),
                    std::string(),
                    std::string(),
-                   ledger::URL_METHOD::GET,
+                   ledger::UrlMethod::GET,
                    callback);
 }
 

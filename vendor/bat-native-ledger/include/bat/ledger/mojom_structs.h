@@ -7,6 +7,7 @@
 #define BAT_LEDGER_MOJOM_STRUCTS_
 
 #include <map>
+#include <string>
 #include <vector>
 
 #include "bat/ledger/public/interfaces/ledger.mojom.h"
@@ -79,6 +80,8 @@ using ServerPublisherInfoList = std::vector<ServerPublisherInfoPtr>;
 using TransferFee = mojom::TransferFee;
 using TransferFeePtr = mojom::TransferFeePtr;
 using TransferFeeList = std::map<std::string, TransferFeePtr>;
+
+using UrlMethod = mojom::UrlMethod;
 
 using VisitData = mojom::VisitData;
 using VisitDataPtr = mojom::VisitDataPtr;

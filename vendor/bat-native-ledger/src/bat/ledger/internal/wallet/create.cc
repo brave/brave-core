@@ -47,7 +47,7 @@ void Create::Start(const std::string& safetynet_token,
                                     std::move(callback));
     ledger_->LoadURL(braveledger_bat_helper::buildURL(
           (std::string)GET_SET_PROMOTION, safetynet_prefix),
-        headers, "", "", ledger::URL_METHOD::GET, safetynet_callback);
+        headers, "", "", ledger::UrlMethod::GET, safetynet_callback);
     return;
   }
   auto on_req = std::bind(&Create::RequestCredentialsCallback,
@@ -59,7 +59,7 @@ void Create::Start(const std::string& safetynet_token,
   ledger_->LoadURL(
       braveledger_bat_helper::buildURL(REGISTER_PERSONA, PREFIX_V2),
       std::vector<std::string>(), "", "",
-      ledger::URL_METHOD::GET, on_req);
+      ledger::UrlMethod::GET, on_req);
 }
 
 void Create::StartSafetyNetCallback(
@@ -242,7 +242,7 @@ void Create::RequestCredentialsCallback(
       registerHeaders,
       payload,
       "application/json; charset=utf-8",
-      ledger::URL_METHOD::POST,
+      ledger::UrlMethod::POST,
       on_register);
 }
 

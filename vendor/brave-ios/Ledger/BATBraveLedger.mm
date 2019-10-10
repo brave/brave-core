@@ -1373,12 +1373,12 @@ BATLedgerBridge(BOOL,
 
 #pragma mark - Network
 
-- (void)loadURL:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)contentType method:(const ledger::URL_METHOD)method callback:(ledger::LoadURLCallback)callback
+- (void)loadURL:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)contentType method:(const ledger::UrlMethod)method callback:(ledger::LoadURLCallback)callback
 {
-  std::map<ledger::URL_METHOD, std::string> methodMap {
-    {ledger::GET, "GET"},
-    {ledger::POST, "POST"},
-    {ledger::PUT, "PUT"}
+  std::map<ledger::UrlMethod, std::string> methodMap {
+    {ledger::UrlMethod::GET, "GET"},
+    {ledger::UrlMethod::POST, "POST"},
+    {ledger::UrlMethod::PUT, "PUT"}
   };
   return [self.commonOps loadURLRequest:url headers:headers content:content content_type:contentType method:methodMap[method] callback:^(int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
     callback(statusCode, response, headers);

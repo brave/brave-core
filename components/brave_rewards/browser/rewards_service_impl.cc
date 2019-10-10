@@ -173,15 +173,15 @@ ContentSite PublisherInfoToContentSite(
   return content_site;
 }
 
-std::string URLMethodToRequestType(ledger::URL_METHOD method) {
+std::string URLMethodToRequestType(ledger::UrlMethod method) {
   switch (method) {
-    case ledger::URL_METHOD::GET:
+    case ledger::UrlMethod::GET:
       return "GET";
-    case ledger::URL_METHOD::POST:
+    case ledger::UrlMethod::POST:
       return "POST";
-    case ledger::URL_METHOD::PUT:
+    case ledger::UrlMethod::PUT:
       return "PUT";
-    case ledger::URL_METHOD::PATCH:
+    case ledger::UrlMethod::PATCH:
       return "PATCH";
     default:
       NOTREACHED();
@@ -1393,7 +1393,7 @@ void RewardsServiceImpl::LoadURL(
     const std::vector<std::string>& headers,
     const std::string& content,
     const std::string& contentType,
-    const ledger::URL_METHOD method,
+    const ledger::UrlMethod method,
     ledger::LoadURLCallback callback) {
 
   if (url.empty()) {
@@ -1412,7 +1412,7 @@ void RewardsServiceImpl::LoadURL(
     std::map<std::string, std::string> test_headers;
     int response_status_code = net::HTTP_OK;
     test_response_callback_.Run(url,
-                                method,
+                                static_cast<int>(method),
                                 &response_status_code,
                                 &test_response,
                                 &test_headers);

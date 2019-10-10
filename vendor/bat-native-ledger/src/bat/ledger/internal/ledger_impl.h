@@ -226,7 +226,7 @@ class LedgerImpl : public ledger::Ledger,
                const std::vector<std::string>& headers,
                const std::string& content,
                const std::string& contentType,
-               const ledger::URL_METHOD method,
+               const ledger::UrlMethod method,
                ledger::LoadURLCallback callback);
 
   void OnReconcileComplete(ledger::Result result,

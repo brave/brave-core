@@ -91,7 +91,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
     const std::vector<std::string>& headers,
     const std::string& content,
     const std::string& contentType,
-    int32_t method,
+    ledger::UrlMethod method,
     LoadURLCallback callback) override;
 
   void SavePendingContribution(

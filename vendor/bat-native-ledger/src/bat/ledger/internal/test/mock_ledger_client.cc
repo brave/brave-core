@@ -63,7 +63,7 @@ void MockLedgerClient::LoadURL(const std::string& url,
                                const std::vector<std::string>& headers,
                                const std::string& content,
                                const std::string& contentType,
-                               const ledger::URL_METHOD method,
+                               const ledger::UrlMethod method,
                                ledger::LoadURLCallback callback) {
   callback(true, "{}", {});
 }

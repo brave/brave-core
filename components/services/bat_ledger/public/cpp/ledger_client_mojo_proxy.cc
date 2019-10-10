@@ -14,14 +14,6 @@ using std::placeholders::_3;
 
 namespace bat_ledger {
 
-namespace {  // TODO(anyone): move into a util class
-
-ledger::URL_METHOD ToLedgerURLMethod(int32_t method) {
-  return (ledger::URL_METHOD)method;
-}
-
-}  // namespace
-
 LedgerClientMojoProxy::LedgerClientMojoProxy(
     ledger::LedgerClient* ledger_client)
   : ledger_client_(ledger_client) {
@@ -412,13 +404,13 @@ void LedgerClientMojoProxy::LoadURL(const std::string& url,
     const std::vector<std::string>& headers,
     const std::string& content,
     const std::string& contentType,
-    int32_t method,
+    ledger::UrlMethod method,
     LoadURLCallback callback) {
   // deleted in OnLoadURL
   auto* holder = new CallbackHolder<LoadURLCallback>(
       AsWeakPtr(), std::move(callback));
   ledger_client_->LoadURL(url, headers, content, contentType,
-      ToLedgerURLMethod(method),
+      method,
       std::bind(LedgerClientMojoProxy::OnLoadURL, holder, _1, _2, _3));
 }
 

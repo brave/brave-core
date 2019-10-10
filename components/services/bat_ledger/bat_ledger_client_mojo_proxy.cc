@@ -17,10 +17,6 @@ namespace bat_ledger {
 
 namespace {
 
-int32_t ToMojomMethod(ledger::URL_METHOD method) {
-  return (int32_t)method;
-}
-
 class LogStreamImpl : public ledger::LogStream {
  public:
   LogStreamImpl(const char* file,
@@ -114,13 +110,13 @@ void BatLedgerClientMojoProxy::LoadURL(
     const std::vector<std::string>& headers,
     const std::string& content,
     const std::string& contentType,
-    const ledger::URL_METHOD method,
+    const ledger::UrlMethod method,
     ledger::LoadURLCallback callback) {
   if (!Connected())
     return;
 
   bat_ledger_client_->LoadURL(url, headers, content, contentType,
-      ToMojomMethod(method), base::BindOnce(&OnLoadURL, std::move(callback)));
+      method, base::BindOnce(&OnLoadURL, std::move(callback)));
 }
 
 void BatLedgerClientMojoProxy::OnWalletProperties(
