@@ -12,13 +12,17 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.ChromePreferenceManager;
 import org.chromium.chrome.browser.preferences.ChromeSwitchPreference;
 import org.chromium.ui.base.DeviceFormFactor;
 
 public class AppearancePreferences
         extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
+    static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +32,10 @@ public class AppearancePreferences
                 ContextUtils.getApplicationContext());
         if (isTablet) {
             removePreferenceIfPresent(ChromePreferenceManager.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
+        }
+
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {
+            removePreferenceIfPresent(PREF_HIDE_BRAVE_REWARDS_ICON);
         }
     }
 
@@ -55,6 +63,13 @@ public class AppearancePreferences
                     .setChecked(!isTablet
                             && ChromePreferenceManager.getInstance().isBottomToolbarEnabled());
         }
+
+        Preference hideBraveRewardsIconPref = findPreference(PREF_HIDE_BRAVE_REWARDS_ICON);
+        if (hideBraveRewardsIconPref != null) {
+            // TODO(jocelyn): Do setEnabled(false) here when
+            // BraveRewardsNativeWorker is implemented.
+            hideBraveRewardsIconPref.setOnPreferenceChangeListener(this);
+        }
     }
 
     @Override
@@ -67,6 +82,12 @@ public class AppearancePreferences
                     .putBoolean(ChromePreferenceManager.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
                             !originalStatus)
                     .apply();
+            BraveRelaunchUtils.askForRelaunch(getActivity());
+        } else if (PREF_HIDE_BRAVE_REWARDS_ICON.equals(key)) {
+            SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+            SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+            sharedPreferencesEditor.putBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, (boolean) newValue);
+            sharedPreferencesEditor.apply();
             BraveRelaunchUtils.askForRelaunch(getActivity());
         }
         return true;
