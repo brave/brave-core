@@ -62,14 +62,14 @@ class TipsDetailViewController: UIViewController {
     
     state.ledger.listOneTimeTips {[weak self] infoList in
       guard let self = self else { return }
-      infoList.forEach({$0.category = Int32(RewardsCategory.oneTimeTip.rawValue)})
+      infoList.forEach({$0.category = Int32(RewardsType.oneTimeTip.rawValue)})
       self.tipsList.append(contentsOf: infoList)
       (self.view as? View)?.tableView.reloadData()
     }
     
     state.ledger.listRecurringTips {[weak self] infoList in
       guard let self = self else { return }
-      infoList.forEach({$0.category = Int32(RewardsCategory.recurringTip.rawValue)})
+      infoList.forEach({$0.category = Int32(RewardsType.recurringTip.rawValue)})
       self.tipsList.insert(contentsOf: infoList, at: 0)
       if !self.tipsView.tableView.isEditing {
         self.navigationItem.rightBarButtonItem?.isEnabled = !self.tipsList.filter { $0.rewardsCategory == .recurringTip }.isEmpty
@@ -298,7 +298,7 @@ extension TipsDetailViewController {
         return
       }
       self.tipsList.removeAll(where: {
-        $0.category == RewardsCategory.recurringTip.rawValue &&
+        $0.category == RewardsType.recurringTip.rawValue &&
         $0.id == key
       })
       self.tipsView.tableView.reloadData()

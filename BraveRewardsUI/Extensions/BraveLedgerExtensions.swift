@@ -121,8 +121,8 @@ extension BraveLedger {
 extension PublisherInfo {
   /// Temporary conveninece method for converting the raw int now in
   /// PublisherInfo, to the enum we've been using all along
-  var rewardsCategory: RewardsCategory {
-    guard let category = RewardsCategory(rawValue: Int(self.category)) else {
+  var rewardsCategory: RewardsType {
+    guard let category = RewardsType(rawValue: Int(self.category)) else {
       fatalError("Could not get a rewards category from category = \(self.category)")
     }
     return category
