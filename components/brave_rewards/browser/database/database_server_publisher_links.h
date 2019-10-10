@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
-#include "bat/ledger/publisher_info.h"
+#include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/database/database_table.h"
 
 namespace brave_rewards {

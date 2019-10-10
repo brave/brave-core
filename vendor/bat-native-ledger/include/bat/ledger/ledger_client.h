@@ -14,16 +14,11 @@
 #include <string>
 #include <map>
 
-#include "bat/ledger/balance_report_info.h"
+#include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/export.h"
-#include "bat/ledger/grant.h"
 #include "bat/ledger/ledger_callback_handler.h"
-#include "bat/ledger/media_event_info.h"
-#include "bat/ledger/pending_contribution.h"
 #include "bat/ledger/publisher_info.h"
-#include "bat/ledger/reconcile_info.h"
 #include "bat/ledger/wallet_properties.h"
-#include "bat/ledger/public/interfaces/ledger.mojom.h"
 
 namespace confirmations {
 class LogStream;

@@ -14,19 +14,12 @@
 #include <vector>
 
 #include "bat/ledger/export.h"
-#include "bat/ledger/auto_contribute_props.h"
-#include "bat/ledger/balance.h"
+#include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/ledger_client.h"
 #include "bat/ledger/publisher_info.h"
-#include "bat/ledger/media_event_info.h"
 #include "bat/ledger/transactions_info.h"
-#include "bat/ledger/rewards_internals_info.h"
-#include "bat/ledger/pending_contribution.h"
 
 namespace ledger {
-
-using VisitData = ledger::mojom::VisitData;
-using VisitDataPtr = ledger::mojom::VisitDataPtr;
 
 extern bool is_production;
 extern bool is_debug;

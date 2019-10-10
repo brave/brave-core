@@ -600,7 +600,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   auto now = [NSDate date];
   const auto bridgedGrant = [[BATGrant alloc] initWithGrant:*grant];
   if (result == ledger::Result::LEDGER_OK) {
-    ledger::ReportType report_type = grant->type == "ads" ? ledger::ADS : ledger::GRANT;
+    ledger::ReportType report_type = grant->type == "ads" ? ledger::ReportType::ADS : ledger::ReportType::GRANT;
     [self fetchBalance:nil];
     ledger->SetBalanceReportItem(BATGetPublisherMonth(now),
                                  BATGetPublisherYear(now),

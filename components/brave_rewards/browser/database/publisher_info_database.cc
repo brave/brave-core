@@ -12,8 +12,6 @@
 #include "base/files/file_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/string_util.h"
-#include "bat/ledger/media_event_info.h"
-#include "bat/ledger/pending_contribution.h"
 #include "build/build_config.h"
 #include "sql/meta_table.h"
 #include "sql/statement.h"

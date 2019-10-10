@@ -69,7 +69,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   void RestorePublishers(RestorePublishersCallback callback) override;
 
   void SetBalanceReportItem(
-      int32_t month, int32_t year, int32_t type,
+      int32_t month, int32_t year, ledger::ReportType type,
       const std::string& probi) override;
   void OnReconcileCompleteSuccess(
       const std::string& viewing_id,

@@ -251,3 +251,12 @@ enum RewardsType {
   ONE_TIME_TIP = 8,
   RECURRING_TIP = 16,
 };
+
+enum ReportType {
+  GRANT = 0,
+  AUTO_CONTRIBUTION = 1,
+  DEPOSIT = 2,
+  ADS = 3,
+  TIP_RECURRING = 4,
+  TIP = 5,
+};

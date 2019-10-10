@@ -32,10 +32,6 @@ ledger::ACTIVITY_MONTH ToLedgerPublisherMonth(int32_t month) {
   return (ledger::ACTIVITY_MONTH)month;
 }
 
-ledger::ReportType ToLedgerReportType(int32_t type) {
-  return (ledger::ReportType)type;
-}
-
 }  // namespace
 
 BatLedgerImpl::BatLedgerImpl(
@@ -223,9 +219,9 @@ void BatLedgerImpl::RestorePublishers(RestorePublishersCallback callback) {
 }
 
 void BatLedgerImpl::SetBalanceReportItem(int32_t month,
-    int32_t year, int32_t type, const std::string& probi) {
+    int32_t year, ledger::ReportType type, const std::string& probi) {
   ledger_->SetBalanceReportItem(
-      ToLedgerPublisherMonth(month), year, ToLedgerReportType(type), probi);
+      ToLedgerPublisherMonth(month), year, type, probi);
 }
 
 void BatLedgerImpl::OnReconcileCompleteSuccess(

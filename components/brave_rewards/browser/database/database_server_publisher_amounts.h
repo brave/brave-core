@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "bat/ledger/publisher_info.h"
+#include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/database/database_table.h"
 
 namespace brave_rewards {

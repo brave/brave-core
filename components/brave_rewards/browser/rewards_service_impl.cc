@@ -31,8 +31,7 @@
 #include "base/task_runner_util.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/auto_contribute_props.h"
-#include "bat/ledger/media_event_info.h"
+#include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_properties.h"
 #include "bat/ledger/transactions_info.h"
@@ -1056,7 +1055,7 @@ void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
       return;
     }
 
-    int report_type = grant->type == "ads"
+    ledger::ReportType report_type = grant->type == "ads"
       ? ledger::ReportType::ADS
       : ledger::ReportType::GRANT;
     bat_ledger_->SetBalanceReportItem(GetPublisherMonth(now),
