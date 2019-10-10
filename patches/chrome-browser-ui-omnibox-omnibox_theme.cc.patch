@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_theme.cc b/chrome/browser/ui/omnibox/omnibox_theme.cc
-index ee753f95f1cddce4067fa20e2b56fc89f65bb737..d48c8d7f729ad4152db9b944d7dccac365482f69 100644
+index 499923574cf0caee89876a84eccabc883af5d62f..d0b8884614eb9e078041d49e04a350a2c2d982af 100644
 --- a/chrome/browser/ui/omnibox/omnibox_theme.cc
 +++ b/chrome/browser/ui/omnibox/omnibox_theme.cc
 @@ -39,7 +39,7 @@ SkColor GetSecurityChipColor(OmniboxTint tint, OmniboxPartState state) {

@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine/sync_manager.h b/components/sync/engine/sync_manager.h
-index 4fe4dbbc21d587652ffc8e8a804e7374373a4cf4..8f1f9e84af910be41c580419fbaefb257ec11594 100644
+index fd197f7f2b1df63a8f4253348a5bf83d5396efa5..62bdaf719e450da862387d674ac7b0c41a7a2dec 100644
 --- a/components/sync/engine/sync_manager.h
 +++ b/components/sync/engine/sync_manager.h
-@@ -248,6 +248,7 @@ class SyncManager {
+@@ -255,6 +255,7 @@ class SyncManager {
      std::string cache_guid;
      std::string birthday;
      std::string bag_of_chips;

@@ -49,7 +49,7 @@ echo "Cleaning $DEST_DIR ..."
 rm -rf $DEST_DIR/*
 
 # Invoke python script to do the signing.
-PARAMS="--input $SOURCE_DIR --output $DEST_DIR --keychain $MAC_SIGNING_KEYCHAIN --identity $MAC_SIGNING_IDENTIFIER --no-dmg --no-notarize"
+PARAMS="--input $SOURCE_DIR --output $DEST_DIR --keychain $MAC_SIGNING_KEYCHAIN --identity $MAC_SIGNING_IDENTIFIER --disable-packaging --no-notarize"
 if [[ -z "${DEVELOPMENT}" ]]; then
   # Copy mac_provisioning_profile to the packaging_dir since that's where the
   # signing scripts expects to find it.

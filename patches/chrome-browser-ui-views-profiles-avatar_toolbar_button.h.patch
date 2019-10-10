@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-index 16b9f20730ffe4fde026883c49b17738dc171dab..d61d6eb7d0495ddfef3b7a54fa9a786595364ac0 100644
+index 09f529aba5820a12a760d95637bdaa34fbce66df..3be8597546d41f49d89afc462ff683a828f64318 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
 @@ -35,6 +35,7 @@ class AvatarToolbarButton : public ToolbarButton,
@@ -10,11 +10,11 @@ index 16b9f20730ffe4fde026883c49b17738dc171dab..d61d6eb7d0495ddfef3b7a54fa9a7865
    FRIEND_TEST_ALL_PREFIXES(AvatarToolbarButtonTest,
                             HighlightMeetsMinimumContrast);
    enum class SyncState { kNormal, kPaused, kError };
-@@ -76,6 +77,7 @@ class AvatarToolbarButton : public ToolbarButton,
+@@ -81,6 +82,7 @@ class AvatarToolbarButton : public ToolbarButton,
    bool IsIncognitoCounterActive() const;
    bool ShouldShowGenericIcon() const;
    base::string16 GetAvatarTooltipText() const;
 +  virtual
-   gfx::ImageSkia GetAvatarIcon() const;
-   gfx::Image GetIconImageFromProfile() const;
+   gfx::ImageSkia GetAvatarIcon(const gfx::Image& gaia_image) const;
+   gfx::Image GetGaiaImage() const;
    SyncState GetSyncState() const;

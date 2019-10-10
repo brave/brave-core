@@ -31,9 +31,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/common/cdm_info.h"
 #include "content/public/browser/cdm_registry.h"
-#include "content/public/common/service_manager_connection.h"
 #include "services/network/public/cpp/resource_request.h"
-#include "services/service_manager/public/cpp/connector.h"
 #include "third_party/widevine/cdm/widevine_cdm_common.h"
 #include "url/gurl.h"
 #include "widevine_cdm_version.h"  // NOLINT
@@ -193,7 +191,6 @@ void BraveWidevineBundleManager::Unzip(
   if (is_test_) return;
 
   BraveWidevineBundleUnzipper::Create(
-      content::ServiceManagerConnection::GetForProcess()->GetConnector(),
       file_task_runner(),
       base::BindOnce(&BraveWidevineBundleManager::OnBundleUnzipped,
                      weak_factory_.GetWeakPtr()))
@@ -362,9 +359,8 @@ scoped_refptr<base::SequencedTaskRunner>
 BraveWidevineBundleManager::file_task_runner() {
   if (!file_task_runner_) {
     file_task_runner_ = base::CreateSequencedTaskRunnerWithTraits(
-                            { base::MayBlock(),
-                              base::TaskPriority::BEST_EFFORT,
-                              base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN });
+        {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+         base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   }
   return file_task_runner_;
 }

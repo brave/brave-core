@@ -1,8 +1,8 @@
 diff --git a/chrome/utility/BUILD.gn b/chrome/utility/BUILD.gn
-index 737d22e3c40c4e6c74dd3040c1a85810a69f03bc..1d545093353a557449ee8e56f500aaa2d4d4e29d 100644
+index 8259d87eaef2415140c1def6253999e5e2c32c62..5156b9c15db53e33aab51edbe0409fc80b9fa58e 100644
 --- a/chrome/utility/BUILD.gn
 +++ b/chrome/utility/BUILD.gn
-@@ -25,6 +25,7 @@ static_library("utility") {
+@@ -27,6 +27,7 @@ static_library("utility") {
  
    public_deps = []
    deps = [

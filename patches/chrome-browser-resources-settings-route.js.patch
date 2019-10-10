@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/route.js b/chrome/browser/resources/settings/route.js
-index 808fc7775c4b623ac37b5ce67dcfd35b287eae12..9ac7e2ec4115d973951c2b88c49dacdb5c41d7ce 100644
+index 244cb3be58018586824d10f1cb70ab7200902e81..d866b8da4ad2af0a712acdcb1b209f837ebb2b19 100644
 --- a/chrome/browser/resources/settings/route.js
 +++ b/chrome/browser/resources/settings/route.js
-@@ -379,7 +379,9 @@ cr.define('settings', function() {
+@@ -313,7 +313,9 @@ cr.define('settings', function() {
  
        // TODO(tommycli): Find a way to refactor these repetitive category
        // routes.
@@ -12,13 +12,13 @@ index 808fc7775c4b623ac37b5ce67dcfd35b287eae12..9ac7e2ec4115d973951c2b88c49dacdb
        r.SITE_SETTINGS_AUTOMATIC_DOWNLOADS =
            r.SITE_SETTINGS.createChild('automaticDownloads');
        r.SITE_SETTINGS_BACKGROUND_SYNC =
-@@ -460,7 +462,9 @@ cr.define('settings', function() {
+@@ -372,7 +374,9 @@ cr.define('settings', function() {
        }
  
        r.PRINTING = r.ADVANCED.createSection('/printing', 'printing');
 +      // <if expr="_google_chrome">
        r.CLOUD_PRINTERS = r.PRINTING.createChild('/cloudPrinters');
 +      // </if>
-       // <if expr="chromeos">
-       r.CUPS_PRINTERS = r.PRINTING.createChild('/cupsPrinters');
-       // </if>
+ 
+       r.ACCESSIBILITY = r.ADVANCED.createSection('/accessibility', 'a11y');
+ 

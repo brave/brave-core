@@ -1,8 +1,8 @@
 diff --git a/extensions/renderer/dispatcher.cc b/extensions/renderer/dispatcher.cc
-index 186613c634c48631e0e0efcf1cc7e630c66423b1..1e8697856c98ec70cb815e141aac6fade678ccf4 100644
+index 9caa5b6b6ab4325c9f0b3d4500f94468ac646dd1..d27ddd353c7e9b70f8ddf63304abf38edb84b03d 100644
 --- a/extensions/renderer/dispatcher.cc
 +++ b/extensions/renderer/dispatcher.cc
-@@ -1409,7 +1409,7 @@ void Dispatcher::RequireGuestViewModules(ScriptContext* context) {
+@@ -1376,7 +1376,7 @@ void Dispatcher::RequireGuestViewModules(ScriptContext* context) {
  std::unique_ptr<NativeExtensionBindingsSystem> Dispatcher::CreateBindingsSystem(
      std::unique_ptr<IPCMessageSender> ipc_sender) {
    auto bindings_system =

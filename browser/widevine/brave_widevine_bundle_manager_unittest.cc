@@ -17,7 +17,7 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/cdm_registry.h"
 #include "content/public/common/cdm_info.h"
-#include "content/public/test/test_browser_thread_bundle.h"
+#include "content/public/test/browser_task_environment.h"
 #include "content/test/test_content_client.h"
 #include "media/base/decrypt_config.h"
 #include "testing/gtest/include/gtest/gtest.h"

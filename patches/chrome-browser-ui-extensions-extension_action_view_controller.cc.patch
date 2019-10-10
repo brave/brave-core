@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/extensions/extension_action_view_controller.cc b/chrome/browser/ui/extensions/extension_action_view_controller.cc
-index 28d030c401cd0df200451163c9a9ff07a8332136..be0113341fd5377e5d0f76a07db0b3fabfdf256e 100644
+index dace9f3bcd2b1fc20be44c872bcc66fbf602d834..b360709c543b0708449aa110ca7506af746fd42d 100644
 --- a/chrome/browser/ui/extensions/extension_action_view_controller.cc
 +++ b/chrome/browser/ui/extensions/extension_action_view_controller.cc
 @@ -61,7 +61,6 @@ ExtensionActionViewController::ExtensionActionViewController(

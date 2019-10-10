@@ -14,7 +14,8 @@
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/paint_vector_icon.h"
 
-gfx::ImageSkia BraveAvatarToolbarButton::GetAvatarIcon() const {
+gfx::ImageSkia BraveAvatarToolbarButton::GetAvatarIcon(
+    const gfx::Image& gaia_image) const {
   if (brave::IsTorProfile(profile_)) {
     const int icon_size =
       ui::MaterialDesignController::touch_ui() ? 24 : 20;
@@ -22,5 +23,5 @@ gfx::ImageSkia BraveAvatarToolbarButton::GetAvatarIcon() const {
       GetThemeProvider()->GetColor(ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON);
     return gfx::CreateVectorIcon(kTorProfileIcon, icon_size, icon_color);
   }
-  return AvatarToolbarButton::GetAvatarIcon();
+  return AvatarToolbarButton::GetAvatarIcon(gaia_image);
 }

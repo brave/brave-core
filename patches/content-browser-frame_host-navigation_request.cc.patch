@@ -1,12 +1,12 @@
 diff --git a/content/browser/frame_host/navigation_request.cc b/content/browser/frame_host/navigation_request.cc
-index 8175ccc7dc74d6b9dc455aef29f3c061624e7b25..24897f53004b07f239ce742a4f26abff87b9aff4 100644
+index 67ce9117a121ceb3127db83319a158dcfaad86cb..cf2a32cc2fe7ef3bd8d41b0e4d672e905586e3aa 100644
 --- a/content/browser/frame_host/navigation_request.cc
 +++ b/content/browser/frame_host/navigation_request.cc
-@@ -1743,6 +1743,7 @@ void NavigationRequest::OnStartChecksComplete(
-   headers.MergeFrom(navigation_handle_->TakeModifiedRequestHeaders());
+@@ -1987,6 +1987,7 @@ void NavigationRequest::OnStartChecksComplete(
+   headers.MergeFrom(TakeModifiedRequestHeaders());
    begin_params_->headers = headers.ToString();
  
 +  BRAVE_ONSTARTCHECKSCOMPLETE_MAYBEHIDEREFERRER
+   // TODO(clamy): Avoid cloning the navigation params and create the
+   // ResourceRequest directly here.
    std::vector<std::unique_ptr<NavigationLoaderInterceptor>> interceptor;
-   if (bundled_exchanges_factory_)
-     interceptor.push_back(bundled_exchanges_factory_->CreateInterceptor());

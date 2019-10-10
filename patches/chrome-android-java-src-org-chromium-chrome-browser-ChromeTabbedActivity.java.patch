@@ -1,13 +1,13 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index a168b085348c218c2951964beb37e0a25d754836..ad5cf672b9548a4f9921c4bc3521a0c8111e998d 100644
+index 9de151eff10dd902d494e9d44419cf9138e365e9..9c10c231c53f707a146b0c0a381b739aa2421dd6 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -174,7 +174,7 @@ import java.util.Locale;
+@@ -179,7 +179,7 @@ import java.util.Locale;
+  * This is the main activity for ChromeMobile when not running in document mode.  All the tabs
   * are accessible via a chrome specific tab switching UI.
   */
- public class ChromeTabbedActivity
--        extends ChromeActivity implements OverviewModeObserver, ScreenshotMonitorDelegate {
-+        extends BraveActivity implements OverviewModeObserver, ScreenshotMonitorDelegate {
-     @IntDef({BackPressedResult.NOTHING_HAPPENED, BackPressedResult.HELP_URL_CLOSED,
-             BackPressedResult.MINIMIZED_NO_TAB_CLOSED, BackPressedResult.MINIMIZED_TAB_CLOSED,
-             BackPressedResult.TAB_CLOSED, BackPressedResult.TAB_IS_NULL,
+-public class ChromeTabbedActivity extends ChromeActivity implements ScreenshotMonitorDelegate {
++public class ChromeTabbedActivity extends BraveActivity implements ScreenshotMonitorDelegate {
+     /**
+      * The results of a system back press action.
+      */

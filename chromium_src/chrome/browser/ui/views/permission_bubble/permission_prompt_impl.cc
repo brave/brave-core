@@ -9,11 +9,11 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/permissions/permission_request.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
-#include "chrome/browser/ui/views/chrome_typography.h"
 #include "ui/gfx/text_constants.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/label.h"
+#include "ui/views/style/typography.h"
 #include "ui/views/window/dialog_delegate.h"
 
 namespace {
@@ -62,10 +62,9 @@ void AddAdditionalWidevineViewControlsIfNeeded(
     return;
 
   auto* widevine_request = static_cast<WidevinePermissionRequest*>(requests[0]);
-  views::Label* text =
-      new views::Label(widevine_request->GetExplanatoryMessageText(),
-                       views::style::CONTEXT_LABEL,
-                       STYLE_SECONDARY);
+  views::Label* text = new views::Label(
+      widevine_request->GetExplanatoryMessageText(),
+      views::style::CONTEXT_LABEL, views::style::STYLE_SECONDARY);
   text->SetMultiLine(true);
   text->SetHorizontalAlignment(gfx::ALIGN_LEFT);
 

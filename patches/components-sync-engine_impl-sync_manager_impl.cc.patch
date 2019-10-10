@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine_impl/sync_manager_impl.cc b/components/sync/engine_impl/sync_manager_impl.cc
-index 43f420ae64a80c2fda1b8f17b53d68e1ccbd3b3d..88c310568287d7abed5003cba6cf75d7c8a76e73 100644
+index cf2cdc7b587c2d098f3bc62945e583d19891ed87..db7794fc623f6e627c4847e3def090c7b1a9f79b 100644
 --- a/components/sync/engine_impl/sync_manager_impl.cc
 +++ b/components/sync/engine_impl/sync_manager_impl.cc
-@@ -396,8 +396,9 @@ void SyncManagerImpl::Init(InitArgs* args) {
+@@ -388,8 +388,9 @@ void SyncManagerImpl::Init(InitArgs* args) {
        args->poll_interval);
    scheduler_ = args->engine_components_factory->BuildScheduler(
        name_, cycle_context_.get(), args->cancelation_signal,

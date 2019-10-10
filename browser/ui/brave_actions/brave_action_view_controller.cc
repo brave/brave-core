@@ -90,7 +90,8 @@ BraveActionViewController::GetIconImageSource(
   image_source->SetIcon(icon_factory_.GetIcon(tab_id));
   // set text
   std::unique_ptr<IconWithBadgeImageSource::Badge> badge;
-  std::string badge_text = extension_action()->GetBadgeText(tab_id);
+  std::string badge_text =
+      extension_action()->GetExplicitlySetBadgeText(tab_id);
   if (!badge_text.empty()) {
     badge.reset(new IconWithBadgeImageSource::Badge(
             badge_text,

@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/media/autoplay_policy.cc b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-index e8615068ef7b085dc6495e37cf212cd10e874ef6..d6da3272f8897bcfc0e5e82251674eda24dfeb7b 100644
+index a5d43e8836fb6f5572a043434fd16850d3cdbace..6de354614ee7ee67e74152134d8b37d0368a5cf2 100644
 --- a/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 +++ b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-@@ -139,6 +139,10 @@ bool AutoplayPolicy::DocumentHasUserExceptionFlag(const Document& document) {
+@@ -138,6 +138,10 @@ bool AutoplayPolicy::DocumentHasUserExceptionFlag(const Document& document) {
  // static
  bool AutoplayPolicy::DocumentShouldAutoplayMutedVideos(
      const Document& document) {
@@ -13,7 +13,7 @@ index e8615068ef7b085dc6495e37cf212cd10e874ef6..d6da3272f8897bcfc0e5e82251674eda
    return GetAutoplayPolicyForDocument(document) !=
           AutoplayPolicy::Type::kNoUserGestureRequired;
  }
-@@ -319,6 +323,10 @@ bool AutoplayPolicy::IsGestureNeededForPlayback() const {
+@@ -307,6 +311,10 @@ bool AutoplayPolicy::IsGestureNeededForPlayback() const {
    if (!IsLockedPendingUserGesture())
      return false;
  

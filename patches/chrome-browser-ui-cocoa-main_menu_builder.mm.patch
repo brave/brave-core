@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/cocoa/main_menu_builder.mm b/chrome/browser/ui/cocoa/main_menu_builder.mm
-index 158d63677d0e6f4b81ae26c0b2fd69f31872857a..26a6afdae1b156365bdfb9150471d889f1fa11b9 100644
+index b0f66cc832e85b3d9da0b64ed1c3536563b16656..00414aa8a7edc794ba901d0ea92f44db7f8700a6 100644
 --- a/chrome/browser/ui/cocoa/main_menu_builder.mm
 +++ b/chrome/browser/ui/cocoa/main_menu_builder.mm
-@@ -97,6 +97,8 @@ base::scoped_nsobject<NSMenuItem> BuildFileMenu(
+@@ -98,6 +98,8 @@ base::scoped_nsobject<NSMenuItem> BuildFileMenu(
                  Item(IDS_NEW_INCOGNITO_WINDOW_MAC)
                      .command_id(IDC_NEW_INCOGNITO_WINDOW)
                      .remove_if(is_pwa),

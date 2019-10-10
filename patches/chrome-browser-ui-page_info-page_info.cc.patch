@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/page_info/page_info.cc b/chrome/browser/ui/page_info/page_info.cc
-index 649078d64a5cba0edae5b81d1b2b27d928d54dcd..fb65df4c3c1ef89ba5602d732586d8bcde97b924 100644
+index 94018b0d55f3a860942c440fb3833aed025d2632..01b8098b70a20253607f758775052f3725922bb8 100644
 --- a/chrome/browser/ui/page_info/page_info.cc
 +++ b/chrome/browser/ui/page_info/page_info.cc
-@@ -158,6 +158,7 @@ bool ShouldShowPermission(
+@@ -163,6 +163,7 @@ bool ShouldShowPermission(
      HostContentSettingsMap* content_settings,
      content::WebContents* web_contents,
      TabSpecificContentSettings* tab_specific_content_settings) {
@@ -10,16 +10,19 @@ index 649078d64a5cba0edae5b81d1b2b27d928d54dcd..fb65df4c3c1ef89ba5602d732586d8bc
    // Note |CONTENT_SETTINGS_TYPE_ADS| will show up regardless of its default
    // value when it has been activated on the current origin.
    if (info.type == CONTENT_SETTINGS_TYPE_ADS) {
-@@ -195,7 +196,7 @@ bool ShouldShowPermission(
+@@ -203,9 +204,11 @@ bool ShouldShowPermission(
+     return true;
    }
- #endif
  
--#if !defined(OS_ANDROID)
-+#if !defined(OS_ANDROID) && !defined(BRAVE_CHROMIUM_BUILD)
++#if !defined(BRAVE_CHROMIUM_BUILD)
    // Autoplay is Android-only at the moment.
    if (info.type == CONTENT_SETTINGS_TYPE_AUTOPLAY)
      return false;
-@@ -1002,7 +1003,7 @@ void PageInfo::RecordPasswordReuseEvent() {
++#endif
+ 
+   // Display the Native File System write permission if the Native File System
+   // API is currently being used.
+@@ -1029,7 +1032,7 @@ void PageInfo::RecordPasswordReuseEvent() {
  std::vector<ContentSettingsType> PageInfo::GetAllPermissionsForTesting() {
    std::vector<ContentSettingsType> permission_list;
    for (size_t i = 0; i < base::size(kPermissionType); ++i) {

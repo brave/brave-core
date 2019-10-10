@@ -1,8 +1,8 @@
 diff --git a/chrome/utility/importer/firefox_importer.h b/chrome/utility/importer/firefox_importer.h
-index e08bf86f692cf7013291a39efb109b218154d8a5..ee5549b80d12baa0f87df36bb1bee7ea4647b44b 100644
+index 46be147c9e70dca82a79025d57c4aaa080f02793..661eb7f520164753c874c78606aa8e5f04d4430d 100644
 --- a/chrome/utility/importer/firefox_importer.h
 +++ b/chrome/utility/importer/firefox_importer.h
-@@ -41,6 +41,9 @@ class FirefoxImporter : public Importer {
+@@ -43,6 +43,9 @@ class FirefoxImporter : public Importer {
                     uint16_t items,
                     ImporterBridge* bridge) override;
  
@@ -12,7 +12,7 @@ index e08bf86f692cf7013291a39efb109b218154d8a5..ee5549b80d12baa0f87df36bb1bee7ea
   private:
    // Location of favicons in Firefox profile. It may vary depending on Firefox
    // version.
-@@ -54,8 +57,6 @@ class FirefoxImporter : public Importer {
+@@ -56,8 +59,6 @@ class FirefoxImporter : public Importer {
  
    using FaviconMap = std::map<int64_t, std::set<GURL>>;
  
