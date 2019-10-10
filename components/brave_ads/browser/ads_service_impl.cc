@@ -354,8 +354,9 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 AdsServiceImpl::AdsServiceImpl(Profile* profile) :
     profile_(profile),
     is_initialized_(false),
-    file_task_runner_(base::CreateSequencedTaskRunnerWithTraits(
-        {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+    file_task_runner_(base::CreateSequencedTaskRunner(
+          {base::ThreadPool(), base::MayBlock(),
+           base::TaskPriority::BEST_EFFORT,
             base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
     base_path_(profile_->GetPath().AppendASCII("ads_service")),
     next_timer_id_(0),
@@ -1832,7 +1833,7 @@ void AdsServiceImpl::URLRequest(
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = GURL(url);
   request->method = URLMethodToRequestType(method);
-  request->allow_credentials = false;
+  request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   for (const auto& header : headers) {
     request->headers.AddHeaderFromString(header);
   }

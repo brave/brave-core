@@ -49,8 +49,8 @@ void TopSitesProvider::Start(const AutocompleteInput& input,
 
   for (size_t i = 0; i < matches_.size(); ++i)
     matches_[i].relevance = kRelevance + matches_.size() - (i + 1);
-  if (!HistoryProvider::PreventInlineAutocomplete(input) &&
-      (matches_.size() == 1) && !matches_[0].inline_autocompletion.empty()) {
+  if ((matches_.size() == 1) && !matches_[0].inline_autocompletion.empty() &&
+      AutocompleteMatch::AllowedToBeDefault(input, matches_[0])) {
     // If there's only one possible completion of the user's input and
     // allowing completions is okay, give the match a high enough score to
     // allow it to beat url-what-you-typed and be inlined.

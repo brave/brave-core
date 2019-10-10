@@ -165,11 +165,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::FollowRedirect(
   RestartInternal();
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::ProceedWithResponse() {
-  if (target_loader_.is_bound())
-    target_loader_->ProceedWithResponse();
-}
-
 void BraveProxyingURLLoaderFactory::InProgressRequest::SetPriority(
     net::RequestPriority priority,
     int32_t intra_priority_value) {
@@ -190,8 +185,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
 }
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveResponse(
-    const network::ResourceResponseHead& head) {
-  current_response_ = head;
+    network::mojom::URLResponseHeadPtr head) {
+  current_response_ = std::move(head);
   HandleResponseOrRedirectHeaders(
       base::BindRepeating(&InProgressRequest::ContinueToResponseStarted,
                           weak_factory_.GetWeakPtr()));
@@ -199,8 +194,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveResponse(
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveRedirect(
     const net::RedirectInfo& redirect_info,
-    const network::ResourceResponseHead& head) {
-  current_response_ = head;
+    network::mojom::URLResponseHeadPtr head) {
+  current_response_ = std::move(head);
   HandleResponseOrRedirectHeaders(
       base::BindRepeating(&InProgressRequest::ContinueToBeforeRedirect,
                           weak_factory_.GetWeakPtr(), redirect_info));
@@ -263,7 +258,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   redirect_info.new_url = redirect_url_;
   redirect_info.new_site_for_cookies = redirect_url_;
 
-  network::ResourceResponseHead head;
+  network::mojom::URLResponseHeadPtr head =
+      network::mojom::URLResponseHead::New();
   std::string headers = base::StringPrintf(
       "HTTP/1.1 %i Internal Redirect\n"
       "Location: %s\n"
@@ -301,11 +297,11 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
           http_origin.c_str());
     }
   }
-  head.headers = base::MakeRefCounted<net::HttpResponseHeaders>(
+  head->headers = base::MakeRefCounted<net::HttpResponseHeaders>(
       net::HttpUtil::AssembleRawHeaders(headers));
-  head.encoded_data_length = 0;
+  head->encoded_data_length = 0;
 
-  current_response_ = head;
+  current_response_ = std::move(head);
   ContinueToBeforeRedirect(redirect_info, net::OK);
 }
 
@@ -475,7 +471,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   }
 
   if (override_headers_)
-    current_response_.headers = override_headers_;
+    current_response_->headers = override_headers_;
 
   std::string redirect_location;
   if (override_headers_ && override_headers_->IsRedirect(&redirect_location)) {
@@ -505,7 +501,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   }
 
   proxied_client_binding_.ResumeIncomingMethodCallProcessing();
-  target_client_->OnReceiveResponse(current_response_);
+  target_client_->OnReceiveResponse(std::move(current_response_));
 }
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToBeforeRedirect(
@@ -519,7 +515,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::ContinueToBeforeRedirect(
   if (proxied_client_binding_.is_bound())
     proxied_client_binding_.ResumeIncomingMethodCallProcessing();
 
-  target_client_->OnReceiveRedirect(redirect_info, current_response_);
+  target_client_->OnReceiveRedirect(redirect_info,
+                                    std::move(current_response_));
   request_.url = redirect_info.new_url;
   request_.method = redirect_info.new_method;
   request_.site_for_cookies = redirect_info.new_site_for_cookies;
@@ -547,7 +544,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
                                      frame_tree_node_id_, request_id_,
                                      browser_context_, ctx_);
     int result = factory_->request_handler_->OnHeadersReceived(
-        ctx_, copyable_callback, current_response_.headers.get(),
+        ctx_, copyable_callback, current_response_->headers.get(),
         &override_headers_, &redirect_url_);
 
     if (result == net::ERR_BLOCKED_BY_CLIENT) {

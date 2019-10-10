@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/launcher_support/chrome_launcher_support.cc b/chrome/installer/launcher_support/chrome_launcher_support.cc
-index e8bd45b7bb6be86360f1c484b880e9caf3a5ef0d..66330682fd0239b5aa4d68bb5cce39bce97af2b6 100644
+index 06704222505a0d582b6393a7524bc1a8ec6aee5e..54b7e6e749d7fe8624fa5835b6efe0c9027e5635 100644
 --- a/chrome/installer/launcher_support/chrome_launcher_support.cc
 +++ b/chrome/installer/launcher_support/chrome_launcher_support.cc
-@@ -28,12 +28,24 @@ const wchar_t kBrowserAppGuid[] = L"{8A69D345-D564-463c-AFF1-A69D9E530F96}";
+@@ -29,12 +29,24 @@ const wchar_t kBrowserAppGuid[] = L"{8A69D345-D564-463c-AFF1-A69D9E530F96}";
  
  // Copied frome google_chrome_sxs_distribution.cc.
  const wchar_t kSxSBrowserAppGuid[] = L"{4ea16ac7-fd5a-47c3-875b-dbf4a2008c20}";
@@ -27,21 +27,21 @@ index e8bd45b7bb6be86360f1c484b880e9caf3a5ef0d..66330682fd0239b5aa4d68bb5cce39bc
  const wchar_t kUninstallStringField[] = L"UninstallString";
  
  // Reads a string value from the specified product's registry key. Returns true
-@@ -76,7 +88,7 @@ base::FilePath GetSetupExeFromRegistry(InstallationLevel level,
+@@ -77,7 +89,7 @@ base::FilePath GetSetupExeFromRegistry(InstallationLevel level,
  // be found via the registry.
  base::FilePath GetSetupExeForInstallationLevel(InstallationLevel level) {
    base::FilePath setup_exe_path;
--#if defined(GOOGLE_CHROME_BUILD)
-+#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
    // Look in the registry for Chrome Binaries first.
    setup_exe_path = GetSetupExeFromRegistry(level, kBinariesAppGuid);
    // If the above fails, look in the registry for Chrome next.
-@@ -118,7 +130,7 @@ base::FilePath FindExeRelativeToSetupExe(const base::FilePath setup_exe_path,
+@@ -119,7 +131,7 @@ base::FilePath FindExeRelativeToSetupExe(const base::FilePath setup_exe_path,
  base::FilePath GetChromePathForInstallationLevel(InstallationLevel level,
                                                   bool is_sxs) {
    if (is_sxs) {
--#if defined(GOOGLE_CHROME_BUILD)
-+#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
      return FindExeRelativeToSetupExe(
          GetSetupExeFromRegistry(level, kSxSBrowserAppGuid), kChromeExe);
  #else

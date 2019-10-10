@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/extensions/BUILD.gn b/chrome/browser/resources/extensions/BUILD.gn
-index 7a60d45137f7c9bdc2f557c88fa16487fd4118db..3de1724a8694e65091a1c35df3ad60dd02ca79a3 100644
+index 1798f6238a7a1a462bd62cb33631c4a8497cd1cf..b51c7627b93cded6a911452101ea0087508b9604 100644
 --- a/chrome/browser/resources/extensions/BUILD.gn
 +++ b/chrome/browser/resources/extensions/BUILD.gn
 @@ -21,6 +21,7 @@ optimize_webui("build") {

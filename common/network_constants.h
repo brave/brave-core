@@ -15,7 +15,9 @@ extern const char kBraveReferralsActivityPath[];
 extern const char kBraveSafeBrowsingFileCheckProxy[];
 extern const char kBraveRedirectorProxy[];
 extern const char kBraveClients4Proxy[];
+extern const char kBraveStaticProxy[];
 
+extern const char kAutofillPrefix[];
 extern const char kClients4Prefix[];
 extern const char kCRXDownloadPrefix[];
 extern const char kEmptyDataURI[];

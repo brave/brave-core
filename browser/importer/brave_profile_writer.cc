@@ -55,10 +55,10 @@
 
 BraveProfileWriter::BraveProfileWriter(Profile* profile)
     : ProfileWriter(profile),
-      task_runner_(base::CreateSequencedTaskRunnerWithTraits({
-          base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-          base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {
-}
+      task_runner_(base::CreateSequencedTaskRunner(
+          {base::ThreadPool(), base::MayBlock(),
+           base::TaskPriority::BEST_EFFORT,
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {}
 
 BraveProfileWriter::~BraveProfileWriter() {
   DCHECK(!IsInObserverList());
@@ -374,7 +374,7 @@ void BraveProfileWriter::UpdateReferral(const BraveReferral& referral) {
 Browser* OpenImportedBrowserWindow(
     const ImportedBrowserWindow& window,
     Profile* profile) {
-  Browser::CreateParams params(Browser::TYPE_TABBED, profile, false);
+  Browser::CreateParams params(Browser::TYPE_NORMAL, profile, false);
 
   params.initial_bounds = gfx::Rect(window.top, window.left,
       window.width, window.height);

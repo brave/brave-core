@@ -74,6 +74,9 @@
   <message name="IDS_MEDIA_ROUTER_ISSUE_FILE_CAST_ERROR" desc="Title of an issue to show when a selected file cannot be cast, file specified by FILE_NAME.">
     Unable to cast <ph name="FILE_NAME">$1<ex>my_media.mp3</ex></ph>.
   </message>
+  <message name="IDS_MEDIA_ROUTER_ISSUE_TAB_AUDIO_NOT_SUPPORTED" desc="Title of an issue shown when the user is casting a tab, but only its visual content can be cast and not its audio output.">
+    Casting tab audio is not supported on this device.
+  </message>
 
   <!-- Sink List -->
   <message name="IDS_MEDIA_ROUTER_STATUS_LOOKING_FOR_DEVICES" desc="Status text temporarily shown while searching for Cast devices but none have been found.">

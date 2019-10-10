@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/svg/svg_path_element.cc b/third_party/blink/renderer/core/svg/svg_path_element.cc
-index c4f1cdf877e35573d3b9ad0e18514429f3d4fb5f..fc05535e630ae5dba955f41ef3700890b1eae378 100644
+index 497baf56704b1f4c0910b1c3af46000f164bb8f0..340b6609ff193f00c67027c4dd4c043607a582b2 100644
 --- a/third_party/blink/renderer/core/svg/svg_path_element.cc
 +++ b/third_party/blink/renderer/core/svg/svg_path_element.cc
 @@ -20,6 +20,7 @@
@@ -13,7 +13,7 @@ index c4f1cdf877e35573d3b9ad0e18514429f3d4fb5f..fc05535e630ae5dba955f41ef3700890
 @@ -65,6 +66,9 @@ Path SVGPathElement::AsPath() const {
  }
  
- float SVGPathElement::getTotalLength() {
+ float SVGPathElement::getTotalLength(ExceptionState& exception_state) {
 +  if (!AllowFingerprinting(GetDocument().GetFrame())) {
 +    return 0.0f;
 +  }

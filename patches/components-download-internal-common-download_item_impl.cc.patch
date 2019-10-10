@@ -1,8 +1,8 @@
 diff --git a/components/download/internal/common/download_item_impl.cc b/components/download/internal/common/download_item_impl.cc
-index 386660c5ee95ba81309ce3c2e39e834646bd27b0..b54f44ff90a7727f52c73de9fc6020f83f8def5f 100644
+index f24ef713bf7d23183e9fe07e32aa151ab386119f..aa59863a6e724e7ef55acb8f68438e25f155ba71 100644
 --- a/components/download/internal/common/download_item_impl.cc
 +++ b/components/download/internal/common/download_item_impl.cc
-@@ -1800,8 +1800,8 @@ void DownloadItemImpl::OnDownloadCompleting() {
+@@ -1797,8 +1797,8 @@ void DownloadItemImpl::OnDownloadCompleting() {
                       base::Unretained(download_file_.get()),
                       GetTargetFilePath(),
                       delegate_->GetApplicationClientIdForFileScanning(),
@@ -10,6 +10,6 @@ index 386660c5ee95ba81309ce3c2e39e834646bd27b0..b54f44ff90a7727f52c73de9fc6020f8
 -                     delegate_->IsOffTheRecord() ? GURL() : GetReferrerUrl(),
 +                     GURL(),  // Never leak download URLs in metadata.
 +                     GURL(),  // See brave-browser#2766.
-                      std::move(new_connector), std::move(callback)));
+                      std::move(quarantine), std::move(callback)));
  }
  

@@ -70,16 +70,17 @@ class BraveProxyingURLLoaderFactory
     void FollowRedirect(const std::vector<std::string>& removed_headers,
                         const net::HttpRequestHeaders& modified_headers,
                         const base::Optional<GURL>& new_url) override;
-    void ProceedWithResponse() override;
     void SetPriority(net::RequestPriority priority,
                      int32_t intra_priority_value) override;
     void PauseReadingBodyFromNet() override;
     void ResumeReadingBodyFromNet() override;
 
     // network::mojom::URLLoaderClient:
-    void OnReceiveResponse(const network::ResourceResponseHead& head) override;
-    void OnReceiveRedirect(const net::RedirectInfo& redirect_info,
-                           const network::ResourceResponseHead& head) override;
+    void OnReceiveResponse(
+        network::mojom::URLResponseHeadPtr response_head) override;
+    void OnReceiveRedirect(
+        const net::RedirectInfo& redirect_info,
+        network::mojom::URLResponseHeadPtr response_head) override;
     void OnUploadProgress(int64_t current_position,
                           int64_t total_size,
                           OnUploadProgressCallback callback) override;
@@ -132,7 +133,7 @@ class BraveProxyingURLLoaderFactory
     // ExtensionWebRequestEventRouter) through much of the request's lifetime.
     // That code supports both Network Service and non-Network Service behavior,
     // which is why this weirdness exists here.
-    network::ResourceResponseHead current_response_;
+    network::mojom::URLResponseHeadPtr current_response_;
     scoped_refptr<net::HttpResponseHeaders> override_headers_;
     GURL redirect_url_;
 

@@ -1,19 +1,19 @@
 diff --git a/chrome/installer/mini_installer/mini_installer.cc b/chrome/installer/mini_installer/mini_installer.cc
-index 6d86e7487289124cd89ee0d574f58f035e538f61..b553e8acd90761bfcf8baf739b08a3a30d0e378d 100644
+index 73e6240800f3c72bd96c91971c53a19516e1b0f1..e0049fab53dcb2bb8fe237523bf6eb9825c66c6e 100644
 --- a/chrome/installer/mini_installer/mini_installer.cc
 +++ b/chrome/installer/mini_installer/mini_installer.cc
-@@ -62,7 +62,7 @@ struct Context {
+@@ -63,7 +63,7 @@ struct Context {
  // TODO(grt): Frame this in terms of whether or not the brand supports
  // integation with Omaha, where Google Update is the Google-specific fork of
  // the open-source Omaha project.
--#if defined(GOOGLE_CHROME_BUILD)
-+#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
  // Opens the Google Update ClientState key. If |binaries| is false, opens the
  // key for Google Chrome or Chrome SxS (canary). If |binaries| is true and an
  // existing multi-install Chrome is being updated, opens the key for the
-@@ -143,6 +143,138 @@ void SetInstallerFlags(const Configuration& configuration) {
+@@ -144,6 +144,138 @@ void SetInstallerFlags(const Configuration& configuration) {
  }
- #endif  // GOOGLE_CHROME_BUILD
+ #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
  
 +#if defined(BRAVE_CHROMIUM_BUILD)
 +bool ParseStandardReferralCode(const wchar_t* filename, ReferralCodeString& referral_code) {
@@ -150,7 +150,7 @@ index 6d86e7487289124cd89ee0d574f58f035e538f61..b553e8acd90761bfcf8baf739b08a3a3
  // Gets the setup.exe path from Registry by looking at the value of Uninstall
  // string.  |size| is measured in wchar_t units.
  ProcessExitResult GetSetupExePathForAppGuid(bool system_level,
-@@ -527,6 +659,21 @@ ProcessExitResult RunSetup(const Configuration& configuration,
+@@ -528,6 +660,21 @@ ProcessExitResult RunSetup(const Configuration& configuration,
    // on to setup.exe
    AppendCommandLineFlags(configuration.command_line(), &cmd_line);
  
@@ -172,21 +172,21 @@ index 6d86e7487289124cd89ee0d574f58f035e538f61..b553e8acd90761bfcf8baf739b08a3a3
    return RunProcessAndWait(setup_exe.get(), cmd_line.get(),
                             RUN_SETUP_FAILED_FILE_NOT_FOUND,
                             RUN_SETUP_FAILED_PATH_NOT_FOUND,
-@@ -874,7 +1021,7 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -875,7 +1022,7 @@ ProcessExitResult WMain(HMODULE module) {
    if (!GetWorkDir(module, &base_path, &exit_code))
      return exit_code;
  
--#if defined(GOOGLE_CHROME_BUILD)
-+#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
    // Set the magic suffix in registry to try full installer next time. We ignore
    // any errors here and we try to set the suffix for user level unless
    // GoogleUpdateIsMachine=1 is present in the environment or --system-level is
-@@ -899,7 +1046,7 @@ ProcessExitResult WMain(HMODULE module) {
+@@ -900,7 +1047,7 @@ ProcessExitResult WMain(HMODULE module) {
    if (ShouldDeleteExtractedFiles())
      DeleteExtractedFiles(base_path.get(), archive_path.get(), setup_path.get());
  
--#if defined(GOOGLE_CHROME_BUILD)
-+#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
    WriteInstallResults(configuration, exit_code);
  #endif
  

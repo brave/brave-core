@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/devtools_ui_data_source.cc b/chrome/browser/ui/webui/devtools_ui_data_source.cc
+index 95e73c57300e7426d70c669439c18efb68be5337..b177eedddda5d5e4b740d6dee2ae870ac188f938 100644
+--- a/chrome/browser/ui/webui/devtools_ui_data_source.cc
++++ b/chrome/browser/ui/webui/devtools_ui_data_source.cc
+@@ -191,6 +191,7 @@ void DevToolsDataSource::StartBundledDataRequest(
+ void DevToolsDataSource::StartRemoteDataRequest(
+     const GURL& url,
+     const content::URLDataSource::GotDataCallback& callback) {
++  return; // feature disabled in Brave
+   CHECK(url.is_valid());
+   net::NetworkTrafficAnnotationTag traffic_annotation =
+       net::DefineNetworkTrafficAnnotation("devtools_hard_coded_data_source",

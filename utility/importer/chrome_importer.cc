@@ -314,7 +314,8 @@ void ChromeImporter::ImportPasswords(const base::FilePath& prefs_filename) {
   base::FilePath passwords_path = source_path_.Append(
       base::FilePath::StringType(FILE_PATH_LITERAL("Login Data")));
 
-  password_manager::LoginDatabase database(passwords_path);
+  password_manager::LoginDatabase database(
+      passwords_path, password_manager::IsAccountStore(false));
   if (!database.Init()) {
     LOG(ERROR) << "LoginDatabase Init() failed";
     return;

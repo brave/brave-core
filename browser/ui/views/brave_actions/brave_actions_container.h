@@ -48,7 +48,7 @@ class BraveActionsContainer : public views::View,
   void OnToolbarActionViewDragDone() override;
   // Returns the view of the toolbar actions overflow menu to use as a
   // reference point for a popup when this view isn't visible.
-  views::MenuButton* GetOverflowReferenceView() override;
+  views::LabelButton* GetOverflowReferenceView() const override;
   // Returns the preferred size of the ToolbarActionView.
   gfx::Size GetToolbarActionSize() override;
   // Overridden from views::DragController (required by

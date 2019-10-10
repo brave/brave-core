@@ -109,7 +109,7 @@ std::string BraveSharedResourcesDataSource::GetSource() {
 
 void BraveSharedResourcesDataSource::StartDataRequest(
     const std::string& path,
-    const content::ResourceRequestInfo::WebContentsGetter& wc_getter,
+    const content::WebContents::Getter& wc_getter,
     const content::URLDataSource::GotDataCallback& callback) {
   int idr = GetIdrForPath(path);
   DCHECK_NE(-1, idr) << " path: " << path;

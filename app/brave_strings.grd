@@ -312,6 +312,10 @@ Brave is unable to recover your settings.
       <message name="IDS_PASSWORD_GENERATION_PROMPT" desc="Autofill dropdown text describing password generation.">
         Brave will save this password in your Brave Account. You won’t have to remember it.
       </message>
+      <!-- Password manager onboarding strings -->
+      <message name="IDS_PASSWORD_MANAGER_ONBOARDING_DETAILS_C" desc="The explanation text that is shown below the title in the password manager onboarding dialog.">
+        Brave lets you know if your passwords are ever compromised
+      </message>
       <message name="IDS_PASSWORD_MANAGER_TITLE_BRAND" desc="The product name used in the title of the password bubble.">
         Brave
       </message>
@@ -824,21 +828,6 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
 
       <!-- Material Design User Manager -->
       <if expr="not is_android and not chromeos">
-        <!-- Supervised user create confirmation page -->
-        <message name="IDS_SUPERVISED_USER_CREATED_TEXT" desc="Informative text for the confirmation dialog that appears after a supervised user has been created.">
-          To set which websites <ph name="NEW_PROFILE_NAME">$1<ex>New User</ex></ph> can view, you can configure restrictions and settings by visiting <ph name="BEGIN_LINK_1">&lt;a target="_blank" href="$3"&gt;</ph><ph name="DISPLAY_LINK">$4</ph><ph name="END_LINK_1">&lt;/a&gt;</ph>. If you do not change the default settings, <ph name="NEW_PROFILE_NAME">$1<ex>New User</ex></ph> can browse everything on the web.
-
-To prevent <ph name="NEW_PROFILE_NAME">$1<ex>New User</ex></ph> from accessing your account, make sure you lock your profile when you're not using Brave. To do this, click your profile name in the upper-right corner of the browser, and select "Exit and childlock."
-<ph name="BEGIN_LINK_2">&lt;a target="_blank" href="https://support.google.com/chrome/?p=ui_supervised_users&amp;hl=[GRITLANGCODE]"&gt;</ph>Learn more<ph name="END_LINK_2">&lt;/a&gt;</ph>
-
-Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</ex></ph> for further instructions.
-        </message>
-
-        <!-- Supervised users deprecation infobar -->
-        <message name="IDS_SUPERVISED_USERS_DEPRECATED_MESSAGE" desc="A message displayed on an at-launch infobar warning supervised users that this feature is deprecated and will be removed.">
-          Supervised user profiles will no longer be available starting with Brave 70.
-        </message>
-
         <!-- User pod remove sync warning text -->
         <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_SYNC" desc="Main text shown as a warning when attempting to remove an user.">
           This profile's browsing data will be deleted from this device. To recover the data, sign in to Brave as <ph name="USER_EMAIL">$2<ex>foo@example.com</ex></ph>.
@@ -1042,7 +1031,7 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
          other {Brave will restart in # seconds}}
       </message>
       <message name="IDS_CRITICAL_NOTIFICATION_TITLE_ALTERNATE" desc="The title for a bubble that appears when there is a critical update and Brave must restart to install it. The title was previously countng down to an automatic restart and now it has finished. Will only be seen if a web page stops the shutdown process.">
-        You should restart Brave now
+        Please restart Brave now
       </message>
       <message name="IDS_CRITICAL_NOTIFICATION_TEXT" desc="Explanation text for the bubble that appears when there is a critical update and Brave must restart to install it.">
         A special security update for Brave was just applied. Restart now and we'll restore your tabs.
@@ -1137,16 +1126,6 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
         </message>
         <message name="IDS_EULA_SCREEN_ACCESSIBLE_TITLE" desc="Title to be spoken on opening the OOBE EULA screen">
           Brave OS terms
-        </message>
-      </if>
-
-      <!-- Windows 8 Metro mode. -->
-      <if expr="is_win">
-        <message name="IDS_METRO_FLOW_TAB_TITLE" desc="The dialog window title.">
-          Welcome to Brave
-        </message>
-        <message name="IDS_METRO_FLOW_TITLE_SHORT" desc="The title at the top of the window guiding user through making Brave default in Metro.">
-          Brave is almost ready.
         </message>
       </if>
 

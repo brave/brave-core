@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/startup/startup_browser_creator_impl.cc b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-index 1e800c468eb679a024433a7b1c02f2f3153f364d..70188977feedaf0fd38023dbd6f08eeac3d211e8 100644
+index 62bb551f1f37e29f95531a2912f779ee26917483..a5ebbbc63909f4efab707b28589e67e09f8dd0a1 100644
 --- a/chrome/browser/ui/startup/startup_browser_creator_impl.cc
 +++ b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-@@ -638,6 +638,7 @@ void StartupBrowserCreatorImpl::DetermineURLsAndLaunch(
-   onboarding_enabled = nux::IsNuxOnboardingEnabled(profile_) &&
-                        nux::DoesOnboardingHaveModulesToShow(profile_);
+@@ -629,6 +629,7 @@ void StartupBrowserCreatorImpl::DetermineURLsAndLaunch(
+   welcome_enabled =
+       welcome::IsEnabled(profile_) && welcome::HasModulesToShow(profile_);
  #endif  // !defined(OS_CHROMEOS)
 +  BRAVE_STARTUPBROWSERCREATORIMPL_DETERMINEURLSANDLAUNCH
  
-   StartupTabs tabs =
-       DetermineStartupTabs(StartupTabProviderImpl(), cmd_line_tabs,
+   StartupTabs tabs = DetermineStartupTabs(
+       StartupTabProviderImpl(), cmd_line_tabs, process_startup,

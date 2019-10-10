@@ -24,6 +24,10 @@
     </message>
   </if>
   <if expr="chromeos">
+    <message name="IDS_SETTINGS_ABOUT_OS_BANNER" desc="Banner displayed in the browser About page that links to the OS About page.">
+      For Brave OS details, please see <ph name="LINK_BEGIN">&lt;a href="chrome://os-settings/help"&gt;</ph>
+      About Brave OS<ph name="LINK_END">&lt;/a&gt;</ph>
+    </message>
     <message name="IDS_SETTINGS_ABOUT_OS" desc="Menu title for the About Brave OS page.">
       About Brave OS
     </message>
@@ -55,6 +59,19 @@
     </message>
     <message name="IDS_SETTINGS_DEFAULT_BROWSER_SECONDARY" desc="The text displayed when Brave is installed in side-by-side mode, which does not support setting as the default browser.">
       This is a secondary installation of Brave, and cannot be made your default browser.
+    </message>
+  </if>
+
+  <!-- Main Page -->
+  <if expr="chromeos">
+    <message name="IDS_SETTINGS_BROWSER_SETTINGS_BANNER" desc="Banner displayed in OS settings page that links to Browser settings.">
+      If a setting doesn't show on this page, look in your <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>
+      Brave browser settings<ph name="LINK_END">&lt;/a&gt;</ph>
+    </message>
+    <!-- No target="_blank" because OS settings opens its own window. -->
+    <message name="IDS_SETTINGS_OS_SETTINGS_BANNER" desc="Banner displayed in browser settings page that links to OS settings.">
+      If a setting doesn't show on this page, look in your <ph name="LINK_BEGIN">&lt;a href="$1<ex>https://google.com/</ex>"&gt;</ph>
+      Brave OS settings<ph name="LINK_END">&lt;/a&gt;</ph>
     </message>
   </if>
 
@@ -117,14 +134,7 @@
 </if>
 
   <!-- Languages Page -->
-  <if expr="chromeos">
-    <message name="IDS_SETTINGS_LANGUAGES_IS_DISPLAYED_IN_THIS_LANGUAGE" desc="The label for a language that is currently used as the UI display language.">
-      This language is used to display the Brave OS UI
-    </message>
-    <message name="IDS_SETTINGS_LANGUAGES_DISPLAY_IN_THIS_LANGUAGE" desc="The label used for a button that changes the UI language.">
-      Display Brave OS in this language
-    </message>
-  </if>
+  <!-- Brave OS string is in settings_strings.grdp. -->
   <if expr="not chromeos">
     <message name="IDS_SETTINGS_LANGUAGES_IS_DISPLAYED_IN_THIS_LANGUAGE" desc="The label for a language that is currently used as the UI display language.">
       This language is used to display the Brave UI

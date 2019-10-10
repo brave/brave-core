@@ -1,8 +1,8 @@
 diff --git a/content/browser/permissions/permission_controller_impl.cc b/content/browser/permissions/permission_controller_impl.cc
-index e07765308f980564be911451875d388db8a32815..3ce425ce224b834d35d2816bf2a104d66eefe449 100644
+index a018bcbfeaf9e414fc9546a938ae6a2cbf9c1ec5..f2531a904454454cd2af760635e028e83b58cdb6 100644
 --- a/content/browser/permissions/permission_controller_impl.cc
 +++ b/content/browser/permissions/permission_controller_impl.cc
-@@ -67,6 +67,7 @@ PermissionToSchedulingFeature(PermissionType permission_name) {
+@@ -59,6 +59,7 @@ PermissionToSchedulingFeature(PermissionType permission_name) {
      case PermissionType::IDLE_DETECTION:
      case PermissionType::WAKE_LOCK_SCREEN:
      case PermissionType::WAKE_LOCK_SYSTEM:

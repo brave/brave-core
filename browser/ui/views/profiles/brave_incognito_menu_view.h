@@ -15,14 +15,11 @@ class BraveIncognitoMenuView : public IncognitoMenuView {
   using IncognitoMenuView::IncognitoMenuView;
   ~BraveIncognitoMenuView() override = default;
 
-  // views::ButtonListener:
-  void ButtonPressed(views::Button* sender, const ui::Event& event) override;
-
-  void Reset() override;
-
   void AddTorButton();
 
-  views::Button* tor_profile_button_;
+  void OnTorProfileButtonClicked();
+
+  views::Button* tor_profile_button_ = nullptr;
 
   DISALLOW_COPY_AND_ASSIGN(BraveIncognitoMenuView);
 };

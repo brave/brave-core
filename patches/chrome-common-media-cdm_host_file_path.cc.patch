@@ -1,8 +1,8 @@
 diff --git a/chrome/common/media/cdm_host_file_path.cc b/chrome/common/media/cdm_host_file_path.cc
-index 298876ce85e723d3d0fe80d4f6f973cb8a64b975..5291d66d02679e294a8e7657b94638981c57c721 100644
+index a454dd3450ae06949ab38f2d854b7a9f811604ff..193d1a682aa2e07ac479ed819033ceba9610a0ff 100644
 --- a/chrome/common/media/cdm_host_file_path.cc
 +++ b/chrome/common/media/cdm_host_file_path.cc
-@@ -43,7 +43,11 @@ void AddCdmHostFilePaths(
+@@ -44,7 +44,11 @@ void AddCdmHostFilePaths(
  #if defined(OS_WIN)
  
    static const base::FilePath::CharType* const kUnversionedFiles[] = {

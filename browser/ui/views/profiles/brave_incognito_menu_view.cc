@@ -16,24 +16,16 @@
 #include "chrome/browser/ui/views/hover_button.h"
 #include "ui/views/controls/button/button.h"
 
-void BraveIncognitoMenuView::ButtonPressed(views::Button* sender,
-                                           const ui::Event& event) {
-  if (sender == tor_profile_button_) {
-    profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
-  } else {
-    IncognitoMenuView::ButtonPressed(sender, event);
-  }
-}
-
 void BraveIncognitoMenuView::AddTorButton() {
   if (brave::ShouldShowTorProfileButton(browser()->profile())) {
     tor_profile_button_ = CreateAndAddButton(
         brave::CreateTorProfileButtonIcon(),
-        brave::CreateTorProfileButtonText());
+        brave::CreateTorProfileButtonText(),
+        base::BindRepeating(&BraveIncognitoMenuView::OnTorProfileButtonClicked,
+                            base::Unretained(this)));
   }
 }
 
-void BraveIncognitoMenuView::Reset() {
-  IncognitoMenuView::Reset();
-  tor_profile_button_ = nullptr;
+void BraveIncognitoMenuView::OnTorProfileButtonClicked() {
+  profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
 }

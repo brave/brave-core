@@ -15,7 +15,7 @@ namespace brave_rewards {
 
 bool HandleRewardsProtocol(
     const GURL& url,
-    content::ResourceRequestInfo::WebContentsGetter web_contents_getter,
+    content::WebContents::Getter web_contents_getter,
     ui::PageTransition page_transition,
     bool has_user_gesture);
 

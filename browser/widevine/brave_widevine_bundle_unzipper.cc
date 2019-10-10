@@ -11,9 +11,9 @@
 #include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/native_library.h"
+#include "components/services/unzip/content/unzip_service.h"
 #include "components/services/unzip/public/cpp/unzip.h"
 #include "content/public/browser/browser_thread.h"
-#include "services/service_manager/public/cpp/connector.h"
 #include "third_party/widevine/cdm/widevine_cdm_common.h"
 
 namespace {
@@ -39,15 +39,12 @@ base::Optional<base::FilePath> GetTempDirForUnzip() {
 // static
 scoped_refptr<BraveWidevineBundleUnzipper>
 BraveWidevineBundleUnzipper::Create(
-    service_manager::Connector* connector,
     scoped_refptr<base::SequencedTaskRunner> file_task_runner,
     DoneCallback done_callback) {
-  DCHECK(connector);
   DCHECK(file_task_runner);
   DCHECK(done_callback);
   return base::WrapRefCounted(
-      new BraveWidevineBundleUnzipper(connector,
-                                      file_task_runner,
+      new BraveWidevineBundleUnzipper(file_task_runner,
                                       std::move(done_callback)));
 }
 
@@ -87,7 +84,7 @@ void BraveWidevineBundleUnzipper::OnGetTempDirForUnzip(
   DVLOG(1) << __func__ << ": temp unzip dir: " << temp_unzip_dir_;
 
   unzip::UnzipWithFilter(
-      connector_->Clone(), zipped_bundle_file_, *temp_unzip_dir,
+      unzip::LaunchUnzipper(), zipped_bundle_file_, *temp_unzip_dir,
       base::BindRepeating(&IsWidevineCdmFile),
       base::BindOnce(&BraveWidevineBundleUnzipper::OnUnzippedInTempDir, this));
 }
@@ -134,11 +131,9 @@ void BraveWidevineBundleUnzipper::UnzipDone(const std::string& error) {
 }
 
 BraveWidevineBundleUnzipper::BraveWidevineBundleUnzipper(
-    service_manager::Connector* connector,
     scoped_refptr<base::SequencedTaskRunner> file_task_runner,
     DoneCallback done_callback)
-    : connector_(connector),
-      file_task_runner_(file_task_runner),
+    : file_task_runner_(file_task_runner),
       done_callback_(std::move(done_callback)) {
 }
 
