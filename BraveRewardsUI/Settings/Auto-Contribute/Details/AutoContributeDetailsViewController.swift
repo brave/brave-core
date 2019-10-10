@@ -131,8 +131,7 @@ class AutoContributeDetailViewController: UIViewController {
   private var nextContributionDateView: LabelAccessoryView {
     let view = LabelAccessoryView()
     let dateFormatter = DateFormatter().then {
-      $0.dateStyle = .short
-      $0.timeStyle = .none
+      $0.dateFormat = Strings.AutoContributeDateFormat
     }
     let reconcileDate = Date(timeIntervalSince1970: TimeInterval(state.ledger.autoContributeProps.reconcileStamp))
     view.label.text = dateFormatter.string(from: reconcileDate)
