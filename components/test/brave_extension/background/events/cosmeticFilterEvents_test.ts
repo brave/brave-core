@@ -2,7 +2,7 @@
 * License, v. 2.0. If a copy of the MPL was not distributed with this file,
 * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import cosmeticFilterActions from '../../../../brave_extension/extension/brave_extension/background/actions/cosmeticFilterActions'
+import * as cosmeticFilterAPI from '../../../../brave_extension/extension/brave_extension/background/api/cosmeticFilterAPI'
 import * as cosmeticFilterEvents from '../../../../brave_extension/extension/brave_extension/background/events/cosmeticFilterEvents'
 
 let lastInputText: string
@@ -36,8 +36,8 @@ describe('cosmeticFilterEvents events', () => {
     beforeEach(() => {
       contextMenuOnClickedSpy = jest.spyOn(chrome.tabs, 'create')
       chromeTabsQuerySpy = jest.spyOn(chrome.tabs, 'query')
-      resetSiteFilterSettingsSpy = jest.spyOn(cosmeticFilterActions, 'siteCosmeticFilterRemoved')
-      resetAllFilterSettingsSpy = jest.spyOn(cosmeticFilterActions, 'allCosmeticFiltersRemoved')
+      resetSiteFilterSettingsSpy = jest.spyOn(cosmeticFilterAPI, 'removeSiteFilter')
+      resetAllFilterSettingsSpy = jest.spyOn(cosmeticFilterAPI, 'removeAllFilters')
       chromeTabsSendMessageSpy = jest.spyOn(chrome.tabs, 'sendMessage')
     })
     afterEach(() => {
@@ -124,15 +124,17 @@ describe('cosmeticFilterEvents events', () => {
       describe('when prompting user with selector', function () {
         describe('when a selector is returned', function () {
           it('calls window.prompt with selector as input', function () {
-            cosmeticFilterEvents.onSelectorReturned('abc')
-            expect(lastInputText).toBe('CSS selector:')
-            expect(lastPromptText).toBe('abc')
+            return cosmeticFilterEvents.onSelectorReturned('abc').then(() => {
+              expect(lastInputText).toBe('CSS selector:')
+              expect(lastPromptText).toBe('abc')
+            })
           })
         })
         describe('when a selector is not returned', function () {
           it('calls window.prompt with `not found` message', function () {
-            cosmeticFilterEvents.onSelectorReturned(null)
-            expect(lastInputText.indexOf('We were unable to automatically populat') > -1).toBe(true)
+            return cosmeticFilterEvents.onSelectorReturned(null).then(() => {
+              expect(lastInputText.indexOf('We were unable to automatically populat') > -1).toBe(true)
+            })
           })
         })
       })
@@ -146,22 +148,25 @@ describe('cosmeticFilterEvents events', () => {
         })
         it('calls `chrome.tabs.insertCSS` when selector is NOT null/undefined', function () {
           selectorToReturn = '#test_selector'
-          cosmeticFilterEvents.onSelectorReturned(selectorToReturn)
-          let returnObj = {
-            'code': '#test_selector {display: none !important;}',
-            'cssOrigin': 'user'
-          }
-          expect(insertCssSpy).toBeCalledWith(returnObj)
+          return cosmeticFilterEvents.onSelectorReturned(selectorToReturn).then(() => {
+            let returnObj = {
+              'code': '#test_selector {display: none !important;}',
+              'cssOrigin': 'user'
+            }
+            expect(insertCssSpy).toBeCalledWith(returnObj)
+          })
         })
         it('does NOT call `chrome.tabs.insertCSS` when selector is undefined', function () {
           selectorToReturn = undefined
-          cosmeticFilterEvents.onSelectorReturned(undefined)
-          expect(insertCssSpy).not.toBeCalled()
+          return cosmeticFilterEvents.onSelectorReturned(undefined).then(() => {
+            expect(insertCssSpy).not.toBeCalled()
+          })
         })
         it('does NOT call `chrome.tabs.insertCSS` when selector is null', function () {
           selectorToReturn = null
-          cosmeticFilterEvents.onSelectorReturned(null)
-          expect(insertCssSpy).not.toBeCalled()
+          return cosmeticFilterEvents.onSelectorReturned(null).then(() => {
+            expect(insertCssSpy).not.toBeCalled()
+          })
         })
       })
     })

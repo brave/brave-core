@@ -1,5 +1,9 @@
-import cosmeticFilterActions from '../actions/cosmeticFilterActions'
 import { getLocale } from '../api/localeAPI'
+import {
+  addSiteCosmeticFilter,
+  removeSiteFilter,
+  removeAllFilters
+} from '../api/cosmeticFilterAPI'
 
 export let rule = {
   host: '',
@@ -54,11 +58,11 @@ export function onContextMenuClicked (info: chrome.contextMenus.OnClickData, tab
       query()
       break
     case 'resetSiteFilterSettings': {
-      cosmeticFilterActions.siteCosmeticFilterRemoved(rule.host)
+      removeSiteFilter(rule.host)
       break
     }
     case 'resetAllFilterSettings': {
-      cosmeticFilterActions.allCosmeticFiltersRemoved()
+      removeAllFilters()
       break
     }
     default: {
@@ -77,7 +81,7 @@ export function tabsCallback (tabs: any) {
   chrome.tabs.sendMessage(tabs[0].id, { type: 'getTargetSelector' }, onSelectorReturned)
 }
 
-export function onSelectorReturned (response: any) {
+export async function onSelectorReturned (response: any) {
   if (!response) {
     rule.selector = window.prompt('We were unable to automatically populate a correct CSS selector for you. Please manually enter a CSS selector to block:') || ''
   } else {
@@ -89,6 +93,7 @@ export function onSelectorReturned (response: any) {
       code: `${rule.selector} {display: none !important;}`,
       cssOrigin: 'user'
     })
-    cosmeticFilterActions.siteCosmeticFilterAdded(rule.host, rule.selector)
+
+    await addSiteCosmeticFilter(rule.host, rule.selector)
   }
 }

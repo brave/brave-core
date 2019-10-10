@@ -5,13 +5,11 @@
 import { combineReducers } from 'redux'
 
 import shieldsPanelReducer from './reducers/shieldsPanelReducer'
-import cosmeticFilterReducer from './reducers/cosmeticFilterReducer'
 import dappDetectionReducer from './reducers/dappDetectionReducer'
 import runtimeReducer from './reducers/runtimeReducer'
 
 export default combineReducers({
   shieldsPanel: shieldsPanelReducer,
-  cosmeticFilter: cosmeticFilterReducer,
   dappDetection: dappDetectionReducer,
   runtime: runtimeReducer
 })

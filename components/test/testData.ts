@@ -332,12 +332,6 @@ export const window = () => {
 }
 
 export const initialState = deepFreeze({
-  cosmeticFilter: {
-    currentWindowId: -1,
-    tabs: {},
-    windows: {},
-    persistentData: { isFirstAccess: true }
-  },
   dappDetection: {},
   runtime: {},
   shieldsPanel: {
