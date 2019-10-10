@@ -16,11 +16,6 @@ class RewardsButton: UIButton {
         didSet { updateView() }
     }
     
-    /// Disabled state shows grayscale icon but still allows interaction.
-    var isDisabled: Bool = false {
-        didSet { updateView() }
-    }
-    
     private let notificationsBadgeView = UIView().then {
         $0.backgroundColor = BraveUX.BraveOrange
         $0.frame = CGRect(x: 19, y: 5, width: 12, height: 12)
@@ -51,11 +46,6 @@ class RewardsButton: UIButton {
     private func updateView() {
         checkmarkView.isHidden = true
         notificationsBadgeView.isHidden = true
-        
-        if isDisabled {
-            setImage(#imageLiteral(resourceName: "brave_rewards_button_disabled"), for: .normal)
-            return
-        }
         
         setImage(#imageLiteral(resourceName: "brave_rewards_button_enabled"), for: .normal)
         
