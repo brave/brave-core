@@ -10,53 +10,25 @@
 #include <vector>
 
 #include "brave/browser/net/url_context.h"
-#include "chrome/test/base/chrome_render_view_host_test_harness.h"
-#include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
-#include "net/url_request/url_request_test_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
 namespace {
-
 const char kInvalidUrl[] = "https://no-thanks.invalid";
+}  // namespace
 
-class BraveBlockReportingUrlsHelperTest : public testing::Test {
- public:
-  BraveBlockReportingUrlsHelperTest()
-      : thread_bundle_(content::TestBrowserThreadBundle::IO_MAINLOOP),
-        context_(new net::TestURLRequestContext(true)) {}
-  ~BraveBlockReportingUrlsHelperTest() override {}
-  void SetUp() override { context_->Init(); }
-  net::TestURLRequestContext* context() { return context_.get(); }
-  void CheckUrl(const std::string& test_url,
-                const char* expected_url,
-                int expected_error);
-
- private:
-  content::TestBrowserThreadBundle thread_bundle_;
-  std::unique_ptr<net::TestURLRequestContext> context_;
-};
-
-void BraveBlockReportingUrlsHelperTest::CheckUrl(const std::string& test_url,
-                                                 const char* expected_url,
-                                                 int expected_error) {
-  net::TestDelegate test_delegate;
-  GURL url(test_url);
-  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
-      url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
-  std::shared_ptr<brave::BraveRequestInfo> before_url_context(
-      new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-                                              before_url_context);
-  brave::ResponseCallback callback;
+void CheckUrl(const std::string& test_url,
+              const char* expected_url,
+              int expected_error) {
   GURL new_url;
-  int ret =
-      brave::OnBeforeURLRequest_BlockSafeBrowsingReportingURLs(url, &new_url);
+  int rc = brave::OnBeforeURLRequest_BlockSafeBrowsingReportingURLs(
+      GURL(test_url), &new_url);
   EXPECT_EQ(new_url, GURL(expected_url));
-  EXPECT_EQ(ret, expected_error);
+  EXPECT_EQ(rc, expected_error);
 }
 
-TEST_F(BraveBlockReportingUrlsHelperTest, PreserveNormalUrls) {
+TEST(BraveBlockReportingUrlsHelperTest, PreserveNormalUrls) {
   const std::vector<const std::string> normalUrls({
       "https://brave.com/",
       "https://safebrowsing.google.com/safebrowsing",
@@ -68,7 +40,7 @@ TEST_F(BraveBlockReportingUrlsHelperTest, PreserveNormalUrls) {
   }
 }
 
-TEST_F(BraveBlockReportingUrlsHelperTest, CancelReportingUrl) {
+TEST(BraveBlockReportingUrlsHelperTest, CancelReportingUrl) {
   const std::vector<const std::string> reportingUrls({
       "https://sb-ssl.google.com/safebrowsing/clientreport/download",
       "https://sb-ssl.google.com/safebrowsing/clientreport/chrome-reset",
@@ -87,5 +59,3 @@ TEST_F(BraveBlockReportingUrlsHelperTest, CancelReportingUrl) {
     CheckUrl(url, kInvalidUrl, net::ERR_ABORTED);
   }
 }
-
-}  // namespace

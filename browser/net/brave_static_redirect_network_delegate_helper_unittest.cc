@@ -211,21 +211,23 @@ TEST(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV5) {
 // TODO(@fmarier): Re-enable download protection once we have
 // truncated the list of metadata that it sends to the server
 // (brave/brave-browser#6267).
-//TEST(BraveStaticRedirectNetworkDelegateHelperTest,
-//     ModifySafeBrowsingFileCheckURL) {
-//  const GURL url(
-//      "https://sb-ssl.google.com/safebrowsing/clientreport/download?"
-//      "key=DUMMY_KEY");
-//  GURL expected_url(
-//      "https://sb-ssl.brave.com/safebrowsing/clientreport/download?"
-//      "key=DUMMY_KEY");
+#if 0
+TEST(BraveStaticRedirectNetworkDelegateHelperTest,
+     ModifySafeBrowsingFileCheckURL) {
+  const GURL url(
+      "https://sb-ssl.google.com/safebrowsing/clientreport/download?"
+      "key=DUMMY_KEY");
+  GURL expected_url(
+      "https://sb-ssl.brave.com/safebrowsing/clientreport/download?"
+      "key=DUMMY_KEY");
 
-//  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
-//  int rc =
-//      OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
-//  EXPECT_EQ(request_info->new_url_spec, expected_url);
-//  EXPECT_EQ(rc, net::OK);
-//}
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  int rc =
+      OnBeforeURLRequest_StaticRedirectWork(ResponseCallback(), request_info);
+  EXPECT_EQ(request_info->new_url_spec, expected_url);
+  EXPECT_EQ(rc, net::OK);
+}
+#endif  // 0
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 TEST(BraveStaticRedirectNetworkDelegateHelperTest, RedirectTranslate) {
