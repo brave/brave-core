@@ -51,9 +51,6 @@ export default class ModalContribute extends React.PureComponent<Props, {}> {
 
     return (
       <>
-        <StyledContent>
-          {getLocale('rewardsContributeText1')} <StyledNum>{numSites}</StyledNum> {getLocale('sites')}.
-        </StyledContent>
         <TableContribute
           header={this.headers}
           rows={rows}
