@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 0c5467af2bce341e0b3f0835899c820f60adbc87..ad26d5d307b168283b9d0bab7c9d4f1d6d11ed0f 100644
+index 0c5467af2bce341e0b3f0835899c820f60adbc87..3819519d2dca2f5b49a69ce81959562abdc0864a 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -31,7 +31,7 @@ import("java_sources.gni")
@@ -19,6 +19,15 @@ index 0c5467af2bce341e0b3f0835899c820f60adbc87..ad26d5d307b168283b9d0bab7c9d4f1d
      "//chrome/android/webapk/libs/common:splash_resources",
      "//chrome/app:java_strings_grd",
      "//components/autofill/android:autofill_java_resources",
+@@ -160,7 +161,7 @@ android_resources("chrome_download_java_resources") {
+ 
+ java_strings_grd("chrome_strings_grd") {
+   defines = chrome_grit_defines
+-  grd_file = "java/strings/android_chrome_strings.grd"
++  grd_file = "java/strings/brave_android_chrome_strings.grd"
+   outputs = [
+     "values/android_chrome_strings.xml",
+     "values-am/android_chrome_strings.xml",
 @@ -524,6 +525,7 @@ java_group("chrome_all_java") {
  group("jni_headers") {
    public_deps = [
