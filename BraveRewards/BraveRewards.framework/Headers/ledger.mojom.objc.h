@@ -63,6 +63,7 @@ typedef NS_ENUM(NSInteger, BATResult) {
   BATResultExpiredToken = 24,
   BATResultBatNotAllowed = 25,
   BATResultAlreadyExists = 26,
+  BATResultSafetynetAttestationFailed = 27,
 } NS_SWIFT_NAME(Result);
 
 
@@ -73,11 +74,11 @@ typedef NS_ENUM(NSInteger, BATPublisherStatus) {
 } NS_SWIFT_NAME(PublisherStatus);
 
 
-typedef NS_ENUM(NSInteger, BATRewardsCategory) {
-  BATRewardsCategoryAutoContribute = 2,
-  BATRewardsCategoryOneTimeTip = 8,
-  BATRewardsCategoryRecurringTip = 16,
-} NS_SWIFT_NAME(RewardsCategory);
+typedef NS_ENUM(NSInteger, BATRewardsType) {
+  BATRewardsTypeAutoContribute = 2,
+  BATRewardsTypeOneTimeTip = 8,
+  BATRewardsTypeRecurringTip = 16,
+} NS_SWIFT_NAME(RewardsType);
 
 
 
@@ -131,13 +132,13 @@ NS_SWIFT_NAME(PendingContribution)
 @property (nonatomic) double amount;
 @property (nonatomic) uint64_t addedDate;
 @property (nonatomic, copy) NSString * viewingId;
-@property (nonatomic) BATRewardsCategory category;
+@property (nonatomic) BATRewardsType type;
 @end
 
 NS_SWIFT_NAME(PendingContributionInfo)
 @interface BATPendingContributionInfo : NSObject <NSCopying>
 @property (nonatomic, copy) NSString * publisherKey;
-@property (nonatomic) BATRewardsCategory category;
+@property (nonatomic) BATRewardsType type;
 @property (nonatomic) BATPublisherStatus status;
 @property (nonatomic, copy) NSString * name;
 @property (nonatomic, copy) NSString * url;

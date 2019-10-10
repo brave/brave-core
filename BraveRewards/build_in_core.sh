@@ -115,8 +115,8 @@ brave_core_build_hash=`git rev-parse HEAD`
 popd > /dev/null
 
 echo "Completed building BraveRewards from \`brave-core/$brave_core_build_hash\`"
-sed -i '' -e "s/brave-core\/[A-Za-z0-9]*/brave-core\/$brave_core_build_hash/g" "$current_dir/BraveRewardsUI/README.md"
-sed -i '' -e "s/brave-browser\/[A-Za-z0-9]*/brave-browser\/$brave_browser_build_hash/g" "$current_dir/BraveRewardsUI/README.md"
+sed -i '' -e "s/brave-core\/[A-Za-z0-9]*/brave-core\/$brave_core_build_hash/g" "$current_dir/../BraveRewardsUI/README.md"
+sed -i '' -e "s/brave-browser\/[A-Za-z0-9]*/brave-browser\/$brave_browser_build_hash/g" "$current_dir/../BraveRewardsUI/README.md"
 echo "  → Updated \`README.md\` to reflect updated library builds"
 
 # Check if any of the includes had changed.
