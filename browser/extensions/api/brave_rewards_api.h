@@ -33,6 +33,17 @@ class BraveRewardsCreateWalletFunction : public ExtensionFunction {
   void OnCreateWallet(int32_t result);
 };
 
+class BraveRewardsOpenBrowserActionUIFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.openBrowserActionUI", UNKNOWN)
+
+ protected:
+  ~BraveRewardsOpenBrowserActionUIFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveRewardsTipSiteFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.tipSite", UNKNOWN)
