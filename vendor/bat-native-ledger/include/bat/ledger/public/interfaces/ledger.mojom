@@ -113,7 +113,7 @@ struct MediaEventInfo {
 struct ExternalWallet {
   string token;
   string address;
-  uint32 status;
+  WalletStatus status;
   string verify_url;
   string add_url;
   string withdraw_url;
@@ -289,4 +289,13 @@ enum PublisherExclude {
   DEFAULT = 0,   // this tell us that user did not manually changed exclude state
   EXCLUDED = 1,  // user manually changed it to exclude
   INCLUDED = 2   // user manually changed it to include and is overriding server
+};
+
+enum WalletStatus {
+  NOT_CONNECTED = 0,
+  CONNECTED = 1,
+  VERIFIED = 2,
+  DISCONNECTED_NOT_VERIFIED = 3,
+  DISCONNECTED_VERIFIED = 4,
+  PENDING = 5
 };

@@ -3624,7 +3624,7 @@ void RewardsServiceImpl::OnGetExternalWallet(
   if (wallet) {
     external->token = wallet->token;
     external->address = wallet->address;
-    external->status = wallet->status;
+    external->status = static_cast<int>(wallet->status);
     external->type = wallet_type;
     external->verify_url = wallet->verify_url;
     external->add_url = wallet->add_url;

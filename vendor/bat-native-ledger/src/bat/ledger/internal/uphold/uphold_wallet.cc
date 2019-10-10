@@ -166,8 +166,8 @@ void UpholdWallet::OnCreateCard(
 ledger::ExternalWalletPtr UpholdWallet::SetStatus(
     const User& user,
     ledger::ExternalWalletPtr wallet) {
-  switch (wallet->status) {
-    case ledger::WalletStatus::CONNECTED: {
+  switch (static_cast<int>(wallet->status)) {
+    case static_cast<int>(ledger::WalletStatus::CONNECTED): {
       if (!user.verified) {
         break;
       }
@@ -180,7 +180,7 @@ ledger::ExternalWalletPtr UpholdWallet::SetStatus(
          {"Uphold"});
       break;
     }
-    case ledger::WalletStatus::VERIFIED: {
+    case static_cast<int>(ledger::WalletStatus::VERIFIED): {
       if (user.verified) {
         break;
       }
@@ -188,7 +188,7 @@ ledger::ExternalWalletPtr UpholdWallet::SetStatus(
       wallet->status = ledger::WalletStatus::CONNECTED;
       break;
     }
-    case ledger::WalletStatus::PENDING: {
+    case static_cast<int>(ledger::WalletStatus::PENDING): {
       if (user.status != UserStatus::OK) {
         break;
       }

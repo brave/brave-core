@@ -93,6 +93,8 @@ using VisitDataPtr = mojom::VisitDataPtr;
 using WalletProperties = mojom::WalletProperties;
 using WalletPropertiesPtr = mojom::WalletPropertiesPtr;
 
+using WalletStatus = mojom::WalletStatus;
+
 }  // namespace ledger
 
 #endif  // BAT_LEDGER_MOJOM_STRUCTS_

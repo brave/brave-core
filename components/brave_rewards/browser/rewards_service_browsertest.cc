@@ -2421,7 +2421,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   auto wallet = ledger::ExternalWallet::New();
   wallet->token = "token";
   wallet->address = external_wallet_address_;
-  wallet->status = 2;
+  wallet->status = ledger::WalletStatus::VERIFIED;
   wallet->one_time_string = "";
   wallet->user_name = "Brave Test";
   wallet->transferred = true;
@@ -2466,7 +2466,7 @@ IN_PROC_BROWSER_TEST_F(
   auto wallet = ledger::ExternalWallet::New();
   wallet->token = "token";
   wallet->address = external_wallet_address_;
-  wallet->status = 1;
+  wallet->status = ledger::WalletStatus::CONNECTED;
   wallet->one_time_string = "";
   wallet->user_name = "Brave Test";
   wallet->transferred = true;
@@ -2497,7 +2497,7 @@ IN_PROC_BROWSER_TEST_F(
   auto wallet = ledger::ExternalWallet::New();
   wallet->token = "token";
   wallet->address = external_wallet_address_;
-  wallet->status = 1;
+  wallet->status = ledger::WalletStatus::CONNECTED;
   wallet->one_time_string = "";
   wallet->user_name = "Brave Test";
   wallet->transferred = true;
@@ -2524,7 +2524,7 @@ IN_PROC_BROWSER_TEST_F(
   auto wallet = ledger::ExternalWallet::New();
   wallet->token = "token";
   wallet->address = external_wallet_address_;
-  wallet->status = 2;
+  wallet->status = ledger::WalletStatus::VERIFIED;
   wallet->one_time_string = "";
   wallet->user_name = "Brave Test";
   wallet->transferred = true;
