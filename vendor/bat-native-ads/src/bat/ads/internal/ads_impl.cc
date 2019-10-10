@@ -193,9 +193,9 @@ void AdsImpl::RemoveAllNotificationsAfterUpdate() {
   std::string current_version_code(
       base::android::BuildInfo::GetInstance()->package_version_code());
   std::string last_version_code = client_->GetVersionCode();
-  if (last_version_code != current_version_code){
+  if (last_version_code != current_version_code) {
     client_->SetVersionCode(current_version_code);
-    //ads notifications don't sustain app update, so remove them
+    // ads notifications don't sustain app update, so remove them
     notifications_->RemoveAll(false);
   }
 }
