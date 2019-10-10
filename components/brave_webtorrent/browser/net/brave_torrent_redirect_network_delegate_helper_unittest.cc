@@ -16,12 +16,12 @@
 
 using brave::ResponseCallback;
 
-class BraveTorrentRedirectNetworkDelegateHelperTest: public testing::Test {
+class BraveTorrentRedirectNetworkDelegateHelperTest : public testing::Test {
  public:
   BraveTorrentRedirectNetworkDelegateHelperTest() {
     torrent_url_ = GURL("https://webtorrent.io/torrents/sintel.torrent");
     torrent_viewer_url_ =
-      GURL("https://webtorrent.io/torrents/sintel.torrent#ix=0");
+        GURL("https://webtorrent.io/torrents/sintel.torrent#ix=0");
     non_torrent_url_ = GURL("https://webtorrent.io/torrents/sintel");
 
     torrent_extension_url_ = GURL(
@@ -36,29 +36,19 @@ class BraveTorrentRedirectNetworkDelegateHelperTest: public testing::Test {
         "brave_webtorrent2.html?https://webtorrent.io/torrents/sintel");
   }
 
-  const GURL& torrent_url() {
-    return torrent_url_;
-  }
+  const GURL& torrent_url() { return torrent_url_; }
 
-  const GURL& torrent_viewer_url() {
-    return torrent_viewer_url_;
-  }
+  const GURL& torrent_viewer_url() { return torrent_viewer_url_; }
 
-  const GURL& non_torrent_url() {
-    return non_torrent_url_;
-  }
+  const GURL& non_torrent_url() { return non_torrent_url_; }
 
-  const GURL& torrent_extension_url() {
-    return torrent_extension_url_;
-  }
+  const GURL& torrent_extension_url() { return torrent_extension_url_; }
 
   const GURL& torrent_viewer_extension_url() {
     return torrent_viewer_extension_url_;
   }
 
-  const GURL& non_torrent_extension_url() {
-    return non_torrent_extension_url_;
-  }
+  const GURL& non_torrent_extension_url() { return non_torrent_extension_url_; }
 
  private:
   GURL torrent_url_;
@@ -73,12 +63,11 @@ class BraveTorrentRedirectNetworkDelegateHelperTest: public testing::Test {
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
        NoRedirectWithoutMimeType) {
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
-    new net::HttpResponseHeaders(std::string());
+      new net::HttpResponseHeaders(std::string());
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
-    new net::HttpResponseHeaders(std::string());
+      new net::HttpResponseHeaders(std::string());
   GURL allowed_unsafe_redirect_url;
-  auto request_info =
-      std::make_shared<brave::BraveRequestInfo>(torrent_url());
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
   request_info->resource_type = content::ResourceType::kMainFrame;
 
   int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
@@ -96,7 +85,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
        BittorrentMimeTypeRedirect) {
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
-    new net::HttpResponseHeaders(std::string());
+      new net::HttpResponseHeaders(std::string());
   orig_response_headers->AddHeader(
       base::StrCat({"Content-Type: ", kBittorrentMimeType}));
   std::string mimeType;
@@ -104,7 +93,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   ASSERT_EQ(mimeType, kBittorrentMimeType);
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
-    new net::HttpResponseHeaders(std::string());
+      new net::HttpResponseHeaders(std::string());
   GURL allowed_unsafe_redirect_url;
   auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
   request_info->resource_type = content::ResourceType::kMainFrame;
@@ -126,7 +115,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
        OctetStreamMimeTypeRedirectWithTorrentURL) {
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
-    new net::HttpResponseHeaders(std::string());
+      new net::HttpResponseHeaders(std::string());
   orig_response_headers->AddHeader(
       base::StrCat({"Content-Type: ", kOctetStreamMimeType}));
   std::string mimeType;
@@ -134,10 +123,9 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   ASSERT_EQ(mimeType, kOctetStreamMimeType);
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
-    new net::HttpResponseHeaders(std::string());
+      new net::HttpResponseHeaders(std::string());
   GURL allowed_unsafe_redirect_url;
-  auto request_info =
-      std::make_shared<brave::BraveRequestInfo>(torrent_url());
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
   request_info->resource_type = content::ResourceType::kMainFrame;
 
   int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
@@ -157,7 +145,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
        OctetStreamMimeTypeRedirectWithTorrentFileName) {
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
-    new net::HttpResponseHeaders(std::string());
+      new net::HttpResponseHeaders(std::string());
   orig_response_headers->AddHeader(
       base::StrCat({"Content-Type: ", kOctetStreamMimeType}));
   std::string mimeType;
@@ -166,11 +154,11 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   orig_response_headers->AddHeader(
       "Content-Disposition: filename=\"sintel.torrent\"");
   std::string disposition;
-  ASSERT_TRUE(orig_response_headers->GetNormalizedHeader(
-        "Content-Disposition", &disposition));
+  ASSERT_TRUE(orig_response_headers->GetNormalizedHeader("Content-Disposition",
+                                                         &disposition));
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
-    new net::HttpResponseHeaders(std::string());
+      new net::HttpResponseHeaders(std::string());
   GURL allowed_unsafe_redirect_url;
   auto request_info =
       std::make_shared<brave::BraveRequestInfo>(non_torrent_url());
@@ -194,7 +182,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
        OctetStreamMimeTypeNoRedirect) {
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
-    new net::HttpResponseHeaders(std::string());
+      new net::HttpResponseHeaders(std::string());
   orig_response_headers->AddHeader(
       base::StrCat({"Content-Type: ", kOctetStreamMimeType}));
   std::string mimeType;
@@ -202,7 +190,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   ASSERT_EQ(mimeType, kOctetStreamMimeType);
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
-    new net::HttpResponseHeaders(std::string());
+      new net::HttpResponseHeaders(std::string());
   GURL allowed_unsafe_redirect_url;
   auto request_info =
       std::make_shared<brave::BraveRequestInfo>(non_torrent_url());
@@ -222,17 +210,16 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
 
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, MimeTypeNoRedirect) {
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
-    new net::HttpResponseHeaders(std::string());
+      new net::HttpResponseHeaders(std::string());
   orig_response_headers->AddHeader("Content-Type: text/html");
   std::string mimeType;
   ASSERT_TRUE(orig_response_headers->GetMimeType(&mimeType));
   ASSERT_EQ(mimeType, "text/html");
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
-    new net::HttpResponseHeaders(std::string());
+      new net::HttpResponseHeaders(std::string());
   GURL allowed_unsafe_redirect_url;
-  auto request_info =
-      std::make_shared<brave::BraveRequestInfo>(torrent_url());
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
   request_info->resource_type = content::ResourceType::kMainFrame;
 
   int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(
@@ -250,7 +237,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, MimeTypeNoRedirect) {
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
        WebtorrentInitiatedNoRedirect) {
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
-    new net::HttpResponseHeaders(std::string());
+      new net::HttpResponseHeaders(std::string());
   orig_response_headers->AddHeader(
       base::StrCat({"Content-Type: ", kBittorrentMimeType}));
   std::string mimeType;
@@ -258,7 +245,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   ASSERT_EQ(mimeType, kBittorrentMimeType);
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
-    new net::HttpResponseHeaders(std::string());
+      new net::HttpResponseHeaders(std::string());
   GURL allowed_unsafe_redirect_url;
   auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
   request_info->initiator_url = torrent_extension_url();
@@ -279,7 +266,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
        WebtorrentInitiatedViewerURLRedirect) {
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
-    new net::HttpResponseHeaders(std::string());
+      new net::HttpResponseHeaders(std::string());
   orig_response_headers->AddHeader(
       base::StrCat({"Content-Type: ", kBittorrentMimeType}));
   std::string mimeType;
@@ -287,7 +274,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   ASSERT_EQ(mimeType, kBittorrentMimeType);
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
-    new net::HttpResponseHeaders(std::string());
+      new net::HttpResponseHeaders(std::string());
   GURL allowed_unsafe_redirect_url;
   auto request_info =
       std::make_shared<brave::BraveRequestInfo>(torrent_viewer_url());
@@ -312,7 +299,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
 TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
        BittorrentNonMainFrameResourceNoRedirect) {
   scoped_refptr<net::HttpResponseHeaders> orig_response_headers =
-    new net::HttpResponseHeaders(std::string());
+      new net::HttpResponseHeaders(std::string());
   orig_response_headers->AddHeader(
       base::StrCat({"Content-Type: ", kBittorrentMimeType}));
   std::string mimeType;
@@ -320,10 +307,9 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
   ASSERT_EQ(mimeType, kBittorrentMimeType);
 
   scoped_refptr<net::HttpResponseHeaders> overwrite_response_headers =
-    new net::HttpResponseHeaders(std::string());
+      new net::HttpResponseHeaders(std::string());
   GURL allowed_unsafe_redirect_url;
-  auto request_info =
-      std::make_shared<brave::BraveRequestInfo>(torrent_url());
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(torrent_url());
   request_info->resource_type = content::ResourceType::kXhr;
 
   int rc = webtorrent::OnHeadersReceived_TorrentRedirectWork(

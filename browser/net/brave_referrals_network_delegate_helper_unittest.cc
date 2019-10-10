@@ -51,8 +51,7 @@ const char kTestReferralHeaders[] = R"(
   ])";
 }  // namespace
 
-TEST(BraveReferralsNetworkDelegateHelperTest,
-     ReplaceHeadersForMatchingDomain) {
+TEST(BraveReferralsNetworkDelegateHelperTest, ReplaceHeadersForMatchingDomain) {
   const GURL url("https://www.marketwatch.com");
   base::Optional<base::Value> referral_headers =
       base::JSONReader().ReadToValue(kTestReferralHeaders);
