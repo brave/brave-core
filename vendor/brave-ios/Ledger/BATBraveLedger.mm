@@ -73,6 +73,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 @property (nonatomic) NSHashTable<BATBraveLedgerObserver *> *observers;
 
 @property (nonatomic, getter=isLoadingPublisherList) BOOL loadingPublisherList;
+@property (nonatomic, getter=isInitializingWallet) BOOL initializingWallet;
 
 /// Notifications
 
@@ -192,6 +193,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   //   - LEDGER_ERROR: Already initialized
   //   - BAD_REGISTRATION_RESPONSE: Request credentials call failure or malformed data
   //   - REGISTRATION_VERIFICATION_FAILED: Missing master user token
+  self.initializingWallet = YES;
   ledger->CreateWallet(std::string(), ^(ledger::Result result) {
     const auto strongSelf = weakSelf;
     if (!strongSelf) { return; }
@@ -209,11 +211,14 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
       }
       error = [NSError errorWithDomain:BATBraveLedgerErrorDomain code:static_cast<NSInteger>(result) userInfo:userInfo];
     }
+    
+    strongSelf.enabled = YES;
+    strongSelf.autoContributeEnabled = YES;
+    strongSelf.ads.enabled = YES;
+    [strongSelf startNotificationTimers];
+    strongSelf.initializingWallet = NO;
+    
     if (completion) {
-      strongSelf.enabled = YES;
-      strongSelf.autoContributeEnabled = YES;
-      strongSelf.ads.enabled = YES;
-      [strongSelf startNotificationTimers];
       dispatch_async(dispatch_get_main_queue(), ^{
         completion(error);
       });
