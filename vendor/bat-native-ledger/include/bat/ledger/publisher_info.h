@@ -18,22 +18,6 @@ namespace ledger {
 const char kClearFavicon[] = "clear";
 const char kIgnorePublisherBlob[] = "ignore";
 
-LEDGER_EXPORT enum ACTIVITY_MONTH {
-  ANY = -1,
-  JANUARY = 1,
-  FEBRUARY = 2,
-  MARCH = 3,
-  APRIL = 4,
-  MAY = 5,
-  JUNE = 6,
-  JULY = 7,
-  AUGUST = 8,
-  SEPTEMBER = 9,
-  OCTOBER = 10,
-  NOVEMBER = 11,
-  DECEMBER = 12
-};
-
 LEDGER_EXPORT enum PUBLISHER_EXCLUDE {
   ALL = -1,
   DEFAULT = 0,  // this tell us that user did not manually changed exclude state

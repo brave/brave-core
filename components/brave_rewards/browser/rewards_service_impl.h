@@ -552,7 +552,7 @@ class RewardsServiceImpl : public RewardsService,
                                     ledger::FetchIconCallback callback,
                                     bool success);
   void SaveContributionInfo(const std::string& probi,
-                            const int month,
+                            const ledger::ActivityMonth month,
                             const int year,
                             const uint32_t date,
                             const std::string& publisher_key,

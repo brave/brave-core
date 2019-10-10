@@ -364,7 +364,7 @@ void LedgerClientMojoProxy::RemoveRecurringTip(const std::string& publisher_key,
 
 void LedgerClientMojoProxy::SaveContributionInfo(
     const std::string& probi,
-    int32_t month,
+    ledger::ActivityMonth month,
     int32_t year,
     uint32_t date,
     const std::string& publisher_key,

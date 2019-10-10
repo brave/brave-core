@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/bignum.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -174,9 +175,9 @@ ledger::ActivityInfoFilterPtr Publisher::CreateActivityFilter(
 }
 
 std::string Publisher::GetBalanceReportName(
-    const ledger::ACTIVITY_MONTH month,
+    const ledger::ActivityMonth month,
     int year) {
-  return std::to_string(year) + "_" + std::to_string(month);
+  return base::StringPrintf("%d_%d", year, month);
 }
 
 void Publisher::OnSaveVisitServerPublisher(
@@ -631,7 +632,7 @@ void Publisher::clearAllBalanceReports() {
   saveState();
 }
 
-void Publisher::setBalanceReport(ledger::ACTIVITY_MONTH month,
+void Publisher::setBalanceReport(ledger::ActivityMonth month,
                                 int year,
                                 const ledger::BalanceReportInfo& report_info) {
   braveledger_bat_helper::REPORT_BALANCE_ST report_balance;
@@ -659,7 +660,7 @@ void Publisher::setBalanceReport(ledger::ACTIVITY_MONTH month,
 }
 
 void Publisher::GetBalanceReport(
-    ledger::ACTIVITY_MONTH month,
+    ledger::ActivityMonth month,
     int year,
     ledger::GetBalanceReportCallback callback) {
   ledger::BalanceReportInfo info;
@@ -667,7 +668,7 @@ void Publisher::GetBalanceReport(
   callback(result, info.Clone());
 }
 
-bool Publisher::GetBalanceReportInternal(ledger::ACTIVITY_MONTH month,
+bool Publisher::GetBalanceReportInternal(ledger::ActivityMonth month,
                                      int year,
                                      ledger::BalanceReportInfo* report_info) {
   std::string name = GetBalanceReportName(month, year);
@@ -845,7 +846,7 @@ void Publisher::OnPanelPublisherInfo(
   }
 }
 
-void Publisher::setBalanceReportItem(ledger::ACTIVITY_MONTH month,
+void Publisher::setBalanceReportItem(ledger::ActivityMonth month,
                                          int year,
                                          ledger::ReportType type,
                                          const std::string& probi) {

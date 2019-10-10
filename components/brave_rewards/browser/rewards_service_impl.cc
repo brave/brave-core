@@ -145,10 +145,10 @@ class LogStreamImpl : public ledger::LogStream {
 
 namespace {
 
-ledger::ACTIVITY_MONTH GetPublisherMonth(const base::Time& time) {
+ledger::ActivityMonth GetPublisherMonth(const base::Time& time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  return (ledger::ACTIVITY_MONTH)exploded.month;
+  return (ledger::ActivityMonth)exploded.month;
 }
 
 int GetPublisherYear(const base::Time& time) {
@@ -2379,14 +2379,14 @@ void RewardsServiceImpl::OnContributionInfoSaved(
 }
 
 void RewardsServiceImpl::SaveContributionInfo(const std::string& probi,
-  const int month,
+  const ledger::ActivityMonth month,
   const int year,
   const uint32_t date,
   const std::string& publisher_key,
   const ledger::RewardsType type) {
   brave_rewards::ContributionInfo info;
   info.probi = probi;
-  info.month = month;
+  info.month = static_cast<int>(month);
   info.year = year;
   info.date = date;
   info.publisher_key = publisher_key;

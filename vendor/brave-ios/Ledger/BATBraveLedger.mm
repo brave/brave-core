@@ -47,9 +47,9 @@ static NSString * const kBackupSucceededKey = @"BATRewardsBackupSucceeded";
 
 static const auto kOneDay = 24 * 60 * 60;
 
-NS_INLINE ledger::ACTIVITY_MONTH BATGetPublisherMonth(NSDate *date) {
+NS_INLINE ledger::ActivityMonth BATGetPublisherMonth(NSDate *date) {
   const auto month = [[NSCalendar currentCalendar] component:NSCalendarUnitMonth fromDate:date];
-  return (ledger::ACTIVITY_MONTH)month;
+  return (ledger::ActivityMonth)month;
 }
 
 NS_INLINE int BATGetPublisherYear(NSDate *date) {
@@ -635,7 +635,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)balanceReportForMonth:(BATActivityMonth)month year:(int)year completion:(void (NS_NOESCAPE ^)(BATBalanceReportInfo * _Nullable info))completion
 {
-  ledger->GetBalanceReport((ledger::ACTIVITY_MONTH)month, year, ^(bool result, ledger::BalanceReportInfoPtr info) {
+  ledger->GetBalanceReport((ledger::ActivityMonth)month, year, ^(bool result, ledger::BalanceReportInfoPtr info) {
     auto bridgedInfo = info.get() != nullptr ? [[BATBalanceReportInfo alloc] initWithBalanceReportInfo:*info.get()] : nil;
     completion(result ? bridgedInfo : nil);
   });
@@ -1575,10 +1575,10 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)saveContributionInfo:(const std::string &)probi month:(const int)month year:(const int)year date:(const uint32_t)date publisherKey:(const std::string &)publisher_key type:(const ledger::RewardsType)type
+- (void)saveContributionInfo:(const std::string &)probi month:(const ledger::ActivityMonth)month year:(const int)year date:(const uint32_t)date publisherKey:(const std::string &)publisher_key type:(const ledger::RewardsType)type
 {
   [BATLedgerDatabase insertContributionInfo:[NSString stringWithUTF8String:probi.c_str()]
-                                      month:month
+                                      month:(BATActivityMonth)month
                                        year:year
                                        date:date
                                publisherKey:[NSString stringWithUTF8String:publisher_key.c_str()]

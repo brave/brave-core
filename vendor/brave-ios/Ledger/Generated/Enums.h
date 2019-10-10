@@ -4,22 +4,6 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, BATActivityMonth) {
-  BATActivityMonthAny = -1,
-  BATActivityMonthJanuary = 1,
-  BATActivityMonthFebruary = 2,
-  BATActivityMonthMarch = 3,
-  BATActivityMonthApril = 4,
-  BATActivityMonthMay = 5,
-  BATActivityMonthJune = 6,
-  BATActivityMonthJuly = 7,
-  BATActivityMonthAugust = 8,
-  BATActivityMonthSeptember = 9,
-  BATActivityMonthOctober = 10,
-  BATActivityMonthNovember = 11,
-  BATActivityMonthDecember = 12
-} NS_SWIFT_NAME(ActivityMonth);
-
 typedef NS_ENUM(NSInteger, BATLogLevel) {
   BATLogLevelLogError = 1,
   BATLogLevelLogWarning = 2,

@@ -147,7 +147,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertContributionInfo) {
 
   ContributionInfo info;
   info.probi = "12345678901234567890123456789012345678901234";
-  info.month = ledger::ACTIVITY_MONTH::JANUARY;
+  info.month = static_cast<int>(ledger::ActivityMonth::JANUARY);
   info.year = 1970;
   info.type = static_cast<int>(ledger::RewardsType::AUTO_CONTRIBUTE);
   info.date = base::Time::Now().ToJsTime();
@@ -1107,7 +1107,7 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv7tov8_ContributionInfo) {
 
   ContributionInfo contribution;
   contribution.probi = "1000000000000000000";
-  contribution.month = ledger::ACTIVITY_MONTH::OCTOBER;
+  contribution.month = static_cast<int>(ledger::ActivityMonth::OCTOBER);
   contribution.year = 2019;
   contribution.type = static_cast<int>(ledger::RewardsType::ONE_TIME_TIP);
   contribution.date = 1570614352;

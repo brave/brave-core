@@ -76,7 +76,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       uint64_t window_id) override;
   void SaveContributionInfo(
       const std::string& probi,
-      int32_t month,
+      ledger::ActivityMonth month,
       int32_t year,
       uint32_t date,
       const std::string& publisher_key,

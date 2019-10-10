@@ -28,10 +28,6 @@ ledger::PUBLISHER_EXCLUDE ToLedgerPublisherExclude(int32_t exclude) {
   return (ledger::PUBLISHER_EXCLUDE)exclude;
 }
 
-ledger::ACTIVITY_MONTH ToLedgerPublisherMonth(int32_t month) {
-  return (ledger::ACTIVITY_MONTH)month;
-}
-
 }  // namespace
 
 BatLedgerImpl::BatLedgerImpl(
@@ -218,24 +214,26 @@ void BatLedgerImpl::RestorePublishers(RestorePublishersCallback callback) {
     std::bind(BatLedgerImpl::OnRestorePublishers, holder, _1));
 }
 
-void BatLedgerImpl::SetBalanceReportItem(int32_t month,
-    int32_t year, ledger::ReportType type, const std::string& probi) {
-  ledger_->SetBalanceReportItem(
-      ToLedgerPublisherMonth(month), year, type, probi);
+void BatLedgerImpl::SetBalanceReportItem(
+    ledger::ActivityMonth month,
+    int32_t year,
+    ledger::ReportType type,
+    const std::string& probi) {
+  ledger_->SetBalanceReportItem(month, year, type, probi);
 }
 
 void BatLedgerImpl::OnReconcileCompleteSuccess(
     const std::string& viewing_id,
     const ledger::RewardsType type,
     const std::string& probi,
-    int32_t month,
+    ledger::ActivityMonth month,
     int32_t year,
     uint32_t data) {
   ledger_->OnReconcileCompleteSuccess(
       viewing_id,
       type,
       probi,
-      ToLedgerPublisherMonth(month),
+      month,
       year,
       data);
 }
@@ -384,12 +382,12 @@ void BatLedgerImpl::OnGetBalanceReport(
     std::move(holder->get()).Run(result, std::move(report_info));
   delete holder;
 }
-void BatLedgerImpl::GetBalanceReport(int32_t month, int32_t year,
+void BatLedgerImpl::GetBalanceReport(ledger::ActivityMonth month, int32_t year,
     GetBalanceReportCallback callback) {
   auto* holder = new CallbackHolder<GetBalanceReportCallback>(
       AsWeakPtr(), std::move(callback));
   ledger_->GetBalanceReport(
-      ToLedgerPublisherMonth(month),
+      month,
       year,
       std::bind(BatLedgerImpl::OnGetBalanceReport, holder, _1, _2));
 }

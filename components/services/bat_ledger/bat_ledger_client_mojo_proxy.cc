@@ -451,8 +451,9 @@ void BatLedgerClientMojoProxy::RemoveRecurringTip(
       base::BindOnce(&OnRemoveRecurringTip, std::move(callback)));
 }
 
-void BatLedgerClientMojoProxy::SaveContributionInfo(const std::string& probi,
-    const int month,
+void BatLedgerClientMojoProxy::SaveContributionInfo(
+    const std::string& probi,
+    const ledger::ActivityMonth month,
     const int year,
     const uint32_t date,
     const std::string& publisher_key,

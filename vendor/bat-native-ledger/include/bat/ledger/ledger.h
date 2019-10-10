@@ -189,7 +189,7 @@ class LEDGER_EXPORT Ledger {
   virtual std::string GetWalletPassphrase() const = 0;
 
   virtual void GetBalanceReport(
-      ACTIVITY_MONTH month,
+      ledger::ActivityMonth month,
       int year,
       ledger::GetBalanceReportCallback callback) const = 0;
 
@@ -217,10 +217,11 @@ class LEDGER_EXPORT Ledger {
       ledger::VisitDataPtr visit_data,
       const std::string& publisher_blob) = 0;
 
-  virtual void SetBalanceReportItem(ACTIVITY_MONTH month,
-                                    int year,
-                                    ledger::ReportType type,
-                                    const std::string& probi) = 0;
+  virtual void SetBalanceReportItem(
+      ledger::ActivityMonth month,
+      int year,
+      ledger::ReportType type,
+      const std::string& probi) = 0;
 
   virtual void GetPublisherBanner(
       const std::string& publisher_id,
@@ -230,7 +231,7 @@ class LEDGER_EXPORT Ledger {
       const std::string& viewing_id,
       const ledger::RewardsType type,
       const std::string& probi,
-      const ledger::ACTIVITY_MONTH month,
+      const ledger::ActivityMonth month,
       const int year,
       const uint32_t date) = 0;
 

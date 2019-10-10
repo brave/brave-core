@@ -20,6 +20,8 @@ using ActivityInfoFilterPtr = mojom::ActivityInfoFilterPtr;
 using ActivityInfoFilterOrderPair = mojom::ActivityInfoFilterOrderPair;
 using ActivityInfoFilterOrderPairPtr = mojom::ActivityInfoFilterOrderPairPtr;
 
+using ActivityMonth = mojom::ActivityMonth;
+
 using AutoContributeProps = mojom::AutoContributeProps;
 using AutoContributePropsPtr = mojom::AutoContributePropsPtr;
 

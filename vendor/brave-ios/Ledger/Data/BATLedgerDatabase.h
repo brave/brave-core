@@ -41,7 +41,7 @@ typedef void (^BATLedgerDatabaseWriteCompletion)(BOOL success);
 
 /// Insert or update contribution info into the database given all the information for a contribution
 + (void)insertContributionInfo:(NSString *)probi
-                         month:(const int)month
+                         month:(const BATActivityMonth)month
                           year:(const int)year
                           date:(const uint32_t)date
                   publisherKey:(NSString *)publisherKey

@@ -240,7 +240,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
 
 #pragma mark - Contribution Info
 
-+ (void)insertContributionInfo:(NSString *)probi month:(const int)month year:(const int)year date:(const uint32_t)date publisherKey:(NSString *)publisherKey type:(BATRewardsType)type completion:(nullable BATLedgerDatabaseWriteCompletion)completion
++ (void)insertContributionInfo:(NSString *)probi month:(const BATActivityMonth)month year:(const int)year date:(const uint32_t)date publisherKey:(NSString *)publisherKey type:(BATRewardsType)type completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
   [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
     auto ci = [[ContributionInfo alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(ContributionInfo.class) inManagedObjectContext:context]

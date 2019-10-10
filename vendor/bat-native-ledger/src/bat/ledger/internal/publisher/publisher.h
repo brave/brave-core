@@ -69,12 +69,12 @@ class Publisher : public ledger::LedgerCallbackHandler {
 
   void setPublisherAllowVideos(const bool& allow);
 
-  void setBalanceReport(ledger::ACTIVITY_MONTH month,
+  void setBalanceReport(ledger::ActivityMonth month,
                         int year,
                         const ledger::BalanceReportInfo& report_info);
 
   void GetBalanceReport(
-      ledger::ACTIVITY_MONTH month,
+      ledger::ActivityMonth month,
       int year,
       ledger::GetBalanceReportCallback callback);
 
@@ -92,7 +92,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
       ledger::Result result,
       ledger::PublisherInfoPtr);
 
-  std::string GetBalanceReportName(ledger::ACTIVITY_MONTH month, int year);
+  std::string GetBalanceReportName(ledger::ActivityMonth month, int year);
 
   void ParsePublisherList(
       const std::string& data,
@@ -106,7 +106,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
   void GetPublisherBanner(const std::string& publisher_key,
                           ledger::PublisherBannerCallback callback);
 
-  void setBalanceReportItem(ledger::ACTIVITY_MONTH month,
+  void setBalanceReportItem(ledger::ActivityMonth month,
                             int year,
                             ledger::ReportType type,
                             const std::string& probi);
@@ -178,7 +178,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
     const ledger::PublisherInfoCallback callback);
 
   bool GetBalanceReportInternal(
-      ledger::ACTIVITY_MONTH month,
+      ledger::ActivityMonth month,
       int year,
       ledger::BalanceReportInfo* report_info);
 

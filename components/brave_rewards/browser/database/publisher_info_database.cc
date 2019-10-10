@@ -143,7 +143,7 @@ bool PublisherInfoDatabase::InsertContributionInfo(
 }
 
 void PublisherInfoDatabase::GetOneTimeTips(ledger::PublisherInfoList* list,
-                                           ledger::ACTIVITY_MONTH month,
+                                           ledger::ActivityMonth month,
                                            int year) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -163,7 +163,7 @@ void PublisherInfoDatabase::GetOneTimeTips(ledger::PublisherInfoList* list,
       "ON spi.publisher_key = pi.publisher_id "
       "WHERE ci.month = ? AND ci.year = ? AND ci.type = ?"));
 
-  info_sql.BindInt(0, month);
+  info_sql.BindInt(0, static_cast<int>(month));
   info_sql.BindInt(1, year);
   info_sql.BindInt(2, static_cast<int>(ledger::RewardsType::ONE_TIME_TIP));
 

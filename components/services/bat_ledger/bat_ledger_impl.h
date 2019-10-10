@@ -69,13 +69,15 @@ class BatLedgerImpl : public mojom::BatLedger,
   void RestorePublishers(RestorePublishersCallback callback) override;
 
   void SetBalanceReportItem(
-      int32_t month, int32_t year, ledger::ReportType type,
+      ledger::ActivityMonth month,
+      int32_t year,
+      ledger::ReportType type,
       const std::string& probi) override;
   void OnReconcileCompleteSuccess(
       const std::string& viewing_id,
       const ledger::RewardsType type,
       const std::string& probi,
-      int32_t month,
+      ledger::ActivityMonth month,
       int32_t year,
       uint32_t data) override;
 
@@ -107,7 +109,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   void OnTimer(uint32_t timer_id) override;
 
   void GetAllBalanceReports(GetAllBalanceReportsCallback callback) override;
-  void GetBalanceReport(int32_t month, int32_t year,
+  void GetBalanceReport(ledger::ActivityMonth month, int32_t year,
       GetBalanceReportCallback callback) override;
 
   void IsWalletCreated(IsWalletCreatedCallback callback) override;

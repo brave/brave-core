@@ -358,7 +358,7 @@ void Contribution::OnReconcileCompleteSuccess(
     const std::string& viewing_id,
     const ledger::RewardsType type,
     const std::string& probi,
-    ledger::ACTIVITY_MONTH month,
+    ledger::ActivityMonth month,
     int year,
     uint32_t date) {
   if (type == ledger::RewardsType::AUTO_CONTRIBUTE) {

@@ -46,7 +46,7 @@ private:
   void RemovePendingContribution(const std::string & publisher_key, const std::string & viewing_id, uint64_t added_date, ledger::RemovePendingContributionCallback callback) override;
   void ResetState(const std::string & name, ledger::OnResetCallback callback) override;
   void SaveActivityInfo(ledger::PublisherInfoPtr publisher_info, ledger::PublisherInfoCallback callback) override;
-  void SaveContributionInfo(const std::string & probi, const int month, const int year, const uint32_t date, const std::string & publisher_key, const ledger::RewardsType type) override;
+  void SaveContributionInfo(const std::string & probi, const ledger::ActivityMonth month, const int year, const uint32_t date, const std::string & publisher_key, const ledger::RewardsType type) override;
   void SaveLedgerState(const std::string & ledger_state, ledger::LedgerCallbackHandler * handler) override;
   void SaveMediaPublisherInfo(const std::string & media_key, const std::string & publisher_id) override;
   void SaveNormalizedPublisherList(ledger::PublisherInfoList normalized_list) override;
