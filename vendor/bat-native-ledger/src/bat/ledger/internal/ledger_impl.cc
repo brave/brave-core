@@ -446,7 +446,7 @@ void LedgerImpl::SaveMediaVisit(const std::string& publisher_id,
 
 void LedgerImpl::SetPublisherExclude(
     const std::string& publisher_id,
-    const ledger::PUBLISHER_EXCLUDE& exclude,
+    const ledger::PublisherExclude& exclude,
     ledger::SetPublisherExcludeCallback callback) {
   bat_publisher_->SetPublisherExclude(publisher_id, exclude, callback);
 }

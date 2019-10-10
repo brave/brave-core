@@ -204,7 +204,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SetPublisherExclude(
       const std::string& publisher_id,
-      const ledger::PUBLISHER_EXCLUDE& exclude,
+      const ledger::PublisherExclude& exclude,
       SetPublisherExcludeCallback callback) = 0;
 
   virtual void RestorePublishers(

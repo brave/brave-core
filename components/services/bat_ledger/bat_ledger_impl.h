@@ -64,7 +64,7 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   void SetPublisherExclude(
       const std::string& publisher_key,
-      const int32_t exclude,
+      const ledger::PublisherExclude exclude,
       SetPublisherExcludeCallback callback) override;
   void RestorePublishers(RestorePublishersCallback callback) override;
 

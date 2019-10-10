@@ -62,7 +62,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
 
   void SetPublisherExclude(
       const std::string& publisher_id,
-      const ledger::PUBLISHER_EXCLUDE& exclude,
+      const ledger::PublisherExclude& exclude,
       ledger::SetPublisherExcludeCallback callback);
 
   void setPublisherAllowNonVerified(const bool& allow);
@@ -156,7 +156,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
   bool IsExcluded(
       const std::string& publisher_id,
       const bool server_exclude,
-      const ledger::PUBLISHER_EXCLUDE& excluded);
+      const ledger::PublisherExclude& excluded);
 
   void SaveVisitInternal(
       const ledger::PublisherStatus,
@@ -193,7 +193,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
                                 uint64_t window_id);
 
   void OnSetPublisherExclude(
-    ledger::PUBLISHER_EXCLUDE exclude,
+    ledger::PublisherExclude exclude,
     ledger::Result result,
     ledger::PublisherInfoPtr publisher_info,
     ledger::SetPublisherExcludeCallback callback);

@@ -12,10 +12,3 @@ typedef NS_ENUM(NSInteger, BATLogLevel) {
   BATLogLevelLogRequest = 5,
   BATLogLevelLogResponse = 6
 } NS_SWIFT_NAME(LogLevel);
-
-typedef NS_ENUM(NSInteger, BATPublisherExclude) {
-  BATPublisherExcludeAll = -1,
-  BATPublisherExcludeDefault = 0,
-  BATPublisherExcludeExcluded = 1,
-  BATPublisherExcludeIncluded = 2
-} NS_SWIFT_NAME(PublisherExclude);

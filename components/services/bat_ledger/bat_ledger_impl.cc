@@ -22,14 +22,6 @@ using std::placeholders::_3;
 
 namespace bat_ledger {
 
-namespace {  // TODO(Nejc Zdovc): Move into a util class
-
-ledger::PUBLISHER_EXCLUDE ToLedgerPublisherExclude(int32_t exclude) {
-  return (ledger::PUBLISHER_EXCLUDE)exclude;
-}
-
-}  // namespace
-
 BatLedgerImpl::BatLedgerImpl(
     mojom::BatLedgerClientAssociatedPtrInfo client_info)
   : bat_ledger_client_mojo_proxy_(
@@ -183,7 +175,7 @@ void BatLedgerImpl::OnSetPublisherExclude(
 
 void BatLedgerImpl::SetPublisherExclude(
     const std::string& publisher_key,
-    const int32_t exclude,
+    const ledger::PublisherExclude exclude,
     SetPublisherExcludeCallback callback) {
   // delete in OnSetPublisherExclude
   auto* holder = new CallbackHolder<SetPublisherExcludeCallback>(
@@ -191,7 +183,7 @@ void BatLedgerImpl::SetPublisherExclude(
 
   ledger_->SetPublisherExclude(
     publisher_key,
-    ToLedgerPublisherExclude(exclude),
+    exclude,
     std::bind(BatLedgerImpl::OnSetPublisherExclude, holder, _1));
 }
 

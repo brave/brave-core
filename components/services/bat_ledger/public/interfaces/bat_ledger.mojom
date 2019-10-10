@@ -55,7 +55,7 @@ interface BatLedger {
             string referrer,
             ledger.mojom.VisitData visit_data);
 
-  SetPublisherExclude(string publisher_key, int32 exclude) => (ledger.mojom.Result result);
+  SetPublisherExclude(string publisher_key, ledger.mojom.PublisherExclude exclude) => (ledger.mojom.Result result);
   RestorePublishers() => (ledger.mojom.Result result);
 
   SetBalanceReportItem(ledger.mojom.ActivityMonth month, int32 year, ledger.mojom.ReportType type, string probi);

@@ -63,6 +63,8 @@ using PublisherInfoPtr = mojom::PublisherInfoPtr;
 using PublisherInfoList = std::vector<PublisherInfoPtr>;
 using PublisherStatus = mojom::PublisherStatus;
 
+using PublisherExclude = mojom::PublisherExclude;
+
 using ReconcileInfo = mojom::ReconcileInfo;
 using ReconcileInfoPtr = mojom::ReconcileInfoPtr;
 

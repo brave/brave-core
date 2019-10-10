@@ -162,7 +162,7 @@ ContentSite PublisherInfoToContentSite(
   ContentSite content_site(publisher_info.id);
   content_site.percentage = publisher_info.percent;
   content_site.status = static_cast<uint32_t>(publisher_info.status);
-  content_site.excluded = publisher_info.excluded;
+  content_site.excluded = static_cast<int>(publisher_info.excluded);
   content_site.name = publisher_info.name;
   content_site.url = publisher_info.url;
   content_site.provider = publisher_info.provider;
@@ -854,7 +854,7 @@ void RewardsServiceImpl::OnRestorePublishersUI(const ledger::Result result) {
 
   for (auto& observer : observers_) {
     observer.OnExcludedSitesChanged(
-      this, "-1", ledger::PUBLISHER_EXCLUDE::ALL);
+      this, "-1", static_cast<int>(ledger::PublisherExclude::ALL));
   }
 }
 
@@ -2702,10 +2702,10 @@ void RewardsServiceImpl::SetPublisherExclude(
   if (!Connected())
     return;
 
-  ledger::PUBLISHER_EXCLUDE status =
+  ledger::PublisherExclude status =
       exclude
-      ? ledger::PUBLISHER_EXCLUDE::EXCLUDED
-      : ledger::PUBLISHER_EXCLUDE::INCLUDED;
+      ? ledger::PublisherExclude::EXCLUDED
+      : ledger::PublisherExclude::INCLUDED;
 
   bat_ledger_->SetPublisherExclude(
     publisher_key,
@@ -2966,7 +2966,7 @@ void RewardsServiceImpl::OnTip(
   ledger::PublisherInfoPtr info;
   info->id = publisher_key;
   info->status = static_cast<ledger::PublisherStatus>(site->status);
-  info->excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info->excluded = ledger::PublisherExclude::DEFAULT;
   info->name = site->name;
   info->url = site->url;
   info->provider = site->provider;

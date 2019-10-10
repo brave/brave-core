@@ -394,7 +394,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)updatePublisherExclusionState:(NSString *)publisherId state:(BATPublisherExclude)state
 {
-  ledger->SetPublisherExclude(std::string(publisherId.UTF8String), (ledger::PUBLISHER_EXCLUDE)state, ^(const ledger::Result result) {
+  ledger->SetPublisherExclude(std::string(publisherId.UTF8String), (ledger::PublisherExclude)state, ^(const ledger::Result result) {
     if (result != ledger::Result::LEDGER_OK) {
       return;
     }
@@ -417,7 +417,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
     for (BATBraveLedgerObserver *observer in self.observers) {
       if (observer.excludedSitesChanged) {
         observer.excludedSitesChanged(@"-1",
-                                      static_cast<BATPublisherExclude>(ledger::PUBLISHER_EXCLUDE::ALL));
+                                      static_cast<BATPublisherExclude>(ledger::PublisherExclude::ALL));
       }
     }
   });
