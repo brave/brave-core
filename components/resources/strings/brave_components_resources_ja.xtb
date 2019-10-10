@@ -78,10 +78,12 @@
 <translation id="2414886740292270097">ダーク</translation>
 <translation id="3829010735958850433">ウェルカムツアーをスキップする</translation>
 <translation id="1201402288615127009">次へ</translation>
+<translation id="7954950242989581218">安心してブラウズ</translation>
+<translation id="2188651882929633653">Braveシールドは、ウェブのあらゆる場所でユーザーを追跡しようとする不気味なファイルをブロックします。これにはほとんどの広告が含まれます。特定のサイトがうまく動かない時は、シールドを「ダウン」に設定してみてください。Braveは<ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>完全に匿名の製品分析<ph name="END_LINK_P3A">&lt;/a&gt;</ph>を使い、特定の機能が全体でどの程度使われているか予測します。これは<ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>設定<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>でオフにできます。</translation>
 <translation id="1919345977826869612">広告</translation>
 <translation id="5946611334574299206">Braveで広告を視聴してトークンを獲得しましょう。ご自身の閲覧状況から推測される関心に基づいて、広告が表示されます。個人データや閲覧履歴は一切ブラウザの外へ出ることはありません。</translation>
 <translation id="6112368337882254910">自動支援</translation>
-<translation id="1527222983464337010">パブリッシャーやコンテンツ制作者を自動で支援する方法です。毎月の支払いを設定し、いつも通りにウェブ閲覧しましょう。あなたが訪問するサイトはBraveによって計測されたあなたのアテンションに基づき、あなたからの支援を自動的に受けとります。</translation>
+<translation id="3742599705619405136">パブリッシャーやコンテンツ制作者を自動で支援する方法です。毎月の支払いを設定し、いつも通りにウェブ閲覧しましょう。あなたが訪問するサイトはBraveによって計測されたあなたのアテンションに基づき、あなたからの支援を自動的に受けとります。</translation>
 <translation id="20281847067919078">保留中の推定報酬額</translation>
 <translation id="8593551638387217772">次回支払日</translation>
 <translation id="319209088187794725">今月受け取った広告通知</translation>
@@ -100,12 +102,17 @@
 <translation id="8759716059844800317">サポートしているサイト</translation>
 <translation id="2365740070488517695">チップ</translation>
 <translation id="1309807437617560451">コンテンツ制作者にチップを送りましょう。毎月定期的に支払われるチップを設定することで、継続的にサイトを支援することができます。</translation>
+<translation id="5012991400231464322">毎月の寄付額</translation>
+<translation id="2084351799622920487">サイトを継続して支援するために、毎月寄付を行うように設定します。</translation>
+<translation id="8150772404570015166">毎月の寄付額が設定されていません。</translation>
+<translation id="7269582398922493824">毎月寄付をして、お気に入りのサイトを支援しましょう。設定はチップバナーから行えます。</translation>
 <translation id="2241248417273918295">広告閲覧トークンは毎月支払われます</translation>
 <translation id="68906705461077250">広告閲覧トークンの受取頻度を設定してください。(頻度を上げる or 下げる)</translation>
 <translation id="1847863811689960237">あなたのお気に入りのコンテンツを作成したクリエイターにRewardを支払う。</translation>
 <translation id="4129489167302464118">あなたの月々の支払額は、訪問したサイトに分配されます</translation>
 <translation id="4898632353264854950">サイトは閲覧する際に表示されます</translation>
 <translation id="3024485967181749006">今月のチップ合計</translation>
+<translation id="5055577484189948413">今月の総寄付額</translation>
 <translation id="4153752809523809915">今日はお気に入りコンテンツの作者へチップを送りましたか？</translation>
 <translation id="1165667598801520610">資金を追加する</translation>
 <translation id="6239274080752256452">資金を引き出す</translation>
@@ -113,7 +120,6 @@
 <translation id="7286722244752781970">サイト訪問を記録する最小ページ数</translation>
 <translation id="4424486208397124985">サイト関連性推定に使用する最小サイト訪問数</translation>
 <translation id="4969081543473319051">何を許可しますか？</translation>
-<translation id="2295504178524377899">未認証サイトへの支援を許可する</translation>
 <translation id="5875669387851353511">動画への支援を許可する</translation>
 <translation id="8933202740471878108">訪問数1</translation>
 <translation id="354797634123275103">5 回訪問</translation>
@@ -209,6 +215,7 @@
 <translation id="4405997465645469914">Brave Rewards を有効にすることで次のことを理解し、同意したことになります</translation>
 <translation id="8819542691525488940">「はい、加入します！」 をクリックすることで次のことを理解し、同意したことになります</translation>
 <translation id="8071424789698327147">「はい、了解しました！」 をクリックすることで、次のことを理解し同意したことになります。</translation>
+<translation id="3745024317593003526">寄付を設定</translation>
 <translation id="7530570094705720669">ウォレットの作成</translation>
 <translation id="2105596359439030979">あなたのアテンションは重要です。プライバシー重視型の広告を閲覧することで報酬を得て、あなたのお気に入りのサイトを支援することができます。</translation>
 <translation id="516395624550019162">参加します！</translation>
@@ -272,6 +279,8 @@
 <translation id="211044356803193224">毎月のチップ！</translation>
 <translation id="606865182719489911">無料のトークンを受け取ることが可能です</translation>
 <translation id="3453206261112715431">無料のトークン付与</translation>
+<translation id="2280319752798785157">毎月の寄付</translation>
+<translation id="7627481505582641588">次の寄付</translation>
 <translation id="5736183007277264868">現在、トークンの付与は行っていません</translation>
 <translation id="8307851765167460403">まだアクティビティがありません…</translation>
 <translation id="8589748782214271192">いいえ、結構です</translation>
@@ -317,9 +326,8 @@
 <translation id="5717619667204259673">この回復キーは安全な場所に保管してください。</translation>
 <translation id="4699702339303280827">あなたのブラウザやコンピューターに問題が発生した場合、いつでもこのキーを使用して、ウォレットを元に戻すことができます。しかし、このキーを持っていれば誰でもあなたのウォレットを手に入れることができるため、しっかりと保管しておいてください。紙に書き写すか、普段大切な情報を保管する場所にしまっておくのが一番安全かもしれません。</translation>
 <translation id="7354412786785889047">このコンテンツのクリエーターにチップを払うことで制作活動をサポートすることができます。素晴らしいコンテンツを制作してくれたことへの謝礼です。正規のクリエーターは毎月最初の１週間チップによる報酬を得ます。</translation>
-<translation id="3475063317678050010">お望みなら、このクリエーターに対して毎月チップを支払って継続的にサポートすることができます。</translation>
+<translation id="972846019534552366">お望みなら、このクリエーターに対して毎月チップを支払って継続的にサポートすることができます。</translation>
 <translation id="3074127054582480056">アテンション</translation>
-<translation id="822513417008209372">現在サポート中</translation>
 <translation id="5010112177773747965">あなたの同意なく。</translation>
 <translation id="7147673045905733351">今、Braveがあなたを新しいインターネットへ招待します。</translation>
 <translation id="1350763070659630336">あなたの時間が尊重され、プライバシーは守られ、更にあなたのアテンションに対して報酬が支払われます。</translation>
@@ -343,6 +351,7 @@
 <translation id="1738658589626889850">ファイルとして保存</translation>
 <translation id="259138486959961679">{{numItems}}件の項目すべてを見る</translation>
 <translation id="7857284676033058221">すべてのサイト{{numSites}} を閲覧</translation>
+<translation id="1549705559752367917">チップを送る</translation>
 <translation id="3536298624341433814">チップを送る</translation>
 <translation id="8428213095426709021">設定</translation>
 <translation id="1792148354504719133">サイト</translation>
@@ -385,7 +394,7 @@
 <translation id="6727483290601442544">詳細を表示</translation>
 <translation id="1988679729106502285">注意:</translation>
 <translation id="5815103311506128988">このクリエイターは、Brave ユーザーから支援を受け取る登録を行っていません。あなたのブラウザは、クリエイターからの認証を受けるか、90日が経過するまで試し続けます。</translation>
-<translation id="603411408512957306">この検証済みクリエイターは、お客様の検証済みウォレットからチップを受け取るためのアカウントの検証（KYC）をまだ行っていません。チップは、検証が完了するまで、お客様のウォレット内にとどまります。</translation>
+<translation id="7461596279975181413">このBrave認定クリエーターは、Braveユーザーからの寄付を受け取るためのアカウント設定を完了していません。Braveは、アカウント設定が完了するか、90日が経過するまで寄付を試みます。</translation>
 <translation id="4292832015778676417">広告からの収入</translation>
 <translation id="3197752845651180812">未承認の支援支払い</translation>
 <translation id="3164105678355419142">定期的に支払うチップ</translation>
@@ -394,12 +403,12 @@
 <translation id="4346944508027912677">未処理案件と期限</translation>
 <translation id="7410549756000115387">未承認の支援支払いはありません...</translation>
 <translation id="1963227389609234879">すべて削除</translation>
-<translation id="1170315781901539495">除外されたサイト</translation>
+<translation id="8706157865312453070">除外されたサイト</translation>
 <translation id="5119190679543565400">このサイトを元に戻す</translation>
 <translation id="9075700728717335924">あなたは除外されました</translation>
 <translation id="4862817811647633830">自動支援のサイト</translation>
 <translation id="923467487918828349">すべてを表示</translation>
-<translation id="5471305206221894680">サポートしているサイト</translation>
+<translation id="1397381065858030856">サポートしているサイト</translation>
 <translation id="2306169361186864012">Brave Adsの報酬！</translation>
 <translation id="3757873395477273033">Brave Adsから付与された報酬はもうすぐ届きます。</translation>
 <translation id="8101881066646819737">付与されたBrave Ads Token</translation>

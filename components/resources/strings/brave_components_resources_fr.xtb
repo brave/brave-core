@@ -78,10 +78,12 @@
 <translation id="2414886740292270097">Sombre</translation>
 <translation id="3829010735958850433">Sauter la visite guidée</translation>
 <translation id="1201402288615127009">Suivant</translation>
+<translation id="7954950242989581218">Naviguez en toute sécurité</translation>
+<translation id="2188651882929633653">Le bouclier de Brave bloque les choses terrifiantes qui tentent de vous suivre sur le Web, y compris la plupart des publicités. Désactivez le bouclier si un site ne semble pas fonctionner. Brave utilise <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>analyse de produit entièrement privée<ph name="END_LINK_P3A">&lt;/a&gt;</ph> pour estimer l'utilisation globale de certaines fonctionnalités. Vous pouvez désactiver cette fonction dans <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Paramètres<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Annonces</translation>
 <translation id="5946611334574299206">Gagnez des jetons en regardant des annonces dans Brave. Les annonces sont basées sur vos centres d'intérêts déduits de votre navigation. Aucune donnée personnelle ni aucun historique de navigation ne quittera jamais votre navigateur.</translation>
 <translation id="6112368337882254910">Auto-Contribuer</translation>
-<translation id="1527222983464337010">Un moyen automatique de soutenir des éditeurs et créateurs de contenus. Définissez un paiement mensuel et naviguez comme à votre habitude. Les sites que vous consultez recevront vos contributions automatiquement, sur base de la mesure de votre attention réalisée par Brave.</translation>
+<translation id="3742599705619405136">Un moyen automatique de soutenir des éditeurs et créateurs de contenus. Définissez un paiement mensuel et naviguez comme à votre habitude. Les sites que vous consultez recevront vos contributions automatiquement, sur base de la mesure de votre attention réalisée par Brave.</translation>
 <translation id="20281847067919078">Estimation des récompenses en attente</translation>
 <translation id="8593551638387217772">Prochaine date de paiement</translation>
 <translation id="319209088187794725">Notifications de publicités reçues ce mois-ci</translation>
@@ -100,12 +102,17 @@
 <translation id="8759716059844800317">Sites soutenus</translation>
 <translation id="2365740070488517695">Dons</translation>
 <translation id="1309807437617560451">Vous pouvez faire un don directement aux créateur·rices de contenus. Vous pouvez aussi mettre en place des dons mensuels pour soutenir ces sites en continu.</translation>
+<translation id="5012991400231464322">Contributions mensuelles</translation>
+<translation id="2084351799622920487">Configurez des contributions mensuelles récurrentes pour pouvoir soutenir les sites en permanence.</translation>
+<translation id="8150772404570015166">Aucune contribution mensuelle n'a encore été établie.</translation>
+<translation id="7269582398922493824">Soutenez vos sites favoris avec des contributions mensuelles récurrentes. Vous pouvez le configurer à partir de la bannière de pourboire.</translation>
 <translation id="2241248417273918295">Les gains sont versés chaque mois.</translation>
 <translation id="68906705461077250">Réglez la fréquence désirée pour augmenter ou diminuer les gains.</translation>
 <translation id="1847863811689960237">Récompensez les créateurs pour le contenu que vous aimez.</translation>
 <translation id="4129489167302464118">Votre paiement mensuel est distribué auprès des sites que vous visitez.</translation>
 <translation id="4898632353264854950">Les sites apparaîtront au fur et à mesure de votre navigation</translation>
 <translation id="3024485967181749006">Total des dons ce mois-ci</translation>
+<translation id="5055577484189948413">Contributions totales ce mois-ci</translation>
 <translation id="4153752809523809915">Avez-vous fait un petit don à votre créateur·rice de contenu préféré·e aujourd'hui ?</translation>
 <translation id="1165667598801520610">Ajouter des Fonds</translation>
 <translation id="6239274080752256452">Retirer des fonds</translation>
@@ -113,7 +120,6 @@
 <translation id="7286722244752781970">Temps minimum sur la page avant de considérer que c'est une visite</translation>
 <translation id="4424486208397124985">Nombre minimum de visites pour considérer l'éditeur comme pertinent</translation>
 <translation id="4969081543473319051">Qu'est-ce qui devrait être autorisé ?</translation>
-<translation id="2295504178524377899">Autoriser les contributions à des sites non vérifiés</translation>
 <translation id="5875669387851353511">Autoriser les contributions à des vidéos</translation>
 <translation id="8933202740471878108">1 visite</translation>
 <translation id="354797634123275103">5 visites</translation>
@@ -209,6 +215,7 @@
 <translation id="4405997465645469914">En activant Brave Rewards, vous indiquez avoir lu et accepté les</translation>
 <translation id="8819542691525488940">En cliquant sur ‘Oui, je participe !’, vous indiquez avoir lu et accepté les</translation>
 <translation id="8071424789698327147">En cliquant sur ‘Oui, je suis prêt !’, vous indiquez avoir lu et accepté les</translation>
+<translation id="3745024317593003526">Définir la contribution</translation>
 <translation id="7530570094705720669">Création du porte-monnaie</translation>
 <translation id="2105596359439030979">Votre attention est précieuse. Valorisez-la en regardant des annonces respectueuses de votre vie privée, et profitez-en pour soutenir les créateurs de contenus que vous aimez.</translation>
 <translation id="516395624550019162">Ça y est, j'y suis !</translation>
@@ -272,6 +279,8 @@
 <translation id="211044356803193224">Dons mensuels !</translation>
 <translation id="606865182719489911">Une subvention gratuite en jetons est disponible.</translation>
 <translation id="3453206261112715431">Allocation de jetons gratuits</translation>
+<translation id="2280319752798785157">Contribution mensuelle</translation>
+<translation id="7627481505582641588">Prochaine contribution</translation>
 <translation id="5736183007277264868">Il n'y a actuellement pas de subventions en jetons disponible.</translation>
 <translation id="8307851765167460403">Pas encore d'activité</translation>
 <translation id="8589748782214271192">Non merci</translation>
@@ -317,9 +326,8 @@
 <translation id="5717619667204259673">Gardez précieusement ce code de récupération.</translation>
 <translation id="4699702339303280827">Vous pouvez toujours utiliser cette clé pour récupérer votre portefeuille si quelque chose arrive à votre navigateur ou à votre ordinateur. Mais assurez-vous de la protéger : toute personne qui reçoit cette clé pourrait voler votre portefeuille. Il est probablement plus sûr de l'écrire sur une feuille de papier, ou n'importe où vous gardez d'autres informations importantes.</translation>
 <translation id="7354412786785889047">Vous pouvez soutenir le créateur de ce contenu en lui envoyant un don. C'est une façon de le remercier d'avoir créé un excellent contenu. Les dons sont versés aux créateurs vérifiés la première semaine de chaque mois civil.</translation>
-<translation id="3475063317678050010">Si vous le souhaitez, vous pouvez programmer des dons mensuels pour soutenir ce créateur de façon continue.</translation>
+<translation id="972846019534552366">Si vous le souhaitez, vous pouvez programmer des dons mensuels pour soutenir ce créateur de façon continue.</translation>
 <translation id="3074127054582480056">Attention</translation>
-<translation id="822513417008209372">Vous’ soutenez actuellement la cause de</translation>
 <translation id="5010112177773747965">Sans votre consentement.</translation>
 <translation id="7147673045905733351">Aujourd'hui, Brave vous accueil dans un nouvel internet.</translation>
 <translation id="1350763070659630336">Un Internet où la valeur de votre temps est reconnue, où vos données personnelles restent confidentielles et où vous êtes réellement rémunéré-e pour votre attention.</translation>
@@ -343,6 +351,7 @@
 <translation id="1738658589626889850">Sauvegarder comme fichier</translation>
 <translation id="259138486959961679">Voir tous les éléments {{numItems}}</translation>
 <translation id="7857284676033058221">Voir tous les {{numSites}} sites</translation>
+<translation id="1549705559752367917">Envoyer mon Pourboire</translation>
 <translation id="3536298624341433814">Envoyer mon Pourboire</translation>
 <translation id="8428213095426709021">Paramètres</translation>
 <translation id="1792148354504719133">site</translation>
@@ -385,7 +394,7 @@
 <translation id="6727483290601442544">Voir Détails</translation>
 <translation id="1988679729106502285">REMARQUE :</translation>
 <translation id="5815103311506128988">Ce créateur ne s'est pas encore inscrit pour recevoir les contributions des utilisateurs de Brave. Votre navigateur continuera d'essayer de contribuer jusqu'à ce qu'il vérifie ou jusqu'à ce que 90 jours se soient écoulés.</translation>
-<translation id="603411408512957306">Ce créateur vérifié n'a pas encore vérifié (KYC) son compte pour recevoir des pourboires de votre portefeuille vérifié. Les pourboires resteront dans votre portefeuille jusqu'à ce qu'il ait terminé la vérification.</translation>
+<translation id="7461596279975181413">Ce créateur vérifié de Brave n'a pas encore configuré son compte pour recevoir les contributions des utilisateurs de Brave. Votre navigateur continuera d'essayer de contribuer jusqu'à ce qu'il vérifie ou jusqu'à ce que 90 jours se soient écoulés.</translation>
 <translation id="4292832015778676417">gagné grâce à la publicité</translation>
 <translation id="3197752845651180812">Contributions en attente</translation>
 <translation id="3164105678355419142">Don récurrent</translation>
@@ -394,12 +403,12 @@
 <translation id="4346944508027912677">En attente jusqu'au</translation>
 <translation id="7410549756000115387">Aucune contribution en attente…</translation>
 <translation id="1963227389609234879">Tout supprimer</translation>
-<translation id="1170315781901539495">Sites exclus</translation>
+<translation id="8706157865312453070">Sites exclus</translation>
 <translation id="5119190679543565400">Restaurer ce site</translation>
 <translation id="9075700728717335924">Vous avez exclus</translation>
 <translation id="4862817811647633830">sites provenant de la contribution automatique.</translation>
 <translation id="923467487918828349">Tout afficher</translation>
-<translation id="5471305206221894680">Sites pris en charge</translation>
+<translation id="1397381065858030856">Sites pris en charge</translation>
 <translation id="2306169361186864012">Récompenses Brave Ads !</translation>
 <translation id="3757873395477273033">Vos récompenses de la part de Brave Ads sont en route.</translation>
 <translation id="8101881066646819737">Votre allocation de jetons Brave Ads</translation>

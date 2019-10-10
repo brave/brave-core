@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "প্রতি মাসে সাইটে টিপ দিন",
+    "message": "মাসিক অবদান",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "এই যাচাইকৃত নির্মাতাকে এখনও তাদের অ্যাকাউন্টটি আপনার যাচাইকৃত ওয়ালেট থেকে টিপস পেতে যাচাই (KYC) করতে হবে। আপনার ওয়ালেট যাচাই না হওয়া অবধি তা টিপস তাতে থেকে যাবে।",
+    "message": "এই Brave যাচাইকৃত নির্মাতাগণ Brave ব্যবহারকারীদের থেকে অবদানগুলি পেতে এখনও তাদের অ্যকাউন্ট কনফিগার করেন নি। আপনার পাঠানো যে কোনও টিপস তারা প্রক্রিয়াটি সম্পূর্ণ না করা অবধি আপনার ওয়ালেটে থেকে যাবে।",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "সম্পূর্ণ ওয়ালেট যাচাইকরণ",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "সেট করুন...",
+    "description": "Button text for setting monthly contribution"
   }
 }

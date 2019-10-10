@@ -78,10 +78,12 @@
 <translation id="2414886740292270097">Mörk</translation>
 <translation id="3829010735958850433">Hoppa över välkomsttur</translation>
 <translation id="1201402288615127009">Nästa</translation>
+<translation id="7954950242989581218">Surfa säkert och tryggt</translation>
+<translation id="2188651882929633653">Brave Shields blockerar de läskiga grejerna som försöker spåra dig på nätet, inklusive största delen av all reklam. Ställ in Shields som "nere" om en webbplats inte verkar fungera. Brave använder <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>helt anonym product analytics<ph name="END_LINK_P3A">&lt;/a&gt;</ph> för att uppskatta den generella användningen av vissa funktioner. Du kan slå av detta i <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Annonser</translation>
 <translation id="5946611334574299206">Tjäna token genom att visa annonser i Brave. Annonser som visas baseras på dina intressen, taget från ditt surfbeteende. Ingen personlig information eller sökhistorik lämnar någonsin din webbläsare.</translation>
 <translation id="6112368337882254910">Bidra automatiskt</translation>
-<translation id="1527222983464337010">Ett sätt att automatiskt stödja de som skapar och publicerar innehåll. Ställ in ett månatligt bidrag och surfa som vanligt. Dina favoritsajter får automatiskt dina bidrag, baserat på din uppmärksamhet uppmätt av Brave.</translation>
+<translation id="3742599705619405136">Ett sätt att automatiskt stödja de som skapar och publicerar innehåll. Ställ in ett månatligt bidrag och surfa som vanligt. Dina favoritsajter får automatiskt dina bidrag, baserat på din uppmärksamhet uppmätt av Brave.</translation>
 <translation id="20281847067919078">Beräknade väntande belöningar</translation>
 <translation id="8593551638387217772">Nästa betalningsdatum</translation>
 <translation id="319209088187794725">Annonsaviseringar mottagna den här månaden</translation>
@@ -100,12 +102,17 @@
 <translation id="8759716059844800317">Webbplatser som stöds</translation>
 <translation id="2365740070488517695">Donationer</translation>
 <translation id="1309807437617560451">Ge innehållsskapare bidrag direkt medan du surfar. Du kan ställa in månatliga bidrag så att du stödjer webbplatser löpande.</translation>
+<translation id="5012991400231464322">Månatliga bidrag</translation>
+<translation id="2084351799622920487">Ställ in återkommande månatliga bidrag så att du kan stödja sidor kontinuerligt.</translation>
+<translation id="8150772404570015166">Inga månatliga bidrag inställda än.</translation>
+<translation id="7269582398922493824">Stöd dina favoritsidor med återkommande månatliga bidrag. Du kan ställa in det från dricksbannern.</translation>
 <translation id="2241248417273918295">Intäkter betalas ut varje månad.</translation>
 <translation id="68906705461077250">Ställ in din önskade frekvens för att öka eller minska intäkterna.</translation>
 <translation id="1847863811689960237">Belöna kreatörer för det innehåll du älskar.</translation>
 <translation id="4129489167302464118">Din månatliga budget distribueras över de webbplatser du besöker.</translation>
 <translation id="4898632353264854950">Webbplatser kommer dyka upp vartefter du surfar på webben</translation>
 <translation id="3024485967181749006">Totala donationer denna månad</translation>
+<translation id="5055577484189948413">Totala bidrag denna månad</translation>
 <translation id="4153752809523809915">Har du donerat till dina favorit-innehållskreatörer idag?</translation>
 <translation id="1165667598801520610">Sätt in pengar</translation>
 <translation id="6239274080752256452">Ta ut tillgångar</translation>
@@ -113,7 +120,6 @@
 <translation id="7286722244752781970">Minimum tid på en sida innan ett besök loggas</translation>
 <translation id="4424486208397124985">Minsta antal besök för relevans för utgivare</translation>
 <translation id="4969081543473319051">Vad borde tillåtas?</translation>
-<translation id="2295504178524377899">Tillåt bidrag till icke-verifierade webbplatser</translation>
 <translation id="5875669387851353511">Tillåt bidrag till videos</translation>
 <translation id="8933202740471878108">1 besök</translation>
 <translation id="354797634123275103">5 besök</translation>
@@ -209,6 +215,7 @@
 <translation id="4405997465645469914">Genom att aktivera Brave Rewards visar du att du har läst och godkänner</translation>
 <translation id="8819542691525488940">Genom att klicka på ‘Ja, jag är med!’ intygar du att du har läst och godkänner</translation>
 <translation id="8071424789698327147">Genom att klicka ‘Ja, jag är redo!’ intygar du att du har läst och godkänner</translation>
+<translation id="3745024317593003526">Ställ in bidrag</translation>
 <translation id="7530570094705720669">Skapar plånbok.</translation>
 <translation id="2105596359439030979">Din uppmärksamhet är värdefull. Tjäna genom att titta på annonser som respekterar integritet, och betala vidare för att stödja innehållskreatörerna du älskar.</translation>
 <translation id="516395624550019162">Ja, jag är med!</translation>
@@ -272,6 +279,8 @@
 <translation id="211044356803193224">Månatliga donationer!</translation>
 <translation id="606865182719489911">En tilldelning av gratis token är tillgänglig.</translation>
 <translation id="3453206261112715431">Tilldelning av gratis token</translation>
+<translation id="2280319752798785157">Månatligt bidrag</translation>
+<translation id="7627481505582641588">Nästa bidrag</translation>
 <translation id="5736183007277264868">Just nu finns inget erbjudande om token tillgängligt.</translation>
 <translation id="8307851765167460403">Ingen aktivitet än…</translation>
 <translation id="8589748782214271192">Nej tack</translation>
@@ -317,9 +326,8 @@
 <translation id="5717619667204259673">Förvara återställningsnyckeln på ett säkert ställe.</translation>
 <translation id="4699702339303280827">Du kan alltid använda denna nyckel för att få tillbaka din plånbok om något händer din webbläsare eller dator. Se dock till att skydda den #8212; den som kommer åt denna nyckel kan stjäla din plånbok. Det är troligen säkrast att skriva ner den på ett papper eller spara den på ett annat ställe där du förvarar viktig information.</translation>
 <translation id="7354412786785889047">Du kan stödja denna contentskapare genom att skicka dricks. Det är ett sätt att tacka för bra innehåll. Verifierade skapare får sin dricks utbetald under varje kalendermånads första vecka.</translation>
-<translation id="3475063317678050010">Om du vill kan du ställa in en månatlig dricks för att stödja denna skapare på regelbunden basis.</translation>
+<translation id="972846019534552366">Om du vill kan du ställa in en månatlig dricks för att stödja denna skapare på regelbunden basis.</translation>
 <translation id="3074127054582480056">Observation</translation>
-<translation id="822513417008209372">Du stödjer för närvarande</translation>
 <translation id="5010112177773747965">utan ditt medgivande.</translation>
 <translation id="7147673045905733351">Idag välkomnar Brave dig till ett nytt internet.</translation>
 <translation id="1350763070659630336">En där din tid värderas, dina personuppgifter hålls privata och där du faktiskt får betalt för din uppmärksamhet.</translation>
@@ -343,6 +351,7 @@
 <translation id="1738658589626889850">Spara som fil</translation>
 <translation id="259138486959961679">Se alla {{numItems}} föremål</translation>
 <translation id="7857284676033058221">Se alla  {{numSites}} webbplatser</translation>
+<translation id="1549705559752367917">Skicka min donation</translation>
 <translation id="3536298624341433814">Skicka min donation</translation>
 <translation id="8428213095426709021">Inställningar</translation>
 <translation id="1792148354504719133">Webbplats</translation>
@@ -385,7 +394,7 @@
 <translation id="6727483290601442544">Se uppgifter</translation>
 <translation id="1988679729106502285">OBS:</translation>
 <translation id="5815103311506128988">Denna skapare har ännu inte registrerat sig för att ta emot stöd från Brave-användare. Din webbläsare fortsätter att försöka ge stöd tills skaparen verifierar eller tills 90 dagar har gått.</translation>
-<translation id="603411408512957306">Denna verifierade skapare måste fortfarande verifiera (KYC) sitt konto för att ta emot pengar från din verifierade plånbok. Pengarna blir kvar i din plånbok i väntan på skaparens verifiering.</translation>
+<translation id="7461596279975181413">Den här bekräftade skaparen hos Brave har ännu inte ställt in sitt konto för att kunna ta emot bidrag från Braves användare. Din webbläsare kommer att fortsätta bidra till dess de bekräftar eller till dess 90 dagar har gått.</translation>
 <translation id="4292832015778676417">förtjänst från annonser</translation>
 <translation id="3197752845651180812">Väntande bidrag</translation>
 <translation id="3164105678355419142">Återkommande dricks</translation>
@@ -394,12 +403,12 @@
 <translation id="4346944508027912677">Väntar till</translation>
 <translation id="7410549756000115387">Inga väntande bidrag…</translation>
 <translation id="1963227389609234879">Ta bort &amp;alla</translation>
-<translation id="1170315781901539495">Exkluderade webbplatser</translation>
+<translation id="8706157865312453070">Exkluderade webbplatser</translation>
 <translation id="5119190679543565400">Återställ denna webbplats</translation>
 <translation id="9075700728717335924">Du har exkluderat</translation>
 <translation id="4862817811647633830">webbplatser från Auto-Contribute.</translation>
 <translation id="923467487918828349">Visa alla</translation>
-<translation id="5471305206221894680">Webbplatser som stöds</translation>
+<translation id="1397381065858030856">Webbplatser som stöds</translation>
 <translation id="2306169361186864012">Belöningar för Brave-annonser!</translation>
 <translation id="3757873395477273033">Din belöning från Brave Annonser är på väg.</translation>
 <translation id="8101881066646819737">Din tilldelning av token för Brave-annonser</translation>

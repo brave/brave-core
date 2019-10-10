@@ -46,6 +46,7 @@
 Brave તમારી સેટિંગ્સને પુનઃપ્રાપ્ત કરવામાં અક્ષમ છે.</translation>
 <translation id="1477146545787277177">ઓહ! Brave ક્રેશ થઈ ગયું. હમણાં ફરીથી લોંચ કરીએ?</translation>
 <translation id="5785919770853225148">Brave આ પાસવર્ડ તમારા Brave Software એકાઉન્ટમાં સાચવશે. તમારે તેને યાદ રાખવો જરૂરી નથી.</translation>
+<translation id="8211837073776713955">Brave વડે તમે તમારા પાસવર્ડમાં ક્યારેક ચેડાં થાય તો તેના વિશે જાણકારી મેળવી શકો છો</translation>
 <translation id="113959764510199339">Brave પાસવર્ડ્સ બતાવવાનો પ્રયાસ કરી રહ્યું છે.</translation>
 <translation id="7503098128120083822">Brave તમારા પાસવર્ડની નિકાસ કરવા માગે છે.</translation>
 <translation id="8285294305439559616">Brave પાસવર્ડ્સ બતાવવાનો પ્રયાસ કરી રહ્યું છે. આની મંજૂરી આપવા માટે તમારો Windows પાસવર્ડ લખો.</translation>
@@ -154,13 +155,6 @@ Brave તમારી સેટિંગ્સને પુનઃપ્રાપ
 <translation id="3205074487970075628">Brave તમારા કેમેરાનો ઉપયોગ કરી રહ્યું છે.</translation>
 <translation id="8142245354207161805">બીજા કમ્પ્યુટર (<ph name="HOST_NAME"/>) પર પ્રોફાઇલ બીજી Brave પ્રક્રિયા (<ph name="PROCESS_ID"/>) દ્વારા ઉપયોગમાં હોય એવું લાગે છે. Brave એ પ્રોફાઇલને લૉક કરી છે જેથી તે દૂષિત ન થઈ જાય. જો તમને ખાતરી છે કે કોઈ અન્ય પ્રક્રિયાઓ આ પ્રોફાઇલનો ઉપયોગ કરી રહી નથી, તો તમે પ્રોફાઇલને અનલૉક કરી અને Brave ને ફરીથી લોંચ કરી શકો છો.</translation>
 <translation id="239760341987199724">Brave ને તમારા ડિફોલ્ટ બ્રાઉઝર તરીકે સેટ કરો</translation>
-<translation id="5344925500065984750">કઈ વેબસાઇટને <ph name="NEW_PROFILE_NAME"/> જોઈ શકે એ સેટ કરવા માટે, તમે <ph name="BEGIN_LINK_1"/><ph name="DISPLAY_LINK"/><ph name="END_LINK_1"/>ની મુલાકાત લઈને પ્રતિબંધો અને સેટિંગને ગોઠવી શકો છો. જો તમે ડિફોલ્ટ સેટિંગમાં ફેરફાર કરતાં નથી, તો <ph name="NEW_PROFILE_NAME"/>, વેબ પર બધું જ બ્રાઉઝ કરી શકે છે.
-
-<ph name="NEW_PROFILE_NAME"/>ને તમારા એકાઉન્ટને ઍક્સેસ કરવાથી અટકાવવા માટે, જ્યારે તમે Braveનો ઉપયોગ કરી રહ્યાં ન હો ત્યારે તમે તમારી પ્રોફાઇલને લૉક કરી હોવાની ખાતરી કરો. આ કરવા માટે, બ્રાઉઝરના ઉપલા-જમણા ખૂણામાં તમારા પ્રોફાઇલ નામને ક્લિક કરો અને "બહાર નીકળો અને ચાઇલ્ડ લૉક" પસંદ કરો.
-<ph name="BEGIN_LINK_2"/>વધુ જાણો<ph name="END_LINK_2"/>
-
-વધુ સૂચનો માટે કૃપા કરીને <ph name="ACCOUNT_EMAIL"/> પર તમારા ઇમેઇલને તપાસો.</translation>
-<translation id="1820843143331379651">Brave 70 શરૂ થવાથી, નિરીક્ષિત વપરાશકર્તા પ્રોફાઇલો હવેથી ઉપલબ્ધ નહીં રહે.</translation>
 <translation id="669092380621816981">આ વ્યક્તિનો બ્રાઉઝિંગ ડેટા આ ડિવાઇસમાંથી ડિલીટ કરવામાં આવશે. આ ડેટા પાછો મેળવવા માટે, Braveમાં <ph name="USER_EMAIL"/> તરીકે સાઇન ઇન કરો.</translation>
 <translation id="2827121003398607864">Brave હવે પહેલાંથી બહેતર બન્યું છે</translation>
 <translation id="7192666605334070839">હવે તમારા Brave Software એકાઉન્ટ સાથે અને શેર કરેલ કમ્પ્યુટર પર Brave નો ઉપયોગ કરવો વધુ સરળ છે.</translation>
@@ -202,7 +196,7 @@ Brave તમારી સેટિંગ્સને પુનઃપ્રાપ
 <translation id="3598551856834560515">સમન્વયનને પ્રારંભ કરવા માટે Brave ને અપડેટ કરો</translation>
 <translation id="4050175100176540509">નવીનતમ વર્ઝનમાં મહત્ત્વપૂર્ણ સુરક્ષા સુધારણાઓ અને નવી સુવિધાઓ ઉપલબ્ધ છે.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave 1 સેકન્ડમાં ફરી શરૂ થશે}one{Brave # સેકન્ડમાં ફરી શરૂ થશે}other{Brave # સેકન્ડમાં ફરી શરૂ થશે}}</translation>
-<translation id="5509303873219371662">તમારે હવે Brave ફરી શરૂ કરવું જોઈએ</translation>
+<translation id="5646769069113654257">કૃપા કરીને હવે Brave ફરી શરૂ કરો</translation>
 <translation id="8668413672647811944">Brave માટેનું એક વિશિષ્ટ સુરક્ષા અપડેટ હમણાં જ લાગુ કરવામાં આવ્યું. હવે ફરી શરૂ કરો અને અમે તમારાં ટૅબની પુનઃસ્થાપના કરીશું.</translation>
 <translation id="763369711159699222">Brave ને બહેતર બનાવવામાં સહાય કરો</translation>
 <translation id="1156940037717341650">તમે Brave Software ને સંભવિત સુરક્ષા ઘટનાઓની વિગતોની જાણ આપમેળે કરીને Brave ને વધુ સલામત અને ઉપયોગમાં વધુ સરળ બનાવવામાં સહાય કરી શકો છો.</translation>
@@ -226,7 +220,6 @@ Brave તમારી સેટિંગ્સને પુનઃપ્રાપ
 <translation id="6141293433381251973">Brave ઑટોમૅટિક રીતે અપડેટ થાય છે જેથી કરીને તમારી પાસે હંમેશાં નવું વર્ઝન રહે છે. જ્યારે આ ડાઉનલોડ પૂરું થાય છે, ત્યારે Brave ફરીથી ચાલુ થશે અને તમે તમારા માર્ગે હશો.</translation>
 <translation id="7808415789955822133">Brave OS શરતો</translation>
 <translation id="7207456302801184289">Brave માં સ્વાગત છે</translation>
-<translation id="5688839044908745927">Brave લગભગ તૈયાર છે.</translation>
 <translation id="3507835409099344374">Braveની નોટિફિકેશનની સેટિંગ પર જાઓ</translation>
 <translation id="1026406809507858026">{0,plural, =0{Brave અપડેટ ઉપલબ્ધ છે}=1{Brave અપડેટ ઉપલબ્ધ છે}one{Brave અપડેટ # દિવસ માટે ઉપલબ્ધ છે}other{Brave અપડેટ # દિવસ માટે ઉપલબ્ધ છે}}</translation>
 <translation id="720532315408041257">તમારા વ્યવસ્થાપક કહે છે કે આ અપડેટ લાગુ કરવા માટે Brave ફરીથી લૉન્ચ કરો</translation>
@@ -244,6 +237,8 @@ Brave તમારી સેટિંગ્સને પુનઃપ્રાપ
 <translation id="1864557848095568223">Brave ને અપડેટ કરી રહ્યું છે</translation>
 <translation id="1786715389543715322">Brave અપડેટ થઈ રહ્યું છે (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="8208853227947884571">Brave અપ ટૂ ડેટ છે</translation>
+<translation id="6756417787837743699">Brave OSની વિગતો માટે, કૃપા કરીને <ph name="LINK_BEGIN"/>
+      Brave OS વિશે<ph name="LINK_END"/> જુઓ</translation>
 <translation id="6686872257969654608">Brave OS વિશે</translation>
 <translation id="2280363356796735201">Brave OS સાથે સહાય મેળવો</translation>
 <translation id="38898988211673781">જ્યારે તમે Braveમાંથી બહાર નીકળો ત્યારે કુકી અને સાઇટનો ડેટા સાફ કરો</translation>
@@ -251,6 +246,10 @@ Brave તમારી સેટિંગ્સને પુનઃપ્રાપ
 <translation id="5468853758063275923">Brave તમારું ડિફૉલ્ટ બ્રાઉઝર છે</translation>
 <translation id="1775322105159056176">Brave ડિફૉલ્ટ બ્રાઉઝરને નિર્ધારિત અથવા સેટ કરી શકતું નથી</translation>
 <translation id="6915252145142862992">આ Brave Software Brave નું દ્વિતીય ઇન્સ્ટૉલેશન છે અને આને તમારું ડિફૉલ્ટ બ્રાઉઝર બનાવી શકાતું નથી.</translation>
+<translation id="6235873178214143377">જો આ પેજ પર સેટિંગ બતાવેલું ન હોય, તો તમારા <ph name="LINK_BEGIN"/>
+      Brave બ્રાઉઝર સેટિંગ<ph name="LINK_END"/>માં જુઓ</translation>
+<translation id="4459296183696059108">જો આ પેજ પર સેટિંગ બતાવેલું ન હોય, તો તમારા <ph name="LINK_BEGIN"/>
+      Brave OS સેટિંગ<ph name="LINK_END"/>માં જુઓ</translation>
 <translation id="7977435741986383568">Brave, તમારા બ્રાઉઝ કરવાના અનુભવને વધુ સારો બનાવવા માટે વેબ સેવાઓનો ઉપયોગ કરી શકે છે. તમે વૈકલ્પિકરૂપે આ સેવાઓને બંધ કરી શકો છો. <ph name="BEGIN_LINK"/>વધુ જાણો<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">જોડણીની ભૂલો સુધારવા માટે, Brave તમે ટેક્સ્ટ ફીલ્ડમાં ટાઇપ કરો તે ટેક્સ્ટ Brave Softwareને મોકલે છે</translation>
 <translation id="8586264863973514035">તમારા ફેરફારો લાગુ કરવા માટે, Braveને ફરી લૉન્ચ કરો</translation>
@@ -264,8 +263,6 @@ Brave તમારી સેટિંગ્સને પુનઃપ્રાપ
 <translation id="7445061995866044926">Braveમાંથી સાઇન આઉટ કરીએ?</translation>
 <translation id="7453070689008684791">ઍડ્રેસ બારમાં સૂચનો કરવા માટે, Brave તમારી ડ્રાઇવને ઍક્સેસ કરશે</translation>
 <translation id="3360368475735266712">તમારા બધા ઉપકરણો પર Braveને સિંક અને વ્યક્તિગત કરવા માટે સાઇન ઇન કરો</translation>
-<translation id="9221712274065451529">આ ભાષાનો ઉપયોગ Brave OS UI પ્રદર્શિત કરવા માટે થાય છે</translation>
-<translation id="3518788198614984730">આ ભાષામાં Brave OS બતાવો</translation>
 <translation id="5757460455745382269">આ ભાષાનો ઉપયોગ Brave UI પ્રદર્શિત કરવા માટે થાય છે</translation>
 <translation id="2335583906071111058">આ ભાષામાં Brave બતાવો</translation>
 <translation id="8926637909431618259">જ્યારે Brave બંધ થાય ત્યારે પૃષ્ઠભૂમિ ઍપ્લિકેશનો ચલાવવાનું ચાલુ રાખો</translation>

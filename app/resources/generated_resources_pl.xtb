@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="pl">
+<translation id="2501278716633472235">Wróć</translation>
 <translation id="1215411991991485844">Nowa aplikacja działająca w tle została dodana</translation>
 <translation id="7396845648024431313">Aplikacja <ph name="APP_NAME"/> zostanie włączona podczas uruchamiania systemu i będzie działać w tle nawet po zamknięciu wszystkich pozostałych okien przeglądarki <ph name="PRODUCT_NAME"/>.</translation>
 <translation id="5246282308050205996">Aplikacja <ph name="APP_NAME"/> uległa awarii. Kliknij ten dymek, aby uruchomić ją ponownie.</translation>
@@ -15,6 +16,8 @@
 <translation id="4610637590575890427">Czy chodziło o przejście do strony <ph name="SITE"/>?</translation>
 <translation id="4759238208242260848">Pobrane pliki</translation>
 <translation id="370665806235115550">Ładuję...</translation>
+<translation id="556321030400250233">plik lokalny lub udostępniony</translation>
+<translation id="1405779994569073824">Awaria</translation>
 <translation id="4880827082731008257">Przeszukaj historię</translation>
 <translation id="1838374766361614909">Wyczyść wyszukiwanie</translation>
 <translation id="8261506727792406068">Usuń</translation>
@@ -409,6 +412,7 @@
 <translation id="5425042808445046667">Pobieraj dalej</translation>
 <translation id="5284445933715251131">Pobieraj dalej</translation>
 <translation id="203837651858678035">Zamknąć tryb prywatny mimo to?</translation>
+<translation id="8951465597020890363">Zamknąć tryb gościa mimo to?</translation>
 <translation id="9148058034647219655">Zakończ</translation>
 <translation id="7376221878517288144">Zamknąć tryb prywatny mimo to?</translation>
 <translation id="973473557718930265">Zakończ</translation>
@@ -527,6 +531,14 @@
 <translation id="4680105648806843642">Dźwięk na tej stronie został wyciszony</translation>
 <translation id="8574990355410201600">Zawsze zezwalaj na odtwarzanie dźwięku na stronie <ph name="HOST"/></translation>
 <translation id="3244294424315804309">Nadal wyciszaj dźwięk</translation>
+<translation id="2839032553903800133">Powiadomienia blokowane</translation>
+<translation id="1195558154361252544">Powiadomienia są automatycznie blokowane w przypadku wszystkich stron, chyba że na nie zezwolisz</translation>
+<translation id="3575121482199441727">Zezwalaj tej stronie</translation>
+<translation id="5145461783043820456">Blokowanie plików cookie innych firm jest włączone</translation>
+<translation id="243242775089461296">Blokowanie plików cookie innych firm jest wyłączone w tej witrynie</translation>
+<translation id="2325002827435400643">Wyłącz w przypadku tej strony</translation>
+<translation id="1646834008704210683">{COUNT,plural, =0{Ta strona nie używa plików cookie do śledzenia między stronami}=1{Brave blokuje pliki cookie z 1 strony}few{Brave blokuje pliki cookie z # stron}many{Brave blokuje pliki cookie z # stron}other{Brave blokuje pliki cookie z # strony}}</translation>
+<translation id="8734674662128056360">Blokowanie plików cookie innych firm</translation>
 <translation id="5154702632169343078">Temat</translation>
 <translation id="5851868085455377790">Wystawca</translation>
 <translation id="2841837950101800123">Dostawca</translation>
@@ -798,7 +810,7 @@
 <translation id="7663719505383602579">Odbiorca: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="6247802389331535091">System: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="5799508265798272974">Linuksowa maszyna wirtualna: <ph name="LINUX_VM_NAME"/></translation>
-<translation id="5552059560155071882">Parser CUPS IPP</translation>
+<translation id="7851720427268294554">Parser IPP</translation>
 <translation id="7171242884588191792">Narzędzia do plików w Brave</translation>
 <translation id="3183139917765991655">Importer profilów</translation>
 <translation id="2190069059097339078">Program do pobierania danych logowania do Wi-Fi</translation>
@@ -904,6 +916,7 @@
 <translation id="2204034823255629767">Odczyt i zmiana wpisanego tekstu</translation>
 <translation id="6979044105893951891">Rozpoczynanie i kończenie zarządzanych sesji gościa</translation>
 <translation id="2741912629735277980">Wyświetlanie UI na ekranie logowania</translation>
+<translation id="7782717250816686129">Przechowuj trwałe dane na ekranie logowania i wstawiaj do sesji dane uwierzytelniające.</translation>
 <translation id="8191230140820435481">Zarządzanie Twoimi aplikacjami, rozszerzeniami i motywami</translation>
 <translation id="6259104249628300056">Wykrywanie urządzeń w sieci lokalnej</translation>
 <translation id="6344170822609224263">Dostęp do listy połączeń sieciowych</translation>
@@ -1083,6 +1096,8 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8261378640211443080">To rozszerzenie nie jest oferowane w <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i mogło zostać dodane bez Twojej wiedzy.</translation>
 <translation id="4096508467498758490">Wyłącz rozszerzenia trybu programisty</translation>
 <translation id="3288047731229977326">Rozszerzenia działające w trybie programisty mogą uszkodzić Twój komputer. Jeśli nie jesteś programistą, wyłącz je dla bezpieczeństwa.</translation>
+<translation id="8827289157496676362">Przypnij rozszerzenie</translation>
+<translation id="5372579129492968947">Odepnij rozszerzenie</translation>
 <translation id="3021426244864538700">Dostęp do danych tej witryny</translation>
 <translation id="8213996900880218548">Chce uzyskać dostęp do danych tej witryny.</translation>
 <translation id="1289513325360489062">Nie ma dostępu do danych tej witryny</translation>
@@ -1147,6 +1162,11 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="3950820424414687140">Zaloguj się</translation>
 <translation id="5624120631404540903">Zarządzaj hasłami</translation>
 <translation id="9135262959729602463">Aby mieć dostęp do swoich haseł na wszystkich urządzeniach, zaloguj się w Brave.</translation>
+<translation id="328571385944182268">Zapisywać Twoje hasła?</translation>
+<translation id="3753033997400164841">Zapisz raz – używaj w dowolnym miejscu</translation>
+<translation id="1703331064825191675">Nie musisz się już martwić o bezpieczeństwo swoich haseł</translation>
+<translation id="2341030170677284705">Możesz bezpiecznie zapisać hasła na swoim koncie Brave Software, by w przyszłości nie musieć ich wpisywać</translation>
+<translation id="3913985461352963178">Miej dostęp do swoich haseł zawsze wtedy, gdy zalogujesz się na swoje konto Brave Software</translation>
 <translation id="8919275547519617350">Aby korzystać ze wszystkich swoich haseł na innych urządzeniach, zaloguj się i włącz synchronizację.</translation>
 <translation id="8470028084415844044">Aby korzystać ze wszystkich swoich haseł na innych urządzeniach, włącz synchronizację.</translation>
 <translation id="1609170755653088773">Zsynchronizuj to hasło ze swoim iPhonem</translation>
@@ -1193,6 +1213,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="5620612546311710611">statystyki użytkowania</translation>
 <translation id="8871696467337989339">Użyto nieobsługiwanej flagi wiersza polecenia: <ph name="BAD_FLAG"/>. Ma to negatywny wpływ na stabilność i zabezpieczenia.</translation>
 <translation id="9140067245205650184">Korzystasz z nieobsługiwanej flagi funkcji: <ph name="BAD_FLAG"/>. Ma to negatywny wpływ na stabilność i zabezpieczenia.</translation>
+<translation id="4094647278880271855">Korzystasz z nieobsługiwanej zmiennej środowiskowej: <ph name="BAD_VAR"/>. Ma to negatywny wpływ na stabilność i zabezpieczenia.</translation>
 <translation id="2178098616815594724">Wtyczka <ph name="PEPPER_PLUGIN_NAME"/> na <ph name="PEPPER_PLUGIN_DOMAIN"/> chce mieć dostęp do Twojego komputera</translation>
 <translation id="8598453409908276158">Wtyczka spoza piaskownicy zablokowana</translation>
 <translation id="1919814239594435008">Wtyczka spoza piaskownicy dozwolona</translation>
@@ -1301,7 +1322,28 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="7460045493116006516">Zainstalowany motyw</translation>
 <translation id="9068849894565669697">Wybierz kolor</translation>
 <translation id="8798099450830957504">Domyślny</translation>
-<translation id="8259556432390118667">Wartość szesnastkowego kodu koloru</translation>
+<translation id="3011384993885886186">Ciepła szarość</translation>
+<translation id="6076491747490570887">Chłodna szarość</translation>
+<translation id="8300374739238450534">Ciemnogranatowy</translation>
+<translation id="7569983096843329377">Czarny</translation>
+<translation id="549211519852037402">Beżowo-biały</translation>
+<translation id="321084946921799184">Żółto-biały</translation>
+<translation id="5722086096420375088">Zielono-biały</translation>
+<translation id="3269612321104318480">Jasny morski i biały</translation>
+<translation id="4175137578744761569">Jasnofioletowo-biały</translation>
+<translation id="8176332201990304395">Różowo-biały</translation>
+<translation id="3159493096109238499">Beżowy</translation>
+<translation id="1197088940767939838">Pomarańczowy</translation>
+<translation id="779308894558717334">Jasnozielony</translation>
+<translation id="8809147117840417135">Jasny morski</translation>
+<translation id="1734212868489994726">Jasnoniebieski</translation>
+<translation id="992256792861109788">Różowy</translation>
+<translation id="8237647586961940482">Ciemnoróżowo-czerwony</translation>
+<translation id="5390677308841849479">Ciemnoczerwono-pomarańczowy</translation>
+<translation id="7297726121602187087">Ciemnozielony</translation>
+<translation id="8923880975836399332">Ciemny morski</translation>
+<translation id="7793098747275782155">Ciemnoniebieski</translation>
+<translation id="1692210323591458290">Ciemnofioletowy</translation>
 <translation id="2858138569776157458">Popularne</translation>
 <translation id="5376169624176189338">Kliknij, aby przejść wstecz. Przytrzymaj, aby wyświetlić historię</translation>
 <translation id="9103868373786083162">Naciśnij, by wrócić, lub otwórz menu kontekstowe, by wyświetlić historię</translation>
@@ -1355,8 +1397,9 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8005600846065423578">Zawsze zezwalaj stronie <ph name="HOST"/> na dostęp do schowka</translation>
 <translation id="6122095009389448667">Nadal blokuj tej stronie dostęp do schowka</translation>
 <translation id="3429275422858276529">Dodaj tę stronę do zakładek, by później łatwo ją znaleźć</translation>
-<translation id="3603533104205588786">Aby dodać stronę do zakładek, możesz kliknąć gwiazdkę</translation>
-<translation id="6613452264606394692">Dodaj tę stronę do zakładek, by szybko na nią wrócić</translation>
+<translation id="4400963414856942668">Aby dodać kartę do zakładek, możesz kliknąć gwiazdkę</translation>
+<translation id="8379991678458444070">Dodaj tę stronę do zakładek, by szybko na nią wrócić</translation>
+<translation id="7174199383876220879">Nowość! Sterowanie muzyką, filmami i inne funkcje.</translation>
 <translation id="4369414322596874629">Możesz przeglądać prywatnie w oknie prywatnym</translation>
 <translation id="3772947852642271642">Korzystaj z internetu w oknie prywatnym, aby nie zapisywać historii przeglądania</translation>
 <translation id="3871738366246972820">Korzystasz ze wspólnego komputera? Otwórz okno prywatne.</translation>
@@ -1382,6 +1425,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="7108338896283013870">Ukryj</translation>
 <translation id="1426410128494586442">Tak</translation>
 <translation id="4250680216510889253">Nie</translation>
+<translation id="7473891865547856676">Nie, dziękuję</translation>
 <translation id="5317780077021120954">Zapisz</translation>
 <translation id="4285418559658561636">Aktualizuj hasło</translation>
 <translation id="9094033019050270033">Aktualizuj hasło</translation>
@@ -1479,7 +1523,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8703346390800944767">Pomiń reklamę</translation>
 <translation id="2121825465123208577">Zmień rozmiar</translation>
 <translation id="4514610446763173167">Przełącz, by odtworzyć lub wstrzymać wideo</translation>
-<translation id="3040310857793999281">Przełącz wyciszenie</translation>
 <translation id="4046123991198612571">Następny utwór</translation>
 <translation id="2874939134665556319">Poprzedni utwór</translation>
 <translation id="2631120081682787498">Czy na pewno chcesz zamknąć tę kartę?</translation>
@@ -1501,35 +1544,25 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="1731911755844941020">Wysyłanie żądania...</translation>
 <translation id="9009369504041480176">Przesyłanie (<ph name="PROGRESS_PERCENT"/>%)...</translation>
 <translation id="7925285046818567682">Czekam na <ph name="HOST_NAME"/>...</translation>
+<translation id="2111670510994270194">Nowa karta po prawej</translation>
 <translation id="7887334752153342268">Duplikuj</translation>
-<translation id="1364702626840264065">{NUM_TABS,plural, =1{Zamknij kartę}few{Zamknij karty}many{Zamknij karty}other{Zamknij karty}}</translation>
-<translation id="68541483639528434">Zamknij inne karty</translation>
 <translation id="6686490380836145850">Zamknij karty po prawej</translation>
 <translation id="6242852299490624841">Ustaw tę kartę jako aktywną</translation>
-<translation id="7415353017141825619">{NUM_TABS,plural, =1{Przypnij kartę}few{Przypnij karty}many{Przypnij karty}other{Przypnij karty}}</translation>
-<translation id="4072793381000095">{NUM_TABS,plural, =1{Odepnij kartę}few{Odepnij karty}many{Odepnij karty}other{Odepnij karty}}</translation>
-<translation id="1904394285866191268">{NUM_TABS,plural, =1{Wycisz kartę}few{Wycisz karty}many{Wycisz karty}other{Wycisz karty}}</translation>
-<translation id="5179127818058486126">{NUM_TABS,plural, =1{Wyłącz wyciszenie karty}few{Wyłącz wyciszenie kart}many{Wyłącz wyciszenie kart}other{Wyłącz wyciszenie kart}}</translation>
 <translation id="4973325300212422370">{NUM_TABS,plural, =1{Wycisz stronę}few{Wycisz strony}many{Wycisz strony}other{Wycisz strony}}</translation>
 <translation id="4744981231093950366">{NUM_TABS,plural, =1{Wyłącz wyciszenie strony}few{Wyłącz wyciszenie stron}many{Wyłącz wyciszenie stron}other{Wyłącz wyciszenie stron}}</translation>
-<translation id="4474155171896946103">Dodaj wszystkie karty do zakładek...</translation>
 <translation id="351952459507671940">Dodaj do nowej grupy</translation>
 <translation id="255747371423522804">Dodaj do istniejącej grupy</translation>
 <translation id="2977480621796371840">Usuń z grupy</translation>
-<translation id="8000467600002607205">{NUM_TABS,plural, =1{Zamknij kartę}few{Zamknij karty}many{Zamknij karty}other{Zamknij karty}}</translation>
-<translation id="4322394346347055525">Zamknij inne karty</translation>
+<translation id="8975562453115131273">{NUM_OTHER_TABS,plural, =0{„<ph name="TAB_TITLE"/>”}=1{„<ph name="TAB_TITLE"/>” i jeszcze jedna karta}few{„<ph name="TAB_TITLE"/>” i # inne karty}many{„<ph name="TAB_TITLE"/>” i # innych kart}other{„<ph name="TAB_TITLE"/>” i # innej karty}}</translation>
+<translation id="5876851302954717356">Nowa karta po prawej</translation>
 <translation id="1166212789817575481">Zamknij karty po prawej</translation>
 <translation id="2343747224442182863">Ustaw tę kartę jako aktywną</translation>
-<translation id="7363260028279024205">{NUM_TABS,plural, =1{Przypnij kartę}few{Przypnij karty}many{Przypnij karty}other{Przypnij karty}}</translation>
-<translation id="3996366967769547206">{NUM_TABS,plural, =1{Odepnij kartę}few{Odepnij karty}many{Odepnij karty}other{Odepnij karty}}</translation>
-<translation id="3785071023202624850">{NUM_TABS,plural, =1{Wycisz kartę}few{Wycisz karty}many{Wycisz karty}other{Wycisz karty}}</translation>
-<translation id="2120478168904746065">{NUM_TABS,plural, =1{Wyłącz wyciszenie karty}few{Wyłącz wyciszenie kart}many{Wyłącz wyciszenie kart}other{Wyłącz wyciszenie kart}}</translation>
 <translation id="8371925839118813971">{NUM_TABS,plural, =1{Wycisz stronę}few{Wycisz strony}many{Wycisz strony}other{Wycisz strony}}</translation>
 <translation id="7933314993013528982">{NUM_TABS,plural, =1{Wyłącz wyciszenie strony}few{Wyłącz wyciszenie stron}many{Wyłącz wyciszenie stron}other{Wyłącz wyciszenie stron}}</translation>
-<translation id="2336228925368920074">Dodaj wszystkie karty do zakładek...</translation>
 <translation id="1541396123399225659">Dodaj do nowej grupy</translation>
 <translation id="7353887511974462734">Dodaj do istniejącej grupy</translation>
 <translation id="6964760285928603117">Usuń z grupy</translation>
+<translation id="5548159762883465903">{NUM_OTHER_TABS,plural, =0{„<ph name="TAB_TITLE"/>”}=1{„<ph name="TAB_TITLE"/>” i jeszcze jedna karta}few{„<ph name="TAB_TITLE"/>” i # inne karty}many{„<ph name="TAB_TITLE"/>” i # innych kart}other{„<ph name="TAB_TITLE"/>” i # innej karty}}</translation>
 <translation id="2278562042389100163">Otwórz okno przeglądarki</translation>
 <translation id="756445078718366910">Otwórz okno przeglądarki</translation>
 <translation id="3683524264665795342"><ph name="APP_NAME"/> – żądanie udostępnienia ekranu</translation>
@@ -1625,7 +1658,13 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="2315587498123194634">Wyślij link na: <ph name="DEVICE_NAME"/></translation>
 <translation id="7761380698973548146">Zadzwoń ze swoich urządzeń</translation>
 <translation id="7427798576651127129">Zadzwoń z urządzenia <ph name="DEVICE_NAME"/></translation>
+<translation id="2355241457888955">Wyślij tekst na swoje urządzenia</translation>
+<translation id="5067000372742249459">Wyślij tekst na: <ph name="DEVICE_NAME"/></translation>
+<translation id="7757787379047923882">Tekst udostępniony z urządzenia <ph name="DEVICE_NAME"/></translation>
+<translation id="5193988420012215838">Skopiowane do schowka</translation>
 <translation id="462021874527520979">Zadzwoń ze swoich urządzeń</translation>
+<translation id="4696983787092045100">Wyślij tekst na swoje urządzenia</translation>
+<translation id="2182058453334755893">Skopiowano do schowka</translation>
 <translation id="4520385623207007473">Pliki cookie w użyciu</translation>
 <translation id="4763408175235639573">Podczas wyświetlania strony zostały utworzone te pliki cookie</translation>
 <translation id="2719936478972253983">Te pliki cookie zostały zablokowane</translation>
@@ -1652,8 +1691,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="473546211690256853">To konto jest zarządzane w domenie <ph name="DOMAIN"/></translation>
 <translation id="622537739776246443">Profil zostanie usunięty</translation>
 <translation id="5632566673632479864">Twoje konto <ph name="EMAIL"/> nie może być już kontem podstawowym. To konto jest zarządzane przez <ph name="DOMAIN"/>, dlatego Twoje zakładki, historia, hasła i inne ustawienia zostaną usunięte z tego urządzenia.</translation>
-<translation id="3797739167230984533">Twoje urządzenie <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph><ph name="DEVICE_TYPE"/> jest zarządzane<ph name="END_LINK">&lt;/a&gt;</ph> przez Twoją organizację</translation>
-<translation id="1722460139690167654">Twoim <ph name="BEGIN_LINK"/>urządzeniem <ph name="DEVICE_TYPE"/> zarządza<ph name="END_LINK"/> domena <ph name="ENROLLMENT_DOMAIN"/></translation>
+<translation id="3797739167230984533">Twoje urządzenie <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DEVICE_TYPE"/> jest zarządzany przez<ph name="END_LINK">&lt;/a&gt;</ph> Twoją organizację</translation>
 <translation id="8118488170956489476">Twoja <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph>przeglądarka jest zarządzana<ph name="END_LINK">&lt;/a&gt;</ph> przez Twoją organizację</translation>
 <translation id="1365180424462182382">Twoją <ph name="BEGIN_LINK"/>przeglądarką zarządza<ph name="END_LINK"/> domena <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Treści</translation>
@@ -1688,8 +1726,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="4258348331913189841">Systemy plików</translation>
 <translation id="7701040980221191251">Brak</translation>
 <translation id="2881966438216424900">Ostatni dostęp:</translation>
-<translation id="3941357410013254652">Identyfikator kanału</translation>
-<translation id="6135622770221372891">Identyfikatory kanałów</translation>
 <translation id="1234808891666923653">Procesy Service Worker</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Pamięć podręczna</translation>
@@ -1725,6 +1761,8 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="189210018541388520">Otwórz na pełnym ekranie</translation>
 <translation id="6096047740730590436">Otwórz zmaksymalizowane</translation>
 <translation id="7256710573727326513">Otwórz na karcie</translation>
+<translation id="8114875720387900039">Podziel poziomo</translation>
+<translation id="4976009197147810135">Podziel pionowo</translation>
 <translation id="7636919061354591437">Zainstaluj na tym urządzeniu</translation>
 <translation id="2993517869960930405">Informacje o aplikacji</translation>
 <translation id="2867768963760577682">Otwórz jako przypiętą kartę</translation>
@@ -1733,6 +1771,8 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="6022526133015258832">Otwórz na pełnym ekranie</translation>
 <translation id="6845038076637626672">Otwórz zmaksymalizowane</translation>
 <translation id="6860427144121307915">Otwórz na karcie</translation>
+<translation id="6789592661892473991">Podziel poziomo</translation>
+<translation id="6387674443318562538">Podziel pionowo</translation>
 <translation id="1231733316453485619">Włączyć synchronizację?</translation>
 <translation id="4736292055110123391">Synchronizuj zakładki, hasła, historię i inne dane na wszystkich Twoich urządzeniach</translation>
 <translation id="5736731321935944068">Brave może wykorzystać Twoją historię do personalizacji wyszukiwania, reklam i innych usług Brave</translation>
@@ -1817,7 +1857,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="5771816112378578655">Trwa konfigurowanie...</translation>
 <translation id="3492788708641132712">Synchronizacja nie działa. Spróbuj zalogować się ponownie.</translation>
 <translation id="6349170655202535379">Synchronizacja nie działa. Wyloguj się i zaloguj się ponownie.</translation>
-<translation id="974555521953189084">Wpisz hasło, by rozpocząć synchronizację</translation>
+<translation id="6828182567531805778">Aby synchronizować dane, wpisz hasło</translation>
 <translation id="7120865473764644444">Nie udało się połączyć z serwerem synchronizacji. Próbuję ponownie…</translation>
 <translation id="5526745900034778153">Zaloguj się ponownie, by wznowić synchronizację</translation>
 <translation id="2932483646085333864">Wyloguj się i zaloguj się ponownie, by rozpocząć synchronizację</translation>
@@ -1878,6 +1918,8 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="2482878487686419369">Powiadomienia</translation>
 <translation id="7221855153210829124">Pokazywanie powiadomień</translation>
 <translation id="8393700583063109961">Wyślij wiadomość</translation>
+<translation id="7336799713063880535">Zablokowane.</translation>
+<translation id="5146995429444047494">Powiadomienia z <ph name="ORIGIN"/> są blokowane</translation>
 <translation id="6701535245008341853">Nie można uzyskać profilu.</translation>
 <translation id="7705276765467986571">Nie można wczytać modelu zakładek.</translation>
 <translation id="5585118885427931890">Nie można utworzyć folderu zakładek.</translation>
@@ -2040,10 +2082,17 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="2435457462613246316">Pokaż hasło</translation>
 <translation id="4565377596337484307">Ukryj hasło</translation>
 <translation id="5311304534597152726">Logowanie się jako</translation>
+<translation id="70850504851191913">Zgłoszono naruszenie bezpieczeństwa danych</translation>
+<translation id="149470879113908545">W wyniku naruszenia bezpieczeństwa danych w witrynie lub aplikacji doszło do ujawnienia Twojego hasła. Brave zaleca niezwłoczne sprawdzenie zapisanych haseł.</translation>
+<translation id="2054306844530250731">W wyniku naruszenia bezpieczeństwa danych w witrynie lub aplikacji doszło do ujawnienia Twojego hasła. Brave zaleca: natychmiast <ph name="BOLD"/> na <ph name="ORIGIN"/>.</translation>
+<translation id="4270615291506829403">zmień hasło</translation>
+<translation id="5103987914706363520">W wyniku naruszenia bezpieczeństwa danych w witrynie lub aplikacji doszło do ujawnienia Twojego hasła. Brave zaleca sprawdzenie zapisanych haseł i zmianę hasła w witrynie <ph name="ORIGIN"/>.</translation>
 <translation id="5425863515030416387">Łatwo loguj się na różnych urządzeniach</translation>
 <translation id="9114663181201435112">Łatwe logowanie</translation>
 <translation id="764017888128728"><ph name="PASSWORD_MANAGER_BRAND"/> automatycznie loguje Cię w odpowiednich stron przy użyciu zapisanych wcześniej haseł.</translation>
 <translation id="5869029295770560994">Rozumiem</translation>
+<translation id="1186201132766001848">Sprawdź hasła</translation>
+<translation id="5979084224081478209">Sprawdź hasła</translation>
 <translation id="3423858849633684918">Ponownie uruchom przeglądarkę <ph name="PRODUCT_NAME"/></translation>
 <translation id="2294358108254308676">Czy chcesz zainstalować aplikację <ph name="PRODUCT_NAME"/>?</translation>
 <translation id="586567932979200359">Produkt <ph name="PRODUCT_NAME"/> został uruchomiony z obrazu dysku. Zainstalowanie go na komputerze umożliwi uruchamianie bez użycia obrazu dysku i bieżące aktualizowanie.</translation>
@@ -2110,8 +2159,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="614940544461990577">Wypróbuj te rozwiązania:</translation>
 <translation id="7325437708553334317">Rozszerzenie High Contrast</translation>
 <translation id="6990778048354947307">Ciemny motyw</translation>
-<translation id="5556206011531515970">Kliknij Dalej, by wybrać domyślną przeglądarkę.</translation>
-<translation id="1201402288615127009">Dalej</translation>
 <translation id="2478176599153288112">Uprawnienia pliku multimedialnego dla rozszerzenia „<ph name="EXTENSION"/>”</translation>
 <translation id="186612162884103683">„<ph name="EXTENSION"/>” może odczytywać oraz zapisywać pliki graficzne, wideo i dźwiękowe z wybranych lokalizacji.</translation>
 <translation id="8180786512391440389">„<ph name="EXTENSION"/>” może odczytywać oraz usuwać pliki graficzne, wideo i dźwiękowe ze sprawdzonych lokalizacji.</translation>
@@ -2212,7 +2259,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="5493792505296048976">ekran włączony</translation>
 <translation id="6459799433792303855">Aktywne okno zostało przeniesione na inny ekran.</translation>
 <translation id="6551508934388063976">Polecenie jest niedostępne. Naciśnij control+N, by otworzyć nowe okno.</translation>
-<translation id="3831486154586836914">Jesteś w trybie przeglądu okien</translation>
+<translation id="703001695939087067">Jesteś w trybie przeglądu okien. Aby zmienić okno, naciśnij TAB.</translation>
 <translation id="4380648069038809855">Włączono tryb pełnego ekranu</translation>
 <translation id="1766575458646819543">Wyłączono tryb pełnego ekranu</translation>
 <translation id="8736288397686080465">Ta strona została zaktualizowana w tle.</translation>
@@ -2327,29 +2374,31 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="874689135111202667">{0,plural, =1{Przesłać jeden plik do tej strony}few{Przesłać # pliki do tej strony?}many{Przesłać # plików do tej strony?}other{Przesłać # plików do tej strony?}}</translation>
 <translation id="1956390763342388273">Spowoduje to przesłanie wszystkich plików z folderu „<ph name="FOLDER_PATH"/>”. Zdecyduj się na ten krok tylko, jeśli ufasz stronie.</translation>
 <translation id="1243314992276662751">Prześlij</translation>
-<translation id="1574038418461948632">Zapisać zmiany w pliku <ph name="FILENAME"/>?</translation>
-<translation id="5181988524012865000">Zapisać zmiany w plikach?</translation>
-<translation id="2775188527796017992"><ph name="ORIGIN"/> będzie mieć możliwość zapisywania zmian bezpośrednio w pliku <ph name="FILENAME"/>. Witryna może zapisywać zmiany do momentu zamknięcia tej karty.</translation>
-<translation id="5375793835576008230"><ph name="ORIGIN"/> będzie mieć możliwość zapisywania zmian bezpośrednio w plikach w folderze <ph name="FOLDERNAME"/>. Witryna może zapisywać zmiany do momentu zamknięcia tej karty.</translation>
+<translation id="3928570707778085600">Zapisać zmiany w: <ph name="FILE_OR_FOLDER_NAME"/>?</translation>
+<translation id="8892226765772586656">Strona <ph name="ORIGIN"/> będzie mogła edytować plik <ph name="FILENAME"/> do chwili zamknięcia tej karty</translation>
+<translation id="3780211714699334884">Strona <ph name="ORIGIN"/> będzie mogła edytować pliki w folderze <ph name="FOLDERNAME"/> do chwili zamknięcia tej karty.</translation>
 <translation id="6532106788206463496">Zapisz zmiany</translation>
-<translation id="5102007300153090427">Ta strona ma uprawnienia do zapisywania zmian w plikach.</translation>
-<translation id="197228003527531594">Ta strona może wyświetlać wszystkie pliki z folderu na Twoim urządzeniu.</translation>
-<translation id="766254481392580456"><ph name="ORIGIN"/> może zapisywać zmiany bezpośrednio w pliku <ph name="FILENAME"/></translation>
-<translation id="856745937116041450"><ph name="ORIGIN"/> może zapisywać zmiany bezpośrednio w tych plikach</translation>
-<translation id="2150212764721500731"><ph name="ORIGIN"/> może zapisywać zmiany bezpośrednio w plikach w folderze <ph name="FOLDERNAME"/></translation>
-<translation id="7509896576944228744"><ph name="ORIGIN"/> może zapisywać zmiany bezpośrednio w tych folderach</translation>
-<translation id="8152021341839173449"><ph name="ORIGIN"/> może zapisywać zmiany bezpośrednio w tych plikach i folderach</translation>
-<translation id="3343738344138980580"><ph name="ORIGIN"/> może wyświetlać wszystkie pliki w folderze <ph name="FOLDERNAME"/></translation>
-<translation id="1507049466468737452"><ph name="ORIGIN"/> może wyświetlać wszystkie pliki z tych folderów</translation>
-<translation id="6868139415119881457"><ph name="ORIGIN"/> może wyświetlać i zapisywać zmiany bezpośrednio w tych plikach i folderach</translation>
+<translation id="4301671483919369635">Ta strona ma zezwolenie na edytowanie plików</translation>
+<translation id="3923676227229836009">Ta strona ma zezwolenie na przeglądanie plików</translation>
+<translation id="8983632908660087688">Strona <ph name="ORIGIN"/> może edytować plik <ph name="FILENAME"/></translation>
+<translation id="1301135395320604080">Strona <ph name="ORIGIN"/> może edytować te pliki</translation>
+<translation id="4469762931504673593">Strona <ph name="ORIGIN"/> może edytować pliki w folderze <ph name="FOLDERNAME"/></translation>
+<translation id="3948507072814225786">Strona <ph name="ORIGIN"/> może edytować pliki w tych folderach</translation>
+<translation id="8889651696183044030">Strona <ph name="ORIGIN"/> może edytować te pliki i foldery</translation>
+<translation id="5969419185858894314">Strona <ph name="ORIGIN"/> może przeglądać pliki w folderze <ph name="FOLDERNAME"/></translation>
+<translation id="3810593934879994994">Strona <ph name="ORIGIN"/> może przeglądać pliki w tych folderach</translation>
+<translation id="2537395079978992874">Strona <ph name="ORIGIN"/> może wyświetlać i edytować te pliki i foldery</translation>
 <translation id="5126611267288187364">Pokaż zmiany</translation>
 <translation id="5073956501367595100">{0,plural,offset:2 =1{<ph name="FILE1"/>}=2{<ph name="FILE1"/>, <ph name="FILE2"/>}few{<ph name="FILE1"/>, <ph name="FILE2"/> i jeszcze #}many{<ph name="FILE1"/>, <ph name="FILE2"/> i jeszcze #}other{<ph name="FILE1"/>, <ph name="FILE2"/> i jeszcze #}}</translation>
 <translation id="1790976235243700817">Anuluj dostęp</translation>
-<translation id="1392975001822614900">Nie można zapisywać danych w tym folderze</translation>
-<translation id="7613156935003315818"><ph name="ORIGIN"/> nie może zapisywać Twoich zmian w tym folderze, ponieważ zawiera on pliki systemowe.</translation>
+<translation id="831440797644402910">Nie można otworzyć tego folderu</translation>
+<translation id="3850914401008572843">Strona <ph name="ORIGIN"/> nie może otworzyć tego folderu, ponieważ zawiera on pliki systemowe</translation>
 <translation id="4403775189117163360">Wybierz inny folder</translation>
+<translation id="3586806079541226322">Nie można otworzyć tego pliku</translation>
+<translation id="6972553992270299730">Strona <ph name="ORIGIN"/> nie może otwierać plików w tym folderze, ponieważ zawiera on pliki systemowe</translation>
+<translation id="2123766928840368256">Wybierz inny plik</translation>
 <translation id="7643932971554933646">Zezwolić witrynie na wyświetlanie plików?</translation>
-<translation id="999180493986838144"><ph name="ORIGIN"/> będzie mieć możliwość wyświetlania wszystkich plików w folderze <ph name="FOLDERNAME"/>. Witryna może wykryć wszystkie zmiany w folderze do momentu zamknięcia tej karty.</translation>
+<translation id="7892963120252479610">Strona <ph name="ORIGIN"/> będzie mogła przeglądać pliki w folderze <ph name="FOLDERNAME"/> do chwili zamknięcia tej karty</translation>
 <translation id="7201420661433230412">Wyświetl pliki</translation>
 <translation id="3015639418649705390">Uruchom ponownie teraz</translation>
 <translation id="8712637175834984815">Rozumiem</translation>
@@ -2388,6 +2437,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="5660204307954428567">Sparować z urządzeniem <ph name="DEVICE_NAME"/>?</translation>
 <translation id="1167199480815330007">Znajdź 6-cyfrowy kod PIN z tyłu klucza bezpieczeństwa</translation>
 <translation id="5601503069213153581">PIN</translation>
+<translation id="1201402288615127009">Dalej</translation>
 <translation id="8921366488406707015">Weryfikuję klucz bezpieczeństwa…</translation>
 <translation id="1805472176602625930">Naciśnij przycisk na kluczu bezpieczeństwa</translation>
 <translation id="1489664337021920575">Wybierz inną opcję</translation>
@@ -2429,6 +2479,11 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="2579188629646253712">Zamknij tryb prywatny</translation>
 <translation id="479219453908726046">Wypełnij ankietę</translation>
 <translation id="4406504596603350105">Twoja opinia jest dla nas ważna</translation>
+<translation id="4349828822184870497">Przydatne</translation>
+<translation id="6876469544038980967">Nieprzydatne</translation>
+<translation id="6428450836711225518">Weryfikowanie numeru telefonu</translation>
+<translation id="8742371904523228557"><ph name="ONE_TIME_CODE"/> to Twój kod do <ph name="ORIGIN"/></translation>
+<translation id="6518133107902771759">Weryfikuj</translation>
 <translation id="394984172568887996">Zaimportowane z IE</translation>
 <translation id="1543284117603151572">Zaimportowane z Edge</translation>
 <translation id="5502500733115278303">Zaimportowane z Firefoxa</translation>
@@ -2517,6 +2572,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="1173894706177603556">Zmień nazwę</translation>
 <translation id="6825184156888454064">Sortuj według nazwy</translation>
 <translation id="3440663250074896476">Więcej czynności dotyczących zakładki <ph name="BOOKMARK_NAME"/></translation>
+<translation id="1608668830839595724">Więcej czynności dla wybranych elementów</translation>
 <translation id="2903457445916429186">Otwórz zaznaczone elementy</translation>
 <translation id="962802172452141067">Drzewo folderów zakładek</translation>
 <translation id="2683638487103917598">Posortowano zawartość folderu</translation>
@@ -2526,11 +2582,11 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="5488093641312826914">Skopiowano: „<ph name="COPIED_ITEM_NAME"/>”</translation>
 <translation id="2277769717710009150">{COUNT,plural, =1{Skopiowano 1 element}few{Skopiowano # elementy}many{Skopiowano # elementów}other{Skopiowano # elementu}}</translation>
 <translation id="9115675100829699941">&amp;Zakładki</translation>
-<translation id="1035590878859356651">Dodaj tę stronę do zakładek...</translation>
-<translation id="1047726139967079566">Dodaj stronę do zakładek...</translation>
-<translation id="1774833706453699074">Dodaj otwarte strony do zakładek...</translation>
-<translation id="6949306908218145636">Dodaj otwarte strony do zakładek...</translation>
-<translation id="4422347585044846479">Edytuj zakładkę tej strony</translation>
+<translation id="9023015617655685412">Dodaj tę kartę do zakładek...</translation>
+<translation id="1482626744466814421">Dodaj tę kartę do zakładek...</translation>
+<translation id="4474155171896946103">Dodaj wszystkie karty do zakładek...</translation>
+<translation id="2336228925368920074">Dodaj wszystkie karty do zakładek...</translation>
+<translation id="8300011035382349091">Edytuj zakładkę w przypadku tej karty</translation>
 <translation id="4776146737004271126">Otwórz ustawienia Androida</translation>
 <translation id="6559023360691182159">{COUNT, plural,
  =0 {None}
@@ -2551,6 +2607,8 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="4739098340603978916">Rozmiar: <ph name="APP_SIZE"/></translation>
 <translation id="4291934469232591280">Wersja: <ph name="VERSION"/></translation>
 <translation id="1920390473494685033">Kontakty</translation>
+<translation id="9123948967884660766">Tej aplikacji nie można odinstalować, ponieważ stanowi ona część systemu operacyjnego Brave.</translation>
+<translation id="496185450405387901">Tę aplikację zainstalował administrator.</translation>
 <translation id="7787308148023287649">Wyświetl na innym ekranie</translation>
 <translation id="7710568461918838723">&amp;Przesyłaj…</translation>
 <translation id="6700480081846086223">Prześlij <ph name="HOST_NAME"/></translation>
@@ -2570,6 +2628,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="6169666352732958425">Nie można przesłać pulpitu.</translation>
 <translation id="4081242589061676262">Nie można przesłać pliku.</translation>
 <translation id="4075639477629295004">Nie udało się przesłać pliku <ph name="FILE_NAME"/>.</translation>
+<translation id="8358912028636606457">Na tym urządzeniu nie jest obsługiwane przesyłanie dźwięku z kart.</translation>
 <translation id="3930737994424905957">Szukam urządzeń</translation>
 <translation id="5209320130288484488">Nie znaleziono urządzeń</translation>
 <translation id="4415245286584082850">Nie znaleziono żadnego urządzenia. Otwórz artykuł w Centrum pomocy na nowej karcie.</translation>
@@ -2582,12 +2641,12 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="2541002089857695151">Zoptymalizować przesyłanie pełnoekranowe?</translation>
 <translation id="4144218403971135344">Lepsza jakość filmów i dłuższy czas pracy na baterii. Filmy będą odtwarzane tylko na ekranie obsługującym Cast.</translation>
 <translation id="236117173274098341">Optymalizuj</translation>
-<translation id="7473891865547856676">Nie, dziękuję</translation>
 <translation id="8538358978858059843">Włączyć usługi w chmurze na potrzeby Cast?</translation>
 <translation id="3856595552313160385">Korzystanie z Hangouts i Cast for Education podlega Polityce prywatności Brave Software.</translation>
 <translation id="3435896845095436175">Włącz</translation>
 <translation id="3700888195348409686">Wyświetlasz prezentację (<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="5285635972691565180">Wyświetlacz <ph name="DISPLAY_ID"/></translation>
+<translation id="7477793887173910789">Steruj filmami, muzyką i innymi multimediami</translation>
 <translation id="4707302005824653064">Działania i historię może sprawdzać menedżer (<ph name="CUSTODIAN_EMAIL"/>) na chrome.com.</translation>
 <translation id="346431825526753">To jest konto dla dzieci, którym zarządza <ph name="CUSTODIAN_EMAIL"/>.</translation>
 <translation id="4159681666905192102">To jest konto dla dzieci, którym zarządzają <ph name="CUSTODIAN_EMAIL"/> i <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
@@ -2622,15 +2681,11 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="7029809446516969842">Hasła</translation>
 <translation id="984275831282074731">Formy płatności</translation>
 <translation id="8473863474539038330">Adresy i ustawienia</translation>
-<translation id="454547174531670764">Zsynchronizuj z innym kontem</translation>
-<translation id="1692115862433274081">Użyj innego konta</translation>
 <translation id="5287425679749926365">Twoje konta</translation>
 <translation id="4801448226354548035">Ukryj konta</translation>
 <translation id="2935225303485967257">Zarządzaj użytkownikami</translation>
 <translation id="7388222713940428051">Otwórz okno trybu gościa</translation>
 <translation id="127668050356036882">Zamknij wszystkie okna</translation>
-<translation id="8883847527783433352">Synchronizuj z innym kontem</translation>
-<translation id="2761898608071930085">Użyj innego konta</translation>
 <translation id="1464258312790801189">Twoje konta</translation>
 <translation id="6655458902729017087">Ukryj konta</translation>
 <translation id="688280436658139163">Zarządzaj użytkownikami</translation>
@@ -2819,6 +2874,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="4570609078116869893">Automatycznie aktualizuj Brave u wszystkich użytkowników</translation>
 <translation id="7102687220333134671">Automatyczne aktualizacje są włączone</translation>
 <translation id="8284326494547611709">Napisy</translation>
+<translation id="3602290021589620013">Podgląd</translation>
 <translation id="1755601632425835748">Rozmiar tekstu</translation>
 <translation id="3179982752812949580">Czcionka tekstu</translation>
 <translation id="6850286078059909152">Kolor tekstu</translation>
@@ -2832,7 +2888,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8184472985242519288">Jednolity</translation>
 <translation id="8619803522055190423">Z cieniem</translation>
 <translation id="3930968231047618417">Kolor tła</translation>
-<translation id="7569983096843329377">Czarny</translation>
 <translation id="2713444072780614174">Biały</translation>
 <translation id="7942349550061667556">Czerwony</translation>
 <translation id="6017514345406065928">Zielony</translation>
@@ -2856,6 +2911,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="2915873080513663243">Automatyczne skanowanie</translation>
 <translation id="8912810933860534797">Włącz automatyczne skanowanie</translation>
 <translation id="6617100836880592260">Szybkość skanowania: <ph name="SPEED_WITH_UNITS"/></translation>
+<translation id="1816036116994822943">Szybkość skanowania klawiatury</translation>
 <translation id="7919210519031517829"><ph name="DURATION"/> s</translation>
 <translation id="2981113813906970160">Pokaż duży kursor myszy</translation>
 <translation id="5072052264945641674">Dostosuj rozmiar kursora</translation>
@@ -2938,7 +2994,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="167160931442925455">Najgłośniej</translation>
 <translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (domyślnie)</translation>
-<translation id="3602290021589620013">Podgląd</translation>
 <translation id="7037509989619051237">Tekst do sprawdzenia mowy</translation>
 <translation id="5471768120198416576">Witaj. Jestem Twoim głosem do czytania tekstu.</translation>
 <translation id="6902066522699286937">Głos do sprawdzenia mowy</translation>
@@ -2980,7 +3035,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
       Nie ma to wpływu na aplikacje ani treści na innych urządzeniach.</translation>
 <translation id="492299503953721473">Usuń aplikacje na Androida</translation>
 <translation id="7566118625369982896">Zarządzaj linkami aplikacji Play</translation>
-<translation id="5026688690798028095">Otwórz Zarządzanie aplikacjami</translation>
 <translation id="2433507940547922241">Wygląd</translation>
 <translation id="1177863135347784049">Niestandardowe</translation>
 <translation id="1925021887439448749">Wpisz niestandardowy adres internetowy</translation>
@@ -3035,6 +3089,10 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="6644512095122093795">Proponuj zapisywanie haseł</translation>
 <translation id="2100273922101894616">Autologowanie</translation>
 <translation id="7513029293694390567">Automatycznie loguj się na stronach, używając zapisanych danych logowania. Jeśli ta funkcja jest wyłączona, przed każdym zalogowaniem się zobaczysz prośbę o potwierdzenie.</translation>
+<translation id="7930681627240672853">Sprawdź bezpieczeństwo haseł</translation>
+<translation id="7510943789645525906">Ostrzeżemy Cię, jeśli Twoje hasło zostało ujawnione w wyniku naruszenia bezpieczeństwa danych</translation>
+<translation id="786008582930267433">Brave Software może sprawdzić, czy bezpieczeństwo Twoich haseł zostało naruszone</translation>
+<translation id="3372463077865465112">Brave Software może sprawdzić, czy bezpieczeństwo Twoich haseł zostało naruszone. Ta funkcja zostanie włączona, gdy zalogujesz się na swoje konto Brave Software.</translation>
 <translation id="1375321115329958930">Zapisane hasła</translation>
 <translation id="152234381334907219">Nigdy nie zapisane</translation>
 <translation id="5137501176474113045">Usuń ten element</translation>
@@ -3144,6 +3202,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
 <translation id="2187895286714876935">Błąd importowania certyfikatu serwera</translation>
 <translation id="816055135686411707">Błąd podczas ustawiania zaufania do certyfikatu</translation>
+<translation id="5541694225089836610">Administrator wyłączył to działanie</translation>
 <translation id="3380365263193509176">Nieznany błąd</translation>
 <translation id="368789413795732264">Wystąpił błąd podczas próby zapisu pliku: <ph name="ERROR_TEXT"/>.</translation>
 <translation id="784934925303690534">Zakres czasu</translation>
@@ -3175,9 +3234,9 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="6985607387932385770">Drukarki</translation>
 <translation id="1815579292149538864">Skonfiguruj drukarki CUPS lub zarządzaj nimi.</translation>
 <translation id="8030656706657716245">Dodaj drukarkę</translation>
-<translation id="8025958612547562988">Wykryte drukarki zapisane w Twoim profilu. Możesz dodać nową drukarkę.</translation>
+<translation id="893254996965966411">Zapisz wykryte drukarki w swoim profilu lub dodaj nową drukarkę.</translation>
 <translation id="6980969641756020642">Dostępne drukarki do zapisania</translation>
-<translation id="8151638057146502721">Konfiguruj</translation>
+<translation id="3571734092741541777">Konfiguruj</translation>
 <translation id="2297705863329999812">Wyszukaj drukarki</translation>
 <translation id="7956373551960864128">Twoje zapisane drukarki</translation>
 <translation id="168991973552362966">Dodaj drukarkę w pobliżu</translation>
@@ -3198,14 +3257,12 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="4058720513957747556">AppSocket (TCP/IP)</translation>
 <translation id="6619058681307408113">Line Printer Daemon (LPD)</translation>
 <translation id="2266957463645820432">IPP przez USB (IPPUSB)</translation>
-<translation id="8086015605808120405">Konfiguruję: <ph name="PRINTER_NAME"/>…</translation>
 <translation id="4665014895760275686">Producent</translation>
 <translation id="4561098487691395071">Możesz też wybrać plik PPD dla drukarki</translation>
 <translation id="1989112275319619282">Przeglądaj</translation>
 <translation id="3625481642044239431">Wybrany plik jest nieprawidłowy. Spróbuj ponownie.</translation>
-<translation id="2462752602710430187">Dodano: <ph name="PRINTER_NAME"/></translation>
-<translation id="7380768571499464492">Zaktualizowano: <ph name="PRINTER_NAME"/></translation>
-<translation id="9057119625587205566">Brak drukarek w pobliżu</translation>
+<translation id="8002670234429879764">Drukarka <ph name="PRINTER_NAME"/> nie jest już dostępna</translation>
+<translation id="3976108569178263973">Brak dostępnych drukarek.</translation>
 <translation id="3213187967168344806">Nie można dodać drukarki. Uruchom komputer ponownie i spróbuj jeszcze raz.</translation>
 <translation id="4052689580269971502">Nie można połączyć z drukarką. Upewnij się, że drukarka jest włączona i podłączona do Bravebooka przez Wi-Fi lub USB.</translation>
 <translation id="7099337801055912064">Nie można załadować pliku PPD, bo jest zbyt duży. Maksymalny rozmiar to 250 kB.</translation>
@@ -3214,6 +3271,9 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="4694024090038830733">Konfiguracją drukarek zajmuje się administrator.</translation>
 <translation id="5816434091619127343">Te zmiany uniemożliwiłyby korzystanie z drukarki.</translation>
 <translation id="6504611359718185067">Aby dodać drukarkę, połącz się z internetem</translation>
+<translation id="4066207411788646768">Aby wyświetlić drukarki dostępne w sieci, sprawdź połączenie</translation>
+<translation id="4320177379694898372">Brak połączenia z internetem</translation>
+<translation id="2910318910161511225">Połącz się z siecią i spróbuj ponownie</translation>
 <translation id="4972129977812092092">Edytuj drukarkę</translation>
 <translation id="5696679855467848181">Bieżący plik PPD: <ph name="PPD_NAME"/></translation>
 <translation id="3016329696181678353">Nie udało się automatycznie skonfigurować drukarki <ph name="PRINTER_NAME"/>. Określ zaawansowane ustawienia drukarki.</translation>
@@ -3251,6 +3311,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="4820236583224459650">Ustaw jako bilet aktywny</translation>
 <translation id="4502423230170890588">Usuń z tego urządzenia</translation>
 <translation id="2507253002925770350">Bilet został usunięty</translation>
+<translation id="3703699162703116302">Bilet odświeżony</translation>
 <translation id="1436390408194692385">Obowiązuje jeszcze przez: <ph name="TICKET_TIME_LEFT"/></translation>
 <translation id="2665647207431876759">Stracił ważność</translation>
 <translation id="5565735124758917034">Aktywny</translation>
@@ -3292,7 +3353,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="6444070574980481588">Ustaw datę i godzinę</translation>
 <translation id="5065775832226780415">Smart Lock</translation>
 <translation id="8468750959626135884">Urządzenie <ph name="DEVICE_TYPE"/> możesz odblokowywać przy użyciu swojego telefonu z Androidem.</translation>
-<translation id="3571734092741541777">Konfiguruj</translation>
 <translation id="3336664756920573711">Urządzenie <ph name="DEVICE_TYPE"/> możesz odblokowywać swoim telefonem z Androidem</translation>
 <translation id="1036348656032585052">Wyłącz</translation>
 <translation id="1164674268730883318">Wyłączyć Smart Lock na urządzenie <ph name="DEVICE_TYPE"/>?</translation>
@@ -3321,7 +3381,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="216169395504480358">Dodaj Wi-Fi...</translation>
 <translation id="3892414795099177503">Dodaj OpenVPN/L2TP…</translation>
 <translation id="287286579981869940">Dodaj dostawcę <ph name="PROVIDER_NAME"/>...</translation>
-<translation id="3609895557594655134">Dodaj VPN na Androida…</translation>
 <translation id="8426713856918551002">Włączam</translation>
 <translation id="3652817283076144888">Inicjuję</translation>
 <translation id="6528513914570774834">Zezwól innym użytkownikom tego urządzenia na używanie tej sieci</translation>
@@ -3402,6 +3461,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8986362086234534611">Zapomnij</translation>
 <translation id="7881483672146086348">Wyświetl konto</translation>
 <translation id="2392369802118427583">Aktywuj</translation>
+<translation id="8151638057146502721">Konfiguruj</translation>
 <translation id="5920543303088087579">Możliwość połączenia się z tą siecią została wyłączona przez administratora</translation>
 <translation id="1235458158152011030">Znane sieci</translation>
 <translation id="3003144360685731741">Preferowane sieci</translation>
@@ -3410,6 +3470,8 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="4384312707950789900">Dodaj do preferowanych</translation>
 <translation id="6077131872140550515">Usuń z preferowanych</translation>
 <translation id="4115002065223188701">Sieć poza zasięgiem</translation>
+<translation id="4421167684395067330">Problemy z połączeniem. Skontaktuj się z zespołem pomocy usługi <ph name="CARRIER_NAME"/>.</translation>
+<translation id="7780252971640011240">Problemy z połączeniem. Poproś o pomoc operatora sieci komórkowej.</translation>
 <translation id="161460670679785907">Nie można wykryć telefonu</translation>
 <translation id="1682335582099955045">Aby używać funkcji Instant Tethering, włącz powiadomienia dla Usług Brave Software Play.</translation>
 <translation id="7696063401938172191">Na telefonie <ph name="PHONE_NAME"/>:</translation>
@@ -3433,7 +3495,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="3483333858382889684">Pozwól temu urządzeniu na wykrywanie innych urządzeń, na których masz konto Brave Software i które obsługują komórkowe połączenie danych</translation>
 <translation id="5637476008227280525">Włączanie komórkowej transmisji danych</translation>
 <translation id="1572266655485775982">Włączanie Wi-Fi</translation>
-<translation id="543381445212956829">Włączanie WiMAX</translation>
 <translation id="166439687370499867">Wprowadzanie zmian w konfiguracjach sieci współdzielonych jest niedozwolone.</translation>
 <translation id="938470336146445890">Zainstaluj certyfikat użytkownika.</translation>
 <translation id="7732111077498238432">W sieci obowiązują zasady</translation>
@@ -3448,6 +3509,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="5669267381087807207">Aktywowanie</translation>
 <translation id="952992212772159698">Nie aktywowano</translation>
 <translation id="3488065109653206955">Częściowo aktywowane</translation>
+<translation id="4562494484721939086">Brak usługi</translation>
 <translation id="4880328057631981605">Nazwa punktu dostępu</translation>
 <translation id="5142961317498132443">Uwierzytelnianie</translation>
 <translation id="5691511426247308406">Rodzina</translation>
@@ -3458,7 +3520,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8461329675984532579">Nazwa operatora macierzystego</translation>
 <translation id="7769672763586021400">Identyfikator modelu</translation>
 <translation id="7487067081878637334">Technologia</translation>
-<translation id="3547495624659668105">Wersja listy PRL</translation>
 <translation id="8620617069779373398">Stan roamingu</translation>
 <translation id="131461803491198646">Sieć macierzysta, nie w roamingu</translation>
 <translation id="5252456968953390977">Roaming</translation>
@@ -3499,6 +3560,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="5088172560898466307">Nazwa hosta serwera</translation>
 <translation id="5050042263972837708">Nazwa grupy</translation>
 <translation id="8675354002693747642">Klucz wstępny</translation>
+<translation id="8372477600026034341">Dodatkowe hosty</translation>
 <translation id="6472207088655375767">Hasło jednorazowe</translation>
 <translation id="8798441408945964110">Nazwa dostawcy</translation>
 <translation id="7882358943899516840">Typ dostawcy</translation>
@@ -3527,6 +3589,9 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="5302048478445481009">Język</translation>
 <translation id="6388429472088318283">Wyszukaj języki</translation>
 <translation id="2690024944919328218">Pokaż opcje języka</translation>
+<translation id="6199184144777428084">Dodaj języki lub zmień kolejność na liście</translation>
+<translation id="8813969267212093033">W tym języku wyświetlany jest tekst z systemu</translation>
+<translation id="2366260648632264559">Wyświetlaj tekst z systemu w tym języku</translation>
 <translation id="7216595297012131718">Ustaw preferowaną kolejność języków</translation>
 <translation id="5972708806901999743">Przenieś na początek</translation>
 <translation id="8609465669617005112">W górę</translation>
@@ -3681,6 +3746,10 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="4085270836953633510">Pytaj, gdy strona chce uzyskać dostęp do portów szeregowych</translation>
 <translation id="2322318151094136999">Pytaj, gdy strona chce uzyskać dostęp do portów szeregowych (zalecane)</translation>
 <translation id="1906828677882361942">Nie zezwalaj żadnym stronom na dostęp do portów szeregowych</translation>
+<translation id="2215727959747642672">Edytowanie pliku</translation>
+<translation id="8392364544846746346">Pytaj, gdy witryna chce edytować pliki lub foldery na urządzeniu</translation>
+<translation id="7614260613810441905">Pytaj, gdy witryna chce edytować pliki lub foldery na urządzeniu (zalecane)</translation>
+<translation id="2957117904572187936">Nie zezwalaj witrynom na edytowanie plików ani folderów na urządzeniu</translation>
 <translation id="8973557916016709913">Usuń poziom powiększenia</translation>
 <translation id="1706625117072057435">Poziomy powiększenia</translation>
 <translation id="6385543213911723544">Strony mogą zapisywać dane w plikach cookie i je odczytywać</translation>
@@ -3690,6 +3759,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="563535393368633106">Pytaj przed uzyskaniem dostępu (zalecane)</translation>
 <translation id="6840155290835956714">Pytaj przed wysłaniem</translation>
 <translation id="2381756643783702095">Pytaj przed wysłaniem (zalecane)</translation>
+<translation id="7593653750169415785">Automatycznie zablokowane z powodu kilkukrotnego odrzucenia przez Ciebie powiadomień</translation>
 <translation id="2812989263793994277">Nie pokazuj żadnych grafik</translation>
 <translation id="3800806661949714323">Pokaż wszystkie (zalecane)</translation>
 <translation id="7661259717474717992">Zezwalaj stronom na zapisywanie i odczytywanie danych w plikach cookie</translation>
@@ -3738,6 +3808,9 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="327147043223061465">Wyświetl wszystkie pliki cookie i dane strony</translation>
 <translation id="1963227389609234879">Usuń wszystko</translation>
 <translation id="3432227430032737297">Usuń wszystkie wyświetlone</translation>
+<translation id="2854896010770911740">Usuń pliki cookie innych firm</translation>
+<translation id="2096715839409389970">Wyczyść pliki cookie innych firm</translation>
+<translation id="7828731929332799387">Spowoduje to usunięcie wszystkich plików cookie i danych witryn dostępnych w kontekście witryn innych firm. Czy chcesz kontynuować?</translation>
 <translation id="6011449291337289699">Wyczyść dane strony</translation>
 <translation id="8339059274628563283">Lokalnie zapisane dane z <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Zresetować uprawnienia strony <ph name="SITE"/>?</translation>
@@ -3781,7 +3854,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="4590324241397107707">Pamięć masowa bazy danych</translation>
 <translation id="8016266267177410919">Pamięć tymczasowa</translation>
 <translation id="4175737294868205930">Pamięć trwała</translation>
-<translation id="1296497012903089238">Typ certyfikatu</translation>
 <translation id="3707212204259470604">Zarządzaj innymi osobami</translation>
 <translation id="8907706281008466056">Zdjęcie z profilu Brave Software</translation>
 <translation id="2408955596600435184">Wpisz kod PIN</translation>
@@ -3807,7 +3879,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="1719312230114180055">Uwaga: odcisk palca może być mniej bezpieczny niż silne hasło czy kod PIN.</translation>
 <translation id="1582955169539260415">usuń [<ph name="FINGERPRINT_NAME"/>]</translation>
 <translation id="1927632033341042996">Palec nr <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="4461062867270151760">Zezwól na odtwarzanie multimediów w Brave na ekranie blokady</translation>
 <translation id="7665369617277396874">Dodaj konto</translation>
 <translation id="5866136067811459986">Tu możesz zarządzać kontami Brave Software, na które się logujesz. Strony, aplikacje i rozszerzenia w Brave i Brave Software Play mogą używać tych kont do dostosowywania swojego wyglądu i działania (jeśli mają odpowiednie uprawnienia).</translation>
 <translation id="1987317783729300807">Konta</translation>
@@ -3852,6 +3923,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="2114896190328250491">Zdjęcie: <ph name="NAME"/></translation>
 <translation id="7155171745945906037">Istniejące zdjęcie z kamery lub pliku</translation>
 <translation id="9125982323641182972">Inteligentne rozwiązania Brave Software w Brave</translation>
+<translation id="1692115862433274081">Użyj innego konta</translation>
 <translation id="5244474230056479698">Synchronizowanie z <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Ponieważ to konto jest zarządzane przez <ph name="DOMAIN"/>, Twoje zakładki, historia, hasła i inne ustawienia zostaną usunięte z tego urządzenia. Twoje dane pozostaną zapisane na koncie Brave Software. Możesz nimi zarządzać w <ph name="BEGIN_LINK"/>Panelu Brave Software<ph name="END_LINK"/>.</translation>
 <translation id="6906406176003824042">Edytuj dane osoby</translation>
@@ -3883,6 +3955,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="1125261911132334651">Zarządzaj kontem Brave Software</translation>
 <translation id="4570387585180509432">Adresy, numery telefonów i inne dane</translation>
 <translation id="5117427536932535467">Motywy i tapety</translation>
+<translation id="7257173066616499747">Sieci Wi-Fi</translation>
 <translation id="3268451620468152448">Otwarte karty</translation>
 <translation id="5241892180459725878">Podpowiedzi z Dysku Brave Software podczas wyszukiwania</translation>
 <translation id="2120297377148151361">Aktywność i interakcje</translation>
@@ -3919,13 +3992,11 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="6828153365543658583">Ogranicz logowanie do następujących użytkowników:</translation>
 <translation id="7645176681409127223"><ph name="USER_NAME"/> (właściciel)</translation>
 <translation id="3699624789011381381">Adres e-mail</translation>
-<translation id="1483829627339988491">Kontrola rodzicielska</translation>
+<translation id="2813094189969465044">Kontrola rodzicielska</translation>
 <translation id="3557101512409028104">Ustaw ograniczenia dostępu do stron i czasu korzystania z urządzenia w Family Link</translation>
-<translation id="7648142322539582331">Połącz się z internetem, by skonfigurować kontrolę rodzicielską</translation>
-<translation id="1005608198058526414">Wyświetl swoje ustawienia Family Link</translation>
+<translation id="7915457674565721553">Połącz się z internetem, by skonfigurować kontrolę rodzicielską</translation>
+<translation id="5192062846343383368">Otwórz aplikację Family Link, by zobaczyć ustawienia nadzoru</translation>
 <translation id="470074695271471509">Czy chcesz się wylogować, by wprowadzić zmiany?</translation>
-<translation id="7850222546481862746"><ph name="BEGIN_PARAGRAPH1"/>Aby dokończyć konfigurowanie nadzoru na tym urządzeniu, musisz wylogować się z konta użytkownika <ph name="USER_NAME"/>.<ph name="END_PARAGRAPH1"/>
-      <ph name="BEGIN_PARAGRAPH2"/>Do zarządzania kontrolą rodzicielską możesz używać na swoim urządzeniu aplikacji Family Link dla rodziców.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="3570985609317741174">Treści internetowe</translation>
 <translation id="7719367874908701697">Powiększenie strony</translation>
 <translation id="4941627891654116707">Rozmiar czcionki</translation>
@@ -3960,6 +4031,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="2497229222757901769">Szybkość myszy</translation>
 <translation id="6586451623538375658">Zamień główny przycisk myszy</translation>
 <translation id="221872881068107022">Odwrotne przewijanie</translation>
+<translation id="2536052711541161459">Przyspieszenie wskaźnika</translation>
 <translation id="1510238584712386396">Menu z aplikacjami</translation>
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="2515586267016047495">Alt</translation>
@@ -4052,8 +4124,8 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="9196021349904508454">Tymczasowe pliki offline z Dysku Brave Software zostaną usunięte. Pliki, które zostały przez Ciebie określone jako dostępne w trybie offline, nie zostaną usunięte z tego urządzenia.</translation>
 <translation id="1865678028973512614">Usuń pliki</translation>
 <translation id="4470957202018033307">Ustawienia pamięci zewnętrznej</translation>
-<translation id="7536220825385726660">Zezwól aplikacjom ze Sklepu Play na dostęp do dysków zewnętrznych</translation>
-<translation id="8157382355099335113">Aplikacje ze Sklepu Brave Software Play mogą wymagać dostępu do urządzeń pamięci zewnętrznej, by móc na nich odczytywać oraz zapisywać pliki i foldery.</translation>
+<translation id="7157776341993107220">Aplikacje z Brave Software Play mogą wymagać pełnego dostępu do systemu plików, by odczytywać i zapisywać pliki na zewnętrznych urządzeniach pamięci masowej. Pliki i foldery utworzone na urządzeniu są widoczne dla każdej osoby używającej dysku zewnętrznego.</translation>
+<translation id="6775163072363532304">Tu pojawią się dostępne urządzenia.</translation>
 <translation id="1529891865407786369">Źródło zasilania</translation>
 <translation id="354060433403403521">Zasilacz</translation>
 <translation id="2127372758936585790">Ładowarka o małej mocy</translation>
@@ -4078,7 +4150,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="5826395379250998812">Połącz urządzenie <ph name="DEVICE_TYPE"/> z telefonem. <ph name="LINK_BEGIN"/>Więcej informacji<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">Brak odpowiednich urządzeń. <ph name="LINK_BEGIN"/>Więcej informacji<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">Czekam na weryfikację. <ph name="LINK_BEGIN"/>Więcej informacji<ph name="LINK_END"/></translation>
-<translation id="6518133107902771759">Weryfikuj</translation>
 <translation id="4142052906269098341">Odblokowuj urządzenie <ph name="DEVICE_TYPE"/> telefonem. <ph name="LINK_BEGIN"/>Więcej informacji<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Instant Tethering</translation>
 <translation id="6415900369006735853">Łącz się z internetem przez telefon</translation>
@@ -4098,7 +4169,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="4840150926623932060">{NUM_DOWNLOAD,plural, =1{jeszcze 1}few{jeszcze #}many{jeszcze #}other{jeszcze #}}</translation>
 <translation id="2749608811030566578">Podczas usuwania szkodliwego oprogramowania przez Brave wystąpił błąd</translation>
 <translation id="8189483132214844139">Brave może znaleźć i usunąć szkodliwe oprogramowanie na Twoim komputerze</translation>
-<translation id="2910318910161511225">Połącz się z siecią i spróbuj ponownie</translation>
 <translation id="1426870617281699524">Kliknij Spróbuj ponownie i zaakceptuj komunikat na komputerze</translation>
 <translation id="7886744396008377537">Masz na komputerze szkodliwe oprogramowanie. Brave właśnie je usuwa, przywraca Twoje ustawienia i wyłącza rozszerzenia. Dzięki temu przeglądarka znowu będzie działać normalnie.</translation>
 <translation id="1484912962860902625">Podczas wyszukiwania szkodliwego oprogramowania przez Brave wystąpił błąd</translation>
@@ -4108,7 +4178,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="284975061945174219">Błąd czyszczenia</translation>
 <translation id="9014750448058570312">Brave wymaga pozwolenia na kontynuację</translation>
 <translation id="1852141627593563189">Znajdź szkodliwe oprogramowanie</translation>
-<translation id="4320177379694898372">Brak połączenia z internetem</translation>
 <translation id="850875081535031620">Nie znaleziono szkodliwego oprogramowania</translation>
 <translation id="1186771945450942097">Usuń szkodliwe oprogramowanie</translation>
 <translation id="354602065659584722">Szkodliwe oprogramowanie zostało usunięte</translation>
@@ -4169,6 +4238,14 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8705629851992224300">Nie udało się odczytać Twojego klucza bezpieczeństwa</translation>
 <translation id="3076977359333237641">Twoje dane logowania zostały usunięte</translation>
 <translation id="3508492320654304609">Nie udało się usunąć Twoich danych logowania</translation>
+<translation id="8945764661949477243">Zarządzaj odciskami palców na urządzeniu – dodawaj, zmieniaj ich nazwy i usuwaj je</translation>
+<translation id="4836504898754963407">Zarządzaj odciskami palców</translation>
+<translation id="403456802563765809">Aby zarządzać odciskami palców, podłącz klucz bezpieczeństwa i dotknij go.</translation>
+<translation id="5639152092474119692">Aby zarządzać odciskami palców, wpisz kod PIN swojego klucza bezpieczeństwa. Jeśli go nie znasz, musisz zresetować klucz.</translation>
+<translation id="3589845496433710431">Na kluczu bezpieczeństwa nie ma zapisanych żadnych odcisków palców.</translation>
+<translation id="1489956991149850859">Tutaj możesz dodawać i usuwać odciski palców, a także zmieniać ich nazwy.</translation>
+<translation id="5995884201513800557">Dotykaj dalej klucza bezpieczeństwa, by zapisać odcisk palca.</translation>
+<translation id="1750172676754093297">Na Twoim kluczu bezpieczeństwa nie można zapisywać odcisków palców</translation>
 <translation id="3341703758641437857">Zezwalaj na dostęp do adresów URL plików</translation>
 <translation id="9003647077635673607">Zezwól we wszystkich stronach</translation>
 <translation id="698524779381350301">Automatycznie zezwalaj na dostęp w następujących stronach</translation>
@@ -4241,6 +4318,8 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8523849605371521713">Dodane przez zasady</translation>
 <translation id="5087249366037322692">Dodane przez inną firmę</translation>
 <translation id="6788210894632713004">Rozszerzenie bez pakietu</translation>
+<translation id="2350133097354918058">Załadowano ponownie</translation>
+<translation id="8635628933471165173">Ładuję ponownie…</translation>
 <translation id="3838085852053358637">Nie udało się wczytać rozszerzenia</translation>
 <translation id="6370021412472292592">Nie można wczytać pliku manifestu.</translation>
 <translation id="7235716375204803342">Pobieram aktywność…</translation>
@@ -4442,4 +4521,29 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="6336451774241870485">Nowa karta prywatna</translation>
 <translation id="6610147964972079463">Zamknij karty prywatne</translation>
 <translation id="8076492880354921740">Karty</translation>
+<translation id="2794233252405721443">Strona zablokowana</translation>
+<translation id="1721312023322545264">Aby wejść na tę stronę, musisz uzyskać pozwolenie od użytkownika <ph name="NAME"/></translation>
+<translation id="7543525346216957623">Poproś rodzica</translation>
+<translation id="471880041731876836">Nie masz pozwolenia, by wejść na tę stronę</translation>
+<translation id="3480834636742786788">Aby użyć tej aplikacji, najpierw uruchom Brave i zaloguj się w nim.</translation>
+<translation id="2851634818064021665">Musisz mieć pozwolenie, by wejść na tę stronę</translation>
+<translation id="4933782374919065856">Masz pytania? Skontaktuj się z osobą, która nadzoruje Twój profil.</translation>
+<translation id="2712173769900027643">Poproś o pozwolenie</translation>
+<translation id="3886446263141354045">Twoja prośba o dostęp to tej strony została wysłana do: <ph name="NAME"/></translation>
+<translation id="3345135638360864351">Nie udało się wysłać żądania dostępu do strony do <ph name="NAME"/>. Spróbuj ponownie.</translation>
+<translation id="6414888972213066896">Zapytałeś rodzica, czy możesz odwiedzić tę stronę</translation>
+<translation id="4858792381671956233">Zapytałeś rodziców, czy możesz wejść na tę stronę</translation>
+<translation id="3498215018399854026">Obecnie nie możemy się skontaktować z Twoim rodzicem. Spróbuj ponownie.</translation>
+<translation id="8012647001091218357">Obecnie nie możemy się skontaktować z Twoimi rodzicami. Spróbuj ponownie.</translation>
+<translation id="3479539252931486093">Zaskoczyło Cię to? <ph name="BEGIN_LINK"/>Daj nam znać<ph name="END_LINK"/></translation>
+<translation id="3586931643579894722">Ukryj szczegóły</translation>
+<translation id="7444046173054089907">Ta strona jest zablokowana</translation>
+<translation id="6778737459546443941">Twój rodzic jeszcze na to nie zezwolił</translation>
+<translation id="8620436878122366504">Twoi rodzice jeszcze na to nie zezwolili</translation>
+<translation id="6563469144985748109">Twój menedżer jeszcze na to nie zezwolił</translation>
+<translation id="9076283476770535406">Może zawierać treści dla dorosłych</translation>
+<translation id="7755287808199759310">Może ją dla Ciebie odblokować Twój rodzic</translation>
+<translation id="5732392974455271431">Mogą ją dla Ciebie odblokować Twoi rodzice</translation>
+<translation id="3556433843310711081">Twój menedżer może ją dla Ciebie odblokować</translation>
+<translation id="1254756632288991504">Uruchom Brave i zaloguj się w nim, by mógł sprawdzić, czy masz uprawnienia dostępu do tej strony.</translation>
 </translationbundle>

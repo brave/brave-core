@@ -78,10 +78,12 @@
 <translation id="2414886740292270097">Sötét</translation>
 <translation id="3829010735958850433">Üdvözlő bemutató átugrása</translation>
 <translation id="1201402288615127009">Következő</translation>
+<translation id="7954950242989581218">Böngéssz biztonságban</translation>
+<translation id="2188651882929633653">A Brave Shields blokkolja azokat a ronda cuccokat, amelyek követnének a neten ideértve a hirdetések zömét is. Állítsd a Shields-t “lent” állásba, ha úgy tűnik, hogy egy oldal nem működik. A Brave <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>teljes mértékben anonimizált termékanalízis<ph name="END_LINK_P3A">&lt;/a&gt;</ph> használatával becsüli meg az egyes funkciók összesített használatát. Kikapcsolhatod a <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Beállítások<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>; menüben.</translation>
 <translation id="1919345977826869612">Hirdetések</translation>
 <translation id="5946611334574299206">Szerezzen tokeneket hirdetéseknek a Brave alatti megtekintésével. A bemutatott hirdetések a böngészési viselkedéséből meghatározott érdeklődési körétől függenek. A böngészőt sosem hagyja el semmilyen személyes adat vagy böngészési előzmény.</translation>
 <translation id="6112368337882254910">Automatikus Támogatás</translation>
-<translation id="1527222983464337010">Egy automatikus módszer a kiadók és tartalomkészítők támogatására. Állíts be egy havi fizetést, és böngéssz a megszokott módon. A felkeresett oldalak a Brave mérése alapján automatikusan megkapják a támogatásodat.</translation>
+<translation id="3742599705619405136">Egy automatikus módszer a kiadók és tartalomkészítők támogatására. Állíts be egy havi fizetést, és böngéssz a megszokott módon. A felkeresett oldalak a Brave mérése alapján automatikusan megkapják a támogatásodat.</translation>
 <translation id="20281847067919078">Várható függőben lévő jutalmak</translation>
 <translation id="8593551638387217772">Következő fizetés dátuma</translation>
 <translation id="319209088187794725">Ebben a hónapban kapott reklámértesítések</translation>
@@ -100,12 +102,17 @@
 <translation id="8759716059844800317">Támogatott honlapok</translation>
 <translation id="2365740070488517695">Adományok</translation>
 <translation id="1309807437617560451">Böngészés közben közvetlenül küldhet hozzájárulást a tartalomkészítőknek. Ezen felül lehetősége van rendszeres havi hozzájárulásokat is létrehozni, így folyamatosan tudja támogatni az oldalakat.</translation>
+<translation id="5012991400231464322">Havi hozzájárulások</translation>
+<translation id="2084351799622920487">Állíts be rendszeres havi hozzájárulást, hogy folyamatosan támogathasd az oldalakat.</translation>
+<translation id="8150772404570015166">Még nem állítottál be havi hozzájárulást.</translation>
+<translation id="7269582398922493824">Támogasd rendszeres havi hozzájárulással kedvenc oldalaidat. Ezt a borravaló bannerből állíthatod be.</translation>
 <translation id="2241248417273918295">A keresetet havonta fizetjük.</translation>
 <translation id="68906705461077250">Állítsd be a kívánt gyakoriságot a kereset növeléséhez vagy csökkentéséhez.</translation>
 <translation id="1847863811689960237">Jutalmazza meg az ön által kedvelt tartalmak létrehozóit</translation>
 <translation id="4129489167302464118">A havi befizetésed az általad felkeresett oldalak között lesz szétosztva.</translation>
 <translation id="4898632353264854950">Az oldalak böngészés közben jelennek meg</translation>
 <translation id="3024485967181749006">Juttatások összege ebben a hónapban</translation>
+<translation id="5055577484189948413">Összes ehavi hozzájárulás</translation>
 <translation id="4153752809523809915">Adakoztál ma kedvenc tartalomkészítődnek?</translation>
 <translation id="1165667598801520610">Pénz hozzáadása</translation>
 <translation id="6239274080752256452">Pénzkivevés</translation>
@@ -113,7 +120,6 @@
 <translation id="7286722244752781970">Oldalon eltöltött minimális idő egy látogatás naplózása előtt</translation>
 <translation id="4424486208397124985">Látogatások minimális száma a tartalomszolgáltató relevanciájához</translation>
 <translation id="4969081543473319051">Mit kell engedélyezni?</translation>
-<translation id="2295504178524377899">Hozzájárulás engedélyezése nem ellenőrzött honlapokhoz</translation>
 <translation id="5875669387851353511">Videókhoz történő hozzájárulás engedélyezése</translation>
 <translation id="8933202740471878108">Egy látogatás</translation>
 <translation id="354797634123275103">Öt látogatás</translation>
@@ -209,6 +215,7 @@
 <translation id="4405997465645469914">A Brave Jutalmak bekapcsolásával jelzed, hogy elolvastad és elfogadtad ezt:</translation>
 <translation id="8819542691525488940">‘Igen, benne vagyok!’, gombra kattintva  jelzed, hogy elolvastad és elfogadod ezt:</translation>
 <translation id="8071424789698327147">‘Igen, benne vagyok!’, gombra kattintva  jelzed, hogy elolvastad és elfogadod ezt:</translation>
+<translation id="3745024317593003526">Hozzájárulás megadása</translation>
 <translation id="7530570094705720669">Pénztárca létrehozása</translation>
 <translation id="2105596359439030979">Az ön figyelme értékes. Keressen pénzt a személyes adatai védelmét tisztelő hirdetések megtekintésével és fizessen előre a kedvelt tartalomszolgáltatók támogatásához.</translation>
 <translation id="516395624550019162">Igen, benne vagyok!</translation>
@@ -272,6 +279,8 @@
 <translation id="211044356803193224">Havi hozzájárulások!</translation>
 <translation id="606865182719489911">Ingyenes token grant érhető el.</translation>
 <translation id="3453206261112715431">Ingyenes zseton adomány</translation>
+<translation id="2280319752798785157">Havi hozzájárulás</translation>
+<translation id="7627481505582641588">Következő hozzájárulás</translation>
 <translation id="5736183007277264868">Jelenleg nem biztosítható token.</translation>
 <translation id="8307851765167460403">Még nincsenek tevékenységek…</translation>
 <translation id="8589748782214271192">Köszönöm, nem</translation>
@@ -317,9 +326,8 @@
 <translation id="5717619667204259673">Gondosan őrizze meg az alábbi helyreállítási kulcsot.</translation>
 <translation id="4699702339303280827">Ezzel a kulccsal mindig visszaszerezheted pénztárcádat, ha valami történik böngésződdel vagy számítógépeddel. Győződj meg róla, hogy biztonságban tartod — a kulccsal bárki ellophatja pénztárcádat. Talán az a legbiztonságosabb, ha leírod egy darab papírra, vagy bárhova ahol fontos adataidat őrzöd.</translation>
 <translation id="7354412786785889047">Ezt az alkotót jatt küldésével támogathatod. Ezzel’ megköszönheted, hogy nagyszerű tartalmat készített.  A megerősített fiókkal rendelkező alkotók minden naptári hónap első hetében megkapják a küldött jattokat.</translation>
-<translation id="3475063317678050010">Ha szeretnéd, beállíthatod, hogy folyamatosan, havonta támogasd jattal ezt az alkotót.</translation>
+<translation id="972846019534552366">Ha szeretnéd, beállíthatod, hogy folyamatosan, havonta támogasd jattal ezt az alkotót.</translation>
 <translation id="3074127054582480056">Figyelem</translation>
-<translation id="822513417008209372">Jelenleg a következőket támogatja:</translation>
 <translation id="5010112177773747965">beleegyezésed nélkül</translation>
 <translation id="7147673045905733351">A mai napon az új interneten köszönt a Brave</translation>
 <translation id="1350763070659630336">Egy olyan, ahol idődet értékelik, személyes adataidat biztonságban tartják, és figyelmedet megfizetik.</translation>
@@ -343,6 +351,7 @@
 <translation id="1738658589626889850">Elmentés fájlként</translation>
 <translation id="259138486959961679">Mind a {{numItems}} elem megtekintése</translation>
 <translation id="7857284676033058221">Összes {{numSites}} honlap megtekintése</translation>
+<translation id="1549705559752367917">Adományom küldése</translation>
 <translation id="3536298624341433814">Adományom küldése</translation>
 <translation id="8428213095426709021">Beállítások</translation>
 <translation id="1792148354504719133">honlap</translation>
@@ -385,7 +394,7 @@
 <translation id="6727483290601442544">Részletek megtekintése</translation>
 <translation id="1988679729106502285">MEGJEGYZÉS:</translation>
 <translation id="5815103311506128988">Ez az alkotó még nem regisztrált, hogy hozzájárulásokat fogadjon a Brave felhasználóktól. Böngésződ próbálkozni fog a folyósítással, amíg igazolnak, vagy eltelik 90 nap.</translation>
-<translation id="603411408512957306">Ennek az ellenőrzött létrehozónak még ellenőriznie kell (KYC) a fiókját, hogy tippeket kapjon az ön ellenőrzött pénztárcájából. A tippek a pénztárcájában maradnak, amíg az ellenőrzés be nem fejeződik.</translation>
+<translation id="7461596279975181413">Ez a Brave Igazolt Alkotó még nem állította be fiókjában, hogy a Brave Felhasználók hozzájárulásait fogadhassa. Böngésződ addig próbálkozik a hozzájárulás folyósításával, amíg nem igazolják magukat, de legfeljebb 90 napig.</translation>
 <translation id="4292832015778676417">reklámokból begyűjtve:</translation>
 <translation id="3197752845651180812">Függőben lévő hozzájárulások</translation>
 <translation id="3164105678355419142">Ismétlődő jattküldés</translation>
@@ -394,12 +403,12 @@
 <translation id="4346944508027912677">Függőben eddig:</translation>
 <translation id="7410549756000115387">Nincsenek függőben lévő hozzájárulások…</translation>
 <translation id="1963227389609234879">Összes eltávolítása</translation>
-<translation id="1170315781901539495">Kizárt oldalak</translation>
+<translation id="8706157865312453070">Kizárt oldalak</translation>
 <translation id="5119190679543565400">Állítsd helyre ezt az oldalt</translation>
 <translation id="9075700728717335924">Kizártad</translation>
 <translation id="4862817811647633830">oldalak az automatikus hozzájárulásból</translation>
 <translation id="923467487918828349">Összes megjelenítése</translation>
-<translation id="5471305206221894680">Támogatott oldalak</translation>
+<translation id="1397381065858030856">Támogatott oldalak</translation>
 <translation id="2306169361186864012">Brave Ads jutalmak!</translation>
 <translation id="3757873395477273033">Brave Ads jutalmaid jóváírása úton van.</translation>
 <translation id="8101881066646819737">Brave Ads token jóváírásod</translation>

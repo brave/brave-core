@@ -49,6 +49,7 @@
 Brave 無法復原你的設定。</translation>
 <translation id="1477146545787277177">Brave 當機了，要立即重新啟動嗎？</translation>
 <translation id="5785919770853225148">Brave 會將這組密碼儲存至你的 Brave Software 帳戶，你不須記住密碼。</translation>
+<translation id="8211837073776713955">Brave 會通知你密碼是否曾遭外洩</translation>
 <translation id="113959764510199339">Brave 即將顯示密碼。</translation>
 <translation id="7503098128120083822">Brave 要求匯出你的密碼。</translation>
 <translation id="8285294305439559616">Brave 現在會嘗試顯示密碼。如果你同意的話，請輸入你的 Windows 密碼。</translation>
@@ -157,13 +158,6 @@ Brave 無法復原你的設定。</translation>
 <translation id="3205074487970075628">Brave 正在使用你的攝影機。</translation>
 <translation id="8142245354207161805">另一台電腦 (<ph name="HOST_NAME"/>) 的 Brave 處理程序 (<ph name="PROCESS_ID"/>) 正在使用這個設定檔。Brave 已鎖定此設定檔，確保其不致受損。如果你確定其他處理程序目前未使用此設定檔，請予以解除鎖定，然後重新啟動 Brave。</translation>
 <translation id="239760341987199724">將 Brave 設為預設瀏覽器</translation>
-<translation id="5344925500065984750">如要設定「<ph name="NEW_PROFILE_NAME"/>」可瀏覽哪些網站，您可以前往 <ph name="BEGIN_LINK_1"/><ph name="DISPLAY_LINK"/><ph name="END_LINK_1"/> 調整限制與設定。如果您未變更預設設定，「<ph name="NEW_PROFILE_NAME"/>」將可瀏覽網路上的所有網站。
-
-如要禁止「<ph name="NEW_PROFILE_NAME"/>」存取您的帳戶，當您不使用 Brave 時，請務必鎖定您的設定檔。方法是按一下瀏覽器右上角的設定檔名稱，然後選取 [結束並執行 Childlock]。
-<ph name="BEGIN_LINK_2"/>瞭解詳情<ph name="END_LINK_2"/>
-
-如需進一步的操作說明，請登入您的 <ph name="ACCOUNT_EMAIL"/> 帳戶，查看系統寄給您的電子郵件。</translation>
-<translation id="1820843143331379651">Brave 從 70 版本起將不再支援受監管的使用者設定檔。</translation>
 <translation id="669092380621816981">這位使用者的瀏覽資料將從這個裝置上刪除。如要還原資料，請使用 <ph name="USER_EMAIL"/> 登入 Brave。</translation>
 <translation id="2827121003398607864">Brave 變得更進步了</translation>
 <translation id="7192666605334070839">無論是登入 Brave Software 帳戶使用 Brave，還是以 Brave Software 帳戶使用共用電腦，現在都變得更容易了。</translation>
@@ -211,7 +205,7 @@ Brave 無法復原你的設定。</translation>
 <translation id="3598551856834560515">如要開始同步處理，請更新 Brave</translation>
 <translation id="4050175100176540509">最新版本包含重要的安全性改善與新功能。</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave 將於 1 秒後重新啟動}other{Brave 將於 # 秒後重新啟動}}</translation>
-<translation id="5509303873219371662">請立即重新啟動 Brave</translation>
+<translation id="5646769069113654257">請立即重新啟動 Brave</translation>
 <translation id="8668413672647811944">Brave 剛才套用了特殊的安全性更新。請立即重新啟動，系統會恢復你原先開啟的分頁。</translation>
 <translation id="763369711159699222">協助改善 Brave</translation>
 <translation id="1156940037717341650">你可以自動將疑似安全性事件的詳細資料傳送給 Brave Software，協助我們讓 Brave 變得更安全、更好用。</translation>
@@ -235,7 +229,6 @@ Brave 無法復原你的設定。</translation>
 <translation id="6141293433381251973">Brave 會自動更新，隨時讓你使用最新版本。完成這項下載作業後，Brave 會重新啟動，自動為你進行更新。</translation>
 <translation id="7808415789955822133">Brave 作業系統條款</translation>
 <translation id="7207456302801184289">歡迎使用 Brave</translation>
-<translation id="5688839044908745927">Brave 即將準備就緒。</translation>
 <translation id="3507835409099344374">前往 Brave 通知設定</translation>
 <translation id="1026406809507858026">{0,plural, =0{有可用的 Brave 更新}=1{有可用的 Brave 更新}other{Brave 更新已發布 # 天}}</translation>
 <translation id="720532315408041257">你的管理員請你重新啟動 Brave，以套用這項更新</translation>
@@ -254,6 +247,8 @@ Brave 無法復原你的設定。</translation>
 <translation id="1864557848095568223">正在更新 Brave</translation>
 <translation id="1786715389543715322">正在更新 Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="8208853227947884571">Brave 目前是最新版本</translation>
+<translation id="6756417787837743699">如需 Brave 作業系統的詳細資料，請參閱<ph name="LINK_BEGIN"/>
+      關於 Brave 作業系統<ph name="LINK_END"/></translation>
 <translation id="6686872257969654608">關於 Brave 作業系統</translation>
 <translation id="2280363356796735201">前往 Brave 作業系統說明頁面</translation>
 <translation id="38898988211673781">當你關閉 Brave 時，清除 Cookie 和網站資料</translation>
@@ -261,6 +256,10 @@ Brave 無法復原你的設定。</translation>
 <translation id="5468853758063275923">Brave 是你的預設瀏覽器</translation>
 <translation id="1775322105159056176">Brave 無法偵測或設定預設瀏覽器</translation>
 <translation id="6915252145142862992">這是以並存形式安裝的次要 Brave，無法設為您的預設瀏覽器。</translation>
+<translation id="6235873178214143377">如果這個頁面上並未顯示你的設定，請檢查 <ph name="LINK_BEGIN"/>
+      Brave 瀏覽器設定<ph name="LINK_END"/></translation>
+<translation id="4459296183696059108">如果這個頁面上並未顯示你的設定，請檢查 <ph name="LINK_BEGIN"/>
+      Brave 作業系統設定<ph name="LINK_END"/></translation>
 <translation id="7977435741986383568">Brave 可能會使用網路服務改善你的瀏覽體驗。不過，你可以選擇停用這些服務。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">為修正拼字錯誤，Brave 會將你在文字欄位輸入的文字傳送給 Brave Software</translation>
 <translation id="8586264863973514035">如要套用變更，請重新啟動 Brave</translation>
@@ -274,8 +273,6 @@ Brave 無法復原你的設定。</translation>
 <translation id="7445061995866044926">要登出 Brave 嗎？</translation>
 <translation id="7453070689008684791">Brave 將存取你的雲端硬碟，並在網址列提供建議</translation>
 <translation id="3360368475735266712">登入即可進行同步處理，讓你在所有裝置上享有個人化的 Brave 體驗</translation>
-<translation id="9221712274065451529">這是 Brave 作業系統 UI 的顯示語言</translation>
-<translation id="3518788198614984730">將 Brave 作業系統的介面文字設為這種語言</translation>
 <translation id="5757460455745382269">這是 Brave UI 的顯示語言</translation>
 <translation id="2335583906071111058">將 Brave 的介面文字設為這種語言</translation>
 <translation id="8926637909431618259">在 Brave 關閉時繼續執行背景應用程式</translation>

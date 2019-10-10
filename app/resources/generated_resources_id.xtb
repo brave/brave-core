@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="id">
+<translation id="2501278716633472235">Kembali</translation>
 <translation id="1215411991991485844">Apl latar belakang yang baru telah ditambahkan</translation>
 <translation id="7396845648024431313"><ph name="APP_NAME"/> akan diluncurkan pada permulaan sistem dan tetap berjalan di latar meskipun Anda telah menutup semua jendela <ph name="PRODUCT_NAME"/>.</translation>
 <translation id="5246282308050205996"><ph name="APP_NAME"/> ngadat. Klik balon ini untuk menyalakan kembali apl.</translation>
@@ -15,6 +16,8 @@
 <translation id="4610637590575890427">Apakah maksud Anda ingin mengunjungi <ph name="SITE"/>?</translation>
 <translation id="4759238208242260848">Download</translation>
 <translation id="370665806235115550">Memuat...</translation>
+<translation id="556321030400250233">file lokal atau bersama</translation>
+<translation id="1405779994569073824">Error.</translation>
 <translation id="4880827082731008257">Telusuri histori</translation>
 <translation id="1838374766361614909">Hapus penelusuran</translation>
 <translation id="8261506727792406068">Hapus</translation>
@@ -409,6 +412,7 @@
 <translation id="5425042808445046667">Lanjutkan mendownload</translation>
 <translation id="5284445933715251131">Lanjutkan Mendownload</translation>
 <translation id="203837651858678035">Tetap keluar dari mode penyamaran?</translation>
+<translation id="8951465597020890363">Tetap keluar dari mode tamu?</translation>
 <translation id="9148058034647219655">Keluar</translation>
 <translation id="7376221878517288144">Tetap keluar dari mode penyamaran?</translation>
 <translation id="973473557718930265">Keluar</translation>
@@ -527,6 +531,14 @@
 <translation id="4680105648806843642">Suara dimatikan di halaman ini</translation>
 <translation id="8574990355410201600">Selalu izinkan suara di <ph name="HOST"/></translation>
 <translation id="3244294424315804309">Lanjutkan mematikan suara</translation>
+<translation id="2839032553903800133">Notifikasi diblokir</translation>
+<translation id="1195558154361252544">Notifikasi otomatis diblokir untuk semua situs kecuali situs yang Anda izinkan</translation>
+<translation id="3575121482199441727">Izinkan untuk situs ini</translation>
+<translation id="5145461783043820456">Pemblokiran cookie pihak ketiga aktif</translation>
+<translation id="243242775089461296">Pemblokiran cookie pihak ketiga dinonaktifkan untuk situs ini</translation>
+<translation id="2325002827435400643">Nonaktifkan untuk situs ini</translation>
+<translation id="1646834008704210683">{COUNT,plural, =0{Situs ini tidak menggunakan cookie untuk pelacakan lintas situs}=1{Brave memblokir cookie dari 1 situs}other{Brave memblokir cookie dari # situs}}</translation>
+<translation id="8734674662128056360">Pemblokiran cookie pihak ketiga</translation>
 <translation id="5154702632169343078">Subjek</translation>
 <translation id="5851868085455377790">Penerbit</translation>
 <translation id="2841837950101800123">Penyedia</translation>
@@ -790,7 +802,7 @@
 <translation id="7663719505383602579">Penerima: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="6247802389331535091">Sistem: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="5799508265798272974">Mesin Virtual Linux: <ph name="LINUX_VM_NAME"/></translation>
-<translation id="5552059560155071882">Parser IPP CUPS</translation>
+<translation id="7851720427268294554">Parser IPP</translation>
 <translation id="7171242884588191792">Utilitas File Brave</translation>
 <translation id="3183139917765991655">Pengimpor Profil</translation>
 <translation id="2190069059097339078">Pembuka Kredensial Wi-Fi</translation>
@@ -896,6 +908,7 @@
 <translation id="2204034823255629767">Membaca dan mengubah apa saja yang Anda ketik</translation>
 <translation id="6979044105893951891">Luncurkan dan tutup sesi tamu yang dikelola</translation>
 <translation id="2741912629735277980">Tampilkan UI di layar login</translation>
+<translation id="7782717250816686129">Simpan data persisten di layar login dan masukkan kredensial ke sesi.</translation>
 <translation id="8191230140820435481">Mengelola aplikasi, ekstensi, dan tema Anda</translation>
 <translation id="6259104249628300056">Menemukan perangkat pada jaringan lokal Anda</translation>
 <translation id="6344170822609224263">Mengakses daftar sambungan jaringan</translation>
@@ -1075,6 +1088,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8261378640211443080">Ekstensi ini tidak tercantum dalam <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> dan mungkin telah ditambahkan tanpa sepengetahuan Anda.</translation>
 <translation id="4096508467498758490">Nonaktifkan ekstensi mode pengembang</translation>
 <translation id="3288047731229977326">Ekstensi yang berjalan dalam mode pengembang dapat membahayakan komputer Anda. Jika Anda bukan pengembang, Anda sebaiknya menonaktifkan ekstensi yang berjalan dalam mode pengembang ini agar tetap aman.</translation>
+<translation id="8827289157496676362">Pasang pin ekstensi</translation>
+<translation id="5372579129492968947">Lepas pin ekstensi</translation>
 <translation id="3021426244864538700">Mengakses data situs ini</translation>
 <translation id="8213996900880218548">Ingin mengakses data situs ini</translation>
 <translation id="1289513325360489062">Tidak dapat mengakses data situs ini</translation>
@@ -1139,6 +1154,11 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="3950820424414687140">Masuk</translation>
 <translation id="5624120631404540903">Kelola sandi</translation>
 <translation id="9135262959729602463">Untuk mendapatkan sandi di semua perangkat Anda, login ke Brave.</translation>
+<translation id="328571385944182268">Simpan sandi Anda?</translation>
+<translation id="3753033997400164841">Simpan sekali. Gunakan di mana saja</translation>
+<translation id="1703331064825191675">Tidak perlu mengkhawatirkan sandi Anda</translation>
+<translation id="2341030170677284705">Simpan sandi dengan aman di Akun Brave Software Anda, dan Anda tidak perlu lagi mengetikkannya</translation>
+<translation id="3913985461352963178">Akses sandi kapan pun Anda login ke Akun Brave Software Anda</translation>
 <translation id="8919275547519617350">Untuk mendapatkan semua sandi di semua perangkat, login dan aktifkan sinkronisasi.</translation>
 <translation id="8470028084415844044">Untuk mendapatkan semua sandi di semua perangkat Anda, aktifkan sinkronisasi.</translation>
 <translation id="1609170755653088773">Sinkronkan sandi ini ke iPhone Anda</translation>
@@ -1185,6 +1205,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5620612546311710611">statistik penggunaan</translation>
 <translation id="8871696467337989339">Anda menggunakan panji baris perintah yang tidak didukung: <ph name="BAD_FLAG"/>. Stabilitas dan keamanan akan terganggu.</translation>
 <translation id="9140067245205650184">Anda menggunakan tanda fitur yang tidak didukung: <ph name="BAD_FLAG"/>. Stabilitas dan keamanan akan terganggu.</translation>
+<translation id="4094647278880271855">Anda menggunakan variabel lingkungan yang tidak didukung: <ph name="BAD_VAR"/>. Stabilitas dan keamanan akan terganggu.</translation>
 <translation id="2178098616815594724">Plugin <ph name="PEPPER_PLUGIN_NAME"/> di <ph name="PEPPER_PLUGIN_DOMAIN"/> ingin mengakses komputer Anda</translation>
 <translation id="8598453409908276158">Plugin yang tidak dimasukkan sandbox diblokir</translation>
 <translation id="1919814239594435008">Plugin yang tidak dimasukkan sandbox diizinkan</translation>
@@ -1293,7 +1314,28 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="7460045493116006516">Tema saat ini yang telah diinstal</translation>
 <translation id="9068849894565669697">Pilih warna</translation>
 <translation id="8798099450830957504">Default</translation>
-<translation id="8259556432390118667">Nilai warna hex</translation>
+<translation id="3011384993885886186">Abu-abu hangat</translation>
+<translation id="6076491747490570887">Abu-abu sejuk</translation>
+<translation id="8300374739238450534">Biru kehitaman</translation>
+<translation id="7569983096843329377">Hitam</translation>
+<translation id="549211519852037402">Beige dan putih</translation>
+<translation id="321084946921799184">Kuning dan putih</translation>
+<translation id="5722086096420375088">Hijau dan putih</translation>
+<translation id="3269612321104318480">Hijau kebiruan muda dan putih</translation>
+<translation id="4175137578744761569">Ungu muda dan putih</translation>
+<translation id="8176332201990304395">Merah muda dan putih</translation>
+<translation id="3159493096109238499">Beige</translation>
+<translation id="1197088940767939838">Oranye</translation>
+<translation id="779308894558717334">Hijau muda</translation>
+<translation id="8809147117840417135">Hijau kebiruan terang</translation>
+<translation id="1734212868489994726">Biru muda</translation>
+<translation id="992256792861109788">Pink</translation>
+<translation id="8237647586961940482">Merah muda gelap dan merah tua</translation>
+<translation id="5390677308841849479">Merah tua dan oranye tua</translation>
+<translation id="7297726121602187087">Hijau tua</translation>
+<translation id="8923880975836399332">Hijau kebiruan gelap</translation>
+<translation id="7793098747275782155">Biru tua</translation>
+<translation id="1692210323591458290">Ungu tua</translation>
 <translation id="2858138569776157458">Situs populer</translation>
 <translation id="5376169624176189338">Klik untuk mundur, tahan untuk melihat histori</translation>
 <translation id="9103868373786083162">Tekan untuk kembali ke menu konteks guna melihat histori</translation>
@@ -1347,8 +1389,9 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8005600846065423578">Selalu izinkan <ph name="HOST"/> melihat papan klip</translation>
 <translation id="6122095009389448667">Terus blokir situs ini dari melihat papan klip</translation>
 <translation id="3429275422858276529">Bookmark halaman ini agar mudah ditemukan nanti</translation>
-<translation id="3603533104205588786">Anda dapat mengklik bintang untuk mem-bookmark halaman</translation>
-<translation id="6613452264606394692">Kembali ke halaman secara cepat dengan mem-bookmark halaman ini</translation>
+<translation id="4400963414856942668">Anda dapat mengklik bintang untuk mem-bookmark tab</translation>
+<translation id="8379991678458444070">Kembali ke halaman secara cepat dengan mem-bookmark tab ini</translation>
+<translation id="7174199383876220879">Baru! Kontrol musik, video, dan banyak lagi.</translation>
 <translation id="4369414322596874629">Anda dapat melakukan browsing rahasia menggunakan jendela samaran</translation>
 <translation id="3772947852642271642">Gunakan web tanpa menyimpan histori browsing dengan jendela samaran</translation>
 <translation id="3871738366246972820">Menggunakan komputer bersama? Coba buka jendela samaran.</translation>
@@ -1374,6 +1417,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="7108338896283013870">Sembunyikan</translation>
 <translation id="1426410128494586442">Ya</translation>
 <translation id="4250680216510889253">Tidak</translation>
+<translation id="7473891865547856676">Lain Kali</translation>
 <translation id="5317780077021120954">Simpan</translation>
 <translation id="4285418559658561636">Perbarui Kata sandi</translation>
 <translation id="9094033019050270033">Perbarui sandi</translation>
@@ -1471,7 +1515,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8703346390800944767">Lewati Iklan</translation>
 <translation id="2121825465123208577">Ubah ukuran</translation>
 <translation id="4514610446763173167">Tombol putar atau jeda video</translation>
-<translation id="3040310857793999281">Aktifkan/nonaktifkan suara</translation>
 <translation id="4046123991198612571">Lagu berikutnya</translation>
 <translation id="2874939134665556319">Lagu sebelumnya</translation>
 <translation id="2631120081682787498">Yakin ingin menutup tab ini?</translation>
@@ -1493,35 +1536,25 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="1731911755844941020">Mengirimkan permintaan...</translation>
 <translation id="9009369504041480176">Mengupload (<ph name="PROGRESS_PERCENT"/>%)...</translation>
 <translation id="7925285046818567682">Menunggu <ph name="HOST_NAME"/>...</translation>
+<translation id="2111670510994270194">Tab baru di sebelah kanan</translation>
 <translation id="7887334752153342268">Gandakan</translation>
-<translation id="1364702626840264065">{NUM_TABS,plural, =1{Tutup tab}other{Tutup beberapa tab}}</translation>
-<translation id="68541483639528434">Tutup tab lain</translation>
 <translation id="6686490380836145850">Tutup tab di sisi kanan</translation>
 <translation id="6242852299490624841">Fokuskan tab ini</translation>
-<translation id="7415353017141825619">{NUM_TABS,plural, =1{Pasang pin pada tab}other{Pasang pin pada beberapa tab}}</translation>
-<translation id="4072793381000095">{NUM_TABS,plural, =1{Lepas pin tab}other{Lepas pin beberapa tab}}</translation>
-<translation id="1904394285866191268">{NUM_TABS,plural, =1{Nonaktifkan notifikasi tab}other{Nonaktifkan notifikasi beberapa tab}}</translation>
-<translation id="5179127818058486126">{NUM_TABS,plural, =1{Aktifkan notifikasi tab}other{Aktifkan notifikasi beberapa tab}}</translation>
 <translation id="4973325300212422370">{NUM_TABS,plural, =1{Nonaktifkan notifikasi situs}other{Nonaktifkan notifikasi beberapa situs}}</translation>
 <translation id="4744981231093950366">{NUM_TABS,plural, =1{Aktifkan notifikasi situs}other{Aktifkan notifikasi beberapa situs}}</translation>
-<translation id="4474155171896946103">Bookmark semua tab...</translation>
 <translation id="351952459507671940">Tambahkan ke grup baru</translation>
 <translation id="255747371423522804">Tambahkan ke grup yang ada</translation>
 <translation id="2977480621796371840">Hapus dari grup</translation>
-<translation id="8000467600002607205">{NUM_TABS,plural, =1{Tutup Tab}other{Tutup Beberapa Tab}}</translation>
-<translation id="4322394346347055525">Tutup Tab Lain</translation>
+<translation id="8975562453115131273">{NUM_OTHER_TABS,plural, =0{"<ph name="TAB_TITLE"/>"}=1{"<ph name="TAB_TITLE"/>" dan 1 tab lainnya}other{"<ph name="TAB_TITLE"/>" dan # tab lainnya}}</translation>
+<translation id="5876851302954717356">Tab Baru di Sebelah Kanan</translation>
 <translation id="1166212789817575481">Tutup Tab di Sebelah Kanan</translation>
 <translation id="2343747224442182863">Fokuskan Tab Ini</translation>
-<translation id="7363260028279024205">{NUM_TABS,plural, =1{Pasang Pin pada Tab}other{Pasang Pin pada Beberapa Tab}}</translation>
-<translation id="3996366967769547206">{NUM_TABS,plural, =1{Lepas Pin Tab}other{Lepas Pin Beberapa Tab}}</translation>
-<translation id="3785071023202624850">{NUM_TABS,plural, =1{Nonaktifkan Notifikasi Tab}other{Nonaktifkan Notifikasi Beberapa Tab}}</translation>
-<translation id="2120478168904746065">{NUM_TABS,plural, =1{Aktifkan Notifikasi Tab}other{Aktifkan Notifikasi Beberapa Tab}}</translation>
 <translation id="8371925839118813971">{NUM_TABS,plural, =1{Nonaktifkan Notifikasi Situs}other{Nonaktifkan Notifikasi Beberapa Situs}}</translation>
 <translation id="7933314993013528982">{NUM_TABS,plural, =1{Aktifkan Notifikasi Situs}other{Aktifkan Notifikasi Beberapa Situs}}</translation>
-<translation id="2336228925368920074">Bookmark Semua Tab...</translation>
 <translation id="1541396123399225659">Tambahkan ke Grup Baru</translation>
 <translation id="7353887511974462734">Tambahkan ke Grup yang Ada</translation>
 <translation id="6964760285928603117">Hapus dari Grup</translation>
+<translation id="5548159762883465903">{NUM_OTHER_TABS,plural, =0{"<ph name="TAB_TITLE"/>"}=1{"<ph name="TAB_TITLE"/>" dan 1 Tab Lainnya}other{"<ph name="TAB_TITLE"/>" dan # Tab Lainnya}}</translation>
 <translation id="2278562042389100163">Buka jendela browser</translation>
 <translation id="756445078718366910">Buka Jendela Browser</translation>
 <translation id="3683524264665795342"><ph name="APP_NAME"/> Permintaan Berbagi Layar</translation>
@@ -1617,7 +1650,13 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="2315587498123194634">Kirim Link ke <ph name="DEVICE_NAME"/></translation>
 <translation id="7761380698973548146">Panggil dari perangkat Anda</translation>
 <translation id="7427798576651127129">Panggilan dari <ph name="DEVICE_NAME"/></translation>
+<translation id="2355241457888955">Kirim pesan teks ke perangkat Anda</translation>
+<translation id="5067000372742249459">Kirim pesan teks ke <ph name="DEVICE_NAME"/></translation>
+<translation id="7757787379047923882">Teks dibagikan dari <ph name="DEVICE_NAME"/></translation>
+<translation id="5193988420012215838">Disalin ke papan klip Anda</translation>
 <translation id="462021874527520979">Panggil dari Perangkat Anda</translation>
+<translation id="4696983787092045100">Kirim pesan teks ke Perangkat Anda</translation>
+<translation id="2182058453334755893">Disalin ke Papan Klip Anda</translation>
 <translation id="4520385623207007473">Cookie yang sedang digunakan</translation>
 <translation id="4763408175235639573">Cookie berikut disetel saat Anda melihat halaman ini</translation>
 <translation id="2719936478972253983">Cookie berikut diblokir</translation>
@@ -1645,7 +1684,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="622537739776246443">Profil akan dihapus</translation>
 <translation id="5632566673632479864"><ph name="EMAIL"/> akun Anda tidak lagi diizinkan sebagai akun utama. Karena akun ini dikelola oleh <ph name="DOMAIN"/>, bookmark, histori, sandi, dan setelan Anda lainnya akan dihapus dari perangkat ini.</translation>
 <translation id="3797739167230984533"><ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> dikelola<ph name="END_LINK"/> oleh organisasi Anda</translation>
-<translation id="1722460139690167654"><ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> Anda dikelola<ph name="END_LINK"/> oleh <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8118488170956489476"><ph name="BEGIN_LINK"/>Browser dikelola<ph name="END_LINK"/> oleh organisasi Anda</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Browser Anda dikelola<ph name="END_LINK"/> oleh <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Konten</translation>
@@ -1680,8 +1718,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4258348331913189841">Sistem file</translation>
 <translation id="7701040980221191251">Tidak ada</translation>
 <translation id="2881966438216424900">Terakhir diakses:</translation>
-<translation id="3941357410013254652">ID Saluran</translation>
-<translation id="6135622770221372891">ID Saluran</translation>
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Pekerja Bersama</translation>
 <translation id="2927017729816812676">Penyimpanan Cache</translation>
@@ -1716,6 +1752,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="189210018541388520">Buka layar penuh</translation>
 <translation id="6096047740730590436">Buka yang dimaksimalkan</translation>
 <translation id="7256710573727326513">Buka di tab</translation>
+<translation id="8114875720387900039">Pisahkan horizontal</translation>
+<translation id="4976009197147810135">Pisahkan vertikal</translation>
 <translation id="7636919061354591437">Instal di Perangkat ini</translation>
 <translation id="2993517869960930405">Info Aplikasi</translation>
 <translation id="2867768963760577682">Buka sebagai Tab Terpasang</translation>
@@ -1724,6 +1762,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="6022526133015258832">Buka Layar Penuh</translation>
 <translation id="6845038076637626672">Buka yang Dimaksimalkan</translation>
 <translation id="6860427144121307915">Buka di Tab</translation>
+<translation id="6789592661892473991">Pisahkan Horizontal</translation>
+<translation id="6387674443318562538">Pisahkan Vertikal</translation>
 <translation id="1231733316453485619">Aktifkan sinkronisasi?</translation>
 <translation id="4736292055110123391">Sinkronisasikan bookmark, sandi, histori, dan lainnya di semua perangkat Anda</translation>
 <translation id="5736731321935944068">Brave Software dapat menggunakan histori Anda untuk mempersonalisasi Penelusuran, iklan, dan layanan Brave Software lainnya</translation>
@@ -1808,7 +1848,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5771816112378578655">Penyiapan sedang berlangsung...</translation>
 <translation id="3492788708641132712">Sinkronisasi tidak berjalan. Coba masuk lagi.</translation>
 <translation id="6349170655202535379">Sinkronisasi tidak berjalan. Coba keluar dan masuk lagi.</translation>
-<translation id="974555521953189084">Masukkan frasa sandi Anda untuk memulai sinkronisasi</translation>
+<translation id="6828182567531805778">Masukkan frasa sandi Anda untuk menyinkronkan data</translation>
 <translation id="7120865473764644444">Tidak dapat terhubung ke server sinkronisasi. Mencoba lagi...</translation>
 <translation id="5526745900034778153">Login lagi untuk melanjutkan sinkronisasi</translation>
 <translation id="2932483646085333864">Keluar dan masuk lagi untuk memulai sinkronisasi</translation>
@@ -1869,6 +1909,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="2482878487686419369">Notifikasi</translation>
 <translation id="7221855153210829124">Tampilkan notifikasi</translation>
 <translation id="8393700583063109961">Kirim pesan</translation>
+<translation id="7336799713063880535">Notifikasi diblokir.</translation>
+<translation id="5146995429444047494">Notifikasi untuk <ph name="ORIGIN"/> diblokir</translation>
 <translation id="6701535245008341853">Tidak dapat memperoleh profil.</translation>
 <translation id="7705276765467986571">Tidak dapat memuat model bookmark.</translation>
 <translation id="5585118885427931890">Tidak dapat membuat folder bookmark.</translation>
@@ -2031,10 +2073,17 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="2435457462613246316">Tampilkan sandi</translation>
 <translation id="4565377596337484307">Sembunyikan sandi</translation>
 <translation id="5311304534597152726">Login sebagai</translation>
+<translation id="70850504851191913">Pelanggaran data dilaporkan</translation>
+<translation id="149470879113908545">Pelanggaran data di situs atau aplikasi yang Anda gunakan telah mengungkapkan sandi Anda. Brave merekomendasikan Anda untuk memeriksa sandi tersimpan sekarang juga.</translation>
+<translation id="2054306844530250731">Pelanggaran data di situs atau aplikasi yang Anda gunakan telah mengungkapkan sandi Anda. Brave merekomendasikan <ph name="BOLD"/> pada <ph name="ORIGIN"/> sekarang.</translation>
+<translation id="4270615291506829403">mengubah sandi Anda</translation>
+<translation id="5103987914706363520">Pelanggaran data di situs atau aplikasi yang Anda gunakan telah mengungkapkan sandi Anda. Brave merekomendasikan Anda untuk memeriksa sandi yang tersimpan dan mengubahnya di <ph name="ORIGIN"/>.</translation>
 <translation id="5425863515030416387">Masuk ke seluruh perangkat dengan mudah</translation>
 <translation id="9114663181201435112">Masuk dengan mudah</translation>
 <translation id="764017888128728"><ph name="PASSWORD_MANAGER_BRAND"/> otomatis memasukkan Anda ke situs yang memenuhi syarat menggunakan sandi tersimpan.</translation>
 <translation id="5869029295770560994">Oke, Mengerti</translation>
+<translation id="1186201132766001848">Periksa Sandi</translation>
+<translation id="5979084224081478209">Periksa sandi</translation>
 <translation id="3423858849633684918">Harap Luncurkan Ulang <ph name="PRODUCT_NAME"/></translation>
 <translation id="2294358108254308676">Apakah Anda ingin memasang <ph name="PRODUCT_NAME"/>?</translation>
 <translation id="586567932979200359">Anda menjalankan <ph name="PRODUCT_NAME"/> dari citra disknya. Dengan memasangnya di komputer, Anda dapat menjalankannya tanpa citra disk, dan memastikannya tetap mutakhir.</translation>
@@ -2101,8 +2150,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="614940544461990577">Coba:</translation>
 <translation id="7325437708553334317">Ekstensi Kontras Tinggi</translation>
 <translation id="6990778048354947307">Tema Gelap</translation>
-<translation id="5556206011531515970">Klik selanjutnya untuk memilih browser default Anda.</translation>
-<translation id="1201402288615127009">Berikutnya</translation>
 <translation id="2478176599153288112">Izin File-Media untuk "<ph name="EXTENSION"/>"</translation>
 <translation id="186612162884103683">"<ph name="EXTENSION"/>" dapat membaca dan menulis file gambar, video, dan suara di lokasi yang dicentang.</translation>
 <translation id="8180786512391440389">"<ph name="EXTENSION"/>" dapat membaca dan menghapus file gambar, video, dan suara di lokasi yang dicentang.</translation>
@@ -2203,7 +2250,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5493792505296048976">layar aktif</translation>
 <translation id="6459799433792303855">Jendela aktif dipindahkan ke layar lain.</translation>
 <translation id="6551508934388063976">Perintah tidak tersedia. Tekan Control-N untuk membuka jendela baru.</translation>
-<translation id="3831486154586836914">Memasuki mode ikhtisar jendela</translation>
+<translation id="703001695939087067">Masuk ke mode ringkasan jendela. Tekan tab untuk memilih.</translation>
 <translation id="4380648069038809855">Layar penuh dibuka</translation>
 <translation id="1766575458646819543">Layar penuh ditutup</translation>
 <translation id="8736288397686080465">Situs ini diperbarui di latar belakang.</translation>
@@ -2317,29 +2364,31 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="874689135111202667">{0,plural, =1{Upload 1 file ke situs ini?}other{Upload # file ke situs ini?}}</translation>
 <translation id="1956390763342388273">Tindakan ini akan mengupload semua file dari "<ph name="FOLDER_PATH"/>". Hanya lakukan ini jika Anda memercayai situs.</translation>
 <translation id="1243314992276662751">Upload</translation>
-<translation id="1574038418461948632">Simpan perubahan ke <ph name="FILENAME"/>?</translation>
-<translation id="5181988524012865000">Simpan perubahan ke file?</translation>
-<translation id="2775188527796017992"><ph name="ORIGIN"/> akan dapat menyimpan perubahan secara langsung ke <ph name="FILENAME"/>. Situs dapat menyimpan perubahan hingga Anda menutup tab ini.</translation>
-<translation id="5375793835576008230"><ph name="ORIGIN"/> akan dapat menyimpan perubahan secara langsung ke file dalam <ph name="FOLDERNAME"/>. Situs dapat menyimpan perubahan hingga Anda menutup tab ini.</translation>
+<translation id="3928570707778085600">Simpan perubahan ke <ph name="FILE_OR_FOLDER_NAME"/>?</translation>
+<translation id="8892226765772586656"><ph name="ORIGIN"/> akan dapat mengedit <ph name="FILENAME"/> hingga Anda menutup tab ini</translation>
+<translation id="3780211714699334884"><ph name="ORIGIN"/> akan dapat mengedit file dalam <ph name="FOLDERNAME"/> hingga Anda menutup tab ini</translation>
 <translation id="6532106788206463496">Simpan perubahan</translation>
-<translation id="5102007300153090427">Halaman ini diizinkan untuk menyimpan ke file.</translation>
-<translation id="197228003527531594">Halaman ini diizinkan untuk melihat semua file dalam folder di perangkat Anda.</translation>
-<translation id="766254481392580456"><ph name="ORIGIN"/> dapat menyimpan perubahan secara langsung ke <ph name="FILENAME"/></translation>
-<translation id="856745937116041450"><ph name="ORIGIN"/> dapat menyimpan perubahan secara langsung ke file berikut ini</translation>
-<translation id="2150212764721500731"><ph name="ORIGIN"/> dapat menyimpan perubahan secara langsung ke file dalam <ph name="FOLDERNAME"/></translation>
-<translation id="7509896576944228744"><ph name="ORIGIN"/> dapat menyimpan perubahan secara langsung ke folder berikut ini</translation>
-<translation id="8152021341839173449"><ph name="ORIGIN"/> dapat menyimpan perubahan secara langsung ke file dan folder berikut ini</translation>
-<translation id="3343738344138980580"><ph name="ORIGIN"/> dapat melihat semua file dalam <ph name="FOLDERNAME"/></translation>
-<translation id="1507049466468737452"><ph name="ORIGIN"/> dapat melihat semua file dalam folder berikut ini</translation>
-<translation id="6868139415119881457"><ph name="ORIGIN"/> dapat melihat dan menyimpan perubahan secara langsung ke file dan folder berikut ini</translation>
+<translation id="4301671483919369635">Halaman ini diizinkan untuk mengedit file</translation>
+<translation id="3923676227229836009">Halaman ini diizinkan untuk melihat file</translation>
+<translation id="8983632908660087688"><ph name="ORIGIN"/> dapat mengedit <ph name="FILENAME"/></translation>
+<translation id="1301135395320604080"><ph name="ORIGIN"/> dapat mengedit file berikut ini</translation>
+<translation id="4469762931504673593"><ph name="ORIGIN"/> dapat mengedit file dalam <ph name="FOLDERNAME"/></translation>
+<translation id="3948507072814225786"><ph name="ORIGIN"/> dapat mengedit file dalam folder berikut ini</translation>
+<translation id="8889651696183044030"><ph name="ORIGIN"/> dapat mengedit file dan folder berikut ini</translation>
+<translation id="5969419185858894314"><ph name="ORIGIN"/> dapat melihat file dalam <ph name="FOLDERNAME"/></translation>
+<translation id="3810593934879994994"><ph name="ORIGIN"/> dapat melihat file dalam folder berikut ini</translation>
+<translation id="2537395079978992874"><ph name="ORIGIN"/> dapat menampilkan dan mengedit file dan folder berikut ini</translation>
 <translation id="5126611267288187364">Lihat perubahan</translation>
 <translation id="5073956501367595100">{0,plural,offset:2 =1{<ph name="FILE1"/>}=2{<ph name="FILE1"/>, <ph name="FILE2"/>}other{<ph name="FILE1"/>, <ph name="FILE2"/>, dan # lainnya}}</translation>
 <translation id="1790976235243700817">Cabut akses</translation>
-<translation id="1392975001822614900">Tidak dapat menyimpan ke folder ini</translation>
-<translation id="7613156935003315818"><ph name="ORIGIN"/> tidak dapat menyimpan perubahan Anda ke folder ini karena berisi sistem file.</translation>
+<translation id="831440797644402910">Tidak dapat membuka folder ini</translation>
+<translation id="3850914401008572843"><ph name="ORIGIN"/> tidak dapat membuka folder ini karena berisi file sistem</translation>
 <translation id="4403775189117163360">Pilih folder yang berbeda</translation>
+<translation id="3586806079541226322">Tidak dapat membuka file ini</translation>
+<translation id="6972553992270299730"><ph name="ORIGIN"/> tidak dapat membuka file dalam folder ini karena berisi file sistem</translation>
+<translation id="2123766928840368256">Pilih file yang berbeda</translation>
 <translation id="7643932971554933646">Izinkan situs melihat file?</translation>
-<translation id="999180493986838144"><ph name="ORIGIN"/> akan dapat melihat semua file dalam <ph name="FOLDERNAME"/>. Situs dapat melihat segala perubahan ke folder hingga Anda menutup tab ini.</translation>
+<translation id="7892963120252479610"><ph name="ORIGIN"/> akan dapat melihat file dalam <ph name="FOLDERNAME"/> hingga Anda menutup tab ini</translation>
 <translation id="7201420661433230412">Lihat file</translation>
 <translation id="3015639418649705390">Luncurkan ulang sekarang</translation>
 <translation id="8712637175834984815">Mengerti</translation>
@@ -2378,6 +2427,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5660204307954428567">Sambungkan dengan <ph name="DEVICE_NAME"/></translation>
 <translation id="1167199480815330007">Lihat PIN 6 digit di bagian belakang kunci keamanan</translation>
 <translation id="5601503069213153581">PIN</translation>
+<translation id="1201402288615127009">Berikutnya</translation>
 <translation id="8921366488406707015">Memverifikasi kunci keamanan...</translation>
 <translation id="1805472176602625930">Tekan tombol pada kunci keamanan</translation>
 <translation id="1489664337021920575">Pilih opsi lain</translation>
@@ -2417,6 +2467,11 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5186185447130319458">Penyamaran</translation>
 <translation id="7643842463591647490">{0,plural, =1{# jendela dibuka}other{# jendela dibuka}}</translation>
 <translation id="2579188629646253712">Keluar dari Mode Penyamaran</translation>
+<translation id="4349828822184870497">Berguna</translation>
+<translation id="6876469544038980967">Tidak Berguna</translation>
+<translation id="6428450836711225518">Verifikasi nomor telepon Anda</translation>
+<translation id="8742371904523228557"><ph name="ONE_TIME_CODE"/> adalah kode Anda untuk <ph name="ORIGIN"/></translation>
+<translation id="6518133107902771759">Verifikasi</translation>
 <translation id="394984172568887996">Diimpor dari IE</translation>
 <translation id="1543284117603151572">Diimpor Dari Edge</translation>
 <translation id="5502500733115278303">Diimpor dari Firefox</translation>
@@ -2505,6 +2560,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="1173894706177603556">Ganti nama</translation>
 <translation id="6825184156888454064">Urutkan menurut nama</translation>
 <translation id="3440663250074896476">Tindakan lainnya untuk <ph name="BOOKMARK_NAME"/></translation>
+<translation id="1608668830839595724">Tindakan lainnya untuk item terpilih</translation>
 <translation id="2903457445916429186">Buka item yang dipilih</translation>
 <translation id="962802172452141067">Cabang folder bookmark</translation>
 <translation id="2683638487103917598">Folder diurutkan</translation>
@@ -2514,11 +2570,11 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5488093641312826914">'<ph name="COPIED_ITEM_NAME"/>' disalin</translation>
 <translation id="2277769717710009150">{COUNT,plural, =1{1 item disalin}other{# item disalin}}</translation>
 <translation id="9115675100829699941">&amp;Bookmark</translation>
-<translation id="1035590878859356651">Bookmark halaman ini...</translation>
-<translation id="1047726139967079566">Bookmark Halaman Ini...</translation>
-<translation id="1774833706453699074">Bookmark halaman yang terbuka...</translation>
-<translation id="6949306908218145636">Bookmark Halaman Aktif...</translation>
-<translation id="4422347585044846479">Edit bookmark untuk halaman ini</translation>
+<translation id="9023015617655685412">Bookmark tab ini...</translation>
+<translation id="1482626744466814421">Bookmark Tab Ini...</translation>
+<translation id="4474155171896946103">Bookmark semua tab...</translation>
+<translation id="2336228925368920074">Bookmark Semua Tab...</translation>
+<translation id="8300011035382349091">Edit bookmark untuk tab ini</translation>
 <translation id="4776146737004271126">Buka setelan Android</translation>
 <translation id="6559023360691182159">{COUNT,plural, =0{Tidak ada}=1{<ph name="APP_1"/>}=2{<ph name="APP_1"/> dan <ph name="APP_2"/>}=3{<ph name="APP_1"/>, <ph name="APP_2"/>, dan <ph name="APP_3"/>}=4{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/>, dan 1 aplikasi lainnya}other{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/>, dan <ph name="EXTRA_APPS"/> aplikasi lainnya}}</translation>
 <translation id="9117030152748022724">Kelola aplikasi Anda</translation>
@@ -2533,6 +2589,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4739098340603978916">Ukuran: <ph name="APP_SIZE"/></translation>
 <translation id="4291934469232591280">Versi: <ph name="VERSION"/></translation>
 <translation id="1920390473494685033">Kontak</translation>
+<translation id="9123948967884660766">Aplikasi ini tidak dapat di-uninstal karena merupakan bagian dari Brave OS.</translation>
+<translation id="496185450405387901">Aplikasi ini telah diinstal oleh administrator Anda.</translation>
 <translation id="7787308148023287649">Tampilkan di layar lain</translation>
 <translation id="7710568461918838723">&amp;Cast...</translation>
 <translation id="6700480081846086223">Transmisikan <ph name="HOST_NAME"/></translation>
@@ -2552,6 +2610,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="6169666352732958425">Tidak dapat mentransmisi desktop.</translation>
 <translation id="4081242589061676262">Tidak dapat mentransmisikan file.</translation>
 <translation id="4075639477629295004">Tidak dapat mentransmisikan <ph name="FILE_NAME"/>.</translation>
+<translation id="8358912028636606457">Mentransmisikan audio tab tidak didukung di perangkat ini.</translation>
 <translation id="3930737994424905957">Mencari perangkat</translation>
 <translation id="5209320130288484488">Perangkat tidak ditemukan</translation>
 <translation id="4415245286584082850">Perangkat tidak ditemukan. Buka artikel pusat bantuan di tab baru.</translation>
@@ -2564,12 +2623,12 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="2541002089857695151">Optimalkan transmisi layar penuh?</translation>
 <translation id="4144218403971135344">Dapatkan video yang berkualitas lebih baik dan hemat baterai. Video hanya akan diputar di layar yang kompatibel untuk Cast.</translation>
 <translation id="236117173274098341">Optimalkan</translation>
-<translation id="7473891865547856676">Lain Kali</translation>
 <translation id="8538358978858059843">Aktifkan layanan cloud untuk Cast?</translation>
 <translation id="3856595552313160385">Penggunaan Hangouts dan Cast for Education diatur oleh Kebijakan Privasi Brave Software.</translation>
 <translation id="3435896845095436175">Aktifkan</translation>
 <translation id="3700888195348409686">Menampilkan (<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="5285635972691565180">Layar <ph name="DISPLAY_ID"/></translation>
+<translation id="7477793887173910789">Kontrol musik, video, dan banyak lagi</translation>
 <translation id="4707302005824653064">Penggunaan dan histori dapat ditinjau oleh pengelola (<ph name="CUSTODIAN_EMAIL"/>) di chrome.com.</translation>
 <translation id="346431825526753">Ini adalah akun untuk anak yang dikelola oleh <ph name="CUSTODIAN_EMAIL"/>.</translation>
 <translation id="4159681666905192102">Ini adalah akun untuk anak yang dikelola oleh <ph name="CUSTODIAN_EMAIL"/> dan <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
@@ -2604,15 +2663,11 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="7029809446516969842">Sandi</translation>
 <translation id="984275831282074731">Metode pembayaran</translation>
 <translation id="8473863474539038330">Alamat dan informasi lainnya</translation>
-<translation id="454547174531670764">Sinkronkan ke akun lain</translation>
-<translation id="1692115862433274081">Gunakan akun lain</translation>
 <translation id="5287425679749926365">Akun Anda</translation>
 <translation id="4801448226354548035">Sembunyikan akun</translation>
 <translation id="2935225303485967257">Kelola orang</translation>
 <translation id="7388222713940428051">Buka jendela Tamu</translation>
 <translation id="127668050356036882">Tutup semua jendela</translation>
-<translation id="8883847527783433352">Sinkronkan ke Akun Lain</translation>
-<translation id="2761898608071930085">Gunakan Akun Lain</translation>
 <translation id="1464258312790801189">Akun Anda</translation>
 <translation id="6655458902729017087">Sembunyikan Akun</translation>
 <translation id="688280436658139163">Kelola Orang</translation>
@@ -2801,6 +2856,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4570609078116869893">Update Brave secara otomatis untuk semua pengguna</translation>
 <translation id="7102687220333134671">Update otomatis diaktifkan</translation>
 <translation id="8284326494547611709">Teks</translation>
+<translation id="3602290021589620013">Pratinjau</translation>
 <translation id="1755601632425835748">Ukuran teks</translation>
 <translation id="3179982752812949580">Font teks</translation>
 <translation id="6850286078059909152">Warna teks</translation>
@@ -2814,7 +2870,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8184472985242519288">Seragam</translation>
 <translation id="8619803522055190423">Drop shadow</translation>
 <translation id="3930968231047618417">Warna latar belakang</translation>
-<translation id="7569983096843329377">Hitam</translation>
 <translation id="2713444072780614174">Putih</translation>
 <translation id="7942349550061667556">Merah</translation>
 <translation id="6017514345406065928">Hijau</translation>
@@ -2838,6 +2893,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="2915873080513663243">Pemindaian otomatis</translation>
 <translation id="8912810933860534797">Aktifkan pindai otomatis</translation>
 <translation id="6617100836880592260">Kecepatan pemindaian: <ph name="SPEED_WITH_UNITS"/></translation>
+<translation id="1816036116994822943">Kecepatan pemindaian keyboard</translation>
 <translation id="7919210519031517829"><ph name="DURATION"/>d</translation>
 <translation id="2981113813906970160">Tampilkan kursor mouse besar</translation>
 <translation id="5072052264945641674">Sesuaikan ukuran kursor</translation>
@@ -2919,7 +2975,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="3677657024345889897">Paling kecil</translation>
 <translation id="167160931442925455">Paling keras</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (default)</translation>
-<translation id="3602290021589620013">Pratinjau</translation>
 <translation id="7037509989619051237">Teks untuk dipratinjau</translation>
 <translation id="5471768120198416576">Halo! Saya suara text to speech Anda.</translation>
 <translation id="6902066522699286937">Suara untuk dipratinjau</translation>
@@ -2961,7 +3016,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
       Hal ini tidak akan berpengaruh pada aplikasi atau konten di perangkat lain.</translation>
 <translation id="492299503953721473">Hapus aplikasi Android</translation>
 <translation id="7566118625369982896">Kelola link aplikasi Play</translation>
-<translation id="5026688690798028095">Buka Pengelolaan Aplikasi</translation>
 <translation id="2433507940547922241">Tampilan</translation>
 <translation id="1177863135347784049">Sesuaikan</translation>
 <translation id="1925021887439448749">Masukkan alamat web khusus</translation>
@@ -3016,6 +3070,10 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="6644512095122093795">Tawarkan untuk menyimpan sandi</translation>
 <translation id="2100273922101894616">Masuk Otomatis</translation>
 <translation id="7513029293694390567">Otomatis login ke situs menggunakan kredensial yang tersimpan. Jika dinonaktifkan, Anda akan dimintai konfirmasi setiap kali login ke situs.</translation>
+<translation id="7930681627240672853">Periksa keamanan sandi</translation>
+<translation id="7510943789645525906">Memperingatkan Anda jika sandi yang digunakan pernah bocor saat terjadi pelanggaran data.</translation>
+<translation id="786008582930267433">Brave Software dapat memeriksa apakah sandi Anda pernah bocor saat terjadi pelanggaran data</translation>
+<translation id="3372463077865465112">Brave Software dapat memeriksa apakah sandi Anda pernah bocor saat terjadi pelanggaran data. Fitur ini akan diaktifkan ketika Anda login dengan Akun Brave Software.</translation>
 <translation id="1375321115329958930">Sandi Tersimpan</translation>
 <translation id="152234381334907219">Jangan Pernah Disimpan</translation>
 <translation id="5137501176474113045">Hapus item ini</translation>
@@ -3125,6 +3183,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
 <translation id="2187895286714876935">Kesalahan Impor Sertifikat Server</translation>
 <translation id="816055135686411707">Kesalahan Saat Menyetel Kepercayaan Sertifikat</translation>
+<translation id="5541694225089836610">Tindakan dinonaktifkan oleh administrator Anda</translation>
 <translation id="3380365263193509176">Kesalahan tidak dikenal</translation>
 <translation id="368789413795732264">Terdapat kesalahan saat mencoba menulis file: <ph name="ERROR_TEXT"/>.</translation>
 <translation id="784934925303690534">Rentang waktu</translation>
@@ -3156,9 +3215,9 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="6985607387932385770">Printer</translation>
 <translation id="1815579292149538864">Siapkan atau kelola printer CUPS.</translation>
 <translation id="8030656706657716245">Tambahkan Printer</translation>
-<translation id="8025958612547562988">Menyimpan printer yang terdeteksi ke profil Anda, atau menambahkan printer baru.</translation>
+<translation id="893254996965966411">Simpan printer yang terdeteksi ke profil Anda, atau tambahkan printer baru.</translation>
 <translation id="6980969641756020642">Printer tersedia untuk disimpan</translation>
-<translation id="8151638057146502721">Konfigurasi</translation>
+<translation id="3571734092741541777">Siapkan</translation>
 <translation id="2297705863329999812">Telusuri printer</translation>
 <translation id="7956373551960864128">Printer yang Anda simpan</translation>
 <translation id="168991973552362966">Tambahkan printer terdekat</translation>
@@ -3179,14 +3238,12 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4058720513957747556">AppSocket (TCP/IP)</translation>
 <translation id="6619058681307408113">Daemon Printer Baris (LPD)</translation>
 <translation id="2266957463645820432">IPP melalui USB (IPPUSB)</translation>
-<translation id="8086015605808120405">Mengonfigurasi <ph name="PRINTER_NAME"/> ...</translation>
 <translation id="4665014895760275686">Produsen</translation>
 <translation id="4561098487691395071">Atau tentukan PPD printer Anda</translation>
 <translation id="1989112275319619282">Jelajahi</translation>
 <translation id="3625481642044239431">File yang dipilih tidak valid. Harap coba lagi.</translation>
-<translation id="2462752602710430187"><ph name="PRINTER_NAME"/> ditambahkan</translation>
-<translation id="7380768571499464492"><ph name="PRINTER_NAME"/> diupdate</translation>
-<translation id="9057119625587205566">Tidak ada printer di sekitar</translation>
+<translation id="8002670234429879764"><ph name="PRINTER_NAME"/> tidak lagi tersedia</translation>
+<translation id="3976108569178263973">Tidak ada printer yang tersedia.</translation>
 <translation id="3213187967168344806">Tidak dapat menambahkan printer. Harap nyalakan ulang komputer dan coba lagi.</translation>
 <translation id="4052689580269971502">Tidak dapat terhubung ke printer. Harap periksa apakah printer sudah diaktifkan dan terhubung ke Bravebook dengan Wi-Fi atau USB.</translation>
 <translation id="7099337801055912064">Tidak dapat memuat PPD yang besar. Ukuran maksimumnya adalah 250 kB.</translation>
@@ -3195,6 +3252,9 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4694024090038830733">Konfigurasi printer ditangani oleh administrator.</translation>
 <translation id="5816434091619127343">Perubahan printer yang diminta akan membuat printer tidak dapat digunakan.</translation>
 <translation id="6504611359718185067">Sambungkan ke internet untuk menambahkan printer</translation>
+<translation id="4066207411788646768">Periksa koneksi untuk melihat printer yang tersedia dalam jaringan Anda</translation>
+<translation id="4320177379694898372">Tidak ada sambungan internet</translation>
+<translation id="2910318910161511225">Sambungkan ke jaringan dan coba lagi</translation>
 <translation id="4972129977812092092">Edit printer</translation>
 <translation id="5696679855467848181">File PPD saat ini yang digunakan: <ph name="PPD_NAME"/></translation>
 <translation id="3016329696181678353"><ph name="PRINTER_NAME"/> tidak dapat dikonfigurasi secara otomatis. Harap tentukan detail printer lanjutan.</translation>
@@ -3232,6 +3292,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4820236583224459650">Setel sebagai tiket aktif</translation>
 <translation id="4502423230170890588">Hapus dari perangkat ini</translation>
 <translation id="2507253002925770350">Tiket dihapus</translation>
+<translation id="3703699162703116302">Tiket diperbarui</translation>
 <translation id="1436390408194692385">Berlaku selama <ph name="TICKET_TIME_LEFT"/></translation>
 <translation id="2665647207431876759">Sudah berakhir</translation>
 <translation id="5565735124758917034">Aktif</translation>
@@ -3273,7 +3334,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="6444070574980481588">Setel tanggal dan waktu</translation>
 <translation id="5065775832226780415">Smart Lock</translation>
 <translation id="8468750959626135884">Buka <ph name="DEVICE_TYPE"/> menggunakan ponsel Android.</translation>
-<translation id="3571734092741541777">Siapkan</translation>
 <translation id="3336664756920573711">Buka kunci <ph name="DEVICE_TYPE"/> menggunakan ponsel Android</translation>
 <translation id="1036348656032585052">Matikan</translation>
 <translation id="1164674268730883318">Nonaktifkan Smart Lock untuk <ph name="DEVICE_TYPE"/>?</translation>
@@ -3302,7 +3362,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="216169395504480358">Tambahkan Wi-Fi...</translation>
 <translation id="3892414795099177503">Tambahkan OpenVPN / L2TP...</translation>
 <translation id="287286579981869940">Menambahkan <ph name="PROVIDER_NAME"/>...</translation>
-<translation id="3609895557594655134">Tambahkan VPN Android...</translation>
 <translation id="8426713856918551002">Mengaktifkan</translation>
 <translation id="3652817283076144888">Memulai</translation>
 <translation id="6528513914570774834">Izinkan pengguna lain di perangkat ini untuk menggunakan jaringan ini</translation>
@@ -3383,6 +3442,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8986362086234534611">Lupakan</translation>
 <translation id="7881483672146086348">Lihat Akun</translation>
 <translation id="2392369802118427583">Aktifkan</translation>
+<translation id="8151638057146502721">Konfigurasi</translation>
 <translation id="5920543303088087579">Koneksi ke jaringan ini tidak diizinkan oleh administrator</translation>
 <translation id="1235458158152011030">Jaringan yang dikenal</translation>
 <translation id="3003144360685731741">Jaringan pilihan</translation>
@@ -3391,6 +3451,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4384312707950789900">Tambahkan ke pilihan</translation>
 <translation id="6077131872140550515">Hapus dari pilihan</translation>
 <translation id="4115002065223188701">Jaringan di luar jangkauan</translation>
+<translation id="4421167684395067330">Terjadi masalah saat menyambungkan. Harap hubungi <ph name="CARRIER_NAME"/> untuk mendapat bantuan.</translation>
+<translation id="7780252971640011240">Terjadi masalah saat menyambungkan. Hubungi operator Anda untuk mendapatkan bantuan.</translation>
 <translation id="161460670679785907">Tidak dapat mendeteksi ponsel Anda</translation>
 <translation id="1682335582099955045">Untuk menggunakan Tethering Instan, aktifkan notifikasi untuk Layanan Brave Software Play.</translation>
 <translation id="7696063401938172191">Di '<ph name="PHONE_NAME"/>' Anda:</translation>
@@ -3414,7 +3476,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="3483333858382889684">Izinkan perangkat ini menemukan perangkat lain dengan Akun Brave Software yang memiliki koneksi data seluler</translation>
 <translation id="5637476008227280525">Data seluler aktif</translation>
 <translation id="1572266655485775982">Wi-Fi aktif</translation>
-<translation id="543381445212956829">WiMAX aktif</translation>
 <translation id="166439687370499867">Mengubah konfigurasi jaringan bersama tidak diizinkan</translation>
 <translation id="938470336146445890">Instal sertifikat pengguna.</translation>
 <translation id="7732111077498238432">Jaringan dikontrol oleh kebijakan</translation>
@@ -3429,6 +3490,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5669267381087807207">Mengaktifkan</translation>
 <translation id="952992212772159698">Tidak diaktifkan</translation>
 <translation id="3488065109653206955">Diaktifkan sebagian</translation>
+<translation id="4562494484721939086">Tidak ada layanan</translation>
 <translation id="4880328057631981605">Nama titik akses</translation>
 <translation id="5142961317498132443">Autentikasi</translation>
 <translation id="5691511426247308406">Keluarga</translation>
@@ -3439,7 +3501,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8461329675984532579">Nama penyedia rumah</translation>
 <translation id="7769672763586021400">ID Model</translation>
 <translation id="7487067081878637334">Teknologi</translation>
-<translation id="3547495624659668105">Versi PRL</translation>
 <translation id="8620617069779373398">Status roaming</translation>
 <translation id="131461803491198646">Jaringan asal, tidak dalam jelajah</translation>
 <translation id="5252456968953390977">Jelajah</translation>
@@ -3480,6 +3541,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5088172560898466307">Hostname server</translation>
 <translation id="5050042263972837708">Nama grup</translation>
 <translation id="8675354002693747642">Kunci yang dibagikan sebelumnya</translation>
+<translation id="8372477600026034341">Host tambahan</translation>
 <translation id="6472207088655375767">OTP</translation>
 <translation id="8798441408945964110">Nama penyedia</translation>
 <translation id="7882358943899516840">Jenis penyedia</translation>
@@ -3508,6 +3570,9 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5302048478445481009">Bahasa</translation>
 <translation id="6388429472088318283">Bahasa penelusuran</translation>
 <translation id="2690024944919328218">Tampilkan opsi bahasa</translation>
+<translation id="6199184144777428084">Tambahkan bahasa atau urutkan ulang daftar</translation>
+<translation id="8813969267212093033">Teks sistem ditampilkan dalam bahasa ini</translation>
+<translation id="2366260648632264559">Tampilkan teks sistem dalam bahasa ini</translation>
 <translation id="7216595297012131718">Urutkan bahasa berdasarkan preferensi Anda</translation>
 <translation id="5972708806901999743">Pindahkan ke atas</translation>
 <translation id="8609465669617005112">Berpindah ke atas</translation>
@@ -3662,6 +3727,10 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4085270836953633510">Tanyakan saat situs ingin mengakses port serial</translation>
 <translation id="2322318151094136999">Tanyakan saat situs ingin mengakses port serial (direkomendasikan)</translation>
 <translation id="1906828677882361942">Jangan izinkan situs apa pun mengakses port serial</translation>
+<translation id="2215727959747642672">Pengeditan file</translation>
+<translation id="8392364544846746346">Tanyakan saat situs ingin mengedit file atau folder di perangkat Anda</translation>
+<translation id="7614260613810441905">Tanyakan saat situs ingin mengedit file atau folder di perangkat Anda (direkomendasikan)</translation>
+<translation id="2957117904572187936">Jangan izinkan situs apa pun mengedit file atau folder di perangkat Anda</translation>
 <translation id="8973557916016709913">Menghapus tingkat zoom</translation>
 <translation id="1706625117072057435">Tingkat perbesar/perkecil</translation>
 <translation id="6385543213911723544">Situs dapat menyimpan dan membaca data cookie</translation>
@@ -3671,6 +3740,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="563535393368633106">Tanyakan sebelum mengakses (disarankan)</translation>
 <translation id="6840155290835956714">Tanyakan sebelum mengirim</translation>
 <translation id="2381756643783702095">Tanyakan sebelum mengirim (disarankan)</translation>
+<translation id="7593653750169415785">Otomatis terblokir karena Anda menolak notifikasi beberapa kali</translation>
 <translation id="2812989263793994277">Jangan tampilkan gambar apa pun</translation>
 <translation id="3800806661949714323">Tampilkan semua (disarankan)</translation>
 <translation id="7661259717474717992">Izinkan situs menyimpan dan membaca data cookie</translation>
@@ -3719,6 +3789,9 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="327147043223061465">Lihat semua data situs dan cookie</translation>
 <translation id="1963227389609234879">Hapus Semua</translation>
 <translation id="3432227430032737297">Buang Semua Yang Ditampilkan</translation>
+<translation id="2854896010770911740">Hapus Cookie Pihak Ketiga</translation>
+<translation id="2096715839409389970">Hapus cookie pihak ketiga</translation>
+<translation id="7828731929332799387">Ini akan menghapus semua cookie dan data situs yang tersedia dalam konteks pihak ketiga. Ingin melanjutkan?</translation>
 <translation id="6011449291337289699">Hapus data situs</translation>
 <translation id="8339059274628563283">Data <ph name="SITE"/> yang disimpan secara lokal</translation>
 <translation id="4090947011087001172">Setel ulang izin situs untuk <ph name="SITE"/>?</translation>
@@ -3762,7 +3835,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4590324241397107707">Penyimpanan basis data</translation>
 <translation id="8016266267177410919">Penyimpanan sementara</translation>
 <translation id="4175737294868205930">Penyimpanan tetap</translation>
-<translation id="1296497012903089238">Jenis Sertifikat</translation>
 <translation id="3707212204259470604">Kelola orang lain</translation>
 <translation id="8907706281008466056">Foto Brave Software profil</translation>
 <translation id="2408955596600435184">Masukkan PIN</translation>
@@ -3788,7 +3860,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="1719312230114180055">Catatan: Sidik jari mungkin kurang aman dibandingkan dengan PIN atau sandi yang kuat.</translation>
 <translation id="1582955169539260415">hapus [<ph name="FINGERPRINT_NAME"/>]</translation>
 <translation id="1927632033341042996">Jari <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="4461062867270151760">Aktifkan pemutaran media Brave di layar kunci</translation>
 <translation id="7665369617277396874">Tambahkan akun</translation>
 <translation id="5866136067811459986">Kelola Akun Brave Software yang digunakan untuk login. Situs, aplikasi, serta ekstensi di Brave dan Brave Software Play mungkin menggunakan akun ini untuk menyesuaikan pengalaman Anda, bergantung pada setelan izin.</translation>
 <translation id="1987317783729300807">Akun</translation>
@@ -3833,6 +3904,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="7155171745945906037">Foto yang sudah ada dari kamera atau file</translation>
 <translation id="8995603266996330174">Dikelola menurut <ph name="DOMAIN"/></translation>
 <translation id="9125982323641182972">Dapatkan kecanggihan Brave Software di Brave</translation>
+<translation id="1692115862433274081">Gunakan akun lain</translation>
 <translation id="5244474230056479698">Menyinkronkan dengan <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Karena akun ini dikelola oleh <ph name="DOMAIN"/>, bookmark, histori, sandi, dan setelan yang lain akan dihapus dari perangkat ini. Namun, data Anda akan tetap disimpan di Akun Brave Software dan dapat dikelola di <ph name="BEGIN_LINK"/>Brave Software Dasbor<ph name="END_LINK"/>.</translation>
 <translation id="6906406176003824042">Edit orang</translation>
@@ -3864,6 +3936,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="1125261911132334651">Kelola Akun Brave Software Anda</translation>
 <translation id="4570387585180509432">Alamat, nomor telepon, dan lainnya</translation>
 <translation id="5117427536932535467">Tema &amp; Wallpaper</translation>
+<translation id="7257173066616499747">Jaringan Wi-Fi</translation>
 <translation id="3268451620468152448">Tab Terbuka</translation>
 <translation id="5241892180459725878">Saran penelusuran Brave Software Drive</translation>
 <translation id="2120297377148151361">Aktivitas dan interaksi</translation>
@@ -3900,13 +3973,11 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="6828153365543658583">Batasi akses masuk hanya untuk pengguna berikut:</translation>
 <translation id="7645176681409127223"><ph name="USER_NAME"/> (pemilik)</translation>
 <translation id="3699624789011381381">Alamat email</translation>
-<translation id="1483829627339988491">Kontrol Orang Tua</translation>
+<translation id="2813094189969465044">Kontrol orang tua</translation>
 <translation id="3557101512409028104">Setel pembatasan situs dan batas waktu pemakaian perangkat dengan Family Link</translation>
-<translation id="7648142322539582331">Sambungkan ke Internet untuk menyiapkan Kontrol Orang Tua</translation>
-<translation id="1005608198058526414">Lihat setelan Family Link Anda</translation>
+<translation id="7915457674565721553">Sambungkan ke internet untuk menyiapkan kontrol orang tua</translation>
+<translation id="5192062846343383368">Buka aplikasi Family Link untuk melihat setelan pengawasan Anda</translation>
 <translation id="470074695271471509">Logout untuk menyelesaikan?</translation>
-<translation id="7850222546481862746"><ph name="BEGIN_PARAGRAPH1"/>Untuk menyelesaikan penyiapan pengawasan pada perangkat ini, Anda harus logout dari akun <ph name="USER_NAME"/>.<ph name="END_PARAGRAPH1"/>
-      <ph name="BEGIN_PARAGRAPH2"/>Anda dapat mengelola kontrol orang tua untuk anak Anda dengan menginstal Family Link untuk orang tua di perangkat Anda sendiri.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="3570985609317741174">Konten web</translation>
 <translation id="7719367874908701697">Perkecil/perbesar halaman</translation>
 <translation id="4941627891654116707">Ukuran font</translation>
@@ -3941,6 +4012,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="2497229222757901769">Kecepatan mouse</translation>
 <translation id="6586451623538375658">Tukar tombol mouse utama</translation>
 <translation id="221872881068107022">Scroll terbalik</translation>
+<translation id="2536052711541161459">Akselerasi penunjuk</translation>
 <translation id="1510238584712386396">Peluncur</translation>
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="2515586267016047495">Alt</translation>
@@ -4033,8 +4105,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="9196021349904508454">File offline Brave Software Drive sementara akan dihapus. File yang telah disetel sebagai tersedia saat offline tidak akan dihapus dari perangkat ini.</translation>
 <translation id="1865678028973512614">Hapus file</translation>
 <translation id="4470957202018033307">Preferensi penyimpanan eksternal</translation>
-<translation id="7536220825385726660">Izinkan aplikasi Play Store mengakses drive eksternal</translation>
-<translation id="8157382355099335113">Aplikasi Brave Software Play Store dapat meminta akses ke perangkat penyimpanan eksternal untuk membaca dan menulis file dan folder di perangkat tersebut.</translation>
+<translation id="7157776341993107220">Aplikasi dari Brave Software Play mungkin meminta akses sistem file penuh untuk membaca dan menulis file di perangkat penyimpanan eksternal. File dan folder yang dibuat di perangkat dapat dilihat oleh siapa saja yang menggunakan drive eksternal.</translation>
+<translation id="6775163072363532304">Perangkat yang tersedia akan muncul di sini.</translation>
 <translation id="1529891865407786369">Sumber listrik</translation>
 <translation id="354060433403403521">Adaptor AC</translation>
 <translation id="2127372758936585790">Pengisi daya rendah</translation>
@@ -4060,7 +4132,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="5826395379250998812">Hubungkan <ph name="DEVICE_TYPE"/> Anda dengan ponsel. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">Tidak ada perangkat yang memenuhi syarat. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">Menunggu verifikasi. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
-<translation id="6518133107902771759">Verifikasi</translation>
 <translation id="4142052906269098341">Buka kunci <ph name="DEVICE_TYPE"/> Anda dengan ponsel. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Tethering Instan</translation>
 <translation id="6415900369006735853">Terhubung ke internet melalui ponsel Anda</translation>
@@ -4080,7 +4151,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4840150926623932060">{NUM_DOWNLOAD,plural, =1{1 lainnya}other{# lainnya}}</translation>
 <translation id="2749608811030566578">Terjadi error saat Brave menghapus software berbahaya</translation>
 <translation id="8189483132214844139">Brave dapat menemukan software berbahaya di komputer dan menghapusnya</translation>
-<translation id="2910318910161511225">Sambungkan ke jaringan dan coba lagi</translation>
 <translation id="1426870617281699524">Klik Coba Lagi, dan terima perintah di komputer</translation>
 <translation id="7886744396008377537">Ada software berbahaya di komputer Anda. Brave sedang menghapusnya, memulihkan setelan Anda, dan menonaktifkan ekstensi. Tindakan ini akan membuat browser berfungsi kembali secara normal.</translation>
 <translation id="1484912962860902625">Terjadi error saat Brave menelusuri software berbahaya</translation>
@@ -4090,7 +4160,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="284975061945174219">Pembersihan gagal</translation>
 <translation id="9014750448058570312">Brave perlu izin untuk melanjutkan</translation>
 <translation id="1852141627593563189">Temukan software berbahaya</translation>
-<translation id="4320177379694898372">Tidak ada sambungan internet</translation>
 <translation id="850875081535031620">Software berbahaya tidak ditemukan</translation>
 <translation id="1186771945450942097">Hapus software berbahaya</translation>
 <translation id="354602065659584722">Software berbahaya dihapus</translation>
@@ -4151,6 +4220,14 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8705629851992224300">Kunci keamanan Anda tidak dapat dibaca</translation>
 <translation id="3076977359333237641">Data login Anda telah dihapus</translation>
 <translation id="3508492320654304609">Data login Anda tidak dapat dihapus</translation>
+<translation id="8945764661949477243">Menambahkan, mengganti nama, dan menghapus sidik jari yang tersimpan di perangkat Anda</translation>
+<translation id="4836504898754963407">Mengelola sidik jari</translation>
+<translation id="403456802563765809">Untuk mengelola sidik jari, masukkan dan sentuh kunci keamanan Anda.</translation>
+<translation id="5639152092474119692">Untuk mengelola sidik jari, masukkan PIN kunci keamanan Anda. Jika tidak mengetahui PIN-nya, Anda perlu menyetel ulang kunci keamanan.</translation>
+<translation id="3589845496433710431">Tidak ada sidik jari yang tersimpan di kunci keamanan Anda.</translation>
+<translation id="1489956991149850859">Anda dapat menambahkan, menghapus, atau mengganti nama sidik jari di sini.</translation>
+<translation id="5995884201513800557">Terus ulangi menyentuh kunci keamanan Anda untuk menyimpan sidik jari.</translation>
+<translation id="1750172676754093297">Kunci keamanan Anda tidak dapat menyimpan sidik jari</translation>
 <translation id="3341703758641437857">Izinkan akses ke URL file</translation>
 <translation id="9003647077635673607">Izinkan di semua situs web</translation>
 <translation id="698524779381350301">Otomatis izinkan akses pada situs berikut</translation>
@@ -4223,6 +4300,8 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8523849605371521713">Ditambahkan sesuai kebijakan</translation>
 <translation id="5087249366037322692">Ditambahkan oleh pihak ketiga</translation>
 <translation id="6788210894632713004">Ektensi yang belum dibuka</translation>
+<translation id="2350133097354918058">Dimuat ulang</translation>
+<translation id="8635628933471165173">Memuat ulang...</translation>
 <translation id="3838085852053358637">Gagal memuat ekstensi</translation>
 <translation id="6370021412472292592">Tidak dapat memuat manifes.</translation>
 <translation id="7235716375204803342">Mengambil aktivitas...</translation>
@@ -4424,4 +4503,29 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="6336451774241870485">Tab rahasia yang baru</translation>
 <translation id="6610147964972079463">Tutup tab rahasia</translation>
 <translation id="8076492880354921740">Tab</translation>
+<translation id="2794233252405721443">Situs diblokir</translation>
+<translation id="1721312023322545264">Anda memerlukan izin dari <ph name="NAME"/> untuk mengunjungi situs ini</translation>
+<translation id="7543525346216957623">Tanyakan kepada orang tua</translation>
+<translation id="471880041731876836">Anda tidak memiliki izin untuk membuka situs ini</translation>
+<translation id="3480834636742786788">Mulai dan login ke Brave sebelum menggunakan aplikasi ini.</translation>
+<translation id="2851634818064021665">Anda memerlukan izin untuk membuka situs ini</translation>
+<translation id="4933782374919065856">Ada pertanyaan? Hubungi orang yang memantau profil Anda.</translation>
+<translation id="2712173769900027643">Minta izin</translation>
+<translation id="3886446263141354045">Permintaan Anda untuk mengakses situs ini telah dikirim ke <ph name="NAME"/></translation>
+<translation id="3345135638360864351">Permintaan Anda untuk mengakses situs ini tidak dapat dikirimkan ke <ph name="NAME"/>. Coba lagi.</translation>
+<translation id="6414888972213066896">Kamu telah meminta izin kepada orang tua untuk mengunjungi situs ini</translation>
+<translation id="4858792381671956233">Kamu telah meminta izin kepada orang tua untuk mengunjungi situs ini</translation>
+<translation id="3498215018399854026">Orang tua Anda saat ini tidak dapat dihubungi. Coba lagi.</translation>
+<translation id="8012647001091218357">Orang tua Anda saat ini tidak dapat dihubungi. Coba lagi.</translation>
+<translation id="3479539252931486093">Apakah hal ini tidak diharapkan? <ph name="BEGIN_LINK"/>Beri tahu kami<ph name="END_LINK"/></translation>
+<translation id="3586931643579894722">Sembunyikan detail</translation>
+<translation id="7444046173054089907">Situs ini diblokir</translation>
+<translation id="6778737459546443941">Orang tuamu belum menyetujuinya</translation>
+<translation id="8620436878122366504">Orang tuamu belum menyetujuinya</translation>
+<translation id="6563469144985748109">Pengelola Anda belum menyetujuinya</translation>
+<translation id="9076283476770535406">Situs mungkin berisi konten dewasa</translation>
+<translation id="7755287808199759310">Orang tua dapat membuka blokirnya untukmu</translation>
+<translation id="5732392974455271431">Orang tua dapat membuka blokirnya untukmu</translation>
+<translation id="3556433843310711081">Pengelola dapat membuka blokirnya untuk Anda</translation>
+<translation id="1254756632288991504">Mulai dan login ke Brave agar Brave dapat memeriksa apakah Anda diizinkan untuk mengakses situs ini atau tidak.</translation>
 </translationbundle>

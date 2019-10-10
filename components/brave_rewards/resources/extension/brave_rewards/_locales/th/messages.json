@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "เคล็ดลับประจำเดือนในเว็บไซต์นี้",
+    "message": "การสนับสนุนรายเดือน",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "ผู้สร้างที่ยืนยันแล้วนี้ยังไม่ได้ยืนยัน (KYC) บัญชีของตนเองเพื่อรับทิปจากวอลเล็ตที่ยืนยันแล้วของคุณ ทิปจะอยู่ในวอลเล็ตของคุณจะกว่าเขาจะยืนยันเสร็จสิ้น",
+    "message": "ครีเอเตอร์ Brave รายนี้ได้ผ่านการรับรองแล้ว แต่ยังไม่กำหนดค่าบัญชีของตนเพื่อรับเงินสนับสนุนจากผู้ใช้ Brave ทิปที่คุณส่งให้จะยังคงอยู่ในกระเป๋าสตางค์ของคุณจนกว่าขั้นตอนนี้จะเสร็จสมบูรณ์",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "ยืนยันวอลเล็ตให้เสร็จสิ้น",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "ตั้งค่า...",
+    "description": "Button text for setting monthly contribution"
   }
 }

@@ -46,6 +46,7 @@ Maaaring hindi available ang ilang tampok at hindi mase-save ang mga pagbabago s
 Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="1477146545787277177">Whoa! Nag-crash ang Brave. Muling ilunsad ngayon?</translation>
 <translation id="5785919770853225148">Ise-save ng Brave ang password na ito sa iyong Brave Software Account. Hindi mo na ito kailangang tandaan.</translation>
+<translation id="8211837073776713955">Ipinapaalam sa iyo ng Brave kung nakompromiso ang mga password mo</translation>
 <translation id="113959764510199339">Sinusubukan ng Brave na magpakita ng mga password.</translation>
 <translation id="7503098128120083822">Gustong i-export ng Brave ang iyong mga password.</translation>
 <translation id="8285294305439559616">Sinusubukan ng Brave na ipakita ang mga password. I-type ang password sa Windows upang payagan ito.</translation>
@@ -154,13 +155,6 @@ Kapag nag-sign in ka pa rin, isasama sa <ph name="ACCOUNT_EMAIL_NEW"/> ang impor
 <translation id="3205074487970075628">Ginagamit ng Brave ang iyong camera.</translation>
 <translation id="8142245354207161805">Mukhang ginagamit ang profile ng iba pang proseso ng Brave (<ph name="PROCESS_ID"/>) sa iba pang computer (<ph name="HOST_NAME"/>).  Ni-lock ng Brave ang profile upang hindi ito ma-corrupt.  Kung nakakatiyak ka na walang ibang mga proseso ang gumagamit sa profile na ito, maaari mong i-unlock ang profile at ilunsad muli ang Brave.</translation>
 <translation id="239760341987199724">Itakda ang Brave bilang iyong default na browser</translation>
-<translation id="5344925500065984750">Upang itakda kung aling mga website ang matitingnan ni <ph name="NEW_PROFILE_NAME"/>, maaari mong i-configure ang mga paghihigpit at setting sa pamamagitan ng pagbisita sa <ph name="BEGIN_LINK_1"/><ph name="DISPLAY_LINK"/><ph name="END_LINK_1"/>. Kung hindi mo babaguhin ang mga default na setting, maba-browse ni <ph name="NEW_PROFILE_NAME"/> ang lahat ng nasa web.
-
-Upang mapigilan si <ph name="NEW_PROFILE_NAME"/> na ma-access ang iyong account, tiyaking ila-lock mo ang iyong profile kapag hindi ka gumagamit ng Brave. Upang gawin ito, i-click ang pangalan ng iyong profile sa kanang sulok sa itaas ng browser, at piliin ang "Lumabas at i-childlock."
-<ph name="BEGIN_LINK_2"/>Matuto nang higit pa<ph name="END_LINK_2"/>
-
-Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagang tagubilin.</translation>
-<translation id="1820843143331379651">Mawawala na ang mga profile ng pinangangasiwaang user simula sa Brave 70.</translation>
 <translation id="669092380621816981">Made-delete sa device na ito ang data sa pag-browse ng taong ito. Para ma-recover ang data, mag-sign in sa Brave bilang <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Mas mahusay na ang Brave</translation>
 <translation id="7192666605334070839">Ngayon, mas madali nang gamitin ang Brave sa iyong Brave Software Account at sa mga nakabahaging computer.</translation>
@@ -202,7 +196,7 @@ Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagan
 <translation id="3598551856834560515">I-update ang Brave upang simulan ang pag-sync</translation>
 <translation id="4050175100176540509">May available na mahahalagang pagpapahusay sa seguridad at mga bagong feature sa pinakabagong bersyon.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Magre-restart ang Brave pagkalipas ng 1 segundo}one{Magre-restart ang Brave pagkalipas ng # segundo}other{Magre-restart ang Brave pagkalipas ng # na segundo}}</translation>
-<translation id="5509303873219371662">Dapat mo nang i-restart ang Brave</translation>
+<translation id="5646769069113654257">Paki-restart ang Brave ngayon</translation>
 <translation id="8668413672647811944">Naglapat ng espesyal na update sa seguridad para sa Brave. Mag-restart na at ire-restore namin ang iyong mga tab.</translation>
 <translation id="763369711159699222">Tumulong sa pagpapahusay ng Brave</translation>
 <translation id="1156940037717341650">Makakatulong ka na gawing mas ligtas at mas madaling gamitin ang Brave sa pamamagitan ng awtomatikong pag-uulat sa Brave Software ng mga detalye ng mga posibleng isyu sa seguridad.</translation>
@@ -226,7 +220,6 @@ Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagan
 <translation id="6141293433381251973">Awtomatikong nag-a-update ang Brave upang palagi kang may pinakabagong bersyon. Kapag nakumpleto ang pag-download na ito, magre-restart ang Brave at makakapagpatuloy ka na.</translation>
 <translation id="7808415789955822133">Mga tuntunin ng Brave OS</translation>
 <translation id="7207456302801184289">Maligayang Pagdating sa Brave</translation>
-<translation id="5688839044908745927">Halos handa na ang Brave.</translation>
 <translation id="3507835409099344374">Pumunta sa mga setting ng notification ng Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{May available na update sa Brave}=1{May available na update sa Brave}one{# araw nang may available na update sa Brave}other{# na araw nang may available na update sa Brave}}</translation>
 <translation id="720532315408041257">Hinihiling sa iyo ng administrator mo na muli mong ilunsad ang Brave para malapat ang update na ito</translation>
@@ -244,6 +237,8 @@ Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagan
 <translation id="1864557848095568223">Ina-update ang Brave</translation>
 <translation id="1786715389543715322">Ina-update ang Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="8208853227947884571">Napapanahon ang Brave</translation>
+<translation id="6756417787837743699">Para sa mga detalye ng Brave OS, pakitingnan ang <ph name="LINK_BEGIN"/>
+      Tungkol sa Brave OS<ph name="LINK_END"/></translation>
 <translation id="6686872257969654608">Tungkol sa Brave OS</translation>
 <translation id="2280363356796735201">Humingi ng tulong sa Brave OS</translation>
 <translation id="38898988211673781">I-clear ang cookies at data ng site kapag umalis ka sa Brave</translation>
@@ -251,6 +246,10 @@ Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagan
 <translation id="5468853758063275923">Brave ang iyong default na browser</translation>
 <translation id="1775322105159056176">Hindi matukoy o maitakda ng Brave ang default na browser</translation>
 <translation id="6915252145142862992">Pangalawang pag-install ito ng Brave at hindi ito maaaring gawing iyong default na browser.</translation>
+<translation id="6235873178214143377">Kung hindi lumalabas ang isang setting sa page na ito, tingnan sa iyong <ph name="LINK_BEGIN"/>
+      mga setting ng Brave browser<ph name="LINK_END"/></translation>
+<translation id="4459296183696059108">Kung hindi lumalabas ang isang setting sa page na ito, tingnan sa iyong <ph name="LINK_BEGIN"/>
+      mga setting ng Brave OS<ph name="LINK_END"/></translation>
 <translation id="7977435741986383568">Maaaring gumamit ang Brave ng mga serbisyo sa web upang mapahusay ang iyong karanasan sa pag-browse. Opsyonal mong madi-disable ang mga serbisyong ito. <ph name="BEGIN_LINK"/>Matuto pa<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Para maayos ang mga error sa pagbabaybay, ipinapadala ng Brave sa Brave Software ang text na na-type mo sa mga text field</translation>
 <translation id="8586264863973514035">Para ilapat ang iyong mga pagbabago, muling ilunsad ang Brave</translation>
@@ -264,8 +263,6 @@ Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagan
 <translation id="7445061995866044926">Mag-sign out sa Brave?</translation>
 <translation id="7453070689008684791">Ia-access ng Brave ang iyong Drive para makapagmungkahi sa address bar</translation>
 <translation id="3360368475735266712">Mag-sign in para i-sync at i-personalize ang Brave sa lahat ng iyong device</translation>
-<translation id="9221712274065451529">Ginagamit ang wikang ito para ipakita ang Brave OS UI</translation>
-<translation id="3518788198614984730">Ipakita ang Brave OS sa wikang ito</translation>
 <translation id="5757460455745382269">Ginagamit ang wikang ito para ipakita ang Brave UI</translation>
 <translation id="2335583906071111058">Ipakita ang Brave sa wikang ito</translation>
 <translation id="8926637909431618259">Patuloy na magpatakbo ng background na apps kapag nakasara ang Brave</translation>

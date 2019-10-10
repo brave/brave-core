@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Beri tip bulanan untuk situs ini",
+    "message": "Kontribusi Bulanan",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Kreator terverifikasi ini belum memverifikasi (KYC)  akun mereka untuk menerima tips dari dompet terverifikasi Anda. Tips akan tetap ada di dompet Anda sampai mereka menyelesaikan proses verifikasi.",
+    "message": "Pencipta Terverifikasi Brave ini belum mengkonfigurasi akunnya untuk menerima kontribusi dari pengguna Brave. Tips yang Anda kirim akan tetap disimpan di dompet Anda sampai mereka menyelesaikan proses ini.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Selesaikan verifikasi dompet",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Tetapkan…",
+    "description": "Button text for setting monthly contribution"
   }
 }

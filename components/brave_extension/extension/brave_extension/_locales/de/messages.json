@@ -4,7 +4,7 @@
     "description": "The name of the the extension."
   },
   "shields": {
-    "message": "Schilde",
+    "message": "Schutz",
     "description": "The Shields feature name"
   },
   "up": {
@@ -20,7 +20,7 @@
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "Falls eine Seite fehlerhaft dargestellt wird, versuchen Sie, die Schilde zu deaktivieren",
+    "message": "Wird die Seite falsch dargestellt? Deaktivieren Sie den Schutz und versuchen Sie es erneut.",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
@@ -76,19 +76,19 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Websiteübergreifende Geräteerkennung blockiert",
+    "message": "Seitenübergreifende Identifizierungen blockiert",
     "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Geräteerkennungs-Versuche blockiert",
+    "message": "Identifizierungs-Mechanismen blockiert",
     "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Alle Geräteerkennungs-Versuche zugelassen",
+    "message": "Alle Identifizierungs-Mechanismen zugelassen",
     "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
-    "message": "Geräteerkennungsversuche",
+    "message": "Versuche das Gerät zu Identifizieren",
     "description": "Message for the device recognition attempts blocked panel"
   },
   "scriptsOnThisSite": {
@@ -144,7 +144,7 @@
     "description": "Message for action in dynamic list of resources blocked to *apply once*"
   },
   "changeDefaults": {
-    "message": "Globale Schutzeinstellungen ändern",
+    "message": "Globale Einstellungen ändern",
     "description": "Message for the button action linking to the settings page"
   },
   "addBlockElement": {
@@ -176,7 +176,7 @@
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
-    "message": "Die Schildeinstellungen in dieser Ansicht zu ändern, könnte auf dieser Seite einen Einfluss auf die Web-Kompatibilität haben.",
+    "message": "Die Einstellungen zum Schutz in dieser Ansicht zu ändern, könnte auf dieser Seite einen Einfluss auf die Web-Kompatibilität haben.",
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {

@@ -78,10 +78,12 @@
 <translation id="2414886740292270097">Tamsu</translation>
 <translation id="3829010735958850433">Praleisti pristatymą</translation>
 <translation id="1201402288615127009">Toliau</translation>
+<translation id="7954950242989581218">Naršykite saugiai ir patikimai</translation>
+<translation id="2188651882929633653">„Brave“ skydai užblokuoja pavojingus elementus, bandančius jus sekti žiniatinklyje, įskaitant daugumą skelbimų. Nustatykite skydus „žemyn“, jei panašu, kad svetainė neveikia. „Brave“ naudoja <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>visiškai privačią produktų analizę<ph name="END_LINK_P3A">&lt;/a&gt;</ph> bendram tam tikrų funkcijų naudojimui įvertinti. Galite ją išjungti dalyje <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Nustatymai<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Reklama</translation>
 <translation id="5946611334574299206">Pelnykite žetonų už reklamos peržiūrą „Brave“. Pateikiamos reklamos paremtos jūsų interesais ir susijusios su jūsų naršymo elgesiu. Iš jūsų naršyklės neperduodami jokie asmens duomenys ar naršymo istorija.</translation>
 <translation id="6112368337882254910">Automatinis indėlis</translation>
-<translation id="1527222983464337010">Automatinis būdas, kaip galite paremti leidėjus ir turinio kūrėjus. Nustatykite mėnesinį mokėjimą ir naršykite įprastai. Jūsų lankomoms svetainėms jūsų indėlis bus išmokamas automatiškai pagal „Brave“ išmatuotą jūsų dėmesį.</translation>
+<translation id="3742599705619405136">Automatinis būdas, kaip galite paremti leidėjus ir turinio kūrėjus. Nustatykite mėnesinį mokėjimą ir naršykite įprastai. Jūsų lankomoms svetainėms jūsų indėlis bus išmokamas automatiškai pagal „Brave“ išmatuotą jūsų dėmesį.</translation>
 <translation id="20281847067919078">Numatomi laukiantys atlygiai</translation>
 <translation id="8593551638387217772">Kita mokėjimo data</translation>
 <translation id="319209088187794725">Šį mėnesį gauti pranešimai apie reklamas</translation>
@@ -100,12 +102,17 @@
 <translation id="8759716059844800317">Remiamos svetainės</translation>
 <translation id="2365740070488517695">Arbatpinigiai</translation>
 <translation id="1309807437617560451">Naršydami skirkite arbatpinigių turinio kūrėjams. Taip pat galite nustatyti pasikartojančius mėnesinius mokėjimus ir nuolat remti svetaines.</translation>
+<translation id="5012991400231464322">Mėnesiniai indėliai</translation>
+<translation id="2084351799622920487">Nustatykite pasikartojančius mėnesinius indėlius, kad galėtumėte nuolat paremti svetaines.</translation>
+<translation id="8150772404570015166">Dar nenustatyta jokių mėnesinių indėlių.</translation>
+<translation id="7269582398922493824">Paremkite savo mėgstamas svetaines pasikartojančiais mėnesiniais indėliais. Juos nustatyti galite arbatpinigių reklamjuostėje.</translation>
 <translation id="2241248417273918295">Išmokos mokamos kas mėnesį.</translation>
 <translation id="68906705461077250">Nustatyk norimą išmokų dažnį, kad jas padidintum ar sumažintum.</translation>
 <translation id="1847863811689960237">Atlyginkite kūrėjams už savo mėgstamą turinį.</translation>
 <translation id="4129489167302464118">Jūsų mėnesinė įmoka paskirstoma svetainėms, kuriose lankotės.</translation>
 <translation id="4898632353264854950">Svetainės bus rodomos jums naršant</translation>
 <translation id="3024485967181749006">Iš viso arbatpinigių šį mėnesį</translation>
+<translation id="5055577484189948413">Iš viso indėlių šį mėnesį</translation>
 <translation id="4153752809523809915">Ar šiandien jau atsilyginote savo mėgstamo turinio kūrėjui?</translation>
 <translation id="1165667598801520610">Pridėti lėšų</translation>
 <translation id="6239274080752256452">Išimti lėšų</translation>
@@ -113,7 +120,6 @@
 <translation id="7286722244752781970">Minimalus puslapyje praleistas laikas prieš užregistruojant apsilankymą</translation>
 <translation id="4424486208397124985">Minimalus apsilankymų skaičius, kad leidėjas būtų pripažintas tinkamu</translation>
 <translation id="4969081543473319051">Kas turėtų būti leidžiama?</translation>
-<translation id="2295504178524377899">Leisti paramą nepatvirtintoms svetainėms</translation>
 <translation id="5875669387851353511">Leisti paramą vaizdo įrašams</translation>
 <translation id="8933202740471878108">1 apsilankymas</translation>
 <translation id="354797634123275103">5 apsilankymai</translation>
@@ -209,6 +215,7 @@
 <translation id="4405997465645469914">Įjungdami „Brave Rewards“ nurodote, kad susipažinote ir sutinkate su</translation>
 <translation id="8819542691525488940">Spustelėdami ‘Taip, sutinku!’ nurodote, kad susipažinote ir sutinkate su</translation>
 <translation id="8071424789698327147">Spustelėdami ‘Taip, pasirengęs!’ nurodote, kad susipažinote ir sutinkate su</translation>
+<translation id="3745024317593003526">Nustatyti indėlį</translation>
 <translation id="7530570094705720669">Kuriama piniginė</translation>
 <translation id="2105596359439030979">Jūsų dėmesys yra vertingas. Gaukite užmokestį už peržiūrėtas privatumo nepažeidžiančias reklamas ir perveskite šiuos pinigus, kad paremtumėte mėgstamus turinio kūrėjus.</translation>
 <translation id="516395624550019162">Taip, sutinku!</translation>
@@ -272,6 +279,8 @@
 <translation id="211044356803193224">Mėnesiniai arbatpinigiai!</translation>
 <translation id="606865182719489911">Galima nemokamų žetonų išmoka.</translation>
 <translation id="3453206261112715431">Nemokamų žetonų išmoka</translation>
+<translation id="2280319752798785157">Mėnesinis indėlis</translation>
+<translation id="7627481505582641588">Kitas indėlis</translation>
 <translation id="5736183007277264868">Dabar nėra galimų žetonų išmokų.</translation>
 <translation id="8307851765167460403">Kol kas veiklos nėra…</translation>
 <translation id="8589748782214271192">Ačiū, ne</translation>
@@ -317,9 +326,8 @@
 <translation id="5717619667204259673">Saugokite šį atkūrimo kodą.</translation>
 <translation id="4699702339303280827">Su šiuo raktu visada gali susigrąžinti savo piniginę, jei kas nors nutiks naršyklei ar kompiuteriui. Todėl gerai saugok jį, nes kas gaus raktą, gali pasisavinti ir tavo piniginę. Saugiausia jį užsirašyti ant popieriaus ar ten, kur paprastai laikai savo svarbią informaciją.</translation>
 <translation id="7354412786785889047">Šio turinio kūrėją galite paremti nusiųsdami arbatpinigių. Tai būdas padėkoti jam už tai, kad kuria puikų turinį. Patvirtintiems turinio kūrėjams už gautus arbatpinigius mokama kiekvieno kalendorinio mėnesio pirmąją savaitę.</translation>
-<translation id="3475063317678050010">Jei norite, galite nustatyti mėnesinius mokėjimus ir nuolatos remti šį kūrėją.</translation>
+<translation id="972846019534552366">Jei norite, galite nustatyti mėnesinius mokėjimus ir nuolatos remti šį kūrėją.</translation>
 <translation id="3074127054582480056">Dėmesys</translation>
-<translation id="822513417008209372">Šiuo metu remiate</translation>
 <translation id="5010112177773747965">be jūsų sutikimo.</translation>
 <translation id="7147673045905733351">Šiandien „Brave“ jus sveikina naujajame internete.</translation>
 <translation id="1350763070659630336">Čia vertinamas jūsų laikas, išlaikomas jūsų asmeninių duomenų privatumas, o jums iš tiesų mokama už jūsų dėmesį.</translation>
@@ -343,6 +351,7 @@
 <translation id="1738658589626889850">Įrašyti kaip failą</translation>
 <translation id="259138486959961679">Rodyti visus {{skaičius}} elem.</translation>
 <translation id="7857284676033058221">Rodyti visas {{skaičius}} svetain.</translation>
+<translation id="1549705559752367917">Siųsti mano arbatpinigius</translation>
 <translation id="3536298624341433814">Siųsti mano arbatpinigius</translation>
 <translation id="8428213095426709021">Nustatymai</translation>
 <translation id="1792148354504719133">svetainė</translation>
@@ -386,7 +395,7 @@
 <translation id="6727483290601442544">Peržiūrėti išsamią informaciją</translation>
 <translation id="1988679729106502285">PASTABA.</translation>
 <translation id="5815103311506128988">Kūrėjas dar neužsiregistravo gauti įmokų iš Brave naudotojų. Tavo naršyklė mėgins paskirti lėšas, kol jie užsisakys, arba 90 dienų.</translation>
-<translation id="603411408512957306">Šis patvirtintas kūrėjas dar turi patvirtinti (KYC) savo paskyrą, kad galėtų gauti arbatpinigius iš patvirtintos piniginės. Arbatpinigiai liks jūsų piniginėje, kol bus užbaigtas patvirtinimas.</translation>
+<translation id="7461596279975181413">Šis „Brave“ patvirtintas kūrėjas dar nesukonfigūravo savo sąskaitos indėliams iš „Brave“ naudotojų gauti. Jūsų naršyklė mėgins paskirti lėšas, kol jis patvirtins, arba 90 dienų.</translation>
 <translation id="4292832015778676417">uždirbta iš reklamos</translation>
 <translation id="3197752845651180812">Laukiantys indėliai</translation>
 <translation id="3164105678355419142">Pasikartojantys arbatpinigiai</translation>
@@ -395,12 +404,12 @@
 <translation id="4346944508027912677">Laukiama iki</translation>
 <translation id="7410549756000115387">Nėra laukiančių indėlių…</translation>
 <translation id="1963227389609234879">Pašalinti viską</translation>
-<translation id="1170315781901539495">Neįtrauktos svetainės</translation>
+<translation id="8706157865312453070">Neįtrauktos svetainės</translation>
 <translation id="5119190679543565400">Atkurti šią svetainę</translation>
 <translation id="9075700728717335924">Neįtraukėte</translation>
 <translation id="4862817811647633830">automatinio indėlio svetainės.</translation>
 <translation id="923467487918828349">Rodyti viską</translation>
-<translation id="5471305206221894680">Remiamos svetainės</translation>
+<translation id="1397381065858030856">Remiamos svetainės</translation>
 <translation id="2306169361186864012">Atlygiai už „Brave“ reklamą!</translation>
 <translation id="3757873395477273033">Jūsų atlygių už „Brave“ reklamą išmoka jau pakeliui.</translation>
 <translation id="8101881066646819737">Jūsų „Brave“ reklamos žetonų išmoka</translation>

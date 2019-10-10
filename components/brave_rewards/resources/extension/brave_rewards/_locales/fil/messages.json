@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Nagbigay ng tip sa site na ito buwan-buwan",
+    "message": "Buwanang Kontribusyon",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Hindi pa nagagawa ng na-verify na creator na ito na i-verify (KYC) ang kanyang account para makatanggap ng mga tip mula sa iyong na-verify na wallet. Mananatili ang mga tip sa iyong wallet hanggang sa makumpleto ng mga ito ang pag-verify.",
+    "message": "Hindi pa nako-configure ng Creator na ito na Na-verify ng Brave ang kanyang account upang makatanggap ng mga kontribusyon mula sa mga User ng Brave. Mananatili sa iyong wallet ang anumang tip na ipapadala mo hanggang makumpleto nila ang prosesong ito.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Kumpletuhin ang pag-verify ng wallet",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Magtakda...",
+    "description": "Button text for setting monthly contribution"
   }
 }
