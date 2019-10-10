@@ -4,6 +4,7 @@
 
 #import <UIKit/UIKit.h>
 #import "bat/ledger/ledger.h"
+#import "bat/ledger/option_keys.h"
 
 #import "Records+Private.h"
 #import "ledger.mojom.objc+private.h"
@@ -22,6 +23,7 @@
 
 #import "BATLedgerDatabase.h"
 
+#import "base/time/time.h"
 #import "url/gurl.h"
 #import "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
@@ -45,7 +47,19 @@ static NSString * const kBackupNotificationFrequencyKey = @"BATBackupNotificatio
 static NSString * const kUserHasFundedKey = @"BATRewardsUserHasFunded";
 static NSString * const kBackupSucceededKey = @"BATRewardsBackupSucceeded";
 
-static const auto kOneDay = 24 * 60 * 60;
+static const auto kOneDay = base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
+
+/// Ledger Prefs, keys will be defined in `bat/ledger/option_keys.h`
+const std::map<std::string, bool> kBoolOptions = {};
+const std::map<std::string, int> kIntegerOptions = {};
+const std::map<std::string, double> kDoubleOptions = {};
+const std::map<std::string, std::string> kStringOptions = {};
+const std::map<std::string, int64_t> kInt64Options = {};
+const std::map<std::string, uint64_t> kUInt64Options = {
+  {ledger::kOptionPublisherListRefreshInterval,
+    7 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour}
+};
+/// ---
 
 NS_INLINE ledger::ACTIVITY_MONTH BATGetPublisherMonth(NSDate *date) {
   const auto month = [[NSCalendar currentCalendar] component:NSCalendarUnitMonth fromDate:date];
@@ -971,33 +985,62 @@ BATLedgerBridge(BOOL,
 
 - (bool)getBooleanOption:(const std::string&)name
 {
-  // TODO implement
-  return true;
+  DCHECK(!name.empty());
+  
+  const auto it = kBoolOptions.find(name);
+  DCHECK(it != kBoolOptions.end());
+  
+  return kBoolOptions.at(name);
 }
+
 - (int)getIntegerOption:(const std::string&)name
 {
-  // TODO implement
-  return 0;
+  DCHECK(!name.empty());
+  
+  const auto it = kIntegerOptions.find(name);
+  DCHECK(it != kIntegerOptions.end());
+  
+  return kIntegerOptions.at(name);
 }
+
 - (double)getDoubleOption:(const std::string&)name
 {
-  // TODO implement
-  return 0.0;
+  DCHECK(!name.empty());
+  
+  const auto it = kDoubleOptions.find(name);
+  DCHECK(it != kDoubleOptions.end());
+  
+  return kDoubleOptions.at(name);
 }
+
 - (std::string)getStringOption:(const std::string&)name
 {
-  // TODO implement
-  return "";
+  DCHECK(!name.empty());
+  
+  const auto it = kStringOptions.find(name);
+  DCHECK(it != kStringOptions.end());
+  
+  return kStringOptions.at(name);
 }
+
 - (int64_t)getInt64Option:(const std::string&)name
 {
-  // TODO implement
-  return 0;
+  DCHECK(!name.empty());
+  
+  const auto it = kInt64Options.find(name);
+  DCHECK(it != kInt64Options.end());
+  
+  return kInt64Options.at(name);
 }
+
 - (uint64_t)getUint64Option:(const std::string&)name
 {
-  // TODO implement
-  return 0;
+  DCHECK(!name.empty());
+  
+  const auto it = kUInt64Options.find(name);
+  DCHECK(it != kUInt64Options.end());
+  
+  return kUInt64Options.at(name);
 }
 
 #pragma mark - Ads & Confirmations
