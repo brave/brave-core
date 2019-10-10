@@ -8,26 +8,21 @@
   </outputs>
   <release seq="1">
     <includes>
-      <!-- WebUI Brave Rewards resources -->
-      <include name="IDR_BRAVE_REWARDS_HTML" file="ui/brave_rewards.html" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_IMG_WALLET_BG" file="img/wallet_bg.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_IMG_CAPTCHA_BAT" file="img/captcha_bat.png" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_IMG_WELCOME_BG" file="img/welcome_bg.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_IMG_BART_TEMP" file="img/temp/bartBaker.jpeg" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_IMG_BAT" file="img/BAT.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_IMG_BTC" file="img/BTC.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_IMG_ETH" file="img/ETH.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_IMG_LTC" file="img/LTC.svg" type="BINDATA" />
+      <!-- WebUI Brave Rewards Page resources -->
+      <include name="IDR_BRAVE_REWARDS_PAGE_HTML" file="page/brave_rewards_page.html" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_WALLET_BG" file="page/img/wallet_bg.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_CAPTCHA_BAT" file="page/img/captcha_bat.png" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_IMG_WELCOME_BG" file="page/img/welcome_bg.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_FAVICON" file="page/img/favicon.ico" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_NICEWARE_LIST" file="../../../vendor/bat-native-ledger/niceware/wordlist" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_FAVICON" file="img/favicon.ico" type="BINDATA" />
 
       <!-- WebUI Brave Rewards Internals resources -->
-      <include name="IDR_BRAVE_REWARDS_INTERNALS_HTML" file="ui/internals/brave_rewards_internals.html" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_INTERNALS_HTML" file="internals/brave_rewards_internals.html" type="BINDATA" />
 
-      <!-- WebUI tip resources -->
-      <include name="IDR_BRAVE_TIP_BG_1" file="img/tip_bg_1.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_TIP_BG_2" file="img/tip_bg_2.svg" type="BINDATA" />
-      <include name="IDR_BRAVE_TIP_HTML" file="tip/brave_tip.html" type="BINDATA" />
+      <!-- WebUI Brave Rewards Tip resources -->
+      <include name="IDR_BRAVE_REWARDS_TIP_BG_1" file="tip/img/tip_bg_1.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_TIP_BG_2" file="tip/img/tip_bg_2.svg" type="BINDATA" />
+      <include name="IDR_BRAVE_REWARDS_TIP_HTML" file="tip/brave_rewards_tip.html" type="BINDATA" />
     </includes>
   </release>
 </grit>

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import reducers from '../../../../brave_rewards/resources/ui/reducers/index'
+import reducers from '../../../../brave_rewards/resources/page/reducers/index'
 import { rewardsInitialState } from '../../../testData'
 
 describe('rewards reducers test', () => {
