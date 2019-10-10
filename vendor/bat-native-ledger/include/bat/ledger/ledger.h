@@ -16,7 +16,6 @@
 #include "bat/ledger/export.h"
 #include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/ledger_client.h"
-#include "bat/ledger/publisher_info.h"
 #include "bat/ledger/transactions_info.h"
 
 namespace ledger {

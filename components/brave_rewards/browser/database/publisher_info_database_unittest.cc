@@ -18,6 +18,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/brave_paths.h"
+#include "bat/ledger/global_constants.h"
 #include "sql/database.h"
 #include "sql/statement.h"
 #include "third_party/sqlite/sqlite3.h"

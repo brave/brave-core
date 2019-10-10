@@ -16,7 +16,6 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "bat/ledger/ledger_callback_handler.h"
-#include "bat/ledger/publisher_info.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "chrome/browser/profiles/profile.h"

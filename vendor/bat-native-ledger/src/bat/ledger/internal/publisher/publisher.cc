@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/bignum.h"
 #include "bat/ledger/internal/ledger_impl.h"

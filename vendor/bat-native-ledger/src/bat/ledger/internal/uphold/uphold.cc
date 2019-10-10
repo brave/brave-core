@@ -9,6 +9,7 @@
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/string_number_conversions.h"
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/uphold/uphold_authorization.h"
 #include "bat/ledger/internal/uphold/uphold_card.h"

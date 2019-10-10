@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/time/time.h"
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/contribution/phase_one.h"
 #include "bat/ledger/internal/contribution/phase_two.h"

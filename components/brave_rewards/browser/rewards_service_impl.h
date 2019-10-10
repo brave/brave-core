@@ -15,7 +15,6 @@
 
 #include "base/containers/flat_set.h"
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/wallet_properties.h"
 #include "base/files/file_path.h"
 #include "base/observer_list.h"
 #include "base/one_shot_event.h"

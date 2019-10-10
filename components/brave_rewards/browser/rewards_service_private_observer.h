@@ -8,7 +8,6 @@
 
 #include "base/observer_list_types.h"
 #include "bat/ledger/mojom_structs.h"
-#include "bat/ledger/publisher_info.h"
 
 namespace brave_rewards {
 

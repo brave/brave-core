@@ -10,10 +10,8 @@
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_client.h"
-#include "bat/ledger/publisher_info.h"
 #include "bat/ledger/transaction_info.h"
 #include "bat/ledger/transactions_info.h"
-#include "bat/ledger/wallet_properties.h"
 
 @interface BATTransactionInfo (Private)
 - (instancetype)initWithTransactionInfo:(const ledger::TransactionInfo&)obj;

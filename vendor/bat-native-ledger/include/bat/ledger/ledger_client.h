@@ -17,8 +17,6 @@
 #include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/export.h"
 #include "bat/ledger/ledger_callback_handler.h"
-#include "bat/ledger/publisher_info.h"
-#include "bat/ledger/wallet_properties.h"
 
 namespace confirmations {
 class LogStream;

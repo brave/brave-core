@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_rewards/browser/database/publisher_info_database.h"
 
+#include "bat/ledger/global_constants.h"
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/files/file_util.h"

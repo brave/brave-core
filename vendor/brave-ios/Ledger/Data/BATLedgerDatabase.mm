@@ -7,7 +7,7 @@
 
 #import "DataController.h"
 #import "CoreDataModels.h"
-#import "bat/ledger/publisher_info.h"
+#import "bat/ledger/global_constants.h"
 #import "RewardsLogStream.h"
 
 #define BLOG(__severity) RewardsLogStream(__FILE__, __LINE__, __severity).stream()
