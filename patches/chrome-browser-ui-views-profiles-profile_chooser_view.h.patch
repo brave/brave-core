@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_chooser_view.h b/chrome/browser/ui/views/profiles/profile_chooser_view.h
-index 99ce6f5b3da37e72f94e7e672adb361a8268ef08..4f5ad40c7c2de59cbe5b648cbced6dc9c7db7819 100644
+index 99ce6f5b3da37e72f94e7e672adb361a8268ef08..c7009bdbb49e3d26d8de4b3f1eb4498cf8d42d02 100644
 --- a/chrome/browser/ui/views/profiles/profile_chooser_view.h
 +++ b/chrome/browser/ui/views/profiles/profile_chooser_view.h
 @@ -46,6 +46,8 @@ class ProfileChooserView : public ProfileMenuViewBase,
