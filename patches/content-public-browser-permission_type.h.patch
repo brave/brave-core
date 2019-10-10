@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/permission_type.h b/content/public/browser/permission_type.h
-index df8c6616808be1a917ebe70694013134a5eee8a2..3847e84c7a9a84fecaa2ef99d0e419aa9ebede25 100644
+index df741d4618e2c49cc5c66a7a4a7ea6c41fcdd25a..5d544aecf3965eae17ce68b9c96624659ca3f6a4 100644
 --- a/content/public/browser/permission_type.h
 +++ b/content/public/browser/permission_type.h
-@@ -35,6 +35,7 @@ enum class PermissionType {
+@@ -40,6 +40,7 @@ enum class PermissionType {
    WAKE_LOCK_SCREEN = 20,
    WAKE_LOCK_SYSTEM = 21,
  

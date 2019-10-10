@@ -13,7 +13,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.ChromeSwitchPreferenceCompat;
+import org.chromium.chrome.browser.preferences.ChromeSwitchPreference;
 import org.chromium.chrome.browser.preferences.PreferenceUtils;
 
 public class PlayYTVideoInBrowserPreferences
@@ -25,8 +25,8 @@ public class PlayYTVideoInBrowserPreferences
         getActivity().setTitle(R.string.settings_play_yt_video_in_browser_title);
         PreferenceUtils.addPreferencesFromResource(this, R.xml.play_yt_video_in_browser_preferences);
 
-        ChromeSwitchPreferenceCompat pref =
-                (ChromeSwitchPreferenceCompat) findPreference(PLAY_YT_VIDEO_IN_BROWSER_KEY);
+        ChromeSwitchPreference pref =
+                (ChromeSwitchPreference) findPreference(PLAY_YT_VIDEO_IN_BROWSER_KEY);
         // Initially enabled.
         pref.setChecked(
             BravePrefServiceBridge.getInstance().getPlayYTVideoInBrowserEnabled());

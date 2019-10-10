@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index 53845f75f0a397917f1b7bc9302d29147118bc85..0085d875e195ca98ee8e04f8ca3da39ac22f94fe 100644
+index d09e6019f1b44f85be3066279e0aa51e29150694..fe211063e6b97e085b29c8108653c04ac1694577 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -266,7 +266,7 @@ void ToolbarView::Init() {
+@@ -274,7 +274,7 @@ void ToolbarView::Init() {
  
    std::unique_ptr<AvatarToolbarButton> avatar;
    if (show_avatar_toolbar_button)

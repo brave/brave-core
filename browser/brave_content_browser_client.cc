@@ -148,7 +148,7 @@ BraveContentBrowserClient::AllowWebBluetooth(
 
 bool BraveContentBrowserClient::HandleExternalProtocol(
     const GURL& url,
-    content::ResourceRequestInfo::WebContentsGetter web_contents_getter,
+    content::WebContents::Getter web_contents_getter,
     int child_id,
     content::NavigationUIData* navigation_data,
     bool is_main_frame,
@@ -222,22 +222,21 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
     content::BrowserContext* browser_context,
     content::RenderFrameHost* frame,
     int render_process_id,
-    bool is_navigation,
-    bool is_download,
+    URLLoaderFactoryType type,
     const url::Origin& request_initiator,
     mojo::PendingReceiver<network::mojom::URLLoaderFactory>* factory_receiver,
-    network::mojom::TrustedURLLoaderHeaderClientPtrInfo* header_client,
+    mojo::PendingRemote<network::mojom::TrustedURLLoaderHeaderClient>*
+        header_client,
     bool* bypass_redirect_checks) {
   bool use_proxy = false;
   // TODO(iefremov): Skip proxying for certain requests?
   use_proxy = BraveProxyingURLLoaderFactory::MaybeProxyRequest(
-      browser_context,
-      frame, is_navigation ? -1 : render_process_id,
+      browser_context, frame,
+      type == URLLoaderFactoryType::kNavigation ? -1 : render_process_id,
       factory_receiver);
 
   use_proxy |= ChromeContentBrowserClient::WillCreateURLLoaderFactory(
-      browser_context,
-      frame, render_process_id, is_navigation, is_download, request_initiator,
+      browser_context, frame, render_process_id, type, request_initiator,
       factory_receiver, header_client, bypass_redirect_checks);
 
   return use_proxy;
@@ -254,7 +253,8 @@ void BraveContentBrowserClient::CreateWebSocket(
     const GURL& url,
     const GURL& site_for_cookies,
     const base::Optional<std::string>& user_agent,
-    network::mojom::WebSocketHandshakeClientPtr handshake_client) {
+    mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
+        handshake_client) {
   auto* proxy = BraveProxyingWebSocket::ProxyWebSocket(
       frame,
       std::move(factory),
@@ -270,7 +270,7 @@ void BraveContentBrowserClient::CreateWebSocket(
         url,
         site_for_cookies,
         user_agent,
-        network::mojom::WebSocketHandshakeClientPtr(proxy->handshake_client()));
+        std::move(proxy->handshake_client().Unbind()));
   } else {
     proxy->Start();
   }
@@ -281,8 +281,8 @@ void BraveContentBrowserClient::MaybeHideReferrer(
     const GURL& request_url,
     const GURL& document_url,
     bool is_main_frame,
-    content::Referrer* referrer) {
-  DCHECK(referrer);
+    blink::mojom::ReferrerPtr* referrer) {
+  DCHECK(referrer && !referrer->is_null());
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   if (document_url.SchemeIs(kChromeExtensionScheme)) {
     return;
@@ -300,9 +300,13 @@ void BraveContentBrowserClient::MaybeHideReferrer(
     // But iframe navigations get spoofed instead (brave/brave-browser#3988).
     replacement_referrer_url = request_url.GetOrigin();
   }
-  brave_shields::ShouldSetReferrer(
-      allow_referrers, shields_up, referrer->url, document_url, request_url,
-      replacement_referrer_url, referrer->policy, referrer);
+  content::Referrer new_referrer;
+  if (brave_shields::ShouldSetReferrer(
+      allow_referrers, shields_up, (*referrer)->url, document_url, request_url,
+          replacement_referrer_url, (*referrer)->policy, &new_referrer)) {
+    (*referrer)->url = new_referrer.url;
+    (*referrer)->policy = new_referrer.policy;
+  }
 }
 
 GURL BraveContentBrowserClient::GetEffectiveURL(

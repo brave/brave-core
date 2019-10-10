@@ -1,5 +1,5 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.cc b/chrome/renderer/chrome_content_renderer_client.cc
-index ae7e07340ea41cd385448b23e0743ff1b65e5bbf..7bda38f292650e03388bd581b48dea78d00491e0 100644
+index 03781c0b08e0157fd478f286b2a80c83d6495a53..e5c361bea59094a4fc71217de4367031a6757f6d 100644
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
 @@ -22,6 +22,7 @@

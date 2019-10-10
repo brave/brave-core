@@ -21,7 +21,7 @@ content::WebUIDataSource* CreateBasicUIHTMLSource(
     int html_resource_id) {
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(name);
-  source->SetJsonPath("strings.js");
+  source->UseStringsJs();
   source->SetDefaultResource(html_resource_id);
   // Add generated resource paths
   for (size_t i = 0; i < resource_map_size; ++i) {

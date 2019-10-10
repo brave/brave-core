@@ -54,7 +54,7 @@ void BraveLocationBarView::OnChanged() {
   if (brave_actions_) {
     // Do not show actions whilst omnibar is open or url is being edited
     const bool should_hide =
-        IsLocationBarUserInputInProgress() && !omnibox_view_->text().empty();
+        IsLocationBarUserInputInProgress() && !omnibox_view_->GetText().empty();
     brave_actions_->SetShouldHide(should_hide);
   }
 

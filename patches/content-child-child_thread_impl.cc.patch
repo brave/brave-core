@@ -1,8 +1,8 @@
 diff --git a/content/child/child_thread_impl.cc b/content/child/child_thread_impl.cc
-index adbdcf956f4f79d038b6127423843fcb778ebf0e..d59124d6a3ad051dcd8dca8f2a9d13524480b8b4 100644
+index be70e3414a1e8633980209a0dca70fa5321b678f..8bd96f754bbffd53e4ff423c8dca33322650a759 100644
 --- a/content/child/child_thread_impl.cc
 +++ b/content/child/child_thread_impl.cc
-@@ -172,6 +172,9 @@ class SuicideOnChannelErrorFilter : public IPC::MessageFilter {
+@@ -182,6 +182,9 @@ class SuicideOnChannelErrorFilter : public IPC::MessageFilter {
      __lsan_do_leak_check();
  #endif
  #else

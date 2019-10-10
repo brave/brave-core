@@ -10,11 +10,13 @@ import android.content.Context;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.components.signin.AccountTrackerService;
+import org.chromium.components.sync.AndroidSyncSettings;
 
 public class BraveSigninManager extends SigninManager {
-    BraveSigninManager(Context context, long nativeSigninManagerAndroid, SigninManagerDelegate delegate,
+    BraveSigninManager(Context context, long nativeSigninManagerAndroid,
             AccountTrackerService accountTrackerService) {
-        super(context, nativeSigninManagerAndroid, delegate, accountTrackerService);
+        super(context, nativeSigninManagerAndroid, accountTrackerService,
+                AndroidSyncSettings.get());
     }
 
     @Override
@@ -28,12 +30,11 @@ public class BraveSigninManager extends SigninManager {
     }
 
     @CalledByNative
-    private static SigninManager create(long nativeSigninManagerAndroid,
-            SigninManagerDelegate delegate, AccountTrackerService accountTrackerService) {
+    private static SigninManager create(
+            long nativeSigninManagerAndroid, AccountTrackerService accountTrackerService) {
         assert nativeSigninManagerAndroid != 0;
-        assert delegate != null;
         assert accountTrackerService != null;
-        return new BraveSigninManager(ContextUtils.getApplicationContext(), nativeSigninManagerAndroid,
-                delegate, accountTrackerService);
+        return new BraveSigninManager(ContextUtils.getApplicationContext(),
+                nativeSigninManagerAndroid, accountTrackerService);
     }
 }

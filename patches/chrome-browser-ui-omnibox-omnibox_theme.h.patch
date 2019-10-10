@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_theme.h b/chrome/browser/ui/omnibox/omnibox_theme.h
-index 0adeb47d814d12199710c2e7527c34e49d0d28aa..7609ad04529b529cb61fbe86926505884b7a94af 100644
+index 1ad58410297798f96178e42ea36c7d2c4d0d0e0a..628bd96d29c66d97b506b126975cfea60927daab 100644
 --- a/chrome/browser/ui/omnibox/omnibox_theme.h
 +++ b/chrome/browser/ui/omnibox/omnibox_theme.h
 @@ -28,7 +28,7 @@ enum class OmniboxPart {

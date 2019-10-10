@@ -11,7 +11,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.ChromeSwitchPreferenceCompat;
+import org.chromium.chrome.browser.preferences.ChromeSwitchPreference;
 import org.chromium.chrome.browser.preferences.PreferenceUtils;
 
 public class DesktopModePreferences
@@ -23,8 +23,8 @@ public class DesktopModePreferences
         getActivity().setTitle(R.string.settings_desktop_mode_title);
         PreferenceUtils.addPreferencesFromResource(this, R.xml.desktop_mode_preferences);
 
-        ChromeSwitchPreferenceCompat desktopModePref =
-                (ChromeSwitchPreferenceCompat) findPreference(DESKTOP_MODE_KEY);
+        ChromeSwitchPreference desktopModePref =
+                (ChromeSwitchPreference) findPreference(DESKTOP_MODE_KEY);
         desktopModePref.setChecked(BravePrefServiceBridge.getInstance().getDesktopModeEnabled());
         desktopModePref.setOnPreferenceChangeListener(this);
     }

@@ -1,5 +1,5 @@
 diff --git a/android_webview/browser/aw_permission_manager.cc b/android_webview/browser/aw_permission_manager.cc
-index f1979fdcc078f31d8caad5da6cd68906b138f263..4d0f05ae1f14f7e6533398456bdebac7d04ba5ba 100644
+index c8782192b6e07503501eb3e5f219b5c533cbbff5..964f6f53ce071459a63a4ef2a2a1deb74e92eed3 100644
 --- a/android_webview/browser/aw_permission_manager.cc
 +++ b/android_webview/browser/aw_permission_manager.cc
 @@ -335,6 +335,7 @@ int AwPermissionManager::RequestPermissions(

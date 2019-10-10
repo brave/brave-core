@@ -1,13 +1,13 @@
 diff --git a/chrome/installer/setup/installer_state.cc b/chrome/installer/setup/installer_state.cc
-index 693bc9a9d8c4be1de440591b31ca6291c2120d61..7d28c7986e065c60be1fbc38b013f966b50392a3 100644
+index 77f49b0f49c17d41f85077f1eed40a6b014216e3..d305bfc312258ad10b088ab813d50ec66eb14ead 100644
 --- a/chrome/installer/setup/installer_state.cc
 +++ b/chrome/installer/setup/installer_state.cc
-@@ -233,7 +233,7 @@ void InstallerState::WriteInstallerResult(
+@@ -234,7 +234,7 @@ void InstallerState::WriteInstallerResult(
        system_install, install_static::GetClientStateKeyPath(), status,
        string_resource_id, launch_cmd, install_list.get());
    if (is_migrating_to_single() && InstallUtil::GetInstallReturnCode(status)) {
--#if defined(GOOGLE_CHROME_BUILD)
-+#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
      // Write to the binaries on error if this is a migration back to
      // single-install for Google Chrome builds. Skip this for Chromium builds
      // because they lump the "ClientState" and "Clients" keys into a single

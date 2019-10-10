@@ -1,0 +1,12 @@
+diff --git a/net/cookies/canonical_cookie.h b/net/cookies/canonical_cookie.h
+index e91331db38a4dcdbc6665feb01ccd033f9208382..851021735afee6f4c8d63a025bbb620fbb39f16e 100644
+--- a/net/cookies/canonical_cookie.h
++++ b/net/cookies/canonical_cookie.h
+@@ -77,6 +77,7 @@ class NET_EXPORT CanonicalCookie {
+   //
+   // If a cookie is returned, |cookie->IsCanonical()| will be true.
+   static std::unique_ptr<CanonicalCookie> Create(
++      BRAVE_CANONICAL_COOKIE_H_CREATE_EXTRA_PARAMS
+       const GURL& url,
+       const std::string& cookie_line,
+       const base::Time& creation_time,

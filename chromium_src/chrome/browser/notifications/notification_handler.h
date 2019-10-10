@@ -18,9 +18,17 @@ class NotificationHandler : public NotificationHandler_ChromiumImpl {
     EXTENSION = 2,
     SEND_TAB_TO_SELF = 3,
     TRANSIENT = 4,
-    BRAVE_ADS = 5,
+    PERMISSION_REQUEST = 5,
+    SHARING = 6,
+    BRAVE_ADS = 7,
     MAX = BRAVE_ADS,
   };
+
+  // Make sure we know if the original enum gets changed.
+  NotificationHandler() {
+    DCHECK(static_cast<int>(NotificationHandler_ChromiumImpl::Type::MAX) + 1 ==
+           static_cast<int>(Type::BRAVE_ADS));
+  }
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_NOTIFICATIONS_NOTIFICATION_HANDLER_H_

@@ -28,7 +28,6 @@ class BraveWidevineBundleUnzipper
   using DoneCallback = base::OnceCallback<void(const std::string& error)>;
 
   static scoped_refptr<BraveWidevineBundleUnzipper> Create(
-      service_manager::Connector* connector,
       scoped_refptr<base::SequencedTaskRunner> file_task_runner,
       DoneCallback done_callback);
 
@@ -42,7 +41,6 @@ class BraveWidevineBundleUnzipper
   friend class base::RefCountedThreadSafe<BraveWidevineBundleUnzipper>;
 
   BraveWidevineBundleUnzipper(
-      service_manager::Connector* connector,
       scoped_refptr<base::SequencedTaskRunner> file_task_runner,
       DoneCallback done_callback);
   ~BraveWidevineBundleUnzipper();
@@ -65,7 +63,6 @@ class BraveWidevineBundleUnzipper
   // So, lib is extracted to temp dir then copied to |target_unzip_dir_|.
   base::FilePath temp_unzip_dir_;
 
-  service_manager::Connector* connector_;
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   DoneCallback done_callback_;
 

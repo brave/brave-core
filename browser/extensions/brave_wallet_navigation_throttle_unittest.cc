@@ -16,7 +16,6 @@
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/prefs/browser_prefs.h"
-#include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -26,6 +25,7 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/common/content_client.h"
 #include "content/public/test/mock_navigation_handle.h"
+#include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/common/extension.h"
@@ -62,7 +62,7 @@ class MockBrowserClient : public content::ContentBrowserClient {
 }  // namespace
 
 class BraveWalletNavigationThrottleUnitTest
-    : public ChromeRenderViewHostTestHarness {
+    : public content::RenderViewHostTestHarness {
  public:
   BraveWalletNavigationThrottleUnitTest()
       : local_state_(TestingBrowserProcess::GetGlobal()) {
@@ -79,16 +79,16 @@ class BraveWalletNavigationThrottleUnitTest
     ASSERT_TRUE(profile_manager);
 #endif
     original_client_ = content::SetBrowserClientForTesting(&client_);
-    ChromeRenderViewHostTestHarness::SetUp();
+    content::RenderViewHostTestHarness::SetUp();
   }
 
-  content::BrowserContext* CreateBrowserContext() override {
+  std::unique_ptr<content::BrowserContext> CreateBrowserContext() override {
     TestingProfile::Builder builder;
     auto prefs =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
     RegisterUserProfilePrefs(prefs->registry());
     builder.SetPrefService(std::move(prefs));
-    return builder.Build().release();
+    return builder.Build();
   }
 
   void TearDown() override {
@@ -96,7 +96,11 @@ class BraveWalletNavigationThrottleUnitTest
     TestingBrowserProcess::GetGlobal()->SetProfileManager(nullptr);
 #endif
     content::SetBrowserClientForTesting(original_client_);
-    ChromeRenderViewHostTestHarness::TearDown();
+    content::RenderViewHostTestHarness::TearDown();
+  }
+
+  TestingProfile* profile() {
+    return static_cast<TestingProfile*>(browser_context());
   }
 
   content::RenderFrameHostTester* render_frame_host_tester(

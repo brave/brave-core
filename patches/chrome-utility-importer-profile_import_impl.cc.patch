@@ -1,5 +1,5 @@
 diff --git a/chrome/utility/importer/profile_import_impl.cc b/chrome/utility/importer/profile_import_impl.cc
-index 9c578d4cc46b57093e0d66dd82a83db512960aa9..92b270509b757114c235cad1ec619cffe6318843 100644
+index 98517c09d260220bcdde1f079def269f3a92d26e..7315b23fecb86221c003eb6d77690df624f71604 100644
 --- a/chrome/utility/importer/profile_import_impl.cc
 +++ b/chrome/utility/importer/profile_import_impl.cc
 @@ -5,11 +5,14 @@
@@ -17,7 +17,7 @@ index 9c578d4cc46b57093e0d66dd82a83db512960aa9..92b270509b757114c235cad1ec619cff
  #include "build/build_config.h"
  #include "chrome/utility/importer/external_process_importer_bridge.h"
  #include "chrome/utility/importer/importer.h"
-@@ -39,6 +42,19 @@ void ProfileImportImpl::StartImport(
+@@ -51,6 +54,19 @@ void ProfileImportImpl::StartImport(
  
    items_to_import_ = items;
  
@@ -37,7 +37,7 @@ index 9c578d4cc46b57093e0d66dd82a83db512960aa9..92b270509b757114c235cad1ec619cff
    // Create worker thread in which importer runs.
    import_thread_.reset(new base::Thread("import_thread"));
  #if defined(OS_WIN)
-@@ -48,7 +64,7 @@ void ProfileImportImpl::StartImport(
+@@ -60,7 +76,7 @@ void ProfileImportImpl::StartImport(
      NOTREACHED();
      ImporterCleanup();
    }

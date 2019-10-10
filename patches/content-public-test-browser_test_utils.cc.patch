@@ -1,0 +1,12 @@
+diff --git a/content/public/test/browser_test_utils.cc b/content/public/test/browser_test_utils.cc
+index 1d20b6d9540df2fa87afab7f5fc524f0cdead3f1..edc38ca9625477e37fee32e36e979106aa3e085d 100644
+--- a/content/public/test/browser_test_utils.cc
++++ b/content/public/test/browser_test_utils.cc
+@@ -1823,6 +1823,7 @@ bool SetCookie(BrowserContext* browser_context,
+       ->GetNetworkContext()
+       ->GetCookieManager(cookie_manager.BindNewPipeAndPassReceiver());
+   std::unique_ptr<net::CanonicalCookie> cc(net::CanonicalCookie::Create(
++      BRAVE_SETCOOKIE
+       url, value, base::Time::Now(), base::nullopt /* server_time */));
+   DCHECK(cc.get());
+ 
