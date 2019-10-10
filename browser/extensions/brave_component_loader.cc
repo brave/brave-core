@@ -97,15 +97,6 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
   }
 #endif
 
-  if (!command_line.HasSwitch(switches::kDisableWebTorrentExtension) &&
-      (!profile_prefs_->FindPreference(kWebTorrentEnabled) ||
-      profile_prefs_->GetBoolean(kWebTorrentEnabled))) {
-    base::FilePath brave_webtorrent_path(FILE_PATH_LITERAL(""));
-    brave_webtorrent_path =
-      brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
-    Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
-  }
-
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   // If brave://wallet has been loaded at least once, then load it again.
   if (ExtensionPrefs::Get(profile_)->
@@ -124,5 +115,18 @@ void BraveComponentLoader::AddEthereumRemoteClientExtension() {
   }
 }
 #endif
+
+void BraveComponentLoader::AddWebTorrentExtension() {
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  if (!command_line.HasSwitch(switches::kDisableWebTorrentExtension) &&
+      (!profile_prefs_->FindPreference(kWebTorrentEnabled) ||
+      profile_prefs_->GetBoolean(kWebTorrentEnabled))) {
+    base::FilePath brave_webtorrent_path(FILE_PATH_LITERAL(""));
+    brave_webtorrent_path =
+      brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
+    Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
+  }
+}
 
 }  // namespace extensions

@@ -5,13 +5,40 @@
 
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 
+#include <string>
+
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/common/network_constants.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+#include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_registry.h"
+#include "net/http/http_content_disposition.h"
 
 namespace webtorrent {
+
+bool TorrentFileNameMatched(const net::HttpResponseHeaders* headers) {
+  std::string disposition;
+  if (!headers->GetNormalizedHeader("Content-Disposition", &disposition)) {
+    return false;
+  }
+
+  net::HttpContentDisposition cd_headers(disposition, std::string());
+  if (base::EndsWith(cd_headers.filename(), ".torrent",
+        base::CompareCase::INSENSITIVE_ASCII) ||
+      base::EndsWith(cd_headers.filename(), ".torrent\"",
+        base::CompareCase::INSENSITIVE_ASCII)) {
+    return true;
+  }
+
+  return false;
+}
+
+bool TorrentURLMatched(const GURL& url) {
+  return base::EndsWith(url.spec(), ".torrent",
+      base::CompareCase::INSENSITIVE_ASCII);
+}
 
 bool IsWebtorrentEnabled(content::BrowserContext* browser_context) {
   extensions::ExtensionRegistry* registry =
@@ -19,8 +46,35 @@ bool IsWebtorrentEnabled(content::BrowserContext* browser_context) {
   return registry->enabled_extensions().Contains(brave_webtorrent_extension_id);
 }
 
+bool IsWebtorrentPrefEnabled(content::BrowserContext* browser_context) {
+  return Profile::FromBrowserContext(browser_context)->
+      GetPrefs()->GetBoolean(kWebTorrentEnabled);
+}
+
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kWebTorrentEnabled, true);
+}
+
+bool IsTorrentFile(const GURL& url, const net::HttpResponseHeaders* headers) {
+  if (!headers) {
+    return false;
+  }
+
+  std::string mimeType;
+  if (!headers->GetMimeType(&mimeType)) {
+    return false;
+  }
+
+  if (mimeType == kBittorrentMimeType) {
+    return true;
+  }
+
+  if (mimeType == kOctetStreamMimeType &&
+      (TorrentURLMatched(url) || TorrentFileNameMatched(headers))) {
+    return true;
+  }
+
+  return false;
 }
 
 }  // namespace webtorrent
