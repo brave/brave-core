@@ -28,9 +28,24 @@ SearchEngineProviderService::SearchEngineProviderService(
       base::Bind(&SearchEngineProviderService::OnPreferenceChanged,
                  base::Unretained(this)));
 
-  auto data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
-      otr_profile->GetPrefs(),
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO);
+  std::vector<TemplateURLPrepopulateData::BravePrepopulatedEngineID>
+      alt_search_providers = {
+          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
+          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
+          TemplateURLPrepopulateData::
+              PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE
+      };
+
+  std::unique_ptr<TemplateURLData> data;
+  for (const auto& id : alt_search_providers) {
+    data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+        otr_profile->GetPrefs(), id);
+    if (data)
+      break;
+  }
+
+  // There should ALWAYS be one entry
+  DCHECK(data);
   alternative_search_engine_url_.reset(new TemplateURL(*data));
 }
 
