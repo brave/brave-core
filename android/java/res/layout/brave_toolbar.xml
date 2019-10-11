@@ -59,8 +59,8 @@
       android:orientation="vertical"
       android:layout_marginTop="8dp"
       android:background="@drawable/modern_toolbar_background_grey_end_segment"
-      android:layout_height="40dp" >
-      <!-- sergz: Should be gone by default-->
+      android:layout_height="40dp"
+      android:visibility="gone" >
 
       <ImageButton android:id="@+id/brave_rewards_button"
           style="@style/ToolbarButton"
