@@ -15,6 +15,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsPanelPopup.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRewardsSiteBannerActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ConfigAPIs.java",
   "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveShieldsMenuAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveShieldsMenuHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveShieldsMenuObserver.java",
@@ -45,4 +46,5 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BookmarksButton.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout.java",
+  "../../brave/android/java/org/chromium/chrome/browser/util/SafetyNetCheck.java",
 ]

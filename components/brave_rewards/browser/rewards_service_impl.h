@@ -37,7 +37,9 @@
 #include "brave/components/brave_rewards/browser/extension_rewards_service_observer.h"
 #endif
 
-#if defined(OS_ANDROID)
+#if defined(OS_ANDROID) && defined(BRAVE_CHROMIUM_BUILD)
+#include "brave/browser/android/rewards/safetynet_check.h"
+#elif defined(OS_ANDROID)
 #include "chrome/browser/android/brave/safetynet_check.h"
 #endif
 

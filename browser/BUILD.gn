@@ -190,6 +190,8 @@ source_set("browser_process") {
       "android/preferences/brave_pref_service_bridge.cc",
       "android/preferences/website/desktop_mode_tab_helper.cc",
       "android/preferences/website/desktop_mode_tab_helper.h",
+      "android/rewards/safetynet_check.cc",
+      "android/rewards/safetynet_check.h",
     ]
 
     if (brave_rewards_enabled) {

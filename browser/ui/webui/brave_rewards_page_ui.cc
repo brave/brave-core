@@ -35,13 +35,15 @@
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/common/bindings_policy.h"
 
-#if !defined(OS_ANDROID)
+#if defined(BRAVE_CHROMIUM_BUILD)
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_page_generated_map.h"
 #else
 #include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
 #include "components/grit/components_resources.h"
 #include "components/grit/components_scaled_resources.h"
+#endif
+#if defined(OS_ANDROID)
 #include "content/public/browser/url_data_source.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
@@ -272,11 +274,12 @@ RewardsDOMHandler::~RewardsDOMHandler() {
 
 void RewardsDOMHandler::RegisterMessages() {
 #if defined(OS_ANDROID)
+  // TODO sergz: figure out why we have link error here
   // Create our favicon data source.
-  Profile* profile = Profile::FromWebUI(web_ui());
-  content::URLDataSource::Add(profile,
-                              std::make_unique<FaviconSource>(profile,
-                              chrome::FaviconUrlFormat::kFaviconLegacy));
+  // Profile* profile = Profile::FromWebUI(web_ui());
+  // content::URLDataSource::Add(profile,
+  //                            std::make_unique<FaviconSource>(profile,
+  //                            chrome::FaviconUrlFormat::kFaviconLegacy));
 #endif
 
   web_ui()->RegisterMessageCallback("brave_rewards.createWalletRequested",
