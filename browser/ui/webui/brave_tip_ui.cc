@@ -371,22 +371,26 @@ void RewardsTipDOMHandler::TweetTip(const base::ListValue *args) {
   std::map<std::string, std::string> share_url_args;
   share_url_args["comment"] = comment;
   if (!base::IsStringUTF8(share_url_args["comment"]))
-    LOG(ERROR) << "\033[1;32m[5516] " << __func__ << " : share_url_args[\"comment\"] is not valid UTF-8 - (" <<
+    LOG(ERROR) << "\033[1;32m[5516] " << __func__ <<
+    " : share_url_args[\"comment\"] is not valid UTF-8 - (" <<
     share_url_args["comment"] << ")\033[0m";
 
   share_url_args["hashtag"] = hashtag;
   if (!base::IsStringUTF8(share_url_args["hashtag"]))
-    LOG(ERROR) << "\033[1;32m[5516] " << __func__ << " : share_url_args[\"hashtag\"] is not valid UTF-8 - (" <<
+    LOG(ERROR) << "\033[1;32m[5516] " << __func__ <<
+    " : share_url_args[\"hashtag\"] is not valid UTF-8 - (" <<
     share_url_args["hashtag"] << ")\033[0m";
 
   share_url_args["name"] = name.erase(0, 1);
   if (!base::IsStringUTF8(share_url_args["name"]))
-    LOG(ERROR) << "\033[1;32m[5516] " << __func__ << " : share_url_args[\"name\"] is not valid UTF-8 - (" <<
+    LOG(ERROR) << "\033[1;32m[5516] " << __func__ <<
+    " : share_url_args[\"name\"] is not valid UTF-8 - (" <<
     share_url_args["name"] << ")\033[0m";
 
   share_url_args["tweet_id"] = tweet_id;
   if (!base::IsStringUTF8(share_url_args["tweet_id"]))
-    LOG(ERROR) << "\033[1;32m[5516] " << __func__ << " : share_url_args[\"tweet_id\"] is not valid UTF-8 - (" <<
+    LOG(ERROR) << "\033[1;32m[5516] " << __func__ <<
+    " : share_url_args[\"tweet_id\"] is not valid UTF-8 - (" <<
     share_url_args["tweet_id"] << ")\033[0m";
 
   rewards_service_->GetShareURL(
@@ -405,7 +409,8 @@ void RewardsTipDOMHandler::OnTwitterShareURL(const std::string& url) {
   if (!base::IsStringUTF8(url)) {
     // SRC: https://webcache.googleusercontent.com/search?q=cache:7cKhSpc-3qMJ:https://chromium-coverage.appspot.com/reports/586584/linux/chromium/src/components/payments/content/manifest_verifier.cc.html+&cd=6&hl=en&ct=clnk&gl=uk
     // GURL constructor may crash with some invalid unicode strings.
-    LOG(ERROR) << "\033[1;32m[5516] " << __func__ << " : url is not valid UTF-8 - (" << url << ")\033[0m";
+    LOG(ERROR) << "\033[1;32m[5516] " << __func__ <<
+    " : url is not valid UTF-8 - (" << url << ")\033[0m";
     return;
   }
 
@@ -414,7 +419,8 @@ void RewardsTipDOMHandler::OnTwitterShareURL(const std::string& url) {
   GURL gurl(url);
 
   if (!gurl.is_valid()) {
-    LOG(ERROR) << "\033[1;32m[5516] " << __func__ << " : !gurl.is_valid()\033[0m";
+    LOG(ERROR) << "\033[1;32m[5516] " << __func__ <<
+    " : !gurl.is_valid()\033[0m";
     return;
   }
   // Open a new tab with the prepopulated tweet ready to share.
