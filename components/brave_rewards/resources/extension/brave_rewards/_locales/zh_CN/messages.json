@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "每月打赏本网站",
+    "message": "每月捐款",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "经过验证的创作者尚未验证 (KYC) 其帐户，以便从经过验证的钱包中收到消费。在完成验证之前，小费将保留在您的钱包中。",
+    "message": "此经过 Brave 验证创建者尚未配置其账户以接收来自 Brave 用户的捐款。您发送的任何打赏都将保留在您的钱包中，直到他们完成该流程。",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "完成钱包验证",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "设置...",
+    "description": "Button text for setting monthly contribution"
   }
 }

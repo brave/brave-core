@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Gửi tiền boa cho trang web này hàng tháng",
+    "message": "Khoản đóng góp hàng tháng",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Người sáng tạo đã được xác thực này chưa xác thực (KYC) tài khoản của họ để nhận tiền thưởng từ ví đã xác thực của bạn. Tiền thưởng sẽ được giữ lại trong ví của bạn cho đến khi họ hoàn thành việc xác thực.",
+    "message": "Người sáng tạo được Brave xác minh này chưa định cấu hình tài khoản của họ để nhận các khoản đóng góp từ Người dùng Brave. Bất kỳ khoản tiền thưởng thêm nào mà bạn gửi sẽ vẫn nằm trong ví của bạn cho đến khi họ hoàn tất quá trình này.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Hoàn thành xác thực ví",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Thiết lập...",
+    "description": "Button text for setting monthly contribution"
   }
 }

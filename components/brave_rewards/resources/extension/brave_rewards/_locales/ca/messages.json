@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Dona propines en aquest lloc mensualment",
+    "message": "Contribució Mensual",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Aquest creador verificat encara ha de verificar (KYC) el seu compte per a poder rebre donatius del vostre moneder verificat. Els donatius romandran al vostre moneder fins que es completi la verificació.",
+    "message": "Aquest Creador Verificat de Brave encara no ha configurat el seu compte per a rebre donacions d'usuaris de Brave. Qualsevol donatiu que envieu romandrà al vostre moneder fins que es completi aquest procés.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Completeu la verificació del moneder",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Configureu...",
+    "description": "Button text for setting monthly contribution"
   }
 }

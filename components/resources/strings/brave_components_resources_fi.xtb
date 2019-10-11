@@ -78,10 +78,12 @@
 <translation id="2414886740292270097">Pimeä</translation>
 <translation id="3829010735958850433">Ohita tervetuliaiskierros</translation>
 <translation id="1201402288615127009">Seuraava</translation>
+<translation id="7954950242989581218">Selaa turvallisesti ja huoletta</translation>
+<translation id="2188651882929633653">Brave Shields estää ne epäilyttävät asiat, jotka yrittävät seurata sinua eri puolilla nettiä suurin osa mainoksista mukaan lukien. Mikäli sivusto ei vaikuta toimivan, “laske” Shields sivuun. Brave hyödyntää <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>täysin yksityisenä pysyvää tuoteanalytiikkaa<ph name="END_LINK_P3A">&lt;/a&gt;</ph> arvioidakseen tiettyjen ominaisuuksien kokonaiskäyttöä. Voit kytkeä tämän ominaisuuden pois päältä <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>asetuksissa<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Mainokset</translation>
 <translation id="5946611334574299206">Ansaitse poletteja katsomalla mainoksia Bravessa. Näytetyt mainokset perustuvat mieltymyksiisi, jotka määritellään selainkäyttäytymisesi perusteella. Henkilökohtaisia tietojasi tai selaushistoriaasi ei koskaan lähetetä selaimesi ulkopuolelle.</translation>
 <translation id="6112368337882254910">Osallistu automaattisesti</translation>
-<translation id="1527222983464337010">Automaattinen tapa tukea julkaisijoita ja sisällöntuottajia. Aseta kuukausittainen maksu ja selaile normaalisti. Vierailemasi sivustot saavat lahjoituksesi automaattisesti, perustuen Braven mittaamaan huomioosi.</translation>
+<translation id="3742599705619405136">Automaattinen tapa tukea julkaisijoita ja sisällöntuottajia. Aseta kuukausittainen maksu ja selaile normaalisti. Vierailemasi sivustot saavat lahjoituksesi automaattisesti, perustuen Braven mittaamaan huomioosi.</translation>
 <translation id="20281847067919078">Arvioidut odottavat palkkiot</translation>
 <translation id="8593551638387217772">Seuraava maksupäivä</translation>
 <translation id="319209088187794725">Tässä kuussa saadut mainosilmoitukset</translation>
@@ -100,12 +102,17 @@
 <translation id="8759716059844800317">Tuetut sivustot</translation>
 <translation id="2365740070488517695">Tipit</translation>
 <translation id="1309807437617560451">Anna tippejä sisällönluojille selatessasi. Voit myös määrittää toistuvat kuukausittaiset tipit, niin voit tukea sivustoja jatkuvasti.</translation>
+<translation id="5012991400231464322">Kuukausittaiset avustukset</translation>
+<translation id="2084351799622920487">Aseta toistuvat kuukausittaiset avustukset, niin voit tukea sivustoja jatkuvalta pohjalta.</translation>
+<translation id="8150772404570015166">Kuukausittaisia avustuksia ei ole vielä asetettu.</translation>
+<translation id="7269582398922493824">Tue suosikkisivustojasi toistuvilla kuukausittaisilla avustuksilla. Voit asettaa avustukset tippibannerin kautta.</translation>
 <translation id="2241248417273918295">Ansiot maksetaan joka kuukausi.</translation>
 <translation id="68906705461077250">Määritä haluamasi tiheysaste ansioiden lisäämiselle tai vähentämiselle.</translation>
 <translation id="1847863811689960237">Palkitse sisällöntuottajia, joista pidät.</translation>
 <translation id="4129489167302464118">Kuukausimaksusi jaetaan vierailtujesi sivustojen kesken.</translation>
 <translation id="4898632353264854950">Sivustoja ilmaantuu, kun selaat</translation>
 <translation id="3024485967181749006">Kuukauden kaikki tipit</translation>
+<translation id="5055577484189948413">Avustukset yhteensä tässä kuussa</translation>
 <translation id="4153752809523809915">Oletko tipannut suosikkisisällöntuottajaasi tänään?</translation>
 <translation id="1165667598801520610">Lisää varoja</translation>
 <translation id="6239274080752256452">Nosta rahaa</translation>
@@ -113,7 +120,6 @@
 <translation id="7286722244752781970">Sivustolla vierailun vähimmäiskesto ennen vierailun kirjautumista</translation>
 <translation id="4424486208397124985">Vierailukertojan vähimmäismäärä julkaisijan kannalta</translation>
 <translation id="4969081543473319051">Mitä tulisi sallia?</translation>
-<translation id="2295504178524377899">Salli lahjoitus vahvistamattomille sivustoille</translation>
 <translation id="5875669387851353511">Salli lahjoitus videoihin</translation>
 <translation id="8933202740471878108">1 vierailu</translation>
 <translation id="354797634123275103">5 vierailua</translation>
@@ -209,6 +215,7 @@
 <translation id="4405997465645469914">Asettamalla Brave-palkinnot päälle ilmaiset lukeneesi ja hyväksyväsi</translation>
 <translation id="8819542691525488940">Napauttamalla ‘Kyllä, mukana ollaan!’, -painiketta ilmaiset lukeneesi ja hyväksyväsi</translation>
 <translation id="8071424789698327147">Napauttamalla ‘Kyllä, olen valmis!’, -painiketta ilmaiset lukeneesi ja hyväksyväsi</translation>
+<translation id="3745024317593003526">Aseta avustus</translation>
 <translation id="7530570094705720669">Luodaan lompakkoa</translation>
 <translation id="2105596359439030979">Huomiosi on arvokasta. Ansaitse rahaa katsomalla yksityisyyttä kunnioittavia mainoksia ja anna hyvän kiertää tukemalla rakastamiasi sisällöntuottajia.</translation>
 <translation id="516395624550019162">Kyllä, olen mukana!</translation>
@@ -272,6 +279,8 @@
 <translation id="211044356803193224">Kuukausittaiset vihjeet</translation>
 <translation id="606865182719489911">Ilmainen lahjoituspoletti on saatavilla</translation>
 <translation id="3453206261112715431">Ilmainen tunnuslahjoitus</translation>
+<translation id="2280319752798785157">Kuukausittainen avustus</translation>
+<translation id="7627481505582641588">Seuraava avustus</translation>
 <translation id="5736183007277264868">Tällä hetkellä ei ole polettilahjoituksia saatavilla.</translation>
 <translation id="8307851765167460403">Ei vielä aktiviteetteja…</translation>
 <translation id="8589748782214271192">Ei kiitos</translation>
@@ -317,9 +326,8 @@
 <translation id="5717619667204259673">Keep this recovery key safe.</translation>
 <translation id="4699702339303280827">Voit aina käyttää tätä avainta lompakkosi palauttamiseen, jos jotain käy selaimellesi tai tietokoneellesi. Muista kuitenkin pitää se turvassa — kuka tahansa avaimen omaava voi nimittäin varastaa lompakkosi. On todennäköisesti turvallisinta kirjoittaa se muistiin paperille tai muulle tärkeälle muistiinpanovälineellesi.</translation>
 <translation id="7354412786785889047">Voit tukea tätä sisällönkehittäjää antamalla tipin. Se on kiitos mainion sisällön tuottamisesta. Vahvistetut kehittäjät saavat maksun tipeistään jokaisen kalenterikuun ensimmäisen viikon aikana.</translation>
-<translation id="3475063317678050010">Voit halutessasi ajastaa kuukausittain annettavia tippejä tukeaksesi tätä kehittäjää säännöllisesti.</translation>
+<translation id="972846019534552366">Voit halutessasi ajastaa kuukausittain annettavia tippejä tukeaksesi tätä kehittäjää säännöllisesti.</translation>
 <translation id="3074127054582480056">Huomio</translation>
-<translation id="822513417008209372">Tuet’ tällä hetkellä kohdetta</translation>
 <translation id="5010112177773747965">ilman suostumustasi.</translation>
 <translation id="7147673045905733351">Tänään Brave toivottaa sinut tervetulleeksi uuteen Internetiin.</translation>
 <translation id="1350763070659630336">Paikka, jossa aikasi on arvokasta, tietosi pidetään turvassa ja huomiostasi maksetaan.</translation>
@@ -343,6 +351,7 @@
 <translation id="1738658589626889850">Tallenna tiedostona</translation>
 <translation id="259138486959961679">Näytä kaikki {{numItems}} tuotetta</translation>
 <translation id="7857284676033058221">Näytä kaikki {{numSites}} sivustot</translation>
+<translation id="1549705559752367917">Lähetä tippini</translation>
 <translation id="3536298624341433814">Lähetä tippini</translation>
 <translation id="8428213095426709021">Asetukset</translation>
 <translation id="1792148354504719133">sivusto</translation>
@@ -385,7 +394,7 @@
 <translation id="6727483290601442544">Katso yksityiskohdat</translation>
 <translation id="1988679729106502285">HUOMIO:</translation>
 <translation id="5815103311506128988">Tämä kehittäjä ei ole vielä rekisteröitynyt vastaanottamaan  Brave-käyttäjien avustuksia. Selaimesi pyrkii tekemään avustuksia joko kyseisen henkilön vahvistukseen asti tai kunnes 90 päivää on kulunut.</translation>
-<translation id="603411408512957306">Tämän vahvistetun tekijän on vielä vahvistettava (KYC) tilinsä voidakseen vastaanottaa tippejä vahvistetusta lompakostasi. Tipit pysyvät lompakossasi vahvistuksen suorittamiseen asti.</translation>
+<translation id="7461596279975181413">Tämä Braven vahvistettu tekijä ei ole vielä asettanut tiliään hyväksymään avustuksia Braven käyttäjiltä. Selaimesi yrittää avustamista kunnes tekijä todentaa itsensä tai 90 päivän raja tulee täyteen.</translation>
 <translation id="4292832015778676417">ansaittu mainoksista</translation>
 <translation id="3197752845651180812">Odottavat lahjoitukset</translation>
 <translation id="3164105678355419142">Toistuva tippi</translation>
@@ -394,12 +403,12 @@
 <translation id="4346944508027912677">Odotus päättyy</translation>
 <translation id="7410549756000115387">Ei odottavia lahjoituksia…</translation>
 <translation id="1963227389609234879">Poista kaikki</translation>
-<translation id="1170315781901539495">Pois rajatut sivustot</translation>
+<translation id="8706157865312453070">Pois rajatut sivustot</translation>
 <translation id="5119190679543565400">Palauta tämä sivusto</translation>
 <translation id="9075700728717335924">Olet rajannut pois:</translation>
 <translation id="4862817811647633830">Automaattiosallistumisen sivut.</translation>
 <translation id="923467487918828349">Näytä kaikki</translation>
-<translation id="5471305206221894680">Tuetut sivustot</translation>
+<translation id="1397381065858030856">Tuetut sivustot</translation>
 <translation id="2306169361186864012">Brave-mainosten palkkiot!</translation>
 <translation id="3757873395477273033">Brave-mainostesi palkkiot ovat matkalla luoksesi.</translation>
 <translation id="8101881066646819737">Brave-mainostesi tunnuksen palkkio</translation>

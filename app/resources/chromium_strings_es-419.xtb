@@ -38,6 +38,7 @@
 <translation id="3403365884036456766">Tu archivo de preferencias está dañado o no es válido. Brave no puede recuperar tu configuración.</translation>
 <translation id="1477146545787277177">¡Vaya! Se ha producido un bloqueo en Brave. ¿Quieres reiniciar el navegador ahora?</translation>
 <translation id="5785919770853225148">Brave guardará esta contraseña en tu cuenta de Brave Software, por lo que no tendrás que recordarla.</translation>
+<translation id="8211837073776713955">Brave te informará si tus contraseñas se ven comprometidas</translation>
 <translation id="113959764510199339">Brave está intentando mostrar contraseñas.</translation>
 <translation id="7503098128120083822">Brave desea exportar tus contraseñas.</translation>
 <translation id="8285294305439559616">Brave está intentando mostrar contraseñas. Para permitirlo, ingresa tu contraseña de Windows.</translation>
@@ -146,13 +147,6 @@ Si accedes de todos modos, se fusionará la información de Brave, como los favo
 <translation id="3205074487970075628">Brave está usando tu cámara.</translation>
 <translation id="8142245354207161805">Parece que otro proceso de Brave (<ph name="PROCESS_ID"/>) está utilizando el perfil en otra computadora (<ph name="HOST_NAME"/>). Brave bloqueó el perfil para que no se dañe. Si puedes confirmar que ningún otro proceso está utilizando este perfil, puedes desbloquearlo y volver a iniciar Brave.</translation>
 <translation id="239760341987199724">Establecer Brave como navegador predeterminado</translation>
-<translation id="5344925500065984750">Para establecer qué sitios web puede ver <ph name="NEW_PROFILE_NAME"/>, puedes configurar las restricciones y las opciones de configuración en <ph name="BEGIN_LINK_1"/><ph name="DISPLAY_LINK"/><ph name="END_LINK_1"/>. Si no cambias las opciones predeterminadas de configuración, <ph name="NEW_PROFILE_NAME"/> podrá navegar en la Web sin restricciones.
-
-Para impedir que <ph name="NEW_PROFILE_NAME"/> acceda a tu cuenta, asegúrate de bloquear tu perfil cuando no uses Brave. Para hacerlo, haz clic en tu nombre de perfil que se encuentra en la esquina superior derecha del navegador y selecciona "Salir y bloquear para niños".
-<ph name="BEGIN_LINK_2"/>Más información<ph name="END_LINK_2"/>
-
-Para obtener más instrucciones, revisa tu correo electrónico en <ph name="ACCOUNT_EMAIL"/>.</translation>
-<translation id="1820843143331379651">A partir de Brave 70, dejarán de estar disponibles los perfiles de los usuarios supervisados.</translation>
 <translation id="669092380621816981">Los datos de navegación de esta persona se borrarán de este dispositivo. Para recuperarlos, accede a Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave mejorado</translation>
 <translation id="7192666605334070839">Ahora es más sencillo utilizar Brave con la cuenta de Brave Software y en computadoras compartidas.</translation>
@@ -194,7 +188,7 @@ Para obtener más instrucciones, revisa tu correo electrónico en <ph name="ACCO
 <translation id="3598551856834560515">Actualiza Brave para iniciar la sincronización</translation>
 <translation id="4050175100176540509">La última versión proporciona importantes mejoras de seguridad y nuevas funciones.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave se reiniciará en 1 segundo}other{Brave se reiniciará en # segundos}}</translation>
-<translation id="5509303873219371662">Debes reiniciar Brave ahora</translation>
+<translation id="5646769069113654257">Reinicia Brave ahora</translation>
 <translation id="8668413672647811944">Se acaba de instalar una actualización de seguridad especial para Brave. Reinícialo ahora (se restablecerán tus pestañas).</translation>
 <translation id="763369711159699222">Ayudar a mejorar Brave</translation>
 <translation id="1156940037717341650">Puedes ayudar a que Brave sea más seguro y fácil de usar si informas automáticamente detalles de posibles incidentes de seguridad en Brave Software.</translation>
@@ -218,7 +212,6 @@ Para obtener más instrucciones, revisa tu correo electrónico en <ph name="ACCO
 <translation id="6141293433381251973">Brave se actualiza automáticamente para que siempre tengas la versión más reciente. Cuando se complete esta descarga, Brave se reiniciará y podrás usarlo.</translation>
 <translation id="7808415789955822133">Condiciones del Sistema operativo Brave</translation>
 <translation id="7207456302801184289">Bienvenido a Brave</translation>
-<translation id="5688839044908745927">Brave está casi listo.</translation>
 <translation id="3507835409099344374">Ir a la configuración de notificaciones Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Hay una actualización de Brave disponible}=1{Hay una actualización de Brave disponible}other{Hay una actualización de Brave disponible hace # días}}</translation>
 <translation id="720532315408041257">Tu administrador te solicita que reinicies Brave para aplicar esta actualización</translation>
@@ -236,6 +229,8 @@ Para obtener más instrucciones, revisa tu correo electrónico en <ph name="ACCO
 <translation id="1864557848095568223">Actualizando Brave</translation>
 <translation id="1786715389543715322">Actualizando Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="8208853227947884571">Brave está actualizado.</translation>
+<translation id="6756417787837743699">Puedes visitar <ph name="LINK_BEGIN"/>Acerca del Sistema operativo Brave<ph name="LINK_END"/>
+      para obtener información sobre este SO</translation>
 <translation id="6686872257969654608">Acerca de Brave OS</translation>
 <translation id="2280363356796735201">Obtener ayuda con el Sistema operativo Brave</translation>
 <translation id="38898988211673781">Borrar las cookies y los datos de los sitios cuando sales de Brave</translation>
@@ -243,6 +238,10 @@ Para obtener más instrucciones, revisa tu correo electrónico en <ph name="ACCO
 <translation id="5468853758063275923">Brave es tu navegador predeterminado</translation>
 <translation id="1775322105159056176">Brave no puede determinar ni establecer el navegador predeterminado</translation>
 <translation id="6915252145142862992">Como esta es una instalación secundaria de Brave, no puede establecerse como tu navegador predeterminado.</translation>
+<translation id="6235873178214143377">Si no ves una opción de configuración en esta página, consulta la <ph name="LINK_BEGIN"/>
+      configuración del navegador Brave<ph name="LINK_END"/></translation>
+<translation id="4459296183696059108">Si no ves una opción de configuración en esta página, consulta la <ph name="LINK_BEGIN"/>
+      configuración del Sistema operativo Brave<ph name="LINK_END"/></translation>
 <translation id="7977435741986383568">Es posible que Brave use servicios web para mejorar tu experiencia de navegación (tienes la opción de inhabilitar estos servicios). <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Para corregir los errores ortográficos, Brave envía a Brave Software lo que escribes en los campos de texto</translation>
 <translation id="8586264863973514035">Para aplicar los cambios, vuelve a ejecutar Brave</translation>
@@ -256,8 +255,6 @@ Para obtener más instrucciones, revisa tu correo electrónico en <ph name="ACCO
 <translation id="7445061995866044926">¿Salir de Brave?</translation>
 <translation id="7453070689008684791">Brave accederá a tus datos de Drive para hacer sugerencias en la barra de direcciones</translation>
 <translation id="3360368475735266712">Accede para sincronizar y personalizar Brave en todos tus dispositivos</translation>
-<translation id="9221712274065451529">Este idioma se usa para mostrar la IU del Sistema operativo Brave</translation>
-<translation id="3518788198614984730">Mostrar el SO Brave en este idioma</translation>
 <translation id="5757460455745382269">Este idioma se usa para mostrar la IU de Brave</translation>
 <translation id="2335583906071111058">Mostrar Brave en este idioma</translation>
 <translation id="8926637909431618259">Continuar ejecutando aplicaciones en segundo plano cuando Brave esté cerrado.</translation>

@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "이 사이트에 매월 팁 주기",
+    "message": "매월 기부금",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "이 인증된 제작자는 계정을 인증(KYC)하지 않았으며 귀하의 인증된 지갑으로부터 팁을 받지 않았습니다. 팁은 인증이 완료될 때까지 지갑에 남습니다.",
+    "message": "Brave Verified Creator가 Brave 사용자로부터 기부금을 수령하도록 아직 계정을 구성하지 않았습니다. 귀하가 보내는 모든 팁은 이 프로세스가 완료될 때까지 귀하의 지갑에 남아 있을 것입니다.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "지갑 인증 완료",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "설정...",
+    "description": "Button text for setting monthly contribution"
   }
 }

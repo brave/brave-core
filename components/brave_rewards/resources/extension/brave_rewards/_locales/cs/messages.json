@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Přispívat této stránce měsíčně ",
+    "message": "Měsíční příspěvek",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Tento ověřený tvůrce musí ještě ověřit (KYC) svůj účet, aby dostával spropitné z vaší ověřené peněženky. Spropitné zůstane ve vaší peněžence, dokud nedokončí proces ověření.",
+    "message": "Tento ověřený tvůrce Brave si ještě nenastavil svůj účet pro příjem příspěvků od uživatelů Brave. Všechny odeslané prostředky zůstanou ve vaší peněžence, dokud tvůrce tento proces nedokončí.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Dokončit ověření peněženky",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Nastavit...",
+    "description": "Button text for setting monthly contribution"
   }
 }

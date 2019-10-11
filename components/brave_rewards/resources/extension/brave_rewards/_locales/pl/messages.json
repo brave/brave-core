@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Ustaw comiesięczne napiwki dla tej strony",
+    "message": "Miesięczny wkład",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Ten zweryfikowany twórca musi jeszcze zweryfikować swoje konto (procedura KYC), aby otrzymać napiwki z Twojego zweryfikowanego portfela. Napiwki pozostaną w Twoim portfelu do czasu zakończenia przez niego weryfikacji.",
+    "message": "Ten zweryfikowany twórca Brave nie ma jeszcze skonfigurowanego konta i nie może otrzymywać wkładów od użytkowników Brave. Wszelkie przesłane środki pozostaną w twoim portfelu, dopóki konto nie zostanie skonfigurowane.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Zakończ weryfikację portfela",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Określ...",
+    "description": "Button text for setting monthly contribution"
   }
 }

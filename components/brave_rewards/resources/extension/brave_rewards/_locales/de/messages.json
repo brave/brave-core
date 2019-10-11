@@ -4,7 +4,7 @@
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
-    "message": "Beginnen Sie jetzt mit dem Verdienen!",
+    "message": "Jetzt beginnen, Token zu Verdienen!",
     "description": "CTA on welcome screen in the panel, existing users"
   },
   "welcomeButtonTextTwo": {
@@ -12,19 +12,19 @@
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "Lassen Sie sich für das Ansehen von Werbung bezahlen und nutzen Sie diese Einkünfte, um Ihre Lieblings-Content-Creators zu unterstützen.",
+    "message": "Lassen Sie sich für das Ansehen von Werbung bezahlen und nutzen Sie diese Einkünfte, um Ihre Lieblings-Content-Creator zu unterstützen.",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
-    "message": "Sie können jetzt Tokens verdienen, indem Sie Werbung ansehen, die Ihre Privatsphäre respektiert.",
+    "message": "Sie können jetzt Tokens verdienen, indem Sie sich Werbung ansehen, die gleichzeitig Ihre Privatsphäre respektiert.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeFooterTextOne": {
-    "message": "Finden Sie heraus, was sich verbessert hat",
+    "message": "Sehen Sie sich an, was sich verbessert hat",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
   },
   "welcomeFooterTextTwo": {
-    "message": "Lernen Sie Mehr",
+    "message": "Mehr...",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
@@ -32,51 +32,51 @@
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
-    "message": "Halten Sie sich bereit für das nächste Internet.",
+    "message": "Machen Sie sich bereit für ein neues Internet.",
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
-    "message": "Ihr Wallet",
+    "message": "Ihre Wallet",
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "Zuschüsse",
+    "message": "Einkünfte",
     "description": "Title for grant section in wallet summary"
   },
   "on": {
-    "message": "ein",
+    "message": "auf",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Brave-verifizierter Urheber",
+    "message": "Von Brave verifizierter Urheber",
     "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
-    "message": "Aufmerksamkeit",
+    "message": "Anteil",
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Dieser Seite monatlich ein Trinkgeld spendieren",
+    "message": "Monatlicher Beitrag",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
-    "message": "In Auto-Beitrag aufnehmen",
+    "message": "Automatisch unterstützen",
     "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
-    "message": "Trinkgeld spendieren …",
+    "message": "Jetzt Token spenden…",
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
-    "message": "Trinkgelder Aktivieren",
+    "message": "Spenden",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
-    "message": "für",
+    "message": "via",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
-    "message": "Reward-Übersicht",
+    "message": "Übersicht der Spenden",
     "description": "Section title in wallet panel, which contains monthly rewards summary"
   },
   "monthApr": {
@@ -128,7 +128,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Token-Zuwendungen",
+    "message": "Gratis Token",
     "description": "Title for grant notification"
   },
   "tokenGrantClaimed": {
@@ -136,15 +136,15 @@
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
-    "message": "Einnahmen aus Werbung",
+    "message": "Einnahmen durch Werbung",
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
-    "message": "Selbsttätiges-Beitragen",
+    "message": "Automatische Spenden",
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
-    "message": "Einmalige Trinkgelder",
+    "message": "Einmalige Spenden",
     "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
@@ -152,7 +152,7 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Monatliche Trinkgelder",
+    "message": "Monatliche Spenden",
     "description": "Title for monthly tips section in wallet summary"
   },
   "off": {
@@ -176,7 +176,7 @@
     "description": "Notification title when we display info about ads"
   },
   "braveContributeTitle": {
-    "message": "Auto-Beitrag",
+    "message": "Automatische Spenden",
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
@@ -190,7 +190,7 @@
     }
   },
   "grantNotification": {
-    "message": "Sie haben einen Förderbertrag erhalten.",
+    "message": "Es warten ein paar gratis Token auf Sie.",
     "description": "Description for new grant notification"
   },
   "backupNow": {
@@ -210,7 +210,7 @@
     "description": "Description for new insufficient funds notification"
   },
   "insufficientFunds": {
-    "message": "Unzureichende Geldmittel",
+    "message": "Unzureichendes Guthaben",
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
@@ -338,7 +338,7 @@
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
-    "message": "Geld einzahlen",
+    "message": "Konto aufladen",
     "description": "Button for adding funds"
   },
   "rewardsSettings": {
@@ -390,7 +390,7 @@
     "description": "Title for monthly tips processed notification"
   },
   "serviceTextPanelWelcome": {
-    "message": "Indem Sie auf 'Belohnungen beitreten' klicken, signalisieren Sie, dass Sie Folgendes gelesen und akzeptiert haben:",
+    "message": "Indem Sie auf 'Rewards beitreten' klicken, bestätigen Sie, dass Sie Folgendes gelesen und akzeptiert haben:",
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
@@ -410,7 +410,7 @@
     "description": "Hover text for Twitter tips action"
   },
   "twitterTipsIconLabel": {
-    "message": "Trinkgeld",
+    "message": "Spenden",
     "description": "Icon label for Twitter tips"
   },
   "redditTipsHoverText": {
@@ -418,15 +418,15 @@
     "description": "Hover text for Reddit tips action"
   },
   "redditTipsIconLabel": {
-    "message": "Trinkgeld",
+    "message": "Spenden",
     "description": "Icon label for Reddit tips"
   },
   "githubTipsHoverText": {
-    "message": "Einen Tipp senden",
+    "message": "Eine Spende senden",
     "description": "Hover text for GitHub tips action"
   },
   "githubTipsIconLabel": {
-    "message": "Trinkgeld",
+    "message": "Spenden",
     "description": "Icon label for GitHub tips"
   },
   "verifiedPublisherNotification": {
@@ -440,7 +440,7 @@
     }
   },
   "pendingNotEnoughFundsNotification": {
-    "message": "Sie haben wegen unzureichender Geldmittel ausstehende Trinkgelder.",
+    "message": "Ihr Kontostand reicht nicht aus um alle Spenden zu decken",
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
@@ -504,7 +504,7 @@
     "description": "Title for notification when wallet becomes verified"
   },
   "walletVerifiedTextNotification":  {
-    "message": "Herzlichen Glückwunsch! Ihr $name$ Wallet wurde erfolgreich verifiziert und steht für die Einzahlung und Auszahlung von Geldmitteln bereit.",
+    "message": "Herzlichen Glückwunsch! Ihr $name$ Wallet wurde erfolgreich verifiziert und steht für die Ein- und Auszahlung von Geldmitteln bereit.",
     "description": "Title for notification when wallet becomes verified",
     "placeholders": {
       "name": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Dieser verifizierte Creator muss sein Konto noch über das KYC-Verfahren verifizieren lassen, um ein Trinkgeld aus Ihrer verifizierten Wallet zu erhalten. Trinkgelder werden in Ihrer Wallet verbleiben, bis die Verifizierung abgeschlossen wurde.",
+    "message": "Dieser verifizierte Content-Creator hat sein Konto noch nicht so konfiguriert, dass er Beiträge von Brave-Nutzern erhalten kann. Alle von Ihnen gesendeten Spenden verbleiben in Ihrer Wallet, bis er diesen Vorgang abgeschlossen hat.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Wallet-Verifizierung abschließen",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Festlegen ...",
+    "description": "Button text for setting monthly contribution"
   }
 }
