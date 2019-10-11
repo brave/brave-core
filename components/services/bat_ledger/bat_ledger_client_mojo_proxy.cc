@@ -58,6 +58,10 @@ class LogStreamImpl : public ledger::LogStream {
   DISALLOW_COPY_AND_ASSIGN(LogStreamImpl);
 };
 
+void OnResultCallback(ledger::ResultCallback callback, ledger::Result result) {
+  callback(result);
+}
+
 void OnSaveState(const ledger::OnSaveCallback& callback,
                  const ledger::Result result) {
   callback(result);
@@ -946,6 +950,34 @@ void BatLedgerClientMojoProxy::RemoveTransferFee(
     const std::string& wallet_type,
     const std::string& id) {
   bat_ledger_client_->RemoveTransferFee(wallet_type, id);
+}
+
+void BatLedgerClientMojoProxy::InsertOrUpdateContributionQueue(
+    ledger::ContributionQueuePtr info,
+    ledger::ResultCallback callback) {
+  bat_ledger_client_->InsertOrUpdateContributionQueue(
+      std::move(info),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
+}
+
+void BatLedgerClientMojoProxy::DeleteContributionQueue(
+    const uint64_t id,
+    ledger::ResultCallback callback) {
+  bat_ledger_client_->DeleteContributionQueue(
+      id,
+      base::BindOnce(&OnResultCallback, std::move(callback)));
+}
+
+void OnGetFirstContributionQueue(
+  const ledger::GetFirstContributionQueueCallback& callback,
+  ledger::ContributionQueuePtr info) {
+  callback(std::move(info));
+}
+
+void BatLedgerClientMojoProxy::GetFirstContributionQueue(
+    ledger::GetFirstContributionQueueCallback callback) {
+  bat_ledger_client_->GetFirstContributionQueue(
+      base::BindOnce(&OnGetFirstContributionQueue, std::move(callback)));
 }
 
 }  // namespace bat_ledger

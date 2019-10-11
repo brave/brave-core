@@ -1858,4 +1858,20 @@ BATLedgerBridge(BOOL,
   // FIXME: Add implementation
 }
 
+- (void)insertOrUpdateContributionQueue:(ledger::ContributionQueuePtr)info callback:(ledger::ResultCallback)callback
+{
+  //FIXME::Add implementation
+}
+
+- (void)deleteContributionQueue:(uint64_t) id callback:(ledger::ResultCallback)callback
+{
+  //FIXME::Add implementation
+}
+
+- (void)getFirstContributionQueue:(ledger::GetFirstContributionQueueCallback)callback
+{
+  //FIXME::Add implementation
+}
+
+
 @end

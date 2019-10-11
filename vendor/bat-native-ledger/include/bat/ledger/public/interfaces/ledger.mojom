@@ -299,3 +299,18 @@ enum WalletStatus {
   DISCONNECTED_VERIFIED = 4,
   PENDING = 5
 };
+
+struct ContributionQueue {
+  uint64 id;
+  uint32 type;
+  double amount;
+  bool partial;
+
+  array<ContributionQueuePublisher> publishers;
+};
+
+struct ContributionQueuePublisher {
+  uint64 contribution_queue_id;
+  string publisher_key;
+  double amount_percent;
+};

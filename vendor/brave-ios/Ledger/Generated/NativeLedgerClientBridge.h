@@ -79,5 +79,8 @@
 - (std::string)getStringOption:(const std::string&)name;
 - (int64_t)getInt64Option:(const std::string&)name;
 - (uint64_t)getUint64Option:(const std::string&)name;
+- (void)insertOrUpdateContributionQueue:(ledger::ContributionQueuePtr)info callback:(ledger::ResultCallback)callback;
+- (void)deleteContributionQueue:(uint64_t) id callback:(ledger::ResultCallback)callback;
+- (void)getFirstContributionQueue:(ledger::GetFirstContributionQueueCallback)callback;
 
 @end
