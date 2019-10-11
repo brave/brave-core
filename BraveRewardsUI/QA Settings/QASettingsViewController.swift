@@ -134,6 +134,24 @@ public class QASettingsViewController: TableViewController {
         ]
       ),
       Section(
+        header: .title("Wallet"),
+        rows: [
+          Row(text: "Recovery Key", detailText: obfuscatedPassphrase ?? "—", selection: {
+            if let passphrase = self.rewards.ledger.walletPassphrase {
+              let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+              sheet.addAction(UIAlertAction(title: "Copy Wallet Passphrase", style: .default, handler: { _ in
+                UIPasteboard.general.string = passphrase
+              }))
+              sheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+              self.present(sheet, animated: true, completion: nil)
+            }
+          }),
+          Row(text: "Restore Wallet", selection: {
+            self.tappedRestoreWallet()
+          }, cellClass: ButtonCell.self)
+        ]
+      ),
+      Section(
         header: .title("Ads"),
         rows: [
           Row(text: "Dismissal Timer", detailText: "Number of seconds before an ad is automatically dismissed. 0 = Default", accessory: .view(adsDismissalTextField), cellClass: MultilineSubtitleCell.self)
@@ -147,6 +165,45 @@ public class QASettingsViewController: TableViewController {
         ]
       )
     ]
+  }
+  
+  @objc private func tappedRestoreWallet() {
+    let environment = BraveLedger.isProduction ? "production" : "staging"
+    let alert = UIAlertController(title: "Restore Wallet", message: "Enter the recovery key for the wallet (must be a \(environment) wallet). Your existing wallet will be overwritten.", preferredStyle: .alert)
+    alert.addTextField { textField in
+      textField.returnKeyType = .done
+    }
+    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+    alert.addAction(UIAlertAction(title: "Restore", style: .default, handler: { action in
+      guard let passphrase = alert.textFields?.first?.text else { return }
+      self.rewards.ledger.recoverWallet(usingPassphrase: passphrase) { (error) in
+        let message = error?.localizedDescription ?? "Restore Complete. Brave must be restarted to ensure expected Rewards behavior"
+        let completionAlert = UIAlertController(title: "Restore Wallet", message: message, preferredStyle: .alert)
+        if error == nil {
+          completionAlert.addAction(UIAlertAction(title: "Exit Now", style: .destructive, handler: { _ in
+            fatalError()
+          }))
+        }
+        completionAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        alert.dismiss(animated: true) {
+          self.present(completionAlert, animated: true)
+        }
+      }
+    }))
+    present(alert, animated: true)
+  }
+  
+  private var obfuscatedPassphrase: String? {
+    if let passphrase = self.rewards.ledger.walletPassphrase {
+      let words = passphrase.split(separator: " ")
+      var obfuscated = String(words.first ?? "")
+      for i in 1..<min(words.count - 1, 4) {
+        let word = String(words[i])
+        obfuscated.append(" \((0..<word.count).map { _ in "•" }.joined())")
+      }
+      return obfuscated
+    }
+    return nil
   }
   
   @objc private func tappedReset() {
