@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Doniraj mesečno ovu veb lokaciju",
+    "message": "Mesečni doprinos",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Ovaj verifikovani autor još uvek nije verifikovao (KYC) svoj nalog kako bi primio napojnice iz Vašeg verifikovanog novčanika. Napojnice će ostati u Vašem novčaniku sve dok ne završe verifikaciju",
+    "message": "Ovaj Brave Stvaralac Verifikacija nije još uvek konfigurisao njihove naloge da bi dobijali doprinose od Brave korisnika. Svaki bakšiš koji pošaljete će ostati u vašem novčaniku dok ne završe ovaj proces.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Dovršite verifikaciju novčanika",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Postavi...",
+    "description": "Button text for setting monthly contribution"
   }
 }

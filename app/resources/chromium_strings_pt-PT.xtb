@@ -44,6 +44,7 @@ Algumas funcionalidades podem não estar disponíveis. Especifique um diretório
 O Brave não consegue recuperar as suas definições.</translation>
 <translation id="1477146545787277177">Ups! O Brave falhou. Reiniciar agora?</translation>
 <translation id="5785919770853225148">O Brave vai guardar esta palavra-passe na sua Conta Brave Software. Não tem de a memorizar.</translation>
+<translation id="8211837073776713955">O Brave indica-lhe se as suas palavras-passe forem comprometidas.</translation>
 <translation id="113959764510199339">O Brave está a tentar mostrar palavras-passe.</translation>
 <translation id="7503098128120083822">O Brave pretende exportar as suas palavras-passe.</translation>
 <translation id="8285294305439559616">O Brave está a tentar mostrar palavras-passe. Escreva a sua palavra-passe do Windows para permitir esta ação.</translation>
@@ -152,13 +153,6 @@ Se continuar com este início de sessão, as informações do Brave, como marcad
 <translation id="3205074487970075628">O Brave está a utilizar a câmara.</translation>
 <translation id="8142245354207161805">O perfil parece estar a ser utilizado por outro processo do Brave (<ph name="PROCESS_ID"/>) noutro computador (<ph name="HOST_NAME"/>). O Brave bloqueou o perfil para que não seja danificado. Se tiver a certeza de que não existem outros processos a utilizar este perfil, pode desbloqueá-lo e reiniciar o Brave.</translation>
 <translation id="239760341987199724">Definir o Brave como o seu navegador predefinido</translation>
-<translation id="5344925500065984750">Para definir que Sites <ph name="NEW_PROFILE_NAME"/> pode ver, pode configurar restrições e definições ao aceder a <ph name="BEGIN_LINK_1"/><ph name="DISPLAY_LINK"/><ph name="END_LINK_1"/>. Se não alterar as predefinições, <ph name="NEW_PROFILE_NAME"/> pode procurar tudo na Web.
-
-Para evitar que <ph name="NEW_PROFILE_NAME"/> aceda à sua conta, certifique-se de que bloqueia o seu perfil quando não estiver a utilizar o Brave. Para o fazer, clique no seu nome de perfil no canto superior direito do navegador e selecione "Sair e bloqueio para criança".
-<ph name="BEGIN_LINK_2"/>Saber mais<ph name="END_LINK_2"/>
-
-Para obter mais instruções, verifique o seu email em <ph name="ACCOUNT_EMAIL"/>.</translation>
-<translation id="1820843143331379651">Os perfis de utilizadores supervisionados vão deixar de estar disponíveis a partir do Brave 70.</translation>
 <translation id="669092380621816981">Os dados de navegação desta pessoa serão eliminados deste dispositivo. Para recuperar os dados, inicie sessão no Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">O Brave está ainda melhor</translation>
 <translation id="7192666605334070839">Agora é mais fácil utilizar o Brave com a sua Conta Brave Software e em computadores partilhados.</translation>
@@ -200,7 +194,7 @@ Para obter mais instruções, verifique o seu email em <ph name="ACCOUNT_EMAIL"/
 <translation id="3598551856834560515">Atualize o Brave para iniciar a sincronização</translation>
 <translation id="4050175100176540509">Estão disponíveis na versão mais recente melhorias de segurança importantes e novas funcionalidades.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{O Brave será reiniciado dentro de 1 segundo}other{O Brave será reiniciado dentro de # segundos}}</translation>
-<translation id="5509303873219371662">Deve reiniciar o Brave agora</translation>
+<translation id="5646769069113654257">Reinicie o Brave agora</translation>
 <translation id="8668413672647811944">Acabou de ser instalada uma atualização de segurança especial para o Brave. Reinicie agora e iremos restaurar os seus separadores.</translation>
 <translation id="763369711159699222">Ajudar a melhorar o Brave</translation>
 <translation id="1156940037717341650">Pode contribuir para tornar o Brave mais seguro e fácil de utilizar ao comunicar automaticamente os detalhes de possíveis incidentes de segurança à Brave Software.</translation>
@@ -224,7 +218,6 @@ Para obter mais instruções, verifique o seu email em <ph name="ACCOUNT_EMAIL"/
 <translation id="6141293433381251973">O Brave é atualizado automaticamente para que tenha sempre a versão mais recente. Quando a transferência estiver concluída, o Brave irá reiniciar e o processo estará terminado.</translation>
 <translation id="7808415789955822133">Termos do SO Brave</translation>
 <translation id="7207456302801184289">Bem-vindo ao Brave</translation>
-<translation id="5688839044908745927">O Brave está quase pronto.</translation>
 <translation id="3507835409099344374">Aceder às definições de notificação do Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Está disponível uma atualização do Brave}=1{Está disponível uma atualização do Brave}other{Está disponível uma atualização do Brave há # dias}}</translation>
 <translation id="720532315408041257">O seu administrador solicita-lhe que reinicie o Brave para aplicar esta atualização.</translation>
@@ -242,6 +235,8 @@ Para obter mais instruções, verifique o seu email em <ph name="ACCOUNT_EMAIL"/
 <translation id="1864557848095568223">A atualizar o Brave…</translation>
 <translation id="1786715389543715322">A atualizar o Brave (<ph name="PROGRESS_PERCENT"/>)…</translation>
 <translation id="8208853227947884571">O Brave está atualizado</translation>
+<translation id="6756417787837743699">Para obter detalhes do Brave OS, consulte <ph name="LINK_BEGIN"/>
+      Acerca do Brave OS<ph name="LINK_END"/></translation>
 <translation id="6686872257969654608">Acerca do SO Brave</translation>
 <translation id="2280363356796735201">Obter ajuda relacionada com o SO Brave</translation>
 <translation id="38898988211673781">Limpar os cookies e os dados do site quando sair do Brave</translation>
@@ -249,6 +244,10 @@ Para obter mais instruções, verifique o seu email em <ph name="ACCOUNT_EMAIL"/
 <translation id="5468853758063275923">O Brave é o seu navegador predefinido</translation>
 <translation id="1775322105159056176">O Brave não consegue determinar ou definir o navegador predefinido</translation>
 <translation id="6915252145142862992">Esta é uma instalação secundária do Brave, pelo que não pode tornar-se o navegador predefinido.</translation>
+<translation id="6235873178214143377">Se não encontrar uma definição nesta página, procure nas <ph name="LINK_BEGIN"/>
+      Definições do navegador Brave<ph name="LINK_END"/>.</translation>
+<translation id="4459296183696059108">Se não encontrar uma definição nesta página, procure nas <ph name="LINK_BEGIN"/>
+      Definições do Brave OS<ph name="LINK_END"/>.</translation>
 <translation id="7977435741986383568">O Brave poderá utilizar serviços Web para melhorar a sua experiência de navegação. Poderá optar por desativar estes serviços. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Para corrigir erros ortográficos, o Brave envia o texto que introduzir nos campos de texto para a Brave Software.</translation>
 <translation id="8586264863973514035">Para aplicar as alterações, reinicie o Brave.</translation>
@@ -262,8 +261,6 @@ Para obter mais instruções, verifique o seu email em <ph name="ACCOUNT_EMAIL"/
 <translation id="7445061995866044926">Pretende terminar sessão no Brave?</translation>
 <translation id="7453070689008684791">O Brave vai aceder ao seu Drive para fornecer sugestões na barra de endereço.</translation>
 <translation id="3360368475735266712">Inicie sessão para sincronizar e personalizar o Brave em todos os dispositivos.</translation>
-<translation id="9221712274065451529">Este idioma é utilizado para apresentar a IU do Brave OS</translation>
-<translation id="3518788198614984730">Apresentar o SO Brave neste idioma</translation>
 <translation id="5757460455745382269">Este idioma é utilizado para apresentar a IU do Brave</translation>
 <translation id="2335583906071111058">Apresentar o Brave neste idioma</translation>
 <translation id="8926637909431618259">Continuar a executar aplicações em segundo plano quando o Brave está fechado</translation>

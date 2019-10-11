@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "ይህን ገፅ በወር ምክር ይስጡ",
+    "message": "ወርሐዊ መዋጮ",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "ይህ የተረጋገጠ ፈጣሪ ከእርሶ የተረጋገጠ የኪስ ቦርሳ ጠቃሚ ምክሮችን ለመቀበል የእነሱን (KYC) መለያ ገና ማረጋገጥ አለበት፡፡ ጠቃሚ ምክሮቹ እነሱ ማረጋገጫውን እስኪያጠናቅቁ ድረስ በእርሶ የኪስ ቦርሳ ውስጥ ይቆያል፡፡",
+    "message": "ይህ የ Brave የተረጋገጠ ፈጣሪ እስካሁን መለያውን ባለማዋቀሩ ምክንያት ከ Brave ተጠቃሚዎች መዋጮ ለመቀበል አይችልም። እነርሱ መለያቸውን እስከሚያረጋግጡ ድረስ ወይም 90 ቀን እስከሚያልፍ ድረስ ማሰሻዎ መዋጮ ለማድረግ መሞከሩን ይቀጥላል።",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "የኪስ ቦርሳ ማረጋገጥ ተጠናቋል",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "አዘጋጅ...",
+    "description": "Button text for setting monthly contribution"
   }
 }

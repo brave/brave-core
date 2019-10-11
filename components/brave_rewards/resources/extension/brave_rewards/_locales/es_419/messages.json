@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Envíe propinas a este sitio mensualmente",
+    "message": "Contribución mensual",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Este creador verificado todavía tiene que verificar (KYC) su cuenta para recibir propinas de tu billetera verificada. Las propinas quedarán en tu billetera hasta que el creador confirme la titularidad.",
+    "message": "Este creador verificado de Brave todavía no ha configurado su cuenta para recibir contribuciones de usuarios de Brave. Cualquier propina que envíes quedará en tu billetera hasta que el creador complete este proceso.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Completar verificación de billetera",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Configurar...",
+    "description": "Button text for setting monthly contribution"
   }
 }

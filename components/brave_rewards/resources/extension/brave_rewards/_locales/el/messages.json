@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Αποστολή tip σε αυτή την ιστοσελίδα μηνιαίως",
+    "message": "Μηνιαία Συνεισφορά",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Αυτός ο επαληθευμένος δημιουργός δεν έχει ακόμη επαληθεύσει (KYC) τον λογαριασμό του για να λάβει φιλοδωρήματα από το επαληθευμένο πορτοφόλι σας. Τα φιλοδωρήματα θα παραμείνουν στο πορτοφόλι σας μέχρι να ολοκληρωθεί η επαλήθευση.",
+    "message": "Αυτός ο Επαληθευμένος Δημιουργός Brave δεν έχει ακόμη διαμορφώσει τον λογαριασμό του για να λαμβάνει συνεισφορές από Χρήστες Brave. Οποιαδήποτε φιλοδωρήματα στέλνετε, θα παραμένουν στο πορτοφόλι σας μέχρι να ολοκληρώσει αυτήν την διαδικασία.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Ολοκλήρωση επαλήθευσης πορτοφολιού",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Ορίστε...",
+    "description": "Button text for setting monthly contribution"
   }
 }

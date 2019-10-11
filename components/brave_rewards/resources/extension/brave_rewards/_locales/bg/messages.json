@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Дарявайте на този сайт ежемесечно",
+    "message": "Месечен принос",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Този проверен създател все още не е потвърдил (KYC) акаунта си, за да получава бакшиши от вашия проверен портфейл. Бакшишите ще останат в портфейла ви, докато той не завърши проверката.",
+    "message": "Този проверен създател на Brave все още не е конфигурирал акаунта си, за да получава приноси от Brave потребители. Всички бакшиши, които изпращате, ще останат в портфейла ви, докато той не завърши този процес.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Завършете проверката на портфейла",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Настройване...",
+    "description": "Button text for setting monthly contribution"
   }
 }

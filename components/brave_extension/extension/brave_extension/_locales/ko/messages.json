@@ -72,7 +72,7 @@
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "모든 쿠키 차단됨",
+    "message": "모든 쿠키 허용됨",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {

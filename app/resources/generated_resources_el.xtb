@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="el">
+<translation id="2501278716633472235">Επιστροφή</translation>
 <translation id="1215411991991485844">Προστέθηκε νέα εφαρμογή παρασκηνίου</translation>
 <translation id="7396845648024431313">Η εφαρμογή <ph name="APP_NAME"/> θα εκκινείται κατά την εκκίνηση του συστήματος και θα συνεχίζει να εκτελείται στο παρασκήνιο αφού πρώτα κλείσετε όλα τα υπόλοιπα παράθυρα του <ph name="PRODUCT_NAME"/>.</translation>
 <translation id="5246282308050205996">Το <ph name="APP_NAME"/> παρουσίασε σφάλμα. Κάντε κλικ σε αυτό το πλαίσιο για να επανεκκινήσετε την εφαρμογή.</translation>
@@ -15,6 +16,8 @@
 <translation id="4610637590575890427">Μήπως θέλετε να μεταβείτε στο <ph name="SITE"/>;</translation>
 <translation id="4759238208242260848">Λήψεις</translation>
 <translation id="370665806235115550">Φόρτωση...</translation>
+<translation id="556321030400250233">τοπικό ή κοινόχρηστο αρχείο</translation>
+<translation id="1405779994569073824">Παρουσιάστηκε σφάλμα.</translation>
 <translation id="4880827082731008257">Αναζήτηση ιστορικού</translation>
 <translation id="1838374766361614909">Διαγραφή αναζητήσεων</translation>
 <translation id="8261506727792406068">Διαγραφή</translation>
@@ -409,6 +412,7 @@
 <translation id="5425042808445046667">Συνέχιση λήψης</translation>
 <translation id="5284445933715251131">Συνέχιση λήψης</translation>
 <translation id="203837651858678035">Θέλετε να εξέλθετε από την κατάσταση ανώνυμης περιήγησης;</translation>
+<translation id="8951465597020890363">Έξοδος από κατάσταση επισκέπτη ούτως ή άλλως;</translation>
 <translation id="9148058034647219655">Έξοδος</translation>
 <translation id="7376221878517288144">Θέλετε να εξέλθετε από την κατάσταση ανώνυμης περιήγησης;</translation>
 <translation id="973473557718930265">Έξοδος</translation>
@@ -527,6 +531,14 @@
 <translation id="4680105648806843642">Έγινε σίγαση του ήχου σε αυτήν τη σελίδα</translation>
 <translation id="8574990355410201600">Να επιτρέπεται πάντα ο ήχος στο <ph name="HOST"/></translation>
 <translation id="3244294424315804309">Συνέχιση σίγασης ήχου</translation>
+<translation id="2839032553903800133">Οι ειδοποιήσεις έχουν αποκλειστεί</translation>
+<translation id="1195558154361252544">Οι ειδοποιήσεις αποκλείονται αυτόματα για όλους τους ιστοτόπους εκτός από αυτούς στους οποίους τις επιτρέπετε</translation>
+<translation id="3575121482199441727">Να επιτρέπεται για αυτόν τον ιστότοπο</translation>
+<translation id="5145461783043820456">Ο αποκλεισμός cookie τρίτου μέρους είναι ενεργός</translation>
+<translation id="243242775089461296">Ο αποκλεισμός cookie τρίτου μέρους έχει απενεργοποιηθεί για αυτόν τον ιστότοπο.</translation>
+<translation id="2325002827435400643">Απενεργοποίηση για αυτόν τον ιστότοπο</translation>
+<translation id="1646834008704210683">{COUNT,plural, =0{Αυτός ο ιστότοπος δεν χρησιμοποιεί cookie για παρακολούθηση μεταξύ ιστοτόπων}=1{Το Brave αποκλείει τα cookie από 1 ιστότοπο}other{Το Brave αποκλείει τα cookie από # ιστοτόπους}}</translation>
+<translation id="8734674662128056360">Αποκλεισμός cookie τρίτου μέρους</translation>
 <translation id="5154702632169343078">Θέμα</translation>
 <translation id="5851868085455377790">Εκδότης</translation>
 <translation id="2841837950101800123">Πάροχος</translation>
@@ -781,7 +793,7 @@
 <translation id="7663719505383602579">Δέκτης: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="6247802389331535091">Σύστημα: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="5799508265798272974">Εικονικό μηχάνημα Linux: <ph name="LINUX_VM_NAME"/></translation>
-<translation id="5552059560155071882">Συντακτικός αναλυτής IPP CUPS</translation>
+<translation id="7851720427268294554">Συντακτικός αναλυτής IPP</translation>
 <translation id="7171242884588191792">Βοηθητικά προγράμματα διαχείρισης αρχείων του Brave</translation>
 <translation id="3183139917765991655">Εργαλείο εισαγωγής προφίλ</translation>
 <translation id="2190069059097339078">Εργαλείο λήψης διαπιστευτηρίων Wi-Fi</translation>
@@ -887,6 +899,7 @@
 <translation id="2204034823255629767">Ανάγνωση και αλλαγή όσων πληκτρολογείτε</translation>
 <translation id="6979044105893951891">Εκκίνηση και έξοδος διαχειριζόμενων περιόδων λειτουργίας επισκέπτη</translation>
 <translation id="2741912629735277980">Εμφάνιση διεπαφής χρήστη στην οθόνη σύνδεσης</translation>
+<translation id="7782717250816686129">Αποθήκευση σταθερών δεδομένων στην οθόνη σύνδεσης και ενσωμάτωση διαπιστευτηρίων στην περίοδο σύνδεσης.</translation>
 <translation id="8191230140820435481">Διαχείριση των εφαρμογών, των επεκτάσεων και των θεμάτων σας</translation>
 <translation id="6259104249628300056">Ανακάλυψη συσκευών στο τοπικό δίκτυό σας</translation>
 <translation id="6344170822609224263">Λίστα πρόσβασης για συνδέσεις δικτύου</translation>
@@ -1066,6 +1079,8 @@
 <translation id="8261378640211443080">Αυτή η επέκταση δεν αναφέρεται στο <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> και ενδέχεται να έχει προστεθεί εν αγνοία σας.</translation>
 <translation id="4096508467498758490">Απενεργοποίηση επεκτάσεων λειτουργίας προγραμματιστή</translation>
 <translation id="3288047731229977326">Οι επεκτάσεις που εκτελούνται σε λειτουργία προγραμματιστή μπορούν να βλάψουν τον υπολογιστή σας. Εάν δεν είστε προγραμματιστής, θα πρέπει να απενεργοποιήσετε αυτές τις επεκτάσεις που εκτελούνται σε λειτουργία προγραμματιστή για να διατηρήσετε την ασφάλειά σας.</translation>
+<translation id="8827289157496676362">Καρφίτσωμα επέκτασης</translation>
+<translation id="5372579129492968947">Ξεκαρφίτσωμα επέκτασης</translation>
 <translation id="3021426244864538700">Με πρόσβαση στα δεδομένα αυτού του ιστοτόπου</translation>
 <translation id="8213996900880218548">Επιθυμούν πρόσβαση στα δεδομένα αυτού του ιστοτόπου</translation>
 <translation id="1289513325360489062">Χωρίς πρόσβαση στα δεδομένα αυτού του ιστοτόπου</translation>
@@ -1130,6 +1145,11 @@
 <translation id="3950820424414687140">Σύνδεση</translation>
 <translation id="5624120631404540903">Διαχείριση κωδικών πρόσβασης</translation>
 <translation id="9135262959729602463">Για να έχετε πρόσβαση από όλες τις συσκευές στους κωδικούς πρόσβασής σας, συνδεθείτε στο Brave.</translation>
+<translation id="328571385944182268">Αποθήκευση των κωδικών πρόσβασής σας;</translation>
+<translation id="3753033997400164841">Αποθηκεύστε μία φορά. Χρησιμοποιήστε παντού.</translation>
+<translation id="1703331064825191675">Δεν χρειάζεται να ανησυχείτε πλέον για τους κωδικούς πρόσβασής σας</translation>
+<translation id="2341030170677284705">Αποθηκεύστε τους κωδικούς πρόσβασης με ασφάλεια στον Λογαριασμό σας Brave Software και δεν θα χρειαστεί να τους πληκτρολογήσετε ποτέ ξανά</translation>
+<translation id="3913985461352963178">Αποκτήστε πρόσβαση στους κωδικούς πρόσβασής σας κάθε φορά που συνδέεστε στον Λογαριασμό σας Brave Software.</translation>
 <translation id="8919275547519617350">Για να έχετε όλους τους κωδικούς πρόσβασης σε όλες τις συσκευές σας, συνδεθείτε και ενεργοποιήστε τον συγχρονισμό.</translation>
 <translation id="8470028084415844044">Για να έχετε όλους τους κωδικούς πρόσβασης σε όλες τις συσκευές σας, ενεργοποιήστε τον συγχρονισμό.</translation>
 <translation id="1609170755653088773">Συγχρονισμός αυτού του κωδικού πρόσβασης με το iPhone σας</translation>
@@ -1176,6 +1196,7 @@
 <translation id="5620612546311710611">στατιστικά χρήσης</translation>
 <translation id="8871696467337989339">Αυτή η μεταβλήτή της γραμμής εντολών δεν υποστηρίζεται: <ph name="BAD_FLAG"/>. Θα παρουσιαστούν προβλήματα σταθερότητας και ασφάλειας.</translation>
 <translation id="9140067245205650184">Χρησιμοποιείτε μια επισήμανση λειτουργίας που δεν υποστηρίζεται: <ph name="BAD_FLAG"/>. Θα παρουσιαστούν προβλήματα σταθερότητας και ασφάλειας.</translation>
+<translation id="4094647278880271855">Χρησιμοποιείτε μη υποστηριζόμενη μεταβλητή περιβάλλοντος: <ph name="BAD_VAR"/>. Αυτό θα επηρεάσει αρνητικά τη σταθερότητα και την ασφάλεια.</translation>
 <translation id="2178098616815594724">Η προσθήκη <ph name="PEPPER_PLUGIN_NAME"/> στον τομέα <ph name="PEPPER_PLUGIN_DOMAIN"/> επιθυμεί να αποκτήσει πρόσβαση στον υπολογιστή σας</translation>
 <translation id="8598453409908276158">Η προσθήκη εκτός περιβάλλοντος δοκιμών αποκλείστηκε</translation>
 <translation id="1919814239594435008">Η προσθήκη εκτός περιβάλλοντος δοκιμών επιτρέπεται</translation>
@@ -1284,7 +1305,28 @@
 <translation id="7460045493116006516">Τρέχον θέμα που έχετε εγκαταστήσει</translation>
 <translation id="9068849894565669697">Επιλογή χρώματος</translation>
 <translation id="8798099450830957504">Προεπιλογή</translation>
-<translation id="8259556432390118667">Δεκαεξαδική τιμή χρώματος</translation>
+<translation id="3011384993885886186">Ζεστό γκρι</translation>
+<translation id="6076491747490570887">Ψυχρό γκρι</translation>
+<translation id="8300374739238450534">Σκούρο μπλε</translation>
+<translation id="7569983096843329377">Μαύρο</translation>
+<translation id="549211519852037402">Μπεζ και λευκό</translation>
+<translation id="321084946921799184">Κίτρινο και λευκό</translation>
+<translation id="5722086096420375088">Πράσινο και λευκό</translation>
+<translation id="3269612321104318480">Ανοιχτό γαλαζοπράσινο και λευκό</translation>
+<translation id="4175137578744761569">Ανοιχτό μοβ και λευκό</translation>
+<translation id="8176332201990304395">Ροζ και λευκό</translation>
+<translation id="3159493096109238499">Μπεζ</translation>
+<translation id="1197088940767939838">Πορτοκαλί</translation>
+<translation id="779308894558717334">Ανοιχτό πράσινο</translation>
+<translation id="8809147117840417135">Ανοιχτό γαλαζοπράσινο</translation>
+<translation id="1734212868489994726">Ανοιχτό μπλε</translation>
+<translation id="992256792861109788">Ροζ</translation>
+<translation id="8237647586961940482">Σκούρο ροζ και κόκκινο</translation>
+<translation id="5390677308841849479">Σκούρο κόκκινο και πορτοκαλί</translation>
+<translation id="7297726121602187087">Σκούρο πράσινο</translation>
+<translation id="8923880975836399332">Σκούρο γαλαζοπράσινο</translation>
+<translation id="7793098747275782155">Σκούρο μπλε</translation>
+<translation id="1692210323591458290">Σκούρο μοβ</translation>
 <translation id="2858138569776157458">Κορ. ιστότοποι</translation>
 <translation id="5376169624176189338">Κάντε κλικ για για να πάτε πίσω, κρατήστε το κουμπί πατημένο για να δείτε το ιστορικό</translation>
 <translation id="9103868373786083162">Πατήστε για να επιστρέψετε στο μενού περιβάλλοντος για να δείτε το ιστορικό</translation>
@@ -1338,8 +1380,9 @@
 <translation id="8005600846065423578">Να επιτρέπεται πάντα στο <ph name="HOST"/> να βλέπει το πρόχειρο</translation>
 <translation id="6122095009389448667">Συνέχεια αποκλεισμού αυτού του ιστοτόπου από την προβολή του πρόχειρου</translation>
 <translation id="3429275422858276529">Προσθέστε σελιδοδείκτη σε αυτήν τη σελίδα, για να την εντοπίσετε εύκολα αργότερα</translation>
-<translation id="3603533104205588786">Μπορείτε να κάνετε κλικ στο αστέρι για να προσθέσετε σελιδοδείκτη σε μια σελίδα</translation>
-<translation id="6613452264606394692">Προσθέστε σελιδοδείκτη σε αυτήν τη σελίδα για να επιστρέψετε εδώ γρήγορα</translation>
+<translation id="4400963414856942668">Μπορείτε να κάνετε κλικ στο αστέρι για να προσθέσετε σελιδοδείκτη σε μια καρτέλα</translation>
+<translation id="8379991678458444070">Προσθέστε σελιδοδείκτη σε αυτήν την καρτέλα για να επιστρέψετε εδώ γρήγορα</translation>
+<translation id="7174199383876220879">Νέο! Ελέγξτε τη μουσική σας, τα βίντεο και περισσότερα.</translation>
 <translation id="4369414322596874629">Μπορείτε να περιηγηθείτε ιδιωτικά χρησιμοποιώντας ένα παράθυρο για ανώνυμη περιήγηση</translation>
 <translation id="3772947852642271642">Χρησιμοποιήστε τον ιστό χωρίς να αποθηκεύσετε το ιστορικό περιήγησής σας με ένα παράθυρο για ανώνυμη περιήγηση</translation>
 <translation id="3871738366246972820">Χρησιμοποιείτε έναν κοινόχρηστο υπολογιστή; Δοκιμάστε να ανοίξετε ένα παράθυρο για ανώνυμη περιήγηση.</translation>
@@ -1365,6 +1408,7 @@
 <translation id="7108338896283013870">Απόκρυψη</translation>
 <translation id="1426410128494586442">Ναι</translation>
 <translation id="4250680216510889253">Όχι</translation>
+<translation id="7473891865547856676">Όχι, ευχαριστώ</translation>
 <translation id="5317780077021120954">Αποθήκευση</translation>
 <translation id="4285418559658561636">Ενημέρωση κωδικού πρόσβασης</translation>
 <translation id="9094033019050270033">Ενημέρωση κωδικού πρόσβασης</translation>
@@ -1462,7 +1506,6 @@
 <translation id="8703346390800944767">Παράβλεψη διαφήμισης</translation>
 <translation id="2121825465123208577">Προσαρμογή μεγέθους</translation>
 <translation id="4514610446763173167">Εναλλαγή αναπαραγωγής ή παύσης βίντεο</translation>
-<translation id="3040310857793999281">Εναλλαγή σίγασης</translation>
 <translation id="4046123991198612571">Επόμενο κομμάτι</translation>
 <translation id="2874939134665556319">Προηγούμενο κομμάτι</translation>
 <translation id="2631120081682787498">Είστε βέβαιοι ότι θέλετε να κλείσετε αυτήν την καρτέλα;</translation>
@@ -1484,35 +1527,25 @@
 <translation id="1731911755844941020">Αποστολή αίτησης...</translation>
 <translation id="9009369504041480176">Μεταφόρτωση του (<ph name="PROGRESS_PERCENT"/>%)...</translation>
 <translation id="7925285046818567682">Αναμονή για κεντρικό υπολογιστή <ph name="HOST_NAME"/>...</translation>
+<translation id="2111670510994270194">Νέα καρτέλα στα δεξιά</translation>
 <translation id="7887334752153342268">Αντιγραφή</translation>
-<translation id="1364702626840264065">{NUM_TABS,plural, =1{Κλείσιμο καρτέλας}other{Κλείσιμο καρτελών}}</translation>
-<translation id="68541483639528434">Κλείσιμο των άλλων καρτελών</translation>
 <translation id="6686490380836145850">Κλείσιμο καρτελών δεξιά</translation>
 <translation id="6242852299490624841">Εστίαση σε αυτήν την καρτέλα</translation>
-<translation id="7415353017141825619">{NUM_TABS,plural, =1{Καρφίτσωμα καρτέλας}other{Καρφίτσωμα καρτελών}}</translation>
-<translation id="4072793381000095">{NUM_TABS,plural, =1{Ξεκαρφίτσωμα καρτέλας}other{Ξεκαρφίτσωμα καρτελών}}</translation>
-<translation id="1904394285866191268">{NUM_TABS,plural, =1{Σίγαση καρτέλας}other{Σίγαση καρτελών}}</translation>
-<translation id="5179127818058486126">{NUM_TABS,plural, =1{Κατάργηση σίγασης καρτέλας}other{Κατάργηση σίγασης καρτελών}}</translation>
 <translation id="4973325300212422370">{NUM_TABS,plural, =1{Σίγαση ιστοτόπου}other{Σίγαση ιστοτόπων}}</translation>
 <translation id="4744981231093950366">{NUM_TABS,plural, =1{Κατάργηση σίγασης ιστοτόπου}other{Κατάργηση σίγασης ιστοτόπων}}</translation>
-<translation id="4474155171896946103">Δημιουργία σελιδοδείκτη για όλες τις καρτέλες...</translation>
 <translation id="351952459507671940">Προσθήκη σε νέα ομάδα</translation>
 <translation id="255747371423522804">Προσθήκη σε υπάρχουσα ομάδα</translation>
 <translation id="2977480621796371840">Κατάργηση από την ομάδα</translation>
-<translation id="8000467600002607205">{NUM_TABS,plural, =1{Κλείσιμο καρτέλας}other{Κλείσιμο καρτελών}}</translation>
-<translation id="4322394346347055525">Κλείσιμο Άλλων Καρτελών</translation>
+<translation id="8975562453115131273">{NUM_OTHER_TABS,plural, =0{"<ph name="TAB_TITLE"/>"}=1{"<ph name="TAB_TITLE"/>" και μία ακόμη καρτέλα}other{"<ph name="TAB_TITLE"/>" και # ακόμη καρτέλες}}</translation>
+<translation id="5876851302954717356">Νέα καρτέλα στα δεξιά</translation>
 <translation id="1166212789817575481">Κλείσιμο Καρτελών Δεξιά</translation>
 <translation id="2343747224442182863">Εστίαση σε αυτήν την καρτέλα</translation>
-<translation id="7363260028279024205">{NUM_TABS,plural, =1{Καρφίτσωμα καρτέλας}other{Καρφίτσωμα καρτελών}}</translation>
-<translation id="3996366967769547206">{NUM_TABS,plural, =1{Ξεκαρφίτσωμα καρτέλας}other{Ξεκαρφίτσωμα καρτελών}}</translation>
-<translation id="3785071023202624850">{NUM_TABS,plural, =1{Σίγαση καρτέλας}other{Σίγαση καρτελών}}</translation>
-<translation id="2120478168904746065">{NUM_TABS,plural, =1{Κατάργηση σίγασης καρτέλας}other{Κατάργηση σίγασης καρτελών}}</translation>
 <translation id="8371925839118813971">{NUM_TABS,plural, =1{Σίγαση ιστοτόπου}other{Σίγαση ιστοτόπων}}</translation>
 <translation id="7933314993013528982">{NUM_TABS,plural, =1{Κατάργηση σίγασης ιστοτόπου}other{Κατάργηση σίγασης ιστοτόπων}}</translation>
-<translation id="2336228925368920074">Δημιουργία σελιδοδείκτη για όλες τις καρτέλες...</translation>
 <translation id="1541396123399225659">Προσθήκη σε νέα ομάδα</translation>
 <translation id="7353887511974462734">Προσθήκη σε υπάρχουσα ομάδα</translation>
 <translation id="6964760285928603117">Κατάργηση από την ομάδα</translation>
+<translation id="5548159762883465903">{NUM_OTHER_TABS,plural, =0{"<ph name="TAB_TITLE"/>"}=1{"<ph name="TAB_TITLE"/>" και μία ακόμη καρτέλα}other{"<ph name="TAB_TITLE"/>" και # ακόμη καρτέλες}}</translation>
 <translation id="2278562042389100163">Άνοιγμα παραθύρου προγράμματος περιήγησης</translation>
 <translation id="756445078718366910">Άνοιγμα παραθύρου προγράμματος περιήγησης</translation>
 <translation id="3683524264665795342">Αίτημα κοινής χρήσης οθόνης από την εφαρμογή <ph name="APP_NAME"/></translation>
@@ -1608,7 +1641,13 @@
 <translation id="2315587498123194634">Αποστολή συνδέσμου σε <ph name="DEVICE_NAME"/></translation>
 <translation id="7761380698973548146">Κλήση από τις συσκευές σας</translation>
 <translation id="7427798576651127129">Κλήση από <ph name="DEVICE_NAME"/></translation>
+<translation id="2355241457888955">Αποστολή μηνύματος κειμένου στις συσκευές σας</translation>
+<translation id="5067000372742249459">Αποστολή μηνύματος κειμένου στη συσκευή <ph name="DEVICE_NAME"/></translation>
+<translation id="7757787379047923882">Το κείμενο κοινοποιήθηκε από τη συσκευή <ph name="DEVICE_NAME"/></translation>
+<translation id="5193988420012215838">Αντιγράφηκε στο πρόχειρό σας</translation>
 <translation id="462021874527520979">Κλήση από τις συσκευές σας</translation>
+<translation id="4696983787092045100">Αποστολή μηνύματος κειμένου στις συσκευές σας</translation>
+<translation id="2182058453334755893">Αντιγράφηκε στο πρόχειρό σας</translation>
 <translation id="4520385623207007473">Χρησιμοποιούνται cookie</translation>
 <translation id="4763408175235639573">Όταν είδατε αυτήν τη σελίδα, ορίστηκαν τα ακόλουθα cookie</translation>
 <translation id="2719936478972253983">Τα ακόλουθα cookie αποκλείστηκαν</translation>
@@ -1636,7 +1675,6 @@
 <translation id="622537739776246443">Το προφίλ θα διαγραφεί</translation>
 <translation id="5632566673632479864">Δεν είναι πλέον δυνατή η χρήση του λογαριασμού σας <ph name="EMAIL"/> ως κύριου λογαριασμού. Επειδή ο λογαριασμός είναι διαχειριζόμενος από τον τομέα <ph name="DOMAIN"/>, οι σελιδοδείκτες, το ιστορικό, οι κωδικοί πρόσβασης και άλλες ρυθμίσεις σας θα διαγραφούν από αυτήν τη συσκευή.</translation>
 <translation id="3797739167230984533">Η συσκευή <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> είναι διαχειριζόμενη<ph name="END_LINK"/> από τον οργανισμό σας</translation>
-<translation id="1722460139690167654">Η συσκευή <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> είναι διαχειριζόμενη<ph name="END_LINK"/> από τον τομέα <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8118488170956489476">Η <ph name="BEGIN_LINK"/>διαχείριση του προγράμματος περιήγησής σας<ph name="END_LINK"/> πραγματοποιείται από τον οργανισμό σας</translation>
 <translation id="1365180424462182382">Το <ph name="BEGIN_LINK"/>πρόγραμμα περιήγησής σας είναι διαχειριζόμενο<ph name="END_LINK"/> από τον τομέα <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Περιεχόμενο</translation>
@@ -1671,8 +1709,6 @@
 <translation id="4258348331913189841">Συστήματα αρχείων</translation>
 <translation id="7701040980221191251">Καμία</translation>
 <translation id="2881966438216424900">Τελευταία πρόσβαση:</translation>
-<translation id="3941357410013254652">Αναγνωριστικό καναλιού</translation>
-<translation id="6135622770221372891">Αναγνωριστικά καναλιών</translation>
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Αποθηκευτικός χώρος κρυφής μνήμης</translation>
@@ -1707,6 +1743,8 @@
 <translation id="189210018541388520">Άνοιγμα πλήρους οθόνης</translation>
 <translation id="6096047740730590436">Άνοιγμα μεγιστοποιημένης εφαρμογής</translation>
 <translation id="7256710573727326513">Άνοιγμα σε καρτέλα</translation>
+<translation id="8114875720387900039">Οριζόντιος διαχωρισμός</translation>
+<translation id="4976009197147810135">Κάθετος διαχωρισμός</translation>
 <translation id="7636919061354591437">Εγκατάσταση σε αυτήν τη συσκευή</translation>
 <translation id="2993517869960930405">Πληροφορίες εφαρμογής</translation>
 <translation id="2867768963760577682">Άνοιγμα σε καρφιτσωμένη καρτέλα</translation>
@@ -1715,6 +1753,8 @@
 <translation id="6022526133015258832">Άνοιγμα πλήρους οθόνης</translation>
 <translation id="6845038076637626672">Άνοιγμα μεγιστοποιημένης εφαρμογής</translation>
 <translation id="6860427144121307915">Άνοιγμα σε καρτέλα</translation>
+<translation id="6789592661892473991">Οριζόντιος διαχωρισμός</translation>
+<translation id="6387674443318562538">Κάθετος διαχωρισμός</translation>
 <translation id="1231733316453485619">Ενεργοποίηση συγχρονισμού;</translation>
 <translation id="4736292055110123391">Συγχρονίστε τους σελιδοδείκτες, τους κωδικούς πρόσβασης, το ιστορικό σας και άλλο περιεχόμενο σε όλες τις συσκευές σας</translation>
 <translation id="5736731321935944068">Η Brave Software μπορεί να χρησιμοποιήσει το ιστορικό σας για την εξατομίκευση της Αναζήτησης, των διαφημίσεων και άλλων υπηρεσιών Brave Software</translation>
@@ -1799,7 +1839,7 @@
 <translation id="5771816112378578655">Ρύθμιση σε εξέλιξη...</translation>
 <translation id="3492788708641132712">Ο συγχρονισμός δεν λειτουργεί. Δοκιμάστε να συνδεθείτε ξανά.</translation>
 <translation id="6349170655202535379">Ο συγχρονισμός δεν λειτουργεί. Δοκιμάστε να αποσυνδεθείτε και να συνδεθείτε ξανά.</translation>
-<translation id="974555521953189084">Εισαγάγετε τη φράση πρόσβασης για να ξεκινήσετε τον συγχρονισμό.</translation>
+<translation id="6828182567531805778">Εισαγάγετε τη φράση πρόσβασης για να συγχρονίσετε τα δεδομένα σας</translation>
 <translation id="7120865473764644444">Δεν ήταν δυνατή η σύνδεση στον διακομιστή συγχρονισμού. Επανάληψη…</translation>
 <translation id="5526745900034778153">Συνδεθείτε ξανά για να συνεχίσετε τον συγχρονισμό</translation>
 <translation id="2932483646085333864">Για να ξεκινήσει ο συγχρονισμός, αποσυνδεθείτε και συνδεθείτε ξανά</translation>
@@ -1860,6 +1900,8 @@
 <translation id="2482878487686419369">Ειδοποιήσεις</translation>
 <translation id="7221855153210829124">Εμφάνιση ειδοποιήσεων</translation>
 <translation id="8393700583063109961">Αποστολή μηνύματος</translation>
+<translation id="7336799713063880535">Αποκλ. ειδοποιήσεων.</translation>
+<translation id="5146995429444047494">Οι ειδοποιήσεις για την προέλευση <ph name="ORIGIN"/> έχουν αποκλειστεί</translation>
 <translation id="6701535245008341853">Δεν ήταν δυνατή η λήψη του προφίλ.</translation>
 <translation id="7705276765467986571">Δεν ήταν δυνατή η φόρτωση μοντέλου σελιδοδείκτη.</translation>
 <translation id="5585118885427931890">Δεν ήταν δυνατή η δημιουργία φακέλου σελιδοδεικτών.</translation>
@@ -2021,10 +2063,17 @@
 <translation id="2435457462613246316">Εμφάνιση κωδικού πρόσβασης</translation>
 <translation id="4565377596337484307">Απόκρυψη κωδικού πρόσβασης</translation>
 <translation id="5311304534597152726">Σύνδεση ως</translation>
+<translation id="70850504851191913">Έγινε αναφορά παραβίασης δεδομένων</translation>
+<translation id="149470879113908545">Μια παραβίαση δεδομένων σε έναν ιστότοπο ή εφαρμογή που χρησιμοποιείτε εξέθεσε τον κωδικό πρόσβασής σας. Το Brave συνιστά να ελέγξετε τους αποθηκευμένους κωδικούς πρόσβασής σας τώρα.</translation>
+<translation id="2054306844530250731">Μια παραβίαση δεδομένων σε έναν ιστότοπο ή μια εφαρμογή που χρησιμοποιείτε εξέθεσε τον κωδικό πρόσβασής σας. Το Brave προτείνει <ph name="BOLD"/> στο <ph name="ORIGIN"/> τώρα.</translation>
+<translation id="4270615291506829403">αλλαγή του κωδικού πρόσβασής σας</translation>
+<translation id="5103987914706363520">Μια παραβίαση δεδομένων σε έναν ιστότοπο ή εφαρμογή που χρησιμοποιείτε εξέθεσε τον κωδικό πρόσβασής σας. Το Brave συνιστά να ελέγξετε τους αποθηκευμένους κωδικούς πρόσβασής σας και να αλλάξετε τον κωδικό πρόσβασής σας στον ιστότοπο <ph name="ORIGIN"/>.</translation>
 <translation id="5425863515030416387">Συνδεθείτε με ευκολία σε όλες τις συσκευές</translation>
 <translation id="9114663181201435112">Εύκολη σύνδεση</translation>
 <translation id="764017888128728">Το <ph name="PASSWORD_MANAGER_BRAND"/> σάς συνδέει αυτόματα σε κατάλληλους ιστότοπους, χρησιμοποιώντας τους κωδικούς πρόσβασης που έχετε αποθηκεύσει.</translation>
 <translation id="5869029295770560994">OK, το κατάλαβα!</translation>
+<translation id="1186201132766001848">Έλεγχος κωδικών πρόσβασης</translation>
+<translation id="5979084224081478209">Έλεγχος κωδικών πρόσβασης</translation>
 <translation id="3423858849633684918">Επανεκκινήστε το <ph name="PRODUCT_NAME"/></translation>
 <translation id="2294358108254308676">Θέλετε να εγκαταστήσετε το <ph name="PRODUCT_NAME"/>;</translation>
 <translation id="586567932979200359">Εκτελείτε το <ph name="PRODUCT_NAME"/> από την εικόνα δίσκου. Αν το εγκαταστήσετε στον υπολογιστή σας, θα μπορείτε να το εκτελείτε χωρίς την εικόνα δίσκου και θα παραμένει ενημερωμένο.</translation>
@@ -2089,8 +2138,6 @@
 <translation id="614940544461990577">Δοκιμάστε να κάνετε τα εξής:</translation>
 <translation id="7325437708553334317">Επέκταση για τις "Αντιθέσεις"</translation>
 <translation id="6990778048354947307">Σκούρο θέμα</translation>
-<translation id="5556206011531515970">Πατήστε Επόμενο για να επιλέξετε το προεπιλεγμένο πρόγραμμα περιήγησης.</translation>
-<translation id="1201402288615127009">Επόμενο</translation>
 <translation id="2478176599153288112">Άδειες αρχείων πολυμέσων για την επέκταση "<ph name="EXTENSION"/>"</translation>
 <translation id="186612162884103683">Η επέκταση "<ph name="EXTENSION"/>" μπορεί να διαβάσει και να εγγράψει εικόνες, βίντεο και αρχεία ήχου στις επιλεγμένες τοποθεσίες.</translation>
 <translation id="8180786512391440389">Η επέκταση "<ph name="EXTENSION"/>" μπορεί να διαβάσει και να εγγράψει εικόνες, βίντεο και αρχεία ήχου σε επιλεγμένες τοποθεσίες.</translation>
@@ -2191,7 +2238,7 @@
 <translation id="5493792505296048976">η οθόνη ενεργοποιήθηκε</translation>
 <translation id="6459799433792303855">Το ενεργό παράθυρο μετακινήθηκε στη άλλη οθόνη.</translation>
 <translation id="6551508934388063976">Μη διαθέσιμη εντολή. Πατήστε control-N για να ανοίξετε ένα νέο παράθυρο.</translation>
-<translation id="3831486154586836914">Έχετε μεταβεί στη λειτουργία προεπισκόπησης παράθυρου</translation>
+<translation id="703001695939087067">Έχει ενεργοποιηθεί η λειτουργία προεπισκόπησης παραθύρου. Πατήστε το πλήκτρο tab για πλοήγηση.</translation>
 <translation id="4380648069038809855">Εισαγωγή σε πλήρη οθόνη</translation>
 <translation id="1766575458646819543">Έξοδος από πλήρη οθόνη</translation>
 <translation id="8736288397686080465">Αυτός ο ιστότοπος έχει ενημερωθεί στο παρασκήνιο.</translation>
@@ -2305,29 +2352,31 @@
 <translation id="874689135111202667">{0,plural, =1{Θέλετε να ανεβάσετε ένα αρχείο σε αυτόν τον ιστότοπο;}other{Θέλετε να ανεβάσετε # αρχεία σε αυτόν τον ιστότοπο;}}</translation>
 <translation id="1956390763342388273">Αυτή η ενέργεια θα ανεβάσει όλα τα αρχεία από το φάκελο "<ph name="FOLDER_PATH"/>". Κάντε την ενέργεια μόνο αν εμπιστεύεστε τον ιστότοπο.</translation>
 <translation id="1243314992276662751">Μεταφόρτωση</translation>
-<translation id="1574038418461948632">Αποθήκευση αλλαγών στο αρχείο <ph name="FILENAME"/>;</translation>
-<translation id="5181988524012865000">Να αποθηκευτούν οι αλλαγές στα αρχεία;</translation>
-<translation id="2775188527796017992">Ο ιστότοπος <ph name="ORIGIN"/> θα μπορεί να αποθηκεύσει τις αλλαγές σας απευθείας στο αρχείο <ph name="FILENAME"/>. Ο ιστότοπος θα μπορεί να αποθηκεύσει αλλαγές έως ότου κλείσετε αυτήν την καρτέλα.</translation>
-<translation id="5375793835576008230">Ο ιστότοπος <ph name="ORIGIN"/> θα μπορεί να αποθηκεύσει τις αλλαγές σας απευθείας στα αρχεία του φακέλου <ph name="FOLDERNAME"/>. Ο ιστότοπος θα μπορεί να αποθηκεύσει αλλαγές έως ότου κλείσετε αυτήν την καρτέλα.</translation>
+<translation id="3928570707778085600">Αποθήκευση αλλαγών στο αρχείο <ph name="FILE_OR_FOLDER_NAME"/>;</translation>
+<translation id="8892226765772586656">Ο ιστότοπος <ph name="ORIGIN"/> μπορεί να επεξεργαστεί το αρχείο <ph name="FILENAME"/> μέχρι να κλείσετε αυτήν την καρτέλα</translation>
+<translation id="3780211714699334884">Ο ιστότοπος <ph name="ORIGIN"/> θα μπορεί να επεξεργαστεί τα αρχεία στον φάκελο <ph name="FOLDERNAME"/> μέχρι να κλείσετε αυτήν την καρτέλα</translation>
 <translation id="6532106788206463496">Αποθήκευση αλλαγών</translation>
-<translation id="5102007300153090427">Επιτρέπεται σε αυτήν τη σελίδα να αποθηκεύει σε αρχεία.</translation>
-<translation id="197228003527531594">Επιτρέπεται σε αυτήν τη σελίδα να βλέπει όλα τα αρχεία σε έναν φάκελο στη συσκευή σας.</translation>
-<translation id="766254481392580456">Ο ιστότοπος <ph name="ORIGIN"/> μπορεί να αποθηκεύσει τις αλλαγές σας απευθείας στο αρχείο <ph name="FILENAME"/>.</translation>
-<translation id="856745937116041450">Ο ιστότοπος <ph name="ORIGIN"/> μπορεί να αποθηκεύσει τις αλλαγές σας απευθείας στα παρακάτω αρχεία.</translation>
-<translation id="2150212764721500731">Ο ιστότοπος <ph name="ORIGIN"/> μπορεί να αποθηκεύσει τις αλλαγές σας απευθείας στα αρχεία του φακέλου <ph name="FOLDERNAME"/>.</translation>
-<translation id="7509896576944228744">Ο ιστότοπος <ph name="ORIGIN"/> μπορεί να αποθηκεύσει τις αλλαγές σας απευθείας στους παρακάτω φακέλους.</translation>
-<translation id="8152021341839173449">Ο ιστότοπος <ph name="ORIGIN"/> μπορεί να αποθηκεύει τις αλλαγές σας απευθείας στα παρακάτω αρχεία και φακέλους.</translation>
-<translation id="3343738344138980580">Ο ιστότοπος <ph name="ORIGIN"/> μπορεί να δει όλα τα αρχεία στον φάκελο <ph name="FOLDERNAME"/>.</translation>
-<translation id="1507049466468737452">Ο ιστότοπος <ph name="ORIGIN"/> μπορεί να δει όλα τα αρχεία στους παρακάτω φακέλους.</translation>
-<translation id="6868139415119881457">Ο ιστότοπος <ph name="ORIGIN"/> μπορεί να δει και να αποθηκεύσει τις αλλαγές σας απευθείας στα παρακάτω αρχεία και φακέλους.</translation>
+<translation id="4301671483919369635">Επιτρέπεται σε αυτήν τη σελίδα να επεξεργάζεται αρχεία</translation>
+<translation id="3923676227229836009">Επιτρέπεται σε αυτήν τη σελίδα να βλέπει αρχεία</translation>
+<translation id="8983632908660087688">Ο ιστότοπος <ph name="ORIGIN"/> μπορεί να επεξεργαστεί το αρχείο <ph name="FILENAME"/></translation>
+<translation id="1301135395320604080">Ο ιστότοπος <ph name="ORIGIN"/> μπορεί να επεξεργαστεί τα παρακάτω αρχεία</translation>
+<translation id="4469762931504673593">Ο ιστότοπος <ph name="ORIGIN"/> μπορεί να επεξεργαστεί τα αρχεία στον φάκελο <ph name="FOLDERNAME"/></translation>
+<translation id="3948507072814225786">Ο ιστότοπος <ph name="ORIGIN"/> μπορεί να επεξεργαστεί τα αρχεία στους παρακάτω φακέλους</translation>
+<translation id="8889651696183044030">Ο ιστότοπος <ph name="ORIGIN"/> μπορεί να επεξεργαστεί τα παρακάτω αρχεία και φακέλους</translation>
+<translation id="5969419185858894314">Ο ιστότοπος <ph name="ORIGIN"/> μπορεί να δει τα αρχεία στον φάκελο <ph name="FOLDERNAME"/></translation>
+<translation id="3810593934879994994">Ο ιστότοπος <ph name="ORIGIN"/> μπορεί να δει τα αρχεία στους παρακάτω φακέλους</translation>
+<translation id="2537395079978992874">Ο ιστότοπος <ph name="ORIGIN"/> μπορεί να δει και να επεξεργαστεί τα παρακάτω αρχεία και φακέλους</translation>
 <translation id="5126611267288187364">Προβολή αλλαγών</translation>
 <translation id="5073956501367595100">{0,plural,offset:2 =1{<ph name="FILE1"/>}=2{<ph name="FILE1"/>, <ph name="FILE2"/>}other{<ph name="FILE1"/>, <ph name="FILE2"/> και # ακόμη}}</translation>
 <translation id="1790976235243700817">Κατάργηση πρόσβασης</translation>
-<translation id="1392975001822614900">Δεν είναι δυνατή η αποθήκευση σε αυτόν τον φάκελο.</translation>
-<translation id="7613156935003315818">Ο ιστότοπος <ph name="ORIGIN"/> δεν μπορεί να αποθηκεύσει τις αλλαγές σας σε αυτόν τον φάκελο επειδή περιέχει αρχεία συστήματος.</translation>
+<translation id="831440797644402910">Δεν είναι δυνατό το άνοιγμα αυτού του φακέλου</translation>
+<translation id="3850914401008572843">Ο ιστότοπος <ph name="ORIGIN"/> δεν μπορεί να ανοίξει αυτόν τον φάκελο επειδή περιέχει αρχεία συστήματος</translation>
 <translation id="4403775189117163360">Επιλέξτε διαφορετικό φάκελο</translation>
+<translation id="3586806079541226322">Δεν είναι δυνατό το άνοιγμα αυτού του αρχείου</translation>
+<translation id="6972553992270299730">Ο ιστότοπος <ph name="ORIGIN"/> δεν μπορεί να ανοίξει τα αρχεία σε αυτόν τον φάκελο επειδή περιέχει αρχεία συστήματος.</translation>
+<translation id="2123766928840368256">Επιλέξτε διαφορετικό αρχείο</translation>
 <translation id="7643932971554933646">Να επιτρέπεται στον ιστότοπο να βλέπει αρχεία;</translation>
-<translation id="999180493986838144">Ο ιστότοπος <ph name="ORIGIN"/> θα μπορεί να δει όλα τα αρχεία στον φάκελο <ph name="FOLDERNAME"/>. Ο ιστότοπος θα μπορεί να δει τυχόν αλλαγές στον φάκελο έως ότου κλείσετε αυτήν την καρτέλα.</translation>
+<translation id="7892963120252479610">Ο ιστότοπος <ph name="ORIGIN"/> θα μπορεί να δει τα αρχεία στον φάκελο <ph name="FOLDERNAME"/> μέχρι να κλείσετε αυτήν την καρτέλα</translation>
 <translation id="7201420661433230412">Προβολή αρχείων</translation>
 <translation id="3015639418649705390">Επανεκκίνηση τώρα</translation>
 <translation id="8712637175834984815">Κατάλαβα!</translation>
@@ -2366,6 +2415,7 @@
 <translation id="5660204307954428567">Σύζευξη με τη συσκευή <ph name="DEVICE_NAME"/></translation>
 <translation id="1167199480815330007">Βρείτε τον 6ψήφιο αριθμό PIN που βρίσκεται στο πίσω μέρος του κλειδιού ασφαλείας σας</translation>
 <translation id="5601503069213153581">PIN</translation>
+<translation id="1201402288615127009">Επόμενο</translation>
 <translation id="8921366488406707015">Επαλήθευση του κλειδιού ασφαλείας σας…</translation>
 <translation id="1805472176602625930">Πατήστε το κουμπί στο κλειδί ασφαλείας</translation>
 <translation id="1489664337021920575">Ορίστε κάποια άλλη επιλογή</translation>
@@ -2405,6 +2455,11 @@
 <translation id="5186185447130319458">Ανώνυμη περιήγηση</translation>
 <translation id="7643842463591647490">{0,plural, =1{# ανοιχτό παράθυρο}other{# ανοιχτά παράθυρα}}</translation>
 <translation id="2579188629646253712">Έξοδος από ανώνυμη περιήγηση</translation>
+<translation id="4349828822184870497">Χρήσιμη</translation>
+<translation id="6876469544038980967">Δεν είναι χρήσιμη</translation>
+<translation id="6428450836711225518">Επαλήθευση του αριθμού τηλεφώνου σας</translation>
+<translation id="8742371904523228557">Το <ph name="ONE_TIME_CODE"/> είναι ο κωδικός σας για το <ph name="ORIGIN"/></translation>
+<translation id="6518133107902771759">Επαλήθευση</translation>
 <translation id="394984172568887996">Εισαγωγή από το IE</translation>
 <translation id="1543284117603151572">Εισαγωγή από το Edge</translation>
 <translation id="5502500733115278303">Εισαγωγή από το Firefox</translation>
@@ -2493,6 +2548,7 @@
 <translation id="1173894706177603556">Μετονομασία</translation>
 <translation id="6825184156888454064">Ταξινόμηση κατά όνομα</translation>
 <translation id="3440663250074896476">Περισσότερες ενέργειες για το σελιδοδείκτη <ph name="BOOKMARK_NAME"/></translation>
+<translation id="1608668830839595724">Περισσότερες ενέργειες για τα επιλεγμένα στοιχεία</translation>
 <translation id="2903457445916429186">Άνοιγμα επιλεγμένων στοιχείων</translation>
 <translation id="962802172452141067">Δέντρο φακέλου σελιδοδεικτών</translation>
 <translation id="2683638487103917598">Ο φάκελος είναι ταξινομημένος</translation>
@@ -2502,11 +2558,11 @@
 <translation id="5488093641312826914">Το στοιχείο "<ph name="COPIED_ITEM_NAME"/>" αντιγράφηκε</translation>
 <translation id="2277769717710009150">{COUNT,plural, =1{1 στοιχείο αντιγράφηκε}other{# στοιχεία αντιγράφηκαν}}</translation>
 <translation id="9115675100829699941">&amp;Σελιδοδείκτες</translation>
-<translation id="1035590878859356651">Δημιουργία σελιδοδείκτη για αυτήν τη σελίδα…</translation>
-<translation id="1047726139967079566">Τοποθέτηση Σελιδοδείκτη σε Αυτήν τη Σελίδα...</translation>
-<translation id="1774833706453699074">Δημιουργία σελιδοδεικτών για όλες τις ανοικτές σελίδες…</translation>
-<translation id="6949306908218145636">Δημιουργία σελιδοδεικτών για όλες τις ανοικτές σελίδες…</translation>
-<translation id="4422347585044846479">Επεξεργασία σελιδοδείκτη για αυτή τη σελίδα</translation>
+<translation id="9023015617655685412">Προσθήκη αυτής της καρτέλας στους σελιδοδείκτες…</translation>
+<translation id="1482626744466814421">Προσθήκη αυτής της καρτέλας στους σελιδοδείκτες…</translation>
+<translation id="4474155171896946103">Δημιουργία σελιδοδείκτη για όλες τις καρτέλες...</translation>
+<translation id="2336228925368920074">Δημιουργία σελιδοδείκτη για όλες τις καρτέλες...</translation>
+<translation id="8300011035382349091">Επεξεργασία σελιδοδείκτη για αυτή την καρτέλα</translation>
 <translation id="4776146737004271126">Άνοιγμα ρυθμίσεων Android</translation>
 <translation id="6559023360691182159">{COUNT,plural, =0{Καμία}=1{<ph name="APP_1"/>}=2{<ph name="APP_1"/> και <ph name="APP_2"/>}=3{<ph name="APP_1"/>, <ph name="APP_2"/> και <ph name="APP_3"/>}=4{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> και 1 ακόμη εφαρμογή}other{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> και <ph name="EXTRA_APPS"/> ακόμη εφαρμογές}}</translation>
 <translation id="9117030152748022724">Διαχείριση των εφαρμογών σας</translation>
@@ -2521,6 +2577,8 @@
 <translation id="4739098340603978916">Μέγεθος: <ph name="APP_SIZE"/></translation>
 <translation id="4291934469232591280">Έκδοση: <ph name="VERSION"/></translation>
 <translation id="1920390473494685033">Επαφές</translation>
+<translation id="9123948967884660766">Δεν είναι δυνατή η απεγκατάσταση αυτής της εφαρμογής καθώς αποτελεί μέρος του Brave OS.</translation>
+<translation id="496185450405387901">Αυτή η εφαρμογή έχει εγκατασταθεί από τον διαχειριστή σας.</translation>
 <translation id="7787308148023287649">Προβολή σε άλλη οθόνη</translation>
 <translation id="7710568461918838723">&amp;Μετάδοση…</translation>
 <translation id="6700480081846086223">Μετάδοση <ph name="HOST_NAME"/></translation>
@@ -2540,6 +2598,7 @@
 <translation id="6169666352732958425">Αδυναμία μετάδοσης επιφάνειας εργασίας.</translation>
 <translation id="4081242589061676262">Αδυναμία μετάδοσης αρχείου.</translation>
 <translation id="4075639477629295004">Δεν είναι δυνατή η μετάδοση του αρχείου <ph name="FILE_NAME"/>.</translation>
+<translation id="8358912028636606457">Η μετάδοση του ήχου καρτέλας δεν υποστηρίζεται σε αυτήν τη συσκευή.</translation>
 <translation id="3930737994424905957">Αναζήτηση συσκευών</translation>
 <translation id="5209320130288484488">Δεν βρέθηκαν συσκευές</translation>
 <translation id="4415245286584082850">Δεν βρέθηκαν συσκευές. Ανοίξτε ένα άρθρο του κέντρο βοήθειας σε νέα καρτέλα.</translation>
@@ -2552,12 +2611,12 @@
 <translation id="2541002089857695151">Βελτιστοποίηση μετάδοσης πλήρους οθόνης;</translation>
 <translation id="4144218403971135344">Απολαύστε βίντεο καλύτερης ποιότητας και εξοικονομήστε μπαταρία. Το βίντεο θα αναπαράγεται μόνο στην οθόνη σας με δυνατότητα Cast.</translation>
 <translation id="236117173274098341">Βελτιστοποίηση</translation>
-<translation id="7473891865547856676">Όχι, ευχαριστώ</translation>
 <translation id="8538358978858059843">Να ενεργοποιηθούν οι υπηρεσίες cloud για το Cast;</translation>
 <translation id="3856595552313160385">Η χρήση του Hangouts και του Cast for Education διέπεται από την Πολιτική απορρήτου της Brave Software.</translation>
 <translation id="3435896845095436175">Ενεργοποίηση</translation>
 <translation id="3700888195348409686">Προβολή σε εξέλιξη (<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="5285635972691565180">Οθόνη <ph name="DISPLAY_ID"/></translation>
+<translation id="7477793887173910789">Ελέγξτε τη μουσική σας, τα βίντεο και περισσότερα</translation>
 <translation id="4707302005824653064">Η χρήση και το ιστορικό μπορούν να ελεγχθούν από το διαχειριστή (<ph name="CUSTODIAN_EMAIL"/>) στη διεύθυνση chrome.com.</translation>
 <translation id="346431825526753">Αυτός είναι ένας λογαριασμός για παιδιά τον οποίο διαχειρίζεται ο χρήστης <ph name="CUSTODIAN_EMAIL"/>.</translation>
 <translation id="4159681666905192102">Αυτός είναι ένας λογαριασμός για παιδιά τον οποίο διαχειρίζονται οι χρήστες <ph name="CUSTODIAN_EMAIL"/> και <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
@@ -2592,15 +2651,11 @@
 <translation id="7029809446516969842">Κωδικοί πρόσβασης</translation>
 <translation id="984275831282074731">Τρόποι πληρωμής</translation>
 <translation id="8473863474539038330">Διευθύνσεις και άλλα</translation>
-<translation id="454547174531670764">Συγχρονισμός με άλλον λογαριασμό</translation>
-<translation id="1692115862433274081">Χρήση διαφορετικού λογαριασμού</translation>
 <translation id="5287425679749926365">Οι λογαριασμοί σας</translation>
 <translation id="4801448226354548035">Απόκρυψη λογαριασμών</translation>
 <translation id="2935225303485967257">Διαχείριση ατόμων</translation>
 <translation id="7388222713940428051">Άνοιγμα παραθύρου περιήγησης επισκέπτη</translation>
 <translation id="127668050356036882">Κλείσιμο όλων των παραθύρων</translation>
-<translation id="8883847527783433352">Συγχρονισμός με άλλον λογαριασμό</translation>
-<translation id="2761898608071930085">Χρήση άλλου λογαριασμού</translation>
 <translation id="1464258312790801189">Οι λογαριασμοί σας</translation>
 <translation id="6655458902729017087">Απόκρυψη λογαριασμών</translation>
 <translation id="688280436658139163">Διαχείριση ατόμων</translation>
@@ -2789,6 +2844,7 @@
 <translation id="4570609078116869893">Αυτόματη ενημέρωση του Brave για όλους τους χρήστες</translation>
 <translation id="7102687220333134671">Οι αυτόματες ενημερώσεις είναι ενεργοποιημένες</translation>
 <translation id="8284326494547611709">Υπότιτλοι</translation>
+<translation id="3602290021589620013">Προεπισκόπηση</translation>
 <translation id="1755601632425835748">Μέγεθος κειμένου</translation>
 <translation id="3179982752812949580">Γραμματοσειρά κειμένου</translation>
 <translation id="6850286078059909152">Χρώμα κειμένου</translation>
@@ -2802,7 +2858,6 @@
 <translation id="8184472985242519288">Ομοιόμορφο</translation>
 <translation id="8619803522055190423">Αναπτυσσόμενη σκιά</translation>
 <translation id="3930968231047618417">Χρώμα φόντου</translation>
-<translation id="7569983096843329377">Μαύρο</translation>
 <translation id="2713444072780614174">Λευκό</translation>
 <translation id="7942349550061667556">Κόκκινο</translation>
 <translation id="6017514345406065928">Πράσινο</translation>
@@ -2826,6 +2881,7 @@
 <translation id="2915873080513663243">Αυτόματη σάρωση</translation>
 <translation id="8912810933860534797">Ενεργοποίηση αυτόματης σάρωσης</translation>
 <translation id="6617100836880592260">Ταχύτητα σάρωσης: <ph name="SPEED_WITH_UNITS"/></translation>
+<translation id="1816036116994822943">Ταχύτητα σάρωσης πληκτρολογίου</translation>
 <translation id="7919210519031517829"><ph name="DURATION"/> δ.</translation>
 <translation id="2981113813906970160">Εμφάνιση μεγάλου δείκτη ποντικιού</translation>
 <translation id="5072052264945641674">Προσαρμογή μεγέθους δείκτη ποντικιού</translation>
@@ -2907,7 +2963,6 @@
 <translation id="3677657024345889897">Χαμηλότερη ένταση</translation>
 <translation id="167160931442925455">Μέγιστη ένταση</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (προεπιλογή)</translation>
-<translation id="3602290021589620013">Προεπισκόπηση</translation>
 <translation id="7037509989619051237">Κείμενο για προεπισκόπηση</translation>
 <translation id="5471768120198416576">Γεια σας! Είμαι η φωνή της λειτουργίας μετατροπής κειμένου σε ομιλία.</translation>
 <translation id="6902066522699286937">Φωνή για προεπισκόπηση</translation>
@@ -2949,7 +3004,6 @@
       Αυτό δεν επηρεάζει εφαρμογές ή περιεχόμενο σε άλλες συσκευές.</translation>
 <translation id="492299503953721473">Κατάργηση εφαρμογών Android</translation>
 <translation id="7566118625369982896">Διαχείριση συνδέσμων εφαρμογών Play</translation>
-<translation id="5026688690798028095">Άνοιγμα διαχείρισης εφαρμογών</translation>
 <translation id="2433507940547922241">Εμφάνιση</translation>
 <translation id="1177863135347784049">Προσαρμοσμένη</translation>
 <translation id="1925021887439448749">Εισαγάγετε προσαρμοσμένη διεύθυνση ιστού</translation>
@@ -3004,6 +3058,10 @@
 <translation id="6644512095122093795">Να προτείνεται αποθήκευση των κωδικών πρόσβασης</translation>
 <translation id="2100273922101894616">Αυτόματη σύνδεση</translation>
 <translation id="7513029293694390567">Αυτόματη σύνδεση σε ιστοτόπους με χρήση αποθηκευμένων διαπιστευτηρίων. Όταν η λειτουργία είναι απενεργοποιημένη, θα σας ζητείται επιβεβαίωση κάθε φορά που προσπαθείτε να συνδεθείτε σε έναν ιστότοπο.</translation>
+<translation id="7930681627240672853">Ελέγξτε την ασφάλεια του κωδικού πρόσβασης</translation>
+<translation id="7510943789645525906">Σας προειδοποιεί σε περίπτωση που ο κωδικός πρόσβασης που χρησιμοποιείτε ήταν μέρος μιας παραβίασης δεδομένων.</translation>
+<translation id="786008582930267433">Το Brave Software μπορεί να ελέγχει εάν οι κωδικοί πρόσβασής σας ήταν μέρος της παραβίασης δεδομένων.</translation>
+<translation id="3372463077865465112">Το Brave Software μπορεί να ελέγχει εάν οι κωδικοί πρόσβασής σας ήταν μέρος της παραβίασης δεδομένων. Αυτή η λειτουργία θα ενεργοποιείται όταν συνδέεστε με τον Λογαριασμό σας Brave Software.</translation>
 <translation id="1375321115329958930">Αποθηκευμένοι κωδικοί πρόσβασης</translation>
 <translation id="152234381334907219">Δεν έγινε ποτέ αποθήκευση</translation>
 <translation id="5137501176474113045">Διαγραφή αυτού του στοιχείο</translation>
@@ -3113,6 +3171,7 @@
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
 <translation id="2187895286714876935">Σφάλμα εισαγωγής του πιστοποιητικού διακομιστή</translation>
 <translation id="816055135686411707">Σφάλμα ρύθμισης της αποδοχής πιστοποιητικού</translation>
+<translation id="5541694225089836610">Η ενέργεια απενεργοποιήθηκε από τον διαχειριστή σας</translation>
 <translation id="3380365263193509176">Άγνωστο σφάλμα</translation>
 <translation id="368789413795732264">Παρουσιάστηκε σφάλμα κατά την απόπειρα εγγραφής στο αρχείο <ph name="ERROR_TEXT"/>.</translation>
 <translation id="784934925303690534">Χρονικό εύρος</translation>
@@ -3144,9 +3203,9 @@
 <translation id="6985607387932385770">Εκτυπωτές</translation>
 <translation id="1815579292149538864">Ρυθμίστε ή διαχειριστείτε εκτυπωτές CUPS.</translation>
 <translation id="8030656706657716245">Προσθήκη εκτυπωτή</translation>
-<translation id="8025958612547562988">Αποθηκεύστε στο προφίλ σας τους εκτυπωτές που έχουν εντοπιστεί ή προσθέστε έναν νέο εκτυπωτή.</translation>
+<translation id="893254996965966411">Αποθήκευση των εκτυπωτών που εντοπίζονται στο προφίλ σας ή προσθήκη νέου εκτυπωτή.</translation>
 <translation id="6980969641756020642">Διαθέσιμοι εκτυπωτές για αποθήκευση</translation>
-<translation id="8151638057146502721">Διαμόρφωση</translation>
+<translation id="3571734092741541777">Ρύθμιση</translation>
 <translation id="2297705863329999812">Αναζήτηση εκτυπωτών</translation>
 <translation id="7956373551960864128">Οι αποθηκευμένοι εκτυπωτές σας</translation>
 <translation id="168991973552362966">Προσθήκη εκτυπωτή που βρίσκεται σε κοντινή απόσταση</translation>
@@ -3167,14 +3226,12 @@
 <translation id="4058720513957747556">AppSocket (TCP/IP)</translation>
 <translation id="6619058681307408113">Daemon εκτυπωτή γραμμής (LPD)</translation>
 <translation id="2266957463645820432">IPP μέσω USB (IPPUSB)</translation>
-<translation id="8086015605808120405">Διαμόρφωση <ph name="PRINTER_NAME"/> …</translation>
 <translation id="4665014895760275686">Κατασκευαστής</translation>
 <translation id="4561098487691395071">Εναλλακτικά, καθορίστε το PPD του εκτυπωτή σας</translation>
 <translation id="1989112275319619282">Περιήγηση</translation>
 <translation id="3625481642044239431">Επιλέχθηκε μη έγκυρο αρχείο. Δοκιμάστε ξανά.</translation>
-<translation id="2462752602710430187">Προστέθηκε <ph name="PRINTER_NAME"/></translation>
-<translation id="7380768571499464492">Ενημερώθηκε <ph name="PRINTER_NAME"/></translation>
-<translation id="9057119625587205566">Δεν υπάρχουν εκτυπωτές κοντά σας</translation>
+<translation id="8002670234429879764">Ο εκτυπωτής <ph name="PRINTER_NAME"/> δεν είναι πλέον διαθέσιμος.</translation>
+<translation id="3976108569178263973">Δεν υπάρχουν διαθέσιμοι εκτυπωτές.</translation>
 <translation id="3213187967168344806">Δεν είναι δυνατή η προσθήκη του εκτυπωτή. Επανεκκινήστε τον υπολογιστή σας και δοκιμάστε ξανά.</translation>
 <translation id="4052689580269971502">Δεν είναι δυνατή η σύνδεση του εκτυπωτή. Βεβαιωθείτε ότι ο εκτυπωτής είναι ενεργοποιημένος και ότι είναι συνδεδεμένος στο Bravebook μέσω Wi-Fi ή USB.</translation>
 <translation id="7099337801055912064">Δεν είναι δυνατή η φόρτωση μεγάλου PPD. Το μέγιστο μέγεθος είναι 250 KB.</translation>
@@ -3183,6 +3240,9 @@
 <translation id="4694024090038830733">Η διαμόρφωση του εκτυπωτή γίνεται από τον διαχειριστή.</translation>
 <translation id="5816434091619127343">Οι ζητούμενες αλλαγές στον εκτυπωτή θα τον καθιστούσαν ακατάλληλο για χρήση.</translation>
 <translation id="6504611359718185067">Σύνδεση στο διαδίκτυο για την προσθήκη εκτυπωτή</translation>
+<translation id="4066207411788646768">Ελέγξτε τη σύνδεσή σας για να δείτε διαθέσιμους εκτυπωτές στο δίκτυό σας.</translation>
+<translation id="4320177379694898372">Χωρίς σύνδεση στο διαδίκτυο</translation>
+<translation id="2910318910161511225">Συνδεθείτε σε ένα δίκτυο και δοκιμάστε ξανά</translation>
 <translation id="4972129977812092092">Επεξεργασία εκτυπωτή</translation>
 <translation id="5696679855467848181">Τρέχον αρχείο PPD που χρησιμοποιείται: <ph name="PPD_NAME"/></translation>
 <translation id="3016329696181678353">Δεν ήταν δυνατή η αυτόματη διαμόρφωση του <ph name="PRINTER_NAME"/>. Ορίστε σύνθετες λεπτομέρειες εκτυπωτή.</translation>
@@ -3220,6 +3280,7 @@
 <translation id="4820236583224459650">Ορισμός ως ενεργό εισιτήριο</translation>
 <translation id="4502423230170890588">Κατάργηση από αυτήν τη συσκευή</translation>
 <translation id="2507253002925770350">Το εισιτήριο καταργήθηκε.</translation>
+<translation id="3703699162703116302">Έγινε ανανέωση του εισιτηρίου</translation>
 <translation id="1436390408194692385">Ισχύει για <ph name="TICKET_TIME_LEFT"/>.</translation>
 <translation id="2665647207431876759">Έληξε</translation>
 <translation id="5565735124758917034">Ενεργό</translation>
@@ -3261,7 +3322,6 @@
 <translation id="6444070574980481588">Ορισμός ημερομηνίας και ώρας</translation>
 <translation id="5065775832226780415">Smart Lock</translation>
 <translation id="8468750959626135884">Ξεκλειδώστε τη συσκευή <ph name="DEVICE_TYPE"/> με το τηλέφωνο Android που χρησιμοποιείτε.</translation>
-<translation id="3571734092741541777">Ρύθμιση</translation>
 <translation id="3336664756920573711">Ξεκλειδώστε τη συσκευή <ph name="DEVICE_TYPE"/> με το τηλέφωνο Android που χρησιμοποιείτε</translation>
 <translation id="1036348656032585052">Απενεργοποίηση</translation>
 <translation id="1164674268730883318">Να απενεργοποιηθεί το Smart Lock για <ph name="DEVICE_TYPE"/>;</translation>
@@ -3290,7 +3350,6 @@
 <translation id="216169395504480358">Προσθήκη Wi-Fi…</translation>
 <translation id="3892414795099177503">Προσθήκη OpenVPN / L2TP…</translation>
 <translation id="287286579981869940">Προσθήκη <ph name="PROVIDER_NAME"/>…</translation>
-<translation id="3609895557594655134">Προσθήκη Android VPN…</translation>
 <translation id="8426713856918551002">Γίνεται ενεργοποίηση</translation>
 <translation id="3652817283076144888">Προετοιμασία</translation>
 <translation id="6528513914570774834">Επιτρέψτε σε άλλους χρήστες της συσκευής να χρησιμοποιούν αυτό το δίκτυο</translation>
@@ -3371,6 +3430,7 @@
 <translation id="8986362086234534611">Διαγραφή από τη μνήμη</translation>
 <translation id="7881483672146086348">Προβολή λογαριασμού</translation>
 <translation id="2392369802118427583">Ενεργοποίηση</translation>
+<translation id="8151638057146502721">Διαμόρφωση</translation>
 <translation id="5920543303088087579">Η σύνδεση σε αυτό το δίκτυο έχει απενεργοποιηθεί από τον διαχειριστή σας</translation>
 <translation id="1235458158152011030">Γνωστά δίκτυα</translation>
 <translation id="3003144360685731741">Προτιμώμενα δίκτυα</translation>
@@ -3379,6 +3439,8 @@
 <translation id="4384312707950789900">Προσθήκη στα προτιμώμενα</translation>
 <translation id="6077131872140550515">Κατάργηση από τα προτιμώμενα</translation>
 <translation id="4115002065223188701">Δίκτυο εκτός εύρους</translation>
+<translation id="4421167684395067330">Παρουσιάστηκε πρόβλημα κατά τη σύνδεση. Επικοινωνήστε με την <ph name="CARRIER_NAME"/> για βοήθεια.</translation>
+<translation id="7780252971640011240">Παρουσιάστηκε πρόβλημα κατά τη σύνδεση. Επικοινωνήστε με την εταιρεία κινητής τηλεφωνίας για βοήθεια.</translation>
 <translation id="161460670679785907">Δεν ήταν δυνατός ο εντοπισμός του τηλεφώνου σας</translation>
 <translation id="1682335582099955045">Για να χρησιμοποιήσετε την Άμεση σύνδεση, ενεργοποιήστε τις ειδοποιήσεις για τις Υπηρεσίες Brave Software Play.</translation>
 <translation id="7696063401938172191">Στο τηλέφωνο "<ph name="PHONE_NAME"/>":</translation>
@@ -3402,7 +3464,6 @@
 <translation id="3483333858382889684">Να επιτρέπεται σε αυτήν τη συσκευή να εντοπίζει άλλες συσκευές με τον Λογαριασμό σας Brave Software, οι οποίες διαθέτουν σύνδεση δεδομένων κινητής τηλεφωνίας</translation>
 <translation id="5637476008227280525">Ενεργοποίηση δεδομένων κινητής τηλεφωνίας</translation>
 <translation id="1572266655485775982">Ενεργοποίηση Wi-Fi</translation>
-<translation id="543381445212956829">Ενεργοποίηση WiMAX</translation>
 <translation id="166439687370499867">Δεν επιτρέπεται η αλλαγή διαμορφώσεων κοινόχρηστου δικτύου</translation>
 <translation id="938470336146445890">Εγκαταστήστε ένα πιστοποιητικό χρήστη.</translation>
 <translation id="7732111077498238432">Το δίκτυο διέπεται από πολιτική</translation>
@@ -3417,6 +3478,7 @@
 <translation id="5669267381087807207">Ενεργοποίηση</translation>
 <translation id="952992212772159698">Μη ενεργοποιημένο</translation>
 <translation id="3488065109653206955">Μερικώς ενεργοποιημένο</translation>
+<translation id="4562494484721939086">Εκτός υπηρεσίας</translation>
 <translation id="4880328057631981605">Όνομα σημείου πρόσβασης</translation>
 <translation id="5142961317498132443">Έλεγχος ταυτότητας</translation>
 <translation id="5691511426247308406">Οικογένεια</translation>
@@ -3427,7 +3489,6 @@
 <translation id="8461329675984532579">Όνομα παρόχου αρχικής σελίδας</translation>
 <translation id="7769672763586021400">Αναγνωριστικό μοντέλου</translation>
 <translation id="7487067081878637334">Τεχνολογία</translation>
-<translation id="3547495624659668105">Έκδοση PRL</translation>
 <translation id="8620617069779373398">Κατάσταση περιαγωγής</translation>
 <translation id="131461803491198646">Εγχώριο δίκτυο, χωρίς περιαγωγή</translation>
 <translation id="5252456968953390977">Περιαγωγη</translation>
@@ -3468,6 +3529,7 @@
 <translation id="5088172560898466307">Όνομα κεντρικού υπολογιστή διακομιστή</translation>
 <translation id="5050042263972837708">Όνομα ομάδας</translation>
 <translation id="8675354002693747642">Ήδη κοινόχρηστο κλειδί</translation>
+<translation id="8372477600026034341">Επιπλέον κεντρικοί υπολογιστές</translation>
 <translation id="6472207088655375767">OTP</translation>
 <translation id="8798441408945964110">Όνομα παρόχου</translation>
 <translation id="7882358943899516840">Τύπος παρόχου</translation>
@@ -3496,6 +3558,9 @@
 <translation id="5302048478445481009">Γλώσσα</translation>
 <translation id="6388429472088318283">Αναζήτηση γλωσσών</translation>
 <translation id="2690024944919328218">Εμφάνιση επιλογών γλώσσας</translation>
+<translation id="6199184144777428084">Προσθέστε γλώσσες ή κάντε αναδιάταξη της λίστας.</translation>
+<translation id="8813969267212093033">Το κείμενο συστήματος εμφανίζεται σε αυτήν τη γλώσσα</translation>
+<translation id="2366260648632264559">Εμφάνιση κειμένου συστήματος σε αυτήν τη γλώσσα</translation>
 <translation id="7216595297012131718">Γλώσσες παραγγελίας με βάση τις προτιμήσεις σας</translation>
 <translation id="5972708806901999743">Μετακίνηση στην κορυφή</translation>
 <translation id="8609465669617005112">Μετακίνηση προς τα επάνω</translation>
@@ -3650,6 +3715,10 @@
 <translation id="4085270836953633510">Να γίνεται ερώτηση όταν ένας ιστότοπος επιθυμεί πρόσβαση στις σειριακές θύρες</translation>
 <translation id="2322318151094136999">Να γίνεται ερώτηση όταν ένας ιστότοπος επιθυμεί πρόσβαση στις σειριακές θύρες (συνιστάται)</translation>
 <translation id="1906828677882361942">Να μην επιτρέπεται η πρόσβαση των ιστοτόπων στις σειριακές θύρες</translation>
+<translation id="2215727959747642672">Επεξεργασία αρχείου</translation>
+<translation id="8392364544846746346">Να γίνεται ερώτηση όταν ένας ιστότοπος θέλει να επεξεργαστεί αρχεία ή φακέλους στη συσκευή σας</translation>
+<translation id="7614260613810441905">Να γίνεται ερώτηση όταν ένας ιστότοπος θέλει να επεξεργαστεί αρχεία ή φακέλους στη συσκευή σας (συνιστάται)</translation>
+<translation id="2957117904572187936">Να μην επιτρέπεται σε κανέναν ιστότοπο να επεξεργάζεται αρχεία ή φακέλους στη συσκευή σας</translation>
 <translation id="8973557916016709913">Κατάργηση επιπέδου εστίασης</translation>
 <translation id="1706625117072057435">Επίπεδα εστίασης</translation>
 <translation id="6385543213911723544">Οι ιστότοποι ενδέχεται να αποθηκεύουν και να διαβάζουν δεδομένα cookie</translation>
@@ -3659,6 +3728,7 @@
 <translation id="563535393368633106">Ερώτηση πριν από την πρόσβαση (συνιστάται)</translation>
 <translation id="6840155290835956714">Ερώτηση πριν από την αποστολή</translation>
 <translation id="2381756643783702095">Ερώτηση πριν από την αποστολή (συνιστάται)</translation>
+<translation id="7593653750169415785">Αποκλείστηκε αυτόματα επειδή απορρίψατε τις ειδοποιήσεις αρκετές φορές</translation>
 <translation id="2812989263793994277">Να μην γίνεται εμφάνιση εικόνων</translation>
 <translation id="3800806661949714323">Εμφάνιση όλων (συνιστάται)</translation>
 <translation id="7661259717474717992">Να επιτρέπεται η αποθήκευση και ανάγνωση δεδομένων cookie από ιστότοπους</translation>
@@ -3707,6 +3777,9 @@
 <translation id="327147043223061465">Εμφάνιση όλων των cookie και των δεδομένων ιστοτόπων</translation>
 <translation id="1963227389609234879">Κατάργηση όλων</translation>
 <translation id="3432227430032737297">Κατάργηση όλων όσων εμφανίζονται</translation>
+<translation id="2854896010770911740">Κατάργηση cookie τρίτου μέρους</translation>
+<translation id="2096715839409389970">Διαγραφή cookie τρίτου μέρους</translation>
+<translation id="7828731929332799387">Με αυτή την ενέργεια θα διαγραφούν όλα τα cookie και τα δεδομένα ιστοτόπων που διατίθενται σε περιβάλλοντα τρίτου μέρους. Θέλετε να συνεχίσετε;</translation>
 <translation id="6011449291337289699">Εκκαθάριση δεδομένων ιστότοπου</translation>
 <translation id="8339059274628563283">Τοπικά αποθηκευμένα δεδομένα στο <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Να γίνει επαναφορά των αδειών για τον ιστότοπο <ph name="SITE"/>;</translation>
@@ -3750,7 +3823,6 @@
 <translation id="4590324241397107707">Αποθηκευτικός χώρος βάσης δεδομένων</translation>
 <translation id="8016266267177410919">Προσωρινός αποθηκευτικός χώρος</translation>
 <translation id="4175737294868205930">Μόνιμος αποθηκευτικός χώρος</translation>
-<translation id="1296497012903089238">Τύπος πιστοποιητικού</translation>
 <translation id="3707212204259470604">Διαχείριση άλλων ατόμων</translation>
 <translation id="8907706281008466056">Φωτογραφία προφίλ Brave Software</translation>
 <translation id="2408955596600435184">Εισαγάγετε το PIN σας</translation>
@@ -3776,7 +3848,6 @@
 <translation id="1719312230114180055">Σημείωση: Το δακτυλικό σας αποτύπωμα μπορεί να είναι λιγότερο ασφαλές από έναν δυνατό κωδικό πρόσβασης ή αριθμό PIN.</translation>
 <translation id="1582955169539260415">διαγραφή [<ph name="FINGERPRINT_NAME"/>]</translation>
 <translation id="1927632033341042996">Δάχτυλο <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="4461062867270151760">Ενεργοποίηση αναπαραγωγής μέσων Brave στην οθόνη κλειδώματος</translation>
 <translation id="7665369617277396874">Προσθήκη λογαριασμού</translation>
 <translation id="5866136067811459986">Διαχείριση των συνδεδεμένων Λογαριασμών Brave Software. Οι ιστότοποι, οι εφαρμογές και οι επεκτάσεις στο Brave και στο Brave Software Play μπορει να χρησιμοποιούν αυτούς τους λογαριασμούς για να προσαρμόσουν την εμπειρία σας, ανάλογα με τις άδειες.</translation>
 <translation id="1987317783729300807">Λογαριασμοί</translation>
@@ -3821,6 +3892,7 @@
 <translation id="7155171745945906037">Υπάρχουσα φωτογραφία από την κάμερα ή το αρχείο</translation>
 <translation id="8995603266996330174">Έγινε διαχείριση από <ph name="DOMAIN"/></translation>
 <translation id="9125982323641182972">Έξυπνες λειτουργίες Brave Software στο Brave</translation>
+<translation id="1692115862433274081">Χρήση διαφορετικού λογαριασμού</translation>
 <translation id="5244474230056479698">Συγχρονισμός με <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Επειδή η διαχείριση αυτού του λογαριασμού γίνεται από τον τομέα <ph name="DOMAIN"/>, οι σελιδοδείκτες, το ιστορικό, οι κωδικοί πρόσβασης και άλλες ρυθμίσεις θα διαγραφούν από αυτήν τη συσκευή. Ωστόσο, τα δεδομένα σας θα παραμείνουν αποθηκευμένα στον Λογαριασμό σας Brave Software και η διαχείρισή τους μπορεί να γίνεται στον <ph name="BEGIN_LINK"/>Πίνακα ελέγχου Brave Software<ph name="END_LINK"/>.</translation>
 <translation id="6906406176003824042">Επεξεργασία ατόμου</translation>
@@ -3852,6 +3924,7 @@
 <translation id="1125261911132334651">Διαχείριση Λογαριασμού Brave Software</translation>
 <translation id="4570387585180509432">Διευθύνσεις, αριθμοί τηλεφώνου και πολλά άλλα</translation>
 <translation id="5117427536932535467">Θέματα και ταπετσαρίες</translation>
+<translation id="7257173066616499747">Δίκτυα Wi-Fi</translation>
 <translation id="3268451620468152448">Ανοικτές καρτέλες</translation>
 <translation id="5241892180459725878">Προτάσεις αναζήτησης Brave Software Drive</translation>
 <translation id="2120297377148151361">Δραστηριότητα και αλληλεπιδράσεις</translation>
@@ -3888,13 +3961,11 @@
 <translation id="6828153365543658583">Περιορισμός σύνδεσης στους ακόλουθους χρήστες:</translation>
 <translation id="7645176681409127223"><ph name="USER_NAME"/> (κάτοχος)</translation>
 <translation id="3699624789011381381">Διεύθυνση ηλεκτρονικού ταχυδρομείου</translation>
-<translation id="1483829627339988491">Γονικοί έλεγχοι</translation>
+<translation id="2813094189969465044">Γονικοί έλεγχοι</translation>
 <translation id="3557101512409028104">Ορίστε περιορισμούς ιστοτόπων και όρια χρόνου χρήσης με το Family Link</translation>
-<translation id="7648142322539582331">Συνδεθείτε στο διαδίκτυο για να ρυθμίσετε τους γονικούς ελέγχους</translation>
-<translation id="1005608198058526414">Προβολή των ρυθμίσεων του Family Link</translation>
+<translation id="7915457674565721553">Συνδεθείτε στο διαδίκτυο για να ρυθμίσετε τους γονικούς ελέγχους</translation>
+<translation id="5192062846343383368">Ανοίξτε την εφαρμογή Family Link για να δείτε τις ρυθμίσεις επίβλεψης</translation>
 <translation id="470074695271471509">Αποσύνδεση για ολοκλήρωση;</translation>
-<translation id="7850222546481862746"><ph name="BEGIN_PARAGRAPH1"/>Για να ολοκληρώσετε τη ρύθμιση επίβλεψης σε αυτήν τη συσκευή, πρέπει να αποσυνδεθείτε από τον λογαριασμό του χρήστη <ph name="USER_NAME"/>.<ph name="END_PARAGRAPH1"/>
-      <ph name="BEGIN_PARAGRAPH2"/>Μπορείτε να διαχειριστείτε τους γονικούς ελέγχους του παιδιού σας εγκαθιστώντας το Family Link για γονείς στη δική σας συσκευή.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="3570985609317741174">Περιεχόμενο ιστού</translation>
 <translation id="7719367874908701697">Εστίαση σελίδας</translation>
 <translation id="4941627891654116707">Μέγεθος γραμματοσειράς</translation>
@@ -3929,6 +4000,7 @@
 <translation id="2497229222757901769">Ταχύτητα ποντικιού</translation>
 <translation id="6586451623538375658">Εναλλαγή κύριου κουμπιού ποντικιού</translation>
 <translation id="221872881068107022">Αντίστροφη κύλιση</translation>
+<translation id="2536052711541161459">Επιτάχυνση δείκτη ποντικιού</translation>
 <translation id="1510238584712386396">Λειτουργία εκκίνησης</translation>
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="2515586267016047495">Alt</translation>
@@ -4021,8 +4093,8 @@
 <translation id="9196021349904508454">Τα προσωρινά αρχεία εκτός σύνδεσης του Brave Software Drive θα διαγραφούν. Τα αρχεία που έχετε ορίσει ως διαθέσιμα εκτός σύνδεσης δεν θα διαγραφούν από αυτήν τη συσκευή.</translation>
 <translation id="1865678028973512614">Διαγραφή αρχείων</translation>
 <translation id="4470957202018033307">Προτιμήσεις εξωτερικού αποθηκευτικού χώρου</translation>
-<translation id="7536220825385726660">Να επιτρέπεται στις εφαρμογές του Play Store να έχουν πρόσβαση σε εξωτερικά προγράμματα οδήγησης</translation>
-<translation id="8157382355099335113">Οι εφαρμογές του Brave Software Play Store μπορεί να απαιτούν πρόσβαση σε συσκευές εξωτερικού αποθηκευτικού χώρου, προκειμένου να γίνεται ανάγνωση και εγγραφή αρχείων και φακέλων σε αυτές.</translation>
+<translation id="7157776341993107220">Οι εφαρμογές από το Brave Software Play μπορεί να απαιτούν πλήρη πρόσβαση στο σύστημα αρχείων για την ανάγνωση και την εγγραφή αρχείων σε εξωτερικές συσκευές αποθηκευτικού χώρου. Τα αρχεία και οι φάκελοι που δημιουργούνται στη συσκευή είναι ορατά σε οποιονδήποτε χρησιμοποιεί την εξωτερική μονάδα δίσκου.</translation>
+<translation id="6775163072363532304">Οι διαθέσιμες συσκευές θα εμφανίζονται εδώ.</translation>
 <translation id="1529891865407786369">Πηγή ενέργειας</translation>
 <translation id="354060433403403521">Φορτιστής (εναλλασσόμενου ρεύματος)</translation>
 <translation id="2127372758936585790">Χαμηλή ισχύς φορτιστή</translation>
@@ -4048,7 +4120,6 @@
 <translation id="5826395379250998812">Συνδέστε τη συσκευή <ph name="DEVICE_TYPE"/> με το τηλέφωνό σας. <ph name="LINK_BEGIN"/>Μάθετε περισσότερα<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">Δεν υπάρχουν κατάλληλες συσκευές. <ph name="LINK_BEGIN"/>Μάθετε περισσότερα<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">Αναμονή για επαλήθευση. <ph name="LINK_BEGIN"/>Μάθετε περισσότερα<ph name="LINK_END"/></translation>
-<translation id="6518133107902771759">Επαλήθευση</translation>
 <translation id="4142052906269098341">Ξεκλειδώστε τη συσκευή <ph name="DEVICE_TYPE"/> με το τηλέφωνό σας. <ph name="LINK_BEGIN"/>Μάθετε περισσότερα<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Άμεση σύνδεση</translation>
 <translation id="6415900369006735853">Συνδεθείτε στο διαδίκτυο μέσω του τηλεφώνου σας</translation>
@@ -4068,7 +4139,6 @@
 <translation id="4840150926623932060">{NUM_DOWNLOAD,plural, =1{1 ακόμη}other{# ακόμη}}</translation>
 <translation id="2749608811030566578">Παρουσιάστηκε ένα σφάλμα κατά την κατάργηση επιβλαβούς λογισμικού από το Brave</translation>
 <translation id="8189483132214844139">Το Brave μπορεί να εντοπίσει και να καταργήσει επιβλαβές λογισμικό από τον υπολογιστή σας</translation>
-<translation id="2910318910161511225">Συνδεθείτε σε ένα δίκτυο και δοκιμάστε ξανά</translation>
 <translation id="1426870617281699524">Κάντε κλικ στην επιλογή "Δοκιμάστε ξανά" και αποδεχτείτε την προτροπή στον υπολογιστή σας</translation>
 <translation id="7886744396008377537">Υπάρχει επιβλαβές λογισμικό στον υπολογιστή σας. Το Brave το καταργεί, επαναφέρει τις ρυθμίσεις σας και απενεργοποιεί τις επεκτάσεις. Με αυτήν την ενέργεια,το πρόγραμμα περιήγησής σας θα λειτουργεί και πάλι φυσιολογικά.</translation>
 <translation id="1484912962860902625">Παρουσιάστηκε ένα σφάλμα κατά την αναζήτηση επιβλαβούς λογισμικού από το Brave</translation>
@@ -4078,7 +4148,6 @@
 <translation id="284975061945174219">Αποτυχία καθαρισμού</translation>
 <translation id="9014750448058570312">Το Brave χρειάζεται άδεια για να συνεχίσει</translation>
 <translation id="1852141627593563189">Εύρεση επιβλαβούς λογισμικού</translation>
-<translation id="4320177379694898372">Χωρίς σύνδεση στο διαδίκτυο</translation>
 <translation id="850875081535031620">Δεν βρέθηκε επιβλαβές λογισμικό</translation>
 <translation id="1186771945450942097">Κατάργηση επιβλαβούς λογισμικού</translation>
 <translation id="354602065659584722">Το επιβλαβές λογισμικό καταργήθηκε</translation>
@@ -4139,6 +4208,14 @@
 <translation id="8705629851992224300">Δεν ήταν δυνατή η ανάγνωση του κλειδιού ασφαλείας σας.</translation>
 <translation id="3076977359333237641">Τα δεδομένα σύνδεσής σας διαγράφηκαν.</translation>
 <translation id="3508492320654304609">Δεν ήταν δυνατή η διαγραφή των δεδομένων σύνδεσης.</translation>
+<translation id="8945764661949477243">Προσθέστε, μετονομάστε και διαγράψτε τα δακτυλικά αποτυπώματα που έχουν αποθηκευτεί στη συσκευή σας</translation>
+<translation id="4836504898754963407">Διαχείριση δακτυλικών αποτυπωμάτων</translation>
+<translation id="403456802563765809">Για τη διαχείριση των δακτυλικών αποτυπωμάτων σας, εισαγάγετε και αγγίξτε το κλειδί ασφαλείας σας.</translation>
+<translation id="5639152092474119692">Για να διαχειριστείτε τα δακτυλικά αποτυπώματά σας, εισαγάγετε το PIN για το κλειδί ασφαλείας σας. Εάν δεν γνωρίζετε το PIN, θα χρειαστεί να επαναφέρετε το κλειδί ασφαλείας σας.</translation>
+<translation id="3589845496433710431">Δεν υπάρχουν αποθηκευμένα δακτυλικά αποτυπώματα στο κλειδί ασφαλείας σας.</translation>
+<translation id="1489956991149850859">Μπορείτε να προσθέσετε, να καταργήσετε ή να μετονομάσετε δακτυλικά αποτυπώματα εδώ.</translation>
+<translation id="5995884201513800557">Συνεχίστε να αγγίζετε το κλειδί ασφαλείας σας για να αποθηκεύσετε το δακτυλικό αποτύπωμά σας.</translation>
+<translation id="1750172676754093297">Αυτό το κλειδί ασφαλείας δεν μπορεί να αποθηκεύσει δακτυλικά αποτυπώματα.</translation>
 <translation id="3341703758641437857">Να επιτρέπεται η πρόσβαση σε διευθύνσεις URL αρχείων</translation>
 <translation id="9003647077635673607">Να επιτρέπεται σε όλους τους ιστότοπους</translation>
 <translation id="698524779381350301">Να επιτρέπεται αυτόματα η πρόσβαση στους παρακάτω ιστότοπους</translation>
@@ -4211,6 +4288,8 @@
 <translation id="8523849605371521713">Προστέθηκε από την πολιτική</translation>
 <translation id="5087249366037322692">Προστέθηκε από τρίτο μέρος</translation>
 <translation id="6788210894632713004">Αποσυμπιεσμένη επέκταση</translation>
+<translation id="2350133097354918058">Έγινε επανάληψη φόρτωσης</translation>
+<translation id="8635628933471165173">Επανάληψη φόρτωσης…</translation>
 <translation id="3838085852053358637">Η φόρτωση της επέκτασης απέτυχε</translation>
 <translation id="6370021412472292592">Δεν ήταν δυνατή η φόρτωση της δήλωσης.</translation>
 <translation id="7235716375204803342">Ανάκτηση δραστηριοτήτων…</translation>
@@ -4412,4 +4491,29 @@
 <translation id="6336451774241870485">Νέα καρτέλα ιδιωτικής περιήγησης</translation>
 <translation id="6610147964972079463">Κλείσιμο ιδιωτικών καρτελών</translation>
 <translation id="8076492880354921740">Καρτέλες</translation>
+<translation id="2794233252405721443">Ο ιστότοπος έχει αποκλειστεί</translation>
+<translation id="1721312023322545264">Για να επισκεφτείτε αυτήν τη σελίδα, χρειάζεστε άδεια από τον διαχειριστή <ph name="NAME"/></translation>
+<translation id="7543525346216957623">Ζητήστε την άδεια του γονέα σας</translation>
+<translation id="471880041731876836">Δεν έχετε άδεια να επισκεφτείτε αυτόν τον ιστότοπο</translation>
+<translation id="3480834636742786788">Εκκινήστε και συνδεθείτε στο Brave πριν χρησιμοποιήσετε αυτήν την εφαρμογή.</translation>
+<translation id="2851634818064021665">Απαιτείται άδεια για να επισκεφτείτε αυτόν τον ιστότοπο</translation>
+<translation id="4933782374919065856">Έχετε ερωτήσεις; Επικοινωνήστε με το άτομο που επιβλέπει το προφίλ σας.</translation>
+<translation id="2712173769900027643">Να ζητηθεί άδεια</translation>
+<translation id="3886446263141354045">Το αίτημά σας για να αποκτήσετε πρόσβαση σε αυτόν τον ιστότοπο έχει σταλεί στον/η(ν) <ph name="NAME"/></translation>
+<translation id="3345135638360864351">Δεν ήταν δυνατή η αποστολή του αιτήματος πρόσβασής σας σε αυτόν τον ιστότοπο σε <ph name="NAME"/>. Δοκιμάστε ξανά.</translation>
+<translation id="6414888972213066896">Ρώτησες τους γονείς σου εάν σου επιτρέπουν να επισκεφτείς αυτόν τον ιστότοπο</translation>
+<translation id="4858792381671956233">Ρώτησες τους γονείς σου εάν σου επιτρέπουν να επισκεφτείς αυτόν τον ιστότοπο</translation>
+<translation id="3498215018399854026">Δεν ήταν δυνατή η επικοινωνία με τον γονέα σας αυτήν τη στιγμή. Δοκιμάστε ξανά.</translation>
+<translation id="8012647001091218357">Δεν ήταν δυνατή η επικοινωνία με τους γονείς σας αυτήν τη στιγμή. Δοκιμάστε ξανά.</translation>
+<translation id="3479539252931486093">Δεν το περιμένατε; <ph name="BEGIN_LINK"/>Ενημερώστε μας<ph name="END_LINK"/></translation>
+<translation id="3586931643579894722">Απόκρυψη λεπτομερειών</translation>
+<translation id="7444046173054089907">Αυτός ο ιστότοπος είναι αποκλεισμένος</translation>
+<translation id="6778737459546443941">Ο γονέας σου δεν τον έχει εγκρίνει ακόμα</translation>
+<translation id="8620436878122366504">Οι γονείς σας δεν τον έχουν εγκρίνει ακόμα</translation>
+<translation id="6563469144985748109">Ο διαχειριστής σας δεν τον έχει εγκρίνει ακόμα</translation>
+<translation id="9076283476770535406">Μπορεί να διαθέτει περιεχόμενο για ενηλίκους</translation>
+<translation id="7755287808199759310">Ο γονέας σας μπορεί να καταργήσει τον αποκλεισμό του για εσάς</translation>
+<translation id="5732392974455271431">Οι γονείς σου μπορούν να καταργήσουν τον αποκλεισμό του</translation>
+<translation id="3556433843310711081">Ο διαχειριστής σας μπορεί να καταργήσει τον αποκλεισμό του για εσάς</translation>
+<translation id="1254756632288991504">Εκκινήστε και συνδεθείτε στο Brave, έτσι ώστε το Brave να μπορεί να ελέγξει εάν έχετε δικαίωμα πρόσβασης σε αυτόν τον ιστότοπο.</translation>
 </translationbundle>
