@@ -168,6 +168,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       features::kNotificationTriggers.name,
       features::kSmsReceiver.name,
       unified_consent::kUnifiedConsent.name,
+      switches::kSyncUSSBookmarks.name,
   };
   command_line.AppendFeatures(enabled_features, disabled_features);
 
