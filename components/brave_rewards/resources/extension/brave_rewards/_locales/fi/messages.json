@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Anna tälle sivustolle tippi kuukausittain",
+    "message": "Kuukausittainen avustus",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Tämän vahvistetun tekijän on vielä vahvistettava (KYC) tilinsä voidakseen vastaanottaa tippejä vahvistetusta lompakostasi. Tipit pysyvät lompakossasi vahvistuksen suorittamiseen asti.",
+    "message": "Tämä Braven vahvistettu tekijä ei ole vielä asettanut tiliään hyväksymään avustuksia Braven käyttäjiltä.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Viimeistele lompakon vahvistus",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Aseta...",
+    "description": "Button text for setting monthly contribution"
   }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sk">
+<translation id="2501278716633472235">Prejsť späť</translation>
 <translation id="1215411991991485844">Bola pridaná nová aplikácia na pozadí</translation>
 <translation id="7396845648024431313">Aplikácia <ph name="APP_NAME"/> sa spustí pri spustení systému a bude fungovať na pozadí aj po zatvorení všetkých okien programu <ph name="PRODUCT_NAME"/>.</translation>
 <translation id="5246282308050205996"><ph name="APP_NAME"/> zlyhala. Aplikáciu reštartujte kliknutím na túto bublinu.</translation>
@@ -15,6 +16,8 @@
 <translation id="4610637590575890427">Chceli ste prejsť na adresu <ph name="SITE"/>?</translation>
 <translation id="4759238208242260848">Stiahnuté</translation>
 <translation id="370665806235115550">Načítava sa...</translation>
+<translation id="556321030400250233">miestny alebo zdieľaný súbor</translation>
+<translation id="1405779994569073824">Karta zlyhala.</translation>
 <translation id="4880827082731008257">Hľadať v histórii</translation>
 <translation id="1838374766361614909">Vymazať vyhľadávanie</translation>
 <translation id="8261506727792406068">Odstrániť</translation>
@@ -409,6 +412,7 @@
 <translation id="5425042808445046667">Pokračovať v sťahovaní</translation>
 <translation id="5284445933715251131">Pokračovať v sťahovaní</translation>
 <translation id="203837651858678035">Aj tak ukončiť režim inkognito?</translation>
+<translation id="8951465597020890363">Chcete aj napriek tomu ukončiť režim pre hostí?</translation>
 <translation id="9148058034647219655">Ukončiť</translation>
 <translation id="7376221878517288144">Aj tak ukončiť režim inkognito?</translation>
 <translation id="973473557718930265">Ukončiť</translation>
@@ -527,6 +531,14 @@
 <translation id="4680105648806843642">Na tejto stránke bol vypnutý zvuk</translation>
 <translation id="8574990355410201600">Vždy povoliť zvuk na webe <ph name="HOST"/></translation>
 <translation id="3244294424315804309">Ponechať zvuk vypnutý</translation>
+<translation id="2839032553903800133">Boli zablokované upozornenia</translation>
+<translation id="1195558154361252544">Upozornenia sú automaticky blokované pre všetky weby okrem tých, ktoré povolíte</translation>
+<translation id="3575121482199441727">Povoliť pre tento web</translation>
+<translation id="5145461783043820456">Blokovanie súborov cookie tretej strany je zapnuté</translation>
+<translation id="243242775089461296">Blokovanie súborov cookie tretej strany je pre tento web vypnuté</translation>
+<translation id="2325002827435400643">Vypnúť pre tento web</translation>
+<translation id="1646834008704210683">{COUNT,plural, =0{Tento web nepoužíva súbory cookie na sledovanie medzi webmi}=1{Brave blokuje súbory cookie z jedného webu}few{Brave blokuje súbory cookie z # webov}many{Brave is blocking cookies from # sites}other{Brave blokuje súbory cookie z # webov}}</translation>
+<translation id="8734674662128056360">Blokovanie súborov cookie tretej strany</translation>
 <translation id="5154702632169343078">Predmet</translation>
 <translation id="5851868085455377790">Vydavateľ</translation>
 <translation id="2841837950101800123">Poskytovateľ</translation>
@@ -780,7 +792,7 @@
 <translation id="7663719505383602579">Prijímač: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="6247802389331535091">Systém: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="5799508265798272974">Virtuálny počítač so systémom Linux: <ph name="LINUX_VM_NAME"/></translation>
-<translation id="5552059560155071882">Analyzátor CUPS IPP</translation>
+<translation id="7851720427268294554">Analyzátor IPP</translation>
 <translation id="7171242884588191792">Nástroje pre súbor Chromu</translation>
 <translation id="3183139917765991655">Profile Importer</translation>
 <translation id="2190069059097339078">WiFi Credentials Getter</translation>
@@ -886,6 +898,7 @@
 <translation id="2204034823255629767">Čítať a meniť všetko, čo napíšete</translation>
 <translation id="6979044105893951891">Spustenie a ukončenie spravovaných relácií hosťa</translation>
 <translation id="2741912629735277980">Zobrazovať používateľské rozhrania na prihlasovacej obrazovke</translation>
+<translation id="7782717250816686129">Uchovávať trvalé údaje na prihlasovacej obrazovke a vkladať prihlasovacie údaje do relácie.</translation>
 <translation id="8191230140820435481">Spravovať vaše aplikácie, rozšírenia a motívy</translation>
 <translation id="6259104249628300056">Objavovať zariadenia vo vašej miestnej sieti</translation>
 <translation id="6344170822609224263">Pristupovať k zoznamu sieťových pripojení</translation>
@@ -1065,6 +1078,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8261378640211443080">Toto rozšírenie nedodáva <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> a mohlo byť pridané bez vášho vedomia.</translation>
 <translation id="4096508467498758490">Zakázanie rozšírení spustených v režime vývojára</translation>
 <translation id="3288047731229977326">Rozšírenia spustené v režime pre vývojárov môžu poškodiť váš počítač. Ak nie ste vývojár, mali by ste v záujme bezpečnosti rozšírenia spustené v režime vývojára zakázať.</translation>
+<translation id="8827289157496676362">Pripnúť rozšírenie</translation>
+<translation id="5372579129492968947">Odopnúť rozšírenie</translation>
 <translation id="3021426244864538700">Rozšírenia s prístupom k údajom tohto webu</translation>
 <translation id="8213996900880218548">Rozšírenia požadujúce prístup k údajom tohto webu</translation>
 <translation id="1289513325360489062">Rozšírenia bez prístupu k údajom tohto webu</translation>
@@ -1129,6 +1144,11 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="3950820424414687140">Prihlásiť sa</translation>
 <translation id="5624120631404540903">Správa hesiel</translation>
 <translation id="9135262959729602463">Ak chcete získať svoje heslá vo všetkých zariadeniach, prihláste sa do Chromu.</translation>
+<translation id="328571385944182268">Chcete ukladať heslá?</translation>
+<translation id="3753033997400164841">Raz uložte. Používajte všade.</translation>
+<translation id="1703331064825191675">Už si nemusíte robiť starosti o heslá</translation>
+<translation id="2341030170677284705">Uložte si heslá bezpečne v účte Brave Software, aby ste ich už nikdy nemuseli zadávať</translation>
+<translation id="3913985461352963178">Získajte prístup k svojim heslám, keď sa prihlásite do účtu Brave Software</translation>
 <translation id="8919275547519617350">Ak chcete získať svoje heslá vo všetkých zariadeniach, prihláste sa a zapnite synchronizáciu.</translation>
 <translation id="8470028084415844044">Ak chcete získať svoje heslá vo všetkých zariadeniach, zapnite synchronizáciu.</translation>
 <translation id="1609170755653088773">Synchronizujte si toto heslo do zariadenia iPhone</translation>
@@ -1175,6 +1195,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="5620612546311710611">štatistiky používania</translation>
 <translation id="8871696467337989339">Používate nepodporovaný príznak príkazového riadku: <ph name="BAD_FLAG"/>. Prejaví sa to na nižšej stabilite a horšom zabezpečení.</translation>
 <translation id="9140067245205650184">Používate nepodporovaný príznak funkcie: <ph name="BAD_FLAG"/>. Prejaví sa to na nižšej stabilite a horšom zabezpečení</translation>
+<translation id="4094647278880271855">Používate nepodporovanú premennú prostredia: <ph name="BAD_VAR"/>. Negatívne to ovplyvní stabilitu a zabezpečenie.</translation>
 <translation id="2178098616815594724"><ph name="PEPPER_PLUGIN_NAME"/> na webe <ph name="PEPPER_PLUGIN_DOMAIN"/> chce získať prístup k vášmu počítaču</translation>
 <translation id="8598453409908276158">Bol zablokovaný doplnok mimo karantény</translation>
 <translation id="1919814239594435008">Bol povolený doplnok mimo karantény</translation>
@@ -1283,7 +1304,28 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="7460045493116006516">Aktuálny nainštalovaný motív</translation>
 <translation id="9068849894565669697">Výber farby</translation>
 <translation id="8798099450830957504">Predvolené</translation>
-<translation id="8259556432390118667">Hodnota farby v šestnástkovej sústave</translation>
+<translation id="3011384993885886186">Teplá sivá</translation>
+<translation id="6076491747490570887">Chladná sivá</translation>
+<translation id="8300374739238450534">Polnočná modrá</translation>
+<translation id="7569983096843329377">Čierna</translation>
+<translation id="549211519852037402">Béžová a biela</translation>
+<translation id="321084946921799184">Žltá a biela</translation>
+<translation id="5722086096420375088">Zelená a biela</translation>
+<translation id="3269612321104318480">Svetlá modrozelená a biela</translation>
+<translation id="4175137578744761569">Svetlofialová a biela</translation>
+<translation id="8176332201990304395">Ružová a biela</translation>
+<translation id="3159493096109238499">Béžová</translation>
+<translation id="1197088940767939838">Oranžová</translation>
+<translation id="779308894558717334">Svetlozelená</translation>
+<translation id="8809147117840417135">Svetlá modrozelená</translation>
+<translation id="1734212868489994726">Svetlomodrá</translation>
+<translation id="992256792861109788">Ružová</translation>
+<translation id="8237647586961940482">Tmavoružová a červená</translation>
+<translation id="5390677308841849479">Tmavočervená a oranžová</translation>
+<translation id="7297726121602187087">Tmavozelená</translation>
+<translation id="8923880975836399332">Tmavá modrozelená</translation>
+<translation id="7793098747275782155">Tmavomodrá</translation>
+<translation id="1692210323591458290">Tmavofialová</translation>
 <translation id="2858138569776157458">Hlavné weby</translation>
 <translation id="5376169624176189338">Kliknutím prejdete naspäť. Pri dlhšom stlačení sa zobrazí história.</translation>
 <translation id="9103868373786083162">Stlačením tohto tlačidla prejdete späť, históriu si zobrazíte pomocou kontextovej ponuky</translation>
@@ -1337,8 +1379,9 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8005600846065423578">Webu <ph name="HOST"/> vždy povoliť čítať obsah schránky</translation>
 <translation id="6122095009389448667">Tomuto webu naďalej blokovať prístup do schránky</translation>
 <translation id="3429275422858276529">Uložte si túto stránku ako záložku, aby ste ju neskôr ľahko našli</translation>
-<translation id="3603533104205588786">Stránku uložíte ako záložku kliknutím na hviezdičku</translation>
-<translation id="6613452264606394692">Vráťte sa sem rýchlejšie tak, že stránku uložíte ako záložku</translation>
+<translation id="4400963414856942668">Kartu uložíte ako záložku kliknutím na hviezdičku</translation>
+<translation id="8379991678458444070">Vráťte sa sem rýchlejšie tak, že kartu uložíte ako záložku</translation>
+<translation id="7174199383876220879">Novinka! Ovládajte svoju hudbu, videá a ďalší obsah.</translation>
 <translation id="4369414322596874629">Prehliadať v súkromí môžete v okne inkognito</translation>
 <translation id="3772947852642271642">Používajte web bez ukladania histórie prehliadania v okne inkognito</translation>
 <translation id="3871738366246972820">Používate zdieľaný počítač? Skúste otvoriť okno inkognito.</translation>
@@ -1364,6 +1407,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="7108338896283013870">Skryť</translation>
 <translation id="1426410128494586442">Áno</translation>
 <translation id="4250680216510889253">Nie</translation>
+<translation id="7473891865547856676">Nie, ďakujem</translation>
 <translation id="5317780077021120954">Uložiť</translation>
 <translation id="4285418559658561636">Aktualizovať heslo</translation>
 <translation id="9094033019050270033">Aktualizovať heslo</translation>
@@ -1461,7 +1505,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8703346390800944767">Preskočiť reklamu</translation>
 <translation id="2121825465123208577">Zmeniť veľkosť</translation>
 <translation id="4514610446763173167">Prepnutím prehráte alebo pozastavíte video</translation>
-<translation id="3040310857793999281">Prepnúť vypnutie zvuku</translation>
 <translation id="4046123991198612571">Ďalšia skladba</translation>
 <translation id="2874939134665556319">Predchádzajúca skladba</translation>
 <translation id="2631120081682787498">Naozaj chcete povoliť režim ukážky?</translation>
@@ -1483,35 +1526,25 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="1731911755844941020">Posielanie požiadavky...</translation>
 <translation id="9009369504041480176">Nahrávanie (<ph name="PROGRESS_PERCENT"/>%)...</translation>
 <translation id="7925285046818567682">Čakanie na <ph name="HOST_NAME"/>...</translation>
+<translation id="2111670510994270194">Nová karta vpravo</translation>
 <translation id="7887334752153342268">Duplikovať</translation>
-<translation id="1364702626840264065">{NUM_TABS,plural, =1{Zavrieť kartu}few{Zavrieť karty}many{Zavrieť karty}other{Zavrieť karty}}</translation>
-<translation id="68541483639528434">Zatvoriť ostatné karty</translation>
 <translation id="6686490380836145850">Zatvoriť karty vpravo</translation>
 <translation id="6242852299490624841">Označiť túto kartu</translation>
-<translation id="7415353017141825619">{NUM_TABS,plural, =1{Pripnúť kartu}few{Pripnúť karty}many{Pripnúť karty}other{Pripnúť karty}}</translation>
-<translation id="4072793381000095">{NUM_TABS,plural, =1{Odopnúť kartu}few{Odopnúť karty}many{Odopnúť karty}other{Odopnúť karty}}</translation>
-<translation id="1904394285866191268">{NUM_TABS,plural, =1{Vypnúť zvuk karty}few{Vypnúť zvuk kariet}many{Vypnúť zvuk kariet}other{Vypnúť zvuk kariet}}</translation>
-<translation id="5179127818058486126">{NUM_TABS,plural, =1{Zapnúť zvuk karty}few{Zapnúť zvuk kariet}many{Zapnúť zvuk kariet}other{Zapnúť zvuk kariet}}</translation>
 <translation id="4973325300212422370">{NUM_TABS,plural, =1{Vypnúť zvuk webu}few{Vypnúť zvuk webov}many{Vypnúť zvuk webov}other{Vypnúť zvuk webov}}</translation>
 <translation id="4744981231093950366">{NUM_TABS,plural, =1{Zapnúť zvuk webu}few{Zapnúť zvuk webov}many{Zapnúť zvuk webov}other{Zapnúť zvuk webov}}</translation>
-<translation id="4474155171896946103">Všetky karty uložiť ako záložky...</translation>
 <translation id="351952459507671940">Pridať do novej skupiny</translation>
 <translation id="255747371423522804">Pridať do existujúcej skupiny</translation>
 <translation id="2977480621796371840">Odstrániť zo skupiny</translation>
-<translation id="8000467600002607205">{NUM_TABS,plural, =1{Zavrieť kartu}few{Zavrieť karty}many{Zavrieť karty}other{Zavrieť karty}}</translation>
-<translation id="4322394346347055525">Zatvoriť ostatné karty</translation>
+<translation id="8975562453115131273">{NUM_OTHER_TABS,plural, =0{„<ph name="TAB_TITLE"/>“}=1{„<ph name="TAB_TITLE"/>“ a jedna ďalšia karta}few{„<ph name="TAB_TITLE"/>“ a # ďalšie karty}many{"<ph name="TAB_TITLE"/>" and # other tabs}other{„<ph name="TAB_TITLE"/>“ a # ďalších kariet}}</translation>
+<translation id="5876851302954717356">Nová karta vpravo</translation>
 <translation id="1166212789817575481">Zatvoriť karty vpravo</translation>
 <translation id="2343747224442182863">Označiť túto kartu</translation>
-<translation id="7363260028279024205">{NUM_TABS,plural, =1{Pripnúť kartu}few{Pripnúť karty}many{Pripnúť karty}other{Pripnúť karty}}</translation>
-<translation id="3996366967769547206">{NUM_TABS,plural, =1{Odopnúť kartu}few{Odopnúť karty}many{Odopnúť karty}other{Odopnúť karty}}</translation>
-<translation id="3785071023202624850">{NUM_TABS,plural, =1{Vypnúť zvuk karty}few{Vypnúť zvuk kariet}many{Vypnúť zvuk kariet}other{Vypnúť zvuk kariet}}</translation>
-<translation id="2120478168904746065">{NUM_TABS,plural, =1{Zapnúť zvuk karty}few{Zapnúť zvuk kariet}many{Zapnúť zvuk kariet}other{Zapnúť zvuk kariet}}</translation>
 <translation id="8371925839118813971">{NUM_TABS,plural, =1{Vypnúť zvuk webu}few{Vypnúť zvuk webov}many{Vypnúť zvuk webov}other{Vypnúť zvuk webov}}</translation>
 <translation id="7933314993013528982">{NUM_TABS,plural, =1{Zapnúť zvuk webu}few{Zapnúť zvuk webov}many{Zapnúť zvuk webov}other{Zapnúť zvuk webov}}</translation>
-<translation id="2336228925368920074">Všetky karty uložiť ako záložky...</translation>
 <translation id="1541396123399225659">Pridať do novej skupiny</translation>
 <translation id="7353887511974462734">Pridať do existujúcej skupiny</translation>
 <translation id="6964760285928603117">Odstrániť zo skupiny</translation>
+<translation id="5548159762883465903">{NUM_OTHER_TABS,plural, =0{„<ph name="TAB_TITLE"/>“}=1{„<ph name="TAB_TITLE"/>“ a jedna ďalšia karta}few{„<ph name="TAB_TITLE"/>“ a # ďalšie karty}many{"<ph name="TAB_TITLE"/>" and # Other Tabs}other{„<ph name="TAB_TITLE"/>“ a # ďalších kariet}}</translation>
 <translation id="2278562042389100163">Otvoriť okno prehliadača</translation>
 <translation id="756445078718366910">Otvoriť okno prehliadača</translation>
 <translation id="3683524264665795342">Žiadosť o zdieľanie obrazovky s aplikáciou <ph name="APP_NAME"/></translation>
@@ -1607,7 +1640,13 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="2315587498123194634">Odoslať odkaz do zariadenia <ph name="DEVICE_NAME"/></translation>
 <translation id="7761380698973548146">Volať zo zariadení</translation>
 <translation id="7427798576651127129">Volať zo zariadenia <ph name="DEVICE_NAME"/></translation>
+<translation id="2355241457888955">Odoslať text do vašich zariadení</translation>
+<translation id="5067000372742249459">Odoslať text do zariadenia <ph name="DEVICE_NAME"/></translation>
+<translation id="7757787379047923882">Text zdieľaný zo zariadenia <ph name="DEVICE_NAME"/></translation>
+<translation id="5193988420012215838">Skopírované do schránky</translation>
 <translation id="462021874527520979">Volať zo zariadení</translation>
+<translation id="4696983787092045100">Odoslať text do vašich zariadení</translation>
+<translation id="2182058453334755893">Skopírované do schránky</translation>
 <translation id="4520385623207007473">Používané súbory cookie</translation>
 <translation id="4763408175235639573">Počas zobrazenia tejto stránky boli nastavené nasledujúce súbory cookie</translation>
 <translation id="2719936478972253983">Boli zablokované nasledujúce súbory cookie:</translation>
@@ -1635,7 +1674,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="622537739776246443">Profil bude odstránený</translation>
 <translation id="5632566673632479864">Účet <ph name="EMAIL"/> už nemôžete použiť ako hlavný účet. Keďže tento účet spravuje doména <ph name="DOMAIN"/>, budú z tohto zariadenia vymazané vaše záložky, história, heslá a ďalšie nastavenia.</translation>
 <translation id="3797739167230984533"><ph name="BEGIN_LINK"/>Zariadenie <ph name="DEVICE_TYPE"/> spravuje<ph name="END_LINK"/> vaša organizácia</translation>
-<translation id="1722460139690167654">Vaše zariadenie <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> spravuje<ph name="END_LINK"/> doména<ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8118488170956489476"><ph name="BEGIN_LINK"/>Prehliadač je spravovaný<ph name="END_LINK"/> vašou organizáciou</translation>
 <translation id="1365180424462182382">Váš <ph name="BEGIN_LINK"/>prehliadač spravuje<ph name="END_LINK"/> doména <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Obsah</translation>
@@ -1670,8 +1708,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="4258348331913189841">Systémy súborov</translation>
 <translation id="7701040980221191251">Žiadne</translation>
 <translation id="2881966438216424900">Dátum posledného prístupu:</translation>
-<translation id="3941357410013254652">ID kanála</translation>
-<translation id="6135622770221372891">ID kanála</translation>
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Zdieľaní pracovníci</translation>
 <translation id="2927017729816812676">Úložisko vyrovnávacej pamäte</translation>
@@ -1706,6 +1742,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="189210018541388520">Otvoriť zobrazenie na celú obrazovku</translation>
 <translation id="6096047740730590436">Otvoriť maximalizované</translation>
 <translation id="7256710573727326513">Otvárať na karte</translation>
+<translation id="8114875720387900039">Rozdeliť vodorovne</translation>
+<translation id="4976009197147810135">Rozdeliť zvislo</translation>
 <translation id="7636919061354591437">Nainštalovať v tomto zariadení</translation>
 <translation id="2993517869960930405">Informácie o aplikácii</translation>
 <translation id="2867768963760577682">Otvoriť ako pevnú kartu</translation>
@@ -1714,6 +1752,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="6022526133015258832">Otvoriť v režime celej obrazovky</translation>
 <translation id="6845038076637626672">Otvoriť maximalizované</translation>
 <translation id="6860427144121307915">Otvoriť na karte</translation>
+<translation id="6789592661892473991">Rozdeliť vodorovne</translation>
+<translation id="6387674443318562538">Rozdeliť zvislo</translation>
 <translation id="1231733316453485619">Chcete zapnúť synchronizáciu?</translation>
 <translation id="4736292055110123391">Synchronizujte svoje záložky, heslá, históriu a ďalší obsah vo všetkých zariadeniach</translation>
 <translation id="5736731321935944068">Brave Software môže pomocou vašej histórie prispôsobiť Vyhľadávanie, reklamy a ďalšie služby Googlu</translation>
@@ -1798,7 +1838,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="5771816112378578655">Inštaluje sa...</translation>
 <translation id="3492788708641132712">Synchronizácia nefunguje. Skúste sa znova prihlásiť</translation>
 <translation id="6349170655202535379">Synchronizácia nefunguje. Skúste sa odhlásiť a znovu prihlásiť.</translation>
-<translation id="974555521953189084">Ak chcete spustiť synchronizáciu, zadajte prístupovú frázu</translation>
+<translation id="6828182567531805778">Ak chcete synchronizovať svoje údaje, zadajte prístupovú frázu</translation>
 <translation id="7120865473764644444">K serveru synchronizácie sa nepodarilo pripojiť. Prebieha ďalší pokus…</translation>
 <translation id="5526745900034778153">Ak chcete obnoviť synchronizáciu, znova sa prihláste</translation>
 <translation id="2932483646085333864">Ak chcete spustiť synchronizáciu, odhláste sa a potom sa znova prihláste</translation>
@@ -1857,6 +1897,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="2482878487686419369">Upozornenia</translation>
 <translation id="7221855153210829124">Zobrazovať upozornenia</translation>
 <translation id="8393700583063109961">Odoslať správu</translation>
+<translation id="7336799713063880535">Upoz. sú blokované.</translation>
+<translation id="5146995429444047494">Upozornenia webu <ph name="ORIGIN"/> sú blokované</translation>
 <translation id="6701535245008341853">Nepodarilo sa získať profil.</translation>
 <translation id="7705276765467986571">Nepodarilo sa načítať model záložiek.</translation>
 <translation id="5585118885427931890">Nepodarilo sa vytvoriť adresár záložiek.</translation>
@@ -2018,10 +2060,17 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="2435457462613246316">Zobraziť heslo</translation>
 <translation id="4565377596337484307">Skryť heslo</translation>
 <translation id="5311304534597152726">Prebieha prihlasovanie ako</translation>
+<translation id="70850504851191913">Bolo nahlásené porušenie ochrany údajov</translation>
+<translation id="149470879113908545">Porušenie ochrany údajov na webe alebo v aplikácii, ktorú používate, viedlo k odhaleniu vášho hesla. Brave odporúča okamžite skontrolovať uložené heslá.</translation>
+<translation id="2054306844530250731">Porušenie ochrany údajov na webe alebo v aplikácii, ktorú používate, viedlo k odhaleniu vášho hesla. Brave vám na <ph name="ORIGIN"/> odporúča okamžite si <ph name="BOLD"/>.</translation>
+<translation id="4270615291506829403">zmeniť heslo</translation>
+<translation id="5103987914706363520">Porušenie ochrany údajov na webe alebo v aplikácii, ktorú používate, viedlo k odhaleniu vášho hesla. Brave odporúča skontrolovať uložené heslá a zmeniť heslo na <ph name="ORIGIN"/>.</translation>
 <translation id="5425863515030416387">Jednoduché prihlásenie v rôznych zariadeniach</translation>
 <translation id="9114663181201435112">Jednoduché prihlásenie</translation>
 <translation id="764017888128728"><ph name="PASSWORD_MANAGER_BRAND"/> vás automaticky prihlási na vhodných weboch pomocou hesiel, ktoré ste si uložili.</translation>
 <translation id="5869029295770560994">Ok, rozumiem</translation>
+<translation id="1186201132766001848">Skontrolovať heslá</translation>
+<translation id="5979084224081478209">Skontrolovať heslá</translation>
 <translation id="3423858849633684918">Reštartujte <ph name="PRODUCT_NAME"/></translation>
 <translation id="2294358108254308676">Chcete nainštalovať aplikáciu <ph name="PRODUCT_NAME"/>?</translation>
 <translation id="586567932979200359">Prehliadač <ph name="PRODUCT_NAME"/> je spustený z jeho obrazu disku. Inštalácia do počítača vám umožní spustiť ho bez obrazu disku a zabezpečí jeho aktualizáciu.</translation>
@@ -2088,8 +2137,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="614940544461990577">Vyskúšajte:</translation>
 <translation id="7325437708553334317">Rozšírenie Vysoký kontrast</translation>
 <translation id="6990778048354947307">Tmavý motív</translation>
-<translation id="5556206011531515970">Kliknutím na tlačidlo Ďalej zvolíte predvolený prehliadač.</translation>
-<translation id="1201402288615127009">Ďalej</translation>
 <translation id="2478176599153288112">Povolenia súborov médií pre rozšírenie <ph name="EXTENSION"/></translation>
 <translation id="186612162884103683"><ph name="EXTENSION"/> môže čítať a zapisovať obrázky, video a zvukové súbory vo vybratých umiestneniach.</translation>
 <translation id="8180786512391440389">Rozšírenie <ph name="EXTENSION"/> dokáže čítať a odstrániť obrázky, videá a zvukové súbory vo vybratých umiestneniach.</translation>
@@ -2190,7 +2237,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="5493792505296048976">obrazovka je zapnutá</translation>
 <translation id="6459799433792303855">Aktívne okno bolo presunuté na inú obrazovku.</translation>
 <translation id="6551508934388063976">Príkaz nie je k dispozícii. Stlačením kombinácie klávesov CTRL + N otvoríte nové okno.</translation>
-<translation id="3831486154586836914">Vstúpili ste do režimu prehľadu okien</translation>
+<translation id="703001695939087067">Vstúpili ste do režimu prehľadu okien. Môžete ich prechádzať pomocou klávesa Tab.</translation>
 <translation id="4380648069038809855">Zapnutie režimu celej obrazovky</translation>
 <translation id="1766575458646819543">Ukončenie režimu celej obrazovky</translation>
 <translation id="8736288397686080465">Tieto webové stránky boli aktualizované na pozadí.</translation>
@@ -2304,29 +2351,31 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="874689135111202667">{0,plural, =1{Nahrať na tento web jeden súbor?}few{Nahrať na tento web # súbory?}many{Nahrať na tento web # súboru?}other{Nahrať na tento web # súborov?}}</translation>
 <translation id="1956390763342388273">Touto akciou nahráte všetky súbory z priečinka <ph name="FOLDER_PATH"/>. Vykonajte to iba v prípade, že webu dôverujete.</translation>
 <translation id="1243314992276662751">Nahrať</translation>
-<translation id="1574038418461948632">Chcete ukladať zmeny do súboru <ph name="FILENAME"/>?</translation>
-<translation id="5181988524012865000">Chcete ukladať zmeny do súborov?</translation>
-<translation id="2775188527796017992"><ph name="ORIGIN"/> bude môcť ukladať zmeny priamo do súboru <ph name="FILENAME"/>. Tento web môže ukladať zmeny, dokým kartu nezavriete.</translation>
-<translation id="5375793835576008230"><ph name="ORIGIN"/> bude môcť ukladať zmeny priamo do súborov v priečinku <ph name="FOLDERNAME"/>. Tento web môže ukladať zmeny, dokým kartu nezavriete.</translation>
+<translation id="3928570707778085600">Chcete uložiť zmeny do súboru alebo priečinka <ph name="FILE_OR_FOLDER_NAME"/>?</translation>
+<translation id="8892226765772586656">Web <ph name="ORIGIN"/> bude môcť upravovať súbor <ph name="FILENAME"/>, kým kartu nezavriete</translation>
+<translation id="3780211714699334884">Web <ph name="ORIGIN"/> bude môcť upravovať všetky súbory v priečinku <ph name="FOLDERNAME"/>, kým túto kartu nezavriete</translation>
 <translation id="6532106788206463496">Uložiť zmeny</translation>
-<translation id="5102007300153090427">Táto stránka môže ukladať do súborov.</translation>
-<translation id="197228003527531594">Táto stránka si môže zobraziť všetky súbory v priečinku vo vašom zariadení.</translation>
-<translation id="766254481392580456"><ph name="ORIGIN"/> môže ukladať zmeny priamo do súboru <ph name="FILENAME"/></translation>
-<translation id="856745937116041450"><ph name="ORIGIN"/> môže ukladať zmeny priamo do nasledujúcich súborov</translation>
-<translation id="2150212764721500731"><ph name="ORIGIN"/> môže ukladať zmeny priamo do súborov v priečinku <ph name="FOLDERNAME"/></translation>
-<translation id="7509896576944228744"><ph name="ORIGIN"/> môže ukladať zmeny priamo do nasledujúcich priečinkov</translation>
-<translation id="8152021341839173449"><ph name="ORIGIN"/> môže ukladať zmeny priamo do nasledujúcich súborov a priečinkov</translation>
-<translation id="3343738344138980580"><ph name="ORIGIN"/> si môže zobraziť všetky súbory v priečinku <ph name="FOLDERNAME"/></translation>
-<translation id="1507049466468737452"><ph name="ORIGIN"/> môže čítať všetky súbory v nasledujúcich priečinkoch</translation>
-<translation id="6868139415119881457"><ph name="ORIGIN"/> môže zobrazovať a ukladať zmeny priamo do nasledujúcich súborov a priečinkov</translation>
+<translation id="4301671483919369635">Táto stránka má povolené upravovať súbory</translation>
+<translation id="3923676227229836009">Táto stránka má povolené zobrazovať súbory</translation>
+<translation id="8983632908660087688">Web <ph name="ORIGIN"/> môže upravovať súbor <ph name="FILENAME"/></translation>
+<translation id="1301135395320604080">Web <ph name="ORIGIN"/> môže upravovať nasledujúce súbory</translation>
+<translation id="4469762931504673593">Web <ph name="ORIGIN"/> môže upravovať súbory v priečinku <ph name="FOLDERNAME"/></translation>
+<translation id="3948507072814225786">Web <ph name="ORIGIN"/> môže upravovať súbory v nasledujúcich priečinkoch</translation>
+<translation id="8889651696183044030">Web <ph name="ORIGIN"/> môže upravovať nasledujúce súbory a priečinky</translation>
+<translation id="5969419185858894314">Web <ph name="ORIGIN"/> môže zobrazovať súbory v priečinku <ph name="FOLDERNAME"/></translation>
+<translation id="3810593934879994994">Web <ph name="ORIGIN"/> môže zobrazovať súbory v nasledujúcich priečinkoch</translation>
+<translation id="2537395079978992874">Web <ph name="ORIGIN"/> môže zobrazovať a upravovať nasledujúce súbory a priečinky</translation>
 <translation id="5126611267288187364">Zobraziť zmeny</translation>
 <translation id="5073956501367595100">{0,plural,offset:2 =1{<ph name="FILE1"/>}=2{<ph name="FILE1"/>, <ph name="FILE2"/>}few{<ph name="FILE1"/>, <ph name="FILE2"/> a # ďalšie}many{<ph name="FILE1"/>, <ph name="FILE2"/>, and # more}other{<ph name="FILE1"/>, <ph name="FILE2"/> a # ďalších}}</translation>
 <translation id="1790976235243700817">Odstrániť prístup</translation>
-<translation id="1392975001822614900">Ukladanie do tohto priečinka nie je možné</translation>
-<translation id="7613156935003315818"><ph name="ORIGIN"/> nemôže ukladať vaše zmeny do tohto priečinka, pretože obsahuje súbory systému.</translation>
+<translation id="831440797644402910">Tento priečinok nie je možné otvoriť</translation>
+<translation id="3850914401008572843">Web <ph name="ORIGIN"/> nemôže otvoriť tento priečinok, pretože obsahuje súbory systému</translation>
 <translation id="4403775189117163360">Vybrať iný priečinok</translation>
+<translation id="3586806079541226322">Súbor nie je možné otvoriť</translation>
+<translation id="6972553992270299730">Web <ph name="ORIGIN"/> nemôže otvoriť súbory v tomto priečinku, pretože obsahuje súbory systému</translation>
+<translation id="2123766928840368256">Vybrať iný súbor</translation>
 <translation id="7643932971554933646">Chcete povoliť webu zobrazovať si súbory?</translation>
-<translation id="999180493986838144"><ph name="ORIGIN"/> si bude môcť zobraziť všetky súbory v priečinku <ph name="FOLDERNAME"/>. Tomuto webu sa zobrazujú všetky zmeny priečinka, dokým kartu nezavriete.</translation>
+<translation id="7892963120252479610">Web <ph name="ORIGIN"/> bude môcť zobrazovať všetky súbory v priečinku <ph name="FOLDERNAME"/>, kým túto kartu nezavriete</translation>
 <translation id="7201420661433230412">Zobraziť súbory</translation>
 <translation id="3015639418649705390">Reštartovať</translation>
 <translation id="8712637175834984815">Dobre</translation>
@@ -2365,6 +2414,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="5660204307954428567">Párovanie so zariadením <ph name="DEVICE_NAME"/></translation>
 <translation id="1167199480815330007">Nájdite šesťčíselný kód PIN na zadnej strane bezpečnostného kľúča</translation>
 <translation id="5601503069213153581">Kód PIN</translation>
+<translation id="1201402288615127009">Ďalej</translation>
 <translation id="8921366488406707015">Overuje sa bezpečnostný kľúč…</translation>
 <translation id="1805472176602625930">Stlačte tlačidlo na bezpečnostnom kľúči</translation>
 <translation id="1489664337021920575">Vybrať inú možnosť</translation>
@@ -2404,6 +2454,11 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="5186185447130319458">Inkognito</translation>
 <translation id="7643842463591647490">{0,plural, =1{# otvorené okno}few{# otvorené okná}many{# open windows}other{# otvorených okien}}</translation>
 <translation id="2579188629646253712">Ukončiť režim inkognito</translation>
+<translation id="4349828822184870497">Užitočné</translation>
+<translation id="6876469544038980967">Neužitočné</translation>
+<translation id="6428450836711225518">Overenie telefónneho čísla</translation>
+<translation id="8742371904523228557"><ph name="ONE_TIME_CODE"/> je kód pre <ph name="ORIGIN"/></translation>
+<translation id="6518133107902771759">Overiť</translation>
 <translation id="394984172568887996">Importované z Internet Explorera</translation>
 <translation id="1543284117603151572">Importované z prehliadača Edge</translation>
 <translation id="5502500733115278303">Importované z Firefoxu</translation>
@@ -2492,6 +2547,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="1173894706177603556">Premenovať</translation>
 <translation id="6825184156888454064">Zoradiť podľa názvu</translation>
 <translation id="3440663250074896476">Ďalšie akcie so záložkou <ph name="BOOKMARK_NAME"/></translation>
+<translation id="1608668830839595724">Ďalšie akcie pre vybrané položky</translation>
 <translation id="2903457445916429186">Otvorenie vybratých položiek</translation>
 <translation id="962802172452141067">Stromová štruktúra priečinka so záložkami</translation>
 <translation id="2683638487103917598">Priečinok je zoradený</translation>
@@ -2501,11 +2557,11 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="5488093641312826914">Položka <ph name="COPIED_ITEM_NAME"/> bola skopírovaná</translation>
 <translation id="2277769717710009150">{COUNT,plural, =1{Bola skopírovaná 1 položka}few{Boli skopírované # položky}many{Bolo skopírovanej # položky}other{Bolo skopírovaných # položiek}}</translation>
 <translation id="9115675100829699941">&amp;Záložky</translation>
-<translation id="1035590878859356651">Pridať stránku medzi záložky…</translation>
-<translation id="1047726139967079566">Pridať stránku medzi záložky…</translation>
-<translation id="1774833706453699074">Pridať otvorené stránky medzi záložky...</translation>
-<translation id="6949306908218145636">Pridať otvorené stránky medzi záložky...</translation>
-<translation id="4422347585044846479">Upraviť záložku pre túto stránku</translation>
+<translation id="9023015617655685412">Pridať kartu medzi záložky…</translation>
+<translation id="1482626744466814421">Pridať kartu medzi záložky…</translation>
+<translation id="4474155171896946103">Všetky karty uložiť ako záložky...</translation>
+<translation id="2336228925368920074">Všetky karty uložiť ako záložky...</translation>
+<translation id="8300011035382349091">Upraviť záložku pre túto kartu</translation>
 <translation id="4776146737004271126">Otvoriť nastavenia Androidu</translation>
 <translation id="6559023360691182159">{COUNT,plural, =0{Žiadna}=1{<ph name="APP_1"/>}=2{<ph name="APP_1"/> a <ph name="APP_2"/>}=3{<ph name="APP_1"/>, <ph name="APP_2"/> a <ph name="APP_3"/>}=4{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> a 1 ďalšia aplikácia}many{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/>, and <ph name="EXTRA_APPS"/> other apps}other{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> a <ph name="EXTRA_APPS"/> ďalších aplikácií}}</translation>
 <translation id="9117030152748022724">Správa aplikácií</translation>
@@ -2520,6 +2576,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="4739098340603978916">Veľkosť: <ph name="APP_SIZE"/></translation>
 <translation id="4291934469232591280">Verzia: <ph name="VERSION"/></translation>
 <translation id="1920390473494685033">Kontakty</translation>
+<translation id="9123948967884660766">Táto aplikácia sa nedá odinštalovať, pretože je súčasťou systému Brave OS.</translation>
+<translation id="496185450405387901">Túto aplikáciu nainštaloval váš správca.</translation>
 <translation id="7787308148023287649">Zobraziť na inej obrazovke</translation>
 <translation id="7710568461918838723">&amp;Prenášať…</translation>
 <translation id="6700480081846086223">Prenášať <ph name="HOST_NAME"/></translation>
@@ -2539,6 +2597,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="6169666352732958425">Plochu sa nepodarilo prenášať.</translation>
 <translation id="4081242589061676262">Súbor sa nedá prenášať.</translation>
 <translation id="4075639477629295004">Nie je možné prenášať súbor <ph name="FILE_NAME"/>.</translation>
+<translation id="8358912028636606457">Prenos zvuku karty nie je v tomto zariadení podporovaný.</translation>
 <translation id="3930737994424905957">Vyhľadávajú sa zariadenia</translation>
 <translation id="5209320130288484488">Nenašli sa žiadne zariadenia</translation>
 <translation id="4415245286584082850">Nenašli sa žiadne zariadenia. Otvorte článok centra pomoci na novej karte.</translation>
@@ -2551,12 +2610,12 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="2541002089857695151">Chcete optimalizovať prenášanie na celú obrazovku?</translation>
 <translation id="4144218403971135344">Získajte kvalitnejšie video a predĺžte výdrž batérie. Video sa bude prehrávať iba na obrazovke podporujúcej Cast.</translation>
 <translation id="236117173274098341">Optimalizovať</translation>
-<translation id="7473891865547856676">Nie, ďakujem</translation>
 <translation id="8538358978858059843">Chcete povoliť cloudové služby pre Cast?</translation>
 <translation id="3856595552313160385">Používanie služieb Hangouts a Cast for Education sa riadi pravidlami ochrany súkromia spoločnosti Brave Software.</translation>
 <translation id="3435896845095436175">Aktivovať</translation>
 <translation id="3700888195348409686">Prebieha prezentácia (<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="5285635972691565180">Obrazovka <ph name="DISPLAY_ID"/></translation>
+<translation id="7477793887173910789">Ovládajte svoju hudbu, videá a ďalší obsah</translation>
 <translation id="4707302005824653064">Aktivitu a históriu môže skontrolovať správca (<ph name="CUSTODIAN_EMAIL"/>) na adrese chrome.com.</translation>
 <translation id="346431825526753">Toto je detský účet spravovaný používateľom <ph name="CUSTODIAN_EMAIL"/>.</translation>
 <translation id="4159681666905192102">Toto je detský účet spravovaný používateľmi <ph name="CUSTODIAN_EMAIL"/> a <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
@@ -2591,15 +2650,11 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="7029809446516969842">Heslá</translation>
 <translation id="984275831282074731">Spôsoby platby</translation>
 <translation id="8473863474539038330">Adresy a ďalšie údaje</translation>
-<translation id="454547174531670764">Synchronizovať do iného účtu</translation>
-<translation id="1692115862433274081">Použiť iný účet</translation>
 <translation id="5287425679749926365">Vaše účty</translation>
 <translation id="4801448226354548035">Skryť účty</translation>
 <translation id="2935225303485967257">Spravovať ľudí</translation>
 <translation id="7388222713940428051">Otvoriť okno hosťa</translation>
 <translation id="127668050356036882">Zavrieť všetky okná</translation>
-<translation id="8883847527783433352">Synchronizovať do iného účtu</translation>
-<translation id="2761898608071930085">Použiť iný účet</translation>
 <translation id="1464258312790801189">Vaše účty</translation>
 <translation id="6655458902729017087">Skryť účty</translation>
 <translation id="688280436658139163">Spravovať ľudí</translation>
@@ -2788,6 +2843,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="4570609078116869893">Automaticky aktualizovať Brave pre všetkých používateľov</translation>
 <translation id="7102687220333134671">Automatické aktualizácie sú zapnuté</translation>
 <translation id="8284326494547611709">Titulky</translation>
+<translation id="3602290021589620013">Ukážka</translation>
 <translation id="1755601632425835748">Veľkosť textu</translation>
 <translation id="3179982752812949580">Písmo textu</translation>
 <translation id="6850286078059909152">Farba textu</translation>
@@ -2801,7 +2857,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8184472985242519288">Jednotný</translation>
 <translation id="8619803522055190423">Vrhnutý tieň</translation>
 <translation id="3930968231047618417">Farba pozadia</translation>
-<translation id="7569983096843329377">Čierna</translation>
 <translation id="2713444072780614174">Biela</translation>
 <translation id="7942349550061667556">Červená</translation>
 <translation id="6017514345406065928">Zelená</translation>
@@ -2825,6 +2880,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="2915873080513663243">Automatické prehľadávanie</translation>
 <translation id="8912810933860534797">Aktivovať automatické prehľadávanie</translation>
 <translation id="6617100836880592260">Rýchlosť prehľadávania: <ph name="SPEED_WITH_UNITS"/></translation>
+<translation id="1816036116994822943">Rýchlosť prehľadávania klávesnice</translation>
 <translation id="7919210519031517829"><ph name="DURATION"/> s</translation>
 <translation id="2981113813906970160">Zobraziť veľký kurzor myši</translation>
 <translation id="5072052264945641674">Zmeniť veľkosť kurzora</translation>
@@ -2906,7 +2962,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="3677657024345889897">Najtichšie</translation>
 <translation id="167160931442925455">Najhlasnejšie</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/> % (predvolené)</translation>
-<translation id="3602290021589620013">Ukážka</translation>
 <translation id="7037509989619051237">Ukážka textu</translation>
 <translation id="5471768120198416576">Dobrý deň, som hlas prevodu textu na reč.</translation>
 <translation id="6902066522699286937">Hlas, ktorého ukážku si chcete vypočuť</translation>
@@ -2948,7 +3003,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
       Neovplyvní to aplikácie ani obsah na ďalších zariadeniach.</translation>
 <translation id="492299503953721473">Odstrániť aplikácie pre Android</translation>
 <translation id="7566118625369982896">Správa skratiek aplikácie Play</translation>
-<translation id="5026688690798028095">Otvoriť správu aplikácie</translation>
 <translation id="2433507940547922241">Vzhľad</translation>
 <translation id="1177863135347784049">Vlastné</translation>
 <translation id="1925021887439448749">Zadajte vlastnú webovú adresu</translation>
@@ -3003,6 +3057,10 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="6644512095122093795">Ponúknuť uloženie hesiel</translation>
 <translation id="2100273922101894616">Automatické prihlasovanie</translation>
 <translation id="7513029293694390567">Prihlasovať sa na weboch automaticky pomocou uložených prihlasovacích údajov. Keď je táto funkcia vypnutá, zobrazí sa vám pred každým prihlásením žiadosť o potvrdenie.</translation>
+<translation id="7930681627240672853">Skontrolovať bezpečnosť hesla</translation>
+<translation id="7510943789645525906">Upozorní vás, ak heslo, ktoré používate, bolo súčasťou porušenia ochrany údajov</translation>
+<translation id="786008582930267433">Brave Software môže skontrolovať, či vaše heslá boli súčasťou porušenia ochrany údajov.</translation>
+<translation id="3372463077865465112">Brave Software môže skontrolovať, či vaše heslá boli súčasťou porušenia ochrany údajov. Táto funkcia bude zapnutá, keď sa prihlásite pomcou svojho účtu Brave Software.</translation>
 <translation id="1375321115329958930">Uložené heslá</translation>
 <translation id="152234381334907219">Neuložené</translation>
 <translation id="5137501176474113045">Odstrániť túto položku</translation>
@@ -3112,6 +3170,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
 <translation id="2187895286714876935">Chyba importovania certifikátu servera</translation>
 <translation id="816055135686411707">Chyba nastavenia dôveryhodnosti certifikátu</translation>
+<translation id="5541694225089836610">Správca akciu zakázal</translation>
 <translation id="3380365263193509176">Neznáma chyba</translation>
 <translation id="368789413795732264">Pri zapisovaní súboru sa vyskytla chyba: <ph name="ERROR_TEXT"/>.</translation>
 <translation id="784934925303690534">Časové obdobie</translation>
@@ -3143,9 +3202,9 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="6985607387932385770">Tlačiarne</translation>
 <translation id="1815579292149538864">Nastaviť alebo spravovať tlačiarne CUPS</translation>
 <translation id="8030656706657716245">Pridať tlačiareň</translation>
-<translation id="8025958612547562988">Uložte rozpoznané tlačiarne do svojho profilu alebo pridajte novú.</translation>
+<translation id="893254996965966411">Uložte rozpoznané tlačiarne do svojho profilu alebo pridajte novú.</translation>
 <translation id="6980969641756020642">Dostupné tlačiarne na uloženie</translation>
-<translation id="8151638057146502721">Konfigurovať</translation>
+<translation id="3571734092741541777">Nastaviť</translation>
 <translation id="2297705863329999812">Hľadať tlačiarne</translation>
 <translation id="7956373551960864128">Vaše uložené tlačiarne</translation>
 <translation id="168991973552362966">Pridanie tlačiarne v blízkosti</translation>
@@ -3166,14 +3225,12 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="4058720513957747556">AppSocket (TCP/IP)</translation>
 <translation id="6619058681307408113">Protokol LPD (Line Printer Daemon)</translation>
 <translation id="2266957463645820432">IPP cez USB (IPPUSB)</translation>
-<translation id="8086015605808120405">Konfiguruje sa tlačiareň <ph name="PRINTER_NAME"/>...</translation>
 <translation id="4665014895760275686">Výrobca</translation>
 <translation id="4561098487691395071">Alebo špecifikujte tlačiareň PPD</translation>
 <translation id="1989112275319619282">Prehliadať</translation>
 <translation id="3625481642044239431">Bol vybraný neplatný súbor. Skúste to znova.</translation>
-<translation id="2462752602710430187">Bolo pridané zariadenie: <ph name="PRINTER_NAME"/></translation>
-<translation id="7380768571499464492">Tlačiareň <ph name="PRINTER_NAME"/> bola aktualizovaná</translation>
-<translation id="9057119625587205566">V okolí sa nenašli žiadne tlačiarne</translation>
+<translation id="8002670234429879764"><ph name="PRINTER_NAME"/> už nie je k dispozícii</translation>
+<translation id="3976108569178263973">Nie sú k dispozícii žiadne tlačiarne.</translation>
 <translation id="3213187967168344806">Tlačiareň sa nepodarilo pridať. Reštartujte počítač a skúste to znova.</translation>
 <translation id="4052689580269971502">K tlačiarni sa nepodarilo pripojiť. Skontrolujte, či je zapnutá a pripojená k Bravebooku prostredníctvom Wi-Fi alebo USB.</translation>
 <translation id="7099337801055912064">Súbor PPD sa nedá načítať, pretože je príliš veľký. Maximálna veľkosť je 250 kB.</translation>
@@ -3182,6 +3239,9 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="4694024090038830733">Konfiguráciu tlačiarne ovláda správca.</translation>
 <translation id="5816434091619127343">Požadované zmeny by tlačiareň znefunkčnili.</translation>
 <translation id="6504611359718185067">Ak chcete pridať tlačiareň, pripojte sa k internetu</translation>
+<translation id="4066207411788646768">Ak si chcete zobraziť dostupné tlačiarne v sieti, skontrolujte pripojenie</translation>
+<translation id="4320177379694898372">Žiadne internetové pripojenie</translation>
+<translation id="2910318910161511225">Pripojte sa k sieti a skúste to znova</translation>
 <translation id="4972129977812092092">Úprava tlačiarne</translation>
 <translation id="5696679855467848181">Aktuálny používaný súbor PPD: <ph name="PPD_NAME"/></translation>
 <translation id="3016329696181678353"><ph name="PRINTER_NAME"/> sa nepodarilo automaticky nakonfigurovať. Špecifikujte rozšírené podrobnosti o tlačiarni.</translation>
@@ -3219,6 +3279,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="4820236583224459650">Nastaviť ako aktívny tiket</translation>
 <translation id="4502423230170890588">Odstrániť z tohto zariadenia</translation>
 <translation id="2507253002925770350">Ticket bol odstránený</translation>
+<translation id="3703699162703116302">Tiket bol obnovený</translation>
 <translation id="1436390408194692385">Do konca platnosti zostáva: <ph name="TICKET_TIME_LEFT"/></translation>
 <translation id="2665647207431876759">Platnosť uplynula</translation>
 <translation id="5565735124758917034">Aktívne</translation>
@@ -3260,7 +3321,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="6444070574980481588">Nastavenie dátumu a času</translation>
 <translation id="5065775832226780415">Smart Lock</translation>
 <translation id="8468750959626135884">Odomknite zariadenie <ph name="DEVICE_TYPE"/> pomocou telefónu s Androidom.</translation>
-<translation id="3571734092741541777">Nastaviť</translation>
 <translation id="3336664756920573711">Odomknite zariadenie <ph name="DEVICE_TYPE"/> pomocou telefónu s Androidom</translation>
 <translation id="1036348656032585052">Vypnúť</translation>
 <translation id="1164674268730883318">Vypnúť v zariadení <ph name="DEVICE_TYPE"/> funkciu Smart Lock?</translation>
@@ -3289,7 +3349,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="216169395504480358">Pridať Wi‑Fi…</translation>
 <translation id="3892414795099177503">Pridať OpenVPN / L2TP...</translation>
 <translation id="287286579981869940">Pridať poskytovateľa <ph name="PROVIDER_NAME"/>...</translation>
-<translation id="3609895557594655134">Pridať Android VPN...</translation>
 <translation id="8426713856918551002">Aktivuje sa</translation>
 <translation id="3652817283076144888">Inicializuje sa</translation>
 <translation id="6528513914570774834">Povoliť ostatným používateľom zariadenia pripojiť sa k tejto sieti</translation>
@@ -3370,6 +3429,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8986362086234534611">Odstrániť</translation>
 <translation id="7881483672146086348">Zobraziť účet</translation>
 <translation id="2392369802118427583">Aktivovať</translation>
+<translation id="8151638057146502721">Konfigurovať</translation>
 <translation id="5920543303088087579">Pripojenie k tejto sieti je zakázané správcom</translation>
 <translation id="1235458158152011030">Známe siete</translation>
 <translation id="3003144360685731741">Preferované siete</translation>
@@ -3378,6 +3438,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="4384312707950789900">Pridať k preferovaným</translation>
 <translation id="6077131872140550515">Odstrániť z preferovaných</translation>
 <translation id="4115002065223188701">Sieť je mimo dosahu</translation>
+<translation id="4421167684395067330">Vyskytli sa problémy s pripojením. Požiadajte o pomoc operátora <ph name="CARRIER_NAME"/>.</translation>
+<translation id="7780252971640011240">Vyskytli sa problémy s pripojením. Požiadajte o pomoc operátora.</translation>
 <translation id="161460670679785907">Telefón sa nedarí nájsť</translation>
 <translation id="1682335582099955045">Ak chcete používať Dynamický tethering, zapnite upozornenia pre Služby Brave Software Play.</translation>
 <translation id="7696063401938172191">V telefóne <ph name="PHONE_NAME"/>:</translation>
@@ -3401,7 +3463,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="3483333858382889684">Umožnite tomuto zariadeniu hľadať ďalšie zariadenia s vaším účtom Brave Software, ktoré majú mobilné dátové pripojenie</translation>
 <translation id="5637476008227280525">Povoliť mobilné dáta</translation>
 <translation id="1572266655485775982">Povolenie Wi‑Fi</translation>
-<translation id="543381445212956829">Povoliť WiMAX</translation>
 <translation id="166439687370499867">Zmena konfigurácií zdieľanej siete nie je povolená</translation>
 <translation id="938470336146445890">Nainštalujte si používateľský certifikát.</translation>
 <translation id="7732111077498238432">Sieť je riadená pravidlami</translation>
@@ -3416,6 +3477,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="5669267381087807207">Prebieha aktivácia</translation>
 <translation id="952992212772159698">Neaktivované</translation>
 <translation id="3488065109653206955">Čiastočne aktivované</translation>
+<translation id="4562494484721939086">Žiadny signál</translation>
 <translation id="4880328057631981605">Názov prístupového bodu</translation>
 <translation id="5142961317498132443">Overenie totožnosti</translation>
 <translation id="5691511426247308406">Rodina</translation>
@@ -3426,7 +3488,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8461329675984532579">Názov poskytovateľa domácej siete</translation>
 <translation id="7769672763586021400">ID modelu</translation>
 <translation id="7487067081878637334">Technológia</translation>
-<translation id="3547495624659668105">Verzia PRL</translation>
 <translation id="8620617069779373398">Stav roamingu</translation>
 <translation id="131461803491198646">Domáca sieť, bez roamingu</translation>
 <translation id="5252456968953390977">Roaming</translation>
@@ -3467,6 +3528,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="5088172560898466307">Názov hostiteľského servera</translation>
 <translation id="5050042263972837708">Názov skupiny</translation>
 <translation id="8675354002693747642">Predzdieľaný kľúč</translation>
+<translation id="8372477600026034341">Ďalší hostitelia</translation>
 <translation id="6472207088655375767">Jednorazové heslo</translation>
 <translation id="8798441408945964110">Názov poskytovateľa</translation>
 <translation id="7882358943899516840">Typ poskytovateľa</translation>
@@ -3495,6 +3557,9 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="5302048478445481009">Jazyk</translation>
 <translation id="6388429472088318283">Vyhľadajte jazyky</translation>
 <translation id="2690024944919328218">Zobraziť možnosti jazyka</translation>
+<translation id="6199184144777428084">Pridajte jazyky alebo upravte poradie zoznamu</translation>
+<translation id="8813969267212093033">V tomto jazyku je zobrazený text systému</translation>
+<translation id="2366260648632264559">Zobrazovať text systému v tomto jazyku</translation>
 <translation id="7216595297012131718">Zoraďte si jazyky podľa svojich požiadaviek</translation>
 <translation id="5972708806901999743">Presunúť na začiatok</translation>
 <translation id="8609465669617005112">Presunúť nahor</translation>
@@ -3649,6 +3714,10 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="4085270836953633510">Opýtať sa, keď chce web použiť sériové porty</translation>
 <translation id="2322318151094136999">Opýtať sa, keď chce web používať sériové porty (odporúčané)</translation>
 <translation id="1906828677882361942">Zakázať všetkým webom používať sériové porty</translation>
+<translation id="2215727959747642672">Úprava súborov</translation>
+<translation id="8392364544846746346">Pýtať sa, keď chce nejaký web upraviť súbory alebo priečinky vo vašom zariadení</translation>
+<translation id="7614260613810441905">Pýtať sa, keď chce nejaký web upraviť súbory alebo priečinky vo vašom zariadení (odporúčané)</translation>
+<translation id="2957117904572187936">Nepovoľovať žiadnym webom upravovať súbory alebo priečinky vo vašom zariadení</translation>
 <translation id="8973557916016709913">Odstrániť úroveň priblíženia</translation>
 <translation id="1706625117072057435">Úrovne priblíženia</translation>
 <translation id="6385543213911723544">Webové stránky môžu ukladať a čítať údaje súborov cookie</translation>
@@ -3658,6 +3727,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="563535393368633106">Spýtať sa pred pristupovaním (odporúčané)</translation>
 <translation id="6840155290835956714">Spýtať sa pred odoslaním</translation>
 <translation id="2381756643783702095">Spýtať sa pred odoslaním (odporúčané)</translation>
+<translation id="7593653750169415785">Automaticky zablokované, pretože ste upozornenia niekoľkokrát odmietli</translation>
 <translation id="2812989263793994277">Nezobraziť žiadne obrázky</translation>
 <translation id="3800806661949714323">Zobraziť všetko (odporúčané)</translation>
 <translation id="7661259717474717992">Povoliť webom ukladať a čítať údaje súborov cookie</translation>
@@ -3706,6 +3776,9 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="327147043223061465">Zobraziť všetky súbory cookie a údaje webu</translation>
 <translation id="1963227389609234879">Odstrániť všetko</translation>
 <translation id="3432227430032737297">Odstrániť všetky zobrazené</translation>
+<translation id="2854896010770911740">Odstrániť súbory cookie tretej strany</translation>
+<translation id="2096715839409389970">Vymazať súbory cookie tretej strany</translation>
+<translation id="7828731929332799387">Týmto odstránite všetky súbory cookie a údaje webu dostupné v kontextoch tretích strán. Chcete pokračovať?</translation>
 <translation id="6011449291337289699">Vymazanie dát webu</translation>
 <translation id="8339059274628563283">Miestne uložené údaje webu <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Obnoviť povolenia webu <ph name="SITE"/>?</translation>
@@ -3749,7 +3822,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="4590324241397107707">Ukladací priestor databázy</translation>
 <translation id="8016266267177410919">Dočasné úložisko</translation>
 <translation id="4175737294868205930">Trvalé úložisko</translation>
-<translation id="1296497012903089238">Typ certifikátu</translation>
 <translation id="3707212204259470604">Spravovať ďalšie osoby</translation>
 <translation id="8907706281008466056">Fotografia profilu Brave Software</translation>
 <translation id="2408955596600435184">Zadajte kód PIN</translation>
@@ -3775,7 +3847,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="1719312230114180055">Poznámka: Odtlačok môže byť menej bezpečný ako silné heslo alebo kód PIN.</translation>
 <translation id="1582955169539260415">odstrániť [<ph name="FINGERPRINT_NAME"/>]</translation>
 <translation id="1927632033341042996">Prst <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="4461062867270151760">Povoliť na uzamknutej obrazovke prehrávanie médií v Brave</translation>
 <translation id="7665369617277396874">Pridať účet</translation>
 <translation id="5866136067811459986">Spravujte svoje prihlásené účty Brave Software. Prostredníctvom týchto účtov môžu weby, aplikácie a rozšírenia v Brave a službe Brave Software Play prispôsobovať vaše prostredie (v závislosti od povolení).</translation>
 <translation id="1987317783729300807">Účty</translation>
@@ -3820,6 +3891,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="7155171745945906037">Existujúca fotka z fotoaparátu alebo súboru</translation>
 <translation id="8995603266996330174">Spravované doménou <ph name="DOMAIN"/></translation>
 <translation id="9125982323641182972">Získajte inteligentné doplnky Googlu v Brave</translation>
+<translation id="1692115862433274081">Použiť iný účet</translation>
 <translation id="5244474230056479698">Synchronizácia do účtu <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Keďže tento účet spravuje doména <ph name="DOMAIN"/>, budú z tohto zariadenia vymazané vaše záložky, história, heslá a ďalšie nastavenia. Vaše údaje však zostanú uložené v účte Brave Software a môžete ich spravovať pomocou panela <ph name="BEGIN_LINK"/>Brave Software Dashboard<ph name="END_LINK"/>.</translation>
 <translation id="6906406176003824042">Úprava osoby</translation>
@@ -3851,6 +3923,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="1125261911132334651">Spravovať účet Brave Software</translation>
 <translation id="4570387585180509432">Adresy, telefónne čísla a pod.</translation>
 <translation id="5117427536932535467">Motívy a tapety</translation>
+<translation id="7257173066616499747">Siete Wi‑Fi</translation>
 <translation id="3268451620468152448">Otvorené karty</translation>
 <translation id="5241892180459725878">Návrhy vyhľadávania z Disku Brave Software</translation>
 <translation id="2120297377148151361">Aktivity a interakcie</translation>
@@ -3887,13 +3960,11 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="6828153365543658583">Obmedziť prihlásenie na nasledujúcich používateľov:</translation>
 <translation id="7645176681409127223"><ph name="USER_NAME"/> (vlastník)</translation>
 <translation id="3699624789011381381">E-mailová adresa</translation>
-<translation id="1483829627339988491">Rodičovská kontrola</translation>
+<translation id="2813094189969465044">Rodičovská kontrola</translation>
 <translation id="3557101512409028104">Pomocou aplikácie Family Link môžete nastaviť obmedzenia webov a obmedzenia času používania</translation>
-<translation id="7648142322539582331">Ak chcete nastaviť rodičovskú kontrolu, pripojte sa k internetu</translation>
-<translation id="1005608198058526414">Zobraziť nastavenia aplikácie Family Link</translation>
+<translation id="7915457674565721553">Ak chcete nastaviť rodičovskú kontrolu, pripojte sa k internetu</translation>
+<translation id="5192062846343383368">Ak chcete zobraziť nastavenia dohľadu, otvorte aplikáciu Family Link</translation>
 <translation id="470074695271471509">Odhlásiť sa a dokončiť?</translation>
-<translation id="7850222546481862746"><ph name="BEGIN_PARAGRAPH1"/>Ak chcete v tomto zariadení dokončiť nastavenie dohľadu, musíte sa odhlásiť z účtu používateľa <ph name="USER_NAME"/>.<ph name="END_PARAGRAPH1"/>
-      <ph name="BEGIN_PARAGRAPH2"/>Ak chcete spravovať rodičovskú kontrolu svojho dieťaťa, nainštalujte si vo svojom zariadení aplikáciu Family Link pre rodičov.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="3570985609317741174">Webový obsah</translation>
 <translation id="7719367874908701697">Priblíženie stránky</translation>
 <translation id="4941627891654116707">Veľkosť písma</translation>
@@ -3928,6 +3999,7 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="2497229222757901769">Rýchlosť myši</translation>
 <translation id="6586451623538375658">Zameniť primárne tlačidlo myši</translation>
 <translation id="221872881068107022">Obrátené posúvanie</translation>
+<translation id="2536052711541161459">Zrýchlenie ukazovateľa</translation>
 <translation id="1510238584712386396">Spúšťač</translation>
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="2515586267016047495">Alt</translation>
@@ -4020,8 +4092,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="9196021349904508454">Dočasné súbory offline na Disku Brave Software budú odstránené. Súbory, v prípade ktorých ste nastavili dostupnosť v režime offline, sa z tohto zariadenia neodstránia.</translation>
 <translation id="1865678028973512614">Odstrániť súbory</translation>
 <translation id="4470957202018033307">Predvoľby externých úložísk</translation>
-<translation id="7536220825385726660">Povoliť aplikáciám Obchodu Play Store prístup k externým diskom</translation>
-<translation id="8157382355099335113">Aplikácie Obchodu Brave Software Play môžu vyžadovať prístup k externým úložným zariadeniam, aby v nich mohli čítať a zapisovať súbory a priečinky.</translation>
+<translation id="7157776341993107220">Aplikácie zo služby Brave Software Play môžu vyžadovať úplný prístup k systému súborov a povolenie zapisovať súbory v externých úložiskách. Súbory a priečinky vytvorené v zariadení sú viditeľné pre všetkých používateľov príslušného externého disku.</translation>
+<translation id="6775163072363532304">Tu sa zobrazia dostupné zariadenia.</translation>
 <translation id="1529891865407786369">Zdroj napájania</translation>
 <translation id="354060433403403521">Sieťový napájací adaptér</translation>
 <translation id="2127372758936585790">Nabíjačka s nízkym výkonom</translation>
@@ -4047,7 +4119,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="5826395379250998812">Pripojte zariadenie <ph name="DEVICE_TYPE"/> k svojmu telefónu. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">Žiadne zariadenia spĺňajúce kritériá. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">Čaká sa na overenie. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
-<translation id="6518133107902771759">Overiť</translation>
 <translation id="4142052906269098341">Odomykajte zariadenie <ph name="DEVICE_TYPE"/> svojím telefónom. <ph name="LINK_BEGIN"/>Ďalšie informácie<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Dynamický tethering</translation>
 <translation id="6415900369006735853">Pripojte sa k internetu cez telefón</translation>
@@ -4067,7 +4138,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="4840150926623932060">{NUM_DOWNLOAD,plural, =1{1 ďalšia položka}few{# ďalšie položky}many{# ďalšej položky}other{# ďalších položiek}}</translation>
 <translation id="2749608811030566578">Pri odstraňovaní škodlivého softvéru sa v Brave vyskytla chyba</translation>
 <translation id="8189483132214844139">Brave dokáže vo vašom počítači nájsť škodlivý softvér a odstrániť ho</translation>
-<translation id="2910318910161511225">Pripojte sa k sieti a skúste to znova</translation>
 <translation id="1426870617281699524">Kliknite na možnosť Skúsiť znova a potvrďte výzvu v počítači</translation>
 <translation id="7886744396008377537">V počítači máte škodlivý softvér. Brave ho odstráni, obnoví nastavenia a deaktivuje rozšírenia. Prehliadač bude vďaka tomu znova normálne fungovať.</translation>
 <translation id="1484912962860902625">Pri hľadaní škodlivého softvéru sa v Brave vyskytla chyba</translation>
@@ -4077,7 +4147,6 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="284975061945174219">Nepodarilo sa vyčistiť</translation>
 <translation id="9014750448058570312">Brave potrebuje na pokračovanie povolenie</translation>
 <translation id="1852141627593563189">Vyhľadať škodlivý softvér</translation>
-<translation id="4320177379694898372">Žiadne internetové pripojenie</translation>
 <translation id="850875081535031620">Nenašiel sa žiadny škodlivý softvér</translation>
 <translation id="1186771945450942097">Odstránenie škodlivého softvéru</translation>
 <translation id="354602065659584722">Škodlivý softvér bol odstránený</translation>
@@ -4138,6 +4207,14 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8705629851992224300">Váš bezpečnostný kľúč sa nepodarilo prečítať</translation>
 <translation id="3076977359333237641">Vaše prihlasovacie údaje boli odstránené</translation>
 <translation id="3508492320654304609">Vaše prihlasovacie údaje sa nepodarilo odstrániť</translation>
+<translation id="8945764661949477243">Pridanie, premenovanie a odstraňovanie odtlačkov prstov uložených v zariadení</translation>
+<translation id="4836504898754963407">Správa odtlačkov</translation>
+<translation id="403456802563765809">Ak chcete spravovať odtlačky prstov, vložte bezpečnostný kľúč a klepnite naň.</translation>
+<translation id="5639152092474119692">Ak chcete spravovať odtlačky prstov, zadajte kód PIN bezpečnostného kľúča. Ak si ho nepamätáte, budete musieť bezpečnostný kľúč resetovať.</translation>
+<translation id="3589845496433710431">V bezpečnostnom kľúči nie sú uložené žiadne odtlačky prstov.</translation>
+<translation id="1489956991149850859">Tu môžete pridať, odstrániť alebo premenovať odtlačky.</translation>
+<translation id="5995884201513800557">Ak chcete odtlačok uložiť, opakovane klepnite na bezpečnostný kľúč.</translation>
+<translation id="1750172676754093297">Váš bezpečnostný kľúč nedokáže ukladať odtlačky prstov</translation>
 <translation id="3341703758641437857">Povoliť prístup k webovým adresám súboru</translation>
 <translation id="9003647077635673607">Povoliť na všetkých webových stránkach</translation>
 <translation id="698524779381350301">Automaticky povoľovať prístup na nasledujúcich weboch</translation>
@@ -4210,6 +4287,8 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="8523849605371521713">Pridané pravidlom</translation>
 <translation id="5087249366037322692">Pridané treťou stranou</translation>
 <translation id="6788210894632713004">Rozbalené rozšírenie</translation>
+<translation id="2350133097354918058">Znovu načítané</translation>
+<translation id="8635628933471165173">Znova sa načítava…</translation>
 <translation id="3838085852053358637">Načítanie rozšírenia zlyhalo</translation>
 <translation id="6370021412472292592">Manifest sa nepodarilo načítať.</translation>
 <translation id="7235716375204803342">Načítavajú sa aktivity…</translation>
@@ -4411,4 +4490,29 @@ Súbor kľúča uložte na bezpečné miesto. Budete ho potrebovať na vytvoreni
 <translation id="6336451774241870485">Nová súkromná karta</translation>
 <translation id="6610147964972079463">Zavrieť súkromné karty</translation>
 <translation id="8076492880354921740">Karty</translation>
+<translation id="2794233252405721443">Web je blokovaný</translation>
+<translation id="1721312023322545264">Ak chcete navštíviť tento web, potrebujete povolenie od správcu <ph name="NAME"/></translation>
+<translation id="7543525346216957623">Opýtajte sa rodiča</translation>
+<translation id="471880041731876836">Nemáte povolenie na návštevu tohto webu</translation>
+<translation id="3480834636742786788">Začnite a prihláste sa do Chromu ešte predtým, ako použijete túto aplikáciu.</translation>
+<translation id="2851634818064021665">Na návštevu tohto webu potrebujete povolenie</translation>
+<translation id="4933782374919065856">Máte otázky? Obráťte sa na osobu, ktorá kontroluje váš profil.</translation>
+<translation id="2712173769900027643">Požiadať o povolenie</translation>
+<translation id="3886446263141354045">Vaša žiadosť o prístup na tento web sa odoslala správcovi <ph name="NAME"/></translation>
+<translation id="3345135638360864351">Vašu žiadosť o prístup k týmto webovým stránkam sa používateľovi <ph name="NAME"/> neporadilo odoslať. Skúste to znova neskôr.</translation>
+<translation id="6414888972213066896">Opýtali ste sa svojho rodiča, či môžete navštíviť tento web</translation>
+<translation id="4858792381671956233">Požiadali ste rodičov o povolenie návštevy tohto webu.</translation>
+<translation id="3498215018399854026">V tejto chvíli sa nám nepodarilo spojiť s vaším rodičom. Skúste to znova neskôr.</translation>
+<translation id="8012647001091218357">V tejto chvíli sa nám nepodarilo spojiť s vašimi rodičmi. Skúste to znova neskôr.</translation>
+<translation id="3479539252931486093">Neočakávali ste to? <ph name="BEGIN_LINK"/>Dajte nám vedieť<ph name="END_LINK"/></translation>
+<translation id="3586931643579894722">Skryť podrobnosti</translation>
+<translation id="7444046173054089907">Tento web je blokovaný</translation>
+<translation id="6778737459546443941">Váš rodič to zatiaľ neschválil</translation>
+<translation id="8620436878122366504">Vaši rodičia to zatiaľ neschválili</translation>
+<translation id="6563469144985748109">Váš správca to zatiaľ neschválil</translation>
+<translation id="9076283476770535406">Môže zahŕňať obsah pre dospelých</translation>
+<translation id="7755287808199759310">Váš rodič ho môže pre vás odblokovať</translation>
+<translation id="5732392974455271431">Vaši rodičia ho môžu pre vás odblokovať</translation>
+<translation id="3556433843310711081">Váš správca ho môže pre vás odblokovať</translation>
+<translation id="1254756632288991504">Začnite a prihláste sa do Chromu, aby skontroloval, či môžete navštíviť tento web.</translation>
 </translationbundle>

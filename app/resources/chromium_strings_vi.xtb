@@ -44,6 +44,7 @@ Một số tính năng có thể không khả dụng. Hãy chỉ định thư m�
 Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="1477146545787277177">Rất tiếc! Brave đã gặp sự cố. Chạy lại ngay bây giờ?</translation>
 <translation id="5785919770853225148">Brave sẽ lưu mật khẩu này trong Tài khoản Brave Software của bạn. Bạn sẽ không phải nhớ mật khẩu này.</translation>
+<translation id="8211837073776713955">Brave cho bạn biết mật khẩu của bạn có bị đánh cắp hay không</translation>
 <translation id="113959764510199339">Brave đang cố gắng hiển thị mật khẩu.</translation>
 <translation id="7503098128120083822">Brave muốn xuất các mật khẩu của bạn.</translation>
 <translation id="8285294305439559616">Brave đang cố gắng hiển thị mật khẩu. Nhập mật khẩu Windows của bạn để cho phép thực hiện việc này.</translation>
@@ -152,13 +153,6 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="3205074487970075628">Brave đang sử dụng máy ảnh của bạn.</translation>
 <translation id="8142245354207161805">Dường như cấu hình này đang được quy trình Brave khác (<ph name="PROCESS_ID"/>) trên máy tính khác (<ph name="HOST_NAME"/>) sử dụng. Brave đã khóa cấu hình này để cấu hình không bị lỗi. Nếu bạn chắc chắn không có quy trình nào khác đang sử dụng cấu hình này, bạn có thể mở khóa cấu hình và chạy lại Brave.</translation>
 <translation id="239760341987199724">Đặt Brave là trình duyệt mặc định của bạn</translation>
-<translation id="5344925500065984750">Để đặt những trang web mà <ph name="NEW_PROFILE_NAME"/> có thể xem, bạn có thể định cấu hình các hạn chế và cài đặt bằng cách truy cập <ph name="BEGIN_LINK_1"/><ph name="DISPLAY_LINK"/><ph name="END_LINK_1"/>. Nếu bạn không thay đổi cài đặt mặc định thì <ph name="NEW_PROFILE_NAME"/> có thể duyệt mọi nội dung trên web.
-
-Để ngăn <ph name="NEW_PROFILE_NAME"/> truy cập vào tài khoản của bạn, hãy nhớ khóa hồ sơ khi bạn không sử dụng Brave. Để làm điều này, nhấp vào tên hồ sơ ở góc phía trên bên phải của trình duyệt, sau đó chọn "Thoát và khóa chặn trẻ em".
-<ph name="BEGIN_LINK_2"/>Tìm hiểu thêm<ph name="END_LINK_2"/>
-
-Vui lòng xem email của bạn tại <ph name="ACCOUNT_EMAIL"/> để được hướng dẫn thêm.</translation>
-<translation id="1820843143331379651">Kể từ Brave 70, tính năng hồ sơ người dùng được giám sát sẽ không còn được cung cấp nữa.</translation>
 <translation id="669092380621816981">Dữ liệu duyệt web của người này sẽ bị xóa khỏi thiết bị này. Để khôi phục dữ liệu, hãy đăng nhập vào Brave bằng <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave được cải tiến hơn</translation>
 <translation id="7192666605334070839">Giờ đây, việc sử dụng Brave bằng tài khoản Brave Software của bạn và trên máy tính dùng chung trở nên dễ dàng hơn.</translation>
@@ -200,7 +194,7 @@ Vui lòng xem email của bạn tại <ph name="ACCOUNT_EMAIL"/> để được 
 <translation id="3598551856834560515">Cập nhật Brave để bắt đầu đồng bộ hóa</translation>
 <translation id="4050175100176540509">Cải thiện bảo mật quan trọng và tính năng mới có trong phiên bản mới nhất.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave sẽ khởi động lại sau 1 giây}other{Brave sẽ khởi động lại sau # giây}}</translation>
-<translation id="5509303873219371662">Bạn cần khởi động lại Brave ngay bây giờ</translation>
+<translation id="5646769069113654257">Vui lòng khởi động lại Brave ngay bây giờ</translation>
 <translation id="8668413672647811944">Brave vừa áp dụng một bản cập nhật bảo mật đặc biệt. Vui lòng khởi động lại ngay bây giờ và chúng tôi sẽ khôi phục các tab của bạn.</translation>
 <translation id="763369711159699222">Giúp cải thiện Brave</translation>
 <translation id="1156940037717341650">Bạn có thể giúp Brave an toàn và dễ sử dụng hơn bằng cách tự động báo cáo với Brave Software chi tiết về sự cố bảo mật có thể xảy ra.</translation>
@@ -224,7 +218,6 @@ Vui lòng xem email của bạn tại <ph name="ACCOUNT_EMAIL"/> để được 
 <translation id="6141293433381251973">Brave tự động cập nhật nên bạn luôn có phiên bản mới nhất. Khi quá trình tải xuống này hoàn tất, Brave sẽ khởi động lại và bạn có thể tiếp tục sử dụng.</translation>
 <translation id="7808415789955822133">Điều khoản Brave OS</translation>
 <translation id="7207456302801184289">Chào mừng bạn đến với Brave</translation>
-<translation id="5688839044908745927">Brave gần như đã sẵn sàng.</translation>
 <translation id="3507835409099344374">Đi tới cài đặt thông báo của Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Đã có bản cập nhật Brave}=1{Đã có bản cập nhật Brave}other{Đã có bản cập nhật Brave từ # ngày trước}}</translation>
 <translation id="720532315408041257">Quản trị viên của bạn yêu cầu bạn chạy lại Brave để áp dụng bản cập nhật này</translation>
@@ -242,6 +235,8 @@ Vui lòng xem email của bạn tại <ph name="ACCOUNT_EMAIL"/> để được 
 <translation id="1864557848095568223">Đang cập nhật Brave</translation>
 <translation id="1786715389543715322">Đang cập nhật Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="8208853227947884571">Brave đã được cập nhật</translation>
+<translation id="6756417787837743699">Để biết thông tin chi tiết về Brave OS, vui lòng xem phần <ph name="LINK_BEGIN"/>
+      Giới thiệu về Brave OS<ph name="LINK_END"/></translation>
 <translation id="6686872257969654608">Giới thiệu về Brave OS</translation>
 <translation id="2280363356796735201">Nhận trợ giúp về Brave OS</translation>
 <translation id="38898988211673781">Xóa cookie và dữ liệu trang web khi bạn thoát khỏi Brave</translation>
@@ -249,6 +244,10 @@ Vui lòng xem email của bạn tại <ph name="ACCOUNT_EMAIL"/> để được 
 <translation id="5468853758063275923">Brave là trình duyệt mặc định của bạn</translation>
 <translation id="1775322105159056176">Brave không thể xác định hoặc đặt trình duyệt mặc định</translation>
 <translation id="6915252145142862992">Đây là cài đặt thứ cấp của Brave và không thể trở thành trình duyệt mặc định của bạn.</translation>
+<translation id="6235873178214143377">Nếu một tùy chọn cài đặt không hiển thị trên trang này, hãy tìm trong phần <ph name="LINK_BEGIN"/>
+      cài đặt trên trình duyệt Brave<ph name="LINK_END"/></translation>
+<translation id="4459296183696059108">Nếu một tùy chọn cài đặt không hiển thị trên trang này, hãy tìm trong mục <ph name="LINK_BEGIN"/>
+      cài đặt của Brave OS<ph name="LINK_END"/></translation>
 <translation id="7977435741986383568">Brave có thể sử dụng dịch vụ web để cải thiện trải nghiệm duyệt web của bạn. Bạn có thể tùy ý vô hiệu hóa các dịch vụ này. <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Để sửa lỗi chính tả, Brave sẽ gửi cho Brave Software nội dung bạn nhập vào các trường văn bản</translation>
 <translation id="8586264863973514035">Để áp dụng các mục thay đổi của bạn, hãy chạy lại Brave</translation>
@@ -262,8 +261,6 @@ Vui lòng xem email của bạn tại <ph name="ACCOUNT_EMAIL"/> để được 
 <translation id="7445061995866044926">Đăng xuất khỏi Brave?</translation>
 <translation id="7453070689008684791">Brave sẽ truy cập vào Drive của bạn để đưa ra đề xuất trên thanh địa chỉ</translation>
 <translation id="3360368475735266712">Đăng nhập để đồng bộ hóa và cá nhân hóa Brave trên các thiết bị của bạn</translation>
-<translation id="9221712274065451529">Ngôn ngữ này dùng để hiển thị giao diện người dùng của Brave OS</translation>
-<translation id="3518788198614984730">Hiển thị Brave OS bằng ngôn ngữ này</translation>
 <translation id="5757460455745382269">Ngôn ngữ này dùng để hiển thị giao diện người dùng của Brave</translation>
 <translation id="2335583906071111058">Hiển thị Brave bằng ngôn ngữ này</translation>
 <translation id="8926637909431618259">Tiếp tục chạy các ứng dụng dưới nền khi Brave bị đóng</translation>

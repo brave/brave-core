@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Doar mensalmente para este site",
+    "message": "Contribuição mensal",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Esse criador verificado ainda precisa confirmar (KYC) a conta para receber dicas da sua carteira verificada. As dicas permanecerão na sua carteira até que a verificação seja concluída.",
+    "message": "Este Criador Verificado do Brave ainda não configurou sua conta para receber contribuições de Usuários do Brave. Qualquer contribuição que você enviar permanecerá em sua carteira até ele concluir esse processo.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Concluir verificação de carteira",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Definir...",
+    "description": "Button text for setting monthly contribution"
   }
 }

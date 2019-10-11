@@ -46,6 +46,7 @@
 Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="1477146545787277177">Brave이 다운되었습니다. 다시 시작하시겠습니까?</translation>
 <translation id="5785919770853225148">Brave에서 내 Brave Software 계정에 이 비밀번호를 저장하므로 기억하지 않아도 됩니다.</translation>
+<translation id="8211837073776713955">비밀번호가 유출되면 Brave에서 알려줍니다.</translation>
 <translation id="113959764510199339">Brave이 비밀번호를 표시하려고 합니다.</translation>
 <translation id="7503098128120083822">Brave에서 비밀번호를 내보내려고 합니다.</translation>
 <translation id="8285294305439559616">Brave에서 비밀번호를 표시하려고 합니다. 허용하려면 Windows 비밀번호를 입력하세요.</translation>
@@ -154,13 +155,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="3205074487970075628">Brave이 카메라를 사용 중입니다.</translation>
 <translation id="8142245354207161805">다른 컴퓨터(<ph name="HOST_NAME"/>)의 다른 Brave 프로세스(<ph name="PROCESS_ID"/>)에서 프로필을 사용 중인 것 같습니다. 프로필이 손상되지 않도록 Brave에서 잠금 설정했습니다. 다른 프로세스에서 프로필을 사용 중이지 않은 것이 확실한 경우 프로필을 잠금 해제하고 Brave을 다시 시작하세요.</translation>
 <translation id="239760341987199724">Brave을 기본 브라우저로 설정</translation>
-<translation id="5344925500065984750"><ph name="NEW_PROFILE_NAME"/>님이 볼 수 있는 웹사이트를 설정하려면 <ph name="BEGIN_LINK_1"/><ph name="DISPLAY_LINK"/><ph name="END_LINK_1"/>을(를) 방문하여 제한사항 및 설정을 지정하세요. 기본 설정을 변경하지 않으면 <ph name="NEW_PROFILE_NAME"/>님이 웹에서 모든 사이트를 탐색할 수 있습니다.
-
-<ph name="NEW_PROFILE_NAME"/>님이 내 계정에 액세스하지 못하도록 하려면 Brave을 사용하지 않을 때 프로필을 잠그세요. 이렇게 하려면 브라우저 오른쪽 상단에서 프로필 이름을 클릭하고 '종료 및 자녀 보호 잠금'을 선택하면 됩니다.
-<ph name="BEGIN_LINK_2"/>자세히 알아보기<ph name="END_LINK_2"/>
-
-자세한 안내를 보려면 <ph name="ACCOUNT_EMAIL"/>에서 이메일을 확인하세요.</translation>
-<translation id="1820843143331379651">Brave 70부터는 관리 대상 사용자 프로필을 사용할 수 없습니다.</translation>
 <translation id="669092380621816981">선택한 사용자의 인터넷 사용 기록이 이 기기에서 삭제됩니다. 데이터를 복구하려면 <ph name="USER_EMAIL"/>(으)로 Brave에 로그인하세요.</translation>
 <translation id="2827121003398607864">더욱 업그레이드된 Brave</translation>
 <translation id="7192666605334070839">이제 Brave Software 계정으로 공유 컴퓨터에서 Brave을 손쉽게 사용할 수 있습니다.</translation>
@@ -202,7 +196,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="3598551856834560515">동기화를 시작하려면 Brave을 업데이트하세요.</translation>
 <translation id="4050175100176540509">최신 버전에는 중요한 보안 개선사항 및 새로운 기능이 포함되어 있습니다.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{1초 후에 Brave이 다시 시작됩니다}other{#초 후에 Brave이 다시 시작됩니다}}</translation>
-<translation id="5509303873219371662">지금 Brave을 다시 시작해야 합니다</translation>
+<translation id="5646769069113654257">지금 Brave을 다시 시작하세요</translation>
 <translation id="8668413672647811944">Brave 특별 보안 업데이트를 방금 적용했습니다. 다시 시작하면 탭이 복원됩니다.</translation>
 <translation id="763369711159699222">Brave 개선에 참여</translation>
 <translation id="1156940037717341650">Brave Software에 발생할 수 있는 보안 문제의 세부정보를 자동으로 보고하도록 설정하면 Brave을 더 안전하고 편리하게 사용할 수 있습니다.</translation>
@@ -226,7 +220,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="6141293433381251973">Brave이 자동으로 업데이트되므로 항상 최신 버전을 사용할 수 있습니다. 이 다운로드가 완료되면 Brave이 다시 시작되며 계속 작업할 수 있습니다.</translation>
 <translation id="7808415789955822133">Brave OS 용어</translation>
 <translation id="7207456302801184289">Brave에 오신 것을 환영합니다.</translation>
-<translation id="5688839044908745927">Brave 준비가 거의 완료되었습니다.</translation>
 <translation id="3507835409099344374">Brave 알림 설정으로 이동</translation>
 <translation id="1026406809507858026">{0,plural, =0{Brave 업데이트 출시}=1{Brave 업데이트 출시}other{Brave 업데이트가 출시된 지 #일 지남}}</translation>
 <translation id="720532315408041257">관리자가 이 업데이트를 적용하려면 사용자가 Brave을 다시 시작하도록 설정했습니다.</translation>
@@ -244,6 +237,8 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="1864557848095568223">Brave 업데이트 중</translation>
 <translation id="1786715389543715322">Brave 업데이트 중(<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="8208853227947884571">Brave이 최신 버전임</translation>
+<translation id="6756417787837743699">Brave OS에 관한 자세한 내용은 <ph name="LINK_BEGIN"/>
+      Brave OS 소개<ph name="LINK_END"/>를 참조하세요.</translation>
 <translation id="6686872257969654608">Brave OS 정보</translation>
 <translation id="2280363356796735201">Brave OS 도움말 보기</translation>
 <translation id="38898988211673781">Brave을 종료할 때 쿠키 및 사이트 데이터 삭제</translation>
@@ -251,6 +246,10 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="5468853758063275923">Brave이 기본 브라우저로 설정되어 있습니다.</translation>
 <translation id="1775322105159056176">Brave에서 기본 브라우저를 확인하거나 설정할 수 없습니다.</translation>
 <translation id="6915252145142862992">Brave의 보조 설치이며 기본 브라우저로 설정할 수 없습니다.</translation>
+<translation id="6235873178214143377">페이지에 표시되지 않는 설정이 있다면 <ph name="LINK_BEGIN"/>
+      Brave 브라우저 설정<ph name="LINK_END"/>을 확인해 보세요.</translation>
+<translation id="4459296183696059108">페이지에 표시되지 않는 설정이 있다면 <ph name="LINK_BEGIN"/>
+      Brave OS 설정<ph name="LINK_END"/>을 확인해 보세요.</translation>
 <translation id="7977435741986383568">Brave에서 사용자에게 더 나은 인터넷 사용 환경을 제공하기 위해 웹 서비스를 사용할 수 있습니다. 원하는 경우 서비스를 사용 중지하실 수 있습니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">맞춤법 오류를 수정하기 위해 Brave에서 사용자가 입력하는 텍스트를 Brave Software로 전송합니다.</translation>
 <translation id="8586264863973514035">변경사항을 적용하려면 Brave을 다시 실행하세요.</translation>
@@ -264,8 +263,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="7445061995866044926">Brave에서 로그아웃</translation>
 <translation id="7453070689008684791">Brave에서 내 드라이브에 액세스하여 주소 표시줄에 추천 검색어를 표시합니다.</translation>
 <translation id="3360368475735266712">로그인하여 모든 기기에서 Brave을 동기화하고 맞춤설정하세요.</translation>
-<translation id="9221712274065451529">Brave OS UI가 이 언어로 표시됩니다.</translation>
-<translation id="3518788198614984730">이 언어로 Brave OS 표시</translation>
 <translation id="5757460455745382269">Brave UI가 이 언어로 표시됩니다.</translation>
 <translation id="2335583906071111058">이 언어로 Brave 표시</translation>
 <translation id="8926637909431618259">Brave 종료 후에도 백그라운드 앱을 계속 실행</translation>

@@ -78,10 +78,12 @@
 <translation id="2414886740292270097">暗</translation>
 <translation id="3829010735958850433">跳过欢迎导览</translation>
 <translation id="1201402288615127009">下一步</translation>
+<translation id="7954950242989581218">Browse 安然无恙</translation>
+<translation id="2188651882929633653">Brave Shields 拦截了尝试在 Web 上跟踪您的大部分恶意内容，包括许多广告。如果某个站点无法正常运行，请将 Shields 设置为“关闭”。Brave 使用 <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>completely private product analytics<ph name="END_LINK_P3A">&lt;/a&gt;</ph>; 估算特定功能的整体使用情况。您可在 <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph> 中将其关闭。</translation>
 <translation id="1919345977826869612">广告</translation>
 <translation id="5946611334574299206">在 Brave 中通过浏览广告赚取代币。根据您的喜好显示广告，这是根据您的浏览情况判断的。您的浏览器中不会留下私人数据或浏览历史。</translation>
 <translation id="6112368337882254910">自动贡献</translation>
-<translation id="1527222983464337010">这是一种支持发布者和内容创建者的自动方式。设置每月付款并正常浏览。您访问的网站会根据Brave测量的您的注意力自动收到您的贡献。</translation>
+<translation id="3742599705619405136">这是一种支持发布者和内容创建者的自动方式。设置每月付款并正常浏览。您访问的网站会根据Brave测量的您的注意力自动收到您的贡献。</translation>
 <translation id="20281847067919078">估计将获得的奖励</translation>
 <translation id="8593551638387217772">下一次支付日期</translation>
 <translation id="319209088187794725">本月收到的广告通知</translation>
@@ -100,12 +102,17 @@
 <translation id="8759716059844800317">支持的站点</translation>
 <translation id="2365740070488517695">赏金</translation>
 <translation id="1309807437617560451">浏览时直接向内容作者打赏。您还可以设置每月定期打赏，由此您可以持续支持网站。</translation>
+<translation id="5012991400231464322">每月捐款</translation>
+<translation id="2084351799622920487">设置每月定期捐款，由此您可以持续支持网站。</translation>
+<translation id="8150772404570015166">尚未设置每月捐款。</translation>
+<translation id="7269582398922493824">每月重复给予捐款，支持您喜欢的网站。您可从打赏横幅进行设置。</translation>
 <translation id="2241248417273918295">酬金每月支付。</translation>
 <translation id="68906705461077250">设置您偏好的收入增减频度。</translation>
 <translation id="1847863811689960237">打赏您喜爱的内容创作者。</translation>
 <translation id="4129489167302464118">您每月付款的一部分会用于您访问的网站。</translation>
 <translation id="4898632353264854950">在您浏览时站点会出现</translation>
 <translation id="3024485967181749006">本月总打赏金额</translation>
+<translation id="5055577484189948413">本月捐款总金额</translation>
 <translation id="4153752809523809915">您今天给喜爱的内容作者打赏了吗？</translation>
 <translation id="1165667598801520610">添加资金</translation>
 <translation id="6239274080752256452">资金提现</translation>
@@ -113,7 +120,6 @@
 <translation id="7286722244752781970">登录访问前最短页面时间</translation>
 <translation id="4424486208397124985">发布者相关性的最低访问量</translation>
 <translation id="4969081543473319051">允许什么？</translation>
-<translation id="2295504178524377899">允许对未经验证的站点作出贡献</translation>
 <translation id="5875669387851353511">允许对视频付款</translation>
 <translation id="8933202740471878108">访问量为 1 次</translation>
 <translation id="354797634123275103">访问量为5次</translation>
@@ -209,6 +215,7 @@
 <translation id="4405997465645469914">启用“Brave奖励”，即表示您已阅读并同意服务条款</translation>
 <translation id="8819542691525488940">点击“好的，我要加入了！“，表示您已阅读并同意</translation>
 <translation id="8071424789698327147">单击“是的，我准备好了”，即表示您已阅读并同意</translation>
+<translation id="3745024317593003526">设置捐款</translation>
 <translation id="7530570094705720669">正在创建钱包</translation>
 <translation id="2105596359439030979">您的注意力很有价值。通过观看尊重隐私的广告来赚取收入，并支付给您喜爱的内容创作者。</translation>
 <translation id="516395624550019162">确认！</translation>
@@ -272,6 +279,8 @@
 <translation id="211044356803193224">每月打赏！</translation>
 <translation id="606865182719489911">有可用的免费令牌授权。</translation>
 <translation id="3453206261112715431">免费代币补助</translation>
+<translation id="2280319752798785157">每月捐款</translation>
+<translation id="7627481505582641588">下一捐款</translation>
 <translation id="5736183007277264868">当前没有可用的令牌授权。</translation>
 <translation id="8307851765167460403">还没有活动…</translation>
 <translation id="8589748782214271192">不用了，谢谢</translation>
@@ -317,9 +326,8 @@
 <translation id="5717619667204259673">保持此恢复密钥的安全性。</translation>
 <translation id="4699702339303280827">如果您的浏览器或电脑出现问题，您可以随时使用此密钥找回您的钱包。请妥善保管，取得密钥的人可盗窃您的钱包。最安全的办法是把它记在纸上，或保存在您保管重要信息的地方。</translation>
 <translation id="7354412786785889047">您可以通过打赏支持内容创建者。这’是为了表示对优质内容提供者的感谢。每个月的第一个星期，已验证的创建者将获得他们的赏金。</translation>
-<translation id="3475063317678050010">您可根据需要设置每月打赏，以持续支持此创作者。</translation>
+<translation id="972846019534552366">您可根据需要设置每月打赏，以持续支持此创作者。</translation>
 <translation id="3074127054582480056">精力</translation>
-<translation id="822513417008209372">您当前支持</translation>
 <translation id="5010112177773747965">未经您同意。</translation>
 <translation id="7147673045905733351">现在，Brave欢迎您进入新的互联网。</translation>
 <translation id="1350763070659630336">在这里，您的时间极具价值，您的个人资料获得保密，您的付出的精力获得收益。</translation>
@@ -343,6 +351,7 @@
 <translation id="1738658589626889850">保存为文件</translation>
 <translation id="259138486959961679">查看所有 {{numItems}} 项目</translation>
 <translation id="7857284676033058221">查看所有 {{numSites}} 站点</translation>
+<translation id="1549705559752367917">发送我的赏金</translation>
 <translation id="3536298624341433814">发送我的赏金</translation>
 <translation id="8428213095426709021">设置</translation>
 <translation id="1792148354504719133">站点</translation>
@@ -385,7 +394,7 @@
 <translation id="6727483290601442544">查看详情</translation>
 <translation id="1988679729106502285">注：</translation>
 <translation id="5815103311506128988">此创建者还未注册为Brave用户捐款的接收者。您的浏览器将会继续尝试捐款，直到该用户通过验证，但不会超过90天。</translation>
-<translation id="603411408512957306">经过验证的创作者尚未验证 (KYC) 其帐户，以便从经过验证的钱包中收到小费。在完成验证之前，小费将保留在您的钱包中。</translation>
+<translation id="7461596279975181413">此 Brave 验证的创建者还未配置其账号以接收 Brave 用户捐款。您的浏览器将会继续尝试捐款，直到该用户通过验证，但不会超过 90 天。</translation>
 <translation id="4292832015778676417">从广告中赚取</translation>
 <translation id="3197752845651180812">待处理的捐款</translation>
 <translation id="3164105678355419142">重复打赏</translation>
@@ -394,12 +403,12 @@
 <translation id="4346944508027912677">待处理截止期限</translation>
 <translation id="7410549756000115387">无待处理的捐款...…</translation>
 <translation id="1963227389609234879">全部删除</translation>
-<translation id="1170315781901539495">不包括的站点</translation>
+<translation id="8706157865312453070">不包括的站点</translation>
 <translation id="5119190679543565400">恢复此站点</translation>
 <translation id="9075700728717335924">您已排除</translation>
 <translation id="4862817811647633830">来自自动贡献的站点。</translation>
 <translation id="923467487918828349">显示全部</translation>
-<translation id="5471305206221894680">支持的站点</translation>
+<translation id="1397381065858030856">支持的站点</translation>
 <translation id="2306169361186864012">Brave 广告奖励！</translation>
 <translation id="3757873395477273033">您即将获得从 Brave Ads 获得的奖励。</translation>
 <translation id="8101881066646819737">您的 Brave Ads 令牌授权</translation>

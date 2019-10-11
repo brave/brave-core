@@ -78,10 +78,12 @@
 <translation id="2414886740292270097">ጨለማ</translation>
 <translation id="3829010735958850433">እንኳን ደህና መጣቹህ የሚለውን ጉብኝት ይዝለሉ</translation>
 <translation id="1201402288615127009">ቀጣይ</translation>
+<translation id="7954950242989581218">ደህንነቱ በተጠበቀና አስተማማኝ በሆነ መንገድ ያስሱ</translation>
+<translation id="2188651882929633653">የ Brave ጋሻ በድረ ገጽ ላይ እርስዎን ለመከታተል የሚሞክሩ አስቸጋሪ ነገሮችን ያግዳል ፤ አብዛኞችን ማስታወቂያዎች ይጨምራል። ድረ ገጹ የማይ ሰራ ከሆነ ለ “down” ጋሻ አዘጋጅ። <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>Brave የተወሰኑ ባህርያትን አጠቃላይ አጠቃቀም ለመገመት ሙሉ በሙሉ ግላዊ የምርት ትንተናን ይጠቀማል።<ph name="END_LINK_P3A">&lt;/a&gt;</ph>  ይህን ለማጥፋት ወደ <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph> መግባት ይችላሉ።</translation>
 <translation id="1919345977826869612">ማስታወቂያዎች</translation>
 <translation id="5946611334574299206">በrave ውስጥ ማስተዋቅያ በማየት ቶክን ያግኙ፡፡ ማስተዋቅያዎች በፍላጎት ከማሰሻው ባህርይ ጋር ተይይዘው ይቀርባሉ፡፡ የግል መረጃ ወይ የማሰስ ታሪክ ማሰሻዎን አይተወውም፡፡</translation>
 <translation id="6112368337882254910">የራስ-አስተዋፅዎ</translation>
-<translation id="1527222983464337010">አሳታሚዎችንና የይዘት ፈጣሪዎችን ለማገዝ አውቶማቲክ መንገድ፡፡ ወርሀዊ ክፍያ አዘጋጅተው በተለመደ መልኩ ይጠቀሙ፡፡ የሚሰጡት ትኩረት በብሬቭ ተለክቶ የሚጎበኙት ድህረ ገፅ አውቶማቲካሊ አስተዋፅኦ ያገኛል፡፡</translation>
+<translation id="3742599705619405136">አሳታሚዎችንና የይዘት ፈጣሪዎችን ለማገዝ አውቶማቲክ መንገድ፡፡ ወርሀዊ ክፍያ አዘጋጅተው በተለመደ መልኩ ይጠቀሙ፡፡ የሚሰጡት ትኩረት በብሬቭ ተለክቶ የሚጎበኙት ድህረ ገፅ አውቶማቲካሊ አስተዋፅኦ ያገኛል፡፡</translation>
 <translation id="20281847067919078">ያልተጠናቀቁ ሽልማቶች በግምት</translation>
 <translation id="8593551638387217772">ቀጣይ የክፍያ ቀን</translation>
 <translation id="319209088187794725">በዚህ ወር የደረሰዎት የማስታወቂያ ማሳወቂያዎች</translation>
@@ -100,12 +102,17 @@
 <translation id="8759716059844800317">የሚደገፉ ገፆች</translation>
 <translation id="2365740070488517695">መረጃዎች</translation>
 <translation id="1309807437617560451">በሚያስሱበት ጊዜ በቀጥታ የይዘት ፈጣሪዎችን ይደጉሙ፤ በየጊዜው ድህረ ገጾችን መደገፍ እንዲችሉ ተደጋጋሚ ወርሃዊ ድጎማዎችን ማዘጋጀት ይችላሉ፡፡</translation>
+<translation id="5012991400231464322">ወርሐዊ መዋጮዎች</translation>
+<translation id="2084351799622920487">ድረ ገጾችን በተከታታይ ለመደገፍ እንዲችሉ መደበኛ ወርሐዊ መዋጮዎችን ያደራጁ።</translation>
+<translation id="8150772404570015166">እስካሁን ወርሐዊ መዋጮ አልተደራጀም።</translation>
+<translation id="7269582398922493824">ለተወዳጅ ሳይቶችዎ መደበኛ የሆነ ወርሐዊ መዋጮ በማድረግ ይደግፉ። ይህን ከመረጃ መስጫ ሰንደቅ ማዘጋጀተ ይችላሉ።</translation>
 <translation id="2241248417273918295">የገቢ ክፍያ በየወሩ ይደረጋል።</translation>
 <translation id="68906705461077250">ገቢን ከፍ ወይም ዝቅ ለማድረግ የሚፈልጉትን የድጎማ ድግግሞሽ ጊዜ ቁጥር ያተካክሉ።</translation>
 <translation id="1847863811689960237">የወደዱት ይዘት ለፈጠሩት ይሸልሙ፡፡</translation>
 <translation id="4129489167302464118">ወርሀዊ ክፍያዎ በሚጎበኟቸው ገፆች መሀከል ይከፋፈላል፡፡</translation>
 <translation id="4898632353264854950">በማሰሻው ሲያስሱ ድረ ገጾች ይታያሉ</translation>
 <translation id="3024485967181749006">በዚህ ወር አጠቃላይ ምክር</translation>
+<translation id="5055577484189948413">በዚህ ወር አጠቃላይ መዋጮ</translation>
 <translation id="4153752809523809915">ዛሬ የሚወዱትን ይዘት ፈጣሪ ምክር ሰጥተዋል?</translation>
 <translation id="1165667598801520610">የማስታወቅያ ፈንድ</translation>
 <translation id="6239274080752256452">ገንዘብ ወጪ ያድርጉ</translation>
@@ -113,7 +120,6 @@
 <translation id="7286722244752781970">ከመጎብኘቶ በፊት ዝቅተኛው የገፅ ሰዓት</translation>
 <translation id="4424486208397124985">አንስተኛ የአሳታሚ ጠቃሚነት ጎብኝዎች</translation>
 <translation id="4969081543473319051">ምን መፈቀድ አለበት?</translation>
-<translation id="2295504178524377899">ላልተረጋገጡ ገፆች አስተዋፅኦ ለማድረግ ይፍቀዱ</translation>
 <translation id="5875669387851353511">ለቪድዮዎች አስተዋጽኦ ይፍቀዱ</translation>
 <translation id="8933202740471878108">1 ጉብኝት</translation>
 <translation id="354797634123275103">5 ጉብኝት</translation>
@@ -209,6 +215,7 @@
 <translation id="4405997465645469914">የ Braveን ሽልማቶች በማብራት እርስዎ ማንበብዎን እና መስማማትዎን ያመለክታሉ ለ</translation>
 <translation id="8819542691525488940">‘፤ አዎ፤ ገብቼዋለሁ! ’፤ን እርስዎ ማንበብዎን እና መስማማትዎን ያመለክታሉ ለ</translation>
 <translation id="8071424789698327147">‘፤ አዎ፤ ዝግጁ ነኝ! ’፤ን እርስዎ ማንበብዎን እና መስማማትዎን ያመለክታሉ ለ</translation>
+<translation id="3745024317593003526">መዋጮ አደራጅ</translation>
 <translation id="7530570094705720669">ቋት መፍጠር</translation>
 <translation id="2105596359439030979">ማስተዋሎ ጠቃሚ ነው፡፡ ግላዊነት የሚያከብር ማስታወቅያ በማየትና የሚወዱትን የፈጣሪዎች ይዘት ለመደገፍ ያስተላልፉ፡፡</translation>
 <translation id="516395624550019162">አዎ በውስጥ ነኝ</translation>
@@ -272,6 +279,8 @@
 <translation id="211044356803193224">ወርሃዊ ድጎማዎች!</translation>
 <translation id="606865182719489911">ነፃ የቶክን ብድር ይገኛል፡፡</translation>
 <translation id="3453206261112715431">ነፃ የቶክን ብድር</translation>
+<translation id="2280319752798785157">ወርሐዊ መዋጮ</translation>
+<translation id="7627481505582641588">ቀጣይ መዋጮ</translation>
 <translation id="5736183007277264868">በአሁኑ ግዜ የቶክን ብድር የለም፡፡</translation>
 <translation id="8307851765167460403">እስከ አሁን ምንም እንቅስቃሴ የለም…</translation>
 <translation id="8589748782214271192">አልፈልግም አመስግናለሁ</translation>
@@ -317,9 +326,8 @@
 <translation id="5717619667204259673">ይህን የመልሶ ማግኛ ቁልፍ ደህንነት ይጠብቁ፡፡</translation>
 <translation id="4699702339303280827">በአሳሽዎ ወይም ኮምፒውተርዎ ላይ ምንም አይነት ነገር ቢፈጠር ይህንን ቁልፍ ሁልጊዜም መጠቀም ይችላሉ.። ነገር ግን ደህንነቱን ለማስተማመን እና #8212፤ ይህንን የሚያገኝ ሰው ሁሉ ዋሌትዎን ሊሰርቅ ይችላል ። ይህ ’ እርሶ ወሳኝ መረጃ በሚያስቀምጡበት ስፍራ ወይም በአንድ ቁራጭ ወረቀት ላይ ማድረግ ከሁሉም ሳይሻል አይቀርም።</translation>
 <translation id="7354412786785889047">ጠቃሚ ምክሮችን በመላክ የዚህን ይዘት ፈጣሪ መደገፍ ይችላሉ፤ It’s ምርጥ ይዘት ስላደረጉ ምስጋና ማቅረቢያ መንገድ ነው፤ የተረጋገጡ ፈጣሪዎች በእያንዳንዱ የቀን መቁጠሪያ ወር የመጀመሪያ ሳምንት ውስጥ ለጠቃሚ ምክራቸው ይከፈላቸዋል።</translation>
-<translation id="3475063317678050010">ከወደዱት፤ ይህን ፈጣሪ ቀጣይነት ባለው መልኩ ለመደገፍ ወርሃዊ ድጎማ ማድረግ ይችላሉ።</translation>
+<translation id="972846019534552366">ከወደዱት፤ ይህን ፈጣሪ ቀጣይነት ባለው መልኩ ለመደገፍ ወርሃዊ ድጎማ ማድረግ ይችላሉ።</translation>
 <translation id="3074127054582480056">ትኩረት</translation>
-<translation id="822513417008209372">እርስዎና #8217; እየደገፉ ነው</translation>
 <translation id="5010112177773747965">ያለእርስዎ ፍቃድ፡፡</translation>
 <translation id="7147673045905733351">ዛሬ ብሬቭ ወደ አዲስ ኢንተርኔት ይቀበሎታል፡፡</translation>
 <translation id="1350763070659630336">ግዜዎ ዋጋ የሚሰጥበት፣ የግል መረጃዎ በሚስጥር የሚያዝበትና ለማስተዋሎ ክፍያ የሚከፈሉበት ነው፡፡</translation>
@@ -343,6 +351,7 @@
 <translation id="1738658589626889850">እንደ ፋይል ያስቀምጡ</translation>
 <translation id="259138486959961679">ሁሉኑም አማራጮች {{አማራጮች}} ይመልከቱ</translation>
 <translation id="7857284676033058221">ሁሉኑም {{ድህረ ገፆች}} ድህረገፆች ይመልከቱ</translation>
+<translation id="1549705559752367917">መረጃዬን ላክ</translation>
 <translation id="3536298624341433814">መረጃዬን ላክ</translation>
 <translation id="8428213095426709021">ቅንብሮች</translation>
 <translation id="1792148354504719133">ገፅ</translation>
@@ -385,7 +394,7 @@
 <translation id="6727483290601442544">ዝርዝሩን ይመልከቱ</translation>
 <translation id="1988679729106502285">ያስታውሱ፤</translation>
 <translation id="5815103311506128988">ይህ ፈጣሪ ከ Brave ተጠቃሚዎች ክፍያዎችን ለማግኘት ገና አልተመዘገበም። አሳሽዎ እስከሚያረጋግጡ ወይም 90 ቀናት እስከሚያልፉ ድረስ መዋጮውን ለማድረግ ይሞክራል።</translation>
-<translation id="603411408512957306">ይህ የተረጋገጠ ፈጣሪ ከእርሶ የተረጋገጠ የኪስ ቦርሳ ጠቃሚ ምክሮችን ለመቀበል የእነሱን (KYC) መለያ ገና ማረጋገጥ አለበት፡፡ ጠቃሚ ምክሮቹ እነሱ ማረጋገጫውን እስኪያጠናቅቁ ድረስ በእርሶ የኪስ ቦርሳ ውስጥ ይቆያል፡፡</translation>
+<translation id="7461596279975181413">ይህ የ Brave የተረጋገጠ ፈጣሪ እስካሁን መለያውን ባለማዋቀሩ ምክንያት ከ Brave ተጠቃሚዎች መዋጮ ለመቀበል አይችልም። እነርሱ መለያቸውን እስከሚያረጋግጡ ድረስ ወይም 90 ቀን እስከሚያልፍ ድረስ ማሰሻዎ መዋጮ ለማድረግ መሞከሩን ይቀጥላል።</translation>
 <translation id="4292832015778676417">ከማስታወቂያዎች የተገኘ</translation>
 <translation id="3197752845651180812">በመጠባበቅ ላይ ያለ አስተዋፅኦ</translation>
 <translation id="3164105678355419142">በተደጋጋሚ የተሰጡ ጠቃሚ ምክሮች</translation>
@@ -394,12 +403,12 @@
 <translation id="4346944508027912677">በመጠባበቅ ላይ እስከ</translation>
 <translation id="7410549756000115387">ምንም በመጠባበቅ ላይ ያለ አስተዋጽዖ የለም…፤</translation>
 <translation id="1963227389609234879">ሁሉንም አስወግድ</translation>
-<translation id="1170315781901539495">የተገለሉ ድረ ገጾች</translation>
+<translation id="8706157865312453070">የተገለሉ ድረ ገጾች</translation>
 <translation id="5119190679543565400">ይህን ድረ ገጽ ወደነበረበት መልስ</translation>
 <translation id="9075700728717335924">አግልለዋል</translation>
 <translation id="4862817811647633830">ከራስ ሰር አስተዋጽኦ የተገኙ ድረ ገጾች።</translation>
 <translation id="923467487918828349">ሁሉንም አሳይ</translation>
-<translation id="5471305206221894680">የሚደገፉ ድረ ገጾች</translation>
+<translation id="1397381065858030856">የሚደገፉ ድረ ገጾች</translation>
 <translation id="2306169361186864012">የ Brave ማስታወቂያ ሽልማቶች!</translation>
 <translation id="3757873395477273033">ከ Brave ማስታወቂያዎች የተላከልዎ ሽልማት እየመጣ ነው።</translation>
 <translation id="8101881066646819737">የ Brave ማስታወቂያዎ የተለዋጭ ስም ግራንት</translation>

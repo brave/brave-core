@@ -78,10 +78,12 @@
 <translation id="2414886740292270097">Gelap</translation>
 <translation id="3829010735958850433">Langkau jelajah alu-aluan</translation>
 <translation id="1201402288615127009">Seterusnya</translation>
+<translation id="7954950242989581218">Belayar dengan selamat</translation>
+<translation id="2188651882929633653">Brave Shields menghalang perkara jahat yang cuba menjejak anda di serata web termasuk kebanyakan iklan. Tetapkan Shields kepada “lumpuh” jika tapak kelihatan tidak berfungsi. Brave menggunakan <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>analitik produk persendirian sepenuhnya<ph name="END_LINK_P3A">&lt;/a&gt;</ph> untuk menganggarkan penggunaan sepenuhnya ciri-ciri tertentu. Anda boleh mematikannya di <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Tetapan<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Iklan</translation>
 <translation id="5946611334574299206">Dapatkan token dengan melihat iklan di Brave. Iklan yang dipaparkan adalah berdasarkan minat anda, sebagaimana yang disimpulkan dari tingkah laku anda semasa melayari web. Tiada data peribadi atau sejarah pelayaran web akan meninggalkan pelayar web anda.</translation>
 <translation id="6112368337882254910">Auto-Sumbang</translation>
-<translation id="1527222983464337010">Cara automatik untuk menyokong penerbit dan pencipta kandungan. Tetapkan bayaran bulanan dan layari seperti biasa. Laman yang anda lawati akan menerima sumbangan anda secara automatik, berdasarkan perhatian anda yang diukur oleh Brave.</translation>
+<translation id="3742599705619405136">Cara automatik untuk menyokong penerbit dan pencipta kandungan. Tetapkan bayaran bulanan dan layari seperti biasa. Laman yang anda lawati akan menerima sumbangan anda secara automatik, berdasarkan perhatian anda yang diukur oleh Brave.</translation>
 <translation id="20281847067919078">Anggaran ganjaran menunggu</translation>
 <translation id="8593551638387217772">Tarikh pembayaran seterusnya</translation>
 <translation id="319209088187794725">Pemberitahuan iklan yang diterima bulan ini</translation>
@@ -100,12 +102,17 @@
 <translation id="8759716059844800317">Laman yang disokong</translation>
 <translation id="2365740070488517695">Tip</translation>
 <translation id="1309807437617560451">Beri pencipta kandungan tip secara langsung semasa anda meyemak imbas. Anda juga bleh menyediakan tip bulanan berulang agar anda boleh menyokong tapak secara berterusan.</translation>
+<translation id="5012991400231464322">Sumbangan Bulanan</translation>
+<translation id="2084351799622920487">Sediakan sumbangan berulang bulanan agar anda boleh menyokong tapak web secara berterusan.</translation>
+<translation id="8150772404570015166">Belum ada sumbangan bulanan yang dimulakan.</translation>
+<translation id="7269582398922493824">Sokong tapak kegemaran anda dengan sumbangan berulang bulanan. Anda boleh menetapkannya dari sepanduk tip.</translation>
 <translation id="2241248417273918295">Pendapatan dibayar setiap bulan.</translation>
 <translation id="68906705461077250">Tetapkan kekerapan yang dikehendaki untuk meningkatkan atau mengurangkan pendapatan.</translation>
 <translation id="1847863811689960237">Beri ganjaran kepada pencipta kandungan yang anda suka.</translation>
 <translation id="4129489167302464118">Bayaran bulanan anda diedarkan pada laman-laman yang anda lawati</translation>
 <translation id="4898632353264854950">Laman akan muncul ketika anda mengimbas</translation>
 <translation id="3024485967181749006">Jumlah tip bulan ini</translation>
+<translation id="5055577484189948413">Jumlah sumbangan bulan ini</translation>
 <translation id="4153752809523809915">Sudahkan anda tip pencipta kandungan kegemaran anda hari ini?</translation>
 <translation id="1165667598801520610">Tambah Dana</translation>
 <translation id="6239274080752256452">Keluarkan Dana</translation>
@@ -113,7 +120,6 @@
 <translation id="7286722244752781970">Masa halaman minimum sebelum mengelog ke laman</translation>
 <translation id="4424486208397124985">Kunjungan minimum untuk kerelevanan penerbit</translation>
 <translation id="4969081543473319051">Apa yang dibenarkan?</translation>
-<translation id="2295504178524377899">Benarkan sumbangan kepada laman yang tidak disahkan</translation>
 <translation id="5875669387851353511">Benarkan sumbangan untuk video</translation>
 <translation id="8933202740471878108">1 visit</translation>
 <translation id="354797634123275103">5 kunjungan</translation>
@@ -209,6 +215,7 @@
 <translation id="4405997465645469914">Dengan menghidupkan Ganjaran Brave, anda menunjukkan bahawa anda telah membaca dan bersetuju dengan</translation>
 <translation id="8819542691525488940">Dengan mengklik ‘Ya, saya ingin turut serta!’, anda menunjukkan bahawa anda telah membaca dan bersetuju dengan</translation>
 <translation id="8071424789698327147">Dengan mengklik ‘Ya, Saya Sedia!’, anda menunjukkan yang anda telah membaca dan bersetuju dengan</translation>
+<translation id="3745024317593003526">Tetapkan Sumbangan</translation>
 <translation id="7530570094705720669">Mencipta dompet</translation>
 <translation id="2105596359439030979">Perhatian anda adalah sangat berharga. Peroleh ganjaran dengan melihat iklan yang menghormati privasi dan bayarnya terus kepada pencipta kandungan pilihan anda.</translation>
 <translation id="516395624550019162">Ya, saya mahu!</translation>
@@ -272,6 +279,8 @@
 <translation id="211044356803193224">Tip Bulanan!</translation>
 <translation id="606865182719489911">Pemberian token percuma tersedia.</translation>
 <translation id="3453206261112715431">Pemberian Token Percuma</translation>
+<translation id="2280319752798785157">Sumbangan Bulanan</translation>
+<translation id="7627481505582641588">Sumbangan Seterusnya</translation>
 <translation id="5736183007277264868">Pada masa ini tiada pemberian token tersedia.</translation>
 <translation id="8307851765167460403">Tiada aktiviti lagi…</translation>
 <translation id="8589748782214271192">Tidak mengapa, terima kasih</translation>
@@ -317,9 +326,8 @@
 <translation id="5717619667204259673">Simpan kunci pemulihan ini dengan selamat.</translation>
 <translation id="4699702339303280827">Anda sentiasa boleh menggunakan kunci ini untuk mendapatkan kembali dompet anda jika sesuatu berlaku kepada penyemak imbas atau komputer anda. Tetapi sila pastikan yang anda melindunginya - sesiapa yang mendapat kunci ini boleh mencuri dompet anda. Mungkin paling selamat untuk anda menuliskannya di atas sekeping kertas, atau di mana sahaja anda menyimpan maklumat penting.</translation>
 <translation id="7354412786785889047">Anda boleh menyokong pencipta kandungan dengan menghantar tip. Ia’ merupakan cara untuk mengucapkan terima kasih kepada mereka kerana menghasilkan kandungan yang hebat. Pencipta yang disahkan akan dibayar tipnya pada minggu pertama setiap bulan kalendar.</translation>
-<translation id="3475063317678050010">Jika anda mahu, anda boleh menjadualkan tip bulanan untuk menyokong pencipta ini secara berterusan.</translation>
+<translation id="972846019534552366">Jika anda mahu, anda boleh menjadualkan tip bulanan untuk menyokong pencipta ini secara berterusan.</translation>
 <translation id="3074127054582480056">Perhatian</translation>
-<translation id="822513417008209372">Anda sedang menyokong</translation>
 <translation id="5010112177773747965">tanpa kebenaran anda.</translation>
 <translation id="7147673045905733351">Hari ini, Brave mengalu-alukan anda ke internet baru.</translation>
 <translation id="1350763070659630336">Satu-satunya tempat dimana masa anda dihargai, data peribadi anda disimpan sulit, dan anda dibayar untuk perhatian anda.</translation>
@@ -343,6 +351,7 @@
 <translation id="1738658589626889850">Simpan sebagai Fail</translation>
 <translation id="259138486959961679">Lihat semua {{numItems}} item</translation>
 <translation id="7857284676033058221">Lihat semua {{numSites}} laman</translation>
+<translation id="1549705559752367917">Hantar Tip saya</translation>
 <translation id="3536298624341433814">Hantar Tip saya</translation>
 <translation id="8428213095426709021">Tetapan</translation>
 <translation id="1792148354504719133">laman</translation>
@@ -385,7 +394,7 @@
 <translation id="6727483290601442544">Lihat Butiran</translation>
 <translation id="1988679729106502285">CATATAN:</translation>
 <translation id="5815103311506128988">Pencipta ini belum lagi mendaftar untuk menerima sumbangan daripada pengguna Brave. Penyemak imbas anda akan terus berusaha untuk menyumbang sehingga mereka mengesahkan, atau sehingga 90 hari telah berlalu.</translation>
-<translation id="603411408512957306">Pencipta disahkan ini belum mengesahkan (KYC) akaun mereka untuk menerima tip daripada dompet disahkan anda. Tip akan kekal di dalam dompet anda selagi mereka belum melengkapkan pengesahan.</translation>
+<translation id="7461596279975181413">Pencipta Disahkan Brave ini belum lagi mengkonfigurasikan akaun mereka untuk menerima sumbangan daripada pengguna Brave. Pelayar anda akan terus berusaha menyumbang sehingga disahkan, atau sehingga 90 hari berlalu.</translation>
 <translation id="4292832015778676417">diperoleh daripada iklan</translation>
 <translation id="3197752845651180812">Sumbangan menunggu</translation>
 <translation id="3164105678355419142">Tip berulang</translation>
@@ -394,12 +403,12 @@
 <translation id="4346944508027912677">Menunggu hingga</translation>
 <translation id="7410549756000115387">Tiada sumbangan menunggu…</translation>
 <translation id="1963227389609234879">Buang Semua</translation>
-<translation id="1170315781901539495">Laman Terkecuali</translation>
+<translation id="8706157865312453070">Laman Terkecuali</translation>
 <translation id="5119190679543565400">Pulihkan laman ini</translation>
 <translation id="9075700728717335924">Anda telah mengecualikan</translation>
 <translation id="4862817811647633830">laman daripada Autosumbang.</translation>
 <translation id="923467487918828349">Paparkan Semua</translation>
-<translation id="5471305206221894680">Laman yang Disokong</translation>
+<translation id="1397381065858030856">Laman yang Disokong</translation>
 <translation id="2306169361186864012">Ganjaran Iklan Brave!</translation>
 <translation id="3757873395477273033">Ganjaran anda yang diperoleh daripada Iklan Brave sedang diproses.</translation>
 <translation id="8101881066646819737">Pemberian Token Iklan Brave Anda</translation>

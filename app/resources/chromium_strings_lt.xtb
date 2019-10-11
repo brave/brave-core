@@ -51,6 +51,7 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 „Brave“ negali atkurti nustatymų.</translation>
 <translation id="1477146545787277177">Oi! „Brave“ užstrigo. Paleisti iš naujo dabar?</translation>
 <translation id="5785919770853225148">„Brave“ išsaugos šį slaptažodį „Brave Software“ paskyroje. Jums nereikia jo prisiminti.</translation>
+<translation id="8211837073776713955">„Brave“ praneš, jei slaptažodžiai bus pažeisti</translation>
 <translation id="113959764510199339">„Brave“ bando parodyti slaptažodžius.</translation>
 <translation id="7503098128120083822">„Brave“ nori eksportuoti jūsų slaptažodžius.</translation>
 <translation id="8285294305439559616">„Brave“ bando rodyti slaptažodžius. Įveskite „Windows“ slaptažodį, kad tai leistumėte.</translation>
@@ -159,13 +160,6 @@ Prisijungus bet kuriuo būdu, „Brave“ informacija, pvz., žymės, istorija i
 <translation id="3205074487970075628">„Brave“ naudoja jūsų fotoaparatą.</translation>
 <translation id="8142245354207161805">Atrodo, kad profilį naudoja kitas „Brave“ procesas (<ph name="PROCESS_ID"/>) kitame kompiuteryje (<ph name="HOST_NAME"/>). „Brave“ užrakino profilį, kad jis nebūtų sugadintas. Jei esate tikri, kad jokie kiti procesai nenaudoja šio profilio, galite atrakinti profilį ir iš naujo paleisti „Brave“.</translation>
 <translation id="239760341987199724">Nustatyti „Brave“ kaip numatytąją naršyklę</translation>
-<translation id="5344925500065984750">Jei norite nustatyti, kokias svetaines <ph name="NEW_PROFILE_NAME"/> gali peržiūrėti, konfigūruokite apribojimus ir nustatymus apsilankę adresu <ph name="BEGIN_LINK_1"/><ph name="DISPLAY_LINK"/><ph name="END_LINK_1"/>. Jei nepakeisite numatytųjų nustatymų, <ph name="NEW_PROFILE_NAME"/> galės naršyti visą žiniatinklį.
-
-Kad <ph name="NEW_PROFILE_NAME"/> negalėtų pasiekti jūsų paskyros, būtinai užrakinkite profilį, kai nenaudojate „Brave“. Norėdami tai atlikti, spustelėkite profilio pavadinimą viršutiniame dešiniajame naršyklės kampe ir pasirinkite „Išeiti ir užrakinti nuo vaikų“.
-<ph name="BEGIN_LINK_2"/>Sužinokite daugiau<ph name="END_LINK_2"/>
-
-Patikrinkite el. pašto adresu <ph name="ACCOUNT_EMAIL"/> išsiųstą laišką, kuriame rasite daugiau instrukcijų.</translation>
-<translation id="1820843143331379651">Prižiūrimų naudotojų profiliai nebebus pasiekiami nuo 70 vers. „Brave“.</translation>
 <translation id="669092380621816981">Šio asmens naršymo duomenys bus ištrinti iš šio įrenginio. Jei norite atkurti duomenis, prisijunkite prie „Brave“ kaip <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">„Brave“ dabar dar tobulesnė</translation>
 <translation id="7192666605334070839">Dabar galite lengviau naudoti „Brave“ naudodami „Brave Software“ paskyrą ir bendrinamus kompiuterius.</translation>
@@ -213,7 +207,7 @@ Patikrinkite el. pašto adresu <ph name="ACCOUNT_EMAIL"/> išsiųstą laišką, 
 <translation id="3598551856834560515">Atnaujinkite „Brave“, kad galėtumėte pradėti sinchronizuoti</translation>
 <translation id="4050175100176540509">Naujausios versijos programoje įdiegti svarbūs saugos patobulinimai ir pasiekiamos naujos funkcijos.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{„Brave“ bus paleista iš naujo po 1 sekundės}one{„Brave“ bus paleista iš naujo po # sekundės}few{„Brave“ bus paleista iš naujo po # sekundžių}many{„Brave“ bus paleista iš naujo po # sekundės}other{„Brave“ bus paleista iš naujo po # sekundžių}}</translation>
-<translation id="5509303873219371662">Dabar turėtumėte paleisti „Brave“ iš naujo</translation>
+<translation id="5646769069113654257">Dabar iš naujo paleiskite „Brave“</translation>
 <translation id="8668413672647811944">Ką tik pritaikytas specialus „Brave“ skirtas saugos naujinys. Paleiskite naršyklę iš naujo ir atkursime visus skirtukus.</translation>
 <translation id="763369711159699222">Padėkite tobulinti „Brave“</translation>
 <translation id="1156940037717341650">Galite padėti sustiprinti „Brave“ saugą ir palengvinti jos naudojimą automatiškai „Brave Software“ pateikdami išsamią informaciją apie galimas saugos problemas.</translation>
@@ -237,7 +231,6 @@ Patikrinkite el. pašto adresu <ph name="ACCOUNT_EMAIL"/> išsiųstą laišką, 
 <translation id="6141293433381251973">„Brave“ atnaujinama automatiškai, todėl visada naudojatės naujausia versija. Baigus atsisiųsti, „Brave“ bus paleista iš naujo ir galėsite pradėti ja naudotis.</translation>
 <translation id="7808415789955822133">„Brave“ OS sąlygos</translation>
 <translation id="7207456302801184289">Sveiki, tai „Brave“</translation>
-<translation id="5688839044908745927">„Brave“ beveik paruošta.</translation>
 <translation id="3507835409099344374">Eiti į „Brave“ pranešimų nustatymus</translation>
 <translation id="1026406809507858026">{0,plural, =0{Pasiekiamas „Brave“ naujinys}=1{Pasiekiamas „Brave“ naujinys}one{„Brave“ naujinys pasiekiamas # dieną}few{„Brave“ naujinys pasiekiamas # dienas}many{„Brave“ naujinys pasiekiamas # dienos}other{„Brave“ naujinys pasiekiamas # dienų}}</translation>
 <translation id="720532315408041257">Administratorius prašo paleisti iš naujo „Brave“, kad galėtų pritaikyti šį naujinį</translation>
@@ -256,6 +249,8 @@ Patikrinkite el. pašto adresu <ph name="ACCOUNT_EMAIL"/> išsiųstą laišką, 
 <translation id="1864557848095568223">Atnaujinama „Brave“</translation>
 <translation id="1786715389543715322">Atnaujinama „Brave“ (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="8208853227947884571">„Brave“ naujausios versijos</translation>
+<translation id="6756417787837743699">Jei reikia išsamios informacijos apie „Brave“ OS, žr. <ph name="LINK_BEGIN"/>
+      „Apie „Brave“ OS“<ph name="LINK_END"/></translation>
 <translation id="6686872257969654608">Apie „Brave“ OS</translation>
 <translation id="2280363356796735201">Gaukite pagalbos dėl „Brave“ OS</translation>
 <translation id="38898988211673781">Išeinant iš „Brave“ išvalyti slapukus ir svetainės duomenis</translation>
@@ -263,6 +258,10 @@ Patikrinkite el. pašto adresu <ph name="ACCOUNT_EMAIL"/> išsiųstą laišką, 
 <translation id="5468853758063275923">„Brave“ yra numatytoji naršyklė</translation>
 <translation id="1775322105159056176">„Brave“ nepavyko aptikti arba nustatyti numatytosios naršyklės</translation>
 <translation id="6915252145142862992">Tai yra antrinis „Brave“ diegimas, todėl ji negali būti nustatyta kaip numatytoji naršyklė.</translation>
+<translation id="6235873178214143377">Jei nustatymai šiame puslapyje nerodomi, jų ieškokite <ph name="LINK_BEGIN"/>
+      naršyklės „Brave“ nustatymuose<ph name="LINK_END"/></translation>
+<translation id="4459296183696059108">Jei nustatymai šiame puslapyje nerodomi, jų ieškokite <ph name="LINK_BEGIN"/>
+      naršyklės „Brave“ nustatymuose<ph name="LINK_END"/></translation>
 <translation id="7977435741986383568">„Brave“ gali naudoti žiniatinklio paslaugas naršymo funkcijoms pagerinti. Galite pasirinktinai išjungti šias paslaugas. <ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Kad ištaisytų rašybos klaidas, „Brave“ siunčia „Brave Software“ tekstą, kurį įvedate teksto laukuose</translation>
 <translation id="8586264863973514035">Norėdami pritaikyti pakeitimus, paleiskite „Brave“ iš naujo</translation>
@@ -276,8 +275,6 @@ Patikrinkite el. pašto adresu <ph name="ACCOUNT_EMAIL"/> išsiųstą laišką, 
 <translation id="7445061995866044926">Atsijungti nuo „Brave“?</translation>
 <translation id="7453070689008684791">„Brave“ turės prieigą prie Disko, kad galėtų teikti pasiūlymus adreso juostoje</translation>
 <translation id="3360368475735266712">Prisijunkite, kad galėtumėte sinchronizuoti ir suasmeninti „Brave“ skirtinguose įrenginiuose</translation>
-<translation id="9221712274065451529">Ši kalba vartojama „Brave“ OS NS pateikti</translation>
-<translation id="3518788198614984730">Pateikti „Brave“ OS šia kalba</translation>
 <translation id="5757460455745382269">Ši kalba vartojama „Brave“ NS pateikti</translation>
 <translation id="2335583906071111058">Pateikti „Brave“ šia kalba</translation>
 <translation id="8926637909431618259">Toliau vykdyti fonines programas, kai „Brave“ uždaroma</translation>
