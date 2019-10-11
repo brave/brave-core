@@ -183,6 +183,10 @@ int OnBeforeURLRequest_StaticRedirectWorkForGURL(
 
       // Brave's translation relay server
       URLPattern(URLPattern::SCHEME_HTTPS, kBraveTranslateServerPrefix),
+
+      // P3A
+      URLPattern(URLPattern::SCHEME_HTTPS,
+          "https://p3a.brave.com/*"),
   });
 
   // Check to make sure the URL being requested matches at least one of the
