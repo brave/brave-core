@@ -400,7 +400,6 @@ void RewardsTipDOMHandler::TweetTip(const base::ListValue *args) {
 }
 
 void RewardsTipDOMHandler::OnTwitterShareURL(const std::string& url) {
-
   if (url.empty()) {
     LOG(ERROR) << "\033[1;32m[5516] " << __func__ << " : url.empty()!\033[0m";
     return;
