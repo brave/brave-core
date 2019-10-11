@@ -122,7 +122,7 @@ void BraveTranslateBubbleView::DisableOfferTranslatePref() {
 
   Profile* profile =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
-  PrefService* const prefs = profile->GetPrefs();
+  PrefService* const prefs = profile->GetOriginalProfile()->GetPrefs();
   DCHECK(prefs);
 
   prefs->SetBoolean(prefs::kOfferTranslateEnabled, false);
