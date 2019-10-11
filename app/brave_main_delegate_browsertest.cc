@@ -12,6 +12,7 @@
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/omnibox/common/omnibox_features.h"
+#include "components/sync/driver/sync_driver_switches.h"
 #include "components/unified_consent/feature.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/content_features.h"
@@ -49,6 +50,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kSmsReceiver,
       &unified_consent::kUnifiedConsent,
       &features::kLookalikeUrlNavigationSuggestionsUI,
+      &switches::kSyncUSSBookmarks,
   };
 
   for (const auto* feature : disabled_features)
