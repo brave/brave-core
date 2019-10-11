@@ -19,7 +19,7 @@ class WalletNotificationView: UIView {
   
   override init(frame: CGRect) {
     super.init(frame: frame)
-    backgroundColor = .white
+    backgroundColor = .clear
     
     closeButton.do {
       $0.setImage(UIImage(frameworkResourceNamed: "close-icon").alwaysTemplate, for: .normal)
