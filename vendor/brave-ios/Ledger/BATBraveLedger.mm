@@ -126,7 +126,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
     ledgerClient = new NativeLedgerClient(self);
     ledger = ledger::Ledger::CreateInstance(ledgerClient);
     ledger->Initialize(^(ledger::Result result){
-      for (BATBraveLedgerObserver *observer in self.observers) {
+      for (BATBraveLedgerObserver *observer in [self.observers copy]) {
         if (observer.walletInitalized) {
           observer.walletInitalized(static_cast<BATResult>(result));
         }
@@ -232,17 +232,17 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
     [strongSelf startNotificationTimers];
     strongSelf.initializingWallet = NO;
     
-    if (completion) {
-      dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if (completion) {
         completion(error);
-      });
-    }
-    
-    for (BATBraveLedgerObserver *observer in strongSelf.observers) {
-      if (observer.walletInitalized) {
-        observer.walletInitalized(static_cast<BATResult>(result));
       }
-    }
+      
+      for (BATBraveLedgerObserver *observer in [strongSelf.observers copy]) {
+        if (observer.walletInitalized) {
+          observer.walletInitalized(static_cast<BATResult>(result));
+        }
+      }
+    });
   });
 }
 
@@ -279,7 +279,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
       strongSelf.balance = [[BATBalance alloc] initWithBalancePtr:std::move(balance)];
     }
     dispatch_async(dispatch_get_main_queue(), ^{
-      for (BATBraveLedgerObserver *observer in self.observers) {
+      for (BATBraveLedgerObserver *observer in [self.observers copy]) {
         if (observer.fetchedBalance) {
           observer.fetchedBalance();
         }
@@ -401,7 +401,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   const auto stamp = ledger->GetReconcileStamp();
   [BATLedgerDatabase deleteActivityInfoWithPublisherID:bridgedKey reconcileStamp:stamp completion:^(BOOL success) {
     if (success) {
-      for (BATBraveLedgerObserver *observer in self.observers) {
+      for (BATBraveLedgerObserver *observer in [self.observers copy]) {
         if (observer.activityRemoved) {
           observer.activityRemoved([NSString stringWithUTF8String:publisher_key.c_str()]);
         }
@@ -417,7 +417,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
     if (result != ledger::Result::LEDGER_OK) {
       return;
     }
-    for (BATBraveLedgerObserver *observer in self.observers) {
+    for (BATBraveLedgerObserver *observer in [self.observers copy]) {
       if (observer.excludedSitesChanged) {
         observer.excludedSitesChanged(publisherId,
                                       state);
@@ -433,7 +433,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
       return;
     }
 
-    for (BATBraveLedgerObserver *observer in self.observers) {
+    for (BATBraveLedgerObserver *observer in [self.observers copy]) {
       if (observer.excludedSitesChanged) {
         observer.excludedSitesChanged(@"-1",
                                       static_cast<BATPublisherExclude>(ledger::PublisherExclude::ALL));
@@ -497,7 +497,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   ledger->SaveRecurringTip(std::move(info), ^(ledger::Result result){
     const auto success = (result == ledger::Result::LEDGER_OK);
     if (success) {
-      for (BATBraveLedgerObserver *observer in self.observers) {
+      for (BATBraveLedgerObserver *observer in [self.observers copy]) {
         if (observer.recurringTipAdded) {
           observer.recurringTipAdded(publisherId);
         }
@@ -511,7 +511,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 {
   ledger->RemoveRecurringTip(std::string(publisherId.UTF8String), ^(ledger::Result result){
     if (result == ledger::Result::LEDGER_OK) {
-      for (BATBraveLedgerObserver *observer in self.observers) {
+      for (BATBraveLedgerObserver *observer in [self.observers copy]) {
         if (observer.recurringTipRemoved) {
           observer.recurringTipRemoved(publisherId);
         }
@@ -581,7 +581,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
                    notificationID:[self notificationIDForGrant:std::move(grant)]
                          onlyOnce:YES];
     }
-    for (BATBraveLedgerObserver *observer in self.observers) {
+    for (BATBraveLedgerObserver *observer in [self.observers copy]) {
       if (observer.grantsAdded) {
         observer.grantsAdded(self.pendingGrants);
       }
@@ -628,7 +628,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   }
 
   [self clearNotificationWithID:[self notificationIDForGrant:std::move(grant)]];
-  for (BATBraveLedgerObserver *observer in self.observers) {
+  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
     if (observer.balanceReportUpdated) {
       observer.balanceReportUpdated();
     }
@@ -702,7 +702,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
                  notificationID:[NSString stringWithFormat:@"contribution_%@", viewingId]];
   }
 
-  for (BATBraveLedgerObserver *observer in self.observers) {
+  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
     if (observer.balanceReportUpdated) {
       observer.balanceReportUpdated();
     }
@@ -863,7 +863,7 @@ BATLedgerReadonlyBridge(BOOL, isEnabled, GetRewardsMainEnabled)
 {
   ledger->SetRewardsMainEnabled(enabled);
 
-  for (BATBraveLedgerObserver *observer in self.observers) {
+  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
     if (observer.rewardsEnabledStateUpdated) {
       observer.rewardsEnabledStateUpdated(enabled);
     }
@@ -1089,7 +1089,7 @@ BATLedgerBridge(BOOL,
 
 - (void)confirmationsTransactionHistoryDidChange
 {
-  for (BATBraveLedgerObserver *observer in self.observers) {
+  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
     if (observer.confirmationsTransactionHistoryDidChange) {
       observer.confirmationsTransactionHistoryDidChange();
     }
@@ -1118,7 +1118,7 @@ BATLedgerBridge(BOOL,
   [self.mNotifications removeObject:notification];
   [self writeNotificationsToDisk];
   
-  for (BATBraveLedgerObserver *observer in self.observers) {
+  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
     if (observer.notificationsRemoved) {
       observer.notificationsRemoved(@[notification]);
     }
@@ -1131,7 +1131,7 @@ BATLedgerBridge(BOOL,
   [self.mNotifications removeAllObjects];
   [self writeNotificationsToDisk];
   
-  for (BATBraveLedgerObserver *observer in self.observers) {
+  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
     if (observer.notificationsRemoved) {
       observer.notificationsRemoved(notifications);
     }
@@ -1270,7 +1270,7 @@ BATLedgerBridge(BOOL,
   [self.mNotifications addObject:notification];
 
   // Post to observers
-  for (BATBraveLedgerObserver *observer in self.observers) {
+  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
     if (observer.notificationAdded) {
       observer.notificationAdded(notification);
     }
@@ -1632,7 +1632,7 @@ BATLedgerBridge(BOOL,
                                publisherKey:[NSString stringWithUTF8String:publisher_key.c_str()]
                                        type:(BATRewardsType)type
                                  completion:^(BOOL success) {
-                                   for (BATBraveLedgerObserver *observer in self.observers) {
+                                   for (BATBraveLedgerObserver *observer in [self.observers copy]) {
                                      if (observer.contributionAdded) {
                                        observer.contributionAdded(success, static_cast<BATRewardsType>(type));
                                      }
@@ -1656,7 +1656,7 @@ BATLedgerBridge(BOOL,
     if (!success) {
       return;
     }
-    for (BATBraveLedgerObserver *observer in self.observers) {
+    for (BATBraveLedgerObserver *observer in [self.observers copy]) {
       if (observer.publisherListNormalized) {
         observer.publisherListNormalized(list);
       }
@@ -1674,7 +1674,7 @@ BATLedgerBridge(BOOL,
       callback(ledger::Result::LEDGER_ERROR);
       return;
     }
-    for (BATBraveLedgerObserver *observer in self.observers) {
+    for (BATBraveLedgerObserver *observer in [self.observers copy]) {
       if (observer.pendingContributionAdded) {
         for (BATPendingContribution *pc in list_) {
           observer.pendingContributionAdded(pc.publisherKey);
@@ -1716,7 +1716,7 @@ BATLedgerBridge(BOOL,
     return;
   }
   auto info = [[BATPublisherInfo alloc] initWithPublisherInfo:*publisher_info];
-  for (BATBraveLedgerObserver *observer in self.observers) {
+  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
     if (observer.fetchedPanelPublisher) {
       observer.fetchedPanelPublisher(info, windowId);
     }
@@ -1734,7 +1734,7 @@ BATLedgerBridge(BOOL,
   [BATLedgerDatabase removeAllPendingContributions:^(BOOL success) {
     callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
     if (success) {
-      for (BATBraveLedgerObserver *observer in self.observers) {
+      for (BATBraveLedgerObserver *observer in [self.observers copy]) {
         if (observer.pendingContributionsRemoved) {
           observer.pendingContributionsRemoved(keys);
         }
@@ -1753,7 +1753,7 @@ BATLedgerBridge(BOOL,
                                                   completion:^(BOOL success) {
                                                     callback(success ? ledger::Result::LEDGER_OK :
                                                              ledger::Result::LEDGER_ERROR);
-                                                    for (BATBraveLedgerObserver *observer in self.observers) {
+                                                    for (BATBraveLedgerObserver *observer in [self.observers copy]) {
                                                       if (observer.pendingContributionsRemoved) {
                                                         observer.pendingContributionsRemoved(@[publisherID]);
                                                       }
@@ -1771,7 +1771,7 @@ BATLedgerBridge(BOOL,
       break;
     case ledger::Result::PENDING_PUBLISHER_REMOVED: {
       const auto publisherID = [NSString stringWithUTF8String:publisher_key.c_str()];
-      for (BATBraveLedgerObserver *observer in self.observers) {
+      for (BATBraveLedgerObserver *observer in [self.observers copy]) {
         if (observer.pendingContributionsRemoved) {
           observer.pendingContributionsRemoved(@[publisherID]);
         }
@@ -1833,7 +1833,7 @@ BATLedgerBridge(BOOL,
     self.loadingPublisherList = NO;
     callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
     
-    for (BATBraveLedgerObserver *observer in self.observers) {
+    for (BATBraveLedgerObserver *observer in [self.observers copy]) {
       if (observer.publisherListUpdated) {
         observer.publisherListUpdated();
       }
