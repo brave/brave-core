@@ -56,6 +56,9 @@ NS_SWIFT_NAME(BraveLedger)
 
 #pragma mark - Wallet
 
+/// Whether or not the wallet is currently in the process of being created
+@property (nonatomic, readonly, getter=isInitializingWallet) BOOL initializingWallet;
+
 /// Whether or not the wallet has been created
 @property (nonatomic, readonly, getter=isWalletCreated) BOOL walletCreated;
 

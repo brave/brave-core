@@ -81,6 +81,59 @@ typedef NS_ENUM(NSInteger, BATRewardsType) {
 } NS_SWIFT_NAME(RewardsType);
 
 
+typedef NS_ENUM(NSInteger, BATReportType) {
+  BATReportTypeGrant = 0,
+  BATReportTypeAutoContribution = 1,
+  BATReportTypeDeposit = 2,
+  BATReportTypeAds = 3,
+  BATReportTypeTipRecurring = 4,
+  BATReportTypeTip = 5,
+} NS_SWIFT_NAME(ReportType);
+
+
+typedef NS_ENUM(NSInteger, BATUrlMethod) {
+  BATUrlMethodGet = 0,
+  BATUrlMethodPut = 1,
+  BATUrlMethodPost = 2,
+  BATUrlMethodPatch = 3,
+} NS_SWIFT_NAME(UrlMethod);
+
+
+typedef NS_ENUM(NSInteger, BATActivityMonth) {
+  BATActivityMonthAny = -1,
+  BATActivityMonthJanuary = 1,
+  BATActivityMonthFebruary = 2,
+  BATActivityMonthMarch = 3,
+  BATActivityMonthApril = 4,
+  BATActivityMonthMay = 5,
+  BATActivityMonthJune = 6,
+  BATActivityMonthJuly = 7,
+  BATActivityMonthAugust = 8,
+  BATActivityMonthSeptember = 9,
+  BATActivityMonthOctober = 10,
+  BATActivityMonthNovember = 11,
+  BATActivityMonthDecember = 12,
+} NS_SWIFT_NAME(ActivityMonth);
+
+
+typedef NS_ENUM(NSInteger, BATPublisherExclude) {
+  BATPublisherExcludeAll = -1,
+  BATPublisherExcludeDefault = 0,
+  BATPublisherExcludeExcluded = 1,
+  BATPublisherExcludeIncluded = 2,
+} NS_SWIFT_NAME(PublisherExclude);
+
+
+typedef NS_ENUM(NSInteger, BATWalletStatus) {
+  BATWalletStatusNotConnected = 0,
+  BATWalletStatusConnected = 1,
+  BATWalletStatusVerified = 2,
+  BATWalletStatusDisconnectedNotVerified = 3,
+  BATWalletStatusDisconnectedVerified = 4,
+  BATWalletStatusPending = 5,
+} NS_SWIFT_NAME(WalletStatus);
+
+
 
 @class BATContributionInfo, BATPublisherInfo, BATPublisherBanner, BATPendingContribution, BATPendingContributionInfo, BATVisitData, BATGrant, BATWalletProperties, BATBalance, BATAutoContributeProps, BATMediaEventInfo, BATExternalWallet, BATBalanceReportInfo, BATActivityInfoFilterOrderPair, BATActivityInfoFilter, BATReconcileInfo, BATRewardsInternalsInfo, BATServerPublisherInfo, BATTransferFee;
 
@@ -101,7 +154,7 @@ NS_SWIFT_NAME(PublisherInfo)
 @property (nonatomic) uint32_t visits;
 @property (nonatomic) uint32_t percent;
 @property (nonatomic) double weight;
-@property (nonatomic) int32_t excluded;
+@property (nonatomic) BATPublisherExclude excluded;
 @property (nonatomic) int32_t category;
 @property (nonatomic) uint64_t reconcileStamp;
 @property (nonatomic) BATPublisherStatus status;
@@ -207,7 +260,7 @@ NS_SWIFT_NAME(ExternalWallet)
 @interface BATExternalWallet : NSObject <NSCopying>
 @property (nonatomic, copy) NSString * token;
 @property (nonatomic, copy) NSString * address;
-@property (nonatomic) uint32_t status;
+@property (nonatomic) BATWalletStatus status;
 @property (nonatomic, copy) NSString * verifyUrl;
 @property (nonatomic, copy) NSString * addUrl;
 @property (nonatomic, copy) NSString * withdrawUrl;

@@ -269,7 +269,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
       publisherView.checkAgainButton.isHidden = publisher.status != .notVerified
       
       self.publisherSummaryView.setAutoContribute(enabled:
-        publisher.excluded != PublisherExclude.excluded.rawValue)
+        publisher.excluded != PublisherExclude.excluded)
       
       attentionView.valueLabel.text = "\(publisher.percent)%"
       
