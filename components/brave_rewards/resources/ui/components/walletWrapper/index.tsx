@@ -285,6 +285,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     let buttonAction = onClose
 
     switch (type) {
+      case 'ads':
       case 'grant':
         buttonText = getLocale('claim')
         buttonAction = this.onNotificationClick
