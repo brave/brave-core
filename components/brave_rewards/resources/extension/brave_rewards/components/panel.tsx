@@ -280,6 +280,7 @@ export class Panel extends React.Component<Props, State> {
     let clickEvent
 
     switch (type) {
+      case 'ads':
       case 'grant':
         clickEvent = this.onFetchCaptcha
         break
