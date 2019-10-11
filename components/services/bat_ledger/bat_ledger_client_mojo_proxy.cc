@@ -969,8 +969,8 @@ void BatLedgerClientMojoProxy::DeleteContributionQueue(
 }
 
 void OnGetFirstContributionQueue(
-  const ledger::GetFirstContributionQueueCallback& callback,
-  ledger::ContributionQueuePtr info) {
+    const ledger::GetFirstContributionQueueCallback& callback,
+    ledger::ContributionQueuePtr info) {
   callback(std::move(info));
 }
 

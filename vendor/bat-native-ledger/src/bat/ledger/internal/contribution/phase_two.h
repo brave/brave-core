@@ -47,16 +47,17 @@ class PhaseTwo {
 
   bool GetStatisticalVotingWinner(
       double dart,
-      const braveledger_bat_helper::PublisherList& list,
+      const braveledger_bat_helper::Directions& list,
       braveledger_bat_helper::WINNERS_ST* winner);
 
   braveledger_bat_helper::Winners GetStatisticalVotingWinners(
       uint32_t total_votes,
-      const braveledger_bat_helper::PublisherList& list);
+      const braveledger_bat_helper::Directions& list);
 
-  void GetContributeWinners(const unsigned int ballots,
-                            const std::string& viewing_id,
-                            const braveledger_bat_helper::PublisherList& list);
+  void GetContributeWinners(
+      const unsigned int ballots,
+      const std::string& viewing_id,
+      const braveledger_bat_helper::Directions& list);
 
   void GetTipsWinners(const unsigned int ballots,
                       const std::string& viewing_id);

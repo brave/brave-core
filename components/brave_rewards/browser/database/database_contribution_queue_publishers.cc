@@ -87,8 +87,8 @@ bool DatabaseContributionQueuePublishers::InsertOrUpdate(
       db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
 
     statement.BindInt64(0, info->id);
-    statement.BindString(0, publisher->publisher_key);
-    statement.BindDouble(0, publisher->amount_percent);
+    statement.BindString(1, publisher->publisher_key);
+    statement.BindDouble(2, publisher->amount_percent);
     statement.Run();
   }
 
@@ -113,7 +113,6 @@ DatabaseContributionQueuePublishers::GetRecords(
     ledger::ContributionQueuePublisherPtr publisher =
         ledger::ContributionQueuePublisher::New();
 
-    publisher->contribution_queue_id = queue_id;
     publisher->publisher_key = statement.ColumnString(0);
     publisher->amount_percent = statement.ColumnDouble(1);
     list.push_back(std::move(publisher));

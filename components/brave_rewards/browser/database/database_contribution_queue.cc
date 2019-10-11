@@ -86,33 +86,32 @@ bool DatabaseContributionQueue::InsertOrUpdate(
   if (!transaction.Begin()) {
     return false;
   }
-
-  // we need to auto increment if new record
-  std::string id_col = GetIdColumnName();
-  std::string id_value = "?,";
-  if (info->id == 0) {
-    id_col = "";
-    id_value = "";
-  }
-
   const std::string query = base::StringPrintf(
     "INSERT OR REPLACE INTO %s (%s, type, amount, partial) "
-    "VALUES (%s ?, ?, ?)",
+    "VALUES (?, ?, ?, ?)",
     table_name_,
-    id_col.c_str(),
-    id_value.c_str());
+    GetIdColumnName().c_str());
 
   sql::Statement statement(
       db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
 
   if (info->id != 0) {
     statement.BindInt64(0, info->id);
+  } else {
+    statement.BindNull(0);
   }
 
-  statement.BindInt(0, static_cast<int>(info->type));
-  statement.BindDouble(0, info->amount);
-  statement.BindInt(0, static_cast<int>(info->partial));
-  statement.Run();
+  statement.BindInt(1, static_cast<int>(info->type));
+  statement.BindDouble(2, info->amount);
+  statement.BindBool(3, info->partial);
+
+  if (!statement.Run()) {
+    return false;
+  }
+
+  if (info->id == 0) {
+    info->id = db->GetLastInsertRowId();
+  }
 
   if (!publishers_->InsertOrUpdate(db, info->Clone())) {
     transaction.Rollback();
@@ -138,7 +137,7 @@ ledger::ContributionQueuePtr DatabaseContributionQueue::GetFirstRecord(
 
   auto info = ledger::ContributionQueue::New();
   info->id = statment.ColumnInt64(0);
-  info->type = statment.ColumnInt(1);
+  info->type = static_cast<ledger::RewardsType>(statment.ColumnInt(1));
   info->amount = statment.ColumnDouble(2);
   info->partial = static_cast<bool>(statment.ColumnInt(3));
   info->publishers = publishers_->GetRecords(db, info->id);

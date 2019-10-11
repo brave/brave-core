@@ -71,7 +71,7 @@ using GetServerPublisherInfoCallback =
     std::function<void(ledger::ServerPublisherInfoPtr)>;
 using ResultCallback = std::function<void(const Result)>;
 using GetFirstContributionQueueCallback =
-    std::function<void(const ContributionQueuePtr)>;
+    std::function<void(ContributionQueuePtr)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:

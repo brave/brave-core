@@ -978,7 +978,7 @@ void LedgerClientMojoProxy::RemoveTransferFee(
 // static
 void LedgerClientMojoProxy::OnInsertOrUpdateContributionQueue(
     CallbackHolder<InsertOrUpdateContributionQueueCallback>* holder,
-    ledger::Result result) {
+    const ledger::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(result);
@@ -1002,7 +1002,7 @@ void LedgerClientMojoProxy::InsertOrUpdateContributionQueue(
 // static
 void LedgerClientMojoProxy::OnDeleteContributionQueue(
     CallbackHolder<DeleteContributionQueueCallback>* holder,
-    ledger::Result result) {
+    const ledger::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
     std::move(holder->get()).Run(result);

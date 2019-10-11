@@ -258,6 +258,12 @@ class RewardsServiceImpl : public RewardsService,
              int amount,
              bool recurring) override;
 
+  void OnTip(
+      const std::string& publisher_key,
+      const int amount,
+      const bool recurring,
+      std::unique_ptr<brave_rewards::ContentSite> site) override;
+
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const override;
 
   void FetchBalance(FetchBalanceCallback callback) override;
@@ -377,8 +383,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnWalletProperties(
       const ledger::Result result,
       ledger::WalletPropertiesPtr properties) override;
-  void OnTip(const std::string& publisher_key, int amount, bool recurring,
-      std::unique_ptr<brave_rewards::ContentSite> site) override;
 
   void DeleteActivityInfo(
     const std::string& publisher_key,

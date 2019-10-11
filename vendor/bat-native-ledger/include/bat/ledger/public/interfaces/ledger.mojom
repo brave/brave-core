@@ -302,7 +302,7 @@ enum WalletStatus {
 
 struct ContributionQueue {
   uint64 id;
-  uint32 type;
+  RewardsType type;
   double amount;
   bool partial;
 
@@ -310,7 +310,6 @@ struct ContributionQueue {
 };
 
 struct ContributionQueuePublisher {
-  uint64 contribution_queue_id;
   string publisher_key;
   double amount_percent;
 };

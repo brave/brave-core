@@ -402,11 +402,11 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   static void OnInsertOrUpdateContributionQueue(
     CallbackHolder<InsertOrUpdateContributionQueueCallback>* holder,
-    ledger::Result result);
+    const ledger::Result result);
 
   static void OnDeleteContributionQueue(
     CallbackHolder<DeleteContributionQueueCallback>* holder,
-    ledger::Result result);
+    const ledger::Result result);
 
   static void OnGetFirstContributionQueue(
     CallbackHolder<GetFirstContributionQueueCallback>* holder,

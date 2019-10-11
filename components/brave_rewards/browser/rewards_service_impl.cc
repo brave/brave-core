@@ -2960,15 +2960,15 @@ void RewardsServiceImpl::OnTip(
 
 void RewardsServiceImpl::OnTip(
     const std::string& publisher_key,
-    int amount,
-    bool recurring,
+    const int amount,
+    const bool recurring,
     std::unique_ptr<brave_rewards::ContentSite> site) {
 
   if (!site) {
     return;
   }
 
-  ledger::PublisherInfoPtr info;
+  auto info = ledger::PublisherInfo::New();
   info->id = publisher_key;
   info->status = static_cast<ledger::PublisherStatus>(site->status);
   info->excluded = ledger::PublisherExclude::DEFAULT;

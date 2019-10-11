@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <utility>
+
 #include "bat/ledger/internal/contribution/unverified.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
@@ -98,17 +100,19 @@ void Unverified::OnContributeUnverifiedPublishers(
 
   // Trigger contribution
   if (balance >= current->amount) {
-    auto direction = braveledger_bat_helper::RECONCILE_DIRECTION(
-        current->publisher_key,
-        current->amount,
-        "BAT");
+    ledger::ContributionQueuePublisherList queue_list;
+    auto publisher = ledger::ContributionQueuePublisher::New();
+    publisher->publisher_key = current->publisher_key;
+    publisher->amount_percent = 100.0;
+    queue_list.push_back(std::move(publisher));
 
-    auto direction_list = std::vector
-        <braveledger_bat_helper::RECONCILE_DIRECTION> { direction };
-    contribution_->InitReconcile(
-        ledger::RewardsType::ONE_TIME_TIP,
-        {},
-        direction_list);
+    auto queue = ledger::ContributionQueue::New();
+    queue->type = ledger::RewardsType::ONE_TIME_TIP;
+    queue->amount = current->amount;
+    queue->partial = false;
+    queue->publishers = std::move(queue_list);
+
+    contribution_->InitReconcile(std::move(queue));
 
     ledger_->RemovePendingContribution(
         current->publisher_key,

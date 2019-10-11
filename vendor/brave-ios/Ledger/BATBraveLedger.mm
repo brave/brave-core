@@ -1863,7 +1863,7 @@ BATLedgerBridge(BOOL,
   //FIXME::Add implementation
 }
 
-- (void)deleteContributionQueue:(uint64_t) id callback:(ledger::ResultCallback)callback
+- (void)deleteContributionQueue:(const uint64_t) id callback:(ledger::ResultCallback)callback
 {
   //FIXME::Add implementation
 }
