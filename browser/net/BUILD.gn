@@ -3,6 +3,16 @@ import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
+declare_args() {
+  brave_services_key = ""
+}
+
+defines = []
+if (brave_services_key != "") {
+  # Refer to the keyed API spec for more details about the Brave Services Key
+  defines += [ "BRAVE_SERVICES_KEY=\"$brave_services_key\"" ]
+}
+
 source_set("net") {
   configs += [ "//brave/build/geolocation" ]
   sources = [
