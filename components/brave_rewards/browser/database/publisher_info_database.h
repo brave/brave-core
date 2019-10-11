@@ -18,8 +18,7 @@
 #include "base/macros.h"
 #include "base/memory/memory_pressure_listener.h"
 #include "base/sequence_checker.h"
-#include "bat/ledger/publisher_info.h"
-#include "bat/ledger/pending_contribution.h"
+#include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/contribution_info.h"
 #include "brave/components/brave_rewards/browser/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/browser/pending_contribution.h"
@@ -47,7 +46,7 @@ class PublisherInfoDatabase {
   bool InsertContributionInfo(const brave_rewards::ContributionInfo& info);
 
   void GetOneTimeTips(ledger::PublisherInfoList* list,
-                      ledger::ACTIVITY_MONTH month,
+                      ledger::ActivityMonth month,
                       int year);
 
   bool InsertOrUpdatePublisherInfo(const ledger::PublisherInfo& info);

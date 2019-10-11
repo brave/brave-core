@@ -43,7 +43,7 @@ void PhaseOne::Start(const std::string& viewing_id) {
       std::vector<std::string>(),
       "",
       "",
-      ledger::URL_METHOD::GET,
+      ledger::UrlMethod::GET,
       callback);
 }
 
@@ -111,7 +111,7 @@ void PhaseOne::CurrentReconcile(const std::string& viewing_id) {
       std::vector<std::string>(),
       "",
       "",
-      ledger::URL_METHOD::GET,
+      ledger::UrlMethod::GET,
       callback);
 }
 
@@ -241,7 +241,7 @@ void PhaseOne::ReconcilePayload(const std::string& viewing_id) {
       wallet_header,
       payload_stringify,
       "application/json; charset=utf-8",
-      ledger::URL_METHOD::PUT,
+      ledger::UrlMethod::PUT,
       callback);
 }
 
@@ -305,7 +305,7 @@ void PhaseOne::RegisterViewing(const std::string& viewing_id) {
       std::vector<std::string>(),
       "",
       "",
-      ledger::URL_METHOD::GET,
+      ledger::UrlMethod::GET,
       callback);
 }
 
@@ -411,7 +411,7 @@ void PhaseOne::ViewingCredentials(const std::string& viewing_id) {
       std::vector<std::string>(),
       proof_stringified,
       "application/json; charset=utf-8",
-      ledger::URL_METHOD::POST,
+      ledger::UrlMethod::POST,
       callback);
 }
 

@@ -7,13 +7,12 @@
 
 #include "brave/components/brave_rewards/browser/database/publisher_info_database.h"
 
+#include "bat/ledger/global_constants.h"
 #include "base/bind.h"
 #include "base/command_line.h"
 #include "base/files/file_util.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/string_util.h"
-#include "bat/ledger/media_event_info.h"
-#include "bat/ledger/pending_contribution.h"
 #include "build/build_config.h"
 #include "sql/meta_table.h"
 #include "sql/statement.h"
@@ -145,7 +144,7 @@ bool PublisherInfoDatabase::InsertContributionInfo(
 }
 
 void PublisherInfoDatabase::GetOneTimeTips(ledger::PublisherInfoList* list,
-                                           ledger::ACTIVITY_MONTH month,
+                                           ledger::ActivityMonth month,
                                            int year) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -165,7 +164,7 @@ void PublisherInfoDatabase::GetOneTimeTips(ledger::PublisherInfoList* list,
       "ON spi.publisher_key = pi.publisher_id "
       "WHERE ci.month = ? AND ci.year = ? AND ci.type = ?"));
 
-  info_sql.BindInt(0, month);
+  info_sql.BindInt(0, static_cast<int>(month));
   info_sql.BindInt(1, year);
   info_sql.BindInt(2, static_cast<int>(ledger::RewardsType::ONE_TIME_TIP));
 
@@ -301,7 +300,7 @@ PublisherInfoDatabase::GetPublisherInfo(const std::string& publisher_key) {
     info->provider = info_sql.ColumnString(4);
     info->status =
         static_cast<ledger::mojom::PublisherStatus>(info_sql.ColumnInt64(5));
-    info->excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(
+    info->excluded = static_cast<ledger::PublisherExclude>(
         info_sql.ColumnInt(6));
 
     return info;
@@ -347,7 +346,7 @@ PublisherInfoDatabase::GetPanelPublisher(
     info->provider = info_sql.ColumnString(4);
     info->status =
         static_cast<ledger::mojom::PublisherStatus>(info_sql.ColumnInt64(5));
-    info->excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(
+    info->excluded = static_cast<ledger::PublisherExclude>(
         info_sql.ColumnInt(6));
     info->percent = info_sql.ColumnInt(7);
 
@@ -371,9 +370,9 @@ bool PublisherInfoDatabase::RestorePublishers() {
       "UPDATE publisher_info SET excluded=? WHERE excluded=?"));
 
   restore_q.BindInt(0, static_cast<int>(
-      ledger::PUBLISHER_EXCLUDE::DEFAULT));
+      ledger::PublisherExclude::DEFAULT));
   restore_q.BindInt(1, static_cast<int>(
-      ledger::PUBLISHER_EXCLUDE::EXCLUDED));
+      ledger::PublisherExclude::EXCLUDED));
 
   return restore_q.Run();
 }
@@ -585,7 +584,8 @@ bool PublisherInfoDatabase::GetActivityList(
 
   if (filter->excluded ==
       ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
-    info_sql.BindInt(column++, ledger::PUBLISHER_EXCLUDE::EXCLUDED);
+    info_sql.BindInt(column++,
+        static_cast<int>(ledger::PublisherExclude::EXCLUDED));
   }
 
   if (filter->percent > 0) {
@@ -605,7 +605,7 @@ bool PublisherInfoDatabase::GetActivityList(
     info->weight = info_sql.ColumnDouble(4);
     info->status =
         static_cast<ledger::mojom::PublisherStatus>(info_sql.ColumnInt64(5));
-    info->excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(
+    info->excluded = static_cast<ledger::PublisherExclude>(
         info_sql.ColumnInt(6));
     info->name = info_sql.ColumnString(7);
     info->url = info_sql.ColumnString(8);
@@ -725,7 +725,7 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
     info->provider = info_sql.ColumnString(4);
     info->status =
         static_cast<ledger::mojom::PublisherStatus>(info_sql.ColumnInt64(5));
-    info->excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(
+    info->excluded = static_cast<ledger::PublisherExclude>(
         info_sql.ColumnInt(6));
 
     return info;

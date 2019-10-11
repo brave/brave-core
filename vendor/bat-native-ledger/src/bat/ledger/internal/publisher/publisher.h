@@ -15,7 +15,6 @@
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
-#include "bat/ledger/publisher_info.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -62,19 +61,19 @@ class Publisher : public ledger::LedgerCallbackHandler {
 
   void SetPublisherExclude(
       const std::string& publisher_id,
-      const ledger::PUBLISHER_EXCLUDE& exclude,
+      const ledger::PublisherExclude& exclude,
       ledger::SetPublisherExcludeCallback callback);
 
   void setPublisherAllowNonVerified(const bool& allow);
 
   void setPublisherAllowVideos(const bool& allow);
 
-  void setBalanceReport(ledger::ACTIVITY_MONTH month,
+  void setBalanceReport(ledger::ActivityMonth month,
                         int year,
                         const ledger::BalanceReportInfo& report_info);
 
   void GetBalanceReport(
-      ledger::ACTIVITY_MONTH month,
+      ledger::ActivityMonth month,
       int year,
       ledger::GetBalanceReportCallback callback);
 
@@ -92,7 +91,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
       ledger::Result result,
       ledger::PublisherInfoPtr);
 
-  std::string GetBalanceReportName(ledger::ACTIVITY_MONTH month, int year);
+  std::string GetBalanceReportName(ledger::ActivityMonth month, int year);
 
   void ParsePublisherList(
       const std::string& data,
@@ -106,7 +105,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
   void GetPublisherBanner(const std::string& publisher_key,
                           ledger::PublisherBannerCallback callback);
 
-  void setBalanceReportItem(ledger::ACTIVITY_MONTH month,
+  void setBalanceReportItem(ledger::ActivityMonth month,
                             int year,
                             ledger::ReportType type,
                             const std::string& probi);
@@ -156,7 +155,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
   bool IsExcluded(
       const std::string& publisher_id,
       const bool server_exclude,
-      const ledger::PUBLISHER_EXCLUDE& excluded);
+      const ledger::PublisherExclude& excluded);
 
   void SaveVisitInternal(
       const ledger::PublisherStatus,
@@ -178,7 +177,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
     const ledger::PublisherInfoCallback callback);
 
   bool GetBalanceReportInternal(
-      ledger::ACTIVITY_MONTH month,
+      ledger::ActivityMonth month,
       int year,
       ledger::BalanceReportInfo* report_info);
 
@@ -193,7 +192,7 @@ class Publisher : public ledger::LedgerCallbackHandler {
                                 uint64_t window_id);
 
   void OnSetPublisherExclude(
-    ledger::PUBLISHER_EXCLUDE exclude,
+    ledger::PublisherExclude exclude,
     ledger::Result result,
     ledger::PublisherInfoPtr publisher_info,
     ledger::SetPublisherExcludeCallback callback);

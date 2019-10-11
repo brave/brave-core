@@ -9,6 +9,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "crypto/random.h"
 

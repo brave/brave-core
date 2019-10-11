@@ -61,9 +61,9 @@ const std::map<std::string, uint64_t> kUInt64Options = {
 };
 /// ---
 
-NS_INLINE ledger::ACTIVITY_MONTH BATGetPublisherMonth(NSDate *date) {
+NS_INLINE ledger::ActivityMonth BATGetPublisherMonth(NSDate *date) {
   const auto month = [[NSCalendar currentCalendar] component:NSCalendarUnitMonth fromDate:date];
-  return (ledger::ACTIVITY_MONTH)month;
+  return (ledger::ActivityMonth)month;
 }
 
 NS_INLINE int BATGetPublisherYear(NSDate *date) {
@@ -413,7 +413,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)updatePublisherExclusionState:(NSString *)publisherId state:(BATPublisherExclude)state
 {
-  ledger->SetPublisherExclude(std::string(publisherId.UTF8String), (ledger::PUBLISHER_EXCLUDE)state, ^(const ledger::Result result) {
+  ledger->SetPublisherExclude(std::string(publisherId.UTF8String), (ledger::PublisherExclude)state, ^(const ledger::Result result) {
     if (result != ledger::Result::LEDGER_OK) {
       return;
     }
@@ -436,7 +436,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
     for (BATBraveLedgerObserver *observer in self.observers) {
       if (observer.excludedSitesChanged) {
         observer.excludedSitesChanged(@"-1",
-                                      static_cast<BATPublisherExclude>(ledger::PUBLISHER_EXCLUDE::ALL));
+                                      static_cast<BATPublisherExclude>(ledger::PublisherExclude::ALL));
       }
     }
   });
@@ -619,7 +619,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   auto now = [NSDate date];
   const auto bridgedGrant = [[BATGrant alloc] initWithGrant:*grant];
   if (result == ledger::Result::LEDGER_OK) {
-    ledger::ReportType report_type = grant->type == "ads" ? ledger::ADS : ledger::GRANT;
+    ledger::ReportType report_type = grant->type == "ads" ? ledger::ReportType::ADS : ledger::ReportType::GRANT;
     [self fetchBalance:nil];
     ledger->SetBalanceReportItem(BATGetPublisherMonth(now),
                                  BATGetPublisherYear(now),
@@ -654,7 +654,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)balanceReportForMonth:(BATActivityMonth)month year:(int)year completion:(void (NS_NOESCAPE ^)(BATBalanceReportInfo * _Nullable info))completion
 {
-  ledger->GetBalanceReport((ledger::ACTIVITY_MONTH)month, year, ^(bool result, ledger::BalanceReportInfoPtr info) {
+  ledger->GetBalanceReport((ledger::ActivityMonth)month, year, ^(bool result, ledger::BalanceReportInfoPtr info) {
     auto bridgedInfo = info.get() != nullptr ? [[BATBalanceReportInfo alloc] initWithBalanceReportInfo:*info.get()] : nil;
     completion(result ? bridgedInfo : nil);
   });
@@ -1421,12 +1421,12 @@ BATLedgerBridge(BOOL,
 
 #pragma mark - Network
 
-- (void)loadURL:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)contentType method:(const ledger::URL_METHOD)method callback:(ledger::LoadURLCallback)callback
+- (void)loadURL:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)contentType method:(const ledger::UrlMethod)method callback:(ledger::LoadURLCallback)callback
 {
-  std::map<ledger::URL_METHOD, std::string> methodMap {
-    {ledger::GET, "GET"},
-    {ledger::POST, "POST"},
-    {ledger::PUT, "PUT"}
+  std::map<ledger::UrlMethod, std::string> methodMap {
+    {ledger::UrlMethod::GET, "GET"},
+    {ledger::UrlMethod::POST, "POST"},
+    {ledger::UrlMethod::PUT, "PUT"}
   };
   return [self.commonOps loadURLRequest:url headers:headers content:content content_type:contentType method:methodMap[method] callback:^(int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
     callback(statusCode, response, headers);
@@ -1623,10 +1623,10 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)saveContributionInfo:(const std::string &)probi month:(const int)month year:(const int)year date:(const uint32_t)date publisherKey:(const std::string &)publisher_key type:(const ledger::RewardsType)type
+- (void)saveContributionInfo:(const std::string &)probi month:(const ledger::ActivityMonth)month year:(const int)year date:(const uint32_t)date publisherKey:(const std::string &)publisher_key type:(const ledger::RewardsType)type
 {
   [BATLedgerDatabase insertContributionInfo:[NSString stringWithUTF8String:probi.c_str()]
-                                      month:month
+                                      month:(BATActivityMonth)month
                                        year:year
                                        date:date
                                publisherKey:[NSString stringWithUTF8String:publisher_key.c_str()]

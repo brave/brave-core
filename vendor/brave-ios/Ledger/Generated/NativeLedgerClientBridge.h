@@ -26,7 +26,7 @@
 - (void)loadPublisherInfo:(const std::string &)publisher_key callback:(ledger::PublisherInfoCallback)callback;
 - (void)loadPublisherState:(ledger::OnLoadCallback)callback;
 - (void)loadState:(const std::string &)name callback:(ledger::OnLoadCallback)callback;
-- (void)loadURL:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)contentType method:(const ledger::URL_METHOD)method callback:(ledger::LoadURLCallback)callback;
+- (void)loadURL:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)contentType method:(const ledger::UrlMethod)method callback:(ledger::LoadURLCallback)callback;
 - (std::unique_ptr<ledger::LogStream>)log:(const char *)file line:(int)line logLevel:(const ledger::LogLevel)log_level;
 - (void)onGrantFinish:(ledger::Result)result grant:(ledger::GrantPtr)grant;
 - (void)onPanelPublisherInfo:(ledger::Result)result publisherInfo:(ledger::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId;
@@ -38,7 +38,7 @@
 - (void)removePendingContribution:(const std::string &)publisher_key viewingId:(const std::string &)viewing_id addedDate:(uint64_t)added_date callback:(ledger::RemovePendingContributionCallback )callback;
 - (void)resetState:(const std::string &)name callback:(ledger::OnResetCallback)callback;
 - (void)saveActivityInfo:(ledger::PublisherInfoPtr)publisher_info callback:(ledger::PublisherInfoCallback)callback;
-- (void)saveContributionInfo:(const std::string &)probi month:(const int)month year:(const int)year date:(const uint32_t)date publisherKey:(const std::string &)publisher_key type:(const ledger::RewardsType)type;
+- (void)saveContributionInfo:(const std::string &)probi month:(const ledger::ActivityMonth)month year:(const int)year date:(const uint32_t)date publisherKey:(const std::string &)publisher_key type:(const ledger::RewardsType)type;
 - (void)saveLedgerState:(const std::string &)ledger_state handler:(ledger::LedgerCallbackHandler *)handler;
 - (void)saveMediaPublisherInfo:(const std::string &)media_key publisherId:(const std::string &)publisher_id;
 - (void)saveNormalizedPublisherList:(ledger::PublisherInfoList)normalized_list;

@@ -6,19 +6,12 @@
 #import "Records.h"
 
 #include "bat/ledger/export.h"
-#include "bat/ledger/balance_report_info.h"
-#include "bat/ledger/grant.h"
+#include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_client.h"
-#include "bat/ledger/media_event_info.h"
-#include "bat/ledger/pending_contribution.h"
-#include "bat/ledger/publisher_info.h"
-#include "bat/ledger/reconcile_info.h"
-#include "bat/ledger/rewards_internals_info.h"
 #include "bat/ledger/transaction_info.h"
 #include "bat/ledger/transactions_info.h"
-#include "bat/ledger/wallet_properties.h"
 
 @interface BATTransactionInfo (Private)
 - (instancetype)initWithTransactionInfo:(const ledger::TransactionInfo&)obj;

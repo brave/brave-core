@@ -382,7 +382,7 @@ void LedgerImpl::LoadURL(const std::string& url,
                          const std::vector<std::string>& headers,
                          const std::string& content,
                          const std::string& contentType,
-                         const ledger::URL_METHOD method,
+                         const ledger::UrlMethod method,
                          ledger::LoadURLCallback callback) {
   ledger_client_->LoadURL(url,
                           headers,
@@ -446,7 +446,7 @@ void LedgerImpl::SaveMediaVisit(const std::string& publisher_id,
 
 void LedgerImpl::SetPublisherExclude(
     const std::string& publisher_id,
-    const ledger::PUBLISHER_EXCLUDE& exclude,
+    const ledger::PublisherExclude& exclude,
     ledger::SetPublisherExcludeCallback callback) {
   bat_publisher_->SetPublisherExclude(publisher_id, exclude, callback);
 }
@@ -696,7 +696,7 @@ void LedgerImpl::OnGrantFinish(ledger::Result result,
 }
 
 void LedgerImpl::GetBalanceReport(
-    ledger::ACTIVITY_MONTH month,
+    ledger::ActivityMonth month,
     int year,
     ledger::GetBalanceReportCallback callback) const {
   bat_publisher_->GetBalanceReport(month, year, callback);
@@ -822,7 +822,7 @@ void LedgerImpl::OnPanelPublisherInfo(
   ledger_client_->OnPanelPublisherInfo(result, std::move(info), windowId);
 }
 
-void LedgerImpl::SetBalanceReportItem(ledger::ACTIVITY_MONTH month,
+void LedgerImpl::SetBalanceReportItem(ledger::ActivityMonth month,
                                       int year,
                                       ledger::ReportType type,
                                       const std::string& probi) {
@@ -844,7 +844,7 @@ void LedgerImpl::OnReconcileCompleteSuccess(
     const std::string& viewing_id,
     const ledger::RewardsType type,
     const std::string& probi,
-    const ledger::ACTIVITY_MONTH month,
+    const ledger::ActivityMonth month,
     const int year,
     const uint32_t date) {
   bat_contribution_->OnReconcileCompleteSuccess(viewing_id,
@@ -1155,7 +1155,7 @@ bool LedgerImpl::ReconcileExists(const std::string& viewingId) {
 
 void LedgerImpl::SaveContributionInfo(
     const std::string& probi,
-    const int month,
+    const ledger::ActivityMonth month,
     const int year,
     const uint32_t date,
     const std::string& publisher_key,

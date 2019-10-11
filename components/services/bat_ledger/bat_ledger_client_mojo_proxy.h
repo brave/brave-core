@@ -57,7 +57,7 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& contentType,
-      const ledger::URL_METHOD method,
+      const ledger::UrlMethod method,
       ledger::LoadURLCallback callback) override;
 
   void OnPanelPublisherInfo(ledger::Result result,
@@ -67,7 +67,7 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                     const std::string& favicon_key,
                     ledger::FetchIconCallback callback) override;
   void SaveContributionInfo(const std::string& probi,
-                            const int month,
+                            const ledger::ActivityMonth month,
                             const int year,
                             const uint32_t date,
                             const std::string& publisher_key,

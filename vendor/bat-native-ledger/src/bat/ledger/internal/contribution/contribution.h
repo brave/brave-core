@@ -152,7 +152,7 @@ class Contribution {
       const std::string& viewing_id,
       const ledger::RewardsType type,
       const std::string& probi,
-      ledger::ACTIVITY_MONTH month,
+      ledger::ActivityMonth month,
       int year,
       uint32_t date);
   void HasSufficientBalance(

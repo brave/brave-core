@@ -68,7 +68,7 @@ void UpholdTransfer::CreateTransaction(double amount,
       headers,
       payload,
       "application/json",
-      ledger::URL_METHOD::POST,
+      ledger::UrlMethod::POST,
       create_callback);
 }
 
@@ -136,7 +136,7 @@ void UpholdTransfer::CommitTransaction(const std::string& transaction_id,
       headers,
       "",
       "application/json",
-      ledger::URL_METHOD::POST,
+      ledger::UrlMethod::POST,
       commit_callback);
 }
 

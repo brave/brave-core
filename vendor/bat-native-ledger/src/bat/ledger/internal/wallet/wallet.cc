@@ -9,6 +9,7 @@
 
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
@@ -87,7 +88,7 @@ void Wallet::GetWalletProperties(
                    std::vector<std::string>(),
                    std::string(),
                    std::string(),
-                   ledger::URL_METHOD::GET,
+                   ledger::UrlMethod::GET,
                    load_callback);
 }
 
@@ -452,7 +453,7 @@ void Wallet::OnTransferAnonToExternalWalletAddress(
       wallet_header,
       payload,
       "application/json; charset=utf-8",
-      ledger::URL_METHOD::POST,
+      ledger::UrlMethod::POST,
       transfer_callback);
 }
 
@@ -461,7 +462,7 @@ void Wallet::GetGrantViaSafetynetCheck(const std::string& promotion_id) {
       (std::string)GET_PROMOTION_ATTESTATION + ledger_->GetPaymentId(),
       PREFIX_V1),
   std::vector<std::string>(), "", "",
-  ledger::URL_METHOD::GET, std::bind(&Wallet::GetGrantViaSafetynetCheckCallback,
+  ledger::UrlMethod::GET, std::bind(&Wallet::GetGrantViaSafetynetCheckCallback,
                                    this,
                                    promotion_id,
                                    _1,

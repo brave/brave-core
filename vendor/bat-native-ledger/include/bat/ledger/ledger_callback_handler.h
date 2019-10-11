@@ -9,12 +9,11 @@
 #include <string>
 
 #include "bat/ledger/export.h"
-#include "bat/ledger/public/interfaces/ledger.mojom.h"
+#include "bat/ledger/mojom_structs.h"
 
 namespace ledger {
 
-using Result = ledger::mojom::Result;
-using InitializeCallback = std::function<void(Result)>;
+using InitializeCallback = std::function<void(ledger::Result)>;
 
 // LedgerCallbackHandler must not be destroyed if they have pending callbacks
 class LEDGER_EXPORT LedgerCallbackHandler {

@@ -14,16 +14,9 @@
 #include <string>
 #include <map>
 
-#include "bat/ledger/balance_report_info.h"
+#include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/export.h"
-#include "bat/ledger/grant.h"
 #include "bat/ledger/ledger_callback_handler.h"
-#include "bat/ledger/media_event_info.h"
-#include "bat/ledger/pending_contribution.h"
-#include "bat/ledger/publisher_info.h"
-#include "bat/ledger/reconcile_info.h"
-#include "bat/ledger/wallet_properties.h"
-#include "bat/ledger/public/interfaces/ledger.mojom.h"
 
 namespace confirmations {
 class LogStream;
@@ -38,13 +31,6 @@ LEDGER_EXPORT enum LogLevel {
   LOG_DEBUG = 4,
   LOG_REQUEST = 5,
   LOG_RESPONSE = 6
-};
-
-LEDGER_EXPORT enum URL_METHOD {
-  GET = 0,
-  PUT = 1,
-  POST = 2,
-  PATCH = 3
 };
 
 class LEDGER_EXPORT LogStream {
@@ -150,7 +136,7 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void SaveContributionInfo(
       const std::string& probi,
-      const int month,
+      const ledger::ActivityMonth month,
       const int year,
       const uint32_t date,
       const std::string& publisher_key,
@@ -185,7 +171,7 @@ class LEDGER_EXPORT LedgerClient {
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& contentType,
-      const ledger::URL_METHOD method,
+      const ledger::UrlMethod method,
       ledger::LoadURLCallback callback) = 0;
 
   virtual void SavePendingContribution(

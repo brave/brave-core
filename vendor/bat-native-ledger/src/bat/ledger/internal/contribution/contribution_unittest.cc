@@ -12,7 +12,6 @@
 #include "bat/ledger/internal/logging.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/publisher_info.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=ContributionTest.*

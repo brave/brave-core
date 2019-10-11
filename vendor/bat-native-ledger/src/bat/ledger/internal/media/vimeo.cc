@@ -273,7 +273,7 @@ void Vimeo::FetchDataFromUrl(
                    std::vector<std::string>(),
                    "",
                    "",
-                   ledger::URL_METHOD::GET,
+                   ledger::UrlMethod::GET,
                    callback);
 }
 

@@ -18,6 +18,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/brave_paths.h"
+#include "bat/ledger/global_constants.h"
 #include "sql/database.h"
 #include "sql/statement.h"
 #include "third_party/sqlite/sqlite3.h"
@@ -147,7 +148,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertContributionInfo) {
 
   ContributionInfo info;
   info.probi = "12345678901234567890123456789012345678901234";
-  info.month = ledger::ACTIVITY_MONTH::JANUARY;
+  info.month = static_cast<int>(ledger::ActivityMonth::JANUARY);
   info.year = 1970;
   info.type = static_cast<int>(ledger::RewardsType::AUTO_CONTRIBUTE);
   info.date = base::Time::Now().ToJsTime();
@@ -185,7 +186,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
   ledger::PublisherInfo info;
   info.id = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   info.status = ledger::PublisherStatus::NOT_VERIFIED;
-  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.excluded = ledger::PublisherExclude::DEFAULT;
   info.name = "name";
   info.url = "https://brave.com";
   info.provider = "";
@@ -214,7 +215,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
   EXPECT_TRUE(info_sql.Step());
   EXPECT_EQ(CountTableRows("publisher_info"), 1);
   EXPECT_EQ(info_sql.ColumnString(0), info.id);
-  EXPECT_EQ(static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql.ColumnInt(1)),
+  EXPECT_EQ(static_cast<ledger::PublisherExclude>(info_sql.ColumnInt(1)),
       info.excluded);
   EXPECT_EQ(info_sql.ColumnString(2), info.name);
   EXPECT_EQ(info_sql.ColumnString(3), info.favicon_url);
@@ -224,7 +225,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
   /**
    * Make sure that second insert is update and not insert
    */
-  info.excluded = ledger::PUBLISHER_EXCLUDE::ALL;
+  info.excluded = ledger::PublisherExclude::ALL;
   info.name = "updated";
   info.url = "https://clifton.com";
   info.provider = "";
@@ -241,7 +242,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
   EXPECT_TRUE(info_sql_1.Step());
   EXPECT_EQ(CountTableRows("publisher_info"), 1);
   EXPECT_EQ(info_sql_1.ColumnString(0), info.id);
-  EXPECT_EQ(static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql_1.ColumnInt(1)),
+  EXPECT_EQ(static_cast<ledger::PublisherExclude>(info_sql_1.ColumnInt(1)),
       info.excluded);
   EXPECT_EQ(info_sql_1.ColumnString(2), info.name);
   EXPECT_EQ(info_sql_1.ColumnString(3), info.favicon_url);
@@ -304,7 +305,7 @@ TEST_F(PublisherInfoDatabaseTest, GetExcludedList) {
 
   std::string excluded_id = "ABCD";
   auto excluded_verified = ledger::PublisherStatus::VERIFIED;
-  ledger::PUBLISHER_EXCLUDE excluded  = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
+  ledger::PublisherExclude excluded  = ledger::PublisherExclude::EXCLUDED;
   std::string excluded_name  = "excluded_publisher";
   std::string excluded_url  = "https://iamexcluded.com";
   std::string excluded_provider  = "exclusion";
@@ -312,7 +313,7 @@ TEST_F(PublisherInfoDatabaseTest, GetExcludedList) {
 
   std::string included_id = "EFGH";
   auto included_verified =  ledger::PublisherStatus::NOT_VERIFIED;
-  ledger::PUBLISHER_EXCLUDE included  = ledger::PUBLISHER_EXCLUDE::INCLUDED;
+  ledger::PublisherExclude included  = ledger::PublisherExclude::INCLUDED;
   std::string included_name  = "included_publisher";
   std::string included_url  = "https://iamincluded.com";
   std::string included_provider  = "inclusion";
@@ -390,7 +391,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfo) {
   ledger::PublisherInfo info;
   info.id = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   info.status = ledger::PublisherStatus::VERIFIED;
-  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.excluded = ledger::PublisherExclude::DEFAULT;
   info.name = "name";
   info.url = "https://brave.com";
   info.provider = "youtube";
@@ -441,7 +442,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfo) {
   EXPECT_TRUE(info_sql_0.Step());
   EXPECT_EQ(CountTableRows("publisher_info"), 1);
   EXPECT_EQ(info_sql_0.ColumnString(0), info.id);
-  EXPECT_EQ(static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql_0.ColumnInt(1)),
+  EXPECT_EQ(static_cast<ledger::PublisherExclude>(info_sql_0.ColumnInt(1)),
       info.excluded);
   EXPECT_EQ(info_sql_0.ColumnString(2), info.name);
   EXPECT_EQ(info_sql_0.ColumnString(3), info.favicon_url);
@@ -452,7 +453,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfo) {
    * Make sure that second insert is update and not insert,
    * publisher_id and stamp is unique key
    */
-  info.excluded = ledger::PUBLISHER_EXCLUDE::ALL;
+  info.excluded = ledger::PublisherExclude::ALL;
   info.name = "update";
   info.url = "https://slo-tech.com";
   info.provider = "1";
@@ -785,7 +786,7 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   info.id = "publisher_1";
   info.name = "publisher_name_1";
   info.url = "https://publisher1.com";
-  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.excluded = ledger::PublisherExclude::DEFAULT;
   info.duration = 0;
   info.status = ledger::PublisherStatus::NOT_VERIFIED;
   info.visits = 0;
@@ -796,7 +797,7 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   info.id = "publisher_2";
   info.name = "publisher_name_2";
   info.url = "https://publisher2.com";
-  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.excluded = ledger::PublisherExclude::DEFAULT;
   info.duration = 100;
   info.status = ledger::PublisherStatus::NOT_VERIFIED;
   info.visits = 1;
@@ -806,7 +807,7 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   info.id = "publisher_3";
   info.name = "publisher_name_3";
   info.url = "https://publisher3.com";
-  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.excluded = ledger::PublisherExclude::DEFAULT;
   info.duration = 1;
   info.status = ledger::PublisherStatus::VERIFIED;
   info.visits = 1;
@@ -821,7 +822,7 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   info.id = "publisher_4";
   info.name = "publisher_name_4";
   info.url = "https://publisher4.com";
-  info.excluded = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
+  info.excluded = ledger::PublisherExclude::EXCLUDED;
   info.duration = 1;
   info.status = ledger::PublisherStatus::NOT_VERIFIED;
   info.visits = 1;
@@ -831,7 +832,7 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   info.id = "publisher_5";
   info.name = "publisher_name_5";
   info.url = "https://publisher5.com";
-  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.excluded = ledger::PublisherExclude::DEFAULT;
   info.duration = 1;
   info.status = ledger::PublisherStatus::NOT_VERIFIED;
   info.visits = 10;
@@ -841,7 +842,7 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   info.id = "publisher_6";
   info.name = "publisher_name_6";
   info.url = "https://publisher6.com";
-  info.excluded = ledger::PUBLISHER_EXCLUDE::INCLUDED;
+  info.excluded = ledger::PublisherExclude::INCLUDED;
   info.duration = 5000;
   info.status = ledger::PublisherStatus::VERIFIED;
   info.visits = 10;
@@ -1107,7 +1108,7 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv7tov8_ContributionInfo) {
 
   ContributionInfo contribution;
   contribution.probi = "1000000000000000000";
-  contribution.month = ledger::ACTIVITY_MONTH::OCTOBER;
+  contribution.month = static_cast<int>(ledger::ActivityMonth::OCTOBER);
   contribution.year = 2019;
   contribution.type = static_cast<int>(ledger::RewardsType::ONE_TIME_TIP);
   contribution.date = 1570614352;
@@ -1165,7 +1166,7 @@ TEST_F(PublisherInfoDatabaseTest, DeleteActivityInfo) {
   ledger::PublisherInfo info;
   info.id = "publisher_1";
   info.status = ledger::PublisherStatus::VERIFIED;
-  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.excluded = ledger::PublisherExclude::DEFAULT;
   info.name = "publisher1";
   info.url = "https://publisher1.com";
   info.duration = 10;
@@ -1213,7 +1214,7 @@ void PublisherInfoDatabaseTest::PreparePendingContributions() {
   ledger::PublisherInfo info;
   info.id = "key1";
   info.status = ledger::PublisherStatus::NOT_VERIFIED;
-  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info.excluded = ledger::PublisherExclude::DEFAULT;
   info.name = "key1";
   info.url = "https://key1.com";
   info.provider = "";

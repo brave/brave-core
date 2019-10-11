@@ -9,6 +9,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/stringprintf.h"
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/bignum.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -174,9 +176,9 @@ ledger::ActivityInfoFilterPtr Publisher::CreateActivityFilter(
 }
 
 std::string Publisher::GetBalanceReportName(
-    const ledger::ACTIVITY_MONTH month,
+    const ledger::ActivityMonth month,
     int year) {
-  return std::to_string(year) + "_" + std::to_string(month);
+  return base::StringPrintf("%d_%d", year, month);
 }
 
 void Publisher::OnSaveVisitServerPublisher(
@@ -270,7 +272,7 @@ void Publisher::SaveVisitInternal(
   bool excluded = IsExcluded(
       publisher_info->id,
       server_excluded,
-      static_cast<ledger::PUBLISHER_EXCLUDE>(publisher_info->excluded));
+      static_cast<ledger::PublisherExclude>(publisher_info->excluded));
   bool ignore_time = ignoreMinTime(publisher_key);
   if (duration == 0) {
     ignore_time = false;
@@ -279,7 +281,7 @@ void Publisher::SaveVisitInternal(
   ledger::PublisherInfoPtr panel_info = nullptr;
 
   if (excluded) {
-    publisher_info->excluded = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
+    publisher_info->excluded = ledger::PublisherExclude::EXCLUDED;
   }
 
   // for new visits that are excluded or are not long enough or ac is off
@@ -387,7 +389,7 @@ void Publisher::OnPublisherInfoSaved(
 
 void Publisher::SetPublisherExclude(
     const std::string& publisher_id,
-    const ledger::PUBLISHER_EXCLUDE& exclude,
+    const ledger::PublisherExclude& exclude,
     ledger::SetPublisherExcludeCallback callback) {
   ledger_->GetPublisherInfo(
     publisher_id,
@@ -400,7 +402,7 @@ void Publisher::SetPublisherExclude(
 }
 
 void Publisher::OnSetPublisherExclude(
-    ledger::PUBLISHER_EXCLUDE exclude,
+    ledger::PublisherExclude exclude,
     ledger::Result result,
     ledger::PublisherInfoPtr publisher_info,
     ledger::SetPublisherExcludeCallback callback) {
@@ -417,7 +419,7 @@ void Publisher::OnSetPublisherExclude(
 
   publisher_info->excluded = exclude;
   ledger_->SetPublisherInfo(publisher_info->Clone());
-  if (exclude == ledger::PUBLISHER_EXCLUDE::EXCLUDED) {
+  if (exclude == ledger::PublisherExclude::EXCLUDED) {
     ledger_->DeleteActivityInfo(
       publisher_info->id,
       [](ledger::Result _){});
@@ -610,13 +612,13 @@ bool Publisher::IsConnectedOrVerified(const ledger::PublisherStatus status) {
 bool Publisher::IsExcluded(
     const std::string& publisher_id,
     const bool server_exclude,
-    const ledger::PUBLISHER_EXCLUDE& excluded) {
+    const ledger::PublisherExclude& excluded) {
   // If exclude is set to 1, we should avoid further computation and return true
-  if (excluded == ledger::PUBLISHER_EXCLUDE::EXCLUDED) {
+  if (excluded == ledger::PublisherExclude::EXCLUDED) {
     return true;
   }
 
-  if (excluded == ledger::PUBLISHER_EXCLUDE::INCLUDED) {
+  if (excluded == ledger::PublisherExclude::INCLUDED) {
     return false;
   }
 
@@ -631,7 +633,7 @@ void Publisher::clearAllBalanceReports() {
   saveState();
 }
 
-void Publisher::setBalanceReport(ledger::ACTIVITY_MONTH month,
+void Publisher::setBalanceReport(ledger::ActivityMonth month,
                                 int year,
                                 const ledger::BalanceReportInfo& report_info) {
   braveledger_bat_helper::REPORT_BALANCE_ST report_balance;
@@ -659,7 +661,7 @@ void Publisher::setBalanceReport(ledger::ACTIVITY_MONTH month,
 }
 
 void Publisher::GetBalanceReport(
-    ledger::ACTIVITY_MONTH month,
+    ledger::ActivityMonth month,
     int year,
     ledger::GetBalanceReportCallback callback) {
   ledger::BalanceReportInfo info;
@@ -667,7 +669,7 @@ void Publisher::GetBalanceReport(
   callback(result, info.Clone());
 }
 
-bool Publisher::GetBalanceReportInternal(ledger::ACTIVITY_MONTH month,
+bool Publisher::GetBalanceReportInternal(ledger::ActivityMonth month,
                                      int year,
                                      ledger::BalanceReportInfo* report_info) {
   std::string name = GetBalanceReportName(month, year);
@@ -845,7 +847,7 @@ void Publisher::OnPanelPublisherInfo(
   }
 }
 
-void Publisher::setBalanceReportItem(ledger::ACTIVITY_MONTH month,
+void Publisher::setBalanceReportItem(ledger::ActivityMonth month,
                                          int year,
                                          ledger::ReportType type,
                                          const std::string& probi) {

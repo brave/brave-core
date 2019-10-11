@@ -349,7 +349,7 @@ void GitHub::FetchDataFromUrl(
                    std::vector<std::string>(),
                    "",
                    "",
-                   ledger::URL_METHOD::GET,
+                   ledger::UrlMethod::GET,
                    callback);
 }
 
@@ -494,7 +494,7 @@ void GitHub::SaveMediaInfo(
                    std::vector<std::string>(),
                    "",
                    "",
-                   ledger::URL_METHOD::GET,
+                   ledger::UrlMethod::GET,
                    std::bind(&GitHub::OnMetaDataGet,
                               this,
                               std::move(callback),

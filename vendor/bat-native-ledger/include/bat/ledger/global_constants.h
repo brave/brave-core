@@ -3,20 +3,25 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_LEDGER_MEDIA_EVENT_INFO_H_
-#define BAT_LEDGER_MEDIA_EVENT_INFO_H_
+#ifndef BAT_LEDGER_PUBLISHER_INFO_HANDLER_
+#define BAT_LEDGER_PUBLISHER_INFO_HANDLER_
 
 #include <string>
+#include <vector>
+#include <map>
+#include <utility>
 
 #include "bat/ledger/export.h"
-#include "bat/ledger/publisher_info.h"
-#include "bat/ledger/public/interfaces/ledger.mojom.h"
 
 namespace ledger {
 
-using MediaEventInfo = mojom::MediaEventInfo;
-using MediaEventInfoPtr = mojom::MediaEventInfoPtr;
+const char kClearFavicon[] = "clear";
+const char kIgnorePublisherBlob[] = "ignore";
+
+const char kWalletAnonymous[] = "anonymous";
+const char kWalletUphold[] = "uphold";
+
 
 }  // namespace ledger
 
-#endif  // BAT_LEDGER_MEDIA_EVENT_INFO_H_
+#endif  // BAT_LEDGER_PUBLISHER_INFO_HANDLER_

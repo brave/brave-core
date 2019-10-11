@@ -31,10 +31,8 @@
 #include "base/task_runner_util.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/auto_contribute_props.h"
-#include "bat/ledger/media_event_info.h"
-#include "bat/ledger/publisher_info.h"
-#include "bat/ledger/wallet_properties.h"
+#include "bat/ledger/global_constants.h"
+#include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/transactions_info.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -146,10 +144,10 @@ class LogStreamImpl : public ledger::LogStream {
 
 namespace {
 
-ledger::ACTIVITY_MONTH GetPublisherMonth(const base::Time& time) {
+ledger::ActivityMonth GetPublisherMonth(const base::Time& time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  return (ledger::ACTIVITY_MONTH)exploded.month;
+  return (ledger::ActivityMonth)exploded.month;
 }
 
 int GetPublisherYear(const base::Time& time) {
@@ -163,7 +161,7 @@ ContentSite PublisherInfoToContentSite(
   ContentSite content_site(publisher_info.id);
   content_site.percentage = publisher_info.percent;
   content_site.status = static_cast<uint32_t>(publisher_info.status);
-  content_site.excluded = publisher_info.excluded;
+  content_site.excluded = static_cast<int>(publisher_info.excluded);
   content_site.name = publisher_info.name;
   content_site.url = publisher_info.url;
   content_site.provider = publisher_info.provider;
@@ -174,15 +172,15 @@ ContentSite PublisherInfoToContentSite(
   return content_site;
 }
 
-std::string URLMethodToRequestType(ledger::URL_METHOD method) {
+std::string URLMethodToRequestType(ledger::UrlMethod method) {
   switch (method) {
-    case ledger::URL_METHOD::GET:
+    case ledger::UrlMethod::GET:
       return "GET";
-    case ledger::URL_METHOD::POST:
+    case ledger::UrlMethod::POST:
       return "POST";
-    case ledger::URL_METHOD::PUT:
+    case ledger::UrlMethod::PUT:
       return "PUT";
-    case ledger::URL_METHOD::PATCH:
+    case ledger::UrlMethod::PATCH:
       return "PATCH";
     default:
       NOTREACHED();
@@ -855,7 +853,7 @@ void RewardsServiceImpl::OnRestorePublishersUI(const ledger::Result result) {
 
   for (auto& observer : observers_) {
     observer.OnExcludedSitesChanged(
-      this, "-1", ledger::PUBLISHER_EXCLUDE::ALL);
+      this, "-1", static_cast<int>(ledger::PublisherExclude::ALL));
   }
 }
 
@@ -1056,7 +1054,7 @@ void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
       return;
     }
 
-    int report_type = grant->type == "ads"
+    ledger::ReportType report_type = grant->type == "ads"
       ? ledger::ReportType::ADS
       : ledger::ReportType::GRANT;
     bat_ledger_->SetBalanceReportItem(GetPublisherMonth(now),
@@ -1394,7 +1392,7 @@ void RewardsServiceImpl::LoadURL(
     const std::vector<std::string>& headers,
     const std::string& content,
     const std::string& contentType,
-    const ledger::URL_METHOD method,
+    const ledger::UrlMethod method,
     ledger::LoadURLCallback callback) {
 
   if (url.empty()) {
@@ -1413,7 +1411,7 @@ void RewardsServiceImpl::LoadURL(
     std::map<std::string, std::string> test_headers;
     int response_status_code = net::HTTP_OK;
     test_response_callback_.Run(url,
-                                method,
+                                static_cast<int>(method),
                                 &response_status_code,
                                 &test_response,
                                 &test_headers);
@@ -2380,14 +2378,14 @@ void RewardsServiceImpl::OnContributionInfoSaved(
 }
 
 void RewardsServiceImpl::SaveContributionInfo(const std::string& probi,
-  const int month,
+  const ledger::ActivityMonth month,
   const int year,
   const uint32_t date,
   const std::string& publisher_key,
   const ledger::RewardsType type) {
   brave_rewards::ContributionInfo info;
   info.probi = probi;
-  info.month = month;
+  info.month = static_cast<int>(month);
   info.year = year;
   info.date = date;
   info.publisher_key = publisher_key;
@@ -2703,10 +2701,10 @@ void RewardsServiceImpl::SetPublisherExclude(
   if (!Connected())
     return;
 
-  ledger::PUBLISHER_EXCLUDE status =
+  ledger::PublisherExclude status =
       exclude
-      ? ledger::PUBLISHER_EXCLUDE::EXCLUDED
-      : ledger::PUBLISHER_EXCLUDE::INCLUDED;
+      ? ledger::PublisherExclude::EXCLUDED
+      : ledger::PublisherExclude::INCLUDED;
 
   bat_ledger_->SetPublisherExclude(
     publisher_key,
@@ -2967,7 +2965,7 @@ void RewardsServiceImpl::OnTip(
   ledger::PublisherInfoPtr info;
   info->id = publisher_key;
   info->status = static_cast<ledger::PublisherStatus>(site->status);
-  info->excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
+  info->excluded = ledger::PublisherExclude::DEFAULT;
   info->name = site->name;
   info->url = site->url;
   info->provider = site->provider;
@@ -3625,7 +3623,7 @@ void RewardsServiceImpl::OnGetExternalWallet(
   if (wallet) {
     external->token = wallet->token;
     external->address = wallet->address;
-    external->status = wallet->status;
+    external->status = static_cast<int>(wallet->status);
     external->type = wallet_type;
     external->verify_url = wallet->verify_url;
     external->add_url = wallet->add_url;

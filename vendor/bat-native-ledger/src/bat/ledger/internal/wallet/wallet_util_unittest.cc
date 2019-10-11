@@ -6,6 +6,7 @@
 #include <map>
 #include <utility>
 
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
 #include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"

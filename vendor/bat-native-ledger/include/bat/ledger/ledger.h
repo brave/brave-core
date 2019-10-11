@@ -14,19 +14,11 @@
 #include <vector>
 
 #include "bat/ledger/export.h"
-#include "bat/ledger/auto_contribute_props.h"
-#include "bat/ledger/balance.h"
+#include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/ledger_client.h"
-#include "bat/ledger/publisher_info.h"
-#include "bat/ledger/media_event_info.h"
 #include "bat/ledger/transactions_info.h"
-#include "bat/ledger/rewards_internals_info.h"
-#include "bat/ledger/pending_contribution.h"
 
 namespace ledger {
-
-using VisitData = ledger::mojom::VisitData;
-using VisitDataPtr = ledger::mojom::VisitDataPtr;
 
 extern bool is_production;
 extern bool is_debug;
@@ -196,7 +188,7 @@ class LEDGER_EXPORT Ledger {
   virtual std::string GetWalletPassphrase() const = 0;
 
   virtual void GetBalanceReport(
-      ACTIVITY_MONTH month,
+      ledger::ActivityMonth month,
       int year,
       ledger::GetBalanceReportCallback callback) const = 0;
 
@@ -211,7 +203,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SetPublisherExclude(
       const std::string& publisher_id,
-      const ledger::PUBLISHER_EXCLUDE& exclude,
+      const ledger::PublisherExclude& exclude,
       SetPublisherExcludeCallback callback) = 0;
 
   virtual void RestorePublishers(
@@ -224,10 +216,11 @@ class LEDGER_EXPORT Ledger {
       ledger::VisitDataPtr visit_data,
       const std::string& publisher_blob) = 0;
 
-  virtual void SetBalanceReportItem(ACTIVITY_MONTH month,
-                                    int year,
-                                    ledger::ReportType type,
-                                    const std::string& probi) = 0;
+  virtual void SetBalanceReportItem(
+      ledger::ActivityMonth month,
+      int year,
+      ledger::ReportType type,
+      const std::string& probi) = 0;
 
   virtual void GetPublisherBanner(
       const std::string& publisher_id,
@@ -237,7 +230,7 @@ class LEDGER_EXPORT Ledger {
       const std::string& viewing_id,
       const ledger::RewardsType type,
       const std::string& probi,
-      const ledger::ACTIVITY_MONTH month,
+      const ledger::ActivityMonth month,
       const int year,
       const uint32_t date) = 0;
 

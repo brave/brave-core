@@ -6,6 +6,7 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/uphold/uphold_wallet.h"
@@ -166,8 +167,8 @@ void UpholdWallet::OnCreateCard(
 ledger::ExternalWalletPtr UpholdWallet::SetStatus(
     const User& user,
     ledger::ExternalWalletPtr wallet) {
-  switch (wallet->status) {
-    case ledger::WalletStatus::CONNECTED: {
+  switch (static_cast<int>(wallet->status)) {
+    case static_cast<int>(ledger::WalletStatus::CONNECTED): {
       if (!user.verified) {
         break;
       }
@@ -180,7 +181,7 @@ ledger::ExternalWalletPtr UpholdWallet::SetStatus(
          {"Uphold"});
       break;
     }
-    case ledger::WalletStatus::VERIFIED: {
+    case static_cast<int>(ledger::WalletStatus::VERIFIED): {
       if (user.verified) {
         break;
       }
@@ -188,7 +189,7 @@ ledger::ExternalWalletPtr UpholdWallet::SetStatus(
       wallet->status = ledger::WalletStatus::CONNECTED;
       break;
     }
-    case ledger::WalletStatus::PENDING: {
+    case static_cast<int>(ledger::WalletStatus::PENDING): {
       if (user.status != UserStatus::OK) {
         break;
       }

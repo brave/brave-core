@@ -130,7 +130,7 @@ void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
 
   publisher.percentage = info->percent;
   publisher.status = static_cast<int>(info->status);
-  publisher.excluded = info->excluded == ledger::PUBLISHER_EXCLUDE::EXCLUDED;
+  publisher.excluded = info->excluded == ledger::PublisherExclude::EXCLUDED;
   publisher.name = info->name;
   publisher.url = info->url;
   publisher.provider = info->provider;

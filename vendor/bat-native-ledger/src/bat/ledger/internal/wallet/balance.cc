@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/json/json_reader.h"
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold.h"
@@ -51,7 +52,7 @@ void Balance::Fetch(ledger::FetchBalanceCallback callback) {
                    std::vector<std::string>(),
                    std::string(),
                    std::string(),
-                   ledger::URL_METHOD::GET,
+                   ledger::UrlMethod::GET,
                    load_callback);
 }
 

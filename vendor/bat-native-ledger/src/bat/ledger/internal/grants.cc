@@ -83,7 +83,7 @@ void Grants::FetchGrants(const std::string& lang,
       headers,
       "",
       "",
-      ledger::URL_METHOD::GET,
+      ledger::UrlMethod::GET,
       internal_callback);
 }
 
@@ -172,7 +172,7 @@ void Grants::SetGrant(const std::string& captchaResponse,
         (std::string)GET_SET_PROMOTION + "/" + ledger_->GetPaymentId(),
         safetynet_token.empty() ? PREFIX_V2 : PREFIX_V3),
       headers, payload, "application/json; charset=utf-8",
-      ledger::URL_METHOD::PUT, callback);
+      ledger::UrlMethod::PUT, callback);
 }
 
 void Grants::SetGrantCallback(
@@ -236,7 +236,7 @@ void Grants::GetGrantCaptcha(const std::vector<std::string>& headers,
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)GET_PROMOTION_CAPTCHA + ledger_->GetPaymentId(),
         PREFIX_V4),
-      headers, "", "", ledger::URL_METHOD::GET, std::move(on_load));
+      headers, "", "", ledger::UrlMethod::GET, std::move(on_load));
 }
 
 void Grants::GetGrantCaptchaCallback(

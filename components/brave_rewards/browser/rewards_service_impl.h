@@ -15,7 +15,6 @@
 
 #include "base/containers/flat_set.h"
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/wallet_properties.h"
 #include "base/files/file_path.h"
 #include "base/observer_list.h"
 #include "base/one_shot_event.h"
@@ -518,7 +517,7 @@ class RewardsServiceImpl : public RewardsService,
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& contentType,
-      const ledger::URL_METHOD method,
+      const ledger::UrlMethod method,
       ledger::LoadURLCallback callback) override;
   void SetRewardsMainEnabled(bool enabled) override;
   void SetPublisherMinVisits(unsigned int visits) const override;
@@ -552,7 +551,7 @@ class RewardsServiceImpl : public RewardsService,
                                     ledger::FetchIconCallback callback,
                                     bool success);
   void SaveContributionInfo(const std::string& probi,
-                            const int month,
+                            const ledger::ActivityMonth month,
                             const int year,
                             const uint32_t date,
                             const std::string& publisher_key,

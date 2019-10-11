@@ -65,7 +65,7 @@ void NativeLedgerClient::LoadPublisherState(ledger::OnLoadCallback callback) {
 void NativeLedgerClient::LoadState(const std::string & name, ledger::OnLoadCallback callback) {
   [bridge_ loadState:name callback:callback];
 }
-void NativeLedgerClient::LoadURL(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & contentType, const ledger::URL_METHOD method, ledger::LoadURLCallback callback) {
+void NativeLedgerClient::LoadURL(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & contentType, const ledger::UrlMethod method, ledger::LoadURLCallback callback) {
   [bridge_ loadURL:url headers:headers content:content contentType:contentType method:method callback:callback];
 }
 std::unique_ptr<ledger::LogStream> NativeLedgerClient::Log(const char * file, int line, const ledger::LogLevel log_level) const {
@@ -106,7 +106,7 @@ void NativeLedgerClient::ResetState(const std::string & name, ledger::OnResetCal
 void NativeLedgerClient::SaveActivityInfo(ledger::PublisherInfoPtr publisher_info, ledger::PublisherInfoCallback callback) {
   [bridge_ saveActivityInfo:std::move(publisher_info) callback:callback];
 }
-void NativeLedgerClient::SaveContributionInfo(const std::string & probi, const int month, const int year, const uint32_t date, const std::string & publisher_key, const ledger::RewardsType type) {
+void NativeLedgerClient::SaveContributionInfo(const std::string & probi, const ledger::ActivityMonth month, const int year, const uint32_t date, const std::string & publisher_key, const ledger::RewardsType type) {
   [bridge_ saveContributionInfo:probi month:month year:year date:date publisherKey:publisher_key type:type];
 }
 void NativeLedgerClient::SaveLedgerState(const std::string & ledger_state, ledger::LedgerCallbackHandler * handler) {

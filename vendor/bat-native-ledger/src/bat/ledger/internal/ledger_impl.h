@@ -150,7 +150,7 @@ class LedgerImpl : public ledger::Ledger,
   bool GetAutoContribute() const override;
 
   void GetBalanceReport(
-      ledger::ACTIVITY_MONTH month,
+      ledger::ActivityMonth month,
       int year,
       ledger::GetBalanceReportCallback callback) const override;
 
@@ -226,7 +226,7 @@ class LedgerImpl : public ledger::Ledger,
                const std::vector<std::string>& headers,
                const std::string& content,
                const std::string& contentType,
-               const ledger::URL_METHOD method,
+               const ledger::UrlMethod method,
                ledger::LoadURLCallback callback);
 
   void OnReconcileComplete(ledger::Result result,
@@ -244,7 +244,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetPublisherExclude(
       const std::string& publisher_id,
-      const ledger::PUBLISHER_EXCLUDE& exclude,
+      const ledger::PublisherExclude& exclude,
       ledger::SetPublisherExcludeCallback callback) override;
 
   void RestorePublishers(ledger::RestorePublishersCallback callback) override;
@@ -270,7 +270,7 @@ class LedgerImpl : public ledger::Ledger,
                            ledger::PublisherInfoPtr info,
                            uint64_t windowId);
 
-  void SetBalanceReportItem(ledger::ACTIVITY_MONTH month,
+  void SetBalanceReportItem(ledger::ActivityMonth month,
                             int year,
                             ledger::ReportType type,
                             const std::string& probi) override;
@@ -290,7 +290,7 @@ class LedgerImpl : public ledger::Ledger,
   void OnReconcileCompleteSuccess(const std::string& viewing_id,
                                   const ledger::RewardsType type,
                                   const std::string& probi,
-                                  const ledger::ACTIVITY_MONTH month,
+                                  const ledger::ActivityMonth month,
                                   const int year,
                                   const uint32_t date) override;
 
@@ -399,7 +399,7 @@ class LedgerImpl : public ledger::Ledger,
   bool ReconcileExists(const std::string& viewingId);
 
   void SaveContributionInfo(const std::string& probi,
-                            const int month,
+                            const ledger::ActivityMonth month,
                             const int year,
                             const uint32_t date,
                             const std::string& publisher_key,

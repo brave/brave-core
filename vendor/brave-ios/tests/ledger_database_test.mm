@@ -294,7 +294,7 @@
 
   XCTAssert([self countMustBeEqualTo:0 forEntityName:@"ContributionInfo"]);
 
-  [self makeOneTimeTip:pubId month:10 year:2020];
+  [self makeOneTimeTip:pubId month:BATActivityMonthOctober year:2020];
 
   const auto filter = [[BATActivityInfoFilter alloc] init];
   filter.id = pubId;
@@ -348,7 +348,7 @@
   XCTAssertEqual(newerTips.count, 3);
 }
 
-- (void)makeOneTimeTip:(NSString *)publisherId month:(const int)month year:(const int)year
+- (void)makeOneTimeTip:(NSString *)publisherId month:(const BATActivityMonth)month year:(const int)year
 {
   const auto probi = @"1500000000000000000";
   const BATRewardsType type = BATRewardsTypeOneTimeTip;
@@ -356,7 +356,7 @@
   [self makeOneTimeTip:publisherId month:month year:year probi:probi type:type];
 }
 
-- (void)makeOneTimeTip:(NSString *)publisherId month:(const int)month year:(const int)year
+- (void)makeOneTimeTip:(NSString *)publisherId month:(const BATActivityMonth)month year:(const int)year
                  probi:(NSString *)probi type:(BATRewardsType)type
 {
   const auto now = [[NSDate date] timeIntervalSince1970];

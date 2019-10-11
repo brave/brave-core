@@ -55,7 +55,7 @@ void UpholdCard::CreateIfNecessary(
       headers,
       "",
       "application/json",
-      ledger::URL_METHOD::GET,
+      ledger::UrlMethod::GET,
       check_callback);
 }
 
@@ -134,7 +134,7 @@ void UpholdCard::Create(
       headers,
       payload,
       "application/json",
-      ledger::URL_METHOD::POST,
+      ledger::UrlMethod::POST,
       create_callback);
 }
 
@@ -242,7 +242,7 @@ void UpholdCard::Update(
     headers,
     json,
     "application/json",
-    ledger::URL_METHOD::PATCH,
+    ledger::UrlMethod::PATCH,
     update_callback);
 }
 
@@ -288,7 +288,7 @@ void UpholdCard::GetCardAddresses(
       headers,
       "",
       "application/json",
-      ledger::URL_METHOD::GET,
+      ledger::UrlMethod::GET,
       address_callback);
 }
 
@@ -427,7 +427,7 @@ void UpholdCard::CreateAnonAddress(
       headers,
       payload,
       "application/json",
-      ledger::URL_METHOD::POST,
+      ledger::UrlMethod::POST,
       anon_callback);
 }
 

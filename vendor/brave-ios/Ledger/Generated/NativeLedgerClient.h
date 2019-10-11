@@ -33,7 +33,7 @@ private:
   void LoadPublisherInfo(const std::string & publisher_key, ledger::PublisherInfoCallback callback) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
   void LoadState(const std::string & name, ledger::OnLoadCallback callback) override;
-  void LoadURL(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & contentType, const ledger::URL_METHOD method, ledger::LoadURLCallback callback) override;
+  void LoadURL(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & contentType, const ledger::UrlMethod method, ledger::LoadURLCallback callback) override;
   std::unique_ptr<ledger::LogStream> Log(const char * file, int line, const ledger::LogLevel log_level) const override;
   void OnGrantFinish(ledger::Result result, ledger::GrantPtr grant) override;
   void OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) override;
@@ -46,7 +46,7 @@ private:
   void RemovePendingContribution(const std::string & publisher_key, const std::string & viewing_id, uint64_t added_date, ledger::RemovePendingContributionCallback callback) override;
   void ResetState(const std::string & name, ledger::OnResetCallback callback) override;
   void SaveActivityInfo(ledger::PublisherInfoPtr publisher_info, ledger::PublisherInfoCallback callback) override;
-  void SaveContributionInfo(const std::string & probi, const int month, const int year, const uint32_t date, const std::string & publisher_key, const ledger::RewardsType type) override;
+  void SaveContributionInfo(const std::string & probi, const ledger::ActivityMonth month, const int year, const uint32_t date, const std::string & publisher_key, const ledger::RewardsType type) override;
   void SaveLedgerState(const std::string & ledger_state, ledger::LedgerCallbackHandler * handler) override;
   void SaveMediaPublisherInfo(const std::string & media_key, const std::string & publisher_id) override;
   void SaveNormalizedPublisherList(ledger::PublisherInfoList normalized_list) override;

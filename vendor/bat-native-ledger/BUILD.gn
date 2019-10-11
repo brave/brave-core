@@ -65,22 +65,15 @@ source_set("headers") {
   public_configs = [ ":external_config" ]
 
   sources = [
-    "include/bat/ledger/auto_contribute_props.h",
-    "include/bat/ledger/balance.h",
-    "include/bat/ledger/balance_report_info.h",
+    "include/bat/ledger/global_constants.h",
     "include/bat/ledger/export.h",
-    "include/bat/ledger/grant.h",
     "include/bat/ledger/ledger.h",
     "include/bat/ledger/ledger_callback_handler.h",
     "include/bat/ledger/ledger_client.h",
-    "include/bat/ledger/media_event_info.h",
+    "include/bat/ledger/mojom_structs.h",
     "include/bat/ledger/option_keys.h",
-    "include/bat/ledger/pending_contribution.h",
-    "include/bat/ledger/publisher_info.h",
-    "include/bat/ledger/reconcile_info.h",
     "include/bat/ledger/transaction_info.h",
     "include/bat/ledger/transactions_info.h",
-    "include/bat/ledger/wallet_properties.h",
   ]
 
   public_deps = [
