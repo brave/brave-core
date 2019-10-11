@@ -555,6 +555,17 @@ class LedgerImpl : public ledger::Ledger,
     const std::string& wallet_type,
     const std::string& id);
 
+  void InsertOrUpdateContributionQueue(
+    ledger::ContributionQueuePtr info,
+    ledger::ResultCallback callback);
+
+  void DeleteContributionQueue(
+    const uint64_t id,
+    ledger::ResultCallback callback);
+
+  void GetFirstContributionQueue(
+    ledger::GetFirstContributionQueueCallback callback);
+
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;

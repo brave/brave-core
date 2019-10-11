@@ -209,3 +209,12 @@ ledger::TransferFeeList NativeLedgerClient::GetTransferFees(const std::string& w
 void NativeLedgerClient::RemoveTransferFee(const std::string& wallet_type, const std::string& id) {
   [bridge_ removeTransferFee:wallet_type id:id];
 }
+void NativeLedgerClient::InsertOrUpdateContributionQueue(ledger::ContributionQueuePtr info, ledger::ResultCallback callback) {
+  return [bridge_ insertOrUpdateContributionQueue:std::move(info) callback:callback];
+}
+void NativeLedgerClient::DeleteContributionQueue(const uint64_t id, ledger::ResultCallback callback) {
+  return [bridge_ deleteContributionQueue:id callback:callback];
+}
+void NativeLedgerClient::GetFirstContributionQueue(ledger::GetFirstContributionQueueCallback callback) {
+  return [bridge_ getFirstContributionQueue:callback];
+}

@@ -15,6 +15,7 @@
 #include <map>
 
 #include "bat/ledger/balance_report_info.h"
+#include "bat/ledger/contribution_queue.h"
 #include "bat/ledger/export.h"
 #include "bat/ledger/grant.h"
 #include "bat/ledger/ledger_callback_handler.h"
@@ -83,6 +84,9 @@ using ClearAndInsertServerPublisherListCallback =
     std::function<void(const Result)>;
 using GetServerPublisherInfoCallback =
     std::function<void(ledger::ServerPublisherInfoPtr)>;
+using ResultCallback = std::function<void(const Result)>;
+using GetFirstContributionQueueCallback =
+    std::function<void(ContributionQueuePtr)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -290,6 +294,17 @@ class LEDGER_EXPORT LedgerClient {
   virtual void RemoveTransferFee(
     const std::string& wallet_type,
     const std::string& id) = 0;
+
+  virtual void InsertOrUpdateContributionQueue(
+    ledger::ContributionQueuePtr info,
+    ledger::ResultCallback callback) = 0;
+
+  virtual void DeleteContributionQueue(
+    const uint64_t id,
+    ledger::ResultCallback callback) = 0;
+
+  virtual void GetFirstContributionQueue(
+    ledger::GetFirstContributionQueueCallback callback) = 0;
 };
 
 }  // namespace ledger

@@ -134,11 +134,7 @@ class Contribution {
 
   // Initial point for contribution
   // In this step we get balance from the server
-  void InitReconcile(
-      const ledger::RewardsType type,
-      const braveledger_bat_helper::PublisherList& list,
-      const braveledger_bat_helper::Directions& directions = {},
-      double budget = 0);
+  void InitReconcile(ledger::ContributionQueuePtr info);
 
   // Called when timer is triggered
   void OnTimer(uint32_t timer_id);
@@ -176,7 +172,7 @@ class Contribution {
   void ResetReconcileStamp();
 
   // Triggers contribution process for auto contribute table
-  void StartAutoContribute();
+  void StartAutoContribute(uint64_t reconcile_stamp);
 
   void ContributeUnverifiedPublishers();
 
@@ -189,23 +185,31 @@ class Contribution {
       ledger::DoDirectTipCallback callback);
 
  private:
+  void CheckContributionQueue();
+
+  void ProcessContributionQueue();
+
+  void OnProcessContributionQueue(ledger::ContributionQueuePtr info);
+
   // RECURRING TIPS: from the list gets only verified publishers and
   // save unverified to the db
   ledger::PublisherInfoList GetVerifiedListRecurring(
-      const ledger::PublisherInfoList& all,
-      double* budget);
+      const ledger::PublisherInfoList& all);
 
   void PrepareACList(ledger::PublisherInfoList list,
                      uint32_t next_record);
 
-  void PrepareRecurringList(ledger::PublisherInfoList list,
-                            uint32_t next_record);
+  void StartRecurringTips(ledger::ResultCallback callback);
+
+  void PrepareRecurringList(
+      ledger::PublisherInfoList list,
+      uint32_t next_record,
+      ledger::ResultCallback callback);
+
+  void OnStartRecurringTips(const ledger::Result result);
 
   void OnBalanceForReconcile(
-      const ledger::RewardsType type,
-      const braveledger_bat_helper::PublisherList& list,
-      const braveledger_bat_helper::Directions& directions,
-      double budget,
+      const std::string& contribution_queue,
       const ledger::Result result,
       ledger::BalancePtr info);
 
@@ -245,24 +249,15 @@ class Contribution {
     ledger::DoDirectTipCallback callback);
 
   bool HaveReconcileEnoughFunds(
-      const ledger::RewardsType type,
+      ledger::ContributionQueuePtr contribution,
       double* fee,
-      double budget,
-      const double balance,
-      const braveledger_bat_helper::Directions& directions);
-
-  bool IsListEmpty(
-    const ledger::RewardsType type,
-    const braveledger_bat_helper::PublisherList& list,
-    const braveledger_bat_helper::Directions& directions,
-    double budget);
+      const double balance);
 
   void ProcessReconcile(
-    const ledger::RewardsType type,
-    const braveledger_bat_helper::PublisherList& list,
-    const braveledger_bat_helper::Directions& directions,
-    double budget,
+    ledger::ContributionQueuePtr contribution,
     ledger::BalancePtr info);
+
+  void DeleteContributionQueue(ledger::ContributionQueuePtr contribution);
 
   void AdjustTipsAmounts(
     braveledger_bat_helper::Directions directions,
@@ -292,7 +287,7 @@ class Contribution {
   std::unique_ptr<braveledger_uphold::Uphold> uphold_;
   uint32_t last_reconcile_timer_id_;
   std::map<std::string, uint32_t> retry_timers_;
-  uint32_t delay_ac_timer_id;
+  uint32_t queue_timer_id_;
 
   // For testing purposes
   friend class ContributionTest;

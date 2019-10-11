@@ -204,6 +204,17 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const std::string& wallet_type,
       const std::string& id) override;
 
+  void InsertOrUpdateContributionQueue(
+    ledger::ContributionQueuePtr info,
+    InsertOrUpdateContributionQueueCallback callback) override;
+
+  void DeleteContributionQueue(
+    const uint64_t id,
+    DeleteContributionQueueCallback callback) override;
+
+  void GetFirstContributionQueue(
+    GetFirstContributionQueueCallback callback) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   // also serves as a wrapper for passing ledger::LedgerCallbackHandler*
@@ -371,6 +382,18 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnGetServerPublisherInfo(
     CallbackHolder<GetServerPublisherInfoCallback>* holder,
     ledger::ServerPublisherInfoPtr info);
+
+  static void OnInsertOrUpdateContributionQueue(
+    CallbackHolder<InsertOrUpdateContributionQueueCallback>* holder,
+    const ledger::Result result);
+
+  static void OnDeleteContributionQueue(
+    CallbackHolder<DeleteContributionQueueCallback>* holder,
+    const ledger::Result result);
+
+  static void OnGetFirstContributionQueue(
+    CallbackHolder<GetFirstContributionQueueCallback>* holder,
+    ledger::ContributionQueuePtr info);
 
   ledger::LedgerClient* ledger_client_;
 

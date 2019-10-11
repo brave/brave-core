@@ -1552,4 +1552,21 @@ void LedgerImpl::RemoveTransferFee(
   ledger_client_->RemoveTransferFee(wallet_type, id);
 }
 
+void LedgerImpl::InsertOrUpdateContributionQueue(
+    ledger::ContributionQueuePtr info,
+    ledger::ResultCallback callback) {
+  ledger_client_->InsertOrUpdateContributionQueue(std::move(info), callback);
+}
+
+void LedgerImpl::DeleteContributionQueue(
+    const uint64_t id,
+    ledger::ResultCallback callback) {
+  ledger_client_->DeleteContributionQueue(id, callback);
+}
+
+void LedgerImpl::GetFirstContributionQueue(
+    ledger::GetFirstContributionQueueCallback callback) {
+  ledger_client_->GetFirstContributionQueue(callback);
+}
+
 }  // namespace bat_ledger

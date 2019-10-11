@@ -277,4 +277,7 @@ interface BatLedgerClient {
   GetTransferFees(string wallet_type) => (map<string, ledger.mojom.TransferFee> list);
   SetTransferFee(string wallet_type, ledger.mojom.TransferFee transfer_fee);
   RemoveTransferFee(string wallet_type, string id);
+  InsertOrUpdateContributionQueue(ledger.mojom.ContributionQueue info) => (ledger.mojom.Result result);
+  DeleteContributionQueue(uint64 id) => (ledger.mojom.Result result);
+  GetFirstContributionQueue() => (ledger.mojom.ContributionQueue? info);
 };
