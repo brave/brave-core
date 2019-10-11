@@ -1,0 +1,315 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tip tests basic tests matches the snapshot 1`] = `
+.c0 {
+  border-radius: 8px;
+  background-image: linear-gradient(148deg,#2825a7,#5465e8),linear-gradient(#696fdc,#696fdc);
+  width: 214px;
+  overflow: hidden;
+  position: relative;
+  padding: 16px 0 0;
+  font-family: Poppins,sans-serif;
+}
+
+.c3 {
+  font-size: 12px;
+  line-height: 1.83;
+  color: #fff;
+  opacity: 0.6;
+  padding-left: 23px;
+}
+
+.c10 {
+  display: inline-block;
+  margin-left: 33px;
+  vertical-align: middle;
+  padding-top: 2px;
+}
+
+.c9 {
+  opacity: 0.65;
+  font-size: 10px;
+  line-height: 1.5;
+  color: #fff;
+}
+
+.c1 {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: #DFDFE8;
+  width: 20px;
+  z-index: 2;
+}
+
+.c8 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  max-width: 160px;
+  margin-bottom: 7px;
+}
+
+.c4 {
+  position: relative;
+  font-family: Muli,sans-serif;
+  margin: 0px;
+  --donate-content-padding: 0 0 0 23px;
+  --donate-send-bg: #392dd1;
+  --donate-send-color: #fff;
+  --donate-send-padding: 11px 0 10px 47px;
+  --donate-funds-padding: 12px 0 11px 25px;
+}
+
+.c5 {
+  margin-top: 0px;
+  padding: var(--donate-content-padding);
+}
+
+.c6 {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.75;
+  color: #fff;
+  margin-bottom: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 167px;
+  padding-left: 0px;
+}
+
+.c16 {
+  background: var(--donate-send-bg);
+  font-size: 13px;
+  font-weight: 600;
+  -webkit-letter-spacing: 0.2px;
+  -moz-letter-spacing: 0.2px;
+  -ms-letter-spacing: 0.2px;
+  letter-spacing: 0.2px;
+  color: var(--donate-send-color);
+  padding: var(--donate-send-padding);
+  text-transform: uppercase;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.c18 {
+  display: block;
+  border: none;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: var(--donate-send-bg);
+  cursor: pointer;
+}
+
+.c17 {
+  display: block;
+  width: 245px;
+  margin: 0 auto;
+}
+
+.c19 {
+  vertical-align: middle;
+  display: inline-block;
+  margin-right: 15px;
+  color: #a1a8f2;
+  width: 27px;
+  height: 27px;
+}
+
+.c7 {
+  width: 100%;
+  display: block;
+}
+
+.c2 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c20 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c11 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c13 {
+  position: relative;
+  display: block;
+  height: 16px;
+  width: 28px;
+}
+
+.c14 {
+  background: #A7ACB2;
+  height: 6px;
+  margin-top: 5px;
+  width: 100%;
+  border-radius: 3px;
+}
+
+.c15 {
+  position: relative;
+  border-radius: 50%;
+  -webkit-transition: all .4s ease;
+  transition: all .4s ease;
+  --toggle-bullet-size: 16px;
+  --toggle-bullet-transform: translate(-1px,calc(-50% - 3px));
+  --toggle-bullet-background: #CDD1D5;
+  width: var(--toggle-bullet-size);
+  height: var(--toggle-bullet-size);
+  -webkit-transform: var(--toggle-bullet-transform);
+  -ms-transform: var(--toggle-bullet-transform);
+  transform: var(--toggle-bullet-transform);
+  background-color: var(--toggle-bullet-background);
+  box-shadow: 0 3px 3px rgba(0,0,0,0.05);
+}
+
+.c12 {
+  color: #838391;
+  font-size: 12px;
+  font-family: Muli,sans-serif;
+  text-align: right;
+  -webkit-letter-spacing: 0.4px;
+  -moz-letter-spacing: 0.4px;
+  -ms-letter-spacing: 0.4px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  margin: 0px 8px 0 0;
+  opacity: 1;
+  -webkit-transition: 100ms ease-out;
+  transition: 100ms ease-out;
+}
+
+<div
+  className="c0"
+  id="tip"
+>
+  <button
+    className="c1"
+  >
+    <svg
+      aria-hidden="true"
+      className="c2"
+      focusable="false"
+      viewBox="0 0 32 32"
+    >
+      <path
+        d="M16 3a13 13 0 1 0 13 13A13 13 0 0 0 16 3zm0 24a11 11 0 1 1 11-11 11 11 0 0 1-11 11z"
+      />
+      <path
+        d="M20.71 11.29a1 1 0 0 0-1.42 0L16 14.59l-3.29-3.3a1 1 0 0 0-1.42 1.42l3.3 3.29-3.3 3.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.29-3.3 3.29 3.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42L17.41 16l3.3-3.29a1 1 0 0 0 0-1.42z"
+      />
+    </svg>
+  </button>
+  <div
+    className="c3"
+  >
+    Send my tip to
+  </div>
+  <div
+    className="c4"
+    disabled={false}
+  >
+    <div
+      className="c5"
+    >
+      <div
+        className="c6"
+      >
+        
+      </div>
+      <div
+        className="c7"
+      />
+      <div
+        className="c8"
+      >
+        <span
+          className="c9"
+        >
+          MISSING: allowTip
+           
+        </span>
+        <span
+          className="c10"
+        >
+          <div
+            className="c11"
+          >
+            <div
+              className="c12"
+              size="small"
+            >
+              MISSING: off
+            </div>
+            <div
+              className="c13"
+              data-test-id="toggle"
+              onClick={[Function]}
+              size="small"
+            >
+              <div
+                className="c14"
+                size="small"
+              />
+              <div
+                className="c15"
+                size="small"
+                type="light"
+              />
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+    <div
+      className="c16"
+      data-test-id="send-tip-button"
+      onClick={[Function]}
+    >
+      <div
+        className="c17"
+      >
+        <button
+          className="c18"
+        >
+          <span
+            className="c19"
+            disabled={false}
+          >
+            <svg
+              aria-hidden="true"
+              className="c20"
+              focusable="false"
+              viewBox="0 0 32 32"
+            >
+              <path
+                d="M29 4v-.07a1 1 0 0 0 0-.24.42.42 0 0 0 0-.1.84.84 0 0 0-.18-.28.84.84 0 0 0-.29-.2h-.1a1 1 0 0 0-.37-.11H28a.87.87 0 0 0-.28.05h-.07L3.6 13.66a1 1 0 0 0-.12 1.77l8.17 4.94 5.14 8.16a1 1 0 0 0 .84.47h.08a1 1 0 0 0 .84-.6l10.37-24A1 1 0 0 0 29 4zm-5.47 3L12.21 18.38l-6.05-3.67zm-6.06 18.86l-3.83-6.08L25 8.41z"
+              />
+            </svg>
+          </span>
+          MISSING: sendTip
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Profile tests basic tests matches the snapshot 1`] = `
+.c0 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  font-family: Muli,sans-serif;
+}
+
+.c1 {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 24px;
+  width: 24px;
+}
+
+.c2 {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.c3 {
+  padding: 0 0 0 12px;
+}
+
+.c4 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 14px;
+  font-weight: 700;
+  color: #3b3e4f;
+}
+
+<div
+  className="c0"
+  id="profile"
+>
+  <div
+    className="c1"
+    type="small"
+  >
+    <img
+      className="c2"
+      src=""
+    />
+  </div>
+  <div
+    className="c3"
+  >
+    <div
+      className="c4"
+    >
+      <span
+        className=""
+        type="small"
+      />
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Info Cards tests basic tests matches the snapshot 1`] = `
+<section
+  id="info-cards"
+/>
+`;

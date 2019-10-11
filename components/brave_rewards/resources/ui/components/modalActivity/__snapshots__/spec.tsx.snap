@@ -1,0 +1,500 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalActivity tests basic tests matches the snapshot 1`] = `
+.c5 {
+  font-family: Muli,sans-serif;
+}
+
+.c6 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.c7 {
+  -webkit-flex-basis: 40%;
+  -ms-flex-preferred-size: 40%;
+  flex-basis: 40%;
+}
+
+.c8 {
+  -webkit-flex-basis: 378px;
+  -ms-flex-preferred-size: 378px;
+  flex-basis: 378px;
+  -webkit-box-flex: 0;
+  -webkit-flex-grow: 0;
+  -ms-flex-positive: 0;
+  flex-grow: 0;
+  -webkit-flex-shrink: 1;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  margin-bottom: 45px;
+}
+
+.c9 {
+  margin-bottom: 103px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.c10 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-right: 35px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.c13 {
+  font-size: 14px;
+  line-height: 1.43;
+  color: #838391;
+  margin-left: 13px;
+}
+
+.c15 {
+  background-color: #f9f9fd;
+  margin: 0 -50px;
+  padding: 0 50px;
+}
+
+.c29 {
+  max-width: 508px;
+  margin-top: 46px;
+  font-family: Muli,sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: #686978;
+}
+
+.c16 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 2.79;
+  -webkit-letter-spacing: 0.2px;
+  -moz-letter-spacing: 0.2px;
+  -ms-letter-spacing: 0.2px;
+  letter-spacing: 0.2px;
+  color: #4b4c5c;
+  text-transform: uppercase;
+  padding-top: 14px;
+  margin-top: 28px;
+}
+
+.c21 {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 2.79;
+  -webkit-letter-spacing: 0.2px;
+  -moz-letter-spacing: 0.2px;
+  -ms-letter-spacing: 0.2px;
+  letter-spacing: 0.2px;
+  color: #4b4c5c;
+  text-transform: none;
+}
+
+.c25 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 12px;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  line-height: 2;
+  color: #9e9fab;
+  padding: 11px 0 32px;
+}
+
+.c28 {
+  margin-left: 5px;
+}
+
+.c11 {
+  color: #A1A8F2;
+  width: 27px;
+}
+
+.c26 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  color: #392DD1;
+  width: 24px;
+  height: 24px;
+}
+
+.c23 {
+  text-align: right;
+}
+
+.c24 {
+  padding-right: 10px;
+}
+
+.c20 {
+  text-align: center;
+  padding: 30px 0;
+  color: #999ea2;
+  font-size: 14px;
+}
+
+.c17 {
+  min-width: 100%;
+  margin: 24px 0;
+}
+
+.c18 {
+  text-transform: uppercase;
+  text-align: left;
+  font-family: Muli,sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  border-bottom: 2px solid #dedfe4;
+  border-top: 2px solid #dedfe4;
+  color: #4B4C5C;
+  padding: 12px 0;
+}
+
+.c22 {
+  text-transform: uppercase;
+  text-align: left;
+  font-family: Muli,sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  border-bottom: 2px solid #dedfe4;
+  border-top: 2px solid #dedfe4;
+  color: #4B4C5C;
+  padding: 12px 0;
+}
+
+.c3 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c14 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c12 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c27 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c0 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(12,13,33,0.85);
+  z-index: 99;
+  padding: 0 20px;
+  overflow: hidden;
+}
+
+.c1 {
+  max-width: 920px;
+  margin: 52px auto;
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.c2 {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  color: #9E9FAB;
+}
+
+.c4 {
+  padding: 48px 48px;
+  overflow-y: auto;
+  max-height: calc(100vh - 100px);
+}
+
+.c19 {
+  text-align: right;
+  padding-right: 14px;
+}
+
+<div
+  className="c0"
+  id="activity"
+  onClick={[Function]}
+>
+  <div
+    className="c1"
+    size="normal"
+  >
+    <div
+      className="c2"
+    >
+      <svg
+        aria-hidden="true"
+        className="c3"
+        focusable="false"
+        viewBox="0 0 32 32"
+      >
+        <path
+          d="M16 3a13 13 0 1 0 13 13A13 13 0 0 0 16 3zm0 24a11 11 0 1 1 11-11 11 11 0 0 1-11 11z"
+        />
+        <path
+          d="M20.71 11.29a1 1 0 0 0-1.42 0L16 14.59l-3.29-3.3a1 1 0 0 0-1.42 1.42l3.3 3.29-3.3 3.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.29-3.3 3.29 3.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42L17.41 16l3.3-3.29a1 1 0 0 0 0-1.42z"
+        />
+      </svg>
+    </div>
+    <div
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        <div
+          className="c6"
+        >
+          <div
+            className="c7"
+          />
+          <div
+            className="c8"
+          >
+            <div
+              className="c9"
+            >
+              <button
+                className="c10"
+              >
+                <span
+                  className="c11"
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="c12"
+                    focusable="false"
+                    viewBox="0 0 32 32"
+                  >
+                    <path
+                      d="M23 13h1c.552 0 1 .447 1 1 0 .553-.448 1-1 1h-1c-.552 0-1-.447-1-1 0-.553.448-1 1-1zm3 9h-2v-4c0-.553-.448-1-1-1H9c-.552 0-1 .447-1 1v4H6V12h20v10zm-16 4h12v-7H10v7zm0-16h12V6H10v4zm16 0h-2V5c0-.553-.448-1-1-1H9c-.552 0-1 .447-1 1v5H6c-1.103 0-2 .897-2 2v10c0 1.103.897 2 2 2h2v3c0 .553.448 1 1 1h14c.552 0 1-.447 1-1v-3h2c1.103 0 2-.897 2-2V12c0-1.103-.897-2-2-2z"
+                      fillRule="evenodd"
+                    />
+                  </svg>
+                </span>
+                <div
+                  className="c13"
+                >
+                  MISSING: print
+                </div>
+              </button>
+              <button
+                className="c10"
+              >
+                <span
+                  className="c11"
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="c14"
+                    focusable="false"
+                    viewBox="0 0 32 32"
+                  >
+                    <path
+                      d="M15.25 21.65a1 1 0 0 0 1.5 0l5.89-4.88a1 1 0 1 0-1.28-1.54L17 18.84V4a1 1 0 0 0-2 0v14.84l-4.36-3.61a1 1 0 0 0-1.28 1.54z"
+                    />
+                    <path
+                      d="M28 20a1 1 0 0 0-1 1v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-5a1 1 0 0 0-2 0v5a3 3 0 0 0 3 3h20a3 3 0 0 0 3-3v-5a1 1 0 0 0-1-1z"
+                    />
+                  </svg>
+                </span>
+                <div
+                  className="c13"
+                >
+                  MISSING: downloadPDF
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          className="c15"
+        >
+          <div
+            className="c16"
+          >
+            MISSING: transactions
+          </div>
+          <div>
+            <div>
+              <table
+                className="c17"
+              >
+                <thead>
+                  <tr>
+                    <th
+                      className="c18"
+                    >
+                      MISSING: date
+                    </th>
+                    <th
+                      className="c18"
+                    >
+                      MISSING: type
+                    </th>
+                    <th
+                      className="c18"
+                    >
+                      MISSING: description
+                    </th>
+                    <th
+                      className="c18"
+                    >
+                      <div
+                        className="c19"
+                      >
+                        MISSING: amount
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+              </table>
+              <div
+                className="c20"
+              />
+            </div>
+          </div>
+          <div
+            className="c16"
+          >
+            <span>
+              MISSING: contributeAllocation
+            </span>
+            <div
+              className="c21"
+            >
+              MISSING: paymentMonthly
+            </div>
+          </div>
+          <div>
+            <div>
+              <table
+                className="c17"
+              >
+                <thead>
+                  <tr>
+                    <th
+                      className="c22"
+                    >
+                      <div>
+                        MISSING: rewardsContributeVisited
+                      </div>
+                    </th>
+                    <th
+                      className="c22"
+                    >
+                      <div
+                        className="c23"
+                      >
+                        MISSING: rewardsContributeAttention
+                      </div>
+                    </th>
+                    <th
+                      className="c22"
+                    >
+                      <div
+                        className="c24 c23"
+                      >
+                        MISSING: payment
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+              </table>
+              <div
+                className="c20"
+              />
+            </div>
+          </div>
+          <div
+            className="c25"
+          >
+            <div
+              className="c26"
+            >
+              <svg
+                aria-hidden="true"
+                className="c27"
+                focusable="false"
+                viewBox="0 0 32 32"
+              >
+                <path
+                  d="M30 16c0 7.73-6.27 14-14 14-7.732 0-14-6.269-14-14S8.268 2 16 2c7.73 0 14 6.27 14 14zm-15.573 3.374l-3.495-3.04a1.167 1.167 0 0 0-1.531 1.761l4.42 3.845c.503.438 1.27.365 1.682-.16l7.646-9.726a1.167 1.167 0 0 0-1.834-1.442l-6.888 8.762z"
+                />
+              </svg>
+            </div>
+            <div
+              className="c28"
+            >
+              MISSING: braveVerified
+            </div>
+          </div>
+        </div>
+        <div
+          className="c29"
+        >
+          <b>
+            MISSING: pleaseNote
+          </b>
+           
+          MISSING: activityNote
+          <br />
+          <br />
+          MISSING: activityCopy
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

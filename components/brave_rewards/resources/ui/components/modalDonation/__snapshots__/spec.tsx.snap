@@ -1,0 +1,176 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ModalDonation tests basic tests matches the snapshot 1`] = `
+.c5 {
+  font-family: Poppins,sans-serif;
+}
+
+.c6 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 2;
+  color: #4b4c5c;
+  margin-bottom: 20px;
+}
+
+.c0 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(12,13,33,0.85);
+  z-index: 99;
+  padding: 0 20px;
+  overflow: hidden;
+}
+
+.c1 {
+  max-width: 920px;
+  margin: 52px auto;
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.c2 {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  color: #9E9FAB;
+}
+
+.c4 {
+  padding: 48px 48px;
+  overflow-y: auto;
+  max-height: calc(100vh - 100px);
+}
+
+.c3 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.c10 {
+  text-align: center;
+  padding: 30px 0;
+  color: #999ea2;
+  font-size: 14px;
+}
+
+.c7 {
+  min-width: 100%;
+  margin: 24px 0;
+}
+
+.c8 {
+  text-transform: uppercase;
+  text-align: left;
+  font-family: Muli,sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  border-bottom: 2px solid #dedfe4;
+  border-top: 2px solid #dedfe4;
+  color: #4B4C5C;
+  padding: 12px 0;
+  border: none;
+  border-bottom: 1px solid #696FDC;
+  padding: 8px 0;
+  color: #696FDC;
+}
+
+.c9 {
+  text-transform: uppercase;
+  text-align: left;
+  font-family: Muli,sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  border-bottom: 2px solid #dedfe4;
+  border-top: 2px solid #dedfe4;
+  color: #4B4C5C;
+  padding: 12px 0;
+  text-align: right;
+  padding-right: 7px;
+  border: none;
+  border-bottom: 1px solid #696FDC;
+  padding: 8px 0;
+  color: #696FDC;
+}
+
+<div
+  className="c0"
+  id="modal"
+  onClick={[Function]}
+>
+  <div
+    className="c1"
+    size="normal"
+  >
+    <div
+      className="c2"
+    >
+      <svg
+        aria-hidden="true"
+        className="c3"
+        focusable="false"
+        viewBox="0 0 32 32"
+      >
+        <path
+          d="M16 3a13 13 0 1 0 13 13A13 13 0 0 0 16 3zm0 24a11 11 0 1 1 11-11 11 11 0 0 1-11 11z"
+        />
+        <path
+          d="M20.71 11.29a1 1 0 0 0-1.42 0L16 14.59l-3.29-3.3a1 1 0 0 0-1.42 1.42l3.3 3.29-3.3 3.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.29-3.3 3.29 3.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42L17.41 16l3.3-3.29a1 1 0 0 0 0-1.42z"
+        />
+      </svg>
+    </div>
+    <div
+      className="c4"
+    >
+      <div
+        className="c5"
+      >
+        <div
+          className="c6"
+        >
+          MISSING: donationTips
+        </div>
+        <div>
+          <div>
+            <table
+              className="c7"
+            >
+              <thead>
+                <tr>
+                  <th
+                    className="c8"
+                  >
+                    MISSING: site
+                  </th>
+                  <th
+                    className="c8"
+                  >
+                    MISSING: type
+                  </th>
+                  <th
+                    className="c9"
+                  >
+                    MISSING: tokens
+                  </th>
+                </tr>
+              </thead>
+            </table>
+            <div
+              className="c10"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

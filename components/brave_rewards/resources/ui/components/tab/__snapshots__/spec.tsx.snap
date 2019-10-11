@@ -1,0 +1,129 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tab tests basic tests matches the snapshot 1`] = `
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-family: Poppins,sans-serif;
+}
+
+.c1 {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 43px;
+  cursor: pointer;
+}
+
+.c2 {
+  width: 100%;
+  height: 100%;
+  background: #DFDFE8;
+  border-radius: 21.5px 21.5px 21.5px 21.5px;
+}
+
+.c7 {
+  top: -17px;
+  width: 50%;
+  height: 37px;
+  background: #FFFFFF;
+  border-radius: 21.5px 21.5px 21.5px 21.5px;
+  position: relative;
+  -webkit-transition: all .4s ease;
+  transition: all .4s ease;
+  -webkit-transform: translate(calc(2%),calc(-50% - 4px));
+  -ms-transform: translate(calc(2%),calc(-50% - 4px));
+  transform: translate(calc(2%),calc(-50% - 4px));
+  box-shadow: 0 3px 3px rgba(0,0,0,0.05);
+}
+
+.c3 {
+  width: 50%;
+  display: block;
+  height: 100%;
+  float: left;
+}
+
+.c5 {
+  width: 50%;
+  display: block;
+  height: 100%;
+  float: right;
+}
+
+.c4 {
+  z-index: 9;
+  position: relative;
+  font-size: 14px;
+  width: 70%;
+  margin: 13px auto 0 auto;
+  text-overflow: ellipsis;
+  display: block;
+  overflow: hidden;
+  text-align: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #FB542B;
+  font-weight: 500;
+}
+
+.c6 {
+  z-index: 9;
+  position: relative;
+  font-size: 14px;
+  width: 70%;
+  margin: 13px auto 0 auto;
+  text-overflow: ellipsis;
+  display: block;
+  overflow: hidden;
+  text-align: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #84889c;
+  font-weight: normal;
+}
+
+<div
+  className="c0"
+>
+  <div
+    className="c1"
+  >
+    <div
+      className="c2"
+    >
+      <div
+        className="c3"
+        onClick={[Function]}
+      >
+        <div
+          className="c4"
+          selected={true}
+        >
+          Test1
+        </div>
+      </div>
+      <div
+        className="c5"
+        onClick={[Function]}
+      >
+        <div
+          className="c6"
+          selected={false}
+        >
+          Test2
+        </div>
+      </div>
+    </div>
+    <div
+      className="c7"
+    />
+  </div>
+</div>
+`;
