@@ -72,6 +72,10 @@ source_set("browser") {
 
   if (brave_rewards_enabled) {
     sources += [
+      "database/database_contribution_queue.cc",
+      "database/database_contribution_queue.h",
+      "database/database_contribution_queue_publishers.cc",
+      "database/database_contribution_queue_publishers.h",
       "database/database_server_publisher_amounts.cc",
       "database/database_server_publisher_amounts.h",
       "database/database_server_publisher_banner.cc",

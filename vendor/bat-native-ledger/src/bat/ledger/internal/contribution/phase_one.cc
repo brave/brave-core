@@ -501,11 +501,6 @@ void PhaseOne::Complete(ledger::Result result,
                         const std::string& viewing_id,
                         const ledger::RewardsType type,
                         const std::string& probi) {
-  // Set timer to the next month when AC is complete
-  if (type == ledger::RewardsType::AUTO_CONTRIBUTE) {
-    contribution_->ResetReconcileStamp();
-  }
-
   ledger_->OnReconcileComplete(result, viewing_id, probi, type);
 
   if (result != ledger::Result::LEDGER_OK) {

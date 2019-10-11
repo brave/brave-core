@@ -252,3 +252,17 @@ enum RewardsType {
   ONE_TIME_TIP = 8,
   RECURRING_TIP = 16,
 };
+
+struct ContributionQueue {
+  uint64 id;
+  RewardsType type;
+  double amount;
+  bool partial;
+
+  array<ContributionQueuePublisher> publishers;
+};
+
+struct ContributionQueuePublisher {
+  string publisher_key;
+  double amount_percent;
+};

@@ -74,5 +74,8 @@
 - (void)setTransferFee:(const std::string&)wallet_type transfer_fee:(ledger::TransferFeePtr)transfer_fee;
 - (void)removeTransferFee:(const std::string&)wallet_type id:(const std::string&)id;
 - (ledger::TransferFeeList)getTransferFees:(const std::string&)wallet_type;
+- (void)insertOrUpdateContributionQueue:(ledger::ContributionQueuePtr)info callback:(ledger::ResultCallback)callback;
+- (void)deleteContributionQueue:(const uint64_t) id callback:(ledger::ResultCallback)callback;
+- (void)getFirstContributionQueue:(ledger::GetFirstContributionQueueCallback)callback;
 
 @end

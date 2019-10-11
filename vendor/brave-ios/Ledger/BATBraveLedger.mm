@@ -1754,6 +1754,22 @@ BATLedgerBridge(BOOL,
   // FIXME: Add implementation
 }
 
+- (void)insertOrUpdateContributionQueue:(ledger::ContributionQueuePtr)info callback:(ledger::ResultCallback)callback
+{
+  //FIXME::Add implementation
+}
+
+- (void)deleteContributionQueue:(const uint64_t) id callback:(ledger::ResultCallback)callback
+{
+  //FIXME::Add implementation
+}
+
+- (void)getFirstContributionQueue:(ledger::GetFirstContributionQueueCallback)callback
+{
+  //FIXME::Add implementation
+}
+
+
 @end
 
 // FIXME: This is a patch, need to use the actual verified state

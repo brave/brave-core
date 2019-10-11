@@ -19,12 +19,6 @@ using std::placeholders::_3;
 
 namespace braveledger_contribution {
 
-static bool winners_votes_compare(
-    const braveledger_bat_helper::WINNERS_ST& first,
-    const braveledger_bat_helper::WINNERS_ST& second) {
-  return (first.votes_ < second.votes_);
-}
-
 PhaseTwo::PhaseTwo(bat_ledger::LedgerImpl* ledger,
     Contribution* contribution) :
     ledger_(ledger),
@@ -47,25 +41,17 @@ void PhaseTwo::Start(const std::string& viewing_id) {
 
   switch (reconcile.type_) {
     case ledger::RewardsType::AUTO_CONTRIBUTE: {
-      GetContributeWinners(ballots_count, viewing_id, reconcile.list_);
+      GetContributeWinners(ballots_count, viewing_id, reconcile.directions_);
       break;
     }
 
-    case ledger::RewardsType::RECURRING_TIP: {
-      GetTipsWinners(ballots_count, viewing_id);
-      break;
-    }
-
+    case ledger::RewardsType::RECURRING_TIP:
     case ledger::RewardsType::ONE_TIME_TIP: {
-      // Direct one-time contribution
       braveledger_bat_helper::WINNERS_ST winner;
       winner.votes_ = ballots_count;
-      winner.publisher_data_.id_ = reconcile.directions_.front().publisher_key_;
-      winner.publisher_data_.duration_ = 0;
-      winner.publisher_data_.score_ = 0;
-      winner.publisher_data_.visits_ = 0;
-      winner.publisher_data_.percent_ = 0;
-      winner.publisher_data_.weight_ = 0;
+      winner.direction_.publisher_key_ =
+          reconcile.directions_.front().publisher_key_;
+      winner.direction_.amount_percent_ = 100.0;
       VotePublishers(braveledger_bat_helper::Winners { winner }, viewing_id);
       break;
     }
@@ -93,16 +79,16 @@ unsigned int PhaseTwo::GetBallotsCount(
 
 bool PhaseTwo::GetStatisticalVotingWinner(
     double dart,
-    const braveledger_bat_helper::PublisherList& list,
+    const braveledger_bat_helper::Directions& directions,
     braveledger_bat_helper::WINNERS_ST* winner) {
   double upper = 0.0;
-  for (const auto& item : list) {
-    upper += item.weight_ / 100.0;
+  for (const auto& item : directions) {
+    upper += item.amount_percent_ / 100.0;
     if (upper < dart)
       continue;
 
     winner->votes_ = 1;
-    winner->publisher_data_ = item;
+    winner->direction_ = item;
 
     return true;
   }
@@ -112,13 +98,13 @@ bool PhaseTwo::GetStatisticalVotingWinner(
 
 braveledger_bat_helper::Winners PhaseTwo::GetStatisticalVotingWinners(
     uint32_t total_votes,
-    const braveledger_bat_helper::PublisherList& list) {
+    const braveledger_bat_helper::Directions& directions) {
   braveledger_bat_helper::Winners winners;
 
   while (total_votes > 0) {
     double dart = brave_base::random::Uniform_01();
     braveledger_bat_helper::WINNERS_ST winner;
-    if (GetStatisticalVotingWinner(dart, list, &winner)) {
+    if (GetStatisticalVotingWinner(dart, directions, &winner)) {
       winners.push_back(winner);
       --total_votes;
     }
@@ -130,50 +116,10 @@ braveledger_bat_helper::Winners PhaseTwo::GetStatisticalVotingWinners(
 void PhaseTwo::GetContributeWinners(
     const unsigned int ballots,
     const std::string& viewing_id,
-    const braveledger_bat_helper::PublisherList& list) {
+    const braveledger_bat_helper::Directions& directions) {
   braveledger_bat_helper::Winners winners =
-      GetStatisticalVotingWinners(ballots, list);
+      GetStatisticalVotingWinners(ballots, directions);
   VotePublishers(winners, viewing_id);
-}
-
-void PhaseTwo::GetTipsWinners(
-    const unsigned int ballots,
-    const std::string& viewing_id) {
-  const auto reconcile = ledger_->GetReconcileById(viewing_id);
-  unsigned int total_votes = 0;
-  braveledger_bat_helper::Winners res;
-
-  for (const auto &item : reconcile.directions_) {
-    if (item.amount_ <= 0) {
-      continue;
-    }
-
-    braveledger_bat_helper::WINNERS_ST winner;
-    double percent = item.amount_ / reconcile.fee_;
-    winner.votes_ = static_cast<unsigned int>(std::lround(percent *
-        static_cast<double>(ballots)));
-    total_votes += winner.votes_;
-    winner.publisher_data_.id_ = item.publisher_key_;
-    winner.publisher_data_.duration_ = 0;
-    winner.publisher_data_.score_ = 0;
-    winner.publisher_data_.visits_ = 0;
-    winner.publisher_data_.percent_ = 0;
-    winner.publisher_data_.weight_ = 0;
-    res.push_back(winner);
-  }
-
-  if (res.size()) {
-    while (total_votes > ballots) {
-      braveledger_bat_helper::Winners::iterator max =
-          std::max_element(res.begin(), res.end(), winners_votes_compare);
-      (max->votes_)--;
-      total_votes--;
-    }
-  } else {
-    // TODO(nejczdovc) what should we do in this case?
-  }
-
-  VotePublishers(res, viewing_id);
 }
 
 void PhaseTwo::VotePublishers(
@@ -182,7 +128,7 @@ void PhaseTwo::VotePublishers(
   std::vector<std::string> publishers;
   for (size_t i = 0; i < winners.size(); i++) {
     for (size_t j = 0; j < winners[i].votes_; j++) {
-      publishers.push_back(winners[i].publisher_data_.id_);
+      publishers.push_back(winners[i].direction_.publisher_key_);
     }
   }
 

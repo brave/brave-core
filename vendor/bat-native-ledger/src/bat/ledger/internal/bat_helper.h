@@ -252,11 +252,25 @@ struct PUBLISHER_ST {
   unsigned int status_ = 0;
 };
 
+struct RECONCILE_DIRECTION {
+  RECONCILE_DIRECTION();
+  RECONCILE_DIRECTION(const std::string& publisher_key,
+                      double amount_percent);
+  ~RECONCILE_DIRECTION();
+
+  bool loadFromJson(const std::string &json);
+
+  std::string publisher_key_;
+  double amount_percent_;
+};
+
+typedef std::vector<RECONCILE_DIRECTION> Directions;
+
 struct WINNERS_ST {
   WINNERS_ST();
   ~WINNERS_ST();
 
-  PUBLISHER_ST publisher_data_;
+  RECONCILE_DIRECTION direction_;
   unsigned int votes_ = 0;
 };
 
@@ -283,21 +297,7 @@ struct SURVEYOR_ST {
   std::string surveySK_;
 };
 
-struct RECONCILE_DIRECTION {
-  RECONCILE_DIRECTION();
-  RECONCILE_DIRECTION(const std::string& publisher_key,
-                      int amount,
-                      const std::string& currency);
-  ~RECONCILE_DIRECTION();
 
-  bool loadFromJson(const std::string &json);
-
-  std::string publisher_key_;
-  int amount_;
-  std::string currency_;
-};
-
-typedef std::vector<RECONCILE_DIRECTION> Directions;
 typedef std::vector<PUBLISHER_ST> PublisherList;
 
 struct CURRENT_RECONCILE {
@@ -321,7 +321,6 @@ struct CURRENT_RECONCILE {
   double fee_;
   Directions directions_;
   ledger::RewardsType type_;
-  PublisherList list_;
   ledger::ContributionRetry retry_step_;
   int retry_level_;
   std::string destination_;

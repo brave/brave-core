@@ -24,7 +24,7 @@ namespace brave_rewards {
 
 namespace {
 
-const int kCurrentVersionNumber = 8;
+const int kCurrentVersionNumber = 9;
 const int kCompatibleVersionNumber = 1;
 
 }  // namespace
@@ -39,6 +39,9 @@ PublisherInfoDatabase::PublisherInfoDatabase(
 
   server_publisher_info_ =
       std::make_unique<DatabaseServerPublisherInfo>(GetCurrentVersion());
+
+  contribution_queue_ =
+      std::make_unique<DatabaseContributionQueue>(GetCurrentVersion());
 }
 
 PublisherInfoDatabase::~PublisherInfoDatabase() {
@@ -80,6 +83,10 @@ bool PublisherInfoDatabase::Init() {
   CreatePendingContributionsIndex();
 
   if (!server_publisher_info_->Init(&GetDB())) {
+    return false;
+  }
+
+  if (!contribution_queue_->Init(&GetDB())) {
     return false;
   }
 
@@ -1076,6 +1083,52 @@ ledger::ServerPublisherInfoPtr PublisherInfoDatabase::GetServerPublisherInfo(
   return server_publisher_info_->GetRecord(&GetDB(), publisher_key);
 }
 
+/**
+ *
+ * CONTRIBUTION QUEUE
+ *
+ */
+bool PublisherInfoDatabase::InsertOrUpdateContributionQueue(
+    ledger::ContributionQueuePtr info) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
+  return contribution_queue_->InsertOrUpdate(&GetDB(), std::move(info));
+}
+
+ledger::ContributionQueuePtr
+PublisherInfoDatabase::GetFirstContributionQueue() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return nullptr;
+  }
+
+  return contribution_queue_->GetFirstRecord(&GetDB());
+}
+
+bool PublisherInfoDatabase::DeleteContributionQueue(const uint64_t id) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
+  return contribution_queue_->DeleteRecord(&GetDB(), id);
+}
+
 // Other -------------------------------------------------------------------
 
 int PublisherInfoDatabase::GetCurrentVersion() {
@@ -1646,6 +1699,12 @@ bool PublisherInfoDatabase::CreateV8PendingContributionsIndex() {
       "ON pending_contribution (publisher_id)");
 }
 
+bool PublisherInfoDatabase::MigrateV8toV9() {
+  // no need to call any script as database has min version
+  // contribution queue tables
+  return true;
+}
+
 bool PublisherInfoDatabase::Migrate(int version) {
   switch (version) {
     case 2: {
@@ -1668,6 +1727,9 @@ bool PublisherInfoDatabase::Migrate(int version) {
     }
     case 8: {
       return MigrateV7toV8();
+    }
+    case 9: {
+      return MigrateV8toV9();
     }
     default:
       return false;

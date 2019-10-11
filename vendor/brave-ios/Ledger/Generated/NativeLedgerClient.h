@@ -38,6 +38,7 @@ private:
   void OnGrantFinish(ledger::Result result, ledger::GrantPtr grant) override;
   void OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) override;
   void OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const std::string & probi, const ledger::RewardsType type) override;
+  void OnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::GrantPtr> grants) override;
   void RemoveRecurringTip(const std::string & publisher_key, ledger::RemoveRecurringTipCallback callback) override;
   void RestorePublishers(ledger::RestorePublishersCallback callback) override;
   void OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) override;
@@ -80,4 +81,7 @@ private:
   void SetTransferFee(const std::string& wallet_type, ledger::TransferFeePtr transfer_fee) override;
   ledger::TransferFeeList GetTransferFees(const std::string& wallet_type) override;
   void RemoveTransferFee(const std::string& wallet_type, const std::string& id) override;
+  void InsertOrUpdateContributionQueue(ledger::ContributionQueuePtr info, ledger::ResultCallback callback) override;
+  void DeleteContributionQueue(const uint64_t id, ledger::ResultCallback callback) override;
+  void GetFirstContributionQueue(ledger::GetFirstContributionQueueCallback callback) override;
 };
