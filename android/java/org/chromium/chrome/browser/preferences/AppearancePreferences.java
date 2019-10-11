@@ -21,7 +21,7 @@ import org.chromium.ui.base.DeviceFormFactor;
 
 public class AppearancePreferences
         extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
-    static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
+    public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -28,6 +28,7 @@ import org.chromium.chrome.browser.ChromeActivity;
 import org.chromium.chrome.browser.ChromeFeatureList;
 import org.chromium.chrome.browser.appmenu.BraveShieldsMenuHandler;
 import org.chromium.chrome.browser.appmenu.BraveShieldsMenuObserver;
+import org.chromium.chrome.browser.preferences.AppearancePreferences;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -53,8 +54,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   private TabModelSelectorTabObserver mTabModelSelectorTabObserver;
   private BraveShieldsContentSettings mBraveShieldsContentSettings;
   private BraveShieldsContentSettingsObserver mBraveShieldsContentSettingsObserver;
-
-  static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
 
   public BraveToolbarLayout(Context context, AttributeSet attrs) {
       super(context, attrs);
@@ -127,7 +126,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
       SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
       if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
-              && !sharedPreferences.getBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, false)) {
+              && !sharedPreferences.getBoolean(
+                      AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON, false)) {
           if (mRewardsLayout != null) {
               mRewardsLayout.setVisibility(View.VISIBLE);
           }
