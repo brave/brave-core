@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/ui/webui/about_ui.cc b/chrome/browser/ui/webui/about_ui.cc
+index 8637fe302a09..8c8b526ab28e 100644
+--- a/chrome/browser/ui/webui/about_ui.cc
++++ b/chrome/browser/ui/webui/about_ui.cc
+@@ -541,16 +541,16 @@ namespace {
+ 
+ std::string ChromeURLs() {
+   std::string html;
+-  AppendHeader(&html, 0, "Chrome URLs");
++  AppendHeader(&html, 0, "Brave URLs");
+   AppendBody(&html);
+-  html += "<h2>List of Chrome URLs</h2>\n<ul>\n";
++  html += "<h2>List of Brave URLs</h2>\n<ul>\n";
+   std::vector<std::string> hosts(
+       chrome::kChromeHostURLs,
+       chrome::kChromeHostURLs + chrome::kNumberOfChromeHostURLs);
+   std::sort(hosts.begin(), hosts.end());
+   for (std::vector<std::string>::const_iterator i = hosts.begin();
+        i != hosts.end(); ++i)
+-    html += "<li><a href='chrome://" + *i + "/'>chrome://" + *i + "</a></li>\n";
++    html += "<li><a href='chrome://" + *i + "/'>brave://" + *i + "</a></li>\n";
+   html += "</ul>\n<h2>For Debug</h2>\n"
+       "<p>The following pages are for debugging purposes only. Because they "
+       "crash or hang the renderer, they're not linked directly; you can type "

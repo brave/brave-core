@@ -1,0 +1,23 @@
+diff --git a/ios/chrome/browser/ui/webui/about_ui.cc b/ios/chrome/browser/ui/webui/about_ui.cc
+index c1106f426f90..10747a1d57fd 100644
+--- a/ios/chrome/browser/ui/webui/about_ui.cc
++++ b/ios/chrome/browser/ui/webui/about_ui.cc
+@@ -82,15 +82,15 @@ void AppendFooter(std::string* output) {
+ 
+ std::string ChromeURLs() {
+   std::string html;
+-  AppendHeader(&html, 0, "Chrome URLs");
++  AppendHeader(&html, 0, "Brave URLs");
+   AppendBody(&html);
+-  html += "<h2>List of Chrome URLs</h2>\n<ul>\n";
++  html += "<h2>List of Brave URLs</h2>\n<ul>\n";
+   std::vector<std::string> hosts(kChromeHostURLs,
+                                  kChromeHostURLs + kNumberOfChromeHostURLs);
+   std::sort(hosts.begin(), hosts.end());
+   for (std::vector<std::string>::const_iterator i = hosts.begin();
+        i != hosts.end(); ++i)
+-    html += "<li><a href='chrome://" + *i + "/' id='" + *i + "'>chrome://" +
++    html += "<li><a href='chrome://" + *i + "/' id='" + *i + "'>brave://" +
+             *i + "</a></li>\n";
+   html += "</ul>\n";
+   AppendFooter(&html);
