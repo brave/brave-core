@@ -24,6 +24,8 @@
 
 using brave_shields::ControlType;
 
+namespace {
+
 const char kIframeID[] = "test";
 
 const char kPointInPathScript[] =
@@ -40,7 +42,12 @@ const char kGetImageDataScript[] =
   "ctx.fill();"
   "domAutomationController.send(ctx.getImageData(0, 0, 10, 10).data.length);";
 
+const char kEmptyCookie[] = "";
+
 #define COOKIE_STR "test=hi"
+
+const char kTestCookie[] = COOKIE_STR;
+
 const char kCookieScript[] =
     "document.cookie = '"
     COOKIE_STR
@@ -48,6 +55,8 @@ const char kCookieScript[] =
 
 const char kReferrerScript[] =
     "domAutomationController.send(document.referrer);";
+
+}  // namespace
 
 class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
  public:
@@ -260,13 +269,21 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
       EXPECT_EQ(main_frame->GetLastCommittedURL(), url());
     }
 
-    bool NavigateToURLUntilLoadStop(
+    void NavigateToURLUntilLoadStop(
         const std::string& origin, const std::string& path) {
       ui_test_utils::NavigateToURL(
           browser(),
           embedded_test_server()->GetURL(origin, path));
+    }
 
-      return WaitForLoadStop(contents());
+    void NavigateIframe() {
+      ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
+      ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
+    }
+
+    template<typename T>
+    void CheckCookie(T* frame, base::StringPiece cookie) {
+      EXPECT_EQ(ExecScriptGetStr(kCookieScript, frame), cookie);
     }
 
  private:
@@ -301,8 +318,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
       kPointInPathScript, &isPointInPath));
   EXPECT_TRUE(isPointInPath);
 
-  EXPECT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  EXPECT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
+  NavigateIframe();
   EXPECT_TRUE(ExecuteScriptAndExtractBool(
       child_frame(), kPointInPathScript, &isPointInPath));
   EXPECT_FALSE(isPointInPath);
@@ -324,8 +340,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockFP) {
       kPointInPathScript, &isPointInPath));
   EXPECT_FALSE(isPointInPath);
 
-  EXPECT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  EXPECT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
+  NavigateIframe();
   EXPECT_TRUE(ExecuteScriptAndExtractBool(
       child_frame(), kPointInPathScript, &isPointInPath));
   EXPECT_FALSE(isPointInPath);
@@ -347,8 +362,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowFP) {
       kPointInPathScript, &isPointInPath));
   EXPECT_TRUE(isPointInPath);
 
-  EXPECT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  EXPECT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
+  NavigateIframe();
   EXPECT_TRUE(ExecuteScriptAndExtractBool(
       child_frame(), kPointInPathScript, &isPointInPath));
   EXPECT_TRUE(isPointInPath);
@@ -371,8 +385,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
       kPointInPathScript, &isPointInPath));
   EXPECT_TRUE(isPointInPath);
 
-  EXPECT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  EXPECT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
+  NavigateIframe();
   EXPECT_TRUE(ExecuteScriptAndExtractBool(
       child_frame(), kPointInPathScript, &isPointInPath));
   EXPECT_FALSE(isPointInPath);
@@ -396,8 +409,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
       kPointInPathScript, &isPointInPath));
   EXPECT_TRUE(isPointInPath);
 
-  EXPECT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  EXPECT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
+  NavigateIframe();
   EXPECT_TRUE(ExecuteScriptAndExtractBool(
       child_frame(), kPointInPathScript, &isPointInPath));
   EXPECT_TRUE(isPointInPath);
@@ -420,8 +432,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
       kGetImageDataScript, &bufLen));
   EXPECT_EQ(400, bufLen);
 
-  EXPECT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  EXPECT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
+  NavigateIframe();
   EXPECT_TRUE(ExecuteScriptAndExtractInt(
       child_frame(), kGetImageDataScript, &bufLen));
   EXPECT_EQ(0, bufLen);
@@ -444,8 +455,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
       kGetImageDataScript, &bufLen));
   EXPECT_EQ(0, bufLen);
 
-  EXPECT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  EXPECT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
+  NavigateIframe();
   EXPECT_TRUE(ExecuteScriptAndExtractInt(
       child_frame(), kGetImageDataScript, &bufLen));
   EXPECT_EQ(0, bufLen);
@@ -468,8 +478,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
       kGetImageDataScript, &bufLen));
   EXPECT_EQ(400, bufLen);
 
-  EXPECT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  EXPECT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
+  NavigateIframe();
   EXPECT_TRUE(ExecuteScriptAndExtractInt(
       child_frame(), kGetImageDataScript, &bufLen));
   EXPECT_EQ(400, bufLen);
@@ -485,8 +494,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
 
   // The initial navigation doesn't have a referrer.
   NavigateToPageWithIframe();
-  EXPECT_STREQ(ExecScriptGetStr(kReferrerScript,
-      contents()).c_str(), "");
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript,
+      contents()), "");
   EXPECT_TRUE(GetLastReferrer(url()).empty());
 
   // Sub-resources loaded within the page get their referrer spoofed.
@@ -495,10 +504,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   EXPECT_EQ(GetLastReferrer(image_url()), iframe_url().GetOrigin().spec());
 
   // Cross-origin iframe navigations get their referrer spoofed.
-  ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
-  EXPECT_STREQ(ExecScriptGetStr(kReferrerScript,
-      child_frame()).c_str(), iframe_url().GetOrigin().spec().c_str());
+  NavigateIframe();
+
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript,
+      child_frame()), iframe_url().GetOrigin().spec());
   EXPECT_EQ(GetLastReferrer(iframe_url()), iframe_url().GetOrigin().spec());
 }
 
@@ -508,8 +517,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
 
   // The initial navigation doesn't have a referrer.
   NavigateToPageWithIframe();
-  EXPECT_STREQ(ExecScriptGetStr(kReferrerScript,
-      contents()).c_str(), "");
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript,
+      contents()), "");
   EXPECT_TRUE(GetLastReferrer(url()).empty());
 
   // Sub-resources loaded within the page get their referrer spoofed.
@@ -518,10 +527,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   EXPECT_EQ(GetLastReferrer(image_url()), image_url().GetOrigin().spec());
 
   // Cross-origin iframe navigations get their referrer spoofed.
-  ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
-  EXPECT_STREQ(ExecScriptGetStr(kReferrerScript, child_frame()).c_str(),
-      iframe_url().GetOrigin().spec().c_str());
+  NavigateIframe();
+
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()),
+      iframe_url().GetOrigin().spec());
   EXPECT_EQ(GetLastReferrer(iframe_url()), iframe_url().GetOrigin().spec());
 }
 
@@ -531,8 +540,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
 
   // The initial navigation doesn't have a referrer.
   NavigateToPageWithIframe();
-  EXPECT_STREQ(ExecScriptGetStr(kReferrerScript,
-      contents()).c_str(), "");
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript,
+      contents()), "");
   EXPECT_TRUE(GetLastReferrer(url()).empty());
 
   // Sub-resources loaded within the page get the page URL as referrer.
@@ -542,11 +551,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
 
   // A cross-origin iframe navigation gets the URL of the first one as
   // referrer.
-  ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
+  NavigateIframe();
+
   EXPECT_EQ(GetLastReferrer(iframe_url()), url());
-  EXPECT_STREQ(ExecScriptGetStr(kReferrerScript, child_frame()).c_str(),
-      url().spec().c_str());
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()), url().spec());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
@@ -556,8 +564,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
 
   // The initial navigation doesn't have a referrer.
   NavigateToPageWithIframe();
-  EXPECT_STREQ(ExecScriptGetStr(kReferrerScript,
-      contents()).c_str(), "");
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, contents()), "");
   EXPECT_TRUE(GetLastReferrer(url()).empty());
 
   // Sub-resources loaded within the page get the page URL as referrer.
@@ -567,21 +574,19 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
 
   // A cross-origin iframe navigation gets the URL of the first one as
   // referrer.
-  ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
+  NavigateIframe();
+  
   EXPECT_EQ(GetLastReferrer(iframe_url()), url());
-  EXPECT_STREQ(ExecScriptGetStr(kReferrerScript, child_frame()).c_str(),
-      url().spec().c_str());
+  EXPECT_EQ(ExecScriptGetStr(kReferrerScript, child_frame()), url().spec());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
     BlockThirdPartyCookieByDefault) {
   NavigateToPageWithIframe();
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript,
-      contents()).c_str(), COOKIE_STR);
-  ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(), "");
+  CheckCookie(child_frame(), kTestCookie);
+
+  NavigateIframe();
+  CheckCookie(child_frame(), kEmptyCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
@@ -589,32 +594,30 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   Block3PCookies();
 
   NavigateToPageWithIframe();
+  CheckCookie(child_frame(), kTestCookie);
 
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript,
-      contents()).c_str(), COOKIE_STR);
-  ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(), "");
+  NavigateIframe();
+  CheckCookie(child_frame(), kEmptyCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockCookies) {
   BlockCookies();
+
   NavigateToPageWithIframe();
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, contents()).c_str(), "");
-  ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(), "");
+  CheckCookie(contents(), kEmptyCookie);
+
+  NavigateIframe();
+  CheckCookie(child_frame(), kEmptyCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowCookies) {
   AllowCookies();
+
   NavigateToPageWithIframe();
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, contents()).c_str(),
-               COOKIE_STR);
-  ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(),
-               COOKIE_STR);
+  CheckCookie(contents(), kTestCookie);
+
+  NavigateIframe();
+  CheckCookie(child_frame(), kTestCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
@@ -627,12 +630,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
       CONTENT_SETTINGS_TYPE_COOKIES, std::string(), CONTENT_SETTING_BLOCK);
 
   NavigateToPageWithIframe();
+  CheckCookie(contents(), kEmptyCookie);
 
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, contents()).c_str(), "");
-  ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(),
-               COOKIE_STR);
+  NavigateIframe();
+  CheckCookie(child_frame(), kTestCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
@@ -645,61 +646,58 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
       CONTENT_SETTINGS_TYPE_COOKIES, std::string(), CONTENT_SETTING_BLOCK);
 
   NavigateToPageWithIframe();
+  CheckCookie(contents(), kTestCookie);
 
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript,
-      contents()).c_str(), COOKIE_STR);
-  ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(), "");
+  NavigateIframe();
+  CheckCookie(child_frame(), kEmptyCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
-    ShieldsDownAllowBlockedCookies) {
+    ShieldsDownOverridesBlockedCookies) {
   BlockCookies();
   ShieldsDown();
+
   NavigateToPageWithIframe();
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, contents()).c_str(), COOKIE_STR);
-  ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(),
-               COOKIE_STR);
+  CheckCookie(contents(), kTestCookie);
+
+  NavigateIframe();
+  CheckCookie(child_frame(), kTestCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
     ShieldsDownAllowsCookies) {
   ShieldsDown();
+
   NavigateToPageWithIframe();
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, contents()).c_str(), COOKIE_STR);
-  ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(),
-               COOKIE_STR);
+  CheckCookie(contents(), kTestCookie);
+
+  NavigateIframe();
+  CheckCookie(child_frame(), kTestCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
     ShieldsUpBlockCookies) {
   BlockCookies();
   ShieldsUp();
+
   NavigateToPageWithIframe();
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, contents()).c_str(), "");
-  ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
-  ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(), "");
+  CheckCookie(contents(), kEmptyCookie);
+
+  NavigateIframe();
+  CheckCookie(child_frame(), kEmptyCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockScripts) {
   BlockScripts();
 
-  EXPECT_TRUE(
-      NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html"));
+  NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html");
   EXPECT_EQ(contents()->GetAllFrames().size(), 1u);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowScripts) {
   AllowScripts();
 
-  EXPECT_TRUE(
-      NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html"));
+  NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html");
   EXPECT_EQ(contents()->GetAllFrames().size(), 4u);
 }
 
@@ -708,8 +706,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   BlockScripts();
   ShieldsDown();
 
-  EXPECT_TRUE(
-      NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html"));
+  NavigateToURLUntilLoadStop("a.com", "/load_js_from_origins.html");
   EXPECT_EQ(contents()->GetAllFrames().size(), 4u);
 }
 
@@ -725,7 +722,6 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
       "",
       CONTENT_SETTING_BLOCK);
 
-  EXPECT_TRUE(
-      NavigateToURLUntilLoadStop("b.com", "/load_js_from_origins.html"));
+  NavigateToURLUntilLoadStop("b.com", "/load_js_from_origins.html");
   EXPECT_EQ(contents()->GetAllFrames().size(), 1u);
 }
