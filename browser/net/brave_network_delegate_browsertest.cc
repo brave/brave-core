@@ -53,6 +53,12 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
                                         top_level_page_url_);
   }
 
+  void ShieldsDown() {
+    brave_shields::SetBraveShieldsEnabled(browser()->profile(),
+                                          false,
+                                          top_level_page_url_);
+  }
+
  protected:
   GURL url_;
   GURL nested_iframe_script_url_;
@@ -75,6 +81,14 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, Iframe3PCookieBlocked) {
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, Iframe3PCookieAllowed) {
   AllowCookies();
+  ui_test_utils::NavigateToURL(browser(), url_);
+  const std::string cookie =
+      content::GetCookies(browser()->profile(), GURL("http://c.com/"));
+  EXPECT_FALSE(cookie.empty());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, Iframe3PShieldsDown) {
+  ShieldsDown();
   ui_test_utils::NavigateToURL(browser(), url_);
   const std::string cookie =
       content::GetCookies(browser()->profile(), GURL("http://c.com/"));

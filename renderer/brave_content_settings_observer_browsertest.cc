@@ -654,8 +654,19 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
-    ShieldsDownAllowsCookies) {
+    ShieldsDownAllowBlockedCookies) {
   BlockCookies();
+  ShieldsDown();
+  NavigateToPageWithIframe();
+  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, contents()).c_str(), COOKIE_STR);
+  ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
+  ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
+  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(),
+               COOKIE_STR);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+    ShieldsDownAllowsCookies) {
   ShieldsDown();
   NavigateToPageWithIframe();
   EXPECT_STREQ(ExecScriptGetStr(kCookieScript, contents()).c_str(), COOKIE_STR);
