@@ -1,0 +1,34 @@
+diff --git a/components/policy/resources/policy_templates.json b/components/policy/resources/policy_templates.json
+index 1aefb537e31087d645307d6bac4ef3448cda3e40..33a3a603447954f7ff647b65ce5daa3c5eb11309 100644
+--- a/components/policy/resources/policy_templates.json
++++ b/components/policy/resources/policy_templates.json
+@@ -17623,6 +17623,21 @@
+ 
+       See https://www.chromestatus.com/feature/4664843055398912 .''',
+     },
++    {
++      'name': 'TorDisabled',
++      'type': 'main',
++      'schema': { 'type': 'boolean' },
++      'supported_on': ['chrome.win:78-'],
++      'features': {
++        'dynamic_refresh': False,
++        'per_profile': False
++      },
++      'example_value': True,
++      'id': 605,
++      'caption': '''Allows to disable tor feature.''',
++      'tags': [],
++      'desc': '''This policy allows an admin to specify that tor feature must be disabled at startup.''',
++    },
+   ],
+ 
+   'messages': {
+@@ -18419,6 +18434,6 @@ The recommended way to configure policy on Windows is via GPO, although provisio
+   ],
+   'placeholders': [],
+   'deleted_policy_ids': [412, 546, 562, 569, 602, 603],
+-  'highest_id_currently_used': 604,
++  'highest_id_currently_used': 605,
+   'highest_atomic_group_id_currently_used': 37
+ }

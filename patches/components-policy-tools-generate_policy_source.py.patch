@@ -1,0 +1,13 @@
+diff --git a/components/policy/tools/generate_policy_source.py b/components/policy/tools/generate_policy_source.py
+index 28db4dd238ad33e4a250d93c1ef90678e5c31ef8..135515f639a3e4744c8f1efd7503cb802135bcc5 100755
+--- a/components/policy/tools/generate_policy_source.py
++++ b/components/policy/tools/generate_policy_source.py
+@@ -24,7 +24,7 @@ import types
+ from xml.sax.saxutils import escape as xml_escape
+ 
+ CHROME_POLICY_KEY = 'SOFTWARE\\\\Policies\\\\Google\\\\Chrome'
+-CHROMIUM_POLICY_KEY = 'SOFTWARE\\\\Policies\\\\Chromium'
++CHROMIUM_POLICY_KEY = 'SOFTWARE\\\\Policies\\\\Brave'
+ 
+ 
+ class PolicyDetails:
