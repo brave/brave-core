@@ -226,16 +226,17 @@ void SetCookieControlType(HostContentSettingsMap* map,
                                     CONTENT_SETTINGS_TYPE_PLUGINS, kReferrers,
                                     GetDefaultBlockFromControlType(type));
 
-  map->SetContentSettingCustomScope(primary_pattern,
-                                    ContentSettingsPattern::Wildcard(),
-                                    CONTENT_SETTINGS_TYPE_PLUGINS, kCookies,
-                                    GetDefaultBlockFromControlType(type));
-
   map->SetContentSettingCustomScope(
       primary_pattern,
       ContentSettingsPattern::FromString("https://firstParty/*"),
       CONTENT_SETTINGS_TYPE_PLUGINS, kCookies,
       GetDefaultAllowFromControlType(type));
+
+  map->SetContentSettingCustomScope(primary_pattern,
+                                    ContentSettingsPattern::Wildcard(),
+                                    CONTENT_SETTINGS_TYPE_PLUGINS, kCookies,
+                                    GetDefaultBlockFromControlType(type));
+
   RecordShieldsSettingChanged();
 }
 
