@@ -9,9 +9,18 @@
 #include <string>
 
 #include "base/files/file_path.h"
+#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "components/prefs/pref_change_registrar.h"
+
+class PrefService;
+class Profile;
+
+namespace brave_rewards {
+class RewardsService;
+}
+
 
 namespace extensions {
 
@@ -29,6 +38,9 @@ class BraveComponentLoader : public ComponentLoader {
   void AddDefaultComponentExtensions(bool skip_session_components) override;
   void OnComponentRegistered(std::string extension_id);
 
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+  void AddRewardsExtension();
+#endif
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   void AddEthereumRemoteClientExtension();
 #endif
@@ -48,9 +60,13 @@ class BraveComponentLoader : public ComponentLoader {
   void AddHangoutServicesExtension() override;
 #endif  // BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
 
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+  void HandleRewardsEnabledStatus();
+#endif
+
   Profile* profile_;
   PrefService* profile_prefs_;
-  PrefChangeRegistrar registrar_;
+  PrefChangeRegistrar pref_change_registrar_;
   std::string ethereum_remote_client_manifest_;
   base::FilePath ethereum_remote_client_install_dir_;
 
