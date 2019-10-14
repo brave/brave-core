@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc b/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
-index 982a8b33c30266413e2cd0ea0944d7c835b81ceb..950e5b0ffcef94d52934579a9b2ea331159be55e 100644
+index 982a8b33c30266413e2cd0ea0944d7c835b81ceb..bf5cdc8224ffa6ce4496a4246fdce1f1834fb66a 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
-@@ -343,6 +343,7 @@ base::string16 AvatarToolbarButton::GetAvatarTooltipText() const {
+@@ -340,6 +340,7 @@ bool AvatarToolbarButton::ShouldShowGenericIcon() const {
+ }
+ 
+ base::string16 AvatarToolbarButton::GetAvatarTooltipText() const {
++  GET_AVATAR_TOOLTIP_TEXT_
    if (IsIncognito())
      return l10n_util::GetStringUTF16(IDS_AVATAR_BUTTON_INCOGNITO_TOOLTIP);
- 
-+  GET_AVATAR_TOOLTIP_TEXT_
-   if (profile_->IsGuestSession())
-     return l10n_util::GetStringUTF16(IDS_GUEST_PROFILE_NAME);
  
