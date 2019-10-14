@@ -14,6 +14,12 @@
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/paint_vector_icon.h"
 
+void BraveAvatarToolbarButton::SetText(const base::string16& text) {
+  // We only want the icon for Tor profile.
+  AvatarToolbarButton::SetText(brave::IsTorProfile(profile_) ? base::string16()
+                                                             : text);
+}
+
 gfx::ImageSkia BraveAvatarToolbarButton::GetAvatarIcon(
     const gfx::Image& gaia_image) const {
   if (brave::IsTorProfile(profile_)) {
