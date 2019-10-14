@@ -16,6 +16,7 @@
 		0A0D3D5221A565C300BEE65B /* SafeBrowsingHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0D3D5121A565C300BEE65B /* SafeBrowsingHandler.swift */; };
 		0A0D3D6121A596BE00BEE65B /* MalwareList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0D3D6021A596BE00BEE65B /* MalwareList.swift */; };
 		0A19362F234D44DB002E2B81 /* AppearanceAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A19362E234D44DB002E2B81 /* AppearanceAttributes.swift */; };
+		0A19365423508756002E2B81 /* LinkPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A19365323508756002E2B81 /* LinkPreviewViewController.swift */; };
 		0A1E842D21909CA70042F782 /* crypto.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A1E842C21909CA70042F782 /* crypto.js */; };
 		0A1E842F21909CBC0042F782 /* bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A1E842E21909CBB0042F782 /* bundle.js */; };
 		0A1E843121909CC40042F782 /* fetch.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A1E843021909CC30042F782 /* fetch.js */; };
@@ -1178,6 +1179,7 @@
 		0A0D3D5121A565C300BEE65B /* SafeBrowsingHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeBrowsingHandler.swift; sourceTree = "<group>"; };
 		0A0D3D6021A596BE00BEE65B /* MalwareList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MalwareList.swift; sourceTree = "<group>"; };
 		0A19362E234D44DB002E2B81 /* AppearanceAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceAttributes.swift; sourceTree = "<group>"; };
+		0A19365323508756002E2B81 /* LinkPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkPreviewViewController.swift; sourceTree = "<group>"; };
 		0A1E841B219095410042F782 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		0A1E842C21909CA70042F782 /* crypto.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = crypto.js; path = "node_modules/brave-sync/node_modules/brave-crypto/browser/crypto.js"; sourceTree = SOURCE_ROOT; };
 		0A1E842E21909CBB0042F782 /* bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = bundle.js; path = "node_modules/brave-sync/bundles/bundle.js"; sourceTree = SOURCE_ROOT; };
@@ -4100,6 +4102,7 @@
 				279C756A219DDE3B001CD1CB /* FingerprintingProtection.swift */,
 				5E34780F22D7A1D200B0D5F8 /* ResourceDownloadManager.swift */,
 				5E4845C122DE3DF800372022 /* WindowRenderHelperScript.swift */,
+				0A19365323508756002E2B81 /* LinkPreviewViewController.swift */,
 			);
 			indentWidth = 4;
 			path = Browser;
@@ -5919,6 +5922,7 @@
 				DDA24A431FD84D630098F159 /* DefaultSearchPrefs.swift in Sources */,
 				4422D4B121BFFB7600BF1855 /* bloom.cc in Sources */,
 				4422D4FD21BFFB7600BF1855 /* dumpfile.cc in Sources */,
+				0A19365423508756002E2B81 /* LinkPreviewViewController.swift in Sources */,
 				E65075611E37F77D006961AC /* MenuHelper.swift in Sources */,
 				E63ED7D81BFCD9990097D08E /* LoginTableViewCell.swift in Sources */,
 				C615FACF2129FBD000A8168C /* ImageCacheProtocol.swift in Sources */,

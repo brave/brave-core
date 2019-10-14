@@ -68,6 +68,8 @@ extension Preferences {
         
         /// The progress the user has made with onboarding
         static let basicOnboardingProgress = Option<Int>(key: "general.basic-onboarding-progress", default: OnboardingProgress.none.rawValue)
+        /// Whether or not link preview upon long press action should be shown.
+        static let enableLinkPreview = Option<Bool>(key: "general.night-mode", default: true)
     }
     final class Search {
         /// Whether or not to show suggestions while the user types
