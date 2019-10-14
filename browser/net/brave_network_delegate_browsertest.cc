@@ -53,6 +53,12 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
                                         top_level_page_url_);
   }
 
+  void BlockCookies() {
+    brave_shields::SetCookieControlType(browser()->profile(),
+                                        brave_shields::ControlType::BLOCK,
+                                        top_level_page_url_);
+  }
+
   void ShieldsDown() {
     brave_shields::SetBraveShieldsEnabled(browser()->profile(),
                                           false,
@@ -91,6 +97,22 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, Iframe3PShieldsDown) {
   ShieldsDown();
   ui_test_utils::NavigateToURL(browser(), url_);
   const std::string cookie =
+      content::GetCookies(browser()->profile(), GURL("http://c.com/"));
+  EXPECT_FALSE(cookie.empty());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+    Iframe3PShieldsDownOverridesCookieBlock) {
+  // create an explicit override
+  BlockCookies();
+  ui_test_utils::NavigateToURL(browser(), url_);
+  std::string cookie =
+      content::GetCookies(browser()->profile(), GURL("http://c.com/"));
+  EXPECT_TRUE(cookie.empty()) << "Actual cookie: " << cookie;
+
+  ShieldsDown();
+  ui_test_utils::NavigateToURL(browser(), url_);
+  cookie =
       content::GetCookies(browser()->profile(), GURL("http://c.com/"));
   EXPECT_FALSE(cookie.empty());
 }

@@ -74,20 +74,14 @@ bool IsActive(const Rule& cookie_rule,
 
   bool default_value = true;
   for (const auto& shield_rule : shield_rules) {
-    if (shield_rule.primary_pattern.MatchesAllHosts()) {
+    auto primary_compare =
+        shield_rule.primary_pattern.Compare(cookie_rule.primary_pattern);
+    // TODO(bridiver) - verify that SUCCESSOR is correct and not PREDECESSOR
+    if (primary_compare == ContentSettingsPattern::IDENTITY ||
+        primary_compare == ContentSettingsPattern::SUCCESSOR) {
       // TODO(bridiver) - move this logic into shields_util for allow/block
-      default_value =
+      return
           ValueToContentSetting(&shield_rule.value) != CONTENT_SETTING_BLOCK;
-    } else {
-      auto primary_compare =
-          shield_rule.primary_pattern.Compare(cookie_rule.primary_pattern);
-      // TODO(bridiver) - verify that SUCCESSOR is correct and not PREDECESSOR
-      if (primary_compare == ContentSettingsPattern::IDENTITY ||
-          primary_compare == ContentSettingsPattern::SUCCESSOR) {
-        // TODO(bridiver) - move this logic into shields_util for allow/block
-        return
-            ValueToContentSetting(&shield_rule.value) != CONTENT_SETTING_BLOCK;
-      }
     }
   }
 
@@ -243,10 +237,10 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
 
   // Adding shields down rules (they always override cookie rules).
   for (const auto& shield_rule : shield_rules) {
-    // Skip the default rule.
-    if (shield_rule.primary_pattern.MatchesAllHosts()) {
-      continue;
-    }
+    // There is no global shields rule
+    if (shield_rule.primary_pattern.MatchesAllHosts())
+      NOTREACHED();
+
     // Shields down.
     if (ValueToContentSetting(&shield_rule.value) == CONTENT_SETTING_BLOCK) {
       rules.push_back(
