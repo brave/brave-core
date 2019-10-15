@@ -97,6 +97,11 @@ static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
   return ads::Ads::IsSupportedRegion(std::string(region.UTF8String));
 }
 
++ (BOOL)isCurrentRegionSupported
+{
+  return [self isSupportedRegion:[NSLocale currentLocale].localeIdentifier];
+}
+
 BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
 BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
