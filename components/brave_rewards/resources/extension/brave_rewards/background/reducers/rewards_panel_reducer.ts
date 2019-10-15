@@ -130,8 +130,14 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       chrome.braveRewards.getWalletProperties()
       break
     case types.ON_WALLET_PROPERTIES: {
-      state = { ...state }
-      state.walletProperties = payload.properties
+      state = {
+        ...state,
+        walletCreated: true,
+        walletCreateFailed: false,
+        walletCreating: false,
+        walletCorrupted: false,
+        walletProperties: payload.properties
+      }
       break
     }
     case types.GET_CURRENT_REPORT:
