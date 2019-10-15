@@ -36,7 +36,7 @@ const char kShouldShowMyFirstAdNotification[] =
 // Stores the preferences version number
 const char kVersion[] = "brave.brave_ads.prefs.version";
 
-const int kCurrentVersionNumber = 4;
+const int kCurrentVersionNumber = 5;
 
 // Ads were disabled at least once.
 const char kBraveAdsWereDisabled[] = "brave.brave_ads.were_disabled";

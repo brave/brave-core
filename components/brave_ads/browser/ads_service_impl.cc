@@ -1285,8 +1285,8 @@ void AdsServiceImpl::MigratePrefsVersion1To2() {
 }
 
 void AdsServiceImpl::MigratePrefsVersion2To3() {
-  auto locale = GetLocale();
-  auto region = ads::Ads::GetRegion(locale);
+  const auto locale = GetLocale();
+  const auto region = ads::Ads::GetRegion(locale);
 
   // Disable ads if upgrading from a pre brave ads build due to a bug where ads
   // were always enabled
@@ -1294,7 +1294,7 @@ void AdsServiceImpl::MigratePrefsVersion2To3() {
 
   // Disable ads for unsupported legacy regions due to a bug where ads were
   // enabled even if the users region was not supported
-  std::vector<std::string> legacy_regions = {
+  const std::vector<std::string> legacy_regions = {
     "US",  // United States of America
     "CA",  // Canada
     "GB",  // United Kingdom (Great Britain and Northern Ireland)
@@ -1305,7 +1305,7 @@ void AdsServiceImpl::MigratePrefsVersion2To3() {
   DisableAdsForUnsupportedRegions(region, legacy_regions);
 
   // On-board users for newly supported regions
-  std::vector<std::string> new_regions = {
+  const std::vector<std::string> new_regions = {
     "AU",  // Australia
     "NZ",  // New Zealand
     "IE"   // Ireland
@@ -1315,11 +1315,26 @@ void AdsServiceImpl::MigratePrefsVersion2To3() {
 }
 
 void AdsServiceImpl::MigratePrefsVersion3To4() {
-  auto locale = GetLocale();
-  auto region = ads::Ads::GetRegion(locale);
+  const auto locale = GetLocale();
+  const auto region = ads::Ads::GetRegion(locale);
+
+  // Disable ads for unsupported legacy regions due to a bug where ads were
+  // enabled even if the users region was not supported
+  const std::vector<std::string> legacy_regions = {
+    "US",  // United States of America
+    "CA",  // Canada
+    "GB",  // United Kingdom (Great Britain and Northern Ireland)
+    "DE",  // Germany
+    "FR",  // France
+    "AU",  // Australia
+    "NZ",  // New Zealand
+    "IE"   // Ireland
+  };
+
+  DisableAdsForUnsupportedRegions(region, legacy_regions);
 
   // On-board users for newly supported regions
-  std::vector<std::string> new_regions = {
+  const std::vector<std::string> new_regions = {
     "AR",  // Argentina
     "AT",  // Austria
     "BR",  // Brazil
@@ -1348,11 +1363,48 @@ void AdsServiceImpl::MigratePrefsVersion3To4() {
 }
 
 void AdsServiceImpl::MigratePrefsVersion4To5() {
-  auto locale = GetLocale();
-  auto region = ads::Ads::GetRegion(locale);
+  const auto locale = GetLocale();
+  const auto region = ads::Ads::GetRegion(locale);
+
+  // Disable ads for unsupported legacy regions due to a bug where ads were
+  // enabled even if the users region was not supported
+  const std::vector<std::string> legacy_regions = {
+    "US",  // United States of America
+    "CA",  // Canada
+    "GB",  // United Kingdom (Great Britain and Northern Ireland)
+    "DE",  // Germany
+    "FR",  // France
+    "AU",  // Australia
+    "NZ",  // New Zealand
+    "IE",  // Ireland
+    "AR",  // Argentina
+    "AT",  // Austria
+    "BR",  // Brazil
+    "CH",  // Switzerland
+    "CL",  // Chile
+    "CO",  // Colombia
+    "DK",  // Denmark
+    "EC",  // Ecuador
+    "IL",  // Israel
+    "IN",  // India
+    "IT",  // Italy
+    "JP",  // Japan
+    "KR",  // Korea
+    "MX",  // Mexico
+    "NL",  // Netherlands
+    "PE",  // Peru
+    "PH",  // Philippines
+    "PL",  // Poland
+    "SE",  // Sweden
+    "SG",  // Singapore
+    "VE",  // Venezuela
+    "ZA"   // South Africa
+  };
+
+  DisableAdsForUnsupportedRegions(region, legacy_regions);
 
   // On-board users for newly supported regions
-  std::vector<std::string> new_regions = {
+  const std::vector<std::string> new_regions = {
     "KY"   // Cayman Islands
   };
 
