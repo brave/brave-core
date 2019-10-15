@@ -98,10 +98,4 @@ void BraveBrowserMainParts::PostProfileInit() {
     command_line->AppendSwitch(switches::kDisableMediaSuspend);
   }
 #endif
-
-#if BUILDFLAG(ENABLE_TOR)
-  if (profile()->GetPrefs()->GetBoolean(kTorDisabled)) {
-    // Disable Tor feature.
-  }
-#endif
 }

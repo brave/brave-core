@@ -43,11 +43,14 @@ BraveExtensionManagement::~BraveExtensionManagement() {
 
 void BraveExtensionManagement::RegisterBraveExtensions() {
 #if BUILDFLAG(ENABLE_TOR)
+  const bool isTorEnabled = !profile_->GetPrefs()->GetBoolean(kTorDisabled);
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
-  if (!command_line.HasSwitch(switches::kDisableTorClientUpdaterExtension) &&
-      !profile_->AsTestingProfile())
+  if (isTorEnabled &&
+      !command_line.HasSwitch(switches::kDisableTorClientUpdaterExtension) &&
+      !profile_->AsTestingProfile()) {
     g_brave_browser_process->tor_client_updater()->Register();
+  }
 #endif
 }
 
