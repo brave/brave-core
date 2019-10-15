@@ -4,6 +4,18 @@
 
 import UIKit
 
+private class LoaderLayer: CALayer {
+  weak var parent: LoaderView?
+  
+  override func action(forKey event: String) -> CAAction? {
+    if event == kCAOnOrderIn && parent?.isAnimating == true {
+      // Resume animation
+      parent?.start()
+    }
+    return super.action(forKey: event)
+  }
+}
+
 /// A Brave styled activity indicator view
 class LoaderView: UIView {
   /// The size of the indicator
@@ -30,11 +42,19 @@ class LoaderView: UIView {
     }
   }
   
+  override class var layerClass: AnyClass {
+    return LoaderLayer.self
+  }
+  
+  private(set) var isAnimating: Bool = false
+  
   func start() {
+    isAnimating = true
     loaderLayer.add(rotateAnimation, forKey: "rotation")
   }
   
   func stop() {
+    isAnimating = false
     loaderLayer.removeAnimation(forKey: "rotation")
   }
   
@@ -46,6 +66,7 @@ class LoaderView: UIView {
     super.init(frame: CGRect(origin: .zero, size: size.size))
     
     layer.addSublayer(loaderLayer)
+    (layer as? LoaderLayer)?.parent = self
   }
   
   override var tintColor: UIColor! {
