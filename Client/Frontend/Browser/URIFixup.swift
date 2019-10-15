@@ -6,6 +6,23 @@ import Foundation
 import Shared
 
 class URIFixup {
+
+    private static func validateURL(_ url: URL) -> URL? {
+        // Validate the domain to make sure it doesn't have any invalid characters
+        // IE: quotes, etc..
+        if let host = url.host {
+            guard let decodedASCIIURL = host.removingPercentEncoding else {
+                return nil
+            }
+            
+            if decodedASCIIURL.rangeOfCharacter(from: CharacterSet.URLAllowed.inverted) != nil {
+                return nil
+            }
+        }
+        
+        return url
+    }
+    
     static func getURL(_ entry: String) -> URL? {
         let trimmed = entry.trimmingCharacters(in: .whitespacesAndNewlines)
         guard let escaped = trimmed.addingPercentEncoding(withAllowedCharacters: .URLAllowed) else {
@@ -18,7 +35,7 @@ class URIFixup {
         // the official URI scheme list, so that other such search phrases
         // like "filetype:" are recognised as searches rather than URLs.
         if let url = URL(string: escaped), url.schemeIsValid {
-            return url
+            return validateURL(url)
         }
 
         // If there's no scheme, we're going to prepend "http://". First,
@@ -32,11 +49,30 @@ class URIFixup {
         if trimmed.range(of: " ") != nil {
             return nil
         }
+        
+        // Partially canonicalize the URL and check if it has a "user"..
+        // If it is, it should go to the search engine and not the DNS server..
+        // This behaviour is mimicking SAFARI! It has the safest behaviour so far.
+        //
+        // 1. If the url contains just "user@domain.com", ALL browsers take you to the search engine.
+        // 2. If it's an email with a PATH or QUERY such as "user@domain.com/whatever"
+        //    where "/whatever" is the path or "user@domain.com?something=whatever"
+        //    where "?something=whatever" is the query:
+        //    - Firefox warns you that a site is trying to log you in automatically to the domain.
+        //    - Chrome takes you to the domain (seems like a security flaw).
+        //    - Safari passes on the entire url to the Search Engine just like it does
+        //      without a path or query.
+        if URL(string: trimmed)?.user != nil ||
+            URL(string: escaped)?.user != nil ||
+            URL(string: "http://\(trimmed)")?.user != nil ||
+            URL(string: "http://\(escaped)")?.user != nil {
+            return nil
+        }
 
         // If there is a ".", prepend "http://" and try again. Since this
         // is strictly an "http://" URL, we also require a host.
         if let url = URL(string: "http://\(escaped)"), url.host != nil {
-            return url
+            return validateURL(url)
         }
 
         return nil
