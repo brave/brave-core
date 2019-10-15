@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java b/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
-index e5270f604ea8b8ee9f27b2e7c89e4945e6e45d60..deb382908cfd0112b7cc0ee02282d8eabf209b5f 100644
+index 3b19402872ef636a37019cc6fb95b61607b8e281..a31e5cac6165386f8bb96b3bf0b43d2ab7da1dce 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
-@@ -457,6 +457,7 @@ public class FeatureUtilities {
+@@ -444,6 +444,7 @@ public class FeatureUtilities {
       * @return Whether or not the bottom toolbar is enabled.
       */
      public static boolean isBottomToolbarEnabled() {
@@ -10,7 +10,7 @@ index e5270f604ea8b8ee9f27b2e7c89e4945e6e45d60..deb382908cfd0112b7cc0ee02282d8ea
          if (sIsBottomToolbarEnabled == null) {
              ChromePreferenceManager prefManager = ChromePreferenceManager.getInstance();
  
-@@ -468,6 +469,7 @@ public class FeatureUtilities {
+@@ -455,6 +456,7 @@ public class FeatureUtilities {
                  && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(
                          ContextUtils.getApplicationContext())
                  && !isTabGroupsAndroidEnabled();

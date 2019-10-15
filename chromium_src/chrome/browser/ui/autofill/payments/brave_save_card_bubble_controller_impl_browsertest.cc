@@ -58,15 +58,15 @@ class BraveSaveCardBubbleControllerImplTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveSaveCardBubbleControllerImplTest,
                        NoSignInPromoBraveSyncDisabled) {
   ShowUi();
-  EXPECT_EQ(nullptr, controller()->save_card_bubble_view());
+  EXPECT_EQ(nullptr, controller()->GetSaveCardBubbleView());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSaveCardBubbleControllerImplTest,
                        NoSignInPromoBraveSyncEnabled) {
   EnableBraveSync(browser()->profile()->GetPrefs());
   ShowUi();
-  EXPECT_EQ(nullptr, controller()->save_card_bubble_view());
+  EXPECT_EQ(nullptr, controller()->GetSaveCardBubbleView());
   DisableBraveSync(browser()->profile()->GetPrefs());
   ShowUi();
-  EXPECT_EQ(nullptr, controller()->save_card_bubble_view());
+  EXPECT_EQ(nullptr, controller()->GetSaveCardBubbleView());
 }

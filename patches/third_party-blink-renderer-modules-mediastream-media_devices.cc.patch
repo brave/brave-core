@@ -1,17 +1,16 @@
 diff --git a/third_party/blink/renderer/modules/mediastream/media_devices.cc b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-index 26f2c6b1a3ec28be5ff555c65f485463e84fb14c..65eae6fa1b4a7a7ae58317f863cfb64ad98d2f9d 100644
+index 4ea5988ca474563176c0e330bf776d745b317217..19bef4ca9169c8791686748798fcc5a024b01285 100644
 --- a/third_party/blink/renderer/modules/mediastream/media_devices.cc
 +++ b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-@@ -6,6 +6,8 @@
+@@ -6,6 +6,7 @@
  
  #include <utility>
  
 +#include "brave/renderer/brave_content_settings_observer_helper.h"
-+
+ #include "mojo/public/cpp/bindings/remote.h"
  #include "services/service_manager/public/cpp/interface_provider.h"
  #include "third_party/blink/public/platform/platform.h"
- #include "third_party/blink/public/platform/task_type.h"
-@@ -74,6 +76,9 @@ ScriptPromise MediaDevices::enumerateDevices(ScriptState* script_state) {
+@@ -73,6 +74,9 @@ ScriptPromise MediaDevices::enumerateDevices(ScriptState* script_state) {
          MakeGarbageCollected<DOMException>(DOMExceptionCode::kNotSupportedError,
                                             "Current frame is detached."));
    }

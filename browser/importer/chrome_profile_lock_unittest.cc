@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -18,7 +19,7 @@
 #include "build/build_config.h"
 #include "chrome/common/chrome_constants.h"
 #include "chrome/common/chrome_paths.h"
-#include "content/public/test/test_browser_thread_bundle.h"
+#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if defined(OS_WIN)
@@ -27,9 +28,10 @@ const char kLockFile[] = "lockfile";
 
 class ChromeProfileLockTest : public testing::Test {
  public:
-   ChromeProfileLockTest ()
-     : test_browser_thread_bundle_(
-         content::TestBrowserThreadBundle::REAL_IO_THREAD) {}
+  ChromeProfileLockTest()
+      : test_browser_thread_bundle_(
+            content::TestBrowserThreadBundle::REAL_IO_THREAD) {}
+
  protected:
   void SetUp() override {
     testing::Test::SetUp();

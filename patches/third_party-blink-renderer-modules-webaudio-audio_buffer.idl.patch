@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.idl b/third_party/blink/renderer/modules/webaudio/audio_buffer.idl
-index d5546d66244feb39077b99540c147cd7232fa45b..17c7ee450bd171c65eee9d6e47428d16df8ca231 100644
+index 54e002a30156cd1b77b4df7a627bde781edad1a4..5f28bdce7a86ec198d24f275a0e73b3b8bd874d1 100644
 --- a/third_party/blink/renderer/modules/webaudio/audio_buffer.idl
 +++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.idl
 @@ -39,7 +39,7 @@
@@ -7,8 +7,8 @@ index d5546d66244feb39077b99540c147cd7232fa45b..17c7ee450bd171c65eee9d6e47428d16
      // Channel access
      readonly attribute unsigned long numberOfChannels;
 -    [HighEntropy, Measure, RaisesException] Float32Array getChannelData(unsigned long channelIndex);
--    [HighEntropy, Measure, RaisesException] void copyFromChannel(Float32Array destination, long channelNumber, optional unsigned long startInChannel = 0);
+-    [HighEntropy, Measure, RaisesException] void copyFromChannel(Float32Array destination, long channelNumber, optional unsigned long bufferOffset = 0);
 +    [CallWith=ScriptState, HighEntropy, Measure, RaisesException] Float32Array getChannelData(unsigned long channelIndex);
-+    [CallWith=ScriptState, HighEntropy, Measure, RaisesException] void copyFromChannel(Float32Array destination, long channelNumber, optional unsigned long startInChannel = 0);
-     [RaisesException] void copyToChannel(Float32Array source, long channelNumber, optional unsigned long startInChannel = 0);
++    [CallWith=ScriptState, HighEntropy, Measure, RaisesException] void copyFromChannel(Float32Array destination, long channelNumber, optional unsigned long bufferOffset = 0);
+     [RaisesException] void copyToChannel(Float32Array source, long channelNumber, optional unsigned long bufferOffset = 0);
  };

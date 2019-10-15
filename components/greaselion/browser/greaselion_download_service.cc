@@ -66,9 +66,7 @@ void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
     std::string pattern_string = urls_it.GetString();
     URLPattern pattern;
     pattern.SetValidSchemes(URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS);
-    if (pattern.Parse(pattern_string,
-                      URLPattern::ALLOW_WILDCARD_FOR_EFFECTIVE_TLD) !=
-        URLPattern::ParseResult::kSuccess) {
+    if (pattern.Parse(pattern_string) != URLPattern::ParseResult::kSuccess) {
       LOG(ERROR) << "Malformed pattern in Greaselion configuration";
       url_patterns_.clear();
       return;

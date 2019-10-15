@@ -78,10 +78,12 @@
 <translation id="2414886740292270097">Scuro</translation>
 <translation id="3829010735958850433">Salta il tour di benvenuto</translation>
 <translation id="1201402288615127009">Successivo</translation>
+<translation id="7954950242989581218">Naviga sano e salvo</translation>
+<translation id="2188651882929633653">Lo scudo di Brave blocca le cose inquietanti che cercano di rintracciarti in tutto il web, tra cui la maggior parte degli annunci. Disattiva lo scudo se un sito non sembra funzionare. Brave utilizza <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>analisi di prodotto completamente privata<ph name="END_LINK_P3A">&lt;/a&gt;</ph> per stimare l'uso complessivo di alcune caratteristiche. Puoi spegnerlo in <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Impostazioni<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Annunci pubblicitari</translation>
 <translation id="5946611334574299206">Guadagna gettoni visualizzando annunci pubblicitari su Brave. La pubblicità che ti viene proposta è basata sui tuoi interessi dedotti dal tuo comportamento di navigazione. Nessun dato personale o cronologia di navigazione lascia mai il tuo browser.</translation>
 <translation id="6112368337882254910">Auto-contributo</translation>
-<translation id="1527222983464337010">Un modo automatico per sostenere editori e creatori di contenuti. Imposta un pagamento mensile e naviga come faresti normalmente. I siti che visiti ricevono automaticamente i tuoi contributi, in base alla tua attenzione così come misurata da Brave.</translation>
+<translation id="3742599705619405136">Un modo automatico per sostenere editori e creatori di contenuti. Imposta un pagamento mensile e naviga come faresti normalmente. I siti che visiti ricevono automaticamente i tuoi contributi, in base alla tua attenzione così come misurata da Brave.</translation>
 <translation id="20281847067919078">Ricompense stimate in sospeso</translation>
 <translation id="8593551638387217772">Prossima data di pagamento</translation>
 <translation id="319209088187794725">Notifiche di annunci ricevute questo mese</translation>
@@ -100,12 +102,17 @@
 <translation id="8759716059844800317">Siti supportati</translation>
 <translation id="2365740070488517695">Donazioni</translation>
 <translation id="1309807437617560451">Fai donazioni dirette ai creatori di contenuti mentre navighi. Puoi anche impostare donazioni mensili periodiche così da poter sostenere i siti in modo continuativo.</translation>
+<translation id="5012991400231464322">Contributi mensili</translation>
+<translation id="2084351799622920487">Imposta contributi mensili ricorrenti in modo da poter supportare i siti in modo continuo.</translation>
+<translation id="8150772404570015166">Non sono ancora stati istituiti contributi mensili.</translation>
+<translation id="7269582398922493824">Supporta i tuoi siti preferiti con contributi mensili ricorrenti. Puoi impostarlo dal tipping banner.</translation>
 <translation id="2241248417273918295">I guadagni vengono pagati ogni mese.</translation>
 <translation id="68906705461077250">Imposta la tua frequenza desiderata per aumentare o diminuire i guadagni.</translation>
 <translation id="1847863811689960237">Ricompensa i creatori per il contenuto che ti piace.</translation>
 <translation id="4129489167302464118">Il pagamento mensile viene distribuito tra i siti che visiti.</translation>
 <translation id="4898632353264854950">Man mano che navighi appariranno dei siti</translation>
 <translation id="3024485967181749006">Donazioni totali in questo mese</translation>
+<translation id="5055577484189948413">Contributi totali di questo mese</translation>
 <translation id="4153752809523809915">Oggi hai fatto una donazione al tuo creatore di contenuti preferito?</translation>
 <translation id="1165667598801520610">Aggiungi fondi</translation>
 <translation id="6239274080752256452">Preleva i Fondi</translation>
@@ -113,7 +120,6 @@
 <translation id="7286722244752781970">Tempo sulla pagina minimo prima di registrare una visita</translation>
 <translation id="4424486208397124985">Visite minime per pertinenza degli editori</translation>
 <translation id="4969081543473319051">Cosa dovrebbe essere consentito?</translation>
-<translation id="2295504178524377899">Consenti il contributo a siti non verificati</translation>
 <translation id="5875669387851353511">Consenti il contributo ai video</translation>
 <translation id="8933202740471878108">1 visita</translation>
 <translation id="354797634123275103">5 visite</translation>
@@ -209,6 +215,7 @@
 <translation id="4405997465645469914">Abilitando le Ricompense Brave, indichi che hai letto e accettato i</translation>
 <translation id="8819542691525488940">Facendo clic su ‘Yes, I'm in!’, confermi di aver letto e accettato i</translation>
 <translation id="8071424789698327147">Facendo clic su ‘Sì, sono pronto!’, indichi di aver letto e accettato i</translation>
+<translation id="3745024317593003526">Imposta il contributo</translation>
 <translation id="7530570094705720669">Creazione del portafoglio</translation>
 <translation id="2105596359439030979">La tua attenzione è preziosa. Guadagna guardando annunci pubblicitari che rispettano la tua privacy e pagali per supportare gli autori dei contenuti che ami.</translation>
 <translation id="516395624550019162">Sì, ci sto!</translation>
@@ -272,6 +279,8 @@
 <translation id="211044356803193224">Donazioni mensili!</translation>
 <translation id="606865182719489911">È disponibile un contributo di gettoni gratuiti.</translation>
 <translation id="3453206261112715431">Contributo di Token Gratuito</translation>
+<translation id="2280319752798785157">Contributo mensile</translation>
+<translation id="7627481505582641588">Prossimo contributo</translation>
 <translation id="5736183007277264868">Attualmente non è disponibile alcun contributo di token.</translation>
 <translation id="8307851765167460403">Ancora nessuna attività…</translation>
 <translation id="8589748782214271192">No, grazie</translation>
@@ -317,9 +326,8 @@
 <translation id="5717619667204259673">Tieni al sicuro questa chiave di ripristino.</translation>
 <translation id="4699702339303280827">Puoi sempre usare questa chiave per riottenere il controllo del tuo portafoglio se accade qualcosa al tuo browser o al tuo computer. Assicurati però di proteggerla; chiunque ottiene questa chiave potrebbe rubare il tuo portafoglio. Probabilmente è più sicuro scriverla su un foglio di carta o dovunque tieni le informazioni importanti.</translation>
 <translation id="7354412786785889047">Puoi supportare il creatore di questo contenuto inviando una mancia. È un modo per ringraziarli per realizzare del contenuto eccellente. I creatori verificati vengono pagati per le loro mance la prima settimana di ciascun mese.</translation>
-<translation id="3475063317678050010">Se desideri, puoi pianificare delle mance mensili per supportare questo creatore su base continua.</translation>
+<translation id="972846019534552366">Se desideri, puoi pianificare delle mance mensili per supportare questo creatore su base continua.</translation>
 <translation id="3074127054582480056">Attenzione</translation>
-<translation id="822513417008209372">Attualmente supporti</translation>
 <translation id="5010112177773747965">senza il tuo consenso</translation>
 <translation id="7147673045905733351">Oggi, Brave ti dà il benvenuto sul nuovo Internet.</translation>
 <translation id="1350763070659630336">Un Internet in cui il tuo tempo ha valore, i tuoi dati personali sono mantenuti riservati e tu sarai davvero pagato per la tua attenzione.</translation>
@@ -343,6 +351,7 @@
 <translation id="1738658589626889850">Salva come file</translation>
 <translation id="259138486959961679">Mostra tutte le {{numItems}} voci</translation>
 <translation id="7857284676033058221">Vedi tutti e {{numSites}} i siti</translation>
+<translation id="1549705559752367917">Invia la mia donazione</translation>
 <translation id="3536298624341433814">Invia la mia donazione</translation>
 <translation id="8428213095426709021">Impostazioni</translation>
 <translation id="1792148354504719133">sito</translation>
@@ -385,7 +394,7 @@
 <translation id="6727483290601442544">Visualizza dettagli</translation>
 <translation id="1988679729106502285">NOTA:</translation>
 <translation id="5815103311506128988">Questo creatore non si è ancora iscritto per ricevere i contributi dagli utenti Brave. Il tuo browser continuerà a provare a contribuire fino a quando non si sarà verificato o fino a quando non saranno passati 90 giorni.</translation>
-<translation id="603411408512957306">Questo creatore verificato deve ancora verificare (KYC) il proprio account per ricevere tips dal tuo portafoglio verificato. I tips rimarranno nel tuo portafoglio fino al completamento della verifica.</translation>
+<translation id="7461596279975181413">Questo creatore verificato di Brave non ha ancora configurato il suo account per ricevere contributi da utenti di Brave. Il tuo browser continuerà a cercare di contribuire fino a quando non verrà verificato, o fino a quando non saranno trascorsi 90 giorni.</translation>
 <translation id="4292832015778676417">guadagnati dagli annunci pubblicitari</translation>
 <translation id="3197752845651180812">Contributi in attesa</translation>
 <translation id="3164105678355419142">Mance ricorrenti</translation>
@@ -394,12 +403,12 @@
 <translation id="4346944508027912677">In attesa fino a</translation>
 <translation id="7410549756000115387">Nessuno contributo in attesa…</translation>
 <translation id="1963227389609234879">Rimuovi tutto</translation>
-<translation id="1170315781901539495">Siti esclusi</translation>
+<translation id="8706157865312453070">Siti esclusi</translation>
 <translation id="5119190679543565400">Ripristina questo sito</translation>
 <translation id="9075700728717335924">Hai escluso</translation>
 <translation id="4862817811647633830">siti da AutoContributi</translation>
 <translation id="923467487918828349">Mostra tutte</translation>
-<translation id="5471305206221894680">Siti supportati</translation>
+<translation id="1397381065858030856">Siti supportati</translation>
 <translation id="2306169361186864012">Ricompense Brave Ads!</translation>
 <translation id="3757873395477273033">La tua ricompensa da Brave Ads è in arrivo.</translation>
 <translation id="8101881066646819737">Il tuo token di Brave Ads</translation>

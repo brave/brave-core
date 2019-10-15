@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Жертвовать этому сайт ежемесячно",
+    "message": "Ежемесячное пожертвование",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Этому проверенному создателю контента все еще нужно пройти проверку (ЗСК) своей учетной записи, чтобы получать пожертвования с вашего проверенного кошелька. Пожертвования останутся в вашем кошельке до завершения проверки.",
+    "message": "Этот верифицированный создатель Brave еще не настроил свой аккаунт для получения пожертвований от пользователей Brave. Любые отправленные вами пожертвования будут оставаться в вашем кошельке до тех пор, пока пользователь не завершит этот процесс. ",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Завершить проверку кошелька",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Установить...",
+    "description": "Button text for setting monthly contribution"
   }
 }

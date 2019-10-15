@@ -45,6 +45,15 @@ class TestNativeThemeObserver : public ui::NativeThemeObserver {
   MOCK_METHOD1(OnNativeThemeUpdated, void(ui::NativeTheme*));
 };
 
+#if defined(OS_WIN)
+void RunLoopRunWithTimeout(base::TimeDelta timeout) {
+  base::RunLoop run_loop;
+  base::RunLoop::ScopedRunTimeoutForTest run_timeout(timeout,
+                                                     run_loop.QuitClosure());
+  run_loop.Run();
+}
+#endif
+
 }  // namespace
 
 class BraveThemeServiceTestWithoutSystemTheme : public InProcessBrowserTest {
@@ -130,27 +139,25 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ThemeObserverTest) {
 
 IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, SystemThemeChangeTest) {
   const bool initial_mode =
-      ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled();
+      ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors();
   Profile* profile = browser()->profile();
 
   // Change to light.
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
   EXPECT_FALSE(
-      ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
+      ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
 
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);
-  EXPECT_TRUE(
-      ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
+  EXPECT_TRUE(ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
 
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
   EXPECT_FALSE(
-      ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
+      ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
 
   if (BraveThemeService::SystemThemeModeEnabled()) {
     SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DEFAULT);
-    EXPECT_EQ(
-        initial_mode,
-        ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled());
+    EXPECT_EQ(initial_mode,
+              ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors());
   }
 }
 
@@ -206,7 +213,6 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, DarkModeChangeByRegTest) {
   hkcu_themes_regkey.WriteValue(L"AppsUseLightTheme", apps_use_light_theme);
 
   // Timeout is used because we can't get notifiication with light theme.
-  base::RunLoop run_loop;
-  run_loop.RunWithTimeout(base::TimeDelta::FromMilliseconds(500));;
+  RunLoopRunWithTimeout(base::TimeDelta::FromMilliseconds(500));
 }
 #endif

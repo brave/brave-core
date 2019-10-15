@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -10,7 +11,7 @@
 namespace extensions {
 namespace api {
 
-class RewardsNotificationsAddNotificationFunction : public UIThreadExtensionFunction {
+class RewardsNotificationsAddNotificationFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("rewardsNotifications.addNotification", UNKNOWN)
 
@@ -20,7 +21,8 @@ class RewardsNotificationsAddNotificationFunction : public UIThreadExtensionFunc
   ResponseAction Run() override;
 };
 
-class RewardsNotificationsDeleteNotificationFunction : public UIThreadExtensionFunction {
+class RewardsNotificationsDeleteNotificationFunction
+    : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("rewardsNotifications.deleteNotification", UNKNOWN)
 
@@ -30,9 +32,11 @@ class RewardsNotificationsDeleteNotificationFunction : public UIThreadExtensionF
   ResponseAction Run() override;
 };
 
-class RewardsNotificationsDeleteAllNotificationsFunction : public UIThreadExtensionFunction {
+class RewardsNotificationsDeleteAllNotificationsFunction
+    : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("rewardsNotifications.deleteAllNotifications", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("rewardsNotifications.deleteAllNotifications",
+                             UNKNOWN)
 
  protected:
   ~RewardsNotificationsDeleteAllNotificationsFunction() override;
@@ -40,7 +44,7 @@ class RewardsNotificationsDeleteAllNotificationsFunction : public UIThreadExtens
   ResponseAction Run() override;
 };
 
-class RewardsNotificationsGetNotificationFunction : public UIThreadExtensionFunction {
+class RewardsNotificationsGetNotificationFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("rewardsNotifications.getNotification", UNKNOWN)
 
@@ -50,9 +54,11 @@ class RewardsNotificationsGetNotificationFunction : public UIThreadExtensionFunc
   ResponseAction Run() override;
 };
 
-class RewardsNotificationsGetAllNotificationsFunction : public UIThreadExtensionFunction {
+class RewardsNotificationsGetAllNotificationsFunction
+    : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("rewardsNotifications.getAllNotifications", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("rewardsNotifications.getAllNotifications",
+                             UNKNOWN)
 
  protected:
   ~RewardsNotificationsGetAllNotificationsFunction() override;

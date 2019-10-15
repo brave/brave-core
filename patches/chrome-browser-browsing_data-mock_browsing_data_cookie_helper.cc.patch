@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/browsing_data/mock_browsing_data_cookie_helper.cc b/chrome/browser/browsing_data/mock_browsing_data_cookie_helper.cc
+index 5f79dd0333e03850926281c18a8511f3b1eaac9b..a08349cd189693ca9278997d2dbc80117f2ff582 100644
+--- a/chrome/browser/browsing_data/mock_browsing_data_cookie_helper.cc
++++ b/chrome/browser/browsing_data/mock_browsing_data_cookie_helper.cc
+@@ -38,6 +38,7 @@ void MockBrowsingDataCookieHelper::DeleteCookie(
+ void MockBrowsingDataCookieHelper::AddCookieSamples(
+     const GURL& url, const std::string& cookie_line) {
+   std::unique_ptr<net::CanonicalCookie> cc(net::CanonicalCookie::Create(
++      BRAVE_ADDCOOKIESAMPLES
+       url, cookie_line, base::Time::Now(), base::nullopt /* server_time */));
+ 
+   if (cc.get()) {

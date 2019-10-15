@@ -34,9 +34,9 @@ GURL GetTopDocumentGURL(content::FrameTreeNode* frame_tree_node) {
 
 #define BRAVE_ONSTARTCHECKSCOMPLETE_MAYBEHIDEREFERRER                        \
   GetContentClient()->browser()->MaybeHideReferrer(                          \
-      browser_context, common_params_.url,                                   \
+      browser_context, common_params_->url,                                  \
       GetTopDocumentGURL(frame_tree_node_), frame_tree_node_->IsMainFrame(), \
-      &common_params_.referrer);
+      &common_params_->referrer);
 
 #include "../../../../../content/browser/frame_host/navigation_request.cc"
 

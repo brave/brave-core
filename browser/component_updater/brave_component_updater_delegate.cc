@@ -19,11 +19,10 @@ using brave_component_updater::BraveComponent;
 namespace brave {
 
 BraveComponentUpdaterDelegate::BraveComponentUpdaterDelegate()
-    : task_runner_(
-          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock(),
-              base::TaskPriority::USER_VISIBLE,
-              base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {
-}
+    : task_runner_(base::CreateSequencedTaskRunner(
+          {base::ThreadPool(), base::MayBlock(),
+           base::TaskPriority::USER_VISIBLE,
+           base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {}
 
 BraveComponentUpdaterDelegate::~BraveComponentUpdaterDelegate() {}
 

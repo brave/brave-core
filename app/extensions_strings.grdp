@@ -278,6 +278,12 @@
   <message name="IDS_EXTENSIONS_ITEM_VERSION" desc="The label above an extension's version.">
     Version
   </message>
+  <message name="IDS_EXTENSIONS_ITEM_RELOADED" desc="Text displayed in a toast popup message when an extension has been reloaded.">
+    Reloaded
+  </message>
+  <message name="IDS_EXTENSIONS_ITEM_RELOADING" desc="Text displayed in a toast popup message when an extension is reloading.">
+    Reloading...
+  </message>
   <message name="IDS_EXTENSIONS_LOAD_ERROR_HEADING" desc="The title of the dialog displaying the error when loading an unpacked extension fails.">
     Failed to load extension
   </message>
@@ -383,7 +389,7 @@
   <message name="IDS_EXTENSIONS_TOOLBAR_UPDATE_NOW_TOOLTIP" desc="Text displayed over the 'update' menu that provides more context as a tooltip.">
     Update extensions now
   </message>
-  <message name="IDS_EXTENSIONS_TOOLBAR_UPDATE_DONE" desc="Text used to announce when extensions have been updated. This is for accessibility.">
+  <message name="IDS_EXTENSIONS_TOOLBAR_UPDATE_DONE" desc="Text displayed in a toast popup message when extensions have been updated.">
     Extensions updated
   </message>
   <message name="IDS_EXTENSIONS_TOOLBAR_UPDATING_TOAST" desc="Text displayed in a toast popup message while extensions are updating.">

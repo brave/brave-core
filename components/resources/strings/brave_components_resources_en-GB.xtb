@@ -78,10 +78,12 @@
 <translation id="2414886740292270097">Dark</translation>
 <translation id="3829010735958850433">Skip welcome tour</translation>
 <translation id="1201402288615127009">Next</translation>
+<translation id="7954950242989581218">Browse safe and sound</translation>
+<translation id="2188651882929633653">Brave Shields blocks the creepy stuff that tries to track you across the web — including most ads. Set Shields to “down” if a site doesn’t seem to be working. Brave uses <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>completely private product analytics<ph name="END_LINK_P3A">&lt;/a&gt;</ph> to estimate the overall usage of certain features. You can turn this off in <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Ads</translation>
 <translation id="5946611334574299206">Earn tokens by viewing ads in Brave. Ads presented are based on your interests, as inferred from your browsing behaviour. No personal data or browsing history ever leaves your browser.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
-<translation id="1527222983464337010">An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The sites you visit receive your contributions automatically, based on your attention as measured by Brave.</translation>
+<translation id="3742599705619405136">An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The sites you visit receive your contributions automatically, based on your attention as measured by Brave.</translation>
 <translation id="20281847067919078">Estimated rewards pending</translation>
 <translation id="8593551638387217772">Next payment date</translation>
 <translation id="319209088187794725">Ad notifications received this month</translation>
@@ -100,12 +102,17 @@
 <translation id="8759716059844800317">Supported sites</translation>
 <translation id="2365740070488517695">Tips</translation>
 <translation id="1309807437617560451">Tip content creators directly as you browse. You can also set up recurring monthly tips so you can support sites continuously.</translation>
+<translation id="5012991400231464322">Monthly Contributions</translation>
+<translation id="2084351799622920487">Set up recurring monthly contributions so you can support sites continuously.</translation>
+<translation id="8150772404570015166">No monthly contributions set up yet.</translation>
+<translation id="7269582398922493824">Support your favourite sites with recurring monthly contributions. You can set this up from the tipping banner.</translation>
 <translation id="2241248417273918295">Earnings are paid every month.</translation>
 <translation id="68906705461077250">Set your desired frequency to increase or decrease earnings.</translation>
 <translation id="1847863811689960237">Reward creators for the content you love.</translation>
 <translation id="4129489167302464118">Your monthly payment gets distributed across the sites you visit.</translation>
 <translation id="4898632353264854950">Sites will appear as you browse</translation>
 <translation id="3024485967181749006">Total tips this month</translation>
+<translation id="5055577484189948413">Total contributions this month</translation>
 <translation id="4153752809523809915">Have you tipped your favourite content creator today?</translation>
 <translation id="1165667598801520610">Add Funds</translation>
 <translation id="6239274080752256452">Withdraw Funds</translation>
@@ -113,7 +120,6 @@
 <translation id="7286722244752781970">Minimum page time before logging a visit</translation>
 <translation id="4424486208397124985">Minimum visits for publisher relevancy</translation>
 <translation id="4969081543473319051">What should be allowed?</translation>
-<translation id="2295504178524377899">Allow contribution to non-verified sites</translation>
 <translation id="5875669387851353511">Allow contribution to videos</translation>
 <translation id="8933202740471878108">1 visit</translation>
 <translation id="354797634123275103">5 visits</translation>
@@ -209,6 +215,7 @@
 <translation id="4405997465645469914">By turning on Brave Rewards, you indicate that you have read and agree to the</translation>
 <translation id="8819542691525488940">By clicking ‘Yes, I'm in!’, you indicate that you have read and agree to the</translation>
 <translation id="8071424789698327147">By clicking ‘Yes, I'm Ready!’, you indicate that you have read and agree to the</translation>
+<translation id="3745024317593003526">Set Contribution</translation>
 <translation id="7530570094705720669">Creating wallet</translation>
 <translation id="2105596359439030979">Your attention is valuable. Earn by viewing privacy-respecting ads and pay it forward to support content creators you love.</translation>
 <translation id="516395624550019162">Yes, I'm In!</translation>
@@ -272,6 +279,8 @@
 <translation id="211044356803193224">Monthly Tips!</translation>
 <translation id="606865182719489911">A free token grant is available.</translation>
 <translation id="3453206261112715431">Free Token Grant</translation>
+<translation id="2280319752798785157">Monthly Contribution</translation>
+<translation id="7627481505582641588">Next Contribution</translation>
 <translation id="5736183007277264868">Currently no token grant is available.</translation>
 <translation id="8307851765167460403">No activities yet…</translation>
 <translation id="8589748782214271192">No, thank you</translation>
@@ -317,9 +326,8 @@
 <translation id="5717619667204259673">Keep this recovery key safe.</translation>
 <translation id="4699702339303280827">You can always use this key to get your wallet back if something happens to your browser or computer. But make sure to protect it — anyone who gets this key could steal your wallet. It’s probably safest to write it down on a piece of paper, or wherever else you keep important info.</translation>
 <translation id="7354412786785889047">You can support this content creator by sending a tip. It’s a way of thanking them for making great content. Verified creators get paid for their tips during the first week of each calendar month.</translation>
-<translation id="3475063317678050010">If you like, you can schedule monthly tips to support this creator on a continuous basis.</translation>
+<translation id="972846019534552366">If you like, you can schedule monthly tips to support this creator on a continuous basis.</translation>
 <translation id="3074127054582480056">Attention</translation>
-<translation id="822513417008209372">You're currently supporting</translation>
 <translation id="5010112177773747965">without your consent.</translation>
 <translation id="7147673045905733351">Today, Brave welcomes you to the new Internet.</translation>
 <translation id="1350763070659630336">One where your time is valued, your personal data is kept private, and you actually get paid for your attention.</translation>
@@ -343,6 +351,7 @@
 <translation id="1738658589626889850">Save as File</translation>
 <translation id="259138486959961679">See all {{numItems}} items</translation>
 <translation id="7857284676033058221">See all {{numSites}} sites</translation>
+<translation id="1549705559752367917">Send my Tip</translation>
 <translation id="3536298624341433814">Send my Tip</translation>
 <translation id="8428213095426709021">Settings</translation>
 <translation id="1792148354504719133">site</translation>
@@ -385,7 +394,7 @@
 <translation id="6727483290601442544">View Details</translation>
 <translation id="1988679729106502285">NOTE:</translation>
 <translation id="5815103311506128988">This creator has not yet signed up to receive contributions from Brave users. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</translation>
-<translation id="603411408512957306">This verified creator has yet to verify (KYC) their account to receive tips from your verified wallet. Tips will remain in your wallet until they complete verification.</translation>
+<translation id="7461596279975181413">This Brave Verified Creator has not yet configured their account to receive contributions from Brave users. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</translation>
 <translation id="4292832015778676417">earned from ads</translation>
 <translation id="3197752845651180812">Pending contributions</translation>
 <translation id="3164105678355419142">Recurring tip</translation>
@@ -394,12 +403,12 @@
 <translation id="4346944508027912677">Pending until</translation>
 <translation id="7410549756000115387">No pending contributions…</translation>
 <translation id="1963227389609234879">Remove All</translation>
-<translation id="1170315781901539495">Excluded Sites</translation>
+<translation id="8706157865312453070">Excluded Sites</translation>
 <translation id="5119190679543565400">Restore this site</translation>
 <translation id="9075700728717335924">You've excluded</translation>
 <translation id="4862817811647633830">sites from Auto-Contribute.</translation>
 <translation id="923467487918828349">Show All</translation>
-<translation id="5471305206221894680">Supported Sites</translation>
+<translation id="1397381065858030856">Supported Sites</translation>
 <translation id="2306169361186864012">Brave Ads Rewards!</translation>
 <translation id="3757873395477273033">Your rewards grant from Brave Ads is on its way.</translation>
 <translation id="8101881066646819737">Your Brave Ads Token Grant</translation>

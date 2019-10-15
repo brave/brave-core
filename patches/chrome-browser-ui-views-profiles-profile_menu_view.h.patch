@@ -1,0 +1,36 @@
+diff --git a/chrome/browser/ui/views/profiles/profile_menu_view.h b/chrome/browser/ui/views/profiles/profile_menu_view.h
+index bea598bc8bb4bbbc9f5fde40bb11c77cbbc0a0df..c9de5dbdfb951effc98a01284a2ca2d98aa51e29 100644
+--- a/chrome/browser/ui/views/profiles/profile_menu_view.h
++++ b/chrome/browser/ui/views/profiles/profile_menu_view.h
+@@ -60,6 +60,7 @@ class ProfileMenuView : public ProfileMenuViewBase, public AvatarMenuObserver {
+   void BuildMenu() override;
+ 
+  private:
++  BRAVE_PROFILE_MENU_VIEW_H
+   friend class ProfileMenuViewExtensionsTest;
+ 
+   // ProfileMenuViewBase:
+@@ -77,6 +78,7 @@ class ProfileMenuView : public ProfileMenuViewBase, public AvatarMenuObserver {
+   void OnGuestProfileButtonClicked();
+   void OnManageProfilesButtonClicked();
+   void OnLockButtonClicked();
++  virtual
+   void OnExitProfileButtonClicked();
+   void OnSyncErrorButtonClicked(sync_ui_util::AvatarSyncErrorType error);
+   void OnCurrentProfileCardClicked();
+@@ -111,6 +113,7 @@ class ProfileMenuView : public ProfileMenuViewBase, public AvatarMenuObserver {
+   void AddGuestProfileView();
+   void AddOptionsView(bool display_lock, AvatarMenu* avatar_menu);
+   void AddSupervisedUserDisclaimerView();
++  virtual
+   void AddAutofillHomeView();
+ #if defined(GOOGLE_CHROME_BUILD)
+   void AddManageGoogleAccountButton();
+@@ -133,6 +136,7 @@ class ProfileMenuView : public ProfileMenuViewBase, public AvatarMenuObserver {
+ 
+   // Adds a view showing the profile associated with |avatar_item| and an error
+   // button below, when dice is enabled.
++  virtual
+   void AddDiceSyncErrorView(const AvatarMenu::Item& avatar_item,
+                             sync_ui_util::AvatarSyncErrorType error,
+                             int button_string_id);

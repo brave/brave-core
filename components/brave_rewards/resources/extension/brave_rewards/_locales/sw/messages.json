@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Changia tovuti hii kila Mwezi",
+    "message": "Mchango wa kila Mwezi",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Muundaji huyu aliyethibitishwa bado hajathibitisha (KYC) akaunti yake ili kupokea vidokezo kutoka kwenye pochi yako iliyothibitishwa. Vidokezo vitasalia katika pochi yako hadi uthibitishaji ukamilike.",
+    "message": "Mtengeneza maudhui huyu bado hajajisajili ili kuanza kupokea michango kutoka kwa watumiaji wa Brave. Zawadi yoyote utakayotuma itabaki kwenye wallet yako hadi watakapokamilisha mchakato huu.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Kamilisha uthibitishaji pochi",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Weka...",
+    "description": "Button text for setting monthly contribution"
   }
 }

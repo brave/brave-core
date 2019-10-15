@@ -1,8 +1,8 @@
 diff --git a/components/crash/content/app/breakpad_linux.cc b/components/crash/content/app/breakpad_linux.cc
-index bb5ee46d3f2b1e679df0090777e73336e2529433..f215487324fbfe18aee20fc7247619a7d62a5c95 100644
+index 505156ada2d847ec07e89663e1b9f4c63eb99c19..ca626894ed61945a8487bcd0a8e96f2738f7d84a 100644
 --- a/components/crash/content/app/breakpad_linux.cc
 +++ b/components/crash/content/app/breakpad_linux.cc
-@@ -100,8 +100,12 @@ namespace {
+@@ -103,8 +103,12 @@ namespace {
  // while we do have functions to deal with uint64_t's.
  uint64_t g_crash_loop_before_time = 0;
  #else

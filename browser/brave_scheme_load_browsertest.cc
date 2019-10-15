@@ -111,17 +111,18 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        NotAllowedToLoadTestByWindowOpenWithNoOpener) {
   EXPECT_TRUE(
       NavigateToURLUntilLoadStop("example.com", "/brave_scheme_load.html"));
-
-  browser()->tab_strip_model()->AddObserver(this);
+  content::ConsoleObserverDelegate console_delegate(
+      active_contents(), "Not allowed to load local resource:*");
+  active_contents()->SetDelegate(&console_delegate);
 
   ASSERT_TRUE(ExecuteScript(
       active_contents(),
       "window.domAutomationController.send(openBraveSettingsWithNoOpener())"));
+  console_delegate.Wait();
 
-  // Loading brave page should be blocked in new window.
-  DCHECK_EQ(active_contents()->GetVisibleURL().spec(), content::kBlockedURL);
-
-  browser()->tab_strip_model()->RemoveObserver(this);
+  EXPECT_TRUE(base::MatchPattern(
+      console_delegate.message(),
+      "Not allowed to load local resource: brave://settings/"));
 }
 
 // Test whether brave page is not loaded from different host directly by

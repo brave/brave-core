@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/cocoa/accelerators_cocoa.mm b/chrome/browser/ui/cocoa/accelerators_cocoa.mm
-index 37baab628592ff2a2ee93f8af0c2e687d35bab42..2145c7b6463628dcea7e0a8b4826d90e00b251d0 100644
+index 3ebd289cdbe024ae42c5c2e8393fda458b4f516f..a083bcf7a4ac040252ebce2888454ffd30786aca 100644
 --- a/chrome/browser/ui/cocoa/accelerators_cocoa.mm
 +++ b/chrome/browser/ui/cocoa/accelerators_cocoa.mm
 @@ -40,6 +40,8 @@ const struct AcceleratorMapping {

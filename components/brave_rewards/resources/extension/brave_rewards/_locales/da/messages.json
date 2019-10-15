@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Donér månedligt til denne side ",
+    "message": "Månedligt bidrag",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Denne verificerede skaber har endnu ikke verificeret (KYC) sin konto for at modtage donationer fra din verificerede tegnebog. Donationen forbliver i din tegnebog, indtil de gennemfører verificeringen.",
+    "message": "Denne Brave Verified Creator har endnu ikke konfigureret sin konto til at modtage bidrag fra Brave-brugere. Alle donationer du sender forbliver i din tegnebog, indtil vedkommende afslutter denne proces.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Gennemfør tegnebogsverificering",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Opret...",
+    "description": "Button text for setting monthly contribution"
   }
 }

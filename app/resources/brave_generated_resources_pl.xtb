@@ -85,6 +85,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="1822560017823072927">Domyślne interfejsy publiczne i prywatne</translation>
 <translation id="5825943197137337319">Tylko domyślny interfejs publiczny</translation>
 <translation id="1689062823386843231">Wyłącz UDP bez proxy</translation>
+<translation id="8502234992433094996">Używaj Usług Google do obsługi wiadomości push</translation>
 <translation id="6645631466045614531">Uzyskaj dostęp do synchronizacji przez</translation>
 <translation id="1807246157184219062">Jasny</translation>
 <translation id="2414886740292270097">Ciemny</translation>
@@ -117,15 +118,20 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="1197088940767939838">Pomarańczowy</translation>
 <translation id="5901630391730855834">Żółty</translation>
 <translation id="6017514345406065928">Zielony</translation>
-<translation id="138218114945450791">Błękitny</translation>
+<translation id="138218114945450791">Jasnoniebieski</translation>
 <translation id="1555130319947370107">Niebieski</translation>
-<translation id="4159784952369912983">Granatowy</translation>
+<translation id="4159784952369912983">Fioletowy</translation>
 <translation id="7569983096843329377">Czarny</translation>
-<translation id="6287165605525340193">Pomarańczowy kształt</translation>
-<translation id="6301585275578119299">Żółty pacman</translation>
-<translation id="2732216714908598537">Zielone kółka</translation>
-<translation id="3657793125124583718">Błękitna linia</translation>
-<translation id="7184617102219850286">Niebieska linia</translation>
-<translation id="5032225845552050824">Granatowe paski</translation>
-<translation id="815851617499295136">Czarne paski</translation>
+<translation id="6287165605525340193">Pomarańczowy z kropką</translation>
+<translation id="6301585275578119299">Żółty kawałek</translation>
+<translation id="2732216714908598537">Zielone obręcze</translation>
+<translation id="3657793125124583718">Jasnoniebieski z paskiem</translation>
+<translation id="7184617102219850286">Niebieski z paskiem</translation>
+<translation id="5032225845552050824">Fioletowy z paskami</translation>
+<translation id="815851617499295136">Czarny z paskami</translation>
+<translation id="1872784258300710671">Brave wykorzystuje całkowicie prywatne analizy dotyczące produktu w celu oszacowania ogólnego poziomu korzystania z określonych funkcji.</translation>
+<translation id="8712637175834984815">Rozumiem</translation>
+<translation id="4394049700291259645">Wyłącz</translation>
+<translation id="6469509880167172749">Automatycznie przesyłaj Brave całkowicie prywatne analizy dotyczące produktu</translation>
+<translation id="7090566321964540749">Te anonimowe informacje pozwalają Brave oszacować jedynie ogólny poziom korzystania z określonych funkcji.</translation>
 </translationbundle>

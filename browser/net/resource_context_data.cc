@@ -61,7 +61,8 @@ BraveProxyingWebSocket* ResourceContextData::StartProxyingWebSocket(
     const GURL& url,
     const GURL& site_for_cookies,
     const base::Optional<std::string>& user_agent,
-    network::mojom::WebSocketHandshakeClientPtrInfo handshake_client,
+    mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
+        handshake_client,
     content::BrowserContext* browser_context,
     int render_process_id,
     int frame_id,
@@ -93,12 +94,11 @@ BraveProxyingWebSocket* ResourceContextData::StartProxyingWebSocket(
   request.render_frame_id = frame_id;
 
   auto proxy = std::make_unique<BraveProxyingWebSocket>(
-      std::move(factory), request,
-      network::mojom::WebSocketHandshakeClientPtr(std::move(handshake_client)),
+      std::move(factory), request, std::move(handshake_client),
       render_process_id, frame_tree_node_id, browser_context,
       self->request_id_generator_, self->request_handler_.get(),
       base::BindOnce(&ResourceContextData::RemoveProxyWebSocket,
-                          self->weak_factory_.GetWeakPtr()));
+                     self->weak_factory_.GetWeakPtr()));
 
   auto* raw_proxy = proxy.get();
   self->websocket_proxies_.emplace(std::move(proxy));

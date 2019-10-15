@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine_impl/commit.cc b/components/sync/engine_impl/commit.cc
-index 312f59cb0e7126d2c7d3059f3eef8819f993c523..7db6e6d7bea2c14847425d44fc5f3a9bfcd372d5 100644
+index 7cbfbddfe4b1bf43c141841c31d046ee3b55deee..f27aae022ae57d651d84bff768e6f6435636a0aa 100644
 --- a/components/sync/engine_impl/commit.cc
 +++ b/components/sync/engine_impl/commit.cc
-@@ -133,6 +133,7 @@ SyncerError Commit::PostAndProcessResponse(
+@@ -137,6 +137,7 @@ SyncerError Commit::PostAndProcessResponse(
    sync_pb::ClientToServerResponse response;
    const SyncerError post_result = SyncerProtoUtil::PostClientToServerMessage(
        message_, &response, cycle, nullptr);

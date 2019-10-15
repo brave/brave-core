@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sv">
+<translation id="2501278716633472235">Föregående</translation>
 <translation id="1215411991991485844">En ny bakgrundsapp har lagts till</translation>
 <translation id="7396845648024431313"><ph name="APP_NAME"/> startas när systemet startas och fortsätter att köras i bakgrunden även när du har stängt alla andra fönster i <ph name="PRODUCT_NAME"/>.</translation>
 <translation id="5246282308050205996"><ph name="APP_NAME"/> har kraschat. Klicka på ballongen för att starta om appen.</translation>
@@ -15,6 +16,8 @@
 <translation id="4610637590575890427">Ville du besöka <ph name="SITE"/>?</translation>
 <translation id="4759238208242260848">Nedladdningar</translation>
 <translation id="370665806235115550">Läser in...</translation>
+<translation id="556321030400250233">lokal eller delad fil</translation>
+<translation id="1405779994569073824">Har kraschat.</translation>
 <translation id="4880827082731008257">Sök i historiken</translation>
 <translation id="1838374766361614909">Rensa sökning</translation>
 <translation id="8261506727792406068">Radera</translation>
@@ -409,6 +412,7 @@
 <translation id="5425042808445046667">Fortsätt nedladdning</translation>
 <translation id="5284445933715251131">Fortsätt nedladdning</translation>
 <translation id="203837651858678035">Vill du stänga inkognitoläget ändå?</translation>
+<translation id="8951465597020890363">Vill du avsluta gästläget ändå?</translation>
 <translation id="9148058034647219655">Avsluta</translation>
 <translation id="7376221878517288144">Vill du avsluta inkognitoläget ändå?</translation>
 <translation id="973473557718930265">Avsluta</translation>
@@ -527,6 +531,14 @@
 <translation id="4680105648806843642">Ljudet är avstängt på den här sidan</translation>
 <translation id="8574990355410201600">Tillåt alltid ljud på <ph name="HOST"/></translation>
 <translation id="3244294424315804309">Ljud fortsatt av</translation>
+<translation id="2839032553903800133">Aviseringar har blockerats</translation>
+<translation id="1195558154361252544">Aviseringar blockeras automatiskt på alla webbplatser utom sådana du tillåter</translation>
+<translation id="3575121482199441727">Tillåt för den här webbplatsen</translation>
+<translation id="5145461783043820456">Blockering av cookies från tredje part är aktiverat</translation>
+<translation id="243242775089461296">Blockering av cookies av tredje part har inaktiverats för den här webbplatsen</translation>
+<translation id="2325002827435400643">Inaktivera för den här webbplatsen</translation>
+<translation id="1646834008704210683">{COUNT,plural, =0{Den här webbplatsen använder inte cookies för spårning över flera webbplatser}=1{Cookies från 1 webbplats blockeras i Brave}other{Cookies från # webbplatser blockeras i Brave}}</translation>
+<translation id="8734674662128056360">Blockering av cookies från tredje part</translation>
 <translation id="5154702632169343078">Ämne</translation>
 <translation id="5851868085455377790">Utfärdare</translation>
 <translation id="2841837950101800123">Leverantör</translation>
@@ -798,7 +810,7 @@
 <translation id="7663719505383602579">Mottagare: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="6247802389331535091">System: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="5799508265798272974">Virtuell maskin för Linux: <ph name="LINUX_VM_NAME"/></translation>
-<translation id="5552059560155071882">CUPS IPP-analysator</translation>
+<translation id="7851720427268294554">IPP-analysator</translation>
 <translation id="7171242884588191792">Braves filverktyg</translation>
 <translation id="3183139917765991655">Profilimportör</translation>
 <translation id="2190069059097339078">Hämtningsfunktion för Wi-Fi-användaruppgifter</translation>
@@ -904,6 +916,7 @@
 <translation id="2204034823255629767">Läsa och ändra allt som du skriver</translation>
 <translation id="6979044105893951891">Starta och avsluta hanterade gästsessioner</translation>
 <translation id="2741912629735277980">Visa användargränssnitt på inloggningsskärmen</translation>
+<translation id="7782717250816686129">Spara beständig data på inloggningsskärmen och injicera användaruppgifterna i sessionen.</translation>
 <translation id="8191230140820435481">Hantera dina appar, tillägg och teman</translation>
 <translation id="6259104249628300056">Upptäck enheter i det lokala nätverket</translation>
 <translation id="6344170822609224263">Få åtkomst till en lista med nätverksanslutningar</translation>
@@ -1083,6 +1096,8 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8261378640211443080">Det här tillägget finns inte i <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> och kan ha lagts till utan att du vet om det.</translation>
 <translation id="4096508467498758490">Inaktivera tillägg i utvecklarläge</translation>
 <translation id="3288047731229977326">Tillägg som körs i utvecklarläge kan skada datorn. Om du inte är en utvecklare bör du inaktivera tillägg som körs i utvecklarläge för att skydda dig.</translation>
+<translation id="8827289157496676362">Fäst tillägg</translation>
+<translation id="5372579129492968947">Lossa tillägg</translation>
 <translation id="3021426244864538700">Har åtkomst till den här webbplatsens data</translation>
 <translation id="8213996900880218548">Vill ha åtkomst till den här webbplatsens data</translation>
 <translation id="1289513325360489062">Har inte åtkomst till den här webbplatsens data</translation>
@@ -1147,6 +1162,11 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="3950820424414687140">Logga in</translation>
 <translation id="5624120631404540903">Hantera lösenord</translation>
 <translation id="9135262959729602463">Logga in i Brave om du vill få tillgång till lösenorden på alla enheter.</translation>
+<translation id="328571385944182268">Vill du spara lösenorden?</translation>
+<translation id="3753033997400164841">Spara dem en gång. Använd dem överallt</translation>
+<translation id="1703331064825191675">Tänk inte mer på dina lösenord</translation>
+<translation id="2341030170677284705">Spara lösenord säkert i Brave Software-kontot så att du aldrig mer behöver skriva dem</translation>
+<translation id="3913985461352963178">Få tillgång till dina lösenord när du är inloggad på Brave Software-kontot</translation>
 <translation id="8919275547519617350">Logga in och aktivera synkronisering om du vill ha tillgång till alla lösenord oavsett vilken enhet du använder.</translation>
 <translation id="8470028084415844044">Aktivera synkronisering om du vill ha tillgång till alla lösenord oavsett vilken enhet du använder.</translation>
 <translation id="1609170755653088773">Synkronisera det här lösenordet med iPhone</translation>
@@ -1193,6 +1213,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5620612546311710611">användningsstatistik</translation>
 <translation id="8871696467337989339">Du använder en kommandoradsflagga som inte stöds: <ph name="BAD_FLAG"/>. Detta påverkar stabilitet och säkerhet negativt.</translation>
 <translation id="9140067245205650184">Du använder en funktionsflagga som inte stöds: <ph name="BAD_FLAG"/>. Detta påverkar stabilitet och säkerhet negativt.</translation>
+<translation id="4094647278880271855">Du använder en miljövariabel som inte stöds: <ph name="BAD_VAR"/>. Detta påverkar stabilitet och säkerhet negativt.</translation>
 <translation id="2178098616815594724"><ph name="PEPPER_PLUGIN_NAME"/> på <ph name="PEPPER_PLUGIN_DOMAIN"/> vill ha åtkomst till datorn</translation>
 <translation id="8598453409908276158">Plugin utanför sandlåda har blockerats</translation>
 <translation id="1919814239594435008">Plugin utanför sandlåda har tillåtits</translation>
@@ -1301,7 +1322,28 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="7460045493116006516">Aktuellt tema som du har installerat</translation>
 <translation id="9068849894565669697">Välj färg</translation>
 <translation id="8798099450830957504">Standard</translation>
-<translation id="8259556432390118667">Hexadecimalt färgvärde</translation>
+<translation id="3011384993885886186">Varmt grå</translation>
+<translation id="6076491747490570887">Kallt grå</translation>
+<translation id="8300374739238450534">Midnattsblå</translation>
+<translation id="7569983096843329377">Svart</translation>
+<translation id="549211519852037402">Beige och vit</translation>
+<translation id="321084946921799184">Gul och vit</translation>
+<translation id="5722086096420375088">Grön och vit</translation>
+<translation id="3269612321104318480">Ljust blågrön och vit</translation>
+<translation id="4175137578744761569">Ljuslila och vit</translation>
+<translation id="8176332201990304395">Rosa och vit</translation>
+<translation id="3159493096109238499">Beige</translation>
+<translation id="1197088940767939838">Orange</translation>
+<translation id="779308894558717334">Ljusgrön</translation>
+<translation id="8809147117840417135">Ljust blågrön</translation>
+<translation id="1734212868489994726">Ljusblå</translation>
+<translation id="992256792861109788">Rosa</translation>
+<translation id="8237647586961940482">Mörkrosa och röd</translation>
+<translation id="5390677308841849479">Mörkröd och orange</translation>
+<translation id="7297726121602187087">Mörkgrön</translation>
+<translation id="8923880975836399332">Mörkt blågrön</translation>
+<translation id="7793098747275782155">Mörkblå</translation>
+<translation id="1692210323591458290">Mörklila</translation>
 <translation id="2858138569776157458">Populärt</translation>
 <translation id="5376169624176189338">Klicka för att återvända, håll ned för att se historik</translation>
 <translation id="9103868373786083162">Tryck här om du vill återgå till föregående, visa historiken med snabbmenyn</translation>
@@ -1355,8 +1397,9 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8005600846065423578">Ge alltid <ph name="HOST"/> tillgång till Urklipp</translation>
 <translation id="6122095009389448667">Fortsätt blockera tillgången till Urklipp för den här webbplatsen</translation>
 <translation id="3429275422858276529">Lägg till ett bokmärke för den här sidan så att du enkelt kan hitta tillbaka till den</translation>
-<translation id="3603533104205588786">Du kan lägga till ett bokmärke för sidan genom att klicka på stjärnan</translation>
-<translation id="6613452264606394692">Hitta snabbt tillbaka hit med ett bokmärke</translation>
+<translation id="4400963414856942668">Du kan lägga till ett bokmärke för fliken genom att klicka på stjärnan</translation>
+<translation id="8379991678458444070">Bokmärk fliken om du snabbt vill hitta tillbaka</translation>
+<translation id="7174199383876220879">Nyhet! Styr uppspelningen av musik, videor med mera.</translation>
 <translation id="4369414322596874629">Du kan surfa privat med ett inkognitofönster</translation>
 <translation id="3772947852642271642">Surfa utan att någon webbhistorik sparas med ett inkognitofönster</translation>
 <translation id="3871738366246972820">Delar du datorn med andra? Testa att öppna ett inkognitofönster.</translation>
@@ -1382,6 +1425,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="7108338896283013870">Dölj</translation>
 <translation id="1426410128494586442">Ja</translation>
 <translation id="4250680216510889253">Nej</translation>
+<translation id="7473891865547856676">Nej tack</translation>
 <translation id="5317780077021120954">Spara</translation>
 <translation id="4285418559658561636">Uppdatera lösenordet</translation>
 <translation id="9094033019050270033">Uppdatera lösenordet</translation>
@@ -1479,7 +1523,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8703346390800944767">Hoppa över annons</translation>
 <translation id="2121825465123208577">Ändra storlek</translation>
 <translation id="4514610446763173167">Växla mellan att spela upp och pausa video</translation>
-<translation id="3040310857793999281">Aktivera eller inaktivera ljud</translation>
 <translation id="4046123991198612571">Nästa spår</translation>
 <translation id="2874939134665556319">Föregående spår</translation>
 <translation id="2631120081682787498">Vill du stänga fliken?</translation>
@@ -1501,35 +1544,25 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1731911755844941020">Skickar begäran...</translation>
 <translation id="9009369504041480176">Överför (<ph name="PROGRESS_PERCENT"/> %)...</translation>
 <translation id="7925285046818567682">Väntar på <ph name="HOST_NAME"/>...</translation>
+<translation id="2111670510994270194">Ny flik till höger</translation>
 <translation id="7887334752153342268">Duplicera</translation>
-<translation id="1364702626840264065">{NUM_TABS,plural, =1{Stäng flik}other{Stäng flikar}}</translation>
-<translation id="68541483639528434">Stäng andra flikar</translation>
 <translation id="6686490380836145850">Stäng flikar till höger</translation>
 <translation id="6242852299490624841">Fokusera på den här fliken</translation>
-<translation id="7415353017141825619">{NUM_TABS,plural, =1{Fäst flik}other{Fäst flikar}}</translation>
-<translation id="4072793381000095">{NUM_TABS,plural, =1{Lossa flik}other{Lossa flikar}}</translation>
-<translation id="1904394285866191268">{NUM_TABS,plural, =1{Stäng av ljud från flik}other{Stäng av ljud från flikar}}</translation>
-<translation id="5179127818058486126">{NUM_TABS,plural, =1{Slå på ljud från flik}other{Slå på ljud från flikar}}</translation>
 <translation id="4973325300212422370">{NUM_TABS,plural, =1{Stäng av webbplatsens ljud}other{Stäng av webbplatsernas ljud}}</translation>
 <translation id="4744981231093950366">{NUM_TABS,plural, =1{Sätt på webbplatsens ljud}other{Sätt på webbplatsernas ljud}}</translation>
-<translation id="4474155171896946103">Skapa bokmärken för alla flikar ...</translation>
 <translation id="351952459507671940">Lägg till i ny grupp</translation>
 <translation id="255747371423522804">Lägg till i befintlig grupp</translation>
 <translation id="2977480621796371840">Ta bort från gruppen</translation>
-<translation id="8000467600002607205">{NUM_TABS,plural, =1{Stäng fliken}other{Stäng flikar}}</translation>
-<translation id="4322394346347055525">Stäng andra flikar</translation>
+<translation id="8975562453115131273">{NUM_OTHER_TABS,plural, =0{<ph name="TAB_TITLE"/>}=1{<ph name="TAB_TITLE"/> och 1 flik till}other{<ph name="TAB_TITLE"/> och # flikar till}}</translation>
+<translation id="5876851302954717356">Ny flik till höger</translation>
 <translation id="1166212789817575481">Stäng flikar till höger</translation>
 <translation id="2343747224442182863">Fokusera på den här fliken</translation>
-<translation id="7363260028279024205">{NUM_TABS,plural, =1{Fäst flik}other{Fäst flikar}}</translation>
-<translation id="3996366967769547206">{NUM_TABS,plural, =1{Lossa flik}other{Lossa flikar}}</translation>
-<translation id="3785071023202624850">{NUM_TABS,plural, =1{Stäng av ljud från flik}other{Stäng av ljud från flikar}}</translation>
-<translation id="2120478168904746065">{NUM_TABS,plural, =1{Slå på ljud från flik}other{Slå på ljud från flikar}}</translation>
 <translation id="8371925839118813971">{NUM_TABS,plural, =1{Stäng av webbplatsens ljud}other{Stäng av webbplatsernas ljud}}</translation>
 <translation id="7933314993013528982">{NUM_TABS,plural, =1{Sätt på webbplatsens ljud}other{Sätt på webbplatsernas ljud}}</translation>
-<translation id="2336228925368920074">Skapa bokmärken för alla flikar ...</translation>
 <translation id="1541396123399225659">Lägg till i ny grupp</translation>
 <translation id="7353887511974462734">Lägg till i befintlig grupp</translation>
 <translation id="6964760285928603117">Ta bort från gruppen</translation>
+<translation id="5548159762883465903">{NUM_OTHER_TABS,plural, =0{<ph name="TAB_TITLE"/>}=1{<ph name="TAB_TITLE"/> och 1 flik till}other{<ph name="TAB_TITLE"/> och # flikar till}}</translation>
 <translation id="2278562042389100163">Öppna webbläsarfönster</translation>
 <translation id="756445078718366910">Öppna webbläsarfönster</translation>
 <translation id="3683524264665795342">Förfrågan från <ph name="APP_NAME"/> om skärmdelning</translation>
@@ -1625,7 +1658,13 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="2315587498123194634">Skicka länk till <ph name="DEVICE_NAME"/></translation>
 <translation id="7761380698973548146">Ring från dina enheter</translation>
 <translation id="7427798576651127129">Ring från <ph name="DEVICE_NAME"/></translation>
+<translation id="2355241457888955">Skicka texten till dina enheter</translation>
+<translation id="5067000372742249459">Skicka texten till <ph name="DEVICE_NAME"/></translation>
+<translation id="7757787379047923882">Texten delades från <ph name="DEVICE_NAME"/></translation>
+<translation id="5193988420012215838">Kopierat till urklipp</translation>
 <translation id="462021874527520979">Ring från dina enheter</translation>
+<translation id="4696983787092045100">Skicka texten till dina enheter</translation>
+<translation id="2182058453334755893">Kopierat till urklipp</translation>
 <translation id="4520385623207007473">Cookies är aktiverade</translation>
 <translation id="4763408175235639573">Följande cookies sparades när du visade denna sida</translation>
 <translation id="2719936478972253983">Följande cookies blockerades</translation>
@@ -1653,7 +1692,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="622537739776246443">Profilen raderas</translation>
 <translation id="5632566673632479864">Kontot <ph name="EMAIL"/> får inte längre användas som primärt konto. Eftersom kontot hanteras av <ph name="DOMAIN"/> raderas bokmärken, historik, lösenord och andra inställningar från enheten.</translation>
 <translation id="3797739167230984533">Din <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> hanteras<ph name="END_LINK"/> av organisationen</translation>
-<translation id="1722460139690167654">Din <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> hanteras<ph name="END_LINK"/> av <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8118488170956489476"><ph name="BEGIN_LINK"/>Webbläsaren hanteras<ph name="END_LINK"/> av din organisation</translation>
 <translation id="1365180424462182382">Din <ph name="BEGIN_LINK"/>webbläsare hanteras<ph name="END_LINK"/> av <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Innehåll</translation>
@@ -1688,8 +1726,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="4258348331913189841">Filsystem</translation>
 <translation id="7701040980221191251">Inget</translation>
 <translation id="2881966438216424900">Senast öppnad:</translation>
-<translation id="3941357410013254652">Kanal-ID</translation>
-<translation id="6135622770221372891">Kanal-ID:n</translation>
 <translation id="1234808891666923653">ServiceWorker-funktioner</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Cachelagring</translation>
@@ -1725,6 +1761,8 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="189210018541388520">Öppna helskärmsläge</translation>
 <translation id="6096047740730590436">Öppna maximerad</translation>
 <translation id="7256710573727326513">Öppna i en flik</translation>
+<translation id="8114875720387900039">Dela vågrätt</translation>
+<translation id="4976009197147810135">Dela lodrätt</translation>
 <translation id="7636919061354591437">Installera på den här enheten</translation>
 <translation id="2993517869960930405">Appinformation</translation>
 <translation id="2867768963760577682">Öppna som en fast flik</translation>
@@ -1733,6 +1771,8 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6022526133015258832">Öppna helskärmsläge</translation>
 <translation id="6845038076637626672">Öppna maximerad</translation>
 <translation id="6860427144121307915">Öppna i en flik</translation>
+<translation id="6789592661892473991">Dela vågrätt</translation>
+<translation id="6387674443318562538">Dela lodrätt</translation>
 <translation id="1231733316453485619">Vill du aktivera synkronisering?</translation>
 <translation id="4736292055110123391">Synkronisera bokmärken, lösenord, historik med mera på alla dina enheter</translation>
 <translation id="5736731321935944068">Brave Software kan anpassa Sök, annonser och andra Brave Software-tjänster utifrån historiken</translation>
@@ -1817,7 +1857,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5771816112378578655">Konfigurationen pågår...</translation>
 <translation id="3492788708641132712">Det går inte att synkronisera. Testa att logga in igen.</translation>
 <translation id="6349170655202535379">Det går inte att synkronisera. Testa att logga ut och logga in igen.</translation>
-<translation id="974555521953189084">Ange lösenfrasen för att starta synkroniseringen</translation>
+<translation id="6828182567531805778">Ange lösenfrasen för att synkronisera data</translation>
 <translation id="7120865473764644444">Det gick inte att ansluta till synkroniseringsservern. Försöker igen …</translation>
 <translation id="5526745900034778153">Logga in igen för att fortsätta synkroniseringen</translation>
 <translation id="2932483646085333864">Synkroniseringen påbörjas när du har loggat ut och loggat in igen</translation>
@@ -1878,6 +1918,8 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="2482878487686419369">Aviseringar</translation>
 <translation id="7221855153210829124">Visa aviseringar</translation>
 <translation id="8393700583063109961">Skicka meddelande</translation>
+<translation id="7336799713063880535">Aviseringar stoppas.</translation>
+<translation id="5146995429444047494">Aviseringar för <ph name="ORIGIN"/> blockeras.</translation>
 <translation id="6701535245008341853">Profilen kunde inte hämtas.</translation>
 <translation id="7705276765467986571">Det gick inte att läsa in bokmärkesmodellen.</translation>
 <translation id="5585118885427931890">Det gick inte att skapa bokmärkesmappen.</translation>
@@ -2040,10 +2082,17 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="2435457462613246316">Visa lösenord</translation>
 <translation id="4565377596337484307">Dölj lösenord</translation>
 <translation id="5311304534597152726">Loggar in som</translation>
+<translation id="70850504851191913">Dataintrång har rapporterats</translation>
+<translation id="149470879113908545">Ditt lösenord exponerades genom ett dataintrång på en webbplats eller i en app du använder. Du rekommenderas i Brave att kontrollera dina sparade lösenord nu.</translation>
+<translation id="2054306844530250731">Ditt lösenord exponerades genom ett dataintrång på en webbplats eller i en app du använder. Brave rekommenderar att du <ph name="BOLD"/> på <ph name="ORIGIN"/> direkt.</translation>
+<translation id="4270615291506829403">ändra lösenordet</translation>
+<translation id="5103987914706363520">Ditt lösenord exponerades genom ett dataintrång på en webbplats eller i en app du använder. Om du har återanvänt lösenordet på andra webbplatser rekommenderas du i Brave att återställa lösenordet på <ph name="ORIGIN"/>.</translation>
 <translation id="5425863515030416387">Logga in enkelt på flera enheter</translation>
 <translation id="9114663181201435112">Logga in enkelt</translation>
 <translation id="764017888128728"><ph name="PASSWORD_MANAGER_BRAND"/> loggar automatiskt in på godkända webbplatser med de lösenord du sparat.</translation>
 <translation id="5869029295770560994">Ok, jag förstår</translation>
+<translation id="1186201132766001848">Kontrollera lösenorden</translation>
+<translation id="5979084224081478209">Kontrollera lösenorden</translation>
 <translation id="3423858849633684918">Starta om <ph name="PRODUCT_NAME"/></translation>
 <translation id="2294358108254308676">Vill du installera <ph name="PRODUCT_NAME"/>?</translation>
 <translation id="586567932979200359">Du kör <ph name="PRODUCT_NAME"/> från diskavbildningen. Om du installerar programmet på din dator kan du köra det utan diskavbildningen och du kan vara säker på att det alltid är uppdaterat.</translation>
@@ -2110,8 +2159,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="614940544461990577">Testa att</translation>
 <translation id="7325437708553334317">Högkontrasttillägg</translation>
 <translation id="6990778048354947307">Mörkt tema</translation>
-<translation id="5556206011531515970">Klicka på Nästa om du vill välja en standardwebbläsare.</translation>
-<translation id="1201402288615127009">Nästa</translation>
 <translation id="2478176599153288112">Mediefilsbehörigheter för <ph name="EXTENSION"/></translation>
 <translation id="186612162884103683"><ph name="EXTENSION"/> kan läsa och skriva bilder, video och ljudfiler på de markerade platserna.</translation>
 <translation id="8180786512391440389"><ph name="EXTENSION"/> kan läsa och ta bort bilder, video och ljudfiler på de markerade platserna.</translation>
@@ -2212,7 +2259,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5493792505296048976">skärm på</translation>
 <translation id="6459799433792303855">Det aktiva fönstret har flyttats till en annan skärm.</translation>
 <translation id="6551508934388063976">Kommandot är inte tillgängligt. Tryck på Ctrl+N om du vill öppna ett nytt fönster.</translation>
-<translation id="3831486154586836914">Fönsteröversiktsläget har startats</translation>
+<translation id="703001695939087067">Fönsteröversiktsläget har startats. Tryck på tabb för att navigera.</translation>
 <translation id="4380648069038809855">Helskärmsläget aktiverades</translation>
 <translation id="1766575458646819543">Helskärmsläget avslutades</translation>
 <translation id="8736288397686080465">Den här webbplatsen har uppdaterats i bakgrunden.</translation>
@@ -2327,29 +2374,31 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="874689135111202667">{0,plural, =1{Vill du ladda upp en fil till webbplatsen?}other{Vill du ladda upp # filer till webbplatsen?}}</translation>
 <translation id="1956390763342388273">Alla filer från <ph name="FOLDER_PATH"/> laddas upp. Gör bara detta om du litar på webbplatsen.</translation>
 <translation id="1243314992276662751">Ladda upp</translation>
-<translation id="1574038418461948632">Vill du spara ändringarna i <ph name="FILENAME"/>?</translation>
-<translation id="5181988524012865000">Vill du spara ändrade filer?</translation>
-<translation id="2775188527796017992"><ph name="ORIGIN"/> får behörighet att spara ändringar direkt i <ph name="FILENAME"/>. Webbplatsen kan spara ändringar tills du stänger den här fliken.</translation>
-<translation id="5375793835576008230"><ph name="ORIGIN"/> får behörighet att spara ändringar direkt i filerna i <ph name="FOLDERNAME"/>. Webbplatsen kan spara ändringar tills du stänger den här fliken.</translation>
+<translation id="3928570707778085600">Vill du spara ändringarna i <ph name="FILE_OR_FOLDER_NAME"/>?</translation>
+<translation id="8892226765772586656"><ph name="ORIGIN"/> har redigeringsbehörighet till filer i <ph name="FILENAME"/> tills du stänger den här fliken</translation>
+<translation id="3780211714699334884"><ph name="ORIGIN"/> har redigeringsbehörighet till filer i <ph name="FOLDERNAME"/> tills du stänger den här fliken</translation>
 <translation id="6532106788206463496">Spara ändringarna</translation>
-<translation id="5102007300153090427">Den här sidan har behörighet att spara filer.</translation>
-<translation id="197228003527531594">Sidan har läsbehörighet till alla filer i en mapp på enheten.</translation>
-<translation id="766254481392580456"><ph name="ORIGIN"/> har behörighet att spara ändringar direkt i <ph name="FILENAME"/>.</translation>
-<translation id="856745937116041450"><ph name="ORIGIN"/> har behörighet att spara ändringar direkt i följande filer</translation>
-<translation id="2150212764721500731"><ph name="ORIGIN"/> har behörighet att spara ändringar direkt i filerna i <ph name="FOLDERNAME"/></translation>
-<translation id="7509896576944228744"><ph name="ORIGIN"/> kan spara ändringar direkt i följande mappar</translation>
-<translation id="8152021341839173449"><ph name="ORIGIN"/> har behörighet att spara ändringar direkt i följande filer och mappar</translation>
-<translation id="3343738344138980580"><ph name="ORIGIN"/> har läsbehörighet till alla filer i <ph name="FOLDERNAME"/></translation>
-<translation id="1507049466468737452"><ph name="ORIGIN"/> har läsbehörighet till alla filer i följande mappar</translation>
-<translation id="6868139415119881457"><ph name="ORIGIN"/> har läs- och skrivbehörighet till följande filer och mappar</translation>
+<translation id="4301671483919369635">Sidan har redigeringsbehörighet till filer</translation>
+<translation id="3923676227229836009">Sidan har läsbehörighet till filer</translation>
+<translation id="8983632908660087688"><ph name="ORIGIN"/> har redigeringsbehörighet till <ph name="FILENAME"/></translation>
+<translation id="1301135395320604080"><ph name="ORIGIN"/> har redigeringsbehörighet till följande filer</translation>
+<translation id="4469762931504673593"><ph name="ORIGIN"/> har redigeringsbehörighet för <ph name="FOLDERNAME"/></translation>
+<translation id="3948507072814225786"><ph name="ORIGIN"/> har redigeringsbehörighet till filer i följande mappar</translation>
+<translation id="8889651696183044030"><ph name="ORIGIN"/> har redigeringsbehörighet till följande filer och mappar</translation>
+<translation id="5969419185858894314"><ph name="ORIGIN"/> har läsbehörighet till filer i <ph name="FOLDERNAME"/></translation>
+<translation id="3810593934879994994"><ph name="ORIGIN"/> har läsbehörigheter till filer i följande mappar</translation>
+<translation id="2537395079978992874"><ph name="ORIGIN"/> har läs- och redigeringsbehörighet till följande filer och mappar</translation>
 <translation id="5126611267288187364">Visa ändringar</translation>
 <translation id="5073956501367595100">{0,plural,offset:2 =1{<ph name="FILE1"/>}=2{<ph name="FILE1"/>, <ph name="FILE2"/>}other{<ph name="FILE1"/>, <ph name="FILE2"/> och # till}}</translation>
 <translation id="1790976235243700817">Ta bort åtkomst</translation>
-<translation id="1392975001822614900">Det går inte att spara i den här mappen</translation>
-<translation id="7613156935003315818"><ph name="ORIGIN"/> kan inte spara ändringar i den här mappen eftersom den innehåller systemfiler.</translation>
+<translation id="831440797644402910">Det går inte att öppna den här mappen</translation>
+<translation id="3850914401008572843"><ph name="ORIGIN"/> kan inte öppna den här mappen eftersom den innehåller systemfiler</translation>
 <translation id="4403775189117163360">Välj en annan mapp</translation>
+<translation id="3586806079541226322">Det går inte att öppna den här filen</translation>
+<translation id="6972553992270299730"><ph name="ORIGIN"/> kan inte öppna filer i den här mappen eftersom den innehåller systemfiler</translation>
+<translation id="2123766928840368256">Välj en annan fil</translation>
 <translation id="7643932971554933646">Vill du ge webbplatsen läsbehörighet till filer?</translation>
-<translation id="999180493986838144"><ph name="ORIGIN"/> får läsbehörighet till alla filer i <ph name="FOLDERNAME"/>. Webbplatsen kan läsa alla ändringar i mappen tills du stänger den här fliken.</translation>
+<translation id="7892963120252479610"><ph name="ORIGIN"/> har läsbehörighet till filer i <ph name="FOLDERNAME"/> tills du stänger den här fliken</translation>
 <translation id="7201420661433230412">Visa filer</translation>
 <translation id="3015639418649705390">Starta om nu</translation>
 <translation id="8712637175834984815">Uppfattat</translation>
@@ -2388,6 +2437,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5660204307954428567">Parkoppla med <ph name="DEVICE_NAME"/></translation>
 <translation id="1167199480815330007">Titta efter den sexsiffriga pinkoden på säkerhetsnyckelns baksida</translation>
 <translation id="5601503069213153581">PIN-kod</translation>
+<translation id="1201402288615127009">Nästa</translation>
 <translation id="8921366488406707015">Säkerhetsnyckeln verifieras …</translation>
 <translation id="1805472176602625930">Tryck på knappen på säkerhetsnyckeln</translation>
 <translation id="1489664337021920575">Välj ett annat alternativ</translation>
@@ -2427,6 +2477,11 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5186185447130319458">Inkognito</translation>
 <translation id="7643842463591647490">{0,plural, =1{# öppet fönster}other{# öppna fönster}}</translation>
 <translation id="2579188629646253712">Avsluta inkognitoläget</translation>
+<translation id="4349828822184870497">Användbart</translation>
+<translation id="6876469544038980967">Inte användbart</translation>
+<translation id="6428450836711225518">Bekräfta ditt telefonnummer</translation>
+<translation id="8742371904523228557"><ph name="ONE_TIME_CODE"/> är din kod för <ph name="ORIGIN"/></translation>
+<translation id="6518133107902771759">Verifiera</translation>
 <translation id="394984172568887996">Importerat från IE</translation>
 <translation id="1543284117603151572">Importerade från Edge</translation>
 <translation id="5502500733115278303">Importerat från Firefox</translation>
@@ -2515,6 +2570,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1173894706177603556">Ändra namn</translation>
 <translation id="6825184156888454064">Sortera efter namn</translation>
 <translation id="3440663250074896476">Fler åtgärder för <ph name="BOOKMARK_NAME"/></translation>
+<translation id="1608668830839595724">Fler åtgärder för valda objekt</translation>
 <translation id="2903457445916429186">Öppna markerade objekt</translation>
 <translation id="962802172452141067">Mappstruktur för bokmärken</translation>
 <translation id="2683638487103917598">Mappens innehåll har sorterats</translation>
@@ -2524,11 +2580,11 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5488093641312826914"><ph name="COPIED_ITEM_NAME"/> har kopierats</translation>
 <translation id="2277769717710009150">{COUNT,plural, =1{1 objekt har kopierats}other{# objekt har kopierats}}</translation>
 <translation id="9115675100829699941">&amp;Bokmärken</translation>
-<translation id="1035590878859356651">Lägg till ett bokmärke för denna sida…</translation>
-<translation id="1047726139967079566">Skapa bokmärke för den här sidan...</translation>
-<translation id="1774833706453699074">Spara bokmärke till öppna sidor…</translation>
-<translation id="6949306908218145636">Spara bokmärke till öppna sidor …</translation>
-<translation id="4422347585044846479">Redigera bokmärke för den här sidan</translation>
+<translation id="9023015617655685412">Bokmärk den här fliken …</translation>
+<translation id="1482626744466814421">Bokmärk den här fliken …</translation>
+<translation id="4474155171896946103">Skapa bokmärken för alla flikar ...</translation>
+<translation id="2336228925368920074">Skapa bokmärken för alla flikar ...</translation>
+<translation id="8300011035382349091">Redigera bokmärket för den här fliken</translation>
 <translation id="4776146737004271126">Öppna Android-inställningarna</translation>
 <translation id="6559023360691182159">{COUNT,plural, =0{Inga}=1{<ph name="APP_1"/>}=2{<ph name="APP_1"/> och <ph name="APP_2"/>}=3{<ph name="APP_1"/>, <ph name="APP_2"/> och <ph name="APP_3"/>}=4{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> och 1 app till}other{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> och <ph name="EXTRA_APPS"/> appar till}}</translation>
 <translation id="9117030152748022724">Hantera dina appar</translation>
@@ -2543,6 +2599,8 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="4739098340603978916">Storlek: <ph name="APP_SIZE"/></translation>
 <translation id="4291934469232591280">Version: <ph name="VERSION"/></translation>
 <translation id="1920390473494685033">Kontakter</translation>
+<translation id="9123948967884660766">Den här appen går inte att avinstallera eftersom den är en del av Brave OS.</translation>
+<translation id="496185450405387901">Den här appen har installerats av administratören.</translation>
 <translation id="7787308148023287649">Visa på en annan skärm</translation>
 <translation id="7710568461918838723">&amp;Casta …</translation>
 <translation id="6700480081846086223">Casta <ph name="HOST_NAME"/></translation>
@@ -2562,6 +2620,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6169666352732958425">Det gick inte att casta skrivbordet.</translation>
 <translation id="4081242589061676262">Det går inte att casta filen.</translation>
 <translation id="4075639477629295004">Det gick inte att casta <ph name="FILE_NAME"/>.</translation>
+<translation id="8358912028636606457">Den här enheten har inte stöd för att casta ljud från en flik.</translation>
 <translation id="3930737994424905957">Söker efter enheter</translation>
 <translation id="5209320130288484488">Det gick inte att hitta några enheter</translation>
 <translation id="4415245286584082850">Inga enheter hittades. Öppna en hjälpsida på en ny flik.</translation>
@@ -2574,12 +2633,12 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="2541002089857695151">Vill du optimera det du castar för helskärm?</translation>
 <translation id="4144218403971135344">Få bättre videokvalitet och spara på batteriet. Videor spelas bara upp på den Cast-kompatibla skärmen.</translation>
 <translation id="236117173274098341">Optimera</translation>
-<translation id="7473891865547856676">Nej tack</translation>
 <translation id="8538358978858059843">Vill du aktivera molntjänster för Cast-funktionen?</translation>
 <translation id="3856595552313160385">Användning av Hangouts och Cast for Education regleras av Brave Softwares sekretesspolicy.</translation>
 <translation id="3435896845095436175">Aktivera</translation>
 <translation id="3700888195348409686">Presenteras (<ph name="PAGE_ORIGIN"/>)</translation>
 <translation id="5285635972691565180">Skärm <ph name="DISPLAY_ID"/></translation>
+<translation id="7477793887173910789">Styr uppspelningen av musik, videor med mera</translation>
 <translation id="4707302005824653064">Den ansvariga (<ph name="CUSTODIAN_EMAIL"/>) kan se användning och historik på chrome.com.</translation>
 <translation id="346431825526753">Det här är ett konto för barn som hanteras av <ph name="CUSTODIAN_EMAIL"/>.</translation>
 <translation id="4159681666905192102">Det här är ett konto för barn som hanteras av <ph name="CUSTODIAN_EMAIL"/> och <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
@@ -2614,15 +2673,11 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="7029809446516969842">Lösenord</translation>
 <translation id="984275831282074731">Betalningsmetoder</translation>
 <translation id="8473863474539038330">Adresser och annat</translation>
-<translation id="454547174531670764">Synkronisera till ett annat konto</translation>
-<translation id="1692115862433274081">Använd ett annat konto</translation>
 <translation id="5287425679749926365">Dina konton</translation>
 <translation id="4801448226354548035">Dölj konton</translation>
 <translation id="2935225303485967257">Hantera personer</translation>
 <translation id="7388222713940428051">Öppna ett gästfönster</translation>
 <translation id="127668050356036882">Stäng alla fönster</translation>
-<translation id="8883847527783433352">Synkronisera med ett annat konto</translation>
-<translation id="2761898608071930085">Använd ett annat konto</translation>
 <translation id="1464258312790801189">Dina konton</translation>
 <translation id="6655458902729017087">Dölj konton</translation>
 <translation id="688280436658139163">Hantera personer</translation>
@@ -2811,6 +2866,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="4570609078116869893">Uppdatera Brave automatiskt för alla användare</translation>
 <translation id="7102687220333134671">Automatiska uppdateringar har aktiverats</translation>
 <translation id="8284326494547611709">Textning</translation>
+<translation id="3602290021589620013">Förhandsgranskning</translation>
 <translation id="1755601632425835748">Textstorlek</translation>
 <translation id="3179982752812949580">Textens teckensnitt</translation>
 <translation id="6850286078059909152">Textfärg</translation>
@@ -2824,7 +2880,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8184472985242519288">Jämnhög</translation>
 <translation id="8619803522055190423">Skugga</translation>
 <translation id="3930968231047618417">Bakgrundsfärg</translation>
-<translation id="7569983096843329377">Svart</translation>
 <translation id="2713444072780614174">Vit</translation>
 <translation id="7942349550061667556">Röd</translation>
 <translation id="6017514345406065928">Grön</translation>
@@ -2848,6 +2903,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="2915873080513663243">Automatisk genomsökning</translation>
 <translation id="8912810933860534797">Aktivera automatisk genomsökning</translation>
 <translation id="6617100836880592260">Genomsökningshastighet: <ph name="SPEED_WITH_UNITS"/></translation>
+<translation id="1816036116994822943">Genomsökningshastighet för tangentbord</translation>
 <translation id="7919210519031517829"><ph name="DURATION"/> sek</translation>
 <translation id="2981113813906970160">Visa stor muspekare</translation>
 <translation id="5072052264945641674">Ändra markörstorlek</translation>
@@ -2930,7 +2986,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="167160931442925455">Högst</translation>
 <translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/> % (standard)</translation>
-<translation id="3602290021589620013">Förhandsgranskning</translation>
 <translation id="7037509989619051237">Text för förhandsgranskning</translation>
 <translation id="5471768120198416576">Hejsan! Nu används min röst för text till tal.</translation>
 <translation id="6902066522699286937">Röst att förhandsgranska</translation>
@@ -2972,7 +3027,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
       Detta påverkar inte appar eller innehåll på andra enheter.</translation>
 <translation id="492299503953721473">Ta bort Android-appar</translation>
 <translation id="7566118625369982896">Hantera länkar till appar på Play</translation>
-<translation id="5026688690798028095">Öppna apphantering</translation>
 <translation id="2433507940547922241">Utseende</translation>
 <translation id="1177863135347784049">Anpassad</translation>
 <translation id="1925021887439448749">Ange en anpassad webbadress</translation>
@@ -3027,6 +3081,10 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6644512095122093795">Erbjud att spara lösenord</translation>
 <translation id="2100273922101894616">Automatisk inloggning</translation>
 <translation id="7513029293694390567">Logga in automatiskt på webbplatser med hjälp av lagrade inloggningsuppgifter. När funktionen är inaktiverad måste du bekräfta inloggningen varje gång du besöker en webbplats.</translation>
+<translation id="7930681627240672853">Kontrollera om lösenordet är säkert</translation>
+<translation id="7510943789645525906">Varnar om ett lösenord du använder har identifierats i samband med ett dataintrång</translation>
+<translation id="786008582930267433">Brave Software kan kontrollera om dina lösenord har läckt ut vid ett dataintrång</translation>
+<translation id="3372463077865465112">Brave Software kan kontrollera om dina lösenord har läckt ut vid ett dataintrång. Detta aktiveras när du loggar in med Brave Software-kontot.</translation>
 <translation id="1375321115329958930">Sparade lösenord</translation>
 <translation id="152234381334907219">Aldrig sparat</translation>
 <translation id="5137501176474113045">Ta bort det här objektet</translation>
@@ -3136,6 +3194,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
 <translation id="2187895286714876935">Fel vid import av servercertifikat</translation>
 <translation id="816055135686411707">Fel när certifikatets tillförlitlighet angavs</translation>
+<translation id="5541694225089836610">Åtgärden har inaktiverats av administratören</translation>
 <translation id="3380365263193509176">Okänt fel</translation>
 <translation id="368789413795732264">Ett fel uppstod när följande fil skulle skrivas: <ph name="ERROR_TEXT"/>.</translation>
 <translation id="784934925303690534">Tidsintervall</translation>
@@ -3167,9 +3226,9 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6985607387932385770">Skrivare</translation>
 <translation id="1815579292149538864">Konfigurera eller hantera CUPS-skrivare.</translation>
 <translation id="8030656706657716245">Lägg till skrivare</translation>
-<translation id="8025958612547562988">Spara identifierade skrivare i profilen eller lägg till en ny skrivare.</translation>
+<translation id="893254996965966411">Spara identifierade skrivare i profilen eller lägg till en ny skrivare.</translation>
 <translation id="6980969641756020642">Tillgängliga skrivare att spara</translation>
-<translation id="8151638057146502721">Konfigurera</translation>
+<translation id="3571734092741541777">Konfigurera</translation>
 <translation id="2297705863329999812">Sök skrivare</translation>
 <translation id="7956373551960864128">Dina sparade skrivare</translation>
 <translation id="168991973552362966">Lägg till en skrivare i närheten</translation>
@@ -3190,14 +3249,12 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="4058720513957747556">AppSocket (TCP/IP)</translation>
 <translation id="6619058681307408113">Line Printer Daemon (LPD)</translation>
 <translation id="2266957463645820432">IPP över USB (IPPUSB)</translation>
-<translation id="8086015605808120405"><ph name="PRINTER_NAME"/> konfigureras …</translation>
 <translation id="4665014895760275686">Tillverkare</translation>
 <translation id="4561098487691395071">Eller ange PPD-fil för skrivaren</translation>
 <translation id="1989112275319619282">Bläddra</translation>
 <translation id="3625481642044239431">Du har valt en ogiltig fil. Försök igen.</translation>
-<translation id="2462752602710430187"><ph name="PRINTER_NAME"/> har lagts till</translation>
-<translation id="7380768571499464492"><ph name="PRINTER_NAME"/> uppdaterades</translation>
-<translation id="9057119625587205566">Det finns inga skrivare i närheten</translation>
+<translation id="8002670234429879764"><ph name="PRINTER_NAME"/> är inte längre tillgänglig</translation>
+<translation id="3976108569178263973">Inga skrivare är tillgängliga.</translation>
 <translation id="3213187967168344806">Det gick inte att lägga till skrivaren. Starta om datorn och försök igen.</translation>
 <translation id="4052689580269971502">Det gick inte att ansluta till skrivaren. Kontrollera att skrivaren är påslagen och ansluten till Bravebook via Wi-Fi eller USB.</translation>
 <translation id="7099337801055912064">PPD-filen var för stor att läsa in. Storleksgränsen är 250 kB.</translation>
@@ -3206,6 +3263,9 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="4694024090038830733">Skrivarkonfigurationen hanteras av administratören.</translation>
 <translation id="5816434091619127343">De begärda ändringarna av skrivaren innebär att skrivaren inte kan användas.</translation>
 <translation id="6504611359718185067">Anslut till internet om du vill lägga till en skrivare</translation>
+<translation id="4066207411788646768">Kontrollera anslutningen om du vill se vilka skrivare som är tillgängliga i nätverket</translation>
+<translation id="4320177379694898372">Ingen internetanslutning</translation>
+<translation id="2910318910161511225">Anslut till ett nätverk och försök igen</translation>
 <translation id="4972129977812092092">Redigera skrivare</translation>
 <translation id="5696679855467848181">PPD-fil som används för närvarande: <ph name="PPD_NAME"/></translation>
 <translation id="3016329696181678353">Det gick inte att konfigurera <ph name="PRINTER_NAME"/> automatiskt. Ange avancerade utskriftsalternativ.</translation>
@@ -3243,6 +3303,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="4820236583224459650">Ställ in som aktiv biljett</translation>
 <translation id="4502423230170890588">Ta bort från den här enheten</translation>
 <translation id="2507253002925770350">Biljetten har tagits bort</translation>
+<translation id="3703699162703116302">Biljetten har uppdaterats</translation>
 <translation id="1436390408194692385">Giltigt i <ph name="TICKET_TIME_LEFT"/></translation>
 <translation id="2665647207431876759">Upphört att gälla</translation>
 <translation id="5565735124758917034">Aktiv</translation>
@@ -3284,7 +3345,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6444070574980481588">Ange datum och tid</translation>
 <translation id="5065775832226780415">Smart Lock</translation>
 <translation id="8468750959626135884">Lås upp <ph name="DEVICE_TYPE"/> med Android-mobilen.</translation>
-<translation id="3571734092741541777">Konfigurera</translation>
 <translation id="3336664756920573711">Lås upp <ph name="DEVICE_TYPE"/> med Android-mobilen</translation>
 <translation id="1036348656032585052">Inaktivera</translation>
 <translation id="1164674268730883318">Vill du inaktivera Smart Lock för <ph name="DEVICE_TYPE"/>?</translation>
@@ -3313,7 +3373,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="216169395504480358">Lägg till Wi-Fi ...</translation>
 <translation id="3892414795099177503">Lägg till OpenVPN/L2TP …</translation>
 <translation id="287286579981869940">Lägg till <ph name="PROVIDER_NAME"/>...</translation>
-<translation id="3609895557594655134">Lägg till Android VPN …</translation>
 <translation id="8426713856918551002">Aktiveras</translation>
 <translation id="3652817283076144888">Initierar</translation>
 <translation id="6528513914570774834">Tillåt att andra användare på den här enheten kan använda det här nätverket</translation>
@@ -3394,6 +3453,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8986362086234534611">Glöm</translation>
 <translation id="7881483672146086348">Visa konto</translation>
 <translation id="2392369802118427583">Aktivera</translation>
+<translation id="8151638057146502721">Konfigurera</translation>
 <translation id="5920543303088087579">Administratören har inaktiverat möjligheten att ansluta till det här nätverket</translation>
 <translation id="1235458158152011030">Kända nätverk</translation>
 <translation id="3003144360685731741">Prioriterade nätverk</translation>
@@ -3402,6 +3462,8 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="4384312707950789900">Lägg till i prioriterade nätverk</translation>
 <translation id="6077131872140550515">Ta bort från prioriterade nätverk</translation>
 <translation id="4115002065223188701">Nätverket är utanför räckvidden</translation>
+<translation id="4421167684395067330">Anslutningsproblem. Kontakta <ph name="CARRIER_NAME"/> för hjälp.</translation>
+<translation id="7780252971640011240">Anslutningsproblem. Kontakta operatören för hjälp.</translation>
 <translation id="161460670679785907">Mobilen hittades inte</translation>
 <translation id="1682335582099955045">Aktivera aviseringar för Brave Software Play-tjänster om du vill använda direktinternetdelning.</translation>
 <translation id="7696063401938172191">Gör så här på din <ph name="PHONE_NAME"/>:</translation>
@@ -3425,7 +3487,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="3483333858382889684">Tillåt att den här enheten upptäcker andra enheter med ditt Brave Software-konto som har en mobildataanslutning</translation>
 <translation id="5637476008227280525">Aktivera mobildata</translation>
 <translation id="1572266655485775982">Aktivera Wi-Fi</translation>
-<translation id="543381445212956829">Aktivera WiMAX</translation>
 <translation id="166439687370499867">Du får inte ändra delade nätverkskonfigurationer</translation>
 <translation id="938470336146445890">Installera ett användarcertifikat.</translation>
 <translation id="7732111077498238432">Nätverket styrs av en princip</translation>
@@ -3440,6 +3501,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5669267381087807207">Aktiverar</translation>
 <translation id="952992212772159698">Inte aktiverat</translation>
 <translation id="3488065109653206955">Delvis aktiverat</translation>
+<translation id="4562494484721939086">Ingen täckning</translation>
 <translation id="4880328057631981605">Namn på åtkomstpunkt (APN)</translation>
 <translation id="5142961317498132443">Autentisering</translation>
 <translation id="5691511426247308406">Familj</translation>
@@ -3450,7 +3512,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8461329675984532579">Hemleverantörens namn</translation>
 <translation id="7769672763586021400">Modell-id</translation>
 <translation id="7487067081878637334">Teknik</translation>
-<translation id="3547495624659668105">PRL-version</translation>
 <translation id="8620617069779373398">Dirigeringsstatus</translation>
 <translation id="131461803491198646">Hemnätverk, ingen roaming</translation>
 <translation id="5252456968953390977">Roaming</translation>
@@ -3491,6 +3552,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5088172560898466307">Serverns värdnamn</translation>
 <translation id="5050042263972837708">Gruppnamn</translation>
 <translation id="8675354002693747642">I förväg delad nyckel</translation>
+<translation id="8372477600026034341">Ytterligare värdar</translation>
 <translation id="6472207088655375767">Engångslösenord</translation>
 <translation id="8798441408945964110">Leverantörens namn</translation>
 <translation id="7882358943899516840">Leverantörstyp</translation>
@@ -3519,6 +3581,9 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5302048478445481009">Språk</translation>
 <translation id="6388429472088318283">Sök på språk</translation>
 <translation id="2690024944919328218">Visa språkalternativ</translation>
+<translation id="6199184144777428084">Lägg till språk eller ändra ordning på listan</translation>
+<translation id="8813969267212093033">Systemtext visas på det här språket</translation>
+<translation id="2366260648632264559">Visa systemtext på det här språket</translation>
 <translation id="7216595297012131718">Sortera språk i prioriteringsordning</translation>
 <translation id="5972708806901999743">Flytta högst upp</translation>
 <translation id="8609465669617005112">Flytta upp</translation>
@@ -3673,6 +3738,10 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="4085270836953633510">Fråga när en webbplats försöker få åtkomst till serieportarna</translation>
 <translation id="2322318151094136999">Fråga när en webbplats försöker få åtkomst till serieportarna (rekommenderas)</translation>
 <translation id="1906828677882361942">Ge inga webbplatser åtkomstbehörighet till serieportar</translation>
+<translation id="2215727959747642672">Filredigering</translation>
+<translation id="8392364544846746346">Fråga när en webbplats vill kunna redigera filer eller mappar på enheten</translation>
+<translation id="7614260613810441905">Fråga när en webbplats vill kunna redigera filer eller mappar på enheten (rekommenderas)</translation>
+<translation id="2957117904572187936">Tillåt inga webbplatser att redigera filer eller mappar på enheten</translation>
 <translation id="8973557916016709913">Ta bort zoomnivå</translation>
 <translation id="1706625117072057435">Zoomnivåer</translation>
 <translation id="6385543213911723544">Webbplatser får spara och läsa uppgifter i cookies</translation>
@@ -3682,6 +3751,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="563535393368633106">Fråga innan informationen används (rekommenderas)</translation>
 <translation id="6840155290835956714">Fråga innan något skickas</translation>
 <translation id="2381756643783702095">Fråga innan något skickas (rekommenderas)</translation>
+<translation id="7593653750169415785">Aviseringen blockerades automatiskt eftersom du har avvisat aviseringar flera gånger</translation>
 <translation id="2812989263793994277">Visa inga bilder</translation>
 <translation id="3800806661949714323">Visa alla (rekommenderas)</translation>
 <translation id="7661259717474717992">Tillåt att webbplatser sparar och läser data i cookies</translation>
@@ -3730,6 +3800,9 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="327147043223061465">Visa alla cookies och webbplatsuppgifter</translation>
 <translation id="1963227389609234879">Ta bort &amp;alla</translation>
 <translation id="3432227430032737297">Ta bort alla som visas</translation>
+<translation id="2854896010770911740">Ta bort cookies från tredje part</translation>
+<translation id="2096715839409389970">Rensa cookies från tredje part</translation>
+<translation id="7828731929332799387">Med denna åtgärd raderas alla cookies och webbplatsuppgifter som är tillgängliga i sammanhang där en tredje part är inblandad. Vill du fortsätta?</translation>
 <translation id="6011449291337289699">Rensa webbplatsdata</translation>
 <translation id="8339059274628563283">Lokalt lagrad data för <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Vill du återställa behörigheterna för webbplatsen <ph name="SITE"/>?</translation>
@@ -3773,7 +3846,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="4590324241397107707">Databaslagring</translation>
 <translation id="8016266267177410919">Tillfällig lagring</translation>
 <translation id="4175737294868205930">Beständig lagring</translation>
-<translation id="1296497012903089238">Certifikattyp</translation>
 <translation id="3707212204259470604">Hantera andra personer</translation>
 <translation id="8907706281008466056">Profilbild i Brave Software Profiler</translation>
 <translation id="2408955596600435184">Ange din pinkod</translation>
@@ -3799,7 +3871,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1719312230114180055">Obs! Fingeravtryck kan vara mindre säkra än starka lösenord och pinkoder.</translation>
 <translation id="1582955169539260415">radera [<ph name="FINGERPRINT_NAME"/>]</translation>
 <translation id="1927632033341042996">Finger <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="4461062867270151760">Aktivera uppspelning i Brave på låsskärmen</translation>
 <translation id="7665369617277396874">Lägg till konto</translation>
 <translation id="5866136067811459986">Hantera inloggade Brave Software-konton. Webbplatser, appar och tillägg i Brave och på Brave Software Play kan anpassa din upplevelse utifrån dessa konton beroende på behörighet.</translation>
 <translation id="1987317783729300807">Konton</translation>
@@ -3844,6 +3915,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="2114896190328250491">Foto taget av <ph name="NAME"/></translation>
 <translation id="7155171745945906037">Befintligt foto från kamera eller fil</translation>
 <translation id="9125982323641182972">Få Brave Software-teknik i Brave</translation>
+<translation id="1692115862433274081">Använd ett annat konto</translation>
 <translation id="5244474230056479698">Synkroniseras med <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Eftersom kontot hanteras av <ph name="DOMAIN"/> raderas bokmärken, historik, lösenord och andra inställningar från enheten. Däremot finns uppgifterna kvar i Brave Software-kontot och kan hanteras via <ph name="BEGIN_LINK"/>Brave Software Översikt<ph name="END_LINK"/>.</translation>
 <translation id="6906406176003824042">Redigera person</translation>
@@ -3875,6 +3947,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1125261911132334651">Hantera Brave Software-kontot</translation>
 <translation id="4570387585180509432">Adresser, telefonnummer och annat</translation>
 <translation id="5117427536932535467">Teman och bakgrunder</translation>
+<translation id="7257173066616499747">Wi-Fi-nätverk</translation>
 <translation id="3268451620468152448">Öppna flikar</translation>
 <translation id="5241892180459725878">Sökförslag från Brave Software Drive</translation>
 <translation id="2120297377148151361">Aktivitet och interaktion</translation>
@@ -3911,13 +3984,11 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6828153365543658583">Begränsa inloggning till följande användare:</translation>
 <translation id="7645176681409127223"><ph name="USER_NAME"/> (ägare)</translation>
 <translation id="3699624789011381381">E-postadress</translation>
-<translation id="1483829627339988491">Barnfilter</translation>
+<translation id="2813094189969465044">Föräldrakontroller</translation>
 <translation id="3557101512409028104">Begränsa vilka webbplatser som är tillgängliga och ange skärmtid med Family Link</translation>
-<translation id="7648142322539582331">Anslut till internet om du vill ställa in barnfilter</translation>
-<translation id="1005608198058526414">Visa inställningarna för Family Link</translation>
+<translation id="7915457674565721553">Anslut till internet om du vill ställa in föräldrakontroller</translation>
+<translation id="5192062846343383368">Öppna Family Link-appen om du vill se inställningarna för kontroll</translation>
 <translation id="470074695271471509">Vill du logga ut och slutföra konverteringen?</translation>
-<translation id="7850222546481862746"><ph name="BEGIN_PARAGRAPH1"/>Om du vill slutföra konfigureringen av kontroll på den här enheten måste du logga ut från kontot som tillhör <ph name="USER_NAME"/>.<ph name="END_PARAGRAPH1"/>
-      <ph name="BEGIN_PARAGRAPH2"/>Du kan hantera barnfilter åt ditt barn genom att installera Family Link för föräldrar på din egen enhet.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="3570985609317741174">Webbinnehåll</translation>
 <translation id="7719367874908701697">Sidzoom</translation>
 <translation id="4941627891654116707">Teckenstorlek</translation>
@@ -3952,6 +4023,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="2497229222757901769">Mushastighet</translation>
 <translation id="6586451623538375658">Byt primär musknapp</translation>
 <translation id="221872881068107022">Omvänd rullning</translation>
+<translation id="2536052711541161459">Pekaracceleration</translation>
 <translation id="1510238584712386396">Startprogram</translation>
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="2515586267016047495">Alt</translation>
@@ -4044,8 +4116,8 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="9196021349904508454">Tillfälliga offlinefiler på Brave Software Drive raderas. Filer som du har angett som tillgängliga offline raderas inte på enheten.</translation>
 <translation id="1865678028973512614">Radera filer</translation>
 <translation id="4470957202018033307">Inställningar för extern lagring</translation>
-<translation id="7536220825385726660">Tillåt att appar i Play Store ansluter till externa enheter</translation>
-<translation id="8157382355099335113">Appar från Brave Software Play Butik kan behöva åtkomst till externa lagringsenheter för att kunna läsa och skriva filer och mappar på dem.</translation>
+<translation id="7157776341993107220">Appar från Brave Software Play kan behöva fullständig åtkomst till filsystemet för att kunna läsa och skriva filer på externa lagringsenheter. Alla som använder den externa enheten kan se filer och mappar som skapats på den.</translation>
+<translation id="6775163072363532304">Tillgängliga enheter visas här.</translation>
 <translation id="1529891865407786369">Strömkälla</translation>
 <translation id="354060433403403521">Laddare</translation>
 <translation id="2127372758936585790">Laddare med låg effekt</translation>
@@ -4070,7 +4142,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5826395379250998812">Anslut <ph name="DEVICE_TYPE"/> till telefonen. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">Du har ingen enhet som uppfyller villkoren. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">Väntar på verifiering. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/></translation>
-<translation id="6518133107902771759">Verifiera</translation>
 <translation id="4142052906269098341">Lås upp <ph name="DEVICE_TYPE"/> med telefonen. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Direktinternetdelning</translation>
 <translation id="6415900369006735853">Anslut till internet via mobilen</translation>
@@ -4090,7 +4161,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="4840150926623932060">{NUM_DOWNLOAD,plural, =1{1 till}other{# till}}</translation>
 <translation id="2749608811030566578">Ett fel uppstod när skadlig programvara skulle tas bort med Brave</translation>
 <translation id="8189483132214844139">Brave kan hjälpa dig att upptäcka skadlig programvara på datorn och ta bort den</translation>
-<translation id="2910318910161511225">Anslut till ett nätverk och försök igen</translation>
 <translation id="1426870617281699524">Klicka på Försök igen och godkänn frågan på datorn</translation>
 <translation id="7886744396008377537">Det finns skadlig programvara på datorn. Den skadliga programvaran tas bort, inställningarna återställs och tillägg inaktiveras. Därefter fungerar webbläsaren som den ska igen.</translation>
 <translation id="1484912962860902625">Ett fel uppstod vid sökningen efter skadlig programvara med Brave</translation>
@@ -4100,7 +4170,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="284975061945174219">Rensningen misslyckades</translation>
 <translation id="9014750448058570312">Du måste ge Brave behörighet att fortsätta</translation>
 <translation id="1852141627593563189">Sök efter skadliga program</translation>
-<translation id="4320177379694898372">Ingen internetanslutning</translation>
 <translation id="850875081535031620">Ingen skadlig programvara hittades</translation>
 <translation id="1186771945450942097">Ta bort skadlig programvara</translation>
 <translation id="354602065659584722">Den skadliga programvaran har tagits bort</translation>
@@ -4161,6 +4230,14 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8705629851992224300">Det gick inte att läsa från säkerhetsnyckeln</translation>
 <translation id="3076977359333237641">Inloggningsuppgifterna har raderats</translation>
 <translation id="3508492320654304609">Det gick inte att radera inloggningsuppgifterna</translation>
+<translation id="8945764661949477243">Läsa, döpa om och radera fingeravtryck som är sparade på enheten</translation>
+<translation id="4836504898754963407">Hantera fingeravtryck</translation>
+<translation id="403456802563765809">Sätt i och tryck på säkerhetsnyckeln om du vill hantera fingeravtryck.</translation>
+<translation id="5639152092474119692">Du måste ange säkerhetsnyckelns pinkod om du vill hantera fingeravtryck. Om du inte kommer ihåg pinkoden måste du återställa säkerhetsnyckeln.</translation>
+<translation id="3589845496433710431">Det finns inga sparade fingeravtryck på säkerhetsnyckeln.</translation>
+<translation id="1489956991149850859">Här kan du lägga till, ta bort eller döpa om fingeravtryck.</translation>
+<translation id="5995884201513800557">Fortsätt att trycka på säkerhetsnyckeln för att spara fingeravtrycket.</translation>
+<translation id="1750172676754093297">Det går inte att lagra fingeravtryck på säkerhetsnyckeln</translation>
 <translation id="3341703758641437857">Tillåt åtkomst till webbadresser i filen</translation>
 <translation id="9003647077635673607">Tillåt på alla webbplatser</translation>
 <translation id="698524779381350301">Tillåt åtkomst automatiskt på följande webbplatser</translation>
@@ -4233,6 +4310,8 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="8523849605371521713">Har lagts till av en policy</translation>
 <translation id="5087249366037322692">Har lagts till av tredje part</translation>
 <translation id="6788210894632713004">Okomprimerat tillägg</translation>
+<translation id="2350133097354918058">Inläst igen</translation>
+<translation id="8635628933471165173">Läser in igen …</translation>
 <translation id="3838085852053358637">Det gick inte att läsa in tillägget</translation>
 <translation id="6370021412472292592">Det gick inte att läsa in manifestet.</translation>
 <translation id="7235716375204803342">Hämtar aktiviteter …</translation>
@@ -4434,4 +4513,29 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6336451774241870485">Ny privat flik</translation>
 <translation id="6610147964972079463">Stäng privata flikar</translation>
 <translation id="8076492880354921740">Flikar</translation>
+<translation id="2794233252405721443">Webbplatsen har blockerats</translation>
+<translation id="1721312023322545264">Du behöver tillstånd från <ph name="NAME"/> om du vill besöka den här webbplatsen</translation>
+<translation id="7543525346216957623">Fråga en förälder</translation>
+<translation id="471880041731876836">Du har inte behörighet att besöka den här webbplatsen.</translation>
+<translation id="3480834636742786788">Logga in på Brave innan du använder den här appen.</translation>
+<translation id="2851634818064021665">Du behöver tillstånd att besöka den här webbplatsen</translation>
+<translation id="4933782374919065856">Frågor? Kontakta den som kontrollerar profilen.</translation>
+<translation id="2712173769900027643">Begär behörighet</translation>
+<translation id="3886446263141354045">Din begäran om att få tillgång till denna webbplats har skickats till <ph name="NAME"/></translation>
+<translation id="3345135638360864351">Det gick inte att skicka begäran om åtkomst till den här webbplatsen till <ph name="NAME"/>. Försök igen.</translation>
+<translation id="6414888972213066896">Du har frågat en förälder om lov att besöka den här webbplatsen.</translation>
+<translation id="4858792381671956233">Du har frågat dina föräldrar om lov att besöka den här webbplatsen.</translation>
+<translation id="3498215018399854026">Vi kunde inte nå din förälder just nu. Försök igen.</translation>
+<translation id="8012647001091218357">Vi kunde inte nå dina föräldrar just nu. Försök igen.</translation>
+<translation id="3479539252931486093">Var det här oväntat? <ph name="BEGIN_LINK"/>Meddela oss<ph name="END_LINK"/></translation>
+<translation id="3586931643579894722">Dölj detaljerad information</translation>
+<translation id="7444046173054089907">Webbplatsen är blockerad</translation>
+<translation id="6778737459546443941">Din förälder har inte godkänt den ännu</translation>
+<translation id="8620436878122366504">Dina föräldrar har inte godkänt den ännu</translation>
+<translation id="6563469144985748109">Den ansvarige har inte godkänt den ännu</translation>
+<translation id="9076283476770535406">Den kan innehålla barnförbjudet innehåll</translation>
+<translation id="7755287808199759310">En förälder kan ta bort blockeringen</translation>
+<translation id="5732392974455271431">Dina föräldrar kan ta bort blockeringen</translation>
+<translation id="3556433843310711081">En ansvarig kan ta bort blockeringen</translation>
+<translation id="1254756632288991504">Logga in på Brave så att Brave kan kontrollera om du har tillgång till den här webbplatsen.</translation>
 </translationbundle>

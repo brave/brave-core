@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.preferences.website;
 
 import org.chromium.base.annotations.CalledByNative;
-import org.chromium.base.annotations.JCaller;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.annotations.NativeMethods;
 import org.chromium.base.Log;
@@ -109,7 +108,7 @@ public class BraveShieldsContentSettings {
 
     @NativeMethods
     interface Natives {
-        void init(@JCaller BraveShieldsContentSettings self);
+        void init(BraveShieldsContentSettings self);
         void destroy(long nativeBraveShieldsContentSettings);
 
         void setBraveShieldsEnabled(boolean enabled, String url, Profile profile);

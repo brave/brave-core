@@ -78,10 +78,12 @@
 <translation id="2414886740292270097">Mørkt</translation>
 <translation id="3829010735958850433">Hopp over velkomstturen</translation>
 <translation id="1201402288615127009">Neste</translation>
+<translation id="7954950242989581218">Surf på en trygg og fornuftig måte</translation>
+<translation id="2188651882929633653">Brave Shields blokkerer de skumle greiene som prøver å spore deg overalt på nettet inkludert de fleste annonser. Sett Shields til “nede” hvis det virker som om et nettsted ikke fungerer. Brave bruker <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>helt privat produktdiagnostikk<ph name="END_LINK_P3A">&lt;/a&gt;</ph> til å beregne den totale bruken av visse funksjoner. Dette kan du slå av i <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Innstillinger<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Reklamer</translation>
 <translation id="5946611334574299206">Tjen tokener ved å se annonser i Brave. Annonser som presenteres er basert på dine interesser, som hentet fra dine nettleservaner. Ingen personlige data eller nettleserhistorikk forlater noensinne nettleseren din.</translation>
 <translation id="6112368337882254910">Auto-bidra</translation>
-<translation id="1527222983464337010">En automatisk måte å støtte utgivere og tekstforfattere på. Bestem deg for en månedlig betaling og surf som normalt. Brave måler den interessen du viser, og sidene du besøker mottar automatisk bidrag fra deg.</translation>
+<translation id="3742599705619405136">En automatisk måte å støtte utgivere og tekstforfattere på. Bestem deg for en månedlig betaling og surf som normalt. Brave måler den interessen du viser, og sidene du besøker mottar automatisk bidrag fra deg.</translation>
 <translation id="20281847067919078">Estimert ventende belønninger</translation>
 <translation id="8593551638387217772">Neste betalingsdato</translation>
 <translation id="319209088187794725">Annonsevarsler mottatt denne måneden</translation>
@@ -100,12 +102,17 @@
 <translation id="8759716059844800317">Støttede nettsider</translation>
 <translation id="2365740070488517695">Tips</translation>
 <translation id="1309807437617560451">Gi tips direkte til tekstforfattere mens du surfer. Du kan også sette opp månedlige gjentakende tips, så du kan støtte sider uten avbrudd.</translation>
+<translation id="5012991400231464322">Månedlige bidrag</translation>
+<translation id="2084351799622920487">Konfigurer gjentakende månedlige bidrag, slik at du kan støtte nettsteder kontinuerlig.</translation>
+<translation id="8150772404570015166">Ingen månedlige bidrag er konfigurert ennå.</translation>
+<translation id="7269582398922493824">Støtt favorittnettstedene dine med gjentakende månedlige bidrag. Dette kan du konfigurere fra tips-banneret.</translation>
 <translation id="2241248417273918295">Fortjeneste utbetales hver måned.</translation>
 <translation id="68906705461077250">Angi ønsket frekvens for å øke eller minske fortjenesten.</translation>
 <translation id="1847863811689960237">Belønn skapere for innholdet du elsker.</translation>
 <translation id="4129489167302464118">Dine månedlige bidrag blir fordelt mellom sidene du besøker.</translation>
 <translation id="4898632353264854950">Sider vil vises mens du leser</translation>
 <translation id="3024485967181749006">Totalt beløp i tips denne måneden</translation>
+<translation id="5055577484189948413">Totalt antall bidrag denne måneden</translation>
 <translation id="4153752809523809915">Har du tipset favoritt-tekstforfatteren din i dag?</translation>
 <translation id="1165667598801520610">Legg til midler</translation>
 <translation id="6239274080752256452">Ta ut penger</translation>
@@ -113,7 +120,6 @@
 <translation id="7286722244752781970">Minste sidetid før du registrering av et besøk</translation>
 <translation id="4424486208397124985">Minimumsbesøk for utgivers relevans</translation>
 <translation id="4969081543473319051">Hva burde bli tillatt?</translation>
-<translation id="2295504178524377899">Tillat bidrag til ikke-verifiserte nettsteder</translation>
 <translation id="5875669387851353511">Tillat donasjoner til videoer</translation>
 <translation id="8933202740471878108">1 besøk</translation>
 <translation id="354797634123275103">5 besøk</translation>
@@ -209,6 +215,7 @@
 <translation id="4405997465645469914">Ved å slå på Brave Rewards indikerer du at du har lest og godtar</translation>
 <translation id="8819542691525488940">Ved å klikke ‘Ja, jeg er med!’,  indikerer du at du har lest og godtar</translation>
 <translation id="8071424789698327147">Ved å klikke ‘Ja, jeg er klar!’, indikerer du at du har lest og godtar</translation>
+<translation id="3745024317593003526">Angi bidrag</translation>
 <translation id="7530570094705720669">Opprett lommebok</translation>
 <translation id="2105596359439030979">Din oppmerksomhet er verdifull. Tjen ved å se annonser som støtter personvern, og send den videre for å støtte skaperene du elsker.</translation>
 <translation id="516395624550019162">Ja, jeg er med!</translation>
@@ -272,6 +279,8 @@
 <translation id="211044356803193224">Månedlige tips!</translation>
 <translation id="606865182719489911">En gratis token tildeling er tilgjengelig</translation>
 <translation id="3453206261112715431">Gratis tokenstipend</translation>
+<translation id="2280319752798785157">Månedlig bidrag</translation>
+<translation id="7627481505582641588">Neste bidrag</translation>
 <translation id="5736183007277264868">Det er for tiden ingen tokens tilgjengelige.</translation>
 <translation id="8307851765167460403">Ingen aktiviteter enda…</translation>
 <translation id="8589748782214271192">Nei, ellers takk</translation>
@@ -318,9 +327,8 @@ dag i hver måned.</translation>
 <translation id="5717619667204259673">Ta godt vare på denne gjenopprettingsnøkkelen.</translation>
 <translation id="4699702339303280827">Du kan alltid bruke denne nøkkelen til å få lommeboken din tilbake hvis det skjer noe med nettleseren eller datamaskinen din. Men sørg for å beskytte den – hvis noen får tak i denne nøkkelen, kan de stjele lommeboken din. Det er sannsynligvis tryggest å skrive den ned på et stykke papir eller et annet sted hvor du oppbevarer viktig informasjon.</translation>
 <translation id="7354412786785889047">Du kan støtte denne innholdskreatøren ved å sende et tips. It’s en måte å takke dem for å lage flott innhold. Verifiserte kreatører blir betalt for tipsene deres i løpet av den første uken i hver kalendermåten.</translation>
-<translation id="3475063317678050010">Hvis du vil, kan du planlegge månedlige tips for å støtte denne kreatøren på månedlig basis.</translation>
+<translation id="972846019534552366">Hvis du vil, kan du planlegge månedlige tips for å støtte denne kreatøren på månedlig basis.</translation>
 <translation id="3074127054582480056">Obs</translation>
-<translation id="822513417008209372">Du støtter for øyeblikket</translation>
 <translation id="5010112177773747965">uten ditt samtykke.</translation>
 <translation id="7147673045905733351">I dag ønsker Brave deg velkommen til det nye internettet.</translation>
 <translation id="1350763070659630336">Et hvor din tid er verdifull, dine personlige opplysninger holdes privat og du faktisk blir betalt for oppmerksomheten din.</translation>
@@ -344,6 +352,7 @@ dag i hver måned.</translation>
 <translation id="1738658589626889850">Lagre som en fil</translation>
 <translation id="259138486959961679">Se alle {{numItems}} gjenstander</translation>
 <translation id="7857284676033058221">Se alle {{numSites}} nettsteder</translation>
+<translation id="1549705559752367917">Send mitt tips</translation>
 <translation id="3536298624341433814">Send mitt tips</translation>
 <translation id="8428213095426709021">Innstillinger</translation>
 <translation id="1792148354504719133">nettsteder</translation>
@@ -386,7 +395,7 @@ dag i hver måned.</translation>
 <translation id="6727483290601442544">Se detaljer</translation>
 <translation id="1988679729106502285">MERK:</translation>
 <translation id="5815103311506128988">Denne skaperen har ikke registrert seg for å motta bidrag fra Brave-brukere ennå. Nettleseren din vil fortsette å prøve å bidra helt til de verifiserer bidraget eller til det har gått 90 dager.</translation>
-<translation id="603411408512957306">Denne verifiserte skaperen har ennå ikke verifisert (KYC) kontoen sin for å motta tips fra den verifiserte lommeboken din. Tipsen blir værende i lommeboken din til vedkommende fullfører verifiseringen.</translation>
+<translation id="7461596279975181413">Denne verifiserte Brave-skaperen har ikke konfigurert kontoen sin for mottak av bidrag fra Brave-brukere ennå. Nettleseren fortsetter å prøve å bidra frem til vedkommende verifiserer, eller til det har gått 90 dager.</translation>
 <translation id="4292832015778676417">opptjent fra annonser</translation>
 <translation id="3197752845651180812">Ventende bidrag</translation>
 <translation id="3164105678355419142">Gjentatt tips</translation>
@@ -395,12 +404,12 @@ dag i hver måned.</translation>
 <translation id="4346944508027912677">Venter til</translation>
 <translation id="7410549756000115387">Ingen ventende bidrag…</translation>
 <translation id="1963227389609234879">Fjern alle</translation>
-<translation id="1170315781901539495">Ekskluderte sider</translation>
+<translation id="8706157865312453070">Ekskluderte sider</translation>
 <translation id="5119190679543565400">Gjenopprett denne siden</translation>
 <translation id="9075700728717335924">Du har ekskludert</translation>
 <translation id="4862817811647633830">sider fra Auto-Contribute.</translation>
 <translation id="923467487918828349">Vis alle</translation>
-<translation id="5471305206221894680">Støttede sider</translation>
+<translation id="1397381065858030856">Støttede sider</translation>
 <translation id="2306169361186864012">Brave annonsebelønninger!</translation>
 <translation id="3757873395477273033">Dine belønninger fra Brave Ads er på vei.</translation>
 <translation id="8101881066646819737">Din token fra Brave Ads</translation>

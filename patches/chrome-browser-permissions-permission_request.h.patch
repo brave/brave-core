@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/permissions/permission_request.h b/chrome/browser/permissions/permission_request.h
-index 6daa247ce558241db33a1d1ae0187f14631cc842..1bd4ae483d9803262a61fc7e6196848aa814ec54 100644
+index f996ac141e999b098b61fa41b60f24d00f1d6419..601cb26d025ea1ca93527f68441edd0a1dfea7f2 100644
 --- a/chrome/browser/permissions/permission_request.h
 +++ b/chrome/browser/permissions/permission_request.h
 @@ -45,6 +45,7 @@ enum class PermissionRequestType {

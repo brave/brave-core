@@ -19,12 +19,11 @@
 #include "ui/views/widget/widget.h"
 
 BookmarkButton::BookmarkButton(views::ButtonListener* listener)
-    : ToolbarButton(listener),
-      widget_observer_(this) {
-        SetID(VIEW_ID_STAR_BUTTON);
-        set_tag(IDC_BOOKMARK_PAGE);
-        SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_FORWARD));
-      }
+    : ToolbarButton(listener), widget_observer_(this) {
+  SetID(VIEW_ID_STAR_BUTTON);
+  set_tag(IDC_BOOKMARK_THIS_TAB);
+  SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_FORWARD));
+}
 
 BookmarkButton::~BookmarkButton() {
 }

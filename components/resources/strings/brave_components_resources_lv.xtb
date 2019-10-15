@@ -78,10 +78,12 @@
 <translation id="2414886740292270097">Tumšs</translation>
 <translation id="3829010735958850433">Izlaist iepazīstināšanas tūri</translation>
 <translation id="1201402288615127009">Nākamais</translation>
+<translation id="7954950242989581218">Droša pārlūkošana</translation>
+<translation id="2188651882929633653">Brave Shields bloķē saturu, kas mēģina izsekot jūsu darbībām tīmeklī, tostarp lielāko daļu reklāmu. Iestatiet Shields uz “leju”,  ja kāda vietne nedarbojas. Brave izmanto <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>pilnīgi privātu produktu analīzi<ph name="END_LINK_P3A">&lt;/a&gt;</ph>, lai novērtētu konkrētu funkciju vispārējo lietojumu. Šo opciju varat izslēgt sadaļā <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Iestatījumi<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Reklāmas</translation>
 <translation id="5946611334574299206">Pelniet merķierus, aplūkojot reklāmas Brave. Reklāmas tiek rādītas, balstotiets uz Jūsu interesēm, kas iegūtas no Jūsu pārlūkošanas paradumiem. Personas dati vai pārlūkošanas vēsture nekad nepamet Jūsu pārlūku.</translation>
 <translation id="6112368337882254910">Automātiska ziedošana</translation>
-<translation id="1527222983464337010">Automātisks veids, kā atbalstīt publicētājus un satura veidotājus. Iestatiet ikmēneša maksājumu un pārlūkojiet kā parasti. Jūsu apmeklētās vietnes saņem Jūsu ziedojumus automātiski, balstoties uz Jūsu veltīto uzmanību pēc Brave mērījumiem.</translation>
+<translation id="3742599705619405136">Automātisks veids, kā atbalstīt publicētājus un satura veidotājus. Iestatiet ikmēneša maksājumu un pārlūkojiet kā parasti. Jūsu apmeklētās vietnes saņem Jūsu ziedojumus automātiski, balstoties uz Jūsu veltīto uzmanību pēc Brave mērījumiem.</translation>
 <translation id="20281847067919078">Aptuvenā gaidāmā peļņa</translation>
 <translation id="8593551638387217772">Nākamais maksājuma datums</translation>
 <translation id="319209088187794725">Šajā mēnesī saņemtie reklāmu paziņojumi</translation>
@@ -100,12 +102,17 @@
 <translation id="8759716059844800317">Atbalstītās vietnes</translation>
 <translation id="2365740070488517695">Dzeramnauda</translation>
 <translation id="1309807437617560451">Iedodiet dzeramnaudu satura veidotājiem tieši pārlūkošanas laikā. Jūs varat arī iestatīt ikmēneša dzeramnaudas došanu, lai pastāvīgi atbalstītu vietnes.</translation>
+<translation id="5012991400231464322">Ikmēneša ieguldījums</translation>
+<translation id="2084351799622920487">Iestatiet periodisku ikmēneša ieguldījumu, lai nepārtraukti atbalstītu vietnes.</translation>
+<translation id="8150772404570015166">Nav iestatīts neviens ikmēneša ieguldījums.</translation>
+<translation id="7269582398922493824">Atbalstiet savas iecienītākās vietnes ar ikmēneša ieguldījumu. Varat to iestatīt, izmantojot dzeramnaudu reklāmkarogu.</translation>
 <translation id="2241248417273918295">Nopelnītais tiek izmaksāts katru mēnesi.</translation>
 <translation id="68906705461077250">Iestatiet vēlamo biežumu, lai palielinātu vai samazinātu peļņu.</translation>
 <translation id="1847863811689960237">Atlīdziniet satura veidotājiem par Jūsu iecienīto saturu.</translation>
 <translation id="4129489167302464118">Jūsu ikmēneša maksājums tiek izdalīts pa visām vietnēm, ko apmeklējat.</translation>
 <translation id="4898632353264854950">Vietnes parādīsies pārlūkojot</translation>
 <translation id="3024485967181749006">Kopējā dzeramnauda šomēnes</translation>
+<translation id="5055577484189948413">Kopējie ieguldījumi šomēnes</translation>
 <translation id="4153752809523809915">Vai šodien esat iedevis/-usi dzeramnaudu savam iecienītajam satura veidotājam?</translation>
 <translation id="1165667598801520610">Pievienot līdzekļus</translation>
 <translation id="6239274080752256452">Izņemt līdzekļus</translation>
@@ -113,7 +120,6 @@
 <translation id="7286722244752781970">Minimālais laiks lapā pirms apmeklējuma reģistrēšanas</translation>
 <translation id="4424486208397124985">Minimālais apmeklējumu skaits publicētāja būtiskumam</translation>
 <translation id="4969081543473319051">Kas ir jāatļauj?</translation>
-<translation id="2295504178524377899">Ļaut ziedot neapstiprinātām vietnēm</translation>
 <translation id="5875669387851353511">Atļauj ziedot videoklipiem</translation>
 <translation id="8933202740471878108">1 apmeklējums</translation>
 <translation id="354797634123275103">5 apmeklējumi</translation>
@@ -209,6 +215,7 @@
 <translation id="4405997465645469914">Ieslēdzot "Brave balvas", Jūs norādāt, ka izlasījāt un piekrītat</translation>
 <translation id="8819542691525488940">Noklikšķinot uz "Jā, es piekrītu!", Jūs  norādāt, ka izlasījāt un piekrītat</translation>
 <translation id="8071424789698327147">Noklikšķinot uz "Jā, esmu gatavs!", Jūs  norādāt, ka izlasījāt un piekrītat</translation>
+<translation id="3745024317593003526">Iestatīt ieguldījumu</translation>
 <translation id="7530570094705720669">Maka izveide</translation>
 <translation id="2105596359439030979">Jūsu veltītā uzmanība ir vērtīga. Nopelniet, skatoties privātumu cienošas reklāmas, un atbalstiet savus iemīļotos satura veidotājus.</translation>
 <translation id="516395624550019162">Jā, aiziet!</translation>
@@ -272,6 +279,8 @@
 <translation id="211044356803193224">Ikmēneša dzeramnaudas!</translation>
 <translation id="606865182719489911">Pieejams bezmaksas marķiera piešķīrums.</translation>
 <translation id="3453206261112715431">Bezmaksas marķiera piešķīrums</translation>
+<translation id="2280319752798785157">Ikmēneša ieguldījums</translation>
+<translation id="7627481505582641588">Nākamais ieguldījums</translation>
 <translation id="5736183007277264868">Pašlaik nav marķieru piešķīrumi nav pieejami.</translation>
 <translation id="8307851765167460403">Vēl nav darbību…</translation>
 <translation id="8589748782214271192">Nē, paldies</translation>
@@ -317,9 +326,8 @@
 <translation id="5717619667204259673">Turiet šo atkopšanas atslēgu drošībā.</translation>
 <translation id="4699702339303280827">Jūs vienmēr varat izmantot šo atslēgu, lai atgūtu savu maku, ja ar jūsu pārlūkprogrammu vai datoru kaut kas ir noticis.  Taču parūpējieties par tās drošību — ikviens, kas iegūst šo atslēgu, var nozagt jūsu maku. Visdrošāk būtu to pierakstīt uz papīra vai turēt vietā, kur glabājat svarīgu informāciju.</translation>
 <translation id="7354412786785889047">Jūs varat atbalstīt šo satura veidotāju, nosūtot dzeramnaudu. Tas ir veids, kā pateikties viņiem par lielisku saturu. Verificētiem satura veidotājiem dzeramnauda tiek izmaksāta katra kalendārā mēneša pirmajā nedēļā.</translation>
-<translation id="3475063317678050010">Ja vēlaties, varat iestatīt ikmēneša dzeramnaudas došanu, lai pastāvīgi atbalstītu šo satura veidotāju.</translation>
+<translation id="972846019534552366">Ja vēlaties, varat iestatīt ikmēneša dzeramnaudas došanu, lai pastāvīgi atbalstītu šo satura veidotāju.</translation>
 <translation id="3074127054582480056">Uzmanību</translation>
-<translation id="822513417008209372">Jūs pašlaik atbalstāt</translation>
 <translation id="5010112177773747965">bez jūsu piekrišanas.</translation>
 <translation id="7147673045905733351">Šodien Brave ielūdz jūs apskatīt jauno interneta pārlūkprogrammu.</translation>
 <translation id="1350763070659630336">Šeit jūsu laiks tiek novērtēts, tiek ievērota jūsu personas datu konfidencialitāte, un jums ir iespēja pat nopelnīt par veltīto uzmanību.</translation>
@@ -343,6 +351,7 @@
 <translation id="1738658589626889850">Saglabāt kā failu</translation>
 <translation id="259138486959961679">Skatīt visus {{numItems}} vienumus</translation>
 <translation id="7857284676033058221">Skatīt visas {{numSites}} vietnes</translation>
+<translation id="1549705559752367917">Sūtīt dzeramnaudu</translation>
 <translation id="3536298624341433814">Sūtīt dzeramnaudu</translation>
 <translation id="8428213095426709021">Iestatījumi</translation>
 <translation id="1792148354504719133">vietne</translation>
@@ -385,7 +394,7 @@
 <translation id="6727483290601442544">Skatīt informāciju</translation>
 <translation id="1988679729106502285">PIEZĪME.</translation>
 <translation id="5815103311506128988">Šis satura veidotājs vēl nav pierakstījies ziedojumu saņemšanai no Brave lietotājiem. Jūsu pārlūkprogramma atkārtoti mēģinās veikt ziedojumu līdz brīdim, kad tas tiks apstiprināts vai būs pagājušas 90 dienas.</translation>
-<translation id="603411408512957306">Šim pārbaudītajam izveidotājam vēl ir jāverificē (KYC) savs konts, lai saņemtu ieteikumus no jūsu apstiprinātā maka. Ieteikumi atradīsies jūsu makā, līdz verifikācija tiks pabeigta.</translation>
+<translation id="7461596279975181413">Šis Brave apstiprinātais veidotājs vēl nav konfigurējis savu kontu, lai saņemtu ieguldījumus no Brave lietotājiem. Jūsu pārlūkprogramma mēģinās nosūtīt ieguldījumu 90 dienas vai līdz brīdim, kad lietotājs veiks apstiprināšanu.</translation>
 <translation id="4292832015778676417">nopelnīts no reklāmām</translation>
 <translation id="3197752845651180812">Neapmaksātie ziedojumi</translation>
 <translation id="3164105678355419142">Periodiska dzeramnauda</translation>
@@ -394,12 +403,12 @@
 <translation id="4346944508027912677">Kavējas līdz</translation>
 <translation id="7410549756000115387">Nav neapmaksātu ziedojumu...</translation>
 <translation id="1963227389609234879">Izņemt visu</translation>
-<translation id="1170315781901539495">Izslēgtās vietnes</translation>
+<translation id="8706157865312453070">Izslēgtās vietnes</translation>
 <translation id="5119190679543565400">Atkopt šo vietni</translation>
 <translation id="9075700728717335924">Jūs esat izslēdzis</translation>
 <translation id="4862817811647633830">vietnes no automātiskās ziedošanas.</translation>
 <translation id="923467487918828349">Rādīt visus</translation>
-<translation id="5471305206221894680">Atbalstītās vietnes</translation>
+<translation id="1397381065858030856">Atbalstītās vietnes</translation>
 <translation id="2306169361186864012">Brave reklāmu peļņa!</translation>
 <translation id="3757873395477273033">Jūsu peļņas piešķīrumi no Brave reklāmām būs drīzumā pieejami.</translation>
 <translation id="8101881066646819737">Jūsu Brave reklāmu marķiera piešķīrums</translation>

@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/webui/downloads/downloads_ui.cc b/chrome/browser/ui/webui/downloads/downloads_ui.cc
-index b2b55ef537a468674db07dcf59ad641f6edd6324..4ffa4ca4aa54a14eb4879f0ee059d1cc9a9ee70b 100644
+index e1c53488cb07b4a1b04f9c23b595cc7cab06b833..2688469d4283135a3b1188f61e4d72758697854d 100644
 --- a/chrome/browser/ui/webui/downloads/downloads_ui.cc
 +++ b/chrome/browser/ui/webui/downloads/downloads_ui.cc
-@@ -51,6 +51,7 @@ content::WebUIDataSource* CreateDownloadsUIHTMLSource(Profile* profile) {
+@@ -52,6 +52,7 @@ content::WebUIDataSource* CreateDownloadsUIHTMLSource(Profile* profile) {
    content::WebUIDataSource* source =
        content::WebUIDataSource::Create(chrome::kChromeUIDownloadsHost);
  
 +  BraveCustomizeDownloadsDataSource(source);
-   bool requests_ap_verdicts = safe_browsing::AdvancedProtectionStatusManager::
-       RequestsAdvancedProtectionVerdicts(profile);
-   source->AddBoolean("requestsApVerdicts", requests_ap_verdicts);
+   bool requests_ap_verdicts =
+       safe_browsing::AdvancedProtectionStatusManagerFactory::GetForProfile(
+           profile)

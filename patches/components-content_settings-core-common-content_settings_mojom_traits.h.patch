@@ -1,0 +1,21 @@
+diff --git a/components/content_settings/core/common/content_settings_mojom_traits.h b/components/content_settings/core/common/content_settings_mojom_traits.h
+index c8b57f679adf9b72c9ee73af3a73d1de2a8ee609..1c71d35f336e56f3e3b9f14cd948517b5711142f 100644
+--- a/components/content_settings/core/common/content_settings_mojom_traits.h
++++ b/components/content_settings/core/common/content_settings_mojom_traits.h
+@@ -145,6 +145,16 @@ struct StructTraits<
+     return r.popup_redirect_rules;
+   }
+ 
++  static const std::vector<ContentSettingPatternSource>& fingerprinting_rules(
++      const RendererContentSettingRules& r) {
++    return r.fingerprinting_rules;
++  }
++
++  static const std::vector<ContentSettingPatternSource>& brave_shields_rules(
++      const RendererContentSettingRules& r) {
++    return r.brave_shields_rules;
++  }
++
+   static bool Read(
+       content_settings::mojom::RendererContentSettingRulesDataView data,
+       RendererContentSettingRules* out);

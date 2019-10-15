@@ -44,6 +44,7 @@ Beberapa ciri mungkin tidak tersedia. Sila nyatakan direktori profil yang berbez
 Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="1477146545787277177">Alamak! Brave mengalami ranap sistem. Lancarkan semula sekarang?</translation>
 <translation id="5785919770853225148">Brave akan menyimpan kata laluan ini dalam Akaun Brave Software anda. Anda tidak perlu mengingati kata laluan tersebut.</translation>
+<translation id="8211837073776713955">Brave akan memberitahu anda sekiranya kata laluan anda terjejas</translation>
 <translation id="113959764510199339">Brave sedang cuba memaparkan kata laluan.</translation>
 <translation id="7503098128120083822">Brave mahu mengeksport kata laluan anda.</translation>
 <translation id="8285294305439559616">Brave cuba menunjukkan kata laluan. Taip kata laluan Windows anda untuk membenarkannya.</translation>
@@ -152,13 +153,6 @@ Meneruskan juga log masuk akan menggabungkan maklumat Brave seperti penanda hala
 <translation id="3205074487970075628">Brave menggunakan kamera anda.</translation>
 <translation id="8142245354207161805">Nampaknya profil digunakan oleh proses Brave lain (<ph name="PROCESS_ID"/>) pada komputer lain (<ph name="HOST_NAME"/>). Brave telah mengunci profil supaya profil tidak rosak. Jika anda pasti tiada proses lain yang menggunakan profil ini, anda boleh membuka profil dan melancarkan semula Brave.</translation>
 <translation id="239760341987199724">Tetapkan Brave sebagai penyemak imbas lalai anda</translation>
-<translation id="5344925500065984750">Untuk menetapkan tapak web yang boleh dilihat oleh <ph name="NEW_PROFILE_NAME"/>, anda boleh mengkonfigurasi sekatan dan tetapan dengan melawati <ph name="BEGIN_LINK_1"/><ph name="DISPLAY_LINK"/><ph name="END_LINK_1"/>. Jika anda tidak menukar tetapan lalainya, <ph name="NEW_PROFILE_NAME"/> boleh menyemak imbas apa sahaja di web.
-
-Untuk menghalang <ph name="NEW_PROFILE_NAME"/> daripada mengakses akaun anda, pastikan profil anda dikunci apabila tidak menggunakan Brave. Untuk melakukannya, klik pada nama profil anda di penjuru atas sebelah kanan penyemak imbas dan pilih "Keluar dan kunci kanak-kanak".
-<ph name="BEGIN_LINK_2"/>Ketahui lebih lanjut<ph name="END_LINK_2"/>
-
-Sila semak e-mel anda di <ph name="ACCOUNT_EMAIL"/> untuk arahan lanjut.</translation>
-<translation id="1820843143331379651">Profil pengguna di bawah seliaan tidak tersedia lagi bermula dengan Brave 70.</translation>
 <translation id="669092380621816981">Data semakan imbas orang ini akan dipadamkan daripada peranti ini. Untuk memulihkan data itu, log masuk ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave kini lebih baik</translation>
 <translation id="7192666605334070839">Kini lebih mudah menggunakan Brave dengan Akaun Brave Software anda dan pada komputer yang dikongsi.</translation>
@@ -200,7 +194,7 @@ Sila semak e-mel anda di <ph name="ACCOUNT_EMAIL"/> untuk arahan lanjut.</transl
 <translation id="3598551856834560515">Kemas kini Brave untuk memulakan penyegerakan</translation>
 <translation id="4050175100176540509">Peningkatan keselamatan penting dan ciri baharu tersedia dalam versi terkini.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave akan dimulakan semula dalam 1 saat}other{Brave akan dimulakan semula dalam # saat}}</translation>
-<translation id="5509303873219371662">Anda perlu memulakan semula Brave sekarang</translation>
+<translation id="5646769069113654257">Sila mulakan semula Brave sekarang</translation>
 <translation id="8668413672647811944">Kemas kini keselamatan khas untuk Brave baru sahaja dilakukan. Mulakan semula sekarang dan kami akan memulihkan tab anda.</translation>
 <translation id="763369711159699222">Bantu menjadikan Brave lebih baik</translation>
 <translation id="1156940037717341650">Anda boleh membantu menjadikan Brave lebih selamat dan lebih mudah untuk digunakan dengan melaporkan butiran kemungkinan insiden keselamatan secara automatik kepada Brave Software.</translation>
@@ -224,7 +218,6 @@ Sila semak e-mel anda di <ph name="ACCOUNT_EMAIL"/> untuk arahan lanjut.</transl
 <translation id="6141293433381251973">Brave dikemas kini secara automatik supaya anda sentiasa mempunyai versi yang terbaharu. Apabila muat turun ini selesai, Brave akan dimulakan semula dan anda sudah boleh menggunakannya.</translation>
 <translation id="7808415789955822133">Syarat Brave OS</translation>
 <translation id="7207456302801184289">Selamat datang ke Brave</translation>
-<translation id="5688839044908745927">Brave hampir sedia.</translation>
 <translation id="3507835409099344374">Pergi ke tetapan pemberitahuan Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Kemas kini Brave tersedia}=1{Kemas kini Brave tersedia}other{Kemas kini Brave telah tersedia selama # hari}}</translation>
 <translation id="720532315408041257">Pentadbir anda meminta anda melancarkan semula Brave untuk menggunakan kemas kini ini</translation>
@@ -242,6 +235,8 @@ Sila semak e-mel anda di <ph name="ACCOUNT_EMAIL"/> untuk arahan lanjut.</transl
 <translation id="1864557848095568223">Mengemas kini Brave</translation>
 <translation id="1786715389543715322">Mengemas kini Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="8208853227947884571">Brave telah dikemas kini</translation>
+<translation id="6756417787837743699">Untuk mendapatkan butiran OS Brave, sila lihat <ph name="LINK_BEGIN"/>
+      Perihal OS Brave<ph name="LINK_END"/></translation>
 <translation id="6686872257969654608">Mengenai Brave OS</translation>
 <translation id="2280363356796735201">Dapatkan bantuan berkenaan Brave OS</translation>
 <translation id="38898988211673781">Kosongkan kuki dan data tapak apabila anda keluar daripada Brave</translation>
@@ -249,6 +244,10 @@ Sila semak e-mel anda di <ph name="ACCOUNT_EMAIL"/> untuk arahan lanjut.</transl
 <translation id="5468853758063275923">Brave ialah penyemak imbas lalai anda</translation>
 <translation id="1775322105159056176">Brave tidak dapat menentukan atau menetapkan penyemak imbas lalai</translation>
 <translation id="6915252145142862992">Ini adalah pemasangan kedua Brave dan tidak boleh dijadikan penyemak imbas lalai anda.</translation>
+<translation id="6235873178214143377">Jika tetapan tidak ditunjukkan pada halaman ini, lihat dalam <ph name="LINK_BEGIN"/>
+      tetapan penyemak imbas Brave anda<ph name="LINK_END"/></translation>
+<translation id="4459296183696059108">Jika tetapan tidak ditunjukkan pada halaman ini, lihat dalam <ph name="LINK_BEGIN"/>
+      tetapan OS Brave anda<ph name="LINK_END"/></translation>
 <translation id="7977435741986383568">Brave boleh menggunakan perkhidmatan web untuk meningkatkan pengalaman penyemakan imbas anda. Anda boleh memilih untuk melumpuhkan perkhidmatan ini. <ph name="BEGIN_LINK"/>Ketahui lebih lanjut<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Untuk membetulkan kesilapan ejaan, Brave menghantar teks yang anda taip dalam medan teks kepada Brave Software</translation>
 <translation id="8586264863973514035">Untuk menggunakan perubahan anda, mulakan semula Brave</translation>
@@ -262,8 +261,6 @@ Sila semak e-mel anda di <ph name="ACCOUNT_EMAIL"/> untuk arahan lanjut.</transl
 <translation id="7445061995866044926">Log keluar daripada Brave?</translation>
 <translation id="7453070689008684791">Brave akan mengakses Drive anda untuk membuat cadangan dalam bar alamat</translation>
 <translation id="3360368475735266712">Log masuk untuk menyegerakkan dan memperibadikan Brave pada semua peranti anda</translation>
-<translation id="9221712274065451529">Bahasa ini digunakan untuk memaparkan UI OS Brave</translation>
-<translation id="3518788198614984730">Paparkan OS Brave dalam bahasa ini</translation>
 <translation id="5757460455745382269">Bahasa ini digunakan untuk memaparkan UI Brave</translation>
 <translation id="2335583906071111058">Paparkan Brave dalam bahasa ini</translation>
 <translation id="8926637909431618259">Terus menjalankan apl latar belakang apabila Brave ditutup</translation>
