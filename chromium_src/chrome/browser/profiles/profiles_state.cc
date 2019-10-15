@@ -6,7 +6,8 @@
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "chrome/browser/profiles/profiles_state.h"
 #include "ui/gfx/text_elider.h"
-#define SetActiveProfileToGuestIfLocked SetActiveProfileToGuestIfLocked_ChromiumImpl
+#define SetActiveProfileToGuestIfLocked \
+  SetActiveProfileToGuestIfLocked_ChromiumImpl
 #define GetAvatarNameForProfile GetAvatarNameForProfile_ChromiumImpl
 #include "../../../../../../chrome/browser/profiles/profiles_state.cc"
 #undef GetAvatarNameForProfile
