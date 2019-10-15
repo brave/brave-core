@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_PROFILE_SYNC_SERVICE_IMPL_H_
 
 #include <memory>
-#include <set>
 #include <string>
 #include <vector>
 
