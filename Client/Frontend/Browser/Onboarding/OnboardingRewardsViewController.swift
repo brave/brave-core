@@ -20,7 +20,7 @@ class OnboardingRewardsViewController: OnboardingViewController {
         super.viewDidLoad()
         
         let isRewardsEnabled = rewards?.ledger.isEnabled == true
-        let isAdsRegionSupported = BraveAds.isSupportedRegion(Locale.current.identifier)
+        let isAdsRegionSupported = BraveAds.isCurrentRegionSupported()
         
         // The user is not new..
         if Preferences.General.basicOnboardingProgress.value != OnboardingProgress.none.rawValue || isRewardsEnabled {
@@ -42,5 +42,11 @@ class OnboardingRewardsViewController: OnboardingViewController {
     override func applyTheme(_ theme: Theme) {
         styleChildren(theme: theme)
         contentView.applyTheme(theme)
+    }
+    
+    override func continueTapped() {
+        rewards?.ads.isEnabled = true
+        
+        super.continueTapped()
     }
 }
