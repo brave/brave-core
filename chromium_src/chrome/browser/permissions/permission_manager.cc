@@ -1,3 +1,8 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "brave/browser/autoplay/autoplay_permission_context.h"
 #include "brave/browser/geolocation/brave_geolocation_permission_context.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -7,15 +12,17 @@ using content::PermissionType;
 
 namespace {
 
-ContentSettingsType PermissionTypeToContentSetting_ChromiumImpl(PermissionType permission);
+ContentSettingsType PermissionTypeToContentSettingSafe_ChromiumImpl(
+    PermissionType permission);
 
-ContentSettingsType PermissionTypeToContentSetting(PermissionType permission) {
+ContentSettingsType PermissionTypeToContentSettingSafe(
+    PermissionType permission) {
   if (permission == PermissionType::AUTOPLAY)
     return CONTENT_SETTINGS_TYPE_AUTOPLAY;
-  return PermissionTypeToContentSetting_ChromiumImpl(permission);
+  return PermissionTypeToContentSettingSafe_ChromiumImpl(permission);
 }
 
-} // namespace
+}  // namespace
 
 #define GeolocationPermissionContext BraveGeolocationPermissionContext
 #define PermissionManagerFactory BravePermissionManagerFactory

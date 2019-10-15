@@ -78,10 +78,12 @@
 <translation id="2414886740292270097">Tối</translation>
 <translation id="3829010735958850433">Bỏ qua tour chào mừng</translation>
 <translation id="1201402288615127009">Tiếp theo</translation>
+<translation id="7954950242989581218">Duyệt web an toàn</translation>
+<translation id="2188651882929633653">Brave Shields chặn những thứ đáng sợ tìm cách theo dõi bạn trên web bao gồm hầu hết các loại quảng cáo. Hãy tắt Shields nếu một trang web có vẻ không hoạt động. Brave sử dụng <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>dữ liệu phân tích sản phẩm hoàn toàn riêng tư<ph name="END_LINK_P3A">&lt;/a&gt;</ph> để ước tính mức độ sử dụng tổng thể của một số tính năng nhất định. Bạn có thể tắt tính năng này trong phần <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Cài đặt<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Quảng cáo</translation>
 <translation id="5946611334574299206">Kiếm token khi xem quảng cáo trên Brave. Quảng cáo trình bày dựa trên sở thích của bạn, theo như suy ra từ hành vi duyệt web của bạn. Không có bất kỳ dữ liệu cá nhân hay lịch sử duyệt nào rời khỏi trình duyệt của bạn.</translation>
 <translation id="6112368337882254910">Tự động Đóng góp</translation>
-<translation id="1527222983464337010">Một cách tự động để hỗ trợ nhà xuất bản và nhà sáng tạo nội dung. Thiết lập thanh toán hàng tháng và duyệt web bình thường. Các trang web bạn truy cập nhận được khoản đóng góp của bạn tự động, dựa trên sự chú ý của bạn do Brave đo lường.</translation>
+<translation id="3742599705619405136">Một cách tự động để hỗ trợ nhà xuất bản và nhà sáng tạo nội dung. Thiết lập thanh toán hàng tháng và duyệt web bình thường. Các trang web bạn truy cập nhận được khoản đóng góp của bạn tự động, dựa trên sự chú ý của bạn do Brave đo lường.</translation>
 <translation id="20281847067919078">Ước tính phần thưởng chờ xử lý</translation>
 <translation id="8593551638387217772">Ngày thanh toán tiếp theo</translation>
 <translation id="319209088187794725">Thông báo quảng cáo đã nhận được trong tháng này</translation>
@@ -100,12 +102,17 @@
 <translation id="8759716059844800317">Trang web được hỗ trợ</translation>
 <translation id="2365740070488517695">Tiền boa</translation>
 <translation id="1309807437617560451">Gửi tiền boa trực tiếp cho nhà sáng tạo nội dung khi bạn duyệt web. Bạn cũng có thể thiết lập khoản tiền boa định kỳ hàng tháng để hỗ trợ các trang một cách liên tục.</translation>
+<translation id="5012991400231464322">Khoản đóng góp hàng tháng</translation>
+<translation id="2084351799622920487">Thiết lập khoản đóng góp định kỳ hàng tháng để bạn có thể liên tục hỗ trợ các trang web.</translation>
+<translation id="8150772404570015166">Chưa thiết lập khoản đóng góp hàng tháng nào.</translation>
+<translation id="7269582398922493824">Hãy hỗ trợ các trang web yêu thích bằng cách đóng góp định kỳ hàng tháng. Bạn có thể thiết lập khoản đóng góp từ biểu ngữ tặng tiền thưởng thêm.</translation>
 <translation id="2241248417273918295">Thu nhập được trả mỗi tháng.</translation>
 <translation id="68906705461077250">Đặt tần suất mong muốn của bạn để tăng hoặc giảm thu nhập.</translation>
 <translation id="1847863811689960237">Thưởng cho nhà sáng tạo nội dung mà bạn thích.</translation>
 <translation id="4129489167302464118">Thu nhập hàng tháng của bạn được phân phối khắp các trang web mà bạn truy cập.</translation>
 <translation id="4898632353264854950">Các trang web sẽ xuất hiện khi bạn duyệt</translation>
 <translation id="3024485967181749006">Tổng tiền tip tháng này</translation>
+<translation id="5055577484189948413">Tổng đóng góp tháng này</translation>
 <translation id="4153752809523809915">Hôm nay bạn đã gửi tiền tip cho nhà sáng tạo nội dung mà bạn ưa thích chưa?</translation>
 <translation id="1165667598801520610">Thêm Nguồn tiền</translation>
 <translation id="6239274080752256452">Rút Tiền</translation>
@@ -113,7 +120,6 @@
 <translation id="7286722244752781970">Thời gian xem trang tối thiểu trước khi lưu lại lượt truy cập</translation>
 <translation id="4424486208397124985">Số lượt truy cập tối thiểu đối với nhà xuất bản liên quan</translation>
 <translation id="4969081543473319051">Cái gì nên được phép?</translation>
-<translation id="2295504178524377899">Cho phép đóng góp đến các trang chưa chứng thực</translation>
 <translation id="5875669387851353511">Cho phép đóng góp vào vidoe</translation>
 <translation id="8933202740471878108">1 lượt truy cập</translation>
 <translation id="354797634123275103">5 lượt truy cập</translation>
@@ -209,6 +215,7 @@
 <translation id="4405997465645469914">Bật Quỹ thưởng Brave nghĩa là bạn đã đọc và đồng ý với</translation>
 <translation id="8819542691525488940">Nhấp vào ‘Vâng, tôi tham gia!’ nghĩa là bạn đã đọc và đồng ý với</translation>
 <translation id="8071424789698327147">Nhấp vào ‘Vâng, tôi đã sẵn sàng!’ nghĩa là bạn đã đọc và đồng ý với</translation>
+<translation id="3745024317593003526">Thiết lập khoản đóng góp</translation>
 <translation id="7530570094705720669">Tạo ví</translation>
 <translation id="2105596359439030979">Sự chú ý của bạn rất quý báu. Kiếm tiền bằng cách xem quảng cáo tôn trọng sự riêng tư, và thanh toán trực tiếp để ủng hộ nhà sáng tạo nội dung mà bạn thích.</translation>
 <translation id="516395624550019162">Vâng, tôi tham gia!</translation>
@@ -272,6 +279,8 @@
 <translation id="211044356803193224">Tiền boa hàng tháng!</translation>
 <translation id="606865182719489911">Một khoản thưởng token miễn phí đang khả dụng.</translation>
 <translation id="3453206261112715431">Khoản thưởng Token Miễn phí</translation>
+<translation id="2280319752798785157">Khoản đóng góp hàng tháng</translation>
+<translation id="7627481505582641588">Khoản đóng góp tiếp theo</translation>
 <translation id="5736183007277264868">Hiện tại không có nguồn cấp token.</translation>
 <translation id="8307851765167460403">Chưa có hoạt động nào…</translation>
 <translation id="8589748782214271192">Không, cám ơn</translation>
@@ -317,9 +326,8 @@
 <translation id="5717619667204259673">Giữ an toàn khóa khôi phục này.</translation>
 <translation id="4699702339303280827">Bạn luôn có thể sử dụng khóa này để lấy lại ví nếu có chuyện gì xảy ra với trình duyệt hoặc máy tính của bạn. Nhưng hãy đảm bảo bảo vệ khóa này — bất kỳ ai có được khóa này đều có thể đánh cắp ví của bạn. Có lẽ an toàn nhất là viết khóa này ra một tờ giấy, hoặc bất cứ nơi nào mà bạn giữ thông tin quan trọng.</translation>
 <translation id="7354412786785889047">Bạn có thể hỗ trợ người tạo nội dung này bằng cách thưởng tiền. Đây là một cách cảm ơn họ đã tạo ra nội dung tuyệt vời. Người tạo đã được xác minh nhận được tiền từ phần tiền thưởng của họ vào tuần đầu tiên của mỗi tháng dương lịch.</translation>
-<translation id="3475063317678050010">Nếu bạn muốn, bạn có thể đặt lịch thưởng hàng tháng để hỗ trợ liên tục cho người tạo nội dung này.</translation>
+<translation id="972846019534552366">Nếu bạn muốn, bạn có thể đặt lịch thưởng hàng tháng để hỗ trợ liên tục cho người tạo nội dung này.</translation>
 <translation id="3074127054582480056">Chú ý</translation>
-<translation id="822513417008209372">Bạn hiện đang hỗ trợ</translation>
 <translation id="5010112177773747965">mà không được bạn đồng ý.</translation>
 <translation id="7147673045905733351">Hôm nay, Brave chào đón bạn đến với Internet mới.</translation>
 <translation id="1350763070659630336">Nơi mà thời gian của bạn được trân trọng, dữ liệu cá nhân của bạn được giữ riêng tư, và bạn thực sự được trả công cho sự chú ý của mình.</translation>
@@ -343,6 +351,7 @@
 <translation id="1738658589626889850">Lưu thành Tập tin</translation>
 <translation id="259138486959961679">Xem tất cả {{numItems}} mục</translation>
 <translation id="7857284676033058221">Xem tất cả {{numSites}} trang</translation>
+<translation id="1549705559752367917">Gửi Tiền tip của tôi</translation>
 <translation id="3536298624341433814">Gửi Tiền tip của tôi</translation>
 <translation id="8428213095426709021">Cài đặt</translation>
 <translation id="1792148354504719133">trang web</translation>
@@ -385,7 +394,7 @@
 <translation id="6727483290601442544">Xem Chi tiết</translation>
 <translation id="1988679729106502285">LƯU Ý:</translation>
 <translation id="5815103311506128988">Người sáng tạo này vẫn chưa đăng ký để nhận đóng góp từ người dùng Brave. Trình duyệt của bạn sẽ tiếp tục cố gắng đóng góp cho đến khi họ xác minh hoặc cho đến khi đã qua 90 ngày.</translation>
-<translation id="603411408512957306">Người sáng tạo đã được xác thực này chưa xác thực (KYC) tài khoản của họ để nhận tiền thưởng từ ví đã xác thực của bạn. Tiền thưởng sẽ được giữ lại trong ví của bạn cho đến khi họ hoàn thành việc xác thực.</translation>
+<translation id="7461596279975181413">Người sáng tạo được Brave xác minh này chưa định cấu hình tài khoản của họ để nhận các khoản đóng góp từ người dùng Brave. Trình duyệt của bạn sẽ vẫn cố gắng đóng góp cho đến khi họ xác minh hoặc sau khi 90 ngày trôi qua.</translation>
 <translation id="4292832015778676417">thu được từ quảng cáo</translation>
 <translation id="3197752845651180812">Đóng góp chờ xử lý</translation>
 <translation id="3164105678355419142">Tiền thưởng thường chọn</translation>
@@ -394,12 +403,12 @@
 <translation id="4346944508027912677">Chờ xử lý đến khi</translation>
 <translation id="7410549756000115387">Không có đóng góp chờ xử lý…</translation>
 <translation id="1963227389609234879">Xóa Tất cả</translation>
-<translation id="1170315781901539495">Website bị Loại trừ</translation>
+<translation id="8706157865312453070">Website bị Loại trừ</translation>
 <translation id="5119190679543565400">Khôi phục website này</translation>
 <translation id="9075700728717335924">Bạn đã loại ra</translation>
 <translation id="4862817811647633830">các website từ phần Tự động Đóng góp.</translation>
 <translation id="923467487918828349">Hiển thị Tất cả</translation>
-<translation id="5471305206221894680">Website được Hỗ trợ</translation>
+<translation id="1397381065858030856">Website được Hỗ trợ</translation>
 <translation id="2306169361186864012">Phần thưởng Quảng cáo Brave!</translation>
 <translation id="3757873395477273033">Phần thưởng tặng bạn từ Quảng cáo Brave sắp tới rồi.</translation>
 <translation id="8101881066646819737">Tặng Token cho Bạn từ Quảng cáo Brave</translation>

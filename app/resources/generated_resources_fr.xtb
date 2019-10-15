@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fr">
+<translation id="2501278716633472235">Retour</translation>
 <translation id="1215411991991485844">Nouvelle application en arrière-plan ajoutée</translation>
 <translation id="7396845648024431313"><ph name="APP_NAME"/> sera lancé au démarrage du système et continuera de s'exécuter en arrière-plan, même si toutes les fenêtres de <ph name="PRODUCT_NAME"/> sont fermées.</translation>
 <translation id="5246282308050205996"><ph name="APP_NAME"/> a planté. Cliquez sur cette info-bulle pour redémarrer l'application.</translation>
@@ -15,6 +16,8 @@
 <translation id="4610637590575890427">Vouliez-vous accéder à <ph name="SITE"/> ?</translation>
 <translation id="4759238208242260848">Téléchargements</translation>
 <translation id="370665806235115550">Chargement en cours...</translation>
+<translation id="556321030400250233">fichier local ou partagé</translation>
+<translation id="1405779994569073824">A planté.</translation>
 <translation id="4880827082731008257">Rechercher dans l'historique</translation>
 <translation id="1838374766361614909">Effacer la recherche</translation>
 <translation id="8261506727792406068">Supprimer</translation>
@@ -409,6 +412,7 @@
 <translation id="5425042808445046667">Continuer le téléchargement</translation>
 <translation id="5284445933715251131">Continuer le téléchargement</translation>
 <translation id="203837651858678035">Voulez-vous vraiment quitter le mode navigation privée ?</translation>
+<translation id="8951465597020890363">Voulez-vous vraiment quitter le mode Invité ?</translation>
 <translation id="9148058034647219655">Quitter</translation>
 <translation id="7376221878517288144">Voulez-vous vraiment quitter le mode navigation privée ?</translation>
 <translation id="973473557718930265">Quitter</translation>
@@ -527,6 +531,14 @@
 <translation id="4680105648806843642">Le son a été désactivé sur cette page</translation>
 <translation id="8574990355410201600">Toujours activer le son sur <ph name="HOST"/></translation>
 <translation id="3244294424315804309">Ne pas réactiver le son</translation>
+<translation id="2839032553903800133">Notifications bloquées</translation>
+<translation id="1195558154361252544">Les notifications sont bloquées automatiquement pour tous les sites, sauf ceux que vous autorisez</translation>
+<translation id="3575121482199441727">Autoriser pour ce site</translation>
+<translation id="5145461783043820456">Le blocage des cookies tiers est activé</translation>
+<translation id="243242775089461296">Le blocage des cookies tiers est désactivé pour ce site</translation>
+<translation id="2325002827435400643">Désactiver pour ce site</translation>
+<translation id="1646834008704210683">{COUNT,plural, =0{Ce site n'utilise pas de cookies de suivi inter-sites}=1{Brave bloque les cookies provenant de 1 site}one{Brave bloque les cookies provenant de # site}other{Brave bloque les cookies provenant de # sites}}</translation>
+<translation id="8734674662128056360">Blocage des cookies tiers</translation>
 <translation id="5154702632169343078">Objet</translation>
 <translation id="5851868085455377790">Émetteur</translation>
 <translation id="2841837950101800123">Fournisseur</translation>
@@ -781,7 +793,7 @@ Assurez-vous de ne pas dévoiler d'informations sensibles.</translation>
 <translation id="7663719505383602579">Destinataire : <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="6247802389331535091">Système : <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="5799508265798272974">Machine virtuelle Linux : <ph name="LINUX_VM_NAME"/></translation>
-<translation id="5552059560155071882">Analyseur IPP CUPS</translation>
+<translation id="7851720427268294554">Analyseur IPP</translation>
 <translation id="7171242884588191792">Utilitaires de fichiers Brave</translation>
 <translation id="3183139917765991655">Importation de profils</translation>
 <translation id="2190069059097339078">Obtention des identifiants Wi-Fi</translation>
@@ -887,6 +899,7 @@ Assurez-vous de ne pas dévoiler d'informations sensibles.</translation>
 <translation id="2204034823255629767">Accéder au contenu que vous saisissez et le modifier</translation>
 <translation id="6979044105893951891">Lancer et quitter les sessions Invité gérées</translation>
 <translation id="2741912629735277980">Afficher l'UI sur l'écran de connexion</translation>
+<translation id="7782717250816686129">Enregistrer les données persistantes dans l'écran de connexion et injecter les identifiants dans la session.</translation>
 <translation id="8191230140820435481">Gérer vos applications, vos extensions et vos thèmes</translation>
 <translation id="6259104249628300056">Découvrir les appareils sur votre réseau local</translation>
 <translation id="6344170822609224263">Accéder à la liste des connexions réseau</translation>
@@ -1066,6 +1079,8 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8261378640211443080">Cette extension n'est pas répertoriée sur le <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> et a pu être ajoutée à votre insu.</translation>
 <translation id="4096508467498758490">Désactiver les extensions exécutées en mode développeur ?</translation>
 <translation id="3288047731229977326">Les extensions exécutées en mode développeur peuvent nuire à votre ordinateur. Si vous n'êtes pas un développeur, nous vous recommandons de désactiver celles-ci afin d'assurer la sécurité de votre ordinateur.</translation>
+<translation id="8827289157496676362">Épingler l'extension</translation>
+<translation id="5372579129492968947">Retirer l'extension</translation>
 <translation id="3021426244864538700">Accéder aux données de ce site</translation>
 <translation id="8213996900880218548">Extension souhaitant accéder aux données de ce site</translation>
 <translation id="1289513325360489062">Impossible d'accéder aux données de ce site</translation>
@@ -1130,6 +1145,11 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="3950820424414687140">Ouvrir une session</translation>
 <translation id="5624120631404540903">Gérer les mots de passe</translation>
 <translation id="9135262959729602463">Connectez-vous à Brave pour synchroniser vos mots de passe sur tous vos appareils.</translation>
+<translation id="328571385944182268">Enregistrer vos mots de passe ?</translation>
+<translation id="3753033997400164841">Enregistrez-les une fois pour toutes. Utilisez-les partout</translation>
+<translation id="1703331064825191675">Ne vous souciez plus jamais de vos mots de passe</translation>
+<translation id="2341030170677284705">Enregistrez les mots de passe en toute sécurité dans votre compte Brave Software pour ne plus jamais avoir à les saisir</translation>
+<translation id="3913985461352963178">Accédez à vos mots de passe chaque fois que vous êtes connecté à votre compte Brave Software</translation>
 <translation id="8919275547519617350">Pour enregistrer tous vos mots de passe sur tous vos appareils, connectez-vous et activez la synchronisation.</translation>
 <translation id="8470028084415844044">Pour avoir tous vos mots de passe sur tous vos appareils, activez la synchronisation.</translation>
 <translation id="1609170755653088773">Synchroniser ce mot de passe avec votre iPhone</translation>
@@ -1176,6 +1196,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="5620612546311710611">statistiques d'utilisation</translation>
 <translation id="8871696467337989339">Vous utilisez un indicateur de ligne de commande non pris en charge : <ph name="BAD_FLAG"/>. La stabilité et la sécurité en seront affectées.</translation>
 <translation id="9140067245205650184">Vous utilisez un indicateur de fonctionnalité non pris en charge : <ph name="BAD_FLAG"/>. La stabilité et la sécurité en seront affectées.</translation>
+<translation id="4094647278880271855">Vous utilisez une variable d'environnement non compatible : <ph name="BAD_VAR"/>. La stabilité et la sécurité en seront affectées.</translation>
 <translation id="2178098616815594724">Le plug-in <ph name="PEPPER_PLUGIN_NAME"/> provenant du domaine <ph name="PEPPER_PLUGIN_DOMAIN"/> demande l'accès à votre ordinateur</translation>
 <translation id="8598453409908276158">Blocage de l'accès via un plug-in sans système de bac à sable</translation>
 <translation id="1919814239594435008">Autorisation de l'accès via un plug-in sans système de bac à sable</translation>
@@ -1284,7 +1305,28 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="7460045493116006516">Thème actuel que vous avez installé</translation>
 <translation id="9068849894565669697">Sélectionner couleur</translation>
 <translation id="8798099450830957504">Par défaut</translation>
-<translation id="8259556432390118667">Valeur de couleur hexadécimale</translation>
+<translation id="3011384993885886186">Gris chaud</translation>
+<translation id="6076491747490570887">Gris froid</translation>
+<translation id="8300374739238450534">Bleu nuit</translation>
+<translation id="7569983096843329377">Noir</translation>
+<translation id="549211519852037402">Beige et blanc</translation>
+<translation id="321084946921799184">Jaune et blanc</translation>
+<translation id="5722086096420375088">Vert et blanc</translation>
+<translation id="3269612321104318480">Turquoise clair et blanc</translation>
+<translation id="4175137578744761569">Violet clair et blanc</translation>
+<translation id="8176332201990304395">Rose et blanc</translation>
+<translation id="3159493096109238499">Beige</translation>
+<translation id="1197088940767939838">Orange</translation>
+<translation id="779308894558717334">Vert clair</translation>
+<translation id="8809147117840417135">Turquoise clair</translation>
+<translation id="1734212868489994726">Bleu clair</translation>
+<translation id="992256792861109788">Rose</translation>
+<translation id="8237647586961940482">Rose foncé et rouge</translation>
+<translation id="5390677308841849479">Rouge foncé et orange</translation>
+<translation id="7297726121602187087">Vert foncé</translation>
+<translation id="8923880975836399332">Turquoise foncé</translation>
+<translation id="7793098747275782155">Bleu foncé</translation>
+<translation id="1692210323591458290">Violet foncé</translation>
 <translation id="2858138569776157458">Sites populaires</translation>
 <translation id="5376169624176189338">Cliquer pour revenir en arrière, maintenir pour voir l'historique</translation>
 <translation id="9103868373786083162">Appuyer pour revenir en arrière, menu contextuel pour afficher l'historique</translation>
@@ -1338,8 +1380,9 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8005600846065423578">Toujours autoriser <ph name="HOST"/> à voir le contenu du presse-papiers</translation>
 <translation id="6122095009389448667">Continuer à empêcher ce site de voir le contenu du presse-papiers</translation>
 <translation id="3429275422858276529">Ajoutez cette page aux favoris pour la retrouver facilement</translation>
-<translation id="3603533104205588786">Vous pouvez cliquer sur l'étoile pour ajouter une page à vos favoris</translation>
-<translation id="6613452264606394692">Revenez facilement sur cette page en l'ajoutant à vos favoris</translation>
+<translation id="4400963414856942668">Vous pouvez cliquer sur l'étoile pour ajouter un onglet à vos favoris</translation>
+<translation id="8379991678458444070">Revenez facilement sur cet onglet en l'ajoutant à vos favoris</translation>
+<translation id="7174199383876220879">Nouveau ! Contrôlez votre musique, vos vidéos et d'autres contenus.</translation>
 <translation id="4369414322596874629">Vous pouvez parcourir le Web en mode privé à l'aide d'une fenêtre de navigation privée</translation>
 <translation id="3772947852642271642">Parcourez le Web sans enregistrer votre historique de navigation à l'aide d'une fenêtre de navigation privée</translation>
 <translation id="3871738366246972820">Vous utilisez un ordinateur partagé ? Essayez d'ouvrir une fenêtre de navigation privée.</translation>
@@ -1365,6 +1408,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="7108338896283013870">Masquer</translation>
 <translation id="1426410128494586442">Oui</translation>
 <translation id="4250680216510889253">Non</translation>
+<translation id="7473891865547856676">Non, merci</translation>
 <translation id="5317780077021120954">Enregistrer</translation>
 <translation id="4285418559658561636">Mettre à jour le mot de passe</translation>
 <translation id="9094033019050270033">Modifier le mot de passe</translation>
@@ -1462,7 +1506,6 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="8703346390800944767">Ignorer l'annonce</translation>
 <translation id="2121825465123208577">Redimensionner</translation>
 <translation id="4514610446763173167">Activer/Désactiver la lecture ou la mise en pause de la vidéo</translation>
-<translation id="3040310857793999281">Activer/Désactiver le son</translation>
 <translation id="4046123991198612571">Piste suivante</translation>
 <translation id="2874939134665556319">Piste précédente</translation>
 <translation id="2631120081682787498">Voulez-vous vraiment fermer cet onglet ?</translation>
@@ -1484,35 +1527,25 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="1731911755844941020">Envoi de la requête...</translation>
 <translation id="9009369504041480176">Transfert en cours (<ph name="PROGRESS_PERCENT"/> %)...</translation>
 <translation id="7925285046818567682">En attente de <ph name="HOST_NAME"/>...</translation>
+<translation id="2111670510994270194">Nouvel onglet à droite</translation>
 <translation id="7887334752153342268">Dupliquer</translation>
-<translation id="1364702626840264065">{NUM_TABS,plural, =1{Fermer l'onglet}one{Fermer l'onglet}other{Fermer les onglets}}</translation>
-<translation id="68541483639528434">Fermer les autres onglets</translation>
 <translation id="6686490380836145850">Fermer les onglets sur la droite</translation>
 <translation id="6242852299490624841">Sélectionner cet onglet</translation>
-<translation id="7415353017141825619">{NUM_TABS,plural, =1{Épingler l'onglet}one{Épingler l'onglet}other{Épingler les onglets}}</translation>
-<translation id="4072793381000095">{NUM_TABS,plural, =1{Retirer l'onglet}one{Retirer l'onglet}other{Retirer les onglets}}</translation>
-<translation id="1904394285866191268">{NUM_TABS,plural, =1{Couper le son de l'onglet}one{Couper le son de l'onglet}other{Couper le son des onglets}}</translation>
-<translation id="5179127818058486126">{NUM_TABS,plural, =1{Réactiver le son de l'onglet}one{Réactiver le son de l'onglet}other{Réactiver le son des onglets}}</translation>
 <translation id="4973325300212422370">{NUM_TABS,plural, =1{Couper le son du site}one{Couper le son du site}other{Couper le son des sites}}</translation>
 <translation id="4744981231093950366">{NUM_TABS,plural, =1{Réactiver le son du site}one{Réactiver le son du site}other{Réactiver le son des sites}}</translation>
-<translation id="4474155171896946103">Ajouter tous les onglets aux favoris...</translation>
 <translation id="351952459507671940">Ajouter à un nouveau groupe</translation>
 <translation id="255747371423522804">Ajouter à un groupe existant</translation>
 <translation id="2977480621796371840">Retirer du groupe</translation>
-<translation id="8000467600002607205">{NUM_TABS,plural, =1{Fermer l'onglet}one{Fermer l'onglet}other{Fermer les onglets}}</translation>
-<translation id="4322394346347055525">Fermer les autres onglets</translation>
+<translation id="8975562453115131273">{NUM_OTHER_TABS,plural, =0{"<ph name="TAB_TITLE"/>"}=1{"<ph name="TAB_TITLE"/>" et 1 autre onglet}one{"<ph name="TAB_TITLE"/>" et # autre onglet}other{"<ph name="TAB_TITLE"/>" et # autres onglets}}</translation>
+<translation id="5876851302954717356">Nouvel onglet à droite</translation>
 <translation id="1166212789817575481">Fermer les onglets sur la droite</translation>
 <translation id="2343747224442182863">Sélectionner cet onglet</translation>
-<translation id="7363260028279024205">{NUM_TABS,plural, =1{Épingler l'onglet}one{Épingler l'onglet}other{Épingler les onglets}}</translation>
-<translation id="3996366967769547206">{NUM_TABS,plural, =1{Retirer l'onglet}one{Retirer l'onglet}other{Retirer les onglets}}</translation>
-<translation id="3785071023202624850">{NUM_TABS,plural, =1{Couper le son de l'onglet}one{Couper le son de l'onglet}other{Couper le son des onglets}}</translation>
-<translation id="2120478168904746065">{NUM_TABS,plural, =1{Réactiver le son de l'onglet}one{Réactiver le son de l'onglet}other{Réactiver le son des onglets}}</translation>
 <translation id="8371925839118813971">{NUM_TABS,plural, =1{Couper le son du site}one{Couper le son du site}other{Couper le son des sites}}</translation>
 <translation id="7933314993013528982">{NUM_TABS,plural, =1{Réactiver le son du site}one{Réactiver le son du site}other{Réactiver le son des sites}}</translation>
-<translation id="2336228925368920074">Ajouter tous les onglets aux favoris...</translation>
 <translation id="1541396123399225659">Ajouter à un nouveau groupe</translation>
 <translation id="7353887511974462734">Ajouter à un groupe existant</translation>
 <translation id="6964760285928603117">Retirer du groupe</translation>
+<translation id="5548159762883465903">{NUM_OTHER_TABS,plural, =0{"<ph name="TAB_TITLE"/>"}=1{"<ph name="TAB_TITLE"/>" et 1 autre onglet}one{"<ph name="TAB_TITLE"/>" et # autre onglet}other{"<ph name="TAB_TITLE"/>" et # autres onglets}}</translation>
 <translation id="2278562042389100163">Ouvrir une fenêtre du navigateur</translation>
 <translation id="756445078718366910">Ouvrir une fenêtre du navigateur</translation>
 <translation id="3683524264665795342">Partage de l'écran demandé par <ph name="APP_NAME"/></translation>
@@ -1608,7 +1641,13 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="2315587498123194634">Envoyer le lien sur <ph name="DEVICE_NAME"/></translation>
 <translation id="7761380698973548146">Passer un appel avec vos appareils</translation>
 <translation id="7427798576651127129">Passer un appel avec <ph name="DEVICE_NAME"/></translation>
+<translation id="2355241457888955">Envoyer le SMS à vos appareils</translation>
+<translation id="5067000372742249459">Envoyer le SMS à l'appareil <ph name="DEVICE_NAME"/></translation>
+<translation id="7757787379047923882">Texte partagé par <ph name="DEVICE_NAME"/></translation>
+<translation id="5193988420012215838">Copié dans le presse-papiers</translation>
 <translation id="462021874527520979">Passer un appel avec vos appareils</translation>
+<translation id="4696983787092045100">Envoyer le SMS à vos appareils</translation>
+<translation id="2182058453334755893">Copié dans le presse-papiers</translation>
 <translation id="4520385623207007473">Cookies utilisés</translation>
 <translation id="4763408175235639573">Les cookies suivants étaient autorisés lorsque vous avez consulté cette page</translation>
 <translation id="2719936478972253983">Les cookies suivants ont été bloqués</translation>
@@ -1636,7 +1675,6 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="622537739776246443">Le profil va être supprimé</translation>
 <translation id="5632566673632479864">Votre compte <ph name="EMAIL"/> n'est plus autorisé comme compte principal. Étant donné que ce compte est géré par <ph name="DOMAIN"/>, vos favoris, votre historique, vos mots de passe et les autres paramètres seront effacés de cet appareil.</translation>
 <translation id="3797739167230984533">Votre <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> est géré<ph name="END_LINK"/> par votre organisation</translation>
-<translation id="1722460139690167654">Votre <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> est géré<ph name="END_LINK"/> par <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8118488170956489476">Votre <ph name="BEGIN_LINK"/>navigateur est géré<ph name="END_LINK"/> par votre organisation</translation>
 <translation id="1365180424462182382">Votre <ph name="BEGIN_LINK"/>navigateur est géré<ph name="END_LINK"/> par <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Contenu</translation>
@@ -1671,8 +1709,6 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="4258348331913189841">Systèmes de fichiers</translation>
 <translation id="7701040980221191251">Aucun</translation>
 <translation id="2881966438216424900">Dernier accès :</translation>
-<translation id="3941357410013254652">Identifiant de version</translation>
-<translation id="6135622770221372891">Identifiants de version</translation>
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Espace de stockage du cache</translation>
@@ -1707,6 +1743,8 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="189210018541388520">Ouvrir en mode plein écran</translation>
 <translation id="6096047740730590436">Ouvrir la version agrandie</translation>
 <translation id="7256710573727326513">Ouvrir dans un onglet</translation>
+<translation id="8114875720387900039">Séparation horizontale</translation>
+<translation id="4976009197147810135">Séparation verticale</translation>
 <translation id="7636919061354591437">Installer sur cet appareil</translation>
 <translation id="2993517869960930405">Informations relatives à l'application</translation>
 <translation id="2867768963760577682">Ouvrir dans un onglet épinglé</translation>
@@ -1715,6 +1753,8 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="6022526133015258832">Ouvrir en mode plein écran</translation>
 <translation id="6845038076637626672">Ouvrir la version agrandie</translation>
 <translation id="6860427144121307915">Ouvrir dans un onglet</translation>
+<translation id="6789592661892473991">Séparation horizontale</translation>
+<translation id="6387674443318562538">Séparation verticale</translation>
 <translation id="1231733316453485619">Activer la synchronisation ?</translation>
 <translation id="4736292055110123391">Synchronisez vos favoris, vos mots de passe, votre historique et plus encore sur tous vos appareils</translation>
 <translation id="5736731321935944068">Brave Software peut utiliser votre historique pour personnaliser la recherche, les annonces et d'autres services Brave Software</translation>
@@ -1799,7 +1839,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="5771816112378578655">Configuration en cours...</translation>
 <translation id="3492788708641132712">La synchronisation ne fonctionne pas. Essayez de vous reconnecter.</translation>
 <translation id="6349170655202535379">La synchronisation ne fonctionne pas. Essayez de vous déconnecter, puis de vous reconnecter.</translation>
-<translation id="974555521953189084">Saisissez votre phrase secrète pour lancer la synchronisation.</translation>
+<translation id="6828182567531805778">Saisissez votre phrase secrète pour synchroniser vos données.</translation>
 <translation id="7120865473764644444">Impossible de se connecter au serveur de synchronisation. Nouvelle tentative…</translation>
 <translation id="5526745900034778153">Connectez-vous de nouveau à votre compte pour reprendre la synchronisation</translation>
 <translation id="2932483646085333864">Déconnectez-vous, puis reconnectez-vous pour lancer la synchronisation</translation>
@@ -1860,6 +1900,8 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="2482878487686419369">Notifications</translation>
 <translation id="7221855153210829124">Afficher les notifications</translation>
 <translation id="8393700583063109961">Envoyer un message</translation>
+<translation id="7336799713063880535">Notif. bloquées.</translation>
+<translation id="5146995429444047494">Les notifications sont bloquées pour <ph name="ORIGIN"/></translation>
 <translation id="6701535245008341853">Impossible de charger le profil.</translation>
 <translation id="7705276765467986571">Impossible de charger le modèle du favori.</translation>
 <translation id="5585118885427931890">Impossible de créer le dossier de favoris.</translation>
@@ -2021,10 +2063,17 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="2435457462613246316">Afficher le mot de passe</translation>
 <translation id="4565377596337484307">Masquer le mot de passe</translation>
 <translation id="5311304534597152726">Connexion en tant que</translation>
+<translation id="70850504851191913">Violation de données signalée</translation>
+<translation id="149470879113908545">Votre mot de passe a été compromis à la suite d'une violation de données affectant un site ou une application que vous utilisez. Nous vous recommandons de vérifier vos mots de passe enregistrés maintenant.</translation>
+<translation id="2054306844530250731">Votre mot de passe a été compromis à la suite d'une violation de données affectant un site ou une application que vous utilisez. Brave vous recommande de <ph name="BOLD"/> sur <ph name="ORIGIN"/> au plus tôt.</translation>
+<translation id="4270615291506829403">modifier votre mot de passe</translation>
+<translation id="5103987914706363520">Votre mot de passe a été compromis à la suite d'une violation de données affectant un site ou une application que vous utilisez. Nous vous recommandons de vérifier vos mots de passe enregistrés et de modifier celui utilisé pour <ph name="ORIGIN"/>.</translation>
 <translation id="5425863515030416387">Se connecter facilement sur tous les appareils</translation>
 <translation id="9114663181201435112">Connectez-vous en toute simplicité</translation>
 <translation id="764017888128728"><ph name="PASSWORD_MANAGER_BRAND"/> vous connecte automatiquement aux sites éligibles avec les mots de passe que vous avez enregistrés.</translation>
 <translation id="5869029295770560994">OK</translation>
+<translation id="1186201132766001848">Vérifier les mots de passe</translation>
+<translation id="5979084224081478209">Vérifier les mots de passe</translation>
 <translation id="3423858849633684918">Veuillez relancer <ph name="PRODUCT_NAME"/>.</translation>
 <translation id="2294358108254308676">Souhaitez-vous installer <ph name="PRODUCT_NAME"/> ?</translation>
 <translation id="586567932979200359">Vous exécutez <ph name="PRODUCT_NAME"/> à partir de son image disque. Si vous l'installez sur votre ordinateur, vous pourrez l'utiliser sans image disque et bénéficierez de mises à jour automatiques.</translation>
@@ -2091,8 +2140,6 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="614940544461990577">Essayez les suggestions ci-dessous :</translation>
 <translation id="7325437708553334317">Extension Contraste élevé</translation>
 <translation id="6990778048354947307">Thème sombre</translation>
-<translation id="5556206011531515970">Cliquez sur "Suivant" pour sélectionner un navigateur par défaut.</translation>
-<translation id="1201402288615127009">Suivant</translation>
 <translation id="2478176599153288112">Autorisations de fichier média pour "<ph name="EXTENSION"/>"</translation>
 <translation id="186612162884103683">"<ph name="EXTENSION"/>" dispose d'un droit d'accès en lecture et en écriture sur les images, les vidéos et les fichiers audio figurant dans les dossiers sélectionnés.</translation>
 <translation id="8180786512391440389">"<ph name="EXTENSION"/>" dispose d'un droit d'accès en lecture/écriture sur les images, les vidéos et les fichiers audio figurant aux emplacements indiqués.</translation>
@@ -2193,7 +2240,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="5493792505296048976">écran activé</translation>
 <translation id="6459799433792303855">Fenêtre active transférée vers un autre écran.</translation>
 <translation id="6551508934388063976">Commande indisponible. Appuyez sur CTRL + N pour ouvrir une nouvelle fenêtre.</translation>
-<translation id="3831486154586836914">Mode de présentation de la fenêtre activé</translation>
+<translation id="703001695939087067">Mode de présentation de la fenêtre activé. Appuyez sur la touche Tabulation pour naviguer.</translation>
 <translation id="4380648069038809855">Mode plein écran activé</translation>
 <translation id="1766575458646819543">Mode plein écran désactivé</translation>
 <translation id="8736288397686080465">Ce site a été mis à jour en arrière-plan.</translation>
@@ -2307,29 +2354,31 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="874689135111202667">{0,plural, =1{Importer un fichier sur ce site ?}one{Importer # fichier sur ce site ?}other{Importer # fichiers sur ce site ?}}</translation>
 <translation id="1956390763342388273">Tous les fichiers seront téléchargés depuis "<ph name="FOLDER_PATH"/>". N'effectuez cette opération que s'il s'agit d'un site de confiance.</translation>
 <translation id="1243314992276662751">Importer</translation>
-<translation id="1574038418461948632">Enregistrer les modifications apportées au fichier <ph name="FILENAME"/> ?</translation>
-<translation id="5181988524012865000">Sauvegarder les modifications apportées aux fichiers ?</translation>
-<translation id="2775188527796017992">Le site <ph name="ORIGIN"/> pourra enregistrer vos modifications directement dans le fichier <ph name="FILENAME"/>. Le site peut enregistrer les modifications jusqu'à ce que vous fermiez cet onglet.</translation>
-<translation id="5375793835576008230">Le site <ph name="ORIGIN"/> pourra enregistrer vos modifications directement dans les fichiers du dossier <ph name="FOLDERNAME"/>. Le site peut enregistrer les modifications jusqu'à ce que vous fermiez cet onglet.</translation>
+<translation id="3928570707778085600">Enregistrer les modifications apportées à "<ph name="FILE_OR_FOLDER_NAME"/>" ?</translation>
+<translation id="8892226765772586656">Le site <ph name="ORIGIN"/> pourra modifier le fichier <ph name="FILENAME"/> jusqu'à ce que vous fermiez cet onglet</translation>
+<translation id="3780211714699334884">Le site <ph name="ORIGIN"/> pourra modifier les fichiers du dossier <ph name="FOLDERNAME"/> jusqu'à ce que vous fermiez cet onglet</translation>
 <translation id="6532106788206463496">Enregistrer les modifications</translation>
-<translation id="5102007300153090427">Cette page est autorisée à enregistrer des modifications dans les fichiers.</translation>
-<translation id="197228003527531594">Cette page est autorisée à afficher tous les fichiers d'un dossier sur votre appareil.</translation>
-<translation id="766254481392580456">Le site <ph name="ORIGIN"/> peut enregistrer vos modifications directement dans le fichier <ph name="FILENAME"/></translation>
-<translation id="856745937116041450">Le site <ph name="ORIGIN"/> peut enregistrer vos modifications directement dans les fichiers ci-après</translation>
-<translation id="2150212764721500731">Le site <ph name="ORIGIN"/> peut enregistrer vos modifications directement dans les fichiers du dossier <ph name="FOLDERNAME"/></translation>
-<translation id="7509896576944228744">Le site <ph name="ORIGIN"/> peut enregistrer vos modifications directement dans les dossiers ci-après</translation>
-<translation id="8152021341839173449">Le site <ph name="ORIGIN"/> peut enregistrer vos modifications directement dans les fichiers et les dossiers ci-après.</translation>
-<translation id="3343738344138980580">Le site <ph name="ORIGIN"/> peut afficher tous les fichiers du dossier <ph name="FOLDERNAME"/></translation>
-<translation id="1507049466468737452">Le site <ph name="ORIGIN"/> peut afficher tous les fichiers des dossiers ci-après</translation>
-<translation id="6868139415119881457">Le site <ph name="ORIGIN"/> peut afficher et enregistrer vos modifications directement dans les fichiers et les dossiers ci-après</translation>
+<translation id="4301671483919369635">Cette page est autorisée à modifier les fichiers</translation>
+<translation id="3923676227229836009">Cette page est autorisée à afficher les fichiers</translation>
+<translation id="8983632908660087688">Le site <ph name="ORIGIN"/> peut modifier le fichier <ph name="FILENAME"/></translation>
+<translation id="1301135395320604080">Le site <ph name="ORIGIN"/> peut modifier les fichiers suivants</translation>
+<translation id="4469762931504673593">Le site <ph name="ORIGIN"/> peut modifier les fichiers du dossier <ph name="FOLDERNAME"/></translation>
+<translation id="3948507072814225786">Le site <ph name="ORIGIN"/> peut modifier les fichiers des dossiers suivants</translation>
+<translation id="8889651696183044030">Le site <ph name="ORIGIN"/> peut modifier les fichiers et les dossiers suivants</translation>
+<translation id="5969419185858894314">Le site <ph name="ORIGIN"/> peut afficher les fichiers du dossier <ph name="FOLDERNAME"/></translation>
+<translation id="3810593934879994994">Le site <ph name="ORIGIN"/> peut afficher les fichiers des dossiers suivants</translation>
+<translation id="2537395079978992874">Le site <ph name="ORIGIN"/> peut afficher et modifier les fichiers et les dossiers suivants</translation>
 <translation id="5126611267288187364">Afficher les modifications</translation>
 <translation id="5073956501367595100">{0,plural,offset:2 =1{<ph name="FILE1"/>}=2{<ph name="FILE1"/>, <ph name="FILE2"/>}one{<ph name="FILE1"/>, <ph name="FILE2"/> et # autre}other{<ph name="FILE1"/>, <ph name="FILE2"/> et # autres}}</translation>
 <translation id="1790976235243700817">Supprimer l'accès</translation>
-<translation id="1392975001822614900">Impossible d'enregistrer des modifications dans ce dossier</translation>
-<translation id="7613156935003315818">Le site <ph name="ORIGIN"/> ne peut pas enregistrer vos modifications dans ce dossier, car il contient des fichiers système.</translation>
+<translation id="831440797644402910">Impossible d'ouvrir ce dossier</translation>
+<translation id="3850914401008572843">Le site <ph name="ORIGIN"/> ne peut pas ouvrir ce dossier, car il contient des fichiers système</translation>
 <translation id="4403775189117163360">Choisir un autre dossier</translation>
+<translation id="3586806079541226322">Impossible d'ouvrir ce fichier</translation>
+<translation id="6972553992270299730">Le site <ph name="ORIGIN"/> ne peut pas ouvrir les fichiers de ce dossier, car il contient des fichiers système</translation>
+<translation id="2123766928840368256">Choisir un autre fichier</translation>
 <translation id="7643932971554933646">Autoriser le site à afficher les fichiers ?</translation>
-<translation id="999180493986838144">Le site <ph name="ORIGIN"/> pourra afficher tous les fichiers du dossier <ph name="FOLDERNAME"/>. Le site peut afficher toutes les modifications apportées au dossier jusqu'à ce que vous fermiez cet onglet.</translation>
+<translation id="7892963120252479610">Le site <ph name="ORIGIN"/> pourra afficher les fichiers du dossier <ph name="FOLDERNAME"/> jusqu'à ce que vous fermiez cet onglet</translation>
 <translation id="7201420661433230412">Afficher les fichiers</translation>
 <translation id="3015639418649705390">Relancer maintenant</translation>
 <translation id="8712637175834984815">OK</translation>
@@ -2368,6 +2417,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="5660204307954428567">Associer à <ph name="DEVICE_NAME"/></translation>
 <translation id="1167199480815330007">Localisez le code à six chiffres au dos de votre clé de sécurité</translation>
 <translation id="5601503069213153581">Code d'accès</translation>
+<translation id="1201402288615127009">Suivant</translation>
 <translation id="8921366488406707015">Validation de votre clé de sécurité…</translation>
 <translation id="1805472176602625930">Appuyez sur le bouton de la clé de sécurité</translation>
 <translation id="1489664337021920575">Sélectionner une autre option</translation>
@@ -2407,6 +2457,11 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="5186185447130319458">Navigation privée</translation>
 <translation id="7643842463591647490">{0,plural, =1{# fenêtre ouverte}one{# fenêtre ouverte}other{# fenêtres ouvertes}}</translation>
 <translation id="2579188629646253712">Quitter le mode navigation privée</translation>
+<translation id="4349828822184870497">Utile</translation>
+<translation id="6876469544038980967">Inutile</translation>
+<translation id="6428450836711225518">Validez votre numéro de téléphone</translation>
+<translation id="8742371904523228557">Votre code pour <ph name="ORIGIN"/> est <ph name="ONE_TIME_CODE"/></translation>
+<translation id="6518133107902771759">Valider</translation>
 <translation id="394984172568887996">Importés depuis IE</translation>
 <translation id="1543284117603151572">Importés depuis Edge</translation>
 <translation id="5502500733115278303">Importés depuis Firefox</translation>
@@ -2495,6 +2550,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="1173894706177603556">Renommer</translation>
 <translation id="6825184156888454064">Trier par nom</translation>
 <translation id="3440663250074896476">Autres actions pour <ph name="BOOKMARK_NAME"/></translation>
+<translation id="1608668830839595724">Autres actions pour les éléments sélectionnés</translation>
 <translation id="2903457445916429186">Ouvrir les éléments sélectionnés</translation>
 <translation id="962802172452141067">Arborescence de dossiers des favoris</translation>
 <translation id="2683638487103917598">Dossier trié</translation>
@@ -2504,11 +2560,11 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="5488093641312826914">"<ph name="COPIED_ITEM_NAME"/>" copié</translation>
 <translation id="2277769717710009150">{COUNT,plural, =1{1 élément copié}one{# élément copié}other{# éléments copiés}}</translation>
 <translation id="9115675100829699941">&amp;Favoris</translation>
-<translation id="1035590878859356651">Ajouter cette page aux favoris…</translation>
-<translation id="1047726139967079566">Ajouter cette page aux favoris</translation>
-<translation id="1774833706453699074">Ajouter les pages ouvertes aux favoris…</translation>
-<translation id="6949306908218145636">Ajouter les pages ouvertes aux favoris…</translation>
-<translation id="4422347585044846479">Modifier le favori de cette page</translation>
+<translation id="9023015617655685412">Ajouter cet onglet aux favoris…</translation>
+<translation id="1482626744466814421">Ajouter cet onglet aux favoris…</translation>
+<translation id="4474155171896946103">Ajouter tous les onglets aux favoris...</translation>
+<translation id="2336228925368920074">Ajouter tous les onglets aux favoris...</translation>
+<translation id="8300011035382349091">Modifier le favori de cet onglet</translation>
 <translation id="4776146737004271126">Ouvrir les paramètres Android</translation>
 <translation id="6559023360691182159">{COUNT,plural, =0{Aucune}=1{<ph name="APP_1"/>}=2{<ph name="APP_1"/> et <ph name="APP_2"/>}=3{<ph name="APP_1"/>, <ph name="APP_2"/> et <ph name="APP_3"/>}=4{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> et 1 autre application}one{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> et <ph name="EXTRA_APPS"/> autre application}other{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> et <ph name="EXTRA_APPS"/> autres applications}}</translation>
 <translation id="9117030152748022724">Gérer vos applications</translation>
@@ -2523,6 +2579,8 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="4739098340603978916">Taille : <ph name="APP_SIZE"/></translation>
 <translation id="4291934469232591280">Version <ph name="VERSION"/></translation>
 <translation id="1920390473494685033">Contacts</translation>
+<translation id="9123948967884660766">Cette application ne peut pas être désinstallée, car elle fait partie de Brave OS.</translation>
+<translation id="496185450405387901">Cette application a été installée par votre administrateur.</translation>
 <translation id="7787308148023287649">Afficher sur un autre écran</translation>
 <translation id="7710568461918838723">&amp;Caster…</translation>
 <translation id="6700480081846086223">Caster <ph name="HOST_NAME"/></translation>
@@ -2542,6 +2600,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="6169666352732958425">Impossible de caster le bureau</translation>
 <translation id="4081242589061676262">Impossible de caster le fichier.</translation>
 <translation id="4075639477629295004">Impossible de caster "<ph name="FILE_NAME"/>"</translation>
+<translation id="8358912028636606457">Impossible de caster le contenu audio de l'onglet sur cet appareil.</translation>
 <translation id="3930737994424905957">Recherche d'appareils</translation>
 <translation id="5209320130288484488">Aucun appareil trouvé.</translation>
 <translation id="4415245286584082850">Aucun appareil détecté. Ouvrir un article du centre d'aide dans un nouvel onglet.</translation>
@@ -2554,12 +2613,12 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="2541002089857695151">Optimiser la diffusion en plein écran ?</translation>
 <translation id="4144218403971135344">Bénéficiez d'une meilleure qualité et économisez de la batterie. La vidéo sera lue uniquement sur votre écran compatible Cast.</translation>
 <translation id="236117173274098341">Optimiser</translation>
-<translation id="7473891865547856676">Non, merci</translation>
 <translation id="8538358978858059843">Activer les services cloud pour Cast ?</translation>
 <translation id="3856595552313160385">L'utilisation de Hangouts et de Cast for Education est régie par les règles de confidentialité de Brave Software.</translation>
 <translation id="3435896845095436175">Activer</translation>
 <translation id="3700888195348409686">Présentation de <ph name="PAGE_ORIGIN"/>…</translation>
 <translation id="5285635972691565180">Écran <ph name="DISPLAY_ID"/></translation>
+<translation id="7477793887173910789">Contrôler votre musique, vos vidéos et d'autres contenus</translation>
 <translation id="4707302005824653064">Les données relatives à l'utilisation et à l'historique peuvent être examinées par le gestionnaire (<ph name="CUSTODIAN_EMAIL"/>) sur le site chrome.com.</translation>
 <translation id="346431825526753">Il s'agit d'un compte pour enfants géré par <ph name="CUSTODIAN_EMAIL"/>.</translation>
 <translation id="4159681666905192102">Il s'agit d'un compte pour enfants géré par <ph name="CUSTODIAN_EMAIL"/> et <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
@@ -2594,15 +2653,11 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="7029809446516969842">Mots de passe</translation>
 <translation id="984275831282074731">Modes de paiement</translation>
 <translation id="8473863474539038330">Adresses et autres</translation>
-<translation id="454547174531670764">Synchroniser avec un autre compte</translation>
-<translation id="1692115862433274081">Utiliser un autre compte</translation>
 <translation id="5287425679749926365">Vos comptes</translation>
 <translation id="4801448226354548035">Masquer les comptes</translation>
 <translation id="2935225303485967257">Gérer les utilisateurs</translation>
 <translation id="7388222713940428051">Ouvrir une fenêtre de navigation en tant qu'invité</translation>
 <translation id="127668050356036882">Fermer toutes les fenêtres</translation>
-<translation id="8883847527783433352">Synchroniser avec un autre compte</translation>
-<translation id="2761898608071930085">Utiliser un autre compte</translation>
 <translation id="1464258312790801189">Vos comptes</translation>
 <translation id="6655458902729017087">Masquer les comptes</translation>
 <translation id="688280436658139163">Gérer les utilisateurs</translation>
@@ -2791,6 +2846,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="4570609078116869893">Mettre à jour Brave automatiquement pour tous les utilisateurs</translation>
 <translation id="7102687220333134671">Les mises à jour automatiques sont activées</translation>
 <translation id="8284326494547611709">Sous-titres</translation>
+<translation id="3602290021589620013">Aperçu</translation>
 <translation id="1755601632425835748">Taille du texte</translation>
 <translation id="3179982752812949580">Police du texte</translation>
 <translation id="6850286078059909152">Couleur du texte</translation>
@@ -2804,7 +2860,6 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="8184472985242519288">Uniforme</translation>
 <translation id="8619803522055190423">Ombre projetée</translation>
 <translation id="3930968231047618417">Couleur de l'arrière-plan</translation>
-<translation id="7569983096843329377">Noir</translation>
 <translation id="2713444072780614174">Blanc</translation>
 <translation id="7942349550061667556">Rouge</translation>
 <translation id="6017514345406065928">Vert</translation>
@@ -2828,6 +2883,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="2915873080513663243">Recherche automatique</translation>
 <translation id="8912810933860534797">Activer la recherche automatique</translation>
 <translation id="6617100836880592260">Vitesse de recherche : <ph name="SPEED_WITH_UNITS"/></translation>
+<translation id="1816036116994822943">Vitesse de recherche pour le clavier</translation>
 <translation id="7919210519031517829"><ph name="DURATION"/> s</translation>
 <translation id="2981113813906970160">Afficher le grand curseur</translation>
 <translation id="5072052264945641674">Ajuster la taille du curseur</translation>
@@ -2909,7 +2965,6 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="3677657024345889897">Volume minimal</translation>
 <translation id="167160931442925455">Volume maximal</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/> % (par défaut)</translation>
-<translation id="3602290021589620013">Aperçu</translation>
 <translation id="7037509989619051237">Texte à prévisualiser</translation>
 <translation id="5471768120198416576">Bonjour ! Je suis la voix de votre synthèse vocale.</translation>
 <translation id="6902066522699286937">Voix à écouter</translation>
@@ -2951,7 +3006,6 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
       En revanche, cette opération n'a pas d'incidence sur les applications ou le contenu figurant sur d'autres appareils.</translation>
 <translation id="492299503953721473">Supprimer des applications Android</translation>
 <translation id="7566118625369982896">Gérer les liens de l'application Play</translation>
-<translation id="5026688690798028095">Accéder à la page de gestion des applications</translation>
 <translation id="2433507940547922241">Apparence</translation>
 <translation id="1177863135347784049">Personnalisé</translation>
 <translation id="1925021887439448749">Saisissez une adresse Web personnalisée</translation>
@@ -3006,6 +3060,10 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="6644512095122093795">Proposer d'enregistrer les mots de passe</translation>
 <translation id="2100273922101894616">Connexion automatique</translation>
 <translation id="7513029293694390567">Permet de se connecter automatiquement aux sites Web à l'aide des identifiants enregistrés. Si cette fonctionnalité est désactivée, vous êtes invité à confirmer chaque connexion à un site Web.</translation>
+<translation id="7930681627240672853">Vérifier si le mot de passe est sûr</translation>
+<translation id="7510943789645525906">Recevoir une alerte si l'un de vos mots de passe est compromis suite à une violation de données</translation>
+<translation id="786008582930267433">Brave Software peut vérifier si vos mots de passe sont concernés par une violation de données</translation>
+<translation id="3372463077865465112">Brave Software peut vérifier si vos mots de passe sont concernés par une violation des données. Cette option sera activée lorsque vous connecterez avec votre compte Brave Software.</translation>
 <translation id="1375321115329958930">Mots de passe enregistrés</translation>
 <translation id="152234381334907219">Jamais enregistrés</translation>
 <translation id="5137501176474113045">Supprimer cet article</translation>
@@ -3115,6 +3173,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/> : <ph name="ERROR"/></translation>
 <translation id="2187895286714876935">Erreur d'importation du certificat serveur</translation>
 <translation id="816055135686411707">Erreur de définition du paramètre de confiance du certificat</translation>
+<translation id="5541694225089836610">Votre administrateur a désactivé cette action</translation>
 <translation id="3380365263193509176">Erreur inconnue.</translation>
 <translation id="368789413795732264">Une erreur s'est produite lors de la tentative d'écriture du fichier : <ph name="ERROR_TEXT"/>.</translation>
 <translation id="784934925303690534">Période</translation>
@@ -3146,9 +3205,9 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="6985607387932385770">Imprimantes</translation>
 <translation id="1815579292149538864">Configurez ou gérez des imprimantes CUPS.</translation>
 <translation id="8030656706657716245">Ajouter une imprimante</translation>
-<translation id="8025958612547562988">Enregistrez les imprimantes détectées dans votre profil ou ajoutez une imprimante.</translation>
+<translation id="893254996965966411">Enregistrez les imprimantes détectées dans votre profil ou ajoutez une imprimante.</translation>
 <translation id="6980969641756020642">Imprimantes disponibles à enregistrer</translation>
-<translation id="8151638057146502721">Configurer</translation>
+<translation id="3571734092741541777">Configurer</translation>
 <translation id="2297705863329999812">Rechercher des imprimantes</translation>
 <translation id="7956373551960864128">Vos imprimantes enregistrées</translation>
 <translation id="168991973552362966">Ajouter une imprimante à proximité</translation>
@@ -3169,14 +3228,12 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="4058720513957747556">AppSocket (TCP/IP)</translation>
 <translation id="6619058681307408113">Line Printer Daemon (LPD)</translation>
 <translation id="2266957463645820432">IPP sur USB (IPPUSB)</translation>
-<translation id="8086015605808120405">Configuration de <ph name="PRINTER_NAME"/>…</translation>
 <translation id="4665014895760275686">Fabricant</translation>
 <translation id="4561098487691395071">Vous pouvez également préciser le fichier PPD correspondant à votre imprimante</translation>
 <translation id="1989112275319619282">Parcourir</translation>
 <translation id="3625481642044239431">Le fichier sélectionné n'est pas valide. Veuillez réessayer.</translation>
-<translation id="2462752602710430187">L'imprimante <ph name="PRINTER_NAME"/> a bien été ajoutée.</translation>
-<translation id="7380768571499464492">L'imprimante "<ph name="PRINTER_NAME"/>" a bien été mise à jour</translation>
-<translation id="9057119625587205566">Aucune imprimante à proximité</translation>
+<translation id="8002670234429879764"><ph name="PRINTER_NAME"/> n'est plus disponible</translation>
+<translation id="3976108569178263973">Aucune imprimante n'est disponible.</translation>
 <translation id="3213187967168344806">Impossible d'ajouter l'imprimante. Redémarrez l'ordinateur, puis réessayez.</translation>
 <translation id="4052689580269971502">Impossible de se connecter à l'imprimante. Vérifiez qu'elle est sous tension et connectée à votre Bravebook par Wi-Fi ou USB.</translation>
 <translation id="7099337801055912064">Impossible de charger un fichier PPD volumineux. Le fichier ne doit pas dépasser 250 Ko.</translation>
@@ -3185,6 +3242,9 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="4694024090038830733">La configuration de l'imprimante est gérée par l'administrateur.</translation>
 <translation id="5816434091619127343">Les modifications demandées concernant l'imprimante risquent de rendre celle-ci inutilisable.</translation>
 <translation id="6504611359718185067">Connectez-vous à Internet pour ajouter une imprimante</translation>
+<translation id="4066207411788646768">Veuillez vérifier votre connexion pour afficher les imprimantes disponibles sur le réseau</translation>
+<translation id="4320177379694898372">Aucune connexion Internet.</translation>
+<translation id="2910318910161511225">Connectez-vous à un réseau et réessayez</translation>
 <translation id="4972129977812092092">Modifier l'imprimante</translation>
 <translation id="5696679855467848181">Fichier PPD en cours d'utilisation : <ph name="PPD_NAME"/></translation>
 <translation id="3016329696181678353">Impossible de configurer automatiquement l'imprimante <ph name="PRINTER_NAME"/>. Veuillez définir des paramètres avancés pour l'imprimante.</translation>
@@ -3222,6 +3282,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="4820236583224459650">Définir comme ticket actif</translation>
 <translation id="4502423230170890588">Supprimer de cet appareil</translation>
 <translation id="2507253002925770350">Ticket supprimé</translation>
+<translation id="3703699162703116302">Ticket actualisé</translation>
 <translation id="1436390408194692385">Valide pendant <ph name="TICKET_TIME_LEFT"/></translation>
 <translation id="2665647207431876759">Arrivé à expiration</translation>
 <translation id="5565735124758917034">Actif</translation>
@@ -3263,7 +3324,6 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="6444070574980481588">Définir la date et l'heure</translation>
 <translation id="5065775832226780415">Smart Lock</translation>
 <translation id="8468750959626135884">Déverrouillez votre <ph name="DEVICE_TYPE"/> avec votre téléphone Android.</translation>
-<translation id="3571734092741541777">Configurer</translation>
 <translation id="3336664756920573711">Déverrouillez votre <ph name="DEVICE_TYPE"/> avec votre téléphone Android</translation>
 <translation id="1036348656032585052">Désactiver</translation>
 <translation id="1164674268730883318">Désactiver Smart Lock pour l'appareil <ph name="DEVICE_TYPE"/> ?</translation>
@@ -3292,7 +3352,6 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="216169395504480358">Ajouter un réseau Wi-Fi…</translation>
 <translation id="3892414795099177503">Ajouter une connexion OpenVPN/L2TP…</translation>
 <translation id="287286579981869940">Ajouter <ph name="PROVIDER_NAME"/>…</translation>
-<translation id="3609895557594655134">Ajouter un VPN Android…</translation>
 <translation id="8426713856918551002">Activation</translation>
 <translation id="3652817283076144888">Initialisation…</translation>
 <translation id="6528513914570774834">Autoriser les autres utilisateurs de cet appareil à employer ce réseau</translation>
@@ -3373,6 +3432,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="8986362086234534611">Retirer</translation>
 <translation id="7881483672146086348">Afficher le compte</translation>
 <translation id="2392369802118427583">Activer</translation>
+<translation id="8151638057146502721">Configurer</translation>
 <translation id="5920543303088087579">Votre administrateur a désactivé la connexion à ce réseau</translation>
 <translation id="1235458158152011030">Réseaux connus</translation>
 <translation id="3003144360685731741">Réseaux préférés</translation>
@@ -3381,6 +3441,8 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="4384312707950789900">Ajouter aux réseaux préférés</translation>
 <translation id="6077131872140550515">Supprimer des réseaux préférés</translation>
 <translation id="4115002065223188701">Réseau hors de portée</translation>
+<translation id="4421167684395067330">Problème de connexion. Veuillez contacter <ph name="CARRIER_NAME"/> pour obtenir de l'aide.</translation>
+<translation id="7780252971640011240">Problème de connexion. Veuillez contacter votre opérateur pour obtenir de l'aide.</translation>
 <translation id="161460670679785907">Impossible de détecter votre téléphone</translation>
 <translation id="1682335582099955045">Pour utiliser le partage de connexion instantané, activez les notifications pour les services Brave Software Play.</translation>
 <translation id="7696063401938172191">Sur votre <ph name="PHONE_NAME"/> :</translation>
@@ -3404,7 +3466,6 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="3483333858382889684">Autoriser cet appareil à rechercher, avec votre compte Brave Software, d'autres appareils disposant d'une connexion de données mobiles</translation>
 <translation id="5637476008227280525">Activation des données mobiles</translation>
 <translation id="1572266655485775982">Activation du Wi-Fi</translation>
-<translation id="543381445212956829">Activation de WiMAX</translation>
 <translation id="166439687370499867">La modification de la configuration d'un réseau partagé n'est pas autorisée</translation>
 <translation id="938470336146445890">Veuillez installer un certificat utilisateur.</translation>
 <translation id="7732111077498238432">Le réseau est soumis à des règles</translation>
@@ -3419,6 +3480,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="5669267381087807207">Activation</translation>
 <translation id="952992212772159698">Désactivé</translation>
 <translation id="3488065109653206955">Partiellement activé</translation>
+<translation id="4562494484721939086">Aucun service</translation>
 <translation id="4880328057631981605">Nom du point d'accès</translation>
 <translation id="5142961317498132443">Authentification</translation>
 <translation id="5691511426247308406">Famille</translation>
@@ -3429,7 +3491,6 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="8461329675984532579">Nom du fournisseur personnel</translation>
 <translation id="7769672763586021400">ID du modèle</translation>
 <translation id="7487067081878637334">Technologie</translation>
-<translation id="3547495624659668105">Version PRL</translation>
 <translation id="8620617069779373398">État d'itinérance</translation>
 <translation id="131461803491198646">Réseau domestique, sans itinérance</translation>
 <translation id="5252456968953390977">Itinérance</translation>
@@ -3470,6 +3531,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="5088172560898466307">Nom d'hôte du serveur</translation>
 <translation id="5050042263972837708">Nom du groupe</translation>
 <translation id="8675354002693747642">Clé pré-partagée</translation>
+<translation id="8372477600026034341">Hôtes supplémentaires</translation>
 <translation id="6472207088655375767">Mot passe usage unique</translation>
 <translation id="8798441408945964110">Nom du fournisseur</translation>
 <translation id="7882358943899516840">Type de fournisseur</translation>
@@ -3498,6 +3560,9 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="5302048478445481009">Langue</translation>
 <translation id="6388429472088318283">Rechercher des langues</translation>
 <translation id="2690024944919328218">Afficher les options linguistiques</translation>
+<translation id="6199184144777428084">Ajouter des langues ou réorganiser la liste</translation>
+<translation id="8813969267212093033">Cette langue est utilisée pour le texte du système</translation>
+<translation id="2366260648632264559">Afficher le texte du système dans cette langue</translation>
 <translation id="7216595297012131718">Classer les langues selon vos préférences</translation>
 <translation id="5972708806901999743">Déplacer vers le haut</translation>
 <translation id="8609465669617005112">Monter</translation>
@@ -3652,6 +3717,10 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="4085270836953633510">Me demander lorsqu'un site souhaite accéder aux ports série</translation>
 <translation id="2322318151094136999">Me demander lorsqu'un site souhaite accéder aux ports série (recommandé)</translation>
 <translation id="1906828677882361942">N'autoriser aucun site à accéder aux ports série</translation>
+<translation id="2215727959747642672">Modification de fichier</translation>
+<translation id="8392364544846746346">Vous demander lorsqu'un site souhaite modifier des fichiers ou des dossiers sur votre appareil</translation>
+<translation id="7614260613810441905">Vous demander lorsqu'un site souhaite modifier des fichiers ou des dossiers sur votre appareil (recommandé)</translation>
+<translation id="2957117904572187936">Interdire à tous les sites de modifier des fichiers ou des dossiers sur votre appareil</translation>
 <translation id="8973557916016709913">Supprimer le niveau de zoom</translation>
 <translation id="1706625117072057435">Niveaux de zoom</translation>
 <translation id="6385543213911723544">Les sites peuvent enregistrer et consulter les données liées aux cookies.</translation>
@@ -3661,6 +3730,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="563535393368633106">Demander l'autorisation avant d'accéder (recommandé)</translation>
 <translation id="6840155290835956714">Demander avant d'envoyer</translation>
 <translation id="2381756643783702095">Demander l'autorisation avant d'envoyer (recommandé)</translation>
+<translation id="7593653750169415785">Notifications automatiquement bloquées, car vous avez refusé d'autoriser les notifications à plusieurs reprises</translation>
 <translation id="2812989263793994277">Ne pas afficher les images</translation>
 <translation id="3800806661949714323">Tout afficher (recommandé)</translation>
 <translation id="7661259717474717992">Autoriser les sites à enregistrer/lire les données des cookies</translation>
@@ -3709,6 +3779,9 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="327147043223061465">Afficher l'ensemble des cookies et données de sites</translation>
 <translation id="1963227389609234879">Tout supprimer</translation>
 <translation id="3432227430032737297">Supprimer tous les cookies affichés</translation>
+<translation id="2854896010770911740">Supprimer les cookies tiers</translation>
+<translation id="2096715839409389970">Effacer les cookies tiers</translation>
+<translation id="7828731929332799387">Cette action supprimera l'ensemble des cookies et données de sites disponibles dans des contextes tiers. Voulez-vous continuer ?</translation>
 <translation id="6011449291337289699">Effacer les données de sites</translation>
 <translation id="8339059274628563283">Données stockées en local pour <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Réinitialiser les autorisations de site pour <ph name="SITE"/> ?</translation>
@@ -3752,7 +3825,6 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="4590324241397107707">Stockage des bases de données</translation>
 <translation id="8016266267177410919">Stockage temporaire</translation>
 <translation id="4175737294868205930">Stockage persistant</translation>
-<translation id="1296497012903089238">Type de certificat</translation>
 <translation id="3707212204259470604">Gérer d'autres utilisateurs</translation>
 <translation id="8907706281008466056">Photo du profil Brave Software</translation>
 <translation id="2408955596600435184">Saisissez votre code.</translation>
@@ -3778,7 +3850,6 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="1719312230114180055">Remarque : Vos empreintes digitales peuvent être moins sécurisées qu'un mot de passe ou un code fiables.</translation>
 <translation id="1582955169539260415">supprimer [<ph name="FINGERPRINT_NAME"/>]</translation>
 <translation id="1927632033341042996">Doigt <ph name="NEW_FINGER_NUMBER"/></translation>
-<translation id="4461062867270151760">Permet de lire les contenus multimédias Brave sur l'écran de verrouillage</translation>
 <translation id="7665369617277396874">Ajouter un compte</translation>
 <translation id="5866136067811459986">Gérez les comptes Brave Software auxquels vous êtes connecté. Les sites Web, les applications et extensions de Brave et de Brave Software Play peuvent utiliser ces comptes pour personnaliser votre expérience, en fonction des autorisations accordées.</translation>
 <translation id="1987317783729300807">Comptes</translation>
@@ -3823,6 +3894,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="7155171745945906037">Photo existante au niveau de l'appareil photo ou dans les fichiers</translation>
 <translation id="8995603266996330174">Géré par <ph name="DOMAIN"/></translation>
 <translation id="9125982323641182972">Profitez des fonctionnalités intelligentes de Brave Software dans Brave</translation>
+<translation id="1692115862433274081">Utiliser un autre compte</translation>
 <translation id="5244474230056479698">Synchronisation avec <ph name="EMAIL"/>…</translation>
 <translation id="4326270470840334364">Étant donné que ce compte est géré par <ph name="DOMAIN"/>, vos favoris, votre historique, vos mots de passe et les autres paramètres sont effacés de cet appareil. Cependant, vos données restent stockées dans votre compte Brave Software et peuvent être gérées dans le <ph name="BEGIN_LINK"/>Brave Software Dashboard<ph name="END_LINK"/>.</translation>
 <translation id="6906406176003824042">Modifier le profil utilisateur</translation>
@@ -3854,6 +3926,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="1125261911132334651">Gérer votre compte Brave Software</translation>
 <translation id="4570387585180509432">Adresses, numéros de téléphone, etc.</translation>
 <translation id="5117427536932535467">Thèmes et fonds d'écran</translation>
+<translation id="7257173066616499747">Réseaux Wi-Fi</translation>
 <translation id="3268451620468152448">Onglets ouverts</translation>
 <translation id="5241892180459725878">Suggestions de recherche Brave Software Drive</translation>
 <translation id="2120297377148151361">Activité et interactions</translation>
@@ -3890,13 +3963,11 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="6828153365543658583">Autoriser uniquement les utilisateurs suivants à se connecter :</translation>
 <translation id="7645176681409127223"><ph name="USER_NAME"/> (propriétaire)</translation>
 <translation id="3699624789011381381">Adresse e-mail</translation>
-<translation id="1483829627339988491">Contrôle parental</translation>
+<translation id="2813094189969465044">Contrôle parental</translation>
 <translation id="3557101512409028104">Définissez des restrictions liées aux sites Web et des limites de temps d'utilisation avec Family Link</translation>
-<translation id="7648142322539582331">Connectez-vous à Internet pour configurer le contrôle parental</translation>
-<translation id="1005608198058526414">Afficher vos paramètres Family Link</translation>
+<translation id="7915457674565721553">Connectez-vous à Internet pour configurer le contrôle parental</translation>
+<translation id="5192062846343383368">Ouvrez l'application Family Link pour accéder aux paramètres de supervision</translation>
 <translation id="470074695271471509">Voulez-vous ensuite vous déconnecter ?</translation>
-<translation id="7850222546481862746"><ph name="BEGIN_PARAGRAPH1"/>Pour terminer de configurer la supervision sur cet appareil, vous devez vous déconnecter du compte de <ph name="USER_NAME"/>.<ph name="END_PARAGRAPH1"/>
-      <ph name="BEGIN_PARAGRAPH2"/>Vous pouvez gérer le contrôle parental pour votre enfant en installant Family Link pour les parents sur votre propre appareil.<ph name="END_PARAGRAPH2"/></translation>
 <translation id="3570985609317741174">Contenu Web</translation>
 <translation id="7719367874908701697">Zoom de la page</translation>
 <translation id="4941627891654116707">Taille de police</translation>
@@ -3931,6 +4002,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="2497229222757901769">Vitesse de la souris</translation>
 <translation id="6586451623538375658">Inverser le bouton principal de la souris</translation>
 <translation id="221872881068107022">Inverser le défilement</translation>
+<translation id="2536052711541161459">Accélération du curseur</translation>
 <translation id="1510238584712386396">Lanceur d'applications</translation>
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="2515586267016047495">Alt</translation>
@@ -4023,8 +4095,8 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="9196021349904508454">Les fichiers temporaires de Brave Software Drive qui sont accessibles hors connexion seront effacés. Cependant, les fichiers que vous avez définis comme étant disponibles hors connexion ne seront pas supprimés de cet appareil.</translation>
 <translation id="1865678028973512614">Supprimer les fichiers</translation>
 <translation id="4470957202018033307">Préférences de l'espace de stockage externe</translation>
-<translation id="7536220825385726660">Autoriser les applications Play Store à accéder aux lecteurs externes</translation>
-<translation id="8157382355099335113">Les applications Brave Software Play Store peuvent nécessiter l'accès aux appareils de stockage externe pour lire et écrire des fichiers et des dossiers sur ceux-ci.</translation>
+<translation id="7157776341993107220">Les applications provenant de Brave Software Play peuvent exiger un accès complet, en lecture et en écriture, aux fichiers situés sur des périphériques de stockage externe. Les fichiers stockés sur ces périphériques externes, et les dossiers où ils se trouvent, sont visibles par tous les utilisateurs.</translation>
+<translation id="6775163072363532304">Les périphériques disponibles s'afficheront ici.</translation>
 <translation id="1529891865407786369">Source d'alimentation</translation>
 <translation id="354060433403403521">Adaptateur</translation>
 <translation id="2127372758936585790">Chargeur de faible puissance</translation>
@@ -4050,7 +4122,6 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="5826395379250998812">Connectez votre <ph name="DEVICE_TYPE"/> à votre téléphone. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">Aucun appareil éligible. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">En attente de validation. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
-<translation id="6518133107902771759">Valider</translation>
 <translation id="4142052906269098341">Déverrouillez votre <ph name="DEVICE_TYPE"/> à l'aide de votre téléphone. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Partage de connexion instantané</translation>
 <translation id="6415900369006735853">Se connecter à Internet via votre téléphone</translation>
@@ -4070,7 +4141,6 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="4840150926623932060">{NUM_DOWNLOAD,plural, =1{1 autre}one{# autre}other{# autres}}</translation>
 <translation id="2749608811030566578">Une erreur s'est produite lors de la suppression du logiciel malveillant par Brave</translation>
 <translation id="8189483132214844139">Brave peut détecter et supprimer les logiciels malveillants sur votre ordinateur</translation>
-<translation id="2910318910161511225">Connectez-vous à un réseau et réessayez</translation>
 <translation id="1426870617281699524">Cliquez sur "Réessayer" et acceptez l'invite sur votre ordinateur</translation>
 <translation id="7886744396008377537">Un logiciel malveillant a été détecté sur votre ordinateur. Brave va le supprimer, restaurer vos paramètres et désactiver les extensions. Ceci permettra à votre navigateur de fonctionner à nouveau normalement.</translation>
 <translation id="1484912962860902625">Une erreur s'est produite lors de la recherche de logiciels malveillants par Brave</translation>
@@ -4080,7 +4150,6 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="284975061945174219">Échec du nettoyage</translation>
 <translation id="9014750448058570312">Brave Software Brave a besoin de votre autorisation pour continuer</translation>
 <translation id="1852141627593563189">Détecter des logiciels malveillants</translation>
-<translation id="4320177379694898372">Aucune connexion Internet.</translation>
 <translation id="850875081535031620">Aucun logiciel malveillant détecté</translation>
 <translation id="1186771945450942097">Supprimez le logiciel malveillant</translation>
 <translation id="354602065659584722">Logiciel malveillant supprimé</translation>
@@ -4141,6 +4210,14 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="8705629851992224300">Impossible de lire votre clé de sécurité</translation>
 <translation id="3076977359333237641">Vos données de connexion ont été supprimées</translation>
 <translation id="3508492320654304609">Impossible de supprimer vos données de connexion</translation>
+<translation id="8945764661949477243">Ajouter des empreintes digitales, et renommer et supprimer celles enregistrées sur votre appareil</translation>
+<translation id="4836504898754963407">Gérer les empreintes digitales</translation>
+<translation id="403456802563765809">Pour gérer vos empreintes digitales, insérez votre clé de sécurité, puis appuyez dessus.</translation>
+<translation id="5639152092474119692">Pour gérer vos empreintes digitales, saisissez le code de votre clé de sécurité. Si vous ne le connaissez pas, vous devez réinitialiser la clé de sécurité.</translation>
+<translation id="3589845496433710431">Aucune empreinte digitale n'est stockée dans votre clé de sécurité.</translation>
+<translation id="1489956991149850859">Vous pouvez ajouter, supprimer ou renommer des empreintes digitales ici.</translation>
+<translation id="5995884201513800557">Continuez à appuyer sur votre clé de sécurité pour enregistrer votre empreinte digitale.</translation>
+<translation id="1750172676754093297">Impossible de stocker des empreintes digitales dans votre clé de sécurité</translation>
 <translation id="3341703758641437857">Autoriser l'accès aux URL de fichier</translation>
 <translation id="9003647077635673607">Autoriser sur tous les sites Web</translation>
 <translation id="698524779381350301">Autoriser automatiquement l'accès aux sites suivants</translation>
@@ -4213,6 +4290,8 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="8523849605371521713">Ajoutée en raison des règles</translation>
 <translation id="5087249366037322692">Ajoutée par un tiers</translation>
 <translation id="6788210894632713004">Extension non empaquetée</translation>
+<translation id="2350133097354918058">Extension actualisée</translation>
+<translation id="8635628933471165173">Actualisation…</translation>
 <translation id="3838085852053358637">Échec du chargement de l'extension</translation>
 <translation id="6370021412472292592">Impossible de charger le fichier manifeste.</translation>
 <translation id="7235716375204803342">Récupération des activités…</translation>
@@ -4414,4 +4493,29 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="6336451774241870485">Nouvel onglet privé</translation>
 <translation id="6610147964972079463">Fermer les onglets privés</translation>
 <translation id="8076492880354921740">Onglets</translation>
+<translation id="2794233252405721443">Site bloqué</translation>
+<translation id="1721312023322545264">Vous devez disposer de l'autorisation de <ph name="NAME"/> pour consulter ce site</translation>
+<translation id="7543525346216957623">Demande à tes parents</translation>
+<translation id="471880041731876836">Vous n'êtes pas autorisé à consulter ce site</translation>
+<translation id="3480834636742786788">Veuillez démarrer Brave et vous connecter à votre compte avant d'utiliser cette application</translation>
+<translation id="2851634818064021665">Tu n'es pas autorisé à consulter ce site</translation>
+<translation id="4933782374919065856">Des questions ? Contactez la personne qui supervise votre profil.</translation>
+<translation id="2712173769900027643">Demander l'autorisation</translation>
+<translation id="3886446263141354045">Votre demande d'accès à ce site a bien été envoyée à <ph name="NAME"/></translation>
+<translation id="3345135638360864351">Impossible d'envoyer votre demande d'accès au site à <ph name="NAME"/>. Veuillez réessayer.</translation>
+<translation id="6414888972213066896">Une demande d'autorisation a été envoyée à tes parents pour la consultation de ce site</translation>
+<translation id="4858792381671956233">Une demande d'autorisation a été envoyée à tes parents pour la consultation de ce site</translation>
+<translation id="3498215018399854026">Impossible de joindre votre parent pour le moment. Veuillez réessayer.</translation>
+<translation id="8012647001091218357">Impossible de joindre vos parents pour le moment. Veuillez réessayer.</translation>
+<translation id="3479539252931486093">S'agit-il d'une erreur inattendue ? <ph name="BEGIN_LINK"/>Signalez-nous ce problème.<ph name="END_LINK"/></translation>
+<translation id="3586931643579894722">Masquer les détails</translation>
+<translation id="7444046173054089907">Ce site est bloqué</translation>
+<translation id="6778737459546443941">Tes parents ne l'ont pas encore autorisé</translation>
+<translation id="8620436878122366504">Tes parents ne l'ont pas encore autorisé</translation>
+<translation id="6563469144985748109">Votre responsable ne l'a pas encore autorisé</translation>
+<translation id="9076283476770535406">Il est possible qu'il comporte du contenu réservé aux adultes</translation>
+<translation id="7755287808199759310">Ton parent peut te le débloquer</translation>
+<translation id="5732392974455271431">Tes parents peuvent te le débloquer</translation>
+<translation id="3556433843310711081">Votre responsable peut vous le débloquer</translation>
+<translation id="1254756632288991504">Veuillez démarrer Brave et vous connecter à votre compte pour que le navigateur puisse vérifier que vous êtes autorisé à accéder à ce site.</translation>
 </translationbundle>

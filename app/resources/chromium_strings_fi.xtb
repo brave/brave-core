@@ -44,6 +44,7 @@ Kaikki ominaisuudet eivät ehkä ole käytettävissä. Määritä jokin muu prof
 Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="1477146545787277177">Hups! Brave kaatui. Käynnistetäänkö uudelleen?</translation>
 <translation id="5785919770853225148">Brave tallentaa tämän salasanan Brave Software-tilillesi. Sinun ei tarvitse muistaa sitä.</translation>
+<translation id="8211837073776713955">Brave ilmoittaa sinulle, jos salasanasi ovat vaarantuneet</translation>
 <translation id="113959764510199339">Brave yrittää näyttää salasanat.</translation>
 <translation id="7503098128120083822">Brave yrittää viedä salasanojasi tiedostoon.</translation>
 <translation id="8285294305439559616">Brave yrittää näyttää salasanat. Salli tämä kirjoittamalla Windows-salasanasi.</translation>
@@ -152,13 +153,6 @@ Jos kirjaudut silti sisään, Brave-tiedot, kuten kirjanmerkit, historia ja aset
 <translation id="3205074487970075628">Brave käyttää kameraasi.</translation>
 <translation id="8142245354207161805">Profiili näyttäisi olevan toisen Brave-prosessin (<ph name="PROCESS_ID"/>) käytössä toisella tietokoneella (<ph name="HOST_NAME"/>). Brave on lukinnut profiilin, jotta se ei vioitu. Jos olet varma, että mikään toinen prosessi ei käytä tätä profiilia, voit poistaa profiilin lukituksen ja käynnistää Bravein uudelleen.</translation>
 <translation id="239760341987199724">Aseta Brave oletusselaimeksi</translation>
-<translation id="5344925500065984750">Jos haluat valita, mitä verkkosivustoja <ph name="NEW_PROFILE_NAME"/> voi katsella, määritä rajoituksia ja asetuksia osoitteessa <ph name="BEGIN_LINK_1"/><ph name="DISPLAY_LINK"/><ph name="END_LINK_1"/>. Jos et muokkaa oletusasetuksia, <ph name="NEW_PROFILE_NAME"/> voi selata kaikkia verkkosivustoja.
-
-Jotta <ph name="NEW_PROFILE_NAME"/> ei voi käyttää tiliäsi, lukitse profiilisi, kun et enää käytä Braveia. Voit tehdä tämän klikkaamalla profiilisi nimeä selainikkunan oikeassa yläkulmassa ja valitsemalla Sulje ja aseta lapsilukko.
-<ph name="BEGIN_LINK_2"/>Lisätietoja<ph name="END_LINK_2"/>
-
-Lähetimme lisäohjeita sähköpostiisi osoitteeseen <ph name="ACCOUNT_EMAIL"/>.</translation>
-<translation id="1820843143331379651">Brave 70:n myötä valvotut käyttäjäprofiilit eivät enää ole saatavilla.</translation>
 <translation id="669092380621816981">Käyttäjän selaustiedot poistetaan tältä laitteelta. Jos haluat palauttaa tiedot myöhemmin, kirjaudu Braveiin käyttäjänä <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave on nyt entistä parempi</translation>
 <translation id="7192666605334070839">Nyt voit helpommin käyttää Braveia Brave Software-tililläsi ja jaetuilla tietokoneilla.</translation>
@@ -200,7 +194,7 @@ Lähetimme lisäohjeita sähköpostiisi osoitteeseen <ph name="ACCOUNT_EMAIL"/>.
 <translation id="3598551856834560515">Aloita synkronointi päivittämällä Brave.</translation>
 <translation id="4050175100176540509">Uusimmassa versiossa on käytettävissä tärkeitä turvallisuusparannuksia ja uusia ominaisuuksia.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave käynnistyy uudelleen 1 sekunnin kuluttua}other{Brave käynnistyy uudelleen # sekunnin kuluttua}}</translation>
-<translation id="5509303873219371662">Käynnistä Brave uudelleen</translation>
+<translation id="5646769069113654257">Käynnistä Brave uudelleen nyt</translation>
 <translation id="8668413672647811944">Bravein tärkeä tietoturvapäivitys on asennettu. Käynnistä selain uudelleen – palautamme avoimet välilehdet.</translation>
 <translation id="763369711159699222">Auta parantamaan Braveia</translation>
 <translation id="1156940037717341650">Voit auttaa meitä parantamaan Bravein turvallisuutta ja tekemään siitä helppokäyttöisemmän ilmoittamalla mahdollisista turvallisuusongelmista Brave Softwarelle automaattisesti.</translation>
@@ -224,7 +218,6 @@ Lähetimme lisäohjeita sähköpostiisi osoitteeseen <ph name="ACCOUNT_EMAIL"/>.
 <translation id="6141293433381251973">Brave päivittyy automaattisesti, joten käytössäsi on aina uusin versio. Kun lataus on valmis, Brave käynnistyy uudelleen ja voit aloittaa käytön.</translation>
 <translation id="7808415789955822133">Brave-käyttöjärjestelmän käyttöehdot</translation>
 <translation id="7207456302801184289">Tervetuloa Braveiin</translation>
-<translation id="5688839044908745927">Brave on lähes valmis.</translation>
 <translation id="3507835409099344374">Siirry Bravein ilmoitusasetuksiin</translation>
 <translation id="1026406809507858026">{0,plural, =0{Brave-päivitys on saatavilla}=1{Brave-päivitys on saatavilla}other{Brave-päivitys on ollut saatavilla # vuorokauden ajan}}</translation>
 <translation id="720532315408041257">Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön.</translation>
@@ -242,6 +235,8 @@ Lähetimme lisäohjeita sähköpostiisi osoitteeseen <ph name="ACCOUNT_EMAIL"/>.
 <translation id="1864557848095568223">Päivitetään Braveia.</translation>
 <translation id="1786715389543715322">Päivitetään Braveia (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="8208853227947884571">Brave on ajan tasalla.</translation>
+<translation id="6756417787837743699">Tutustu Brave-käyttöjärjestelmään lukemalla <ph name="LINK_BEGIN"/>
+      Tietoja Brave-käyttöjärjestelmästä<ph name="LINK_END"/></translation>
 <translation id="6686872257969654608">Tietoja Brave-käyttöjärjestelmästä</translation>
 <translation id="2280363356796735201">Ohjeita Brave-käyttöjärjestelmän käyttöön</translation>
 <translation id="38898988211673781">Tyhjennä evästeet ja sivustodata, kun suljet Bravein</translation>
@@ -249,6 +244,10 @@ Lähetimme lisäohjeita sähköpostiisi osoitteeseen <ph name="ACCOUNT_EMAIL"/>.
 <translation id="5468853758063275923">Brave on oletusselaimesi.</translation>
 <translation id="1775322105159056176">Brave ei voi tunnistaa tai asettaa oletusselainta.</translation>
 <translation id="6915252145142862992">Tämä on Bravein toissijainen asennus, eikä sitä voi asettaa oletusselaimeksi.</translation>
+<translation id="6235873178214143377">Jos asetus ei näy tällä sivulla, siirry <ph name="LINK_BEGIN"/>
+    Bravein selainasetuksiin<ph name="LINK_END"/>.</translation>
+<translation id="4459296183696059108">Jos asetus ei näy tällä sivulla, siirry <ph name="LINK_BEGIN"/>
+    Brave-käyttöjärjestelmän asetuksiin<ph name="LINK_END"/>.</translation>
 <translation id="7977435741986383568">Brave voi käyttää verkkopalveluita selauskokemuksesi parantamiseen. Voit halutessasi poistaa nämä palvelut käytöstä. <ph name="BEGIN_LINK"/>Lisätietoja<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Brave lähettää kenttiin kirjoittamasi tekstin Brave Softwarelle oikeinkirjoitusvirheiden korjaamiseksi.</translation>
 <translation id="8586264863973514035">Ota muutokset käyttöön käynnistämällä Brave uudelleen</translation>
@@ -262,8 +261,6 @@ Lähetimme lisäohjeita sähköpostiisi osoitteeseen <ph name="ACCOUNT_EMAIL"/>.
 <translation id="7445061995866044926">Kirjaudutaanko ulos?</translation>
 <translation id="7453070689008684791">Brave käyttää Drivea antaakseen ehdotuksia osoitepalkissa</translation>
 <translation id="3360368475735266712">Kirjaudu sisään, niin voit synkronoida Bravein ja tehdä siitä yksilöllisemmän kaikilla laitteilla.</translation>
-<translation id="9221712274065451529">Brave OS ‑käyttöliittymä näytetään tällä kielellä</translation>
-<translation id="3518788198614984730">Näytä Brave-käyttöjärjestelmä tällä kielellä</translation>
 <translation id="5757460455745382269">Brave-käyttöliittymä näytetään tällä kielellä</translation>
 <translation id="2335583906071111058">Näytä Brave tällä kielellä</translation>
 <translation id="8926637909431618259">Jätä taustasovellukset käyntiin, kun Brave suljetaan</translation>

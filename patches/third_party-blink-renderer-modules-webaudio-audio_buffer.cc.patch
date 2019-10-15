@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
-index fd85f8425ff542d5c466c4b8168bca5da45eaebe..8e69639d01e367e7494250fca5600d319a16a438 100644
+index c2934d9b1dc0c8f0206293e19dcf1dd22c48fe96..158e4da72748415ca509f759dcdcc4e9cae48fb0 100644
 --- a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
 +++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
 @@ -29,6 +29,7 @@
@@ -41,7 +41,7 @@ index fd85f8425ff542d5c466c4b8168bca5da45eaebe..8e69639d01e367e7494250fca5600d31
 +void AudioBuffer::copyFromChannel(ScriptState* script_state,
 +                                  NotShared<DOMFloat32Array> destination,
                                    int32_t channel_number,
-                                   uint32_t start_in_channel,
+                                   uint32_t buffer_offset,
                                    ExceptionState& exception_state) {
 +  LocalDOMWindow* window = LocalDOMWindow::From(script_state);
 +  if (window && !AllowFingerprinting(window->GetFrame())) {

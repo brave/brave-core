@@ -78,10 +78,12 @@
 <translation id="2414886740292270097">Tmavý</translation>
 <translation id="3829010735958850433">Preskočiť prehliadku na uvítanie</translation>
 <translation id="1201402288615127009">Ďalej</translation>
+<translation id="7954950242989581218">Surfujte bezpečne a riadne</translation>
+<translation id="2188651882929633653">Bezpečnostný štít Brave Shields blokuje zákerné programy vrátane väčšiny reklám, ktoré sa vás snažia na sieti vystopovať. Ak sa vám zdá, že stránka nefunguje, nastavte štít na dole. Na odhad celkového využívania určitých funkcií využíva Brave <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>výlučne vlastné produktové analýzy<ph name="END_LINK_P3A">&lt;/a&gt;</ph>. Môžete ich vypnúť v <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Nastaveniach<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Reklamy</translation>
 <translation id="5946611334574299206">Získajte žetóny za sledovanie reklám v Brave. Tieto reklamy sú založené na Vašich záujmoch, ktoré vyplývajú z vášho surfovania. Vaše osobné údaje a história prehliadania nikdy neopustia váš prehliadač.</translation>
 <translation id="6112368337882254910">Automaticky prispieť</translation>
-<translation id="1527222983464337010">Automatický spôsob podpory vydavateľov a tvorcov obsahu. Stanovte mesačnú platbu a vyhľadávajte normálne. Stránky, ktoré navštívite, automaticky získajú váš príspevok, čo vychádza z vašej pozornosti zaznamenanej prehliadačom Brave.</translation>
+<translation id="3742599705619405136">Automatický spôsob podpory vydavateľov a tvorcov obsahu. Stanovte mesačnú platbu a vyhľadávajte normálne. Stránky, ktoré navštívite, automaticky získajú váš príspevok, čo vychádza z vašej pozornosti zaznamenanej prehliadačom Brave.</translation>
 <translation id="20281847067919078">Odhadované čakajúce odmeny</translation>
 <translation id="8593551638387217772">Dátum ďalšej platby</translation>
 <translation id="319209088187794725">Oznámenia o reklame prijaté tento mesiac</translation>
@@ -100,12 +102,17 @@
 <translation id="8759716059844800317">Podporované stránky</translation>
 <translation id="2365740070488517695">Príspevky</translation>
 <translation id="1309807437617560451">Poskytujte príspevok tvorcom obsahu priamo počas prehliadania. Môžete si tiež nastaviť zasielanie mesačných príspevkov, aby ste zabezpečili stránkam nepretržitú podporu.</translation>
+<translation id="5012991400231464322">Mesačné príspevky</translation>
+<translation id="2084351799622920487">Ak chcete niektoré stránky podporovať opakovane, nastavte pravidelné mesačné príspevky.</translation>
+<translation id="8150772404570015166">Zatiaľ neboli stanovené žiadne mesačné príspevky.</translation>
+<translation id="7269582398922493824">Podporte svoje obľúbené stránky nastavením pravidelných mesačných príspevkov. Môžete ich nastaviť cez tlačidlo príspevku na prevádzku.</translation>
 <translation id="2241248417273918295">Zárobky sa vyplácajú každý mesiac.</translation>
 <translation id="68906705461077250">Nastavte si požadovanú frekvenciu, aby ste si zvýšili alebo znížili svoje zárobky.</translation>
 <translation id="1847863811689960237">Odmeňte autorov za obsah, ktorý máte radi.</translation>
 <translation id="4129489167302464118">Vaša mesačná platba sa rozdelí medzi stránky, ktoré navštívite.</translation>
 <translation id="4898632353264854950">Stránky sa zobrazia pri prehliadaní</translation>
 <translation id="3024485967181749006">Celkové príspevky za tento mesiac</translation>
+<translation id="5055577484189948413">Celkové príspevky za tento mesiac</translation>
 <translation id="4153752809523809915">Už ste dnes poslali príspevok svojmu obľúbenému tvorcovi obsahu?</translation>
 <translation id="1165667598801520610">Pridať finančný príspevok</translation>
 <translation id="6239274080752256452">Vybrať prostriedky</translation>
@@ -113,7 +120,6 @@
 <translation id="7286722244752781970">Minimálny čas na stránke k zalogovaniu návštevy</translation>
 <translation id="4424486208397124985">Minimálny počet návštev pre relevanciu vydavateľa</translation>
 <translation id="4969081543473319051">Čo by malo byť povolené?</translation>
-<translation id="2295504178524377899">Umožniť prispievanie neovereným stránkam</translation>
 <translation id="5875669387851353511">Umožniť príspevok k videám</translation>
 <translation id="8933202740471878108">1 návšteva</translation>
 <translation id="354797634123275103">5 návštev</translation>
@@ -209,6 +215,7 @@
 <translation id="4405997465645469914">Zapnutím Brave Rewards prehlasujte, že ste si prečítali a súhlasíte s</translation>
 <translation id="8819542691525488940">Kliknutím na ‘Áno, som tam!’, prehlasujete, že ste si prečítali a súhlasíte s</translation>
 <translation id="8071424789698327147">Kliknutím na ‘Áno, som tam!’, prehlasujete, že ste si prečítali a súhlasíte s</translation>
+<translation id="3745024317593003526">Nastaviť príspevok</translation>
 <translation id="7530570094705720669">Vytváranie peňaženky</translation>
 <translation id="2105596359439030979">Ceníme si vašu pozornosť. Zarábajte sledovaním reklám, ktoré rešpektujú vaše súkromie a pošlite to ďalej! Podporte tvorcov, ktorých obsah máte radi.</translation>
 <translation id="516395624550019162">Áno, som tam!</translation>
@@ -272,6 +279,8 @@
 <translation id="211044356803193224">Mesačné príspevky!</translation>
 <translation id="606865182719489911">K dispozícii je bezplatný grant na žetóny.</translation>
 <translation id="3453206261112715431">Bezplatný grant kupónov</translation>
+<translation id="2280319752798785157">Mesačný príspevok</translation>
+<translation id="7627481505582641588">Nasledujúci príspevok</translation>
 <translation id="5736183007277264868">Momentálne nie je dostupná žiadna dotácia žetónov.</translation>
 <translation id="8307851765167460403">Zatiaľ žiadne aktivity</translation>
 <translation id="8589748782214271192">Nie, ďakujem</translation>
@@ -317,9 +326,8 @@
 <translation id="5717619667204259673">Uchovávajte tento obnovovací kľúč v bezpečí.</translation>
 <translation id="4699702339303280827">Túto klávesu môžete kedykoľvek použiť na vrátenie svojej peňaženky späť, ak sa niečo stane s vaším prehliadačom alebo počítačom. Nezabudnite si ju však chrániť — každý, kto získa tento kľúč, vám môže vašu peňaženku ukradnúť. Bude asi najbezpečnejšie zapísať si ho na kus papiera alebo kdekoľvek inde, kde si uchovávate dôležité informácie.</translation>
 <translation id="7354412786785889047">Tohoto tvorcu obsahu môžete podporiť poslaním príspevku. Je to spôsob ako mu poďakovať za vytvorenie skvelého obsahu. Verifikovaní tvorcovia dostanú zaplatené za svoje príspevky v prvom týždni každého kalendárneho mesiaca.</translation>
-<translation id="3475063317678050010">Ak chcete, môžete si naplánovať pravidelné mesačné príspevky na podporu tohto tvorcu.</translation>
+<translation id="972846019534552366">Ak chcete, môžete si naplánovať pravidelné mesačné príspevky na podporu tohto tvorcu.</translation>
 <translation id="3074127054582480056">Pozornosť</translation>
-<translation id="822513417008209372">Práve podporujete</translation>
 <translation id="5010112177773747965">bez vášho súhlasu.</translation>
 <translation id="7147673045905733351">Brave vás dnes víta v novom internete.</translation>
 <translation id="1350763070659630336">Taký, ktorý si cení váš čas, pri ktorom sú vaše osobné údaje chránené a dokonca dostávate zaplatené za svoju pozornosť.</translation>
@@ -343,6 +351,7 @@
 <translation id="1738658589626889850">Uložiť ako súbor</translation>
 <translation id="259138486959961679">Pozrieť všetkých {{numItems}} položiek</translation>
 <translation id="7857284676033058221">Pozrieť všetkých {{numSites}} stránok</translation>
+<translation id="1549705559752367917">Poslať príspevok</translation>
 <translation id="3536298624341433814">Poslať príspevok</translation>
 <translation id="8428213095426709021">Nastavenia</translation>
 <translation id="1792148354504719133">stránka</translation>
@@ -385,7 +394,7 @@
 <translation id="6727483290601442544">Zobraziť podrobnosti</translation>
 <translation id="1988679729106502285">POZNÁMKA:</translation>
 <translation id="5815103311506128988">Tento tvorca sa ešte nezaregistroval, aby dostával príspevky od používateľov Brave. Váš prehliadač sa bude snažiť prispievať, kým nedôjde k overeniu alebo kým neprejde 90 dní.</translation>
-<translation id="603411408512957306">Aby mohol tento verifikovaný tvorca dostávať príspevky z verifikovanej peňaženky, musí ešte overiť (KYC) svoj účet. Kým sa verifikácia nedokončí, zostanú príspevky vo vašej peňaženke.</translation>
+<translation id="7461596279975181413">Tento overený tvorca Brave si ešte nenakonfiguroval účet na príjem príspevkov od používateľov Brave. Váš prehliadač sa bude naďalej snažiť prispievať až do overenia alebo do uplynutia 90 dní.</translation>
 <translation id="4292832015778676417">zarobené na reklamách</translation>
 <translation id="3197752845651180812">Čakajúce dary</translation>
 <translation id="3164105678355419142">Opakujúci sa príspevok</translation>
@@ -394,12 +403,12 @@
 <translation id="4346944508027912677">Čakajúce do</translation>
 <translation id="7410549756000115387">Žiadne čakajúce dary…</translation>
 <translation id="1963227389609234879">Odstrániť všetko</translation>
-<translation id="1170315781901539495">Vylúčené stránky</translation>
+<translation id="8706157865312453070">Vylúčené stránky</translation>
 <translation id="5119190679543565400">Obnoviť túto stránku</translation>
 <translation id="9075700728717335924">Vylúčili ste</translation>
 <translation id="4862817811647633830">stránky z Auto-Contribute.</translation>
 <translation id="923467487918828349">Zobraziť všetko</translation>
-<translation id="5471305206221894680">Podporované stránky</translation>
+<translation id="1397381065858030856">Podporované stránky</translation>
 <translation id="2306169361186864012">Brave odmeny za sledovanie reklám!</translation>
 <translation id="3757873395477273033">Váš grant od Brave reklám je už na ceste.</translation>
 <translation id="8101881066646819737">Grant vášho tokenu Brave reklamy</translation>

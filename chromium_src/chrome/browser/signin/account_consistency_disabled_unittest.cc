@@ -20,7 +20,7 @@
 #include "components/signin/public/base/signin_pref_names.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/common/content_features.h"
-#include "content/public/test/test_browser_thread_bundle.h"
+#include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if BUILDFLAG(ENABLE_DICE_SUPPORT)

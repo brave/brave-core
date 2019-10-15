@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+      <!-- Supervised User Block Interstitial data -->
+      <message name="IDS_BLOCK_INTERSTITIAL_TITLE" desc="A title for the supervised-user block interstitial page.">
+        Site blocked
+      </message>
+      <message name="IDS_BLOCK_INTERSTITIAL_HEADER" desc="A heading for the supervised user when they attempt to visit a site that is not permitted by the manager.">
+        You need permission from <ph name="NAME">$1<ex>John Doe</ex></ph> to visit this site
+      </message>
+      <message name="IDS_CHILD_BLOCK_INTERSTITIAL_HEADER" desc="A heading for the message to the child user when they attempt to visit a site that is not permitted by their parent.">
+        Ask your parent
+      </message>
+      <message name="IDS_BLOCK_INTERSTITIAL_HEADER_ACCESS_REQUESTS_DISABLED" desc="A heading for the supervised user when they attempt to visit a site that is not permitted by the manager (and they can't ask for permission).">
+        You don't have permission to visit this site
+      </message>
+      <message name="IDS_BLOCK_INTERSTITIAL_HEADER_NOT_SIGNED_IN" desc="A heading for the supervised user when the status cannot be established because they haven't signed in to Brave).">
+        Please start and sign in to Brave before using this app.
+      </message>
+      <message name="IDS_CHILD_BLOCK_INTERSTITIAL_MESSAGE" desc="A message for the child user when they attempt to visit a site that is not permitted by their parent.">
+        You need permission to visit this site
+      </message>
+      <message name="IDS_BLOCK_INTERSTITIAL_MESSAGE_SUPERVISED_USERS_DEPRECATED" desc="Message to be shown to a supervised user directing them to the supervisor.">
+        Questions? Contact the profile who supervises your profile.
+      </message>
+      <message name="IDS_BACK_BUTTON" desc="A button for going back to the last safe url after being blocked.">
+        Go back
+      </message>
+      <message name="IDS_BLOCK_INTERSTITIAL_REQUEST_ACCESS_BUTTON" desc="A button for requesting access to blocked sites.">
+        Ask permission
+      </message>
+      <message name="IDS_BLOCK_INTERSTITIAL_REQUEST_SENT_MESSAGE" desc="The text that tells the supervised user that a request has been sent.">
+        Your request to access this site has been sent to <ph name="NAME">$1<ex>John Doe</ex></ph>
+      </message>
+      <message name="IDS_BLOCK_INTERSTITIAL_REQUEST_FAILED_MESSAGE" desc="The text that tells the supervised user that a request could not be sent.">
+        Your request to access this site could not be sent to <ph name="NAME">$1<ex>John Doe</ex></ph>. Please try again.
+      </message>
+      <message name="IDS_CHILD_BLOCK_INTERSTITIAL_REQUEST_SENT_MESSAGE_SINGLE_PARENT" desc="The text that tells the child user that a request has been sent to their parent.">
+        You asked your parent if it's OK to visit this site
+      </message>
+      <message name="IDS_CHILD_BLOCK_INTERSTITIAL_REQUEST_SENT_MESSAGE_MULTI_PARENT" desc="The text that tells the child user that a request has been sent to their parents.">
+        You asked your parents if it's OK to visit this site
+      </message>
+      <message name="IDS_CHILD_BLOCK_INTERSTITIAL_REQUEST_FAILED_MESSAGE_SINGLE_PARENT" desc="The text that tells the child user that a request to their parent failed.">
+        We could not reach your parent at the moment. Please try again.
+      </message>
+      <message name="IDS_CHILD_BLOCK_INTERSTITIAL_REQUEST_FAILED_MESSAGE_MULTI_PARENT" desc="The text that tells the child user that a request to their parents failed.">
+        We could not reach your parents at the moment. Please try again.
+      </message>
+      <message name="IDS_BLOCK_INTERSTITIAL_SEND_FEEDBACK" desc="The text for a link to submit feedback about a blocked site.">
+        Was this unexpected? <ph name="BEGIN_LINK">&lt;a href="#" id="feedback-link"&gt;</ph>Let us know<ph name="END_LINK">&lt;/a&gt;</ph>
+      </message>
+      <message name="IDS_BLOCK_INTERSTITIAL_SHOW_DETAILS" desc="The text for the link to show details about the interstitial.">
+        Details
+      </message>
+      <message name="IDS_BLOCK_INTERSTITIAL_HIDE_DETAILS" desc="The text for the link to hide details about the interstitial.">
+        Hide details
+      </message>
+      <message name="IDS_SUPERVISED_USER_BLOCK_HEADER" desc="Header for the message to be shown when a site was blocked.">
+        This site is blocked
+      </message>
+      <message name="IDS_CHILD_BLOCK_MESSAGE_DEFAULT_SINGLE_PARENT" desc="Message to be shown when a site was blocked due to the default fallback behavior and the child has one parent.">
+        Your parent hasn't approved it yet
+      </message>
+      <message name="IDS_CHILD_BLOCK_MESSAGE_DEFAULT_MULTI_PARENT" desc="Message to be shown when a site was blocked due to the default fallback behavior and the child has two parents.">
+        Your parents haven't approved it yet
+      </message>
+      <message name="IDS_SUPERVISED_USER_BLOCK_MESSAGE_DEFAULT" desc="Message to be show to a supervised user when a site was blocked due to the default fallback behaviour.">
+        Your manager hasn't approved it yet
+      </message>
+      <message name="IDS_SUPERVISED_USER_BLOCK_MESSAGE_SAFE_SITES" desc="Message to be shown when a site was blocked due to the SafeSites safety check.">
+        It may have mature content
+      </message>
+      <message name="IDS_CHILD_BLOCK_MESSAGE_MANUAL_SINGLE_PARENT" desc="Message to be shown to a child when a site was blocked due to a manual blacklist entry and the child has one parent.">
+        Your parent can unblock it for you
+      </message>
+      <message name="IDS_CHILD_BLOCK_MESSAGE_MANUAL_MULTI_PARENT" desc="Message to be shown to a child when a site was blocked due to a manual blacklist entry and the child has two parents.">
+        Your parents can unblock it for you
+      </message>
+      <message name="IDS_SUPERVISED_USER_BLOCK_MESSAGE_MANUAL" desc="Message to be shown to a supervised user when a site is blocked due to a manual blacklist entry">
+        Your manager can unblock it for you
+      </message>
+      <message name="IDS_SUPERVISED_USER_NOT_SIGNED_IN" desc="Message to be shown to a supervised user who is not signed in to Brave">
+        Please start and sign in to Brave so that Brave can check whether you are allowed to access this site.
+      </message>
+
+</grit-part>

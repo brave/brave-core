@@ -78,10 +78,12 @@
 <translation id="2414886740292270097">כהה</translation>
 <translation id="3829010735958850433">לדלג על סיור קבלת הפנים</translation>
 <translation id="1201402288615127009">הבא</translation>
+<translation id="7954950242989581218">גלשו באופן בטוח</translation>
+<translation id="2188651882929633653">Brave Shields חוסם את הדברים המפחידים שמנסים לעקוב אחריכם ברחבי האינטרנט כולל רוב מודעות הפרסומת. העבירו את Shields למצב ”כבוי“ אם נראה שאתר מסוים אינו עובד. Brave משתמש <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>באנליטיקות מוצר פרטיות לחלוטין<ph name="END_LINK_P3A">&lt;/a&gt;</ph> כדי להעריך את השימוש הכולל בתכונות מסוימות. באפשרותכם לכבות זאת דרך <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>ההגדרות<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">פרסומות</translation>
 <translation id="5946611334574299206">אגרו Tokens על ידי צפייה בפרסומות ב-Brave. הפרסומות המוצגות לכם מבוססות על תחומי העניין שלכם, כפי שנגזרו מהתנהגות הגלישה שלכם. שום מידע אישי או היסטוריית גלישה לעולם לא יוצאים מהדפדפן.</translation>
 <translation id="6112368337882254910">תרומה אוטומטית</translation>
-<translation id="1527222983464337010">דרך אוטומטית לתמוך בבעלי אתרים ויוצרי תוכן. הגדירו תשלום חודשי וגלשו כרגיל. האתרים שבהם אתם מבקרים מקבלים את התרומות שלכם באופן אוטומטי, בהתבסס על תשומת הלב שלכם כפי שהיא נמדדת על ידי Brave.</translation>
+<translation id="3742599705619405136">דרך אוטומטית לתמוך בבעלי אתרים ויוצרי תוכן. הגדירו תשלום חודשי וגלשו כרגיל. האתרים שבהם אתם מבקרים מקבלים את התרומות שלכם באופן אוטומטי, בהתבסס על תשומת הלב שלכם כפי שהיא נמדדת על ידי Brave.</translation>
 <translation id="20281847067919078">תגמולים מוערכים שממתינים</translation>
 <translation id="8593551638387217772">תאריך התשלום הבא</translation>
 <translation id="319209088187794725">התראות פרסומות שהתקבלו החודש</translation>
@@ -100,12 +102,17 @@
 <translation id="8759716059844800317">אתרים נתמכים</translation>
 <translation id="2365740070488517695">טיפים</translation>
 <translation id="1309807437617560451">שלחו טיפים ליוצרי התוכן ישירות בזמן הגלישה. תוכלו גם להגדיר טיפים חוזרים מידי חודש, כך שתוכלו לתמוך באתרים דרך קבע.</translation>
+<translation id="5012991400231464322">תרומות חודשיות</translation>
+<translation id="2084351799622920487">הגדירו תרומות חודשיות נשנות כדי שתוכלו לתמוך באתרים באופן רציף.</translation>
+<translation id="8150772404570015166">טרם נקבעו תרומות חודשיות.</translation>
+<translation id="7269582398922493824">תמכו באתרים המועדפים עליכם באמצעות תרומות חודשיות נשנות. באפשרותכם להגדיר זאת דרך באנר שליחת הטיפים.</translation>
 <translation id="2241248417273918295">הרווחים משולמים מדי חודש.</translation>
 <translation id="68906705461077250">הגדירו את התדירות הרצויה כדי להגדיל או להקטין את השכר.</translation>
 <translation id="1847863811689960237">תגמלו יוצרים של התוכן שאתם אוהבים.</translation>
 <translation id="4129489167302464118">התשלומים החודשיים שלכם מתחלקים בין האתרים בהם גלשתם.</translation>
 <translation id="4898632353264854950">אתרים יופיעו במהלך הגלישה</translation>
 <translation id="3024485967181749006">סך כל הטיפים החודש</translation>
+<translation id="5055577484189948413">סך התרומות החודש</translation>
 <translation id="4153752809523809915">האם תגמלתם את יוצר התוכן האהוב עליכם היום?</translation>
 <translation id="1165667598801520610">הוספת כספים</translation>
 <translation id="6239274080752256452">משיכת כספים</translation>
@@ -113,7 +120,6 @@
 <translation id="7286722244752781970">זמן מינימלי בדף לפני כניסה שנרשמת כביקור</translation>
 <translation id="4424486208397124985">מספר כניסות מינימלי עבור רלוונטיות של אתר</translation>
 <translation id="4969081543473319051">מה אתם מרשים שיהיה מותר?</translation>
-<translation id="2295504178524377899">אפשרו תרומות לאתרים לא מאומתים</translation>
 <translation id="5875669387851353511">אפשרו תרומות לסרטונים</translation>
 <translation id="8933202740471878108">ביקור אחד</translation>
 <translation id="354797634123275103">5 ביקורים</translation>
@@ -212,6 +218,7 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="4405997465645469914">בהפעלת "פרסי Brave", את/ה מאשר/ת שקראת והסכמת ל-</translation>
 <translation id="8819542691525488940">בהקשה על  ‘כן, אני בפנים! 8217;, את/ה מאשר/ת שקראת והסכמת ל-</translation>
 <translation id="8071424789698327147">בהקשה על  ‘כן, אני בפנים! 8217;, את/ה מאשר/ת שקראת והסכמת ל-</translation>
+<translation id="3745024317593003526">הגדר תרומה</translation>
 <translation id="7530570094705720669">יצירת ארנק</translation>
 <translation id="2105596359439030979">תשומת הלב שלכם מוערכת. הרוויחו על ידי צפייה במודעות המכבדות פרטיות, ושתפו עם אחרים תכנים של יוצרים שאתם אוהבים.</translation>
 <translation id="516395624550019162">כן, אני בפנים!</translation>
@@ -275,6 +282,8 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="211044356803193224">טיפים חודשיים</translation>
 <translation id="606865182719489911">יש לכם קופון חינמי.</translation>
 <translation id="3453206261112715431">מענק אסימון חינם</translation>
+<translation id="2280319752798785157">תרומה חודשית</translation>
+<translation id="7627481505582641588">התרומה הבאה</translation>
 <translation id="5736183007277264868">בשלב זה מענקי אסימונים אינם זמינים.</translation>
 <translation id="8307851765167460403">אין פעילויות עדיין…</translation>
 <translation id="8589748782214271192">לא, תודה</translation>
@@ -320,9 +329,8 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="5717619667204259673">שמרו את מפתח השחזור הזה באופן מוגן.</translation>
 <translation id="4699702339303280827">תמיד תוכלו להשתמש במפתח זה כדי לקבל את הארנק שלכם בחזרה אם משהו קורה לדפדפן או למחשב. אך הקפידו להגן עליו — כל מי שמקבל את המפתח הזה יכול לגנוב את הארנק שלכם. כנראה הכי בטוח לכתוב אותו על פיסת נייר, או בכל מקום אחר בו אתם שומרים מידע חשוב.</translation>
 <translation id="7354412786785889047">באפשרותך לתמוך ביוצר תוכן על ידי משלוח טיפ. זו דרך להודות להם על יצירת תוכן מעולה. יוצרים מאומתים מקבלים תשלום על הטיפי שלהם בשבוע הראשון של כל חודש קלנדרי.</translation>
-<translation id="3475063317678050010">אם תרצה/י, באפשרותך לתזמן טיפים חודשיים כדי לתמוך ביוצר זה באופן קבוע.</translation>
+<translation id="972846019534552366">אם תרצה/י, באפשרותך לתזמן טיפים חודשיים כדי לתמוך ביוצר זה באופן קבוע.</translation>
 <translation id="3074127054582480056">שימו לב</translation>
-<translation id="822513417008209372">אתם כרגע תומכים</translation>
 <translation id="5010112177773747965">ללא הסכמתכם.</translation>
 <translation id="7147673045905733351">היום, Brave מקדמת אתכם בברכה לאינטרנט החדש.</translation>
 <translation id="1350763070659630336">בו הזמן שלכם מוערך, הנתונים האישיים שלכם שמורים בפרטיות, ואתם בעצם מקבלים תשלום עבור תשומת הלב שלכם.</translation>
@@ -346,6 +354,7 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="1738658589626889850">שמירה כקובץ</translation>
 <translation id="259138486959961679">הציגו את כל {{numItems}} הפריטים</translation>
 <translation id="7857284676033058221">ראו את כל {{numSites}} האתרים</translation>
+<translation id="1549705559752367917">שלח את הטיפ שלי</translation>
 <translation id="3536298624341433814">שלח את הטיפ שלי</translation>
 <translation id="8428213095426709021">הגדרות</translation>
 <translation id="1792148354504719133">אתר</translation>
@@ -388,7 +397,7 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="6727483290601442544">הצג פרטים</translation>
 <translation id="1988679729106502285">הערה:</translation>
 <translation id="5815103311506128988">יוצר זה עדיין לא נרשם לקבלת תרומות ממשתמשי Brave. הדפדפן ימשיך לנסות לתרום עד אשר יאומת או עד שיחלפו 90 יום.</translation>
-<translation id="603411408512957306">יוצר מאומת זה צריך עדיין לאמת (KYC) את חשבונו כדי לקבל טיפים מהארנק המאומת שלך. הטיפים יישארו בארנקך עד אשר הוא ישלים את תהליך האימות.</translation>
+<translation id="7461596279975181413">יוצר מאומת זה של Brave טרם הגדיר את חשבונו לקבלת תרומות ממשתמשי Brave. הדפדפן שלך ימשיך לנסות לשלוח תרומה עד שהוא יבצע אימות, או עד לאחר שיחלפו 90 יום.</translation>
 <translation id="4292832015778676417">סכום שהתקבל מפרסומות</translation>
 <translation id="3197752845651180812">תרומות ממתינות</translation>
 <translation id="3164105678355419142">טיפ חוזר</translation>
@@ -397,12 +406,12 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="4346944508027912677">ממתין עד</translation>
 <translation id="7410549756000115387">אין תרומות ממתינות…</translation>
 <translation id="1963227389609234879">הסר הכל</translation>
-<translation id="1170315781901539495">אתרים שלא נכללו</translation>
+<translation id="8706157865312453070">אתרים שלא נכללו</translation>
 <translation id="5119190679543565400">שחזר אתר זה</translation>
 <translation id="9075700728717335924">לא כללתם</translation>
 <translation id="4862817811647633830">חלק מאתרים בתרומה האוטומטית.</translation>
 <translation id="923467487918828349">הצג הכל</translation>
-<translation id="5471305206221894680">אתרים נתמכים</translation>
+<translation id="1397381065858030856">אתרים נתמכים</translation>
 <translation id="2306169361186864012">תגמולים של Brave Ads!</translation>
 <translation id="3757873395477273033">מענק התגמולים שלכם מ-Brave Ads בדרך.</translation>
 <translation id="8101881066646819737">מענק הטוקן של Brave Ads שלכם</translation>

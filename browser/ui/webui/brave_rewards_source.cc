@@ -64,7 +64,7 @@ std::string BraveRewardsSource::GetSource() {
 
 void BraveRewardsSource::StartDataRequest(
     const std::string& path,
-    const content::ResourceRequestInfo::WebContentsGetter& wc_getter,
+    const content::WebContents::Getter& wc_getter,
     const content::URLDataSource::GotDataCallback& got_data_callback) {
   GURL url(path);
   if (!url.is_valid()) {

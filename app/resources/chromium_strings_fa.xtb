@@ -42,6 +42,7 @@
 Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="1477146545787277177">‏اوه! Brave خراب شده است. دوباره راه‌اندازی شود؟</translation>
 <translation id="5785919770853225148">‏Brave این گذرواژه را در حساب Brave Software شما ذخیره می‌کند. لازم نیست آن را به خاطر بسپارید.</translation>
+<translation id="8211837073776713955">‏Brave می‌تواند، اگر گذرواژه‌هایتان در معرض خطر باشد، مطلعتان کند</translation>
 <translation id="113959764510199339">‏Brave می‌خواهد گذرواژه‌ها را نشان دهد.</translation>
 <translation id="7503098128120083822">‏Brave می‌خواهد گذرواژه‌های شما را صادر کند.</translation>
 <translation id="8285294305439559616">‏Brave در حال تلاش برای نشان دادن گذرواژه‌هاست. برای اجازه به این کار، گذرواژه Windows خود را تایپ کنید.</translation>
@@ -150,13 +151,6 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="3205074487970075628">‏Brave درحال استفاده از دوربین شما است.</translation>
 <translation id="8142245354207161805">‏ظاهراً نمایه توسط فرآیند Brave دیگری (<ph name="PROCESS_ID"/>) در رایانه‌ای دیگر (<ph name="HOST_NAME"/>) در حال استفاده است. Brave نمایه را قفل کرده است تا خراب نشود. اگر مطمئنید فرآیندهای دیگری از این نمایه استفاده نمی‌کنند، می‌توانید قفل نمایه را باز کنید و Brave را مجدداً راه‌اندازی نمایید.</translation>
 <translation id="239760341987199724">‏تنظیم Brave به عنوان مرورگر پیش‌فرضتان</translation>
-<translation id="5344925500065984750">‏برای تنظیم وب‌سایت‌هایی که <ph name="NEW_PROFILE_NAME"/> می‌تواند ببیند، می‌توانید با رفتن به <ph name="BEGIN_LINK_1"/><ph name="DISPLAY_LINK"/><ph name="END_LINK_1"/> محدودیت‌ها و تنظیمات را اعمال کنید. اگر تنظیمات پیش‌فرض را تغییر ندهید، <ph name="NEW_PROFILE_NAME"/> می‌تواند همه محتوای وب را مرور کند.
-
-برای اینکه <ph name="NEW_PROFILE_NAME"/> نتواند به محتوای شما دسترسی داشته باشد، حتماً در زمان‌هایی که از Brave استفاده نمی‌کنید نمایه‌تان را قفل کنید. برای انجام این کار، روی نام نمایه در گوشه چپ بالای مرورگر کلیک کنید و «خروج و قفل کودک» را انتخاب نمایید.
-<ph name="BEGIN_LINK_2"/>بیشتر بدانید<ph name="END_LINK_2"/>
-
-برای دستورالعمل‌های بیشتر، لطفاً رایانامه‌تان (<ph name="ACCOUNT_EMAIL"/>) را بررسی کنید.</translation>
-<translation id="1820843143331379651">‏نمایه‌های کاربر تحت نظارت، از نسخه ۷۰ Brave دیگر دردسترس نخواهد بود.</translation>
 <translation id="669092380621816981">‏داده‌های محصول مرور این کاربر از این دستگاه حذف می‌شود. برای بازیابی داده‌ها، با نام <ph name="USER_EMAIL"/> به سیستم Brave وارد شوید.</translation>
 <translation id="2827121003398607864">‏Brave اکنون بهتر شده است</translation>
 <translation id="7192666605334070839">‏اکنون استفاده از Brave با حساب Brave Software شما و در رایانه‌های مشترک آسان‌تر شده است.</translation>
@@ -198,7 +192,7 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="3598551856834560515">‏به‌روزرسانی Brave برای شروع همگام‌سازی</translation>
 <translation id="4050175100176540509">بهبودهای امنیتی مهم و ویژگی‌های جدید در جدیدترین نسخه در دسترس است.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{‏Brave بعد از ۱ ثانیه بازراه‌اندازی می‌شود}one{‏Brave بعد از # ثانیه بازراه‌اندازی می‌شود}other{‏Brave بعد از # ثانیه بازراه‌اندازی می‌شود}}</translation>
-<translation id="5509303873219371662">‏باید هم‌اکنون Brave را بازراه‌اندازی کنید</translation>
+<translation id="5646769069113654257">‏لطفاً اکنون Brave را بازراه‌اندازی کنید</translation>
 <translation id="8668413672647811944">‏لحظاتی پیش به‌روزرسانی امنیتی ویژه‌ای برای Brave اعمال شد. هم‌اکنون بازراه‌اندازی کنید و ما برگه‌هایتان را بازیابی خواهیم کرد.</translation>
 <translation id="763369711159699222">‏به بهبود Brave کمک کنید</translation>
 <translation id="1156940037717341650">‏می‌توانید با گزارش خودکار جزئیات حوادث امنیتی احتمالی به Brave Software به ایمن‌تر شدن Brave و استفاده آسان‌تر از آن کمک کنید.</translation>
@@ -222,7 +216,6 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="6141293433381251973">‏Brave به صورت خودکار به‌روزرسانی می‌شود بنابراین همیشه جدیدترین نسخه را دارید. وقتی این بارگیری تمام شد، Brave دوباره شروع به کار می‌کند و می‌توانید کارتان را ادامه دهید.</translation>
 <translation id="7808415789955822133">‏شرایط Brave OS</translation>
 <translation id="7207456302801184289">‏به Brave خوش آمدید</translation>
-<translation id="5688839044908745927">‏Brave تقریباً آماده است.</translation>
 <translation id="3507835409099344374">‏رفتن به تنظیمات اعلان Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{‏به‌روزرسانی Brave دردسترس است}=1{‏به‌روزرسانی Brave دردسترس است}one{‏به‌روزرسانی Brave از # روز پیش دردسترس است}other{‏به‌روزرسانی Brave از # روز پیش دردسترس است}}</translation>
 <translation id="720532315408041257">‏سرپرست سیستم از شما می‌خواهد برای اعمال این به‌روزرسانی، Brave را راه‌اندازی مجدد کنید</translation>
@@ -240,6 +233,8 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="1864557848095568223">‏در حال به‌روزرسانی Brave</translation>
 <translation id="1786715389543715322">‏درحال به‌روزرسانی Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="8208853227947884571">‏Brave به‌روز است</translation>
+<translation id="6756417787837743699">‏برای اطلاع از جزئیات سیستم عامل Brave، لطفاً <ph name="LINK_BEGIN"/>
+      درباره سیستم عامل Brave<ph name="LINK_END"/> را ببینید</translation>
 <translation id="6686872257969654608">‏درباره سیستم عامل Brave</translation>
 <translation id="2280363356796735201">‏دریافت کمک برای سیستم عامل Brave</translation>
 <translation id="38898988211673781">‏هنگام خروج از Brave، کوکی‌ها و داده‌های سایت را پاک کنید</translation>
@@ -247,6 +242,10 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="5468853758063275923">‏Brave مرورگر پیش‌فرضتان است</translation>
 <translation id="1775322105159056176">‏Brave نمی‌تواند مرورگر پیش‌فرض را تعیین یا تنظیم کند</translation>
 <translation id="6915252145142862992">‏این نصب ثانویه Brave است و نمی‌تواند مرورگر پیش‌فرضتان شود.</translation>
+<translation id="6235873178214143377">‏اگر تنظیمی در این صفحه نشان داده نمی‌شود، در <ph name="LINK_BEGIN"/>
+      تنظیمات مرورگر Brave<ph name="LINK_END"/> آن را پیدا کنید</translation>
+<translation id="4459296183696059108">‏اگر تنظیمی در این صفحه نشان داده نمی‌شود، در <ph name="LINK_BEGIN"/>
+      تنظیمات مرورگر Brave<ph name="LINK_END"/> آن را کنید</translation>
 <translation id="7977435741986383568">‏ممکن است Brave برای بهبود تجربه مرور شما از سرویس‌های وب استفاده کند. می‌توانید به‌صورت اختیاری این سرویس‌ها را غیرفعال کنید. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">‏برای رفع خطاهای املائی، Brave نوشتاری را که در فیلد نوشتار تایپ می‌کنید، برای Brave Software ارسال می‌کند</translation>
 <translation id="8586264863973514035">‏برای اعمال تغییراتتان، Brave را راه‌اندازی مجدد کنید</translation>
@@ -260,8 +259,6 @@ Brave قادر به بازیابی تنظیمات شما نیست.</translation>
 <translation id="7445061995866044926">‏از Brave خارج می‌شوید؟</translation>
 <translation id="7453070689008684791">‏Brave برای ارائه پیشنهاد در نوار نشانی، به Drive شما دسترسی خواهد داشت</translation>
 <translation id="3360368475735266712">‏برای همگام‌سازی و شخصی‌سازی Brave در همه دستگاه‌هایتان، به سیستم وارد شوید</translation>
-<translation id="9221712274065451529">‏از این زبان برای نمایش رابط کاربری سیستم عامل Brave استفاده می‌شود</translation>
-<translation id="3518788198614984730">‏نمایش سیستم عامل Brave به این زبان</translation>
 <translation id="5757460455745382269">‏از این زبان برای نمایش رابط کاربری Brave استفاده می‌شود</translation>
 <translation id="2335583906071111058">‏نمایش Brave به این زبان</translation>
 <translation id="8926637909431618259">‏ادامه اجرای برنامه‌ها در پس‌زمینه هنگامیکه Brave بسته می‌شود</translation>

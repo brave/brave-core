@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Gi tips til denne siden hver måned",
+    "message": "Månedlig bidrag",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Denne verifiserte skaperen har ennå ikke verifisert (KYC) kontoen sin for å motta tips fra den verifiserte lommeboken din. Tipsen blir værende i lommeboken din til vedkommende fullfører verifiseringen.",
+    "message": "Denne verifiserte Brave-skaperen har ikke konfigurert kontoen sin for mottak av bidrag fra Brave-brukere ennå. Tips du sender, blir værende i lommeboken din til vedkommende fullfører denne prosessen.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Fullfør lommebokverifiseringen",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Angi …",
+    "description": "Button text for setting monthly contribution"
   }
 }

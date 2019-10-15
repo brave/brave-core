@@ -13,6 +13,7 @@
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
+#include "third_party/blink/public/mojom/referrer.mojom.h"
 
 class PrefChangeRegistrar;
 
@@ -32,7 +33,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   bool HandleExternalProtocol(
       const GURL& url,
-      content::ResourceRequestInfo::WebContentsGetter web_contents_getter,
+      content::WebContents::Getter web_contents_getter,
       int child_id,
       content::NavigationUIData* navigation_data,
       bool is_main_frame,
@@ -57,11 +58,11 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       content::BrowserContext* browser_context,
       content::RenderFrameHost* frame,
       int render_process_id,
-      bool is_navigation,
-      bool is_download,
+      URLLoaderFactoryType type,
       const url::Origin& request_initiator,
       mojo::PendingReceiver<network::mojom::URLLoaderFactory>* factory_receiver,
-      network::mojom::TrustedURLLoaderHeaderClientPtrInfo* header_client,
+      mojo::PendingRemote<network::mojom::TrustedURLLoaderHeaderClient>*
+          header_client,
       bool* bypass_redirect_checks) override;
 
   bool WillInterceptWebSocket(content::RenderFrameHost* frame) override;
@@ -71,13 +72,14 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const GURL& url,
       const GURL& site_for_cookies,
       const base::Optional<std::string>& user_agent,
-      network::mojom::WebSocketHandshakeClientPtr handshake_client) override;
+      mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
+          handshake_client) override;
 
   void MaybeHideReferrer(content::BrowserContext* browser_context,
                          const GURL& request_url,
                          const GURL& document_url,
                          bool is_main_frame,
-                         content::Referrer* referrer) override;
+                         blink::mojom::ReferrerPtr* referrer) override;
 
   GURL GetEffectiveURL(content::BrowserContext* browser_context,
                        const GURL& url) override;

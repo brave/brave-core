@@ -16,13 +16,24 @@ base::Time BraveCanonExpiration(const net::ParsedCookie& pc,
                                 const base::Time& current,
                                 const base::Time& server_time,
                                 const bool is_from_http) {
-  const base::Time max_expiration = current +
+  const base::Time max_expiration =
+      current +
       (is_from_http ? kMaxServerSideExpiration : kMaxClientSideExpiration);
 
-  return std::min(net::CanonicalCookie::CanonExpiration(pc, current, server_time),
-                  max_expiration);
+  return std::min(
+      net::CanonicalCookie::CanonExpiration(pc, current, server_time),
+      max_expiration);
 }
 
 }  // namespace
 
+#define BRAVE_CANONICALCOOKIE_CREATE_EXTRA_PARAMS \
+  const bool is_from_http,
+
+#define BRAVE_CANONICALCOOKIE_CREATE_BRAVECANONEXPIRATION \
+  Time cookie_expires = BraveCanonExpiration(             \
+      parsed_cookie, creation_time, cookie_server_time, is_from_http);
+
 #include "../../../../net/cookies/canonical_cookie.cc"
+#undef BRAVE_CANONICALCOOKIE_CREATE_BRAVECANONEXPIRATION
+#undef BRAVE_CANONICALCOOKIE_CREATE_EXTRA_PARAMS

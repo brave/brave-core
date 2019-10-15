@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/search_engines/template_url_service_factory.cc b/chrome/browser/search_engines/template_url_service_factory.cc
-index c137bd1e4cfdf4a4479201d849240245741af390..36785c9794bead23ec5c3c92b2c6c7e29a2bec6a 100644
+index 8903b8cb902aca89c0b7bb9a3ca8203e4580b044..bab4dc7b7ef99cb127eac26a2610786ebe68f2ae 100644
 --- a/chrome/browser/search_engines/template_url_service_factory.cc
 +++ b/chrome/browser/search_engines/template_url_service_factory.cc
-@@ -86,7 +86,12 @@ void TemplateURLServiceFactory::RegisterProfilePrefs(
+@@ -82,7 +82,12 @@ void TemplateURLServiceFactory::RegisterProfilePrefs(
  
  content::BrowserContext* TemplateURLServiceFactory::GetBrowserContextToUse(
      content::BrowserContext* context) const {

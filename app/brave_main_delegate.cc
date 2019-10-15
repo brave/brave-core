@@ -29,6 +29,7 @@
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/unified_consent/feature.h"
+#include "components/sync/driver/sync_driver_switches.h"
 #include "content/public/common/content_features.h"
 #include "extensions/common/extension_features.h"
 #include "services/network/public/cpp/features.h"
@@ -134,7 +135,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   command_line.AppendSwitch(switches::kEnableDomDistiller);
 #endif
   command_line.AppendSwitch(switches::kDisableDomainReliability);
-  command_line.AppendSwitch(switches::kDisableChromeGoogleURLTrackingClient);
   command_line.AppendSwitch(switches::kNoPings);
 
   // Setting these to default values in Chromium to maintain parity
@@ -144,6 +144,10 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       switches::kExtensionContentVerificationEnforceStrict);
   command_line.AppendSwitchASCII(switches::kExtensionsInstallVerification,
       "enforce");
+
+  // Brave's sync protocol does not use the sync service url
+  command_line.AppendSwitchASCII(switches::kSyncServiceURL,
+                                 "https://no-thanks.invalid");
 
   // Enabled features.
   const std::unordered_set<const char*> enabled_features = {
@@ -161,7 +165,10 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       autofill::features::kAutofillServerCommunication.name,
       features::kAudioServiceOutOfProcess.name,
       features::kLookalikeUrlNavigationSuggestionsUI.name,
+      features::kNotificationTriggers.name,
+      features::kSmsReceiver.name,
       unified_consent::kUnifiedConsent.name,
+      switches::kSyncUSSBookmarks.name,
   };
   command_line.AppendFeatures(enabled_features, disabled_features);
 

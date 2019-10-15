@@ -142,9 +142,9 @@ BraveThemeType BraveThemeService::GetActiveBraveThemeType(
       profile->GetPrefs()->GetInteger(kBraveThemeType));
   if (type == BraveThemeType::BRAVE_THEME_TYPE_DEFAULT) {
     DCHECK(SystemThemeModeEnabled());
-    return ui::NativeTheme::GetInstanceForNativeUi()->
-         SystemDarkModeEnabled() ? BraveThemeType::BRAVE_THEME_TYPE_DARK
-                                 : BraveThemeType::BRAVE_THEME_TYPE_LIGHT;
+    return ui::NativeTheme::GetInstanceForNativeUi()->ShouldUseDarkColors()
+               ? BraveThemeType::BRAVE_THEME_TYPE_DARK
+               : BraveThemeType::BRAVE_THEME_TYPE_LIGHT;
   }
   return type;
 }

@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Ge dricks till denna webbplats varje månad",
+    "message": "Månatligt bidrag",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -522,11 +522,15 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Denna verifierade skapare måste fortfarande verifiera (KYC) sitt konto för att ta emot pengar från din verifierade plånbok. Pengarna blir kvar i din plånbok i väntan på skaparens verifiering. ",
+    "message": "Den här bekräftade skaparen hos Brave har ännu inte ställt in sitt konto för att kunna ta emot bidrag från Braves användare. Den dricks du skickar kommer att finnas kvar i din plånbok till dess de slutför denna process.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Slutför verifiering av plånbok",
     "description": "CTA for completing wallet verification"
+  },
+  "set": {
+    "message": "Ställ in ...",
+    "description": "Button text for setting monthly contribution"
   }
 }

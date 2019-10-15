@@ -53,8 +53,8 @@ class MockInstanceID : public InstanceID {
                void(const std::string& authorized_entity,
                     const std::string& scope,
                     const std::map<std::string, std::string>& options,
-                    bool is_lazy,
-                    const GetTokenCallback callback));
+                    std::set<Flags> flags,
+                    GetTokenCallback callback));
   MOCK_METHOD4(ValidateToken,
                void(const std::string& authorized_entity,
                     const std::string& scope,
@@ -108,7 +108,7 @@ class MockGCMDriver : public gcm::GCMDriver {
                         account_tokens));
   MOCK_METHOD1(UpdateAccountMapping,
                void(const gcm::AccountMapping& account_mapping));
-  MOCK_METHOD1(RemoveAccountMapping, void(const std::string& account_id));
+  MOCK_METHOD1(RemoveAccountMapping, void(const CoreAccountId& account_id));
   MOCK_METHOD0(GetLastTokenFetchTime, base::Time());
   MOCK_METHOD1(SetLastTokenFetchTime, void(const base::Time& time));
   MOCK_METHOD1(WakeFromSuspendForHeartbeat, void(bool wake));

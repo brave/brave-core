@@ -10,7 +10,7 @@ index 441d74eb9c66b5aca7b728e30ef42304ecac67d1..a32b1023f18a9b8138ebe2a580f4a5ea
    if (params->contents_to_insert || params->switch_to_singleton_tab ||
        IsURLAllowedInIncognito(params->url, params->initiating_profile) ||
        params->initiating_profile->IsGuestSession()) {
-@@ -730,6 +731,7 @@ void Navigate(NavigateParams* params) {
+@@ -739,6 +740,7 @@ void Navigate(NavigateParams* params) {
  bool IsHostAllowedInIncognito(const GURL& url) {
    std::string scheme = url.scheme();
    base::StringPiece host = url.host_piece();

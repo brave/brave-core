@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
-index 6b0082fe76b27d72b5d90c7047e9e23173dd0afc..cc1ab03f9a7c149da521375cfc18b70aaa83fdd2 100644
+index 25e5c818201456c50d351aa8acaf01b9d5ce77be..1cdc1b4807174bdf995a1d4ddf606fa3cf9b971c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarPhone.java
 @@ -86,7 +86,7 @@ import java.util.List;
@@ -25,7 +25,7 @@ index 6b0082fe76b27d72b5d90c7047e9e23173dd0afc..cc1ab03f9a7c149da521375cfc18b70a
      }
  
      /**
-@@ -542,6 +544,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
+@@ -543,6 +545,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
                          .notifyEvent(EventConstants.PARTNER_HOME_PAGE_BUTTON_PRESSED);
              }
          }
@@ -33,7 +33,7 @@ index 6b0082fe76b27d72b5d90c7047e9e23173dd0afc..cc1ab03f9a7c149da521375cfc18b70a
      }
  
      @Override
-@@ -715,7 +718,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
+@@ -716,7 +719,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
       * @return The right bounds of the location bar after accounting for any visible left buttons.
       */
      private int getBoundsAfterAccountingForRightButtons() {
@@ -42,7 +42,7 @@ index 6b0082fe76b27d72b5d90c7047e9e23173dd0afc..cc1ab03f9a7c149da521375cfc18b70a
      }
  
      private void updateToolbarBackground(int color) {
-@@ -2130,6 +2133,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
+@@ -2139,6 +2142,7 @@ public class ToolbarPhone extends ToolbarLayout implements Invalidator.Client, O
          } else {
              populateUrlClearFocusingAnimatorSet(animators);
          }

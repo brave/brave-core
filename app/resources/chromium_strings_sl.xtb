@@ -46,6 +46,7 @@ Nekatere funkcije morda niso na voljo in spremembe nastavitev ne bodo shranjene.
 Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="1477146545787277177">Opa! Brave se je zrušil. Ga želite znova zagnati?</translation>
 <translation id="5785919770853225148">Brave bo shranil to geslo v Brave Software Računu. Ni si vam ga treba zapomniti.</translation>
+<translation id="8211837073776713955">Brave vam sporoči, ali so gesla ogrožena</translation>
 <translation id="113959764510199339">Brave poskuša prikazati gesla.</translation>
 <translation id="7503098128120083822">Brave želi izvoziti gesla.</translation>
 <translation id="8285294305439559616">Brave poskuša prikazati gesla. Če želite omogočiti to, vnesite geslo za Windows.</translation>
@@ -154,13 +155,6 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="3205074487970075628">Brave uporablja vašo kamero.</translation>
 <translation id="8142245354207161805">Videti je, da profil uporablja drug Braveov proces (<ph name="PROCESS_ID"/>) v drugem računalniku (<ph name="HOST_NAME"/>). Brave je zaklenil profil, da se ne poškoduje. Če ste prepričani, da tega profila ne uporabljajo nobeni drugi procesi, ga lahko odklenete in znova zaženete Brave.</translation>
 <translation id="239760341987199724">Nastavitev Bravea za privzeti brskalnik</translation>
-<translation id="5344925500065984750">Če želite nastaviti, katera spletna mesta si lahko ogleda <ph name="NEW_PROFILE_NAME"/>, lahko na <ph name="BEGIN_LINK_1"/><ph name="DISPLAY_LINK"/><ph name="END_LINK_1"/> konfigurirate omejitve in nastavitve. Če privzetih nastavitev ne spremenite, lahko <ph name="NEW_PROFILE_NAME"/> brska po spletu brez omejitev.
-
-Če želite preprečiti, da bi <ph name="NEW_PROFILE_NAME"/> dostopal(-a) do vašega računa, zaklenite profil, ko ne uporabljate Bravea. To storite tako, da v zgornjem desnem kotu brskalnika kliknete ime profila in izberete »Izhod in zaklepanje pred otroki«.
-<ph name="BEGIN_LINK_2"/>Več o tem<ph name="END_LINK_2"/>
-
-Nadaljnja navodila preberite v e-poštnem sporočilu, ki ste ga prejeli na <ph name="ACCOUNT_EMAIL"/>.</translation>
-<translation id="1820843143331379651">S Braveom 70 profili zaščitenih uporabnikov ne bodo več na voljo.</translation>
 <translation id="669092380621816981">Podatki brskanja te osebe bodo izbrisani iz te naprave. Če želite podatke obnoviti, se prijavite v Brave kot <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Brave je pravkar postal še boljši</translation>
 <translation id="7192666605334070839">Zdaj je Brave lažje uporabljati z Brave Software Računom in v računalnikih, ki so v skupni rabi.</translation>
@@ -202,7 +196,7 @@ Nadaljnja navodila preberite v e-poštnem sporočilu, ki ste ga prejeli na <ph n
 <translation id="3598551856834560515">Posodobite Brave, če želite začeti sinhronizacijo</translation>
 <translation id="4050175100176540509">V najnovejši različici so na voljo pomembne varnostne izboljšave in nove funkcije.</translation>
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave se bo znova zagnal čez 1 sekundo}one{Brave se bo znova zagnal čez # sekundo}two{Brave se bo znova zagnal čez # sekundi}few{Brave se bo znova zagnal čez # sekunde}other{Brave se bo znova zagnal čez # sekund}}</translation>
-<translation id="5509303873219371662">Brave zdaj znova zaženite.</translation>
+<translation id="5646769069113654257">Znova zaženite Brave</translation>
 <translation id="8668413672647811944">Pravkar je bila nameščena posebna varnostna posodobitev za Brave. Znova ga zaženite (vaše zavihke bomo obnovili).</translation>
 <translation id="763369711159699222">Pomagajte izboljšati Brave</translation>
 <translation id="1156940037717341650">S samodejnim poročanjem podrobnosti o morebitnih varnostnih dogodkih Googlu lahko pomagate narediti Brave varnejši in preprostejši za uporabo.</translation>
@@ -226,7 +220,6 @@ Nadaljnja navodila preberite v e-poštnem sporočilu, ki ste ga prejeli na <ph n
 <translation id="6141293433381251973">Brave se samodejno posodablja, zato boste vedno imeli najnovejšo različico. Ko bo ta prenos končan, se bo Brave znova zagnal in lahko boste nadaljevali z delom.</translation>
 <translation id="7808415789955822133">Pogoji za Brave OS</translation>
 <translation id="7207456302801184289">Pozdravljeni v Braveu</translation>
-<translation id="5688839044908745927">Brave je skoraj pripravljen.</translation>
 <translation id="3507835409099344374">Odprite nastavitve obvestil v Braveu</translation>
 <translation id="1026406809507858026">{0,plural, =0{Posodobitev za Brave je na voljo}=1{Posodobitev za Brave je na voljo}one{Posodobitev za Brave je na voljo že # dan}two{Posodobitev za Brave je na voljo že # dneva}few{Posodobitev za Brave je na voljo že # dni}other{Posodobitev za Brave je na voljo že # dni}}</translation>
 <translation id="720532315408041257">Skrbnik prosi, da za uveljavitev te posodobitve znova zaženete Brave</translation>
@@ -244,6 +237,8 @@ Nadaljnja navodila preberite v e-poštnem sporočilu, ki ste ga prejeli na <ph n
 <translation id="1864557848095568223">Posodabljanje Bravea</translation>
 <translation id="1786715389543715322">Posodabljanje Bravea (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="8208853227947884571">Brave je posodobljen</translation>
+<translation id="6756417787837743699">Glede podrobnosti o sistemu OS Brave glejte <ph name="LINK_BEGIN"/>
+      O sistemu OS Brave<ph name="LINK_END"/></translation>
 <translation id="6686872257969654608">O sistemu Brave OS</translation>
 <translation id="2280363356796735201">Pomoč za OS Brave</translation>
 <translation id="38898988211673781">Izbris piškotkov in podatkov spletnih mest, ko zaprete Brave</translation>
@@ -251,6 +246,10 @@ Nadaljnja navodila preberite v e-poštnem sporočilu, ki ste ga prejeli na <ph n
 <translation id="5468853758063275923">Brave je privzeti brskalnik</translation>
 <translation id="1775322105159056176">Brave ne more določiti ali nastaviti privzetega brskalnika</translation>
 <translation id="6915252145142862992">To je sekundarna namestitev Bravea in ga ni mogoče nastaviti kot privzeti brskalnik.</translation>
+<translation id="6235873178214143377">Če nastavitev ni prikazana na tej strani, preverite <ph name="LINK_BEGIN"/>
+      nastavitve brskalnika Brave<ph name="LINK_END"/></translation>
+<translation id="4459296183696059108">Če nastavitev ni prikazana na tej strani, preverite <ph name="LINK_BEGIN"/>
+      nastavitve operacijskega sistema Brave<ph name="LINK_END"/></translation>
 <translation id="7977435741986383568">Brave lahko za izboljšanje izkušnje pri brskanju uporabi spletne storitve.
 Te storitve lahko po želji onemogočite. <ph name="BEGIN_LINK"/>Več o tem<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Brave zaradi odpravljanja napak pri črkovanju Googlu pošlje besedilo, ki ga vnesete v besedilna polja</translation>
@@ -265,8 +264,6 @@ Te storitve lahko po želji onemogočite. <ph name="BEGIN_LINK"/>Več o tem<ph n
 <translation id="7445061995866044926">Se želite odjaviti iz Bravea?</translation>
 <translation id="7453070689008684791">Brave bo dostopal do Googla Drive zaradi ponujanja predlogov v naslovni vrstici</translation>
 <translation id="3360368475735266712">Prijavite se, da boste lahko Brave sinhronizirali in prilagodili v vseh svojih napravah</translation>
-<translation id="9221712274065451529">Ta jezik se uporablja za prikaz uporabniškega vmesnika za Brave OS</translation>
-<translation id="3518788198614984730">Prikaži Brave OS v tem jeziku</translation>
 <translation id="5757460455745382269">Ta jezik se uporablja za prikaz uporabniškega vmesnika v Braveu</translation>
 <translation id="2335583906071111058">Prikaži Brave v tem jeziku</translation>
 <translation id="8926637909431618259">Nadaljuj izvajanje aplikacij v ozadju, ko je Brave zaprt</translation>

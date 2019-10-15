@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/gfx/color_utils.h"
 #include "ui/views/background.h"
 
 namespace {
@@ -60,8 +61,9 @@ SkColor BraveAlertIndicator::GetBackgroundColor() const {
   if (!IsAudioState(alert_state_) || !IsMouseHovered())
     return colors.background_color;
 
-  return mouse_pressed_ ? colors.button_background_pressed_color
-                        : colors.button_background_hovered_color;
+  // Approximating the InkDrop behavior of the close button.
+  return color_utils::BlendTowardMaxContrast(colors.background_color,
+                                             mouse_pressed_ ? 72 : 36);
 }
 
 bool BraveAlertIndicator::OnMousePressed(const ui::MouseEvent& event) {

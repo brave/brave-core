@@ -44,7 +44,7 @@ GURL TranslateUrl(const GURL& url) {
 
 void LoadRewardsURL(
     const GURL& url,
-    const content::ResourceRequestInfo::WebContentsGetter& web_contents_getter,
+    const content::WebContents::Getter& web_contents_getter,
     ui::PageTransition page_transition,
     bool has_user_gesture) {
   content::WebContents* web_contents = web_contents_getter.Run();
@@ -74,7 +74,7 @@ namespace brave_rewards {
 
 bool HandleRewardsProtocol(
     const GURL& url,
-    content::ResourceRequestInfo::WebContentsGetter web_contents_getter,
+    content::WebContents::Getter web_contents_getter,
     ui::PageTransition page_transition,
     bool has_user_gesture) {
   if (url.SchemeIs(kRewardsScheme)) {

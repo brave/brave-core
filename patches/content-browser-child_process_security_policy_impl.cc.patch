@@ -1,8 +1,8 @@
 diff --git a/content/browser/child_process_security_policy_impl.cc b/content/browser/child_process_security_policy_impl.cc
-index 3c18dc775e8bf46d0eedda409ce346736671fd5c..aae4736a8e6258b80dc712bfca6dad9c627057b5 100644
+index 97d3cc6af2973e88da8c250b3faf3a3ea44eedfb..998d89ee1c1195fb81101c9951a746461344ea6c 100644
 --- a/content/browser/child_process_security_policy_impl.cc
 +++ b/content/browser/child_process_security_policy_impl.cc
-@@ -827,6 +827,9 @@ void ChildProcessSecurityPolicyImpl::GrantWebUIBindings(int child_id,
+@@ -839,6 +839,9 @@ void ChildProcessSecurityPolicyImpl::GrantWebUIBindings(int child_id,
  
    // Web UI bindings need the ability to request chrome: URLs.
    state->second->GrantRequestScheme(kChromeUIScheme);

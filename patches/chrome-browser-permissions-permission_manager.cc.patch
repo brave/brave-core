@@ -1,21 +1,21 @@
 diff --git a/chrome/browser/permissions/permission_manager.cc b/chrome/browser/permissions/permission_manager.cc
-index 9f535334da7e3ca1939e98a055ec93662a38b552..81f81e6d2b3dc359d262440dbd20cf995ba88c46 100644
+index 6673d1591ab95d937a0c208d3ce4fce935329072..da3727e240f130c92304dee854d3522ff4e202f3 100644
 --- a/chrome/browser/permissions/permission_manager.cc
 +++ b/chrome/browser/permissions/permission_manager.cc
-@@ -89,7 +89,7 @@ PermissionStatus ContentSettingToPermissionStatus(ContentSetting setting) {
- }
- 
+@@ -106,7 +106,7 @@ ContentSetting PermissionStatusToContentSetting(PermissionStatus status) {
  // Helper method to convert PermissionType to ContentSettingType.
--ContentSettingsType PermissionTypeToContentSetting(PermissionType permission) {
-+ContentSettingsType PermissionTypeToContentSetting_ChromiumImpl(PermissionType permission) {
+ // If PermissionType is not supported or found, returns
+ // CONTENT_SETTINGS_TYPE_DEFAULT.
+-ContentSettingsType PermissionTypeToContentSettingSafe(
++ContentSettingsType PermissionTypeToContentSettingSafe_ChromiumImpl(
+     PermissionType permission) {
    switch (permission) {
      case PermissionType::MIDI:
-       return CONTENT_SETTINGS_TYPE_MIDI;
-@@ -137,6 +137,7 @@ ContentSettingsType PermissionTypeToContentSetting(PermissionType permission) {
+@@ -154,6 +154,7 @@ ContentSettingsType PermissionTypeToContentSettingSafe(
      case PermissionType::WAKE_LOCK_SYSTEM:
        return CONTENT_SETTINGS_TYPE_WAKE_LOCK_SYSTEM;
      case PermissionType::NUM:
 +    default:
-       // This will hit the NOTREACHED below.
        break;
    }
+ 
