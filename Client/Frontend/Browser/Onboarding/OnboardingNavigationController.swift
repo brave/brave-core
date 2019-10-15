@@ -241,7 +241,7 @@ class CustomAnimator: NSObject, UIViewControllerAnimatedTransitioning {
         tDetails?.alpha = 0.0
         tDetailsContent?.alpha = 0.0
         
-        let inset = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0.0
+        let inset: CGFloat = 0.0
         var fDetailsFrame = (fDetails?.bounds ?? .zero)
         fDetailsFrame.origin.y = (container.frame.height - container.frame.origin.y) - fDetailsFrame.height
         fDetailsFrame = fDetailsFrame.offsetBy(dx: 0.0, dy: -inset)
