@@ -12,24 +12,32 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
+import android.support.v7.app.AlertDialog;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveFeatureList;
+import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.BraveRewardsNativeWorker;
+import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
+import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.ChromeActivity;
 import org.chromium.chrome.browser.ChromeFeatureList;
 import org.chromium.chrome.browser.appmenu.BraveShieldsMenuHandler;
 import org.chromium.chrome.browser.appmenu.BraveShieldsMenuObserver;
 import org.chromium.chrome.browser.preferences.AppearancePreferences;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -46,7 +54,10 @@ import java.net.URL;
 import java.util.List;
 
 public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClickListener,
-                                                           View.OnLongClickListener {
+                                                           View.OnLongClickListener,
+                                                           BraveRewardsObserver {
+  public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
+
   private ImageButton mBraveShieldsButton;
   private ImageButton mBraveRewardsButton;
   private FrameLayout mShieldsLayout;
@@ -54,9 +65,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   private ChromeActivity mMainActivity;
   private BraveShieldsMenuHandler mBraveShieldsMenuHandler;
   private TabModelSelectorTabObserver mTabModelSelectorTabObserver;
+  private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
   private BraveRewardsPanelPopup mRewardsPopup;
   private BraveShieldsContentSettings mBraveShieldsContentSettings;
   private BraveShieldsContentSettingsObserver mBraveShieldsContentSettingsObserver;
+  private TextView mBraveRewardsNotificationsCount;
 
   public BraveToolbarLayout(Context context, AttributeSet attrs) {
       super(context, attrs);
@@ -68,6 +81,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           mBraveShieldsContentSettings.destroy();
       }
       super.destroy();
+
+      if (mBraveRewardsNativeWorker != null) {
+          mBraveRewardsNativeWorker.RemoveObserver(this);
+      }
   }
 
   @Override
@@ -75,6 +92,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       super.onFinishInflate();
       mShieldsLayout = (FrameLayout) findViewById(R.id.brave_shields_button_layout);
       mRewardsLayout = (FrameLayout) findViewById(R.id.brave_rewards_button_layout);
+      mBraveRewardsNotificationsCount = (TextView) findViewById(R.id.br_notifications_count);
       mBraveShieldsButton = (ImageButton) findViewById(R.id.brave_shields_button);
       mBraveRewardsButton = (ImageButton) findViewById(R.id.brave_rewards_button);
       if (mBraveShieldsButton != null) {
@@ -140,6 +158,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           if (mRewardsLayout != null) {
               mRewardsLayout.setVisibility(View.VISIBLE);
           }
+      }
+      mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
+      if (mBraveRewardsNativeWorker != null) {
+          mBraveRewardsNativeWorker.AddObserver(this);
+          mBraveRewardsNativeWorker.GetAllNotifications();
       }
   }
 
@@ -209,16 +232,13 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           }
           mRewardsPopup = new BraveRewardsPanelPopup(v);
           mRewardsPopup.showLikePopDownMenu();
-          // TODO
-          // if (mBraveRewardsNotificationsCount.isShown()) {
+          if (mBraveRewardsNotificationsCount.isShown()) {
               SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
               SharedPreferences.Editor editor = sharedPref.edit();
               editor.putBoolean(BraveRewardsPanelPopup.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, true);
               editor.apply();
-              // TODO
-              // mBraveRewardsNotificationsCount.setVisibility(View.GONE);
-          // TODO
-          // }
+              mBraveRewardsNotificationsCount.setVisibility(View.GONE);
+          }
       }
   }
 
@@ -331,5 +351,153 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   public  void onRewardsPanelDismiss() {
       mRewardsPopup = null;
+  }
+
+  @Override
+  public void OnWalletInitialized(int error_code) {
+      if (error_code == BraveRewardsNativeWorker.SAFETYNET_ATTESTATION_FAILED) {
+          BravePrefServiceBridge.getInstance().setSafetynetCheckFailed(true);
+          if (mRewardsLayout != null) {
+              mRewardsLayout.setVisibility(View.GONE);
+          }
+          // Show message
+          AlertDialog.Builder alert = new AlertDialog.Builder(getContext(), R.style.Theme_Chromium_AlertDialog);
+          AlertDialog alertDialog = alert.setMessage(getResources().getString(R.string.brave_rewards_not_available))
+                                         .setPositiveButton(R.string.ok, null)
+                                         .create();
+          alertDialog.getDelegate().setHandleNativeActionModesEnabled(false);
+          alertDialog.show();
+          // If current tab is rewards tab we close it, as it is not valid anymore
+          Tab currentTab = getToolbarDataProvider().getTab();
+          if (currentTab != null && getToolbarDataProvider().getCurrentUrl().equals(BraveActivity.REWARDS_SETTINGS_URL)) {
+              if (getContext() instanceof BraveActivity) {
+                  BraveActivity activity = (BraveActivity)getContext();
+                  activity.getCurrentTabModel().closeTab(currentTab);
+              }
+          }
+      }
+      else if (error_code == BraveRewardsNativeWorker.WALLET_CREATED) {   // Wallet created code
+          // Check and set flag to show Brave Rewards icon if enabled
+          SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+          SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+          // Set preferences that Brave Rewards was turned On and that Brave Rewards icon is not hidden
+          sharedPreferencesEditor.putBoolean(BraveRewardsPanelPopup.PREF_WAS_BRAVE_REWARDS_TURNED_ON, true);
+          if (sharedPreferences.getBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, false)) {
+              sharedPreferencesEditor.putBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, false);
+              sharedPreferencesEditor.apply();
+              BraveRelaunchUtils.askForRelaunch((ChromeActivity)getContext());
+          }
+          sharedPreferencesEditor.apply();
+      }
+  }
+
+  @Override
+  public void OnWalletProperties(int error_code) {}
+
+  @Override
+  public void OnPublisherInfo(int tabId) {}
+
+  @Override
+  public void OnGetCurrentBalanceReport(String[] report) {}
+
+  @Override
+  public void OnNotificationAdded(String id, int type, long timestamp,
+        String[] args) {
+      if (mBraveRewardsNativeWorker == null) {
+          return;
+      }
+
+      if (type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_BACKUP_WALLET) {
+          mBraveRewardsNativeWorker.DeleteNotification(id);
+      } else if (type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT) {
+          // Set flag
+          SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+          SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+          sharedPreferencesEditor.putBoolean(BraveRewardsPanelPopup.PREF_GRANTS_NOTIFICATION_RECEIVED, true);
+          sharedPreferencesEditor.apply();
+      }
+      mBraveRewardsNativeWorker.GetAllNotifications();
+  }
+
+  @Override
+  public void OnNotificationsCount(int count) {
+      boolean rewardsEnabled = BraveRewardsPanelPopup.isBraveRewardsEnabled();
+      if (mBraveRewardsNotificationsCount != null && rewardsEnabled) {
+          if (count != 0) {
+              String value = Integer.toString(count);
+              if (count > 99) {
+                  mBraveRewardsNotificationsCount.setBackground(
+                      getResources().getDrawable(R.drawable.brave_rewards_rectangle));
+                  value = "99+";
+              } else {
+                  mBraveRewardsNotificationsCount.setBackground(
+                      getResources().getDrawable(R.drawable.brave_rewards_circle));
+              }
+              mBraveRewardsNotificationsCount.setText(value);
+              mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
+          } else {
+              mBraveRewardsNotificationsCount.setText("");
+              mBraveRewardsNotificationsCount.setVisibility(View.GONE);
+          }
+      }
+
+      updateNotificationBadgeForNewInstall(rewardsEnabled);
+      // TODO when ads enabled
+      // if (!PackageUtils.isFirstInstall(getContext()) && !OnboardingPrefManager.getInstance().isAdsAvailable()) {
+      //     mayShowBraveAdsOobeDialog();
+      // }
+  }
+
+  @Override
+  public void OnGetLatestNotification(String id, int type, long timestamp,
+            String[] args) {}
+
+  @Override
+  public void OnNotificationDeleted(String id) {}
+
+  @Override
+  public void OnIsWalletCreated(boolean created) {}
+
+  @Override
+  public void OnGetPendingContributionsTotal(double amount) {}
+
+  @Override
+  public void OnGetRewardsMainEnabled(boolean enabled) {}
+
+  @Override
+  public void OnGetAutoContributeProps() {}
+
+  @Override
+  public void OnGetReconcileStamp(long timestamp) {}
+
+  @Override
+  public void OnRecurringDonationUpdated() {}
+
+  @Override
+  public void OnResetTheWholeState(boolean success) {}
+
+  @Override
+  public void OnRewardsMainEnabled(boolean enabled) {
+      SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+      SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+      sharedPreferencesEditor.putBoolean(BraveRewardsPanelPopup.PREF_IS_BRAVE_REWARDS_ENABLED, enabled);
+      sharedPreferencesEditor.apply();
+      if (mBraveRewardsNotificationsCount != null) {
+          String count = mBraveRewardsNotificationsCount.getText().toString();
+          if (!count.isEmpty()) {
+              mBraveRewardsNotificationsCount.setVisibility(enabled ? View.VISIBLE : View.GONE);
+          }
+      }
+  }
+
+  private void updateNotificationBadgeForNewInstall(boolean rewardsEnabled) {
+      SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
+      boolean shownBefore = sharedPref.getBoolean(BraveRewardsPanelPopup.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, false);
+      boolean shouldShow = !shownBefore && !rewardsEnabled;
+
+      if (!shouldShow) return;
+
+      mBraveRewardsNotificationsCount.setText("");
+      mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
   }
 }

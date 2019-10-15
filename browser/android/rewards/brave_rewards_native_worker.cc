@@ -29,8 +29,7 @@ BraveRewardsNativeWorker::BraveRewardsNativeWorker(JNIEnv* env, const base::andr
       ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
   if (brave_rewards_service_) {
     brave_rewards_service_->AddObserver(this);
-    // TODO
-    // brave_rewards_service_->AddPrivateObserver(this);
+    brave_rewards_service_->AddPrivateObserver(this);
     brave_rewards::RewardsNotificationService* notification_service = 
       brave_rewards_service_->GetNotificationService();
     if (notification_service) {
@@ -46,8 +45,7 @@ void BraveRewardsNativeWorker::Destroy(JNIEnv* env, const
         base::android::JavaParamRef<jobject>& jcaller) {
   if (brave_rewards_service_) {
     brave_rewards_service_->RemoveObserver(this);
-    // TODO
-    // brave_rewards_service_->RemovePrivateObserver(this);
+    brave_rewards_service_->RemovePrivateObserver(this);
     brave_rewards::RewardsNotificationService* notification_service = 
       brave_rewards_service_->GetNotificationService();
     if (notification_service) {
@@ -344,8 +342,7 @@ void BraveRewardsNativeWorker::DeleteNotification(JNIEnv* env,
 void BraveRewardsNativeWorker::GetGrant(JNIEnv* env, const base::android::JavaParamRef<jobject>& obj,
         const base::android::JavaParamRef<jstring>& promotionId) {
   if (brave_rewards_service_) {
-    // TODO
-    // brave_rewards_service_->GetGrantViaSafetynetCheck(base::android::ConvertJavaStringToUTF8(env, promotionId));
+      brave_rewards_service_->GetGrantViaSafetynetCheck(base::android::ConvertJavaStringToUTF8(env, promotionId));
   }
 }
 
@@ -444,10 +441,9 @@ void BraveRewardsNativeWorker::ResetTheWholeState(JNIEnv* env, const base::andro
   auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(
     ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
   if (ads_service_) {
-    // TODO
-    // ads_service_->ResetTheWholeState(base::Bind(
-    //        &BraveRewardsNativeWorker::OnAdsResetTheWholeState,
-    //        weak_factory_.GetWeakPtr()));
+    ads_service_->ResetTheWholeState(base::Bind(
+           &BraveRewardsNativeWorker::OnAdsResetTheWholeState,
+           weak_factory_.GetWeakPtr()));
   } else {
     OnAdsResetTheWholeState(true);
   }
@@ -455,10 +451,9 @@ void BraveRewardsNativeWorker::ResetTheWholeState(JNIEnv* env, const base::andro
 
 void BraveRewardsNativeWorker::OnAdsResetTheWholeState(bool sucess) {
   if (sucess && brave_rewards_service_) {
-    // TODO
-    // brave_rewards_service_->ResetTheWholeState(base::Bind(
-    //        &BraveRewardsNativeWorker::OnResetTheWholeState,
-    //        weak_factory_.GetWeakPtr()));
+    brave_rewards_service_->ResetTheWholeState(base::Bind(
+           &BraveRewardsNativeWorker::OnResetTheWholeState,
+           weak_factory_.GetWeakPtr()));
   } else {
     JNIEnv* env = base::android::AttachCurrentThread();
 

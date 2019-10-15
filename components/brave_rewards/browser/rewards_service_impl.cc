@@ -39,6 +39,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
+#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/auto_contribution_props.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
@@ -919,8 +920,10 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
 
     // Record P3A:
     RecordWalletBalanceP3A(true, 0);
-    const bool ads_enabled =
-        profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled);
+    bool ads_enabled = false;
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
+    ads_enabled = profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled);
+#endif
     RecordAdsState(ads_enabled ? AdsP3AState::kAdsEnabled
                                : AdsP3AState::kAdsDisabled);
   }
