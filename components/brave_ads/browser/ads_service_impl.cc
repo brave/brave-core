@@ -1233,7 +1233,8 @@ bool AdsServiceImpl::MigratePrefs(
     {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2},
     {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
     {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4},
-    {{4, 5}, &AdsServiceImpl::MigratePrefsVersion4To5}
+    {{4, 5}, &AdsServiceImpl::MigratePrefsVersion4To5},
+    {{5, 6}, &AdsServiceImpl::MigratePrefsVersion5To6}
   };
 
   // Cycle through migration paths, i.e. if upgrading from version 2 to 5 we
@@ -1409,6 +1410,13 @@ void AdsServiceImpl::MigratePrefsVersion4To5() {
   };
 
   MayBeShowOnboardingForSupportedRegion(region, new_regions);
+}
+
+void AdsServiceImpl::MigratePrefsVersion5To6() {
+  // Unlike Muon, ads per day are not configurable in the UI so we can safely
+  // migrate to the new value
+
+  SetUint64Pref(prefs::kAdsPerDay, 20);
 }
 
 int AdsServiceImpl::GetPrefsVersion() const {

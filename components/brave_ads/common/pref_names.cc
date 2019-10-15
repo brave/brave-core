@@ -12,6 +12,9 @@ namespace prefs {
 // Stores whether Brave ads is enabled or disabled
 const char kEnabled[] = "brave.brave_ads.enabled";
 
+// Stores whether ads were disabled at least once
+const char kBraveAdsWereDisabled[] = "brave.brave_ads.were_disabled";
+
 // Stores the maximum amount of ads per hour
 const char kAdsPerHour[] = "brave.brave_ads.ads_per_hour";
 
@@ -36,10 +39,7 @@ const char kShouldShowMyFirstAdNotification[] =
 // Stores the preferences version number
 const char kVersion[] = "brave.brave_ads.prefs.version";
 
-const int kCurrentVersionNumber = 5;
-
-// Ads were disabled at least once.
-const char kBraveAdsWereDisabled[] = "brave.brave_ads.were_disabled";
+const int kCurrentVersionNumber = 6;
 
 }  // namespace prefs
 
