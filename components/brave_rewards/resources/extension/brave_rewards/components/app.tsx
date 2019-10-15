@@ -193,7 +193,7 @@ export class RewardsPanel extends React.Component<Props, State> {
     this.props.actions.onSettingSave('enabledMain', '1')
   }
 
-  openRewardsAddFunds () {
+  openRewardsAddFunds = () => {
     const { externalWallet } = this.props.rewardsPanelData
 
     if (!externalWallet) {
@@ -233,14 +233,14 @@ export class RewardsPanel extends React.Component<Props, State> {
     if (!this.state.onlyAnonWallet) {
       actions.push({
         name: getMessage('addFunds'),
-        action: this.openRewards,
+        action: this.openRewardsAddFunds,
         icon: <WalletAddIcon />
       })
     }
 
     return actions.concat([{
       name:  getMessage('rewardsSettings'),
-      action: this.openRewardsAddFunds,
+      action: this.openRewards,
       icon: <BatColorIcon />
     }])
   }
