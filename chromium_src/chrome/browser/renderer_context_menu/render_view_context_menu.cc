@@ -8,6 +8,7 @@
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
+#include "brave/common/pref_names.h"
 
 // Our .h file creates a masquerade for RenderViewContextMenu.  Switch
 // back to the Chromium one for the Chromium implementation.
@@ -34,6 +35,8 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
   switch (id) {
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
 #if BUILDFLAG(ENABLE_TOR)
+      if (GetProfile()->GetPrefs()->GetBoolean(kTorDisabled))
+        return false;
       return params_.link_url.is_valid() &&
              IsURLAllowedInIncognito(params_.link_url, browser_context_) &&
              !brave::IsTorProfile(GetProfile());
@@ -78,9 +81,11 @@ void BraveRenderViewContextMenu::AddSpellCheckServiceItem(
 void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
 
+#if BUILDFLAG(ENABLE_TOR)
+  const bool isTorEnabled = !GetProfile()->GetPrefs()->GetBoolean(kTorDisabled);
   // Add Open Link with Tor
   int index = -1;
-  if (!params_.link_url.is_empty()) {
+  if (isTorEnabled && !params_.link_url.is_empty()) {
     const Browser* browser = GetBrowser();
     const bool is_app = browser && browser->is_type_app();
 
@@ -94,6 +99,7 @@ void BraveRenderViewContextMenu::InitMenu() {
         is_app ? IDS_CONTENT_CONTEXT_OPENLINKTOR_INAPP
                : IDS_CONTENT_CONTEXT_OPENLINKTOR);
   }
+#endif
 
   // Only show the translate item when go-translate is enabled.
 #if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
