@@ -550,7 +550,7 @@ extension Strings {
     public static let OBSaveButton = NSLocalizedString("OBSaveButton", bundle: Bundle.braveShared, value: "Save", comment: "Save button to save current selection")
     public static let OBFinishButton = NSLocalizedString("OBFinishButton", bundle: Bundle.braveShared, value: "Start browsing", comment: "Button to finish onboarding and start using the app.")
     public static let OBJoinButton = NSLocalizedString("OBJoinButton", bundle: Bundle.braveShared, value: "Join", comment: "Button to join Brave Rewards.")
-    public static let OBShowMeButton = NSLocalizedString("OBShowMeButton", bundle: Bundle.braveShared, value: "Show Me", comment: "Button to show Brave Rewards.")
+    public static let OBTurnOnButton = NSLocalizedString("OBTurnOnButton", bundle: Bundle.braveShared, value: "Turn On", comment: "Button to show Brave Rewards.")
     public static let OBAgreeButton = NSLocalizedString("OBAgreeButton", bundle: Bundle.braveShared, value: "Agree", comment: "Button to agree to Brave's Terms of Service.")
     public static let OBDidntSeeAdButton = NSLocalizedString("OBDidntSeeAdButton", bundle: Bundle.braveShared, value: "I didn't see an ad", comment: "Button to show information on how to enable ads")
     public static let OBSearchEngineTitle = NSLocalizedString("OBSearchEngineTitle", bundle: Bundle.braveShared, value: "Welcome to Brave Browser", comment: "Title for search engine onboarding screen")
