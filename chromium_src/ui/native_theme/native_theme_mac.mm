@@ -7,13 +7,20 @@
 
 namespace ui {
 bool ShouldOverride(NativeTheme::ColorId color_id) {
-  // This override only targets for old macOS like high sierra that doesn't
-  // support dark mode. We are using dark mode on old macOS but some below
-  // colors are fetched from system color and they are not dark mode aware.
-  // So, we should replace those colors with dark mode aware aura color.
-  if (@available(macOS 10.14, *))
+  // Always theme for these colors:
+  switch (color_id) {
+    case NativeTheme::kColorId_ButtonPressedShade:
+      return true;
+    default:
+      break;
+  }
+  // The rest of these overrides only targets for old macOS like high sierra
+  // that doesn't support dark mode. We are using dark mode on old macOS but
+  // some below colors are fetched from system color and they are not dark mode
+  // aware. So, we should replace those colors with dark mode aware aura color.
+  if (@available(macOS 10.14, *)) {
     return false;
-
+  }
   switch (color_id) {
     case NativeTheme::kColorId_EnabledMenuItemForegroundColor:
     case NativeTheme::kColorId_DisabledMenuItemForegroundColor:

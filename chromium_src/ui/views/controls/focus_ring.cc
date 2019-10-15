@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "base/no_destructor.h"
 #include "ui/gfx/skia_util.h"
@@ -18,23 +19,23 @@
 namespace {
 
 class FocusRingTheme {
-  public:
-    SkColor GetSystemColor(int id) {
-      // At the time of implementation, only two Color IDs were possible.
-      // If this changes, consider overriding NativeTheme, or moving to
-      // ThemeProperties.
-      DCHECK(id == ui::NativeTheme::kColorId_FocusedBorderColor ||
-              id == ui::NativeTheme::kColorId_AlertSeverityHigh);
-      // Must be colors that are OK on dark or light bg since this is
-      // a very simplistic implementation.
-      switch (id) {
-        case ui::NativeTheme::kColorId_FocusedBorderColor:
-          return SkColorSetRGB(0xfb, 0x54, 0x2b);
-        case ui::NativeTheme::kColorId_AlertSeverityHigh:
-          return SkColorSetRGB(0xf4, 0x34, 0x05);
-      }
-      return gfx::kPlaceholderColor;
+ public:
+  SkColor GetSystemColor(int id) {
+    // At the time of implementation, only two Color IDs were possible.
+    // If this changes, consider overriding NativeTheme, or moving to
+    // ThemeProperties.
+    DCHECK(id == ui::NativeTheme::kColorId_FocusedBorderColor ||
+            id == ui::NativeTheme::kColorId_AlertSeverityHigh);
+    // Must be colors that are OK on dark or light bg since this is
+    // a very simplistic implementation.
+    switch (id) {
+      case ui::NativeTheme::kColorId_FocusedBorderColor:
+        return SkColorSetARGB(0x66, 0xfb, 0x54, 0x2b);
+      case ui::NativeTheme::kColorId_AlertSeverityHigh:
+        return SkColorSetRGB(0xf4, 0x34, 0x05);
     }
+    return gfx::kPlaceholderColor;
+  }
 };
 
 FocusRingTheme* GetFocusRingTheme() {
@@ -42,7 +43,7 @@ FocusRingTheme* GetFocusRingTheme() {
   return instance.get();
 }
 
-}
+}  // namespace
 
 #define GetNativeTheme GetFocusRingTheme
 #include "../../../../ui/views/controls/focus_ring.cc"
