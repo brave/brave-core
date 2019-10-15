@@ -45,6 +45,20 @@ class SearchTests: XCTestCase {
         checkInvalidURL("创业咖啡. 中国")
         checkInvalidURL("data:text/html;base64,SGVsbG8gV29ybGQhCg==")
         checkInvalidURL("data://https://www.example.com,fake example.com")
+        
+        // Check invalid quoted URLs, emails, and quoted domains.
+        // These are passed along to the default search engine.
+        checkInvalidURL(#""123"#)
+        checkInvalidURL(#""123""#)
+        checkInvalidURL(#""ftp.mozilla.org"#)
+        checkInvalidURL(#""ftp.mozilla.org""#)
+        checkInvalidURL(#"https://"ftp.mozilla.org""#)
+        checkInvalidURL(#"https://"ftp.mozilla.org"#)
+        checkInvalidURL("foo@brave.com")
+        checkInvalidURL("\"foo@brave.com")
+        checkInvalidURL("\"foo@brave.com\"")
+        checkInvalidURL(#""创业咖啡.中国"#)
+        checkInvalidURL(#""创业咖啡.中国""#)
     }
 
     fileprivate func checkValidURL(_ beforeFixup: String, afterFixup: String) {
