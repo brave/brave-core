@@ -56,7 +56,8 @@
 
 - (void)reset
 {
-  [[NSFileManager defaultManager] removeItemAtPath:self.configuration.stateStoragePath error:nil];
+  [[NSFileManager defaultManager] removeItemAtPath:[self.configuration.stateStoragePath stringByAppendingPathComponent:@"ledger"] error:nil];
+  [[NSFileManager defaultManager] removeItemAtPath:[self.configuration.stateStoragePath stringByAppendingPathComponent:@"ads"] error:nil];
   [[NSFileManager defaultManager] removeItemAtURL:DataController.shared.storeDirectoryURL error:nil];
   DataController.shared = [[DataController alloc] init];
 
