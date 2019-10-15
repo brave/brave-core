@@ -55,9 +55,9 @@ class OnboardingNavigationController: UINavigationController {
             }
             #else
             switch self {
-            case .newUser: return BraveAds.isSupportedRegion(Locale.current.identifier) ? [.searchEnginePicker, .shieldsInfo, .rewardsInfo, .rewardsAgreement, .adsCountdown] : [.searchEnginePicker, .shieldsInfo, .rewardsInfo, .rewardsAgreement]
-            case .existingUserRewardsOff: return BraveAds.isSupportedRegion(Locale.current.identifier) ? [.rewardsInfo, .rewardsAgreement, .adsCountdown] : []
-            case .existingUserRewardsOn: return BraveAds.isSupportedRegion(Locale.current.identifier) ? [.rewardsInfo, .adsCountdown] : []
+            case .newUser: return BraveAds.isCurrentRegionSupported() ? [.searchEnginePicker, .shieldsInfo, .rewardsInfo, .rewardsAgreement, .adsCountdown] : [.searchEnginePicker, .shieldsInfo, .rewardsInfo, .rewardsAgreement]
+            case .existingUserRewardsOff: return BraveAds.isCurrentRegionSupported() ? [.rewardsInfo, .rewardsAgreement, .adsCountdown] : []
+            case .existingUserRewardsOn: return BraveAds.isCurrentRegionSupported() ? [.rewardsInfo, .adsCountdown] : []
             }
             #endif
         }

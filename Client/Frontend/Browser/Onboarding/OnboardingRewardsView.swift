@@ -53,7 +53,7 @@ extension OnboardingRewardsViewController {
         private let titleLabel = CommonViews.primaryText(Strings.OBRewardsTitle)
         
         private let descriptionLabel = CommonViews.secondaryText("").then {
-            $0.attributedText = BraveAds.isSupportedRegion(Locale.current.identifier) ?  Strings.OBRewardsDetailInAdRegion.boldWords(with: $0.font, amount: 2) : Strings.OBRewardsDetailOutsideAdRegion.boldWords(with: $0.font, amount: 1)
+            $0.attributedText = BraveAds.isCurrentRegionSupported() ?  Strings.OBRewardsDetailInAdRegion.boldWords(with: $0.font, amount: 2) : Strings.OBRewardsDetailOutsideAdRegion.boldWords(with: $0.font, amount: 1)
         }
         
         private lazy var textStackView = UIStackView().then { stackView in

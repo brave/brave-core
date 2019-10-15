@@ -76,7 +76,7 @@ class SettingsViewController: UIViewController {
       let dollarString = state.ledger.dollarStringForBATAmount(state.ledger.balance?.total ?? 0) ?? ""
       $0.walletSection.setWalletBalance(state.ledger.balanceString, crypto: "BAT", dollarValue: dollarString)
       
-      if !BraveAds.isSupportedRegion(Locale.current.identifier) {
+      if !BraveAds.isCurrentRegionSupported() {
          $0.adsSection.status = .unsupportedRegion
       }
       $0.adsSection.toggleSwitch.isOn = state.ads.isEnabled

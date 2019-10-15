@@ -265,7 +265,7 @@ class BrowserViewController: UIViewController {
         guard let rewards = rewards, rewards.ledger.isEnabled && rewards.ads.isEnabled else { return }
         if Preferences.Rewards.myFirstAdShown.value { return }
         // Check if ads are eligible
-        if BraveAds.isSupportedRegion(Locale.current.identifier) {
+        if BraveAds.isCurrentRegionSupported() {
             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                 if Preferences.Rewards.myFirstAdShown.value { return }
                 Preferences.Rewards.myFirstAdShown.value = true
@@ -734,7 +734,7 @@ class BrowserViewController: UIViewController {
         // 1. Rewards are on/off (existing user)
         // 2. Ads are now available
         // 3. User hasn't seen the ads part of onboarding yet
-        if BraveAds.isSupportedRegion(Locale.current.identifier)
+        if BraveAds.isCurrentRegionSupported()
             &&
             (Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue)
             &&
