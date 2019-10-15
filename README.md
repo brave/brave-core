@@ -52,6 +52,11 @@ Building the code
 1. Open `Client.xcodeproj` in Xcode.
 1. Build the `Fennec` scheme in Xcode.
 
+Updating Rewards
+----------------
+
+Some Brave Rewards code is precompiled into a framework in the `BraveRewards` directory. It's code can be found in [brave-core](https://github.com/brave/brave-core/tree/master/vendor/brave-ios), and instructions on building and updating this code can be found [here](https://github.com/brave/brave-ios/blob/master/BraveRewards/Updating%20the%20BraveRewards%20framework.md)
+
 ## Contributor guidelines
 
 ### Creating a pull request
