@@ -3,6 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveRewards
+import BraveShared
 
 class CreateWalletViewController: UIViewController {
   
@@ -14,7 +16,9 @@ class CreateWalletViewController: UIViewController {
   
   init(state: RewardsState) {
     self.state = state
+    self.observer = LedgerObserver(ledger: state.ledger)
     super.init(nibName: nil, bundle: nil)
+    setupLedgerObserver()
   }
   
   @available(*, unavailable)
@@ -34,6 +38,7 @@ class CreateWalletViewController: UIViewController {
     createWalletView.createWalletButton.addTarget(self, action: #selector(tappedCreateWallet), for: .touchUpInside)
     createWalletView.learnMoreButton.addTarget(self, action: #selector(tappedLearnMore), for: .touchUpInside)
     createWalletView.termsOfServiceLabel.onLinkedTapped = tappedDisclaimerLink
+    createWalletView.createWalletButton.isCreatingWallet = state.ledger.isInitializingWallet
     
     let size = CGSize(width: RewardsUX.preferredPanelSize.width, height: UIScreen.main.bounds.height)
     preferredContentSize = view.systemLayoutSizeFitting(
@@ -52,25 +57,35 @@ class CreateWalletViewController: UIViewController {
     }
   }
   
+  let observer: LedgerObserver
+  
+  func setupLedgerObserver() {
+    state.ledger.add(observer)
+    observer.walletInitalized = { [weak self] result in
+      guard let self = self else { return }
+      self.createWalletView.createWalletButton.isCreatingWallet = false
+      if result == .ledgerOk || result == .walletCreated {
+        self.show(WalletViewController(state: self.state), sender: self)
+      } else {
+        self.showFailureAlert()
+      }
+    }
+  }
+  
   // MARK: - Actions
+  
+  func showFailureAlert() {
+    let alertController = UIAlertController(title: Strings.WalletCreationErrorTitle, message: Strings.WalletCreationErrorBody, preferredStyle: .alert)
+    alertController.addAction(UIAlertAction(title: Strings.OK, style: .default, handler: nil))
+    self.present(alertController, animated: true)
+  }
   
   @objc private func tappedCreateWallet() {
     if createWalletView.createWalletButton.isCreatingWallet {
       return
     }
     createWalletView.createWalletButton.isCreatingWallet = true
-    state.ledger.createWalletAndFetchDetails { [weak self] success in
-      guard let self = self else { return }
-      if !success {
-        let alertController = UIAlertController(title: "Error", message: "Oops! Something went wrong. Please try again.", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        self.present(alertController, animated: true)
-        self.createWalletView.createWalletButton.isCreatingWallet = false
-        return
-      }
-      defer { self.createWalletView.createWalletButton.isCreatingWallet = false }
-      self.show(WalletViewController(state: self.state), sender: self)
-    }
+    state.ledger.createWalletAndFetchDetails { _ in }
   }
   
   @objc private func tappedLearnMore() {

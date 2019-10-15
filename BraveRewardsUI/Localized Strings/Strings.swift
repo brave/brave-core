@@ -177,5 +177,7 @@ internal extension Strings {
   static let NoNetworkBody = NSLocalizedString("NoNetworkBody", bundle: Bundle.RewardsUI, value: "The Brave Rewards server is not responding. We will fix this as soon as possible.", comment: "Body for a no network notification")
   static let MyFirstAdTitle = NSLocalizedString("MyFirstAdTitle", bundle: Bundle.RewardsUI, value: "This is your first Brave ad", comment: "")
   static let MyFirstAdBody = NSLocalizedString("MyFirstAdBody", bundle: Bundle.RewardsUI, value: "Tap here to learn more.", comment: "")
+  static let WalletCreationErrorTitle = NSLocalizedString("WalletCreationErrorTitle", bundle: Bundle.RewardsUI, value: "Error", comment: "")
+  static let WalletCreationErrorBody = NSLocalizedString("WalletCreationErrorBody", bundle: Bundle.RewardsUI, value: "Oops! Something went wrong. Please try again.", comment: "")
 }
 
