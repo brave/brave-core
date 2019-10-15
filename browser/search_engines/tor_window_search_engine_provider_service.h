@@ -9,6 +9,9 @@
 #include "components/prefs/pref_member.h"
 #include "components/search_engines/template_url_service_observer.h"
 
+class PrefService;
+struct TemplateURLData;
+
 // The purpose of this service for tor is making user changed search engine
 // provider persist across the sessions.
 // Also, BraveProfileManager::SetNonPersonalProfilePrefs() overrides for it.
@@ -23,7 +26,8 @@ class TorWindowSearchEngineProviderService
   // TemplateURLServiceObserver overrides:
   void OnTemplateURLServiceChanged() override;
 
-  int GetInitialSearchEngineProvider() const;
+  std::unique_ptr<TemplateURLData> GetInitialSearchEngineProvider(
+      PrefService* prefs) const;
 
   IntegerPrefMember alternative_search_engine_provider_in_tor_;
 
