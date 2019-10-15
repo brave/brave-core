@@ -1231,7 +1231,9 @@ void RewardsDOMHandler::SaveAdsSetting(const base::ListValue* args) {
   const std::string value = args->GetList()[1].GetString();
 
   if (key == "adsEnabled") {
-    ads_service_->SetEnabled(value == "true");
+    const auto is_enabled =
+        value == "true" && ads_service_->IsSupportedRegion();
+    ads_service_->SetEnabled(is_enabled);
   } else if (key == "adsPerHour") {
     ads_service_->SetAdsPerHour(std::stoull(value));
   }
