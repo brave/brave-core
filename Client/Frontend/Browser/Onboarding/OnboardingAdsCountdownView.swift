@@ -110,14 +110,12 @@ extension OnboardingAdsCountdownViewController {
             addSubview(imageView)
             addSubview(mainStackView)
             mainStackView.snp.makeConstraints {
-                $0.leading.equalTo(self.safeArea.leading)
-                $0.trailing.equalTo(self.safeArea.trailing)
-                $0.bottom.equalTo(self.safeArea.bottom)
+                $0.leading.trailing.bottom.equalToSuperview()
             }
             
             descriptionView.addSubview(descriptionStackView)
             descriptionStackView.snp.makeConstraints {
-                $0.edges.equalToSuperview().inset(UX.descriptionContentInset)
+                $0.edges.equalTo(descriptionView.safeArea.edges).inset(UX.descriptionContentInset)
             }
             
             mainStackView.addArrangedSubview(descriptionView)
