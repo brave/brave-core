@@ -192,7 +192,11 @@ void Contribution::PrepareRecurringList(
     StartAutoContribute();
     return;
   } else {
-    SetTimer(&delay_ac_timer_id, 30);
+    int delay = 30;
+    if (ledger::is_testing) {
+      delay = 1;
+    }
+    SetTimer(&delay_ac_timer_id, delay);
   }
 
   auto verified_list = GetVerifiedListRecurring(list, &budget);
