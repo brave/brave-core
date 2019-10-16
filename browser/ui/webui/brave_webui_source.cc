@@ -244,7 +244,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "contributionVisitSome",  IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_SOME },
         { "contributionMinTime",  IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_TIME },
         { "contributionMinVisits",  IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_VISITS },
-        { "contributionAllowed",  IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOWED },
+        { "contributionOther",  IDS_BRAVE_REWARDS_LOCAL_CONTR_OTHER },
         { "contributionShowNonVerified",  IDS_BRAVE_REWARDS_LOCAL_CONTR_SHOW_NON_VERIFIED },        // NOLINT
         { "contributionVideos",  IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOW_VIDEOS },
         { "contributionVisit1",  IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_1 },
@@ -548,7 +548,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "serviceTextWelcome", IDS_BRAVE_UI_SERVICE_TEXT_WELCOME },
         { "serviceTextReady", IDS_BRAVE_UI_SERVICE_TEXT_READY },
         { "showAll", IDS_BRAVE_UI_SHOW_ALL },
-        { "supportedSites", IDS_BRAVE_UI_SUPPORTED_SITES },
+        { "viewedSites", IDS_BRAVE_UI_VIEWED_SITES },
         { "termsOfService", IDS_BRAVE_UI_TERMS_OF_SERVICE }
       }
     }, {
