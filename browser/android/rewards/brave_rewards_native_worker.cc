@@ -13,7 +13,6 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "content/public/browser/url_data_source.h"
 #include "brave/build/android/jni_headers/BraveRewardsNativeWorker_jni.h"
-#include "brave/vendor/bat-native-ledger/include/bat/ledger/wallet_properties.h"
 
 namespace chrome {
 namespace android {
@@ -165,7 +164,7 @@ bool BraveRewardsNativeWorker::GetPublisherExcluded(JNIEnv* env,
 
   PublishersInfoMap::const_iterator iter(map_publishers_info_.find(tabId));
   if (iter != map_publishers_info_.end()) {
-    res = iter->second->excluded == ledger::PUBLISHER_EXCLUDE::EXCLUDED;
+    res = iter->second->excluded == ledger::PublisherExclude::EXCLUDED;
   }
 
   return res;
@@ -188,9 +187,9 @@ void BraveRewardsNativeWorker::IncludeInAutoContribution(JNIEnv* env,
   PublishersInfoMap::iterator iter(map_publishers_info_.find(tabId));
   if (iter != map_publishers_info_.end()) {
     if (exclude) {
-      iter->second->excluded = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
+      iter->second->excluded = ledger::PublisherExclude::EXCLUDED;
     } else {
-      iter->second->excluded = ledger::PUBLISHER_EXCLUDE::INCLUDED;
+      iter->second->excluded = ledger::PublisherExclude::INCLUDED;
     }
     if (brave_rewards_service_) {
       brave_rewards_service_->SetPublisherExclude(iter->second->id, exclude);
