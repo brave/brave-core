@@ -17,6 +17,14 @@ public class AdsViewController: UIViewController {
     let animatedOut: () -> Void
   }
   
+  /// Whether or not this ads container is being used to display "my first ad"
+  ///
+  /// Setting this to true disables the debug ads override and uses a shorter dismissal duration
+  private var isFirstAd = false
+  
+  /// The number of seconds until the "my first ad" is automatically dismissed
+  private let myFirstAdDismissalInterval: TimeInterval = 3
+  
   /// The number of seconds until the ad is automatically dismissed
   private let automaticDismissalInterval: TimeInterval = 8
   
@@ -93,8 +101,8 @@ public class AdsViewController: UIViewController {
       // Invalidate and reschedule
       timer.invalidate()
     }
-    var dismissInterval = automaticDismissalInterval
-    if !AppConstants.BuildChannel.isRelease, let override = Preferences.Rewards.adsDurationOverride.value, override > 0 {
+    var dismissInterval = isFirstAd ? myFirstAdDismissalInterval : automaticDismissalInterval
+    if !AppConstants.BuildChannel.isRelease && !isFirstAd, let override = Preferences.Rewards.adsDurationOverride.value, override > 0 {
       dismissInterval = TimeInterval(override)
     }
     dismissTimers[adView] = Timer.scheduledTimer(withTimeInterval: dismissInterval, repeats: false, block: { [weak self] _ in
@@ -298,6 +306,7 @@ extension AdsViewController {
   /// Display a "My First Ad" on a presenting controller and be notified if they tap it
   public static func displayFirstAd(on presentingController: UIViewController, completion: @escaping (AdsNotificationHandler.Action, URL) -> Void) {
     let adsViewController = AdsViewController()
+    adsViewController.isFirstAd = true
     
     presentingController.addChild(adsViewController)
     presentingController.view.addSubview(adsViewController.view)
