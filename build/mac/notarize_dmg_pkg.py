@@ -24,7 +24,7 @@ packaging_signing_path = os.path.realpath(os.path.dirname(os.path.realpath(__fil
 sys.path.append(packaging_signing_path)
 
 # Import the entire module to avoid circular dependencies in the functions
-from signing import config, commands, model, notarize, pipeline, signing
+from signing import config, commands, model, notarize, pipeline, signing  # noqa: E402
 
 
 def run_command(args, **kwargs):
@@ -123,22 +123,24 @@ def NotarizeBraveDmgPkg(paths, config, dmg, pkg, outdir, signed, do_notarization
             commands.copy_files(os.path.join(signed, item), outdir)
     return 0
 
+
 def main():
 
     args = parse_args()
 
     if args.mac_provisioning_profile and args.development is not True:
         config = create_config((args.identity, args.keychain, args.notary_user,
-                                args.notary_password, args.notary_asc_provider),
-                                args.development, args.mac_provisioning_profile)
+                               args.notary_password, args.notary_asc_provider),
+                               args.development, args.mac_provisioning_profile)
     else:
         config = create_config((args.identity, args.keychain, args.notary_user,
-                                args.notary_password, args.notary_asc_provider),
-                                args.development)
+                               args.notary_password, args.notary_asc_provider),
+                               args.development)
     paths = model.Paths(args.pkgdir, args.outdir, None)
 
     rc = NotarizeBraveDmgPkg(paths, config, args.dmg, args.pkg, args.outdir, args.signed)
     return rc
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Notarize Mac DMG and PKG')
