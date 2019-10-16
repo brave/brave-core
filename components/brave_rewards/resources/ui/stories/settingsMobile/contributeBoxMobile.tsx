@@ -143,7 +143,7 @@ class ContributeBoxMobile extends React.Component<Props, State> {
             ]}
           />
         </ControlWrapper>
-        <ControlWrapper text={locale.contributionAllowed}>
+        <ControlWrapper text={locale.contributionOther}>
           <Checkbox
             value={{
               contributionNonVerified: true,
