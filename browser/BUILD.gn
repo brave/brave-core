@@ -12,6 +12,10 @@ import("//extensions/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 import("//third_party/protobuf/proto_library.gni")
 
+declare_args() {
+  brave_safetynet_api_key = ""
+}
+
 source_set("browser_process") {
   visibility = [
     "//chrome/browser/*",
@@ -180,6 +184,8 @@ source_set("browser_process") {
       "//brave/app:brave_generated_resources_grit",
     ]
   } else {
+    
+
     sources += [
       "android/brave_relaunch_utils.cc",
       "android/brave_shields_content_settings.cc",
@@ -203,6 +209,8 @@ source_set("browser_process") {
       deps += [
         "//brave/vendor/bat-native-ledger",
       ]
+
+      configs += [ ":safetynet_config" ]
     }
     if (brave_ads_enabled) {
       sources += [
@@ -309,4 +317,8 @@ source_set("browser") {
       "//brave/vendor/sparkle:sparkle_framework_bundle_data"
     ]
   }
+}
+
+config("safetynet_config") {
+  defines = [ "SAFETYNET_API_KEY=\"$brave_safetynet_api_key\"" ]
 }

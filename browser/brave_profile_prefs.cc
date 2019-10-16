@@ -90,6 +90,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kDesktopModeEnabled, false);
   registry->RegisterBooleanPref(kPlayYTVideoInBrowserEnabled, true);
   registry->RegisterBooleanPref(kBackgroundVideoPlaybackEnabled, false);
+  registry->RegisterBooleanPref(kSafetynetCheckFailed, false);
 #endif
 
   // Hangouts
