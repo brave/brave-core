@@ -17,8 +17,6 @@ class BraveBookmarkModelLoadedObserver
   void BookmarkModelLoaded(bookmarks::BookmarkModel* model,
                            bool ids_reassigned) override;
 
-  Profile* profile_;
-
   DISALLOW_COPY_AND_ASSIGN(BraveBookmarkModelLoadedObserver);
 };
 

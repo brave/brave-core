@@ -18,13 +18,11 @@ using bookmarks::BookmarkModel;
 
 BraveBookmarkModelLoadedObserver::BraveBookmarkModelLoadedObserver(
     Profile* profile)
-    : BookmarkModelLoadedObserver(profile), profile_(profile) {}
+    : BookmarkModelLoadedObserver(profile) {}
 
 void BraveBookmarkModelLoadedObserver::BookmarkModelLoaded(
     BookmarkModel* model,
     bool ids_reassigned) {
-  // Causes lazy-load if sync is enabled.
-  ProfileSyncServiceFactory::GetInstance()->GetForProfile(profile_);
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
   BraveProfileSyncServiceImpl* brave_profile_service =
       static_cast<BraveProfileSyncServiceImpl*>(
@@ -36,6 +34,5 @@ void BraveBookmarkModelLoadedObserver::BookmarkModelLoaded(
 #else
   BraveMigrateOtherNode(model);
 #endif
-  model->RemoveObserver(this);
-  delete this;
+  BookmarkModelLoadedObserver::BookmarkModelLoaded(model, ids_reassigned);
 }
