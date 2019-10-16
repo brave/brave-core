@@ -30,23 +30,37 @@ bool DatabaseServerPublisherBanner::Init(sql::Database* db) {
     return true;
   }
 
+  sql::Transaction transaction(db);
+  if (!transaction.Begin()) {
+    return false;
+  }
+
   bool success = CreateTable(db);
   if (!success) {
     return false;
   }
 
-  CreateIndex(db);
-  return true;
+  success = CreateIndex(db);
+  if (!success) {
+    return false;
+  }
+
+  success = links_->Init(db);
+  if (!success) {
+    return false;
+  }
+
+  success = amounts_->Init(db);
+  if (!success) {
+    return false;
+  }
+
+  return transaction.Commit();
 }
 
 bool DatabaseServerPublisherBanner::CreateTable(sql::Database* db) {
   if (db->DoesTableExist(table_name_)) {
     return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
   }
 
   const std::string query = base::StringPrintf(
@@ -64,51 +78,11 @@ bool DatabaseServerPublisherBanner::CreateTable(sql::Database* db) {
       table_name_,
       table_name_);
 
-  if (!db->Execute(query.c_str())) {
-    transaction.Rollback();
-    return false;
-  }
-
-  bool success = links_->CreateTable(db);
-  if (!success) {
-    transaction.Rollback();
-    return false;
-  }
-
-  success = amounts_->CreateTable(db);
-  if (!success) {
-    transaction.Rollback();
-    return false;
-  }
-
-  return transaction.Commit();
+  return db->Execute(query.c_str());
 }
 
 bool DatabaseServerPublisherBanner::CreateIndex(sql::Database* db) {
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = this->InsertIndex(db, table_name_, "publisher_key");
-  if (!success) {
-    transaction.Rollback();
-    return false;
-  }
-
-  success = links_->CreateIndex(db);
-  if (!success) {
-    transaction.Rollback();
-    return false;
-  }
-
-  success = amounts_->CreateIndex(db);
-  if (!success) {
-    transaction.Rollback();
-    return false;
-  }
-
-  return transaction.Commit();
+  return this->InsertIndex(db, table_name_, "publisher_key");
 }
 
 bool DatabaseServerPublisherBanner::InsertOrUpdate(
