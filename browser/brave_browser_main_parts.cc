@@ -14,11 +14,14 @@
 #include "media/base/media_switches.h"
 
 #if BUILDFLAG(ENABLE_TOR)
+#include <string>
 #include "base/files/file_util.h"
 #include "brave/common/tor/tor_constants.h"
 #include "chrome/browser/browser_process_impl.h"
+#include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_metrics.h"
+#include "components/account_id/account_id.h"
 #endif
 
 #if !defined(OS_ANDROID)
@@ -42,6 +45,18 @@ void BraveBrowserMainParts::PostBrowserStart() {
 
   // Delete Tor legacy profile if exists.
   if (base::PathExists(tor_legacy_path)) {
+    // Add tor legacy path into profile attributes storage first if nonexist
+    // because we will hit DCHECK(!GetProfileAttributesWithPath(...))  in
+    // ProfileInfoCache::DeleteProfileFromCache when we trying to delete it
+    // without this being added into the storage first.
+    ProfileAttributesEntry* entry = nullptr;
+    ProfileAttributesStorage& storage =
+        profile_manager->GetProfileAttributesStorage();
+    if (!storage.GetProfileAttributesWithPath(tor_legacy_path, &entry)) {
+      storage.AddProfile(tor_legacy_path, base::string16(), std::string(),
+                         base::string16(), 0, std::string(), EmptyAccountId());
+    }
+
     profile_manager->MaybeScheduleProfileForDeletion(
         tor_legacy_path, base::DoNothing(),
         ProfileMetrics::DELETE_PROFILE_SETTINGS);
