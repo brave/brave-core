@@ -188,7 +188,7 @@ group("create_dist") {
       ]
     } else {
       deps += [
-        "build/mac:notarize_dmg_pkg"
+        "build/mac:finalize_dmg_pkg"
       ]
     }
   }
