@@ -10,7 +10,11 @@ namespace network {
 struct ResourceRequest;
 }
 
+extern const char kBraveServicesKeyHeader[];
+
 namespace brave {
+
+void AddBraveServicesKeyHeader(network::ResourceRequest* url_request);
 
 network::ResourceRequest OnBeforeSystemRequest(
     const network::ResourceRequest& url_request);

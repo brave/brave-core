@@ -5,6 +5,7 @@
 
 #include "brave/common/network_constants.h"
 
+const char kBraveProxyPattern[] = "https://*.brave.com/*";
 const char kBraveUpdatesExtensionsEndpoint[] =
     "https://go-updater.brave.com/extensions";
 // For debgugging:
