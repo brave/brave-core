@@ -5,10 +5,13 @@
 
 package org.chromium.chrome.browser;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
@@ -23,6 +26,7 @@ import org.chromium.base.Log;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeSwitches;
+import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 import org.chromium.chrome.browser.preferences.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
@@ -41,6 +45,7 @@ public abstract class BraveActivity extends ChromeActivity {
      */
     public static final String BRAVE_PRODUCTION_PACKAGE_NAME = "com.brave.browser";
     public static final String BRAVE_DEVELOPMENT_PACKAGE_NAME = "com.brave.browser_default";
+    public static final String CHANNEL_ID = "com.brave.browser";
 
     @Override
     public void onResumeWithNative() {
@@ -116,17 +121,43 @@ public abstract class BraveActivity extends ChromeActivity {
         }
     }
 
-    private boolean isNoRestoreState() {
-        return ContextUtils.getAppSharedPreferences().getBoolean(PREF_CLOSE_TABS_ON_EXIT, false);
+    @Override
+    public void performPostInflationStartup() {
+        super.performPostInflationStartup();
+
+        createNotificationChannel();
+        setupBraveSetDefaultBrowserNotification();
     }
 
-    public boolean isBraveSetAsDefaultBrowser() {
-        Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://"));
-        boolean supportsDefault = Build.VERSION.SDK_INT >= 24;
-        ResolveInfo resolveInfo = getPackageManager().resolveActivity(
-                browserIntent, supportsDefault ? PackageManager.MATCH_DEFAULT_ONLY : 0);
-        return resolveInfo.activityInfo.packageName.equals(BRAVE_PRODUCTION_PACKAGE_NAME)
-                || resolveInfo.activityInfo.packageName.equals(BRAVE_DEVELOPMENT_PACKAGE_NAME);
+    private void createNotificationChannel() {
+        Context context = ContextUtils.getApplicationContext();
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Brave Browser";
+            String description = "Notification channel for Brave Browser";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void setupBraveSetDefaultBrowserNotification() {
+        Context context = ContextUtils.getApplicationContext();
+        if (BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(this)) {
+            // Don't ask again
+            return;
+        }
+        Intent intent = new Intent(context, BraveSetDefaultBrowserNotificationService.class);
+        context.sendBroadcast(intent);
+    }
+
+    private boolean isNoRestoreState() {
+        return ContextUtils.getAppSharedPreferences().getBoolean(PREF_CLOSE_TABS_ON_EXIT, false);
     }
 
     private void handleBraveSetDefaultBrowserDialog() {
@@ -138,7 +169,7 @@ public abstract class BraveActivity extends ChromeActivity {
         ResolveInfo resolveInfo = getPackageManager().resolveActivity(
                 browserIntent, supportsDefault ? PackageManager.MATCH_DEFAULT_ONLY : 0);
         Context context = ContextUtils.getApplicationContext();
-        if (isBraveSetAsDefaultBrowser()) {
+        if (BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(this)) {
             Toast toast = Toast.makeText(
                     context, R.string.brave_already_set_as_default_browser, Toast.LENGTH_LONG);
             toast.show();
