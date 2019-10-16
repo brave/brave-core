@@ -2045,7 +2045,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
-    InsufficientNotificationForVerifiedsZeroAmountZeroPublishers) {
+    InsufficientNotificationForZeroAmountZeroPublishers) {
   rewards_service_->GetNotificationService()->AddObserver(this);
   EnableRewards();
   CheckInsufficientFundsForTesting();
@@ -2055,7 +2055,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   if (notifications.empty()) {
     SUCCEED();
+    return;
   }
+
   bool notification_shown = false;
   for (const auto& notification : notifications) {
     if (notification.second.type_ ==
@@ -2072,13 +2074,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
-                       InsufficientNotificationForVerifiedsDefaultAmount) {
+                       InsufficientNotificationForACNotEnoughFunds) {
   rewards_service_->AddObserver(this);
   rewards_service_->GetNotificationService()->AddObserver(this);
   EnableRewards();
-  // Claim grant using panel
-  const bool use_panel = true;
-  ClaimGrant(use_panel);
 
   // Visit publishers
   const bool verified = true;
@@ -2095,7 +2094,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   if (notifications.empty()) {
     SUCCEED();
+    return;
   }
+
   bool notification_shown = false;
   for (const auto& notification : notifications) {
     if (notification.second.type_ ==
@@ -2112,32 +2113,31 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
-                       InsufficientNotificationForVerifiedsSufficientAmount) {
+                       InsufficientNotificationForInsufficientAmount) {
   rewards_service_->AddObserver(this);
   rewards_service_->GetNotificationService()->AddObserver(this);
-
   EnableRewards();
   // Claim grant using panel
   const bool use_panel = true;
   ClaimGrant(use_panel);
 
-  // Visit publishers
   const bool verified = true;
-  while (!last_publisher_added_) {
-    VisitPublisher("duckduckgo.com", verified);
-    VisitPublisher("bumpsmack.com", verified);
-    VisitPublisher("brave.com", !verified, true);
-  }
+  VisitPublisher("duckduckgo.com", verified);
+  rewards_service_->OnTip("duckduckgo.com", 20, true);
 
-  rewards_service_->SetContributionAmount(40.0);
+  VisitPublisher("brave.com", !verified);
+  rewards_service_->OnTip("brave.com", 50, true);
 
   CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();
   const brave_rewards::RewardsNotificationService::RewardsNotificationsMap&
       notifications = rewards_service_->GetAllNotifications();
+
   if (notifications.empty()) {
     SUCCEED();
+    return;
   }
+
   bool notification_shown = false;
   for (const auto& notification : notifications) {
     if (notification.second.type_ ==
@@ -2154,7 +2154,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
-                       InsufficientNotificationForVerifiedsInsufficientAmount) {
+                       InsufficientNotificationForVerifiedInsufficientAmount) {
   rewards_service_->AddObserver(this);
   rewards_service_->GetNotificationService()->AddObserver(this);
   EnableRewards();
@@ -2162,23 +2162,23 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   const bool use_panel = true;
   ClaimGrant(use_panel);
 
-  // Visit publishers
   const bool verified = true;
-  while (!last_publisher_added_) {
-    VisitPublisher("duckduckgo.com", verified);
-    VisitPublisher("bumpsmack.com", verified);
-    VisitPublisher("brave.com", !verified, true);
-  }
-  rewards_service_->SetContributionAmount(100.0);
+  VisitPublisher("duckduckgo.com", verified);
+  rewards_service_->OnTip("duckduckgo.com", 50, true);
 
-  rewards_service_->CheckInsufficientFundsForTesting();
+  VisitPublisher("brave.com", !verified);
+  rewards_service_->OnTip("brave.com", 50, true);
+
+  CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();
   const brave_rewards::RewardsNotificationService::RewardsNotificationsMap&
       notifications = rewards_service_->GetAllNotifications();
 
   if (notifications.empty()) {
     FAIL() << "Should see Insufficient Funds notification";
+    return;
   }
+
   bool notification_shown = false;
   for (const auto& notification : notifications) {
     if (notification.second.type_ ==
@@ -2189,7 +2189,6 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     }
   }
   EXPECT_TRUE(notification_shown);
-
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2540,6 +2539,68 @@ IN_PROC_BROWSER_TEST_F(
 
   // Tip verified publisher
   TipPublisher("bumpsmack.com", false);
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+    RecurringAndPartialAutoContribution) {
+  // Observe the Rewards service
+  rewards_service_->AddObserver(this);
+
+  // Enable Rewards
+  EnableRewards();
+
+  // Claim grant using panel (30 BAT)
+  const bool use_panel = true;
+  ClaimGrant(use_panel);
+
+  // Visit verified publisher
+  const bool verified = true;
+  VisitPublisher("duckduckgo.com", verified);
+  VisitPublisher("brave.com", !verified);
+
+  // Tip publisher
+  rewards_service_->OnTip("duckduckgo.com", 25, true);
+
+  // Trigger contribution process
+  rewards_service()->StartMonthlyContributionForTest();
+
+  // Wait for reconciliation to complete
+  WaitForTipReconcileCompleted();
+  ASSERT_EQ(tip_reconcile_status_, ledger::Result::LEDGER_OK);
+
+  // Wait for reconciliation to complete successfully
+  WaitForACReconcileCompleted();
+  ASSERT_EQ(ac_reconcile_status_, ledger::Result::LEDGER_OK);
+
+  // Make sure that balance is updated correctly
+  {
+    content::EvalJsResult js_result = EvalJs(
+        contents(),
+        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
+        "delay(1000).then(() => "
+        "  "
+        "document.querySelector(\"[data-test-id='balance']\").innerText);",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+    EXPECT_NE(js_result.ExtractString().find(GetBalance() + " BAT"),
+              std::string::npos);
+  }
+
+  // Check that summary table shows the appropriate contribution
+  {
+    content::EvalJsResult js_result = EvalJs(
+        contents(),
+        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
+        "delay(0).then(() => "
+        "  document.querySelector(\"[color='contribute']\").innerText);",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+    EXPECT_NE(js_result.ExtractString().find("-5.0BAT"),
+              std::string::npos);
+  }
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);

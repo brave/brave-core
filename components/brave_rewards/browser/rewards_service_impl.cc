@@ -2560,7 +2560,18 @@ void RewardsServiceImpl::MaybeShowNotificationAddFunds() {
 
 void RewardsServiceImpl::MaybeShowNotificationAddFundsForTesting(
     base::OnceCallback<void(bool)> callback) {
-  bat_ledger_->HasSufficientBalanceToReconcile(std::move(callback));
+  bat_ledger_->HasSufficientBalanceToReconcile(
+      base::BindOnce(
+          &RewardsServiceImpl::OnMaybeShowNotificationAddFundsForTesting,
+          AsWeakPtr(),
+          std::move(callback)));
+}
+
+void RewardsServiceImpl::OnMaybeShowNotificationAddFundsForTesting(
+    base::OnceCallback<void(bool)> callback,
+    const bool sufficient) {
+  ShowNotificationAddFunds(sufficient);
+  std::move(callback).Run(sufficient);
 }
 
 bool RewardsServiceImpl::ShouldShowNotificationAddFunds() const {
@@ -2774,10 +2785,6 @@ void RewardsServiceImpl::SetLedgerEnvForTesting() {
 
 void RewardsServiceImpl::StartMonthlyContributionForTest() {
   bat_ledger_->StartMonthlyContribution();
-}
-
-void RewardsServiceImpl::CheckInsufficientFundsForTesting() {
-  MaybeShowNotificationAddFunds();
 }
 
 void RewardsServiceImpl::GetProduction(const GetProductionCallback& callback) {

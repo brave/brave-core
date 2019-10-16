@@ -40,35 +40,35 @@ class ContributionTest : public testing::Test {
   }
 };
 
-TEST_F(ContributionTest, GetAmountFromVerifiedRecurring) {
+TEST_F(ContributionTest, GetTotalFromRecurringVerified) {
   ledger::PublisherInfoList publisher_info_list;
   GetPublishersForRecurring(&publisher_info_list, 5, {1, 5, 10}, 2);
   double amount =
-      Contribution::GetAmountFromVerifiedRecurring(publisher_info_list);
+      Contribution::GetTotalFromRecurringVerified(publisher_info_list);
   EXPECT_EQ(amount, 6);
 
   publisher_info_list.clear();
   GetPublishersForRecurring(&publisher_info_list, 7, {1, 5, 10}, 5);
   amount =
-      Contribution::GetAmountFromVerifiedRecurring(publisher_info_list);
+      Contribution::GetTotalFromRecurringVerified(publisher_info_list);
   EXPECT_EQ(amount, 22);
 
   publisher_info_list.clear();
   GetPublishersForRecurring(&publisher_info_list, 10, {5, 10, 20}, 7);
   amount =
-      Contribution::GetAmountFromVerifiedRecurring(publisher_info_list);
+      Contribution::GetTotalFromRecurringVerified(publisher_info_list);
   EXPECT_EQ(amount, 75);
 
   publisher_info_list.clear();
   GetPublishersForRecurring(&publisher_info_list, 10, {10, 20, 50}, 9);
   amount =
-      Contribution::GetAmountFromVerifiedRecurring(publisher_info_list);
+      Contribution::GetTotalFromRecurringVerified(publisher_info_list);
   EXPECT_EQ(amount, 240);
 
   publisher_info_list.clear();
   GetPublishersForRecurring(&publisher_info_list, 5, {1, 5, 10, 20, 50}, 5);
   amount =
-      Contribution::GetAmountFromVerifiedRecurring(publisher_info_list);
+      Contribution::GetTotalFromRecurringVerified(publisher_info_list);
   EXPECT_EQ(amount, 86);
 }
 
