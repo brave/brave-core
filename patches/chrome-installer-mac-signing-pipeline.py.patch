@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/signing/pipeline.py b/chrome/installer/mac/signing/pipeline.py
-index 898c0d4542bb3474d654e71a1e4fd5a1355e3897..a19e7b70b34f19de054918fee539efb59bc17003 100644
+index 898c0d4542bb3474d654e71a1e4fd5a1355e3897..a1a32cac6e7e23bda56411b165ff0fe84a620e91 100644
 --- a/chrome/installer/mac/signing/pipeline.py
 +++ b/chrome/installer/mac/signing/pipeline.py
 @@ -192,12 +192,6 @@ def _package_dmg(paths, dist, config):
@@ -27,8 +27,8 @@ index 898c0d4542bb3474d654e71a1e4fd5a1355e3897..a19e7b70b34f19de054918fee539efb5
                          uuids_to_package_path.keys(), config):
                      package_path = uuids_to_package_path[result]
                      notarize.staple(package_path)
-+            else:
-+                # Copy the notarized app to the orig_paths.output dir where the user expects it.
-+                commands.copy_files(dest_dir, orig_paths.output)
++        else:
++            # Copy the notarized app to the orig_paths.output dir where the user expects it.
++            commands.copy_files(dest_dir, orig_paths.output)
 
      _package_installer_tools(orig_paths, config)

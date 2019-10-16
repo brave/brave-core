@@ -11,6 +11,7 @@ declare_args() {
   mac_signing_keychain = "login"
   mac_signing_output_prefix = "signing"
   mac_signed_output_prefix = "signed"
+  mac_notarized_output_prefix = "notarized"
   notary_user = ""
   notary_password = ""
   notarize = false
@@ -266,6 +267,12 @@ if (skip_signing) {
     deps = [":create_dmg"]
   }
 
+  group("finalize_dmg_pkg") {
+    deps = [
+      ":copy_dmg_pkg"
+    ]
+  }
+
   copy("copy_notarize_script") {
 
     sources = [ "notarize_dmg_pkg.py" ]
@@ -277,59 +284,81 @@ if (skip_signing) {
   }
 
   action("notarize_dmg_pkg") {
-    if (notarize) {
-      if (is_official_build) {
-        development_arg = ""
-        if (brave_channel == "") {
-          provisioning_profile = "//brave/build/mac/release.provisionprofile"
-        } else {
-          provisioning_profile = "//brave/build/mac/${brave_channel}.provisionprofile"
-        }
+    if (is_official_build) {
+      development_arg = ""
+      if (brave_channel == "") {
+        provisioning_profile = "//brave/build/mac/release.provisionprofile"
       } else {
-        development_arg = "--development"
-        provisioning_profile = "//brave/build/mac/dummy.provisionprofile"
+        provisioning_profile = "//brave/build/mac/${brave_channel}.provisionprofile"
       }
+    } else {
+      development_arg = "--development"
+      provisioning_profile = "//brave/build/mac/dummy.provisionprofile"
+    }
 
-      script = "$packaging_dir/notarize_dmg_pkg.py"
-      inputs = [
-        script,
+    script = "$packaging_dir/notarize_dmg_pkg.py"
+    inputs = [
+      script,
+      "$root_out_dir/$mac_signed_output_prefix/$brave_dmg",
+      "$root_out_dir/$mac_signed_output_prefix/$brave_pkg",
+    ]
+    outputs = [
+      "$root_out_dir/$mac_notarized_output_prefix/$brave_dmg",
+      "$root_out_dir/$mac_notarized_output_prefix/$brave_pkg",
+    ]
+    args = [
+      "--keychain",
+      keychain_db,
+      "--identity",
+      mac_signing_identifier,
+      "--notary-user",
+      notary_user,
+      "--notary-password",
+      notary_password,
+      development_arg,
+      "--dmg",
+      rebase_path("$root_out_dir/$mac_signed_output_prefix/$brave_dmg"),
+      "--pkg",
+      rebase_path("$root_out_dir/$mac_signed_output_prefix/$brave_pkg"),
+      "--signed",
+      rebase_path("$root_out_dir/$mac_signed_output_prefix"),
+      "--outdir",
+      rebase_path("$root_out_dir/$mac_notarized_output_prefix"),
+      "--pkgdir",
+      rebase_path(packaging_dir),
+      "--mac_provisioning_profile",
+      rebase_path(provisioning_profile)
+    ]
+    deps = [
+      ":sign_dmg",
+      ":sign_pkg",
+      ":copy_notarize_script"
+    ]
+  }
+
+  copy("copy_dmg_pkg") {
+    if (notarize) {
+      sources = [
+        "$root_out_dir/$mac_notarized_output_prefix/$brave_dmg",
+        "$root_out_dir/$mac_notarized_output_prefix/$brave_pkg",
+      ]
+      deps = [
+        ":copy_notarize_script",
+        ":notarize_dmg_pkg",
+      ]
+    } else {
+      sources = [
         "$root_out_dir/$mac_signed_output_prefix/$brave_dmg",
         "$root_out_dir/$mac_signed_output_prefix/$brave_pkg",
       ]
-      outputs = [
-        "$root_out_dir/$brave_dmg",
-        "$root_out_dir/$brave_pkg",
-      ]
-      args = [
-        "--keychain",
-        keychain_db,
-        "--identity",
-        mac_signing_identifier,
-        "--notary-user",
-        notary_user,
-        "--notary-password",
-        notary_password,
-        development_arg,
-        "--dmg",
-        rebase_path("$root_out_dir/$mac_signed_output_prefix/$brave_dmg"),
-        "--pkg",
-        rebase_path("$root_out_dir/$mac_signed_output_prefix/$brave_pkg"),
-        "--signed",
-        rebase_path("$root_out_dir/$mac_signed_output_prefix"),
-        "--outdir",
-        rebase_path("$root_out_dir"),
-        "--pkgdir",
-        rebase_path(packaging_dir),
-        "--mac_provisioning_profile",
-        rebase_path(provisioning_profile)
-      ]
       deps = [
         ":sign_dmg",
-        ":sign_pkg",
-        ":copy_notarize_script"
+        ":sign_pkg"
       ]
-    } else {
-      print("Notarization of .dmg and .pkg not requested.")
     }
+    outputs = [
+      "$root_out_dir/{{source_file_part}}"
+    ]
+
   }
 }

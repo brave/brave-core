@@ -11,8 +11,6 @@ if [[ ${#} -lt "7" ]]; then
   exit 1
 fi
 
-# TODO - ARGUMENT HANDLING SHOULD BE MORE ROBUST
-
 SOURCE_DIR="${1}"
 DEST_DIR="${2}"
 PKG_DIR="${3}"
@@ -32,20 +30,20 @@ if [[ -z ${7} ]]; then
 fi
 
 if [[ ${#} -gt "7" ]]; then
-  NOTARIZE="${8}"
-  if [[ "${NOTARIZE}" = "True" ]]; then
+  if [[ "${8}" = "True" ]]; then
     NOTARIZE="--notarize"
+    NOTARY_USER="${9}"
+    NOTARY_PASSWORD="${10}"
+    if [[ -n "${NOTARIZE}" ]]; then
+        if [[ ( -z "${NOTARY_USER}" ) || ( -z "${NOTARY_PASSWORD}" ) ]]; then
+            echo "Error: when <notarize> is True, both <notary_user> and <notary_password> must be provided. Cannot perform notarization."
+            usage
+            exit 1
+        fi
+    fi
+    NOTARIZE_ARGS="${NOTARIZE} --notary-user $NOTARY_USER --notary-password $NOTARY_PASSWORD"
   else
-    unset NOTARIZE
-  fi
-  NOTARY_USER="${9}"
-  NOTARY_PASSWORD="${10}"
-  if [[ -n "${NOTARIZE}" ]]; then
-      if [[ ( -z "${NOTARY_USER}" ) || ( -z "${NOTARY_PASSWORD}" ) ]]; then
-          echo "Error: when <notarize> is True, both <notary_user> and <notary_password> must be provided. Cannot perform notarization."
-          usage
-          exit 1
-      fi
+    NOTARIZE="False"
   fi
 fi
 
@@ -66,6 +64,14 @@ trap check_exit EXIT
 # sign_chrome.py
 export MAC_PROVISIONING_PROFILE
 
+# Clear output directory. It seems GN auto-creates directory path to the
+# expected outputs. However, the signing script doesn't expect the path to
+# have been created and fails trying to create it again.
+if [ -d $DEST_DIR ]; then
+  echo "Cleaning $DEST_DIR ..."
+  rm -rf $DEST_DIR/*
+fi
+
 # Invoke python script to do the signing.
 PARAMS="--input $SOURCE_DIR --output $DEST_DIR --keychain $MAC_SIGNING_KEYCHAIN --identity $MAC_SIGNING_IDENTIFIER --disable-packaging"
 if [[ -z "${DEVELOPMENT}" ]]; then
@@ -76,10 +82,10 @@ else
   PARAMS="$PARAMS $DEVELOPMENT"
 fi
 
-if [[ -z "${NOTARIZE}" ]]; then
+if [[ "${NOTARIZE}" = "False" ]]; then
   PARAMS="$PARAMS --no-notarize"
 else
-  PARAMS="$PARAMS ${NOTARIZE} --notary-user $NOTARY_USER --notary-password $NOTARY_PASSWORD"
+  PARAMS="$PARAMS ${NOTARIZE_ARGS}"
 fi
 
 "${PKG_DIR}/sign_chrome.py" $PARAMS
