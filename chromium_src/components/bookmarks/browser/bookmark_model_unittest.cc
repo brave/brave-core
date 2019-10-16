@@ -86,7 +86,7 @@ TEST_F(BookmarkModelTest, BraveMostRecentlyModifiedFolders) {
   ASSERT_TRUE(most_recent_folders[0] != folder);
 }
 
-TEST_F(BookmarkModelTest, MigrateOtherNode) {
+TEST_F(BookmarkModelTest, BraveMigrateOtherNode) {
   // -- Bookmarks
   // |-- A
   // -- Other Bookmarks
@@ -107,7 +107,7 @@ TEST_F(BookmarkModelTest, MigrateOtherNode) {
   //     |-- B
   //     |   |--B1.com
   //     |-- C.com
-  model_->MigrateOtherNode();
+  BraveMigrateOtherNode(model_.get());
   ASSERT_EQ(model_->other_node()->children().size(), 0u);
   ASSERT_EQ(model_->bookmark_bar_node()->children().size(), 2u);
   EXPECT_EQ(model_->bookmark_bar_node()->children()[0]->GetTitle(),
