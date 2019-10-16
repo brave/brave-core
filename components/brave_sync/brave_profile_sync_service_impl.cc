@@ -171,6 +171,19 @@ BraveProfileSyncServiceImpl::BraveProfileSyncServiceImpl(Profile* profile,
   brave_sync_prefs_ =
       std::make_unique<prefs::Prefs>(sync_client_->GetPrefService());
 
+  auto devices = brave_sync_prefs_->GetSyncDevices();
+  if (devices->size() < 2 &&
+      (brave_sync_prefs_->GetSyncEnabled() ||
+       !brave_sync_prefs_->GetSeed().empty() ||
+       !brave_sync_prefs_->GetThisDeviceName().empty())) {
+    // We want to reset the chain because it was not fully created
+    // We cannot make it here directly, because some sync classes may not be
+    // constructed yet
+    reseting_ = true;
+    // Need to clear prefs to allow UI page give us code words
+    brave_sync_prefs_->Clear();
+  }
+
   // Moniter syncs prefs required in GetSettingsAndDevices
   brave_pref_change_registrar_.Init(sync_client_->GetPrefService());
   brave_pref_change_registrar_.Add(
