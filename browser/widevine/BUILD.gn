@@ -6,6 +6,7 @@ source_set("widevine") {
   deps = [
     "//base",
     "//brave/app:brave_generated_resources_grit",
+    "//chrome/app/vector_icons",
     "//components/content_settings/core/common",
     "//content/public/browser",
     "//content/public/common",
