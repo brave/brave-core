@@ -844,9 +844,6 @@
 /* Add a Computer title */
 "SyncAddComputerTitle" = "Adicionar um computador";
 
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "Ler código QR da cadeia";
-
 /* Sync add device description */
 "SyncAddDeviceScanDescription" = "No seu segundo dispositivo móvel, navegue até a opção \"Sincronizar\" do painel \"Configurações\" e toque no botão \"Ler código de sincronização\". Use sua câmera para ler o código QR abaixo.\n Trate esse código como uma senha. Se outra pessoa tiver acesso a ele, ela poderá ler e modificar seus dados sincronizados.";
 
@@ -1029,9 +1026,6 @@
 
 /* Selection to color/style the user interface with a dark theme */
 "ThemesDarkOption" = "Escuro";
-
-/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
-"ThemesDisplayBrightness" = "Exibição e brilho";
 
 /* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
 "ThemesDisplayBrightnessFooter" = "Essas configurações não são aplicadas no modo de navegação privada.";

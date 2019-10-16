@@ -14,7 +14,7 @@
 "touchKeyCancel" = "Cancelar";
 
 /* Message for touch key modal. */
-"touchKeyMessage" = "Pulsa la clave para finalizar la solicitud de";
+"touchKeyMessage" = "Pulsa la clave para finalizar la solicitud de ";
 
 /* Title when PIN code is being verified. */
 "verificationPending" = "Verificando tu PIN de";

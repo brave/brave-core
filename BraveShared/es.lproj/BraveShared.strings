@@ -188,7 +188,7 @@
 "BraveShieldDefaults" = "Opciones por defecto de Brave Shield";
 
 /* Sync page title */
-"BraveSync" = "Sincroniza";
+"BraveSync" = "Sincronización";
 
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Lo primero que tendrás que hacer es instalar Brave en todos los dispositivos que quieras sincronizar. Para conectarlos entre sí, inicia una cadena de sincronización con la que vincular todos tus dispositivos de forma segura.";
@@ -263,7 +263,7 @@
 "Copied" = "¡Copiado!";
 
 /* Copied codewords title */
-"CopiedToClipboard" = "¡Copiado al portapapeles!";
+"CopiedToClipboard" = "¡Copiado en el portapapeles!";
 
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Copiar información de la aplicación en el portapapeles.";
@@ -275,7 +275,7 @@
 "CopyLinkActionTitle" = "Copiar enlace";
 
 /* Copy codewords title */
-"CopyToClipboard" = "Copiar al portapapeles";
+"CopyToClipboard" = "Copiar en el portapapeles";
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Utilizado actualmente en buscadores";
@@ -359,10 +359,10 @@
 "EditFolderTitle" = "Editar carpeta";
 
 /* Sync enter code words */
-"EnterCodeWords" = "Ingresa las palabras clave";
+"EnterCodeWords" = "Introduce las palabras clave";
 
 /* Enter sync code words below */
-"EnterCodeWordsBelow" = "Ingresa las palabras clave abajo";
+"EnterCodeWordsBelow" = "Introduce las palabras clave abajo";
 
 /* Description for new folder popup */
 "EnterFolderName" = "Editar nombre de carpeta";
@@ -404,7 +404,7 @@
 "FavoritesRootLevelCellTitle" = "Favoritos";
 
 /* Share action title */
-"FindInPage" = "Encontrar en la página";
+"FindInPage" = "Buscar en página";
 
 /* Done button in Find in Page Toolbar. */
 "FindInPageDoneButtonAccessibilityLabel" = "Listo";
@@ -836,7 +836,7 @@
 "SuppressAlertsActionTitle" = "Suprimir alertas";
 
 /* Sync settings section title */
-"Sync" = "Sincroniza";
+"Sync" = "Sincronización";
 
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Añadir otro dispositivo";
@@ -844,14 +844,11 @@
 /* Add a Computer title */
 "SyncAddComputerTitle" = "Añadir un ordenador";
 
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "Escanear el código QR de la cadena";
-
 /* Sync add device description */
 "SyncAddDeviceScanDescription" = "En su segundo aparato móvil, navega hacia el panel de settings (ajustes) y presione el botón “scan sync code”. Use su camera para escanear el código QR debajo.\nTrate este código como una contraseña. So alguien lo obtiene, lo pueden leer y modificar sus datos sincronizados.";
 
 /* Add device to sync with code words */
-"SyncAddDeviceWords" = "Ingresar el código de sincronización";
+"SyncAddDeviceWords" = "Introduce el código de sincronización";
 
 /* Sync add device description */
 "SyncAddDeviceWordsDescription" = "En su aparato, navega hacia sincroniza en el panel de ajustes y presione el botón “%@” Entre la palabra clave en la cadena de sincronización mostrada debajo.\nTrate este código como una contraseña. So alguien lo obtiene, lo pueden leer y modificar sus datos sincronizados.";
@@ -875,10 +872,10 @@
 "SyncDevices" = "Dispositivos y ajustes";
 
 /* Message for sync initialization error alert */
-"SyncInitErrorMessage" = "El agente de sincronización está actualmente desconectado o no alcanzable. Intente de nuevo más tarde.";
+"SyncInitErrorMessage" = "El agente de sincronización está desconectado u ocupado. Inténtalo de nuevo más tarde.";
 
 /* Title for sync initialization error alert */
-"SyncInitErrorTitle" = "Error de comunicación de sincronización";
+"SyncInitErrorTitle" = "Error de comunicación en la sincronización";
 
 /* No internet connection alert body. */
 "SyncNoConnectionBody" = "Comprueba tu conexión a Internet y vuelve a intentarlo.";
@@ -1029,9 +1026,6 @@
 
 /* Selection to color/style the user interface with a dark theme */
 "ThemesDarkOption" = "Oscuro";
-
-/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
-"ThemesDisplayBrightness" = "Pantalla y brillo";
 
 /* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
 "ThemesDisplayBrightnessFooter" = "Estos ajustes no se aplican en el modo de navegación privada.";

@@ -844,9 +844,6 @@
 /* Add a Computer title */
 "SyncAddComputerTitle" = "新增電腦";
 
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "掃瞄鏈接 QR 碼";
-
 /* Sync add device description */
 "SyncAddDeviceScanDescription" = "在第二部行動裝置上導向至設定面板中的同步並點選「掃描同步代碼」按鈕。使用相機掃描下方的 QR 碼。\n將此代碼視為密碼。如某人取得該密碼，其可讀取並修改您同步的資料。";
 
@@ -1029,9 +1026,6 @@
 
 /* Selection to color/style the user interface with a dark theme */
 "ThemesDarkOption" = "暗";
-
-/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
-"ThemesDisplayBrightness" = "顯示及亮度";
 
 /* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
 "ThemesDisplayBrightnessFooter" = "這些設定不適用於私密瀏覽模式。";

@@ -17,6 +17,7 @@
 		0A0D3D6121A596BE00BEE65B /* MalwareList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0D3D6021A596BE00BEE65B /* MalwareList.swift */; };
 		0A19362F234D44DB002E2B81 /* AppearanceAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A19362E234D44DB002E2B81 /* AppearanceAttributes.swift */; };
 		0A19365423508756002E2B81 /* LinkPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A19365323508756002E2B81 /* LinkPreviewViewController.swift */; };
+		0A1CBCFD23571EFA004DA73F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0A1CBCFB23571EFA004DA73F /* Localizable.strings */; };
 		0A1E842D21909CA70042F782 /* crypto.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A1E842C21909CA70042F782 /* crypto.js */; };
 		0A1E842F21909CBC0042F782 /* bundle.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A1E842E21909CBB0042F782 /* bundle.js */; };
 		0A1E843121909CC40042F782 /* fetch.js in Resources */ = {isa = PBXBuildFile; fileRef = 0A1E843021909CC30042F782 /* fetch.js */; };
@@ -1186,6 +1187,7 @@
 		03CCC9171AF05E7300DBF30D /* RelativeDatesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelativeDatesTests.swift; sourceTree = "<group>"; };
 		0A063D4A22EB2945001CE50B /* libadblock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libadblock.a; sourceTree = "<group>"; };
 		0A063D4B22EB2945001CE50B /* ablock_rust_lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ablock_rust_lib.h; sourceTree = "<group>"; };
+		0A0B951123571EF200E6543A /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Storage.strings; sourceTree = "<group>"; };
 		0A0D3D3821A4BD0600BEE65B /* SafeBrowsing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeBrowsing.swift; sourceTree = "<group>"; };
 		0A0D3D3B21A4BE6400BEE65B /* adblock-list.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "adblock-list.txt"; sourceTree = "<group>"; };
 		0A0D3D3D21A4BE6C00BEE65B /* simple_malware.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = simple_malware.txt; sourceTree = "<group>"; };
@@ -1194,6 +1196,8 @@
 		0A0D3D6021A596BE00BEE65B /* MalwareList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MalwareList.swift; sourceTree = "<group>"; };
 		0A19362E234D44DB002E2B81 /* AppearanceAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceAttributes.swift; sourceTree = "<group>"; };
 		0A19365323508756002E2B81 /* LinkPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkPreviewViewController.swift; sourceTree = "<group>"; };
+		0A1CBCFC23571EFA004DA73F /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0A1CBCFE23571EFA004DA73F /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Storage.strings; sourceTree = "<group>"; };
 		0A1E841B219095410042F782 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		0A1E842C21909CA70042F782 /* crypto.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = crypto.js; path = "node_modules/brave-sync/node_modules/brave-crypto/browser/crypto.js"; sourceTree = SOURCE_ROOT; };
 		0A1E842E21909CBB0042F782 /* bundle.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = bundle.js; path = "node_modules/brave-sync/bundles/bundle.js"; sourceTree = SOURCE_ROOT; };
@@ -1229,6 +1233,7 @@
 		0A24F845233EB5B5004D2F3A /* BundleId.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = BundleId.xcconfig; sourceTree = "<group>"; };
 		0A24F846233EB5B5004D2F3A /* Fennec.enterprise.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Fennec.enterprise.xcconfig; sourceTree = "<group>"; };
 		0A24F847233EB5B5004D2F3A /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
+		0A2D5DF623571F02001ED889 /* ko-KR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ko-KR"; path = "ko-KR.lproj/Storage.strings"; sourceTree = "<group>"; };
 		0A2F921B22146B7700304249 /* FrecencyQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrecencyQuery.swift; sourceTree = "<group>"; };
 		0A38EA7F216532DB00142710 /* CRUDProtocolsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRUDProtocolsTests.swift; sourceTree = "<group>"; };
 		0A39D56C21930B89008B2772 /* ScriptOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScriptOpener.swift; sourceTree = "<group>"; };
@@ -1253,15 +1258,19 @@
 		0A4BEFD7221EE78E0005551A /* CachedNetworkResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedNetworkResource.swift; sourceTree = "<group>"; };
 		0A4BEFD9221EF3360005551A /* NetworkResourceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkResourceType.swift; sourceTree = "<group>"; };
 		0A4BEFDD221F03C80005551A /* NetworkManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerTests.swift; sourceTree = "<group>"; };
+		0A529EBB23571F1800DDAFDD /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Storage.strings; sourceTree = "<group>"; };
 		0A53F3E621E6560A0086E80C /* InMemoryDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryDataController.swift; sourceTree = "<group>"; };
 		0A6112AB230B00E7001BBC45 /* OnboardingNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNavigationController.swift; sourceTree = "<group>"; };
 		0A6112BC230B4306001BBC45 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		0A67500A23571F21006A6D00 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Storage.strings; sourceTree = "<group>"; };
 		0A6E095E230E05BC00AB3F19 /* onboarding-shields.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "onboarding-shields.json"; sourceTree = "<group>"; };
+		0A75A3BD23571F2B00013540 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Storage.strings"; sourceTree = "<group>"; };
 		0A764F30230EE5CA003A1D9B /* OnboardingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingState.swift; sourceTree = "<group>"; };
 		0A771D34218C8FDC00336E0D /* Bookmark+Sync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bookmark+Sync.swift"; sourceTree = "<group>"; };
 		0A7B5D6622689C5D00AADF22 /* AddEditHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditHeaderView.swift; sourceTree = "<group>"; };
 		0A7B5D6F2269E72C00AADF22 /* BookmarkSaveLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkSaveLocation.swift; sourceTree = "<group>"; };
 		0A7B5D712269E7AD00AADF22 /* BookmarkEditMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkEditMode.swift; sourceTree = "<group>"; };
+		0A86268423571F3300FD4C11 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Storage.strings; sourceTree = "<group>"; };
 		0A8C6992225BC7B100988715 /* ToolbarUrlActionsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarUrlActionsProtocol.swift; sourceTree = "<group>"; };
 		0A8C69AA225CFCAF00988715 /* AddEditBookmarkTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditBookmarkTableViewController.swift; sourceTree = "<group>"; };
 		0A8C69B4225DE99700988715 /* BookmarkDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailsView.swift; sourceTree = "<group>"; };
@@ -1271,11 +1280,13 @@
 		0A917390231D173C0069A08B /* AppReviewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewTests.swift; sourceTree = "<group>"; };
 		0A93F17F2264C2D200A3571B /* FolderDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderDetailsView.swift; sourceTree = "<group>"; };
 		0A93F1882264C72000A3571B /* BookmarkFormFieldsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkFormFieldsProtocol.swift; sourceTree = "<group>"; };
+		0A95EF7A23571F3A001385A3 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/Storage.strings; sourceTree = "<group>"; };
 		0A9B6A3420E6453400712BC9 /* Model8.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model8.xcdatamodel; sourceTree = "<group>"; };
 		0AA029F7222E899400D6B535 /* Bookmark+Reorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bookmark+Reorder.swift"; sourceTree = "<group>"; };
 		0AA21E472302C4CC00358988 /* webauth_verify_key.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = webauth_verify_key.json; sourceTree = "<group>"; };
 		0AA21E482302C4CC00358988 /* webauth_insert_key.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = webauth_insert_key.json; sourceTree = "<group>"; };
 		0AA21E492302C4CC00358988 /* webauth_touch_key.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = webauth_touch_key.json; sourceTree = "<group>"; };
+		0AA490CD23571F440098D1FF /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Storage.strings; sourceTree = "<group>"; };
 		0AA4AA98231849440009AAEF /* ABPFilterParserData.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = ABPFilterParserData.dat; sourceTree = "<group>"; };
 		0AA4FC382109D685000B173A /* CRUDProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRUDProtocols.swift; sourceTree = "<group>"; };
 		0AAAAC962249174A009A8763 /* SyncAlerts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncAlerts.swift; sourceTree = "<group>"; };
@@ -1287,11 +1298,14 @@
 		0AADC4D120D2A6A200FDE368 /* PreloadedFavorites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreloadedFavorites.swift; sourceTree = "<group>"; };
 		0AADC4D620D2B03900FDE368 /* BraveShieldStatsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveShieldStatsView.swift; sourceTree = "<group>"; };
 		0AB2442B22AA789B00B4D9DD /* ReaderModeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderModeButton.swift; sourceTree = "<group>"; };
+		0AB70C6A23571F4C00E9C2C8 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/Storage.strings; sourceTree = "<group>"; };
 		0AC0D399233E7CAF0091EFA5 /* ObjcExceptionBridging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjcExceptionBridging.framework; path = Carthage/Build/iOS/ObjcExceptionBridging.framework; sourceTree = "<group>"; };
 		0AC0D3A9233E86E50091EFA5 /* sqlcipher.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = sqlcipher.xcodeproj; sourceTree = "<group>"; };
 		0AC0D3BF233E889D0091EFA5 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/Storage.strings; sourceTree = "<group>"; };
 		0AC0D3C1233E889D0091EFA5 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		0AC8E23A22A6C56D0064F3FA /* libYubiKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libYubiKit.a; path = ThirdParty/YubiKit/libYubiKit.a; sourceTree = "<group>"; };
+		0ACB38EA23571F5600DDC245 /* zh-TW */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-TW"; path = "zh-TW.lproj/Storage.strings"; sourceTree = "<group>"; };
+		0ACB3BF723571ED1000AC688 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Storage.strings; sourceTree = "<group>"; };
 		0AD4FEE9223A9A5500E00C05 /* BundledJSProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundledJSProtocol.swift; sourceTree = "<group>"; };
 		0AD4FEEB223A9C1300E00C05 /* BrowserifiedJS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserifiedJS.swift; sourceTree = "<group>"; };
 		0AD4FEED223AA09D00E00C05 /* BrowserifyExposable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserifyExposable.swift; sourceTree = "<group>"; };
@@ -1302,9 +1316,11 @@
 		0AD5E9C32200591F00D0D91B /* BraveShield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveShield.swift; sourceTree = "<group>"; };
 		0AD9F88022F049E5008B4D95 /* AdblockRustEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdblockRustEngine.swift; sourceTree = "<group>"; };
 		0AD9F88D22F05376008B4D95 /* AdblockRustTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdblockRustTests.swift; sourceTree = "<group>"; };
+		0ADAFD9223571ED700C8669B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Storage.strings; sourceTree = "<group>"; };
 		0ADCD4512319640F0078CC67 /* UserAgentBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgentBuilder.swift; sourceTree = "<group>"; };
 		0ADCD45A231973650078CC67 /* UserAgentBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgentBuilderTests.swift; sourceTree = "<group>"; };
 		0AE5C09822CAA01E00DFF3EE /* RewardsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsButton.swift; sourceTree = "<group>"; };
+		0AE885BC23571EE1006951A8 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Storage.strings; sourceTree = "<group>"; };
 		0AEF99A822E22C5E00294C76 /* DownloadsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsViewController.swift; sourceTree = "<group>"; };
 		0AEF99B122E22D2200294C76 /* DateGroupedTableData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateGroupedTableData.swift; sourceTree = "<group>"; };
 		0AEFB84822244135007AF600 /* AdblockDebugMenuTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdblockDebugMenuTableViewController.swift; sourceTree = "<group>"; };
@@ -1320,6 +1336,7 @@
 		0AF3B4EB213D8E3300695962 /* DeviceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceTests.swift; sourceTree = "<group>"; };
 		0AF3B4EC213D8E3300695962 /* TabMOTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabMOTests.swift; sourceTree = "<group>"; };
 		0AF6845A2191D6470079EC77 /* bookmark_util.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = bookmark_util.js; sourceTree = "<group>"; };
+		0AF89E5A23571EE80074E1EF /* id-ID */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "id-ID"; path = "id-ID.lproj/Storage.strings"; sourceTree = "<group>"; };
 		0B3E7D931B27A7CE00E2E84D /* AboutHomeHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutHomeHandler.swift; sourceTree = "<group>"; };
 		0B3E7DB91B27AB4C00E2E84D /* MockLogins.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MockLogins.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		0B54BD181B698B7C004C822C /* SuggestedSites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestedSites.swift; sourceTree = "<group>"; };
@@ -2806,6 +2823,7 @@
 				271DEC3B234CC7ED009DAC37 /* Welcome */,
 				271DEC1B234CC75F009DAC37 /* BraveRewardsUI.h */,
 				271DEC1C234CC75F009DAC37 /* Info.plist */,
+				0A1CBCFB23571EFA004DA73F /* Localizable.strings */,
 			);
 			indentWidth = 2;
 			path = BraveRewardsUI;
@@ -5162,6 +5180,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				271DED0A234CC7EF009DAC37 /* Images.xcassets in Resources */,
+				0A1CBCFD23571EFA004DA73F /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6304,10 +6323,33 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		0A1CBCFB23571EFA004DA73F /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0A1CBCFC23571EFA004DA73F /* ja */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		0AC0D3BE233E889D0091EFA5 /* Storage.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				0AC0D3BF233E889D0091EFA5 /* ms */,
+				0ACB3BF723571ED1000AC688 /* de */,
+				0ADAFD9223571ED700C8669B /* es */,
+				0AE885BC23571EE1006951A8 /* fr */,
+				0AF89E5A23571EE80074E1EF /* id-ID */,
+				0A0B951123571EF200E6543A /* it */,
+				0A1CBCFE23571EFA004DA73F /* ja */,
+				0A2D5DF623571F02001ED889 /* ko-KR */,
+				0A529EBB23571F1800DDAFDD /* nb */,
+				0A67500A23571F21006A6D00 /* pl */,
+				0A75A3BD23571F2B00013540 /* pt-BR */,
+				0A86268423571F3300FD4C11 /* ru */,
+				0A95EF7A23571F3A001385A3 /* sv */,
+				0AA490CD23571F440098D1FF /* uk */,
+				0AB70C6A23571F4C00E9C2C8 /* zh */,
+				0ACB38EA23571F5600DDC245 /* zh-TW */,
 			);
 			name = Storage.strings;
 			sourceTree = "<group>";

@@ -844,9 +844,6 @@
 /* Add a Computer title */
 "SyncAddComputerTitle" = "Tambah satu Komputer";
 
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "Imbas Kod QR Rantai";
-
 /* Sync add device description */
 "SyncAddDeviceScanDescription" = "Pada peranti mudah alih kedua anda, navigasi ke Segerak dalam panel Tetapan dan ketik butang \"Imbas Kod Segerak\". Gunakan kamera anda untuk mengimbas Kod QR di bawah.\nAnggapkan kod ini sebagai kata laluan. Jika orang lain mendapat kod ini, mereka boleh membaca dan mengubah suai data anda yang disegerakkan. ";
 
@@ -1029,9 +1026,6 @@
 
 /* Selection to color/style the user interface with a dark theme */
 "ThemesDarkOption" = "Gelap";
-
-/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
-"ThemesDisplayBrightness" = "Paparan & Kecerahan";
 
 /* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
 "ThemesDisplayBrightnessFooter" = "Tetapan ini tidak terpakai dalam mod pelayaran peribadi.";
