@@ -12,13 +12,15 @@
 
 namespace {
 
-const policy::PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
+// Wrap whole array definition in TOR to avoid unused varilable build error.
+// It can happen if platform doesn't support tor.
 #if BUILDFLAG(ENABLE_TOR)
+const policy::PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
   { policy::key::kTorDisabled,
     kTorDisabled,
     base::Value::Type::BOOLEAN },
-#endif
 };
+#endif
 
 }  // namespace
 
@@ -33,12 +35,16 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildHandlerList(
   std::unique_ptr<ConfigurationPolicyHandlerList> handlers =
       BuildHandlerList_ChromiumImpl(chrome_schema);
 
+  // TODO(simonhong): Remove this guard when array size is not empty w/o tor.
+  // base::size failed to instantiate with zero-size array.
+#if BUILDFLAG(ENABLE_TOR)
   for (size_t i = 0; i < base::size(kBraveSimplePolicyMap); ++i) {
     handlers->AddHandler(std::make_unique<SimplePolicyHandler>(
         kBraveSimplePolicyMap[i].policy_name,
         kBraveSimplePolicyMap[i].preference_path,
         kBraveSimplePolicyMap[i].value_type));
   }
+#endif
   return handlers;
 }
 
