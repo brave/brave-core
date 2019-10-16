@@ -47,6 +47,8 @@ static NSString * const kBackupNotificationFrequencyKey = @"BATBackupNotificatio
 static NSString * const kUserHasFundedKey = @"BATRewardsUserHasFunded";
 static NSString * const kBackupSucceededKey = @"BATRewardsBackupSucceeded";
 
+static NSString * const kContributionQueueAutoincrementID = @"BATContributionQueueAutoincrementID";
+
 static const auto kOneDay = base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 
 /// Ledger Prefs, keys will be defined in `bat/ledger/option_keys.h`
@@ -1860,17 +1862,32 @@ BATLedgerBridge(BOOL,
 
 - (void)insertOrUpdateContributionQueue:(ledger::ContributionQueuePtr)info callback:(ledger::ResultCallback)callback
 {
-  //FIXME::Add implementation
+  if (info.get() == nullptr) { return; }
+  
+  if (info->id == 0) {
+    NSNumber *nextID = self.prefs[kContributionQueueAutoincrementID] ?: [NSNumber numberWithUnsignedLongLong:1];
+    info->id = [nextID unsignedLongLongValue];
+    self.prefs[kContributionQueueAutoincrementID] = @([nextID unsignedLongLongValue] + 1);
+    [self savePrefs];
+  }
+  
+  const auto queue = [[BATContributionQueue alloc] initWithContributionQueue:*info];
+  [BATLedgerDatabase insertOrUpdateContributionQueue:queue completion:^(BOOL success) {
+    callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
+  }];
 }
 
 - (void)deleteContributionQueue:(const uint64_t) id callback:(ledger::ResultCallback)callback
 {
-  //FIXME::Add implementation
+  [BATLedgerDatabase deleteQueueWithID:id completion:^(BOOL success) {
+    callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
+  }];
 }
 
 - (void)getFirstContributionQueue:(ledger::GetFirstContributionQueueCallback)callback
 {
-  //FIXME::Add implementation
+  const auto queue = [BATLedgerDatabase firstQueue];
+  callback(queue != nil ? queue.cppObjPtr : nullptr);
 }
 
 

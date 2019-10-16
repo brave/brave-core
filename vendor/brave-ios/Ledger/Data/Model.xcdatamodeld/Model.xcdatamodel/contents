@@ -1,71 +1,83 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14492.1" systemVersion="18G95" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15400" systemVersion="18G103" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="ActivityInfo" representedClassName="ActivityInfo" syncable="YES">
-        <attribute name="duration" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="percent" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="publisherID" attributeType="String" syncable="YES"/>
-        <attribute name="reconcileStamp" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="score" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="visits" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="weight" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="publisher" maxCount="1" deletionRule="Nullify" destinationEntity="PublisherInfo" inverseName="activities" inverseEntity="PublisherInfo" syncable="YES"/>
+        <attribute name="duration" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="percent" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="publisherID" attributeType="String"/>
+        <attribute name="reconcileStamp" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="score" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="visits" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="weight" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="publisher" maxCount="1" deletionRule="Nullify" destinationEntity="PublisherInfo" inverseName="activities" inverseEntity="PublisherInfo"/>
         <fetchIndex name="byPublisherIDIndex">
             <fetchIndexElement property="publisherID" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
     <entity name="ContributionInfo" representedClassName="ContributionInfo" syncable="YES">
-        <attribute name="date" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="month" attributeType="Integer 32" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="probi" attributeType="String" syncable="YES"/>
-        <attribute name="publisherID" attributeType="String" syncable="YES"/>
-        <attribute name="type" attributeType="Integer 32" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="year" attributeType="Integer 32" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="publisher" maxCount="1" deletionRule="Nullify" destinationEntity="PublisherInfo" inverseName="contributions" inverseEntity="PublisherInfo" syncable="YES"/>
+        <attribute name="date" attributeType="Integer 64" usesScalarValueType="YES"/>
+        <attribute name="month" attributeType="Integer 32" usesScalarValueType="YES"/>
+        <attribute name="probi" attributeType="String"/>
+        <attribute name="publisherID" attributeType="String"/>
+        <attribute name="type" attributeType="Integer 32" usesScalarValueType="YES"/>
+        <attribute name="year" attributeType="Integer 32" usesScalarValueType="YES"/>
+        <relationship name="publisher" maxCount="1" deletionRule="Nullify" destinationEntity="PublisherInfo" inverseName="contributions" inverseEntity="PublisherInfo"/>
         <fetchIndex name="byPublisherIDIndex">
             <fetchIndexElement property="publisherID" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
+    <entity name="ContributionPublisher" representedClassName="ContributionPublisher" syncable="YES" codeGenerationType="class">
+        <attribute name="amountPercent" attributeType="Double" usesScalarValueType="YES"/>
+        <attribute name="publisherKey" attributeType="String" defaultValueString=""/>
+        <relationship name="queue" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ContributionQueue" inverseName="publishers" inverseEntity="ContributionQueue"/>
+    </entity>
+    <entity name="ContributionQueue" representedClassName="ContributionQueue" syncable="YES" codeGenerationType="class">
+        <attribute name="amount" attributeType="Double" usesScalarValueType="YES"/>
+        <attribute name="id" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="partial" attributeType="Boolean" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="type" attributeType="Integer 32" usesScalarValueType="YES"/>
+        <relationship name="publishers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ContributionPublisher" inverseName="queue" inverseEntity="ContributionPublisher"/>
+    </entity>
     <entity name="MediaPublisherInfo" representedClassName="MediaPublisherInfo" syncable="YES">
-        <attribute name="mediaKey" attributeType="String" syncable="YES"/>
-        <attribute name="publisherID" attributeType="String" syncable="YES"/>
+        <attribute name="mediaKey" attributeType="String"/>
+        <attribute name="publisherID" attributeType="String"/>
     </entity>
     <entity name="PendingContribution" representedClassName="PendingContribution" syncable="YES">
-        <attribute name="addedDate" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="amount" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="publisherID" attributeType="String" syncable="YES"/>
-        <attribute name="type" attributeType="Integer 32" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="viewingID" attributeType="String" syncable="YES"/>
-        <relationship name="publisher" maxCount="1" deletionRule="Nullify" destinationEntity="PublisherInfo" inverseName="pendingContributions" inverseEntity="PublisherInfo" syncable="YES"/>
+        <attribute name="addedDate" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="amount" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="publisherID" attributeType="String"/>
+        <attribute name="type" attributeType="Integer 32" usesScalarValueType="YES"/>
+        <attribute name="viewingID" attributeType="String"/>
+        <relationship name="publisher" maxCount="1" deletionRule="Nullify" destinationEntity="PublisherInfo" inverseName="pendingContributions" inverseEntity="PublisherInfo"/>
         <fetchIndex name="byPublisherIDIndex">
             <fetchIndexElement property="publisherID" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
     <entity name="PublisherInfo" representedClassName="PublisherInfo" syncable="YES">
-        <attribute name="excluded" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="faviconURL" attributeType="String" syncable="YES"/>
-        <attribute name="name" attributeType="String" syncable="YES"/>
-        <attribute name="provider" attributeType="String" syncable="YES"/>
-        <attribute name="publisherID" attributeType="String" syncable="YES"/>
-        <attribute name="status" attributeType="Integer 32" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="url" attributeType="String" syncable="YES"/>
-        <relationship name="activities" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ActivityInfo" inverseName="publisher" inverseEntity="ActivityInfo" syncable="YES"/>
-        <relationship name="contributions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ContributionInfo" inverseName="publisher" inverseEntity="ContributionInfo" syncable="YES"/>
-        <relationship name="pendingContributions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PendingContribution" inverseName="publisher" inverseEntity="PendingContribution" syncable="YES"/>
-        <relationship name="recurringDonations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RecurringDonation" inverseName="publisher" inverseEntity="RecurringDonation" syncable="YES"/>
+        <attribute name="excluded" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="faviconURL" attributeType="String"/>
+        <attribute name="name" attributeType="String"/>
+        <attribute name="provider" attributeType="String"/>
+        <attribute name="publisherID" attributeType="String"/>
+        <attribute name="status" attributeType="Integer 32" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="url" attributeType="String"/>
+        <relationship name="activities" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ActivityInfo" inverseName="publisher" inverseEntity="ActivityInfo"/>
+        <relationship name="contributions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ContributionInfo" inverseName="publisher" inverseEntity="ContributionInfo"/>
+        <relationship name="pendingContributions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PendingContribution" inverseName="publisher" inverseEntity="PendingContribution"/>
+        <relationship name="recurringDonations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RecurringDonation" inverseName="publisher" inverseEntity="RecurringDonation"/>
     </entity>
     <entity name="RecurringDonation" representedClassName="RecurringDonation" syncable="YES">
-        <attribute name="addedDate" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="amount" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="publisherID" attributeType="String" syncable="YES"/>
-        <relationship name="publisher" maxCount="1" deletionRule="Nullify" destinationEntity="PublisherInfo" inverseName="recurringDonations" inverseEntity="PublisherInfo" syncable="YES"/>
+        <attribute name="addedDate" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="amount" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="publisherID" attributeType="String"/>
+        <relationship name="publisher" maxCount="1" deletionRule="Nullify" destinationEntity="PublisherInfo" inverseName="recurringDonations" inverseEntity="PublisherInfo"/>
         <fetchIndex name="byPublisherIDIndex">
             <fetchIndexElement property="publisherID" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
     <entity name="ServerPublisherAmount" representedClassName="ServerPublisherAmount" syncable="YES">
-        <attribute name="amount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="publisherID" attributeType="String" syncable="YES"/>
-        <relationship name="serverPublisherInfo" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ServerPublisherInfo" inverseName="amounts" inverseEntity="ServerPublisherInfo" syncable="YES"/>
+        <attribute name="amount" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="publisherID" attributeType="String"/>
+        <relationship name="serverPublisherInfo" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ServerPublisherInfo" inverseName="amounts" inverseEntity="ServerPublisherInfo"/>
         <fetchIndex name="byPublisherIDIndex">
             <fetchIndexElement property="publisherID" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -77,12 +89,12 @@
         </uniquenessConstraints>
     </entity>
     <entity name="ServerPublisherBanner" representedClassName="ServerPublisherBanner" syncable="YES">
-        <attribute name="background" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="desc" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="logo" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="publisherID" attributeType="String" syncable="YES"/>
-        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="serverPublisherInfo" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ServerPublisherInfo" inverseName="banner" inverseEntity="ServerPublisherInfo" syncable="YES"/>
+        <attribute name="background" optional="YES" attributeType="String"/>
+        <attribute name="desc" optional="YES" attributeType="String"/>
+        <attribute name="logo" optional="YES" attributeType="String"/>
+        <attribute name="publisherID" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <relationship name="serverPublisherInfo" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ServerPublisherInfo" inverseName="banner" inverseEntity="ServerPublisherInfo"/>
         <fetchIndex name="byPublisherIDIndex">
             <fetchIndexElement property="publisherID" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -93,22 +105,22 @@
         </uniquenessConstraints>
     </entity>
     <entity name="ServerPublisherInfo" representedClassName="ServerPublisherInfo" syncable="YES">
-        <attribute name="address" attributeType="String" syncable="YES"/>
-        <attribute name="excluded" attributeType="Boolean" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <attribute name="publisherID" attributeType="String" syncable="YES"/>
-        <attribute name="status" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
-        <relationship name="amounts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ServerPublisherAmount" inverseName="serverPublisherInfo" inverseEntity="ServerPublisherAmount" syncable="YES"/>
-        <relationship name="banner" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ServerPublisherBanner" inverseName="serverPublisherInfo" inverseEntity="ServerPublisherBanner" syncable="YES"/>
-        <relationship name="links" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ServerPublisherLink" inverseName="serverPublisherInfo" inverseEntity="ServerPublisherLink" syncable="YES"/>
+        <attribute name="address" attributeType="String"/>
+        <attribute name="excluded" attributeType="Boolean" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="publisherID" attributeType="String"/>
+        <attribute name="status" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="amounts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ServerPublisherAmount" inverseName="serverPublisherInfo" inverseEntity="ServerPublisherAmount"/>
+        <relationship name="banner" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ServerPublisherBanner" inverseName="serverPublisherInfo" inverseEntity="ServerPublisherBanner"/>
+        <relationship name="links" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ServerPublisherLink" inverseName="serverPublisherInfo" inverseEntity="ServerPublisherLink"/>
         <fetchIndex name="byPublisherIDIndex">
             <fetchIndexElement property="publisherID" type="Binary" order="ascending"/>
         </fetchIndex>
     </entity>
     <entity name="ServerPublisherLink" representedClassName="ServerPublisherLink" syncable="YES">
-        <attribute name="link" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="provider" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="publisherID" attributeType="String" syncable="YES"/>
-        <relationship name="serverPublisherInfo" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ServerPublisherInfo" inverseName="links" inverseEntity="ServerPublisherInfo" syncable="YES"/>
+        <attribute name="link" optional="YES" attributeType="String"/>
+        <attribute name="provider" optional="YES" attributeType="String"/>
+        <attribute name="publisherID" attributeType="String"/>
+        <relationship name="serverPublisherInfo" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ServerPublisherInfo" inverseName="links" inverseEntity="ServerPublisherInfo"/>
         <fetchIndex name="byPublisherIDIndex">
             <fetchIndexElement property="publisherID" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -127,8 +139,10 @@
         <element name="PublisherInfo" positionX="-63" positionY="-18" width="128" height="210"/>
         <element name="RecurringDonation" positionX="-36" positionY="126" width="128" height="105"/>
         <element name="ServerPublisherAmount" positionX="-54" positionY="99" width="128" height="90"/>
-        <element name="ServerPublisherInfo" positionX="-45" positionY="108" width="128" height="150"/>
         <element name="ServerPublisherBanner" positionX="-36" positionY="117" width="128" height="135"/>
+        <element name="ServerPublisherInfo" positionX="-45" positionY="108" width="128" height="150"/>
         <element name="ServerPublisherLink" positionX="-27" positionY="126" width="128" height="105"/>
+        <element name="ContributionQueue" positionX="-45" positionY="108" width="128" height="118"/>
+        <element name="ContributionPublisher" positionX="-36" positionY="117" width="128" height="88"/>
     </elements>
 </model>
