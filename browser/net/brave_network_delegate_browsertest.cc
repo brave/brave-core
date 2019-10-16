@@ -47,6 +47,12 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   }
 
+  void DefaultBlockAllCookies() {
+    brave_shields::SetCookieControlType(browser()->profile(),
+                                        brave_shields::ControlType::BLOCK,
+                                        GURL());
+  }
+
   void AllowCookies() {
     brave_shields::SetCookieControlType(browser()->profile(),
                                         brave_shields::ControlType::ALLOW,
@@ -97,4 +103,16 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   const std::string cookie =
       content::GetCookies(browser()->profile(), GURL("http://c.com/"));
   EXPECT_FALSE(cookie.empty());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
+                       DefaultCookiesBlocked) {
+  DefaultBlockAllCookies();
+  ui_test_utils::NavigateToURL(browser(), nested_iframe_script_url_);
+  std::string cookie =
+      content::GetCookies(browser()->profile(), GURL("http://c.com/"));
+  EXPECT_TRUE(cookie.empty()) << "Actual cookie: " << cookie;
+  cookie =
+      content::GetCookies(browser()->profile(), GURL("http://a.com/"));
+  EXPECT_TRUE(cookie.empty()) << "Actual cookie: " << cookie;
 }
