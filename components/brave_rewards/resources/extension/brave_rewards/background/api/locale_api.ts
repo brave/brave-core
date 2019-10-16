@@ -42,6 +42,7 @@ export const getUIMessages = (): Record<string, string> => {
     'claim',
     'contributionTips',
     'connectedText',
+    'details',
     'disabledPanelTextTwo',
     'donateMonthly',
     'donateNow',

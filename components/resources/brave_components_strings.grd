@@ -385,6 +385,7 @@
       <message name="IDS_BRAVE_UI_DEPOSIT" desc="">Deposit</message>
       <message name="IDS_BRAVE_UI_DEPOSITS" desc="">Deposits</message>
       <message name="IDS_BRAVE_UI_DESCRIPTION" desc="">Description</message>
+      <message name="IDS_BRAVE_UI_DETAILS" desc="">Details</message>
       <message name="IDS_BRAVE_UI_DISABLED_PANEL_OFF" desc="">Off</message>
       <message name="IDS_BRAVE_UI_DISABLED_PANEL_SETTINGS" desc="">Settings.</message>
       <message name="IDS_BRAVE_UI_DISABLED_PANEL_TEXT" desc="">You are not currently accruing any Rewards benefits while browsing. Turn Rewards back on in</message>
