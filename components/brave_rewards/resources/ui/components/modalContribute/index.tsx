@@ -120,7 +120,7 @@ export default class ModalContribute extends React.PureComponent<Props, {}> {
                 onChange={onTabChange}
                 tabIndexSelected={activeTabId}
                 tabTitles={[
-                  this.getTabTitle('supportedSites', numSites),
+                  this.getTabTitle('viewedSites', numSites),
                   this.getTabTitle('excludedSites', numExcluded)
                 ]}
               />
