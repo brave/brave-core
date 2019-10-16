@@ -120,6 +120,8 @@ void SetBraveShieldsEnabled(Profile* profile,
   if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS())
     return;
 
+  DCHECK(!url.is_empty()) << "url for shields setting cannot be blank";
+
   auto primary_pattern = GetPatternFromURL(url, true);
 
   if (!primary_pattern.IsValid())
