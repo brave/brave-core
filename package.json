@@ -11,6 +11,7 @@
     "web-ui": "webpack --config components/webpack/webpack.config.js --progress --colors",
     "build-storybook": "build-storybook -c .storybook -o .storybook-out",
     "storybook": "start-storybook",
+    "build": "npm run build-storybook",
     "test-unit": "jest -t",
     "test-security": "npm audit",
     "test-python-scripts": "npm run pep8 && PYTHONPATH=./script python -m unittest discover -s ./script/test"
