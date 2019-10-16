@@ -207,7 +207,7 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
     // Returns a single Favicon UIImage for a given URL
     class func fetchFavImageForURL(forURL url: URL, profile: Profile) -> Deferred<Maybe<UIImage>> {
         let deferred = Deferred<Maybe<UIImage>>()
-        FaviconFetcher.getForURL(url.domainURL).uponQueue(.main) { result in
+        FaviconFetcher.getForURL(url.domainURL()).uponQueue(.main) { result in
             guard let favicons = result.successValue, let favicon = favicons.first, let faviconURL = favicon.url.asURL else {
                 return deferred.fill(Maybe(failure: FaviconError()))
             }

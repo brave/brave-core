@@ -158,7 +158,7 @@ extension BrowserViewController: WKNavigationDelegate {
 
             pendingRequests[url.absoluteString] = navigationAction.request
             
-            if let urlHost = url.normalizedHost {
+            if let urlHost = url.normalizedHost() {
                 if let mainDocumentURL = navigationAction.request.mainDocumentURL, url.scheme == "http" {
                     let domainForShields = Domain.getOrCreate(forUrl: mainDocumentURL, persistent: !isPrivateBrowsing)
                     if domainForShields.isShieldExpected(.HTTPSE) && HttpsEverywhereStats.shared.shouldUpgrade(url) {
@@ -258,7 +258,7 @@ extension BrowserViewController: WKNavigationDelegate {
         let canShowInWebView = navigationResponse.canShowMIMEType && (webView != pendingDownloadWebView)
         let forceDownload = webView == pendingDownloadWebView
         
-        if let url = responseURL, let urlHost = responseURL?.normalizedHost {
+        if let url = responseURL, let urlHost = responseURL?.normalizedHost() {
             // If an upgraded https load happens with a host which was upgraded, increase the stats
             if url.scheme == "https", let _ = pendingHTTPUpgrades.removeValue(forKey: urlHost) {
                 BraveGlobalShieldStats.shared.httpse += 1

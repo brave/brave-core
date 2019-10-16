@@ -31,7 +31,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
         
         super.init(nibName: nil, bundle: nil)
         
-        shieldsView.shieldsContainerStackView.hostLabel.text = url?.normalizedHost
+        shieldsView.shieldsContainerStackView.hostLabel.text = url?.normalizedHost()
         
         updateToggleStatus()
         updateShieldBlockStats()

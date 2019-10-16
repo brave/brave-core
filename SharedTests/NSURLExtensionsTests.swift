@@ -166,7 +166,7 @@ class NSURLExtensionsTests: XCTestCase {
         let nsURL = url.asURL
         XCTAssertNotNil(nsURL, "URL parses.")
 
-        let host = nsURL!.normalizedHost
+        let host = nsURL!.normalizedHost()
         XCTAssertEqual(host!, "bugzilla.mozilla.org")
         XCTAssertEqual(nsURL!.fragment!, "h=dupes%7CData%20%26%20BI%20Services%20Team%7C")
     }
@@ -175,7 +175,7 @@ class NSURLExtensionsTests: XCTestCase {
         let url = "http://[::1]/foo/bar".asURL!
         XCTAssertTrue(url.isIPv6)
         XCTAssertNil(url.baseDomain)
-        XCTAssertEqual(url.normalizedHost!, "[::1]")
+        XCTAssertEqual(url.normalizedHost()!, "[::1]")
     }
 
     func testisAboutHomeURL() {
@@ -363,7 +363,16 @@ class NSURLExtensionsTests: XCTestCase {
             ("https://mail.example.com/index.html", "https://mail.example.com"),
             ("https://mail.example.co.uk/index.html", "https://mail.example.co.uk"),
         ]
-        urls.forEach { XCTAssertEqual(URL(string:$0.0)!.domainURL.absoluteString, $0.1) }
+        urls.forEach { XCTAssertEqual(URL(string:$0.0)!.domainURL().absoluteString, $0.1) }
+    }
+    
+    func testdomainURLStrippingOnlyWWW() {
+        let urls = [
+            ("https://www.example.com/index.html", "https://example.com"),
+            ("https://m.example.com/index.html", "https://m.example.com"),
+            ("https://mobile.example.co.uk/index.html", "https://mobile.example.co.uk"),
+        ]
+        urls.forEach { XCTAssertEqual(URL(string:$0.0)!.domainURL(stripWWWSubdomainOnly: true).absoluteString, $0.1) }
     }
 
     func testdisplayURL() {
