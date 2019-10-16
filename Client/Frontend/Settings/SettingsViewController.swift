@@ -151,6 +151,7 @@ class SettingsViewController: TableViewController {
                 }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 BoolRow(title: Strings.Save_Logins, option: Preferences.General.saveLogins),
                 BoolRow(title: Strings.Block_Popups, option: Preferences.General.blockPopups),
+                BoolRow(title: Strings.Media_Auto_Plays, option: Preferences.General.mediaAutoPlays)
             ]
         )
         

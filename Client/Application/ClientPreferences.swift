@@ -49,6 +49,9 @@ extension Preferences {
         static let showBookmarkToolbarShortcut = Option<Bool>(key: "general.show-bookmark-toolbar-shortcut", default: UIDevice.isIpad)
         /// Sets Desktop UA for iPad by default (iOS 13+ & iPad only)
         static let alwaysRequestDesktopSite = Option<Bool>(key: "general.always-request-desktop-site", default: UIDevice.isIpad)
+        /// Controls whether or not media auto-plays
+        static let mediaAutoPlays = Option<Bool>(key: "general.media-auto-plays", default: false)
+        
         /// Whether or not a user has enabled Night Mode.
         ///
         /// Currently unused
