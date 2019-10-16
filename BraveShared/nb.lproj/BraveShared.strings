@@ -844,9 +844,6 @@
 /* Add a Computer title */
 "SyncAddComputerTitle" = "Legg til en datamaskin";
 
-/* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "Skann kjedens QR-kode";
-
 /* Sync add device description */
 "SyncAddDeviceScanDescription" = "På den andre mobilenheten går du til Sync på panelet Innstillinger på enheten og trykker på knappen «Skann synkkode». Bruk kameraet til å skanne QR-koden som er vist nedenfor.\nDu må behandle koden som et passord. Hvis noen får tak i den, kan de lese og endre de synkroniserte dataene.";
 
@@ -1029,9 +1026,6 @@
 
 /* Selection to color/style the user interface with a dark theme */
 "ThemesDarkOption" = "Mørk";
-
-/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
-"ThemesDisplayBrightness" = "Skjerm og lysstyrke";
 
 /* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
 "ThemesDisplayBrightnessFooter" = "Disse innstillingene brukes ikke i privat nettlesermodus.";

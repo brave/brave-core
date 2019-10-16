@@ -8,7 +8,7 @@
 "AccessPhotoDeniedAlertTitle" = "Brave が写真にアクセスしようとしています";
 
 /* Button to add a bookmark */
-"AddBookmark" = "ブックマークを追加";
+"AddBookmark" = "ブックマーク追加";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "新しいフォルダ";
@@ -17,7 +17,7 @@
 "AddToFavorites" = "お気に入りに追加";
 
 /* Title for the button to add a new website bookmark. */
-"AddToMenuItem" = "ブックマークに追加";
+"AddToMenuItem" = "ブックマーク追加";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "広告とトラッカー";
@@ -322,6 +322,9 @@
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "デバイス %1$@ (%2$@)";
 
+/* Section name for display preferences. */
+"DisplaySettingsSection" = "ディスプレイ";
+
 /* No comment provided by engineer. */
 "Done" = "完了";
 
@@ -425,13 +428,22 @@
 "FingerprintingMethods" = "フィンガープリント";
 
 /* blocking stat title */
-"FingerprintingnProtection" = "指紋\n認証";
+"FingerprintingnProtection" = "フィンガー\nプリント対策";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "フィンガープリント対策";
 
 /* Grand camera access */
 "GrantCameraAccess" = "カメラを有効にする";
+
+/* Context menu item for hiding link previews */
+"HideLinkPreviewsActionTitle" = "リンクプレビューを非表示にする";
+
+/* Hides the rewards icon */
+"HideRewardsIcon" = "Brave Rewardsのアイコンを非表示にする";
+
+/* Hide the rewards icon explination. */
+"HideRewardsIconSubtitle" = "Brave Rewardsが対応していないページでBrave Rewardsのアイコンを非表示にする";
 
 /* Title for history menu item */
 "HistortMenuItem" = "履歴";
@@ -814,6 +826,9 @@
 /* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
 "ShowInLandscapeOnly" = "横持ちのときだけ表示";
 
+/* Context menu item for showing link previews */
+"ShowLinkPreviewsActionTitle" = "リンクプレビューを表示する";
+
 /* Accessibility Label for the tabs button in the browser toolbar */
 "ShowTabs" = "タブを表示";
 
@@ -845,7 +860,7 @@
 "SyncAddComputerTitle" = "コンピュータを追加";
 
 /* Add mobile device to sync with scan */
-"SyncAddDeviceScan" = "チェーンのQRコードをスキャン";
+"SyncAddDeviceScan" = "同期チェーン用QRコード";
 
 /* Sync add device description */
 "SyncAddDeviceScanDescription" = "他のスマートフォンまたはタブレットでBraveを開き、[設定] > [Brave Sync] > {スキャン} と移動します。\nカメラを使って下のQRコードを読み込んでください。\nこのコードをパスワードのように扱ってください。何者かがコードを手に入れた場合、コードを入手した者はあなたが同期したデータを読んだり、変更を加えたりすることができます。";
@@ -1031,7 +1046,7 @@
 "ThemesDarkOption" = "ダーク";
 
 /* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
-"ThemesDisplayBrightness" = "ディスプレイと明るさの設定";
+"ThemesDisplayBrightness" = "外観";
 
 /* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
 "ThemesDisplayBrightnessFooter" = "これらの設定はプライベートモードには適用されません。";

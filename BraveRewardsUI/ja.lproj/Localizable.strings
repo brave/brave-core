@@ -1,0 +1,516 @@
+/* Label for auto-contribute toggle. */
+"AutoContributeSwitchLabel" = "自動支援";
+
+/* No comment provided by engineer. */
+"BraveRewards" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFunds" = "資金を追加する";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsBody" = "あなたが所有する仮想通貨に合ったアドレスを必ず使用してください。送られた仮想通貨はUpholdによってBATに自動的に変換され、Brave Rewards Wallet上に残高として追加されます。残高に反映されるまでに1時間ほどかかる可能性があります。";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsDisclaimer" = "Brave Walletは一方向です。つまりあなたのBATをパブリッシャーに送ることだけが可能です。Brave Walletについての詳しい情報はFAQをご確認ください。";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsShowQRCode" = "QRコードを表示する";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsTitle" = "外部アカウントからBrave Rewards Walletに仮想通貨を送信してください。";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsTokenWalletAddress" = "ウォレットアドレス";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsVCTitle" = "資金を追加する";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationsReceived" = "今月受け取った広告通知";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsEstimatedEarnings" = "保留中の推定報酬額";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsMaxPerDay" = "広告の最大表示件数";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsPayoutDateFormat" = "MMM d";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsUnsupportedDvice" = "現時点では、お使いのデバイスではBrave Rewardsと広告は利用できません。";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsUnsupportedRegion" = "申し訳ございません。お住まいの地域ではまだ広告を利用できません。";
+
+/* No comment provided by engineer. */
+"BraveRewardsAttention" = "アテンション";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContribute" = "自動支援";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeDateFormat" = "MMM d";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumLength" = "最小の長さ";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumLengthMessage" = "サイト訪問を記録する最小ページ数";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumVisits" = "最小訪問数";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumVisitsMessage" = "パブリッシャー関連度の計算に利用する最小訪問数";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMonthlyPayment" = "月々の支払額";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMonthlyPaymentTitle" = "月々の支払額";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeNextDate" = "次の支援支払日";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeRestoreExcludedSites" = "除外した%ldサイトを復元する";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeSupportedSites" = "支援中のサイト";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeToUnverifiedSites" = "未認証サイトへの支援を許可";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeToVideos" = "動画への支援を許可する";
+
+/* No comment provided by engineer. */
+"BraveRewardsCheckAgain" = "ステータスを更新";
+
+/* No comment provided by engineer. */
+"BraveRewardsContributingToUnverifiedSites" = "支援の受取設定が完了していないクリエーターに％@ BATを送りました。彼らが設定を完了するか、90日が経過するまで送付を試みます。";
+
+/* No comment provided by engineer. */
+"BraveRewardsCreatingWallet" = "ウォレットを作成中";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledBody" = "プライバシー重視型の広告を閲覧することで報酬を得て、あなたのお気に入りのサイトを支援することができます。";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledEnableButton" = "Brave Rewardsを有効にする";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledSubtitle" = "ウェブサイト閲覧で報酬を得よう！";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledTitle" = "お帰りなさい！";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisclaimerLearnMore" = "詳しく知る";
+
+/* No comment provided by engineer. */
+"BraveRewardsEarningFromAds" = "広告からの収益";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyAutoContribution" = "サイトはブラウザをご利用いただいていると表示されるようになります。";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyTipsText" = "今日はもうお気に入りのクリエイターにチップを送りましたか？";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyWalletBulletHeader" = "ウォレットの残高を増やす3つの方法";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyWalletBulletPoints" = "• 外部ウォレットから資金を追加する• 広告を表示して報酬を獲得する• Braveからの無料のトークン受け取る。通知をお見逃しなく！";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyWalletTitle" = "残念、まだ獲得したトークンはありません。";
+
+/* No comment provided by engineer. */
+"BraveRewardsExclude" = "除外";
+
+/* No comment provided by engineer. */
+"BraveRewardsFiveAdsPerHour" = "広告を1時間に5件表示";
+
+/* No comment provided by engineer. */
+"BraveRewardsFourAdsPerHour" = "広告を1時間に4件表示";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantListExpiresOn" = "有効期限: %@";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrants" = "付与トークン";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedAmountTitle" = "無料の付与トークン";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedExpirationDateTitle" = "付与トークンの有効期限";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitle" = "あなたの付与トークンは送金中です。";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedTitle" = "今日はラッキーデーです！";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBody" = "あなたのアテンションは貴重です。 プライバシーを重視する画期的な広告を表示して報酬を獲得し、お気に入りのクリエイターを支援することが可能です。";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBraveAdsBody" = "関連性が高くプライバシーを重視する広告を表示し報酬を獲得しましょう。";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBraveAdsTitle" = "広告";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreCreateWallet1" = "参加します！";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreCreateWallet2" = "準備できました！";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreHowItWorks" = "仕組み";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreReady" = "準備はできましたか？";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreSubtitle" = "ウェブサイト閲覧で報酬を得よう！";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTipsBody" = "ウェブサーフィン中に自動的にサイトを支援したり、好きなタイミングでチップを送ることが可能です。";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTipsTitle" = "自動支援";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTurnOnRewardsBody" = "広告と自動支援を有効にします。それぞれ個別にオンまたはオフにできます。";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTurnOnRewardsTitle" = "Brave Rewardsを有効にする";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreWhyBody" = "従来のブラウザではその貴重なアテンションを広告に向けることで間接的にコンテンツに対価を支払っています。その際、不要な広告やスクリプトをダウンロードするためにあなたの貴重な時間が使われ、しかも個人情報を広告主へ送信してしまっているのです。あなたが知らないうちに。\n\nこれからBraveがあなたを新しいインターネットにご招待いたします。あなたの時間が尊重され、個人情報は守られ、関心に対して報酬が支払われます。";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreWhyTitle" = "Brave Rewardsの利点";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices0" = "5秒";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices1" = "8秒";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices2" = "1分";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices0" = "訪問数: 1";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices1" = "訪問数: 5";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices2" = "訪問数: 10";
+
+/* No comment provided by engineer. */
+"BraveRewardsMonthlyTips" = "月々のチップ";
+
+/* No comment provided by engineer. */
+"BraveRewardsNoActivitiesYet" = "まだアクティビティがありません…";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationAdsTitle" = "Brave Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationAutoContributeTitle" = "自動支援";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationRecurringTipTitle" = "定期チップ";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationTokenGrantTitle" = "付与トークン";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotYetVerified" = "未認証";
+
+/* No comment provided by engineer. */
+"BraveRewardsNumberOfAdsPerHourOptionsTitle" = "1時間あたりの広告表示件数";
+
+/* No comment provided by engineer. */
+"BraveRewardsOneAdPerHour" = "広告を1時間に1件表示";
+
+/* No comment provided by engineer. */
+"BraveRewardsOneTimeTips" = "1回限りのチップ";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "開く";
+
+/* No comment provided by engineer. */
+"BraveRewardsPanelTitle" = "Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsPaymentDate" = "次の支払日";
+
+/* No comment provided by engineer. */
+"BraveRewardsPoweredByUphold" = "Brave WalletはUpholdを使用しています";
+
+/* No comment provided by engineer. */
+"BraveRewardsPublisherSendTip" = "チップを送る";
+
+/* No comment provided by engineer. */
+"BraveRewardsRecurringTipTitle" = "定期チップ";
+
+/* No comment provided by engineer. */
+"BraveRewardsRemove" = "削除";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettings" = "設定";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBody" = "Braveで広告を見ることでトークンを獲得しましょう。広告はあなたのブラウザの利用履歴を元に推測されたものが表示されますが、全ての個人情報や閲覧履歴はブラウザの中だけに保存され外部に出ることはありません。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsComingSoonText" = "Coming soon.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsGrantAmountText" = "広告報酬  %@ 利用可能です";
+
+/* Example: <10 BAT> earned from ads */
+"BraveRewardsSettingsAdsGrantText" = "広告からの収益";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsTitle" = "広告";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAutoContributeBody" = "パブリッシャーやコンテンツ制作者を自動で支援する方法です。毎月の支払いを設定し、いつも通りにウェブ閲覧しましょう。あなたが訪問するサイトはBraveによって計測されたあなたのアテンションに基づき、あなたからの支援を自動的に受けとります。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAutoContributeTitle" = "自動支援";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledBody1" = "旧来のブラウザでは、 あなたの貴重なアテンションを広告に向けることでウェブ閲覧の支払いをしています。また不要な広告やスクリプトをダウンロードするためにあなたの貴重な時間を消費するだけでなく、個人情報を広告主へ送信しています — あなたの同意もなく。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledBody2" = "あなたの時間が尊重され、プライバシーは守られ、更にあなたのアテンションに対して報酬が支払われます。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledTitle1" = "Brave Rewardsの利点";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledTitle2" = "あなたを新しいインターネットへ招待します。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantClaimButtonTitle" = "受け取る";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantText" = "無料のトークンを受け取ることが可能です";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsBody" = "コンテンツ制作者にチップを送りましょう。毎月定期的に支払われるチップを設定することで、継続的にサイトを支援することができます。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsTitle" = "チップ";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTitle" = "設定";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsViewDetails" = "詳細を表示";
+
+/* No comment provided by engineer. */
+"BraveRewardsSite" = "サイト";
+
+/* No comment provided by engineer. */
+"BraveRewardsSummaryTitle" = "Rewardsのサマリ";
+
+/* No comment provided by engineer. */
+"BraveRewardsThreeAdsPerHour" = "広告を1時間に3件表示";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingAmountTitle" = "チップする金額";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingConfirmation" = "ありがとうございます";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingMakeMonthly" = "毎月支払う";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingMonthlyTitle" = "次の宛先に自動的にチップを送信しています: ";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotEnoughTokens" = "トークンが不足しています。資金を追加してください。";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOneTimeTitle" = "次の宛先にチップを送信しました:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOverviewBody" = "チップを送ることで、このクリエイターをサポートできます。 すばらしいコンテンツを作成してくれたクリエイターに感謝の気持ちを届けましょう。クリエイターは受取設定が完了していれば毎月第1週にチップを受け取ることができます。\n\n毎月の自動的にチップを送り継続的にサポートすることも可能です。";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOverviewTitle" = "ようこそ！";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingRecurring" = "毎月";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingRecurringDetails" = "初回の定期チップ支払いは次の日付に行われます : ";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingSendMonthlyTip" = "毎月定期チップ支払いを設定する";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingSendTip" = "チップを送る";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingTitle" = "チップを送る";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingUnverifiedDisclaimer" = "注: このクリエイターは、まだBraveユーザーからの支援を受諾する手続きを行っていません。クリエイターが確認するまで、または90日間が経過するまで、支援の送信を継続します。";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingWalletBalanceTitle" = "ウォレット残高";
+
+/* No comment provided by engineer. */
+"BraveRewardsTips" = "チップ";
+
+/* No comment provided by engineer. */
+"BraveRewardsTipsTotalThisMonth" = "今月のチップ総額";
+
+/* No comment provided by engineer. */
+"BraveRewardsTokens" = "トークン";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalGrantsClaimed" = "受け取り済みのトークン";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalSites" = "合計 %Id";
+
+/* No comment provided by engineer. */
+"BraveRewardsTwoAdsPerHour" = "広告を1時間に2件表示";
+
+/* No comment provided by engineer. */
+"BraveRewardsUnverifiedPublisherDisclaimer" = "このクリエイターは、まだBraveユーザーからの支援を受諾する手続きを行っていません。クリエイターの認証確認が終了するまで、送信されたチップはあなたのウォレット内に維持されます。";
+
+/* No comment provided by engineer. */
+"BraveRewardsVerified" = "Brave認証済みパブリッシャー";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletDetailsTitle" = "ウォレット詳細";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderGrants" = "付与トークン";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderTitle" = "あなたのウォレット";
+
+/* No comment provided by engineer. */
+"Cancel" = "キャンセル";
+
+/* No comment provided by engineer. */
+"CLAIM" = "受け取る";
+
+/* No comment provided by engineer. */
+"DisclaimerInformation" = "「Brave Rewardsに参加」をクリックすると、利用規約とプライバシーポリシーに同意したと見なされます。";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "詳しくはこちら";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "これが初めてのBrave Ads(広告)です。";
+
+/* Body for a no network notification */
+"NoNetworkBody" = "Braveリワードサーバーが応答していません。修復作業が終了するまで少々お待ちください。";
+
+/* Title for a no network notification */
+"NoNetworkTitle" = "おっと！";
+
+/* We show this string in the notification when you don't have enough funds for contribution */
+"NotificationAutoContributeNotEnoughFundsBody" = "資金が不十分なため、予定されていたサイトへの自動支援と設定されている毎月支払いチップの支払いを完了できませんでした。30日後に再試行します。";
+
+/* Message for ads launch notification */
+"NotificationBraveAdsLaunchMsg" = "これで今後広告を閲覧することで報酬を獲得できるようになりました。";
+
+/* We show this string in notification when contribution fails */
+"NotificationContributeError" = "支援の処理中にエラーが発生しました。もう一度お試しください。";
+
+/* We show this string in notification when contribution fails */
+"NotificationContributeNotificationError" = "支援の処理中にエラーが発生しました。もう一度お試しください。";
+
+/* We show this string in the notification when contribution is successful */
+"NotificationContributeSuccess" = "%@ BATを支援しました。";
+
+/* We show this string in notification when tip fails */
+"NotificationContributeTipError" = "チップを送信することができませんでした。後ほどもう一度お試しください。";
+
+/* Panel notification text for Ads grant */
+"NotificationEarningsClaimDefault" = "広告閲覧の報酬を受け取りました！";
+
+/* Title for an error notification */
+"NotificationErrorTitle" = "おっと！";
+
+/* Description for new grant notification */
+"NotificationGrantNotification" = "受け取り可能な付与トークンがあります。";
+
+/* Description for new insufficient funds notification */
+"NotificationinsufficientFunds" = "あなたのBrave Rewardsアカウントはデポジットが必要です。";
+
+/* Title for insufficient funds notification */
+"NotificationInsufficientFundsTitle" = "資金不足";
+
+/* Notification title for pending contribution type */
+"NotificationPendingContributionTitle" = "保留中の支援";
+
+/* Notification text that tells user his wallet is under funded for pending contribution to complete */
+"NotificationPendingNotEnoughFunds" = "資金不足のため保留中のチップがあります";
+
+/* Message for monthly tips processed notification */
+"NotificationTipsProcessedBody" = "毎月の定期チップ支払いが処理が完了しました！";
+
+/* Notification text that tells user which publisher just verified */
+"NotificationVerifiedPublisherBody" = "クリエイター : %@ の認証手続きが完了しました";
+
+/* No comment provided by engineer. */
+"OK" = "OK";
+
+/* Text describing the type of contribution */
+"OneTimeText" = "1回限り";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "on %@";
+
+/* No comment provided by engineer. */
+"PrivacyPolicyURL" = "プライバシーポリシー";
+
+/* Text describing the type of contribution */
+"RecurringText" = "定期支払い";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescription" = "プライバシーに配慮した広告を見ると\nトークンを獲得できます。";
+
+/* No comment provided by engineer. */
+"RewardsOptInJoinTitle" = "Rewardsに参加する";
+
+/* No comment provided by engineer. */
+"RewardsOptInLearnMore" = "詳しく知る";
+
+/* No comment provided by engineer. */
+"RewardsOptInPrefix" = "未来のインターネット体験をする準備はできましたか？";
+
+/* No comment provided by engineer. */
+"TermsOfServiceURL" = "利用規約";
+
+/* No comment provided by engineer. */
+"TipSiteMonthly" = "毎月定期支払いチップを設定";
+
+/* Prompt to turn on Ads via notification */
+"TurnOnAds" = "Brave AdsをOnにする";
+
+/* No comment provided by engineer. */
+"WelcomeDisclaimerInformation" = "「参加します」をクリックすると、利用規約とプライバシーポリシーに同意したと見なされます。";
+

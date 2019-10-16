@@ -1,8 +1,50 @@
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "いいえ";
 
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "この後、初めての広告を表示します";
+
+/* Button to agree to Brave's Terms of Service. */
+"OBAgreeButton" = "同意する";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "準備が完了しました。";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "広告が表示されませんでした。";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "ウォレット作成中にエラーが発生しました。もう一度お試しください。";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "OK";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "申し訳ございません";
+
 /* Button to finish onboarding and start using the app. */
 "OBFinishButton" = "ブラウジングを開始する";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "参加する";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "Brave Rewardsに同意する";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "利用規約";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Brave Rewardsの利用規約に同意する";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "プライバシー重視型の広告を閲覧することで報酬を得て、あなたのお気に入りのクリエイターやサイトを支援することができます。";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailOutsideAdRegion" = "ウェブサーフィン中に自動的にサイトを支援したり、好きなタイミングでチップを送ることが可能です。";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Brave Rewards";
 
 /* Save button to save current selection */
 "OBSaveButton" = "保存";
@@ -18,6 +60,9 @@
 
 /* Title for shields onboarding screen */
 "OBShieldsTitle" = "Brave Shields";
+
+/* Button to show Brave Rewards. */
+"OBShowMeButton" = "表示する";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "続ける";
