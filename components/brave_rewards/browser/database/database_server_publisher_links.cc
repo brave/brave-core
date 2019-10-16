@@ -28,13 +28,22 @@ bool DatabaseServerPublisherLinks::Init(sql::Database* db) {
     return true;
   }
 
+  sql::Transaction transaction(db);
+  if (!transaction.Begin()) {
+    return false;
+  }
+
   bool success = CreateTable(db);
   if (!success) {
     return false;
   }
 
-  CreateIndex(db);
-  return true;
+  success = CreateIndex(db);
+  if (!success) {
+    return false;
+  }
+
+  return transaction.Commit();
 }
 
 bool DatabaseServerPublisherLinks::CreateTable(sql::Database* db) {

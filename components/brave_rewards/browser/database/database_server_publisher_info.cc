@@ -30,13 +30,27 @@ bool DatabaseServerPublisherInfo::Init(sql::Database* db) {
     return true;
   }
 
+  sql::Transaction transaction(db);
+  if (!transaction.Begin()) {
+    return false;
+  }
+
   bool success = CreateTable(db);
   if (!success) {
     return false;
   }
 
-  CreateIndex(db);
-  return true;
+  success = CreateIndex(db);
+  if (!success) {
+    return false;
+  }
+
+  success = banner_->Init(db);
+  if (!success) {
+    return false;
+  }
+
+  return transaction.Commit();
 }
 
 bool DatabaseServerPublisherInfo::CreateTable(sql::Database* db) {
@@ -54,21 +68,11 @@ bool DatabaseServerPublisherInfo::CreateTable(sql::Database* db) {
       ")",
       table_name_);
 
-  bool success = db->Execute(query.c_str());
-  if (!success) {
-    return false;
-  }
-
-  return banner_->CreateTable(db);
+  return db->Execute(query.c_str());
 }
 
 bool DatabaseServerPublisherInfo::CreateIndex(sql::Database* db) {
-  bool success = this->InsertIndex(db, table_name_, "publisher_key");
-  if (!success) {
-    return false;
-  }
-
-  return banner_->CreateIndex(db);
+  return this->InsertIndex(db, table_name_, "publisher_key");
 }
 
 bool DatabaseServerPublisherInfo::InsertOrUpdate(
