@@ -12,12 +12,30 @@ struct PreloadedFavorites {
     static func getList() -> [FavoriteSite] {
         func appendPopularEnglishWebsites() -> [FavoriteSite] {
             var list = [FavoriteSite]()
-            try? list.append(FavoriteSite(url: "https://m.youtube.com".asURL(), title: "Youtube"))
-            try? list.append(FavoriteSite(url: "https://www.amazon.com/".asURL(), title: "Amazon"))
-            try? list.append(FavoriteSite(url: "https://www.wikipedia.org/".asURL(), title: "Wikipedia"))
-            try? list.append(FavoriteSite(url: "https://mobile.twitter.com/".asURL(), title: "Twitter"))
-            try? list.append(FavoriteSite(url: "https://reddit.com/".asURL(), title: "Reddit"))
-            try? list.append(FavoriteSite(url: "https://coinmarketcap.com/".asURL(), title: "CoinMarketCap"))
+            
+            if let url = URL(string: "https://m.youtube.com") {
+                list.append(FavoriteSite(url: url, title: "Youtube"))
+            }
+            
+            if let url = URL(string: "https://www.amazon.com/") {
+                list.append(FavoriteSite(url: url, title: "Amazon"))
+            }
+            
+            if let url = URL(string: "https://www.wikipedia.org/") {
+                list.append(FavoriteSite(url: url, title: "Wikipedia"))
+            }
+            
+            if let url = URL(string: "https://mobile.twitter.com/") {
+                list.append(FavoriteSite(url: url, title: "Twitter"))
+            }
+            
+            if let url = URL(string: "https://reddit.com/") {
+                list.append(FavoriteSite(url: url, title: "Reddit"))
+            }
+            
+            if let url = URL(string: "https://coinmarketcap.com/") {
+                list.append(FavoriteSite(url: url, title: "CoinMarketCap"))
+            }
 
             return list
         }

@@ -1,7 +1,6 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Foundation
-import Alamofire
 import SafariServices
 import Shared
 import SwiftyJSON
@@ -19,28 +18,23 @@ struct UrpService {
 
     let host: String
     private let apiKey: String
-    let sessionManager: Session
+    let sessionManager: URLSession
+    private let certificateEvaluator: PinningCertificateEvaluator
 
     init?(host: String, apiKey: String) {
         self.host = host
         self.apiKey = apiKey
 
-        guard let hostUrl = try? host.asURL(), let normalizedHost = hostUrl.normalizedHost else { return nil }
+        guard let hostUrl = URL(string: host), let normalizedHost = hostUrl.normalizedHost else { return nil }
 
         // Certificate pinning
-        let serverTrustPolicies: [String: PinnedCertificatesTrustEvaluator] = [
-            normalizedHost: PinnedCertificatesTrustEvaluator()
-        ]
-
-        sessionManager = Session(
-            serverTrustManager: ServerTrustManager(
-                evaluators: serverTrustPolicies
-            )
-        )
+        certificateEvaluator = PinningCertificateEvaluator(hosts: [normalizedHost])
+        
+        sessionManager = URLSession(configuration: .default, delegate: certificateEvaluator, delegateQueue: nil)
     }
 
     func referralCodeLookup(completion: @escaping (ReferralData?, UrpError?) -> Void) {
-        guard var endPoint = try? host.asURL() else {
+        guard var endPoint = URL(string: host) else {
             completion(nil, .endpointError)
             UrpLog.log("Host not a url: \(host)")
             return
@@ -50,17 +44,26 @@ struct UrpService {
         let params = [UrpService.apiKeyParam: apiKey]
 
         sessionManager.urpApiRequest(endPoint: endPoint, params: params) { response in
-            log.debug("Referral code lookup response: \(response)")
-            UrpLog.log("Referral code lookup response: \(response)")
-            let json = JSON(response.data as Any)
-
-            let referral = ReferralData(json: json)
-            completion(referral, nil)
+            switch response {
+            case .success(let data):
+                log.debug("Referral code lookup response: \(data)")
+                UrpLog.log("Referral code lookup response: \(data)")
+                
+                let json = JSON(data)
+                let referral = ReferralData(json: json)
+                completion(referral, nil)
+                
+            case .failure(let error):
+                log.error("Referral code lookup response: \(error)")
+                UrpLog.log("Referral code lookup response: \(error)")
+                
+                completion(nil, .endpointError)
+            }
         }
     }
     
     func checkIfAuthorizedForGrant(with downloadId: String, completion: @escaping (Bool?, UrpError?) -> Void) {
-        guard var endPoint = try? host.asURL() else {
+        guard var endPoint = URL(string: host) else {
             completion(nil, .endpointError)
             return
         }
@@ -72,15 +75,21 @@ struct UrpService {
         ]
 
         sessionManager.urpApiRequest(endPoint: endPoint, params: params) { response in
-            log.debug("Check if authorized for grant response: \(response)")
-            let json = JSON(response.data as Any)
-
-            completion(json["finalized"].boolValue, nil)
+            switch response {
+            case .success(let data):
+                log.debug("Check if authorized for grant response: \(data)")
+                let json = JSON(data)
+                completion(json["finalized"].boolValue, nil)
+                
+            case .failure(let error):
+                log.error("Check if authorized for grant response: \(error)")
+                completion(nil, .endpointError)
+            }
         }
     }
 
     func fetchCustomHeaders(completion: @escaping ([CustomHeaderData], UrpError?) -> Void) {
-        guard var endPoint = try? host.asURL() else {
+        guard var endPoint = URL(string: host) else {
             completion([], .endpointError)
             return
         }
@@ -88,18 +97,25 @@ struct UrpService {
 
         let params = [UrpService.apiKeyParam: apiKey]
 
-        sessionManager.request(endPoint, parameters: params).responseJSON { response in
-            let json = JSON(response.data as Any)
-            let customHeaders = CustomHeaderData.customHeaders(from: json)
-            completion(customHeaders, nil)
+        sessionManager.request(endPoint, parameters: params) { response in
+            switch response {
+            case .success(let data):
+                let json = JSON(data)
+                let customHeaders = CustomHeaderData.customHeaders(from: json)
+                completion(customHeaders, nil)
+            case .failure(let error):
+                log.error(error)
+                completion([], .endpointError)
+            }
         }
     }
 }
 
-extension Session {
+extension URLSession {
     /// All requests to referral api use PUT method, accept and receive json.
-    func urpApiRequest(endPoint: URL, params: [String: String], completion: @escaping (DataResponse<Any>) -> Void) {
-        self.request(endPoint, method: .put, parameters: params, encoding: JSONEncoding.default).responseJSON { response in
+    func urpApiRequest(endPoint: URL, params: [String: String], completion: @escaping (Result<Any, Error>) -> Void) {
+        
+        self.request(endPoint, method: .put, parameters: params, encoding: .json) { response in
             completion(response)
         }
     }

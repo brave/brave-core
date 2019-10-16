@@ -58,7 +58,6 @@
 		0A53F3E721E6560A0086E80C /* InMemoryDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A53F3E621E6560A0086E80C /* InMemoryDataController.swift */; };
 		0A6112AC230B00E7001BBC45 /* OnboardingNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6112AB230B00E7001BBC45 /* OnboardingNavigationController.swift */; };
 		0A6112BD230B4306001BBC45 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6112BC230B4306001BBC45 /* OnboardingViewController.swift */; };
-		0A6E0966230E05BC00AB3F19 /* onboarding-shields.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A6E095E230E05BC00AB3F19 /* onboarding-shields.json */; };
 		0A764F31230EE5CA003A1D9B /* OnboardingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A764F30230EE5CA003A1D9B /* OnboardingState.swift */; };
 		0A771D35218C8FDC00336E0D /* Bookmark+Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A771D34218C8FDC00336E0D /* Bookmark+Sync.swift */; };
 		0A7B5D6722689C5D00AADF22 /* AddEditHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B5D6622689C5D00AADF22 /* AddEditHeaderView.swift */; };
@@ -611,21 +610,37 @@
 		5DE768AE20B443E500FF5533 /* JSONSerializationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE768AD20B443E500FF5533 /* JSONSerializationExtensions.swift */; };
 		5DE768B020B4601700FF5533 /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DE768AF20B4601600FF5533 /* UIColorExtensions.swift */; };
 		5DE768B120B4713000FF5533 /* Storage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2FCAE21A1ABB51F800877008 /* Storage.framework */; };
-		5E11C40023314D970003C363 /* onboarding-ads.json in Resources */ = {isa = PBXBuildFile; fileRef = 5E11C3FF23314D970003C363 /* onboarding-ads.json */; };
-		5E1D8C67232BE43100BDE662 /* OnboardingRewardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C66232BE43100BDE662 /* OnboardingRewardsViewController.swift */; };
-		5E1D8C69232BE47A00BDE662 /* OnboardingRewardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C68232BE47A00BDE662 /* OnboardingRewardsView.swift */; };
-		5E1D8C6B232BF95200BDE662 /* OnboardingRewardsAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C6A232BF95200BDE662 /* OnboardingRewardsAgreementViewController.swift */; };
-		5E1D8C6D232BF9C200BDE662 /* OnboardingRewardsAgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C6C232BF9C200BDE662 /* OnboardingRewardsAgreementView.swift */; };
-		5E1D8C6F232C0BDB00BDE662 /* onboarding-rewards.json in Resources */ = {isa = PBXBuildFile; fileRef = 5E1D8C6E232C0BDB00BDE662 /* onboarding-rewards.json */; };
+		5E0FCD212342526700AC831E /* FullscreenHelper.js in Resources */ = {isa = PBXBuildFile; fileRef = 5EB57D0122FDC0CB00A07325 /* FullscreenHelper.js */; };
+		5E0FCD23234253DC00AC831E /* CertificatePinning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0FCD22234253DC00AC831E /* CertificatePinning.swift */; };
+		5E0FCD252342544C00AC831E /* URLSession+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0FCD242342544C00AC831E /* URLSession+Requests.swift */; };
 		5E3477E922D7771700B0D5F8 /* ResourceDownloader.js in Resources */ = {isa = PBXBuildFile; fileRef = 5E3477E822D7771700B0D5F8 /* ResourceDownloader.js */; };
 		5E34781022D7A1D200B0D5F8 /* ResourceDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E34780F22D7A1D200B0D5F8 /* ResourceDownloadManager.swift */; };
+		5E46C371234FACC600ACA8C1 /* root.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5E46C36D234FACC600ACA8C1 /* root.cer */; };
+		5E46C372234FACC600ACA8C1 /* leaf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5E46C36E234FACC600ACA8C1 /* leaf.cer */; };
+		5E46C373234FACC600ACA8C1 /* intermediate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5E46C36F234FACC600ACA8C1 /* intermediate.cer */; };
+		5E46C377234FB54000ACA8C1 /* untrusted.badssl.com-root.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5E46C375234FB53F00ACA8C1 /* untrusted.badssl.com-root.cer */; };
+		5E46C378234FB54000ACA8C1 /* untrusted.badssl.com-leaf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5E46C376234FB54000ACA8C1 /* untrusted.badssl.com-leaf.cer */; };
+		5E46C37A234FB61000ACA8C1 /* self-signed.badssl.com.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5E46C379234FB60F00ACA8C1 /* self-signed.badssl.com.cer */; };
+		5E46C37C234FB9A700ACA8C1 /* self-signed.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5E46C37B234FB9A700ACA8C1 /* self-signed.cer */; };
 		5E4845C022DE381200372022 /* WindowRenderHelper.js in Resources */ = {isa = PBXBuildFile; fileRef = 5E4845BF22DE381200372022 /* WindowRenderHelper.js */; };
 		5E4845C222DE3DF800372022 /* WindowRenderHelperScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4845C122DE3DF800372022 /* WindowRenderHelperScript.swift */; };
+		5E612A8C234B7FC1007D12B5 /* OnboardingRewardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C66232BE43100BDE662 /* OnboardingRewardsViewController.swift */; };
+		5E612A8E234B7FC8007D12B5 /* OnboardingRewardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C68232BE47A00BDE662 /* OnboardingRewardsView.swift */; };
+		5E612A8F234B7FCA007D12B5 /* OnboardingRewardsAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C6A232BF95200BDE662 /* OnboardingRewardsAgreementViewController.swift */; };
+		5E612A90234B7FCD007D12B5 /* OnboardingRewardsAgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C6C232BF9C200BDE662 /* OnboardingRewardsAgreementView.swift */; };
 		5E9288CA22DF864C007BE7A6 /* TabSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9288C922DF864C007BE7A6 /* TabSessionTests.swift */; };
+		5EA8438E234F802C00076A91 /* expired.badssl.com-root-ca.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5EA84389234F802C00076A91 /* expired.badssl.com-root-ca.cer */; };
+		5EA8438F234F802C00076A91 /* expired.badssl.com-intermediate-ca-1.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5EA8438B234F802C00076A91 /* expired.badssl.com-intermediate-ca-1.cer */; };
+		5EA84390234F802C00076A91 /* expired.badssl.com-intermediate-ca-2.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5EA8438C234F802C00076A91 /* expired.badssl.com-intermediate-ca-2.cer */; };
+		5EA84391234F802C00076A91 /* expired.badssl.com-leaf.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5EA8438D234F802C00076A91 /* expired.badssl.com-leaf.cer */; };
 		5EAB745C230456F0006055F5 /* BookmarkValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAB745B230456F0006055F5 /* BookmarkValidation.swift */; };
+		5EC1DDBC2356883800CA4028 /* onboarding-shields.json in Resources */ = {isa = PBXBuildFile; fileRef = 0A6E095E230E05BC00AB3F19 /* onboarding-shields.json */; };
+		5EC1DDBD2356888000CA4028 /* onboarding-rewards.json in Resources */ = {isa = PBXBuildFile; fileRef = 5E1D8C6E232C0BDB00BDE662 /* onboarding-rewards.json */; };
+		5EC1DDBE2356892900CA4028 /* onboarding-ads.json in Resources */ = {isa = PBXBuildFile; fileRef = 5E11C3FF23314D970003C363 /* onboarding-ads.json */; };
 		5EC594ED232C2C8F00922111 /* OnboardingWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC594EC232C2C8F00922111 /* OnboardingWebViewController.swift */; };
 		5EC594EF232C68FC00922111 /* OnboardingAdsCountdownViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC594EE232C68FC00922111 /* OnboardingAdsCountdownViewController.swift */; };
 		5EC594F1232C697200922111 /* OnboardingAdsCountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC594F0232C697200922111 /* OnboardingAdsCountdownView.swift */; };
+		5EEB25DE234E667700279091 /* CertificatePinningTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEB25DD234E667700279091 /* CertificatePinningTest.swift */; };
 		744ED5611DBFEB8D00A2B5BE /* MailtoLinkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 744ED5601DBFEB8D00A2B5BE /* MailtoLinkHandler.swift */; };
 		7479B4EF1C5306A200DF000B /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7479B4ED1C5306A200DF000B /* Reachability.swift */; };
 		74821FFE1DB6D3AC00EEEA72 /* MailSchemes.plist in Resources */ = {isa = PBXBuildFile; fileRef = 74821FFD1DB6D3AC00EEEA72 /* MailSchemes.plist */; };
@@ -637,7 +652,6 @@
 		7B2142FE1E5E055000CDD3FC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7B2142FC1E5E055000CDD3FC /* InfoPlist.strings */; };
 		7B3631EA1C244FEE00D12AF9 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3631E91C244FEE00D12AF9 /* Theme.swift */; };
 		7B3D9E651E4CBFDB007A50DA /* NSCoderExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B3D9E641E4CBFDB007A50DA /* NSCoderExtensions.swift */; };
-		7B604F861C494983006EEEC3 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B604F851C494983006EEEC3 /* Alamofire.framework */; };
 		7B604F9B1C4950F2006EEEC3 /* SDWebImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B604F9A1C4950F2006EEEC3 /* SDWebImage.framework */; };
 		7B604FA21C495268006EEEC3 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B604FA11C495268006EEEC3 /* SnapKit.framework */; };
 		7B604FBB1C495D8A006EEEC3 /* XCGLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B604FBA1C495D8A006EEEC3 /* XCGLogger.framework */; };
@@ -1980,6 +1994,8 @@
 		5DE768AA20B346B700FF5533 /* BraveGlobalShieldStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveGlobalShieldStats.swift; sourceTree = "<group>"; };
 		5DE768AD20B443E500FF5533 /* JSONSerializationExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerializationExtensions.swift; sourceTree = "<group>"; };
 		5DE768AF20B4601600FF5533 /* UIColorExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
+		5E0FCD22234253DC00AC831E /* CertificatePinning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificatePinning.swift; sourceTree = "<group>"; };
+		5E0FCD242342544C00AC831E /* URLSession+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Requests.swift"; sourceTree = "<group>"; };
 		5E11C3FF23314D970003C363 /* onboarding-ads.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "onboarding-ads.json"; sourceTree = "<group>"; };
 		5E1D8C66232BE43100BDE662 /* OnboardingRewardsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRewardsViewController.swift; sourceTree = "<group>"; };
 		5E1D8C68232BE47A00BDE662 /* OnboardingRewardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRewardsView.swift; sourceTree = "<group>"; };
@@ -1988,14 +2004,26 @@
 		5E1D8C6E232C0BDB00BDE662 /* onboarding-rewards.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "onboarding-rewards.json"; sourceTree = "<group>"; };
 		5E3477E822D7771700B0D5F8 /* ResourceDownloader.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ResourceDownloader.js; sourceTree = "<group>"; };
 		5E34780F22D7A1D200B0D5F8 /* ResourceDownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceDownloadManager.swift; sourceTree = "<group>"; };
+		5E46C36D234FACC600ACA8C1 /* root.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = root.cer; sourceTree = "<group>"; };
+		5E46C36E234FACC600ACA8C1 /* leaf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = leaf.cer; sourceTree = "<group>"; };
+		5E46C36F234FACC600ACA8C1 /* intermediate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = intermediate.cer; sourceTree = "<group>"; };
+		5E46C375234FB53F00ACA8C1 /* untrusted.badssl.com-root.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "untrusted.badssl.com-root.cer"; sourceTree = "<group>"; };
+		5E46C376234FB54000ACA8C1 /* untrusted.badssl.com-leaf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "untrusted.badssl.com-leaf.cer"; sourceTree = "<group>"; };
+		5E46C379234FB60F00ACA8C1 /* self-signed.badssl.com.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "self-signed.badssl.com.cer"; sourceTree = "<group>"; };
+		5E46C37B234FB9A700ACA8C1 /* self-signed.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "self-signed.cer"; sourceTree = "<group>"; };
 		5E4845BF22DE381200372022 /* WindowRenderHelper.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = WindowRenderHelper.js; sourceTree = "<group>"; };
 		5E4845C122DE3DF800372022 /* WindowRenderHelperScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowRenderHelperScript.swift; sourceTree = "<group>"; };
 		5E9288C922DF864C007BE7A6 /* TabSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSessionTests.swift; sourceTree = "<group>"; };
+		5EA84389234F802C00076A91 /* expired.badssl.com-root-ca.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "expired.badssl.com-root-ca.cer"; sourceTree = "<group>"; };
+		5EA8438B234F802C00076A91 /* expired.badssl.com-intermediate-ca-1.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "expired.badssl.com-intermediate-ca-1.cer"; sourceTree = "<group>"; };
+		5EA8438C234F802C00076A91 /* expired.badssl.com-intermediate-ca-2.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "expired.badssl.com-intermediate-ca-2.cer"; sourceTree = "<group>"; };
+		5EA8438D234F802C00076A91 /* expired.badssl.com-leaf.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "expired.badssl.com-leaf.cer"; sourceTree = "<group>"; };
 		5EAB745B230456F0006055F5 /* BookmarkValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkValidation.swift; sourceTree = "<group>"; };
 		5EB57D0122FDC0CB00A07325 /* FullscreenHelper.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = FullscreenHelper.js; sourceTree = "<group>"; };
 		5EC594EC232C2C8F00922111 /* OnboardingWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWebViewController.swift; sourceTree = "<group>"; };
 		5EC594EE232C68FC00922111 /* OnboardingAdsCountdownViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAdsCountdownViewController.swift; sourceTree = "<group>"; };
 		5EC594F0232C697200922111 /* OnboardingAdsCountdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAdsCountdownView.swift; sourceTree = "<group>"; };
+		5EEB25DD234E667700279091 /* CertificatePinningTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificatePinningTest.swift; sourceTree = "<group>"; };
 		744ED5601DBFEB8D00A2B5BE /* MailtoLinkHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailtoLinkHandler.swift; sourceTree = "<group>"; };
 		7479B4ED1C5306A200DF000B /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		74821FFD1DB6D3AC00EEEA72 /* MailSchemes.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MailSchemes.plist; sourceTree = "<group>"; };
@@ -2351,7 +2379,6 @@
 				288A2D9D1AB8B3260023ABC3 /* Shared.framework in Frameworks */,
 				5DE7689920B3456E00FF5533 /* BraveShared.framework in Frameworks */,
 				2FCAE2311ABB51F800877008 /* Storage.framework in Frameworks */,
-				7B604F861C494983006EEEC3 /* Alamofire.framework in Frameworks */,
 				A1D841FD20BC405E00BDAFF7 /* pop.framework in Frameworks */,
 				3BA9A0231D2C208C00BD418C /* Fuzi.framework in Frameworks */,
 				A1F66A8020DD87CA00303328 /* Static.framework in Frameworks */,
@@ -3768,6 +3795,7 @@
 				276582682171266900754B2F /* UrpLogsViewController.swift */,
 				276582662171266900754B2F /* UrpService.swift */,
 				0A917387231D11960069A08B /* AppReview.swift */,
+				5E0FCD242342544C00AC831E /* URLSession+Requests.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -3783,6 +3811,7 @@
 				5D6DDEF62141B6A0001FF0AE /* Preferences.swift */,
 				5DE7687C20B342E600FF5533 /* BraveStrings.swift */,
 				5DE768A820B3461200FF5533 /* BraveUX.swift */,
+				5E0FCD22234253DC00AC831E /* CertificatePinning.swift */,
 				5DE7688620B3456D00FF5533 /* BraveShared.h */,
 				5DE7688720B3456D00FF5533 /* Info.plist */,
 				59B6913721B695A400E9388E /* BraveShared.strings */,
@@ -3795,6 +3824,7 @@
 		5DE7689220B3456E00FF5533 /* BraveSharedTests */ = {
 			isa = PBXGroup;
 			children = (
+				5EA84392234F803100076A91 /* Certificates */,
 				0A917390231D173C0069A08B /* AppReviewTests.swift */,
 				5DE7689320B3456E00FF5533 /* BraveSharedTests.swift */,
 				5D6DDEFF21428CF0001FF0AE /* DAUTests.swift */,
@@ -3803,8 +3833,35 @@
 				5DE7689520B3456E00FF5533 /* Info.plist */,
 				5965CA212215D4A0000B9EC1 /* CustomHeaderDataTests.swift */,
 				2777273F22EB44B300F0214C /* StringExtensionTests.swift */,
+				5EEB25DD234E667700279091 /* CertificatePinningTest.swift */,
 			);
 			path = BraveSharedTests;
+			sourceTree = "<group>";
+		};
+		5EA84392234F803100076A91 /* Certificates */ = {
+			isa = PBXGroup;
+			children = (
+				5E46C37B234FB9A700ACA8C1 /* self-signed.cer */,
+				5E46C36F234FACC600ACA8C1 /* intermediate.cer */,
+				5E46C36E234FACC600ACA8C1 /* leaf.cer */,
+				5E46C36D234FACC600ACA8C1 /* root.cer */,
+				5EA84393234F803C00076A91 /* expired.badssl.com */,
+			);
+			path = Certificates;
+			sourceTree = "<group>";
+		};
+		5EA84393234F803C00076A91 /* expired.badssl.com */ = {
+			isa = PBXGroup;
+			children = (
+				5E46C379234FB60F00ACA8C1 /* self-signed.badssl.com.cer */,
+				5E46C376234FB54000ACA8C1 /* untrusted.badssl.com-leaf.cer */,
+				5E46C375234FB53F00ACA8C1 /* untrusted.badssl.com-root.cer */,
+				5EA8438B234F802C00076A91 /* expired.badssl.com-intermediate-ca-1.cer */,
+				5EA8438C234F802C00076A91 /* expired.badssl.com-intermediate-ca-2.cer */,
+				5EA8438D234F802C00076A91 /* expired.badssl.com-leaf.cer */,
+				5EA84389234F802C00076A91 /* expired.badssl.com-root-ca.cer */,
+			);
+			path = expired.badssl.com;
 			sourceTree = "<group>";
 		};
 		7B604FC11C496005006EEEC3 /* Frameworks */ = {
@@ -5188,6 +5245,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E46C377234FB54000ACA8C1 /* untrusted.badssl.com-root.cer in Resources */,
+				5E46C37A234FB61000ACA8C1 /* self-signed.badssl.com.cer in Resources */,
+				5E46C37C234FB9A700ACA8C1 /* self-signed.cer in Resources */,
+				5EA84390234F802C00076A91 /* expired.badssl.com-intermediate-ca-2.cer in Resources */,
+				5E46C378234FB54000ACA8C1 /* untrusted.badssl.com-leaf.cer in Resources */,
+				5EA84391234F802C00076A91 /* expired.badssl.com-leaf.cer in Resources */,
+				5EA8438F234F802C00076A91 /* expired.badssl.com-intermediate-ca-1.cer in Resources */,
+				5E46C371234FACC600ACA8C1 /* root.cer in Resources */,
+				5E46C372234FACC600ACA8C1 /* leaf.cer in Resources */,
+				5E46C373234FACC600ACA8C1 /* intermediate.cer in Resources */,
+				5EA8438E234F802C00076A91 /* expired.badssl.com-root-ca.cer in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5202,6 +5270,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E0FCD212342526700AC831E /* FullscreenHelper.js in Resources */,
 				D38A1EE01CB458EC0080C842 /* CertError.html in Resources */,
 				0BA1E0301B051A07007675AF /* NetError.css in Resources */,
 				59871C1921E4D83900316590 /* block-cookies.json in Resources */,
@@ -5219,7 +5288,6 @@
 				F35B8D2B1D6380EA008E3D61 /* SessionRestore.html in Resources */,
 				5E4845C022DE381200372022 /* WindowRenderHelper.js in Resources */,
 				3BC659591E5BA505006D560F /* top_sites.json in Resources */,
-				0A6E0966230E05BC00AB3F19 /* onboarding-shields.json in Resources */,
 				E4B7B7631A793CF20022C5E0 /* CharisSILI.ttf in Resources */,
 				E4CD9F541A71506400318571 /* Reader.html in Resources */,
 				C6345ECB2113B3A000CFB983 /* SearchPlugins in Resources */,
@@ -5246,8 +5314,9 @@
 				D0FCF8081FE4772D004A7995 /* MainFrameAtDocumentStart.js in Resources */,
 				0A0D3D5021A5609600BEE65B /* SafeBrowsingError.html in Resources */,
 				74821FFE1DB6D3AC00EEEA72 /* MailSchemes.plist in Resources */,
+				5EC1DDBC2356883800CA4028 /* onboarding-shields.json in Resources */,
 				0AA4AA99231849450009AAEF /* ABPFilterParserData.dat in Resources */,
-				5E11C40023314D970003C363 /* onboarding-ads.json in Resources */,
+				5EC1DDBE2356892900CA4028 /* onboarding-ads.json in Resources */,
 				4422D57621C05DE600BF1855 /* httpse.leveldb.tgz in Resources */,
 				FA9294011D6584A200AC8D33 /* QRCode.xcassets in Resources */,
 				D308EE561CBF0BF5006843F2 /* CertError.css in Resources */,
@@ -5256,8 +5325,8 @@
 				5D21AE082303B70E00B30D97 /* Themes in Resources */,
 				4422D56D21BFFB7F00BF1855 /* make_unicode_groups.py in Resources */,
 				E4B7B7681A793CF20022C5E0 /* FiraSans-Bold.ttf in Resources */,
-				5E1D8C6F232C0BDB00BDE662 /* onboarding-rewards.json in Resources */,
 				E4B7B7781A793CF20022C5E0 /* FiraSans-Italic.ttf in Resources */,
+				5EC1DDBD2356888000CA4028 /* onboarding-rewards.json in Resources */,
 				0BA1E00E1B03FB0B007675AF /* NetError.html in Resources */,
 				5DE5250E218CE92C000DFAA6 /* block-images.json in Resources */,
 				E4A961381AC06FA50069AD6F /* ReaderViewLoading.html in Resources */,
@@ -5327,7 +5396,6 @@
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SDWebImage.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SnapKit.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/XCGLogger.framework",
@@ -5686,7 +5754,9 @@
 				5DE768AB20B346B800FF5533 /* BraveGlobalShieldStats.swift in Sources */,
 				A1510DA120E409E9008BF1F4 /* URLCacheExtensions.swift in Sources */,
 				0AD4FEEA223A9A5500E00C05 /* BundledJSProtocol.swift in Sources */,
+				5E0FCD23234253DC00AC831E /* CertificatePinning.swift in Sources */,
 				2765826B2171266900754B2F /* CustomHeaderData.swift in Sources */,
+				5E0FCD252342544C00AC831E /* URLSession+Requests.swift in Sources */,
 				5D6DDEFE2141B6A1001FF0AE /* Preferences.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5701,6 +5771,7 @@
 				27A586E1214C0DDD000CAE3C /* PreferencesTest.swift in Sources */,
 				5965CA222215D4A0000B9EC1 /* CustomHeaderDataTests.swift in Sources */,
 				0A917391231D173C0069A08B /* AppReviewTests.swift in Sources */,
+				5EEB25DE234E667700279091 /* CertificatePinningTest.swift in Sources */,
 				5D6DDF0021428CF0001FF0AE /* DAUTests.swift in Sources */,
 				0A42150121AC0E8E006B8E39 /* TimeExtensionTests.swift in Sources */,
 			);
@@ -5737,7 +5808,6 @@
 				0A1E843F2190A57F0042F782 /* SyncQRCodeView.swift in Sources */,
 				4422D56921BFFB7F00BF1855 /* prefilter.cc in Sources */,
 				5E4845C222DE3DF800372022 /* WindowRenderHelperScript.swift in Sources */,
-				5E1D8C69232BE47A00BDE662 /* OnboardingRewardsView.swift in Sources */,
 				27F94A3A21909A5900F4FADF /* SearchSuggestionsPromptView.swift in Sources */,
 				C690C208212FF35100E6EEE9 /* WebImageCacheWithNoPrivacyProtectionManager.swift in Sources */,
 				0A4BEFDA221EF3360005551A /* NetworkResourceType.swift in Sources */,
@@ -5830,7 +5900,6 @@
 				FA9293D41D6580E100AC8D33 /* QRCodeViewController.swift in Sources */,
 				E6108FF91C84E91C005D25E8 /* BasePasscodeViewController.swift in Sources */,
 				39F4C10A2045DB2E00746155 /* FocusHelper.swift in Sources */,
-				5E1D8C6D232BF9C200BDE662 /* OnboardingRewardsAgreementView.swift in Sources */,
 				E4CD9F2D1A6DC91200318571 /* TabLocationView.swift in Sources */,
 				0BB5B2881AC0A2B90052877D /* SnackBar.swift in Sources */,
 				7BEFC6801BFF68C30059C952 /* QuickActions.swift in Sources */,
@@ -5879,6 +5948,7 @@
 				4422D56221BFFB7F00BF1855 /* dfa.cc in Sources */,
 				A1AD4BE120C082EF007A6EA1 /* UIGestureRecognizerExtensions.swift in Sources */,
 				282DA4731A68C1E700A406E2 /* OpenSearch.swift in Sources */,
+				5E612A8C234B7FC1007D12B5 /* OnboardingRewardsViewController.swift in Sources */,
 				F35B8D2F1D638408008E3D61 /* SessionRestoreHandler.swift in Sources */,
 				4422D4C621BFFB7600BF1855 /* env_posix.cc in Sources */,
 				E63ED8E11BFD25580097D08E /* LoginListViewController.swift in Sources */,
@@ -5890,6 +5960,7 @@
 				D34510881ACF415700EC27F0 /* SearchLoader.swift in Sources */,
 				E65075521E37F6D1006961AC /* UIViewExtensions.swift in Sources */,
 				C8F457A81F1FD75A000CB895 /* BrowserViewController+WKNavigationDelegate.swift in Sources */,
+				5E612A8F234B7FCA007D12B5 /* OnboardingRewardsAgreementViewController.swift in Sources */,
 				E6927EC01C7B6FB800D03F75 /* ErrorToast.swift in Sources */,
 				4422D4B821BFFB7600BF1855 /* histogram.cc in Sources */,
 				0A0D3D3921A4BD0600BEE65B /* SafeBrowsing.swift in Sources */,
@@ -6004,13 +6075,13 @@
 				D863C8F21F68BFC20058D95F /* GradientProgressBar.swift in Sources */,
 				D3C744CD1A687D6C004CE85D /* URIFixup.swift in Sources */,
 				E4A961181AC041C40069AD6F /* ReadabilityService.swift in Sources */,
+				5E612A90234B7FCD007D12B5 /* OnboardingRewardsAgreementView.swift in Sources */,
 				4422D56A21BFFB7F00BF1855 /* simplify.cc in Sources */,
 				5EC594F1232C697200922111 /* OnboardingAdsCountdownView.swift in Sources */,
 				A134B88A20DA98BB00A581D0 /* ClientPreferences.swift in Sources */,
 				D3BE7B261B054D4400641031 /* main.swift in Sources */,
 				0A4BEF5D221AF1910005551A /* AdblockResourceDownloader.swift in Sources */,
 				0BA1E02E1B046F1E007675AF /* ErrorPageHelper.swift in Sources */,
-				5E1D8C6B232BF95200BDE662 /* OnboardingRewardsAgreementViewController.swift in Sources */,
 				D3A9949C1A3686BD008AD1AC /* BrowserViewController.swift in Sources */,
 				59A681BDFC95A19F05E07223 /* SearchViewController.swift in Sources */,
 				0A8C6993225BC7B100988715 /* ToolbarUrlActionsProtocol.swift in Sources */,
@@ -6029,7 +6100,6 @@
 				E633E2DA1C21EAF8001FFF6C /* LoginDetailViewController.swift in Sources */,
 				E65D89181C8647420006EA35 /* AppAuthenticator.swift in Sources */,
 				28FDFF0C1C1F725800840F86 /* SeparatorTableCell.swift in Sources */,
-				5E1D8C67232BE43100BDE662 /* OnboardingRewardsViewController.swift in Sources */,
 				C400467C1CF4E43E00B08303 /* BackForwardListViewController.swift in Sources */,
 				D3972BF31C22412B00035B87 /* ShareExtensionHelper.swift in Sources */,
 				F35B8D2D1D6383E9008E3D61 /* SessionRestoreHelper.swift in Sources */,
@@ -6052,6 +6122,7 @@
 				0AD9F88122F049E5008B4D95 /* AdblockRustEngine.swift in Sources */,
 				D3E8EF101B97BE69001900FB /* ClearPrivateDataTableViewController.swift in Sources */,
 				4422D4B421BFFB7600BF1855 /* hash.cc in Sources */,
+				5E612A8E234B7FC8007D12B5 /* OnboardingRewardsView.swift in Sources */,
 				4422D56621BFFB7F00BF1855 /* tostring.cc in Sources */,
 				4422D54821BFFB7E00BF1855 /* pcre.cc in Sources */,
 				C8F457AA1F1FDD9B000CB895 /* BrowserViewController+KeyCommands.swift in Sources */,

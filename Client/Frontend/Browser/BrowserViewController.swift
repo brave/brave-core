@@ -10,7 +10,6 @@ import Shared
 import Storage
 import SnapKit
 import XCGLogger
-import Alamofire
 import MobileCoreServices
 import SwiftyJSON
 import Deferred
@@ -2838,17 +2837,24 @@ extension BrowserViewController: ContextMenuHelperDelegate {
                 taskId = application.beginBackgroundTask (expirationHandler: {
                     application.endBackgroundTask(taskId)
                 })
-
-                AF.request(url).validate(statusCode: 200..<300).response { response in
+                
+                URLSession(configuration: .default).dataTask(with: url, completionHandler: { data, response, error in
+                    
+                    if let response = response as? HTTPURLResponse {
+                        if !(200..<300).contains(response.statusCode) {
+                            return application.endBackgroundTask(taskId)
+                        }
+                    }
+                    
                     // Only set the image onto the pasteboard if the pasteboard hasn't changed since
                     // fetching the image; otherwise, in low-bandwidth situations,
                     // we might be overwriting something that the user has subsequently added.
-                    if changeCount == pasteboard.changeCount, let imageData = response.data, response.error == nil {
+                    if changeCount == pasteboard.changeCount, let imageData = data, error == nil {
                         pasteboard.addImageWithData(imageData, forURL: url)
                     }
-
+                    
                     application.endBackgroundTask(taskId)
-                }
+                }).resume()
             }
             actionSheetController.addAction(copyAction, accessibilityIdentifier: "linkContextMenu.copyImage")
         }
@@ -2876,11 +2882,17 @@ extension BrowserViewController: ContextMenuHelperDelegate {
     }
 
     private func getData(_ url: URL, success: @escaping (Data) -> Void) {
-        AF.request(url).validate(statusCode: 200..<300).response { response in
-            if let data = response.data {
+        URLSession(configuration: .default).dataTask(with: url) { data, response, _ in
+            if let response = response as? HTTPURLResponse {
+                if !(200..<300).contains(response.statusCode) {
+                    return
+                }
+            }
+            
+            if let data = data {
                 success(data)
             }
-        }
+        }.resume()
     }
 
     func contextMenuHelper(_ contextMenuHelper: ContextMenuHelper, didCancelGestureRecognizer: UIGestureRecognizer) {
