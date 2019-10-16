@@ -24,6 +24,8 @@
 #include "brave/components/brave_sync/syncer_helper.h"
 #include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/values_conv.h"
+#include "chrome/browser/bookmarks/bookmark_model_factory.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/chrome_sync_client.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/signin/public/identity_manager/account_info.h"
@@ -195,10 +197,8 @@ BraveProfileSyncServiceImpl::BraveProfileSyncServiceImpl(Profile* profile,
       prefs::kSyncHistoryEnabled,
       base::Bind(&BraveProfileSyncServiceImpl::OnBraveSyncPrefsChanged,
                  base::Unretained(this)));
-  // TODO(darkdh): find another way to obtain bookmark model
-  // change introduced in 83b9663e3814ef7e53af5009d10033b89955db44
-  model_ =
-      static_cast<ChromeSyncClient*>(sync_client_.get())->GetBookmarkModel();
+
+  model_ = BookmarkModelFactory::GetForBrowserContext(profile);
 
   if (!brave_sync_prefs_->GetSeed().empty() &&
       !brave_sync_prefs_->GetThisDeviceName().empty()) {
@@ -498,6 +498,8 @@ void BraveProfileSyncServiceImpl::OnSyncReady() {
     OnSetSyncBookmarks(true);
     ProfileSyncService::GetUserSettings()->SetSyncRequested(true);
   }
+
+  BraveMigrateOtherNode(model_);
 }
 
 syncer::ModelTypeSet BraveProfileSyncServiceImpl::GetPreferredDataTypes()

@@ -103,7 +103,7 @@
     </message>
     <if expr="not is_android">
       <message name="IDS_SHOW_BOOKMARK_BAR" desc="The toggle to show the bookmark bar">
-        &amp;Show bookmarks bar
+        &amp;Show bookmarks
       </message>
     </if>
   </if>
@@ -155,7 +155,7 @@
     </message>
     <if expr="not is_android">
       <message name="IDS_SHOW_BOOKMARK_BAR" desc="In Title Case: The toggle to show the bookmark bar">
-        &amp;Show Bookmarks Bar
+        &amp;Show Bookmarks
       </message>
     </if>
   </if>

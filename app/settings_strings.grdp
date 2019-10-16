@@ -781,7 +781,7 @@
     Show home button
   </message>
   <message name="IDS_SETTINGS_SHOW_BOOKMARKS_BAR" desc="Label for the checkbox which enables or disables showing the bookmarks bar in the toolbar.">
-    Show bookmarks bar
+    Show bookmarks
   </message>
   <message name="IDS_SETTINGS_HOME_PAGE_NTP" desc="Description of the New Tab Page when set as the home page.">
     New Tab page

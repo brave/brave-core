@@ -168,10 +168,8 @@ void AddBookmarkNode(sync_pb::SyncEntity* entity, const SyncRecord* record) {
   entity->set_id_string(record->objectId);
   if (!bookmark_record.parentFolderObjectId.empty())
     entity->set_parent_id_string(bookmark_record.parentFolderObjectId);
-  else if (!bookmark_record.hideInToolbar)
-    entity->set_parent_id_string(std::string(kBookmarkBarFolderServerTag));
   else
-    entity->set_parent_id_string(std::string(kOtherBookmarksFolderServerTag));
+    entity->set_parent_id_string(std::string(kBookmarkBarFolderServerTag));
   entity->set_non_unique_name(bookmark_record.site.TryGetNonEmptyTitle());
   entity->set_folder(bookmark_record.isFolder);
 
