@@ -203,6 +203,7 @@
       <part file="dom_distiller_strings.grdp" />
       <part file="error_page_strings.grdp" />
       <part file="find_in_page_strings.grdp" />
+      <part file="flags_strings.grdp" />
       <part file="history_strings.grdp" />
       <part file="login_dialog_strings.grdp" />
       <part file="media_message_center_strings.grdp" />
@@ -222,7 +223,6 @@
       <part file="security_interstitials_strings.grdp" />
       <part file="security_state_strings.grdp" />
       <part file="ssl_errors_strings.grdp" />
-      <part file="supervised_user_error_page_strings.grdp" />
       <part file="sync_ui_strings.grdp" />
       <part file="translate_strings.grdp" />
       <part file="undo_strings.grdp" />

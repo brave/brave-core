@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_editor_view.cc b/chrome/browser/ui/views/bookmarks/bookmark_editor_view.cc
-index 93867d7ea20fa8bd7a7fc783b3ad9808b502b48d..4dadcb55d25578c9b593e9803096f23386b3c75f 100644
+index 9d6a177b942768d32f6f7a23d4efb6aff69f1337..c066ff4a4d195a22502640d7f2818b204cfd566a 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_editor_view.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_editor_view.cc
 @@ -491,7 +491,7 @@ BookmarkEditorView::CreateRootNode() {
