@@ -231,6 +231,15 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_MENU_SET_DEFAULT_BROWSER" desc="Title for set default browser menu item">
         Set as default browser
       </message>
+      <message name="IDS_BRAVE_SET_DEFAULT_BROWSER_DIALOG_TEXT" desc="Dialog for setting default browser">
+        Select Brave Browser from the list and tap 'Always'
+      </message>
+      <message name="IDS_BRAVE_ALREADY_SET_AS_DEFAULT_BROWSER" desc="Toast message for those whom have already set Brave as default browser">
+        Brave is already set as your default browser.
+      </message>
+      <message name="IDS_BRAVE_DEFAULT_BROWSER_GO_TO_SETTINGS" desc="Toast message for those without 7.0 to go to settings to change default browser">
+        You've already set a default browser. You may change the default browser in your app settings.
+      </message>
       <message name="IDS_MENU_BRAVE_REWARDS" desc="Title for brave rewards menu item">
         Brave Rewards
       </message>
