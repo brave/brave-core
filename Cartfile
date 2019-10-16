@@ -1,4 +1,3 @@
-github "Alamofire/Alamofire"		"5.0.0-beta.7"
 github "garvankeeley/Deferred"		"9.9.2"
 github "SnapKit/SnapKit"		"5.0.1"
 github "rs/SDWebImage"			"4.4.6"

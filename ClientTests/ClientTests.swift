@@ -8,7 +8,6 @@ import XCTest
 import Shared
 import Storage
 import WebKit
-import Alamofire
 @testable import Client
 
 class ClientTests: XCTestCase {
@@ -87,15 +86,22 @@ class ClientTests: XCTestCase {
 
     fileprivate func hostIsValid(_ host: String) -> Bool {
         let expectation = self.expectation(description: "Validate host for \(host)")
-        let request = URLRequest(url: URL(string: "http://\(host):6571/about/license")!)
+        var request = URLRequest(url: URL(string: "http://\(host):6571/about/license")!)
         var response: HTTPURLResponse?
         
-        AF.request(request).authenticate(with: WebServer.sharedInstance.credentials).response { (res) -> Void in
-            response = res.response
+        let username = WebServer.sharedInstance.credentials.user ?? ""
+        let password = WebServer.sharedInstance.credentials.password ?? ""
+        
+        let credentials = "\(username):\(password)".data(using: .utf8)?.base64EncodedString() ?? ""
+
+        request.setValue("Basic \(credentials)", forHTTPHeaderField: "Authorization")
+
+        URLSession(configuration: .ephemeral).dataTask(with: request) { data, resp, error in
+            response = resp as? HTTPURLResponse
             expectation.fulfill()
-        }
+        }.resume()
+
         waitForExpectations(timeout: 100, handler: nil)
         return response?.statusCode == 200
     }
-
 }

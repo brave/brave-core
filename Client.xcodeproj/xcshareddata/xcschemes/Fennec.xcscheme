@@ -95,6 +95,14 @@
                BlueprintName = "BraveSharedTests"
                ReferencedContainer = "container:Client.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "CertificatePinningTest/testSelfSignedRootAllowed()">
+               </Test>
+               <Test
+                  Identifier = "CertificatePinningTest/testSelfSignedRootAllowed2()">
+               </Test>
+            </SkippedTests>
          </TestableReference>
          <TestableReference
             skipped = "NO">

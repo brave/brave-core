@@ -136,7 +136,7 @@ extension HTTPDownload: URLSessionTaskDelegate, URLSessionDownloadDelegate {
             try FileManager.default.moveItem(at: location, to: destination)
             isComplete = true
             delegate?.download(self, didFinishDownloadingTo: destination)
-        } catch let error {
+        } catch {
             delegate?.download(self, didCompleteWithError: error)
         }
     }
@@ -166,7 +166,7 @@ class BlobDownload: Download {
                 try self.data.write(to: destination)
                 self.isComplete = true
                 self.delegate?.download(self, didFinishDownloadingTo: destination)
-            } catch let error {
+            } catch {
                 self.delegate?.download(self, didCompleteWithError: error)
             }
         }

@@ -2,7 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Alamofire
 import Foundation
 import Shared
 
@@ -18,15 +17,13 @@ let SearchSuggestClientErrorInvalidResponse = 1
  */
 class SearchSuggestClient {
     fileprivate let searchEngine: OpenSearchEngine
-    fileprivate weak var request: Request?
+    fileprivate var request: URLSessionDataTask?
     fileprivate let userAgent: String
 
-    lazy fileprivate var alamofire: Session = {
+    lazy fileprivate var session: URLSession = {
         let configuration = URLSessionConfiguration.ephemeral
-        var defaultHeaders = Session.default.session.configuration.httpAdditionalHeaders ?? [:]
-        defaultHeaders["User-Agent"] = self.userAgent
-        configuration.httpAdditionalHeaders = defaultHeaders
-        return Session(configuration: configuration)
+        configuration.httpAdditionalHeaders = ["User-Agent": self.userAgent]
+        return URLSession(configuration: configuration)
     }()
 
     init(searchEngine: OpenSearchEngine, userAgent: String) {
@@ -42,39 +39,48 @@ class SearchSuggestClient {
             return
         }
 
-        request = alamofire.request(url!)
-            .validate(statusCode: 200..<300)
-            .responseJSON { response in
-                do {
-                    _ = try response.result.get()
-                } catch {
-                    callback(nil, error as NSError?)
+        request = session.dataTask(with: url!, completionHandler: { data, response, error in
+            if let error = error {
+                return callback(nil, error as NSError?)
+            }
+            
+            let responseError = NSError(domain: SearchSuggestClientErrorDomain, code: SearchSuggestClientErrorInvalidResponse, userInfo: nil)
+            
+            if let response = response as? HTTPURLResponse {
+                if !(200..<300).contains(response.statusCode) {
+                    return callback(nil, responseError)
                 }
+            }
+            
+            guard let data = data else {
+                return callback(nil, responseError)
+            }
+            
+            do {
+                let result = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
                 
-                let responseError = NSError(domain: SearchSuggestClientErrorDomain, code: SearchSuggestClientErrorInvalidResponse, userInfo: nil)
-
                 // The response will be of the following format:
                 //    ["foobar",["foobar","foobar2000 mac","foobar skins",...]]
                 // That is, an array of at least two elements: the search term and an array of suggestions.
-                guard let array = try? response.result.get() as? NSArray else {
-                    callback(nil, responseError)
-                    return
+                guard let array = result as? NSArray else {
+                    return callback(nil, responseError)
                 }
                 
                 if array.count < 2 {
-                    callback(nil, responseError)
-                    return
+                    return callback(nil, responseError)
                 }
 
                 let suggestions = array[1] as? [String]
                 if suggestions == nil {
-                    callback(nil, responseError)
-                    return
+                    return callback(nil, responseError)
                 }
 
                 callback(suggestions!, nil)
-        }
-
+            } catch {
+                return callback(nil, error as NSError?)
+            }
+        })
+        request?.resume()
     }
 
     func cancelPendingRequest() {

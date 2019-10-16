@@ -8,7 +8,6 @@ import XCTest
 import Shared
 import Storage
 import WebKit
-import Alamofire
 @testable import Client
 
 class U2FTests: XCTestCase {
