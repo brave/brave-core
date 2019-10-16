@@ -236,7 +236,7 @@ class U2FExtensions: NSObject {
         guard let url = self.tab?.url else {
             return nil
         }
-        return url.domainURL.absoluteString
+        return url.domainURL().absoluteString
     }
     
     private func setCurrentTabId() {

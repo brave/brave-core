@@ -321,7 +321,7 @@ class TabLocationView: UIView {
 
     fileprivate func updateTextWithURL() {
         (urlTextField as? DisplayTextField)?.hostString = url?.host ?? ""
-        urlTextField.text = url?.schemelessAbsoluteString.trim("/")
+        urlTextField.text = url?.domainURL(stripWWWSubdomainOnly: true).schemelessAbsoluteString.trim("/")
     }
 }
 

@@ -25,7 +25,7 @@ struct UrpService {
         self.host = host
         self.apiKey = apiKey
 
-        guard let hostUrl = URL(string: host), let normalizedHost = hostUrl.normalizedHost else { return nil }
+        guard let hostUrl = URL(string: host), let normalizedHost = hostUrl.normalizedHost() else { return nil }
 
         // Certificate pinning
         certificateEvaluator = PinningCertificateEvaluator(hosts: [normalizedHost])

@@ -164,13 +164,13 @@ extension URL {
      **/
     public var hostSLD: String {
         guard let publicSuffix = self.publicSuffix, let baseDomain = self.baseDomain else {
-            return self.normalizedHost ?? self.absoluteString
+            return self.normalizedHost() ?? self.absoluteString
         }
         return baseDomain.replacingOccurrences(of: ".\(publicSuffix)", with: "")
     }
 
     public var normalizedHostAndPath: String? {
-        return normalizedHost.flatMap { $0 + self.path }
+        return normalizedHost().flatMap { $0 + self.path }
     }
 
     public var absoluteDisplayString: String {
@@ -243,10 +243,13 @@ extension URL {
      * E.g., https://m.foo.com/bar/baz?noo=abc#123  => https://foo.com/
      *
      * Any failure? Return this URL.
+     *
+     * @param stripWWWSubdomainOnly only strips the www host if true. Else m and mobile are also stripped
+     * E.g., https://mobile.foo.com/bar/baz?noo=abc#123 => https://mobile.foo.com/
      */
-    public var domainURL: URL {
-        if let normalized = self.normalizedHost {
-            // Use NSURLComponents instead of NSURL since the former correctly preserves
+    public func domainURL(stripWWWSubdomainOnly: Bool = false) -> URL {
+        if let normalized = self.normalizedHost(stripWWWSubdomainOnly) {
+            // Use URLComponents instead of URL since the former correctly preserves
             // brackets for IPv6 hosts, whereas the latter escapes them.
             var components = URLComponents()
             components.scheme = self.scheme
@@ -254,17 +257,20 @@ extension URL {
             components.host = normalized
             return components.url ?? self
         }
+
         return self
     }
 
-    public var normalizedHost: String? {
+    public func normalizedHost(_ stripWWWSubdomainOnly: Bool = false) -> String? {
         // Use components.host instead of self.host since the former correctly preserves
         // brackets for IPv6 hosts, whereas the latter strips them.
         guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false), var host = components.host, host != "" else {
             return nil
         }
 
-        if let range = host.range(of: "^(www|mobile|m)\\.", options: .regularExpression) {
+        let textToReplace = stripWWWSubdomainOnly ? "^(www)\\." : "^(www|mobile|m)\\."
+
+        if let range = host.range(of: textToReplace, options: .regularExpression) {
             host.replaceSubrange(range, with: "")
         }
 
