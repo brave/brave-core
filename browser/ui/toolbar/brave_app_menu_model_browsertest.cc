@@ -8,10 +8,15 @@
 #include <memory>
 
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/brave_browser_main_parts.h"
+#include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
+#include "chrome/browser/chrome_browser_main.h"
+#include "chrome/browser/chrome_browser_main_extra_parts.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
@@ -19,6 +24,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/test_utils.h"
 
@@ -40,6 +46,16 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BasicTest) {
 #endif
 
   auto* command_controller = browser()->command_controller();
+#if BUILDFLAG(ENABLE_TOR)
+  EXPECT_NE(
+      -1, normal_model.GetIndexOfCommandId(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
+  // Check tor browser commands are disabled.
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
+#endif
+
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
 #else
@@ -116,3 +132,49 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BasicTest) {
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
 }
+
+#if BUILDFLAG(ENABLE_TOR)
+class ChromeBrowserMainExtraPartsTor : public ChromeBrowserMainExtraParts {
+ public:
+  explicit ChromeBrowserMainExtraPartsTor(BraveBrowserMainParts* main_parts)
+      : main_parts_(main_parts) {}
+
+  // ChromeBrowserMainExtraParts:
+  void PostProfileInit() override {
+    main_parts_->profile()->GetPrefs()->SetBoolean(kTorDisabled, true);
+  }
+
+ private:
+  BraveBrowserMainParts* main_parts_;
+
+  DISALLOW_COPY_AND_ASSIGN(ChromeBrowserMainExtraPartsTor);
+};
+
+class BraveAppMenuBrowserTestWithTorDisabledPolicy
+    : public InProcessBrowserTest {
+ public:
+  void CreatedBrowserMainParts(content::BrowserMainParts* parts) override {
+    auto* brave_main_parts = static_cast<BraveBrowserMainParts*>(parts);
+    static_cast<ChromeBrowserMainParts*>(parts)->AddParts(
+        new ChromeBrowserMainExtraPartsTor(brave_main_parts));
+  }
+};
+
+// If tor is disabled, corresponding menu and commands should be also disabled.
+IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTestWithTorDisabledPolicy,
+                       TorDisabledTest) {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  BraveAppMenuModel normal_model(browser_view->toolbar(), browser());
+  normal_model.Init();
+
+  // -1 means |model| doesn't have passed command id.
+  EXPECT_EQ(
+      -1, normal_model.GetIndexOfCommandId(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
+  auto* command_controller = browser()->command_controller();
+  // Check tor browser commands are disabled.
+  EXPECT_FALSE(
+      command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
+  EXPECT_FALSE(
+      command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
+}
+#endif
