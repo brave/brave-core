@@ -94,9 +94,9 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
     
     @objc func textFieldDidChange(_ textField: UITextField) {
         if textField.text?.isBookmarklet == true {
-            delegate?.correctValues(validationPassed: validateCodeFields() && validateFields())
-        } else {
             delegate?.correctValues(validationPassed: validateCodeFields())
+        } else {
+            delegate?.correctValues(validationPassed: validateFields())
         }
     }
     

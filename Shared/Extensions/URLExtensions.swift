@@ -492,8 +492,7 @@ extension String {
     public var isBookmarklet: Bool {
         let url = self.lowercased()
         return url.hasPrefix("javascript:") &&
-            !url.hasPrefix("javascript:/") &&
-            !url.dropFirst("javascript:".count).isEmpty
+            !url.hasPrefix("javascript:/")
     }
     
     public var bookmarkletCodeComponent: String? {

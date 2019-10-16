@@ -129,6 +129,48 @@ class BookmarkTests: CoreDataTestCase {
         assertDefaultValues(for: result)
     }
     
+    func testValidateBookmark() {
+        let validate = BookmarkValidation.validateBookmark
+        XCTAssertTrue(validate("Brave", "https://brave.com"))
+        XCTAssertTrue(validate("Brave", "https://brave.com/"))
+        XCTAssertTrue(validate("Brave", "http://brave.com"))
+        XCTAssertTrue(validate("Brave", "http://brave.com/"))
+        XCTAssertFalse(validate(nil, "https://brave.com"))
+        XCTAssertTrue(validate("Brave", nil))
+        XCTAssertFalse(validate("Brave", "https"))
+        
+        XCTAssertTrue(validate("Brave", "javascript:"))
+        XCTAssertTrue(validate("Brave", "javascript://"))
+        XCTAssertFalse(validate("Brave", "javascript:(function(){})"))
+        XCTAssertFalse(validate("Brave", "javascript:(function(){})()"))
+        
+        XCTAssertTrue(validate("Brave", "https://brave.com?query=1"))
+        XCTAssertTrue(validate("Brave", "https://brave.com/?query=1"))
+        XCTAssertTrue(validate("Brave", "https://brave.com?query=1&other=2"))
+        XCTAssertTrue(validate("Brave", "https://brave.com/?query=1&other=2"))
+        
+        XCTAssertTrue(validate("Brave", "ftp://brave.com"))
+        XCTAssertTrue(validate("Brave", "https://brandon@brave.com"))
+        XCTAssertTrue(validate("Brave", "https://brandon@brave.com/"))
+        XCTAssertTrue(validate("Brave", "https://brandon:password@brave.com"))
+        XCTAssertTrue(validate("Brave", "https://brandon:password@brave.com:8080"))
+        XCTAssertTrue(validate("Brave", "https://brandon@brave.com:8080"))
+        XCTAssertTrue(validate("Brave", "https://brave.com:8080"))
+        XCTAssertTrue(validate("Brave", "https://www.brave.com"))
+        XCTAssertTrue(validate("Brave", "https://www.brave.com:8080"))
+        XCTAssertTrue(validate("Brave", "https://ww2.brave.com"))
+        XCTAssertTrue(validate("Brave", "https://ww2.brave.com?query=%20test%20bookmarks"))
+        
+        // scheme-less urls..
+        XCTAssertFalse(validate("Brave", "www.brave.com"))
+        XCTAssertFalse(validate("Brave", "www.brave.com:8080"))
+        XCTAssertFalse(validate("Brave", "brave.com"))
+        XCTAssertFalse(validate("Brave", "brandon@brave.com"))
+        XCTAssertFalse(validate("Brave", "brandon:password@brave.com"))
+        XCTAssertFalse(validate("Brave", "brandon@brave.com:8080"))
+        XCTAssertFalse(validate("Brave", "brandon:password@brave.com:8080"))
+    }
+    
     func testValidateBookmarklet() {
         let validate = BookmarkValidation.validateBookmarklet
         XCTAssertTrue(validate("Brave", "javascript:void(window.close(self))"))
@@ -142,6 +184,16 @@ class BookmarkTests: CoreDataTestCase {
         XCTAssertFalse(validate("Brave", "javascript:"))
         XCTAssertFalse(validate("Brave", "javascript:%20function(){}"))
         XCTAssertFalse(validate("Brave", "javascript:(function(){)"))
+        
+        XCTAssertFalse(validate("Brave", "javascript:/"))
+        XCTAssertFalse(validate("Brave", "javascript://"))
+        XCTAssertFalse(validate("Brave", "javascript://(function(){})"))
+        XCTAssertFalse(validate("Brave", "https:(function(){})"))
+        XCTAssertFalse(validate("Brave", "https://brave.com"))
+        XCTAssertFalse(validate("Brave", "https://brave.com/"))
+        XCTAssertFalse(validate("Brave", "https://"))
+        XCTAssertFalse(validate("Brave", "brave:some"))
+        XCTAssertFalse(validate("Brave", "brave:some?query=1"))
     }
     
     func testCreateFolder() {

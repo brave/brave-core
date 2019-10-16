@@ -531,12 +531,12 @@ class NSURLExtensionsTests: XCTestCase {
     
     func testIsBookmarkletURL() {
         let goodURLs = [
+            "javascript:",
             "javascript:void(window.close(self))",
             "javascript:window.open('https://brave.com')"
         ]
         
         let badURLs = [
-            "javascript:",
             "javascript:/",
             "javascript://",
             "javascript://something"
