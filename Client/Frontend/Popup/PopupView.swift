@@ -85,9 +85,13 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
     var showHandler: (() -> Void)?
     var dismissHandler: (() -> Void)?
     
-    var dialogWidth: CGFloat {
+    var dialogWidth: CGFloat {        
         get {
-            return min(UIScreen.main.bounds.width - padding * 2.0, kPopupDialogMaxWidth)
+            if let superview = self.superview {
+                return min(superview.bounds.width - padding * 2.0, kPopupDialogMaxWidth)
+            }
+            
+            return 0.0
         }
     }
     
@@ -243,7 +247,21 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
         
         dialogView.removeFromSuperview()
         
-        frame = UIScreen.main.bounds
+        if presentsOverWindow {
+            UIApplication.shared.keyWindow?.addSubview(self)
+        } else {
+            let currentViewController: AnyObject = (applicationWindow?.rootViewController)!
+            if currentViewController is UINavigationController {
+                let navigationController: UINavigationController? = currentViewController as? UINavigationController
+                navigationController?.visibleViewController?.view.addSubview(self)
+            } else if currentViewController is UIViewController {
+                let viewController: UIViewController? = currentViewController as? UIViewController
+                viewController?.view.addSubview(self)
+            }
+        }
+        
+        frame = superview?.bounds ?? UIScreen.main.bounds
+        
         addSubview(dialogView)
         setNeedsLayout()
         layoutIfNeeded()
@@ -274,19 +292,6 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
         }
         
         overlayView.alpha = 0.0
-        
-        if presentsOverWindow {
-            UIApplication.shared.keyWindow?.addSubview(self)
-        } else {
-            let currentViewController: AnyObject = (applicationWindow?.rootViewController)!
-            if currentViewController is UINavigationController {
-                let navigationController: UINavigationController? = currentViewController as? UINavigationController
-                navigationController?.visibleViewController?.view.addSubview(self)
-            } else if currentViewController is UIViewController {
-                let viewController: UIViewController? = currentViewController as? UIViewController
-                viewController?.view.addSubview(self)
-            }
-        }
         
         UIView.animate(withDuration: 0.2, delay: 0.0, options: [.curveEaseOut], animations: {
             self.overlayView.alpha = self.kPopupBackgroundAlpha
