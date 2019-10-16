@@ -249,7 +249,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "contributionVisitSome",  IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_SOME },
         { "contributionMinTime",  IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_TIME },
         { "contributionMinVisits",  IDS_BRAVE_REWARDS_LOCAL_CONTR_MIN_VISITS },
-        { "contributionAllowed",  IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOWED },
+        { "contributionOther",  IDS_BRAVE_REWARDS_LOCAL_CONTR_OTHER },
         { "contributionShowNonVerified",  IDS_BRAVE_REWARDS_LOCAL_CONTR_SHOW_NON_VERIFIED },        // NOLINT
         { "contributionVideos",  IDS_BRAVE_REWARDS_LOCAL_CONTR_ALLOW_VIDEOS },
         { "contributionVisit1",  IDS_BRAVE_REWARDS_LOCAL_CONTR_VISIT_1 },
