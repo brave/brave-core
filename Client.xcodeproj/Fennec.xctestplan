@@ -1,0 +1,86 @@
+{
+  "configurations" : [
+    {
+      "id" : "BAC87EDD-E63E-4DAA-ADE5-F432C92DE8F4",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "commandLineArgumentEntries" : [
+      {
+        "argument" : "-com.apple.CoreData.ConcurrencyDebug 1"
+      },
+      {
+        "argument" : "-com.apple.CoreData.SQLDebug 1",
+        "enabled" : false
+      }
+    ],
+    "language" : "en",
+    "region" : "US",
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Client.xcodeproj",
+      "identifier" : "F84B21BD1A090F8100AAB793",
+      "name" : "Client"
+    }
+  },
+  "testTargets" : [
+    {
+      "skippedTests" : [
+        "NavigationRouterTests\/testNavigationPathInPrivateBrowsingOnlyMode()"
+      ],
+      "target" : {
+        "containerPath" : "container:Client.xcodeproj",
+        "identifier" : "F84B21D21A090F8100AAB793",
+        "name" : "ClientTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Client.xcodeproj",
+        "identifier" : "E6F9650B1B2F1CF20034B023",
+        "name" : "SharedTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Client.xcodeproj",
+        "identifier" : "5D1DC51A20AC9AFA00905E5A",
+        "name" : "DataTests"
+      }
+    },
+    {
+      "skippedTests" : [
+        "CertificatePinningTest\/testSelfSignedRootAllowed()",
+        "CertificatePinningTest\/testSelfSignedRootAllowed2()"
+      ],
+      "target" : {
+        "containerPath" : "container:Client.xcodeproj",
+        "identifier" : "5DE7688B20B3456E00FF5533",
+        "name" : "BraveSharedTests"
+      }
+    },
+    {
+      "skippedTests" : [
+        "TestSQLiteLogins",
+        "TestSQLiteLoginsPerf",
+        "TestSyncableLogins"
+      ],
+      "target" : {
+        "containerPath" : "container:Client.xcodeproj",
+        "identifier" : "2FCAE2231ABB51F800877008",
+        "name" : "StorageTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Client.xcodeproj",
+        "identifier" : "271DEC20234CC75F009DAC37",
+        "name" : "BraveRewardsUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

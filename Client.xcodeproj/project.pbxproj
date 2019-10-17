@@ -1261,6 +1261,7 @@
 		0A529EBB23571F1800DDAFDD /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Storage.strings; sourceTree = "<group>"; };
 		0A53F3E621E6560A0086E80C /* InMemoryDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryDataController.swift; sourceTree = "<group>"; };
 		0A5922F32357863000959DD1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0A60A1882358AF9E00953CA8 /* Fennec.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = Fennec.xctestplan; path = Client.xcodeproj/Fennec.xctestplan; sourceTree = "<group>"; };
 		0A6112AB230B00E7001BBC45 /* OnboardingNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNavigationController.swift; sourceTree = "<group>"; };
 		0A6112BC230B4306001BBC45 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		0A67500A23571F21006A6D00 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Storage.strings; sourceTree = "<group>"; };
@@ -4400,6 +4401,7 @@
 		F84B21B51A090F8100AAB793 = {
 			isa = PBXGroup;
 			children = (
+				0A60A1882358AF9E00953CA8 /* Fennec.xctestplan */,
 				0A24F7DE233E8EF2004D2F3A /* Config */,
 				F84B21C01A090F8100AAB793 /* Client */,
 				F84B21D61A090F8100AAB793 /* ClientTests */,
