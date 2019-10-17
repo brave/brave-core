@@ -40,6 +40,8 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest,
                      OnSetupSyncHaveCode_Reset_SetupAgain);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, ExponentialResend);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords);
+FORWARD_DECLARE_TEST(ServiceTestDeviceLeftover,
+                     OnSetupSyncHaveCodeDeviceLeftover);
 
 class BraveSyncServiceTest;
 
@@ -146,6 +148,8 @@ class BraveProfileSyncServiceImpl
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, ExponentialResend);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
                            GetDevicesWithFetchSyncRecords);
+  FRIEND_TEST_ALL_PREFIXES(::ServiceTestDeviceLeftover,
+                           OnSetupSyncHaveCodeDeviceLeftover);
   friend class ::BraveSyncServiceTest;
 
   void SignalWaitableEvent();

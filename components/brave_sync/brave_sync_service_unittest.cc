@@ -195,6 +195,7 @@ class BraveSyncServiceTest : public testing::Test {
     sync_client_ = new MockBraveSyncClient();
     brave_sync::BraveSyncClientImpl::set_for_testing(sync_client_);
 
+    PreCreateService();
     sync_service_ = static_cast<BraveProfileSyncServiceImpl*>(
         ProfileSyncServiceFactory::GetAsProfileSyncServiceForProfile(
             profile()));
@@ -213,6 +214,8 @@ class BraveSyncServiceTest : public testing::Test {
     sync_prefs_.reset();
     profile_.reset();
   }
+
+  virtual void PreCreateService() {}
 
   Profile* profile() { return profile_.get(); }
   BraveProfileSyncServiceImpl* sync_service() { return sync_service_; }
@@ -238,6 +241,31 @@ class BraveSyncServiceTest : public testing::Test {
   std::unique_ptr<MockBraveSyncServiceObserver> observer_;
 
   base::ScopedTempDir temp_dir_;
+};
+
+class ServiceTestDeviceLeftover : public BraveSyncServiceTest {
+ public:
+  void PreCreateService() override {
+    // Emulating we have one device and seed saved, like inthe case when
+    // the browser was closed righ after starting procedure of sync chain
+    // creation without waiting for the second device to connect
+    const std::string devices_json =
+        R"json(
+      {
+      "devices":
+      [{
+        "device_id":"0",
+        "last_active":1.571261287102e+12,
+        "name":"COMPUTER",
+        "object_id":"67, 22, 139, 42, 47, 37, 218, 215,
+                     254, 228, 11, 42, 192, 73, 99, 47"
+      }]
+      }
+      )json";
+    profile()->GetPrefs()->SetString(brave_sync::prefs::kSyncDeviceList,
+                                     devices_json);
+    profile()->GetPrefs()->SetString(brave_sync::prefs::kSyncSeed, "1, 2, 3");
+  }
 };
 
 TEST_F(BraveSyncServiceTest, SetSyncEnabled) {
@@ -682,6 +710,8 @@ TEST_F(BraveSyncServiceTest, OnBraveSyncPrefsChanged) {
 
 TEST_F(BraveSyncServiceTest, StartSyncNonDeviceRecords) {
   EXPECT_FALSE(sync_service()->IsBraveSyncInitialized());
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
+  EXPECT_CALL(*observer(), OnSyncStateChanged).Times(AtLeast(1));
   sync_service()->OnSetSyncEnabled(true);
   profile()->GetPrefs()->SetString(brave_sync::prefs::kSyncBookmarksBaseOrder,
                                    "1.1.");
@@ -737,6 +767,8 @@ TEST_F(BraveSyncServiceTest, GetDisableReasons) {
   EXPECT_EQ(sync_service()->GetDisableReasons(),
             syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY |
                 syncer::SyncService::DISABLE_REASON_USER_CHOICE);
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged);
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnSetSyncEnabled(true);
   EXPECT_EQ(sync_service()->GetDisableReasons(),
             syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY |
@@ -744,6 +776,8 @@ TEST_F(BraveSyncServiceTest, GetDisableReasons) {
   brave_sync_prefs()->SetMigratedBookmarksVersion(2);
   EXPECT_EQ(sync_service()->GetDisableReasons(),
             syncer::SyncService::DISABLE_REASON_NONE);
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged);
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnSetSyncEnabled(false);
   EXPECT_TRUE(sync_service()->HasDisableReason(
       syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY));
@@ -975,4 +1009,17 @@ TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
         .Times(1);
     sync_service()->FetchDevices();
   }
+}
+
+TEST_F(ServiceTestDeviceLeftover, OnSetupSyncHaveCodeDeviceLeftover) {
+  EXPECT_TRUE(sync_service()->reseting_);
+  EXPECT_EQ(brave_sync_prefs()->GetSyncDevices()->size(), 0u);
+
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(AtLeast(2));
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service()))
+      .Times(AtLeast(2));
+  sync_service()->OnSetupSyncHaveCode("word1 word2 word3", "test_device");
+  EXPECT_TRUE(
+      profile()->GetPrefs()->GetBoolean(brave_sync::prefs::kSyncEnabled));
+  EXPECT_FALSE(sync_service()->reseting_);
 }
