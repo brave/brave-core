@@ -60,7 +60,9 @@ struct BraveRequestInfo {
   GURL initiator_url;
 
   GURL referrer;
-  net::URLRequest::ReferrerPolicy referrer_policy;
+  net::URLRequest::ReferrerPolicy referrer_policy =
+      net::URLRequest::ReferrerPolicy::
+          CLEAR_REFERRER_ON_TRANSITION_FROM_SECURE_TO_INSECURE;
   GURL new_referrer;
 
   std::string new_url_spec;
