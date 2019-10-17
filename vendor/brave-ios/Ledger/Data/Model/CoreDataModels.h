@@ -20,3 +20,5 @@
 #import "ServerPublisherAmount.h"
 #import "ServerPublisherBanner.h"
 #import "ServerPublisherLink.h"
+#import "ContributionQueue.h"
+#import "ContributionPublisher.h"

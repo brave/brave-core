@@ -27,15 +27,31 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
 @implementation BATLedgerDatabase
 
 + (nullable __kindof NSManagedObject *)firstOfClass:(Class)clazz
-                                    withPublisherID:(NSString *)publisherID
-                                additionalPredicate:(nullable NSPredicate *)additionalPredicate
+                                         predicates:(NSArray<NSPredicate *> *)predicates
+                                    sortDescriptors:(NSArray<NSSortDescriptor *> *)sortDescriptors
                                             context:(NSManagedObjectContext *)context
 {
   const auto fetchRequest = [clazz fetchRequest];
   fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(clazz)
                                     inManagedObjectContext:context];
   fetchRequest.fetchLimit = 1;
+  fetchRequest.sortDescriptors = sortDescriptors;
+  fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
+  
+  NSError *error;
+  const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+  if (error) {
+    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+  }
+  
+  return fetchedObjects.firstObject;
+}
 
++ (nullable __kindof NSManagedObject *)firstOfClass:(Class)clazz
+                                    withPublisherID:(NSString *)publisherID
+                                additionalPredicate:(nullable NSPredicate *)additionalPredicate
+                                            context:(NSManagedObjectContext *)context
+{
   const auto predicates = [[NSMutableArray<NSPredicate *> alloc] init];
   [predicates addObject:[NSPredicate predicateWithFormat:@"publisherID == %@", publisherID]];
 
@@ -43,15 +59,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     [predicates addObject:additionalPredicate];
   }
 
-  fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
-
-  NSError *error;
-  const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-  if (error) {
-    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
-  }
-
-  return fetchedObjects.firstObject;
+  return [self firstOfClass:clazz predicates:predicates sortDescriptors:@[] context:context];
 }
 
 + (nullable PublisherInfo *)getPublisherInfoWithID:(NSString *)publisherID context:(NSManagedObjectContext *)context
@@ -284,6 +292,92 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     [publishers addObject:info];
   }
   return publishers;
+}
+
+#pragma mark - Contribution Queue
+
++ (nullable ContributionQueue *)getContributionQueueWithID:(int64_t)queueID context:(NSManagedObjectContext *)context
+{
+  const auto predicate = [NSPredicate predicateWithFormat:@"id == %ld", queueID];
+  return [self firstOfClass:ContributionQueue.class predicates:@[predicate] sortDescriptors:@[] context:context];
+}
+
++ (nullable ContributionPublisher *)getContributionPublisherWithQueueID:(int64_t)queueID context:(NSManagedObjectContext *)context
+{
+  const auto predicate = [NSPredicate predicateWithFormat:@"queue.id == %ld", queueID];
+  return [self firstOfClass:ContributionPublisher.class predicates:@[predicate] sortDescriptors:@[] context:context];
+}
+
++ (void)insertOrUpdateContributionQueue:(BATContributionQueue *)queue
+                             completion:(nullable BATLedgerDatabaseWriteCompletion)completion
+{
+  [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
+    const auto cq = [self getContributionQueueWithID:queue.id context:context] ?:
+    [[ContributionQueue alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(ContributionQueue.class) inManagedObjectContext:context]
+           insertIntoManagedObjectContext:context];
+    cq.id = queue.id;
+    cq.type = static_cast<int64_t>(queue.type);
+    cq.amount = queue.amount;
+    cq.partial = queue.partial;
+    [self insertContributionPublishersIntoQueue:cq publishers:queue.publishers context:context];
+  } completion:WriteToDataControllerCompletion(completion)];
+}
+
++ (BATContributionQueue *)firstQueue
+{
+  auto sort = [[NSSortDescriptor alloc] initWithKey:@"id" ascending:YES];
+  ContributionQueue *cq = [self firstOfClass:ContributionQueue.class
+                                  predicates:@[]
+                             sortDescriptors:@[sort]
+                                     context:DataController.viewContext];
+  if (!cq) {
+    return nil;
+  }
+  
+  BATContributionQueue *queue = [[BATContributionQueue alloc] init];
+  queue.id = cq.id;
+  queue.partial = cq.partial;
+  queue.amount = cq.amount;
+  queue.type = static_cast<BATRewardsType>(cq.type);
+  queue.publishers = ^NSArray *{
+    NSMutableArray *pubs = [[NSMutableArray alloc] init];
+    for (ContributionPublisher *pub in cq.publishers.allObjects) {
+      auto queuePublisher = [[BATContributionQueuePublisher alloc] init];
+      queuePublisher.amountPercent = pub.amountPercent;
+      queuePublisher.publisherKey = pub.publisherKey;
+      [pubs addObject:queuePublisher];
+    }
+    return [pubs copy];
+  }();
+  return queue;
+}
+
++ (void)deleteQueueWithID:(int64_t)queueID
+               completion:(nullable BATLedgerDatabaseWriteCompletion)completion
+{
+  [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
+    const auto cq = [self getContributionQueueWithID:queueID context:context];
+    if (!cq) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        completion(NO);
+      });
+      return;
+    }
+    [context deleteObject:cq];
+  } completion:WriteToDataControllerCompletion(completion)];
+}
+
++ (void)insertContributionPublishersIntoQueue:(ContributionQueue *)queue
+                                   publishers:(NSArray<BATContributionQueuePublisher *> *)publishers
+                                      context:(NSManagedObjectContext *)context
+{
+  for (BATContributionQueuePublisher *publisher in publishers) {
+    const auto cp = [[ContributionPublisher alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(ContributionPublisher.class) inManagedObjectContext:context]
+               insertIntoManagedObjectContext:context];
+    cp.queue = queue;
+    cp.publisherKey = publisher.publisherKey;
+    cp.amountPercent = publisher.amountPercent;
+  }
 }
 
 #pragma mark - Activity Info

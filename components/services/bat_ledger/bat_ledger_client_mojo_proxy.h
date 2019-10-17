@@ -201,6 +201,17 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const std::string& wallet_type,
       const std::string& id) override;
 
+  void InsertOrUpdateContributionQueue(
+      ledger::ContributionQueuePtr info,
+      ledger::ResultCallback callback) override;
+
+  void DeleteContributionQueue(
+      const uint64_t id,
+      ledger::ResultCallback callback) override;
+
+  void GetFirstContributionQueue(
+      ledger::GetFirstContributionQueueCallback callback) override;
+
  private:
   bool Connected() const;
 

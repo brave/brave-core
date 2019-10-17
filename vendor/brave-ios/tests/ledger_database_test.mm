@@ -1150,6 +1150,129 @@
   }
 }
 
+#pragma mark - Contribution Queue
+
+- (void)testInsertContributionQueue
+{
+  const auto queue = [[BATContributionQueue alloc] init];
+  queue.id = 1;
+  queue.amount = 10;
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase insertOrUpdateContributionQueue:queue completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto queried = [BATLedgerDatabase firstQueue];
+  XCTAssertEqual(queried.id, queue.id);
+  XCTAssertEqual(queried.amount, queue.amount);
+}
+
+- (void)testFirstContributionQueueSorting
+{
+  const auto queue = [[BATContributionQueue alloc] init];
+  queue.id = 1;
+  queue.amount = 10;
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase insertOrUpdateContributionQueue:queue completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto queue2 = [[BATContributionQueue alloc] init];
+  queue2.id = 2;
+  queue2.amount = 10;
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase insertOrUpdateContributionQueue:queue2 completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto queried = [BATLedgerDatabase firstQueue];
+  XCTAssertEqual(queried.id, queue.id);
+  XCTAssertEqual(queried.amount, queue.amount);
+}
+
+- (void)testEmptyContributionQueue
+{
+  const auto queried = [BATLedgerDatabase firstQueue];
+  XCTAssertNil(queried);
+}
+
+- (void)testDeleteContributionQueue
+{
+  const auto queue = [[BATContributionQueue alloc] init];
+  queue.id = 1;
+  queue.amount = 10;
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase insertOrUpdateContributionQueue:queue completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto queue2 = [[BATContributionQueue alloc] init];
+  queue2.id = 2;
+  queue2.amount = 10;
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase insertOrUpdateContributionQueue:queue2 completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  // Delete the first queue, therefore firstQueue should return the second one
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase deleteQueueWithID:queue.id completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto queried = [BATLedgerDatabase firstQueue];
+  XCTAssertEqual(queried.id, queue2.id);
+  XCTAssertEqual(queried.amount, queue2.amount);
+}
+
+- (void)testContributionQueueWithPublishers
+{
+  const auto queue = [[BATContributionQueue alloc] init];
+  queue.id = 1;
+  queue.amount = 10;
+  
+  const auto pub1 = [[BATContributionQueuePublisher alloc] init];
+  pub1.publisherKey = @"brave.com";
+  pub1.amountPercent = 0.6;
+  
+  const auto pub2 = [[BATContributionQueuePublisher alloc] init];
+  pub2.publisherKey = @"duckduckgo.com";
+  pub2.amountPercent = 0.4;
+  
+  queue.publishers = @[ pub1, pub2 ];
+  
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase insertOrUpdateContributionQueue:queue completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto queried = [BATLedgerDatabase firstQueue];
+  XCTAssertEqual(queried.publishers.count, queue.publishers.count);
+  const auto pub1Index = [queried.publishers indexOfObjectPassingTest:^BOOL(BATContributionQueuePublisher * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    return [obj.publisherKey isEqualToString:pub1.publisherKey];
+  }];
+  XCTAssertNotEqual(pub1Index, NSNotFound);
+  const auto pub2Index = (pub1Index == 0 ? 1 : 0);
+  
+  XCTAssertEqual(queried.publishers[pub1Index].amountPercent, pub1.amountPercent);
+  XCTAssert([queried.publishers[pub2Index].publisherKey isEqualToString:pub2.publisherKey]);
+  XCTAssertEqual(queried.publishers[pub2Index].amountPercent, pub2.amountPercent);
+}
+
 #pragma mark -
 
 - (void)waitForCompletion:(void (^)(XCTestExpectation *))task

@@ -258,6 +258,12 @@ class RewardsServiceImpl : public RewardsService,
              int amount,
              bool recurring) override;
 
+  void OnTip(
+      const std::string& publisher_key,
+      const int amount,
+      const bool recurring,
+      std::unique_ptr<brave_rewards::ContentSite> site) override;
+
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const override;
 
   void FetchBalance(FetchBalanceCallback callback) override;
@@ -297,6 +303,9 @@ class RewardsServiceImpl : public RewardsService,
   FRIEND_TEST_ALL_PREFIXES(RewardsServiceTest, OnWalletProperties);
 
   const base::OneShotEvent& ready() const { return ready_; }
+
+  void OnResult(ledger::ResultCallback callback, const ledger::Result result);
+
   void OnCreateWallet(CreateWalletCallback callback,
                       ledger::Result result);
   void OnLedgerStateSaved(ledger::LedgerCallbackHandler* handler,
@@ -374,8 +383,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnWalletProperties(
       const ledger::Result result,
       ledger::WalletPropertiesPtr properties) override;
-  void OnTip(const std::string& publisher_key, int amount, bool recurring,
-      std::unique_ptr<brave_rewards::ContentSite> site) override;
 
   void DeleteActivityInfo(
     const std::string& publisher_key,
@@ -662,6 +669,17 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& wallet_type,
       const std::string& id) override;
 
+  void InsertOrUpdateContributionQueue(
+    ledger::ContributionQueuePtr info,
+    ledger::ResultCallback callback) override;
+
+  void DeleteContributionQueue(
+    const uint64_t id,
+    ledger::ResultCallback callback) override;
+
+  void GetFirstContributionQueue(
+    ledger::GetFirstContributionQueueCallback callback) override;
+
   // end ledger::LedgerClient
 
   // Mojo Proxy methods
@@ -708,6 +726,10 @@ class RewardsServiceImpl : public RewardsService,
   void RemovePrivateObserver(RewardsServicePrivateObserver* observer) override;
 
   void RecordBackendP3AStats() const;
+
+  void OnGetFirstContributionQueue(
+    ledger::GetFirstContributionQueueCallback callback,
+    ledger::ContributionQueuePtr info);
 
 #if defined(OS_ANDROID)
   bool ShouldUseStagingServerForAndroid();

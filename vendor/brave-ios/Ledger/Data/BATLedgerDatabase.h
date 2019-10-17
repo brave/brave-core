@@ -52,6 +52,16 @@ typedef void (^BATLedgerDatabaseWriteCompletion)(BOOL success);
 + (NSArray<BATPublisherInfo *> *)oneTimeTipsPublishersForMonth:(BATActivityMonth)month
                                                           year:(int)year;
 
+#pragma mark - Contribution Queue
+
++ (void)insertOrUpdateContributionQueue:(BATContributionQueue *)queue
+                             completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
+
++ (nullable BATContributionQueue *)firstQueue;
+
++ (void)deleteQueueWithID:(int64_t)queueID
+               completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
+
 #pragma mark - Activity Info
 
 /// Insert or update activity info from a publisher

@@ -333,7 +333,10 @@ class BraveRewardsBrowserTest :
             "["
             "[\"bumpsmack.com\",\"publisher_verified\",false,\"address1\",{}],"
             "[\"duckduckgo.com\",\"wallet_connected\",false,\"address2\",{}],"
-            "[\"3zsistemi.si\",\"wallet_connected\",false,\"address3\",{}]"
+            "[\"3zsistemi.si\",\"wallet_connected\",false,\"address3\",{}],"
+            "[\"site1.com\",\"wallet_connected\",false,\"address4\",{}],"
+            "[\"site2.com\",\"wallet_connected\",false,\"address5\",{}],"
+            "[\"site3.com\",\"wallet_connected\",false,\"address6\",{}]"
             "]";
       }
     } else if (base::StartsWith(
@@ -990,11 +993,13 @@ class BraveRewardsBrowserTest :
       rewards_service()->StartMonthlyContributionForTest();
 
       // Wait for reconciliation to complete
-      WaitForTipReconcileCompleted();
-      const auto result = should_contribute
-          ? ledger::Result::LEDGER_OK
-          : ledger::Result::RECURRING_TABLE_EMPTY;
-      ASSERT_EQ(tip_reconcile_status_, result);
+      if (should_contribute) {
+        WaitForTipReconcileCompleted();
+        const auto result = should_contribute
+            ? ledger::Result::LEDGER_OK
+            : ledger::Result::RECURRING_TABLE_EMPTY;
+        ASSERT_EQ(tip_reconcile_status_, result);
+      }
 
       // Signal that monthly contribution was made and update wallet
       // with new balance
@@ -1208,6 +1213,21 @@ class BraveRewardsBrowserTest :
         base::BindOnce(
             &BraveRewardsBrowserTest::ShowNotificationAddFundsForTesting,
             AsWeakPtr()));
+  }
+
+  void TipViaCode(
+      const std::string publisher_key,
+      int amount,
+      bool recurring,
+      ledger::PublisherStatus status) {
+    auto site = std::make_unique<brave_rewards::ContentSite>();
+    site->id = publisher_key;
+    site->name = publisher_key;
+    site->url = publisher_key;
+    site->status = static_cast<int>(status);
+    site->provider = "";
+    site->favicon_url = "";
+    rewards_service_->OnTip(publisher_key, amount, recurring, std::move(site));
   }
 
   const std::vector<double> tip_amounts_ = {1.0, 5.0, 10.0};
@@ -2505,7 +2525,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   VisitPublisher("duckduckgo.com", verified);
   VisitPublisher("brave.com", !verified);
 
-  // Tip publisher
+  // Set monthly recurring
   rewards_service_->OnTip("duckduckgo.com", 25, true);
 
   // Trigger contribution process
@@ -2521,29 +2541,64 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   // Make sure that balance is updated correctly
   {
-    content::EvalJsResult js_result = EvalJs(
-        contents(),
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(1000).then(() => "
-        "  "
-        "document.querySelector(\"[data-test-id='balance']\").innerText);",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_NE(js_result.ExtractString().find(GetBalance() + " BAT"),
-              std::string::npos);
+    const std::string result = RewardsPageBalance();
+    EXPECT_NE(result.find(ExpectedBalanceString()), std::string::npos);
   }
 
   // Check that summary table shows the appropriate contribution
   {
-    content::EvalJsResult js_result = EvalJs(
-        contents(),
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(0).then(() => "
-        "  document.querySelector(\"[color='contribute']\").innerText);",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_NE(js_result.ExtractString().find("-5.0BAT"),
-              std::string::npos);
+    const std::string result = ElementInnerText("[color='contribute']");
+    EXPECT_NE(result.find("-5.0BAT"), std::string::npos);
+  }
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+    MultipleRecurringOverBudgetAndPartialAutoContribution) {
+  // Observe the Rewards service
+  rewards_service_->AddObserver(this);
+
+  // Enable Rewards
+  EnableRewards();
+
+  // Claim grant using panel (30 BAT)
+  const bool use_panel = true;
+  ClaimGrant(use_panel);
+
+  // Visit verified publisher
+  const bool verified = true;
+  VisitPublisher("duckduckgo.com", verified);
+
+  // Set monthly recurring
+  rewards_service_->OnTip("duckduckgo.com", 5, true);
+
+  TipViaCode("site1.com", 10, true, ledger::PublisherStatus::VERIFIED);
+  TipViaCode("site2.com", 10, true, ledger::PublisherStatus::VERIFIED);
+  TipViaCode("site3.com", 10, true, ledger::PublisherStatus::VERIFIED);
+
+  // Trigger contribution process
+  rewards_service()->StartMonthlyContributionForTest();
+
+  // Wait for reconciliation to complete
+  WaitForMultipleTipReconcileCompleted(3);
+  ASSERT_EQ(tip_reconcile_status_, ledger::Result::LEDGER_OK);
+
+  // Wait for reconciliation to complete successfully
+  WaitForACReconcileCompleted();
+  ASSERT_EQ(ac_reconcile_status_, ledger::Result::LEDGER_OK);
+
+  // Make sure that balance is updated correctly
+  {
+    const std::string result = RewardsPageBalance();
+    EXPECT_NE(result.find(ExpectedBalanceString()), std::string::npos);
+  }
+
+  // Check that summary table shows the appropriate contribution
+  {
+    const std::string result = ElementInnerText("[color='contribute']");
+    EXPECT_NE(result.find("-5.0BAT"), std::string::npos);
   }
 
   // Stop observing the Rewards service

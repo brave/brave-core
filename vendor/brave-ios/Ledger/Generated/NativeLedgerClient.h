@@ -87,4 +87,7 @@ private:
   std::string GetStringOption(const std::string& name) const override;
   int64_t GetInt64Option(const std::string& name) const override;
   uint64_t GetUint64Option(const std::string& name) const override;
+  void InsertOrUpdateContributionQueue(ledger::ContributionQueuePtr info, ledger::ResultCallback callback) override;
+  void DeleteContributionQueue(const uint64_t id, ledger::ResultCallback callback) override;
+  void GetFirstContributionQueue(ledger::GetFirstContributionQueueCallback callback) override;
 };
