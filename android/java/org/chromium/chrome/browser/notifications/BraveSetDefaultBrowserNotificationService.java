@@ -29,6 +29,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveActivity;
+import org.chromium.chrome.browser.util.UrlConstants;
 
 import java.util.Calendar;
 
@@ -53,8 +54,12 @@ public class BraveSetDefaultBrowserNotificationService extends BroadcastReceiver
     // Startup notification data
     public static final String NOTIFICATION_ID_EXTRA = "notification_id_extra";
 
+    private static final int NOTIFICATION_HOUR = 11;
+    private static final int NOTIFICATION_MIN = 22;
+
     public static boolean isBraveSetAsDefaultBrowser(Context context) {
-        Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://"));
+        Intent browserIntent =
+                new Intent(Intent.ACTION_VIEW, Uri.parse(UrlConstants.HTTP_URL_PREFIX));
         ResolveInfo resolveInfo = context.getPackageManager().resolveActivity(
                 browserIntent, supportsDefault() ? PackageManager.MATCH_DEFAULT_ONLY : 0);
         return resolveInfo.activityInfo.packageName.equals(
@@ -77,15 +82,17 @@ public class BraveSetDefaultBrowserNotificationService extends BroadcastReceiver
     }
 
     private static boolean supportsDefault() {
-        return Build.VERSION.SDK_INT >= 24;
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
     }
 
     private boolean hasAlternateDefaultBrowser() {
-        Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://"));
+        Intent browserIntent =
+                new Intent(Intent.ACTION_VIEW, Uri.parse(UrlConstants.HTTP_URL_PREFIX));
         ResolveInfo resolveInfo = mContext.getPackageManager().resolveActivity(
                 browserIntent, supportsDefault() ? PackageManager.MATCH_DEFAULT_ONLY : 0);
-        return !(resolveInfo.activityInfo.packageName.equals("com.google.android.setupwizard")
-                || resolveInfo.activityInfo.packageName.equals("android"));
+        return !(resolveInfo.activityInfo.packageName.equals(
+                         BraveActivity.ANDROID_SETUPWIZARD_PACKAGE_NAME)
+                || resolveInfo.activityInfo.packageName.equals(BraveActivity.ANDROID_PACKAGE_NAME));
     }
 
     private void showNotification() {
@@ -153,14 +160,14 @@ public class BraveSetDefaultBrowserNotificationService extends BroadcastReceiver
         editor.apply();
 
         Calendar currentTime = Calendar.getInstance();
-        if (currentTime.get(Calendar.HOUR_OF_DAY) > 11
-                || (currentTime.get(Calendar.HOUR_OF_DAY) == 11
-                        && currentTime.get(Calendar.MINUTE) >= 22)) {
+        if (currentTime.get(Calendar.HOUR_OF_DAY) > NOTIFICATION_HOUR
+                || (currentTime.get(Calendar.HOUR_OF_DAY) == NOTIFICATION_HOUR
+                        && currentTime.get(Calendar.MINUTE) >= NOTIFICATION_MIN)) {
             // Current time is after 11:22, so set alarm on tomorrow
             currentTime.add(Calendar.DAY_OF_YEAR, 1);
         }
-        currentTime.set(Calendar.HOUR_OF_DAY, 11);
-        currentTime.set(Calendar.MINUTE, 22);
+        currentTime.set(Calendar.HOUR_OF_DAY, NOTIFICATION_HOUR);
+        currentTime.set(Calendar.MINUTE, NOTIFICATION_MIN);
         currentTime.set(Calendar.SECOND, 0);
         currentTime.set(Calendar.MILLISECOND, 0);
         AlarmManager am = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
@@ -178,7 +185,7 @@ public class BraveSetDefaultBrowserNotificationService extends BroadcastReceiver
                                         .SHOW_DEFAULT_APP_SETTINGS)) {
             Intent settingsIntent = hasAlternateDefaultBrowser()
                     ? new Intent(Settings.ACTION_MANAGE_DEFAULT_APPS_SETTINGS)
-                    : new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.brave.com/blog"));
+                    : new Intent(Intent.ACTION_VIEW, Uri.parse(BraveActivity.BRAVE_BLOG_URL));
             settingsIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(settingsIntent);
         }

@@ -31,6 +31,7 @@ import org.chromium.chrome.browser.preferences.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.util.UrlConstants;
 import org.chromium.ui.widget.Toast;
 
 /**
@@ -46,6 +47,9 @@ public abstract class BraveActivity extends ChromeActivity {
     public static final String BRAVE_PRODUCTION_PACKAGE_NAME = "com.brave.browser";
     public static final String BRAVE_DEVELOPMENT_PACKAGE_NAME = "com.brave.browser_default";
     public static final String CHANNEL_ID = "com.brave.browser";
+    public static final String ANDROID_SETUPWIZARD_PACKAGE_NAME = "com.google.android.setupwizard";
+    public static final String ANDROID_PACKAGE_NAME = "android";
+    public static final String BRAVE_BLOG_URL = "http://www.brave.com/blog";
 
     @Override
     public void onResumeWithNative() {
@@ -164,8 +168,9 @@ public abstract class BraveActivity extends ChromeActivity {
         /* (Albert Wang): Default app settings didn't get added until API 24
          * https://developer.android.com/reference/android/provider/Settings#ACTION_MANAGE_DEFAULT_APPS_SETTINGS
          */
-        Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://"));
-        boolean supportsDefault = Build.VERSION.SDK_INT >= 24;
+        Intent browserIntent =
+                new Intent(Intent.ACTION_VIEW, Uri.parse(UrlConstants.HTTP_URL_PREFIX));
+        boolean supportsDefault = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
         ResolveInfo resolveInfo = getPackageManager().resolveActivity(
                 browserIntent, supportsDefault ? PackageManager.MATCH_DEFAULT_ONLY : 0);
         Context context = ContextUtils.getApplicationContext();
@@ -176,8 +181,8 @@ public abstract class BraveActivity extends ChromeActivity {
             return;
         }
         if (supportsDefault) {
-            if (resolveInfo.activityInfo.packageName.equals("com.google.android.setupwizard")
-                    || resolveInfo.activityInfo.packageName.equals("android")) {
+            if (resolveInfo.activityInfo.packageName.equals(ANDROID_SETUPWIZARD_PACKAGE_NAME)
+                    || resolveInfo.activityInfo.packageName.equals(ANDROID_PACKAGE_NAME)) {
                 LayoutInflater inflater = getLayoutInflater();
                 View layout = inflater.inflate(R.layout.brave_set_default_browser_dialog,
                         (ViewGroup) findViewById(R.id.brave_set_default_browser_toast_container));
@@ -187,8 +192,7 @@ public abstract class BraveActivity extends ChromeActivity {
                 toast.setView(layout);
                 toast.setGravity(Gravity.TOP, 0, 40);
                 toast.show();
-                Intent intent =
-                        new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.brave.com/blog"));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(BRAVE_BLOG_URL));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             } else {
@@ -197,13 +201,12 @@ public abstract class BraveActivity extends ChromeActivity {
                 context.startActivity(intent);
             }
         } else {
-            if (resolveInfo.activityInfo.packageName.equals("com.google.android.setupwizard")
-                    || resolveInfo.activityInfo.packageName.equals("android")) {
+            if (resolveInfo.activityInfo.packageName.equals(ANDROID_SETUPWIZARD_PACKAGE_NAME)
+                    || resolveInfo.activityInfo.packageName.equals(ANDROID_PACKAGE_NAME)) {
                 // (Albert Wang): From what I've experimented on 6.0,
                 // default browser popup is in the middle of the screen for
                 // these versions. So we shouldn't show the toast.
-                Intent intent =
-                        new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.brave.com/blog"));
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(BRAVE_BLOG_URL));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             } else {
