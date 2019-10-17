@@ -1158,6 +1158,18 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv7tov8_PendingContribution) {
       static_cast<int>(pending_contribution->type));
 }
 
+TEST_F(PublisherInfoDatabaseTest, Migrationv8tov9) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateMigrationDatabase(&temp_dir, &db_file, 8, 9);
+  EXPECT_TRUE(publisher_info_database_->Init());
+
+  EXPECT_EQ(publisher_info_database_->GetTableVersionNumber(), 9);
+
+  const std::string schema = publisher_info_database_->GetSchema();
+  EXPECT_EQ(schema, GetSchemaString(9));
+}
+
 TEST_F(PublisherInfoDatabaseTest, DeleteActivityInfo) {
   base::ScopedTempDir temp_dir;
   base::FilePath db_file;
