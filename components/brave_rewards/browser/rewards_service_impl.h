@@ -38,7 +38,7 @@
 #endif
 
 #if defined(OS_ANDROID) && defined(BRAVE_CHROMIUM_BUILD)
-#include "brave/browser/android/rewards/safetynet_check.h"
+#include "brave/components/brave_rewards/browser/safetynet_check.h"
 #elif defined(OS_ANDROID)
 #include "chrome/browser/android/brave/safetynet_check.h"
 #endif
@@ -735,7 +735,7 @@ class RewardsServiceImpl : public RewardsService,
     ledger::ContributionQueuePtr info);
 
 #if defined(OS_ANDROID)
-  bool GetServerEnvironmentForAndroid();
+  ledger::Environment GetServerEnvironmentForAndroid();
   void CreateWalletAttestationResult(
       bat_ledger::mojom::BatLedger::CreateWalletCallback callback,
       bool result, const std::string& result_string);

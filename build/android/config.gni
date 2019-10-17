@@ -5,3 +5,4 @@ declare_args() {
 }
 
 brave_android_manifest_includes = [ "//brave/android/java/AndroidManifest.xml" ]
+brave_chrome_java_deps = ["//brave/third_party/android_deps:google_play_services_safetynet_java"]

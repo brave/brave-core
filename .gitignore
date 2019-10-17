@@ -1,7 +1,6 @@
 .DS_Store
 .tags*
 /.idea/
-/android/java/org/chromium/chrome/browser/ConfigAPIs.java
 /components/brave_webtorrent/extension/out/
 /components/brave_rewards/resources/extension/brave_rewards/out/
 /components/brave_sync/extension/brave-sync/

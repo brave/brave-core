@@ -27,12 +27,9 @@
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #endif
 
-#if !defined(OS_ANDROID)
 #if BUILDFLAG(BRAVE_STP_ENABLED)
 #include "brave/components/brave_shields/browser/tracking_protection_helper.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
-#endif
-// Add tab helpers here unless they are intended for android too
 #endif
 
 namespace brave {
@@ -47,15 +44,14 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #if defined(OS_ANDROID)
   DesktopModeTabHelper::CreateForWebContents(web_contents);
   BackgroundVideoPlaybackTabHelper::CreateForWebContents(web_contents);
+#else
+  // Add tab helpers here unless they are intended for android too
+  BraveDrmTabHelper::CreateForWebContents(web_contents);
+  BraveBookmarkTabHelper::CreateForWebContents(web_contents);
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   brave_rewards::RewardsTabHelper::CreateForWebContents(web_contents);
-#endif
-#if !defined(OS_ANDROID)
-  // Add tab helpers here unless they are intended for android too
-  BraveDrmTabHelper::CreateForWebContents(web_contents);
-  BraveBookmarkTabHelper::CreateForWebContents(web_contents);
 #endif
 
 #if BUILDFLAG(BRAVE_STP_ENABLED)

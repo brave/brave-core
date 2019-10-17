@@ -1,7 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-#include "brave_rewards_native_worker.h"
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/brave_rewards/android/brave_rewards_native_worker.h"
+
+#include <utility>
+#include <string>
+#include <vector>
+
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
 #include "base/android/jni_array.h"
@@ -17,19 +24,20 @@
 namespace chrome {
 namespace android {
 
-BraveRewardsNativeWorker::BraveRewardsNativeWorker(JNIEnv* env, const base::android::JavaRef<jobject>& obj):
+BraveRewardsNativeWorker::BraveRewardsNativeWorker(JNIEnv* env,
+    const base::android::JavaRef<jobject>& obj):
     weak_java_brave_rewards_native_worker_(env, obj),
     brave_rewards_service_(nullptr),
     weak_factory_(this) {
-
-  Java_BraveRewardsNativeWorker_setNativePtr(env, obj, reinterpret_cast<intptr_t>(this));
+  Java_BraveRewardsNativeWorker_setNativePtr(env, obj,
+    reinterpret_cast<intptr_t>(this));
 
   brave_rewards_service_ = brave_rewards::RewardsServiceFactory::GetForProfile(
       ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
   if (brave_rewards_service_) {
     brave_rewards_service_->AddObserver(this);
     brave_rewards_service_->AddPrivateObserver(this);
-    brave_rewards::RewardsNotificationService* notification_service = 
+    brave_rewards::RewardsNotificationService* notification_service =
       brave_rewards_service_->GetNotificationService();
     if (notification_service) {
       notification_service->AddObserver(this);
@@ -45,7 +53,7 @@ void BraveRewardsNativeWorker::Destroy(JNIEnv* env, const
   if (brave_rewards_service_) {
     brave_rewards_service_->RemoveObserver(this);
     brave_rewards_service_->RemovePrivateObserver(this);
-    brave_rewards::RewardsNotificationService* notification_service = 
+    brave_rewards::RewardsNotificationService* notification_service =
       brave_rewards_service_->GetNotificationService();
     if (notification_service) {
       notification_service->RemoveObserver(this);
@@ -77,7 +85,6 @@ void BraveRewardsNativeWorker::GetPublisherInfo(JNIEnv* env, const
         base::android::JavaParamRef<jobject>& jcaller, int tabId,
         const base::android::JavaParamRef<jstring>& host) {
   if (brave_rewards_service_) {
-    // TODO fill publisher_blob
     brave_rewards_service_->GetPublisherActivityFromUrl(tabId,
       base::android::ConvertJavaStringToUTF8(env, host), "", "");
   }
@@ -94,13 +101,15 @@ void BraveRewardsNativeWorker::OnPanelPublisherInfo(
   ledger::PublisherInfoPtr pi = info->Clone();
   map_publishers_info_[tabId] = std::move(pi);
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_OnPublisherInfo(env, 
+  Java_BraveRewardsNativeWorker_OnPublisherInfo(env,
         weak_java_brave_rewards_native_worker_.get(env), tabId);
 }
 
-base::android::ScopedJavaLocalRef<jstring> BraveRewardsNativeWorker::GetPublisherURL(JNIEnv* env, 
+base::android::ScopedJavaLocalRef<jstring>
+  BraveRewardsNativeWorker::GetPublisherURL(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj, uint64_t tabId) {
-  base::android::ScopedJavaLocalRef<jstring> res = base::android::ConvertUTF8ToJavaString(env, "");
+  base::android::ScopedJavaLocalRef<jstring> res =
+    base::android::ConvertUTF8ToJavaString(env, "");
 
   PublishersInfoMap::const_iterator iter(map_publishers_info_.find(tabId));
   if (iter != map_publishers_info_.end()) {
@@ -110,21 +119,26 @@ base::android::ScopedJavaLocalRef<jstring> BraveRewardsNativeWorker::GetPublishe
   return res;
 }
 
-base::android::ScopedJavaLocalRef<jstring> BraveRewardsNativeWorker::GetPublisherFavIconURL(JNIEnv* env, 
+base::android::ScopedJavaLocalRef<jstring>
+  BraveRewardsNativeWorker::GetPublisherFavIconURL(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj, uint64_t tabId) {
-  base::android::ScopedJavaLocalRef<jstring> res = base::android::ConvertUTF8ToJavaString(env, "");
+  base::android::ScopedJavaLocalRef<jstring> res =
+    base::android::ConvertUTF8ToJavaString(env, "");
 
   PublishersInfoMap::const_iterator iter(map_publishers_info_.find(tabId));
   if (iter != map_publishers_info_.end()) {
-    res = base::android::ConvertUTF8ToJavaString(env, iter->second->favicon_url);
+    res = base::android::ConvertUTF8ToJavaString(env,
+      iter->second->favicon_url);
   }
 
-  return res; 
+  return res;
 }
 
-base::android::ScopedJavaLocalRef<jstring> BraveRewardsNativeWorker::GetPublisherName(JNIEnv* env, 
+base::android::ScopedJavaLocalRef<jstring>
+  BraveRewardsNativeWorker::GetPublisherName(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj, uint64_t tabId) {
-  base::android::ScopedJavaLocalRef<jstring> res = base::android::ConvertUTF8ToJavaString(env, "");
+  base::android::ScopedJavaLocalRef<jstring> res =
+    base::android::ConvertUTF8ToJavaString(env, "");
 
   PublishersInfoMap::const_iterator iter(map_publishers_info_.find(tabId));
   if (iter != map_publishers_info_.end()) {
@@ -134,9 +148,11 @@ base::android::ScopedJavaLocalRef<jstring> BraveRewardsNativeWorker::GetPublishe
   return res;
 }
 
-base::android::ScopedJavaLocalRef<jstring> BraveRewardsNativeWorker::GetPublisherId(JNIEnv* env, 
+base::android::ScopedJavaLocalRef<jstring>
+  BraveRewardsNativeWorker::GetPublisherId(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj, uint64_t tabId) {
-  base::android::ScopedJavaLocalRef<jstring> res = base::android::ConvertUTF8ToJavaString(env, "");
+  base::android::ScopedJavaLocalRef<jstring> res =
+    base::android::ConvertUTF8ToJavaString(env, "");
 
   PublishersInfoMap::const_iterator iter(map_publishers_info_.find(tabId));
   if (iter != map_publishers_info_.end()) {
@@ -146,7 +162,7 @@ base::android::ScopedJavaLocalRef<jstring> BraveRewardsNativeWorker::GetPublishe
   return res;
 }
 
-int BraveRewardsNativeWorker::GetPublisherPercent(JNIEnv* env, 
+int BraveRewardsNativeWorker::GetPublisherPercent(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj, uint64_t tabId) {
   int res = 0;
 
@@ -158,7 +174,7 @@ int BraveRewardsNativeWorker::GetPublisherPercent(JNIEnv* env,
   return res;
 }
 
-bool BraveRewardsNativeWorker::GetPublisherExcluded(JNIEnv* env, 
+bool BraveRewardsNativeWorker::GetPublisherExcluded(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj, uint64_t tabId) {
   bool res = false;
 
@@ -170,20 +186,22 @@ bool BraveRewardsNativeWorker::GetPublisherExcluded(JNIEnv* env,
   return res;
 }
 
-bool BraveRewardsNativeWorker::GetPublisherVerified(JNIEnv* env, 
+bool BraveRewardsNativeWorker::GetPublisherVerified(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj, uint64_t tabId) {
   bool res = false;
 
   PublishersInfoMap::const_iterator iter(map_publishers_info_.find(tabId));
   if (iter != map_publishers_info_.end()) {
-    res = ((uint32_t)iter->second->status == (uint32_t)ledger::WalletStatus::VERIFIED);
+    res = ((uint32_t)iter->second->status ==
+      (uint32_t)ledger::WalletStatus::VERIFIED);
   }
 
   return res;
 }
 
-void BraveRewardsNativeWorker::IncludeInAutoContribution(JNIEnv* env, 
-        const base::android::JavaParamRef<jobject>& obj, uint64_t tabId, bool exclude) {
+void BraveRewardsNativeWorker::IncludeInAutoContribution(JNIEnv* env,
+        const base::android::JavaParamRef<jobject>& obj, uint64_t tabId,
+        bool exclude) {
   PublishersInfoMap::iterator iter(map_publishers_info_.find(tabId));
   if (iter != map_publishers_info_.end()) {
     if (exclude) {
@@ -197,7 +215,7 @@ void BraveRewardsNativeWorker::IncludeInAutoContribution(JNIEnv* env,
   }
 }
 
-void BraveRewardsNativeWorker::RemovePublisherFromMap(JNIEnv* env, 
+void BraveRewardsNativeWorker::RemovePublisherFromMap(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj, uint64_t tabId) {
   PublishersInfoMap::const_iterator iter(map_publishers_info_.find(tabId));
   if (iter != map_publishers_info_.end()) {
@@ -205,17 +223,17 @@ void BraveRewardsNativeWorker::RemovePublisherFromMap(JNIEnv* env,
   }
 }
 
-void BraveRewardsNativeWorker::OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
-        int32_t error_code) {
+void BraveRewardsNativeWorker::OnWalletInitialized(
+  brave_rewards::RewardsService* rewards_service, int32_t error_code) {
   JNIEnv* env = base::android::AttachCurrentThread();
-  
-  Java_BraveRewardsNativeWorker_OnWalletInitialized(env, 
+
+  Java_BraveRewardsNativeWorker_OnWalletInitialized(env,
         weak_java_brave_rewards_native_worker_.get(env), error_code);
 }
 
-void BraveRewardsNativeWorker::OnWalletProperties(brave_rewards::RewardsService* rewards_service,
-        int error_code, 
-        std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
+void BraveRewardsNativeWorker::OnWalletProperties(
+    brave_rewards::RewardsService* rewards_service, int error_code,
+    std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
   if (wallet_properties) {
     wallet_properties_ = *wallet_properties;
   }
@@ -243,7 +261,7 @@ void BraveRewardsNativeWorker::OnBalance(
         weak_java_brave_rewards_native_worker_.get(env), 0);
 }
 
-double BraveRewardsNativeWorker::GetWalletBalance(JNIEnv* env, 
+double BraveRewardsNativeWorker::GetWalletBalance(JNIEnv* env,
     const base::android::JavaParamRef<jobject>& obj) {
   return balance_.total;
 }
@@ -269,7 +287,8 @@ void BraveRewardsNativeWorker::WalletExist(JNIEnv* env,
   }
 }
 
-void BraveRewardsNativeWorker::FetchGrants(JNIEnv* env, const base::android::JavaParamRef<jobject>& obj) {
+void BraveRewardsNativeWorker::FetchGrants(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj) {
   if (brave_rewards_service_) {
     brave_rewards_service_->FetchGrants(std::string(), std::string());
   }
@@ -277,11 +296,11 @@ void BraveRewardsNativeWorker::FetchGrants(JNIEnv* env, const base::android::Jav
 
 void BraveRewardsNativeWorker::OnIsWalletCreated(bool created) {
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_OnIsWalletCreated(env, 
+  Java_BraveRewardsNativeWorker_OnIsWalletCreated(env,
         weak_java_brave_rewards_native_worker_.get(env), created);
 }
 
-void BraveRewardsNativeWorker::GetCurrentBalanceReport(JNIEnv* env, 
+void BraveRewardsNativeWorker::GetCurrentBalanceReport(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj) {
   if (brave_rewards_service_) {
     return brave_rewards_service_->GetCurrentBalanceReport();
@@ -304,33 +323,34 @@ void BraveRewardsNativeWorker::OnGetCurrentBalanceReport(
   base::android::ScopedJavaLocalRef<jobjectArray> java_array =
       base::android::ToJavaArrayOfStrings(env, values);
 
-  Java_BraveRewardsNativeWorker_OnGetCurrentBalanceReport(env, 
+  Java_BraveRewardsNativeWorker_OnGetCurrentBalanceReport(env,
         weak_java_brave_rewards_native_worker_.get(env), java_array);
 }
 
-void BraveRewardsNativeWorker::Donate(JNIEnv* env, 
+void BraveRewardsNativeWorker::Donate(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj,
-        const base::android::JavaParamRef<jstring>& publisher_key, 
+        const base::android::JavaParamRef<jstring>& publisher_key,
         int amount, bool recurring) {
   if (brave_rewards_service_) {
-    brave_rewards_service_->OnTip(base::android::ConvertJavaStringToUTF8(env, publisher_key), 
-      amount, recurring);
+    brave_rewards_service_->OnTip(
+      base::android::ConvertJavaStringToUTF8(env, publisher_key), amount,
+        recurring);
   }
 }
 
-void BraveRewardsNativeWorker::GetAllNotifications(JNIEnv* env, 
+void BraveRewardsNativeWorker::GetAllNotifications(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj) {
-  brave_rewards::RewardsNotificationService* notification_service = 
+  brave_rewards::RewardsNotificationService* notification_service =
     brave_rewards_service_->GetNotificationService();
   if (notification_service) {
     notification_service->GetNotifications();
   }
 }
 
-void BraveRewardsNativeWorker::DeleteNotification(JNIEnv* env, 
+void BraveRewardsNativeWorker::DeleteNotification(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj,
         const base::android::JavaParamRef<jstring>& notification_id) {
-  brave_rewards::RewardsNotificationService* notification_service = 
+  brave_rewards::RewardsNotificationService* notification_service =
     brave_rewards_service_->GetNotificationService();
   if (notification_service) {
     notification_service->DeleteNotification(
@@ -338,33 +358,37 @@ void BraveRewardsNativeWorker::DeleteNotification(JNIEnv* env,
   }
 }
 
-void BraveRewardsNativeWorker::GetGrant(JNIEnv* env, const base::android::JavaParamRef<jobject>& obj,
-        const base::android::JavaParamRef<jstring>& promotionId) {
+void BraveRewardsNativeWorker::GetGrant(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj,
+    const base::android::JavaParamRef<jstring>& promotionId) {
   if (brave_rewards_service_) {
-      brave_rewards_service_->GetGrantViaSafetynetCheck(base::android::ConvertJavaStringToUTF8(env, promotionId));
+      brave_rewards_service_->GetGrantViaSafetynetCheck(
+        base::android::ConvertJavaStringToUTF8(env, promotionId));
   }
 }
 
-int BraveRewardsNativeWorker::GetCurrentGrantsCount(JNIEnv* env, 
+int BraveRewardsNativeWorker::GetCurrentGrantsCount(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj) {
   return wallet_properties_.grants.size();
 }
 
-base::android::ScopedJavaLocalRef<jobjectArray> BraveRewardsNativeWorker::GetCurrentGrant(JNIEnv* env, 
-        const base::android::JavaParamRef<jobject>& obj,
-        int position) {
+base::android::ScopedJavaLocalRef<jobjectArray>
+    BraveRewardsNativeWorker::GetCurrentGrant(JNIEnv* env,
+      const base::android::JavaParamRef<jobject>& obj,
+      int position) {
   if ((size_t)position > wallet_properties_.grants.size() - 1) {
     return base::android::ScopedJavaLocalRef<jobjectArray>();
   }
   std::vector<std::string> values;
   values.push_back(wallet_properties_.grants[position].probi);
-  values.push_back(std::to_string(wallet_properties_.grants[position].expiryTime));
+  values.push_back(
+    std::to_string(wallet_properties_.grants[position].expiryTime));
   values.push_back(wallet_properties_.grants[position].type);
 
   return base::android::ToJavaArrayOfStrings(env, values);
 }
 
-void BraveRewardsNativeWorker::GetPendingContributionsTotal(JNIEnv* env, 
+void BraveRewardsNativeWorker::GetPendingContributionsTotal(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj) {
   if (brave_rewards_service_) {
     brave_rewards_service_->GetPendingContributionsTotalUI(base::Bind(
@@ -373,7 +397,7 @@ void BraveRewardsNativeWorker::GetPendingContributionsTotal(JNIEnv* env,
   }
 }
 
-void BraveRewardsNativeWorker::GetRecurringDonations(JNIEnv* env, 
+void BraveRewardsNativeWorker::GetRecurringDonations(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj) {
   if (brave_rewards_service_) {
     brave_rewards_service_->GetRecurringTipsUI(base::Bind(
@@ -392,19 +416,21 @@ void BraveRewardsNativeWorker::OnGetRecurringTips(
   }
 
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_OnRecurringDonationUpdated(env, 
+  Java_BraveRewardsNativeWorker_OnRecurringDonationUpdated(env,
         weak_java_brave_rewards_native_worker_.get(env));
 }
 
-bool BraveRewardsNativeWorker::IsCurrentPublisherInRecurrentDonations(JNIEnv* env, 
-        const base::android::JavaParamRef<jobject>& obj,
-        const base::android::JavaParamRef<jstring>& publisher) {
-  return map_recurrent_publishers_.find(base::android::ConvertJavaStringToUTF8(env, publisher)) !=
-    map_recurrent_publishers_.end();
+bool BraveRewardsNativeWorker::IsCurrentPublisherInRecurrentDonations(
+    JNIEnv* env, const base::android::JavaParamRef<jobject>& obj,
+    const base::android::JavaParamRef<jstring>& publisher) {
+  return map_recurrent_publishers_.find(
+    base::android::ConvertJavaStringToUTF8(env, publisher)) !=
+      map_recurrent_publishers_.end();
 }
 
 
-void BraveRewardsNativeWorker::GetAutoContributeProps(JNIEnv* env, const base::android::JavaParamRef<jobject>& obj) {
+void BraveRewardsNativeWorker::GetAutoContributeProps(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj) {
   if (brave_rewards_service_) {
     brave_rewards_service_->GetAutoContributeProps(base::Bind(
             &BraveRewardsNativeWorker::OnGetAutoContributeProps,
@@ -421,14 +447,16 @@ void BraveRewardsNativeWorker::OnGetAutoContributeProps(
 
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_OnGetAutoContributeProps(env,
-                                                               weak_java_brave_rewards_native_worker_.get(env));
+    weak_java_brave_rewards_native_worker_.get(env));
 }
 
-bool BraveRewardsNativeWorker::IsAutoContributeEnabled(JNIEnv* env, const base::android::JavaParamRef<jobject>& obj){
+bool BraveRewardsNativeWorker::IsAutoContributeEnabled(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj) {
   return auto_contrib_properties_.enabled_contribute;
 }
 
-void BraveRewardsNativeWorker::GetReconcileStamp(JNIEnv* env, const base::android::JavaParamRef<jobject>& obj){
+void BraveRewardsNativeWorker::GetReconcileStamp(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj) {
   if (brave_rewards_service_) {
     brave_rewards_service_->GetReconcileStamp(base::Bind(
             &BraveRewardsNativeWorker::OnGetGetReconcileStamp,
@@ -436,7 +464,8 @@ void BraveRewardsNativeWorker::GetReconcileStamp(JNIEnv* env, const base::androi
   }
 }
 
-void BraveRewardsNativeWorker::ResetTheWholeState(JNIEnv* env, const base::android::JavaParamRef<jobject>& obj) {
+void BraveRewardsNativeWorker::ResetTheWholeState(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj) {
   auto* ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(
     ProfileManager::GetActiveUserProfile()->GetOriginalProfile());
   if (ads_service_) {
@@ -468,76 +497,81 @@ void BraveRewardsNativeWorker::OnResetTheWholeState(bool sucess) {
           weak_java_brave_rewards_native_worker_.get(env), sucess);
 }
 
-double BraveRewardsNativeWorker::GetPublisherRecurrentDonationAmount(JNIEnv* env,
-                                              const base::android::JavaParamRef<jobject>& obj,
-                                              const base::android::JavaParamRef<jstring>& publisher){
-  double amount (0.0);
-  auto it = map_recurrent_publishers_.find(base::android::ConvertJavaStringToUTF8(env, publisher));
-  if ( it != map_recurrent_publishers_.end() ){
+double BraveRewardsNativeWorker::GetPublisherRecurrentDonationAmount(
+    JNIEnv* env, const base::android::JavaParamRef<jobject>& obj,
+    const base::android::JavaParamRef<jstring>& publisher) {
+  double amount(0.0);
+  auto it = map_recurrent_publishers_.find(
+    base::android::ConvertJavaStringToUTF8(env, publisher));
+  if (it != map_recurrent_publishers_.end()) {
     // for Recurrent Donations, the amount is stored in ContentSite::percentage
     amount = it->second.percentage;
   }
   return  amount;
 }
 
-void BraveRewardsNativeWorker::RemoveRecurring(JNIEnv* env, const base::android::JavaParamRef<jobject>& obj,
-    const base::android::JavaParamRef<jstring>& publisher){
+void BraveRewardsNativeWorker::RemoveRecurring(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj,
+    const base::android::JavaParamRef<jstring>& publisher) {
   if (brave_rewards_service_) {
-      brave_rewards_service_->RemoveRecurringTipUI(base::android::ConvertJavaStringToUTF8(env, publisher));
+      brave_rewards_service_->RemoveRecurringTipUI(
+        base::android::ConvertJavaStringToUTF8(env, publisher));
   }
 }
 
-
-void BraveRewardsNativeWorker::OnGetGetReconcileStamp( uint64_t timestamp){
+void BraveRewardsNativeWorker::OnGetGetReconcileStamp(uint64_t timestamp) {
   JNIEnv* env = base::android::AttachCurrentThread();
 
   Java_BraveRewardsNativeWorker_OnGetReconcileStamp(env,
           weak_java_brave_rewards_native_worker_.get(env), timestamp);
 }
 
-
 void BraveRewardsNativeWorker::OnGetPendingContributionsTotal(double amount) {
   JNIEnv* env = base::android::AttachCurrentThread();
 
-  Java_BraveRewardsNativeWorker_OnGetPendingContributionsTotal(env, 
+  Java_BraveRewardsNativeWorker_OnGetPendingContributionsTotal(env,
         weak_java_brave_rewards_native_worker_.get(env), amount);
 }
 
 void BraveRewardsNativeWorker::OnNotificationAdded(
-      brave_rewards::RewardsNotificationService* rewards_notification_service,
-      const brave_rewards::RewardsNotificationService::RewardsNotification& notification) {
+    brave_rewards::RewardsNotificationService* rewards_notification_service,
+    const brave_rewards::RewardsNotificationService::RewardsNotification&
+      notification) {
   JNIEnv* env = base::android::AttachCurrentThread();
 
-  Java_BraveRewardsNativeWorker_OnNotificationAdded(env, 
+  Java_BraveRewardsNativeWorker_OnNotificationAdded(env,
         weak_java_brave_rewards_native_worker_.get(env),
-        base::android::ConvertUTF8ToJavaString(env, notification.id_), 
+        base::android::ConvertUTF8ToJavaString(env, notification.id_),
         notification.type_,
         notification.timestamp_,
         base::android::ToJavaArrayOfStrings(env, notification.args_));
 }
 
 void BraveRewardsNativeWorker::OnGetAllNotifications(
-      brave_rewards::RewardsNotificationService* rewards_notification_service,
-      const brave_rewards::RewardsNotificationService::RewardsNotificationsList&
-          notifications_list) {
+    brave_rewards::RewardsNotificationService* rewards_notification_service,
+    const brave_rewards::RewardsNotificationService::RewardsNotificationsList&
+      notifications_list) {
   JNIEnv* env = base::android::AttachCurrentThread();
-  
+
   // Notify about notifications count
-  Java_BraveRewardsNativeWorker_OnNotificationsCount(env, 
+  Java_BraveRewardsNativeWorker_OnNotificationsCount(env,
         weak_java_brave_rewards_native_worker_.get(env),
         notifications_list.size());
 
-  brave_rewards::RewardsNotificationService::RewardsNotificationsList::const_iterator iter = 
-    std::max_element(notifications_list.begin(), notifications_list.end(),
-      [](const brave_rewards::RewardsNotificationService::RewardsNotification& notification_a,
-        const brave_rewards::RewardsNotificationService::RewardsNotification& notification_b) {
-      return notification_a.timestamp_ > notification_b.timestamp_;
-    });
+  brave_rewards::RewardsNotificationService::RewardsNotificationsList::
+    const_iterator iter =
+      std::max_element(notifications_list.begin(), notifications_list.end(),
+        [](const brave_rewards::RewardsNotificationService::
+            RewardsNotification& notification_a,
+          const brave_rewards::RewardsNotificationService::
+            RewardsNotification& notification_b) {
+        return notification_a.timestamp_ > notification_b.timestamp_;
+      });
 
   if (iter != notifications_list.end()) {
-    Java_BraveRewardsNativeWorker_OnGetLatestNotification(env, 
+    Java_BraveRewardsNativeWorker_OnGetLatestNotification(env,
         weak_java_brave_rewards_native_worker_.get(env),
-        base::android::ConvertUTF8ToJavaString(env, iter->id_), 
+        base::android::ConvertUTF8ToJavaString(env, iter->id_),
         iter->type_,
         iter->timestamp_,
         base::android::ToJavaArrayOfStrings(env, iter->args_));
@@ -546,43 +580,49 @@ void BraveRewardsNativeWorker::OnGetAllNotifications(
 
 void BraveRewardsNativeWorker::OnNotificationDeleted(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
-      const brave_rewards::RewardsNotificationService::RewardsNotification& notification) {
+      const brave_rewards::RewardsNotificationService::RewardsNotification&
+        notification) {
   JNIEnv* env = base::android::AttachCurrentThread();
 
-  Java_BraveRewardsNativeWorker_OnNotificationDeleted(env, 
+  Java_BraveRewardsNativeWorker_OnNotificationDeleted(env,
         weak_java_brave_rewards_native_worker_.get(env),
         base::android::ConvertUTF8ToJavaString(env, notification.id_));
 }
 
-void BraveRewardsNativeWorker::OnGrant(brave_rewards::RewardsService* rewards_service, 
-      unsigned int result, brave_rewards::Grant grant) {
-  // TODO what do we need to do here? We receive notification about deletion
+void BraveRewardsNativeWorker::OnGrant(
+    brave_rewards::RewardsService* rewards_service, unsigned int result,
+    brave_rewards::Grant grant) {
+  // TODO(sergz) what do we need to do here?
+  // We receive notification about deletion
 }
-void BraveRewardsNativeWorker::OnGrantFinish(brave_rewards::RewardsService* rewards_service, 
-      unsigned int result, brave_rewards::Grant grant) {
+
+void BraveRewardsNativeWorker::OnGrantFinish(
+    brave_rewards::RewardsService* rewards_service, unsigned int result,
+    brave_rewards::Grant grant) {
   JNIEnv* env = base::android::AttachCurrentThread();
 
-  Java_BraveRewardsNativeWorker_OnGrantFinish(env, 
+  Java_BraveRewardsNativeWorker_OnGrantFinish(env,
         weak_java_brave_rewards_native_worker_.get(env), result);
 }
 
-void BraveRewardsNativeWorker::SetRewardsMainEnabled(JNIEnv* env, 
+void BraveRewardsNativeWorker::SetRewardsMainEnabled(JNIEnv* env,
       const base::android::JavaParamRef<jobject>& obj, bool enabled) {
   if (brave_rewards_service_) {
     brave_rewards_service_->SetRewardsMainEnabled(enabled);
   }
 }
 
-void BraveRewardsNativeWorker::OnRewardsMainEnabled(brave_rewards::RewardsService* rewards_service, 
+void BraveRewardsNativeWorker::OnRewardsMainEnabled(
+    brave_rewards::RewardsService* rewards_service,
     bool rewards_main_enabled) {
   JNIEnv* env = base::android::AttachCurrentThread();
 
-  Java_BraveRewardsNativeWorker_OnRewardsMainEnabled(env, 
-        weak_java_brave_rewards_native_worker_.get(env), rewards_main_enabled);
+  Java_BraveRewardsNativeWorker_OnRewardsMainEnabled(env,
+    weak_java_brave_rewards_native_worker_.get(env), rewards_main_enabled);
 }
 
-void BraveRewardsNativeWorker::GetRewardsMainEnabled(JNIEnv* env, 
-      const base::android::JavaParamRef<jobject>& obj) {
+void BraveRewardsNativeWorker::GetRewardsMainEnabled(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj) {
   if (brave_rewards_service_) {
     brave_rewards_service_->GetRewardsMainEnabled(base::Bind(
       &BraveRewardsNativeWorker::OnGetRewardsMainEnabled,
@@ -594,13 +634,12 @@ void BraveRewardsNativeWorker::OnGetRewardsMainEnabled(
     bool enabled) {
   JNIEnv* env = base::android::AttachCurrentThread();
 
-  Java_BraveRewardsNativeWorker_OnGetRewardsMainEnabled(env, 
-        weak_java_brave_rewards_native_worker_.get(env), enabled);
+  Java_BraveRewardsNativeWorker_OnGetRewardsMainEnabled(env,
+    weak_java_brave_rewards_native_worker_.get(env), enabled);
 }
 
-
-static void JNI_BraveRewardsNativeWorker_Init(JNIEnv* env, const
-    base::android::JavaParamRef<jobject>& jcaller) {
+static void JNI_BraveRewardsNativeWorker_Init(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jcaller) {
   new BraveRewardsNativeWorker(env, jcaller);
 }
 
@@ -609,7 +648,8 @@ void BraveRewardsNativeWorker::OnGetAddresses(
   addresses_ = addresses;
 }
 
-void BraveRewardsNativeWorker::GetAddresses(JNIEnv* env, const base::android::JavaParamRef<jobject>& obj) {
+void BraveRewardsNativeWorker::GetAddresses(JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj) {
   // TODO(samartnik): find out how to get addresses
   // if (brave_rewards_service_) {
   //   brave_rewards_service_->GetAddresses(base::Bind(
@@ -618,16 +658,20 @@ void BraveRewardsNativeWorker::GetAddresses(JNIEnv* env, const base::android::Ja
   // }
 }
 
-base::android::ScopedJavaLocalRef<jstring> BraveRewardsNativeWorker::GetAddress(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj,
-        const base::android::JavaParamRef<jstring>& jaddress_name) {
-  base::android::ScopedJavaLocalRef<jstring> res = base::android::ConvertUTF8ToJavaString(env, "");
-  std::string address_name = base::android::ConvertJavaStringToUTF8(env, jaddress_name);
+base::android::ScopedJavaLocalRef<jstring>
+    BraveRewardsNativeWorker::GetAddress(JNIEnv* env,
+      const base::android::JavaParamRef<jobject>& obj,
+      const base::android::JavaParamRef<jstring>& jaddress_name) {
+  base::android::ScopedJavaLocalRef<jstring> res =
+    base::android::ConvertUTF8ToJavaString(env, "");
+  std::string address_name =
+    base::android::ConvertJavaStringToUTF8(env, jaddress_name);
   if (addresses_.find(address_name) != addresses_.end()) {
-    res = base::android::ConvertUTF8ToJavaString(env, addresses_.at(address_name));
+    res = base::android::ConvertUTF8ToJavaString(env,
+      addresses_.at(address_name));
   }
   return res;
 }
 
-}
-}
+}  // namespace android
+}  // namespace chrome

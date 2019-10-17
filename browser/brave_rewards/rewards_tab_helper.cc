@@ -120,8 +120,8 @@ void RewardsTabHelper::WebContentsDestroyed() {
     rewards_service_->OnUnload(tab_id_);
 }
 
-void RewardsTabHelper::OnBrowserSetLastActive(Browser* browser) {
 #if !defined(OS_ANDROID)
+void RewardsTabHelper::OnBrowserSetLastActive(Browser* browser) {
   if (!rewards_service_)
     return;
 
@@ -129,11 +129,11 @@ void RewardsTabHelper::OnBrowserSetLastActive(Browser* browser) {
       TabStripModel::kNoTab) {
     rewards_service_->OnForeground(tab_id_);
   }
-#endif
 }
+#endif
 
-void RewardsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
 #if !defined(OS_ANDROID)
+void RewardsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
   if (!rewards_service_)
     return;
 
@@ -141,8 +141,8 @@ void RewardsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
       TabStripModel::kNoTab) {
     rewards_service_->OnBackground(tab_id_);
   }
-#endif
 }
+#endif
 
 #if BUILDFLAG(ENABLE_GREASELION)
 void RewardsTabHelper::OnRewardsMainEnabled(RewardsService* rewards_service,

@@ -1,0 +1,13 @@
+import("//build/config/android/rules.gni")
+
+group("android_deps") {
+  public_deps = [
+    ":google_play_services_safetynet_java"
+  ]
+}
+
+android_aar_prebuilt("google_play_services_safetynet_java") { 
+  aar_path = "libs/com_google_android_gms_play_services_safetynet/play-services-safetynet-15.0.1.aar"  
+  info_path = "libs/com_google_android_gms_play_services_safetynet/com_google_android_gms_play_services_safetynet.info" 
+  deps = ["$google_play_services_package:google_play_services_base_java"]
+}

@@ -274,7 +274,7 @@ RewardsDOMHandler::~RewardsDOMHandler() {
 
 void RewardsDOMHandler::RegisterMessages() {
 #if defined(OS_ANDROID)
-  // TODO sergz: figure out why we have link error here
+  // TODO(sergz) figure out why we have link error here
   // Create our favicon data source.
   // Profile* profile = Profile::FromWebUI(web_ui());
   // content::URLDataSource::Add(profile,

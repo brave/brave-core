@@ -1,3 +1,8 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
 #include "chrome/browser/profiles/profile_android.h"
@@ -52,19 +57,21 @@ void JNI_BraveAdsNativeHelper_SetAdsEnabled(
   ads_service_->SetEnabled(true);
 }
 
-base::android::ScopedJavaLocalRef<jstring> JNI_BraveAdsNativeHelper_GetCountryCode(
-  JNIEnv* env,
-  const base::android::JavaParamRef<jstring>& jlocale){
+base::android::ScopedJavaLocalRef<jstring>
+  JNI_BraveAdsNativeHelper_GetCountryCode(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jstring>& jlocale) {
 
   std::string locale = base::android::ConvertJavaStringToUTF8(env, jlocale);
-  std::string country_code = brave_ads::LocaleHelperAndroid::GetCountryCode(locale);
+  std::string country_code =
+    brave_ads::LocaleHelperAndroid::GetCountryCode(locale);
   return base::android::ConvertUTF8ToJavaString(env, country_code);
 }
 
 base::android::ScopedJavaLocalRef<jstring> JNI_BraveAdsNativeHelper_GetLocale(
-  JNIEnv* env){
-
-  brave_ads::LocaleHelper* locale_helper = brave_ads::LocaleHelper::GetInstance();
+  JNIEnv* env) {
+  brave_ads::LocaleHelper* locale_helper =
+    brave_ads::LocaleHelper::GetInstance();
   std::string locale = locale_helper->GetLocale();
   return base::android::ConvertUTF8ToJavaString(env, locale);
 }
