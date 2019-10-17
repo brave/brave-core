@@ -607,7 +607,7 @@
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_LIST3" desc="">Withdraw BAT that you may have previously added to your Brave Rewards wallet</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_HEADER" desc="">Benefits of verifying</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_TITLE1" desc="">Ready to verify your wallet?</message>
-      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_TITLE2" desc="">Verification is not necessary to earn rewards for creator contributions</message>
+      <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_TITLE2" desc="">Verification is not necessary to contribute rewards to creators</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFIED" desc="">Verified</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE1" desc="">Uphold may require you to verify your identity based on services requested.</message>
       <message name="IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE2" desc="">Brave Software Inc. does not process, store, or access any of the personal information that you provide to Uphold when you establish an account with them.</message>
