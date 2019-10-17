@@ -122,7 +122,7 @@ class SettingsViewController: TableViewController {
         list.append(generalSection)
         list.append(displaySection)
         #if !NO_SYNC
-            list.append(syncSection)
+            list.append(otherSettingsSection)
         #endif
         list.append(contentsOf: [privacySection,
                                  securitySection,
@@ -150,8 +150,7 @@ class SettingsViewController: TableViewController {
                     self.navigationController?.pushViewController(viewController, animated: true)
                 }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
                 BoolRow(title: Strings.Save_Logins, option: Preferences.General.saveLogins),
-                BoolRow(title: Strings.Block_Popups, option: Preferences.General.blockPopups),
-                BoolRow(title: Strings.Media_Auto_Plays, option: Preferences.General.mediaAutoPlays)
+                BoolRow(title: Strings.Block_Popups, option: Preferences.General.blockPopups)
             ]
         )
         
@@ -231,7 +230,7 @@ class SettingsViewController: TableViewController {
         return display
     }()
     
-    private lazy var syncSection: Section = {
+    private lazy var otherSettingsSection: Section = {
         
         return Section(
             // BRAVE TODO: Change it once we finalize our decision how to name the section.(#385)
@@ -254,7 +253,8 @@ class SettingsViewController: TableViewController {
                         self.navigationController?.pushViewController(view, animated: true)
                     }
                 }, accessory: .disclosureIndicator,
-                   cellClass: MultilineValue1Cell.self)
+                   cellClass: MultilineValue1Cell.self),
+                BoolRow(title: Strings.Media_Auto_Plays, option: Preferences.General.mediaAutoPlays)
             ]
         )
     }()
