@@ -2,22 +2,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Image1 from '../../../../img/newtab/ntp-1.webp'
-import Image2 from '../../../../img/newtab/ntp-2.webp'
-import Image3 from '../../../../img/newtab/ntp-3.webp'
-import Image4 from '../../../../img/newtab/ntp-4.webp'
-import Image5 from '../../../../img/newtab/ntp-5.webp'
-import Image6 from '../../../../img/newtab/ntp-6.webp'
-import Image7 from '../../../../img/newtab/ntp-7.webp'
-import Image8 from '../../../../img/newtab/ntp-8.webp'
-import Image9 from '../../../../img/newtab/ntp-9.webp'
-import Image10 from '../../../../img/newtab/ntp-10.webp'
-import Image11 from '../../../../img/newtab/ntp-11.webp'
-import Image12 from '../../../../img/newtab/ntp-12.webp'
-import Image13 from '../../../../img/newtab/ntp-13.webp'
-import Image14 from '../../../../img/newtab/ntp-14.webp'
-import Image15 from '../../../../img/newtab/ntp-15.webp'
-import Image16 from '../../../../img/newtab/ntp-16.webp'
+import Image1 from '../../../../img/newtab/ntp-1-min.webp'
+import Image2 from '../../../../img/newtab/ntp-2-min.webp'
+import Image3 from '../../../../img/newtab/ntp-3-min.webp'
+import Image4 from '../../../../img/newtab/ntp-4-min.webp'
+import Image5 from '../../../../img/newtab/ntp-5-min.webp'
+import Image6 from '../../../../img/newtab/ntp-6-min.webp'
+import Image7 from '../../../../img/newtab/ntp-7-min.webp'
+import Image8 from '../../../../img/newtab/ntp-8-min.webp'
+import Image9 from '../../../../img/newtab/ntp-9-min.webp'
+import Image10 from '../../../../img/newtab/ntp-10-min.webp'
+import Image11 from '../../../../img/newtab/ntp-11-min.webp'
+import Image12 from '../../../../img/newtab/ntp-12-min.webp'
+import Image13 from '../../../../img/newtab/ntp-13-min.webp'
+import Image14 from '../../../../img/newtab/ntp-14-min.webp'
+import Image15 from '../../../../img/newtab/ntp-15-min.webp'
+import Image16 from '../../../../img/newtab/ntp-16-min.webp'
 
 export const images = [
   {
