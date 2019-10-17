@@ -21,8 +21,6 @@ class BATValueOptionsSelectionViewController: OptionsSelectionViewController<BAT
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    self.title = Strings.RecurringTipTitle
   }
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
