@@ -1,12 +1,12 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 9f95291191e896e0ce9691941fc0fa8d5323a1ed..d736f9d7f0b6014c4d8cfb07928f94664061688c 100644
+index 9f95291191e896e0ce9691941fc0fa8d5323a1ed..b1729b5a3f5ffe8c8a871a766a325ca485f15240 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
-@@ -1097,6 +1097,7 @@ by a child template that "extends" this file.
-                <category android:name="{{ manifest_package }}"/>
-             </intent-filter>
-         </receiver>
-+        <receiver android:name="org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService" android:exported="false"><intent-filter><action android:name="DEEP_LINK"/></intent-filter></receiver>
-         <!-- GcmTaskService for registration for Invalidations. -->
-         <service android:name="com.google.ipc.invalidation.ticl.android2.channel.GcmRegistrationTaskService"
-             android:exported="true"
+@@ -1344,6 +1344,7 @@ android:value="true" />
+         </activity>
+         {% endif %}
+ 
++        {% include "//brave/android/java/AndroidManifest.xml" %}
+         {% block extra_application_definitions %}
+ 
+         <!-- Media route controllers to use for remote playback (cast).

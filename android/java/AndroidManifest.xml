@@ -1,0 +1,6 @@
+<receiver android:name="org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService"
+    android:exported="false">
+    <intent-filter>
+          <action android:name="DEEP_LINK"/>
+    </intent-filter>
+</receiver>
