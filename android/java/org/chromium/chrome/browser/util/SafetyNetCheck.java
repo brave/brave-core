@@ -31,7 +31,6 @@ import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
-import org.chromium.chrome.browser.ConfigAPIs;
 
 /**
  * Utility class for providing additional safety checks.
@@ -66,7 +65,7 @@ public class SafetyNetCheck {
     * Performs client attestation
     */
     @CalledByNative
-    public boolean clientAttestation(String nonceData) {
+    public boolean clientAttestation(String nonceData, String apiKey) {
         boolean res = false;
         try {
             Activity activity = ApplicationStatus.getLastTrackedFocusedActivity();
@@ -83,7 +82,7 @@ public class SafetyNetCheck {
                 }
                 byte[] nonce = nonceData.isEmpty() ? getRequestNonce() : nonceData.getBytes();
                 SafetyNetClient client = SafetyNet.getClient(activity);
-                Task<SafetyNetApi.AttestationResponse> attestTask = client.attest(nonce, ConfigAPIs.GS_API_KEY);                
+                Task<SafetyNetApi.AttestationResponse> attestTask = client.attest(nonce, apiKey);
                 attestTask.addOnSuccessListener(activity,
                     new OnSuccessListener<SafetyNetApi.AttestationResponse>() {
                         @Override

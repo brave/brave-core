@@ -18,8 +18,12 @@ SafetyNetCheck::~SafetyNetCheck() {
 bool SafetyNetCheck::clientAttestation(const std::string& nonce, ClientAttestationCallback attest_callback) {
   attest_callback_ = std::move(attest_callback);
   JNIEnv* env = base::android::AttachCurrentThread();
-  base::android::ScopedJavaLocalRef<jstring> jnonce = base::android::ConvertUTF8ToJavaString(env, nonce);
-  return Java_SafetyNetCheck_clientAttestation(env, java_obj_, jnonce);
+  base::android::ScopedJavaLocalRef<jstring> jnonce =
+    base::android::ConvertUTF8ToJavaString(env, nonce);
+  base::android::ScopedJavaLocalRef<jstring> japiKey =
+    base::android::ConvertUTF8ToJavaString(env, SAFETYNET_API_KEY);
+  return Java_SafetyNetCheck_clientAttestation(env, java_obj_, jnonce,
+    japiKey);
 }
 
 void SafetyNetCheck::clientAttestationResult(JNIEnv* env, const base::android::JavaRef<jobject>& jobj, jboolean jresult,
