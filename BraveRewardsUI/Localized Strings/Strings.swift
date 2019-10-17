@@ -7,7 +7,7 @@ internal struct Strings {}
 internal extension Strings {
   static let Open = NSLocalizedString("BraveRewardsOpen", bundle: Bundle.RewardsUI, value: "Open", comment: "")
   static let AdNotificationTitle = NSLocalizedString("BraveRewardsAdNotificationTitle", bundle: Bundle.RewardsUI, value: "Brave Rewards", comment: "")
-  static let Verified = NSLocalizedString("BraveRewardsVerified", bundle: Bundle.RewardsUI, value: "Brave Verified Publisher", comment: "")
+  static let Verified = NSLocalizedString("BraveRewardsVerified", bundle: Bundle.RewardsUI, value: "Brave Verified Creator", comment: "")
   static let CheckAgain = NSLocalizedString("BraveRewardsCheckAgain", bundle: Bundle.RewardsUI, value: "Refresh Status", comment: "")
   static let RewardsOptInLearnMore = NSLocalizedString("RewardsOptInLearnMore", bundle: Bundle.RewardsUI, value: "Learn More", comment: "")
   static let SettingsAdsBody = NSLocalizedString("BraveRewardsSettingsAdsBody", bundle: Bundle.RewardsUI, value: "Earn tokens by viewing ads in Brave. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.", comment: "")
@@ -57,7 +57,7 @@ internal extension Strings {
   static let RecurringTipTitle = NSLocalizedString("BraveRewardsRecurringTipTitle", bundle: Bundle.RewardsUI, value: "Recurring tip", comment: "")
   static let UnverifiedPublisherDisclaimer = NSLocalizedString("BraveRewardsUnverifiedPublisherDisclaimer", bundle: Bundle.RewardsUI, value: "This creator has not yet signed up to receive contributions from Brave users. Any tips you send will remain in your wallet until they verify.", comment: "")
   static let SettingsGrantClaimButtonTitle = NSLocalizedString("BraveRewardsSettingsGrantClaimButtonTitle", bundle: Bundle.RewardsUI, value: "Claim", comment: "")
-  static let AutoContributeMinimumLength = NSLocalizedString("BraveRewardsAutoContributeMinimumLength", bundle: Bundle.RewardsUI, value: "Minimum Length", comment: "")
+  static let AutoContributeMinimumLength = NSLocalizedString("BraveRewardsAutoContributeMinimumLength", bundle: Bundle.RewardsUI, value: "Minimum Page Time", comment: "")
   static let AutoContributeMinimumVisitsMessage = NSLocalizedString("BraveRewardsAutoContributeMinimumVisitsMessage", bundle: Bundle.RewardsUI, value: "Minimum visits for publisher relevancy", comment: "")
   static let AutoContributeMinimumLengthMessage = NSLocalizedString("BraveRewardsAutoContributeMinimumLengthMessage", bundle: Bundle.RewardsUI, value: "Minimum page time before logging a visit", comment: "")
   static let NotificationTokenGrantTitle = NSLocalizedString("BraveRewardsNotificationTokenGrantTitle", bundle: Bundle.RewardsUI, value: "Token Grants", comment: "")
