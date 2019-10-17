@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -28,28 +29,6 @@ class BraveContentSettingsRegistryBrowserTest : public InProcessBrowserTest {
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveContentSettingsRegistryBrowserTest);
 };
-
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsRegistryBrowserTest,
-                       WithWildcardContentSetting) {
-  content_settings()->SetContentSettingCustomScope(
-      ContentSettingsPattern::Wildcard(),
-      ContentSettingsPattern::Wildcard(),
-      CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kBraveShields,
-      CONTENT_SETTING_ALLOW);
-
-  ContentSetting brave_url_shields_setting =
-      content_settings()->GetContentSetting(
-          kBraveURL, kBraveURL, CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kBraveShields);
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, brave_url_shields_setting);
-
-  ContentSetting brave_url_shields_setting_private =
-      private_content_settings()->GetContentSetting(
-          kBraveURL, kBraveURL, CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kBraveShields);
-  EXPECT_EQ(CONTENT_SETTING_ALLOW, brave_url_shields_setting_private);
-}
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsRegistryBrowserTest,
                        WithoutWildcardContentSetting) {
