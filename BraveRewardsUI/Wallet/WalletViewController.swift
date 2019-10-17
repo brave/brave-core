@@ -365,6 +365,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
         }
       })
       
+      optionsVC.title = Strings.RecurringTipTitle
       self.navigationController?.pushViewController(optionsVC, animated: true)
     })
   }
