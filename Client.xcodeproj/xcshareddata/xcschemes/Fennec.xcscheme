@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "0820"
-   version = "1.3">
+   version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -49,6 +49,12 @@
             isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
+      <TestPlans>
+         <TestPlanReference
+            reference = "container:Client.xcodeproj/Fennec.xctestplan"
+            default = "YES">
+         </TestPlanReference>
+      </TestPlans>
       <Testables>
          <TestableReference
             skipped = "NO">
