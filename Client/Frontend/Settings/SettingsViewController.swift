@@ -24,39 +24,6 @@ extension TabBarVisibility: RepresentableOptionType {
     }
 }
 
-/// The same style switch accessory view as in Static framework, except will not be recreated each time the Cell
-/// is configured, since it will be stored as is in `Row.Accessory.view`
-private class SwitchAccessoryView: UISwitch {
-    typealias ValueChange = (Bool) -> Void
-    
-    init(initialValue: Bool, valueChange: (ValueChange)? = nil) {
-        self.valueChange = valueChange
-        super.init(frame: .zero)
-        isOn = initialValue
-        addTarget(self, action: #selector(valueChanged), for: .valueChanged)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    var valueChange: ValueChange?
-    
-    @objc func valueChanged() {
-        valueChange?(self.isOn)
-    }
-}
-
-/// Just creates a switch toggle `Row` which updates a `Preferences.Option<Bool>`
-private func BoolRow(title: String, option: Preferences.Option<Bool>, onValueChange: SwitchAccessoryView.ValueChange? = nil) -> Row {
-    return Row(
-        text: title,
-        accessory: .view(SwitchAccessoryView(initialValue: option.value, valueChange: onValueChange ?? { option.value = $0 })),
-        cellClass: MultilineValue1Cell.self,
-        uuid: option.key
-    )
-}
-
 extension DataSource {
     /// Get the index path of a Row to modify it
     ///
@@ -218,45 +185,43 @@ class SettingsViewController: TableViewController {
             BoolRow(title: Strings.Show_Bookmark_Button_In_Top_Toolbar, option: Preferences.General.showBookmarkToolbarShortcut)
         )
         
-        #if !NO_REWARDS
-        display.rows.append({
-            var row = BoolRow(title: Strings.HideRewardsIcon, option: Preferences.Rewards.hideRewardsIcon)
-            row.detailText = Strings.HideRewardsIconSubtitle
-            row.cellClass = MultilineSubtitleCell.self
-            return row
-        }())
-        #endif
-        
         return display
     }()
     
     private lazy var otherSettingsSection: Section = {
-        
-        return Section(
-            // BRAVE TODO: Change it once we finalize our decision how to name the section.(#385)
-            header: .title(Strings.OtherSettingsSection),
-            rows: [
-                Row(text: Strings.Sync, selection: { [unowned self] in
-                    
-                    if Sync.shared.isInSyncGroup {
-                        let syncSettingsVC = SyncSettingsTableViewController(style: .grouped)
-                        syncSettingsVC.dismissHandler = {
-                            self.navigationController?.popToRootViewController(animated: true)
-                        }
-                        
-                        self.navigationController?.pushViewController(syncSettingsVC, animated: true)
-                    } else {
-                        let view = SyncWelcomeViewController()
-                        view.dismissHandler = {
-                            view.navigationController?.popToRootViewController(animated: true)
-                        }
-                        self.navigationController?.pushViewController(view, animated: true)
+        // BRAVE TODO: Change it once we finalize our decision how to name the section.(#385)
+        var section = Section(header: .title(Strings.OtherSettingsSection))
+        #if !NO_REWARDS
+        if let rewards = rewards {
+            section.rows += [
+                Row(text: Strings.BraveRewardsTitle, selection: { [unowned self] in
+                    let rewardsVC = BraveRewardsSettingsViewController(rewards)
+                    self.navigationController?.pushViewController(rewardsVC, animated: true)
+                }, accessory: .disclosureIndicator),
+            ]
+        }
+        #endif
+        section.rows += [
+            Row(text: Strings.Sync, selection: { [unowned self] in
+                if Sync.shared.isInSyncGroup {
+                    let syncSettingsVC = SyncSettingsTableViewController(style: .grouped)
+                    syncSettingsVC.dismissHandler = {
+                        self.navigationController?.popToRootViewController(animated: true)
                     }
+                    
+                    self.navigationController?.pushViewController(syncSettingsVC, animated: true)
+                } else {
+                    let view = SyncWelcomeViewController()
+                    view.dismissHandler = {
+                        view.navigationController?.popToRootViewController(animated: true)
+                    }
+                    self.navigationController?.pushViewController(view, animated: true)
+                }
                 }, accessory: .disclosureIndicator,
                    cellClass: MultilineValue1Cell.self),
-                BoolRow(title: Strings.Media_Auto_Plays, option: Preferences.General.mediaAutoPlays)
-            ]
-        )
+            BoolRow(title: Strings.Media_Auto_Plays, option: Preferences.General.mediaAutoPlays)
+        ]
+        return section
     }()
     
     private lazy var privacySection: Section = {
@@ -502,42 +467,5 @@ extension TableViewController: Themeable {
         // exiting menus, so setting explicitly.
         navigationController?.navigationBar.tintColor = UINavigationBar.appearance().tintColor
         navigationController?.navigationBar.barTintColor = UINavigationBar.appearance().appearanceBarTintColor
-    }
-}
-
-fileprivate class MultilineButtonCell: ButtonCell {
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        textLabel?.numberOfLines = 0
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-fileprivate class MultilineValue1Cell: Value1Cell {
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        textLabel?.numberOfLines = 0
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-fileprivate class MultilineSubtitleCell: SubtitleCell {
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        textLabel?.numberOfLines = 0
-        detailTextLabel?.numberOfLines = 0
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
