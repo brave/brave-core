@@ -230,11 +230,11 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_NEXT_DATE" desc="">Next contribution date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_SITES" desc="">Sites viewed</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TITLE" desc="">Tips</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC" desc="">Tip content creators directly as you browse. You can also set up recurring monthly tips so you can support sites continuously.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC" desc="">Tip content creators directly as you browse by using the Rewards Panel, or by using the inline tip button on various sites including Twitter, Reddit and GitHub.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_CONTRIBUTION_TITLE" desc="">Monthly Contributions</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_CONTRIBUTION_DESC" desc="">Set up recurring monthly contributions so you can support sites continuously.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_CONTRIBUTION_EMPTY" desc="">No monthly contributions set up yet.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_CONTRIBUTION_DISABLED_TEXT" desc="">Support your favorite sites with recurring monthly contributions. You can set this up from the tipping banner.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_CONTRIBUTION_DISABLED_TEXT" desc="">Your monthly contributions will be sent every 30 days.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT" desc="">Coming soon.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_ONE" desc="">Earnings are paid every month.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_TWO" desc="">Set your desired frequency to increase or decrease earnings.</message>
@@ -265,7 +265,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_GH" desc="">GitHub</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_TW" desc="">Twitter</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT1" desc="">Tip on the spot as you find gems.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT2" desc="">Support your favorite sites with recurring monthly tips.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT2" desc="">If you like, let people know with a quick tweet.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_SUCCESS" desc="">{{balance}} BAT was recovered. Your wallet key has been verified and loaded successfully.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RESTORED" desc="">Wallet restored!</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_FAIL" desc="">Please re-enter keys or try different keys.</message>
@@ -385,6 +385,7 @@
       <message name="IDS_BRAVE_UI_DEPOSIT" desc="">Deposit</message>
       <message name="IDS_BRAVE_UI_DEPOSITS" desc="">Deposits</message>
       <message name="IDS_BRAVE_UI_DESCRIPTION" desc="">Description</message>
+      <message name="IDS_BRAVE_UI_DETAILS" desc="">Details</message>
       <message name="IDS_BRAVE_UI_DISABLED_PANEL_OFF" desc="">Off</message>
       <message name="IDS_BRAVE_UI_DISABLED_PANEL_SETTINGS" desc="">Settings.</message>
       <message name="IDS_BRAVE_UI_DISABLED_PANEL_TEXT" desc="">You are not currently accruing any Rewards benefits while browsing. Turn Rewards back on in</message>

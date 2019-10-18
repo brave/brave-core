@@ -65,6 +65,7 @@ const locale: Record<string, string> = {
   deposit: 'Deposit',
   deposits: 'Deposits',
   description: 'Description',
+  details: 'Details',
   disabledPanelOff: 'Off',
   disabledPanelSettings: 'Settings.',
   disabledPanelPrivateText: 'Brave Rewards is not available while in a Private Window.',

@@ -24,6 +24,7 @@ import {
   StyledAlertWrapper,
   StyledAlertClose,
   StyleGrantButton,
+  GrantButton,
   StyledActionText,
   StyledBAT,
   StyledNotificationIcon,
@@ -671,8 +672,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                     {
                       hasGrants
                         ? <StyleGrantButton>
-                          <Button
-                            text={getLocale('grants')}
+                          <GrantButton
+                            text={getLocale('details')}
                             size={'small'}
                             type={'subtle'}
                             level={'secondary'}

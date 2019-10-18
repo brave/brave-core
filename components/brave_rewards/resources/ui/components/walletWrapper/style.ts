@@ -69,6 +69,15 @@ export const StyledBalance = styled<{}, 'div'>('div')`
 export const StyleGrantButton = styled<{}, 'div'>('div')`
   display: flex;
   justify-content: center;
+
+  &:focus {
+    outline: 0;
+  }
+`
+
+export const GrantButton = styled(Button as ComponentType<ButtonProps>)`
+  min-width: 100px;
+  color: rgba(255, 255, 255, 0.8);
 `
 
 export const StyledBalanceTokens = styled<{}, 'div'>('div')`
