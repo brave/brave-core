@@ -60,7 +60,6 @@ extern const char kBraveWalletAES256GCMSivNonce[];
 extern const char kBraveWalletEncryptedSeed[];
 extern const char kBraveWalletEnabled[];
 extern const char kAlwaysShowBookmarkBarOnNTP[];
-extern const char kTorDisabled[];
 
 #if defined(OS_ANDROID)
 extern const char kDesktopModeEnabled[];

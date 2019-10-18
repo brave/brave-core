@@ -56,6 +56,13 @@ void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   const std::string tor_proxy_uri =
       std::string(kTorProxyScheme) + std::string(kTorProxyAddress) + ":" + port;
   registry->RegisterStringPref(prefs::kTorProxyString, tor_proxy_uri);
+  // Tor for group policy. Only can be true by group policy.
+  registry->RegisterBooleanPref(prefs::kTorDisabled, false);
+}
+
+// static
+bool TorProfileService::IsTorDisabled() {
+  return g_browser_process->local_state()->GetBoolean(prefs::kTorDisabled);
 }
 
 std::string TorProfileService::GetTorProxyURI() {

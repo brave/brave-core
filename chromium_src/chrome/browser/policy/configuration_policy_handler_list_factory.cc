@@ -6,6 +6,7 @@
 #include "base/stl_util.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/pref_names.h"
+#include "brave/common/tor/pref_names.h"
 #include "chrome/browser/policy/configuration_policy_handler_list_factory.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
 #include "components/policy/policy_constants.h"
@@ -17,7 +18,7 @@ namespace {
 #if BUILDFLAG(ENABLE_TOR)
 const policy::PolicyToPreferenceMapEntry kBraveSimplePolicyMap[] = {
   { policy::key::kTorDisabled,
-    kTorDisabled,
+    tor::prefs::kTorDisabled,
     base::Value::Type::BOOLEAN },
 };
 #endif

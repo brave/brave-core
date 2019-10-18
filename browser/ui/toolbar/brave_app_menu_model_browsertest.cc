@@ -8,13 +8,14 @@
 #include <memory>
 
 #include "brave/app/brave_command_ids.h"
-#include "brave/browser/brave_browser_main_parts.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/common/pref_names.h"
+#include "brave/common/tor/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_browser_main.h"
 #include "chrome/browser/chrome_browser_main_extra_parts.h"
 #include "chrome/browser/chrome_notification_types.h"
@@ -136,17 +137,15 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BasicTest) {
 #if BUILDFLAG(ENABLE_TOR)
 class ChromeBrowserMainExtraPartsTor : public ChromeBrowserMainExtraParts {
  public:
-  explicit ChromeBrowserMainExtraPartsTor(BraveBrowserMainParts* main_parts)
-      : main_parts_(main_parts) {}
+  ChromeBrowserMainExtraPartsTor() = default;
 
   // ChromeBrowserMainExtraParts:
   void PostProfileInit() override {
-    main_parts_->profile()->GetPrefs()->SetBoolean(kTorDisabled, true);
+    g_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled,
+                                                 true);
   }
 
  private:
-  BraveBrowserMainParts* main_parts_;
-
   DISALLOW_COPY_AND_ASSIGN(ChromeBrowserMainExtraPartsTor);
 };
 
@@ -154,9 +153,8 @@ class BraveAppMenuBrowserTestWithTorDisabledPolicy
     : public InProcessBrowserTest {
  public:
   void CreatedBrowserMainParts(content::BrowserMainParts* parts) override {
-    auto* brave_main_parts = static_cast<BraveBrowserMainParts*>(parts);
     static_cast<ChromeBrowserMainParts*>(parts)->AddParts(
-        new ChromeBrowserMainExtraPartsTor(brave_main_parts));
+        new ChromeBrowserMainExtraPartsTor);
   }
 };
 

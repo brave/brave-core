@@ -16,7 +16,6 @@
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/browser/extensions/brave_extension_provider.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/extensions/external_policy_loader.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -27,6 +26,7 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/extensions/brave_tor_client_updater.h"
+#include "brave/browser/tor/tor_profile_service.h"
 #endif
 
 namespace {
@@ -54,7 +54,7 @@ BraveExtensionManagement::~BraveExtensionManagement() {
 
 void BraveExtensionManagement::RegisterBraveExtensions() {
 #if BUILDFLAG(ENABLE_TOR)
-  const bool isTorEnabled = !profile_->GetPrefs()->GetBoolean(kTorDisabled);
+  const bool isTorEnabled = !tor::TorProfileService::IsTorDisabled();
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
   if (isTorEnabled &&
@@ -68,7 +68,7 @@ void BraveExtensionManagement::RegisterBraveExtensions() {
 void BraveExtensionManagement::CleanupBraveExtensions() {
 #if BUILDFLAG(ENABLE_TOR)
   // Delete tor binaries if tor is disabled by gpo.
-  if (profile_->GetPrefs()->GetBoolean(kTorDisabled)) {
+  if (tor::TorProfileService::IsTorDisabled()) {
     ProfileManager* profile_manager = g_browser_process->profile_manager();
     base::FilePath tor_component_dir =
         profile_manager->user_data_dir().AppendASCII(

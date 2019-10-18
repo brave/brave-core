@@ -10,6 +10,10 @@
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
 #include "brave/common/pref_names.h"
 
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service.h"
+#endif
+
 // Our .h file creates a masquerade for RenderViewContextMenu.  Switch
 // back to the Chromium one for the Chromium implementation.
 #undef RenderViewContextMenu
@@ -35,7 +39,7 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
   switch (id) {
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
 #if BUILDFLAG(ENABLE_TOR)
-      if (GetProfile()->GetPrefs()->GetBoolean(kTorDisabled))
+      if (tor::TorProfileService::IsTorDisabled())
         return false;
       return params_.link_url.is_valid() &&
              IsURLAllowedInIncognito(params_.link_url, browser_context_) &&
@@ -82,7 +86,7 @@ void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
 
 #if BUILDFLAG(ENABLE_TOR)
-  const bool isTorEnabled = !GetProfile()->GetPrefs()->GetBoolean(kTorDisabled);
+  const bool isTorEnabled = !tor::TorProfileService::IsTorDisabled();
   // Add Open Link with Tor
   int index = -1;
   if (isTorEnabled && !params_.link_url.is_empty()) {

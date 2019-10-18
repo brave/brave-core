@@ -18,6 +18,7 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/extensions/brave_tor_client_updater.h"
+#include "brave/browser/tor/tor_profile_service.h"
 #endif
 
 namespace {
@@ -29,7 +30,7 @@ namespace brave {
 bool ShouldShowTorProfileButton(Profile* profile) {
   DCHECK(profile);
 #if BUILDFLAG(ENABLE_TOR)
-  return !profile->GetPrefs()->GetBoolean(kTorDisabled) &&
+  return !tor::TorProfileService::IsTorDisabled() &&
       !brave::IsTorProfile(profile) &&
       !g_brave_browser_process->tor_client_updater()->GetExecutablePath()
            .empty();

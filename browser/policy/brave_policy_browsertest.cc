@@ -13,6 +13,11 @@
 #include "components/policy/policy_constants.h"
 #include "components/prefs/pref_service.h"
 
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service.h"
+#include "brave/common/tor/pref_names.h"
+#endif
+
 using testing::_;
 using testing::Return;
 using NoTorPolicyBrowserTest = InProcessBrowserTest;
@@ -54,7 +59,7 @@ class TorDisabledPolicyBrowserTest : public BravePolicyTest {
 };
 
 IN_PROC_BROWSER_TEST_F(TorDisabledPolicyBrowserTest, TorDisabledPrefValueTest) {
-  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kTorDisabled));
+  EXPECT_TRUE(tor::TorProfileService::IsTorDisabled());
 }
 
 class TorEnabledPolicyBrowserTest : public BravePolicyTest {
@@ -74,7 +79,7 @@ class TorEnabledPolicyBrowserTest : public BravePolicyTest {
 };
 
 IN_PROC_BROWSER_TEST_F(TorEnabledPolicyBrowserTest, TorDisabledPrefValueTest) {
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(kTorDisabled));
+  EXPECT_FALSE(tor::TorProfileService::IsTorDisabled());
 }
 
 #endif  // ENABLE_TOR
@@ -83,7 +88,7 @@ IN_PROC_BROWSER_TEST_F(TorEnabledPolicyBrowserTest, TorDisabledPrefValueTest) {
 // W/o TorDisabled group policy, kTorDisabled pref value should be false.
 IN_PROC_BROWSER_TEST_F(NoTorPolicyBrowserTest,
                        DefaultTorDisabledPrefValueTest) {
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(kTorDisabled));
+  EXPECT_FALSE(tor::TorProfileService::IsTorDisabled());
 }
 
 }  // namespace policy

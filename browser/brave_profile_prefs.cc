@@ -166,9 +166,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kBraveWalletAES256GCMSivNonce, "");
   registry->RegisterStringPref(kBraveWalletEncryptedSeed, "");
   registry->RegisterBooleanPref(kBraveWalletEnabled, true);
-
-  // Tor for group policy. Only can be true by group policy.
-  registry->RegisterBooleanPref(kTorDisabled, false);
 }
 
 }  // namespace brave
