@@ -1539,7 +1539,7 @@ bool AdsServiceImpl::ShouldShowOnboarding() {
 
   auto should_show = GetBooleanPref(prefs::kShouldShowOnboarding);
 
-  return IsSupportedLocale() && !is_ads_enabled && is_rewards_enabled
+  return IsNewlySupportedLocale() && !is_ads_enabled && is_rewards_enabled
       && should_show;
 }
 
