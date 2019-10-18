@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_NET_BRAVE_SYSTEM_REQUEST_HANDLER_H_
 #define BRAVE_BROWSER_NET_BRAVE_SYSTEM_REQUEST_HANDLER_H_
 
+#include <string>
+
 namespace network {
 struct ResourceRequest;
 }
@@ -13,6 +15,8 @@ struct ResourceRequest;
 extern const char kBraveServicesKeyHeader[];
 
 namespace brave {
+
+std::string BraveServicesKeyForTesting();
 
 void AddBraveServicesKeyHeader(network::ResourceRequest* url_request);
 

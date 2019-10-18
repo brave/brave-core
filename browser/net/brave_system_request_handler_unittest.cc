@@ -10,10 +10,6 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-#if !defined(BRAVE_SERVICES_KEY)
-#define BRAVE_SERVICES_KEY "dummytoken"
-#endif
-
 namespace brave {
 
 TEST(BraveSystemRequestHandlerTest, AddBraveServiceKeyHeader) {
@@ -24,7 +20,7 @@ TEST(BraveSystemRequestHandlerTest, AddBraveServiceKeyHeader) {
     brave::AddBraveServicesKeyHeader(&request);
     std::string key;
     EXPECT_TRUE(request.headers.GetHeader(kBraveServicesKeyHeader, &key));
-    EXPECT_EQ(key, BRAVE_SERVICES_KEY);
+    EXPECT_EQ(key, BraveServicesKeyForTesting());
 }
 
 TEST(BraveSystemRequestHandlerTest, DontAddBraveServiceKeyHeader) {
