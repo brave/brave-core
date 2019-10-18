@@ -219,7 +219,9 @@ class SettingsViewController: TableViewController {
                 }
                 }, accessory: .disclosureIndicator,
                    cellClass: MultilineValue1Cell.self),
-            BoolRow(title: Strings.Media_Auto_Plays, option: Preferences.General.mediaAutoPlays)
+            
+            //Disabled until 1.13
+            //BoolRow(title: Strings.Media_Auto_Plays, option: Preferences.General.mediaAutoPlays)
         ]
         return section
     }()
