@@ -38,9 +38,18 @@ def main():
 
     repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
 
-    release = get_draft(repo, BRAVE_VERSION)
+    tag = get_brave_version()
+    logging.debug("Tag: {}".format(tag))
+
+    # If we are publishing a prerelease, the release can only be in draft mode. If we
+    # are publishing a full release, it is allowed to already be a published release.
+    if args.prerelease:
+        release = get_draft(repo, tag)
+    else:
+        release = get_release(repo, tag, allow_published_release_updates=True)
 
     tag_name = release['tag_name']
+    logging.debug("release[id]: {}".format(release['id']))
 
     logging.info("Releasing {}".format(tag_name))
     publish_release(repo, release['id'], tag_name, args.prerelease, logging)
