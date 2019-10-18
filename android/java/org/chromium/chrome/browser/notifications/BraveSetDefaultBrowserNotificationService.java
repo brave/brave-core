@@ -63,9 +63,7 @@ public class BraveSetDefaultBrowserNotificationService extends BroadcastReceiver
         ResolveInfo resolveInfo = context.getPackageManager().resolveActivity(
                 browserIntent, supportsDefault() ? PackageManager.MATCH_DEFAULT_ONLY : 0);
         return resolveInfo.activityInfo.packageName.equals(
-                       BraveActivity.BRAVE_PRODUCTION_PACKAGE_NAME)
-                || resolveInfo.activityInfo.packageName.equals(
-                        BraveActivity.BRAVE_DEVELOPMENT_PACKAGE_NAME);
+                ContextUtils.getApplicationContext().getPackageName());
     }
 
     private boolean shouldShowNotification() {

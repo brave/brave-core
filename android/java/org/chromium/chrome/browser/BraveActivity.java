@@ -44,8 +44,6 @@ public abstract class BraveActivity extends ChromeActivity {
     /**
      * Settings for sending local notification reminders.
      */
-    public static final String BRAVE_PRODUCTION_PACKAGE_NAME = "com.brave.browser";
-    public static final String BRAVE_DEVELOPMENT_PACKAGE_NAME = "com.brave.browser_default";
     public static final String CHANNEL_ID = "com.brave.browser";
     public static final String ANDROID_SETUPWIZARD_PACKAGE_NAME = "com.google.android.setupwizard";
     public static final String ANDROID_PACKAGE_NAME = "android";
