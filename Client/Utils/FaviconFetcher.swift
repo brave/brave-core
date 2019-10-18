@@ -102,7 +102,7 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
         let configuration = URLSessionConfiguration.default
         configuration.httpAdditionalHeaders = ["User-Agent": FaviconFetcher.userAgent]
         configuration.timeoutIntervalForRequest = 5
-        return URLSession(configuration: configuration)
+        return URLSession(configuration: configuration, delegate: nil, delegateQueue: .main)
     }()
 
     fileprivate func fetchDataForURL(_ url: URL) -> Deferred<Maybe<Data>> {

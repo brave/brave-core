@@ -96,7 +96,7 @@ class ClientTests: XCTestCase {
 
         request.setValue("Basic \(credentials)", forHTTPHeaderField: "Authorization")
 
-        URLSession(configuration: .ephemeral).dataTask(with: request) { data, resp, error in
+        URLSession(configuration: .ephemeral, delegate: nil, delegateQueue: .main).dataTask(with: request) { data, resp, error in
             response = resp as? HTTPURLResponse
             expectation.fulfill()
         }.resume()

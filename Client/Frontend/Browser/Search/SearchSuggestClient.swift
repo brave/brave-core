@@ -23,7 +23,7 @@ class SearchSuggestClient {
     lazy fileprivate var session: URLSession = {
         let configuration = URLSessionConfiguration.ephemeral
         configuration.httpAdditionalHeaders = ["User-Agent": self.userAgent]
-        return URLSession(configuration: configuration)
+        return URLSession(configuration: configuration, delegate: nil, delegateQueue: .main)
     }()
 
     init(searchEngine: OpenSearchEngine, userAgent: String) {
