@@ -536,7 +536,7 @@ class U2FExtensions: NSObject {
             getAssertionRequest.clientDataHash = clientDataHash
             
             getAssertionRequest.options = [
-                YKFKeyFIDO2GetAssertionRequestOptionUP: request.userPresence,
+                YKFKeyFIDO2GetAssertionRequestOptionUP: request.userPresence
             ]
 
             var allowList = [YKFFIDO2PublicKeyCredentialDescriptor]()
