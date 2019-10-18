@@ -585,9 +585,9 @@
       <message name="IDS_BRAVE_UI_SHOW_ALL" desc="">Show All</message>
       <message name="IDS_BRAVE_UI_VIEWED_SITES" desc="">Sites Viewed</message>
 
-      <message name="IDS_BRAVE_UI_GRANT_FINISH_TITLE_ADS" desc="Title on final grant screen for Ads">Brave Ads Rewards!</message>
-      <message name="IDS_BRAVE_UI_GRANT_FINISH_TEXT_ADS" desc="Text on final grant screen for UGP">Your rewards grant from Brave Ads is on its way.</message>
-      <message name="IDS_BRAVE_UI_GRANT_FINISH_TOKEN_ADS" desc="Token text on final grant screen for UGP">Your Brave Ads Token Grant</message>
+      <message name="IDS_BRAVE_UI_GRANT_FINISH_TITLE_ADS" desc="Title on final grant screen for Ads">You've earned an Ads Reward!</message>
+      <message name="IDS_BRAVE_UI_GRANT_FINISH_TEXT_ADS" desc="Text on final grant screen for UGP">Your Reward is on its way to your Brave Rewards wallet.</message>
+      <message name="IDS_BRAVE_UI_GRANT_FINISH_TOKEN_ADS" desc="Token text on final grant screen for UGP">Your Reward Amount</message>
       <message name="IDS_BRAVE_UI_GRANT_FINISH_TITLE_UGP" desc="Title on final grant screen for UGP">It’s your lucky day!</message>
       <message name="IDS_BRAVE_UI_GRANT_FINISH_TEXT_UGP" desc="Text on final grant screen for UGP">Your token grant is on its way.</message>
       <message name="IDS_BRAVE_UI_GRANT_FINISH_TOKEN_UGP" desc="Token text on final grant screen for UGP">Free Token Grant</message>
