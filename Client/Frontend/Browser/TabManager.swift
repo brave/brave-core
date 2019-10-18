@@ -162,7 +162,11 @@ class TabManager: NSObject {
         let configuration = WKWebViewConfiguration()
         configuration.processPool = WKProcessPool()
         configuration.preferences.javaScriptCanOpenWindowsAutomatically = !Preferences.General.blockPopups.value
-        configuration.mediaTypesRequiringUserActionForPlayback = Preferences.General.mediaAutoPlays.value ? [] : .all
+        
+        if !Preferences.General.mediaAutoPlays.value {
+            configuration.mediaTypesRequiringUserActionForPlayback = .all
+        }
+        
         UserReferralProgram.shared?.insertCookies(intoStore: configuration.websiteDataStore.httpCookieStore)
         return configuration
     }
