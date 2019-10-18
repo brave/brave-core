@@ -22,6 +22,10 @@ const char kBraveServicesKeyHeader[] = "BraveServiceKey";
 
 namespace brave {
 
+std::string BraveServicesKeyForTesting() {
+  return BRAVE_SERVICES_KEY;
+}
+
 void AddBraveServicesKeyHeader(network::ResourceRequest* url_request) {
   static URLPattern proxy_pattern(URLPattern::SCHEME_HTTPS,
                                   kBraveProxyPattern);
