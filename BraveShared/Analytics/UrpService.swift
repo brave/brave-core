@@ -30,7 +30,7 @@ struct UrpService {
         // Certificate pinning
         certificateEvaluator = PinningCertificateEvaluator(hosts: [normalizedHost])
         
-        sessionManager = URLSession(configuration: .default, delegate: certificateEvaluator, delegateQueue: nil)
+        sessionManager = URLSession(configuration: .default, delegate: certificateEvaluator, delegateQueue: .main)
     }
 
     func referralCodeLookup(completion: @escaping (ReferralData?, UrpError?) -> Void) {

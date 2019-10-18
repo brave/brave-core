@@ -2838,7 +2838,7 @@ extension BrowserViewController: ContextMenuHelperDelegate {
                     application.endBackgroundTask(taskId)
                 })
                 
-                URLSession(configuration: .default).dataTask(with: url, completionHandler: { data, response, error in
+                URLSession(configuration: .default, delegate: nil, delegateQueue: .main).dataTask(with: url, completionHandler: { data, response, error in
                     
                     if let response = response as? HTTPURLResponse {
                         if !(200..<300).contains(response.statusCode) {
@@ -2882,7 +2882,7 @@ extension BrowserViewController: ContextMenuHelperDelegate {
     }
 
     private func getData(_ url: URL, success: @escaping (Data) -> Void) {
-        URLSession(configuration: .default).dataTask(with: url) { data, response, _ in
+        URLSession(configuration: .default, delegate: nil, delegateQueue: .main).dataTask(with: url) { data, response, _ in
             if let response = response as? HTTPURLResponse {
                 if !(200..<300).contains(response.statusCode) {
                     return
