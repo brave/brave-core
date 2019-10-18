@@ -1,1 +1,7 @@
 import("//brave/android/brave_java_sources.gni")
+
+declare_args() {
+  brave_android_manifest_includes = []
+}
+
+brave_android_manifest_includes = [ "//brave/android/java/AndroidManifest.xml" ]

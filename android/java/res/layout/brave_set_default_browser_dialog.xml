@@ -1,0 +1,22 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/brave_set_default_browser_toast_container"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="8dp"
+    android:background="#FFF">
+  <ImageView
+      android:src="@drawable/btn_brave"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="8dp"
+      tools:ignore="ContentDescription"/>
+  <TextView
+      android:text="@string/brave_set_default_browser_dialog_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:textColor="#222"/>
+</LinearLayout>

@@ -11,12 +11,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import org.chromium.base.ObservableSupplier;
 import org.chromium.base.Log;
+import org.chromium.base.ObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
+import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
 
@@ -49,6 +50,10 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
         menu.add(Menu.NONE, R.id.set_default_browser, 0, R.string.menu_set_default_browser);
         menu.add(Menu.NONE, R.id.brave_rewards_id, 0, R.string.menu_brave_rewards);
         menu.add(Menu.NONE, R.id.exit_id, 0, R.string.menu_exit);
+
+        if (BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(mContext)) {
+            menu.findItem(R.id.set_default_browser).setVisible(false);
+        }
     }
 
     @Override
