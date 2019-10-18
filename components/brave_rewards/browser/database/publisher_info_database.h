@@ -20,6 +20,7 @@
 #include "base/sequence_checker.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/contribution_info.h"
+#include "brave/components/brave_rewards/browser/database/database_contribution_info.h"
 #include "brave/components/brave_rewards/browser/database/database_contribution_queue.h"
 #include "brave/components/brave_rewards/browser/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/browser/pending_contribution.h"
@@ -210,6 +211,7 @@ class PublisherInfoDatabase {
   std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
   std::unique_ptr<DatabaseServerPublisherInfo> server_publisher_info_;
   std::unique_ptr<DatabaseContributionQueue> contribution_queue_;
+  std::unique_ptr<DatabaseContributionInfo> contribution_info_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   DISALLOW_COPY_AND_ASSIGN(PublisherInfoDatabase);

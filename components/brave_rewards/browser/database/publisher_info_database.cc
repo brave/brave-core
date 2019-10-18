@@ -70,7 +70,6 @@ bool PublisherInfoDatabase::Init() {
   }
 
   if (!CreatePublisherInfoTable() ||
-      !CreateContributionInfoTable() ||
       !CreateActivityInfoTable() ||
       !CreateMediaPublisherInfoTable() ||
       !CreateRecurringTipsTable() ||
@@ -78,10 +77,13 @@ bool PublisherInfoDatabase::Init() {
     return false;
   }
 
-  CreateContributionInfoIndex();
   CreateActivityInfoIndex();
   CreateRecurringTipsIndex();
   CreatePendingContributionsIndex();
+
+  if (!contribution_info_->Init(&GetDB())) {
+    return false;
+  }
 
   if (!server_publisher_info_->Init(&GetDB())) {
     return false;
@@ -114,14 +116,6 @@ bool PublisherInfoDatabase::Init() {
  * CONTRIBUTION INFO
  *
  */
-
-bool PublisherInfoDatabase::CreateContributionInfoTable() {
-  return CreateV8ContributionInfoTable();
-}
-
-bool PublisherInfoDatabase::CreateContributionInfoIndex() {
-  return CreateV8ContributionInfoIndex();
-}
 
 bool PublisherInfoDatabase::InsertContributionInfo(
     const brave_rewards::ContributionInfo& info) {
