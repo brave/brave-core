@@ -556,6 +556,8 @@ test("brave_browser_tests") {
     sources += [
       "//brave/components/brave_rewards/browser/rewards_notification_service_browsertest.cc",
       "//brave/components/brave_rewards/browser/rewards_service_browsertest.cc",
+      "//brave/components/brave_ads/browser/locale_helper_mock.cc",
+      "//brave/components/brave_ads/browser/locale_helper_mock.h",
     ]
 
     deps += [

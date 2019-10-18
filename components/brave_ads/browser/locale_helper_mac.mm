@@ -13,17 +13,17 @@ LocaleHelperMac::LocaleHelperMac() = default;
 
 LocaleHelperMac::~LocaleHelperMac() = default;
 
-std::string LocaleHelperMac::GetLocale() const {
+const std::string LocaleHelperMac::GetLocale() const {
   NSString *locale = [[NSLocale preferredLanguages] firstObject];
   return std::string([locale UTF8String]);
 }
 
-LocaleHelperMac* LocaleHelperMac::GetInstance() {
+LocaleHelperMac* LocaleHelperMac::GetInstanceImpl() {
   return base::Singleton<LocaleHelperMac>::get();
 }
 
-LocaleHelper* LocaleHelper::GetInstance() {
-  return LocaleHelperMac::GetInstance();
+LocaleHelper* LocaleHelper::GetInstanceImpl() {
+  return LocaleHelperMac::GetInstanceImpl();
 }
 
 }  // namespace brave_ads

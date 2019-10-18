@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <map>
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "base/path_service.h"
 #include "base/run_loop.h"
@@ -23,10 +26,16 @@
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"  // NOLINT
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"  // NOLINT
 #include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_ads/browser/ads_service_factory.h"
+#include "brave/components/brave_ads/browser/ads_service_impl.h"
+#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/browser/locale_helper_mock.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/common/chrome_constants.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/testing_profile.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/browser/notification_service.h"
@@ -40,7 +49,13 @@
 
 // npm run test -- brave_browser_tests --filter=BraveRewardsBrowserTest.*
 
+using ::testing::NiceMock;
+using ::testing::Return;
+
 using braveledger_bat_helper::SERVER_TYPES;
+
+using RewardsNotificationType =
+    brave_rewards::RewardsNotificationService::RewardsNotificationType;
 
 namespace {
 
@@ -137,13 +152,26 @@ namespace brave_test_resp {
   std::string uphold_commit_resp_;
 }  // namespace brave_test_resp
 
-class BraveRewardsBrowserTest :
-    public InProcessBrowserTest,
-    public brave_rewards::RewardsServiceObserver,
-    public brave_rewards::RewardsNotificationServiceObserver,
-    public base::SupportsWeakPtr<BraveRewardsBrowserTest> {
+class BraveRewardsBrowserTest
+    : public InProcessBrowserTest,
+      public brave_rewards::RewardsServiceObserver,
+      public brave_rewards::RewardsNotificationServiceObserver,
+      public base::SupportsWeakPtr<BraveRewardsBrowserTest> {
  public:
+  BraveRewardsBrowserTest() {
+    // You can do set-up work for each test here
+
+    MaybeMockLocaleHelper();
+  }
+
+  ~BraveRewardsBrowserTest() override {
+    // You can do clean-up work that doesn't throw exceptions here
+  }
+
   void SetUpOnMainThread() override {
+    // Code here will be called immediately after the constructor (right before
+    // each test)
+
     InProcessBrowserTest::SetUpOnMainThread();
 
     host_resolver()->AddRule("*", "127.0.0.1");
@@ -157,17 +185,32 @@ class BraveRewardsBrowserTest :
 
     brave::RegisterPathProvider();
     ReadTestData();
+
+    auto* browser_profile = browser()->profile();
+
     rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
-        brave_rewards::RewardsServiceFactory::GetForProfile(
-            browser()->profile()));
+        brave_rewards::RewardsServiceFactory::GetForProfile(browser_profile));
     rewards_service_->test_response_callback_ =
         base::BindRepeating(&BraveRewardsBrowserTest::GetTestResponse,
                             base::Unretained(this));
     rewards_service_->SetLedgerEnvForTesting();
+
+    ads_service_ = static_cast<brave_ads::AdsServiceImpl*>(
+        brave_ads::AdsServiceFactory::GetForProfile(browser_profile));
+    ASSERT_NE(nullptr, ads_service_);
   }
 
   void TearDown() override {
+    // Code here will be called immediately after each test (right before the
+    // destructor)
+
     InProcessBrowserTest::TearDown();
+  }
+
+  bool SetUpUserDataDirectory() override {
+    MaybeMockUserProfilePreferencesForBraveAdsUpgradePath();
+
+    return true;
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
@@ -181,6 +224,18 @@ class BraveRewardsBrowserTest :
   void RunUntilIdle() {
     base::RunLoop loop;
     loop.RunUntilIdle();
+  }
+
+  PrefService* GetPrefs() {
+    return browser()->profile()->GetPrefs();
+  }
+
+  bool IsRewardsEnabled() {
+    return GetPrefs()->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled);
+  }
+
+  bool IsAdsEnabled() {
+    return ads_service_->IsEnabled();
   }
 
   std::string GetWalletProperties() {
@@ -464,6 +519,180 @@ class BraveRewardsBrowserTest :
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
         content::ISOLATED_WORLD_ID_CONTENT_END);
     ASSERT_TRUE(js_result.ExtractBool());
+  }
+
+  void WaitForBraveAdsHaveArrivedNotification() {
+    if (brave_ads_have_arrived_notification_was_already_shown_) {
+      return;
+    }
+
+    brave_ads_have_arrived_notification_run_loop_ =
+        std::make_unique<base::RunLoop>();
+    brave_ads_have_arrived_notification_run_loop_->Run();
+  }
+
+  void AddNotificationServiceObserver() {
+    rewards_service_->GetNotificationService()->AddObserver(this);
+  }
+
+  void MaybeMockLocaleHelper() {
+    const std::map<std::string, std::string> locale_for_tests = {
+      {"BraveAdsRegionIsSupported", "en_US"},
+      {"BraveAdsRegionIsNotSupported", "en_XX"},
+      {"PRE_AutoEnableAdsForSupportedRegions", "en_US"},
+      {"AutoEnableAdsForSupportedRegions", "en_US"},
+      {"PRE_DoNotAutoEnableAdsForUnsupportedRegions", "en_XX"},
+      {"DoNotAutoEnableAdsForUnsupportedRegions", "en_XX"},
+      {"PRE_ShowBraveAdsHaveArrivedNotificationForNewRegion", "en_XX"},
+      {"ShowBraveAdsHaveArrivedNotificationForNewRegion", "en_US"},
+      {"PRE_DoNotShowBraveAdsHaveArrivedNotificationForUnsupportedRegion", "en_XX"},  // NOLINT
+      {"DoNotShowBraveAdsHaveArrivedNotificationForUnsupportedRegion", "en_XX"},
+    };
+
+    const ::testing::TestInfo* const test_info =
+        ::testing::UnitTest::GetInstance()->current_test_info();
+    ASSERT_NE(nullptr, test_info);
+
+    const auto it = locale_for_tests.find(test_info->name());
+    if (it == locale_for_tests.end()) {
+      MaybeMockLocaleHelperForBraveAdsUpgradePath();
+      return;
+    }
+
+    MockLocaleHelper(it->second);
+  }
+
+  void MaybeMockLocaleHelperForBraveAdsUpgradePath() {
+    std::vector<std::string> parameters;
+    if (!GetUpgradePathParams(&parameters)) {
+      return;
+    }
+
+    const std::string supported_region_parameter = parameters.at(1);
+    ASSERT_TRUE(!supported_region_parameter.empty());
+
+    std::string locale;
+    if (supported_region_parameter == "ForSupportedRegion") {
+      locale = "en_US";
+    } else {
+      locale = "en_XX";
+    }
+
+    MockLocaleHelper(locale);
+  }
+
+  void MockLocaleHelper(
+      const std::string& locale) {
+    locale_helper_mock_ =
+        std::make_unique<NiceMock<brave_ads::LocaleHelperMock>>();
+
+    brave_ads::LocaleHelper::GetInstance()->set_for_testing(
+        locale_helper_mock_.get());
+
+    ON_CALL(*locale_helper_mock_, GetLocale())
+        .WillByDefault(Return(locale));
+  }
+
+  void MaybeMockUserProfilePreferencesForBraveAdsUpgradePath() {
+    std::vector<std::string> parameters;
+    if (!GetUpgradePathParams(&parameters)) {
+      return;
+    }
+
+    const std::string preferences_parameter = parameters.at(0);
+    ASSERT_TRUE(!preferences_parameter.empty());
+
+    MockUserProfilePreferences(preferences_parameter);
+  }
+
+  bool GetUpgradePathParams(
+      std::vector<std::string>* parameters) {
+    EXPECT_NE(nullptr, parameters);
+
+    const ::testing::TestInfo* const test_info =
+        ::testing::UnitTest::GetInstance()->current_test_info();
+    EXPECT_NE(nullptr, test_info);
+
+    const std::string test_suite_name = test_info->test_suite_name();
+    if (test_suite_name != "BraveRewardsBrowserTest/BraveAdsBrowserTest") {
+      return false;
+    }
+
+    const std::string test_name = test_info->name();
+    const auto test_name_components = base::SplitString(test_name, "/",
+        base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+    EXPECT_EQ(2UL, test_name_components.size());
+
+    // test_name_components:
+    //   0 = Name
+    //   1 = Parameters
+
+    const std::string name = test_name_components.at(0);
+    if (name != "UpgradePath") {
+      return false;
+    }
+
+    // parameters:
+    //   0 = Preferences
+    //   1 = Supported region
+    //   2 = Rewards enabled
+    //   3 = Ads enabled
+    //   4 = Should show notification
+
+    *parameters = base::SplitString(test_name_components.at(1), "_",
+        base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+    EXPECT_EQ(5UL, parameters->size());
+
+    return true;
+  }
+
+  base::FilePath GetUserDataPath() const {
+    base::FilePath path;
+    base::PathService::Get(chrome::DIR_USER_DATA, &path);
+    path = path.AppendASCII(TestingProfile::kTestUserProfileDir);
+    return path;
+  }
+
+  base::FilePath GetTestDataPath() const {
+    // TODO(tmancey): We should be able to use |GetTestDataDir| however the path
+    // was invalid during setup, therefore investigate further
+    base::FilePath path;
+    base::PathService::Get(base::DIR_SOURCE_ROOT, &path);
+    path = path.Append(FILE_PATH_LITERAL("brave"));
+    path = path.Append(FILE_PATH_LITERAL("test"));
+    path = path.Append(FILE_PATH_LITERAL("data"));
+    return path;
+  }
+
+  void MockUserProfilePreferences(
+      const std::string& preference) const {
+    auto user_data_path = GetUserDataPath();
+    ASSERT_TRUE(base::CreateDirectory(user_data_path));
+
+    const auto preferences_path =
+        user_data_path.Append(chrome::kPreferencesFilename);
+
+    // TODO(tmancey): We should be able to use |GetTestDataDir| however the path
+    // was invalid during setup, therefore investigate further
+    auto test_data_path = GetTestDataPath();
+    test_data_path = test_data_path.AppendASCII("rewards-data");
+    test_data_path = test_data_path.AppendASCII("migration");
+    test_data_path = test_data_path.AppendASCII(preference);
+    ASSERT_TRUE(base::PathExists(test_data_path));
+
+    ASSERT_TRUE(base::CopyFile(test_data_path, preferences_path));
+  }
+
+  bool IsShowingNotificationForType(
+      const RewardsNotificationType type) const {
+    const auto& notifications = rewards_service_->GetAllNotifications();
+    for (const auto& notification : notifications) {
+      if (notification.second.type_ == type) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   void GetReconcileTime() {
@@ -1197,15 +1426,34 @@ class BraveRewardsBrowserTest :
       brave_rewards::RewardsNotificationService* rewards_notification_service,
       const brave_rewards::RewardsNotificationService::RewardsNotification&
       notification) {
-    const brave_rewards::RewardsNotificationService::RewardsNotificationsMap&
-        notifications = rewards_notification_service->GetAllNotifications();
+    const auto& notifications =
+        rewards_notification_service->GetAllNotifications();
+
     for (const auto& notification : notifications) {
-      if (notification.second.type_ ==
-          brave_rewards::RewardsNotificationService::RewardsNotificationType
-          ::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS) {
-        insufficient_notification_would_have_already_shown_ = true;
-        if (wait_for_insufficient_notification_loop_) {
-          wait_for_insufficient_notification_loop_->Quit();
+      switch (notification.second.type_) {
+        case brave_rewards::RewardsNotificationService::
+            RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS: {
+          insufficient_notification_would_have_already_shown_ = true;
+          if (wait_for_insufficient_notification_loop_) {
+            wait_for_insufficient_notification_loop_->Quit();
+          }
+
+          break;
+        }
+
+        case brave_rewards::RewardsNotificationService::
+            RewardsNotificationType::REWARDS_NOTIFICATION_ADS_ONBOARDING: {
+          brave_ads_have_arrived_notification_was_already_shown_ = true;
+
+          if (brave_ads_have_arrived_notification_run_loop_) {
+            brave_ads_have_arrived_notification_run_loop_->Quit();
+          }
+
+          break;
+        }
+
+        default: {
+          break;
         }
       }
     }
@@ -1259,6 +1507,10 @@ class BraveRewardsBrowserTest :
 
   brave_rewards::RewardsServiceImpl* rewards_service_;
 
+  brave_ads::AdsServiceImpl* ads_service_;
+
+  std::unique_ptr<brave_ads::LocaleHelperMock> locale_helper_mock_;
+
   brave_rewards::Grant grant_;
 
   std::unique_ptr<base::RunLoop> wait_for_wallet_initialization_loop_;
@@ -1290,6 +1542,9 @@ class BraveRewardsBrowserTest :
 
   std::unique_ptr<base::RunLoop> wait_for_insufficient_notification_loop_;
   bool insufficient_notification_would_have_already_shown_ = false;
+
+  std::unique_ptr<base::RunLoop> brave_ads_have_arrived_notification_run_loop_;
+  bool brave_ads_have_arrived_notification_was_already_shown_ = false;
 
   bool ac_low_amount_ = false;
   bool last_publisher_added_ = false;
@@ -2157,16 +2412,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     return;
   }
 
-  bool notification_shown = false;
-  for (const auto& notification : notifications) {
-    if (notification.second.type_ ==
-        brave_rewards::RewardsNotificationService::RewardsNotificationType
-        ::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS) {
-      notification_shown = true;
-      break;
-    }
-  }
-  EXPECT_FALSE(notification_shown);
+  bool is_showing_notification = IsShowingNotificationForType(
+      RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
+
+  EXPECT_FALSE(is_showing_notification);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2196,16 +2445,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     return;
   }
 
-  bool notification_shown = false;
-  for (const auto& notification : notifications) {
-    if (notification.second.type_ ==
-        brave_rewards::RewardsNotificationService::RewardsNotificationType
-        ::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS) {
-      notification_shown = true;
-      break;
-    }
-  }
-  EXPECT_FALSE(notification_shown);
+  bool is_showing_notification = IsShowingNotificationForType(
+      RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
+
+  EXPECT_FALSE(is_showing_notification);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2237,16 +2480,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     return;
   }
 
-  bool notification_shown = false;
-  for (const auto& notification : notifications) {
-    if (notification.second.type_ ==
-        brave_rewards::RewardsNotificationService::RewardsNotificationType
-        ::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS) {
-      notification_shown = true;
-      break;
-    }
-  }
-  EXPECT_FALSE(notification_shown);
+  bool is_showing_notification = IsShowingNotificationForType(
+      RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
+
+  EXPECT_FALSE(is_showing_notification);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2278,16 +2515,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     return;
   }
 
-  bool notification_shown = false;
-  for (const auto& notification : notifications) {
-    if (notification.second.type_ ==
-        brave_rewards::RewardsNotificationService::RewardsNotificationType
-        ::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS) {
-      notification_shown = true;
-      break;
-    }
-  }
-  EXPECT_TRUE(notification_shown);
+  bool is_showing_notification = IsShowingNotificationForType(
+      RewardsNotificationType::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS);
+
+  EXPECT_TRUE(is_showing_notification);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2662,3 +2893,477 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
 }
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+    BraveAdsRegionIsSupported) {
+  EXPECT_TRUE(ads_service_->IsSupportedRegion());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+    BraveAdsRegionIsNotSupported) {
+  EXPECT_FALSE(ads_service_->IsSupportedRegion());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+    PRE_AutoEnableAdsForSupportedRegions) {
+  EnableRewards();
+
+  EXPECT_TRUE(IsAdsEnabled());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+    AutoEnableAdsForSupportedRegions) {
+  EXPECT_TRUE(IsAdsEnabled());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+    PRE_DoNotAutoEnableAdsForUnsupportedRegions) {
+  EnableRewards();
+
+  EXPECT_FALSE(IsAdsEnabled());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+    DoNotAutoEnableAdsForUnsupportedRegions) {
+  EXPECT_FALSE(IsAdsEnabled());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+    PRE_ShowBraveAdsHaveArrivedNotificationForNewRegion) {
+  EnableRewards();
+
+  EXPECT_FALSE(IsAdsEnabled());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+    ShowBraveAdsHaveArrivedNotificationForNewRegion) {
+  AddNotificationServiceObserver();
+
+  WaitForBraveAdsHaveArrivedNotification();
+
+  EXPECT_FALSE(IsAdsEnabled());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+    PRE_DoNotShowBraveAdsHaveArrivedNotificationForUnsupportedRegion) {
+  EnableRewards();
+
+  EXPECT_FALSE(IsAdsEnabled());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+    DoNotShowBraveAdsHaveArrivedNotificationForUnsupportedRegion) {
+  bool is_showing_notification = IsShowingNotificationForType(
+      RewardsNotificationType::REWARDS_NOTIFICATION_ADS_ONBOARDING);
+
+  EXPECT_FALSE(is_showing_notification);
+}
+
+struct BraveAdsUpgradePathParamInfo {
+  // |preferences| should be set to the name of the preferences filename located
+  // at "src/brave/test/data/rewards-data/migration"
+  std::string preferences;
+
+  // |supported_region| should be set to |true| if the locale should be set to a
+  // supported region; otherwise, should be set to |false|
+  bool supported_region;
+
+  // |rewards_enabled| should be set to |true| if Brave rewards should be
+  // enabled after upgrade; otherwise, should be set to |false|
+  bool rewards_enabled;
+
+  // |ads_enabled| should be set to |true| if Brave ads should be enabled after
+  // upgrade; otherwise, should be set to |false|
+  bool ads_enabled;
+
+  // |should_show_onboarding| should be set to |true| if Brave ads onboarding
+  // should be shown after upgrade; otherwise, should be set to |false|
+  bool should_show_onboarding;
+};
+
+class BraveAdsBrowserTest
+    : public BraveRewardsBrowserTest,
+      public ::testing::WithParamInterface<BraveAdsUpgradePathParamInfo> {};
+
+const BraveAdsUpgradePathParamInfo kTests[] = {
+  // Test Suite with expected outcomes for upgrade paths instantiated using
+  // Value-Parameterized Tests
+
+  // Upgrade from 0.62 to current version
+  {
+    "PreferencesForVersion062WithRewardsDisabled",
+    false, /* supported_region */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion062WithRewardsDisabled",
+    true,  /* supported_region */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion062WithRewardsEnabled",
+    false, /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion062WithRewardsEnabled",
+    true,  /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
+
+  // Upgrade from 0.63 to current version (Initial release of Brave ads)
+  {
+    "PreferencesForVersion063WithRewardsAndAdsDisabled",
+    false, /* supported_region */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion063WithRewardsEnabledAndAdsDisabled",
+    false, /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion063WithRewardsAndAdsEnabled",
+    false, /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion063WithRewardsAndAdsDisabled",
+    true,  /* supported_region */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion063WithRewardsEnabledAndAdsDisabled",
+    true,  /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
+  // TODO(tmancey): The following test failed due to the ads_enabled flag being
+  // incorrectly set to false
+  // {
+  //   "PreferencesForVersion063WithRewardsAndAdsEnabled",
+  //   true,  /* supported_region */
+  //   true,  /* rewards_enabled */
+  //   true,  /* ads_enabled */
+  //   false  /* should_show_onboarding */
+  // },
+
+  // Upgrade from 0.67 to current version
+  {
+    "PreferencesForVersion067WithRewardsAndAdsDisabled",
+    false, /* supported_region */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion067WithRewardsEnabledAndAdsDisabled",
+    false, /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion067WithRewardsAndAdsEnabled",
+    false, /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion067WithRewardsAndAdsDisabled",
+    true,  /* supported_region */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion067WithRewardsEnabledAndAdsDisabled",
+    true,  /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion067WithRewardsAndAdsEnabled",
+    true,  /* supported_region */
+    true,  /* rewards_enabled */
+    true,  /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+
+  // Upgrade from 0.68 to current version
+  {
+    "PreferencesForVersion068WithRewardsAndAdsDisabled",
+    false, /* supported_region */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion068WithRewardsEnabledAndAdsDisabled",
+    false, /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion068WithRewardsAndAdsEnabled",
+    false, /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion068WithRewardsAndAdsDisabled",
+    true,  /* supported_region */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion068WithRewardsEnabledAndAdsDisabled",
+    true,  /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion068WithRewardsAndAdsEnabled",
+    true,  /* supported_region */
+    true,  /* rewards_enabled */
+    true,  /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+
+  // Upgrade from 0.69 to current version
+  {
+    "PreferencesForVersion069WithRewardsAndAdsDisabled",
+    false, /* supported_region */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion069WithRewardsEnabledAndAdsDisabled",
+    false, /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion069WithRewardsAndAdsEnabled",
+    false, /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion069WithRewardsAndAdsDisabled",
+    true,  /* supported_region */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion069WithRewardsEnabledAndAdsDisabled",
+    true,  /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion069WithRewardsAndAdsEnabled",
+    true,  /* supported_region */
+    true,  /* rewards_enabled */
+    true,  /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+
+  // Upgrade from 0.70 to current version
+  {
+    "PreferencesForVersion070WithRewardsAndAdsDisabled",
+    false, /* supported_region */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion070WithRewardsEnabledAndAdsDisabled",
+    false, /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion070WithRewardsAndAdsEnabled",
+    false, /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion070WithRewardsAndAdsDisabled",
+    true,  /* supported_region */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion070WithRewardsEnabledAndAdsDisabled",
+    true,  /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion070WithRewardsAndAdsEnabled",
+    true,  /* supported_region */
+    true,  /* rewards_enabled */
+    true,  /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+
+  // Upgrade from 0.71 to current version
+  {
+    "PreferencesForVersion071WithRewardsAndAdsDisabled",
+    false, /* supported_region */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion071WithRewardsEnabledAndAdsDisabled",
+    false, /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion071WithRewardsAndAdsEnabled",
+    false, /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion071WithRewardsAndAdsDisabled",
+    true,  /* supported_region */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion071WithRewardsEnabledAndAdsDisabled",
+    true,  /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion071WithRewardsAndAdsEnabled",
+    true,  /* supported_region */
+    true,  /* rewards_enabled */
+    true,  /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+
+  // Upgrade from 0.72 to current version
+  {
+    "PreferencesForVersion072WithRewardsAndAdsDisabled",
+    false, /* supported_region */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion072WithRewardsEnabledAndAdsDisabled",
+    false, /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion072WithRewardsAndAdsEnabled",
+    false, /* supported_locale */
+    true,  /* rewards_enabled */
+    true, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion072WithRewardsAndAdsDisabled",
+    true,  /* supported_region */
+    false, /* rewards_enabled */
+    false, /* ads_enabled */
+    false  /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion072WithRewardsEnabledAndAdsDisabled",
+    true,  /* supported_region */
+    true,  /* rewards_enabled */
+    false, /* ads_enabled */
+    true   /* should_show_onboarding */
+  },
+  {
+    "PreferencesForVersion072WithRewardsAndAdsEnabled",
+    true,  /* supported_region */
+    true,  /* rewards_enabled */
+    true,  /* ads_enabled */
+    false  /* should_show_onboarding */
+  }
+};
+
+IN_PROC_BROWSER_TEST_P(BraveAdsBrowserTest, UpgradePath) {
+  BraveAdsUpgradePathParamInfo param(GetParam());
+
+  bool is_showing_notification = IsShowingNotificationForType(
+      RewardsNotificationType::REWARDS_NOTIFICATION_ADS_ONBOARDING);
+
+  EXPECT_EQ(IsRewardsEnabled(), param.rewards_enabled);
+  EXPECT_EQ(IsAdsEnabled(), param.ads_enabled);
+  EXPECT_EQ(is_showing_notification, param.should_show_onboarding);
+}
+
+// Generate the test case name from the metadata included in
+// |BraveAdsUpgradePathParamInfo|
+static std::string GetTestCaseName(
+    ::testing::TestParamInfo<BraveAdsUpgradePathParamInfo> param_info) {
+  const char* preferences = param_info.param.preferences.c_str();
+
+  const char* supported_region = param_info.param.supported_region ?
+      "ForSupportedRegion" : "ForUnsupportedRegion";
+
+  const char* rewards_enabled = param_info.param.rewards_enabled ?
+      "RewardsShouldBeEnabled" : "RewardsShouldBeDisabled";
+
+  const char* ads_enabled = param_info.param.ads_enabled ?
+      "AdsShouldBeEnabled" : "AdsShouldBeDisabled";
+
+  const char* should_show_onboarding = param_info.param.should_show_onboarding ?
+      "ShouldShowOnboarding" : "ShouldNotShowOnboarding";
+
+  // NOTE: You should not remove, change the format or reorder the following
+  // parameters as they are parsed in |GetUpgradePathParams|
+  return base::StringPrintf("%s_%s_%s_%s_%s", preferences, supported_region,
+      rewards_enabled, ads_enabled, should_show_onboarding);
+}
+
+INSTANTIATE_TEST_SUITE_P(BraveRewardsBrowserTest,
+    BraveAdsBrowserTest, ::testing::ValuesIn(kTests), GetTestCaseName);

@@ -12,7 +12,7 @@
 
 namespace brave_ads {
 
-std::string LocaleHelperAndroid::GetLocale() const {
+const std::string LocaleHelperAndroid::GetLocale() const {
   return base::android::GetDefaultLocaleString();
 }
 
@@ -20,7 +20,7 @@ LocaleHelperAndroid* LocaleHelperAndroid::GetInstance() {
   return base::Singleton<LocaleHelperAndroid>::get();
 }
 
-LocaleHelper* LocaleHelper::GetInstance() {
+LocaleHelper* LocaleHelper::GetInstanceImpl() {
   return LocaleHelperAndroid::GetInstance();
 }
 

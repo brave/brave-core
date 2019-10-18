@@ -13,7 +13,7 @@ LocaleHelperWin::LocaleHelperWin() = default;
 
 LocaleHelperWin::~LocaleHelperWin() = default;
 
-std::string LocaleHelperWin::GetLocale() const {
+const std::string LocaleHelperWin::GetLocale() const {
   auto size = ::GetLocaleInfoEx(nullptr, LOCALE_SNAME, nullptr, 0);
   if (size == 0) {
     return kDefaultLocale;
@@ -39,11 +39,11 @@ std::string LocaleHelperWin::GetLocale() const {
   return std::string(locale.get());
 }
 
-LocaleHelperWin* LocaleHelperWin::GetInstance() {
+LocaleHelperWin* LocaleHelperWin::GetInstanceImpl() {
   return base::Singleton<LocaleHelperWin>::get();
 }
 
-LocaleHelper* LocaleHelper::GetInstance() {
+LocaleHelper* LocaleHelper::GetInstanceImpl() {
   return LocaleHelperWin::GetInstance();
 }
 
