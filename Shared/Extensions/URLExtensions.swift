@@ -248,10 +248,10 @@ extension URL {
      * E.g., https://mobile.foo.com/bar/baz?noo=abc#123 => https://mobile.foo.com/
      */
     public func domainURL(stripWWWSubdomainOnly: Bool = false) -> URL {
-        if let normalized = self.normalizedHost(stripWWWSubdomainOnly) {
-            // Use URLComponents instead of URL since the former correctly preserves
-            // brackets for IPv6 hosts, whereas the latter escapes them.
-            var components = URLComponents()
+        // Use URLComponents instead of URL since the former correctly preserves
+        // brackets for IPv6 hosts, whereas the latter escapes them.
+        if let normalized = self.normalizedHost(stripWWWSubdomainOnly),
+            var components = URLComponents(url: self, resolvingAgainstBaseURL: false) {
             components.scheme = self.scheme
             components.port = self.port
             components.host = normalized

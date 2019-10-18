@@ -359,18 +359,18 @@ class NSURLExtensionsTests: XCTestCase {
 
     func testdomainURL() {
         let urls = [
-            ("https://www.example.com/index.html", "https://example.com"),
-            ("https://mail.example.com/index.html", "https://mail.example.com"),
-            ("https://mail.example.co.uk/index.html", "https://mail.example.co.uk"),
+            ("https://www.example.com/index.html", "https://example.com/index.html"),
+            ("https://mail.example.com/index.html", "https://mail.example.com/index.html"),
+            ("https://mail.example.co.uk/index.html", "https://mail.example.co.uk/index.html"),
         ]
         urls.forEach { XCTAssertEqual(URL(string:$0.0)!.domainURL().absoluteString, $0.1) }
     }
     
     func testdomainURLStrippingOnlyWWW() {
         let urls = [
-            ("https://www.example.com/index.html", "https://example.com"),
-            ("https://m.example.com/index.html", "https://m.example.com"),
-            ("https://mobile.example.co.uk/index.html", "https://mobile.example.co.uk"),
+            ("https://www.example.com/index.html", "https://example.com/index.html"),
+            ("https://m.example.com/index.html", "https://m.example.com/index.html"),
+            ("https://mobile.example.co.uk/index.html", "https://mobile.example.co.uk/index.html"),
         ]
         urls.forEach { XCTAssertEqual(URL(string:$0.0)!.domainURL(stripWWWSubdomainOnly: true).absoluteString, $0.1) }
     }
