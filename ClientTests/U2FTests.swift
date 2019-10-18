@@ -57,7 +57,37 @@ class U2FTests: XCTestCase {
             XCTAssertEqual(request.challenge, "mdMbxTPACurawWFHqkoltSUwDear2OZQVl/uhBNqiaM=", "request challenge is correct.")
             XCTAssertEqual(request.allowCredentials.count, 1, "request allowCredential count is correct")
             XCTAssertEqual(request.allowCredentials.first, "OvQO5490o1w89Op/9dp4w7VvKuLEk5NHcfOnc2ZECtc=", "request allowCredential is correct")
-            XCTAssertTrue(request.userPresence, "request userPresence is correct")
+            XCTAssertTrue(request.userPresence, "request userPresence is correct") //User presence must always be true now!
+        } catch {
+            XCTFail("\(error)")
+        }
+    }
+    
+    func testWebAuthnUserVerification() {
+        do {
+            var payloads = [String]()
+            let verifications = ["required", "preferred", "discouraged"]
+            let expected: [WebAuthnUserVerification] = [.required, .preferred, .discouraged, .preferred]
+            
+            // Test expected verifications
+            for verification in verifications {
+                let payload = "{\"publicKey\":{\"allowCredentials\":[{\"type\":\"public-key\",\"id\":\"OvQO5490o1w89Op/9dp4w7VvKuLEk5NHcfOnc2ZECtc=\"}],\"rpId\":\"demo.brave.com\",\"timeout\":90000,\"userVerification\":\"\(verification)\",\"challenge\":\"mdMbxTPACurawWFHqkoltSUwDear2OZQVl/uhBNqiaM=\"},\"signal\":{}}"
+                payloads.append(payload)
+            }
+            
+            // Test when userPresence is MISSING from the payload..
+        payloads.append("{\"publicKey\":{\"allowCredentials\":[{\"type\":\"public-key\",\"id\":\"OvQO5490o1w89Op/9dp4w7VvKuLEk5NHcfOnc2ZECtc=\"}],\"rpId\":\"demo.brave.com\",\"timeout\":90000,\"challenge\":\"mdMbxTPACurawWFHqkoltSUwDear2OZQVl/uhBNqiaM=\"},\"signal\":{}}")
+            
+            for i in 0..<payloads.count {
+                guard let jsonData = payloads[i].data(using: String.Encoding.utf8) else {
+                    XCTFail("Failed parsing webauthn authentication data")
+                    return
+                }
+                
+                let request =  try JSONDecoder().decode(WebAuthnAuthenticateRequest.self, from: jsonData)
+                
+                XCTAssertTrue(request.userVerification == expected[i], "request userPresence is correct")
+            }
         } catch {
             XCTFail("\(error)")
         }

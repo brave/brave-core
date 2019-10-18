@@ -3,11 +3,18 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 import Shared
 
+enum WebAuthnUserVerification: String, Codable {
+    case required
+    case preferred
+    case discouraged
+}
+
 struct WebAuthnAuthenticateRequest {
     var rpID: String?
     var challenge: String
     var allowCredentials: [String] = []
-    var userPresence: Bool
+    let userPresence: Bool
+    var userVerification: WebAuthnUserVerification
 
     enum RequestKeys: String, CodingKey {
         case publicKey
@@ -35,9 +42,12 @@ extension WebAuthnAuthenticateRequest: Decodable {
         rpID = try publicKeyDictionary.decodeIfPresent(String.self, forKey: .rpId)
         challenge = try publicKeyDictionary.decode(String.self, forKey: .challenge)
         
-        // userPresence is the inverse of userVerification, UP by default is true
-        let userVerifcationString = try publicKeyDictionary.decodeIfPresent(String.self, forKey: .userVerification) ?? "discouraged"
-        userPresence = userVerifcationString == "discouraged"
+        // As of the latest spec changes, this valid will always be true!
+        // https://github.com/w3c/webauthn/pull/1140/files
+        userPresence = true
+        
+        // As a result of the above, we need to ensure that the default value is preferred
+        userVerification = try publicKeyDictionary.decodeIfPresent(WebAuthnUserVerification.self, forKey: .userVerification) ?? .preferred
         
         let allowCredentialsArray = try publicKeyDictionary.decode([AllowCredentials].self, forKey: .allowCredentials)
     
