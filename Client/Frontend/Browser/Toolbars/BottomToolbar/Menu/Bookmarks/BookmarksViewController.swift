@@ -81,11 +81,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         
         let items = [padding, addFolderButton, flexibleSpace, editBookmarksButton, padding]
         setToolbarItems(items, animated: true)
-        
-//        navigationController?.toolbar.do {
-//            $0.barTintColor = BraveUX.BackgroundColorForSideToolbars
-//            $0.isTranslucent = false
-//        }
     }
   
   override func reloadData() {
