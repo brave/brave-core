@@ -78,6 +78,8 @@ class BraveSyncClient {
   virtual void SendDeleteSyncCategory(const std::string &category_name) = 0;
   virtual void SendGetBookmarksBaseOrder(const std::string &device_id,
                                          const std::string &platform) = 0;
+  // COMPACT_SYNC_CATEGORY
+  virtual void SendCompactSyncCategory(const std::string& category_name) = 0;
 
   virtual void OnExtensionInitialized() = 0;
 

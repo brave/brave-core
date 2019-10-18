@@ -60,6 +60,7 @@ class BraveSyncClientImpl : public BraveSyncClient,
   void SendDeleteSyncCategory(const std::string& category_name) override;
   void SendGetBookmarksBaseOrder(const std::string& device_id,
                                  const std::string& platform) override;
+  void SendCompactSyncCategory(const std::string& category_name) override;
 
  private:
   friend class BraveSyncClient;

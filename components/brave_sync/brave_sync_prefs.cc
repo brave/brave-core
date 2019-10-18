@@ -29,6 +29,7 @@ const char kSyncLatestRecordTime[] = "brave_sync.latest_record_time";
 const char kSyncLatestDeviceRecordTime[] =
     "brave_sync.latest_device_record_time";
 const char kSyncLastFetchTime[] = "brave_sync.last_fetch_time";
+const char kSyncLastCompactTime[] = "brave_sync.last_compact_time";
 const char kSyncDeviceList[] = "brave_sync.device_list";
 const char kSyncApiVersion[] = "brave_sync.api_version";
 const char kSyncMigrateBookmarksVersion[]
@@ -53,6 +54,7 @@ void Prefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterTimePref(prefs::kSyncLatestRecordTime, base::Time());
   registry->RegisterTimePref(prefs::kSyncLatestDeviceRecordTime, base::Time());
   registry->RegisterTimePref(prefs::kSyncLastFetchTime, base::Time());
+  registry->RegisterTimePref(prefs::kSyncLastCompactTime, base::Time());
 
   registry->RegisterStringPref(prefs::kSyncDeviceList, std::string());
   registry->RegisterStringPref(prefs::kSyncApiVersion, std::string("0"));
@@ -172,6 +174,14 @@ void Prefs::SetLastFetchTime(const base::Time &time) {
 
 base::Time Prefs::GetLastFetchTime() {
   return pref_service_->GetTime(kSyncLastFetchTime);
+}
+
+void Prefs::SetLastCompactTime(const base::Time &time) {
+  pref_service_->SetTime(kSyncLastCompactTime, time);
+}
+
+base::Time Prefs::GetLastCompactTime() {
+  return pref_service_->GetTime(kSyncLastCompactTime);
 }
 
 std::unique_ptr<SyncDevices> Prefs::GetSyncDevices() {

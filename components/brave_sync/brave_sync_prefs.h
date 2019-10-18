@@ -102,6 +102,8 @@ class Prefs {
   base::Time GetLatestDeviceRecordTime();
   void SetLastFetchTime(const base::Time &time);
   base::Time GetLastFetchTime();
+  void SetLastCompactTime(const base::Time &time);
+  base::Time GetLastCompactTime();
 
   std::unique_ptr<SyncDevices> GetSyncDevices();
   void SetSyncDevices(const SyncDevices& sync_devices);

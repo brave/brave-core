@@ -50,6 +50,11 @@ chrome.braveSync.onSendGetBookmarksBaseOrder.addListener(function(deviceId, plat
   callbackList["get-bookmarks-base-order"](null, deviceId, platform);
 });
 
+chrome.braveSync.onSendCompactSyncCategory.addListener(function(category_name) {
+  console.log(`"compact-sync-category" category_name=${JSON.stringify(category_name)}`);
+  callbackList["compact-sync-category"](null, category_name);
+});
+
 chrome.braveSync.onLoadClient.addListener(function() {
   console.log("in chrome.braveSync.onLoadClient");
   LoadJsLibScript();

@@ -12,14 +12,14 @@
 #include "base/logging.h"
 #include "base/one_shot_event.h"
 #include "brave/browser/extensions/api/brave_sync_event_router.h"
-#include "brave/components/brave_sync/client/client_ext_impl_data.h"
-#include "brave/components/brave_sync/grit/brave_sync_resources.h"
-#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/common/extensions/api/brave_sync.h"
 #include "brave/common/extensions/extension_constants.h"
-#include "chrome/browser/profiles/profile.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_sync/client/client_ext_impl_data.h"
+#include "brave/components/brave_sync/grit/brave_sync_resources.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
+#include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
@@ -43,17 +43,17 @@ BraveSyncClient* BraveSyncClient::Create(SyncMessageHandler* handler,
 }
 
 BraveSyncClientImpl::BraveSyncClientImpl(SyncMessageHandler* handler,
-                                         Profile* profile) :
-    handler_(handler),
-    profile_(profile),
-    sync_prefs_(new brave_sync::prefs::Prefs(profile->GetPrefs())),
-    extension_loaded_(false),
-    brave_sync_event_router_(new extensions::BraveSyncEventRouter(profile)),
-    extension_registry_observer_(this) {
+                                         Profile* profile)
+    : handler_(handler),
+      profile_(profile),
+      sync_prefs_(new brave_sync::prefs::Prefs(profile->GetPrefs())),
+      extension_loaded_(false),
+      brave_sync_event_router_(new extensions::BraveSyncEventRouter(profile)),
+      extension_registry_observer_(this) {
   // Handle when the extension system is ready
   extensions::ExtensionSystem::Get(profile)->ready().Post(
       FROM_HERE, base::Bind(&BraveSyncClientImpl::OnExtensionSystemReady,
-          base::Unretained(this)));
+                            base::Unretained(this)));
 }
 
 BraveSyncClientImpl::~BraveSyncClientImpl() {}
@@ -72,8 +72,8 @@ void BraveSyncClientImpl::SendGotInitData(const Uint8Array& seed,
 }
 
 void BraveSyncClientImpl::SendFetchSyncRecords(
-    const std::vector<std::string> &category_names,
-    const base::Time &startAt,
+    const std::vector<std::string>& category_names,
+    const base::Time& startAt,
     const int max_records) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   brave_sync_event_router_->FetchSyncRecords(category_names, startAt,
@@ -81,7 +81,7 @@ void BraveSyncClientImpl::SendFetchSyncRecords(
 }
 
 void BraveSyncClientImpl::SendResolveSyncRecords(
-    const std::string &category_name,
+    const std::string& category_name,
     std::unique_ptr<SyncRecordAndExistingList> records_and_existing_objects) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   std::vector<extensions::api::brave_sync::RecordAndExistingObject>
@@ -90,12 +90,12 @@ void BraveSyncClientImpl::SendResolveSyncRecords(
   ConvertResolvedPairs(*records_and_existing_objects,
                        &records_and_existing_objects_ext);
 
-  brave_sync_event_router_->ResolveSyncRecords(category_name,
-    records_and_existing_objects_ext);
+  brave_sync_event_router_->ResolveSyncRecords(
+      category_name, records_and_existing_objects_ext);
 }
 
-void BraveSyncClientImpl::SendSyncRecords(const std::string &category_name,
-                                          const RecordsList &records) {
+void BraveSyncClientImpl::SendSyncRecords(const std::string& category_name,
+                                          const RecordsList& records) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   std::vector<extensions::api::brave_sync::SyncRecord> records_ext;
   ConvertSyncRecordsFromLibToExt(records, &records_ext);
@@ -103,7 +103,7 @@ void BraveSyncClientImpl::SendSyncRecords(const std::string &category_name,
   brave_sync_event_router_->SendSyncRecords(category_name, records_ext);
 }
 
-void BraveSyncClientImpl::SendDeleteSyncUser()  {
+void BraveSyncClientImpl::SendDeleteSyncUser() {
   NOTIMPLEMENTED();
 }
 
@@ -117,6 +117,12 @@ void BraveSyncClientImpl::SendGetBookmarksBaseOrder(
     const std::string& platform) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   brave_sync_event_router_->SendGetBookmarksBaseOrder(device_id, platform);
+}
+
+void BraveSyncClientImpl::SendCompactSyncCategory(
+    const std::string& category_name) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  brave_sync_event_router_->SendCompactSyncCategory(category_name);
 }
 
 void BraveSyncClientImpl::OnExtensionInitialized() {
@@ -170,9 +176,9 @@ void BraveSyncClientImpl::LoadOrUnloadExtension(bool load) {
   brave_sync_extension_path =
       brave_sync_extension_path.Append(FILE_PATH_LITERAL("brave_sync"));
   extensions::ExtensionSystem* system =
-    extensions::ExtensionSystem::Get(profile_);
+      extensions::ExtensionSystem::Get(profile_);
   extensions::ComponentLoader* component_loader =
-    system->extension_service()->component_loader();
+      system->extension_service()->component_loader();
   if (load) {
     component_loader->Add(IDR_BRAVE_SYNC_EXTENSION, brave_sync_extension_path);
   } else {

@@ -53,6 +53,8 @@ class BraveSyncEventRouter {
   void SendGetBookmarksBaseOrder(const std::string& device_id,
                                  const std::string& platform);
 
+  void SendCompactSyncCategory(const std::string& category_name);
+
   void LoadClient();
 
  private:
