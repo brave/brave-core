@@ -1435,7 +1435,8 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsSingleArg) {
   // Staging - true and 1
   EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::STAGING)).Times(2);
   // Staging - false and random
-  EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::PRODUCTION)).Times(2);
+  EXPECT_CALL(*this, OnGetEnvironment(
+      ledger::Environment::PRODUCTION)).Times(2);
 
   rewards_service()->SetEnvironment(ledger::Environment::PRODUCTION);
   GetEnvironment();

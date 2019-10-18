@@ -46,6 +46,8 @@ using ContributionQueuePublisherList =
 
 using ContributionRetry = mojom::ContributionRetry;
 
+using Environment = ledger::mojom::Environment;
+
 using ExcludeFilter = mojom::ExcludeFilter;
 
 using ExternalWallet = mojom::ExternalWallet;

@@ -297,6 +297,7 @@ class RewardsServiceImpl : public RewardsService,
   void StartMonthlyContributionForTest();
   void MaybeShowNotificationAddFundsForTesting(
       base::OnceCallback<void(bool)> callback);
+  void CheckInsufficientFundsForTesting();
 
  private:
   friend class ::BraveRewardsBrowserTest;

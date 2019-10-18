@@ -3016,7 +3016,8 @@ void RewardsServiceImpl::CheckInsufficientFundsForTesting() {
   MaybeShowNotificationAddFunds();
 }
 
-void RewardsServiceImpl::GetEnvironment(const GetEnvironmentCallback& callback) {
+void RewardsServiceImpl::GetEnvironment(
+    const GetEnvironmentCallback& callback) {
   bat_ledger_service_->GetEnvironment(callback);
 }
 
@@ -4039,7 +4040,7 @@ ledger::Environment RewardsServiceImpl::GetServerEnvironmentForAndroid() {
 
   if (use_staging) {
     result = ledger::Environment::STAGING;
-  };
+  }
 
   return result;
 }

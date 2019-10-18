@@ -11,10 +11,18 @@
 namespace helper {
 
 std::string LedgerServe::GetURL() {
-  if (confirmations::_is_production) {
-    return BAT_LEDGER_PRODUCTION_SERVER;
-  } else {
-    return BAT_LEDGER_STAGING_SERVER;
+  switch (confirmations::_environment) {
+    case ledger::Environment::PRODUCTION: {
+      return BAT_LEDGER_PRODUCTION_SERVER;
+    }
+
+    case ledger::Environment::STAGING: {
+      return BAT_LEDGER_STAGING_SERVER;
+    }
+
+    case ledger::Environment::DEVELOPMENT: {
+      return BAT_LEDGER_DEVELOPMENT_SERVER;
+    }
   }
 }
 

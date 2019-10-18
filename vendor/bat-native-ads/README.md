@@ -19,6 +19,12 @@ Default for non official builds, i.e. Debug
 --brave-ads-staging
 ```
 
+Use development Ads Serve as defined by `DEVELOPMENT_SERVER` in `static_values.h`.
+
+```
+--brave-ads-development
+```
+
 Collect initial activity after 25 seconds instead of 1 hour as defined by
 `kDebugOneHourInSeconds` in `static_values.h`. Download the catalog after 15
 minutes instead of 2 hours as defined by `kDebugCatalogPing` in

@@ -20,10 +20,6 @@
 
 namespace ledger {
 
-using VisitData = ledger::mojom::VisitData;
-using VisitDataPtr = ledger::mojom::VisitDataPtr;
-using Environment = ledger::mojom::Environment;
-
 extern Environment _environment;
 extern bool is_debug;
 extern bool is_testing;

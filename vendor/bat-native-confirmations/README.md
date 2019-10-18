@@ -21,6 +21,12 @@ Default for non offical builds, i.e. Debug
 --rewards=staging=true
 ```
 
+Use development Ads Server as defined by `DEVELOPMENT_SERVER` in `static_values.h`.
+
+```
+--rewards=development=true
+```
+
 Use shorter timers to help with testing token redemption as defined by
 `kDebugNextTokenRedemptionAfterSeconds` in `static_values.h`.
 

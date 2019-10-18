@@ -11,10 +11,18 @@
 namespace helper {
 
 std::string AdsServe::GetURL() {
-  if (confirmations::_is_production) {
-    return BAT_ADS_PRODUCTION_SERVER;
-  } else {
-    return BAT_ADS_STAGING_SERVER;
+  switch (confirmations::_environment) {
+    case ledger::Environment::PRODUCTION: {
+      return BAT_ADS_PRODUCTION_SERVER;
+    }
+
+    case ledger::Environment::STAGING: {
+      return BAT_ADS_STAGING_SERVER;
+    }
+
+    case ledger::Environment::DEVELOPMENT: {
+      return BAT_ADS_DEVELOPMENT_SERVER;
+    }
   }
 }
 

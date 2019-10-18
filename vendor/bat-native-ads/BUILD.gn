@@ -12,7 +12,10 @@ config("external_config") {
   visibility = [
     ":*",
   ]
-  include_dirs = [ "include" ]
+  include_dirs = [
+    "include",
+    "$target_gen_dir/include",
+  ]
 }
 
 config("internal_config") {
@@ -50,19 +53,13 @@ static_library("bat-native-ads-standalone") {
   ]
 }
 
-source_set("ads") {
-  public_configs = [ ":external_config" ]
-  configs += [ ":internal_config" ]
-
+source_set("headers") {
   visibility = [
     ":*",
-    # add this only when ledger and confirmations are in the same process
-    # rebase_path("bat-native-ledger", dep_base),
-    # rebase_path("bat-native-ads", dep_base),
     "//brave/test:*",
   ]
 
-  output_name = "bat_native_ads"
+  public_configs = [ ":external_config" ]
 
   sources = [
     "include/bat/ads/ad_content.h",
@@ -82,6 +79,19 @@ source_set("ads") {
     "include/bat/ads/notification_event_type.h",
     "include/bat/ads/notification_info.h",
     "include/bat/ads/result.h",
+  ]
+
+  public_deps = [
+    "include/bat/ads/public/interfaces"
+  ]
+}
+
+source_set("ads") {
+  configs += [ ":internal_config" ]
+
+  output_name = "bat_native_ads"
+
+  sources = [
     "src/bat/ads/ad_content.cc",
     "src/bat/ads/ad_history_detail.cc",
     "src/bat/ads/ad_info.cc",
@@ -162,12 +172,16 @@ source_set("ads") {
     "src/bat/ads/internal/uri_helper.cc",
     "src/bat/ads/internal/uri_helper.h",
   ]
-    
+
   deps = [
     "//base",
     "//url",
     rebase_path("bat-native-usermodel", dep_base),
     rebase_path("bat-native-rapidjson", dep_base),
     rebase_path("brave_base", dep_base),
+  ]
+
+  public_deps = [
+    ":headers",
   ]
 }

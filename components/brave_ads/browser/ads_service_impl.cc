@@ -658,7 +658,7 @@ bool AdsServiceImpl::StartService() {
   bat_ads_service_.set_connection_error_handler(
       base::Bind(&AdsServiceImpl::MaybeStart, AsWeakPtr(), true));
 
-  UpdateIsProductionFlag();
+  UpdateEnvironment();
   UpdateIsDebugFlag();
   UpdateIsTestingFlag();
 
@@ -748,31 +748,32 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(
   MaybeShowMyFirstAdNotification();
 }
 
-void AdsServiceImpl::UpdateIsProductionFlag() {
-  auto is_production = IsProduction();
-  bat_ads_service_->SetProduction(is_production, base::NullCallback());
-}
-
-bool AdsServiceImpl::IsProduction() const {
-#if defined(OS_ANDROID)
+void AdsServiceImpl::UpdateEnvironment() {
+  ads::Environment environment;
 
 #if defined(OFFICIAL_BUILD)
-  return !GetBooleanPref(brave_rewards::prefs::kUseRewardsStagingServer);
+  environment = ads::Environment::PRODUCTION;
 #else
-  return false;
+  environment = ads::Environment::STAGING;
 #endif
 
+#if defined(OS_ANDROID)
+  if (GetBooleanPref(brave_rewards::prefs::kUseRewardsStagingServer)) {
+    environment = ads::Environment::STAGING;
+  }
 #else
-
   const auto& command_line = *base::CommandLine::ForCurrentProcess();
 
-#if defined(OFFICIAL_BUILD)
-  return !command_line.HasSwitch(switches::kStaging);
-#else
-  return command_line.HasSwitch(switches::kProduction);
+  if (command_line.HasSwitch(switches::kProduction)) {
+    environment = ads::Environment::PRODUCTION;
+  } else if (command_line.HasSwitch(switches::kStaging)) {
+    environment = ads::Environment::STAGING;
+  } else if (command_line.HasSwitch(switches::kDevelopment)) {
+    environment = ads::Environment::DEVELOPMENT;
+  }
 #endif
 
-#endif
+  bat_ads_service_->SetEnvironment(environment, base::NullCallback());
 }
 
 void AdsServiceImpl::UpdateIsDebugFlag() {

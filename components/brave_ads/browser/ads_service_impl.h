@@ -160,8 +160,7 @@ class AdsServiceImpl : public AdsService,
   void OnEnsureBaseDirectoryExists(
       const bool success);
 
-  void UpdateIsProductionFlag();
-  bool IsProduction() const;
+  void UpdateEnvironment();
   void UpdateIsDebugFlag();
   bool IsDebug() const;
   void UpdateIsTestingFlag();
