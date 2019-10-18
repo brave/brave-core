@@ -196,6 +196,11 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
       case SummaryRows.excludedSites.rawValue:
         let numberOfExcludedSites = state.ledger.numberOfExcludedPublishers
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        if let presenter = alert.popoverPresentationController, let cell = tableView.cellForRow(at: indexPath) {
+          presenter.sourceView = cell
+          presenter.sourceRect = cell.bounds
+          presenter.permittedArrowDirections = [.up, .down]
+        }
         alert.addAction(UIAlertAction(title: String(format: Strings.AutoContributeRestoreExcludedSites, numberOfExcludedSites), style: .default, handler: { _ in
           self.state.ledger.restoreAllExcludedPublishers()
         }))
