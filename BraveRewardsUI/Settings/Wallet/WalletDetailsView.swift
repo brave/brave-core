@@ -66,42 +66,21 @@ extension WalletDetailsViewController.View {
       let titleLabel = UILabel().then {
         $0.text = Strings.EmptyWalletTitle
         $0.appearanceTextColor = SettingsUX.bodyTextColor
-        $0.font = .systemFont(ofSize: 22.0)
+        $0.font = .systemFont(ofSize: 22.0, weight: .medium)
         $0.textAlignment = .center
         $0.numberOfLines = 0
       }
-      
-      /// Left-aligned bullet-points stack view
-      class BulletPointStackView: UIStackView {
-        override init(frame: CGRect) {
-          super.init(frame: frame)
-          axis = .vertical
-          spacing = 4.0
-          alignment = .leading
-          
-          addArrangedSubview(UILabel().then {
-            $0.font = .systemFont(ofSize: 15.0, weight: .medium)
-            $0.appearanceTextColor = SettingsUX.subtitleTextColor
-            $0.text = Strings.EmptyWalletBulletHeader
-          })
-          addArrangedSubview(UILabel().then {
-            $0.font = .systemFont(ofSize: 15.0)
-            $0.appearanceTextColor = SettingsUX.bodyTextColor
-            $0.text = Strings.EmptyWalletBulletPoints
-            $0.numberOfLines = 0
-          })
-        }
-        @available(*, unavailable)
-        required init(coder: NSCoder) {
-          fatalError()
-        }
+      let textLabel = UILabel().then {
+        $0.font = .systemFont(ofSize: 15.0, weight: .medium)
+        $0.appearanceTextColor = SettingsUX.subtitleTextColor
+        $0.textAlignment = .center
+        $0.text = Strings.EmptyWalletBody
+        $0.numberOfLines = 0
       }
-      
-      let bulletPointStackView = BulletPointStackView()
       
       addSubview(imageView)
       addSubview(titleLabel)
-      addSubview(bulletPointStackView)
+      addSubview(textLabel)
       
       imageView.snp.makeConstraints {
         $0.centerX.equalToSuperview()
@@ -111,10 +90,10 @@ extension WalletDetailsViewController.View {
         $0.leading.trailing.equalToSuperview().inset(30.0)
         $0.top.equalTo(imageView.snp.bottom).offset(30.0)
       }
-      bulletPointStackView.snp.makeConstraints {
+      textLabel.snp.makeConstraints {
         $0.leading.trailing.equalToSuperview().inset(40.0)
         $0.top.equalTo(titleLabel.snp.bottom).offset(30.0)
-        $0.bottom.equalToSuperview().inset(20.0)
+        $0.bottom.equalToSuperview().inset(40.0)
       }
     }
   }
