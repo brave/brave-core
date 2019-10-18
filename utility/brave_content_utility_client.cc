@@ -9,7 +9,12 @@
 #include <string>
 #include <utility>
 
+#if defined(BRAVE_CHROMIUM_BUILD)
 #include "brave/browser/tor/buildflags.h"
+#else
+#include "build/buildflag.h"
+#define BUILDFLAG_INTERNAL_ENABLE_TOR() (0)
+#endif
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "content/public/utility/utility_thread.h"
