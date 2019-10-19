@@ -105,7 +105,6 @@ declare namespace Rewards {
 
   export interface WalletProperties {
     choices: number[]
-    promotions?: Promotion[]
   }
 
   export interface RecoverWallet {

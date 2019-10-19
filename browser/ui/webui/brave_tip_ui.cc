@@ -189,16 +189,6 @@ void RewardsTipDOMHandler::OnWalletProperties(
       choices->AppendDouble(choice);
     }
     walletInfo->SetList("choices", std::move(choices));
-
-    auto promotions = std::make_unique<base::ListValue>();
-    for (auto const& item : wallet_properties->promotions) {
-      auto promotion = std::make_unique<base::DictionaryValue>();
-      promotion->SetString("probi", item.probi);
-      promotion->SetInteger("expiryTime", item.expiryTime);
-      promotion->SetString("type", item.type);
-      promotions->Append(std::move(promotion));
-    }
-    walletInfo->SetList("promotions", std::move(promotions));
   }
 
   result.SetDictionary("wallet", std::move(walletInfo));

@@ -405,20 +405,6 @@ ExtensionFunction::ResponseAction BraveRewardsGetPublisherDataFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsGetWalletPropertiesFunction::
-~BraveRewardsGetWalletPropertiesFunction() {
-}
-
-ExtensionFunction::ResponseAction
-BraveRewardsGetWalletPropertiesFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service) {
-    rewards_service->FetchWalletProperties();
-  }
-  return RespondNow(NoArguments());
-}
-
 BraveRewardsGetCurrentReportFunction::~BraveRewardsGetCurrentReportFunction() {
 }
 

@@ -113,16 +113,6 @@ class BraveRewardsGetPublisherDataFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetWalletPropertiesFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getWalletProperties", UNKNOWN)
-
- protected:
-  ~BraveRewardsGetWalletPropertiesFunction() override;
-
-  ResponseAction Run() override;
-};
-
 class BraveRewardsGetCurrentReportFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getCurrentReport", UNKNOWN)

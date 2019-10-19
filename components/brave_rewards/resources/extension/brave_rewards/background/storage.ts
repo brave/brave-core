@@ -13,9 +13,6 @@ export const defaultState: RewardsExtension.State = {
   walletCreating: false,
   walletCreateFailed: false,
   publishers: {},
-  walletProperties: {
-    promotions: []
-  },
   report: {
     ads: '0',
     closing: '0',
