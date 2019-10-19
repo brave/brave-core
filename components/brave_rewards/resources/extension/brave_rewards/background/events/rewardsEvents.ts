@@ -28,7 +28,7 @@ chrome.braveRewards.onCurrentReport.addListener((properties: RewardsExtension.Re
   rewardsPanelActions.onCurrentReport(properties)
 })
 
-chrome.braveRewards.onGrant.addListener((properties: RewardsExtension.GrantResponse) => {
+chrome.braveRewards.onGrant.addListener((properties: RewardsExtension.PromotionResponse) => {
   rewardsPanelActions.onGrant(properties)
 })
 
@@ -36,7 +36,7 @@ chrome.braveRewards.onGrantCaptcha.addListener((captcha: RewardsExtension.Captch
   rewardsPanelActions.onGrantCaptcha(captcha)
 })
 
-chrome.braveRewards.onGrantFinish.addListener((properties: RewardsExtension.GrantFinish) => {
+chrome.braveRewards.onGrantFinish.addListener((properties: RewardsExtension.PromotionFinish) => {
   rewardsPanelActions.onGrantFinish(properties)
   chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
     rewardsPanelActions.onBalance(balance)

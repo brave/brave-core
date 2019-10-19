@@ -46,7 +46,7 @@ class BraveProfileWriter : public ProfileWriter,
   void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
                        unsigned int result,
                        double balance,
-                       std::vector<brave_rewards::Grant> grants) override;
+                       std::vector<brave_rewards::Promotion> grants) override;
   void OnWalletProperties(
       brave_rewards::RewardsService* rewards_service,
       int error_code,

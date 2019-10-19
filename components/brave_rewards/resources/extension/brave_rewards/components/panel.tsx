@@ -167,7 +167,7 @@ export class Panel extends React.Component<Props, State> {
     this.actions.deleteNotification(id)
   }
 
-  onGrantHide = () => {
+  onPromotionHide = () => {
     this.actions.onResetGrant()
   }
 
@@ -612,7 +612,7 @@ export class Panel extends React.Component<Props, State> {
   render () {
     const { pendingContributionTotal, enabledAC, externalWallet, balance } = this.props.rewardsPanelData
     const { rates } = this.props.rewardsPanelData.balance
-    const { grants } = this.props.rewardsPanelData.walletProperties
+    const { promotions } = this.props.rewardsPanelData.walletProperties
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const total = balance.total || 0
     const converted = utils.convertBalance(total.toString(), rates)
@@ -620,7 +620,7 @@ export class Panel extends React.Component<Props, State> {
     const notificationId = this.getNotificationProp('id', notification)
     const notificationType = this.getNotificationProp('type', notification)
     const notificationClick = this.getNotificationClickEvent(notificationType, notificationId)
-    let { currentGrant } = this.props.rewardsPanelData
+    let { currentPromotion } = this.props.rewardsPanelData
     const defaultContribution = this.getContribution(publisher)
     const checkmark = publisher && utils.isPublisherConnectedOrVerified(publisher.status)
     const tipAmounts = defaultContribution !== '0.0'
@@ -645,7 +645,7 @@ export class Panel extends React.Component<Props, State> {
       }
     }
 
-    currentGrant = utils.getGrant(currentGrant, this.props.onlyAnonWallet)
+    currentPromotion = utils.getPromotion(currentPromotion, onlyAnonWallet)
 
     let walletStatus: WalletState | undefined = undefined
     let onVerifyClick = undefined
@@ -664,13 +664,13 @@ export class Panel extends React.Component<Props, State> {
         actions={this.getActions()}
         showCopy={false}
         showSecActions={false}
-        grant={currentGrant}
-        onGrantHide={this.onGrantHide}
+        grant={currentPromotion}
+        onGrantHide={this.onPromotionHide}
         onNotificationClick={notificationClick}
         onSolution={this.onSolution}
         onFinish={this.onFinish}
         convertProbiToFixed={utils.convertProbiToFixed}
-        grants={utils.getGrants(grants)}
+        grants={utils.generatePromotions(promotions)}
         walletState={walletStatus}
         onVerifyClick={onVerifyClick}
         onDisconnectClick={this.onDisconnectClick}

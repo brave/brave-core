@@ -60,7 +60,7 @@ export const includeInAutoContribution = (publisherKey: string, exclude: boolean
 
 export const getGrants = () => action(types.GET_GRANTS)
 
-export const onGrant = (properties: RewardsExtension.GrantResponse) => action(types.ON_GRANT, {
+export const onGrant = (properties: RewardsExtension.PromotionResponse) => action(types.ON_GRANT, {
   properties
 })
 
@@ -77,7 +77,7 @@ export const solveGrantCaptcha = (x: number, y: number) => action(types.SOLVE_GR
   y
 })
 
-export const onGrantFinish = (properties: RewardsExtension.GrantFinish) => action(types.ON_GRANT_FINISH, {
+export const onGrantFinish = (properties: RewardsExtension.PromotionFinish) => action(types.ON_GRANT_FINISH, {
   properties
 })
 

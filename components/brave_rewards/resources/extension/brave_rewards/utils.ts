@@ -35,40 +35,40 @@ export const convertProbiToFixed = (probi: string, places: number = 1) => {
   return result
 }
 
-export const getGrants = (grants?: RewardsExtension.Grant[]) => {
-  if (!grants) {
+export const generatePromotions = (promotions?: RewardsExtension.Promotion[]) => {
+  if (!promotions) {
     return []
   }
 
-  return grants.map((grant: RewardsExtension.Grant) => {
+  return promotions.map((promotion: RewardsExtension.Promotion) => {
     return {
-      tokens: convertProbiToFixed(grant.probi),
-      expireDate: new Date(grant.expiryTime * 1000).toLocaleDateString(),
-      type: grant.type || 'ugp'
+      tokens: convertProbiToFixed(promotion.probi),
+      expireDate: new Date(promotion.expiryTime * 1000).toLocaleDateString(),
+      type: promotion.type || 'ugp'
     }
   })
 }
 
-export const getGrant = (grant?: RewardsExtension.GrantInfo, onlyAnonWallet?: boolean) => {
-  if (!grant) {
-    return grant
+export const getPromotion = (promotion?: RewardsExtension.Promotion) => {
+  if (!promotion) {
+    return promotion
   }
 
   const tokenString = onlyAnonWallet ? getMessage('point') : getMessage('token')
-  grant.finishTitle = getMessage('grantFinishTitleUGP')
-  grant.finishText = getMessage('grantFinishTextUGP', [tokenString])
-  grant.finishTokenTitle = onlyAnonWallet
+  promotion.finishTitle = getMessage('grantFinishTitleUGP')
+  promotion.finishText = getMessage('grantFinishTextUGP', [tokenString])
+  promotion.finishTokenTitle = onlyAnonWallet
     ? getMessage('grantFinishPointTitleUGP')
     : getMessage('grantFinishTokenTitleUGP')
 
-  if (grant.type === 'ads') {
-    grant.expiryTime = 0
-    grant.finishTitle = getMessage('grantFinishTitleAds')
-    grant.finishText = getMessage('grantFinishTextAds')
-    grant.finishTokenTitle = getMessage('grantFinishTokenTitleAds')
+  if (promotion.type === 'ads') {
+    promotion.expiryTime = 0
+    promotion.finishTitle = getMessage('grantFinishTitleAds')
+    promotion.finishText = getMessage('grantFinishTextAds')
+    promotion.finishTokenTitle = getMessage('grantFinishTokenTitleAds')
   }
 
-  return grant
+  return promotion
 }
 
 export const isPublisherVerified = (status?: RewardsExtension.PublisherStatus) => {

@@ -50,12 +50,14 @@ class RewardsNotificationServiceImpl
   std::string GetGrantIdPrefix(const std::string& grant_type);
 
   // RewardsServiceObserver impl
-  void OnGrant(RewardsService* rewards_service,
-               unsigned int result,
-               Grant properties) override;
-  void OnGrantFinish(RewardsService* rewards_service,
-                     unsigned int result,
-                     brave_rewards::Grant grant) override;
+  void OnGrant(
+      RewardsService* rewards_service,
+      unsigned int result,
+      Promotion properties) override;
+  void OnGrantFinish(
+      RewardsService* rewards_service,
+      unsigned int result,
+      Promotion promotion) override;
   void OnReconcileComplete(RewardsService* rewards_service,
                            unsigned int result,
                            const std::string& viewing_id,

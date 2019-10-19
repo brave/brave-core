@@ -35,11 +35,11 @@ declare global {
       walletCreated: chrome.events.Event<() => void>
       walletCreateFailed: chrome.events.Event<() => void>
       walletProperties: chrome.events.Event<(properties: {status: number, wallet: Rewards.WalletProperties}) => void>
-      grant: chrome.events.Event<(properties: Rewards.Grant) => void>
+      grant: chrome.events.Event<(properties: Rewards.Promotion) => void>
       grantCaptcha: chrome.events.Event<(image: string) => void>
       walletPassphrase: chrome.events.Event<(pass: string) => void>
       recoverWalletData: chrome.events.Event<(properties: Rewards.RecoverWallet) => void>
-      grantFinish: chrome.events.Event<(properties: Rewards.GrantFinish) => void>
+      grantFinish: chrome.events.Event<(properties: Rewards.PromotionFinish) => void>
       reconcileStamp: chrome.events.Event<(stamp: number) => void>
       addresses: chrome.events.Event<(addresses: Record<string, string>) => void>
       contributeList: chrome.events.Event<(list: Rewards.Publisher[]) => void>

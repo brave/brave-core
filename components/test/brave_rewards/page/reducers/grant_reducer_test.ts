@@ -100,7 +100,7 @@ describe('Grant Reducer', () => {
         }
       })
 
-      const currentGrant = {
+      const currentPromotion = {
         promotionId: 'test-promotion-id-2',
         expiryTime: 0,
         probi: '',
@@ -108,7 +108,7 @@ describe('Grant Reducer', () => {
       }
       const expectedState: Rewards.State = {
         ...initialState,
-        currentGrant
+        currentPromotion
       }
 
       expect(assertion).toEqual({
@@ -171,7 +171,7 @@ describe('Grant Reducer', () => {
           type: 'ads'
         }
       ]
-      initialState.currentGrant = {
+      initialState.currentPromotion = {
         promotionId: 'test-promotion-id-2',
         expiryTime: 0,
         probi: '',
@@ -191,7 +191,7 @@ describe('Grant Reducer', () => {
       })
 
       const expectedState: Rewards.State = { ...defaultState }
-      expectedState.currentGrant = {
+      expectedState.currentPromotion = {
         promotionId: 'test-promotion-id-2',
         expiryTime: 0,
         probi: '',
@@ -241,7 +241,7 @@ describe('Grant Reducer', () => {
           hint: 'blue'
         }
       ]
-      initialState.currentGrant = {
+      initialState.currentPromotion = {
         promotionId: 'test-promotion-id-2',
         expiryTime: 0,
         probi: '',
@@ -256,7 +256,7 @@ describe('Grant Reducer', () => {
       })
 
       const expectedState: Rewards.State = { ...defaultState }
-      expectedState.currentGrant = undefined
+      expectedState.currentPromotion = undefined
       expectedState.grants = [
         {
           promotionId: 'test-promotion-id',
@@ -299,7 +299,7 @@ describe('Grant Reducer', () => {
           hint: 'blue'
         }
       ]
-      initialState.currentGrant = {
+      initialState.currentPromotion = {
         promotionId: 'test-promotion-id-2',
         expiryTime: 0,
         probi: '',
@@ -314,7 +314,7 @@ describe('Grant Reducer', () => {
       })
 
       const expectedState: Rewards.State = { ...defaultState }
-      expectedState.currentGrant = undefined
+      expectedState.currentPromotion = undefined
       expectedState.grants = [
         {
           promotionId: 'test-promotion-id',
@@ -342,7 +342,7 @@ describe('Grant Reducer', () => {
           hint: 'blue'
         }
       ]
-      initialState.currentGrant = {
+      initialState.currentPromotion = {
         promotionId: 'test-promotion-id-2',
         expiryTime: 0,
         probi: '',
@@ -357,7 +357,7 @@ describe('Grant Reducer', () => {
       })
 
       const expectedState: Rewards.State = { ...defaultState }
-      expectedState.currentGrant = undefined
+      expectedState.currentPromotion = undefined
       expectedState.grants = []
 
       expect(assertion).toEqual({
@@ -409,7 +409,7 @@ describe('Grant Reducer', () => {
           hint: 'blue'
         }
       ]
-      initialState.currentGrant = {
+      initialState.currentPromotion = {
         promotionId: 'test-promotion-id-2',
         expiryTime: 0,
         probi: '',
@@ -431,7 +431,7 @@ describe('Grant Reducer', () => {
       })
 
       const expectedState: Rewards.State = { ...defaultState }
-      expectedState.currentGrant = {
+      expectedState.currentPromotion = {
         promotionId: 'test-promotion-id-2',
         expiryTime: 0,
         probi: '',
@@ -480,7 +480,7 @@ describe('Grant Reducer', () => {
           hint: 'blue'
         }
       ]
-      initialState.currentGrant = {
+      initialState.currentPromotion = {
         promotionId: 'test-promotion-id-2',
         expiryTime: 0,
         probi: '',
@@ -499,7 +499,7 @@ describe('Grant Reducer', () => {
       })
 
       const expectedState: Rewards.State = { ...defaultState }
-      expectedState.currentGrant = {
+      expectedState.currentPromotion = {
         promotionId: 'test-promotion-id-2',
         expiryTime: 0,
         probi: '',

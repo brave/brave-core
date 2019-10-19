@@ -1,14 +1,14 @@
 declare namespace RewardsExtension {
   interface State {
     balance: Balance
-    currentGrant?: GrantInfo
+    currentPromotion?: Promotion
     currentNotification?: string
     enabledAC: boolean
     enabledMain: boolean
     notifications: Record<string, Notification>
     publishers: Record<string, Publisher>
     report: Report
-    grants?: GrantInfo[]
+    promotions?: Promotion[]
     pendingContributionTotal: number
     walletCorrupted: boolean
     walletCreated: boolean
@@ -48,36 +48,29 @@ declare namespace RewardsExtension {
     status?: PublisherStatus
   }
 
-  export interface Grant {
-    altcurrency: string
-    probi: string
-    expiryTime: number
-    type: string
-  }
+  export type PromotionStatus = 'wrongPosition' | 'grantGone' | 'generalError' | 'grantAlreadyClaimed' | number | null
 
-  export type GrantStatus = 'wrongPosition' | 'grantGone' | 'generalError' | 'grantAlreadyClaimed' | number | null
-
-  export interface GrantInfo {
+  export interface Promotion {
     promotionId?: string
     altcurrency?: string
     probi: string
     expiryTime: number
     captcha?: string
     hint?: string
-    status?: GrantStatus
+    status?: PromotionStatus
     type?: string
     finishTitle?: string
     finishText?: string
     finishTokenTitle?: string
   }
 
-  export interface GrantResponse {
+  export interface PromotionResponse {
     promotionId?: string
     status?: number
     type?: string
   }
 
-  export interface GrantFinish {
+  export interface PromotionFinish {
     result: Result,
     statusCode: number,
     expiryTime: number
@@ -107,7 +100,7 @@ declare namespace RewardsExtension {
   }
 
   export interface WalletProperties {
-    grants?: Grant[]
+    promotions?: Promotion[]
   }
 
   export interface Report {

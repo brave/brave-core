@@ -945,14 +945,14 @@ void RewardsServiceImpl::OnWalletProperties(
       wallet_properties->monthly_amount = properties->fee_amount;
 
       for (size_t i = 0; i < properties->grants.size(); i ++) {
-        brave_rewards::Grant grant;
+        brave_rewards::Promotion promotion;
 
-        grant.altcurrency = properties->grants[i]->altcurrency;
-        grant.probi = properties->grants[i]->probi;
-        grant.expiryTime = properties->grants[i]->expiry_time;
-        grant.type = properties->grants[i]->type;
+        promotion.altcurrency = properties->grants[i]->altcurrency;
+        promotion.probi = properties->grants[i]->probi;
+        promotion.expiryTime = properties->grants[i]->expiry_time;
+        promotion.type = properties->grants[i]->type;
 
-        wallet_properties->grants.push_back(grant);
+        wallet_properties->promotions.push_back(promotion);
       }
     }
     // webui
@@ -1030,19 +1030,19 @@ void RewardsServiceImpl::OnRecoverWallet(
     ledger::Result result,
     double balance,
     std::vector<ledger::GrantPtr> grants) {
-  std::vector<brave_rewards::Grant> new_grants;
+  std::vector<brave_rewards::Promotion> new_grants;
   for (size_t i = 0; i < grants.size(); i ++) {
     if (!grants[i]) {
       continue;
     }
 
-    brave_rewards::Grant grant;
-    grant.altcurrency = grants[i]->altcurrency;
-    grant.probi = grants[i]->probi;
-    grant.expiryTime = grants[i]->expiry_time;
-    grant.type = grants[i]->type;
+    brave_rewards::Promotion promotion;
+    promotion.altcurrency = grants[i]->altcurrency;
+    promotion.probi = grants[i]->probi;
+    promotion.expiryTime = grants[i]->expiry_time;
+    promotion.type = grants[i]->type;
 
-    new_grants.push_back(grant);
+    new_grants.push_back(promotion);
   }
 
   for (auto& observer : observers_) {
@@ -1577,7 +1577,7 @@ void RewardsServiceImpl::FetchGrantAttestationResult(const std::string& lang,
 
 void RewardsServiceImpl::TriggerOnGrant(const ledger::Result result,
                                         ledger::GrantPtr grant) {
-  brave_rewards::Grant properties;
+  brave_rewards::Promotion properties;
 
   if (grant) {
     properties.promotionId = grant->promotion_id;
@@ -1641,7 +1641,7 @@ void RewardsServiceImpl::SolveGrantCaptcha(const std::string& solution,
 
 void RewardsServiceImpl::TriggerOnGrantFinish(ledger::Result result,
                                               ledger::GrantPtr grant) {
-  brave_rewards::Grant properties;
+  brave_rewards::Promotion properties;
 
   if (grant) {
     properties.promotionId = grant->promotion_id;

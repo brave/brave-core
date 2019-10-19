@@ -21,20 +21,20 @@ import { convertProbiToFixed } from '../utils'
 import GrantError from '../../ui/components/grantError'
 
 interface State {
-  grantShow: boolean
+  promotionShow: boolean
 }
 
 interface Props extends Rewards.ComponentProps {
-  grant: Rewards.Grant
+  promotion: Rewards.Promotion
   onlyAnonWallet?: boolean
 }
 
 // TODO add local when we know what we will get from the server
-class Grant extends React.Component<Props, State> {
+class Promotion extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      grantShow: true
+      promotionShow: true
     }
   }
 
@@ -42,17 +42,17 @@ class Grant extends React.Component<Props, State> {
     return this.props.actions
   }
 
-  onGrantShow = (promotionId?: string) => {
+  onShow = (promotionId?: string) => {
     this.actions.getGrantCaptcha(promotionId)
   }
 
-  onGrantHide = () => {
+  onHide = () => {
     this.actions.onResetGrant()
   }
 
   onFinish = () => {
     this.setState({
-      grantShow: false
+      promotionShow: false
     })
     this.actions.onDeleteGrant()
   }
@@ -61,14 +61,14 @@ class Grant extends React.Component<Props, State> {
     this.actions.solveGrantCaptcha(x, y)
   }
 
-  grantCaptcha = () => {
-    const { grant } = this.props
+  getCaptcha = () => {
+    const { promotion } = this.props
 
-    if (!grant) {
+    if (!promotion) {
       return
     }
 
-    if (grant.status === 'grantGone') {
+    if (promotion.status === 'grantGone') {
       return (
         <GrantWrapper
           onClose={this.onFinish}
@@ -84,7 +84,7 @@ class Grant extends React.Component<Props, State> {
       )
     }
 
-    if (grant.status === 'grantAlreadyClaimed') {
+    if (promotion.status === 'grantAlreadyClaimed') {
       return (
         <GrantWrapper
           onClose={this.onFinish}
@@ -100,43 +100,43 @@ class Grant extends React.Component<Props, State> {
       )
     }
 
-    if (grant.status === 'generalError') {
+    if (promotion.status === 'generalError') {
       return (
         <GrantWrapper
-          onClose={this.onGrantHide}
+          onClose={this.onHide}
           title={getLocale('grantGeneralErrorTitle')}
           text={''}
         >
           <GrantError
             buttonText={getLocale('grantGeneralErrorButton')}
             text={getLocale('grantGeneralErrorText')}
-            onButtonClick={this.onGrantHide}
+            onButtonClick={this.onHide}
           />
         </GrantWrapper>
       )
     }
 
-    if (!grant.captcha || !grant.hint) {
+    if (!promotion.captcha || !promotion.hint) {
       return
     }
 
     return (
       <GrantWrapper
-        onClose={this.onGrantHide}
-        title={grant.status === 'wrongPosition' ? getLocale('notQuite') : getLocale('almostThere')}
+        onClose={this.onHide}
+        title={promotion.status === 'wrongPosition' ? getLocale('notQuite') : getLocale('almostThere')}
         text={getLocale('proveHuman')}
       >
         <GrantCaptcha
           onSolution={this.onSolution}
-          dropBgImage={grant.captcha}
-          hint={grant.hint}
+          dropBgImage={promotion.captcha}
+          hint={promotion.hint}
           isWindows={navigator.platform === 'Win32'}
         />
       </GrantWrapper>
     )
   }
 
-  grantFinish = (type: string, tokens: string, date: string) => {
+  getFinish = (type: string, tokens: string, date: string) => {
     const { onlyAnonWallet } = this.props
     const tokenString = onlyAnonWallet ? getLocale('point') : getLocale('token')
 
@@ -172,9 +172,9 @@ class Grant extends React.Component<Props, State> {
   }
 
   render () {
-    const { grant } = this.props
+    const { promotion } = this.props
 
-    if (!grant) {
+    if (!promotion) {
       return null
     }
 
@@ -183,35 +183,35 @@ class Grant extends React.Component<Props, State> {
     let tokens = '0.0'
     let date = ''
 
-    if (grant.type) {
-      type = grant.type
+    if (promotion.type) {
+      type = promotion.type
     }
-    if (grant.promotionId) {
-      promoId = grant.promotionId
+    if (promotion.promotionId) {
+      promoId = promotion.promotionId
     }
-    if (grant.probi) {
-      tokens = convertProbiToFixed(grant.probi)
+    if (promotion.probi) {
+      tokens = convertProbiToFixed(promotion.probi)
     }
 
-    if (grant.type !== 'ads') {
-      date = new Date(grant.expiryTime).toLocaleDateString()
+    if (promotion.type !== 'ads') {
+      date = new Date(promotion.expiryTime).toLocaleDateString()
     }
 
     return (
       <>
         {
-          this.state.grantShow && type
-            ? <GrantClaim type={type as Type} onClaim={this.onGrantShow.bind(this, promoId)} testId={'claimGrant'}/>
+          this.state.promotionShow && type
+            ? <GrantClaim type={type as Type} onClaim={this.onShow.bind(this, promoId)} testId={'claimGrant'}/>
             : null
         }
         {
-          !grant.expiryTime
-            ? this.grantCaptcha()
+          !promotion.expiryTime
+            ? this.getCaptcha()
             : null
         }
         {
-          grant.expiryTime
-            ? this.grantFinish(type, tokens, date)
+          promotion.expiryTime
+            ? this.getFinish(type, tokens, date)
             : null
         }
       </>
@@ -230,4 +230,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Grant)
+)(Promotion)

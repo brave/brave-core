@@ -28,8 +28,8 @@ namespace base {
 class SequencedTaskRunner;
 }
 
-namespace braveledger_grant {
-class Grants;
+namespace braveledger_promotion {
+class Promotion;
 }
 
 namespace braveledger_media {
@@ -677,7 +677,7 @@ class LedgerImpl : public ledger::Ledger,
       ledger::OnRefreshPublisherCallback callback);
 
   ledger::LedgerClient* ledger_client_;
-  std::unique_ptr<braveledger_grant::Grants> bat_grants_;
+  std::unique_ptr<braveledger_promotion::Promotion> bat_promotion_;
   std::unique_ptr<braveledger_publisher::Publisher> bat_publisher_;
   std::unique_ptr<braveledger_media::Media> bat_media_;
   std::unique_ptr<braveledger_bat_state::BatState> bat_state_;

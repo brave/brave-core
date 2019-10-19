@@ -36,7 +36,7 @@ declare namespace Rewards {
     contributionNonVerified: boolean
     contributionVideos: boolean
     createdTimestamp: number | null
-    currentGrant?: Grant
+    currentPromotion?: Promotion
     donationAbilityTwitter: boolean
     donationAbilityYT: boolean
     enabledAds: boolean
@@ -51,7 +51,7 @@ declare namespace Rewards {
     }
     excludedList: ExcludedPublisher[]
     firstLoad: boolean | null
-    grants?: Grant[]
+    promotions?: Promotion[]
     pendingContributions: PendingContribution[]
     pendingContributionTotal: number
     reconcileStamp: number
@@ -84,20 +84,20 @@ declare namespace Rewards {
     actions: any
   }
 
-  export type GrantStatus = 'wrongPosition' | 'grantGone' | 'generalError' | 'grantAlreadyClaimed' | number | null
+  export type PromotionStatus = 'wrongPosition' | 'grantGone' | 'generalError' | 'grantAlreadyClaimed' | number | null
 
-  export interface Grant {
+  export interface Promotion {
     promotionId?: string
     altcurrency?: string
     probi: string
     expiryTime: number
     captcha?: string
     hint?: string
-    status?: GrantStatus
+    status?: PromotionStatus
     type?: string
   }
 
-  export interface GrantResponse {
+  export interface PromotionResponse {
     promotionId?: string
     status?: number
     type?: string
@@ -105,16 +105,16 @@ declare namespace Rewards {
 
   export interface WalletProperties {
     choices: number[]
-    grants?: Grant[]
+    promotions?: Promotion[]
   }
 
   export interface RecoverWallet {
     result: Result
     balance: number
-    grants?: Grant[]
+    promotions?: Promotion[]
   }
 
-  export interface GrantFinish {
+  export interface PromotionFinish {
     result: Result,
     statusCode: number,
     expiryTime: number

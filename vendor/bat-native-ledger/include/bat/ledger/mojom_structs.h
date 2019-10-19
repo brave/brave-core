@@ -69,6 +69,7 @@ using PendingContributionInfoList = std::vector<PendingContributionInfoPtr>;
 
 using Promotion = mojom::Promotion;
 using PromotionPtr = mojom::PromotionPtr;
+using PromotionList = std::vector<PromotionPtr>;
 
 using PromotionType = mojom::PromotionType;
 
