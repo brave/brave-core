@@ -219,7 +219,6 @@ class LedgerImpl : public ledger::Ledger,
   void OnRecoverWallet(
       const ledger::Result result,
       double balance,
-      std::vector<ledger::GrantPtr> grants,
       ledger::RecoverWalletCallback callback);
 
   void LoadURL(const std::string& url,

@@ -113,8 +113,7 @@ describe('wallet reducer', () => {
         payload: {
           properties: {
             result: 0,
-            balance: 5,
-            grants: []
+            balance: 5
           }
         }
       })

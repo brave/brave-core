@@ -137,10 +137,9 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const std::string& image,
       const std::string& hint));
 
-  MOCK_METHOD3(OnRecoverWallet, void(
+  MOCK_METHOD2(OnRecoverWallet, void(
       ledger::Result result,
-      double balance,
-      std::vector<ledger::GrantPtr> grants));
+      double balance));
 
   MOCK_METHOD2(OnGrantFinish, void(
       ledger::Result result,

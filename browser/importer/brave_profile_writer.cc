@@ -173,8 +173,7 @@ void BraveProfileWriter::OnWalletProperties(
 void BraveProfileWriter::OnRecoverWallet(
     brave_rewards::RewardsService* rewards_service,
     unsigned int result,
-    double balance,
-    std::vector<brave_rewards::Promotion> grants) {
+    double balance) {
   rewards_service->RemoveObserver(this);
 
   if (result) {

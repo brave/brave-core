@@ -259,8 +259,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnRecoverWallet(
       CallbackHolder<RecoverWalletCallback>* holder,
       ledger::Result result,
-      double balance,
-      std::vector<ledger::GrantPtr> grants);
+      double balance);
 
   static void OnFetchWalletProperties(
       CallbackHolder<FetchWalletPropertiesCallback>* holder,
