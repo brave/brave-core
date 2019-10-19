@@ -64,8 +64,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     initializing_(false),
     last_tab_active_time_(0),
     last_shown_tab_id_(-1),
-    last_pub_load_timer_id_(0u),
-    last_grant_check_timer_id_(0u) {
+    last_pub_load_timer_id_(0u) {
   // Ensure ThreadPoolInstance is initialized before creating the task runner
   // for ios.
   if (!base::ThreadPoolInstance::Get()) {
@@ -97,7 +96,7 @@ void LedgerImpl::OnWalletInitializedInternal(
     initialized_ = true;
     bat_publisher_->SetPublisherServerListTimer();
     bat_contribution_->SetReconcileTimer();
-    RefreshGrant(false);
+    bat_promotion_->Refresh(false);
     bat_contribution_->Initialize();
   } else {
     BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to initialize wallet";
@@ -610,30 +609,6 @@ void LedgerImpl::FetchWalletProperties(
   bat_wallet_->GetWalletProperties(callback);
 }
 
-void LedgerImpl::FetchGrants(const std::string& lang,
-                             const std::string& payment_id,
-                             const std::string& safetynet_token,
-                             ledger::FetchGrantsCallback callback) const {
-  bat_promotion_->FetchGrants(lang, payment_id, safetynet_token, callback);
-}
-
-void LedgerImpl::OnGrants(ledger::Result result,
-                          const braveledger_bat_helper::Grants& grants,
-                          ledger::FetchGrantsCallback callback) {
-  std::vector<ledger::GrantPtr> ledger_grants;
-  for (const braveledger_bat_helper::GRANT& properties : grants) {
-    ledger::GrantPtr grant = ledger::Grant::New();
-    grant->type = properties.type;
-    grant->promotion_id = properties.promotionId;
-    ledger_grants.push_back(std::move(grant));
-  }
-
-  last_grant_check_timer_id_ = 0;
-  RefreshGrant(result != ledger::Result::LEDGER_OK &&
-    result != ledger::Result::GRANT_NOT_FOUND);
-  callback(result, std::move(ledger_grants));
-}
-
 void LedgerImpl::GetGrantCaptcha(
     const std::vector<std::string>& headers,
     ledger::GetGrantCaptchaCallback callback) const {
@@ -719,17 +694,13 @@ void LedgerImpl::DoDirectTip(const std::string& publisher_key,
 }
 
 void LedgerImpl::OnTimer(uint32_t timer_id) {
-  if (bat_confirmations_->OnTimer(timer_id))
+  if (bat_confirmations_->OnTimer(timer_id)) {
     return;
-
-  if (timer_id == last_grant_check_timer_id_) {
-    last_grant_check_timer_id_ = 0;
-    FetchGrants(std::string(), std::string(), std::string(),
-                [](ledger::Result _, std::vector<ledger::GrantPtr> __){});
   }
 
   bat_contribution_->OnTimer(timer_id);
   bat_publisher_->OnTimer(timer_id);
+  bat_promotion_->OnTimer(timer_id);
 }
 
 void LedgerImpl::SaveRecurringTip(
@@ -747,45 +718,6 @@ void LedgerImpl::GetRecurringTips(
 void LedgerImpl::GetOneTimeTips(
     ledger::PublisherInfoListCallback callback) {
   ledger_client_->GetOneTimeTips(callback);
-}
-
-void LedgerImpl::RefreshGrant(bool retryAfterError) {
-  uint64_t start_timer_in{ 0ull };
-  if (last_grant_check_timer_id_ != 0) {
-    return;
-  }
-
-  if (retryAfterError) {
-    start_timer_in = retryRequestSetup(300, 600);
-
-    BLOG(this, ledger::LogLevel::LOG_WARNING) <<
-      "Failed to refresh grant, will try again in " << start_timer_in;
-  } else {
-    uint64_t now = std::time(nullptr);
-    uint64_t last_grant_stamp = bat_state_->GetLastGrantLoadTimestamp();
-
-    uint64_t time_since_last_grant_check = (last_grant_stamp == 0ull ||
-      last_grant_stamp > now) ? 0ull : now - last_grant_stamp;
-    if (now == last_grant_stamp) {
-      start_timer_in = braveledger_ledger::_grant_load_interval;
-    } else if (time_since_last_grant_check > 0 &&
-      time_since_last_grant_check < braveledger_ledger::_grant_load_interval) {
-      start_timer_in =
-        braveledger_ledger::_grant_load_interval - time_since_last_grant_check;
-    } else {
-      start_timer_in = 0ull;
-    }
-  }
-  SetTimer(start_timer_in, &last_grant_check_timer_id_);
-}
-
-uint64_t LedgerImpl::retryRequestSetup(uint64_t min_time, uint64_t max_time) {
-  std::random_device seeder;
-  const auto seed = seeder.entropy() ? seeder() : time(nullptr);
-  std::mt19937 eng(static_cast<std::mt19937::result_type>(seed));
-  DCHECK(max_time > min_time);
-  std::uniform_int_distribution <> dist(min_time, max_time);
-  return dist(eng);
 }
 
 bool LedgerImpl::IsWalletCreated() const {
@@ -1125,10 +1057,6 @@ const std::string& LedgerImpl::GetCurrency() const {
 
 void LedgerImpl::SetCurrency(const std::string& currency) {
   bat_state_->SetCurrency(currency);
-}
-
-void LedgerImpl::SetLastGrantLoadTimestamp(uint64_t stamp) {
-  bat_state_->SetLastGrantLoadTimestamp(stamp);
 }
 
 uint64_t LedgerImpl::GetBootStamp() const {
@@ -1602,6 +1530,11 @@ void LedgerImpl::DeleteContributionQueue(
 void LedgerImpl::GetFirstContributionQueue(
     ledger::GetFirstContributionQueueCallback callback) {
   ledger_client_->GetFirstContributionQueue(callback);
+}
+
+void LedgerImpl::FetchPromotions(
+    ledger::FetchPromotionCallback callback) const {
+  bat_promotion_->Fetch(callback);
 }
 
 void LedgerImpl::InsertOrUpdatePromotion(

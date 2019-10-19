@@ -22,7 +22,7 @@
         ]
       },
       {
-        "name": "onGrant",
+        "name": "onPromotion",
         "type": "function",
         "description": "Fired when grant is received",
         "parameters": [
@@ -556,9 +556,9 @@
         ]
       },
       {
-        "name": "getGrants",
+        "name": "fetchPromotions",
         "type": "function",
-        "description": "Retrieves grant when panel is mounted",
+        "description": "Retrieves promotions when panel is mounted",
         "parameters": []
       },
       {

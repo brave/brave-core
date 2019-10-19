@@ -230,26 +230,24 @@ void BatLedgerImpl::OnReconcileCompleteSuccess(
       data);
 }
 
-void BatLedgerImpl::OnFetchGrants(
-    CallbackHolder<FetchGrantsCallback>* holder,
-    ledger::Result result,
-    std::vector<ledger::GrantPtr> grants) {
+void BatLedgerImpl::OnFetchPromotions(
+    CallbackHolder<FetchPromotionsCallback>* holder,
+    const ledger::Result result,
+    ledger::PromotionList promotions) {
   DCHECK(holder);
   if (holder->is_valid()) {
-    std::move(holder->get()).Run(result, std::move(grants));
+    std::move(holder->get()).Run(result, std::move(promotions));
   }
   delete holder;
 }
 
-void BatLedgerImpl::FetchGrants(const std::string& lang,
-    const std::string& payment_id,
-    const std::string& result_string,
-    FetchGrantsCallback callback) {
-  // deleted in OnFetchGrants
-  auto* holder = new CallbackHolder<FetchGrantsCallback>(
+void BatLedgerImpl::FetchPromotions(
+    FetchPromotionsCallback callback) {
+  // deleted in OnFetchPromotions
+  auto* holder = new CallbackHolder<FetchPromotionsCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger_->FetchGrants(lang, payment_id, result_string,
-      std::bind(BatLedgerImpl::OnFetchGrants, holder, _1, _2));
+  ledger_->FetchPromotions(
+      std::bind(BatLedgerImpl::OnFetchPromotions, holder, _1, _2));
 }
 
 void BatLedgerImpl::GetGrantViaSafetynetCheck(const std::string& promotion_id) {

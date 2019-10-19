@@ -30,11 +30,11 @@ const updatePromotion = (newPromotion: Rewards.Promotion, promotions: Rewards.Pr
 const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   const payload = action.payload
   switch (action.type) {
-    case types.GET_GRANTS: {
-      chrome.send('brave_rewards.getGrants', ['', ''])
+    case types.FETCH_PROMOTIONS: {
+      chrome.send('brave_rewards.fetchPromotions')
       break
     }
-    case types.ON_GRANT: {
+    case types.ON_PROMOTION: {
       state = { ...state }
       if (payload.properties.status === 1) {
         break
@@ -49,9 +49,9 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
       if (!getPromotion(promotionId, state.promotions)) {
         state.promotions.push({
           promotionId: promotionId,
-          expiryTime: 0,
-          probi: '',
-          type: action.payload.properties.type
+          expiresAt: 0,
+          amount: 0,
+          type: payload.properties.type
         })
       }
 
@@ -123,8 +123,8 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
           if (currentPromotion.promotionId === item.promotionId) {
             return {
               promotionId: currentPromotion.promotionId,
-              probi: '',
-              expiryTime: 0,
+              amount: currentPromotion.amount,
+              expiresAt: currentPromotion.expiresAt,
               type: currentPromotion.type
             }
           }
@@ -177,7 +177,7 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
         state.firstLoad = false
         state.promotions = []
         let ui = state.ui
-        chrome.send('brave_rewards.getGrants', ['', ''])
+        chrome.send('brave_rewards.fetchPromotions', ['', ''])
 
         if (properties.status === 0) {
           ui.emptyWallet = false
@@ -197,8 +197,8 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
       switch (properties.status) {
         case 0:
           let ui = state.ui
-          newPromotion.expiryTime = properties.expiryTime * 1000
-          newPromotion.probi = properties.probi
+          newPromotion.expiresAt = properties.expiresAt * 1000
+          newPromotion.amount = properties.amount
           newPromotion.type = properties.type
           newPromotion.status = null
           ui.emptyWallet = false

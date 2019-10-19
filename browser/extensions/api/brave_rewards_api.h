@@ -133,12 +133,12 @@ class BraveRewardsIncludeInAutoContributionFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetGrantsFunction : public ExtensionFunction {
+class BraveRewardsFetchPromotionsFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getGrants", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.fetchPromotions", UNKNOWN)
 
  protected:
-  ~BraveRewardsGetGrantsFunction() override;
+  ~BraveRewardsFetchPromotionsFunction() override;
 
   ResponseAction Run() override;
 };

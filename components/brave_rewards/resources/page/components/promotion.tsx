@@ -17,7 +17,6 @@ import GrantClaim, { Type } from '../../ui/components/grantClaim'
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
 import { getLocale } from '../../../../common/locale'
-import { convertProbiToFixed } from '../utils'
 import GrantError from '../../ui/components/grantError'
 
 interface State {
@@ -171,6 +170,17 @@ class Promotion extends React.Component<Props, State> {
     )
   }
 
+  convertPromotionTypesToType = (type: Rewards.PromotionTypes) => {
+    switch (type) {
+      case Rewards.PromotionTypes.ADS: {
+        return 'ads'
+      }
+      default: {
+        return 'ugp'
+      }
+    }
+  }
+
   render () {
     const { promotion } = this.props
 
@@ -184,17 +194,17 @@ class Promotion extends React.Component<Props, State> {
     let date = ''
 
     if (promotion.type) {
-      type = promotion.type
+      type = this.convertPromotionTypesToType(promotion.type)
     }
     if (promotion.promotionId) {
       promoId = promotion.promotionId
     }
-    if (promotion.probi) {
-      tokens = convertProbiToFixed(promotion.probi)
+    if (promotion.amount) {
+      tokens = promotion.amount.toFixed(1)
     }
 
-    if (promotion.type !== 'ads') {
-      date = new Date(promotion.expiryTime).toLocaleDateString()
+    if (promotion.type !== 1) { // Rewards.PromotionTypes.ADS
+      date = new Date(promotion.expiresAt).toLocaleDateString()
     }
 
     return (
@@ -205,12 +215,12 @@ class Promotion extends React.Component<Props, State> {
             : null
         }
         {
-          !promotion.expiryTime
+          !promotion.expiresAt
             ? this.getCaptcha()
             : null
         }
         {
-          promotion.expiryTime
+          promotion.expiresAt
             ? this.getFinish(type, tokens, date)
             : null
         }

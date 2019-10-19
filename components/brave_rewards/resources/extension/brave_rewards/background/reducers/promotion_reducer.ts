@@ -30,12 +30,14 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
   }
 
   switch (action.type) {
-    case types.GET_GRANTS:
-      chrome.braveRewards.getGrants()
+    case types.FETCH_PROMOTIONS: {
+      chrome.braveRewards.fetchPromotions()
       break
-    case types.ON_GRANT:
+    }
+    case types.ON_PROMOTION: {
       state = { ...state }
-      if (action.payload.properties.status === 1) {
+      const promotion = action.payload.properties
+      if (promotion.status === 1) {
         break
       }
 
@@ -43,14 +45,14 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
         state.promotions = []
       }
 
-      const promotionId = action.payload.properties.promotionId
+      const promotionId = promotion.promotionId
 
       if (!getPromotion(promotionId, state.promotions)) {
         state.promotions.push({
           promotionId: promotionId,
-          expiryTime: 0,
-          probi: '',
-          type: action.payload.properties.type
+          expiresAt: 0,
+          amount: 0,
+          type: promotion.type
         })
       }
 
@@ -60,6 +62,7 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
       }
 
       break
+    }
     case types.GET_GRANT_CAPTCHA:
       if (!state.promotions) {
         break
@@ -72,8 +75,9 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
       }
 
       state.currentPromotion = currentPromotion
-      if (currentPromotion.promotionId && currentPromotion.type) {
-        chrome.braveRewards.getGrantCaptcha(currentPromotion.promotionId, currentPromotion.type)
+      if (currentPromotion.promotionId) {
+        // TODO implement
+        //chrome.braveRewards.getGrantCaptcha(currentPromotion.promotionId, currentPromotion.type)
       }
       break
     case types.ON_GRANT_CAPTCHA: {
@@ -129,8 +133,8 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
           if (currentPromotion.promotionId === item.promotionId) {
             return {
               promotionId: currentPromotion.promotionId,
-              probi: '',
-              expiryTime: 0,
+              expiresAt: currentPromotion.expiresAt,
+              amount: currentPromotion.amount,
               type: currentPromotion.type
             }
           }
@@ -181,8 +185,8 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
 
       switch (properties.status) {
         case 0:
-          currentPromotion.expiryTime = properties.expiryTime * 1000
-          currentPromotion.probi = properties.probi
+          currentPromotion.expiresAt = properties.expiresAt * 1000
+          currentPromotion.amount = properties.amount
           currentPromotion.type = properties.type
           currentPromotion.status = null
           break

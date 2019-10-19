@@ -32,10 +32,10 @@ class RewardsServiceObserver : public base::CheckedObserver {
       RewardsService* rewards_service,
       int error_code,
       std::unique_ptr<brave_rewards::WalletProperties> properties) {}
-  virtual void OnGrant(
+  virtual void OnFetchPromotions(
       RewardsService* rewards_service,
-      unsigned int result,
-      brave_rewards::Promotion properties) {}
+      const uint32_t result,
+      Promotion properties) {}
   virtual void OnGrantCaptcha(
       RewardsService* rewards_service,
       std::string image,
@@ -46,7 +46,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
       double balance) {}
   virtual void OnGrantFinish(
       RewardsService* rewards_service,
-      unsigned int result,
+      const uint32_t result,
       brave_rewards::Promotion promotion) {}
   virtual void OnContentSiteUpdated(
       RewardsService* rewards_service) {}

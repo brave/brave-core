@@ -62,9 +62,7 @@ class BatState {
 
   void ResetReconcileStamp();
 
-  uint64_t GetLastGrantLoadTimestamp() const;
-
-  void SetLastGrantLoadTimestamp(uint64_t stamp);
+  uint64_t GetLastPromotionLoadTimestamp() const;
 
   bool IsWalletCreated() const;
 

@@ -168,13 +168,8 @@ void BatState::ResetReconcileStamp() {
   SaveState();
 }
 
-uint64_t BatState::GetLastGrantLoadTimestamp() const {
+uint64_t BatState::GetLastPromotionLoadTimestamp() const {
   return state_->last_grant_fetch_stamp_;
-}
-
-void BatState::SetLastGrantLoadTimestamp(uint64_t stamp) {
-  state_->last_grant_fetch_stamp_ = stamp;
-  SaveState();
 }
 
 bool BatState::IsWalletCreated() const {

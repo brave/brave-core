@@ -52,9 +52,9 @@ export const includeInAutoContribution = (publisherKey: string, exclude: boolean
   exclude
 })
 
-export const getGrants = () => action(types.GET_GRANTS)
+export const fetchPromotions = () => action(types.FETCH_PROMOTIONS)
 
-export const onGrant = (properties: RewardsExtension.PromotionResponse) => action(types.ON_GRANT, {
+export const onPromotion = (properties: RewardsExtension.PromotionResponse) => action(types.ON_PROMOTION, {
   properties
 })
 

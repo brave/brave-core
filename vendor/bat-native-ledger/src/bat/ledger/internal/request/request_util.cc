@@ -73,6 +73,23 @@ std::string BuildUrl(
       }
       break;
     }
+    case ServerTypes::kPromotion: {
+      switch (ledger::_environment) {
+        case ledger::Environment::STAGING: {
+          url = PROMOTION_STAGING_SERVER;
+          break;
+        }
+        case ledger::Environment::PRODUCTION: {
+          url = PROMOTION_PRODUCTION_SERVER;
+          break;
+        }
+        case ledger::Environment::DEVELOPMENT: {
+          url = PROMOTION_DEVELOPMENT_SERVER;
+          break;
+        }
+      }
+      break;
+    }
   }
 
   if (url.empty()) {

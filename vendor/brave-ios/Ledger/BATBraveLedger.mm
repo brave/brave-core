@@ -574,7 +574,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)fetchAvailableGrantsForLanguage:(NSString *)language paymentId:(NSString *)paymentId completion:(nullable void (^)(NSArray<BATGrant *> *grants))completion
 {
-  ledger->FetchGrants(std::string(language.UTF8String), std::string(paymentId.UTF8String), std::string(), ^(ledger::Result result, std::vector<ledger::GrantPtr> grants) {
+  ledger->FetchPromotions(^(ledger::Result result, std::vector<ledger::PromotionPtr> grants) {
     if (result != ledger::Result::LEDGER_OK) {
       return;
     }

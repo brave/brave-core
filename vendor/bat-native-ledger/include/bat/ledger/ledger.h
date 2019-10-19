@@ -46,8 +46,8 @@ using DisconnectWalletCallback = std::function<void(ledger::Result)>;
 using TransferAnonToExternalWalletCallback =
     std::function<void(ledger::Result)>;
 using DoDirectTipCallback = std::function<void(ledger::Result)>;
-using FetchGrantsCallback =
-    std::function<void(ledger::Result, std::vector<ledger::GrantPtr>)>;
+using FetchPromotionCallback =
+    std::function<void(ledger::Result, ledger::PromotionList)>;
 using SetPublisherExcludeCallback = std::function<void(ledger::Result)>;
 using GetGrantCaptchaCallback = std::function<void(const std::string&,
                                                    const std::string&)>;
@@ -166,10 +166,7 @@ class LEDGER_EXPORT Ledger {
   virtual void FetchWalletProperties(
       OnWalletPropertiesCallback callback) const = 0;
 
-  virtual void FetchGrants(const std::string& lang,
-                           const std::string& paymentId,
-                           const std::string& safetynet_token,
-                           ledger::FetchGrantsCallback callback) const = 0;
+  virtual void FetchPromotions(ledger::FetchPromotionCallback callback) const = 0;
 
   virtual void SolveGrantCaptcha(const std::string& solution,
                                  const std::string& promotionId) const = 0;

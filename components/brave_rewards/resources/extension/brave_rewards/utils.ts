@@ -42,9 +42,9 @@ export const generatePromotions = (promotions?: RewardsExtension.Promotion[]) =>
 
   return promotions.map((promotion: RewardsExtension.Promotion) => {
     return {
-      tokens: convertProbiToFixed(promotion.probi),
-      expireDate: new Date(promotion.expiryTime * 1000).toLocaleDateString(),
-      type: promotion.type || 'ugp'
+      amount: promotion.amount,
+      expiresAt: new Date(promotion.expiresAt * 1000).toLocaleDateString(),
+      type: promotion.type || 0
     }
   })
 }
@@ -61,8 +61,8 @@ export const getPromotion = (promotion?: RewardsExtension.Promotion) => {
     ? getMessage('grantFinishPointTitleUGP')
     : getMessage('grantFinishTokenTitleUGP')
 
-  if (promotion.type === 'ads') {
-    promotion.expiryTime = 0
+  if (promotion.type === Rewards.PromotionTypes.ADS) {
+    promotion.expiresAt = 0
     promotion.finishTitle = getMessage('grantFinishTitleAds')
     promotion.finishText = getMessage('grantFinishTextAds')
     promotion.finishTokenTitle = getMessage('grantFinishTokenTitleAds')

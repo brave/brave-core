@@ -124,9 +124,9 @@ void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
   event_router->BroadcastEvent(std::move(event));
 }
 
-void ExtensionRewardsServiceObserver::OnGrant(
+void ExtensionRewardsServiceObserver::OnFetchPromotions(
     RewardsService* rewards_service,
-    unsigned int result,
+    const uint32_t result,
     brave_rewards::Promotion promotion) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
@@ -135,15 +135,15 @@ void ExtensionRewardsServiceObserver::OnGrant(
 
   base::DictionaryValue new_promotion;
   new_promotion.SetInteger("status", result);
-  new_promotion.SetString("type", promotion.type);
-  new_promotion.SetString("promotionId", promotion.promotionId);
+  new_promotion.SetInteger("type", promotion.type);
+  new_promotion.SetString("promotionId", promotion.promotion_id);
 
   std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnGrant::Create(new_promotion)
+      extensions::api::brave_rewards::OnPromotion::Create(new_promotion)
           .release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
-      extensions::api::brave_rewards::OnGrant::kEventName,
+      extensions::api::brave_rewards::OnPromotion::kEventName,
       std::move(args)));
   event_router->BroadcastEvent(std::move(event));
 }
@@ -175,7 +175,7 @@ void ExtensionRewardsServiceObserver::OnGrantCaptcha(
 
 void ExtensionRewardsServiceObserver::OnGrantFinish(
     RewardsService* rewards_service,
-    unsigned int result,
+    const uint32_t result,
     brave_rewards::Promotion promotion) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
@@ -184,9 +184,10 @@ void ExtensionRewardsServiceObserver::OnGrantFinish(
 
   extensions::api::brave_rewards::OnGrantFinish::Properties properties;
   properties.status = result;
-  properties.expiry_time = promotion.expiryTime;
-  properties.probi = promotion.probi;
-  properties.type = promotion.type;
+  // TODO implement
+//  properties.expiry_time = promotion.expires_at;
+//  properties.amount = promotion.amount;
+//  properties.type = promotion.type;
 
   std::unique_ptr<base::ListValue> args(
       extensions::api::brave_rewards::OnGrantFinish::Create(properties)

@@ -16,11 +16,10 @@ struct Promotion {
   ~Promotion();
   Promotion(const Promotion& properties);
 
-  std::string altcurrency;
-  std::string probi;
-  std::string promotionId;
-  uint64_t expiryTime;
-  std::string type;
+  double amount;
+  std::string promotion_id;
+  uint64_t expires_at;
+  uint32_t type;
 };
 
 }  // namespace brave_rewards

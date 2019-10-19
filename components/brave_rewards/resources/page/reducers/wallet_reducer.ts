@@ -108,7 +108,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       if (result === 0) {
         balance.total = action.payload.properties.balance
         chrome.send('brave_rewards.getWalletPassphrase')
-        chrome.send('brave_rewards.getGrants', ['', ''])
+        chrome.send('brave_rewards.fetchPromotions')
         ui.emptyWallet = balance.total <= 0
         ui.modalBackup = false
         ui.walletCorrupted = false

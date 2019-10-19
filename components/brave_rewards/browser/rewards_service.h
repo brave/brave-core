@@ -115,8 +115,7 @@ class RewardsService : public KeyedService {
       uint32_t min_visits,
       bool fetch_excluded,
       const GetContentSiteListCallback& callback) = 0;
-  virtual void FetchGrants(const std::string& lang,
-                           const std::string& paymentId) = 0;
+  virtual void FetchPromotions() = 0;
   virtual void GetGrantCaptcha(
       const std::string& promotion_id,
       const std::string& promotion_type) = 0;

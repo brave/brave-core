@@ -205,7 +205,6 @@ enum Result {
   REGISTRATION_VERIFICATION_FAILED = 10,
   BAD_REGISTRATION_RESPONSE = 11,
   WALLET_CREATED = 12,
-  GRANT_NOT_FOUND = 13,
 
   AC_TABLE_EMPTY = 14,
   NOT_ENOUGH_FUNDS = 15,
@@ -334,7 +333,7 @@ struct Promotion {
   bool claimed;
   bool active;
   uint64 expires_at;
-  PromotionCreds credentials;
+  PromotionCreds? credentials;
 };
 
 struct PromotionCreds {

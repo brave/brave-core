@@ -182,14 +182,7 @@ class LedgerImpl : public ledger::Ledger,
   void FetchWalletProperties(
       ledger::OnWalletPropertiesCallback callback) const override;
 
-  void FetchGrants(const std::string& lang,
-                   const std::string& paymentId,
-                   const std::string& safetynet_token,
-                   ledger::FetchGrantsCallback callback) const override;
-
-  void OnGrants(ledger::Result result,
-                const braveledger_bat_helper::Grants& grants,
-                ledger::FetchGrantsCallback callback);
+  void FetchPromotions(ledger::FetchPromotionCallback callback) const override;
 
   void GetGrantCaptcha(
       const std::vector<std::string>& headers,
@@ -384,8 +377,6 @@ class LedgerImpl : public ledger::Ledger,
   const std::string& GetCurrency() const;
 
   void SetCurrency(const std::string& currency);
-
-  void SetLastGrantLoadTimestamp(uint64_t stamp);
 
   uint64_t GetBootStamp() const override;
 
@@ -657,9 +648,7 @@ class LedgerImpl : public ledger::Ledger,
                            const std::string& data,
                            ledger::InitializeCallback callback) override;
 
-  void RefreshGrant(bool retryAfterError);
-
-  uint64_t retryRequestSetup(uint64_t min_time, uint64_t max_time);
+  void RefreshPromotions(bool retryAfterError);
 
   void OnPublisherInfoSavedInternal(
       ledger::Result result,
@@ -693,7 +682,6 @@ class LedgerImpl : public ledger::Ledger,
   uint64_t last_tab_active_time_;
   uint32_t last_shown_tab_id_;
   uint32_t last_pub_load_timer_id_;
-  uint32_t last_grant_check_timer_id_;
 };
 
 }  // namespace bat_ledger

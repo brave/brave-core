@@ -103,13 +103,13 @@ class RewardsServiceImpl : public RewardsService,
   void StartLedger();
   void CreateWallet(CreateWalletCallback callback) override;
   void FetchWalletProperties() override;
-  void FetchGrants(const std::string& lang,
-                   const std::string& paymentId) override;
+  void FetchPromotions() override;
   void GetGrantCaptcha(
       const std::string& promotion_id,
       const std::string& promotion_type) override;
-  void SolveGrantCaptcha(const std::string& solution,
-                         const std::string& promotionId) const override;
+  void SolveGrantCaptcha(
+      const std::string& solution,
+      const std::string& promotion_id) const override;
   void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) override;
   void RecoverWallet(const std::string& passPhrase) override;
@@ -323,10 +323,12 @@ class RewardsServiceImpl : public RewardsService,
                               const std::string& data);
   void OnFetchWalletProperties(const ledger::Result result,
                                ledger::WalletPropertiesPtr properties);
-  void OnFetchGrants(
+  void OnFetchPromotions(
     const ledger::Result result,
-    std::vector<ledger::GrantPtr> grants);
-  void TriggerOnGrant(const ledger::Result result, ledger::GrantPtr grant);
+    ledger::PromotionList promotions);
+  void TriggerOnPromotion(
+      const ledger::Result result,
+      ledger::PromotionPtr promotion);
   void TriggerOnGrantCaptcha(const std::string& image, const std::string& hint);
   void TriggerOnGrantFinish(ledger::Result result, ledger::GrantPtr grant);
   void TriggerOnRewardsMainEnabled(bool rewards_main_enabled);
@@ -763,9 +765,6 @@ class RewardsServiceImpl : public RewardsService,
   void CreateWalletAttestationResult(
       bat_ledger::mojom::BatLedger::CreateWalletCallback callback,
       bool result, const std::string& result_string);
-  void FetchGrantAttestationResult(const std::string& lang,
-                                const std::string& payment_id,
-                                bool result, const std::string& result_string);
   void GrantAttestationResult(
       const std::string& promotion_id, bool result,
       const std::string& result_string);
