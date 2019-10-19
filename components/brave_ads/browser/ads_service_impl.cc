@@ -658,7 +658,7 @@ bool AdsServiceImpl::StartService() {
   bat_ads_service_.set_connection_error_handler(
       base::Bind(&AdsServiceImpl::MaybeStart, AsWeakPtr(), true));
 
-  UpdateEnvironment();
+  SetEnvironment();
   UpdateIsDebugFlag();
   UpdateIsTestingFlag();
 
@@ -748,7 +748,7 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(
   MaybeShowMyFirstAdNotification();
 }
 
-void AdsServiceImpl::UpdateEnvironment() {
+void AdsServiceImpl::SetEnvironment() {
   ads::Environment environment;
 
 #if defined(OFFICIAL_BUILD)
