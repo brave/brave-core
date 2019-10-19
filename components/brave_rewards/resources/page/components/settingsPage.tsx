@@ -143,7 +143,7 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   getGrantClaims = () => {
-    const { grants } = this.props.rewardsData
+    const { grants, ui } = this.props.rewardsData
 
     if (!grants) {
       return null
@@ -158,7 +158,7 @@ class SettingsPage extends React.Component<Props, State> {
 
           return (
             <div key={`grant-${index}`}>
-              <Grant grant={grant} />
+              <Grant grant={grant} onlyAnonWallet={ui.onlyAnonWallet} />
             </div>
           )
         })}

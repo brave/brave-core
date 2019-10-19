@@ -268,6 +268,7 @@ class PageWallet extends React.Component<Props, State> {
           onSettingsClick={this.onBackupModalOpen}
           onActivityClick={doNothing}
           showCopy={true}
+          onlyAnonWallet={false}
           showSecActions={true}
           grants={grants}
           walletState={walletState}
@@ -287,6 +288,7 @@ class PageWallet extends React.Component<Props, State> {
                   tips: { tokens: '19.0', converted: '5.25' }
                 }}
                 onActivity={this.onActivity}
+                onlyAnonWallet={false}
               />
               : null
           }

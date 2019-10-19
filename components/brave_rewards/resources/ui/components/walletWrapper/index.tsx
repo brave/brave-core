@@ -149,6 +149,7 @@ export interface Props {
   onDisconnectClick?: () => void
   goToUphold?: () => void
   userName?: string
+  onlyAnonWallet?: boolean
 }
 
 export type Step = '' | 'captcha' | 'complete'
@@ -580,7 +581,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       isMobile,
       convertProbiToFixed,
       onVerifyClick,
-      onDisconnectClick
+      onDisconnectClick,
+      onlyAnonWallet
     } = this.props
 
     const hasGrants = this.hasGrants(grants)
@@ -597,6 +599,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
 
     const walletVerified = walletState === 'verified' || walletState === 'disconnected_verified'
     const connectedVerified = walletState === 'verified'
+    const batFormatString = onlyAnonWallet ? getLocale('batPoints') : getLocale('bat')
 
     return (
       <>
@@ -619,7 +622,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                 title={grant.finishTitle || ''}
                 text={grant.finishText}
               >
-                <GrantComplete isMobile={true} onClose={this.onFinish} amount={tokens} date={date} tokenTitle={grant.finishTokenTitle} />
+                <GrantComplete isMobile={true} onClose={this.onFinish} amount={tokens} date={date} tokenTitle={grant.finishTokenTitle} onlyAnonWallet={onlyAnonWallet} />
               </GrantWrapper>
               : null
           }
@@ -649,9 +652,9 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                       : null
                   }
                   {
-                    walletState
+                    walletState && !onlyAnonWallet
                       ? this.generateWalletButton(walletState)
-                      : <StyledTitle>{getLocale('yourWallet')}</StyledTitle>
+                      : <StyledTitle>{getLocale('yourBalance')}</StyledTitle>
                   }
                   {
                     showSecActions
@@ -662,7 +665,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                   }
                   <StyledBalance>
                     <StyledBalanceTokens data-test-id='balance'>
-                      {balance} <StyledBalanceCurrency>BAT</StyledBalanceCurrency>
+                      {balance} <StyledBalanceCurrency>{batFormatString}</StyledBalanceCurrency>
                     </StyledBalanceTokens>
                     {
                       converted
@@ -690,7 +693,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                         {
                           grants && grants.map((grant: Grant, i: number) => {
                             return <StyledGrant key={`${id}-grant-${i}`}>
-                              <b>{grant.tokens} BAT</b>
+                              <b>{grant.tokens} {batFormatString}</b>
                               {
                                 grant.type === 'ads'
                                 ? <span>{getLocale('adsEarnings')}</span>
@@ -716,7 +719,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
             {children}
           </StyledContent>
           {
-            showCopy
+            showCopy && !onlyAnonWallet
               ? <StyledCopy connected={connectedVerified}>
                 {
                   walletVerified
@@ -749,7 +752,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           }
         </StyledWrapper>
         {
-          showCopy
+          showCopy && !onlyAnonWallet
             ? <StyledBAT>
               {getLocale('rewardsPanelText3')} <a href={'https://basicattentiontoken.org/'} target={'_blank'}>{getLocale('rewardsPanelText4')}</a>
             </StyledBAT>
