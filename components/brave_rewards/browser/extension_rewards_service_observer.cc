@@ -62,31 +62,7 @@ void ExtensionRewardsServiceObserver::OnWalletProperties(
         extensions::api::brave_rewards::OnWalletInitialized::kEventName,
         std::move(args)));
     event_router->BroadcastEvent(std::move(event));
-  }
-  if (event_router && wallet_properties) {
-    extensions::api::brave_rewards::OnWalletProperties::Properties properties;
-
-    for (size_t i = 0; i < wallet_properties->promotions.size(); i ++) {
-      properties.promotions.push_back(
-          extensions::api::brave_rewards::OnWalletProperties::Properties::
-              PromotionsType());
-      auto& promotion = properties.promotions[properties.promotions.size() -1];
-
-      promotion.altcurrency = wallet_properties->promotions[i].altcurrency;
-      promotion.probi = wallet_properties->promotions[i].probi;
-      promotion.expiry_time = wallet_properties->promotions[i].expiryTime;
-      promotion.type = wallet_properties->promotions[i].type;
-    }
-
-    std::unique_ptr<base::ListValue> args(
-        extensions::api::brave_rewards::OnWalletProperties::Create(properties)
-            .release());
-
-    std::unique_ptr<extensions::Event> event(new extensions::Event(
-        extensions::events::BRAVE_ON_WALLET_PROPERTIES,
-        extensions::api::brave_rewards::OnWalletProperties::kEventName,
-        std::move(args)));
-    event_router->BroadcastEvent(std::move(event));
+    return;
   }
 }
 

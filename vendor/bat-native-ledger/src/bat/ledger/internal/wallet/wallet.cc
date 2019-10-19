@@ -97,18 +97,6 @@ ledger::WalletPropertiesPtr Wallet::WalletPropertiesToWalletInfo(
   ledger::WalletPropertiesPtr wallet = ledger::WalletProperties::New();
   wallet->parameters_choices = properties.parameters_choices_;
   wallet->fee_amount = ledger_->GetContributionAmount();
-
-  for (size_t i = 0; i < properties.grants_.size(); i ++) {
-    ledger::GrantPtr grant = ledger::Grant::New();
-
-    grant->altcurrency = properties.grants_[i].altcurrency;
-    grant->probi = properties.grants_[i].probi;
-    grant->expiry_time = properties.grants_[i].expiryTime;
-    grant->type = properties.grants_[i].type;
-
-    wallet->grants.push_back(std::move(grant));
-  }
-
   return wallet;
 }
 

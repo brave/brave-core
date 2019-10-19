@@ -943,17 +943,6 @@ void RewardsServiceImpl::OnWalletProperties(
       wallet_properties.reset(new brave_rewards::WalletProperties);
       wallet_properties->parameters_choices = properties->parameters_choices;
       wallet_properties->monthly_amount = properties->fee_amount;
-
-      for (size_t i = 0; i < properties->grants.size(); i ++) {
-        brave_rewards::Promotion promotion;
-
-        promotion.altcurrency = properties->grants[i]->altcurrency;
-        promotion.probi = properties->grants[i]->probi;
-        promotion.expiryTime = properties->grants[i]->expiry_time;
-        promotion.type = properties->grants[i]->type;
-
-        wallet_properties->promotions.push_back(promotion);
-      }
     }
     // webui
     observer.OnWalletProperties(this,

@@ -67,7 +67,6 @@ export class Panel extends React.Component<Props, State> {
     })
 
     this.actions.getGrants()
-    this.actions.getWalletProperties()
     this.actions.getCurrentReport()
 
     chrome.braveRewards.getPendingContributionsTotal(((amount: number) => {
@@ -609,7 +608,7 @@ export class Panel extends React.Component<Props, State> {
   render () {
     const { pendingContributionTotal, enabledAC, externalWallet, balance } = this.props.rewardsPanelData
     const { rates } = this.props.rewardsPanelData.balance
-    const { promotions } = this.props.rewardsPanelData.walletProperties
+    const promotions: any = [] // TODO fix me
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const total = balance.total || 0
     const converted = utils.convertBalance(total.toString(), rates)

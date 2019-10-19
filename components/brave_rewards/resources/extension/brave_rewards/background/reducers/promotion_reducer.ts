@@ -185,7 +185,6 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
           currentPromotion.probi = properties.probi
           currentPromotion.type = properties.type
           currentPromotion.status = null
-          chrome.braveRewards.getWalletProperties()
           break
         case 6:
           currentPromotion.status = 'wrongPosition'

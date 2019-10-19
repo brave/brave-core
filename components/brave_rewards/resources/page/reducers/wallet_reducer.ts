@@ -100,7 +100,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
     case types.ON_RECOVER_WALLET_DATA: {
       state = { ...state }
       const result = action.payload.properties.result
-      const promotions = action.payload.properties.grants
       let ui = state.ui
       let walletInfo = state.walletInfo
       let balance = state.balance
@@ -109,7 +108,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       ui.walletRecoverySuccess = result === 0
       if (result === 0) {
         balance.total = action.payload.properties.balance
-        walletInfo.promotions = promotions || []
         chrome.send('brave_rewards.getWalletPassphrase')
         chrome.send('brave_rewards.getGrants', ['', ''])
         ui.emptyWallet = balance.total <= 0

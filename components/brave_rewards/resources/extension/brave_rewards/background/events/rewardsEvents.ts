@@ -20,10 +20,6 @@ chrome.braveRewards.onPublisherData.addListener((windowId: number, publisher: Re
   }
 })
 
-chrome.braveRewards.onWalletProperties.addListener((properties: RewardsExtension.WalletProperties) => {
-  rewardsPanelActions.onWalletProperties(properties)
-})
-
 chrome.braveRewards.onCurrentReport.addListener((properties: RewardsExtension.Report) => {
   rewardsPanelActions.onCurrentReport(properties)
 })
@@ -121,7 +117,6 @@ chrome.braveRewards.onDisconnectWallet.addListener((properties: {result: number,
 chrome.braveRewards.getRewardsMainEnabled((enabledMain: boolean) => {
   rewardsPanelActions.onEnabledMain(enabledMain)
   if (enabledMain) {
-    chrome.braveRewards.getWalletProperties()
     chrome.braveRewards.getGrants()
     chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
       rewardsPanelActions.onBalance(balance)

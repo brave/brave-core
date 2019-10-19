@@ -163,31 +163,6 @@
                     "description": "EUR rate"
                   }
                 }
-              },
-              "promotions": {
-                "type": "array",
-                "description": "user claimed promotions",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "altcurrency": {
-                      "type": "string",
-                      "description": "currency in which grant is served"
-                    },
-                    "probi": {
-                      "type": "string",
-                      "description": "amount of the grant represented in probis"
-                    },
-                    "expiryTime": {
-                      "type": "integer",
-                      "description": "when grant expires, timestamp in seconds"
-                    },
-                    "type": {
-                      "type": "string",
-                      "description": "grant type, ugp or ads"
-                    }
-                  }
-                }
               }
             }
           }
@@ -562,12 +537,6 @@
             "type": "string"
           }
         ]
-      },
-      {
-        "name": "getWalletProperties",
-        "type": "function",
-        "description": "Get wallet data (balance, grant)",
-        "parameters": []
       },
       {
         "name": "getCurrentReport",

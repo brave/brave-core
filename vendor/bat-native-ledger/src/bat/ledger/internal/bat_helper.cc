@@ -777,7 +777,6 @@ WALLET_PROPERTIES_ST::WALLET_PROPERTIES_ST(
     const WALLET_PROPERTIES_ST &properties) {
   fee_amount_ = properties.fee_amount_;
   parameters_choices_ = properties.parameters_choices_;
-  grants_ = properties.grants_;
 }
 
 bool WALLET_PROPERTIES_ST::loadFromJson(const std::string & json) {
@@ -796,32 +795,6 @@ bool WALLET_PROPERTIES_ST::loadFromJson(const std::string & json) {
     }
 
     fee_amount_ = d["parameters"]["adFree"]["fee"]["BAT"].GetDouble();
-
-    if (d.HasMember("grants") && d["grants"].IsArray()) {
-      for (auto &i : d["grants"].GetArray()) {
-        GRANT grant;
-        auto obj = i.GetObject();
-        if (obj.HasMember("probi")) {
-          grant.probi = obj["probi"].GetString();
-        }
-
-        if (obj.HasMember("altcurrency")) {
-          grant.altcurrency = obj["altcurrency"].GetString();
-        }
-
-        if (obj.HasMember("expiryTime")) {
-          grant.expiryTime = obj["expiryTime"].GetUint64();
-        }
-
-        if (obj.HasMember("type")) {
-          grant.type = obj["type"].GetString();
-        }
-
-        grants_.push_back(grant);
-      }
-    } else {
-      grants_.clear();
-    }
   }
   return !error;
 }
@@ -856,13 +829,6 @@ void saveToJson(JsonWriter* writer, const WALLET_PROPERTIES_ST& data) {
 
   writer->EndObject();
   writer->EndObject();
-
-  writer->String("grants");
-  writer->StartArray();
-  for (auto & grant : data.grants_) {
-    saveToJson(writer, grant);
-  }
-  writer->EndArray();
 
   writer->EndObject();
 }
@@ -1808,8 +1774,7 @@ bool getJSONWalletInfo(const std::string& json,
 }
 
 bool getJSONRecoverWallet(const std::string& json,
-                          double* balance,
-                          std::vector<GRANT>* grants) {
+                          double* balance) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
@@ -1821,32 +1786,6 @@ bool getJSONRecoverWallet(const std::string& json,
 
   if (!error) {
     *balance = std::stod(d["balance"].GetString());
-
-    if (d.HasMember("grants") && d["grants"].IsArray()) {
-      for (auto &i : d["grants"].GetArray()) {
-        GRANT grant;
-        auto obj = i.GetObject();
-        if (obj.HasMember("probi")) {
-          grant.probi = obj["probi"].GetString();
-        }
-
-        if (obj.HasMember("altcurrency")) {
-          grant.altcurrency = obj["altcurrency"].GetString();
-        }
-
-        if (obj.HasMember("expiryTime")) {
-          grant.expiryTime = obj["expiryTime"].GetUint64();
-        }
-
-        if (obj.HasMember("type")) {
-          grant.type = obj["type"].GetString();
-        }
-
-        grants->push_back(grant);
-      }
-    } else {
-      grants->clear();
-    }
   }
   return !error;
 }

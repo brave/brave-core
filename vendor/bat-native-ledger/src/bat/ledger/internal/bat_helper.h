@@ -167,7 +167,6 @@ struct WALLET_PROPERTIES_ST {
 
   double fee_amount_;
   std::vector<double> parameters_choices_;
-  std::vector<GRANT> grants_;
 };
 
 struct REPORT_BALANCE_ST {
@@ -405,8 +404,7 @@ bool getJSONBatchSurveyors(const std::string& json,
                            std::vector<std::string>* surveyors);
 
 bool getJSONRecoverWallet(const std::string& json,
-                          double* balance,
-                          std::vector<GRANT>* grants);
+                          double* balance);
 
 bool getJSONResponse(const std::string& json,
                      unsigned int* statusCode,

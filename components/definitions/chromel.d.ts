@@ -65,16 +65,12 @@ declare namespace chrome.braveRewards {
   const tipRedditUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
   const tipGitHubUser: (tabId: number, githubMetaData: RewardsTip.MediaMetaData) => {}
   const getPublisherData: (windowId: number, url: string, faviconUrl: string, publisherBlob: string | undefined) => {}
-  const getWalletProperties: () => {}
   const getCurrentReport: () => {}
   const onWalletInitialized: {
     addListener: (callback: (result: RewardsExtension.Result) => void) => void
   }
   const onPublisherData: {
     addListener: (callback: (windowId: number, publisher: RewardsExtension.Publisher) => void) => void
-  }
-  const onWalletProperties: {
-    addListener: (callback: (properties: RewardsExtension.WalletProperties) => void) => void
   }
   const onCurrentReport: {
     addListener: (callback: (properties: RewardsExtension.Report) => void) => void
