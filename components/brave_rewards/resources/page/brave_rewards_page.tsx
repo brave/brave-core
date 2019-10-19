@@ -61,8 +61,8 @@ window.cr.define('brave_rewards', function () {
     getActions().onWalletProperties(properties)
   }
 
-  function grant (properties: Rewards.PromotionResponse) {
-    getActions().onGrant(properties)
+  function promotion (properties: Rewards.PromotionResponse) {
+    getActions().onPromotion(properties)
   }
 
   function grantCaptcha (captcha: Rewards.Captcha) {
@@ -238,7 +238,7 @@ window.cr.define('brave_rewards', function () {
     walletCreated,
     walletCreateFailed,
     walletProperties,
-    grant,
+    promotion,
     grantCaptcha,
     walletPassphrase,
     recoverWalletData,

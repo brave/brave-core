@@ -66,7 +66,7 @@ export class Panel extends React.Component<Props, State> {
       this.props.actions.onEnabledAC(enabled)
     })
 
-    this.actions.getGrants()
+    this.actions.fetchPromotions()
     this.actions.getCurrentReport()
 
     chrome.braveRewards.getPendingContributionsTotal(((amount: number) => {
@@ -95,7 +95,7 @@ export class Panel extends React.Component<Props, State> {
     }
 
     if (!prevProps.rewardsPanelData.enabledMain && this.props.rewardsPanelData.enabledMain) {
-      this.actions.getGrants()
+      this.actions.fetchPromotions()
     }
   }
 
@@ -606,9 +606,8 @@ export class Panel extends React.Component<Props, State> {
   }
 
   render () {
-    const { pendingContributionTotal, enabledAC, externalWallet, balance } = this.props.rewardsPanelData
+    const { pendingContributionTotal, enabledAC, externalWallet, balance, promotions } = this.props.rewardsPanelData
     const { rates } = this.props.rewardsPanelData.balance
-    const promotions: any = [] // TODO fix me
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const total = balance.total || 0
     const converted = utils.convertBalance(total.toString(), rates)
@@ -665,7 +664,6 @@ export class Panel extends React.Component<Props, State> {
         onNotificationClick={notificationClick}
         onSolution={this.onSolution}
         onFinish={this.onFinish}
-        convertProbiToFixed={utils.convertProbiToFixed}
         grants={utils.generatePromotions(promotions)}
         walletState={walletStatus}
         onVerifyClick={onVerifyClick}

@@ -121,9 +121,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
       ledger::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoListCallback callback));
 
-  MOCK_METHOD2(FetchGrants, void(
-      const std::string& lang,
-      const std::string& paymentId));
+  MOCK_METHOD2(FetchPromotions, void());
 
   MOCK_METHOD2(OnGrant, void(
       ledger::Result result,

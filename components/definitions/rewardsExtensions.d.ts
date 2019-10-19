@@ -49,24 +49,30 @@ declare namespace RewardsExtension {
 
   export type PromotionStatus = 'wrongPosition' | 'grantGone' | 'generalError' | 'grantAlreadyClaimed' | number | null
 
+  export enum PromotionTypes {
+    UGP = 0,
+    ADS = 1
+  }
+
   export interface Promotion {
     promotionId?: string
-    altcurrency?: string
-    probi: string
-    expiryTime: number
+    amount: number
+    expiresAt: number
     captcha?: string
     hint?: string
     status?: PromotionStatus
-    type?: string
+    type: PromotionTypes
     finishTitle?: string
     finishText?: string
     finishTokenTitle?: string
   }
 
   export interface PromotionResponse {
-    promotionId?: string
-    status?: number
-    type?: string
+    status: number
+    promotionId: string
+    amount: number
+    expiresAt: number
+    type: PromotionTypes
   }
 
   export interface PromotionFinish {
@@ -90,7 +96,6 @@ declare namespace RewardsExtension {
     REGISTRATION_VERIFICATION_FAILED = 10,
     BAD_REGISTRATION_RESPONSE = 11,
     WALLET_CREATED = 12,
-    GRANT_NOT_FOUND = 13,
     WALLET_CORRUPT = 17
   }
 

@@ -1506,61 +1506,39 @@ void RewardsServiceImpl::FetchWalletProperties() {
   }
 }
 
-void RewardsServiceImpl::OnFetchGrants(
+void RewardsServiceImpl::OnFetchPromotions(
     const ledger::Result result,
-    std::vector<ledger::GrantPtr> grants) {
-  for (size_t i = 0; i < grants.size(); i ++) {
-    TriggerOnGrant(result, std::move(grants[i]));
+    ledger::PromotionList promotions) {
+  for (auto & promotion : promotions) {
+    TriggerOnPromotion(result, std::move(promotion));
   }
 }
 
-void RewardsServiceImpl::FetchGrants(const std::string& lang,
-    const std::string& payment_id) {
+void RewardsServiceImpl::FetchPromotions() {
   if (!Connected()) {
     return;
   }
-#if !defined(OS_ANDROID)
-  bat_ledger_->FetchGrants(lang, payment_id, "", base::BindOnce(
-      &RewardsServiceImpl::OnFetchGrants,
+
+  bat_ledger_->FetchPromotions(base::BindOnce(
+      &RewardsServiceImpl::OnFetchPromotions,
       AsWeakPtr()));
-#else
-  safetynet_check::ClientAttestationCallback attest_callback =
-      base::BindOnce(&RewardsServiceImpl::FetchGrantAttestationResult,
-          AsWeakPtr(), lang, payment_id);
-  safetynet_check_runner_.performSafetynetCheck("",
-      std::move(attest_callback));
-#endif
 }
 
-#if defined(OS_ANDROID)
-void RewardsServiceImpl::FetchGrantAttestationResult(const std::string& lang,
-    const std::string& payment_id,
-    bool result, const std::string& result_string) {
-  if (result) {
-    bat_ledger_->FetchGrants(lang, payment_id, result_string, base::BindOnce(
-      &RewardsServiceImpl::OnFetchGrants,
-      AsWeakPtr()));
-  } else {
-    LOG(ERROR) << "FetchGrantAttestationResult error: " << result_string;
-    TriggerOnGrantFinish(ledger::Result::LEDGER_ERROR, nullptr);
+void RewardsServiceImpl::TriggerOnPromotion(
+    const ledger::Result result,
+    ledger::PromotionPtr promotion) {
+  if (!promotion) {
+    return;
   }
-}
-#endif
 
-void RewardsServiceImpl::TriggerOnGrant(const ledger::Result result,
-                                        ledger::GrantPtr grant) {
   brave_rewards::Promotion properties;
-
-  if (grant) {
-    properties.promotionId = grant->promotion_id;
-    properties.altcurrency = grant->altcurrency;
-    properties.probi = grant->probi;
-    properties.expiryTime = grant->expiry_time;
-    properties.type = grant->type;
-  }
+  properties.promotion_id = promotion->id;
+  properties.amount = promotion->approximate_value;
+  properties.expires_at = promotion->expires_at;
+  properties.type = static_cast<uint32_t>(promotion->type);
 
   for (auto& observer : observers_)
-    observer.OnGrant(this, static_cast<int>(result), properties);
+    observer.OnFetchPromotions(this, static_cast<int>(result), properties);
 }
 
 void RewardsServiceImpl::GetGrantCaptcha(
@@ -1602,13 +1580,14 @@ void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) {
       AsWeakPtr()));
 }
 
-void RewardsServiceImpl::SolveGrantCaptcha(const std::string& solution,
-                                         const std::string& promotionId) const {
+void RewardsServiceImpl::SolveGrantCaptcha(
+    const std::string& solution,
+    const std::string& promotion_id) const {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->SolveGrantCaptcha(solution, promotionId);
+  bat_ledger_->SolveGrantCaptcha(solution, promotion_id);
 }
 
 void RewardsServiceImpl::TriggerOnGrantFinish(ledger::Result result,
@@ -1616,11 +1595,11 @@ void RewardsServiceImpl::TriggerOnGrantFinish(ledger::Result result,
   brave_rewards::Promotion properties;
 
   if (grant) {
-    properties.promotionId = grant->promotion_id;
-    properties.altcurrency = grant->altcurrency;
-    properties.probi = grant->probi;
-    properties.expiryTime = grant->expiry_time;
-    properties.type = grant->type;
+    properties.promotion_id = grant->promotion_id;
+    // TODO fix me
+//    properties.amount = grant->amount;
+//    properties.expiryTime = grant->expiry_time;
+//    properties.type = grant->type;
   }
 
   for (auto& observer : observers_) {
@@ -2744,7 +2723,7 @@ void RewardsServiceImpl::OnNotificationTimerFired() {
   GetReconcileStamp(
       base::Bind(&RewardsServiceImpl::MaybeShowAddFundsNotification,
         AsWeakPtr()));
-  FetchGrants(std::string(), std::string());
+  FetchPromotions();
 }
 
 void RewardsServiceImpl::MaybeShowNotificationAddFunds() {

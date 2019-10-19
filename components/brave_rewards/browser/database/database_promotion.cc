@@ -98,7 +98,7 @@ bool DatabasePromotion::InsertOrUpdate(
       "INSERT OR REPLACE INTO %s "
       "(%s_id, version, type, public_keys, suggestions, "
       "approximate_value, claimed, active, expires_at) "
-      "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
       table_name_,
       table_name_);
 

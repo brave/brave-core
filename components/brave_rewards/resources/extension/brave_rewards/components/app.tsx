@@ -273,7 +273,7 @@ export class RewardsPanel extends React.Component<Props, State> {
 
     const total = balance.total || 0
     const converted = utils.convertBalance(total.toString(), balance.rates)
-    const promotions: any = []
+    const promotions: any = [] // TODO fix me
 
     if (!walletCreated || walletCorrupted) {
       return (
@@ -317,7 +317,6 @@ export class RewardsPanel extends React.Component<Props, State> {
                 onlyAnonWallet={this.state.onlyAnonWallet}
                 grants={utils.generatePromotions(promotions)}
                 converted={utils.formatConverted(converted)}
-                convertProbiToFixed={utils.convertProbiToFixed}
                 walletState={walletStatus}
                 onVerifyClick={onVerifyClick}
                 onDisconnectClick={this.onDisconnectClick}

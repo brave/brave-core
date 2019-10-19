@@ -24,11 +24,7 @@ class Promotion {
   explicit Promotion(bat_ledger::LedgerImpl* ledger);
   ~Promotion();
 
-  void FetchGrants(
-      const std::string& lang,
-      const std::string& forPaymentId,
-      const std::string& safetynet_token,
-      ledger::FetchGrantsCallback callback);
+  void Fetch(ledger::FetchPromotionCallback callback);
 
   void SetGrant(const std::string& captchaResponse,
                 const std::string& promotionId,
@@ -37,19 +33,27 @@ class Promotion {
   void GetGrantCaptcha(const std::vector<std::string>& headers,
                        ledger::GetGrantCaptchaCallback callback);
 
+  void Refresh(const bool retry_after_error);
+
+  void OnTimer(const uint32_t timer_id);
+
  private:
+  void OnFetchPromotions(
+      const int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers,
+      ledger::FetchPromotionCallback callback);
+
+  void ProcessFetchedPromotions(
+      const ledger::Result result,
+      ledger::PromotionList promotions,
+      ledger::FetchPromotionCallback callback);
+
   void GetGrantCaptchaCallback(
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
       ledger::GetGrantCaptchaCallback callback);
-
-  void GetGrantsCallback(
-      std::string safetynet_token,
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
-      ledger::FetchGrantsCallback callback);
 
   void SetGrantCallback(
       int response_status_code,
@@ -58,6 +62,7 @@ class Promotion {
       bool is_safetynet_check);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  uint32_t last_check_timer_id_;
 };
 
 }  // namespace braveledger_promotion

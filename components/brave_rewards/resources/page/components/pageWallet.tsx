@@ -160,9 +160,9 @@ class PageWallet extends React.Component<Props, State> {
 
     return promotions.map((promotion: Rewards.Promotion) => {
       return {
-        tokens: utils.convertProbiToFixed(promotion.probi),
-        expireDate: new Date(promotion.expiryTime * 1000).toLocaleDateString(),
-        type: promotion.type || 'ugp'
+        amount: promotion.amount,
+        expiresAt: new Date(promotion.expiresAt * 1000).toLocaleDateString(),
+        type: promotion.type || 0
       }
     })
   }

@@ -309,34 +309,34 @@ void RewardsNotificationServiceImpl::OnGetAllNotifications(
   TriggerOnGetAllNotifications(rewards_notifications_list);
 }
 
-bool RewardsNotificationServiceImpl::IsUGPGrant(const std::string& grant_type) {
+bool RewardsNotificationServiceImpl::IsUGP(const std::string& promotion_type) {
 #if defined(OS_ANDROID)
-      return (grant_type == "android");
+  return promotion_type == "android";
 #else
-      return (grant_type == "ugp");
+  return promotion_type == "ugp";
 #endif
 }
 
-std::string RewardsNotificationServiceImpl::GetGrantIdPrefix(
+std::string RewardsNotificationServiceImpl::GetPromotionIdPrefix(
     const std::string& grant_type) {
-  std::string prefix = IsUGPGrant(grant_type)
+  std::string prefix = IsUGP(grant_type)
       ? "rewards_notification_grant_"
       : "rewards_notification_grant_ads_";
   return prefix;
 }
 
-void RewardsNotificationServiceImpl::OnGrant(
+void RewardsNotificationServiceImpl::OnFetchPromotions(
     RewardsService* rewards_service,
-    unsigned int result,
-    Promotion properties) {
+    const uint32_t result,
+    Promotion promotion) {
   if (static_cast<ledger::Result>(result) != ledger::Result::LEDGER_OK) {
     return;
   }
 
-  std::string grant_type = properties.type;
-  std::string prefix = GetGrantIdPrefix(grant_type);
-  RewardsNotificationService::RewardsNotificationType notification_type
-      = IsUGPGrant(grant_type)
+  // TODO add conversion to string
+  const std::string promotion_type = "ugp";
+  const std::string prefix = GetPromotionIdPrefix(promotion_type);
+  auto notification_type = IsUGP(promotion_type)
       ? RewardsNotificationService::REWARDS_NOTIFICATION_GRANT
       : RewardsNotificationService::REWARDS_NOTIFICATION_GRANT_ADS;
 
@@ -347,22 +347,24 @@ void RewardsNotificationServiceImpl::OnGrant(
   only_once = false;
 #endif
 
-  AddNotification(notification_type,
-                  args,
-                  prefix + properties.promotionId,
-                  only_once);
+  AddNotification(
+      notification_type,
+      args,
+      prefix + promotion.promotion_id,
+      only_once);
 }
 
 void RewardsNotificationServiceImpl::OnGrantFinish(
     RewardsService* rewards_service,
-    unsigned int result,
+    const uint32_t result,
     Promotion promotion) {
-  const std::string promotion_type = promotion.type;
-  std::string prefix = GetGrantIdPrefix(promotion_type);
+  // TODO add conversion to string
+  const std::string promotion_type = "ugp";
+  std::string prefix = GetPromotionIdPrefix(promotion_type);
 
-  DeleteNotification(prefix + promotion.promotionId);
+  DeleteNotification(prefix + promotion.promotion_id);
   // We keep it for back compatibility
-  if (IsUGPGrant(promotion_type)) {
+  if (IsUGP(promotion_type)) {
     DeleteNotification("rewards_notification_grant");
   }
 }

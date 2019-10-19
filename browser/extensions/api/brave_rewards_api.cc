@@ -417,15 +417,15 @@ ExtensionFunction::ResponseAction BraveRewardsGetCurrentReportFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsGetGrantsFunction::~BraveRewardsGetGrantsFunction() {
+BraveRewardsFetchPromotionsFunction::~BraveRewardsFetchPromotionsFunction() {
 }
 
-ExtensionFunction::ResponseAction BraveRewardsGetGrantsFunction::Run() {
+ExtensionFunction::ResponseAction BraveRewardsFetchPromotionsFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
   if (rewards_service) {
-    rewards_service->FetchGrants(std::string(), std::string());
+    rewards_service->FetchPromotions();
   }
   return RespondNow(NoArguments());
 }

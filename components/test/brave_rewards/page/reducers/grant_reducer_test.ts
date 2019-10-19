@@ -9,10 +9,10 @@ import { defaultState } from '../../../../brave_rewards/resources/page/storage'
 
 describe('Grant Reducer', () => {
 
-  describe('GET_GRANTS', () => {
+  describe('FETCH_PROMOTIONS', () => {
     it('does not modify state', () => {
       const assertion = reducers(undefined, {
-        type: types.GET_GRANTS,
+        type: types.FETCH_PROMOTIONS,
         payload: {}
       })
 
@@ -24,10 +24,10 @@ describe('Grant Reducer', () => {
     })
   })
 
-  describe('ON_GRANT', () => {
+  describe('ON_PROMOTION', () => {
     it('pushes new grant to state', () => {
       const assertion = reducers(undefined, {
-        type: types.ON_GRANT,
+        type: types.ON_PROMOTION,
         payload: {
           properties: {
             promotionId: 'test-promotion-id',
@@ -40,8 +40,8 @@ describe('Grant Reducer', () => {
       const grants = [
         {
           promotionId: 'test-promotion-id',
-          expiryTime: 0,
-          probi: '',
+          expiresAt: 0,
+          amount: 0,
           type: 'ugp'
         }
       ]
@@ -53,7 +53,7 @@ describe('Grant Reducer', () => {
     })
     it('does not modify state on status 1', () => {
       const assertion = reducers(undefined, {
-        type: types.ON_GRANT,
+        type: types.ON_PROMOTION,
         payload: {
           properties: {
             promotionId: 'test-promotion-id',

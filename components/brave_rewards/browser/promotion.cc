@@ -7,15 +7,14 @@
 
 namespace brave_rewards {
 
-Promotion::Promotion() : expiryTime(0) {}
+Promotion::Promotion() : expires_at(0) {}
 
 Promotion::~Promotion() {}
 
 Promotion::Promotion(const Promotion &properties) {
-  altcurrency = properties.altcurrency;
-  probi = properties.probi;
-  promotionId = properties.promotionId;
-  expiryTime = properties.expiryTime;
+  amount = properties.amount;
+  promotion_id = properties.promotion_id;
+  expires_at = properties.expires_at;
   type = properties.type;
 }
 

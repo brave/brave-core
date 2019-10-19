@@ -62,16 +62,16 @@ import loveIconUrl from './assets/love.svg'
 import megaphoneIconUrl from './assets/megaphone.svg'
 
 type Grant = {
-  tokens: string,
-  expireDate: string,
-  type: string
+  amount: number,
+  expiresAt: string,
+  type: number
 }
 
 type GrantClaim = {
   promotionId?: string
-  altcurrency?: string
-  probi: string
-  expiryTime: number
+  amount: number
+  expiresAt: number,
+  type: number
   captcha?: string
   hint?: string
   status?: 'wrongPosition' | 'grantGone' | 'generalError' | 'grantAlreadyClaimed' | number | null
@@ -144,7 +144,6 @@ export interface Props {
   onGrantHide?: () => void
   onFinish?: () => void
   onSolution?: (x: number, y: number) => void
-  convertProbiToFixed?: (probi: string, place: number) => string
   onVerifyClick?: () => void
   onDisconnectClick?: () => void
   goToUphold?: () => void
@@ -581,7 +580,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       gradientTop,
       notification,
       isMobile,
-      convertProbiToFixed,
       onVerifyClick,
       onDisconnectClick,
       onlyAnonWallet
@@ -589,14 +587,16 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
 
     const hasGrants = this.hasGrants(grants)
 
-    let tokens = '0.0'
-    if (grant && grant.probi && convertProbiToFixed) {
-      tokens = convertProbiToFixed(grant.probi, 1)
-    }
-
     let date = ''
-    if (grant && grant.expiryTime !== 0) {
-      date = new Date(grant.expiryTime).toLocaleDateString()
+    let grantAmount = '0.0'
+    if (grant) {
+      if (grant.expiresAt) {
+        date = new Date(grant.expiresAt).toLocaleDateString()
+      }
+
+      if (grant.amount) {
+        grantAmount = grant.amount.toFixed(1)
+      }
     }
 
     const walletVerified = walletState === 'verified' || walletState === 'disconnected_verified'
@@ -612,19 +612,19 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           notification={notification}
         >
           {
-            grant && !grant.probi
+            grant && !grant.amount
               ? this.grantCaptcha()
               : null
           }
           {
-            grant && grant.probi
+            grant && grant.amount
               ? <GrantWrapper
                 isPanel={true}
                 onClose={this.onFinish}
                 title={grant.finishTitle || ''}
                 text={grant.finishText}
               >
-                <GrantComplete isMobile={true} onClose={this.onFinish} amount={tokens} date={date} tokenTitle={grant.finishTokenTitle} onlyAnonWallet={onlyAnonWallet} />
+                <GrantComplete isMobile={true} onClose={this.onFinish} amount={grantAmount} date={date} tokenTitle={grant.finishTokenTitle} onlyAnonWallet={onlyAnonWallet} />
               </GrantWrapper>
               : null
           }
@@ -695,11 +695,11 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                         {
                           grants && grants.map((grant: Grant, i: number) => {
                             return <StyledGrant key={`${id}-grant-${i}`}>
-                              <b>{grant.tokens} {batFormatString}</b>
+                              <b>{grantAmount} {batFormatString}</b>
                               {
-                                grant.type === 'ads'
+                                grant.type === 1
                                 ? <span>{getLocale('adsEarnings')}</span>
-                                : <span>{getLocale('expiresOn')} {grant.expireDate}</span>
+                                : <span>{getLocale('expiresOn')} {grant.expiresAt}</span>
                               }
                             </StyledGrant>
                           })

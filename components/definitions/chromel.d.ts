@@ -75,7 +75,7 @@ declare namespace chrome.braveRewards {
   const onCurrentReport: {
     addListener: (callback: (properties: RewardsExtension.Report) => void) => void
   }
-  const onGrant: {
+  const onPromotion: {
     addListener: (callback: (properties: RewardsExtension.PromotionResponse) => void) => void
   }
   const onGrantFinish: {
@@ -85,7 +85,7 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (properties: RewardsExtension.Captcha) => void) => void
   }
   const includeInAutoContribution: (publisherKey: string, exclude: boolean) => {}
-  const getGrants: () => {}
+  const fetchPromotions: () => {}
   const getGrantCaptcha: (promotionId: string, type: string) => {}
   const solveGrantCaptcha: (solution: string, promotionId: string) => {}
   const getPendingContributionsTotal: (callback: (amount: number) => void) => {}

@@ -435,10 +435,10 @@ class BraveRewardsBrowserTest
   }
 
   void WaitForGrantInitialization() {
-    if (grant_initialized_)
+    if (promotion_initialized_)
       return;
-    wait_for_grant_initialization_loop_.reset(new base::RunLoop);
-    wait_for_grant_initialization_loop_->Run();
+    wait_for_promotion_initialization_loop_.reset(new base::RunLoop);
+    wait_for_promotion_initialization_loop_->Run();
   }
 
   void WaitForGrantFinished() {
@@ -1357,13 +1357,14 @@ class BraveRewardsBrowserTest
       wait_for_wallet_initialization_loop_->Quit();
   }
 
-  void OnGrant(brave_rewards::RewardsService* rewards_service,
-               unsigned int result,
-               brave_rewards::Promotion properties) {
+  void TriggerOnPromotion(
+      brave_rewards::RewardsService* rewards_service,
+      unsigned int result,
+      brave_rewards::Promotion promotion) {
     ASSERT_EQ(static_cast<ledger::Result>(result), ledger::Result::LEDGER_OK);
-    grant_initialized_ = true;
-    if (wait_for_grant_initialization_loop_)
-      wait_for_grant_initialization_loop_->Quit();
+    promotion_initialized_ = true;
+    if (wait_for_promotion_initialization_loop_)
+      wait_for_promotion_initialization_loop_->Quit();
   }
 
   void OnGrantCaptcha(brave_rewards::RewardsService* rewards_service,
@@ -1544,8 +1545,8 @@ class BraveRewardsBrowserTest
   std::unique_ptr<base::RunLoop> wait_for_wallet_initialization_loop_;
   bool wallet_initialized_ = false;
 
-  std::unique_ptr<base::RunLoop> wait_for_grant_initialization_loop_;
-  bool grant_initialized_ = false;
+  std::unique_ptr<base::RunLoop> wait_for_promotion_initialization_loop_;
+  bool promotion_initialized_ = false;
 
   std::unique_ptr<base::RunLoop> wait_for_grant_finished_loop_;
   bool grant_finished_ = false;
