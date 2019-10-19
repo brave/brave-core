@@ -325,9 +325,10 @@ std::string RewardsNotificationServiceImpl::GetGrantIdPrefix(
   return prefix;
 }
 
-void RewardsNotificationServiceImpl::OnGrant(RewardsService* rewards_service,
-                                             unsigned int result,
-                                             Grant properties) {
+void RewardsNotificationServiceImpl::OnGrant(
+    RewardsService* rewards_service,
+    unsigned int result,
+    Promotion properties) {
   if (static_cast<ledger::Result>(result) != ledger::Result::LEDGER_OK) {
     return;
   }
@@ -355,13 +356,13 @@ void RewardsNotificationServiceImpl::OnGrant(RewardsService* rewards_service,
 void RewardsNotificationServiceImpl::OnGrantFinish(
     RewardsService* rewards_service,
     unsigned int result,
-    Grant grant) {
-  std::string grant_type = grant.type;
-  std::string prefix = GetGrantIdPrefix(grant_type);
+    Promotion promotion) {
+  const std::string promotion_type = promotion.type;
+  std::string prefix = GetGrantIdPrefix(promotion_type);
 
-  DeleteNotification(prefix + grant.promotionId);
+  DeleteNotification(prefix + promotion.promotionId);
   // We keep it for back compatibility
-  if (IsUGPGrant(grant_type)) {
+  if (IsUGPGrant(promotion_type)) {
     DeleteNotification("rewards_notification_grant");
   }
 }

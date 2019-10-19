@@ -29,7 +29,7 @@ export const onWalletProperties = (properties: {status: number, wallet: Rewards.
 
 export const getGrants = () => action(types.GET_GRANTS)
 
-export const onGrant = (properties: Rewards.GrantResponse) => action(types.ON_GRANT, {
+export const onGrant = (properties: Rewards.PromotionResponse) => action(types.ON_GRANT, {
   properties
 })
 
@@ -46,7 +46,7 @@ export const solveGrantCaptcha = (x: number, y: number) => action(types.SOLVE_GR
   y
 })
 
-export const onGrantFinish = (properties: Rewards.GrantFinish) => action(types.ON_GRANT_FINISH, {
+export const onGrantFinish = (properties: Rewards.PromotionFinish) => action(types.ON_GRANT_FINISH, {
   properties
 })
 

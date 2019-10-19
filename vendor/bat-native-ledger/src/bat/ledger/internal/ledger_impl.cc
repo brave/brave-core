@@ -22,14 +22,14 @@
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/publisher/publisher.h"
 #include "bat/ledger/internal/bat_state.h"
-#include "bat/ledger/internal/grants.h"
+#include "bat/ledger/internal/promotion.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 
-using namespace braveledger_grant; //  NOLINT
+using namespace braveledger_promotion; //  NOLINT
 using namespace braveledger_publisher; //  NOLINT
 using namespace braveledger_media; //  NOLINT
 using namespace braveledger_bat_state; //  NOLINT
@@ -53,7 +53,7 @@ namespace bat_ledger {
 
 LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     ledger_client_(client),
-    bat_grants_(new Grants(this)),
+    bat_promotion_(new Promotion(this)),
     bat_publisher_(new Publisher(this)),
     bat_media_(new Media(this)),
     bat_state_(new BatState(this)),
@@ -614,7 +614,7 @@ void LedgerImpl::FetchGrants(const std::string& lang,
                              const std::string& payment_id,
                              const std::string& safetynet_token,
                              ledger::FetchGrantsCallback callback) const {
-  bat_grants_->FetchGrants(lang, payment_id, safetynet_token, callback);
+  bat_promotion_->FetchGrants(lang, payment_id, safetynet_token, callback);
 }
 
 void LedgerImpl::OnGrants(ledger::Result result,
@@ -637,7 +637,7 @@ void LedgerImpl::OnGrants(ledger::Result result,
 void LedgerImpl::GetGrantCaptcha(
     const std::vector<std::string>& headers,
     ledger::GetGrantCaptchaCallback callback) const {
-  bat_grants_->GetGrantCaptcha(headers, std::move(callback));
+  bat_promotion_->GetGrantCaptcha(headers, std::move(callback));
 }
 
 std::string LedgerImpl::GetWalletPassphrase() const {
@@ -675,7 +675,7 @@ void LedgerImpl::OnRecoverWallet(
 void LedgerImpl::SolveGrantCaptcha(
     const std::string& solution,
     const std::string& promotionId) const {
-  bat_grants_->SetGrant(solution, promotionId, "");
+  bat_promotion_->SetGrant(solution, promotionId, "");
 }
 
 void LedgerImpl::OnGrantFinish(ledger::Result result,
@@ -1586,7 +1586,7 @@ void LedgerImpl::OnGrantViaSafetynetCheck(
 
 void LedgerImpl::ApplySafetynetToken(
     const std::string& promotion_id, const std::string& token) const {
-  bat_grants_->SetGrant("", promotion_id, token);
+  bat_promotion_->SetGrant("", promotion_id, token);
 }
 
 void LedgerImpl::InsertOrUpdateContributionQueue(

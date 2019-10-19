@@ -80,10 +80,10 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (properties: RewardsExtension.Report) => void) => void
   }
   const onGrant: {
-    addListener: (callback: (properties: RewardsExtension.GrantResponse) => void) => void
+    addListener: (callback: (properties: RewardsExtension.PromotionResponse) => void) => void
   }
   const onGrantFinish: {
-    addListener: (callback: (properties: RewardsExtension.GrantFinish) => void) => void
+    addListener: (callback: (properties: RewardsExtension.PromotionFinish) => void) => void
   }
   const onGrantCaptcha: {
     addListener: (callback: (properties: RewardsExtension.Captcha) => void) => void

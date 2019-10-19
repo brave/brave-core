@@ -13,7 +13,7 @@
 #include "base/observer_list_types.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
-#include "brave/components/brave_rewards/browser/grant.h"
+#include "brave/components/brave_rewards/browser/promotion.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
 
@@ -35,7 +35,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnGrant(
       RewardsService* rewards_service,
       unsigned int result,
-      brave_rewards::Grant properties) {}
+      brave_rewards::Promotion properties) {}
   virtual void OnGrantCaptcha(
       RewardsService* rewards_service,
       std::string image,
@@ -44,11 +44,11 @@ class RewardsServiceObserver : public base::CheckedObserver {
       RewardsService* rewards_service,
       unsigned int result,
       double balance,
-      std::vector<brave_rewards::Grant> grants) {}
+      std::vector<brave_rewards::Promotion> grants) {}
   virtual void OnGrantFinish(
       RewardsService* rewards_service,
       unsigned int result,
-      brave_rewards::Grant grant) {}
+      brave_rewards::Promotion promotion) {}
   virtual void OnContentSiteUpdated(
       RewardsService* rewards_service) {}
   virtual void OnExcludedSitesChanged(

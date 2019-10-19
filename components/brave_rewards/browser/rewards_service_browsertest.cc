@@ -1360,7 +1360,7 @@ class BraveRewardsBrowserTest
 
   void OnGrant(brave_rewards::RewardsService* rewards_service,
                unsigned int result,
-               brave_rewards::Grant properties) {
+               brave_rewards::Promotion properties) {
     ASSERT_EQ(static_cast<ledger::Result>(result), ledger::Result::LEDGER_OK);
     grant_initialized_ = true;
     if (wait_for_grant_initialization_loop_)
@@ -1377,10 +1377,10 @@ class BraveRewardsBrowserTest
 
   void OnGrantFinish(brave_rewards::RewardsService* rewards_service,
                      unsigned int result,
-                     brave_rewards::Grant grant) {
+                     brave_rewards::Promotion promotion) {
     ASSERT_EQ(static_cast<ledger::Result>(result), ledger::Result::LEDGER_OK);
     grant_finished_ = true;
-    grant_ = grant;
+    grant_ = promotion;
     balance_ += 30.0;
     if (wait_for_grant_finished_loop_)
       wait_for_grant_finished_loop_->Quit();
@@ -1540,7 +1540,7 @@ class BraveRewardsBrowserTest
   std::unique_ptr<brave_ads::LocaleHelperMock> locale_helper_mock_;
   std::unique_ptr<brave_ads::NotificationHelperMock> notification_helper_mock_;
 
-  brave_rewards::Grant grant_;
+  brave_rewards::Promotion grant_;
 
   std::unique_ptr<base::RunLoop> wait_for_wallet_initialization_loop_;
   bool wallet_initialized_ = false;

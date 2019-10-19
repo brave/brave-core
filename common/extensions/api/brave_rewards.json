@@ -164,9 +164,9 @@
                   }
                 }
               },
-              "grants": {
+              "promotions": {
                 "type": "array",
-                "description": "user claimed grants",
+                "description": "user claimed promotions",
                 "items": {
                   "type": "object",
                   "properties": {

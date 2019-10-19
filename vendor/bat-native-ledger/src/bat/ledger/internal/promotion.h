@@ -3,27 +3,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_GRANTS_H_
-#define BRAVELEDGER_GRANTS_H_
+#ifndef BRAVELEDGER_PROMOTION_H_
+#define BRAVELEDGER_PROMOTION_H_
 
 #include <string>
 #include <vector>
 #include <map>
 
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/mojom_structs.h"
 
 namespace bat_ledger {
 class LedgerImpl;
 }
 
-namespace braveledger_grant {
+namespace braveledger_promotion {
 
-class Grants {
+class Promotion {
  public:
-  explicit Grants(bat_ledger::LedgerImpl* ledger);
-  ~Grants();
-
+  explicit Promotion(bat_ledger::LedgerImpl* ledger);
+  ~Promotion();
 
   void FetchGrants(
       const std::string& lang,
@@ -61,6 +60,6 @@ class Grants {
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_grant
+}  // namespace braveledger_promotion
 
-#endif  // BRAVELEDGER_GRANTS_H_
+#endif  // BRAVELEDGER_PROMOTION_H_

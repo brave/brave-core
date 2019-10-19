@@ -68,15 +68,17 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
       int error_code,
       const ledger::PublisherInfo* info,
       uint64_t windowId) override;
-  void OnGrant(RewardsService* rewards_service,
-               unsigned int result,
-               brave_rewards::Grant grant) override;
+  void OnGrant(
+      RewardsService* rewards_service,
+      unsigned int result,
+      brave_rewards::Promotion promotion) override;
   void OnGrantCaptcha(RewardsService* rewards_service,
                       std::string image,
                       std::string hint) override;
-  void OnGrantFinish(RewardsService* rewards_service,
-                     unsigned int result,
-                     brave_rewards::Grant grant) override;
+  void OnGrantFinish(
+      RewardsService* rewards_service,
+      unsigned int result,
+      brave_rewards::Promotion promotion) override;
   void OnRewardsMainEnabled(RewardsService* rewards_service,
                             bool rewards_main_enabled) override;
 

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ledger/internal/grants.h"
+#include "bat/ledger/internal/promotion.h"
 
 #include <algorithm>
 #include <map>
@@ -19,16 +19,15 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_grant {
+namespace braveledger_promotion {
 
-Grants::Grants(bat_ledger::LedgerImpl* ledger) :
-      ledger_(ledger) {
+Promotion::Promotion(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
 }
 
-Grants::~Grants() {
+Promotion::~Promotion() {
 }
 
-void Grants::FetchGrants(const std::string& lang,
+void Promotion::FetchGrants(const std::string& lang,
                          const std::string& forPaymentId,
                          const std::string& safetynet_token,
                          ledger::FetchGrantsCallback callback) {
@@ -71,7 +70,7 @@ void Grants::FetchGrants(const std::string& lang,
     safetynet_prefix = PREFIX_V3;
 #endif
   auto internal_callback = std::bind(
-      &Grants::GetGrantsCallback,
+      &Promotion::GetGrantsCallback,
       this,
       safetynet_token,
       _1, _2, _3,
@@ -87,7 +86,7 @@ void Grants::FetchGrants(const std::string& lang,
       internal_callback);
 }
 
-void Grants::GetGrantsCallback(
+void Promotion::GetGrantsCallback(
     std::string safetynet_token,
     int response_status_code,
     const std::string& response,
@@ -147,7 +146,7 @@ void Grants::GetGrantsCallback(
   ledger_->SetGrants(grants);
 }
 
-void Grants::SetGrant(const std::string& captchaResponse,
+void Promotion::SetGrant(const std::string& captchaResponse,
                       const std::string& promotionId,
                       const std::string& safetynet_token) {
   if (promotionId.empty() && safetynet_token.empty()) {
@@ -166,7 +165,7 @@ void Grants::SetGrant(const std::string& captchaResponse,
     headers.push_back("safetynet-token:" + safetynet_token);
   }
 
-  auto callback = std::bind(&Grants::SetGrantCallback, this, _1, _2, _3,
+  auto callback = std::bind(&Promotion::SetGrantCallback, this, _1, _2, _3,
                                 !safetynet_token.empty());
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)GET_SET_PROMOTION + "/" + ledger_->GetPaymentId(),
@@ -175,7 +174,7 @@ void Grants::SetGrant(const std::string& captchaResponse,
       ledger::UrlMethod::PUT, callback);
 }
 
-void Grants::SetGrantCallback(
+void Promotion::SetGrantCallback(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers,
@@ -225,9 +224,9 @@ void Grants::SetGrantCallback(
   ledger_->SetGrants(updated_grants);
 }
 
-void Grants::GetGrantCaptcha(const std::vector<std::string>& headers,
+void Promotion::GetGrantCaptcha(const std::vector<std::string>& headers,
     ledger::GetGrantCaptchaCallback callback) {
-  auto on_load = std::bind(&Grants::GetGrantCaptchaCallback,
+  auto on_load = std::bind(&Promotion::GetGrantCaptchaCallback,
                             this,
                             _1,
                             _2,
@@ -239,7 +238,7 @@ void Grants::GetGrantCaptcha(const std::vector<std::string>& headers,
       headers, "", "", ledger::UrlMethod::GET, std::move(on_load));
 }
 
-void Grants::GetGrantCaptchaCallback(
+void Promotion::GetGrantCaptchaCallback(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers,
@@ -255,4 +254,4 @@ void Grants::GetGrantCaptchaCallback(
   callback(response, it->second);
 }
 
-}  // namespace braveledger_grant
+}  // namespace braveledger_promotion

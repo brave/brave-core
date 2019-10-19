@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/grant.h"
+#include "brave/components/brave_rewards/browser/promotion.h"
 
 namespace brave_rewards {
 
-Grant::Grant() : expiryTime(0) {}
+Promotion::Promotion() : expiryTime(0) {}
 
-Grant::~Grant() {}
+Promotion::~Promotion() {}
 
-Grant::Grant(const Grant &properties) {
+Promotion::Promotion(const Promotion &properties) {
   altcurrency = properties.altcurrency;
   probi = properties.probi;
   promotionId = properties.promotionId;

@@ -66,16 +66,16 @@ void ExtensionRewardsServiceObserver::OnWalletProperties(
   if (event_router && wallet_properties) {
     extensions::api::brave_rewards::OnWalletProperties::Properties properties;
 
-    for (size_t i = 0; i < wallet_properties->grants.size(); i ++) {
-      properties.grants.push_back(
+    for (size_t i = 0; i < wallet_properties->promotions.size(); i ++) {
+      properties.promotions.push_back(
           extensions::api::brave_rewards::OnWalletProperties::Properties::
-              GrantsType());
-      auto& grant = properties.grants[properties.grants.size() -1];
+              PromotionsType());
+      auto& promotion = properties.promotions[properties.promotions.size() -1];
 
-      grant.altcurrency = wallet_properties->grants[i].altcurrency;
-      grant.probi = wallet_properties->grants[i].probi;
-      grant.expiry_time = wallet_properties->grants[i].expiryTime;
-      grant.type = wallet_properties->grants[i].type;
+      promotion.altcurrency = wallet_properties->promotions[i].altcurrency;
+      promotion.probi = wallet_properties->promotions[i].probi;
+      promotion.expiry_time = wallet_properties->promotions[i].expiryTime;
+      promotion.type = wallet_properties->promotions[i].type;
     }
 
     std::unique_ptr<base::ListValue> args(
@@ -151,19 +151,19 @@ void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
 void ExtensionRewardsServiceObserver::OnGrant(
     RewardsService* rewards_service,
     unsigned int result,
-    brave_rewards::Grant grant) {
+    brave_rewards::Promotion promotion) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
   }
 
-  base::DictionaryValue newGrant;
-  newGrant.SetInteger("status", result);
-  newGrant.SetString("type", grant.type);
-  newGrant.SetString("promotionId", grant.promotionId);
+  base::DictionaryValue new_promotion;
+  new_promotion.SetInteger("status", result);
+  new_promotion.SetString("type", promotion.type);
+  new_promotion.SetString("promotionId", promotion.promotionId);
 
   std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnGrant::Create(newGrant)
+      extensions::api::brave_rewards::OnGrant::Create(new_promotion)
           .release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
@@ -200,7 +200,7 @@ void ExtensionRewardsServiceObserver::OnGrantCaptcha(
 void ExtensionRewardsServiceObserver::OnGrantFinish(
     RewardsService* rewards_service,
     unsigned int result,
-    brave_rewards::Grant grant) {
+    brave_rewards::Promotion promotion) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
@@ -208,10 +208,10 @@ void ExtensionRewardsServiceObserver::OnGrantFinish(
 
   extensions::api::brave_rewards::OnGrantFinish::Properties properties;
   properties.status = result;
-  properties.expiry_time = grant.expiryTime;
-  properties.probi = grant.probi;
-  properties.type = grant.type;
-  properties.promotion_id = grant.promotionId;
+  properties.expiry_time = promotion.expiryTime;
+  properties.probi = promotion.probi;
+  properties.type = promotion.type;
+  properties.promotion_id = promotion.promotionId;
 
   std::unique_ptr<base::ListValue> args(
       extensions::api::brave_rewards::OnGrantFinish::Create(properties)

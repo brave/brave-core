@@ -57,8 +57,8 @@ export const defaultState: Rewards.State = {
   },
   adsHistory: [],
   pendingContributionTotal: 0,
-  grants: [],
-  currentGrant: undefined,
+  promotions: [],
+  currentPromotion: undefined,
   inlineTip: {
     twitter: true,
     reddit: true,

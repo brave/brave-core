@@ -17,7 +17,7 @@ import MonthlyContributionBox from './monthlyContributionBox'
 
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
-import Grant from './grant'
+import Promotion from './promotion'
 import { getLocale } from '../../../../common/locale'
 
 interface Props extends Rewards.ComponentProps {
@@ -141,23 +141,23 @@ class SettingsPage extends React.Component<Props, State> {
     window.open('https://brave.com/privacy#rewards', '_blank')
   }
 
-  getGrantClaims = () => {
-    const { grants, ui } = this.props.rewardsData
+  getPromotionsClaims = () => {
+    const { promotions, ui } = this.props.rewardsData
 
-    if (!grants) {
+    if (!promotions) {
       return null
     }
 
     return (
       <div style={{ width: '100%' }}>
-        {grants.map((grant?: Rewards.Grant, index?: number) => {
-          if (!grant || !grant.promotionId) {
+        {promotions.map((promotion?: Rewards.Promotion, index?: number) => {
+          if (!promotion || !promotion.promotionId) {
             return null
           }
 
           return (
-            <div key={`grant-${index}`}>
-              <Grant grant={grant} onlyAnonWallet={ui.onlyAnonWallet} />
+            <div key={`promotion-${index}`}>
+              <Promotion promotion={promotion} onlyAnonWallet={ui.onlyAnonWallet} />
             </div>
           )
         })}
@@ -250,7 +250,7 @@ class SettingsPage extends React.Component<Props, State> {
           <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
             {
               enabledMain
-              ? this.getGrantClaims()
+              ? this.getPromotionsClaims()
               : null
             }
             <PageWallet />

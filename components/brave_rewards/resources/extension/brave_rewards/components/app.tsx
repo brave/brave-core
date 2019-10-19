@@ -315,7 +315,7 @@ export class RewardsPanel extends React.Component<Props, State> {
                 showSecActions={false}
                 showCopy={false}
                 onlyAnonWallet={this.state.onlyAnonWallet}
-                grants={utils.getGrants(walletProperties.grants)}
+                grants={utils.generatePromotions(walletProperties.promotions)}
                 converted={utils.formatConverted(converted)}
                 convertProbiToFixed={utils.convertProbiToFixed}
                 walletState={walletStatus}
