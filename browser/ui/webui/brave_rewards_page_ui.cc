@@ -190,8 +190,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
                           std::string image, std::string hint) override;
   void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
                        unsigned int result,
-                       double balance,
-                       std::vector<brave_rewards::Promotion> grants) override;
+                       double balance) override;
   void OnGrantFinish(
       brave_rewards::RewardsService* rewards_service,
       unsigned int result,
@@ -642,23 +641,12 @@ void RewardsDOMHandler::RecoverWallet(const base::ListValue *args) {
 void RewardsDOMHandler::OnRecoverWallet(
     brave_rewards::RewardsService* rewards_service,
     unsigned int result,
-    double balance,
-    std::vector<brave_rewards::Promotion> grants) {
+    double balance) {
   GetAllBalanceReports();
   if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue recover;
     recover.SetInteger("result", result);
     recover.SetDouble("balance", balance);
-
-    auto newGrants = std::make_unique<base::ListValue>();
-    for (auto const& item : grants) {
-      auto grant = std::make_unique<base::DictionaryValue>();
-      grant->SetString("probi", item.probi);
-      grant->SetInteger("expiryTime", item.expiryTime);
-      grant->SetString("type", item.type);
-      newGrants->Append(std::move(grant));
-    }
-    recover.SetList("grants", std::move(newGrants));
 
     web_ui()->CallJavascriptFunctionUnsafe(
         "brave_rewards.recoverWalletData", recover);

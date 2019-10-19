@@ -493,9 +493,9 @@ class RewardsServiceImpl : public RewardsService,
   std::string GenerateGUID() const override;
   void OnGrantCaptcha(const std::string& image,
                       const std::string& hint);
-  void OnRecoverWallet(ledger::Result result,
-                      double balance,
-                      std::vector<ledger::GrantPtr> grants);
+  void OnRecoverWallet(
+      ledger::Result result,
+      double balance);
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
                            const std::string& probi,

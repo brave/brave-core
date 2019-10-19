@@ -43,8 +43,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnRecoverWallet(
       RewardsService* rewards_service,
       unsigned int result,
-      double balance,
-      std::vector<brave_rewards::Promotion> grants) {}
+      double balance) {}
   virtual void OnGrantFinish(
       RewardsService* rewards_service,
       unsigned int result,

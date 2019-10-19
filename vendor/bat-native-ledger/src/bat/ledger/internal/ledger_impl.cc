@@ -651,7 +651,6 @@ void LedgerImpl::RecoverWallet(
       this,
       _1,
       _2,
-      _3,
       std::move(callback));
   bat_wallet_->RecoverWallet(pass_phrase, std::move(on_recover));
 }
@@ -659,7 +658,6 @@ void LedgerImpl::RecoverWallet(
 void LedgerImpl::OnRecoverWallet(
     const ledger::Result result,
     const double balance,
-    std::vector<ledger::GrantPtr> grants,
     ledger::RecoverWalletCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to recover wallet";
@@ -669,7 +667,7 @@ void LedgerImpl::OnRecoverWallet(
     bat_publisher_->clearAllBalanceReports();
   }
 
-  callback(result, balance, std::move(grants));
+  callback(result, balance);
 }
 
 void LedgerImpl::SolveGrantCaptcha(

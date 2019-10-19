@@ -101,7 +101,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state = { ...state }
       const result = action.payload.properties.result
       let ui = state.ui
-      let walletInfo = state.walletInfo
       let balance = state.balance
 
       // TODO NZ check why enum can't be used inside Rewards namespace
@@ -118,7 +117,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state = {
         ...state,
         ui,
-        walletInfo,
         balance
       }
       break

@@ -1017,29 +1017,12 @@ void RewardsServiceImpl::OnGrantCaptcha(const std::string& image,
 
 void RewardsServiceImpl::OnRecoverWallet(
     ledger::Result result,
-    double balance,
-    std::vector<ledger::GrantPtr> grants) {
-  std::vector<brave_rewards::Promotion> new_grants;
-  for (size_t i = 0; i < grants.size(); i ++) {
-    if (!grants[i]) {
-      continue;
-    }
-
-    brave_rewards::Promotion promotion;
-    promotion.altcurrency = grants[i]->altcurrency;
-    promotion.probi = grants[i]->probi;
-    promotion.expiryTime = grants[i]->expiry_time;
-    promotion.type = grants[i]->type;
-
-    new_grants.push_back(promotion);
-  }
-
+    double balance) {
   for (auto& observer : observers_) {
     observer.OnRecoverWallet(
       this,
       static_cast<int>(result),
-      balance,
-      new_grants);
+      balance);
   }
 }
 

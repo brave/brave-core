@@ -61,8 +61,7 @@ using GetBalanceReportCallback =
 
 using RecoverWalletCallback = std::function<void(
     const ledger::Result,
-    const double balance,
-    std::vector<ledger::GrantPtr>)>;
+    const double balance)>;
 
 class LEDGER_EXPORT Ledger {
  public:
