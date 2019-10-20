@@ -10,10 +10,11 @@
 #include <set>
 #include <string>
 
-#include "chrome/browser/net/chrome_network_delegate.h"
 #include "content/public/common/resource_type.h"
 #include "net/url_request/url_request.h"
 #include "url/gurl.h"
+
+class BraveRequestHandler;
 
 namespace content {
 class BrowserContext;
@@ -22,19 +23,15 @@ class BrowserContext;
 namespace network {
 struct ResourceRequest;
 }
-class BraveRequestHandler;
 
 namespace brave {
-
 struct BraveRequestInfo;
 using ResponseCallback = base::Callback<void()>;
-
 }  // namespace brave
 
 namespace brave_rewards {
-  int OnBeforeURLRequest(
-      const brave::ResponseCallback& next_callback,
-      std::shared_ptr<brave::BraveRequestInfo> ctx);
+int OnBeforeURLRequest(const brave::ResponseCallback& next_callback,
+                       std::shared_ptr<brave::BraveRequestInfo> ctx);
 }  // namespace brave_rewards
 
 namespace brave {
@@ -48,14 +45,14 @@ enum BraveNetworkDelegateEventType {
   kUnknownEventType
 };
 
-enum BlockedBy {
-  kNotBlocked ,
-  kAdBlocked,
-  kOtherBlocked
-};
+enum BlockedBy { kNotBlocked, kAdBlocked, kOtherBlocked };
 
 struct BraveRequestInfo {
   BraveRequestInfo();
+
+  // For tests, should not be used directly.
+  explicit BraveRequestInfo(const GURL& url);
+
   ~BraveRequestInfo();
   GURL request_url;
   GURL tab_origin;
@@ -63,7 +60,9 @@ struct BraveRequestInfo {
   GURL initiator_url;
 
   GURL referrer;
-  net::URLRequest::ReferrerPolicy referrer_policy;
+  net::URLRequest::ReferrerPolicy referrer_policy =
+      net::URLRequest::ReferrerPolicy::
+          CLEAR_REFERRER_ON_TRANSITION_FROM_SECURE_TO_INSECURE;
   GURL new_referrer;
 
   std::string new_url_spec;
@@ -101,16 +100,12 @@ struct BraveRequestInfo {
 
   std::string upload_data;
 
-  static void FillCTXFromRequest(const net::URLRequest* request,
-                                 std::shared_ptr<brave::BraveRequestInfo> ctx);
-
-  static void FillCTX(
-      const network::ResourceRequest& request,
-      int render_process_id,
-      int frame_tree_node_id,
-      uint64_t request_identifier,
-      content::BrowserContext* browser_context,
-      std::shared_ptr<brave::BraveRequestInfo> ctx);
+  static void FillCTX(const network::ResourceRequest& request,
+                      int render_process_id,
+                      int frame_tree_node_id,
+                      uint64_t request_identifier,
+                      content::BrowserContext* browser_context,
+                      std::shared_ptr<brave::BraveRequestInfo> ctx);
 
  private:
   // Please don't add any more friends here if it can be avoided.
@@ -125,25 +120,18 @@ struct BraveRequestInfo {
 // ResponseListener
 using OnBeforeURLRequestCallback =
     base::Callback<int(const ResponseCallback& next_callback,
-        std::shared_ptr<BraveRequestInfo> ctx)>;
+                       std::shared_ptr<BraveRequestInfo> ctx)>;
 using OnBeforeStartTransactionCallback =
-    base::Callback<int(
-        net::HttpRequestHeaders* headers,
-        const ResponseCallback& next_callback,
-        std::shared_ptr<BraveRequestInfo> ctx)>;
-using OnHeadersReceivedCallback =
-    base::Callback<int(
-        const net::HttpResponseHeaders* original_response_headers,
-        scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
-        GURL* allowed_unsafe_redirect_url,
-        const ResponseCallback& next_callback,
-        std::shared_ptr<BraveRequestInfo> ctx)>;
-using OnCanGetCookiesCallback =
-    base::Callback<bool(std::shared_ptr<BraveRequestInfo> ctx)>;
-using OnCanSetCookiesCallback =
-    base::Callback<bool(std::shared_ptr<BraveRequestInfo> ctx)>;
+    base::Callback<int(net::HttpRequestHeaders* headers,
+                       const ResponseCallback& next_callback,
+                       std::shared_ptr<BraveRequestInfo> ctx)>;
+using OnHeadersReceivedCallback = base::Callback<int(
+    const net::HttpResponseHeaders* original_response_headers,
+    scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
+    GURL* allowed_unsafe_redirect_url,
+    const ResponseCallback& next_callback,
+    std::shared_ptr<BraveRequestInfo> ctx)>;
 
 }  // namespace brave
-
 
 #endif  // BRAVE_BROWSER_NET_URL_CONTEXT_H_

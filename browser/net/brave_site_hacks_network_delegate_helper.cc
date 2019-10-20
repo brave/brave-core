@@ -70,7 +70,6 @@ DECLARE_LAZY_MATCHER(tracker_appended_matcher,
 #undef DECLARE_LAZY_MATCHER
 
 bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   GURL target_origin = ctx->request_url.GetOrigin();
   GURL tab_origin = ctx->tab_origin;
   if (tab_origin.SchemeIs(kChromeExtensionScheme)) {

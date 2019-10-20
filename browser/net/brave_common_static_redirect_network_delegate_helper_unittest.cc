@@ -10,116 +10,68 @@
 
 #include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
-#include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "components/component_updater/component_updater_url_constants.h"
-#include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
-#include "net/url_request/url_request_test_util.h"
+#include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
 
+using brave::ResponseCallback;
+
 namespace {
-
 const char kComponentUpdaterProxy[] = "https://componentupdater.brave.com";
+}
 
-class BraveCommonStaticRedirectNetworkDelegateHelperTest
-    : public testing::Test {
- public:
-  BraveCommonStaticRedirectNetworkDelegateHelperTest()
-      : thread_bundle_(content::TestBrowserThreadBundle::IO_MAINLOOP),
-        context_(new net::TestURLRequestContext(true)) {}
-  ~BraveCommonStaticRedirectNetworkDelegateHelperTest() override {}
-  void SetUp() override { context_->Init(); }
-  net::TestURLRequestContext* context() { return context_.get(); }
-
- private:
-  content::TestBrowserThreadBundle thread_bundle_;
-  std::unique_ptr<net::TestURLRequestContext> context_;
-};
-
-TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest,
-       ModifyComponentUpdaterURL) {
-  net::TestDelegate test_delegate;
-  std::string query_string("?foo=bar");
-  GURL url(std::string(component_updater::kUpdaterJSONDefaultUrl) +
-           query_string);
-  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
-      url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
-  std::shared_ptr<brave::BraveRequestInfo> before_url_context(
-      new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-                                              before_url_context);
-  brave::ResponseCallback callback;
-  GURL expected_url(
+TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
+     ModifyComponentUpdaterURL) {
+  const std::string query_string("?foo=bar");
+  const GURL url(component_updater::kUpdaterJSONDefaultUrl + query_string);
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+  const GURL expected_url(
       std::string(kBraveUpdatesExtensionsEndpoint + query_string));
-  int ret =
-      OnBeforeURLRequest_CommonStaticRedirectWork(callback, before_url_context);
-  EXPECT_EQ(GURL(before_url_context->new_url_spec), expected_url);
-  EXPECT_EQ(ret, net::OK);
+
+  int rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
+                                                       request_info);
+  EXPECT_EQ(GURL(request_info->new_url_spec), expected_url);
+  EXPECT_EQ(rc, net::OK);
 }
 
-TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest,
-       NoModifyComponentUpdaterURL) {
-  net::TestDelegate test_delegate;
-  GURL url(kComponentUpdaterProxy);
-  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
-      url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
-  std::shared_ptr<brave::BraveRequestInfo> before_url_context(
-      new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-                                              before_url_context);
-  brave::ResponseCallback callback;
-  GURL expected_url;
-  int ret =
-      OnBeforeURLRequest_CommonStaticRedirectWork(callback, before_url_context);
-  EXPECT_EQ(before_url_context->new_url_spec, expected_url);
-  EXPECT_EQ(ret, net::OK);
+TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
+     NoModifyComponentUpdaterURL) {
+  const GURL url(kComponentUpdaterProxy);
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
+
+  int rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
+                                                       request_info);
+  EXPECT_EQ(request_info->new_url_spec, GURL());
+  EXPECT_EQ(rc, net::OK);
 }
 
-TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest,
-    RedirectChromecastDownload) {
-  net::TestDelegate test_delegate;
-  GURL url(
+TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
+     RedirectChromecastDownload) {
+  const GURL url(
       "http://redirector.gvt1.com/edgedl/chromewebstore/"
       "random_hash/random_version_pkedcjkdefgpdelpbcmbmeomcjbeemfm.crx");
-  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
-      url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
 
-  std::shared_ptr<brave::BraveRequestInfo> before_url_context(
-      new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-                                              before_url_context);
-  brave::ResponseCallback callback;
-
-  int ret = OnBeforeURLRequest_CommonStaticRedirectWork(callback,
-      before_url_context);
-  GURL redirect = GURL(before_url_context->new_url_spec);
+  int rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
+                                                       request_info);
+  const GURL redirect = GURL(request_info->new_url_spec);
   EXPECT_EQ(redirect.host(), kBraveRedirectorProxy);
   EXPECT_TRUE(redirect.SchemeIs(url::kHttpsScheme));
   EXPECT_EQ(redirect.path(), url.path());
-  EXPECT_EQ(ret, net::OK);
+  EXPECT_EQ(rc, net::OK);
 }
 
-TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest,
-    RedirectGoogleClients4) {
-  net::TestDelegate test_delegate;
-  GURL url(
-      "https://clients4.google.com/chrome-sync/dev");
-  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
-      url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
+TEST(BraveCommonStaticRedirectNetworkDelegateHelperTest,
+     RedirectGoogleClients4) {
+  const GURL url("https://clients4.google.com/chrome-sync/dev");
+  auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
 
-  std::shared_ptr<brave::BraveRequestInfo> before_url_context(
-      new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-                                              before_url_context);
-  brave::ResponseCallback callback;
-
-  int ret = OnBeforeURLRequest_CommonStaticRedirectWork(callback,
-      before_url_context);
-  GURL redirect = GURL(before_url_context->new_url_spec);
+  int rc = OnBeforeURLRequest_CommonStaticRedirectWork(ResponseCallback(),
+                                                       request_info);
+  const GURL redirect = GURL(request_info->new_url_spec);
   EXPECT_EQ(redirect.host(), kBraveClients4Proxy);
   EXPECT_TRUE(redirect.SchemeIs(url::kHttpsScheme));
   EXPECT_EQ(redirect.path(), url.path());
-  EXPECT_EQ(ret, net::OK);
+  EXPECT_EQ(rc, net::OK);
 }
-
-}  // namespace

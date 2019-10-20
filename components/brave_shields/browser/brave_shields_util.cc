@@ -8,7 +8,6 @@
 #include <memory>
 
 #include "base/strings/string_number_conversions.h"
-#include "base/task/post_task.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/shield_exceptions.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
@@ -17,23 +16,14 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
-#include "chrome/browser/profiles/profile_io_data.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "components/content_settings/core/common/content_settings_types.h"
 #include "components/content_settings/core/common/pref_names.h"
-#include "components/prefs/pref_service.h"
-#include "content/public/browser/browser_task_traits.h"
-#include "content/public/browser/websocket_handshake_request_info.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/common/referrer.h"
-#include "extensions/browser/extension_api_frame_id_map.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 
-using content::BrowserThread;
 using content::Referrer;
-using content::ResourceContext;
-// using content::ResourceRequestInfo;
-using net::URLRequest;
 
 namespace brave_shields {
 
@@ -381,108 +371,12 @@ ControlType GetNoScriptControlType(Profile* profile, const GURL& url) {
                                           : ControlType::BLOCK;
 }
 
-bool IsAllowContentSettingFromIO(const net::URLRequest* request,
-                                 const GURL& primary_url,
-                                 const GURL& secondary_url,
-                                 ContentSettingsType setting_type,
-                                 const std::string& resource_identifier) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-
-  // content::ResourceRequestInfo* resource_info =
-  //    content::ResourceRequestInfo::ForRequest(request);
-  // if (!resource_info) {
-  return content_settings::GetDefaultFromResourceIdentifier(
-             resource_identifier, primary_url, secondary_url) ==
-         CONTENT_SETTING_ALLOW;
-  // }
-  // ProfileIOData* io_data =
-  //    ProfileIOData::FromResourceContext(resource_info->GetContext());
-  // return IsAllowContentSettingWithIOData(io_data, primary_url, secondary_url,
-  //                                       setting_type, resource_identifier);
-}
-
-bool IsAllowContentSettingsForProfile(Profile* profile,
-                                      const GURL& primary_url,
-                                      const GURL& secondary_url,
-                                      ContentSettingsType setting_type,
-                                      const std::string& resource_identifier) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  DCHECK(profile);
-  auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
-  ContentSettingsForOneType settings;
-  map->GetSettingsForOneType(setting_type, resource_identifier, &settings);
-  return content_settings::IsAllowContentSetting(
-      settings,
-      primary_url,
-      secondary_url,
-      resource_identifier);
-}
-
-bool IsAllowContentSettingWithIOData(ProfileIOData* io_data,
-                                     const GURL& primary_url,
-                                     const GURL& secondary_url,
-                                     ContentSettingsType setting_type,
-                                     const std::string& resource_identifier) {
-  if (!io_data) {
-    return content_settings::GetDefaultFromResourceIdentifier(
-        resource_identifier, primary_url, secondary_url);
-  }
-
-  auto* map = io_data->GetHostContentSettingsMap();
-  ContentSettingsForOneType settings;
-  map->GetSettingsForOneType(setting_type, resource_identifier, &settings);
-
-  return content_settings::IsAllowContentSetting(
-      settings,
-      primary_url,
-      secondary_url,
-      resource_identifier);
-}
-
-void GetRenderFrameInfo(const URLRequest* request,
-                        int* render_frame_id,
-                        int* render_process_id,
-                        int* frame_tree_node_id) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  *render_frame_id = -1;
-  *render_process_id = -1;
-  *frame_tree_node_id = -1;
-
-  // PlzNavigate requests have a frame_tree_node_id, but no render_process_id
-  // auto* request_info = content::ResourceRequestInfo::ForRequest(request);
-  // if (request_info) {
-  //  *frame_tree_node_id = request_info->GetFrameTreeNodeId();
-  // }
-  // if (!content::ResourceRequestInfo::GetRenderFrameForRequest(
-  //        request, render_process_id, render_frame_id)) {
-  content::WebSocketHandshakeRequestInfo* websocket_info =
-      content::WebSocketHandshakeRequestInfo::ForRequest(request);
-  if (websocket_info) {
-    *render_frame_id = websocket_info->GetRenderFrameId();
-    *render_process_id = websocket_info->GetChildId();
-  }
-  // }
-}
-
-void DispatchBlockedEventFromIO(const GURL& request_url,
-                                int render_frame_id,
-                                int render_process_id,
-                                int frame_tree_node_id,
-                                const std::string& block_type) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::UI},
-      base::BindOnce(&BraveShieldsWebContentsObserver::DispatchBlockedEvent,
-                     block_type, request_url.spec(), render_process_id,
-                     render_frame_id, frame_tree_node_id));
-}
-
 void DispatchBlockedEvent(const GURL& request_url,
                           int render_frame_id,
                           int render_process_id,
                           int frame_tree_node_id,
                           const std::string& block_type) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   BraveShieldsWebContentsObserver::DispatchBlockedEvent(
       block_type, request_url.spec(),
       render_process_id, render_frame_id, frame_tree_node_id);

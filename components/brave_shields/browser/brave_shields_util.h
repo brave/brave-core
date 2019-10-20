@@ -13,19 +13,13 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "services/network/public/mojom/referrer_policy.mojom.h"
 
-namespace net {
-class URLRequest;
-}
-
 namespace content {
 struct Referrer;
 }
 
 class GURL;
 class HostContentSettingsMap;
-class PrefService;
 class Profile;
-class ProfileIOData;
 
 namespace brave_shields {
 
@@ -73,40 +67,11 @@ void SetNoScriptControlType(Profile* profile,
                             const GURL& url);
 ControlType GetNoScriptControlType(Profile* profile, const GURL& url);
 
-bool IsAllowContentSettingWithIOData(ProfileIOData* io_data,
-                                     const GURL& primary_url,
-                                     const GURL& secondary_url,
-                                     ContentSettingsType setting_type,
-                                     const std::string& resource_identifier);
-
-bool IsAllowContentSettingsForProfile(Profile* profile,
-                                      const GURL& primary_url,
-                                      const GURL& secondary_url,
-                                      ContentSettingsType setting_type,
-                                      const std::string& resource_identifier);
-
-bool IsAllowContentSettingFromIO(const net::URLRequest* request,
-                                 const GURL& primary_url,
-                                 const GURL& secondary_url,
-                                 ContentSettingsType setting_type,
-                                 const std::string& resource_identifier);
-
-void DispatchBlockedEventFromIO(const GURL& request_url,
-                                int render_frame_id,
-                                int render_process_id,
-                                int frame_tree_node_id,
-                                const std::string& block_type);
-
 void DispatchBlockedEvent(const GURL& request_url,
                           int render_frame_id,
                           int render_process_id,
                           int frame_tree_node_id,
                           const std::string& block_type);
-
-void GetRenderFrameInfo(const net::URLRequest* request,
-                        int* render_frame_id,
-                        int* render_process_id,
-                        int* frame_tree_node_id);
 
 bool ShouldSetReferrer(bool allow_referrers,
                        bool shields_up,
