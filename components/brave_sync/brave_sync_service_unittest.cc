@@ -873,8 +873,7 @@ TEST_F(BraveSyncServiceTest, ExponentialResend) {
   // emulate the wait time after reaching maximum retry
   EXPECT_TRUE(contains(should_sent_at, 230));
   for (size_t i = 0; i <= 231 + 1; ++i) {
-    auto time_override =
-        OverrideForTimeDelta(base::TimeDelta::FromMinutes(i));
+    auto time_override = OverrideForTimeDelta(base::TimeDelta::FromMinutes(i));
     bool is_send_expected = contains(should_sent_at, i);
     int expect_call_times = is_send_expected ? 1 : 0;
     EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _))
@@ -975,4 +974,21 @@ TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
         .Times(1);
     sync_service()->FetchDevices();
   }
+}
+
+TEST_F(BraveSyncServiceTest, SendCompactSyncCategory) {
+  using brave_sync::jslib_const::kBookmarks;
+  EXPECT_EQ(brave_sync_prefs()->GetLastCompactTime(), base::Time());
+  EXPECT_CALL(*sync_client(), SendCompactSyncCategory(kBookmarks)).Times(1);
+  sync_service()->FetchSyncRecords(true, false, true, 1000);
+  EXPECT_CALL(*sync_client(), SendCompactSyncCategory(kBookmarks)).Times(0);
+  sync_service()->FetchSyncRecords(true, false, true, 1000);
+  {
+    auto time_override = OverrideForTimeDelta(base::TimeDelta::FromDays(
+        sync_service()->GetCompactPeriodInDaysForTests()));
+    EXPECT_CALL(*sync_client(), SendCompactSyncCategory(kBookmarks)).Times(1);
+    sync_service()->FetchSyncRecords(true, false, true, 1000);
+  }
+  EXPECT_CALL(*sync_client(), SendCompactSyncCategory(kBookmarks)).Times(0);
+  sync_service()->FetchSyncRecords(true, false, true, 1000);
 }

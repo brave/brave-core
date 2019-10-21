@@ -53,7 +53,7 @@ class MockBraveSyncClient : public BraveSyncClient {
     const std::string& platform));
   MOCK_METHOD0(OnExtensionInitialized, void());
   MOCK_METHOD0(OnSyncEnabledChanged, void());
-  MOCK_METHOD0(ClearOrderMap, void());
+  MOCK_METHOD1(SendCompactSyncCategory, void(const std::string& category_name));
 };
 
 std::unique_ptr<Profile> CreateBraveSyncProfile(const base::FilePath& path);

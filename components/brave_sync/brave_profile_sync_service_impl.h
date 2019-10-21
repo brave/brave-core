@@ -40,6 +40,7 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest,
                      OnSetupSyncHaveCode_Reset_SetupAgain);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, ExponentialResend);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, SendCompactSyncCategory);
 
 class BraveSyncServiceTest;
 
@@ -146,6 +147,7 @@ class BraveProfileSyncServiceImpl
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, ExponentialResend);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
                            GetDevicesWithFetchSyncRecords);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, SendCompactSyncCategory);
   friend class ::BraveSyncServiceTest;
 
   void SignalWaitableEvent();
@@ -196,6 +198,10 @@ class BraveProfileSyncServiceImpl
   static std::vector<unsigned> GetExponentialWaitsForTests();
   static const std::vector<unsigned> kExponentialWaits;
   static const int kMaxSendRetries;
+  static const int kCompactPeriodInDays = 7;
+  static constexpr int GetCompactPeriodInDaysForTests() {
+    return kCompactPeriodInDays;
+  }
 
   std::unique_ptr<brave_sync::prefs::Prefs> brave_sync_prefs_;
   // True when is in active sync chain

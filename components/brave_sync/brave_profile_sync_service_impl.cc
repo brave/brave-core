@@ -829,7 +829,8 @@ void BraveProfileSyncServiceImpl::FetchSyncRecords(const bool bookmarks,
 
   base::Time last_compact_time = brave_sync_prefs_->GetLastCompactTime();
   if (tools::IsTimeEmpty(last_compact_time) ||
-      base::Time::Now() - last_compact_time > base::TimeDelta::FromDays(7)) {
+      base::Time::Now() - last_compact_time >
+          base::TimeDelta::FromDays(kCompactPeriodInDays)) {
     brave_sync_client_->SendCompactSyncCategory(kBookmarks);
     brave_sync_prefs_->SetLastCompactTime(base::Time::Now());
   }
