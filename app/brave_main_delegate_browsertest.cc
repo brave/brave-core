@@ -12,6 +12,7 @@
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/omnibox/common/omnibox_features.h"
+#include "components/password_manager/core/common/password_manager_features.h"
 #include "components/sync/driver/sync_driver_switches.h"
 #include "components/unified_consent/feature.h"
 #include "content/public/browser/render_view_host.h"
@@ -63,6 +64,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
     &extensions_features::kNewExtensionUpdaterService,
 #endif
     &omnibox::kSimplifyHttpsIndicator,
+    &password_manager::features::kPasswordImport,
   };
 
   for (const auto* feature : enabled_features)
