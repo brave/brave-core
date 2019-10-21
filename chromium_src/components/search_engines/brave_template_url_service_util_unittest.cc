@@ -101,6 +101,7 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
   TemplateURL::OwnedTemplateURLVector template_urls;
   int new_resource_keyword_version = 0;
 
+  prefs_.SetInteger(kCountryIDAtInstall, 'U' << 8 | 'S');
   GetSearchProvidersUsingKeywordResult(result, nullptr, &prefs_, &template_urls,
                                        default_turl.get(), SearchTermsData(),
                                        &new_resource_keyword_version, nullptr);
