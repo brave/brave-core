@@ -990,4 +990,128 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   }
 }
 
+#pragma mark - Promotions
+
++ (nullable Promotion *)getPromotionWithID:(NSString *)promoID context:(NSManagedObjectContext *)context
+{
+  return [self firstOfClass:Promotion.class
+                 predicates:@[[NSPredicate predicateWithFormat:@"promotionID == %@", promoID]]
+            sortDescriptors:@[]
+                    context:context];
+}
+
++ (nullable PromotionCredentials *)getPromoCredsWithClaimID:(NSString *)claimID context:(NSManagedObjectContext *)context
+{
+  return [self firstOfClass:PromotionCredentials.class
+                 predicates:@[[NSPredicate predicateWithFormat:@"claimID == %@", claimID]]
+            sortDescriptors:@[]
+                    context:context];
+}
+
++ (nullable UnblindedToken *)getUnblindedTokenWithID:(UInt64)tokenID context:(NSManagedObjectContext *)context
+{
+  return [self firstOfClass:UnblindedToken.class
+                 predicates:@[[NSPredicate predicateWithFormat:@"tokenID == %lld", tokenID]]
+            sortDescriptors:@[]
+                    context:context];
+}
+
++ (void)insertOrUpdatePromotion:(BATPromotion *)promotion
+                     completion:(nullable BATLedgerDatabaseWriteCompletion)completion
+{
+  [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
+    auto promo = [self getPromotionWithID:promotion.id context:context] ?: [[Promotion alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(Promotion.class) inManagedObjectContext:context]
+                                                                                             insertIntoManagedObjectContext:context];
+    promo.promotionID = promotion.id;
+    promo.version = promotion.version;
+    promo.type = static_cast<int64_t>(promotion.type);
+    promo.publicKeys = promotion.publicKeys;
+    promo.suggestions = promotion.suggestions;
+    promo.approximateValue = promotion.approximateValue;
+    promo.claimed = promotion.claimed;
+    promo.active = promotion.active;
+    promo.expiryDate = [NSDate dateWithTimeIntervalSince1970:promotion.expiresAt];
+    if (promotion.credentials) {
+      auto creds = [self getPromoCredsWithClaimID:promotion.credentials.claimId context:context] ?: [[PromotionCredentials alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(PromotionCredentials.class) inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+      creds.claimID = promotion.credentials.claimId;
+      creds.batchProof = promotion.credentials.batchProof;
+      creds.publicKey = promotion.credentials.publicKey;
+      creds.signedCredentials = promotion.credentials.signedCreds;
+      creds.blindedCredentials = promotion.credentials.blindedCreds;
+      promo.credentials = creds;
+    }
+  } completion:WriteToDataControllerCompletion(completion)];
+}
+
++ (nullable BATPromotion *)promotionWithID:(NSString *)promoID
+{
+  const auto dbPromo = [self getPromotionWithID:promoID context:DataController.viewContext];
+  if (!dbPromo) {
+    return nil;
+  }
+  
+  const auto promotion = [[BATPromotion alloc] init];
+  promotion.active = dbPromo.active;
+  promotion.id = dbPromo.promotionID;
+  promotion.version = dbPromo.version;
+  promotion.type = static_cast<BATPromotionType>(dbPromo.type);
+  promotion.publicKeys = dbPromo.publicKeys;
+  promotion.suggestions = dbPromo.suggestions;
+  promotion.approximateValue = dbPromo.approximateValue;
+  promotion.claimed = dbPromo.claimed;
+  promotion.active = dbPromo.active;
+  promotion.expiresAt = [dbPromo.expiryDate timeIntervalSince1970];
+  promotion.credentials = ^BATPromotionCreds * _Nullable {
+    if (!dbPromo.credentials) {
+      return nil;
+    }
+    const auto creds = [[BATPromotionCreds alloc] init];
+    creds.claimId = dbPromo.credentials.claimID;
+    creds.blindedCreds = dbPromo.credentials.blindedCredentials;
+    creds.signedCreds = dbPromo.credentials.signedCredentials;
+    creds.publicKey = dbPromo.credentials.publicKey;
+    creds.batchProof = dbPromo.credentials.batchProof;
+    return creds;
+  }();
+  return promotion;
+}
+
++ (void)insertOrUpdateUnblindedToken:(BATUnblindedToken *)unblindedToken
+                          completion:(nullable BATLedgerDatabaseWriteCompletion)completion
+{
+  [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
+    auto token = [self getUnblindedTokenWithID:unblindedToken.id context:context] ?: [[UnblindedToken alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(UnblindedToken.class) inManagedObjectContext:context]
+                                                                                                   insertIntoManagedObjectContext:context];
+    token.tokenID = unblindedToken.id;
+    token.publicKey = unblindedToken.publicKey;
+    token.value = unblindedToken.value;
+    token.promotion = [self getPromotionWithID:unblindedToken.promotionId context:context];
+  } completion:WriteToDataControllerCompletion(completion)];
+}
+
++ (NSArray<BATUnblindedToken *> *)allUnblindedTokens
+{
+  const auto context = DataController.viewContext;
+  const auto fetchRequest = [UnblindedToken fetchRequest];
+  fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(UnblindedToken.class)
+                                    inManagedObjectContext:context];
+  NSError *error;
+  const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+  if (error) {
+    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+    return @[];
+  }
+  
+  auto tokens = [[NSMutableArray<BATUnblindedToken *> alloc] init];
+  for (UnblindedToken *dbToken in fetchedObjects) {
+    BATUnblindedToken *token = [[BATUnblindedToken alloc] init];
+    token.id = dbToken.tokenID;
+    token.publicKey = dbToken.publicKey;
+    token.value = dbToken.value;
+    token.promotionId = dbToken.promotion.promotionID;
+    [tokens addObject:token];
+  }
+  return [tokens copy];
+}
+
 @end

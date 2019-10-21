@@ -48,6 +48,7 @@ static NSString * const kUserHasFundedKey = @"BATRewardsUserHasFunded";
 static NSString * const kBackupSucceededKey = @"BATRewardsBackupSucceeded";
 
 static NSString * const kContributionQueueAutoincrementID = @"BATContributionQueueAutoincrementID";
+static NSString * const kUnblindedTokenAutoincrementID = @"BATUnblindedTokenAutoincrementID";
 
 static const auto kOneDay = base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 
@@ -574,7 +575,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 {
   bool isUGP = promo->type == ledger::PromotionType::UGP;
   const auto prefix = isUGP ? @"rewards_grant_" : @"rewards_grant_ads_";
-  const auto promotionId = [NSString stringWithFormat:@"%lld", promo->id];
+  const auto promotionId = [NSString stringWithUTF8String:promo->id.c_str()];
   return [NSString stringWithFormat:@"%@%@", prefix, promotionId];
 }
 
@@ -613,7 +614,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   });
 }
 
-- (void)grantCaptchaForPromotionId:(NSString *)promoID promotionType:(NSString *)promotionType completion:(void (^)(NSString * _Nonnull, NSString * _Nonnull))completion
+- (void)grantCaptchaForPromotionId:(NSString *)promoID promotionType:(NSString *)promotionType completion:(void (^)(BATResult result, NSString * _Nonnull json))completion
 {
   std::vector<std::string> headers;
   headers.push_back("brave-product:brave-core");
@@ -1916,22 +1917,41 @@ BATLedgerBridge(BOOL,
 
 - (void)insertOrUpdatePromotion:(ledger::PromotionPtr)info callback:(ledger::ResultCallback)callback
 {
-  // FIXME: Add implementation
+  if (info.get() == nullptr) { return; }
+  const auto bridgedPromotion = [[BATPromotion alloc] initWithPromotion:*info];
+  [BATLedgerDatabase insertOrUpdatePromotion:bridgedPromotion completion:^(BOOL success) {
+    callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
+  }];
 }
 
 - (void)getPromotion:(const std::string&) id callback:(ledger::GetPromotionCallback)callback
 {
-  // FIXME: Add implementation
+  const auto bridgedId = [NSString stringWithUTF8String:id.c_str()];
+  const auto promo = [BATLedgerDatabase promotionWithID:bridgedId];
+  callback(promo != nil ? promo.cppObjPtr : nullptr);
 }
 
 - (void)insertOrUpdateUnblindedToken:(ledger::UnblindedTokenPtr)info callback:(ledger::ResultCallback)callback
 {
-  // FIXME: Add implementation
+  if (info.get() == nullptr) { return; }
+  if (info->id == 0) {
+    NSNumber *nextID = self.prefs[kUnblindedTokenAutoincrementID] ?: [NSNumber numberWithUnsignedLongLong:1];
+    info->id = [nextID unsignedLongLongValue];
+    self.prefs[kUnblindedTokenAutoincrementID] = @([nextID unsignedLongLongValue] + 1);
+    [self savePrefs];
+  }
+  const auto bridgedToken = [[BATUnblindedToken alloc] initWithUnblindedToken:*info];
+  [BATLedgerDatabase insertOrUpdateUnblindedToken:bridgedToken completion:^(BOOL success) {
+    callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
+  }];
 }
 
 - (void)getAllUnblindedTokens:(ledger::GetAllUnblindedTokensCallback)callback
 {
-  // FIXME: Add implementation
+  const auto tokens = [BATLedgerDatabase allUnblindedTokens];
+  callback(VectorFromNSArray(tokens, ^ledger::UnblindedTokenPtr(BATUnblindedToken *info){
+    return info.cppObjPtr;
+  }));
 }
 
 @end

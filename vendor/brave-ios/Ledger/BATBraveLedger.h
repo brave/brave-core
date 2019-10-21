@@ -179,7 +179,7 @@ NS_SWIFT_NAME(BraveLedger)
 
 - (void)grantCaptchaForPromotionId:(NSString *)promoID
                      promotionType:(NSString *)promotionType
-                        completion:(void (^)(NSString *image, NSString *hint))completion;
+                        completion:(void (^)(BATResult result, NSString * _Nonnull json))completion;
 
 - (void)solveGrantCaptchWithPromotionId:(NSString *)promotionId
                                solution:(NSString *)solution;
