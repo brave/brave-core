@@ -38,13 +38,18 @@ void GuestWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
   if (ignore_template_url_service_changing_)
     return;
 
-  // The purpose of below code is togging alternative prefs
+  // The purpose of below code is toggling alternative prefs
   // when user changes from ddg to different search engine provider
   // (or vice versa) from settings ui.
-  const bool is_ddg_is_set =
-      otr_template_url_service_->GetDefaultSearchProvider()->
-          data().prepopulate_id ==
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
+  bool is_ddg_is_set = false;
+  switch (otr_template_url_service_->GetDefaultSearchProvider()
+              ->data()
+              .prepopulate_id) {
+    case TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO:
+    case TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE:
+    case TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE:
+      is_ddg_is_set = true;
+  }
 
   if (UseAlternativeSearchEngineProvider() || is_ddg_is_set)
     brave::ToggleUseAlternativeSearchEngineProvider(otr_profile_);
