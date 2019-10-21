@@ -38,7 +38,7 @@ def main():
 
     repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
 
-    tag = get_brave_version()
+    tag = BRAVE_VERSION
     logging.debug("Tag: {}".format(tag))
 
     # If we are publishing a prerelease, the release can only be in draft mode. If we
