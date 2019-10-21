@@ -171,11 +171,7 @@ BraveProfileSyncServiceImpl::BraveProfileSyncServiceImpl(Profile* profile,
   brave_sync_prefs_ =
       std::make_unique<prefs::Prefs>(sync_client_->GetPrefService());
 
-  auto devices = brave_sync_prefs_->GetSyncDevices();
-  if (devices->size() < 2 &&
-      (brave_sync_prefs_->GetSyncEnabled() ||
-       !brave_sync_prefs_->GetSeed().empty() ||
-       !brave_sync_prefs_->GetThisDeviceName().empty())) {
+  if (IsSyncSetupIncomplete()) {
     // We want to reset the chain because it was not fully created
     // We cannot make it here directly, because some sync classes may not be
     // constructed yet
@@ -243,6 +239,17 @@ void BraveProfileSyncServiceImpl::OnNudgeSyncCycle(RecordsListPtr records) {
 
 BraveProfileSyncServiceImpl::~BraveProfileSyncServiceImpl() {
   network_connection_tracker_->RemoveNetworkConnectionObserver(this);
+}
+
+bool BraveProfileSyncServiceImpl::IsSyncSetupIncomplete() const {
+  auto devices = brave_sync_prefs_->GetSyncDevices();
+  if (devices->size() < 2 &&
+      (brave_sync_prefs_->GetSyncEnabled() ||
+       !brave_sync_prefs_->GetSeed().empty() ||
+       !brave_sync_prefs_->GetThisDeviceName().empty())) {
+    return true;
+  }
+  return false;
 }
 
 void BraveProfileSyncServiceImpl::OnSetupSyncHaveCode(
@@ -637,6 +644,15 @@ void BraveProfileSyncServiceImpl::OnConnectionChanged(
 }
 
 void BraveProfileSyncServiceImpl::Shutdown() {
+  if (IsSyncSetupIncomplete()) {
+    // Need to clear prefs to allow UI page give us code words next time
+    // But we want to avoid unload of Extension in d`tor
+    brave_pref_change_registrar_.RemoveAll();
+    // This will clear prefs and prepare Chromium sync for the proper enabling
+    // when sync will be turned on next time
+    ResetSyncInternal();
+  }
+
   SignalWaitableEvent();
   syncer::ProfileSyncService::Shutdown();
 }

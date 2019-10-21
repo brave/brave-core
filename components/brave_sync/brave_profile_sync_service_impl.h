@@ -40,7 +40,7 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest,
                      OnSetupSyncHaveCode_Reset_SetupAgain);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, ExponentialResend);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords);
-FORWARD_DECLARE_TEST(ServiceTestDeviceLeftover,
+FORWARD_DECLARE_TEST(ServiceStartDeviceLeftoverTest,
                      OnSetupSyncHaveCodeDeviceLeftover);
 
 class BraveSyncServiceTest;
@@ -148,7 +148,7 @@ class BraveProfileSyncServiceImpl
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, ExponentialResend);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
                            GetDevicesWithFetchSyncRecords);
-  FRIEND_TEST_ALL_PREFIXES(::ServiceTestDeviceLeftover,
+  FRIEND_TEST_ALL_PREFIXES(::ServiceStartDeviceLeftoverTest,
                            OnSetupSyncHaveCodeDeviceLeftover);
   friend class ::BraveSyncServiceTest;
 
@@ -195,6 +195,8 @@ class BraveProfileSyncServiceImpl
   void ResendSyncRecords(const std::string& category_name);
 
   void RecordSyncStateP3A() const;
+
+  bool IsSyncSetupIncomplete() const;
 
   static base::TimeDelta GetRetryExponentialWaitAmount(int retry_number);
   static std::vector<unsigned> GetExponentialWaitsForTests();
