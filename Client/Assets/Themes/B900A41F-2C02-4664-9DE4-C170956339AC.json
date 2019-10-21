@@ -25,9 +25,9 @@
             "borderAlpha": 0.2,
         },
         "stats": {
-            "ads": "0xFA4214",
+            "ads": "0xFB542B",
             "trackers": "0x1bc760",
-            "httpse": "0x9339D4",
+            "httpse": "0xA0A5EB",
             "timeSaved": "0xffffff"
         }
     },

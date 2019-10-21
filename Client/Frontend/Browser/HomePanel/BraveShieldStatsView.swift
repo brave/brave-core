@@ -74,8 +74,8 @@ class BraveShieldStatsView: UIView, Themeable {
     }
     
     @objc private func update() {
-        adsStatView.stat = (BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection).decimalFormattedString ?? "0"
-        httpsStatView.stat = BraveGlobalShieldStats.shared.httpse.decimalFormattedString ?? "0"
+        adsStatView.stat = (BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection).kFormattedNumber
+        httpsStatView.stat = BraveGlobalShieldStats.shared.httpse.kFormattedNumber
         timeStatView.stat = timeSaved
     }
     
@@ -138,7 +138,7 @@ class StatView: UIView {
         let label = UILabel()
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 24, weight: UIFont.Weight.bold)
+        label.font = UIFont.systemFont(ofSize: 32, weight: UIFont.Weight.medium)
         return label
     }()
     
@@ -147,7 +147,7 @@ class StatView: UIView {
         label.textColor = UX.HomePanel.StatTitleColor
         label.textAlignment = .center
         label.numberOfLines = 0
-        label.font = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.medium)
+        label.font = UIFont.systemFont(ofSize: 10, weight: UIFont.Weight.medium)
         return label
     }()
     
