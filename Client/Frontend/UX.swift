@@ -21,7 +21,7 @@ struct UX {
     struct HomePanel {
         static let BackgroundColorPBM = GreyJ
         static let BackgroundColor = UIColor.white
-        static let StatTitleColor = GreyF
+        static let StatTitleColor = UIColor(rgb: 0x8C9094)
     }
     
     struct Favorites {
