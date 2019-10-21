@@ -19,8 +19,8 @@ extension OnboardingRewardsViewController {
     
     class View: UIView {
         
-        let continueButton = CommonViews.primaryButton(text: Strings.OBJoinButton).then {
-            $0.accessibilityIdentifier = "OnboardingRewardsViewController.OBJoinButton"
+        let continueButton = CommonViews.primaryButton(text: Strings.OBShowMeButton).then {
+            $0.accessibilityIdentifier = "OnboardingRewardsViewController.OBShowMeButton"
         }
         
         let skipButton = CommonViews.secondaryButton().then {
@@ -59,6 +59,8 @@ extension OnboardingRewardsViewController {
         private lazy var textStackView = UIStackView().then { stackView in
             stackView.axis = .vertical
             stackView.spacing = 8
+            stackView.layoutMargins = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
+            stackView.isLayoutMarginsRelativeArrangement = true
             
             [titleLabel, descriptionLabel].forEach {
                 stackView.addArrangedSubview($0)
@@ -94,6 +96,10 @@ extension OnboardingRewardsViewController {
                 .forEach(buttonsStackView.addArrangedSubview(_:))
             
             [textStackView, buttonsStackView].forEach(descriptionStackView.addArrangedSubview(_:))
+            
+            continueButton.snp.makeConstraints {
+                $0.centerX.equalTo(self.snp.centerX)
+            }
         }
         
         func updateDetailsText(_ text: String, boldWords: Int) {

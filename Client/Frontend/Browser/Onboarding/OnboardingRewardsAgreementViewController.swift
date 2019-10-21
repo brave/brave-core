@@ -22,8 +22,19 @@ class OnboardingRewardsAgreementViewController: OnboardingViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        contentView.agreeButton.addTarget(self, action: #selector(onAgreed), for: .touchUpInside)
-        contentView.cancelButton.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
+        let isRewardsEnabled = rewards?.ledger.isEnabled == true
+        let isAdsRegionSupported = BraveAds.isCurrentRegionSupported()
+        
+        // The user is not new..
+        if Preferences.General.basicOnboardingProgress.value != OnboardingProgress.none.rawValue || isRewardsEnabled {
+            contentView.updateSubtitleText(Strings.OBRewardsDetailInAdRegion, boldWords: 2)
+        } else {
+            // The user is new..
+            contentView.updateSubtitleText(isAdsRegionSupported ? Strings.OBRewardsDetailInAdRegion : Strings.OBRewardsDetailOutsideAdRegion, boldWords: isAdsRegionSupported ? 2 : 1)
+        }
+        
+        contentView.turnOnButton.addTarget(self, action: #selector(onTurnOn), for: .touchUpInside)
+        contentView.skipButton.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
         
         (view as! View).onTermsOfServicePressed = { [weak self] in  // swiftlint:disable:this force_cast
             guard let self = self else { return }
@@ -39,16 +50,16 @@ class OnboardingRewardsAgreementViewController: OnboardingViewController {
     }
     
     @objc
-    private func onAgreed() {
+    private func onTurnOn() {
         if loadingView.superview != nil || loadingView.isAnimating {
             return
         }
         
-        let titleColour = contentView.agreeButton.titleColor(for: .normal)
-        contentView.agreeButton.setTitleColor(.clear, for: .normal)
-        contentView.agreeButton.isUserInteractionEnabled = false
-        contentView.cancelButton.isUserInteractionEnabled = false
-        contentView.agreeButton.addSubview(loadingView)
+        let titleColour = contentView.turnOnButton.titleColor(for: .normal)
+        contentView.turnOnButton.setTitleColor(.clear, for: .normal)
+        contentView.turnOnButton.isUserInteractionEnabled = false
+        contentView.skipButton.isUserInteractionEnabled = false
+        contentView.turnOnButton.addSubview(loadingView)
         loadingView.snp.makeConstraints {
             $0.center.equalToSuperview()
         }
@@ -59,9 +70,9 @@ class OnboardingRewardsAgreementViewController: OnboardingViewController {
 
             self.loadingView.stopAnimating()
             self.loadingView.removeFromSuperview()
-            self.contentView.agreeButton.setTitleColor(titleColour, for: .normal)
-            self.contentView.agreeButton.isUserInteractionEnabled = true
-            self.contentView.cancelButton.isUserInteractionEnabled = true
+            self.contentView.turnOnButton.setTitleColor(titleColour, for: .normal)
+            self.contentView.turnOnButton.isUserInteractionEnabled = true
+            self.contentView.skipButton.isUserInteractionEnabled = true
             
             if success {
                 self.continueTapped()

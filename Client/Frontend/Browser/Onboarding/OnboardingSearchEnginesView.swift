@@ -122,6 +122,10 @@ extension OnboardingSearchEnginesViewController {
                 $0.alpha = CGFloat.leastNormalMagnitude
             }
             
+            continueButton.snp.makeConstraints {
+                $0.centerX.equalTo(self.snp.centerX)
+            }
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
                 self?.startAnimations()
             }
