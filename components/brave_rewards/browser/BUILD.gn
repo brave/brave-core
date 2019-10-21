@@ -1,10 +1,6 @@
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
-declare_args() {
-  brave_safetynet_api_key = ""
-}
-
 source_set("browser") {
   public_deps = [
     "buildflags",
@@ -128,12 +124,7 @@ source_set("browser") {
     ]
 
     if (is_android) {
-      sources += [
-        "safetynet_check.cc",
-        "safetynet_check.h",
-      ]
-
-      configs += [ ":safetynet_config" ]
+      deps += [ "android" ]
     }
   }
 }
@@ -154,8 +145,4 @@ source_set("testutil") {
     "test_util.cc",
     "test_util.h",
   ]
-}
-
-config("safetynet_config") {
-  defines = [ "SAFETYNET_API_KEY=\"$brave_safetynet_api_key\"" ]
 }

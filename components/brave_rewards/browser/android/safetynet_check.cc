@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/safetynet_check.h"
+#include "brave/components/brave_rewards/browser/android/safetynet_check.h"
 
 #include <memory>
 #include <utility>
 
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
-#include "brave/build/android/jni_headers/SafetyNetCheck_jni.h"
+#include "brave/components/brave_rewards/browser/jni_headers/SafetyNetCheck_jni.h"
 
 namespace safetynet_check {
 
