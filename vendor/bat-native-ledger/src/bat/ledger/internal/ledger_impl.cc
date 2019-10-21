@@ -322,7 +322,7 @@ void LedgerImpl::OnLedgerStateLoaded(
 void LedgerImpl::SetConfirmationsWalletInfo(
     const braveledger_bat_helper::WALLET_INFO_ST& wallet_info) {
   if (!bat_confirmations_) {
-    confirmations::_is_production = ledger::is_production;
+    confirmations::_environment = ledger::_environment;
     confirmations::_is_debug = ledger::is_debug;
 
     bat_confirmations_.reset(

@@ -13,7 +13,7 @@ namespace ads {
 
 bool _is_debug = false;
 bool _is_testing = false;
-bool _is_production = false;
+Environment _environment = Environment::DEVELOPMENT;
 
 const char _bundle_schema_resource_name[] = "bundle-schema.json";
 const char _catalog_schema_resource_name[] = "catalog-schema.json";

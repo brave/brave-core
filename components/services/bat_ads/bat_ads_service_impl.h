@@ -13,6 +13,7 @@
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/binding_set.h"
 #include "services/service_manager/public/cpp/service_context_ref.h"
+#include "bat/ads/ads.h"
 
 namespace bat_ads {
 
@@ -29,9 +30,9 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
       mojom::BatAdsAssociatedRequest bat_ads,
       CreateCallback callback) override;
 
-  void SetProduction(
-      const bool is_production,
-      SetProductionCallback callback) override;
+  void SetEnvironment(
+      const ads::Environment environment,
+      SetEnvironmentCallback callback) override;
 
   void SetTesting(
       const bool is_testing,

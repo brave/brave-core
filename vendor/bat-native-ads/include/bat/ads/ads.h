@@ -18,19 +18,21 @@
 #include "bat/ads/export.h"
 #include "bat/ads/notification_event_type.h"
 #include "bat/ads/notification_info.h"
+#include "bat/ads/public/interfaces/ads.mojom.h"
 
 namespace ads {
 
 struct AdsHistory;
 
+using Environment = mojom::Environment;
+
 using InitializeCallback = std::function<void(const Result)>;
 using ShutdownCallback = std::function<void(const Result)>;
 using RemoveAllHistoryCallback = std::function<void(const Result)>;
 
-// |_is_production| indicates that URL requests should use production servers if
-// set to |true| or staging servers if set to |false| but can be overridden via
-// command-line arguments
-extern bool _is_production;
+// |_environment| indicates that URL requests should use production, staging or
+// development servers but can be overridden via command-line arguments
+extern Environment _environment;
 
 // |_is_debug| indicates that the next catalogue download should be reduced from
 // ~1 hour to ~25 seconds. This value should be set to |false| on production

@@ -31,11 +31,11 @@ void BatAdsServiceImpl::Create(
   std::move(callback).Run();
 }
 
-void BatAdsServiceImpl::SetProduction(
-    const bool is_production,
-    SetProductionCallback callback) {
-  DCHECK(!is_initialized_ || ads::_is_production == is_production);
-  ads::_is_production = is_production;
+void BatAdsServiceImpl::SetEnvironment(
+    const ads::Environment environment,
+    SetEnvironmentCallback callback) {
+  DCHECK(!is_initialized_|| ads::_environment == environment);
+  ads::_environment = environment;
   std::move(callback).Run();
 }
 

@@ -20,53 +20,53 @@ class UpholdUtilTest : public testing::Test {
 
 TEST(UpholdUtilTest, GetClientId) {
   // production
-  ledger::is_production = true;
+  ledger::_environment = ledger::Environment::PRODUCTION;
   std::string result = braveledger_uphold::GetClientId();
   ASSERT_EQ(result, kClientIdProduction);
 
   // staging
-  ledger::is_production = false;
+  ledger::_environment = ledger::Environment::STAGING;
   result = braveledger_uphold::GetClientId();
   ASSERT_EQ(result, kClientIdStaging);
 }
 
 TEST(UpholdUtilTest, GetClientSecret) {
   // production
-  ledger::is_production = true;
+  ledger::_environment = ledger::Environment::PRODUCTION;
   std::string result = braveledger_uphold::GetClientSecret();
   ASSERT_EQ(result, kClientSecretProduction);
 
   // staging
-  ledger::is_production = false;
+  ledger::_environment = ledger::Environment::STAGING;
   result = braveledger_uphold::GetClientSecret();
   ASSERT_EQ(result, kClientSecretStaging);
 }
 
 TEST(UpholdUtilTest, GetAPIUrl) {
   // empty path, production
-  ledger::is_production = true;
+  ledger::_environment = ledger::Environment::PRODUCTION;
   std::string result = braveledger_uphold::GetAPIUrl("");
   ASSERT_EQ(result, kAPIUrlProduction);
 
   // empty path, staging
-  ledger::is_production = false;
+  ledger::_environment = ledger::Environment::STAGING;
   result = braveledger_uphold::GetAPIUrl("");
   ASSERT_EQ(result, kAPIUrlStaging);
 
   // with path
-  ledger::is_production = false;
+  ledger::_environment = ledger::Environment::STAGING;
   result = braveledger_uphold::GetAPIUrl("/v0/testing");
   ASSERT_EQ(result, static_cast<std::string>(kAPIUrlStaging) + "/v0/testing");
 }
 
 TEST(UpholdUtilTest, GetFeeAddress) {
   // production
-  ledger::is_production = true;
+  ledger::_environment = ledger::Environment::PRODUCTION;
   std::string result = braveledger_uphold::GetFeeAddress();
   ASSERT_EQ(result, kFeeAddressProduction);
 
   // staging
-  ledger::is_production = false;
+  ledger::_environment = ledger::Environment::STAGING;
   result = braveledger_uphold::GetFeeAddress();
   ASSERT_EQ(result, kFeeAddressStaging);
 }
@@ -95,7 +95,7 @@ TEST(UpholdUtilTest, ConvertToProbi) {
 
 TEST(UpholdUtilTest, GetVerifyUrl) {
   // production
-  ledger::is_production = true;
+  ledger::_environment = ledger::Environment::PRODUCTION;
   std::string result = braveledger_uphold::GetVerifyUrl("rdfdsfsdfsdf");
   ASSERT_EQ(result,
       "https://uphold.com/authorize/"
@@ -104,7 +104,7 @@ TEST(UpholdUtilTest, GetVerifyUrl) {
       "transactions:transfer:others&intention=kyc&state=rdfdsfsdfsdf");
 
   // staging
-  ledger::is_production = false;
+  ledger::_environment = ledger::Environment::STAGING;
   result = braveledger_uphold::GetVerifyUrl("rdfdsfsdfsdf");
   ASSERT_EQ(result,
       "https://sandbox.uphold.com/authorize/"
@@ -119,12 +119,12 @@ TEST(UpholdUtilTest, GetAddUrl) {
   ASSERT_EQ(result, "");
 
   // production
-  ledger::is_production = true;
+  ledger::_environment = ledger::Environment::PRODUCTION;
   result = braveledger_uphold::GetAddUrl("9324i5i32459i");
   ASSERT_EQ(result, "https://uphold.com/dashboard/cards/9324i5i32459i/add");
 
   // staging
-  ledger::is_production = false;
+  ledger::_environment = ledger::Environment::STAGING;
   result = braveledger_uphold::GetAddUrl("9324i5i32459i");
   ASSERT_EQ(result,
       "https://sandbox.uphold.com/dashboard/cards/9324i5i32459i/add");
@@ -136,12 +136,12 @@ TEST(UpholdUtilTest, GetWithdrawUrl) {
   ASSERT_EQ(result, "");
 
   // production
-  ledger::is_production = true;
+  ledger::_environment = ledger::Environment::PRODUCTION;
   result = braveledger_uphold::GetWithdrawUrl("9324i5i32459i");
   ASSERT_EQ(result, "https://uphold.com/dashboard/cards/9324i5i32459i/use");
 
   // staging
-  ledger::is_production = false;
+  ledger::_environment = ledger::Environment::STAGING;
   result = braveledger_uphold::GetWithdrawUrl("9324i5i32459i");
   ASSERT_EQ(result,
       "https://sandbox.uphold.com/dashboard/cards/9324i5i32459i/use");
@@ -149,14 +149,14 @@ TEST(UpholdUtilTest, GetWithdrawUrl) {
 
 TEST(UpholdUtilTest, GetSecondStepVerify) {
   // production
-  ledger::is_production = true;
+  ledger::_environment = ledger::Environment::PRODUCTION;
   std::string result = braveledger_uphold::GetSecondStepVerify();
   ASSERT_EQ(result,
       "https://uphold.com/signup/step2?"
       "application_id=6d8d9473ed20be627f71ed46e207f40c004c5b1a&intention=kyc");
 
   // staging
-  ledger::is_production = false;
+  ledger::_environment = ledger::Environment::STAGING;
   result = braveledger_uphold::GetSecondStepVerify();
   ASSERT_EQ(result,
       "https://sandbox.uphold.com/signup/step2?"
@@ -193,7 +193,7 @@ TEST(UpholdUtilTest, RequestAuthorization) {
 
 
   // token is not defined
-  ledger::is_production = false;
+  ledger::_environment = ledger::Environment::STAGING;
   result = braveledger_uphold::RequestAuthorization();
   ASSERT_EQ(result.at(0),
       "Authorization: Basic NGMyYjY2NWNhMDYwZDkxMmZlYzVjNzM1YzczNDg1OWEwNjEx"
@@ -206,13 +206,13 @@ TEST(UpholdUtilTest, GenerateRandomString) {
   ASSERT_EQ(result, "123456789");
 
   // random string
-  ledger::is_production = false;
+  ledger::_environment = ledger::Environment::STAGING;
   result = braveledger_uphold::GenerateRandomString(false);
   ASSERT_EQ(result.length(), 64u);
 }
 
 TEST(UpholdUtilTest, GenerateLinks) {
-  ledger::is_production = false;
+  ledger::_environment = ledger::Environment::STAGING;
 
   auto wallet = ledger::ExternalWallet::New();
   wallet->address = "123123123124234234234";
@@ -295,7 +295,7 @@ TEST(UpholdUtilTest, GenerateLinks) {
 }
 
 TEST(UpholdUtilTest, GenerateVerifyLink) {
-  ledger::is_production = false;
+  ledger::_environment = ledger::Environment::STAGING;
 
   auto wallet = ledger::ExternalWallet::New();
   wallet->one_time_string = "123123123124234234234";

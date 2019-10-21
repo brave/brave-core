@@ -9,7 +9,7 @@
 
 namespace confirmations {
 
-bool _is_production = false;
+ledger::Environment _environment = ledger::Environment::STAGING;
 bool _is_debug = false;
 
 const char _confirmations_resource_name[] = "confirmations.json";

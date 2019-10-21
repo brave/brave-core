@@ -20,7 +20,7 @@
 
 namespace ledger {
 
-extern bool is_production;
+extern Environment _environment;
 extern bool is_debug;
 extern bool is_testing;
 extern int reconcile_time;  // minutes

@@ -193,9 +193,18 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 
 BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
 BATClassLedgerBridge(BOOL, isTesting, setTesting, is_testing)
-BATClassLedgerBridge(BOOL, isProduction, setProduction, is_production)
 BATClassLedgerBridge(int, reconcileTime, setReconcileTime, reconcile_time)
 BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
+
++ (BATEnvironment)environment
+{
+  return static_cast<BATEnvironment>(ledger::_environment);
+}
+
++ (void)setEnvironment:(BATEnvironment)environment
+{
+  ledger::_environment = static_cast<ledger::Environment>(environment);
+}
 
 #pragma mark - Wallet
 

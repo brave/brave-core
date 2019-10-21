@@ -33,10 +33,21 @@ AdsServe::AdsServe(AdsImpl* ads, AdsClient* ads_client, Bundle* bundle) :
 AdsServe::~AdsServe() = default;
 
 void AdsServe::BuildUrl() {
-  if (_is_production) {
-    url_ = PRODUCTION_SERVER;
-  } else {
-    url_ = STAGING_SERVER;
+  switch (_environment) {
+    case Environment::PRODUCTION: {
+      url_ = PRODUCTION_SERVER;
+      break;
+    }
+
+    case Environment::STAGING: {
+      url_ = STAGING_SERVER;
+      break;
+    }
+
+    case Environment::DEVELOPMENT: {
+      url_ = DEVELOPMENT_SERVER;
+      break;
+    }
   }
 
   url_ += CATALOG_PATH;

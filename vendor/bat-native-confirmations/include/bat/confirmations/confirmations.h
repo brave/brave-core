@@ -26,10 +26,9 @@ using TransactionsInfo = ::ledger::TransactionsInfo;
 
 using OnGetTransactionHistory = ::ledger::GetTransactionHistoryCallback;
 
-// |_is_production| indicates that URL requests should use production servers if
-// set to |true| or staging servers if set to |false| but can be overridden via
-// command-line arguments
-extern bool _is_production;
+// |_environment| indicates that URL requests should use production, staging or
+// development servers but can be overridden via command-line arguments
+extern ledger::Environment _environment;
 
 // |_is_debug| indicates that the next token redemption date should be reduced
 // from ~7 days to ~25 minutes. This value should be set to |false| on

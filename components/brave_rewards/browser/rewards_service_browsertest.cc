@@ -451,9 +451,9 @@ class BraveRewardsBrowserTest :
           base::Unretained(this)));
   }
 
-  void GetProduction() {
-    rewards_service()->GetProduction(
-        base::Bind(&BraveRewardsBrowserTest::OnGetProduction,
+  void GetEnvironment() {
+    rewards_service()->GetEnvironment(
+        base::Bind(&BraveRewardsBrowserTest::OnGetEnvironment,
           base::Unretained(this)));
   }
 
@@ -1232,7 +1232,7 @@ class BraveRewardsBrowserTest :
 
   const std::vector<double> tip_amounts_ = {1.0, 5.0, 10.0};
 
-  MOCK_METHOD1(OnGetProduction, void(bool));
+  MOCK_METHOD1(OnGetEnvironment, void(ledger::Environment));
   MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
   MOCK_METHOD1(OnGetShortRetries, void(bool));
@@ -1430,39 +1430,40 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ActivateSettingsModal) {
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsSingleArg) {
   testing::InSequence s;
-  // SetProduction(true)
-  EXPECT_CALL(*this, OnGetProduction(true));
+  // SetEnvironment(ledger::Environment::PRODUCTION)
+  EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::PRODUCTION));
   // Staging - true and 1
-  EXPECT_CALL(*this, OnGetProduction(false)).Times(2);
+  EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::STAGING)).Times(2);
   // Staging - false and random
-  EXPECT_CALL(*this, OnGetProduction(true)).Times(2);
+  EXPECT_CALL(*this, OnGetEnvironment(
+      ledger::Environment::PRODUCTION)).Times(2);
 
-  rewards_service()->SetProduction(true);
-  GetProduction();
+  rewards_service()->SetEnvironment(ledger::Environment::PRODUCTION);
+  GetEnvironment();
   RunUntilIdle();
 
   // Staging - true
-  rewards_service()->SetProduction(true);
+  rewards_service()->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service()->HandleFlags("staging=true");
-  GetProduction();
+  GetEnvironment();
   RunUntilIdle();
 
   // Staging - 1
-  rewards_service()->SetProduction(true);
+  rewards_service()->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service()->HandleFlags("staging=1");
-  GetProduction();
+  GetEnvironment();
   RunUntilIdle();
 
   // Staging - false
-  rewards_service()->SetProduction(false);
+  rewards_service()->SetEnvironment(ledger::Environment::STAGING);
   rewards_service()->HandleFlags("staging=false");
-  GetProduction();
+  GetEnvironment();
   RunUntilIdle();
 
   // Staging - random
-  rewards_service()->SetProduction(false);
+  rewards_service()->SetEnvironment(ledger::Environment::STAGING);
   rewards_service()->HandleFlags("staging=werwe");
-  GetProduction();
+  GetEnvironment();
   RunUntilIdle();
 
   // SetDebug(true)
@@ -1498,6 +1499,45 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsSingleArg) {
   rewards_service()->SetDebug(true);
   rewards_service()->HandleFlags("debug=werwe");
   GetDebug();
+  RunUntilIdle();
+
+  // SetEnvironment(ledger::Environment::PRODUCTION)
+  EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::PRODUCTION));
+  // Development - true and 1
+  EXPECT_CALL(
+      *this,
+      OnGetEnvironment(ledger::Environment::DEVELOPMENT)).Times(2);
+  // Development - false and random
+  EXPECT_CALL(
+      *this,
+      OnGetEnvironment(ledger::Environment::PRODUCTION)).Times(2);
+
+  rewards_service()->SetEnvironment(ledger::Environment::PRODUCTION);
+  GetEnvironment();
+  RunUntilIdle();
+
+  // Development - true
+  rewards_service()->SetEnvironment(ledger::Environment::PRODUCTION);
+  rewards_service()->HandleFlags("development=true");
+  GetEnvironment();
+  RunUntilIdle();
+
+  // Development - 1
+  rewards_service()->SetEnvironment(ledger::Environment::PRODUCTION);
+  rewards_service()->HandleFlags("development=1");
+  GetEnvironment();
+  RunUntilIdle();
+
+  // Development - false
+  rewards_service()->SetEnvironment(ledger::Environment::PRODUCTION);
+  rewards_service()->HandleFlags("development=false");
+  GetEnvironment();
+  RunUntilIdle();
+
+  // Development - random
+  rewards_service()->SetEnvironment(ledger::Environment::PRODUCTION);
+  rewards_service()->HandleFlags("development=werwe");
+  GetEnvironment();
   RunUntilIdle();
 
   // positive number
@@ -1540,12 +1580,12 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsSingleArg) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsMultipleFlags) {
-  EXPECT_CALL(*this, OnGetProduction(false));
+  EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::STAGING));
   EXPECT_CALL(*this, OnGetDebug(true));
   EXPECT_CALL(*this, OnGetReconcileTime(10));
   EXPECT_CALL(*this, OnGetShortRetries(true));
 
-  rewards_service()->SetProduction(true);
+  rewards_service()->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service()->SetDebug(true);
   rewards_service()->SetReconcileTime(0);
   rewards_service()->SetShortRetries(false);
@@ -1555,18 +1595,18 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsMultipleFlags) {
 
   GetReconcileTime();
   GetShortRetries();
-  GetProduction();
+  GetEnvironment();
   GetDebug();
   RunUntilIdle();
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsWrongInput) {
-  EXPECT_CALL(*this, OnGetProduction(true));
+  EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::PRODUCTION));
   EXPECT_CALL(*this, OnGetDebug(false));
   EXPECT_CALL(*this, OnGetReconcileTime(0));
   EXPECT_CALL(*this, OnGetShortRetries(false));
 
-  rewards_service()->SetProduction(true);
+  rewards_service()->SetEnvironment(ledger::Environment::PRODUCTION);
   rewards_service()->SetDebug(false);
   rewards_service()->SetReconcileTime(0);
   rewards_service()->SetShortRetries(false);
@@ -1577,7 +1617,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsWrongInput) {
   GetReconcileTime();
   GetShortRetries();
   GetDebug();
-  GetProduction();
+  GetEnvironment();
   RunUntilIdle();
 }
 
