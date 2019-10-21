@@ -155,6 +155,27 @@ std::unique_ptr<base::subtle::ScopedTimeClockOverrides> OverrideForTimeDelta(
       nullptr);
 }
 
+void PreparePrefsStateDeviceLeftover(PrefService* pref_service) {
+  // Emulating we have one device and seed saved, like in the case when
+  // the browser was closed right after starting sync chain creation without
+  // waiting for the second device to connect
+  const std::string devices_json =
+      R"json(
+    {
+    "devices":
+    [{
+      "device_id":"0",
+      "last_active":1.571261287102e+12,
+      "name":"COMPUTER",
+      "object_id":"67, 22, 139, 42, 47, 37, 218, 215,
+                   254, 228, 11, 42, 192, 73, 99, 47"
+    }]
+    }
+    )json";
+  pref_service->SetString(brave_sync::prefs::kSyncDeviceList, devices_json);
+  pref_service->SetString(brave_sync::prefs::kSyncSeed, "1, 2, 3");
+}
+
 }  // namespace
 
 class MockBraveSyncServiceObserver : public BraveSyncServiceObserver {
@@ -211,11 +232,13 @@ class BraveSyncServiceTest : public testing::Test {
     sync_service_->BraveSyncService::RemoveObserver(observer_.get());
     // this will also trigger a shutdown of the brave sync service
     sync_service_->Shutdown();
+    PostShotdownService();
     sync_prefs_.reset();
     profile_.reset();
   }
 
   virtual void PreCreateService() {}
+  virtual void PostShotdownService() {}
 
   Profile* profile() { return profile_.get(); }
   BraveProfileSyncServiceImpl* sync_service() { return sync_service_; }
@@ -243,28 +266,20 @@ class BraveSyncServiceTest : public testing::Test {
   base::ScopedTempDir temp_dir_;
 };
 
-class ServiceTestDeviceLeftover : public BraveSyncServiceTest {
+class ServiceStartDeviceLeftoverTest : public BraveSyncServiceTest {
  public:
   void PreCreateService() override {
     // Emulating we have one device and seed saved, like inthe case when
     // the browser was closed righ after starting procedure of sync chain
     // creation without waiting for the second device to connect
-    const std::string devices_json =
-        R"json(
-      {
-      "devices":
-      [{
-        "device_id":"0",
-        "last_active":1.571261287102e+12,
-        "name":"COMPUTER",
-        "object_id":"67, 22, 139, 42, 47, 37, 218, 215,
-                     254, 228, 11, 42, 192, 73, 99, 47"
-      }]
-      }
-      )json";
-    profile()->GetPrefs()->SetString(brave_sync::prefs::kSyncDeviceList,
-                                     devices_json);
-    profile()->GetPrefs()->SetString(brave_sync::prefs::kSyncSeed, "1, 2, 3");
+    PreparePrefsStateDeviceLeftover(profile()->GetPrefs());
+  }
+};
+
+class ServiceShotdownDeviceLeftoverTest : public BraveSyncServiceTest {
+ public:
+  void PostShotdownService() override {
+    EXPECT_EQ(brave_sync_prefs()->GetSyncDevices()->size(), 0u);
   }
 };
 
@@ -1011,7 +1026,7 @@ TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
   }
 }
 
-TEST_F(ServiceTestDeviceLeftover, OnSetupSyncHaveCodeDeviceLeftover) {
+TEST_F(ServiceStartDeviceLeftoverTest, OnSetupSyncHaveCodeDeviceLeftover) {
   EXPECT_TRUE(sync_service()->reseting_);
   EXPECT_EQ(brave_sync_prefs()->GetSyncDevices()->size(), 0u);
 
@@ -1022,4 +1037,12 @@ TEST_F(ServiceTestDeviceLeftover, OnSetupSyncHaveCodeDeviceLeftover) {
   EXPECT_TRUE(
       profile()->GetPrefs()->GetBoolean(brave_sync::prefs::kSyncEnabled));
   EXPECT_FALSE(sync_service()->reseting_);
+}
+
+TEST_F(ServiceShotdownDeviceLeftoverTest, OnShutdownDeviceLeftover) {
+  // Configure state of enabled sync and just only one device in the chain
+  // before service shotdown
+  PreparePrefsStateDeviceLeftover(profile()->GetPrefs());
+  // Will verify in ServiceShotdownDeviceLeftoverTest::PostShotdownService
+  // we did a proper cleanup
 }
