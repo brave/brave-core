@@ -154,6 +154,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
       extensions_features::kNewExtensionUpdaterService.name,
 #endif
+      password_manager::features::kPasswordImport.name,
     // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated on
     // this feature.
       features::kWebUIDarkMode.name,
