@@ -84,7 +84,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 @property (nonatomic) BATCommonOperations *commonOps;
 @property (nonatomic) NSMutableDictionary<NSString *, __kindof NSObject *> *prefs;
 
-@property (nonatomic) NSMutableArray<BATGrant *> *mPendingGrants;
+@property (nonatomic) NSMutableArray<BATPromotion *> *mPendingPromotions;
 
 @property (nonatomic) NSHashTable<BATBraveLedgerObserver *> *observers;
 
@@ -110,7 +110,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
     self.commonOps = [[BATCommonOperations alloc] initWithStoragePath:path];
     self.state = [[NSMutableDictionary alloc] initWithContentsOfFile:self.randomStatePath] ?: [[NSMutableDictionary alloc] init];
     self.fileWriteThread = dispatch_queue_create("com.rewards.file-write", DISPATCH_QUEUE_SERIAL);
-    self.mPendingGrants = [[NSMutableArray alloc] init];
+    self.mPendingPromotions = [[NSMutableArray alloc] init];
     self.observers = [NSHashTable weakObjectsHashTable];
 
     self.prefs = [[NSMutableDictionary alloc] initWithContentsOfFile:[self prefsPath]];
@@ -317,7 +317,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   //   - LEDGER_OK: Good to go
   //   - LEDGER_ERROR: Recovery failed
   ledger->RecoverWallet(std::string(passphrase.UTF8String),
-    ^(const ledger::Result result, const double balance, std::vector<ledger::GrantPtr> grants) {
+    ^(const ledger::Result result, const double balance) {
       const auto strongSelf = weakSelf;
       if (!strongSelf) { return; }
       NSError *error = nil;
@@ -552,18 +552,29 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (NSArray<BATGrant *> *)pendingGrants
 {
-  return [self.mPendingGrants copy];
+  return [self.mPendingPromotions copy];
 }
 
+// TODO: Remove this when ledger::Grant goes away
 - (BOOL)isGrantUGP:(const ledger::Grant &)grant
 {
   return grant.type == "ugp";
 }
 
+// TODO: Remove this when ledger::Grant goes away
 - (NSString *)notificationIDForGrant:(const ledger::GrantPtr)grant
 {
   const auto prefix = [self isGrantUGP:*grant] ? @"rewards_grant_" : @"rewards_grant_ads_";
   const auto promotionId = [NSString stringWithUTF8String:grant->promotion_id.c_str()];
+  return [NSString stringWithFormat:@"%@%@", prefix, promotionId];
+}
+
+
+- (NSString *)notificationIDForPromo:(const ledger::PromotionPtr)promo
+{
+  bool isUGP = promo->type == ledger::PromotionType::UGP;
+  const auto prefix = isUGP ? @"rewards_grant_" : @"rewards_grant_ads_";
+  const auto promotionId = [NSString stringWithFormat:@"%lld", promo->id];
   return [NSString stringWithFormat:@"%@%@", prefix, promotionId];
 }
 
@@ -574,22 +585,21 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)fetchAvailableGrantsForLanguage:(NSString *)language paymentId:(NSString *)paymentId completion:(nullable void (^)(NSArray<BATGrant *> *grants))completion
 {
-  ledger->FetchPromotions(^(ledger::Result result, std::vector<ledger::PromotionPtr> grants) {
+  ledger->FetchPromotions(^(ledger::Result result, std::vector<ledger::PromotionPtr> promotions) {
     if (result != ledger::Result::LEDGER_OK) {
       return;
     }
-    [self.mPendingGrants removeAllObjects];
-    for (int i = 0; i < grants.size(); i++) {
-      ledger::GrantPtr grant = std::move(grants[i]);
-      const auto bridgedGrant = [[BATGrant alloc] initWithGrant:*grant];
-      [self.mPendingGrants addObject:bridgedGrant];
-
-      bool isUGP = [self isGrantUGP:*grant];
+    [self.mPendingPromotions removeAllObjects];
+    for (int i = 0; i < promotions.size(); i++) {
+      ledger::PromotionPtr promo = std::move(promotions[i]);
+      const auto bridgedPromotion = [[BATPromotion alloc] initWithPromotion:*promo];
+      [self.mPendingPromotions addObject:bridgedPromotion];
+      bool isUGP = bridgedPromotion.type == BATPromotionTypeUgp;
       auto notificationKind = isUGP ? BATRewardsNotificationKindGrant : BATRewardsNotificationKindGrantAds;
 
       [self addNotificationOfKind:notificationKind
                          userInfo:nil
-                   notificationID:[self notificationIDForGrant:std::move(grant)]
+                   notificationID:[self notificationIDForPromo:std::move(promo)]
                          onlyOnce:YES];
     }
     for (BATBraveLedgerObserver *observer in [self.observers copy]) {
