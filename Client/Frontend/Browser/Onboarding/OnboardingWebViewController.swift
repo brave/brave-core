@@ -21,7 +21,8 @@ class OnboardingWebViewController: UIViewController {
     
     private let toolbar = Toolbar().then {
         $0.snp.makeConstraints {
-            $0.height.equalTo(45.0)
+            $0.height.greaterThanOrEqualTo(45.0)
+            //$0.height.equalTo(45.0)
         }
     }
     
@@ -220,22 +221,17 @@ extension OnboardingWebViewController {
             
             middleStackview.snp.makeConstraints {
                 $0.centerX.equalTo(self.snp.centerX)
-                $0.top.equalTo(self.snp.top)
-                $0.bottom.equalTo(self.snp.bottom)
+                $0.top.bottom.equalToSuperview()
             }
             
             leftStackview.snp.makeConstraints {
-                $0.left.equalTo(self.snp.left)
+                $0.left.top.bottom.equalToSuperview()
                 $0.right.equalTo(middleStackview.snp.left).offset(-20.0)
-                $0.top.equalTo(self.snp.top)
-                $0.bottom.equalTo(self.snp.bottom)
             }
             
             rightStackview.snp.makeConstraints {
+                $0.right.top.bottom.equalToSuperview()
                 $0.left.equalTo(middleStackview.snp.right).offset(20.0)
-                $0.right.equalTo(self.snp.right)
-                $0.top.equalTo(self.snp.top)
-                $0.bottom.equalTo(self.snp.bottom)
             }
         }
         

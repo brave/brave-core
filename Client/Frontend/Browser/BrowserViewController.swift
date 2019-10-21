@@ -684,6 +684,25 @@ class BrowserViewController: UIViewController {
     }
     
     func presentOnboardingIntro() {
+        // 1. Existing user.
+        // 2. User already completed onboarding.
+        if Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue {
+            // The user has ads in their region and they completed all onboarding.
+            if BraveAds.isCurrentRegionSupported()
+                &&
+                Preferences.General.basicOnboardingProgress.value == OnboardingProgress.ads.rawValue {
+                return
+            }
+            
+            // The user doesn't have ads in their region and they've completed rewards.
+            if !BraveAds.isCurrentRegionSupported()
+                &&
+                Preferences.General.basicOnboardingProgress.value == OnboardingProgress.rewards.rawValue {
+                return
+            }
+        }
+        
+        // The user either skipped or didn't complete onboarding.
         let isRewardsEnabled = rewards?.ledger.isEnabled == true
         
         // 1. Existing user.
@@ -3306,12 +3325,43 @@ extension BrowserViewController {
 
 extension BrowserViewController: OnboardingControllerDelegate {
     func onboardingCompleted(_ onboardingController: OnboardingNavigationController) {
+        Preferences.General.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
+        Preferences.General.basicOnboardingNextOnboardingPrompt.value = nil
+        
+        #if NO_REWARDS
         switch onboardingController.onboardingType {
         case .newUser:
-            Preferences.General.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
-            Preferences.General.basicOnboardingNextOnboardingPrompt.value = nil
-        default: break
+            Preferences.General.basicOnboardingProgress.value = OnboardingProgress.searchEngine.rawValue
+            
+        case .existingUserRewardsOff, .existingUserRewardsOn:
+            break
+            
+        default:
+            break
         }
+        #else
+        switch onboardingController.onboardingType {
+        case .newUser:
+            if BraveAds.isCurrentRegionSupported() {
+                Preferences.General.basicOnboardingProgress.value = OnboardingProgress.ads.rawValue
+            } else {
+                Preferences.General.basicOnboardingProgress.value = OnboardingProgress.rewards.rawValue
+            }
+            
+        case .existingUserRewardsOff:
+            if BraveAds.isCurrentRegionSupported() {
+                Preferences.General.basicOnboardingProgress.value = OnboardingProgress.ads.rawValue
+            }
+            
+        case .existingUserRewardsOn:
+            if BraveAds.isCurrentRegionSupported() {
+                Preferences.General.basicOnboardingProgress.value = OnboardingProgress.ads.rawValue
+            }
+            
+        default:
+            break
+        }
+        #endif
         
         onboardingController.dismiss(animated: true)
     }

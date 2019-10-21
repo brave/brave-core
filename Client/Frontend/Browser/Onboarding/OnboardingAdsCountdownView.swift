@@ -130,6 +130,10 @@ extension OnboardingAdsCountdownViewController {
             countdownView.snp.makeConstraints {
                 $0.size.equalTo(UX.animationContentSize)
             }
+            
+            finishedButton.snp.makeConstraints {
+                $0.centerX.equalTo(self.snp.centerX)
+            }
         }
         
         func applyTheme(_ theme: Theme) {

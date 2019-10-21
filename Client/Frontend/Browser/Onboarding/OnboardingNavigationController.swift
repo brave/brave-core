@@ -55,8 +55,8 @@ class OnboardingNavigationController: UINavigationController {
             }
             #else
             switch self {
-            case .newUser: return BraveAds.isCurrentRegionSupported() ? [.searchEnginePicker, .shieldsInfo, .rewardsInfo, .rewardsAgreement, .adsCountdown] : [.searchEnginePicker, .shieldsInfo, .rewardsInfo, .rewardsAgreement]
-            case .existingUserRewardsOff: return BraveAds.isCurrentRegionSupported() ? [.rewardsInfo, .rewardsAgreement, .adsCountdown] : []
+            case .newUser: return BraveAds.isCurrentRegionSupported() ? [.searchEnginePicker, .shieldsInfo, .rewardsAgreement, .adsCountdown] : [.searchEnginePicker, .shieldsInfo, .rewardsAgreement]
+            case .existingUserRewardsOff: return BraveAds.isCurrentRegionSupported() ? [.rewardsAgreement, .adsCountdown] : []
             case .existingUserRewardsOn: return BraveAds.isCurrentRegionSupported() ? [.rewardsInfo, .adsCountdown] : []
             }
             #endif
@@ -66,7 +66,7 @@ class OnboardingNavigationController: UINavigationController {
     fileprivate enum Screens {
         case searchEnginePicker
         case shieldsInfo
-        case rewardsInfo
+        case existingRewards
         case rewardsAgreement
         case adsCountdown
         
@@ -77,7 +77,7 @@ class OnboardingNavigationController: UINavigationController {
                 return OnboardingSearchEnginesViewController(profile: profile, rewards: rewards, theme: theme)
             case .shieldsInfo:
                 return OnboardingShieldsViewController(profile: profile, rewards: rewards, theme: theme)
-            case .rewardsInfo:
+            case .existingRewards:
                 return OnboardingRewardsViewController(profile: profile, rewards: rewards, theme: theme)
             case .rewardsAgreement:
                 return OnboardingRewardsAgreementViewController(profile: profile, rewards: rewards, theme: theme)
@@ -90,7 +90,7 @@ class OnboardingNavigationController: UINavigationController {
             switch self {
             case .searchEnginePicker: return OnboardingSearchEnginesViewController.self
             case .shieldsInfo: return OnboardingShieldsViewController.self
-            case .rewardsInfo: return OnboardingRewardsViewController.self
+            case .existingRewards: return OnboardingRewardsViewController.self
             case .rewardsAgreement: return OnboardingRewardsAgreementViewController.self
             case .adsCountdown: return OnboardingAdsCountdownViewController.self
             }
@@ -170,11 +170,9 @@ extension OnboardingNavigationController: UINavigationControllerDelegate {
 
          switch operation {
          case .push:
-            let shouldFade = !fromVC.isKind(of: OnboardingRewardsViewController.self)
-            return CustomAnimator(isPresenting: true, shouldFadeGraphics: shouldFade)
+            return CustomAnimator(isPresenting: true, shouldFadeGraphics: false)
          default:
-            let shouldFade = !fromVC.isKind(of: OnboardingRewardsAgreementViewController.self)
-             return CustomAnimator(isPresenting: false, shouldFadeGraphics: shouldFade)
+             return CustomAnimator(isPresenting: false, shouldFadeGraphics: false)
          }
     }
 }

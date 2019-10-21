@@ -57,6 +57,8 @@ extension OnboardingShieldsViewController {
         private let textStackView = UIStackView().then { stackView in
             stackView.axis = .vertical
             stackView.spacing = 8
+            stackView.layoutMargins = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
+            stackView.isLayoutMarginsRelativeArrangement = true
             
             let titleLabel = CommonViews.primaryText(Strings.OBShieldsTitle)
             
@@ -98,6 +100,10 @@ extension OnboardingShieldsViewController {
             .forEach(buttonsStackView.addArrangedSubview(_:))
             
             [textStackView, buttonsStackView].forEach(descriptionStackView.addArrangedSubview(_:))
+            
+            continueButton.snp.makeConstraints {
+                $0.centerX.equalTo(self.snp.centerX)
+            }
         }
         
         func applyTheme(_ theme: Theme) {

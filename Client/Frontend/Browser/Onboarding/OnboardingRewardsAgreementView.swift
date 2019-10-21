@@ -5,6 +5,7 @@
 import Foundation
 import Shared
 import BraveShared
+import BraveRewards
 import Lottie
 
 extension OnboardingRewardsAgreementViewController {
@@ -22,14 +23,13 @@ extension OnboardingRewardsAgreementViewController {
         
         var onTermsOfServicePressed: (() -> Void)?
         
-        let agreeButton = CommonViews.primaryButton(text: Strings.OBAgreeButton).then {
-            $0.accessibilityIdentifier = "OnboardingRewardsAgreementViewController.AgreeButton"
-            $0.backgroundColor = BraveUX.BraveOrange.withAlphaComponent(0.7)
-            $0.isEnabled = false
+        let turnOnButton = CommonViews.primaryButton(text: Strings.OBTurnOnButton).then {
+            $0.accessibilityIdentifier = "OnboardingRewardsAgreementViewController.OBTurnOnButton"
+            $0.backgroundColor = BraveUX.BraveOrange
         }
         
-        let cancelButton = CommonViews.secondaryButton(text: Strings.CancelButtonTitle).then {
-            $0.accessibilityIdentifier = "OnboardingRewardsAgreementViewController.CancelButton"
+        let skipButton = CommonViews.secondaryButton(text: Strings.OBSkipButton).then {
+            $0.accessibilityIdentifier = "OnboardingRewardsAgreementViewController.OBSkipButton"
         }
         
         private let mainStackView = UIStackView().then {
@@ -55,19 +55,12 @@ extension OnboardingRewardsAgreementViewController {
             $0.spacing = 32
         }
         
-        private let descriptionCheckbox = UIButton().then {
-            $0.setImage(#imageLiteral(resourceName: "checkbox_off"), for: .normal)
-            $0.setImage(#imageLiteral(resourceName: "checkbox_on"), for: .selected)
-            $0.setImage(#imageLiteral(resourceName: "checkbox_on"), for: .highlighted)
-            $0.adjustsImageWhenHighlighted = true
-            
-            $0.contentMode = .scaleAspectFit
-            $0.setContentHuggingPriority(.required, for: .horizontal)
-            $0.setContentCompressionResistancePriority(.required, for: .horizontal)
-        }
-        
         private let titleLabel = CommonViews.primaryText(Strings.OBRewardsAgreementTitle).then {
             $0.numberOfLines = 0
+        }
+        
+        private let subtitleLabel = CommonViews.secondaryText("").then {
+            $0.attributedText = BraveAds.isCurrentRegionSupported() ?  Strings.OBRewardsDetailInAdRegion.boldWords(with: $0.font, amount: 2) : Strings.OBRewardsDetailOutsideAdRegion.boldWords(with: $0.font, amount: 1)
         }
         
         private lazy var descriptionLabel = UITextView().then {
@@ -93,12 +86,12 @@ extension OnboardingRewardsAgreementViewController {
         private lazy var textStackView = UIStackView().then { stackView in
             stackView.axis = .vertical
             stackView.spacing = 8
-            let descriptionStackView =  UIStackView(arrangedSubviews: [descriptionLabel, descriptionCheckbox]).then {
-                $0.alignment = .center
-                $0.spacing = 65.0
+            stackView.layoutMargins = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
+            stackView.isLayoutMarginsRelativeArrangement = true
+
+            [titleLabel, subtitleLabel, descriptionLabel].forEach {
+                stackView.addArrangedSubview($0)
             }
-            
-            [titleLabel, descriptionStackView].forEach(stackView.addArrangedSubview(_:))
         }
         
         private let buttonsStackView = UIStackView().then {
@@ -107,31 +100,33 @@ extension OnboardingRewardsAgreementViewController {
         
         private func updateDescriptionLabel() {
             descriptionLabel.attributedText = {
+                let fontSize: CGFloat = 14.0
                 let titleLabelColor = titleLabel.textColor ?? .black
                 
                 let text = NSMutableAttributedString(string: Strings.OBRewardsAgreementDetail, attributes: [
-                    .font: UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.regular),
+                    .font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular),
                     .foregroundColor: titleLabelColor
                 ])
                 
                 text.append(NSAttributedString(string: " ", attributes: [
-                    .font: UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.regular),
+                    .font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular),
                     .foregroundColor: titleLabelColor
                 ]))
                 
                 text.append(NSAttributedString(string: Strings.OBRewardsAgreementDetailLink, attributes: [
-                    .font: UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.regular),
+                    .font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular),
                     .foregroundColor: UX.linkColor,
                     .link: "brave_terms_of_service"
                 ]))
                 
                 text.append(NSAttributedString(string: ".", attributes: [
-                    .font: UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.regular),
+                    .font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular),
                     .foregroundColor: titleLabelColor
                 ]))
                 
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.lineBreakMode = .byWordWrapping
+                paragraphStyle.alignment = .center
                 
                 text.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: text.length))
                 
@@ -142,6 +137,10 @@ extension OnboardingRewardsAgreementViewController {
             descriptionLabel.accessibilityTraits = [.staticText, .link]
             descriptionLabel.accessibilityValue = nil
             descriptionLabel.isAccessibilityElement = true
+        }
+        
+        func updateSubtitleText(_ text: String, boldWords: Int) {
+            self.subtitleLabel.attributedText = text.boldWords(with: self.subtitleLabel.font, amount: boldWords)
         }
         
         init(theme: Theme) {
@@ -165,19 +164,20 @@ extension OnboardingRewardsAgreementViewController {
             
             mainStackView.addArrangedSubview(descriptionView)
 
-            [cancelButton, agreeButton, UIView.spacer(.horizontal, amount: 0)]
+            [skipButton, turnOnButton, UIView.spacer(.horizontal, amount: 0)]
                 .forEach(buttonsStackView.addArrangedSubview(_:))
             
             [textStackView, buttonsStackView].forEach(descriptionStackView.addArrangedSubview(_:))
             
-            descriptionCheckbox.addTarget(self, action: #selector(onTermsAccepted(_:)), for: .touchUpInside)
+            turnOnButton.snp.makeConstraints {
+                $0.centerX.equalTo(self.snp.centerX)
+            }
         }
         
         func applyTheme(_ theme: Theme) {
             descriptionView.backgroundColor = OnboardingViewController.colorForTheme(theme)
             titleLabel.appearanceTextColor = theme.colors.tints.home
             updateDescriptionLabel()
-            descriptionCheckbox.setImage(theme.isDark ? #imageLiteral(resourceName: "checkbox_off_dark") : #imageLiteral(resourceName: "checkbox_off"), for: .normal)
         }
         
         override func layoutSubviews() {
@@ -191,31 +191,8 @@ extension OnboardingRewardsAgreementViewController {
         }
         
         @available(*, unavailable)
-        required init(coder: NSCoder) { fatalError() }
-        
-        @objc
-        private func onTermsAccepted(_ button: UIButton) {
-            button.isSelected.toggle()
-            
-            agreeButton.backgroundColor = button.isSelected ? BraveUX.BraveOrange : BraveUX.BraveOrange.withAlphaComponent(0.7)
-            agreeButton.isEnabled = button.isSelected
-        }
-        
-        override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-            if !descriptionCheckbox.isHidden &&
-                descriptionCheckbox.isUserInteractionEnabled &&
-                descriptionCheckbox.alpha >= 0.01,
-                let frame = descriptionCheckbox.superview?.convert(
-                    descriptionCheckbox.frame,
-                    to: self
-                ) {
-                
-                if frame.inset(by: UIEdgeInsets(equalInset: UX.checkboxInsets)).contains(point) {
-                    return descriptionCheckbox
-                }
-            }
-            
-            return super.hitTest(point, with: event)
+        required init(coder: NSCoder) {
+            fatalError()
         }
     }
 }
@@ -230,11 +207,12 @@ extension OnboardingRewardsAgreementViewController.View: UITextViewDelegate {
 }
 
 private extension String {
-    func boldFirstWord(with font: UIFont) -> NSMutableAttributedString {
+    func boldWords(with font: UIFont, amount: Int) -> NSMutableAttributedString {
         let mutableDescriptionText = NSMutableAttributedString(string: self)
         
-        if let firstWord = self.components(separatedBy: " ").first {
-            if let range = self.range(of: firstWord) {
+        let components = self.components(separatedBy: " ")
+        for i in 0..<min(amount, components.count) {
+            if let range = self.range(of: components[i]) {
                 let nsRange = NSRange(range, in: self)
                 let font = UIFont.systemFont(ofSize: font.pointSize, weight: UIFont.Weight.bold)
                 
@@ -245,3 +223,4 @@ private extension String {
         return mutableDescriptionText
     }
 }
+
