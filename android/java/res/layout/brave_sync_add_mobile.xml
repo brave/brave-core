@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view_add_mobile_device"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@drawable/brave_sync_cover_general" >
+
+    <LinearLayout android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:paddingStart="2dip"
+        android:paddingTop="2dip"
+        android:paddingEnd="2dip" >
+
+        <LinearLayout android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@android:color/transparent"
+            android:paddingTop="15dip"
+            android:paddingStart="15dip"
+            android:paddingEnd="15dip"
+            android:paddingBottom="15dip" >
+
+            <Button android:id="@+id/brave_sync_qr_code_on_btn"
+                android:layout_width="0px"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:text="@string/brave_sync_qr_code"
+                style="@style/BraveSyncToggleOnButtonLeft" />
+
+            <Button android:id="@+id/brave_sync_code_words_off_btn"
+                android:layout_width="0px"
+                android:layout_weight="1"
+                android:layout_height="30dp"
+                android:text="@string/brave_sync_code_words"
+                style="@style/BraveSyncToggleOffButtonRight" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingStart="15dip"
+            android:paddingEnd="15dip"
+            android:paddingBottom="15dip">
+
+            <TextView android:id="@+id/brave_sync_text_add_mobile_device"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" />
+
+            <TextView android:id="@+id/brave_sync_warning_text_add_mobile_device"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" />
+
+        </LinearLayout>
+
+        <LinearLayout android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/brave_sync_qr_rounded"
+            android:layout_gravity="center"
+            android:paddingBottom="5dip"
+            android:paddingTop="5dip"
+            android:paddingStart="5dip"
+            android:paddingEnd="5dip"
+            android:layout_marginBottom="15dp" >
+
+            <ImageView android:id="@+id/brave_sync_qr_code_image"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/brave_sync_btn_laptop" />
+
+        </LinearLayout>
+
+        <Button android:id="@+id/brave_sync_btn_done"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_sync_btn_done"
+            style="@style/BraveSyncButton" />
+
+    </LinearLayout>
+</ScrollView>

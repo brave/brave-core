@@ -22,4 +22,12 @@
     <color name="onboarding_progress_start_color">#FA7250</color>
     <color name="onboarding_progress_mid_color">#FF1893</color>
     <color name="onboarding_progress_end_color">#4F30AB</color>
+
+    <!-- Sync colors -->
+    <color name="brave_sync_bg_color">@color/modern_grey_50</color>
+    <color name="brave_sync_border_color">@color/modern_grey_50</color>
+    <color name="brave_sync_bg_secondary_color">@android:color/white</color>
+
+    <!-- Theme colors -->
+    <color name="brave_theme_color">#fb542b</color>
 </resources>

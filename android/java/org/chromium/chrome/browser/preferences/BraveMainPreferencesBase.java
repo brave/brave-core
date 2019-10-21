@@ -35,6 +35,7 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
     private static final String PREF_CLOSING_ALL_TABS_CLOSES_BRAVE = "closing_all_tabs_closes_brave";
     private static final String PREF_ADVANCED_SECTION = "advanced_section";
     private static final String PREF_PRIVACY = "privacy";
+    private static final String PREF_SYNC = "brave_sync_layout";
     private static final String PREF_ACCESSIBILITY = "accessibility";
     private static final String PREF_CONTENT_SETTINGS = "content_settings";
     private static final String PREF_ABOUT_CHROME = "about_chrome";
@@ -105,6 +106,7 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
         int order = findPreference(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE).getOrder();
         findPreference(PREF_ADVANCED_SECTION).setOrder(++order);
         findPreference(PREF_PRIVACY).setOrder(++order);
+        findPreference(PREF_SYNC).setOrder(++order);
         findPreference(PREF_ACCESSIBILITY).setOrder(++order);
         findPreference(PREF_CONTENT_SETTINGS).setOrder(++order);
         findPreference(MainPreferences.PREF_LANGUAGES).setOrder(++order);
