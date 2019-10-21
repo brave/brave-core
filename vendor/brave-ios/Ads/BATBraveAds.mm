@@ -104,7 +104,16 @@ static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
 
 BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
-BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
+
++ (int)environment
+{
+  return static_cast<int>(ads::_environment);
+}
+
++ (void)setEnvironment:(int)environment
+{
+  ads::_environment = static_cast<ads::Environment>(environment);
+}
 
 #pragma mark - Configuration
 

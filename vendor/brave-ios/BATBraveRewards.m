@@ -89,7 +89,7 @@
     self.adsClass = adsClass ?: BATBraveAds.class;
 
     BATBraveAds.debug = configuration.environment != BATEnvironmentProduction;
-    BATBraveAds.production = configuration.environment == BATEnvironmentProduction;
+    BATBraveAds.environment = configuration.environment;
     BATBraveAds.testing = configuration.testing;
 
     BATBraveLedger.debug = configuration.environment != BATEnvironmentProduction;
