@@ -25,7 +25,7 @@ sys.path.append(packaging_signing_path)
 
 # Import the entire module to avoid circular dependencies in the functions
 from signing import config, commands, model, notarize, pipeline, signing  # noqa: E402
-
+from signing_helper import GetBraveSigningConfig
 
 def run_command(args, **kwargs):
     print('Running command: {}'.format(args))
@@ -48,16 +48,6 @@ def create_config(config_args, development, mac_provisioning_profile):
         An instance of |model.CodeSignConfig|.
     """
     config_class = config.CodeSignConfig
-    """
-    try:
-        import signing.internal_config
-        config_class = signing.internal_config.InternalCodeSignConfig
-    except ImportError as e:
-        # If the build specified Google Chrome as the product, then the
-        # internal config has to be available.
-        if config_class(identity, keychain).product == 'Google Chrome':
-            raise e
-    """
 
     if development:
 
@@ -81,46 +71,23 @@ def create_config(config_args, development, mac_provisioning_profile):
     return config_class(*config_args)
 
 
-def GetBraveSigningConfig(config_class, development, mac_provisioning_profile):
-    if development:
-        return config_class
-
-    if mac_provisioning_profile:
-        provisioning_profile = mac_provisioning_profile
-        assert len(provisioning_profile), 'Argument mac_provisioning_profile not provided!'
-
-    class ProvisioningProfileCodeSignConfig(config_class):
-
-        @property
-        def provisioning_profile_basename(self):
-            return os.path.splitext(os.path.basename(
-                provisioning_profile))[0]
-
-        @property
-        def run_spctl_assess(self):
-            return True
-
-    return ProvisioningProfileCodeSignConfig
-
-
-def NotarizeBraveDmgPkg(paths, config, dmg, pkg, outdir, signed, do_notarization=True):
+def NotarizeBraveDmgPkg(paths, config, dmg, pkg, outdir, signed):
     """
     Notarize Brave .dmg and .pkg files.
     """
-    if do_notarization:
-        uuids_to_path_map = {}
-        for dist in config.distributions:
-            dist_config = dist.to_config(config)
-            uuid = notarize.submit(dmg, dist_config)
-            uuids_to_path_map[uuid] = dmg
-            uuid1 = notarize.submit(pkg, dist_config)
-            uuids_to_path_map[uuid1] = pkg
-            for result in notarize.wait_for_results(
-                    uuids_to_path_map.keys(), config):
-                brave_path = uuids_to_path_map[result]
-                notarize.staple(brave_path)
-        for item in uuids_to_path_map.values():
-            commands.copy_files(os.path.join(signed, item), outdir)
+    uuids_to_path_map = {}
+    for dist in config.distributions:
+        dist_config = dist.to_config(config)
+        uuid = notarize.submit(dmg, dist_config)
+        uuids_to_path_map[uuid] = dmg
+        uuid1 = notarize.submit(pkg, dist_config)
+        uuids_to_path_map[uuid1] = pkg
+        for result in notarize.wait_for_results(
+                uuids_to_path_map.keys(), config):
+            brave_path = uuids_to_path_map[result]
+            notarize.staple(brave_path)
+    for item in uuids_to_path_map.values():
+        commands.copy_files(os.path.join(signed, item), outdir)
     return 0
 
 
