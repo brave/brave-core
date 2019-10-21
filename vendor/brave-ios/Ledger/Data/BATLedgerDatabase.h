@@ -142,6 +142,18 @@ typedef void (^BATLedgerDatabaseWriteCompletion)(BOOL success);
 + (nullable NSArray<NSNumber *> *)bannerAmountsForPublisherWithPublisherID:(NSString *)publisherID;
 + (nullable NSDictionary<NSString *, NSString *> *)publisherLinksWithPublisherID:(NSString *)publisherID;
 
+#pragma mark - Promotions
+
++ (void)insertOrUpdatePromotion:(BATPromotion *)promotion
+                     completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
+
++ (nullable BATPromotion *)promotionWithID:(NSString *)promoID;
+
++ (void)insertOrUpdateUnblindedToken:(BATUnblindedToken *)unblindedToken
+                          completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
+
++ (NSArray<BATUnblindedToken *> *)allUnblindedTokens;
+
 #pragma mark -
 
 - (instancetype)init NS_UNAVAILABLE;

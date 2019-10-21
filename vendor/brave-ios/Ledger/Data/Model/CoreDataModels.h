@@ -22,3 +22,6 @@
 #import "ServerPublisherLink.h"
 #import "ContributionQueue.h"
 #import "ContributionPublisher.h"
+#import "Promotion.h"
+#import "PromotionCredentials.h"
+#import "UnblindedToken.h"
