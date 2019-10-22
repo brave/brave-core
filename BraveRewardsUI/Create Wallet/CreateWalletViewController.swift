@@ -89,6 +89,7 @@ class CreateWalletViewController: UIViewController {
   }
   
   @objc private func tappedLearnMore() {
+    state.ledger.remove(observer) // No way to come back to this screen anyways
     let controller = WelcomeViewController(state: state)
     navigationController?.pushViewController(controller, animated: true)
   }
