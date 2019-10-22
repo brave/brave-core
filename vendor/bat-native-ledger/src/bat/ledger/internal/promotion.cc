@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/request/request_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -76,7 +77,7 @@ void Promotion::FetchGrants(const std::string& lang,
       _1, _2, _3,
       std::move(callback));
   ledger_->LoadURL(
-      braveledger_bat_helper::buildURL(
+      braveledger_request_util::BuildUrl(
           (std::string)GET_SET_PROMOTION + arguments,
           safetynet_token.empty() ? PREFIX_V4 : safetynet_prefix),
       headers,
@@ -167,7 +168,7 @@ void Promotion::SetGrant(const std::string& captchaResponse,
 
   auto callback = std::bind(&Promotion::SetGrantCallback, this, _1, _2, _3,
                                 !safetynet_token.empty());
-  ledger_->LoadURL(braveledger_bat_helper::buildURL(
+  ledger_->LoadURL(braveledger_request_util::BuildUrl(
         (std::string)GET_SET_PROMOTION + "/" + ledger_->GetPaymentId(),
         safetynet_token.empty() ? PREFIX_V2 : PREFIX_V3),
       headers, payload, "application/json; charset=utf-8",
@@ -232,7 +233,7 @@ void Promotion::GetGrantCaptcha(const std::vector<std::string>& headers,
                             _2,
                             _3,
                             std::move(callback));
-  ledger_->LoadURL(braveledger_bat_helper::buildURL(
+  ledger_->LoadURL(braveledger_request_util::BuildUrl(
         (std::string)GET_PROMOTION_CAPTCHA + ledger_->GetPaymentId(),
         PREFIX_V4),
       headers, "", "", ledger::UrlMethod::GET, std::move(on_load));

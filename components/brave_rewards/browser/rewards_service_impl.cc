@@ -2981,7 +2981,7 @@ void RewardsServiceImpl::SetLedgerEnvForTesting() {
 
   SetPublisherMinVisitTime(1);
 
-  // this is needed because we are using braveledger_bat_helper::buildURL
+  // this is needed because we are using braveledger_request_util::buildURL
   // directly in BraveRewardsBrowserTest
   #if defined(OFFICIAL_BUILD)
   ledger::_environment = ledger::Environment::PRODUCTION;

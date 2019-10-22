@@ -16,6 +16,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/request/request_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -38,10 +39,10 @@ void Balance::Fetch(ledger::FetchBalanceCallback callback) {
   std::string path = (std::string)WALLET_PROPERTIES
       + payment_id
       + WALLET_PROPERTIES_END;
-  const std::string url = braveledger_bat_helper::buildURL(
+  const std::string url = braveledger_request_util::BuildUrl(
       path,
       PREFIX_V2,
-      braveledger_bat_helper::SERVER_TYPES::BALANCE);
+      braveledger_request_util::ServerTypes::BALANCE);
   auto load_callback = std::bind(&Balance::OnWalletProperties,
                             this,
                             _1,
