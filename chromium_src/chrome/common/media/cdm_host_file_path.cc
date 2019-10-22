@@ -10,18 +10,18 @@
 #include "base/logging.h"
 #include "base/path_service.h"
 #include "base/stl_util.h"
+#include "build/branding_buildflags.h"
 #include "build/build_config.h"
 #include "chrome/common/chrome_version.h"
 
 #if defined(OS_MACOSX)
 #include "base/mac/bundle_locations.h"
-#include "chrome/common/buildflags.h"
 #include "chrome/common/chrome_constants.h"
 #endif
 
 // All above headers copied from original cdm_host_file_path.cc are included
 // to prevent below GOOGLE_CHROEM_BUILD affect them.
 
-#define GOOGLE_CHROME_BUILD
+#undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
+#define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
 #include "../../../../../chrome/common/media/cdm_host_file_path.cc"  // NOLINT
-#undef GOOGLE_CHROME_BUILD
