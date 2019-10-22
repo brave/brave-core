@@ -31,6 +31,7 @@ extension BraveLedger {
     let currencyFormatter = NumberFormatter()
     currencyFormatter.currencySymbol = ""
     currencyFormatter.numberStyle = .currency
+    currencyFormatter.locale = Locale(identifier: "en_US")
     let valueString = currencyFormatter.string(from: NSNumber(value: amount * conversionRate)) ?? "0.00"
     if includeCurrencyCode {
       return "\(valueString) \(currencyCode)"
