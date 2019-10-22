@@ -16,7 +16,7 @@ protocol RewardsSummaryProtocol {
   var summaryRows: [RowView] { get }
   
   /// A view informing users about contributing to unverified publishers.
-  var disclaimerView: LinkLabel? { get }
+  var disclaimerLabels: [LinkLabel] { get }
 }
 
 private struct Activity {
@@ -71,21 +71,36 @@ extension RewardsSummaryProtocol {
     }
   }
   
-  var disclaimerView: LinkLabel? {
+  var disclaimerLabels: [LinkLabel] {
+    var labels: [LinkLabel] = []
+    
+    if Locale.current.isJapan {
+      labels.append(LinkLabel().then {
+        $0.attributedText = {
+          let str = NSMutableAttributedString(string: Strings.BATPointsDisclaimer, attributes: [.font: UIFont.systemFont(ofSize: 12.0)])
+          if let range = str.string.range(of: Strings.BATPointsDisclaimerBoldedWords) {
+            str.addAttribute(.font, value: UIFont.systemFont(ofSize: 12.0, weight: .semibold), range: NSRange(range, in: str.string))
+          }
+          return str
+        }()
+        $0.appearanceTextColor = Colors.grey200
+      })
+    }
+    
     let reservedAmount = BATValue(state.ledger.reservedAmount)
     // Don't show the view if there's no pending contributions.
-    if reservedAmount.doubleValue <= 0 { return nil }
-    
-    let text = String(format: Strings.ContributingToUnverifiedSites, reservedAmount.displayString)
-    
-    return LinkLabel().then {
-      $0.appearanceTextColor = Colors.grey200
-      $0.font = UIFont.systemFont(ofSize: 12.0)
-      $0.textContainerInset = UIEdgeInsets(top: 8.0, left: 8.0, bottom: 8.0, right: 8.0)
-      $0.text = "\(text) \(Strings.DisclaimerLearnMore)"
-      $0.setURLInfo([Strings.DisclaimerLearnMore: "learn-more"])
-      $0.backgroundColor = UIColor(white: 0.0, alpha: 0.04)
-      $0.layer.cornerRadius = 4.0
+    if reservedAmount.doubleValue > 0 {
+      let batAmountText = "\(reservedAmount.displayString) \(Strings.BAT)"
+      let text = String(format: Strings.ContributingToUnverifiedSites, batAmountText)
+      
+      labels.append(LinkLabel().then {
+        $0.appearanceTextColor = Colors.grey200
+        $0.font = UIFont.systemFont(ofSize: 12.0)
+        $0.text = "\(text) \(Strings.DisclaimerLearnMore)"
+        $0.setURLInfo([Strings.DisclaimerLearnMore: "learn-more"])
+      })
     }
+    
+    return labels
   }
 }

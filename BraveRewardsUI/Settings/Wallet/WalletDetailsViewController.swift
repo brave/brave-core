@@ -38,13 +38,17 @@ class WalletDetailsViewController: UIViewController, RewardsSummaryProtocol {
     
     detailsView.walletSection.setWalletBalance(
       state.ledger.balanceString,
-      crypto: "BAT",
+      crypto: Strings.BAT,
       dollarValue: state.ledger.usdBalanceString
     )
     
     detailsView.activityView.monthYearLabel.text = summaryPeriod
     detailsView.activityView.rows = summaryRows
-    detailsView.activityView.disclaimerView = disclaimerView
+    if !disclaimerLabels.isEmpty {
+      detailsView.activityView.disclaimerView = WalletDisclaimerView().then {
+        $0.labels = disclaimerLabels
+      }
+    }
   }
   
   // MARK: - Actions
@@ -60,7 +64,7 @@ class WalletDetailsViewController: UIViewController, RewardsSummaryProtocol {
       if let self = self {
         self.detailsView.walletSection.setWalletBalance(
           self.state.ledger.balanceString,
-          crypto: "BAT",
+          crypto: Strings.BAT,
           dollarValue: self.state.ledger.usdBalanceString
         )
       }

@@ -265,6 +265,7 @@
 		271DED2B234CC7EF009DAC37 /* BundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECC0234CC7EF009DAC37 /* BundleExtensions.swift */; };
 		271DED2C234CC7EF009DAC37 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECC1234CC7EF009DAC37 /* DateExtensions.swift */; };
 		272FCAA0225CF8F00091E645 /* OnePasswordExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */; };
+		27353FF2235F4E7300E42EBB /* WalletDisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27353FF1235F4E7300E42EBB /* WalletDisclaimerView.swift */; };
 		2755AB7D23107BC600F0721F /* AdsReporting.js in Resources */ = {isa = PBXBuildFile; fileRef = 2755AB7C23107BC600F0721F /* AdsReporting.js */; };
 		2755AB8623107DBD00F0721F /* AdsMediaReporting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2755AB8523107DBD00F0721F /* AdsMediaReporting.swift */; };
 		2760D2BF215ACCE20068E131 /* BundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2760D2BE215ACCE20068E131 /* BundleExtensions.swift */; };
@@ -285,6 +286,7 @@
 		279C756B219DDE3B001CD1CB /* FingerprintingProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279C756A219DDE3B001CD1CB /* FingerprintingProtection.swift */; };
 		279C75C821A5B37D001CD1CB /* FingerprintingProtection.js in Resources */ = {isa = PBXBuildFile; fileRef = 279C75C021A5B37D001CD1CB /* FingerprintingProtection.js */; };
 		27A586E1214C0DDD000CAE3C /* PreferencesTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A586E0214C0DDD000CAE3C /* PreferencesTest.swift */; };
+		27B1E26D235E58190062E86F /* LocaleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B1E26C235E58190062E86F /* LocaleExtensions.swift */; };
 		27C461DE211B76500088A441 /* ShieldsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C461DD211B76500088A441 /* ShieldsView.swift */; };
 		27C46201211CD8D20088A441 /* DeferredTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A176323020CF2A6000126F25 /* DeferredTestUtils.swift */; };
 		27D114D42358FBBF00166534 /* BraveRewardsSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D114D32358FBBF00166534 /* BraveRewardsSettingsViewController.swift */; };
@@ -1477,6 +1479,7 @@
 		271DECC0234CC7EF009DAC37 /* BundleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BundleExtensions.swift; sourceTree = "<group>"; };
 		271DECC1234CC7EF009DAC37 /* DateExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 		272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OnePasswordExtension.framework; path = Carthage/Build/iOS/OnePasswordExtension.framework; sourceTree = "<group>"; };
+		27353FF1235F4E7300E42EBB /* WalletDisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDisclaimerView.swift; sourceTree = "<group>"; };
 		2755AB7C23107BC600F0721F /* AdsReporting.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = AdsReporting.js; sourceTree = "<group>"; };
 		2755AB8523107DBD00F0721F /* AdsMediaReporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsMediaReporting.swift; sourceTree = "<group>"; };
 		2760D2BE215ACCE20068E131 /* BundleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtensions.swift; sourceTree = "<group>"; };
@@ -1497,6 +1500,7 @@
 		279C756A219DDE3B001CD1CB /* FingerprintingProtection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FingerprintingProtection.swift; sourceTree = "<group>"; };
 		279C75C021A5B37D001CD1CB /* FingerprintingProtection.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = FingerprintingProtection.js; sourceTree = "<group>"; };
 		27A586E0214C0DDD000CAE3C /* PreferencesTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesTest.swift; sourceTree = "<group>"; };
+		27B1E26C235E58190062E86F /* LocaleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocaleExtensions.swift; sourceTree = "<group>"; };
 		27C461DD211B76500088A441 /* ShieldsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShieldsView.swift; sourceTree = "<group>"; };
 		27D114D32358FBBF00166534 /* BraveRewardsSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveRewardsSettingsViewController.swift; sourceTree = "<group>"; };
 		27D114D52358FCA400166534 /* SettingsRowViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRowViews.swift; sourceTree = "<group>"; };
@@ -3068,6 +3072,7 @@
 				271DEC8C234CC7EF009DAC37 /* WalletDetailsView.swift */,
 				271DEC8D234CC7EF009DAC37 /* WalletActivityView.swift */,
 				271DEC8E234CC7EF009DAC37 /* WalletSummaryView.swift */,
+				27353FF1235F4E7300E42EBB /* WalletDisclaimerView.swift */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -3160,6 +3165,7 @@
 				271DECBF234CC7EF009DAC37 /* UIImageExtensions.swift */,
 				271DECC0234CC7EF009DAC37 /* BundleExtensions.swift */,
 				271DECC1234CC7EF009DAC37 /* DateExtensions.swift */,
+				27B1E26C235E58190062E86F /* LocaleExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -5511,6 +5517,7 @@
 				271DECDA234CC7EF009DAC37 /* TippingView.swift in Sources */,
 				271DECF1234CC7EF009DAC37 /* AdsDetailsViewController.swift in Sources */,
 				271DED0C234CC7EF009DAC37 /* EmptyTableCell.swift in Sources */,
+				27B1E26D235E58190062E86F /* LocaleExtensions.swift in Sources */,
 				271DECF3234CC7EF009DAC37 /* OptionsSelectionViewController.swift in Sources */,
 				271DED10234CC7EF009DAC37 /* CurrencyContainerView.swift in Sources */,
 				271DED12234CC7EF009DAC37 /* SeparatorView.swift in Sources */,
@@ -5518,6 +5525,7 @@
 				271DECF0234CC7EF009DAC37 /* SettingsAdSectionView.swift in Sources */,
 				271DECD3234CC7EF009DAC37 /* AdContentButton.swift in Sources */,
 				271DED1A234CC7EF009DAC37 /* ActionButton.swift in Sources */,
+				27353FF2235F4E7300E42EBB /* WalletDisclaimerView.swift in Sources */,
 				271DECC5234CC7EF009DAC37 /* PublisherView.swift in Sources */,
 				271DED03234CC7EF009DAC37 /* AutoContributeDetailsViewController.swift in Sources */,
 				271DED16234CC7EF009DAC37 /* BATUSDPairView.swift in Sources */,

@@ -2,7 +2,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-internal struct Strings {}
+internal struct Strings {
+  /// "BAT" or "BAT Points" depending on the region
+  static var BAT: String {
+    if Locale.current.isJapan {
+      return NSLocalizedString("BATPoints", bundle: Bundle.RewardsUI, value: "BAT Points", comment: "The name of BAT in Japan")
+    }
+    return "BAT"
+  }
+}
 
 internal extension Strings {
   static let Open = NSLocalizedString("BraveRewardsOpen", bundle: Bundle.RewardsUI, value: "Open", comment: "")
@@ -111,7 +119,7 @@ internal extension Strings {
   static let AddFundsTokenWalletAddress = NSLocalizedString("BraveRewardsAddFundsTokenWalletAddress", bundle: Bundle.RewardsUI, value: "Wallet Address", comment: "")
   static let AutoContributeToVideos = NSLocalizedString("BraveRewardsAutoContributeToVideos", bundle: Bundle.RewardsUI, value: "Allow contribution to videos", comment: "")
   static let SettingsDisabledBody2 = NSLocalizedString("BraveRewardsSettingsDisabledBody2", bundle: Bundle.RewardsUI, value: "One where your time is valued, your personal data is kept private, and you actually get paid for your attention.", comment: "")
-  static let ContributingToUnverifiedSites = NSLocalizedString("BraveRewardsContributingToUnverifiedSites", bundle: Bundle.RewardsUI, value: "You've designated %@ BAT for creators who haven't yet signed up to recieve contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.", comment: "")
+  static let ContributingToUnverifiedSites = NSLocalizedString("BraveRewardsContributingToUnverifiedSites", bundle: Bundle.RewardsUI, value: "You've designated %@ for creators who haven't yet signed up to recieve contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.", comment: "")
   static let SettingsDisabledBody1 = NSLocalizedString("BraveRewardsSettingsDisabledBody1", bundle: Bundle.RewardsUI, value: "With your old browser, you paid to browse the web by viewing ads with your valuable attention. You spent your valuable time downloading invasive ad technology that transmitted your valuable private data to advertisers — without your consent.", comment: "")
   static let PanelTitle = NSLocalizedString("BraveRewardsPanelTitle", bundle: Bundle.RewardsUI, value: "Rewards", comment: "")
   static let CreatingWallet = NSLocalizedString("BraveRewardsCreatingWallet", bundle: Bundle.RewardsUI, value: "Creating wallet", comment: "")
@@ -178,5 +186,7 @@ internal extension Strings {
   static let MyFirstAdBody = NSLocalizedString("MyFirstAdBody", bundle: Bundle.RewardsUI, value: "Tap here to learn more.", comment: "")
   static let WalletCreationErrorTitle = NSLocalizedString("WalletCreationErrorTitle", bundle: Bundle.RewardsUI, value: "Error", comment: "")
   static let WalletCreationErrorBody = NSLocalizedString("WalletCreationErrorBody", bundle: Bundle.RewardsUI, value: "Oops! Something went wrong. Please try again.", comment: "")
+  static let BATPointsDisclaimer = NSLocalizedString("BATPointsDisclaimer", bundle: Bundle.RewardsUI, value: "BAT Points can be used to contribute to your favorite content creators. BAT Points cannot be exchanged for BAT.", comment: "Disclaimer about BAT Points for JP users")
+  static let BATPointsDisclaimerBoldedWords = NSLocalizedString("BATPointsBoldedWords", bundle: Bundle.RewardsUI, value: "BAT Points", comment: "Words that should be bolded in the BAT Points disclaimer")
 }
 

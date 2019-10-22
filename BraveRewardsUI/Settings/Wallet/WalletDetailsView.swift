@@ -24,7 +24,9 @@ extension WalletDetailsViewController {
       } else {
         stackView.addArrangedSubview(activityView)
       }
-      stackView.addArrangedSubview(PoweredByUpholdView())
+      if !Locale.current.isJapan {
+        stackView.addArrangedSubview(PoweredByUpholdView())
+      }
       
       scrollView.snp.makeConstraints {
         $0.edges.equalTo(self)

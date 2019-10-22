@@ -11,7 +11,7 @@ class TipsSummaryTableCell: UITableViewCell, TableViewReusable {
     $0.font = .systemFont(ofSize: 14.0, weight: .semibold)
   }, kindLabelConfig: {
     $0.appearanceTextColor = Colors.neutral200
-    $0.text = "BAT"
+    $0.text = Strings.BAT
     $0.font = .systemFont(ofSize: 13.0)
   })
   

@@ -27,7 +27,7 @@ class BATUSDPairView: UIStackView {
     spacing = 5.0
     alignment = .bottom
     
-    batContainer.kindLabel.text = "BAT"
+    batContainer.kindLabel.text = Strings.BAT
     batContainer.amountLabel.text = "0"
     usdContainer.kindLabel.text = "USD"
     usdContainer.amountLabel.text = "0.00"

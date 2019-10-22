@@ -24,7 +24,7 @@ class TippingOption: NSObject {
   class func batAmount(_ value: BATValue, dollarValue: String) -> TippingOption {
     return TippingOption(
       value: value,
-      crypto: "BAT",
+      crypto: "BAT", // Tipping page stays "BAT" regardless of locale
       cryptoImage: UIImage(frameworkResourceNamed: "bat-small"),
       dollarValue: dollarValue
     )
