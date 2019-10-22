@@ -239,6 +239,5 @@ export const webtorrentReducer = (state: TorrentsState = defaultState, action: a
       break
   }
 
-  // console.error("Got state", JSON.stringify(state));
   return state
 }
