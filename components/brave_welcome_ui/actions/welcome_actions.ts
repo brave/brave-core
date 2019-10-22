@@ -38,3 +38,9 @@ export const setTheme = (browserTheme: Welcome.BrowserTheme) => action(types.SET
 export const recordP3A = (details: any) => action(types.RECORD_P3A, {
   details
 })
+
+export const createWallet = () => action(types.CREATE_WALLET, {})
+
+export const onWalletInitialized = (result: Welcome.WalletResult) => action(types.ON_WALLET_INITIALIZED, {
+  result
+})

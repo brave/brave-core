@@ -75,7 +75,11 @@ export class WelcomePage extends React.Component<Props, State> {
   }
 
   onClickRewardsGetStarted = () => {
-    this.props.actions.goToTabRequested('chrome://rewards', '_blank')
+    this.props.actions.createWallet()
+  }
+
+  onWalletCreated = () => {
+    this.props.actions.goToTabRequested('chrome://rewards', '_self')
   }
 
   onClickSlideBullet = (nextScreen: number) => {
@@ -111,6 +115,11 @@ export class WelcomePage extends React.Component<Props, State> {
   render () {
     const { welcomeData, actions } = this.props
     const { shouldUpdateElementOverflow } = this.state
+    const {
+      walletCreated,
+      walletCreating,
+      walletCreateFailed
+    } = this.props.welcomeData
     return (
       <>
         <Page
@@ -135,7 +144,15 @@ export class WelcomePage extends React.Component<Props, State> {
                 changeDefaultSearchProvider={actions.changeDefaultSearchProvider}
                 searchProviders={welcomeData.searchProviders}
               />
-              <RewardsBox index={5} currentScreen={this.currentScreen} onClick={this.onClickRewardsGetStarted} />
+              <RewardsBox
+                index={5}
+                currentScreen={this.currentScreen}
+                onClick={this.onClickRewardsGetStarted}
+                walletCreated={walletCreated}
+                walletCreating={walletCreating}
+                walletCreateFailed={walletCreateFailed}
+                onWalletCreated={this.onWalletCreated}
+              />
             </SlideContent>
             <FooterBox
               totalScreensSize={totalScreensSize}

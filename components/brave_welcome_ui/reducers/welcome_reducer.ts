@@ -52,6 +52,30 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
         details.skipped
       ])
       break
+    case types.CREATE_WALLET:
+      chrome.braveRewards.createWallet()
+      state = { ...state, walletCreating: true }
+      break
+    case types.ON_WALLET_INITIALIZED: {
+      const result: Welcome.WalletResult = payload.result
+      state = { ...state }
+
+      switch (result) {
+        case Welcome.WalletResult.WALLET_CREATED:
+          state.walletCreated = true
+          state.walletCreating = false
+          state.walletCreateFailed = false
+          chrome.braveRewards.saveAdsSetting('adsEnabled', 'true')
+          break
+        case Welcome.WalletResult.WALLET_CORRUPT:
+        case Welcome.WalletResult.LEDGER_OK:
+          state.walletCreated = false
+          state.walletCreating = false
+          state.walletCreateFailed = true
+          break
+      }
+      break
+    }
   }
 
   if (state !== startingState) {

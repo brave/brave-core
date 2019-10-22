@@ -47,3 +47,9 @@ export const Paragraph = styled.p`
     }
   }
 `
+
+export const SubText = styled(Paragraph)`
+  font-size: 13px;
+  line-height: 20px;
+  margin-bottom: -15px;
+`

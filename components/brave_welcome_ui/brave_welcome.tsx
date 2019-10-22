@@ -26,6 +26,9 @@ window.cr.define('brave_welcome', function () {
     actions.getSearchEngineProviders()
     actions.getBrowserProfiles()
     actions.getBrowserThemes()
+    chrome.braveRewards.onWalletInitialized.addListener((result: any) => {
+      actions.onWalletInitialized(result)
+    })
   }
 
   function initialize () {

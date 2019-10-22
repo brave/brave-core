@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, PrimaryButton } from '../../components'
+import { Content, Title, Paragraph, PrimaryButton, SubText } from '../../components'
 
 // Images
 import { WelcomeRewardsImage } from '../../components/images'
@@ -16,12 +16,52 @@ import { getLocale } from '../../../common/locale'
 interface Props {
   index: number
   currentScreen: number
+  walletCreated: boolean
+  walletCreating: boolean
+  walletCreateFailed: boolean
   onClick: () => void
+  onWalletCreated: () => void
 }
 
-export default class PaymentsBox extends React.PureComponent<Props, {}> {
+interface State {
+  turnedOn: boolean
+}
+
+export default class PaymentsBox extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
+    super(props)
+    this.state = {
+      turnedOn: false
+    }
+  }
+
+  componentDidUpdate (prevProps: Props) {
+    if (!prevProps.walletCreated && this.props.walletCreated) {
+      this.props.onWalletCreated()
+    }
+  }
+
+  getButtonText = () => {
+    const { walletCreating, walletCreateFailed } = this.props
+
+    if (walletCreateFailed) {
+      return getLocale('walletFailedButton')
+    }
+
+    if (walletCreating || this.state.turnedOn) {
+      return getLocale('turningOnRewards')
+    }
+
+    return getLocale('turnOnRewards')
+  }
+
+  turnOnRewards = () => {
+    this.setState({ turnedOn: true })
+    this.props.onClick()
+  }
+
   render () {
-    const { index, currentScreen, onClick } = this.props
+    const { index, currentScreen } = this.props
     return (
       <Content
         zIndex={index}
@@ -30,15 +70,18 @@ export default class PaymentsBox extends React.PureComponent<Props, {}> {
         isPrevious={index <= currentScreen}
       >
         <WelcomeRewardsImage />
-        <Title>{getLocale('enableBraveRewards')}</Title>
+        <Title>{getLocale('turnOnRewards')}</Title>
         <Paragraph>{getLocale('setupBraveRewards')}</Paragraph>
         <PrimaryButton
           level='primary'
           type='accent'
           size='large'
-          text={getLocale('enableRewards')}
-          onClick={onClick}
+          text={this.getButtonText()}
+          onClick={this.turnOnRewards}
         />
+        <SubText>
+          {getLocale('serviceText')} <a href={'https://brave.com/terms-of-use'}>{getLocale('termsOfService')}</a> {getLocale('and')} <a href={'https://brave.com/privacy#rewards'}>{getLocale('privacyPolicy')}</a>.
+        </SubText>
       </Content>
     )
   }

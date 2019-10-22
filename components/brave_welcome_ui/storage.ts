@@ -10,7 +10,10 @@ const keyName = 'welcome-data'
 export const defaultState = {
   searchProviders: [],
   browserProfiles: [],
-  browserThemes: []
+  browserThemes: [],
+  walletCreated: false,
+  walletCreating: false,
+  walletCreateFailed: false
 }
 
 const cleanData = (state: Welcome.State) => {

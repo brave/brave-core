@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { SkipButton, FooterButton, Bullet, PrimaryButton, Link } from './button'
-import { Title, Paragraph } from './text'
+import { Title, Paragraph, SubText } from './text'
 import { SelectBox } from './select'
 import {
   Footer,
@@ -25,6 +25,7 @@ export {
   Bullet,
   Title,
   Paragraph,
+  SubText,
   Footer,
   FooterLeftColumn,
   FooterMiddleColumn,

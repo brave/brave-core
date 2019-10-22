@@ -25,7 +25,10 @@ describe('welcomeReducer', () => {
       expect(assertion).toEqual({
         searchProviders: [],
         browserProfiles: [],
-        browserThemes: []
+        browserThemes: [],
+        walletCreated: false,
+        walletCreating: false,
+        walletCreateFailed: false
       })
       expect(spy).toBeCalled()
       expect(spy.mock.calls[0][1]).toBe(undefined)

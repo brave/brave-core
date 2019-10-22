@@ -179,7 +179,9 @@
       <message name="IDS_BRAVE_WELCOME_PAGE_MAIN_BUTTON" desc="Button that moves to the next welcome screen">Let's go</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_TITLE" desc="Welcome message title for Brave Rewards">Enable Brave Rewards</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_DESC" desc="Explainer text about Brave Rewards">Your attention is valuable. Earn by viewing privacy-respecting ads while you browse, and pay it forward to support content creators you love.</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_BUTTON" desc="Button to enable Brave Rewards from the welcome page">Enable Rewards</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_BUTTON" desc="Button to turn on Brave Rewards from the welcome page">Turn on Rewards</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_SERVICE_TEXT" desc="">By clicking 'Turn on Rewards', you indicate that you have read and agree to the</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_TURNING_ON_REWARDS" desc="Button text that indicates Rewards is being turned on">Turning on...</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_TITLE" desc="Welcome message title for import from another browser">Import bookmarks and settings</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_DESC" desc="Explainer text about importing from another browser">Set up your usual browsing environment by importing bookmarks and settings from your old browser. Advanced import options can be found in Settings.</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_BUTTON" desc="Button to import from another browser">Import</message>

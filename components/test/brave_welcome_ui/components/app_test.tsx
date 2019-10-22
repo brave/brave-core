@@ -13,7 +13,10 @@ describe('welcomePage component', () => {
         welcomeData: {
           searchProviders: [],
           browserProfiles: [],
-          browserThemes: []
+          browserThemes: [],
+          walletCreated: false,
+          walletCreating: false,
+          walletCreateFailed: false
         }
       })
     })
