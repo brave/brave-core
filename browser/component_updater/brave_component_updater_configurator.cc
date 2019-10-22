@@ -185,11 +185,7 @@ BraveConfigurator::GetProtocolHandlerFactory() const {
 
 update_client::RecoveryCRXElevator BraveConfigurator::GetRecoveryCRXElevator()
     const {
-#if defined(GOOGLE_CHROME_BUILD) && defined(OS_WIN)
-  return base::BindOnce(&RunRecoveryCRXElevated);
-#else
   return {};
-#endif
 }
 
 }  // namespace component_updater
