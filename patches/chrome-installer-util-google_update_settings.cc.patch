@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/google_update_settings.cc b/chrome/installer/util/google_update_settings.cc
-index 441ed6d50d5cb4edcd665665fca7887f034ff6a0..709c7e5e24518902ae86ab1ef819dd9d86239d1a 100644
+index 441ed6d50d5cb4edcd665665fca7887f034ff6a0..54a22d11c380ee31e12440900cf2a365781fe8d9 100644
 --- a/chrome/installer/util/google_update_settings.cc
 +++ b/chrome/installer/util/google_update_settings.cc
 @@ -29,7 +29,11 @@ using base::win::RegKey;
@@ -14,23 +14,14 @@ index 441ed6d50d5cb4edcd665665fca7887f034ff6a0..709c7e5e24518902ae86ab1ef819dd9d
  const wchar_t GoogleUpdateSettings::kUpdatePolicyValue[] = L"UpdateDefault";
  const wchar_t GoogleUpdateSettings::kDownloadPreferencePolicyValue[] =
      L"DownloadPreference";
-@@ -41,6 +45,11 @@ const wchar_t GoogleUpdateSettings::kCheckPeriodOverrideMinutes[] =
+@@ -41,6 +45,10 @@ const wchar_t GoogleUpdateSettings::kCheckPeriodOverrideMinutes[] =
  const int GoogleUpdateSettings::kCheckPeriodOverrideMinutesMax =
      60 * 24 * 7 * 6;
  
-+
 +#if defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD)
-+#define GOOGLE_CHROME_BUILD
++#undef BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING
++#define BUILDFLAG_INTERNAL_GOOGLE_CHROME_BRANDING() (1)
 +#endif
-+
  const GoogleUpdateSettings::UpdatePolicy
      GoogleUpdateSettings::kDefaultUpdatePolicy =
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
-@@ -836,3 +845,7 @@ bool GoogleUpdateSettings::ReadExperimentLabels(
- 
-   return result == ERROR_SUCCESS;
- }
-+
-+#if defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD)
-+#undef GOOGLE_CHROME_BUILD
-+#endif
