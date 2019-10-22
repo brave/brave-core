@@ -17,11 +17,6 @@ namespace bat_ledger {
 
 namespace {
 
-
-int32_t ToMojomPublisherCategory(ledger::REWARDS_CATEGORY category) {
-  return (int32_t)category;
-}
-
 int32_t ToMojomMethod(ledger::URL_METHOD method) {
   return (int32_t)method;
 }
@@ -66,6 +61,10 @@ class LogStreamImpl : public ledger::LogStream {
   std::unique_ptr<logging::LogMessage> log_message_;
   DISALLOW_COPY_AND_ASSIGN(LogStreamImpl);
 };
+
+void OnResultCallback(ledger::ResultCallback callback, ledger::Result result) {
+  callback(result);
+}
 
 void OnSaveState(const ledger::OnSaveCallback& callback,
                  const ledger::Result result) {
@@ -153,16 +152,16 @@ void BatLedgerClientMojoProxy::OnRecoverWallet(
 
 void BatLedgerClientMojoProxy::OnReconcileComplete(ledger::Result result,
     const std::string& viewing_id,
-    ledger::REWARDS_CATEGORY category,
-    const std::string& probi) {
+    const std::string& probi,
+    const ledger::RewardsType type) {
   if (!Connected())
     return;
 
   bat_ledger_client_->OnReconcileComplete(
       result,
       viewing_id,
-      ToMojomPublisherCategory(category),
-      probi);
+      probi,
+      type);
 }
 
 std::unique_ptr<ledger::LogStream> BatLedgerClientMojoProxy::Log(
@@ -477,12 +476,17 @@ void BatLedgerClientMojoProxy::SaveContributionInfo(const std::string& probi,
     const int year,
     const uint32_t date,
     const std::string& publisher_key,
-    const ledger::REWARDS_CATEGORY category) {
+    const ledger::RewardsType type) {
   if (!Connected())
     return;
 
-  bat_ledger_client_->SaveContributionInfo(probi, month, year, date,
-      publisher_key, ToMojomPublisherCategory(category));
+  bat_ledger_client_->SaveContributionInfo(
+      probi,
+      month,
+      year,
+      date,
+      publisher_key,
+      type);
 }
 
 void BatLedgerClientMojoProxy::SaveMediaPublisherInfo(
@@ -916,6 +920,34 @@ void BatLedgerClientMojoProxy::RemoveTransferFee(
     const std::string& wallet_type,
     const std::string& id) {
   bat_ledger_client_->RemoveTransferFee(wallet_type, id);
+}
+
+void BatLedgerClientMojoProxy::InsertOrUpdateContributionQueue(
+    ledger::ContributionQueuePtr info,
+    ledger::ResultCallback callback) {
+  bat_ledger_client_->InsertOrUpdateContributionQueue(
+      std::move(info),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
+}
+
+void BatLedgerClientMojoProxy::DeleteContributionQueue(
+    const uint64_t id,
+    ledger::ResultCallback callback) {
+  bat_ledger_client_->DeleteContributionQueue(
+      id,
+      base::BindOnce(&OnResultCallback, std::move(callback)));
+}
+
+void OnGetFirstContributionQueue(
+    const ledger::GetFirstContributionQueueCallback& callback,
+    ledger::ContributionQueuePtr info) {
+  callback(std::move(info));
+}
+
+void BatLedgerClientMojoProxy::GetFirstContributionQueue(
+    ledger::GetFirstContributionQueueCallback callback) {
+  bat_ledger_client_->GetFirstContributionQueue(
+      base::BindOnce(&OnGetFirstContributionQueue, std::move(callback)));
 }
 
 }  // namespace bat_ledger

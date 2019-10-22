@@ -35,6 +35,7 @@
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_properties.h"
 #include "bat/ledger/transactions_info.h"
+#include "bat/ledger/contribution_queue.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/common/pref_names.h"
@@ -492,6 +493,12 @@ void RewardsServiceImpl::StartLedger() {
       AsWeakPtr());
 
   bat_ledger_->Initialize(std::move(callback));
+}
+
+void RewardsServiceImpl::OnResult(
+    ledger::ResultCallback callback,
+    const ledger::Result result) {
+  callback(result);
 }
 
 void RewardsServiceImpl::MaybeShowBackupNotification(uint64_t boot_stamp) {
@@ -968,21 +975,22 @@ void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
   TriggerOnGrantFinish(result, std::move(grant));
 }
 
-void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
-  const std::string& viewing_id,
-  ledger::REWARDS_CATEGORY category,
-  const std::string& probi) {
+void RewardsServiceImpl::OnReconcileComplete(
+    ledger::Result result,
+    const std::string& viewing_id,
+    const std::string& probi,
+    const ledger::RewardsType type) {
   if (result == ledger::Result::LEDGER_OK) {
     auto now = base::Time::Now();
     if (!Connected())
       return;
 
-    if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
+    if (type == ledger::RewardsType::RECURRING_TIP) {
       MaybeShowNotificationTipsPaid();
     }
 
     bat_ledger_->OnReconcileCompleteSuccess(viewing_id,
-        category,
+        type,
         probi,
         GetPublisherMonth(now),
         GetPublisherYear(now),
@@ -994,8 +1002,8 @@ void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
     observer.OnReconcileComplete(this,
                                  static_cast<int>(result),
                                  viewing_id,
-                                 category,
-                                 probi);
+                                 probi,
+                                 static_cast<int>(type));
 }
 
 void RewardsServiceImpl::LoadLedgerState(
@@ -2159,10 +2167,10 @@ bool SaveContributionInfoOnFileTaskRunner(
 }
 
 void RewardsServiceImpl::OnContributionInfoSaved(
-    const ledger::REWARDS_CATEGORY category,
+    const ledger::RewardsType type,
     bool success) {
   for (auto& observer : observers_) {
-    observer.OnContributionSaved(this, success, category);
+    observer.OnContributionSaved(this, success, static_cast<int>(type));
   }
 }
 
@@ -2171,14 +2179,14 @@ void RewardsServiceImpl::SaveContributionInfo(const std::string& probi,
   const int year,
   const uint32_t date,
   const std::string& publisher_key,
-  const ledger::REWARDS_CATEGORY category) {
+  const ledger::RewardsType type) {
   brave_rewards::ContributionInfo info;
   info.probi = probi;
   info.month = month;
   info.year = year;
   info.date = date;
   info.publisher_key = publisher_key;
-  info.category = category;
+  info.type = static_cast<int>(type);
 
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::Bind(&SaveContributionInfoOnFileTaskRunner,
@@ -2186,7 +2194,7 @@ void RewardsServiceImpl::SaveContributionInfo(const std::string& probi,
                     publisher_info_backend_.get()),
       base::Bind(&RewardsServiceImpl::OnContributionInfoSaved,
                      AsWeakPtr(),
-                     category));
+                     type));
 }
 
 bool SaveRecurringTipOnFileTaskRunner(
@@ -2745,15 +2753,15 @@ void RewardsServiceImpl::OnTip(
 
 void RewardsServiceImpl::OnTip(
     const std::string& publisher_key,
-    int amount,
-    bool recurring,
+    const int amount,
+    const bool recurring,
     std::unique_ptr<brave_rewards::ContentSite> site) {
 
   if (!site) {
     return;
   }
 
-  ledger::PublisherInfoPtr info;
+  auto info = ledger::PublisherInfo::New();
   info->id = publisher_key;
   info->status = static_cast<ledger::PublisherStatus>(site->status);
   info->excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
@@ -3101,7 +3109,7 @@ PendingContributionInfo PendingContributionLedgerToRewards(
     const ledger::PendingContributionInfoPtr contribution) {
   PendingContributionInfo info;
   info.publisher_key = contribution->publisher_key;
-  info.category = contribution->category;
+  info.type = static_cast<int>(contribution->type);
   info.status = static_cast<uint32_t>(contribution->status);
   info.name = contribution->name;
   info.url = contribution->url;
@@ -3746,6 +3754,86 @@ bool RewardsServiceImpl::OnlyAnonWallet() {
   }
 
   return false;
+}
+
+ledger::Result InsertOrUpdateContributionQueueOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    ledger::ContributionQueuePtr info) {
+  if (!backend) {
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  const bool result = backend->InsertOrUpdateContributionQueue(std::move(info));
+
+  return result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
+}
+
+void RewardsServiceImpl::InsertOrUpdateContributionQueue(
+    ledger::ContributionQueuePtr info,
+    ledger::ResultCallback callback) {
+  ledger::ContributionQueuePtr info_clone = info->Clone();
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&InsertOrUpdateContributionQueueOnFileTaskRunner,
+        publisher_info_backend_.get(),
+        std::move(info_clone)),
+    base::BindOnce(&RewardsServiceImpl::OnResult,
+        AsWeakPtr(),
+        callback));
+}
+
+ledger::Result DeleteContributionQueueOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    const uint64_t id) {
+  if (!backend) {
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  const bool result = backend->DeleteContributionQueue(id);
+
+  return result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
+}
+
+void RewardsServiceImpl::DeleteContributionQueue(
+    const uint64_t id,
+    ledger::ResultCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&DeleteContributionQueueOnFileTaskRunner,
+        publisher_info_backend_.get(),
+        id),
+    base::BindOnce(&RewardsServiceImpl::OnResult,
+        AsWeakPtr(),
+        callback));
+}
+
+ledger::ContributionQueuePtr GetFirstContributionQueueOnFileTaskRunner(
+    PublisherInfoDatabase* backend) {
+  if (!backend) {
+    return nullptr;
+  }
+
+  return backend->GetFirstContributionQueue();
+}
+
+void RewardsServiceImpl::GetFirstContributionQueue(
+    ledger::GetFirstContributionQueueCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&GetFirstContributionQueueOnFileTaskRunner,
+        publisher_info_backend_.get()),
+    base::BindOnce(&RewardsServiceImpl::OnGetFirstContributionQueue,
+        AsWeakPtr(),
+        callback));
+}
+
+void RewardsServiceImpl::OnGetFirstContributionQueue(
+    ledger::GetFirstContributionQueueCallback callback,
+    ledger::ContributionQueuePtr info) {
+  callback(std::move(info));
 }
 
 }  // namespace brave_rewards

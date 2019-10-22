@@ -220,8 +220,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
-                           const std::string& probi = "0",
-                           int32_t category = 0);
+                           const std::string& probi,
+                           const ledger::RewardsType type);
 
   std::string URIEncode(const std::string& value) override;
 
@@ -277,7 +277,7 @@ class LedgerImpl : public ledger::Ledger,
                           ledger::PublisherBannerCallback callback) override;
 
   void OnReconcileCompleteSuccess(const std::string& viewing_id,
-                                  const ledger::REWARDS_CATEGORY category,
+                                  const ledger::RewardsType type,
                                   const std::string& probi,
                                   const ledger::ACTIVITY_MONTH month,
                                   const int year,
@@ -392,7 +392,7 @@ class LedgerImpl : public ledger::Ledger,
                             const int year,
                             const uint32_t date,
                             const std::string& publisher_key,
-                            const ledger::REWARDS_CATEGORY category);
+                            const ledger::RewardsType type);
 
   void NormalizeContributeWinners(
       ledger::PublisherInfoList* newList,
@@ -554,6 +554,17 @@ class LedgerImpl : public ledger::Ledger,
   void RemoveTransferFee(
     const std::string& wallet_type,
     const std::string& id);
+
+  void InsertOrUpdateContributionQueue(
+    ledger::ContributionQueuePtr info,
+    ledger::ResultCallback callback);
+
+  void DeleteContributionQueue(
+    const uint64_t id,
+    ledger::ResultCallback callback);
+
+  void GetFirstContributionQueue(
+    ledger::GetFirstContributionQueueCallback callback);
 
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,

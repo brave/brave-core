@@ -6,9 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_PUBLISHER_INFO_DATABASE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_PUBLISHER_INFO_DATABASE_H_
 
+#include <stddef.h>
+#include <stdint.h>
+#include <map>
 #include <memory>
 #include <string>
-#include <stddef.h>  // NOLINT
+#include <vector>
 
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
@@ -17,7 +20,9 @@
 #include "base/sequence_checker.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/pending_contribution.h"
+#include "bat/ledger/contribution_queue.h"
 #include "brave/components/brave_rewards/browser/contribution_info.h"
+#include "brave/components/brave_rewards/browser/database/database_contribution_queue.h"
 #include "brave/components/brave_rewards/browser/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/browser/pending_contribution.h"
 #include "brave/components/brave_rewards/browser/recurring_donation.h"
@@ -100,6 +105,12 @@ class PublisherInfoDatabase {
   ledger::ServerPublisherInfoPtr GetServerPublisherInfo(
       const std::string& publisher_key);
 
+  bool InsertOrUpdateContributionQueue(ledger::ContributionQueuePtr info);
+
+  ledger::ContributionQueuePtr GetFirstContributionQueue();
+
+  bool DeleteContributionQueue(const uint64_t id);
+
   // Returns the current version of the publisher info database
   int GetCurrentVersion();
 
@@ -158,7 +169,35 @@ class PublisherInfoDatabase {
 
   bool MigrateV6toV7();
 
+  bool MigrateV7toV8();
+  bool MigrateToV8ContributionInfoTable();
+  bool CreateV8ContributionInfoTable();
+  bool CreateV8ContributionInfoIndex();
+  bool MigrateToV8PendingContributionsTable();
+  bool CreateV8PendingContributionsTable();
+  bool CreateV8PendingContributionsIndex();
+
+  bool MigrateV8toV9();
+
   bool Migrate(int version);
+
+  bool MigrateDBTable(
+      const std::string& from,
+      const std::string& to,
+      const std::vector<std::string>& columns,
+      const bool should_drop);
+  bool MigrateDBTable(
+      const std::string& from,
+      const std::string& to,
+      const std::map<std::string, std::string>& columns,
+      const bool should_drop);
+  bool RenameDBTable(
+      const std::string& from,
+      const std::string& to);
+  std::string GenerateDBInsertQuery(
+      const std::string& from,
+      const std::string& to,
+      const std::map<std::string, std::string>& columns);
 
   sql::InitStatus EnsureCurrentVersion();
 
@@ -170,6 +209,7 @@ class PublisherInfoDatabase {
 
   std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;
   std::unique_ptr<DatabaseServerPublisherInfo> server_publisher_info_;
+  std::unique_ptr<DatabaseContributionQueue> contribution_queue_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   DISALLOW_COPY_AND_ASSIGN(PublisherInfoDatabase);

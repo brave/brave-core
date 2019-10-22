@@ -36,8 +36,8 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                       std::vector<ledger::GrantPtr> grants) override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
-                           ledger::REWARDS_CATEGORY category,
-                           const std::string& probi) override;
+                           const std::string& probi,
+                           const ledger::RewardsType type) override;
   void OnGrantFinish(ledger::Result result,
                      ledger::GrantPtr grant) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
@@ -74,7 +74,7 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                             const int year,
                             const uint32_t date,
                             const std::string& publisher_key,
-                            const ledger::REWARDS_CATEGORY category) override;
+                            const ledger::RewardsType type) override;
   void SaveRecurringTip(
       ledger::ContributionInfoPtr info,
       ledger::SaveRecurringTipCallback callback) override;
@@ -194,6 +194,17 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void RemoveTransferFee(
       const std::string& wallet_type,
       const std::string& id) override;
+
+  void InsertOrUpdateContributionQueue(
+      ledger::ContributionQueuePtr info,
+      ledger::ResultCallback callback) override;
+
+  void DeleteContributionQueue(
+      const uint64_t id,
+      ledger::ResultCallback callback) override;
+
+  void GetFirstContributionQueue(
+      ledger::GetFirstContributionQueueCallback callback) override;
 
  private:
   bool Connected() const;
