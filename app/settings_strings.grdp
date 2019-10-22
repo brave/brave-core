@@ -193,11 +193,14 @@
   <message name="IDS_SETTINGS_CAPTIONS_BACKGROUND_OPACITY" desc="Name of the caption background opacity preference.">
     Background opacity
   </message>
-  <message name="IDS_SETTINGS_CAPTIONS_OPACITY_MIN" desc="Value of the minimum captions text opacity setting.">
-    0
+  <message name="IDS_SETTINGS_CAPTIONS_OPACITY_OPAQUE" desc="Name of the opaque opacity preference.">
+    Opaque
   </message>
-  <message name="IDS_SETTINGS_CAPTIONS_OPACITY_MAX" desc="Value of the maximum captions text opacity setting.">
-    100
+  <message name="IDS_SETTINGS_CAPTIONS_OPACITY_SEMI_TRANSPARENT" desc="Name of the semi-transparent opacity preference.">
+    Semi-transparent
+  </message>
+  <message name="IDS_SETTINGS_CAPTIONS_OPACITY_TRANSPARENT" desc="Name of the transparent opacity preference.">
+    Transparent
   </message>
   <message name="IDS_SETTINGS_CAPTIONS_TEXT_SHADOW" desc="Name of the caption text shadow preference.">
     Text shadow

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_navigator.cc b/chrome/browser/ui/browser_navigator.cc
-index f7e171b342cde5c6d2e321cb37bb9ce3635c118d..661db0a3d8af12c0c6389b9a63d76d4172d56b81 100644
+index f7e171b342cde5c6d2e321cb37bb9ce3635c118d..5fb4da522eca9b7bc852e5a173369315cede9f19 100644
 --- a/chrome/browser/ui/browser_navigator.cc
 +++ b/chrome/browser/ui/browser_navigator.cc
 @@ -108,6 +108,7 @@ Browser* GetOrCreateBrowser(Profile* profile, bool user_gesture) {
