@@ -8,7 +8,6 @@ import { parse } from 'querystring'
 
 // Constants
 import * as tabTypes from '../../constants/tab_types'
-import * as windowTypes from '../../constants/window_types'
 import * as torrentTypes from '../../constants/webtorrent_types'
 import { File, TorrentState, TorrentsState } from '../../constants/webtorrentState'
 
@@ -19,44 +18,7 @@ import {
   findTorrent,
   saveAllFiles as webtorrentSaveAllFiles
 } from '../webtorrent'
-import { getTabData } from '../api/tabs_api'
 import { parseTorrentRemote } from '../api/torrent_api'
-
-const focusedWindowChanged = (windowId: number, state: TorrentsState) => {
-  return { ...state, currentWindowId: windowId }
-}
-
-const windowRemoved = (windowId: number, state: TorrentsState) => {
-  const { activeTabIds } = state
-  delete activeTabIds[windowId]
-  return { ...state, activeTabIds }
-}
-
-const activeTabChanged = (tabId: number, windowId: number, state: TorrentsState) => {
-  const { activeTabIds, torrentStateMap } = state
-  activeTabIds[windowId] = tabId
-  if (!torrentStateMap[tabId]) {
-    getTabData(tabId)
-  }
-  return { ...state, activeTabIds }
-}
-
-const windowCreated = (window: chrome.windows.Window, state: TorrentsState) => {
-  // update currentWindowId if needed
-  if (window.focused || Object.keys(state.activeTabIds).length === 0) {
-    state = focusedWindowChanged(window.id, state)
-  }
-
-  // update its activeTabId
-  if (window.tabs) {
-    const tab = window.tabs.find((tab: chrome.tabs.Tab) => tab.active)
-    if (tab && tab.id) {
-      state = activeTabChanged(tab.id, window.id, state)
-    }
-  }
-
-  return state
-}
 
 const tabUpdated = (tabId: number, url: string, state: TorrentsState) => {
   const { torrentStateMap, torrentObjMap } = state
@@ -125,7 +87,9 @@ const tabRemoved = (tabId: number, state: TorrentsState) => {
   if (torrentState) {
     const infoHash = torrentState.infoHash
     if (infoHash && torrentObjMap[infoHash]) { // unsubscribe
-      torrentObjMap[infoHash].tabClients.delete(tabId)
+      if (torrentObjMap[infoHash].tabClients) {
+        torrentObjMap[infoHash].tabClients.delete(tabId)
+      }
       if (!torrentObjMap[infoHash].tabClients.size) {
         delete torrentObjMap[infoHash]
         delTorrent(infoHash)
@@ -234,42 +198,13 @@ const saveAllFiles = (state: TorrentsState, infoHash: string) => {
   return { ...state }
 }
 
-const defaultState: TorrentsState = { currentWindowId: -1, activeTabIds: {}, torrentStateMap: {}, torrentObjMap: {} }
+const defaultState: TorrentsState = { torrentStateMap: {}, torrentObjMap: {} }
 export const webtorrentReducer = (state: TorrentsState = defaultState, action: any) => { // TODO: modify any to be actual action type
   const payload = action.payload
   switch (action.type) {
-    case windowTypes.types.WINDOW_CREATED:
-      state = windowCreated(payload.window, state)
-      break
-    case windowTypes.types.WINDOW_REMOVED:
-      state = windowRemoved(payload.windowId, state)
-      break
-    case windowTypes.types.WINDOW_FOCUS_CHANGED:
-      state = focusedWindowChanged(payload.windowId, state)
-      break
-    case tabTypes.types.ACTIVE_TAB_CHANGED:
-      if (state.currentWindowId === -1) {
-        state = focusedWindowChanged(payload.windowId, state)
-      }
-      state = activeTabChanged(payload.tabId, payload.windowId, state)
-      break
-    case tabTypes.types.TAB_CREATED:
-      if (payload.tab.id && payload.tab.url) {
-        state = tabUpdated(payload.tab.id, payload.tab.url, state)
-      }
-      break
     case tabTypes.types.TAB_UPDATED:
-      // it's possible to be the first event when browser starts
-      // initialize currentWindowId and its activeTabId if so
-      if (state.currentWindowId === -1) {
-        state = focusedWindowChanged(payload.tab.windowId, state)
-      }
-      if (!state.activeTabIds[state.currentWindowId] && payload.tab.active) {
-        state = activeTabChanged(payload.tab.id, payload.tab.windowId, state)
-      }
-
       if (payload.changeInfo.url) {
-        state = tabUpdated(payload.tab.id, payload.changeInfo.url, state)
+        state = tabUpdated(payload.changeInfo.tabId, payload.changeInfo.url, state)
       }
       break
     case tabTypes.types.TAB_REMOVED:

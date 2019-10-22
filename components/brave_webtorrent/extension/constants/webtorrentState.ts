@@ -21,13 +21,7 @@ export interface ApplicationState {
   torrentsData: TorrentsState
 }
 
-export interface ActiveTabIds {
-  [key: number]: number // windowId as key
-}
-
 export interface TorrentsState {
-  currentWindowId: number
-  activeTabIds: ActiveTabIds
   torrentStateMap: TorrentStateMap
   torrentObjMap: TorrentObjMap
 }
