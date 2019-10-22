@@ -73,4 +73,9 @@ public extension UIButton {
             if #available(iOS 13.0, *) { } else { titleLabel?.appearanceTextColor = newValue }
         }
     }
+    
+    @objc dynamic var appearanceTintColor: UIColor! {
+        get { return self.tintColor }
+        set { self.tintColor = newValue }
+    }
 }
