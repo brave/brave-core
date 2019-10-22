@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.chromium.base.ApplicationStatus;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
@@ -27,6 +28,8 @@ import org.chromium.base.annotations.JNINamespace;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeSwitches;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
+import org.chromium.chrome.browser.onboarding.OnboardingActivity;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
@@ -139,6 +142,22 @@ public abstract class BraveActivity extends ChromeActivity {
 
         createNotificationChannel();
         setupBraveSetDefaultBrowserNotification();
+    }
+
+    @Override
+    public void finishNativeInitialization() {
+        super.finishNativeInitialization();
+
+        OnboardingActivity onboardingActivity = null;
+        for (Activity ref : ApplicationStatus.getRunningActivities()) {
+            if (!(ref instanceof OnboardingActivity)) continue;
+
+            onboardingActivity = (OnboardingActivity) ref;
+        }
+
+        if (onboardingActivity == null) {
+            OnboardingPrefManager.getInstance().showOnboarding(this, false);
+        }
     }
 
     private void createNotificationChannel() {
