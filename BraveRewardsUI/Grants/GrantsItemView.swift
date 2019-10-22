@@ -25,7 +25,7 @@ class GrantsItemView: SettingsSectionView {
     }, kindLabelConfig: {
       $0.appearanceTextColor = Colors.grey200
       $0.font = .systemFont(ofSize: 13.0)
-      $0.text = "BAT"
+      $0.text = Strings.BAT
     })
     
     addSubview(stackView)

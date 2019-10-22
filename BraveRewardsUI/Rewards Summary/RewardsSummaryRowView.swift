@@ -72,7 +72,7 @@ import UIKit
                      batValue: String, usdDollarValue: String) {
       self.init(frame: .zero)
       titleLabel.text = title
-      cryptoCurrencyLabel.text = "BAT"
+      cryptoCurrencyLabel.text = Strings.BAT
       cryptoValueLabel.text = batValue
       cryptoValueLabel.appearanceTextColor = cryptoValueColor
       dollarValueLabel.text = usdDollarValue

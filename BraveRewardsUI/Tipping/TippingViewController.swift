@@ -82,7 +82,7 @@ class TippingViewController: UIViewController, UIViewControllerTransitioningDele
     }
     
     tippingView.overviewView.disclaimerView.isHidden = publisherInfo.status == .verified
-    tippingView.optionSelectionView.setWalletBalance(state.ledger.balanceString, crypto: "BAT")
+    tippingView.optionSelectionView.setWalletBalance(state.ledger.balanceString, crypto: Strings.BAT)
     tippingView.optionSelectionView.options = TippingViewController.defaultTippingAmounts.map {
       TippingOption.batAmount(BATValue($0), dollarValue: state.ledger.dollarStringForBATAmount($0) ?? "")
     }

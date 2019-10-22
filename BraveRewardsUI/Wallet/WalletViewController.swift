@@ -88,7 +88,11 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
     navigationController?.setNavigationBarHidden(true, animated: false)
     
     rewardsSummaryView.rewardsSummaryButton.addTarget(self, action: #selector(tappedRewardsSummaryButton), for: .touchUpInside)
-    rewardsSummaryView.disclaimerView = disclaimerView
+    if !disclaimerLabels.isEmpty {
+      rewardsSummaryView.disclaimerView = WalletDisclaimerView().then {
+        $0.labels = disclaimerLabels
+      }
+    }
     
     walletView.headerView.addFundsButton.addTarget(self, action: #selector(tappedAddFunds), for: .touchUpInside)
     walletView.headerView.settingsButton.addTarget(self, action: #selector(tappedSettings), for: .touchUpInside)
@@ -190,9 +194,11 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
       self.state.delegate?.loadNewTabWithURL(url)
     }
     
-    walletView.rewardsSummaryView?.disclaimerView?.onLinkedTapped = { [weak self] _ in
-      guard let self = self, let url = URL(string: DisclaimerLinks.unclaimedFundsURL) else { return }
-      self.state.delegate?.loadNewTabWithURL(url)
+    walletView.rewardsSummaryView?.disclaimerView?.labels.forEach {
+      $0.onLinkedTapped = { [weak self] _ in
+        guard let self = self, let url = URL(string: DisclaimerLinks.unclaimedFundsURL) else { return }
+        self.state.delegate?.loadNewTabWithURL(url)
+      }
     }
     
     publisherView.onCheckAgainTapped = { [weak self] in
@@ -515,7 +521,7 @@ extension WalletViewController {
   func updateWalletHeader() {
     walletView.headerView.setWalletBalance(
       state.ledger.balanceString,
-      crypto: "BAT",
+      crypto: Strings.BAT,
       dollarValue: state.ledger.usdBalanceString
     )
   }
