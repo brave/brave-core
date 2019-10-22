@@ -11,6 +11,7 @@
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/request/request_util.h"
 #include "net/http/http_status_code.h"
 
 #include "anon/anon.h"
@@ -45,7 +46,7 @@ void Create::Start(const std::string& safetynet_token,
                                     _2,
                                     _3,
                                     std::move(callback));
-    ledger_->LoadURL(braveledger_bat_helper::buildURL(
+    ledger_->LoadURL(braveledger_request_util::BuildUrl(
           (std::string)GET_SET_PROMOTION, safetynet_prefix),
         headers, "", "", ledger::UrlMethod::GET, safetynet_callback);
     return;
@@ -57,7 +58,7 @@ void Create::Start(const std::string& safetynet_token,
                             _3,
                             std::move(callback));
   ledger_->LoadURL(
-      braveledger_bat_helper::buildURL(REGISTER_PERSONA, PREFIX_V2),
+      braveledger_request_util::BuildUrl(REGISTER_PERSONA, PREFIX_V2),
       std::vector<std::string>(), "", "",
       ledger::UrlMethod::GET, on_req);
 }
@@ -229,7 +230,7 @@ void Create::RequestCredentialsCallback(
   registerHeaders.push_back("Content-Type: application/json; charset=UTF-8");
 
   // We should use simple callbacks on iOS
-  const std::string url = braveledger_bat_helper::buildURL(
+  const std::string url = braveledger_request_util::BuildUrl(
       (std::string)REGISTER_PERSONA + "/" + ledger_->GetUserId(), PREFIX_V2);
   auto on_register = std::bind(&Create::RegisterPersonaCallback,
                             this,

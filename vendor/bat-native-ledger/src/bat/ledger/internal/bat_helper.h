@@ -365,13 +365,6 @@ struct BATCH_PROOF {
 
 typedef std::vector<braveledger_bat_helper::BATCH_PROOF> BatchProofs;
 
-enum class SERVER_TYPES {
-  LEDGER,
-  BALANCE,
-  PUBLISHER,
-  PUBLISHER_DISTRO
-};
-
 using SaveVisitSignature = void(const std::string&, uint64_t);
 using SaveVisitCallback = std::function<SaveVisitSignature>;
 
@@ -451,10 +444,6 @@ std::string sign(std::string* keys,
                  const std::vector<uint8_t>& secretKey);
 
 uint64_t currentTime();
-
-std::string buildURL(const std::string& path,
-                     const std::string& prefix = "",
-                     const SERVER_TYPES& server = SERVER_TYPES::LEDGER);
 
 std::vector<std::string> split(const std::string& s, char delim);
 

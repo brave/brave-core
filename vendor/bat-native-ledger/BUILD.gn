@@ -129,6 +129,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/publisher/publisher.h",
     "src/bat/ledger/internal/publisher/publisher_server_list.cc",
     "src/bat/ledger/internal/publisher/publisher_server_list.h",
+    "src/bat/ledger/internal/request/request_util.cc",
+    "src/bat/ledger/internal/request/request_util.h",
     "src/bat/ledger/internal/state_keys.h",
     "src/bat/ledger/internal/uphold/uphold.h",
     "src/bat/ledger/internal/uphold/uphold.cc",

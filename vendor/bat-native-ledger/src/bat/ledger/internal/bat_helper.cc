@@ -2143,68 +2143,6 @@ bool HasSameDomainAndPath(
       gurl.path().substr(0, path_to_match.size()) == path_to_match;
 }
 
-std::string buildURL(const std::string& path,
-                     const std::string& prefix,
-                     const SERVER_TYPES& server) {
-  std::string url;
-  switch (server) {
-    case SERVER_TYPES::BALANCE:
-      switch (ledger::_environment) {
-        case ledger::Environment::STAGING:
-          url = BALANCE_STAGING_SERVER;
-          break;
-        case ledger::Environment::PRODUCTION:
-          url = BALANCE_PRODUCTION_SERVER;
-          break;
-        case ledger::Environment::DEVELOPMENT:
-          url = BALANCE_DEVELOPMENT_SERVER;
-          break;
-      }
-      break;
-    case SERVER_TYPES::PUBLISHER:
-      switch (ledger::_environment) {
-        case ledger::Environment::STAGING:
-          url = PUBLISHER_STAGING_SERVER;
-          break;
-        case ledger::Environment::PRODUCTION:
-          url = PUBLISHER_PRODUCTION_SERVER;
-          break;
-        case ledger::Environment::DEVELOPMENT:
-          url = PUBLISHER_DEVELOPMENT_SERVER;
-          break;
-      }
-      break;
-    case SERVER_TYPES::PUBLISHER_DISTRO:
-      switch (ledger::_environment) {
-        case ledger::Environment::STAGING:
-          url = PUBLISHER_DISTRO_STAGING_SERVER;
-          break;
-        case ledger::Environment::PRODUCTION:
-          url = PUBLISHER_DISTRO_PRODUCTION_SERVER;
-          break;
-        case ledger::Environment::DEVELOPMENT:
-          url = PUBLISHER_DISTRO_DEVELOPMENT_SERVER;
-          break;
-      }
-      break;
-    case SERVER_TYPES::LEDGER:
-      switch (ledger::_environment) {
-        case ledger::Environment::STAGING:
-          url = LEDGER_STAGING_SERVER;
-          break;
-        case ledger::Environment::PRODUCTION:
-          url = LEDGER_PRODUCTION_SERVER;
-          break;
-        case ledger::Environment::DEVELOPMENT:
-          url = LEDGER_DEVELOPMENT_SERVER;
-          break;
-      }
-      break;
-  }
-
-  return url + prefix + path;
-}
-
 std::vector<std::string> split(const std::string& s, char delim) {
   std::stringstream ss(s);
   std::string item;

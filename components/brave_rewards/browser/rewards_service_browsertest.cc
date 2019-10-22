@@ -53,7 +53,7 @@
 using ::testing::NiceMock;
 using ::testing::Return;
 
-using braveledger_bat_helper::SERVER_TYPES;
+using braveledger_request_util::ServerTypes;
 
 using RewardsNotificationType =
     brave_rewards::RewardsNotificationService::RewardsNotificationType;
@@ -128,7 +128,7 @@ bool URLMatches(const std::string& url,
                 const std::string& prefix,
                 const SERVER_TYPES& server) {
   const std::string target_url =
-      braveledger_bat_helper::buildURL(path, prefix, server);
+      braveledger_request_util::BuildUrl(path, prefix, server);
   return (url.find(target_url) == 0);
 }
 
@@ -320,19 +320,18 @@ class BraveRewardsBrowserTest
                                                      "/",
                                                      base::TRIM_WHITESPACE,
                                                      base::SPLIT_WANT_ALL);
-    if (url.find(braveledger_bat_helper::buildURL(REGISTER_PERSONA, PREFIX_V2,
-      braveledger_bat_helper::SERVER_TYPES::LEDGER)) == 0
+    if (url.find(braveledger_request_util::BuildUrl(REGISTER_PERSONA, PREFIX_V2)) == 0
       && tmp.size() == 6) {
       *response = brave_test_resp::registrarVK_;
     } else if (URLMatches(url, REGISTER_PERSONA, PREFIX_V2,
-                          SERVER_TYPES::LEDGER) &&
+                          ServerTypes::LEDGER) &&
                tmp.size() == 7) {
       *response = brave_test_resp::verification_;
     } else if (URLMatches(url, WALLET_PROPERTIES, PREFIX_V2,
-                          SERVER_TYPES::BALANCE)) {
+                          ServerTypes::BALANCE)) {
       *response = GetWalletProperties();
     } else if (URLMatches(url, WALLET_PROPERTIES, PREFIX_V2,
-                          SERVER_TYPES::LEDGER)) {
+                          ServerTypes::LEDGER)) {
       GURL gurl(url);
       if (gurl.has_query()) {
         *response = brave_test_resp::reconcile_;

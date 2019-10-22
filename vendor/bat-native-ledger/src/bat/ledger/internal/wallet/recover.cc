@@ -9,6 +9,7 @@
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/request/request_util.h"
 #include "net/http/http_status_code.h"
 
 #include "anon/anon.h"
@@ -110,7 +111,7 @@ void Recover::ContinueRecover(
                             _3,
                             newSeed,
                             std::move(callback));
-  const auto url = braveledger_bat_helper::buildURL(
+  const auto url = braveledger_request_util::BuildUrl(
         (std::string)RECOVER_WALLET_PUBLIC_KEY + publicKeyHex,
         PREFIX_V2);
   ledger_->LoadURL(
@@ -145,7 +146,7 @@ void Recover::RecoverWalletPublicKeyCallback(
                             recoveryId,
                             new_seed,
                             std::move(callback));
-  ledger_->LoadURL(braveledger_bat_helper::buildURL(
+  ledger_->LoadURL(braveledger_request_util::BuildUrl(
         (std::string)WALLET_PROPERTIES + recoveryId, PREFIX_V2),
       std::vector<std::string>(), "", "", ledger::UrlMethod::GET, on_recover);
 }

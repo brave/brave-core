@@ -10,6 +10,7 @@
 #include "base/task_runner_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/request/request_util.h"
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
 
@@ -227,7 +228,7 @@ void PhaseTwo::PrepareBallots() {
 void PhaseTwo::PrepareBatch(
     const braveledger_bat_helper::BALLOT_ST& ballot,
     const braveledger_bat_helper::TRANSACTION_ST& transaction) {
-  std::string url = braveledger_bat_helper::buildURL(
+  std::string url = braveledger_request_util::BuildUrl(
       (std::string)SURVEYOR_BATCH_VOTING +
       "/" +
       transaction.anonizeViewingId_, PREFIX_V2);
@@ -530,7 +531,7 @@ void PhaseTwo::VoteBatch() {
 
   std::string payload = braveledger_bat_helper::stringifyBatch(vote_batch);
 
-  std::string url = braveledger_bat_helper::buildURL(
+  std::string url = braveledger_request_util::BuildUrl(
       (std::string)SURVEYOR_BATCH_VOTING ,
       PREFIX_V2);
   auto callback = std::bind(&PhaseTwo::VoteBatchCallback,

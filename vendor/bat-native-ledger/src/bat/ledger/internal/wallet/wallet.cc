@@ -14,6 +14,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/internal/state_keys.h"
+#include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/wallet/balance.h"
 #include "bat/ledger/internal/wallet/create.h"
 #include "bat/ledger/internal/wallet/recover.h"
@@ -74,10 +75,10 @@ void Wallet::GetWalletProperties(
   std::string path = (std::string)WALLET_PROPERTIES
       + payment_id
       + WALLET_PROPERTIES_END;
-  const std::string url = braveledger_bat_helper::buildURL(
+  const std::string url = braveledger_request_util::BuildUrl(
       path,
       PREFIX_V2,
-      braveledger_bat_helper::SERVER_TYPES::BALANCE);
+      braveledger_request_util::ServerTypes::BALANCE);
   auto load_callback = std::bind(&Wallet::WalletPropertiesCallback,
                             this,
                             _1,
@@ -411,10 +412,9 @@ void Wallet::OnTransferAnonToExternalWalletAddress(
       WALLET_PROPERTIES,
       ledger_->GetPaymentId().c_str());
 
-  const std::string url = braveledger_bat_helper::buildURL(
+  const std::string url = braveledger_request_util::BuildUrl(
       path,
-      PREFIX_V2,
-      braveledger_bat_helper::SERVER_TYPES::LEDGER);
+      PREFIX_V2);
 
   auto transfer_callback = std::bind(&Wallet::OnTransferAnonToExternalWallet,
                           this,
@@ -446,7 +446,7 @@ void Wallet::OnTransferAnonToExternalWalletAddress(
 }
 
 void Wallet::GetGrantViaSafetynetCheck(const std::string& promotion_id) {
-  ledger_->LoadURL(braveledger_bat_helper::buildURL(
+  ledger_->LoadURL(braveledger_request_util::BuildUrl(
       (std::string)GET_PROMOTION_ATTESTATION + ledger_->GetPaymentId(),
       PREFIX_V1),
   std::vector<std::string>(), "", "",
