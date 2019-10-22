@@ -232,7 +232,7 @@ const locale: Record<string, string> = {
   siteBannerConnectedText: 'This creator has not yet signed up to receive contributions from Brave users. Your browser will keep trying to contribute until they verify, or until 90 days have passed.',
   sites: 'sites',
   tellOthers: 'Tell others about your tip.',
-  supportedSites: 'Sites viewed',
+  viewedSites: 'Sites Viewed',
   thankYou: 'Thank You!',
   termsOfService: 'Terms of Service',
   optOutTooltip: 'You will no longer receive\nads from this category',

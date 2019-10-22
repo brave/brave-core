@@ -34,6 +34,16 @@ using BalanceReportInfoPtr = mojom::BalanceReportInfoPtr;
 using ContributionInfo = mojom::ContributionInfo;
 using ContributionInfoPtr = mojom::ContributionInfoPtr;
 
+using ContributionQueue = ledger::mojom::ContributionQueue;
+using ContributionQueuePtr = ledger::mojom::ContributionQueuePtr;
+using ContributionQueueList = std::vector<ledger::mojom::ContributionQueuePtr>;
+
+using ContributionQueuePublisher = ledger::mojom::ContributionQueuePublisher;
+using ContributionQueuePublisherPtr =
+    ledger::mojom::ContributionQueuePublisherPtr;
+using ContributionQueuePublisherList =
+    std::vector<ContributionQueuePublisherPtr>;
+
 using ContributionRetry = mojom::ContributionRetry;
 
 using ExcludeFilter = mojom::ExcludeFilter;

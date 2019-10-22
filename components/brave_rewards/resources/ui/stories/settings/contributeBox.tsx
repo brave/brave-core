@@ -74,7 +74,7 @@ class ContributeBox extends React.Component<{}, State> {
                 <div data-value='60'>{locale.contributionVisit10}</div>
               </Select>
             </ControlWrapper>
-            <ControlWrapper text={locale.contributionAllowed}>
+            <ControlWrapper text={locale.contributionOther}>
               <Checkbox
                 value={{
                   contributionNonVerified: true,

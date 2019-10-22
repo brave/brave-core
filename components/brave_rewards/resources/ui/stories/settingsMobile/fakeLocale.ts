@@ -10,7 +10,7 @@ const locale = {
   adsFreq: 'Ad Frequency',
   adsMode: 'Ad mode',
   adsTitle: 'Brave Ads',
-  contributionAllowed: 'What should be allowed?',
+  contributionOther: 'Other settings',
   contributionDesc: 'A simple way to support content creators. Set monthly allowance and browse normally. Your favorite sites (content sites only) receive your contributions automatically. You can exclude sites from funding here.',
   contributionHideAll: 'Hide all',
   contributionMinTime: 'Minimum page time before logging a visit',
