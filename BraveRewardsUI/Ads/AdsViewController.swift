@@ -92,6 +92,10 @@ public class AdsViewController: UIViewController {
     }
   }
   
+  deinit {
+    dismissTimers.forEach({ $0.value.invalidate() })
+  }
+  
   // MARK: - Actions
   
   private var dismissTimers: [AdView: Timer] = [:]
