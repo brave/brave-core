@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/chrome_extensions_browser_client.cc b/chrome/browser/extensions/chrome_extensions_browser_client.cc
-index 37972b557b457ffd69215caf8d2616432fe7a3da..9be4fa73fe51417bc5e8ed88517089a6d6f6592c 100644
+index f079d9ff4dc0cd0805275ce3d94cadfad311b6f6..8097ca4fe149b4a477dd834196e63eb0646c188e 100644
 --- a/chrome/browser/extensions/chrome_extensions_browser_client.cc
 +++ b/chrome/browser/extensions/chrome_extensions_browser_client.cc
 @@ -9,6 +9,8 @@
@@ -11,7 +11,7 @@ index 37972b557b457ffd69215caf8d2616432fe7a3da..9be4fa73fe51417bc5e8ed88517089a6
  #include "build/build_config.h"
  #include "chrome/browser/app_mode/app_mode_utils.h"
  #include "chrome/browser/browser_process.h"
-@@ -92,11 +94,12 @@ bool ExtensionsDisabled(const base::CommandLine& command_line) {
+@@ -90,11 +92,12 @@ bool ExtensionsDisabled(const base::CommandLine& command_line) {
  ChromeExtensionsBrowserClient::ChromeExtensionsBrowserClient() {
    AddAPIProvider(std::make_unique<CoreExtensionsBrowserAPIProvider>());
    AddAPIProvider(std::make_unique<ChromeExtensionsBrowserAPIProvider>());
