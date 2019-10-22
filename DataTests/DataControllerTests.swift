@@ -75,6 +75,7 @@ class DataControllerTests: CoreDataTestCase {
             }
         }
         
+        DataController.viewContext.refreshAllObjects()
         let result = try! DataController.viewContext.fetch(fetchRequest)
         XCTAssertEqual(result.count, 1)
         
@@ -82,6 +83,7 @@ class DataControllerTests: CoreDataTestCase {
             (result.first as! Device).delete()
         }
         
+        DataController.viewContext.refreshAllObjects()
         let newResult = try! DataController.viewContext.fetch(fetchRequest)
         
         XCTAssertEqual(newResult.count, 0)
