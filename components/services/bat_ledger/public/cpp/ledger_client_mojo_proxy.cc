@@ -16,10 +16,6 @@ namespace bat_ledger {
 
 namespace {  // TODO(anyone): move into a util class
 
-ledger::REWARDS_CATEGORY ToLedgerPublisherCategory(int32_t category) {
-  return (ledger::REWARDS_CATEGORY)category;
-}
-
 ledger::URL_METHOD ToLedgerURLMethod(int32_t method) {
   return (ledger::URL_METHOD)method;
 }
@@ -157,13 +153,13 @@ void LedgerClientMojoProxy::OnRecoverWallet(
 void LedgerClientMojoProxy::OnReconcileComplete(
     const ledger::Result result,
     const std::string& viewing_id,
-    int32_t category,
-    const std::string& probi) {
+    const std::string& probi,
+    const ledger::RewardsType type) {
   ledger_client_->OnReconcileComplete(
       result,
       viewing_id,
-      ToLedgerPublisherCategory(category),
-      probi);
+      probi,
+      type);
 }
 
 void LedgerClientMojoProxy::OnGrantFinish(
@@ -384,11 +380,20 @@ void LedgerClientMojoProxy::RemoveRecurringTip(const std::string& publisher_key,
       std::bind(LedgerClientMojoProxy::OnRemoveRecurringTip, holder, _1));
 }
 
-void LedgerClientMojoProxy::SaveContributionInfo(const std::string& probi,
-    int32_t month, int32_t year, uint32_t date,
-    const std::string& publisher_key, int32_t category) {
-  ledger_client_->SaveContributionInfo(probi, month, year, date, publisher_key,
-      ToLedgerPublisherCategory(category));
+void LedgerClientMojoProxy::SaveContributionInfo(
+    const std::string& probi,
+    int32_t month,
+    int32_t year,
+    uint32_t date,
+    const std::string& publisher_key,
+    const ledger::RewardsType type) {
+  ledger_client_->SaveContributionInfo(
+    probi,
+    month,
+    year,
+    date,
+    publisher_key,
+    type);
 }
 
 void LedgerClientMojoProxy::SaveMediaPublisherInfo(
@@ -945,6 +950,76 @@ void LedgerClientMojoProxy::RemoveTransferFee(
     const std::string& wallet_type,
     const std::string& id) {
   ledger_client_->RemoveTransferFee(wallet_type, id);
+}
+
+// static
+void LedgerClientMojoProxy::OnInsertOrUpdateContributionQueue(
+    CallbackHolder<InsertOrUpdateContributionQueueCallback>* holder,
+    const ledger::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::InsertOrUpdateContributionQueue(
+    ledger::ContributionQueuePtr info,
+    InsertOrUpdateContributionQueueCallback callback) {
+  auto* holder = new CallbackHolder<InsertOrUpdateContributionQueueCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->InsertOrUpdateContributionQueue(
+      std::move(info),
+      std::bind(LedgerClientMojoProxy::OnInsertOrUpdateContributionQueue,
+                holder,
+                _1));
+}
+
+// static
+void LedgerClientMojoProxy::OnDeleteContributionQueue(
+    CallbackHolder<DeleteContributionQueueCallback>* holder,
+    const ledger::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::DeleteContributionQueue(
+    const uint64_t id,
+    DeleteContributionQueueCallback callback) {
+  auto* holder = new CallbackHolder<DeleteContributionQueueCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->DeleteContributionQueue(
+      id,
+      std::bind(LedgerClientMojoProxy::OnDeleteContributionQueue,
+                holder,
+                _1));
+}
+
+// static
+void LedgerClientMojoProxy::OnGetFirstContributionQueue(
+    CallbackHolder<GetFirstContributionQueueCallback>* holder,
+    ledger::ContributionQueuePtr info) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(std::move(info));
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::GetFirstContributionQueue(
+    GetFirstContributionQueueCallback callback) {
+  auto* holder = new CallbackHolder<GetFirstContributionQueueCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->GetFirstContributionQueue(
+      std::bind(LedgerClientMojoProxy::OnGetFirstContributionQueue,
+                holder,
+                _1));
 }
 
 }  // namespace bat_ledger

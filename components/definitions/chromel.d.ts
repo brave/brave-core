@@ -125,7 +125,7 @@ declare namespace chrome.braveRewards {
   const getInlineTipSetting: (key: string, callback: (enabled: boolean) => void) => {}
   const fetchBalance: (callback: (balance: RewardsExtension.Balance) => void) => {}
   const onReconcileComplete: {
-    addListener: (callback: (result: number, category: number) => void) => void
+    addListener: (callback: (result: number, type: number) => void) => void
   }
 
   const getExternalWallet: (type: string, callback: (result: number, wallet: RewardsExtension.ExternalWallet) => void) => {}

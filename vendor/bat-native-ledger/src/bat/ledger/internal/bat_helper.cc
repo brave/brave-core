@@ -1083,11 +1083,9 @@ bool SURVEYOR_ST::loadFromJson(const std::string & json) {
 /////////////////////////////////////////////////////////////////////////////
 RECONCILE_DIRECTION::RECONCILE_DIRECTION() {}
 RECONCILE_DIRECTION::RECONCILE_DIRECTION(const std::string& publisher_key,
-                                         const int amount,
-                                         const std::string& currency) :
+                                         const double amount_percent) :
   publisher_key_(publisher_key),
-  amount_(amount),
-  currency_(currency) {}
+  amount_percent_(amount_percent) {}
 RECONCILE_DIRECTION::~RECONCILE_DIRECTION() {}
 
 bool RECONCILE_DIRECTION::loadFromJson(const std::string & json) {
@@ -1097,15 +1095,19 @@ bool RECONCILE_DIRECTION::loadFromJson(const std::string & json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
   if (!error) {
-    error = !(d.HasMember("amount") && d["amount"].IsInt() &&
-      d.HasMember("publisher_key") && d["publisher_key"].IsString() &&
-      d.HasMember("currency") && d["currency"].IsString());
+    error = !(d.HasMember("publisher_key") && d["publisher_key"].IsString());
   }
 
   if (!error) {
-    amount_ = d["amount"].GetInt();
+    if (d.HasMember("amount") && d["amount"].IsInt()) {
+      amount_percent_ = static_cast<double>(d["amount"].GetInt());
+    } else if (d["amount_percent"].IsDouble()) {
+      amount_percent_ = d["amount_percent"].GetDouble();
+    } else {
+      return false;
+    }
+
     publisher_key_ = d["publisher_key"].GetString();
-    currency_ = d["currency"].GetString();
   }
 
   return !error;
@@ -1114,14 +1116,11 @@ bool RECONCILE_DIRECTION::loadFromJson(const std::string & json) {
 void saveToJson(JsonWriter* writer, const RECONCILE_DIRECTION& data) {
   writer->StartObject();
 
-  writer->String("amount");
-  writer->Int(data.amount_);
+  writer->String("amount_percent");
+  writer->Double(data.amount_percent_);
 
   writer->String("publisher_key");
   writer->String(data.publisher_key_.c_str());
-
-  writer->String("currency");
-  writer->String(data.currency_.c_str());
 
   writer->EndObject();
 }
@@ -1146,8 +1145,7 @@ CURRENT_RECONCILE::CURRENT_RECONCILE(const CURRENT_RECONCILE& data):
   currency_(data.currency_),
   fee_(data.fee_),
   directions_(data.directions_),
-  category_(data.category_),
-  list_(data.list_),
+  type_(data.type_),
   retry_step_(data.retry_step_),
   retry_level_(data.retry_level_),
   destination_(data.destination_),
@@ -1164,7 +1162,8 @@ bool CURRENT_RECONCILE::loadFromJson(const std::string & json) {
   if (!error) {
     error = !(d.HasMember("viewingId") && d["viewingId"].IsString() &&
       d.HasMember("fee") && d["fee"].IsDouble() &&
-      d.HasMember("category") && d["category"].IsInt());
+      ((d.HasMember("category") && d["category"].IsInt()) ||
+      (d.HasMember("type") && d["type"].IsInt())));
   }
 
   if (!error) {
@@ -1177,7 +1176,11 @@ bool CURRENT_RECONCILE::loadFromJson(const std::string & json) {
     amount_ = d["amount"].GetString();
     currency_ = d["currency"].GetString();
     fee_ = d["fee"].GetDouble();
-    category_ = d["category"].GetInt();
+    if (d.HasMember("category") && d["category"].IsInt()) {
+      type_ = static_cast<ledger::RewardsType>(d["category"].GetInt());
+    } else {
+      type_ = static_cast<ledger::RewardsType>(d["type"].GetInt());
+    }
 
     if (d.HasMember("surveyorInfo") && d["surveyorInfo"].IsObject()) {
       auto obj = d["surveyorInfo"].GetObject();
@@ -1194,28 +1197,25 @@ bool CURRENT_RECONCILE::loadFromJson(const std::string & json) {
 
     if (d.HasMember("directions") && d["directions"].IsArray()) {
       for (auto & i : d["directions"].GetArray()) {
-        auto obj = i.GetObject();
+        rapidjson::StringBuffer sb;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+        i.Accept(writer);
+
         RECONCILE_DIRECTION direction;
-        direction.amount_ = obj["amount"].GetInt();
-        direction.publisher_key_ = obj["publisher_key"].GetString();
-        direction.currency_ = obj["currency"].GetString();
+        direction.loadFromJson(sb.GetString());
         directions_.push_back(direction);
       }
     }
 
+    // LEGACY MIGRATION from publisher object
     if (d.HasMember("list") && d["list"].IsArray()) {
       for (auto &i : d["list"].GetArray()) {
-        PUBLISHER_ST publisher_st;
+        RECONCILE_DIRECTION direction;
 
         auto obj = i.GetObject();
-        publisher_st.id_ = obj["id"].GetString();
-        publisher_st.duration_ = obj["duration"].GetUint64();
-        publisher_st.score_ = obj["score"].GetDouble();
-        publisher_st.visits_ = obj["visits"].GetUint();
-        publisher_st.percent_ = obj["percent"].GetUint();
-        publisher_st.weight_ = obj["weight"].GetDouble();
-
-        list_.push_back(publisher_st);
+        direction.publisher_key_ = obj["id"].GetString();
+        direction.amount_percent_ = obj["weight"].GetDouble();
+        directions_.push_back(direction);
       }
     }
 
@@ -1280,8 +1280,8 @@ void saveToJson(JsonWriter* writer, const CURRENT_RECONCILE& data) {
   writer->String("fee");
   writer->Double(data.fee_);
 
-  writer->String("category");
-  writer->Int(data.category_);
+  writer->String("type");
+  writer->Int(static_cast<int>(data.type_));
 
   writer->String("rates");
   writer->StartObject();
@@ -1294,13 +1294,6 @@ void saveToJson(JsonWriter* writer, const CURRENT_RECONCILE& data) {
   writer->String("directions");
   writer->StartArray();
   for (auto & i : data.directions_) {
-    saveToJson(writer, i);
-  }
-  writer->EndArray();
-
-  writer->String("list");
-  writer->StartArray();
-  for (auto & i : data.list_) {
     saveToJson(writer, i);
   }
   writer->EndArray();

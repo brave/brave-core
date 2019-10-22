@@ -37,8 +37,8 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void OnReconcileComplete(
       const ledger::Result result,
       const std::string& viewing_id,
-      int32_t category,
-      const std::string& probi) override;
+      const std::string& probi,
+      const ledger::RewardsType type) override;
   void OnGrantFinish(
     const ledger::Result result,
     ledger::GrantPtr grant) override;
@@ -78,9 +78,13 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const ledger::Result result,
       ledger::PublisherInfoPtr info,
       uint64_t window_id) override;
-  void SaveContributionInfo(const std::string& probi, int32_t month,
-      int32_t year, uint32_t date, const std::string& publisher_key,
-      int32_t category) override;
+  void SaveContributionInfo(
+      const std::string& probi,
+      int32_t month,
+      int32_t year,
+      uint32_t date,
+      const std::string& publisher_key,
+      const ledger::RewardsType type) override;
   void SaveMediaPublisherInfo(const std::string& media_key,
       const std::string& publisher_id) override;
 
@@ -199,6 +203,17 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void RemoveTransferFee(
       const std::string& wallet_type,
       const std::string& id) override;
+
+  void InsertOrUpdateContributionQueue(
+    ledger::ContributionQueuePtr info,
+    InsertOrUpdateContributionQueueCallback callback) override;
+
+  void DeleteContributionQueue(
+    const uint64_t id,
+    DeleteContributionQueueCallback callback) override;
+
+  void GetFirstContributionQueue(
+    GetFirstContributionQueueCallback callback) override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind
@@ -367,6 +382,18 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnGetServerPublisherInfo(
     CallbackHolder<GetServerPublisherInfoCallback>* holder,
     ledger::ServerPublisherInfoPtr info);
+
+  static void OnInsertOrUpdateContributionQueue(
+    CallbackHolder<InsertOrUpdateContributionQueueCallback>* holder,
+    const ledger::Result result);
+
+  static void OnDeleteContributionQueue(
+    CallbackHolder<DeleteContributionQueueCallback>* holder,
+    const ledger::Result result);
+
+  static void OnGetFirstContributionQueue(
+    CallbackHolder<GetFirstContributionQueueCallback>* holder,
+    ledger::ContributionQueuePtr info);
 
   ledger::LedgerClient* ledger_client_;
 

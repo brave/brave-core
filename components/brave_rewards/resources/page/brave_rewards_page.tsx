@@ -202,7 +202,7 @@ window.cr.define('brave_rewards', function () {
     getActions().onBalance(properties.status, properties.balance)
   }
 
-  function reconcileComplete (properties: {category: number, result: number}) {
+  function reconcileComplete (properties: {type: number, result: number}) {
     chrome.send('brave_rewards.getReconcileStamp')
     getActions().getContributeList()
     getActions().getBalance()
