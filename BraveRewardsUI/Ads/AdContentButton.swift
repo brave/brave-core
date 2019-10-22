@@ -14,13 +14,13 @@ class AdContentButton: UIControl {
     $0.numberOfLines = 2
   }
   let bodyLabel = UILabel().then {
-    $0.appearanceTextColor = UIColor(white: 0.0, alpha: 0.5)
+    $0.appearanceTextColor = .black
     $0.font = .systemFont(ofSize: 15.0)
     $0.numberOfLines = 3
   }
   private let appNameLabel = UILabel().then {
-    $0.appearanceTextColor = .black
-    $0.font = .systemFont(ofSize: 14.0, weight: .medium)
+    $0.appearanceTextColor = UIColor.black.withAlphaComponent(0.5)
+    $0.font = .systemFont(ofSize: 14.0, weight: .regular)
     $0.text = Strings.AdNotificationTitle.uppercased()
   }
   
@@ -112,9 +112,9 @@ class AdContentButton: UIControl {
   }
   
   func applyTheme() {
-    appNameLabel.appearanceTextColor = isDarkMode ? .white : .black
+    appNameLabel.appearanceTextColor = (isDarkMode ? UIColor.white : UIColor.black).withAlphaComponent(0.5)
     titleLabel.appearanceTextColor = isDarkMode ? .white : .black
-    bodyLabel.appearanceTextColor = UIColor(white: isDarkMode ? 1.0 : 0.0, alpha: 0.5)
+    bodyLabel.appearanceTextColor = isDarkMode ? .white : .black
     backgroundView.contentView.backgroundColor = isDarkMode ? UIColor.black.withAlphaComponent(0.3) : UIColor.white.withAlphaComponent(0.7)
   }
   
