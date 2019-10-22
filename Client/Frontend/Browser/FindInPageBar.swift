@@ -27,6 +27,7 @@ class FindInPageBar: UIView {
     fileprivate let matchCountView = UILabel()
     fileprivate let previousButton = UIButton()
     fileprivate let nextButton = UIButton()
+    fileprivate let closeButton = UIButton()
 
     var currentResult = 0 {
         didSet {
@@ -84,22 +85,21 @@ class FindInPageBar: UIView {
         matchCountView.accessibilityIdentifier = "FindInPage.matchCount"
         addSubview(matchCountView)
 
-        previousButton.setImage(#imageLiteral(resourceName: "find_previous"), for: [])
+        previousButton.setImage(#imageLiteral(resourceName: "find_previous").template, for: [])
         previousButton.setTitleColor(FindInPageUX.ButtonColor, for: [])
         previousButton.accessibilityLabel = Strings.FindInPagePreviousResultButtonAccessibilityLabel
         previousButton.addTarget(self, action: #selector(didFindPrevious), for: .touchUpInside)
         previousButton.accessibilityIdentifier = "FindInPage.find_previous"
         addSubview(previousButton)
 
-        nextButton.setImage(#imageLiteral(resourceName: "find_next"), for: [])
+        nextButton.setImage(#imageLiteral(resourceName: "find_next").template, for: [])
         nextButton.setTitleColor(FindInPageUX.ButtonColor, for: [])
         nextButton.accessibilityLabel = Strings.FindInPageNextResultButtonAccessibilityLabel
         nextButton.addTarget(self, action: #selector(didFindNext), for: .touchUpInside)
         nextButton.accessibilityIdentifier = "FindInPage.find_next"
         addSubview(nextButton)
 
-        let closeButton = UIButton()
-        closeButton.setImage(#imageLiteral(resourceName: "find_close"), for: [])
+        closeButton.setImage(#imageLiteral(resourceName: "find_close").template, for: [])
         closeButton.setTitleColor(FindInPageUX.ButtonColor, for: [])
         closeButton.accessibilityLabel = Strings.FindInPageDoneButtonAccessibilityLabel
         closeButton.addTarget(self, action: #selector(didPressClose), for: .touchUpInside)
@@ -171,5 +171,18 @@ class FindInPageBar: UIView {
 
     @objc fileprivate func didPressClose(_ sender: UIButton) {
         delegate?.findInPageDidPressClose(self)
+    }
+}
+
+extension FindInPageBar: Themeable {
+    func applyTheme(_ theme: Theme) {
+        styleChildren(theme: theme)
+        
+        appearanceBackgroundColor = theme.colors.home
+        searchText.appearanceTextColor = theme.colors.tints.home
+        
+        [nextButton, previousButton, closeButton].forEach {
+            $0.appearanceTintColor = theme.colors.tints.home
+        }
     }
 }

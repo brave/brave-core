@@ -1384,6 +1384,7 @@ class BrowserViewController: UIViewController {
                 self.findInPageBar = findInPageBar
                 findInPageBar.delegate = self
                 alertStackView.addArrangedSubview(findInPageBar)
+                findInPageBar.applyTheme(Theme.of(tabManager.selectedTab))
 
                 findInPageBar.snp.makeConstraints { make in
                     make.height.equalTo(UIConstants.ToolbarHeight)
