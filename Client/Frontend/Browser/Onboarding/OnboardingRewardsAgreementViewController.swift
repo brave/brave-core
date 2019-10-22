@@ -9,8 +9,6 @@ import BraveRewards
 
 class OnboardingRewardsAgreementViewController: OnboardingViewController {
 
-    private var loadingView = UIActivityIndicatorView(style: .white)
-
     private var contentView: View {
         return view as! View // swiftlint:disable:this force_cast
     }
@@ -51,37 +49,11 @@ class OnboardingRewardsAgreementViewController: OnboardingViewController {
     
     @objc
     private func onTurnOn() {
-        if loadingView.superview != nil || loadingView.isAnimating {
-            return
+        rewards?.ledger.createWalletAndFetchDetails { _ in
+            //TODO: Handle errors at a later date and possibly elsewhere..
         }
         
-        let titleColour = contentView.turnOnButton.titleColor(for: .normal)
-        contentView.turnOnButton.setTitleColor(.clear, for: .normal)
-        contentView.turnOnButton.isUserInteractionEnabled = false
-        contentView.skipButton.isUserInteractionEnabled = false
-        contentView.turnOnButton.addSubview(loadingView)
-        loadingView.snp.makeConstraints {
-            $0.center.equalToSuperview()
-        }
-        
-        loadingView.startAnimating()
-        rewards?.ledger.createWalletAndFetchDetails { [weak self] success in
-            guard let self = self else { return }
-
-            self.loadingView.stopAnimating()
-            self.loadingView.removeFromSuperview()
-            self.contentView.turnOnButton.setTitleColor(titleColour, for: .normal)
-            self.contentView.turnOnButton.isUserInteractionEnabled = true
-            self.contentView.skipButton.isUserInteractionEnabled = true
-            
-            if success {
-                self.continueTapped()
-            } else {
-                let alert = UIAlertController(title: Strings.OBErrorTitle, message: Strings.OBErrorDetails, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: Strings.OBErrorOkay, style: .default, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-            }
-        }
+        self.continueTapped()
     }
     
     override func applyTheme(_ theme: Theme) {
