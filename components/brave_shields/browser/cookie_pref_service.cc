@@ -46,8 +46,12 @@ void SetCookiePrefDefaults(HostContentSettingsMap* map, PrefService* prefs) {
     prefs->SetInteger("profile.default_content_setting_values.cookies",
                       CONTENT_SETTING_BLOCK);
   } else {
-    prefs->SetInteger("profile.default_content_setting_values.cookies",
-                      CONTENT_SETTING_ALLOW);
+    int value =
+        prefs->GetInteger("profile.default_content_setting_values.cookies");
+    if (IntToContentSetting(value) != CONTENT_SETTING_SESSION_ONLY) {
+      value = CONTENT_SETTING_ALLOW;
+    }
+    prefs->SetInteger("profile.default_content_setting_values.cookies", value);
   }
 }
 
