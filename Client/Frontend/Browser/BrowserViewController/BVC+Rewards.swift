@@ -57,9 +57,13 @@ extension BrowserViewController {
         let isVerifiedBadgeVisible = self.publisher?.status == .verified || self.publisher?.status == .connected
         self.topToolbar.locationView.rewardsButton.isVerified = isVerifiedBadgeVisible
         self.topToolbar.locationView.rewardsButton.notificationCount = self.rewards?.ledger.notifications.count ?? 0
+        self.topToolbar.locationView.rewardsButton.forceShowBadge = !Preferences.Rewards.panelOpened.value
     }
 
     func showBraveRewardsPanel() {
+        Preferences.Rewards.panelOpened.value = true
+        updateRewardsButtonState()
+        
         if UIDevice.current.userInterfaceIdiom != .pad && UIApplication.shared.statusBarOrientation.isLandscape {
             let value = UIInterfaceOrientation.portrait.rawValue
             UIDevice.current.setValue(value, forKey: "orientation")

@@ -16,6 +16,10 @@ class RewardsButton: UIButton {
         didSet { updateView() }
     }
     
+    var forceShowBadge = false {
+        didSet { updateView() }
+    }
+    
     private let notificationsBadgeView = UIView().then {
         $0.backgroundColor = BraveUX.BraveOrange
         $0.frame = CGRect(x: 19, y: 5, width: 12, height: 12)
@@ -49,7 +53,7 @@ class RewardsButton: UIButton {
         
         setImage(#imageLiteral(resourceName: "brave_rewards_button_enabled"), for: .normal)
         
-        if notificationCount > 0 {
+        if notificationCount > 0 || forceShowBadge {
             notificationsBadgeView.isHidden = false
         } else if isVerified {
             checkmarkView.isHidden = false
