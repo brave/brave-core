@@ -39,6 +39,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
+#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/auto_contribution_props.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
@@ -81,7 +82,7 @@
 #include "url/gurl.h"
 #include "url/url_canon_stdstring.h"
 
-#if !defined(OS_ANDROID)
+#if defined(BRAVE_CHROMIUM_BUILD)
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "components/grit/brave_components_resources.h"
 #else
@@ -919,10 +920,12 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
 
     // Record P3A:
     RecordWalletBalanceP3A(true, 0);
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
     const bool ads_enabled =
-        profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled);
+      profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled);
     RecordAdsState(ads_enabled ? AdsP3AState::kAdsEnabled
                                : AdsP3AState::kAdsDisabled);
+#endif
   }
 
   for (auto& observer : observers_) {
@@ -4033,6 +4036,7 @@ void RewardsServiceImpl::GrantAttestationResult(
 #if defined(OS_ANDROID)
 ledger::Environment RewardsServiceImpl::GetServerEnvironmentForAndroid() {
   auto result = ledger::Environment::PRODUCTION;
+  bool use_staging = false;
   if (profile_ && profile_->GetPrefs()) {
     use_staging =
         profile_->GetPrefs()->GetBoolean(prefs::kUseRewardsStagingServer);

@@ -111,5 +111,11 @@ int JNI_BravePrefServiceBridge_GetHttpsUpgradesCount(
   return profile->GetPrefs()->GetUint64(kHttpsUpgrades);
 }
 
+void JNI_BravePrefServiceBridge_SetSafetynetCheckFailed(
+    JNIEnv* env,
+    jboolean value) {
+  GetOriginalProfile()->GetPrefs()->SetBoolean(kSafetynetCheckFailed, value);
+}
+
 }  // namespace android
 }  // namespace chrome

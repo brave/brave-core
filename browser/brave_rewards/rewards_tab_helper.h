@@ -53,9 +53,11 @@ class RewardsTabHelper : public RewardsServiceObserver,
   void OnVisibilityChanged(content::Visibility visibility) override;
   void WebContentsDestroyed() override;
 
+#if !defined(OS_ANDROID)
   // BrowserListObserver overrides
   void OnBrowserSetLastActive(Browser* browser) override;
   void OnBrowserNoLongerActive(Browser* browser) override;
+#endif
 
   SessionID tab_id_;
   RewardsService* rewards_service_;  // NOT OWNED

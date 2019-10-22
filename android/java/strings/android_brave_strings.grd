@@ -270,6 +270,236 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_DDG_OFFER_LINK" desc="Text for DDG offer link.">
         Learn about private search with DuckDuckGo
       </message>
+      <message name="IDS_BRAVE_UI_THANK_YOU" desc="A message that appears after tipping">
+        Thank you
+      </message>
+      <message name="IDS_BRAVE_UI_TIP_TEXT" desc="string from Thank you screen">
+        You've just sent a tip to:
+      </message>
+      <message name="IDS_BRAVE_UI_AUTO_TIP_TEXT" desc="string from Thank you screen">
+        You are automatically sending a tip to:
+      </message>
+      <message name="IDS_BRAVE_UI_MONTHLY_TEXT" desc="string from Thank you screen">
+        Monthly
+      </message>
+      <message name="IDS_BRAVE_UI_FIRST_TIP_TEXT" desc="string from Thank you screen">
+        Your first monthly tip will be sent on:
+      </message>
+      <message name="IDS_BRAVE_UI_SITE_BANNER_NOTICE_TEXT" desc="A message on tipping page when a creator is not verified yet">
+        NOTE: This creator has not yet signed up to receive contributions from Brave users. We'll keep trying to contribute until they verify, or until 90 days have passed.
+      </message>
+      <message name="IDS_BRAVE_UI_SITE_BANNER_WELCOME" desc="Tipping page title">
+        Thanks for stopping by!
+      </message>
+      <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="Tipping page description">
+        You can support this site by sending a tip. It's a way of thanking them for making great content. Verified content creators get paid for their tips during the first week of each calendar month.
+      </message>
+      <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT2" desc="Tipping page description 2">
+        If you like, you can schedule monthly tips to support this site on a continuous basis.
+      </message>
+      <message name="IDS_BRAVE_UI_DONATION_AMOUNT" desc="Tipping amount screen title">
+        Tip amount
+      </message>
+      <message name="IDS_BRAVE_UI_WALLET_BALANCE" desc="Wallet balance on tipping screen">
+        wallet balance:
+      </message>
+      <message name="IDS_BRAVE_UI_SEND_TIP" desc="Send my tip button text">
+        send my tip
+      </message>
+      <message name="IDS_BRAVE_UI_MAKE_MONTHLY" desc="A button to make monthly tipping">
+        Make this monthly
+      </message>
+      <message name="IDS_BRAVE_UI_MONTH_JAN" desc="Name of a month">JANUARY</message>
+      <message name="IDS_BRAVE_UI_MONTH_FEB" desc="Name of a month">FEBRUARY</message>
+      <message name="IDS_BRAVE_UI_MONTH_MAR" desc="Name of a month">MARCH</message>
+      <message name="IDS_BRAVE_UI_MONTH_APR" desc="Name of a month">APRIL</message>
+      <message name="IDS_BRAVE_UI_MONTH_MAY" desc="Name of a month">MAY</message>
+      <message name="IDS_BRAVE_UI_MONTH_JUN" desc="Name of a month">JUNE</message>
+      <message name="IDS_BRAVE_UI_MONTH_JUL" desc="Name of a month">JULY</message>
+      <message name="IDS_BRAVE_UI_MONTH_AUG" desc="Name of a month">AUGUST</message>
+      <message name="IDS_BRAVE_UI_MONTH_SEP" desc="Name of a month">SEPTEMBER</message>
+      <message name="IDS_BRAVE_UI_MONTH_OCT" desc="Name of a month">OCTOBER</message>
+      <message name="IDS_BRAVE_UI_MONTH_NOV" desc="Name of a month">NOVEMBER</message>
+      <message name="IDS_BRAVE_UI_MONTH_DEC" desc="Name of a month">DECEMBER</message>
+      <message name="IDS_BRAVE_UI_WELCOME_HEADER_TWO" desc="Get ready to experience the next Internet.">
+        Get ready to experience
+the next Internet.
+      </message>
+      <message name="IDS_BRAVE_UI_WELCOME_DESC_TWO" desc="Get paid for viewing ads and pay it forward to support your favorite content creators.">
+        You can now earn tokens for
+watching privacy-respecting ads.
+      </message>
+      <message name="IDS_BRAVE_UI_WELCOME_BUTTON_TEXT_TWO" desc="Button to join Brave Rewards">
+        JOIN REWARDS
+      </message>
+      <message name="IDS_BRAVE_UI_BRAVE_REWARDS" desc="Menu item and title for Brave Rewards Settings. [CHAR-LIMIT=27]">
+        Brave Rewards
+      </message>
+      <message name="IDS_BRAVE_UI_WELCOME_FOOTER_TEXT_TWO" desc="Learn more hyperlink">
+        LEARN MORE
+      </message>
+      <message name="IDS_BRAVE_UI_YOUR_WALLET" desc="Your wallet title">
+        Your wallet
+      </message>
+      <message name="IDS_BRAVE_UI_BAT_TEXT" desc="A token name">
+        BAT
+      </message>
+      <message name="IDS_BRAVE_UI_USD" desc="USD value of tokens">
+        <ph name="VALUE">%1$s<ex>0.0</ex></ph> USD
+      </message>
+      <message name="IDS_BRAVE_UI_GRANTS" desc="Grants button text">
+        Grants
+      </message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_PANEL_ADD_FUNDS" desc="Add Funds button text">
+        Add Funds
+      </message>
+      <message name="IDS_BRAVE_UI_SETTINGS" desc="Settings button text">
+        Settings
+      </message>
+      <message name="IDS_BRAVE_UI_WELCOME_BACK_MESSAGE" desc="Welcome back title">
+        Welcome back!
+      </message>
+      <message name="IDS_BRAVE_UI_GET_REWARDED" desc="Welcome back first description">
+        Get rewarded for browsing.
+      </message>
+      <message name="IDS_BRAVE_UI_BRAVE_REWARDS_DESC" desc="Welcome back second description">
+        Earn by viewing privacy-respecting
+ads, and pay it forward to support
+content creators you love.
+      </message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_REWARDS_TITLE" desc="Enable Rewards button">
+        ENABLE BRAVE REWARDS
+      </message>
+      <message name="IDS_BRAVE_UI_VERIFIED_PUBLISHER" desc="A message that a particular publisher is verified">
+        Brave Verified Publisher
+      </message>
+      <message name="IDS_BRAVE_UI_NOT_VERIFIED_PUBLISHER" desc="A message that a particular publisher is not verified">
+        Not yet verified
+      </message>
+      <message name="IDS_BRAVE_UI_NOT_VERIFIED_PUBLISHER_DESCRIPTION" desc="A message that appear when a particular publisher is not verified">
+        This creator has not yet signed up to receive contributions from Brave users.
+        Any tips you send will remain in your wallet until they verify.
+      </message>
+      <message name="IDS_BRAVE_UI_DONATE_NOW" desc="Send a tip button text">
+        Send a tip...
+      </message>
+      <message name="IDS_BRAVE_UI_NO_ACTIVITY" desc="A message that appears when no activity was done yet related to payments">
+        No activities yet this
+month...
+      </message>
+      <message name="IDS_BRAVE_UI_ONE_TIME_DONATION" desc="A message about one time tips">
+        One-time Tips
+      </message>
+      <message name="IDS_BRAVE_UI_RECURRING_DONATION" desc="A message about monthly tips">
+        Monthly Tips
+      </message>
+      <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="A message about user's attantion on a particular website">
+        Attention
+      </message>
+      <message name="IDS_BRAVE_UI_TOKEN_GRANT_CLAIMED" desc="A message about tokens being claimed">
+        Token Grants Claimed
+      </message>
+      <message name="IDS_BRAVE_UI_EARNINGS_ADS" desc="A message about earning from ads">
+        Earnings from Ads
+      </message>
+      <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="A message about auto-contribute">
+        Auto-Contribute
+      </message>
+      <message name="IDS_BRAVE_UI_REWARDS_SUMMARY" desc="Rewards Summary section title">
+        REWARDS SUMMARY
+      </message>
+      <message name="IDS_BRAVE_UI_CLAIM" desc="A claim grant button text">
+        Claim
+      </message>
+      <message name="IDS_BRAVE_UI_INCLUDE_IN_AUTO" desc="A switch to include a particular website in auto contribution or not">
+        Include in Auto-Contribute
+      </message>
+      <message name="IDS_BRAVE_UI_DONATE_MONTHLY" desc="">
+        Tip this site monthly
+      </message>
+      <message name="IDS_BRAVE_UI_REWARDS_CREATING_TEXT" desc="Creating a wallet button message">
+        Creating wallet
+      </message>
+      <message name="IDS_BRAVE_UI_MONTH_YEAR" desc="Current year">
+        <ph name="MONTH">%1$s<ex>DECEMBER</ex></ph> <ph name="YEAR">%2$s<ex>2018</ex></ph>
+      </message>
+      <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_DESCRIPTION" desc="A notication message description about auto-contribute">
+        You've contributed <ph name="BAT_VALUE">%1$s<ex>50</ex></ph> BAT.
+      </message>
+      <message name="IDS_BRAVE_UI_NOTIFICATION_DESC_NO_FUNDS" desc="A notification about not enough funds">
+        Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We'll try again in 30 days.
+      </message>
+      <message name="IDS_BRAVE_UI_NOTIFICATION_DESC_TIP_ERROR" desc="A notification about tip processing problem">
+        There was a problem processing your tip, please try again.
+      </message>
+      <message name="IDS_BRAVE_UI_NOTIFICATION_DESC_CONTR_ERROR" desc="A notification about contribution processing problem">
+        There was a problem processing your contribution.
+      </message>
+      <message name="IDS_BRAVE_UI_NEW_TOKEN_GRANT" desc="A notification about free token grant">
+        Free Token Grant
+      </message>
+      <message name="IDS_NOTIFICATION_CATEGORY_GROUP_BRAVE_ADS" desc="Subheading for 'Brave Ads' section of a list of notification categories. [CHAR-LIMIT=32]">
+        Brave Ads
+      </message>
+      <message name="IDS_BRAVE_UI_NEW_GRANT" desc="A notification about free token grant">
+        A free token grant is available.
+      </message>
+      <message name="IDS_BRAVE_ADS_YOU_EARNED" desc='Brave Ads "You earned" text'>
+        You've earned
+      </message>
+      <message name="IDS_BRAVE_UI_INSUFFICIENT_FUNDS_MSG" desc="A message about not enough funds">
+        Insufficient Funds
+      </message>
+      <message name="IDS_BRAVE_UI_INSUFFICIENT_FUNDS_DESC" desc="A notification message about not enough funds">
+        Your Brave Rewards account is waiting for a deposit.
+      </message>
+      <message name="IDS_BRAVE_UI_BACKUP_WALLET_MSG" desc="A notification message title about backing up the wallet">
+        Backup Wallet
+      </message>
+      <message name="IDS_BRAVE_UI_BACKUP_WALLET_DESC" desc="A notification message description about backing up the wallet">
+        Please backup your Brave wallet.
+      </message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_UH_OH" desc="A prefix to a message about a problem">
+        Uh oh!
+      </message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_SERVER_NOT_RESPONDING" desc="A message that appears when no connection to rewards server">
+        The Brave Rewards server is not responding. We will fix this as soon as possible.
+      </message>
+      <message name="IDS_BRAVE_UI_ERROR_INIT_WALLET" desc="An error which appear on wallet creation with no connection to the rewards service">
+        Please try again later.
+      </message>
+      <message name="IDS_BRAVE_UI_EXPIRES_ON" desc="A message about grants expiration date">
+        expires on <ph name="DATE">%1$s<ex>4/14/2019</ex></ph>
+      </message>
+      <message name="IDS_BRAVE_UI_ADS_EARNINGS" desc="Description text for ad grants in grant details">
+        earned from ads
+      </message>
+      <message name="IDS_BRAVE_UI_ON_YOUTUBE" desc="A suffix to YouTube channel creator">
+        on YouTube
+      </message>
+      <message name="IDS_BRAVE_UI_ON_TWITCH" desc="A suffix to Twitch channel creator">
+        on Twitch
+      </message>
+      <message name="IDS_BRAVE_UI_RESERVED_AMOUNT_TEXT" desc="A message that some amount of tokens reserved for non verified publishers">
+        You've designated <ph name="BAT_VALUE">%1$s<ex>50</ex></ph> BAT for creators who haven't
+yet signed up to receive contributions. Your browser will keep trying to contribute
+until they verify, or until 90 days have passed.
+      </message>
+      <message name="IDS_BRAVE_UI_NOT_ENOUGH_TOKENS" desc="Message if not enough tokens to make a tip">
+        not enough tokens
+      </message>
+      <message name="IDS_BRAVE_UI_PLEASE" desc="Part of a message about not enough tokens to pay">
+        please
+      </message>
+      <message name="IDS_BRAVE_UI_ADD_FUNDS" desc="Part of a message about not enough tokens to pay">
+        add funds
+      </message>
+      <message name="IDS_BRAVE_UI_DO_MONTHLY" desc="Set monthly tip button text">
+        set monthly tip
+      </message>
+      <message name="IDS_BRAVE_REWARDS_NOT_AVAILABLE" desc="The message for the dialog when Brave Rewards is not available on the device.">
+        We're sorry it appears Brave Rewards is not available on your device
+      </message>
     </messages>
   </release>
 </grit>

@@ -19,7 +19,7 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
-#if !defined(OS_ANDROID)
+#if defined(BRAVE_CHROMIUM_BUILD)
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #else
 #include "components/grit/components_resources.h"

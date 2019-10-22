@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".site_banner2"
+    android:orientation="vertical"
+    android:background="@android:color/transparent"
+    android:id="@+id/floater">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#E62F3140"
+            tools:fontFamily="@font/poppins_bold"
+            android:gravity="center">
+
+            <FrameLayout
+                android:layout_centerHorizontal="true"
+                android:id="@+id/frame_publisher_favicon"
+                android:layout_height="80dp"
+                android:layout_width="80dp"
+                android:background="@drawable/publisher_favicon_background">
+
+                <ProgressBar
+                    android:id="@+id/progress_publisher_favicon"
+                    android:indeterminateDrawable="@drawable/progress_indeterminate"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:visibility="visible"/>
+
+                <ImageView
+                    android:id="@+id/publisher_favicon"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="center"
+                    android:visibility="gone"
+                    tools:ignore="ContentDescription"/>
+
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/txt_thank_you"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/frame_publisher_favicon"
+                android:layout_centerHorizontal="true"
+                android:paddingTop="10dp"
+                android:text="@string/brave_ui_thank_you"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/txt_you_sent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_ui_tip_text"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_below="@id/txt_thank_you"
+                android:layout_centerHorizontal="true"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/txt_pub_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="@string/brave_ui_auto_tip_text"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_below="@id/txt_you_sent"
+                android:layout_centerHorizontal="true"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/txt_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_ui_monthly_text"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_below="@id/txt_pub_name"
+                android:layout_centerHorizontal="true"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/txt_tip_will_be_sent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="@string/brave_ui_first_tip_text"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_below="@id/txt_amount"
+                android:layout_centerHorizontal="true"
+                android:textColor="@android:color/white"
+                android:visibility="gone"/>
+
+
+            <TextView
+                android:id="@+id/txt_send_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_ui_thank_you"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_below="@id/txt_tip_will_be_sent"
+                android:layout_centerHorizontal="true"
+                android:textColor="#cb5737"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+</RelativeLayout>

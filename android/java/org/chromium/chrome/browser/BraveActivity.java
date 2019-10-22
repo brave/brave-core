@@ -31,6 +31,11 @@ import org.chromium.chrome.browser.preferences.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tabmodel.TabLaunchType;
+import org.chromium.chrome.browser.tabmodel.TabModel;
+import org.chromium.chrome.browser.tabmodel.TabModelUtils;
+import org.chromium.chrome.browser.tabmodel.TabSelectionType;
+import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout;
 import org.chromium.chrome.browser.util.UrlConstants;
 import org.chromium.ui.widget.Toast;
 
@@ -39,6 +44,11 @@ import org.chromium.ui.widget.Toast;
  */
 @JNINamespace("chrome::android")
 public abstract class BraveActivity extends ChromeActivity {
+    public static final int SITE_BANNER_REQUEST_CODE = 33;
+    public static final String ADD_FUNDS_URL = "chrome://rewards/#add-funds";
+    public static final String REWARDS_SETTINGS_URL = "chrome://rewards/";
+    public static final String REWARDS_AC_SETTINGS_URL = "chrome://rewards/contribute";
+    public static final String REWARDS_LEARN_MORE_URL = "https://brave.com/faq-rewards/#unclaimed-funds";
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
 
     /**
@@ -213,6 +223,33 @@ public abstract class BraveActivity extends ChromeActivity {
                 toast.show();
                 return;
             }
+        }
+    }
+
+    public void OnRewardsPanelDismiss() {
+        BraveToolbarLayout layout = (BraveToolbarLayout)findViewById(R.id.toolbar);
+        assert layout != null;
+        if (layout != null) {
+            layout.onRewardsPanelDismiss();
+        }
+    }
+
+    public void openNewOrSelectExistingTab(String url) {
+        TabModel tabModel = getCurrentTabModel();
+        int tabRewardsIndex = TabModelUtils.getTabIndexByUrl(tabModel, url);
+
+        // Find if tab exists
+        if (tabRewardsIndex != TabModel.INVALID_TAB_INDEX){
+            Tab tab = tabModel.getTabAt(tabRewardsIndex);
+            // Moving tab forward
+            if (!getActivityTab().equals(tab)){
+                tabModel.moveTab(tab.getId(), tabModel.getCount());
+                tabModel.setIndex(
+                        TabModelUtils.getTabIndexById(tabModel, tab.getId()),
+                        TabSelectionType.FROM_USER);
+            }
+        } else { // Open a new tab
+            getTabCreator(false).launchUrl(url, TabLaunchType.FROM_CHROME_UI);
         }
     }
 

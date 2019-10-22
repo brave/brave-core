@@ -82,6 +82,13 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getHttpsUpgradesCount(profile);
     }
 
+    /**
+     * @param whether SafetyNet check failed.
+     */
+    public void setSafetynetCheckFailed(boolean value) {
+        BravePrefServiceBridgeJni.get().setSafetynetCheckFailed(value);
+    }
+
     @NativeMethods
     interface Natives {
         void setHTTPSEEnabled(boolean enabled);
@@ -100,5 +107,7 @@ public class BravePrefServiceBridge {
         int getTrackersBlockedCount(Profile profile);
         int getAdsBlockedCount(Profile profile);
         int getHttpsUpgradesCount(Profile profile);
+
+        void setSafetynetCheckFailed(boolean value);
     }
 }

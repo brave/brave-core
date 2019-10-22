@@ -62,30 +62,30 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   } else if (host == kWalletHost) {
     return new BraveWalletUI(web_ui, url.host());
-#endif
+#endif  // BUILDFLAG(BRAVE_WALLET_ENABLED)
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
   } else if (host == kBraveUISyncHost &&
              brave_sync::switches::IsBraveSyncAllowedByFlag()) {
     return new SyncUI(web_ui, url.host());
-#endif
+#endif  // BUILDFLAG(ENABLE_BRAVE_SYNC)
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   } else if (host == kRewardsPageHost) {
     return new BraveRewardsPageUI(web_ui, url.host());
   } else if (host == kRewardsInternalsHost) {
     return new BraveRewardsInternalsUI(web_ui, url.host());
+#if !defined(OS_ANDROID)
   } else if (host == kTipHost) {
     return new BraveTipUI(web_ui, url.host());
-#endif
+#endif  // !defined(OS_ANDROID)
+#endif  // BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #if !defined(OS_ANDROID)
   } else if (host == kWelcomeHost) {
     return new BraveWelcomeUI(web_ui, url.host());
-#endif
-  } else if (host == chrome::kChromeUINewTabHost) {
-    return new BraveNewTabUI(web_ui, url.host());
-#if !defined(OS_ANDROID)
   } else if (host == chrome::kChromeUISettingsHost) {
     return new BraveSettingsUI(web_ui, url.host());
-#endif
+#endif  // !defined(OS_ANDROID)
+  } else if (host == chrome::kChromeUINewTabHost) {
+    return new BraveNewTabUI(web_ui, url.host());
   }
   return nullptr;
 }
