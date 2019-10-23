@@ -31,7 +31,10 @@ struct RewardsNotificationViewBuilder {
   }
   
   private static func getAutoContribute(notification: RewardsNotification) -> WalletNotificationView? {
-    if let result = notification.userInfo["result"] as? Int, let amount = notification.userInfo["amount"] as? String, let batResult = Result(rawValue: result) {
+    if let result = notification.userInfo["result"] as? Int,
+      let probi = notification.userInfo["amount"] as? String,
+      let amount = BATValue(probi: probi)?.displayString,
+      let batResult = Result(rawValue: result) {
       switch batResult {
       case .ledgerOk:
         return RewardsNotificationViewBuilder.get(actionNotification: notification, bodyText: String.localizedStringWithFormat(Strings.NotificationContributeSuccess, amount))
