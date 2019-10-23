@@ -1,8 +1,8 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index cb76914c7ca0268b2e39c0b50cfa5eccb65bf907..8de76f84eaba7ca7fcaa5cc7c638564f925dbbc9 100644
+index 5750de79c8e9a30816ba1faf35f41f90c895128d..6a0885f848421befd904743f67a47b5b0b8e427b 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -32,7 +32,7 @@ import("java_sources.gni")
+@@ -33,7 +33,7 @@ import("java_sources.gni")
  import("static_initializers.gni")
  import("trichrome.gni")
  
@@ -11,7 +11,7 @@ index cb76914c7ca0268b2e39c0b50cfa5eccb65bf907..8de76f84eaba7ca7fcaa5cc7c638564f
  chrome_public_test_manifest_package = "org.chromium.chrome.tests"
  
  chrome_public_jinja_variables =
-@@ -58,6 +58,7 @@ chrome_jni_registration_header =
+@@ -59,6 +59,7 @@ chrome_jni_registration_header =
  chrome_jni_for_test_registration_header = "$root_build_dir/gen/chrome/browser/android/chrome_jni_for_test_registration.h"
  
  jinja_template("chrome_public_android_manifest") {
@@ -19,7 +19,7 @@ index cb76914c7ca0268b2e39c0b50cfa5eccb65bf907..8de76f84eaba7ca7fcaa5cc7c638564f
    input = "java/AndroidManifest.xml"
    output = chrome_public_android_manifest
    variables = chrome_public_jinja_variables
-@@ -68,6 +69,7 @@ jinja_template("chrome_public_android_manifest") {
+@@ -69,6 +70,7 @@ jinja_template("chrome_public_android_manifest") {
  }
  
  jinja_template("chrome_modern_public_android_manifest") {
@@ -27,7 +27,7 @@ index cb76914c7ca0268b2e39c0b50cfa5eccb65bf907..8de76f84eaba7ca7fcaa5cc7c638564f
    input = "java/AndroidManifest.xml"
    output = chrome_modern_public_android_manifest
    variables = chrome_public_jinja_variables
-@@ -116,6 +118,7 @@ android_resources("chrome_app_java_resources") {
+@@ -117,6 +119,7 @@ android_resources("chrome_app_java_resources") {
      "//third_party/android_deps:com_android_support_preference_v7_java",
      "//third_party/android_deps:com_android_support_recyclerview_v7_java",
    ]
@@ -35,23 +35,23 @@ index cb76914c7ca0268b2e39c0b50cfa5eccb65bf907..8de76f84eaba7ca7fcaa5cc7c638564f
    custom_package = "org.chromium.chrome"
  }
  
-@@ -399,6 +402,7 @@ android_library("chrome_java") {
+@@ -389,6 +392,7 @@ android_library("chrome_java") {
    ]
  
    deps += feed_deps
 +  deps += brave_chrome_java_deps
  
    srcjar_deps = [
-     ":browser_build_config",
-@@ -551,6 +555,7 @@ group("jni_headers") {
-     "//chrome/lib/image_fetcher/public/android:jni_headers",
-     "//chrome/lib/util/public/android:jni_headers",
+     ":chrome_android_java_enums_srcjar",
+@@ -521,6 +525,7 @@ group("jni_headers") {
+     "//chrome/browser/touch_to_fill/android:jni_headers",
+     "//chrome/browser/util/android:jni_headers",
    ]
 +  public_deps += ["//brave/build/android:jni_headers"]
  }
  
  android_library("bundle_canary_java") {
-@@ -1423,6 +1428,7 @@ if (current_toolchain == default_toolchain) {
+@@ -1402,6 +1407,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]

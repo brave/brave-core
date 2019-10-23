@@ -1,5 +1,5 @@
 diff --git a/components/invalidation/impl/push_client_channel.cc b/components/invalidation/impl/push_client_channel.cc
-index 709d8e562c2238f00ac6a037395d16dca52b89e0..9170819bb45eb1060f5768a9a6922eb11ae85502 100644
+index 6bebebfdd315adba938b76d65c881ba3cd6b42a3..17f71ecacf2cde0fc233728ca2a922023071e142 100644
 --- a/components/invalidation/impl/push_client_channel.cc
 +++ b/components/invalidation/impl/push_client_channel.cc
 @@ -28,6 +28,7 @@ PushClientChannel::PushClientChannel(
@@ -12,8 +12,8 @@ index 709d8e562c2238f00ac6a037395d16dca52b89e0..9170819bb45eb1060f5768a9a6922eb1
    subscription.channel = kChannelName;
 @@ -43,6 +44,7 @@ PushClientChannel::~PushClientChannel() {
  
- void PushClientChannel::UpdateCredentials(
-     const std::string& email, const std::string& token) {
+ void PushClientChannel::UpdateCredentials(const CoreAccountId& account_id,
+                                           const std::string& token) {
 +  return; // feature disabled in Brave
    net::NetworkTrafficAnnotationTag traffic_annotation =
        net::DefineNetworkTrafficAnnotation("puch_client_channel", R"(

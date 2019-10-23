@@ -1,9 +1,9 @@
 diff --git a/extensions/browser/updater/update_service.cc b/extensions/browser/updater/update_service.cc
-index a8483425f60fb2b14e3b2d3fcf6efe8f90e1849f..fb0c655d4c0bb2e15d7ed087e6a4fada1744ceb4 100644
+index 316b0581f55ac689af16c8c0773724b14427a141..da8a0697be7e66fe0846ca7311306a1890e8888f 100644
 --- a/extensions/browser/updater/update_service.cc
 +++ b/extensions/browser/updater/update_service.cc
-@@ -32,7 +32,7 @@ namespace extensions {
- namespace {
+@@ -33,7 +33,7 @@ namespace {
+ UpdateService* update_service_override = nullptr;
  
  // 98% of update checks have 22 or less extensions.
 -constexpr size_t kMaxExtensionsPerUpdate = 22;

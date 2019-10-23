@@ -1,5 +1,5 @@
 diff --git a/base/win/embedded_i18n/create_string_rc.py b/base/win/embedded_i18n/create_string_rc.py
-index e046b6fe39c36e7323c8169355316c4a9583fd09..6606f40ff96bc3513699e5e3b9af8b34af3aa1b6 100755
+index 934131c2af25d4b2bdf5b5af648d5df453582cf8..b8a196381149c6906c89468a078c3c584db945d7 100755
 --- a/base/win/embedded_i18n/create_string_rc.py
 +++ b/base/win/embedded_i18n/create_string_rc.py
 @@ -344,7 +344,13 @@ Extra input files:
@@ -20,7 +20,7 @@ index e046b6fe39c36e7323c8169355316c4a9583fd09..6606f40ff96bc3513699e5e3b9af8b34
 @@ -576,7 +582,7 @@ def main():
          'specific strings were given.')
      valid_brands = [b for b in
-       mode_specific_strings.itervalues().next().iterkeys()]
+       next(iter(mode_specific_strings.values())).keys()]
 -    if not brand in valid_brands:
 +    if not brand in valid_brands and False:
        parser.error('A brand was specified (' + brand + ') but it is not '

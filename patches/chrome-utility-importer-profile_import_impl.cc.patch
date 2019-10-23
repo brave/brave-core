@@ -1,9 +1,9 @@
 diff --git a/chrome/utility/importer/profile_import_impl.cc b/chrome/utility/importer/profile_import_impl.cc
-index 98517c09d260220bcdde1f079def269f3a92d26e..7315b23fecb86221c003eb6d77690df624f71604 100644
+index d5044a30dd5cd657e9e2f484f681743d53788afd..68a53a7c6ace3c4b98e2e4cab56f45ccf9190f6e 100644
 --- a/chrome/utility/importer/profile_import_impl.cc
 +++ b/chrome/utility/importer/profile_import_impl.cc
-@@ -5,11 +5,14 @@
- #include "chrome/utility/importer/profile_import_impl.h"
+@@ -8,11 +8,14 @@
+ #include <utility>
  
  #include "base/bind.h"
 +#include "base/command_line.h"
@@ -15,9 +15,9 @@ index 98517c09d260220bcdde1f079def269f3a92d26e..7315b23fecb86221c003eb6d77690df6
  #include "base/threading/thread_task_runner_handle.h"
 +#include "brave/utility/importer/brave_external_process_importer_bridge.h"
  #include "build/build_config.h"
+ #include "chrome/common/importer/profile_import.mojom.h"
  #include "chrome/utility/importer/external_process_importer_bridge.h"
- #include "chrome/utility/importer/importer.h"
-@@ -51,6 +54,19 @@ void ProfileImportImpl::StartImport(
+@@ -56,6 +59,19 @@ void ProfileImportImpl::StartImport(
  
    items_to_import_ = items;
  
@@ -37,12 +37,12 @@ index 98517c09d260220bcdde1f079def269f3a92d26e..7315b23fecb86221c003eb6d77690df6
    // Create worker thread in which importer runs.
    import_thread_.reset(new base::Thread("import_thread"));
  #if defined(OS_WIN)
-@@ -60,7 +76,7 @@ void ProfileImportImpl::StartImport(
+@@ -65,7 +81,7 @@ void ProfileImportImpl::StartImport(
      NOTREACHED();
      ImporterCleanup();
    }
 -  bridge_ = new ExternalProcessImporterBridge(
 +  bridge_ = new BraveExternalProcessImporterBridge(
        localized_strings,
-       ThreadSafeProfileImportObserverPtr::Create(std::move(observer)));
-   import_thread_->task_runner()->PostTask(
+       mojo::SharedRemote<chrome::mojom::ProfileImportObserver>(
+           std::move(observer)));

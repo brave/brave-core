@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
-index 41708bd1d5be49814c86452ce5df54b98b83c75c..21978676c2972240f5655b2e9bff40cb5202f87f 100644
+index 0d3bc64d4da5e8cdf8f1cbaf14840fbc8913b1f9..cb10fdda8c6897abbaf075ef85ecd0986d52218f 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
-@@ -230,4 +230,5 @@ public class BottomControlsCoordinator {
+@@ -231,4 +231,5 @@ public class BottomControlsCoordinator {
          if (mTabGroupUi != null) mTabGroupUi.destroy();
          mMediator.destroy();
      }

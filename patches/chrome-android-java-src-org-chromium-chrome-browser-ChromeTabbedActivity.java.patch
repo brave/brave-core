@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 0275c213018b897fcde045286f9b9416c070a6a8..f9021a9dc0f5b966834d93b6382c94fb53fdf958 100644
+index ef132a26816817dc818af1ea2e9416f501f7f479..3b67919bcce0db0665509220336c2e4c9c435fb6 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -179,7 +179,7 @@ import java.util.Locale;
+@@ -180,7 +180,7 @@ import java.util.Locale;
   * This is the main activity for ChromeMobile when not running in document mode.  All the tabs
   * are accessible via a chrome specific tab switching UI.
   */

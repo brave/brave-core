@@ -1,11 +1,11 @@
 diff --git a/components/content_settings/core/common/content_settings.h b/components/content_settings/core/common/content_settings.h
-index 0565046f47c016b89815d38e54648c2fd42d4e9d..4b699e7d4c169f197a8ca4100b507cb725983d57 100644
+index 824c42112ec33d18796cfe50bbec8cc4b62de660..2a54e9451e2a947a676495e4df3ff6528dbb0094 100644
 --- a/components/content_settings/core/common/content_settings.h
 +++ b/components/content_settings/core/common/content_settings.h
-@@ -75,6 +75,8 @@ struct RendererContentSettingRules {
-   ContentSettingsForOneType autoplay_rules;
+@@ -76,6 +76,8 @@ struct RendererContentSettingRules {
    ContentSettingsForOneType client_hints_rules;
    ContentSettingsForOneType popup_redirect_rules;
+   ContentSettingsForOneType mixed_content_rules;
 +  ContentSettingsForOneType fingerprinting_rules;
 +  ContentSettingsForOneType brave_shields_rules;
  };
