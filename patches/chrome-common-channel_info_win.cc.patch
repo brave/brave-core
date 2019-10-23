@@ -1,13 +1,13 @@
 diff --git a/chrome/common/channel_info_win.cc b/chrome/common/channel_info_win.cc
-index b40e2ef01791b2b391a5e4c9b584fd9118b1d596..67ee14c66e41101d6e10054c5cc29330319a5100 100644
+index 8a9e2d3335b6cf945864a88d1644e1935234990b..cae0e9f8f7e1d9dc3d2489111cbb8f5d75330928 100644
 --- a/chrome/common/channel_info_win.cc
 +++ b/chrome/common/channel_info_win.cc
-@@ -12,7 +12,7 @@
+@@ -13,7 +13,7 @@
  namespace chrome {
  
  std::string GetChannelName() {
--#if defined(GOOGLE_CHROME_BUILD)
-+#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
    base::string16 channel(install_static::GetChromeChannelName());
  #if defined(DCHECK_IS_CONFIGURABLE)
    // Adorn the channel when DCHECKs are baked into the build, as there will be

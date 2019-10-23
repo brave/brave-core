@@ -1,24 +1,24 @@
 diff --git a/chrome/installer/mac/sign_chrome.py b/chrome/installer/mac/sign_chrome.py
-index a1de96203f51d6beccdda0024838a2cacc072120..92e875797b4e97170f7d3f5fb2858aa21e81ae45 100755
+index 2ccdfc99c46be9bd86baee175531cfd10a702068..664c6e67d8b468f52a07ac0e56cda4b3b37b31dd 100755
 --- a/chrome/installer/mac/sign_chrome.py
 +++ b/chrome/installer/mac/sign_chrome.py
-@@ -28,6 +28,7 @@ def create_config(config_args, development):
-         An instance of |model.CodeSignConfig|.
-     """
-     config_class = config.CodeSignConfig
+@@ -31,6 +31,7 @@ def create_config(config_args, development):
+     from signing.chromium_config import ChromiumCodeSignConfig
+     config_class = ChromiumCodeSignConfig
+ 
 +    """
+     # Then search for the internal config for Google Chrome.
      try:
-         import signing.internal_config
-         config_class = signing.internal_config.InternalCodeSignConfig
-@@ -36,6 +37,7 @@ def create_config(config_args, development):
+         from signing.internal_config import InternalCodeSignConfig
+@@ -40,6 +41,7 @@ def create_config(config_args, development):
          # internal config has to be available.
-         if config_class(identity, keychain).product == 'Google Chrome':
+         if config_class(*config_args).product == 'Google Chrome':
              raise e
 +    """
  
      if development:
  
-@@ -57,6 +59,8 @@ def create_config(config_args, development):
+@@ -61,6 +63,8 @@ def create_config(config_args, development):
  
          config_class = DevelopmentCodeSignConfig
  

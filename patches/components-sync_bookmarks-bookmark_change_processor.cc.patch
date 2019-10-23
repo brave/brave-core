@@ -1,5 +1,5 @@
 diff --git a/components/sync_bookmarks/bookmark_change_processor.cc b/components/sync_bookmarks/bookmark_change_processor.cc
-index 4363d682a7467ac0f501a06032d711278ab82b26..f655c50e84fd5ff1cd994577eff2eaf86a954544 100644
+index 4c50233634aaef7c3d86cffd1465351dbcc388b8..47b5e7b42adf4dd28f0f2dc7ea1ccd92f9615e04 100644
 --- a/components/sync_bookmarks/bookmark_change_processor.cc
 +++ b/components/sync_bookmarks/bookmark_change_processor.cc
 @@ -87,6 +87,7 @@ void BookmarkChangeProcessor::UpdateSyncNodeProperties(

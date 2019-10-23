@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelDefinitions.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelDefinitions.java
-index 23eebd17c1cf56471714da158ae9f65e7bd02551..d07591f6a25bfd5393b9108d89330c890785c1a0 100644
+index d5b4877e96934b06e80bd5d120868197c39e5bdf..6615dacd9592f3cf780b5363736220f93651cad8 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelDefinitions.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChannelDefinitions.java
-@@ -54,6 +54,7 @@ public class ChannelDefinitions {
+@@ -55,6 +55,7 @@ public class ChannelDefinitions {
       * more detailed instructions.
       */
      @StringDef({ChannelId.BROWSER, ChannelId.DOWNLOADS, ChannelId.INCOGNITO, ChannelId.MEDIA,
@@ -10,7 +10,7 @@ index 23eebd17c1cf56471714da158ae9f65e7bd02551..d07591f6a25bfd5393b9108d89330c89
              ChannelId.SCREEN_CAPTURE, ChannelId.CONTENT_SUGGESTIONS, ChannelId.WEBAPP_ACTIONS,
              ChannelId.SITES, ChannelId.SHARING, ChannelId.UPDATES, ChannelId.COMPLETED_DOWNLOADS,
              ChannelId.PERMISSION_REQUESTS, ChannelId.PERMISSION_REQUESTS_HIGH})
-@@ -77,6 +78,7 @@ public class ChannelDefinitions {
+@@ -78,6 +79,7 @@ public class ChannelDefinitions {
      }
  
      @StringDef({
@@ -18,7 +18,7 @@ index 23eebd17c1cf56471714da158ae9f65e7bd02551..d07591f6a25bfd5393b9108d89330c89
              ChannelGroupId.GENERAL, ChannelGroupId.SITES
      })
      @Retention(RetentionPolicy.SOURCE)
-@@ -107,6 +109,7 @@ public class ChannelDefinitions {
+@@ -108,6 +110,7 @@ public class ChannelDefinitions {
              Map<String, PredefinedChannel> map = new HashMap<>();
              Set<String> startup = new HashSet<>();
  
@@ -26,7 +26,7 @@ index 23eebd17c1cf56471714da158ae9f65e7bd02551..d07591f6a25bfd5393b9108d89330c89
              map.put(ChannelId.BROWSER,
                      new PredefinedChannel(ChannelId.BROWSER, R.string.notification_category_browser,
                              NotificationManager.IMPORTANCE_LOW, ChannelGroupId.GENERAL));
-@@ -207,6 +210,7 @@ public class ChannelDefinitions {
+@@ -208,6 +211,7 @@ public class ChannelDefinitions {
          static final Map<String, PredefinedChannelGroup> MAP;
          static {
              Map<String, PredefinedChannelGroup> map = new HashMap<>();

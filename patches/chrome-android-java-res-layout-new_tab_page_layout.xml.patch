@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/res/layout/new_tab_page_layout.xml b/chrome/android/java/res/layout/new_tab_page_layout.xml
-index 9a138cd6276691c4b1343d3701a76859bb99a9a0..21e9f0018b7e5446b6d92d0e5953ce674ab02c16 100644
+index 596e78c9b13f780d57f0e79c90d17fb3f263e49e..eba9263095a6117d26125d88f651e02796c4e55b 100644
 --- a/chrome/android/java/res/layout/new_tab_page_layout.xml
 +++ b/chrome/android/java/res/layout/new_tab_page_layout.xml
 @@ -2,7 +2,7 @@
@@ -11,7 +11,7 @@ index 9a138cd6276691c4b1343d3701a76859bb99a9a0..21e9f0018b7e5446b6d92d0e5953ce67
      xmlns:android="http://schemas.android.com/apk/res/android"
      xmlns:app="http://schemas.android.com/apk/res-auto"
      xmlns:tools="http://schemas.android.com/tools"
-@@ -104,4 +104,4 @@
+@@ -70,4 +70,4 @@
          android:layout_height="0dp"
          android:layout_weight="1"
          android:visibility="gone" />
