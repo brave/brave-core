@@ -17,6 +17,8 @@ import * as utils from '../utils'
 interface Props extends RewardsTip.ComponentProps {
   monthly: boolean
   publisher: RewardsTip.Publisher
+  tipComplete?: boolean
+  onTweet: () => void
   mediaMetaData?: RewardsTip.MediaMetaData
 }
 
@@ -215,6 +217,7 @@ class Banner extends React.Component<Props, State> {
     const checkmark = utils.isPublisherConnectedOrVerified(publisher.status)
     const bannerType = this.props.monthly ? 'monthly' : 'one-time'
     let logo = publisher.logo
+    const currentBalance = total && total.toFixed(1) || 0
 
     const internalFavicon = /^https:\/\/[a-z0-9-]+\.invalid(\/)?$/
     if (internalFavicon.test(publisher.logo)) {
@@ -232,7 +235,7 @@ class Banner extends React.Component<Props, State> {
         name={publisher.name}
         screenName={this.getScreenName(mediaMetaData)}
         provider={publisher.provider as Provider}
-        balance={total.toString() || '0'}
+        balance={currentBalance.toString()}
         bgImage={publisher.background}
         logo={logo}
         donationAmounts={this.generateAmounts()}
@@ -246,6 +249,8 @@ class Banner extends React.Component<Props, State> {
         isVerified={checkmark}
         learnMoreNotice={'https://brave.com/faq/#unclaimed-funds'}
         addFundsLink={this.addFundsLink}
+        tipComplete={this.props.tipComplete}
+        onTweet={this.props.onTweet}
         nextContribution={this.getNextContribution()}
       >
       {

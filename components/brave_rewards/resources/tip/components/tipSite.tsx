@@ -8,7 +8,6 @@ import { connect } from 'react-redux'
 
 // Components
 import Banner from './siteBanner'
-import TransientTipOverlay from './transientTipOverlay'
 
 // Utils
 import * as rewardsActions from '../actions/tip_actions'
@@ -43,19 +42,12 @@ class TipSite extends React.Component<Props, {}> {
     return (
       <>
         {
-          !finished && !error
+          !error
           ? <Banner
+              tipComplete={finished}
               monthly={this.props.monthly}
               publisher={this.props.publisher}
-          />
-          : null
-        }
-        {
-          finished
-          ? <TransientTipOverlay
-              publisher={this.props.publisher}
               onTweet={this.onTweet}
-              timeout={3000}
           />
           : null
         }

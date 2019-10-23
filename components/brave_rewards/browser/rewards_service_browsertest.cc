@@ -1227,9 +1227,8 @@ class BraveRewardsBrowserTest
           "  document.documentElement.innerText);",
           content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
           content::ISOLATED_WORLD_ID_CONTENT_END);
-      EXPECT_NE(js_result.ExtractString().find(publisher), std::string::npos);
-      EXPECT_NE(js_result.ExtractString().find("" + amount_str + ".0 BAT"),
-                std::string::npos);
+      EXPECT_NE(js_result.ExtractString().find("Tip sent!"), std::string::npos);
+      EXPECT_NE(js_result.ExtractString().find("Share the good news:"), std::string::npos);
 
       if (monthly) {
         EXPECT_NE(js_result.ExtractString().find(
