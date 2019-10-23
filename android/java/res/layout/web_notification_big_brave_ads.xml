@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<!--
+  Web notification custom layout, big state.
+  _______________________________________________________
+  |        |                                            |
+  |  Icon  |  Title text                        1:23 pm |
+  |        |                                            |
+  |        |  Body text which may run to multiple lines |
+  |________|  if there is a lot of it.                  |
+  |_____________________________________________________|
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <include layout="@layout/web_notification_icon_frame_brave"
+        android:id="@+id/icon_frame"/>
+
+    <!--
+      This LinearLayout handles dynamically changing the visibility of the buttons related views.
+      The apparent alternative of setting layout params from Java on a RelativeLayout does not work
+      with RemoteViews. The alternative of using a separate template when there are buttons was
+      rejected to avoid code duplication.
+    -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/icon_frame"
+        android:layout_alignParentEnd="true"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:singleLine="true"
+                android:ellipsize="end"
+                style="@style/WebNotificationTitle"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/body_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-4dp"
+            android:layout_marginBottom="5dp">
+
+            <TextView
+                android:id="@+id/body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_alignWithParentIfMissing="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/work_profile_badge"
+                android:ellipsize="end"
+                style="@style/WebNotificationBodyBraveAd"/>
+
+            <ImageView
+                android:id="@id/work_profile_badge"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="1dp"
+                android:scaleType="centerInside"
+                android:contentDescription="@string/notification_work_profile_badge_content_description"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>
