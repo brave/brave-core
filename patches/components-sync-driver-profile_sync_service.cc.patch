@@ -1,8 +1,8 @@
 diff --git a/components/sync/driver/profile_sync_service.cc b/components/sync/driver/profile_sync_service.cc
-index 4989bc9af35a037d747ed6cda034eb5f541101e8..86074bcff5979e06fc324d5078ccc0ad0712ed8e 100644
+index 6fde79dea55822db89b717f632fc70b870b496a0..93c5db13325e01db9abff3a924b613968dab297b 100644
 --- a/components/sync/driver/profile_sync_service.cc
 +++ b/components/sync/driver/profile_sync_service.cc
-@@ -463,6 +463,7 @@ void ProfileSyncService::StartUpSlowEngineComponents() {
+@@ -466,6 +466,7 @@ void ProfileSyncService::StartUpSlowEngineComponents() {
    params.sync_user_agent = MakeUserAgentForSync(channel_);
    params.http_factory_getter = MakeHttpPostProviderFactoryGetter();
    params.authenticated_account_id = GetAuthenticatedAccountInfo().account_id;

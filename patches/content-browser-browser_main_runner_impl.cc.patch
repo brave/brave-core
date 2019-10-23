@@ -1,5 +1,5 @@
 diff --git a/content/browser/browser_main_runner_impl.cc b/content/browser/browser_main_runner_impl.cc
-index ec00bd53ac2dd7d3e3f59aacb140c4f752393241..8443501f1d82b55dedc517b0dc1ec3e7031a437b 100644
+index b9b31076a8cac05cf4726de4c2c8c16c63043df6..abb7675556bf66633b6270ed5a61b535df0b4f83 100644
 --- a/content/browser/browser_main_runner_impl.cc
 +++ b/content/browser/browser_main_runner_impl.cc
 @@ -17,6 +17,7 @@
@@ -10,9 +10,9 @@ index ec00bd53ac2dd7d3e3f59aacb140c4f752393241..8443501f1d82b55dedc517b0dc1ec3e7
  #include "build/build_config.h"
  #include "components/tracing/common/trace_startup_config.h"
  #include "components/tracing/common/tracing_switches.h"
-@@ -94,8 +95,8 @@ int BrowserMainRunnerImpl::Initialize(const MainFunctionParams& parameters) {
-     gfx::win::InitializeDirectWrite();
- #endif  // OS_WIN
+@@ -95,8 +96,8 @@ int BrowserMainRunnerImpl::Initialize(const MainFunctionParams& parameters) {
+ 
+     gfx::InitializeFonts();
  
 -    main_loop_.reset(
 -        new BrowserMainLoop(parameters, std::move(scoped_execution_fence_)));

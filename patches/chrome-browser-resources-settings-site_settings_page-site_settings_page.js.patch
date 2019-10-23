@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/site_settings_page/site_settings_page.js b/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
-index 25bee399e1cf069ab7f4569e7b4c671c9880d3cc..a460e0d25568d820b7a155811df3f3bde2c4a924 100644
+index 588b6d078aaf967da93eeb52c7b422a8e1fecd71..0a4a3369dc35940ab19d655b1791b9ea85f2215b 100644
 --- a/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
 +++ b/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
 @@ -113,7 +113,9 @@ Polymer({

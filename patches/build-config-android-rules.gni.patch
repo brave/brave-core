@@ -1,8 +1,8 @@
 diff --git a/build/config/android/rules.gni b/build/config/android/rules.gni
-index c99d7820ca022184168be26ffa6897e292b17c20..477ea611ddc43a359960ca65f4b3d8303128d3fb 100644
+index 70b5c29ce260b2c212ac6aca82bdce5597a9c790..286fb07cfa1eb72e30eacfa233cb7215043c4d55 100644
 --- a/build/config/android/rules.gni
 +++ b/build/config/android/rules.gni
-@@ -553,6 +553,7 @@ if (enable_java_templates) {
+@@ -556,6 +556,7 @@ if (enable_java_templates) {
    #   }
    template("java_cpp_enum") {
      set_sources_assignment_filter([])

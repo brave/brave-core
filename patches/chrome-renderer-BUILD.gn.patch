@@ -1,8 +1,8 @@
 diff --git a/chrome/renderer/BUILD.gn b/chrome/renderer/BUILD.gn
-index a008c196d02039265f570b11b1766d87d08a0d5a..e1188499c2f2f899e9d8e7789bca815a125f9af8 100644
+index d3c40c67d58789214fe4a180c302bcc0a029f87a..de5f9ccd6ba35cc94095faf078cd121a79b69b13 100644
 --- a/chrome/renderer/BUILD.gn
 +++ b/chrome/renderer/BUILD.gn
-@@ -118,6 +118,7 @@ jumbo_static_library("renderer") {
+@@ -127,6 +127,7 @@ jumbo_static_library("renderer") {
    defines = []
  
    deps = [

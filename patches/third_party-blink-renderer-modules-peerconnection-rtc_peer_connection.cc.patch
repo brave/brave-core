@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc b/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc
-index a40b6f03b4a2f9f70825a74e3d2046f95b54d196..69af8eb6b9d2a98e1a8aa07747195399deab4668 100644
+index 26cec8dd6751f09ec5c061b78d7d0dfb5100a524..72ffa2fc5117e6549716a959b5695a0e5a8dd2fb 100644
 --- a/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc
 +++ b/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc
 @@ -38,6 +38,7 @@

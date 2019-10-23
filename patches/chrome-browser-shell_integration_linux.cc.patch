@@ -1,34 +1,8 @@
 diff --git a/chrome/browser/shell_integration_linux.cc b/chrome/browser/shell_integration_linux.cc
-index 6b085929b33f08bbae6da53ffd114bebc739ee9b..f3e5c05467c75f45e9db4200b06b1363f09d6540 100644
+index e000c6c83eb52e18d731e1a42be2106f04773119..7b72091a2448776da01db9d781ac9930c6652b42 100644
 --- a/chrome/browser/shell_integration_linux.cc
 +++ b/chrome/browser/shell_integration_linux.cc
-@@ -428,13 +428,24 @@ std::string GetDesktopName(base::Environment* env) {
-       return "google-chrome.desktop";
-   }
- #else  // BUILDFLAG(CHROMIUM_BRANDING)
-+#if defined(OFFICIAL_BUILD)
-+  version_info::Channel product_channel(chrome::GetChannel());
-+  switch (product_channel) {
-+    case version_info::Channel::DEV:
-+      return "brave-browser-dev.desktop";
-+    case version_info::Channel::BETA:
-+      return "brave-browser-beta.desktop";
-+    default:
-+      return "brave-browser.desktop";
-+  }
-+#endif  // defined(OFFICIAL_BUILD)
-   // Allow $CHROME_DESKTOP to override the built-in value, so that development
-   // versions can set themselves as the default without interfering with
-   // non-official, packaged versions using the built-in value.
-   std::string name;
-   if (env->GetVar("CHROME_DESKTOP", &name) && !name.empty())
-     return name;
--  return "chromium-browser.desktop";
-+  return "brave-browser.desktop";
- #endif
- }
- 
-@@ -442,7 +453,7 @@ std::string GetIconName() {
+@@ -420,7 +420,7 @@ std::string GetIconName() {
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
    return "google-chrome";
  #else  // BUILDFLAG(CHROMIUM_BRANDING)

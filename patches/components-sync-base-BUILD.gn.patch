@@ -1,8 +1,8 @@
 diff --git a/components/sync/base/BUILD.gn b/components/sync/base/BUILD.gn
-index cd73fed196331fd918bd01dd8b259f8a0d63e103..e254254c1a1dc47bc7b913b33cb47f5b893f5e55 100644
+index 2986bd5d14d6574cb1bc13b2fbeea87a45ce7196..648d52f3561e8a51f67cebee33d12706a217f030 100644
 --- a/components/sync/base/BUILD.gn
 +++ b/components/sync/base/BUILD.gn
-@@ -79,6 +79,7 @@ jumbo_static_library("base") {
+@@ -80,6 +80,7 @@ jumbo_static_library("base") {
    ]
    deps = [
      "//base:i18n",

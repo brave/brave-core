@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/extensions/BUILD.gn b/chrome/browser/resources/extensions/BUILD.gn
-index 1798f6238a7a1a462bd62cb33631c4a8497cd1cf..b51c7627b93cded6a911452101ea0087508b9604 100644
+index 734470fdaf4639ca70a95c607db6950aa5b2a6f0..911f0c52a3914692f50cdd05ab7ab6735f005f7b 100644
 --- a/chrome/browser/resources/extensions/BUILD.gn
 +++ b/chrome/browser/resources/extensions/BUILD.gn
-@@ -21,6 +21,7 @@ optimize_webui("build") {
+@@ -22,6 +22,7 @@ if (optimize_webui) {
  
-   deps = [
-     ":unpak",
+     deps = [
+       ":unpak",
 +    "//brave/browser/resources/extensions:unpak",
-   ]
- }
+     ]
+   }
  
