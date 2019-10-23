@@ -83,6 +83,9 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
      */
     private static final int BUTTON_ICON_COLOR_MATERIAL = 0xff757575;
 
+    // TODO(jocelyn): Move this into a separate class for handling Brave's notification channels.
+    private static final String BRAVE_ADS_CHANNEL_ID = "com.brave.browser.ads";
+
     private final Context mContext;
 
     public BraveAdsNotificationBuilder(Context context) {
@@ -109,7 +112,7 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
         bigView.setInt(R.id.body, "setMaxLines", calculateMaxBodyLines(fontScale));
         int scaledPadding =
                 calculateScaledPadding(fontScale, mContext.getResources().getDisplayMetrics());
-        setChannelId(ChannelDefinitions.ChannelId.BRAVE_ADS);
+        setChannelId(BRAVE_ADS_CHANNEL_ID);
 
         for (RemoteViews view : new RemoteViews[] {compactView, bigView}) {
             view.setTextViewText(R.id.title, mTitle);

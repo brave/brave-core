@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser;
 
+import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;

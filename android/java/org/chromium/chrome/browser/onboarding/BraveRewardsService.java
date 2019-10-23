@@ -13,7 +13,8 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import org.chromium.chrome.browser.BraveAdsNativeHelper;
+// TODO
+// import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -64,7 +65,8 @@ public class BraveRewardsService extends Service implements BraveRewardsObserver
         if (BraveRewardsNativeWorker.WALLET_CREATED == error_code
                 && OnboardingPrefManager.getInstance().isAdsAvailable()) {
             // Enable ads
-            BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
+            // TODO
+            // BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
         } else {
             // TODO: handle wallet creation problem
         }

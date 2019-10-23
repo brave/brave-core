@@ -38,7 +38,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveAdsNativeHelper;
+// TODO
+// import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.onboarding.BraveRewardsServiceReceiver;
@@ -238,7 +239,8 @@ public class BraveRewardsOnboardingFragment extends Fragment implements View.OnT
                     if (onViewPagerAction != null) onViewPagerAction.onNext();
                 } else if (onboardingType
                         == OnboardingPrefManager.EXISTING_USER_REWARDS_ON_ONBOARDING) {
-                    BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
+                    // TODO
+                    // BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
                     assert onViewPagerAction != null;
                     if (onViewPagerAction != null) onViewPagerAction.onNext();
                 } else {

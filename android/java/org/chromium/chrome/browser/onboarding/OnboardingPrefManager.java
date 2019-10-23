@@ -15,7 +15,8 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.BraveAdsNativeHelper;
+// TODO
+// import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.ChromeFeatureList;
@@ -66,7 +67,6 @@ public class OnboardingPrefManager {
     private static final String QWANT = "Qwant";
     private static final String BING = "Bing";
     private static final String STARTPAGE = "StartPage";
-    private static final String YANDEX = "Yandex";
 
     private OnboardingPrefManager() {
         mSharedPreferences = ContextUtils.getAppSharedPreferences();
@@ -146,7 +146,8 @@ public class OnboardingPrefManager {
         boolean shouldShow = getPrefOnboardingEnabled() && showOnboardingForSkip()
                 && isAdsAvailableNewLocale() && !PackageUtils.isFirstInstall(context)
                 && !BraveRewardsPanelPopup.isBraveRewardsEnabled()
-                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
+// TODO
+//                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
                 && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
         return shouldShow;
@@ -156,22 +157,33 @@ public class OnboardingPrefManager {
         boolean shouldShow = getPrefOnboardingEnabled() && showOnboardingForSkip()
                 && isAdsAvailableNewLocale() && !PackageUtils.isFirstInstall(context)
                 && BraveRewardsPanelPopup.isBraveRewardsEnabled()
-                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
+// TODO
+//                && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
                 && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
         return shouldShow;
     }
 
     public boolean isAdsAvailable() {
+        return false;
+
+        // TODO
+        /*
         String locale = BraveAdsNativeHelper.nativeGetLocale();
         String countryCode = BraveAdsNativeHelper.nativeGetCountryCode(locale);
         return adsAvailableRegions.contains(countryCode);
+        */
     }
 
     public boolean isAdsAvailableNewLocale() {
+        return false;
+
+        // TODO
+        /*
         String locale = BraveAdsNativeHelper.nativeGetLocale();
         String countryCode = BraveAdsNativeHelper.nativeGetCountryCode(locale);
         return newAdsAvailableRegions.contains(countryCode);
+        */
     }
 
     public void showOnboarding(Context context, boolean fromSettings) {
@@ -213,7 +225,6 @@ public class OnboardingPrefManager {
                     put(QWANT, SearchEngineEnum.QWANT);
                     put(BING, SearchEngineEnum.BING);
                     put(STARTPAGE, SearchEngineEnum.STARTPAGE);
-                    put(YANDEX, SearchEngineEnum.YANDEX);
                 }
             };
 }
