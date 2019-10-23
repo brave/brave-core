@@ -134,8 +134,15 @@ typedef NS_ENUM(NSInteger, BATWalletStatus) {
 } NS_SWIFT_NAME(WalletStatus);
 
 
+typedef NS_ENUM(NSInteger, BATEnvironment) {
+  BATEnvironmentStaging = 0,
+  BATEnvironmentProduction = 1,
+  BATEnvironmentDevelopment = 2,
+} NS_SWIFT_NAME(Environment);
 
-@class BATContributionInfo, BATPublisherInfo, BATPublisherBanner, BATPendingContribution, BATPendingContributionInfo, BATVisitData, BATGrant, BATWalletProperties, BATBalance, BATAutoContributeProps, BATMediaEventInfo, BATExternalWallet, BATBalanceReportInfo, BATActivityInfoFilterOrderPair, BATActivityInfoFilter, BATReconcileInfo, BATRewardsInternalsInfo, BATServerPublisherInfo, BATTransferFee;
+
+
+@class BATContributionInfo, BATPublisherInfo, BATPublisherBanner, BATPendingContribution, BATPendingContributionInfo, BATVisitData, BATGrant, BATWalletProperties, BATBalance, BATAutoContributeProps, BATMediaEventInfo, BATExternalWallet, BATBalanceReportInfo, BATActivityInfoFilterOrderPair, BATActivityInfoFilter, BATReconcileInfo, BATRewardsInternalsInfo, BATServerPublisherInfo, BATTransferFee, BATContributionQueue, BATContributionQueuePublisher;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -334,6 +341,21 @@ NS_SWIFT_NAME(TransferFee)
 @property (nonatomic) double amount;
 @property (nonatomic) uint64_t executionTimestamp;
 @property (nonatomic) uint32_t executionId;
+@end
+
+NS_SWIFT_NAME(ContributionQueue)
+@interface BATContributionQueue : NSObject <NSCopying>
+@property (nonatomic) uint64_t id;
+@property (nonatomic) BATRewardsType type;
+@property (nonatomic) double amount;
+@property (nonatomic) bool partial;
+@property (nonatomic, copy) NSArray<BATContributionQueuePublisher *> * publishers;
+@end
+
+NS_SWIFT_NAME(ContributionQueuePublisher)
+@interface BATContributionQueuePublisher : NSObject <NSCopying>
+@property (nonatomic, copy) NSString * publisherKey;
+@property (nonatomic) double amountPercent;
 @end
 
 NS_ASSUME_NONNULL_END

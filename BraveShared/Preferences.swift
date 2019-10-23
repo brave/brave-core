@@ -93,17 +93,23 @@ extension Preferences {
         public static let hideRewardsIcon = Option<Bool>(key: "rewards.hide-rewards-icon", default: false)
         public static let panelOpened = Option<Bool>(key: "rewards.rewards-panel-opened", default: false)
         
-        public enum EnvironmentOverride: Int, CaseIterable {
+        public enum EnvironmentOverride: Int {
             case none
             case staging
             case prod
+            case dev
             
             public var name: String {
                 switch self {
                 case .none: return "None"
                 case .staging: return "Staging"
                 case .prod: return "Prod"
+                case .dev: return "Dev"
                 }
+            }
+            
+            public static var sortedCases: [EnvironmentOverride] {
+                return [.none, .dev, .staging, .prod]
             }
         }
         /// In debug/beta, this is the overriden environment.

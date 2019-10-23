@@ -25,7 +25,7 @@ public class QASettingsViewController: TableViewController {
     fatalError()
   }
   
-  private let segmentedControl = UISegmentedControl(items: EnvironmentOverride.allCases.map { $0.name })
+  private let segmentedControl = UISegmentedControl(items: EnvironmentOverride.sortedCases.map { $0.name })
   
   @objc private func environmentChanged() {
     let value = segmentedControl.selectedSegmentIndex
@@ -168,7 +168,14 @@ public class QASettingsViewController: TableViewController {
   }
   
   @objc private func tappedRestoreWallet() {
-    let environment = BraveLedger.isProduction ? "production" : "staging"
+    let environment: String = {
+      switch BraveLedger.environment {
+      case .production: return "production"
+      case .staging: return "staging"
+      case .development: return "development"
+      default: return "(unknown)"
+      }
+    }()
     let alert = UIAlertController(title: "Restore Wallet", message: "Enter the recovery key for the wallet (must be a \(environment) wallet). Your existing wallet will be overwritten.", preferredStyle: .alert)
     alert.addTextField { textField in
       textField.returnKeyType = .done
