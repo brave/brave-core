@@ -1,7 +1,0 @@
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at http://mozilla.org/MPL/2.0/.
-
-CANVAS_DIMENSIONS, 40,
-PATH_COLOR_ARGB, 0xFF, 0xF7, 0x3C, 0x21,
-CIRCLE, 20, 20, 20
