@@ -6,7 +6,7 @@ import Foundation
 
 extension Locale {
   /// Whether or not the current users region and language is set to JP
-  var isJapan: Bool {
+  public var isJapan: Bool {
     return regionCode == "JP"
   }
 }

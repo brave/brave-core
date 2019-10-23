@@ -176,7 +176,7 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
         let choices = wallet.parametersChoices.map { $0.doubleValue }
         let selectedIndex = choices.firstIndex(of: monthlyPayment) ?? 0
         let stringChoices = choices.map { choice -> String in
-          var amount = "\(choice) BAT"
+          var amount = "\(choice) \(Strings.BAT)"
           if let dollarRate = state.ledger.dollarStringForBATAmount(choice) {
             amount.append(" (\(dollarRate))")
           }
@@ -297,7 +297,7 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
         cell.label.text = Strings.AutoContributeMonthlyPayment
         cell.accessoryType = .disclosureIndicator
         if let dollarAmount = state.ledger.dollarStringForBATAmount(state.ledger.contributionAmount) {
-          cell.accessoryLabel?.text = "\(state.ledger.contributionAmount) BAT (\(dollarAmount))"
+          cell.accessoryLabel?.text = "\(state.ledger.contributionAmount) \(Strings.BAT) (\(dollarAmount))"
         }
         cell.selectionStyle = .default
       case .nextContribution:

@@ -212,7 +212,7 @@ extension TippingSelectionView {
     let titleLabel = UILabel().then {
       $0.appearanceTextColor = Colors.blurple700
       $0.font = .systemFont(ofSize: 12.0)
-      $0.text = Strings.TippingWalletBalanceTitle
+      $0.text = Locale.current.isJapan ? Strings.TippingWalletBalanceTitleJapan : Strings.TippingWalletBalanceTitle
     }
     let valueLabel = UILabel().then {
       $0.appearanceTextColor = .white

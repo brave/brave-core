@@ -34,7 +34,7 @@ class BATValueOptionsSelectionViewController: OptionsSelectionViewController<BAT
       .font: UIFont.systemFont(ofSize: 14.0, weight: .medium)
     ])
     
-    attributedText.append(NSAttributedString(string: " BAT", attributes: [
+    attributedText.append(NSAttributedString(string: " \(Strings.BAT)", attributes: [
       .foregroundColor: Colors.grey200,
       .font: UIFont.systemFont(ofSize: 12.0)
     ]))
