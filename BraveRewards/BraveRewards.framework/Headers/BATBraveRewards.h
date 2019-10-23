@@ -15,8 +15,9 @@ NS_SWIFT_NAME(BraveRewardsConfiguration)
 
 /// Whether or not rewards is being tested
 @property (nonatomic, getter=isTesting) BOOL testing;
-/// Whether or not rewards is in production
-@property (nonatomic, getter=isProduction) BOOL production;
+//@property (nonatomic, getter=isDebug) BOOL debug;
+/// The rewards environment
+@property (nonatomic) BATEnvironment environment;
 /// Where ledger and ads should save their state
 @property (nonatomic, copy) NSString *stateStoragePath;
 /// The number of seconds between overrides. Defaults to 0 (no override) which means reconciles
@@ -25,16 +26,20 @@ NS_SWIFT_NAME(BraveRewardsConfiguration)
 /// Whether or not to enable short retries between contribution attempts
 @property (nonatomic) BOOL useShortRetries;
 
-/// The default configuration. Channel is debug, no changes to ledger configuration
+/// The default configuration. Environment is dev, no changes to ledger configuration
 ///
 /// State is stored in Application Support
 @property (nonatomic, class, readonly) BATBraveRewardsConfiguration *defaultConfiguration NS_SWIFT_NAME(default);
-/// The production configuration. Channel is production, no changes to ledger configuration
+/// The staging configuration. Environment is staging, no changes to ledger configuration
+///
+/// State is stored in Application Support
+@property (nonatomic, class, readonly) BATBraveRewardsConfiguration *stagingConfiguration NS_SWIFT_NAME(staging);
+/// The production configuration. Environment is production, no changes to ledger configuration
 ///
 /// State is stored in Application Support
 @property (nonatomic, class, readonly) BATBraveRewardsConfiguration *productionConfiguration NS_SWIFT_NAME(production);
-/// The testing configuration. Channel is debug & testing. Short retries are enabled, number of
-/// seconds between reconciles is set to 30 seconds instead of 30 days.
+/// The testing configuration. Environment is development & is_testing is set to true. Short retries are enabled,
+/// number of seconds between reconciles is set to 30 seconds instead of 30 days.
 ///
 /// State is saved to a directory created in /tmp
 @property (nonatomic, class, readonly) BATBraveRewardsConfiguration *testingConfiguration NS_SWIFT_NAME(testing);

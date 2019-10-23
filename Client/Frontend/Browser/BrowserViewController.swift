@@ -158,9 +158,18 @@ class BrowserViewController: UIViewController {
             configuration = .production
         } else {
             if let override = Preferences.Rewards.EnvironmentOverride(rawValue: Preferences.Rewards.environmentOverride.value), override != .none {
-                configuration = override == .prod ? .production : .default
+                switch override {
+                case .dev:
+                    configuration = .default
+                case .staging:
+                    configuration = .staging
+                case .prod:
+                    configuration = .production
+                default:
+                    configuration = .staging
+                }
             } else {
-                configuration = AppConstants.BuildChannel == .developer ? .default : .production
+                configuration = AppConstants.BuildChannel == .developer ? .staging : .production
             }
         }
         rewards = BraveRewards(configuration: configuration)
