@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/upgrade_detector/upgrade_detector_impl.cc b/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
-index 5b53d0704776658a1b12325bf02cce9f5d4d1275..e2b98c21236e0d181c9962665f88a33c7522b256 100644
+index 07850fdf80cd7ad5cbe180fb6ec54671a690bf7c..615716c08c9261b0551c9ed9a9694a4e70e11ccd 100644
 --- a/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
 +++ b/chrome/browser/upgrade_detector/upgrade_detector_impl.cc
-@@ -220,7 +220,7 @@ UpgradeDetectorImpl::UpgradeDetectorImpl(const base::Clock* clock,
+@@ -230,7 +230,7 @@ UpgradeDetectorImpl::UpgradeDetectorImpl(const base::Clock* clock,
  #if defined(OS_WIN)
  // Only enable upgrade notifications for Google Chrome builds. Chromium does not
  // use an auto-updater.
@@ -11,7 +11,7 @@ index 5b53d0704776658a1b12325bf02cce9f5d4d1275..e2b98c21236e0d181c9962665f88a33c
    // There might be a policy/enterprise environment preventing updates, so
    // validate updatability and then call StartTimerForUpgradeCheck
    // appropriately. Skip this step if a past attempt has been made to enable
-@@ -558,7 +558,7 @@ void UpgradeDetectorImpl::OnRelaunchNotificationPeriodPrefChanged() {
+@@ -578,7 +578,7 @@ void UpgradeDetectorImpl::OnRelaunchNotificationPeriodPrefChanged() {
      NotifyOnUpgrade();
  }
  

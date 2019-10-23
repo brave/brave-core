@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
-index 11aa2c662ba6c9742fb0e53c037fb9010914aabe..06af2dc9cd45b2b1f70f658c9117ae704a2304f9 100644
+index 78cd8cb4d35772400c9bd2da3882822b141dc25c..18f49d595007ec1e29b594765521a12a29c5a6a4 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.h
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
 @@ -93,12 +93,14 @@ class ToolbarView : public views::AccessiblePaneView,
@@ -25,7 +25,7 @@ index 11aa2c662ba6c9742fb0e53c037fb9010914aabe..06af2dc9cd45b2b1f70f658c9117ae70
    void ShowBookmarkBubble(const GURL& url,
                            bool already_bookmarked,
                            bookmarks::BookmarkBubbleObserver* observer);
-@@ -199,6 +202,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -195,6 +198,7 @@ class ToolbarView : public views::AccessiblePaneView,
    void ChildPreferredSizeChanged(views::View* child) override;
  
   protected:
@@ -33,7 +33,7 @@ index 11aa2c662ba6c9742fb0e53c037fb9010914aabe..06af2dc9cd45b2b1f70f658c9117ae70
    // AccessiblePaneView:
    bool SetPaneFocusAndFocusDefault() override;
  
-@@ -245,6 +249,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -242,6 +246,7 @@ class ToolbarView : public views::AccessiblePaneView,
    views::View* GetViewForDrop() override;
  
    // Loads the images for all the child views.

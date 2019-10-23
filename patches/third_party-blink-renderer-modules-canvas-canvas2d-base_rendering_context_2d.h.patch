@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
-index 112f4aa0c105f56d548e0762f3ef7acc4d71ff6d..751b71a70389f785e53caac598e126cd531a1236 100644
+index 5ad18e2ea4e5b15e5be9edbf41f6ee371dd95115..64d92c53e5ee97c28ed9ea22b2cc4ff04c6d6d29 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
 @@ -50,7 +50,7 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
@@ -33,10 +33,10 @@ index 112f4aa0c105f56d548e0762f3ef7acc4d71ff6d..751b71a70389f785e53caac598e126cd
  
    void clearRect(double x, double y, double width, double height);
    void fillRect(double x, double y, double width, double height);
-@@ -193,7 +195,7 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
-                              ImageDataColorSettings*,
-                              ExceptionState&) const;
+@@ -195,7 +197,7 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,
  
+   // For deferred canvases this will have the side effect of drawing recorded
+   // commands in order to finalize the frame
 -  ImageData* getImageData(int sx, int sy, int sw, int sh, ExceptionState&);
 +  ImageData* getImageData(ScriptState*, int sx, int sy, int sw, int sh, ExceptionState&);
    void putImageData(ImageData*, int dx, int dy, ExceptionState&);

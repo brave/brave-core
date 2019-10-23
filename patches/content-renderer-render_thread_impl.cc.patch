@@ -1,8 +1,8 @@
 diff --git a/content/renderer/render_thread_impl.cc b/content/renderer/render_thread_impl.cc
-index f133e1651a27458d4bd5ba05ba341635e8d5b8f3..e675805f7627bfc7dbde49878795bfd04acb5c9a 100644
+index e2cb076d3a690bf8ef1978b1f0bb935f2ddcb100..9f8bb6dce985cff3a562090c3f4eb2af3351880c 100644
 --- a/content/renderer/render_thread_impl.cc
 +++ b/content/renderer/render_thread_impl.cc
-@@ -1204,6 +1204,14 @@ void RenderThreadImpl::InitializeWebKit(
+@@ -1222,6 +1222,14 @@ void RenderThreadImpl::InitializeWebKit(
  }
  
  void RenderThreadImpl::RegisterSchemes() {
