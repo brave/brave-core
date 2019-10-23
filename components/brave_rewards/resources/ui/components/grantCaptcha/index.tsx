@@ -20,7 +20,7 @@ export interface Props {
   isPanel?: true
   isWindows?: boolean
   onSolution: (x: number, y: number) => void
-  dropBgImage: string
+  captchaImage: string
   hint: string
 }
 
@@ -92,7 +92,7 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, isPanel, dropBgImage, hint } = this.props
+    const { id, isPanel, captchaImage, hint } = this.props
 
     return (
       <StyledWrapper
@@ -111,7 +111,7 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
             : null
           }
         </StyledDrag>
-        <StyledDropArea src={dropBgImage} draggable={false} onDrop={this.onCaptchaDrop} onDragOver={this.preventDefault} />
+        <StyledDropArea src={captchaImage} draggable={false} onDrop={this.onCaptchaDrop} onDragOver={this.preventDefault} />
       </StyledWrapper>
     )
   }

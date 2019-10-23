@@ -72,9 +72,6 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
       RewardsService* rewards_service,
       const uint32_t result,
       brave_rewards::Promotion promotion) override;
-  void OnGrantCaptcha(RewardsService* rewards_service,
-                      std::string image,
-                      std::string hint) override;
   void OnGrantFinish(
       RewardsService* rewards_service,
       const uint32_t result,

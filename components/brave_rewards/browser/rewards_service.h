@@ -98,6 +98,10 @@ using ProcessRewardsPageUrlCallback = base::OnceCallback<void(
     const std::string&,
     const std::map<std::string, std::string>&)>;
 using CreateWalletCallback = base::OnceCallback<void(int32_t)>;
+using ClaimPromotionCallback = base::OnceCallback<void(
+    const int32_t,
+    const std::string&,
+    const std::string&)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -116,9 +120,8 @@ class RewardsService : public KeyedService {
       bool fetch_excluded,
       const GetContentSiteListCallback& callback) = 0;
   virtual void FetchPromotions() = 0;
-  virtual void GetGrantCaptcha(
-      const std::string& promotion_id,
-      const std::string& promotion_type) = 0;
+  virtual void ClaimPromotion(
+      ClaimPromotionCallback callback) = 0;
   virtual void SolveGrantCaptcha(const std::string& solution,
                                  const std::string& promotionId) const = 0;
   virtual void GetWalletPassphrase(

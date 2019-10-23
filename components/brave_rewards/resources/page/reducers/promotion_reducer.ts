@@ -8,9 +8,9 @@ import { Reducer } from 'redux'
 // Temporary (ryanml)
 import { types } from '../constants/rewards_types'
 
-const getPromotion = (id?: string, promotions?: Rewards.Promotion[]) => {
-  if (!id || !promotions) {
-    return null
+const getPromotion = (id: string, promotions?: Rewards.Promotion[]) => {
+  if (!promotions) {
+    return undefined
   }
 
   return promotions.find((promotion: Rewards.Promotion) => {
@@ -62,45 +62,51 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
 
       break
     }
-    case types.GET_GRANT_CAPTCHA:
-      if (!state.promotions) {
-        break
-      }
-
-      const currentPromotion = getPromotion(action.payload.promotionId, state.promotions)
-
-      if (!currentPromotion) {
-        break
-      }
-
-      state.currentPromotion = currentPromotion
-      if (currentPromotion.promotionId && currentPromotion.type) {
-        chrome.send('brave_rewards.getGrantCaptcha', [currentPromotion.promotionId, currentPromotion.type])
-      }
-      break
-    case types.ON_GRANT_CAPTCHA: {
-      if (state.currentPromotion && state.promotions) {
-        const props = action.payload.captcha
-        let hint = props.hint
-        let captcha = `data:image/jpeg;base64,${props.image}`
-
-        const promotions = state.promotions.map((item: Rewards.Promotion) => {
-          let promotion = item
-          let promotionId = state.currentPromotion && state.currentPromotion.promotionId
-
-          if (promotionId === item.promotionId) {
-            promotion = item
-            promotion.captcha = captcha
-            promotion.hint = hint
-          }
-
-          return promotion
-        })
-
+    case types.CLAIM_PROMOTION: {
+      const promotionId = action.payload.promotionId
+      if (!promotionId) {
         state = {
           ...state,
-          promotions
+          currentPromotion: undefined
         }
+        break
+      }
+      chrome.send('brave_rewards.claimPromotion', [promotionId])
+      break
+    }
+    case types.ON_CLAIM_PROMOTION: {
+      const promotionId = payload.properties.promotionId
+      if (!state.promotions || !promotionId) {
+        break
+      }
+
+      let currentPromotion = state.currentPromotion
+      if (!state.currentPromotion) {
+        currentPromotion = getPromotion(promotionId, state.promotions)
+      }
+
+      if (!currentPromotion || payload.properties.result !== 0) {
+        state = {
+          ...state,
+          currentPromotion: undefined
+        }
+        break
+      }
+
+      const hint = payload.properties.hint
+      const captchaImage = payload.properties.captchaImage
+
+      const promotions = state.promotions.map((item: Rewards.Promotion) => {
+        if (promotionId === item.promotionId) {
+          item.captchaImage = captchaImage
+          item.hint = hint
+        }
+        return item
+      })
+
+      state = {
+        ...state,
+        promotions
       }
       break
     }

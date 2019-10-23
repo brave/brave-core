@@ -184,9 +184,9 @@ class LedgerImpl : public ledger::Ledger,
 
   void FetchPromotions(ledger::FetchPromotionCallback callback) const override;
 
-  void GetGrantCaptcha(
-      const std::vector<std::string>& headers,
-      ledger::GetGrantCaptchaCallback callback) const override;
+  void ClaimPromotion(
+      const std::string& payload,
+      ledger::ClaimPromotionCallback callback) const override;
 
   void SolveGrantCaptcha(const std::string& solution,
                          const std::string& promotionId) const override;

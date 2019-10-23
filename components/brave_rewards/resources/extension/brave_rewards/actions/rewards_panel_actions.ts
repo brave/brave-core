@@ -62,8 +62,8 @@ export const getGrantCaptcha = (promotionId?: string) => action(types.GET_GRANT_
   promotionId
 })
 
-export const onGrantCaptcha = (captcha: RewardsExtension.Captcha) => action(types.ON_GRANT_CAPTCHA, {
-  captcha
+export const onClaimPromotion = (properties: RewardsExtension.Captcha) => action(types.ON_CLAIM_PROMOTION, {
+  properties
 })
 
 export const solveGrantCaptcha = (x: number, y: number) => action(types.SOLVE_GRANT_CAPTCHA, {

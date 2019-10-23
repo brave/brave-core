@@ -104,9 +104,7 @@ class RewardsServiceImpl : public RewardsService,
   void CreateWallet(CreateWalletCallback callback) override;
   void FetchWalletProperties() override;
   void FetchPromotions() override;
-  void GetGrantCaptcha(
-      const std::string& promotion_id,
-      const std::string& promotion_type) override;
+  void ClaimPromotion(ClaimPromotionCallback callback) override;
   void SolveGrantCaptcha(
       const std::string& solution,
       const std::string& promotion_id) const override;
@@ -329,7 +327,6 @@ class RewardsServiceImpl : public RewardsService,
   void TriggerOnPromotion(
       const ledger::Result result,
       ledger::PromotionPtr promotion);
-  void TriggerOnGrantCaptcha(const std::string& image, const std::string& hint);
   void TriggerOnGrantFinish(ledger::Result result, ledger::GrantPtr grant);
   void TriggerOnRewardsMainEnabled(bool rewards_main_enabled);
   void OnPublisherInfoSaved(ledger::PublisherInfoCallback callback,
@@ -493,8 +490,10 @@ class RewardsServiceImpl : public RewardsService,
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
-  void OnGrantCaptcha(const std::string& image,
-                      const std::string& hint);
+  void OnClaimPromotion(
+    ClaimPromotionCallback callback,
+    const ledger::Result result,
+    const std::string& response);
   void OnRecoverWallet(
       ledger::Result result,
       double balance);

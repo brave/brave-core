@@ -154,7 +154,9 @@ export class Panel extends React.Component<Props, State> {
       const split = notification.id.split('_')
       const promoId = split[split.length - 1]
       if (promoId) {
-        this.actions.getGrantCaptcha(promoId)
+        chrome.braveRewards.claimPromotion(promoId, (properties: RewardsExtension.Captcha) => {
+          this.actions.onClaimPromotion(properties)
+        })
       }
     }
   }

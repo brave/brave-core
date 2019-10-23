@@ -63,7 +63,7 @@ interface BatLedger {
       ledger.mojom.ActivityMonth month, int32 year, uint32 data);
 
   FetchPromotions() => (ledger.mojom.Result result, array<ledger.mojom.Promotion> grants);
-  GetGrantCaptcha(array<string> headers) => (string image, string hint);
+  ClaimPromotion(string payload) => (ledger.mojom.Result result, string response);
   GetWalletPassphrase() => (string wallet_passphrase);
   RecoverWallet(string passPhrase) => (ledger.mojom.Result result, double balance);
   SolveGrantCaptcha(string solution, string promotionId);

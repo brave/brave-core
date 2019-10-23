@@ -31,8 +31,6 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
       std::unique_ptr<brave_rewards::WalletProperties>));
   MOCK_METHOD3(OnFetchPromotions,
       void(RewardsService*, const uint32_t, brave_rewards::Promotion));
-  MOCK_METHOD3(OnGrantCaptcha,
-      void(RewardsService*, std::string, std::string));
   MOCK_METHOD3(OnRecoverWallet, void(RewardsService*,
                                      unsigned int,
                                      double));

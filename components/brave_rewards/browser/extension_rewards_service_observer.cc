@@ -148,31 +148,6 @@ void ExtensionRewardsServiceObserver::OnFetchPromotions(
   event_router->BroadcastEvent(std::move(event));
 }
 
-void ExtensionRewardsServiceObserver::OnGrantCaptcha(
-    RewardsService* rewards_service,
-    std::string image,
-    std::string hint) {
-  auto* event_router = extensions::EventRouter::Get(profile_);
-  if (!event_router) {
-    return;
-  }
-
-  std::string encoded_string;
-  base::Base64Encode(image, &encoded_string);
-  base::DictionaryValue captcha;
-  captcha.SetString("image", std::move(encoded_string));
-  captcha.SetString("hint", hint);
-
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnGrantCaptcha::Create(captcha)
-          .release());
-  std::unique_ptr<extensions::Event> event(new extensions::Event(
-      extensions::events::BRAVE_START,
-      extensions::api::brave_rewards::OnGrantCaptcha::kEventName,
-      std::move(args)));
-  event_router->BroadcastEvent(std::move(event));
-}
-
 void ExtensionRewardsServiceObserver::OnGrantFinish(
     RewardsService* rewards_service,
     const uint32_t result,

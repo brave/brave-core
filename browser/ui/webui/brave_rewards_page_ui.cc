@@ -13,7 +13,6 @@
 #include <vector>
 #include <map>
 
-#include "base/base64.h"
 #include "base/i18n/time_formatting.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
@@ -72,7 +71,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void HandleCreateWalletRequested(const base::ListValue* args);
   void GetWalletProperties(const base::ListValue* args);
   void FetchPromotions(const base::ListValue* args);
-  void GetGrantCaptcha(const base::ListValue* args);
+  void ClaimPromotion(const base::ListValue* args);
   void GetWalletPassphrase(const base::ListValue* args);
   void RecoverWallet(const base::ListValue* args);
   void SolveGrantCaptcha(const base::ListValue* args);
@@ -187,8 +186,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       brave_rewards::RewardsService* rewards_service,
       const uint32_t result,
       brave_rewards::Promotion promotion) override;
-  void OnGrantCaptcha(brave_rewards::RewardsService* rewards_service,
-                          std::string image, std::string hint) override;
   void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
                        unsigned int result,
                        double balance) override;
@@ -243,6 +240,12 @@ class RewardsDOMHandler : public WebUIMessageHandler,
     brave_rewards::RewardsService* rewards_service,
     bool ads_enabled) override;
 
+  void OnClaimPromotion(
+      const std::string& promotion_id,
+      const int32_t result,
+      const std::string& captcha_image,
+      const std::string& hint);
+
   // RewardsNotificationsServiceObserver implementation
   void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
@@ -296,8 +299,8 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.fetchPromotions",
       base::BindRepeating(&RewardsDOMHandler::FetchPromotions,
       base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.getGrantCaptcha",
-      base::BindRepeating(&RewardsDOMHandler::GetGrantCaptcha,
+  web_ui()->RegisterMessageCallback("brave_rewards.claimPromotion",
+      base::BindRepeating(&RewardsDOMHandler::ClaimPromotion,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getWalletPassphrase",
       base::BindRepeating(&RewardsDOMHandler::GetWalletPassphrase,
@@ -575,42 +578,37 @@ void RewardsDOMHandler::FetchPromotions(const base::ListValue* args) {
   }
 }
 
-void RewardsDOMHandler::OnGrantCaptcha(
-    brave_rewards::RewardsService* rewards_service,
-    std::string image,
-    std::string hint) {
-  if (web_ui()->CanCallJavascript()) {
-    std::string encoded_string;
-    base::Base64Encode(image, &encoded_string);
-
-    base::DictionaryValue captcha;
-    captcha.SetString("image", std::move(encoded_string));
-    captcha.SetString("hint", hint);
-
-    web_ui()->CallJavascriptFunctionUnsafe(
-        "brave_rewards.grantCaptcha", captcha);
+void RewardsDOMHandler::OnClaimPromotion(
+      const std::string& promotion_id,
+      const int32_t result,
+      const std::string& captcha_image,
+      const std::string& hint) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
   }
+
+  base::DictionaryValue response;
+  response.SetInteger("result", result);
+  response.SetString("promotionId", promotion_id);
+  response.SetString("captchaImage", captcha_image);
+  response.SetString("hint", hint);
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.claimPromotion",
+      response);
 }
 
-void RewardsDOMHandler::GetGrantCaptcha(const base::ListValue* args) {
-  CHECK_EQ(2U, args->GetSize());
-  if (rewards_service_) {
-#if defined(OS_ANDROID)
-    std::string promotion_id;
-    args->GetString(0, &promotion_id);
-    // TODO(samartnik): we need different call from JS,
-    // currently using this one to make sure it all work
-    // As soon as @ryanml adds separate action for safetynet,
-    // we will move that code
-    rewards_service_->GetGrantViaSafetynetCheck(promotion_id);
-#else
-  if (rewards_service_) {
-    const std::string promotion_id = args->GetList()[0].GetString();
-    const std::string promotion_type = args->GetList()[1].GetString();
-    rewards_service_->GetGrantCaptcha(promotion_id, promotion_type);
+void RewardsDOMHandler::ClaimPromotion(const base::ListValue* args) {
+  CHECK_EQ(1U, args->GetSize());
+  if (!rewards_service_) {
+    return;
   }
-#endif
-  }
+
+  const std::string promotion_id = args->GetList()[0].GetString();
+  rewards_service_->ClaimPromotion(
+      base::Bind(&RewardsDOMHandler::OnClaimPromotion,
+          weak_factory_.GetWeakPtr(),
+          promotion_id));
 }
 
 void RewardsDOMHandler::OnGetWalletPassphrase(const std::string& pass) {
