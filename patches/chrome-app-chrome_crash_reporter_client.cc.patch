@@ -1,13 +1,13 @@
 diff --git a/chrome/app/chrome_crash_reporter_client.cc b/chrome/app/chrome_crash_reporter_client.cc
-index ce1bd30b94839b2a51dc375ade2ce14e6e85130c..6e8924fef1e50931076ab69c816169bfc92c6ad0 100644
+index fddc7867cc05c462ea659e83d6565863731448f0..9397361712e11e252b18db964a2363e3b53858d5 100644
 --- a/chrome/app/chrome_crash_reporter_client.cc
 +++ b/chrome/app/chrome_crash_reporter_client.cc
-@@ -132,7 +132,7 @@ bool ChromeCrashReporterClient::IsRunningUnattended() {
+@@ -152,7 +152,7 @@ bool ChromeCrashReporterClient::IsRunningUnattended() {
  }
  
  bool ChromeCrashReporterClient::GetCollectStatsConsent() {
--#if defined(GOOGLE_CHROME_BUILD)
-+#if defined(GOOGLE_CHROME_BUILD) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
+-#if BUILDFLAG(GOOGLE_CHROME_BRANDING)
++#if BUILDFLAG(GOOGLE_CHROME_BRANDING) || (defined(BRAVE_CHROMIUM_BUILD) && defined(OFFICIAL_BUILD))
    bool is_official_chrome_build = true;
  #else
    bool is_official_chrome_build = false;

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources_util.cc b/chrome/browser/resources_util.cc
-index e2bbf23a96d9ad6947c1aed458a1d09889e8d57a..b3a3d5e7776e5cd77867d9ed27ba71d1b4c7b033 100644
+index a57015672e9fbedfb1a25e880a4adb21ad114011..7126ecd7023dbcf08d341b94846e46a842427b41 100644
 --- a/chrome/browser/resources_util.cc
 +++ b/chrome/browser/resources_util.cc
 @@ -19,6 +19,10 @@

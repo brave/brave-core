@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/cocoa/main_menu_builder.mm b/chrome/browser/ui/cocoa/main_menu_builder.mm
-index b0f66cc832e85b3d9da0b64ed1c3536563b16656..70e98fdc608b443022af1222e5fc8d8f7b21785e 100644
+index 2e3f95172aeab65e7a6a01c76cd2d894418c87bc..2d74c2c49c16625e3420cee23bd7d6bf8e1c3a4e 100644
 --- a/chrome/browser/ui/cocoa/main_menu_builder.mm
 +++ b/chrome/browser/ui/cocoa/main_menu_builder.mm
 @@ -98,6 +98,7 @@ base::scoped_nsobject<NSMenuItem> BuildFileMenu(
@@ -10,7 +10,7 @@ index b0f66cc832e85b3d9da0b64ed1c3536563b16656..70e98fdc608b443022af1222e5fc8d8f
                  Item(IDS_REOPEN_CLOSED_TABS_MAC)
                      .command_id(IDC_RESTORE_TAB)
                      .remove_if(is_pwa),
-@@ -426,6 +428,7 @@ base::scoped_nsobject<NSMenuItem> BuildHelpMenu(
+@@ -436,6 +437,7 @@ base::scoped_nsobject<NSMenuItem> BuildHelpMenu(
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
              Item(IDS_FEEDBACK_MAC).command_id(IDC_FEEDBACK),
  #endif

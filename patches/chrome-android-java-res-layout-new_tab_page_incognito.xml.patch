@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/res/layout/new_tab_page_incognito.xml b/chrome/android/java/res/layout/new_tab_page_incognito.xml
-index b294fa17a33e3c089babc00ca4d17b2a62a9e8f3..26efb010768cc6cf6f0ab64c7c3fbc57a54e65e4 100644
+index 29a20b7d6ad21a9ada0b720542f2efa33703a4db..2a391bfccd9e3c68d771470a971638daff9c58f8 100644
 --- a/chrome/android/java/res/layout/new_tab_page_incognito.xml
 +++ b/chrome/android/java/res/layout/new_tab_page_incognito.xml
-@@ -82,6 +82,7 @@
+@@ -84,6 +84,7 @@
                  android:textAppearance="@style/TextAppearance.IncognitoNewTabLearnMoreLinkModern"
                  android:lineSpacingExtra="@dimen/md_incognito_ntp_line_spacing" />
  

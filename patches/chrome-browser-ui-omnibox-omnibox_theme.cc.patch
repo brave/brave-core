@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_theme.cc b/chrome/browser/ui/omnibox/omnibox_theme.cc
-index 499923574cf0caee89876a84eccabc883af5d62f..d0b8884614eb9e078041d49e04a350a2c2d982af 100644
+index 57330f1d63c29f190ccce2294b5552034960676b..86b89ed04ba7f7fc4021d226c09dbb3d8810286a 100644
 --- a/chrome/browser/ui/omnibox/omnibox_theme.cc
 +++ b/chrome/browser/ui/omnibox/omnibox_theme.cc
-@@ -39,7 +39,7 @@ SkColor GetSecurityChipColor(OmniboxTint tint, OmniboxPartState state) {
+@@ -67,7 +67,7 @@ int GetThemePropertyId(OmniboxPart part, OmniboxPartState state) {
  
  }  // namespace
  
--SkColor GetOmniboxColor(OmniboxPart part,
-+SkColor GetOmniboxColor_ChromiumImpl(OmniboxPart part,
-                         OmniboxTint tint,
+-SkColor GetOmniboxColor(const ui::ThemeProvider* theme_provider,
++SkColor GetOmniboxColor_ChromiumImpl(const ui::ThemeProvider* theme_provider,
+                         OmniboxPart part,
                          OmniboxPartState state) {
-   using NativeId = ui::NativeTheme::ColorId;
+   return theme_provider->GetColor(GetThemePropertyId(part, state));

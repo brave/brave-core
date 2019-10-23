@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/views/tabs/new_tab_button.h b/chrome/browser/ui/views/tabs/new_tab_button.h
-index b53bac3e26964d030725641d973fd5693b903425..b5a82e8d69725ee60707a2fcde5aaad38087cf49 100644
+index be79ae1321eda962e8370c074a7c9961da84600d..47d52bdf0a9f9c3533c227f4aa2f67dfdd115181 100644
 --- a/chrome/browser/ui/views/tabs/new_tab_button.h
 +++ b/chrome/browser/ui/views/tabs/new_tab_button.h
-@@ -66,6 +66,7 @@ class NewTabButton : public views::ImageButton,
-   void RemoveLayerBeneathView(ui::Layer* old_layer) override;
+@@ -69,6 +69,7 @@ class NewTabButton : public views::ImageButton,
+   void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
  
   private:
 +  friend class BraveNewTabButton;
+   class HighlightPathGenerator;
+ 
  // views::ImageButton:
- #if defined(OS_WIN)
-   void OnMouseReleased(const ui::MouseEvent& event) override;
-@@ -89,12 +90,14 @@ class NewTabButton : public views::ImageButton,
+@@ -93,12 +94,14 @@ class NewTabButton : public views::ImageButton,
    void PaintFill(gfx::Canvas* canvas) const;
  
    // Paints a properly sized plus (+) icon into the center of the button.
