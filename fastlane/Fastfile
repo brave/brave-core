@@ -45,7 +45,8 @@ platform :ios do
         "ClientTests/FingerprintProtectionTest/testFingerprintProtection",
         "ClientTests/TabSessionTests",
         "ClientTests/ContentBlockerTests",
-        "ClientTests/ClientTests/testUserAgent"
+        "ClientTests/ClientTests/testUserAgent",
+        "DataTests/DataControllerTests/testSaveAndRemove"
       ]
     )
   end
