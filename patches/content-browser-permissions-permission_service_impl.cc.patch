@@ -1,5 +1,5 @@
 diff --git a/content/browser/permissions/permission_service_impl.cc b/content/browser/permissions/permission_service_impl.cc
-index 4fffcddf2e29e22f80ab2200a1af3f8539723799..efe7f6fa18c99af4d28bfc896f8461a67388ccd6 100644
+index c6345e0119f80319683267332f278cbb4a473c77..85088dadc171464ab413df53d5504bec929d5634 100644
 --- a/content/browser/permissions/permission_service_impl.cc
 +++ b/content/browser/permissions/permission_service_impl.cc
 @@ -107,6 +107,9 @@ bool PermissionDescriptorToPermissionType(

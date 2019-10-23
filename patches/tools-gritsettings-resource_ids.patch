@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids b/tools/gritsettings/resource_ids
-index a4c39b1f6b141056b35ff8b7d9283863d057d0a2..7a2bd9c420381fae4939b168ce91ad7fe192d1ea 100644
+index 60aa21e9e2705c91ab634e4b405e10afc93494de..74773472e0cb8a899436a8c7a401a6dbcecd1716 100644
 --- a/tools/gritsettings/resource_ids
 +++ b/tools/gritsettings/resource_ids
 @@ -36,6 +36,9 @@
@@ -12,13 +12,13 @@ index a4c39b1f6b141056b35ff8b7d9283863d057d0a2..7a2bd9c420381fae4939b168ce91ad7f
    "chrome/app/google_chrome_strings.grd": {
      "messages": [400],
    },
-@@ -201,6 +204,9 @@
+@@ -210,6 +213,9 @@
    # Chromium strings and Google Chrome strings must start at the same id.
    # We only use one file depending on whether we're building Chromium or
    # Google Chrome.
 +  "components/components_brave_strings.grd": {
-+    "messages": [15040],
++    "messages": [15060],
 +  },
    "components/components_chromium_strings.grd": {
-     "messages": [15040],
+     "messages": [15060],
    },

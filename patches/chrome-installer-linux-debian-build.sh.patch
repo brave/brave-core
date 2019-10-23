@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/build.sh b/chrome/installer/linux/debian/build.sh
-index 306b59c138b7cb5df21ad6e9d502bb7a46a104c6..9e6da48138b26754e9e5b000451e65db2f317728 100755
+index 15f9b02202331e9e0a107f682cfd169e0ab31f4e..2ac392c585ae8a2f17975a48ecfd634b90aec0b8 100755
 --- a/chrome/installer/linux/debian/build.sh
 +++ b/chrome/installer/linux/debian/build.sh
 @@ -21,7 +21,7 @@ gen_changelog() {
@@ -38,19 +38,26 @@ index 306b59c138b7cb5df21ad6e9d502bb7a46a104c6..9e6da48138b26754e9e5b000451e65db
        grep '^ Depends: ' | sed 's/^ Depends: //' | sed 's/, /\n/g' | \
        LANG=C sort > "${ACTUAL_DEPENDS}"
    BAD_DIFF=0
-@@ -157,8 +157,11 @@ verify_channel() {
+@@ -156,13 +156,18 @@ verify_channel() {
+       RELEASENOTES="https://chromereleases.googleblog.com/search/label/Stable%20updates"
        ;;
-     unstable|dev|alpha )
+     beta|testing )
++
++
+       CHANNEL=beta
+       RELEASENOTES="https://chromereleases.googleblog.com/search/label/Beta%20updates"
+       ;;
+     dev|unstable|alpha )
        CHANNEL=unstable
 +      CHANNEL=dev
-       RELEASENOTES="http://googlechromereleases.blogspot.com/search/label/Dev%20updates"
+       RELEASENOTES="https://chromereleases.googleblog.com/search/label/Dev%20updates"
        ;;
 +    nightly )
 +      ;;
-     testing|beta )
-       CHANNEL=beta
-       RELEASENOTES="http://googlechromereleases.blogspot.com/search/label/Beta%20updates"
-@@ -170,6 +173,7 @@ verify_channel() {
+     * )
+       echo
+       echo "ERROR: '$CHANNEL' is not a valid channel type."
+@@ -170,6 +175,7 @@ verify_channel() {
        exit 1
        ;;
    esac
@@ -58,7 +65,7 @@ index 306b59c138b7cb5df21ad6e9d502bb7a46a104c6..9e6da48138b26754e9e5b000451e65db
  }
  
  process_opts() {
-@@ -259,6 +263,17 @@ fi
+@@ -259,6 +265,17 @@ fi
  eval $(sed -e "s/^\([^=]\+\)=\(.*\)$/export \1='\2'/" \
    "${BUILDDIR}/installer/theme/BRANDING")
  
@@ -76,7 +83,7 @@ index 306b59c138b7cb5df21ad6e9d502bb7a46a104c6..9e6da48138b26754e9e5b000451e65db
  verify_channel
  
  # Some Debian packaging tools want these set.
-@@ -270,6 +285,10 @@ COMMON_DEPS=$(sed ':a;N;$!ba;s/\n/, /g' "${DEB_COMMON_DEPS}")
+@@ -270,6 +287,10 @@ COMMON_DEPS=$(sed ':a;N;$!ba;s/\n/, /g' "${DEB_COMMON_DEPS}")
  COMMON_PREDEPS="dpkg (>= 1.14.0)"
  COMMON_RECOMMENDS="libu2f-udev"
  
