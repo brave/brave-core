@@ -3,11 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/command_line.h"
-#include "brave/common/brave_switches.h"
-#define BRAVE_SET_UP                     \
-  base::CommandLine::ForCurrentProcess() \
-    ->AppendSwitch(switches::kDisableTorClientUpdaterExtension);
 #include "../../../../../../../chrome/browser/extensions/api/bookmarks/bookmarks_api_unittest.cc"  // NOLINT
 
 namespace extensions {

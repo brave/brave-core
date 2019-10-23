@@ -29,7 +29,8 @@ namespace extensions {
 
 BraveExtensionManagement::BraveExtensionManagement(Profile* profile)
     : ExtensionManagement(profile),
-      extension_registry_observer_(this) {
+      extension_registry_observer_(this),
+      profile_(profile) {
   extension_registry_observer_.Add(ExtensionRegistry::Get(
         static_cast<content::BrowserContext*>(profile)));
   providers_.push_back(
@@ -44,7 +45,8 @@ void BraveExtensionManagement::RegisterBraveExtensions() {
 #if BUILDFLAG(ENABLE_TOR)
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
-  if (!command_line.HasSwitch(switches::kDisableTorClientUpdaterExtension))
+  if (!command_line.HasSwitch(switches::kDisableTorClientUpdaterExtension) &&
+      !profile_->AsTestingProfile())
     g_brave_browser_process->tor_client_updater()->Register();
 #endif
 }
