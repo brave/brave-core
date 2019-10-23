@@ -18,7 +18,7 @@ public class AdsViewController: UIViewController {
   }
   
   /// The number of seconds until the ad is automatically dismissed
-  private let automaticDismissalInterval: TimeInterval = 8
+  private let automaticDismissalInterval: TimeInterval = 30
   
   private var displayedAds: [AdView: DisplayedAd] = [:]
   private(set) var visibleAdView: AdView?
