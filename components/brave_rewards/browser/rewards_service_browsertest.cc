@@ -697,14 +697,6 @@ class BraveRewardsBrowserTest :
     // Wait for grant to finish
     WaitForGrantFinished();
 
-    // Goes to final step
-    if (use_panel) {
-      ASSERT_TRUE(ExecJs(contents,
-                         "document.getElementsByTagName('button')[0].click();",
-                         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                         content::ISOLATED_WORLD_ID_CONTENT_END));
-    }
-
     // Ensure that grant looks as expected
     EXPECT_STREQ(grant_.altcurrency.c_str(), "BAT");
     EXPECT_STREQ(grant_.probi.c_str(), "30000000000000000000");
