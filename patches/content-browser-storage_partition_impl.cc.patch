@@ -1,5 +1,5 @@
 diff --git a/content/browser/storage_partition_impl.cc b/content/browser/storage_partition_impl.cc
-index c626801963afa375d2c9c971b5d48afb3e269c29..0913f037b048007dd3ead6e28075f925e0e0ba54 100644
+index a9318c8de61582486d4cc380a3081b43ac9b90f0..04f26aec9e8eae266163d9cddf4ce31f756ed74d 100644
 --- a/content/browser/storage_partition_impl.cc
 +++ b/content/browser/storage_partition_impl.cc
 @@ -1705,6 +1705,7 @@ void StoragePartitionImpl::OnCanSendReportingReports(

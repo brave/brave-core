@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc b/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
-index 982a8b33c30266413e2cd0ea0944d7c835b81ceb..bf5cdc8224ffa6ce4496a4246fdce1f1834fb66a 100644
+index b6e0a0f51d5dc9c05afeae38c32f4cd8549933e2..5b63c8a2f6af4111863b6a8063dec47e4bf5b0df 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
-@@ -340,6 +340,7 @@ bool AvatarToolbarButton::ShouldShowGenericIcon() const {
+@@ -455,6 +455,7 @@ void AvatarToolbarButton::MaybeHideIdentityAnimation() {
  }
  
  base::string16 AvatarToolbarButton::GetAvatarTooltipText() const {
 +  GET_AVATAR_TOOLTIP_TEXT_
-   if (IsIncognito())
-     return l10n_util::GetStringUTF16(IDS_AVATAR_BUTTON_INCOGNITO_TOOLTIP);
- 
+   switch (GetState()) {
+     case State::kIncognitoProfile:
+       return l10n_util::GetStringUTF16(IDS_AVATAR_BUTTON_INCOGNITO_TOOLTIP);

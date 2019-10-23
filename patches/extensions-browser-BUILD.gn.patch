@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/BUILD.gn b/extensions/browser/BUILD.gn
-index 9ad769b7a3f6a1cb33290c17f2d74101c3ba1243..3636d96bd74143c646352ae27a59f8d77d70c559 100644
+index 7a44fac8ae0a69fc32d77473c1fcc408a31a17ec..851eae945fe79868a986560fce5affa75495b0d9 100644
 --- a/extensions/browser/BUILD.gn
 +++ b/extensions/browser/BUILD.gn
-@@ -404,6 +404,7 @@ jumbo_source_set("browser_sources") {
+@@ -406,6 +406,7 @@ jumbo_source_set("browser_sources") {
      "//third_party/blink/public/common",
      "//ui/display",
    ]

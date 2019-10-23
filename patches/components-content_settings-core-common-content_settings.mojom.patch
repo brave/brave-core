@@ -1,11 +1,11 @@
 diff --git a/components/content_settings/core/common/content_settings.mojom b/components/content_settings/core/common/content_settings.mojom
-index 3635caff1e290b6ad3463375bf3b9d99cf3ebeb7..7ea8d332f797fabdbe254ea851cd535194f9522f 100644
+index 771b4dbc435f147f16b6cce9422846f375d27caf..82aaf41aa5f7704660c74ff4b205bc2f27d5d5cc 100644
 --- a/components/content_settings/core/common/content_settings.mojom
 +++ b/components/content_settings/core/common/content_settings.mojom
-@@ -73,4 +73,6 @@ struct RendererContentSettingRules {
-   array<ContentSettingPatternSource> autoplay_rules;
+@@ -74,4 +74,6 @@ struct RendererContentSettingRules {
    array<ContentSettingPatternSource> client_hints_rules;
    array<ContentSettingPatternSource> popup_redirect_rules;
+   array<ContentSettingPatternSource> mixed_content_rules;
 +  array<ContentSettingPatternSource> fingerprinting_rules;
 +  array<ContentSettingPatternSource> brave_shields_rules;
  };

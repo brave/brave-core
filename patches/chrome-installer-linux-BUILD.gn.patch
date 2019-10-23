@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 709552f18688ed39c64ab48581d46e7f43b39ffe..ccf0f7a0100b131d2a2bab194100ed13150d4352 100644
+index 44a55944a276bb84fbea4132a299c868761cb119..1b6961bd0ebb53b75c2bf3b44972e8b79b336203 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -27,8 +27,8 @@ declare_args() {
@@ -10,10 +10,10 @@ index 709552f18688ed39c64ab48581d46e7f43b39ffe..ccf0f7a0100b131d2a2bab194100ed13
 -  "$root_out_dir/chrome_sandbox",
 +  "$root_out_dir/brave",
 +  "$root_out_dir/brave_sandbox",
+   "$root_out_dir/crashpad_handler",
  ]
  packaging_files_shlibs = []
- 
-@@ -156,12 +156,17 @@ action("merge_rpm_dependencies") {
+@@ -157,12 +157,17 @@ action("merge_rpm_dependencies") {
  }
  
  action("strip_chrome_binary") {
@@ -32,7 +32,7 @@ index 709552f18688ed39c64ab48581d46e7f43b39ffe..ccf0f7a0100b131d2a2bab194100ed13
    script = "//build/gn_run_binary.py"
    sources = [
      "//buildtools/third_party/eu-strip/bin/eu-strip",
-@@ -222,7 +227,7 @@ branding_dir_100 =
+@@ -223,7 +228,7 @@ branding_dir_100 =
  copy("common_packaging_files") {
    visibility = [ ":*" ]
    sources = [
@@ -41,7 +41,7 @@ index 709552f18688ed39c64ab48581d46e7f43b39ffe..ccf0f7a0100b131d2a2bab194100ed13
      "common/apt.include",
      "common/default-app-block.template",
      "common/default-app.template",
-@@ -245,8 +250,8 @@ copy("common_packaging_files") {
+@@ -246,8 +251,8 @@ copy("common_packaging_files") {
      ]
    } else {
      sources += [
@@ -52,9 +52,9 @@ index 709552f18688ed39c64ab48581d46e7f43b39ffe..ccf0f7a0100b131d2a2bab194100ed13
      ]
    }
  
-@@ -353,6 +358,12 @@ group("installer_deps") {
-     "//chrome/browser/resources/media/mei_preload:component",
+@@ -355,6 +360,12 @@ group("installer_deps") {
      "//sandbox/linux:chrome_sandbox",
+     "//third_party/crashpad/crashpad/handler:crashpad_handler",
    ]
 +  if (brave_chromium_build) {
 +    public_deps += [
@@ -65,7 +65,7 @@ index 709552f18688ed39c64ab48581d46e7f43b39ffe..ccf0f7a0100b131d2a2bab194100ed13
    if (enable_nacl) {
      public_deps += [
        "//components/nacl/loader:nacl_helper",
-@@ -378,6 +389,9 @@ group("installer_deps") {
+@@ -380,6 +391,9 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -75,7 +75,7 @@ index 709552f18688ed39c64ab48581d46e7f43b39ffe..ccf0f7a0100b131d2a2bab194100ed13
  
    if (current_cpu == "x86") {
      # The shell scripts use "ia32" instead of "x86".
-@@ -520,3 +534,6 @@ linux_package("beta") {
+@@ -522,3 +536,6 @@ linux_package("beta") {
  linux_package("unstable") {
    channel = "unstable"
  }

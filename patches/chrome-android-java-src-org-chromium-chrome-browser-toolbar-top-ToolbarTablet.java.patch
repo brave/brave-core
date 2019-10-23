@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-index 8d1e0bc5bb3613a9fb0a1390814786d3032a05be..b40fc42aa63078a1fbfc1a718f5e0305720f0578 100644
+index e8b3f1c7f6c2b5f06bb11054f180b7d4b910a102..d5f3076a8b247249210b61ce824fd203d6c3e106 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-@@ -51,7 +51,7 @@ import java.util.Collection;
+@@ -52,7 +52,7 @@ import java.util.Collection;
   * The Toolbar object for Tablet screens.
   */
  @SuppressLint("Instantiatable")
@@ -11,7 +11,7 @@ index 8d1e0bc5bb3613a9fb0a1390814786d3032a05be..b40fc42aa63078a1fbfc1a718f5e0305
          implements OnClickListener, View.OnLongClickListener, TabCountObserver {
      // The number of toolbar buttons that can be hidden at small widths (reload, back, forward).
      public static final int HIDEABLE_BUTTON_COUNT = 3;
-@@ -326,6 +326,7 @@ public class ToolbarTablet extends ToolbarLayout
+@@ -327,6 +327,7 @@ public class ToolbarTablet extends ToolbarLayout
              DownloadUtils.downloadOfflinePage(getContext(), getToolbarDataProvider().getTab());
              RecordUserAction.record("MobileToolbarDownloadPage");
          }
