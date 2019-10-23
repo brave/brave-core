@@ -143,14 +143,21 @@ class BraveRewardsFetchPromotionsFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetGrantCaptchaFunction : public ExtensionFunction {
+class BraveRewardsClaimPromotionFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getGrantCaptcha", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.claimPromotion", UNKNOWN)
 
  protected:
-  ~BraveRewardsGetGrantCaptchaFunction() override;
+  ~BraveRewardsClaimPromotionFunction() override;
 
   ResponseAction Run() override;
+
+ private:
+  void OnClaimPromotion(
+      const std::string& promotion_id,
+      const int32_t result,
+      const std::string& captcha_image,
+      const std::string& hint);
 };
 
 class BraveRewardsSolveGrantCaptchaFunction : public ExtensionFunction {

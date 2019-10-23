@@ -430,20 +430,43 @@ ExtensionFunction::ResponseAction BraveRewardsFetchPromotionsFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsGetGrantCaptchaFunction::~BraveRewardsGetGrantCaptchaFunction() {
+BraveRewardsClaimPromotionFunction::~BraveRewardsClaimPromotionFunction() {
 }
 
-ExtensionFunction::ResponseAction BraveRewardsGetGrantCaptchaFunction::Run() {
-  std::unique_ptr<brave_rewards::GetGrantCaptcha::Params> params(
-      brave_rewards::GetGrantCaptcha::Params::Create(*args_));
+ExtensionFunction::ResponseAction BraveRewardsClaimPromotionFunction::Run() {
+  std::unique_ptr<brave_rewards::ClaimPromotion::Params> params(
+      brave_rewards::ClaimPromotion::Params::Create(*args_));
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service) {
-    rewards_service->GetGrantCaptcha(params->promotion_id,
-                                     params->type);
+  if (!rewards_service) {
+    auto results = std::make_unique<base::ListValue>();
+    results->Append(std::make_unique<base::Value>(1));
+    results->Append(std::make_unique<base::Value>(""));
+    results->Append(std::make_unique<base::Value>(""));
+    results->Append(std::make_unique<base::Value>(""));
+    return RespondNow(ArgumentList(std::move(results)));
   }
-  return RespondNow(NoArguments());
+  rewards_service->ClaimPromotion(
+      base::BindOnce(
+        &BraveRewardsClaimPromotionFunction::OnClaimPromotion,
+        this,
+        params->promotion_id));
+  return RespondLater();
+}
+
+void BraveRewardsClaimPromotionFunction::OnClaimPromotion(
+    const std::string& promotion_id,
+    const int32_t result,
+    const std::string& captcha_image,
+    const std::string& hint) {
+
+  auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+  data->SetIntKey("result", result);
+  data->SetStringKey("promotionId", promotion_id);
+  data->SetStringKey("captchaImage", captcha_image);
+  data->SetStringKey("hint", hint);
+  Respond(OneArgument(std::move(data)));
 }
 
 BraveRewardsSolveGrantCaptchaFunction::

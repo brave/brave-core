@@ -20,6 +20,7 @@
 #include "base/files/important_file_writer.h"
 #include "base/guid.h"
 #include "base/i18n/time_formatting.h"
+#include "base/json/json_reader.h"
 #include "base/json/json_string_value_serializer.h"
 #include "base/time/time.h"
 #include "base/logging.h"
@@ -1010,11 +1011,6 @@ void RewardsServiceImpl::GetAutoContributeProps(
         &RewardsServiceImpl::OnGetAutoContributeProps, AsWeakPtr(), callback));
 }
 
-void RewardsServiceImpl::OnGrantCaptcha(const std::string& image,
-    const std::string& hint) {
-  TriggerOnGrantCaptcha(image, hint);
-}
-
 void RewardsServiceImpl::OnRecoverWallet(
     ledger::Result result,
     double balance) {
@@ -1541,24 +1537,68 @@ void RewardsServiceImpl::TriggerOnPromotion(
     observer.OnFetchPromotions(this, static_cast<int>(result), properties);
 }
 
-void RewardsServiceImpl::GetGrantCaptcha(
-    const std::string& promotion_id,
-    const std::string& promotion_type) {
+void RewardsServiceImpl::OnClaimPromotion(
+    ClaimPromotionCallback callback,
+    const ledger::Result result,
+    const std::string& response) {
+  if (result != ledger::Result::LEDGER_OK) {
+    std::move(callback).Run(static_cast<int32_t>(result), "", "");
+    return;
+  }
+
+  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  if (!value || !value->is_dict()) {
+    std::move(callback).Run(
+        static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
+        "",
+        "");
+    return;
+  }
+
+  base::DictionaryValue* dictionary = nullptr;
+  if (!value->GetAsDictionary(&dictionary)) {
+    std::move(callback).Run(
+        static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
+        "",
+        "");
+    return;
+  }
+
+  auto* captcha_image = dictionary->FindKey("captcha_image");
+  if (!captcha_image || !captcha_image->is_string()) {
+    std::move(callback).Run(
+        static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
+        "",
+        "");
+    return;
+  }
+
+  auto* hint = dictionary->FindKey("hint");
+  if (!hint || !hint->is_string()) {
+    std::move(callback).Run(
+        static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
+        "",
+        "");
+    return;
+  }
+
+  std::move(callback).Run(
+      static_cast<int32_t>(result),
+      captcha_image->GetString(),
+      hint->GetString());
+}
+
+void RewardsServiceImpl::ClaimPromotion(
+    ClaimPromotionCallback callback) {
   if (!Connected()) {
     return;
   }
-  std::vector<std::string> headers;
-  headers.push_back("brave-product:brave-core");
-  headers.push_back("promotion-id:" + promotion_id);
-  headers.push_back("promotion-type:" + promotion_type);
-  bat_ledger_->GetGrantCaptcha(headers,
-      base::BindOnce(&RewardsServiceImpl::OnGrantCaptcha, AsWeakPtr()));
-}
 
-void RewardsServiceImpl::TriggerOnGrantCaptcha(const std::string& image,
-    const std::string& hint) {
-  for (auto& observer : observers_)
-    observer.OnGrantCaptcha(this, image, hint);
+  bat_ledger_->ClaimPromotion(
+      "",
+      base::BindOnce(&RewardsServiceImpl::OnClaimPromotion,
+          AsWeakPtr(),
+          std::move(callback)));
 }
 
 void RewardsServiceImpl::GetWalletPassphrase(

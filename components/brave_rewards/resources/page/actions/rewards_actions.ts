@@ -33,12 +33,12 @@ export const onPromotion = (properties: Rewards.PromotionResponse) => action(typ
   properties
 })
 
-export const getGrantCaptcha = (promotionId?: string) => action(types.GET_GRANT_CAPTCHA, {
+export const claimPromotion = (promotionId: string) => action(types.CLAIM_PROMOTION, {
   promotionId
 })
 
-export const onGrantCaptcha = (captcha: Rewards.Captcha) => action(types.ON_GRANT_CAPTCHA, {
-  captcha
+export const onClaimPromotion = (properties: Rewards.Captcha) => action(types.ON_CLAIM_PROMOTION, {
+  properties
 })
 
 export const solveGrantCaptcha = (x: number, y: number) => action(types.SOLVE_GRANT_CAPTCHA, {

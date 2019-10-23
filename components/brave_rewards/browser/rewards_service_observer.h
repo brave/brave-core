@@ -36,10 +36,6 @@ class RewardsServiceObserver : public base::CheckedObserver {
       RewardsService* rewards_service,
       const uint32_t result,
       Promotion properties) {}
-  virtual void OnGrantCaptcha(
-      RewardsService* rewards_service,
-      std::string image,
-      std::string hint) {}
   virtual void OnRecoverWallet(
       RewardsService* rewards_service,
       unsigned int result,

@@ -616,11 +616,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)grantCaptchaForPromotionId:(NSString *)promoID promotionType:(NSString *)promotionType completion:(void (^)(BATResult result, NSString * _Nonnull json))completion
 {
-  std::vector<std::string> headers;
-  headers.push_back("brave-product:brave-core");
-  headers.push_back("promotion-id:" + std::string(promoID.UTF8String));
-  headers.push_back("promotion-type:" + std::string(promotionType.UTF8String));
-  ledger->GetGrantCaptcha(headers,
+  ledger->ClaimPromotion(std::string(promoID.UTF8String),
       ^(const std::string &image, const std::string &hint) {
         dispatch_async(dispatch_get_main_queue(), ^{
           completion([NSString stringWithUTF8String:image.c_str()],

@@ -133,12 +133,12 @@ describe('Grant Reducer', () => {
     })
   })
 
-  describe('ON_GRANT_CAPTCHA', () => {
+  describe('ON_CLAIM_PROMOTION', () => {
     it('does not modify state if no grants or current grant', () => {
       const assertion = reducers({
         rewardsData: defaultState
       }, {
-        type: types.ON_GRANT_CAPTCHA,
+        type: types.ON_CLAIM_PROMOTION,
         payload: {
           captcha: {
             image: 'XXX',
@@ -181,7 +181,7 @@ describe('Grant Reducer', () => {
       const assertion = reducers({
         rewardsData: initialState
       }, {
-        type: types.ON_GRANT_CAPTCHA,
+        type: types.ON_CLAIM_PROMOTION,
         payload: {
           captcha: {
             image: 'XXX',

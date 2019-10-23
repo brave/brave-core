@@ -49,8 +49,8 @@ using DoDirectTipCallback = std::function<void(ledger::Result)>;
 using FetchPromotionCallback =
     std::function<void(ledger::Result, ledger::PromotionList)>;
 using SetPublisherExcludeCallback = std::function<void(ledger::Result)>;
-using GetGrantCaptchaCallback = std::function<void(const std::string&,
-                                                   const std::string&)>;
+using ClaimPromotionCallback =
+    std::function<void(const ledger::Result, const std::string&)>;
 using RewardsInternalsInfoCallback =
     std::function<void(ledger::RewardsInternalsInfoPtr)>;
 using CreateWalletCallback = std::function<void(ledger::Result)>;
@@ -166,14 +166,22 @@ class LEDGER_EXPORT Ledger {
   virtual void FetchWalletProperties(
       OnWalletPropertiesCallback callback) const = 0;
 
-  virtual void FetchPromotions(ledger::FetchPromotionCallback callback) const = 0;
+  virtual void FetchPromotions(
+      ledger::FetchPromotionCallback callback) const = 0;
 
   virtual void SolveGrantCaptcha(const std::string& solution,
                                  const std::string& promotionId) const = 0;
 
-  virtual void GetGrantCaptcha(
-      const std::vector<std::string>& headers,
-      GetGrantCaptchaCallback callback) const = 0;
+  // |payload|:
+  // desktop and Android: empty
+  // iOS: { "publicKey": "{{publicKey}}" }
+  // =====================================
+  // |callback| returns result as json
+  // desktop: { "captchaImage": "{{captchaImage}}", "hint": "{{hint}}" }
+  // iOS and Android: { "nonce": "{{nonce}}" }
+  virtual void ClaimPromotion(
+      const std::string& payload,
+      ClaimPromotionCallback callback) const = 0;
 
   virtual void ApplySafetynetToken(const std::string& promotion_id,
       const std::string& token) const = 0;

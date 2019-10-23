@@ -12,6 +12,7 @@
 
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/mojom_structs.h"
+#include "bat/ledger/internal/attestation/attestation_impl.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -30,15 +31,16 @@ class Promotion {
                 const std::string& promotionId,
                 const std::string& safetynet_token);
 
-  void GetGrantCaptcha(const std::vector<std::string>& headers,
-                       ledger::GetGrantCaptchaCallback callback);
+  void ClaimPromotion(
+      const std::string& payload,
+      ledger::ClaimPromotionCallback callback);
 
   void Refresh(const bool retry_after_error);
 
   void OnTimer(const uint32_t timer_id);
 
  private:
-  void OnFetchPromotions(
+  void OnFetch(
       const int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
@@ -49,18 +51,13 @@ class Promotion {
       ledger::PromotionList promotions,
       ledger::FetchPromotionCallback callback);
 
-  void GetGrantCaptchaCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
-      ledger::GetGrantCaptchaCallback callback);
-
   void SetGrantCallback(
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
       bool is_safetynet_check);
 
+  std::unique_ptr<braveledger_attestation::AttestationImpl> attestation_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   uint32_t last_check_timer_id_;
 };

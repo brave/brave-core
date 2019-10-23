@@ -5,9 +5,9 @@
 import { types } from '../../constants/rewards_panel_types'
 import * as storage from '../storage'
 
-const getPromotion = (id?: string, promotions?: RewardsExtension.Promotion[]) => {
-  if (!id || !promotions) {
-    return null
+const getPromotion = (id: string, promotions?: RewardsExtension.Promotion[]) => {
+  if (!promotions) {
+    return undefined
   }
 
   return promotions.find((promotion: RewardsExtension.Promotion) => {
@@ -28,7 +28,7 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
   if (state === undefined) {
     state = storage.load()
   }
-
+  const payload = action.payload
   switch (action.type) {
     case types.FETCH_PROMOTIONS: {
       chrome.braveRewards.fetchPromotions()
@@ -36,7 +36,7 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
     }
     case types.ON_PROMOTION: {
       state = { ...state }
-      const promotion = action.payload.properties
+      const promotion = payload.properties
       if (promotion.status === 1) {
         break
       }
@@ -63,54 +63,40 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
 
       break
     }
-    case types.GET_GRANT_CAPTCHA:
-      if (!state.promotions) {
+    case types.ON_CLAIM_PROMOTION: {
+      const promotionId = payload.properties.promotionId
+      if (!state.promotions || !promotionId) {
         break
       }
 
-      const currentPromotion = getPromotion(action.payload.promotionId, state.promotions)
-
-      if (!currentPromotion) {
-        break
+      let currentPromotion = state.currentPromotion
+      if (!state.currentPromotion) {
+        currentPromotion = getPromotion(promotionId, state.promotions)
       }
 
-      state.currentPromotion = currentPromotion
-      if (currentPromotion.promotionId) {
-        // TODO implement
-        //chrome.braveRewards.getGrantCaptcha(currentPromotion.promotionId, currentPromotion.type)
-      }
-      break
-    case types.ON_GRANT_CAPTCHA: {
-      if (state.currentPromotion && state.promotions) {
-        const props = action.payload.captcha
-        let hint = props.hint
-        let captcha = `data:image/jpeg;base64,${props.image}`
-
-        const promotions = state.promotions.map((item: RewardsExtension.Promotion) => {
-          let promotionId
-          let newPromotion = item
-
-          if (!state ||
-              !state.currentPromotion ||
-              !state.currentPromotion.promotionId) {
-            return newPromotion
-          }
-
-          promotionId = state.currentPromotion.promotionId
-
-          if (promotionId === item.promotionId) {
-            newPromotion = item
-            newPromotion.captcha = captcha
-            newPromotion.hint = hint
-          }
-
-          return newPromotion
-        })
-
+      if (!currentPromotion || payload.properties.result !== 0) {
         state = {
           ...state,
-          promotions
+          currentPromotion: undefined
         }
+        break
+      }
+
+      const hint = payload.properties.hint
+      const captchaImage = payload.properties.captchaImage
+
+      const promotions = state.promotions.map((item: RewardsExtension.Promotion) => {
+        if (promotionId === item.promotionId) {
+          item.captchaImage = captchaImage
+          item.hint = hint
+        }
+        return item
+      })
+
+      state = {
+        ...state,
+        promotions,
+        currentPromotion
       }
       break
     }
@@ -192,8 +178,9 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
           break
         case 6:
           currentPromotion.status = 'wrongPosition'
+          // TODO we need to reponse to UI to fetch it again
           if (currentPromotion.promotionId && currentPromotion.type) {
-            chrome.braveRewards.getGrantCaptcha(currentPromotion.promotionId, currentPromotion.type)
+            //chrome.braveRewards.getGrantCaptcha(currentPromotion.promotionId, currentPromotion.type)
           }
           break
         case 13:

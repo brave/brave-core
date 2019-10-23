@@ -609,10 +609,10 @@ void LedgerImpl::FetchWalletProperties(
   bat_wallet_->GetWalletProperties(callback);
 }
 
-void LedgerImpl::GetGrantCaptcha(
-    const std::vector<std::string>& headers,
-    ledger::GetGrantCaptchaCallback callback) const {
-  bat_promotion_->GetGrantCaptcha(headers, std::move(callback));
+void LedgerImpl::ClaimPromotion(
+    const std::string& payload,
+    ledger::ClaimPromotionCallback callback) const {
+  bat_promotion_->ClaimPromotion(payload, std::move(callback));
 }
 
 std::string LedgerImpl::GetWalletPassphrase() const {

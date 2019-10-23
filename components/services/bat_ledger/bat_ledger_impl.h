@@ -81,10 +81,10 @@ class BatLedgerImpl : public mojom::BatLedger,
       int32_t year,
       uint32_t data) override;
 
-  void FetchPromotions(
-      FetchPromotionsCallback callback) override;
-  void GetGrantCaptcha(const std::vector<std::string>& headers,
-      GetGrantCaptchaCallback callback) override;
+  void FetchPromotions(FetchPromotionsCallback callback) override;
+  void ClaimPromotion(
+      const std::string& payload,
+      ClaimPromotionCallback callback) override;
   void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
   void RecoverWallet(
       const std::string& pass_phrase,
@@ -240,10 +240,10 @@ class BatLedgerImpl : public mojom::BatLedger,
       const bool result,
       ledger::BalanceReportInfoPtr report_info);
 
-  static void OnGetGrantCaptcha(
-      CallbackHolder<GetGrantCaptchaCallback>* holder,
-      const std::string& image,
-      const std::string& hint);
+  static void OnClaimPromotion(
+      CallbackHolder<ClaimPromotionCallback>* holder,
+      const ledger::Result result,
+      const std::string& response);
 
   static void OnCreateWallet(
       CallbackHolder<CreateWalletCallback>* holder,

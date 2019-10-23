@@ -16,7 +16,7 @@ export const enum types {
   FETCH_PROMOTIONS = '@@rewards_panel/FETCH_PROMOTIONS',
   ON_PROMOTION = '@@rewards_panel/ON_PROMOTION',
   GET_GRANT_CAPTCHA = '@@rewards_panel/GET_GRANT_CAPTCHA',
-  ON_GRANT_CAPTCHA = '@@rewards_panel/ON_GRANT_CAPTCHA',
+  ON_CLAIM_PROMOTION = '@@rewards_panel/ON_CLAIM_PROMOTION',
   SOLVE_GRANT_CAPTCHA = '@@rewards_panel/SOLVE_GRANT_CAPTCHA',
   ON_GRANT_RESET = '@@rewards_panel/ON_GRANT_RESET',
   ON_GRANT_DELETE = '@@rewards_panel/ON_GRANT_DELETE',

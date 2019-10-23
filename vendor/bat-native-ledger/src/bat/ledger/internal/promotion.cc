@@ -6,6 +6,7 @@
 #include "bat/ledger/internal/promotion.h"
 
 #include <map>
+#include <memory>
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -25,7 +26,10 @@ using std::placeholders::_3;
 
 namespace braveledger_promotion {
 
-Promotion::Promotion(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
+Promotion::Promotion(bat_ledger::LedgerImpl* ledger) :
+    attestation_(std::make_unique<braveledger_attestation::AttestationImpl>
+        (ledger)),
+    ledger_(ledger) {
 }
 
 Promotion::~Promotion() {
@@ -129,7 +133,7 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
     return;
   }
 
-  auto url_callback = std::bind(&Promotion::OnFetchPromotions,
+  auto url_callback = std::bind(&Promotion::OnFetch,
       this,
       _1,
       _2,
@@ -149,7 +153,7 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
       url_callback);
 }
 
-void Promotion::OnFetchPromotions(
+void Promotion::OnFetch(
     const int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers,
@@ -190,7 +194,16 @@ void Promotion::OnFetchPromotions(
         [](const ledger::Result _){});
   }
 
-  ProcessFetchedPromotions(ledger::Result::LEDGER_OK, std::move(list), callback);
+  ProcessFetchedPromotions(
+      ledger::Result::LEDGER_OK,
+      std::move(list),
+      callback);
+}
+
+void Promotion::ClaimPromotion(
+    const std::string& payload,
+    ledger::ClaimPromotionCallback callback) {
+  attestation_->Start(payload, callback);
 }
 
 void Promotion::ProcessFetchedPromotions(
@@ -282,36 +295,6 @@ void Promotion::SetGrantCallback(
   }
 
   ledger_->SetGrants(updated_grants);
-}
-
-void Promotion::GetGrantCaptcha(const std::vector<std::string>& headers,
-    ledger::GetGrantCaptchaCallback callback) {
-  auto on_load = std::bind(&Promotion::GetGrantCaptchaCallback,
-                            this,
-                            _1,
-                            _2,
-                            _3,
-                            std::move(callback));
-  ledger_->LoadURL(braveledger_request_util::BuildUrl(
-        (std::string)GET_PROMOTION_CAPTCHA + ledger_->GetPaymentId(),
-        PREFIX_V4),
-      headers, "", "", ledger::UrlMethod::GET, std::move(on_load));
-}
-
-void Promotion::GetGrantCaptchaCallback(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
-    ledger::GetGrantCaptchaCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
-
-  auto it = headers.find("captcha-hint");
-  if (response_status_code != net::HTTP_OK || it == headers.end()) {
-    // TODO(nejczdovc): Add error handler
-    return;
-  }
-
-  callback(response, it->second);
 }
 
 void Promotion::OnTimer(const uint32_t timer_id) {

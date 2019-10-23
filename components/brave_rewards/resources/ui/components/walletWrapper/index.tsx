@@ -72,7 +72,7 @@ type GrantClaim = {
   amount: number
   expiresAt: number,
   type: number
-  captcha?: string
+  captchaImage?: string
   hint?: string
   status?: 'wrongPosition' | 'grantGone' | 'generalError' | 'grantAlreadyClaimed' | number | null
   finishTokenTitle?: string
@@ -258,7 +258,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       )
     }
 
-    if (!grant.captcha || !grant.hint) {
+    if (!grant.captchaImage || !grant.hint) {
       return
     }
 
@@ -273,7 +273,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         <GrantCaptcha
           isPanel={true}
           onSolution={this.onSolution}
-          dropBgImage={grant.captcha}
+          captchaImage={grant.captchaImage}
           hint={grant.hint}
           isWindows={window.navigator.platform === 'Win32'}
         />

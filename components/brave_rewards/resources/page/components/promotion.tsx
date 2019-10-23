@@ -42,7 +42,7 @@ class Promotion extends React.Component<Props, State> {
   }
 
   onShow = (promotionId?: string) => {
-    this.actions.getGrantCaptcha(promotionId)
+    this.actions.claimPromotion(promotionId)
   }
 
   onHide = () => {
@@ -115,7 +115,7 @@ class Promotion extends React.Component<Props, State> {
       )
     }
 
-    if (!promotion.captcha || !promotion.hint) {
+    if (!promotion.captchaImage || !promotion.hint) {
       return
     }
 
@@ -127,7 +127,7 @@ class Promotion extends React.Component<Props, State> {
       >
         <GrantCaptcha
           onSolution={this.onSolution}
-          dropBgImage={promotion.captcha}
+          captchaImage={promotion.captchaImage}
           hint={promotion.hint}
           isWindows={navigator.platform === 'Win32'}
         />

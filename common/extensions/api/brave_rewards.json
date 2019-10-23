@@ -33,17 +33,6 @@
         ]
       },
       {
-        "name": "onGrantCaptcha",
-        "type": "function",
-        "description": "Fired when grant captcha is received",
-        "parameters": [
-          {
-            "name": "captcha",
-            "type": "any"
-          }
-        ]
-      },
-      {
         "name": "onGrantFinish",
         "type": "function",
         "description": "Fired when grant process is finished",
@@ -566,17 +555,37 @@
         "parameters": []
       },
       {
-        "name": "getGrantCaptcha",
+        "name": "claimPromotion",
         "type": "function",
-        "description": "Retrieves grant captcha data",
+        "description": "Starts claim process for selected promotion",
         "parameters": [
           {
             "name": "promotionId",
             "type": "string"
           },
           {
-            "name": "type",
-            "type": "string"
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "properties",
+                "type": "object",
+                "properties": {
+                  "result": {
+                    "type": "integer"
+                  },
+                  "promotionId": {
+                    "type": "string"
+                  },
+                  "captchaImage": {
+                    "type": "string"
+                  },
+                  "hint": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
           }
         ]
       },

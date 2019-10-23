@@ -28,10 +28,6 @@ chrome.braveRewards.onPromotion.addListener((properties: RewardsExtension.Promot
   rewardsPanelActions.onPromotion(properties)
 })
 
-chrome.braveRewards.onGrantCaptcha.addListener((captcha: RewardsExtension.Captcha) => {
-  rewardsPanelActions.onGrantCaptcha(captcha)
-})
-
 chrome.braveRewards.onGrantFinish.addListener((properties: RewardsExtension.PromotionFinish) => {
   rewardsPanelActions.onGrantFinish(properties)
   chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {

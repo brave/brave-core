@@ -127,13 +127,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
       ledger::Result result,
       ledger::GrantPtr grant));
 
-  MOCK_METHOD2(GetGrantCaptcha, void(
-      const std::string& promotion_id,
-      const std::string& promotion_type));
-
-  MOCK_METHOD2(OnGrantCaptcha, void(
-      const std::string& image,
-      const std::string& hint));
+  MOCK_METHOD1(ClaimPromotion, void(const std::string& promotion_id));
 
   MOCK_METHOD2(OnRecoverWallet, void(
       ledger::Result result,

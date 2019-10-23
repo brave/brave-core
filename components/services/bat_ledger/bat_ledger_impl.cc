@@ -261,23 +261,24 @@ void BatLedgerImpl::ApplySafetynetToken(
 
 
 // static
-void BatLedgerImpl::OnGetGrantCaptcha(
-    CallbackHolder<GetGrantCaptchaCallback>* holder,
-    const std::string& image,
-    const std::string& hint) {
+void BatLedgerImpl::OnClaimPromotion(
+    CallbackHolder<ClaimPromotionCallback>* holder,
+    const ledger::Result result,
+    const std::string& response) {
   DCHECK(holder);
   if (holder->is_valid())
-    std::move(holder->get()).Run(image, hint);
+    std::move(holder->get()).Run(result, response);
   delete holder;
 }
-void BatLedgerImpl::GetGrantCaptcha(
-    const std::vector<std::string>& headers,
-    GetGrantCaptchaCallback callback) {
-  // deleted in OnGetGrantCaptcha
-  auto* holder = new CallbackHolder<GetGrantCaptchaCallback>(
+void BatLedgerImpl::ClaimPromotion(
+    const std::string& payload,
+    ClaimPromotionCallback callback) {
+  // deleted in OnClaimPromotion
+  auto* holder = new CallbackHolder<ClaimPromotionCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger_->GetGrantCaptcha(headers,
-      std::bind(BatLedgerImpl::OnGetGrantCaptcha, holder, _1, _2));
+  ledger_->ClaimPromotion(
+      payload,
+      std::bind(BatLedgerImpl::OnClaimPromotion, holder, _1, _2));
 }
 
 void BatLedgerImpl::GetWalletPassphrase(GetWalletPassphraseCallback callback) {
