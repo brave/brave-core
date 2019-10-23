@@ -54,8 +54,8 @@ class TipsDetailViewController: UIViewController {
   private func loadData() {
     _ = getTipsThisMonth().then {
       
-      if let oneTimeTips = BATValue($0.oneTimeDonation),
-        let recurringTips = BATValue($0.recurringDonation) {
+      if let oneTimeTips = BATValue(probi: "\($0.oneTimeDonation)"),
+        let recurringTips = BATValue(probi: "\($0.recurringDonation)") {
         totalBatTips = oneTimeTips.doubleValue + recurringTips.doubleValue
       }
     }
