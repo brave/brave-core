@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index ac52a743f73b7109f57df8f677518ca717812ba7..ff92fd9e070e290566ebfb401afc3b3a27ba353d 100644
+index cb76914c7ca0268b2e39c0b50cfa5eccb65bf907..8e13c7540876cfad62400c69ae4f996334749c97 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -32,7 +32,7 @@ import("java_sources.gni")
@@ -19,7 +19,7 @@ index ac52a743f73b7109f57df8f677518ca717812ba7..ff92fd9e070e290566ebfb401afc3b3a
      "//chrome/android/webapk/libs/common:splash_resources",
      "//chrome/app:java_strings_grd",
      "//chrome/browser/ui/android/widget:ui_widget_java_resources",
-@@ -543,6 +544,7 @@ java_group("chrome_all_java") {
+@@ -544,6 +545,7 @@ java_group("chrome_all_java") {
  group("jni_headers") {
    public_deps = [
      ":chrome_jni_headers",
