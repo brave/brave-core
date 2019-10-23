@@ -4,3 +4,10 @@
           <action android:name="DEEP_LINK"/>
     </intent-filter>
 </receiver>
+
+<activity android:name="org.chromium.chrome.browser.BraveRewardsDonationSentActivity"
+    android:theme="@android:style/Theme.Translucent.NoTitleBar"
+    android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" />
+
+<activity android:name="org.chromium.chrome.browser.BraveRewardsSiteBannerActivity"
+    android:theme="@android:style/Theme.Translucent.NoTitleBar" />
