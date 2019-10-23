@@ -37,7 +37,7 @@ class SettingsGrantSectionView: SettingsSectionView {
     case .ads(let amount):
       iconImageView.image = UIImage(frameworkResourceNamed: "icn-ads")
       if let amount = amount {
-        textLabel.text = String(format: Strings.SettingsAdsGrantText, "\(amount) BAT ")
+        textLabel.text = String(format: Strings.SettingsAdsGrantText, "\(amount) \(Strings.BAT) ")
       } else {
         textLabel.text = Strings.SettingsAdsGrantText
       }

@@ -37,7 +37,8 @@ struct RewardsNotificationViewBuilder {
       let batResult = Result(rawValue: result) {
       switch batResult {
       case .ledgerOk:
-        return RewardsNotificationViewBuilder.get(actionNotification: notification, bodyText: String.localizedStringWithFormat(Strings.NotificationContributeSuccess, amount))
+        let batAmount = "\(amount) \(Strings.BAT)"
+        return RewardsNotificationViewBuilder.get(actionNotification: notification, bodyText: String.localizedStringWithFormat(Strings.NotificationContributeSuccess, batAmount))
       default:
         let model = RewardsNotificationViewBuilder.alertModel(contributeResult: batResult)
         return RewardsNotificationViewBuilder.get(alertNotification: notification, model: model)
