@@ -169,9 +169,6 @@ CHAR-LIMIT guidelines:
       <message name="IDS_DELETE" desc="Label for a delete button. Used in multiple contexts. [CHAR-LIMIT=20]">
         Delete
       </message>
-      <message name="IDS_DELETE_GROUP" desc="Label for button that deletes a group of items. [CHAR-LIMIT=20]">
-        Delete group
-      </message>
       <message name="IDS_REMOVE" desc="Label for a button to remove an item (e.g. a bookmark) from a list. [CHAR-LIMIT=20]">
         Remove
       </message>
@@ -228,9 +225,6 @@ CHAR-LIMIT guidelines:
       </message>
       <message name="IDS_SHARE" desc="Content description for a button to share item(s). [CHAR-LIMIT=20]">
         Share
-      </message>
-      <message name="IDS_SHARE_GROUP" desc="Content description for a button to share a group item(s). [CHAR-LIMIT=20]">
-        Share group
       </message>
       <message name="IDS_SEARCH" desc="The label for a search button.">
         Search
@@ -683,14 +677,6 @@ CHAR-LIMIT guidelines:
         Open this page
       </message>
 
-      <!-- Startup page preferences -->
-      <message name="IDS_OPTIONS_STARTUP_PAGE_TITLE" desc="The title of the setting that allows users to manage the page that opens when they start Brave.">
-        Startup Page
-      </message>
-      <message name="IDS_OPTIONS_STARTUP_PAGE_EDIT_TITLE" desc="The title of the screen that allows users to change the URL of the page that opens when they start Brave.">
-        Edit startup page
-      </message>
-
       <!-- Notifications preferences -->
       <message name="IDS_PREFS_NOTIFICATIONS" desc="Title for Notification preferences.">
         Notifications
@@ -720,6 +706,9 @@ CHAR-LIMIT guidelines:
       </message>
       <message name="IDS_THEMES_SYSTEM_DEFAULT_SUMMARY_API_29" desc="Summary for the System Default option (Android Q+).">
         Turn on dark theme when your device's dark theme or Battery Saver is on
+      </message>
+      <message name="IDS_DARKEN_WEBSITES" desc="Title for the Darken websites option. [CHAR-LIMIT=32]">
+        Darken websites
       </message>
 
       <!-- Privacy preferences -->
@@ -1372,8 +1361,11 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_DATA_REDUCTION_PROMO_TITLE_LITE_MODE" desc="The title for the promo inviting users to enable Lite mode">
         Browse faster. Use less data.
       </message>
-      <message name="IDS_DATA_REDUCTION_PROMO_SUMMARY_LITE_MODE" desc="Description for the promo inviting users to enable Lite mode. This informs users that their web traffic will be seen and optimized for speed and data usage, by Brave servers (AKA 'Cloud technology')." meaning="The translation of percent should be spelled out instead of using the percent symbol.">
-        In Lite mode, Brave loads pages faster and uses up to 60 percent less data. Brave's Cloud technology optimizes the pages you visit.
+      <message name="IDS_DATA_REDUCTION_PROMO_SUMMARY_LITE_MODE" desc="Description for the promo inviting users to enable Lite mode. This informs users that their web traffic will sent to Brave to optimize data usage. The Learn more link goes to the help center article for Lite mode." meaning="The translation of percent should be spelled out instead of using the percent symbol.">
+        In Lite mode, Brave loads pages faster and uses up to 60 percent less data. To optimize the pages that you visit, Brave sends your web traffic to Brave. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
+      </message>
+      <message name="IDS_DATA_REDUCTION_PROMO_LEARN_MORE_URL" desc="URL for Lite mode help center article" translateable="false">
+        https://support.google.com/chrome/?p=lite_mode
       </message>
       <message name="IDS_DATA_REDUCTION_ENABLE_BUTTON_LITE_MODE" desc="Button the user presses if they want to enable Lite mode">
         Turn on Lite mode
@@ -1607,9 +1599,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SIGNOUT_MANAGED_ACCOUNT_TITLE" desc="Title for sign out of Brave dialog for enterprise account [CHAR-LIMIT=40]">
         Clear your Brave data from this device?
       </message>
-      <message name="IDS_SIGNOUT_MESSAGE_WITHOUT_REMOVE_LOCAL_DATA" desc="Message to display in 'Sign out and turn off sync?' dialog">
-        Your bookmarks, history, passwords, and more will no longer be synced to your Brave Account
-      </message>
       <message name="IDS_SIGNOUT_MESSAGE" desc="Message to display in 'Sign out and turn off sync?' dialog">
         Your bookmarks, history, passwords, and other Brave data will no longer be synced to your Brave Account
       </message>
@@ -1630,26 +1619,11 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
 
       <!-- Sync strings -->
-      <message name="IDS_SIGN_OUT_MANAGED_ACCOUNT" desc="Title for prompts to sign out of managed accounts">
-        Sign out of managed account
-      </message>
       <message name="IDS_SIGN_IN_MANAGED_ACCOUNT" desc="Title for prompts to sign in to managed accounts">
         Sign in to managed account
       </message>
       <message name="IDS_SIGN_IN_MANAGED_ACCOUNT_DESCRIPTION" desc="Description for signing in to managed accounts">
         You are signing in with an account managed by <ph name="MANAGED_DOMAIN">%1$s<ex>Brave</ex></ph> and giving its administrator control over your Brave data. Your data will become permanently tied to this account. Signing out of Brave will delete your data from this device, but it will remain stored in your Brave Account.
-      </message>
-      <message name="IDS_SIGN_OUT_MANAGED_ACCOUNT_DESCRIPTION" desc="Description for signing out of a managed account">
-        You are signing out of an account managed by <ph name="MANAGED_DOMAIN">%1$s<ex>Brave</ex></ph>. This will delete your Brave data from this device, but your data will remain in your Brave Account.
-      </message>
-      <message name="IDS_SWITCH_FROM_MANAGED_ACCOUNT_DESCRIPTION" desc="Description for switching from a managed account">
-        You are switching sync accounts from <ph name="ACCOUNT_EMAIL_OLD">%1$s<ex>user@example.com</ex></ph> to <ph name="ACCOUNT_EMAIL_NEW">%2$s<ex>user@example.com</ex></ph>. Your existing Brave data is managed by <ph name="MANAGED_DOMAIN">%3$s<ex>Brave</ex></ph>. This will delete your data from this device, but your data will remain in <ph name="ACCOUNT_EMAIL_OLD">%1$s<ex>user@example.com</ex></ph>.
-      </message>
-      <message name="IDS_ACCEPT_AND_SIGN_OUT" desc="Button displayed for user to confirm and sign out of a managed account">
-        Accept and sign out
-      </message>
-      <message name="IDS_ACCEPT_AND_SWITCH_ACCOUNTS" desc="Button displayed for user to confirm and switch from a managed account">
-        Accept and switch accounts
       </message>
       <message name="IDS_SYNC_YOUR_BOOKMARKS" desc="Title for the prompt to signin and enable sync to sync their bookmarks">
         Sync your bookmarks
@@ -1770,9 +1744,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_SYNC_KEEP_EXISTING_DATA_SEPARATE_SUBTEXT_EXISTING_DATA" desc="Subtext describing what happens if the user elects to keep the existing data separate signing into a new account after have previously being signed into a different account then signed out.">
         Delete existing data.
-      </message>
-      <message name="IDS_SYNC_KEEP_EXISTING_DATA_SEPARATE_SUBTEXT_SWITCHING_ACCOUNTS" desc="Subtext describing what happens if the user elects to keep the existing data separate when switching sync accounts.">
-        Delete existing data. You can retrieve it by switching back to <ph name="FROM_ACCOUNT">%1$s<ex>johndoe@old.com</ex></ph>.
       </message>
 
       <!-- Bluetooth Picker UI strings -->
@@ -2206,17 +2177,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         A
       </message>
 
-      <!-- TalkBack upgrade -->
-      <message name="IDS_OLD_TALKBACK_TITLE" desc="Title of dialog notifying user that the version of TalkBack they're running is too old.">
-        You need to update TalkBack to a newer version.
-      </message>
-      <message name="IDS_UPDATE_FROM_MARKET" desc="Title of button that will direct the user to update TalkBack from the market (Play Store)">
-        Update
-      </message>
-      <message name="IDS_CANCEL_TALKBACK_ALERT" desc="Title of button that will cancel the TalkBack alert dialog dialog.">
-        Cancel
-      </message>
-
       <!-- Android NFC Beam strings -->
       <message name="IDS_NFC_BEAM_ERROR_OVERLAY_ACTIVE" desc="Android Beam error - a tab is not in the foreground [CHAR-LIMIT=40]">
         Select a tab to beam
@@ -2255,9 +2215,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_NOTIFICATION_WEBAPK_INSTALLED" desc="Indicates that a WebAPK has been successfully added to Home screen.">
         Added to Home screen
-      </message>
-      <message name="IDS_ADDED_TO_APPS" desc="Text that confirms a site or app has been added to the apps screen.">
-        <ph name="APP_NAME">%1$s<ex>Zomato</ex></ph> added to my apps
       </message>
 
       <!-- Page info popup -->
@@ -2411,15 +2368,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_DOWNLOAD_UI_DETERMINATE_BYTES" desc="Appears in a notification when a user starts downloading a file. Indicates the number of bytes downloaded out of the total file size. E.g. 3/7 MB [downloaded]. As appropriate for your language, use '/' or 'of'; and change word order as needed.">
         <ph name="BYTES_DOWNLOADED_WITH_UNITS">%1$s<ex>12.2 MB</ex></ph> / <ph name="FILE_SIZE_WITH_UNITS">%2$s<ex>20.3 GB</ex></ph>
       </message>
-      <message name="IDS_PREFETCH_BADGE_NEW" desc="Message on download home to show that there are new prefetched contents">
-        New
-      </message>
-      <message name="IDS_DOWNLOAD_SUCCEEDED_MESSAGE" desc="App-based transient message shown when a file download has succeeded." meaning="Android">
-        <ph name="FILE_NAME">%1$s<ex>http://abc.com/test.pdf</ex></ph> downloaded in <ph name="PRODUCT_NAME">%2$s<ex>Brave</ex></ph>
-      </message>
-      <message name="IDS_DOWNLOAD_SUCCEEDED_MESSAGE_DEFAULT" desc="Transient message shown when a file download has succeeded." meaning="Android">
-        <ph name="FILE_NAME">%1$s<ex>http://abc.com/test.pdf</ex></ph> downloaded
-      </message>
       <message name="IDS_FILE_SIZE_DOWNLOADED_KB" desc="Notification message showing how many KBs have been downloaded.">
         Downloaded <ph name="KBS">%1$.1f<ex>10.1</ex></ph> KB
       </message>
@@ -2497,9 +2445,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_OPEN_DOWNLOADED_LABEL" desc="A text label on the snackbar widget to open the downloaded file.">
         Open
       </message>
-      <message name="IDS_DOWNLOAD_MANAGER_UI_SPACE_FREE_AND_OTHER" desc="Formatted string indicating how much storage is available to use on this device and how much storage space on this device has been used by other apps.">
-        <ph name="SPACE_FREE">%1$s<ex>4.8 GB available</ex></ph> (<ph name="SPACE_OTHER">%2$s<ex>5.22 GB other apps</ex></ph>)
-      </message>
       <message name="IDS_DOWNLOAD_MANAGER_UI_SPACE_FREE_KB" desc="String indicating how much storage is available to use on the device, in kilobytes.">
         <ph name="kilobytes">%1$3.2f<ex>12.5</ex></ph> KB available
       </message>
@@ -2508,24 +2453,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_DOWNLOAD_MANAGER_UI_SPACE_FREE_GB" desc="String indicating how much storage is available to use on the device, in gigabytes.">
         <ph name="gigabytes">%1$3.2f<ex>12.5</ex></ph> GB available
-      </message>
-      <message name="IDS_DOWNLOAD_MANAGER_UI_SPACE_OTHER_KB" desc="String indicating that some amount of storage space on the device has been used by other apps, in kilobytes.">
-        <ph name="kilobytes">%1$3.2f<ex>0.3</ex></ph> KB other apps
-      </message>
-      <message name="IDS_DOWNLOAD_MANAGER_UI_SPACE_OTHER_MB" desc="String indicating that some amount of storage space on the device has been used by other apps, in megabytes.">
-        <ph name="megabytes">%1$3.2f<ex>0.3</ex></ph> MB other apps
-      </message>
-      <message name="IDS_DOWNLOAD_MANAGER_UI_SPACE_OTHER_GB" desc="String indicating that some amount of storage space on the device has been used by other apps, in gigabytes.">
-        <ph name="gigabytes">%1$3.2f<ex>0.3</ex></ph> GB other apps
-      </message>
-      <message name="IDS_DOWNLOAD_MANAGER_UI_SPACE_USED_KB" desc="String indicating that some amount of storage space on the device has been used by downloads, in kilobytes.">
-        <ph name="kilobytes">%1$3.2f<ex>0.3</ex></ph> KB downloaded
-      </message>
-      <message name="IDS_DOWNLOAD_MANAGER_UI_SPACE_USED_MB" desc="String indicating that some amount of storage space on the device has been used by downloads, in megabytes.">
-        <ph name="megabytes">%1$3.2f<ex>0.3</ex></ph> MB downloaded
-      </message>
-      <message name="IDS_DOWNLOAD_MANAGER_UI_SPACE_USED_GB" desc="String indicating that some amount of storage space on the device has been used by downloads, in gigabytes.">
-        <ph name="gigabytes">%1$3.2f<ex>0.3</ex></ph> GB downloaded
       </message>
       <message name="IDS_DOWNLOAD_MANAGER_UI_SPACE_USING" desc="String indicating the amount of storage space used by downloads out of total available storage.">
         Using <ph name="SPACE_USED">%1$s<ex>0.3MB</ex></ph> of <ph name="SPACE_AVAILABLE">%2$s<ex>3 GB</ex></ph>
@@ -2578,15 +2505,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_DOWNLOAD_MANAGER_SEARCH" desc="Placeholder text for the input field that allows users to search downloads.">
         Search your downloads
       </message>
-      <message name="IDS_DOWNLOAD_MANAGER_NO_RESULTS" desc="Text explaining that no download items matched a search query.">
-        No downloads found
-      </message>
-      <message name="IDS_DOWNLOAD_MANAGER_OFFLINE_HEADER_TITLE" desc="The title for suggested offline pages header.">
-        Popular pages from Brave
-      </message>
-      <message name="IDS_DOWNLOAD_MANAGER_OFFLINE_HEADER_DESCRIPTION" desc="Text containing the offline pages description.">
-        <ph name="FILE_SIZE">%1$s<ex>1.56 MB</ex></ph> - Updated <ph name="TIME_SINCE_UPDATE">%2$s<ex>4 minutes ago</ex></ph>
-      </message>
       <message name="IDS_DOWNLOAD_MANAGER_LIST_ITEM_DESCRIPTION" desc="Text containing the download list item description.">
         <ph name="FILE_SIZE">%1$s<ex>1.56 MB</ex></ph> <ph name="SEPARATOR">•</ph> <ph name="DESCRIPTION">%2$s<ex>www.example.com</ex></ph>
       </message>
@@ -2620,6 +2538,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_DOWNLOAD_MANAGER_JUST_NOW" desc="Text on a label describing that the associated download event happened just now.">
         Just Now
       </message>
+      <message name="IDS_DOWNLOAD_MANAGER_OFFLINE_HOME" desc="The title text on download home indicating that we are in offline mode.">
+        Offline Home
+      </message>
+      <message name="IDS_DOWNLOAD_MANAGER_EXPLORE_OFFLINE" desc="Tab text for the offline content in download home which contains recommended offline content for the user.">
+        Explore Offline
+      </message>
 
       <!-- Browsing History UI -->
       <message name="IDS_HISTORY_MANAGER_EMPTY" desc="Indicates that there are no browsing history items.">
@@ -2632,8 +2556,11 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Search your history
       </message>
 
-      <!-- Document mode messages -->
-      <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION" desc="Message on the notification that closes all private tabs in document mode">
+      <!-- Close Private tabs notification messages -->
+      <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION_TITLE" desc="Title on the notification that closes all private tabs on Android N+.">
+        Private Tabs
+      </message>
+      <message name="IDS_CLOSE_ALL_INCOGNITO_NOTIFICATION" desc="Message on the notification that closes all private tabs.">
         Close all private tabs
       </message>
 
@@ -2646,17 +2573,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_AUTOFILL_EXPIRATION_DATE_YEAR_HINT" desc="Hint text for an input field containing a credit card expiration year in two digit format.">
         YY
-      </message>
-
-      <!-- Startup errors -->
-      <message name="IDS_OS_VERSION_MISSING_FEATURES" desc="Error message shown when Brave fails to run due to an incomplete version of Android.">
-        Critical functionality required to run Brave is missing; either your Brave installation is incomplete, or not compatible with this version of Android.
-      </message>
-      <message name="IDS_INCOMPATIBLE_LIBRARIES" desc="Error message shown when Brave fails to start due to having the wrong version of the native library">
-        Brave’s components are incompatible with one another. Brave may be upgrading, please try again in a few minutes. If the problem continues, try uninstalling and re-installing Brave.
-      </message>
-      <message name="IDS_NATIVE_STARTUP_FAILED" desc="Error message shown when Brave fails to start for other (unknown) reasons">
-        Brave failed during startup with an unexpected error.
       </message>
 
       <!-- First Run strings -->
@@ -2776,6 +2692,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- New Tab Page strings -->
+      <message name="IDS_EXPLORE_OFFLINE_CARD_MESSAGE" desc="Text informing the user that they are currently offline and they can tap here to explore the offline feed. ">
+        You are currently offline.\n<ph name="BEGIN_LINK">&lt;link&gt;</ph>Explore your offline feed.<ph name="END_LINK">&lt;/link&gt;</ph>
+      </message>
       <message name="IDS_RECENT_TABS" desc="Text for button to show 'Recent tabs', i.e. recently closed tabs and tabs that are open on other devices [CHAR-LIMIT=20]">
         Recent tabs
       </message>
@@ -3445,6 +3364,20 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Navigation history is closed
       </message>
 
+      <!-- Ephemeral Tab -->
+      <message name="IDS_EPHEMERAL_TAB_SHEET_DESCRIPTION" desc="The content description of the preview tab bottom sheet.">
+        Preview tab
+      </message>
+      <message name="IDS_EPHEMERAL_TAB_SHEET_OPENED_HALF" desc="Accessibility string read when the preview tab bottom sheet is opened at half height. The sheet will occupy up to half the screen.">
+        Preview tab is half-opened
+      </message>
+      <message name="IDS_EPHEMERAL_TAB_SHEET_OPENED_FULL" desc="Accessibility string read when the preview tab bottom sheet is opened at full height. The sheet will occupy up to the full screen.">
+        Preview tab is opened
+      </message>
+      <message name="IDS_EPHEMERAL_TAB_SHEET_CLOSED" desc="Accessibility string read when the preview tab bottom sheet is closed.">
+        Preview tab is closed
+      </message>
+
       <!-- Storage Preference UI strings for clearing storage. -->
       <message name="IDS_STORAGE_MANAGEMENT_ACTIVITY_LABEL" desc="Title for Brave's Manage Space Activity.">
          Brave <ph name="APP_NAME">%1$s<ex>Brave</ex></ph> storage
@@ -3736,6 +3669,11 @@ The site does NOT gain access to the camera. The camera images are only visible 
         <message name="IDS_AR_IMMERSIVE_MODE_CONSENT_BUTTON" desc="Confirm button for dialog shown when a site requests consent for starting an augmented reality session.">
           Enter AR
         </message>
+
+        <!-- App upgrade from Play Store -->
+        <message name="IDS_UPDATE_FROM_MARKET" desc="Title of button that will direct the user to update an app from the market (Play Store)">
+          Update
+        </message>
       </if>
 
       <!-- Dynamic feature modules -->
@@ -3817,18 +3755,6 @@ The site does NOT gain access to the camera. The camera images are only visible 
       <message name="IDS_IPH_DOWNLOAD_INFOBAR_DOWNLOADS_ARE_FASTER_TEXT" desc="The in-product-help message on the download InfoBar to inform that downloads are now faster than before.">
         Brave now downloads files faster
       </message>
-      <message name="IDS_IPH_NTP_BUTTON_TEXT_HOME_TEXT" desc="The in-product-help message to tap on the home button to navigate to the new tab page on the current tab.">
-        Tap to load the new tab page
-      </message>
-      <message name="IDS_IPH_NTP_BUTTON_TEXT_HOME_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility message to tap on the home button to navigate to the new tab page on the current tab.">
-        Tap the home button to load the new tab page
-      </message>
-      <message name="IDS_IPH_HOMEPAGE_TILE_TEXT" desc="The in-product-help message to use first tile in Most Visited as homepage tile.">
-        Your favorite pages are here
-      </message>
-      <message name="IDS_IPH_HOMEPAGE_TILE_ACCESSIBILITY_TEXT" desc="The in-product-help message to use first tile in Most Visited as homepage tile when accessibility mode is enabled.">
-        Links to your favorite websites can be found on this page
-      </message>
 
       <!-- Launcher Shortcuts -->
       <message name="IDS_DISABLED_INCOGNITO_LAUNCHER_SHORTCUT_MESSAGE" desc="Text for a toast displayed prompting the user to remove the disabled 'New private tab' app shortcut and recreate it.">
@@ -3881,9 +3807,6 @@ The site does NOT gain access to the camera. The camera images are only visible 
       <!-- Sharing -->
       <message name="IDS_SHARING_SENDING_NOTIFICATION_TITLE" desc="Title text displayed in a sharing sending notification.">
         Sharing to <ph name="DEVICE_NAME">%1$s<ex>Pixel 3</ex></ph>
-      </message>
-      <message name="IDS_SHARING_DISMISS_ACTION" desc="Text for action that dismiss a sharing sending notification.">
-        Dismiss
       </message>
       <message name="IDS_SHARING_NO_DEVICES_AVAILABLE_TITLE" desc="Text to show when no device targets are available for sharing.">
         Turn on sync to share across devices
@@ -3999,17 +3922,6 @@ The site does NOT gain access to the camera. The camera images are only visible 
          Show original
       </message>
 
-      <!-- Private disclosure dialog -->
-      <message name="IDS_INCOGNITO_DISCLOSURE_TITLE" desc="Title of private disclosure dialog." translateable="false">
-         Warning
-      </message>
-      <message name="IDS_INCOGNITO_DISCLOSURE_TEXT" desc="Text for private disclosure dialog." translateable="false">
-         You are about to open a Private Custom Tab, while having other private tabs active.\n\nPrivate Custom Tabs share the same profile, so you risk giving access to your Private data.
-      </message>
-      <message name="IDS_INCOGNITO_DISCLOSURE_CHECKBOX_TEXT" desc="Text for checkbox inviting to close private tabs in private disclosure dialog." translateable="false">
-         Close other private tabs
-      </message>
-
       <!-- Autofill Assistant preferences -->
       <message name="IDS_PREFS_AUTOFILL_ASSISTANT_TITLE" desc="Title for the Autofill Assistant preferences screen. [CHAR-LIMIT=32]">
         Brave Assistant in Brave
@@ -4055,6 +3967,10 @@ The site does NOT gain access to the camera. The camera images are only visible 
 
       <message name="IDS_TEST_DUMMY_MODULE_TITLE" translateable="false" desc="Text shown when the test dummy module is referenced in install start, success,               failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to               'Installing Test Dummy for Brave…').">
         Test Dummy
+      </message>
+
+      <message name="IDS_EXTRA_ICU_MODULE_TITLE" desc="Text shown when the extra ICU module is referenced in install start, success,               failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to               'Installing Extra ICU for Brave…').">
+        Extra ICU
       </message>
 
     </messages>
