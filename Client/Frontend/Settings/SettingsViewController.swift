@@ -410,7 +410,15 @@ class SettingsViewController: TableViewController {
                     actionSheet.addAction(copyDebugInfoAction)
                     actionSheet.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil))
                     self.navigationController?.present(actionSheet, animated: true, completion: nil)
-                }, cellClass: MultilineValue1Cell.self)
+                }, cellClass: MultilineValue1Cell.self),
+                Row(text: Strings.SettingsLicenses, selection: { [unowned self] in
+                    guard let url = URL(string: WebServer.sharedInstance.base) else { return }
+                    
+                    let licenses = SettingsContentViewController().then {
+                        $0.url = url.appendingPathComponent("about").appendingPathComponent("license")
+                    }
+                    self.navigationController?.pushViewController(licenses, animated: true)
+                    }, accessory: .disclosureIndicator)
             ]
         )
     }()
