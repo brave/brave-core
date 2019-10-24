@@ -114,9 +114,10 @@ static bool HandleMagnetProtocol(
     ui::PageTransition page_transition,
     bool has_user_gesture) {
   if (url.SchemeIs(kMagnetScheme)) {
-    base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::UI},
+    base::PostTask(
+        FROM_HERE, {content::BrowserThread::UI},
         base::BindOnce(&LoadOrLaunchMagnetURL, url, web_contents_getter,
-        page_transition, has_user_gesture));
+                       page_transition, has_user_gesture));
     return true;
   }
 
