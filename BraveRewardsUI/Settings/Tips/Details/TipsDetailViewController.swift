@@ -46,7 +46,11 @@ class TipsDetailViewController: UIViewController {
   
   private var nextContributionDateView: LabelAccessoryView {
     let view = LabelAccessoryView()
-    view.label.text = Date.stringFrom(reconcileStamp: state.ledger.autoContributeProps.reconcileStamp)
+    let dateFormatter = DateFormatter().then {
+      $0.dateFormat = Strings.AutoContributeDateFormat
+    }
+    let date = Date(timeIntervalSince1970: TimeInterval(state.ledger.autoContributeProps.reconcileStamp))
+    view.label.text = dateFormatter.string(from: date)
     view.bounds = CGRect(origin: .zero, size: view.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize))
     return view
   }
