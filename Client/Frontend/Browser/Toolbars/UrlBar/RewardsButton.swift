@@ -21,6 +21,7 @@ class RewardsButton: UIButton {
     }
     
     private let notificationsBadgeView = UIView().then {
+        $0.isUserInteractionEnabled = false
         $0.backgroundColor = BraveUX.BraveOrange
         $0.frame = CGRect(x: 19, y: 5, width: 12, height: 12)
         $0.layer.cornerRadius = 6
@@ -31,6 +32,7 @@ class RewardsButton: UIButton {
         $0.image = checkmark
         $0.frame = CGRect(x: 22, y: 2, width: checkmark.size.width, height: checkmark.size.height)
         $0.isHidden = true
+        $0.isUserInteractionEnabled = false
     }
     
     override init(frame: CGRect) {
