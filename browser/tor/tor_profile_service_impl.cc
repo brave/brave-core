@@ -83,11 +83,10 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
 
   network::mojom::ProxyLookupClientPtr GetProxyLookupClientPtr() {
     network::mojom::ProxyLookupClientPtr proxy_lookup_client_ptr;
-    binding_.Bind(
-        mojo::MakeRequest(&proxy_lookup_client_ptr),
-        base::CreateSingleThreadTaskRunnerWithTraits(
-            {content::BrowserThread::UI,
-             content::BrowserTaskType::kPreconnect}));
+    binding_.Bind(mojo::MakeRequest(&proxy_lookup_client_ptr),
+                  base::CreateSingleThreadTaskRunner(
+                      {content::BrowserThread::UI,
+                       content::BrowserTaskType::kPreconnect}));
     binding_.set_connection_error_handler(
         base::BindOnce(&TorProxyLookupClient::OnProxyLookupComplete,
                        base::Unretained(this),
