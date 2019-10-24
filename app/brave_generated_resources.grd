@@ -169,9 +169,6 @@
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
           Install and run Widevine
       </message>
-      <message name="IDS_WALLET_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for wallet installation permission request.">
-          Install Crypto Wallets
-      </message>
       <message name="IDS_WIDEVINE_DONT_ASK_AGAIN_CHECKBOX" desc="Checkbox for prevent showing widevine install prompt">
         Don't ask again
       </message>
@@ -626,6 +623,22 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_BRAVE_P3A_ENABLE_SETTING_SUBITEM" desc="Description that shows under main toggle setting for P3A">
         This anonymous info only lets Brave estimate the overall usage of certain features.
+      </message>
+      <!-- Web3 detection -->
+      <message name="IDS_BRAVE_CRYPTO_WALLETS_METAMASK_INFOBAR_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
+        Crypto Wallets is now available in Brave. You can't use MetaMask and Crypto Wallets at the same time.
+      </message>
+      <message name="IDS_BRAVE_CRYPTO_WALLETS_INFOBAR_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
+        Set up Crypto Wallets to interact with this app and others like it.
+      </message>
+      <message name="IDS_BRAVE_CRYPTO_WALLETS_USE_CRYPTO_WALLETS" desc="Use Crypto Wallets">
+        Use Crypto Wallets
+      </message>
+      <message name="IDS_BRAVE_CRYPTO_WALLETS_USE_METAMASK" desc="Use MetaMask and don't use Crypto Wallets">
+        Use MetaMask
+      </message>
+      <message name="IDS_BRAVE_CRYPTO_WALLETS_SETUP" desc="Use Crypto Wallets">
+        SETUP
       </message>
     </messages>
     <includes>

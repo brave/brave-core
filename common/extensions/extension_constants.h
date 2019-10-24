@@ -19,6 +19,7 @@ extern const char ethereum_remote_client_extension_name[];
 extern const char ethereum_remote_client_extension_public_key[];
 extern const char ethereum_remote_client_base_url[];
 extern const char ethereum_remote_client_host[];
+extern const char metamask_extension_id[];
 
 extern const char ipfs_companion_extension_id[];
 extern const char ipfs_companion_extension_name[];
