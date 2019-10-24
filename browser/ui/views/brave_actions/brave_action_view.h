@@ -15,9 +15,11 @@ namespace gfx {
 // outside the highlight bubble.
 class BraveActionView : public ToolbarActionView {
  public:
-  using ToolbarActionView::ToolbarActionView;
-  // views::MenuButton:
-  void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
+  BraveActionView(ToolbarActionViewController* view_controller,
+                  ToolbarActionView::Delegate* delegate);
+
+  SkPath GetHighlightPath() const;
+
   DISALLOW_COPY_AND_ASSIGN(BraveActionView);
 };
 
