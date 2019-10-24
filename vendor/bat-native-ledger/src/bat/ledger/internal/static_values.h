@@ -148,7 +148,7 @@ static const uint64_t _publishers_list_load_interval = 24 * 60 * 60;
 static const uint64_t _reconcile_default_interval = 30 * 24 * 60 * 60;
 
 // 1 day in seconds
-static const uint64_t _grant_load_interval = 24 * 60 * 60;
+static const uint64_t _promotion_load_interval = 24 * 60 * 60;
 
 // pending contribution expiration in seconds (90 days)
 static const uint64_t _pending_contribution_expiration = 90 * 24 * 60 * 60;

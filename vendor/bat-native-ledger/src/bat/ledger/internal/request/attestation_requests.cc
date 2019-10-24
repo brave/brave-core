@@ -30,4 +30,11 @@ std::string GetCaptchaUrl(const std::string captcha_id) {
   return BuildUrl(path, PREFIX_V1, ServerTypes::kPromotion);
 }
 
+std::string GetClaimAttestationDesktopUrl(const std::string captcha_id) {
+  const std::string path = base::StringPrintf(
+      "/captchas/%s",
+      captcha_id.c_str());
+  return BuildUrl(path, PREFIX_V1, ServerTypes::kPromotion);
+}
+
 }  // namespace braveledger_request_util

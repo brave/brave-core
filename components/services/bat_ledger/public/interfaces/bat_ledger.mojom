@@ -62,11 +62,11 @@ interface BatLedger {
   OnReconcileCompleteSuccess(string viewing_id, ledger.mojom.RewardsType type, string probi,
       ledger.mojom.ActivityMonth month, int32 year, uint32 data);
 
-  FetchPromotions() => (ledger.mojom.Result result, array<ledger.mojom.Promotion> grants);
+  FetchPromotions() => (ledger.mojom.Result result, array<ledger.mojom.Promotion> promotion);
   ClaimPromotion(string payload) => (ledger.mojom.Result result, string response);
+  AttestPromotion(string promotion_id, string solution) => (ledger.mojom.Result result, ledger.mojom.Promotion? promotion);
   GetWalletPassphrase() => (string wallet_passphrase);
   RecoverWallet(string passPhrase) => (ledger.mojom.Result result, double balance);
-  SolveGrantCaptcha(string solution, string promotionId);
 
   GetGrantViaSafetynetCheck(string promotion_id);
   ApplySafetynetToken(string promotion_id, string result_string);
@@ -165,7 +165,6 @@ interface BatLedgerClient {
   OnWalletProperties(ledger.mojom.Result result, ledger.mojom.WalletProperties? properties);
   OnReconcileComplete(ledger.mojom.Result result, string viewing_id,
       string probi, ledger.mojom.RewardsType type);
-  OnGrantFinish(ledger.mojom.Result result, ledger.mojom.Grant? grant);
 
   SavePublisherInfo(ledger.mojom.PublisherInfo publisher_info) =>
       (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);

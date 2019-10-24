@@ -68,6 +68,7 @@ bool ParseFetchResponse(
 
   auto* promotions = dictionary->FindKey("promotions");
   if (promotions && promotions->is_list()) {
+    const auto promotion_size = promotions->GetList().size();
     for (auto& item : promotions->GetList()) {
       ledger::PromotionPtr promotion = ledger::Promotion::New();
 
@@ -101,6 +102,12 @@ bool ParseFetchResponse(
       }
       promotion->approximate_value =std::stod(approximate_value->GetString());
 
+      auto* available = item.FindKey("available");
+      if (!available || !available->is_bool()) {
+        continue;
+      }
+      promotion->active = available->GetBool();
+
       auto* expires_at = item.FindKey("expiresAt");
       if (!expires_at || !expires_at->is_string()) {
         continue;
@@ -114,6 +121,10 @@ bool ParseFetchResponse(
       }
 
       list->push_back(std::move(promotion));
+    }
+
+    if (promotion_size != list->size()) {
+      return false;
     }
   }
 
@@ -189,6 +200,7 @@ void Promotion::OnFetch(
   }
 
   for (auto & item : list) {
+    item->active = true;
     ledger_->InsertOrUpdatePromotion(
         item->Clone(),
         [](const ledger::Result _){});
@@ -200,10 +212,54 @@ void Promotion::OnFetch(
       callback);
 }
 
-void Promotion::ClaimPromotion(
+void Promotion::Claim(
     const std::string& payload,
     ledger::ClaimPromotionCallback callback) {
   attestation_->Start(payload, callback);
+}
+
+void Promotion::Attest(
+    const std::string& promotion_id,
+    const std::string& solution,
+    ledger::AttestPromotionCallback callback) {
+  auto confirm_callback = std::bind(&Promotion::OnAttestPromotion,
+      this,
+      _1,
+      promotion_id,
+      callback);
+  attestation_->Confirm(solution, confirm_callback);
+}
+
+void Promotion::OnAttestPromotion(
+    const ledger::Result result,
+    const std::string& promotion_id,
+    ledger::AttestPromotionCallback callback) {
+  if (result != ledger::Result::LEDGER_OK) {
+    callback(result, nullptr);
+    return;
+  }
+
+  auto promotion_callback = std::bind(&Promotion::OnCompletePromotion,
+      this,
+      _1,
+      callback);
+
+  ledger_->GetPromotion(promotion_id, promotion_callback);
+}
+
+void Promotion::OnCompletePromotion(
+    ledger::PromotionPtr promotion,
+    ledger::AttestPromotionCallback callback) {
+  if (!promotion) {
+    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    return;
+  }
+
+  promotion->active = false;
+  ledger_->InsertOrUpdatePromotion(
+        promotion->Clone(),
+        [](const ledger::Result _){});
+  callback(ledger::Result::LEDGER_OK, std::move(promotion));
 }
 
 void Promotion::ProcessFetchedPromotions(
@@ -217,84 +273,6 @@ void Promotion::ProcessFetchedPromotions(
       result != ledger::Result::NOT_FOUND;
   Refresh(retry);
   callback(result, std::move(promotions));
-}
-
-void Promotion::SetGrant(const std::string& captchaResponse,
-                      const std::string& promotionId,
-                      const std::string& safetynet_token) {
-  if (promotionId.empty() && safetynet_token.empty()) {
-    braveledger_bat_helper::GRANT properties;
-    ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, properties);
-    return;
-  }
-
-  std::string keys[2] = {"promotionId", "captchaResponse"};
-  std::string values[2] = {promotionId, captchaResponse};
-  std::string payload = braveledger_bat_helper::stringify(keys, values,
-      safetynet_token.empty() ? 2 : 1);
-
-  std::vector<std::string> headers;
-  if (!safetynet_token.empty()) {
-    headers.push_back("safetynet-token:" + safetynet_token);
-  }
-
-//  auto callback = std::bind(&Promotion::SetGrantCallback, this, _1, _2, _3,
-//                                !safetynet_token.empty());
-//  ledger_->LoadURL(braveledger_request_util::BuildUrl(
-//        (std::string)GET_SET_PROMOTION + "/" + ledger_->GetPaymentId(),
-//        safetynet_token.empty() ? PREFIX_V2 : PREFIX_V3),
-//      headers, payload, "application/json; charset=utf-8",
-//      ledger::UrlMethod::PUT, callback);
-}
-
-void Promotion::SetGrantCallback(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
-    bool is_safetynet_check) {
-  std::string error;
-  unsigned int statusCode;
-  braveledger_bat_helper::GRANT grant;
-  braveledger_bat_helper::getJSONResponse(response, &statusCode, &error);
-
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
-
-  if (!error.empty()) {
-    if (statusCode == net::HTTP_FORBIDDEN) {
-      ledger_->OnGrantFinish(is_safetynet_check ?
-          ledger::Result::SAFETYNET_ATTESTATION_FAILED :
-          ledger::Result::CAPTCHA_FAILED, grant);
-    } else if (statusCode == net::HTTP_NOT_FOUND ||
-               statusCode == net::HTTP_GONE) {
-      ledger_->OnGrantFinish(ledger::Result::NOT_FOUND, grant);
-    } else if (statusCode == net::HTTP_CONFLICT) {
-      ledger_->OnGrantFinish(ledger::Result::GRANT_ALREADY_CLAIMED, grant);
-    } else {
-      ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, grant);
-    }
-    return;
-  }
-
-//  bool ok = braveledger_bat_helper::loadFromJson(&grant, response);
-//  if (!ok) {
-//    ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, grant);
-//    return;
-//  }
-
-  braveledger_bat_helper::Grants updated_grants;
-  braveledger_bat_helper::Grants state_grants = ledger_->GetGrants();
-
-  for (auto state_grant : state_grants) {
-    if (grant.type == state_grant.type) {
-      grant.promotionId = state_grant.promotionId;
-      ledger_->OnGrantFinish(ledger::Result::LEDGER_OK, grant);
-      updated_grants.push_back(grant);
-    } else {
-      updated_grants.push_back(state_grant);
-    }
-  }
-
-  ledger_->SetGrants(updated_grants);
 }
 
 void Promotion::OnTimer(const uint32_t timer_id) {
@@ -314,24 +292,24 @@ void Promotion::Refresh(const bool retry_after_error) {
     start_timer_in = brave_base::random::Geometric(300);
 
     BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
-      "Failed to refresh grant, will try again in " << start_timer_in;
+      "Failed to refresh promotion, will try again in " << start_timer_in;
   } else {
+    const auto default_time = braveledger_ledger::_promotion_load_interval;
     const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
-    const uint64_t last_grant_stamp =
+    const uint64_t last_promo_stamp =
         ledger_->GetUint64State(ledger::kStatePromotionLastFetchStamp);
 
-    uint64_t time_since_last_grant_check = 0ull;
+    uint64_t time_since_last_promo_check = 0ull;
 
-    if (last_grant_stamp != 0ull && last_grant_stamp < now) {
-      time_since_last_grant_check = now - last_grant_stamp;
+    if (last_promo_stamp != 0ull && last_promo_stamp < now) {
+      time_since_last_promo_check = now - last_promo_stamp;
     }
 
-    if (now == last_grant_stamp) {
-      start_timer_in = braveledger_ledger::_grant_load_interval;
-    } else if (time_since_last_grant_check > 0 &&
-      braveledger_ledger::_grant_load_interval > time_since_last_grant_check) {
-      start_timer_in =
-        braveledger_ledger::_grant_load_interval - time_since_last_grant_check;
+    if (now == last_promo_stamp) {
+      start_timer_in = default_time;
+    } else if (time_since_last_promo_check > 0 &&
+        default_time > time_since_last_promo_check) {
+      start_timer_in = default_time - time_since_last_promo_check;
     }
   }
 

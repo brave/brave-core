@@ -16,6 +16,7 @@
 #include "brave/components/brave_rewards/browser/external_wallet.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
+#include "brave/components/brave_rewards/browser/promotion.h"
 #include "extensions/browser/extension_function.h"
 
 namespace extensions {
@@ -157,17 +158,23 @@ class BraveRewardsClaimPromotionFunction : public ExtensionFunction {
       const std::string& promotion_id,
       const int32_t result,
       const std::string& captcha_image,
-      const std::string& hint);
+      const std::string& hint,
+      const std::string& captcha_id);
 };
 
-class BraveRewardsSolveGrantCaptchaFunction : public ExtensionFunction {
+class BraveRewardsAttestPromotionFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.solveGrantCaptcha", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.attestPromotion", UNKNOWN)
 
  protected:
-  ~BraveRewardsSolveGrantCaptchaFunction() override;
+  ~BraveRewardsAttestPromotionFunction() override;
 
   ResponseAction Run() override;
+
+ private:
+  void OnAttestPromotion(
+      const int32_t result,
+      std::unique_ptr<::brave_rewards::Promotion> promotion);
 };
 
 class BraveRewardsGetPendingContributionsTotalFunction

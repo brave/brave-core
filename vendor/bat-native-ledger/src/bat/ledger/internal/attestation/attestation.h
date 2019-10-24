@@ -30,7 +30,9 @@ class Attestation {
 
   virtual void Start(const std::string& payload, StartCallback callback) = 0;
 
-  virtual void Confirm(const std::string& result, ConfirmCallback callback) = 0;
+  virtual void Confirm(
+      const std::string& solution,
+      ConfirmCallback callback) = 0;
 
  protected:
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED

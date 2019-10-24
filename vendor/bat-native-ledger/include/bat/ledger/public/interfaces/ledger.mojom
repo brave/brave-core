@@ -74,14 +74,6 @@ struct VisitData {
   string favicon_url;
 };
 
-struct Grant {
-  string altcurrency;
-  string probi;
-  string promotion_id;
-  uint64 expiry_time;
-  string type;
-};
-
 struct WalletProperties {
   double fee_amount;
   array<double> parameters_choices;

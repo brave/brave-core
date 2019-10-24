@@ -125,8 +125,9 @@ ledger::PromotionCredsPtr DatabasePromotionCreds::GetRecord(
 
   const std::string query = base::StringPrintf(
       "SELECT blinded_creds, signed_creds, public_key, "
-      "batch_proof, claim_id FROM %s WHERE id=?",
-      table_name_);
+      "batch_proof, claim_id FROM %s WHERE %s_id=?",
+      table_name_,
+      parent_table_name_);
 
   sql::Statement statement(db->GetUniqueStatement(query.c_str()));
   statement.BindString(0, promotion_id);

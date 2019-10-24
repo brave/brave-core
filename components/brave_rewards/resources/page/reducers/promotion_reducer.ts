@@ -95,10 +95,12 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
 
       const hint = payload.properties.hint
       const captchaImage = payload.properties.captchaImage
+      const captchaId = payload.properties.captchaId
 
       const promotions = state.promotions.map((item: Rewards.Promotion) => {
         if (promotionId === item.promotionId) {
           item.captchaImage = captchaImage
+          item.captchaId = captchaId
           item.hint = hint
         }
         return item
@@ -106,19 +108,29 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
 
       state = {
         ...state,
-        promotions
+        promotions,
+        currentPromotion
       }
       break
     }
-    case types.SOLVE_GRANT_CAPTCHA: {
+    case types.ATTEST_PROMOTION: {
       const promotionId = state.currentPromotion && state.currentPromotion.promotionId
 
-      if (promotionId && action.payload.x && action.payload.y) {
-        chrome.send('brave_rewards.solveGrantCaptcha', [JSON.stringify({
-          x: action.payload.x,
-          y: action.payload.y
-        }), promotionId])
+      if (!promotionId || !payload.x || !payload.y) {
+        break
       }
+
+      const currentPromotion = getPromotion(promotionId, state.promotions)
+
+      if (!currentPromotion || !currentPromotion.captchaId) {
+        break
+      }
+
+      chrome.send('brave_rewards.attestPromotion', [promotionId, JSON.stringify({
+        captchaId: currentPromotion.captchaId,
+        x: parseInt(payload.x, 10),
+        y: parseInt(payload.y, 10)
+      })])
       break
     }
     case types.ON_GRANT_RESET: {
@@ -170,10 +182,11 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
       }
       break
     }
-    case types.ON_GRANT_FINISH: {
+    case types.ON_PROMOTION_FINISH: {
       state = { ...state }
       let newPromotion: any = {}
-      const properties: Rewards.Promotion = action.payload.properties
+      const promotion: Rewards.Promotion = payload.properties.promotion
+      const result = payload.properties.result
 
       if (!state.promotions) {
         break
@@ -185,7 +198,7 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
         let ui = state.ui
         chrome.send('brave_rewards.fetchPromotions', ['', ''])
 
-        if (properties.status === 0) {
+        if (result === 0) {
           ui.emptyWallet = false
           chrome.send('brave_rewards.getWalletProperties')
           chrome.send('brave_rewards.fetchBalance')
@@ -200,12 +213,12 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
 
       newPromotion.promotionId = state.currentPromotion.promotionId
 
-      switch (properties.status) {
+      switch (result) {
         case 0:
           let ui = state.ui
-          newPromotion.expiresAt = properties.expiresAt * 1000
-          newPromotion.amount = properties.amount
-          newPromotion.type = properties.type
+          newPromotion.expiresAt = promotion.expiresAt * 1000
+          newPromotion.amount = promotion.amount
+          newPromotion.type = promotion.type
           newPromotion.status = null
           ui.emptyWallet = false
 
@@ -219,15 +232,18 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
           break
         case 6:
           newPromotion.status = 'wrongPosition'
-          if (state.currentPromotion.promotionId && state.currentPromotion.type) {
-            chrome.send('brave_rewards.getGrantCaptcha', [state.currentPromotion.promotionId, state.currentPromotion.type])
+          if (!state.currentPromotion.promotionId) {
+            break
           }
-          break
-        case 13:
-          newPromotion.status = 'grantGone'
-          break
-        case 18:
-          newPromotion.status = 'grantAlreadyClaimed'
+          const promotionId = state.currentPromotion.promotionId
+          if (!promotionId) {
+            state = {
+              ...state,
+              currentPromotion: undefined
+            }
+            break
+          }
+          chrome.send('brave_rewards.claimPromotion', [promotionId])
           break
         default:
           newPromotion.status = 'generalError'

@@ -133,10 +133,6 @@ class MockConfirmationsClient : public ConfirmationsClient {
       ledger::Result result,
       double balance));
 
-  MOCK_METHOD2(OnGrantFinish, void(
-      ledger::Result result,
-      ledger::GrantPtr grant));
-
   MOCK_METHOD3(OnPanelPublisherInfo, void(
       ledger::Result result,
       ledger::PublisherInfoPtr,

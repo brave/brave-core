@@ -19,6 +19,7 @@
 #include "brave/components/brave_rewards/browser/external_wallet.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/pending_contribution.h"
+#include "brave/components/brave_rewards/browser/promotion.h"
 #include "brave/components/brave_rewards/browser/rewards_internals_info.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "build/build_config.h"
@@ -101,7 +102,11 @@ using CreateWalletCallback = base::OnceCallback<void(int32_t)>;
 using ClaimPromotionCallback = base::OnceCallback<void(
     const int32_t,
     const std::string&,
+    const std::string&,
     const std::string&)>;
+using AttestPromotionCallback = base::OnceCallback<void(
+    const int32_t,
+    std::unique_ptr<brave_rewards::Promotion> promotion)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -122,8 +127,10 @@ class RewardsService : public KeyedService {
   virtual void FetchPromotions() = 0;
   virtual void ClaimPromotion(
       ClaimPromotionCallback callback) = 0;
-  virtual void SolveGrantCaptcha(const std::string& solution,
-                                 const std::string& promotionId) const = 0;
+  virtual void AttestPromotion(
+      const std::string& promotion_id,
+      const std::string& solution,
+      AttestPromotionCallback callback) = 0;
   virtual void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) = 0;
   virtual void RecoverWallet(const std::string& passPhrase) = 0;

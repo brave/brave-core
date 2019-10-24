@@ -144,12 +144,6 @@ void LedgerClientMojoProxy::OnReconcileComplete(
       type);
 }
 
-void LedgerClientMojoProxy::OnGrantFinish(
-    const ledger::Result result,
-    ledger::GrantPtr grant) {
-  ledger_client_->OnGrantFinish(result, std::move(grant));
-}
-
 // static
 void LedgerClientMojoProxy::OnSavePublisherInfo(
     CallbackHolder<SavePublisherInfoCallback>* holder,

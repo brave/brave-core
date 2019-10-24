@@ -67,9 +67,9 @@ void AttestationAndroid::OnStart(
 }
 
 void AttestationAndroid::Confirm(
-    const std::string& result,
-    ConfirmCallback callback) {
-
+    const std::string& solution,
+    ConfirmCallback callback)  {
+  // make sure to handle HTTP reponses like before
 }
 
 }  // namespace braveledger_attestation

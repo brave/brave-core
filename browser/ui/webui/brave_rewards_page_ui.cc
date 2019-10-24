@@ -72,9 +72,9 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetWalletProperties(const base::ListValue* args);
   void FetchPromotions(const base::ListValue* args);
   void ClaimPromotion(const base::ListValue* args);
+  void AttestPromotion(const base::ListValue* args);
   void GetWalletPassphrase(const base::ListValue* args);
   void RecoverWallet(const base::ListValue* args);
-  void SolveGrantCaptcha(const base::ListValue* args);
   void GetReconcileStamp(const base::ListValue* args);
   void SaveSetting(const base::ListValue* args);
   void UpdateAdsRewards(const base::ListValue* args);
@@ -189,10 +189,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
                        unsigned int result,
                        double balance) override;
-  void OnGrantFinish(
-      brave_rewards::RewardsService* rewards_service,
-      const uint32_t result,
-      brave_rewards::Promotion promotion) override;
   void OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service,
                               std::string publisher_id,
                               bool excluded) override;
@@ -244,7 +240,12 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       const std::string& promotion_id,
       const int32_t result,
       const std::string& captcha_image,
-      const std::string& hint);
+      const std::string& hint,
+      const std::string& captcha_id);
+
+  void OnAttestPromotion(
+      const int32_t result,
+      std::unique_ptr<brave_rewards::Promotion> promotion);
 
   // RewardsNotificationsServiceObserver implementation
   void OnNotificationAdded(
@@ -302,14 +303,14 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.claimPromotion",
       base::BindRepeating(&RewardsDOMHandler::ClaimPromotion,
       base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.attestPromotion",
+      base::BindRepeating(&RewardsDOMHandler::AttestPromotion,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getWalletPassphrase",
       base::BindRepeating(&RewardsDOMHandler::GetWalletPassphrase,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.recoverWallet",
       base::BindRepeating(&RewardsDOMHandler::RecoverWallet,
-      base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.solveGrantCaptcha",
-      base::BindRepeating(&RewardsDOMHandler::SolveGrantCaptcha,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getReconcileStamp",
       base::BindRepeating(&RewardsDOMHandler::GetReconcileStamp,
@@ -582,7 +583,8 @@ void RewardsDOMHandler::OnClaimPromotion(
       const std::string& promotion_id,
       const int32_t result,
       const std::string& captcha_image,
-      const std::string& hint) {
+      const std::string& hint,
+      const std::string& captcha_id) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -591,6 +593,7 @@ void RewardsDOMHandler::OnClaimPromotion(
   response.SetInteger("result", result);
   response.SetString("promotionId", promotion_id);
   response.SetString("captchaImage", captcha_image);
+  response.SetString("captchaId", captcha_id);
   response.SetString("hint", hint);
 
   web_ui()->CallJavascriptFunctionUnsafe(
@@ -609,6 +612,51 @@ void RewardsDOMHandler::ClaimPromotion(const base::ListValue* args) {
       base::Bind(&RewardsDOMHandler::OnClaimPromotion,
           weak_factory_.GetWeakPtr(),
           promotion_id));
+}
+
+
+void RewardsDOMHandler::AttestPromotion(const base::ListValue *args) {
+  CHECK_EQ(2U, args->GetSize());
+  if (!rewards_service_) {
+    base::DictionaryValue finish;
+    finish.SetInteger("status", 1);
+    web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.promotionFinish",
+      finish);
+  }
+
+  const std::string promotion_id = args->GetList()[0].GetString();
+  const std::string solution = args->GetList()[1].GetString();
+  rewards_service_->AttestPromotion(
+      promotion_id,
+      solution,
+      base::BindOnce(
+        &RewardsDOMHandler::OnAttestPromotion,
+        weak_factory_.GetWeakPtr()));
+}
+
+void RewardsDOMHandler::OnAttestPromotion(
+    const int32_t result,
+    std::unique_ptr<brave_rewards::Promotion> promotion) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::DictionaryValue finish;
+  finish.SetInteger("result", result);
+  if (promotion) {
+    base::DictionaryValue promotion_dict;
+    promotion_dict.SetString("promotionId", promotion->promotion_id);
+    promotion_dict.SetInteger("expiresAt", promotion->expires_at);
+    promotion_dict.SetDouble("amount", promotion->amount);
+    promotion_dict.SetInteger("type", promotion->type);
+    finish.SetKey("promotion", std::move(promotion_dict));
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.promotionFinish",
+      finish);
+  GetAllBalanceReports();
 }
 
 void RewardsDOMHandler::OnGetWalletPassphrase(const std::string& pass) {
@@ -646,32 +694,6 @@ void RewardsDOMHandler::OnRecoverWallet(
 
     web_ui()->CallJavascriptFunctionUnsafe(
         "brave_rewards.recoverWalletData", recover);
-  }
-}
-
-void RewardsDOMHandler::SolveGrantCaptcha(const base::ListValue *args) {
-  CHECK_EQ(2U, args->GetSize());
-  if (rewards_service_) {
-    const std::string solution = args->GetList()[0].GetString();
-    const std::string promotionId = args->GetList()[1].GetString();
-    rewards_service_->SolveGrantCaptcha(solution, promotionId);
-  }
-}
-
-void RewardsDOMHandler::OnGrantFinish(
-    brave_rewards::RewardsService* rewards_service,
-    const uint32_t result,
-    brave_rewards::Promotion promotion) {
-  if (web_ui()->CanCallJavascript()) {
-    base::DictionaryValue finish;
-    finish.SetInteger("status", result);
-    finish.SetInteger("expiryTime", promotion.expires_at);
-    finish.SetDouble("amount", promotion.amount);
-    finish.SetInteger("type", promotion.type);
-    finish.SetString("promotionId", promotion.promotion_id);
-
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grantFinish", finish);
-    GetAllBalanceReports();
   }
 }
 

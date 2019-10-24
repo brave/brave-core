@@ -35,9 +35,9 @@ void AttestationImpl::Start(
 }
 
 void AttestationImpl::Confirm(
-    const std::string& result,
+    const std::string& solution,
     ConfirmCallback callback) {
-  instance_->Confirm(result, callback);
+  instance_->Confirm(solution, callback);
 }
 
 }  // namespace braveledger_attestation

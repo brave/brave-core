@@ -1022,27 +1022,6 @@ void RewardsServiceImpl::OnRecoverWallet(
   }
 }
 
-void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
-                                       ledger::GrantPtr grant) {
-  auto now = base::Time::Now();
-  if (grant && result == ledger::Result::LEDGER_OK) {
-    if (!Connected()) {
-      return;
-    }
-
-    ledger::ReportType report_type = grant->type == "ads"
-      ? ledger::ReportType::ADS
-      : ledger::ReportType::GRANT;
-    bat_ledger_->SetBalanceReportItem(GetPublisherMonth(now),
-                                      GetPublisherYear(now),
-                                      report_type,
-                                      grant->probi);
-  }
-
-  GetCurrentBalanceReport();
-  TriggerOnGrantFinish(result, std::move(grant));
-}
-
 void RewardsServiceImpl::OnReconcileComplete(
     ledger::Result result,
     const std::string& viewing_id,
@@ -1542,7 +1521,7 @@ void RewardsServiceImpl::OnClaimPromotion(
     const ledger::Result result,
     const std::string& response) {
   if (result != ledger::Result::LEDGER_OK) {
-    std::move(callback).Run(static_cast<int32_t>(result), "", "");
+    std::move(callback).Run(static_cast<int32_t>(result), "", "", "");
     return;
   }
 
@@ -1550,6 +1529,7 @@ void RewardsServiceImpl::OnClaimPromotion(
   if (!value || !value->is_dict()) {
     std::move(callback).Run(
         static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
+        "",
         "",
         "");
     return;
@@ -1560,14 +1540,16 @@ void RewardsServiceImpl::OnClaimPromotion(
     std::move(callback).Run(
         static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
         "",
+        "",
         "");
     return;
   }
 
-  auto* captcha_image = dictionary->FindKey("captcha_image");
+  auto* captcha_image = dictionary->FindKey("captchaImage");
   if (!captcha_image || !captcha_image->is_string()) {
     std::move(callback).Run(
         static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
+        "",
         "",
         "");
     return;
@@ -1578,6 +1560,17 @@ void RewardsServiceImpl::OnClaimPromotion(
     std::move(callback).Run(
         static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
         "",
+        "",
+        "");
+    return;
+  }
+
+  auto* captcha_id = dictionary->FindKey("captchaId");
+  if (!captcha_id || !captcha_id->is_string()) {
+    std::move(callback).Run(
+        static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
+        "",
+        "",
         "");
     return;
   }
@@ -1585,7 +1578,8 @@ void RewardsServiceImpl::OnClaimPromotion(
   std::move(callback).Run(
       static_cast<int32_t>(result),
       captcha_image->GetString(),
-      hint->GetString());
+      hint->GetString(),
+      captcha_id->GetString());
 }
 
 void RewardsServiceImpl::ClaimPromotion(
@@ -1620,31 +1614,40 @@ void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) {
       AsWeakPtr()));
 }
 
-void RewardsServiceImpl::SolveGrantCaptcha(
+void RewardsServiceImpl::AttestPromotion(
+    const std::string& promotion_id,
     const std::string& solution,
-    const std::string& promotion_id) const {
+    AttestPromotionCallback callback) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->SolveGrantCaptcha(solution, promotion_id);
+  bat_ledger_->AttestPromotion(
+      promotion_id,
+      solution,
+      base::BindOnce(&RewardsServiceImpl::OnAttestPromotion,
+          AsWeakPtr(),
+          std::move(callback)));
 }
 
-void RewardsServiceImpl::TriggerOnGrantFinish(ledger::Result result,
-                                              ledger::GrantPtr grant) {
-  brave_rewards::Promotion properties;
-
-  if (grant) {
-    properties.promotion_id = grant->promotion_id;
-    // TODO fix me
-//    properties.amount = grant->amount;
-//    properties.expiryTime = grant->expiry_time;
-//    properties.type = grant->type;
+void RewardsServiceImpl::OnAttestPromotion(
+    AttestPromotionCallback callback,
+    const ledger::Result result,
+    ledger::PromotionPtr promotion) {
+  const auto result_converted = static_cast<int>(result);
+  if (result != ledger::Result::LEDGER_OK) {
+    std::move(callback).Run(result_converted, nullptr);
+    return;
   }
 
-  for (auto& observer : observers_) {
-    observer.OnGrantFinish(this, static_cast<int>(result), properties);
-  }
+  auto brave_promotion = std::make_unique<brave_rewards::Promotion>();
+  brave_promotion->amount = promotion->approximate_value;
+  brave_promotion->promotion_id = promotion->id;
+  brave_promotion->expires_at = promotion->expires_at;
+  brave_promotion->type = static_cast<int>(promotion->type);
+
+  std::move(callback).Run(result_converted, std::move(brave_promotion));
+  // TODO I still need to trigger observer as others needs to know to update data
 }
 
 void RewardsServiceImpl::GetReconcileStamp(

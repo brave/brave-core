@@ -463,19 +463,19 @@ void Wallet::GetGrantViaSafetynetCheckCallback(const std::string& promotion_id,
                                                   const std::string& response,
                                                   const std::map<std::string,
                                                   std::string>& headers) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
-
-  if (response_status_code != net::HTTP_OK) {
-    // Attestation failed
-    braveledger_bat_helper::GRANT grant;
-    grant.promotionId = promotion_id;
-    ledger_->OnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED,
-        grant);
-    return;
-  }
-  std::string nonce;
-  braveledger_bat_helper::getJSONValue("nonce", response, &nonce);
-  ledger_->OnGrantViaSafetynetCheck(promotion_id, nonce);
+//  ledger_->LogResponse(__func__, response_status_code, response, headers);
+//
+//  if (response_status_code != net::HTTP_OK) {
+//    // Attestation failed
+//    braveledger_bat_helper::GRANT grant;
+//    grant.promotionId = promotion_id;
+//    ledger_->OnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED,
+//        grant);
+//    return;
+//  }
+//  std::string nonce;
+//  braveledger_bat_helper::getJSONValue("nonce", response, &nonce);
+//  ledger_->OnGrantViaSafetynetCheck(promotion_id, nonce);
 }
 
 }  // namespace braveledger_wallet

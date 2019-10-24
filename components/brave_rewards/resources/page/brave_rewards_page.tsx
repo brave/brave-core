@@ -77,8 +77,8 @@ window.cr.define('brave_rewards', function () {
     getActions().onRecoverWalletData(properties)
   }
 
-  function grantFinish (properties: Rewards.PromotionFinish) {
-    getActions().onGrantFinish(properties)
+  function promotionFinish (properties: Rewards.PromotionFinish) {
+    getActions().onPromotionFinish(properties)
   }
 
   function reconcileStamp (stamp: number) {
@@ -242,7 +242,7 @@ window.cr.define('brave_rewards', function () {
     claimPromotion,
     walletPassphrase,
     recoverWalletData,
-    grantFinish,
+    promotionFinish,
     reconcileStamp,
     contributeList,
     excludedList,

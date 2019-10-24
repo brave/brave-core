@@ -72,10 +72,6 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
       RewardsService* rewards_service,
       const uint32_t result,
       brave_rewards::Promotion promotion) override;
-  void OnGrantFinish(
-      RewardsService* rewards_service,
-      const uint32_t result,
-      brave_rewards::Promotion promotion) override;
   void OnRewardsMainEnabled(RewardsService* rewards_service,
                             bool rewards_main_enabled) override;
 

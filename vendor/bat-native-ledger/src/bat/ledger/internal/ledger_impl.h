@@ -188,15 +188,14 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& payload,
       ledger::ClaimPromotionCallback callback) const override;
 
-  void SolveGrantCaptcha(const std::string& solution,
-                         const std::string& promotionId) const override;
+  void AttestPromotion(
+      const std::string& promotion_id,
+      const std::string& solution,
+      ledger::AttestPromotionCallback callback) const override;
 
   void ApplySafetynetToken(
       const std::string& promotion_id,
       const std::string& token) const override;
-
-  void OnGrantFinish(ledger::Result result,
-                     const braveledger_bat_helper::GRANT& grant);
 
   void GetGrantViaSafetynetCheck(
       const std::string& promotion_id) const override;
@@ -323,9 +322,6 @@ class LedgerImpl : public ledger::Ledger,
 
   const std::string& GetPaymentId() const;
 
-  const braveledger_bat_helper::Grants& GetGrants() const;
-
-  void SetGrants(braveledger_bat_helper::Grants grants);
   const std::string& GetPersonaId() const;
 
   void SetPersonaId(const std::string& persona_id);
