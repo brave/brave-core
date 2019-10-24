@@ -29,10 +29,28 @@
 #include "ui/views/view_class_properties.h"
 #include "ui/views/animation/ink_drop_impl.h"
 #include "ui/views/controls/button/label_button_border.h"
+#include "ui/views/controls/highlight_path_generator.h"
 
 namespace {
-  constexpr SkColor kRewardsBadgeBg = SkColorSetRGB(0xfb, 0x54, 0x2b);
-}
+
+constexpr SkColor kRewardsBadgeBg = SkColorSetRGB(0xfb, 0x54, 0x2b);
+
+class BraveRewardsActionStubViewHighlightPathGenerator
+      : public views::HighlightPathGenerator {
+ public:
+  BraveRewardsActionStubViewHighlightPathGenerator() = default;
+
+  // HighlightPathGenerator
+  SkPath GetHighlightPath(const views::View* view) override {
+    return static_cast<const BraveRewardsActionStubView*>(view)
+        ->GetHighlightPath();
+  }
+
+ private:
+  DISALLOW_COPY_AND_ASSIGN(BraveRewardsActionStubViewHighlightPathGenerator);
+};
+
+}  // namespace
 
 BraveRewardsActionStubView::BraveRewardsActionStubView(Profile* profile,
     BraveRewardsActionStubView::Delegate* delegate)
@@ -76,20 +94,27 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(Profile* profile,
       .AsImageSkia());
   // Use badge-and-icon source for button's image in all states
   SetImage(views::Button::STATE_NORMAL, icon);
+  // Install highlight path generator
+  views::HighlightPathGenerator::Install(
+      this,
+      std::make_unique<BraveRewardsActionStubViewHighlightPathGenerator>());
+}
+
+BraveRewardsActionStubView::~BraveRewardsActionStubView() {}
+
+SkPath BraveRewardsActionStubView::GetHighlightPath() const {
   // Set the highlight path for the toolbar button,
   // making it inset so that the badge can show outside it in the
   // fake margin on the right that we are creating.
   gfx::Insets highlight_insets(0, 0, 0, brave_actions::kBraveActionRightMargin);
-  gfx::Rect rect(preferred_size);
+  gfx::Rect rect(GetPreferredSize());
   rect.Inset(highlight_insets);
   const int radii = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
       views::EMPHASIS_MAXIMUM, rect.size());
-  auto path = std::make_unique<SkPath>();
-  path->addRoundRect(gfx::RectToSkRect(rect), radii, radii);
-  SetProperty(views::kHighlightPathKey, path.release());
+  SkPath path;
+  path.addRoundRect(gfx::RectToSkRect(rect), radii, radii);
+  return path;
 }
-
-BraveRewardsActionStubView::~BraveRewardsActionStubView() {}
 
 void BraveRewardsActionStubView::ButtonPressed(
     Button* sender, const ui::Event& event) {
