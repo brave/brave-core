@@ -217,7 +217,7 @@ class Banner extends React.Component<Props, State> {
     const checkmark = utils.isPublisherConnectedOrVerified(publisher.status)
     const bannerType = this.props.monthly ? 'monthly' : 'one-time'
     let logo = publisher.logo
-    const currentBalance = total && total.toFixed(1) || 0
+    const currentBalance = (total && total.toFixed(1)) || '0.0'
 
     const internalFavicon = /^https:\/\/[a-z0-9-]+\.invalid(\/)?$/
     if (internalFavicon.test(publisher.logo)) {
@@ -235,7 +235,7 @@ class Banner extends React.Component<Props, State> {
         name={publisher.name}
         screenName={this.getScreenName(mediaMetaData)}
         provider={publisher.provider as Provider}
-        balance={currentBalance.toString()}
+        balance={currentBalance}
         bgImage={publisher.background}
         logo={logo}
         donationAmounts={this.generateAmounts()}

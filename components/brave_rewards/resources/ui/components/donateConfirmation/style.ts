@@ -1,7 +1,7 @@
 import styled from 'brave-ui/theme'
 import oneTimeBgUrl from './assets/one-time-bg.svg'
 import monthlyBgUrl from './assets/monthly-bg.svg'
-import tweetUrl from './assets/tweet.svg'
+import palette from 'brave-ui/theme/colors'
 
 interface StyleProps {
   isMonthly?: boolean
@@ -41,9 +41,16 @@ export const StyledSubTitle = styled<{}, 'span'>('span')`
 `
 
 export const StyledTweet = styled<{}, 'div'>('div')`
-  cursor: pointer;
+  border-radius: 50px;
   width: 96px;
   height: 96px;
   margin: 25px auto 0 auto;
-  background: url(${tweetUrl});
+  background: ${palette.blue400};
+  cursor: pointer;
+`
+
+export const StyledTwitterIcon = styled<{}, 'div'>('div')`
+  height: 80px;
+  padding-top: 16px;
+  color: #fff;
 `

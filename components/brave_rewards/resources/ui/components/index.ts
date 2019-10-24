@@ -12,7 +12,6 @@ import DisabledBox from './disabledBox'
 import DisabledContent from './disabledContent'
 import DisabledPanel from './disabledPanel'
 import Donate from './donate'
-import DonationOverlay from './donationOverlay'
 import GrantCaptcha from './grantCaptcha'
 import GrantClaim from './grantClaim'
 import GrantComplete from './grantComplete'
@@ -70,7 +69,6 @@ export {
   DisabledBox,
   DisabledContent,
   DisabledPanel,
-  DonationOverlay,
   Donate,
   GrantCaptcha,
   GrantClaim,

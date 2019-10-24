@@ -22,7 +22,6 @@ import {
   PanelWelcome,
   ToggleTips,
   Tooltip,
-  DonationOverlay,
   MediaBox,
   Tab
 } from '../components'
@@ -34,8 +33,6 @@ import { BatColorIcon, SettingsIcon, UpholdColorIcon } from 'brave-ui/components
 import GrantClaim from '../components/grantClaim'
 
 const favicon = require('./img/brave-favicon.png')
-const tipScreen = require('./img/tip_site.jpg')
-const siteBgLogo = require('./img/ddgo_siteBanner.svg')
 
 const dummyClick = () => {
   console.log(dummyClick)
@@ -284,30 +281,6 @@ storiesOf('Rewards/Other/Desktop', module)
       </div>
     )
   })
-  .add('Donation Overlay', withState({ displayed: true }, (store) => {
-    const onOverlayClose = () => {
-      store.set({ displayed: false })
-    }
-
-    return (
-      <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '100vh', margin: '0 auto', position: 'relative' }}>
-        {
-          store.state.displayed
-            ? <DonationOverlay
-              onClose={onOverlayClose}
-              success={boolean('Success', false)}
-              send={boolean('Is send page?', true)}
-              domain={'duckduckgo.com'}
-              amount={'5.0'}
-              monthlyDate={select<any>('Recurring', { yes: 'October 31st, 2018', no: '' }, 'October 31st, 2018')}
-              logo={boolean('Show logo', false) ? siteBgLogo : null}
-              onTweet={boolean('Show Tweet Now button', false) ? dummyClick : undefined}
-            />
-            : null
-        }
-      </div>
-    )
-  }))
   .add('Tweet Box', () => {
     const mediaProvider = select<any>('Provider', { twitter: 'twitter', reddit: 'reddit' }, 'twitter')
     return (

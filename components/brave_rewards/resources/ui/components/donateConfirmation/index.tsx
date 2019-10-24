@@ -5,8 +5,10 @@ import {
   StyledWrapper,
   StyledTitle,
   StyledSubTitle,
-  StyledTweet
+  StyledTweet,
+  StyledTwitterIcon
 } from './style'
+import { LogoTwitterIcon } from 'brave-ui/components/icons'
 
 interface Props {
   isMonthly: boolean
@@ -26,7 +28,11 @@ export default class DonateConfirmation extends React.PureComponent<Props, {}> {
         <StyledSubTitle>
           {getLocale('shareText')}
         </StyledSubTitle>
-        <StyledTweet onClick={onTweet} />
+        <StyledTweet onClick={onTweet}>
+          <StyledTwitterIcon>
+            <LogoTwitterIcon />
+          </StyledTwitterIcon>
+        </StyledTweet>
       </StyledWrapper>
     )
   }
