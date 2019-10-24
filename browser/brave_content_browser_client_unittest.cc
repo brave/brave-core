@@ -18,6 +18,7 @@
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "content/public/common/content_client.h"
 
 namespace extensions {
 
