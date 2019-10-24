@@ -627,34 +627,41 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)solveGrantCaptchWithPromotionId:(NSString *)promotionId solution:(NSString *)solution
 {
-  ledger->SolveGrantCaptcha(std::string(solution.UTF8String),
-                            std::string(promotionId.UTF8String));
+  ledger->AttestPromotion(
+      std::string(promotionId.UTF8String),
+      std::string(solution.UTF8String),
+      ^(const ledger::Result result, ledger::PromotionPtr promotion) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+          // TODO move logic onGrantFinish here
+        });
+      });
 }
 
-- (void)onGrantFinish:(ledger::Result)result grant:(ledger::GrantPtr)grant
-{
-  ledger::BalanceReportInfo report_info;
-  auto now = [NSDate date];
-  const auto bridgedGrant = [[BATGrant alloc] initWithGrant:*grant];
-  if (result == ledger::Result::LEDGER_OK) {
-    ledger::ReportType report_type = grant->type == "ads" ? ledger::ReportType::ADS : ledger::ReportType::GRANT;
-    [self fetchBalance:nil];
-    ledger->SetBalanceReportItem(BATGetPublisherMonth(now),
-                                 BATGetPublisherYear(now),
-                                 report_type,
-                                 grant->probi);
-  }
-
-  [self clearNotificationWithID:[self notificationIDForGrant:std::move(grant)]];
-  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
-    if (observer.balanceReportUpdated) {
-      observer.balanceReportUpdated();
-    }
-    if (observer.grantClaimed) {
-      observer.grantClaimed(bridgedGrant);
-    }
-  }
-}
+// TODO this needs to be callback from AttestPromotion in solveGrantCaptchWithPromotionId
+//- (void)onGrantFinish:(ledger::Result)result grant:(ledger::GrantPtr)grant
+//{
+//  ledger::BalanceReportInfo report_info;
+//  auto now = [NSDate date];
+//  const auto bridgedGrant = [[BATGrant alloc] initWithGrant:*grant];
+//  if (result == ledger::Result::LEDGER_OK) {
+//    ledger::ReportType report_type = grant->type == "ads" ? ledger::ReportType::ADS : ledger::ReportType::GRANT;
+//    [self fetchBalance:nil];
+//    ledger->SetBalanceReportItem(BATGetPublisherMonth(now),
+//                                 BATGetPublisherYear(now),
+//                                 report_type,
+//                                 grant->probi);
+//  }
+//
+//  [self clearNotificationWithID:[self notificationIDForGrant:std::move(grant)]];
+//  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
+//    if (observer.balanceReportUpdated) {
+//      observer.balanceReportUpdated();
+//    }
+//    if (observer.grantClaimed) {
+//      observer.grantClaimed(bridgedGrant);
+//    }
+//  }
+//}
 
 #pragma mark - History
 

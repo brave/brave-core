@@ -148,32 +148,6 @@ void ExtensionRewardsServiceObserver::OnFetchPromotions(
   event_router->BroadcastEvent(std::move(event));
 }
 
-void ExtensionRewardsServiceObserver::OnGrantFinish(
-    RewardsService* rewards_service,
-    const uint32_t result,
-    brave_rewards::Promotion promotion) {
-  auto* event_router = extensions::EventRouter::Get(profile_);
-  if (!event_router) {
-    return;
-  }
-
-  extensions::api::brave_rewards::OnGrantFinish::Properties properties;
-  properties.status = result;
-  // TODO implement
-//  properties.expiry_time = promotion.expires_at;
-//  properties.amount = promotion.amount;
-//  properties.type = promotion.type;
-
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnGrantFinish::Create(properties)
-          .release());
-  std::unique_ptr<extensions::Event> event(new extensions::Event(
-      extensions::events::BRAVE_START,
-      extensions::api::brave_rewards::OnGrantFinish::kEventName,
-      std::move(args)));
-  event_router->BroadcastEvent(std::move(event));
-}
-
 void ExtensionRewardsServiceObserver::OnAdsEnabled(
     RewardsService* rewards_service,
     bool ads_enabled) {

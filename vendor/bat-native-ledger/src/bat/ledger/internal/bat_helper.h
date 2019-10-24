@@ -129,34 +129,6 @@ struct BATCH_VOTES_ST {
   std::vector<BATCH_VOTES_INFO_ST> batchVotesInfo_;
 };
 
-struct GRANT {
-  GRANT();
-  GRANT(const GRANT& properties);
-  ~GRANT();
-
-  // load from json string
-  bool loadFromJson(const std::string & json);
-  std::string altcurrency;
-  std::string probi;
-  uint64_t expiryTime;
-  std::string promotionId;
-  std::string type;
-};
-
-struct GRANT_RESPONSE {
-  GRANT_RESPONSE();
-  GRANT_RESPONSE(const GRANT_RESPONSE& properties);
-  ~GRANT_RESPONSE();
-
-  // load from json string
-  bool loadFromJson(const std::string & json);
-
-  std::string promotionId;
-  uint64_t minimumReconcileTimestamp;
-  uint64_t protocolVersion;
-  std::string type;
-};
-
 struct WALLET_PROPERTIES_ST {
   WALLET_PROPERTIES_ST();
   ~WALLET_PROPERTIES_ST();
@@ -304,7 +276,6 @@ struct CURRENT_RECONCILE {
   std::string proof_;
 };
 
-typedef std::vector<GRANT> Grants;
 typedef std::vector<TRANSACTION_ST> Transactions;
 typedef std::vector<BALLOT_ST> Ballots;
 typedef std::vector<BATCH_VOTES_ST> BatchVotes;
@@ -322,7 +293,6 @@ struct CLIENT_STATE_ST {
   WALLET_PROPERTIES_ST walletProperties_;
   uint64_t bootStamp_ = 0u;
   uint64_t reconcileStamp_ = 0u;
-  uint64_t last_grant_fetch_stamp_ = 0u;
   std::string personaId_;
   std::string userId_;
   std::string registrarVK_;
@@ -338,21 +308,10 @@ struct CLIENT_STATE_ST {
   std::string ruleset_;
   std::string rulesetV2_;
   BatchVotes batch_;
-  Grants grants_;
   CurrentReconciles current_reconciles_;
   bool auto_contribute_ = false;
   bool rewards_enabled_ = false;
   std::map<std::string, bool> inline_tip_;
-};
-
-struct GRANTS_PROPERTIES_ST {
-  GRANTS_PROPERTIES_ST();
-  ~GRANTS_PROPERTIES_ST();
-  GRANTS_PROPERTIES_ST(const GRANTS_PROPERTIES_ST& properties);
-
-  //  load from json string
-  bool loadFromJson(const std::string & json);
-  std::vector<GRANT_RESPONSE> grants_;
 };
 
 struct BATCH_PROOF {

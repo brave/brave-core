@@ -57,6 +57,40 @@ void AttestationDesktop::ParseCaptchaResponse(
       dictionary->FindKey("captchaId")->GetString());
 }
 
+void AttestationDesktop::ParseClaimSolution(
+    const std::string& response,
+    base::Value* result) {
+  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  if (!value || !value->is_dict()) {
+    return;
+  }
+
+  base::DictionaryValue* dictionary = nullptr;
+  if (!value->GetAsDictionary(&dictionary)) {
+    return;
+  }
+
+  auto* captcha_id = dictionary->FindKey("captchaId");
+  if (!captcha_id || !captcha_id->is_string()) {
+    return;
+  }
+
+  auto* x = dictionary->FindKey("x");
+  if (!x || !x->is_int()) {
+    return;
+  }
+
+  auto* y = dictionary->FindKey("y");
+  if (!y || !y->is_int()) {
+    return;
+  }
+
+  result->SetIntKey("x", dictionary->FindKey("x")->GetInt());
+  result->SetIntKey("y", dictionary->FindKey("y")->GetInt());
+  result->SetStringKey("captchaId",
+      dictionary->FindKey("captchaId")->GetString());
+}
+
 void AttestationDesktop::Start(
     const std::string& payload,
     StartCallback callback) {
@@ -155,7 +189,7 @@ void AttestationDesktop::OnDownloadCaptchaImage(
   base::Base64Encode(response, &encoded_image);
   encoded_image =
       base::StringPrintf("data:image/jpeg;base64,%s", encoded_image.c_str());
-  dictionary.SetStringKey("captcha_image", encoded_image);
+  dictionary.SetStringKey("captchaImage", encoded_image);
 
   std::string json;
   base::JSONWriter::Write(dictionary, &json);
@@ -163,9 +197,67 @@ void AttestationDesktop::OnDownloadCaptchaImage(
 }
 
 void AttestationDesktop::Confirm(
-    const std::string& result,
+    const std::string& solution,
     ConfirmCallback callback) {
+  base::Value parsed_solution(base::Value::Type::DICTIONARY);
+  ParseClaimSolution(solution, &parsed_solution);
 
+  if (parsed_solution.DictSize() != 3) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+
+  base::Value dictionary(base::Value::Type::DICTIONARY);
+  base::Value solution_dict(base::Value::Type::DICTIONARY);
+  solution_dict.SetIntKey("x", *parsed_solution.FindIntKey("x"));
+  solution_dict.SetIntKey("y", *parsed_solution.FindIntKey("y"));
+  dictionary.SetKey("solution", std::move(solution_dict));
+  std::string payload;
+  base::JSONWriter::Write(dictionary, &payload);
+
+  const auto* id = parsed_solution.FindStringKey("captchaId");
+  if (!id) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  const std::string url =
+      braveledger_request_util::GetClaimAttestationDesktopUrl(*id);
+  auto url_callback = std::bind(&AttestationDesktop::OnConfirm,
+      this,
+      _1,
+      _2,
+      _3,
+      callback);
+
+  ledger_->LoadURL(
+      url,
+      std::vector<std::string>(),
+      payload,
+      "application/json; charset=utf-8",
+      ledger::UrlMethod::PUT,
+      url_callback);
+}
+
+void AttestationDesktop::OnConfirm(
+    const int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers,
+    ConfirmCallback callback) {
+  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  if (response_status_code == net::HTTP_OK) {
+    callback(ledger::Result::LEDGER_OK);
+    return;
+  }
+
+  if (response_status_code == net::HTTP_UNAUTHORIZED ||
+      response_status_code == net::HTTP_BAD_REQUEST ) {
+    callback(ledger::Result::CAPTCHA_FAILED);
+    return;
+  }
+
+  callback(ledger::Result::LEDGER_ERROR);
 }
 
 }  // namespace braveledger_attestation

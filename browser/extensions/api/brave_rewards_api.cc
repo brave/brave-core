@@ -440,12 +440,9 @@ ExtensionFunction::ResponseAction BraveRewardsClaimPromotionFunction::Run() {
   RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
   if (!rewards_service) {
-    auto results = std::make_unique<base::ListValue>();
-    results->Append(std::make_unique<base::Value>(1));
-    results->Append(std::make_unique<base::Value>(""));
-    results->Append(std::make_unique<base::Value>(""));
-    results->Append(std::make_unique<base::Value>(""));
-    return RespondNow(ArgumentList(std::move(results)));
+    auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+    data->SetIntKey("result", 1);
+    return RespondNow(OneArgument(std::move(data)));
   }
   rewards_service->ClaimPromotion(
       base::BindOnce(
@@ -459,30 +456,53 @@ void BraveRewardsClaimPromotionFunction::OnClaimPromotion(
     const std::string& promotion_id,
     const int32_t result,
     const std::string& captcha_image,
-    const std::string& hint) {
+    const std::string& hint,
+    const std::string& captcha_id) {
 
   auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
   data->SetIntKey("result", result);
   data->SetStringKey("promotionId", promotion_id);
   data->SetStringKey("captchaImage", captcha_image);
+  data->SetStringKey("captchaId", captcha_id);
   data->SetStringKey("hint", hint);
   Respond(OneArgument(std::move(data)));
 }
 
-BraveRewardsSolveGrantCaptchaFunction::
-~BraveRewardsSolveGrantCaptchaFunction() {
+BraveRewardsAttestPromotionFunction::
+~BraveRewardsAttestPromotionFunction() {
 }
 
-ExtensionFunction::ResponseAction BraveRewardsSolveGrantCaptchaFunction::Run() {
-  std::unique_ptr<brave_rewards::SolveGrantCaptcha::Params> params(
-      brave_rewards::SolveGrantCaptcha::Params::Create(*args_));
+ExtensionFunction::ResponseAction BraveRewardsAttestPromotionFunction::Run() {
+  std::unique_ptr<brave_rewards::AttestPromotion::Params> params(
+      brave_rewards::AttestPromotion::Params::Create(*args_));
   Profile* profile = Profile::FromBrowserContext(browser_context());
   RewardsService* rewards_service =
     RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service) {
-    rewards_service->SolveGrantCaptcha(params->solution, params->promotion_id);
+  if (!rewards_service) {
+    return RespondNow(OneArgument(std::make_unique<base::Value>(1)));
   }
-  return RespondNow(NoArguments());
+
+  rewards_service->AttestPromotion(params->promotion_id, params->solution,
+      base::BindOnce(
+        &BraveRewardsAttestPromotionFunction::OnAttestPromotion,
+        this));
+  return RespondLater();
+}
+
+void BraveRewardsAttestPromotionFunction::OnAttestPromotion(
+    const int32_t result,
+    std::unique_ptr<::brave_rewards::Promotion> promotion) {
+  if (!promotion) {
+    Respond(OneArgument(std::make_unique<base::Value>(result)));
+    return;
+  }
+
+  auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+  data->SetStringKey("promotionId", promotion->promotion_id);
+  data->SetIntKey("expiresAt", promotion->expires_at);
+  data->SetDoubleKey("amount", promotion->amount);
+  data->SetIntKey("type", promotion->type);
+  Respond(TwoArguments(std::make_unique<base::Value>(result), std::move(data)));
 }
 
 BraveRewardsGetPendingContributionsTotalFunction::

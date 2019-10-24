@@ -57,21 +57,12 @@ export const fetchPromotions = () => action(types.FETCH_PROMOTIONS)
 export const onPromotion = (properties: RewardsExtension.PromotionResponse) => action(types.ON_PROMOTION, {
   properties
 })
-
-export const getGrantCaptcha = (promotionId?: string) => action(types.GET_GRANT_CAPTCHA, {
-  promotionId
+export const promotionFinished = (result: number, promotion: RewardsExtension.Promotion) => action(types.ON_PROMOTION_FINISH, {
+  result,
+  promotion
 })
 
 export const onClaimPromotion = (properties: RewardsExtension.Captcha) => action(types.ON_CLAIM_PROMOTION, {
-  properties
-})
-
-export const solveGrantCaptcha = (x: number, y: number) => action(types.SOLVE_GRANT_CAPTCHA, {
-  x,
-  y
-})
-
-export const onGrantFinish = (properties: RewardsExtension.PromotionFinish) => action(types.ON_GRANT_FINISH, {
   properties
 })
 

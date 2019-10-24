@@ -16,6 +16,8 @@ std::string GetStartAttestationAndroidUrl();
 
 std::string GetCaptchaUrl(const std::string captcha_id);
 
+std::string GetClaimAttestationDesktopUrl(const std::string captcha_id);
+
 }  // namespace braveledger_request_util
 
 #endif  // BRAVELEDGER_COMMON_ATTESTATION_REQUESTS_H_

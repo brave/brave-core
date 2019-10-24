@@ -57,7 +57,7 @@ class Promotion extends React.Component<Props, State> {
   }
 
   onSolution = (x: number, y: number) => {
-    this.actions.solveGrantCaptcha(x, y)
+    this.actions.attestPromotion(x, y)
   }
 
   getCaptcha = () => {

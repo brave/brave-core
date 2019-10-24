@@ -55,6 +55,8 @@ using RewardsInternalsInfoCallback =
     std::function<void(ledger::RewardsInternalsInfoPtr)>;
 using CreateWalletCallback = std::function<void(ledger::Result)>;
 using InitializeCallback = std::function<void(ledger::Result)>;
+using AttestPromotionCallback =
+    std::function<void(const ledger::Result, ledger::PromotionPtr promotion)>;
 
 using GetBalanceReportCallback =
     std::function<void(bool, ledger::BalanceReportInfoPtr)>;
@@ -169,9 +171,6 @@ class LEDGER_EXPORT Ledger {
   virtual void FetchPromotions(
       ledger::FetchPromotionCallback callback) const = 0;
 
-  virtual void SolveGrantCaptcha(const std::string& solution,
-                                 const std::string& promotionId) const = 0;
-
   // |payload|:
   // desktop and Android: empty
   // iOS: { "publicKey": "{{publicKey}}" }
@@ -182,6 +181,29 @@ class LEDGER_EXPORT Ledger {
   virtual void ClaimPromotion(
       const std::string& payload,
       ClaimPromotionCallback callback) const = 0;
+
+  // |solution|:
+  // desktop:
+  //  {
+  //    "captchaId": "{{captchaId}}",
+  //    "x": "{{x}}",
+  //    "y": "{{y}}"
+  //  }
+  // iOS:
+  //  {
+  //    "nonce": "{{captchaId}}",
+  //    "blob": "{{blob}}",
+  //    "signature": "{{signature}}"
+  //  }
+  // android:
+  //  {
+  //    "nonce": "{{captchaId}}",
+  //    "token": "{{blob}}"
+  //  }
+  virtual void AttestPromotion(
+      const std::string& promotion_id,
+      const std::string& solution,
+      AttestPromotionCallback callback) const = 0;
 
   virtual void ApplySafetynetToken(const std::string& promotion_id,
       const std::string& token) const = 0;

@@ -138,7 +138,8 @@ ledger::PromotionPtr DatabasePromotion::GetRecord(
 
   const std::string query = base::StringPrintf(
       "SELECT %s_id, version, type, public_keys, suggestions, "
-      "approximate_value, claimed, active, expires_at FROM %s WHERE id=?",
+      "approximate_value, claimed, active, expires_at FROM %s WHERE %s_id=?",
+      table_name_,
       table_name_,
       table_name_);
 

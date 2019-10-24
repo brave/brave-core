@@ -28,13 +28,6 @@ chrome.braveRewards.onPromotion.addListener((properties: RewardsExtension.Promot
   rewardsPanelActions.onPromotion(properties)
 })
 
-chrome.braveRewards.onGrantFinish.addListener((properties: RewardsExtension.PromotionFinish) => {
-  rewardsPanelActions.onGrantFinish(properties)
-  chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
-    rewardsPanelActions.onBalance(balance)
-  })
-})
-
 chrome.rewardsNotifications.onNotificationAdded.addListener((id: string, type: number, timestamp: number, args: string[]) => {
   rewardsPanelActions.onNotificationAdded(id, type, timestamp, args)
 })

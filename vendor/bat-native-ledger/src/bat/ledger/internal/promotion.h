@@ -27,13 +27,14 @@ class Promotion {
 
   void Fetch(ledger::FetchPromotionCallback callback);
 
-  void SetGrant(const std::string& captchaResponse,
-                const std::string& promotionId,
-                const std::string& safetynet_token);
-
-  void ClaimPromotion(
+  void Claim(
       const std::string& payload,
       ledger::ClaimPromotionCallback callback);
+
+  void Attest(
+      const std::string& promotion_id,
+      const std::string& solution,
+      ledger::AttestPromotionCallback callback);
 
   void Refresh(const bool retry_after_error);
 
@@ -46,16 +47,19 @@ class Promotion {
       const std::map<std::string, std::string>& headers,
       ledger::FetchPromotionCallback callback);
 
+  void OnAttestPromotion(
+    const ledger::Result result,
+    const std::string& promotion_id,
+    ledger::AttestPromotionCallback callback);
+
+  void OnCompletePromotion(
+    ledger::PromotionPtr promotion,
+    ledger::AttestPromotionCallback callback);
+
   void ProcessFetchedPromotions(
       const ledger::Result result,
       ledger::PromotionList promotions,
       ledger::FetchPromotionCallback callback);
-
-  void SetGrantCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
-      bool is_safetynet_check);
 
   std::unique_ptr<braveledger_attestation::AttestationImpl> attestation_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED

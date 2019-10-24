@@ -33,35 +33,6 @@
         ]
       },
       {
-        "name": "onGrantFinish",
-        "type": "function",
-        "description": "Fired when grant process is finished",
-        "parameters": [
-          {
-            "name": "properties",
-            "type": "object",
-            "properties": {
-              "status": {
-                "type": "integer",
-                "description": "grant process status"
-              },
-              "expiryTime": {
-                "type": "integer",
-                "description": "grant expiry time"
-              },
-              "probi": {
-                "type": "string",
-                "description": "value of the grant"
-              },
-              "type": {
-                "type": "string",
-                "description": "type of the grant (ugp or ads)"
-              }
-            }
-          }
-        ]
-      },
-      {
         "name": "onPublisherData",
         "type": "function",
         "description": "Fired when we get publisher data from the DB",
@@ -573,6 +544,9 @@
                   "promotionId": {
                     "type": "string"
                   },
+                  "captchaId": {
+                    "type": "string"
+                  },
                   "captchaImage": {
                     "type": "string"
                   },
@@ -586,17 +560,46 @@
         ]
       },
       {
-        "name": "solveGrantCaptcha",
+        "name": "attestPromotion",
         "type": "function",
         "description": "Sends the user solution to the grant claim captcha",
         "parameters": [
+          {
+            "name": "promotionId",
+            "type": "string"
+          },
           {
             "name": "solution",
             "type": "string"
           },
           {
-            "name": "promotionId",
-            "type": "string"
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "result",
+                "type": "integer"
+              },
+              {
+                "name": "promotion",
+                "type": "object",
+                "optional": true,
+                "properties": {
+                  "promotionId": {
+                    "type": "string"
+                  },
+                  "expiresAt": {
+                    "type": "integer"
+                  },
+                  "amount": {
+                    "type": "number"
+                  },
+                  "type": {
+                    "type": "integer"
+                  }
+                }
+              }
+            ]
           }
         ]
       },

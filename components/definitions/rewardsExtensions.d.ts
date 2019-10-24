@@ -55,10 +55,11 @@ declare namespace RewardsExtension {
   }
 
   export interface Promotion {
-    promotionId?: string
+    promotionId: string
     amount: number
     expiresAt: number
     captchaImage?: string
+    captchaId?: string
     hint?: string
     status?: PromotionStatus
     type: PromotionTypes
@@ -77,8 +78,7 @@ declare namespace RewardsExtension {
 
   export interface PromotionFinish {
     result: Result,
-    statusCode: number,
-    expiryTime: number
+    promotion?: Promotion
   }
 
   export const enum Result {

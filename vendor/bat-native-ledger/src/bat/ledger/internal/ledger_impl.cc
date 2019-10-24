@@ -612,7 +612,14 @@ void LedgerImpl::FetchWalletProperties(
 void LedgerImpl::ClaimPromotion(
     const std::string& payload,
     ledger::ClaimPromotionCallback callback) const {
-  bat_promotion_->ClaimPromotion(payload, std::move(callback));
+  bat_promotion_->Claim(payload, std::move(callback));
+}
+
+void LedgerImpl::AttestPromotion(
+    const std::string& promotion_id,
+    const std::string& solution,
+    ledger::AttestPromotionCallback callback) const {
+  bat_promotion_->Attest(promotion_id, solution, callback);
 }
 
 std::string LedgerImpl::GetWalletPassphrase() const {
@@ -643,29 +650,6 @@ void LedgerImpl::OnRecoverWallet(
   }
 
   callback(result, balance);
-}
-
-void LedgerImpl::SolveGrantCaptcha(
-    const std::string& solution,
-    const std::string& promotionId) const {
-  bat_promotion_->SetGrant(solution, promotionId, "");
-}
-
-void LedgerImpl::OnGrantFinish(ledger::Result result,
-                               const braveledger_bat_helper::GRANT& grant) {
-  ledger::GrantPtr newGrant = ledger::Grant::New();
-
-  newGrant->altcurrency = grant.altcurrency;
-  newGrant->probi = grant.probi;
-  newGrant->expiry_time = grant.expiryTime;
-  newGrant->promotion_id = grant.promotionId;
-  newGrant->type = grant.type;
-
-  if (grant.type == "ads") {
-    bat_confirmations_->UpdateAdsRewards(true);
-  }
-
-  ledger_client_->OnGrantFinish(result, std::move(newGrant));
 }
 
 void LedgerImpl::GetBalanceReport(
@@ -883,14 +867,6 @@ void LedgerImpl::AddReconcile(
 
 const std::string& LedgerImpl::GetPaymentId() const {
   return bat_state_->GetPaymentId();
-}
-
-const braveledger_bat_helper::Grants& LedgerImpl::GetGrants() const {
-  return bat_state_->GetGrants();
-}
-
-void LedgerImpl::SetGrants(braveledger_bat_helper::Grants grants) {
-  bat_state_->SetGrants(grants);
 }
 
 const std::string& LedgerImpl::GetPersonaId() const {
@@ -1512,7 +1488,7 @@ void LedgerImpl::OnGrantViaSafetynetCheck(
 
 void LedgerImpl::ApplySafetynetToken(
     const std::string& promotion_id, const std::string& token) const {
-  bat_promotion_->SetGrant("", promotion_id, token);
+  //bat_grants_->SetGrant("", promotion_id, token);
 }
 
 void LedgerImpl::InsertOrUpdateContributionQueue(

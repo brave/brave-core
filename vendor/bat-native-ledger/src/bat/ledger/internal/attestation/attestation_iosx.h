@@ -24,7 +24,9 @@ class AttestationIOS : public Attestation {
 
   void Start(const std::string& payload, StartCallback callback) override;
 
-  void Confirm(const std::string& result, ConfirmCallback callback) override;
+  void Confirm(
+      const std::string& solution,
+      ConfirmCallback callback) override;
 
  private:
   void OnStart(

@@ -42,7 +42,7 @@ void AttestationIOS::OnStart(
 }
 
 void AttestationIOS::Confirm(
-    const std::string& result,
+    const std::string& solution,
     ConfirmCallback callback) {
 
 }

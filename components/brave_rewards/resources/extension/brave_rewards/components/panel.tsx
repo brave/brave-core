@@ -151,6 +151,7 @@ export class Panel extends React.Component<Props, State> {
     notification = notification && notification.notification
 
     if (notification && notification.id) {
+      this.actions.deleteNotification(notification.id)
       const split = notification.id.split('_')
       const promoId = split[split.length - 1]
       if (promoId) {
@@ -177,7 +178,34 @@ export class Panel extends React.Component<Props, State> {
   }
 
   onSolution = (x: number, y: number) => {
-    this.actions.solveGrantCaptcha(x, y)
+    let { currentPromotion } = this.props.rewardsPanelData
+    if (!currentPromotion) {
+      return
+    }
+
+    const promotionId = currentPromotion.promotionId
+    if (!promotionId) {
+      this.actions.promotionFinished(1)
+      return
+    }
+
+    const data = JSON.stringify({
+      captchaId: currentPromotion.captchaId,
+      x: parseInt(x.toFixed(1), 10),
+      y: parseInt(y.toFixed(1), 10)
+    })
+
+
+    chrome.braveRewards.attestPromotion(promotionId, data, (result: number, promotion?: RewardsExtension.Promotion) => {
+      // if wrong position try again
+      if (result === 6) {
+        chrome.braveRewards.claimPromotion(promotionId, (properties: RewardsExtension.Captcha) => {
+          this.actions.onClaimPromotion(properties)
+        })
+      }
+
+      this.actions.promotionFinished(result, promotion)
+    })
   }
 
   getWalletSummary = () => {

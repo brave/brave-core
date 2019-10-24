@@ -85,13 +85,14 @@ class BatLedgerImpl : public mojom::BatLedger,
   void ClaimPromotion(
       const std::string& payload,
       ClaimPromotionCallback callback) override;
+  void AttestPromotion(
+      const std::string& promotion_id,
+      const std::string& solution,
+      AttestPromotionCallback callback) override;
   void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
   void RecoverWallet(
       const std::string& pass_phrase,
       RecoverWalletCallback callback) override;
-  void SolveGrantCaptcha(
-      const std::string& solution,
-      const std::string& promotionId) override;
 
   void SetRewardsMainEnabled(bool enabled) override;
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) override;
@@ -244,6 +245,11 @@ class BatLedgerImpl : public mojom::BatLedger,
       CallbackHolder<ClaimPromotionCallback>* holder,
       const ledger::Result result,
       const std::string& response);
+
+  static void OnAttestPromotion(
+      CallbackHolder<AttestPromotionCallback>* holder,
+      const ledger::Result result,
+      ledger::PromotionPtr promotion);
 
   static void OnCreateWallet(
       CallbackHolder<CreateWalletCallback>* holder,

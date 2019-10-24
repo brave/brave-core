@@ -24,12 +24,18 @@ class AttestationDesktop : public Attestation {
 
   void Start(const std::string& payload, StartCallback callback) override;
 
-  void Confirm(const std::string& result, ConfirmCallback callback) override;
+  void Confirm(
+      const std::string& solution,
+      ConfirmCallback callback) override;
 
  private:
   void ParseCaptchaResponse(
       const std::string& response,
       base::Value* result);
+
+  void ParseClaimSolution(
+    const std::string& response,
+    base::Value* result);
 
   void OnStart(
       const int response_status_code,
@@ -48,6 +54,12 @@ class AttestationDesktop : public Attestation {
       const std::map<std::string, std::string>& headers,
       const std::string& captcha_response,
       StartCallback callback);
+
+  void OnConfirm(
+    const int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers,
+    ConfirmCallback callback);
 };
 
 }  // namespace braveledger_attestation

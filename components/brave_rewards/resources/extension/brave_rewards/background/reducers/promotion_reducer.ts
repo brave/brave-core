@@ -84,10 +84,12 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
 
       const hint = payload.properties.hint
       const captchaImage = payload.properties.captchaImage
+      const captchaId = payload.properties.captchaId
 
       const promotions = state.promotions.map((item: RewardsExtension.Promotion) => {
         if (promotionId === item.promotionId) {
           item.captchaImage = captchaImage
+          item.captchaId = captchaId
           item.hint = hint
         }
         return item
@@ -97,17 +99,6 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
         ...state,
         promotions,
         currentPromotion
-      }
-      break
-    }
-    case types.SOLVE_GRANT_CAPTCHA: {
-      const promotionId = state.currentPromotion && state.currentPromotion.promotionId
-
-      if (promotionId && action.payload.x && action.payload.y) {
-        chrome.braveRewards.solveGrantCaptcha(JSON.stringify({
-          x: action.payload.x,
-          y: action.payload.y
-        }), promotionId)
       }
       break
     }
@@ -160,28 +151,26 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
       }
       break
     }
-    case types.ON_GRANT_FINISH: {
+    case types.ON_PROMOTION_FINISH: {
       state = { ...state }
       let currentPromotion: any = state.currentPromotion
-      const properties: RewardsExtension.Promotion = action.payload.properties
+      const result = payload.result
 
       if (!state.promotions || !state.currentPromotion) {
         break
       }
 
-      switch (properties.status) {
-        case 0:
-          currentPromotion.expiresAt = properties.expiresAt * 1000
-          currentPromotion.amount = properties.amount
-          currentPromotion.type = properties.type
+      switch (result) {
+        case 0: {
+          const promotion: RewardsExtension.Promotion = payload.promotion
+          currentPromotion.expiresAt = promotion.expiresAt * 1000
+          currentPromotion.amount = promotion.amount
+          currentPromotion.type = promotion.type
           currentPromotion.status = null
           break
+        }
         case 6:
           currentPromotion.status = 'wrongPosition'
-          // TODO we need to reponse to UI to fetch it again
-          if (currentPromotion.promotionId && currentPromotion.type) {
-            //chrome.braveRewards.getGrantCaptcha(currentPromotion.promotionId, currentPromotion.type)
-          }
           break
         case 13:
           currentPromotion.status = 'grantGone'

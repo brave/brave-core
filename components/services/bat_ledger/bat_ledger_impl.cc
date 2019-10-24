@@ -259,7 +259,6 @@ void BatLedgerImpl::ApplySafetynetToken(
   ledger_->ApplySafetynetToken(promotion_id, result_string);
 }
 
-
 // static
 void BatLedgerImpl::OnClaimPromotion(
     CallbackHolder<ClaimPromotionCallback>* holder,
@@ -279,6 +278,29 @@ void BatLedgerImpl::ClaimPromotion(
   ledger_->ClaimPromotion(
       payload,
       std::bind(BatLedgerImpl::OnClaimPromotion, holder, _1, _2));
+}
+
+// static
+void BatLedgerImpl::OnAttestPromotion(
+    CallbackHolder<AttestPromotionCallback>* holder,
+    const ledger::Result result,
+    ledger::PromotionPtr promotion) {
+  DCHECK(holder);
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result, std::move(promotion));
+  delete holder;
+}
+void BatLedgerImpl::AttestPromotion(
+    const std::string& promotion_id,
+    const std::string& solution,
+    AttestPromotionCallback callback) {
+  // deleted in OnAttestPromotion
+  auto* holder = new CallbackHolder<AttestPromotionCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->AttestPromotion(
+      promotion_id,
+      solution,
+      std::bind(BatLedgerImpl::OnAttestPromotion, holder, _1, _2));
 }
 
 void BatLedgerImpl::GetWalletPassphrase(GetWalletPassphraseCallback callback) {
@@ -306,11 +328,6 @@ void BatLedgerImpl::RecoverWallet(
       holder,
       _1,
       _2));
-}
-
-void BatLedgerImpl::SolveGrantCaptcha(const std::string& solution,
-                                      const std::string& promotion_id) {
-  ledger_->SolveGrantCaptcha(solution, promotion_id);
 }
 
 void BatLedgerImpl::SetRewardsMainEnabled(bool enabled) {

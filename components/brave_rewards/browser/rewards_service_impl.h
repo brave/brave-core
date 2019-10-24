@@ -105,9 +105,10 @@ class RewardsServiceImpl : public RewardsService,
   void FetchWalletProperties() override;
   void FetchPromotions() override;
   void ClaimPromotion(ClaimPromotionCallback callback) override;
-  void SolveGrantCaptcha(
+  void AttestPromotion(
+      const std::string& promotion_id,
       const std::string& solution,
-      const std::string& promotion_id) const override;
+      AttestPromotionCallback callback) override;
   void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) override;
   void RecoverWallet(const std::string& passPhrase) override;
@@ -327,7 +328,6 @@ class RewardsServiceImpl : public RewardsService,
   void TriggerOnPromotion(
       const ledger::Result result,
       ledger::PromotionPtr promotion);
-  void TriggerOnGrantFinish(ledger::Result result, ledger::GrantPtr grant);
   void TriggerOnRewardsMainEnabled(bool rewards_main_enabled);
   void OnPublisherInfoSaved(ledger::PublisherInfoCallback callback,
                             ledger::PublisherInfoPtr info,
@@ -501,8 +501,10 @@ class RewardsServiceImpl : public RewardsService,
                            const std::string& viewing_id,
                            const std::string& probi,
                            const ledger::RewardsType type) override;
-  void OnGrantFinish(ledger::Result result,
-                     ledger::GrantPtr grant) override;
+  void OnAttestPromotion(
+      AttestPromotionCallback callback,
+      const ledger::Result result,
+      ledger::PromotionPtr promotion);
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
   void OnGrantViaSafetynetCheck(const std::string& promotion_id,
