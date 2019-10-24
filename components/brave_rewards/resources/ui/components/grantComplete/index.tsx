@@ -22,17 +22,19 @@ export interface Props {
   date: string
   isMobile?: boolean
   tokenTitle?: string
+  onlyAnonWallet?: boolean
 }
 
 export default class GrantComplete extends React.PureComponent<Props, {}> {
   render () {
-    const { id, testId, onClose, amount, date, isMobile, tokenTitle } = this.props
+    const { id, testId, onClose, amount, date, isMobile, tokenTitle, onlyAnonWallet } = this.props
+    const batFormatString = onlyAnonWallet ? getLocale('batPoints') : getLocale('bat')
 
     return (
       <StyledWrapper id={id} data-test-id={testId}>
         <StyledBox>
           <StyledTitle>{tokenTitle}</StyledTitle>
-          <StyledValue>{amount} BAT</StyledValue>
+          <StyledValue>{amount} {batFormatString}</StyledValue>
           {
             date && date.length > 0
             ? <>

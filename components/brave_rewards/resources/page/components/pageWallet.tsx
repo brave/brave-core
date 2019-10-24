@@ -224,7 +224,8 @@ class PageWallet extends React.Component<Props, State> {
     const {
       walletRecoverySuccess,
       walletServerProblem,
-      walletCorrupted
+      walletCorrupted,
+      onlyAnonWallet
     } = this.props.rewardsData.ui
 
     if (walletServerProblem) {
@@ -235,8 +236,10 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     if (walletRecoverySuccess) {
+      const batFormatString = onlyAnonWallet ? getLocale('batPoints') : getLocale('bat')
+
       return {
-        node: <><b>{getLocale('walletRestored')}</b> {getLocale('walletRecoverySuccess', { balance: total.toString() })}</>,
+        node: <><b>{getLocale('walletRestored')}</b> {getLocale('walletRecoverySuccess', { balance: total.toString(), currency: batFormatString })}</>,
         type: 'success',
         onAlertClose: () => {
           this.actions.onClearAlert('walletRecoverySuccess')
@@ -506,6 +509,7 @@ class PageWallet extends React.Component<Props, State> {
           onDisconnectClick={this.onDisconnectClick}
           goToUphold={this.goToUphold}
           userName={this.getUserName()}
+          onlyAnonWallet={onlyAnonWallet}
         >
           {
             enabledMain
@@ -513,6 +517,7 @@ class PageWallet extends React.Component<Props, State> {
               ? <WalletEmpty />
               : <WalletSummary
                 reservedAmount={pendingTotal}
+                onlyAnonWallet={onlyAnonWallet}
                 reservedMoreLink={'https://brave.com/faq/#unclaimed-funds'}
                 {...this.getWalletSummary()}
               />

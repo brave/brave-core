@@ -54,6 +54,7 @@ storiesOf('Rewards/Wallet/Desktop', module)
         onNotificationClick={onEnableAds}
         notification={boolean('Show notification', true) ? adsLaunchNotification : undefined}
         showCopy={boolean('Show Uphold', false)}
+        onlyAnonWallet={boolean('Anon Wallet Only', false)}
         showSecActions={boolean('Show secondary actions', true)}
         balance={text('Balance', '25.0')}
         converted={text('Converted', '163230.50 USD')}
@@ -118,6 +119,7 @@ storiesOf('Rewards/Wallet/Desktop', module)
           reservedAmount={number('Reserved amount', 52)}
           reservedMoreLink={'https://brave.com'}
           onSeeAllReserved={doNothing}
+          onlyAnonWallet={boolean('Anon Wallet Only', false)}
         />
       </div>
     )
