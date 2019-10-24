@@ -14,7 +14,8 @@ import {
   StyledNoActivityWrapper,
   StyledReservedWrapper,
   StyledReservedLink,
-  StyledAllReserved
+  StyledAllReserved,
+  StyledBatPoints
 } from './style'
 import ListToken from '../listToken'
 import { Type } from '../tokens'
@@ -41,11 +42,13 @@ export interface Props {
   compact?: boolean
   reservedAmount?: number
   reservedMoreLink?: string
+  onlyAnonWallet?: boolean
   onSeeAllReserved?: () => void
 }
 
 export default class WalletSummary extends React.PureComponent<Props, {}> {
   generateList = () => {
+    const { onlyAnonWallet } = this.props
     const tokenSize = this.props.compact ? 'small' : 'normal'
     const list = [
       {
@@ -101,6 +104,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
             color={item.color as Type}
             title={getLocale(item.translation)}
             isNegative={item.negative}
+            onlyAnonWallet={onlyAnonWallet}
             border={all === current ? 'last' : undefined}
           />
         ))
@@ -120,14 +124,56 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
     return result
   }
 
+  generateInfo = () => {
+    const {
+      reservedAmount,
+      onlyAnonWallet,
+      onSeeAllReserved,
+      reservedMoreLink
+    } = this.props
+    const showReserved = reservedAmount && reservedAmount > 0
+
+    if (!onlyAnonWallet && !showReserved) {
+      return null
+    }
+
+    const amount = (reservedAmount && reservedAmount.toFixed(1)) || '0.0'
+    const batFormatString = onlyAnonWallet ? getLocale('batPoints') : getLocale('bat')
+
+    return (
+      <StyledReservedWrapper data-test-id={'pending-contribution-box'}>
+        {
+          onlyAnonWallet
+          ? <p>
+              <StyledBatPoints>{getLocale('batPoints')}</StyledBatPoints> {getLocale('batPointsMessage')}
+            </p>
+          : null
+        }
+        {
+          showReserved
+          ? <>
+              {getLocale('reservedAmountText', { reservedAmount: amount, currency: batFormatString })} <StyledReservedLink href={reservedMoreLink} target={'_blank'}>
+                {getLocale('reservedMoreLink')}
+              </StyledReservedLink>
+              {
+                onSeeAllReserved
+                ? <StyledAllReserved onClick={onSeeAllReserved} data-test-id={'reservedAllLink'}>
+                  {getLocale('reservedAllLink')}
+                </StyledAllReserved>
+                : null
+              }
+            </>
+          : null
+        }
+      </StyledReservedWrapper>
+    )
+  }
+
   render () {
     const {
       id,
       onActivity,
-      compact,
-      reservedAmount,
-      reservedMoreLink,
-      onSeeAllReserved
+      compact
     } = this.props
     const date = new Date()
     const month = getLocale(`month${date.toLocaleString('en-us', { month: 'short' })}`)
@@ -143,22 +189,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
           <StyledTitle>{month} {year}</StyledTitle>
           <div>
             {this.generateList()}
-            {
-              reservedAmount && reservedAmount > 0
-              ? <StyledReservedWrapper data-test-id={'pending-contribution-box'}>
-                {getLocale('reservedAmountText', { reservedAmount: reservedAmount.toFixed(1) })} <StyledReservedLink href={reservedMoreLink} target={'_blank'}>
-                  {getLocale('reservedMoreLink')}
-                </StyledReservedLink>
-                {
-                  onSeeAllReserved
-                  ? <StyledAllReserved onClick={onSeeAllReserved} data-test-id={'reservedAllLink'}>
-                    {getLocale('reservedAllLink')}
-                  </StyledAllReserved>
-                  : null
-                }
-              </StyledReservedWrapper>
-              : null
-            }
+            {this.generateInfo()}
           </div>
           {
             onActivity

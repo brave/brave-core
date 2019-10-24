@@ -56,10 +56,11 @@ export const StyledHeader = styled<{}, 'div'>('div')`
 
 export const StyledTitle = styled<{}, 'div'>('div')`
   font-size: 16px;
-  font-weight: 500;
+  font-weight: bold;
   line-height: 1.38;
-  letter-spacing: -0.2px;
+  letter-spacing: 0.5px;
   color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 30px;
 `
 
 export const StyledBalance = styled<{}, 'div'>('div')`

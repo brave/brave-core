@@ -28,6 +28,8 @@ export const getUIMessages = (): Record<string, string> => {
     'backupWalletNotification',
     'backupWalletTitle',
     'bat',
+    'batPoints',
+    'batPointsMessage',
     'braveAdsLaunchTitle',
     'braveAdsLaunchMsg',
     'braveAdsTitle',
@@ -133,7 +135,8 @@ export const getUIMessages = (): Record<string, string> => {
     'walletVerificationListHeader',
     'walletVerificationTitle1',
     'walletVerificationTitle2',
-    'walletVerified'
+    'walletVerified',
+    'yourBalance'
   ]
 
   let translations = {}

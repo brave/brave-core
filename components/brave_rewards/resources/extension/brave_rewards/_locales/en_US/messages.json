@@ -43,6 +43,22 @@
     "message": "Grants",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "Details",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Your Balance",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT Points",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "can be used in Brave Rewards to contribute to your favorite content creators. BAT Points cannot be exchanged for BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "on",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "You’ve designated {{reservedAmount}} BAT for creators who haven’t yet signed up to receive contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.",
+    "message": "You’ve designated {{reservedAmount}} {{currency}} for creators who haven’t yet signed up to receive contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {

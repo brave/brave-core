@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import { getLocale } from 'brave-ui/helpers'
 import { StyledWrapper, StyledTokens, StyledContent, StyledTokenValue, StyledTokenCurrency } from './style'
 
 export type Size = 'mini' | 'small' | 'normal'
@@ -17,6 +18,7 @@ export interface Props {
   isNegative?: boolean
   size?: Size
   color?: Type
+  onlyAnonWallet?: boolean
 }
 
 export default class Tokens extends React.PureComponent<Props, {}> {
@@ -28,7 +30,8 @@ export default class Tokens extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, converted, value, hideText, isNegative, size, color, currency } = this.props
+    const { id, converted, value, hideText, isNegative, size, color, currency, onlyAnonWallet } = this.props
+    const batFormatString = onlyAnonWallet ? getLocale('batPoints') : getLocale('bat')
 
     return (
       <StyledWrapper id={id} size={size} color={color}>
@@ -38,7 +41,9 @@ export default class Tokens extends React.PureComponent<Props, {}> {
           </StyledTokenValue>
           {
             !hideText
-            ? <StyledTokenCurrency>BAT</StyledTokenCurrency>
+            ? <StyledTokenCurrency isAnon={onlyAnonWallet}>
+                {batFormatString}
+              </StyledTokenCurrency>
             : null
           }
         </StyledTokens>

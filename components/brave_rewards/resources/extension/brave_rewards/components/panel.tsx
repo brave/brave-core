@@ -673,6 +673,7 @@ export class Panel extends React.Component<Props, State> {
         onDisconnectClick={this.onDisconnectClick}
         goToUphold={this.goToUphold}
         userName={utils.getUserName(externalWallet)}
+        onlyAnonWallet={this.props.onlyAnonWallet}
         {...notification}
       >
         <WalletSummarySlider
@@ -708,6 +709,7 @@ export class Panel extends React.Component<Props, State> {
           <WalletSummary
             compact={true}
             reservedAmount={pendingTotal}
+            onlyAnonWallet={this.props.onlyAnonWallet}
             reservedMoreLink={'https://brave.com/faq/#unclaimed-funds'}
             {...this.getWalletSummary()}
           />
