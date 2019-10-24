@@ -26,6 +26,7 @@ interface State {
 
 interface Props extends Rewards.ComponentProps {
   grant: Rewards.Grant
+  onlyAnonWallet?: boolean
 }
 
 // TODO add local when we know what we will get from the server
@@ -139,6 +140,7 @@ class Grant extends React.Component<Props, State> {
     let title = getLocale('grantFinishTitleUGP')
     let text = getLocale('grantFinishTextUGP')
     let tokenTitle = getLocale('grantFinishTokenUGP')
+    const { onlyAnonWallet } = this.props
 
     if (type === 'ads') {
       title = getLocale('grantFinishTitleAds')
@@ -159,6 +161,7 @@ class Grant extends React.Component<Props, State> {
           date={date}
           testId={'newTokenGrant'}
           tokenTitle={tokenTitle}
+          onlyAnonWallet={onlyAnonWallet}
         />
       </GrantWrapper>
     )

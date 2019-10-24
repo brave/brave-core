@@ -5,6 +5,10 @@
 import styled, { css } from 'styled-components'
 import { Props, Size, Type } from './index'
 
+interface StyleProps {
+  isAnon?: boolean
+}
+
 const sizes: Record<Size, { token: string, tokenNum: string, text: string }> = {
   mini: {
     text: '14px',
@@ -63,8 +67,15 @@ export const StyledContent = styled<{}, 'span'>('span')`
   margin-left: 8px;
 `
 
-export const StyledTokenCurrency = styled<{}, 'span'>('span')`
+export const StyledTokenCurrency = styled<StyleProps, 'span'>('span')`
   font-size: var(--tokens-token-size);
   display: inline-block;
   margin-left: 4px;
+  ${(p) => {
+    if (!p.isAnon) {
+      return 'text-transform: uppercase;'
+    }
+
+    return null
+  }}
 `

@@ -225,6 +225,8 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_4" desc="">4 ads per hour</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_5" desc="">5 ads per hour</message>
       <message name="IDS_BRAVE_UI_BAT_REWARDS_TEXT" desc="">BAT</message>
+      <message name="IDS_BRAVE_UI_BAT_POINTS_TEXT" desc="">BAT Points</message>
+      <message name="IDS_BRAVE_UI_POINTS_MESSAGE" desc="">can be used in Brave Rewards to contribute to your favorite content creators. BAT Points cannot be exchanged for BAT.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DEVICE_OFFLINE" desc="">The device is offline, please try again later.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MONTHLY" desc="">Monthly Payment</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_NEXT_DATE" desc="">Next contribution date</message>
@@ -266,7 +268,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_TW" desc="">Twitter</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT1" desc="">Tip on the spot as you find gems.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT2" desc="">Support your favorite sites with recurring monthly tips.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_SUCCESS" desc="">{{balance}} BAT was recovered. Your wallet key has been verified and loaded successfully.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_SUCCESS" desc="">{{balance}} {{currency}} was recovered. Your wallet key has been verified and loaded successfully.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RESTORED" desc="">Wallet restored!</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_FAIL" desc="">Please re-enter keys or try different keys.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ALMOST_THERE" desc="">Almost there…</message>
@@ -478,7 +480,7 @@
       <message name="IDS_BRAVE_UI_GITHUB_TIP_TITLE_EMPTY" desc="We use this title when github text is empty">Tip {{ user }} </message>
       <message name="IDS_BRAVE_UI_REMOVE" desc="">remove</message>
       <message name="IDS_BRAVE_UI_REMOVE_AD_FROM_SAVED" desc="">Remove From Saved</message>
-      <message name="IDS_BRAVE_UI_RESERVED_AMOUNT_TEXT" desc="Notification about how much BAT do you have reserved">You’ve designated {{reservedAmount}} BAT for creators who haven’t yet signed up to receive contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</message>
+      <message name="IDS_BRAVE_UI_RESERVED_AMOUNT_TEXT" desc="Notification about how much BAT do you have reserved">You’ve designated {{reservedAmount}} {{currency}} for creators who haven’t yet signed up to receive contributions. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</message>
       <message name="IDS_BRAVE_UI_RESERVED_MORE_LINK" desc="Text for the link that explains more about reserved amount">Learn more.</message>
       <message name="IDS_BRAVE_UI_RESTORE" desc="">Restore</message>
       <message name="IDS_BRAVE_UI_RESTORE_ALL" desc="">Restore All</message>
@@ -561,6 +563,7 @@
       <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS" desc="">Why Brave Rewards?</message>
       <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_1" desc="">With your old browser, you paid to browse the web by viewing ads with your valuable attention. You spent your valuable time downloading invasive ad technology that transmitted your valuable private data to advertisers — without your consent.</message>
       <message name="IDS_BRAVE_UI_WHY_BRAVE_REWARDS_DESC_2" desc="">Today, Brave welcomes you to the new Internet. One where your time is valued, your personal data is kept private, and you actually get paid for your attention.</message>
+      <message name="IDS_BRAVE_UI_YOUR_BALANCE" desc="">Your Balance</message>
       <message name="IDS_BRAVE_UI_YOUR_WALLET" desc="">Your wallet</message>
       <message name="IDS_BRAVE_UI_VIEW_DETAILS" desc="">View Details</message>
       <message name="IDS_BRAVE_UI_REWARDS_CREATING_TEXT" desc="">Creating wallet</message>
