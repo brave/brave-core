@@ -62,9 +62,14 @@ class SearchEngines {
         self.orderedEngines = getOrderedEngines()
     }
     
-    func setupDefaultRegionalSearchEngines() {
-        guard let region = Locale.current.regionCode,
-            let searchEngine = SearchEngines.defaultRegionSearchEngines[region] else { return }
+    func regionalSearchEngineSetup(for locale: Locale = Locale.current) {
+        guard let region = locale.regionCode else { return }
+        
+        setupDefaultRegionalSearchEngines(region: region)
+    }
+    
+    private func setupDefaultRegionalSearchEngines(region: String) {
+        guard let searchEngine = SearchEngines.defaultRegionSearchEngines[region] else { return }
         
         setDefaultEngine(searchEngine, forType: .standard)
         setDefaultEngine(searchEngine, forType: .privateMode)

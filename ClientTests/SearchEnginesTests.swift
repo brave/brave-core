@@ -196,4 +196,58 @@ class SearchEnginesTests: XCTestCase {
         XCTAssertEqual(engines.orderedEngines.first!.shortName, "Google", "Google should be the first search engine")
     }
 
+    func testSearchEngineParamsNewUser() {
+        Preferences.General.isFirstLaunch.value = true
+        
+        let profile = MockProfile()
+        profile.searchEngines.regionalSearchEngineSetup(for: Locale(identifier: "de-DE"))
+        
+        expectddgClientName(locales: ["de-DE"], expectedClientName: "bravened", profile: profile)
+        expectddgClientName(locales: ["en-IE", "en-AU", "en-NZ"], expectedClientName: "braveed", profile: profile)
+        expectddgClientName(locales: ["en-US, pl-PL"],
+                            expectedClientName: OpenSearchEngine.defaultSearchClientName, profile: profile)
+        
+        XCTAssert(getQwant(profile: profile).searchURLForQuery("test")!.absoluteString.contains("client=brz-brave"))
+    }
+    
+    func testSearchEngineParamsExistingUser() {
+        Preferences.General.isFirstLaunch.value = false
+        
+        let profile = MockProfile()
+        expectddgClientName(locales: ["de-DE"], expectedClientName: "bravened", profile: profile)
+        expectddgClientName(locales: ["en-IE", "en-AU", "en-NZ"], expectedClientName: "braveed", profile: profile)
+        expectddgClientName(locales: ["en-US, pl-PL"],
+                            expectedClientName: OpenSearchEngine.defaultSearchClientName, profile: profile)
+        
+        XCTAssert(getQwant(profile: profile).searchURLForQuery("test")!.absoluteString.contains("client=brz-brave"))
+    }
+    
+    private func expectddgClientName(locales: [String], expectedClientName: String, profile: Profile) {
+        locales.forEach {
+            let ddg = getDdg(profile: profile)
+            let locale = Locale(identifier: $0)
+            print(ddg.searchURLForQuery("test", locale: locale)!)
+            
+            let query = ddg.searchURLForQuery("test", locale: locale)
+            XCTAssertNotNil(query)
+            
+            let tParam = URLComponents(url: query!, resolvingAgainstBaseURL: false)?
+                .queryItems?
+                .first(where: { $0.name == "t" })
+            
+            XCTAssertEqual(tParam?.value, expectedClientName)
+        }
+    }
+    
+    private func getDdg(profile: Profile) -> OpenSearchEngine {
+         profile.searchEngines.orderedEngines.first(where: {
+            $0.shortName == OpenSearchEngine.EngineNames.duckDuckGo
+         })!
+    }
+    
+    private func getQwant(profile: Profile) -> OpenSearchEngine {
+         return profile.searchEngines.orderedEngines.first(where: {
+            $0.shortName == OpenSearchEngine.EngineNames.qwant
+         })!
+    }
 }
