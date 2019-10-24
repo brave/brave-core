@@ -41,7 +41,7 @@ AdBlockRegionalServiceManager::~AdBlockRegionalServiceManager() {
 
 bool AdBlockRegionalServiceManager::Init() {
   DCHECK(!initialized_);
-  base::PostTaskWithTraits(
+  base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},
       base::BindOnce(&AdBlockRegionalServiceManager::StartRegionalServices,
                      base::Unretained(this)));
@@ -176,7 +176,7 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
 
   // Update preferences to reflect enabled/disabled state of specified
   // filter list
-  base::PostTaskWithTraits(
+  base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},
       base::BindOnce(&AdBlockRegionalServiceManager::UpdateFilterListPrefs,
                      base::Unretained(this), uuid, enabled));
