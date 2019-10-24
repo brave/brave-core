@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/onboarding_black">
+
+    <ImageView
+        android:id="@+id/bg_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/android_onboarding_4"
+        android:layout_marginBottom="100dp"
+        android:contentDescription="@string/troubleshooting_onboarding"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/onboarding_bottom_sheet_height"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:background="@color/onboarding_bg_color"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/section_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/brave_ads_onboarding_text"
+            android:gravity="center"
+            android:scrollbars = "vertical"
+            android:fadeScrollbars="false"
+            android:textColor="@color/onboarding_text_color"
+            android:textSize="@dimen/onboarding_text_size" />
+
+        <Button
+            android:id="@+id/btn_start_browsing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start_browsing"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:textColor="@android:color/white"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:textAllCaps="false"
+            android:textSize="@dimen/onboarding_text_size"
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@drawable/orange_rounded_button"/>
+
+    </LinearLayout>
+
+</FrameLayout>

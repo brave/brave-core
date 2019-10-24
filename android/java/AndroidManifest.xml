@@ -11,3 +11,19 @@
 
 <activity android:name="org.chromium.chrome.browser.BraveRewardsSiteBannerActivity"
     android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+<!-- Onboarding notification -->
+<receiver android:name="org.chromium.chrome.browser.notifications.BraveOnboardingNotification"
+    android:exported="false">
+</receiver>
+<receiver android:name="org.chromium.chrome.browser.onboarding.BraveRewardsServiceReceiver"
+    android:exported="false">
+</receiver>
+<activity
+    android:name="org.chromium.chrome.browser.onboarding.OnboardingActivity"
+    android:theme="@style/Theme.Chromium.Activity.Fullscreen"
+    android:screenOrientation="sensorPortrait"/>
+
+<service android:name="org.chromium.chrome.browser.onboarding.BraveRewardsService"
+    android:exported="false">
+</service>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/onboarding_black">
+
+    <ImageView
+        android:id="@+id/bg_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/android_onboarding_3"
+        android:layout_marginBottom="100dp"
+        android:contentDescription="@string/brave_ads_onboarding_title"/>
+
+    <LinearLayout
+        android:id="@+id/count_down_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/onboarding_counter_layout_height"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="32dp"
+        android:background="@color/onboarding_bg_color"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/section_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center"
+            android:text="@string/brave_ads_onboarding_title"
+            android:textSize="@dimen/onboarding_text_size"
+            android:lineSpacingMultiplier="1.2"
+            android:textColor="@color/onboarding_text_color"
+            android:textStyle="bold" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <ProgressBar
+                android:id="@+id/view_progress_bar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="@dimen/onboarding_counter_height"
+                android:layout_height="@dimen/onboarding_counter_height"
+                android:layout_gravity="center"
+                android:progressDrawable="@drawable/circular_progress" />
+
+            <TextView
+                android:id="@+id/tv_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/onboarding_timer_color"
+                android:textSize="54sp" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/action_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/onboarding_bottom_sheet_height"
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:gravity="center"
+        android:background="@color/onboarding_bg_color"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btn_start_browsing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/orange_rounded_button"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/start_browsing"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/onboarding_text_size"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <Button
+            android:id="@+id/btn_didnt_see_ad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:color/transparent"
+            android:padding="16dp"
+            android:text="@string/i_didnt_see"
+            android:textAllCaps="false"
+            android:textSize="@dimen/onboarding_text_size"
+            android:textColor="@color/onboarding_text_color"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+</FrameLayout>

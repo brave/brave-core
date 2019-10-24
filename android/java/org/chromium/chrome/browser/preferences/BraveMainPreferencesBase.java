@@ -18,6 +18,7 @@ import android.util.DisplayMetrics;
 import android.widget.TextView;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.privacy.BravePrivacyPreferences;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.components.search_engines.TemplateUrl;
@@ -168,7 +169,7 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
                     .setPositiveButton(R.string.continue_button, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            // TODO(simonhong):show onboarding
+                            OnboardingPrefManager.getInstance().showOnboarding(context, true);
                         }
                     })
                     .setNegativeButton(android.R.string.cancel, null)

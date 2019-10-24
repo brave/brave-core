@@ -216,12 +216,90 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SETTINGS_REQUIRE_RELAUNCH_LATER" desc="Text on the button allows to relaunch browser later">
         LATER
       </message>
+
+      <!-- Onboarding strings -->
+      <message name="IDS_SKIP" desc="Text for skip button in onboarding">
+        Skip
+      </message>
+      <message name="IDS_SEARCH_ENGINE_ONBOARDING" desc="Text for search engine page for onboarding">
+        Search engine onboarding
+      </message>
+      <message name="IDS_TROUBLESHOOTING_ONBOARDING" desc="Text for trouble shooting page for onboarding">
+        Troubleshooting onboarding
+      </message>
+      <message name="IDS_WELCOME_TO_BRAVE_BROWSER" desc="Title for search engine page for onboarding">
+        Welcome to Brave Browser
+      </message>
+      <message name="IDS_SELECT_YOUR_DEFAULT_SEARCH_ENGINE" desc="Text for search engine page for onboarding">
+        Select your default search engine
+      </message>
+      <message name="IDS_BLOCK" desc="Partial Text for brave shield page">
+        Block
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_ONBOARDING_TITLE" desc="Title for brave shield page">
+        Brave Shields
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_ONBOARDING_TEXT" desc="Text for brave shield page">
+        privacy-invading ads and trackers so you can browse without being followed around the web.
+      </message>
+      <message name="IDS_EARN_TOKENS" desc="Partial Text for brave rewards page">
+        Earn tokens
+      </message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TITLE" desc="Title for brave rewards page">
+        Brave Rewards
+      </message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TEXT" desc="Text for brave rewards page">
+        for seeing privacy-respecting ads. Use them to support your favorite sites and creators.
+      </message>
+      <message name="IDS_BRAVE_REWARDS_ONBOARDING_TEXT2" desc="Alternate Text for brave rewards page">
+        for seeing privacy-respecting ads.
+      </message>
+      <message name="IDS_TERMS_TITLE" desc="Title for terms of service page">
+        Agree to the Terms to use Brave Rewards
+      </message>
+      <message name="IDS_TERMS_TEXT" desc="Text for terms of service page">
+        I agree to Brave Rewards
+      </message>
+      <message name="IDS_TERMS_OF_SERVICE" desc="Text for terms of service">
+        Terms of Service
+      </message>
+      <message name="IDS_AGREE" desc="Text for agree button">
+        Agree
+      </message>
+      <message name="IDS_JOIN" desc="Text for join button">
+        Join
+      </message>
+      <message name="IDS_START_BROWSING" desc="Text for start browsing button">
+        Start browsing
+      </message>
+      <message name="IDS_I_DIDNT_SEE" desc="Text for i didt see it button">
+        I didn&apos;t see an ad
+      </message>
+      <message name="IDS_BRAVE_ADS_ONBOARDING_TITLE" desc="Title for brave ads page">
+        Brave will show your first ad in
+      </message>
+      <message name="IDS_BRAVE_ADS_ONBOARDING_TEXT" desc="Text for brave ads page">
+        To see ads from Brave Rewards, make sure Brave is allowed to show you notifications.
+      </message>
+      <message name="IDS_THIS_IS_YOUR_FIRST_AD" desc="Text brave rewards notification.">
+        This is your first Brave ad. Tap to learn more.
+      </message>
+      <message name="IDS_TURN_ON" desc="Text for turn on button">
+        Turn On
+      </message>
+      <message name="IDS_DO_NOT_AGREE" desc="Text for do not agree button">
+        Do not agree
+      </message>
+      <message name="IDS_FINISH" desc="Text for finish button">
+        Finish
+      </message>
       <message name="IDS_PREFS_WELCOME_TOUR" desc="Title for welcome tour preferences.">
         Welcome Tour
       </message>
       <message name="IDS_WELCOME_TOUR_DIALOG_TEXT" desc="Text for welcome tour dialog">
         Relaunching Welcome Tour will not affect any existing settings.
       </message>
+
       <message name="IDS_CONTINUE_BUTTON" desc="Generic label for a button to continue to the next screen. Used in multiple contexts. [CHAR-LIMIT=20]">
         Continue
       </message>
@@ -499,6 +577,9 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_BRAVE_REWARDS_NOT_AVAILABLE" desc="The message for the dialog when Brave Rewards is not available on the device.">
         We're sorry it appears Brave Rewards is not available on your device
+      </message>
+      <message name="IDS_BRAVE_ADS_EXISTING_USER_OFFER_TITLE" desc="Title for Brave Ads offer.">
+        Brave Ads are here!
       </message>
     </messages>
   </release>
