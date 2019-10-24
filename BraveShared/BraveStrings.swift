@@ -305,6 +305,7 @@ extension Strings {
     public static let HideRewardsIconSubtitle = NSLocalizedString("HideRewardsIconSubtitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Hides the Brave Rewards icon when Brave Rewards is not enabled", comment: "Hide the rewards icon explination.")
     public static let WalletCreationDate = NSLocalizedString("WalletCreationDate", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Wallet Creation Date", comment: "The date your wallet was created")
     public static let CopyWalletSupportInfo = NSLocalizedString("CopyWalletSupportInfo", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Copy Support Info", comment: "Copy rewards internals info for support")
+    public static let SettingsLicenses = NSLocalizedString("SettingsLicenses", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Licenses", comment: "Row name for licenses.")
 }
 
 // MARK:- Error pages.
