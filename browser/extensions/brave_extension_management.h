@@ -35,6 +35,8 @@ class BraveExtensionManagement : public ExtensionManagement,
   ScopedObserver<ExtensionRegistry, ExtensionRegistryObserver>
     extension_registry_observer_;
 
+  Profile* profile_;
+
   DISALLOW_COPY_AND_ASSIGN(BraveExtensionManagement);
 };
 

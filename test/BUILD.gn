@@ -106,6 +106,9 @@ test("brave_unit_tests") {
     sources += [
       "//brave/chromium_src/extensions/browser/sandboxed_unpacker_unittest.cc",
       "//brave/chromium_src/extensions/common/permissions/permissions_data_unittest.cc",
+      "//chrome/browser/extensions/extension_service_test_base.cc",
+      "//chrome/browser/extensions/extension_service_test_base.h",
+      "//chrome/browser/extensions/api/bookmarks/bookmarks_api_unittest.cc",
     ]
   }
 
@@ -307,6 +310,12 @@ test("brave_unit_tests") {
     "//services/network:test_support",
     "//third_party/cacheinvalidation",
   ]
+
+  if (enable_extensions) {
+    deps += [
+      "//extensions/browser:test_support",
+    ]
+  }
 
   if (is_android) {
     deps += [
