@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<resources>
+    <dimen name="onboarding_text_size">18sp</dimen>
+    <dimen name="onboarding_bottom_sheet_height">235dp</dimen>
+    <dimen name="onboarding_counter_layout_height">330dp</dimen>
+    <dimen name="onboarding_counter_height">230dp</dimen>
+</resources>

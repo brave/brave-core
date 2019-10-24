@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Onborading colors -->
+    <color name="onboarding_orange">#fb542b</color>
+    <color name="onboarding_gray">#84889c</color>
+    <color name="onboarding_black">#1e2029</color>
+    <color name="onboarding_radio_button_active">#f0f1ff</color>
+    <color name="onboarding_disable_text_color">#ffb8a6</color>
+
+    <color name="onboarding_timer_color">#4f30ab</color>
+
+    <color name="onboarding_text_color">@color/onboarding_black</color>
+    <color name="onboarding_bg_color">@android:color/white</color>
+
+    <color name="onboarding_progressbar_secondary_bg">#ced4da</color>
+    <color name="onboarding_progress_start_color">#FA7250</color>
+    <color name="onboarding_progress_mid_color">#FF1893</color>
+    <color name="onboarding_progress_end_color">#4F30AB</color>
+</resources>
