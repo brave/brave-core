@@ -10,7 +10,7 @@
 
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
-#include "brave/components/brave_rewards/browser/jni_headers/SafetyNetCheck_jni.h"
+#include "brave/components/brave_rewards/browser/android/jni_headers/SafetyNetCheck_jni.h"
 
 namespace safetynet_check {
 
