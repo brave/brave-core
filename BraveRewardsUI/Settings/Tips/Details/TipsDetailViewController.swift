@@ -191,7 +191,7 @@ extension TipsDetailViewController: UITableViewDataSource, UITableViewDelegate {
       
       cell.siteImageView.image = UIImage(frameworkResourceNamed: "defaultFavicon")
       setFavicon(identifier: tip.id, pageURL: tip.url, faviconURL: tip.faviconUrl)
-      cell.verifiedStatusImageView.isHidden = tip.status != .verified
+      cell.verifiedStatusImageView.isHidden = tip.status == .notVerified
       let contribution = tip.weight
       switch tip.rewardsCategory {
       case .oneTimeTip:

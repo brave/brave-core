@@ -333,7 +333,7 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
         }
       }
       
-      cell.verifiedStatusImageView.isHidden = publisher.status != .verified
+      cell.verifiedStatusImageView.isHidden = publisher.status == .notVerified
       let provider = " \(publisher.provider.isEmpty ? "" : String(format: Strings.OnProviderText, publisher.providerDisplayString))"
       let attrName = NSMutableAttributedString(string: publisher.name).then {
         $0.append(NSMutableAttributedString(string: provider, attributes: [.font: UIFont.boldSystemFont(ofSize: 14.0),
