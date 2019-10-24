@@ -335,7 +335,7 @@ void BraveWidevineBundleManager::WillRestart() const {
 scoped_refptr<base::SequencedTaskRunner>
 BraveWidevineBundleManager::file_task_runner() {
   if (!file_task_runner_) {
-    file_task_runner_ = base::CreateSequencedTaskRunnerWithTraits(
+    file_task_runner_ = base::CreateSequencedTaskRunner(
         {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT,
          base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   }
