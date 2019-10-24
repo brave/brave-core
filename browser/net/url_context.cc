@@ -13,6 +13,7 @@
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/browser_thread.h"
 
 namespace brave {
 
