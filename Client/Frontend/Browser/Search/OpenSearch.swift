@@ -4,6 +4,7 @@
 
 import UIKit
 import Shared
+import BraveShared
 import Fuzi
 
 private let TypeSearch = "text/html"
@@ -17,6 +18,8 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
         static let qwant = "Qwant"
     }
     
+    static let defaultSearchClientName = "brave"
+    
     let shortName: String
     let engineID: String?
     let image: UIImage
@@ -26,10 +29,12 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
 
     fileprivate let SearchTermComponent = "{searchTerms}"
     fileprivate let LocaleTermComponent = "{moz:locale}"
+    fileprivate let RegionalClientComponent = "{customClient}"
 
     fileprivate lazy var searchQueryComponentKey: String? = self.getQueryArgFromTemplate()
 
-    init(engineID: String?, shortName: String, image: UIImage, searchTemplate: String, suggestTemplate: String?, isCustomEngine: Bool) {
+    init(engineID: String?, shortName: String, image: UIImage, searchTemplate: String,
+         suggestTemplate: String?, isCustomEngine: Bool) {
         self.shortName = shortName
         self.image = image
         self.searchTemplate = searchTemplate
@@ -73,8 +78,8 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
     /**
      * Returns the search URL for the given query.
      */
-    func searchURLForQuery(_ query: String) -> URL? {
-        return getURLFromTemplate(searchTemplate, query: query)
+    func searchURLForQuery(_ query: String, locale: Locale = Locale.current) -> URL? {
+        return getURLFromTemplate(searchTemplate, query: query, locale: locale)
     }
 
     /**
@@ -86,7 +91,9 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
         // a valid URL, otherwise we cannot do the conversion to NSURLComponents
         // and have to do flaky pattern matching instead.
         let placeholder = "PLACEHOLDER"
-        let template = searchTemplate.replacingOccurrences(of: SearchTermComponent, with: placeholder)
+        let template = searchTemplate
+            .replacingOccurrences(of: SearchTermComponent, with: placeholder)
+            .replacingOccurrences(of: RegionalClientComponent, with: placeholder)
         let components = URLComponents(string: template)
         let searchTerm = components?.queryItems?.filter { item in
             return item.value == placeholder
@@ -121,32 +128,47 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
     /**
      * Returns the search suggestion URL for the given query.
      */
-    func suggestURLForQuery(_ query: String) -> URL? {
+    func suggestURLForQuery(_ query: String, locale: Locale = Locale.current) -> URL? {
         if let suggestTemplate = suggestTemplate {
-            return getURLFromTemplate(suggestTemplate, query: query)
+            return getURLFromTemplate(suggestTemplate, query: query, locale: locale)
         }
         return nil
     }
 
-    fileprivate func getURLFromTemplate(_ searchTemplate: String, query: String) -> URL? {
-        if let escapedQuery = query.addingPercentEncoding(withAllowedCharacters: .SearchTermsAllowed) {
-            // Escape the search template as well in case it contains not-safe characters like symbols
-            let templateAllowedSet = NSMutableCharacterSet()
-            templateAllowedSet.formUnion(with: .URLAllowed)
+    fileprivate func getURLFromTemplate(_ searchTemplate: String, query: String, locale: Locale) -> URL? {
+        guard let escapedQuery = query.addingPercentEncoding(withAllowedCharacters: .SearchTermsAllowed) else {
+            return nil
+        }
+        
+        // Escape the search template as well in case it contains not-safe characters like symbols
+        let templateAllowedSet = NSMutableCharacterSet()
+        templateAllowedSet.formUnion(with: .URLAllowed)
 
-            // Allow brackets since we use them in our template as our insertion point
-            templateAllowedSet.formUnion(with: CharacterSet(charactersIn: "{}"))
+        // Allow brackets since we use them in our template as our insertion point
+        templateAllowedSet.formUnion(with: CharacterSet(charactersIn: "{}"))
 
-            if let encodedSearchTemplate = searchTemplate.addingPercentEncoding(withAllowedCharacters: templateAllowedSet as CharacterSet) {
-                let localeString = Locale.current.identifier
-                let urlString = encodedSearchTemplate
-                    .replacingOccurrences(of: SearchTermComponent, with: escapedQuery, options: .literal, range: nil)
-                    .replacingOccurrences(of: LocaleTermComponent, with: localeString, options: .literal, range: nil)
-                return URL(string: urlString)
+        guard let encodedSearchTemplate = searchTemplate.addingPercentEncoding(withAllowedCharacters:
+            templateAllowedSet as CharacterSet) else { return nil }
+        
+        let localeString = locale.identifier
+        let urlString = encodedSearchTemplate
+            .replacingOccurrences(of: SearchTermComponent, with: escapedQuery, options: .literal, range: nil)
+            .replacingOccurrences(of: LocaleTermComponent, with: localeString, options: .literal, range: nil)
+            .replacingOccurrences(of: RegionalClientComponent, with: regionalClientParam(locale),
+                                  options: .literal, range: nil)
+        return URL(string: urlString)
+    }
+    
+    private func regionalClientParam(_ locale: Locale) -> String {
+        if shortName == EngineNames.duckDuckGo, let region = locale.regionCode {
+            switch region {
+            case "AU", "IE", "NZ": return "braveed"
+            case "DE": return "bravened"
+            default: break
             }
         }
-
-        return nil
+        
+        return OpenSearchEngine.defaultSearchClientName
     }
 }
 

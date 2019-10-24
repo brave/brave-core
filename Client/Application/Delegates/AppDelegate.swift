@@ -242,7 +242,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         
         if isFirstLaunch {
             FavoritesHelper.addDefaultFavorites()
-            profile?.searchEngines.setupDefaultRegionalSearchEngines()
+            profile?.searchEngines.regionalSearchEngineSetup()
         }
         if let urp = UserReferralProgram.shared {
             if isFirstLaunch {
