@@ -195,16 +195,19 @@ extension TipsDetailViewController: UITableViewDataSource, UITableViewDelegate {
       let contribution = tip.weight
       switch tip.rewardsCategory {
       case .oneTimeTip:
+        let value = BATValue(probi: "\(contribution)")
         cell.typeNameLabel.text = Strings.OneTimeText + Date.stringFrom(reconcileStamp: tip.reconcileStamp)
-        cell.tokenView.batContainer.amountLabel.text = BATValue(probi: "\(contribution)")?.displayString
+        cell.tokenView.batContainer.amountLabel.text = value?.displayString
+        cell.tokenView.usdContainer.amountLabel.text = state.ledger.dollarStringForBATAmount(value?.doubleValue ?? 0, includeCurrencyCode: false)
       case .recurringTip:
         cell.tokenView.batContainer.amountLabel.text = BATValue(contribution).displayString
+        cell.tokenView.usdContainer.amountLabel.text = state.ledger.dollarStringForBATAmount(contribution, includeCurrencyCode: false)
         cell.typeNameLabel.text = Strings.RecurringText
       default:
         cell.tokenView.batContainer.amountLabel.text = ""
+        cell.tokenView.usdContainer.amountLabel.text = ""
         cell.typeNameLabel.text = ""
       }
-      cell.tokenView.usdContainer.amountLabel.text = state.ledger.dollarStringForBATAmount(contribution, includeCurrencyCode: false)
       return cell
     }
   }
