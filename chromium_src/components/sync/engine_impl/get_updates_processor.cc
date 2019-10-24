@@ -29,7 +29,7 @@ SyncerError ApplyBraveRecords(sync_pb::ClientToServerResponse*,
 #include "components/sync/base/system_encryptor.h"
 #include "components/sync/base/time.h"
 #include "components/sync/engine_impl/loopback_server/loopback_server_entity.h"
-#include "components/sync/nigori/cryptographer.h"
+#include "components/sync/syncable/directory_cryptographer.h"
 #include "components/sync/syncable/syncable_proto_util.h"
 #include "url/gurl.h"
 
@@ -220,7 +220,7 @@ void ConstructUpdateResponse(sync_pb::GetUpdatesResponse* gu_response,
       sync_pb::NigoriSpecifics* nigori = specifics.mutable_nigori();
       nigori->set_encrypt_everything(false);
       nigori->set_encrypt_bookmarks(false);
-      syncer::Cryptographer cryptographer;
+      syncer::DirectoryCryptographer cryptographer;
       KeyParams params = {KeyDerivationParams::CreateForPbkdf2(), "foobar"};
       syncer::KeyDerivationMethod method = params.derivation_params.method();
       bool add_key_result = cryptographer.AddKey(params);
