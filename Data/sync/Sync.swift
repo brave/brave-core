@@ -46,8 +46,12 @@ public enum SyncRecordType: String {
         return map[self]
     }
     
-    var syncFetchMethod: String {
-        return self == .devices ? "fetch-sync-devices" : "fetch-sync-records"
+    /// Preferences(devices) have separate fetch timestamp.
+    var lastFetchTimeStamp: Int {
+        switch self {
+        case .prefs: return Preferences.Sync.lastPreferenceFetchTimestamp.value
+        default: return Preferences.Sync.lastFetchTimestamp.value
+        }
     }
 }
 
@@ -98,6 +102,9 @@ public class Sync: JSInjector {
         return syncSeed != nil
     }
     
+    let syncFetchMethod = "fetch-sync-records"
+    let fetchInterval: TimeInterval = 60
+    
     fileprivate var fetchTimer: Timer?
     
     /// If sync initialization fails, we should inform user and remove all partial sync setup that happened.
@@ -146,7 +153,6 @@ public class Sync: JSInjector {
     private var syncFetchedHandlers = [() -> Void]()
     
     private var baseSyncOrder: String { return Preferences.Sync.baseSyncOrder.value }
-    private var lastSyncTimestamp: Int { return Preferences.Sync.lastFetchTimestamp.value }
     
     override init() {
         super.init()
@@ -179,8 +185,8 @@ public class Sync: JSInjector {
             Device.deleteAll(context: .existing(context))
         }
         
-        lastFetchedRecordTimestamp = 0
         Preferences.Sync.lastFetchTimestamp.reset()
+        Preferences.Sync.lastPreferenceFetchTimestamp.reset()
         lastFetchWasTrimmed = false
         syncReadyLock = false
         isSyncFullyInitialized = (false, false, false, false, false, false, false, false)
@@ -269,11 +275,6 @@ public class Sync: JSInjector {
         return seed?.count == Sync.SeedByteLength ? seed : nil
     }
     
-    // TODO: Abstract into classes as static members, each object type needs their own sync time stamp!
-    // This includes just the last record that was fetched, used to store timestamp until full process has been completed
-    //  then set into defaults
-    fileprivate(set) var lastFetchedRecordTimestamp: Int? = 0
-    
     // Same abstraction note as above
     //  Used to know if data on get-existing-objects was trimmed, this value is used inside resolved-sync-records
     fileprivate var lastFetchWasTrimmed: Bool = false
@@ -315,15 +316,15 @@ public class Sync: JSInjector {
                     self.fetchWrapper()
                     
                     // Fetch timer to run on regular basis
-                    self.fetchTimer = Timer.scheduledTimer(timeInterval: 30.0, target: self, selector: #selector(Sync.fetchWrapper), userInfo: nil, repeats: true)
+                    self.fetchTimer = Timer.scheduledTimer(timeInterval: self.fetchInterval, target: self, selector: #selector(Sync.fetchWrapper), userInfo: nil, repeats: true)
                 }
             }
             
             // Just throw by itself, does not need to recover or retry due to lack of importance
-            self.fetch(type: .devices)
+            self.fetch(type: .prefs)
             
             // Use proper variable and store in defaults
-            if lastSyncTimestamp == 0 {
+            if Preferences.Sync.lastFetchTimestamp.value == 0 {
                 // Sync local bookmarks, then proceed with fetching
                 // Pull all local bookmarks and update their order with newly aquired device id and base sync order.
                 DataController.perform { context in
@@ -361,7 +362,7 @@ public class Sync: JSInjector {
     // This can be removed and fetch called directly via scheduledTimerBlock
     @objc func fetchWrapper() {
         self.fetch(type: .bookmark)
-        self.fetch(type: .devices)
+        self.fetch(type: .prefs)
     }
 }
 
@@ -445,7 +446,7 @@ extension Sync {
         executeBlockOnReady() {
             
             // Pass in `lastFetch` to get records since that time
-            let evaluate = "callbackList['\(type.syncFetchMethod)'](null, ['\(type.rawValue)'], \(self.lastSyncTimestamp), \(Sync.RecordFetchAmount))"
+            let evaluate = "callbackList['\(self.syncFetchMethod)'](null, ['\(type.rawValue)'], \(type.lastFetchTimeStamp), \(Sync.RecordFetchAmount))"
             self.webView.evaluateJavaScript(evaluate,
                                             completionHandler: { (result, error) in
                                                 completion?(error)
@@ -505,28 +506,26 @@ extension Sync {
         }
         log.debug("\(fetchedRecords.count) \(recordType.rawValue) processed")
         
-        // Make generic when other record types are supported
-        if recordType != .bookmark {
-            // Currently only support bookmark timestamp, so do not want to adjust that
-            return
-        }
+        if fetchedRecords.isEmpty { return }
         
         // After records have been written, without issue, save timestamp
         // We increment by a single millisecond to make sure we don't re-fetch the same duplicate records over and over
         // If there are more records with the same timestamp than the batch size, they will be dropped,
         //  however this is unimportant, as it actually prevents an infinitely recursive loop, of refetching the same records over
         //  and over again
-        if let stamp = self.lastFetchedRecordTimestamp {
-            Preferences.Sync.lastFetchTimestamp.value = stamp + 1
+        if recordType == .bookmark {
+            Preferences.Sync.lastFetchTimestamp.value += 1
+            
+            if self.lastFetchWasTrimmed {
+                // Do fast refresh, do not wait for timer
+                self.fetch(type: .bookmark)
+                self.lastFetchWasTrimmed = false
+            }
+            
+            syncFetchedHandlers.forEach { $0() }
+        } else if recordType == .prefs {
+            Preferences.Sync.lastPreferenceFetchTimestamp.value += 1
         }
-        
-        if self.lastFetchWasTrimmed {
-            // Do fast refresh, do not wait for timer
-            self.fetch(type: .bookmark)
-            self.lastFetchWasTrimmed = false
-        }
-        
-        syncFetchedHandlers.forEach { $0() }
     }
     
     func deleteSyncUser(_ data: [String: AnyObject]) {
@@ -554,39 +553,45 @@ extension Sync {
         
         let ids = fetchedRecords.map { $0.objectId }.compactMap { $0 }
         
-        var localbookmarks: [Bookmark]?
+        var localRecord: [Syncable]?
         
         DataController.perform { context in
-            localbookmarks = recordType.coredataModelType?.get(syncUUIDs: ids, context: context) as? [Bookmark]
+            localRecord = recordType.coredataModelType?.get(syncUUIDs: ids, context: context) as? [Syncable]
         
-	        var matchedBookmarks = [[Any]]()
+	        var matchedRecords = [[Any]]()
 	        let deviceId = Device.currentDevice(context: context)?.deviceId
 	        
-	        for fetchedBM in fetchedRecords {
-	            var localBM: Any = "null"
+	        for fetchedRecord in fetchedRecords {
+	            var local: Any = "null"
 	            
-	            if let found = localbookmarks?.find({ $0.syncUUID != nil && $0.syncUUID == fetchedBM.objectId }) {
-	                localBM = found.asDictionary(deviceId: deviceId, action: fetchedBM.action)
+	            if let found = localRecord?.find({ $0.syncUUID != nil && $0.syncUUID == fetchedRecord.objectId }) {
+	                local = found.asDictionary(deviceId: deviceId, action: fetchedRecord.action)
 	            }
 	            
-	            matchedBookmarks.append([fetchedBM.dictionaryRepresentation(), localBM])
+	            matchedRecords.append([fetchedRecord.dictionaryRepresentation(), local])
 	        }
 	        
-	        /* Top level keys: "bookmark", "action","objectId", "objectData:bookmark","deviceId" */
-	        
 	        // TODO: Check if parsing not required
-	        guard let serializedData = JSONSerialization.jsObject(withNative: matchedBookmarks as AnyObject, escaped: false) else {
+	        guard let serializedData = JSONSerialization.jsObject(withNative: matchedRecords as AnyObject, escaped: false) else {
 	            log.error("Critical error: could not serialize data for resolve-sync-records")
 	            return
 	        }
 	        
+            let lastFetchTimestamp = data?.lastFetchedTimestamp ?? 0
 	        // Only currently support bookmarks, this data will be abstracted (see variable definition note)
 	        if recordType == .bookmark {
-	            // Store the last record's timestamp, to know what timestamp to pass in next time if this one does not fail
-	            self.lastFetchedRecordTimestamp = data?.lastFetchedTimestamp
-	            log.info("sync fetched last timestamp \(self.lastFetchedRecordTimestamp ?? 0)")
+                if lastFetchTimestamp > Preferences.Sync.lastFetchTimestamp.value {
+                    Preferences.Sync.lastFetchTimestamp.value = lastFetchTimestamp
+                    log.info("sync bookmark last timestamp \(lastFetchTimestamp)")
+                }
 	            self.lastFetchWasTrimmed = data?.isTruncated ?? false
-	        }
+            } else if recordType == .prefs {
+                
+                if lastFetchTimestamp > Preferences.Sync.lastPreferenceFetchTimestamp.value {
+                    Preferences.Sync.lastPreferenceFetchTimestamp.value = lastFetchTimestamp
+                    log.info("sync preference last timestamp \(lastFetchTimestamp)")
+                }
+            }
 	        
             DispatchQueue.main.async {
                 self.webView.evaluateJavaScript("callbackList['resolve-sync-records'](null, '\(recordType.rawValue)', \(serializedData))",

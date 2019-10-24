@@ -16,6 +16,8 @@ public extension Preferences {
         /// To count as a successful, the entire process must succeed: fetching, resolving, insertion/update, and save
         static let lastFetchTimestamp = Option<Int>(key: "sync.last-fetch-timestamp", default: 0)
         
+        static let lastPreferenceFetchTimestamp = Option<Int>(key: "sync.last-fetch-timestamp-device", default: 0)
+        
         /// We store this value to signify that a group has been joined
         /// This is _only_ used on a re-installation to know that the app was deleted and re-installed
         /// Real Sync seed is stored in a keychain, although preference name of this option is used for both.
