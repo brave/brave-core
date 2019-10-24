@@ -34,28 +34,7 @@ chrome.tabs.query({
   rewardsPanelActions.init(tabs)
 })
 
-chrome.runtime.onInstalled.addListener(function (details) {
-  if (details.reason === 'install') {
-    const initialNotificationDismissed = 'false'
-    chrome.storage.local.set({
-      'is_dismissed': initialNotificationDismissed
-    }, function () {
-      chrome.browserAction.setBadgeText({
-        text: '1'
-      })
-    })
-  }
-})
-
 chrome.runtime.onStartup.addListener(function () {
-  chrome.storage.local.get(['is_dismissed'], function (result) {
-    if (result && result['is_dismissed'] === 'false') {
-      chrome.browserAction.setBadgeText({
-        text: '1'
-      })
-    }
-  })
-
   chrome.runtime.onConnect.addListener(function (externalPort) {
     chrome.storage.local.set({
       'rewards_panel_open': 'true'
@@ -66,17 +45,6 @@ chrome.runtime.onStartup.addListener(function () {
         'rewards_panel_open': 'false'
       })
     })
-  })
-})
-
-chrome.runtime.onConnect.addListener(function () {
-  chrome.storage.local.get(['is_dismissed'], function (result) {
-    if (result && result['is_dismissed'] === 'false') {
-      chrome.browserAction.setBadgeText({
-        text: ''
-      })
-      chrome.storage.local.remove(['is_dismissed'])
-    }
   })
 })
 

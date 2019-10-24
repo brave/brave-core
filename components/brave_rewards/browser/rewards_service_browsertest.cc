@@ -439,6 +439,34 @@ class BraveRewardsBrowserTest :
     wait_for_insufficient_notification_loop_->Run();
   }
 
+  void WaitForSelector(content::WebContents* contents,
+      const std::string& selector) const {
+    auto script = content::JsReplace(
+        "new Promise((resolve) => {"
+        "  let count = 20;"
+        "  let interval = setInterval(function() {"
+        "    if (count == 0) {"
+        "      clearInterval(interval);"
+        "      resolve(false);"
+        "    } else {"
+        "      count -= 1;"
+        "    }"
+        "    const element = document.querySelector($1);"
+        "    if (element) {"
+        "      clearInterval(interval);"
+        "      resolve(true);"
+        "    }"
+        "  }, 500);"
+        "});",
+        selector);
+    auto js_result = EvalJs(
+        contents,
+        script,
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+    ASSERT_TRUE(js_result.ExtractBool());
+  }
+
   void GetReconcileTime() {
     rewards_service()->GetReconcileTime(
         base::Bind(&BraveRewardsBrowserTest::OnGetReconcileTime,
@@ -487,6 +515,7 @@ class BraveRewardsBrowserTest :
         static_cast<const content::Source<content::WebContents>&>(
             popup_observer.source());
 
+    WaitForSelector(source.ptr(), "#panel-slider");
     return source.ptr();
   }
 
@@ -667,14 +696,6 @@ class BraveRewardsBrowserTest :
 
     // Wait for grant to finish
     WaitForGrantFinished();
-
-    // Goes to final step
-    if (use_panel) {
-      ASSERT_TRUE(ExecJs(contents,
-                         "document.getElementsByTagName('button')[0].click();",
-                         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                         content::ISOLATED_WORLD_ID_CONTENT_END));
-    }
 
     // Ensure that grant looks as expected
     EXPECT_STREQ(grant_.altcurrency.c_str(), "BAT");

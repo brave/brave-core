@@ -9,14 +9,21 @@
 #include <string>
 #include <utility>
 
+#include "base/command_line.h"
 #include "base/one_shot_event.h"
+#include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/ui/brave_actions/brave_action_view_controller.h"
+#include "brave/browser/ui/brave_actions/constants.h"
 #include "brave/browser/ui/views/brave_actions/brave_action_view.h"
+#include "brave/browser/ui/views/brave_actions/brave_rewards_action_stub_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
+#include "brave/common/brave_switches.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/extensions/extension_action_manager.h"
+#include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -47,6 +54,7 @@ void BraveActionsContainer::BraveActionInfo::Reset() {
 BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
     : views::View(),
       browser_(browser),
+      extension_system_(extensions::ExtensionSystem::Get(profile)),
       extension_action_api_(extensions::ExtensionActionAPI::Get(profile)),
       extension_registry_(extensions::ExtensionRegistry::Get(profile)),
       extension_action_manager_(
@@ -55,7 +63,7 @@ BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
       extension_action_observer_(this),
       weak_ptr_factory_(this) {
   // Handle when the extension system is ready
-  extensions::ExtensionSystem::Get(profile)->ready().Post(
+  extension_system_->ready().Post(
       FROM_HERE, base::Bind(&BraveActionsContainer::OnExtensionSystemReady,
                             weak_ptr_factory_.GetWeakPtr()));
 }
@@ -118,20 +126,26 @@ bool BraveActionsContainer::ShouldAddAction(const std::string& id) const {
 }
 
 bool BraveActionsContainer::ShouldAddBraveRewardsAction() const {
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  if (command_line.HasSwitch(switches::kDisableBraveRewardsExtension)) {
+    return false;
+  }
   const PrefService* prefs = browser_->profile()->GetPrefs();
   return prefs->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled) ||
          !prefs->GetBoolean(kHideBraveRewardsButton);
 }
 
-void BraveActionsContainer::AddAction(const extensions::Extension* extension,
-                                      int pos) {
+void BraveActionsContainer::AddAction(const extensions::Extension* extension) {
   DCHECK(extension);
   if (!ShouldAddAction(extension->id()))
     return;
   VLOG(1) << "AddAction (" << extension->id() << "), was already loaded: "
           << static_cast<bool>(actions_[extension->id()].view_);
-  if (!actions_[extension->id()].view_) {
+  if (!actions_[extension->id()].view_controller_) {
     const auto& id = extension->id();
+    // Remove existing stub view, if present
+    actions_[id].Reset();
     // Create a ExtensionActionViewController for the extension
     // Passing |nullptr| instead of ToolbarActionsBar since we
     // do not require that logic.
@@ -144,30 +158,59 @@ void BraveActionsContainer::AddAction(const extensions::Extension* extension,
     // The button view
     actions_[id].view_ = std::make_unique<BraveActionView>(
         actions_[id].view_controller_.get(), this);
-    // Add extension view after separator view
-    // `AddChildView` should be called first, so that changes that modify
-    // layout (e.g. preferred size) are forwarded to its parent
-    if (actions_[id].position_ != ACTION_ANY_POSITION) {
-      DCHECK_GT(actions_[id].position_, 0);
-      AddChildViewAt(actions_[id].view_.get(), actions_[id].position_);
-    } else {
-      AddChildView(actions_[id].view_.get());
+    AttachAction(actions_[id]);
+    // Handle if we are in a continuing pressed state for this extension.
+    if (is_rewards_pressed_ && id == brave_rewards_extension_id) {
+      is_rewards_pressed_ = false;
+      actions_[id].view_controller_->ExecuteAction(true);
     }
-    // we control destruction
-    actions_[id].view_->set_owned_by_client();
-    // Sets overall size of button but not image graphic. We set a large width
-    // in order to give space for the bubble.
-    actions_[id].view_->SetPreferredSize(gfx::Size(34, 24));
-    Update();
   }
 }
 
-void BraveActionsContainer::AddAction(const std::string& id, int pos) {
+void BraveActionsContainer::AddActionStubForRewards() {
+  const std::string id = brave_rewards_extension_id;
+  if (!ShouldAddAction(id)) {
+    return;
+  }
+  if (actions_[id].view_) {
+    return;
+  }
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+  actions_[id].view_ = std::make_unique<BraveRewardsActionStubView>(this);
+  AttachAction(actions_[id]);
+#endif
+}
+
+void BraveActionsContainer::AttachAction(BraveActionInfo &action) {
+  // Add extension view after separator view
+  // `AddChildView` should be called first, so that changes that modify
+  // layout (e.g. preferred size) are forwarded to its parent
+  if (action.position_ != ACTION_ANY_POSITION) {
+    DCHECK_GT(action.position_, 0);
+    AddChildViewAt(action.view_.get(), action.position_);
+  } else {
+    AddChildView(action.view_.get());
+  }
+  // we control destruction
+  action.view_->set_owned_by_client();
+  Update();
+}
+
+void BraveActionsContainer::AddAction(const std::string& id) {
   DCHECK(extension_registry_);
   const extensions::Extension* extension =
       extension_registry_->enabled_extensions().GetByID(id);
-  if (extension)
-    AddAction(extension, pos);
+  if (extension) {
+    AddAction(extension);
+    return;
+  }
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+  if (id == brave_rewards_extension_id) {
+    AddActionStubForRewards();
+    return;
+  }
+#endif
+  LOG(ERROR) << "Extension not found for Brave Action: " << id;
 }
 
 void BraveActionsContainer::RemoveAction(const std::string& id) {
@@ -240,10 +283,9 @@ views::LabelButton* BraveActionsContainer::GetOverflowReferenceView() const {
 
 // ToolbarActionView::Delegate members
 gfx::Size BraveActionsContainer::GetToolbarActionSize() {
-  // Shields icon should be square, and full-height
-  gfx::Rect rect(gfx::Size(height(), height()));
-  rect.Inset(-GetLayoutInsets(LOCATION_BAR_ICON_INTERIOR_PADDING));
-  return rect.size();
+  // Width > Height to give space for a large bubble (especially for shields).
+  // TODO(petemill): Generate based on toolbar size.
+  return gfx::Size(34, 24);
 }
 
 void BraveActionsContainer::WriteDragDataForView(View* sender,
@@ -264,20 +306,34 @@ bool BraveActionsContainer::CanStartDragForView(View* sender,
 }
 // end ToolbarActionView::Delegate members
 
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+// BraveRewardsActionStubView::Delegate members
+void BraveActionsContainer::OnRewardsStubButtonClicked() {
+  // Keep button state visually pressed until new extension button
+  // takes over.
+  actions_[brave_rewards_extension_id].view_->SetState(
+      views::Button::STATE_PRESSED);
+  extensions::ExtensionService* service =
+           extension_system_->extension_service();
+  if (service) {
+    is_rewards_pressed_ = true;
+    extensions::ComponentLoader* loader = service->component_loader();
+          static_cast<extensions::BraveComponentLoader*>(loader)->
+              AddRewardsExtension();
+  }
+}
+// end BraveRewardsActionStubView::Delegate members
+#endif
+
 void BraveActionsContainer::OnExtensionSystemReady() {
   // observe changes in extension system
   extension_registry_observer_.Add(extension_registry_);
   extension_action_observer_.Add(extension_action_api_);
-  // Check if brave extension already loaded
-  const extensions::Extension* extension =
-          extension_registry_->enabled_extensions().GetByID(brave_extension_id);
-  if (extension)
-    AddAction(extension);
-  // Check if brave rewards extension already loaded
-  extension = extension_registry_->enabled_extensions().GetByID(
-      brave_rewards_extension_id);
-  if (extension)
-    AddAction(extension);
+  // Check if extensions already loaded
+  AddAction(brave_extension_id);
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+  AddAction(brave_rewards_extension_id);
+#endif
 }
 
 // ExtensionRegistry::Observer
