@@ -38,6 +38,8 @@ class BraveRewardsActionStubView : public views::LabelButton,
   std::unique_ptr<views::InkDropHighlight> CreateInkDropHighlight()
       const override;
 
+  SkPath GetHighlightPath() const;
+
  private:
   gfx::Size CalculatePreferredSize() const override;
 

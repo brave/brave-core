@@ -4,6 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "ui/views/controls/button/md_text_button.h"
+#include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view_class_properties.h"
 
 // Override button creation to return BraveTextButton instances
@@ -19,6 +20,18 @@ namespace {
 
 constexpr SkColor kBraveBrandColor = SkColorSetRGB(0xff, 0x76, 0x54);
 
+class BraveTextButtonHighlightPathGenerator
+    : public views::HighlightPathGenerator {
+ public:
+  BraveTextButtonHighlightPathGenerator() = default;
+
+  // HighlightPathGenerator
+  SkPath GetHighlightPath(const views::View* view) override;
+
+ private:
+  DISALLOW_COPY_AND_ASSIGN(BraveTextButtonHighlightPathGenerator);
+};
+
 }  // namespace
 
 namespace views {
@@ -30,15 +43,16 @@ namespace views {
 //  - No shadow for prominent background
 class BraveTextButton : public MdTextButton {
  public:
-  using MdTextButton::MdTextButton;
+  BraveTextButton(ButtonListener* listener, int button_context);
   // InkDrop
   std::unique_ptr<InkDrop> CreateInkDrop() override;
   std::unique_ptr<views::InkDropHighlight> CreateInkDropHighlight()
       const override;
 
+  SkPath GetHighlightPath() const;
+
  protected:
   void OnPaintBackground(gfx::Canvas* canvas) override;
-  void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
 
  private:
   void UpdateColors() override;
@@ -77,6 +91,20 @@ std::unique_ptr<MdTextButton> MdTextButton::Create(ButtonListener* listener,
   button->SetCornerRadius(100);
   button->SetFocusForPlatform();
   return button;
+}
+
+BraveTextButton::BraveTextButton(ButtonListener* listener, int button_context)
+    : MdTextButton(listener, button_context) {
+  views::HighlightPathGenerator::Install(
+      this, std::make_unique<BraveTextButtonHighlightPathGenerator>());
+}
+
+SkPath BraveTextButton::GetHighlightPath() const {
+  SkPath path;
+  int radius = GetCornerRadius();
+  path.addRRect(
+      SkRRect::MakeRectXY(RectToSkRect(GetLocalBounds()), radius, radius));
+  return path;
 }
 
 void BraveTextButton::OnPaintBackground(gfx::Canvas* canvas) {
@@ -120,16 +148,6 @@ std::unique_ptr<views::InkDropHighlight>
       boundsF.CenterPoint(), fill_color);
 }
 
-void BraveTextButton::OnBoundsChanged(const gfx::Rect& previous_bounds) {
-  MdTextButton::OnBoundsChanged(previous_bounds);
-  // Provide a path for the focus border, and for clipping the inkdrop highlight
-  auto path = std::make_unique<SkPath>();
-  int radius = GetCornerRadius();
-  path->addRRect(SkRRect::MakeRectXY(RectToSkRect(GetLocalBounds()),
-                                    radius, radius));
-  SetProperty(kHighlightPathKey, path.release());
-}
-
 void BraveTextButton::UpdateColors() {
   MdTextButton::UpdateColors();
   if (GetProminent()) {
@@ -168,3 +186,12 @@ void BraveTextButton::UpdateColors() {
 }
 
 }  // namespace views
+
+namespace {
+
+SkPath BraveTextButtonHighlightPathGenerator::GetHighlightPath(
+    const views::View* view) {
+  return static_cast<const views::BraveTextButton*>(view)->GetHighlightPath();
+}
+
+}  // namespace
