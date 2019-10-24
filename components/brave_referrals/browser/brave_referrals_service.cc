@@ -367,13 +367,13 @@ void BraveReferralsService::GetFirstRunTimeDesktop() {
 
 void BraveReferralsService::PerformFinalizationChecks() {
   // Delete the promo code preference, if appropriate.
-  base::PostTaskWithTraits(
+  base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},
       base::BindOnce(&BraveReferralsService::MaybeDeletePromoCodePref,
                      base::Unretained(this)));
 
   // Check for referral finalization, if appropriate.
-  base::PostTaskWithTraits(
+  base::PostTask(
       FROM_HERE, {content::BrowserThread::UI},
       base::BindOnce(&BraveReferralsService::MaybeCheckForReferralFinalization,
                      base::Unretained(this)));

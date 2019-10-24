@@ -99,7 +99,7 @@ void ReferrerWhitelistService::OnDATFileDataReady(std::string contents) {
     }
   }
 
-  base::PostTaskWithTraits(
+  base::PostTask(
       FROM_HERE, {BrowserThread::IO},
       base::BindOnce(&ReferrerWhitelistService::OnDATFileDataReadyOnIOThread,
                      weak_factory_io_thread_.GetWeakPtr(),

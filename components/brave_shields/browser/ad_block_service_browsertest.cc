@@ -215,8 +215,7 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
         g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
     ASSERT_TRUE(tr_helper->Run());
     scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
-        base::CreateSingleThreadTaskRunnerWithTraits({BrowserThread::IO})
-            .get()));
+        base::CreateSingleThreadTaskRunner({BrowserThread::IO}).get()));
     ASSERT_TRUE(io_helper->Run());
   }
 };

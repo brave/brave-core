@@ -305,10 +305,9 @@ void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
     return;
   }
 
-  base::PostTaskWithTraits(
-      FROM_HERE, {content::BrowserThread::UI},
-      base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI, this,
-                     histogram_name, sample, bucket));
+  base::PostTask(FROM_HERE, {content::BrowserThread::UI},
+                 base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI, this,
+                                histogram_name, sample, bucket));
 }
 
 void BraveP3AService::OnHistogramChangedOnUI(base::StringPiece histogram_name,
