@@ -36,6 +36,14 @@ const char kOnboardingTimestamp[] =
 const char kShouldShowMyFirstAdNotification[] =
     "brave.brave_ads.should_show_my_first_ad_notification";
 
+// Stores the supported regions current schema version number
+const char kSupportedRegionsLastSchemaVersion[] =
+    "brave.brave_ads.supported_regions_last_schema_version_number";
+const char kSupportedRegionsSchemaVersion[] =
+    "brave.brave_ads.supported_regions_schema_version_number";
+
+const int kSupportedRegionsSchemaVersionNumber = 4;
+
 // Stores the preferences version number
 const char kVersion[] = "brave.brave_ads.prefs.version";
 

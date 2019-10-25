@@ -42,7 +42,7 @@ jboolean JNI_BraveAdsNativeHelper_IsLocaleValid(
     return false;
   }
 
-  return ads_service_->IsSupportedRegion();
+  return ads_service_->IsSupportedLocale();
 }
 
 void JNI_BraveAdsNativeHelper_SetAdsEnabled(

@@ -61,7 +61,8 @@ class AdsServiceImpl : public AdsService,
   explicit AdsServiceImpl(Profile* profile);
   ~AdsServiceImpl() override;
 
-  bool IsSupportedRegion() const override;
+  bool IsSupportedLocale() const override;
+  bool IsNewlySupportedLocale() override;
 
   void SetEnabled(
       const bool is_enabled) override;
@@ -284,7 +285,7 @@ class AdsServiceImpl : public AdsService,
       const uint64_t timestamp_in_seconds) const;
 
   void MaybeShowOnboarding();
-  bool ShouldShowOnboarding() const;
+  bool ShouldShowOnboarding();
   void ShowOnboarding();
   void RemoveOnboarding();
   void MaybeStartRemoveOnboardingTimer();

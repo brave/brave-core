@@ -206,7 +206,7 @@ bool AdsImpl::IsInitialized() {
     return false;
   }
 
-  if (ShouldClassifyPages() && !user_model_->IsInitialized()) {
+  if (ShouldClassifyPagesIfTargeted() && !user_model_->IsInitialized()) {
     return false;
   }
 
@@ -614,7 +614,7 @@ void AdsImpl::ChangeLocale(
     const std::string& locale) {
   auto language = helper::Locale::GetLanguageCode(locale);
 
-  if (!ShouldClassifyPages()) {
+  if (!ShouldClassifyPagesIfTargeted()) {
     client_->SetUserModelLanguage(language);
 
     InitializeStep4(SUCCESS);
@@ -683,7 +683,7 @@ void AdsImpl::OnPageLoaded(
 void AdsImpl::MaybeClassifyPage(
     const std::string& url,
     const std::string& html) {
-  if (!ShouldClassifyPages()) {
+  if (!ShouldClassifyPagesIfTargeted()) {
     MaybeGenerateAdReportingLoadEvent(url, kUntargetedPageClassification);
     return;
   }
@@ -692,16 +692,22 @@ void AdsImpl::MaybeClassifyPage(
   MaybeGenerateAdReportingLoadEvent(url, classification);
 }
 
-bool AdsImpl::ShouldClassifyPages() const {
-  auto locale = ads_client_->GetLocale();
-  auto region = helper::Locale::GetRegionCode(locale);
+bool AdsImpl::ShouldClassifyPagesIfTargeted() const {
+  const std::string locale = ads_client_->GetLocale();
+  const std::string region = helper::Locale::GetRegionCode(locale);
 
-  auto it = kSupportedRegions.find(region);
-  if (it == kSupportedRegions.end()) {
-    return false;
+  auto targeted = false;
+
+  for (const auto& schema : kSupportedRegionsSchemas) {
+    const std::map<std::string, bool> regions = schema.second;
+    const auto it = regions.find(region);
+    if (it != regions.end()) {
+      targeted = it->second;
+      break;
+    }
   }
 
-  return it->second;
+  return targeted;
 }
 
 std::string AdsImpl::ClassifyPage(

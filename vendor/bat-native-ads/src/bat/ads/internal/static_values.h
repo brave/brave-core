@@ -44,47 +44,68 @@ const char kDefaultUserModelLanguage[] = "en";
 static const int kDoNotDisturbFromHour = 21;  // 9pm
 static const int kDoNotDisturbToHour = 6;     // 6am
 
-const std::map<std::string, bool> kSupportedRegions = {
-  // {{region, targeted}}
-
-  { "US", true  },  // United States of America
-  { "CA", true  },  // Canada
-  { "GB", true  },  // United Kingdom (Great Britain and Northern Ireland)
-  { "DE", true  },  // Germany
-  { "FR", true  },  // France
-  { "AU", true  },  // Australia
-  { "NZ", true  },  // New Zealand
-  { "IE", true  },  // Ireland
-  { "AR", false },  // Argentina
-  { "AT", false },  // Austria
-  { "BR", false },  // Brazil
-  { "CH", false },  // Switzerland
-  { "CL", false },  // Chile
-  { "CO", false },  // Colombia
-  { "DK", false },  // Denmark
-  { "EC", false },  // Ecuador
-  { "IL", false },  // Israel
-  { "IN", false },  // India
-  { "IT", false },  // Italy
-  { "JP", false },  // Japan
-  { "KR", false },  // Korea
-  { "MX", false },  // Mexico
-  { "NL", false },  // Netherlands
-  { "PE", false },  // Peru
-  { "PH", false },  // Philippines
-  { "PL", false },  // Poland
-  { "SE", false },  // Sweden
-  { "SG", false },  // Singapore
-  { "VE", false },  // Venezuela
-  { "ZA", false },  // South Africa
-  { "KY", true  }   // Cayman Islands
+const std::map<int, std::map<std::string, bool>> kSupportedRegionsSchemas = {
+  // Append newly supported regions with a new schema version and update
+  // |kSupportedRegionsSchemaVersionNumber| to match the new version
+  //
+  //   Format: { schema_version : {{region, targeted}} }
+  //
+  // If |targeted| is set to |true| web pages are classified using the
+  // "bat-native-usermodel", otherwise untargeted ads are delivered
+  {
+    1, {
+      { "US", true  },  // United States of America
+      { "CA", true  },  // Canada
+      { "GB", true  },  // United Kingdom (Great Britain and Northern Ireland)
+      { "DE", true  },  // Germany
+      { "FR", true  }   // France
+    }
+  },
+  {
+    2, {
+      { "AU", true  },  // Australia
+      { "NZ", true  },  // New Zealand
+      { "IE", true  }   // Ireland
+    }
+  },
+  {
+    3, {
+      { "AR", false },  // Argentina
+      { "AT", false },  // Austria
+      { "BR", false },  // Brazil
+      { "CH", false },  // Switzerland
+      { "CL", false },  // Chile
+      { "CO", false },  // Colombia
+      { "DK", false },  // Denmark
+      { "EC", false },  // Ecuador
+      { "IL", false },  // Israel
+      { "IN", false },  // India
+      { "IT", false },  // Italy
+      { "JP", false },  // Japan
+      { "KR", false },  // Korea
+      { "MX", false },  // Mexico
+      { "NL", false },  // Netherlands
+      { "PE", false },  // Peru
+      { "PH", false },  // Philippines
+      { "PL", false },  // Poland
+      { "SE", false },  // Sweden
+      { "SG", false },  // Singapore
+      { "VE", false },  // Venezuela
+      { "ZA", false }   // South Africa
+    }
+  },
+  {
+    4, {
+      { "KY", true  }   // Cayman Islands
+    }
+  }
 };
+
+const char kUntargetedPageClassification[] = "untargeted";
 
 #if defined(OS_ANDROID)
 const int kMaximumAdNotifications = 3;
 #endif
-
-const char kUntargetedPageClassification[] = "untargeted";
 
 }  // namespace ads
 

@@ -21,22 +21,49 @@ const char _catalog_resource_name[] = "catalog.json";
 const char _client_resource_name[] = "client.json";
 
 // static
-Ads* Ads::CreateInstance(AdsClient* ads_client) {
+Ads* Ads::CreateInstance(
+    AdsClient* ads_client) {
   return new AdsImpl(ads_client);
 }
 
-bool Ads::IsSupportedRegion(const std::string& locale) {
-  auto region = GetRegion(locale);
+bool Ads::IsSupportedLocale(
+    const std::string& locale) {
+  const auto region = GetRegion(locale);
 
-  auto it = kSupportedRegions.find(region);
-  if (it == kSupportedRegions.end()) {
-    return false;
+  for (const auto& schema : kSupportedRegionsSchemas) {
+    const std::map<std::string, bool> regions = schema.second;
+    const auto it = regions.find(region);
+    if (it != regions.end()) {
+      return true;
+    }
   }
 
-  return true;
+  return false;
 }
 
-std::string Ads::GetRegion(const std::string& locale) {
+bool Ads::IsNewlySupportedLocale(
+    const std::string& locale,
+    const int last_schema_version) {
+  const auto region = GetRegion(locale);
+
+  for (const auto& schema : kSupportedRegionsSchemas) {
+    const int schema_version = schema.first;
+    if (schema_version < last_schema_version) {
+      continue;
+    }
+
+    const std::map<std::string, bool> regions = schema.second;
+    const auto it = regions.find(region);
+    if (it != regions.end()) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+std::string Ads::GetRegion(
+    const std::string& locale) {
   return helper::Locale::GetRegionCode(locale);
 }
 

@@ -239,7 +239,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
     
     strongSelf.enabled = YES;
     strongSelf.autoContributeEnabled = YES;
-    strongSelf.ads.enabled = [BATBraveAds isCurrentRegionSupported];
+    strongSelf.ads.enabled = [BATBraveAds isCurrentLocaleSupported];
     [strongSelf startNotificationTimers];
     strongSelf.initializingWallet = NO;
     

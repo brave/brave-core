@@ -158,7 +158,7 @@ class AdsImpl : public Ads {
   void MaybeClassifyPage(
       const std::string& url,
       const std::string& html);
-  bool ShouldClassifyPages() const;
+  bool ShouldClassifyPagesIfTargeted() const;
   std::string ClassifyPage(
       const std::string& url,
       const std::string& html);

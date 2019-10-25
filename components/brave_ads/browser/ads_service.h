@@ -46,7 +46,8 @@ class AdsService : public KeyedService {
  public:
   AdsService() = default;
 
-  virtual bool IsSupportedRegion() const = 0;
+  virtual bool IsSupportedLocale() const = 0;
+  virtual bool IsNewlySupportedLocale() = 0;
 
   virtual bool IsEnabled() const = 0;
   virtual void SetEnabled(

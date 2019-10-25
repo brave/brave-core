@@ -41,12 +41,16 @@ NS_SWIFT_NAME(BraveAds)
 
 #pragma mark - Global
 
-/// Whether or not a given region is supported. The region should be a standard
+/// Whether or not a given locale is supported. The locale should be a standard
 /// locale identifier, i.e. "en_US"
-+ (BOOL)isSupportedRegion:(NSString *)region;
++ (BOOL)isSupportedLocale:(NSString *)locale;
 
-/// Whether or not the users current region (by `NSLocale`) is supported
-+ (BOOL)isCurrentRegionSupported;
+/// Whether or not a given locale is newly supported. The locale should be a
+/// standard locale identifier, i.e. "en_US"
++ (BOOL)isNewlySupportedLocale:(NSString *)locale;
+
+/// Whether or not the users current locale (by `NSLocale`) is supported
++ (BOOL)isCurrentLocaleSupported;
 
 /// Whether or not to use staging servers. Defaults to false
 @property (nonatomic, class, getter=isDebug) BOOL debug;
