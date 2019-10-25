@@ -75,8 +75,6 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
   // network::mojom::WebSocketHandshakeClient methods:
   void OnOpeningHandshakeStarted(
       network::mojom::WebSocketHandshakeRequestPtr request) override;
-  void OnResponseReceived(
-      network::mojom::WebSocketHandshakeResponsePtr response) override;
   void OnConnectionEstablished(
       mojo::PendingRemote<network::mojom::WebSocket> websocket,
       mojo::PendingReceiver<network::mojom::WebSocketClient> client_receiver,
