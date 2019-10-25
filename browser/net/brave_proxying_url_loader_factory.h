@@ -24,7 +24,8 @@
 #include "brave/browser/net/resource_context_data.h"
 #include "brave/browser/net/url_context.h"
 #include "mojo/public/cpp/bindings/binding.h"
-#include "mojo/public/cpp/bindings/binding_set.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
 #include "net/base/completion_once_callback.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -168,7 +169,7 @@ class BraveProxyingURLLoaderFactory
       content::BrowserContext* browser_context,
       int render_process_id,
       int frame_tree_node_id,
-      network::mojom::URLLoaderFactoryRequest request,
+      mojo::PendingReceiver<network::mojom::URLLoaderFactory> receiver,
       network::mojom::URLLoaderFactoryPtrInfo target_factory,
       scoped_refptr<RequestIDGenerator> request_id_generator,
       DisconnectCallback on_disconnect);
@@ -191,7 +192,8 @@ class BraveProxyingURLLoaderFactory
                             network::mojom::URLLoaderClientPtr client,
                             const net::MutableNetworkTrafficAnnotationTag&
                                 traffic_annotation) override;
-  void Clone(network::mojom::URLLoaderFactoryRequest loader_request) override;
+  void Clone(mojo::PendingReceiver<network::mojom::URLLoaderFactory>
+                 loader_receiver) override;
 
  private:
   friend class base::DeleteHelper<BraveProxyingURLLoaderFactory>;
@@ -208,7 +210,7 @@ class BraveProxyingURLLoaderFactory
   const int render_process_id_;
   const int frame_tree_node_id_;
 
-  mojo::BindingSet<network::mojom::URLLoaderFactory> proxy_bindings_;
+  mojo::ReceiverSet<network::mojom::URLLoaderFactory> proxy_receivers_;
   network::mojom::URLLoaderFactoryPtr target_factory_;
 
   std::set<std::unique_ptr<InProgressRequest>, base::UniquePtrComparator>
