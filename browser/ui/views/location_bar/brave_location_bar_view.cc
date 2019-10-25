@@ -75,35 +75,6 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
   return min_size;
 }
 
-OmniboxTint BraveLocationBarView::CalculateTint() const {
-#if defined(OS_LINUX)
-  // If gtk theme is selected, respect it.
-  if (ThemeServiceFactory::GetForProfile(profile())->UsingSystemTheme())
-    return LocationBarView::CalculateTint();
-#endif
-
-  // Match the user-selectable brave theme, even if there is a theme extension
-  // installed, allowing non-extension-themeable elements to fit in better with
-  // a theme extension.
-  if (profile()->IsIncognitoProfile() ||
-      brave::IsTorProfile(profile()) ||
-      brave::IsGuestProfile(profile())) {
-    return OmniboxTint::PRIVATE;  // special extra enum value
-  }
-  // TODO(petemill): BraveThemeService can have a simpler get dark / light
-  // function
-  switch (BraveThemeService::GetActiveBraveThemeType(profile())) {
-    case BraveThemeType::BRAVE_THEME_TYPE_LIGHT:
-      return OmniboxTint::LIGHT;
-    case BraveThemeType::BRAVE_THEME_TYPE_DARK:
-      return OmniboxTint::DARK;
-    default:
-      NOTREACHED();
-      return OmniboxTint::LIGHT;
-  }
-}
-
-
 void BraveLocationBarView::OnThemeChanged() {
   LocationBarView::OnThemeChanged();
 
