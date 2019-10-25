@@ -32,13 +32,13 @@
 #include "chrome/test/base/testing_profile.h"
 #include "components/safe_browsing/common/safe_browsing_prefs.h"
 #include "components/translate/core/browser/translate_pref_names.h"
-#include "content/public/common/webrtc_ip_handling_policy.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/test_utils.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
@@ -154,7 +154,7 @@ TEST_F(BraveProfileManagerTest, InitProfileUserPrefs) {
   // Check WebRTC IP handling policy.
   EXPECT_EQ(
       tor_profile->GetPrefs()->GetString(prefs::kWebRTCIPHandlingPolicy),
-      content::kWebRTCIPHandlingDisableNonProxiedUdp);
+      blink::kWebRTCIPHandlingDisableNonProxiedUdp);
 
   // Check SafeBrowsing status
   EXPECT_FALSE(
