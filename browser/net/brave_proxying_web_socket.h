@@ -95,6 +95,7 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
   void OnBeforeSendHeaders(const net::HttpRequestHeaders& headers,
                            OnBeforeSendHeadersCallback callback) override;
   void OnHeadersReceived(const std::string& headers,
+                         const ::net::IPEndPoint& remote_endpoint,
                          OnHeadersReceivedCallback callback) override;
 
  private:
