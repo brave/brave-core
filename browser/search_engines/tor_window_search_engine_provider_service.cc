@@ -53,8 +53,8 @@ TorWindowSearchEngineProviderService::GetInitialSearchEngineProvider(
   int initial_id = alternative_search_engine_provider_in_tor_.GetValue();
   if (initial_id !=
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_INVALID) {
-    provider_data = std::move(
-        TemplateURLPrepopulateData::GetPrepopulatedEngine(prefs, initial_id));
+    provider_data =
+        TemplateURLPrepopulateData::GetPrepopulatedEngine(prefs, initial_id);
   }
 
   // If this is first run, |initial_id| is invalid. Then, use qwant or ddg
@@ -77,8 +77,8 @@ TorWindowSearchEngineProviderService::GetInitialSearchEngineProvider(
             TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
         break;
     }
-    provider_data = std::move(
-        TemplateURLPrepopulateData::GetPrepopulatedEngine(prefs, initial_id));
+    provider_data =
+        TemplateURLPrepopulateData::GetPrepopulatedEngine(prefs, initial_id);
   }
 
   DCHECK(provider_data);
