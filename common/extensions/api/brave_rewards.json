@@ -380,6 +380,24 @@
     ],
     "functions": [
       {
+        "name": "openBrowserActionUI",
+        "type": "function",
+        "description": "Prompts the user with a popup UI",
+        "parameters": [
+          {
+            "name": "windowId",
+            "type": "integer",
+            "minimum": 0,
+            "optional": true
+          },
+          {
+            "name": "relativePath",
+            "type": "string",
+            "optional": true
+          }
+        ]
+      },
+      {
         "name": "createWallet",
         "type": "function",
         "description": "Creates new wallet",

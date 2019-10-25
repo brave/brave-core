@@ -14,8 +14,7 @@
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/ledger.h"
-#include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
-#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
+#include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
@@ -497,15 +496,13 @@ class BraveRewardsBrowserTest :
         content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
         content::NotificationService::AllSources());
 
-    // Click on the Rewards button
-    BraveLocationBarView* brave_location_bar_view =
-        static_cast<BraveLocationBarView*>(
-            BrowserView::GetBrowserViewForBrowser(browser())
-                ->GetLocationBarView());
-    BraveActionsContainer* brave_actions_container =
-        brave_location_bar_view->brave_actions_;
-    EXPECT_TRUE(brave_actions_container->actions_.at(brave_rewards_extension_id)
-                    .view_controller_->ExecuteAction(true));
+    // Ask the popup to open
+    std::string error;
+    bool popup_shown = extensions::BraveActionAPI::ShowActionUI(
+      browser(), brave_rewards_extension_id, nullptr, &error);
+    if (!popup_shown)
+      LOG(ERROR) << "Could not open rewards popup: " << error;
+    EXPECT_TRUE(popup_shown);
 
     // Wait for the popup to load
     popup_observer.Wait();
