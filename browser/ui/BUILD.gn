@@ -206,6 +206,7 @@ source_set("ui") {
     deps += [
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser:version_info",
+      "//third_party/blink/public/common",
     ]
   }
 
