@@ -15,10 +15,6 @@ base::Optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
   //     ui::MaterialDesignController::touch_ui();
   // const bool newer_material = ui::MaterialDesignController::IsNewerMaterialUi();
   switch (constant) {
-    case LOCATION_BAR_BUBBLE_CORNER_RADIUS:
-      // Note: this is likely to be moved in to views/layout_provider.h
-      // in a future chromium version.
-      return 4;
     case TAB_HEIGHT: {
       return (touch ? 41 : 30) + GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP);
     }
