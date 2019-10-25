@@ -11,7 +11,6 @@ int BraveLayoutProvider::GetCornerRadiusMetric(
     const gfx::Size& size) const {
   switch (emphasis_metric) {
     case views::EMPHASIS_NONE:
-      NOTREACHED();
       return 0;
     case views::EMPHASIS_LOW:
     case views::EMPHASIS_MEDIUM:

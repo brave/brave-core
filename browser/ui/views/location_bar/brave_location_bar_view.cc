@@ -13,6 +13,7 @@
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/location_bar/star_view.h"
 #include "components/version_info/channel.h"
@@ -120,6 +121,11 @@ void BraveLocationBarView::ChildPreferredSizeChanged(views::View* child) {
     return;
 
   Layout();
+}
+
+int BraveLocationBarView::GetBorderRadius() const {
+  return ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
+      views::EMPHASIS_HIGH, size());
 }
 
 ContentSettingImageView*
