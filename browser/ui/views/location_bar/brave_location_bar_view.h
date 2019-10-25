@@ -29,6 +29,8 @@ class BraveLocationBarView : public LocationBarView {
   void OnThemeChanged() override;
   void ChildPreferredSizeChanged(views::View* child) override;
 
+  int GetBorderRadius() const override;
+
   ContentSettingImageView* GetContentSettingsImageViewForTesting(size_t idx);
 
  private:
