@@ -49,6 +49,10 @@ class BraveThemeService : public ThemeService {
  protected:
   // ThemeService overrides:
   SkColor GetDefaultColor(int id, bool incognito) const override;
+  base::Optional<SkColor> GetOmniboxColor(
+      int id,
+      bool incognito,
+      bool* has_custom_color) const override;
 
  private:
   friend class BraveThemeServiceTestWithoutSystemTheme;
