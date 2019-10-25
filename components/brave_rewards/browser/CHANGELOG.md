@@ -22,3 +22,17 @@ to determinate which country user is in.
 |  Parameters   |    |                          |
 
 ---
+### Refactoring (9th October 2019)
+##### Related PR
+
+[https://github.com/brave/brave-core/pull/3630](https://github.com/brave/brave-core/pull/3630)
+
+##### Description
+
+Refactored and migrated Rewards category from `category` to `type`.
+
+##### Change
+
+Renamed `RewardsCategory` to `RewardsType` and added migration path.
+
+---
