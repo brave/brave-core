@@ -361,6 +361,12 @@ test("brave_unit_tests") {
     ]
   }
 
+  if (enable_tor) {
+    deps += [
+      "//third_party/blink/public/common",
+    ]
+  }
+
   if (enable_widevine) {
     if (is_win || is_mac) {
       sources += [ "//brave/chromium_src/chrome/browser/component_updater/widevine_cdm_component_installer_unittest.cc" ]
