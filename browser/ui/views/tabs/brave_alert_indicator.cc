@@ -20,9 +20,9 @@
 
 namespace {
 
-bool IsAudioState(TabAlertState state) {
-  return (state == TabAlertState::AUDIO_PLAYING ||
-          state == TabAlertState::AUDIO_MUTING);
+bool IsAudioState(const base::Optional<TabAlertState>& state) {
+  return (state.has_value() && (state.value() == TabAlertState::AUDIO_PLAYING ||
+                                state.value() == TabAlertState::AUDIO_MUTING));
 }
 
 }  // namespace
