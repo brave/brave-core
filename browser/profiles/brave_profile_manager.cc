@@ -198,7 +198,7 @@ void BraveProfileManager::MigrateProfileNames() {
     if (entry->IsUsingDefaultName() &&
         !storage.IsDefaultProfileName(entry->GetName())) {
       auto icon_index = entry->GetAvatarIconIndex();
-      entry->SetName(storage.ChooseNameForNewProfile(icon_index));
+      entry->SetLocalProfileName(storage.ChooseNameForNewProfile(icon_index));
     }
   }
 #endif
