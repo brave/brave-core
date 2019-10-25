@@ -82,6 +82,7 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
       mojo::PendingReceiver<network::mojom::WebSocketClient> client_receiver,
       const std::string& selected_protocol,
       const std::string& extensions,
+      network::mojom::WebSocketHandshakeResponsePtr response,
       mojo::ScopedDataPipeConsumerHandle readable) override;
 
   // network::mojom::AuthenticationHandler method:
