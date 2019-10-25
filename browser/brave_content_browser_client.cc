@@ -271,7 +271,7 @@ void BraveContentBrowserClient::CreateWebSocket(
         url,
         site_for_cookies,
         user_agent,
-        std::move(proxy->handshake_client().Unbind()));
+        proxy->handshake_client().Unbind());
   } else {
     proxy->Start();
   }
