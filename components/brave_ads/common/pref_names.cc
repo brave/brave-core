@@ -39,7 +39,7 @@ const char kShouldShowMyFirstAdNotification[] =
 // Stores the preferences version number
 const char kVersion[] = "brave.brave_ads.prefs.version";
 
-const int kCurrentVersionNumber = 6;
+const int kCurrentVersionNumber = 4;
 
 }  // namespace prefs
 
