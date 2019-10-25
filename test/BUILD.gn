@@ -366,6 +366,12 @@ test("brave_unit_tests") {
     ]
   }
 
+  if (enable_tor) {
+    deps += [
+      "//third_party/blink/public/common",
+    ]
+  }
+
   if (bundle_widevine_cdm) {
     sources += [
       "//brave/browser/widevine/brave_widevine_bundle_manager_unittest.cc",
