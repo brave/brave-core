@@ -47,9 +47,10 @@ void BraveIncognitoMenuView::BuildMenu() {
                             base::Unretained(this)));
     return;
 
-    SetIdentityInfo(
-        gfx::Image(gfx::CreateVectorIcon(kIncognitoProfileIcon, icon_color)),
-        l10n_util::GetStringUTF16(IDS_TOR_PROFILE_NAME), base::string16());
+    SetIdentityInfo(gfx::CreateVectorIcon(kIncognitoProfileIcon, icon_color),
+                    /*badge=*/gfx::ImageSkia(),
+                    l10n_util::GetStringUTF16(IDS_TOR_PROFILE_NAME),
+                    base::string16());
 }
 
 void BraveIncognitoMenuView::AddTorButton() {
