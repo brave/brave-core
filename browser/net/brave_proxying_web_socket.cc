@@ -212,12 +212,13 @@ void BraveProxyingWebSocket::OnConnectionEstablished(
     mojo::PendingReceiver<network::mojom::WebSocketClient> client_receiver,
     const std::string& selected_protocol,
     const std::string& extensions,
+    network::mojom::WebSocketHandshakeResponsePtr response,
     mojo::ScopedDataPipeConsumerHandle readable) {
   DCHECK(forwarding_handshake_client_);
   DCHECK(!is_done_);
   forwarding_handshake_client_->OnConnectionEstablished(
       std::move(websocket), std::move(client_receiver), selected_protocol,
-      extensions, std::move(readable));
+      extensions, std::move(response), std::move(readable));
 
   OnError(net::ERR_FAILED);
 }
