@@ -24,8 +24,8 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
-#include "mojo/public/cpp/bindings/binding.h"
-#include "mojo/public/cpp/bindings/interface_request.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
 #include "net/url_request/url_request_context.h"
 #include "services/network/public/mojom/network_context.mojom.h"
@@ -66,33 +66,30 @@ class NewTorCircuitTracker : public WebContentsObserver {
 
 class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
  public:
-  static network::mojom::ProxyLookupClientPtr CreateTorProxyLookupClient(
-      NewTorCircuitCallback callback) {
+  static mojo::PendingRemote<network::mojom::ProxyLookupClient>
+  CreateTorProxyLookupClient(NewTorCircuitCallback callback) {
     auto* lookup_client = new TorProxyLookupClient(std::move(callback));
-    return lookup_client->GetProxyLookupClientPtr();
+    return lookup_client->GetProxyLookupClient();
   }
 
  private:
   explicit TorProxyLookupClient(NewTorCircuitCallback callback)
-      : callback_(std::move(callback)),
-        binding_(this) {}
+      : callback_(std::move(callback)) {}
 
   ~TorProxyLookupClient() override {
-    binding_.Close();
+    receiver_.reset();
   }
 
-  network::mojom::ProxyLookupClientPtr GetProxyLookupClientPtr() {
-    network::mojom::ProxyLookupClientPtr proxy_lookup_client_ptr;
-    binding_.Bind(mojo::MakeRequest(&proxy_lookup_client_ptr),
-                  base::CreateSingleThreadTaskRunner(
-                      {content::BrowserThread::UI,
-                       content::BrowserTaskType::kPreconnect}));
-    binding_.set_connection_error_handler(
-        base::BindOnce(&TorProxyLookupClient::OnProxyLookupComplete,
-                       base::Unretained(this),
-                       net::ERR_ABORTED,
-                       base::nullopt));
-    return proxy_lookup_client_ptr;
+  mojo::PendingRemote<network::mojom::ProxyLookupClient>
+  GetProxyLookupClient() {
+    mojo::PendingRemote<network::mojom::ProxyLookupClient> pending_remote =
+        receiver_.BindNewPipeAndPassRemote(base::CreateSingleThreadTaskRunner(
+            {content::BrowserThread::UI,
+             content::BrowserTaskType::kPreconnect}));
+    receiver_.set_disconnect_handler(base::BindOnce(
+        &TorProxyLookupClient::OnProxyLookupComplete, base::Unretained(this),
+        net::ERR_ABORTED, base::nullopt));
+    return pending_remote;
   }
 
   // network::mojom::ProxyLookupClient:
@@ -104,7 +101,7 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
   }
 
   NewTorCircuitCallback callback_;
-  mojo::Binding<network::mojom::ProxyLookupClient> binding_;
+  mojo::Receiver<network::mojom::ProxyLookupClient> receiver_{this};
 
   DISALLOW_COPY_AND_ASSIGN(TorProxyLookupClient);
 };
@@ -174,10 +171,10 @@ void TorProfileServiceImpl::SetNewTorCircuit(WebContents* tab) {
     storage_partition =
         content::BrowserContext::GetDefaultStoragePartition(profile_);
   }
-  auto proxy_lookup_client_ptr =
+  auto proxy_lookup_client =
       TorProxyLookupClient::CreateTorProxyLookupClient(std::move(callback));
   storage_partition->GetNetworkContext()->LookUpProxyForURL(
-      url, std::move(proxy_lookup_client_ptr));
+      url, std::move(proxy_lookup_client));
 }
 
 void TorProfileServiceImpl::KillTor() {
