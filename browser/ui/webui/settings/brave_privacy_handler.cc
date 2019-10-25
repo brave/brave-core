@@ -16,7 +16,6 @@
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
-#include "content/public/common/webrtc_ip_handling_policy.h"
 #include "content/public/browser/web_ui_data_source.h"
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
