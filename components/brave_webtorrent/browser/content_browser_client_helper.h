@@ -82,7 +82,8 @@ static void LoadOrLaunchMagnetURL(
     const GURL& url,
     const content::WebContents::Getter& web_contents_getter,
     ui::PageTransition page_transition,
-    bool has_user_gesture) {
+    bool has_user_gesture,
+    const base::Optional<url::Origin>& initiating_origin) {
   content::WebContents* web_contents = web_contents_getter.Run();
   if (!web_contents)
     return;
@@ -94,7 +95,7 @@ static void LoadOrLaunchMagnetURL(
     ExternalProtocolHandler::LaunchUrl(
         url, web_contents->GetRenderViewHost()->GetProcess()->GetID(),
         web_contents->GetRenderViewHost()->GetRoutingID(), page_transition,
-        has_user_gesture);
+        has_user_gesture, initiating_origin);
   }
 }
 
@@ -112,12 +113,13 @@ static bool HandleMagnetProtocol(
     const GURL& url,
     content::WebContents::Getter web_contents_getter,
     ui::PageTransition page_transition,
-    bool has_user_gesture) {
+    bool has_user_gesture,
+    const base::Optional<url::Origin>& initiating_origin) {
   if (url.SchemeIs(kMagnetScheme)) {
     base::PostTask(
         FROM_HERE, {content::BrowserThread::UI},
         base::BindOnce(&LoadOrLaunchMagnetURL, url, web_contents_getter,
-                       page_transition, has_user_gesture));
+                       page_transition, has_user_gesture, initiating_origin));
     return true;
   }
 
