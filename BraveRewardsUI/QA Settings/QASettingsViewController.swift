@@ -29,8 +29,9 @@ public class QASettingsViewController: TableViewController {
   
   @objc private func environmentChanged() {
     let value = segmentedControl.selectedSegmentIndex
-    guard let _ = EnvironmentOverride(rawValue: value) else { return }
-    Preferences.Rewards.environmentOverride.value = value
+    guard value < EnvironmentOverride.sortedCases.count else { return }
+    let overrideForIndex = EnvironmentOverride.sortedCases[value]
+    Preferences.Rewards.environmentOverride.value = overrideForIndex.rawValue
     self.rewards.reset()
     self.showResetRewardsAlert()
   }
@@ -98,7 +99,8 @@ public class QASettingsViewController: TableViewController {
     
     let isDefaultEnvironmentProd = AppConstants.BuildChannel != .developer
     
-    segmentedControl.selectedSegmentIndex = Preferences.Rewards.environmentOverride.value
+    let override: EnvironmentOverride = EnvironmentOverride(rawValue: Preferences.Rewards.environmentOverride.value) ?? .none
+    segmentedControl.selectedSegmentIndex = EnvironmentOverride.sortedCases.firstIndex(of: override) ?? 0
     segmentedControl.addTarget(self, action: #selector(environmentChanged), for: .valueChanged)
     reconcileTimeTextField.addTarget(self, action: #selector(reconcileTimeEditingEnded), for: .editingDidEnd)
     reconcileTimeTextField.frame = CGRect(x: 0, y: 0, width: 50, height: 32)

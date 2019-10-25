@@ -318,6 +318,26 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
   
   // MARK: - Actions
   
+  @objc private func tappedClaimGrantButton(_ sender: ActionButton) {
+    sender.loaderView = LoaderView(size: .small)
+    sender.loaderPlacement = .replacesContent
+    sender.isLoading = true
+    ledgerObserver.grantClaimed = { [weak self] grant in
+      guard let self = self, let grantAmount = BATValue(probi: grant.probi)?.displayString else { return }
+      sender.isLoading = false
+      let claimedVC = GrantClaimedViewController(
+        grantAmount: grantAmount,
+        expirationDate: Date(timeIntervalSince1970: TimeInterval(grant.expiryTime))
+      )
+      self.present(claimedVC, animated: true) {
+        self.tappedNotificationClose()
+      }
+    }
+    if let grant = state.ledger.pendingGrants.first {
+      state.ledger.solveGrantCaptch(withPromotionId: grant.promotionId, solution: "")
+    }
+  }
+  
   @objc private func tappedGrantsButton() {
     let controller = GrantsListViewController(ledger: state.ledger)
     navigationController?.pushViewController(controller, animated: true)
@@ -504,17 +524,17 @@ extension WalletViewController {
     loadNextNotification()
   }
   
-  @objc private func tappedNotificationAction() {
+  @objc private func tappedNotificationAction(_ sender: ActionButton) {
     if let notification = currentNotification {
       switch notification.kind {
       case .grant, .grantAds:
-        tappedGrantsButton()
+        tappedClaimGrantButton(sender)
       case .adsLaunch:
         tappedSettings()
+        tappedNotificationClose()
       default:
         break
       }
-      tappedNotificationClose()
     }
   }
   
