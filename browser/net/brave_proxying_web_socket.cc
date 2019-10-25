@@ -151,35 +151,6 @@ void BraveProxyingWebSocket::OnOpeningHandshakeStarted(
   forwarding_handshake_client_->OnOpeningHandshakeStarted(std::move(request));
 }
 
-void BraveProxyingWebSocket::OnResponseReceived(
-    network::mojom::WebSocketHandshakeResponsePtr response) {
-  // response_.headers will be set in OnBeforeSendHeaders if
-  // proxy_has_extra_headers() is set.
-  if (!proxy_has_extra_headers()) {
-    response_.headers =
-        base::MakeRefCounted<net::HttpResponseHeaders>(base::StringPrintf(
-            "HTTP/%d.%d %d %s", response->http_version.major_value(),
-            response->http_version.minor_value(), response->status_code,
-            response->status_text.c_str()));
-    for (const auto& header : response->headers)
-      response_.headers->AddHeader(header->name + ": " + header->value);
-  }
-
-  response_.remote_endpoint = response->remote_endpoint;
-
-  // TODO(yhirano): OnResponseReceived is called with the original
-  // response headers. That means if OnHeadersReceived modified them the
-  // renderer won't see that modification. This is the opposite of http(s)
-  // requests.
-  forwarding_handshake_client_->OnResponseReceived(std::move(response));
-
-  if (!proxy_has_extra_headers() || response_.headers) {
-    ContinueToHeadersReceived();
-  } else {
-    waiting_for_header_client_headers_received_ = true;
-  }
-}
-
 void BraveProxyingWebSocket::ContinueToHeadersReceived() {
   auto continuation = base::BindRepeating(
       &BraveProxyingWebSocket::OnHeadersReceivedComplete,
