@@ -11,7 +11,6 @@
 class BraveActionsContainer;
 class BraveActionsContainerTest;
 class BraveRewardsBrowserTest;
-enum class OmniboxTint;
 
 // The purposes of this subclass are to:
 // - Add the BraveActionsContainer to the location bar
@@ -37,7 +36,6 @@ class BraveLocationBarView : public LocationBarView {
   friend class ::BraveActionsContainerTest;
   friend class ::BraveRewardsBrowserTest;
   void UpdateBookmarkStarVisibility() override;
-  OmniboxTint CalculateTint() const override;
   BraveActionsContainer* brave_actions_ = nullptr;
 
   DISALLOW_COPY_AND_ASSIGN(BraveLocationBarView);
