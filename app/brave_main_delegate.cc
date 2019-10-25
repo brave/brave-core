@@ -32,7 +32,6 @@
 #include "components/sync/driver/sync_driver_switches.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/content_switches.h"
-#include "extensions/common/extension_features.h"
 #include "services/network/public/cpp/features.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/ui_base_features.h"
@@ -156,9 +155,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 
   // Enabled features.
   const std::unordered_set<const char*> enabled_features = {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-      extensions_features::kNewExtensionUpdaterService.name,
-#endif
       password_manager::features::kPasswordImport.name,
     // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated on
     // this feature.

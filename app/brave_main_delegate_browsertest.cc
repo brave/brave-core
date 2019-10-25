@@ -18,7 +18,6 @@
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/web_preferences.h"
-#include "extensions/common/extension_features.h"
 #include "gpu/config/gpu_finch_features.h"
 #include "services/network/public/cpp/features.h"
 
@@ -60,9 +59,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
   const base::Feature* enabled_features[] = {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-    &extensions_features::kNewExtensionUpdaterService,
-#endif
     &omnibox::kSimplifyHttpsIndicator,
     &password_manager::features::kPasswordImport,
   };
