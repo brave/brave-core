@@ -54,7 +54,9 @@ void BraveBrowserMainParts::PostBrowserStart() {
         profile_manager->GetProfileAttributesStorage();
     if (!storage.GetProfileAttributesWithPath(tor_legacy_path, &entry)) {
       storage.AddProfile(tor_legacy_path, base::string16(), std::string(),
-                         base::string16(), 0, std::string(), EmptyAccountId());
+                         base::string16(),
+                         /* is_consented_primary_account*/ false, 0,
+                         std::string(), EmptyAccountId());
     }
 
     profile_manager->MaybeScheduleProfileForDeletion(
