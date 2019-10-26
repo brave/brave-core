@@ -9,6 +9,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/themes/theme_properties.h"
+#include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
@@ -23,23 +24,6 @@ void BraveAvatarToolbarButton::SetText(const base::string16& text) {
                                                              : text);
 }
 
-bool BraveAvatarToolbarButton::ShouldShowGenericIcon() const {
-  const bool chromium_should_show =
-      AvatarToolbarButton::ShouldShowGenericIcon();
-  if (chromium_should_show) {
-    // We don't want to show the skia icon image as the Brave placeholder image
-    // has a gradient and is best rendered by bitmap.
-    ProfileAttributesEntry* entry;
-    if (g_browser_process->profile_manager()
-            ->GetProfileAttributesStorage()
-            .GetProfileAttributesWithPath(profile_->GetPath(), &entry) &&
-        entry->GetAvatarIconIndex() == profiles::GetPlaceholderAvatarIndex()) {
-        return false;
-    }
-  }
-  return chromium_should_show;
-}
-
 gfx::ImageSkia BraveAvatarToolbarButton::GetAvatarIcon(
     const gfx::Image& gaia_image) const {
   if (brave::IsTorProfile(profile_)) {
@@ -50,4 +34,18 @@ gfx::ImageSkia BraveAvatarToolbarButton::GetAvatarIcon(
     return gfx::CreateVectorIcon(kTorProfileIcon, icon_size, icon_color);
   }
   return AvatarToolbarButton::GetAvatarIcon(gaia_image);
+}
+
+AvatarToolbarButton::State BraveAvatarToolbarButton::GetState() const {
+  AvatarToolbarButton::State state = AvatarToolbarButton::GetState();
+  if (state == AvatarToolbarButton::State::kGenericProfile) {
+    ProfileAttributesEntry* entry;
+    if (g_browser_process->profile_manager()
+            ->GetProfileAttributesStorage()
+            .GetProfileAttributesWithPath(profile_->GetPath(), &entry) &&
+        entry->GetAvatarIconIndex() == profiles::GetPlaceholderAvatarIndex()) {
+      return AvatarToolbarButton::State::kNormal;
+    }
+  }
+  return state;
 }
