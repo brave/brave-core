@@ -23,7 +23,7 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
   void OpenProfileMenuView(Browser* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
     AvatarToolbarButton* button =
-        browser_view->toolbar()->GetAvatarToolbarButton();
+        browser_view->toolbar_button_provider()->GetAvatarToolbarButton();
     DCHECK(button);
 
     ui::MouseEvent e(ui::ET_MOUSE_PRESSED, gfx::Point(), gfx::Point(),
