@@ -29,13 +29,16 @@ class BraveActionAPIDependencyManager : public DependencyManager {
     static base::NoDestructor<BraveActionAPIDependencyManager> factory;
     return factory.get();
   }
-  BraveActionAPIDependencyManager() { }
-  ~BraveActionAPIDependencyManager() override;
+  BraveActionAPIDependencyManager() {}
+  ~BraveActionAPIDependencyManager() override {}
+
+#ifndef NDEBUG
+void DumpContextDependencies(void* context) const override {}
+#endif  // NDEBUG
+
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveActionAPIDependencyManager);
 };
-
-BraveActionAPIDependencyManager::~BraveActionAPIDependencyManager() { }
 
 class BraveActionAPIFactory : public KeyedServiceFactory {
  public:
