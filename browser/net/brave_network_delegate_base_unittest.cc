@@ -8,6 +8,7 @@
 #include "brave/browser/net/url_context.h"
 #include "brave/browser/net/brave_stp_util.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "content/public/test/browser_task_environment.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "net/url_request/url_request_test_util.h"
 #include "url/gurl.h"
@@ -42,13 +43,13 @@ const char kRawHeaders[] =
 class BraveNetworkDelegateBaseTest : public testing::Test {
  public:
   BraveNetworkDelegateBaseTest()
-      : thread_bundle_(content::TestBrowserThreadBundle::IO_MAINLOOP),
+      : task_environment_(content::BrowserTaskEnvironment::IO_MAINLOOP),
         context_(new net::TestURLRequestContext(true)) {}
   ~BraveNetworkDelegateBaseTest() override {}
   void SetUp() override { context_->Init(); }
 
  private:
-  content::TestBrowserThreadBundle thread_bundle_;
+  content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<net::TestURLRequestContext> context_;
 };
 

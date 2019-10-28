@@ -43,7 +43,7 @@ class BraveAutocompleteProviderClientUnitTest : public testing::Test {
     return builder.Build();
   }
 
-  content::TestBrowserThreadBundle test_browser_thread_bundle_;
+  content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<BraveAutocompleteProviderClient> client_;
 };

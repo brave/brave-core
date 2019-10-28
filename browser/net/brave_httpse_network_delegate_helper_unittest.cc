@@ -7,6 +7,7 @@
 #include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "content/public/test/browser_task_environment.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "net/url_request/url_request_test_util.h"
 
@@ -15,7 +16,7 @@ namespace {
 class BraveHTTPSENetworkDelegateHelperTest: public testing::Test {
  public:
   BraveHTTPSENetworkDelegateHelperTest()
-      : thread_bundle_(content::TestBrowserThreadBundle::IO_MAINLOOP),
+      : task_environment_(content::BrowserTaskEnvironment::IO_MAINLOOP),
         context_(new net::TestURLRequestContext(true)) {
   }
   ~BraveHTTPSENetworkDelegateHelperTest() override {}
@@ -25,7 +26,7 @@ class BraveHTTPSENetworkDelegateHelperTest: public testing::Test {
   net::TestURLRequestContext* context() { return context_.get(); }
 
  private:
-  content::TestBrowserThreadBundle thread_bundle_;
+  content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<net::TestURLRequestContext> context_;
 };
 

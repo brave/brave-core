@@ -33,7 +33,7 @@ class BraveWalletUnitTest : public testing::Test {
     return ProfileManager::GetActiveUserProfile()->GetPrefs();
   }
 
-  content::TestBrowserThreadBundle threads_;
+  content::BrowserTaskEnvironment task_environment_;
   TestingProfileManager testing_profile_manager_;
   base::ScopedTempDir temp_dir_;
 };

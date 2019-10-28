@@ -227,7 +227,7 @@ class AdsServiceTest : public testing::Test {
   MockRewardsService* rewards_service() { return rewards_service_; }
 
  private:
-  content::TestBrowserThreadBundle thread_bundle_;
+  content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<Profile> profile_;
   base::ScopedTempDir temp_dir_;
   MockRewardsService* rewards_service_;

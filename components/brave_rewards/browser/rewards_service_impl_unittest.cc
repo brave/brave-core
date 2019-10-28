@@ -84,7 +84,7 @@ class RewardsServiceTest : public testing::Test {
   // Need this as a very first member to run tests in UI thread
   // When this is set, class should not install any other MessageLoops, like
   // base::test::ScopedTaskEnvironment
-  content::TestBrowserThreadBundle thread_bundle_;
+  content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<Profile> profile_;
   RewardsServiceImpl* rewards_service_;
   std::unique_ptr<MockRewardsServiceObserver> observer_;
