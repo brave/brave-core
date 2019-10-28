@@ -120,10 +120,10 @@ void AddBraveMetaInfo(const bookmarks::BookmarkNode* node,
 
   std::string sync_timestamp;
   node->GetMetaInfo("sync_timestamp", &sync_timestamp);
-  if (sync_timestamp.empty()) {
-    sync_timestamp = std::to_string(base::Time::Now().ToJsTime());
-    model->SetNodeMetaInfo(node, "sync_timestamp", sync_timestamp);
-  }
+
+  sync_timestamp = std::to_string(base::Time::Now().ToJsTime());
+  model->SetNodeMetaInfo(node, "sync_timestamp", sync_timestamp);
+
   DCHECK(!sync_timestamp.empty());
 }
 

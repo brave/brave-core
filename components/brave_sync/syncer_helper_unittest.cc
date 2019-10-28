@@ -136,7 +136,14 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoCreateOrUpdate) {
   EXPECT_EQ(node_a_parent_id, folder1_id);
   std::string new_sync_timestamp;
   node_a->GetMetaInfo("sync_timestamp", &new_sync_timestamp);
-  EXPECT_EQ(new_sync_timestamp, sync_timestamp);
+  EXPECT_NE(new_sync_timestamp, sync_timestamp);
+
+  double time_d = 0.0l;
+  ASSERT_TRUE(base::StringToDouble(sync_timestamp, &time_d));
+  double new_time_d = 0.0l;
+  ASSERT_TRUE(base::StringToDouble(new_sync_timestamp, &new_time_d));
+
+  EXPECT_GT(new_time_d, time_d);
 }
 
 TEST_F(SyncerHelperTest, AddBraveMetaInfoNodeMoved) {
