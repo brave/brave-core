@@ -789,11 +789,9 @@ void BraveProfileSyncServiceImpl::CreateResolveList(
     SyncRecordAndExistingList* records_and_existing_objects) {
   const auto& this_device_id = brave_sync_prefs_->GetThisDeviceId();
   for (const auto& record : records) {
-    // Ignore records from ourselves to avoid mess on merge
     if (record->deviceId == this_device_id) {
       // Remove Acked sent records
       brave_sync_prefs_->RemoveFromRecordsToResend(record->objectId);
-      continue;
     }
     auto resolved_record = std::make_unique<SyncRecordAndExisting>();
     resolved_record->first = SyncRecord::Clone(*record);
