@@ -250,15 +250,6 @@ void BatLedgerImpl::FetchPromotions(
       std::bind(BatLedgerImpl::OnFetchPromotions, holder, _1, _2));
 }
 
-void BatLedgerImpl::GetGrantViaSafetynetCheck(const std::string& promotion_id) {
-  ledger_->GetGrantViaSafetynetCheck(promotion_id);
-}
-
-void BatLedgerImpl::ApplySafetynetToken(
-    const std::string& promotion_id, const std::string& result_string) {
-  ledger_->ApplySafetynetToken(promotion_id, result_string);
-}
-
 // static
 void BatLedgerImpl::OnClaimPromotion(
     CallbackHolder<ClaimPromotionCallback>* holder,

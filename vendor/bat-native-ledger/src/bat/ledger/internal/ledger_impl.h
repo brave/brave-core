@@ -193,15 +193,6 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& solution,
       ledger::AttestPromotionCallback callback) const override;
 
-  void ApplySafetynetToken(
-      const std::string& promotion_id,
-      const std::string& token) const override;
-
-  void GetGrantViaSafetynetCheck(
-      const std::string& promotion_id) const override;
-  void OnGrantViaSafetynetCheck(
-      const std::string& promotion_id, const std::string& nonce);
-
   std::string GetWalletPassphrase() const override;
 
   void RecoverWallet(

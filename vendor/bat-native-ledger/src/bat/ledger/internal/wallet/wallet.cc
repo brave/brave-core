@@ -445,37 +445,4 @@ void Wallet::OnTransferAnonToExternalWalletAddress(
       transfer_callback);
 }
 
-void Wallet::GetGrantViaSafetynetCheck(const std::string& promotion_id) {
-  ledger_->LoadURL(braveledger_request_util::BuildUrl(
-      (std::string)GET_PROMOTION_ATTESTATION + ledger_->GetPaymentId(),
-      PREFIX_V1),
-  std::vector<std::string>(), "", "",
-  ledger::UrlMethod::GET, std::bind(&Wallet::GetGrantViaSafetynetCheckCallback,
-                                   this,
-                                   promotion_id,
-                                   _1,
-                                   _2,
-                                   _3));
-}
-
-void Wallet::GetGrantViaSafetynetCheckCallback(const std::string& promotion_id,
-                                                  int response_status_code,
-                                                  const std::string& response,
-                                                  const std::map<std::string,
-                                                  std::string>& headers) {
-//  ledger_->LogResponse(__func__, response_status_code, response, headers);
-//
-//  if (response_status_code != net::HTTP_OK) {
-//    // Attestation failed
-//    braveledger_bat_helper::GRANT grant;
-//    grant.promotionId = promotion_id;
-//    ledger_->OnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED,
-//        grant);
-//    return;
-//  }
-//  std::string nonce;
-//  braveledger_bat_helper::getJSONValue("nonce", response, &nonce);
-//  ledger_->OnGrantViaSafetynetCheck(promotion_id, nonce);
-}
-
 }  // namespace braveledger_wallet

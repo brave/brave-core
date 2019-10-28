@@ -362,8 +362,9 @@ void BraveRewardsNativeWorker::GetGrant(JNIEnv* env,
     const base::android::JavaParamRef<jobject>& obj,
     const base::android::JavaParamRef<jstring>& promotionId) {
   if (brave_rewards_service_) {
-      brave_rewards_service_->GetGrantViaSafetynetCheck(
-        base::android::ConvertJavaStringToUTF8(env, promotionId));
+    // TODO need to call new API for promotion FetchPromotion
+//      brave_rewards_service_->GetGrantViaSafetynetCheck(
+//        base::android::ConvertJavaStringToUTF8(env, promotionId));
   }
 }
 

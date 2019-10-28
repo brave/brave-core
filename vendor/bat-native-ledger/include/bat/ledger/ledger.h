@@ -205,12 +205,6 @@ class LEDGER_EXPORT Ledger {
       const std::string& solution,
       AttestPromotionCallback callback) const = 0;
 
-  virtual void ApplySafetynetToken(const std::string& promotion_id,
-      const std::string& token) const = 0;
-
-  virtual void GetGrantViaSafetynetCheck(
-      const std::string& promotion_id) const = 0;
-
   virtual std::string GetWalletPassphrase() const = 0;
 
   virtual void GetBalanceReport(
