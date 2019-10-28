@@ -4,6 +4,7 @@
 
 import UIKit
 import BraveRewards
+import BraveShared
 
 enum PublisherMediaType: String {
   case youtube
@@ -95,6 +96,11 @@ class TippingViewController: UIViewController, UIViewControllerTransitioningDele
     state.ledger.publisherBanner(forId: self.publisherInfo.id) { [weak self] banner in
       guard let self = self, let banner = banner else { return }
       
+      if publisherInfo.provider.isEmpty {
+        self.tippingView.overviewView.publisherNameLabel.text = publisherInfo.name
+      } else {
+        self.tippingView.overviewView.publisherNameLabel.text = "\(publisherInfo.name) \(String(format: Strings.OnProviderText, publisherInfo.providerDisplayString))"
+      }
       self.tippingView.overviewView.titleLabel.text = banner.title.isEmpty ? Strings.TippingOverviewTitle : banner.title
       self.tippingView.overviewView.bodyLabel.text = banner.desc.isEmpty ? Strings.TippingOverviewBody : banner.desc
       
