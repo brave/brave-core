@@ -4,10 +4,7 @@
 
 import rewardsPanelActions from '../actions/rewardsPanelActions'
 
-chrome.braveRewards.getAllNotifications((list: RewardsExtension.Notification[]) => {
-  rewardsPanelActions.onAllNotifications(list)
-})
-
+// Handle all rewards events and pass to actions
 chrome.braveRewards.onWalletInitialized.addListener((result: RewardsExtension.Result) => {
   rewardsPanelActions.onWalletInitialized(result)
 })
@@ -114,6 +111,23 @@ chrome.braveRewards.onDisconnectWallet.addListener((properties: {result: number,
 
     chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
       rewardsPanelActions.onBalance(balance)
+    })
+  }
+})
+
+// Fetch initial data required to refresh state, keeping in mind
+// that the extension process be restarted at any time.
+// TODO(petemill): Move to initializer function or single 'init' action.
+chrome.braveRewards.getRewardsMainEnabled((enabledMain: boolean) => {
+  rewardsPanelActions.onEnabledMain(enabledMain)
+  if (enabledMain) {
+    chrome.braveRewards.getWalletProperties()
+    chrome.braveRewards.getGrants()
+    chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
+      rewardsPanelActions.onBalance(balance)
+    })
+    chrome.braveRewards.getAllNotifications((list: RewardsExtension.Notification[]) => {
+      rewardsPanelActions.onAllNotifications(list)
     })
   }
 })
