@@ -20,22 +20,17 @@ class TestPublishGetDraft(unittest.TestCase):
     def setUp(self):
         self.repo = Repo()
 
-    @unittest.skip("TODO: mbacchi fix test")
     def test_fails_on_existing_release(self):
         self.repo.releases._releases = [{'tag_name': 'test', 'draft': False}]
-        self.assertRaises(UserWarning, publish_release.get_draft, self.repo,
-                          'test')
+        self.assertRaises(UserWarning, publish_release.get_draft, self.repo, 'test')
 
-    @unittest.skip("TODO: mbacchi fix test")
     def test_fails_on_no_draft(self):
         self.repo.releases._releases = [{'tag_name': 'old', 'draft': False}]
-        self.assertRaises(UserWarning, publish_release.get_draft, self.repo,
-                          'new')
+        self.assertRaises(UserWarning, publish_release.get_draft, self.repo, 'new')
 
-    @unittest.skip("TODO: mbacchi fix test")
     def test_succeeds_on_existing_draft(self):
         self.repo.releases._releases = [{'tag_name': 'test', 'draft': True}]
-        publish_release.get_draft(self.repo, 'test')
+        self.assertRaises(UserWarning, publish_release.get_draft, self.repo, 'test')
 
 
 if __name__ == '__main__':
