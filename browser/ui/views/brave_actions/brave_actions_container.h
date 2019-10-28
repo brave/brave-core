@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 
+#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
 #include "chrome/browser/ui/toolbar/toolbar_action_view_controller.h"
 #include "chrome/browser/ui/browser.h"
@@ -19,6 +20,10 @@
 #include "extensions/common/extension.h"
 #include "ui/views/view.h"
 
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+#include "brave/browser/ui/views/brave_actions/brave_rewards_action_stub_view.h"
+#endif
+
 class BraveActionsContainerTest;
 class BraveRewardsBrowserTest;
 
@@ -27,13 +32,21 @@ class ExtensionActionManager;
 class ExtensionRegistry;
 }
 
+namespace views {
+class Button;
+}
+
 // This View contains all the built-in BraveActions such as Shields and Payments
 // TODO(petemill): consider splitting to separate model, like
 // ToolbarActionsModel and ToolbarActionsBar
 class BraveActionsContainer : public views::View,
                               public extensions::ExtensionActionAPI::Observer,
                               public extensions::ExtensionRegistryObserver,
-                              public ToolbarActionView::Delegate {
+                              public ToolbarActionView::Delegate,
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+                              public BraveRewardsActionStubView::Delegate
+#endif
+                              {
  public:
   BraveActionsContainer(Browser* browser, Profile* profile);
   ~BraveActionsContainer() override;
@@ -60,6 +73,11 @@ class BraveActionsContainer : public views::View,
   bool CanStartDragForView(View* sender,
                            const gfx::Point& press_pt,
                            const gfx::Point& p) override;
+
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+  // BraveRewardsActionStubView::Delegate
+  void OnRewardsStubButtonClicked() override;
+#endif
 
   // ExtensionRegistryObserver:
   void OnExtensionLoaded(content::BrowserContext* browser_context,
@@ -102,7 +120,7 @@ class BraveActionsContainer : public views::View,
     void Reset();
 
     int position_;
-    std::unique_ptr<ToolbarActionView> view_;
+    std::unique_ptr<views::Button> view_;
     std::unique_ptr<ToolbarActionViewController> view_controller_;
   };
 
@@ -111,17 +129,20 @@ class BraveActionsContainer : public views::View,
 
   // Actions operations
   bool ShouldAddAction(const std::string& id) const;
-  bool ShouldAddBraveRewardsAction() const;
   bool IsContainerAction(const std::string& id) const;
-  void AddAction(const extensions::Extension* extension,
-                 int pos = ACTION_ANY_POSITION);
-  void AddAction(const std::string& id, int pos = ACTION_ANY_POSITION);
+  void AddAction(const extensions::Extension* extension);
+  void AddAction(const std::string& id);
+  bool ShouldAddBraveRewardsAction() const;
+  void AddActionStubForRewards();
   void RemoveAction(const std::string& id);
   void ShowAction(const std::string& id, bool show);
   bool IsActionShown(const std::string& id) const;
   void UpdateActionState(const std::string& id);
+  void AttachAction(BraveActionInfo &action);
 
   bool should_hide_ = false;
+
+  bool is_rewards_pressed_ = false;
 
   // The Browser this LocationBarView is in.  Note that at least
   // chromeos::SimpleWebViewDialog uses a LocationBarView outside any browser
@@ -130,6 +151,7 @@ class BraveActionsContainer : public views::View,
 
   void OnExtensionSystemReady();
 
+  extensions::ExtensionSystem* extension_system_;
   extensions::ExtensionActionAPI* extension_action_api_;
   extensions::ExtensionRegistry* extension_registry_;
   extensions::ExtensionActionManager* extension_action_manager_;
