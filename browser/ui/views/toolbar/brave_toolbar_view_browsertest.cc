@@ -13,6 +13,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
@@ -42,19 +43,20 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
     BrowserView* browser_view =
       BrowserView::GetBrowserViewForBrowser(browser);
     ASSERT_NE(browser_view, nullptr);
-    toolbar_view_ = browser_view->toolbar();
-    ASSERT_NE(toolbar_view_, nullptr);
+    ASSERT_NE(browser_view->toolbar(), nullptr);
+    toolbar_button_provider_ = browser_view->toolbar_button_provider();
+    ASSERT_NE(toolbar_button_provider_, nullptr);
   }
 
  protected:
   bool is_avatar_button_shown() {
-    views::View* button = toolbar_view_->GetAvatarToolbarButton();
+    views::View* button = toolbar_button_provider_->GetAvatarToolbarButton();
     DCHECK(button);
     return button->GetVisible();
   }
 
  private:
-  ToolbarView* toolbar_view_;
+  ToolbarButtonProvider* toolbar_button_provider_;
   DISALLOW_COPY_AND_ASSIGN(BraveToolbarViewTest);
 };
 
