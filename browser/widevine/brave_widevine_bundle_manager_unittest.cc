@@ -93,7 +93,7 @@ class BraveWidevineBundleManagerTest : public testing::Test {
               pref_service()->GetString(kWidevineInstalledVersion));
   }
 
-  content::TestBrowserThreadBundle threads_;
+  content::BrowserTaskEnvironment task_environment_;
   BraveWidevineBundleManager manager_;
   TestingProfileManager testing_profile_manager_;
   base::ScopedTempDir temp_dir_;

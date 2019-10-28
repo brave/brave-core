@@ -21,7 +21,7 @@ namespace translate {
 
 #if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE_GO)
 TEST(TranslateLanguageListTest, GetSupportedLanguagesNoFetch) {
-  base::test::ScopedTaskEnvironment scoped_task_environment;
+  base::test::TaskEnvironment task_environment;
   network::TestURLLoaderFactory test_url_loader_factory;
   scoped_refptr<network::SharedURLLoaderFactory> test_shared_loader_factory =
       base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
