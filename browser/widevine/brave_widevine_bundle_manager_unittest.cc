@@ -87,7 +87,7 @@ class BraveWidevineBundleManagerTest : public testing::Test {
     EXPECT_EQ(WIDEVINE_CDM_VERSION_STRING, GetWidevineInstalledVersion());
   }
 
-  content::TestBrowserThreadBundle threads_;
+  content::BrowserTaskEnvironment task_environment_;
   BraveWidevineBundleManager manager_;
   TestClient client_;
   bool initial_opted_in_value_ = false;
