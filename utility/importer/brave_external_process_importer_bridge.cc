@@ -19,7 +19,7 @@ const int kNumCookiesToSend = 100;
 
 void BraveExternalProcessImporterBridge::SetCookies(
     const std::vector<net::CanonicalCookie>& cookies) {
-  (*observer_)->OnCookiesImportStart(cookies.size());
+  observer_->OnCookiesImportStart(cookies.size());
 
   // |cookies_left| is required for the checks below as Windows has a
   // Debug bounds-check which prevents pushing an iterator beyond its end()
@@ -32,7 +32,7 @@ void BraveExternalProcessImporterBridge::SetCookies(
         it + std::min(cookies_left, kNumCookiesToSend);
     cookies_group.assign(it, end_group);
 
-    (*observer_)->OnCookiesImportGroup(cookies_group);
+    observer_->OnCookiesImportGroup(cookies_group);
     cookies_left -= end_group - it;
     it = end_group;
   }
@@ -41,34 +41,34 @@ void BraveExternalProcessImporterBridge::SetCookies(
 
 void BraveExternalProcessImporterBridge::UpdateStats(
     const BraveStats& stats) {
-  (*observer_)->OnStatsImportReady(stats);
+  observer_->OnStatsImportReady(stats);
 }
 
 void BraveExternalProcessImporterBridge::UpdateLedger(
     const BraveLedger& ledger) {
-  (*observer_)->OnLedgerImportReady(ledger);
+  observer_->OnLedgerImportReady(ledger);
 }
 
 void BraveExternalProcessImporterBridge::UpdateReferral(
     const BraveReferral& referral) {
-  (*observer_)->OnReferralImportReady(referral);
+  observer_->OnReferralImportReady(referral);
 }
 
 void BraveExternalProcessImporterBridge::UpdateWindows(
     const ImportedWindowState& windowState) {
-  (*observer_)->OnWindowsImportReady(windowState);
+  observer_->OnWindowsImportReady(windowState);
 }
 
 
 void BraveExternalProcessImporterBridge::UpdateSettings(
       const SessionStoreSettings& settings) {
-  (*observer_)->OnSettingsImportReady(settings);
+  observer_->OnSettingsImportReady(settings);
 }
 
 
 BraveExternalProcessImporterBridge::BraveExternalProcessImporterBridge(
     const base::flat_map<uint32_t, std::string>& localized_strings,
-    scoped_refptr<chrome::mojom::ThreadSafeProfileImportObserverPtr> observer)
+    mojo::SharedRemote<chrome::mojom::ProfileImportObserver> observer)
   : ExternalProcessImporterBridge(localized_strings, observer) {}
 
 BraveExternalProcessImporterBridge::~BraveExternalProcessImporterBridge() {}
