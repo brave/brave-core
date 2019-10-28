@@ -37,6 +37,11 @@ class TippingOverviewView: UIView {
     $0.layer.borderWidth = 2.0
   }
   
+  let publisherNameLabel = UILabel().then {
+    $0.appearanceTextColor = .white
+    $0.font = .systemFont(ofSize: 20.0, weight: .medium)
+  }
+  
   let socialStackView = UIStackView().then {
     $0.spacing = 20.0
   }
@@ -90,6 +95,7 @@ class TippingOverviewView: UIView {
     addSubview(headerView)
     headerView.addSubview(watermarkImageView)
     headerView.addSubview(grabberView)
+    headerView.addSubview(publisherNameLabel)
     addSubview(dismissButton)
     // headerView.addSubview(heartsImageView)
     scrollView.addSubview(socialStackView)
@@ -124,6 +130,11 @@ class TippingOverviewView: UIView {
       $0.centerY.equalTo(self.headerView.snp.bottom).offset(-8.0)
       $0.leading.equalTo(self).offset(25.0)
       $0.size.equalTo(UX.faviconSize)
+    }
+    publisherNameLabel.snp.makeConstraints {
+      $0.leading.equalTo(faviconImageView.snp.trailing).offset(15)
+      $0.bottom.equalTo(headerView).inset(10)
+      $0.trailing.equalTo(headerView).inset(15)
     }
     socialStackView.snp.makeConstraints {
       $0.top.equalTo(self.scrollView.contentLayoutGuide).offset(20.0)
