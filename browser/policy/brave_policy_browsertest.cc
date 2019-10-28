@@ -38,9 +38,9 @@ class BravePolicyTest : public InProcessBrowserTest {
   MockConfigurationPolicyProvider provider_;
 };
 
+#if BUILDFLAG(ENABLE_TOR)
 #if defined(OS_WIN)
 // This policy only exists on Windows.
-#if BUILDFLAG(ENABLE_TOR)
 // Sets the tor policy before the browser is started.
 class TorDisabledPolicyBrowserTest : public BravePolicyTest {
  public:
@@ -82,13 +82,12 @@ IN_PROC_BROWSER_TEST_F(TorEnabledPolicyBrowserTest, TorDisabledPrefValueTest) {
   EXPECT_FALSE(tor::TorProfileService::IsTorDisabled());
 }
 
-#endif  // ENABLE_TOR
-#endif  // OS_WIN
-
 // W/o TorDisabled group policy, kTorDisabled pref value should be false.
 IN_PROC_BROWSER_TEST_F(NoTorPolicyBrowserTest,
                        DefaultTorDisabledPrefValueTest) {
   EXPECT_FALSE(tor::TorProfileService::IsTorDisabled());
 }
+#endif  // OS_WIN
+#endif  // ENABLE_TOR
 
 }  // namespace policy
