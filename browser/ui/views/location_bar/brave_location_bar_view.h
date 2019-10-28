@@ -35,7 +35,6 @@ class BraveLocationBarView : public LocationBarView {
  private:
   friend class ::BraveActionsContainerTest;
   friend class ::BraveRewardsBrowserTest;
-  void UpdateBookmarkStarVisibility() override;
   BraveActionsContainer* brave_actions_ = nullptr;
 
   DISALLOW_COPY_AND_ASSIGN(BraveLocationBarView);

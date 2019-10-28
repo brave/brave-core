@@ -15,7 +15,6 @@
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
-#include "chrome/browser/ui/views/location_bar/star_view.h"
 #include "components/version_info/channel.h"
 
 void BraveLocationBarView::Init() {
@@ -44,12 +43,6 @@ void BraveLocationBarView::Update(const content::WebContents* contents) {
     brave_actions_->Update();
   }
   LocationBarView::Update(contents);
-}
-
-void BraveLocationBarView::UpdateBookmarkStarVisibility() {
-  if (star_view_) {
-    star_view_->SetVisible(false);
-  }
 }
 
 void BraveLocationBarView::OnChanged() {

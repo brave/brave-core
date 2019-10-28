@@ -10,11 +10,9 @@
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
-#include "chrome/browser/ui/page_action/page_action_icon_container.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
-#include "chrome/browser/ui/views/page_action/omnibox_page_action_icon_container_view.h"
 #include "components/prefs/pref_service.h"
 #include "components/translate/core/browser/translate_pref_names.h"
 #include "extensions/browser/extension_registry.h"
@@ -109,7 +107,6 @@ void BraveTranslateBubbleView::InstallGoogleTranslate() {
     static_cast<BraveTranslateIconView*>(
         BrowserView::GetBrowserViewForBrowser(browser)
         ->toolbar_button_provider()
-        ->GetOmniboxPageActionIconContainerView()
         ->GetPageActionIconView(PageActionIconType::kTranslate));
   DCHECK(translate_icon);
 
