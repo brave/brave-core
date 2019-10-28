@@ -16,8 +16,7 @@ class BraveExternalProcessImporterBridge :
   // |observer| must outlive this object.
   BraveExternalProcessImporterBridge(
       const base::flat_map<uint32_t, std::string>& localized_strings,
-      scoped_refptr<chrome::mojom::ThreadSafeProfileImportObserverPtr>
-          observer);
+      mojo::SharedRemote<chrome::mojom::ProfileImportObserver> observer);
 
   void SetCookies(const std::vector<net::CanonicalCookie>& cookies) override;
   void UpdateStats(const BraveStats& stats) override;
