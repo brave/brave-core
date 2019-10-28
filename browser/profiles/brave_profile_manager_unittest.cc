@@ -103,7 +103,7 @@ class BraveProfileManagerTest : public testing::Test {
     entry->SetIsEphemeral(true);
   }
 
-  content::TestBrowserThreadBundle thread_bundle_;
+  content::BrowserTaskEnvironment task_environment_;
 
   // The path to temporary directory used to contain the test operations.
   base::ScopedTempDir temp_dir_;
