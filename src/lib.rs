@@ -2,6 +2,7 @@ extern crate adblock;
 
 use adblock::engine::Engine;
 use adblock::filter_lists;
+use adblock::resources::{Resource, ResourceType, MimeType};
 use core::ptr;
 use libc::size_t;
 use std::ffi::CStr;
@@ -98,18 +99,28 @@ pub unsafe extern "C" fn engine_add_resource(
     let key = CStr::from_ptr(key).to_str().unwrap();
     let content_type = CStr::from_ptr(content_type).to_str().unwrap();
     let data = CStr::from_ptr(data).to_str().unwrap();
+    let resource = Resource {
+        name: key.to_string(),
+        aliases: vec![],
+        kind: ResourceType::Mime(MimeType::from(content_type)),
+        content: data.to_string(),
+    };
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
-    engine.resource_add(key, content_type, data);
+    engine.resource_add(resource);
 }
 
-/// Adds a list of resources in uBlock resources format
+/// Adds a list of `Resource`s from JSON format
 #[no_mangle]
 pub unsafe extern "C" fn engine_add_resources(engine: *mut Engine, resources: *const c_char) {
     let resources = CStr::from_ptr(resources).to_str().unwrap();
+    let resources: Vec<Resource> = serde_json::from_str(resources).unwrap_or_else(|e| {
+        eprintln!("Failed to parse JSON adblock resources: {}", e);
+        vec![]
+    });
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
-    engine.with_resources(resources);
+    engine.with_resources(&resources);
 }
 
 // Adds a filter rule to the engine

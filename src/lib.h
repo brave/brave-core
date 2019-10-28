@@ -36,7 +36,7 @@ void engine_add_resource(C_Engine *engine,
                          const char *data);
 
 /**
- * Adds a list of resources in uBlock resources format
+ * Adds a list of `Resource`s from JSON format
  */
 void engine_add_resources(C_Engine *engine, const char *resources);
 

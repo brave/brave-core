@@ -193,9 +193,10 @@ void TestTags() {
 
 void TestRedirects() {
   Engine engine("-advertisement-$redirect=1x1-transparent.gif\n");
-  engine.addResources("# test\n"
-                      "1x1-transparent.gif image/gif;base64\n"
-                      "R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\n");
+  engine.addResources("[{\"name\": \"1x1-transparent.gif\","
+                      "\"aliases\": [],"
+                      "\"kind\": {\"mime\": \"image/gif\"},"
+                      "\"content\":\"R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\"}]");
   Check(true, false, false, "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==", "Testing redirects match", engine,
       "http://example.com/-advertisement-icon.", "example.com", "example.com",
       false, "image");
@@ -203,7 +204,7 @@ void TestRedirects() {
 
 void TestRedirect() {
   Engine engine("-advertisement-$redirect=test\n");
-  engine.addResource("test", "application/javascript", "alert(1)");
+  engine.addResource("test", "application/javascript", "YWxlcnQoMSk=");
   Check(true, false, false, "data:application/javascript;base64,YWxlcnQoMSk=", "Testing single redirect match", engine,
       "http://example.com/-advertisement-icon.", "example.com", "example.com",
       false, "image");
@@ -232,7 +233,7 @@ void TestThirdParty() {
 
 void TestDefaultLists() {
   std::vector<FilterList>& default_lists = FilterList::GetDefaultLists();
-  assert(default_lists.size() == 7);
+  assert(default_lists.size() == 8);
   FilterList& l = default_lists[0];
   assert(l.uuid == "67F880F5-7602-4042-8A3D-01481FD7437A");
   assert(l.url == "https://easylist.to/easylist/easylist.txt");
@@ -245,7 +246,7 @@ void TestDefaultLists() {
   num_passed++;
 
   // Includes Brave Disconnect list
-  FilterList& l2 = default_lists[6];
+  FilterList& l2 = default_lists[7];
   assert(l2.uuid == "9FA0665A-8FC0-4590-A80A-3FF6117A1258");
   assert(l2.url == "https://raw.githubusercontent.com"
       "/brave/adblock-lists/master/brave-disconnect.txt");
