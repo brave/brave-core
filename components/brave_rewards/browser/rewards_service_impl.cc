@@ -4004,33 +4004,16 @@ void RewardsServiceImpl::RecordBackendP3AStats() const {
                  auto_contributions_enabled_));
 }
 
-void RewardsServiceImpl::GetGrantViaSafetynetCheck(
-    const std::string& promotion_id) const {
-  bat_ledger_->GetGrantViaSafetynetCheck(promotion_id);
-}
-
-void RewardsServiceImpl::OnGrantViaSafetynetCheck(
-    const std::string& promotion_id, const std::string& nonce) {
-// This is used on Android only
-#if defined(OS_ANDROID)
-  safetynet_check::ClientAttestationCallback attest_callback =
-      base::BindOnce(&RewardsServiceImpl::GrantAttestationResult,
-          AsWeakPtr(), promotion_id);
-  safetynet_check_runner_.performSafetynetCheck(nonce,
-      std::move(attest_callback));
-#endif
-}
-
 #if defined(OS_ANDROID)
 void RewardsServiceImpl::GrantAttestationResult(
     const std::string& promotion_id, bool result,
     const std::string& result_string) {
-  if (result) {
-    return bat_ledger_->ApplySafetynetToken(promotion_id, result_string);
-  } else {
-    LOG(ERROR) << "GrantAttestationResult error: " << result_string;
-    TriggerOnGrantFinish(ledger::Result::LEDGER_ERROR, nullptr);
-  }
+//  if (result) {
+//    return bat_ledger_->ApplySafetynetToken(promotion_id, result_string);
+//  } else {
+//    LOG(ERROR) << "GrantAttestationResult error: " << result_string;
+//    TriggerOnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED, nullptr);
+//  }
 }
 #endif
 

@@ -112,8 +112,6 @@ class RewardsServiceImpl : public RewardsService,
   void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) override;
   void RecoverWallet(const std::string& passPhrase) override;
-  void GetGrantViaSafetynetCheck(
-      const std::string& promotion_id) const override;
   void GetContentSiteList(
       uint32_t start,
       uint32_t limit,
@@ -507,8 +505,6 @@ class RewardsServiceImpl : public RewardsService,
       ledger::PromotionPtr promotion);
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
-  void OnGrantViaSafetynetCheck(const std::string& promotion_id,
-                    const std::string& nonce) override;
   void SaveLedgerState(const std::string& ledger_state,
                        ledger::LedgerCallbackHandler* handler) override;
   void SavePublisherState(const std::string& publisher_state,

@@ -67,9 +67,6 @@ interface BatLedger {
   AttestPromotion(string promotion_id, string solution) => (ledger.mojom.Result result, ledger.mojom.Promotion? promotion);
   GetWalletPassphrase() => (string wallet_passphrase);
   RecoverWallet(string passPhrase) => (ledger.mojom.Result result, double balance);
-
-  GetGrantViaSafetynetCheck(string promotion_id);
-  ApplySafetynetToken(string promotion_id, string result_string);
   
   SetRewardsMainEnabled(bool enabled);
   SetPublisherMinVisitTime(uint64 duration_in_seconds);
@@ -190,7 +187,6 @@ interface BatLedgerClient {
 
   LoadNicewareList() => (ledger.mojom.Result result, string data);
   RemoveRecurringTip(string publisher_key) => (ledger.mojom.Result result);
-  OnGrantViaSafetynetCheck(string promotion_id, string nonce);
 
   LoadURL(string url, array<string> headers, string content,
       string content_type, ledger.mojom.UrlMethod method) => (int32 status_code, string response,
