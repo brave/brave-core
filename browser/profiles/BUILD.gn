@@ -9,6 +9,14 @@ source_set("profiles") {
     "profile_util.cc",
     "profile_util.h",
   ]
+
+  if (is_win) {
+    sources += [
+      "brave_profile_shortcut_manager_win.cc",
+      "brave_profile_shortcut_manager_win.h",
+    ]
+  }
+
   deps = [
     "//base",
     "//brave/browser/gcm_driver",
