@@ -551,25 +551,10 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 #pragma mark - Grants
 
-- (NSArray<BATGrant *> *)pendingGrants
+- (NSArray<BATPromotion *> *)pendingPromotions
 {
   return [self.mPendingPromotions copy];
 }
-
-// TODO: Remove this when ledger::Grant goes away
-- (BOOL)isGrantUGP:(const ledger::Grant &)grant
-{
-  return grant.type == "ugp";
-}
-
-// TODO: Remove this when ledger::Grant goes away
-- (NSString *)notificationIDForGrant:(const ledger::GrantPtr)grant
-{
-  const auto prefix = [self isGrantUGP:*grant] ? @"rewards_grant_" : @"rewards_grant_ads_";
-  const auto promotionId = [NSString stringWithUTF8String:grant->promotion_id.c_str()];
-  return [NSString stringWithFormat:@"%@%@", prefix, promotionId];
-}
-
 
 - (NSString *)notificationIDForPromo:(const ledger::PromotionPtr)promo
 {
@@ -579,12 +564,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   return [NSString stringWithFormat:@"%@%@", prefix, promotionId];
 }
 
-- (void)fetchAvailableGrantsForLanguage:(NSString *)language paymentId:(NSString *)paymentId
-{
-  [self fetchAvailableGrantsForLanguage:language paymentId:paymentId completion:nil];
-}
-
-- (void)fetchAvailableGrantsForLanguage:(NSString *)language paymentId:(NSString *)paymentId completion:(nullable void (^)(NSArray<BATGrant *> *grants))completion
+- (void)fetchPromotions:(nullable void (^)(NSArray<BATPromotion *> *grants))completion
 {
   ledger->FetchPromotions(^(ledger::Result result, std::vector<ledger::PromotionPtr> promotions) {
     if (result != ledger::Result::LEDGER_OK) {
@@ -604,64 +584,59 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
                          onlyOnce:YES];
     }
     for (BATBraveLedgerObserver *observer in [self.observers copy]) {
-      if (observer.grantsAdded) {
-        observer.grantsAdded(self.pendingGrants);
+      if (observer.promotionsAdded) {
+        observer.promotionsAdded(self.pendingPromotions);
       }
     }
     if (completion) {
-      completion(self.pendingGrants);
+      completion(self.pendingPromotions);
     }
   });
 }
 
-- (void)grantCaptchaForPromotionId:(NSString *)promoID promotionType:(NSString *)promotionType completion:(void (^)(BATResult result, NSString * _Nonnull json))completion
+- (void)claimPromotion:(NSString *)deviceCheckPublicKey completion:(void (^)(BATResult result, NSString * _Nonnull noonce))completion
 {
-  ledger->ClaimPromotion(std::string(promoID.UTF8String),
-      ^(const std::string &image, const std::string &hint) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-          completion([NSString stringWithUTF8String:image.c_str()],
-                     [NSString stringWithUTF8String:hint.c_str()]);
-        });
-      });
+  const auto payload = [NSDictionary dictionaryWithObject:deviceCheckPublicKey forKey:@"publicKey"];
+  const auto jsonData = [NSJSONSerialization dataWithJSONObject:payload options:0 error:nil];
+  if (!jsonData) {
+    NSLog(@"Missing JSON payload while attempting to claim promotion");
+    return;
+  }
+  const auto jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+  ledger->ClaimPromotion(jsonString.UTF8String, ^(const ledger::Result result, const std::string& json) {
+    const auto jsonData = [[NSString stringWithUTF8String:json.c_str()] dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *noonce = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+      completion(static_cast<BATResult>(result),
+                 noonce[@"noonce"]);
+    });
+  });
 }
 
-- (void)solveGrantCaptchWithPromotionId:(NSString *)promotionId solution:(NSString *)solution
+- (void)attestPromotion:(NSString *)promotionId solution:(BATPromotionSolution *)solution completion:(void (^)(BATPromotion * _Nullable promotion))completion
 {
-  ledger->AttestPromotion(
-      std::string(promotionId.UTF8String),
-      std::string(solution.UTF8String),
-      ^(const ledger::Result result, ledger::PromotionPtr promotion) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-          // TODO move logic onGrantFinish here
-        });
-      });
+  ledger->AttestPromotion(std::string(promotionId.UTF8String), solution.JSONPayload.UTF8String, ^(const ledger::Result result, ledger::PromotionPtr promotion) {
+    if (promotion.get() == nullptr) return;
+    
+    const auto bridgedPromotion = [[BATPromotion alloc] initWithPromotion:*promotion];
+    if (result == ledger::Result::LEDGER_OK) {
+      [self fetchBalance:nil];
+    }
+    
+    [self clearNotificationWithID:[self notificationIDForPromo:std::move(promotion)]];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if (completion) {
+        completion(bridgedPromotion);
+      }
+      for (BATBraveLedgerObserver *observer in [self.observers copy]) {
+        if (observer.promotionClaimed) {
+          observer.promotionClaimed(bridgedPromotion);
+        }
+      }
+    });
+  });
 }
-
-// TODO this needs to be callback from AttestPromotion in solveGrantCaptchWithPromotionId
-//- (void)onGrantFinish:(ledger::Result)result grant:(ledger::GrantPtr)grant
-//{
-//  ledger::BalanceReportInfo report_info;
-//  auto now = [NSDate date];
-//  const auto bridgedGrant = [[BATGrant alloc] initWithGrant:*grant];
-//  if (result == ledger::Result::LEDGER_OK) {
-//    ledger::ReportType report_type = grant->type == "ads" ? ledger::ReportType::ADS : ledger::ReportType::GRANT;
-//    [self fetchBalance:nil];
-//    ledger->SetBalanceReportItem(BATGetPublisherMonth(now),
-//                                 BATGetPublisherYear(now),
-//                                 report_type,
-//                                 grant->probi);
-//  }
-//
-//  [self clearNotificationWithID:[self notificationIDForGrant:std::move(grant)]];
-//  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
-//    if (observer.balanceReportUpdated) {
-//      observer.balanceReportUpdated();
-//    }
-//    if (observer.grantClaimed) {
-//      observer.grantClaimed(bridgedGrant);
-//    }
-//  }
-//}
 
 #pragma mark - History
 
@@ -1192,7 +1167,7 @@ BATLedgerBridge(BOOL,
 
   [self showBackupNotificationIfNeccessary];
   [self showAddFundsNotificationIfNeccessary];
-  [self fetchAvailableGrantsForLanguage:@"" paymentId:@""];
+  [self fetchPromotions:nil];
 }
 
 - (void)showBackupNotificationIfNeccessary

@@ -7,6 +7,7 @@
 #import "ledger.mojom.objc.h"
 #import "BATRewardsNotification.h"
 #import "BATBraveLedgerObserver.h"
+#import "BATPromotionSolution.h"
 
 @class BATBraveAds;
 
@@ -166,23 +167,18 @@ NS_SWIFT_NAME(BraveLedger)
                   completion:(void (^)(BATResult result))completion;
 
 
-#pragma mark - Grants
+#pragma mark - Promotions
 
-@property (nonatomic, readonly) NSArray<BATGrant *> *pendingGrants;
+@property (nonatomic, readonly) NSArray<BATPromotion *> *pendingPromotions;
 
-- (void)fetchAvailableGrantsForLanguage:(NSString *)language
-                              paymentId:(NSString *)paymentId;
+- (void)fetchPromotions:(nullable void (^)(NSArray<BATPromotion *> *grants))completion;
 
-- (void)fetchAvailableGrantsForLanguage:(NSString *)language
-                              paymentId:(NSString *)paymentId
-                             completion:(nullable void (^)(NSArray<BATGrant *> *grants))completion;
+- (void)claimPromotion:(NSString *)deviceCheckPublicKey
+            completion:(void (^)(BATResult result, NSString * _Nonnull json))completion;
 
-- (void)grantCaptchaForPromotionId:(NSString *)promoID
-                     promotionType:(NSString *)promotionType
-                        completion:(void (^)(BATResult result, NSString * _Nonnull json))completion;
-
-- (void)solveGrantCaptchWithPromotionId:(NSString *)promotionId
-                               solution:(NSString *)solution;
+- (void)attestPromotion:(NSString *)promotionId
+               solution:(BATPromotionSolution *)solution
+             completion:(nullable void (^)(BATPromotion * _Nullable promotion))completion;
 
 #pragma mark - History
 
