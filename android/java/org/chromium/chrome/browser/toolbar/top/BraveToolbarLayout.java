@@ -25,19 +25,20 @@ import org.chromium.base.ApplicationStatus;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
-import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.ChromeActivity;
 import org.chromium.chrome.browser.ChromeFeatureList;
 import org.chromium.chrome.browser.appmenu.BraveShieldsMenuHandler;
 import org.chromium.chrome.browser.appmenu.BraveShieldsMenuObserver;
+import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.AppearancePreferences;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -48,6 +49,7 @@ import org.chromium.chrome.browser.tabmodel.TabSelectionType;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.util.AccessibilityUtil;
 import org.chromium.chrome.browser.util.MathUtils;
+import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
 
 import java.net.URL;
@@ -419,6 +421,23 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       mBraveRewardsNativeWorker.GetAllNotifications();
   }
 
+  private boolean mayShowBraveAdsOobeDialog() {
+      Context context = getContext();
+
+      if (BraveAdsSignupDialog.shouldShowNewUserDialog(context)) {
+          BraveAdsSignupDialog.showNewUserDialog(getContext());
+          return true;
+      } else if (BraveAdsSignupDialog.shouldShowNewUserDialogIfRewardsIsSwitchedOff(context)) {
+          BraveAdsSignupDialog.showNewUserDialog(getContext());
+          return true;
+      } else if (BraveAdsSignupDialog.shouldShowExistingUserDialog(context)) {
+          BraveAdsSignupDialog.showExistingUserDialog(getContext());
+          return true;
+      }
+
+      return false;
+  }
+
   @Override
   public void OnNotificationsCount(int count) {
       boolean rewardsEnabled = BraveRewardsPanelPopup.isBraveRewardsEnabled();
@@ -442,10 +461,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       }
 
       updateNotificationBadgeForNewInstall(rewardsEnabled);
-      // TODO when ads enabled
-      // if (!PackageUtils.isFirstInstall(getContext()) && !OnboardingPrefManager.getInstance().isAdsAvailable()) {
-      //     mayShowBraveAdsOobeDialog();
-      // }
+      if (!PackageUtils.isFirstInstall(getContext())
+              && !OnboardingPrefManager.getInstance().isAdsAvailable()) {
+          mayShowBraveAdsOobeDialog();
+      }
   }
 
   @Override

@@ -27,12 +27,14 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
+import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.ChromeFeatureList;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.preferences.BraveRewardsPreferences;
+// TODO(jocelyn): import this after rewards page are added.
+// import org.chromium.chrome.browser.preferences.BraveRewardsPreferences;
 
 public class BraveAdsSignupDialog {
 
@@ -49,7 +51,7 @@ public class BraveAdsSignupDialog {
           && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
           && !BraveRewardsPanelPopup.isBraveRewardsEnabled()
           && hasElapsed24Hours(context)
-          && ChromeFeatureList.isEnabled(ChromeFeatureList.BRAVE_REWARDS);
+          && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
         boolean shouldShowForViewCount = shouldShowForViewCount();
         if (shouldShow) updateViewCount();
@@ -63,7 +65,7 @@ public class BraveAdsSignupDialog {
           && !PackageUtils.isFirstInstall(context)
           && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
           && !BraveRewardsPanelPopup.isBraveRewardsEnabled()
-          && ChromeFeatureList.isEnabled(ChromeFeatureList.BRAVE_REWARDS);
+          && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
         boolean shouldShowForViewCount = shouldShowForViewCount();
         if (shouldShow) updateViewCount();
@@ -78,7 +80,7 @@ public class BraveAdsSignupDialog {
           && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
           && BraveRewardsPanelPopup.isBraveRewardsEnabled()
           && BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedProfile())
-          && ChromeFeatureList.isEnabled(ChromeFeatureList.BRAVE_REWARDS);
+          && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
         boolean shouldShowForViewCount = shouldShowForViewCount();
         if (shouldShow) updateViewCount();
@@ -93,7 +95,9 @@ public class BraveAdsSignupDialog {
 
     @CalledByNative
     public static boolean showAdsInBackground() {
-        return BraveRewardsPreferences.getPrefAdsInBackgroundEnabled();
+      return false;
+      // TODO(jocelyn): Remove above and uncomment this when rewards page are added.
+      // return BraveRewardsPreferences.getPrefAdsInBackgroundEnabled();
     }
 
     private static void enqueueOobeNotification(Context context) {
@@ -194,7 +198,7 @@ public class BraveAdsSignupDialog {
 
     private static boolean shouldShowOnboardingDialog() {
         SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
- 
+
         return sharedPref.getBoolean(SHOULD_SHOW_ONBOARDING_DIALOG, true);
     }
 }

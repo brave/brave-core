@@ -8,6 +8,7 @@ import("//brave/components/brave_rewards/browser/android/java_sources.gni")
 
 brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/BraveAdsNativeHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveBadge.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveFeatureList.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRelaunchUtils.java",
@@ -21,7 +22,9 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveShieldsMenuAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveShieldsMenuHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveShieldsMenuObserver.java",
+  "../../brave/android/java/org/chromium/chrome/browser/dialogs/BraveAdsSignupDialog.java",
   "../../brave/android/java/org/chromium/chrome/browser/document/BraveLauncherActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveAds.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveAdsNotificationBuilder.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveOnboardingNotification.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveSetDefaultBrowserNotificationService.java",

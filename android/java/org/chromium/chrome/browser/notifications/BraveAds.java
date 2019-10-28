@@ -6,17 +6,19 @@
 
 package org.chromium.chrome.browser.notifications;
 
-
 import org.chromium.base.annotations.CalledByNative;
-import org.chromium.chrome.browser.notifications.channels.ChannelDefinitions;
 
 /**
  * This class provides the Brave Ads related methods for the native library
  * (brave/components/brave_ads/browser/notification_helper_android)
  */
 public abstract class BraveAds {
+    // TODO(jocelyn): Move this into a separate class for handling Brave's
+    // notification channels.
+    private static final String BRAVE_ADS_CHANNEL_ID = "com.brave.browser.ads";
+
     @CalledByNative
     public static String getBraveAdsChannelId() {
-        return ChannelDefinitions.ChannelId.BRAVE_ADS;
+        return BRAVE_ADS_CHANNEL_ID;
     }
 }

@@ -519,6 +519,9 @@ month...
       <message name="IDS_NOTIFICATION_CATEGORY_GROUP_BRAVE_ADS" desc="Subheading for 'Brave Ads' section of a list of notification categories. [CHAR-LIMIT=32]">
         Brave Ads
       </message>
+      <message name="IDS_NOTIFICATION_CATEGORY_BRAVE_ADS" desc="Label for Brave Ads. [CHAR-LIMIT=32]">
+        Brave Ads
+      </message>
       <message name="IDS_BRAVE_UI_NEW_GRANT" desc="A notification about free token grant">
         A free token grant is available.
       </message>
@@ -715,6 +718,15 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_SETTINGS_EXIT" desc="Text for Settings exit.">
 	Settings exit
+      </message>
+      <message name="IDS_BRAVE_ADS_NEW_USER_OFFER_TITLE" desc="Title for Brave Ads offer.">
+        Enable Brave Rewards
+      </message>
+      <message name="IDS_BRAVE_ADS_OFFER_POSITIVE" desc="Positive button text for Brave Ads offer.">
+        I'm in!
+      </message>
+      <message name="IDS_BRAVE_ADS_OFFER_TEXT" desc="Text for Brave Ads offer.">
+        Earn Basic Attention Token for viewing privacy preserving ads in Brave Rewards.
       </message>
     </messages>
   </release>

@@ -212,6 +212,7 @@ source_set("browser_process") {
     }
 
     deps += [
+      "//brave/build/android:jni_headers",
       "//chrome/android:jni_headers",
     ]
   }
