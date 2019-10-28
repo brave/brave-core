@@ -29,8 +29,7 @@ const char kLockFile[] = "lockfile";
 class ChromeProfileLockTest : public testing::Test {
  public:
   ChromeProfileLockTest()
-      : test_browser_thread_bundle_(
-            content::TestBrowserThreadBundle::REAL_IO_THREAD) {}
+      : task_environment_(content::BrowserTaskEnvironment::REAL_IO_THREAD) {}
 
  protected:
   void SetUp() override {
@@ -49,7 +48,7 @@ class ChromeProfileLockTest : public testing::Test {
 
   void LockFileExists(bool expect);
 
-  content::TestBrowserThreadBundle test_browser_thread_bundle_;
+  content::BrowserTaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
   base::FilePath user_data_path_;
   base::FilePath lock_file_path_;
