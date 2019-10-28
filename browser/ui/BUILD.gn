@@ -208,6 +208,8 @@ source_set("ui") {
       "views/brave_actions/brave_actions_container.h",
       "views/location_bar/brave_location_bar_view.cc",
       "views/location_bar/brave_location_bar_view.h",
+      "views/location_bar/brave_star_view.cc",
+      "views/location_bar/brave_star_view.h",
       "views/profiles/brave_avatar_toolbar_button.cc",
       "views/profiles/brave_avatar_toolbar_button.h",
       "views/tabs/brave_alert_indicator.cc",
