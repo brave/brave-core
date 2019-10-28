@@ -8,7 +8,7 @@ class PublisherIconCircleImageView: UIView {
   
   private var imageView = UIImageView()
   
-  init(size: CGFloat) {
+  init(size: CGFloat, inset: CGFloat = 7.0) {
     super.init(frame: .zero)
     
     addSubview(imageView)
@@ -18,7 +18,7 @@ class PublisherIconCircleImageView: UIView {
     }
     
     imageView.snp.makeConstraints {
-      $0.edges.equalTo(self).inset(7)
+      $0.edges.equalTo(self).inset(inset)
     }
     
     setContentHuggingPriority(.required, for: .horizontal)

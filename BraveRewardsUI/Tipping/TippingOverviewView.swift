@@ -29,10 +29,8 @@ class TippingOverviewView: UIView {
   
   let heartsImageView = UIImageView(image: UIImage(frameworkResourceNamed: "hearts"))
   
-  let faviconImageView = UIImageView().then {
+  let faviconImageView = PublisherIconCircleImageView(size: UX.faviconSize.width, inset: 14).then {
     $0.backgroundColor = UX.faviconBackgroundColor
-    $0.clipsToBounds = true
-    $0.layer.cornerRadius = UX.faviconSize.width / 2.0
     $0.layer.borderColor = UIColor.white.cgColor
     $0.layer.borderWidth = 2.0
   }
