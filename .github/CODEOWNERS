@@ -19,5 +19,14 @@ vendor/bat-native-confirmations/ @tmancey
 components/brave_ads/ @tmancey
 components/services/bat_ads/ @tmancey
 
+# Rewards and Ads Android related. Most likely should go away when we have
+# tests running on Android brave-core based.
+browser/ui/webui/brave_rewards_page_ui.cc @gdregalo
+components/brave_rewards/browser/rewards_notification_service.h @gdregalo
+components/brave_rewards/browser/rewards_service.h @gdregalo
+vendor/bat-native-ads/src/bat/ads/internal/static_values.h @gdregalo
+vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom @gdregalo
+vendor/bat-native-ledger/src/bat/ledger/internal/static_values.h @gdregalo
+
 # Network
 browser/net/ @iefremov
