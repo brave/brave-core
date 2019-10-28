@@ -11,7 +11,6 @@
 #include "base/memory/weak_ptr.h"
 
 #include "brave/components/brave_ads/browser/notification_helper.h"
-#include "chrome/browser/notifications/notification_channels_provider_android.h"
 
 namespace brave_ads {
 
@@ -26,9 +25,6 @@ class NotificationHelperAndroid
   ~NotificationHelperAndroid() override;
 
   bool IsBraveAdsNotificationChannelEnabled() const;
-
-  std::unique_ptr<NotificationChannelsProviderAndroid> channels_provider_ =
-      std::make_unique<NotificationChannelsProviderAndroid>();
 
   int GetOperatingSystemVersion() const;
 

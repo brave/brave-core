@@ -26,6 +26,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/document/BraveLauncherActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveAds.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveAdsNotificationBuilder.java",
+  "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationSettingsBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveOnboardingNotification.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveSetDefaultBrowserNotificationService.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveDuckDuckGoOfferView.java",

@@ -3,15 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_ads/browser/notification_helper_android.h"
+
 #include <string>
 
 #include "base/android/jni_string.h"
 #include "base/system/sys_info.h"
-#include "brave/components/brave_ads/browser/notification_helper_android.h"
 #include "brave/build/android/jni_headers/BraveAds_jni.h"
 #include "brave/build/android/jni_headers/BraveAdsSignupDialog_jni.h"
+#include "brave/build/android/jni_headers/BraveNotificationSettingsBridge_jni.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
 #include "chrome/android/chrome_jni_headers/NotificationSystemStatusUtil_jni.h"
+#include "chrome/browser/notifications/notification_channels_provider_android.h"
 
 namespace brave_ads {
 
@@ -77,13 +80,12 @@ bool NotificationHelperAndroid::IsBraveAdsNotificationChannelEnabled() const {
 
   JNIEnv* env = base::android::AttachCurrentThread();
   auto j_channel_id = Java_BraveAds_getBraveAdsChannelId(env);
-  std::string channel_id = ConvertJavaStringToUTF8(env, j_channel_id);
+  auto status = static_cast<NotificationChannelStatus>(
+      Java_BraveNotificationSettingsBridge_getChannelStatus(
+          env, j_channel_id));
 
-  return false;
-  // TODO(jocelyn): FIXME
-  // auto status = channels_provider_->GetChannelStatus(channel_id);
-  // return (status == NotificationChannelStatus::ENABLED ||
-  //    status == NotificationChannelStatus::UNAVAILABLE);
+  return (status == NotificationChannelStatus::ENABLED ||
+      status == NotificationChannelStatus::UNAVAILABLE);
 }
 
 int NotificationHelperAndroid::GetOperatingSystemVersion() const {
