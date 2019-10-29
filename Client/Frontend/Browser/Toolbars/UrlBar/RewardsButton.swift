@@ -30,7 +30,7 @@ class RewardsButton: UIButton {
     private var checkmarkView = UIImageView().then {
         let checkmark = #imageLiteral(resourceName: "brave_rewards_verified_badge")
         $0.image = checkmark
-        $0.frame = CGRect(x: 22, y: 2, width: checkmark.size.width, height: checkmark.size.height)
+        $0.frame = CGRect(x: 19, y: 4, width: checkmark.size.width, height: checkmark.size.height)
         $0.isHidden = true
         $0.isUserInteractionEnabled = false
     }
