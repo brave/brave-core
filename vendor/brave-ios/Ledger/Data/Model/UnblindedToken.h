@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy) NSString *publicKey;
 @property (nonatomic) double value;
 @property (nullable, nonatomic, retain) Promotion *promotion;
+@property (nullable, nonatomic, copy) NSString *tokenValue;
 
 @end
 
