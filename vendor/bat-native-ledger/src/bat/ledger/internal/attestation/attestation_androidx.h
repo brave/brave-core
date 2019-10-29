@@ -28,11 +28,21 @@ class AttestationAndroid : public Attestation {
       ConfirmCallback callback) override;
 
  private:
+  void ParseClaimSolution(
+      const std::string& response,
+      base::Value* result);
+
   void OnStart(
       const int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
       StartCallback callback);
+
+  void OnConfirm(
+      const int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers,
+      ConfirmCallback callback);
 };
 
 }  // namespace braveledger_attestation

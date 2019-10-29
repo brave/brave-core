@@ -12,11 +12,17 @@ namespace braveledger_request_util {
 
 std::string GetStartAttestationDesktopUrl();
 
+std::string GetCaptchaUrl(const std::string& captcha_id);
+
+std::string GetClaimAttestationDesktopUrl(const std::string& captcha_id);
+
+std::string GetConfirmAttestationAndroidUrl(const std::string& nonce);
+
 std::string GetStartAttestationAndroidUrl();
 
-std::string GetCaptchaUrl(const std::string captcha_id);
+std::string GetStartAttestationIOSUrl();
 
-std::string GetClaimAttestationDesktopUrl(const std::string captcha_id);
+std::string GetConfirmAttestationIOSUrl(const std::string& nonce);
 
 }  // namespace braveledger_request_util
 

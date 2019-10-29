@@ -34,8 +34,8 @@ class AttestationDesktop : public Attestation {
       base::Value* result);
 
   void ParseClaimSolution(
-    const std::string& response,
-    base::Value* result);
+      const std::string& response,
+      base::Value* result);
 
   void OnStart(
       const int response_status_code,
@@ -56,10 +56,10 @@ class AttestationDesktop : public Attestation {
       StartCallback callback);
 
   void OnConfirm(
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
-    ConfirmCallback callback);
+      const int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers,
+      ConfirmCallback callback);
 };
 
 }  // namespace braveledger_attestation
