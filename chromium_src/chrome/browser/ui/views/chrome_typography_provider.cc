@@ -3,21 +3,42 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "chrome/browser/ui/views/chrome_typography_provider.h"
 #include "ui/gfx/color_palette.h"
+#include "ui/views/style/typography.h"
 
-namespace gfx {
-  const SkColor kBraveWhite = SkColorSetRGB(0xff, 0xff, 0xff);
+// Comes after the above includes.
+#include "chrome/browser/ui/views/chrome_typography_provider.h"
+
+namespace {
   const SkColor kBraveGrey800 = SkColorSetRGB(0x3b, 0x3e, 0x4f);
 }
 
-// Button text color
-#define kGoogleGrey900 kBraveWhite
-// Button text color (prominent, dark mode)
-#define kGoogleBlue300 kBraveWhite
-// // Button text color (prominent, light mode)
-#define kGoogleBlue600 kBraveGrey800
-#include "../../../../../chrome/browser/ui/views/chrome_typography_provider.cc"
-#undef kGoogleGrey900
-#undef kGoogleBlue300
-#undef kGoogleBlue600
+#define GetColor GetColor_ChromiumImpl
+#include "../../../../../../chrome/browser/ui/views/chrome_typography_provider.cc"
+#undef GetColor
+
+SkColor ChromeTypographyProvider::GetColor(const views::View& view,
+                                           int context,
+                                           int style) const {
+  // Harmony check duplicated from ChromiumImpl
+  const ui::NativeTheme* native_theme = view.GetNativeTheme();
+  DCHECK(native_theme);
+  if (ShouldIgnoreHarmonySpec(*native_theme)) {
+    return GetHarmonyTextColorForNonStandardNativeTheme(context, style,
+                                                        *native_theme);
+  }
+  // Override button text colors
+  if (context == views::style::CONTEXT_BUTTON_MD) {
+    switch (style) {
+      case views::style::STYLE_DIALOG_BUTTON_DEFAULT:
+        return SK_ColorWHITE;
+      case views::style::STYLE_DISABLED:
+        // Keep chromium style for this state.
+        break;
+      default:
+        return native_theme->ShouldUseDarkColors() ? SK_ColorWHITE
+                                                   : kBraveGrey800;
+    }
+  }
+  return GetColor_ChromiumImpl(view, context, style);
+}
