@@ -172,10 +172,15 @@ class TippingSelectionView: UIView {
     insufficientFundsButton.snp.makeConstraints {
       $0.edges.equalTo(self.sendTipButton)
     }
+    updateForTraits()
   }
   
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
+    updateForTraits()
+  }
+  
+  func updateForTraits() {
     let isWideLayout = traitCollection.horizontalSizeClass == .regular
     layoutGuide.snp.remakeConstraints {
       if isWideLayout {

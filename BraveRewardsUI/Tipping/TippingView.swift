@@ -138,11 +138,11 @@ extension TippingViewController {
         $0.top.leading.trailing.equalTo(contentView)
         $0.bottom.equalTo(self.optionSelectionView.snp.top)
       }
+      
+      updateForTraits()
     }
     
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-      super.traitCollectionDidChange(previousTraitCollection)
-      
+    func updateForTraits() {
       let isWideLayout = traitCollection.horizontalSizeClass == .regular
       contentView.snp.remakeConstraints {
         if isWideLayout {
@@ -160,6 +160,11 @@ extension TippingViewController {
       optionSelectionView.clipsToBounds = isWideLayout
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+      super.traitCollectionDidChange(previousTraitCollection)
+      updateForTraits()
+    }
+    
     @available(*, unavailable)
     required init(coder: NSCoder) {
       fatalError()
@@ -173,6 +178,9 @@ extension TippingViewController {
 extension TippingViewController.View: BasicAnimationControllerDelegate {
   func animatePresentation(context: UIViewControllerContextTransitioning) {
     context.containerView.addSubview(self)
+    snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
     frame = context.containerView.bounds
     let isWideLayout = context.containerView.traitCollection.horizontalSizeClass == .regular
     
