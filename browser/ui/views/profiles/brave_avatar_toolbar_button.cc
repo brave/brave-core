@@ -7,7 +7,10 @@
 
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/themes/theme_properties.h"
+#include "chrome/browser/profiles/profile_avatar_icon_util.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 #include "ui/base/material_design/material_design_controller.h"
 #include "ui/base/theme_provider.h"
@@ -18,6 +21,23 @@ void BraveAvatarToolbarButton::SetText(const base::string16& text) {
   // We only want the icon for Tor profile.
   AvatarToolbarButton::SetText(brave::IsTorProfile(profile_) ? base::string16()
                                                              : text);
+}
+
+bool BraveAvatarToolbarButton::ShouldShowGenericIcon() const {
+  const bool chromium_should_show =
+      AvatarToolbarButton::ShouldShowGenericIcon();
+  if (chromium_should_show) {
+    // We don't want to show the skia icon image as the Brave placeholder image
+    // has a gradient and is best rendered by bitmap.
+    ProfileAttributesEntry* entry;
+    if (g_browser_process->profile_manager()
+            ->GetProfileAttributesStorage()
+            .GetProfileAttributesWithPath(profile_->GetPath(), &entry) &&
+        entry->GetAvatarIconIndex() == profiles::GetPlaceholderAvatarIndex()) {
+        return false;
+    }
+  }
+  return chromium_should_show;
 }
 
 gfx::ImageSkia BraveAvatarToolbarButton::GetAvatarIcon(

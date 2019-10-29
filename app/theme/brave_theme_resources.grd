@@ -25,20 +25,40 @@
           > declare -i a=56
           > for file in $(cat < avatarlist); do echo "<structure type=\"chrome_scaled_image\" name=\"IDR_PROFILE_AVATAR_$a\" file=\"common/avatars/$file\" />"; a=a+1 done | pbcopy
         -->
-        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_56" file="common/avatars/avatar_orangepeel.png" />
-        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_57" file="common/avatars/avatar_nana.png" />
-        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_58" file="common/avatars/avatar_envy.png" />
-        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_59" file="common/avatars/avatar_clearskies.png" />
-        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_60" file="common/avatars/avatar_bondyblue.png" />
-        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_61" file="common/avatars/avatar_blurple.png" />
-        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_62" file="common/avatars/avatar_darknight.png" />
-        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_63" file="common/avatars/avatar_orangepeel_shape.png" />
-        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_64" file="common/avatars/avatar_nana_shape.png" />
-        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_65" file="common/avatars/avatar_envy_shape.png" />
-        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_66" file="common/avatars/avatar_clearskies_shape.png" />
-        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_67" file="common/avatars/avatar_bondyblue_shape.png" />
-        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_68" file="common/avatars/avatar_blurple_shape.png" />
-        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_69" file="common/avatars/avatar_darknight_shape.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_56" file="common/avatars/avatar_edgy_brave.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_57" file="common/avatars/avatar_edgy_ocean.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_58" file="common/avatars/avatar_edgy_grass.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_59" file="common/avatars/avatar_edgy_corn.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_60" file="common/avatars/avatar_edgy_royal.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_61" file="common/avatars/avatar_edgy_ninja.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_62" file="common/avatars/avatar_paladin_rewards.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_63" file="common/avatars/avatar_paladin_brave.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_64" file="common/avatars/avatar_paladin_ocean.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_65" file="common/avatars/avatar_paladin_grass.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_66" file="common/avatars/avatar_paladin_corn.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_67" file="common/avatars/avatar_paladin_royal.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_68" file="common/avatars/avatar_paladin_ninja.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_69" file="common/avatars/avatar_gleam_rewards.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_70" file="common/avatars/avatar_gleam_brave.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_71" file="common/avatars/avatar_gleam_ocean.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_72" file="common/avatars/avatar_gleam_grass.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_73" file="common/avatars/avatar_gleam_corn.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_74" file="common/avatars/avatar_gleam_royal.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_75" file="common/avatars/avatar_gleam_ninja.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_76" file="common/avatars/avatar_oval_rewards.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_77" file="common/avatars/avatar_oval_brave.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_78" file="common/avatars/avatar_oval_ocean.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_79" file="common/avatars/avatar_oval_grass.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_80" file="common/avatars/avatar_oval_corn.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_81" file="common/avatars/avatar_oval_royal.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_82" file="common/avatars/avatar_oval_ninja.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_83" file="common/avatars/avatar_bonbon_rewards.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_84" file="common/avatars/avatar_bonbon_brave.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_85" file="common/avatars/avatar_bonbon_ocean.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_86" file="common/avatars/avatar_bonbon_grass.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_87" file="common/avatars/avatar_bonbon_corn.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_88" file="common/avatars/avatar_bonbon_royal.png" />
+        <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_89" file="common/avatars/avatar_bonbon_ninja.png" />
       </if>
     </structures>
   </release>
