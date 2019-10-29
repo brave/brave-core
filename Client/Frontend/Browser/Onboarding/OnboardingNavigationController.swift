@@ -57,7 +57,7 @@ class OnboardingNavigationController: UINavigationController {
             switch self {
             case .newUser: return BraveAds.isCurrentRegionSupported() ? [.searchEnginePicker, .shieldsInfo, .rewardsAgreement, .adsCountdown] : [.searchEnginePicker, .shieldsInfo, .rewardsAgreement]
             case .existingUserRewardsOff: return BraveAds.isCurrentRegionSupported() ? [.rewardsAgreement, .adsCountdown] : [.rewardsAgreement]
-            case .existingUserRewardsOn: return BraveAds.isCurrentRegionSupported() ? [.existingRewards, .adsCountdown] : []
+            case .existingUserRewardsOn: return BraveAds.isCurrentRegionSupported() ? [.existingRewardsTurnOnAds, .adsCountdown] : []
             }
             #endif
         }
@@ -66,7 +66,7 @@ class OnboardingNavigationController: UINavigationController {
     fileprivate enum Screens {
         case searchEnginePicker
         case shieldsInfo
-        case existingRewards
+        case existingRewardsTurnOnAds
         case rewardsAgreement
         case adsCountdown
         
@@ -77,8 +77,8 @@ class OnboardingNavigationController: UINavigationController {
                 return OnboardingSearchEnginesViewController(profile: profile, rewards: rewards, theme: theme)
             case .shieldsInfo:
                 return OnboardingShieldsViewController(profile: profile, rewards: rewards, theme: theme)
-            case .existingRewards:
-                return OnboardingRewardsViewController(profile: profile, rewards: rewards, theme: theme)
+            case .existingRewardsTurnOnAds:
+                return OnboardingAdsAvailableController(profile: profile, rewards: rewards, theme: theme)
             case .rewardsAgreement:
                 return OnboardingRewardsAgreementViewController(profile: profile, rewards: rewards, theme: theme)
             case .adsCountdown:
@@ -90,7 +90,7 @@ class OnboardingNavigationController: UINavigationController {
             switch self {
             case .searchEnginePicker: return OnboardingSearchEnginesViewController.self
             case .shieldsInfo: return OnboardingShieldsViewController.self
-            case .existingRewards: return OnboardingRewardsViewController.self
+            case .existingRewardsTurnOnAds: return OnboardingAdsAvailableController.self
             case .rewardsAgreement: return OnboardingRewardsAgreementViewController.self
             case .adsCountdown: return OnboardingAdsCountdownViewController.self
             }

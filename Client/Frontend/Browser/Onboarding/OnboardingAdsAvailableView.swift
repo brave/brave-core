@@ -8,7 +8,7 @@ import BraveShared
 import BraveRewards
 import Lottie
 
-extension OnboardingRewardsViewController {
+extension OnboardingAdsAvailableController {
     
     private struct UX {
         /// A negative spacing is needed to make rounded corners for details view visible.
@@ -19,8 +19,8 @@ extension OnboardingRewardsViewController {
     
     class View: UIView {
         
-        let continueButton = CommonViews.primaryButton(text: Strings.OBShowMeButton).then {
-            $0.accessibilityIdentifier = "OnboardingRewardsViewController.OBShowMeButton"
+        let continueButton = CommonViews.primaryButton(text: Strings.OBTurnOnButton).then {
+            $0.accessibilityIdentifier = "OnboardingRewardsViewController.OBTurnOnButton"
         }
         
         let skipButton = CommonViews.secondaryButton().then {
@@ -50,16 +50,11 @@ extension OnboardingRewardsViewController {
             $0.spacing = 32
         }
         
-        private let titleLabel = CommonViews.primaryText(Strings.OBRewardsTitle)
+        private let titleLabel = CommonViews.primaryText(Strings.OBAdsOptInTitle)
         
         private let descriptionLabel = CommonViews.secondaryText("").then {
-            if BraveAds.isCurrentRegionSupported() {
-                let text = Locale.current.isJapan ? Strings.OBRewardsDetailInAdRegionJapan : Strings.OBRewardsDetailInAdRegion
-                $0.attributedText = text.boldWords(with: $0.font, amount: 2)
-            } else {
-                $0.attributedText = Strings.OBRewardsDetailOutsideAdRegion
-                    .boldWords(with: $0.font, amount: 1)
-            }
+            let text = Locale.current.isJapan ? Strings.OBAdsOptInMessageJapan : Strings.OBAdsOptInMessage
+            $0.attributedText = text.boldWords(with: $0.font, amount: 2)
         }
         
         private lazy var textStackView = UIStackView().then { stackView in
