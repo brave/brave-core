@@ -328,6 +328,7 @@ struct Promotion {
 };
 
 struct PromotionCreds {
+  string tokens; // JSONStringArray
   string blinded_creds; // JSONStringArray
   string signed_creds; // JSONStringArray
   string public_key;

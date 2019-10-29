@@ -54,6 +54,7 @@ bool DatabasePromotionCreds::CreateTable(sql::Database* db) {
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
         "%s_id TEXT NOT NULL,"
+        "tokens TEXT NOT NULL,"
         "blinded_creds TEXT NOT NULL,"
         "signed_creds TEXT,"
         "public_key TEXT,"
@@ -94,7 +95,7 @@ bool DatabasePromotionCreds::InsertOrUpdate(
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
-      "(%s_id, blinded_creds, signed_creds, public_key, batch_proof, claim_id) "
+      "(%s_id, tokens, blinded_creds, signed_creds, public_key, batch_proof, claim_id) "
       "VALUES (?, ?, ?, ?, ?, ?)",
       table_name_,
       parent_table_name_);
@@ -103,11 +104,12 @@ bool DatabasePromotionCreds::InsertOrUpdate(
     db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
 
   statement.BindString(0, promotion_id);
-  statement.BindString(1, info->blinded_creds);
-  statement.BindString(2, info->signed_creds);
-  statement.BindString(3, info->public_key);
-  statement.BindString(4, info->batch_proof);
-  statement.BindString(5, info->claim_id);
+  statement.BindString(1, info->tokens);
+  statement.BindString(2, info->blinded_creds);
+  statement.BindString(3, info->signed_creds);
+  statement.BindString(4, info->public_key);
+  statement.BindString(5, info->batch_proof);
+  statement.BindString(6, info->claim_id);
 
   if (!statement.Run()) {
     return false;
@@ -124,7 +126,7 @@ ledger::PromotionCredsPtr DatabasePromotionCreds::GetRecord(
   }
 
   const std::string query = base::StringPrintf(
-      "SELECT blinded_creds, signed_creds, public_key, "
+      "SELECT tokens, blinded_creds, signed_creds, public_key, "
       "batch_proof, claim_id FROM %s WHERE %s_id=?",
       table_name_,
       parent_table_name_);
@@ -137,11 +139,12 @@ ledger::PromotionCredsPtr DatabasePromotionCreds::GetRecord(
   }
 
   auto info = ledger::PromotionCreds::New();
-  info->blinded_creds = statement.ColumnString(0);
-  info->signed_creds = statement.ColumnString(1);
-  info->public_key = statement.ColumnString(2);
-  info->batch_proof = statement.ColumnString(3);
-  info->claim_id = statement.ColumnString(4);
+  info->tokens = statement.ColumnString(0);
+  info->blinded_creds = statement.ColumnString(1);
+  info->signed_creds = statement.ColumnString(2);
+  info->public_key = statement.ColumnString(3);
+  info->batch_proof = statement.ColumnString(4);
+  info->claim_id = statement.ColumnString(5);
 
   return info;
 }
