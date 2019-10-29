@@ -210,7 +210,7 @@ class NewTabPage extends React.Component<Props, State> {
               showWidget={newTabData.showRewards}
               hideWidget={this.toggleShowRewards}
               onDismissNotification={this.dismissNotification}
-              menuPosition={'right'}
+              menuPosition={'left'}
             />
             {this.props.newTabData.gridSites.length ? <List
               blockNumber={this.props.newTabData.gridSites.length}

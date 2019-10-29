@@ -214,7 +214,7 @@ class RewardsService : public KeyedService {
       RewardsServicePrivateObserver* observer) = 0;
   virtual void GetTransactionHistory(
       GetTransactionHistoryCallback callback) = 0;
-  virtual void TriggerOnAdsEnabled(bool ads_enabled) = 0;
+  virtual void OnAdsEnabled(bool ads_enabled) = 0;
 
   virtual void RefreshPublisher(
       const std::string& publisher_key,

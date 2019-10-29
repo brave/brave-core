@@ -35,9 +35,7 @@ export function wireApiEventsToStore () {
   .then((initialData) => {
     if (initialData.preferences.showRewards) {
       rewardsInitData()
-      window.setInterval(() => {
-        fetchCreatedWalletData()
-      }, 30000)
+      setRewardsFetchInterval()
     }
     getActions().setInitialData(initialData)
     // Listen for API changes and dispatch to store
@@ -56,16 +54,25 @@ export function rewardsInitData () {
   .then((preInitialRewardsData) => {
     getActions().setPreInitialRewardsData(preInitialRewardsData)
     chrome.braveRewards.getWalletExists((exists: boolean) => {
-      if (!exists) {
-        return
+      if (exists) {
+        fetchCreatedWalletData()
+        getActions().onWalletExists(exists)
       }
-      fetchCreatedWalletData()
-      getActions().onWalletExists(exists)
     })
   })
   .catch(e => {
     console.error('Error fetching pre-initial rewards data: ', e)
   })
+}
+
+function setRewardsFetchInterval () {
+  window.setInterval(() => {
+    chrome.braveRewards.getWalletExists((exists: boolean) => {
+      if (exists) {
+        fetchCreatedWalletData()
+      }
+    })
+  }, 30000)
 }
 
 function fetchCreatedWalletData () {

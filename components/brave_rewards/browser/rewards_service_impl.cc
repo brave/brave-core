@@ -2080,7 +2080,7 @@ void RewardsServiceImpl::SetAutoContribute(bool enabled) {
   }
 }
 
-void RewardsServiceImpl::TriggerOnAdsEnabled(
+void RewardsServiceImpl::OnAdsEnabled(
     bool ads_enabled) {
   for (auto& observer : observers_)
     observer.OnAdsEnabled(this, ads_enabled);

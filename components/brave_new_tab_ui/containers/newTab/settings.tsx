@@ -86,6 +86,14 @@ export default class Settings extends React.PureComponent<Props, {}> {
               />
             </SettingsRow>
             <SettingsRow>
+              <SettingsText>{getLocale('showRewards')}</SettingsText>
+              <Toggle
+                onChange={toggleShowRewards}
+                checked={showRewards}
+                size='small'
+              />
+            </SettingsRow>
+            <SettingsRow>
               <SettingsText>{getLocale('showBraveStats')}</SettingsText>
               <Toggle
                 onChange={toggleShowStats}
@@ -106,14 +114,6 @@ export default class Settings extends React.PureComponent<Props, {}> {
               <Toggle
                 onChange={toggleShowTopSites}
                 checked={showTopSites}
-                size='small'
-              />
-            </SettingsRow>
-            <SettingsRow>
-              <SettingsText>{getLocale('showRewards')}</SettingsText>
-              <Toggle
-                onChange={toggleShowRewards}
-                checked={showRewards}
                 size='small'
               />
             </SettingsRow>

@@ -35,6 +35,7 @@ export const Header = styled<{}, 'header'>('header')`
     grid-area: topsites;
     margin: 0 46px 0 46px;
     justify-self: start;
+    align-items: normal;
   }
 
   > *:nth-child(5) {

@@ -17,7 +17,7 @@ export const WidgetWrapper = styled<{}, 'div'>('div')`
 
 export const Footer = styled<{}, 'div'>('div')`
   max-width: 275px;
-  margin-top: 10px;
+  margin-top: 25px;
 `
 
 export const BatIcon = styled<{}, 'div'>('div')`
@@ -43,7 +43,7 @@ export const ServiceText = styled<{}, 'span'>('span')`
 `
 
 export const ServiceLink = styled<{}, 'a'>('a')`
-  color: ${palette.blue500};
+  color: #B0DBFF;
   font-weight: 600;
   text-decoration: none;
 `
@@ -116,7 +116,7 @@ export const ConvertedAmount = styled<{}, 'span'>('span')`
 
 export const AmountDescription = styled<{}, 'span'>('span')`
   font-size: 14px;
-  color: rgb(128, 158, 255);
+  color: #fff;
 `
 
 export const NotificationWrapper = styled(WidgetWrapper)`
