@@ -35,6 +35,10 @@ class TippingOverviewView: UIView {
     $0.layer.borderWidth = 2.0
   }
   
+  let verifiedImageView = UIImageView(image: UIImage(frameworkResourceNamed: "icn-verified-large")).then {
+    $0.isHidden = true
+  }
+  
   let publisherNameLabel = UILabel().then {
     $0.appearanceTextColor = .white
     $0.font = .systemFont(ofSize: 20.0, weight: .medium)
@@ -98,6 +102,7 @@ class TippingOverviewView: UIView {
     // headerView.addSubview(heartsImageView)
     scrollView.addSubview(socialStackView)
     addSubview(faviconImageView)
+    addSubview(verifiedImageView)
     scrollView.addSubview(bodyStackView)
     bodyStackView.addArrangedSubview(disclaimerView)
     bodyStackView.setCustomSpacing(15.0, after: disclaimerView)
@@ -128,6 +133,10 @@ class TippingOverviewView: UIView {
       $0.centerY.equalTo(self.headerView.snp.bottom).offset(-8.0)
       $0.leading.equalTo(self).offset(25.0)
       $0.size.equalTo(UX.faviconSize)
+    }
+    verifiedImageView.snp.makeConstraints {
+      $0.centerX.equalTo(faviconImageView.snp.trailing).offset(-11)
+      $0.centerY.equalTo(faviconImageView.snp.top).offset(11)
     }
     publisherNameLabel.snp.makeConstraints {
       $0.leading.equalTo(faviconImageView.snp.trailing).offset(15)

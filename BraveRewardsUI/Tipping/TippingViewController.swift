@@ -101,6 +101,7 @@ class TippingViewController: UIViewController, UIViewControllerTransitioningDele
       } else {
         self.tippingView.overviewView.publisherNameLabel.text = "\(publisherInfo.name) \(String(format: Strings.OnProviderText, publisherInfo.providerDisplayString))"
       }
+      self.tippingView.overviewView.verifiedImageView.isHidden = publisherInfo.status == .notVerified
       self.tippingView.overviewView.titleLabel.text = banner.title.isEmpty ? Strings.TippingOverviewTitle : banner.title
       self.tippingView.overviewView.bodyLabel.text = banner.desc.isEmpty ? Strings.TippingOverviewBody : banner.desc
       
