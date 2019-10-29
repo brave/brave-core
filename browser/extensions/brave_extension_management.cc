@@ -8,8 +8,6 @@
 #include <memory>
 
 #include "base/command_line.h"
-#include "base/files/file_path.h"
-#include "base/files/file_util.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/brave_switches.h"
@@ -18,7 +16,6 @@
 #include "brave/browser/extensions/brave_extension_provider.h"
 #include "chrome/browser/extensions/external_policy_loader.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/common/extension.h"
@@ -28,12 +25,6 @@
 #include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/tor/tor_profile_service.h"
 #endif
-
-namespace {
-void DeleteDir(const base::FilePath& path) {
-  base::DeleteFile(path, true);
-}
-}  // namespace
 
 namespace extensions {
 
@@ -54,10 +45,9 @@ BraveExtensionManagement::~BraveExtensionManagement() {
 
 void BraveExtensionManagement::RegisterBraveExtensions() {
 #if BUILDFLAG(ENABLE_TOR)
-  const bool isTorEnabled = !tor::TorProfileService::IsTorDisabled();
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
-  if (isTorEnabled &&
+  if (!tor::TorProfileService::IsTorDisabled() &&
       !command_line.HasSwitch(switches::kDisableTorClientUpdaterExtension) &&
       !profile_->AsTestingProfile()) {
     g_brave_browser_process->tor_client_updater()->Register();
@@ -67,15 +57,7 @@ void BraveExtensionManagement::RegisterBraveExtensions() {
 
 void BraveExtensionManagement::CleanupBraveExtensions() {
 #if BUILDFLAG(ENABLE_TOR)
-  // Delete tor binaries if tor is disabled by gpo.
-  if (tor::TorProfileService::IsTorDisabled()) {
-    ProfileManager* profile_manager = g_browser_process->profile_manager();
-    base::FilePath tor_component_dir =
-        profile_manager->user_data_dir().AppendASCII(
-            extensions::kTorClientComponentId);
-    g_brave_browser_process->tor_client_updater()->GetTaskRunner()->PostTask(
-        FROM_HERE, base::BindOnce(&DeleteDir, tor_component_dir));
-  }
+  g_brave_browser_process->tor_client_updater()->Cleanup();
 #endif
 }
 

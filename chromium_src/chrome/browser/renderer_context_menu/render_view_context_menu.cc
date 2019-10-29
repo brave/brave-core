@@ -8,7 +8,6 @@
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
-#include "brave/common/pref_names.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service.h"
@@ -86,10 +85,10 @@ void BraveRenderViewContextMenu::InitMenu() {
   RenderViewContextMenu_Chromium::InitMenu();
 
 #if BUILDFLAG(ENABLE_TOR)
-  const bool isTorEnabled = !tor::TorProfileService::IsTorDisabled();
   // Add Open Link with Tor
   int index = -1;
-  if (isTorEnabled && !params_.link_url.is_empty()) {
+  if (!tor::TorProfileService::IsTorDisabled() &&
+      !params_.link_url.is_empty()) {
     const Browser* browser = GetBrowser();
     const bool is_app = browser && browser->is_type_app();
 
