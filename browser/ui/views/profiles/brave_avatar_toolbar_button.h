@@ -12,8 +12,9 @@ class BraveAvatarToolbarButton : public AvatarToolbarButton {
  public:
   using AvatarToolbarButton::AvatarToolbarButton;
 
-  // views::LabelButton:
-  void SetText(const base::string16& text) override;
+  // ToolbarButton:
+  void SetHighlight(const base::string16& highlight_text,
+                    base::Optional<SkColor> highlight_color) override;
 
  private:
   gfx::ImageSkia GetAvatarIcon(const gfx::Image& gaia_image) const override;
