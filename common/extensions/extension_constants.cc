@@ -12,6 +12,7 @@ const char hangouts_extension_id[] = "nkeimhogjdpnpccoofpliimaahmaaome";
 const char widevine_extension_id[] = "oimompecagnajdejgnnjijobebaeigek";
 const char brave_sync_extension_id[] = "nomlkjnggnifocmealianaaiobmebgil";
 const char crl_set_extension_id[] = "hfnkpimlhhgieaddgfemjhofmfblmnib";
+const char brave_wayback_machine_extension_id[] = "kpgdnghmcgkbndckiehmcfmgpnfpacjh";
 
 const char ethereum_remote_client_extension_id[] =
     "odbfpeeihdkbihmopkbjmoonfanlbfcl";

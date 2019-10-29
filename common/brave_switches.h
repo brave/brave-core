@@ -20,6 +20,8 @@ extern const char kDisableTorClientUpdaterExtension[];
 
 extern const char kDisableWebTorrentExtension[];
 
+extern const char kDisableBraveWaybackMachineExtension[];
+
 extern const char kRewards[];
 
 extern const char kUiMode[];

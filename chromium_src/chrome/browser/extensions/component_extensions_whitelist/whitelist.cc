@@ -14,6 +14,7 @@
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_sync/grit/brave_sync_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+#include "brave/components/brave_wayback_machine/grit/brave_wayback_machine_resources.h"
 
 namespace extensions {
 
@@ -23,7 +24,8 @@ namespace extensions {
       brave_rewards_extension_id,
       brave_sync_extension_id,
       ethereum_remote_client_extension_id,
-      brave_webtorrent_extension_id
+      brave_webtorrent_extension_id,
+      brave_wayback_machine_extension_id,
     };
 
     for (size_t i = 0; i < base::size(kAllowed); ++i) {
@@ -41,6 +43,7 @@ namespace extensions {
       case IDR_BRAVE_REWARDS:
       case IDR_BRAVE_SYNC_EXTENSION:
       case IDR_BRAVE_WEBTORRENT:
+      case IDR_BRAVE_WAYBACK_MACHINE:
         return true;
     }
 

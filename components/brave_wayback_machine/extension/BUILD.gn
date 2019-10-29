@@ -1,0 +1,16 @@
+import("//brave/components/common/typescript.gni")
+
+transpile_web_ui("generate_brave_wayback_machine") {
+  entry_points = [
+    # Background script
+    ["brave_wayback_machine_background", rebase_path("background/index.ts")]
+  ]
+
+  resource_name = "brave_wayback_machine"
+
+  # Must match the relative path from the static GRD to the manifest.json
+  # plus any other relative path we want these files to live in the extension
+  extra_relative_path = "/brave_wayback_machine/extension/out"
+
+  public_asset_path = "/extension/out/"
+}

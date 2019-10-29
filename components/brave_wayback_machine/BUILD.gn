@@ -1,0 +1,39 @@
+import("//brave/components/common/typescript.gni")
+import("//tools/grit/grit_rule.gni")
+import("//tools/grit/repack.gni")
+
+grit("static_resources") {
+  source = "resources.grd"
+  outputs = [
+    "grit/brave_wayback_machine_resources_map.cc",
+    "grit/brave_wayback_machine_resources_map.h",
+    "grit/brave_wayback_machine_resources.h",
+    "brave_wayback_machine_static.pak",
+  ]
+
+  deps = [ ]
+
+  resource_ids = ""
+}
+
+pack_web_resources("generated_resources") {
+  resource_name = "brave_wayback_machine"
+  output_dir = "$root_gen_dir/brave/components/brave_wayback_machine"
+  # Need wepack and GRD generation first
+  deps = [
+    "extension:generate_brave_wayback_machine"
+  ]
+}
+
+repack("resources") {
+  deps = [
+    ":static_resources",
+    ":generated_resources",
+  ]
+  sources = [
+    "$root_gen_dir/brave/components/brave_wayback_machine/brave_wayback_machine_static.pak",
+    "$root_gen_dir/brave/components/brave_wayback_machine/brave_wayback_machine_generated.pak",
+  ]
+  # This output repacked by brave_paks.gni
+  output = "$root_gen_dir/brave/components/brave_wayback_machine/brave_wayback_machine_resources.pak"
+}

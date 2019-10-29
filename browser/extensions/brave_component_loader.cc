@@ -19,6 +19,7 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+#include "brave/components/brave_wayback_machine/grit/brave_wayback_machine_resources.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/components_ui.h"
@@ -103,6 +104,13 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
   // Enable rewards extension if already opted-in
   HandleRewardsEnabledStatus();
 #endif
+
+  if (!command_line.HasSwitch(switches::kDisableBraveWaybackMachineExtension)) {
+    base::FilePath brave_wayback_machine_path(FILE_PATH_LITERAL(""));
+    brave_wayback_machine_path =
+      brave_wayback_machine_path.Append(FILE_PATH_LITERAL("brave_wayback_machine"));
+    Add(IDR_BRAVE_WAYBACK_MACHINE, brave_wayback_machine_path);
+  }
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   // If brave://wallet has been loaded at least once, then load it again.

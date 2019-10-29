@@ -27,6 +27,9 @@ const char kDisableTorClientUpdaterExtension[] =
 // Allows disabling the WebTorrent extension.
 const char kDisableWebTorrentExtension[] = "disable-webtorrent-extension";
 
+// Allows disabling the Wayback Machine extension.
+const char kDisableBraveWaybackMachineExtension[] = "disable-brave-wayback-machine-extension";
+
 // Specifies overriding the built-in theme setting.
 // Valid values are: "dark" | "light".
 const char kUiMode[] = "ui-mode";

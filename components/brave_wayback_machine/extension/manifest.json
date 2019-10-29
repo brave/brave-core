@@ -1,0 +1,20 @@
+{
+  "name": "Brave Wayback Machine",
+  "description": "__MSG_appDescription__",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "background": {
+    "scripts": [
+      "extension/out/brave_wayback_machine_background.bundle.js"
+    ],
+    "persistent": true
+  },
+  "incognito": "not_allowed",
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+    "tabs",
+    "<all_urls>"
+  ],
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt+p9PkEQg5Z0hmSpEbawsKnL0aBX6sGKqn5v+HE2KVD8EK6eJJlhHb8yRg2+EGI5V8Sgf9NZF8I32FvCcZm7JMWYwABXFMLPRZ44CrRbUjjCgA5f+4tz6tdHM3Y+G7ON62BB5hBOgbfrJNpGJojIxb23/sZA1ELwDxgGmmIo1DpjjuMWAxd2OdBtHgFhhjW2LiKSpT+oAxwCwAZ2BUetvaxMefzzKQlrfDPbBXFEaVgrDKQgJS5H8skwlEKwfRvHLZS+na8s3mLKsxDgT3RPgBc/RzpI7KuyVH7eiIemHqfcG0nwFv4GdD6F24qhcIUv3649fzg8mET2isGU0dL1zwIDAQAB"
+}
