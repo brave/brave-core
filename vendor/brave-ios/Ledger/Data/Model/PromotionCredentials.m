@@ -20,5 +20,6 @@
 @dynamic batchProof;
 @dynamic claimID;
 @dynamic promotion;
+@dynamic tokens;
 
 @end

@@ -1038,6 +1038,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
       creds.publicKey = promotion.credentials.publicKey;
       creds.signedCredentials = promotion.credentials.signedCreds;
       creds.blindedCredentials = promotion.credentials.blindedCreds;
+      creds.tokens = promotion.credentials.tokens;
       promo.credentials = creds;
     }
   } completion:WriteToDataControllerCompletion(completion)];
@@ -1071,6 +1072,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     creds.signedCreds = dbPromo.credentials.signedCredentials;
     creds.publicKey = dbPromo.credentials.publicKey;
     creds.batchProof = dbPromo.credentials.batchProof;
+    creds.tokens = dbPromo.credentials.tokens;
     return creds;
   }();
   return promotion;
@@ -1086,6 +1088,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     token.publicKey = unblindedToken.publicKey;
     token.value = unblindedToken.value;
     token.promotion = [self getPromotionWithID:unblindedToken.promotionId context:context];
+    token.tokenValue = unblindedToken.tokenValue;
   } completion:WriteToDataControllerCompletion(completion)];
 }
 
@@ -1108,6 +1111,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     token.id = dbToken.tokenID;
     token.publicKey = dbToken.publicKey;
     token.value = dbToken.value;
+    token.tokenValue = dbToken.tokenValue;
     token.promotionId = dbToken.promotion.promotionID;
     [tokens addObject:token];
   }

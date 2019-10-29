@@ -15,6 +15,7 @@
 }
 
 @dynamic tokenID;
+@dynamic tokenValue;
 @dynamic publicKey;
 @dynamic value;
 @dynamic promotion;

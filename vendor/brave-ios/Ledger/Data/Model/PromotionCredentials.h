@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy) NSString *batchProof;
 @property (nonatomic, copy) NSString *claimID;
 @property (nullable, nonatomic, retain) Promotion *promotion;
+@property (nonatomic, copy) NSString *tokens;
 
 @end
 
