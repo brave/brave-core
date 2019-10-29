@@ -36,8 +36,8 @@ bool IsBraveOverrideCommands(int id) {
       IDC_NEW_WINDOW,
       IDC_NEW_INCOGNITO_WINDOW,
   });
-  return std::find(override_commands.begin(), override_commands.end(), id)
-      != override_commands.end();
+  return std::find(override_commands.begin(), override_commands.end(), id) !=
+         override_commands.end();
 }
 
 }  // namespace
@@ -67,7 +67,6 @@ bool BraveBrowserCommandController::ExecuteCommandWithDisposition(
     int id,
     WindowOpenDisposition disposition,
     base::TimeTicks time_stamp) {
-
   return IsBraveCommands(id) || IsBraveOverrideCommands(id)
              ? ExecuteBraveCommandWithDisposition(id, disposition, time_stamp)
              : BrowserCommandController::ExecuteCommandWithDisposition(
@@ -147,7 +146,9 @@ void BraveBrowserCommandController::UpdateCommandForBraveWallet() {
 }
 
 bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
-    int id, WindowOpenDisposition disposition, base::TimeTicks time_stamp) {
+    int id,
+    WindowOpenDisposition disposition,
+    base::TimeTicks time_stamp) {
   if (!SupportsCommand(id) || !IsCommandEnabled(id))
     return false;
 
