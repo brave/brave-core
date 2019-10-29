@@ -152,6 +152,7 @@ class TippingOverviewView: UIView {
       $0.leading.trailing.equalTo(self).inset(25.0)
       $0.bottom.equalTo(self.scrollView.contentLayoutGuide).inset(25.0)
     }
+    updateForTraits()
   }
   
   @available(*, unavailable)
@@ -161,6 +162,10 @@ class TippingOverviewView: UIView {
   
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
+    updateForTraits()
+  }
+  
+  func updateForTraits() {
     grabberView.isHidden = traitCollection.horizontalSizeClass == .regular
   }
 }
