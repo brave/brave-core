@@ -34,11 +34,11 @@ void BraveAddExtensionsResources(content::WebUIDataSource* source) {
 // These are defined in generated_resources.h, but since we are including it
 // here the original extensions_ui.cc shouldn't include it again and the
 // redefined values will be used.
-#undef IDS_MD_EXTENSIONS_ITEM_CHROME_WEB_STORE
-#define IDS_MD_EXTENSIONS_ITEM_CHROME_WEB_STORE \
-  IDS_MD_EXTENSIONS_BRAVE_ITEM_CHROME_WEB_STORE
-#undef IDS_MD_EXTENSIONS_ITEM_SOURCE_WEBSTORE
-#define IDS_MD_EXTENSIONS_ITEM_SOURCE_WEBSTORE \
-  IDS_MD_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE
+#undef IDS_EXTENSIONS_ITEM_CHROME_WEB_STORE
+#define IDS_EXTENSIONS_ITEM_CHROME_WEB_STORE \
+  IDS_EXTENSIONS_BRAVE_ITEM_CHROME_WEB_STORE
+#undef IDS_EXTENSIONS_ITEM_SOURCE_WEBSTORE
+#define IDS_EXTENSIONS_ITEM_SOURCE_WEBSTORE \
+  IDS_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE
 
 #include "../../../../../../chrome/browser/ui/webui/extensions/extensions_ui.cc"  // NOLINT
