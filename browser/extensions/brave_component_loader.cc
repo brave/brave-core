@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/bind.h"
 #include "base/command_line.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/component_updater/brave_component_installer.h"
@@ -15,6 +16,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -22,6 +24,8 @@
 #include "chrome/browser/ui/webui/components_ui.h"
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_resources.h"
+#include "components/prefs/pref_change_registrar.h"
+#include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
@@ -33,7 +37,14 @@ BraveComponentLoader::BraveComponentLoader(
     Profile* profile)
     : ComponentLoader(extension_service, profile),
       profile_(profile),
-      profile_prefs_(profile->GetPrefs()) {}
+      profile_prefs_(profile->GetPrefs()) {
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+  pref_change_registrar_.Init(profile_prefs_);
+  pref_change_registrar_.Add(brave_rewards::prefs::kBraveRewardsEnabled,
+      base::Bind(&BraveComponentLoader::HandleRewardsEnabledStatus,
+      base::Unretained(this)));
+#endif
+}
 
 BraveComponentLoader::~BraveComponentLoader() {
 }
@@ -89,12 +100,8 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
   }
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  if (!command_line.HasSwitch(switches::kDisableBraveRewardsExtension)) {
-    base::FilePath brave_rewards_path(FILE_PATH_LITERAL(""));
-    brave_rewards_path =
-        brave_rewards_path.Append(FILE_PATH_LITERAL("brave_rewards"));
-    Add(IDR_BRAVE_REWARDS, brave_rewards_path);
-  }
+  // Enable rewards extension if already opted-in
+  HandleRewardsEnabledStatus();
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -105,6 +112,28 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
   }
 #endif
 }
+
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+void BraveComponentLoader::AddRewardsExtension() {
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  if (!command_line.HasSwitch(switches::kDisableBraveRewardsExtension) &&
+      !Exists(brave_rewards_extension_id)) {
+    base::FilePath brave_rewards_path(FILE_PATH_LITERAL(""));
+    brave_rewards_path =
+        brave_rewards_path.Append(FILE_PATH_LITERAL("brave_rewards"));
+    Add(IDR_BRAVE_REWARDS, brave_rewards_path);
+  }
+}
+
+void BraveComponentLoader::HandleRewardsEnabledStatus() {
+  const bool is_rewards_enabled = profile_prefs_->GetBoolean(
+      brave_rewards::prefs::kBraveRewardsEnabled);
+  if (is_rewards_enabled) {
+    AddRewardsExtension();
+  }
+}
+#endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 void BraveComponentLoader::AddEthereumRemoteClientExtension() {
