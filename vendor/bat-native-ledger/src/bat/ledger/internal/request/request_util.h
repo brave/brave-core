@@ -23,6 +23,12 @@ std::string BuildUrl(
     const std::string& prefix = "",
     const ServerTypes& server = ServerTypes::LEDGER);
 
+std::vector<std::string> BuildSignHeaders(
+    const std::string& url,
+    const std::string& body,
+    const std::string& payment_id,
+    const std::vector<uint8_t>& private_key);
+
 }  // namespace braveledger_request_util
 
 #endif  // BRAVELEDGER_COMMON_REQUEST_UTIL_H_

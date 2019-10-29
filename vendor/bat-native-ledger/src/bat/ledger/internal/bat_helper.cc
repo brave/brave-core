@@ -1889,14 +1889,16 @@ bool getFromBase64(const std::string& in, std::vector<uint8_t>* out) {
   return succeded;
 }
 
-std::string sign(std::string* keys,
-                 std::string* values,
-                 const unsigned int size,
-                 const std::string& keyId,
-                 const std::vector<uint8_t>& secretKey) {
+std::string sign(
+    const std::vector<std::string>& keys,
+    const std::vector<std::string>& values,
+    const std::string& key_id,
+    const std::vector<uint8_t>& secretKey) {
+  DCHECK(keys.size() == values.size());
+
   std::string headers;
   std::string message;
-  for (unsigned int i = 0; i < size; i++) {
+  for (unsigned int i = 0; i < keys.size(); i++) {
     if (i != 0) {
       headers += " ";
       message += "\n";
@@ -1918,7 +1920,7 @@ std::string sign(std::string* keys,
             signedMsg.begin() + crypto_sign_BYTES,
             signature.begin());
 
-  return "keyId=\"" + keyId + "\",algorithm=\"" + SIGNATURE_ALGORITHM +
+  return "keyId=\"" + key_id + "\",algorithm=\"" + SIGNATURE_ALGORITHM +
     "\",headers=\"" + headers + "\",signature=\"" + getBase64(signature) + "\"";
 }
 

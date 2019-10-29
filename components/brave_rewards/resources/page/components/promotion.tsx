@@ -172,7 +172,7 @@ class Promotion extends React.Component<Props, State> {
 
   convertPromotionTypesToType = (type: Rewards.PromotionTypes) => {
     switch (type) {
-      case Rewards.PromotionTypes.ADS: {
+      case 1: { // Rewards.PromotionTypes.ADS
         return 'ads'
       }
       default: {

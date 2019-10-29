@@ -92,4 +92,132 @@ ledger::ContributionQueuePtr FromStringToContributionQueue(
   return queue;
 }
 
+std::string FromPromotionToString(ledger::PromotionPtr info) {
+  base::Value credentials(base::Value::Type::DICTIONARY);
+  if (info->credentials) {
+    credentials.SetStringKey("tokens", info->credentials->tokens);
+    credentials.SetStringKey("blinded_creds", info->credentials->blinded_creds);
+    credentials.SetStringKey("signed_creds", info->credentials->signed_creds);
+    credentials.SetStringKey("public_key", info->credentials->public_key);
+    credentials.SetStringKey("batch_proof", info->credentials->batch_proof);
+    credentials.SetStringKey("claim_id", info->credentials->claim_id);
+  }
+
+  base::Value promotion(base::Value::Type::DICTIONARY);
+  promotion.SetStringKey("id", info->id);
+  promotion.SetStringKey("public_keys", info->public_keys);
+  promotion.SetStringKey("approximate_value",
+      std::to_string(info->approximate_value));
+  promotion.SetStringKey("expires_at", std::to_string(info->expires_at));
+  promotion.SetIntKey("version", info->version);
+  promotion.SetIntKey("type", static_cast<int>(info->type));
+  promotion.SetIntKey("suggestions", info->suggestions);
+  promotion.SetBoolKey("claimed", info->claimed);
+  promotion.SetBoolKey("active", info->active);
+  promotion.SetKey("credentials", std::move(credentials));
+
+  std::string json;
+  base::JSONWriter::Write(promotion, &json);
+
+  return json;
+}
+
+ledger::PromotionPtr FromStringToPromotion(const std::string& data) {
+  auto promotion = ledger::Promotion::New();
+  base::Optional<base::Value> value = base::JSONReader::Read(data);
+
+  if (!value || !value->is_dict()) {
+    return nullptr;
+  }
+
+  base::DictionaryValue* dictionary = nullptr;
+  if (!value->GetAsDictionary(&dictionary)) {
+    return nullptr;
+  }
+
+  auto* id = dictionary->FindStringKey("id");
+  if (id) {
+    promotion->id = *id;
+  }
+
+  auto* public_keys = dictionary->FindStringKey("public_keys");
+  if (public_keys) {
+    promotion->public_keys = *public_keys;
+  }
+
+  auto* approximate_value = dictionary->FindStringKey("approximate_value");
+  if (approximate_value) {
+    promotion->approximate_value = std::stod(*approximate_value);
+  }
+
+  auto* expires_at = dictionary->FindStringKey("expires_at");
+  if (expires_at) {
+    promotion->expires_at = std::stoull(*expires_at);
+  }
+
+  auto version = dictionary->FindIntKey("version");
+  if (version) {
+    promotion->version = *version;
+  }
+
+  auto type = dictionary->FindIntKey("type");
+  if (type) {
+    promotion->type = static_cast<ledger::PromotionType>(*type);
+  }
+
+  auto suggestions = dictionary->FindIntKey("suggestions");
+  if (suggestions) {
+    promotion->suggestions = *suggestions;
+  }
+
+  auto claimed = dictionary->FindBoolKey("claimed");
+  if (claimed) {
+    promotion->claimed = *claimed;
+  }
+
+  auto active = dictionary->FindBoolKey("active");
+  if (active) {
+    promotion->active = *active;
+  }
+
+  auto* credentials = dictionary->FindDictKey("credentials");
+  if (credentials) {
+    auto creds = ledger::PromotionCreds::New();
+
+    auto* tokens = credentials->FindStringKey("tokens");
+    if (tokens) {
+      creds->tokens = *tokens;
+    }
+
+    auto* blinded_creds = credentials->FindStringKey("blinded_creds");
+    if (blinded_creds) {
+      creds->blinded_creds = *blinded_creds;
+    }
+
+    auto* signed_creds = credentials->FindStringKey("signed_creds");
+    if (signed_creds) {
+      creds->signed_creds = *signed_creds;
+    }
+
+    auto* public_key = credentials->FindStringKey("public_key");
+    if (public_key) {
+      creds->public_key = *public_key;
+    }
+
+    auto* batch_proof = credentials->FindStringKey("batch_proof");
+    if (batch_proof) {
+      creds->batch_proof = *batch_proof;
+    }
+
+    auto* claim_id = credentials->FindStringKey("claim_id");
+    if (claim_id) {
+      creds->claim_id = *claim_id;
+    }
+
+    promotion->credentials = std::move(creds);
+  }
+
+  return promotion;
+}
+
 }  // namespace braveledger_bind_util

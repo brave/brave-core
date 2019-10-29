@@ -53,7 +53,7 @@ bool DatabasePromotionCreds::CreateTable(sql::Database* db) {
 
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
-        "%s_id TEXT NOT NULL,"
+        "%s_id TEXT UNIQUE NOT NULL,"
         "tokens TEXT NOT NULL,"
         "blinded_creds TEXT NOT NULL,"
         "signed_creds TEXT,"
@@ -96,7 +96,7 @@ bool DatabasePromotionCreds::InsertOrUpdate(
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(%s_id, tokens, blinded_creds, signed_creds, public_key, batch_proof, claim_id) "
-      "VALUES (?, ?, ?, ?, ?, ?)",
+      "VALUES (?, ?, ?, ?, ?, ?, ?)",
       table_name_,
       parent_table_name_);
 

@@ -20,6 +20,7 @@ const char kIgnorePublisherBlob[] = "ignore";
 
 const char kWalletAnonymous[] = "anonymous";
 const char kWalletUphold[] = "uphold";
+const char kWalletUnBlinded[] = "blinded";
 
 
 }  // namespace ledger

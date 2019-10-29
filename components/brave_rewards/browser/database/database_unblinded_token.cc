@@ -94,7 +94,13 @@ bool DatabaseUnblindedToken::InsertOrUpdate(
   sql::Statement statement(
     db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
 
-  statement.BindInt64(0, info->id);
+
+  if (info->id != 0) {
+    statement.BindInt64(0, info->id);
+  } else {
+    statement.BindNull(0);
+  }
+
   statement.BindString(1, info->token_value);
   statement.BindString(2, info->public_key);
   statement.BindDouble(3, info->value);

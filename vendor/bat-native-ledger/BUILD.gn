@@ -109,6 +109,10 @@ source_set("ledger") {
     "src/bat/ledger/internal/promotion.h",
     "src/bat/ledger/internal/common/bind_util.cc",
     "src/bat/ledger/internal/common/bind_util.h",
+    "src/bat/ledger/internal/common/security_helper.cc",
+    "src/bat/ledger/internal/common/security_helper.h",
+    "src/bat/ledger/internal/common/time_util.cc",
+    "src/bat/ledger/internal/common/time_util.h",
     "src/bat/ledger/internal/contribution/contribution.cc",
     "src/bat/ledger/internal/contribution/contribution.h",
     "src/bat/ledger/internal/contribution/contribution_util.cc",
@@ -189,6 +193,7 @@ source_set("ledger") {
     rebase_path("bip39wally-core-native:bip39wally-core", dep_base),
     rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
     rebase_path("bat-native-rapidjson", dep_base),
+    rebase_path("challenge_bypass_ristretto_ffi", dep_base),
     rebase_path("brave_base", dep_base),
   ]
 

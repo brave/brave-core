@@ -211,12 +211,15 @@ void Create::RequestCredentialsCallback(
   std::string digest = "SHA-256=" +
       braveledger_bat_helper::getBase64(
           braveledger_bat_helper::getSHA256(octets));
-  std::string headerKeys[1] = {"digest"};
-  std::string headerValues[1] = {digest};
+
+  std::vector<std::string> header_keys;
+  header_keys.push_back("digest");
+  std::vector<std::string> header_values;
+  header_values.push_back(digest);
+
   std::string signature = braveledger_bat_helper::sign(
-      headerKeys,
-      headerValues,
-      1,
+      header_keys,
+      header_values,
       "primary",
       newSecretKey);
 

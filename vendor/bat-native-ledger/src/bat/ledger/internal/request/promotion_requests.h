@@ -11,8 +11,14 @@
 namespace braveledger_request_util {
 
 std::string GetFetchPromotionUrl(
-    const std::string payment_id,
-    const std::string platform);
+    const std::string& payment_id,
+    const std::string& platform);
+
+std::string ClaimTokensUrl(const std::string& promotion_id);
+
+std::string FetchSignedTokensUrl(
+    const std::string& promotion_id,
+    const std::string& claim_id);
 
 }  // namespace braveledger_request_util
 

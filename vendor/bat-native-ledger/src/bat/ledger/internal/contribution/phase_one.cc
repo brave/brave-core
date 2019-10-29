@@ -195,8 +195,10 @@ void PhaseOne::ReconcilePayload(const std::string& viewing_id) {
       braveledger_bat_helper::getBase64(
           braveledger_bat_helper::getSHA256(octets));
 
-  std::string header_keys[1] = {"digest"};
-  std::string header_values[1] = {header_digest};
+  std::vector<std::string> header_keys;
+  header_keys.push_back("digest");
+  std::vector<std::string> header_values;
+  header_values.push_back(header_digest);
 
   std::vector<uint8_t> secret_key = braveledger_bat_helper::getHKDF(
       wallet_info.keyInfoSeed_);
@@ -211,11 +213,11 @@ void PhaseOne::ReconcilePayload(const std::string& viewing_id) {
     return;
   }
 
-  std::string headerSignature = braveledger_bat_helper::sign(header_keys,
-                                                             header_values,
-                                                             1,
-                                                             "primary",
-                                                             new_secret_key);
+  std::string headerSignature = braveledger_bat_helper::sign(
+      header_keys,
+      header_values,
+      "primary",
+      new_secret_key);
 
   braveledger_bat_helper::RECONCILE_PAYLOAD_ST reconcile_payload;
   reconcile_payload.requestType_ = "httpSignature";
