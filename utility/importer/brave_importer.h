@@ -34,6 +34,7 @@ class BraveImporter : public ChromeImporter {
 
   void ImportBookmarks() override;
   void ImportHistory() override;
+  const char* GetCookiesQueryString() const override;
   void ImportStats();
   bool ImportLedger();
   void ImportWindows();

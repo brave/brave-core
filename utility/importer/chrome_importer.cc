@@ -46,6 +46,13 @@
 
 using base::Time;
 
+namespace {
+const char kCookiesQueryString[] =
+    "SELECT creation_utc, host_key, name, value, encrypted_value, path, "
+    "expires_utc, is_secure, is_httponly, samesite, last_access_utc, "
+    "has_expires, is_persistent, priority FROM cookies";
+}  // namespace
+
 ChromeImporter::ChromeImporter() {
 }
 
@@ -337,6 +344,10 @@ void ChromeImporter::ImportPasswords(const base::FilePath& prefs_filename) {
   }
 }
 
+const char* ChromeImporter::GetCookiesQueryString() const {
+  return kCookiesQueryString;
+}
+
 void ChromeImporter::ImportCookies() {
   base::FilePath cookies_path =
     source_path_.Append(
@@ -348,12 +359,7 @@ void ChromeImporter::ImportCookies() {
   if (!db.Open(cookies_path))
     return;
 
-  const char query[] =
-    "SELECT creation_utc, host_key, name, value, encrypted_value, path, "
-    "expires_utc, is_secure, is_httponly, firstpartyonly, last_access_utc, "
-    "has_expires, is_persistent, priority FROM cookies";
-
-  sql::Statement s(db.GetUniqueStatement(query));
+  sql::Statement s(db.GetUniqueStatement(GetCookiesQueryString()));
 
   net::CookieCryptoDelegate* delegate =
     cookie_config::GetCookieCryptoDelegate();
