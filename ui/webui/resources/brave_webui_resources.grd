@@ -22,7 +22,7 @@
       <structure name="IDR_BRAVE_WEBUI_CSS_MD_COLORS"
              file="css/md_colors.css" type="chrome_html" compress="gzip" />
       <structure name="IDR_BRAVE_WEBUI_CSS_TEXT_DEFAULTS"
-             file="css/text_defaults.css" type="chrome_html" />
+             file="css/text_defaults.css" type="chrome_html" compress="gzip" />
       <structure name="IDR_BRAVE_WEBUI_POLYMER_OVERRIDING_HTML"
              file="polymer_overriding.html" type="chrome_html" compress="gzip" />
       <structure name="IDR_BRAVE_WEBUI_POLYMER_OVERRIDING_JS"
