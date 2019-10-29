@@ -29,7 +29,7 @@ to determinate which country user is in.
 
 ##### Description
 
-Refactored and migrated Rewards category from `category` to `type`.
+Refactored and migrated Rewards category from `category` to `type`. This will also effect JS return data so please update any UI which is using `category`
 
 ##### Change
 
