@@ -41,6 +41,16 @@
 
 using base::Time;
 
+namespace {
+// This query is different from chrome's one.
+// Chrome renamed firstpartyonly column to samesite since its V11 schema.
+// But, muon still uses firstpartyonly.
+const char kCookiesQueryString[] =
+    "SELECT creation_utc, host_key, name, value, encrypted_value, path, "
+    "expires_utc, is_secure, is_httponly, firstpartyonly, last_access_utc, "
+    "has_expires, is_persistent, priority FROM cookies";
+}  // namespace
+
 BraveImporter::BraveImporter() {
 }
 
@@ -164,6 +174,10 @@ void BraveImporter::ImportHistory() {
 
   if (!rows.empty() && !cancelled())
     bridge_->SetHistoryItems(rows, importer::VISIT_SOURCE_BRAVE_IMPORTED);
+}
+
+const char* BraveImporter::GetCookiesQueryString() const {
+  return kCookiesQueryString;
 }
 
 void BraveImporter::ParseBookmarks(
