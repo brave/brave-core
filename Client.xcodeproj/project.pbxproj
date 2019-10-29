@@ -631,8 +631,8 @@
 		5E46C37C234FB9A700ACA8C1 /* self-signed.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5E46C37B234FB9A700ACA8C1 /* self-signed.cer */; };
 		5E4845C022DE381200372022 /* WindowRenderHelper.js in Resources */ = {isa = PBXBuildFile; fileRef = 5E4845BF22DE381200372022 /* WindowRenderHelper.js */; };
 		5E4845C222DE3DF800372022 /* WindowRenderHelperScript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4845C122DE3DF800372022 /* WindowRenderHelperScript.swift */; };
-		5E612A8C234B7FC1007D12B5 /* OnboardingRewardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C66232BE43100BDE662 /* OnboardingRewardsViewController.swift */; };
-		5E612A8E234B7FC8007D12B5 /* OnboardingRewardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C68232BE47A00BDE662 /* OnboardingRewardsView.swift */; };
+		5E612A8C234B7FC1007D12B5 /* OnboardingAdsAvailableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C66232BE43100BDE662 /* OnboardingAdsAvailableController.swift */; };
+		5E612A8E234B7FC8007D12B5 /* OnboardingAdsAvailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C68232BE47A00BDE662 /* OnboardingAdsAvailableView.swift */; };
 		5E612A8F234B7FCA007D12B5 /* OnboardingRewardsAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C6A232BF95200BDE662 /* OnboardingRewardsAgreementViewController.swift */; };
 		5E612A90234B7FCD007D12B5 /* OnboardingRewardsAgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C6C232BF9C200BDE662 /* OnboardingRewardsAgreementView.swift */; };
 		5E9288CA22DF864C007BE7A6 /* TabSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9288C922DF864C007BE7A6 /* TabSessionTests.swift */; };
@@ -2028,8 +2028,8 @@
 		5E0FCD22234253DC00AC831E /* CertificatePinning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificatePinning.swift; sourceTree = "<group>"; };
 		5E0FCD242342544C00AC831E /* URLSession+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Requests.swift"; sourceTree = "<group>"; };
 		5E11C3FF23314D970003C363 /* onboarding-ads.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "onboarding-ads.json"; sourceTree = "<group>"; };
-		5E1D8C66232BE43100BDE662 /* OnboardingRewardsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRewardsViewController.swift; sourceTree = "<group>"; };
-		5E1D8C68232BE47A00BDE662 /* OnboardingRewardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRewardsView.swift; sourceTree = "<group>"; };
+		5E1D8C66232BE43100BDE662 /* OnboardingAdsAvailableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAdsAvailableController.swift; sourceTree = "<group>"; };
+		5E1D8C68232BE47A00BDE662 /* OnboardingAdsAvailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAdsAvailableView.swift; sourceTree = "<group>"; };
 		5E1D8C6A232BF95200BDE662 /* OnboardingRewardsAgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRewardsAgreementViewController.swift; sourceTree = "<group>"; };
 		5E1D8C6C232BF9C200BDE662 /* OnboardingRewardsAgreementView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRewardsAgreementView.swift; sourceTree = "<group>"; };
 		5E1D8C6E232C0BDB00BDE662 /* onboarding-rewards.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "onboarding-rewards.json"; sourceTree = "<group>"; };
@@ -2621,8 +2621,8 @@
 				0A3C789E23056C910022F6D8 /* OnboardingSearchEnginesView.swift */,
 				0A3C78A0230597DA0022F6D8 /* OnboardingShieldsViewController.swift */,
 				0A3C78A2230597F10022F6D8 /* OnboardingShieldsView.swift */,
-				5E1D8C66232BE43100BDE662 /* OnboardingRewardsViewController.swift */,
-				5E1D8C68232BE47A00BDE662 /* OnboardingRewardsView.swift */,
+				5E1D8C66232BE43100BDE662 /* OnboardingAdsAvailableController.swift */,
+				5E1D8C68232BE47A00BDE662 /* OnboardingAdsAvailableView.swift */,
 				5E1D8C6A232BF95200BDE662 /* OnboardingRewardsAgreementViewController.swift */,
 				5E1D8C6C232BF9C200BDE662 /* OnboardingRewardsAgreementView.swift */,
 				5EC594EC232C2C8F00922111 /* OnboardingWebViewController.swift */,
@@ -5993,7 +5993,7 @@
 				4422D56221BFFB7F00BF1855 /* dfa.cc in Sources */,
 				A1AD4BE120C082EF007A6EA1 /* UIGestureRecognizerExtensions.swift in Sources */,
 				282DA4731A68C1E700A406E2 /* OpenSearch.swift in Sources */,
-				5E612A8C234B7FC1007D12B5 /* OnboardingRewardsViewController.swift in Sources */,
+				5E612A8C234B7FC1007D12B5 /* OnboardingAdsAvailableController.swift in Sources */,
 				F35B8D2F1D638408008E3D61 /* SessionRestoreHandler.swift in Sources */,
 				4422D4C621BFFB7600BF1855 /* env_posix.cc in Sources */,
 				E63ED8E11BFD25580097D08E /* LoginListViewController.swift in Sources */,
@@ -6167,7 +6167,7 @@
 				0AD9F88122F049E5008B4D95 /* AdblockRustEngine.swift in Sources */,
 				D3E8EF101B97BE69001900FB /* ClearPrivateDataTableViewController.swift in Sources */,
 				4422D4B421BFFB7600BF1855 /* hash.cc in Sources */,
-				5E612A8E234B7FC8007D12B5 /* OnboardingRewardsView.swift in Sources */,
+				5E612A8E234B7FC8007D12B5 /* OnboardingAdsAvailableView.swift in Sources */,
 				27D114D62358FCA400166534 /* SettingsRowViews.swift in Sources */,
 				4422D56621BFFB7F00BF1855 /* tostring.cc in Sources */,
 				4422D54821BFFB7E00BF1855 /* pcre.cc in Sources */,

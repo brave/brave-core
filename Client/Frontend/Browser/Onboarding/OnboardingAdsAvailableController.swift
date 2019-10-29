@@ -7,7 +7,7 @@ import BraveRewards
 import BraveShared
 import Shared
 
-class OnboardingRewardsViewController: OnboardingViewController {
+class OnboardingAdsAvailableController: OnboardingViewController {
     private var contentView: View {
         return view as! View // swiftlint:disable:this force_cast
     }
