@@ -20,16 +20,9 @@ class OnboardingRewardsAgreementViewController: OnboardingViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let isRewardsEnabled = rewards?.ledger.isEnabled == true
         let isAdsRegionSupported = BraveAds.isCurrentRegionSupported()
         
-        // The user is not new..
-        if Preferences.General.basicOnboardingProgress.value != OnboardingProgress.none.rawValue || isRewardsEnabled {
-            contentView.updateSubtitleText(Strings.OBRewardsDetailInAdRegion, boldWords: 2)
-        } else {
-            // The user is new..
-            contentView.updateSubtitleText(isAdsRegionSupported ? Strings.OBRewardsDetailInAdRegion : Strings.OBRewardsDetailOutsideAdRegion, boldWords: isAdsRegionSupported ? 2 : 1)
-        }
+        contentView.updateSubtitleText(isAdsRegionSupported ? Strings.OBRewardsDetailInAdRegion : Strings.OBRewardsDetailOutsideAdRegion, boldWords: isAdsRegionSupported ? 2 : 1)
         
         contentView.turnOnButton.addTarget(self, action: #selector(onTurnOn), for: .touchUpInside)
         contentView.skipButton.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)
