@@ -13,8 +13,8 @@
 namespace braveledger_request_util {
 
 std::string GetFetchPromotionUrl(
-    const std::string payment_id,
-    const std::string platform) {
+    const std::string& payment_id,
+    const std::string& platform) {
   const std::string& arguments = base::StringPrintf(
       "paymentId=%s&platform=%s",
       payment_id.c_str(),
@@ -24,6 +24,23 @@ std::string GetFetchPromotionUrl(
       "/promotions?%s",
       arguments.c_str());
 
+  return BuildUrl(path, PREFIX_V1, ServerTypes::kPromotion);
+}
+
+std::string ClaimTokensUrl(const std::string& promotion_id) {
+    const std::string& path = base::StringPrintf(
+      "/promotions/%s",
+      promotion_id.c_str());
+  return BuildUrl(path, PREFIX_V1, ServerTypes::kPromotion);
+}
+
+std::string FetchSignedTokensUrl(
+    const std::string& promotion_id,
+    const std::string& claim_id) {
+    const std::string& path = base::StringPrintf(
+      "/promotions/%s/claims/%s",
+      promotion_id.c_str(),
+      claim_id.c_str());
   return BuildUrl(path, PREFIX_V1, ServerTypes::kPromotion);
 }
 

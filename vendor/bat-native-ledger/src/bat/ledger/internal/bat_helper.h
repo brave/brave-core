@@ -396,11 +396,11 @@ std::string getBase64(const std::vector<uint8_t>& in);
 bool getFromBase64(const std::string& in, std::vector<uint8_t>* out);
 
 // Sign using ed25519 algorithm
-std::string sign(std::string* keys,
-                 std::string* values,
-                 const unsigned int size,
-                 const std::string& keyId,
-                 const std::vector<uint8_t>& secretKey);
+std::string sign(
+    const std::vector<std::string>& keys,
+    const std::vector<std::string>& values,
+    const std::string& key_id,
+    const std::vector<uint8_t>& secretKey);
 
 uint64_t currentTime();
 
