@@ -69,6 +69,9 @@ class AdsServiceImpl : public AdsService,
   void SetAdsPerHour(
       const uint64_t ads_per_hour) override;
 
+  void SetAdsPerDay(
+      const uint64_t ads_per_day) override;
+
   void SetConfirmationsIsReady(
       const bool is_ready) override;
 

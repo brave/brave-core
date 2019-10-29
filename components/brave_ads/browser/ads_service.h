@@ -56,6 +56,10 @@ class AdsService : public KeyedService {
   virtual void SetAdsPerHour(
       const uint64_t ads_per_hour) = 0;
 
+  virtual uint64_t GetAdsPerDay() const = 0;
+  virtual void SetAdsPerDay(
+      const uint64_t ads_per_day) = 0;
+
   virtual void SetConfirmationsIsReady(
       const bool is_ready) = 0;
 

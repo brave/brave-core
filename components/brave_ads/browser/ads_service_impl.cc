@@ -418,6 +418,11 @@ void AdsServiceImpl::SetAdsPerHour(
   SetUint64Pref(prefs::kAdsPerHour, ads_per_hour);
 }
 
+void AdsServiceImpl::SetAdsPerDay(
+    const uint64_t ads_per_day) {
+  SetUint64Pref(prefs::kAdsPerDay, ads_per_day);
+}
+
 void AdsServiceImpl::SetConfirmationsIsReady(
     const bool is_ready) {
   if (!connected()) {
