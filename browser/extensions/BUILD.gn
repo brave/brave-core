@@ -75,6 +75,7 @@ source_set("extensions") {
 
   if (brave_rewards_enabled) {
     deps += [
+      "//brave/components/brave_rewards/browser",
       "//brave/components/brave_rewards/resources/extension:extension_generated_resources",
       "//brave/components/brave_rewards/resources/extension:static_resources",
     ]

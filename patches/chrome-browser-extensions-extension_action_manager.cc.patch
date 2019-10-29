@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/extensions/extension_action_manager.cc b/chrome/browser/extensions/extension_action_manager.cc
+index 90884f9916494778fc182c49ac7709bc91f536b9..0b099db863682c226da5f6e2f67e684ed56da3ef 100644
+--- a/chrome/browser/extensions/extension_action_manager.cc
++++ b/chrome/browser/extensions/extension_action_manager.cc
+@@ -109,6 +109,7 @@ ExtensionAction* ExtensionActionManager::GetExtensionAction(
+         ExtensionAction::ActionIconSize(),
+         ExtensionAction::FallbackIcon().AsImageSkia(), nullptr));
+   }
++  BRAVE_GET_EXTENSION_ACTION
+ 
+   ExtensionAction* raw_action = action.get();
+   actions_[extension.id()] = std::move(action);
