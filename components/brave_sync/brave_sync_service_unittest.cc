@@ -978,9 +978,13 @@ TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
 
 TEST_F(BraveSyncServiceTest, SendCompactSyncCategory) {
   using brave_sync::jslib_const::kBookmarks;
-  EXPECT_EQ(brave_sync_prefs()->GetLastCompactTime(), base::Time());
+  EXPECT_EQ(brave_sync_prefs()->GetLastCompactTimeBookmarks(), base::Time());
   EXPECT_CALL(*sync_client(), SendCompactSyncCategory(kBookmarks)).Times(1);
   sync_service()->FetchSyncRecords(true, false, true, 1000);
+  // timestamp is not writtend until we get CompactedSyncCategory
+  EXPECT_CALL(*sync_client(), SendCompactSyncCategory(kBookmarks)).Times(1);
+  sync_service()->FetchSyncRecords(true, false, true, 1000);
+  sync_service()->OnCompactedSyncCategory(kBookmarks);
   EXPECT_CALL(*sync_client(), SendCompactSyncCategory(kBookmarks)).Times(0);
   sync_service()->FetchSyncRecords(true, false, true, 1000);
   {
@@ -988,6 +992,7 @@ TEST_F(BraveSyncServiceTest, SendCompactSyncCategory) {
         sync_service()->GetCompactPeriodInDaysForTests()));
     EXPECT_CALL(*sync_client(), SendCompactSyncCategory(kBookmarks)).Times(1);
     sync_service()->FetchSyncRecords(true, false, true, 1000);
+    sync_service()->OnCompactedSyncCategory(kBookmarks);
   }
   EXPECT_CALL(*sync_client(), SendCompactSyncCategory(kBookmarks)).Times(0);
   sync_service()->FetchSyncRecords(true, false, true, 1000);

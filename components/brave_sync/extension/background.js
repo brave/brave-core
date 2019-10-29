@@ -191,6 +191,10 @@ class InjectedObject {
         console.log(`"save-bookmarks-base-order" order=${JSON.stringify(arg1)} `);
         chrome.braveSync.saveBookmarksBaseOrder(arg1/*order*/);
         break;
+      case "compacted-sync-category":
+        console.log(`"compacted-sync-category" category=${JSON.stringify(arg1)} `);
+        chrome.braveSync.compactedSyncCategory(arg1/*categoryName*/);
+        break;
       default:
         console.log('background.js TAGAB InjectedObject.handleMessage unknown message', message, arg1, arg2, arg3, arg4);
         console.log('background.js TAGAB message=' + message);

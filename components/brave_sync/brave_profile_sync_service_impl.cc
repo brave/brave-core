@@ -594,6 +594,12 @@ void BraveProfileSyncServiceImpl::OnSaveBookmarksBaseOrder(
   OnSyncReady();
 }
 
+void BraveProfileSyncServiceImpl::OnCompactedSyncCategory(
+    const std::string& category) {
+  if (category == kBookmarks)
+    brave_sync_prefs_->SetLastCompactTimeBookmarks(base::Time::Now());
+}
+
 int BraveProfileSyncServiceImpl::GetDisableReasons() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -822,17 +828,17 @@ void BraveProfileSyncServiceImpl::FetchSyncRecords(const bool bookmarks,
   }
   if (bookmarks) {
     category_names.push_back(kBookmarks);  // "BOOKMARKS";
+
+    base::Time last_compact_time =
+        brave_sync_prefs_->GetLastCompactTimeBookmarks();
+    if (tools::IsTimeEmpty(last_compact_time) ||
+        base::Time::Now() - last_compact_time >
+            base::TimeDelta::FromDays(kCompactPeriodInDays)) {
+      brave_sync_client_->SendCompactSyncCategory(kBookmarks);
+    }
   }
   if (preferences) {
     category_names.push_back(kPreferences);  // "PREFERENCES";
-  }
-
-  base::Time last_compact_time = brave_sync_prefs_->GetLastCompactTime();
-  if (tools::IsTimeEmpty(last_compact_time) ||
-      base::Time::Now() - last_compact_time >
-          base::TimeDelta::FromDays(kCompactPeriodInDays)) {
-    brave_sync_client_->SendCompactSyncCategory(kBookmarks);
-    brave_sync_prefs_->SetLastCompactTime(base::Time::Now());
   }
 
   base::Time start_at_time = brave_sync_prefs_->GetLatestRecordTime();

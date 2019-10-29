@@ -59,6 +59,12 @@ class BraveSyncSaveBookmarksBaseOrderFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveSyncCompactedSyncCategoryFunction : public ExtensionFunction {
+  ~BraveSyncCompactedSyncCategoryFunction() override {}
+  DECLARE_EXTENSION_FUNCTION("braveSync.compactedSyncCategory", UNKNOWN)
+  ResponseAction Run() override;
+};
+
 class BraveSyncExtensionInitializedFunction : public ExtensionFunction {
   ~BraveSyncExtensionInitializedFunction() override {}
   DECLARE_EXTENSION_FUNCTION("braveSync.extensionInitialized", UNKNOWN)

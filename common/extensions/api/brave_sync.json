@@ -407,6 +407,17 @@
             "name": "order"
           }
         ]
+      },
+      {
+        "name": "compactedSyncCategory",
+        "type": "function",
+        "description": "Notify browser that compaction for category is done",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "category_name"
+          }
+        ]
       }
     ]
   }

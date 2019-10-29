@@ -31,6 +31,7 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnResetSync);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, ClientOnGetInitData);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnGetInitData);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSaveBookmarksBaseOrder);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnCompactedSyncCategory);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncPrefsChanged);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncDebug);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, StartSyncNonDeviceRecords);
@@ -94,6 +95,7 @@ class BraveProfileSyncServiceImpl
   void OnDeletedSyncUser() override;
   void OnDeleteSyncSiteSettings() override;
   void OnSaveBookmarksBaseOrder(const std::string& order) override;
+  void OnCompactedSyncCategory(const std::string& category_name) override;
 
   // syncer::SyncService implementation
   int GetDisableReasons() const override;
@@ -136,6 +138,7 @@ class BraveProfileSyncServiceImpl
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnResetSync);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, ClientOnGetInitData);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSaveBookmarksBaseOrder);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnCompactedSyncCategory);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnGetInitData);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSyncPrefsChanged);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSyncDebug);
