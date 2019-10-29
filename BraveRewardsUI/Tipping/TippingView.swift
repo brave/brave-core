@@ -19,7 +19,7 @@ extension TippingViewController {
       confirmationView.faviconImageView.backgroundColor = overviewView.faviconImageView.backgroundColor
       confirmationView.subtitleLabel.text = isMonthly ? Strings.TippingMonthlyTitle : Strings.TippingOneTimeTitle
       
-      confirmationView.infoLabel.text = "\(name)\n\(tipAmount) BAT\(isMonthly ? ", \(Strings.TippingRecurring)" : "")"
+      confirmationView.infoLabel.text = "\(name)\n\(tipAmount) \(Strings.BAT)\(isMonthly ? ", \(Strings.TippingRecurring)" : "")"
       
       if isMonthly, let recurringDate = recurringDate {
         confirmationView.monthlyTipLabel.attributedText = {
