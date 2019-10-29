@@ -20,12 +20,17 @@ class LocaleHelper {
  public:
   static LocaleHelper* GetInstance();
 
+  void set_for_testing(
+      LocaleHelper* locale_helper);
+
   // Should return the language based upon the tagging conventions of RFC 4646
-  virtual std::string GetLocale() const;
+  virtual const std::string GetLocale() const;
 
  protected:
   LocaleHelper();
   virtual ~LocaleHelper();
+
+  static LocaleHelper* GetInstanceImpl();
 
  private:
   friend struct base::DefaultSingletonTraits<LocaleHelper>;

@@ -7,17 +7,32 @@
 
 namespace brave_ads {
 
+LocaleHelper* g_locale_helper_for_testing = nullptr;
+
 LocaleHelper::LocaleHelper() = default;
 
 LocaleHelper::~LocaleHelper() = default;
 
-std::string LocaleHelper::GetLocale() const {
+void LocaleHelper::set_for_testing(
+    LocaleHelper* locale_helper) {
+  g_locale_helper_for_testing = locale_helper;
+}
+
+const std::string LocaleHelper::GetLocale() const {
   return kDefaultLocale;
 }
 
-#if !defined(OS_MACOSX) && !defined(OS_WIN) && !defined(OS_LINUX) && !defined(OS_ANDROID)  // NOLINT
 LocaleHelper* LocaleHelper::GetInstance() {
-  // just return a dummy locale helper for all other platforms
+  if (g_locale_helper_for_testing) {
+    return g_locale_helper_for_testing;
+  }
+
+  return GetInstanceImpl();
+}
+
+#if !defined(OS_MACOSX) && !defined(OS_WIN) && !defined(OS_LINUX) && !defined(OS_ANDROID)  // NOLINT
+LocaleHelper* LocaleHelper::GetInstanceImpl() {
+  // Return a default locale helper for unsupported platforms
   return base::Singleton<LocaleHelper>::get();
 }
 #endif

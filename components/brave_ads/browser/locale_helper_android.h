@@ -16,16 +16,17 @@ namespace brave_ads {
 
 class LocaleHelperAndroid : public LocaleHelper {
  public:
-  static LocaleHelperAndroid* GetInstance();
-  static const std::string GetCountryCode(const std::string& locale);
+  static LocaleHelperAndroid* GetInstanceImpl();
 
- protected:
-  LocaleHelperAndroid() = default;
-  ~LocaleHelperAndroid() override = default;
+  static const std::string GetCountryCode(
+      const std::string& locale);
 
  private:
+  LocaleHelperAndroid();
+  ~LocaleHelperAndroid() override;
+
   // LocaleHelper impl
-  std::string GetLocale() const override;
+  const std::string GetLocale() const override;
 
   friend struct base::DefaultSingletonTraits<LocaleHelperAndroid>;
   DISALLOW_COPY_AND_ASSIGN(LocaleHelperAndroid);

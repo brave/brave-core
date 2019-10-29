@@ -15,14 +15,14 @@ namespace brave_ads {
 
 class LocaleHelperWin : public LocaleHelper {
  public:
+  static LocaleHelperWin* GetInstanceImpl();
+
+ private:
   LocaleHelperWin();
   ~LocaleHelperWin() override;
 
-  static LocaleHelperWin* GetInstance();
-
- private:
   // LocaleHelper impl
-  std::string GetLocale() const override;
+  const std::string GetLocale() const override;
 
   friend struct base::DefaultSingletonTraits<LocaleHelperWin>;
   DISALLOW_COPY_AND_ASSIGN(LocaleHelperWin);
