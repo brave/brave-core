@@ -338,6 +338,7 @@ struct PromotionCreds {
 
 struct UnblindedToken {
   uint64 id;
+  string token_value;
   string public_key;
   double value;
   string promotion_id;

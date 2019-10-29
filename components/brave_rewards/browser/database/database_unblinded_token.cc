@@ -54,6 +54,7 @@ bool DatabaseUnblindedToken::CreateTable(sql::Database* db) {
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
         "token_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+        "token_value TEXT,"
         "public_key TEXT,"
         "value DOUBLE NOT NULL DEFAULT 0,"
         "promotion_id TEXT,"
@@ -86,17 +87,18 @@ bool DatabaseUnblindedToken::InsertOrUpdate(
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
-      "(token_id, public_key, value, promotion_id) "
-      "VALUES (?, ?, ?, ?)",
+      "(token_id, token_value, public_key, value, promotion_id) "
+      "VALUES (?, ?, ?, ?, ?)",
       table_name_);
 
   sql::Statement statement(
     db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
 
   statement.BindInt64(0, info->id);
-  statement.BindString(1, info->public_key);
-  statement.BindDouble(2, info->value);
-  statement.BindString(3, info->promotion_id);
+  statement.BindString(1, info->token_value);
+  statement.BindString(2, info->public_key);
+  statement.BindDouble(3, info->value);
+  statement.BindString(4, info->promotion_id);
 
   if (!statement.Run()) {
     return false;
@@ -109,7 +111,7 @@ ledger::UnblindedTokenList DatabaseUnblindedToken::GetAllRecords(
     sql::Database* db) {
   ledger::UnblindedTokenList list;
   const std::string query = base::StringPrintf(
-      "SELECT token_id, public_key, value, promotion_id FROM %s",
+      "SELECT token_id, token_value, public_key, value, promotion_id FROM %s",
       table_name_);
 
   sql::Statement statement(db->GetUniqueStatement(query.c_str()));
@@ -117,9 +119,10 @@ ledger::UnblindedTokenList DatabaseUnblindedToken::GetAllRecords(
   while (statement.Step()) {
     auto info = ledger::UnblindedToken::New();
     info->id = statement.ColumnInt64(0);
-    info->public_key = statement.ColumnString(1);
-    info->value = statement.ColumnDouble(2);
-    info->promotion_id = statement.ColumnString(3);
+    info->token_value = statement.ColumnString(1);
+    info->public_key = statement.ColumnString(2);
+    info->value = statement.ColumnDouble(3);
+    info->promotion_id = statement.ColumnString(4);
 
     list.push_back(std::move(info));
   }
