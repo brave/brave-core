@@ -16,6 +16,20 @@ std::string GetStartAttestationDesktopUrl() {
   return BuildUrl("/captchas", PREFIX_V1, ServerTypes::kPromotion);
 }
 
+std::string GetCaptchaUrl(const std::string& captcha_id) {
+  const std::string path = base::StringPrintf(
+      "/captchas/%s.png",
+      captcha_id.c_str());
+  return BuildUrl(path, PREFIX_V1, ServerTypes::kPromotion);
+}
+
+std::string GetClaimAttestationDesktopUrl(const std::string& captcha_id) {
+  const std::string path = base::StringPrintf(
+      "/captchas/%s",
+      captcha_id.c_str());
+  return BuildUrl(path, PREFIX_V1, ServerTypes::kPromotion);
+}
+
 std::string GetStartAttestationAndroidUrl() {
   return BuildUrl(
       "/attestations/safetynet",
@@ -23,17 +37,24 @@ std::string GetStartAttestationAndroidUrl() {
       ServerTypes::kPromotion);
 }
 
-std::string GetCaptchaUrl(const std::string captcha_id) {
+std::string GetConfirmAttestationAndroidUrl(const std::string& nonce) {
   const std::string path = base::StringPrintf(
-      "/captchas/%s.png",
-      captcha_id.c_str());
-  return BuildUrl(path, PREFIX_V1, ServerTypes::kPromotion);
+      "/attestations/safetynet/%s",
+      nonce.c_str());
+  return BuildUrl(path, PREFIX_V2, ServerTypes::kPromotion);
 }
 
-std::string GetClaimAttestationDesktopUrl(const std::string captcha_id) {
+std::string GetStartAttestationIOSUrl() {
+  return BuildUrl(
+      "/devicecheck/attestations",
+      PREFIX_V1,
+      ServerTypes::kPromotion);
+}
+
+std::string GetConfirmAttestationIOSUrl(const std::string& nonce) {
   const std::string path = base::StringPrintf(
-      "/captchas/%s",
-      captcha_id.c_str());
+      "/devicecheck/attestations/%s",
+      nonce.c_str());
   return BuildUrl(path, PREFIX_V1, ServerTypes::kPromotion);
 }
 

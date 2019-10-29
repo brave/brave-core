@@ -41,8 +41,8 @@ void AttestationDesktop::ParseCaptchaResponse(
     return;
   }
 
-  auto* captcha_image = dictionary->FindKey("captchaId");
-  if (!captcha_image || !captcha_image->is_string()) {
+  auto* captcha_id = dictionary->FindKey("captchaId");
+  if (!captcha_id || !captcha_id->is_string()) {
     return;
   }
 
@@ -51,10 +51,8 @@ void AttestationDesktop::ParseCaptchaResponse(
     return;
   }
 
-  result->SetStringKey("hint", dictionary->FindKey("hint")->GetString());
-  result->SetStringKey(
-      "captchaId",
-      dictionary->FindKey("captchaId")->GetString());
+  result->SetStringKey("hint", hint->GetString());
+  result->SetStringKey("captchaId", captcha_id->GetString());
 }
 
 void AttestationDesktop::ParseClaimSolution(
@@ -85,16 +83,14 @@ void AttestationDesktop::ParseClaimSolution(
     return;
   }
 
-  result->SetIntKey("x", dictionary->FindKey("x")->GetInt());
-  result->SetIntKey("y", dictionary->FindKey("y")->GetInt());
-  result->SetStringKey("captchaId",
-      dictionary->FindKey("captchaId")->GetString());
+  result->SetIntKey("x", x->GetInt());
+  result->SetIntKey("y", y->GetInt());
+  result->SetStringKey("captchaId", captcha_id->GetString());
 }
 
 void AttestationDesktop::Start(
     const std::string& payload,
     StartCallback callback) {
-
   auto url_callback = std::bind(&AttestationDesktop::OnStart,
       this,
       _1,
@@ -206,7 +202,6 @@ void AttestationDesktop::Confirm(
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
-
 
   base::Value dictionary(base::Value::Type::DICTIONARY);
   base::Value solution_dict(base::Value::Type::DICTIONARY);

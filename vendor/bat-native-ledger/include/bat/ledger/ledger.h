@@ -191,14 +191,14 @@ class LEDGER_EXPORT Ledger {
   //  }
   // iOS:
   //  {
-  //    "nonce": "{{captchaId}}",
+  //    "nonce": "{{nonce}}",
   //    "blob": "{{blob}}",
   //    "signature": "{{signature}}"
   //  }
   // android:
   //  {
-  //    "nonce": "{{captchaId}}",
-  //    "token": "{{blob}}"
+  //    "nonce": "{{nonce}}",
+  //    "token": "{{token}}"
   //  }
   virtual void AttestPromotion(
       const std::string& promotion_id,
