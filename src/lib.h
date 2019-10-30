@@ -8,18 +8,6 @@
 
 typedef struct C_Engine C_Engine;
 
-/**
- * A set of cosmetic filtering resources specific to a particular hostname, including a base
- * stylesheet to inject, a set of script injections to add to the page, and a set of exceptions
- * that can be provided when incrementally querying later selectors by class or id.
- */
-typedef struct {
-  const char *stylesheet;
-  char *const *exceptions;
-  size_t exceptions_len;
-  const char *injected_script;
-} C_HostnameResources;
-
 typedef struct {
   const char *uuid;
   const char *url;
@@ -61,13 +49,13 @@ void engine_add_tag(C_Engine *engine, const char *tag);
  * Returns a stylesheet containing all generic cosmetic rules that begin with any of the provided class and id selectors
  * The leading '.' or '#' character should not be provided
  */
-const char *engine_class_id_stylesheet(C_Engine *engine,
-                                       const char *const *classes,
-                                       size_t classes_size,
-                                       const char *const *ids,
-                                       size_t ids_size,
-                                       const char *const *exceptions,
-                                       size_t exceptions_size);
+char *engine_class_id_stylesheet(C_Engine *engine,
+                                 const char *const *classes,
+                                 size_t classes_size,
+                                 const char *const *ids,
+                                 size_t ids_size,
+                                 const char *const *exceptions,
+                                 size_t exceptions_size);
 
 /**
  * Create a new `Engine`.
@@ -85,9 +73,9 @@ bool engine_deserialize(C_Engine *engine, const char *data, size_t data_size);
 void engine_destroy(C_Engine *engine);
 
 /**
- * Returns a set of cosmetic filtering resources specific to the given hostname.
+ * Returns a set of cosmetic filtering resources specific to the given hostname, in JSON format
  */
-C_HostnameResources engine_hostname_cosmetic_resources(C_Engine *engine, const char *hostname);
+char *engine_hostname_cosmetic_resources(C_Engine *engine, const char *hostname);
 
 /**
  * Checks if a `url` matches for the specified `Engine` within the context.

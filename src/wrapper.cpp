@@ -69,18 +69,6 @@ std::vector<FilterList>& FilterList::GetFilterLists(const std::string &category)
   return list;
 }
 
-HostnameResources::HostnameResources(const std::string& stylesheet,
-                                     const std::vector<std::string>& exceptions,
-                                     const std::string& injected_script)
-    : stylesheet(stylesheet),
-      exceptions(exceptions),
-      injected_script(injected_script) {}
-
-HostnameResources::HostnameResources(const HostnameResources& other) = default;
-
-HostnameResources::~HostnameResources() {
-}
-
 Engine::Engine() : raw(engine_create("")) {
 }
 
@@ -134,22 +122,12 @@ void Engine::addResources(const std::string& resources) {
   engine_add_resources(raw, resources.c_str());
 }
 
-const HostnameResources Engine::hostnameCosmeticResources(const std::string& hostname) {
-  C_HostnameResources resources = engine_hostname_cosmetic_resources(raw, hostname.c_str());
-  const std::string stylesheet = std::string(resources.stylesheet);
+const std::string Engine::hostnameCosmeticResources(const std::string& hostname) {
+  char* resources_raw = engine_hostname_cosmetic_resources(raw, hostname.c_str());
+  const std::string resources_json = std::string(resources_raw);
 
-  std::vector<std::string> exceptions;
-  for(size_t i = 0; i < resources.exceptions_len; i++) {
-    exceptions.push_back(std::string(resources.exceptions[i]));
-  }
-
-  const std::string injected_script = std::string(resources.injected_script);
-
-  return HostnameResources(
-    stylesheet,
-    exceptions,
-    injected_script
-  );
+  free(resources_raw);
+  return resources_json;
 }
 
 const std::string Engine::classIdStylesheet(const std::vector<std::string>& classes, const std::vector<std::string>& ids, const std::vector<std::string>& exceptions) {
@@ -171,12 +149,16 @@ const std::string Engine::classIdStylesheet(const std::vector<std::string>& clas
     exceptions_raw.push_back(exceptions[i].c_str());
   }
 
-  return engine_class_id_stylesheet(
+  char* stylesheet_raw = engine_class_id_stylesheet(
     raw,
     classes_raw.data(), classes.size(),
     ids_raw.data(), ids.size(),
     exceptions_raw.data(), exceptions.size()
   );
+  const std::string stylesheet = std::string(stylesheet_raw);
+
+  free(stylesheet_raw);
+  return stylesheet;
 }
 
 Engine::~Engine() {

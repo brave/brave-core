@@ -39,19 +39,6 @@ private:
   static std::vector<FilterList> regional_list;
 };
 
-class HostnameResources {
-  public:
-    HostnameResources(const std::string& stylesheet,
-                      const std::vector<std::string>& exceptions,
-                      const std::string& injected_script);
-    HostnameResources(const HostnameResources& other);
-    ~HostnameResources();
-
-    const std::string stylesheet;
-    const std::vector<std::string> exceptions;
-    const std::string injected_script;
-};
-
 class Engine {
  public:
   Engine();
@@ -70,7 +57,7 @@ class Engine {
   void addResources(const std::string& resources);
   void removeTag(const std::string& tag);
   bool tagExists(const std::string& tag);
-  const HostnameResources hostnameCosmeticResources(const std::string& hostname);
+  const std::string hostnameCosmeticResources(const std::string& hostname);
   const std::string classIdStylesheet(
       const std::vector<std::string>& classes,
       const std::vector<std::string>& ids,

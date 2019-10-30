@@ -228,44 +228,21 @@ pub unsafe extern "C" fn filter_list_get(category: *const c_char, i: size_t) -> 
     new_list
 }
 
-/// A set of cosmetic filtering resources specific to a particular hostname, including a base
-/// stylesheet to inject, a set of script injections to add to the page, and a set of exceptions
-/// that can be provided when incrementally querying later selectors by class or id.
-#[repr(C)]
-pub struct HostnameResources {
-    stylesheet: *const c_char,
-    exceptions: *const *mut c_char,
-    exceptions_len: size_t,
-    injected_script: *const c_char,
-}
-
-impl From<adblock::cosmetic_filter_cache::HostnameSpecificResources> for HostnameResources {
-    fn from(v: adblock::cosmetic_filter_cache::HostnameSpecificResources) -> Self {
-        let mut exceptions = v.exceptions.iter().map(|s| CString::new(s.to_owned()).unwrap().into_raw()).collect::<Vec<_>>();
-        exceptions.shrink_to_fit();
-        let exceptions_ptr = exceptions.as_ptr();
-        let exceptions_len = exceptions.len();
-        std::mem::forget(exceptions);
-
-        HostnameResources {
-            stylesheet: CString::new(v.stylesheet).expect("Error: CString::new()").into_raw(),
-            exceptions: exceptions_ptr,
-            exceptions_len,
-            injected_script: CString::new(v.injected_script).expect("Error: CString::new()").into_raw(),
-        }
-    }
-}
-
-/// Returns a set of cosmetic filtering resources specific to the given hostname.
+/// Returns a set of cosmetic filtering resources specific to the given hostname, in JSON format
 #[no_mangle]
 pub unsafe extern "C" fn engine_hostname_cosmetic_resources(
     engine: *mut Engine,
     hostname: *const c_char,
-) -> HostnameResources {
+) -> *mut c_char {
     let hostname = CStr::from_ptr(hostname).to_str().unwrap();
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
-    engine.hostname_cosmetic_resources(hostname).into()
+    let ptr = CString::new(serde_json::to_string(&engine.hostname_cosmetic_resources(hostname))
+        .unwrap_or_else(|_| "".into()))
+        .expect("Error: CString::new()")
+        .into_raw();
+    std::mem::forget(ptr);
+    ptr
 }
 
 /// Returns a stylesheet containing all generic cosmetic rules that begin with any of the provided class and id selectors
@@ -280,7 +257,7 @@ pub unsafe extern "C" fn engine_class_id_stylesheet(
     ids_size: size_t,
     exceptions: *const *const c_char,
     exceptions_size: size_t,
-) -> *const c_char {
+) -> *mut c_char {
     let classes = std::slice::from_raw_parts(classes, classes_size);
     let classes: Vec<String> = (0..classes_size)
         .map(|index| CStr::from_ptr(classes[index]).to_str().unwrap().to_owned())
