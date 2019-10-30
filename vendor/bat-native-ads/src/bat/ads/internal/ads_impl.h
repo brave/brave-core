@@ -105,7 +105,7 @@ class AdsImpl : public Ads {
       const std::string& id,
       const NotificationInfo& notification);
 
-  bool IsDoNotDisturb() const;
+  bool ShouldNotDisturb() const;
 
   int32_t active_tab_id_;
   std::string active_tab_url_;
@@ -205,6 +205,10 @@ class AdsImpl : public Ads {
       const std::string& category,
       const std::vector<AdInfo>& ads);
 
+  void SuccessfullyServedAd();
+  void FailedToServeAd(
+      const std::string& reason);
+
   std::vector<AdInfo> GetEligibleAds(
       const std::vector<AdInfo>& ads);
   std::vector<AdInfo> GetUnseenAdsAndRoundRobinIfNeeded(
@@ -255,6 +259,8 @@ class AdsImpl : public Ads {
 
   uint32_t delivering_notifications_timer_id_;
   void StartDeliveringNotifications();
+  void StartDeliveringNotificationsAfterSeconds(
+      const uint64_t seconds);
   void DeliverNotification();
   void StopDeliveringNotifications();
   bool IsDeliveringNotifications() const;
