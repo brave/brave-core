@@ -234,6 +234,7 @@ void PhaseTwo::PrepareBatch(
 
   auto callback = std::bind(&PhaseTwo::PrepareBatchCallback,
                             this,
+                            transaction.viewingId_,
                             _1,
                             _2,
                             _3);
@@ -246,7 +247,7 @@ void PhaseTwo::PrepareBatch(
 }
 
 void PhaseTwo::AssignPrepareBallots(
-    const braveledger_bat_helper::Transactions& transactions,
+    const std::string& viewing_id,
     const std::vector<std::string>& surveyors,
     braveledger_bat_helper::Ballots* ballots) {
   for (size_t j = 0; j < surveyors.size(); j++) {
@@ -267,19 +268,16 @@ void PhaseTwo::AssignPrepareBallots(
     }
 
     for (auto& ballot : *ballots) {
-      if (ballot.surveyorId_ == surveyor_id) {
-        for (size_t k = 0; k < transactions.size(); k++) {
-          if (transactions[k].viewingId_ == ballot.viewingId_ &&
-              ballot.proofBallot_.empty()) {
-            ballot.prepareBallot_ = surveyors[j];
-          }
-        }
+      if (ballot.surveyorId_ == surveyor_id &&
+          ballot.viewingId_ == viewing_id) {
+        ballot.prepareBallot_ = surveyors[j];
       }
     }
   }
 }
 
 void PhaseTwo::PrepareBatchCallback(
+    const std::string& viewing_id,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
@@ -298,11 +296,9 @@ void PhaseTwo::PrepareBatchCallback(
     return;
   }
 
-  braveledger_bat_helper::Transactions transactions =
-    ledger_->GetTransactions();
   braveledger_bat_helper::Ballots ballots = ledger_->GetBallots();
 
-  AssignPrepareBallots(transactions, surveyors, &ballots);
+  AssignPrepareBallots(viewing_id, surveyors, &ballots);
 
   ledger_->SetBallots(ballots);
   Proof();

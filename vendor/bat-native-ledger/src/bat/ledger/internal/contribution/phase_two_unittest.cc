@@ -77,4 +77,29 @@ TEST_F(PhaseTwoTest, GetStatisticalVotingWinners) {
   }
 }
 
+// Surveyor IDs are not unique and may be shared between different transactions.
+// Ensure that when assigning prepareBallot objects to ballots, we only assign
+// to ballots for the current viewing ID, even if they share a surveyor ID.
+TEST_F(PhaseTwoTest, AssignPrepareBallotsRespectsViewingID) {
+  const std::string shared_surveyor_id =
+      "Ad5pNzrwhWokTOR8/hC83LWJfEy8aY7mFwPQWe6CpRF";
+  const std::vector<std::string> surveyors = {
+      "{\"surveyorId\":\"" + shared_surveyor_id + "\"}"
+  };
+
+  // Create ballots with different viewing IDs but the same surveyor ID.
+  braveledger_bat_helper::Ballots ballots(2);
+  ballots[0].viewingId_ = "00000000-0000-0000-0000-000000000000";
+  ballots[0].surveyorId_ = shared_surveyor_id;
+  ballots[1].viewingId_ = "ffffffff-ffff-ffff-ffff-ffffffffffff";
+  ballots[1].surveyorId_ = shared_surveyor_id;
+
+  // Check that only ballot[0] with the matching viewing ID is updated. Ballot 1
+  // should remain unmodified.
+  PhaseTwo::AssignPrepareBallots("00000000-0000-0000-0000-000000000000",
+      surveyors, &ballots);
+  ASSERT_FALSE(ballots[0].prepareBallot_.empty());
+  ASSERT_TRUE(ballots[1].prepareBallot_.empty());
+}
+
 }  // namespace braveledger_contribution

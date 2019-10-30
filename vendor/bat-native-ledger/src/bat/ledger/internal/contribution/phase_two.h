@@ -73,12 +73,13 @@ class PhaseTwo {
       const braveledger_bat_helper::TRANSACTION_ST& transaction);
 
   void PrepareBatchCallback(
+      const std::string& viewing_id,
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
   static void AssignPrepareBallots(
-      const braveledger_bat_helper::Transactions& transactions,
+      const std::string& viewing_id,
       const std::vector<std::string>& surveyors,
       braveledger_bat_helper::Ballots* ballots);
 
@@ -105,6 +106,7 @@ class PhaseTwo {
   // For testing purposes
   friend class PhaseTwoTest;
   FRIEND_TEST_ALL_PREFIXES(PhaseTwoTest, GetStatisticalVotingWinners);
+  FRIEND_TEST_ALL_PREFIXES(PhaseTwoTest, AssignPrepareBallotsRespectsViewingID);
 };
 
 }  // namespace braveledger_contribution
