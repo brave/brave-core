@@ -558,6 +558,7 @@ extension WalletViewController {
     ledgerObserver.publisherListUpdated = { [weak self] in
       guard let self = self else { return }
       self.publisherSummaryView.publisherView.setCheckAgainIsLoading(self.state.ledger.isLoadingPublisherList)
+      self.fetchPublisherActivity()
     }
     ledgerObserver.fetchedBalance = { [weak self] in
       self?.updateWalletHeader()
