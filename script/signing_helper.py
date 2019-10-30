@@ -89,13 +89,16 @@ def AddBravePartsForSigning(parts, config):
     parts['helper-app'].options = CodeSignOptions.RESTRICT + CodeSignOptions.KILL + CodeSignOptions.HARDENED_RUNTIME
 
 
-def GetBraveSigningConfig(config_class, development):
+def GetBraveSigningConfig(config_class, development, mac_provisioning_profile=None):
     if development:
         return config_class
 
-    # Retrieve provisioning profile exported by build/mac/sign_app.sh
-    provisioning_profile = os.environ['MAC_PROVISIONING_PROFILE']
-    assert len(provisioning_profile), 'MAC_PROVISIONING_PROFILE is not set'
+    if mac_provisioning_profile is not None:
+        provisioning_profile = mac_provisioning_profile
+    else:
+        # Retrieve provisioning profile exported by build/mac/sign_app.sh
+        provisioning_profile = os.environ['MAC_PROVISIONING_PROFILE']
+        assert len(provisioning_profile), 'MAC_PROVISIONING_PROFILE is not set'
 
     class ProvisioningProfileCodeSignConfig(config_class):
 

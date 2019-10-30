@@ -1,0 +1,10 @@
+diff --git a/chrome/installer/mac/signing/config.py.in b/chrome/installer/mac/signing/config.py.in
+index 71e0dedeaaff81489748837fbaa72fcb58fb6edb..02c6b809472584e1e81e4feb9ed418a91d7b0c18 100644
+--- a/chrome/installer/mac/signing/config.py.in
++++ b/chrome/installer/mac/signing/config.py.in
+@@ -189,4 +189,4 @@ class CodeSignConfig(object):
+     @property
+     def packaging_dir(self):
+         """Returns the path to the packaging and installer tools."""
+-        return '{.product} Packaging'.format(self)
++        return '{}_Packaging'.format(self.product.replace(' ', '_'))
