@@ -56,7 +56,7 @@ internal extension Strings {
   static let RewardsOptInPrefix = NSLocalizedString("RewardsOptInPrefix", bundle: Bundle.RewardsUI, value: "Get ready to experience the next Internet.", comment: "")
   static let DisclaimerLearnMore = NSLocalizedString("BraveRewardsDisclaimerLearnMore", bundle: Bundle.RewardsUI, value: "Learn More", comment: "")
   static let CLAIM = NSLocalizedString("CLAIM", bundle: Bundle.RewardsUI, value: "CLAIM", comment: "")
-  static let AutoContributeNextDate = NSLocalizedString("BraveRewardsAutoContributeNextDate", bundle: Bundle.RewardsUI, value: "Next contribution date", comment: "")
+  static let AutoContributeNextDate = NSLocalizedString("BraveRewardsAutoContributeNextDate", bundle: Bundle.RewardsUI, value: "Next monthly tip date", comment: "")
   static let TippingMakeMonthly = NSLocalizedString("BraveRewardsTippingMakeMonthly", bundle: Bundle.RewardsUI, value: "Make this monthly", comment: "")
   static let OK = NSLocalizedString("OK", bundle: Bundle.RewardsUI, value: "OK", comment: "")
   static let LearnMoreHowItWorks = NSLocalizedString("BraveRewardsLearnMoreHowItWorks", bundle: Bundle.RewardsUI, value: "How it works…", comment: "")
