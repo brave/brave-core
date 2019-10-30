@@ -141,12 +141,14 @@ const onTipActionKey = (e: KeyboardEvent) => {
   }
 }
 
-const createBraveTipAction = (tweet: Element, tweetId: string) => {
+const createBraveTipAction = (tweet: Element, tweetId: string, numActions: number) => {
   // Create the tip action
+  const hasUserActions = numActions > 3
   const braveTipAction = document.createElement('div')
   braveTipAction.className = 'ProfileTweet-action js-tooltip action-brave-tip'
   braveTipAction.style.display = 'inline-block'
   braveTipAction.style.minWidth = '80px'
+  braveTipAction.style.textAlign = hasUserActions ? 'right' : 'start'
   braveTipAction.setAttribute('role', 'button')
   braveTipAction.setAttribute('tabindex', '0')
   braveTipAction.setAttribute('data-original-title', getMessage('twitterTipsHoverText'))
@@ -277,9 +279,10 @@ const configureBraveTipAction = () => {
         if (!actions) {
           continue
         }
+        const numActions = actions.querySelectorAll(':scope > div').length || 0
         const braveTipActions = actions.getElementsByClassName('action-brave-tip')
         if (tippingEnabled && braveTipActions.length === 0) {
-          actions.appendChild(createBraveTipAction(tweets[i], tweetId))
+          actions.appendChild(createBraveTipAction(tweets[i], tweetId, numActions))
         } else if (!tippingEnabled && braveTipActions.length === 1) {
           actions.removeChild(braveTipActions[0])
         }
