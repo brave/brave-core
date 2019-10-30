@@ -1482,7 +1482,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         About Brave
       </message>
       <message name="IDS_LEGAL_INFORMATION_SUMMARY" desc="Summary for legal information" meaning="Android">
-        Copyright <ph name="year">%1$d<ex>2014</ex></ph> Brave LLC. All rights reserved.
+        Copyright © <ph name="year">%1$d<ex>2014</ex></ph> Brave Software Inc. All rights reserved.
       </message>
       <message name="IDS_APPLICATION_VERSION_TITLE" desc="Title for application version">
         Application version
