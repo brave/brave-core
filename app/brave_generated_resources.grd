@@ -416,6 +416,13 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BRAVE_SYNC_LINK_LABEL" desc="Brave Sync link label">
         Access Sync via
       </message>
+      <!-- Help Tips Page -->
+      <message name="IDS_SETTINGS_HELP_TIPS" desc="Title for an item in the 'Help Tips' section of Brave Settings">
+        Help Tips
+      </message>
+      <message name="IDS_SETTINGS_HELP_TIPS_SHOW_BRAVE_WAYBACK_MACHINE_PROMPT" desc="The label describing the 'wayback machine' toggle option">
+        Show Wayback Machine prompt on 404 pages
+      </message>
       <!-- Brave Theme -->
       <message name="IDS_BRAVE_THEME_TYPE_LIGHT" desc="Text for light theme type">
         Light

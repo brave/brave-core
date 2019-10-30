@@ -156,9 +156,12 @@ BravePatching.RegisterPolymerTemplateModifications({
     // Add Sync item
     const syncEl = createMenuElement(loadTimeData.getString('braveSync'), '/braveSync', 'brave_settings:sync')
     appearanceBrowserEl.insertAdjacentElement('afterend', syncEl)
+    // Add Help Tips item
+    const helpTipsEl = createMenuElement(loadTimeData.getString('braveHelpTips'), '/braveHelpTips', 'brave_settings:help')
+    syncEl.insertAdjacentElement('afterend', helpTipsEl)
     // Add Shields item
     const shieldsEl = createMenuElement(loadTimeData.getString('braveShieldsTitle'), '/shields',  'brave_settings:shields')
-    syncEl.insertAdjacentElement('afterend', shieldsEl)
+    helpTipsEl.insertAdjacentElement('afterend', shieldsEl)
     // Add Embed Blocking item
     const embedEl = createMenuElement(loadTimeData.getString('socialBlocking'), '/socialBlocking', 'brave_settings:social-permissions')
     shieldsEl.insertAdjacentElement('afterend', embedEl)
@@ -181,6 +184,9 @@ BravePatching.RegisterPolymerTemplateModifications({
     const autofillEl = getMenuElement(templateContent, '/autofill')
     const privacyEl = getMenuElement(templateContent, '/privacy')
     privacyEl.insertAdjacentElement('afterend', autofillEl)
+    // Move helptips to advanced
+    const printingEl = getMenuElement(templateContent, '/printing')
+    printingEl.insertAdjacentElement('afterend', helpTipsEl)
     // Remove extensions link
     const extensionsLinkEl = templateContent.querySelector('#extensionsLink')
     if (!extensionsLinkEl) {
@@ -216,6 +222,7 @@ BravePatching.RegisterPolymerTemplateModifications({
     r.SOCIAL_BLOCKING = r.BASIC.createSection('/socialBlocking', 'socialBlocking')
     r.EXTENSIONS = r.BASIC.createSection('/extensions', 'extensions')
     r.BRAVE_SYNC = r.BASIC.createSection('/braveSync', 'braveSync')
+    r.BRAVE_HELP_TIPS = r.BASIC.createSection('/braveHelpTips', 'braveHelpTips')
     if (!r.SITE_SETTINGS) {
       console.error('[Brave Settings Overrides] Routes: could not find SITE_SETTINGS page')
     }
@@ -285,6 +292,15 @@ BravePatching.RegisterPolymerTemplateModifications({
           <settings-social-blocking-page prefs="{{prefs}}"></settings-social-blocking-page>
         </settings-section>
       `
+      const sectionHelpTips = document.createElement('template')
+      sectionHelpTips.setAttribute('is', 'dom-if')
+      sectionHelpTips.setAttribute('restamp', true)
+      sectionHelpTips.setAttribute('if', '[[showPage_(pageVisibility.braveHelpTips)]]')
+      sectionHelpTips.innerHTML = `
+        <settings-section page-title="${loadTimeData.getString('braveHelpTips')}" section="braveHelpTips">
+          <settings-brave-help-tips-page prefs="{{prefs}}"></settings-brave-help-tips-page>
+        </settings-section>
+      `
       // Get Started at top
       basicPageEl.insertAdjacentElement('afterbegin', sectionGetStarted)
       // Move Appearance item
@@ -326,6 +342,9 @@ BravePatching.RegisterPolymerTemplateModifications({
       const sectionAutofill = getSectionElement(actualTemplate.content, 'autofill')
       const sectionPrivacy = getSectionElement(advancedSubSectionsTemplate.content, 'privacy')
       sectionPrivacy.insertAdjacentElement('afterend', sectionAutofill)
+      // Move help tips after printing
+      const sectionPrinting = getSectionElement(advancedSubSectionsTemplate.content, 'printing')
+      sectionPrinting.insertAdjacentElement('afterend', sectionHelpTips)
     }
   },
   'settings-default-browser-page': (templateContent) => {
@@ -334,7 +353,7 @@ BravePatching.RegisterPolymerTemplateModifications({
       for (const boxEl of templateEl.content.querySelectorAll('.settings-box')) {
         boxEl.classList.remove('first')
       }
-    }
+    }   
   },
   'settings-people-page': (templateContent) => {
     // People page needs to think it's in the getStarted section, since it is
