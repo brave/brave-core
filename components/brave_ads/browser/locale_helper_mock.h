@@ -19,7 +19,7 @@ class LocaleHelperMock : public LocaleHelper {
   LocaleHelperMock();
   ~LocaleHelperMock() override;
 
-  MOCK_METHOD(const std::string, GetLocale, (), (const, override));
+  MOCK_CONST_METHOD0(GetLocale, const std::string());
 
  private:
   DISALLOW_COPY_AND_ASSIGN(LocaleHelperMock);
