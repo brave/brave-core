@@ -25,12 +25,12 @@ GPG_KEY_ID=${2}
 TMP_REPO=$(mktemp -d)
 # SNAP_TAG=$(date +'%s')
 
-if [ -n "$S3_BUCKET" ]; then
+if [ -z "$S3_BUCKET" ]; then
     echo "Error: Please pass the S3 bucket argument as the first argument"
     exit 1
 fi
 
-if [ -n "$GPG_KEY_ID" ]; then
+if [ -z "$GPG_KEY_ID" ]; then
     echo "Error: Please pass the full GPG Key ID as the second argument"
     exit 1
 fi
