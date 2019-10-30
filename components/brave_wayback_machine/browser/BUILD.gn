@@ -1,0 +1,20 @@
+source_set("browser") {
+  sources = [
+    "content_browser_client_helper.h",
+    "wayback_machine_util.cc",
+    "wayback_machine_util.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common",
+    "//components/pref_registry",
+    "//content/public/browser",
+    "//extensions/browser",
+    "//extensions/common",
+  ]
+
+  public_deps = [
+    "buildflags",
+  ]
+}

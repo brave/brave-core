@@ -105,7 +105,9 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
   HandleRewardsEnabledStatus();
 #endif
 
-  if (!command_line.HasSwitch(switches::kDisableBraveWaybackMachineExtension)) {
+  if (!command_line.HasSwitch(switches::kDisableBraveWaybackMachineExtension) &&
+      (!profile_prefs_->FindPreference(kBraveWaybackMachineEnabled) ||
+      profile_prefs_->GetBoolean(kBraveWaybackMachineEnabled))) {
     base::FilePath brave_wayback_machine_path(FILE_PATH_LITERAL(""));
     brave_wayback_machine_path =
       brave_wayback_machine_path.Append(FILE_PATH_LITERAL("brave_wayback_machine"));

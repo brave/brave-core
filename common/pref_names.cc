@@ -56,6 +56,7 @@ const char kMigratedMuonProfile[] = "brave.muon.migrated_profile";
 const char kBravePaymentsPinnedItemCount[] =
     "brave.muon.import_pinned_item_count";
 const char kWebTorrentEnabled[] = "brave.webtorrent_enabled";
+const char kBraveWaybackMachineEnabled[] = "brave.wayback_machine_enabled";
 const char kHangoutsEnabled[] = "brave.hangouts_enabled";
 const char kHideBraveRewardsButton[] = "brave.hide_brave_rewards_button";
 const char kIPFSCompanionEnabled[] = "brave.ipfs_companion_enabled";

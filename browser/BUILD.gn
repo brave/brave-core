@@ -4,6 +4,7 @@ import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_wayback_machine/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
@@ -131,6 +132,7 @@ source_set("browser_process") {
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_webtorrent/browser/buildflags",
+    "//brave/components/brave_wayback_machine/browser/buildflags",
     "//brave/components/content_settings/core/browser",
     "//brave/components/greaselion/browser/buildflags",
     "//brave/components/ntp_tiles",
@@ -269,6 +271,12 @@ source_set("browser_process") {
       "brave_drm_tab_helper.h",
     ]
     deps += [ "//brave/browser/widevine" ]
+  }
+
+  if (enable_brave_wayback_machine) {
+    deps += [
+      "//brave/components/brave_wayback_machine/browser",
+    ]
   }
 
   if (is_win && is_official_build) {

@@ -48,6 +48,7 @@ extern const char kLinkedInEmbedControlType[];
 extern const char kMigratedMuonProfile[];
 extern const char kBravePaymentsPinnedItemCount[];
 extern const char kWebTorrentEnabled[];
+extern const char kBraveWaybackMachineEnabled[];
 extern const char kHangoutsEnabled[];
 extern const char kHideBraveRewardsButton[];
 extern const char kIPFSCompanionEnabled[];

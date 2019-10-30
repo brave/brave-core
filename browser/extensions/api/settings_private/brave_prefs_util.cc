@@ -90,6 +90,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   // WebTorrent pref
   (*s_brave_whitelist)[kWebTorrentEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  // Wayback Machine pref
+  (*s_brave_whitelist)[kBraveWaybackMachineEnabled] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // Hangouts pref
   (*s_brave_whitelist)[kHangoutsEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

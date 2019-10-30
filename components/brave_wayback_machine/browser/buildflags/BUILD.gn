@@ -1,0 +1,9 @@
+import("//build/buildflag_header.gni")
+import("buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "ENABLE_BRAVE_WAYBACK_MACHINE=$enable_brave_wayback_machine",
+  ]
+}
