@@ -5,15 +5,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+
 def AddBravePolicies(template_file_contents):
     highest_id = template_file_contents['highest_id_currently_used']
     policies = [
         {
             'name': 'TorDisabled',
             'type': 'main',
-            'schema': { 'type': 'boolean' },
+            'schema': {'type': 'boolean'},
             'supported_on': ['chrome.win:78-'],
-            'features': { 'dynamic_refresh': False, 'per_profile': False },
+            'features': {'dynamic_refresh': False, 'per_profile': False},
             'example_value': True,
             'id': 0,
             'caption': '''Disables the tor feature.''',
