@@ -16,10 +16,33 @@
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "components/version_info/channel.h"
+#include "ui/views/controls/highlight_path_generator.h"
+
+namespace {
+
+class BraveLocationBarViewFocusRingHighlightPathGenerator
+    : public views::HighlightPathGenerator {
+ public:
+  BraveLocationBarViewFocusRingHighlightPathGenerator() = default;
+
+  // HighlightPathGenerator
+  SkPath GetHighlightPath(const views::View* view) override {
+    return static_cast<const BraveLocationBarView*>(view)
+        ->GetFocusRingHighlightPath();
+  }
+
+ private:
+  DISALLOW_COPY_AND_ASSIGN(BraveLocationBarViewFocusRingHighlightPathGenerator);
+};
+
+}  // namepsace
 
 void BraveLocationBarView::Init() {
   // base method calls Update and Layout
   LocationBarView::Init();
+  // Change focus ring highlight path
+  focus_ring_->SetPathGenerator(
+      std::make_unique<BraveLocationBarViewFocusRingHighlightPathGenerator>());
   // brave action buttons
   brave_actions_ = new BraveActionsContainer(browser_, profile());
   brave_actions_->Init();
@@ -90,6 +113,12 @@ void BraveLocationBarView::ChildPreferredSizeChanged(views::View* child) {
 int BraveLocationBarView::GetBorderRadius() const {
   return ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
       views::EMPHASIS_HIGH, size());
+}
+
+SkPath BraveLocationBarView::GetFocusRingHighlightPath() const {
+  const SkScalar radius = GetBorderRadius();
+  return SkPath().addRoundRect(gfx::RectToSkRect(GetLocalBounds()),
+                               radius, radius);
 }
 
 ContentSettingImageView*
