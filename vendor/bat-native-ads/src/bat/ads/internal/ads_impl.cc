@@ -162,7 +162,12 @@ void AdsImpl::InitializeStep4(
   client_->UpdateAdUUID();
 
   if (IsMobile()) {
-    StartDeliveringNotifications();
+    if (client_->GetNextCheckServeAdTimestampInSeconds() == 0) {
+      StartDeliveringNotificationsAfterSeconds(
+          2 * base::Time::kSecondsPerMinute);
+    } else {
+      StartDeliveringNotifications();
+    }
   }
 
   if (_is_debug) {
@@ -445,8 +450,12 @@ void AdsImpl::NotificationEventTimedOut(
       NotificationResultInfoResultType::TIMEOUT);
 }
 
-bool AdsImpl::IsDoNotDisturb() const {
+bool AdsImpl::ShouldNotDisturb() const {
   if (!IsAndroid()) {
+    return false;
+  }
+
+  if (IsForeground()) {
     return false;
   }
 
@@ -905,39 +914,37 @@ void AdsImpl::CheckEasterEgg(
 void AdsImpl::CheckReadyAdServe(
     const bool forced) {
   if (!IsInitialized() || !bundle_->IsReady()) {
-    BLOG(INFO) << "Notification not made: Not initialized";
+    FailedToServeAd("Not initialized");
     return;
   }
 
   if (!forced) {
     if (!is_confirmations_ready_) {
-      BLOG(INFO) << "Notification not made: Confirmations not ready";
+      FailedToServeAd("Confirmations not ready");
       return;
     }
 
     if (!IsAndroid() && !IsForeground()) {
-      BLOG(INFO) << "Notification not made: Not in foreground";
+      FailedToServeAd("Not in foreground");
       return;
     }
 
     if (IsMediaPlaying()) {
-      BLOG(INFO) << "Notification not made: Media playing in browser";
+      FailedToServeAd("Media playing in browser");
       return;
     }
 
-    if (IsDoNotDisturb() && !IsForeground()) {
+    if (ShouldNotDisturb()) {
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Notification not made', { reason: 'do not disturb while not in
       // foreground' }
 
-      BLOG(INFO)
-          << "Notification not made: Do not disturb while not in foreground";
-
+      FailedToServeAd("Should not disturb");
       return;
     }
 
     if (!IsAllowedToServeAds()) {
-      BLOG(INFO) << "Notification not made: Not allowed based on history";
+      FailedToServeAd("Not allowed based on history");
       return;
     }
   }
@@ -948,11 +955,11 @@ void AdsImpl::CheckReadyAdServe(
 
 void AdsImpl::ServeAdFromCategory(
     const std::string& category) {
-  BLOG(INFO) << "Notification for category " << category;
+  BLOG(INFO) << "Serving ad for category: " << category;
 
   std::string catalog_id = bundle_->GetCatalogId();
   if (catalog_id.empty()) {
-    BLOG(INFO) << "Notification not made: No ad catalog";
+    FailedToServeAd("No ad catalog");
     return;
   }
 
@@ -963,8 +970,7 @@ void AdsImpl::ServeAdFromCategory(
     return;
   }
 
-  BLOG(INFO) << "Notification not made: Category is empty, trying "
-      << "again with untargeted category";
+  BLOG(INFO) << "Category is empty, trying again with untargeted category";
 
   ServeUntargetedAd();
 }
@@ -983,7 +989,7 @@ void AdsImpl::OnServeAdFromCategory(
     return;
   }
 
-  BLOG(INFO) << "Notification not made: No ads found in \"" << category
+  BLOG(INFO) << "No ads found in \"" << category
       << "\" category, trying again with untargeted category";
 
   ServeUntargetedAd();
@@ -999,12 +1005,11 @@ bool AdsImpl::ServeAdFromParentCategory(
 
   std::string parent_category = category.substr(0, pos);
 
-  BLOG(INFO) << "Notification not made: No ads found in \"" << category
+  BLOG(INFO) << "No ads found in \"" << category
       << "\" category, trying again with \"" << parent_category
       << "\" category";
 
-  auto callback =
-      std::bind(&AdsImpl::OnServeAdFromCategory, this, _1, _2, _3);
+  auto callback = std::bind(&AdsImpl::OnServeAdFromCategory, this, _1, _2, _3);
   ads_client_->GetAds(parent_category, callback);
 
   return true;
@@ -1025,8 +1030,7 @@ void AdsImpl::OnServeUntargetedAd(
     return;
   }
 
-  BLOG(INFO) << "Notification not made: No ad (or eligible ad) for \""
-      << category << "\" category";
+  FailedToServeAd("No eligible ads found");
 }
 
 void AdsImpl::ServeAd(
@@ -1038,6 +1042,25 @@ void AdsImpl::ServeAd(
   auto rand = base::RandInt(0, ads.size() - 1);
   auto ad = ads.at(rand);
   ShowAd(ad, category);
+
+  SuccessfullyServedAd();
+}
+
+void AdsImpl::SuccessfullyServedAd() {
+  if (IsMobile()) {
+    StartDeliveringNotificationsAfterSeconds(
+        base::Time::kSecondsPerHour / ads_client_->GetAdsPerHour());
+  }
+}
+
+void AdsImpl::FailedToServeAd(
+    const std::string& reason) {
+  BLOG(INFO) << "Notification not made: " << reason;
+
+  if (IsMobile()) {
+    StartDeliveringNotificationsAfterSeconds(
+        2 * base::Time::kSecondsPerMinute);
+  }
 }
 
 std::vector<AdInfo> AdsImpl::GetEligibleAds(
@@ -1416,10 +1439,6 @@ bool AdsImpl::IsCollectingActivity() const {
 void AdsImpl::StartDeliveringNotifications() {
   StopDeliveringNotifications();
 
-  if (client_->GetNextCheckServeAdTimestampInSeconds() == 0) {
-    client_->UpdateNextCheckServeAdTimestampInSeconds();
-  }
-
   auto now_in_seconds = Time::NowInSeconds();
   auto next_check_serve_ad_timestamp_in_seconds =
       client_->GetNextCheckServeAdTimestampInSeconds();
@@ -1444,12 +1463,16 @@ void AdsImpl::StartDeliveringNotifications() {
       << start_timer_in << " seconds";
 }
 
-void AdsImpl::DeliverNotification() {
-  NotificationAllowedCheck(true);
-
-  client_->UpdateNextCheckServeAdTimestampInSeconds();
+void AdsImpl::StartDeliveringNotificationsAfterSeconds(
+    const uint64_t seconds) {
+  auto timestamp_in_seconds = Time::NowInSeconds() + seconds;
+  client_->SetNextCheckServeAdTimestampInSeconds(timestamp_in_seconds);
 
   StartDeliveringNotifications();
+}
+
+void AdsImpl::DeliverNotification() {
+  NotificationAllowedCheck(true);
 }
 
 void AdsImpl::StopDeliveringNotifications() {
@@ -1516,8 +1539,7 @@ void AdsImpl::NotificationAllowedCheck(
     // 'Notification not made', { reason: 'notifications not presently allowed'
     // }
 
-    BLOG(INFO) << "Notification not made: Notifications not presently allowed";
-
+    FailedToServeAd("Notifications not presently allowed");
     return;
   }
 
@@ -1525,8 +1547,7 @@ void AdsImpl::NotificationAllowedCheck(
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'network connection not available' }
 
-    BLOG(INFO) << "Notification not made: Network connection not available";
-
+    FailedToServeAd("Network connection not available");
     return;
   }
 
@@ -1534,8 +1555,7 @@ void AdsImpl::NotificationAllowedCheck(
     // TODO(Terry Mancey): Implement Log (#44)
     // 'Notification not made', { reason: 'catalog older than one day' }
 
-    BLOG(INFO) << "Notification not made: Catalog older than one day";
-
+    FailedToServeAd("Catalog older than one day");
     return;
   }
 
