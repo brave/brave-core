@@ -24,7 +24,7 @@ class TippingOption: NSObject {
   class func batAmount(_ value: BATValue, dollarValue: String) -> TippingOption {
     return TippingOption(
       value: value,
-      crypto: "BAT", // Tipping page stays "BAT" regardless of locale
+      crypto: Strings.BAT,
       cryptoImage: UIImage(frameworkResourceNamed: "bat-small"),
       dollarValue: dollarValue
     )
@@ -217,7 +217,7 @@ extension TippingSelectionView {
     let titleLabel = UILabel().then {
       $0.appearanceTextColor = Colors.blurple700
       $0.font = .systemFont(ofSize: 12.0)
-      $0.text = Locale.current.isJapan ? Strings.TippingWalletBalanceTitleJapan : Strings.TippingWalletBalanceTitle
+      $0.text = Strings.TippingWalletBalanceTitle
     }
     let valueLabel = UILabel().then {
       $0.appearanceTextColor = .white

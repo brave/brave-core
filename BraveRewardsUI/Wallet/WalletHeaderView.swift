@@ -14,7 +14,7 @@ class WalletHeaderView: UIView {
   let titleLabel = UILabel().then {
     $0.font = .systemFont(ofSize: 16.0, weight: .medium)
     $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.65)
-    $0.text = Locale.current.isJapan ? Strings.WalletHeaderTitleJapan : Strings.WalletHeaderTitle
+    $0.text = Strings.WalletHeaderTitle
   }
   
   private let altcurrencyContainerView = UIStackView().then {
@@ -42,7 +42,7 @@ class WalletHeaderView: UIView {
     $0.flipImageOrigin = true
     $0.titleLabel?.font = .systemFont(ofSize: 10.0, weight: .semibold)
     $0.setImage(UIImage(frameworkResourceNamed: "right-arrow-small").alwaysTemplate, for: .normal)
-    $0.setTitle(Locale.current.isJapan ? Strings.WalletHeaderGrantsJapan : Strings.WalletHeaderGrants, for: .normal)
+    $0.setTitle(Strings.WalletHeaderGrants, for: .normal)
     $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.75)
     $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5.0)
     $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10.0)

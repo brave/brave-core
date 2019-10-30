@@ -25,7 +25,7 @@ class InsufficientFundsButton: UIControl {
     $0.appearanceTextColor = .white
     $0.font = .systemFont(ofSize: 13.0)
     $0.numberOfLines = 0
-    $0.text = Locale.current.isJapan ? Strings.TippingNotEnoughTokensJapan : Strings.TippingNotEnoughTokens
+    $0.text = Strings.TippingNotEnoughTokens
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
   }
   
