@@ -40,7 +40,7 @@ LocaleHelperLinux* LocaleHelperLinux::GetInstanceImpl() {
 }
 
 LocaleHelper* LocaleHelper::GetInstanceImpl() {
-  return LocaleHelperLinux::GetInstance();
+  return LocaleHelperLinux::GetInstanceImpl();
 }
 
 }  // namespace brave_ads
