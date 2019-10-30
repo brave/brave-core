@@ -613,6 +613,7 @@ test("brave_browser_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
   deps += [
     "//chrome/browser/ui",
+    "//components/prefs",
     "//ppapi/buildflags",
     ":brave_browser_tests_deps",
     ":browser_tests_runner",

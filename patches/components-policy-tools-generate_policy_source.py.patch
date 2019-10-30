@@ -1,19 +1,15 @@
 diff --git a/components/policy/tools/generate_policy_source.py b/components/policy/tools/generate_policy_source.py
-index 28db4dd238ad33e4a250d93c1ef90678e5c31ef8..75ce4477f67a9c18de4202913b3b794c769fc800 100755
+index 28db4dd238ad33e4a250d93c1ef90678e5c31ef8..6a308a65e6865f1d77e3761bf7e0661fb5b78130 100755
 --- a/components/policy/tools/generate_policy_source.py
 +++ b/components/policy/tools/generate_policy_source.py
-@@ -22,9 +22,10 @@ import sys
- import textwrap
- import types
- from xml.sax.saxutils import escape as xml_escape
-+from policy_source_helper import AddBravePolicies
- 
+@@ -26,6 +26,7 @@ from xml.sax.saxutils import escape as xml_escape
  CHROME_POLICY_KEY = 'SOFTWARE\\\\Policies\\\\Google\\\\Chrome'
--CHROMIUM_POLICY_KEY = 'SOFTWARE\\\\Policies\\\\Chromium'
-+CHROMIUM_POLICY_KEY = 'SOFTWARE\\\\Policies\\\\BraveSoftware\\\\Brave'
+ CHROMIUM_POLICY_KEY = 'SOFTWARE\\\\Policies\\\\Chromium'
  
++from policy_source_helper import AddBravePolicies, CHROMIUM_POLICY_KEY
  
  class PolicyDetails:
+   """Parses a policy template and caches all its details."""
 @@ -335,6 +336,7 @@ def main():
      chrome_major_version = ParseVersionFile(version_path)
  

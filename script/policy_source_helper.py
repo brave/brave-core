@@ -6,6 +6,9 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+CHROMIUM_POLICY_KEY = 'SOFTWARE\\\\Policies\\\\BraveSoftware\\\\Brave'
+
+
 def AddBravePolicies(template_file_contents):
     highest_id = template_file_contents['highest_id_currently_used']
     policies = [
