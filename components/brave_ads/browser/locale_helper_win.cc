@@ -44,7 +44,7 @@ LocaleHelperWin* LocaleHelperWin::GetInstanceImpl() {
 }
 
 LocaleHelper* LocaleHelper::GetInstanceImpl() {
-  return LocaleHelperWin::GetInstance();
+  return LocaleHelperWin::GetInstanceImpl();
 }
 
 }  // namespace brave_ads

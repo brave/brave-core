@@ -16,12 +16,12 @@ const std::string LocaleHelperAndroid::GetLocale() const {
   return base::android::GetDefaultLocaleString();
 }
 
-LocaleHelperAndroid* LocaleHelperAndroid::GetInstance() {
+LocaleHelperAndroid* LocaleHelperAndroid::GetInstanceImpl() {
   return base::Singleton<LocaleHelperAndroid>::get();
 }
 
 LocaleHelper* LocaleHelper::GetInstanceImpl() {
-  return LocaleHelperAndroid::GetInstance();
+  return LocaleHelperAndroid::GetInstanceImpl();
 }
 
 const std::string LocaleHelperAndroid::GetCountryCode(
@@ -46,6 +46,5 @@ const std::string LocaleHelperAndroid::GetCountryCode(
   auto country_code = components.at(1);
   return country_code;
 }
-
 
 }  // namespace brave_ads
