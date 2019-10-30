@@ -77,6 +77,11 @@ class PhaseTwo {
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
+  static void AssignPrepareBallots(
+      const braveledger_bat_helper::Transactions& transactions,
+      const std::vector<std::string>& surveyors,
+      braveledger_bat_helper::Ballots* ballots);
+
   std::vector<std::string> ProofBatch(
       const braveledger_bat_helper::BatchProofs& batch_proofs);
 

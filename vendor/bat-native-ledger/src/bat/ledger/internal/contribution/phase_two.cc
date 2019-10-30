@@ -245,6 +245,40 @@ void PhaseTwo::PrepareBatch(
       callback);
 }
 
+void PhaseTwo::AssignPrepareBallots(
+    const braveledger_bat_helper::Transactions& transactions,
+    const std::vector<std::string>& surveyors,
+    braveledger_bat_helper::Ballots* ballots) {
+  for (size_t j = 0; j < surveyors.size(); j++) {
+    std::string error;
+    braveledger_bat_helper::getJSONValue("error", surveyors[j], &error);
+    if (!error.empty()) {
+      // TODO(nejczdovc) what should we do here
+      continue;
+    }
+
+    std::string surveyor_id;
+    bool success = braveledger_bat_helper::getJSONValue("surveyorId",
+                                                        surveyors[j],
+                                                        &surveyor_id);
+    if (!success) {
+      // TODO(nejczdovc) what should we do here
+      continue;
+    }
+
+    for (auto& ballot : *ballots) {
+      if (ballot.surveyorId_ == surveyor_id) {
+        for (size_t k = 0; k < transactions.size(); k++) {
+          if (transactions[k].viewingId_ == ballot.viewingId_ &&
+              ballot.proofBallot_.empty()) {
+            ballot.prepareBallot_ = surveyors[j];
+          }
+        }
+      }
+    }
+  }
+}
+
 void PhaseTwo::PrepareBatchCallback(
     int response_status_code,
     const std::string& response,
@@ -268,34 +302,7 @@ void PhaseTwo::PrepareBatchCallback(
     ledger_->GetTransactions();
   braveledger_bat_helper::Ballots ballots = ledger_->GetBallots();
 
-  for (size_t j = 0; j < surveyors.size(); j++) {
-    std::string error;
-    braveledger_bat_helper::getJSONValue("error", surveyors[j], &error);
-    if (!error.empty()) {
-      // TODO(nejczdovc) what should we do here
-      continue;
-    }
-
-    std::string surveyor_id;
-    bool success = braveledger_bat_helper::getJSONValue("surveyorId",
-                                                        surveyors[j],
-                                                        &surveyor_id);
-    if (!success) {
-      // TODO(nejczdovc) what should we do here
-      continue;
-    }
-
-    for (int i = ballots.size() - 1; i >= 0; i--) {
-      if (ballots[i].surveyorId_ == surveyor_id) {
-        for (size_t k = 0; k < transactions.size(); k++) {
-          if (transactions[k].viewingId_ == ballots[i].viewingId_ &&
-              ballots[i].proofBallot_.empty()) {
-            ballots[i].prepareBallot_ = surveyors[j];
-          }
-        }
-      }
-    }
-  }
+  AssignPrepareBallots(transactions, surveyors, &ballots);
 
   ledger_->SetBallots(ballots);
   Proof();
