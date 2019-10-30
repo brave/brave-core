@@ -88,6 +88,11 @@ class PhaseTwo {
 
   void PrepareVoteBatch();
 
+  static void ProofBallots(
+      const braveledger_bat_helper::BatchProofs& batch_proofs,
+      const std::vector<std::string>& proofs,
+      braveledger_bat_helper::Ballots* ballots);
+
   void ProofBatchCallback(
       const braveledger_bat_helper::BatchProofs& batch_proofs,
       const std::vector<std::string>& proofs);
