@@ -408,13 +408,14 @@ std::vector<std::string> PhaseTwo::ProofBatch(
   return proofs;
 }
 
-void PhaseTwo::ProofBallots(
+void PhaseTwo::AssignProofs(
     const braveledger_bat_helper::BatchProofs& batch_proofs,
     const std::vector<std::string>& proofs,
     braveledger_bat_helper::Ballots* ballots) {
   for (size_t i = 0; i < batch_proofs.size(); i++) {
     for (auto& ballot : *ballots) {
-      if (ballot.surveyorId_ == batch_proofs[i].ballot_.surveyorId_) {
+      if (ballot.surveyorId_ == batch_proofs[i].ballot_.surveyorId_ &&
+          ballot.viewingId_ == batch_proofs[i].ballot_.viewingId_) {
         ballot.proofBallot_ = proofs[i];
       }
     }
@@ -426,7 +427,7 @@ void PhaseTwo::ProofBatchCallback(
     const std::vector<std::string>& proofs) {
   braveledger_bat_helper::Ballots ballots = ledger_->GetBallots();
 
-  ProofBallots(batch_proofs, proofs, &ballots);
+  AssignProofs(batch_proofs, proofs, &ballots);
 
   ledger_->SetBallots(ballots);
 

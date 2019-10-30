@@ -88,7 +88,7 @@ class PhaseTwo {
 
   void PrepareVoteBatch();
 
-  static void ProofBallots(
+  static void AssignProofs(
       const braveledger_bat_helper::BatchProofs& batch_proofs,
       const std::vector<std::string>& proofs,
       braveledger_bat_helper::Ballots* ballots);
@@ -110,8 +110,9 @@ class PhaseTwo {
 
   // For testing purposes
   friend class PhaseTwoTest;
-  FRIEND_TEST_ALL_PREFIXES(PhaseTwoTest, GetStatisticalVotingWinners);
   FRIEND_TEST_ALL_PREFIXES(PhaseTwoTest, AssignPrepareBallotsRespectsViewingID);
+  FRIEND_TEST_ALL_PREFIXES(PhaseTwoTest, AssignProofsRespectsViewingID);
+  FRIEND_TEST_ALL_PREFIXES(PhaseTwoTest, GetStatisticalVotingWinners);
 };
 
 }  // namespace braveledger_contribution
