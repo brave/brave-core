@@ -128,13 +128,14 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   if (!databaseInfo) {
     return nil;
   }
+  auto statusInfo = [self getServerPublisherInfoWithPublisherID:publisherID context:DataController.viewContext];
   auto info = [[BATPublisherInfo alloc] init];
   info.id = databaseInfo.publisherID;
   info.name = databaseInfo.name;
   info.url = databaseInfo.url;
   info.faviconUrl = databaseInfo.faviconURL;
   info.provider = databaseInfo.provider;
-  info.status = static_cast<BATPublisherStatus>(databaseInfo.status);
+  info.status = static_cast<BATPublisherStatus>(statusInfo.status);
   info.excluded = (BATPublisherExclude)databaseInfo.excluded;
   return info;
 }
@@ -168,7 +169,6 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
       [[PublisherInfo alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(PublisherInfo.class) inManagedObjectContext:context]
              insertIntoManagedObjectContext:context];
     pi.publisherID = info.id;
-    pi.status = static_cast<int32_t>(info.status);
     pi.excluded = info.excluded;
     pi.name = info.name;
     pi.url = info.url;
@@ -287,7 +287,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     info.faviconUrl = ci.publisher.faviconURL;
     info.weight = [ci.probi doubleValue];
     info.reconcileStamp = ci.date;
-    info.status = static_cast<BATPublisherStatus>(ci.publisher.status);
+    info.status = static_cast<BATPublisherStatus>([self getServerPublisherInfoWithPublisherID:ci.publisherID context:context].status);
     info.provider = ci.publisher.provider;
     [publishers addObject:info];
   }
@@ -490,7 +490,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     info.score = activity.score;
     info.percent = activity.percent;
     info.weight = activity.weight;
-    info.status = static_cast<BATPublisherStatus>(activity.publisher.status);
+    info.status = static_cast<BATPublisherStatus>([self getServerPublisherInfoWithPublisherID:activity.publisherID context:context].status);
     info.excluded = (BATPublisherExclude)activity.publisher.excluded;
     info.name = activity.publisher.name;
     info.url = activity.publisher.url;
@@ -579,7 +579,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     info.faviconUrl = rd.publisher.faviconURL;
     info.weight = rd.amount;
     info.reconcileStamp = rd.addedDate;
-    info.status = static_cast<BATPublisherStatus>(rd.publisher.status);
+    info.status = static_cast<BATPublisherStatus>([self getServerPublisherInfoWithPublisherID:rd.publisherID context:context].status);
     info.provider = rd.publisher.provider;
     [publishers addObject:info];
   }
@@ -645,7 +645,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     info.name = pc.publisher.name;
     info.url = pc.publisher.url;
     info.faviconUrl = pc.publisher.faviconURL;
-    info.status = static_cast<BATPublisherStatus>(pc.publisher.status);
+    info.status = static_cast<BATPublisherStatus>([self getServerPublisherInfoWithPublisherID:pc.publisherID context:context].status);
     info.provider = pc.publisher.provider;
     info.amount = pc.amount;
     info.addedDate = pc.addedDate;
