@@ -38,7 +38,7 @@ class WalletDetailsViewController: UIViewController, RewardsSummaryProtocol {
     
     detailsView.walletSection.setWalletBalance(
       state.ledger.balanceString,
-      crypto: Strings.BAT,
+      crypto: Strings.WalletBalanceType,
       dollarValue: state.ledger.usdBalanceString
     )
     
@@ -64,7 +64,7 @@ class WalletDetailsViewController: UIViewController, RewardsSummaryProtocol {
       if let self = self {
         self.detailsView.walletSection.setWalletBalance(
           self.state.ledger.balanceString,
-          crypto: Strings.BAT,
+          crypto: Strings.WalletBalanceType,
           dollarValue: self.state.ledger.usdBalanceString
         )
       }
