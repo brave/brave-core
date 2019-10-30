@@ -541,7 +541,7 @@ extension WalletViewController {
   func updateWalletHeader() {
     walletView.headerView.setWalletBalance(
       state.ledger.balanceString,
-      crypto: Strings.BAT,
+      crypto: Strings.WalletBalanceType,
       dollarValue: state.ledger.usdBalanceString
     )
   }
