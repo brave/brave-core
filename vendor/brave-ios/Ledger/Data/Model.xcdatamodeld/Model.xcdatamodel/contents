@@ -58,7 +58,6 @@
         <attribute name="name" attributeType="String"/>
         <attribute name="provider" attributeType="String"/>
         <attribute name="publisherID" attributeType="String"/>
-        <attribute name="status" attributeType="Integer 32" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="url" attributeType="String"/>
         <relationship name="activities" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ActivityInfo" inverseName="publisher" inverseEntity="ActivityInfo"/>
         <relationship name="contributions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ContributionInfo" inverseName="publisher" inverseEntity="ContributionInfo"/>
