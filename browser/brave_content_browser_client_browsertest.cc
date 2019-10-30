@@ -405,6 +405,15 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
       << "No changes on the real URL";
 }
 
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
+                       BraveWaybackMachineExtensionEnabledByDefault) {
+  ASSERT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kBraveWaybackMachineEnabled));
+  extensions::ExtensionRegistry* registry =
+      extensions::ExtensionRegistry::Get(browser()->profile());
+  ASSERT_TRUE(
+      registry->enabled_extensions().Contains(brave_wayback_machine_extension_id));
+}
+
 #if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
                        HangoutsEnabledByDefault) {

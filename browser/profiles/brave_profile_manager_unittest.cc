@@ -18,6 +18,7 @@
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
+#include "brave/components/brave_wayback_machine/browser/wayback_machine_util.h"
 #include "chrome/browser/net/proxy_config_monitor.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
@@ -235,6 +236,20 @@ TEST_F(BraveProfileManagerTest, NoWebtorrentInTorProfile) {
   EXPECT_EQ(brave::GetParentProfile(profile), parent_profile);
 
   EXPECT_FALSE(webtorrent::IsWebtorrentEnabled(profile));
+}
+
+TEST_F(BraveProfileManagerTest, NoWaybackMachineInTorProfile) {
+  base::FilePath tor_parent_profile_path =
+      temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir);
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
+  Profile* parent_profile =
+      profile_manager->GetProfile(tor_parent_profile_path);
+  Profile* profile = profile_manager->GetProfile(tor_path);
+  ASSERT_TRUE(profile);
+  EXPECT_EQ(brave::GetParentProfile(profile), parent_profile);
+
+  EXPECT_FALSE(brave_wayback_machine::IsBraveWaybackMachineEnabled(profile));
 }
 
 TEST_F(BraveProfileManagerTest, ProxyConfigMonitorInTorProfile) {
