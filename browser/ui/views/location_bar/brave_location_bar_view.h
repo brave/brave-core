@@ -11,6 +11,7 @@
 class BraveActionsContainer;
 class BraveActionsContainerTest;
 class BraveRewardsBrowserTest;
+class SkPath;
 
 // The purposes of this subclass are to:
 // - Add the BraveActionsContainer to the location bar
@@ -30,6 +31,7 @@ class BraveLocationBarView : public LocationBarView {
 
   int GetBorderRadius() const override;
 
+  SkPath GetFocusRingHighlightPath() const;
   ContentSettingImageView* GetContentSettingsImageViewForTesting(size_t idx);
 
  private:
