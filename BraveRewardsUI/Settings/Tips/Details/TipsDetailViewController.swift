@@ -172,7 +172,7 @@ extension TipsDetailViewController: UITableViewDataSource, UITableViewDelegate {
       // Next Contribution Row
       let cell = tableView.dequeueReusableCell(for: indexPath) as TableViewCell
       cell.label.font = SettingsUX.bodyFont
-      cell.label.text = Strings.AutoContributeNextDate
+      cell.label.text = Strings.MonthlyTippingNextDate
       cell.accessoryView = nextContributionDateView
       cell.selectionStyle = .none
       return cell
