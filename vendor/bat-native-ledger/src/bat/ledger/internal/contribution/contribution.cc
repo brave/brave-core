@@ -16,6 +16,7 @@
 #include "bat/ledger/internal/bat_util.h"
 #include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/contribution/contribution.h"
+#include "bat/ledger/internal/contribution/contribution_unblinded.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
 #include "bat/ledger/internal/contribution/phase_one.h"
 #include "bat/ledger/internal/contribution/phase_two.h"
@@ -37,6 +38,7 @@ Contribution::Contribution(bat_ledger::LedgerImpl* ledger) :
     phase_one_(std::make_unique<PhaseOne>(ledger, this)),
     phase_two_(std::make_unique<PhaseTwo>(ledger, this)),
     unverified_(std::make_unique<Unverified>(ledger, this)),
+    unblinded_(std::make_unique<Unblinded>(ledger)),
     uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)),
     last_reconcile_timer_id_(0u),
     queue_timer_id_(0u) {
@@ -758,6 +760,19 @@ void Contribution::ProcessReconcile(
     DeleteContributionQueue(contribution->Clone());
     return;
   }
+
+  // Check if we can process contributions with blinded tokens only
+  const double blinded_balance = braveledger_wallet::Balance::GetPerWalletBalance(
+      ledger::kWalletUnBlinded,
+      info->wallets);
+  if (blinded_balance >= fee) {
+    ledger_->AddReconcile(anon_reconcile.viewingId_, anon_reconcile);
+    DeleteContributionQueue(contribution->Clone());
+    unblinded_->Start(anon_reconcile.viewingId_);
+    return;
+  }
+
+  // TODO add partial contribution with blinded tokens
 
   // Check if we can process contribution with anon wallet only
   const double anon_balance = braveledger_wallet::Balance::GetPerWalletBalance(

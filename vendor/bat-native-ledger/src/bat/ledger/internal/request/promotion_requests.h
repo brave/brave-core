@@ -20,6 +20,8 @@ std::string FetchSignedTokensUrl(
     const std::string& promotion_id,
     const std::string& claim_id);
 
+std::string GetReedemSuggestionsUrl();
+
 }  // namespace braveledger_request_util
 
 #endif  // BRAVELEDGER_COMMON_PROMOTION_REQUESTS_H_

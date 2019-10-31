@@ -1212,6 +1212,20 @@ PublisherInfoDatabase::GetAllUnblindedTokens()  {
   return unblinded_token_->GetAllRecords(&GetDB());
 }
 
+bool PublisherInfoDatabase::DeleteUnblindedToken(
+    const std::vector<std::string>& id_list) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
+  return unblinded_token_->DeleteRecord(&GetDB(), id_list);
+}
+
 // Other -------------------------------------------------------------------
 
 void PublisherInfoDatabase::RecordP3AStats(bool auto_contributions_on) {

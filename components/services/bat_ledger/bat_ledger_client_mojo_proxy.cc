@@ -1009,4 +1009,12 @@ void BatLedgerClientMojoProxy::GetAllUnblindedTokens(
       base::BindOnce(&OnGetAllUnblindedTokens, std::move(callback)));
 }
 
+void BatLedgerClientMojoProxy::DeleteUnblindedToken(
+    const std::vector<std::string>& id_list,
+    ledger::ResultCallback callback) {
+  bat_ledger_client_->DeleteUnblindedToken(
+      id_list,
+      base::BindOnce(&OnResultCallback, std::move(callback)));
+}
+
 }  // namespace bat_ledger

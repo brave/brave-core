@@ -82,23 +82,16 @@ namespace bat_ledger {
 class LedgerImpl;
 }
 
-namespace braveledger_contribution {
-class PhaseOne;
-}
-
-namespace braveledger_contribution {
-class PhaseTwo;
-}
-
-namespace braveledger_contribution {
-class Unverified;
-}
-
 namespace braveledger_uphold {
 class Uphold;
 }
 
 namespace braveledger_contribution {
+
+class PhaseOne;
+class PhaseTwo;
+class Unverified;
+class Unblinded;
 
 static const uint64_t phase_one_timers[] = {
     1 * 60 * 60,  // 1h
@@ -284,6 +277,7 @@ class Contribution {
   std::unique_ptr<PhaseOne> phase_one_;
   std::unique_ptr<PhaseTwo> phase_two_;
   std::unique_ptr<Unverified> unverified_;
+  std::unique_ptr<Unblinded> unblinded_;
   std::unique_ptr<braveledger_uphold::Uphold> uphold_;
   uint32_t last_reconcile_timer_id_;
   std::map<std::string, uint32_t> retry_timers_;
