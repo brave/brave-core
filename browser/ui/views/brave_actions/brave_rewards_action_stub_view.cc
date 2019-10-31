@@ -15,11 +15,13 @@
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
+#include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/geometry/rect.h"
+#include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_skia.h"
+#include "ui/gfx/image/image_skia_rep_default.h"
 #include "ui/gfx/image/canvas_image_source.h"
-#include "ui/gfx/image/image_skia_source.h"
 #include "ui/views/view.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/animation/ink_drop_impl.h"
@@ -44,10 +46,13 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(
   std::unique_ptr<IconWithBadgeImageSource> image_source(
       new BraveActionIconWithBadgeImageSource(preferred_size));
   // Set icon on badge using actual extension icon resource
-  const auto image = gfx::Image(
-      rb.GetImageNamed(IDR_BRAVE_REWARDS_ICON_64).AsImageSkia()
-          .DeepCopy());
-  image_source->SetIcon(image);
+  gfx::ImageSkia image;
+  const SkBitmap bitmap = rb.GetImageNamed(IDR_BRAVE_REWARDS_ICON_64)
+      .AsBitmap();
+  float scale = static_cast<float>(bitmap.width()) /
+      brave_actions::kBraveActionGraphicSize;
+  image.AddRepresentation(gfx::ImageSkiaRep(bitmap, scale));
+  image_source->SetIcon(gfx::Image(image));
   // Set text on badge
   std::unique_ptr<IconWithBadgeImageSource::Badge> badge;
   badge.reset(new IconWithBadgeImageSource::Badge(
