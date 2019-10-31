@@ -25,10 +25,12 @@ interface Props {
   toggleShowClock: () => void
   toggleShowStats: () => void
   toggleShowTopSites: () => void
+  toggleShowRewards: () => void
   showBackgroundImage: boolean
   showClock: boolean
   showStats: boolean
   showTopSites: boolean
+  showRewards: boolean
 }
 
 export default class FooterInfo extends React.PureComponent<Props, {}> {
@@ -48,7 +50,9 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
       showBackgroundImage,
       showClock,
       showStats,
-      showTopSites
+      showTopSites,
+      toggleShowRewards,
+      showRewards
     } = this.props
 
     return (
@@ -76,6 +80,8 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
             showClock={showClock}
             showStats={showStats}
             showTopSites={showTopSites}
+            toggleShowRewards={toggleShowRewards}
+            showRewards={showRewards}
           />
           <IconLink title={getLocale('preferencesPageTitle')} href='chrome://settings'>
             <SettingsAdvancedIcon />

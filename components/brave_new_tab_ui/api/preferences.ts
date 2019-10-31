@@ -15,6 +15,7 @@ export type Preferences = {
   showStats: boolean
   showClock: boolean
   showTopSites: boolean
+  showRewards: boolean
 }
 
 type PreferencesUpdatedHandler = (prefData: Preferences) => void
@@ -41,6 +42,10 @@ export function saveShowTopSites (value: boolean): void {
 
 export function saveShowStats (value: boolean): void {
   sendSavePref('showStats', value)
+}
+
+export function saveShowRewards (value: boolean): void {
+  sendSavePref('showRewards', value)
 }
 
 export function addChangeListener (listener: PreferencesUpdatedHandler): void {

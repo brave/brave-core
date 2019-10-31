@@ -9,7 +9,7 @@ import { Provider } from 'react-redux'
 import Theme from 'brave-ui/theme/brave-default'
 import DarkTheme from 'brave-ui/theme/brave-dark'
 import BraveCoreThemeProvider from '../common/BraveCoreThemeProvider'
-import wireAPIEventsToStore from './apiEventsToStore'
+import { wireApiEventsToStore } from './apiEventsToStore'
 
 // Components
 import App from './containers/app'
@@ -49,7 +49,7 @@ function initialize () {
 console.timeStamp('JS start')
 
 // Get store data going
-wireAPIEventsToStore()
+wireApiEventsToStore()
 
 // Perform DOM-dependent initialization when ready
 document.addEventListener('DOMContentLoaded', initialize)

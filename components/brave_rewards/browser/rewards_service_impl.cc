@@ -1866,6 +1866,12 @@ void RewardsServiceImpl::SetAutoContribute(bool enabled) const {
   bat_ledger_->SetAutoContribute(enabled);
 }
 
+void RewardsServiceImpl::OnAdsEnabled(
+    bool ads_enabled) {
+  for (auto& observer : observers_)
+    observer.OnAdsEnabled(this, ads_enabled);
+}
+
 void RewardsServiceImpl::TriggerOnRewardsMainEnabled(
     bool rewards_main_enabled) {
   for (auto& observer : observers_)

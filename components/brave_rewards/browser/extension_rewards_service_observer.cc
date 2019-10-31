@@ -222,6 +222,24 @@ void ExtensionRewardsServiceObserver::OnGrantFinish(
   event_router->BroadcastEvent(std::move(event));
 }
 
+void ExtensionRewardsServiceObserver::OnAdsEnabled(
+    RewardsService* rewards_service,
+    bool ads_enabled) {
+  auto* event_router = extensions::EventRouter::Get(profile_);
+  if (!event_router) {
+    return;
+  }
+
+  std::unique_ptr<base::ListValue> args(
+      extensions::api::brave_rewards::OnAdsEnabled::Create(
+          ads_enabled).release());
+  std::unique_ptr<extensions::Event> event(new extensions::Event(
+      extensions::events::BRAVE_START,
+      extensions::api::brave_rewards::OnAdsEnabled::kEventName,
+      std::move(args)));
+  event_router->BroadcastEvent(std::move(event));
+}
+
 void ExtensionRewardsServiceObserver::OnRewardsMainEnabled(
     RewardsService* rewards_service,
     bool rewards_main_enabled) {
