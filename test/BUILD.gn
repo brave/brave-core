@@ -497,6 +497,7 @@ test("brave_browser_tests") {
     "//brave/chromium_src/third_party/blink/renderer/modules/bluetooth/navigator_bluetoothtest.cc",
     "//brave/common/brave_channel_info_browsertest.cc",
     "//brave/components/brave_shields/browser/ad_block_service_browsertest.cc",
+    "//brave/components/brave_shields/browser/cookie_pref_service_browsertest.cc",
     "//brave/components/brave_shields/browser/https_everywhere_service_browsertest.cc",
     "//brave/components/brave_shields/browser/referrer_whitelist_service_browsertest.cc",
     "//brave/components/brave_shields/browser/tracking_protection_service_browsertest.cc",
