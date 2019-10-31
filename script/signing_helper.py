@@ -65,7 +65,7 @@ def GenerateBraveWidevineSigFile(paths, config, part):
 def AddBravePartsForSigning(parts, config):
     from signing.model import CodeSignedProduct, VerifyOptions, CodeSignOptions
 
-    development = config.provisioning_profile_basename == None
+    development = True if config.provisioning_profile_basename is None else False
 
     # Add libs
     brave_dylibs = (
