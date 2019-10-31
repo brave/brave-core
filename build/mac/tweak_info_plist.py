@@ -44,14 +44,17 @@ def _RemoveKeys(plist, *keys):
 
 
 def _OverrideVersionKey(plist, brave_version):
-  """ minor.build version string is used for update.
-  When we start to 1.0 version era, brave version string will be 1.0.0 and
-  0.0 is used for update check. With it, update will be failed because 0.0 is lower
-  version from 7x.xx. To make higher version from 7x.xx, add 100 magic number to
-  minor version and set it to `CFBundleVersion`."""
+  """ `minor.build` version string is used for update.
+  When we begin to use the Major version component, Brave version string will
+  be `1.0.0` for example and `Minor.Build` (`0.0`) would be used for update
+  check. Without modifying these numbers, update will fail as `0.0` is lower
+  than `70.121` for example.
+
+  To ensure minor version is higher than existing minor versions, we can
+  multiply the major version by 100 and set it to `CFBundleVersion`."""
   version_values = brave_version.split('.')
   if int(version_values[0]) >= 1:
-    adjusted_minor = int(version_values[1]) + 100
+    adjusted_minor = int(version_values[1]) + (100 * int(version_values[0]))
     plist['CFBundleVersion'] = str(adjusted_minor) + '.' + version_values[2]
 
 
