@@ -26,6 +26,7 @@ const char ethereum_remote_client_extension_public_key[] =
 const char ethereum_remote_client_base_url[] =
     "chrome-extension://odbfpeeihdkbihmopkbjmoonfanlbfcl/home.html";
 const char ethereum_remote_client_host[] = "wallet";
+const char metamask_extension_id[] = "nkbihfbeogaeaoehlefnkodbefgpgknn";
 
 const char ipfs_companion_extension_id[] = "nibjojkomfdiaoajekhjakgkdhaomnch";
 const char ipfs_companion_extension_name[] = "IPFS Companion";

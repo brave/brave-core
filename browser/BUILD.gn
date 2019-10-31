@@ -215,15 +215,6 @@ source_set("browser_process") {
     ]
   }
 
-  if (brave_wallet_enabled) {
-    sources += [
-      "brave_wallet/brave_wallet_utils.cc",
-      "brave_wallet/brave_wallet_utils.h",
-      "brave_wallet/wallet_installation_permission_request.cc",
-      "brave_wallet/wallet_installation_permission_request.h",
-    ]
-  }
-
   if (enable_tor) {
     deps += [
       "//brave/components/services/tor/public/cpp:manifest",

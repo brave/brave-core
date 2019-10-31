@@ -10,13 +10,14 @@
 
 #include "base/base64.h"
 #include "base/environment.h"
-#include "brave/browser/brave_wallet/brave_wallet_utils.h"
+#include "brave/browser/infobars/crypto_wallets_infobar_delegate.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/api/brave_wallet.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
+#include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
@@ -58,7 +59,15 @@ BraveWalletPromptToEnableWalletFunction::Run() {
                             base::NumberToString(params->tab_id)));
   }
 
-  RequestWalletInstallationPermission(contents);
+  InfoBarService* infobar_service =
+      InfoBarService::FromWebContents(contents);
+  if (infobar_service) {
+    auto* registry = extensions::ExtensionRegistry::Get(profile);
+    bool metamask_enabled = !brave::IsTorProfile(profile) &&
+      registry->ready_extensions().GetByID(metamask_extension_id);
+    CryptoWalletsInfoBarDelegate::Create(infobar_service, metamask_enabled);
+  }
+
   return RespondNow(NoArguments());
 }
 

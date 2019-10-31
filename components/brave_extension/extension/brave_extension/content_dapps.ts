@@ -32,10 +32,7 @@ const code =
     if (window.web3 === undefined) {
       return
     }
-    if (!window.web3.currentProvider ||
-        !window.web3.currentProvider.isMetaMask) {
-      __insertDappDetected()
-    }
+    __insertDappDetected()
   } else {
     var oldWeb3 = window.web3
     Object.defineProperty(window, 'web3', {

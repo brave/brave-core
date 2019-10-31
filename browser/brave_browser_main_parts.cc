@@ -26,6 +26,7 @@
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/infobars/brave_confirm_p3a_infobar_delegate.h"
+#include "brave/browser/infobars/crypto_wallets_infobar_delegate.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "content/public/browser/web_contents.h"
