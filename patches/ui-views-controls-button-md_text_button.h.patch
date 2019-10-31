@@ -1,0 +1,14 @@
+diff --git a/ui/views/controls/button/md_text_button.h b/ui/views/controls/button/md_text_button.h
+index 02bb4d1677e79497e02eaa42a70fd3ece310f803..52e54a1ee6d5bbe1710a20ffde554ac82ff61db2 100644
+--- a/ui/views/controls/button/md_text_button.h
++++ b/ui/views/controls/button/md_text_button.h
+@@ -66,7 +66,9 @@ class VIEWS_EXPORT MdTextButton : public LabelButton {
+   MdTextButton(ButtonListener* listener, int button_context);
+ 
+  private:
++  friend class BraveTextButton;
+   void UpdatePadding();
++  virtual
+   void UpdateColors();
+ 
+   // True if this button uses prominent styling (blue fill, etc.).
