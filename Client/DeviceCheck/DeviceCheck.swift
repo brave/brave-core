@@ -46,7 +46,7 @@ public struct DeviceCheckRegistration: Codable {
 
 public struct DeviceCheckEnrollment: Codable {
   // The payment Id from Brave Rewards in UUIDv4 Format.
-  let paymentID: String
+  let paymentId: String
   
   // The public key in ASN.1 DER, PEM PKCS#8 Format.
   let publicKey: String
@@ -155,7 +155,7 @@ class DeviceCheckClient {
       
       let parameters = [
         "publicKeyHash": publicKey,
-        "paymentID": paymentId
+        "paymentId": paymentId
       ]
       
       try executeRequest(.getAttestation(parameters)) { (result: Result<AttestationBlob, Error>) in
@@ -222,7 +222,7 @@ class DeviceCheckClient {
         throw CryptographyError(description: "Unable to retrieve public key")
       }
       
-      let enrollment = DeviceCheckEnrollment(paymentID: paymentId,
+      let enrollment = DeviceCheckEnrollment(paymentId: paymentId,
                                              publicKey: publicKey,
                                              deviceToken: token)
 
@@ -255,7 +255,7 @@ private extension DeviceCheckClient {
     func method() -> HttpMethod {
       switch self {
       case .register: return .post
-      case .getAttestation: return .get
+      case .getAttestation: return .post
       case .setAttestation: return .put
       }
     }
@@ -339,7 +339,8 @@ private extension DeviceCheckClient {
       request.setValue("application/json", forHTTPHeaderField: "Content-Type")
       
     case .getAttestation(let parameters):
-      request.url = encodeQueryURL(url: request.url!, parameters: parameters)
+      request.httpBody = try JSONEncoder().encode(parameters)
+      request.setValue("application/json", forHTTPHeaderField: "Content-Type")
       
     case .setAttestation(_, let parameters):
       request.httpBody = try JSONEncoder().encode(parameters)
