@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import CommonCrypto
 
 /// An error class representing an error that has occurred when handling encryption
 public struct CryptographyError: Error {

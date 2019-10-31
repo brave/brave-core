@@ -4,6 +4,7 @@
 
 import Foundation
 import DeviceCheck
+import BraveRewards
 
 /// A structure used to register a device for Brave's DeviceCheck enrollment
 public struct DeviceCheckRegistration: Codable {
@@ -113,10 +114,24 @@ public struct AttestationBlob: Codable {
   }
 }
 
-class DeviceCheckClient {
+public struct Attestation: Codable {
+  // The public key hash is a SHA-256 FingerPrint of the PublicKey in ASN.1 DER format
+  let publicKeyHash: String
+  
+  // The payment Id from Brave Rewards in UUIDv4 Format.
+  let paymentId: String
+}
+
+public class DeviceCheckClient {
+  
+  // The ID of the private-key stored in the secure-enclave chip
+  private static let privateKeyId = "com.brave.device.check.private.key"
+  
+  // The current build environment
+  private let environment: Environment
   
   // A structure representing an error returned by the server
-  struct DeviceCheckError: Error, Codable {
+  public struct DeviceCheckError: Error, Codable {
     // The error message
     let message: String
     
@@ -124,13 +139,16 @@ class DeviceCheckClient {
     let code: Int
   }
   
-  // The ID of the private-key stored in the secure-enclave chip
-  private static let privateKeyId = "com.brave.device.check.private.key"
+  public init(environment: Environment) {
+    self.environment = environment
+  }
+  
+  // MARK: - Server calls for DeviceCheck
   
   // Registers a device with the server using the device-check token
   public func registerDevice(enrollment: DeviceCheckRegistration, _ completion: @escaping (Error?) -> Void) {
     do {
-      try executeRequest(.register(enrollment)) { (result: Result<Data, Error>) in
+      try executeRequest(.register(enrollment)) { (result: Swift.Result<Data, Error>) in
         if case .failure(let error) = result {
           return completion(error)
         }
@@ -143,22 +161,9 @@ class DeviceCheckClient {
   }
   
   // Retrieves existing attestations for this device and returns a nonce if any
-  public func getAttestation(paymentId: String, _ completion: @escaping (AttestationBlob?, Error?) -> Void) {
+  public func getAttestation(attestation: Attestation, _ completion: @escaping (AttestationBlob?, Error?) -> Void) {
     do {
-      guard let privateKey = try Cryptography.getExistingKey(id: DeviceCheckClient.privateKeyId) else {
-        throw CryptographyError(description: "Unable to retrieve existing private key")
-      }
-      
-      guard let publicKey = try privateKey.getPublicKeySha256FingerPrint() else {
-        throw CryptographyError(description: "Unable to retrieve public key")
-      }
-      
-      let parameters = [
-        "publicKeyHash": publicKey,
-        "paymentId": paymentId
-      ]
-      
-      try executeRequest(.getAttestation(parameters)) { (result: Result<AttestationBlob, Error>) in
+      try executeRequest(.getAttestation(attestation)) { (result: Swift.Result<AttestationBlob, Error>) in
         switch result {
         case .success(let blob):
           completion(blob, nil)
@@ -173,18 +178,9 @@ class DeviceCheckClient {
   }
   
   // Sends the attestation to the server along with the nonce and the challenge signature
-  public func setAttestation(nonce: String, _ completion: @escaping (Error?) -> Void) {
+  public func setAttestation(nonce: String, verification: AttestationVerifcation, _ completion: @escaping (Error?) -> Void) {
     do {
-      guard let privateKey = try Cryptography.getExistingKey(id: DeviceCheckClient.privateKeyId) else {
-        throw CryptographyError(description: "Unable to retrieve existing private key")
-      }
-      
-      let attestation = AttestationBlob(nonce: nonce)
-      let signature = try privateKey.sign(message: try attestation.bsonData()).base64EncodedString()
-      let verification = AttestationVerifcation(attestationBlob: attestation,
-                                                signature: signature)
-      
-      try executeRequest(.setAttestation(nonce, verification)) { (result: Result<Data, Error>) in
+      try executeRequest(.setAttestation(nonce, verification)) { (result: Swift.Result<Data, Error>) in
         if case .failure(let error) = result {
           return completion(error)
         }
@@ -195,6 +191,8 @@ class DeviceCheckClient {
       completion(error)
     }
   }
+  
+  // MARK: - Factory functions for generating structures to be used with the above server calls
   
   // Generates a device-check token
   public func generateToken(_ completion: @escaping (String, Error?) -> Void) {
@@ -235,11 +233,60 @@ class DeviceCheckClient {
       completion(nil, error)
     }
   }
+  
+  // Generates an attestation structure to be used with `getAttestation`
+  public func generateAttestation(paymentId: String, _ completion: (Attestation?, Error?) -> Void) {
+    do {
+      guard let privateKey = try Cryptography.getExistingKey(id: DeviceCheckClient.privateKeyId) else {
+        throw CryptographyError(description: "Unable to retrieve existing private key")
+      }
+      
+      guard let publicKeyFingerprint = try privateKey.getPublicKeySha256FingerPrint() else {
+        throw CryptographyError(description: "Unable to retrieve public key")
+      }
+      
+      let attestation = Attestation(publicKeyHash: publicKeyFingerprint,
+                                    paymentId: paymentId)
+      
+      completion(attestation, nil)
+    } catch {
+      completion(nil, error)
+    }
+  }
+  
+  // Generates an attestation verification structure to be used with `setAttestation`
+  public func generateAttestationVerification(nonce: String, _ completion: (AttestationVerifcation?, Error?) -> Void) {
+    do {
+      guard let privateKey = try Cryptography.getExistingKey(id: DeviceCheckClient.privateKeyId) else {
+        throw CryptographyError(description: "Unable to retrieve existing private key")
+      }
+      
+      let attestation = AttestationBlob(nonce: nonce)
+      let signature = try privateKey.sign(message: try attestation.bsonData()).base64EncodedString()
+      let verification = AttestationVerifcation(attestationBlob: attestation,
+                                                signature: signature)
+      
+      completion(verification, nil)
+    } catch {
+      completion(nil, error)
+    }
+  }
 }
 
 private extension DeviceCheckClient {
   // The base URL of the server
-  private static let baseURL = URL(string: "https://reputation.rewards.brave.software")
+  private var baseURL: URL? {
+    switch environment {
+    case .development:
+      return URL(string: "https://grant.rewards.brave.software")
+    case .staging:
+      return URL(string: "https://grant.rewards.bravesoftware.com")
+    case .production:
+      return URL(string: "https://grant.rewards.brave.com")
+    @unknown default:
+      fatalError("Unknown Environment for Device Check")
+    }
+  }
   
   private enum HttpMethod: String {
     case get
@@ -249,7 +296,7 @@ private extension DeviceCheckClient {
   
   private enum Request {
     case register(DeviceCheckRegistration)
-    case getAttestation([String: String])
+    case getAttestation(Attestation)
     case setAttestation(String, AttestationVerifcation)
     
     func method() -> HttpMethod {
@@ -260,23 +307,23 @@ private extension DeviceCheckClient {
       }
     }
     
-    func url() -> URL? {
+    func url(for client: DeviceCheckClient) -> URL? {
       switch self {
       case .register:
-        return URL(string: "/v1/devicecheck/enrollments", relativeTo: DeviceCheckClient.baseURL)
+        return URL(string: "/v1/devicecheck/enrollments", relativeTo: client.baseURL)
         
       case .getAttestation:
-        return URL(string: "/v1/devicecheck/attestations", relativeTo: DeviceCheckClient.baseURL)
+        return URL(string: "/v1/devicecheck/attestations", relativeTo: client.baseURL)
         
       case .setAttestation(let nonce, _):
         let nonce = nonce.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? nonce
-        return URL(string: "/v1/devicecheck/attestations/\(nonce)", relativeTo: DeviceCheckClient.baseURL)
+        return URL(string: "/v1/devicecheck/attestations/\(nonce)", relativeTo: client.baseURL)
       }
     }
   }
   
   @discardableResult
-  private func executeRequest<T: Codable>(_ request: Request, _ completion: @escaping (Result<T, Error>) -> Void) throws -> URLSessionDataTask {
+  private func executeRequest<T: Codable>(_ request: Request, _ completion: @escaping (Swift.Result<T, Error>) -> Void) throws -> URLSessionDataTask {
     
     let request = try encodeRequest(request)
     let task = URLSession(configuration: .ephemeral, delegate: nil, delegateQueue: .main).dataTask(with: request) { data, response, error in
@@ -325,7 +372,7 @@ private extension DeviceCheckClient {
   
   // Encodes the given `endpoint` into a `URLRequest
   private func encodeRequest(_ endpoint: Request) throws -> URLRequest {
-    guard let url = endpoint.url() else {
+    guard let url = endpoint.url(for: self) else {
       throw DeviceCheckError(message: "Invalid URL for Request", code: 400)
     }
     
@@ -353,7 +400,7 @@ private extension DeviceCheckClient {
 private extension DeviceCheckClient {
   
   // Encodes parameters into the query component of the URL
-  func encodeQueryURL(url: URL, parameters: [String: String]) -> URL? {
+  private func encodeQueryURL(url: URL, parameters: [String: String]) -> URL? {
     var urlComponents = URLComponents()
     urlComponents.scheme = url.scheme
     urlComponents.host = url.host
