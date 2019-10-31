@@ -368,6 +368,10 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD1(GetAllUnblindedTokens, void(
     ledger::GetAllUnblindedTokensCallback callback));
+
+  MOCK_METHOD2(DeleteUnblindedToken, void(
+    const std::vector<std::string>& id_list,
+    ledger::ResultCallback callback));
 };
 
 }  // namespace confirmations

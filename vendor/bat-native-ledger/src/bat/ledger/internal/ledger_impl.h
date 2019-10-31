@@ -581,6 +581,10 @@ class LedgerImpl : public ledger::Ledger,
   void GetAllUnblindedTokens(
     ledger::GetAllUnblindedTokensCallback callback);
 
+  void DeleteUnblindedToken(
+    const std::vector<std::string>& id_list,
+    ledger::ResultCallback callback);
+
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;

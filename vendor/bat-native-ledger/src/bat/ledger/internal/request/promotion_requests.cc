@@ -44,4 +44,8 @@ std::string FetchSignedTokensUrl(
   return BuildUrl(path, PREFIX_V1, ServerTypes::kPromotion);
 }
 
+std::string GetReedemSuggestionsUrl() {
+  return BuildUrl("/suggestions", PREFIX_V1, ServerTypes::kPromotion);
+}
+
 }  // namespace braveledger_request_util

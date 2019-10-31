@@ -4226,4 +4226,31 @@ void RewardsServiceImpl::OnGetAllUnblindedTokens(
   callback(std::move(list));
 }
 
+
+ledger::Result DeleteUnblindedTokenOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    const std::vector<std::string>& id_list) {
+  if (!backend) {
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  const bool result = backend->DeleteUnblindedToken(id_list);
+
+  return result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
+}
+
+void RewardsServiceImpl::DeleteUnblindedToken(
+    const std::vector<std::string>& id_list,
+    ledger::ResultCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&DeleteUnblindedTokenOnFileTaskRunner,
+        publisher_info_backend_.get(),
+        id_list),
+    base::BindOnce(&RewardsServiceImpl::OnResult,
+        AsWeakPtr(),
+        callback));
+}
+
 }  // namespace brave_rewards

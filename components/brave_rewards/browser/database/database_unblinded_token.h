@@ -8,6 +8,9 @@
 
 #include <stdint.h>
 
+#include <string>
+#include <vector>
+
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/database/database_table.h"
 
@@ -27,6 +30,8 @@ class DatabaseUnblindedToken: public DatabaseTable {
   bool InsertOrUpdate(sql::Database* db, ledger::UnblindedTokenPtr info);
 
   ledger::UnblindedTokenList GetAllRecords(sql::Database* db);
+
+  bool DeleteRecord(sql::Database* db, const std::vector<std::string>& id_list);
 
  private:
   const char* table_name_ = "unblinded_tokens";

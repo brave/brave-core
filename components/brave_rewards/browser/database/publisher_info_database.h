@@ -119,6 +119,8 @@ class PublisherInfoDatabase {
 
   ledger::UnblindedTokenList GetAllUnblindedTokens();
 
+  bool DeleteUnblindedToken(const std::vector<std::string>& id_list);
+
   void RecordP3AStats(bool auto_contributions_on);
 
   // Returns the current version of the publisher info database

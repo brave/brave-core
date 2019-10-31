@@ -1128,4 +1128,30 @@ void LedgerClientMojoProxy::GetAllUnblindedTokens(
                 _1));
 }
 
+
+
+// static
+void LedgerClientMojoProxy::OnDeleteUnblindedToken(
+    CallbackHolder<DeleteUnblindedTokenCallback>* holder,
+    const ledger::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::DeleteUnblindedToken(
+    const std::vector<std::string>& id_list,
+    DeleteUnblindedTokenCallback callback) {
+  auto* holder = new CallbackHolder<DeleteUnblindedTokenCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->DeleteUnblindedToken(
+      id_list,
+      std::bind(LedgerClientMojoProxy::OnDeleteUnblindedToken,
+                holder,
+                _1));
+}
+
 }  // namespace bat_ledger

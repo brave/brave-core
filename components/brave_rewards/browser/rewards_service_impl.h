@@ -698,6 +698,10 @@ class RewardsServiceImpl : public RewardsService,
   void GetAllUnblindedTokens(
       ledger::GetAllUnblindedTokensCallback callback) override;
 
+  void DeleteUnblindedToken(
+    const std::vector<std::string>& id_list,
+    ledger::ResultCallback callback) override;
+
   // end ledger::LedgerClient
 
   // Mojo Proxy methods

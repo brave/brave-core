@@ -1521,4 +1521,10 @@ void LedgerImpl::GetAllUnblindedTokens(
   ledger_client_->GetAllUnblindedTokens(callback);
 }
 
+void LedgerImpl::DeleteUnblindedToken(
+    const std::vector<std::string>& id_list,
+    ledger::ResultCallback callback) {
+  ledger_client_->DeleteUnblindedToken(id_list, callback);
+}
+
 }  // namespace bat_ledger

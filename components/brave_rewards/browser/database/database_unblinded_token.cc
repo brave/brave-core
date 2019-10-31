@@ -10,6 +10,7 @@
 
 #include "base/bind.h"
 #include "base/strings/stringprintf.h"
+#include "base/strings/string_util.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
@@ -134,6 +135,23 @@ ledger::UnblindedTokenList DatabaseUnblindedToken::GetAllRecords(
   }
 
   return list;
+}
+
+bool DatabaseUnblindedToken::DeleteRecord(
+    sql::Database* db,
+    const std::vector<std::string>& id_list) {
+  if (id_list.size() == 0) {
+    return true;
+  }
+
+  const std::string query = base::StringPrintf(
+      "DELETE FROM %s WHERE token_id IN (%s)",
+      table_name_,
+      base::JoinString(id_list, ", ").c_str());
+
+  sql::Statement statement(db->GetUniqueStatement(query.c_str()));
+
+  return statement.Run();
 }
 
 }  // namespace brave_rewards
