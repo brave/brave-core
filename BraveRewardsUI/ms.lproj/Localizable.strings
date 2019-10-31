@@ -1,0 +1,537 @@
+/* No comment provided by engineer. */
+"BATPoints" = "Mata BAT";
+
+/* Words that should be bolded in the BAT Points disclaimer */
+"BATPointsBoldedWords" = "Mata BAT";
+
+/* Disclaimer about BAT Points for JP users */
+"BATPointsDisclaimer" = "Mata BAT boleh digunakan untuk menyumbang kepada pencipta kandungan kegemaran anda. Mata BAT tidak boleh ditukar kepada BAT.";
+
+/* No comment provided by engineer. */
+"BraveRewards" = "Brave Rewards™";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFunds" = "Tambah Dana";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsBody" = "Pastikan anda menggunakan alamat di bawah yang sepadan dengan jenis kripto yang anda miliki. Ia akan ditukarkan kepada BAT oleh Uphold secara automatik dan terpapar sebagai baki yang bertambah dalam dompet Brave Rewards anda. Sila berikan masa sehingga satu jam untuk baki dompet anda dikemas kini.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsDisclaimer" = "Peringatan: Dompet Brave adalah satu arah dan BAT mengalir ke tapak penerbit. Untuk maklumat lanjut mengenai Brave Rewards, sila lawati Soalan Lazim.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsShowQRCode" = "Tunjukkan Kod QR";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsTitle" = "Hantar mata wang kripto daripada akaun luaran anda ke dompet Brave Rewards anda.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsTokenWalletAddress" = "Alamat Dompet";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsVCTitle" = "Tambah Dana";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationsReceived" = "Pemberitahuan iklan yang diterima bulan ini";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsEstimatedEarnings" = "Anggaran ganjaran yang belum selesai";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsMaxPerDay" = "Bilangan maksimum iklan dipaparkan";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsPayoutDateFormat" = "MMM d";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsUnsupportedDvice" = " Brave Rewards dan Iklan tidak tersedia pada peranti anda pada masa ini.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsUnsupportedRegion" = "Maaf! Iklan belum tersedia lagi di wilayah anda.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAttention" = "Perhatian";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContribute" = "Auto-Sumbangan";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeDateFormat" = "MMM d";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumLength" = "Waktu Halaman Minimum";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumLengthMessage" = "Waktu halaman minimum sebelum mengelog lawatan";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumVisits" = "Lawatan Minimum";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumVisitsMessage" = "Lawatan minimum untuk perkaitan penerbit";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMonthlyPayment" = "Bayaran bulanan";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMonthlyPaymentTitle" = "Bayaran Bulanan";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeNextDate" = "Tarikh sumbangan seterusnya";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeRestoreExcludedSites" = "Pulihkan %ld tapak terkecuali";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeSupportedSites" = "Tapak yang disokong";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeToUnverifiedSites" = "Benarkan sumbangan kepada tapak yang tidak disahkan";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeToVideos" = "Benarkan sumbangan kepada video";
+
+/* No comment provided by engineer. */
+"BraveRewardsCheckAgain" = "Segar Semula Status";
+
+/* No comment provided by engineer. */
+"BraveRewardsContributingToUnverifiedSites" = "Anda telah menetapkan %@ untuk pencipta yang belum mendaftar lagi untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang sehingga mereka mengesahkan atau sehingga 90 hari telah berlalu.";
+
+/* No comment provided by engineer. */
+"BraveRewardsCreatingWallet" = "Mencipta dompet";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledBody" = "Dapatkan pendapatan dengan melihat iklan yang menghormati privasi, dan bayar selanjutnya untuk menyokong pencipta kandungan yang anda suka.";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledEnableButton" = "Dayakan Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledSubtitle" = "Dapatkan Ganjaran kerana Melayari!";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledTitle" = "Selamat Kembali!";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisclaimerLearnMore" = "Ketahui Lebih Lanjut";
+
+/* No comment provided by engineer. */
+"BraveRewardsEarningFromAds" = "Pendapatan daripada Iklan";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyAutoContribution" = "Tapak akan muncul semasa anda melayari";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyTipsText" = "Sudahkah anda memberikan tip kepada pencipta kandungan kegemaran anda hari ini?";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyWalletBody" = "Perhatikan baki anda bertambah apabila anda melihat iklan yang menjaga privasi melalui Brave.";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyWalletTitle" = "Dompet anda bersedia untuk bertindak.";
+
+/* No comment provided by engineer. */
+"BraveRewardsExclude" = "Kecualikan";
+
+/* No comment provided by engineer. */
+"BraveRewardsFiveAdsPerHour" = "5 iklan sejam";
+
+/* No comment provided by engineer. */
+"BraveRewardsFourAdsPerHour" = "4 iklan sejam";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantListExpiresOn" = "Tamat tempoh pada %@";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrants" = "Pemberian";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedAmountTitle" = "Pemberian Token Percuma";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedExpirationDateTitle" = "Tarikh Tamat Tempoh Pemberian";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitle" = "Pemberian token anda sedang berjalan.";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedTitle" = "Hari ini hari bertuah anda!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBody" = "Perhatian anda amat dihargai. Dapatkan pendapatan dengan melihat iklan yang menghormati privasi dan bayar selanjutnya untuk menyokong pencipta kandungan yang anda suka.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBraveAdsBody" = "Dapatkan bayaran untuk melihat iklan berkaitan yang menghormati privasi anda.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBraveAdsTitle" = "Iklan";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreCreateWallet1" = "Ya, saya ingin menyertai!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreCreateWallet2" = "Ya saya bersedia!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreHowItWorks" = "Cara ia berfungsi…";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreReady" = "Bersedia untuk bermula?";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreSubtitle" = "Dapatkan Ganjaran kerana Melayari!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTipsBody" = "Sokong tapak kegemaran anda hanya dengan melayari - atau berikan tip kepada tapak pada bila-bila masa yang anda suka.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTipsTitle" = "Auto-Sumbangan";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTurnOnRewardsBody" = "Ini membolehkan kedua-dua iklan dan sumbangan automatik. Anda boleh menghidupkan atau mematikannya secara berasingan pada bila-bila masa.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTurnOnRewardsTitle" = "Aktifkan Ganjaran";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreWhyBody" = "Dengan pelayar lama anda, anda membayar untuk melayari web dengan melihat iklan menggunakan perhatian berharga anda. Anda menghabiskan masa berharga anda untuk memuat turun teknologi iklan invasif yang menghantar data peribadi berharga anda kepada pengiklan - tanpa persetujuan anda. \n\nHari ini, Brave menyambut anda ke Internet baharu. Satu tapak yang menghargai masa anda, menyimpan data peribadi anda secara rahsia,dan anda dibayar untuk perhatian anda.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreWhyTitle" = "Mengapa Brave Rewards?";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices0" = "5 saat";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices1" = "8 saat";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices2" = "1 minit";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices0" = "1 lawatan";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices1" = "5 lawatan";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices2" = "10 lawatan";
+
+/* No comment provided by engineer. */
+"BraveRewardsMonthlyTips" = "Tip Bulanan";
+
+/* No comment provided by engineer. */
+"BraveRewardsNoActivitiesYet" = "Tiada aktiviti lagi...";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationAdsTitle" = "Iklan Brave";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationAutoContributeTitle" = "Auto-Sumbangan";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationRecurringTipTitle" = "Tip berulang";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationTokenGrantTitle" = "Pemberian Token";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotYetVerified" = "Belum disahkan lagi";
+
+/* No comment provided by engineer. */
+"BraveRewardsNumberOfAdsPerHourOptionsTitle" = "Iklan sejam";
+
+/* No comment provided by engineer. */
+"BraveRewardsOneAdPerHour" = "1 iklan sejam";
+
+/* No comment provided by engineer. */
+"BraveRewardsOneTimeTips" = "Tip Sekali";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "Buka";
+
+/* No comment provided by engineer. */
+"BraveRewardsPanelTitle" = "Ganjaran";
+
+/* No comment provided by engineer. */
+"BraveRewardsPaymentDate" = "Tarikh pembayaran seterusnya";
+
+/* No comment provided by engineer. */
+"BraveRewardsPoweredByUphold" = "Dompet Brave anda dikuasakan oleh Uphold";
+
+/* No comment provided by engineer. */
+"BraveRewardsPublisherSendTip" = "Hantar tip...";
+
+/* No comment provided by engineer. */
+"BraveRewardsRecurringTipTitle" = "Tip berulang";
+
+/* No comment provided by engineer. */
+"BraveRewardsRemove" = "Keluarkan";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettings" = "Tetapan";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBody" = "Dapatkan token dengan melihat iklan di Brave. Iklan dipaparkan berdasarkan minat anda, seperti yang disimpulkan daripada tingkah laku pelayaran anda. Tiada data peribadi atau sejarah pelayaran yang akan meninggalkan pelayar anda.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsComingSoonText" = "Akan datang.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsGrantAmountText" = "Pendapatan Iklan anda, %@ tersedia.";
+
+/* Example: <10 BAT> earned from ads */
+"BraveRewardsSettingsAdsGrantText" = "diperoleh daripada iklan";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsTitle" = "Iklan";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAutoContributeBody" = "Satu cara automatik untuk menyokong penerbit dan pencipta kandungan. Tetapkan pembayaran bulanan dan layari secara normal. Tapak-tapak yang anda lawati menerima sumbangan anda secara automatik, berdasarkan perhatian anda yang diukur oleh Brave.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAutoContributeTitle" = "Auto-Sumbangan";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledBody1" = "Dengan pelayar lama anda, anda membayar untuk melayari web dengan melihat iklan menggunakan perhatian berharga anda. Anda menghabiskan masa berharga anda untuk memuat turun teknologi iklan invasif yang menghantar data peribadi berharga anda kepada pengiklan - tanpa persetujuan anda.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledBody2" = "Satu tapak yang menghargai masa anda, menyimpan data peribadi anda secara rahsia dan anda dibayar untuk perhatian anda.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledTitle1" = "Mengapa Brave Rewards?";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledTitle2" = "Hari ini, Brave menyambut anda ke internet baharu.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantClaimButtonTitle" = "Tuntutan";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantText" = "Pemberian token percuma tersedia.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsBody" = "Berikan tip kepada pencipta kandungan secara langsung semasa anda melayari. Anda juga boleh menetapkan tip bulanan berulang supaya anda boleh menyokong tapak secara berterusan.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsTitle" = "Tip";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTitle" = "Tetapan";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsViewDetails" = "Lihat Butiran";
+
+/* No comment provided by engineer. */
+"BraveRewardsSite" = "Tapak";
+
+/* No comment provided by engineer. */
+"BraveRewardsSummaryTitle" = "Ringkasan Ganjaran";
+
+/* No comment provided by engineer. */
+"BraveRewardsThreeAdsPerHour" = "3 iklan sejam";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingAmountTitle" = "Jumlah tip";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingBalanceTitle" = "baki";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingConfirmation" = "Terima kasih";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingMakeMonthly" = "Buat demikian secara bulanan";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingMonthlyTitle" = "Anda menghantar tip secara automatik kepada:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotEnoughPoints" = "Mata tidak mencukupi.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotEnoughTokens" = "Token tidak mencukupi.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOneTimeTitle" = "Anda baru sahaja menghantar tip kepada:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOverviewBody" = "Anda boleh menyokong pencipta kandungan ini dengan menghantar tip. Ia adalah satu cara untuk mengucapkan terima kasih kepada mereka kerana membuat kandungan yang hebat. Pencipta yang disahkan mendapat bayaran tip mereka pada minggu pertama setiap bulan kalendar.\n\nJika anda suka, anda boleh menjadualkan tip bulanan untuk menyokong pencipta ini secara berterusan.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOverviewTitle" = "Selamat datang!";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingRecurring" = "Bulanan";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingRecurringDetails" = "Tip bulanan pertama anda akan dihantar pada:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingSendMonthlyTip" = "Tetapkan tip bulanan";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingSendTip" = "Hantar Tip saya";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingTitle" = "Hantar tip";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingUnverifiedDisclaimer" = "NOTA: Pencipta ini masih belum mendaftar lagi untuk menerima sumbangan daripada pengguna Brave. Pelayar anda akan terus cuba menyumbang sehingga mereka mengesahkan atau sehingga 90 hari telah berlalu.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingWalletBalanceTitle" = "baki dompet";
+
+/* No comment provided by engineer. */
+"BraveRewardsTips" = "Tip";
+
+/* No comment provided by engineer. */
+"BraveRewardsTipsTotalThisMonth" = "Jumlah tip bulan ini";
+
+/* No comment provided by engineer. */
+"BraveRewardsTokens" = "Token";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalGrantsClaimed" = "Pemberian Token Dituntut";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalSites" = "Jumlah %ld";
+
+/* No comment provided by engineer. */
+"BraveRewardsTwoAdsPerHour" = "2 iklan sejam";
+
+/* No comment provided by engineer. */
+"BraveRewardsUnverifiedPublisherDisclaimer" = "Pencipta ini masih belum mendaftar lagi untuk menerima sumbangan daripada pengguna Brave. Apa-apa tip yang anda hantar akan kekal dalam dompet anda sehingga mereka mengesahkan.";
+
+/* No comment provided by engineer. */
+"BraveRewardsVerified" = "Pencipta Brave Disahkan";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletDetailsTitle" = "Butiran Dompet";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderDetails" = "Butiran";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderGrants" = "Pemberian";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderTitle" = "Dompet anda";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderTitleJapan" = "Baki anda";
+
+/* No comment provided by engineer. */
+"Cancel" = "Batal";
+
+/* No comment provided by engineer. */
+"CLAIM" = "TUNTUTAN";
+
+/* No comment provided by engineer. */
+"DisclaimerInformation" = "Dengan mengklik 'Sertai Ganjaran', anda menunjukkan bahawa anda telah membaca dan bersetuju dengan Syarat Perkhidmatan dan Dasar Privasi.";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "Ketik di sini untuk mengetahui lebih lanjut.";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "Ini ialah iklan Brave pertama anda";
+
+/* Body for a no network notification */
+"NoNetworkBody" = "Pelayan Brave Rewards tidak bertindak balas. Kami akan membaikinya secepat mungkin.";
+
+/* Title for a no network notification */
+"NoNetworkTitle" = "Uh oh!";
+
+/* We show this string in the notification when you don't have enough funds for contribution */
+"NotificationAutoContributeNotEnoughFundsBody" = "Bayaran bulanan berjadual anda untuk Auto-Sumbangan dan tip bulanan tidak dapat diselesaikan kerana dana tidak mencukupi. Kami akan cuba lagi dalam masa 30 hari.";
+
+/* Message for ads launch notification */
+"NotificationBraveAdsLaunchMsg" = "Kini anda boleh mendapatkan pendapatan dengan melihat iklan.";
+
+/* We show this string in notification when contribution fails */
+"NotificationContributeError" = "Terdapat masalah memproses sumbangan anda.";
+
+/* We show this string in notification when contribution fails */
+"NotificationContributeNotificationError" = "Terdapat masalah memproses sumbangan anda.";
+
+/* We show this string in the notification when contribution is successful */
+"NotificationContributeSuccess" = "Anda telah menyumbangkan %@";
+
+/* We show this string in notification when tip fails */
+"NotificationContributeTipError" = "Tidak dapat menghantar tip anda. Sila cuba sebentar lagi.";
+
+/* Panel notification text for Ads grant */
+"NotificationEarningsClaimDefault" = "Ganjaran anda daripada Iklan terdapat di sini!";
+
+/* Title for an error notification */
+"NotificationErrorTitle" = "Uh oh!";
+
+/* Description for new grant notification */
+"NotificationGrantNotification" = "Anda mempunyai pemberian yang menunggu anda.";
+
+/* Description for new insufficient funds notification */
+"NotificationinsufficientFunds" = "Akaun Brave Rewards anda sedang menunggu deposit.";
+
+/* Title for insufficient funds notification */
+"NotificationInsufficientFundsTitle" = "Kekurangan Dana";
+
+/* Notification title for pending contribution type */
+"NotificationPendingContributionTitle" = "Sumbangan yang Belum Selesai";
+
+/* Notification text that tells user his wallet is under funded for pending contribution to complete */
+"NotificationPendingNotEnoughFunds" = "Anda mempunyai tip yang belum selesai kerana dana tidak mencukupi";
+
+/* Message for monthly tips processed notification */
+"NotificationTipsProcessedBody" = "Tip bulanan anda telah diproses!";
+
+/* Notification text that tells user which publisher just verified */
+"NotificationVerifiedPublisherBody" = "Pencipta %@ disahkan baru-baru ini";
+
+/* No comment provided by engineer. */
+"OK" = "OK";
+
+/* Text describing the type of contribution */
+"OneTimeText" = "Satu kali";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "pada %@";
+
+/* No comment provided by engineer. */
+"PrivacyPolicyURL" = "Dasar Privasi";
+
+/* Text describing the type of contribution */
+"RecurringText" = "Berulang";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescription" = "Anda kini boleh mendapat token kerana menonton iklan yang menghormati privasi.";
+
+/* No comment provided by engineer. */
+"RewardsOptInJoinTitle" = "Sertai Ganjaran";
+
+/* No comment provided by engineer. */
+"RewardsOptInLearnMore" = "Ketahui Lebih Lanjut";
+
+/* No comment provided by engineer. */
+"RewardsOptInPrefix" = "Bersedia untuk mengalami Internet seterusnya.";
+
+/* No comment provided by engineer. */
+"TermsOfServiceURL" = "Syarat Perkhidmatan";
+
+/* No comment provided by engineer. */
+"TipSiteMonthly" = "Berikan tip kepada tapak ini secara bulanan";
+
+/* Prompt to turn on Ads via notification */
+"TurnOnAds" = "Hidupkan Iklan";
+
+/* No comment provided by engineer. */
+"WalletCreationErrorBody" = "Oops! Ralat telah berlaku. Sila cuba lagi.";
+
+/* No comment provided by engineer. */
+"WalletCreationErrorTitle" = "Ralat";
+
+/* No comment provided by engineer. */
+"WelcomeDisclaimerInformation" = "Dengan mengklik 'Ya, saya ingin menyertai!', anda menunjukkan bahawa anda telah membaca dan bersetuju dengan Syarat Perkhidmatan dan Dasar Privasi.";
+

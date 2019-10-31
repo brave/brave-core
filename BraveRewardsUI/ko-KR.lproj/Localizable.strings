@@ -1,0 +1,537 @@
+/* No comment provided by engineer. */
+"BATPoints" = "BAT 포인트";
+
+/* Words that should be bolded in the BAT Points disclaimer */
+"BATPointsBoldedWords" = "BAT 포인트";
+
+/* Disclaimer about BAT Points for JP users */
+"BATPointsDisclaimer" = "BAT 포인트를 사용하여 좋아하는 컨텐츠 제작자에게 후원할 수 있습니다. BAT 포인트는 BAT로 교환할 수 없습니다.";
+
+/* No comment provided by engineer. */
+"BraveRewards" = "Brave Rewards™";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFunds" = "잔액 추가";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsBody" = "아래 주소 중에서 소유하고 있는 암호화폐 유형과 일치하는 것을 사용하세요. 이는 Uphold가 자동으로 BAT로 변환하여 Brave Rewards 지갑 잔액이 증가합니다. 월렛 잔액이 업데이트되려면 최대 1시간이 소요됩니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsDisclaimer" = "알림: Brave 월렛은 단방향으로, BAT는 게시자 사이트로만 이동 가능합니다. Brave Rewards에 대한 자세한 내용은 FAQ를 참조하세요.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsShowQRCode" = "QR 코드 표시";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsTitle" = "가지고 있는 외부 계정에서 Brave Rewards 월렛으로 암호화폐를 송금합니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsTokenWalletAddress" = "월렛 주소";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsVCTitle" = "잔액 추가";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationsReceived" = "이번 달 수신한 광고 알림";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsEstimatedEarnings" = "보류 중인 Rewards 예상액";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsMaxPerDay" = "광고 표시 최대 한도";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsPayoutDateFormat" = "M월 d일";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsUnsupportedDvice" = "지금은 기기에서 Brave Rewards 및 광고를 사용할 수 없습니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsUnsupportedRegion" = "죄송합니다! 현재 지역에서는 아직 광고를 사용할 수 없습니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAttention" = "관심도";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContribute" = "자동 후원";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeDateFormat" = "M월 d일";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumLength" = "최소 페이지 유지 시간";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumLengthMessage" = "방문으로 기록되기 전까지 최소 페이지 유지 시간";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumVisits" = "최소 방문 횟수";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumVisitsMessage" = "게시자 관련성을 위한 최소 방문 횟수";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMonthlyPayment" = "월정기 결제";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMonthlyPaymentTitle" = "월정기 결제";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeNextDate" = "다음 후원 날짜";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeRestoreExcludedSites" = "제외된 사이트 %ld개 복원";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeSupportedSites" = "지원되는 사이트";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeToUnverifiedSites" = "확인되지 않은 사이트에 대한 후원 허용";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeToVideos" = "동영상에 대한 후원 허용";
+
+/* No comment provided by engineer. */
+"BraveRewardsCheckAgain" = "새로고침 상태";
+
+/* No comment provided by engineer. */
+"BraveRewardsContributingToUnverifiedSites" = "아직 가입하지 않아 후원금을 받을 수 없는 제작자에게 %@을(를) 지정하셨습니다. 제작자가 확인되거나 90일이 경과될 때까지 브라우저에서 계속 후원을 시도합니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsCreatingWallet" = "월렛 만들기";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledBody" = "프라이버시 보장 광고를 보고 수익을 얻어 이를 좋아하는 콘텐츠 제작자에게 후원하세요.";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledEnableButton" = "Brave Rewards 활성화";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledSubtitle" = "브라우징도 하고 보상도 받고!";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledTitle" = "돌아와주셔서 감사합니다!";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisclaimerLearnMore" = "자세히 알아보기";
+
+/* No comment provided by engineer. */
+"BraveRewardsEarningFromAds" = "광고에서 얻은 수익";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyAutoContribution" = "브라우징할 때 사이트 표시";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyTipsText" = "좋아하는 콘텐츠 제작자에게 오늘 팁이라도 조금 주셨나요?";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyWalletBody" = "Brave를 통해 프라이버시 보장 광고를 보고 잔액이 늘어나는 모습을 지켜보세요.";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyWalletTitle" = "월렛이 준비되어 사용 가능합니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsExclude" = "제외하기";
+
+/* No comment provided by engineer. */
+"BraveRewardsFiveAdsPerHour" = "시간당 광고 5개";
+
+/* No comment provided by engineer. */
+"BraveRewardsFourAdsPerHour" = "시간당 광고 4개";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantListExpiresOn" = "만료 날짜: %@";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrants" = "무료 코인";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedAmountTitle" = "무료 토큰";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedExpirationDateTitle" = "무료 코인 만료 날짜";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitle" = "무료 토큰이 전달되고 있습니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedTitle" = "오늘 정말 운이 좋으시네요!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBody" = "여러분의 관심도는 소중한 데 사용하세요. 프라이버시 보장 광고를 보고 수익을 얻어 이를 좋아하는 콘텐츠 제작자에게 후원하세요.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBraveAdsBody" = "프라이버시를 존중하는 관련 광고를 보고 수익을 얻으세요.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBraveAdsTitle" = "Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreCreateWallet1" = "예, 좋습니다!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreCreateWallet2" = "예, 준비됐습니다!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreHowItWorks" = "기본 개념...";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreReady" = "시작할 준비가 되셨나요?";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreSubtitle" = "브라우징도 하고 보상도 받고!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTipsBody" = "브라우징을 하는 것만으로도 좋아하는 사이트를 후원할 수 있습니다. 원하신다면 팁을 좀 쥐어줘도 좋고요.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTipsTitle" = "자동 후원";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTurnOnRewardsBody" = "광고와 자동 후원이 모두 활성화됩니다. 언제든지 개별적으로 켜거나 끌 수 있습니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTurnOnRewardsTitle" = "Rewards 활성화";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreWhyBody" = "기존의 브라우저에서는 광고를 보면서 여러분의 소중한 관심도를 소모해 웹브라우징에 대한 비용을 지불했습니다. 동의 없이 여러분의 귀중한 개인 데이터를 광고주에게 전송하는 침입성 광고 기술을 다운로드하는 데 금쪽같은 시간을 들이기도 했죠.\n\n이제 Brave가 새로운 인터넷 세계로 초대합니다. 여러분의 시간을 귀하게 여기고, 사적인 개인 데이터를 보호하고, 광고에 주의를 기울여준 만큼 실제로 이득을 얻는 인터넷 세계입니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreWhyTitle" = "왜 Brave Rewards일까요?";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices0" = "5초";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices1" = "8초";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices2" = "1분";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices0" = "1회 방문";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices1" = "5회 방문";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices2" = "10회 방문";
+
+/* No comment provided by engineer. */
+"BraveRewardsMonthlyTips" = "월정기 팁";
+
+/* No comment provided by engineer. */
+"BraveRewardsNoActivitiesYet" = "아직 활동 없음…";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationAdsTitle" = "Brave Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationAutoContributeTitle" = "자동 후원";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationRecurringTipTitle" = "정기 팁";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationTokenGrantTitle" = "무료 토큰";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotYetVerified" = "아직 확인되지 않음";
+
+/* No comment provided by engineer. */
+"BraveRewardsNumberOfAdsPerHourOptionsTitle" = "시간당 광고 수";
+
+/* No comment provided by engineer. */
+"BraveRewardsOneAdPerHour" = "시간당 광고 1개";
+
+/* No comment provided by engineer. */
+"BraveRewardsOneTimeTips" = "일회성 팁";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "열기";
+
+/* No comment provided by engineer. */
+"BraveRewardsPanelTitle" = "Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsPaymentDate" = "다음 결제 날짜";
+
+/* No comment provided by engineer. */
+"BraveRewardsPoweredByUphold" = "Brave 월렛은 Uphold에서 제공합니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsPublisherSendTip" = "팁 보내기…";
+
+/* No comment provided by engineer. */
+"BraveRewardsRecurringTipTitle" = "정기 팁";
+
+/* No comment provided by engineer. */
+"BraveRewardsRemove" = "제거";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettings" = "설정";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBody" = "Brave에서 광고를 보면 토큰을 얻을 수 있습니다. 표시되는 광고는 사용자의 브라우징 이력을 통해 관심분야를 유추하여 이를 기반으로 합니다. 개인 데이터나 브라우징 기록은 절대 브라우저 외부로 유출되지 않습니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsComingSoonText" = "공개 예정.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsGrantAmountText" = "Ads 수익이 %@이며, 사용 가능합니다.";
+
+/* Example: <10 BAT> earned from ads */
+"BraveRewardsSettingsAdsGrantText" = "- 광고를 통한 수익";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsTitle" = "Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAutoContributeBody" = "퍼블리셔와 콘텐츠 제작자를 자동으로 후원하는 방법입니다. 매월 결제를 설정하고 평범하게 브라우징하세요. Brave에서 측정한 관심도를 기반으로, 방문하신 사이트에 후원금이 자동 전달됩니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAutoContributeTitle" = "자동 후원";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledBody1" = "기존의 브라우저에서는 광고를 보면서 여러분의 소중한 관심도를 소모해 웹브라우징에 대한 비용을 지불했습니다. 동의 없이 여러분의 귀중한 개인 데이터를 광고주에게 전송하는 침입성 광고 기술을 다운로드하는 데 금쪽같은 시간을 들이기도 했죠.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledBody2" = "여러분의 시간을 귀하게 여기고, 사적인 개인 데이터를 보호하고, 광고에 관심도를 기울여준 만큼 실제로 이득을 얻는 인터넷 세계입니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledTitle1" = "왜 Brave Rewards일까요?";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledTitle2" = "이제 Brave가 새로운 인터넷 세계로 초대합니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantClaimButtonTitle" = "받기";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantText" = "무료 토큰을 받을 수 있습니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsBody" = "브라우징하면서 콘텐츠 제작자에게 직접 팁을 건넵니다. 월정기 팁을 설정하여 사이트를 지속적으로 후원할 수도 있습니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsTitle" = "팁";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTitle" = "설정";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsViewDetails" = "세부정보 보기";
+
+/* No comment provided by engineer. */
+"BraveRewardsSite" = "사이트";
+
+/* No comment provided by engineer. */
+"BraveRewardsSummaryTitle" = "Rewards 요약";
+
+/* No comment provided by engineer. */
+"BraveRewardsThreeAdsPerHour" = "시간당 광고 3개";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingAmountTitle" = "팁 액수";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingBalanceTitle" = "잔액";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingConfirmation" = "감사합니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingMakeMonthly" = "월정기로 설정";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingMonthlyTitle" = "다음 대상에게 팁을 자동으로 보냅니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotEnoughPoints" = "포인트가 부족합니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotEnoughTokens" = "토큰이 부족합니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOneTimeTitle" = "방금 다음 대상에게 팁을 보냈습니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOverviewBody" = "팁을 보내 이 콘텐츠 제작자를 후원할 수 있습니다. 멋진 콘텐츠를 만들어준 데 대한 보답의 표현입니다. 확인된 제작자는 매달 첫째 주에 팁을 정산받을 수 있습니다.\n\n원한다면 월정기 팁을 설정하여 이 제작자를 정기적으로 후원해도 됩니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOverviewTitle" = "환영합니다!";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingRecurring" = "월정기";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingRecurringDetails" = "첫 번째 월정기 팁을 다음 날짜에 보냅니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingSendMonthlyTip" = "월정기 팁 설정";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingSendTip" = "내 팁 보내기";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingTitle" = "팁 보내기";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingUnverifiedDisclaimer" = "참고: 아직 가입하지 않아 Brave 사용자로부터 후원금을 받을 수 없는 제작자입니다. 제작자가 확인되거나 90일이 경과될 때까지 브라우저에서 계속 후원을 시도합니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingWalletBalanceTitle" = "월렛 잔액";
+
+/* No comment provided by engineer. */
+"BraveRewardsTips" = "팁";
+
+/* No comment provided by engineer. */
+"BraveRewardsTipsTotalThisMonth" = "이번 달 팁 총액";
+
+/* No comment provided by engineer. */
+"BraveRewardsTokens" = "토큰";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalGrantsClaimed" = "무료 토큰 총액";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalSites" = "%ld 총액";
+
+/* No comment provided by engineer. */
+"BraveRewardsTwoAdsPerHour" = "시간당 광고 2개";
+
+/* No comment provided by engineer. */
+"BraveRewardsUnverifiedPublisherDisclaimer" = "아직 가입하지 않아 Brave 사용자로부터 후원금을 받을 수 없는 제작자입니다. 보내신 모든 팁은 제작자가 확인되기 전까지 월렛에 보관됩니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsVerified" = "Brave 확인 완료 제작자";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletDetailsTitle" = "월렛 세부정보";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderDetails" = "세부정보";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderGrants" = "무료 코인";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderTitle" = "월렛";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderTitleJapan" = "잔액";
+
+/* No comment provided by engineer. */
+"Cancel" = "취소";
+
+/* No comment provided by engineer. */
+"CLAIM" = "받기";
+
+/* No comment provided by engineer. */
+"DisclaimerInformation" = "'Rewards 가입'을 클릭하면 서비스 약관 및 개인정보 취급방침을 읽고 이에 동의한 것으로 간주됩니다.";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "자세히 알아보려면 여기를 탭하세요.";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "첫 Brave 광고";
+
+/* Body for a no network notification */
+"NoNetworkBody" = "Brave Rewards 서버가 응답하지 않습니다. 조속히 해결하겠습니다.";
+
+/* Title for a no network notification */
+"NoNetworkTitle" = "앗!";
+
+/* We show this string in the notification when you don't have enough funds for contribution */
+"NotificationAutoContributeNotEnoughFundsBody" = "잔액이 충분하지 않아 자동 후원 및 월정기 팁에 사용할 월정기 결제를 진행할 수 없습니다. 30일 후에 다시 시도합니다.";
+
+/* Message for ads launch notification */
+"NotificationBraveAdsLaunchMsg" = "이제 광고를 보면 수익을 얻습니다.";
+
+/* We show this string in notification when contribution fails */
+"NotificationContributeError" = "후원을 처리하는 중에 문제가 발생했습니다.";
+
+/* We show this string in notification when contribution fails */
+"NotificationContributeNotificationError" = "후원을 처리하는 중에 문제가 발생했습니다.";
+
+/* We show this string in the notification when contribution is successful */
+"NotificationContributeSuccess" = "%@을(를) 후원했습니다.";
+
+/* We show this string in notification when tip fails */
+"NotificationContributeTipError" = "팁을 보낼 수 없습니다. 나중에 다시 시도하세요.";
+
+/* Panel notification text for Ads grant */
+"NotificationEarningsClaimDefault" = "Ads에서 얻은 Reward가 여기 있습니다!";
+
+/* Title for an error notification */
+"NotificationErrorTitle" = "앗!";
+
+/* Description for new grant notification */
+"NotificationGrantNotification" = "받을 수 있는 무료 코인이 있습니다.";
+
+/* Description for new insufficient funds notification */
+"NotificationinsufficientFunds" = "Brave Rewards 계정에 잔액이 부족합니다.";
+
+/* Title for insufficient funds notification */
+"NotificationInsufficientFundsTitle" = "잔액 부족";
+
+/* Notification title for pending contribution type */
+"NotificationPendingContributionTitle" = "보류 중인 후원";
+
+/* Notification text that tells user his wallet is under funded for pending contribution to complete */
+"NotificationPendingNotEnoughFunds" = "잔액 부족으로 보류 중인 팁 있음";
+
+/* Message for monthly tips processed notification */
+"NotificationTipsProcessedBody" = "월정기 팁이 처리되었습니다!";
+
+/* Notification text that tells user which publisher just verified */
+"NotificationVerifiedPublisherBody" = "제작자 %@ 최근 확인됨";
+
+/* No comment provided by engineer. */
+"OK" = "확인";
+
+/* Text describing the type of contribution */
+"OneTimeText" = "일회성";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "- %@";
+
+/* No comment provided by engineer. */
+"PrivacyPolicyURL" = "개인정보 취급방침";
+
+/* Text describing the type of contribution */
+"RecurringText" = "정기";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescription" = "이제 프라이버시 보호 광고를 보고 토큰을 받을 수 있습니다.";
+
+/* No comment provided by engineer. */
+"RewardsOptInJoinTitle" = "Rewards 가입";
+
+/* No comment provided by engineer. */
+"RewardsOptInLearnMore" = "자세히 알아보기";
+
+/* No comment provided by engineer. */
+"RewardsOptInPrefix" = "차세대 인터넷 세계를 경험하세요.";
+
+/* No comment provided by engineer. */
+"TermsOfServiceURL" = "서비스 약관";
+
+/* No comment provided by engineer. */
+"TipSiteMonthly" = "이 사이트에 월정기 팁 제공";
+
+/* Prompt to turn on Ads via notification */
+"TurnOnAds" = "광고 켜기";
+
+/* No comment provided by engineer. */
+"WalletCreationErrorBody" = "앗! 문제가 발생했습니다. 다시 시도하세요.";
+
+/* No comment provided by engineer. */
+"WalletCreationErrorTitle" = "오류";
+
+/* No comment provided by engineer. */
+"WelcomeDisclaimerInformation" = "'예, 좋습니다!'를 클릭하면 서비스 약관 및 개인정보 취급방침을 읽고 이에 동의한 것으로 간주됩니다.";
+

@@ -1,0 +1,537 @@
+/* No comment provided by engineer. */
+"BATPoints" = "Бали BAT";
+
+/* Words that should be bolded in the BAT Points disclaimer */
+"BATPointsBoldedWords" = "Бали BAT";
+
+/* Disclaimer about BAT Points for JP users */
+"BATPointsDisclaimer" = "Бали BAT можна передавати улюбленим авторам. Бали BAT не можна обміняти на BAT.";
+
+/* No comment provided by engineer. */
+"BraveRewards" = "Brave Rewards™";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFunds" = "Додати кошти";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsBody" = "Обов’язково використовуйте зазначену нижче адресу, що відповідає вашій криптовалюті. Uphold автоматично конвертує криптовалюту в BAT, після чого отриману суму буде додано до балансу вашого гаманця Brave Rewards. Оновлення балансу гаманця може зайняти одну годину.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsDisclaimer" = "Нагадування: гаманець Brave дає можливість здійснювати платежі в одному напрямку, BAT надходить на сайти, на яких публікують контент. Додаткову інформацію про Brave Rewards можна знайти в розділі питань і відповідей.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsShowQRCode" = "Показати QR-код";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsTitle" = "Надсилайте криптовалюту зі свого зовнішнього рахунку до гаманця Brave Rewards.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsTokenWalletAddress" = "Адреса гаманця";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsVCTitle" = "Додати кошти";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationsReceived" = "Сповіщення про рекламу, отримані цього місяця";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsEstimatedEarnings" = "Приблизний розмір нагород, що очікують на отримання";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsMaxPerDay" = "Максимальна кількість оголошень, що відображаються";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsPayoutDateFormat" = "МММ д";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsUnsupportedDvice" = "Наразі послуги сервісів Brave Rewards та Ads недоступні на вашому пристрої.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsUnsupportedRegion" = "Вибачте! Сервіс реклами ще не доступний у вашому регіоні.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAttention" = "Увага!";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContribute" = "Автовнесок";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeDateFormat" = "МММ д";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumLength" = "Мінімальний час перебування на сторінці";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumLengthMessage" = "Мінімальний час перебування на сторінці перед реєстрацією відвідування";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumVisits" = "Мінімальна кількість відвідувань";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumVisitsMessage" = "Мінімальна кількість відвідувань для визначення актуальності особи, що публікує контент";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMonthlyPayment" = "Щомісячний платіж";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMonthlyPaymentTitle" = "Щомісячний платіж";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeNextDate" = "Дата наступного внеску";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeRestoreExcludedSites" = "Відновити сайти, що було виключено: (%ld)";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeSupportedSites" = "Підтримувані сайти";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeToUnverifiedSites" = "Дозволити внески для неперевірених сайтів";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeToVideos" = "Дозволити внески для відео";
+
+/* No comment provided by engineer. */
+"BraveRewardsCheckAgain" = "Оновити статус";
+
+/* No comment provided by engineer. */
+"BraveRewardsContributingToUnverifiedSites" = "Ви призначили %@ для авторів, які ще не зареєструвалися для отримання внесків. Спроби зробити внесок виконуватимуться в браузері, доки ці автори не пройдуть перевірку особи або доки не мине 90 днів.";
+
+/* No comment provided by engineer. */
+"BraveRewardsCreatingWallet" = "Створення гаманця";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledBody" = "Заробляйте, переглядаючи рекламу, що не порушує вашу конфіденційність, і платіть авторам, які вам подобаються.";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledEnableButton" = "Увімкнути Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledSubtitle" = "Отримуйте нагороди за користування Інтернетом!";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledTitle" = "З поверненням!";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisclaimerLearnMore" = "Докладніше";
+
+/* No comment provided by engineer. */
+"BraveRewardsEarningFromAds" = "Заробіток від сервісу Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyAutoContribution" = "Сайти з’являтимуться під час користування Інтернетом";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyTipsText" = "Чи надсилали ви гроші улюбленому авторові сьогодні?";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyWalletBody" = "Підвищуйте баланс, переглядаючи рекламу, що не порушує вашу конфіденційність, у Brave.";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyWalletTitle" = "Можете користуватися гаманцем.";
+
+/* No comment provided by engineer. */
+"BraveRewardsExclude" = "Виключити";
+
+/* No comment provided by engineer. */
+"BraveRewardsFiveAdsPerHour" = "5 оголошень на годину";
+
+/* No comment provided by engineer. */
+"BraveRewardsFourAdsPerHour" = "4 оголошення на годину";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantListExpiresOn" = "Термін дії закінчується %@";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrants" = "Бонуси";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedAmountTitle" = "Безкоштовний бонус на токени";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedExpirationDateTitle" = "Дата закінчення терміну дії бонуса";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitle" = "Скоро ви отримаєте бонус на токени.";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedTitle" = "Сьогодні ваш щасливий день!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBody" = "Ми цінуємо вашу увагу. Заробляйте, переглядаючи рекламу, що не порушує вашу конфіденційність, і платіть авторам, які вам подобаються.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBraveAdsBody" = "Заробляйте, переглядаючи актуальну рекламу, що не порушує вашу конфіденційність.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBraveAdsTitle" = "Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreCreateWallet1" = "Так!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreCreateWallet2" = "Поїхали!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreHowItWorks" = "Як це працює…";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreReady" = "Готові розпочати?";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreSubtitle" = "Отримуйте нагороди за користування Інтернетом!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTipsBody" = "Підтримуйте улюблені сайти, просто користуючись Інтернетом, або в будь-який час надсилайте кошти на сайти.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTipsTitle" = "Автовнесок";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTurnOnRewardsBody" = "Увімкнення реклами та надсилання автовнесків. Ви можете в будь-який момент вимкнути кожен із цих параметрів.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTurnOnRewardsTitle" = "Активувати сервіс Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreWhyBody" = "У старому браузері ви платили за Інтернет своєю увагою, переглядаючи рекламу. Ви витрачали свій цінний час на завантаження нав’язливої реклами, тоді як ваші особисті дані передавалися рекламодавцям без вашої згоди.\n\nАле сьогодні Brave вітає вас в Інтернеті майбутнього. Тут цінують ваш час, зберігають конфіденційність особистих даних і фактично платят вам за увагу.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreWhyTitle" = "Чому Brave Rewards?";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices0" = "5 секунд";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices1" = "8 секунд";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices2" = "1 хвилина";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices0" = "1 відвідування";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices1" = "5 відвідувань";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices2" = "10 відвідувань";
+
+/* No comment provided by engineer. */
+"BraveRewardsMonthlyTips" = "Щомісячні платежі";
+
+/* No comment provided by engineer. */
+"BraveRewardsNoActivitiesYet" = "Немає інформації про активність…";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationAdsTitle" = "Brave Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationAutoContributeTitle" = "Автовнесок";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationRecurringTipTitle" = "Повторні платежі";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationTokenGrantTitle" = "Бонуси на токени";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotYetVerified" = "Ще не підтверджено";
+
+/* No comment provided by engineer. */
+"BraveRewardsNumberOfAdsPerHourOptionsTitle" = "Оголошень на годину";
+
+/* No comment provided by engineer. */
+"BraveRewardsOneAdPerHour" = "1 оголошення на годину";
+
+/* No comment provided by engineer. */
+"BraveRewardsOneTimeTips" = "Одноразові платежі";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "Відкрити";
+
+/* No comment provided by engineer. */
+"BraveRewardsPanelTitle" = "Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsPaymentDate" = "Дата наступного платежу";
+
+/* No comment provided by engineer. */
+"BraveRewardsPoweredByUphold" = "Гаманець Brave надано компанією Uphold";
+
+/* No comment provided by engineer. */
+"BraveRewardsPublisherSendTip" = "Надіслати платіж…";
+
+/* No comment provided by engineer. */
+"BraveRewardsRecurringTipTitle" = "Повторний платіж";
+
+/* No comment provided by engineer. */
+"BraveRewardsRemove" = "Видалити";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettings" = "Налаштування";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBody" = "Заробляйте токени, переглядаючи рекламу в Brave. Реклама надається на базі ваших інтересів, що визначаються на основі ваших дій в Інтернеті. Персональні дані та інформація з історію браузера не передаються.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsComingSoonText" = "Незабаром.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsGrantAmountText" = "Доступний ваш заробіток за використання сервісу Ads: %@.";
+
+/* Example: <10 BAT> earned from ads */
+"BraveRewardsSettingsAdsGrantText" = "отримано за перегляд реклами";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsTitle" = "Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAutoContributeBody" = "Автоматичний спосіб підтримки осіб, що публікують контент, й авторів. Налаштуйте щомісячний платіж і користуйтесь Інтернетом як зазвичай. Cайти, які ви відвідуєте, автоматично отримуватимуть від вас внески залежно від того, скільки уваги ви їм приділили (за підрахунками Brave).";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAutoContributeTitle" = "Автовнесок";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledBody1" = "У старому браузері ви платили за Інтернет своєю увагою, переглядаючи рекламу. Ви витрачали свій цінний час на завантаження нав’язливої реклами, тоді як ваші особисті дані передавалися рекламодавцям без вашої згоди.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledBody2" = "Тут цінують ваш час, зберігають конфіденційність ваших особистих даних і фактично платят вам за увагу.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledTitle1" = "Чому Brave Rewards?";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledTitle2" = "Але сьогодні Brave вітає вас в Інтернеті майбутнього.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantClaimButtonTitle" = "Отримати";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantText" = "Доступний безкоштовний бонус на токени.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsBody" = "Допомагайте авторам, просто користуючись Інтернетом. Також ви можете налаштувати щомісячні платежі, щоб постійно підтримувати певні веб-сайти.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsTitle" = "Платежі";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTitle" = "Налаштування";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsViewDetails" = "Докладніше";
+
+/* No comment provided by engineer. */
+"BraveRewardsSite" = "Сайт";
+
+/* No comment provided by engineer. */
+"BraveRewardsSummaryTitle" = "Зведення сервісу Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsThreeAdsPerHour" = "3 оголошення на годину";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingAmountTitle" = "Сума платежу";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingBalanceTitle" = "баланс";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingConfirmation" = "Дякуємо";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingMakeMonthly" = "Повторювати щомісяця";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingMonthlyTitle" = "Особи, яким ви автоматично надсилаєте платежі:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotEnoughPoints" = "Недостатньо балів.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotEnoughTokens" = "Недостатньо токенів.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOneTimeTitle" = "Оосба, якій ви щойно надіслали платіж:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOverviewBody" = "Ви можете підтримати цього автора, надіславши йому платіж. Так можна подякувати за чудовий контент. Перевірені автори отримують платежі протягом першого тижня кожного місяця.\n\nЯкщо бажаєте, ви можете налаштувати щомісячні платежі, щоб постійно підтримувати цього автора.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOverviewTitle" = "Ласкаво просимо!";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingRecurring" = "Щомісяця";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingRecurringDetails" = "Дата, коли буде надіслано перший щомісячний платіж:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingSendMonthlyTip" = "Налаштувати щомісячний платіж";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingSendTip" = "Надіслати платіж";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingTitle" = "Надсилання платежу";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingUnverifiedDisclaimer" = "Примітка: цей автор ще не підтвердив особу, щоб отримувати платежі від користувачів Brave. Спроби зробити внесок виконуватимуться в браузері, доки ці автори не пройдуть перевірку особи або доки не мине 90 днів.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingWalletBalanceTitle" = "Баланс гаманця";
+
+/* No comment provided by engineer. */
+"BraveRewardsTips" = "Платежі";
+
+/* No comment provided by engineer. */
+"BraveRewardsTipsTotalThisMonth" = "Загальна сума платежів цього місяця";
+
+/* No comment provided by engineer. */
+"BraveRewardsTokens" = "Токени";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalGrantsClaimed" = "Бонуси на токени отримано";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalSites" = "Усього %ld";
+
+/* No comment provided by engineer. */
+"BraveRewardsTwoAdsPerHour" = "2 оголошення на годину";
+
+/* No comment provided by engineer. */
+"BraveRewardsUnverifiedPublisherDisclaimer" = "Цей автор ще не підтвердив особу, щоб отримувати платежі від користувачів Brave. Надіслані платежі залишаться у вашому гаманці, доки автор не пройде перевірку.";
+
+/* No comment provided by engineer. */
+"BraveRewardsVerified" = "Перевірений автор Brave";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletDetailsTitle" = "Відомості про гаманець";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderDetails" = "Відомості";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderGrants" = "Бонус";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderTitle" = "Ваш гаманець";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderTitleJapan" = "Ваш баланс";
+
+/* No comment provided by engineer. */
+"Cancel" = "Скасувати";
+
+/* No comment provided by engineer. */
+"CLAIM" = "ОТРИМАТИ";
+
+/* No comment provided by engineer. */
+"DisclaimerInformation" = "Натискаючи «Приєднатися до програми Rewards», ви підтверджуєте, що прочитали та погоджуєтеся з Умовами надання послуг та Політикою конфіденційності.";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "Торкніться тут, щоб дізнатися більше.";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "Це ваша перша реклама Brave";
+
+/* Body for a no network notification */
+"NoNetworkBody" = "Сервер Brave Rewards не відповідає. Ми працюємо над проблемою.";
+
+/* Title for a no network notification */
+"NoNetworkTitle" = "Отакої!";
+
+/* We show this string in the notification when you don't have enough funds for contribution */
+"NotificationAutoContributeNotEnoughFundsBody" = "Не вдалося зробити плановий щомісячний автовнесок і щомісячні платежі через недостатню кількість коштів. Ми спробуємо знову через 30 днів.";
+
+/* Message for ads launch notification */
+"NotificationBraveAdsLaunchMsg" = "Тепер ви можете заробляти, переглядаючи рекламу.";
+
+/* We show this string in notification when contribution fails */
+"NotificationContributeError" = "Під час обробки вашого внеску сталася помилка.";
+
+/* We show this string in notification when contribution fails */
+"NotificationContributeNotificationError" = "Під час обробки вашого внеску сталася помилка.";
+
+/* We show this string in the notification when contribution is successful */
+"NotificationContributeSuccess" = "Ви внесли %@";
+
+/* We show this string in notification when tip fails */
+"NotificationContributeTipError" = "Не вдалося надіслати платіж. Спробуйте пізніше.";
+
+/* Panel notification text for Ads grant */
+"NotificationEarningsClaimDefault" = "Ваші нагороди від сервісу Ads вже доступні!";
+
+/* Title for an error notification */
+"NotificationErrorTitle" = "Отакої!";
+
+/* Description for new grant notification */
+"NotificationGrantNotification" = "У нас є для вас бонус.";
+
+/* Description for new insufficient funds notification */
+"NotificationinsufficientFunds" = "Очікується поповнення вашого рахунку Brave Rewards.";
+
+/* Title for insufficient funds notification */
+"NotificationInsufficientFundsTitle" = "Недостатньо коштів";
+
+/* Notification title for pending contribution type */
+"NotificationPendingContributionTitle" = "Незавершений внесок";
+
+/* Notification text that tells user his wallet is under funded for pending contribution to complete */
+"NotificationPendingNotEnoughFunds" = "Через недостатню кількість коштів у вас є незавершені внески";
+
+/* Message for monthly tips processed notification */
+"NotificationTipsProcessedBody" = "Щомісячні платежі оброблено!";
+
+/* Notification text that tells user which publisher just verified */
+"NotificationVerifiedPublisherBody" = "Автор %@ нещодавно пройшов перевірку";
+
+/* No comment provided by engineer. */
+"OK" = "ОК";
+
+/* Text describing the type of contribution */
+"OneTimeText" = "Одного разу";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "в %@";
+
+/* No comment provided by engineer. */
+"PrivacyPolicyURL" = "Політика конфіденційності";
+
+/* Text describing the type of contribution */
+"RecurringText" = "Повторні";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescription" = "Тепер ви можете заробляти токени за перегляд реклами, що не порушує конфіденційність.";
+
+/* No comment provided by engineer. */
+"RewardsOptInJoinTitle" = "Приєднатися до програми Rewards";
+
+/* No comment provided by engineer. */
+"RewardsOptInLearnMore" = "Докладніше";
+
+/* No comment provided by engineer. */
+"RewardsOptInPrefix" = "Підготуйтеся до Інтернету майбутнього.";
+
+/* No comment provided by engineer. */
+"TermsOfServiceURL" = "Умови обслуговування";
+
+/* No comment provided by engineer. */
+"TipSiteMonthly" = "Щомісяця надсилати платіж на цей сайт";
+
+/* Prompt to turn on Ads via notification */
+"TurnOnAds" = "Увімкнути сервіс Ads";
+
+/* No comment provided by engineer. */
+"WalletCreationErrorBody" = "Сталася помилка. Спробуйте ще раз.";
+
+/* No comment provided by engineer. */
+"WalletCreationErrorTitle" = "Помилка";
+
+/* No comment provided by engineer. */
+"WelcomeDisclaimerInformation" = "Натискаючи «Так», ви підтверджуєте, що прочитали та погоджуєтеся з Умовами надання послуг та Політикою конфіденційності.";
+

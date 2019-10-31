@@ -1,8 +1,50 @@
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Não";
 
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "O Brave mostrará seu primeiro anúncio em";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "Agora está tudo pronto.";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "Não vi nenhum anúncio";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "Algo deu errado ao criar sua carteira. Tente novamente";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "OK";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "Lamentamos";
+
 /* Button to finish onboarding and start using the app. */
 "OBFinishButton" = "Começar a navegar";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "Participar";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "Ao ativar o Rewards, você concorda com os";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "Termos de Serviço";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Brave Rewards";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "Ganhe tokens visualizando anúncios que respeitam a privacidade. Use-os para apoiar seus sites e criadores favoritos.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegionJapan" = "Ganhe pontos visualizando anúncios que respeitam a privacidade. Use-os para apoiar seus sites e criadores favoritos.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailOutsideAdRegion" = "Apoie seus sites e criadores favoritos com base na sua atenção.";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Brave Rewards";
 
 /* Save button to save current selection */
 "OBSaveButton" = "Salvar";
@@ -18,6 +60,12 @@
 
 /* Title for shields onboarding screen */
 "OBShieldsTitle" = "Proteções do Brave";
+
+/* Button to show the Brave Rewards Ads. */
+"OBShowMeButton" = "Mostrar";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "Ativar";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Continuar";

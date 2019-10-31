@@ -1,8 +1,59 @@
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Nei";
 
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessage" = "Tjene tokens for å se på annonser som respekterer personvernet.";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessageJapan" = "Tjene poeng for å se på annonser som respekterer personvernet.";
+
+/* Title when opting into brave Ads when region becomes available */
+"OBAdsOptInTitle" = "Brave-annonser er her!";
+
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "Brave vil vise din første annonse i";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "Nå er du klar til å begynne.";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "Jeg så ikke en annonse";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "Noe gikk galt da du opprettet lommeboken. Prøv på nytt";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "OK";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "Beklager";
+
 /* Button to finish onboarding and start using the app. */
-"OBFinishButton" = "Start nettlesning";
+"OBFinishButton" = "Start å surfe";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "Registrer deg";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "Ved å slå på Rewards, godtar du";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "vilkårene for bruk";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Brave Rewards";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "Tjen token for å se annonser som respekterer personvernet. Bruk dem til å støtte dine favorittnettsteder og -skapere.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegionJapan" = "Tjen poeng ved å se annonser som respekterer personvernet. Bruk dem til å støtte dine favorittnettsteder og -skapere.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailOutsideAdRegion" = "Støtt dine favorittnettsteder og -skapere basert på din oppmerksomhet.";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Brave Rewards";
 
 /* Save button to save current selection */
 "OBSaveButton" = "Lagre";
@@ -11,13 +62,19 @@
 "OBSearchEngineDetail" = "Velg standard søkemotor";
 
 /* Title for search engine onboarding screen */
-"OBSearchEngineTitle" = "Velkommen til Brave Browser.";
+"OBSearchEngineTitle" = "Velkommen til Brave Browser";
 
 /* Detail text for shields onboarding screen */
-"OBShieldsDetail" = "Blokker trackere som truer personvernet, slik at du kan surfe på nett uten å bli forfulgt.";
+"OBShieldsDetail" = "Blokker trackere som truer personvernet, slik at du kan surfe på nett uten å bli forfulgt";
 
 /* Title for shields onboarding screen */
 "OBShieldsTitle" = "Brave-skjold";
+
+/* Button to show the Brave Rewards Ads. */
+"OBShowMeButton" = "Vis meg";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "Slå på";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Fortsett";

@@ -184,6 +184,9 @@
 /* Button to show the brave panel */
 "BravePanel" = "Brave-panelen";
 
+/* Brave Rewards settings title */
+"BraveRewardsTitle" = "Brave Rewards";
+
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Standardinställningar för Braves sköldar";
 
@@ -277,6 +280,9 @@
 /* Copy codewords title */
 "CopyToClipboard" = "Kopiera till urklipp";
 
+/* Copy rewards internals info for support */
+"CopyWalletSupportInfo" = "Kopiera kundtjänstinformation";
+
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Sökmotorer som används för närvarande";
 
@@ -321,6 +327,9 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Enhet %1$@ (%2$@)";
+
+/* Section name for display preferences. */
+"DisplaySettingsSection" = "Visning";
 
 /* No comment provided by engineer. */
 "Done" = "Klar";
@@ -433,6 +442,15 @@
 /* Grand camera access */
 "GrantCameraAccess" = "Aktivera kamera";
 
+/* Context menu item for hiding link previews */
+"HideLinkPreviewsActionTitle" = "Dölj förhandsgranskning av länkar";
+
+/* Hides the rewards icon */
+"HideRewardsIcon" = "Dölj Brave Rewards-ikonen";
+
+/* Hide the rewards icon explination. */
+"HideRewardsIconSubtitle" = "Döljer Brave Rewards-ikonen när Brave Rewards inte är aktiverat";
+
 /* Title for history menu item */
 "HistortMenuItem" = "Historik";
 
@@ -486,6 +504,9 @@
 
 /* Label for the button used to select all logins. */
 "LoginListSelectAllButtonTitle" = "Välj alla";
+
+/* Setting to allow media to play automatically */
+"MediaAutoPlays" = "Aktivera uppspelning av videor i bakgrunden";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Kopiera";
@@ -763,6 +784,9 @@
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Kunde inte ladda sidan.";
 
+/* Row name for licenses. */
+"SettingsLicenses" = "Licenser";
+
 /* Title for settings menu item */
 "SettingsMenuItem" = "Inställningar";
 
@@ -814,6 +838,9 @@
 /* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
 "ShowInLandscapeOnly" = "Visa endast i Landscape";
 
+/* Context menu item for showing link previews */
+"ShowLinkPreviewsActionTitle" = "Visa förhandsgranskning av länkar";
+
 /* Accessibility Label for the tabs button in the browser toolbar */
 "ShowTabs" = "Visa flikar";
 
@@ -843,6 +870,9 @@
 
 /* Add a Computer title */
 "SyncAddComputerTitle" = "Lägg till en dator";
+
+/* Add mobile device to sync with scan */
+"SyncAddDeviceScan" = "Synka kedje-QR-kod";
 
 /* Sync add device description */
 "SyncAddDeviceScanDescription" = "På din andra mobila enhet navigerar du till synkronisering på panelen för inställningar och trycker på knappen \"Skanna synkroniseringskod\". Använd din kamera för att skanna QR koden nedan.\nBehandla den här koden som ett lösenord. Om någon får tag i den kan de läsa och ändra dina synkroniserade data.";
@@ -1027,6 +1057,9 @@
 /* Selection to color/style the user interface with a dark theme */
 "ThemesDarkOption" = "Mörk";
 
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "Utseende";
+
 /* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
 "ThemesDisplayBrightnessFooter" = "Dessa inställningar tillämpas inte i privat surfläge.";
 
@@ -1056,6 +1089,9 @@
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Version %1$@ (%2$@)";
+
+/* The date your wallet was created */
+"WalletCreationDate" = "Plånboken skapades";
 
 /* Accessibility label for the main web content view */
 "WebContentAccessibilityLabel" = "Webbinnehåll";

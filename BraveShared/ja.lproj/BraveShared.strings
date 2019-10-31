@@ -41,7 +41,7 @@
 "AuthenticationChangePasscode" = "パスコードを変更";
 
 /* Touch ID prompt subtitle when disabling Touch ID */
-"AuthenticationDisableTouchReason" = "指紋を使って Touch ID を無効にしてください。";
+"AuthenticationDisableTouchReason" = "Touch IDを無効にするため指紋認証を行って行ってください。";
 
 /* Text displayed above the input field when entering a new passcode */
 "AuthenticationEnterAPasscode" = "パスコードを入力";
@@ -65,7 +65,7 @@
 "AuthenticationIncorrectAttemptsRemaining" = "パスコードが正しくありません。やり直してください (残り試行回数: %d)。";
 
 /* Touch ID prompt subtitle when accessing logins */
-"AuthenticationLoginsTouchReason" = "今すぐ指紋を使ってログイン情報にアクセスしてください。";
+"AuthenticationLoginsTouchReason" = "ログイン情報にアクセスするには指紋認証が必要です。";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReached" = "試行回数が上限に達しました。1 時間後にやり直してください。";
@@ -83,7 +83,7 @@
 "AuthenticationRequirePasscode" = "パスコードを要求";
 
 /* Touch ID prompt subtitle when accessing the require passcode setting */
-"AuthenticationRequirePasscodeTouchReason" = "パスコードの要求時間を変更するには指紋を使ってください。";
+"AuthenticationRequirePasscodeTouchReason" = "パスコードの要求時間を変更するには指紋認証が必要です。";
 
 /* Title of the dialog used to set a passcode */
 "AuthenticationSetPasscode" = "パスコードを設定";
@@ -184,6 +184,9 @@
 /* Button to show the brave panel */
 "BravePanel" = "Brave パネル";
 
+/* Brave Rewards settings title */
+"BraveRewardsTitle" = "Brave Rewards";
+
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Brave Shieldのデフォルト設定";
 
@@ -276,6 +279,9 @@
 
 /* Copy codewords title */
 "CopyToClipboard" = "クリップボードにコピーしました";
+
+/* Copy rewards internals info for support */
+"CopyWalletSupportInfo" = "サポート情報をコピー";
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "現在使用中の検索エンジン";
@@ -428,7 +434,7 @@
 "FingerprintingMethods" = "フィンガープリント";
 
 /* blocking stat title */
-"FingerprintingnProtection" = "フィンガー\nプリント対策";
+"FingerprintingnProtection" = "フィンガープリント対策";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "フィンガープリント対策";
@@ -498,6 +504,9 @@
 
 /* Label for the button used to select all logins. */
 "LoginListSelectAllButtonTitle" = "すべて選択";
+
+/* Setting to allow media to play automatically */
+"MediaAutoPlays" = "動画のバックグラウンド再生を有効にする";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "コピー";
@@ -774,6 +783,9 @@
 
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "ページを読み込めませんでした。";
+
+/* Row name for licenses. */
+"SettingsLicenses" = "ライセンス";
 
 /* Title for settings menu item */
 "SettingsMenuItem" = "設定";
@@ -1077,6 +1089,9 @@
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "バージョン %1$@ (%2$@)";
+
+/* The date your wallet was created */
+"WalletCreationDate" = "ウォレット作成日";
 
 /* Accessibility label for the main web content view */
 "WebContentAccessibilityLabel" = "ウェブコンテンツ";

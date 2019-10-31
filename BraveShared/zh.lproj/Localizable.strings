@@ -1,8 +1,50 @@
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "否";
 
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "Brave 会在以下时间内显示您的第一个广告：";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "现在您可以开始了。";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "我没看到广告。";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "创建钱包时出了点问题。请再试一次。";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "好的";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "抱歉";
+
 /* Button to finish onboarding and start using the app. */
 "OBFinishButton" = "开始浏览";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "加入";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "启用“Rewards”即表示您同意";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "服务条款";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Brave Rewards";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "通过查看尊重隐私的广告来赚取令牌，并用其来支持您最喜欢的网站和创建者。";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegionJapan" = "通过查看尊重隐私的广告来赚取积分，并用其来支持您最喜欢的网站和创建者。";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailOutsideAdRegion" = "根据您的关注度来支持您最喜欢的网站和创建者。";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Brave Rewards";
 
 /* Save button to save current selection */
 "OBSaveButton" = "保存";
@@ -18,6 +60,12 @@
 
 /* Title for shields onboarding screen */
 "OBShieldsTitle" = "Brave 防护盾";
+
+/* Button to show the Brave Rewards Ads. */
+"OBShowMeButton" = "给我看看";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "打开";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "继续";

@@ -1,8 +1,50 @@
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "아니요";
 
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "첫 Brave 광고가 다음 시간 후 표시됩니다.";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "이제 준비를 마쳤습니다.";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "광고가 표시되지 않음";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "월렛을 만드는 중에 문제가 발생했습니다. 다시 시도하세요.";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "확인";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "죄송합니다";
+
 /* Button to finish onboarding and start using the app. */
 "OBFinishButton" = "브라우징 시작";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "가입";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "Rewards를 켜면 다음에 동의하는 것으로 간주됩니다.";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "서비스 약관";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Brave Rewards";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "프라이버시 보호 광고를 보고 토큰을 받으세요. 이를 사용하여 좋아하는 사이트와 제작자를 후원하세요.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegionJapan" = "프라이버시 보호 광고를 보고 포인트를 받으세요. 이를 사용하여 좋아하는 사이트와 제작자를 후원하세요.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailOutsideAdRegion" = "관심도를 기반으로 좋아하는 웹사이트와 제작자를 후원하세요.";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Brave Rewards";
 
 /* Save button to save current selection */
 "OBSaveButton" = "저장";
@@ -18,6 +60,12 @@
 
 /* Title for shields onboarding screen */
 "OBShieldsTitle" = "Brave 쉴드";
+
+/* Button to show the Brave Rewards Ads. */
+"OBShowMeButton" = "표시";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "켜기";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "계속";

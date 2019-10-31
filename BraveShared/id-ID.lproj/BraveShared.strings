@@ -184,6 +184,9 @@
 /* Button to show the brave panel */
 "BravePanel" = "Panel Brave";
 
+/* Brave Rewards settings title */
+"BraveRewardsTitle" = "Brave Rewards";
+
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Default Perisai Brave";
 
@@ -277,6 +280,9 @@
 /* Copy codewords title */
 "CopyToClipboard" = "Salin ke Clipboard";
 
+/* Copy rewards internals info for support */
+"CopyWalletSupportInfo" = "Salin Info Dukungan";
+
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Mesin pencari yang digunakan saat ini";
 
@@ -321,6 +327,9 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Perangkat %1$@ (%2$@)";
+
+/* Section name for display preferences. */
+"DisplaySettingsSection" = "Tampilan";
 
 /* No comment provided by engineer. */
 "Done" = "Selesai";
@@ -433,6 +442,15 @@
 /* Grand camera access */
 "GrantCameraAccess" = "Aktifkan Kamera";
 
+/* Context menu item for hiding link previews */
+"HideLinkPreviewsActionTitle" = "Sembunyikan Pratinjau Tautan";
+
+/* Hides the rewards icon */
+"HideRewardsIcon" = "Sembunyikan Ikon Brave Rewards";
+
+/* Hide the rewards icon explination. */
+"HideRewardsIconSubtitle" = "Menyembunyikan ikon Brave Rewards saat Brave Rewards tidak diaktifkan";
+
 /* Title for history menu item */
 "HistortMenuItem" = "Riwayat";
 
@@ -486,6 +504,9 @@
 
 /* Label for the button used to select all logins. */
 "LoginListSelectAllButtonTitle" = "Pilih Semua";
+
+/* Setting to allow media to play automatically */
+"MediaAutoPlays" = "Aktifkan pemutaran video otomatis di latar belakang";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Salin";
@@ -763,6 +784,9 @@
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Tidak dapat memuat halaman.";
 
+/* Row name for licenses. */
+"SettingsLicenses" = "Lisensi";
+
 /* Title for settings menu item */
 "SettingsMenuItem" = "Pengaturan";
 
@@ -814,6 +838,9 @@
 /* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
 "ShowInLandscapeOnly" = "Tampilkan Hanya dalam Lanskap";
 
+/* Context menu item for showing link previews */
+"ShowLinkPreviewsActionTitle" = "Tampilkan Pratinjau Tautan";
+
 /* Accessibility Label for the tabs button in the browser toolbar */
 "ShowTabs" = "Tampilkan Tab";
 
@@ -843,6 +870,9 @@
 
 /* Add a Computer title */
 "SyncAddComputerTitle" = "Tambahkan Komputer";
+
+/* Add mobile device to sync with scan */
+"SyncAddDeviceScan" = "Sinkronisasikan Kode QR Kelompok";
 
 /* Sync add device description */
 "SyncAddDeviceScanDescription" = "Pada perangkat Anda, navigasilah ke Sinkronisasi di panel Pengaturan, lalu ketuk tombol \"Pindai Kode Sinkronisasi\". Gunakan kamera Anda untuk memindai Kode QR di bawah ini.\nPerlakukan kode ini layaknya kata sandi. Jika seseorang mengetahuinya, mereka dapat membaca dan mengubah data Anda yang telah disinkronisasi.";
@@ -1027,6 +1057,9 @@
 /* Selection to color/style the user interface with a dark theme */
 "ThemesDarkOption" = "Gelap";
 
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "Penampilan";
+
 /* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
 "ThemesDisplayBrightnessFooter" = "Pengaturan ini tidak diterapkan dalam mode penjelajahan pribadi.";
 
@@ -1056,6 +1089,9 @@
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Versi %1$@ (%2$@)";
+
+/* The date your wallet was created */
+"WalletCreationDate" = "Tanggal Pembuatan Dompet";
 
 /* Accessibility label for the main web content view */
 "WebContentAccessibilityLabel" = "Konten web";
