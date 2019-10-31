@@ -581,6 +581,141 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BRAVE_ADS_EXISTING_USER_OFFER_TITLE" desc="Title for Brave Ads offer.">
         Brave Ads are here!
       </message>
+      <message name="IDS_BRAVE_SYNC_REQUIRES_CORRECT_TIME" desc="Text for Brave Sync requires correct time.">
+	Your computer's clock may be set to the wrong time, or to the wrong time-zone. Check your clock settings
+      </message>
+      <message name="IDS_BRAVE_SYNC_DEVICE_FAILURE" desc="Text for Brave Sync device failure.">
+	Sync could not be setup
+      </message>
+      <message name="IDS_BRAVE_SYNC_THIS_DEVICE_TEXT" desc="Text for Brave Sync this device.">
+	(this device)
+      </message>
+      <message name="IDS_BRAVE_SYNC_DEVICES_TITLE" desc="Text for Brave Sync devices title.">
+	OTHER DEVICES ON CHAIN
+      </message>
+      <message name="IDS_BRAVE_SYNC_LOADING_DEVICES_TITLE" desc="Text for Brave Sync loading devices title.">
+	LOADING DEVICES...
+      </message>
+      <message name="IDS_BRAVE_SYNC_WORD_COUNT_TEXT" desc="Text for Brave Sync word count message.">
+	Word count: <ph name="WORD_COUNT">%1$d</ph>
+      </message>
+      <message name="IDS_BRAVE_SYNC_WORD_COUNT_ERROR" desc="Text for Brave Sync word count error.">
+	Incorrect number of words
+      </message>
+      <message name="IDS_BRAVE_SYNC_TIME_OUT_MESSAGE" desc="Text for Brave Sync time out message.">
+	Something went wrong, looks like your request timed out.
+      </message>
+      <message name="IDS_BRAVE_SYNC_OFFICIAL" desc="Text for Brave Sync preference.">
+	Brave Sync
+      </message>
+      <message name="IDS_BRAVE_SYNC_DESCRIPTION_PAGE_1_PART_1" desc="Text for Brave Sync description part 1.">
+	Brave Sync allows you to sync bookmarks data privately between your Brave Browsers on your various devices.
+      </message>
+      <message name="IDS_BRAVE_SYNC_DESCRIPTION_PAGE_1_PART_2" desc="Text for Brave Sync description part 2.">
+	Simply scan the code from your sync chain that you created on another device. Or start a new sync chain.
+      </message>
+      <message name="IDS_BRAVE_SYNC_QRCODE_MESSAGE_V2" desc="Text for Brave Sync QR code message.">
+	Using existing synced device, open Brave Settings and navigate to Settings > Sync. Choose "Add Device" and scan the QR Code displayed on the screen.
+      </message>
+      <message name="IDS_BRAVE_SYNC_COPIED_TEXT" desc="Text for Brave Sync copied text message.">
+	Copied to Clipboard
+      </message>
+      <message name="IDS_BRAVE_SYNC_CODE_WORDS_TITLE" desc="Text for Brave Sync code words title.">
+	Pair
+      </message>
+      <message name="IDS_BRAVE_SYNC_DELETE_SENT" desc="Text for Brave Sync delete request message.">
+	Delete request has been sent. Device will be removed shortly.
+      </message>
+      <message name="IDS_BRAVE_SYNC_REMOVE_DEVICE_TEXT" desc="Text for Brave Sync remove device message.">
+	Remove this device
+      </message>
+      <message name="IDS_BRAVE_SYNC_DELETE_DEVICE" desc="Text for Brave Sync delete device message.">
+	Are you sure you want to delete device '<ph name="DEVICE_NAME">%1$s</ph>'?
+      </message>
+      <message name="IDS_BRAVE_SYNC_SCAN_CHAIN_CODE" desc="Text for Brave Sync chain code message.">
+	Scan or enter sync code
+      </message>
+      <message name="IDS_BRAVE_SYNC_START_NEW_CHAIN" desc="Text for Brave Sync start new chain message.">
+	Start a new sync chain
+      </message>
+      <message name="IDS_BRAVE_SYNC_BTN_MOBILE" desc="Text for Brave Sync add a mobile device button.">
+	Add a Mobile Device
+      </message>
+      <message name="IDS_BRAVE_SYNC_BTN_LAPTOP" desc="Text for Brave Sync add a laptop button.">
+	Add a Computer
+      </message>
+      <message name="IDS_BRAVE_SYNC_ADD_MOBILE_DEVICE_TEXT_PART_1" desc="Text for Brave Sync add a mobile device description part 1.">
+	Using a second phone or tablet, navigate to Brave Settings > Sync > Scan.
+      </message>
+      <message name="IDS_BRAVE_SYNC_ADD_MOBILE_DEVICE_TEXT_PART_2" desc="Text for Brave Sync add a mobile device description part 2.">
+	On your mobile device, navigate to Brave Sync in the Settings panel and click the button "Scan Sync Code". Use your camera to scan the QR Code below.
+      </message>
+      <message name="IDS_BRAVE_SYNC_ADD_LAPTOP_TEXT_PART_1" desc="Text for Brave Sync add a laptop description part 1.">
+	On your computer, navigate to Brave Settings > Sync. Choose "Enter a Sync Chain Code".
+      </message>
+      <message name="IDS_BRAVE_SYNC_SCAN_SYNC_CODE" desc="Text for Brave Sync scan sync code message.">
+	Scan this sync code
+      </message>
+      <message name="IDS_BRAVE_SYNC_CODE_WARNING" desc="Text for Brave Sync code warning message.">
+	Treat this code like a password. If someone gets hold of it, they can read and modify your synced data.
+      </message>
+      <message name="IDS_BRAVE_SYNC_LOADING_DATA_TITLE" desc="Text for Brave Sync loading data title.">
+	Loading data...
+      </message>
+      <message name="IDS_BRAVE_SYNC_ADD_LAPTOP_TEXT_PART_2_NEW" desc="Text for Brave Sync add laptop part 2.">
+	On your target computer, navigate to Brave Sync in settings and click the button "I have a Sync Code".\nEnter the sync chain code words shown below.
+      </message>
+      <message name="IDS_BRAVE_SYNC_ADD_LAPTOP_TEXT_TITLE" desc="Text for Brave Sync add laptop title.">
+	Enter the sync chain code
+      </message>
+      <message name="IDS_BRAVE_SYNC_QR_CODE" desc="Text for Brave Sync QR code.">
+	QR Code
+      </message>
+      <message name="IDS_BRAVE_SYNC_CODE_WORDS" desc="Text for Brave Sync code words.">
+	Code Words
+      </message>
+      <message name="IDS_BRAVE_SYNC_COPY_BUTTON_TEXT" desc="Text for Brave Sync copy button.">
+	Copy to Clipboard
+      </message>
+      <message name="IDS_BRAVE_SYNC_BTN_DONE" desc="Text for Brave Sync done button.">
+	Done
+      </message>
+      <message name="IDS_BRAVE_SYNC_SETTINGS_TITLE" desc="Text for Brave Sync settings title.">
+	SYNC ON THIS DEVICE
+      </message>
+      <message name="IDS_BRAVE_SYNC_SETTINGS_DESCRIPTION" desc="Text for Brave Sync settings description.">
+	Changing settings will only affect data that this device shares with others.
+      </message>
+      <message name="IDS_BRAVE_SYNC_ADD_DEVICE_TEXT" desc="Text for Brave Sync add device message.">
+	Add another device
+      </message>
+      <message name="IDS_ENTER_CODE_WORDS_SYNC" desc="Text for Brave Sync enter code words message.">
+	Enter code words
+      </message>
+      <message name="IDS_BRAVE_SYNC_CODEWORDS_MESSAGE" desc="Text for Brave Sync code words message.">
+	Using existing synced device, open Brave Settings and navigate to Settings > Sync. Choose "Add Device" then "Display code words instead".
+      </message>
+      <message name="IDS_BRAVE_SYNC_CONFIRM_CODE_WORDS_TEXT" desc="Text for Brave Sync confirm code words message.">
+	Confirm
+      </message>
+      <message name="IDS_BRAVE_SYNC_USE_CAMERA_TEXT" desc="Text for Brave Sync use camera message.">
+	I'll use my camera...
+      </message>
+      <message name="IDS_BRAVE_SYNC_EXAMPLE_DEVICE_NAME" desc="Text for Brave Sync example device name.">
+	Android device
+      </message>
+      <message name="IDS_BRAVE_SYNC_DEVICE" desc="Text for sync device message.">
+	Sync device
+      </message>
+      <message name="IDS_BRAVE_SYNC_SETTINGS_ADD_DEVICE_NAME_TITLE" desc="Text for sync settings add device name.">
+	Add device name
+      </message>
+      <message name="IDS_BRAVE_SYNC_SETTINGS_ADD_DEVICE_NAME_LABEL" desc="Text for sync settings add device name label.">
+	Enter an optional name for this device
+      </message>
+      <message name="IDS_SETTINGS_EXIT" desc="Text for Settings exit.">
+	Settings exit
+      </message>
     </messages>
   </release>
 </grit>

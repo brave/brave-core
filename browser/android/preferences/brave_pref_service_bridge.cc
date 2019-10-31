@@ -5,13 +5,18 @@
 
 #include "brave/build/android/jni_headers/BravePrefServiceBridge_jni.h"
 
+#include "base/android/jni_string.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_android.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
 
+using base::android::ConvertUTF8ToJavaString;
+using base::android::JavaParamRef;
+using base::android::ScopedJavaLocalRef;
 using brave_shields::ControlType;
 
 namespace {
@@ -109,6 +114,42 @@ int JNI_BravePrefServiceBridge_GetHttpsUpgradesCount(
     const base::android::JavaParamRef<jobject>& j_profile) {
   Profile* profile = ProfileAndroid::FromProfileAndroid(j_profile);
   return profile->GetPrefs()->GetUint64(kHttpsUpgrades);
+}
+
+ScopedJavaLocalRef<jstring> JNI_BravePrefServiceBridge_GetSyncDeviceId(
+    JNIEnv* env) {
+  return ConvertUTF8ToJavaString(env,
+                                 GetOriginalProfile()->GetPrefs()->GetString(
+                                     brave_sync::prefs::kSyncDeviceId));
+}
+
+void JNI_BravePrefServiceBridge_SetSyncDeviceName(
+    JNIEnv* env,
+    const JavaParamRef<jstring>& deviceName) {
+  return GetOriginalProfile()->GetPrefs()->SetString(
+      brave_sync::prefs::kSyncDeviceName,
+      ConvertJavaStringToUTF8(env, deviceName));
+}
+
+ScopedJavaLocalRef<jstring> JNI_BravePrefServiceBridge_GetSyncDeviceName(
+    JNIEnv* env) {
+  return ConvertUTF8ToJavaString(env,
+                                 GetOriginalProfile()->GetPrefs()->GetString(
+                                     brave_sync::prefs::kSyncDeviceName));
+}
+
+void JNI_BravePrefServiceBridge_SetSyncSeed(
+    JNIEnv* env,
+    const JavaParamRef<jstring>& seed) {
+  return GetOriginalProfile()->GetPrefs()->SetString(
+      brave_sync::prefs::kSyncSeed, ConvertJavaStringToUTF8(env, seed));
+}
+
+ScopedJavaLocalRef<jstring> JNI_BravePrefServiceBridge_GetSyncSeed(
+    JNIEnv* env) {
+  return ConvertUTF8ToJavaString(env,
+                                 GetOriginalProfile()->GetPrefs()->GetString(
+                                     brave_sync::prefs::kSyncSeed));
 }
 
 void JNI_BravePrefServiceBridge_SetSafetynetCheckFailed(

@@ -48,4 +48,9 @@
         android:key="closing_all_tabs_closes_brave"
         android:order="16"
         android:title="@string/prefs_closing_all_tabs_closes_brave"/>
+    <org.chromium.chrome.browser.preferences.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.preferences.BraveSyncScreensPreference"
+        android:key="brave_sync_layout"
+        android:order="17"
+        android:title="@string/sync_category_title"/>
 </android.support.v7.preference.PreferenceScreen>

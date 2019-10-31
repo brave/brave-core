@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view_sync_done"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@drawable/brave_sync_cover_general" >
+
+    <LinearLayout android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:paddingStart="2dip"
+        android:paddingTop="2dip"
+        android:paddingEnd="2dip" >
+
+        <TextView android:id="@+id/brave_sync_settings_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_sync_settings_title"
+            android:textColor="@color/modern_grey_500"
+            android:paddingStart="15dip"
+            android:paddingTop="30dip"
+            android:visibility="gone" />
+
+        <LinearLayout android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@android:color/white"
+            android:visibility="gone" >
+
+            <include layout="@layout/menu_separator"/>
+
+            <RelativeLayout android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingStart="15dip"
+                android:paddingTop="8dip"
+                android:paddingBottom="8dip"
+                android:paddingEnd="15dip" >
+
+                <TextView android:id="@+id/sync_bookmarks_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sync_bookmarks"
+                    android:layout_centerVertical="true"
+                    android:textSize="16sp" />
+
+                <Switch android:id="@+id/sync_bookmarks_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:theme="@style/BraveSwitchTheme"
+                    android:switchMinWidth="56dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true" />
+
+            </RelativeLayout>
+
+            <include layout="@layout/menu_separator"/>
+
+        </LinearLayout>
+
+        <!-- <RelativeLayout android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingStart="15dip" >
+
+            <TextView android:id="@+id/brave_sync_tabs_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_sync_tabs_text"
+                android:layout_centerVertical="true"
+                android:textSize="16sp" />
+
+            <Switch android:id="@+id/brave_sync_tabs_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:theme="@style/BraveSwitchTheme"
+                android:switchMinWidth="56dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
+
+        <include layout="@layout/menu_separator"/>
+
+        <RelativeLayout android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingStart="15dip" >
+
+            <TextView android:id="@+id/brave_sync_history_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_sync_history_text"
+                android:layout_centerVertical="true"
+                android:textSize="16sp" />
+
+            <Switch android:id="@+id/brave_sync_history_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:theme="@style/BraveSwitchTheme"
+                android:switchMinWidth="56dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
+
+        <include layout="@layout/menu_separator"/>
+
+        <RelativeLayout android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingStart="15dip" >
+
+            <TextView android:id="@+id/brave_sync_autofill_passwords_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_sync_autofill_passwords_text"
+                android:layout_centerVertical="true"
+                android:textSize="16sp" />
+
+            <Switch android:id="@+id/brave_sync_autofill_passwords_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:theme="@style/BraveSwitchTheme"
+                android:switchMinWidth="56dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
+
+        <include layout="@layout/menu_separator"/>
+
+        <RelativeLayout android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:paddingStart="15dip" >
+
+            <TextView android:id="@+id/brave_sync_payment_settings_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_sync_payment_settings_text"
+                android:layout_centerVertical="true"
+                android:textSize="16sp" />
+
+            <Switch android:id="@+id/brave_sync_payment_settings_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:theme="@style/BraveSwitchTheme"
+                android:switchMinWidth="56dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true" />
+
+        </RelativeLayout>
+
+        <include layout="@layout/menu_separator"/> -->
+
+        <TextView android:id="@+id/brave_sync_settings_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_sync_settings_description"
+            android:paddingStart="15dip"
+            android:textColor="@color/modern_grey_500"
+            android:visibility="gone" />
+
+        <TextView android:id="@+id/brave_sync_devices_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_sync_devices_title"
+            android:paddingStart="15dip"
+            android:paddingTop="30dip"
+            android:textColor="@color/modern_grey_500" />
+
+        <LinearLayout android:id="@+id/brave_sync_devices"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:background="@android:color/white" />
+
+        <TextView android:id="@+id/brave_sync_fake"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:visibility="invisible" />
+
+        <Button android:id="@+id/brave_sync_btn_cancel_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:visibility="gone"
+            style="@style/BraveSyncButton" />
+
+        <Button android:id="@+id/brave_sync_btn_add_device"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_sync_add_device_text"
+            style="@style/BraveSyncButton" />
+
+        <Button android:id="@+id/brave_sync_btn_remove_device"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_sync_remove_device_text"
+            style="@style/BraveSyncBottomButton"
+            android:background="@android:color/transparent"
+            android:textColor="@color/google_red_600" />
+
+    </LinearLayout>
+</ScrollView>

@@ -1,16 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright 2014 The Chromium Authors. All rights reserved.
-     Use of this source code is governed by a BSD-style license that can be
-     found in the LICENSE file. -->
+<!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
     <style name="BraveSwitchTheme">
         <item name="colorControlActivated">#fb542b</item>
     </style>
+
     <style name="BraveDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="windowNoTitle">true</item>
     </style>
     <style name="BraveRewardsSwitchTheme">
         <item name="colorControlActivated">#392DD1</item>
+    </style>
+
+    <!-- Buttons for Brave Sync -->
+    <style name="BraveSyncButton">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/brave_sync_btn</item>
+        <item name="android:layout_marginStart">15dp</item>
+        <item name="android:layout_marginEnd">15dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="BraveSyncBottomButton">
+        <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="BraveSyncToggleOffButtonLeft">
+        <item name="android:textColor">@color/brave_theme_color</item>
+        <item name="android:background">@drawable/brave_sync_toggle_off_btn_left</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="BraveSyncToggleOffButtonRight">
+        <item name="android:textColor">@color/brave_theme_color</item>
+        <item name="android:background">@drawable/brave_sync_toggle_off_btn_right</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="BraveSyncToggleOnButtonRight">
+        <item name="android:textColor">@color/white_alpha_65</item>
+        <item name="android:background">@drawable/brave_sync_toggle_on_btn_right</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="BraveSyncToggleOnButtonLeft">
+        <item name="android:textColor">@color/white_alpha_65</item>
+        <item name="android:background">@drawable/brave_sync_toggle_on_btn_left</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">14sp</item>
     </style>
 </resources>
