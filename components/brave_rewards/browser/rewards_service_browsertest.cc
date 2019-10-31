@@ -273,6 +273,49 @@ class BraveRewardsBrowserTest
       verified.c_str());
   }
 
+  static std::vector<double> GetSiteBannerTipOptions(
+      content::WebContents* site_banner) {
+    auto options = content::EvalJs(
+        site_banner,
+        R"(
+            const delay = t => new Promise(resolve => setTimeout(resolve, t));
+            delay(500).then(() => Array.prototype.map.call(
+                document.querySelectorAll(
+                    "[data-test-id=amount-wrapper] div span"),
+                node => parseFloat(node.innerText)))
+        )",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END).ExtractList();
+
+    std::vector<double> result;
+    for (const auto& value : options.GetList()) {
+      result.push_back(value.GetDouble());
+    }
+    return result;
+  }
+
+  static std::vector<double> GetRewardsPopupTipOptions(
+      content::WebContents* popup) {
+    auto options = content::EvalJs(
+        popup,
+        R"_(
+          const delay = t => new Promise(resolve => setTimeout(resolve, t));
+          delay(0).then(() =>
+              Array.prototype.map.call(
+                  document.querySelectorAll("option:not(:disabled)"),
+                  node => parseFloat(node.value)))
+        )_",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END).ExtractList();
+
+    std::vector<double> result;
+    for (const auto& value : options.GetList()) {
+      result.push_back(value.GetDouble());
+    }
+    return result;
+  }
+
+
   void GetTestResponse(const std::string& url,
                        int32_t method,
                        int* response_status_code,
@@ -874,7 +917,7 @@ class BraveRewardsBrowserTest
     return BalanceDoubleToString(external_balance_);
   }
 
-  std::string GetAnonBalance() {
+  std::string GetAnonBalance() const {
     return BalanceDoubleToString(balance_);
   }
 
@@ -1180,31 +1223,16 @@ class BraveRewardsBrowserTest
       ASSERT_TRUE(js_result.ExtractBool());
   }
 
-  void TipPublisher(
-      const std::string& publisher,
-      bool should_contribute = false,
-      bool monthly = false,
-      int32_t selection = 0) {
-    // we shouldn't be adding publisher to AC list,
-    // so that we can focus only on tipping part
-    rewards_service_->SetPublisherMinVisitTime(8);
-
-    // Navigate to a site in a new tab
-    GURL url = https_server()->GetURL(publisher, "/index.html");
-    ui_test_utils::NavigateToURLWithDisposition(
-        browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
-        ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
-
-    // Open the Rewards popup
+  content::WebContents* OpenSiteBanner(ContributionType banner_type) const {
     content::WebContents* popup_contents = OpenRewardsPopup();
     ASSERT_TRUE(popup_contents);
 
-    // Construct an observer to wait for the site banner to load
+    // Construct an observer to wait for the site banner to load.
     content::WindowedNotificationObserver site_banner_observer(
         content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
         content::NotificationService::AllSources());
 
-    const std::string buttonSelector = monthly
+    const std::string buttonSelector = banner_type == ContributionType::MonthlyTip
         ? "[type='tip-monthly']"
         : "[type='tip']";
 
@@ -1240,10 +1268,37 @@ class BraveRewardsBrowserTest
         static_cast<const content::Source<content::WebContents>&>(
             site_banner_observer.source());
 
-    content::WebContents* site_banner_contents = site_banner_source.ptr();
+    // Allow the site banner to update its UI. We cannot use ExecJs here,
+    // because it does not resolve promises.
+    (void)EvalJs(site_banner_source.ptr(),
+        "new Promise(resolve => setTimeout(resolve, 0))",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+
+    return site_banner_source.ptr();
+  }
+
+  void TipPublisher(
+      const std::string& publisher,
+      ContributionType type,
+      bool should_contribute = false,
+      int32_t selection = 0) {
+    // we shouldn't be adding publisher to AC list,
+    // so that we can focus only on tipping part
+    rewards_service_->SetPublisherMinVisitTime(8);
+
+    // Navigate to a site in a new tab
+    GURL url = https_server()->GetURL(publisher, "/index.html");
+    ui_test_utils::NavigateToURLWithDisposition(
+        browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+
+    content::WebContents* site_banner_contents = OpenSiteBanner(type);
     ASSERT_TRUE(site_banner_contents);
 
-    const double amount = tip_amounts_.at(selection);
+    std::vector<double> tip_options =
+        GetSiteBannerTipOptions(site_banner_contents);
+    const double amount = tip_options.at(selection);
     const std::string amount_str = base::StringPrintf("%2.1f", amount);
 
     // Select the tip amount (default is 1.0 BAT)
@@ -1281,7 +1336,7 @@ class BraveRewardsBrowserTest
         ? "Monthly contribution has been set!"
         : "Tip sent!";
 
-    if (monthly) {
+    if (type == ContributionType::MonthlyTip) {
       WaitForRecurringTipToBeSaved();
       // Trigger contribution process
       rewards_service()->StartMonthlyContributionForTest();
@@ -1300,7 +1355,7 @@ class BraveRewardsBrowserTest
       if (!should_contribute) {
         UpdateContributionBalance(amount, should_contribute);
       }
-    } else if (!monthly && should_contribute) {
+    } else if (type == ContributionType::OneTimeTip && should_contribute) {
       // Wait for reconciliation to complete
       WaitForTipReconcileCompleted();
       ASSERT_EQ(tip_reconcile_status_, ledger::Result::LEDGER_OK);
@@ -1334,7 +1389,7 @@ class BraveRewardsBrowserTest
       ASSERT_EQ(RewardsPageBalance(), ExpectedBalanceString());
 
       // Check that tip table shows the appropriate tip amount
-      const std::string selector = monthly
+      const std::string selector = type == ContributionType::MonthlyTip
           ? "[data-test-id='summary-donation']"
           : "[data-test-id='summary-tips']";
 
@@ -1563,12 +1618,12 @@ class BraveRewardsBrowserTest
     rewards_service_->OnTip(publisher_key, amount, recurring, std::move(site));
   }
 
-  const std::vector<double> tip_amounts_ = {1.0, 5.0, 10.0};
-
   MOCK_METHOD1(OnGetEnvironment, void(ledger::Environment));
   MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
   MOCK_METHOD1(OnGetShortRetries, void(bool));
+
+  enum class ContributionType { OneTimeTip, MonthlyTip };
 
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
 
@@ -1627,6 +1682,8 @@ class BraveRewardsBrowserTest
   const std::string external_wallet_address_ =
       "abe5f454-fedd-4ea9-9203-470ae7315bb3";
   bool first_url_ac_called_ = false;
+  std::vector<double> default_tip_choices_;
+  std::vector<double> default_monthly_tip_choices_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
@@ -2193,7 +2250,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipVerifiedPublisher) {
   ClaimPromotion(use_panel);
 
   // Tip verified publisher
-  TipPublisher("duckduckgo.com", true);
+  TipPublisher("duckduckgo.com", ContributionType::OneTimeTip, true);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2212,7 +2269,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipUnverifiedPublisher) {
   ClaimPromotion(use_panel);
 
   // Tip unverified publisher
-  TipPublisher("brave.com");
+  TipPublisher("brave.com", ContributionType::OneTimeTip);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2232,8 +2289,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   ClaimPromotion(use_panel);
 
   // Tip verified publisher
-  const bool monthly = true;
-  TipPublisher("duckduckgo.com", true, monthly);
+  TipPublisher("duckduckgo.com", ContributionType::MonthlyTip, true);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2254,7 +2310,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   // Tip verified publisher
   const bool monthly = true;
-  TipPublisher("brave.com", false, monthly);
+  TipPublisher("brave.com", ContributionType::MonthlyTip, false);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2440,7 +2496,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   ClaimPromotion(use_panel);
 
   // Tip unverified publisher
-  TipPublisher(publisher);
+  TipPublisher(publisher, ContributionType::OneTimeTip);
 
   // Check that link for pending is shown
   {
@@ -2638,13 +2694,13 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   ClaimPromotion(true);
 
   // Tip unverified publisher
-  TipPublisher("brave.com");
+  TipPublisher("brave.com", ContributionType::OneTimeTip);
   rewards_service_->OnTip("brave.com", 5.0, false);
   UpdateContributionBalance(5.0, false);  // update pending balance
-  TipPublisher("3zsistemi.si", false, false, 2);
-  TipPublisher("3zsistemi.si", false, false, 1);
-  TipPublisher("3zsistemi.si", false, false, 2);
-  TipPublisher("3zsistemi.si", false, false, 2);
+  TipPublisher("3zsistemi.si", ContributionType::OneTimeTip, false, 2);
+  TipPublisher("3zsistemi.si", ContributionType::OneTimeTip, false, 1);
+  TipPublisher("3zsistemi.si", ContributionType::OneTimeTip, false, 2);
+  TipPublisher("3zsistemi.si", ContributionType::OneTimeTip, false, 2);
 
   // Make sure that pending contribution box shows the correct
   // amount
@@ -2714,6 +2770,65 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   rewards_service_->RemoveObserver(this);
 }
 
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RewardsPanelDefaultTipChoices) {
+  rewards_service_->AddObserver(this);
+  EnableRewards();
+
+  bool use_panel = true;
+  ClaimGrant(use_panel);
+
+  GURL url = https_server()->GetURL("3zsistemi.si", "/index.html");
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+
+  // Add a recurring tip of 10 BAT.
+  bool monthly = true;
+  TipViaCode("3zsistemi.si", 10, monthly, ledger::PublisherStatus::VERIFIED);
+
+  // Set the default monthly tip choices, and verify that those are the options
+  // in the rewards popup (along with 0, which disables the contribution).
+  default_monthly_tip_choices_ = { 10, 20, 50 };
+
+  content::WebContents* popup = OpenRewardsPopup();
+  std::vector<double> tip_options = GetRewardsPopupTipOptions(popup);
+  ASSERT_EQ(tip_options, std::vector<double>({ 0, 10, 20, 50 }));
+
+  rewards_service_->RemoveObserver(this);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, SiteBannerDefaultTipChoices) {
+  rewards_service_->AddObserver(this);
+  EnableRewards();
+
+  GURL url = https_server()->GetURL("3zsistemi.si", "/index.html");
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+
+  // The UI defaults to [1, 5, 10] if no default is provided.
+  content::WebContents* site_banner = OpenSiteBanner(ContributionType::OneTimeTip);
+  std::vector<double> tip_options = GetSiteBannerTipOptions(site_banner);
+  ASSERT_EQ(tip_options, std::vector<double>({ 1, 5, 10 }));
+
+  default_tip_choices_ = { 5, 10, 20 };
+  site_banner = OpenSiteBanner(ContributionType::OneTimeTip);
+  tip_options = GetSiteBannerTipOptions(site_banner);
+  ASSERT_EQ(tip_options, default_tip_choices_);
+
+  // The UI defaults to [1, 5, 10] if no default is provided.
+  site_banner = OpenSiteBanner(ContributionType::MonthlyTip);
+  tip_options = GetSiteBannerTipOptions(site_banner);
+  ASSERT_EQ(tip_options, std::vector<double>({ 1, 5, 10 }));
+
+  default_monthly_tip_choices_ = { 25, 50, 100 };
+  site_banner = OpenSiteBanner(ContributionType::MonthlyTip);
+  tip_options = GetSiteBannerTipOptions(site_banner);
+  ASSERT_EQ(tip_options, default_monthly_tip_choices_);
+
+  rewards_service_->RemoveObserver(this);
+}
+
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        NotVerifedWallet) {
   EnableRewards();
@@ -2777,7 +2892,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   EnableRewards();
 
   // Tip verified publisher
-  TipPublisher("duckduckgo.com", true);
+  TipPublisher("duckduckgo.com", ContributionType::OneTimeTip, true);
 
   // Stop observing the Rewards service
   rewards_service()->RemoveObserver(this);
@@ -2795,7 +2910,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipConnectedPublisherAnon) {
   ClaimPromotion(use_panel);
 
   // Tip verified publisher
-  TipPublisher("bumpsmack.com", true);
+  TipPublisher("bumpsmack.com", ContributionType::OneTimeTip, true);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2826,7 +2941,7 @@ IN_PROC_BROWSER_TEST_F(
   ClaimPromotion(use_panel);
 
   // Tip verified publisher
-  TipPublisher("bumpsmack.com", true);
+  TipPublisher("bumpsmack.com",ContributionType::OneTimeTip, true);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2853,7 +2968,7 @@ IN_PROC_BROWSER_TEST_F(
   EnableRewards();
 
   // Tip verified publisher
-  TipPublisher("bumpsmack.com", false);
+  TipPublisher("bumpsmack.com", ContributionType::OneTimeTip, false);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2880,7 +2995,7 @@ IN_PROC_BROWSER_TEST_F(
   EnableRewards();
 
   // Tip verified publisher
-  TipPublisher("bumpsmack.com", false);
+  TipPublisher("bumpsmack.com", ContributionType::OneTimeTip, false);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
