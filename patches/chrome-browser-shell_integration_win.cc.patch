@@ -1,0 +1,19 @@
+diff --git a/chrome/browser/shell_integration_win.cc b/chrome/browser/shell_integration_win.cc
+index 9b05880c7b94700e2cbfdddcd8e0b95cd11f7c4e..08e519ba345854aa29dc5927b58fe6325228e55d 100644
+--- a/chrome/browser/shell_integration_win.cc
++++ b/chrome/browser/shell_integration_win.cc
+@@ -588,6 +588,14 @@ bool IsFirefoxDefaultBrowser() {
+          app_cmd == L"FirefoxURL";
+ }
+ 
++bool IsIEDefaultBrowser() {
++  base::string16 app_cmd;
++  base::win::RegKey key(HKEY_CURRENT_USER, ShellUtil::kRegVistaUrlPrefs,
++                        KEY_READ);
++  return key.Valid() && key.ReadValue(L"Progid", &app_cmd) == ERROR_SUCCESS &&
++         app_cmd == L"IE.HTTP";
++}
++
+ DefaultWebClientState IsDefaultProtocolClient(const std::string& protocol) {
+   return GetDefaultWebClientStateFromShellUtilDefaultState(
+       ShellUtil::GetChromeDefaultProtocolClientState(
