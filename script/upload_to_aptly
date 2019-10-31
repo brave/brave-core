@@ -12,6 +12,8 @@ set -exu
 # DOESN'T HAVE A SIGNING SUBKEY.
 #
 # Date          Channel       Fingerprint           Full Key
+#
+# NOT ACTIVE    Release       0xA8580BDC82D3DC6C    9BD198A2D848C482E3550697A8580BDC82D3DC6C
 # 06/26/2019    Release       0x0BB75829C2D4E821    D8BAD4DE7EE17AF52A834B2D0BB75829C2D4E821
 # 12/29/2018    Beta          0x0B31DBA06A8A26F9    9228DBCE20DDE5EC46488DE90B31DBA06A8A26F9
 # 12/29/2018    Dev           0x0B31DBA06A8A26F9    9228DBCE20DDE5EC46488DE90B31DBA06A8A26F9
@@ -23,12 +25,12 @@ GPG_KEY_ID=${2}
 DIST='artful zesty yakkety xenial jessie trusty serena stretch bionic buster cosmic disco eoan bullseye stable'
 # SNAP_TAG=$(date +'%s')
 
-if [ -n "$S3_BUCKET" ]; then
+if [ -z "$S3_BUCKET" ]; then
     echo "Error: Please pass the S3 bucket argument as the first argument"
     exit 1
 fi
 
-if [ -n "$GPG_KEY_ID" ]; then
+if [ -z "$GPG_KEY_ID" ]; then
     echo "Error: Please pass the full GPG Key ID as the second argument"
     exit 1
 fi
@@ -127,9 +129,9 @@ done
 
 set +x
 for i in ${DIST}; do
-	if [ "${i}" = "stable" ]; then 
+    if [ "${i}" = "stable" ]; then
         STABLE_ARGS="-origin='Brave Software' -label='Brave Browser'"
     fi
-	aptly publish snapshot ${STABLE_ARGS} -force-overwrite=true -gpg-key="${GPG_KEY_ID}!" -passphrase="${GPG_PASS}" "${i}-snapshot" "s3:${S3_BUCKET}:"
+	  aptly publish snapshot ${STABLE_ARGS} -force-overwrite=true -gpg-key="${GPG_KEY_ID}!" -passphrase="${GPG_PASS}" "${i}-snapshot" "s3:${S3_BUCKET}:"
 done
 set -x
