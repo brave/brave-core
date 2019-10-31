@@ -635,8 +635,8 @@
 		5E612A8E234B7FC8007D12B5 /* OnboardingAdsAvailableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C68232BE47A00BDE662 /* OnboardingAdsAvailableView.swift */; };
 		5E612A8F234B7FCA007D12B5 /* OnboardingRewardsAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C6A232BF95200BDE662 /* OnboardingRewardsAgreementViewController.swift */; };
 		5E612A90234B7FCD007D12B5 /* OnboardingRewardsAgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C6C232BF9C200BDE662 /* OnboardingRewardsAgreementView.swift */; };
-		5E856FE6235E08110094E113 /* Cryptography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E856FE5235E08110094E113 /* Cryptography.swift */; };
-		5E856FE8235E083B0094E113 /* DeviceCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E856FE7235E083B0094E113 /* DeviceCheck.swift */; };
+		5E77F9A8236B362800E1649C /* DeviceCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E856FE7235E083B0094E113 /* DeviceCheck.swift */; };
+		5E77F9AA236B362E00E1649C /* Cryptography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E856FE5235E08110094E113 /* Cryptography.swift */; };
 		5E9288CA22DF864C007BE7A6 /* TabSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9288C922DF864C007BE7A6 /* TabSessionTests.swift */; };
 		5EA8438E234F802C00076A91 /* expired.badssl.com-root-ca.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5EA84389234F802C00076A91 /* expired.badssl.com-root-ca.cer */; };
 		5EA8438F234F802C00076A91 /* expired.badssl.com-intermediate-ca-1.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5EA8438B234F802C00076A91 /* expired.badssl.com-intermediate-ca-1.cer */; };
@@ -5530,6 +5530,7 @@
 				271DECF2234CC7EF009DAC37 /* AdsUnsupportedView.swift in Sources */,
 				271DECDA234CC7EF009DAC37 /* TippingView.swift in Sources */,
 				271DECF1234CC7EF009DAC37 /* AdsDetailsViewController.swift in Sources */,
+				5E77F9AA236B362E00E1649C /* Cryptography.swift in Sources */,
 				271DED0C234CC7EF009DAC37 /* EmptyTableCell.swift in Sources */,
 				27B1E26D235E58190062E86F /* LocaleExtensions.swift in Sources */,
 				271DECF3234CC7EF009DAC37 /* OptionsSelectionViewController.swift in Sources */,
@@ -5538,6 +5539,7 @@
 				271DECE1234CC7EF009DAC37 /* RewardsSummaryProtocol.swift in Sources */,
 				271DECF0234CC7EF009DAC37 /* SettingsAdSectionView.swift in Sources */,
 				271DECD3234CC7EF009DAC37 /* AdContentButton.swift in Sources */,
+				5E77F9A8236B362800E1649C /* DeviceCheck.swift in Sources */,
 				271DED1A234CC7EF009DAC37 /* ActionButton.swift in Sources */,
 				27353FF2235F4E7300E42EBB /* WalletDisclaimerView.swift in Sources */,
 				271DECC5234CC7EF009DAC37 /* PublisherView.swift in Sources */,
@@ -5871,7 +5873,6 @@
 				27D114D42358FBBF00166534 /* BraveRewardsSettingsViewController.swift in Sources */,
 				0A4BEFDA221EF3360005551A /* NetworkResourceType.swift in Sources */,
 				4422D4B921BFFB7600BF1855 /* crc32c.cc in Sources */,
-				5E856FE8235E083B0094E113 /* DeviceCheck.swift in Sources */,
 				592F521E2217327C0078395E /* HttpCookieExtension.swift in Sources */,
 				4422D4D721BFFB7600BF1855 /* table.cc in Sources */,
 				0A4BEF62221B26610005551A /* LocalAdblockResourceProtocol.swift in Sources */,
@@ -5967,7 +5968,6 @@
 				D0C95E36200FDC5500E4E51C /* MetadataParserHelper.swift in Sources */,
 				4422D55B21BFFB7F00BF1855 /* onepass.cc in Sources */,
 				0A3C78A1230597DA0022F6D8 /* OnboardingShieldsViewController.swift in Sources */,
-				5E856FE6235E08110094E113 /* Cryptography.swift in Sources */,
 				A1CDF22D20BDDB66005C6E58 /* BasicAnimationController.swift in Sources */,
 				0BF1B7E31AC60DEA00A7B407 /* InsetButton.swift in Sources */,
 				D0C95EF6201A55A800E4E51C /* BrowserViewController+UIDropInteractionDelegate.swift in Sources */,
