@@ -7,10 +7,34 @@ import UIKit
 public enum AppBuildChannel: String {
     case release = "release"
     case beta = "beta"
+    case enterprise = "enterprise"
     case developer = "developer"
     
-    public var isRelease: Bool {
-        return self == .release
+    /// Whether this release channel is used/seen by external users (app store or testers)
+    public var isPublic: Bool {
+        // Using switch to force a return definition for each enum value
+        // Simply using `return [.release, .beta].includes(self)` could lead to easily missing a definition
+        //  if enum is ever expanded
+        switch self {
+        case .release, .beta:
+            return true
+        case .enterprise, .developer:
+            return false
+        }
+    }
+    
+    public var serverChannelParam: String {
+        switch self {
+        case .release:
+            return "stable"
+        case .beta:
+            return "beta"
+         case .enterprise:
+             // This is designed to follow desktop platform
+            return "developer"
+        case .developer:
+            return "invalid"
+        }
     }
 }
 
@@ -35,6 +59,8 @@ public struct AppConstants {
             return AppBuildChannel.release
         #elseif MOZ_CHANNEL_BETA
             return AppBuildChannel.beta
+        #elseif MOZ_CHANNEL_ENTERPRISE
+            return AppBuildChannel.enterprise
         #elseif MOZ_CHANNEL_FENNEC
             return AppBuildChannel.developer
         #endif

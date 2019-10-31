@@ -424,7 +424,7 @@ class SettingsViewController: TableViewController {
     }()
     
     private lazy var debugSection: Section? = {
-        if AppConstants.BuildChannel.isRelease { return nil }
+        if AppConstants.BuildChannel.isPublic { return nil }
         
         return Section(
             rows: [

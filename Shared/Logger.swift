@@ -22,7 +22,7 @@ public extension Logger {
         let logger = RollingFileLogger(filenameRoot: "rewards", logDirectoryPath: nil)
         logger.identifier = "BraveRewards"
         
-        if !AppConstants.BuildChannel.isRelease {
+        if !AppConstants.BuildChannel.isPublic {
             // Create a destination for the system console log (via NSLog)
             let systemDestination = AppleSystemLogDestination(identifier: "com.brave.ios.logs")
 

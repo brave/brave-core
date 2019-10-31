@@ -98,7 +98,7 @@ public class AdsViewController: UIViewController {
       timer.invalidate()
     }
     var dismissInterval = automaticDismissalInterval
-    if !AppConstants.BuildChannel.isRelease, let override = Preferences.Rewards.adsDurationOverride.value, override > 0 {
+    if !AppConstants.BuildChannel.isPublic, let override = Preferences.Rewards.adsDurationOverride.value, override > 0 {
       dismissInterval = TimeInterval(override)
     }
     dismissTimers[adView] = Timer.scheduledTimer(withTimeInterval: dismissInterval, repeats: false, block: { [weak self] _ in
