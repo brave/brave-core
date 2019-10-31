@@ -184,6 +184,9 @@
 /* Button to show the brave panel */
 "BravePanel" = "Brave 面板";
 
+/* Brave Rewards settings title */
+"BraveRewardsTitle" = "Brave Rewards";
+
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Brave Shield 預設";
 
@@ -277,6 +280,9 @@
 /* Copy codewords title */
 "CopyToClipboard" = "複製到剪貼簿";
 
+/* Copy rewards internals info for support */
+"CopyWalletSupportInfo" = "複製客服資訊";
+
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "目前使用的搜尋引擎";
 
@@ -321,6 +327,9 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "裝置 %1$@ (%2$@)";
+
+/* Section name for display preferences. */
+"DisplaySettingsSection" = "顯示";
 
 /* No comment provided by engineer. */
 "Done" = "完成";
@@ -433,6 +442,15 @@
 /* Grand camera access */
 "GrantCameraAccess" = "啟用相機";
 
+/* Context menu item for hiding link previews */
+"HideLinkPreviewsActionTitle" = "隱藏連結預覽";
+
+/* Hides the rewards icon */
+"HideRewardsIcon" = "隱藏 Brave Rewards 圖示";
+
+/* Hide the rewards icon explination. */
+"HideRewardsIconSubtitle" = "未啟用 Brave Rewards 時隱藏 Brave Rewards 圖示";
+
 /* Title for history menu item */
 "HistortMenuItem" = "歷史記錄";
 
@@ -486,6 +504,9 @@
 
 /* Label for the button used to select all logins. */
 "LoginListSelectAllButtonTitle" = "全選";
+
+/* Setting to allow media to play automatically */
+"MediaAutoPlays" = "啟用自動播放背景影片";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "複製";
@@ -763,6 +784,9 @@
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "無法載入頁面。";
 
+/* Row name for licenses. */
+"SettingsLicenses" = "許可證";
+
 /* Title for settings menu item */
 "SettingsMenuItem" = "設定";
 
@@ -814,6 +838,9 @@
 /* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
 "ShowInLandscapeOnly" = "僅於橫向顯示";
 
+/* Context menu item for showing link previews */
+"ShowLinkPreviewsActionTitle" = "顯示連結預覽";
+
 /* Accessibility Label for the tabs button in the browser toolbar */
 "ShowTabs" = "顯示分頁";
 
@@ -843,6 +870,9 @@
 
 /* Add a Computer title */
 "SyncAddComputerTitle" = "新增電腦";
+
+/* Add mobile device to sync with scan */
+"SyncAddDeviceScan" = "Sync Chain 二維碼";
 
 /* Sync add device description */
 "SyncAddDeviceScanDescription" = "在第二部行動裝置上導向至設定面板中的同步並點選「掃描同步代碼」按鈕。使用相機掃描下方的 QR 碼。\n將此代碼視為密碼。如某人取得該密碼，其可讀取並修改您同步的資料。";
@@ -1027,6 +1057,9 @@
 /* Selection to color/style the user interface with a dark theme */
 "ThemesDarkOption" = "暗";
 
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "外觀";
+
 /* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
 "ThemesDisplayBrightnessFooter" = "這些設定不適用於私密瀏覽模式。";
 
@@ -1056,6 +1089,9 @@
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "%1$@ 版 (%2$@)";
+
+/* The date your wallet was created */
+"WalletCreationDate" = "錢包建立日期";
 
 /* Accessibility label for the main web content view */
 "WebContentAccessibilityLabel" = "網頁內容";

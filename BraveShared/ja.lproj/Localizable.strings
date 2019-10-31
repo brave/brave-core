@@ -4,9 +4,6 @@
 /* Title for ads onboarding screen */
 "OBAdsTitle" = "この後、初めての広告を表示します";
 
-/* Button to agree to Brave's Terms of Service. */
-"OBAgreeButton" = "同意する";
-
 /* Title for when the user completes onboarding */
 "OBCompleteTitle" = "準備が完了しました。";
 
@@ -29,16 +26,19 @@
 "OBJoinButton" = "参加する";
 
 /* Detail text for rewards agreement onboarding screen */
-"OBRewardsAgreementDetail" = "Brave Rewardsに同意する";
+"OBRewardsAgreementDetail" = "Rewardsを有効にすることで以下に同意したものと見なされます: ";
 
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetailLink" = "利用規約";
 
 /* Title for rewards agreement onboarding screen */
-"OBRewardsAgreementTitle" = "Brave Rewardsの利用規約に同意する";
+"OBRewardsAgreementTitle" = "Brave Rewards";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailInAdRegion" = "プライバシー重視型の広告を閲覧することで報酬を得て、あなたのお気に入りのクリエイターやサイトを支援することができます。";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegionJapan" = "プライバシー重視型の広告を閲覧することで報酬を得て、あなたのお気に入りのクリエイターやサイトを支援することができます。";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailOutsideAdRegion" = "ウェブサーフィン中に自動的にサイトを支援したり、好きなタイミングでチップを送ることが可能です。";
@@ -61,8 +61,11 @@
 /* Title for shields onboarding screen */
 "OBShieldsTitle" = "Brave Shields";
 
-/* Button to show Brave Rewards. */
+/* Button to show the Brave Rewards Ads. */
 "OBShowMeButton" = "表示する";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "有効にする";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "続ける";

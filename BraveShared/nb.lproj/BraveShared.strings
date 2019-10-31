@@ -23,7 +23,7 @@
 "AdsAndTrackers" = "Annonser og sporingsprogrammer";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Annonser og  sporer\nblokkert";
+"AdsAndTrackersrBlocked" = "Annonser og sporer \nblokkert";
 
 /* Shields Ads Stat */
 "AdsrBlocked" = "Annonser \nblokkert";
@@ -62,7 +62,7 @@
 "AuthenticationImmediately" = "Umiddelbart";
 
 /* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
-"AuthenticationIncorrectAttemptsRemaining" = "Ugyldig passkode. Prøv igjen. (Gjenværende forsøk: %d.)";
+"AuthenticationIncorrectAttemptsRemaining" = "Ugyldig passkode. Prøv igjen. (Gjenværende forsøk: %d).";
 
 /* Touch ID prompt subtitle when accessing logins */
 "AuthenticationLoginsTouchReason" = "Bruk fingeravtrykket ditt for å få tilgang til innlogginger nå.";
@@ -184,11 +184,14 @@
 /* Button to show the brave panel */
 "BravePanel" = "Brave-panel";
 
+/* Brave Rewards settings title */
+"BraveRewardsTitle" = "Brave Rewards";
+
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Brave Shield standardinnstillinger";
 
 /* Sync page title */
-"BraveSync" = "Sync";
+"BraveSync" = "Synk";
 
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Brave må være installert på alle enhetene du vil synkronisere. Start en synkkjede for å knytte alle enhetene dine sikkert sammen.";
@@ -263,7 +266,7 @@
 "Copied" = "Kopiert!";
 
 /* Copied codewords title */
-"CopiedToClipboard" = "Kopiert til utklippstavlen.";
+"CopiedToClipboard" = "Kopiert til utklippstavlen!";
 
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Kopier informasjon om appen til utklippstavlen.";
@@ -276,6 +279,9 @@
 
 /* Copy codewords title */
 "CopyToClipboard" = "Kopier til utklippstavlen";
+
+/* Copy rewards internals info for support */
+"CopyWalletSupportInfo" = "Kopier støtteinformasjon";
 
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Søkemotorer som for tiden er i bruk";
@@ -321,6 +327,9 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Enhet %1$@ (%2$@)";
+
+/* Section name for display preferences. */
+"DisplaySettingsSection" = "Vis";
 
 /* No comment provided by engineer. */
 "Done" = "Ferdig";
@@ -395,7 +404,7 @@
 "ErrorPagesVisitOnceButton" = "Besøk siden allikevel";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Est. tid\nspart";
+"EstTimerSaved" = "Est. tid \nspart";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
 "FavoritesLocationFooterText" = "Favoritter er plassert på startskjermen. Disse bokmerkene synkroniseres ikke med andre enheter.";
@@ -432,6 +441,15 @@
 
 /* Grand camera access */
 "GrantCameraAccess" = "Aktiver kamera";
+
+/* Context menu item for hiding link previews */
+"HideLinkPreviewsActionTitle" = "Skjul forhåndsvisning av kobling";
+
+/* Hides the rewards icon */
+"HideRewardsIcon" = "Skjul Brave Rewards-ikon";
+
+/* Hide the rewards icon explination. */
+"HideRewardsIconSubtitle" = "Skjuler ikonet for Brave Rewards når Brave Rewards ikke er tilgjengelig";
 
 /* Title for history menu item */
 "HistortMenuItem" = "Logg";
@@ -487,6 +505,9 @@
 /* Label for the button used to select all logins. */
 "LoginListSelectAllButtonTitle" = "Velg alle";
 
+/* Setting to allow media to play automatically */
+"MediaAutoPlays" = "Aktiver automatisk avspilling av bakgrunnsvideo";
+
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Kopier";
 
@@ -527,7 +548,7 @@
 "NewTab" = "Ny fane";
 
 /* Sync Alert */
-"NotEnoughWordsDescription" = "Skriv alle ordene og prøv igjen";
+"NotEnoughWordsDescription" = "Skriv alle ordene og prøv igjen.";
 
 /* Sync Alert */
 "NotEnoughWordsTitle" = "Ikke nok ord";
@@ -635,7 +656,7 @@
 "ReaderModeFontTypeButtonAccessibilityHint" = "Endrer fonttypen.";
 
 /* Message displayed when the reader mode page is loading. This message will appear only when sharing to Brave reader mode from another app. */
-"ReaderModeLoadingContentDisplayText" = "Laster innhold ...";
+"ReaderModeLoadingContentDisplayText" = "Laster innhold...";
 
 /* Link for going to the non-reader page when the reader view could not be loaded. This message will appear only when sharing to Brave reader mode from another app. */
 "ReaderModeLoadOriginalLinkText" = "Last inn original side";
@@ -752,7 +773,7 @@
 "SendCrashReportAlertMessage" = "Sende en krasjrapport, slik at Brave kan fikse problemet?";
 
 /* Title for prompt displayed to user after the app crashes */
-"SendCrashReportAlertTitle" = "Oi! Brave krasjet.";
+"SendCrashReportAlertTitle" = "Oi! Brave krasjet";
 
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "Send rapport";
@@ -763,6 +784,9 @@
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "Kunne ikke laste inn side.";
 
+/* Row name for licenses. */
+"SettingsLicenses" = "Lisenser";
+
 /* Title for settings menu item */
 "SettingsMenuItem" = "Innstillinger";
 
@@ -770,7 +794,7 @@
 "ShareLinkActionTitle" = "Del lenke";
 
 /* Title for sharing url menu item */
-"ShareWithMenuItem" = "Lagre med ";
+"ShareWithMenuItem" = "Lagre med...";
 
 /* shields overview message */
 "ShieldsOverview" = "Med Site Shield kan du kontrollere når annonser og sporingsprogrammer blokkeres på hver side du besøker. Hvis du vil se annonser på en bestemt side, kan du aktivere dem her.";
@@ -814,6 +838,9 @@
 /* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
 "ShowInLandscapeOnly" = "Bare vis i landskapsmodus";
 
+/* Context menu item for showing link previews */
+"ShowLinkPreviewsActionTitle" = "Vis forhåndsvisning av kobling";
+
 /* Accessibility Label for the tabs button in the browser toolbar */
 "ShowTabs" = "Vis faner";
 
@@ -836,13 +863,16 @@
 "SuppressAlertsActionTitle" = "Hold tilbake varsler";
 
 /* Sync settings section title */
-"Sync" = "Sync";
+"Sync" = "Synk";
 
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Legg til en ny enhet";
 
 /* Add a Computer title */
 "SyncAddComputerTitle" = "Legg til en datamaskin";
+
+/* Add mobile device to sync with scan */
+"SyncAddDeviceScan" = "QR-kode for synkkjede";
 
 /* Sync add device description */
 "SyncAddDeviceScanDescription" = "På den andre mobilenheten går du til Sync på panelet Innstillinger på enheten og trykker på knappen «Skann synkkode». Bruk kameraet til å skanne QR-koden som er vist nedenfor.\nDu må behandle koden som et passord. Hvis noen får tak i den, kan de lese og endre de synkroniserte dataene.";
@@ -851,7 +881,7 @@
 "SyncAddDeviceWords" = "Angi synkkoden";
 
 /* Sync add device description */
-"SyncAddDeviceWordsDescription" = "Naviger til Sync på panelet Innstillinger på enheten, og trykk på knappen «%@». Skriv inn ordene for synkroniseringskoden som er vist nedenfor.\nDu må behandle koden som et passord. Hvis noen får tak i den, kan de lese og endre de synkroniserte dataene.";
+"SyncAddDeviceWordsDescription" = "Naviger til Sync på panelet Innstillinger på enheten, og trykk på knappen «%@». Skriv inn ordene for synkroniseringskoden som er vist nedenfor.\n Du må behandle koden som et passord. Hvis noen får tak i den, kan de lese og endre de synkroniserte dataene.";
 
 /* Add device to sync with code words navigation title */
 "SyncAddDeviceWordsTitle" = "Skriv inn kodeord";
@@ -884,7 +914,7 @@
 "SyncNoConnectionTitle" = "Kan ikke koble til synkronisering";
 
 /* Message for removing the current device from Sync */
-"SyncRemoveCurrentDeviceMessage" = "Data på den lokale enheten blir værende på alle enheter. Andre enheter i denne synkkjeden blir værende synkronisert ";
+"SyncRemoveCurrentDeviceMessage" = "Data på den lokale enheten blir værende på alle enheter. Andre enheter i denne synkkjeden blir værende synkronisert. ";
 
 /* Title for removing the current device from Sync */
 "SyncRemoveCurrentDeviceTitle" = "Vil du fjerne %@ fra synkkjeden?";
@@ -923,7 +953,7 @@
 "SyncSettingsHeader" = "På oversikten under ser du alle enhetene i synkkjeden din. Alle enhetene kan administreres fra enhver av de andre enhetene.";
 
 /* Switch back to camera button */
-"SyncSwitchBackToCameraButton" = "Jeg bruker kameraet mitt …";
+"SyncSwitchBackToCameraButton" = "Jeg bruker kameraet mitt…";
 
 /* Tablet or phone button title */
 "SyncTabletOrMobileDevice" = "Nettbrett eller telefon";
@@ -1025,13 +1055,16 @@
 "ThemesAutomaticOption" = "Automatisk";
 
 /* Selection to color/style the user interface with a dark theme */
-"ThemesDarkOption" = "Mørk";
+"ThemesDarkOption" = "Mørkt";
+
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "Utseende";
 
 /* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
 "ThemesDisplayBrightnessFooter" = "Disse innstillingene brukes ikke i privat nettlesermodus.";
 
 /* Selection to color/style the user interface with a light theme. */
-"ThemesLightOption" = "Lys";
+"ThemesLightOption" = "Lyst";
 
 /* History tableview section header */
 "Today" = "I dag";
@@ -1056,6 +1089,9 @@
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Versjon %1$@ (%2$@)";
+
+/* The date your wallet was created */
+"WalletCreationDate" = "Opprettelsesdato for lommebok";
 
 /* Accessibility label for the main web content view */
 "WebContentAccessibilityLabel" = "Nettinnhold";

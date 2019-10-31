@@ -1,8 +1,50 @@
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "No";
 
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "Brave mostrerà il tuo primo annuncio tra";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "Ora è tutto pronto per iniziare.";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "Non ho visto un annuncio";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "Qualcosa è andato storto durante la creazione del portafoglio. Per favore, prova di nuovo";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "Ok";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "Ci spiace";
+
 /* Button to finish onboarding and start using the app. */
 "OBFinishButton" = "Inizia a navigare";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "Iscriviti";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "Attivando Rewards, accetti";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "Termini di servizio";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Brave Rewards";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "Guadagna token guardando annunci che rispettano la privacy. Utilizzali per supportare i tuoi siti e creatori preferiti.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegionJapan" = "Guadagna punti guardando annunci che rispettano la privacy. Utilizzali per supportare i tuoi siti e creatori preferiti.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailOutsideAdRegion" = "Supporta i tuoi siti web e creatori preferiti in base alla tua attenzione.";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Brave Rewards";
 
 /* Save button to save current selection */
 "OBSaveButton" = "Salva";
@@ -18,6 +60,12 @@
 
 /* Title for shields onboarding screen */
 "OBShieldsTitle" = "Scudi Brave";
+
+/* Button to show the Brave Rewards Ads. */
+"OBShowMeButton" = "Mostra";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "Attiva";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Continua";

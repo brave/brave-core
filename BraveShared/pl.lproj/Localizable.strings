@@ -1,8 +1,50 @@
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Nie";
 
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "Brave pokaże Twoją pierwszą reklamę.";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "Teraz możesz zaczynać.";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "Nie widzę reklamy.";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "Coś poszło nie tak podczas tworzenia portfela. Spróbuj ponownie";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "Dobrze";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "Przepraszam";
+
 /* Button to finish onboarding and start using the app. */
 "OBFinishButton" = "Rozpocznij przeglądanie";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "Dołącz";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "Włączając Nagrody, akceptujesz";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "Warunki świadczenia usług";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Brave Rewards";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "Zarabiaj tokeny za oglądanie reklam szanujących prywatność. Wykorzystaj je, aby wspierać swoje ulubione strony i twórców.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegionJapan" = "Zdobywaj punkty za oglądanie reklam szanujących prywatność. Wykorzystaj je, aby wspierać swoje ulubione strony i twórców.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailOutsideAdRegion" = "Wykorzystaj swoją uwagę, aby wspierać swoje ulubione strony internetowe i twórców.";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Brave Rewards";
 
 /* Save button to save current selection */
 "OBSaveButton" = "Zapisz";
@@ -18,6 +60,12 @@
 
 /* Title for shields onboarding screen */
 "OBShieldsTitle" = "Tarcze Brave";
+
+/* Button to show the Brave Rewards Ads. */
+"OBShowMeButton" = "Pokaż mi";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "Włącz";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Kontynuuj";

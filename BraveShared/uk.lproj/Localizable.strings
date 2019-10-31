@@ -1,8 +1,50 @@
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Ні";
 
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "Brave покаже першу рекламу через";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "Тепер усе готово.";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "Рекламу не було показано";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "Під час створення гаманця сталася помилка. Спробуйте ще раз";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "OK";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "Помилка";
+
 /* Button to finish onboarding and start using the app. */
 "OBFinishButton" = "Почати використання";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "Приєднатися";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "Увімкнувши Rewards, ви приймаєте";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "Умови обслуговування";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Brave Rewards";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "Заробляйте токени, переглядаючи рекламу, що не порушує вашу конфіденційність, і використовуйте їх, щоб підтримувати улюблених авторів і веб-сайти.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegionJapan" = "Заробляйте токени, переглядаючи рекламу, що не порушує вашу конфіденційність, і використовуйте їх, щоб підтримувати улюблених авторів і веб-сайти.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailOutsideAdRegion" = "Підтримуйте улюблені веб-сайти та авторів, приділяючи їм увагу.";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Brave Rewards";
 
 /* Save button to save current selection */
 "OBSaveButton" = "Зберегти";
@@ -18,6 +60,12 @@
 
 /* Title for shields onboarding screen */
 "OBShieldsTitle" = "Щити Brave";
+
+/* Button to show the Brave Rewards Ads. */
+"OBShowMeButton" = "Показати";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "Ввімкнути";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Продовжити";

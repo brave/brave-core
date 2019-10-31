@@ -1,0 +1,537 @@
+/* No comment provided by engineer. */
+"BATPoints" = "BAT 點數";
+
+/* Words that should be bolded in the BAT Points disclaimer */
+"BATPointsBoldedWords" = "BAT 點數";
+
+/* Disclaimer about BAT Points for JP users */
+"BATPointsDisclaimer" = "BAT 點數可用於贊助您喜歡的內容創作者。 BAT 點數不能交換 BAT。";
+
+/* No comment provided by engineer. */
+"BraveRewards" = "Brave Rewards™";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFunds" = "增加資金";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsBody" = "確保利用以下的網址核對您所有的加密類型。 Uphold 將會自動轉換為 BAT，加入您 Brave Rewards 錢包的餘額。您的錢包餘額將在一小內更新。";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsDisclaimer" = "提醒：Brave 錢包是單向的，BAT 可以流向發布者站點。 有關 Brave Rewards 的更多資訊，請造訪 FAQ。";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsShowQRCode" = "顯示二維碼";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsTitle" = "從您的外部帳戶向您的 Brave Rewards 錢包發送加密貨幣。";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsTokenWalletAddress" = "錢包位址";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsVCTitle" = "增加資金";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationsReceived" = "本月收到的廣告通知";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsEstimatedEarnings" = "估計待處理的獎勵";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsMaxPerDay" = "顯示的最大廣告數量";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsPayoutDateFormat" = "MMM d";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsUnsupportedDvice" = "Brave Rewards 及 Ads 目前無法在您的裝置上使用。";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsUnsupportedRegion" = "抱歉！廣告尚無法在您的地區使用。";
+
+/* No comment provided by engineer. */
+"BraveRewardsAttention" = "注意";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContribute" = "自動贊助";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeDateFormat" = "MMM d";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumLength" = "最短頁面時間";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumLengthMessage" = "登入前的最短頁面時間";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumVisits" = "最少造訪次數";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumVisitsMessage" = "與發布者有關的最少造訪次數";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMonthlyPayment" = "每月付款";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMonthlyPaymentTitle" = "每月付款";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeNextDate" = "下一個贊助日期";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeRestoreExcludedSites" = "還原 ％ld 個已排除的站點";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeSupportedSites" = "支持的站點";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeToUnverifiedSites" = "允許贊助未驗證的站點";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeToVideos" = "允許贊助影片";
+
+/* No comment provided by engineer. */
+"BraveRewardsCheckAgain" = "重新整理狀態";
+
+/* No comment provided by engineer. */
+"BraveRewardsContributingToUnverifiedSites" = "您已將 ％@ 指定給尚未註冊接受贊助的創作者。 您的瀏覽器將繼續嘗試贊助，直到他們通過驗證或 90 天期滿為止。";
+
+/* No comment provided by engineer. */
+"BraveRewardsCreatingWallet" = "建立錢包";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledBody" = "觀看尊重隱私的廣告來賺取報酬，轉而支持您喜歡的內容創作者。";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledEnableButton" = "啟用 Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledSubtitle" = "瀏覽以獲得獎勵！";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledTitle" = "歡迎回來！";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisclaimerLearnMore" = "了解更多";
+
+/* No comment provided by engineer. */
+"BraveRewardsEarningFromAds" = "廣告收入";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyAutoContribution" = "瀏覽時所顯示的站點";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyTipsText" = "您今天贊助了您最喜歡的內容創作者嗎？";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyWalletBody" = "當您透過 Brave 觀看隱私保護的廣告時，可增加您的餘額。";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyWalletTitle" = "您的錢包已準備就緒。";
+
+/* No comment provided by engineer. */
+"BraveRewardsExclude" = "排除";
+
+/* No comment provided by engineer. */
+"BraveRewardsFiveAdsPerHour" = "每小時 5 則廣告";
+
+/* No comment provided by engineer. */
+"BraveRewardsFourAdsPerHour" = "每小時 4 則廣告";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantListExpiresOn" = "於 ％@ 到期";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrants" = "獎金";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedAmountTitle" = "贈與免費代幣";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedExpirationDateTitle" = "贈與到期日";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitle" = "正在處理您的代幣贈與。";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedTitle" = "今天是您的幸運日！";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBody" = "您的關注很有價值。 觀看尊重隱私的廣告來賺錢，付款支持您喜歡的內容創作者。";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBraveAdsBody" = "觀看尊重您隱私的相關廣告，獲得報酬。";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBraveAdsTitle" = "Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreCreateWallet1" = "好，我要加入！";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreCreateWallet2" = "好，我準備好了！";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreHowItWorks" = "如何運作…";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreReady" = "準備開始了嗎？";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreSubtitle" = "瀏覽以獲得獎勵！";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTipsBody" = "只需瀏覽即可支持您喜歡的站點－或您可隨時給小費。";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTipsTitle" = "自動贊助";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTurnOnRewardsBody" = "這樣可以啟用廣告和自動贊助。 您可以隨時分別開啟或關閉。";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTurnOnRewardsTitle" = "啟用獎勵";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreWhyBody" = "使用舊款瀏覽器時，您需要花上寶貴的時間觀看廣告，才能瀏覽網頁。 您花費了寶貴的時間下載侵入式的廣告技術，未經您同意即將寶貴的私人數據傳給廣告商。\n\n今天，Brave 歡迎您使用全新網際網路。 您的時間具有價值，您的個人數據隱私獲得保障，您還會因此獲得實際報酬。";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreWhyTitle" = "為什麼要 Brave Rewards？";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices0" = "5 秒";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices1" = "8 秒";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices2" = "1  分鐘";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices0" = "1  次造訪";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices1" = "5 次造訪";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices2" = "10 次造訪";
+
+/* No comment provided by engineer. */
+"BraveRewardsMonthlyTips" = "每月小費";
+
+/* No comment provided by engineer. */
+"BraveRewardsNoActivitiesYet" = "尚無活動...";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationAdsTitle" = "Brave 廣告";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationAutoContributeTitle" = "自動贊助";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationRecurringTipTitle" = "定期小費";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationTokenGrantTitle" = "代幣贈與";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotYetVerified" = "尚未驗證";
+
+/* No comment provided by engineer. */
+"BraveRewardsNumberOfAdsPerHourOptionsTitle" = "每小時廣告數";
+
+/* No comment provided by engineer. */
+"BraveRewardsOneAdPerHour" = "每小時 1 則廣告";
+
+/* No comment provided by engineer. */
+"BraveRewardsOneTimeTips" = "一次性小費";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "開啟";
+
+/* No comment provided by engineer. */
+"BraveRewardsPanelTitle" = "Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsPaymentDate" = "下次付款日";
+
+/* No comment provided by engineer. */
+"BraveRewardsPoweredByUphold" = "您的 Brave 錢包由 Uphold 提供";
+
+/* No comment provided by engineer. */
+"BraveRewardsPublisherSendTip" = "發送小費...";
+
+/* No comment provided by engineer. */
+"BraveRewardsRecurringTipTitle" = "定期小費";
+
+/* No comment provided by engineer. */
+"BraveRewardsRemove" = "刪除";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettings" = "設定";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBody" = "在 Brave 中觀看廣告來賺取代幣。 展示的廣告是根據您的興趣，根據您的瀏覽行為而得。 沒有任何個人數據或瀏覽歷史記錄會離開您的瀏覽器。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsComingSoonText" = "即將推出。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsGrantAmountText" = "您的廣告收入，共計 ％@。";
+
+/* Example: <10 BAT> earned from ads */
+"BraveRewardsSettingsAdsGrantText" = "獲得的廣告收入";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsTitle" = "Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAutoContributeBody" = "自動支持發布者和內容創作者的方法。 設定每月付款並維持正常瀏覽。 根據 Brave 記錄的關注度，您所造訪的網站會自動獲得您的贊助。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAutoContributeTitle" = "自動贊助";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledBody1" = "使用舊款瀏覽器時，您需要花上寶貴的時間觀看廣告，才能瀏覽網頁。 您花費了寶貴的時間下載侵入式的廣告技術，未經您同意即將寶貴的私人數據傳給廣告商。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledBody2" = "您的時間具有價值，您的個人數據隱私獲得保障，您還會因此獲得實際報酬。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledTitle1" = "為什麼要 Brave Rewards？";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledTitle2" = "今天，Brave 歡迎您使用全新網際網路。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantClaimButtonTitle" = "領取";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantText" = "有免費的代幣贈與。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsBody" = "瀏覽時直接贊助內容創作者。 您還可以設定每月定期小費，以便持續支持站點。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsTitle" = "小費";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTitle" = "設定";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsViewDetails" = "查看詳情";
+
+/* No comment provided by engineer. */
+"BraveRewardsSite" = "站點";
+
+/* No comment provided by engineer. */
+"BraveRewardsSummaryTitle" = "Rewards 摘要";
+
+/* No comment provided by engineer. */
+"BraveRewardsThreeAdsPerHour" = "每小時 3 則廣告";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingAmountTitle" = "小費金額";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingBalanceTitle" = "餘額";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingConfirmation" = "謝謝";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingMakeMonthly" = "每月一次";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingMonthlyTitle" = "您會自動發送小費給：";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotEnoughPoints" = "點數不足。";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotEnoughTokens" = "代幣不足。";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOneTimeTitle" = "您已發送小費給：";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOverviewBody" = "您可以發送小費來支持內容創作者。 這是感謝他們提供豐富內容的一種方式。通過驗證的創作者會在每個日曆月的第一周獲得小費。\n\n如果願意，您可以安排每月小費，持續支持該創作者。";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOverviewTitle" = "歡迎！";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingRecurring" = "每月一次";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingRecurringDetails" = "您的每月小費將首次發送於：";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingSendMonthlyTip" = "設定每月提示";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingSendTip" = "發送我的小費";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingTitle" = "發送小費";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingUnverifiedDisclaimer" = "注意：創作者尚未註冊接收 Brave 用戶的贊助。 您的瀏覽器將繼續嘗試貢獻，直到他們通過驗證或 90 天期滿為止。";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingWalletBalanceTitle" = "錢包餘額";
+
+/* No comment provided by engineer. */
+"BraveRewardsTips" = "小費";
+
+/* No comment provided by engineer. */
+"BraveRewardsTipsTotalThisMonth" = "本月小費總計";
+
+/* No comment provided by engineer. */
+"BraveRewardsTokens" = "代幣";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalGrantsClaimed" = "已領取代幣贈與";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalSites" = "總計 ％ld";
+
+/* No comment provided by engineer. */
+"BraveRewardsTwoAdsPerHour" = "每小時 2 則廣告";
+
+/* No comment provided by engineer. */
+"BraveRewardsUnverifiedPublisherDisclaimer" = "創作者尚未註冊接受 Brave 用戶的贊助。 您發送的所有小費都將保留在您的錢包，直到他們通過驗證。";
+
+/* No comment provided by engineer. */
+"BraveRewardsVerified" = "通過 Brave 驗證的創作者";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletDetailsTitle" = "錢包的詳細資訊";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderDetails" = "詳細資訊";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderGrants" = "贈與";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderTitle" = "您的錢包";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderTitleJapan" = "您的餘額";
+
+/* No comment provided by engineer. */
+"Cancel" = "取消";
+
+/* No comment provided by engineer. */
+"CLAIM" = "領取";
+
+/* No comment provided by engineer. */
+"DisclaimerInformation" = "按下「加入獎勵」，表示您已閱讀並同意服務條款和隱私政策。";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "點選此處了解更多資訊。";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "這是您第一則 Brave 廣告";
+
+/* Body for a no network notification */
+"NoNetworkBody" = "Brave Rewards 伺服器無回應。 我們將盡快修復。";
+
+/* Title for a no network notification */
+"NoNetworkTitle" = "糟糕！";
+
+/* We show this string in the notification when you don't have enough funds for contribution */
+"NotificationAutoContributeNotEnoughFundsBody" = "由於餘額不足，無法支付您安排的每月自動贊助和每月小費。 我們會在 30 天內重試。";
+
+/* Message for ads launch notification */
+"NotificationBraveAdsLaunchMsg" = "現在，您可以觀看廣告獲得報酬。";
+
+/* We show this string in notification when contribution fails */
+"NotificationContributeError" = "處理您的贊助時出現問題。";
+
+/* We show this string in notification when contribution fails */
+"NotificationContributeNotificationError" = "處理您的贊助時出現問題。";
+
+/* We show this string in the notification when contribution is successful */
+"NotificationContributeSuccess" = "您已贊助 ％@";
+
+/* We show this string in notification when tip fails */
+"NotificationContributeTipError" = "無法發送您的小費。 請稍後再試。";
+
+/* Panel notification text for Ads grant */
+"NotificationEarningsClaimDefault" = "您的 Ads 獎勵在此！";
+
+/* Title for an error notification */
+"NotificationErrorTitle" = "糟糕！";
+
+/* Description for new grant notification */
+"NotificationGrantNotification" = "您有一筆贈與。";
+
+/* Description for new insufficient funds notification */
+"NotificationinsufficientFunds" = "您的 Brave Rewards 帳戶正在等待入賬。";
+
+/* Title for insufficient funds notification */
+"NotificationInsufficientFundsTitle" = "餘額不足";
+
+/* Notification title for pending contribution type */
+"NotificationPendingContributionTitle" = "待處理的贊助";
+
+/* Notification text that tells user his wallet is under funded for pending contribution to complete */
+"NotificationPendingNotEnoughFunds" = "由於餘額不足，您仍有待處理的小費";
+
+/* Message for monthly tips processed notification */
+"NotificationTipsProcessedBody" = "您的每月小費已處理！";
+
+/* Notification text that tells user which publisher just verified */
+"NotificationVerifiedPublisherBody" = "最近通過驗證的創作者 ％@ ";
+
+/* No comment provided by engineer. */
+"OK" = "好";
+
+/* Text describing the type of contribution */
+"OneTimeText" = "一次性";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "於 ％@";
+
+/* No comment provided by engineer. */
+"PrivacyPolicyURL" = "隱私政策";
+
+/* Text describing the type of contribution */
+"RecurringText" = "定期";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescription" = "現在，您可以觀看尊重隱私的廣告並賺取代幣。";
+
+/* No comment provided by engineer. */
+"RewardsOptInJoinTitle" = "加入獎勵";
+
+/* No comment provided by engineer. */
+"RewardsOptInLearnMore" = "了解更多";
+
+/* No comment provided by engineer. */
+"RewardsOptInPrefix" = "準備體驗新一代網際網路。";
+
+/* No comment provided by engineer. */
+"TermsOfServiceURL" = "服務條款";
+
+/* No comment provided by engineer. */
+"TipSiteMonthly" = "每月發送小費給這個站點";
+
+/* Prompt to turn on Ads via notification */
+"TurnOnAds" = "開啟廣告功能";
+
+/* No comment provided by engineer. */
+"WalletCreationErrorBody" = "糟糕！ 出問題了。 請再試一次。";
+
+/* No comment provided by engineer. */
+"WalletCreationErrorTitle" = "錯誤";
+
+/* No comment provided by engineer. */
+"WelcomeDisclaimerInformation" = "按下「好，我要加入！」，表示您已閱讀並同意服務條款和隱私政策。";
+

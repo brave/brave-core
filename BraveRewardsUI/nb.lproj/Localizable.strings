@@ -1,0 +1,537 @@
+/* No comment provided by engineer. */
+"BATPoints" = "BAT-poeng";
+
+/* Words that should be bolded in the BAT Points disclaimer */
+"BATPointsBoldedWords" = "BAT-poeng";
+
+/* Disclaimer about BAT Points for JP users */
+"BATPointsDisclaimer" = "BAT-poeng kan brukes til å bidra til din favoritt-innholdsskapere. BAT-poeng kan ikke byttes mot BAT.";
+
+/* No comment provided by engineer. */
+"BraveRewards" = "Brave Rewards™";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFunds" = "Legg til midler";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsBody" = "Pass på at du bruker adressen nedenfor som samsvarer med den typen krypto du eier. Det vil bli konvertert automatisk til BAT av Uphold og vises som en økt saldo i Brave Rewards-lommeboken din. Det kan ta opptil én time før lommeboksaldoen oppdateres.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsDisclaimer" = "Påminnelse: Brave-lommeboken er ensrettet og BAT flyter til utgivernettsteder. Hvis du vil ha mer informasjon om Brave Rewards, kan du gå til vanlige spørsmål.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsShowQRCode" = "Vis QR-kode";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsTitle" = "Send kryptovaluta fra den eksterne kontoen din til Brave Rewards-lommeboken din.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsTokenWalletAddress" = "Adresse til lommeboken";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsVCTitle" = "Legg til midler";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationsReceived" = "Annonsevarsler mottatt denne måneden";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsEstimatedEarnings" = "Anslåtte ventende belønninger";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsMaxPerDay" = "Maksimalt antall annonser som vises";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsPayoutDateFormat" = "MMM d";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsUnsupportedDvice" = "Brave Rewards og Ads er ikke tilgjengelige på enheten nå.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsUnsupportedRegion" = "Beklager! Annonser er ennå ikke tilgjengelige i din region.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAttention" = "Advarsel";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContribute" = "Auto-bidra";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeDateFormat" = "MMM d";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumLength" = "Minimum sidetid";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumLengthMessage" = "Minimum sidetid før du logger et besøk";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumVisits" = "Minimum besøk";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumVisitsMessage" = "Minimum besøk for utgiverrelevans";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMonthlyPayment" = "Månedlig betaling";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMonthlyPaymentTitle" = "Månedlig betaling";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeNextDate" = "Neste bidragsdato";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeRestoreExcludedSites" = "Gjenopprett %ld-ekskluderte sider";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeSupportedSites" = "Støttede nettsteder";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeToUnverifiedSites" = "Tillat bidrag til ikke-verifiserte nettsteder";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeToVideos" = "Tillat bidrag til videoer";
+
+/* No comment provided by engineer. */
+"BraveRewardsCheckAgain" = "Oppdater-status";
+
+/* No comment provided by engineer. */
+"BraveRewardsContributingToUnverifiedSites" = "Du har angitt %@ for skapere som ennå ikke har meldt seg på for å motta bidrag. Nettleseren din vil fortsette å prøve å bidra til de bekrefter, eller til 90 dager har gått.";
+
+/* No comment provided by engineer. */
+"BraveRewardsCreatingWallet" = "Oppretter lommebok";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledBody" = "Tjen penger ved å se annonser som respekterer personvernet, og bruk det til å støtte innholdsskapere du liker.";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledEnableButton" = "Aktiver Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledSubtitle" = "Få belønning for surfing!";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledTitle" = "Velkommen tilbake!";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisclaimerLearnMore" = "Få mer informasjon";
+
+/* No comment provided by engineer. */
+"BraveRewardsEarningFromAds" = "Inntekter fra annonser";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyAutoContribution" = "Nettsider vises når du surfer";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyTipsText" = "Har du tipset din favoritt-innholdsskaper i dag?";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyWalletBody" = "Se saldoen vokse når du ser annonser som opprettholder personvern gjennom Brave.";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyWalletTitle" = "Lommeboken din er klar for action.";
+
+/* No comment provided by engineer. */
+"BraveRewardsExclude" = "Utelat";
+
+/* No comment provided by engineer. */
+"BraveRewardsFiveAdsPerHour" = "5 annonser per time";
+
+/* No comment provided by engineer. */
+"BraveRewardsFourAdsPerHour" = "4 annonser per time";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantListExpiresOn" = "Utløper %@";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrants" = "Tilskudd";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedAmountTitle" = "Gratis token-tilskudd";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedExpirationDateTitle" = "Utløpsdato for tilskudd";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitle" = "Ditt token-tilskudd er på vei.";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedTitle" = "Dette er din lykkedag!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBody" = "Din tid er verdifull. Tjen penger ved å se annonser som respekterer personvernet, og bruk det til å støtte innholdsskapere du liker.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBraveAdsBody" = "Få betalt for å se relevante annonser som respekterer privatlivet ditt.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBraveAdsTitle" = "Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreCreateWallet1" = "Ja, jeg er med!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreCreateWallet2" = "Ja, jeg er klar!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreHowItWorks" = "Slik fungerer det …";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreReady" = "Klar for å komme i gang?";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreSubtitle" = "Få belønning for surfing!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTipsBody" = "Støtt dine favorittnettsteder bare ved å bla – eller tips et nettsted når du vil.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTipsTitle" = "Auto-bidra";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTurnOnRewardsBody" = "Dette aktiverer både annonser og automatiske bidrag. Du kan slå dem på eller av hver for seg, når som helst.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTurnOnRewardsTitle" = "Aktivere belønninger";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreWhyBody" = "Med den gamle nettleseren din, har du betalt for å surfe på nettet ved å se annonser. Du brukte din verdifulle tid på å laste ned inntrengende annonseteknologi som overførte dine verdifulle private data til annonsører — uten ditt samtykke.\n\nI dag ønsker Brave deg velkommen til det nye Internettet. Et Internett hvor tiden din er verdsatt, dine personlige data holdes privat, og du faktisk får betalt for tiden din.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreWhyTitle" = "Hvorfor Brave Rewards?";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices0" = "5 sekunder";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices1" = "8 sekunder";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices2" = "1 minutt";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices0" = "1 besøk";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices1" = "5 besøk";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices2" = "10 besøk";
+
+/* No comment provided by engineer. */
+"BraveRewardsMonthlyTips" = "Månedlig tips";
+
+/* No comment provided by engineer. */
+"BraveRewardsNoActivitiesYet" = "Ingen aktiviteter ennå …";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationAdsTitle" = "Brave-annonser";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationAutoContributeTitle" = "Auto-bidra";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationRecurringTipTitle" = "Gjentakende tips";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationTokenGrantTitle" = "Token-tilskudd";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotYetVerified" = "Ennå ikke bekreftet";
+
+/* No comment provided by engineer. */
+"BraveRewardsNumberOfAdsPerHourOptionsTitle" = "Annonser per time";
+
+/* No comment provided by engineer. */
+"BraveRewardsOneAdPerHour" = "1 annonse per time";
+
+/* No comment provided by engineer. */
+"BraveRewardsOneTimeTips" = "Engangstips";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "Åpne";
+
+/* No comment provided by engineer. */
+"BraveRewardsPanelTitle" = "Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsPaymentDate" = "Neste utbetalingsdato";
+
+/* No comment provided by engineer. */
+"BraveRewardsPoweredByUphold" = "Din Brave-lommebok er drevet av Uphold";
+
+/* No comment provided by engineer. */
+"BraveRewardsPublisherSendTip" = "Send et tips …";
+
+/* No comment provided by engineer. */
+"BraveRewardsRecurringTipTitle" = "Gjentakende tips";
+
+/* No comment provided by engineer. */
+"BraveRewardsRemove" = "Fjern";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettings" = "Innstillinger";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBody" = "Tjen tokens ved å se annonser i Brave. Annonsene som presenteres, er basert på interessene dine, som angitt i nettlesingsatferden din. Ingen personlige data eller leserloggen forlater nettleseren din.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsComingSoonText" = "Kommer snart.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsGrantAmountText" = "Annonseinntektene dine, %@ er tilgjengelige.";
+
+/* Example: <10 BAT> earned from ads */
+"BraveRewardsSettingsAdsGrantText" = "inntekter fra annonser";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsTitle" = "Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAutoContributeBody" = "En automatisk måte å støtte utgivere og innholdsskapere på. Angi en månedlig betaling og surf normalt. Nettstedene du besøker mottar bidragene dine automatisk, basert på din oppmerksomhet målt av Brave.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAutoContributeTitle" = "Auto-bidra";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledBody1" = "Med den gamle nettleseren din, har du betalt for å surfe på nettet ved å se annonser. Du brukte din verdifulle tid på å laste ned inntrengende annonseteknologi som overførte dine verdifulle private data til annonsører — uten ditt samtykke.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledBody2" = "Et Internett hvor tiden din er verdsatt, dine personlige data holdes privat, og du faktisk får betalt for tiden din.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledTitle1" = "Hvorfor Brave Rewards?";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledTitle2" = "I dag ønsker Brave deg velkommen til det nye Internettet.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantClaimButtonTitle" = "Krev";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantText" = "Et gratis token-tilskudd er tilgjengelig.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsBody" = "Tips innholdsskapere direkte mens du surfer. Du kan også konfigurere regelmessig månedlig tips slik at du kan støtte sider kontinuerlig.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsTitle" = "Tips";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTitle" = "Innstillinger";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsViewDetails" = "Se detaljer";
+
+/* No comment provided by engineer. */
+"BraveRewardsSite" = "Nettsted";
+
+/* No comment provided by engineer. */
+"BraveRewardsSummaryTitle" = "Rewards-oppsummering";
+
+/* No comment provided by engineer. */
+"BraveRewardsThreeAdsPerHour" = "3 annonser per time";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingAmountTitle" = "Tipsbeløp";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingBalanceTitle" = "saldo";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingConfirmation" = "Takk";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingMakeMonthly" = "Gjør denne månedlig";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingMonthlyTitle" = "Du sender automatisk et tips til:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotEnoughPoints" = "Ikke nok poeng.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotEnoughTokens" = "Ikke nok tokener.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOneTimeTitle" = "Du har nettopp sendt et tips til:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOverviewBody" = "Du kan støtte denne innholdsskaperen ved å sende tips. Det er en måte å takke dem for å lage bra innhold. Verifiserte skapere får betalt for tipsene sine i løpet av den første uken i hver kalendermåned.\n\nHvis du vil, kan du planlegge månedlig tips for å støtte denne skaperen på en kontinuerlig basis.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOverviewTitle" = "Velkommen!";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingRecurring" = "Månedlig";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingRecurringDetails" = "Din første månedlige tips vil bli sendt på:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingSendMonthlyTip" = "Angi månedlig tips";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingSendTip" = "Send tips";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingTitle" = "Send tips";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingUnverifiedDisclaimer" = "Merk: denne skaperen har ennå ikke registrert seg for å motta bidrag fra Brave-brukere. Nettleseren din vil fortsette å prøve å bidra til de bekrefter, eller til 90 dager har gått.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingWalletBalanceTitle" = "lommeboksaldo";
+
+/* No comment provided by engineer. */
+"BraveRewardsTips" = "Tips";
+
+/* No comment provided by engineer. */
+"BraveRewardsTipsTotalThisMonth" = "Total tips denne måneden";
+
+/* No comment provided by engineer. */
+"BraveRewardsTokens" = "Tokens";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalGrantsClaimed" = "Token-tilskudd krevd";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalSites" = "Totalt %ld";
+
+/* No comment provided by engineer. */
+"BraveRewardsTwoAdsPerHour" = "2 annonser per time";
+
+/* No comment provided by engineer. */
+"BraveRewardsUnverifiedPublisherDisclaimer" = "Denne skaperen har ennå ikke registrert seg for å motta bidrag fra Brave-brukere. Eventuell tips du sender vil forbli i lommeboken til de bekrefter.";
+
+/* No comment provided by engineer. */
+"BraveRewardsVerified" = "Brave-verifisert skaper";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletDetailsTitle" = "Lommebokdetaljer";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderDetails" = "Detaljer";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderGrants" = "Tilskudd";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderTitle" = "Lommeboken din";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderTitleJapan" = "Saldoen din";
+
+/* No comment provided by engineer. */
+"Cancel" = "Avbryt";
+
+/* No comment provided by engineer. */
+"CLAIM" = "KREV";
+
+/* No comment provided by engineer. */
+"DisclaimerInformation" = "Ved å klikke på «Bli med i Rewards» angir du at du har lest og godtatt vilkårene for bruk og personvernerklæringen.";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "Trykk her for å få mer informasjon.";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "Dette er din første Brave-annonse";
+
+/* Body for a no network notification */
+"NoNetworkBody" = "Brave Rewards-serveren svarer ikke. Vi vil fikse dette så snart som mulig.";
+
+/* Title for a no network notification */
+"NoNetworkTitle" = "Oi, sann!";
+
+/* We show this string in the notification when you don't have enough funds for contribution */
+"NotificationAutoContributeNotEnoughFundsBody" = "Den planlagte månedlige innbetalingen for automatisk bidrag og månedlig tips kan ikke fullføres på grunn av utilstrekkelige midler. Vi prøver igjen om 30 dager.";
+
+/* Message for ads launch notification */
+"NotificationBraveAdsLaunchMsg" = "Nå kan du tjene ved å se annonser.";
+
+/* We show this string in notification when contribution fails */
+"NotificationContributeError" = "Det oppstod et problem under behandlingen av bidraget.";
+
+/* We show this string in notification when contribution fails */
+"NotificationContributeNotificationError" = "Det oppstod et problem under behandlingen av bidraget.";
+
+/* We show this string in the notification when contribution is successful */
+"NotificationContributeSuccess" = "Du har bidratt med % @";
+
+/* We show this string in notification when tip fails */
+"NotificationContributeTipError" = "Klarer ikke å sende tipsen din. Prøv igjen senere.";
+
+/* Panel notification text for Ads grant */
+"NotificationEarningsClaimDefault" = "Dine belønninger fra Ads er her!";
+
+/* Title for an error notification */
+"NotificationErrorTitle" = "Oi, sann!";
+
+/* Description for new grant notification */
+"NotificationGrantNotification" = "Du har et tilskudd som venter på deg.";
+
+/* Description for new insufficient funds notification */
+"NotificationinsufficientFunds" = "Din Brave Rewards-konto venter på et innskudd.";
+
+/* Title for insufficient funds notification */
+"NotificationInsufficientFundsTitle" = "Utilstrekkelige midler";
+
+/* Notification title for pending contribution type */
+"NotificationPendingContributionTitle" = "Ventende bidrag";
+
+/* Notification text that tells user his wallet is under funded for pending contribution to complete */
+"NotificationPendingNotEnoughFunds" = "Du har ventende tips på grunn av utilstrekkelige midler";
+
+/* Message for monthly tips processed notification */
+"NotificationTipsProcessedBody" = "Dine månedlige tips har blitt behandlet!";
+
+/* Notification text that tells user which publisher just verified */
+"NotificationVerifiedPublisherBody" = "Skaperen %@ nylig bekreftet";
+
+/* No comment provided by engineer. */
+"OK" = "OK";
+
+/* Text describing the type of contribution */
+"OneTimeText" = "Én gang ";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "på %@";
+
+/* No comment provided by engineer. */
+"PrivacyPolicyURL" = "Personvernerklæring";
+
+/* Text describing the type of contribution */
+"RecurringText" = "Gjentakende";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescription" = "Du kan nå tjene tokens for å se på annonser som respekterer personvernet.";
+
+/* No comment provided by engineer. */
+"RewardsOptInJoinTitle" = "Registrer deg for Rewards";
+
+/* No comment provided by engineer. */
+"RewardsOptInLearnMore" = "Få mer informasjon";
+
+/* No comment provided by engineer. */
+"RewardsOptInPrefix" = "Gjør deg klar til å oppleve neste generasjon Internett.";
+
+/* No comment provided by engineer. */
+"TermsOfServiceURL" = "Vilkår for bruk";
+
+/* No comment provided by engineer. */
+"TipSiteMonthly" = "Tips dette nettsted månedlig";
+
+/* Prompt to turn on Ads via notification */
+"TurnOnAds" = "Slå på annonser";
+
+/* No comment provided by engineer. */
+"WalletCreationErrorBody" = "Noe gikk galt da du opprettet lommeboken. Prøv på nytt.";
+
+/* No comment provided by engineer. */
+"WalletCreationErrorTitle" = "Feil";
+
+/* No comment provided by engineer. */
+"WelcomeDisclaimerInformation" = "Ved å klikke på «Ja, jeg er med!» angir du at du har lest og godtatt vilkårene for bruk og personvernreglene.";
+

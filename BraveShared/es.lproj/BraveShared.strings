@@ -184,6 +184,9 @@
 /* Button to show the brave panel */
 "BravePanel" = "Panel de Brave";
 
+/* Brave Rewards settings title */
+"BraveRewardsTitle" = "Brave Rewards";
+
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Opciones por defecto de Brave Shield";
 
@@ -277,6 +280,9 @@
 /* Copy codewords title */
 "CopyToClipboard" = "Copiar en el portapapeles";
 
+/* Copy rewards internals info for support */
+"CopyWalletSupportInfo" = "Copiar información de soporte";
+
 /* Currently usedd search engines section name. */
 "CurrentlyUsedSearchEngines" = "Utilizado actualmente en buscadores";
 
@@ -321,6 +327,9 @@
 
 /* Current device model and iOS version copied to clipboard. */
 "DeviceTemplate" = "Dispositivo %1$@ (%2$@)";
+
+/* Section name for display preferences. */
+"DisplaySettingsSection" = "Visualización";
 
 /* No comment provided by engineer. */
 "Done" = "Listo";
@@ -433,6 +442,15 @@
 /* Grand camera access */
 "GrantCameraAccess" = "Activar cámara";
 
+/* Context menu item for hiding link previews */
+"HideLinkPreviewsActionTitle" = "Ocultar vistas previas de enlaces";
+
+/* Hides the rewards icon */
+"HideRewardsIcon" = "Ocultar el icono de Brave Rewards";
+
+/* Hide the rewards icon explination. */
+"HideRewardsIconSubtitle" = "Oculta el icono de Brave Rewards cuando esta función no está activada";
+
 /* Title for history menu item */
 "HistortMenuItem" = "Historial";
 
@@ -486,6 +504,9 @@
 
 /* Label for the button used to select all logins. */
 "LoginListSelectAllButtonTitle" = "Seleccionar todo";
+
+/* Setting to allow media to play automatically */
+"MediaAutoPlays" = "Activa la reproducción automática de vídeo en segundo plano";
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Copiar";
@@ -763,6 +784,9 @@
 /* Error message that is shown in settings when there was a problem loading */
 "SettingsContentLoadErrorMessage" = "No se ha podido cargar la página.";
 
+/* Row name for licenses. */
+"SettingsLicenses" = "Licencias";
+
 /* Title for settings menu item */
 "SettingsMenuItem" = "Ajustes";
 
@@ -814,6 +838,9 @@
 /* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
 "ShowInLandscapeOnly" = "Mostrar solo apaisado";
 
+/* Context menu item for showing link previews */
+"ShowLinkPreviewsActionTitle" = "Mostrar vistas previas de enlaces";
+
 /* Accessibility Label for the tabs button in the browser toolbar */
 "ShowTabs" = "Mostrar pestañas";
 
@@ -843,6 +870,9 @@
 
 /* Add a Computer title */
 "SyncAddComputerTitle" = "Añadir un ordenador";
+
+/* Add mobile device to sync with scan */
+"SyncAddDeviceScan" = "Código QR de la cadena de sincronización";
 
 /* Sync add device description */
 "SyncAddDeviceScanDescription" = "En su segundo aparato móvil, navega hacia el panel de settings (ajustes) y presione el botón “scan sync code”. Use su camera para escanear el código QR debajo.\nTrate este código como una contraseña. So alguien lo obtiene, lo pueden leer y modificar sus datos sincronizados.";
@@ -1027,6 +1057,9 @@
 /* Selection to color/style the user interface with a dark theme */
 "ThemesDarkOption" = "Oscuro";
 
+/* Setting to choose the user interface theme for normal browsing mode, contains choices like 'light' or 'dark' themes */
+"ThemesDisplayBrightness" = "Apariencia";
+
 /* Text specifying that the above setting does not impact the user interface while they user is in private browsing mode. */
 "ThemesDisplayBrightnessFooter" = "Estos ajustes no se aplican en el modo de navegación privada.";
 
@@ -1056,6 +1089,9 @@
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Versión %1$@ (%2$@)";
+
+/* The date your wallet was created */
+"WalletCreationDate" = "Fecha de creación de la cartera";
 
 /* Accessibility label for the main web content view */
 "WebContentAccessibilityLabel" = "Contenido web";

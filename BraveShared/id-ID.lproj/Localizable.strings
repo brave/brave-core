@@ -1,8 +1,59 @@
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Tidak";
 
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessage" = "Dapatkan token dengan melihat iklan terkait privasi.";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessageJapan" = "Dapatkan token dengan melihat iklan perlindungan privasi.";
+
+/* Title when opting into brave Ads when region becomes available */
+"OBAdsOptInTitle" = "Iklan Brave telah hadir!";
+
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "Brave akan menampilkan iklan pertama Anda di";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "Sekarang Anda telah siap.";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "Saya tidak melihat iklan";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "Terjadi kesalahan saat membuat dompet Anda. Coba lagi.";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "OK";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "Maaf";
+
 /* Button to finish onboarding and start using the app. */
 "OBFinishButton" = "Mulai penjelajahan";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "Bergabung";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "Dengan mengaktifkan Brave Rewards, berarti Anda setuju dengan";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "Persyaratan Layanan";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Brave Rewards";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "Dapatkan token dengan melihat iklan perlindungan privasi. Gunakan token untuk mendukung situs dan pembuat konten favorit Anda.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegionJapan" = "Dapatkan poin dengan melihat iklan perlindungan privasi. Gunakan token untuk mendukung situs dan pembuat konten favorit Anda.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailOutsideAdRegion" = "Dukung situs web dan pembuat konten favorit Anda berdasarkan atensi Anda.";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Brave Rewards";
 
 /* Save button to save current selection */
 "OBSaveButton" = "Simpan";
@@ -18,6 +69,12 @@
 
 /* Title for shields onboarding screen */
 "OBShieldsTitle" = "Perisai Brave";
+
+/* Button to show the Brave Rewards Ads. */
+"OBShowMeButton" = "Tampilkan Kepada Saya";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "Aktifkan";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Lanjutkan";

@@ -1,5 +1,11 @@
-/* Label for auto-contribute toggle. */
-"AutoContributeSwitchLabel" = "自動支援";
+/* No comment provided by engineer. */
+"BATPoints" = "BATポイント";
+
+/* Words that should be bolded in the BAT Points disclaimer */
+"BATPointsBoldedWords" = "BATポイント";
+
+/* Disclaimer about BAT Points for JP users */
+"BATPointsDisclaimer" = "BATポイントでお気に入りのコンテンツクリエーターを支援できます。 BATポイントはBATと交換することはできません。";
 
 /* No comment provided by engineer. */
 "BraveRewards" = "Brave Rewards";
@@ -56,7 +62,7 @@
 "BraveRewardsAutoContributeDateFormat" = "MMM d";
 
 /* No comment provided by engineer. */
-"BraveRewardsAutoContributeMinimumLength" = "最小の長さ";
+"BraveRewardsAutoContributeMinimumLength" = "最小のページ滞在時間";
 
 /* No comment provided by engineer. */
 "BraveRewardsAutoContributeMinimumLengthMessage" = "サイト訪問を記録する最小ページ数";
@@ -92,7 +98,7 @@
 "BraveRewardsCheckAgain" = "ステータスを更新";
 
 /* No comment provided by engineer. */
-"BraveRewardsContributingToUnverifiedSites" = "支援の受取設定が完了していないクリエーターに％@ BATを送りました。彼らが設定を完了するか、90日が経過するまで送付を試みます。";
+"BraveRewardsContributingToUnverifiedSites" = "支援の受諾手続きを行なっていないクリエイターに %@を送信しました。クリエイターが手続きを完了するか、または90日間が経過するまで、ブラウザーにより支援の送信が継続されます。";
 
 /* No comment provided by engineer. */
 "BraveRewardsCreatingWallet" = "ウォレットを作成中";
@@ -122,13 +128,10 @@
 "BraveRewardsEmptyTipsText" = "今日はもうお気に入りのクリエイターにチップを送りましたか？";
 
 /* No comment provided by engineer. */
-"BraveRewardsEmptyWalletBulletHeader" = "ウォレットの残高を増やす3つの方法";
+"BraveRewardsEmptyWalletBody" = "プライバシーに配慮した広告を見ると残高が増えます。";
 
 /* No comment provided by engineer. */
-"BraveRewardsEmptyWalletBulletPoints" = "• 外部ウォレットから資金を追加する• 広告を表示して報酬を獲得する• Braveからの無料のトークン受け取る。通知をお見逃しなく！";
-
-/* No comment provided by engineer. */
-"BraveRewardsEmptyWalletTitle" = "残念、まだ獲得したトークンはありません。";
+"BraveRewardsEmptyWalletTitle" = "ウォレットにアクションが必要です。";
 
 /* No comment provided by engineer. */
 "BraveRewardsExclude" = "除外";
@@ -335,6 +338,9 @@
 "BraveRewardsTippingAmountTitle" = "チップする金額";
 
 /* No comment provided by engineer. */
+"BraveRewardsTippingBalanceTitle" = "残高";
+
+/* No comment provided by engineer. */
 "BraveRewardsTippingConfirmation" = "ありがとうございます";
 
 /* No comment provided by engineer. */
@@ -344,7 +350,10 @@
 "BraveRewardsTippingMonthlyTitle" = "次の宛先に自動的にチップを送信しています: ";
 
 /* No comment provided by engineer. */
-"BraveRewardsTippingNotEnoughTokens" = "トークンが不足しています。資金を追加してください。";
+"BraveRewardsTippingNotEnoughPoints" = "ポイントが不足しています。";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotEnoughTokens" = "トークンが不足しています。";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingOneTimeTitle" = "次の宛先にチップを送信しました:";
@@ -398,16 +407,22 @@
 "BraveRewardsUnverifiedPublisherDisclaimer" = "このクリエイターは、まだBraveユーザーからの支援を受諾する手続きを行っていません。クリエイターの認証確認が終了するまで、送信されたチップはあなたのウォレット内に維持されます。";
 
 /* No comment provided by engineer. */
-"BraveRewardsVerified" = "Brave認証済みパブリッシャー";
+"BraveRewardsVerified" = "Brave認証済みクリエイター";
 
 /* No comment provided by engineer. */
 "BraveRewardsWalletDetailsTitle" = "ウォレット詳細";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderDetails" = "詳細";
 
 /* No comment provided by engineer. */
 "BraveRewardsWalletHeaderGrants" = "付与トークン";
 
 /* No comment provided by engineer. */
 "BraveRewardsWalletHeaderTitle" = "あなたのウォレット";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderTitleJapan" = "残高";
 
 /* No comment provided by engineer. */
 "Cancel" = "キャンセル";
@@ -443,7 +458,7 @@
 "NotificationContributeNotificationError" = "支援の処理中にエラーが発生しました。もう一度お試しください。";
 
 /* We show this string in the notification when contribution is successful */
-"NotificationContributeSuccess" = "%@ BATを支援しました。";
+"NotificationContributeSuccess" = "%@支援しました。";
 
 /* We show this string in notification when tip fails */
 "NotificationContributeTipError" = "チップを送信することができませんでした。後ほどもう一度お試しください。";
@@ -510,6 +525,12 @@
 
 /* Prompt to turn on Ads via notification */
 "TurnOnAds" = "Brave AdsをOnにする";
+
+/* No comment provided by engineer. */
+"WalletCreationErrorBody" = "問題が発生しました。もう一度お試しください。";
+
+/* No comment provided by engineer. */
+"WalletCreationErrorTitle" = "エラー";
 
 /* No comment provided by engineer. */
 "WelcomeDisclaimerInformation" = "「参加します」をクリックすると、利用規約とプライバシーポリシーに同意したと見なされます。";

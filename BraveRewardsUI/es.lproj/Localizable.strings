@@ -1,0 +1,537 @@
+/* No comment provided by engineer. */
+"BATPoints" = "Puntos BAT";
+
+/* Words that should be bolded in the BAT Points disclaimer */
+"BATPointsBoldedWords" = "Puntos BAT";
+
+/* Disclaimer about BAT Points for JP users */
+"BATPointsDisclaimer" = "Los puntos BAT pueden usarse para ayudar a sus creadores de contenido favoritos, pero no se pueden cambiar por BAT.";
+
+/* No comment provided by engineer. */
+"BraveRewards" = "Brave Rewards™";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFunds" = "Añadir fondos";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsBody" = "De las direcciones que aparecen a continuación, asegúrese de usar la que coincide con el tipo de criptomonedas que posee. Uphold las convertirá automáticamente a BAT, y estas aumentarán el saldo de su cartera de Brave Rewards. El saldo de su cartera tardará, como máximo, una hora en actualizarse.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsDisclaimer" = "Recordatorio: La cartera de Brave es unidireccional y el BAT se dirige a los sitios de los editores. Para más información sobre Brave Rewards, visite el apartado de preguntas frecuentes.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsShowQRCode" = "Mostrar código QR";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsTitle" = "Envíe criptomonedas de su cuenta externa a su cartera de Brave Rewards.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsTokenWalletAddress" = "Dirección de la cartera";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsVCTitle" = "Añadir fondos";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationsReceived" = "Notificaciones de anuncios recibidas este mes";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsEstimatedEarnings" = "Estimación de recompensas pendientes";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsMaxPerDay" = "Número máximo de anuncios mostrados";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsPayoutDateFormat" = "D de MMM";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsUnsupportedDvice" = "En este momento, Brave Rewards y Brave Ads no están disponibles en su dispositivo.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsUnsupportedRegion" = "Lo sentimos, Brave Ads aún no está disponible en su región.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAttention" = "Atención";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContribute" = "Contribución automática";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeDateFormat" = "D de MMM";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumLength" = "Tiempo mínimo en la página";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumLengthMessage" = "Tiempo mínimo en la página antes de registrar una visita";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumVisits" = "Visitas mínimas";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumVisitsMessage" = "Número mínimo de visitas para ser relevantes para los editores";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMonthlyPayment" = "Pago mensual";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMonthlyPaymentTitle" = "Pago mensual";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeNextDate" = "Fecha de la siguiente contribución";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeRestoreExcludedSites" = "Restaurar %ld sitios excluidos";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeSupportedSites" = "Sitios compatibles";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeToUnverifiedSites" = "Permitir la contribución a sitios web no verificados";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeToVideos" = "Permitir la contribución a vídeos";
+
+/* No comment provided by engineer. */
+"BraveRewardsCheckAgain" = "Actualizar estado";
+
+/* No comment provided by engineer. */
+"BraveRewardsContributingToUnverifiedSites" = "Ha designado %@ para los creadores que aún no se han registrado para recibir contribuciones. Su navegador seguirá intentando contribuir hasta que el creador se verifique o hasta que hayan transcurrido 90 días.";
+
+/* No comment provided by engineer. */
+"BraveRewardsCreatingWallet" = "Creación de la cartera";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledBody" = "Obtenga ganancias viendo anuncios que respetan su privacidad y apoye a los creadores de contenido que tanto le gustan en señal de agradecimiento.";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledEnableButton" = "Activar Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledSubtitle" = "¡Obtenga recompensas por navegar!";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledTitle" = "¡Gracias por volver!";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisclaimerLearnMore" = "Más información";
+
+/* No comment provided by engineer. */
+"BraveRewardsEarningFromAds" = "Ganancias procedentes de Brave Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyAutoContribution" = "Los sitios aparecerán mientras navegas";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyTipsText" = "¿Ya le has dado alguna propina a tu creador de contenido favorito hoy?";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyWalletBody" = "Vea cómo aumenta su saldo al ver anuncios respetuosos con su privacidad a través de Brave.";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyWalletTitle" = "Su cartera está lista para entrar en acción.";
+
+/* No comment provided by engineer. */
+"BraveRewardsExclude" = "Excluir";
+
+/* No comment provided by engineer. */
+"BraveRewardsFiveAdsPerHour" = "5 anuncios por hora";
+
+/* No comment provided by engineer. */
+"BraveRewardsFourAdsPerHour" = "4 anuncios por hora";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantListExpiresOn" = "Expira el %@";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrants" = "Subvenciones";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedAmountTitle" = "Subvención en tokens gratuitos";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedExpirationDateTitle" = "Fecha de expiración de la subvención";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitle" = "Su subvención en tokens está en camino.";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedTitle" = "¡Hoy está de suerte!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBody" = "Su atención es valiosa. Obtenga ganancias viendo anuncios que respetan su privacidad y apoye a los creadores de contenido que tanto le gustan en señal de agradecimiento.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBraveAdsBody" = "Cobre por ver anuncios personalizados y respetuosos con su privacidad.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBraveAdsTitle" = "Brave Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreCreateWallet1" = "¡Sí, me interesa!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreCreateWallet2" = "¡Sí, adelante!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreHowItWorks" = "Cómo funciona…";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreReady" = "¿Listo para empezar?";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreSubtitle" = "¡Obtenga recompensas por navegar!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTipsBody" = "Apoye sus sitios web favoritos navegando en ellos… o envíele una propina a un sitio cuando quiera.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTipsTitle" = "Contribución automática";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTurnOnRewardsBody" = "Esto activa tanto los anuncios como las contribuciones automáticas, aunque usted puede activarlos o desactivarlos de forma individual en cualquier momento.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTurnOnRewardsTitle" = "Activar Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreWhyBody" = "Cuando usaba su antiguo navegador, usted pagó para navegar por la web prestando su valiosa atención a los anuncios. Es decir, dedicó su valioso tiempo a descargar tecnología publicitaria invasiva que transmitía sus también valiosos datos privados a los anunciantes sin su consentimiento.\n\nHoy, Brave tiene el placer de darle la bienvenida al nuevo modelo de Internet, uno en el que se valora su tiempo, en el que sus datos personales se mantienen privados y en el que de verdad se le compensa por su atención.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreWhyTitle" = "¿Por qué Brave Rewards?";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices0" = "5 segundos";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices1" = "8 segundos";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices2" = "1 minuto";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices0" = "1 visita";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices1" = "5 visitas";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices2" = "10 visitas";
+
+/* No comment provided by engineer. */
+"BraveRewardsMonthlyTips" = "Propinas mensuales";
+
+/* No comment provided by engineer. */
+"BraveRewardsNoActivitiesYet" = "Aún no hay actividades…";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationAdsTitle" = "Brave Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationAutoContributeTitle" = "Contribución automática";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationRecurringTipTitle" = "Propinas periódicas";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationTokenGrantTitle" = "Subvenciones en tokens";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotYetVerified" = "Aún sin verificar";
+
+/* No comment provided by engineer. */
+"BraveRewardsNumberOfAdsPerHourOptionsTitle" = "Anuncios por hora";
+
+/* No comment provided by engineer. */
+"BraveRewardsOneAdPerHour" = "1 anuncio por hora";
+
+/* No comment provided by engineer. */
+"BraveRewardsOneTimeTips" = "Propinas ocasionales";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "Abrir";
+
+/* No comment provided by engineer. */
+"BraveRewardsPanelTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsPaymentDate" = "Fecha del siguiente pago";
+
+/* No comment provided by engineer. */
+"BraveRewardsPoweredByUphold" = "Su cartera de Brave funciona con la tecnología de Uphold";
+
+/* No comment provided by engineer. */
+"BraveRewardsPublisherSendTip" = "Envíe una propina…";
+
+/* No comment provided by engineer. */
+"BraveRewardsRecurringTipTitle" = "Propina periódica";
+
+/* No comment provided by engineer. */
+"BraveRewardsRemove" = "Eliminar";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettings" = "Ajustes";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBody" = "Gane tokens viendo anuncios en Brave. Los anuncios presentados se basan en sus intereses, de acuerdo con su actividad en la red. Los datos personales o el historial de navegación no saldrán de su navegador.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsComingSoonText" = "Próximamente.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsGrantAmountText" = "Sus ganancias procedentes de Brave Ads: %@ disponibles.";
+
+/* Example: <10 BAT> earned from ads */
+"BraveRewardsSettingsAdsGrantText" = "ganados gracias a los anuncios";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsTitle" = "Brave Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAutoContributeBody" = "Un método automático para apoyar a los editores y creadores de contenido. Fije un pago mensual y navegue con normalidad. Los sitios que visite recibirán sus contribuciones automáticamente en función de su atención, que será calculada por Brave.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAutoContributeTitle" = "Contribución automática";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledBody1" = "Cuando usaba su antiguo navegador, usted pagó para navegar por la web prestando su valiosa atención a los anuncios. Es decir, dedicó su valioso tiempo a descargar tecnología publicitaria invasiva que transmitía sus también valiosos datos privados a los anunciantes sin su consentimiento.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledBody2" = "Uno en el que se valora su tiempo, en el que sus datos personales se mantienen privados y en el que de verdad se le compensa por su atención.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledTitle1" = "¿Por qué Brave Rewards?";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledTitle2" = "Hoy, Brave tiene el placer de darle la bienvenida al nuevo modelo de Internet.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantClaimButtonTitle" = "Reclamar";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantText" = "Hay una subvención en tokens gratuitos disponible.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsBody" = "Envíe propinas a los creadores de contenido directamente mientras navega. También puede fijar el pago de propinas mensuales periódicas para apoyar sitios web de forma continua.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsTitle" = "Propinas";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTitle" = "Ajustes";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsViewDetails" = "Ver detalles";
+
+/* No comment provided by engineer. */
+"BraveRewardsSite" = "Sitio";
+
+/* No comment provided by engineer. */
+"BraveRewardsSummaryTitle" = "Resumen de Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsThreeAdsPerHour" = "3 anuncios por hora";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingAmountTitle" = "Importe de la propina";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingBalanceTitle" = "saldo";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingConfirmation" = "Gracias";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingMakeMonthly" = "Todos los meses";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingMonthlyTitle" = "Va a enviarle automáticamente una propina a:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotEnoughPoints" = "No hay suficientes puntos.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotEnoughTokens" = "No hay suficientes tokens.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOneTimeTitle" = "Acaba de enviarle una propina a:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOverviewBody" = "Puede apoyar a este creador de contenido con una propina. Es una forma de darle las gracias por hacer contenido de calidad. Los creadores verificados reciben sus propinas la primera semana de cada mes.\n\nSi lo desea, puede programar el pago de propinas mensuales para apoyar a este creador de forma continua.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOverviewTitle" = "¡Le damos la bienvenida!";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingRecurring" = "Todos los meses";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingRecurringDetails" = "Su primera propina mensual se enviará el:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingSendMonthlyTip" = "Fijar una propina mensual";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingSendTip" = "Enviar mi propina";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingTitle" = "Envíe una propina";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingUnverifiedDisclaimer" = "NOTA: Este creador aún no se ha registrado para recibir contribuciones de los usuarios de Brave. Su navegador seguirá intentando contribuir hasta que el creador se verifique o hasta que hayan transcurrido 90 días.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingWalletBalanceTitle" = "saldo de la cartera";
+
+/* No comment provided by engineer. */
+"BraveRewardsTips" = "Propinas";
+
+/* No comment provided by engineer. */
+"BraveRewardsTipsTotalThisMonth" = "Total de propinas de este mes";
+
+/* No comment provided by engineer. */
+"BraveRewardsTokens" = "Tokens";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalGrantsClaimed" = "Subvenciones en tokens reclamadas";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalSites" = "Total de %ld";
+
+/* No comment provided by engineer. */
+"BraveRewardsTwoAdsPerHour" = "2 anuncios por hora";
+
+/* No comment provided by engineer. */
+"BraveRewardsUnverifiedPublisherDisclaimer" = "Este creador aún no se ha registrado para recibir contribuciones de los usuarios de Brave. Si le envía alguna propina, esta permanecerá en su cartera hasta que se verifique.";
+
+/* No comment provided by engineer. */
+"BraveRewardsVerified" = "Creador verificado de Brave";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletDetailsTitle" = "Detalles de la cartera";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderDetails" = "Detalles";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderGrants" = "Subvenciones";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderTitle" = "Su cartera";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderTitleJapan" = "Su saldo";
+
+/* No comment provided by engineer. */
+"Cancel" = "Cancelar";
+
+/* No comment provided by engineer. */
+"CLAIM" = "RECLAMAR";
+
+/* No comment provided by engineer. */
+"DisclaimerInformation" = "Al hacer clic en \"Unirse a Brave Rewards\", indica que ha leído y está de acuerdo con las Condiciones de uso y la Política de privacidad.";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "Toque aquí para obtener más información.";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "Este es su primer anuncio de Brave";
+
+/* Body for a no network notification */
+"NoNetworkBody" = "El servidor de Brave Rewards no responde. Solucionaremos esto lo antes posible.";
+
+/* Title for a no network notification */
+"NoNetworkTitle" = "¡Vaya!";
+
+/* We show this string in the notification when you don't have enough funds for contribution */
+"NotificationAutoContributeNotEnoughFundsBody" = "Su pago mensual programado para la contribución automática y las propinas mensuales no se han podido enviar debido a una insuficiencia de fondos. Lo intentaremos de nuevo dentro de 30 días.";
+
+/* Message for ads launch notification */
+"NotificationBraveAdsLaunchMsg" = "Ya puede obtener ganancias viendo anuncios.";
+
+/* We show this string in notification when contribution fails */
+"NotificationContributeError" = "Ha ocurrido un problema al procesar su contribución.";
+
+/* We show this string in notification when contribution fails */
+"NotificationContributeNotificationError" = "Ha ocurrido un problema al procesar su contribución.";
+
+/* We show this string in the notification when contribution is successful */
+"NotificationContributeSuccess" = "Ha contribuido con %@";
+
+/* We show this string in notification when tip fails */
+"NotificationContributeTipError" = "No se puede enviar su propina. Inténtelo de nuevo más tarde.";
+
+/* Panel notification text for Ads grant */
+"NotificationEarningsClaimDefault" = "¡Ya están aquí sus recompensas de Brave Ads!";
+
+/* Title for an error notification */
+"NotificationErrorTitle" = "¡Vaya!";
+
+/* Description for new grant notification */
+"NotificationGrantNotification" = "Hay una subvención esperándole.";
+
+/* Description for new insufficient funds notification */
+"NotificationinsufficientFunds" = "Su cuenta de Brave Rewards está esperando un depósito.";
+
+/* Title for insufficient funds notification */
+"NotificationInsufficientFundsTitle" = "Fondos insuficientes";
+
+/* Notification title for pending contribution type */
+"NotificationPendingContributionTitle" = "Contribución pendiente";
+
+/* Notification text that tells user his wallet is under funded for pending contribution to complete */
+"NotificationPendingNotEnoughFunds" = "Tiene propinas pendientes debido a una insuficiencia de fondos";
+
+/* Message for monthly tips processed notification */
+"NotificationTipsProcessedBody" = "¡Se han procesado sus propinas mensuales!";
+
+/* Notification text that tells user which publisher just verified */
+"NotificationVerifiedPublisherBody" = "Creador %@, verificado recientemente";
+
+/* No comment provided by engineer. */
+"OK" = "Aceptar";
+
+/* Text describing the type of contribution */
+"OneTimeText" = "Ocasional";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "en %@";
+
+/* No comment provided by engineer. */
+"PrivacyPolicyURL" = "Política de privacidad";
+
+/* Text describing the type of contribution */
+"RecurringText" = "Periódica";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescription" = "Ya puede ganar tokens por ver anuncios respetuosos con su privacidad.";
+
+/* No comment provided by engineer. */
+"RewardsOptInJoinTitle" = "Unirse a Brave Rewards";
+
+/* No comment provided by engineer. */
+"RewardsOptInLearnMore" = "Más información";
+
+/* No comment provided by engineer. */
+"RewardsOptInPrefix" = "Prepárese para disfrutar del próximo modelo de Internet.";
+
+/* No comment provided by engineer. */
+"TermsOfServiceURL" = "Condiciones de uso";
+
+/* No comment provided by engineer. */
+"TipSiteMonthly" = "Envíe una propina a este sitio todos los meses";
+
+/* Prompt to turn on Ads via notification */
+"TurnOnAds" = "Activar Brave Ads";
+
+/* No comment provided by engineer. */
+"WalletCreationErrorBody" = "Uy, algo salió mal. Inténtelo de nuevo.";
+
+/* No comment provided by engineer. */
+"WalletCreationErrorTitle" = "Error";
+
+/* No comment provided by engineer. */
+"WelcomeDisclaimerInformation" = "Al hacer clic en \"¡Sí, me interesa!\", indica que ha leído y acepta las Condiciones de uso y la Política de privacidad.";
+

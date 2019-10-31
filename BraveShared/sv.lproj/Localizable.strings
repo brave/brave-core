@@ -1,8 +1,50 @@
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Nej";
 
+/* Title for ads onboarding screen */
+"OBAdsTitle" = "Brave visar din första annons om";
+
+/* Title for when the user completes onboarding */
+"OBCompleteTitle" = "Nu är du redo att sätta igång.";
+
+/* Button to show information on how to enable ads */
+"OBDidntSeeAdButton" = "Jag såg ingen annons";
+
+/* A generic error body for onboarding */
+"OBErrorDetails" = "Någonting gick fel när din plånbok skapades. Försök igen.";
+
+/* No comment provided by engineer. */
+"OBErrorOkay" = "Okej";
+
+/* A generic error title for onboarding */
+"OBErrorTitle" = "Tyvärr";
+
 /* Button to finish onboarding and start using the app. */
 "OBFinishButton" = "Börja bläddra";
+
+/* Button to join Brave Rewards. */
+"OBJoinButton" = "Gå med";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetail" = "Genom att aktivera Rewards godkänner du";
+
+/* Detail text for rewards agreement onboarding screen */
+"OBRewardsAgreementDetailLink" = "Tjänstevillkor";
+
+/* Title for rewards agreement onboarding screen */
+"OBRewardsAgreementTitle" = "Brave Rewards";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegion" = "Tjäna mynt genom att se på annonser som respekterar din integritet. Använd dem för att stötta sajter och skapare du gillar.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailInAdRegionJapan" = "Tjäna poäng genom att se på annonser som respekterar din integritet. Använd dem för att stötta sajter och skapare du gillar.";
+
+/* Detail text for rewards onboarding screen */
+"OBRewardsDetailOutsideAdRegion" = "Stötta webbplatser och skapare baserat på hur mycket tid du ger dem.";
+
+/* Title for rewards onboarding screen */
+"OBRewardsTitle" = "Brave Rewards";
 
 /* Save button to save current selection */
 "OBSaveButton" = "Spara";
@@ -18,6 +60,12 @@
 
 /* Title for shields onboarding screen */
 "OBShieldsTitle" = "Brave Shields";
+
+/* Button to show the Brave Rewards Ads. */
+"OBShowMeButton" = "Visa";
+
+/* Button to show Brave Rewards. */
+"OBTurnOnButton" = "Aktivera";
 
 /* Continue button to navigate to next onboarding screen. */
 "OnboardingContinueButton" = "Fortsätt";

@@ -1,0 +1,537 @@
+/* No comment provided by engineer. */
+"BATPoints" = "BAT-poäng";
+
+/* Words that should be bolded in the BAT Points disclaimer */
+"BATPointsBoldedWords" = "BAT-poäng";
+
+/* Disclaimer about BAT Points for JP users */
+"BATPointsDisclaimer" = "BAT-poäng kan användas för att donera till dina favoritskapare. BAT-poäng kan inte bytas in mot BAT.";
+
+/* No comment provided by engineer. */
+"BraveRewards" = "Brave Rewards™";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFunds" = "Sätt in pengar";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsBody" = "Se till att adressen nedan matchar den sorts kryptovaluta du äger. Uphold konverterar den automatiskt till BAT och lägger till den i din Brave Rewards-plånbok. Det kan ta upp till en timme innan saldot i plånboken uppdateras.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsDisclaimer" = "Påminnelse: Brave-plånboken fungerar åt båda hållen och BAT går vidare till utgivares webbplatser. Se vanliga frågor om Brave Rewards för mer information.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsShowQRCode" = "Visa QR-kod";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsTitle" = "Skicka kryptovaluta från ditt externa konto till din Brave Rewards-plånbok.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsTokenWalletAddress" = "Plånboksadress";
+
+/* No comment provided by engineer. */
+"BraveRewardsAddFundsVCTitle" = "Sätt in pengar";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationsReceived" = "Mottagna annonsnotiser den här månaden";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdNotificationTitle" = "Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsEstimatedEarnings" = "Uppskattade väntande belöningar";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsMaxPerDay" = "Maximalt antal annonser visade";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsPayoutDateFormat" = "MMM d";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsUnsupportedDvice" = "Brave Rewards och Ads är inte tillgängliga på din enhet just nu.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsUnsupportedRegion" = "Tyvärr! Annonser är inte tillgängliga i din region än.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAttention" = "Viktigt";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContribute" = "Donera automatiskt";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeDateFormat" = "MMM d";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumLength" = "Minsta sidtid";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumLengthMessage" = "Minsta sidtid innan besök registreras";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumVisits" = "Minsta antal besök";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMinimumVisitsMessage" = "Minsta antal besök för utgivarrelevans";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMonthlyPayment" = "Månadsbetalning";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeMonthlyPaymentTitle" = "Månadsbetalning";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeNextDate" = "Nästa donationsdatum";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeRestoreExcludedSites" = "Återställ %ld exkluderade webbplatser";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeSupportedSites" = "Webbplatser som stöds";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeToUnverifiedSites" = "Tillåt donationer till obekräftade webbplatser";
+
+/* No comment provided by engineer. */
+"BraveRewardsAutoContributeToVideos" = "Tillåt donationer till videor";
+
+/* No comment provided by engineer. */
+"BraveRewardsCheckAgain" = "Uppdatera status";
+
+/* No comment provided by engineer. */
+"BraveRewardsContributingToUnverifiedSites" = "Du har satt @% åt sidan till skapare som inte har anmält sig för att ta emot donationer. Din webbläsare kommer fortsätta att försöka donera tills de bekräftar, eller tills 90 dagar har passerat.";
+
+/* No comment provided by engineer. */
+"BraveRewardsCreatingWallet" = "Skapar plånbok";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledBody" = "Tjäna på att titta på annonser som respekterar din integritet, och ge tillbaka genom att stötta skapare du gillar.";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledEnableButton" = "Aktivera Brave Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledSubtitle" = "Bli belönad för att surfa!";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisabledTitle" = "Välkommen tillbaka!";
+
+/* No comment provided by engineer. */
+"BraveRewardsDisclaimerLearnMore" = "Lär dig mer";
+
+/* No comment provided by engineer. */
+"BraveRewardsEarningFromAds" = "Tjäna på annonser";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyAutoContribution" = "Listan fylls på med webbplatser ju mer du surfar";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyTipsText" = "Har du gett dricks till dina favoritskapare idag?";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyWalletBody" = "Se ditt saldo växa medan du tittar på annonser som respekterar din integritet i Brave.";
+
+/* No comment provided by engineer. */
+"BraveRewardsEmptyWalletTitle" = "Din plånbok är redo att användas.";
+
+/* No comment provided by engineer. */
+"BraveRewardsExclude" = "Exkludera";
+
+/* No comment provided by engineer. */
+"BraveRewardsFiveAdsPerHour" = "5 annonser i timmen";
+
+/* No comment provided by engineer. */
+"BraveRewardsFourAdsPerHour" = "4 annonser i timmen";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantListExpiresOn" = "Går ut den %@";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrants" = "Bidrag";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedAmountTitle" = "Gratis myntbidrag";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedExpirationDateTitle" = "Bidragets utgångsdatum";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitle" = "Ditt myntbidrag är på väg.";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedTitle" = "Grattis!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBody" = "Din tid är dyrbar. Tjäna på att se på annonser som respekterar din integritet, och ge tillbaka genom att stötta skapare du gillar.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBraveAdsBody" = "Få betalt för att se på annonser som respekterar din integritet.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreBraveAdsTitle" = "Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreCreateWallet1" = "Ja, jag är med!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreCreateWallet2" = "Ja, jag är redo!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreHowItWorks" = "Så här funkar det";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreReady" = "Är du redo att sätta igång?";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreSubtitle" = "Bli belönad när du surfar!";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTipsBody" = "Stötta dina favoritsajter genom att surfa på dem – eller ge dricks till vilken webbplats som helst.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTipsTitle" = "Donera automatiskt";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTurnOnRewardsBody" = "Det här aktiverar både annonser och automatiska donationer. De kan aktiveras eller stängas av enskilt när som helst.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreTurnOnRewardsTitle" = "Aktivera Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreWhyBody" = "I din gamla webbläsare betalade du för att surfa på nätet med din dyrbara tid. Bara genom att vara på nätet laddade du ner snokande annonsteknologi som skickade uppgifter om dig till annonsörer, utan ditt medtycke.\n\nNu slår Brave upp dörrarna för ett nytt internet. Ett där du kompenseras för din tid, dina uppgifter skyddas och du får betalt för att medverka.";
+
+/* No comment provided by engineer. */
+"BraveRewardsLearnMoreWhyTitle" = "Varför Brave Rewards?";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices0" = "5 sekunder";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices1" = "8 sekunder";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumLengthChoices2" = "1 minut";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices0" = "1 besök";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices1" = "5 besök";
+
+/* No comment provided by engineer. */
+"BraveRewardsMinimumVisitsChoices2" = "10 besök";
+
+/* No comment provided by engineer. */
+"BraveRewardsMonthlyTips" = "Månatlig dricks";
+
+/* No comment provided by engineer. */
+"BraveRewardsNoActivitiesYet" = "Inga aktiviteter än…";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationAdsTitle" = "Brave-annonser";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationAutoContributeTitle" = "Donera automatiskt";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationRecurringTipTitle" = "Automatisk dricks";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationTokenGrantTitle" = "Myntbidrag";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotYetVerified" = "Obekräftad";
+
+/* No comment provided by engineer. */
+"BraveRewardsNumberOfAdsPerHourOptionsTitle" = "Annonser i timmen";
+
+/* No comment provided by engineer. */
+"BraveRewardsOneAdPerHour" = "1 annons i timmen";
+
+/* No comment provided by engineer. */
+"BraveRewardsOneTimeTips" = "Engångsdricks";
+
+/* No comment provided by engineer. */
+"BraveRewardsOpen" = "Öppna";
+
+/* No comment provided by engineer. */
+"BraveRewardsPanelTitle" = "Rewards";
+
+/* No comment provided by engineer. */
+"BraveRewardsPaymentDate" = "Nästa betalningsdatum";
+
+/* No comment provided by engineer. */
+"BraveRewardsPoweredByUphold" = "Din Brave-plånbok drivs av Uphold";
+
+/* No comment provided by engineer. */
+"BraveRewardsPublisherSendTip" = "Skicka dricks…";
+
+/* No comment provided by engineer. */
+"BraveRewardsRecurringTipTitle" = "Automatisk dricks";
+
+/* No comment provided by engineer. */
+"BraveRewardsRemove" = "Ta bort";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettings" = "Inställningar";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBody" = "Få mynt genom att se på annonser i Brave. De annonser som visas är baserade på hur du surfar på nätet. Dina personuppgifter och din sökhistorik lämnar aldrig din dator.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsComingSoonText" = "Kommer snart.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsGrantAmountText" = "Dina annonsintäkter. %@ tillgängliga.";
+
+/* Example: <10 BAT> earned from ads */
+"BraveRewardsSettingsAdsGrantText" = "intjänade från annonser";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsTitle" = "Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAutoContributeBody" = "Ett automatiskt sätt att stötta utgivare och innehållsskapare. Ställ in en månatlig betalning och surfa som vanligt. Sajterna du besöker får donationer baserade på din uppmärksamhet automatiskt.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAutoContributeTitle" = "Donera automatiskt";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledBody1" = "I din gamla webbläsare betalade du för att surfa på nätet med din dyrbara tid. Bara genom att vara på nätet laddade du ner snokande annonsteknologi som skickade uppgifter om dig till annonsörer, utan ditt medtycke.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledBody2" = "Ett där du kompenseras för din tid, dina uppgifter skyddas och du får betalt för att medverka.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledTitle1" = "Varför Brave Rewards?";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsDisabledTitle2" = "Nu slår Brave upp dörrarna för ett nytt internet.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantClaimButtonTitle" = "Hämta";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantText" = "Du har ett gratis myntbidrag som väntar på dig.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsBody" = "Dricksa innehållsskapare direkt medan du surfar. Du kan även ställa in dricks som betalas automatiskt månatligen för att ge ditt ständiga stöd till sajter.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTipsTitle" = "Dricks";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsTitle" = "Inställningar";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsViewDetails" = "Visa detaljer";
+
+/* No comment provided by engineer. */
+"BraveRewardsSite" = "Webbplats";
+
+/* No comment provided by engineer. */
+"BraveRewardsSummaryTitle" = "Rewards-sammanfattning";
+
+/* No comment provided by engineer. */
+"BraveRewardsThreeAdsPerHour" = "3 annonser i timmen";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingAmountTitle" = "Dricks";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingBalanceTitle" = "saldo";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingConfirmation" = "Tack";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingMakeMonthly" = "Betala varje månad";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingMonthlyTitle" = "Du dricksar automatiskt till:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotEnoughPoints" = "För lite poäng.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingNotEnoughTokens" = "För få mynt.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOneTimeTitle" = "Du har dricksat:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOverviewBody" = "Du kan stötta den här innehållsskaparen med dricks. Det är ett sätt att säga tack. Bekräftade skapare får sin dricks utbetalad första veckan varje kalendermånad.\n\nOm du vill kan du ställa in att betala dricks löpande till skaparen.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingOverviewTitle" = "Välkommen!";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingRecurring" = "Månatlig";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingRecurringDetails" = "Din första månatliga dricks skickas den:";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingSendMonthlyTip" = "Ställ in månatlig dricks";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingSendTip" = "Skicka dricks";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingTitle" = "Skicka dricks";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingUnverifiedDisclaimer" = "Obs! Den här skaparen har inte anmält sig för att få donationer från Brave-användare. Din webbläsare kommer fortsätta försöka till skaparen har bekräftat sig, eller tills 90 dagar har passerat.";
+
+/* No comment provided by engineer. */
+"BraveRewardsTippingWalletBalanceTitle" = "plånbokssaldo";
+
+/* No comment provided by engineer. */
+"BraveRewardsTips" = "Dricks";
+
+/* No comment provided by engineer. */
+"BraveRewardsTipsTotalThisMonth" = "Total dricks den här månaden";
+
+/* No comment provided by engineer. */
+"BraveRewardsTokens" = "Mynt";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalGrantsClaimed" = "Hämtade myntbidrag";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalSites" = "Totalt antal %ld";
+
+/* No comment provided by engineer. */
+"BraveRewardsTwoAdsPerHour" = "2 annonser i timme";
+
+/* No comment provided by engineer. */
+"BraveRewardsUnverifiedPublisherDisclaimer" = "Den här skaparen har inte anmält sig för att få donationer från Brave-användare. Din dricks lämnar inte plånboken förrän skaparen har bekräftat sig.";
+
+/* No comment provided by engineer. */
+"BraveRewardsVerified" = "Skapare bekräftad av Brave";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletDetailsTitle" = "Plånboksuppgifter";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderDetails" = "Uppgifter";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderGrants" = "Bidrag";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderTitle" = "Din plånbok";
+
+/* No comment provided by engineer. */
+"BraveRewardsWalletHeaderTitleJapan" = "Ditt saldo";
+
+/* No comment provided by engineer. */
+"Cancel" = "Avbryt";
+
+/* No comment provided by engineer. */
+"CLAIM" = "HÄMTA";
+
+/* No comment provided by engineer. */
+"DisclaimerInformation" = "Genom att klicka på \"Gå med i Rewards\" intygar du att du har läst och godkänner tjänstevillkoren och integritetspolicyn.";
+
+/* No comment provided by engineer. */
+"MyFirstAdBody" = "Tryck här för att läsa mer.";
+
+/* No comment provided by engineer. */
+"MyFirstAdTitle" = "Det här är din första Brave-annons";
+
+/* Body for a no network notification */
+"NoNetworkBody" = "Brave Rewards-servern svarar inte. Vi kommer att åtgärda det så fort som möjligt.";
+
+/* Title for a no network notification */
+"NoNetworkTitle" = "Aj då!";
+
+/* We show this string in the notification when you don't have enough funds for contribution */
+"NotificationAutoContributeNotEnoughFundsBody" = "Dina månatliga automatiska donationer och dricksbetalningar kunde inte behandlas; du har för lite pengar. Vi försöker igen om 30 dagar.";
+
+/* Message for ads launch notification */
+"NotificationBraveAdsLaunchMsg" = "Nu kan du tjäna pengar på att se på annonser.";
+
+/* We show this string in notification when contribution fails */
+"NotificationContributeError" = "Det gick inte att behandla donationen.";
+
+/* We show this string in notification when contribution fails */
+"NotificationContributeNotificationError" = "Det gick inte att behandla donationen.";
+
+/* We show this string in the notification when contribution is successful */
+"NotificationContributeSuccess" = "Du har donerat %@";
+
+/* We show this string in notification when tip fails */
+"NotificationContributeTipError" = "Kunde inte dricksa. Försök igen senare.";
+
+/* Panel notification text for Ads grant */
+"NotificationEarningsClaimDefault" = "Du har fått dina belöningar från Ads!";
+
+/* Title for an error notification */
+"NotificationErrorTitle" = "Aj då!";
+
+/* Description for new grant notification */
+"NotificationGrantNotification" = "Du har ett bidrag att hämta ut.";
+
+/* Description for new insufficient funds notification */
+"NotificationinsufficientFunds" = "Ditt Brave Rewards-konto väntar på en insättning.";
+
+/* Title for insufficient funds notification */
+"NotificationInsufficientFundsTitle" = "För lite pengar";
+
+/* Notification title for pending contribution type */
+"NotificationPendingContributionTitle" = "Väntande donation";
+
+/* Notification text that tells user his wallet is under funded for pending contribution to complete */
+"NotificationPendingNotEnoughFunds" = "Du har dricks som inte betalats på grund av för lite pengar.";
+
+/* Message for monthly tips processed notification */
+"NotificationTipsProcessedBody" = "Dina månatliga dricksbetalningar har behandlats!";
+
+/* Notification text that tells user which publisher just verified */
+"NotificationVerifiedPublisherBody" = "Skaparen %@ har nyligen bekräftats";
+
+/* No comment provided by engineer. */
+"OK" = "OK";
+
+/* Text describing the type of contribution */
+"OneTimeText" = "En gång";
+
+/* This is a suffix statement. example: SomeChannel on Twitter */
+"OnProviderText" = "på %@";
+
+/* No comment provided by engineer. */
+"PrivacyPolicyURL" = "Integritetspolicy";
+
+/* Text describing the type of contribution */
+"RecurringText" = "Återkommande";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescription" = "Nu kan du tjäna mynt när du ser på annonser som respekterar din integritet.";
+
+/* No comment provided by engineer. */
+"RewardsOptInJoinTitle" = "Gå med i Rewards";
+
+/* No comment provided by engineer. */
+"RewardsOptInLearnMore" = "Lär dig mer";
+
+/* No comment provided by engineer. */
+"RewardsOptInPrefix" = "Gör dig redo att uppleva det nya internet.";
+
+/* No comment provided by engineer. */
+"TermsOfServiceURL" = "Tjänstevillkor";
+
+/* No comment provided by engineer. */
+"TipSiteMonthly" = "Dricksa sajten varje månad";
+
+/* Prompt to turn on Ads via notification */
+"TurnOnAds" = "Aktivera annonser";
+
+/* No comment provided by engineer. */
+"WalletCreationErrorBody" = "Hoppsan! Någonting gick fel. Försök igen.";
+
+/* No comment provided by engineer. */
+"WalletCreationErrorTitle" = "Fel";
+
+/* No comment provided by engineer. */
+"WelcomeDisclaimerInformation" = "Genom att klicka på \"Ja, jag är med!\" intygar du att du har läst och godkänner tjänstevillkoren och integritetspolicyn.";
+
