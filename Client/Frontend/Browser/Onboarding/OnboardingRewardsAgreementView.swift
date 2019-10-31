@@ -60,7 +60,8 @@ extension OnboardingRewardsAgreementViewController {
         }
         
         private let subtitleLabel = CommonViews.secondaryText("").then {
-            $0.attributedText = BraveAds.isCurrentRegionSupported() ?  Strings.OBRewardsDetailInAdRegion.boldWords(with: $0.font, amount: 2) : Strings.OBRewardsDetailOutsideAdRegion.boldWords(with: $0.font, amount: 1)
+            let adSupportedRegionText = Locale.current.isJapan ? Strings.OBRewardsDetailInAdRegionJapan : Strings.OBRewardsDetailInAdRegion
+            $0.attributedText = BraveAds.isCurrentRegionSupported() ?  adSupportedRegionText.boldWords(with: $0.font, amount: 2) : Strings.OBRewardsDetailOutsideAdRegion.boldWords(with: $0.font, amount: 1)
         }
         
         private lazy var descriptionLabel = UITextView().then {
