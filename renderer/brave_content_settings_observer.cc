@@ -18,7 +18,10 @@
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "content/public/renderer/render_frame.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
+#include "third_party/blink/public/common/browser_interface_broker_proxy.h"
+#include "third_party/blink/public/mojom/permissions/permission.mojom.h"
 #include "third_party/blink/public/mojom/permissions/permission.mojom-blink.h"
 #include "third_party/blink/public/mojom/permissions/permission.mojom-blink-forward.h"
 #include "third_party/blink/public/platform/web_url.h"
@@ -263,32 +266,32 @@ bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
     }
   }
 
-  blink::mojom::blink::PermissionServicePtr permission_service;
+  mojo::Remote<blink::mojom::PermissionService> permission_service;
 
-  render_frame()->GetRemoteInterfaces()
-    ->GetInterface(mojo::MakeRequest(&permission_service));
+  render_frame()->GetBrowserInterfaceBroker()
+    ->GetInterface(permission_service.BindNewPipeAndPassReceiver());
 
   if (permission_service.get()) {
     // Check (synchronously) whether we already have permission to autoplay.
     // This may call the autoplay whitelist service in the UI thread, which
     // we need to wait for.
     auto has_permission_descriptor =
-        blink::mojom::blink::PermissionDescriptor::New();
+        blink::mojom::PermissionDescriptor::New();
     has_permission_descriptor->name =
-        blink::mojom::blink::PermissionName::AUTOPLAY;
+        blink::mojom::PermissionName::AUTOPLAY;
     blink::mojom::blink::PermissionStatus status;
     if (permission_service->HasPermission(
             std::move(has_permission_descriptor), &status)) {
-      allow = status == blink::mojom::blink::PermissionStatus::GRANTED;
+      allow = status == blink::mojom::PermissionStatus::GRANTED;
       if (!allow) {
         // Request permission (asynchronously) but exit this function without
         // allowing autoplay. Depending on settings and previous user choices,
         // this may display visible permissions UI, or an "autoplay blocked"
         // message, or nothing. In any case, we can't wait for it now.
         auto request_permission_descriptor =
-            blink::mojom::blink::PermissionDescriptor::New();
+            blink::mojom::PermissionDescriptor::New();
         request_permission_descriptor->name =
-            blink::mojom::blink::PermissionName::AUTOPLAY;
+            blink::mojom::PermissionName::AUTOPLAY;
         permission_service->RequestPermission(
             std::move(request_permission_descriptor), true, base::DoNothing());
       }
