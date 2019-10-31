@@ -36,7 +36,8 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController {
   void UpdateCommandForBraveWallet();
 
   bool ExecuteBraveCommandWithDisposition(int id,
-                                          WindowOpenDisposition disposition);
+                                          WindowOpenDisposition disposition,
+                                          base::TimeTicks time_stamp);
 
   Browser* const browser_;
 
