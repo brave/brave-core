@@ -13,7 +13,8 @@ import {
   Footer,
   App,
   PosterBackground,
-  Gradient
+  Gradient,
+  RewardsWidget as Rewards
 } from '../../components/default'
 
 // Components
@@ -29,15 +30,18 @@ interface Props {
   saveShowClock: (value: boolean) => void
   saveShowTopSites: (value: boolean) => void
   saveShowStats: (value: boolean) => void
+  saveShowRewards: (value: boolean) => void
 }
 
 interface State {
+  onlyAnonWallet: boolean
   showSettingsMenu: boolean
   backgroundHasLoaded: boolean
 }
 
 class NewTabPage extends React.Component<Props, State> {
   state = {
+    onlyAnonWallet: false,
     showSettingsMenu: false,
     backgroundHasLoaded: false
   }
@@ -128,6 +132,28 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
+  toggleShowRewards = () => {
+    this.props.saveShowRewards(
+      !this.props.newTabData.showRewards
+    )
+  }
+
+  enableAds = () => {
+    chrome.braveRewards.saveAdsSetting('adsEnabled', 'true')
+  }
+
+  enableRewards = () => {
+    this.props.actions.onRewardsSettingSave('enabledMain', '1')
+  }
+
+  createWallet = () => {
+    this.props.actions.createWallet()
+  }
+
+  dismissNotification = (id: string) => {
+    this.props.actions.dismissNotification(id)
+  }
+
   closeSettings = () => {
     this.setState({ showSettingsMenu: false })
   }
@@ -139,6 +165,7 @@ class NewTabPage extends React.Component<Props, State> {
   render () {
     const { newTabData, actions } = this.props
     const { showSettingsMenu } = this.state
+    const { rewardsState } = newTabData
 
     if (!newTabData) {
       return null
@@ -172,6 +199,17 @@ class NewTabPage extends React.Component<Props, State> {
               textDirection={newTabData.textDirection}
               showWidget={newTabData.showClock}
               hideWidget={this.toggleShowClock}
+              menuPosition={'left'}
+            />
+            <Rewards
+              {...rewardsState}
+              onCreateWallet={this.createWallet}
+              onEnableAds={this.enableAds}
+              onEnableRewards={this.enableRewards}
+              textDirection={newTabData.textDirection}
+              showWidget={newTabData.showRewards}
+              hideWidget={this.toggleShowRewards}
+              onDismissNotification={this.dismissNotification}
               menuPosition={'left'}
             />
             {this.props.newTabData.gridSites.length ? <List
@@ -223,6 +261,8 @@ class NewTabPage extends React.Component<Props, State> {
               showClock={newTabData.showClock}
               showStats={newTabData.showStats}
               showTopSites={newTabData.showTopSites}
+              showRewards={newTabData.showRewards}
+              toggleShowRewards={this.toggleShowRewards}
             />
           </Footer>
         </Page>

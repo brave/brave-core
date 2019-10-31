@@ -14,6 +14,7 @@ const defaultState: NewTab.State = {
   showStats: false,
   showClock: false,
   showTopSites: false,
+  showRewards: false,
   topSites: [],
   ignoredTopSites: [],
   pinnedTopSites: [],
@@ -29,6 +30,24 @@ const defaultState: NewTab.State = {
     javascriptBlockedStat: 0,
     httpsUpgradesStat: 0,
     fingerprintingBlockedStat: 0
+  },
+  rewardsState: {
+    adsEstimatedEarnings: 0,
+    balance: {
+      total: 0,
+      rates: {},
+      wallets: {}
+    },
+    dismissedNotifications: [],
+    enabledAds: false,
+    enabledMain: false,
+    grants: [],
+    onlyAnonWallet: false,
+    totalContribution: '0.0',
+    walletCreated: false,
+    walletCreating: false,
+    walletCreateFailed: false,
+    walletCorrupted: false
   }
 }
 
@@ -46,7 +65,8 @@ const getPersistentData = (state: NewTab.State): NewTab.PersistentState => {
     pinnedTopSites: state.pinnedTopSites,
     gridSites: state.gridSites,
     showEmptyPage: state.showEmptyPage,
-    bookmarks: state.bookmarks
+    bookmarks: state.bookmarks,
+    rewardsState: state.rewardsState
   }
 
   return peristantState
