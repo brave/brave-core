@@ -14,6 +14,7 @@ declare_args() {
   mac_notarized_output_prefix = "notarized"
   notary_user = ""
   notary_password = ""
+  notary_asc_provider = "KL8N8XSYF4" # brave team id
   notarize = false
   notarize_argument = "False"
 }
@@ -161,7 +162,8 @@ if (skip_signing) {
       mac_signing_identifier,
       notarize_argument,
       notary_user,
-      notary_password
+      notary_password,
+      notary_asc_provider
     ]
   }
 
@@ -315,6 +317,8 @@ if (skip_signing) {
       notary_user,
       "--notary-password",
       notary_password,
+      "--notary-asc-provider",
+      notary_asc_provider,
       development_arg,
       "--dmg",
       rebase_path("$root_out_dir/$mac_signed_output_prefix/$brave_dmg"),

@@ -65,6 +65,8 @@ def GenerateBraveWidevineSigFile(paths, config, part):
 def AddBravePartsForSigning(parts, config):
     from signing.model import CodeSignedProduct, VerifyOptions, CodeSignOptions
 
+    development = config.provisioning_profile_basename == None
+
     # Add libs
     brave_dylibs = (
         'libchallenge_bypass_ristretto.dylib',
@@ -79,10 +81,11 @@ def AddBravePartsForSigning(parts, config):
             verify_options=VerifyOptions.DEEP)
 
     # Add Sparkle
-    parts['sparkle-framework'] = CodeSignedProduct(
-        '{.framework_dir}/Frameworks/Sparkle.framework'.format(config),
-        'org.sparkle-project.Sparkle',
-        verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
+    if not development:
+        parts['sparkle-framework'] = CodeSignedProduct(
+            '{.framework_dir}/Frameworks/Sparkle.framework'.format(config),
+            'org.sparkle-project.Sparkle',
+            verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
 
     # Overwrite to avoid TeamID mismatch with widevine dylib.
     parts['helper-app'].entitlements = 'helper-entitlements.plist'
