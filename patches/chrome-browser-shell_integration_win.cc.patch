@@ -1,19 +1,65 @@
 diff --git a/chrome/browser/shell_integration_win.cc b/chrome/browser/shell_integration_win.cc
-index 9b05880c7b94700e2cbfdddcd8e0b95cd11f7c4e..08e519ba345854aa29dc5927b58fe6325228e55d 100644
+index 9b05880c7b94700e2cbfdddcd8e0b95cd11f7c4e..f6b4919378cc72bffe1e95d261566364e3a06e4b 100644
 --- a/chrome/browser/shell_integration_win.cc
 +++ b/chrome/browser/shell_integration_win.cc
-@@ -588,6 +588,14 @@ bool IsFirefoxDefaultBrowser() {
-          app_cmd == L"FirefoxURL";
+@@ -492,6 +492,15 @@ void IsPinnedToTaskbarHelper::OnIsPinnedToTaskbarResult(
+   delete this;
  }
  
-+bool IsIEDefaultBrowser() {
-+  base::string16 app_cmd;
++base::string16 GetHttpProtocolUserChoiceProgId() {
++  base::string16 prog_id;
 +  base::win::RegKey key(HKEY_CURRENT_USER, ShellUtil::kRegVistaUrlPrefs,
-+                        KEY_READ);
-+  return key.Valid() && key.ReadValue(L"Progid", &app_cmd) == ERROR_SUCCESS &&
-+         app_cmd == L"IE.HTTP";
++                        KEY_QUERY_VALUE);
++  if (key.Valid())
++    key.ReadValue(L"ProgId", &prog_id);
++  return prog_id;
++}  
++
+ }  // namespace
+ 
+ bool SetAsDefaultBrowser() {
+@@ -569,23 +578,28 @@ DefaultWebClientState GetDefaultBrowser() {
+       ShellUtil::GetChromeDefaultState());
+ }
+ 
+-// There is no reliable way to say which browser is default on a machine (each
+-// browser can have some of the protocols/shortcuts). So we look for only HTTP
+-// protocol handler. Even this handler is located at different places in
+-// registry on XP and Vista:
+-// - HKCR\http\shell\open\command (XP)
+-// - HKCU\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\
+-//   http\UserChoice (Vista)
+-// This method checks if Firefox is default browser by checking these
+-// locations and returns true if Firefox traces are found there. In case of
+-// error (or if Firefox is not found)it returns the default value which
+-// is false.
++// This method checks if Firefox is default browser by checking for the default
++// HTTP protocol handler. Returns false in case of error or if Firefox is not
++// the user's default http protocol client.
+ bool IsFirefoxDefaultBrowser() {
+-  base::string16 app_cmd;
+-  base::win::RegKey key(HKEY_CURRENT_USER, ShellUtil::kRegVistaUrlPrefs,
+-                        KEY_READ);
+-  return key.Valid() && key.ReadValue(L"Progid", &app_cmd) == ERROR_SUCCESS &&
+-         app_cmd == L"FirefoxURL";
++  return base::StartsWith(GetHttpProtocolUserChoiceProgId(), L"FirefoxURL",
++                          base::CompareCase::SENSITIVE);
 +}
 +
++std::string GetFirefoxProgIdSuffix() {
++  const base::string16 app_cmd = GetHttpProtocolUserChoiceProgId();
++  static constexpr base::StringPiece16 kFirefoxProgIdPrefix(L"FirefoxURL-");
++  if (base::StartsWith(app_cmd, kFirefoxProgIdPrefix,
++                       base::CompareCase::SENSITIVE)) {
++    // Returns the id that appears after the prefix "FirefoxURL-".
++    return std::string(app_cmd.begin() + kFirefoxProgIdPrefix.size(),
++                       app_cmd.end());
++  }
++  return std::string();
++}
++
++bool IsIEDefaultBrowser() {
++  return GetHttpProtocolUserChoiceProgId() == L"IE.HTTP";
+ }
+ 
  DefaultWebClientState IsDefaultProtocolClient(const std::string& protocol) {
-   return GetDefaultWebClientStateFromShellUtilDefaultState(
-       ShellUtil::GetChromeDefaultProtocolClientState(
