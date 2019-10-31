@@ -1,5 +1,6 @@
 import("//brave/build/config.gni")
 import("//build/config/mac/base_rules.gni")
+import("//build/util/branding.gni")
 import("//build/util/version.gni")
 import("//chrome/common/features.gni")
 import("//third_party/widevine/cdm/widevine.gni")
@@ -14,7 +15,7 @@ declare_args() {
   mac_notarized_output_prefix = "notarized"
   notary_user = ""
   notary_password = ""
-  notary_asc_provider = "KL8N8XSYF4" # brave team id
+  notary_asc_provider = chrome_mac_team_id
   notarize = false
   notarize_argument = "False"
 }
