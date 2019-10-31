@@ -253,12 +253,16 @@ void Prefs::Clear() {
   pref_service_->ClearPref(kSyncBookmarksBaseOrder);
   pref_service_->ClearPref(kSyncSiteSettingsEnabled);
   pref_service_->ClearPref(kSyncHistoryEnabled);
-  pref_service_->ClearPref(kSyncLatestRecordTime);
   pref_service_->ClearPref(kSyncLatestDeviceRecordTime);
   pref_service_->ClearPref(kSyncLastFetchTime);
   pref_service_->ClearPref(kSyncDeviceList);
   pref_service_->ClearPref(kSyncApiVersion);
   pref_service_->ClearPref(kSyncMigrateBookmarksVersion);
+  ClearBookmarksPrefs();
+}
+
+void Prefs::ClearBookmarksPrefs() {
+  pref_service_->ClearPref(kSyncLatestRecordTime);
   pref_service_->ClearPref(kSyncRecordsToResend);
   pref_service_->ClearPref(kSyncRecordsToResendMeta);
 }

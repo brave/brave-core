@@ -356,8 +356,10 @@ void BraveProfileSyncServiceImpl::OnSetSyncBookmarks(
       ProfileSyncService::GetUserSettings()->GetSelectedTypes();
   if (sync_bookmarks)
     type_set.Put(syncer::UserSelectableType::kBookmarks);
-  else
+  else {
     type_set.Remove(syncer::UserSelectableType::kBookmarks);
+    brave_sync_prefs_->ClearBookmarksPrefs();
+  }
   ProfileSyncService::GetUserSettings()->SetSelectedTypes(false, type_set);
   if (brave_sync_prefs_->GetSyncBookmarksEnabled() != sync_bookmarks)
     brave_sync_prefs_->SetSyncBookmarksEnabled(sync_bookmarks);

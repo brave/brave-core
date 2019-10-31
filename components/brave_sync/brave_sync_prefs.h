@@ -124,6 +124,7 @@ class Prefs {
                              std::unique_ptr<base::DictionaryValue> meta);
 
   void Clear();
+  void ClearBookmarksPrefs();
 
  private:
   // May be null.

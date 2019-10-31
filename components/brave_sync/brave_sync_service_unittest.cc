@@ -611,11 +611,21 @@ TEST_F(BraveSyncServiceTest, OnSetSyncBookmarks) {
       brave_sync::prefs::kSyncBookmarksEnabled));
   EXPECT_CALL(*observer(), OnSyncStateChanged).Times(1);
   sync_service()->OnSetSyncBookmarks(true);
+  brave_sync_prefs()->AddToRecordsToResend(
+      "test_object_id", std::make_unique<base::DictionaryValue>());
+  brave_sync_prefs()->SetRecordToResendMeta(
+      "test_object_id", std::make_unique<base::DictionaryValue>());
+  brave_sync_prefs()->SetLatestRecordTime(base::Time::Now());
   EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(syncer::prefs::kSyncBookmarks));
   EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(
       brave_sync::prefs::kSyncBookmarksEnabled));
   EXPECT_CALL(*observer(), OnSyncStateChanged).Times(1);
   sync_service()->OnSetSyncBookmarks(false);
+  EXPECT_TRUE(brave_sync::tools::IsTimeEmpty(
+      brave_sync_prefs()->GetLatestRecordTime()));
+  EXPECT_TRUE(brave_sync_prefs()->GetRecordsToResend().empty());
+  EXPECT_EQ(brave_sync_prefs()->GetRecordToResendMeta("test_obejct_id"),
+            nullptr);
   EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
       brave_sync::prefs::kSyncBookmarksEnabled));
   EXPECT_FALSE(
