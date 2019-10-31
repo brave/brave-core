@@ -66,6 +66,8 @@ export class RewardsPanel extends React.Component<Props, State> {
       const { externalWallet } = this.props.rewardsPanelData
       utils.getExternalWallet(this.actions, externalWallet)
     }
+
+    this.handleGrantNotification()
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {
@@ -78,6 +80,20 @@ export class RewardsPanel extends React.Component<Props, State> {
     if (!prevProps.rewardsPanelData.enabledMain && this.props.rewardsPanelData.enabledMain) {
       chrome.windows.getCurrent({}, this.onWindowCallback)
     }
+  }
+
+  handleGrantNotification = () => {
+    const hash = window && window.location && window.location.hash
+
+    if (!hash) {
+      return
+    }
+
+    if (!hash.startsWith('#grant_')) {
+      return
+    }
+
+    this.actions.getGrantCaptcha(hash.split('#grant_')[1])
   }
 
   goToUphold = () => {

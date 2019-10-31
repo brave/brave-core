@@ -55,6 +55,9 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   pref_data.SetBoolean(
       "showStats",
       prefs->GetBoolean(kNewTabPageShowStats));
+  pref_data.SetBoolean(
+      "showRewards",
+      prefs->GetBoolean(kNewTabPageShowRewards));
   return pref_data;
 }
 
@@ -168,6 +171,9 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowTopSites,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
+  pref_change_registrar_.Add(kNewTabPageShowRewards,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
 }
 
 void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
@@ -229,6 +235,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageShowTopSites;
   } else if (settingsKeyInput == "showStats") {
     settingsKey = kNewTabPageShowStats;
+  } else if (settingsKeyInput == "showRewards") {
+    settingsKey = kNewTabPageShowRewards;
   } else {
     LOG(ERROR) << "Invalid setting key";
     return;

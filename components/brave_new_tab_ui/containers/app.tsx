@@ -39,6 +39,7 @@ class DefaultPage extends React.Component<Props, {}> {
           saveShowClock={PreferencesAPI.saveShowClock}
           saveShowStats={PreferencesAPI.saveShowStats}
           saveShowTopSites={PreferencesAPI.saveShowTopSites}
+          saveShowRewards={PreferencesAPI.saveShowRewards}
         />
       )
   }

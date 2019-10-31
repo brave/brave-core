@@ -40,7 +40,7 @@ export const App = styled<AppProps, 'div'>('div')`
 `
 
 export const PosterBackground = styled<ImageLoadProps & HasImageProps, 'div'>('div')`
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
@@ -70,7 +70,7 @@ export const Gradient = styled<ImageLoadProps, 'div'>('div')`
     rgba(0, 0, 0, 0.6) 100%
   );
   z-index: 2;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
