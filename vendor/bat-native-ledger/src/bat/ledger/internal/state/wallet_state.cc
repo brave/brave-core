@@ -20,6 +20,10 @@ const char kBatKey[] = "BAT";
 const char kChoicesKey[] = "choices";
 const char kChoicesBatPath[] = "parameters.adFree.choices.BAT";
 const char kFeeBatPath[] = "parameters.adFree.fee.BAT";
+const char kDefaultTipChoiceKey[] = "defaultTipChoices";
+const char kDefaultTipChoicePath[] = "parameters.defaultTipChoices";
+const char kDefaultMonthlyChoiceKey[] = "defaultMonthlyChoices";
+const char kDefaultMonthlyChoicePath[] = "parameters.defaultMonthlyChoices";
 
 }  // namespace
 
@@ -89,6 +93,27 @@ bool WalletState::FromDict(
     wallet_properties.parameters_choices.push_back(bat);
   }
 
+  // Default tip choices
+  const auto* tip_choices_list =
+      dictionary->FindListPath(kDefaultTipChoicePath);
+  if (tip_choices_list) {
+    for (const auto& item : tip_choices_list->GetList()) {
+      const std::string amount = item.GetString();
+      wallet_properties.default_tip_choices.push_back(std::stod(amount));
+    }
+  }
+
+  // Default monthly tip choices
+  const auto* monthly_choices_list =
+      dictionary->FindListPath(kDefaultMonthlyChoicePath);
+  if (monthly_choices_list) {
+    for (const auto& item : monthly_choices_list->GetList()) {
+      const std::string amount = item.GetString();
+      wallet_properties.default_monthly_tip_choices.push_back(
+          std::stod(amount));
+    }
+  }
+
   *properties = wallet_properties;
 
   return true;
@@ -129,8 +154,24 @@ bool WalletState::ToJson(
   }
   writer->EndArray();
   writer->EndObject();
-
   writer->EndObject();
+
+  writer->String(kDefaultTipChoiceKey);
+
+  writer->StartArray();
+  for (const auto& item : properties.default_tip_choices) {
+    writer->String(std::to_string(item).c_str());
+  }
+  writer->EndArray();
+
+  writer->String(kDefaultMonthlyChoiceKey);
+
+  writer->StartArray();
+  for (const auto& item : properties.default_monthly_tip_choices) {
+    writer->String(std::to_string(item).c_str());
+  }
+  writer->EndArray();
+
   writer->EndObject();
   writer->EndObject();
 

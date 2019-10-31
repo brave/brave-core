@@ -164,6 +164,22 @@
                 "type": "double",
                 "description": "balance"
               },
+              "defaultTipChoices": {
+                "type": "array",
+                "description": "default tip choices for one-time tips",
+                "items": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "defaultMonthlyTipChoices": {
+                "type": "array",
+                "description": "default tip choices for recurring tips",
+                "items": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
               "rates": {
                 "type": "object",
                 "description": "rates for different currencies",

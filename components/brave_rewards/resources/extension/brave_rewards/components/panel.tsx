@@ -503,16 +503,24 @@ export class Panel extends React.Component<Props, State> {
   }
 
   generateAmounts = (publisher?: RewardsExtension.Publisher) => {
-    const { tipAmounts } = this.props.rewardsPanelData
+    const { tipAmounts, walletProperties } = this.props.rewardsPanelData
     const { rates } = this.props.rewardsPanelData.balance
 
     const publisherKey = publisher && publisher.publisher_key
-    const initialAmounts = (
-      !publisherKey ||
-      !tipAmounts ||
-      !tipAmounts[publisherKey] ||
-      tipAmounts[publisherKey].length === 0
-    ) ? this.defaultTipAmounts : tipAmounts[publisherKey]
+    let publisherAmounts = null
+    if (publisherKey && tipAmounts && tipAmounts[publisherKey] && tipAmounts[publisherKey].length) {
+      publisherAmounts = tipAmounts[publisherKey]
+    }
+
+    const walletAmounts = walletProperties.defaultMonthlyTipChoices
+
+    // Prefer the publisher amounts, then the wallet's defaults. Fall back to defaultTipAmounts.
+    let initialAmounts = this.defaultTipAmounts
+    if (publisherAmounts) {
+      initialAmounts = publisherAmounts
+    } else if (walletAmounts.length) {
+      initialAmounts = walletAmounts
+    }
 
     const amounts = [0, ...initialAmounts]
 

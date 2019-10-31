@@ -53,6 +53,10 @@ void ExtensionRewardsServiceObserver::OnWalletProperties(
     std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
   auto* event_router =
       extensions::EventRouter::Get(profile_);
+  if (!event_router) {
+    return;
+  }
+
   if (error_code == 17) {  // ledger::Result::CORRUPT_WALLET
     std::unique_ptr<base::ListValue> args(
         extensions::api::brave_rewards::OnWalletInitialized::Create(
@@ -64,6 +68,26 @@ void ExtensionRewardsServiceObserver::OnWalletProperties(
     event_router->BroadcastEvent(std::move(event));
     return;
   }
+
+  if (!wallet_properties) {
+    return;
+  }
+
+  extensions::api::brave_rewards::OnWalletProperties::Properties properties;
+
+  properties.default_tip_choices = wallet_properties->default_tip_choices;
+  properties.default_monthly_tip_choices =
+      wallet_properties->default_monthly_tip_choices;
+
+  std::unique_ptr<base::ListValue> args(
+      extensions::api::brave_rewards::OnWalletProperties::Create(properties)
+          .release());
+
+  std::unique_ptr<extensions::Event> event(new extensions::Event(
+      extensions::events::BRAVE_ON_WALLET_PROPERTIES,
+      extensions::api::brave_rewards::OnWalletProperties::kEventName,
+      std::move(args)));
+  event_router->BroadcastEvent(std::move(event));
 }
 
 void ExtensionRewardsServiceObserver::OnGetCurrentBalanceReport(

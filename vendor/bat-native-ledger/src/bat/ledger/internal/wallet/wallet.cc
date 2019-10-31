@@ -103,6 +103,9 @@ ledger::WalletPropertiesPtr Wallet::WalletPropertiesToWalletInfo(
   ledger::WalletPropertiesPtr wallet = ledger::WalletProperties::New();
   wallet->parameters_choices = properties.parameters_choices;
   wallet->fee_amount = ledger_->GetContributionAmount();
+  wallet->default_tip_choices = properties.default_tip_choices;
+  wallet->default_monthly_tip_choices = properties.default_monthly_tip_choices;
+
   return wallet;
 }
 

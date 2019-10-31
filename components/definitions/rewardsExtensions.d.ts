@@ -111,6 +111,10 @@ declare namespace RewardsExtension {
     hint: string
   }
 
+  export interface WalletProperties {
+    defaultMonthlyTipChoices: number[]
+  }
+
   export interface Report {
     ads: string
     closing: string

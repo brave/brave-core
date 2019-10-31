@@ -947,6 +947,9 @@ void RewardsServiceImpl::OnWalletProperties(
       wallet_properties.reset(new brave_rewards::WalletProperties);
       wallet_properties->parameters_choices = properties->parameters_choices;
       wallet_properties->monthly_amount = properties->fee_amount;
+      wallet_properties->default_tip_choices = properties->default_tip_choices;
+      wallet_properties->default_monthly_tip_choices =
+          properties->default_monthly_tip_choices;
     }
     // webui
     observer.OnWalletProperties(this,
