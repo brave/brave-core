@@ -81,7 +81,7 @@ public class UserReferralProgram {
     }
     
     private func initRetryPingConnection(numberOfTimes: Int32) {
-        if AppConstants.BuildChannel.isRelease {
+        if AppConstants.BuildChannel.isPublic {
             // Adding some time offset to be extra safe.
             let offset = 1.hours
             let _30daysFromToday = Date().timeIntervalSince1970 + 30.days + offset
@@ -171,7 +171,7 @@ public class UserReferralProgram {
             // Appending ref code to dau ping if user used installed the app via user referral program.
             if Preferences.URP.referralCodeDeleteDate.value == nil {
                 UrpLog.log("Setting new date for deleting referral code.")
-                let timeToDelete = AppConstants.BuildChannel.isRelease ? 90.days : 20.minutes
+                let timeToDelete = AppConstants.BuildChannel.isPublic ? 90.days : 20.minutes
                 Preferences.URP.referralCodeDeleteDate.value = Date().timeIntervalSince1970 + timeToDelete
             }
             

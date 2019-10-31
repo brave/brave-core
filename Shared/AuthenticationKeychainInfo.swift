@@ -33,7 +33,7 @@ open class AuthenticationKeychainInfo: NSObject, NSSecureCoding {
     open var useTouchID: Bool
 
     // Timeout period before user can retry entering passcodes
-    private let lockTimeInterval: TimeInterval = AppConstants.BuildChannel == .release ? 15 * 60 : 60
+    private let lockTimeInterval: TimeInterval = AppConstants.BuildChannel.isPublic ? 15 * 60 : 60
 
     public init(passcode: String) {
         self.passcode = passcode

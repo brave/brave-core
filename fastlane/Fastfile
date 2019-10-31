@@ -54,40 +54,33 @@ platform :ios do
 
   desc "Creates a Brave Beta Release build for TestFlight."
   lane :beta do |options|
-    set_build_number(options)
-
-    # TODO: make name dynamic
-    # build_name = "Brave#{get_client_version_number}(#{get_build_number})"
-    build_name = "BraveBeta#{get_client_version_number}"
-
-    UI.message "NAME: #{build_name}"
-
-    carthage(
-      platform: "iOS",
-      cache_builds: true,
-      configuration: "Release",
-    )
-
-    defaultParams = gym_params()
     overrideParams = {
       scheme: "FirefoxBeta",
-      output_directory: "./builds/",
-      output_name: "#{build_name}.ipa",
       export_method: "development",
-      include_symbols: true,
-      include_bitcode: true,
     }
-    gym(defaultParams.merge!(overrideParams))
+    testflight_build({overrideParams: overrideParams})
+  end
 
-    testflight(
-      username: sh("cat", "#{LOCAL_PATH}/AppleId"),
-      ipa: "./builds/#{build_name}.ipa",
-      skip_waiting_for_build_processing: true,
-    )
+  desc "Creates a Brave Internal Beta Release build for TestFlight."
+  lane :internal do |options|
+
+    overrideParams = {
+      scheme: "Fennec_Enterprise",
+      export_method: "development",
+    }
+    testflight_build({overrideParams: overrideParams})
   end
 
   desc "Create an archive to be uploaded to the App Store"
   lane :release do |options|
+    overrideParams = {
+      scheme: "Firefox",
+    }
+    testflight_build({overrideParams: overrideParams})
+  end
+
+  desc "All Testflight releases use this as the foundation. Pass in `gym` override params."
+  private_lane :testflight_build do |options|
     set_build_number(options)
 
     carthage(
@@ -95,13 +88,8 @@ platform :ios do
       cache_builds: true,
       configuration: "Release",
     )
-
     defaultParams = gym_params()
-    overrideParams = {
-      scheme: "Firefox",
-      skip_package_ipa: true,
-    }
-    gym(defaultParams.merge!(overrideParams))
+    gym(defaultParams.merge!(options[:overrideParams]))
   end
 
   # Private helper methods ---------------------------------------
@@ -111,6 +99,7 @@ platform :ios do
     {
       sdk: "iphoneos",
       clean: true,
+      skip_package_ipa: true,
       xcargs: "-allowProvisioningUpdates BRAVE_API_KEY=\"#{sh("head", "-1", "#{ENV['HOME']}/.brave-api-key")}\""
     }
   end

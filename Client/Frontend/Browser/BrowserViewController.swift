@@ -154,7 +154,7 @@ class BrowserViewController: UIViewController {
         #else
         RewardsHelper.configureRewardsLogs()
         let configuration: BraveRewardsConfiguration
-        if AppConstants.BuildChannel.isRelease {
+        if AppConstants.BuildChannel.isPublic {
             configuration = .production
         } else {
             if let override = Preferences.Rewards.EnvironmentOverride(rawValue: Preferences.Rewards.environmentOverride.value), override != .none {
@@ -529,7 +529,7 @@ class BrowserViewController: UIViewController {
         
         initializeSyncWebView()
         
-        if AppConstants.BuildChannel.isRelease && AppReview.shouldRequestReview() {
+        if AppConstants.BuildChannel.isPublic && AppReview.shouldRequestReview() {
             // Request Review when the main-queue is free or on the next cycle.
             DispatchQueue.main.async {
                 SKStoreReviewController.requestReview()
