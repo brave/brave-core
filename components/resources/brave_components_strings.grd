@@ -210,6 +210,7 @@
       <!-- WebUI rewards resources -->
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Ads</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESC" desc="">Earn tokens by viewing ads in Brave. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESC_POINTS" desc="">Earn points by viewing ads in Brave. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The Brave Verified sites you visit will receive your contributions automatically, based on your attention as measured by Brave.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS" desc="">Estimated pending rewards</message>
@@ -225,6 +226,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_4" desc="">4 ads per hour</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_5" desc="">5 ads per hour</message>
       <message name="IDS_BRAVE_UI_BAT_REWARDS_TEXT" desc="">BAT</message>
+      <message name="IDS_BRAVE_UI_BAP_REWARDS_TEXT" desc="">BAP</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DEVICE_OFFLINE" desc="">The device is offline, please try again later.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MONTHLY" desc="">Monthly Payment</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_NEXT_DATE" desc="">Next contribution date</message>
@@ -533,6 +535,7 @@
       <message name="IDS_BRAVE_UI_TITLE_LTC" desc="">Litecoin (LTC)</message>
       <message name="IDS_BRAVE_UI_TOKEN_GRANT_CLAIMED" desc="">Token Grants Claimed</message>
       <message name="IDS_BRAVE_UI_TOKENS" desc="">tokens</message>
+      <message name="IDS_BRAVE_UI_POINTS" desc="">points</message>
       <message name="IDS_BRAVE_UI_TOTAL" desc="">Total</message>
       <message name="IDS_BRAVE_UI_TRANSACTIONS" desc="">Transactions</message>
       <message name="IDS_BRAVE_UI_TURN_ON_ADS" desc="">Turn on Ads</message>

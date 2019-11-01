@@ -228,6 +228,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
       std::string("rewards"), {
         { "adsCurrentEarnings",  IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS },
         { "adsDesc",  IDS_BRAVE_REWARDS_LOCAL_ADS_DESC },
+        { "adsDescPoints",  IDS_BRAVE_REWARDS_LOCAL_ADS_DESC_POINTS },
         { "adsDisabledTextOne",  IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_ONE },                // NOLINT
         { "adsDisabledTextTwo",  IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_TWO },                // NOLINT
         { "adsNotificationsReceived",  IDS_BRAVE_REWARDS_LOCAL_ADS_NOTIFICATIONS_RECEIVED },     // NOLINT
@@ -244,6 +245,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "adsTitle",  IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE },
 
         { "bat", IDS_BRAVE_UI_BAT_REWARDS_TEXT },
+        { "bap", IDS_BRAVE_UI_BAP_REWARDS_TEXT },
         { "contributionTitle",  IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE },
         { "contributionDesc",  IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC },
         { "contributionMonthly",  IDS_BRAVE_REWARDS_LOCAL_CONTR_MONTHLY },
@@ -450,6 +452,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "pinnedSitesThree", IDS_BRAVE_UI_PAYMENT_PINNED_SITES_THREE },
         { "pinnedSitesFour", IDS_BRAVE_UI_PAYMENT_PINNED_SITES_FOUR },
         { "pleaseNote", IDS_BRAVE_UI_PLEASE_NOTE },
+        { "points", IDS_BRAVE_UI_POINTS },
         { "print", IDS_BRAVE_UI_PRINT },
         { "processingRequest", IDS_BRAVE_UI_PROCESSING_REQUEST },
         { "processingRequestButton", IDS_BRAVE_UI_PROCESSING_REQUEST_BUTTON },
