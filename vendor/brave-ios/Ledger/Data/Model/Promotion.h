@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) int32_t suggestions;
 @property (nonatomic) double approximateValue;
 @property (nonatomic) BOOL claimed;
-@property (nonatomic) BOOL active;
+@property (nonatomic) int32_t status;
 @property (nonatomic, copy) NSDate *expiryDate;
 
 @end

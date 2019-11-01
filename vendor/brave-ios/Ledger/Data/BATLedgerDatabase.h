@@ -144,6 +144,8 @@ typedef void (^BATLedgerDatabaseWriteCompletion)(BOOL success);
 
 #pragma mark - Promotions
 
++ (NSArray<BATPromotion *> *)allPromotions;
+
 + (void)insertOrUpdatePromotion:(BATPromotion *)promotion
                      completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
 

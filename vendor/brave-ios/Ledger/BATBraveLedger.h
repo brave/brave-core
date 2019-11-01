@@ -171,6 +171,8 @@ NS_SWIFT_NAME(BraveLedger)
 
 @property (nonatomic, readonly) NSArray<BATPromotion *> *pendingPromotions;
 
+@property (nonatomic, readonly) NSArray<BATPromotion *> *finishedPromotions;
+
 - (void)fetchPromotions:(nullable void (^)(NSArray<BATPromotion *> *grants))completion;
 
 - (void)claimPromotion:(NSString *)deviceCheckPublicKey

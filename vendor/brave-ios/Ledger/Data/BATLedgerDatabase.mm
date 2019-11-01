@@ -484,13 +484,17 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
 
   const auto publishers = [[NSMutableArray<BATPublisherInfo *> alloc] init];
   for (ActivityInfo *activity in fetchedObjects) {
+    const auto status = static_cast<BATPublisherStatus>([self getServerPublisherInfoWithPublisherID:activity.publisherID context:context].status);
+    if (!filter.nonVerified && status == BATPublisherStatusNotVerified) {
+      continue;
+    }
     auto info = [[BATPublisherInfo alloc] init];
     info.id = activity.publisherID;
     info.duration = activity.duration;
     info.score = activity.score;
     info.percent = activity.percent;
     info.weight = activity.weight;
-    info.status = static_cast<BATPublisherStatus>([self getServerPublisherInfoWithPublisherID:activity.publisherID context:context].status);
+    info.status = status;
     info.excluded = (BATPublisherExclude)activity.publisher.excluded;
     info.name = activity.publisher.name;
     info.url = activity.publisher.url;
@@ -1016,10 +1020,59 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
                     context:context];
 }
 
++ (BATPromotion *)promotiomFromDBPromotion:(Promotion *)dbPromo context:(NSManagedObjectContext *)context
+{
+  const auto promotion = [[BATPromotion alloc] init];
+  promotion.id = dbPromo.promotionID;
+  promotion.version = dbPromo.version;
+  promotion.type = static_cast<BATPromotionType>(dbPromo.type);
+  promotion.publicKeys = dbPromo.publicKeys;
+  promotion.suggestions = dbPromo.suggestions;
+  promotion.approximateValue = dbPromo.approximateValue;
+  promotion.claimed = dbPromo.claimed;
+  promotion.status = static_cast<BATPromotionStatus>(dbPromo.status);
+  promotion.expiresAt = [dbPromo.expiryDate timeIntervalSince1970];
+  promotion.credentials = ^BATPromotionCreds * _Nullable {
+    const auto dbCreds = [self getPromoCredsWithPromotionID:dbPromo.promotionID context:context];
+    if (!dbCreds) {
+      return nil;
+    }
+    const auto creds = [[BATPromotionCreds alloc] init];
+    creds.claimId = dbCreds.claimID;
+    creds.blindedCreds = dbCreds.blindedCredentials;
+    creds.signedCreds = dbCreds.signedCredentials;
+    creds.publicKey = dbCreds.publicKey;
+    creds.batchProof = dbCreds.batchProof;
+    creds.tokens = dbCreds.tokens;
+    return creds;
+  }();
+  return promotion;
+}
+
++ (NSArray<BATPromotion *> *)allPromotions
+{
+  const auto context = DataController.viewContext;
+  const auto fetchRequest = [Promotion fetchRequest];
+  fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(Promotion.class)
+                                    inManagedObjectContext:context];
+  NSError *error;
+  const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+  if (error) {
+    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+    return @[];
+  }
+  
+  auto promos = [[NSMutableArray<BATPromotion *> alloc] init];
+  for (Promotion *dbPromotion in fetchedObjects) {
+    [promos addObject:[self promotiomFromDBPromotion:dbPromotion context:context]];
+  }
+  return [promos copy];
+}
+
 + (void)insertOrUpdatePromotion:(BATPromotion *)promotion
                      completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
-  [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
+  [DataController.shared performOnContext:DataController.viewContext task:^(NSManagedObjectContext * _Nonnull context) {
     auto promo = [self getPromotionWithID:promotion.id context:context] ?: [[Promotion alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(Promotion.class) inManagedObjectContext:context]
                                                                                              insertIntoManagedObjectContext:context];
     promo.promotionID = promotion.id;
@@ -1029,7 +1082,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     promo.suggestions = promotion.suggestions;
     promo.approximateValue = promotion.approximateValue;
     promo.claimed = promotion.claimed;
-    promo.active = promotion.active;
+    promo.status = static_cast<int32_t>(promotion.status);
     promo.expiryDate = [NSDate dateWithTimeIntervalSince1970:promotion.expiresAt];
     if (promotion.credentials != nil) {
       auto creds = [self getPromoCredsWithPromotionID:promotion.id context:context] ?: [[PromotionCredentials alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(PromotionCredentials.class) inManagedObjectContext:context] insertIntoManagedObjectContext:context];
@@ -1051,33 +1104,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   if (!dbPromo) {
     return nil;
   }
-  
-  const auto promotion = [[BATPromotion alloc] init];
-  promotion.active = dbPromo.active;
-  promotion.id = dbPromo.promotionID;
-  promotion.version = dbPromo.version;
-  promotion.type = static_cast<BATPromotionType>(dbPromo.type);
-  promotion.publicKeys = dbPromo.publicKeys;
-  promotion.suggestions = dbPromo.suggestions;
-  promotion.approximateValue = dbPromo.approximateValue;
-  promotion.claimed = dbPromo.claimed;
-  promotion.active = dbPromo.active;
-  promotion.expiresAt = [dbPromo.expiryDate timeIntervalSince1970];
-  promotion.credentials = ^BATPromotionCreds * _Nullable {
-    const auto dbCreds = [self getPromoCredsWithPromotionID:promoID context:context];
-    if (!dbCreds) {
-      return nil;
-    }
-    const auto creds = [[BATPromotionCreds alloc] init];
-    creds.claimId = dbCreds.claimID;
-    creds.blindedCreds = dbCreds.blindedCredentials;
-    creds.signedCreds = dbCreds.signedCredentials;
-    creds.publicKey = dbCreds.publicKey;
-    creds.batchProof = dbCreds.batchProof;
-    creds.tokens = dbCreds.tokens;
-    return creds;
-  }();
-  return promotion;
+  return [self promotiomFromDBPromotion:dbPromo context:context];
 }
 
 + (void)insertOrUpdateUnblindedToken:(BATUnblindedToken *)unblindedToken

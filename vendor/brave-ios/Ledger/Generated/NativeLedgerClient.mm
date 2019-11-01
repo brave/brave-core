@@ -252,3 +252,6 @@ ledger::ClientInfoPtr NativeLedgerClient::GetClientInfo() {
 void NativeLedgerClient::UnblindedTokensReady() {
   [bridge_ unblindedTokensReady];
 }
+void NativeLedgerClient::GetAllPromotions(ledger::GetAllPromotionsCallback callback) {
+  [bridge_ getAllPromotions:callback];
+}

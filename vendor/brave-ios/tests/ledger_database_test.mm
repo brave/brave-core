@@ -1275,10 +1275,34 @@
 
 #pragma mark - Promotions
 
+- (void)testQueryAllPromotions
+{
+  NSUInteger numberOfPromos = 3;
+  for (NSUInteger i = 0; i < numberOfPromos; i++) {
+    const auto promo = [[BATPromotion alloc] init];
+    promo.status = BATPromotionStatusFinished;
+    promo.claimed = NO;
+    promo.credentials = [[BATPromotionCreds alloc] init];
+    promo.credentials.tokens = @"Test";
+    promo.credentials.claimId = [NSString stringWithFormat:@"%ld", i];
+    promo.id = [NSString stringWithFormat:@"%ld", i];
+    
+    [self waitForCompletion:^(XCTestExpectation *expectation) {
+      [BATLedgerDatabase insertOrUpdatePromotion:promo completion:^(BOOL success) {
+        XCTAssert(success);
+        [expectation fulfill];
+      }];
+    }];
+  }
+  
+  const auto queried = [BATLedgerDatabase allPromotions];
+  XCTAssertEqual(queried.count, numberOfPromos);
+  XCTAssertEqual(queried[0].status, BATPromotionStatusFinished);
+}
+
 - (void)testInsertPromotion
 {
   const auto promo = [[BATPromotion alloc] init];
-  promo.active = YES;
   promo.claimed = NO;
   promo.credentials = [[BATPromotionCreds alloc] init];
   promo.credentials.tokens = @"Test";
@@ -1294,7 +1318,6 @@
   
   const auto queried = [BATLedgerDatabase promotionWithID:promo.id];
   XCTAssertNotNil(queried);
-  XCTAssertEqual(promo.active, queried.active);
   XCTAssertEqual(promo.claimed, queried.claimed);
   XCTAssertNotNil(queried.credentials);
   XCTAssert([queried.credentials.claimId isEqualToString:promo.credentials.claimId]);
