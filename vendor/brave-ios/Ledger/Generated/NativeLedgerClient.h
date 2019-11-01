@@ -92,4 +92,5 @@ private:
   void GetPromotion(const std::string& id, ledger::GetPromotionCallback callback) override;
   void InsertOrUpdateUnblindedToken(ledger::UnblindedTokenPtr info, ledger::ResultCallback callback) override;
   void GetAllUnblindedTokens(ledger::GetAllUnblindedTokensCallback callback) override;
+  void DeleteUnblindedToken(const std::vector<std::string>& id_list, ledger::ResultCallback callback) override;
 };

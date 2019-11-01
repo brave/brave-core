@@ -1932,4 +1932,14 @@ BATLedgerBridge(BOOL,
   }));
 }
 
+- (void)deleteUnblindedToken:(const std::vector<std::string>&)list callback:(ledger::ResultCallback)callback
+{
+  const auto ids = NSArrayFromVector(list, ^NSNumber *(const std::string &str){
+    return @([[NSString stringWithUTF8String:str.c_str()] integerValue]);
+  });
+  [BATLedgerDatabase deleteUnblindedTokens:ids completion:^(BOOL success) {
+    callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
+  }];
+}
+
 @end

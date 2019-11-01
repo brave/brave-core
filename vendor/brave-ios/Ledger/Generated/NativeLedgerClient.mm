@@ -243,3 +243,6 @@ void NativeLedgerClient::InsertOrUpdateUnblindedToken(ledger::UnblindedTokenPtr 
 void NativeLedgerClient::GetAllUnblindedTokens(ledger::GetAllUnblindedTokensCallback callback) {
   return [bridge_ getAllUnblindedTokens:callback];
 }
+void NativeLedgerClient::DeleteUnblindedToken(const std::vector<std::string>& id_list, ledger::ResultCallback callback) {
+  [bridge_ deleteUnblindedToken:id_list callback:callback];
+}

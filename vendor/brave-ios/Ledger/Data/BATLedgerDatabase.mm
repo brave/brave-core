@@ -1118,4 +1118,25 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   return [tokens copy];
 }
 
++ (void)deleteUnblindedTokens:(NSArray<NSNumber *> *)idList completion:(nullable BATLedgerDatabaseWriteCompletion)completion
+{
+  [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
+    const auto fetchRequest = UnblindedToken.fetchRequest;
+    fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(UnblindedToken.class)
+                                      inManagedObjectContext:context];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"ANY tokenID IN %@", idList];
+    NSError *error;
+    const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+      NSLog(@"%@", error);
+      completion(NO);
+      return;
+    }
+    
+    for (UnblindedToken *token in fetchedObjects) {
+      [context deleteObject:token];
+    }
+  } completion:WriteToDataControllerCompletion(completion)];
+}
+
 @end
