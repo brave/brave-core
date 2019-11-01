@@ -115,6 +115,8 @@ class PublisherInfoDatabase {
 
   ledger::PromotionPtr GetPromotion(const std::string& id);
 
+  ledger::PromotionMap GetAllPromotions();
+
   bool InsertOrUpdateUnblindedToken(ledger::UnblindedTokenPtr info);
 
   ledger::UnblindedTokenList GetAllUnblindedTokens();

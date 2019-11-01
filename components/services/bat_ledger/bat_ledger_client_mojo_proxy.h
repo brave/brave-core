@@ -215,6 +215,9 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const std::string& id,
       ledger::GetPromotionCallback callback) override;
 
+  void GetAllPromotions(
+    ledger::GetAllPromotionsCallback callback) override;
+
   void InsertOrUpdateUnblindedToken(
       ledger::UnblindedTokenPtr info,
       ledger::ResultCallback callback) override;
@@ -227,6 +230,8 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       ledger::ResultCallback callback) override;
 
   ledger::ClientInfoPtr GetClientInfo() override;
+
+  void UnblindedTokensReady() override;
 
  private:
   bool Connected() const;

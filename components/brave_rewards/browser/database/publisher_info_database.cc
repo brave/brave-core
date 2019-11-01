@@ -1178,6 +1178,19 @@ PublisherInfoDatabase::GetPromotion(const std::string& id) {
   return promotion_->GetRecord(&GetDB(), id);
 }
 
+ledger::PromotionMap PublisherInfoDatabase::GetAllPromotions() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return {};
+  }
+
+  return promotion_->GetAllRecords(&GetDB());
+}
+
 /**
  *
  * UNBLINDED TOKEN

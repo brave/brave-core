@@ -331,6 +331,8 @@ class LEDGER_EXPORT Ledger {
   virtual void DisconnectWallet(
       const std::string& wallet_type,
       ledger::DisconnectWalletCallback callback) = 0;
+
+  virtual void GetAllPromotions(ledger::GetAllPromotionsCallback callback) = 0;
 };
 
 }  // namespace ledger

@@ -202,6 +202,7 @@ enum Result {
   NOT_ENOUGH_FUNDS = 15,
   TIP_ERROR = 16,
   CORRUPTED_WALLET = 17,
+  GRANT_ALREADY_CLAIMED = 18,
 
   CONTRIBUTION_AMOUNT_TOO_LOW = 19,
   VERIFIED_PUBLISHER = 20,
@@ -314,6 +315,15 @@ enum PromotionType {
   ADS = 1
 };
 
+enum PromotionStatus {
+  ACTIVE = 0,
+  ATTESTED = 1,
+  CLAIMED = 2,
+  SIGNED_TOKENS = 3,
+  FINISHED = 4,
+  OVER = 5
+};
+
 struct Promotion {
   string id;
   uint32 version;
@@ -322,7 +332,7 @@ struct Promotion {
   uint32 suggestions;
   double approximate_value;
   bool claimed;
-  bool active;
+  PromotionStatus status;
   uint64 expires_at;
   PromotionCreds? credentials;
 };

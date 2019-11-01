@@ -98,6 +98,7 @@ void LedgerImpl::OnWalletInitializedInternal(
     bat_contribution_->SetReconcileTimer();
     bat_promotion_->Refresh(false);
     bat_contribution_->Initialize();
+    bat_promotion_->Initialize();
   } else {
     BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to initialize wallet";
   }
@@ -1510,6 +1511,11 @@ void LedgerImpl::GetPromotion(
   ledger_client_->GetPromotion(id, callback);
 }
 
+void LedgerImpl::GetAllPromotions(
+    ledger::GetAllPromotionsCallback callback) {
+  ledger_client_->GetAllPromotions(callback);
+}
+
 void LedgerImpl::InsertOrUpdateUnblindedToken(
     ledger::UnblindedTokenPtr info,
     ledger::ResultCallback callback) {
@@ -1529,6 +1535,10 @@ void LedgerImpl::DeleteUnblindedToken(
 
 ledger::ClientInfoPtr LedgerImpl::GetClientInfo() {
   return ledger_client_->GetClientInfo();
+}
+
+void LedgerImpl::UnblindedTokensReady() {
+  return ledger_client_->UnblindedTokensReady();
 }
 
 }  // namespace bat_ledger

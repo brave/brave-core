@@ -74,11 +74,14 @@ using PendingContributionInfoList = std::vector<PendingContributionInfoPtr>;
 using Promotion = mojom::Promotion;
 using PromotionPtr = mojom::PromotionPtr;
 using PromotionList = std::vector<PromotionPtr>;
+using PromotionMap = std::map<std::string, PromotionPtr>;
 
 using PromotionType = mojom::PromotionType;
 
 using PromotionCreds = mojom::PromotionCreds;
 using PromotionCredsPtr = mojom::PromotionCredsPtr;
+
+using PromotionStatus = mojom::PromotionStatus;
 
 using PublisherBanner = mojom::PublisherBanner;
 using PublisherBannerPtr = mojom::PublisherBannerPtr;

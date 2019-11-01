@@ -290,9 +290,11 @@ interface BatLedgerClient {
   GetFirstContributionQueue() => (ledger.mojom.ContributionQueue? info);
   InsertOrUpdatePromotion(ledger.mojom.Promotion info) => (ledger.mojom.Result result);
   GetPromotion(string id) => (ledger.mojom.Promotion? info);
+  GetAllPromotions() => (map<string, ledger.mojom.Promotion> promotions);
   InsertOrUpdateUnblindedToken(ledger.mojom.UnblindedToken info) => (ledger.mojom.Result result);
   GetAllUnblindedTokens() => (array<ledger.mojom.UnblindedToken> info);
   DeleteUnblindedToken(array<string> id_list) => (ledger.mojom.Result result);
   [Sync]
   GetClientInfo() => (ledger.mojom.ClientInfo info);
+  UnblindedTokensReady();
 };
