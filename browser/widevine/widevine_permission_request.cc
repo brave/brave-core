@@ -33,7 +33,7 @@ GURL WidevinePermissionRequest::GetOrigin() const {
 }
 
 void WidevinePermissionRequest::PermissionGranted() {
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) && !defined(OS_LINUX)
   EnableWidevineCdmComponent(web_contents_);
 #endif
 

@@ -19,7 +19,7 @@ void RequestWidevinePermission(content::WebContents* web_contents);
 void InstallBundleOrRestartBrowser();
 #endif
 
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) && !defined(OS_LINUX)
 void EnableWidevineCdmComponent(content::WebContents* web_contents);
 #endif
 
