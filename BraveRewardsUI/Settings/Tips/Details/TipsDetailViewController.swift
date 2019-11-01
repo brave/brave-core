@@ -288,14 +288,21 @@ extension TipsDetailViewController {
     if let pageURL = URL(string: pageURL) {
       state.dataSource?.retrieveFavicon(for: pageURL, faviconURL: URL(string: faviconURL ?? ""), completion: {[weak self] favData in
         guard let self = self,
-          let image = favData?.image,
-          let index = self.tipsList.firstIndex(where: {$0.id == identifier}) else {
+          let image = favData?.image  else {
             return
         }
+        
+        let indices = self.tipsList.enumerated().compactMap({ $0.element.id == identifier ? $0.offset : nil })
+        if indices.isEmpty {
+          return
+        }
 
-        if let tableView = (self.view as? View)?.tableView,
-          let cell = tableView.cellForRow(at: IndexPath(row: index, section: Section.tips.rawValue)) as? TipsTableCell {
-          cell.siteImageView.image = image
+        if let tableView = (self.view as? View)?.tableView {
+          for index in indices {
+            if let cell = tableView.cellForRow(at: IndexPath(row: index, section: Section.tips.rawValue)) as? TipsTableCell {
+              cell.siteImageView.image = image
+            }
+          }
         }
       })
     }
