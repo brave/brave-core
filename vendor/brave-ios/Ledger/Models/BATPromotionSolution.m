@@ -9,7 +9,7 @@
 - (NSString *)JSONPayload
 {
   NSDictionary *payload = @{
-    @"noonce": self.noonce,
+    @"nonce": self.noonce,
     @"blob": self.blob,
     @"signature": self.signature
   };
