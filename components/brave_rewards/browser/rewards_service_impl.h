@@ -702,6 +702,8 @@ class RewardsServiceImpl : public RewardsService,
     const std::vector<std::string>& id_list,
     ledger::ResultCallback callback) override;
 
+  ledger::ClientInfoPtr GetClientInfo() override;
+
   // end ledger::LedgerClient
 
   // Mojo Proxy methods

@@ -293,4 +293,6 @@ interface BatLedgerClient {
   InsertOrUpdateUnblindedToken(ledger.mojom.UnblindedToken info) => (ledger.mojom.Result result);
   GetAllUnblindedTokens() => (array<ledger.mojom.UnblindedToken> info);
   DeleteUnblindedToken(array<string> id_list) => (ledger.mojom.Result result);
+  [Sync]
+  GetClientInfo() => (ledger.mojom.ClientInfo info);
 };

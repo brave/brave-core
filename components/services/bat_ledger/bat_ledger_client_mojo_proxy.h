@@ -226,6 +226,8 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const std::vector<std::string>& id_list,
       ledger::ResultCallback callback) override;
 
+  ledger::ClientInfoPtr GetClientInfo() override;
+
  private:
   bool Connected() const;
 
