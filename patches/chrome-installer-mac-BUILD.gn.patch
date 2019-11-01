@@ -5,9 +5,9 @@ index 1425094d2cb2605fbc9ce11d68276471322d5640..23029d1e900dee50cc55fc7de4ac6235
 @@ -15,7 +15,7 @@ group("mac") {
    ]
  }
-
+ 
 -_packaging_dir = "$root_out_dir/$chrome_product_full_name Packaging"
 +_packaging_dir = "$root_out_dir/" + string_replace("$chrome_product_full_name Packaging", " ", "_")
-
+ 
  process_version_rc_template("sign_config") {
    visibility = [ ":copy_signing" ]
