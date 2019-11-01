@@ -116,6 +116,7 @@ source_set("browser_process") {
     "//base",
     "//brave/browser/tor",
     "//brave/browser/translate/buildflags",
+    "//brave/browser/notifications",
     "//brave/common",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_component_updater/browser",
