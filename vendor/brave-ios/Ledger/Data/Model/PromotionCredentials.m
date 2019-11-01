@@ -19,7 +19,7 @@
 @dynamic publicKey;
 @dynamic batchProof;
 @dynamic claimID;
-@dynamic promotion;
 @dynamic tokens;
+@dynamic promotionID;
 
 @end

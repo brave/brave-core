@@ -1280,6 +1280,9 @@
   const auto promo = [[BATPromotion alloc] init];
   promo.active = YES;
   promo.claimed = NO;
+  promo.credentials = [[BATPromotionCreds alloc] init];
+  promo.credentials.tokens = @"Test";
+  promo.credentials.claimId = @"1";
   promo.id = @"1";
   
   [self waitForCompletion:^(XCTestExpectation *expectation) {
@@ -1293,6 +1296,8 @@
   XCTAssertNotNil(queried);
   XCTAssertEqual(promo.active, queried.active);
   XCTAssertEqual(promo.claimed, queried.claimed);
+  XCTAssertNotNil(queried.credentials);
+  XCTAssert([queried.credentials.claimId isEqualToString:promo.credentials.claimId]);
   XCTAssert([promo.id isEqualToString:queried.id]);
 }
 
