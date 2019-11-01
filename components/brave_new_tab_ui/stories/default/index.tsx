@@ -26,7 +26,7 @@ interface State {
   showRewards: boolean
   adsEstimatedEarnings: number
   balance: NewTab.RewardsBalance
-  grants: NewTab.GrantRecord[]
+  promotions: NewTab.Promotion[]
   enabledAds: boolean
   enabledMain: boolean
   totalContribution: string
@@ -53,7 +53,7 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
       adsEstimatedEarnings: 5,
       enabledAds: false,
       enabledMain: false,
-      grants: [],
+      promotions: [],
       balance: {
         total: 0,
         rates: {},
@@ -126,7 +126,7 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
       walletCreateFailed,
       walletCreated,
       walletCreating,
-      grants,
+      promotions,
       balance,
       totalContribution
     } = this.state
@@ -159,7 +159,7 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
               hideWidget={this.toggleShowTopSites}
             />
             <Rewards
-              grants={grants}
+              promotions={promotions}
               balance={balance}
               enabledAds={enabledAds}
               enabledMain={enabledMain}

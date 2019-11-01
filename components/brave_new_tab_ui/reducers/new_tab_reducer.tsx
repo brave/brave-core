@@ -317,12 +317,12 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       dismissedNotifications.push(payload.id)
       state.rewardsState.dismissedNotifications = dismissedNotifications
 
-      state.rewardsState.grants = state.rewardsState.grants.filter((grant) => {
-        return grant.promotionId !== payload.id
+      state.rewardsState.promotions = state.rewardsState.promotions.filter((promotion) => {
+        return promotion.promotionId !== payload.id
       })
       break
 
-    case types.ON_GRANT:
+    case types.ON_PROMOTION:
       if (action.payload.properties.status === 1) {
         break
       }
@@ -342,20 +342,20 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         break
       }
 
-      const hasGrant = state.rewardsState.grants.find((grant: NewTab.GrantRecord) => {
-        return grant.promotionId === promotionId
+      const hasPromotion = state.rewardsState.promotions.find((promotion: NewTab.Promotion) => {
+        return promotion.promotionId === promotionId
       })
-      if (hasGrant) {
+      if (hasPromotion) {
         break
       }
 
-      const updatedGrants = state.rewardsState.grants
-      updatedGrants.push({
+      const updatedPromotions = state.rewardsState.promotions
+      updatedPromotions.push({
         promotionId: promotionId,
         type: payload.properties.type
       })
 
-      state.rewardsState.grants = updatedGrants
+      state.rewardsState.promotions = updatedPromotions
       break
 
     case types.ON_GRANT_FINISH:

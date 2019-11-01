@@ -74,7 +74,7 @@ declare namespace NewTab {
     dismissedNotifications: string[]
     enabledAds: boolean
     enabledMain: boolean
-    grants: GrantRecord[]
+    promotions: Promotion[]
     onlyAnonWallet: boolean
     totalContribution: string
     walletCreated: boolean
@@ -113,13 +113,20 @@ declare namespace NewTab {
     total: string
   }
 
-  export interface GrantResponse {
-    promotionId?: string
-    status?: number
-    type?: string
+  export enum PromotionTypes {
+    UGP = 0,
+    ADS = 1
   }
 
-  export interface GrantRecord {
+  export interface PromotionResponse {
+    status: number
+    promotionId: string
+    amount: number
+    expiresAt: number
+    type: PromotionTypes
+  }
+
+  export interface Promotion {
     type: string
     promotionId: string
   }
