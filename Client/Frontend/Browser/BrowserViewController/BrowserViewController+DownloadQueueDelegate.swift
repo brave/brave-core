@@ -52,8 +52,10 @@ extension BrowserViewController: DownloadQueueDelegate {
                 let downloadCompleteToast = ButtonToast(labelText: download.filename, imageName: "check", buttonText: Strings.DownloadsButtonTitle, completion: { buttonPressed in
                     guard buttonPressed else { return }
                     
-                    let nav = SettingsNavigationController(rootViewController:
-                        DownloadsPanel(profile: self.profile))
+                    let downloadsPanel = DownloadsPanel(profile: self.profile)
+                    let currentTheme = Theme.of(self.tabManager.selectedTab)
+                    downloadsPanel.applyTheme(currentTheme)
+                    let nav = SettingsNavigationController(rootViewController: downloadsPanel)
                     nav.modalPresentationStyle = .formSheet
                     nav.navigationBar.topItem?.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: nav, action: #selector(nav.done))
                     
