@@ -608,7 +608,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
     NSDictionary *noonce = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
     dispatch_async(dispatch_get_main_queue(), ^{
       completion(static_cast<BATResult>(result),
-                 noonce[@"noonce"]);
+                 noonce[@"nonce"]);
     });
   });
 }
@@ -1941,6 +1941,14 @@ BATLedgerBridge(BOOL,
   [BATLedgerDatabase deleteUnblindedTokens:ids completion:^(BOOL success) {
     callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
   }];
+}
+
+- (ledger::ClientInfoPtr)getClientInfo
+{
+  auto info = ledger::ClientInfo::New();
+  info->os = ledger::OperatingSystem::UNDEFINED;
+  info->platform = ledger::Platform::IOS;
+  return info;
 }
 
 @end
