@@ -613,7 +613,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   });
 }
 
-- (void)attestPromotion:(NSString *)promotionId solution:(BATPromotionSolution *)solution completion:(void (^)(BATPromotion * _Nullable promotion))completion
+- (void)attestPromotion:(NSString *)promotionId solution:(BATPromotionSolution *)solution completion:(void (^)(BATResult result, BATPromotion * _Nullable promotion))completion
 {
   ledger->AttestPromotion(std::string(promotionId.UTF8String), solution.JSONPayload.UTF8String, ^(const ledger::Result result, ledger::PromotionPtr promotion) {
     if (promotion.get() == nullptr) return;
@@ -621,17 +621,18 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
     const auto bridgedPromotion = [[BATPromotion alloc] initWithPromotion:*promotion];
     if (result == ledger::Result::LEDGER_OK) {
       [self fetchBalance:nil];
+      [self clearNotificationWithID:[self notificationIDForPromo:std::move(promotion)]];
     }
-    
-    [self clearNotificationWithID:[self notificationIDForPromo:std::move(promotion)]];
     
     dispatch_async(dispatch_get_main_queue(), ^{
       if (completion) {
-        completion(bridgedPromotion);
+        completion(static_cast<BATResult>(result), bridgedPromotion);
       }
-      for (BATBraveLedgerObserver *observer in [self.observers copy]) {
-        if (observer.promotionClaimed) {
-          observer.promotionClaimed(bridgedPromotion);
+      if (result == ledger::Result::LEDGER_OK) {
+        for (BATBraveLedgerObserver *observer in [self.observers copy]) {
+          if (observer.promotionClaimed) {
+            observer.promotionClaimed(bridgedPromotion);
+          }
         }
       }
     });

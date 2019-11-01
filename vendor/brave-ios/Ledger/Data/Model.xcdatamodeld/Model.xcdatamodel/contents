@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15400" systemVersion="18G103" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15508" systemVersion="18G103" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
     <entity name="ActivityInfo" representedClassName="ActivityInfo" syncable="YES">
         <attribute name="duration" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="percent" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
@@ -62,17 +62,15 @@
         <attribute name="suggestions" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="type" attributeType="Integer 32" usesScalarValueType="YES"/>
         <attribute name="version" attributeType="Integer 32" usesScalarValueType="YES"/>
-        <relationship name="credentials" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="PromotionCredentials" inverseName="promotion" inverseEntity="PromotionCredentials"/>
-        <relationship name="unblindedTokens" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="UnblindedToken" inverseName="promotion" inverseEntity="UnblindedToken"/>
     </entity>
     <entity name="PromotionCredentials" representedClassName="PromotionCredentials" syncable="YES" codeGenerationType="class">
         <attribute name="batchProof" optional="YES" attributeType="String"/>
         <attribute name="blindedCredentials" attributeType="String"/>
         <attribute name="claimID" optional="YES" attributeType="String"/>
+        <attribute name="promotionID" attributeType="String"/>
         <attribute name="publicKey" optional="YES" attributeType="String"/>
         <attribute name="signedCredentials" optional="YES" attributeType="String"/>
         <attribute name="tokens" attributeType="String"/>
-        <relationship name="promotion" maxCount="1" deletionRule="Nullify" destinationEntity="Promotion" inverseName="credentials" inverseEntity="Promotion"/>
     </entity>
     <entity name="PublisherInfo" representedClassName="PublisherInfo" syncable="YES">
         <attribute name="excluded" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
@@ -153,11 +151,11 @@
         </uniquenessConstraints>
     </entity>
     <entity name="UnblindedToken" representedClassName="UnblindedToken" syncable="YES" codeGenerationType="class">
+        <attribute name="promotionID" optional="YES" attributeType="String"/>
         <attribute name="publicKey" optional="YES" attributeType="String"/>
         <attribute name="tokenID" attributeType="Integer 64" usesScalarValueType="YES"/>
         <attribute name="tokenValue" optional="YES" attributeType="String"/>
         <attribute name="value" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <relationship name="promotion" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Promotion" inverseName="unblindedTokens" inverseEntity="Promotion"/>
     </entity>
     <elements>
         <element name="ActivityInfo" positionX="-54" positionY="45" width="128" height="165"/>
@@ -166,7 +164,7 @@
         <element name="ContributionQueue" positionX="-45" positionY="108" width="128" height="118"/>
         <element name="MediaPublisherInfo" positionX="-54" positionY="108" width="128" height="75"/>
         <element name="PendingContribution" positionX="-45" positionY="117" width="128" height="135"/>
-        <element name="Promotion" positionX="-45" positionY="108" width="128" height="208"/>
+        <element name="Promotion" positionX="-45" positionY="108" width="128" height="178"/>
         <element name="PromotionCredentials" positionX="-36" positionY="117" width="128" height="148"/>
         <element name="PublisherInfo" positionX="-63" positionY="-18" width="128" height="210"/>
         <element name="RecurringDonation" positionX="-36" positionY="126" width="128" height="105"/>

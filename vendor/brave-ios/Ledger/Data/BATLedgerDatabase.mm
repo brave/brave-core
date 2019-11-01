@@ -1000,10 +1000,10 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
                     context:context];
 }
 
-+ (nullable PromotionCredentials *)getPromoCredsWithClaimID:(NSString *)claimID context:(NSManagedObjectContext *)context
++ (nullable PromotionCredentials *)getPromoCredsWithPromotionID:(NSString *)promotionID context:(NSManagedObjectContext *)context
 {
   return [self firstOfClass:PromotionCredentials.class
-                 predicates:@[[NSPredicate predicateWithFormat:@"claimID == %@", claimID]]
+                 predicates:@[[NSPredicate predicateWithFormat:@"promotionID == %@", promotionID]]
             sortDescriptors:@[]
                     context:context];
 }
@@ -1031,22 +1031,23 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     promo.claimed = promotion.claimed;
     promo.active = promotion.active;
     promo.expiryDate = [NSDate dateWithTimeIntervalSince1970:promotion.expiresAt];
-    if (promotion.credentials) {
-      auto creds = [self getPromoCredsWithClaimID:promotion.credentials.claimId context:context] ?: [[PromotionCredentials alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(PromotionCredentials.class) inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+    if (promotion.credentials != nil) {
+      auto creds = [self getPromoCredsWithPromotionID:promotion.id context:context] ?: [[PromotionCredentials alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(PromotionCredentials.class) inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+      creds.promotionID = promotion.id;
       creds.claimID = promotion.credentials.claimId;
       creds.batchProof = promotion.credentials.batchProof;
       creds.publicKey = promotion.credentials.publicKey;
       creds.signedCredentials = promotion.credentials.signedCreds;
       creds.blindedCredentials = promotion.credentials.blindedCreds;
       creds.tokens = promotion.credentials.tokens;
-      promo.credentials = creds;
     }
   } completion:WriteToDataControllerCompletion(completion)];
 }
 
 + (nullable BATPromotion *)promotionWithID:(NSString *)promoID
 {
-  const auto dbPromo = [self getPromotionWithID:promoID context:DataController.viewContext];
+  const auto context = DataController.viewContext;
+  const auto dbPromo = [self getPromotionWithID:promoID context:context];
   if (!dbPromo) {
     return nil;
   }
@@ -1063,16 +1064,17 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   promotion.active = dbPromo.active;
   promotion.expiresAt = [dbPromo.expiryDate timeIntervalSince1970];
   promotion.credentials = ^BATPromotionCreds * _Nullable {
-    if (!dbPromo.credentials) {
+    const auto dbCreds = [self getPromoCredsWithPromotionID:promoID context:context];
+    if (!dbCreds) {
       return nil;
     }
     const auto creds = [[BATPromotionCreds alloc] init];
-    creds.claimId = dbPromo.credentials.claimID;
-    creds.blindedCreds = dbPromo.credentials.blindedCredentials;
-    creds.signedCreds = dbPromo.credentials.signedCredentials;
-    creds.publicKey = dbPromo.credentials.publicKey;
-    creds.batchProof = dbPromo.credentials.batchProof;
-    creds.tokens = dbPromo.credentials.tokens;
+    creds.claimId = dbCreds.claimID;
+    creds.blindedCreds = dbCreds.blindedCredentials;
+    creds.signedCreds = dbCreds.signedCredentials;
+    creds.publicKey = dbCreds.publicKey;
+    creds.batchProof = dbCreds.batchProof;
+    creds.tokens = dbCreds.tokens;
     return creds;
   }();
   return promotion;
@@ -1087,7 +1089,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     token.tokenID = unblindedToken.id;
     token.publicKey = unblindedToken.publicKey;
     token.value = unblindedToken.value;
-    token.promotion = [self getPromotionWithID:unblindedToken.promotionId context:context];
+    token.promotionID = unblindedToken.promotionId;
     token.tokenValue = unblindedToken.tokenValue;
   } completion:WriteToDataControllerCompletion(completion)];
 }
@@ -1112,7 +1114,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     token.publicKey = dbToken.publicKey;
     token.value = dbToken.value;
     token.tokenValue = dbToken.tokenValue;
-    token.promotionId = dbToken.promotion.promotionID;
+    token.promotionId = dbToken.promotionID;
     [tokens addObject:token];
   }
   return [tokens copy];

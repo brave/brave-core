@@ -23,7 +23,5 @@
 @dynamic claimed;
 @dynamic active;
 @dynamic expiryDate;
-@dynamic credentials;
-@dynamic unblindedTokens;
 
 @end

@@ -18,6 +18,6 @@
 @dynamic tokenValue;
 @dynamic publicKey;
 @dynamic value;
-@dynamic promotion;
+@dynamic promotionID;
 
 @end

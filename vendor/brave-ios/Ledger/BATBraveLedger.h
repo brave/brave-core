@@ -178,7 +178,7 @@ NS_SWIFT_NAME(BraveLedger)
 
 - (void)attestPromotion:(NSString *)promotionId
                solution:(BATPromotionSolution *)solution
-             completion:(nullable void (^)(BATPromotion * _Nullable promotion))completion;
+             completion:(nullable void (^)(BATResult result, BATPromotion * _Nullable promotion))completion;
 
 #pragma mark - History
 

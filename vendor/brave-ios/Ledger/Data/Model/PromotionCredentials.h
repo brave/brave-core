@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Promotion;
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PromotionCredentials : NSManagedObject
@@ -22,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy) NSString *publicKey;
 @property (nullable, nonatomic, copy) NSString *batchProof;
 @property (nonatomic, copy) NSString *claimID;
-@property (nullable, nonatomic, retain) Promotion *promotion;
+@property (nonatomic, copy) NSString *promotionID;
 @property (nonatomic, copy) NSString *tokens;
 
 @end
