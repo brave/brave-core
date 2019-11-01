@@ -55,6 +55,10 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
     private var groupedDownloadedFiles = DateGroupedTableData<DownloadedFile>()
     private var fileExtensionIcons: [String: UIImage] = [:]
     
+    let welcomeLabel = UILabel()
+    let overlayView = UIView()
+    let logoImageView = UIImageView(image: #imageLiteral(resourceName: "emptyDownloads").template)
+    
     // MARK: - Lifecycle
     init(profile: Profile) {
         self.profile = profile
@@ -247,10 +251,8 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     fileprivate func createEmptyStateOverlayView() -> UIView {
-        let overlayView = UIView()
         overlayView.backgroundColor = UIColor.Photon.White100
         
-        let logoImageView = UIImageView(image: #imageLiteral(resourceName: "emptyDownloads").template)
         overlayView.addSubview(logoImageView)
         logoImageView.snp.makeConstraints { make in
             make.centerX.equalTo(overlayView)
@@ -262,7 +264,6 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
             make.top.greaterThanOrEqualTo(overlayView).offset(50)
         }
         
-        let welcomeLabel = UILabel()
         overlayView.addSubview(welcomeLabel)
         welcomeLabel.text = Strings.DownloadsPanelEmptyStateTitle
         welcomeLabel.textAlignment = .center
@@ -386,6 +387,10 @@ extension DownloadsPanel: Themeable {
         emptyStateOverlayView.removeFromSuperview()
         emptyStateOverlayView = createEmptyStateOverlayView()
         updateEmptyPanelState()
+        
+        welcomeLabel.appearanceTextColor = theme.colors.tints.home
+        overlayView.appearanceBackgroundColor = theme.colors.home
+        logoImageView.tintColor = theme.colors.tints.home
         
         tableView.reloadData()
     }

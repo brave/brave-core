@@ -226,6 +226,8 @@ class MenuViewController: UITableViewController {
     
     private func openDownloads() {
         let vc = DownloadsPanel(profile: bvc.profile)
+        let currentTheme = Theme.of(bvc.tabManager.selectedTab)
+        vc.applyTheme(currentTheme)
         
         open(vc, doneButton: DoneButton(style: .done, position: .right))
     }
