@@ -21,7 +21,7 @@
 @dynamic suggestions;
 @dynamic approximateValue;
 @dynamic claimed;
-@dynamic active;
+@dynamic status;
 @dynamic expiryDate;
 
 @end

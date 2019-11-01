@@ -53,12 +53,12 @@
         </fetchIndex>
     </entity>
     <entity name="Promotion" representedClassName="Promotion" syncable="YES" codeGenerationType="class">
-        <attribute name="active" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="approximateValue" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="claimed" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="expiryDate" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="promotionID" attributeType="String"/>
         <attribute name="publicKeys" attributeType="String"/>
+        <attribute name="status" attributeType="Integer 32" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="suggestions" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="type" attributeType="Integer 32" usesScalarValueType="YES"/>
         <attribute name="version" attributeType="Integer 32" usesScalarValueType="YES"/>
