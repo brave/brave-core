@@ -177,9 +177,9 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   bool ret = ChromeMainDelegate::BasicStartupComplete(exit_code);
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  // Override chrome::FILE_WIDEVINE_CDM path because we install it in user data
-  // dir. Must call after ChromeMainDelegate::BasicStartupComplete() to use
-  // chrome paths.
+  // Override chrome::DIR_BUNDLED_WIDEVINE_CDM path because we install it in
+  // user data dir. Must call after ChromeMainDelegate::BasicStartupComplete()
+  // to use chrome paths.
   brave::OverridePath();
 #endif
 
