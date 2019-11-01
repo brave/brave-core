@@ -16,19 +16,19 @@ import { CloseStrokeIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../common/locale'
 
 interface NotificationProps {
-  grant: NewTab.GrantRecord
+  promotion: NewTab.Promotion
   onDismissNotification: (id: string) => void
 }
 
 export default class RewardsNotification extends React.PureComponent<NotificationProps, {}> {
 
   dismissNotification = () => {
-    this.props.onDismissNotification(this.props.grant.promotionId)
+    this.props.onDismissNotification(this.props.promotion.promotionId)
   }
 
   onNotificationAction = () => {
     this.dismissNotification()
-    chrome.braveRewards.openBrowserActionUI(`brave_rewards_panel.html#grant_${this.props.grant.promotionId}`)
+    chrome.braveRewards.openBrowserActionUI(`brave_rewards_panel.html#grant_${this.props.promotion.promotionId}`)
   }
 
   render () {
@@ -43,7 +43,7 @@ export default class RewardsNotification extends React.PureComponent<Notificatio
           </Title>
           <SubTitle>
             {
-              this.props.grant.type === 'ads'
+              this.props.promotion.type === 'ads'
               ? getLocale('rewardsWidgetNotificationTextAds')
               : getLocale('rewardsWidgetNotificationTextUGP')
             }

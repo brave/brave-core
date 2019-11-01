@@ -97,6 +97,6 @@ chrome.braveRewards.onAdsEnabled.addListener((enabled: boolean) => {
   getActions().onAdsEnabled(enabled)
 })
 
-chrome.braveRewards.onGrant.addListener((properties: NewTab.GrantResponse) => {
-  getActions().onGrant(properties)
+chrome.braveRewards.onPromotion.addListener((properties: NewTab.PromotionResponse) => {
+  getActions().onPromotion(properties)
 })

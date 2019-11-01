@@ -36,7 +36,7 @@ export interface RewardsProps {
   enabledAds: boolean
   enabledMain: boolean
   balance: NewTab.RewardsBalance
-  grants: NewTab.GrantRecord[]
+  promotions: NewTab.Promotion[]
   totalContribution: string
   walletCreated: boolean
   walletCreating: boolean
@@ -226,14 +226,18 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
   }
 
   renderNotifications = () => {
-    const { grants, onDismissNotification } = this.props
+    const { promotions, onDismissNotification } = this.props
+
+    if (!promotions) {
+      return null;
+    }
 
     return (
       <>
-        {grants.map((grant: NewTab.GrantRecord, index) => {
+        {promotions.map((promotion: NewTab.Promotion, index) => {
           return (
             <Notification
-              grant={grant}
+              promotion={promotion}
               key={`notification-${index}`}
               onDismissNotification={onDismissNotification}
             />
