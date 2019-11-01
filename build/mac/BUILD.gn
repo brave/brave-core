@@ -1,5 +1,6 @@
 import("//brave/build/config.gni")
 import("//build/config/mac/base_rules.gni")
+import("//build/util/branding.gni")
 import("//build/util/version.gni")
 import("//chrome/common/features.gni")
 import("//third_party/widevine/cdm/widevine.gni")
@@ -14,6 +15,7 @@ declare_args() {
   mac_notarized_output_prefix = "notarized"
   notary_user = ""
   notary_password = ""
+  notary_asc_provider = chrome_mac_team_id
   notarize = false
   notarize_argument = "False"
 }
@@ -161,7 +163,8 @@ if (skip_signing) {
       mac_signing_identifier,
       notarize_argument,
       notary_user,
-      notary_password
+      notary_password,
+      notary_asc_provider
     ]
   }
 
@@ -315,6 +318,8 @@ if (skip_signing) {
       notary_user,
       "--notary-password",
       notary_password,
+      "--notary-asc-provider",
+      notary_asc_provider,
       development_arg,
       "--dmg",
       rebase_path("$root_out_dir/$mac_signed_output_prefix/$brave_dmg"),
