@@ -12,3 +12,12 @@ brave_chrome_java_deps = [
   "//third_party/android_deps:google_play_services_vision_java",
   "//third_party/android_deps:google_play_services_vision_common_java",
 ]
+
+# To use our overrided enum in java, put the header file of our overrided enum
+# in brave_android_java_enums_srcjar target and add the chromium header file of
+# the enum we're replacing in brave_overrided_chrome_android_java_enums.
+# If you're replacing enum files not included in chrome_android_java_enums_srcjar
+# target, a new arg should be added to specify the files we're going to remove
+# from that target.
+brave_overrided_chrome_android_java_enums = ["//chrome/browser/notifications/notification_handler.h"]
+brave_chrome_java_srcjar_deps = ["//brave/android:brave_android_java_enums_srcjar"]

@@ -12,6 +12,8 @@
 
 class NotificationHandler : public NotificationHandler_ChromiumImpl {
  public:
+  // GENERATED_JAVA_ENUM_PACKAGE: org.chromium.chrome.browser.notifications
+  // GENERATED_JAVA_CLASS_NAME_OVERRIDE: NotificationType
   enum class Type {
     WEB_PERSISTENT = 0,
     WEB_NON_PERSISTENT = 1,

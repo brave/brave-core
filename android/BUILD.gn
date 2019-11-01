@@ -1,0 +1,7 @@
+import("//build/config/android/rules.gni")
+
+java_cpp_enum("brave_android_java_enums_srcjar") {
+  sources = [
+    "//brave/chromium_src/chrome/browser/notifications/notification_handler.h",
+  ]
+}
