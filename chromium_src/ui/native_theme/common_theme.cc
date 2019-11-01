@@ -10,7 +10,8 @@
 #undef GetAuraColor
 
 namespace {
-  const SkColor kBraveBrandColor = SkColorSetRGB(0xff, 0x76, 0x54);
+  const SkColor kBraveColorBrand = SkColorSetRGB(0xfb, 0x54, 0x2b);
+  const SkColor kBraveColorOrange300 = SkColorSetRGB(0xFF, 0x97, 0x7D);
 }  // namespace
 
 
@@ -27,12 +28,12 @@ SkColor GetAuraColor(NativeTheme::ColorId color_id,
       return is_dark ? SK_ColorWHITE
                     : SkColorSetRGB(0x3b, 0x3e, 0x4f);
     case NativeTheme::kColorId_ButtonHoverColor:
-      return kBraveBrandColor;
+      return kBraveColorBrand;
     case NativeTheme::kColorId_ButtonPressedShade:
-      return SkColorSetA(kBraveBrandColor, is_dark ? 0x2b : 0x23);
+      return SkColorSetA(kBraveColorBrand, is_dark ? 0x2b : 0x23);
     case NativeTheme::kColorId_ProminentButtonColor:
     case NativeTheme::kColorId_ProminentButtonFocusedColor:
-      return kBraveBrandColor;
+      return kBraveColorBrand;
     case NativeTheme::kColorId_ProminentButtonDisabledColor:
       return gfx::kGoogleGrey800;
     case NativeTheme::kColorId_TextOnProminentButtonColor:
@@ -44,6 +45,9 @@ SkColor GetAuraColor(NativeTheme::ColorId color_id,
           base_theme);
       return button;
     }
+    case NativeTheme::kColorId_LinkEnabled:
+    case NativeTheme::kColorId_LinkPressed:
+      return is_dark ? kBraveColorOrange300 : kBraveColorBrand;
     default:
       break;
   }
