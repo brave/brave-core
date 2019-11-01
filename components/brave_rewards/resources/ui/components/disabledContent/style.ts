@@ -19,6 +19,7 @@ export const StyledTwoColumn = styled<{}, 'div'>('div')`
 `
 
 export const StyledIcon = styled<{}, 'div'>('div')`
-  width: 180px;
+  max-width: 50px;
   padding: 4px;
+  margin-right: 20px;
 `
