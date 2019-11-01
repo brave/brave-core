@@ -154,6 +154,9 @@ typedef void (^BATLedgerDatabaseWriteCompletion)(BOOL success);
 
 + (NSArray<BATUnblindedToken *> *)allUnblindedTokens;
 
++ (void)deleteUnblindedTokens:(NSArray<NSNumber *> *)idList
+                   completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
+
 #pragma mark -
 
 - (instancetype)init NS_UNAVAILABLE;

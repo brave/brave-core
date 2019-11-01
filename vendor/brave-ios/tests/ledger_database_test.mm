@@ -1373,6 +1373,64 @@
   XCTAssertEqual(queried.count, 2);
 }
 
+- (void)testDeletingUnblindedTokens
+{
+  const auto token = [[BATUnblindedToken alloc] init];
+  token.id = 1;
+  
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase insertOrUpdateUnblindedToken:token completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto token2 = [[BATUnblindedToken alloc] init];
+  token2.id = 2;
+  
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase insertOrUpdateUnblindedToken:token2 completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto token3 = [[BATUnblindedToken alloc] init];
+  token3.id = 3;
+  
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase insertOrUpdateUnblindedToken:token3 completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto firstQuery = [BATLedgerDatabase allUnblindedTokens];
+  XCTAssertEqual(firstQuery.count, 3);
+  
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase deleteUnblindedTokens:@[@1, @3] completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto queried = [BATLedgerDatabase allUnblindedTokens];
+  XCTAssertEqual(queried.count, 1);
+  XCTAssertEqual(queried.firstObject.id, 2);
+  
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase deleteUnblindedTokens:@[@2] completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  
+  const auto lastQuery = [BATLedgerDatabase allUnblindedTokens];
+  XCTAssertEqual(lastQuery.count, 0);
+}
+
 #pragma mark -
 
 - (void)waitForCompletion:(void (^)(XCTestExpectation *))task
