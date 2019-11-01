@@ -93,4 +93,5 @@ private:
   void InsertOrUpdateUnblindedToken(ledger::UnblindedTokenPtr info, ledger::ResultCallback callback) override;
   void GetAllUnblindedTokens(ledger::GetAllUnblindedTokensCallback callback) override;
   void DeleteUnblindedToken(const std::vector<std::string>& id_list, ledger::ResultCallback callback) override;
+  ledger::ClientInfoPtr GetClientInfo() override;
 };
