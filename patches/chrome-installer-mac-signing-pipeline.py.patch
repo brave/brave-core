@@ -1,8 +1,21 @@
 diff --git a/chrome/installer/mac/signing/pipeline.py b/chrome/installer/mac/signing/pipeline.py
-index 898c0d4542bb3474d654e71a1e4fd5a1355e3897..dad0718097522f2346f690ae7435dbe162cbb964 100644
+index 898c0d4542bb3474d654e71a1e4fd5a1355e3897..a1a32cac6e7e23bda56411b165ff0fe84a620e91 100644
 --- a/chrome/installer/mac/signing/pipeline.py
 +++ b/chrome/installer/mac/signing/pipeline.py
-@@ -221,7 +221,6 @@ def _package_installer_tools(paths, config):
+@@ -192,12 +192,6 @@ def _package_dmg(paths, dist, config):
+         '--volname', config.app_product,
+         '--icon', os.path.join(packaging_dir, icon_file),
+         '--copy', '{}:/'.format(app_path),
+-        '--copy',
+-            '{}/keystone_install.sh:/.keystone_install'.format(packaging_dir),
+-        '--mkdir', '.background',
+-        '--copy',
+-            '{}/chrome_dmg_background.png:/.background/background.png'.format(
+-                packaging_dir),
+         '--copy', '{}/{}:/.DS_Store'.format(packaging_dir, dsstore_file),
+         '--symlink', '/Applications:/ ',
+     ])
+@@ -221,7 +215,6 @@ def _package_installer_tools(paths, config):
          'dirdiffer.sh',
          'dirpatcher.sh',
          'dmgdiffer.sh',
@@ -10,3 +23,12 @@ index 898c0d4542bb3474d654e71a1e4fd5a1355e3897..dad0718097522f2346f690ae7435dbe1
          'pkg-dmg',
      )
  
+@@ -338,5 +331,8 @@ def sign_all(orig_paths, config, disable_packaging=False, do_notarization=True):
+                         uuids_to_package_path.keys(), config):
+                     package_path = uuids_to_package_path[result]
+                     notarize.staple(package_path)
++        else:
++            # Copy the notarized app to the orig_paths.output dir where the user expects it.
++            commands.copy_files(dest_dir, orig_paths.output)
+
+     _package_installer_tools(orig_paths, config)
