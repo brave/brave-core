@@ -246,6 +246,9 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const std::vector<std::string>& id_list,
       DeleteUnblindedTokenCallback callback) override;
 
+  void GetClientInfo(
+      GetClientInfoCallback callback) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   // also serves as a wrapper for passing ledger::LedgerCallbackHandler*

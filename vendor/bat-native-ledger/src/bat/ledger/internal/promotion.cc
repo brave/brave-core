@@ -49,6 +49,49 @@ Promotion::Promotion(bat_ledger::LedgerImpl* ledger) :
 Promotion::~Promotion() {
 }
 
+std::string ParseOSToString(ledger::OperatingSystem os) {
+  switch (static_cast<int>(os)) {
+    case static_cast<int>(ledger::OperatingSystem::WINDOWS):  {
+      return "windows";
+    }
+    case static_cast<int>(ledger::OperatingSystem::MACOS):  {
+      return "osx";
+    }
+    case static_cast<int>(ledger::OperatingSystem::LINUX):  {
+      return "linux";
+    }
+    case static_cast<int>(ledger::OperatingSystem::UNDEFINED):  {
+      return "undefined";
+    }
+    default: {
+      NOTREACHED();
+      return "";
+    }
+  }
+}
+
+std::string ParseClientInfoToString(ledger::ClientInfoPtr info) {
+  if (!info) {
+    return "";
+  }
+
+  switch (static_cast<int>(info->platform)) {
+    case static_cast<int>(ledger::Platform::ANDROID):  {
+      return "android";
+    }
+    case static_cast<int>(ledger::Platform::IOS):  {
+      return "ios";
+    }
+    case static_cast<int>(ledger::Platform::DESKTOP):  {
+      return ParseOSToString(info->os);
+    }
+    default: {
+      NOTREACHED();
+      return "";
+    }
+  }
+}
+
 ledger::PromotionType ConvertStringToPromotionType(const std::string& type) {
   if (type == "ugp") {
     return ledger::PromotionType::UGP;
@@ -244,9 +287,12 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
       _3,
       std::move(callback));
 
+  auto client_info = ledger_->GetClientInfo();
+  const std::string client = ParseClientInfoToString(std::move(client_info));
+
   const std::string url = braveledger_request_util::GetFetchPromotionUrl(
       wallet_payment_id,
-      "osx"); // TODO make dynamic
+      client);
 
   ledger_->LoadURL(
       url,

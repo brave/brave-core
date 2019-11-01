@@ -1128,8 +1128,6 @@ void LedgerClientMojoProxy::GetAllUnblindedTokens(
                 _1));
 }
 
-
-
 // static
 void LedgerClientMojoProxy::OnDeleteUnblindedToken(
     CallbackHolder<DeleteUnblindedTokenCallback>* holder,
@@ -1152,6 +1150,12 @@ void LedgerClientMojoProxy::DeleteUnblindedToken(
       std::bind(LedgerClientMojoProxy::OnDeleteUnblindedToken,
                 holder,
                 _1));
+}
+
+void LedgerClientMojoProxy::GetClientInfo(
+    GetClientInfoCallback callback) {
+  auto info = ledger_client_->GetClientInfo();
+  std::move(callback).Run(std::move(info));
 }
 
 }  // namespace bat_ledger

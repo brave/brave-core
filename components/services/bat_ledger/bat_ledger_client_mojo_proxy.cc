@@ -1017,4 +1017,10 @@ void BatLedgerClientMojoProxy::DeleteUnblindedToken(
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
+ledger::ClientInfoPtr BatLedgerClientMojoProxy::GetClientInfo() {
+  auto info = ledger::ClientInfo::New();
+  bat_ledger_client_->GetClientInfo(&info);
+  return info;
+}
+
 }  // namespace bat_ledger

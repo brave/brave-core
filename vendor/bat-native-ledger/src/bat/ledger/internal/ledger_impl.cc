@@ -1527,4 +1527,8 @@ void LedgerImpl::DeleteUnblindedToken(
   ledger_client_->DeleteUnblindedToken(id_list, callback);
 }
 
+ledger::ClientInfoPtr LedgerImpl::GetClientInfo() {
+  return ledger_client_->GetClientInfo();
+}
+
 }  // namespace bat_ledger

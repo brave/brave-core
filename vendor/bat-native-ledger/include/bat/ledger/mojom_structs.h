@@ -31,6 +31,9 @@ using BalancePtr = mojom::BalancePtr;
 using BalanceReportInfo = mojom::BalanceReportInfo;
 using BalanceReportInfoPtr = mojom::BalanceReportInfoPtr;
 
+using ClientInfo = mojom::ClientInfo;
+using ClientInfoPtr = mojom::ClientInfoPtr;
+
 using ContributionInfo = mojom::ContributionInfo;
 using ContributionInfoPtr = mojom::ContributionInfoPtr;
 
@@ -55,6 +58,10 @@ using ExternalWalletPtr = mojom::ExternalWalletPtr;
 
 using MediaEventInfo = mojom::MediaEventInfo;
 using MediaEventInfoPtr = mojom::MediaEventInfoPtr;
+
+using OperatingSystem = mojom::OperatingSystem;
+
+using Platform = mojom::Platform;
 
 using PendingContribution = mojom::PendingContribution;
 using PendingContributionPtr = mojom::PendingContributionPtr;

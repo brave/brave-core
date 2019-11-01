@@ -312,6 +312,8 @@ class LEDGER_EXPORT LedgerClient {
   virtual void DeleteUnblindedToken(
     const std::vector<std::string>& id_list,
     ledger::ResultCallback callback) = 0;
+
+  virtual ledger::ClientInfoPtr GetClientInfo() = 0;
 };
 
 }  // namespace ledger

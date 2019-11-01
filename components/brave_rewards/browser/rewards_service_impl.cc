@@ -4253,4 +4253,35 @@ void RewardsServiceImpl::DeleteUnblindedToken(
         callback));
 }
 
+ledger::ClientInfoPtr GetAndroidClientInfo() {
+  auto info = ledger::ClientInfo::New();
+  info->platform = ledger::Platform::ANDROID;
+  info->os = ledger::OperatingSystem::UNDEFINED;
+  return info;
+}
+
+ledger::ClientInfoPtr GetDesktopClientInfo() {
+  auto info = ledger::ClientInfo::New();
+  info->platform = ledger::Platform::DESKTOP;
+  #if defined(OS_MACOSX)
+    info->os = ledger::OperatingSystem::MACOS;
+  #elif defined(OS_WIN)
+    info->os = ledger::OperatingSystem::WINDOWS;
+  #elif defined(OS_LINUX)
+    info->os = ledger::OperatingSystem::LINUX;
+  #else
+    info->os = ledger::OperatingSystem::UNDEFINED;
+  #endif
+
+  return info;
+}
+
+ledger::ClientInfoPtr RewardsServiceImpl::GetClientInfo() {
+  #if defined(OS_ANDROID)
+    return GetAndroidClientInfo();
+  #else
+    return GetDesktopClientInfo();
+  #endif
+}
+
 }  // namespace brave_rewards

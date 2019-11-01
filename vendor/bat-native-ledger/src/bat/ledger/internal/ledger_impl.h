@@ -585,6 +585,8 @@ class LedgerImpl : public ledger::Ledger,
     const std::vector<std::string>& id_list,
     ledger::ResultCallback callback);
 
+  ledger::ClientInfoPtr GetClientInfo();
+
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;
