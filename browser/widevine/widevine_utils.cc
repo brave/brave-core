@@ -28,7 +28,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #endif
 
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) && !defined(OS_LINUX)
 #include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
 #endif
 
@@ -78,7 +78,7 @@ void OnWidevineInstallDone(const std::string& error) {
 
 }  // namespace
 
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) && !defined(OS_LINUX)
 void EnableWidevineCdmComponent(content::WebContents* web_contents) {
   DCHECK(web_contents);
 
@@ -126,7 +126,7 @@ std::string GetWidevineInstalledVersion() {
 int GetWidevinePermissionRequestTextFrangmentResourceId() {
   int message_id = -1;
 
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) && !defined(OS_LINUX)
   message_id = IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT;
 #endif
 
