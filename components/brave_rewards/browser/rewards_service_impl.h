@@ -691,6 +691,9 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& id,
       ledger::GetPromotionCallback callback) override;
 
+  void GetAllPromotions(
+      ledger::GetAllPromotionsCallback callback) override;
+
   void InsertOrUpdateUnblindedToken(
       ledger::UnblindedTokenPtr info,
       ledger::ResultCallback callback) override;
@@ -703,6 +706,8 @@ class RewardsServiceImpl : public RewardsService,
     ledger::ResultCallback callback) override;
 
   ledger::ClientInfoPtr GetClientInfo() override;
+
+  void UnblindedTokensReady() override;
 
   // end ledger::LedgerClient
 
@@ -762,6 +767,10 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetAllUnblindedTokens(
       ledger::GetAllUnblindedTokensCallback callback,
       ledger::UnblindedTokenList list);
+
+  void OnGetAllPromotions(
+      ledger::GetAllPromotionsCallback callback,
+      ledger::PromotionMap promotions);
 
 #if defined(OS_ANDROID)
   ledger::Environment GetServerEnvironmentForAndroid();

@@ -25,6 +25,8 @@ class Promotion {
   explicit Promotion(bat_ledger::LedgerImpl* ledger);
   ~Promotion();
 
+  void Initialize();
+
   void Fetch(ledger::FetchPromotionCallback callback);
 
   void Claim(
@@ -51,12 +53,17 @@ class Promotion {
       const std::map<std::string, std::string>& headers,
       ledger::FetchPromotionCallback callback);
 
+  void OnGetAllPromotions(
+      ledger::PromotionMap promotions,
+      const std::string& response,
+      ledger::FetchPromotionCallback callback);
+
   void OnAttestPromotion(
       const ledger::Result result,
       const std::string& promotion_id,
       ledger::AttestPromotionCallback callback);
 
-  void OnCompletePromotion(
+  void OnCompletedAttestation(
       ledger::PromotionPtr promotion,
       ledger::AttestPromotionCallback callback);
 
@@ -69,6 +76,8 @@ class Promotion {
       const ledger::Result result,
       ledger::PromotionList promotions,
       ledger::FetchPromotionCallback callback);
+
+  void Retry(ledger::PromotionMap promotions);
 
   void OnClaimTokens(
       const int response_status_code,
@@ -95,6 +104,7 @@ class Promotion {
   std::unique_ptr<braveledger_attestation::AttestationImpl> attestation_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   uint32_t last_check_timer_id_;
+  uint32_t retry_timer_id_;
 };
 
 }  // namespace braveledger_promotion

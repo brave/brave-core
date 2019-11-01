@@ -249,3 +249,6 @@ void NativeLedgerClient::DeleteUnblindedToken(const std::vector<std::string>& id
 ledger::ClientInfoPtr NativeLedgerClient::GetClientInfo() {
   return [bridge_ getClientInfo];
 }
+void NativeLedgerClient::UnblindedTokensReady() {
+  [bridge_ unblindedTokensReady];
+}

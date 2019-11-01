@@ -179,7 +179,11 @@ bool ParseFetchResponse(
       if (!available || !available->is_bool()) {
         continue;
       }
-      promotion->active = available->GetBool();
+      if (available->GetBool()) {
+        promotion->status = ledger::PromotionStatus::ACTIVE;
+      } else {
+        promotion->status = ledger::PromotionStatus::OVER;
+      }
 
       auto* expires_at = item.FindKey("expiresAt");
       if (!expires_at || !expires_at->is_string()) {
@@ -267,6 +271,13 @@ std::unique_ptr<base::ListValue> ParseStringToBaseList(
   return std::make_unique<base::ListValue>(value->GetList());
 }
 
+void Promotion::Initialize() {
+  auto claim_callback = std::bind(&Promotion::Retry,
+      this,
+      _1);
+  ledger_->GetAllPromotions(claim_callback);
+}
+
 void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
   // make sure wallet/client state is sane here as this is the first
   // panel call.
@@ -327,6 +338,20 @@ void Promotion::OnFetch(
     return;
   }
 
+  auto all_callback = std::bind(&Promotion::OnGetAllPromotions,
+      this,
+      _1,
+      response,
+      callback);
+
+  ledger_->GetAllPromotions(all_callback);
+}
+
+void Promotion::OnGetAllPromotions(
+    ledger::PromotionMap promotions,
+    const std::string& response,
+    ledger::FetchPromotionCallback callback) {
+  ledger::PromotionList list;
   bool success = ParseFetchResponse(response, &list);
 
   if (!success) {
@@ -338,11 +363,18 @@ void Promotion::OnFetch(
     return;
   }
 
-  for (auto & item : list) {
-    item->active = true;
-    ledger_->InsertOrUpdatePromotion(
-        item->Clone(),
-        [](const ledger::Result _){});
+  if (list.size() > 0) {
+    for (auto & item : list) {
+      auto it = promotions.find(item->id);
+      if (it != promotions.end() &&
+          promotions.at(item->id)->status != ledger::PromotionStatus::ACTIVE) {
+        item->status = promotions.at(item->id)->status;
+      }
+
+      ledger_->InsertOrUpdatePromotion(
+          item->Clone(),
+          [](const ledger::Result _){});
+    }
   }
 
   ProcessFetchedPromotions(
@@ -378,7 +410,7 @@ void Promotion::OnAttestPromotion(
     return;
   }
 
-  auto promotion_callback = std::bind(&Promotion::OnCompletePromotion,
+  auto promotion_callback = std::bind(&Promotion::OnCompletedAttestation,
       this,
       _1,
       callback);
@@ -386,7 +418,7 @@ void Promotion::OnAttestPromotion(
   ledger_->GetPromotion(promotion_id, promotion_callback);
 }
 
-void Promotion::OnCompletePromotion(
+void Promotion::OnCompletedAttestation(
     ledger::PromotionPtr promotion,
     ledger::AttestPromotionCallback callback) {
   if (!promotion) {
@@ -394,7 +426,12 @@ void Promotion::OnCompletePromotion(
     return;
   }
 
-  promotion->active = false;
+  if (promotion->status == ledger::PromotionStatus::CLAIMED) {
+    callback(ledger::Result::GRANT_ALREADY_CLAIMED, nullptr);
+    return;
+  }
+
+  promotion->status = ledger::PromotionStatus::ATTESTED;
   ledger_->InsertOrUpdatePromotion(
         promotion->Clone(),
         [](const ledger::Result _){});
@@ -444,6 +481,25 @@ void Promotion::OnTimer(const uint32_t timer_id) {
   if (timer_id == last_check_timer_id_) {
     last_check_timer_id_ = 0;
     Fetch([](ledger::Result _, ledger::PromotionList __){});
+    return;
+  }
+
+  if (timer_id == retry_timer_id_) {
+    auto claim_callback = std::bind(&Promotion::Retry,
+      this,
+      _1);
+    ledger_->GetAllPromotions(claim_callback);
+  }
+}
+
+void Promotion::Retry(ledger::PromotionMap promotions) {
+  for (auto & promotion : promotions) {
+    if (promotion.second->status == ledger::PromotionStatus::CLAIMED) {
+      FetchSignedTokens(
+          promotion.second->Clone(),
+          [](const ledger::Result _){});
+      continue;
+    }
   }
 }
 
@@ -586,6 +642,7 @@ void Promotion::OnClaimTokens(
     return;
   }
 
+  promotion->status = ledger::PromotionStatus::CLAIMED;
   promotion->credentials->claim_id = claim_id;
   ledger_->InsertOrUpdatePromotion(
         promotion->Clone(),
@@ -632,6 +689,12 @@ void Promotion::OnFetchSignedTokens(
   auto promotion =
       braveledger_bind_util::FromStringToPromotion(promotion_string);
 
+  if (response_status_code == net::HTTP_ACCEPTED) {
+    callback(ledger::Result::LEDGER_OK);
+    ledger_->SetTimer(5, &retry_timer_id_);
+    return;
+  }
+
   if (!promotion ||
       !promotion->credentials ||
       response_status_code != net::HTTP_OK) {
@@ -657,6 +720,7 @@ void Promotion::OnFetchSignedTokens(
   promotion->credentials->batch_proof =
       *parsed_response.FindStringKey("batch_proof");
 
+  promotion->status = ledger::PromotionStatus::SIGNED_TOKENS;
   ledger_->InsertOrUpdatePromotion(
         promotion->Clone(),
         [](const ledger::Result _){});
@@ -717,7 +781,13 @@ void Promotion::UnBlindTokens(
         std::move(token_info),
         [](const ledger::Result _){});
   }
+
+  promotion->status = ledger::PromotionStatus::FINISHED;
+  ledger_->InsertOrUpdatePromotion(
+        std::move(promotion),
+        [](const ledger::Result _){});
   callback(ledger::Result::LEDGER_OK);
+  ledger_->UnblindedTokensReady();
 }
 
 }  // namespace braveledger_promotion

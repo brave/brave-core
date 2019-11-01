@@ -235,6 +235,9 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
     const std::string& id,
     GetPromotionCallback callback) override;
 
+  void GetAllPromotions(
+    GetAllPromotionsCallback callback) override;
+
   void InsertOrUpdateUnblindedToken(
     ledger::UnblindedTokenPtr info,
     InsertOrUpdateUnblindedTokenCallback callback) override;
@@ -248,6 +251,8 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   void GetClientInfo(
       GetClientInfoCallback callback) override;
+
+  void UnblindedTokensReady() override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind
@@ -436,6 +441,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnGetPromotion(
     CallbackHolder<GetPromotionCallback>* holder,
     ledger::PromotionPtr info);
+
+  static void OnGetAllPromotions(
+      CallbackHolder<GetAllPromotionsCallback>* holder,
+     ledger::PromotionMap promotions);
 
   static void OnInsertOrUpdateUnblindedToken(
     CallbackHolder<InsertOrUpdateUnblindedTokenCallback>* holder,

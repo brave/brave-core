@@ -1083,6 +1083,28 @@ void LedgerClientMojoProxy::GetPromotion(
 }
 
 // static
+void LedgerClientMojoProxy::OnGetAllPromotions(
+    CallbackHolder<GetAllPromotionsCallback>* holder,
+    ledger::PromotionMap promotions) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(mojo::MapToFlatMap(std::move(promotions)));
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::GetAllPromotions(
+    GetAllPromotionsCallback callback) {
+  auto* holder = new CallbackHolder<GetAllPromotionsCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->GetAllPromotions(
+      std::bind(LedgerClientMojoProxy::OnGetAllPromotions,
+                holder,
+                _1));
+}
+
+// static
 void LedgerClientMojoProxy::OnInsertOrUpdateUnblindedToken(
     CallbackHolder<InsertOrUpdateUnblindedTokenCallback>* holder,
     const ledger::Result result) {
@@ -1156,6 +1178,10 @@ void LedgerClientMojoProxy::GetClientInfo(
     GetClientInfoCallback callback) {
   auto info = ledger_client_->GetClientInfo();
   std::move(callback).Run(std::move(info));
+}
+
+void LedgerClientMojoProxy::UnblindedTokensReady() {
+  ledger_client_->UnblindedTokensReady();
 }
 
 }  // namespace bat_ledger

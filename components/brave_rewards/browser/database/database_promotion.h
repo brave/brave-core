@@ -29,6 +29,8 @@ class DatabasePromotion: public DatabaseTable {
 
   ledger::PromotionPtr GetRecord(sql::Database* db, const std::string& id);
 
+  ledger::PromotionMap GetAllRecords(sql::Database* db);
+
  private:
   const char* table_name_ = "promotion";
   const int minimum_version_ = 10;

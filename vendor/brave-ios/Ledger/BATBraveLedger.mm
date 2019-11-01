@@ -1951,4 +1951,9 @@ BATLedgerBridge(BOOL,
   return info;
 }
 
+- (void)unblindedTokensReady
+{
+  // TODO implement
+}
+
 @end

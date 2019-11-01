@@ -87,5 +87,6 @@
 - (void)getAllUnblindedTokens:(ledger::GetAllUnblindedTokensCallback)callback;
 - (void)deleteUnblindedToken:(const std::vector<std::string>&)list callback:(ledger::ResultCallback)callback;
 - (ledger::ClientInfoPtr)getClientInfo;
+- (void)unblindedTokensReady;
 
 @end

@@ -4171,6 +4171,34 @@ void RewardsServiceImpl::OnGetPromotion(
   callback(std::move(info));
 }
 
+
+ledger::PromotionMap GetAllPromotionsOnFileTaskRunner(
+    PublisherInfoDatabase* backend) {
+  if (!backend) {
+    return {};
+  }
+
+  return backend->GetAllPromotions();
+}
+
+void RewardsServiceImpl::GetAllPromotions(
+    ledger::GetAllPromotionsCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&GetAllPromotionsOnFileTaskRunner,
+        publisher_info_backend_.get()),
+    base::BindOnce(&RewardsServiceImpl::OnGetAllPromotions,
+        AsWeakPtr(),
+        callback));
+}
+
+void RewardsServiceImpl::OnGetAllPromotions(
+    ledger::GetAllPromotionsCallback callback,
+    ledger::PromotionMap promotions) {
+  callback(std::move(promotions));
+}
+
 ledger::Result InsertOrUpdateUnblindedTokenFileTaskRunner(
     PublisherInfoDatabase* backend,
     ledger::UnblindedTokenPtr info) {
@@ -4282,6 +4310,10 @@ ledger::ClientInfoPtr RewardsServiceImpl::GetClientInfo() {
   #else
     return GetDesktopClientInfo();
   #endif
+}
+
+void RewardsServiceImpl::UnblindedTokensReady() {
+  // TODO add observer and report it to UI, UI should fetch balance on it
 }
 
 }  // namespace brave_rewards

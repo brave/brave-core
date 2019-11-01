@@ -988,6 +988,17 @@ void BatLedgerClientMojoProxy::GetPromotion(
       id,
       base::BindOnce(&OnGetPromotion, std::move(callback)));
 }
+void OnGetAllPromotions(
+    const ledger::GetAllPromotionsCallback& callback,
+    base::flat_map<std::string, ledger::PromotionPtr> promotions) {
+  callback(mojo::FlatMapToMap(std::move(promotions)));
+}
+
+void BatLedgerClientMojoProxy::GetAllPromotions(
+    ledger::GetAllPromotionsCallback callback) {
+  bat_ledger_client_->GetAllPromotions(
+      base::BindOnce(&OnGetAllPromotions, std::move(callback)));
+}
 
 void BatLedgerClientMojoProxy::InsertOrUpdateUnblindedToken(
     ledger::UnblindedTokenPtr info,
@@ -1021,6 +1032,10 @@ ledger::ClientInfoPtr BatLedgerClientMojoProxy::GetClientInfo() {
   auto info = ledger::ClientInfo::New();
   bat_ledger_client_->GetClientInfo(&info);
   return info;
+}
+
+void BatLedgerClientMojoProxy::UnblindedTokensReady() {
+  bat_ledger_client_->UnblindedTokensReady();
 }
 
 }  // namespace bat_ledger

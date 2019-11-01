@@ -574,6 +574,9 @@ class LedgerImpl : public ledger::Ledger,
     const std::string& id,
     ledger::GetPromotionCallback callback);
 
+  void GetAllPromotions(
+    ledger::GetAllPromotionsCallback callback) override;
+
   void InsertOrUpdateUnblindedToken(
     ledger::UnblindedTokenPtr info,
     ledger::ResultCallback callback);
@@ -586,6 +589,8 @@ class LedgerImpl : public ledger::Ledger,
     ledger::ResultCallback callback);
 
   ledger::ClientInfoPtr GetClientInfo();
+
+  void UnblindedTokensReady();
 
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
