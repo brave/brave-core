@@ -145,7 +145,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, BubbleTest) {
 
 // OptedInPref of bundling tests are done by
 // BraveWidevineBundleManagerBrowserTest.
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) && !defined(OS_LINUX)
 IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
                        CheckOptedInPrefStateForComponent) {
   // Before we allow, opted in should be false
