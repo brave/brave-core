@@ -533,7 +533,7 @@ extension WalletViewController {
         tappedSettings()
         tappedNotificationClose()
       default:
-        break
+        tappedNotificationClose()
       }
     }
   }
