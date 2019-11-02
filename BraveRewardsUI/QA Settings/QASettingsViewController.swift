@@ -160,6 +160,21 @@ public class QASettingsViewController: TableViewController {
         ]
       ),
       Section(
+        header: .title("Attestation Data"),
+        rows: [
+          Row(text: "Device Check Debugger", selection: {
+            guard let paymentId = self.rewards.ledger.paymentId, !paymentId.isEmpty else {
+              self.displayAlert(message: "Enable Rewards First")
+              return
+            }
+            
+            let debugController = QAAttestationDebugViewController(paymentId: paymentId)
+            self.navigationController?.pushViewController(debugController, animated: true)
+            
+          }, cellClass: ButtonCell.self)
+        ]
+      ),
+      Section(
         rows: [
           Row(text: "Reset Rewards", selection: {
             self.tappedReset()
@@ -167,6 +182,14 @@ public class QASettingsViewController: TableViewController {
         ]
       )
     ]
+  }
+  
+  private func displayAlert(title: String? = nil, message: String) {
+    DispatchQueue.main.async {
+      let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+      alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+      self.present(alert, animated: true, completion: nil)
+    }
   }
   
   @objc private func tappedRestoreWallet() {
