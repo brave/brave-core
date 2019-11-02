@@ -88,6 +88,7 @@ export const TurnOnButton = styled<{}, 'button'>('button')`
   padding: 7px 60px;
   margin: 0 auto;
   cursor: pointer;
+  border: none;
 `
 
 export const TurnOnAdsButton = styled(TurnOnButton)`
@@ -124,18 +125,19 @@ export const NotificationWrapper = styled(WidgetWrapper)`
   bottom: 0;
   left: 0;
   width: 100%;
+  min-height: 210px;
   box-shadow: 5px 10px 8px 10px #000;
 `
 
 export const NotificationButton = styled(TurnOnButton)`
-  background: ${palette.green500};
+  background: #1DB100;
   color: #fff;
   border: none;
   font-weight: bold;
   padding-top: 10px;
   padding-bottom: 10px;
   margin-top: 50px;
-  font-size: 12px;
+  font-size: 13px;
 `
 
 export const Content = styled<{}, 'div'>('div')`
