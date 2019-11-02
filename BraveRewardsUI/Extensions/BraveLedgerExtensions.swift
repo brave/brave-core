@@ -4,6 +4,9 @@
 
 import Foundation
 import BraveRewards
+import Shared
+
+private let log = Logger.rewardsLogger
 
 extension BraveLedger {
   
@@ -124,6 +127,92 @@ extension BraveLedger {
       id = info?.paymentId
     }
     return id
+  }
+  
+  public func setupDeviceCheckEnrollment(_ client: DeviceCheckClient, completion: @escaping () -> Void) {
+    // Enroll in DeviceCheck
+    client.generateToken { [weak self] (token, error) in
+      guard let self = self else { return }
+      if let error = error {
+        log.error("Failed to generate DeviceCheck token: \(error)")
+        completion()
+        return
+      }
+      let paymentId = self.paymentId ?? ""
+      client.generateEnrollment(paymentId: paymentId, token: token) { registration, error in
+        if let error = error {
+          log.error("Failed to enroll in DeviceCheck: \(error)")
+          completion()
+          return
+        }
+        guard let registration = registration else { return }
+        client.registerDevice(enrollment: registration) { error in
+          if let error = error {
+            log.error("Failed to register device with mobile attestation server: \(error)")
+            completion()
+            return
+          }
+        }
+      }
+    }
+  }
+  
+  public func claimPromotion(_ promotion: Promotion, completion: @escaping (_ success: Bool) -> Void) {
+    guard let paymentId = self.paymentId else { return }
+    let deviceCheck = DeviceCheckClient(environment: BraveLedger.environment)
+    let group = DispatchGroup()
+    if !DeviceCheckClient.isDeviceEnrolled() {
+      group.enter()
+      setupDeviceCheckEnrollment(deviceCheck) {
+        if !DeviceCheckClient.isDeviceEnrolled() {
+          DispatchQueue.main.async {
+            completion(false)
+          }
+          return
+        }
+        group.leave()
+      }
+    }
+    group.notify(queue: .main) {
+      deviceCheck.generateAttestation(paymentId: paymentId) { (attestation, error) in
+        guard let attestation = attestation else {
+          completion(false)
+          return
+        }
+        self.claimPromotion(attestation.publicKeyHash) { result, noonce in
+          if result != .ledgerOk {
+            completion(false)
+            return
+          }
+          
+          deviceCheck.generateAttestationVerification(nonce: noonce) { verification, error in
+            guard let verification = verification else {
+              completion(false)
+              return
+            }
+            
+            let solution = PromotionSolution()
+            solution.noonce = noonce
+            solution.signature = verification.signature
+            do {
+              solution.blob = try verification.attestationBlob.bsonData().base64EncodedString()
+            } catch {
+              log.error("Couldn't serialize attestation blob. The attest promotion will fail")
+            }
+            
+            self.attestPromotion(promotion.id, solution: solution) { result, promotion in
+              if result == .ledgerOk {
+                self.fetchPromotions { _ in
+                  completion(true)
+                }
+              } else {
+                completion(false)
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 

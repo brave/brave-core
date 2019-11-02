@@ -174,6 +174,7 @@ class BrowserViewController: UIViewController {
         }
         rewards = BraveRewards(configuration: configuration)
         rewardsObserver = LedgerObserver(ledger: rewards!.ledger)
+        deviceCheckClient = DeviceCheckClient(environment: configuration.environment)
         #endif
 
         super.init(nibName: nil, bundle: nil)
@@ -252,9 +253,17 @@ class BrowserViewController: UIViewController {
         }
     }
     
+    let deviceCheckClient: DeviceCheckClient?
+    
     private func setupRewardsObservers() {
         guard let rewards = rewards, let observer = rewardsObserver else { return }
         rewards.ledger.add(observer)
+        observer.walletInitalized = { [weak self] result in
+            guard let self = self, let rewards = self.rewards, let client = self.deviceCheckClient else { return }
+            if result == .walletCreated {
+                rewards.ledger.setupDeviceCheckEnrollment(client) { }
+            }
+        }
         observer.fetchedPanelPublisher = { [weak self] publisher, tabId in
             guard let self = self, self.isViewLoaded, let tab = self.tabManager.selectedTab, tab.rewardsId == tabId else { return }
             self.publisher = publisher

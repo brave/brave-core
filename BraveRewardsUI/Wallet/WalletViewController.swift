@@ -79,11 +79,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
     // Not actually visible from this controller
     title = Strings.PanelTitle
     
-    if let grants = state.ledger.walletInfo?.grants, !grants.isEmpty {
-      walletView.headerView.grantsButton.isHidden = false
-    } else {
-      walletView.headerView.grantsButton.isHidden = true
-    }
+    walletView.headerView.grantsButton.isHidden = state.ledger.finishedPromotions.isEmpty
     
     navigationController?.setNavigationBarHidden(true, animated: false)
     
@@ -319,22 +315,30 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
   // MARK: - Actions
   
   @objc private func tappedClaimGrantButton(_ sender: ActionButton) {
+    guard let promotion = state.ledger.pendingPromotions.first else { return }
     sender.loaderView = LoaderView(size: .small)
     sender.loaderPlacement = .replacesContent
     sender.isLoading = true
-    ledgerObserver.grantClaimed = { [weak self] grant in
-      guard let self = self, let grantAmount = BATValue(probi: grant.probi)?.displayString else { return }
+    sender.isEnabled = false
+    state.ledger.claimPromotion(promotion) { success in
+      sender.isEnabled = true
       sender.isLoading = false
+      if !success {
+        // Show error?
+        let alert = UIAlertController(title: Strings.WalletCreationErrorTitle, message: Strings.WalletCreationErrorBody, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Strings.OK, style: .default, handler: nil))
+        self.present(alert, animated: true)
+        return
+      }
+      let grantAmount = BATValue(promotion.approximateValue).displayString
+      let isAdGrant = promotion.type == .ads
       let claimedVC = GrantClaimedViewController(
         grantAmount: grantAmount,
-        expirationDate: Date(timeIntervalSince1970: TimeInterval(grant.expiryTime))
+        expirationDate: isAdGrant ? nil : Date(timeIntervalSince1970: TimeInterval(promotion.expiresAt))
       )
       self.present(claimedVC, animated: true) {
         self.tappedNotificationClose()
       }
-    }
-    if let grant = state.ledger.pendingGrants.first {
-      state.ledger.solveGrantCaptch(withPromotionId: grant.promotionId, solution: "")
     }
   }
   
@@ -554,6 +558,9 @@ extension WalletViewController {
         self.publisher?.percent = activity.percent
       }
       self.reloadPublisherDetails()
+    }
+    ledgerObserver.finishedPromotionsAdded = { [weak self] promotions in
+      self?.walletView.headerView.grantsButton.isHidden = promotions.isEmpty
     }
     ledgerObserver.publisherListUpdated = { [weak self] in
       guard let self = self else { return }

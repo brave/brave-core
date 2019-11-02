@@ -3,17 +3,21 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import UIKit
+import BraveRewards
 
 class SettingsGrantSectionView: SettingsSectionView {
   
   /// The grant type
-  enum GrantType {
+  private enum PromotionViewType {
     /// A regular UGP grant, which does not show the user what the amount is
     case ugp
     /// An ads grant. The amount optionally should be a `BATValue`'s
     /// `displayString`
     case ads(amount: String?)
   }
+  
+  /// Reference to the promotion this section is referring to
+  let promotion: Promotion
   
   var claimGrantTapped: ((SettingsGrantSectionView) -> Void)?
   
@@ -28,7 +32,17 @@ class SettingsGrantSectionView: SettingsSectionView {
     $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
   }
   
-  init(type: GrantType) {
+  private var type: PromotionViewType {
+    if promotion.type == .ads {
+      return .ads(amount: BATValue(promotion.approximateValue).displayString)
+    } else {
+      return .ugp
+    }
+  }
+  
+  init(promotion: Promotion) {
+    self.promotion = promotion
+    
     super.init(frame: .zero)
     
     claimGrantButton.addTarget(self, action: #selector(tappedClaimGrantButton), for: .touchUpInside)
