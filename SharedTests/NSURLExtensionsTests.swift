@@ -357,22 +357,22 @@ class NSURLExtensionsTests: XCTestCase {
         badurls.forEach { XCTAssertFalse(URL(string:$0)!.isWebPage(), $0) }
     }
 
-    func testdomainURL() {
+    func testdomainWithoutWWW() {
         let urls = [
             ("https://www.example.com/index.html", "https://example.com/index.html"),
             ("https://mail.example.com/index.html", "https://mail.example.com/index.html"),
             ("https://mail.example.co.uk/index.html", "https://mail.example.co.uk/index.html"),
         ]
-        urls.forEach { XCTAssertEqual(URL(string:$0.0)!.domainURL().absoluteString, $0.1) }
+        urls.forEach { XCTAssertEqual(URL(string:$0.0)!.withoutWWW.absoluteString, $0.1) }
     }
     
-    func testdomainURLStrippingOnlyWWW() {
+    func testdomainUrl() {
         let urls = [
-            ("https://www.example.com/index.html", "https://example.com/index.html"),
-            ("https://m.example.com/index.html", "https://m.example.com/index.html"),
-            ("https://mobile.example.co.uk/index.html", "https://mobile.example.co.uk/index.html"),
+            ("https://www.example.com/index.html", "https://example.com"),
+            ("https://mail.example.com/index.html", "https://mail.example.com"),
+            ("https://mail.example.co.uk/index.html", "https://mail.example.co.uk"),
         ]
-        urls.forEach { XCTAssertEqual(URL(string:$0.0)!.domainURL(stripWWWSubdomainOnly: true).absoluteString, $0.1) }
+        urls.forEach { XCTAssertEqual(URL(string:$0.0)!.domainURL.absoluteString, $0.1) }
     }
 
     func testdisplayURL() {

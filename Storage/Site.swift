@@ -62,7 +62,7 @@ open class Site: Identifiable, Hashable {
     var guid: String?
 
     open var tileURL: URL {
-        return URL(string: url)?.domainURL() ?? URL(string: "about:blank")!
+        return URL(string: url)?.domainURL ?? URL(string: "about:blank")!
     }
 
     public let url: String

@@ -73,7 +73,7 @@ class FaviconHandler {
             guard let image = image else {
                 // If we failed to download a page-level icon, try getting the domain-level icon
                 // instead before ultimately failing.
-                let siteIconURL = currentURL.domainURL().appendingPathComponent("favicon.ico")
+                let siteIconURL = currentURL.domainURL.appendingPathComponent("favicon.ico")
                 imageOperation = webImageCache.load(from: siteIconURL, options: [.lowPriority], progress: onProgress, completion: onCompletedSiteFavicon)
 
                 return
