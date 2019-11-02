@@ -37,7 +37,7 @@ class GrantClaimedViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    grantView.infoView.freeTokenAmountLabel.text = grantAmount
+    grantView.infoView.freeTokenAmountLabel.text = grantAmount + " " + Strings.BAT
     grantView.infoView.expirationDateLabel.text = claimGrantDateFormatter.string(from: expirationDate)
     grantView.okButton.addTarget(self, action: #selector(dismissController), for: .touchUpInside)
   }
