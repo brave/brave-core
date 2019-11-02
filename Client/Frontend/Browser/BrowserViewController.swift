@@ -758,6 +758,25 @@ class BrowserViewController: UIViewController {
             
             onboarding.onboardingDelegate = self
             present(onboarding, animated: true)
+            return
+        }
+        
+        // 1. Rewards are on/off (existing user)
+        // 2. User hasn't seen the rewards part of the onboarding yet because their version of the app is insanely OLD and somehow the progress value doesn't exist.
+        if (Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue)
+            &&
+            (Preferences.General.basicOnboardingProgress.value == OnboardingProgress.none.rawValue) {
+            
+            guard let onboarding = OnboardingNavigationController(
+                profile: profile,
+                onboardingType: isRewardsEnabled ? .existingUserRewardsOn : .existingUserRewardsOff,
+                rewards: rewards,
+                theme: Theme.of(tabManager.selectedTab)
+                ) else { return }
+            
+            onboarding.onboardingDelegate = self
+            present(onboarding, animated: true)
+            return
         }
         
         // 1. Rewards are on/off (existing user)
@@ -778,6 +797,7 @@ class BrowserViewController: UIViewController {
             
             onboarding.onboardingDelegate = self
             present(onboarding, animated: true)
+            return
         }
         
         // 1. User is brand new
@@ -795,6 +815,7 @@ class BrowserViewController: UIViewController {
             
             onboarding.onboardingDelegate = self
             present(onboarding, animated: true)
+            return
         }
     }
 
