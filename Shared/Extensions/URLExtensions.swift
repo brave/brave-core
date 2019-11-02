@@ -238,19 +238,28 @@ extension URL {
     }
 
     /**
-     * Returns just the domain, but with the same scheme, and a trailing '/'.
+     * Returns just the domain, but with the same scheme.
      *
-     * E.g., https://m.foo.com/bar/baz?noo=abc#123  => https://foo.com/
+     * E.g., https://m.foo.com/bar/baz?noo=abc#123  => https://foo.com
      *
      * Any failure? Return this URL.
-     *
-     * @param stripWWWSubdomainOnly only strips the www host if true. Else m and mobile are also stripped
-     * E.g., https://mobile.foo.com/bar/baz?noo=abc#123 => https://mobile.foo.com/
      */
-    public func domainURL(stripWWWSubdomainOnly: Bool = false) -> URL {
-        // Use URLComponents instead of URL since the former correctly preserves
-        // brackets for IPv6 hosts, whereas the latter escapes them.
-        if let normalized = self.normalizedHost(stripWWWSubdomainOnly),
+    public var domainURL: URL {
+        if let normalized = self.normalizedHost() {
+            // Use URLComponents instead of URL since the former correctly preserves
+            // brackets for IPv6 hosts, whereas the latter escapes them.
+            var components = URLComponents()
+            components.scheme = self.scheme
+            components.port = self.port
+            components.host = normalized
+            return components.url ?? self
+        }
+
+        return self
+    }
+    
+    public var withoutWWW: URL {
+        if let normalized = self.normalizedHost(stripWWWSubdomainOnly: true),
             var components = URLComponents(url: self, resolvingAgainstBaseURL: false) {
             components.scheme = self.scheme
             components.port = self.port
@@ -261,7 +270,7 @@ extension URL {
         return self
     }
 
-    public func normalizedHost(_ stripWWWSubdomainOnly: Bool = false) -> String? {
+    public func normalizedHost(stripWWWSubdomainOnly: Bool = false) -> String? {
         // Use components.host instead of self.host since the former correctly preserves
         // brackets for IPv6 hosts, whereas the latter strips them.
         guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false), var host = components.host, host != "" else {

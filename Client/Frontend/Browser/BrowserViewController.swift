@@ -3034,7 +3034,7 @@ extension BrowserViewController {
         guard searchQuery != "",
             let iconURL = URL(string: favicon.url),
             let url = URL(string: searchQuery.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlFragmentAllowed)!),
-            let shortName = url.domainURL().host else {
+            let shortName = url.domainURL.host else {
                 let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
                 self.present(alert, animated: true, completion: nil)
                 return
