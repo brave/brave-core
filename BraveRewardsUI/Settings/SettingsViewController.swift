@@ -44,25 +44,11 @@ class SettingsViewController: UIViewController {
     
     settingsView.do {
       $0.rewardsToggleSection.toggleSwitch.addTarget(self, action: #selector(rewardsSwitchValueChanged), for: .valueChanged)
-      $0.grantsSections = state.ledger.pendingGrants.map {
-        var type: SettingsGrantSectionView.GrantType
-        if $0.type == "ads" {
-          type = .ads(amount: BATValue(probi: $0.probi)?.displayString)
-        } else {
-          type = .ugp
-        }
-        let section = SettingsGrantSectionView(type: type)
+      $0.grantsSections = state.ledger.pendingPromotions.map {
+        let section = SettingsGrantSectionView(promotion: $0)
         section.claimGrantTapped = { [weak self] section in
           guard let self = self else { return }
-          // FIXME: Remove fake values
-          let controller = GrantClaimedViewController(grantAmount: "30.0 BAT", expirationDate: Date().addingTimeInterval(30*24*60*60))
-          let container = PopoverNavigationController(rootViewController: controller)
-          
-          section.claimGrantButton.isLoading = true
-          DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
-            self?.present(container, animated: true)
-            section.claimGrantButton.isLoading = false
-          }
+          self.tappedClaimButton(section)
         }
         return section
       }
@@ -167,6 +153,30 @@ class SettingsViewController: UIViewController {
         crypto: Strings.WalletBalanceType,
         dollarValue: self.state.ledger.usdBalanceString
       )
+    }
+  }
+  
+  private func tappedClaimButton(_ section: SettingsGrantSectionView) {
+    let promotion = section.promotion
+    
+    section.claimGrantButton.isLoading = true
+    
+    state.ledger.claimPromotion(promotion) { [weak self] success in
+      guard let self = self else { return }
+      section.claimGrantButton.isLoading = false
+      if !success {
+        // Show error?
+        return
+      }
+      
+      let amount = BATValue(promotion.approximateValue).displayString
+      let isAdGrant = promotion.type == .ads
+      
+      let claimedVC = GrantClaimedViewController(
+        grantAmount: amount,
+        expirationDate: isAdGrant ? nil : Date(timeIntervalSince1970: TimeInterval(promotion.expiresAt))
+      )
+      self.present(claimedVC, animated: true)
     }
   }
 }

@@ -209,7 +209,6 @@
 		271DECF3234CC7EF009DAC37 /* OptionsSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC7D234CC7EF009DAC37 /* OptionsSelectionViewController.swift */; };
 		271DECF4234CC7EF009DAC37 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC7E234CC7EF009DAC37 /* SettingsView.swift */; };
 		271DECF5234CC7EF009DAC37 /* SettingsGrantSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC80234CC7EF009DAC37 /* SettingsGrantSectionView.swift */; };
-		271DECF6234CC7EF009DAC37 /* GrantClaimedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC81234CC7EF009DAC37 /* GrantClaimedViewController.swift */; };
 		271DECF7234CC7EF009DAC37 /* SettingsViewDetailsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC82234CC7EF009DAC37 /* SettingsViewDetailsButton.swift */; };
 		271DECF8234CC7EF009DAC37 /* SettingsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC83234CC7EF009DAC37 /* SettingsSectionView.swift */; };
 		271DECF9234CC7EF009DAC37 /* TipsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC86234CC7EF009DAC37 /* TipsDetailViewController.swift */; };
@@ -264,6 +263,7 @@
 		271DED2A234CC7EF009DAC37 /* UIImageExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECBF234CC7EF009DAC37 /* UIImageExtensions.swift */; };
 		271DED2B234CC7EF009DAC37 /* BundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECC0234CC7EF009DAC37 /* BundleExtensions.swift */; };
 		271DED2C234CC7EF009DAC37 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECC1234CC7EF009DAC37 /* DateExtensions.swift */; };
+		27253973236CE6B100D06EF1 /* GrantClaimedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC81234CC7EF009DAC37 /* GrantClaimedViewController.swift */; };
 		272FCAA0225CF8F00091E645 /* OnePasswordExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */; };
 		27353FF2235F4E7300E42EBB /* WalletDisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27353FF1235F4E7300E42EBB /* WalletDisclaimerView.swift */; };
 		2755AB7D23107BC600F0721F /* AdsReporting.js in Resources */ = {isa = PBXBuildFile; fileRef = 2755AB7C23107BC600F0721F /* AdsReporting.js */; };
@@ -5532,6 +5532,7 @@
 				271DED2B234CC7EF009DAC37 /* BundleExtensions.swift in Sources */,
 				271DED08234CC7EF009DAC37 /* SettingsViewController.swift in Sources */,
 				271DECC4234CC7EF009DAC37 /* PublisherAttentionView.swift in Sources */,
+				27253973236CE6B100D06EF1 /* GrantClaimedViewController.swift in Sources */,
 				271DED23234CC7EF009DAC37 /* UITableViewExtensions.swift in Sources */,
 				271DED02234CC7EF009DAC37 /* AutoContributeSettingsViewController.swift in Sources */,
 				271DECD1234CC7EF009DAC37 /* AdView.swift in Sources */,
@@ -5569,7 +5570,6 @@
 				271DECD6234CC7EF009DAC37 /* QASettingsViewController.swift in Sources */,
 				271DED17234CC7EF009DAC37 /* Then.swift in Sources */,
 				271DED14234CC7EF009DAC37 /* CreateWalletButton.swift in Sources */,
-				271DECF6234CC7EF009DAC37 /* GrantClaimedViewController.swift in Sources */,
 				271DECCF234CC7EF009DAC37 /* AdsViewController.swift in Sources */,
 				271DED25234CC7EF009DAC37 /* UIStackViewExtensions.swift in Sources */,
 				271DECFC234CC7EF009DAC37 /* SettingsTipsSectionView.swift in Sources */,

@@ -12,13 +12,15 @@ private let claimGrantDateFormatter = DateFormatter().then {
 class GrantClaimedViewController: UIViewController {
   
   let grantAmount: String
-  let expirationDate: Date
+  let expirationDate: Date?
   
-  init(grantAmount: String, expirationDate: Date) {
+  init(grantAmount: String, expirationDate: Date?) {
     self.grantAmount = grantAmount
     self.expirationDate = expirationDate
     
     super.init(nibName: nil, bundle: nil)
+    
+    self.modalPresentationStyle = .currentContext
   }
   
   @available(*, unavailable)
@@ -38,7 +40,13 @@ class GrantClaimedViewController: UIViewController {
     super.viewDidLoad()
     
     grantView.infoView.freeTokenAmountLabel.text = grantAmount + " " + Strings.BAT
-    grantView.infoView.expirationDateLabel.text = claimGrantDateFormatter.string(from: expirationDate)
+    if let expirationDate = expirationDate {
+      grantView.infoView.expirationDateLabel.text = claimGrantDateFormatter.string(from: expirationDate)
+    } else {
+      // No expiration
+      grantView.infoView.expirationDateTitleLabel.isHidden = true
+      grantView.infoView.expirationDateLabel.isHidden = true
+    }
     grantView.okButton.addTarget(self, action: #selector(dismissController), for: .touchUpInside)
   }
   
@@ -136,6 +144,12 @@ extension GrantClaimedViewController {
     let freeTokenAmountLabel: UILabel
     let expirationDateLabel: UILabel
     
+    let expirationDateTitleLabel = UILabel().then {
+      $0.text = Strings.GrantsClaimedExpirationDateTitle
+      $0.appearanceTextColor = SettingsUX.subtitleTextColor
+      $0.font = .systemFont(ofSize: 13.0)
+    }
+    
     override init(frame: CGRect) {
       let infoLabelConfig: (UILabel) -> Void = {
         $0.appearanceTextColor = UX.infoAccentTextColor
@@ -161,17 +175,12 @@ extension GrantClaimedViewController {
         $0.appearanceTextColor = SettingsUX.subtitleTextColor
         $0.font = .systemFont(ofSize: 13.0)
       }
-      let expirdationDateTitleLabel = UILabel().then {
-        $0.text = Strings.GrantsClaimedExpirationDateTitle
-        $0.appearanceTextColor = SettingsUX.subtitleTextColor
-        $0.font = .systemFont(ofSize: 13.0)
-      }
       
       addSubview(stackView)
       stackView.addArrangedSubview(amountTitleLabel)
       stackView.addArrangedSubview(freeTokenAmountLabel)
       stackView.setCustomSpacing(8.0, after: freeTokenAmountLabel)
-      stackView.addArrangedSubview(expirdationDateTitleLabel)
+      stackView.addArrangedSubview(expirationDateTitleLabel)
       stackView.addArrangedSubview(expirationDateLabel)
       
       stackView.snp.makeConstraints {
