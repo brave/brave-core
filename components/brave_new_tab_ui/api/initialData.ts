@@ -22,7 +22,7 @@ export type PreInitialRewardsData = {
 
 export type InitialRewardsData = {
   onlyAnonWallet: boolean
-  adsEstimatedEarnings: boolean
+  adsEstimatedEarnings: number
   reports: Record<string, NewTab.RewardsReport>
   balance: NewTab.RewardsBalance
 }
