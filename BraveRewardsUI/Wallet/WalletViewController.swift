@@ -114,6 +114,8 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
       navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     reloadUIState()
+    
+    loadNextNotification()
   }
   
   override func viewWillDisappear(_ animated: Bool) {
@@ -324,7 +326,6 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
       sender.isEnabled = true
       sender.isLoading = false
       if !success {
-        // Show error?
         let alert = UIAlertController(title: Strings.GenericErrorTitle, message: Strings.GenericErrorBody, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: Strings.OK, style: .default, handler: nil))
         self.present(alert, animated: true)
