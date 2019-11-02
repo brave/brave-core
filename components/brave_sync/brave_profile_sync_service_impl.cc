@@ -354,11 +354,17 @@ void BraveProfileSyncServiceImpl::OnSetSyncBookmarks(
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   syncer::UserSelectableTypeSet type_set =
       ProfileSyncService::GetUserSettings()->GetSelectedTypes();
-  if (sync_bookmarks)
+  if (sync_bookmarks) {
     type_set.Put(syncer::UserSelectableType::kBookmarks);
-  else {
+  } else {
     type_set.Remove(syncer::UserSelectableType::kBookmarks);
+    // We shouldn't apply any remote records before and after the resend
+    halt_bookmarks_fetch_times_ = 2;
     brave_sync_prefs_->ClearBookmarksPrefs();
+
+    model_->SetNodeSyncTransactionVersion(
+        model_->root_node(),
+        bookmarks::BookmarkNode::kInvalidSyncTransactionVersion);
   }
   ProfileSyncService::GetUserSettings()->SetSelectedTypes(false, type_set);
   if (brave_sync_prefs_->GetSyncBookmarksEnabled() != sync_bookmarks)
@@ -813,7 +819,6 @@ void BraveProfileSyncServiceImpl::FetchSyncRecords(const bool bookmarks,
                                                    const bool preferences,
                                                    int max_records) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(bookmarks || history || preferences);
   if (!(bookmarks || history || preferences)) {
     return;
   }
@@ -962,25 +967,33 @@ void BraveProfileSyncServiceImpl::FetchDevices() {
 }
 void BraveProfileSyncServiceImpl::OnPollSyncCycle(GetRecordsCallback cb,
                                                   base::WaitableEvent* wevent) {
-  if (!IsBraveSyncEnabled())
+  get_record_cb_ = std::move(cb);
+  wevent_ = wevent;
+  if (!IsBraveSyncEnabled()) {
+    SignalWaitableEvent();
     return;
+  }
 
   if (IsTimeEmpty(brave_sync_prefs_->GetLastFetchTime()))
     SendCreateDevice();
 
   FetchDevices();
 
-  if (!brave_sync_initialized_) {
-    wevent->Signal();
-    return;
-  }
-
-  get_record_cb_ = std::move(cb);
-  wevent_ = wevent;
-
   const bool bookmarks = brave_sync_prefs_->GetSyncBookmarksEnabled();
   const bool history = brave_sync_prefs_->GetSyncHistoryEnabled();
   const bool preferences = brave_sync_prefs_->GetSyncSiteSettingsEnabled();
+  if (!brave_sync_initialized_ || !(bookmarks || history || preferences)) {
+    SignalWaitableEvent();
+    return;
+  }
+
+  if (bookmarks && halt_bookmarks_fetch_times_ >= 0) {
+    if (halt_bookmarks_fetch_times_-- > 0) {
+      SignalWaitableEvent();
+      return;
+    }
+  }
+
   FetchSyncRecords(bookmarks, history, preferences, 1000);
   ResendSyncRecords(jslib_const::SyncRecordType_BOOKMARKS);
 }

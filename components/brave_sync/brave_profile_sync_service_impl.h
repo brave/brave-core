@@ -210,6 +210,9 @@ class BraveProfileSyncServiceImpl
 
   bool reseting_ = false;
 
+  // counter that prevents sending "fetching bookmarks" to js sync library
+  int  halt_bookmarks_fetch_times_ = -1;
+
   std::string brave_sync_words_;
 
   brave_sync::GetRecordsCallback get_record_cb_;
