@@ -44,14 +44,6 @@ class SettingsViewController: UIViewController {
     
     settingsView.do {
       $0.rewardsToggleSection.toggleSwitch.addTarget(self, action: #selector(rewardsSwitchValueChanged), for: .valueChanged)
-      $0.grantsSections = state.ledger.pendingPromotions.map {
-        let section = SettingsGrantSectionView(promotion: $0)
-        section.claimGrantTapped = { [weak self] section in
-          guard let self = self else { return }
-          self.tappedClaimButton(section)
-        }
-        return section
-      }
       $0.walletSection.viewDetailsButton.addTarget(self, action: #selector(tappedWalletViewDetails), for: .touchUpInside)
       $0.adsSection.viewDetailsButton.addTarget(self, action: #selector(tappedAdsViewDetails), for: .touchUpInside)
       $0.adsSection.toggleSwitch.addTarget(self, action: #selector(adsToggleValueChanged), for: .valueChanged)
@@ -78,6 +70,20 @@ class SettingsViewController: UIViewController {
     
     // Not sure why this has to be set on the nav controller specifically instead of just this controller
     navigationController?.preferredContentSize = CGSize(width: RewardsUX.preferredPanelSize.width, height: 1000)
+    
+    updateGrantsSection()
+  }
+  
+  func updateGrantsSection() {
+    // Reset pending promos
+    settingsView.grantsSections = state.ledger.pendingPromotions.map {
+      let section = SettingsGrantSectionView(promotion: $0)
+      section.claimGrantTapped = { [weak self] section in
+        guard let self = self else { return }
+        self.tappedClaimButton(section)
+      }
+      return section
+    }
   }
   
   // MARK: -
@@ -154,6 +160,9 @@ class SettingsViewController: UIViewController {
         dollarValue: self.state.ledger.usdBalanceString
       )
     }
+    ledgerObserver.promotionsAdded = { [weak self] _ in
+      self?.updateGrantsSection()
+    }
   }
   
   private func tappedClaimButton(_ section: SettingsGrantSectionView) {
@@ -165,7 +174,9 @@ class SettingsViewController: UIViewController {
       guard let self = self else { return }
       section.claimGrantButton.isLoading = false
       if !success {
-        // Show error?
+        let alert = UIAlertController(title: Strings.GenericErrorTitle, message: Strings.GenericErrorBody, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Strings.OK, style: .default, handler: nil))
+        self.present(alert, animated: true)
         return
       }
       
