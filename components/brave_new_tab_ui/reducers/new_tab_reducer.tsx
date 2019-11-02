@@ -387,7 +387,8 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       const newRewardsState = {
         onlyAnonWallet: initialRewardsDataPayload.onlyAnonWallet,
         balance: initialRewardsDataPayload.balance,
-        totalContribution: getTotalContributions(initialRewardsDataPayload.reports)
+        totalContribution: getTotalContributions(initialRewardsDataPayload.reports),
+        adsEstimatedEarnings: initialRewardsDataPayload.adsEstimatedEarnings
       }
 
       state = {
