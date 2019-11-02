@@ -118,6 +118,9 @@ extension Preferences {
         
         /// In debut/beta, the number of seconds before an ad should automatically dismiss
         public static let adsDurationOverride = Option<Int?>(key: "rewards.ads.dismissal-override", default: nil)
+        
+        /// Whether or not the user successfully enrolled before
+        public static let didEnrollDeviceCheck = Option<Bool>(key: "rewards.devicecheck.did.enroll", default: false)
     }
 }
 

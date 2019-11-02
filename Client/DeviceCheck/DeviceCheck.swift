@@ -5,6 +5,7 @@
 import Foundation
 import DeviceCheck
 import BraveRewards
+import BraveShared
 
 /// A structure used to register a device for Brave's DeviceCheck enrollment
 public struct DeviceCheckRegistration: Codable {
@@ -143,6 +144,12 @@ public class DeviceCheckClient {
     self.environment = environment
   }
   
+  public class func isDeviceEnrolled() -> Bool {
+    let hasPrivateKey = Cryptography.keyExists(id: DeviceCheckClient.privateKeyId)
+    let didEnrollSuccessfully = Preferences.Rewards.didEnrollDeviceCheck.value
+    return hasPrivateKey && didEnrollSuccessfully
+  }
+  
   // MARK: - Server calls for DeviceCheck
   
   // Registers a device with the server using the device-check token
@@ -153,6 +160,7 @@ public class DeviceCheckClient {
           return completion(error)
         }
         
+        Preferences.Rewards.didEnrollDeviceCheck.value = true
         completion(nil)
       }
     } catch {

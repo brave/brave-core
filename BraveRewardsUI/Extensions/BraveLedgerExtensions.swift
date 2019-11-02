@@ -117,6 +117,14 @@ extension BraveLedger {
       })
     }
   }
+  
+  var paymentId: String? {
+    var id: String?
+    rewardsInternalInfo { info in
+      id = info?.paymentId
+    }
+    return id
+  }
 }
 
 extension PublisherInfo {

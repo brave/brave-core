@@ -637,6 +637,7 @@
 		5E612A90234B7FCD007D12B5 /* OnboardingRewardsAgreementView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1D8C6C232BF9C200BDE662 /* OnboardingRewardsAgreementView.swift */; };
 		5E77F9A8236B362800E1649C /* DeviceCheck.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E856FE7235E083B0094E113 /* DeviceCheck.swift */; };
 		5E77F9AA236B362E00E1649C /* Cryptography.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E856FE5235E08110094E113 /* Cryptography.swift */; };
+		5E77F9DD236BB68700E1649C /* AttestationDebugger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E77F9DC236BB68700E1649C /* AttestationDebugger.swift */; };
 		5E9288CA22DF864C007BE7A6 /* TabSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9288C922DF864C007BE7A6 /* TabSessionTests.swift */; };
 		5EA8438E234F802C00076A91 /* expired.badssl.com-root-ca.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5EA84389234F802C00076A91 /* expired.badssl.com-root-ca.cer */; };
 		5EA8438F234F802C00076A91 /* expired.badssl.com-intermediate-ca-1.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5EA8438B234F802C00076A91 /* expired.badssl.com-intermediate-ca-1.cer */; };
@@ -2046,6 +2047,7 @@
 		5E46C37B234FB9A700ACA8C1 /* self-signed.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = "self-signed.cer"; sourceTree = "<group>"; };
 		5E4845BF22DE381200372022 /* WindowRenderHelper.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = WindowRenderHelper.js; sourceTree = "<group>"; };
 		5E4845C122DE3DF800372022 /* WindowRenderHelperScript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowRenderHelperScript.swift; sourceTree = "<group>"; };
+		5E77F9DC236BB68700E1649C /* AttestationDebugger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttestationDebugger.swift; sourceTree = "<group>"; };
 		5E856FE5235E08110094E113 /* Cryptography.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Cryptography.swift; sourceTree = "<group>"; tabWidth = 2; };
 		5E856FE7235E083B0094E113 /* DeviceCheck.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = DeviceCheck.swift; sourceTree = "<group>"; tabWidth = 2; };
 		5E9288C922DF864C007BE7A6 /* TabSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabSessionTests.swift; sourceTree = "<group>"; };
@@ -2948,6 +2950,7 @@
 			isa = PBXGroup;
 			children = (
 				271DEC57234CC7EE009DAC37 /* QASettingsViewController.swift */,
+				5E77F9DC236BB68700E1649C /* AttestationDebugger.swift */,
 			);
 			path = "QA Settings";
 			sourceTree = "<group>";
@@ -5499,6 +5502,7 @@
 				271DECCA234CC7EF009DAC37 /* TokenAddressView.swift in Sources */,
 				271DECC2234CC7EF009DAC37 /* WelcomeViewController.swift in Sources */,
 				271DECCE234CC7EF009DAC37 /* RewardsUX.swift in Sources */,
+				5E77F9DD236BB68700E1649C /* AttestationDebugger.swift in Sources */,
 				271DED13234CC7EF009DAC37 /* LinkLabel.swift in Sources */,
 				271DED21234CC7EF009DAC37 /* BasicAnimationController.swift in Sources */,
 				271DED26234CC7EF009DAC37 /* BraveLedgerExtensions.swift in Sources */,
