@@ -325,7 +325,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
       sender.isLoading = false
       if !success {
         // Show error?
-        let alert = UIAlertController(title: Strings.WalletCreationErrorTitle, message: Strings.WalletCreationErrorBody, preferredStyle: .alert)
+        let alert = UIAlertController(title: Strings.GenericErrorTitle, message: Strings.GenericErrorBody, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: Strings.OK, style: .default, handler: nil))
         self.present(alert, animated: true)
         return
