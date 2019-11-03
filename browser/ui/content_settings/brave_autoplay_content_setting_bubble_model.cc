@@ -1,16 +1,18 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/content_settings/brave_autoplay_content_setting_bubble_model.h"
 
+#include <memory>
+#include <string>
+
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "brave/grit/brave_generated_resources.h"
-#include "chrome/grit/generated_resources.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
@@ -35,7 +37,8 @@ BraveAutoplayContentSettingBubbleModel::BraveAutoplayContentSettingBubbleModel(
   SetRadioGroup();
 }
 
-BraveAutoplayContentSettingBubbleModel::~BraveAutoplayContentSettingBubbleModel() {}
+BraveAutoplayContentSettingBubbleModel::
+~BraveAutoplayContentSettingBubbleModel() {}
 
 void BraveAutoplayContentSettingBubbleModel::CommitChanges() {
   if (settings_changed()) {
@@ -69,9 +72,9 @@ void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
   RadioGroup radio_group;
   radio_group.url = url;
   base::string16 radio_allow_label =
-    l10n_util::GetStringFUTF16(IDS_BLOCKED_AUTOPLAY_UNBLOCK, display_host);
+      l10n_util::GetStringFUTF16(IDS_BLOCKED_AUTOPLAY_UNBLOCK, display_host);
   base::string16 radio_block_label =
-    l10n_util::GetStringUTF16(IDS_BLOCKED_AUTOPLAY_NO_ACTION);
+      l10n_util::GetStringUTF16(IDS_BLOCKED_AUTOPLAY_NO_ACTION);
   radio_group.radio_items.push_back(radio_allow_label);
   radio_group.radio_items.push_back(radio_block_label);
 
@@ -80,9 +83,9 @@ void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
 
   SettingInfo info;
   HostContentSettingsMap* map =
-    HostContentSettingsMapFactory::GetForProfile(GetProfile());
+      HostContentSettingsMapFactory::GetForProfile(GetProfile());
   std::unique_ptr<base::Value> value =
-    map->GetWebsiteSetting(url, url, content_type(), std::string(), &info);
+      map->GetWebsiteSetting(url, url, content_type(), std::string(), &info);
   setting = content_settings::ValueToContentSetting(value.get());
   setting_source = info.source;
 
