@@ -62,6 +62,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   // BrowserProcess implementation.
 
   ProfileManager* profile_manager() override;
+  NotificationPlatformBridge* notification_platform_bridge() override;
 
   void StartBraveServices();
   brave_shields::AdBlockService* ad_block_service();
@@ -90,6 +91,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 
  private:
   void CreateProfileManager();
+  void CreateNotificationPlatformBridge();
 
   BraveComponent::Delegate* brave_component_updater_delegate();
 
