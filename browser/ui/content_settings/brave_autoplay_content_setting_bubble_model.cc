@@ -15,6 +15,8 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "components/url_formatter/elide_url.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 
 using content_settings::SettingInfo;
@@ -41,6 +43,7 @@ void BraveAutoplayContentSettingBubbleModel::CommitChanges() {
                                  ? CONTENT_SETTING_ALLOW
                                  : block_setting_;
     SetNarrowestContentSetting(setting);
+    web_contents()->GetController().Reload(content::ReloadType::NORMAL, true);
   }
 }
 
