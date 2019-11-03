@@ -33,6 +33,11 @@
 #include "components/component_updater/timer_update_scheduler.h"
 #include "content/public/browser/browser_thread.h"
 
+#if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
+#include "chrome/browser/notifications/notification_platform_bridge.h"
+#include "brave/browser/notifications/brave_notification_platform_bridge.h"
+#endif
+
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 #include "brave/browser/widevine/brave_widevine_bundle_manager.h"
 #endif
@@ -274,4 +279,29 @@ void BraveBrowserProcessImpl::CreateProfileManager() {
   base::FilePath user_data_dir;
   base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
   profile_manager_ = std::make_unique<BraveProfileManager>(user_data_dir);
+}
+
+NotificationPlatformBridge*
+BraveBrowserProcessImpl::notification_platform_bridge() {
+#if !defined(OS_MACOSX)
+  return BrowserProcessImpl::notification_platform_bridge();
+#else
+#if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
+  if (!created_notification_bridge_)
+    CreateNotificationPlatformBridge();
+  return notification_bridge_.get();
+#else
+  return nullptr;
+#endif
+#endif
+}
+
+void BraveBrowserProcessImpl::CreateNotificationPlatformBridge() {
+#if defined(OS_MACOSX)
+#if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
+  DCHECK(!notification_bridge_);
+  notification_bridge_ = BraveNotificationPlatformBridge::Create();
+  created_notification_bridge_ = true;
+#endif
+#endif
 }
