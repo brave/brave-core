@@ -1904,6 +1904,7 @@ bool AdsServiceImpl::ShouldShowNotifications() const {
 
 void AdsServiceImpl::CloseNotification(
     const std::string& id) {
+#if defined(OS_ANDROID)
   // we might want to close Brave ads notification
   // between browser sessions and
   // NotificationPlatformBridgeAndroid::regenerated_notification_infos_
@@ -1911,6 +1912,9 @@ void AdsServiceImpl::CloseNotification(
   std::string prefixed_id(kBraveAdsUrlPrefix);
   prefixed_id += id;
   display_service_->Close(NotificationHandler::Type::BRAVE_ADS, prefixed_id);
+#else
+  display_service_->Close(NotificationHandler::Type::BRAVE_ADS, id);
+#endif
 }
 
 void AdsServiceImpl::SetCatalogIssuers(
