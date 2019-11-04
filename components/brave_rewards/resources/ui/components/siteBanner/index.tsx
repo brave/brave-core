@@ -36,6 +36,7 @@ import {
 } from './style'
 
 import Donate from '../donate/index'
+import DonateConfirmation from '../donateConfirmation'
 import { getLocale } from 'brave-ui/helpers'
 import {
   CloseCircleOIcon,
@@ -76,6 +77,8 @@ export interface Props {
   addFundsLink?: string
   isVerified?: boolean
   type: BannerType
+  tipComplete?: boolean
+  onTweet: () => void
   nextContribution?: string
 }
 
@@ -223,6 +226,17 @@ export default class SiteBanner extends React.PureComponent<Props, {}> {
     }
   }
 
+  renderConfirmation = () => {
+    const { type, onTweet } = this.props
+
+    return (
+      <DonateConfirmation
+        onTweet={onTweet}
+        isMonthly={type === 'monthly'}
+      />
+    )
+  }
+
   render () {
     const {
       id,
@@ -246,7 +260,8 @@ export default class SiteBanner extends React.PureComponent<Props, {}> {
       addFundsLink,
       isVerified,
       type,
-      nextContribution
+      nextContribution,
+      tipComplete
     } = this.props
 
     const isMonthly = type === 'monthly'
@@ -317,19 +332,23 @@ export default class SiteBanner extends React.PureComponent<Props, {}> {
               <StyledWallet monthly={isMonthly}>
                 {getLocale('walletBalance')} <StyledTokens>{balance} BAT</StyledTokens>
               </StyledWallet>
-              <Donate
-                type={type}
-                nextContribution={nextContribution}
-                balance={parseFloat(balance)}
-                donationAmounts={donationAmounts}
-                title={!isMonthly ? getLocale('donationAmount') : getLocale('monthlyContribution')}
-                onDonate={this.onDonate}
-                actionText={!isMonthly ? getLocale('sendDonation') : getLocale('setContribution')}
-                onAmountSelection={onAmountSelection}
-                donateType={'big'}
-                currentAmount={currentAmount}
-                addFundsLink={addFundsLink}
-              />
+              {
+                tipComplete
+                ? this.renderConfirmation()
+                : <Donate
+                    type={type}
+                    nextContribution={nextContribution}
+                    balance={parseFloat(balance)}
+                    donationAmounts={donationAmounts}
+                    title={!isMonthly ? getLocale('donationAmount') : getLocale('monthlyContribution')}
+                    onDonate={this.onDonate}
+                    actionText={!isMonthly ? getLocale('sendDonation') : getLocale('setContribution')}
+                    onAmountSelection={onAmountSelection}
+                    donateType={'big'}
+                    currentAmount={currentAmount}
+                    addFundsLink={addFundsLink}
+                />
+              }
             </StyledDonation>
           </StyledContentWrapper>
         </StyledBanner>

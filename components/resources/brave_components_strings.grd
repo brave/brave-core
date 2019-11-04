@@ -366,6 +366,7 @@
       <message name="IDS_BRAVE_UI_SERVICE_TEXT_WELCOME" desc="">By clicking ‘Yes, I'm in!’, you indicate that you have read and agree to the</message>
       <message name="IDS_BRAVE_UI_SERVICE_TEXT_READY" desc="">By clicking ‘Yes, I'm Ready!’, you indicate that you have read and agree to the</message>
       <message name="IDS_BRAVE_UI_SET_CONTRIBUTION" desc="">Set Contribution</message>
+      <message name="IDS_BRAVE_UI_SHARE_TEXT" desc="">Share the good news:</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_CREATING_TEXT" desc="">Creating wallet</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_DESC" desc="">Your attention is valuable. Earn by viewing privacy-respecting ads, and pay it forward to support content creators you love.</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_OPT_IN_TEXT" desc="">Yes, I'm In!</message>
@@ -528,6 +529,7 @@
       <message name="IDS_BRAVE_UI_SITES" desc="">sites</message>
       <message name="IDS_BRAVE_UI_TELL_OTHERS" desc="">Tell others about your tip.</message>
       <message name="IDS_BRAVE_UI_THANK_YOU" desc="">Thank you</message>
+      <message name="IDS_BRAVE_UI_TIP_SENT" desc="">Tip sent!</message>
       <message name="IDS_BRAVE_UI_TIP_TEXT" desc="">You've just sent a tip to:</message>
       <message name="IDS_BRAVE_UI_TIP_ON_LIKE" desc="">Tip on like</message>
       <message name="IDS_BRAVE_UI_TITLE_BAT" desc="">Basic Attention Token (BAT)</message>

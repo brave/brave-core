@@ -8,7 +8,6 @@ import { connect } from 'react-redux'
 
 // Components
 import Banner from './siteBanner'
-import TransientTipOverlay from './transientTipOverlay'
 
 // Utils
 import * as rewardsActions from '../actions/tip_actions'
@@ -79,20 +78,13 @@ class TipMediaUser extends React.Component<Props, {}> {
     return (
       <>
         {
-          !finished && !error
+          !error
           ? <Banner
               monthly={monthly}
               publisher={publisher}
-              mediaMetaData={mediaMetaData}
-          />
-          : null
-        }
-        {
-          finished
-          ? <TransientTipOverlay
-              publisher={publisher}
+              tipComplete={finished}
               onTweet={this.onTweet}
-              timeout={3000}
+              mediaMetaData={mediaMetaData}
           />
           : null
         }
