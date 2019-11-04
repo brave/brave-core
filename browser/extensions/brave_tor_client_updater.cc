@@ -8,6 +8,7 @@
 #include <memory>
 #include <string>
 
+#include "base/command_line.h"
 #include "base/files/file_enumerator.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -15,6 +16,7 @@
 #include "base/task_runner.h"
 #include "base/task_runner_util.h"
 #include "brave/browser/tor/tor_profile_service.h"
+#include "brave/common/brave_switches.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "third_party/re2/src/re2/re2.h"
@@ -119,12 +121,17 @@ BraveTorClientUpdater::~BraveTorClientUpdater() {
 }
 
 void BraveTorClientUpdater::Register() {
-  if (registered_)
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  if (tor::TorProfileService::IsTorDisabled() ||
+      command_line.HasSwitch(switches::kDisableTorClientUpdaterExtension) ||
+      registered_) {
     return;
+  }
 
   BraveComponent::Register(kTorClientComponentName,
-                               g_tor_client_component_id_,
-                               g_tor_client_component_base64_public_key_);
+                           g_tor_client_component_id_,
+                           g_tor_client_component_base64_public_key_);
   registered_ = true;
 }
 
