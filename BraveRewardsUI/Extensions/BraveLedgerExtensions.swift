@@ -158,7 +158,10 @@ extension BraveLedger {
   }
   
   public func claimPromotion(_ promotion: Promotion, completion: @escaping (_ success: Bool) -> Void) {
-    guard let paymentId = self.paymentId else { return }
+    guard let paymentId = self.paymentId else {
+      completion(false)
+      return
+    }
     let deviceCheck = DeviceCheckClient(environment: BraveLedger.environment)
     let group = DispatchGroup()
     if !DeviceCheckClient.isDeviceEnrolled() {
