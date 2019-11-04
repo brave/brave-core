@@ -53,6 +53,7 @@ typedef NS_ENUM(NSInteger, BATResult) {
   BATResultNotEnoughFunds = 15,
   BATResultTipError = 16,
   BATResultCorruptedWallet = 17,
+  BATResultGrantAlreadyClaimed = 18,
   BATResultContributionAmountTooLow = 19,
   BATResultVerifiedPublisher = 20,
   BATResultPendingPublisherRemoved = 21,
