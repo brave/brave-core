@@ -49,7 +49,6 @@ typedef NS_ENUM(NSInteger, BATResult) {
   BATResultRegistrationVerificationFailed = 10,
   BATResultBadRegistrationResponse = 11,
   BATResultWalletCreated = 12,
-  BATResultGrantNotFound = 13,
   BATResultAcTableEmpty = 14,
   BATResultNotEnoughFunds = 15,
   BATResultTipError = 16,
@@ -141,8 +140,39 @@ typedef NS_ENUM(NSInteger, BATEnvironment) {
 } NS_SWIFT_NAME(Environment);
 
 
+typedef NS_ENUM(NSInteger, BATPromotionType) {
+  BATPromotionTypeUgp = 0,
+  BATPromotionTypeAds = 1,
+} NS_SWIFT_NAME(PromotionType);
 
-@class BATContributionInfo, BATPublisherInfo, BATPublisherBanner, BATPendingContribution, BATPendingContributionInfo, BATVisitData, BATGrant, BATWalletProperties, BATBalance, BATAutoContributeProps, BATMediaEventInfo, BATExternalWallet, BATBalanceReportInfo, BATActivityInfoFilterOrderPair, BATActivityInfoFilter, BATReconcileInfo, BATRewardsInternalsInfo, BATServerPublisherInfo, BATTransferFee, BATContributionQueue, BATContributionQueuePublisher;
+
+typedef NS_ENUM(NSInteger, BATPromotionStatus) {
+  BATPromotionStatusActive = 0,
+  BATPromotionStatusAttested = 1,
+  BATPromotionStatusClaimed = 2,
+  BATPromotionStatusSignedTokens = 3,
+  BATPromotionStatusFinished = 4,
+  BATPromotionStatusOver = 5,
+} NS_SWIFT_NAME(PromotionStatus);
+
+
+typedef NS_ENUM(NSInteger, BATPlatform) {
+  BATPlatformDesktop = 0,
+  BATPlatformAndroid = 1,
+  BATPlatformIos = 2,
+} NS_SWIFT_NAME(Platform);
+
+
+typedef NS_ENUM(NSInteger, BATOperatingSystem) {
+  BATOperatingSystemWindows = 0,
+  BATOperatingSystemMacos = 1,
+  BATOperatingSystemLinux = 2,
+  BATOperatingSystemUndefined = 3,
+} NS_SWIFT_NAME(OperatingSystem);
+
+
+
+@class BATContributionInfo, BATPublisherInfo, BATPublisherBanner, BATPendingContribution, BATPendingContributionInfo, BATVisitData, BATWalletProperties, BATBalance, BATAutoContributeProps, BATMediaEventInfo, BATExternalWallet, BATBalanceReportInfo, BATActivityInfoFilterOrderPair, BATActivityInfoFilter, BATReconcileInfo, BATRewardsInternalsInfo, BATServerPublisherInfo, BATTransferFee, BATContributionQueue, BATContributionQueuePublisher, BATPromotion, BATPromotionCreds, BATUnblindedToken, BATClientInfo;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -222,20 +252,10 @@ NS_SWIFT_NAME(VisitData)
 @property (nonatomic, copy) NSString * faviconUrl;
 @end
 
-NS_SWIFT_NAME(Grant)
-@interface BATGrant : NSObject <NSCopying>
-@property (nonatomic, copy) NSString * altcurrency;
-@property (nonatomic, copy) NSString * probi;
-@property (nonatomic, copy) NSString * promotionId;
-@property (nonatomic) uint64_t expiryTime;
-@property (nonatomic, copy) NSString * type;
-@end
-
 NS_SWIFT_NAME(WalletProperties)
 @interface BATWalletProperties : NSObject <NSCopying>
 @property (nonatomic) double feeAmount;
 @property (nonatomic, copy) NSArray<NSNumber *> * parametersChoices;
-@property (nonatomic, copy) NSArray<BATGrant *> * grants;
 @end
 
 NS_SWIFT_NAME(Balance)
@@ -356,6 +376,45 @@ NS_SWIFT_NAME(ContributionQueuePublisher)
 @interface BATContributionQueuePublisher : NSObject <NSCopying>
 @property (nonatomic, copy) NSString * publisherKey;
 @property (nonatomic) double amountPercent;
+@end
+
+NS_SWIFT_NAME(Promotion)
+@interface BATPromotion : NSObject <NSCopying>
+@property (nonatomic, copy) NSString * id;
+@property (nonatomic) uint32_t version;
+@property (nonatomic) BATPromotionType type;
+@property (nonatomic, copy) NSString * publicKeys;
+@property (nonatomic) uint32_t suggestions;
+@property (nonatomic) double approximateValue;
+@property (nonatomic) bool claimed;
+@property (nonatomic) BATPromotionStatus status;
+@property (nonatomic) uint64_t expiresAt;
+@property (nonatomic, copy, nullable) BATPromotionCreds * credentials;
+@end
+
+NS_SWIFT_NAME(PromotionCreds)
+@interface BATPromotionCreds : NSObject <NSCopying>
+@property (nonatomic, copy) NSString * tokens;
+@property (nonatomic, copy) NSString * blindedCreds;
+@property (nonatomic, copy) NSString * signedCreds;
+@property (nonatomic, copy) NSString * publicKey;
+@property (nonatomic, copy) NSString * batchProof;
+@property (nonatomic, copy) NSString * claimId;
+@end
+
+NS_SWIFT_NAME(UnblindedToken)
+@interface BATUnblindedToken : NSObject <NSCopying>
+@property (nonatomic) uint64_t id;
+@property (nonatomic, copy) NSString * tokenValue;
+@property (nonatomic, copy) NSString * publicKey;
+@property (nonatomic) double value;
+@property (nonatomic, copy) NSString * promotionId;
+@end
+
+NS_SWIFT_NAME(ClientInfo)
+@interface BATClientInfo : NSObject <NSCopying>
+@property (nonatomic) BATPlatform platform;
+@property (nonatomic) BATOperatingSystem os;
 @end
 
 NS_ASSUME_NONNULL_END

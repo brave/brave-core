@@ -32,19 +32,16 @@ class GrantsListViewController: UIViewController {
     super.viewDidLoad()
     
     title = Strings.Grants
-    
-    if let grants = ledger.walletInfo?.grants, !grants.isEmpty {
-      grants.forEach {
-        if let value = BATValue(probi: $0.probi) {
-          let isAd = $0.type == "ads"
-          grantsView.stackView.addArrangedSubview(
-            GrantsItemView(
-              amount: value.displayString,
-              expirationDate: isAd ? nil : Date(timeIntervalSince1970: TimeInterval($0.expiryTime))
-            )
-          )
-        }
-      }
+  
+    ledger.finishedPromotions.forEach {
+      let value = BATValue($0.approximateValue)
+      let isAd = $0.type == .ads
+      grantsView.stackView.addArrangedSubview(
+        GrantsItemView(
+          amount: value.displayString,
+          expirationDate: isAd ? nil : Date(timeIntervalSince1970: TimeInterval($0.expiresAt))
+        )
+      )
     }
   }
 }

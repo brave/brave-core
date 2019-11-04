@@ -33,11 +33,14 @@ NS_SWIFT_NAME(LedgerObserver)
 
 @property (nonatomic, copy, nullable) void (^publisherListUpdated)();
 
+/// 
+@property (nonatomic, copy, nullable) void (^finishedPromotionsAdded)(NSArray<BATPromotion *> *promotions);
+
 /// Eligable grants were added to the wallet
-@property (nonatomic, copy, nullable) void (^grantsAdded)(NSArray<BATGrant *> *grants);
+@property (nonatomic, copy, nullable) void (^promotionsAdded)(NSArray<BATPromotion *> *promotions);
 
 /// A grant was claimed
-@property (nonatomic, copy, nullable) void (^grantClaimed)(BATGrant *grant);
+@property (nonatomic, copy, nullable) void (^promotionClaimed)(BATPromotion *promotion);
 
 /// A reconcile transaction completed and the user may have an updated balance
 /// and likely an updated balance report

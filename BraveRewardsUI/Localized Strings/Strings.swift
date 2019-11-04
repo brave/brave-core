@@ -251,8 +251,8 @@ internal extension Strings {
   static let NoNetworkBody = NSLocalizedString("NoNetworkBody", bundle: Bundle.RewardsUI, value: "The Brave Rewards server is not responding. We will fix this as soon as possible.", comment: "Body for a no network notification")
   static let MyFirstAdTitle = NSLocalizedString("MyFirstAdTitle", bundle: Bundle.RewardsUI, value: "This is your first Brave ad", comment: "")
   static let MyFirstAdBody = NSLocalizedString("MyFirstAdBody", bundle: Bundle.RewardsUI, value: "Tap here to learn more.", comment: "")
-  static let WalletCreationErrorTitle = NSLocalizedString("WalletCreationErrorTitle", bundle: Bundle.RewardsUI, value: "Error", comment: "")
-  static let WalletCreationErrorBody = NSLocalizedString("WalletCreationErrorBody", bundle: Bundle.RewardsUI, value: "Oops! Something went wrong. Please try again.", comment: "")
+  static let GenericErrorTitle = NSLocalizedString("WalletCreationErrorTitle", bundle: Bundle.RewardsUI, value: "Error", comment: "")
+  static let GenericErrorBody = NSLocalizedString("WalletCreationErrorBody", bundle: Bundle.RewardsUI, value: "Oops! Something went wrong. Please try again.", comment: "")
   static let BATPointsDisclaimer = NSLocalizedString("BATPointsDisclaimer", bundle: Bundle.RewardsUI, value: "BAT Points can be used to contribute to your favorite content creators. BAT Points cannot be exchanged for BAT.", comment: "Disclaimer about BAT Points for JP users")
   static let BATPointsDisclaimerBoldedWords = NSLocalizedString("BATPointsBoldedWords", bundle: Bundle.RewardsUI, value: "BAT Points", comment: "Words that should be bolded in the BAT Points disclaimer")
 }
