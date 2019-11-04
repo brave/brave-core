@@ -221,6 +221,7 @@ source_set("ui") {
       "//brave/browser/resources/extensions:resources",
       "//brave/components/brave_extension:generated_resources",
       "//brave/components/brave_extension:static_resources",
+      "//brave/browser/extensions",
       "//chrome/browser/extensions",
       "//extensions/browser",
     ]

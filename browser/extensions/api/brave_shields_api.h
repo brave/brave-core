@@ -21,6 +21,17 @@ class BraveShieldsAllowScriptsOnceFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveShieldsOpenBrowserActionUIFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.openBrowserActionUI", UNKNOWN)
+
+ protected:
+  ~BraveShieldsOpenBrowserActionUIFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveShieldsSetBraveShieldsEnabledFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.setBraveShieldsEnabled", UNKNOWN)
