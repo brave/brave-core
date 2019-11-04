@@ -640,6 +640,22 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_BRAVE_CRYPTO_WALLETS_SETUP" desc="Use Crypto Wallets">
         SETUP
       </message>
+      <if expr="not use_titlecase">
+        <message name="IDS_TAB_CXMENU_CLOSEOTHERTABS" desc="The label of the 'Close other tabs' Tab context menu item.">
+          Close other tabs
+        </message>
+        <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
+          Bookmark all tabs...
+        </message>
+      </if>
+      <if expr="use_titlecase">
+        <message name="IDS_TAB_CXMENU_CLOSEOTHERTABS" desc="In Title Case: The label of the 'Close Other Tabs' Tab context menu item.">
+          Close Other Tabs
+        </message>
+        <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="In Title Case: The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
+          Bookmark All Tabs...
+        </message>
+      </if>
     </messages>
     <includes>
       <include name="IDR_BRAVE_GOOGLE_ANALYTICS_POLYFILL" file="resources/js/google_analytics_polyfill.js" type="BINDATA" />
