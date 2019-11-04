@@ -175,7 +175,16 @@ test("brave_unit_tests") {
 
   if (brave_ads_enabled) {
     sources += [
-      "//brave/components/brave_ads/browser/ads_service_impl_unittest.cc"
+      "//brave/components/brave_ads/browser/ads_service_impl_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/client_mock.h",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/client_mock.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/per_day_frequency_cap_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/per_hour_frequency_cap_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/exclusion_rules/total_max_frequency_cap_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/permission_rules/ads_per_day_frequency_cap_unittest.cc",
+      "//brave/vendor/bat-native-ads/src/bat/ads/internal/frequency_capping/permission_rules/ads_per_hour_frequency_cap_unittest.cc",
     ]
   }
 
