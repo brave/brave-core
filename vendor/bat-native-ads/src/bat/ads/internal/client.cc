@@ -72,7 +72,7 @@ void Client::AppendAdToAdsShownHistory(
   SaveState();
 }
 
-const std::deque<AdHistoryDetail> Client::GetAdsShownHistory() {
+const std::deque<AdHistoryDetail> Client::GetAdsShownHistory() const {
   return client_state_->ads_shown_history;
 }
 
@@ -496,16 +496,16 @@ const std::deque<std::vector<double>> Client::GetPageScoreHistory() {
   return client_state_->page_score_history;
 }
 
-void Client::AppendCurrentTimeToCreativeSetHistory(
-    const std::string& creative_set_id) {
-  if (client_state_->creative_set_history.find(creative_set_id) ==
+void Client::AppendTimestampToCreativeSetHistoryForUuid(
+    const std::string& uuid,
+    const uint64_t timestamp_in_seconds) {
+  if (client_state_->creative_set_history.find(uuid) ==
       client_state_->creative_set_history.end()) {
-    client_state_->creative_set_history.insert({creative_set_id, {}});
+    client_state_->creative_set_history.insert({uuid, {}});
   }
 
-  auto now_in_seconds = Time::NowInSeconds();
   client_state_->creative_set_history.at(
-      creative_set_id).push_back(now_in_seconds);
+      uuid).push_back(timestamp_in_seconds);
 
   SaveState();
 }
@@ -515,15 +515,15 @@ const std::map<std::string, std::deque<uint64_t>>
   return client_state_->creative_set_history;
 }
 
-void Client::AppendCurrentTimeToCampaignHistory(
-    const std::string& campaign_id) {
-  if (client_state_->campaign_history.find(campaign_id) ==
+void Client::AppendTimestampToCampaignHistoryForUuid(
+    const std::string& uuid,
+    const uint64_t timestamp_in_seconds) {
+  if (client_state_->campaign_history.find(uuid) ==
       client_state_->campaign_history.end()) {
-    client_state_->campaign_history.insert({campaign_id, {}});
+    client_state_->campaign_history.insert({uuid, {}});
   }
 
-  auto now_in_seconds = Time::NowInSeconds();
-  client_state_->campaign_history.at(campaign_id).push_back(now_in_seconds);
+  client_state_->campaign_history.at(uuid).push_back(timestamp_in_seconds);
 
   SaveState();
 }

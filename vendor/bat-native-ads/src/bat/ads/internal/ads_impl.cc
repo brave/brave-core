@@ -22,6 +22,15 @@
 #include "bat/ads/internal/static_values.h"
 #include "bat/ads/internal/time.h"
 #include "bat/ads/internal/uri_helper.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/frequency_capping.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/per_hour_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/per_day_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/total_max_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/ads_per_day_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/permission_rules/ads_per_hour_frequency_cap.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
@@ -79,6 +88,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     client_(std::make_unique<Client>(this, ads_client)),
     bundle_(std::make_unique<Bundle>(this, ads_client)),
     ads_serve_(std::make_unique<AdsServe>(this, ads_client, bundle_.get())),
+    frequency_capping_(std::make_unique<FrequencyCapping>(client_.get())),
     notifications_(std::make_unique<Notifications>(this, ads_client)),
     user_model_(nullptr),
     is_initialized_(false),
@@ -1069,38 +1079,48 @@ void AdsImpl::FailedToServeAd(
   }
 }
 
+std::vector<std::unique_ptr<ExclusionRule>>
+    AdsImpl::CreateExclusionRules() const {
+  std::vector<std::unique_ptr<ExclusionRule>> exclusion_rules;
+
+  std::unique_ptr<ExclusionRule> daily_cap_frequency_cap =
+      std::make_unique<DailyCapFrequencyCap>(frequency_capping_.get());
+  exclusion_rules.push_back(std::move(daily_cap_frequency_cap));
+
+  std::unique_ptr<ExclusionRule> per_day_frequency_cap =
+      std::make_unique<PerDayFrequencyCap>(frequency_capping_.get());
+  exclusion_rules.push_back(std::move(per_day_frequency_cap));
+
+  std::unique_ptr<ExclusionRule> per_hour_frequency_cap =
+      std::make_unique<PerHourFrequencyCap>(frequency_capping_.get());
+  exclusion_rules.push_back(std::move(per_hour_frequency_cap));
+
+  std::unique_ptr<ExclusionRule> total_max_frequency_cap =
+      std::make_unique<TotalMaxFrequencyCap>(frequency_capping_.get());
+  exclusion_rules.push_back(std::move(total_max_frequency_cap));
+
+  return exclusion_rules;
+}
+
 std::vector<AdInfo> AdsImpl::GetEligibleAds(
     const std::vector<AdInfo>& ads) {
   std::vector<AdInfo> eligible_ads = {};
 
   auto unseen_ads = GetUnseenAdsAndRoundRobinIfNeeded(ads);
 
+  std::vector<std::unique_ptr<ExclusionRule>> exclusion_rules =
+      CreateExclusionRules();
+
   for (const auto& ad : unseen_ads) {
-    if (!AdRespectsTotalMaxFrequencyCapping(ad)) {
-      BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
-          << " has exceeded the frequency capping for totalMax";
-
-      continue;
+    bool should_exclude = false;
+    for (std::unique_ptr<ExclusionRule>& exclusion_rule : exclusion_rules) {
+      if (exclusion_rule->ShouldExclude(ad)) {
+        BLOG(INFO) << exclusion_rule->GetLastMessage();
+        should_exclude = true;
+      }
     }
 
-    if (!AdRespectsPerHourFrequencyCapping(ad)) {
-      BLOG(WARNING) << "adUUID " << ad.uuid
-          << " has exceeded the frequency capping for perHour";
-
-      continue;
-    }
-
-    if (!AdRespectsPerDayFrequencyCapping(ad)) {
-      BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
-          << " has exceeded the frequency capping for perDay";
-
-      continue;
-    }
-
-    if (!AdRespectsDailyCapFrequencyCapping(ad)) {
-      BLOG(WARNING) << "campaignId " << ad.campaign_id
-          << " has exceeded the frequency capping for dailyCap";
-
+    if (should_exclude) {
       continue;
     }
 
@@ -1151,81 +1171,6 @@ std::vector<AdInfo> AdsImpl::GetUnseenAds(
   return unseen_ads;
 }
 
-bool AdsImpl::AdRespectsTotalMaxFrequencyCapping(
-    const AdInfo& ad) {
-  auto creative_set = GetCreativeSetForId(ad.creative_set_id);
-  if (creative_set.size() >= ad.total_max) {
-    return false;
-  }
-
-  return true;
-}
-
-bool AdsImpl::AdRespectsPerHourFrequencyCapping(
-    const AdInfo& ad) {
-  auto ads_shown = GetAdsShownForId(ad.uuid);
-  auto hour_window = base::Time::kSecondsPerHour;
-
-  return HistoryRespectsRollingTimeConstraint(
-      ads_shown, hour_window, 1);
-}
-
-bool AdsImpl::AdRespectsPerDayFrequencyCapping(
-    const AdInfo& ad) {
-  auto creative_set = GetCreativeSetForId(ad.creative_set_id);
-  auto day_window = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
-
-  return HistoryRespectsRollingTimeConstraint(
-      creative_set, day_window, ad.per_day);
-}
-
-bool AdsImpl::AdRespectsDailyCapFrequencyCapping(
-    const AdInfo& ad) {
-  auto campaign = GetCampaignForId(ad.campaign_id);
-  auto day_window = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
-
-  return HistoryRespectsRollingTimeConstraint(
-      campaign, day_window, ad.daily_cap);
-}
-
-std::deque<uint64_t> AdsImpl::GetAdsShownForId(
-    const std::string& id) {
-  std::deque<uint64_t> ads_shown = {};
-
-  auto ads_shown_history = client_->GetAdsShownHistory();
-  for (const auto& ad_shown : ads_shown_history) {
-    if (ad_shown.ad_content.uuid == id) {
-      ads_shown.push_back(ad_shown.timestamp_in_seconds);
-    }
-  }
-
-  return ads_shown;
-}
-
-std::deque<uint64_t> AdsImpl::GetCreativeSetForId(
-    const std::string& id) {
-  std::deque<uint64_t> creative_set = {};
-
-  auto creative_set_history = client_->GetCreativeSetHistory();
-  if (creative_set_history.find(id) != creative_set_history.end()) {
-    creative_set = creative_set_history.at(id);
-  }
-
-  return creative_set;
-}
-
-std::deque<uint64_t> AdsImpl::GetCampaignForId(
-    const std::string& id) {
-  std::deque<uint64_t> campaign = {};
-
-  auto campaign_history = client_->GetCampaignHistory();
-  if (campaign_history.find(id) != campaign_history.end()) {
-    campaign = campaign_history.at(id);
-  }
-
-  return campaign;
-}
-
 bool AdsImpl::IsAdValid(
     const AdInfo& ad_info) {
   if (ad_info.advertiser.empty() ||
@@ -1255,6 +1200,15 @@ bool AdsImpl::ShowAd(
   if (!IsAdValid(ad)) {
     return false;
   }
+
+  auto now_in_seconds = Time::NowInSeconds();
+
+  client_->AppendTimestampToCreativeSetHistoryForUuid(ad.creative_set_id,
+      now_in_seconds);
+  client_->AppendTimestampToCampaignHistoryForUuid(ad.campaign_id,
+      now_in_seconds);
+
+  client_->UpdateAdsUUIDSeen(ad.uuid, 1);
 
   auto notification_info = std::make_unique<NotificationInfo>();
   notification_info->id = base::GenerateGUID();
@@ -1287,114 +1241,45 @@ bool AdsImpl::ShowAd(
   }
 #endif
 
-
-  client_->AppendCurrentTimeToCreativeSetHistory(ad.creative_set_id);
-  client_->AppendCurrentTimeToCampaignHistory(ad.campaign_id);
-
-  client_->UpdateAdsUUIDSeen(ad.uuid, 1);
-
   return true;
 }
 
-bool AdsImpl::HistoryRespectsRollingTimeConstraint(
-    const std::deque<uint64_t> history,
-    const uint64_t seconds_window,
-    const uint64_t allowable_ad_count) const {
-  uint64_t recent_count = 0;
+std::vector<std::unique_ptr<PermissionRule>>
+    AdsImpl::CreatePermissionRules() const {
+  std::vector<std::unique_ptr<PermissionRule>> permission_rules;
 
-  auto now_in_seconds = Time::NowInSeconds();
+  std::unique_ptr<PermissionRule> ads_per_hour_frequency_cap =
+      std::make_unique<AdsPerHourFrequencyCap>(this, ads_client_,
+          frequency_capping_.get());
+  permission_rules.push_back(std::move(ads_per_hour_frequency_cap));
 
-  for (const auto& timestamp_in_seconds : history) {
-    if (now_in_seconds - timestamp_in_seconds < seconds_window) {
-      recent_count++;
-    }
-  }
+  std::unique_ptr<PermissionRule> minimum_wait_time_frequency_cap =
+      std::make_unique<MinimumWaitTimeFrequencyCap>(this, ads_client_,
+          frequency_capping_.get());
+  permission_rules.push_back(std::move(minimum_wait_time_frequency_cap));
 
-  if (recent_count <= allowable_ad_count) {
-    return true;
-  }
+  std::unique_ptr<PermissionRule> ads_per_day_frequency_cap =
+      std::make_unique<AdsPerDayFrequencyCap>(ads_client_,
+          frequency_capping_.get());
+  permission_rules.push_back(std::move(ads_per_day_frequency_cap));
 
-  return false;
-}
-
-bool AdsImpl::HistoryRespectsRollingTimeConstraint(
-    const std::deque<AdHistoryDetail> history,
-    const uint64_t seconds_window,
-    const uint64_t allowable_ad_count) const {
-  uint64_t recent_count = 0;
-
-  auto now_in_seconds = Time::NowInSeconds();
-
-  for (const auto& detail : history) {
-    if (now_in_seconds - detail.timestamp_in_seconds < seconds_window) {
-      recent_count++;
-    }
-  }
-
-  if (recent_count <= allowable_ad_count) {
-    return true;
-  }
-
-  return false;
+  return permission_rules;
 }
 
 bool AdsImpl::IsAllowedToServeAds() {
-  auto does_history_respect_ads_per_day_limit =
-      DoesHistoryRespectAdsPerDayLimit();
+  std::vector<std::unique_ptr<PermissionRule>> permission_rules =
+      CreatePermissionRules();
 
-  bool does_history_respect_minimum_wait_time;
-  if (!IsMobile()) {
-    does_history_respect_minimum_wait_time =
-        DoesHistoryRespectMinimumWaitTimeToServeAds();
-  } else {
-    does_history_respect_minimum_wait_time = true;
+  bool is_allowed = true;
+
+  for (std::unique_ptr<PermissionRule>& permission_rule : permission_rules) {
+    if (!permission_rule->IsAllowed()) {
+      BLOG(INFO) << permission_rule->GetLastMessage();
+      is_allowed = false;
+    }
   }
 
-  BLOG(INFO) << "IsAllowedToServeAds:";
-  BLOG(INFO) << "    does_history_respect_minimum_wait_time: "
-      << does_history_respect_minimum_wait_time;
-  BLOG(INFO) << "    does_history_respect_ads_per_day_limit: "
-      << does_history_respect_ads_per_day_limit;
-
-  return does_history_respect_minimum_wait_time &&
-      does_history_respect_ads_per_day_limit;
-}
-
-bool AdsImpl::DoesHistoryRespectMinimumWaitTimeToServeAds() {
-  auto ads_shown_history = client_->GetAdsShownHistory();
-
-  auto hour_window = base::Time::kSecondsPerHour;
-  auto hour_allowed = ads_client_->GetAdsPerHour();
-  auto respects_hour_limit = HistoryRespectsRollingTimeConstraint(
-      ads_shown_history, hour_window, hour_allowed);
-
-  auto minimum_wait_time = hour_window / hour_allowed;
-  auto respects_minimum_wait_time = HistoryRespectsRollingTimeConstraint(
-      ads_shown_history, minimum_wait_time, 0);
-
-  BLOG(INFO) << "DoesHistoryRespectMinimumWaitTimeToServeAds:";
-  BLOG(INFO) << "    respects_hour_limit: "
-      << respects_hour_limit;
-  BLOG(INFO) << "    respects_minimum_wait_time: "
-      << respects_minimum_wait_time;
-
-  return respects_hour_limit && respects_minimum_wait_time;
-}
-
-bool AdsImpl::DoesHistoryRespectAdsPerDayLimit() {
-  auto ads_shown_history = client_->GetAdsShownHistory();
-
-  auto day_window = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
-  auto day_allowed = ads_client_->GetAdsPerDay();
-
-  auto respects_day_limit = HistoryRespectsRollingTimeConstraint(
-      ads_shown_history, day_window, day_allowed);
-
-  BLOG(INFO) << "DoesHistoryRespectAdsPerDayLimit:";
-  BLOG(INFO) << "    respects_day_limit: "
-      << respects_day_limit;
-
-  return respects_day_limit;
+  return is_allowed;
 }
 
 void AdsImpl::StartCollectingActivity(

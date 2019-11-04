@@ -37,6 +37,9 @@ class Client;
 class Bundle;
 class AdsServe;
 class Notifications;
+class FrequencyCapping;
+class ExclusionRule;
+class PermissionRule;
 
 class AdsImpl : public Ads {
  public:
@@ -216,39 +219,13 @@ class AdsImpl : public Ads {
   std::vector<AdInfo> GetUnseenAds(
       const std::vector<AdInfo>& ads) const;
 
-  bool AdRespectsTotalMaxFrequencyCapping(
-      const AdInfo& ad);
-  bool AdRespectsPerHourFrequencyCapping(
-      const AdInfo& ad);
-  bool AdRespectsPerDayFrequencyCapping(
-      const AdInfo& ad);
-  bool AdRespectsDailyCapFrequencyCapping(
-      const AdInfo& ad);
-
-  std::deque<uint64_t> GetAdsShownForId(
-      const std::string& id);
-  std::deque<uint64_t> GetCreativeSetForId(
-      const std::string& id);
-  std::deque<uint64_t> GetCampaignForId(
-      const std::string& id);
-
   bool IsAdValid(
       const AdInfo& ad_info);
   NotificationInfo last_shown_notification_info_;
   bool ShowAd(
       const AdInfo& ad_info,
       const std::string& category);
-  bool HistoryRespectsRollingTimeConstraint(
-      const std::deque<uint64_t> history,
-      const uint64_t seconds_window,
-      const uint64_t allowable_ad_count) const;
-  bool HistoryRespectsRollingTimeConstraint(
-      const std::deque<AdHistoryDetail> history,
-      const uint64_t seconds_window,
-      const uint64_t allowable_ad_count) const;
   bool IsAllowedToServeAds();
-  bool DoesHistoryRespectMinimumWaitTimeToServeAds();
-  bool DoesHistoryRespectAdsPerDayLimit();
 
   uint32_t collect_activity_timer_id_;
   void StartCollectingActivity(
@@ -340,6 +317,7 @@ class AdsImpl : public Ads {
   std::unique_ptr<Client> client_;
   std::unique_ptr<Bundle> bundle_;
   std::unique_ptr<AdsServe> ads_serve_;
+  std::unique_ptr<FrequencyCapping> frequency_capping_;
   std::unique_ptr<Notifications> notifications_;
   std::unique_ptr<usermodel::UserModel> user_model_;
 
@@ -349,6 +327,10 @@ class AdsImpl : public Ads {
   bool is_confirmations_ready_;
 
   AdsClient* ads_client_;  // NOT OWNED
+
+  std::vector<std::unique_ptr<PermissionRule>> CreatePermissionRules() const;
+
+  std::vector<std::unique_ptr<ExclusionRule>> CreateExclusionRules() const;
 
   // Not copyable, not assignable
   AdsImpl(const AdsImpl&) = delete;
