@@ -40,6 +40,7 @@ const defaultState: NewTab.State = {
     },
     dismissedNotifications: [],
     enabledAds: false,
+    adsSupported: false,
     enabledMain: false,
     grants: [],
     onlyAnonWallet: false,

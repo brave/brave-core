@@ -377,6 +377,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         rewardsState: {
           ...state.rewardsState,
           enabledAds: preInitialRewardsDataPayload.enabledAds,
+          adsSupported: preInitialRewardsDataPayload.adsSupported,
           enabledMain: preInitialRewardsDataPayload.enabledMain
         }
       }
