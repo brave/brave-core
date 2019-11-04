@@ -68,7 +68,7 @@ class TippingViewController: UIViewController, UIViewControllerTransitioningDele
     tippingView.optionSelectionView.optionChanged = { [weak self] option in
       guard let self = self else { return }
       if let balanceTotal = self.state.ledger.balance?.total {
-        let hasEnoughBalanceForTip = option.value.doubleValue < balanceTotal
+        let hasEnoughBalanceForTip = option.value.doubleValue <= balanceTotal
         self.tippingView.optionSelectionView.setEnoughFundsAvailable(hasEnoughBalanceForTip)
       } else {
         self.tippingView.optionSelectionView.setEnoughFundsAvailable(false)
