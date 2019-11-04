@@ -1,3 +1,6 @@
+/* Label for auto-contribute toggle. */
+"AutoContributeSwitchLabel" = "Włącz automatyczną dotację";
+
 /* No comment provided by engineer. */
 "BATPoints" = "Punkty BAT";
 
@@ -152,10 +155,16 @@
 "BraveRewardsGrantsClaimedAmountTitle" = "Bezpłatne granty tokenowe";
 
 /* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedAmountTitleJapan" = "Bezpłatny grant punktowy";
+
+/* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedExpirationDateTitle" = "Data wygaśnięcia grantu";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedSubtitle" = "Twój grant tokenowy jest w drodze.";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitleJapan" = "Twój grant punktowy jest w drodze.";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedTitle" = "To Twój szczęśliwy dzień!";
@@ -221,6 +230,9 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 wizyt";
 
 /* No comment provided by engineer. */
+"BraveRewardsMonthlyTippingNextDate" = "Data następnego miesięcznego napiwku";
+
+/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Miesięczne napiwki";
 
 /* No comment provided by engineer. */
@@ -231,6 +243,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationAutoContributeTitle" = "Automatyczna dotacja";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationPointGrantTitle" = "Grant punktowy";
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationRecurringTipTitle" = "Powtarzające się napiwki";
@@ -260,6 +275,9 @@
 "BraveRewardsPaymentDate" = "Data następnej płatności";
 
 /* No comment provided by engineer. */
+"BraveRewardsPoints" = "Punkty";
+
+/* No comment provided by engineer. */
 "BraveRewardsPoweredByUphold" = "Twój portfel Brave jest obsługiwany przez Uphold";
 
 /* No comment provided by engineer. */
@@ -276,6 +294,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsBody" = "Zarabiaj tokeny oglądając reklamy w Brave. Reklamy prezentowane są w oparciu o Twoje zainteresowania, co wynika z Twojego zachowania podczas przeglądania stron internetowych. Żadne dane osobowe ani historia przeglądania nie opuszczają przeglądarki.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBodyJapan" = "Zdobywaj punkty, oglądając reklamy w Brave. Reklamy prezentowane są w oparciu o Twoje zainteresowania, co wynika z Twojego zachowania podczas przeglądania stron internetowych. Żadne dane osobowe ani historia przeglądania nie opuszczają przeglądarki.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "Już wkrótce.";
@@ -312,6 +333,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantText" = "Dostępny jest bezpłatny grant tokenowy.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantTextJapan" = "Dostępny jest bezpłatny grant punktowy.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsBody" = "Przekaż napiwek dla twórców treści bezpośrednio podczas przeglądania. Możesz również ustawić powtarzające się miesięczne napiwki, które będą co miesiąc wspierać wybrane strony internetowe.";
@@ -396,6 +420,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTotalGrantsClaimed" = "Odebrane granty tokenowe";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalGrantsClaimedJapan" = "Odebrane granty punktowe";
 
 /* No comment provided by engineer. */
 "BraveRewardsTotalSites" = "Łącznie %ld";
@@ -507,6 +534,9 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInDescription" = "Teraz możesz zarabiać tokeny za oglądanie reklam szanujących prywatność.";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescriptionJapan" = "Teraz możesz zdobywać punkty za oglądanie reklam szanujących prywatność.";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Dołącz do nagród";

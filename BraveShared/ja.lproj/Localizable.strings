@@ -1,6 +1,15 @@
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "いいえ";
 
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessage" = "プライバシーに配慮した広告を見ることでトークンを獲得できます。";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessageJapan" = "プライバシーに配慮した広告を見ることでポイントを獲得できます。";
+
+/* Title when opting into brave Ads when region becomes available */
+"OBAdsOptInTitle" = "Brave Adsが有効になりました！";
+
 /* Title for ads onboarding screen */
 "OBAdsTitle" = "この後、初めての広告を表示します";
 

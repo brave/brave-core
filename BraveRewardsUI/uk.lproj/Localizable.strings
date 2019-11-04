@@ -1,3 +1,6 @@
+/* Label for auto-contribute toggle. */
+"AutoContributeSwitchLabel" = "Додати в автовнесок";
+
 /* No comment provided by engineer. */
 "BATPoints" = "Бали BAT";
 
@@ -152,10 +155,16 @@
 "BraveRewardsGrantsClaimedAmountTitle" = "Безкоштовний бонус на токени";
 
 /* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedAmountTitleJapan" = "Безкоштовні бонусні бали";
+
+/* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedExpirationDateTitle" = "Дата закінчення терміну дії бонуса";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedSubtitle" = "Скоро ви отримаєте бонус на токени.";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitleJapan" = "Скоро ви отримаєте бонусні бали.";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedTitle" = "Сьогодні ваш щасливий день!";
@@ -221,6 +230,9 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 відвідувань";
 
 /* No comment provided by engineer. */
+"BraveRewardsMonthlyTippingNextDate" = "Дата наступного щомісячного платежу";
+
+/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Щомісячні платежі";
 
 /* No comment provided by engineer. */
@@ -231,6 +243,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationAutoContributeTitle" = "Автовнесок";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationPointGrantTitle" = "Бонусні бали";
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationRecurringTipTitle" = "Повторні платежі";
@@ -260,6 +275,9 @@
 "BraveRewardsPaymentDate" = "Дата наступного платежу";
 
 /* No comment provided by engineer. */
+"BraveRewardsPoints" = "Бали";
+
+/* No comment provided by engineer. */
 "BraveRewardsPoweredByUphold" = "Гаманець Brave надано компанією Uphold";
 
 /* No comment provided by engineer. */
@@ -276,6 +294,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsBody" = "Заробляйте токени, переглядаючи рекламу в Brave. Реклама надається на базі ваших інтересів, що визначаються на основі ваших дій в Інтернеті. Персональні дані та інформація з історію браузера не передаються.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBodyJapan" = "Заробляйте бали, переглядаючи рекламу в Brave. Реклама надається на базі ваших інтересів, що визначаються на основі ваших дій в Інтернеті. Персональні дані та інформація з історії браузера не передаються.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "Незабаром.";
@@ -312,6 +333,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantText" = "Доступний безкоштовний бонус на токени.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantTextJapan" = "Доступні безкоштовні бонусні бали.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsBody" = "Допомагайте авторам, просто користуючись Інтернетом. Також ви можете налаштувати щомісячні платежі, щоб постійно підтримувати певні веб-сайти.";
@@ -396,6 +420,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTotalGrantsClaimed" = "Бонуси на токени отримано";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalGrantsClaimedJapan" = "Бонусні бали отримано";
 
 /* No comment provided by engineer. */
 "BraveRewardsTotalSites" = "Усього %ld";
@@ -507,6 +534,9 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInDescription" = "Тепер ви можете заробляти токени за перегляд реклами, що не порушує конфіденційність.";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescriptionJapan" = "Тепер ви можете заробляти бали за перегляд реклами, що не порушує вашу конфіденційність.";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Приєднатися до програми Rewards";

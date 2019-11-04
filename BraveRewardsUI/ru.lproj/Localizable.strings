@@ -1,3 +1,6 @@
+/* Label for auto-contribute toggle. */
+"AutoContributeSwitchLabel" = "Включить в автоматический вклад";
+
 /* No comment provided by engineer. */
 "BATPoints" = "Баллы BAT";
 
@@ -152,10 +155,16 @@
 "BraveRewardsGrantsClaimedAmountTitle" = "Бесплатная выдача токена";
 
 /* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedAmountTitleJapan" = "Бесплатные баллы";
+
+/* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedExpirationDateTitle" = "Дата истечения срока выдачи";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedSubtitle" = "Скоро вы получите свой токен.";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitleJapan" = "Ваш балл уже в пути.";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedTitle" = "Это ваш счастливый день!";
@@ -221,6 +230,9 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 посещений";
 
 /* No comment provided by engineer. */
+"BraveRewardsMonthlyTippingNextDate" = "Дата следующего ежемесячного платежа";
+
+/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Ежемесячные платежи";
 
 /* No comment provided by engineer. */
@@ -231,6 +243,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationAutoContributeTitle" = "Автоматический вклад";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationPointGrantTitle" = "Выдача баллов";
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationRecurringTipTitle" = "Повторяющиеся платежи";
@@ -260,6 +275,9 @@
 "BraveRewardsPaymentDate" = "Дата следующего платежа";
 
 /* No comment provided by engineer. */
+"BraveRewardsPoints" = "Баллы";
+
+/* No comment provided by engineer. */
 "BraveRewardsPoweredByUphold" = "Ваш кошелек Brave работает на Uphold";
 
 /* No comment provided by engineer. */
@@ -276,6 +294,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsBody" = "Зарабатывайте токены, просматривая рекламу в Brave. Отображаемые объявления основаны на ваших предпочтениях, сформированных исходя из вашего поведения в Интернете. Браузер Brave никому не передает личные данные и историю посещений.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBodyJapan" = "Зарабатывайте баллы за просмотр рекламы в Brave. Объявления отбираются с учетом ваших интересов, определяемых на основе действий в браузере. Ваши личные данные и история просмотра никогда не передаются за пределы браузера.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "Уже скоро.";
@@ -312,6 +333,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantText" = "Доступен бесплатный токен.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantTextJapan" = "Доступен бесплатный балл.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsBody" = "Отправляйте платежи создателям контента непосредственно при просмотре сайтов. Также вы можете настроить повторяющиеся ежемесячные платежи, чтобы постоянно поддерживать их.";
@@ -396,6 +420,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTotalGrantsClaimed" = "Полученные токены";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalGrantsClaimedJapan" = "Запрошено баллов";
 
 /* No comment provided by engineer. */
 "BraveRewardsTotalSites" = "Всего %ld";
@@ -507,6 +534,9 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInDescription" = "Теперь вы можете зарабатывать токены за просмотр рекламы, которая не нарушает вашу конфиденциальность.";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescriptionJapan" = "Теперь вы можете зарабатывать баллы за просмотр рекламных объявлений, не нарушающих вашу конфиденциальность.";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Присоединиться к сервису Rewards";

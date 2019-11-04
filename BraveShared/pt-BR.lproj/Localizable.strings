@@ -1,6 +1,15 @@
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Não";
 
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessage" = "Ganhe tokens visualizando anúncios que respeitam a privacidade.";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessageJapan" = "Ganhe pontos visualizando anúncios que respeitam a privacidade.";
+
+/* Title when opting into brave Ads when region becomes available */
+"OBAdsOptInTitle" = "O Brave Ads chegou!";
+
 /* Title for ads onboarding screen */
 "OBAdsTitle" = "O Brave mostrará seu primeiro anúncio em";
 

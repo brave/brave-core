@@ -1,3 +1,6 @@
+/* Label for auto-contribute toggle. */
+"AutoContributeSwitchLabel" = "Termasuk dalam Kontribusi-Otomatif";
+
 /* No comment provided by engineer. */
 "BATPoints" = "Poin BAT";
 
@@ -152,10 +155,16 @@
 "BraveRewardsGrantsClaimedAmountTitle" = "Hadiah Token Gratis";
 
 /* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedAmountTitleJapan" = "Hadiah Poin Gratis";
+
+/* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedExpirationDateTitle" = "Tanggal Berakhir Hadiah";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedSubtitle" = "Hadiah token Anda sedang dikirim.";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitleJapan" = "Hadiah poin Anda akan segera diberikan.";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedTitle" = "Ini hari keberuntungan Anda!";
@@ -221,6 +230,9 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 kunjungan";
 
 /* No comment provided by engineer. */
+"BraveRewardsMonthlyTippingNextDate" = "Tanggal saran bulanan berikutnya";
+
+/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Tip Bulanan";
 
 /* No comment provided by engineer. */
@@ -231,6 +243,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationAutoContributeTitle" = "Kontribusi Otomatis";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationPointGrantTitle" = "Hadiah Poin";
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationRecurringTipTitle" = "Tip rutin";
@@ -260,6 +275,9 @@
 "BraveRewardsPaymentDate" = "Tanggal pembayaran berikutnya";
 
 /* No comment provided by engineer. */
+"BraveRewardsPoints" = "Poin";
+
+/* No comment provided by engineer. */
 "BraveRewardsPoweredByUphold" = "Dompet Brave Anda didukung oleh Uphold";
 
 /* No comment provided by engineer. */
@@ -276,6 +294,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsBody" = "Dapatkan token dengan melihat iklan di Brave. Iklan yang ditampilkan didasarkan pada minat Anda, sebagaimana disimpulkan dari aktivitas penelusuran Anda. Tidak ada data pribadi atau riwayat penelusuran yang diambil dari browser Anda.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBodyJapan" = "Dapatkan poin dengan melihat iklan di Brave. Iklan ditampilkan berdasarkan minat Anda, sebagaimana disimpulkan dari perilaku pencarian Internet Anda. Tidak ada data pribadi atau riwayat pencarian yang akan meninggalkan perambah Anda.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "Segera hadir.";
@@ -312,6 +333,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantText" = "Hadiah token gratis tersedia.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantTextJapan" = "Hadiah poin gratis telah tersedia.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsBody" = "Berikan tip kepada pembuat konten secara langsung saat Anda menelusuri. Anda juga dapat mengatur tip bulanan berulang sehingga Anda dapat mendukung situs secara berkelanjutan.";
@@ -396,6 +420,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTotalGrantsClaimed" = "Hadiah Token Diklaim";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalGrantsClaimedJapan" = "Hadiah Poin Telah Diklaim";
 
 /* No comment provided by engineer. */
 "BraveRewardsTotalSites" = "Total %ld";
@@ -507,6 +534,9 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInDescription" = "Anda kini dapat memperoleh token dengan menonton iklan terkait privasi.";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescriptionJapan" = "Anda kini bisa mendapat poin dengan menonton iklan-iklan yang menghormati kerahasiaan Anda.";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Bergabunglah dengan Brave Rewards";

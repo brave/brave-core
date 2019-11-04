@@ -1,3 +1,6 @@
+/* Label for auto-contribute toggle. */
+"AutoContributeSwitchLabel" = "Incluir na contribuição automática";
+
 /* No comment provided by engineer. */
 "BATPoints" = "Pontos BAT";
 
@@ -44,7 +47,7 @@
 "BraveRewardsAdsMaxPerDay" = "Número máximo de anúncios exibidos";
 
 /* No comment provided by engineer. */
-"BraveRewardsAdsPayoutDateFormat" = "MMM d";
+"BraveRewardsAdsPayoutDateFormat" = "d MMM";
 
 /* No comment provided by engineer. */
 "BraveRewardsAdsUnsupportedDvice" = "O Brave Rewards e o Brave Ads não estão disponíveis no seu dispositivo neste momento.";
@@ -59,7 +62,7 @@
 "BraveRewardsAutoContribute" = "Contribuição automática";
 
 /* No comment provided by engineer. */
-"BraveRewardsAutoContributeDateFormat" = "MMM d";
+"BraveRewardsAutoContributeDateFormat" = "d MMM";
 
 /* No comment provided by engineer. */
 "BraveRewardsAutoContributeMinimumLength" = "Tempo mínimo de página";
@@ -152,10 +155,16 @@
 "BraveRewardsGrantsClaimedAmountTitle" = "Doação de token grátis";
 
 /* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedAmountTitleJapan" = "Doação de pontos grátis";
+
+/* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedExpirationDateTitle" = "Data de vencimento da doação";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedSubtitle" = "Sua doação de token está a caminho.";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitleJapan" = "Sua doação de pontos está a caminho.";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedTitle" = "Hoje é seu dia de sorte!";
@@ -194,7 +203,7 @@
 "BraveRewardsLearnMoreTurnOnRewardsBody" = "Isso ativa tanto os anúncios quanto as contribuições automáticas. Você pode ativá-los ou desativá-los separadamente a qualquer momento.";
 
 /* No comment provided by engineer. */
-"BraveRewardsLearnMoreTurnOnRewardsTitle" = "Ativar recompensas";
+"BraveRewardsLearnMoreTurnOnRewardsTitle" = "Ativar Rewards";
 
 /* No comment provided by engineer. */
 "BraveRewardsLearnMoreWhyBody" = "Com seu navegador antigo, você pagava para navegar na web com sua valiosa atenção, visualizando anúncios. Você desperdiçava seu tempo valioso baixando tecnologias invasivas de anúncios que transmitiam seus valiosos dados privados para os anunciantes... sem o seu consentimento.\n\nHoje, o Brave apresenta a você a nova internet. Aqui, seu tempo é valorizado, seus dados pessoais são mantidos em sigilo e você é pago pela sua atenção.";
@@ -221,6 +230,9 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 visitas";
 
 /* No comment provided by engineer. */
+"BraveRewardsMonthlyTippingNextDate" = "Data da próxima contribuição mensal";
+
+/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Contribuições mensais";
 
 /* No comment provided by engineer. */
@@ -231,6 +243,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationAutoContributeTitle" = "Contribuição automática";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationPointGrantTitle" = "Doações de pontos";
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationRecurringTipTitle" = "Contribuições recorrentes";
@@ -251,13 +266,16 @@
 "BraveRewardsOneTimeTips" = "Contribuições únicas";
 
 /* No comment provided by engineer. */
-"BraveRewardsOpen" = "Aberto";
+"BraveRewardsOpen" = "Abrir";
 
 /* No comment provided by engineer. */
 "BraveRewardsPanelTitle" = "Rewards";
 
 /* No comment provided by engineer. */
 "BraveRewardsPaymentDate" = "Próxima data de pagamento";
+
+/* No comment provided by engineer. */
+"BraveRewardsPoints" = "Pontos";
 
 /* No comment provided by engineer. */
 "BraveRewardsPoweredByUphold" = "Sua carteira do Brave utiliza a tecnologia da Uphold";
@@ -276,6 +294,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsBody" = "Ganhe tokens visualizando anúncios no Brave. Os anúncios apresentados baseiam-se nos seus interesses, deduzidos a partir do seu comportamento de navegação. Nenhum dado pessoal ou histórico de navegação sai do seu navegador.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBodyJapan" = "Ganhe pontos visualizando anúncios no Brave. Os anúncios apresentados baseiam-se nos seus interesses, deduzidos a partir do seu comportamento de navegação. Nenhum dado pessoal ou histórico de navegação sai do seu navegador.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "Em breve.";
@@ -312,6 +333,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantText" = "Uma doação de token grátis está disponível.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantTextJapan" = "Uma doação de pontos grátis está disponível.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsBody" = "Contribua diretamente para criadores de conteúdo enquanto navega. Você também pode configurar contribuições mensais recorrentes para apoiar sites continuamente.";
@@ -398,7 +422,10 @@
 "BraveRewardsTotalGrantsClaimed" = "Doações de tokens reivindicadas";
 
 /* No comment provided by engineer. */
-"BraveRewardsTotalSites" = "Total %ld";
+"BraveRewardsTotalGrantsClaimedJapan" = "Doações de pontos reivindicadas";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalSites" = "Total: %ld";
 
 /* No comment provided by engineer. */
 "BraveRewardsTwoAdsPerHour" = "2 anúncios por hora";
@@ -507,6 +534,9 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInDescription" = "Agora você pode ganhar tokens visualizando anúncios que respeitam a privacidade.";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescriptionJapan" = "Agora você pode ganhar pontos visualizando anúncios que respeitam a privacidade.";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Participar do Rewards";

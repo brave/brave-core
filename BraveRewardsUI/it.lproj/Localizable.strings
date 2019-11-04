@@ -1,3 +1,6 @@
+/* Label for auto-contribute toggle. */
+"AutoContributeSwitchLabel" = "Includi nel contributo automatico";
+
 /* No comment provided by engineer. */
 "BATPoints" = "Punti BAT";
 
@@ -152,10 +155,16 @@
 "BraveRewardsGrantsClaimedAmountTitle" = "Finanziamento token gratuiti";
 
 /* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedAmountTitleJapan" = "Finanziamento punti gratuiti";
+
+/* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedExpirationDateTitle" = "Data di scadenza del finanziamento";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedSubtitle" = "Il tuo finanziamento token è in arrivo.";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitleJapan" = "Il tuo finanziamento punti è in arrivo.";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedTitle" = "È il tuo giorno fortunato!";
@@ -221,6 +230,9 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 visite";
 
 /* No comment provided by engineer. */
+"BraveRewardsMonthlyTippingNextDate" = "Data della prossima mancia mensile";
+
+/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Mance mensili";
 
 /* No comment provided by engineer. */
@@ -231,6 +243,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationAutoContributeTitle" = "Contributo automatico";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationPointGrantTitle" = "Finanziamenti punti";
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationRecurringTipTitle" = "Mance ricorrenti";
@@ -260,6 +275,9 @@
 "BraveRewardsPaymentDate" = "Data del prossimo pagamento";
 
 /* No comment provided by engineer. */
+"BraveRewardsPoints" = "Punti";
+
+/* No comment provided by engineer. */
 "BraveRewardsPoweredByUphold" = "Il tuo portafoglio Brave è fornito da Uphold";
 
 /* No comment provided by engineer. */
@@ -276,6 +294,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsBody" = "Guadagna token visualizzando annunci su Brave. Gli annunci presentati sono basati sui tuoi interessi, come si deduce dal tuo comportamento di navigazione. Nessun dato personale o cronologia di navigazione lascia mai il tuo browser.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBodyJapan" = "Guadagna punti visualizzando annunci su Brave. Gli annunci presentati sono basati sui tuoi interessi, come si deduce dal tuo comportamento di navigazione. Nessun dato personale o cronologia di navigazione lascia mai il tuo browser.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "Prossimamente.";
@@ -312,6 +333,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantText" = "È disponibile un finanziamento token gratuiti.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantTextJapan" = "È disponibile un finanziamento punti gratuiti.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsBody" = "Dai una mancia ai creatori di contenuti direttamente durante la navigazione. È inoltre possibile impostare mance mensili ricorrenti in modo da poter supportare continuamente i siti.";
@@ -398,7 +422,10 @@
 "BraveRewardsTotalGrantsClaimed" = "Finanziamenti token rivendicati";
 
 /* No comment provided by engineer. */
-"BraveRewardsTotalSites" = "Totale %ld";
+"BraveRewardsTotalGrantsClaimedJapan" = "Finanziamenti punti rivendicati";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalSites" = "Totale: %ld";
 
 /* No comment provided by engineer. */
 "BraveRewardsTwoAdsPerHour" = "2 annunci all’ora";
@@ -507,6 +534,9 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInDescription" = "Ora è possibile guadagnare token guardando annunci che rispettano la privacy.";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescriptionJapan" = "Ora è possibile guadagnare punti guardando annunci che rispettano la privacy.";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Iscriviti a Rewards";

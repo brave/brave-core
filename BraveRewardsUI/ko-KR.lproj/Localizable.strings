@@ -1,3 +1,6 @@
+/* Label for auto-contribute toggle. */
+"AutoContributeSwitchLabel" = "자동 후원에 포함하기";
+
 /* No comment provided by engineer. */
 "BATPoints" = "BAT 포인트";
 
@@ -152,10 +155,16 @@
 "BraveRewardsGrantsClaimedAmountTitle" = "무료 토큰";
 
 /* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedAmountTitleJapan" = "무료 제공 포인트";
+
+/* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedExpirationDateTitle" = "무료 코인 만료 날짜";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedSubtitle" = "무료 토큰이 전달되고 있습니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitleJapan" = "무료 포인트가 전달되고 있습니다.";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedTitle" = "오늘 정말 운이 좋으시네요!";
@@ -221,6 +230,9 @@
 "BraveRewardsMinimumVisitsChoices2" = "10회 방문";
 
 /* No comment provided by engineer. */
+"BraveRewardsMonthlyTippingNextDate" = "다음 달 팁 날짜";
+
+/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "월정기 팁";
 
 /* No comment provided by engineer. */
@@ -231,6 +243,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationAutoContributeTitle" = "자동 후원";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationPointGrantTitle" = "무료 포인트";
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationRecurringTipTitle" = "정기 팁";
@@ -260,6 +275,9 @@
 "BraveRewardsPaymentDate" = "다음 결제 날짜";
 
 /* No comment provided by engineer. */
+"BraveRewardsPoints" = "포인트";
+
+/* No comment provided by engineer. */
 "BraveRewardsPoweredByUphold" = "Brave 월렛은 Uphold에서 제공합니다.";
 
 /* No comment provided by engineer. */
@@ -276,6 +294,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsBody" = "Brave에서 광고를 보면 토큰을 얻을 수 있습니다. 표시되는 광고는 사용자의 브라우징 이력을 통해 관심분야를 유추하여 이를 기반으로 합니다. 개인 데이터나 브라우징 기록은 절대 브라우저 외부로 유출되지 않습니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBodyJapan" = "Brave에서 광고를 보면 포인트를 얻을 수 있습니다. 표시되는 광고는 사용자의 브라우징 이력을 통해 관심분야를 유추하여 이를 기반으로 합니다. 개인 데이터나 브라우징 기록은 절대 브라우저 외부로 유출되지 않습니다.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "공개 예정.";
@@ -312,6 +333,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantText" = "무료 토큰을 받을 수 있습니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantTextJapan" = "무료 포인트를 받을 수 있습니다.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsBody" = "브라우징하면서 콘텐츠 제작자에게 직접 팁을 건넵니다. 월정기 팁을 설정하여 사이트를 지속적으로 후원할 수도 있습니다.";
@@ -396,6 +420,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTotalGrantsClaimed" = "무료 토큰 총액";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalGrantsClaimedJapan" = "받은 무료 포인트";
 
 /* No comment provided by engineer. */
 "BraveRewardsTotalSites" = "%ld 총액";
@@ -507,6 +534,9 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInDescription" = "이제 프라이버시 보호 광고를 보고 토큰을 받을 수 있습니다.";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescriptionJapan" = "이제 프라이버시 보호 광고를 보고 포인트를 받을 수 있습니다.";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Rewards 가입";

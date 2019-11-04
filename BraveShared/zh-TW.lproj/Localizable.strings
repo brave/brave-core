@@ -1,6 +1,15 @@
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "否";
 
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessage" = "觀看尊重隱私的廣告賺取令牌。";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessageJapan" = "觀看尊重隱私的廣告賺取點數。";
+
+/* Title when opting into brave Ads when region becomes available */
+"OBAdsOptInTitle" = "Brave Ads 在這裡！";
+
 /* Title for ads onboarding screen */
 "OBAdsTitle" = "Brave 會在時限內展示您的第一個廣告";
 
