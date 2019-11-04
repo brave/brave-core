@@ -62,8 +62,6 @@ source_set("ui") {
       "omnibox/brave_omnibox_client.h",
       "tabs/brave_tab_menu_model.cc",
       "tabs/brave_tab_menu_model.h",
-      "tabs/tab_menu_model_delegate_proxy.cc",
-      "tabs/tab_menu_model_delegate_proxy.h",
       "toolbar/brave_app_menu_model.cc",
       "toolbar/brave_app_menu_model.h",
       "webui/brave_settings_ui.cc",
