@@ -231,6 +231,17 @@
         ]
       },
       {
+        "name": "onAdsEnabled",
+        "type": "function",
+        "description": "",
+        "parameters": [
+          {
+            "name": "enabled",
+            "type": "boolean"
+          }
+        ]
+      },
+      {
         "name": "onEnabledMain",
         "type": "function",
         "description": "",
@@ -607,6 +618,57 @@
         ]
       },
       {
+        "name": "getAdsEnabled",
+        "type": "function",
+        "description": "Gets whether ads is enabled",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "enabled",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getAdsEstimatedEarnings",
+        "type": "function",
+        "description": "Gets estimated ads earnings for the current month",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "amount",
+                "type": "number"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getBalanceReports",
+        "type": "function",
+        "description": "Gets balance reports and contribution totals",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "data",
+                "type": "any"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "getRewardsMainEnabled",
         "type": "function",
         "description": "Gets whether rewards has been enabled explicitly",
@@ -617,6 +679,23 @@
             "parameters": [
               {
                 "name": "enabled",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getWalletExists",
+        "type": "function",
+        "description": "Gets whether a Rewards wallet already exists",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "exists",
                 "type": "boolean"
               }
             ]

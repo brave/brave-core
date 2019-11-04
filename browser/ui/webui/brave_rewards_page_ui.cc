@@ -225,6 +225,10 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       int32_t result,
       const std::string& wallet_type) override;
 
+  void OnAdsEnabled(
+    brave_rewards::RewardsService* rewards_service,
+    bool ads_enabled) override;
+
   // RewardsNotificationsServiceObserver implementation
   void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
@@ -1597,6 +1601,17 @@ void RewardsDOMHandler::OnDisconnectWallet(
 
   web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.disconnectWallet",
                                          data);
+}
+
+void RewardsDOMHandler::OnAdsEnabled(
+    brave_rewards::RewardsService* rewards_service,
+    bool ads_enabled) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::ListValue* emptyArgs = nullptr;
+  GetAdsData(emptyArgs);
 }
 
 void RewardsDOMHandler::OnlyAnonWallet(const base::ListValue* args) {

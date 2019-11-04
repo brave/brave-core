@@ -147,6 +147,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "showBraveStats", IDS_BRAVE_NEW_TAB_SHOW_BRAVE_STATS },
         { "showClock", IDS_BRAVE_NEW_TAB_SHOW_CLOCK },
         { "showTopSites", IDS_BRAVE_NEW_TAB_SHOW_TOP_SITES },
+        { "showRewards", IDS_BRAVE_NEW_TAB_SHOW_REWARDS },
 
         // Private Tab - General
         { "learnMore", IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE },
@@ -181,7 +182,31 @@ void CustomizeWebUIHTMLSource(const std::string &name,
 
         // Private Tab - Private Window - Tor Box
         { "boxTorText2", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_TEXT_2 },
-        { "boxTorButton", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_BUTTON }
+        { "boxTorButton", IDS_BRAVE_PRIVATE_NEW_TAB_BOX_TOR_BUTTON },
+
+        // Rewards widget
+        { "rewardsWidgetAnd", IDS_BRAVE_UI_AND },
+        { "rewardsWidgetBat", IDS_BRAVE_UI_BAT_REWARDS_TEXT },
+        { "rewardsWidgetBatPoints", IDS_BRAVE_UI_BAT_POINTS_TEXT },
+        { "rewardsWidgetBraveRewards", IDS_BRAVE_UI_BRAVE_REWARDS },
+        { "rewardsWidgetPrivacyPolicy", IDS_BRAVE_UI_PRIVACY_POLICY },
+        { "rewardsWidgetTermsOfService", IDS_BRAVE_UI_TERMS_OF_SERVICE },
+        { "rewardsWidgetTurnOnAds", IDS_BRAVE_UI_TURN_ON_ADS },
+        { "rewardsWidgetClaimMyRewards", IDS_REWARDS_WIDGET_CLAIM_MY_REWARDS },
+        { "rewardsWidgetWalletFailedButton", IDS_BRAVE_UI_WALLET_FAILED_BUTTON },         // NOLINT
+        { "rewardsWidgetAboutRewards", IDS_REWARDS_WIDGET_ABOUT_REWARDS },
+        { "rewardsWidgetServiceText", IDS_REWARDS_WIDGET_SERVICE_TEXT },
+        { "rewardsWidgetEstimatedEarnings", IDS_REWARDS_WIDGET_ESTIMATED_EARNINGS },      // NOLINT
+        { "rewardsWidgetMonthlyTips", IDS_REWARDS_WIDGET_MONTHLY_TIPS },
+        { "rewardsWidgetTurningOn", IDS_REWARDS_WIDGET_TURNING_ON },
+        { "rewardsWidgetTurnOnRewards", IDS_REWARDS_WIDGET_TURN_ON_REWARDS },             // NOLINT
+        { "rewardsWidgetReEnableTitle", IDS_REWARDS_WIDGET_REENABLE_TITLE },              // NOLINT
+        { "rewardsWidgetEnableTitle", IDS_REWARDS_WIDGET_ENABLE_TITLE },
+        { "rewardsWidgetReEnableSubTitle", IDS_REWARDS_WIDGET_REENABLE_SUBTITLE },        // NOLINT
+        { "rewardsWidgetEnableSubTitle", IDS_REWARDS_WIDGET_ENABLE_SUBTITLE },            // NOLINT
+        { "rewardsWidgetNotificationTitle", IDS_REWARDS_WIDGET_NOTIFICATION_TITLE },      // NOLINT
+        { "rewardsWidgetNotificationTextAds", IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_ADS }, // NOLINT
+        { "rewardsWidgetNotificationTextUGP", IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_UGP }  // NOLINT
       }
     }, {
       std::string("welcome"), {

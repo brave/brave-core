@@ -13,10 +13,11 @@ import { PrivateTabData } from '../api/privateTabData'
 // API
 import * as backgroundAPI from '../api/background'
 import * as gridAPI from '../api/topSites/grid'
-import { InitialData } from '../api/initialData'
+import { InitialData, InitialRewardsData, PreInitialRewardsData } from '../api/initialData'
 import * as bookmarksAPI from '../api/topSites/bookmarks'
 import * as dndAPI from '../api/topSites/dnd'
 import * as storage from '../storage'
+import { getTotalContributions } from '../rewards-utils'
 
 const initialState = storage.load()
 
@@ -243,6 +244,159 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       }
       if (shouldChangeBackgroundImage) {
         state.backgroundImage = backgroundAPI.randomBackgroundImage()
+      }
+      break
+
+    case types.CREATE_WALLET:
+      chrome.braveRewards.createWallet()
+      state = { ...state }
+      state.rewardsState.walletCreating = true
+      break
+
+    case types.ON_ENABLED_MAIN:
+      state = { ...state }
+      state.rewardsState.enabledMain = payload.enabledMain
+      break
+
+    case types.ON_WALLET_INITIALIZED: {
+      const result: NewTab.RewardsResult = payload.result
+      state = { ...state }
+
+      switch (result) {
+        case NewTab.RewardsResult.WALLET_CORRUPT:
+          state.rewardsState.walletCorrupted = true
+          break
+        case NewTab.RewardsResult.WALLET_CREATED:
+          state.rewardsState.walletCreated = true
+          state.rewardsState.walletCreateFailed = false
+          state.rewardsState.walletCreating = false
+          state.rewardsState.walletCorrupted = false
+          chrome.braveRewards.saveAdsSetting('adsEnabled', 'true')
+          break
+        case NewTab.RewardsResult.LEDGER_OK:
+          state.rewardsState.walletCreateFailed = true
+          state.rewardsState.walletCreating = false
+          state.rewardsState.walletCreated = false
+          state.rewardsState.walletCorrupted = false
+          break
+      }
+      break
+    }
+
+    case types.ON_REWARDS_SETTING_SAVE:
+      const key = action.payload.key
+      const value = action.payload.value
+
+      if (key) {
+        state = { ...state }
+        state.rewardsState[key] = !!value
+        chrome.braveRewards.saveSetting(key, value)
+      }
+      break
+
+    case types.ON_ADS_ENABLED:
+      state = { ...state }
+      state.rewardsState.enabledAds = payload.enabled
+      break
+
+    case types.ON_ADS_ESTIMATED_EARNINGS:
+      state = { ...state }
+      state.rewardsState.adsEstimatedEarnings = payload.amount
+      break
+
+    case types.ON_BALANCE_REPORTS:
+      state = { ...state }
+      const reports = payload.reports || {}
+      state.rewardsState.totalContribution = getTotalContributions(reports)
+      break
+
+    case types.DISMISS_NOTIFICATION:
+      state = { ...state }
+
+      const dismissedNotifications = state.rewardsState.dismissedNotifications
+      dismissedNotifications.push(payload.id)
+      state.rewardsState.dismissedNotifications = dismissedNotifications
+
+      state.rewardsState.grants = state.rewardsState.grants.filter((grant) => {
+        return grant.promotionId !== payload.id
+      })
+      break
+
+    case types.ON_GRANT:
+      if (action.payload.properties.status === 1) {
+        break
+      }
+
+      const promotionId = payload.properties.promotionId
+      if (!promotionId) {
+        break
+      }
+
+      state = { ...state }
+
+      if (!state.rewardsState.dismissedNotifications) {
+        state.rewardsState.dismissedNotifications = []
+      }
+
+      if (state.rewardsState.dismissedNotifications.indexOf(promotionId) > -1) {
+        break
+      }
+
+      const hasGrant = state.rewardsState.grants.find((grant: NewTab.GrantRecord) => {
+        return grant.promotionId === promotionId
+      })
+      if (hasGrant) {
+        break
+      }
+
+      const updatedGrants = state.rewardsState.grants
+      updatedGrants.push({
+        promotionId: promotionId,
+        type: payload.properties.type
+      })
+
+      state.rewardsState.grants = updatedGrants
+      break
+
+    case types.ON_BALANCE:
+      state = { ...state }
+      state.rewardsState.balance = payload.balance
+      break
+
+    case types.ON_WALLET_EXISTS:
+      if (!payload.exists || state.rewardsState.walletCreated) {
+        break
+      }
+      state.rewardsState.walletCreated = true
+      break
+
+    case types.SET_PRE_INITIAL_REWARDS_DATA:
+      const preInitialRewardsDataPayload = payload as PreInitialRewardsData
+      state = {
+        ...state,
+        rewardsState: {
+          ...state.rewardsState,
+          enabledAds: preInitialRewardsDataPayload.enabledAds,
+          enabledMain: preInitialRewardsDataPayload.enabledMain
+        }
+      }
+      break
+
+    case types.SET_INITIAL_REWARDS_DATA:
+      const initialRewardsDataPayload = payload as InitialRewardsData
+      const newRewardsState = {
+        onlyAnonWallet: initialRewardsDataPayload.onlyAnonWallet,
+        balance: initialRewardsDataPayload.balance,
+        totalContribution: getTotalContributions(initialRewardsDataPayload.reports),
+        adsEstimatedEarnings: initialRewardsDataPayload.adsEstimatedEarnings
+      }
+
+      state = {
+        ...state,
+        rewardsState: {
+          ...state.rewardsState,
+          ...newRewardsState
+        }
       }
       break
 

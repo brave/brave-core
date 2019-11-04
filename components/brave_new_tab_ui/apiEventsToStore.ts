@@ -7,7 +7,7 @@ import getActions from './api/getActions'
 import * as preferencesAPI from './api/preferences'
 import * as statsAPI from './api/stats'
 import * as privateTabDataAPI from './api/privateTabData'
-import getInitialData from './api/initialData'
+import { getInitialData, getRewardsInitialData, getRewardsPreInitialData } from './api/initialData'
 
 async function updatePreferences (prefData: preferencesAPI.Preferences) {
   getActions().preferencesUpdated(prefData)
@@ -21,19 +21,82 @@ async function updatePrivateTabData (data: privateTabDataAPI.PrivateTabData) {
   getActions().privateTabDataUpdated(data)
 }
 
+function onRewardsToggled (prefData: preferencesAPI.Preferences): void {
+  if (prefData.showRewards) {
+    rewardsInitData()
+  }
+}
+
 // Not marked as async so we don't return a promise
 // and confuse callers
-export default function wireApiEventsToStore () {
+export function wireApiEventsToStore () {
   // Get initial data and dispatch to store
   getInitialData()
   .then((initialData) => {
+    if (initialData.preferences.showRewards) {
+      rewardsInitData()
+      setRewardsFetchInterval()
+    }
     getActions().setInitialData(initialData)
     // Listen for API changes and dispatch to store
     statsAPI.addChangeListener(updateStats)
     preferencesAPI.addChangeListener(updatePreferences)
+    preferencesAPI.addChangeListener(onRewardsToggled)
     privateTabDataAPI.addChangeListener(updatePrivateTabData)
   })
   .catch(e => {
     console.error('New Tab Page fatal error:', e)
   })
 }
+
+export function rewardsInitData () {
+  getRewardsPreInitialData()
+  .then((preInitialRewardsData) => {
+    getActions().setPreInitialRewardsData(preInitialRewardsData)
+    chrome.braveRewards.getWalletExists((exists: boolean) => {
+      if (exists) {
+        fetchCreatedWalletData()
+        getActions().onWalletExists(exists)
+      }
+    })
+  })
+  .catch(e => {
+    console.error('Error fetching pre-initial rewards data: ', e)
+  })
+}
+
+function setRewardsFetchInterval () {
+  window.setInterval(() => {
+    chrome.braveRewards.getWalletExists((exists: boolean) => {
+      if (exists) {
+        fetchCreatedWalletData()
+      }
+    })
+  }, 30000)
+}
+
+function fetchCreatedWalletData () {
+  getRewardsInitialData()
+  .then((initialRewardsData) => {
+    getActions().setInitialRewardsData(initialRewardsData)
+  })
+  .catch(e => {
+    console.error('Error fetching initial rewards data: ', e)
+  })
+}
+
+chrome.braveRewards.onWalletInitialized.addListener((result: any | NewTab.RewardsResult) => {
+  getActions().onWalletInitialized(result)
+})
+
+chrome.braveRewards.onEnabledMain.addListener((enabledMain: boolean) => {
+  getActions().onEnabledMain(enabledMain)
+})
+
+chrome.braveRewards.onAdsEnabled.addListener((enabled: boolean) => {
+  getActions().onAdsEnabled(enabled)
+})
+
+chrome.braveRewards.onGrant.addListener((properties: NewTab.GrantResponse) => {
+  getActions().onGrant(properties)
+})

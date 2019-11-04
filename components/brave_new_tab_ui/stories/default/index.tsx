@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Page, Header, Footer, App, PosterBackground, Gradient, ClockWidget as Clock } from '../../components/default'
+import { Page, Header, Footer, App, PosterBackground, Gradient, ClockWidget as Clock, RewardsWidget as Rewards } from '../../components/default'
 
 import TopSitesList from './topSites/topSitesList'
 import Stats from './stats'
@@ -23,6 +23,17 @@ interface State {
   showStats: boolean
   showClock: boolean
   showTopSites: boolean
+  showRewards: boolean
+  adsEstimatedEarnings: number
+  balance: NewTab.RewardsBalance
+  grants: NewTab.GrantRecord[]
+  enabledAds: boolean
+  enabledMain: boolean
+  totalContribution: string
+  walletCreated: boolean
+  walletCreating: boolean
+  walletCreateFailed: boolean
+  walletCorrupted: boolean
 }
 
 interface Props {
@@ -37,8 +48,27 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
       showBackgroundImage: true,
       showStats: true,
       showClock: true,
-      showTopSites: true
+      showTopSites: true,
+      showRewards: true,
+      adsEstimatedEarnings: 5,
+      enabledAds: false,
+      enabledMain: false,
+      grants: [],
+      balance: {
+        total: 0,
+        rates: {},
+        wallets: {}
+      },
+      totalContribution: '0.0',
+      walletCreated: false,
+      walletCreating: false,
+      walletCreateFailed: false,
+      walletCorrupted: false
     }
+  }
+
+  doNothing = (s: string) => {
+    /* no-op */
   }
 
   toggleShowBackgroundImage = () => {
@@ -57,6 +87,10 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
     this.setState({ showTopSites: !this.state.showTopSites })
   }
 
+  toggleShowRewards = () => {
+    this.setState({ showRewards: !this.state.showRewards })
+  }
+
   closeSettings = () => {
     this.setState({ showSettingsMenu: false })
   }
@@ -65,9 +99,39 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
     this.setState({ showSettingsMenu: !this.state.showSettingsMenu })
   }
 
+  enableAds = () => {
+    this.setState({ enabledAds: true })
+  }
+
+  enableRewards = () => {
+    this.setState({ enabledMain: true })
+  }
+
+  createWallet = () => {
+    this.setState({ walletCreating: true })
+    setTimeout(() => {
+      this.setState({ walletCreated: true })
+      this.enableAds()
+      this.enableRewards()
+    }, 1000)
+  }
+
   render () {
-    const { showSettingsMenu, showBackgroundImage, showClock, showStats, showTopSites } = this.state
+    const { showSettingsMenu, showBackgroundImage, showClock, showStats, showTopSites, showRewards } = this.state
+    const {
+      enabledAds,
+      enabledMain,
+      adsEstimatedEarnings,
+      walletCorrupted,
+      walletCreateFailed,
+      walletCreated,
+      walletCreating,
+      grants,
+      balance,
+      totalContribution
+    } = this.state
     const { textDirection } = this.props
+
     return (
       <App dataIsReady={true} dir={textDirection}>
       <PosterBackground hasImage={showBackgroundImage} imageHasLoaded={true}>
@@ -94,6 +158,26 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
               menuPosition={'right'}
               hideWidget={this.toggleShowTopSites}
             />
+            <Rewards
+              grants={grants}
+              balance={balance}
+              enabledAds={enabledAds}
+              enabledMain={enabledMain}
+              walletCreated={walletCreated}
+              walletCorrupted={walletCorrupted}
+              walletCreateFailed={walletCreateFailed}
+              walletCreating={walletCreating}
+              adsEstimatedEarnings={adsEstimatedEarnings}
+              onEnableAds={this.enableAds}
+              onCreateWallet={this.createWallet}
+              onEnableRewards={this.enableRewards}
+              textDirection={textDirection}
+              showWidget={showRewards}
+              menuPosition={'left'}
+              hideWidget={this.toggleShowRewards}
+              onDismissNotification={this.doNothing}
+              totalContribution={totalContribution}
+            />
             <SiteRemovalNotification />
           </Header>
           <Footer>
@@ -108,10 +192,12 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
               toggleShowClock={this.toggleShowClock}
               toggleShowStats={this.toggleShowStats}
               toggleShowTopSites={this.toggleShowTopSites}
+              toggleShowRewards={this.toggleShowRewards}
               showBackgroundImage={showBackgroundImage}
               showClock={showClock}
               showStats={showStats}
               showTopSites={showTopSites}
+              showRewards={showRewards}
             />
           </Footer>
         </Page>

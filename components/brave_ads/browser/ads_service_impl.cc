@@ -407,6 +407,7 @@ bool AdsServiceImpl::IsSupportedRegion() const {
 void AdsServiceImpl::SetEnabled(
     const bool is_enabled) {
   SetBooleanPref(prefs::kEnabled, is_enabled);
+  rewards_service_->OnAdsEnabled(is_enabled);
 }
 
 void AdsServiceImpl::SetAdsPerHour(
