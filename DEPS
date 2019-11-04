@@ -14,11 +14,11 @@ deps = {
   "vendor/bat-native-rapidjson": "https://github.com/brave-intl/bat-native-rapidjson.git@86aafe2ef89835ae71c9ed7c2527e3bb3000930e",
   "vendor/bip39wally-core-native": "https://github.com/brave-intl/bip39wally-core-native.git@13bb40a215248cfbdd87d0a6b425c8397402e9e6",
   "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@e3742ba3e8942eea9e4755d91532491871bd3116",
-  "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@dd0c535898a645b84d6f3372b393bdad6746108c",
+  "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@800f9d40b7409239ff192e0be634764e747c7a75",
   "components/brave_sync/extension/brave-sync": "https://github.com/brave/sync.git@8a9f4fefe42c25b5359c402f97f454fa333c8d48",
   "components/brave_sync/extension/brave-crypto": "https://github.com/brave/crypto@4e054a7978bd480f8bc1455db14b603a3f0597c0",
-  "vendor/bat-native-usermodel": "https://github.com/brave-intl/bat-native-usermodel.git@a82acda22d8cb255d86ee28734efb8ad886e9a49",
-  "vendor/challenge_bypass_ristretto_ffi": "https://github.com/brave-intl/challenge-bypass-ristretto-ffi.git@f88d942ddfaf61a4a6703355a77c4ef71bc95c35",
+  "vendor/bat-native-usermodel": "https://github.com/brave-intl/bat-native-usermodel.git@45e32155af9897dbe1d5534dd36697ec4728bb75",
+  "vendor/challenge_bypass_ristretto_ffi": "https://github.com/brave-intl/challenge-bypass-ristretto-ffi.git@c396fb4eb9e9bf63b89ae5a0ec0b5f201d43c7c5",
 }
 
 hooks = [
