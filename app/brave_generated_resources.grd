@@ -648,6 +648,22 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Brave is made available to you under the <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) and includes <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> under a variety of other licenses.
         You can read <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instructions on how to download and build for yourself<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> the specific <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>source code used to create this copy<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.
       </message>
+      <if expr="not use_titlecase">
+        <message name="IDS_TAB_CXMENU_CLOSEOTHERTABS" desc="The label of the 'Close other tabs' Tab context menu item.">
+          Close other tabs
+        </message>
+        <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
+          Bookmark all tabs...
+        </message>
+      </if>
+      <if expr="use_titlecase">
+        <message name="IDS_TAB_CXMENU_CLOSEOTHERTABS" desc="In Title Case: The label of the 'Close Other Tabs' Tab context menu item.">
+          Close Other Tabs
+        </message>
+        <message name="IDS_TAB_CXMENU_BOOKMARK_ALL_TABS" desc="In Title Case: The label of the tab context menu item for creating a bookmark folder containing an entry for each open tab.">
+          Bookmark All Tabs...
+        </message>
+      </if>
     </messages>
     <includes>
       <include name="IDR_BRAVE_GOOGLE_ANALYTICS_POLYFILL" file="resources/js/google_analytics_polyfill.js" type="BINDATA" />

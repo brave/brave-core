@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/tabs/tab_strip_model.h b/chrome/browser/ui/tabs/tab_strip_model.h
+index 3e1ad42324a309728b588ed115f33484effd30bd..556a21e3d5d6436c30e9fdcfb263c41299c5ef14 100644
+--- a/chrome/browser/ui/tabs/tab_strip_model.h
++++ b/chrome/browser/ui/tabs/tab_strip_model.h
+@@ -516,6 +516,7 @@ class TabStripModel {
+ 
+  private:
+   FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, GetIndicesClosedByCommand);
++  friend class TabMenuModelDelegateProxy;
+ 
+   class WebContentsData;
+   struct DetachedWebContents;
