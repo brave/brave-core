@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/notifications/notification_platform_bridge_mac.mm b/chrome/browser/notifications/notification_platform_bridge_mac.mm
-index f4e3046614e13837050edf3862d66bccee3cc9e1..e982932589cbb24d486b41fb02e031abaf59f15f 100644
+index f4e3046614e13837050edf3862d66bccee3cc9e1..724e1a39cdfe950d6ce933f630195a273f35c7e8 100644
 --- a/chrome/browser/notifications/notification_platform_bridge_mac.mm
 +++ b/chrome/browser/notifications/notification_platform_bridge_mac.mm
 @@ -226,6 +226,7 @@ void NotificationPlatformBridgeMac::Display(
@@ -10,3 +10,11 @@ index f4e3046614e13837050edf3862d66bccee3cc9e1..e982932589cbb24d486b41fb02e031ab
                               IDS_NOTIFICATION_BUTTON_SETTINGS)]);
  
    [builder
+@@ -300,6 +301,7 @@ void NotificationPlatformBridgeMac::Display(
+   } else {
+     NSUserNotification* toast = [builder buildUserNotification];
+     [notification_center_ deliverNotification:toast];
++    BRAVE_DISPLAY_
+   }
+ }
+ 
