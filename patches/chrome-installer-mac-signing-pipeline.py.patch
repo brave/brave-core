@@ -30,5 +30,5 @@ index 898c0d4542bb3474d654e71a1e4fd5a1355e3897..a1a32cac6e7e23bda56411b165ff0fe8
 +        else:
 +            # Copy the notarized app to the orig_paths.output dir where the user expects it.
 +            commands.copy_files(dest_dir, orig_paths.output)
-
+ 
      _package_installer_tools(orig_paths, config)
