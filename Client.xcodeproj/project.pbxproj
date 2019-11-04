@@ -9124,7 +9124,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Dev;
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Client/Entitlements/FennecEnterpriseApplication.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_BITCODE = NO;
@@ -9640,7 +9640,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Beta;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon_Nightly;
 				CODE_SIGN_ENTITLEMENTS = "$(SRCROOT)/Client/Entitlements/FennecApplication.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_BITCODE = NO;
