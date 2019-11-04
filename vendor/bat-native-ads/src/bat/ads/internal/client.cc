@@ -364,11 +364,8 @@ void Client::ResetAdsUUIDSeen(
   SaveState();
 }
 
-void Client::UpdateNextCheckServeAdTimestampInSeconds() {
-  auto timestamp_in_seconds = Time::NowInSeconds();
-  timestamp_in_seconds += base::Time::kSecondsPerHour /
-      ads_client_->GetAdsPerHour();
-
+void Client::SetNextCheckServeAdTimestampInSeconds(
+    const uint64_t timestamp_in_seconds) {
   client_state_->next_check_serve_ad_timestamp_in_seconds
       = timestamp_in_seconds;
 
