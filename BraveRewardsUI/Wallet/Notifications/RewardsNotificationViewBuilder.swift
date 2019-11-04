@@ -75,7 +75,7 @@ struct RewardsNotificationViewBuilder {
       body = Strings.NotificationTipsProcessedBody
       category = .tipsProcessed
     case .verifiedPublisher:
-      if let name = actionNotification.userInfo["name"] as? String {
+      if let name = actionNotification.userInfo["publisher_name"] as? String {
         body = String.localizedStringWithFormat(Strings.NotificationVerifiedPublisherBody, name)// publisher name"
         category = .verifiedPublisher
       } else {
