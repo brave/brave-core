@@ -1,6 +1,15 @@
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "아니요";
 
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessage" = "프라이버시 보호 광고를 보고 토큰을 받으세요.";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessageJapan" = "프라이버시 보호 광고를 보고 포인트를 받으세요.";
+
+/* Title when opting into brave Ads when region becomes available */
+"OBAdsOptInTitle" = "Brave Ads 이용 가능!";
+
 /* Title for ads onboarding screen */
 "OBAdsTitle" = "첫 Brave 광고가 다음 시간 후 표시됩니다.";
 

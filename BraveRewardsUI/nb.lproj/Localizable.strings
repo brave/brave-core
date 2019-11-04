@@ -1,3 +1,6 @@
+/* Label for auto-contribute toggle. */
+"AutoContributeSwitchLabel" = "Inkludert i Auto-bidra";
+
 /* No comment provided by engineer. */
 "BATPoints" = "BAT-poeng";
 
@@ -152,10 +155,16 @@
 "BraveRewardsGrantsClaimedAmountTitle" = "Gratis token-tilskudd";
 
 /* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedAmountTitleJapan" = "Gratis poeng-tilskudd";
+
+/* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedExpirationDateTitle" = "Utløpsdato for tilskudd";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedSubtitle" = "Ditt token-tilskudd er på vei.";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitleJapan" = "Ditt poeng-tilskudd er på vei.";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedTitle" = "Dette er din lykkedag!";
@@ -221,6 +230,9 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 besøk";
 
 /* No comment provided by engineer. */
+"BraveRewardsMonthlyTippingNextDate" = "Neste månedlige tips-dato";
+
+/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Månedlig tips";
 
 /* No comment provided by engineer. */
@@ -231,6 +243,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationAutoContributeTitle" = "Auto-bidra";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationPointGrantTitle" = "Poeng-tilskudd";
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationRecurringTipTitle" = "Gjentakende tips";
@@ -260,6 +275,9 @@
 "BraveRewardsPaymentDate" = "Neste utbetalingsdato";
 
 /* No comment provided by engineer. */
+"BraveRewardsPoints" = "Poeng";
+
+/* No comment provided by engineer. */
 "BraveRewardsPoweredByUphold" = "Din Brave-lommebok er drevet av Uphold";
 
 /* No comment provided by engineer. */
@@ -276,6 +294,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsBody" = "Tjen tokens ved å se annonser i Brave. Annonsene som presenteres, er basert på interessene dine, som angitt i nettlesingsatferden din. Ingen personlige data eller leserloggen forlater nettleseren din.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBodyJapan" = "Tjen poeng ved å se annonser i Brave. Annonsene som presenteres, er basert på interessene dine, som angitt i nettlesingsatferden din. Ingen personlige data eller leserloggen forlater nettleseren din.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "Kommer snart.";
@@ -312,6 +333,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantText" = "Et gratis token-tilskudd er tilgjengelig.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantTextJapan" = "Et gratis poeng-tilskudd er tilgjengelig.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsBody" = "Tips innholdsskapere direkte mens du surfer. Du kan også konfigurere regelmessig månedlig tips slik at du kan støtte sider kontinuerlig.";
@@ -396,6 +420,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTotalGrantsClaimed" = "Token-tilskudd krevd";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalGrantsClaimedJapan" = "Poeng-tilskudd krevd";
 
 /* No comment provided by engineer. */
 "BraveRewardsTotalSites" = "Totalt %ld";
@@ -507,6 +534,9 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInDescription" = "Du kan nå tjene tokens for å se på annonser som respekterer personvernet.";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescriptionJapan" = "Du kan nå tjene poeng for å se på annonser som respekterer personvernet.";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Registrer deg for Rewards";

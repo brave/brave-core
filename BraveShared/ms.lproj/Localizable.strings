@@ -1,6 +1,15 @@
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Tidak";
 
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessage" = "Dapatkan token dengan menonton iklan yang menghormati privasi.";
+
+/* Message when opting into brave Ads when region becomes available */
+"OBAdsOptInMessageJapan" = "Dapatkan poin dengan menonton iklan yang menghormati privasi.";
+
+/* Title when opting into brave Ads when region becomes available */
+"OBAdsOptInTitle" = "Iklan Brave tersedia!";
+
 /* Title for ads onboarding screen */
 "OBAdsTitle" = "Brave akan menunjukkan iklan pertama anda dalam";
 

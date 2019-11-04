@@ -1,3 +1,6 @@
+/* Label for auto-contribute toggle. */
+"AutoContributeSwitchLabel" = "Zu Auto-Beitrag hinzufügen";
+
 /* No comment provided by engineer. */
 "BATPoints" = "BAT-Punkte";
 
@@ -152,10 +155,16 @@
 "BraveRewardsGrantsClaimedAmountTitle" = "Kostenloser Token-Zuschuss";
 
 /* No comment provided by engineer. */
-"BraveRewardsGrantsClaimedExpirationDateTitle" = "Ablaufdatum des Zuschusses";
+"BraveRewardsGrantsClaimedAmountTitleJapan" = "Kostenloser Punkte-Zuschuss";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedExpirationDateTitle" = "Ablaufdatum des Zuschuss";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedSubtitle" = "Ihr Token-Zuschuss ist auf dem Weg.";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitleJapan" = "Ihr Punkte-Zuschuss ist auf dem Weg.";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedTitle" = "Heute ist Ihr Glückstag!";
@@ -221,6 +230,9 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 Besuche";
 
 /* No comment provided by engineer. */
+"BraveRewardsMonthlyTippingNextDate" = "Nächster Termin für monatliches Trinkgeld";
+
+/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Monatliche Trinkgelder";
 
 /* No comment provided by engineer. */
@@ -233,10 +245,13 @@
 "BraveRewardsNotificationAutoContributeTitle" = "Auto-Beitrag";
 
 /* No comment provided by engineer. */
+"BraveRewardsNotificationPointGrantTitle" = "Punkte-Zuschüsse";
+
+/* No comment provided by engineer. */
 "BraveRewardsNotificationRecurringTipTitle" = "Wiederkehrende Trinkgelder";
 
 /* No comment provided by engineer. */
-"BraveRewardsNotificationTokenGrantTitle" = "Token-Zuteilungen";
+"BraveRewardsNotificationTokenGrantTitle" = "Token-Zuschuss";
 
 /* No comment provided by engineer. */
 "BraveRewardsNotYetVerified" = "Noch nicht verifiziert";
@@ -260,6 +275,9 @@
 "BraveRewardsPaymentDate" = "Nächstes Zahlungsdatum";
 
 /* No comment provided by engineer. */
+"BraveRewardsPoints" = "Punkte";
+
+/* No comment provided by engineer. */
 "BraveRewardsPoweredByUphold" = "Ihre Brave Wallet wird von Uphold unterstützt.";
 
 /* No comment provided by engineer. */
@@ -276,6 +294,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsBody" = "Verdienen Sie Token, indem Sie Ads in Brave ansehen. Die präsentierten Ads basieren auf Ihren Interessen, wie sie sich aus Ihrem Browserverhalten ergeben. Keine persönlichen Daten oder der Browserverlauf verlassen jemals Ihren Browser.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBodyJapan" = "Verdienen Sie Punkte, indem Sie Ads in Brave ansehen. Die präsentierten Ads basieren auf Ihren Interessen, wie sie sich aus Ihrem Browserverhalten ergeben. Keine persönlichen Daten oder der Browserverlauf verlassen jemals Ihren Browser.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "Demnächst erhältlich.";
@@ -311,7 +332,10 @@
 "BraveRewardsSettingsGrantClaimButtonTitle" = "Anfordern";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsGrantText" = "Eine kostenlose Token-Zuteilung ist verfügbar.";
+"BraveRewardsSettingsGrantText" = "Ein kostenloser Token-Zuschuss ist verfügbar.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantTextJapan" = "Ein kostenloser Punkte-Zuschuss ist verfügbar.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsBody" = "Geben Sie den Inhaltserstellern direkt beim Durchsuchen ein Trinkgeld. Sie können auch wiederkehrende monatliche Trinkgelder einrichten, damit Sie Websites kontinuierlich unterstützen können.";
@@ -395,7 +419,10 @@
 "BraveRewardsTokens" = "Token";
 
 /* No comment provided by engineer. */
-"BraveRewardsTotalGrantsClaimed" = "Angeforderte Token-Zuschüsse";
+"BraveRewardsTotalGrantsClaimed" = "Angeforderter Token-Zuschuss";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalGrantsClaimedJapan" = "Angeforderte Punkte-Zuschüsse";
 
 /* No comment provided by engineer. */
 "BraveRewardsTotalSites" = "Total %ld";
@@ -507,6 +534,9 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInDescription" = "Sie können jetzt Tokens für das Ansehen von Ads verdienen, die den Datenschutz respektieren.";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescriptionJapan" = "Sie können jetzt Punkte für das Ansehen von Ads verdienen, die den Datenschutz respektieren.";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "An Rewards teilnehmen";

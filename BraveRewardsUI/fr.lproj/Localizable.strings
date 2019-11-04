@@ -1,3 +1,6 @@
+/* Label for auto-contribute toggle. */
+"AutoContributeSwitchLabel" = "Inclure dans Contribuer automatiquement";
+
 /* No comment provided by engineer. */
 "BATPoints" = "Points BAT";
 
@@ -152,10 +155,16 @@
 "BraveRewardsGrantsClaimedAmountTitle" = "Don de jeton gratuit";
 
 /* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedAmountTitleJapan" = "Don de points gratuit";
+
+/* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedExpirationDateTitle" = "Date d'expiration du don";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedSubtitle" = "Votre don de jeton est en route.";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitleJapan" = "Votre don de points est en route.";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedTitle" = "C'est votre jour de chance !";
@@ -221,6 +230,9 @@
 "BraveRewardsMinimumVisitsChoices2" = "10 visites";
 
 /* No comment provided by engineer. */
+"BraveRewardsMonthlyTippingNextDate" = "Date du prochain pourboire mensuel";
+
+/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "Pourboires mensuels";
 
 /* No comment provided by engineer. */
@@ -231,6 +243,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationAutoContributeTitle" = "Contribuer automatiquement";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationPointGrantTitle" = "Dons de points";
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationRecurringTipTitle" = "Pourboires récurrents";
@@ -260,6 +275,9 @@
 "BraveRewardsPaymentDate" = "Date du prochain paiement";
 
 /* No comment provided by engineer. */
+"BraveRewardsPoints" = "Points";
+
+/* No comment provided by engineer. */
 "BraveRewardsPoweredByUphold" = "Votre portefeuille Brave est optimisé par Uphold";
 
 /* No comment provided by engineer. */
@@ -276,6 +294,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsBody" = "Gagnez des jetons en visionnant des publicités dans Brave. Les publicités présentées sont basées sur vos intérêts, tels que déduits de votre comportement de navigation. Les données personnelles et les historiques de navigation ne quittent jamais votre navigateur.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBodyJapan" = "Gagnez des points en visionnant des publicités dans Brave. Les publicités présentées sont basées sur vos intérêts, tels que déduits de votre comportement de navigation. Les données personnelles et les historiques de navigation ne quittent jamais votre navigateur.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "Bientôt disponible.";
@@ -312,6 +333,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantText" = "Un don de jeton gratuit est disponible.";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantTextJapan" = "Un don de points gratuit est disponible.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsBody" = "Donnez un pourboire aux créateurs de contenu tout en navigant, ou mettez en place des pourboires mensuels récurrents pour soutenir les sites en permanence.";
@@ -396,6 +420,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTotalGrantsClaimed" = "Dons de jetons réclamés";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalGrantsClaimedJapan" = "Dons de points réclamés";
 
 /* No comment provided by engineer. */
 "BraveRewardsTotalSites" = "Total : %ld";
@@ -507,6 +534,9 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInDescription" = "Vous pouvez maintenant gagner des jetons en visionnant des publicités respectueuses de la vie privée.";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescriptionJapan" = "Vous pouvez maintenant gagner des points en visionnant des publicités respectueuses de la vie privée.";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Rejoindre Rewards";

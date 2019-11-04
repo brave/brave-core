@@ -1,3 +1,6 @@
+/* Label for auto-contribute toggle. */
+"AutoContributeSwitchLabel" = "包含在自动捐款中";
+
 /* No comment provided by engineer. */
 "BATPoints" = "BAT 点数";
 
@@ -152,10 +155,16 @@
 "BraveRewardsGrantsClaimedAmountTitle" = "免费赠予的代币";
 
 /* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedAmountTitleJapan" = "免费赠予积分";
+
+/* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedExpirationDateTitle" = "赠款到期日期";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedSubtitle" = "您的代币授权正在进行中。";
+
+/* No comment provided by engineer. */
+"BraveRewardsGrantsClaimedSubtitleJapan" = "赠予你的积分快要拿到了。";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrantsClaimedTitle" = "这是您的幸运日！";
@@ -221,6 +230,9 @@
 "BraveRewardsMinimumVisitsChoices2" = "访问 10 次";
 
 /* No comment provided by engineer. */
+"BraveRewardsMonthlyTippingNextDate" = "下个月的酬谢费发送日期";
+
+/* No comment provided by engineer. */
 "BraveRewardsMonthlyTips" = "每月酬谢费";
 
 /* No comment provided by engineer. */
@@ -231,6 +243,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationAutoContributeTitle" = "自动捐款";
+
+/* No comment provided by engineer. */
+"BraveRewardsNotificationPointGrantTitle" = "赠予的积分";
 
 /* No comment provided by engineer. */
 "BraveRewardsNotificationRecurringTipTitle" = "定期支付酬谢费";
@@ -260,6 +275,9 @@
 "BraveRewardsPaymentDate" = "下次付款日期";
 
 /* No comment provided by engineer. */
+"BraveRewardsPoints" = "积分";
+
+/* No comment provided by engineer. */
 "BraveRewardsPoweredByUphold" = "您的 Brave 钱包由 Uphold 提供支持";
 
 /* No comment provided by engineer. */
@@ -276,6 +294,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsBody" = "通过在 Brave 中查看广告来赚取令牌。显示的广告是根据您的兴趣（根据您的浏览行为得出）。我们不会从您的浏览器获取任何个人数据或浏览历史记录。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsAdsBodyJapan" = "通过在 Brave 上看广告来赚积分。显示的广告是根据您的兴趣（是根据您的浏览行为推断出的）提供的，我们不会从您的浏览器获取任何个人数据或浏览历史记录。";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "即将推出。";
@@ -312,6 +333,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsGrantText" = "提供免费的令牌赠予。";
+
+/* No comment provided by engineer. */
+"BraveRewardsSettingsGrantTextJapan" = "免费赠予的积分现已可用。";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsTipsBody" = "可在浏览时直接打赏内容创建者。您还可以设置每月定期打赏，以便可以持续支持网站。";
@@ -396,6 +420,9 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTotalGrantsClaimed" = "领取的代币补助";
+
+/* No comment provided by engineer. */
+"BraveRewardsTotalGrantsClaimedJapan" = "赠予的积分已被领取";
 
 /* No comment provided by engineer. */
 "BraveRewardsTotalSites" = "总计％ld";
@@ -507,6 +534,9 @@
 
 /* No comment provided by engineer. */
 "RewardsOptInDescription" = "现在，您可以通过查看尊重隐私的广告来获得代币了。";
+
+/* No comment provided by engineer. */
+"RewardsOptInDescriptionJapan" = "现在您就可以通过看尊重隐私的广告来赚积分了。";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "加入 Rewards";
