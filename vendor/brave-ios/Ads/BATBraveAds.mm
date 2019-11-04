@@ -92,14 +92,21 @@ static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
 
 #pragma mark - Global
 
-+ (BOOL)isSupportedRegion:(NSString *)region
++ (BOOL)isSupportedLocale:(NSString *)locale
 {
-  return ads::Ads::IsSupportedRegion(std::string(region.UTF8String));
+  return ads::Ads::IsSupportedLocale(std::string(locale.UTF8String));
 }
 
-+ (BOOL)isCurrentRegionSupported
++ (BOOL)isNewlySupportedLocale:(NSString *)locale
 {
-  return [self isSupportedRegion:[NSLocale currentLocale].localeIdentifier];
+  // TODO(khickinson): Add support for last schema version, however for the MVP
+  // we can safely pass 0 as all locales are newly supported
+  return ads::Ads::IsNewlySupportedLocale(std::string(locale.UTF8String), 0);
+}
+
++ (BOOL)isCurrentLocaleSupported
+{
+  return [self isSupportedLocale:[NSLocale currentLocale].localeIdentifier];
 }
 
 BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)

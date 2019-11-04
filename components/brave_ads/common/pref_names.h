@@ -23,6 +23,10 @@ extern const char kOnboardingTimestamp[];
 
 extern const char kShouldShowMyFirstAdNotification[];
 
+extern const char kSupportedRegionsLastSchemaVersion[];
+extern const char kSupportedRegionsSchemaVersion[];
+extern const int kSupportedRegionsSchemaVersionNumber;
+
 extern const char kVersion[];
 extern const int kCurrentVersionNumber;
 

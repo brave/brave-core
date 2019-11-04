@@ -394,7 +394,10 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
       NotificationHandler::Type::BRAVE_ADS,
           std::make_unique<AdsNotificationHandler>(this));
 
+#if !defined(OS_ANDROID)
+  // TODO(tmancey): Refactor on-boarding to be platform agnostic
   MaybeShowOnboarding();
+#endif
 
   MaybeStart(false);
 }
@@ -403,9 +406,30 @@ AdsServiceImpl::~AdsServiceImpl() {
   file_task_runner_->DeleteSoon(FROM_HERE, bundle_state_backend_.release());
 }
 
-bool AdsServiceImpl::IsSupportedRegion() const {
-  auto locale = LocaleHelper::GetInstance()->GetLocale();
-  return ads::Ads::IsSupportedRegion(locale);
+bool AdsServiceImpl::IsSupportedLocale() const {
+  const std::string locale = GetLocale();
+  return ads::Ads::IsSupportedLocale(locale);
+}
+
+bool AdsServiceImpl::IsNewlySupportedLocale() {
+  if (!IsSupportedLocale()) {
+    return false;
+  }
+
+  const int schema_version =
+      GetIntegerPref(prefs::kSupportedRegionsSchemaVersion);
+  if (schema_version != prefs::kSupportedRegionsSchemaVersionNumber) {
+    SetIntegerPref(prefs::kSupportedRegionsLastSchemaVersion, schema_version);
+
+    SetIntegerPref(prefs::kSupportedRegionsSchemaVersion,
+        prefs::kSupportedRegionsSchemaVersionNumber);
+  }
+
+  const int last_schema_version =
+      GetIntegerPref(prefs::kSupportedRegionsLastSchemaVersion);
+
+  const std::string locale = GetLocale();
+  return ads::Ads::IsNewlySupportedLocale(locale, last_schema_version);
 }
 
 void AdsServiceImpl::SetEnabled(
@@ -668,8 +692,8 @@ bool AdsServiceImpl::StartService() {
 
 void AdsServiceImpl::MaybeStart(
     const bool should_restart) {
-  if (!IsSupportedRegion()) {
-    LOG(INFO) << GetLocale() << " locale does not support Ads";
+  if (!IsSupportedLocale()) {
+    LOG(INFO) << GetLocale() << " locale does not support ads";
     Shutdown();
     return;
   }
@@ -1507,7 +1531,7 @@ void AdsServiceImpl::MaybeShowOnboarding() {
   ShowOnboarding();
 }
 
-bool AdsServiceImpl::ShouldShowOnboarding() const {
+bool AdsServiceImpl::ShouldShowOnboarding() {
   auto is_ads_enabled = GetBooleanPref(prefs::kEnabled);
 
   auto is_rewards_enabled =
@@ -1515,7 +1539,7 @@ bool AdsServiceImpl::ShouldShowOnboarding() const {
 
   auto should_show = GetBooleanPref(prefs::kShouldShowOnboarding);
 
-  return IsSupportedRegion() && !is_ads_enabled && is_rewards_enabled
+  return IsNewlySupportedLocale() && !is_ads_enabled && is_rewards_enabled
       && should_show;
 }
 
