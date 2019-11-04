@@ -20,7 +20,7 @@ class RewardsNotificationViewBuilderTests: XCTestCase {
   func testActionNotifiication() {
     XCTAssert(RewardsNotificationViewBuilder.get(notification: notification(.grant)) is WalletActionNotificationView)
     XCTAssert(RewardsNotificationViewBuilder.get(notification: notification(.tipsProcessed)) is WalletActionNotificationView)
-    XCTAssert(RewardsNotificationViewBuilder.get(notification: notification(.verifiedPublisher, userInfo: ["name": "abc"])) is WalletActionNotificationView)
+    XCTAssert(RewardsNotificationViewBuilder.get(notification: notification(.verifiedPublisher, userInfo: ["publisher_name": "abc"])) is WalletActionNotificationView)
     XCTAssert(RewardsNotificationViewBuilder.get(notification: notification(.autoContribute, userInfo: ["result": 0, "amount": "1"])) is WalletActionNotificationView)
   }
   

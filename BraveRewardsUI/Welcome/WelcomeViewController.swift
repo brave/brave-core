@@ -75,7 +75,7 @@ class WelcomeViewController: UIViewController {
   }
   
   func showFailureAlert() {
-    let alertController = UIAlertController(title: Strings.WalletCreationErrorTitle, message: Strings.WalletCreationErrorBody, preferredStyle: .alert)
+    let alertController = UIAlertController(title: Strings.GenericErrorTitle, message: Strings.GenericErrorBody, preferredStyle: .alert)
     alertController.addAction(UIAlertAction(title: Strings.OK, style: .default, handler: nil))
     self.present(alertController, animated: true)
   }
