@@ -20,7 +20,8 @@ const locale: any = {
   showBackgroundImg: 'Show background image',
   showBraveStats: 'Show Brave Stats',
   showClock: 'Show Clock',
-  showTopSites: 'Show Top Sites'
+  showTopSites: 'Show Top Sites',
+  showRewards: 'Show Rewards'
 }
 
 export default locale

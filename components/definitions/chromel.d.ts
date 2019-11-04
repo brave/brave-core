@@ -94,10 +94,17 @@ declare namespace chrome.braveRewards {
   const solveGrantCaptcha: (solution: string, promotionId: string) => {}
   const getPendingContributionsTotal: (callback: (amount: number) => void) => {}
   const getNonVerifiedSettings: (callback: (nonVerified: boolean) => void) => {}
+  const onAdsEnabled: {
+    addListener: (callback: (enabled: boolean) => void) => void
+  }
   const onEnabledMain: {
     addListener: (callback: (enabledMain: boolean) => void) => void
   }
+  const getAdsEnabled: (callback: (enabled: boolean) => void) => {}
+  const getBalanceReports: (callback: (reports: Record<string, Rewards.Report>) => void) => {}
+  const getAdsEstimatedEarnings: (callback: (amount: number) => void) => {}
   const getRewardsMainEnabled: (callback: (enabled: boolean) => void) => {}
+  const getWalletExists: (callback: (exists: boolean) => void) => {}
   const saveAdsSetting: (key: string, value: string) => {}
   const onPendingContributionSaved: {
     addListener: (callback: (result: number) => void) => void
@@ -137,6 +144,8 @@ declare namespace chrome.braveRewards {
   }
 
   const onlyAnonWallet: (callback: (only: boolean) => void) => {}
+
+  const openBrowserActionUI: (path?: string) => {}
 }
 
 declare namespace chrome.rewardsNotifications {

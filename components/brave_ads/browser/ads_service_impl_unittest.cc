@@ -144,6 +144,7 @@ class MockRewardsService : public RewardsService {
            brave_rewards::SaveRecurringTipCallback));
   MOCK_METHOD2(RefreshPublisher, void(const std::string&,
                                       brave_rewards::RefreshPublisherCallback));
+  MOCK_METHOD1(OnAdsEnabled, void(bool));
   MOCK_METHOD0(GetAllNotifications,
   const brave_rewards::RewardsNotificationService::RewardsNotificationsMap&());
   MOCK_METHOD3(SaveInlineMediaInfo,

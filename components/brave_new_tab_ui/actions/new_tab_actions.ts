@@ -9,7 +9,7 @@ import { types } from '../constants/new_tab_types'
 import { Preferences } from '../api/preferences'
 import { Stats } from '../api/stats'
 import { PrivateTabData } from '../api/privateTabData'
-import { InitialData } from '../api/initialData'
+import { InitialData, InitialRewardsData, PreInitialRewardsData } from '../api/initialData'
 
 export const bookmarkAdded = (url: string) => action(types.BOOKMARK_ADDED, {
   url
@@ -74,3 +74,50 @@ export const preferencesUpdated = (preferences: Preferences) =>
 
 export const setInitialData = (initialData: InitialData) =>
   action(types.NEW_TAB_SET_INITIAL_DATA, initialData)
+
+export const createWallet = () => action(types.CREATE_WALLET, {})
+
+export const onEnabledMain = (enabledMain: boolean) => action(types.ON_ENABLED_MAIN, {
+  enabledMain
+})
+
+export const onAdsEnabled = (enabled: boolean) => action(types.ON_ADS_ENABLED, {
+  enabled
+})
+
+export const onRewardsSettingSave = (key: string, value: any) => action(types.ON_REWARDS_SETTING_SAVE, {
+  key,
+  value
+})
+
+export const onWalletInitialized = (result: NewTab.RewardsResult) => action(types.ON_WALLET_INITIALIZED, {
+  result
+})
+
+export const onAdsEstimatedEarnings = (amount: number) => action(types.ON_ADS_ESTIMATED_EARNINGS, {
+  amount
+})
+
+export const onBalanceReports = (reports: Record<string, NewTab.RewardsReport>) => action(types.ON_BALANCE_REPORTS, {
+  reports
+})
+
+export const onGrant = (properties: NewTab.GrantResponse) => action(types.ON_GRANT, {
+  properties
+})
+
+export const dismissNotification = (id: string) => action(types.DISMISS_NOTIFICATION, {
+  id
+})
+
+export const onBalance = (balance: NewTab.RewardsBalance) => action(types.ON_BALANCE, {
+  balance
+})
+
+export const onWalletExists = (exists: boolean) => action(types.ON_WALLET_EXISTS, {
+  exists
+})
+
+export const setInitialRewardsData = (initialRewardsData: InitialRewardsData) => action(types.SET_INITIAL_REWARDS_DATA, initialRewardsData)
+
+export const setPreInitialRewardsData = (preInitialRewardsData: PreInitialRewardsData) => action(types.SET_PRE_INITIAL_REWARDS_DATA, preInitialRewardsData)
