@@ -22,7 +22,22 @@ source_set("importer") {
 
   deps = [
     "//base",
+    "//brave/common",
+    "//brave/common:pref_names",
+    "//brave/components/brave_rewards/browser",
+    "//chrome/browser/ui",
+    # For buildflags.h included from chrome/browser/browser_process.h, we are
+    # not including chrome/browser here because of circular dependency.
+    # We should refactor this in the future to be able to add chrome/browser
+    # into importer target's deps.
+    "//chrome/common:buildflags",
+    "//chrome/common/importer",
+    "//components/prefs",
+    "//components/search_engines",
     "//content/public/browser",
     "//net",
+    "//services/network/public/mojom",
+    "//ui/base",
+    "//ui/gfx:native_widget_types",
   ]
 }
