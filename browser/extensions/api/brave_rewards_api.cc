@@ -13,12 +13,15 @@
 #include "base/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/brave_rewards/tip_dialog.h"
+#include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/common/extensions/api/brave_rewards.h"
+#include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
+#include "chrome/browser/extensions/chrome_extension_function_details.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
@@ -49,6 +52,25 @@ ExtensionFunction::ResponseAction BraveRewardsCreateWalletFunction::Run() {
         base::Bind(
             &BraveRewardsCreateWalletFunction::OnCreateWallet,
             weak_factory_.GetWeakPtr()));
+  }
+  return RespondNow(NoArguments());
+}
+
+BraveRewardsOpenBrowserActionUIFunction::
+~BraveRewardsOpenBrowserActionUIFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsOpenBrowserActionUIFunction::Run() {
+  std::unique_ptr<brave_rewards::OpenBrowserActionUI::Params> params(
+      brave_rewards::OpenBrowserActionUI::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+  std::string error;
+  if (!BraveActionAPI::ShowActionUI(this,
+      brave_rewards_extension_id,
+      std::move(params->window_id),
+      std::move(params->relative_path), &error)) {
+    return RespondNow(Error(error));
   }
   return RespondNow(NoArguments());
 }

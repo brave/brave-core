@@ -11,6 +11,8 @@ declare_args() {
 
 source_set("extensions") {
   sources = [
+    "api/brave_action_api.cc",
+    "api/brave_action_api.h",
     "api/brave_extensions_api_client.cc",
     "api/brave_extensions_api_client.h",
     "api/brave_rewards_api.cc",
