@@ -90,33 +90,6 @@ def main():
 
     file_list = download_linux_pkgs_from_github(args, logging)
 
-    # Run rpmsign command for rpm
-    for item in file_list:
-        if re.match(r'.*\.rpm$', item):
-            logging.info("Signing RPM: {}".format(item))
-
-            # Currently only the release channel requires the expect script
-            # rpm-resign.exp. Nightly, dev and beta do not, although they will eventually
-            # when we use the same signing key for all channels.
-            if channel in ['release']:
-                rpm_resign_cmd = os.path.join(repo_dir, "rpm-resign.exp")
-                cmd = "{} {} {} {}".format(
-                    rpm_resign_cmd, gpg_full_key_id, item, gpg_passphrase)
-                log_cmd = "{} {} {} {}".format(
-                    rpm_resign_cmd, gpg_full_key_id, item, 'NOTAREALPASSWORD')
-            else:
-                cmd = "rpmsign --resign --key-id={} {}".format(
-                    gpg_full_key_id, item)
-                log_cmd = cmd
-            logging.info("Running command: \"{}\"".format(log_cmd))
-
-            try:
-                subprocess.check_output(cmd, shell=True)
-                logging.info("RPM signing successful!")
-            except subprocess.CalledProcessError as cpe:
-                logging.error("Error running command: \"{}\"".format(log_cmd))
-                exit(1)
-
     try:
         os.chdir(repo_dir)
         logging.debug('Changed directory to \"{}\"'.format(repo_dir))
@@ -144,7 +117,8 @@ def main():
         else:
             bucket = 'brave-browser-apt-staging-'
 
-        upload_script = os.path.join(repo_dir, item)
+        # the upload scripts should be run from the same path as this script
+        upload_script = os.path.join('./', item)
 
         TESTCHANNEL = 'test'
 
