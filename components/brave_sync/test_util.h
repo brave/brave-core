@@ -52,7 +52,7 @@ class MockBraveSyncClient : public BraveSyncClient {
   MOCK_METHOD2(SendGetBookmarksBaseOrder, void(const std::string& device_id,
     const std::string& platform));
   MOCK_METHOD0(OnExtensionInitialized, void());
-  MOCK_METHOD0(OnSyncEnabledChanged, void());
+  MOCK_METHOD1(OnSyncEnabledChanged, void(bool is_enabled));
   MOCK_METHOD0(ClearOrderMap, void());
 };
 
