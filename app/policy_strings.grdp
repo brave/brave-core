@@ -1,0 +1,514 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+
+  <message name="IDS_POLICY_DM_STATUS_SUCCESS" desc="Message indicating a successful device management server call.">
+    Request succeeded
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_REQUEST_INVALID" desc="Message indicating a bad request to the enterprise server.">
+    Invalid request or request parameters
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_REQUEST_FAILED" desc="Message indicating the request to the enterprise server failed in the network.">
+    Network error
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_TEMPORARY_UNAVAILABLE" desc="Message indicating a temporary problem on the enterprise server.">
+    Temporary server error
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_HTTP_STATUS_ERROR" desc="Message indicating an abnormal response code from the enterprise server.">
+    HTTP error
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_RESPONSE_DECODING_ERROR" desc="Message indicating a problem decoding a response from the enterprise server.">
+    Failed to decode response
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_SERVICE_MANAGEMENT_NOT_SUPPORTED" desc="Message indicating that enterprise management is not applicable to the user/device.">
+    Management not supported
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_SERVICE_DEVICE_NOT_FOUND" desc="Message indicating the enterprise server is missing a device record.">
+    Missing device record
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_SERVICE_MANAGEMENT_TOKEN_INVALID" desc="Message indicating the token used to authenticate to the enterprise server is invalid.">
+    Invalid device management token
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_SERVICE_ACTIVATION_PENDING" desc="Message indicating enterprise management must first be activated for this user/device.">
+    Activation is pending on the server
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_SERVICE_INVALID_SERIAL_NUMBER" desc="Message indicating the provided device serial number is invalid.">
+    Device serial number is invalid
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_SERVICE_DEVICE_ID_CONFLICT" desc="Message indicating the chosen device identifier is already used.">
+    Conflicting device identifier
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_SERVICE_MISSING_LICENSES" desc="Message indicating the enterprise server doesn't have enough licenses to allow management.">
+    Licenses exhausted
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_SERVICE_DEPROVISIONED" desc="Message indicating the administrator has deprovisioned this client on the server.">
+    Deprovisioned
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_SERVICE_POLICY_NOT_FOUND" desc="Message indicating that the enterprise server failed to find the policy to be applied to the device.">
+    Policy not found
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_UNKNOWN_ERROR" desc="Message indicating an unknown error from the enterprise server.">
+    Unknown error
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_SERVICE_DOMAIN_MISMATCH" desc="Message indicating this client cannot be registered with the specified domain.">
+    Domain mismatch
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_CANNOT_SIGN_REQUEST" desc="Message indicating a failure to sign a request.">
+    Request could not be signed
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_REQUEST_TOO_LARGE" desc="Message indicating a request to enterprise server is too large.">
+    Request is too large
+  </message>
+  <message name="IDS_POLICY_DM_STATUS_CONSUMER_ACCOUNT_WITH_PACKAGED_LICENSE" desc="Message to show when the user tries to enroll a device with a packaged license using a consumer account.">
+    Can't enroll with consumer account (packaged license available).
+  </message>
+  <message name="IDS_POLICY_VALIDATION_OK" desc="Message indicating successful policy validation.">
+    Validation successful
+  </message>
+  <message name="IDS_POLICY_VALIDATION_BAD_INITIAL_SIGNATURE" desc="Message indicating a bad signature on policy validation using the initial key.">
+    Bad initial signature
+  </message>
+  <message name="IDS_POLICY_VALIDATION_BAD_SIGNATURE" desc="Message indicating a bad signature on policy validation.">
+    Bad signature
+  </message>
+  <message name="IDS_POLICY_VALIDATION_ERROR_CODE_PRESENT" desc="Message indicating policy validation failure due to an error code in the policy.">
+    Error code present in the policy response
+  </message>
+  <message name="IDS_POLICY_VALIDATION_PAYLOAD_PARSE_ERROR" desc="Message indicating a policy parse error during policy validation.">
+    Error parsing policy
+  </message>
+  <message name="IDS_POLICY_VALIDATION_WRONG_POLICY_TYPE" desc="Message indicating the policy did not have the expected type.">
+    Wrong policy type
+  </message>
+  <message name="IDS_POLICY_VALIDATION_WRONG_SETTINGS_ENTITY_ID" desc="Message indicating the policy did not have the expected entity identifier.">
+    Wrong entity identifier
+  </message>
+  <message name="IDS_POLICY_VALIDATION_BAD_TIMESTAMP" desc="Message indicating the policy timestamp is bad.">
+    Bad policy timestamp
+  </message>
+  <message name="IDS_POLICY_VALIDATION_BAD_DM_TOKEN" desc="Message indicating the policy token is empty or different from the one expected.">
+    Returned policy token is empty or doesn't match current token
+  </message>
+  <message name="IDS_POLICY_VALIDATION_BAD_DEVICE_ID" desc="Message indicating the policy device id is empty or different from the one expected.">
+    Returned policy device id is empty or doesn't match current device id
+  </message>
+  <message name="IDS_POLICY_VALIDATION_BAD_USER" desc="Message indicating policy validation failed due to bad user/domain id.">
+    Wrong policy subject
+  </message>
+  <message name="IDS_POLICY_VALIDATION_POLICY_PARSE_ERROR" desc="Message indicating a parse error in policy.">
+    Error parsing policy settings
+  </message>
+  <message name="IDS_POLICY_VALIDATION_BAD_KEY_VERIFICATION_SIGNATURE" desc="Message indicating a policy key had an invalid verification signature.">
+    Bad verification signature
+  </message>
+  <message name="IDS_POLICY_VALIDATION_VALUE_WARNING" desc="Message indicating the policy value validation succeeded with non-fatal warnings.">
+    Validation of policy values has raised warnings
+  </message>
+  <message name="IDS_POLICY_VALIDATION_VALUE_ERROR" desc="Message indicating the policy value validation failed with fatal errors.">
+    Validation of policy values has failed with errors
+  </message>
+  <message name="IDS_POLICY_VALIDATION_UNKNOWN_ERROR" desc="Message indicating unknown error in policy validation.">
+    Unknown error
+  </message>
+
+  <message name="IDS_POLICY_STORE_STATUS_OK" desc="Message indicating a healthy policy store.">
+    Policy cache OK
+  </message>
+  <message name="IDS_POLICY_STORE_STATUS_LOAD_ERROR" desc="Message indicating a failure to load policy.">
+    Failed to load policy settings
+  </message>
+  <message name="IDS_POLICY_STORE_STATUS_STORE_ERROR" desc="Message indicating a failure to store policy.">
+    Failed to store policy settings
+  </message>
+  <message name="IDS_POLICY_STORE_STATUS_PARSE_ERROR" desc="Message indicating a parse error on loading policy.">
+    Policy parse error
+  </message>
+  <message name="IDS_POLICY_STORE_STATUS_SERIALIZE_ERROR" desc="Message indicating an error preparing policy for storage.">
+    Serialization error
+  </message>
+  <message name="IDS_POLICY_STORE_STATUS_VALIDATION_ERROR" desc="Message indicating policy validation on store/load failed.">
+    Validation error: <ph name="VALIDATION_ERROR">$1<ex>Bad signature</ex></ph>
+  </message>
+  <message name="IDS_POLICY_STORE_STATUS_BAD_STATE" desc="Message indicating policy cannot be stored/loaded due to the backend being in bad state.">
+    Backing store in bad state
+  </message>
+  <message name="IDS_POLICY_STORE_STATUS_UNKNOWN_ERROR" desc="Message indicating an unknown error with the policy cache.">
+    Unknown error
+  </message>
+
+  <message name="IDS_POLICY_ASSOCIATION_STATE_ACTIVE" desc="Message indicating that the server actively manages the client.">
+    Active
+  </message>
+  <message name="IDS_POLICY_ASSOCIATION_STATE_UNMANAGED" desc="Message indicating that the server is currently not willing to manage this client.">
+    Unmanaged
+  </message>
+  <message name="IDS_POLICY_ASSOCIATION_STATE_DEPROVISIONED" desc="Message indicating that the server has deprovisioned the client.">
+    Deprovisioned
+  </message>
+
+  <message name="IDS_POLICY_TYPE_ERROR" desc="The text displayed in the status column when a policy value has the wrong type.">
+    Expected <ph name="VALUE_TYPE">$1<ex>boolean</ex></ph> value.
+  </message>
+  <message name="IDS_POLICY_OUT_OF_RANGE_ERROR" desc="The text displayed in the status column when a policy value is out of range.">
+    Value is out of range <ph name="VALUE">$1<ex>10</ex></ph>.
+  </message>
+  <message name="IDS_POLICY_VALUE_FORMAT_ERROR" desc="The text displayed in the status column when a policy value doesn't match the expected format.">
+    Value doesn't match format.
+  </message>
+  <message name="IDS_POLICY_DEFAULT_SEARCH_DISABLED" desc="The text displayed in the status column when a policy value has been ignored because default search has not been enabled.">
+    Ignored because default search is not enabled by policy.
+  </message>
+  <message name="IDS_POLICY_NOT_SPECIFIED_ERROR" desc="The text displayed in the status column when a policy value should have been specified but wasn't.">
+    Must be specified.
+  </message>
+  <message name="IDS_POLICY_EXTENSION_SETTINGS_ORIGIN_LIMIT_WARNING" desc="The text displayed in the status column of the 'Extension Settings' policy when more than 100 origins are specified.">
+    This field should not have more than <ph name="MAX_ITEMS_LIMIT">$1<ex>100</ex></ph> entries. All further entries will be discarded.
+  </message>
+  <message name="IDS_POLICY_SUBKEY_ERROR" desc="The text displayed in the status column for errors in a subkey of a policy.">
+    Key "<ph name="SUBKEY">$1<ex>ProxyMode</ex></ph>": <ph name="ERROR">$2<ex>Must be specified.</ex></ph>
+  </message>
+  <message name="IDS_POLICY_LIST_ENTRY_ERROR" desc="The text displayed in the status column for errors in list entry in a policy.">
+    List entry "<ph name="ENTRY_INDEX">$1<ex>3</ex></ph>": <ph name="ERROR">$2<ex>Value is out of range.</ex></ph>
+  </message>
+  <message name="IDS_POLICY_SCHEMA_VALIDATION_ERROR" desc="The text displayed in the status column when the policy value doesn't conform to the policy schema.">
+    Schema validation error at "<ph name="ERROR_PATH">$1<ex>AC.Delays.ScreenOff</ex></ph>": <ph name="ERROR">$2<ex>Value is out of range.</ex></ph>
+  </message>
+  <message name="IDS_POLICY_INVALID_JSON_ERROR" desc="The text displayed in the status column when the policy value should be a valid JSON string, but it cannot be parsed as JSON.">
+    Error while parsing JSON value: <ph name="ERROR">$1<ex>Line 2, Column 3: Map keys must be quoted.</ex></ph>
+  </message>
+  <message name="IDS_POLICY_INVALID_SEARCH_URL_ERROR" desc="The text displayed in the status column when a the URL given for DefaultSearchProviderSearchURL is invalid.">
+    Invalid search URL.
+  </message>
+  <message name="IDS_POLICY_INVALID_SECURE_DNS_MODE_ERROR" desc="The text displayed in the status column when the value for DnsOverHttpsMode is invalid.">
+    Invalid DnsOverHttps mode.
+  </message>
+  <message name="IDS_POLICY_SECURE_DNS_MODE_NOT_SUPPORTED_ERROR" desc="The text displayed in the status column when the value for DnsOverHttpsMode is secure, which is not supported yet.">
+    The DnsOverHttps mode <ph name="SECURE_DNS_MODE_SECURE">'secure'</ph> is not yet supported, the mode has been set to <ph name="SECURE_DNS_MODE_OFF">'off'</ph>.
+  </message>
+  <message name="IDS_POLICY_INVALID_PROXY_MODE_ERROR" desc="The text displayed in the status column when the value for ProxyMode is invalid.">
+    Invalid proxy mode.
+  </message>
+  <message name="IDS_POLICY_INVALID_UPDATE_URL_ERROR" desc="The text displayed in the status column when the update URL for given extension is invalid.">
+    Invalid update URL for extension with ID "<ph name="EXTENSION_ID">$1<ex>abcdefghijklmnopabcdefghijklmnop</ex></ph>".
+  </message>
+  <message name="IDS_POLICY_OFF_CWS_URL_ERROR" desc="The text displayed in the status column when the update URL points to a location other than the Brave Webstore and the machine is not enterprise managed.">
+    This computer is not detected as enterprise managed so policy can only automatically install extensions hosted on the Brave Webstore. The Brave Webstore update URL is "<ph name="CWS_UPDATE_URL">$1<ex>https://clients2.google.com/service/update2/crx</ex></ph>".
+  </message>
+  <message name="IDS_POLICY_HOMEPAGE_LOCATION_ERROR" desc="The text displayed in the status column when the homepage URL given by the HomepageLocation policy is invalid.">
+    Invalid URL. Must be a URL with a standard scheme, e.g http://example.com or https://example.com.
+  </message>
+  <message name="IDS_POLICY_PROXY_MODE_DISABLED_ERROR" desc="The text displayed in the status column when use of a proxy is disabled but a proxy configuration is given.">
+    Use of a proxy is disabled but an explicit proxy configuration is specified.
+  </message>
+  <message name="IDS_POLICY_PROXY_MODE_AUTO_DETECT_ERROR" desc="The text displayed in the status column when the proxy is set to auto configured but a proxy configuration is given.">
+    Proxy is set to auto configured.
+  </message>
+  <message name="IDS_POLICY_PROXY_MODE_PAC_URL_ERROR" desc="The text displayed in the status column when the proxy configuration is set to use a .pac script URL but policies only for fixed proxy servers are also specified.">
+    Proxy configuration is set to use a .pac script URL, not fixed proxy servers.
+  </message>
+  <message name="IDS_POLICY_PROXY_MODE_FIXED_SERVERS_ERROR" desc="The text displayed in the status column when the proxy configuration is set to use fixed proxy servers but an alternate configuration is given.">
+    Proxy is set to use fixed proxy servers, not a .pac script URL.
+  </message>
+  <message name="IDS_POLICY_PROXY_MODE_SYSTEM_ERROR" desc="The text displayed in the status column when the proxy configuration is set to use system settings but an alternate configuration is given.">
+    System proxy settings are set to be used but an explicit proxy configuration is also specified.
+  </message>
+  <message name="IDS_POLICY_PROXY_BOTH_SPECIFIED_ERROR" desc="The text displayed in the status column when both fixed proxy servers and .pac url are specified.">
+    Both fixed proxy servers and a .pac script URL are specified.
+  </message>
+  <message name="IDS_POLICY_PROXY_NEITHER_SPECIFIED_ERROR" desc="The text displayed in the status column when neither a fixed proxy servers or a .pac url are specified.">
+    Neither fixed proxy servers nor a .pac script URL are specified.
+  </message>
+  <message name="IDS_POLICY_OVERRIDDEN" desc="The text displayed in the status column when the corresponding policy is being ignored because another policy is overriding it.">
+    Ignored because it was overridden by <ph name="POLICY_NAME">$1<ex>ProxyMode</ex></ph>.
+  </message>
+  <message name="IDS_POLICY_DEPRECATED" desc="The text displayed in the status column when the corresponding policy is deprecated.">
+    This policy has been deprecated.
+  </message>
+  <message name="IDS_POLICY_VALUE_DEPRECATED" desc="The text displayed in the status column when a specific value for a policy is deprecated.">
+    This value is deprecated for this policy.
+  </message>
+  <if expr="chromeos">
+    <message name="IDS_POLICY_NETWORK_CONFIG_PARSE_FAILED" desc="The text displayed in the status column when the corresponding network configuration policy failed to parse.">
+      Network configuration failed to be parsed (invalid JSON).
+    </message>
+    <message name="IDS_POLICY_NETWORK_CONFIG_IMPORT_PARTIAL" desc="The text displayed in the status column when the corresponding network configuration policy is not standard conform and was imported partially. DEBUG_INFO contains non-localized detailed information about existing warnings.">
+      The network configuration doesn't comply to the ONC standard. Parts of the configuration may not be imported.
+Additional details:
+<ph name="DEBUG_INFO">$1<ex>WARNING: Field name 'SomeRandomField' is unknown. (at toplevel)</ex></ph>
+    </message>
+    <message name="IDS_POLICY_NETWORK_CONFIG_IMPORT_FAILED" desc="The text displayed in the status column when the corresponding network configuration policy is invalid. DEBUG_INFO contains non-localized detailed information about existing errors/warnings.">
+      The network configuration is invalid and couldn't be imported.
+Additional details:
+<ph name="DEBUG_INFO">$1<ex>ERROR: Field name 'SomeRandomField' is unknown. (at toplevel)</ex></ph>
+    </message>
+    <message name="IDS_POLICY_SCOPE_ERROR" desc="Text displayed in the status column when a policy is set in an unsupported scope.">
+      Policy scope is not supported.
+    </message>
+  </if>
+  <message name="IDS_POLICY_LEVEL_ERROR" desc="Text displayed in the status column when a policy is set at an unsupported level.">
+    Policy level is not supported.
+  </message>
+  <message name="IDS_POLICY_OK" desc="Text displayed in the status column when a valid value is set for a policy.">
+    OK
+  </message>
+  <message name="IDS_POLICY_UNSET" desc="Text displayed in the status column when no value is set for a policy.">
+    Not set.
+  </message>
+  <message name="IDS_POLICY_UNKNOWN" desc="Text displayed in the status column when a policy name is not recognized.">
+    Unknown policy.
+  </message>
+
+  <!-- chrome://policy -->
+  <message name="IDS_POLICY_TITLE" desc="Page title and the title of the section that lists policies.">
+    Policies
+  </message>
+  <message name="IDS_POLICY_FILTER_PLACEHOLDER" desc="Placeholder for the input field that lets the user filter policies by name.">
+    Filter policies by name
+  </message>
+  <message name="IDS_POLICY_RELOAD_POLICIES" desc="Label for the button that reloads policies.">
+    Reload policies
+  </message>
+  <message name="IDS_EXPORT_POLICIES_JSON" desc="Label for the button that exports policies in JSON format.">
+    Export to JSON
+  </message>
+  <message name="IDS_POLICY_STATUS" desc="Title of the status section.">
+    Status
+  </message>
+  <message name="IDS_POLICY_STATUS_DEVICE" desc="Title for the device policy status box.">
+    Device policies
+  </message>
+  <message name="IDS_POLICY_STATUS_USER" desc="Title for the user policy status box.">
+    User policies
+  </message>
+<message name="IDS_POLICY_STATUS_MACHINE" desc="Title for the machine policy status box.">
+    Machine policies
+  </message>
+  <message name="IDS_POLICY_LABEL_ENTERPRISE_ENROLLMENT_DOMAIN" desc="Label for the enrollment domain in the device policy status box.">
+    Enrollment domain:
+  </message>
+  <message name="IDS_POLICY_LABEL_ENTERPRISE_DISPLAY_DOMAIN" desc="Label for the display domain in the device policy status box.">
+    Display domain:
+  </message>
+  <message name="IDS_POLICY_LABEL_MACHINE_ENROLLMENT_DOMAIN" desc="Label for the enrollment domain in the machine policy status box.">
+    Enrollment domain:
+  </message>
+  <message name="IDS_POLICY_LABEL_MACHINE_ENROLLMENT_TOKEN" desc="Label for the enrollment token in the machine policy status box.">
+    Enrollment Token:
+  </message>
+  <message name="IDS_POLICY_LABEL_MACHINE_ENROLLMENT_DEVICE_ID" desc="Label for the device ID in the machine policy status box.">
+    Device ID:
+  </message>
+    <message name="IDS_POLICY_LABEL_MACHINE_ENROLLMENT_MACHINE_NAME" desc="Label for the machine name in the machine policy status box.">
+    Machine Name:
+  </message>
+  <message name="IDS_POLICY_LABEL_USERNAME" desc="Label for the username in the user policy status box.">
+    User:
+  </message>
+  <message name="IDS_POLICY_LABEL_GAIA_ID" desc="Label for the user GAIA ID in the user policy status box.">
+    Gaia ID:
+  </message>
+  <message name="IDS_POLICY_LABEL_CLIENT_ID" desc="Label for the client IDs in the policy status boxes.">
+    Client ID:
+  </message>
+  <message name="IDS_POLICY_LABEL_ASSET_ID" desc="Label for the asset ID in the device policy status box.">
+    Asset ID:
+  </message>
+  <message name="IDS_POLICY_LABEL_LOCATION" desc="Label for the device location in the device policy status box.">
+    Assigned Location:
+  </message>
+  <message name="IDS_POLICY_LABEL_DIRECTORY_API_ID" desc="Label for the directory API ID in the device policy status box.">
+    Directory API ID:
+  </message>
+  <message name="IDS_POLICY_LABEL_TIME_SINCE_LAST_REFRESH" desc="Label for the time since the last refresh in the policy status boxes.">
+    Last fetched:
+  </message>
+  <message name="IDS_POLICY_NOT_SPECIFIED" desc="Indicates if that device attribute has not specified yet.">
+    Not Specified
+  </message>
+  <message name="IDS_POLICY_LABEL_PUSH_POLICIES" desc="Label to indicates the policies can be pushed or not to chrome.">
+    Policies push:
+  </message>
+  <message name="IDS_POLICY_PUSH_POLICIES_ON" desc="Indicates the policies can be pushed to chrome.">
+    On
+  </message>
+  <message name="IDS_POLICY_PUSH_POLICIES_OFF" desc="Indicates the policies cannot be pushed to chrome.">
+    Off
+  </message>
+  <message name="IDS_POLICY_NEVER_FETCHED" desc="Indicates that a policy fetch was never performed before.">
+    Never
+  </message>
+  <message name="IDS_POLICY_LABEL_REFRESH_INTERVAL" desc="Label for the refresh interval in the policy status boxes.">
+    Fetch interval:
+  </message>
+  <message name="IDS_POLICY_LABEL_CONFLICT" desc="Label for the conflict row in the policy table.">
+    Conflict
+  </message>
+  <message name="IDS_POLICY_LABEL_ERROR" desc="Label for the error row in the policy table.">
+    Error
+  </message>
+  <message name="IDS_POLICY_LABEL_IGNORED" desc="Label for the ignored row in the policy table.">
+    Ignored
+  </message>
+  <message name="IDS_POLICY_LABEL_VALUE" desc="Label for the value row in the policy table.">
+    Value
+  </message>
+  <message name="IDS_POLICY_LABEL_STATUS" desc="Label for the actual status in the policy status boxes.">
+    Status:
+  </message>
+  <message name="IDS_POLICY_SHOW_UNSET" desc="Label for the checkbox that determines whether policies whose value has not been set are shown.">
+    Show policies with no value set
+  </message>
+  <message name="IDS_POLICY_NO_POLICIES_SET" desc="Text displayed when none of the policies have been set.">
+    No policies set
+  </message>
+  <message name="IDS_POLICY_HEADER_SCOPE" desc="Table header for the column in the policy table that details whether a policy is a user or a device policy.">
+    Applies to
+  </message>
+  <message name="IDS_POLICY_HEADER_LEVEL" desc="Table header for the column in the policy table that details whether a policy is mandatory or recommended.">
+    Level
+  </message>
+  <message name="IDS_POLICY_HEADER_NAME" desc="Table header for the column in the policy table that contains the policy name.">
+    Policy name
+  </message>
+  <message name="IDS_POLICY_HEADER_VALUE" desc="Table header for the column in the policy table that contains the policy value.">
+    Policy value
+  </message>
+  <message name="IDS_POLICY_HEADER_STATUS" desc="Table header for the column in policy table that contains the policy status.">
+    Status
+  </message>
+  <message name="IDS_POLICY_HEADER_SOURCE" desc="Table header for the column in policy table that contains the policy source.">
+    Source
+  </message>
+  <message name="IDS_POLICY_HEADER_WARNING" desc="Table header for the column in the policy table that contains the policy warnings.">
+    Warning
+  </message>
+  <message name="IDS_POLICY_SHOW_MORE" desc="Text for the link that expands and shows the are full value, conflicts and warnings rows of a policy.">
+    Show more
+  </message>
+  <message name="IDS_POLICY_SHOW_LESS" desc="Text for the link that collapses and hides the are full value, conflicts and warnings rows of a policy.">
+    Show less
+  </message>
+  <message name="IDS_POLICY_LEARN_MORE" desc="Help text for learn-more link for known chrome policies.">
+    Learn more about <ph name="POLICY_NAME">$1<ex>AllowDinosaurEasterEgg</ex></ph> policy
+  </message>
+  <message name="IDS_POLICY_SCOPE_USER" desc="Text displayed in the Applies to column when a policy applies to the current user only.">
+    Current user
+  </message>
+  <if expr="not is_android and not chromeos">
+    <message name="IDS_POLICY_SCOPE_DEVICE" desc="Text displayed in the Applies to column when a policy applies to everyone on the machine.">
+      Machine
+    </message>
+  </if>
+  <if expr="chromeos or is_android">
+    <message name="IDS_POLICY_SCOPE_DEVICE" desc="Mobile: Text displayed in the Applies To column when a policy applies to everyone on the device.">
+      Device
+    </message>
+  </if>
+  <message name="IDS_POLICY_LEVEL_RECOMMENDED" desc="Text displayed in the Level column when a policy is recommended.">
+    Recommended
+  </message>
+  <message name="IDS_POLICY_LEVEL_MANDATORY" desc="Text displayed in the Level column when a policy is mandatory.">
+    Mandatory
+  </message>
+  <message name="IDS_POLICY_SOURCE_ENTERPRISE_DEFAULT" desc="Indicates that a policy is set by default in an enterprise environment and can be overridden (for Brave OS only).">
+    Enterprise default
+  </message>
+  <message name="IDS_POLICY_SOURCE_CLOUD" desc="Indicates that the policy originates from the cloud.">
+    Cloud
+  </message>
+  <message name="IDS_POLICY_SOURCE_MERGED" desc="Indicates that the policy is a merged values from multiple sources.">
+    Merged
+  </message>
+  <message name="IDS_POLICY_SOURCE_ACTIVE_DIRECTORY" desc="Indicates that the policy originates from a local server, e.g. Samba or Active Directory.">
+    <ph name="MICROSOFT_ACTIVE_DIRECTORY">Local Server</ph>
+  </message>
+  <message name="IDS_POLICY_SOURCE_PLATFORM" desc="Indicates that the policy is obtained from the local OS.">
+    Platform
+  </message>
+  <message name="IDS_POLICY_SOURCE_DEVICE_LOCAL_ACCOUNT_OVERRIDE" desc="Indicates that the policy is set programmatically because of an active device-local account session: managed session or Kiosk app (both for Brave OS only). It could have overridden other sources that set this policy.">
+    Device local account override
+  </message>
+  <message name="IDS_POLICY_RISK_TAG_FULL_ADMIN_ACCESS" desc="Title of a group/tag whose policies potentially allow the administrator to access all of a user's data.">
+    Full Admin Access
+  </message>
+  <message name="IDS_POLICY_RISK_TAG_SYSTEM_SECURITY" desc="Title of a group/tag whose policies might influence the system's security.">
+    System Security
+  </message>
+  <message name="IDS_POLICY_RISK_TAG_WEBSITE_SHARING" desc="Title of a group/tag whose policies might lead to information sharing with other websites.">
+    Sharing with Websites
+  </message>
+  <message name="IDS_POLICY_RISK_TAG_ADMIN_SHARING" desc="Title of a group/tag whose policies potentially allow sending information about the user (like activity times) to an administrator.">
+    Sharing with Administrator
+  </message>
+  <message name="IDS_POLICY_RISK_TAG_FILTERING" desc="Title of a group/tag whose policies might restrict web contents which would be visible otherwise (e.g. forced SafeSearch).">
+    Filtering
+  </message>
+  <message name="IDS_POLICY_RISK_TAG_LOCAL_DATA_ACCESS" desc="Title of a group/tag whose policies might allow storage of user data to local drives where others might access them.">
+    Local Data Access
+  </message>
+  <message name="IDS_POLICY_RISK_TAG_GOOGLE_SHARING" desc="Title of a group/tag whose policies enable functionality that might share user data with trusted Brave services.">
+    Sharing with Brave
+  </message>
+  <message name="IDS_POLICY_SHOW_EXPANDED_STATUS" desc="Text for the link that shows the policy status. Used when the policy status is too long to be always visible.">
+    Show status
+  </message>
+  <message name="IDS_POLICY_HIDE_EXPANDED_STATUS" desc="Text for the link that hides the policy status. Used when the policy status is too long to be always visible.">
+    Hide status
+  </message>
+  <message name="IDS_POLICY_LIST_MERGING_WRONG_POLICY_TYPE_SPECIFIED" desc="Text explaining that a policy specified to be merged as a list is not a list.">
+    Warning: This policy was not merged as a list as specified by policy because it is not a list.
+  </message>
+  <message name="IDS_POLICY_DICTIONARY_MERGING_WRONG_POLICY_TYPE_SPECIFIED" desc="Text explaining that a policy specified to be merged as a dictionary is not a dictionary.">
+    Warning: This policy was not merged as a dictionary as specified by policy because it is not a dictionary.
+  </message>
+  <message name="IDS_POLICY_DICTIONARY_MERGING_POLICY_NOT_ALLOWED" desc="Text explaining that a policy specified to be merged as a dictionary is not allowed to be merged.">
+    Warning: This policy was not merged as specified in PolicyDictionaryMultipleSourceMergeList policy because it is not part of the dictionary policies that can be merged.
+  </message>
+  <message name="IDS_POLICY_CONFLICT_SAME_VALUE" desc="Text explaining that a policy had conflicting sources, but with the same values.">
+    More than one source is present for the policy, but the values are the same.
+  </message>
+  <message name="IDS_POLICY_CONFLICT_DIFF_VALUE" desc="Text explaining that a policy had conflicting sources and values.">
+    More than one source with conflicting values is present for this policy!
+  </message>
+  <message name="IDS_POLICY_MIGRATED_OLD_POLICY" desc="Text explaining that a policy is deprecated, and that admins should use the new policy instead">
+    This policy is deprecated. You should use the <ph name="NEW_POLICY">$1<ex>AllowDinosaurEasterEgg</ex></ph> policy instead.
+  </message>
+  <message name="IDS_POLICY_MIGRATED_NEW_POLICY" desc="Text explaining that the policy value was automatically copied from a deprecated policy's value">
+    This policy was automatically copied from the deprecated <ph name="OLD_POLICY">$1<ex>AllowDinosaurEasterEgg</ex></ph> policy. You should use this policy instead.
+  </message>
+  <message name="IDS_POLICY_BLOCKED" desc="Text explaining that a policy is blocked, therefore ignored.">
+    This policy is blocked, its value will be ignored.
+  </message>
+  <message name="IDS_POLICY_IGNORED_BY_GROUP_MERGING" desc="Text explaining that a policy is ignored because another policy of the same group has a higher priority">
+    This policy is ignored because another policy from the same policy group has a higher priority.
+  </message>
+  <message name="IDS_POLICY_INVALID_VALUE" desc="Text explaining that the policy value is invalid">
+    Policy value is not valid.
+  </message>
+  <if expr="not is_macosx">
+    <message name="IDS_POLICY_SPELLCHECK_UNKNOWN_LANGUAGE" desc="Warning message in the policy summary page for the spellcheck policies when a language is unrecognized or unsupported.">
+      List entry "<ph name="LANGUAGE_ID">$1<ex>xx-YY</ex></ph>": Unknown or unsupported language.
+    </message>
+    <message name="IDS_POLICY_SPELLCHECK_BLACKLIST_IGNORE" desc="Warning message in the policy summary page for the spellcheck blacklist policy when a language is both force-enabled and force-disabled. 'SpellcheckLanguage' is a policy name and shouldn't be translated.">
+    List entry "<ph name="LANGUAGE_ID">$1<ex>en-GB</ex></ph>": Entry ignored because it is also included in the SpellcheckLanguage policy.
+    </message>
+  </if>
+  <message name="IDS_POLICY_LABEL_IS_AFFILIATED" desc="Label to indicate if the user is affiliated or not.">
+    Is affiliated:
+  </message>
+  <message name="IDS_POLICY_IS_AFFILIATED_YES" desc="Indicates the user is affiliated.">
+    Yes
+  </message>
+  <message name="IDS_POLICY_IS_AFFILIATED_NO" desc="Indicates the user is not affiliated.">
+    No
+  </message>
+  <message name="IDS_POLICY_LABEL_IS_OFFHOURS_ACTIVE" desc="Label to indicate if the off-hours policy is active or not.">
+    Off-Hours Policy:
+  </message>
+  <message name="IDS_POLICY_OFFHOURS_ACTIVE" desc="Indicates the off-hours policy is active.">
+    Active
+  </message>
+  <message name="IDS_POLICY_OFFHOURS_NOT_ACTIVE" desc="Indicates the off-hours policy is not active.">
+    Not active
+  </message>
+</grit-part>

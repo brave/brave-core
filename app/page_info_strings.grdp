@@ -1,0 +1,507 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+  <!-- Security summary strings -->
+  <message name="IDS_PAGE_INFO_SECURE_SUMMARY" desc="A short summary phrase at the top of the Page Info bubble (which shows when you click the lock icon) that indicates that the connection to the current website is secure.">
+    Connection is secure
+  </message>
+  <message name="IDS_PAGE_INFO_MIXED_CONTENT_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the connection to the current website is using mainly using a secure connection but has some insecure parts (like insecurely loaded images).">
+    Your connection to this site is not fully secure
+  </message>
+  <message name="IDS_PAGE_INFO_NOT_SECURE_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the connection to the current website is not secure.">
+    Your connection to this site is not secure
+  </message>
+  <message name="IDS_PAGE_INFO_MALWARE_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the current website has been flagged as containing malware.">
+    This site contains malware
+  </message>
+  <message name="IDS_PAGE_INFO_SOCIAL_ENGINEERING_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the current website has been flagged as social engineering.">
+    This site is deceptive
+  </message>
+  <message name="IDS_PAGE_INFO_UNWANTED_SOFTWARE_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the current website has been flagged as containing unwanted software.">
+    This site contains harmful programs
+  </message>
+
+  <!-- Internal page summary strings -->
+  <!-- Note: IDS_PAGE_INFO_INTERNAL_PAGE would be here, but it is in components_{chromium,google_chrome}_strings.grd because it uses the browser name. -->
+  <message name="IDS_PAGE_INFO_EXTENSION_PAGE" desc="Message to display in the page info bubble when the page you are on is a chrome-extension:// page. This refers to Brave extensions.">
+    You're viewing an extension page
+  </message>
+  <message name="IDS_PAGE_INFO_VIEW_SOURCE_PAGE" desc="Message to display in the page info bubble when you are viewing page sources by using |View page source| option from the right click menu.">
+    You're viewing the source of a web page
+  </message>
+  <message name="IDS_PAGE_INFO_DEVTOOLS_PAGE" desc="Message to display in the page info bubble when the page you are on is a devtools:// page.">
+    You're viewing a developer tools page
+  </message>
+
+  <!-- Safety Tip summary strings -->
+  <message name="IDS_PAGE_INFO_SAFETY_TIP_BAD_REPUTATION_TITLE" desc="Message to display in the page info bubble when the page you are on triggered a safety tip.">
+    Suspicious site
+  </message>
+  <message name="IDS_PAGE_INFO_SAFETY_TIP_BAD_REPUTATION_DESCRIPTION" desc="Body of message to display in the page info bubble when you are viewing a page that triggered a safety tip.">
+    This site could be fake or fraudulent. Brave recommends leaving now.
+  </message>
+  <message name="IDS_PAGE_INFO_SAFETY_TIP_MORE_INFO_LINK" desc="Text of link to Help Center page on safety tip page info bubble.">
+    Learn more
+  </message>
+  <message name="IDS_PAGE_INFO_SAFETY_TIP_IGNORE_BUTTON" desc="Text of button to ignore a safety tip page info bubble.">
+    Ignore
+  </message>
+  <message name="IDS_PAGE_INFO_SAFETY_TIP_LEAVE_BUTTON" desc="Text of button to leave a suspicious page shown on the safety tip page info bubble.">
+    Leave site
+  </message>
+  <message name="IDS_PAGE_INFO_SAFETY_TIP_LOOKALIKE_TITLE" desc="Title of Safety Tip infobar on a domain that looks like another domain.">
+    Did you mean <ph name="LOOKALIKE_DOMAIN">$1<ex>google.com</ex></ph>?
+  </message>
+  <message name="IDS_PAGE_INFO_SAFETY_TIP_LOOKALIKE_DESCRIPTION" desc="Body of a warning when the user visits a page that triggered a Safety Tip because the domain looked like another domain.">
+    This site's name looks similar to <ph name="LOOKALIKE_DOMAIN">$1<ex>google.com</ex></ph>. Attackers sometimes mimic sites by making hard-to-see changes to the web address.
+  </message>
+
+  <!-- Viewing file strings -->
+  <message name="IDS_PAGE_INFO_FILE_PAGE" desc="Message to display in the page info bubble when the page the user has navigated to is a file:// page">
+    You're viewing a local or shared file
+  </message>
+
+  <!-- Detail strings -->
+  <message name="IDS_PAGE_INFO_SECURE_DETAILS" desc="A short paragraph explaining a secure site to the user.">
+    Your information (for example, passwords or credit card numbers) is private when it is sent to this site.
+  </message>
+  <message name="IDS_PAGE_INFO_MIXED_CONTENT_DETAILS" desc="A short paragraph explaining a partially insecure site to the user.">
+    Attackers might be able to see the images you’re looking at on this site and trick you by modifying them.
+  </message>
+  <message name="IDS_PAGE_INFO_LEGACY_TLS_DETAILS" desc="A short paragraph explaining to the user a site that uses deprecated security configrations.">
+    This site uses an outdated security configuration, which may expose your information (for example, passwords or credit card numbers) when it is sent to this site.
+  </message>
+  <message name="IDS_PAGE_INFO_NOT_SECURE_DETAILS" desc="A short paragraph explaining a non-secure site to the user.">
+    You should not enter any sensitive information on this site (for example, passwords or credit cards), because it could be stolen by attackers.
+  </message>
+  <message name="IDS_PAGE_INFO_MALWARE_DETAILS" desc="A short paragraph explaining to the user that the current website has been flagged as containing malware.">
+    Attackers on this site might attempt to install dangerous programs on your computer that steal or delete your information (for example, photos, passwords, messages, and credit cards).
+  </message>
+  <message name="IDS_PAGE_INFO_SOCIAL_ENGINEERING_DETAILS" desc="A short paragraph explaining to the user that the current website has been flagged as social engineering.">
+    Attackers on this site may trick you into doing something dangerous like installing software or revealing your personal information (for example, passwords, phone numbers, or credit cards).
+  </message>
+  <message name="IDS_PAGE_INFO_UNWANTED_SOFTWARE_DETAILS" desc="A short paragraph explaining to the user that the current website has been flagged as containing unwanted software.">
+    Attackers on this site might try to trick you into installing programs that harm your browsing experience (for example, by changing your homepage or showing extra ads on sites you visit).
+  </message>
+
+  <!-- Identity detail strings shared with iOS -->
+  <message name="IDS_PAGE_INFO_SECURITY_TAB_INSECURE_IDENTITY" desc="The text of the identity section when the page is not secure.">
+    The identity of this website has not been verified.
+  </message>
+
+  <if expr="chromeos">
+    <!-- Administrator-provided certificate notifications -->
+    <message name="IDS_CERT_POLICY_PROVIDED_CERT_MESSAGE" desc="Text that is displayed in the Page Info popup when using an administrator-provided certificate">
+      You have accessed content using an administrator-provided certificate. Data you provide to <ph name="DOMAIN">$1<ex>www.google.com</ex></ph> can be intercepted by your administrator.
+    </message>
+  </if>
+
+  <!-- Strings below are not used on iOS. -->
+  <if expr="not is_ios">
+
+    <!-- Certificate exception decision UI (after clicking through an SSL certificate error) -->
+    <!-- TODO(crbug.com/502473): Support revoking certificate overrides on iOS Page Info. -->
+    <message name="IDS_PAGE_INFO_INVALID_CERTIFICATE_DESCRIPTION" desc="A short paragraph to the user that security warnings are disabled. This is the case when the user has encountered a certificate error for the current site and chosen to override it.">
+      You have chosen to disable security warnings for this site.
+    </message>
+    <if expr="is_android">
+      <message name="IDS_PAGE_INFO_RESET_INVALID_CERTIFICATE_DECISIONS_BUTTON" desc="Text of button in the page info that resets allow/deny decisions of invalid certificates, which will start showing security warnings for the page again.">
+        Stop using an invalid certificate
+      </message>
+    </if>
+    <if expr="not is_android">
+      <message name="IDS_PAGE_INFO_RESET_INVALID_CERTIFICATE_DECISIONS_BUTTON" desc="Text of button in the page info that resets allow/deny decisions of invalid certificates, which will start showing security warnings for the page again.">
+        Re-enable warnings
+      </message>
+    </if>
+
+    <!-- Old connection info UI. Only used on Android, but still compiled on desktop. -->
+    <message name="IDS_PAGE_INFO_HELP_CENTER_LINK" desc="This is the text of the link pointing to the Help Center. This appears at the bottom of the SSL dialog and 'this' refers to the sections within the bubble.">
+      What do these mean?
+    </message>
+    <message name="IDS_PAGE_INFO_SECURITY_TAB_DEPRECATED_SIGNATURE_ALGORITHM" desc="The security summary phrase in the page information panel for a security problem where the site's certificate chain contains a SHA1 signature. Such certificates are treated as errors except when a policy override is present.">
+      The certificate chain for this site contains a certificate signed using SHA-1.
+    </message>
+    <message name="IDS_PAGE_INFO_SECURITY_TAB_ENCRYPTED_CONNECTION_TEXT" desc="The text of the connection section when the connection is encrypted.">
+      Your connection to <ph name="DOMAIN">$1<ex>www.google.com</ex></ph> is encrypted using a modern cipher suite.
+    </message>
+    <message name="IDS_PAGE_INFO_SECURITY_TAB_ENCRYPTED_INSECURE_CONTENT_ERROR" desc="Some extra text of the connection section when the connection is encrypted and the page contains insecure content which has been run (e.g. script).">
+      Further, this page includes other resources which are not secure. These resources can be viewed by others while in transit, and can be modified by an attacker to change the behavior of the page.
+    </message>
+    <message name="IDS_PAGE_INFO_SECURITY_TAB_ENCRYPTED_INSECURE_CONTENT_WARNING" desc="Some extra text of the connection section when the connection is encrypted and the page contains insecure content which has been displayed (e.g. images, CSS).">
+      Further, this page includes other resources which are not secure. These resources can be viewed by others while in transit, and can be modified by an attacker to change the look of the page.
+    </message>
+    <message name="IDS_PAGE_INFO_SECURITY_TAB_ENCRYPTED_INSECURE_FORM_WARNING" desc="Some extra text of the connection section when the connection is encrypted and the page contains a form with a non-secure target.">
+      This page includes a form that may not submit securely. Data you send can be viewed by others while in transit or could be modified by an attacker to change what the server receives.
+    </message>
+    <message name="IDS_PAGE_INFO_SECURITY_TAB_ENCRYPTED_SENTENCE_LINK" desc="Linking 2 sentences in 1 paragraph.">
+      <ph name="SENTENCE1">$1<ex>Your connection is encrypted.</ex></ph> <ph name="SENTENCE2">$2<ex>However, this page includes resources from other pages whose identity cannot be verified.</ex></ph>
+    </message>
+    <message name="IDS_PAGE_INFO_SECURITY_TAB_ENCRYPTION_DETAILS" desc="This message gives details of the cryptographic primitives used to protect the HTTPS connection.">
+      The connection is encrypted using <ph name="CIPHER">$1<ex>AES_128</ex></ph>, with <ph name="MAC">$2<ex>HMAC-SHA1</ex></ph> for message authentication and <ph name="KX">$3<ex>RSA</ex></ph> as the key exchange mechanism.
+    </message>
+    <message name="IDS_PAGE_INFO_SECURITY_TAB_ENCRYPTION_DETAILS_AEAD" desc="This message gives details of the cryptographic primitives used to protect the HTTPS connection. It should be translated in a similar manner as IDS_PAGE_INFO_SECURITY_TAB_ENCRYPTION_DETAILS">
+      The connection is encrypted and authenticated using <ph name="CIPHER">$1<ex>AES_128_GCM</ex></ph> and uses <ph name="KX">$2<ex>RSA</ex></ph> as the key exchange mechanism.
+    </message>
+    <message name="IDS_PAGE_INFO_SECURITY_TAB_NON_UNIQUE_NAME" desc="The text of the identity section when the host is not unique (such as with Intranet host names).">
+      The identity of the server you are connected to cannot be fully validated. You are connected to a server using a name only valid within your network, which an external certificate authority has no way to validate ownership of. As some certificate authorities will issue certificates for these names regardless, there is no way to ensure you are connected to the intended website and not an attacker.
+    </message>
+    <message name="IDS_PAGE_INFO_SECURITY_TAB_NOT_ENCRYPTED_CONNECTION_TEXT" desc="The text of the connection section when the connection is not encrypted.">
+      Your connection to <ph name="DOMAIN">$1<ex>www.google.com</ex></ph> is not encrypted.
+    </message>
+    <message name="IDS_PAGE_INFO_SECURITY_TAB_SSL_VERSION" desc="This message gives the version of the SSL protocol used to protect the HTTPS connection.">
+      The connection uses <ph name="SSL_VERSION">$1<ex>TLS 1.0</ex></ph>.
+    </message>
+    <message name="IDS_PAGE_INFO_SECURITY_TAB_UNKNOWN_PARTY" desc="The default name used when we did not find a principal name.">
+      unknown name
+    </message>
+    <message name="IDS_PAGE_INFO_SECURITY_TAB_WEAK_ENCRYPTION_CONNECTION_TEXT" desc="The text of the connection section when the connection uses weak encryption.">
+      Your connection to <ph name="DOMAIN">$1<ex>www.google.com</ex></ph> is encrypted using an obsolete cipher suite.
+    </message>
+    <if expr="not use_titlecase">
+      <message name="IDS_PAGE_INFO_CERT_INFO_BUTTON" desc="Text of button in the page info that shows the SSL certificate.">
+        Certificate information
+      </message>
+    </if>
+    <if expr="use_titlecase">
+      <message name="IDS_PAGE_INFO_CERT_INFO_BUTTON" desc="In Title Case: Text of button in the page info that shows the SSL certificate.">
+        Certificate Information
+      </message>
+    </if>
+    <message name="IDS_PAGE_INFO_ADDRESS" desc="Locality as reported in the EV identity text.">
+      <ph name="CITY">$1<ex>Mountain View</ex></ph>, <ph name="STATE">$2<ex>California</ex></ph> <ph name="COUNTRY">$3<ex>USA</ex></ph>
+    </message>
+    <message name="IDS_PAGE_INFO_PARTIAL_ADDRESS" desc="Locality with missing state as reported in the EV identity text.">
+      <ph name="CITY">$1<ex>Mountain View</ex></ph>, <ph name="COUNTRY">$2<ex>US</ex></ph>
+    </message>
+    <message name="IDS_PAGE_INFO_SECURITY_TAB_SECURE_IDENTITY_EV_VERIFIED" desc="Describes the legal entity that the current page's HTTPS certificate was issued to. Shown in the certificate area in the Page Info bubble when a HTTPS site with a valid EV certificate is loaded.">
+      Issued to: <ph name="ORGANIZATION">$1<ex>Brave LLC</ex></ph> [<ph name="JURISDICTION">$2<ex>US</ex></ph>]
+    </message>
+
+    <!-- Certificate Viewer link -->
+    <if expr="not is_android">
+      <message name="IDS_PAGE_INFO_CERTIFICATE" desc="Title of the certificate area in the Page Info bubble, shown when a HTTPS site is loaded.">
+        Certificate
+      </message>
+      <message name="IDS_PAGE_INFO_CERTIFICATE_VALID_LINK" desc="This appears in the Page Info bubble when a HTTPS site is loaded with a valid certificate. Text of the link that launches the Certificate Viewer.">
+        Valid
+      </message>
+      <message name="IDS_PAGE_INFO_CERTIFICATE_INVALID_LINK" desc="This appears in the Page Info bubble when a HTTPS site is loaded with an invalid certificate, e.g. https://wrong.host.badssl.com/. Text of the link that launches the Certificate Viewer.">
+        Invalid
+      </message>
+      <message name="IDS_PAGE_INFO_CERTIFICATE_BUTTON_TEXT" desc="Title of the certificate button in the Page Info bubble, shown when a HTTPS site is loaded. Clicking this button will show the certificate viewer.">
+        Certificate <ph name="CERTIFICATE_VALIDITY">$1<ex>(Invalid)</ex></ph>
+      </message>
+      <message name="IDS_PAGE_INFO_CERTIFICATE_VALID_PARENTHESIZED" desc="Button text used as part of IDS_PAGE_INFO_CERTIFICATE_BUTTON_TEXT when the Page Information bubble has been opened for a site with a valid certificate.">
+        (Valid)
+      </message>
+      <message name="IDS_PAGE_INFO_CERTIFICATE_INVALID_PARENTHESIZED" desc="Button text used as part of IDS_PAGE_INFO_CERTIFICATE_BUTTON_TEXT when the Page Information bubble has been opened for a site with an invalid certificate.">
+        (Invalid)
+      </message>
+      <message name="IDS_PAGE_INFO_CERTIFICATE_VALID_LINK_TOOLTIP" desc="The text of the tooltip on IDS_PAGE_INFO_CERTIFICATE_VALID_LINK.">
+        Show certificate (issued by <ph name="ISSUER">$1<ex>Let's Encrypt X3</ex></ph>)
+      </message>
+      <message name="IDS_PAGE_INFO_CERTIFICATE_INVALID_LINK_TOOLTIP" desc="The text of the tooltip on IDS_PAGE_INFO_CERTIFICATE_INVALID_LINK.">
+        Show certificate
+      </message>
+    </if>
+
+    <!-- Cookies -->
+    <if expr="not is_android">
+      <message name="IDS_PAGE_INFO_COOKIES" desc="The label for the Cookies setting in the Page Information Window.">
+        Cookies
+      </message>
+      <message name="IDS_PAGE_INFO_COOKIES_BUTTON_TEXT" desc="The label on a button in the Page Information Window that, when clicked, opens a dialog where cookies can be managed by the user.">
+          Cookies <ph name="NUM_COOKIES">$1<ex>(4 in use)</ex></ph>
+      </message>
+      <message name="IDS_PAGE_INFO_NUM_COOKIES_PARENTHESIZED" desc="The label of the counts for allowed cookies that are in use on the page. This text will be used in IDS_PAGE_INFO_COOKIES_BUTTON_TEXT.">
+        {NUM_COOKIES, plural, =1 {(1 in use)} other {(# in use)}}
+      </message>
+      <message name="IDS_PAGE_INFO_COOKIES_TOOLTIP" desc="The text of the tooltip on IDS_PAGE_INFO_NUM_COOKIES_PARENTHESIZED.">
+        Show cookies
+      </message>
+    </if>
+
+    <!-- Permission names -->
+    <message name="IDS_PAGE_INFO_TYPE_ADS" desc="The label used for the ads permission controls in the Page Info popup.">
+      Ads
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_AUTOPLAY" desc="The label used for the autoplay permission controls in the Page Info popup.">
+      Autoplay
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_BACKGROUND_SYNC" desc="The label used for the background sync permission controls in the Page Info popup.">
+      Background Sync
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_IMAGES" desc="The label used for images permission controls in the Page Info popup.">
+      Images
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_JAVASCRIPT" desc="The label used for JavaScript permission controls in the Page Info popup.">
+      JavaScript
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_POPUPS_REDIRECTS" desc="The label used for the popup/redirect permission controls in the Page Info popup.">
+      Pop-ups and redirects
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_FLASH" desc="The label used for Flash permissions in the Page Info popup.">
+      Flash
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_LOCATION" desc="The label used for geolocation permission controls in the Page Info popup." meaning="Geolocation">
+      Location
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_NOTIFICATIONS" desc="The label used for notifications permission controls in the Page Info popup.">
+      Notifications
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_MIC" desc="The label used for the microphone permission controls in the Page Info popup.">
+      Microphone
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_CAMERA" desc="The label used for the camera permission controls in the Page Info popup.">
+      Camera
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_MIDI_SYSEX" desc="The label used for MIDI system exclusive message permission controls in the Page Info popup.">
+      MIDI devices full control
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_SOUND" desc="The label used for the sound permission controls in the Page Info popup.">
+      Sound
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_CLIPBOARD" desc="The label used for the clipboard permission controls in the Page Info popup.">
+      Clipboard
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_SENSORS" desc="The label used for the sensor permission controls in the Page Info popup. Title case format.">
+      Motion or Light Sensors
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_MOTION_SENSORS" desc="The label used for the motion sensor (accelerometer, gyroscope, magnetometer) permission controls in the Page Info popup. Title case format.">
+      Motion Sensors
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_USB" desc="The label used for the USB permission controls in the Page Info popup.">
+      USB devices
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_SERIAL" desc="The label used for the serial port permission controls in the Page Info popup.">
+      Serial ports
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_NATIVE_FILE_SYSTEM_WRITE" desc="The label used for the native file system write permission controls in the Page Info popup. The write permission determines whether sites are allowed to save to the original file that was selected by the user through the Native File System API.">
+      File editing
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_BLUETOOTH_SCANNING" desc="The label used for the Bluetooth scanning controls in the Page Info popup.">
+      Bluetooth scanning
+    </message>
+    <!-- TODO(crbug.com/716303): A few permissions are missing here. -->
+
+    <!-- Permission values -->
+    <message name="IDS_PAGE_INFO_BUTTON_TEXT_ALLOWED_BY_USER" desc="The Page Info popup contains several buttons for opening dropdown menus and changing site permissions. This is the text of such a button if the permission controlled by the button was explicitly set to allow by the user.">
+      Allow
+    </message>
+    <message name="IDS_PAGE_INFO_BUTTON_TEXT_BLOCKED_BY_USER" desc="The Page Info popup contains several buttons for opening dropdown menus and changing site permissions. This is the text of such a button if the permission controlled by the button was explicitly set to block by the user.">
+      Block
+    </message>
+    <message name="IDS_PAGE_INFO_BUTTON_TEXT_MUTED_BY_USER" desc="The Page Info popup contains several buttons for opening dropdown menus and changing site permissions. This is the text of such a button if the button controls the sound permission and was explicitly set to mute by the user.">
+      Mute
+    </message>
+    <message name="IDS_PAGE_INFO_BUTTON_TEXT_ASK_BY_USER" desc="The Page Info popup contains several buttons for opening dropdown menus and changing site permissions. This is the text of such a button if the permission controlled by the button was explicitly set to ask by the user.">
+      Ask
+    </message>
+    <message name="IDS_PAGE_INFO_BUTTON_TEXT_DETECT_IMPORTANT_CONTENT_BY_USER" desc="The Page Info popup contains several buttons for opening dropdown menus and changing site permissions. This is the text of such a button if the permission controlled by the button was explicitly set to detect important content by the user.">
+      Detect
+    </message>
+
+    <message name="IDS_PAGE_INFO_BUTTON_TEXT_ALLOWED_BY_DEFAULT" desc="The Page Info popup contains several buttons for opening dropdown menus and changing site permissions. This is the text of such a button if the permission controlled by the button is set to the default setting and the default settings is allow.">
+      Allow (default)
+    </message>
+    <message name="IDS_PAGE_INFO_BUTTON_TEXT_AUTOMATIC_BY_DEFAULT" desc="The Page Info popup contains several buttons for opening dropdown menus and changing site permissions. This is the text of such a button if the button controls the sound permission and is set to the default setting and the default setting is automatic.">
+      Automatic (default)
+    </message>
+    <message name="IDS_PAGE_INFO_BUTTON_TEXT_BLOCKED_BY_DEFAULT" desc="The Page Info popup contains several buttons for opening dropdown menus and changing site permissions. This is the text of such a button if the permission controlled by the button is set to the default setting and the default settings is block.">
+      Block (default)
+    </message>
+    <message name="IDS_PAGE_INFO_BUTTON_TEXT_MUTED_BY_DEFAULT" desc="The Page Info popup contains several buttons for opening dropdown menus and changing site permissions. This is the text of such a button if the button controls the sound permission and is set to the default setting and the default setting is mute.">
+      Mute (default)
+    </message>
+    <message name="IDS_PAGE_INFO_BUTTON_TEXT_ASK_BY_DEFAULT" desc="The Page Info popup contains several buttons for opening dropdown menus and changing site permissions. This is the text of such a button if the permission controlled by the button is set to the default setting and the default settings is ask.">
+      Ask (default)
+    </message>
+    <message name="IDS_PAGE_INFO_BUTTON_TEXT_DETECT_IMPORTANT_CONTENT_BY_DEFAULT" desc="The Page Info popup contains several buttons for opening dropdown menus and changing site permissions. This is the text of such a button if the permission controlled by the button is set to the default setting and the default settings is detect important content.">
+      Detect (default)
+    </message>
+
+    <message name="IDS_PAGE_INFO_MENU_ITEM_DEFAULT_ALLOW" desc="The text of the menu item of a permissions menu on the Page Info UI that resets the setting to the default setting which is allow.">
+      Use global default (Allow)
+    </message>
+    <message name="IDS_PAGE_INFO_MENU_ITEM_DEFAULT_BLOCK" desc="The text of the menu item of a permissions menu on the Page Info UI that resets the setting to the default setting which is block.">
+      Use global default (Block)
+    </message>
+    <message name="IDS_PAGE_INFO_MENU_ITEM_DEFAULT_ASK" desc="The text of the menu item of a permissions menu on the Page Info UI that reset the setting to the default setting which is ask.">
+      Use global default (Ask)
+    </message>
+    <message name="IDS_PAGE_INFO_MENU_ITEM_DEFAULT_DETECT_IMPORTANT_CONTENT" desc="The text of the menu item of a permissions menu on the Page Info UI that reset the setting to the default setting which is detect important content.">
+      Use global default (Detect)
+    </message>
+
+    <message name="IDS_PAGE_INFO_MENU_ITEM_ALLOW" desc="The text of the menu item of a permissions menu on the Page Info UI that sets the setting to allow.">
+      Always allow on this site
+    </message>
+    <message name="IDS_PAGE_INFO_MENU_ITEM_BLOCK" desc="The text of the menu item of a permissions menu on the Page Info UI that sets the setting to allow.">
+      Always block on this site
+    </message>
+    <message name="IDS_PAGE_INFO_MENU_ITEM_ASK" desc="The text of the menu item of a permissions menu on the Page Info UI that sets the setting to ask.">
+      Always ask on this site
+    </message>
+     <message name="IDS_PAGE_INFO_MENU_ITEM_DETECT_IMPORTANT_CONTENT" desc="The text of the menu item of a permissions menu on the Page Info UI that sets the setting to detect important content.">
+      Always detect important content on this site
+    </message>
+    <message name="IDS_PAGE_INFO_MENU_ITEM_ADS_BLOCK" desc="The text of the menu item of a permissions menu on the Page Info UI for the ads permission in Block mode">
+      Block on this site
+    </message>
+
+    <message name="IDS_PAGE_INFO_SELECTOR_TOOLTIP" desc="The text of the tooltip on the page info selector.">
+      Select permission for <ph name="PERMISSION_NAME">$1<ex>Location</ex></ph>
+    </message>
+
+    <!-- UI for device access granted to the site using the device chooser (e.g. USB, Bluetooth) -->
+    <message name="IDS_PAGE_INFO_USB_DEVICE_SECONDARY_LABEL" desc="The label displayed underneath the device name to inform the user that the item refers to a USB device.">
+      USB device
+    </message>
+    <message name="IDS_PAGE_INFO_USB_DEVICE_ALLOWED_BY_POLICY_LABEL" desc="The label displayed underneath the device name to inform the user that the item listed is refering to a USB device explicitly allowed by the user's enterprise policy.">
+      USB device allowed by your administrator
+    </message>
+    <message name="IDS_PAGE_INFO_DELETE_USB_DEVICE" desc="The tooltip displayed when hovering over the button that will remove permission to access a USB device that the user previously granted to the site.">
+      Revoke access
+    </message>
+    <message name="IDS_PAGE_INFO_SERIAL_PORT_SECONDARY_LABEL" desc="The label displayed underneath the port name to inform the user that the permission listed refers to a serial port.">
+      Serial port
+    </message>
+    <message name="IDS_PAGE_INFO_DELETE_SERIAL_PORT" desc="The tooltip displayed when hovering over the button that will remove permission to access a serial port that the user previously granted to the site.">
+      Revoke access
+    </message>
+
+    <!-- Site settings link -->
+    <message name="IDS_PAGE_INFO_SITE_SETTINGS_LINK" desc="This is the text of the link pointing to Brave's Site Settings page. This appears at the bottom of the Permissions pane of the Page Information Window.">
+      Site settings
+    </message>
+    <message name="IDS_PAGE_INFO_SITE_SETTINGS_TOOLTIP" desc="The text of the tooltip on IDS_PAGE_INFO_SITE_SETTINGS_LINK.">
+      Open site settings
+    </message>
+
+    <!-- Permission decision strings -->
+    <message name="IDS_PAGE_INFO_PERMISSION_ALLOWED_BY_POLICY" desc="The label used underneath a permission listed in the Page Info bubble if the permission was explicitly allowed by the user's enterprise policy.">
+      Allowed by your administrator
+    </message>
+    <message name="IDS_PAGE_INFO_PERMISSION_BLOCKED_BY_POLICY" desc="The label used underneath a permission listed in the Page Info bubble if the permission was explicitly blocked by the user's enterprise policy.">
+      Blocked by your administrator
+    </message>
+    <message name="IDS_PAGE_INFO_PERMISSION_ASK_BY_POLICY" desc="The label used underneath a permission listed in the Page Info bubble if the permission was explicitly set to 'Ask' by the user's enterprise policy.">
+      Setting controlled by your administrator
+    </message>
+    <message name="IDS_PAGE_INFO_PERMISSION_ALLOWED_BY_EXTENSION" desc="The label used underneath a permission listed in the Page Info bubble if the permission was explicitly allowed by one of the user's extensions.">
+      Allowed by an extension
+    </message>
+    <message name="IDS_PAGE_INFO_PERMISSION_BLOCKED_BY_EXTENSION" desc="The label used underneath a permission listed in the Page Info bubble if the permission was explicitly blocked by one of the user's extensions.">
+      Blocked by an extension
+    </message>
+    <message name="IDS_PAGE_INFO_PERMISSION_ASK_BY_EXTENSION" desc="The label used underneath a permission listed in the Page Info bubble if the permission was explicitly set to 'Ask' by one of the user's extensions.">
+      Setting controlled by an extension
+    </message>
+    <message name="IDS_PAGE_INFO_PERMISSION_AUTOMATICALLY_BLOCKED" desc="The label used underneath a permission listed in the Page Info bubble if the permission was blocked by Brave on behalf of the user.">
+      Automatically blocked
+    </message>
+    <message name="IDS_PAGE_INFO_PERMISSION_ADS_SUBTITLE" desc="A subtitle shown under the ‘Ads’ setting indicating that a site has, in the past, shown intrusive or misleading ads. Shown when user clicks/taps the lock/'Danger' icon in the address bar. Used on both desktop and Android platforms" formatter_data="android_java">
+      Site shows intrusive or misleading ads
+    </message>
+
+    <!-- Permission change infobar. -->
+    <if expr="not is_android">
+      <message name="IDS_PAGE_INFO_INFOBAR_TEXT" desc="The string shown in the infobar after the user has changed site permissions settings, reminding them to reload the page in order for the new settings to take effect.">
+        To apply your updated settings to this site, reload this page
+      </message>
+      <message name="IDS_PAGE_INFO_INFOBAR_BUTTON" desc="The string used in the infobar button allowing the user to reload the page directly from the infobar.">
+        Reload
+      </message>
+    </if>
+
+    <!-- Password Protection -->
+    <if expr="not is_android">
+      <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if user has reuse their google password on current website.">
+        Your password may be compromised
+      </message>
+      <if expr="_google_chrome">
+        <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS" desc="A short paragraph explaining to the user that they has reuse their google password on current website.">
+          You could lose access to your Brave Account. Brave recommends changing your password now. You'll be asked to sign in.
+        </message>
+        <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SAVED" desc="A short paragraph explaining to a Brave user that they have reused their saved password on the current website.">
+          You just entered your password on a deceptive site. Brave recommends changing your password now.
+        </message>
+        <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SYNC" desc="A short paragraph explaining to a Brave sync user that they have reused their Brave password on the current website.">
+          Brave can help you protect your Brave Account and change your password.
+        </message>
+        <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SIGNED_IN_NON_SYNC" desc="A short paragraph explaining to a non-sync user that they have reused their Brave password on the current website.">
+          Brave can help you protect your Brave Account and change your password. This will notify Brave about this site.
+        </message>
+        <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_ENTERPRISE" desc="A short paragraph explaining to the user that they have reused their password on the current website.">
+          You could lose access to your organization's account or experience identity theft. Brave recommends changing your password now.
+        </message>
+        <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_ENTERPRISE_WITH_ORG_NAME" desc="A short paragraph explaining to the user that they have reused their password on the current website.">
+          You could lose access to your <ph name="ORG_NAME">$1<ex>Brave</ex></ph> account or experience identity theft. Brave recommends changing your password now.
+        </message>
+      </if>
+      <if expr="not _google_chrome">
+        <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS" desc="A short paragraph explaining to the user that they has reuse their google password on current website.">
+          You could lose access to your Brave Account. Brave recommends changing your password now. You'll be asked to sign in.
+        </message>
+        <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SAVED" desc="A short paragraph explaining to a Brave user that they have reused their saved password on the current website.">
+          You just entered your password on a deceptive site. Brave recommends changing your password now.
+        </message>
+        <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SYNC" desc="A short paragraph explaining to a Brave sync user that they have reused their Brave password on the current website.">
+          Brave can help you protect your Brave Account and change your password.
+        </message>
+        <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SIGNED_IN_NON_SYNC" desc="A short paragraph explaining to a non-sync user that they have reused their Brave password on the current website.">
+          Brave can help you protect your Brave Account and change your password. This will notify Brave about this site.
+        </message>
+        <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_ENTERPRISE" desc="A short paragraph explaining to the user that they have reused their password on the current website.">
+          You could lose access to your organization's account or experience identity theft. Brave recommends changing your password now.
+        </message>
+        <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_ENTERPRISE_WITH_ORG_NAME" desc="A short paragraph explaining to the user that they have reused their password on the current website.">
+          You could lose access to your <ph name="ORG_NAME">$1<ex>Brave</ex></ph> account or experience identity theft. Brave recommends changing your password now.
+        </message>
+      </if>
+
+      <if expr="use_titlecase">
+        <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_BUTTON" desc="In Title Case: The string used in the page info change password button.">
+          Change Password
+        </message>
+        <message name="IDS_PAGE_INFO_PROTECT_ACCOUNT_BUTTON" desc="In Title Case: The string used in the page info protect account button.">
+          Protect Account
+        </message>
+        <message name="IDS_PAGE_INFO_IGNORE_PASSWORD_WARNING_BUTTON" desc="In Title Case: The string used in the page info ignore password warning button.">
+          Ignore
+        </message>
+      </if>
+      <if expr="not use_titlecase">
+        <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_BUTTON" desc="The string used in the page info change password button.">
+          Change password
+        </message>
+        <message name="IDS_PAGE_INFO_PROTECT_ACCOUNT_BUTTON" desc="The string used in the page info protect account button.">
+          Protect account
+        </message>
+        <message name="IDS_PAGE_INFO_IGNORE_PASSWORD_WARNING_BUTTON" desc="The string used in the page info ignore password warning button.">
+          Ignore
+        </message>
+       </if>
+      <message name="IDS_PAGE_INFO_WHITELIST_PASSWORD_REUSE_BUTTON" desc="The string used in the page info whitelist password reuse button.">
+        Site is legitimate
+      </message>
+    </if>
+  </if>
+
+     <!-- Billing -->
+    <message name="IDS_PAGE_INFO_BILLING_SUMMARY" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the website has been flagged for a billing interstitial">
+      This page may try to charge you money
+    </message>
+    <message name="IDS_PAGE_INFO_BILLING_DETAILS" desc="A one-line summary at the top of the Page Info bubble (which shows when you click the security indicator) if the website has been flagged for a billing interstitial.">
+      These charges could be one-time or recurring and may not be obvious.
+    </message>
+
+  <!-- Misc site settings -->
+  <message name="IDS_PAGE_INFO_VR_PRESENTING_TEXT" desc="The string used in the page info that states that an active VR presentation is in progress.">
+    VR session in progress
+  </message>
+  <message name="IDS_PAGE_INFO_VR_TURN_OFF_BUTTON_TEXT" desc="Label on the button that's used to turn off the VR presentation.">
+    End
+  </message>
+</grit-part>
