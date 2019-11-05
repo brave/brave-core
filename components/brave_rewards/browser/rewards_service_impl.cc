@@ -631,7 +631,8 @@ void RewardsServiceImpl::CreateWalletAttestationResult(
   if (result) {
     bat_ledger_->CreateWallet(result_string, std::move(callback));
   } else {
-    OnWalletInitialized(ledger::Result::SAFETYNET_ATTESTATION_FAILED);
+    LOG(ERROR) << "CreateWalletAttestationResult error: " << result_string;
+    OnWalletInitialized(ledger::Result::LEDGER_ERROR);
   }
 }
 #endif
@@ -1569,7 +1570,7 @@ void RewardsServiceImpl::FetchGrantAttestationResult(const std::string& lang,
       AsWeakPtr()));
   } else {
     LOG(ERROR) << "FetchGrantAttestationResult error: " << result_string;
-    TriggerOnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED, nullptr);
+    TriggerOnGrantFinish(ledger::Result::LEDGER_ERROR, nullptr);
   }
 }
 #endif
@@ -4034,7 +4035,7 @@ void RewardsServiceImpl::GrantAttestationResult(
     return bat_ledger_->ApplySafetynetToken(promotion_id, result_string);
   } else {
     LOG(ERROR) << "GrantAttestationResult error: " << result_string;
-    TriggerOnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED, nullptr);
+    TriggerOnGrantFinish(ledger::Result::LEDGER_ERROR, nullptr);
   }
 }
 #endif
