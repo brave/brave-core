@@ -571,33 +571,37 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   return [NSString stringWithFormat:@"%@%@", prefix, promotionId];
 }
 
-- (void)fetchPromotions:(nullable void (^)(NSArray<BATPromotion *> *grants))completion
+- (void)updatePromotions:(void (^)())completion
 {
-  ledger->FetchPromotions(^(ledger::Result result, std::vector<ledger::PromotionPtr> promotions) {
-    if (result != ledger::Result::LEDGER_OK) {
-      return;
+  ledger->GetAllPromotions(^(ledger::PromotionMap map) {
+    NSMutableArray *promos = [[NSMutableArray alloc] init];
+    for (auto it = map.begin(); it != map.end(); ++it) {
+      if (it->second.get() != nullptr) {
+        [promos addObject:[[BATPromotion alloc] initWithPromotion:*it->second]];
+      }
     }
     for (BATPromotion *promo in [self.mPendingPromotions copy]) {
       [self clearNotificationWithID:[self notificationIDForPromo:promo.cppObjPtr]];
     }
     [self.mFinishedPromotions removeAllObjects];
     [self.mPendingPromotions removeAllObjects];
-    for (int i = 0; i < promotions.size(); i++) {
-      ledger::PromotionPtr promo = std::move(promotions[i]);
-      const auto bridgedPromotion = [[BATPromotion alloc] initWithPromotion:*promo];
-      if (bridgedPromotion.status == BATPromotionStatusFinished) {
-        [self.mFinishedPromotions addObject:bridgedPromotion];
-      } else if (bridgedPromotion.status == BATPromotionStatusActive ||
-                 bridgedPromotion.status == BATPromotionStatusAttested) {
-        [self.mPendingPromotions addObject:bridgedPromotion];
-        bool isUGP = bridgedPromotion.type == BATPromotionTypeUgp;
+    for (BATPromotion *promotion in promos) {
+      if (promotion.status == BATPromotionStatusFinished) {
+        [self.mFinishedPromotions addObject:promotion];
+      } else if (promotion.status == BATPromotionStatusActive ||
+                 promotion.status == BATPromotionStatusAttested) {
+        [self.mPendingPromotions addObject:promotion];
+        bool isUGP = promotion.type == BATPromotionTypeUgp;
         auto notificationKind = isUGP ? BATRewardsNotificationKindGrant : BATRewardsNotificationKindGrantAds;
         
         [self addNotificationOfKind:notificationKind
                            userInfo:nil
-                     notificationID:[self notificationIDForPromo:std::move(promo)]
+                     notificationID:[self notificationIDForPromo:promotion.cppObjPtr]
                            onlyOnce:YES];
       }
+    }
+    if (completion) {
+      completion();
     }
     for (BATBraveLedgerObserver *observer in [self.observers copy]) {
       if (observer.promotionsAdded) {
@@ -607,9 +611,20 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
         observer.finishedPromotionsAdded(self.finishedPromotions);
       }
     }
-    if (completion) {
-      completion(self.pendingPromotions);
+  });
+}
+
+- (void)fetchPromotions:(nullable void (^)(NSArray<BATPromotion *> *grants))completion
+{
+  ledger->FetchPromotions(^(ledger::Result result, std::vector<ledger::PromotionPtr> promotions) {
+    if (result != ledger::Result::LEDGER_OK) {
+      return;
     }
+    [self updatePromotions:^{
+      if (completion) {
+        completion(self.pendingPromotions);
+      }
+    }];
   });
 }
 
@@ -1982,7 +1997,12 @@ BATLedgerBridge(BOOL,
 
 - (void)unblindedTokensReady
 {
-  // TODO implement
+  [self fetchBalance:nil];
+  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
+    if (observer.balanceReportUpdated) {
+      observer.balanceReportUpdated();
+    }
+  }
 }
 
 @end
