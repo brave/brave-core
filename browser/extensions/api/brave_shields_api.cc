@@ -10,11 +10,13 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
+#include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/common/extensions/api/brave_shields.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
+#include "chrome/browser/extensions/chrome_extension_function_details.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
@@ -52,6 +54,25 @@ ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
 
   BraveShieldsWebContentsObserver::FromWebContents(contents)->AllowScriptsOnce(
       params->origins, contents);
+  return RespondNow(NoArguments());
+}
+
+BraveShieldsOpenBrowserActionUIFunction::
+~BraveShieldsOpenBrowserActionUIFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveShieldsOpenBrowserActionUIFunction::Run() {
+  std::unique_ptr<brave_shields::OpenBrowserActionUI::Params> params(
+      brave_shields::OpenBrowserActionUI::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+  std::string error;
+  if (!BraveActionAPI::ShowActionUI(this,
+      brave_extension_id,
+      std::move(params->window_id),
+      std::move(params->relative_path), &error)) {
+    return RespondNow(Error(error));
+  }
   return RespondNow(NoArguments());
 }
 
