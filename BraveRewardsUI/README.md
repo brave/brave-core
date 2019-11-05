@@ -6,5 +6,5 @@ The latest BraveRewards.framework was built on:
 
 ```
 brave-browser/5d5f18be463abaf9b5f23d5b7ec14be51f7fd412
-brave-core/96b0900380ed89472c8ad2a20e1c6bb728e75573
+brave-core/c4ddbe240f2b580f0c1c77e86d3b020b6988ae09
 ```
