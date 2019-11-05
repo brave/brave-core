@@ -19,6 +19,8 @@ class BraveBrowserMainParts : public ChromeBrowserMainParts {
   void PostProfileInit() override;
 
  private:
+  friend class ChromeBrowserMainExtraPartsTor;
+
   DISALLOW_COPY_AND_ASSIGN(BraveBrowserMainParts);
 };
 

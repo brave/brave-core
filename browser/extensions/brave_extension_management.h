@@ -22,6 +22,7 @@ class BraveExtensionManagement : public ExtensionManagement,
 
  private:
   void RegisterBraveExtensions();
+  void CleanupBraveExtensions();
 
   // ExtensionRegistryObserver implementation.
   void OnExtensionLoaded(

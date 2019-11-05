@@ -7,10 +7,8 @@
 
 #include <memory>
 
-#include "base/command_line.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/tor/buildflags.h"
-#include "brave/common/brave_switches.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/browser/extensions/brave_extension_provider.h"
@@ -35,6 +33,7 @@ BraveExtensionManagement::BraveExtensionManagement(Profile* profile)
         static_cast<content::BrowserContext*>(profile)));
   providers_.push_back(
       std::make_unique<BraveExtensionProvider>());
+  CleanupBraveExtensions();
   RegisterBraveExtensions();
 }
 
@@ -43,11 +42,15 @@ BraveExtensionManagement::~BraveExtensionManagement() {
 
 void BraveExtensionManagement::RegisterBraveExtensions() {
 #if BUILDFLAG(ENABLE_TOR)
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-  if (!command_line.HasSwitch(switches::kDisableTorClientUpdaterExtension) &&
-      !profile_->AsTestingProfile())
+  if (!profile_->AsTestingProfile())
     g_brave_browser_process->tor_client_updater()->Register();
+#endif
+}
+
+void BraveExtensionManagement::CleanupBraveExtensions() {
+#if BUILDFLAG(ENABLE_TOR)
+  if (!profile_->AsTestingProfile())
+    g_brave_browser_process->tor_client_updater()->Cleanup();
 #endif
 }
 

@@ -39,6 +39,7 @@ class TorProfileService : public KeyedService {
   ~TorProfileService() override;
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
+  static bool IsTorDisabled();
 
   virtual void SetNewTorCircuit(content::WebContents* web_contents) = 0;
   virtual std::unique_ptr<net::ProxyConfigService>

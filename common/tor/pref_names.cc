@@ -8,7 +8,8 @@
 namespace tor {
 namespace prefs {
 
-extern const char kTorProxyString[] = "tor.tor_proxy_string";
+const char kTorProxyString[] = "tor.tor_proxy_string";
+const char kTorDisabled[] = "tor.tor_disabled";
 
 }  // namespace prefs
 }  // namespace tor
