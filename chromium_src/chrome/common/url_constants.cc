@@ -183,9 +183,7 @@ const char kLegacySupervisedUserManagementDisplayURL[] =
 const char kLegacySupervisedUserManagementURL[] =
     "https://support.brave.com/";
 
-// TODO(nicolaso): Replace with a p-link once it's ready. b/117655761
-const char kManagedUiLearnMoreUrl[] =
-    "https://support.google.com/chromebook/answer/1331549";
+const char kManagedUiLearnMoreUrl[] = "https://support.brave.com/";
 
 const char kMyActivityUrlInClearBrowsingData[] =
     "https://support.brave.com/";

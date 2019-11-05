@@ -22,6 +22,7 @@ class BraveExtensionManagement : public ExtensionManagement,
 
  private:
   void RegisterBraveExtensions();
+  void CleanupBraveExtensions();
 
   // ExtensionRegistryObserver implementation.
   void OnExtensionLoaded(
@@ -34,6 +35,8 @@ class BraveExtensionManagement : public ExtensionManagement,
 
   ScopedObserver<ExtensionRegistry, ExtensionRegistryObserver>
     extension_registry_observer_;
+
+  Profile* profile_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveExtensionManagement);
 };

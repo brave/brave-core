@@ -473,6 +473,7 @@ test("brave_browser_tests") {
     "//brave/browser/extensions/brave_theme_event_router_browsertest.cc",
     "//brave/browser/net/brave_network_delegate_browsertest.cc",
     "//brave/browser/net/brave_network_delegate_hsts_fingerprinting_browsertest.cc",
+    "//brave/browser/policy/brave_policy_browsertest.cc",
     "//brave/browser/profiles/brave_profile_manager_browsertest.cc",
     "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.cc",
     "//brave/browser/renderer_context_menu/brave_mock_render_view_context_menu.h",
@@ -587,7 +588,17 @@ test("brave_browser_tests") {
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
   deps += [
+    "//brave/app:command_ids",
+    "//brave/browser/tor:buildflags",
+    "//brave/common:pref_names",
+    "//brave/common/tor:pref_names",
+    "//brave/components/brave_rewards/browser/buildflags:buildflags",
+    "//brave/components/brave_sync/buildflags:buildflags",
+    "//brave/components/brave_wallet/browser/buildflags:buildflags",
     "//chrome/browser/ui",
+    "//chrome/test:test_support_ui",
+    "//components/prefs",
+    "//content/test:test_support",
     "//ppapi/buildflags",
     ":brave_browser_tests_deps",
     ":browser_tests_runner",
