@@ -118,6 +118,7 @@ source_set("browser_process") {
     "//brave/browser/translate/buildflags",
     "//brave/browser/notifications",
     "//brave/common",
+    "//brave/common:pref_names",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_drm",
@@ -217,8 +218,9 @@ source_set("browser_process") {
 
   if (enable_tor) {
     deps += [
-      "//brave/components/services/tor/public/cpp:manifest",
       "//brave/browser/tor",
+      "//brave/components/services/tor/public/cpp:manifest",
+      "//brave/common/tor:pref_names",
     ]
   }
 

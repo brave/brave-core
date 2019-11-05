@@ -1,3 +1,4 @@
+import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
@@ -60,11 +61,13 @@ source_set("extensions") {
   deps = [
     "//base",
     "//brave/app:brave_generated_resources_grit",
+    "//brave/common",
     "//brave/common:pref_names",
     "//brave/common/extensions/api",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_extension:generated_resources",
     "//brave/components/brave_extension:static_resources",
+    "//chrome/browser/extensions",
     "//components/gcm_driver:gcm_driver",
     "//components/gcm_driver:gcm_buildflags",
     "//components/prefs",
@@ -108,6 +111,11 @@ source_set("extensions") {
     sources += [
       "brave_webtorrent_navigation_throttle.cc",
       "brave_webtorrent_navigation_throttle.h",
+    ]
+  }
+  if (enable_tor) {
+    deps += [
+      "//brave/browser/tor:buildflags",
     ]
   }
 }
