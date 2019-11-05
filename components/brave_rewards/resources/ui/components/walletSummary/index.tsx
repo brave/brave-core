@@ -91,6 +91,9 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
     let current = 0
 
     list.forEach((item, index) => {
+      const translatedLabel = item.translation === 'tokenGrantClaimed' && onlyAnonWallet
+        ? getLocale('pointGrantClaimed')
+        : getLocale(item.translation)
       const data = (this.props.report as Record<string, Token>)[item.key]
       if (data) {
         current++
@@ -102,7 +105,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
             value={data.tokens}
             converted={data.converted}
             color={item.color as Type}
-            title={getLocale(item.translation)}
+            title={translatedLabel}
             isNegative={item.negative}
             onlyAnonWallet={onlyAnonWallet}
             border={all === current ? 'last' : undefined}

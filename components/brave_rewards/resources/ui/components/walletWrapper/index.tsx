@@ -528,7 +528,9 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         typeText = getLocale('braveContributeTitle')
         break
       case 'grant':
-        typeText = getLocale('tokenGrant')
+        typeText = this.props.onlyAnonWallet
+          ? getLocale('pointGrants')
+          : getLocale('tokenGrants')
         break
       case 'insufficientFunds':
         typeText = getLocale('insufficientFunds')

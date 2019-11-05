@@ -16,6 +16,7 @@ import { isPublisherConnectedOrVerified } from '../utils'
 interface Props extends RewardsTip.ComponentProps {
   publisher: RewardsTip.Publisher
   timeout?: number
+  onlyAnonWallet?: boolean
   onTweet?: () => void
 }
 
@@ -45,7 +46,7 @@ class TransientTipOverlay extends React.Component<Props, {}> {
       reconcileStamp
     } = this.props.rewardsDonateData
 
-    const publisher = this.props.publisher
+    const { onlyAnonWallet, publisher } = this.props
     const publisherKey = publisher && publisher.publisherKey
 
     if (!publisherKey) {
@@ -83,6 +84,7 @@ class TransientTipOverlay extends React.Component<Props, {}> {
         amount={currentTipAmount}
         monthlyDate={monthlyDate}
         logo={logo}
+        onlyAnonWallet={onlyAnonWallet}
       />
     )
   }

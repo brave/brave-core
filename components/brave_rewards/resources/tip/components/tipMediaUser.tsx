@@ -47,7 +47,7 @@ class TipMediaUser extends React.Component<Props, {}> {
   }
 
   render () {
-    const { finished, error } = this.props.rewardsDonateData
+    const { finished, error, onlyAnonWallet } = this.props.rewardsDonateData
 
     const publisher = this.props.publisher
     const mediaMetaData = this.props.mediaMetaData
@@ -78,7 +78,7 @@ class TipMediaUser extends React.Component<Props, {}> {
       <>
         {
           !finished && !error
-          ? <Banner publisher={publisher} mediaMetaData={mediaMetaData} />
+          ? <Banner onlyAnonWallet={onlyAnonWallet} publisher={publisher} mediaMetaData={mediaMetaData} />
           : null
         }
         {
@@ -87,6 +87,7 @@ class TipMediaUser extends React.Component<Props, {}> {
               publisher={publisher}
               onTweet={this.onTweet}
               timeout={3000}
+              onlyAnonWallet={onlyAnonWallet}
           />
           : null
         }

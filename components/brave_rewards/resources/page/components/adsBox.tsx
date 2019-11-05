@@ -263,8 +263,10 @@ class AdsBox extends React.Component<Props, State> {
       adsHistory,
       enabledMain,
       firstLoad,
-      balance
+      balance,
+      ui
     } = this.props.rewardsData
+    const { onlyAnonWallet } = ui
 
     if (adsData) {
       adsEnabled = adsData.adsEnabled
@@ -283,13 +285,14 @@ class AdsBox extends React.Component<Props, State> {
     const historyEntries = adsHistory || []
     const rows = this.getAdHistoryData(historyEntries, savedOnly)
     const notEmpty = rows && rows.length !== 0
+    const tokenString = onlyAnonWallet ? 'points' : 'tokens'
 
     return (
       <>
         <Box
           title={getLocale('adsTitle')}
           type={'ads'}
-          description={getLocale('adsDesc')}
+          description={getLocale('adsDesc', { currency: tokenString })}
           toggle={toggle}
           checked={enabled}
           settingsChild={this.adsSettings(enabled && enabledMain)}
@@ -302,6 +305,7 @@ class AdsBox extends React.Component<Props, State> {
         >
           <List title={getLocale('adsCurrentEarnings')}>
             <Tokens
+              onlyAnonWallet={onlyAnonWallet}
               value={estimatedPendingRewards}
               converted={utils.convertBalance(estimatedPendingRewards, balance.rates)}
             />

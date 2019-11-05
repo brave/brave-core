@@ -30,6 +30,7 @@ export interface Props {
   variant?: Variant
   creating?: boolean
   error?: boolean
+  onlyAnonWallet?: boolean
   moreLink?: () => void
   optInAction: () => void
   optInErrorAction: () => void
@@ -64,7 +65,8 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
       optInErrorAction,
       moreLink,
       onTOSClick,
-      onPrivacyClick
+      onPrivacyClick,
+      onlyAnonWallet
     } = this.props
 
     let props = {}
@@ -74,6 +76,10 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
         onClick: moreLink
       }
     }
+
+    const descriptionLocale = onlyAnonWallet && this.locale.desc === 'welcomeDescTwo'
+      ? getLocale('welcomeDescPoints')
+      : getLocale(this.locale.desc)
 
     return (
       <StyledWrapper id={id}>
@@ -89,7 +95,7 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
           </StyledTitle>
           <StyledTrademark>TM</StyledTrademark>
           <StyledDescText>
-            {getLocale(this.locale.desc)}
+            {descriptionLocale}
           </StyledDescText>
           {
             this.props.creating && !this.props.error
