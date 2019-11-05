@@ -24,7 +24,7 @@ exports[`BoxAlert tests basic tests matches the snapshot 1`] = `
     <span
       className="sc-bxivhb gepbvZ"
     >
-      MISSING: adsNotSupported
+      MISSING: adsNotSupportedRegion
     </span>
   </div>
 </div>

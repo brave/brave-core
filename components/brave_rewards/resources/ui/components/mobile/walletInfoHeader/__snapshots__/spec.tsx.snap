@@ -23,7 +23,7 @@ exports[`WalletInfoHeader tests basic tests matches the snapshot 1`] = `
         <span
           className="sc-bZQynM kWKKJe"
         >
-          BAT
+          MISSING: bat
         </span>
       </div>
     </div>

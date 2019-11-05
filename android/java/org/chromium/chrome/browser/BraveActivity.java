@@ -91,7 +91,7 @@ public abstract class BraveActivity extends ChromeActivity {
         } else if (id == R.id.set_default_browser) {
             handleBraveSetDefaultBrowserDialog();
         } else if (id == R.id.brave_rewards_id) {
-            // Implement handler.
+            openNewOrSelectExistingTab(REWARDS_SETTINGS_URL);
         } else {
             return false;
         }

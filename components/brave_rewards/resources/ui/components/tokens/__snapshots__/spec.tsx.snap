@@ -19,7 +19,7 @@ exports[`Tokens tests basic tests matches the snapshot 1`] = `
     <span
       className="sc-ifAKCX buDqon"
     >
-      BAT
+      MISSING: bat
     </span>
   </span>
 </span>
