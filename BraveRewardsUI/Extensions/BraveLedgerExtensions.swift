@@ -205,8 +205,7 @@ extension BraveLedger {
             
             self.attestPromotion(promotion.id, solution: solution) { result, promotion in
               if result == .ledgerOk {
-                self.fetchPromotions { _ in
-                  self.fetchBalance({ _ in })
+                self.updatePromotions {
                   completion(true)
                 }
               } else {
