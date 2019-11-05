@@ -114,10 +114,11 @@ source_set("browser_process") {
     "renderer_host",
     "ui",
     "//base",
-    "//brave/browser/tor",
+    "//brave/browser/tor:buildflags",
     "//brave/browser/translate/buildflags",
     "//brave/browser/notifications",
     "//brave/common",
+    "//brave/common:pref_names",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_drm",
@@ -143,6 +144,7 @@ source_set("browser_process") {
     "//components/gcm_driver:gcm_driver",
     "//components/gcm_driver:gcm_buildflags",
     "//components/password_manager/core/common",
+    "//components/policy/core/browser",
     "//components/prefs",
     "//components/safe_browsing/common:safe_browsing_prefs",
     "//components/search_engines",
@@ -181,8 +183,6 @@ source_set("browser_process") {
       "//brave/app:brave_generated_resources_grit",
     ]
   } else {
-    
-
     sources += [
       "android/brave_relaunch_utils.cc",
       "android/brave_shields_content_settings.cc",
@@ -218,8 +218,9 @@ source_set("browser_process") {
 
   if (enable_tor) {
     deps += [
+      "//brave/browser/tor",
       "//brave/components/services/tor/public/cpp:manifest",
-      "tor",
+      "//brave/common/tor:pref_names",
     ]
   }
 

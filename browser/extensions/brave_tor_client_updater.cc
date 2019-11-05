@@ -8,15 +8,26 @@
 #include <memory>
 #include <string>
 
+#include "base/command_line.h"
 #include "base/files/file_enumerator.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/task/post_task.h"
 #include "base/task_runner.h"
 #include "base/task_runner_util.h"
+#include "brave/browser/tor/tor_profile_service.h"
+#include "brave/common/brave_switches.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile_manager.h"
 #include "third_party/re2/src/re2/re2.h"
 
 using brave_component_updater::BraveComponent;
+
+namespace {
+void DeleteDir(const base::FilePath& path) {
+  base::DeleteFile(path, true);
+}
+}  // namespace
 
 namespace extensions {
 
@@ -110,13 +121,29 @@ BraveTorClientUpdater::~BraveTorClientUpdater() {
 }
 
 void BraveTorClientUpdater::Register() {
-  if (registered_)
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  if (tor::TorProfileService::IsTorDisabled() ||
+      command_line.HasSwitch(switches::kDisableTorClientUpdaterExtension) ||
+      registered_) {
     return;
+  }
 
   BraveComponent::Register(kTorClientComponentName,
-                               g_tor_client_component_id_,
-                               g_tor_client_component_base64_public_key_);
+                           g_tor_client_component_id_,
+                           g_tor_client_component_base64_public_key_);
   registered_ = true;
+}
+
+void BraveTorClientUpdater::Cleanup() {
+  // Delete tor binaries if tor is disabled by gpo.
+  if (tor::TorProfileService::IsTorDisabled()) {
+    ProfileManager* profile_manager = g_browser_process->profile_manager();
+    base::FilePath tor_component_dir =
+        profile_manager->user_data_dir().AppendASCII(kTorClientComponentId);
+    GetTaskRunner()->PostTask(FROM_HERE,
+                              base::BindOnce(&DeleteDir, tor_component_dir));
+  }
 }
 
 void BraveTorClientUpdater::SetExecutablePath(const base::FilePath& path) {

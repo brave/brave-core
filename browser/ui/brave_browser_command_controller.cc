@@ -12,6 +12,7 @@
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
@@ -20,9 +21,14 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "components/prefs/pref_service.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
 #include "brave/components/brave_sync/switches.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service.h"
 #endif
 
 namespace {
@@ -133,8 +139,11 @@ void BraveBrowserCommandController::UpdateCommandForBraveAdblock() {
 }
 
 void BraveBrowserCommandController::UpdateCommandForTor() {
-  UpdateCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE, true);
-  UpdateCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR, true);
+#if BUILDFLAG(ENABLE_TOR)
+  const bool is_tor_enabled = !tor::TorProfileService::IsTorDisabled();
+  UpdateCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE, is_tor_enabled);
+  UpdateCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR, is_tor_enabled);
+#endif
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveSync() {
