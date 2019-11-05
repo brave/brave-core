@@ -29,6 +29,7 @@ export default class GrantComplete extends React.PureComponent<Props, {}> {
   render () {
     const { id, testId, onClose, amount, date, isMobile, tokenTitle, onlyAnonWallet } = this.props
     const batFormatString = onlyAnonWallet ? getLocale('batPoints') : getLocale('bat')
+    const tokensString = onlyAnonWallet ? getLocale('points') : ('tokens')
 
     return (
       <StyledWrapper id={id} data-test-id={testId}>
@@ -47,7 +48,7 @@ export default class GrantComplete extends React.PureComponent<Props, {}> {
         {
           !isMobile && date && date.length > 0
           ? <StyledText>
-              {getLocale('grantDisclaimer')}
+              {getLocale('grantDisclaimer', { currency: tokensString })}
             </StyledText>
           : null
         }

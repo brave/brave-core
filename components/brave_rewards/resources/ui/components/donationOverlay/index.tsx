@@ -48,6 +48,7 @@ export interface Props {
   logo?: string
   amount?: string
   monthlyDate?: string
+  onlyAnonWallet?: boolean
   onTweet?: () => void
   onClose: () => void
 }
@@ -80,7 +81,8 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
       logoBgColor,
       amount,
       monthlyDate,
-      onTweet
+      onTweet,
+      onlyAnonWallet
     } = this.props
     return (
       <StyledOverlayContent>
@@ -139,7 +141,7 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
                             }
                           </StyleSubHeaderText>
                           <StyledDomainText>
-                            {domain}<br />{amount} {getLocale('bat')}
+                            {domain}<br />{amount} {getLocale(onlyAnonWallet ? 'bap' : 'bat')}
                             {
                               monthlyDate
                                 ? `, ${getLocale('monthlyText')}`

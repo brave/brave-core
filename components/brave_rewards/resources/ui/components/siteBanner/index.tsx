@@ -79,6 +79,7 @@ export interface Props {
   learnMoreNotice?: string
   addFundsLink?: string
   isVerified?: boolean
+  onlyAnonWallet?: boolean
 }
 
 interface State {
@@ -255,10 +256,12 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       showUnVerifiedNotice,
       learnMoreNotice,
       addFundsLink,
-      isVerified
+      isVerified,
+      onlyAnonWallet
     } = this.props
 
     const isTwitterTip: boolean = !!(screenName && screenName !== '')
+    const batFormatString = onlyAnonWallet ? 'bap' : 'bat'
 
     return (
       <StyledWrapper
@@ -323,7 +326,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
             </StyledContent>
             <StyledDonation>
               <StyledWallet>
-                {getLocale('walletBalance')} <StyledTokens>{balance} BAT</StyledTokens>
+                {getLocale('walletBalance')} <StyledTokens>{balance} {getLocale(batFormatString)}</StyledTokens>
               </StyledWallet>
               <Donate
                 balance={parseFloat(balance)}
@@ -335,6 +338,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                 donateType={'big'}
                 currentAmount={currentAmount}
                 addFundsLink={addFundsLink}
+                onlyAnonWallet={onlyAnonWallet}
               >
                 {
                   !recurringDonation
