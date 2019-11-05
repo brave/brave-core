@@ -49,14 +49,17 @@ export const getGrants = (grants?: RewardsExtension.Grant[]) => {
   })
 }
 
-export const getGrant = (grant?: RewardsExtension.GrantInfo) => {
+export const getGrant = (grant?: RewardsExtension.GrantInfo, onlyAnonWallet?: boolean) => {
   if (!grant) {
     return grant
   }
 
+  const tokenString = onlyAnonWallet ? getMessage('point') : getMessage('token')
   grant.finishTitle = getMessage('grantFinishTitleUGP')
-  grant.finishText = getMessage('grantFinishTextUGP')
-  grant.finishTokenTitle = getMessage('grantFinishTokenTitleUGP')
+  grant.finishText = getMessage('grantFinishTextUGP', [tokenString])
+  grant.finishTokenTitle = onlyAnonWallet
+    ? getMessage('grantFinishPointTitleUGP')
+    : getMessage('grantFinishTokenTitleUGP')
 
   if (grant.type === 'ads') {
     grant.expiryTime = 0

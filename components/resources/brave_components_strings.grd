@@ -210,7 +210,7 @@
       </message>
       <!-- WebUI rewards resources -->
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_TITLE" desc="">Ads</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESC" desc="">Earn tokens by viewing ads in Brave. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_DESC" desc="">Earn {{currency}} by viewing ads in Brave. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_TITLE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_DESC" desc="">An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The Brave Verified sites you visit will receive your contributions automatically, based on your attention as measured by Brave.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS" desc="">Estimated pending rewards</message>
@@ -226,6 +226,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_4" desc="">4 ads per hour</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_5" desc="">5 ads per hour</message>
       <message name="IDS_BRAVE_UI_BAT_REWARDS_TEXT" desc="">BAT</message>
+      <message name="IDS_BRAVE_UI_BAP_REWARDS_TEXT" desc="">BAP</message>
       <message name="IDS_BRAVE_UI_BAT_POINTS_TEXT" desc="">BAT Points</message>
       <message name="IDS_BRAVE_UI_POINTS_MESSAGE" desc="">can be used in Brave Rewards to contribute to your favorite content creators. BAT Points cannot be exchanged for BAT.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DEVICE_OFFLINE" desc="">The device is offline, please try again later.</message>
@@ -412,7 +413,7 @@
       <message name="IDS_BRAVE_UI_EXCLUDED_SITES" desc="">Total number of sites you excluded from Auto-Contribute:</message>
       <message name="IDS_BRAVE_UI_EXPIRES_ON" desc="">expires on</message>
       <message name="IDS_BRAVE_UI_FOR" desc="">for</message>
-      <message name="IDS_BRAVE_UI_GRANT_DISCLAIMER" desc="">Tokens not used by the expiration date will be automatically returned to the Brave User Growth Pool.</message>
+      <message name="IDS_BRAVE_UI_GRANT_DISCLAIMER" desc="">{{currency}} not used by the expiration date will be automatically returned to the Brave User Growth Pool.</message>
       <message name="IDS_BRAVE_UI_GRANT_EXPIRE" desc="">Grant Expiration Date</message>
       <message name="IDS_BRAVE_UI_GRANTS" desc="">Grants</message>
       <message name="IDS_BRAVE_UI_IMPORT" desc="">import</message>
@@ -448,7 +449,7 @@
       <message name="IDS_BRAVE_UI_NO_GRANTS" desc="">Currently no token grant is available.</message>
       <message name="IDS_BRAVE_UI_NO_ACTIVITY" desc="">No activities yet…</message>
       <message name="IDS_BRAVE_UI_NO_THANK_YOU" desc="">No, thank you</message>
-      <message name="IDS_BRAVE_UI_NOT_ENOUGH_TOKENS" desc="">Not enough tokens. Please</message>
+      <message name="IDS_BRAVE_UI_NOT_ENOUGH_TOKENS" desc="">Not enough {{currency}}. Please</message>
       <message name="IDS_BRAVE_UI_OFF" desc="">off</message>
       <message name="IDS_BRAVE_UI_OK" desc="">ok</message>
       <message name="IDS_BRAVE_UI_ON" desc="">on</message>
@@ -540,8 +541,14 @@
       <message name="IDS_BRAVE_UI_TITLE_ETH" desc="">Ethereum (ETH)</message>
       <message name="IDS_BRAVE_UI_TITLE_LTC" desc="">Litecoin (LTC)</message>
       <message name="IDS_BRAVE_UI_TOKEN_GRANT_CLAIMED" desc="">Token Grants Claimed</message>
+      <message name="IDS_BRAVE_UI_POINT_GRANT_CLAIMED" desc="">Point Grants Claimed</message>
+      <message name="IDS_BRAVE_UI_POINTS" desc="">points</message>
       <message name="IDS_BRAVE_UI_TOKENS" desc="">tokens</message>
+      <message name="IDS_BRAVE_UI_POINT" desc="">Point</message>
+      <message name="IDS_BRAVE_UI_TOKEN" desc="">Token</message>
       <message name="IDS_BRAVE_UI_TOTAL" desc="">Total</message>
+      <message name="IDS_BRAVE_UI_TOKEN_GRANTS" desc="">Token Grants</message>
+      <message name="IDS_BRAVE_UI_POINT_GRANTS" desc="">Point Grants</message>
       <message name="IDS_BRAVE_UI_TRANSACTIONS" desc="">Transactions</message>
       <message name="IDS_BRAVE_UI_TURN_ON_ADS" desc="">Turn on Brave Ads</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_DESC" desc="">This enables both ads and automatic contributions. You can turn them on or off separately at any time.</message>
@@ -563,6 +570,7 @@
       <message name="IDS_BRAVE_UI_WELCOME_BUTTON_TEXT_TWO" desc="">Join Rewards</message>
       <message name="IDS_BRAVE_UI_WELCOME_DESC_ONE" desc="">You can now earn tokens for watching privacy-respecting ads.</message>
       <message name="IDS_BRAVE_UI_WELCOME_DESC_TWO" desc="">Get paid for viewing ads and pay it forward to support your favorite content creators.</message>
+      <message name="IDS_BRAVE_UI_WELCOME_DESC_POINTS" desc="">You can now earn points for watching privacy-respecting ads.</message>
       <message name="IDS_BRAVE_UI_WELCOME_FOOTER_TEXT_ONE" desc="">Check out what’s improved</message>
       <message name="IDS_BRAVE_UI_WELCOME_FOOTER_TEXT_TWO" desc="">Learn More</message>
       <message name="IDS_BRAVE_UI_WELCOME_HEADER_ONE" desc="">We’ve given Brave Payments a big upgrade.</message>
@@ -599,8 +607,9 @@
       <message name="IDS_BRAVE_UI_GRANT_FINISH_TEXT_ADS" desc="Text on final grant screen for UGP">Your Reward is on its way to your Brave Rewards wallet.</message>
       <message name="IDS_BRAVE_UI_GRANT_FINISH_TOKEN_ADS" desc="Token text on final grant screen for UGP">Your Reward Amount</message>
       <message name="IDS_BRAVE_UI_GRANT_FINISH_TITLE_UGP" desc="Title on final grant screen for UGP">It’s your lucky day!</message>
-      <message name="IDS_BRAVE_UI_GRANT_FINISH_TEXT_UGP" desc="Text on final grant screen for UGP">Your token grant is on its way.</message>
+      <message name="IDS_BRAVE_UI_GRANT_FINISH_TEXT_UGP" desc="Text on final grant screen for UGP">Your {{currency}} grant is on its way.</message>
       <message name="IDS_BRAVE_UI_GRANT_FINISH_TOKEN_UGP" desc="Token text on final grant screen for UGP">Free Token Grant</message>
+      <message name="IDS_BRAVE_UI_GRANT_FINISH_POINT_UGP" desc="Token text on final grant screen for UGP">Free Point Grant</message>
 
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_VERIFY" desc="">verify</message>
       <message name="IDS_BRAVE_UI_WALLET_BUTTON_DISCONNECTED" desc="">Disconnected</message>

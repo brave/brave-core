@@ -286,6 +286,7 @@ export class RewardsPanel extends React.Component<Props, State> {
           optInErrorAction={this.onCreate}
           moreLink={this.openRewards}
           onTOSClick={this.openTOS}
+          onlyAnonWallet={this.state.onlyAnonWallet}
           onPrivacyClick={this.openPrivacyPolicy}
         />
       )

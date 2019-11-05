@@ -542,6 +542,7 @@ class PageWallet extends React.Component<Props, State> {
         {
           this.state.modalPendingContribution
             ? <ModalPending
+              onlyAnonWallet={onlyAnonWallet}
               onClose={this.onModalPendingToggle}
               rows={this.getPendingRows()}
               onRemoveAll={this.removeAllPendingContribution}
