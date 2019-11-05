@@ -200,7 +200,7 @@ class Grant extends React.Component<Props, State> {
     return (
       <>
         {
-          this.state.grantShow && type
+          this.state.grantShow && type && grant.showClaim !== false
             ? <GrantClaim type={type as Type} onClaim={this.onGrantShow.bind(this, promoId)} testId={'claimGrant'}/>
             : null
         }

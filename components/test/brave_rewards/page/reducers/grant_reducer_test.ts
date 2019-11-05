@@ -451,7 +451,8 @@ describe('Grant Reducer', () => {
           type: 'ads',
           captcha: 'data:image/jpeg;base64,XXX',
           hint: 'blue',
-          status: null
+          status: null,
+          showClaim: false
         }
       ]
       expectedState.ui.emptyWallet = false

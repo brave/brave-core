@@ -67,6 +67,10 @@
               "type": {
                 "type": "string",
                 "description": "type of the grant (ugp or ads)"
+              },
+              "promotionId": {
+                "type": "string",
+                "description": "promotionId of claimed grant"
               }
             }
           }

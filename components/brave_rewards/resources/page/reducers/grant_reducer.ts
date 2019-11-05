@@ -198,6 +198,7 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
           newGrant.probi = properties.probi
           newGrant.type = properties.type
           newGrant.status = null
+          newGrant.showClaim = false
           ui.emptyWallet = false
 
           state = {

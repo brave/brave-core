@@ -358,6 +358,24 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       state.rewardsState.grants = updatedGrants
       break
 
+    case types.ON_GRANT_FINISH:
+      const properties = payload.properties
+
+      if (properties.status !== 0) {
+        break
+      }
+
+      state = { ...state }
+      const oldNotifications = state.rewardsState.dismissedNotifications
+
+      oldNotifications.push(payload.id)
+      state.rewardsState.dismissedNotifications = oldNotifications
+
+      state.rewardsState.grants = state.rewardsState.grants.filter((grant) => {
+        return grant.promotionId !== properties.promotionId
+      })
+      break
+
     case types.ON_BALANCE:
       state = { ...state }
       state.rewardsState.balance = payload.balance

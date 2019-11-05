@@ -95,6 +95,7 @@ declare namespace Rewards {
     hint?: string
     status?: GrantStatus
     type?: string
+    showClaim?: boolean
   }
 
   export interface GrantResponse {
