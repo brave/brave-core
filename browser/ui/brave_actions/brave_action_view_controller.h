@@ -1,16 +1,18 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #ifndef BRAVE_BROWSER_UI_BRAVE_ACTIONS_BRAVE_ACTION_VIEW_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_BRAVE_ACTIONS_BRAVE_ACTION_VIEW_CONTROLLER_H_
 
 #include <memory>
+#include <string>
 
 #include "chrome/browser/ui/extensions/extension_action_view_controller.h"
 
 class BraveActionIconWithBadgeImageSource;
+class ToolbarActionViewController;
 
 namespace ui {
 class MenuModel;
@@ -29,6 +31,9 @@ class BraveActionViewController : public ExtensionActionViewController {
                        const gfx::Size& size) override;
     bool DisabledClickOpensMenu() const override;
     ui::MenuModel* GetContextMenu() override;
+    bool ExecuteActionUI(std::string relative_path);
+    ToolbarActionViewController* GetExtensionViewController(
+        const std::string& extension_id);
  private:
     ExtensionActionViewController* GetPreferredPopupViewController() override;
     bool TriggerPopupWithUrl(PopupShowAction show_action,

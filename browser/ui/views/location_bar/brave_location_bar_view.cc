@@ -8,6 +8,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/layout_constants.h"

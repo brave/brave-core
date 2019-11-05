@@ -46,6 +46,13 @@ ui::MenuModel* BraveActionViewController::GetContextMenu() {
   return nullptr;
 }
 
+bool BraveActionViewController::ExecuteActionUI(
+    std::string relative_path) {
+  return TriggerPopupWithUrl(PopupShowAction::SHOW_POPUP,
+      extension()->GetResourceURL(relative_path),
+      true);
+}
+
 ExtensionActionViewController*
 BraveActionViewController::GetPreferredPopupViewController() {
   return this;
