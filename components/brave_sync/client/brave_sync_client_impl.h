@@ -69,7 +69,7 @@ class BraveSyncClientImpl : public BraveSyncClient,
   explicit BraveSyncClientImpl(SyncMessageHandler* handler, Profile* profile);
 
   void OnExtensionInitialized() override;
-  void OnSyncEnabledChanged() override;
+  void OnSyncEnabledChanged(bool is_enabled) override;
 
   // ExtensionRegistryObserver:
   void OnExtensionReady(content::BrowserContext* browser_context,

@@ -121,6 +121,7 @@ std::unique_ptr<SyncRecord> CreateDeleteBookmarkByObjectId(
     const std::string& object_id) {
   auto record = std::make_unique<SyncRecord>();
   record->deviceId = brave_sync_prefs->GetThisDeviceId();
+  DCHECK(!record->deviceId.empty());
   record->objectData = jslib_const::SyncObjectData_BOOKMARK;
   record->objectId = object_id;
   record->action = jslib::SyncRecord::Action::A_DELETE;
@@ -168,8 +169,9 @@ BraveProfileSyncServiceImpl::BraveProfileSyncServiceImpl(Profile* profile,
     : BraveProfileSyncService(std::move(init_params)),
       brave_sync_client_(BraveSyncClient::Create(this, profile)) {
   brave_sync_words_ = std::string();
-  brave_sync_prefs_ =
+  brave_sync_prefs_disk_store_ =
       std::make_unique<prefs::Prefs>(sync_client_->GetPrefService());
+  brave_sync_prefs_ = brave_sync_prefs_disk_store_.get();
 
   if (IsSyncSetupIncomplete()) {
     // We want to reset the chain because it was not fully created
@@ -182,6 +184,24 @@ BraveProfileSyncServiceImpl::BraveProfileSyncServiceImpl(Profile* profile,
 
   // Moniter syncs prefs required in GetSettingsAndDevices
   brave_pref_change_registrar_.Init(sync_client_->GetPrefService());
+
+  model_ = BookmarkModelFactory::GetForBrowserContext(profile);
+
+  if (!brave_sync_prefs_->GetSeed().empty() &&
+      !brave_sync_prefs_->GetThisDeviceName().empty()) {
+    brave_sync_configured_ = true;
+    SetupDiskPrefsObservers();
+  } else {
+    brave_sync_prefs_ = &brave_sync_prefs_mem_store_;
+    brave_sync_prefs_mem_store_.AddObserver(base::BindRepeating(
+        &BraveProfileSyncServiceImpl::OnBraveSyncPrefsChanged,
+        base::Unretained(this)));
+  }
+  network_connection_tracker_->AddNetworkConnectionObserver(this);
+  RecordSyncStateP3A();
+}
+
+void BraveProfileSyncServiceImpl::SetupDiskPrefsObservers() {
   brave_pref_change_registrar_.Add(
       prefs::kSyncEnabled,
       base::Bind(&BraveProfileSyncServiceImpl::OnBraveSyncPrefsChanged,
@@ -206,15 +226,6 @@ BraveProfileSyncServiceImpl::BraveProfileSyncServiceImpl(Profile* profile,
       prefs::kSyncHistoryEnabled,
       base::Bind(&BraveProfileSyncServiceImpl::OnBraveSyncPrefsChanged,
                  base::Unretained(this)));
-
-  model_ = BookmarkModelFactory::GetForBrowserContext(profile);
-
-  if (!brave_sync_prefs_->GetSeed().empty() &&
-      !brave_sync_prefs_->GetThisDeviceName().empty()) {
-    brave_sync_configured_ = true;
-  }
-  network_connection_tracker_->AddNetworkConnectionObserver(this);
-  RecordSyncStateP3A();
 }
 
 void BraveProfileSyncServiceImpl::OnNudgeSyncCycle(RecordsListPtr records) {
@@ -223,6 +234,7 @@ void BraveProfileSyncServiceImpl::OnNudgeSyncCycle(RecordsListPtr records) {
 
   for (auto& record : *records) {
     record->deviceId = brave_sync_prefs_->GetThisDeviceId();
+    DCHECK(!record->deviceId.empty());
   }
   if (!records->empty()) {
     if (((!brave_sync::tools::IsTimeEmpty(chain_created_time_) &&
@@ -340,6 +352,7 @@ void BraveProfileSyncServiceImpl::OnResetSync() {
     // We have to send delete record and wait for library deleted response then
     // we can reset it by ResetSyncInternal()
     const std::string device_id = brave_sync_prefs_->GetThisDeviceId();
+    DCHECK(!device_id.empty());
     OnDeleteDevice(device_id);
     reseting_ = true;
   }
@@ -644,15 +657,6 @@ void BraveProfileSyncServiceImpl::OnConnectionChanged(
 }
 
 void BraveProfileSyncServiceImpl::Shutdown() {
-  if (IsSyncSetupIncomplete()) {
-    // Need to clear prefs to allow UI page give us code words next time
-    // But we want to avoid unload of Extension in d`tor
-    brave_pref_change_registrar_.RemoveAll();
-    // This will clear prefs and prepare Chromium sync for the proper enabling
-    // when sync will be turned on next time
-    ResetSyncInternal();
-  }
-
   SignalWaitableEvent();
   syncer::ProfileSyncService::Shutdown();
 }
@@ -700,6 +704,11 @@ void BraveProfileSyncServiceImpl::ResetSyncInternal() {
 void BraveProfileSyncServiceImpl::ForceCompleteReset() {
   if (reseting_) {
     ResetSyncInternal();
+  } else {
+    // Reset only Chromium part
+    ProfileSyncService::GetUserSettings()->SetSyncRequested(false);
+    syncer::SyncPrefs sync_prefs(sync_client_->GetPrefService());
+    sync_prefs.SetLastSyncedTime(base::Time());
   }
 }
 
@@ -888,6 +897,8 @@ void BraveProfileSyncServiceImpl::SendDeviceSyncRecord(
 void BraveProfileSyncServiceImpl::OnResolvedPreferences(
     const RecordsList& records) {
   const std::string this_device_id = brave_sync_prefs_->GetThisDeviceId();
+  DCHECK(!this_device_id.empty());
+
   bool this_device_deleted = false;
   bool contains_only_one_device = false;
 
@@ -916,6 +927,7 @@ void BraveProfileSyncServiceImpl::OnResolvedPreferences(
   if (old_devices_size < 2 && sync_devices->size() >= 2) {
     // Save chain creation time to send bookmarks 30 sec after
     chain_created_time_ = base::Time::Now();
+    SwitchToDiskPrefs();
   }
   if (!tools::IsTimeEmpty(chain_created_time_) &&
       (base::Time::Now() - chain_created_time_).InSeconds() > 30u) {
@@ -935,7 +947,8 @@ void BraveProfileSyncServiceImpl::OnResolvedPreferences(
 void BraveProfileSyncServiceImpl::OnBraveSyncPrefsChanged(
     const std::string& pref) {
   if (pref == prefs::kSyncEnabled) {
-    brave_sync_client_->OnSyncEnabledChanged();
+    bool is_enabled = brave_sync_prefs_->GetSyncEnabled();
+    brave_sync_client_->OnSyncEnabledChanged(is_enabled);
     RecordSyncStateP3A();
   } else if (pref == prefs::kSyncDeviceList) {
     RecordSyncStateP3A();
@@ -1089,8 +1102,8 @@ void BraveProfileSyncServiceImpl::ResendSyncRecords(
       if (node) {
         records->push_back(BookmarkNodeToSyncBookmark(node));
       } else {
-        records->push_back(
-            CreateDeleteBookmarkByObjectId(brave_sync_prefs_.get(), object_id));
+        records->push_back(CreateDeleteBookmarkByObjectId(
+            brave_sync_prefs_disk_store_.get(), object_id));
       }
     }
     if (!records->empty())
@@ -1125,6 +1138,15 @@ void BraveProfileSyncServiceImpl::RecordSyncStateP3A() const {
     result = std::min(device_count, 3UL) - 1UL;
   }
   UMA_HISTOGRAM_EXACT_LINEAR("Brave.Sync.Status", result, 2);
+}
+
+void BraveProfileSyncServiceImpl::SwitchToDiskPrefs() {
+  brave_sync_prefs_ = brave_sync_prefs_disk_store_.get();
+  brave_sync::prefs::CloneMemPrefsToDisk(&brave_sync_prefs_mem_store_,
+                                         brave_sync_prefs_disk_store_.get());
+  SetupDiskPrefsObservers();
+  brave_sync_prefs_mem_store_.ResetObserver();
+  brave_sync_prefs_mem_store_.Clear();
 }
 
 }  // namespace brave_sync

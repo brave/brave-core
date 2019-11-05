@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_sync/brave_sync_prefs_mem_store.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "brave/components/brave_sync/jslib_messages_fwd.h"
@@ -48,6 +49,7 @@ class BraveSyncServiceTest;
 namespace brave_sync {
 namespace prefs {
 class Prefs;
+class PrefsBase;
 }  // namespace prefs
 
 class BraveProfileSyncServiceImpl
@@ -203,7 +205,10 @@ class BraveProfileSyncServiceImpl
   static const std::vector<unsigned> kExponentialWaits;
   static const int kMaxSendRetries;
 
-  std::unique_ptr<brave_sync::prefs::Prefs> brave_sync_prefs_;
+  brave_sync::prefs::PrefsBase* brave_sync_prefs_ = nullptr;
+  std::unique_ptr<brave_sync::prefs::Prefs> brave_sync_prefs_disk_store_;
+  brave_sync::prefs::PrefsMemStore brave_sync_prefs_mem_store_;
+
   // True when is in active sync chain
   bool brave_sync_configured_ = false;
 
@@ -230,6 +235,9 @@ class BraveProfileSyncServiceImpl
 
   base::Time chain_created_time_;
   std::vector<RecordsListPtr> pending_send_records_;
+
+  void SwitchToDiskPrefs();
+  void SetupDiskPrefsObservers();
 
   // Used to ensure that certain operations are performed on the sequence that
   // this object was created on.

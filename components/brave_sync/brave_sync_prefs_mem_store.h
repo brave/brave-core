@@ -3,26 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
-#define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_MEM_STORE_H_
+#define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_MEM_STORE_H_
 
 #include <memory>
 #include <string>
 #include <vector>
 
+#include "base/callback.h"
 #include "base/macros.h"
 #include "base/values.h"
 #include "brave/components/brave_sync/brave_sync_prefs_base.h"
 
-class PrefService;
-class Profile;
-
 namespace base {
 class Time;
-}
-
-namespace user_prefs {
-class PrefRegistrySyncable;
 }
 
 namespace brave_sync {
@@ -32,51 +26,15 @@ class SyncDevices;
 
 namespace prefs {
 
-// String of device id. Supposed to be an integer
-extern const char kSyncDeviceId[];
-// String of 32 comma separated bytes
-// like "145,58,125,111,85,164,236,38,204,67,40,31,182,114,14,152,242,..."
-extern const char kSyncSeed[];
-// For storing previous seed after reset. It won't be cleared by Clear()
-extern const char kSyncPrevSeed[];
-// String of current device namefor sync
-extern const char kSyncDeviceName[];
-// The initial bookmarks order, in a format of
-// "<1(desktop)|2(mobile)>.<device_id>.">
-extern const char kSyncBookmarksBaseOrder[];
-// Boolean, whether sync is enabled for the current device
-// If true, then sync is enabled and running
-// If false, then sync is not enabled or not running (disabled after enabling,
-// but seed and device id are configured)
-extern const char kSyncEnabled[];
-extern const char kSyncBookmarksEnabled[];
-extern const char kSyncSiteSettingsEnabled[];
-extern const char kSyncHistoryEnabled[];
-// The latest time of synced bookmark record, field 'syncTimestamp'
-extern const char kSyncLatestRecordTime[];
-// The latest time of synced device record
-extern const char kSyncLatestDeviceRecordTime[];
-// The time of latest fetch records operation
-extern const char kSyncLastFetchTime[];
-// the list of all known sync devices
-// TODO(bridiver) - this should be a dictionary - not raw json
-extern const char kSyncDeviceList[];
-// the sync api version from the server
-extern const char kSyncApiVersion[];
-// The version of bookmarks state: 0,1,... .
-// Current to migrate to is 1.
-extern const char kSyncMigrateBookmarksVersion[];
-// Cached object_id list for unconfirmed records
-extern const char kSyncRecordsToResend[];
-// Meta info of kSyncRecordsToResend
-extern const char kSyncRecordsToResendMeta[];
-
-class Prefs : public PrefsBase {
+class PrefsMemStore : public PrefsBase {
  public:
-  explicit Prefs(PrefService* pref_service);
-  virtual ~Prefs() = default;
+  using NamedChangeCallback = base::RepeatingCallback<void(const std::string&)>;
 
-  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+  PrefsMemStore();
+  virtual ~PrefsMemStore();
+
+  void AddObserver(const NamedChangeCallback& obs);
+  void ResetObserver();
 
   std::string GetSeed() const override;
   void SetSeed(const std::string& seed) override;
@@ -130,13 +88,37 @@ class Prefs : public PrefsBase {
   void Clear() override;
 
  private:
-  // May be null.
-  PrefService* pref_service_;
+  std::string seed_;
+  std::string prev_seed_;
+  std::string this_device_id_;
+  std::string this_device_name_;
+  bool sync_enabled_ = false;
+  std::string json_device_list_;
 
-  DISALLOW_COPY_AND_ASSIGN(Prefs);
+  bool bookmarks_enabled_ = false;
+  bool site_settings_enabled_ = false;
+  bool history_enabled_ = false;
+
+  int migrate_bookmarks_version_ = 0;
+  std::string api_version_;
+  std::string bookmark_base_order_;
+
+  base::Time last_fetch_time_;
+  // Bookmarks are always enabled on start of sync
+  base::Time latest_record_time_;
+  // We are using latest device record until chain is not fully created
+  base::Time latest_device_record_time_;
+
+  NamedChangeCallback obs_;
+  void FireCallback(const std::string& name);
+
+  PrefsMemStore(const PrefsMemStore&) = delete;
+  PrefsMemStore& operator=(const PrefsMemStore&) = delete;
 };
+
+void CloneMemPrefsToDisk(PrefsMemStore* prefs_mem, PrefsBase* prefs_disk);
 
 }  // namespace prefs
 }  // namespace brave_sync
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_MEM_STORE_H_

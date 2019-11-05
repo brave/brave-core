@@ -35,8 +35,8 @@ if (enable_brave_sync) {
       "//components/prefs",
       "//components/prefs",
       "//components/signin/public/identity_manager",
-      "//components/sync/driver:driver",
       "//components/sync:rest_of_sync",
+      "//components/sync/driver:driver",
       "//content/public/browser",
       "//extensions/browser",
       "//net",
@@ -64,6 +64,9 @@ source_set("prefs") {
   sources = [
     "brave_sync_prefs.cc",
     "brave_sync_prefs.h",
+    "brave_sync_prefs_base.h",
+    "brave_sync_prefs_mem_store.cc",
+    "brave_sync_prefs_mem_store.h",
     "settings.cc",
     "settings.h",
     "sync_devices.cc",
@@ -100,9 +103,7 @@ source_set("crypto") {
   ]
 
   if (is_android) {
-    deps += [
-      "//third_party/android_sdk:cpu_features",
-    ]
+    deps += [ "//third_party/android_sdk:cpu_features" ]
   }
 }
 

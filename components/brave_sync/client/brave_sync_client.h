@@ -81,7 +81,7 @@ class BraveSyncClient {
 
   virtual void OnExtensionInitialized() = 0;
 
-  virtual void OnSyncEnabledChanged() = 0;
+  virtual void OnSyncEnabledChanged(bool is_enabled) = 0;
 };
 
 }   // namespace brave_sync

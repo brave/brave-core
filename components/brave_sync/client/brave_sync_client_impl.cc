@@ -12,14 +12,14 @@
 #include "base/logging.h"
 #include "base/one_shot_event.h"
 #include "brave/browser/extensions/api/brave_sync_event_router.h"
-#include "brave/components/brave_sync/client/client_ext_impl_data.h"
-#include "brave/components/brave_sync/grit/brave_sync_resources.h"
-#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/common/extensions/api/brave_sync.h"
 #include "brave/common/extensions/extension_constants.h"
-#include "chrome/browser/profiles/profile.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_sync/client/client_ext_impl_data.h"
+#include "brave/components/brave_sync/grit/brave_sync_resources.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
+#include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
@@ -126,9 +126,9 @@ void BraveSyncClientImpl::OnExtensionInitialized() {
     brave_sync_event_router_->LoadClient();
 }
 
-void BraveSyncClientImpl::OnSyncEnabledChanged() {
+void BraveSyncClientImpl::OnSyncEnabledChanged(bool is_enabled) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (sync_prefs_->GetSyncEnabled()) {
+  if (is_enabled) {
     LoadOrUnloadExtension(true);
   } else {
     LoadOrUnloadExtension(false);
