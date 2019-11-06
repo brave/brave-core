@@ -57,11 +57,6 @@
   self.ads = nil;
 }
 
-- (void)testEnabledByDefault
-{
-  XCTAssertTrue(self.ads.isEnabled, "Brave Ads should be enabled by default on iOS");
-}
-
 - (void)testPreferencePersistance
 {
   const auto expect = [self expectationWithDescription:@"File IO"];
@@ -83,6 +78,8 @@
 
 - (void)testServeSampleAd
 {
+  self.ads.enabled = YES;
+  
   const auto expect = [self expectationWithDescription:@"Serving Sample Ad"];
   const auto mockHandler = [[_MockNotificationHandler alloc] init];
   mockHandler.showNotification = ^(BATAdsNotification *) {

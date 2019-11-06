@@ -118,6 +118,10 @@
   self.ledger.faviconFetcher = ^(NSURL *pageURL, void (^completion)(NSURL * _Nullable)) {
     [weakSelf.delegate faviconURLFromPageURL:pageURL completion:completion];
   };
+  
+  if (self.ledger.isEnabled) {
+    [self.ads initializeIfAdsEnabled];
+  }
 }
 
 #pragma clang diagnostic push
