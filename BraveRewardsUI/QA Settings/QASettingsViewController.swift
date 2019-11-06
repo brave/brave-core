@@ -141,6 +141,8 @@ public class QASettingsViewController: TableViewController {
           Row(text: "Recovery Key", detailText: obfuscatedPassphrase ?? "—", selection: {
             if let passphrase = self.rewards.ledger.walletPassphrase {
               let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+              sheet.popoverPresentationController?.sourceView = self.view
+              sheet.popoverPresentationController?.sourceRect = self.view.bounds
               sheet.addAction(UIAlertAction(title: "Copy Wallet Passphrase", style: .default, handler: { _ in
                 UIPasteboard.general.string = passphrase
               }))

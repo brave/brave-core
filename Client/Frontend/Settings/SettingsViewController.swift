@@ -400,6 +400,8 @@ class SettingsViewController: TableViewController {
                 Row(text: version, selection: { [unowned self] in
                     let device = UIDevice.current
                     let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                    actionSheet.popoverPresentationController?.sourceView = self.view
+                    actionSheet.popoverPresentationController?.sourceRect = self.view.bounds
                     let iOSVersion = "\(device.systemName) \(UIDevice.current.systemVersion)"
                     
                     let deviceModel = String(format: Strings.Device_template, device.modelName, iOSVersion)

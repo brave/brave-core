@@ -71,6 +71,8 @@ class BraveRewardsSettingsViewController: TableViewController {
                 Section(rows: [
                     Row(text: Strings.WalletCreationDate, detailText: walletCreatedDate, selection: {
                         let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+                        sheet.popoverPresentationController?.sourceView = self.view
+                        sheet.popoverPresentationController?.sourceRect = self.view.bounds
                         sheet.addAction(UIAlertAction(title: Strings.CopyWalletSupportInfo, style: .default, handler: { [unowned self] _ in
                             self.rewards.ledger.rewardsInternalInfo { info in
                                 guard let info = info else { return }
