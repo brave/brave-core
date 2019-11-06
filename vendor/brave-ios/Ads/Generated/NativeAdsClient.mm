@@ -63,7 +63,7 @@ void NativeAdsClient::ShowNotification(std::unique_ptr<ads::NotificationInfo> in
   [bridge_ showNotification:std::move(info)];
 }
 
-bool NativeAdsClient::ShouldShowNotifications() const {
+bool NativeAdsClient::ShouldShowNotifications() {
   return [bridge_ shouldShowNotifications];
 }
 

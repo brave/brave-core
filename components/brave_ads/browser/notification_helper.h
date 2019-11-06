@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_NOTIFICATION_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_NOTIFICATION_HELPER_H_
 
-#include <string>
-
 #include "base/macros.h"
 #include "base/memory/singleton.h"
 #include "build/build_config.h"
@@ -18,15 +16,20 @@ class NotificationHelper {
  public:
   static NotificationHelper* GetInstance();
 
-  virtual bool ShouldShowNotifications() const;
+  void set_for_testing(
+      NotificationHelper* notification_helper);
 
-  virtual bool ShowMyFirstAdNotification() const;
+  virtual bool ShouldShowNotifications();
+
+  virtual bool ShowMyFirstAdNotification();
 
   virtual bool CanShowBackgroundNotifications() const;
 
  protected:
   NotificationHelper();
   virtual ~NotificationHelper();
+
+  static NotificationHelper* GetInstanceImpl();
 
  private:
   friend struct base::DefaultSingletonTraits<NotificationHelper>;

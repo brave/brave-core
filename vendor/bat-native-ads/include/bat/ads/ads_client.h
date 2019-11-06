@@ -128,7 +128,7 @@ class ADS_EXPORT AdsClient {
 
   // Should return |true| if notifications can be displayed; otherwise should
   // return |false|
-  virtual bool ShouldShowNotifications() const = 0;
+  virtual bool ShouldShowNotifications() = 0;
 
   // Should close a notification
   virtual void CloseNotification(

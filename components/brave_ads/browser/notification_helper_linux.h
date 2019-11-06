@@ -6,28 +6,26 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_NOTIFICATION_HELPER_LINUX_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_NOTIFICATION_HELPER_LINUX_H_
 
-#include "base/macros.h"
-#include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 
 #include "brave/components/brave_ads/browser/notification_helper.h"
 
 namespace brave_ads {
 
-class NotificationHelperLinux :
-    public NotificationHelper,
-    public base::SupportsWeakPtr<NotificationHelperLinux> {
+class NotificationHelperLinux
+    : public NotificationHelper,
+      public base::SupportsWeakPtr<NotificationHelperLinux> {
  public:
+  static NotificationHelperLinux* GetInstanceImpl();
+
+ private:
   NotificationHelperLinux();
   ~NotificationHelperLinux() override;
 
-  static NotificationHelperLinux* GetInstance();
-
- private:
   // NotificationHelper impl
-  bool ShouldShowNotifications() const override;
+  bool ShouldShowNotifications() override;
 
-  bool ShowMyFirstAdNotification() const override;
+  bool ShowMyFirstAdNotification() override;
 
   bool CanShowBackgroundNotifications() const override;
 

@@ -28,7 +28,7 @@ NotificationHelperAndroid::NotificationHelperAndroid() = default;
 
 NotificationHelperAndroid::~NotificationHelperAndroid() = default;
 
-bool NotificationHelperAndroid::ShouldShowNotifications() const {
+bool NotificationHelperAndroid::ShouldShowNotifications() {
   JNIEnv* env = base::android::AttachCurrentThread();
   int status = Java_NotificationSystemStatusUtil_getAppNotificationStatus(env);
   bool is_notifications_enabled = (status == kAppNotificationsStatusEnabled ||
@@ -40,12 +40,11 @@ bool NotificationHelperAndroid::ShouldShowNotifications() const {
   auto should_show_notifications =
       CanShowBackgroundNotifications() || is_foreground;
 
-  return is_notifications_enabled &&
-         is_notification_channel_enabled &&
-         should_show_notifications;
+  return is_notifications_enabled && is_notification_channel_enabled &&
+      should_show_notifications;
 }
 
-bool NotificationHelperAndroid::ShowMyFirstAdNotification() const {
+bool NotificationHelperAndroid::ShowMyFirstAdNotification() {
   if (!ShouldShowNotifications()) {
     return false;
   }
@@ -60,6 +59,16 @@ bool NotificationHelperAndroid::CanShowBackgroundNotifications() const {
   JNIEnv* env = base::android::AttachCurrentThread();
   return Java_BraveAdsSignupDialog_showAdsInBackground(env);
 }
+
+NotificationHelperAndroid* NotificationHelperAndroid::GetInstanceImpl() {
+  return base::Singleton<NotificationHelperAndroid>::get();
+}
+
+NotificationHelper* NotificationHelper::GetInstanceImpl() {
+  return NotificationHelperAndroid::GetInstanceImpl();
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 bool NotificationHelperAndroid::IsBraveAdsNotificationChannelEnabled() const {
   if (GetOperatingSystemVersion() < kMinimumVersionForNotificationChannels) {
@@ -84,14 +93,6 @@ int NotificationHelperAndroid::GetOperatingSystemVersion() const {
       &major_version, &minor_version, &bugfix_version);
 
   return major_version;
-}
-
-NotificationHelperAndroid* NotificationHelperAndroid::GetInstance() {
-  return base::Singleton<NotificationHelperAndroid>::get();
-}
-
-NotificationHelper* NotificationHelper::GetInstance() {
-  return NotificationHelperAndroid::GetInstance();
 }
 
 }  // namespace brave_ads

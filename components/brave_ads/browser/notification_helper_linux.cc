@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/browser/notification_helper_linux.h"
-
 #include "chrome/browser/fullscreen.h"
 
 namespace brave_ads {
@@ -13,11 +12,20 @@ NotificationHelperLinux::NotificationHelperLinux() = default;
 
 NotificationHelperLinux::~NotificationHelperLinux() = default;
 
-bool NotificationHelperLinux::ShouldShowNotifications() const {
-  return !IsFullScreenMode();
+bool NotificationHelperLinux::ShouldShowNotifications() {
+  if (IsFullScreenMode()) {
+    LOG(WARNING) << "Notification not made: Full screen mode";
+    return false;
+  }
+
+  // TODO(https://github.com/brave/brave-browser/issues/5542): Investigate how
+  // we can detect if notifications are enabled within the Linux operating
+  // system
+
+  return true;
 }
 
-bool NotificationHelperLinux::ShowMyFirstAdNotification() const {
+bool NotificationHelperLinux::ShowMyFirstAdNotification() {
   return false;
 }
 
@@ -25,12 +33,12 @@ bool NotificationHelperLinux::CanShowBackgroundNotifications() const {
   return true;
 }
 
-NotificationHelperLinux* NotificationHelperLinux::GetInstance() {
+NotificationHelperLinux* NotificationHelperLinux::GetInstanceImpl() {
   return base::Singleton<NotificationHelperLinux>::get();
 }
 
-NotificationHelper* NotificationHelper::GetInstance() {
-  return NotificationHelperLinux::GetInstance();
+NotificationHelper* NotificationHelper::GetInstanceImpl() {
+  return NotificationHelperLinux::GetInstanceImpl();
 }
 
 }  // namespace brave_ads

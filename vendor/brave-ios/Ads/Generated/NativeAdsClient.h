@@ -29,7 +29,7 @@ class NativeAdsClient : public ads::AdsClient {
   const std::vector<std::string> GetUserModelLanguages() const override;
   void LoadUserModelForLanguage(const std::string & language, ads::OnLoadCallback callback) const override;
   void ShowNotification(std::unique_ptr<ads::NotificationInfo> info) override;
-  bool ShouldShowNotifications() const override;
+  bool ShouldShowNotifications() override;
   void CloseNotification(const std::string& id) override;
   void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
   void ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) override;
