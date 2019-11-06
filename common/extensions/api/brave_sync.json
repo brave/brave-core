@@ -268,9 +268,9 @@
         ]
       },
       {
-        "name": "onSendCompactSyncCategory",
+        "name": "sendCompact",
         "type": "function",
-        "description": "Browser sends this to compact recors of a category",
+        "description": "Browser sends this to compact records of a category",
         "parameters": [
           {
             "type": "string",
@@ -409,7 +409,7 @@
         ]
       },
       {
-        "name": "compactedSyncCategory",
+        "name": "onCompactComplete",
         "type": "function",
         "description": "Notify browser that compaction for category is done",
         "parameters": [

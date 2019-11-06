@@ -154,16 +154,16 @@ BraveSyncSaveBookmarksBaseOrderFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction
-BraveSyncCompactedSyncCategoryFunction::Run() {
-  std::unique_ptr<brave_sync::CompactedSyncCategory::Params> params(
-      brave_sync::CompactedSyncCategory::Params::Create(*args_));
+BraveSyncOnCompactCompleteFunction::Run() {
+  std::unique_ptr<brave_sync::OnCompactComplete::Params> params(
+      brave_sync::OnCompactComplete::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   BraveSyncService* sync_service = GetSyncService(browser_context());
   DCHECK(sync_service);
   sync_service->GetBraveSyncClient()
       ->sync_message_handler()
-      ->OnCompactedSyncCategory(params->category_name);
+      ->OnCompactComplete(params->category_name);
 
   return RespondNow(NoArguments());
 }

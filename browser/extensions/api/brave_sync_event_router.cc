@@ -108,14 +108,14 @@ void BraveSyncEventRouter::SendGetBookmarksBaseOrder(
   event_router_->BroadcastEvent(std::move(event));
 }
 
-void BraveSyncEventRouter::SendCompactSyncCategory(
+void BraveSyncEventRouter::SendCompact(
     const std::string& category_name) {
   std::unique_ptr<base::ListValue> args(
-     extensions::api::brave_sync::OnSendCompactSyncCategory::Create(
+     extensions::api::brave_sync::SendCompact::Create(
         category_name).release());
   std::unique_ptr<Event> event(
      new Event(extensions::events::FOR_TEST,
-       extensions::api::brave_sync::OnSendCompactSyncCategory::kEventName,
+       extensions::api::brave_sync::SendCompact::kEventName,
        std::move(args)));
 
   event_router_->BroadcastEvent(std::move(event));

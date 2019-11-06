@@ -602,7 +602,7 @@ void BraveProfileSyncServiceImpl::OnSaveBookmarksBaseOrder(
   OnSyncReady();
 }
 
-void BraveProfileSyncServiceImpl::OnCompactedSyncCategory(
+void BraveProfileSyncServiceImpl::OnCompactComplete(
     const std::string& category) {
   if (category == kBookmarks)
     brave_sync_prefs_->SetLastCompactTimeBookmarks(base::Time::Now());
@@ -842,7 +842,7 @@ void BraveProfileSyncServiceImpl::FetchSyncRecords(const bool bookmarks,
     if (tools::IsTimeEmpty(last_compact_time) ||
         base::Time::Now() - last_compact_time >
             base::TimeDelta::FromDays(kCompactPeriodInDays)) {
-      brave_sync_client_->SendCompactSyncCategory(kBookmarks);
+      brave_sync_client_->SendCompact(kBookmarks);
     }
   }
   if (preferences) {

@@ -52,7 +52,7 @@ class SyncMessageHandler {
   // SAVE_BOOKMARKS_BASE_ORDER
   virtual void OnSaveBookmarksBaseOrder(const std::string& order) = 0;
   // COMOACTED_SYNC_CATEGORY
-  virtual void OnCompactedSyncCategory(const std::string& category_name) = 0;
+  virtual void OnCompactComplete(const std::string& category_name) = 0;
 };
 
 class BraveSyncClient {
@@ -81,7 +81,7 @@ class BraveSyncClient {
   virtual void SendGetBookmarksBaseOrder(const std::string &device_id,
                                          const std::string &platform) = 0;
   // COMPACT_SYNC_CATEGORY
-  virtual void SendCompactSyncCategory(const std::string& category_name) = 0;
+  virtual void SendCompact(const std::string& category_name) = 0;
 
   virtual void OnExtensionInitialized() = 0;
 

@@ -119,10 +119,10 @@ void BraveSyncClientImpl::SendGetBookmarksBaseOrder(
   brave_sync_event_router_->SendGetBookmarksBaseOrder(device_id, platform);
 }
 
-void BraveSyncClientImpl::SendCompactSyncCategory(
+void BraveSyncClientImpl::SendCompact(
     const std::string& category_name) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  brave_sync_event_router_->SendCompactSyncCategory(category_name);
+  brave_sync_event_router_->SendCompact(category_name);
 }
 
 void BraveSyncClientImpl::OnExtensionInitialized() {

@@ -31,7 +31,7 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnResetSync);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, ClientOnGetInitData);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnGetInitData);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSaveBookmarksBaseOrder);
-FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnCompactedSyncCategory);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnCompactComplete);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncPrefsChanged);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncDebug);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, StartSyncNonDeviceRecords);
@@ -41,7 +41,7 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest,
                      OnSetupSyncHaveCode_Reset_SetupAgain);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, ExponentialResend);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords);
-FORWARD_DECLARE_TEST(BraveSyncServiceTest, SendCompactSyncCategory);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, SendCompact);
 
 class BraveSyncServiceTest;
 
@@ -95,7 +95,7 @@ class BraveProfileSyncServiceImpl
   void OnDeletedSyncUser() override;
   void OnDeleteSyncSiteSettings() override;
   void OnSaveBookmarksBaseOrder(const std::string& order) override;
-  void OnCompactedSyncCategory(const std::string& category_name) override;
+  void OnCompactComplete(const std::string& category_name) override;
 
   // syncer::SyncService implementation
   int GetDisableReasons() const override;
@@ -138,7 +138,7 @@ class BraveProfileSyncServiceImpl
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnResetSync);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, ClientOnGetInitData);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSaveBookmarksBaseOrder);
-  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnCompactedSyncCategory);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnCompactComplete);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnGetInitData);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSyncPrefsChanged);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSyncDebug);
@@ -150,7 +150,7 @@ class BraveProfileSyncServiceImpl
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, ExponentialResend);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
                            GetDevicesWithFetchSyncRecords);
-  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, SendCompactSyncCategory);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, SendCompact);
   friend class ::BraveSyncServiceTest;
 
   void SignalWaitableEvent();
