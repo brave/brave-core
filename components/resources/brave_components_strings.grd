@@ -232,7 +232,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_NEXT_DATE" desc="">Next contribution date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_SITES" desc="">Sites viewed</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TITLE" desc="">Tips</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC" desc="">Tip content creators directly as you browse by using the Rewards Panel, or by using the inline tip button on various sites including Twitter, Reddit and GitHub.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DESC" desc="">Tip content creators directly as you browse. You can also set up recurring monthly tips so you can support sites continuously.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_CONTRIBUTION_TITLE" desc="">Monthly Contributions</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_CONTRIBUTION_DESC" desc="">Set up recurring monthly contributions so you can support sites continuously.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_MONTHLY_CONTRIBUTION_EMPTY" desc="">No monthly contributions set up yet.</message>

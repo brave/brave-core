@@ -82,6 +82,8 @@
 <translation id="2188651882929633653">Braveシールドは、ウェブのあらゆる場所でユーザーを追跡しようとする不気味なファイルをブロックします。これにはほとんどの広告が含まれます。特定のサイトがうまく動かない時は、シールドを「ダウン」に設定してみてください。Braveは<ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>完全に匿名の製品分析<ph name="END_LINK_P3A">&lt;/a&gt;</ph>を使い、特定の機能が全体でどの程度使われているか予測します。これは<ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>設定<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>でオフにできます。</translation>
 <translation id="1919345977826869612">広告</translation>
 <translation id="5946611334574299206">Braveで広告を視聴してトークンを獲得しましょう。ご自身の閲覧状況から推測される関心に基づいて、広告が表示されます。個人データや閲覧履歴は一切ブラウザの外へ出ることはありません。</translation>
+<translation id="7233381014326446022">Braveで広告を見ることでポイントを獲得しましょう。広告はあなたのブラウザの利用履歴を元に推測されたものが表示されますが、全ての個人情報や閲覧履歴はブラウザの中だけに保存され外部に出ることはありません。</translation>
+<translation id="768850953428043522">ポイント</translation>
 <translation id="6112368337882254910">自動支援</translation>
 <translation id="3742599705619405136">パブリッシャーやコンテンツ制作者を自動で支援する方法です。毎月の支払いを設定し、いつも通りにウェブ閲覧しましょう。あなたが訪問するサイトはBraveによって計測されたあなたのアテンションに基づき、あなたからの支援を自動的に受けとります。</translation>
 <translation id="20281847067919078">保留中の推定報酬額</translation>
