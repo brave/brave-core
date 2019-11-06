@@ -93,7 +93,6 @@
 		0ABA874320E68CF500D2694F /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C027441B2A348C001B1E88 /* SessionData.swift */; };
 		0AC0D388233BD7880091EFA5 /* Deferred.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7BA4A9631C4CFE840091D032 /* Deferred.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0AC0D389233BD7DA0091EFA5 /* SwiftyJSON.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3B4988CD1E42B01800A12FDA /* SwiftyJSON.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0AC0D38A233BD7DA0091EFA5 /* Alamofire.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7B604F851C494983006EEEC3 /* Alamofire.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0AC0D39A233E7CAF0091EFA5 /* ObjcExceptionBridging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC0D399233E7CAF0091EFA5 /* ObjcExceptionBridging.framework */; };
 		0AC0D3BB233E872C0091EFA5 /* libsqlcipher.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC0D3B2233E86E50091EFA5 /* libsqlcipher.a */; };
 		0AC0D3C2233E889D0091EFA5 /* Storage.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0AC0D3BE233E889D0091EFA5 /* Storage.strings */; };
@@ -104,7 +103,6 @@
 		0ACF621222FDC16A00297576 /* XCGLogger.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7B604FBA1C495D8A006EEEC3 /* XCGLogger.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0ACF621322FDC17800297576 /* Shared.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 288A2D861AB8B3260023ABC3 /* Shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0ACF621422FDC17800297576 /* BraveShared.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5DE7688420B3456C00FF5533 /* BraveShared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		0ACF621722FDC25F00297576 /* Alamofire.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7B604F851C494983006EEEC3 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0ACF621822FDC28B00297576 /* SnapKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7B604FA11C495268006EEEC3 /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0AD4FEEA223A9A5500E00C05 /* BundledJSProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4FEE9223A9A5500E00C05 /* BundledJSProtocol.swift */; };
 		0AD4FEEC223A9C1300E00C05 /* BrowserifiedJS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD4FEEB223A9C1300E00C05 /* BrowserifiedJS.swift */; };
@@ -1122,7 +1120,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				0AC0D389233BD7DA0091EFA5 /* SwiftyJSON.framework in CopyFiles */,
-				0AC0D38A233BD7DA0091EFA5 /* Alamofire.framework in CopyFiles */,
 				0AC0D388233BD7880091EFA5 /* Deferred.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1135,7 +1132,6 @@
 			files = (
 				0A24F7F0233E9136004D2F3A /* ObjcExceptionBridging.framework in CopyFiles */,
 				0ACF621822FDC28B00297576 /* SnapKit.framework in CopyFiles */,
-				0ACF621722FDC25F00297576 /* Alamofire.framework in CopyFiles */,
 				0ACF621322FDC17800297576 /* Shared.framework in CopyFiles */,
 				0ACF621422FDC17800297576 /* BraveShared.framework in CopyFiles */,
 				0ACF621222FDC16A00297576 /* XCGLogger.framework in CopyFiles */,
