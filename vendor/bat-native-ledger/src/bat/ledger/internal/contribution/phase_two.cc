@@ -230,6 +230,7 @@ void PhaseTwo::PrepareBatch(
 
   auto callback = std::bind(&PhaseTwo::PrepareBatchCallback,
                             this,
+                            transaction.viewingId_,
                             _1,
                             _2,
                             _3);
@@ -241,7 +242,38 @@ void PhaseTwo::PrepareBatch(
       callback);
 }
 
+void PhaseTwo::AssignPrepareBallots(
+    const std::string& viewing_id,
+    const std::vector<std::string>& surveyors,
+    braveledger_bat_helper::Ballots* ballots) {
+  for (size_t j = 0; j < surveyors.size(); j++) {
+    std::string error;
+    braveledger_bat_helper::getJSONValue("error", surveyors[j], &error);
+    if (!error.empty()) {
+      // TODO(nejczdovc) what should we do here
+      continue;
+    }
+
+    std::string surveyor_id;
+    bool success = braveledger_bat_helper::getJSONValue("surveyorId",
+                                                        surveyors[j],
+                                                        &surveyor_id);
+    if (!success) {
+      // TODO(nejczdovc) what should we do here
+      continue;
+    }
+
+    for (auto& ballot : *ballots) {
+      if (ballot.surveyorId_ == surveyor_id &&
+          ballot.viewingId_ == viewing_id) {
+        ballot.prepareBallot_ = surveyors[j];
+      }
+    }
+  }
+}
+
 void PhaseTwo::PrepareBatchCallback(
+    const std::string& viewing_id,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
@@ -260,38 +292,9 @@ void PhaseTwo::PrepareBatchCallback(
     return;
   }
 
-  braveledger_bat_helper::Transactions transactions =
-    ledger_->GetTransactions();
   braveledger_bat_helper::Ballots ballots = ledger_->GetBallots();
 
-  for (size_t j = 0; j < surveyors.size(); j++) {
-    std::string error;
-    braveledger_bat_helper::getJSONValue("error", surveyors[j], &error);
-    if (!error.empty()) {
-      // TODO(nejczdovc) what should we do here
-      continue;
-    }
-
-    std::string surveyor_id;
-    bool success = braveledger_bat_helper::getJSONValue("surveyorId",
-                                                        surveyors[j],
-                                                        &surveyor_id);
-    if (!success) {
-      // TODO(nejczdovc) what should we do here
-      continue;
-    }
-
-    for (int i = ballots.size() - 1; i >= 0; i--) {
-      if (ballots[i].surveyorId_ == surveyor_id) {
-        for (size_t k = 0; k < transactions.size(); k++) {
-          if (transactions[k].viewingId_ == ballots[i].viewingId_ &&
-              ballots[i].proofBallot_.empty()) {
-            ballots[i].prepareBallot_ = surveyors[j];
-          }
-        }
-      }
-    }
-  }
+  AssignPrepareBallots(viewing_id, surveyors, &ballots);
 
   ledger_->SetBallots(ballots);
   Proof();
