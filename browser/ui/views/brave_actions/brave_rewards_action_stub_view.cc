@@ -11,10 +11,13 @@
 
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"  // NOLINT
 #include "brave/browser/ui/brave_actions/constants.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"  // NOLINT
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
+#include "components/prefs/pref_service.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/geometry/rect.h"
@@ -29,12 +32,12 @@
 
 namespace {
   constexpr SkColor kRewardsBadgeBg = SkColorSetRGB(0xfb, 0x54, 0x2b);
-  const std::string kRewardsInitialBadgeText = "1";
 }
 
-BraveRewardsActionStubView::BraveRewardsActionStubView(
+BraveRewardsActionStubView::BraveRewardsActionStubView(Profile* profile,
     BraveRewardsActionStubView::Delegate* delegate)
     : LabelButton(this, base::string16()),
+      profile_(profile),
       delegate_(delegate) {
   SetInkDropMode(InkDropMode::ON);
   set_has_ink_drop_action_on_click(true);
@@ -55,8 +58,13 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(
   image_source->SetIcon(gfx::Image(image));
   // Set text on badge
   std::unique_ptr<IconWithBadgeImageSource::Badge> badge;
+  // TODO(petemill): Provide an observer if this value is expected to change
+  // during runtime. At time of implementation, this would only be different
+  // after a restart.
+  badge_text_pref_.Init(
+    brave_rewards::prefs::kRewardsBadgeText, profile->GetPrefs());
   badge.reset(new IconWithBadgeImageSource::Badge(
-          kRewardsInitialBadgeText,
+          badge_text_pref_.GetValue(),
           SK_ColorWHITE,
           kRewardsBadgeBg));
   image_source->SetBadge(std::move(badge));
@@ -85,6 +93,15 @@ BraveRewardsActionStubView::~BraveRewardsActionStubView() {}
 
 void BraveRewardsActionStubView::ButtonPressed(
     Button* sender, const ui::Event& event) {
+  // We only show the default badge text once, so once the button
+  // is clicked then change it back. We consider pressing the button
+  // as an action to 'dismiss' the badge notification.
+  // This cannot be done from the rewards service since it is not
+  // involved in showing the pre-opt-in panel.
+  if (badge_text_pref_.GetValue() != "") {
+    profile_->GetPrefs()->SetString(brave_rewards::prefs::kRewardsBadgeText,
+        "");
+  }
   delegate_->OnRewardsStubButtonClicked();
 }
 
