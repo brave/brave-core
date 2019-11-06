@@ -233,6 +233,7 @@ class BraveProfileSyncServiceImpl
 
   base::Time chain_created_time_;
   std::vector<RecordsListPtr> pending_send_records_;
+  std::unique_ptr<RecordsList> pending_received_records_;
 
   // Used to ensure that certain operations are performed on the sequence that
   // this object was created on.

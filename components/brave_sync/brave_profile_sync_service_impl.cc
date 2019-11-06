@@ -565,13 +565,21 @@ void BraveProfileSyncServiceImpl::OnResolvedSyncRecords(
   } else if (category_name == kBookmarks) {
     for (auto& record : *records) {
       LoadSyncEntityInfo(record.get());
+      // We have to cache records when this function is triggered during
+      // non-PollCycle (ex. compaction update) and wait for next available poll
+      // cycle to have valid get_record_cb_
+      if (!pending_received_records_)
+        pending_received_records_ = std::make_unique<RecordsList>();
+      pending_received_records_->push_back(std::move(record));
     }
     // Send records to syncer
-    if (get_record_cb_)
+    if (get_record_cb_) {
       sync_thread_->task_runner()->PostTask(
           FROM_HERE,
           base::BindOnce(&DoDispatchGetRecordsCallback,
-                         std::move(get_record_cb_), std::move(records)));
+                         std::move(get_record_cb_),
+                         std::move(pending_received_records_)));
+    }
     SignalWaitableEvent();
   } else if (category_name == kHistorySites) {
     NOTIMPLEMENTED();
