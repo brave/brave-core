@@ -38,7 +38,12 @@ bool NotificationHelperMac::ShouldShowNotifications() {
     return true;
   }
 
-  if (!IsNotificationsEnabled()) {
+  if (!IsAuthorized()) {
+    LOG(INFO) << "Notification not made: User denied authorization";
+    return false;
+  }
+
+  if (!IsEnabled()) {
     LOG(INFO) << "Notification not made: Notifications are disabled";
     return false;
   }
@@ -64,7 +69,52 @@ NotificationHelper* NotificationHelper::GetInstanceImpl() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool NotificationHelperMac::IsNotificationsEnabled() const {
+bool NotificationHelperMac::IsAuthorized() const {
+#if !defined(OFFICIAL_BUILD)
+  LOG(WARNING) << "Unable to detect the status of native notifications on non"
+      " official builds as the app is not code signed";
+  return true;
+#else
+  // TODO(https://openradar.appspot.com/27768556): We must mock this function
+  // using NotificationHelperMock as a workaround to UNUserNotificationCenter
+  // throwing an exception during tests
+
+  if (@available(macOS 10.14, *)) {
+    __block bool is_authorized = false;
+
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+
+    UNUserNotificationCenter *notificationCenter =
+        [UNUserNotificationCenter currentNotificationCenter];
+
+    [notificationCenter requestAuthorizationWithOptions:UNAuthorizationOptionAlert
+        completionHandler:^(BOOL granted, NSError * _Nullable error) {
+      if (granted) {
+        LOG(INFO) << "User granted authorization to show notifications";
+      } else {
+        LOG(WARNING) << "User denied authorization to show notifications";
+      }
+
+      is_authorized = granted;
+
+      dispatch_semaphore_signal(semaphore);
+    }];
+
+    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+    dispatch_release(semaphore);
+
+    if (!is_authorized) {
+      LOG(WARNING) << "User is not authorized to show notifications";
+    }
+
+    return is_authorized;
+  }
+
+  return true;
+#endif
+}
+
+bool NotificationHelperMac::IsEnabled() const {
 #if !defined(OFFICIAL_BUILD)
   LOG(WARNING) << "Unable to detect the status of native notifications on non"
       " official builds as the app is not code signed";
@@ -115,6 +165,10 @@ bool NotificationHelperMac::IsNotificationsEnabled() const {
 
     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
     dispatch_release(semaphore);
+
+    if (!is_authorized) {
+      LOG(WARNING) << "Notifications not authorized";
+    }
 
     return is_authorized;
   }

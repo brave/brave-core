@@ -22,7 +22,8 @@ class NotificationHelperMac
   NotificationHelperMac();
   ~NotificationHelperMac() override;
 
-  bool IsNotificationsEnabled() const;
+  bool IsEnabled() const;
+  bool IsAuthorized() const;
 
   // NotificationHelper impl
   bool ShouldShowNotifications() override;
