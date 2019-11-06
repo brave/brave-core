@@ -1,3 +1,4 @@
 Name: Bulgarian adblock list
 URL: https://stanev.org/abp/adblock_bg.txt
-License: unknown
+License: GPL-3.0-or-later OR CC-BY-SA-3.0
+License File: /brave/components/brave_shields/third_party/easylist/LICENSE
