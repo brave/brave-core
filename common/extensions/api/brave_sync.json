@@ -268,6 +268,17 @@
         ]
       },
       {
+        "name": "sendCompact",
+        "type": "function",
+        "description": "Browser sends this to compact records of a category",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "categoryName"
+          }
+        ]
+      },
+      {
         "name": "onLoadClient",
         "type": "function",
         "description": "Browser informs extension page to load js sync library.",
@@ -394,6 +405,17 @@
           {
             "type": "string",
             "name": "order"
+          }
+        ]
+      },
+      {
+        "name": "onCompactComplete",
+        "type": "function",
+        "description": "Notify browser that compaction for category is done",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "category_name"
           }
         ]
       }

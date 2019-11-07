@@ -50,6 +50,11 @@ chrome.braveSync.onSendGetBookmarksBaseOrder.addListener(function(deviceId, plat
   callbackList["get-bookmarks-base-order"](null, deviceId, platform);
 });
 
+chrome.braveSync.sendCompact.addListener(function(category_name) {
+  console.log(`"compact-sync-category" category_name=${JSON.stringify(category_name)}`);
+  callbackList["compact-sync-category"](null, category_name);
+});
+
 chrome.braveSync.onLoadClient.addListener(function() {
   console.log("in chrome.braveSync.onLoadClient");
   LoadJsLibScript();
@@ -185,6 +190,10 @@ class InjectedObject {
       case "save-bookmarks-base-order":
         console.log(`"save-bookmarks-base-order" order=${JSON.stringify(arg1)} `);
         chrome.braveSync.saveBookmarksBaseOrder(arg1/*order*/);
+        break;
+      case "compacted-sync-category":
+        console.log(`"compacted-sync-category" category=${JSON.stringify(arg1)} `);
+        chrome.braveSync.onCompactComplete(arg1/*categoryName*/);
         break;
       default:
         console.log('background.js TAGAB InjectedObject.handleMessage unknown message', message, arg1, arg2, arg3, arg4);
