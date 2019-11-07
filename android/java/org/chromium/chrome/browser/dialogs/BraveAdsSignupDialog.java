@@ -89,8 +89,8 @@ public class BraveAdsSignupDialog {
     }
 
     @CalledByNative
-    public static void enqueueOobeNotificationNative() {
-        enqueueOobeNotification(ContextUtils.getApplicationContext());
+    public static void enqueueOnboardingNotificationNative() {
+        enqueueOnboardingNotification(ContextUtils.getApplicationContext());
     }
 
     @CalledByNative
@@ -100,7 +100,7 @@ public class BraveAdsSignupDialog {
       // return BraveRewardsPreferences.getPrefAdsInBackgroundEnabled();
     }
 
-    private static void enqueueOobeNotification(Context context) {
+    private static void enqueueOnboardingNotification(Context context) {
         if(!OnboardingPrefManager.getInstance().isOnboardingNotificationShown()) {
             AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             Intent intent = new Intent(context, BraveOnboardingNotification.class);

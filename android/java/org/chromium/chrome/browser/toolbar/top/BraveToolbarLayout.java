@@ -421,7 +421,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       mBraveRewardsNativeWorker.GetAllNotifications();
   }
 
-  private boolean mayShowBraveAdsOobeDialog() {
+  private boolean mayShowBraveAdsOnboardingDialog() {
       Context context = getContext();
 
       if (BraveAdsSignupDialog.shouldShowNewUserDialog(context)) {
@@ -463,7 +463,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       updateNotificationBadgeForNewInstall(rewardsEnabled);
       if (!PackageUtils.isFirstInstall(getContext())
               && !OnboardingPrefManager.getInstance().isAdsAvailable()) {
-          mayShowBraveAdsOobeDialog();
+          mayShowBraveAdsOnboardingDialog();
       }
   }
 

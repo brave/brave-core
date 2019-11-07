@@ -53,7 +53,7 @@ bool NotificationHelperAndroid::ShowMyFirstAdNotification() {
   }
 
   JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveAdsSignupDialog_enqueueOobeNotificationNative(env);
+  Java_BraveAdsSignupDialog_enqueueOnboardingNotificationNative(env);
 
   return true;
 }
