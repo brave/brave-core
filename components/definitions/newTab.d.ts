@@ -69,6 +69,7 @@ declare namespace NewTab {
 
   export interface RewardsWidgetState {
     adsEstimatedEarnings: number
+    adsSupported?: boolean
     balance: RewardsBalance
     dismissedNotifications: string[]
     enabledAds: boolean

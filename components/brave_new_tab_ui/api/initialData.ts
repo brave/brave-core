@@ -17,6 +17,7 @@ export type InitialData = {
 
 export type PreInitialRewardsData = {
   enabledAds: boolean
+  adsSupported: boolean
   enabledMain: boolean
 }
 
@@ -54,10 +55,14 @@ export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData
   try {
     const [
       enabledAds,
+      adsSupported,
       enabledMain
     ] = await Promise.all([
       new Promise(resolve => chrome.braveRewards.getAdsEnabled((enabledAds: boolean) => {
         resolve(enabledAds)
+      })),
+      new Promise(resolve => chrome.braveRewards.getAdsSupported((adsSupported: boolean) => {
+        resolve(adsSupported)
       })),
       new Promise(resolve => chrome.braveRewards.getRewardsMainEnabled((enabledMain: boolean) => {
         resolve(enabledMain)
@@ -65,6 +70,7 @@ export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData
     ])
     return {
       enabledAds,
+      adsSupported,
       enabledMain
     } as PreInitialRewardsData
   } catch (err) {
