@@ -30,6 +30,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationSettingsBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveOnboardingNotification.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveSetDefaultBrowserNotificationService.java",
+  "../../brave/android/java/org/chromium/chrome/browser/notifications/channels/BraveChannelDefinitions.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveDuckDuckGoOfferView.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageView.java",
