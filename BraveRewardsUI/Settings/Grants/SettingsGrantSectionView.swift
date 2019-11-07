@@ -50,10 +50,11 @@ class SettingsGrantSectionView: SettingsSectionView {
     switch type {
     case .ads(let amount):
       iconImageView.image = UIImage(frameworkResourceNamed: "icn-ads")
+      
       if let amount = amount {
-        textLabel.text = String(format: Strings.SettingsAdsGrantText, "\(amount) \(Strings.BAT) ")
+        textLabel.text = "\(amount) \(Strings.BAT) \(Strings.SettingsAdsGrantText)"
       } else {
-        textLabel.text = Strings.SettingsAdsGrantText
+        textLabel.text = Strings.NotificationEarningsClaimDefault
       }
     case .ugp:
       iconImageView.image = UIImage(frameworkResourceNamed: "icn-grant")
