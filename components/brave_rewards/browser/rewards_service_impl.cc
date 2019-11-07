@@ -3952,7 +3952,7 @@ void RewardsServiceImpl::RemoveTransferFee(
 
 bool RewardsServiceImpl::OnlyAnonWallet() {
   const int32_t current_country =
-      country_codes::GetCurrentCountryID();
+      country_codes::GetCountryIDFromPrefs(profile_->GetPrefs());
 
   for (const auto& country : kOnlyAnonWalletCountries) {
     if (country.length() != 2) {
