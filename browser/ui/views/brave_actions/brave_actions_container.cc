@@ -179,7 +179,8 @@ void BraveActionsContainer::AddActionStubForRewards() {
     return;
   }
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  actions_[id].view_ = std::make_unique<BraveRewardsActionStubView>(this);
+  actions_[id].view_ = std::make_unique<BraveRewardsActionStubView>(
+      browser_->profile(), this);
   AttachAction(actions_[id]);
 #endif
 }
