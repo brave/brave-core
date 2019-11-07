@@ -8,8 +8,11 @@
 
 #include <memory>
 
+#include "components/prefs/pref_member.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/view.h"
+
+class Profile;
 
 // A button to take the place of an extension that will be loaded in the future.
 // Call SetImage with the BraveActionIconWithBadgeImageSource
@@ -25,7 +28,7 @@ class BraveRewardsActionStubView : public views::LabelButton,
     ~Delegate() {}
   };
 
-  explicit BraveRewardsActionStubView(Delegate* delegate);
+  explicit BraveRewardsActionStubView(Profile* profile, Delegate* delegate);
   ~BraveRewardsActionStubView() override;
 
   // views::ButtonListener
@@ -41,6 +44,8 @@ class BraveRewardsActionStubView : public views::LabelButton,
  private:
   gfx::Size CalculatePreferredSize() const override;
 
+  StringPrefMember badge_text_pref_;
+  Profile* profile_;
   Delegate* delegate_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveRewardsActionStubView);
