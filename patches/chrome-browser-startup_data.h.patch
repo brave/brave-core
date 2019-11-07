@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/startup_data.h b/chrome/browser/startup_data.h
+index e5c8a0195b4365498a0569ddc25cea643564f489..9b4cee0c6e361d70194f386d8d2113f09ed20bd3 100644
+--- a/chrome/browser/startup_data.h
++++ b/chrome/browser/startup_data.h
+@@ -37,6 +37,7 @@ class ChromeFeatureListCreator;
+ class StartupData {
+  public:
+   StartupData();
++  virtual
+   ~StartupData();
+ 
+   // Records core profile settings into the SystemProfileProto. It is important
+@@ -83,6 +84,7 @@ class StartupData {
+     return chrome_feature_list_creator_.get();
+   }
+ 
++  BRAVE_STARTUP_DATA_H_
+  private:
+ #if defined(OS_ANDROID)
+   void PreProfilePrefServiceInit();
