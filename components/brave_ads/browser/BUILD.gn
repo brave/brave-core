@@ -88,12 +88,6 @@ source_set("browser") {
       "//ui/message_center/public/cpp",
     ]
 
-    if (is_mac) {
-      libs = [
-        "UserNotifications.framework",
-      ]
-    }
-
     if (is_win) {
       deps += [
         "//ui/views",
