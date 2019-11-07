@@ -9,8 +9,8 @@
 #include <string>
 
 #include "base/macros.h"
-#include "components/keyed_service/core/keyed_service.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
+#include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 
 class HostContentSettingsMap;
@@ -22,9 +22,8 @@ namespace brave_shields {
 class CookiePrefService : public KeyedService,
                           public content_settings::Observer {
  public:
-  explicit CookiePrefService(
-      HostContentSettingsMap* host_content_settings_map,
-      PrefService* prefs);
+  explicit CookiePrefService(HostContentSettingsMap* host_content_settings_map,
+                             PrefService* prefs);
   ~CookiePrefService() override;
 
  private:
@@ -34,6 +33,7 @@ class CookiePrefService : public KeyedService,
     ~Lock();
     bool Try();
     void Release();
+
    private:
     bool locked_;
     DISALLOW_COPY_AND_ASSIGN(Lock);
@@ -42,11 +42,10 @@ class CookiePrefService : public KeyedService,
   void OnPreferenceChanged();
 
   // content_settings::Observer overrides:
-  void OnContentSettingChanged(
-    const ContentSettingsPattern& primary_pattern,
-    const ContentSettingsPattern& secondary_pattern,
-    ContentSettingsType content_type,
-    const std::string& resource_identifier) override;
+  void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,
+                               const ContentSettingsPattern& secondary_pattern,
+                               ContentSettingsType content_type,
+                               const std::string& resource_identifier) override;
 
   Lock lock_;
   HostContentSettingsMap* host_content_settings_map_;

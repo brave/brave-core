@@ -77,8 +77,7 @@ void CookiePrefService::Lock::Release() {
 CookiePrefService::CookiePrefService(
     HostContentSettingsMap* host_content_settings_map,
     PrefService* prefs)
-    : host_content_settings_map_(host_content_settings_map),
-      prefs_(prefs) {
+    : host_content_settings_map_(host_content_settings_map), prefs_(prefs) {
   SetCookiePrefDefaults(host_content_settings_map, prefs);
   host_content_settings_map_->AddObserver(this);
   pref_change_registrar_.Init(prefs_);
@@ -112,10 +111,10 @@ void CookiePrefService::OnContentSettingChanged(
       secondary_pattern == ContentSettingsPattern::Wildcard() &&
       content_type == CONTENT_SETTINGS_TYPE_PLUGINS &&
       resource_identifier == brave_shields::kCookies) {
-     if (lock_.Try()) {
-       SetCookiePrefDefaults(host_content_settings_map_, prefs_);
-       lock_.Release();
-     }
+    if (lock_.Try()) {
+      SetCookiePrefDefaults(host_content_settings_map_, prefs_);
+      lock_.Release();
+    }
   }
 }
 

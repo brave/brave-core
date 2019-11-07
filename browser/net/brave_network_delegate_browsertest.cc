@@ -52,21 +52,19 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   }
 
   void DefaultBlockAllCookies() {
-    brave_shields::SetCookieControlType(browser()->profile(),
-                                        brave_shields::ControlType::BLOCK,
-                                        GURL());
+    brave_shields::SetCookieControlType(
+        browser()->profile(), brave_shields::ControlType::BLOCK, GURL());
   }
 
   void BlockThirdPartyCookies() {
-    brave_shields::SetCookieControlType(browser()->profile(),
-                                        brave_shields::ControlType::BLOCK_THIRD_PARTY,
-                                        GURL());
+    brave_shields::SetCookieControlType(
+        browser()->profile(), brave_shields::ControlType::BLOCK_THIRD_PARTY,
+        GURL());
   }
 
   void AllowAllCookies() {
-    brave_shields::SetCookieControlType(browser()->profile(),
-                                        brave_shields::ControlType::ALLOW,
-                                        GURL());
+    brave_shields::SetCookieControlType(
+        browser()->profile(), brave_shields::ControlType::ALLOW, GURL());
   }
 
   void AllowCookies() {
@@ -82,25 +80,24 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   }
 
   void ShieldsDown() {
-    brave_shields::SetBraveShieldsEnabled(browser()->profile(),
-                                          false,
+    brave_shields::SetBraveShieldsEnabled(browser()->profile(), false,
                                           top_level_page_url_);
   }
 
-  void NavigateToPageWithFrame(const EmbeddedTestServer *server,
+  void NavigateToPageWithFrame(const EmbeddedTestServer* server,
                                const std::string& host) {
-      ui_test_utils::NavigateToURL(browser(),
-                                   server->GetURL(host, "/cookie_iframe.html"));
+    ui_test_utils::NavigateToURL(browser(),
+                                 server->GetURL(host, "/cookie_iframe.html"));
   }
 
-  void ExpectCookiesOnHost(const EmbeddedTestServer *server,
+  void ExpectCookiesOnHost(const EmbeddedTestServer* server,
                            const std::string& host,
                            const std::string& expected) {
-      EXPECT_EQ(expected, content::GetCookies(browser()->profile(),
-                                              server->GetURL(host, "/")));
+    EXPECT_EQ(expected, content::GetCookies(browser()->profile(),
+                                            server->GetURL(host, "/")));
   }
 
-  void NavigateFrameTo(const EmbeddedTestServer *server,
+  void NavigateFrameTo(const EmbeddedTestServer* server,
                        const std::string& host,
                        const std::string& path) {
     GURL page = server->GetURL(host, path);
@@ -146,7 +143,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, Iframe3PShieldsDown) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
-    Iframe3PShieldsDownOverridesCookieBlock) {
+                       Iframe3PShieldsDownOverridesCookieBlock) {
   // create an explicit override
   BlockCookies();
   ui_test_utils::NavigateToURL(browser(), url_);
@@ -156,8 +153,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
 
   ShieldsDown();
   ui_test_utils::NavigateToURL(browser(), url_);
-  cookie =
-      content::GetCookies(browser()->profile(), GURL("http://c.com/"));
+  cookie = content::GetCookies(browser()->profile(), GURL("http://c.com/"));
   EXPECT_FALSE(cookie.empty());
 }
 
@@ -179,15 +175,13 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   EXPECT_FALSE(cookie.empty());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
-                       DefaultCookiesBlocked) {
+IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, DefaultCookiesBlocked) {
   DefaultBlockAllCookies();
   ui_test_utils::NavigateToURL(browser(), nested_iframe_script_url_);
   std::string cookie =
       content::GetCookies(browser()->profile(), GURL("http://c.com/"));
   EXPECT_TRUE(cookie.empty()) << "Actual cookie: " << cookie;
-  cookie =
-      content::GetCookies(browser()->profile(), GURL("http://a.com/"));
+  cookie = content::GetCookies(browser()->profile(), GURL("http://a.com/"));
   EXPECT_TRUE(cookie.empty()) << "Actual cookie: " << cookie;
 }
 
@@ -196,18 +190,15 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   DefaultBlockAllCookies();
   BlockThirdPartyCookies();
 
-  EXPECT_TRUE(browser()->profile()->GetPrefs()->
-      GetBoolean(prefs::kBlockThirdPartyCookies));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->
-      GetInteger("profile.default_content_setting_values.cookies"),
-      ContentSetting::CONTENT_SETTING_ALLOW);
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
+      prefs::kBlockThirdPartyCookies));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
+                "profile.default_content_setting_values.cookies"),
+            ContentSetting::CONTENT_SETTING_ALLOW);
 
-  NavigateToPageWithFrame(embedded_test_server(),
-                          "a.com");
+  NavigateToPageWithFrame(embedded_test_server(), "a.com");
 
-  NavigateFrameTo(embedded_test_server(),
-                  "b.com",
-                  "/set-cookie?name=Good");
+  NavigateFrameTo(embedded_test_server(), "b.com", "/set-cookie?name=Good");
 
   ExpectCookiesOnHost(embedded_test_server(), "a.com", "name=Good");
   ExpectCookiesOnHost(embedded_test_server(), "b.com", "");
@@ -218,18 +209,15 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   DefaultBlockAllCookies();
   AllowAllCookies();
 
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->
-      GetBoolean(prefs::kBlockThirdPartyCookies));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->
-      GetInteger("profile.default_content_setting_values.cookies"),
-      ContentSetting::CONTENT_SETTING_ALLOW);
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+      prefs::kBlockThirdPartyCookies));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
+                "profile.default_content_setting_values.cookies"),
+            ContentSetting::CONTENT_SETTING_ALLOW);
 
-  NavigateToPageWithFrame(embedded_test_server(),
-                          "a.com");
+  NavigateToPageWithFrame(embedded_test_server(), "a.com");
 
-  NavigateFrameTo(embedded_test_server(),
-                  "b.com",
-                  "/set-cookie?name=Good");
+  NavigateFrameTo(embedded_test_server(), "b.com", "/set-cookie?name=Good");
 
   ExpectCookiesOnHost(embedded_test_server(), "a.com", "name=Good");
   ExpectCookiesOnHost(embedded_test_server(), "b.com", "name=Good");
@@ -240,18 +228,15 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   BlockThirdPartyCookies();
   AllowAllCookies();
 
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->
-      GetBoolean(prefs::kBlockThirdPartyCookies));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->
-      GetInteger("profile.default_content_setting_values.cookies"),
-      ContentSetting::CONTENT_SETTING_ALLOW);
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+      prefs::kBlockThirdPartyCookies));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
+                "profile.default_content_setting_values.cookies"),
+            ContentSetting::CONTENT_SETTING_ALLOW);
 
-  NavigateToPageWithFrame(embedded_test_server(),
-                          "a.com");
+  NavigateToPageWithFrame(embedded_test_server(), "a.com");
 
-  NavigateFrameTo(embedded_test_server(),
-                  "b.com",
-                  "/set-cookie?name=Good");
+  NavigateFrameTo(embedded_test_server(), "b.com", "/set-cookie?name=Good");
 
   ExpectCookiesOnHost(embedded_test_server(), "a.com", "name=Good");
   ExpectCookiesOnHost(embedded_test_server(), "b.com", "name=Good");
@@ -262,18 +247,15 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   BlockThirdPartyCookies();
   DefaultBlockAllCookies();
 
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->
-      GetBoolean(prefs::kBlockThirdPartyCookies));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->
-      GetInteger("profile.default_content_setting_values.cookies"),
-      ContentSetting::CONTENT_SETTING_BLOCK);
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+      prefs::kBlockThirdPartyCookies));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
+                "profile.default_content_setting_values.cookies"),
+            ContentSetting::CONTENT_SETTING_BLOCK);
 
-  NavigateToPageWithFrame(embedded_test_server(),
-                          "a.com");
+  NavigateToPageWithFrame(embedded_test_server(), "a.com");
 
-  NavigateFrameTo(embedded_test_server(),
-                  "b.com",
-                  "/set-cookie?name=Good");
+  NavigateFrameTo(embedded_test_server(), "b.com", "/set-cookie?name=Good");
 
   ExpectCookiesOnHost(embedded_test_server(), "a.com", "");
   ExpectCookiesOnHost(embedded_test_server(), "b.com", "");
@@ -284,18 +266,15 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   AllowAllCookies();
   BlockThirdPartyCookies();
 
-  EXPECT_TRUE(browser()->profile()->GetPrefs()->
-      GetBoolean(prefs::kBlockThirdPartyCookies));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->
-      GetInteger("profile.default_content_setting_values.cookies"),
-      ContentSetting::CONTENT_SETTING_ALLOW);
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
+      prefs::kBlockThirdPartyCookies));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
+                "profile.default_content_setting_values.cookies"),
+            ContentSetting::CONTENT_SETTING_ALLOW);
 
-  NavigateToPageWithFrame(embedded_test_server(),
-                          "a.com");
+  NavigateToPageWithFrame(embedded_test_server(), "a.com");
 
-  NavigateFrameTo(embedded_test_server(),
-                  "b.com",
-                  "/set-cookie?name=Good");
+  NavigateFrameTo(embedded_test_server(), "b.com", "/set-cookie?name=Good");
 
   ExpectCookiesOnHost(embedded_test_server(), "a.com", "name=Good");
   ExpectCookiesOnHost(embedded_test_server(), "b.com", "");
@@ -306,18 +285,15 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   AllowAllCookies();
   DefaultBlockAllCookies();
 
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->
-      GetBoolean(prefs::kBlockThirdPartyCookies));
-  EXPECT_EQ(browser()->profile()->GetPrefs()->
-      GetInteger("profile.default_content_setting_values.cookies"),
-      ContentSetting::CONTENT_SETTING_BLOCK);
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+      prefs::kBlockThirdPartyCookies));
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
+                "profile.default_content_setting_values.cookies"),
+            ContentSetting::CONTENT_SETTING_BLOCK);
 
-  NavigateToPageWithFrame(embedded_test_server(),
-                          "a.com");
+  NavigateToPageWithFrame(embedded_test_server(), "a.com");
 
-  NavigateFrameTo(embedded_test_server(),
-                  "b.com",
-                  "/set-cookie?name=Good");
+  NavigateFrameTo(embedded_test_server(), "b.com", "/set-cookie?name=Good");
 
   ExpectCookiesOnHost(embedded_test_server(), "a.com", "");
   ExpectCookiesOnHost(embedded_test_server(), "b.com", "");
