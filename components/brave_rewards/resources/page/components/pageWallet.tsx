@@ -514,7 +514,7 @@ class PageWallet extends React.Component<Props, State> {
           {
             enabledMain
             ? emptyWallet
-              ? <WalletEmpty />
+              ? <WalletEmpty onlyAnonWallet={onlyAnonWallet} />
               : <WalletSummary
                 reservedAmount={pendingTotal}
                 onlyAnonWallet={onlyAnonWallet}
