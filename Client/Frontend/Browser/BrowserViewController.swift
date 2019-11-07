@@ -284,7 +284,7 @@ class BrowserViewController: UIViewController {
         guard let rewards = rewards, rewards.ledger.isEnabled && rewards.ads.isEnabled else { return }
         if Preferences.Rewards.myFirstAdShown.value { return }
         // Check if ads are eligible
-        if BraveAds.isCurrentRegionSupported() {
+        if BraveAds.isCurrentLocaleSupported() {
             DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                 if Preferences.Rewards.myFirstAdShown.value { return }
                 Preferences.Rewards.myFirstAdShown.value = true
@@ -708,14 +708,14 @@ class BrowserViewController: UIViewController {
         // 2. User already completed onboarding.
         if Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue {
             // The user has ads in their region and they completed all onboarding.
-            if BraveAds.isCurrentRegionSupported()
+            if BraveAds.isCurrentLocaleSupported()
                 &&
                 Preferences.General.basicOnboardingProgress.value == OnboardingProgress.ads.rawValue {
                 return
             }
             
             // The user doesn't have ads in their region and they've completed rewards.
-            if !BraveAds.isCurrentRegionSupported()
+            if !BraveAds.isCurrentLocaleSupported()
                 &&
                 Preferences.General.basicOnboardingProgress.value == OnboardingProgress.rewards.rawValue {
                 return
@@ -791,7 +791,7 @@ class BrowserViewController: UIViewController {
         // 1. Rewards are on/off (existing user)
         // 2. Ads are now available
         // 3. User hasn't seen the ads part of onboarding yet
-        if BraveAds.isCurrentRegionSupported()
+        if BraveAds.isCurrentLocaleSupported()
             &&
             (Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue)
             &&
@@ -3384,19 +3384,19 @@ extension BrowserViewController: OnboardingControllerDelegate {
         #else
         switch onboardingController.onboardingType {
         case .newUser:
-            if BraveAds.isCurrentRegionSupported() {
+            if BraveAds.isCurrentLocaleSupported() {
                 Preferences.General.basicOnboardingProgress.value = OnboardingProgress.ads.rawValue
             } else {
                 Preferences.General.basicOnboardingProgress.value = OnboardingProgress.rewards.rawValue
             }
             
         case .existingUserRewardsOff:
-            if BraveAds.isCurrentRegionSupported() {
+            if BraveAds.isCurrentLocaleSupported() {
                 Preferences.General.basicOnboardingProgress.value = OnboardingProgress.ads.rawValue
             }
             
         case .existingUserRewardsOn:
-            if BraveAds.isCurrentRegionSupported() {
+            if BraveAds.isCurrentLocaleSupported() {
                 Preferences.General.basicOnboardingProgress.value = OnboardingProgress.ads.rawValue
             }
             
