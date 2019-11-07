@@ -20,6 +20,7 @@ extern const char kRewardsUserHasFunded[];
 extern const char kRewardsAddFundsNotification[];
 extern const char kRewardsNotificationStartupDelay[];
 extern const char kRewardsExternalWallets[];
+extern const char kRewardsBadgeText[];
 
 // Defined in native-ledger
 extern const char kStateServerPublisherListStamp[];
