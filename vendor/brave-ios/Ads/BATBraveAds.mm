@@ -61,14 +61,9 @@ static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
       self.prefs = [[NSMutableDictionary alloc] init];
       self.numberOfAllowableAdsPerDay = kDefaultNumberOfAdsPerDay;
       self.numberOfAllowableAdsPerHour = kDefaultNumberOfAdsPerHour;
-      self.enabled = YES;
     }
 
     [self setupNetworkMonitoring];
-
-    adsClient = new NativeAdsClient(self);
-    ads = ads::Ads::CreateInstance(adsClient);
-    ads->Initialize(^(bool) { });
 
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -81,8 +76,12 @@ static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
 {
   [NSNotificationCenter.defaultCenter removeObserver:self];
   if (networkMonitor) { nw_path_monitor_cancel(networkMonitor); }
-  delete ads;
-  delete adsClient;
+  if (ads != nil) {
+    delete ads;
+    delete adsClient;
+    ads = nil;
+    adsClient = nil;
+  }
 }
 
 - (NSString *)prefsPath
@@ -122,6 +121,34 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
   ads::_environment = static_cast<ads::Environment>(environment);
 }
 
+#pragma mark - Initialization / Shutdown
+
+- (void)initializeIfAdsEnabled
+{
+  if (![self isAdsServiceRunning] && self.enabled) {
+    adsClient = new NativeAdsClient(self);
+    ads = ads::Ads::CreateInstance(adsClient);
+    ads->Initialize(^(bool) { });
+  }
+}
+
+- (void)shutdown
+{
+  if ([self isAdsServiceRunning]) {
+    ads->Shutdown(^(bool) {
+      delete ads;
+      delete adsClient;
+      ads = nil;
+      adsClient = nil;
+    });
+  }
+}
+
+- (BOOL)isAdsServiceRunning
+{
+  return ads != nil;
+}
+
 #pragma mark - Configuration
 
 - (BOOL)isEnabled
@@ -133,12 +160,10 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
 {
   self.prefs[kAdsEnabledPrefKey] = @(enabled);
   [self savePrefs];
-  if (ads != nil) {
-    if (enabled) {
-      ads->Initialize(^(bool) { });
-    } else {
-      ads->Shutdown(^(bool) { });
-    }
+  if (enabled) {
+    [self initializeIfAdsEnabled];
+  } else {
+    [self shutdown];
   }
 }
 
@@ -196,11 +221,13 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
 
 - (void)removeAllHistory:(void (^)(BOOL))completion
 {
+  if (![self isAdsServiceRunning]) { return; }
   ads->RemoveAllHistory(completion);
 }
 
 - (void)serveSampleAd
 {
+  if (![self isAdsServiceRunning]) { return; }
   ads->ServeSampleAd();
 }
 
@@ -208,6 +235,7 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
 
 - (void)setConfirmationsIsReady:(BOOL)isReady
 {
+  if (![self isAdsServiceRunning]) { return; }
   ads->SetConfirmationsIsReady(isReady);
 }
 
@@ -215,11 +243,13 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
 
 - (void)applicationDidBecomeActive
 {
+  if (![self isAdsServiceRunning]) { return; }
   ads->OnForeground();
 }
 
 - (void)applicationDidBackground
 {
+  if (![self isAdsServiceRunning]) { return; }
   ads->OnBackground();
 }
 
@@ -227,39 +257,46 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
 
 - (void)reportLoadedPageWithURL:(NSURL *)url html:(NSString *)html
 {
+  if (![self isAdsServiceRunning]) { return; }
   const auto urlString = std::string(url.absoluteString.UTF8String);
   ads->OnPageLoaded(urlString, std::string(html.UTF8String));
 }
 
 - (void)reportMediaStartedWithTabId:(NSInteger)tabId
 {
+  if (![self isAdsServiceRunning]) { return; }
   ads->OnMediaPlaying((int32_t)tabId);
 }
 
 - (void)reportMediaStoppedWithTabId:(NSInteger)tabId
 {
+  if (![self isAdsServiceRunning]) { return; }
   ads->OnMediaStopped((int32_t)tabId);
 }
 
 - (void)reportTabUpdated:(NSInteger)tabId url:(NSURL *)url isSelected:(BOOL)isSelected isPrivate:(BOOL)isPrivate
 {
+  if (![self isAdsServiceRunning]) { return; }
   const auto urlString = std::string(url.absoluteString.UTF8String);
   ads->OnTabUpdated((int32_t)tabId, urlString, isSelected, isPrivate);
 }
 
 - (void)reportTabClosedWithTabId:(NSInteger)tabId
 {
+  if (![self isAdsServiceRunning]) { return; }
   ads->OnTabClosed((int32_t)tabId);
 }
 
 - (void)reportNotificationEvent:(NSString *)notificationId eventType:(BATAdsNotificationEventType)eventType
 {
+  if (![self isAdsServiceRunning]) { return; }
   ads->OnNotificationEvent(notificationId.UTF8String,
                            static_cast<ads::NotificationEventType>(eventType));
 }
 
 - (void)toggleThumbsUpForAd:(NSString *)identifier creativeSetID:(NSString *)creativeSetID
 {
+  if (![self isAdsServiceRunning]) { return; }
   ads->ToggleAdThumbUp(identifier.UTF8String,
                        creativeSetID.UTF8String,
                        ads::AdContent::LikeAction::LIKE_ACTION_THUMBS_UP);
@@ -268,6 +305,7 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
 
 - (void)toggleThumbsDownForAd:(NSString *)identifier creativeSetID:(NSString *)creativeSetID
 {
+  if (![self isAdsServiceRunning]) { return; }
   ads->ToggleAdThumbDown(identifier.UTF8String,
                          creativeSetID.UTF8String,
                          ads::AdContent::LikeAction::LIKE_ACTION_THUMBS_DOWN);
@@ -287,6 +325,7 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
 
 - (void)getAds:(const std::string &)category callback:(ads::OnGetAdsCallback)callback
 {
+  if (![self isAdsServiceRunning]) { return; }
   auto categories = bundleState->categories.find(category);
   if (categories == bundleState->categories.end()) {
     callback(ads::Result::FAILED, category, {});
@@ -298,6 +337,7 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
 
 - (void)setCatalogIssuers:(std::unique_ptr<ads::IssuersInfo>)info
 {
+  if (![self isAdsServiceRunning]) { return; }
   [self.ledger setCatalogIssuers:[NSString stringWithUTF8String:info->ToJson().c_str()]];
 }
 
@@ -363,7 +403,9 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
     auto strongSelf = weakSelf;
     // If this object dies, common will get nil'd out
     if (strongSelf) {
-      strongSelf->ads->OnTimer(timer_id);
+      if ([strongSelf isAdsServiceRunning]) {
+        strongSelf->ads->OnTimer(timer_id);
+      }
       [strongSelf.commonOps removeTimerWithID:timer_id];
     }
   }];
@@ -499,6 +541,7 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
 
 - (nullable BATAdsNotification *)adsNotificationForIdentifier:(NSString *)identifier
 {
+  if (![self isAdsServiceRunning]) { return nil; }
   ads::NotificationInfo info;
   if (ads->GetNotificationForId(identifier.UTF8String, &info)) {
     return [[BATAdsNotification alloc] initWithNotificationInfo:info];

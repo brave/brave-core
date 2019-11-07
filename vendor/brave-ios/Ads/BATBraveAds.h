@@ -60,6 +60,17 @@ NS_SWIFT_NAME(BraveAds)
 /// Marks if this is being ran in a test environment. Defaults to false
 @property (nonatomic, class, getter=isTesting) BOOL testing;
 
+#pragma mark - Initialization / Shutdown
+
+/// Initializes the ads service if ads is enabled
+- (void)initializeIfAdsEnabled;
+
+/// Shuts down the ads service if its running
+- (void)shutdown;
+
+/// Whether or not the ads service is running
+- (BOOL)isAdsServiceRunning;
+
 #pragma mark - Configuration
 
 /// Whether or not Brave Ads is enabled

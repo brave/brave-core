@@ -873,6 +873,11 @@ BATLedgerReadonlyBridge(BOOL, isEnabled, GetRewardsMainEnabled)
 - (void)setEnabled:(BOOL)enabled
 {
   ledger->SetRewardsMainEnabled(enabled);
+  if (enabled) {
+    [self.ads initializeIfAdsEnabled];
+  } else {
+    [self.ads shutdown];
+  }
 
   for (BATBraveLedgerObserver *observer in [self.observers copy]) {
     if (observer.rewardsEnabledStateUpdated) {
