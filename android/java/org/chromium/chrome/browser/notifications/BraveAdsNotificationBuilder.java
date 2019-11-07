@@ -93,6 +93,17 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
         mContext = context;
     }
 
+    /**
+     * Override this function to always set the channel ID as Ads channel ID.
+     *
+     * This avoids the channel ID being overwritten by Chromium later using
+     * notificationBuilder.setChannelId.
+     */
+    @Override
+    public NotificationBuilderBase setChannelId(String channelId) {
+        return super.setChannelId(BRAVE_ADS_CHANNEL_ID);
+    }
+
     @Override
     public ChromeNotification build(NotificationMetadata metadata) {
         // A note about RemoteViews and updating notifications. When a notification is passed to the
