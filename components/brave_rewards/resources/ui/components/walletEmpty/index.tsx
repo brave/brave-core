@@ -9,29 +9,45 @@ import coins from './assets/coins'
 
 interface Props {
   id?: string
+  onlyAnonWallet?: boolean
   hideAddFundsText?: boolean
 }
 
 export default class WalletEmpty extends React.PureComponent<Props, {}> {
+  getEmptyWalletMessage = () => {
+    const { onlyAnonWallet } = this.props
+    return (
+      <>
+        {
+          onlyAnonWallet
+          ? getLocale('rewardsPanelEmptyText6')
+          : <>
+              <b>{getLocale('rewardsPanelEmptyText2')}</b><br/>
+              • {getLocale('rewardsPanelEmptyText3')}<br/>
+              • {getLocale('rewardsPanelEmptyText4')}<br/>
+              • {getLocale('rewardsPanelEmptyText5')}
+            </>
+        }
+      </>
+    )
+  }
+
   render () {
-    const { id, hideAddFundsText } = this.props
+    const { id, hideAddFundsText, onlyAnonWallet } = this.props
 
     return (
       <StyledWrapper id={id}>
         {coins}
-        <StyledTitle>{getLocale('rewardsPanelEmptyText1')}</StyledTitle>
+        <StyledTitle>
+          {onlyAnonWallet ? getLocale('rewardsPanelEmptyTextPoints') : getLocale('rewardsPanelEmptyText1')}
+        </StyledTitle>
         <StyledContent>
           {
             hideAddFundsText
             ? <StyledCenter>
                 {getLocale('rewardsPanelEmptyText5')}
               </StyledCenter>
-            : <>
-                <b>{getLocale('rewardsPanelEmptyText2')}</b><br/>
-                • {getLocale('rewardsPanelEmptyText3')}<br/>
-                • {getLocale('rewardsPanelEmptyText4')}<br/>
-                • {getLocale('rewardsPanelEmptyText5')}
-              </>
+            : this.getEmptyWalletMessage()
           }
         </StyledContent>
       </StyledWrapper>
