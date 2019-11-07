@@ -62,20 +62,7 @@ public struct CryptographicKey {
   /// Deletes the key from the secure-enclave and keychain
   @discardableResult
   public func delete() -> Error? {
-    guard let keyId = keyId.data(using: .utf8) else {
-      return CryptographyError(description: "Invalid KeyId")
-    }
-    
-    let error = SecItemDelete([
-      kSecClass: kSecClassKey,
-      kSecAttrApplicationTag: keyId
-    ] as CFDictionary)
-    
-    if error == errSecSuccess || error == errSecItemNotFound {
-      return nil
-    }
-    
-    return CryptographyError(code: error)
+    return Cryptography.delete(id: keyId)
   }
   
   /// Signs "message" with the key and returns the signature
@@ -267,6 +254,25 @@ public class Cryptography {
     }
     
     return CryptographicKey(key: pKey, keyId: id)
+  }
+  
+  /// Deletes the key with the specified ID from the secure-enclave and keychain
+  @discardableResult
+  public class func delete(id: String) -> Error? {
+    guard let keyId = id.data(using: .utf8) else {
+      return CryptographyError(description: "Invalid KeyId")
+    }
+    
+    let error = SecItemDelete([
+      kSecClass: kSecClassKey,
+      kSecAttrApplicationTag: keyId
+    ] as CFDictionary)
+    
+    if error == errSecSuccess || error == errSecItemNotFound {
+      return nil
+    }
+    
+    return CryptographyError(code: error)
   }
   
   /// Retrieve a key's properties without retrieving the actual key itself
