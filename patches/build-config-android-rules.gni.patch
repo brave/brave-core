@@ -1,0 +1,12 @@
+diff --git a/build/config/android/rules.gni b/build/config/android/rules.gni
+index c99d7820ca022184168be26ffa6897e292b17c20..477ea611ddc43a359960ca65f4b3d8303128d3fb 100644
+--- a/build/config/android/rules.gni
++++ b/build/config/android/rules.gni
+@@ -553,6 +553,7 @@ if (enable_java_templates) {
+   #   }
+   template("java_cpp_enum") {
+     set_sources_assignment_filter([])
++    foreach(source, invoker.sources) { foreach(filter, brave_java_cpp_enum_filter) { if(source == filter) { invoker.sources -= [filter] }}}
+     action_with_pydeps(target_name) {
+       forward_variables_from(invoker,
+                              [
