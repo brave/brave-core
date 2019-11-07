@@ -52,17 +52,11 @@ class DataControllerTests: CoreDataTestCase {
     }
     
     func testSavingBackgroundContext() {
-        var result = [Any]()
         backgroundSaveAndWaitForExpectation {
             DataController.perform { context in
                 _ = Device(entity: self.entity(for: context), insertInto: context)
-                
-                
-                result = try! context.fetch(self.fetchRequest)
             }
         }
-        
-        XCTAssertEqual(result.count, 1)
         
         // Check if object got updated on view context(merge from parent check)
         XCTAssertEqual(try! DataController.viewContext.fetch(fetchRequest).count, 1)
@@ -88,8 +82,10 @@ class DataControllerTests: CoreDataTestCase {
     }
     
     func testNoChangesContext() {
-        DataController.perform { context in
-            // Do nothing
+        backgroundSaveAndWaitForExpectation(inverted: true) {
+            DataController.perform { context in
+                // Do nothing
+            }
         }
         
         XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), 0)
