@@ -31,7 +31,7 @@ import org.chromium.base.Log;
 import org.chromium.base.VisibleForTesting;
 import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.notifications.channels.ChannelDefinitions;
+import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
 import org.chromium.ui.base.LocalizationUtils;
 
 import java.util.Date;
@@ -83,9 +83,6 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
      */
     private static final int BUTTON_ICON_COLOR_MATERIAL = 0xff757575;
 
-    // TODO(jocelyn): Move this into a separate class for handling Brave's notification channels.
-    private static final String BRAVE_ADS_CHANNEL_ID = "com.brave.browser.ads";
-
     private final Context mContext;
 
     public BraveAdsNotificationBuilder(Context context) {
@@ -101,7 +98,7 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
      */
     @Override
     public NotificationBuilderBase setChannelId(String channelId) {
-        return super.setChannelId(BRAVE_ADS_CHANNEL_ID);
+        return super.setChannelId(BraveChannelDefinitions.ChannelId.BRAVE_ADS);
     }
 
     @Override
@@ -123,7 +120,7 @@ public class BraveAdsNotificationBuilder extends NotificationBuilderBase {
         bigView.setInt(R.id.body, "setMaxLines", calculateMaxBodyLines(fontScale));
         int scaledPadding =
                 calculateScaledPadding(fontScale, mContext.getResources().getDisplayMetrics());
-        setChannelId(BRAVE_ADS_CHANNEL_ID);
+        setChannelId(BraveChannelDefinitions.ChannelId.BRAVE_ADS);
 
         for (RemoteViews view : new RemoteViews[] {compactView, bigView}) {
             view.setTextViewText(R.id.title, mTitle);
