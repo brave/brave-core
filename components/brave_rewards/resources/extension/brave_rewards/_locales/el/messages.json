@@ -43,6 +43,22 @@
     "message": "Επιχορηγήσεις ",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "Λεπτομέρειες",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Το Υπόλοιπό Σας",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "Πόντοι BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "μπορεί να χρησιμοποιηθεί στις Ανταμοιβές Brave για συνεισφορά στους αγαπημένους σας δημιουργούς περιεχομένου. Οι Πόντοι BAT δεν μπορούν να ανταλλαγούν με BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "ανοιχτό ",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Μηνιαία Συνεισφορά",
+    "message": "Αποστολή tip σε αυτή την ιστοσελίδα μηνιαίως",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Έχετε ορίσει {{reservedAmount}} BAT για  τους δημιουργούς που δεν έχουν ακόμη εγγραφεί για να λάβουν συνεισφορές. Το πρόγραμμα περιήγησης σας θα συνεχίσει να προσπαθεί να πραγματοποιήσει συνεισφορά μέχρι να την επιβεβαιώσουν, ή μέχρι να περάσουν 90 ημέρες.",
+    "message": "Έχετε ορίσει {{reservedAmount}} {{currency}} για δημιουργούς που δεν έχουν ακόμη εγγραφεί για να λαμβάνουν συνεισφορές. Το πρόγραμμα περιήγησής σας θα συνεχίσει να προσπαθεί για τη συνεισφορά μέχρι να γίνει επαλήθευσή τους ή μέχρι να περάσουν 90 ημέρες.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Ανταμοιβές Των Διαφημίσεων Brave!",
+    "message": "Κερδίσατε μια Ανταμοιβή Διαφημίσεων!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Το επίδομα επιβράβευσής σας από τις διαφημίσεις Brave είναι σε εξέλιξη.",
+    "message": "Η Ανταμοιβή σας βρίσκεται καθ' οδόν για το πορτοφόλι σας Ανταμοιβών Brave.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Η Απόδειξη Του Επιδόματος Των Brave Διαφημίσεών Σας",
+    "message": "Το Ποσό Ανταμοιβής Σας",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "Ολοκλήρωση επαλήθευσης πορτοφολιού",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "Ορίστε...",
-    "description": "Button text for setting monthly contribution"
   }
 }

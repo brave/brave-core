@@ -43,6 +43,22 @@
     "message": "Ruzuku",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "Maelezo",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Salio lako",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "Pointi za BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "inaweza kutumika katika Tuzo za Brave ili kuchangia katika watengenezaji maudhui uwapendao. Pointi za BAT haziwezi kubadilishwa kwa BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "katika",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Mchango wa kila Mwezi",
+    "message": "Changia tovuti hii kila Mwezi",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Umepewa kiwango cha BAT {{reservedAmount}} BAT kwa watengenezaji ambao bado hawajajisajili ili kupokea michango. Kisakuzi chako kitaendelea kujaribu kuchangia hadi watakapothibitisha, au hadi siku 90 zitakapokuwa zimepita.",
+    "message": "Umeweka {{sarafu}}{{kiwango}}kwa watengenezaji ambao bado hawajajisajili ili kupokea michango. Kisakuzi chako kitaendelea kujaribu kuchangia hadi watakapothibitisha, au hadi siku 90 zitakapokuwa zimepita.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave Ads Rewards!",
+    "message": "Umepata Tuzo ya Matangazo",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Ruzuku yako ya zawadi kutoka Brave Ads ipo njiani.",
+    "message": "Tuzo yako iko njiani kuelekea katika waleti yako ya Tuzo za Brave.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Ruzuku yako ya Kianzio ya Brave Ads",
+    "message": "Kiwango chako cha Tuzo",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "Kamilisha uthibitishaji pochi",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "Weka...",
-    "description": "Button text for setting monthly contribution"
   }
 }

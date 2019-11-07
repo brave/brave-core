@@ -43,6 +43,22 @@
     "message": "Cấp",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "Chi tiết",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Số dư của bạn",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "Điểm BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "có thể sử dụng trong Brave Rewards để đóng góp cho người sáng tạo nội dung yêu thích của bạn. Điểm BAT không thể quy đổi sang BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "trên",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Khoản đóng góp hàng tháng",
+    "message": "Gửi tiền boa cho trang web này hàng tháng",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Bạn đã chỉ định {{reservedAmount}} BAT cho những người sáng tạo vẫn chưa đăng ký để nhận đóng góp. Trình duyệt của bạn sẽ tiếp tục cố gắng đóng góp cho đến khi họ xác minh hoặc cho đến khi đã qua 90 ngày.",
+    "message": "Bạn đã trao thưởng {{reservedAmount}} {{currency}} cho người sáng tạo chưa đăng ký nhận đóng góp. Trình duyệt của bạn sẽ tiếp tục gửi đóng góp cho đến khi họ xác thực hoặc hết thời hạn 90 ngày.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Phần thưởng Quảng cáo Brave!",
+    "message": "Bạn đã nhận được Điểm thưởng Quảng cáo!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Phần thưởng tặng bạn từ Quảng cáo Brave sắp tới rồi.",
+    "message": "Điểm thưởng đang được gửi đến ví Brave Rewards của bạn.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Tặng Token cho Bạn từ Quảng cáo Brave",
+    "message": "Số tiền thưởng của bạn",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "Hoàn thành xác thực ví",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "Thiết lập...",
-    "description": "Button text for setting monthly contribution"
   }
 }

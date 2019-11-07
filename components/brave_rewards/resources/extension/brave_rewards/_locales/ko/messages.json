@@ -43,6 +43,22 @@
     "message": "그랜트",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "세부사항",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "귀하의 잔액",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT 포인트",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "Brave 리워드에서 사용하여 가장 좋아하는 콘텐츠 제작자들에게 기부할 수 있습니다. BAT 포인트는 BAT로 환전될 수 없습니다.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "켜기",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "매월 기부금",
+    "message": "이 사이트에 매월 팁 주기",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "귀하께서는 아직 기부를 받기 위해 회원 가입을 하지 않은 크리에이터에 대하여 {{reservedAmount}} 의 배트(BAT)를 지정했습니다. 귀하의 브라우저는 그들이 확인 할 때까지 혹은 90일이 지나기까지 계속 기부를 시도하게 됩니다.",
+    "message": "아직 기부금을 받기 위해 가입하지 않은 제작자들에게 {{reservedAmount}} {{currency}}을/를 지정하셨습니다. 그들이 확인할 때까지, 또는 90일이 지날 때까지, 귀하의 브라우저가 계속 기부하려고 시도할 것입니다.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave Ads 보상!",
+    "message": "광고 리워드를 획득하셨습니다!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Brave Ads의 보상금이 곧 수령됩니다.",
+    "message": "귀하의 리워드는 귀하의 Brave 월렛으로 이동하는 중입니다. ",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "귀하의 Brave Ads 토큰 보상금",
+    "message": "귀하의 리워드 금액",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "지갑 인증 완료",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "설정...",
-    "description": "Button text for setting monthly contribution"
   }
 }

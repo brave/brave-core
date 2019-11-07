@@ -8,11 +8,11 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "activados",
+    "message": "activos",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "desactivados",
+    "message": "inactivos",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
@@ -64,7 +64,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Cookies de terceros bloqueadas.",
+    "message": "Cookies de terceros bloqueadas",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -152,19 +152,19 @@
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
   "resetSiteFilterSettings": {
-    "message": "Borra las reglas CSS para esta página",
+    "message": "Borra las reglas CSS para este sitio web",
     "description": "Message for context menu that resets the site filters for cosmetic filtering"
   },
   "resetAllFilterSettings": {
-    "message": "Borrar las reglas CSS para todas las páginas",
+    "message": "Borrar las reglas CSS para todas los sitios web",
     "description": "Message for context menu that resets all cosmetic filters"
   },
   "advancedView": {
-    "message": "Vista avanzada",
+    "message": "Vista Avanzada",
     "description": "Message for the advanced view option"
   },
   "simpleView": {
-    "message": "Vista simple",
+    "message": "Vista Simple",
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {

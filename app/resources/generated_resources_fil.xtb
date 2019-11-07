@@ -61,7 +61,7 @@
 <translation id="1163931534039071049">&amp;View frame source</translation>
 <translation id="6886871292305414135">Buksan ang link sa bagong &amp;tab</translation>
 <translation id="8899851313684471736">Buksan ang link sa bagong &amp;window</translation>
-<translation id="658539216370629794">Buksan ang link sa inco&amp;gnito window</translation>
+<translation id="658539216370629794">Buksan ang link sa &amp;pribadong window</translation>
 <translation id="3144647712221361880">Buksan ang link bilang</translation>
 <translation id="9137916601698928395">Buksan ang link bilang <ph name="USER"/></translation>
 <translation id="1137673463384776352">Buksan ang link sa <ph name="APP"/></translation>
@@ -122,7 +122,7 @@
 <translation id="3021678814754966447">&amp;Tingnan ang Pinagmulan ng Frame</translation>
 <translation id="9027459031423301635">Buksan ang Link sa Bagong &amp;Tab</translation>
 <translation id="1769104665586091481">Buksan ang Link sa Bagong &amp;Window</translation>
-<translation id="1432267168815937878">Buksan ang link sa Inco&amp;gnito Window</translation>
+<translation id="1432267168815937878">Buksan ang Link sa &amp;Pribadong Window</translation>
 <translation id="2142328300403846845">Buksan ang Link bilang</translation>
 <translation id="6892812721183419409">Buksan ang Link bilang <ph name="USER"/></translation>
 <translation id="2006638907958895361">Buksan ang Link sa <ph name="APP"/></translation>
@@ -172,7 +172,7 @@
 <translation id="4200983522494130825">Bagong &amp;tab</translation>
 <translation id="8418445294933751433">&amp;Ipakita bilang tab</translation>
 <translation id="1723824996674794290">&amp;Bagong window</translation>
-<translation id="6516243500644829484">Bagong &amp;incognito window</translation>
+<translation id="6516243500644829484">Bagong &amp;pribadong window</translation>
 <translation id="6120205520491252677">I-pin ang pahinang ito screen ng Simula...</translation>
 <translation id="9065203028668620118">I-edit</translation>
 <translation id="5329858601952122676">&amp;Tanggalin</translation>
@@ -192,7 +192,7 @@
 <translation id="3285322247471302225">Bagong &amp;Tab</translation>
 <translation id="8879284080359814990">&amp;Ipakita Bilang Tab</translation>
 <translation id="176587472219019965">&amp;Bagong Window</translation>
-<translation id="7973394300052703468">Bagong &amp;Incognito Window</translation>
+<translation id="7973394300052703468">Bagong &amp;Pribadong Window</translation>
 <translation id="5157635116769074044">I-pin ang Pahinang ito sa Screen ng Simula...</translation>
 <translation id="5830720307094128296">Save Page &amp;As...</translation>
 <translation id="4672657274720418656">Distill Page</translation>
@@ -364,7 +364,7 @@
 <translation id="2902312830803030883">Higit pang pagkilos</translation>
 <translation id="495170559598752135">Mga Pagkilos</translation>
 <translation id="3612673635130633812">Na-download ng &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="6395403722585816044">Na-download sa Incognito</translation>
+<translation id="6395403722585816044">Na-download sa Pribado</translation>
 <translation id="4551763574344810652">Pindutin ang <ph name="MODIFIER_KEY_DESCRIPTION"/> para i-undo</translation>
 <translation id="2079545284768500474">I-undo</translation>
 <translation id="2490481887078769936">Inalis ang '<ph name="FILE_NAME"/>' sa listahan</translation>
@@ -411,10 +411,10 @@
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Kasalukuyang isinasagawa ang pag-download}one{Kasalukuyang isinasagawa ang mga pag-download}other{Kasalukuyang isinasagawa ang mga pag-download}}</translation>
 <translation id="5425042808445046667">Ituloy ang pag-download</translation>
 <translation id="5284445933715251131">Ituloy ang Pag-download</translation>
-<translation id="203837651858678035">Umalis pa rin sa incognito mode?</translation>
+<translation id="203837651858678035">Lumabas pa rin sa private mode?</translation>
 <translation id="8951465597020890363">Lumabas pa rin sa guest mode?</translation>
 <translation id="9148058034647219655">Lumabas</translation>
-<translation id="7376221878517288144">Umalis pa rin sa incognito mode?</translation>
+<translation id="7376221878517288144">Umalis pa rin sa private mode?</translation>
 <translation id="973473557718930265">Isara</translation>
 <translation id="7707599169365957976">Makakatulong ka sa pagpapahusay ng Ligtas na Pag-browse sa pamamagitan ng pagpapadala ng ilang impormasyon ng system at content ng page sa Brave Software.</translation>
 <translation id="4923279099980110923">Oo, gusto kong makatulong</translation>
@@ -596,6 +596,24 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Certificate Signature Value</translation>
 <translation id="4104163789986725820">I-e&amp;xport...</translation>
+<translation id="2029156652561216312">CN</translation>
+<translation id="7822286184239325970">ST</translation>
+<translation id="8180262569555229595">O</translation>
+<translation id="7252376466538759696">OU</translation>
+<translation id="5734574586460918465">dnQualifier</translation>
+<translation id="964324710553558337">C</translation>
+<translation id="511291565806773566">serialNumber</translation>
+<translation id="5912292566401425135">L</translation>
+<translation id="5725734596824080201">DC</translation>
+<translation id="2948789661744572780">MAIL</translation>
+<translation id="7481079953250545971">UID</translation>
+<translation id="4196967880387277612">E</translation>
+<translation id="5887772116581657016">businessCategory</translation>
+<translation id="6561757256477115975">jurisdictionLocalityName</translation>
+<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
+<translation id="8904360804686555987">jurisdictionCountryName</translation>
+<translation id="8718098216622210506">KALYE</translation>
+<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">PKCS #1 RSA Encryption</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 na May RSA Encryption</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 na May RSA Encryption</translation>
@@ -767,11 +785,11 @@
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/> (<ph name="NUM_KILOBYTES_LIVE"/> ang pinakamataas)</translation>
 <translation id="8004582292198964060">Browser</translation>
 <translation id="3678156199662914018">Extension: <ph name="EXTENSION_NAME"/></translation>
-<translation id="5053701565089446556">Extension ng Incognito: <ph name="EXTENSION_NAME"/></translation>
+<translation id="5053701565089446556">Pribadong Extension: <ph name="EXTENSION_NAME"/></translation>
 <translation id="6508261954199872201">App: <ph name="APP_NAME"/></translation>
-<translation id="611296870688433505">Incognito App: <ph name="APP_NAME"/></translation>
+<translation id="611296870688433505">Pribadong App: <ph name="APP_NAME"/></translation>
 <translation id="7629827748548208700">Tab: <ph name="TAB_NAME"/></translation>
-<translation id="9048137919253433011">Tab na Incognito: <ph name="TAB_NAME"/></translation>
+<translation id="9048137919253433011">Pribadong Tab: <ph name="TAB_NAME"/></translation>
 <translation id="6900284862687837908">Background App: <ph name="BACKGROUND_APP_URL"/></translation>
 <translation id="7427348830195639090">Pahina ng Background: <ph name="BACKGROUND_PAGE_URL"/></translation>
 <translation id="6798954102094737107">Plugin: <ph name="PLUGIN_NAME"/></translation>
@@ -786,7 +804,7 @@
 <translation id="2282146716419988068">Proseso ng GPU</translation>
 <translation id="2087822576218954668">Print: <ph name="PRINT_NAME"/></translation>
 <translation id="8859174528519900719">Subframe: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="1799432502220762862">Incognito na Subframe: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="1799432502220762862">Pribadong Subframe: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="2348176352564285430">App: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="786073089922909430">Serbisyo: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7663719505383602579">Tatanggap: <ph name="ARC_PROCESS_NAME"/></translation>
@@ -1350,7 +1368,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="192494336144674234">Buksan gamit ang</translation>
 <translation id="9053893665344928494">Tandaan ang aking pinili</translation>
 <translation id="5340857474604400806">Manatili sa Brave</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Private)</translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (Bisita)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Available ang update)</translation>
@@ -1382,10 +1400,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4400963414856942668">Puwede mong i-click ang star para mag-bookmark ng tab</translation>
 <translation id="8379991678458444070">Makabalik kaagad dito sa pamamagitan ng pag-bookmark sa tab na ito</translation>
 <translation id="7174199383876220879">Bago! Kontrolin ang iyong musika, mga video, at higit pa.</translation>
-<translation id="4369414322596874629">Maaari kang mag-browse nang pribado gamit ang isang incognito window</translation>
-<translation id="3772947852642271642">Gamitin ang web nang hindi nase-save ang iyong history ng pag-browse gamit ang isang incognito window</translation>
-<translation id="3871738366246972820">Gumagamit ng nakabahaging computer? Subukang magbukas ng incognito window.</translation>
-<translation id="5808622652939943719">Upang mag-browse nang pribado, i-click ang menu ng icon na mga tuldok upang magbukas ng incognito window</translation>
+<translation id="4369414322596874629">Makakapag-browse ka nang pribado gamit ang pribadong window</translation>
+<translation id="3772947852642271642">Gamitin ang web nang hindi sine-save ang iyong history ng pag-browse sa pribadong window</translation>
+<translation id="3871738366246972820">Gumagamit ng nakabahaging computer? Subukang magbukas ng pribadong window.</translation>
+<translation id="5808622652939943719">Para makapag-browse nang pribado, i-click ang menu ng icon na mga tuldok para magbukas ng pribadong window</translation>
 <translation id="8803953437405899238">Magbukas ng bagong tab sa isang pag-click</translation>
 <translation id="3071624960923923138">Maaari kang mag-click dito upang magbukas ng bagong tab</translation>
 <translation id="4908811072292128752">Magbukas ng bagong tab upang mag-browse ng dalawang site nang sabay</translation>
@@ -1601,13 +1619,13 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4620809267248568679">Ipinapatupad ng isang extension ang setting na ito.</translation>
 <translation id="4846680374085650406">Sinusunod mo ang rekomendasyon ng administrator para sa setting na ito.</translation>
 <translation id="1223853788495130632">Inirerekomenda ng iyong administrator ang isang tukoy na halaga para sa setting na ito.</translation>
-<translation id="8839398440242019256">Hindi mula sa Brave Web Store.</translation>
+<translation id="8839398440242019256">Hindi galing sa Web Store.</translation>
 <translation id="5337771866151525739">Na-install ng third party.</translation>
 <translation id="4538792345715658285">Na-install ng patakaran ng enterprise.</translation>
 <translation id="4359408040881008151">Na-install dahil sa (mga) nakadependeng extension.</translation>
 <translation id="4980805016576257426">May malware ang extension na ito.</translation>
 <translation id="5522156646677899028">Naglalaman ang extension na ito ng isang malubhang kahinaan sa seguridad.</translation>
-<translation id="6945695820322143954">Lumalabag ang extension na ito sa patakaran ng Brave Web Store.</translation>
+<translation id="6945695820322143954">Nilalabag ng extension na ito ang patakaran ng Web Store.</translation>
 <translation id="177808131755847449">Na-disable ng Brave. Maaaring hindi ligtas ang extension na ito.</translation>
 <translation id="1434696352799406980">Ire-reset nito ang iyong page sa pagsisimula, page ng bagong tab, search engine at mga naka-pin na tab. Idi-disable din nito ang lahat ng extension at iki-clear ang pansamantalang data tulad ng cookies. Hindi iki-clear ang iyong mga bookmark, history at naka-save na password.</translation>
 <translation id="1242633766021457174">Gustong i-reset ng <ph name="THIRD_PARTY_TOOL_NAME"/> ang iyong mga setting.</translation>
@@ -1674,6 +1692,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="622537739776246443">Ide-delete ang profile</translation>
 <translation id="5632566673632479864">Hindi na pinapayagan ang iyong account na <ph name="EMAIL"/> bilang pangunahing account. Dahil pinapamahalaan ng <ph name="DOMAIN"/> ang account na ito, iki-clear ang iyong mga bookmark, history, password, at iba pang setting sa device na ito.</translation>
 <translation id="3797739167230984533">Ang iyong <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> ay pinapamahalaan<ph name="END_LINK"/> ng iyong organisasyon</translation>
+<translation id="1722460139690167654">Ang iyong <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> ay pinapamahalaan<ph name="END_LINK"/> ng <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8118488170956489476">Ang iyong <ph name="BEGIN_LINK"/>browser ay pinamamahalaan<ph name="END_LINK"/> ng organisasyon mo</translation>
 <translation id="1365180424462182382">Pinaapamahalaan ang iyong <ph name="BEGIN_LINK"/>browser<ph name="END_LINK"/> ng <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Content</translation>
@@ -1711,6 +1730,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1234808891666923653">Mga Service Worker</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Storage ng Cache</translation>
+<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Mga App</translation>
 <translation id="542872847390508405">Nagba-browse ka bilang isang Bisita</translation>
 <translation id="537813040452600081">Hindi lalabas sa history ng browser ang mga page na tiningnan mo sa window na ito at hindi mag-iiwan ang mga ito ng iba pang mga palatandaan, tulad ng cookies, sa computer pagkatapos mong mag-sign out. Hindi papanatilihin ang iyong mga na-download na file at ginawang bookmark.</translation>
@@ -1924,7 +1944,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="881799181680267069">Hide Others</translation>
 <translation id="4708849949179781599">Quit <ph name="PRODUCT_NAME"/></translation>
 <translation id="8795916974678578410">New Window</translation>
-<translation id="1676595396635191120">New Incognito Window</translation>
+<translation id="1676595396635191120">Bagong Pribadong Window</translation>
 <translation id="406070391919917862">Background na Apps</translation>
 <translation id="3335947283844343239">Muling buksan ang Nakasarang Tab</translation>
 <translation id="8214489666383623925">Open File...</translation>
@@ -2050,6 +2070,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2650609753175229582">Gusto ng <ph name="URL"/> na mag-play ng pinoprotektahang content. Ive-verify ng Brave Software ang pagkakakilanlan ng iyong device, at maaari itong i-access ng site na ito.</translation>
 <translation id="1746402432151920942">Pagkakakilanlan ng Pinoprotektahang Media</translation>
 <translation id="1322046419516468189">Tingnan at pamahalaan ang mga naka-save na password sa iyong <ph name="SAVED_PASSWORDS_STORE"/></translation>
+<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Na-save ang password. Tingnan at pamahalaan ang mga naka-save na password sa iyong <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Brave Software Account</translation>
 <translation id="3785727820640310185">Mga naka-save na password para sa site na ito</translation>
@@ -2162,7 +2183,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7339898014177206373">Bagong window</translation>
 <translation id="7551643184018910560">I-pin sa shelf</translation>
 <translation id="8335587457941836791">I-unpin mula sa shelf</translation>
-<translation id="4471385409549756595">Bagong window ng incognito</translation>
+<translation id="4471385409549756595">Bagong pribadong window</translation>
 <translation id="8249048954461686687">Folder ng OEM</translation>
 <translation id="8440630305826533614">Mga Linux app</translation>
 <translation id="4742746985488890273">I-pin sa Shelf</translation>
@@ -2266,8 +2287,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
         <ph name="FILE_INFO"/>
         <ph name="EVENT_NAME"/></translation>
-<translation id="4540437243849625078">Magbabahagi ang site na ito ng impormasyon sa isang app sa labas ng incognito mode.</translation>
-<translation id="1227836882233136433">Umalis sa incognito mode?</translation>
+<translation id="4540437243849625078">Magbabahagi ang site na ito ng impormasyon sa app na wala sa private mode.</translation>
+<translation id="1227836882233136433">Umalis sa private mode?</translation>
 <translation id="662080504995468778">Manatili</translation>
 <translation id="2593289874938379417">Walang access ang Brave sa hiniling na mapagkukunan.</translation>
 <translation id="760197030861754408">Pumunta sa <ph name="LANDING_PAGE"/> upang kumonekta.</translation>
@@ -2310,6 +2331,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8750155211039279868">Gustong kumonekta ng <ph name="ORIGIN"/> sa isang serial port</translation>
 <translation id="4943691134276646401">Gustong kumonekta ng "<ph name="CHROME_EXTENSION_NAME"/>" sa isang serial port</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
+<translation id="1587562069597918292"><ph name="DEVICE_PATH"/></translation>
 <translation id="1171515578268894665">Gustong kumonekta ng <ph name="ORIGIN"/> sa isang HID device</translation>
 <translation id="6078769373519310690">Gustong kumonekta ng "<ph name="CHROME_EXTENSION_NAME"/>" sa isang HID device</translation>
 <translation id="4419610272958564173">Hindi Kilalang Device (Vendor: <ph name="VENDOR_ID"/>, Produkto: <ph name="PRODUCT_ID"/>)</translation>
@@ -2450,12 +2472,15 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7235737137505019098">Walang sapat na espasyo para sa higit pang account ang iyong security key.</translation>
 <translation id="3984431586879874039">Payagan ang site na ito na makita ang iyong security key?</translation>
 <translation id="8948939328578167195">Gusto ng <ph name="WEBSITE"/> na makita ang manufacturer at modelo ng iyong security key</translation>
-<translation id="7618452966706304788">Gusto mo bang gamitin ang Touch ID sa <ph name="APP_NAME"/> gamit ang Incognito mode?</translation>
-<translation id="3098826269712097986">Iso-store ang data ng pag-sign in sa Brave pagkatapos mong lumabas sa Incognito mode. Nagbibigay-daan ito sa iyong gamitin ulit ang Touch ID sa website na ito sa ibang pagkakataon.</translation>
+<translation id="7618452966706304788">Gusto mo bang gamitin ang Touch ID sa <ph name="APP_NAME"/>sa Private mode?</translation>
+<translation id="3098826269712097986">Iso-store ang data sa pag-sign in sa Brave pagkatapos mong lumabas sa Private mode. Bibigyang-daan ka nitong gamitin ulit ang Touch ID sa website na ito sa ibang pagkakataon.</translation>
 <translation id="2172784515318616985">Magpatuloy</translation>
-<translation id="5186185447130319458">Incognito</translation>
+<translation id="5186185447130319458">Pribado</translation>
 <translation id="7643842463591647490">{0,plural, =1{# bukas na window}one{# bukas na window}other{# na bukas na window}}</translation>
-<translation id="2579188629646253712">Lumabas sa Incognito</translation>
+<translation id="2579188629646253712">Lumabas sa Pribado</translation>
+<translation id="479219453908726046">Sagutan ang Survey</translation>
+<translation id="7581273696622423628">Sagutan ang survey</translation>
+<translation id="4406504596603350105">Importante sa amin ang feedback mo.</translation>
 <translation id="4349828822184870497">Kapaki-pakinabang</translation>
 <translation id="6876469544038980967">Hindi Kapaki-pakinabang</translation>
 <translation id="6428450836711225518">I-verify ang iyong numero ng telepono</translation>
@@ -2468,17 +2493,20 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="399179161741278232">Na-import</translation>
 <translation id="5225324770654022472">Ipakita ang shortcut ng mga app</translation>
 <translation id="5072836811783999860">Ipakita ang mga pinamamahalaang bookmark</translation>
+<translation id="3613134908380545408">Ipakita ang <ph name="FOLDER_NAME"/></translation>
 <translation id="3785308913036335955">Ipakita ang Shortcut ng Apps</translation>
 <translation id="711840821796638741">Ipakita ang Mga Pinamamahalaang Bookmark</translation>
-<translation id="3613134908380545408">Ipakita ang <ph name="FOLDER_NAME"/></translation>
 <translation id="2367972762794486313">Ipakita ang apps</translation>
 <translation id="8368859634510605990">&amp;Buksan ang lahat ng bookmark</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{&amp;Buksan lahat}=1{&amp;Buksan ang bookmark}one{&amp;Buksan lahat (#)}other{&amp;Buksan lahat (#)}}</translation>
 <translation id="1016437870506746108">{COUNT,plural, =0{Buksan lahat sa &amp;bagong window}=1{Buksan sa &amp;bagong window}one{Buksan lahat (#) sa &amp;bagong window}other{Buksan lahat (#) sa &amp;bagong window}}</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Buksan lahat sa &amp;incognito window}=1{Buksan lahat sa &amp;incognito window}one{Buksan lahat (#) sa &amp;incognito window}other{Buksan lahat (#) sa &amp;incognito window}}</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Buksan lahat sa &amp;pribadong window}
+          =1 {Buksan sa &amp;pribadong window}
+          other {Buksan lahat (#) sa &amp;pribadong window}}</translation>
 <translation id="3613422051106148727">&amp;Buksan sa bagong tab</translation>
 <translation id="4853020600495124913">Buksan sa &amp;bagong window</translation>
-<translation id="2431625704210501303">Buksan sa &amp;incognito window</translation>
+<translation id="2431625704210501303">Buksan sa &amp;pribadong window</translation>
 <translation id="6702639462873609204">&amp;I-edit...</translation>
 <translation id="3088325635286126843">&amp;Palitan ang pangalan...</translation>
 <translation id="713122686776214250">Magdagdag ng Pahina...</translation>
@@ -2487,10 +2515,13 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6466988389784393586">&amp;Buksan Ang Lahat ng Bookmark</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Buksan Lahat}=1{&amp;Buksan ang Bookmark}one{&amp;Buksan Lahat (#)}other{&amp;Buksan Lahat (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Buksan Lahat sa &amp;Bagong Window}=1{Buksan sa &amp;Bagong Window}one{Buksan Lahat (#) sa &amp;Bagong Window}other{Buksan Lahat (#) sa &amp;Bagong Window}}</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Buksan Lahat sa &amp;Incognito Window}=1{Buksan sa &amp;Incognito Window}one{Buksan Lahat (#) sa &amp;Incognito Window}other{Buksan Lahat (#) sa &amp;Incognito Window}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Buksan Lahat sa &amp;Pribadong Window}
+          =1 {Buksan sa &amp;Pribadong Window}
+          other {Buksan Lahat (#) sa &amp;Pribadong Window}}</translation>
 <translation id="9024127637873500333">&amp;Buksan sa Bagong Tab</translation>
 <translation id="665061930738760572">Buksan sa &amp;Bagong Window</translation>
-<translation id="1985165269306590797">Buksan sa &amp;Incognito Window</translation>
+<translation id="1985165269306590797">Buksan sa &amp;Pribadong Window</translation>
 <translation id="8824701697284169214">Magdagdag ng Pahina...</translation>
 <translation id="2489918096470125693">Magdagdag ng &amp;Folder...</translation>
 <translation id="421182450098841253">&amp;Ipakita ang Bookmarks Bar</translation>
@@ -2542,10 +2573,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8457451314607652708">Mag-import ng mga bookmark</translation>
 <translation id="5101042277149003567">Buksan lahat ng mga bookmark</translation>
 <translation id="7007648447224463482">Buksan ang lahat sa bagong window</translation>
-<translation id="642436385689435488">Buksan ang lahat sa incognito window</translation>
+<translation id="642436385689435488">Buksan lahat sa pribadong window</translation>
 <translation id="4195643157523330669">Buksan sa bagong tab</translation>
 <translation id="2979639724566107830">Buksan ng bagong window</translation>
-<translation id="5463021359602611602">Buksan sa incognito window</translation>
+<translation id="5463021359602611602">Buksan sa pribadong window</translation>
 <translation id="1173894706177603556">Pangalanang muli</translation>
 <translation id="6825184156888454064">Uriin ayon sa pangalan</translation>
 <translation id="3440663250074896476">Higit pang aksyon para sa <ph name="BOOKMARK_NAME"/></translation>
@@ -2623,9 +2654,15 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4159681666905192102">Isa itong account para sa mga bata na pinamamahalaan nina <ph name="CUSTODIAN_EMAIL"/> at <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Pinangangasiwaang user</translation>
 <translation id="5720705177508910913">Kasalukuyang user</translation>
-<translation id="1850357845349976573">{0,plural, =1{Incognito}one{# bukas na incognito window}other{# na bukas na incognito window}}</translation>
-<translation id="37784332082579802">{0,plural, =1{Incognito}one{Incognito (#)}other{Incognito (#)}}</translation>
-<translation id="5070556616376997776">Incognito ka</translation>
+<translation id="1850357845349976573">{0, plural,
+        =1 {Pribado}
+        other {# na bukas na pribadong window}
+      }</translation>
+<translation id="37784332082579802">{0, plural,
+      =1 {Pribado}
+      other {Pribado(#)}
+    }</translation>
+<translation id="5070556616376997776">Isa itong pribadong window</translation>
 <translation id="2199298570273670671">Nagka-error</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: Hindi gumagana ang pag-sync</translation>
 <translation id="7307129035224081534">Naka-pause</translation>
@@ -2634,8 +2671,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (Account para sa mga bata)</translation>
 <translation id="8182664696082410784"><ph name="REASON"/>
     Sa palagay ko, hindi dapat i-block ang site na ito!</translation>
-<translation id="5832813618714645810">Mga Tao</translation>
-<translation id="7171000599584840888">Magdagdag ng Tao...</translation>
+<translation id="5832813618714645810">Mga profile</translation>
+<translation id="7171000599584840888">Magdagdag ng Profile...</translation>
 <translation id="1781771911845953849">Mga account at pag-sync</translation>
 <translation id="4974733135013075877">Lumabas at i-childlock</translation>
 <translation id="3965965397408324205">Lumabas sa <ph name="PROFILE_NAME"/></translation>
@@ -2654,21 +2691,21 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8473863474539038330">Mga address at higit pa</translation>
 <translation id="5287425679749926365">Ang iyong mga account</translation>
 <translation id="4801448226354548035">Itago ang mga account</translation>
-<translation id="2935225303485967257">Pamahalaan ang mga tao</translation>
+<translation id="2935225303485967257">Pamahalaan ang mga profile</translation>
 <translation id="7388222713940428051">Buksan ang window ng Bisita</translation>
 <translation id="127668050356036882">Isara ang lahat ng iyong window</translation>
 <translation id="1464258312790801189">Ang Iyong Mga Account</translation>
 <translation id="6655458902729017087">Itago ang Mga Account</translation>
-<translation id="688280436658139163">Pamahalaan ang Mga Tao</translation>
+<translation id="688280436658139163">Pamahalaan ang Mga Profile</translation>
 <translation id="2666990579225592931">Buksan ang Window ng Bisita</translation>
 <translation id="5869948122057593679">Isara ang Lahat ng Iyong Window</translation>
-<translation id="4133080584509825342">I-edit ang tao, <ph name="PROFILE_NAME"/></translation>
-<translation id="4848862725510532982">I-edit ang tao, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4133080584509825342">I-edit ang profile, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">I-edit ang profile, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="3294437725009624529">Bisita</translation>
 <translation id="475088594373173692">Unang user</translation>
 <translation id="4535127706710932914">Default na Profile</translation>
 <translation id="4389091756366370506">User <ph name="VALUE"/></translation>
-<translation id="4536111748245793305">Tao <ph name="VALUE"/></translation>
+<translation id="4536111748245793305">Profile <ph name="VALUE"/></translation>
 <translation id="5397794290049113714">Ikaw</translation>
 <translation id="3031417829280473749">Agent X</translation>
 <translation id="412730574613779332">Superhero</translation>
@@ -2756,7 +2793,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2871813825302180988">Ginagamit na ang account na ito sa device na ito.</translation>
 <translation id="7654941827281939388">Ginagamit na ang account na ito sa computer na ito.</translation>
 <translation id="9022847679183471841">Ang account na ito ay ginagamit na ni <ph name="AVATAR_NAME"/> sa computer na ito.</translation>
-<translation id="6921634551681321094">Magdagdag ng tao</translation>
+<translation id="6921634551681321094">Magdagdag ng profile</translation>
 <translation id="5389237414310520250">Hindi magawa ang bagong user. Pakitingnan ang espasyo at mga pahintulot sa iyong hard drive at subukang muli.</translation>
 <translation id="2673589024369449924">Gumawa ng desktop shortcut para sa user na ito</translation>
 <translation id="2731710757838467317">Ginagawa ang iyong pinangangasiwaang user. Maaari itong tumagal ng ilang sandali.</translation>
@@ -2764,13 +2801,13 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6690751852586194791">Pumili ng isang pinangangasiwaang user na idaragdag sa device na ito.</translation>
 <translation id="5525677322972469346">Gumawa ng bagong pinangangasiwaang user</translation>
 <translation id="8630903300770275248">Mag-import ng pinangangasiwaang user</translation>
-<translation id="4904061654709986277">Magdagdag ng Tao</translation>
-<translation id="6114945161119872228">Alisin ang Taong Ito</translation>
-<translation id="769308100792069196">Magdagdag ng Pinapangasiwaang Tao</translation>
+<translation id="4904061654709986277">Magdagdag ng Profile</translation>
+<translation id="6114945161119872228">Alisin ang Profile na Ito</translation>
+<translation id="769308100792069196">Magdagdag ng Pinapangasiwaang Profile</translation>
 <translation id="3470442499439619530">Alisin ang User na Ito</translation>
 <translation id="4296575653627536209">Magdagdag ng Pinapangasiwaang User</translation>
-<translation id="8006143138282906848">Alisin ang taong ito</translation>
-<translation id="6912187023601892621">Magdagdag ng pinapangasiwaang tao</translation>
+<translation id="8006143138282906848">Alisin ang profile na ito</translation>
+<translation id="6912187023601892621">Magdagdag ng pinapangasiwaang profile</translation>
 <translation id="1608626060424371292">Alisin ang user na ito</translation>
 <translation id="493571969993549666">Magdagdag ng pinapangasiwaang user</translation>
 <translation id="9101691533782776290">Ilunsad ang app</translation>
@@ -2792,8 +2829,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6164005077879661055">Permanenteng matatanggal ang lahat ng file at lokal na data na kaugnay ng pinangangasiwaang user sa oras na alisin ang pinangangasiwaang user na ito. Maaari pa ring makita ng manager ang mga nabisitang website at setting para sa pinangangasiwaang user na ito sa <ph name="MANAGEMENT_URL"/>.</translation>
 <translation id="3410832398355316179">Permanenteng made-delete ang lahat ng file at lokal na data na nauugnay sa user na ito kapag inalis ang user na ito. Maaari pa ring mag-sign in si <ph name="USER_EMAIL"/> sa ibang pagkakataon.</translation>
 <translation id="672213144943476270">Paki-unlock ang iyong profile bago mag-browse bilang bisita.</translation>
-<translation id="8086119151297127544">Paki-unlock ang iyong profile bago mag-alis ng tao.</translation>
-<translation id="7805701378418968629">Paki-unlock ang iyong profile bago magdagdag ng tao.</translation>
+<translation id="8086119151297127544">Paki-unlock ang iyong profile bago mag-alis ng profile.</translation>
+<translation id="7805701378418968629">Paki-unlock ang iyong profile bago magdagdag ng profile.</translation>
 <translation id="8978225823042133615">Upang magamit ang Brave, mag-sign in</translation>
 <translation id="4893336867552636863">Permanente nitong ide-delete ang iyong data mula sa pagba-browse sa device na ito.</translation>
 <translation id="2496180316473517155">History ng Pagba-browse</translation>
@@ -2851,8 +2888,9 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6850286078059909152">Kulay ng text</translation>
 <translation id="8042142357103597104">Opacity ng text</translation>
 <translation id="1656528038316521561">Opacity ng background</translation>
-<translation id="5750288053043553775">0</translation>
-<translation id="8689998525144040851">100</translation>
+<translation id="8838601485495657486">Opaque</translation>
+<translation id="5826993284769733527">Semi-transparent</translation>
+<translation id="4438043733494739848">Transparent</translation>
 <translation id="2442916515643169563">Shadow ng text</translation>
 <translation id="3599221874935822507">Raised</translation>
 <translation id="274029851662193272">Depressed</translation>
@@ -2867,7 +2905,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="161042844686301425">Cyan</translation>
 <translation id="4115378294792113321">Magenta</translation>
 <translation id="6981982820502123353">Pagiging Maa-access</translation>
-<translation id="5840822070878669614">Buksan ang Brave Web Store</translation>
+<translation id="5840822070878669614">Buksan ang Web Store</translation>
 <translation id="6073903501322152803">Magdagdag ng mga feature ng pagiging naa-access</translation>
 <translation id="7988355189918024273">Paganahin ang mga tampok sa pagiging maa-access</translation>
 <translation id="5499063270485366718">Kung hindi sapat ang deskripsyon ng isang larawan, susubukan ng Brave na ayusin ito para sa iyo. Para gumawa ng mga deskripsyon, ipinapadala ang mga larawan sa Brave Software.</translation>
@@ -2963,6 +3001,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4430019312045809116">Volume</translation>
 <translation id="3677657024345889897">Pinakamahina</translation>
 <translation id="167160931442925455">Pinakamalakas</translation>
+<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (default)</translation>
 <translation id="7037509989619051237">Text na ipi-preview</translation>
 <translation id="5471768120198416576">Kumusta! Ako ang iyong boses ng text-to-speech.</translation>
@@ -3227,10 +3266,13 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4058720513957747556">AppSocket (TCP/IP)</translation>
 <translation id="6619058681307408113">Line Printer Daemon (LPD)</translation>
 <translation id="2266957463645820432">IPP sa USB (IPPUSB)</translation>
+<translation id="8086015605808120405">Kino-configure ang <ph name="PRINTER_NAME"/> ...</translation>
 <translation id="4665014895760275686">Manufacturer</translation>
 <translation id="4561098487691395071">O kaya, tukuyin ang PPD ng iyong printer</translation>
 <translation id="1989112275319619282">Mag-browse</translation>
 <translation id="3625481642044239431">Invalid ang file na napili. Subukang muli.</translation>
+<translation id="2462752602710430187">Idinagdag ang <ph name="PRINTER_NAME"/></translation>
+<translation id="7380768571499464492">Na-update ang <ph name="PRINTER_NAME"/></translation>
 <translation id="8002670234429879764">Hindi na available ang <ph name="PRINTER_NAME"/></translation>
 <translation id="3976108569178263973">Walang available na printer.</translation>
 <translation id="3213187967168344806">Hindi maidagdag ang printer. I-restart ang iyong computer at subukang muli.</translation>
@@ -3795,9 +3837,9 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6196640612572343990">I-block ang mga third-party na cookie</translation>
 <translation id="6782111308708962316">Pigilan ang mga third-party na website na mag-save at magbasa ng data ng cookie</translation>
 <translation id="1274977772557788323">Mga setting ng Storage ng Adobe Flash Player</translation>
-<translation id="1281501490173223206">Kasalukuyang incognito na session lang</translation>
-<translation id="3479035826743782247">Kasalukuyang incognito na session</translation>
-<translation id="4750220700975225">Kasalukuyang incognito na session (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Kasalukuyang pribadong session lang</translation>
+<translation id="3479035826743782247">Kasalukuyang pribadong session</translation>
+<translation id="4750220700975225">Kasalukuyang pribadong session (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Walang site na na-zoom in o na-zoom out</translation>
 <translation id="3566721612727112615">Walang naidagdag na site</translation>
 <translation id="8098574385249290065">Hayaan ang Brave na pumili kung kailan makakapag-play ng tunog ang mga site (inirerekomenda)</translation>
@@ -3824,8 +3866,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4590324241397107707">Storage ng database</translation>
 <translation id="8016266267177410919">Pansamantalang storage</translation>
 <translation id="4175737294868205930">Matagalang storage</translation>
-<translation id="3707212204259470604">Pamahalaan ang iba pang mga tao</translation>
-<translation id="8907706281008466056">Larawan sa Profile sa Brave Software</translation>
+<translation id="3707212204259470604">Pamahalaan ang iba pang profile</translation>
+<translation id="8907706281008466056">Larawan sa profile sa Brave</translation>
 <translation id="2408955596600435184">Ilagay ang iyong PIN</translation>
 <translation id="6619990499523117484">Kumpirmahin ang iyong PIN</translation>
 <translation id="2023167225947895179">Maaaring mahulaan agad ang PIN na ito</translation>
@@ -3859,6 +3901,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2458379781610688953">I-update ang account, <ph name="EMAIL"/></translation>
 <translation id="2701737434167469065">Mag-sign in, <ph name="EMAIL"/></translation>
 <translation id="2923234477033317484">Alisin ang account na ito</translation>
+<translation id="8995603266996330174">Pinamamahalaan ng <ph name="DOMAIN"/></translation>
 <translation id="4659077111144409915">Pangunahing account</translation>
 <translation id="8864458770072227512">Inalis ang <ph name="EMAIL"/> sa device na ito</translation>
 <translation id="3158033540161634471">I-set up ang iyong fingerprint</translation>
@@ -3891,12 +3934,11 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3608576286259426129">Preview ng larawan ng user</translation>
 <translation id="2114896190328250491">Larawan ni <ph name="NAME"/></translation>
 <translation id="7155171745945906037">Kasalukuyang larawan mula sa camera o file</translation>
-<translation id="8995603266996330174">Pinamamahalaan ni <ph name="DOMAIN"/></translation>
 <translation id="9125982323641182972">Magkaroon ng mga smart na feature ng Brave Software sa Brave</translation>
 <translation id="1692115862433274081">Gumamit ng ibang account</translation>
 <translation id="5244474230056479698">Sini-sync sa <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Dahil pinamamahalaan ng <ph name="DOMAIN"/> ang account na ito, iki-clear sa device na ito ang iyong mga bookmark, history, password at iba pang mga setting. Gayunpaman, mananatiling nakaimbak ang data mo sa iyong Brave Software Account at mapamamahalaan ito sa <ph name="BEGIN_LINK"/>Brave Software Dashboard<ph name="END_LINK"/>.</translation>
-<translation id="6906406176003824042">I-edit ang tao</translation>
+<translation id="6906406176003824042">I-edit ang profile</translation>
 <translation id="6739923123728562974">Ipakita ang desktop shortcut</translation>
 <translation id="2450310832094867474">I-off ang pag-sync at mag-sign out?</translation>
 <translation id="3699920817649120894">I-off ang pag-sync at pag-personalize?</translation>
@@ -3986,7 +4028,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="437184764829821926">Mga advanced na setting ng font</translation>
 <translation id="323803881985677942">Buksan ang mga opsyon ng extension</translation>
 <translation id="2166369534954157698">The quick brown fox jumps over the lazy dog</translation>
-<translation id="8911765336506423117">Nangangailangan ng extension mula sa Brave Web Store</translation>
+<translation id="8911765336506423117">Nangangailangan ng extension mula sa Web Store</translation>
 <translation id="6965978654500191972">Device</translation>
 <translation id="8260864402787962391">Mouse</translation>
 <translation id="155865706765934889">Touchpad</translation>
@@ -4110,7 +4152,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8781980678064919987">Mag-shut down kapag isinara ang takip</translation>
 <translation id="3636766455281737684"><ph name="PERCENTAGE"/>% - <ph name="TIME"/> na lang ang natitira</translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - <ph name="TIME"/> na lang bago mapuno</translation>
-<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="2620436844016719705">System</translation>
 <translation id="2077129598763517140">Gamitin ang pagpapabilis ng hardware kapag available</translation>
 <translation id="3817524650114746564">Buksan ang mga setting ng proxy ng iyong computer</translation>
@@ -4233,7 +4274,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="329838636886466101">Ayusin</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Hindi aktibo)</translation>
-<translation id="3860292630623580294">(Incognito)</translation>
+<translation id="3860292630623580294">(Pribado)</translation>
 <translation id="6655190889273724601">Developer mode</translation>
 <translation id="2868746137289129307">Ang extension na ito ay luma na at na-disable ayon sa patakaran ng enterprise. Maaaring awtomatiko itong ma-enable kapag may available na bagong bersyon.</translation>
 <translation id="6841186874966388268">Mga error</translation>
@@ -4269,7 +4310,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1805822111539868586">Siyasatin ang mga view</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> pa...</translation>
 <translation id="2450849356604136918">Walang aktibong view</translation>
-<translation id="4854477725773269949">Payagan sa incognito</translation>
+<translation id="4854477725773269949">Pahintulutan sa pribado</translation>
 <translation id="6124650939968185064">Nakadepende ang mga sumusunod na extension sa extension na ito:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="3866249974567520381">Paglalarawan</translation>
@@ -4296,7 +4337,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7235716375204803342">Kinukuha ang mga aktibidad...</translation>
 <translation id="8314381333424235892">Nawawala o hindi naka-install ang extension</translation>
 <translation id="7647403192093989392">Walang kamakailang aktibidad</translation>
-<translation id="38046578254905003">Maghanap ng mga extension at tema sa <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
+<translation id="38046578254905003">Maghanap ng mga extension at tema sa <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
 <translation id="7272674038937250585">Walang ibinigay na paglalarawan</translation>
 <translation id="3855441664322950881">Extension ng pack</translation>
 <translation id="2958721676848865875">Babala sa extension ng pack</translation>
@@ -4323,7 +4364,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1688935057616748272">Mag-type ng titik</translation>
 <translation id="4479424953165245642">Pamahalaan ang mga kiosk application</translation>
 <translation id="6619801788773578757">Magdagdag ng kiosk application</translation>
-<translation id="8045923671629973368">Maglagay ng application ID o URL ng webstore</translation>
+<translation id="8045923671629973368">Ilagay ang application ID o URL ng webstore</translation>
 <translation id="7059858479264779982">Itakdang awtomatikong ilunsad</translation>
 <translation id="6325191661371220117">I-disable ang awtomatikong paglulunsad</translation>
 <translation id="4699357559218762027">(awtomatikong inilunsad)</translation>

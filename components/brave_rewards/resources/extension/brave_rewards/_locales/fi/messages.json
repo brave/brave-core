@@ -43,6 +43,22 @@
     "message": "Lahjoitukset",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "Tiedot",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Saldosi",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT-pisteet",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "voidaan käyttää Brave-palkinnoissa antamaan kannatusmaksuja suosikkisisällöntuottajillesi. BAT-pisteitä ei voi vaihtaa BATiin.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "päällä",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Kuukausittainen avustus",
+    "message": "Anna tälle sivustolle tippi kuukausittain",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Olet myöntänyt {{reservedAmount}} BATia kehittäjille, jotka eivät ole vielä rekisteröityneet vastaanottamaan avustuksia. Selaimesi pyrkii tekemään avustuksia joko kyseisen henkilön vahvistukseen asti tai kunnes 90 päivää on kulunut.",
+    "message": "Olet osoittanut {{reservedAmount}} {{currency}} tekijöille, jotka eivät ole vielä rekisteröityneet kannatusmaksujen vastaanottajiksi. Selaimesi jatkaa kannatusmaksuyritysten tekemistä siihen asti, että tekijät ovat vahvistaneet tai että on kulunut 90 vuorokautta.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave-mainosten palkkiot!",
+    "message": "Olet ansainnut mainospalkinnon!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Brave-mainosten palkkiot ovat matkalla luoksesi.",
+    "message": "Palkintosi on matkalla Brave-palkintokukkaroosi.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Brave-mainostesi tunnuksen palkkio",
+    "message": "Palkintosummasi",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "Viimeistele lompakon vahvistus",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "Aseta...",
-    "description": "Button text for setting monthly contribution"
   }
 }

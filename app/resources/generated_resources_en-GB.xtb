@@ -61,7 +61,7 @@
 <translation id="1163931534039071049">&amp;View frame source</translation>
 <translation id="6886871292305414135">Open link in new &amp;tab</translation>
 <translation id="8899851313684471736">Open link in new &amp;window</translation>
-<translation id="658539216370629794">Open link in inco&amp;gnito window</translation>
+<translation id="658539216370629794">Open link in &amp;private window</translation>
 <translation id="3144647712221361880">Open link as</translation>
 <translation id="9137916601698928395">Open link as <ph name="USER"/></translation>
 <translation id="1137673463384776352">Open link in <ph name="APP"/></translation>
@@ -122,7 +122,7 @@
 <translation id="3021678814754966447">&amp;View Frame Source</translation>
 <translation id="9027459031423301635">Open Link in New &amp;Tab</translation>
 <translation id="1769104665586091481">Open Link in New &amp;Window</translation>
-<translation id="1432267168815937878">Open Link in Inco&amp;gnito Window</translation>
+<translation id="1432267168815937878">Open link in &amp;private window</translation>
 <translation id="2142328300403846845">Open Link as</translation>
 <translation id="6892812721183419409">Open Link as <ph name="USER"/></translation>
 <translation id="2006638907958895361">Open Link in <ph name="APP"/></translation>
@@ -172,7 +172,7 @@
 <translation id="4200983522494130825">New &amp;tab</translation>
 <translation id="8418445294933751433">&amp;Show as tab</translation>
 <translation id="1723824996674794290">&amp;New window</translation>
-<translation id="6516243500644829484">New &amp;incognito window</translation>
+<translation id="6516243500644829484">New &amp;private window</translation>
 <translation id="6120205520491252677">Pin this page to Start screen...</translation>
 <translation id="9065203028668620118">Edit</translation>
 <translation id="5329858601952122676">&amp;Delete</translation>
@@ -192,7 +192,7 @@
 <translation id="3285322247471302225">New &amp;Tab</translation>
 <translation id="8879284080359814990">&amp;Show As Tab</translation>
 <translation id="176587472219019965">&amp;New Window</translation>
-<translation id="7973394300052703468">New &amp;Incognito Window</translation>
+<translation id="7973394300052703468">New &amp;private window</translation>
 <translation id="5157635116769074044">Pin this Page to Start Screen...</translation>
 <translation id="5830720307094128296">Save Page &amp;As...</translation>
 <translation id="4672657274720418656">Distill Page</translation>
@@ -364,7 +364,7 @@
 <translation id="2902312830803030883">More actions</translation>
 <translation id="495170559598752135">Actions</translation>
 <translation id="3612673635130633812">Downloaded by &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="6395403722585816044">Downloaded in Incognito</translation>
+<translation id="6395403722585816044">Downloaded in private</translation>
 <translation id="4551763574344810652">Press <ph name="MODIFIER_KEY_DESCRIPTION"/> to undo</translation>
 <translation id="2079545284768500474">Undo</translation>
 <translation id="2490481887078769936">Removed '<ph name="FILE_NAME"/>' from list</translation>
@@ -411,10 +411,10 @@
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Download is in progress}other{Downloads are in progress}}</translation>
 <translation id="5425042808445046667">Continue downloading</translation>
 <translation id="5284445933715251131">Continue Downloading</translation>
-<translation id="203837651858678035">Exit incognito mode anyway?</translation>
+<translation id="203837651858678035">Exit private mode anyway?</translation>
 <translation id="8951465597020890363">Exit guest mode anyway?</translation>
 <translation id="9148058034647219655">Exit</translation>
-<translation id="7376221878517288144">Quit incognito mode anyway?</translation>
+<translation id="7376221878517288144">Quit private mode anyway?</translation>
 <translation id="973473557718930265">Quit</translation>
 <translation id="7707599169365957976">You can help improve Safe Browsing by sending some system information and page content to Brave Software.</translation>
 <translation id="4923279099980110923">Yes, I want to help</translation>
@@ -596,6 +596,24 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Certificate Signature Value</translation>
 <translation id="4104163789986725820">E&amp;xport...</translation>
+<translation id="2029156652561216312">CN</translation>
+<translation id="7822286184239325970">ST</translation>
+<translation id="8180262569555229595">O</translation>
+<translation id="7252376466538759696">OU</translation>
+<translation id="5734574586460918465">dnqualifier</translation>
+<translation id="964324710553558337">C</translation>
+<translation id="511291565806773566">serialnumber</translation>
+<translation id="5912292566401425135">L</translation>
+<translation id="5725734596824080201">DC</translation>
+<translation id="2948789661744572780">MAIL</translation>
+<translation id="7481079953250545971">UID</translation>
+<translation id="4196967880387277612">E</translation>
+<translation id="5887772116581657016">businesscategory</translation>
+<translation id="6561757256477115975">jurisdictionlocalityname</translation>
+<translation id="7150038968052501583">jurisdictionstateorprovincename</translation>
+<translation id="8904360804686555987">jurisdictioncountryname</translation>
+<translation id="8718098216622210506">STREET</translation>
+<translation id="6969275223369931223">postcode</translation>
 <translation id="5434065355175441495">PKCS #1 RSA Encryption</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 With RSA Encryption</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 With RSA Encryption</translation>
@@ -767,11 +785,11 @@
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/> (<ph name="NUM_KILOBYTES_LIVE"/> peak)</translation>
 <translation id="8004582292198964060">Browser</translation>
 <translation id="3678156199662914018">Extension: <ph name="EXTENSION_NAME"/></translation>
-<translation id="5053701565089446556">Incognito Extension: <ph name="EXTENSION_NAME"/></translation>
+<translation id="5053701565089446556">Private extension: <ph name="EXTENSION_NAME"/></translation>
 <translation id="6508261954199872201">App: <ph name="APP_NAME"/></translation>
-<translation id="611296870688433505">Incognito App: <ph name="APP_NAME"/></translation>
+<translation id="611296870688433505">Private app: <ph name="APP_NAME"/></translation>
 <translation id="7629827748548208700">Tab: <ph name="TAB_NAME"/></translation>
-<translation id="9048137919253433011">Incognito Tab: <ph name="TAB_NAME"/></translation>
+<translation id="9048137919253433011">Private tab: <ph name="TAB_NAME"/></translation>
 <translation id="6900284862687837908">Background App: <ph name="BACKGROUND_APP_URL"/></translation>
 <translation id="7427348830195639090">Background Page: <ph name="BACKGROUND_PAGE_URL"/></translation>
 <translation id="6798954102094737107">Plug-in: <ph name="PLUGIN_NAME"/></translation>
@@ -786,7 +804,7 @@
 <translation id="2282146716419988068">GPU Process</translation>
 <translation id="2087822576218954668">Print: <ph name="PRINT_NAME"/></translation>
 <translation id="8859174528519900719">Subframe: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="1799432502220762862">Incognito Subframe: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="1799432502220762862">Private subframe: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="2348176352564285430">App: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="786073089922909430">Service: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7663719505383602579">Receiver: <ph name="ARC_PROCESS_NAME"/></translation>
@@ -1060,7 +1078,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5483785310822538350">Revoke file and device access</translation>
 <translation id="93766956588638423">Repair extension</translation>
 <translation id="3905761538810670789">Repair app</translation>
-<translation id="8808478386290700967">Web Store</translation>
+<translation id="8808478386290700967">Web store</translation>
 <translation id="488785315393301722">Show Details</translation>
 <translation id="8962083179518285172">Hide Details</translation>
 <translation id="7287143125007575591">Access denied</translation>
@@ -1350,7 +1368,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="192494336144674234">Open with</translation>
 <translation id="9053893665344928494">Remember my choice</translation>
 <translation id="5340857474604400806">Stay in Brave</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (private)</translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (Guest)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Update is available)</translation>
@@ -1382,10 +1400,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4400963414856942668">You can click the star to bookmark a tab</translation>
 <translation id="8379991678458444070">Get back here fast by bookmarking this tab</translation>
 <translation id="7174199383876220879">New! Control your music, videos and more.</translation>
-<translation id="4369414322596874629">You can browse privately using an incognito window</translation>
-<translation id="3772947852642271642">Use the web without saving your browsing history with an incognito window</translation>
-<translation id="3871738366246972820">Using a shared computer? Try opening an incognito window.</translation>
-<translation id="5808622652939943719">To browse privately, click the dots icon menu to open an incognito window</translation>
+<translation id="4369414322596874629">You can browse privately using a private window</translation>
+<translation id="3772947852642271642">Use the web without saving your browsing history with a private window</translation>
+<translation id="3871738366246972820">Using a shared computer? Try opening a private window.</translation>
+<translation id="5808622652939943719">To browse privately, click the dots icon menu to open a private window</translation>
 <translation id="8803953437405899238">Open a new tab with one click</translation>
 <translation id="3071624960923923138">You can click here to open a new tab</translation>
 <translation id="4908811072292128752">Open a new tab to browse two sites at once</translation>
@@ -1601,13 +1619,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4620809267248568679">This setting is enforced by an extension.</translation>
 <translation id="4846680374085650406">You are following the administrator's recommendation for this setting.</translation>
 <translation id="1223853788495130632">Your administrator recommends a specific value for this setting.</translation>
-<translation id="8839398440242019256">Not from Brave Web Store.</translation>
+<translation id="8839398440242019256">Not from web store.</translation>
 <translation id="5337771866151525739">Installed by a third party.</translation>
 <translation id="4538792345715658285">Installed by enterprise policy.</translation>
 <translation id="4359408040881008151">Installed because of dependent extension(s).</translation>
 <translation id="4980805016576257426">This extension contains malware.</translation>
 <translation id="5522156646677899028">This extension contains a serious security vulnerability.</translation>
-<translation id="6945695820322143954">This extension violates the Brave Web Store policy.</translation>
+<translation id="6945695820322143954">This extension violates the web store policy.</translation>
 <translation id="177808131755847449">Disabled by Brave. This extension may be unsafe.</translation>
 <translation id="1434696352799406980">This will reset your startup page, new tab page, search engine and pinned tabs. It will also disable all extensions and clear temporary data like cookies. Your bookmarks, history and saved passwords will not be cleared.</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/> wants to reset your settings.</translation>
@@ -1674,6 +1692,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="622537739776246443">Profile will be deleted</translation>
 <translation id="5632566673632479864">Your account <ph name="EMAIL"/> is no longer allowed as the primary account. Because this account is managed by <ph name="DOMAIN"/>, your bookmarks, history, passwords and other settings will be cleared from this device.</translation>
 <translation id="3797739167230984533">Your <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> is managed<ph name="END_LINK"/> by your organisation</translation>
+<translation id="1722460139690167654">Your <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> is managed<ph name="END_LINK"/> by <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8118488170956489476">Your <ph name="BEGIN_LINK"/>browser is managed<ph name="END_LINK"/> by your organisation</translation>
 <translation id="1365180424462182382">Your <ph name="BEGIN_LINK"/>browser is managed<ph name="END_LINK"/> by <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Content</translation>
@@ -1711,6 +1730,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Cache Storage</translation>
+<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Apps</translation>
 <translation id="542872847390508405">You’re browsing as a Guest</translation>
 <translation id="537813040452600081">Pages that you view in this window won’t appear in the browser history and they won’t leave other traces, like cookies, on the computer after you sign out. Files that you download and bookmarks that you create won’t be preserved.</translation>
@@ -1924,7 +1944,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="881799181680267069">Hide Others</translation>
 <translation id="4708849949179781599">Quit <ph name="PRODUCT_NAME"/></translation>
 <translation id="8795916974678578410">New Window</translation>
-<translation id="1676595396635191120">New Incognito Window</translation>
+<translation id="1676595396635191120">New private window</translation>
 <translation id="406070391919917862">Background Apps</translation>
 <translation id="3335947283844343239">Re-open Closed Tab</translation>
 <translation id="8214489666383623925">Open File...</translation>
@@ -2050,6 +2070,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2650609753175229582"><ph name="URL"/> wants to play protected content. Your device's identity will be verified by Brave Software and may be accessed by this site.</translation>
 <translation id="1746402432151920942">Protected media identifier</translation>
 <translation id="1322046419516468189">View and manage saved passwords in your <ph name="SAVED_PASSWORDS_STORE"/></translation>
+<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Password saved. View and manage saved passwords in your <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Brave Software Account</translation>
 <translation id="3785727820640310185">Saved passwords for this site</translation>
@@ -2162,7 +2183,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7339898014177206373">New window</translation>
 <translation id="7551643184018910560">Pin to shelf</translation>
 <translation id="8335587457941836791">Unpin from shelf</translation>
-<translation id="4471385409549756595">New incognito window</translation>
+<translation id="4471385409549756595">New private window</translation>
 <translation id="8249048954461686687">OEM folder</translation>
 <translation id="8440630305826533614">Linux apps</translation>
 <translation id="4742746985488890273">Pin to Shelf</translation>
@@ -2266,8 +2287,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
         <ph name="FILE_INFO"/>
         <ph name="EVENT_NAME"/></translation>
-<translation id="4540437243849625078">This site is about to share information with an app outside of incognito mode.</translation>
-<translation id="1227836882233136433">Leave incognito mode?</translation>
+<translation id="4540437243849625078">This site is about to share information with an app outside of private mode.</translation>
+<translation id="1227836882233136433">Leave private mode?</translation>
 <translation id="662080504995468778">Stay</translation>
 <translation id="2593289874938379417">Brave does not have access to the requested resource.</translation>
 <translation id="760197030861754408">Go to <ph name="LANDING_PAGE"/> to connect.</translation>
@@ -2310,6 +2331,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8750155211039279868"><ph name="ORIGIN"/> wants to connect to a serial port</translation>
 <translation id="4943691134276646401">'<ph name="CHROME_EXTENSION_NAME"/>' wants to connect to a serial port</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
+<translation id="1587562069597918292"><ph name="DEVICE_PATH"/></translation>
 <translation id="1171515578268894665"><ph name="ORIGIN"/> wants to connect to a HID device</translation>
 <translation id="6078769373519310690">'<ph name="CHROME_EXTENSION_NAME"/>' wants to connect to a HID device</translation>
 <translation id="4419610272958564173">Unknown Device (Vendor: <ph name="VENDOR_ID"/>, Product: <ph name="PRODUCT_ID"/>)</translation>
@@ -2450,12 +2472,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7235737137505019098">Your security key does not have enough space for any more accounts.</translation>
 <translation id="3984431586879874039">Allow this site to see your security key?</translation>
 <translation id="8948939328578167195"><ph name="WEBSITE"/> wants to see the make and model of your security key</translation>
-<translation id="7618452966706304788">Do you want to use Touch ID with <ph name="APP_NAME"/> in Incognito mode?</translation>
-<translation id="3098826269712097986">Sign-in data will be stored in Brave after you exit Incognito mode. This will let you use Touch ID with this website again later.</translation>
+<translation id="7618452966706304788">Do you want to use Touch ID with <ph name="APP_NAME"/> in private mode?</translation>
+<translation id="3098826269712097986">Sign-in data will be stored in Brave after you exit private mode. This will let you use Touch ID with this website again later.</translation>
 <translation id="2172784515318616985">Continue</translation>
-<translation id="5186185447130319458">Incognito</translation>
+<translation id="5186185447130319458">Private</translation>
 <translation id="7643842463591647490">{0,plural, =1{# open window}other{# open windows}}</translation>
-<translation id="2579188629646253712">Exit incognito</translation>
+<translation id="2579188629646253712">Exit private</translation>
+<translation id="479219453908726046">Take survey</translation>
+<translation id="7581273696622423628">Take survey</translation>
+<translation id="4406504596603350105">Your feedback is important to us.</translation>
 <translation id="4349828822184870497">Helpful</translation>
 <translation id="6876469544038980967">Not helpful</translation>
 <translation id="6428450836711225518">Verifying your phone number</translation>
@@ -2468,17 +2493,20 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="399179161741278232">Imported</translation>
 <translation id="5225324770654022472">Show apps shortcut</translation>
 <translation id="5072836811783999860">Show managed bookmarks</translation>
+<translation id="3613134908380545408">Show <ph name="FOLDER_NAME"/></translation>
 <translation id="3785308913036335955">Show Apps Shortcut</translation>
 <translation id="711840821796638741">Show Managed Bookmarks</translation>
-<translation id="3613134908380545408">Show <ph name="FOLDER_NAME"/></translation>
 <translation id="2367972762794486313">Show apps</translation>
 <translation id="8368859634510605990">&amp;Open all bookmarks</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{&amp;Open all}=1{&amp;Open bookmark}other{&amp;Open all (#)}}</translation>
 <translation id="1016437870506746108">{COUNT,plural, =0{Open all in &amp;new window}=1{Open in &amp;new window}other{Open all (#) in &amp;new window}}</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Open all in &amp;incognito window}=1{Open in &amp;incognito window}other{Open all (#) in &amp;incognito window}}</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Open all in &amp;private window}
+          =1 {Open in &amp;private window}
+          other {Open all (#) in &amp;private window}}</translation>
 <translation id="3613422051106148727">&amp;Open in new tab</translation>
 <translation id="4853020600495124913">Open in &amp;new window</translation>
-<translation id="2431625704210501303">Open in &amp;Incognito window</translation>
+<translation id="2431625704210501303">Open in &amp;private window</translation>
 <translation id="6702639462873609204">&amp;Edit...</translation>
 <translation id="3088325635286126843">&amp;Rename...</translation>
 <translation id="713122686776214250">Add pa&amp;ge...</translation>
@@ -2487,10 +2515,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6466988389784393586">&amp;Open All Bookmarks</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Open All}=1{&amp;Open Bookmark}other{&amp;Open All (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Open All in &amp;New Window}=1{Open in &amp;New Window}other{Open All (#) in &amp;New Window}}</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Open All in &amp;incognito Window}=1{Open in &amp;incognito Window}other{Open All (#) in &amp;incognito Window}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Open all in &amp;private window}
+          =1 {Open in &amp;private window}
+          other {Open all (#) in &amp;private window}}</translation>
 <translation id="9024127637873500333">&amp;Open in New Tab</translation>
 <translation id="665061930738760572">Open in &amp;New Window</translation>
-<translation id="1985165269306590797">Open in &amp;Incognito Window</translation>
+<translation id="1985165269306590797">Open in &amp;private window</translation>
 <translation id="8824701697284169214">Add Pa&amp;ge...</translation>
 <translation id="2489918096470125693">Add &amp;Folder...</translation>
 <translation id="421182450098841253">&amp;Show Bookmarks Bar</translation>
@@ -2542,10 +2573,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8457451314607652708">Import bookmarks</translation>
 <translation id="5101042277149003567">Open all bookmarks</translation>
 <translation id="7007648447224463482">Open all in new window</translation>
-<translation id="642436385689435488">Open all in incognito window</translation>
+<translation id="642436385689435488">Open all in private window</translation>
 <translation id="4195643157523330669">Open in new tab</translation>
 <translation id="2979639724566107830">Open in new window</translation>
-<translation id="5463021359602611602">Open in incognito window</translation>
+<translation id="5463021359602611602">Open in private window</translation>
 <translation id="1173894706177603556">Rename</translation>
 <translation id="6825184156888454064">Sort by name</translation>
 <translation id="3440663250074896476">More actions for <ph name="BOOKMARK_NAME"/></translation>
@@ -2623,9 +2654,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4159681666905192102">This is an account for kids managed by <ph name="CUSTODIAN_EMAIL"/> and <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Supervised user</translation>
 <translation id="5720705177508910913">Current user</translation>
-<translation id="1850357845349976573">{0,plural, =1{Incognito}other{# open incognito windows}}</translation>
-<translation id="37784332082579802">{0,plural, =1{Incognito}other{Incognito (#)}}</translation>
-<translation id="5070556616376997776">You're incognito</translation>
+<translation id="1850357845349976573">{0, plural,
+        =1 {private}
+        other {# open private windows}
+      }</translation>
+<translation id="37784332082579802">{0, plural,
+      =1 {private}
+      other {private (#)}
+    }</translation>
+<translation id="5070556616376997776">This is a private window</translation>
 <translation id="2199298570273670671">Error</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: Sync isn't working</translation>
 <translation id="7307129035224081534">Paused</translation>
@@ -2634,8 +2671,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (Account for kids)</translation>
 <translation id="8182664696082410784"><ph name="REASON"/>
     I don't think this site should be blocked.</translation>
-<translation id="5832813618714645810">People</translation>
-<translation id="7171000599584840888">Add Person...</translation>
+<translation id="5832813618714645810">Profiles</translation>
+<translation id="7171000599584840888">Add profile ...</translation>
 <translation id="1781771911845953849">Accounts and sync</translation>
 <translation id="4974733135013075877">Exit and child lock</translation>
 <translation id="3965965397408324205">Exit <ph name="PROFILE_NAME"/></translation>
@@ -2654,21 +2691,21 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8473863474539038330">Addresses and more</translation>
 <translation id="5287425679749926365">Your accounts</translation>
 <translation id="4801448226354548035">Hide accounts</translation>
-<translation id="2935225303485967257">Manage people</translation>
+<translation id="2935225303485967257">Manage profiles</translation>
 <translation id="7388222713940428051">Open Guest window</translation>
 <translation id="127668050356036882">Close all your windows</translation>
 <translation id="1464258312790801189">Your Accounts</translation>
 <translation id="6655458902729017087">Hide Accounts</translation>
-<translation id="688280436658139163">Manage People</translation>
+<translation id="688280436658139163">Manage profiles</translation>
 <translation id="2666990579225592931">Open Guest window</translation>
 <translation id="5869948122057593679">Close all your windows</translation>
-<translation id="4133080584509825342">Edit person, <ph name="PROFILE_NAME"/></translation>
-<translation id="4848862725510532982">Edit person, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4133080584509825342">Edit profile, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Edit profile, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="3294437725009624529">Guest</translation>
 <translation id="475088594373173692">First user</translation>
 <translation id="4535127706710932914">Default Profile</translation>
 <translation id="4389091756366370506">User <ph name="VALUE"/></translation>
-<translation id="4536111748245793305">Person <ph name="VALUE"/></translation>
+<translation id="4536111748245793305">Profile <ph name="VALUE"/></translation>
 <translation id="5397794290049113714">You</translation>
 <translation id="3031417829280473749">Agent X</translation>
 <translation id="412730574613779332">Speedy</translation>
@@ -2756,7 +2793,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2871813825302180988">This account is already being used on this device.</translation>
 <translation id="7654941827281939388">This account is already being used on this computer.</translation>
 <translation id="9022847679183471841">This account is already being used on this computer by <ph name="AVATAR_NAME"/>.</translation>
-<translation id="6921634551681321094">Add person</translation>
+<translation id="6921634551681321094">Add profile</translation>
 <translation id="5389237414310520250">The new user couldn't be created. Please check your hard drive space and permissions and try again.</translation>
 <translation id="2673589024369449924">Create a desktop shortcut for this profile</translation>
 <translation id="2731710757838467317">Creating your supervised user. This may take a few moments.</translation>
@@ -2764,13 +2801,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6690751852586194791">Choose a supervised user to add to this device.</translation>
 <translation id="5525677322972469346">Create a new supervised user</translation>
 <translation id="8630903300770275248">Import supervised user</translation>
-<translation id="4904061654709986277">Add Person</translation>
-<translation id="6114945161119872228">Remove This Person</translation>
-<translation id="769308100792069196">Add Supervised Person</translation>
+<translation id="4904061654709986277">Add profile</translation>
+<translation id="6114945161119872228">Remove this profile</translation>
+<translation id="769308100792069196">Add supervised profile</translation>
 <translation id="3470442499439619530">Remove This User</translation>
 <translation id="4296575653627536209">Add Supervised User</translation>
-<translation id="8006143138282906848">Remove this person</translation>
-<translation id="6912187023601892621">Add supervised person</translation>
+<translation id="8006143138282906848">Remove this profile</translation>
+<translation id="6912187023601892621">Add supervised profile</translation>
 <translation id="1608626060424371292">Remove this user</translation>
 <translation id="493571969993549666">Add supervised user</translation>
 <translation id="9101691533782776290">Launch app</translation>
@@ -2792,8 +2829,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6164005077879661055">All files and local data associated with the supervised user will be permanently deleted once this supervised user is removed. Visited websites and settings for this supervised user may still be visible by the manager at <ph name="MANAGEMENT_URL"/>.</translation>
 <translation id="3410832398355316179">All files and local data associated with this user will be permanently deleted once this user is removed. <ph name="USER_EMAIL"/> can still sign in later.</translation>
 <translation id="672213144943476270">Please unlock your profile before browsing as a guest.</translation>
-<translation id="8086119151297127544">Please unlock your profile before removing a person.</translation>
-<translation id="7805701378418968629">Please unlock your profile before adding a person.</translation>
+<translation id="8086119151297127544">Please unlock your profile before removing a profile.</translation>
+<translation id="7805701378418968629">Please unlock your profile before adding a profile.</translation>
 <translation id="8978225823042133615">To use Brave, please sign in</translation>
 <translation id="4893336867552636863">This will permanently delete your browsing data from this device.</translation>
 <translation id="2496180316473517155">Browsing history</translation>
@@ -2851,8 +2888,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6850286078059909152">Text colour</translation>
 <translation id="8042142357103597104">Text opacity</translation>
 <translation id="1656528038316521561">Background opacity</translation>
-<translation id="5750288053043553775">0</translation>
-<translation id="8689998525144040851">100</translation>
+<translation id="8838601485495657486">Opaque</translation>
+<translation id="5826993284769733527">Semi-transparent</translation>
+<translation id="4438043733494739848">Transparent</translation>
 <translation id="2442916515643169563">Text shadow</translation>
 <translation id="3599221874935822507">Raised</translation>
 <translation id="274029851662193272">Depressed</translation>
@@ -2867,7 +2905,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="161042844686301425">Cyan</translation>
 <translation id="4115378294792113321">Magenta</translation>
 <translation id="6981982820502123353">Accessibility</translation>
-<translation id="5840822070878669614">Open Brave Web Store</translation>
+<translation id="5840822070878669614">Open web store</translation>
 <translation id="6073903501322152803">Add accessibility features</translation>
 <translation id="7988355189918024273">Enable accessibility features</translation>
 <translation id="5499063270485366718">If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave Software.</translation>
@@ -2963,6 +3001,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4430019312045809116">volume</translation>
 <translation id="3677657024345889897">Quietest</translation>
 <translation id="167160931442925455">Loudest</translation>
+<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (default)</translation>
 <translation id="7037509989619051237">Text to preview</translation>
 <translation id="5471768120198416576">Hi there! I'm your text-to-speech voice.</translation>
@@ -3227,10 +3266,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4058720513957747556">AppSocket (TCP/IP)</translation>
 <translation id="6619058681307408113">Line Printer Daemon (LPD)</translation>
 <translation id="2266957463645820432">IPP over USB (IPPUSB)</translation>
+<translation id="8086015605808120405">Configuring <ph name="PRINTER_NAME"/> ...</translation>
 <translation id="4665014895760275686">Manufacturer</translation>
 <translation id="4561098487691395071">Or specify your printer PPD</translation>
 <translation id="1989112275319619282">Browse</translation>
 <translation id="3625481642044239431">Invalid file selected. Try again.</translation>
+<translation id="2462752602710430187">Added <ph name="PRINTER_NAME"/></translation>
+<translation id="7380768571499464492">Updated <ph name="PRINTER_NAME"/></translation>
 <translation id="8002670234429879764"><ph name="PRINTER_NAME"/> is no longer available</translation>
 <translation id="3976108569178263973">There are no available printers.</translation>
 <translation id="3213187967168344806">Can’t add printer. Restart your computer and try again.</translation>
@@ -3795,9 +3837,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6196640612572343990">Block third-party cookies</translation>
 <translation id="6782111308708962316">Prevent third-party websites from saving and reading cookie data</translation>
 <translation id="1274977772557788323">Adobe Flash Player Storage settings</translation>
-<translation id="1281501490173223206">Current incognito session only</translation>
-<translation id="3479035826743782247">Current incognito session</translation>
-<translation id="4750220700975225">Current incognito session (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Current private session only</translation>
+<translation id="3479035826743782247">Current private session</translation>
+<translation id="4750220700975225">Current private session (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">No sites have been zoomed in or out</translation>
 <translation id="3566721612727112615">No sites added</translation>
 <translation id="8098574385249290065">Let Brave choose when sites can play sound (recommended)</translation>
@@ -3824,8 +3866,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4590324241397107707">Database Storage</translation>
 <translation id="8016266267177410919">Temporary storage</translation>
 <translation id="4175737294868205930">Persistent storage</translation>
-<translation id="3707212204259470604">Manage other people</translation>
-<translation id="8907706281008466056">Brave Software Profile photo</translation>
+<translation id="3707212204259470604">Manage other profiles</translation>
+<translation id="8907706281008466056">Brave profile photo</translation>
 <translation id="2408955596600435184">Enter your PIN</translation>
 <translation id="6619990499523117484">Confirm your PIN</translation>
 <translation id="2023167225947895179">PIN may be easy to guess</translation>
@@ -3859,6 +3901,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2458379781610688953">Update account, <ph name="EMAIL"/></translation>
 <translation id="2701737434167469065">Sign in, <ph name="EMAIL"/></translation>
 <translation id="2923234477033317484">Remove this account</translation>
+<translation id="8995603266996330174">Managed by <ph name="DOMAIN"/></translation>
 <translation id="4659077111144409915">Primary account</translation>
 <translation id="8864458770072227512"><ph name="EMAIL"/> was removed from this device</translation>
 <translation id="3158033540161634471">Set up your fingerprint</translation>
@@ -3891,12 +3934,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3608576286259426129">User image preview</translation>
 <translation id="2114896190328250491">Photo by <ph name="NAME"/></translation>
 <translation id="7155171745945906037">Existing photo from camera or file</translation>
-<translation id="8995603266996330174">Managed by <ph name="DOMAIN"/></translation>
 <translation id="9125982323641182972">Get Brave Software smarts in Brave</translation>
 <translation id="1692115862433274081">Use another account</translation>
 <translation id="5244474230056479698">Syncing to <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Because this account is managed by <ph name="DOMAIN"/>, your bookmarks, history, passwords and other settings will be cleared from this device. However, your data will remain stored in your Brave Software account and can be managed on <ph name="BEGIN_LINK"/>Brave Software Dashboard<ph name="END_LINK"/>.</translation>
-<translation id="6906406176003824042">Edit person</translation>
+<translation id="6906406176003824042">Edit profile</translation>
 <translation id="6739923123728562974">Show desktop shortcut</translation>
 <translation id="2450310832094867474">Turn off sync and sign out?</translation>
 <translation id="3699920817649120894">Turn off sync and personalisation?</translation>
@@ -3986,7 +4028,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="437184764829821926">Advanced font settings</translation>
 <translation id="323803881985677942">Open extension options</translation>
 <translation id="2166369534954157698">The quick brown fox jumps over the lazy dog</translation>
-<translation id="8911765336506423117">Requires extension from the Brave Web Store</translation>
+<translation id="8911765336506423117">Requires extension from the web store</translation>
 <translation id="6965978654500191972">Device</translation>
 <translation id="8260864402787962391">Mouse</translation>
 <translation id="155865706765934889">Touchpad</translation>
@@ -4110,7 +4152,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8781980678064919987">Shut down when lid is closed</translation>
 <translation id="3636766455281737684"><ph name="PERCENTAGE"/>% - <ph name="TIME"/> left</translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - <ph name="TIME"/> until full</translation>
-<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="2620436844016719705">System</translation>
 <translation id="2077129598763517140">Use hardware acceleration when available</translation>
 <translation id="3817524650114746564">Open your computer's proxy settings</translation>
@@ -4233,7 +4274,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="329838636886466101">Repair</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Inactive)</translation>
-<translation id="3860292630623580294">(Incognito)</translation>
+<translation id="3860292630623580294">(Private)</translation>
 <translation id="6655190889273724601">Developer mode</translation>
 <translation id="2868746137289129307">This extension is outdated and disabled by enterprise policy. It might become enabled automatically when a newer version is available.</translation>
 <translation id="6841186874966388268">Errors</translation>
@@ -4269,7 +4310,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1805822111539868586">Inspect views</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> more...</translation>
 <translation id="2450849356604136918">No active views</translation>
-<translation id="4854477725773269949">Allow in incognito</translation>
+<translation id="4854477725773269949">Allow in private</translation>
 <translation id="6124650939968185064">The following extensions depend on this extension:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="3866249974567520381">Description</translation>
@@ -4296,7 +4337,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7235716375204803342">Fetching activities...</translation>
 <translation id="8314381333424235892">Missing or uninstalled extension</translation>
 <translation id="7647403192093989392">No recent activities</translation>
-<translation id="38046578254905003">Find extensions and themes in the <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
+<translation id="38046578254905003">Find extensions and themes in the <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
 <translation id="7272674038937250585">No description provided</translation>
 <translation id="3855441664322950881">Pack extension</translation>
 <translation id="2958721676848865875">Pack extension warning</translation>

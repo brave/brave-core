@@ -246,9 +246,8 @@ Kui logite siiski sisse, liidetakse Bravei teave, nagu järjehoidjad, ajalugu ja
 <translation id="1864557848095568223">Bravei värskendamine</translation>
 <translation id="1786715389543715322">Bravei värskendamine (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="8208853227947884571">Brave on ajakohane</translation>
-<translation id="6756417787837743699">Brave OS-i üksikasjade nägemiseks avage leht <ph name="LINK_BEGIN"/>
-      Teave Brave OS-i kohta<ph name="LINK_END"/></translation>
 <translation id="6686872257969654608">Teave Brave OS-i kohta</translation>
+<translation id="7674116293463255181">Kui soovite teada saada, kas teie seade on ajakohane, avage <ph name="LINK_BEGIN"/>Brave OS-i seaded<ph name="LINK_END"/></translation>
 <translation id="2280363356796735201">Brave OS-i puhul abi hankimine</translation>
 <translation id="38898988211673781">Kustuta Bravei sulgemisel küpsisefailide ja saitide andmed</translation>
 <translation id="5253815230176279256">Brave Pay (kopeeritud Brave'i)</translation>

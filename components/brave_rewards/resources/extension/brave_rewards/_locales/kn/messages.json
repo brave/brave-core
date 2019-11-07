@@ -43,6 +43,22 @@
     "message": "ಅನುದಾನಗಳು",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "ವಿವರಗಳು",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "ನಿಮ್ಮ ಬ್ಯಾಲೆನ್ಸ್",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT ಪಾಯಿಂಟ್‍ಗಳು",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "ನಿಮ್ಮ ಮೆಚ್ಚಿನ ವಿಷಯ ರಚನೆಕಾರರಿಗೆ ಕೊಡುಗೆಯನ್ನು ನೀಡಲು Brave Rewards ನಲ್ಲಿ ಬಳಸಬಹುದು. BAT ಪಾಯಿಂಟ್‌ಗಳನ್ನು BAT ಗೆ ವಿನಿಮಯ ಮಾಡಲಾಗುವುದಿಲ್ಲ.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "ಆನ್",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "ಮಾಸಿಕ ಕೊಡುಗೆ",
+    "message": "ಈ ಸೈಟ್‌ಗೆ ಮಾಸಿಕವಾಗಿ ಟಿಪ್ ನೀಡಿ",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಇನ್ನೂ ಸೈನ್ ಅಪ್ ಮಾಡದ ರಚನೆಕಾರರಿಗಾಗಿ ನೀವು {{reservedAmount}} BAT ಅನ್ನು ಗೊತ್ತುಪಡಿಸಿದ್ದೀರಿ. ನಿಮ್ಮ ಬ್ರೌಸರ್ ಅನ್ನು ಪರಿಶೀಲಿಸುವವರೆಗೆ ಅಥವಾ 90 ದಿನಗಳು ಮುಗಿಯುವವರೆಗೆ, ಕೊಡುಗೆ ನೀಡಲು ಅವು ಪ್ರಯತ್ನಿಸುತ್ತವೆ.",
+    "message": "ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಇನ್ನೂ ಸೈನ್ ಅಪ್ ಮಾಡದ ರಚನೆಕಾರರಿಗೆ ನೀವು {{reservedAmount}} {{currency}} ಅನ್ನು ನಿಯೋಜಿಸಿದ್ದೀರಿ. ಅವರು ಅವುಗಳನ್ನು ಪರಿಶೀಲಿಸುವ ತನಕ ಅಥವಾ 90 ದಿನಗಳು ಮುಗಿಯುವ ತನಕ ನಿಮ್ಮ ಬ್ರೌಸರ್ ಕೊಡುಗೆ ನೀಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಲೇ ಇರುತ್ತದೆ.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave ಆ್ಯಡ್ಸ್ ಬಹುಮಾನಗಳು!",
+    "message": "ನೀವು ಜಾಹೀರಾತುಗಳ ರಿವಾರ್ಡ್ ಅನ್ನು ಗಳಿಸಿದ್ದೀರಿ!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Brave ಆ್ಯಡ್ಸ್ ನಿಂದ ಗಳಿಸಿದ ನಿಮ್ಮ ಬಹುಮಾನಗಳು ಸದ್ಯದಲ್ಲೆ ನಿಮ್ಮನ್ನು ತಲುಪಲಿವೆ.",
+    "message": "ನಿಮ್ಮ ರಿವಾರ್ಡ್ ನಿಮ್ಮ Brave Rewards ವ್ಯಾಲೆಟ್‌ನಲ್ಲಿ ಇನ್ನೇನು ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತದೆ.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "ನಿಮ್ಮ Brave ಆ್ಯಡ್ಸ್ ಟೋಕನ್ ನೀಡಿಕೆ",
+    "message": "ನಿಮ್ಮ ರಿವಾರ್ಡ್ ಮೊತ್ತ",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "ಸಂಪೂರ್ಣ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲನೆ",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "ಹೊಂದಿಸಿ...",
-    "description": "Button text for setting monthly contribution"
   }
 }

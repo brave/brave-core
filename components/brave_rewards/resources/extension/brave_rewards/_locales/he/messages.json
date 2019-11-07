@@ -43,6 +43,22 @@
     "message": "מענקים",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "פרטים",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "היתרה שלך",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "נקודות BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "ניתן להשתמש בו ב-Brave Rewards כדי לתרום ליוצרי התוכן החביבים עליך. לא ניתן להמיר נקודות BAT ב-BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "פעיל",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "תרומה חודשית",
+    "message": "תגמלו אתר זה מדי חודש",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "ביצעתם הקצאה של {{ }} BAT ליוצרים שטרם נרשמו לקבלת תגמולים. הדפדפן ימשיך לנסות לתרום עד אשר יאומתו או עד שיחלפו 90 יום.",
+    "message": "הקצית {{reservedAmount}} {{currency}} ליוצרים שלא נרשמו לקבלת תרומות. הדפדפן שלך ימשיך לנסות לתרום עד שהם יאומתו, אך לא יותר מ-90 יום.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "תגמולים של Brave Ads!",
+    "message": "זכית בתגמול על פרסומות!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "מענק התגמולים שלכם מ-Brave Ads בדרך.",
+    "message": "התגמול שלך בדרך לארנק תגמולי ה-Brave שלך.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "מענק הטוקן של Brave Ads שלכם",
+    "message": "סכום התגמול שלך",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "השלמת אימות הארנק",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "הגדר...",
-    "description": "Button text for setting monthly contribution"
   }
 }

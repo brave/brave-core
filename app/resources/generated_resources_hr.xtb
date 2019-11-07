@@ -61,7 +61,7 @@
 <translation id="1163931534039071049">&amp;Pogledaj izvor okvira</translation>
 <translation id="6886871292305414135">Otvori vezu u novoj &amp;kartici</translation>
 <translation id="8899851313684471736">Otvori vezu u novom &amp;prozoru</translation>
-<translation id="658539216370629794">Otvori vezu u anonimnom prozoru</translation>
+<translation id="658539216370629794">Otvori poveznicu u &amp;privatnom prozoru</translation>
 <translation id="3144647712221361880">Otvori vezu kao</translation>
 <translation id="9137916601698928395">Otvori vezu kao <ph name="USER"/></translation>
 <translation id="1137673463384776352">Otvori vezu u aplikaciji <ph name="APP"/></translation>
@@ -122,7 +122,7 @@
 <translation id="3021678814754966447">&amp;Pogledaj izvor okvira</translation>
 <translation id="9027459031423301635">Otvori vezu u novoj &amp;kartici</translation>
 <translation id="1769104665586091481">Otvori vezu u novom &amp;prozoru</translation>
-<translation id="1432267168815937878">Otvori vezu u anoni&amp;mnom prozoru</translation>
+<translation id="1432267168815937878">Otvori poveznicu u &amp;privatnom prozoru</translation>
 <translation id="2142328300403846845">Otvori vezu kao</translation>
 <translation id="6892812721183419409">Otvori vezu kao <ph name="USER"/></translation>
 <translation id="2006638907958895361">Otvori vezu u aplikaciji <ph name="APP"/></translation>
@@ -172,7 +172,7 @@
 <translation id="4200983522494130825">Nova &amp;kartica</translation>
 <translation id="8418445294933751433">&amp;Prikaži kao karticu</translation>
 <translation id="1723824996674794290">&amp;Novi prozor</translation>
-<translation id="6516243500644829484">&amp;Novi anonimni prozor</translation>
+<translation id="6516243500644829484">Novi &amp;privatni prozor</translation>
 <translation id="6120205520491252677">Prikvači ovu stranicu na zaslon Start...</translation>
 <translation id="9065203028668620118">Uredi</translation>
 <translation id="5329858601952122676">&amp;Obriši</translation>
@@ -192,7 +192,7 @@
 <translation id="3285322247471302225">Nova &amp;kartica</translation>
 <translation id="8879284080359814990">&amp;Prikaži kao karticu</translation>
 <translation id="176587472219019965">&amp;Novi prozor</translation>
-<translation id="7973394300052703468">&amp;Novi anoniman prozor</translation>
+<translation id="7973394300052703468">Novi &amp;privatni prozor</translation>
 <translation id="5157635116769074044">Prikvači ovu stranicu na početni zaslon...</translation>
 <translation id="5830720307094128296">Spremi stranicu &amp;kao...</translation>
 <translation id="4672657274720418656">Sažmi stranicu</translation>
@@ -364,7 +364,7 @@
 <translation id="2902312830803030883">Druge radnje</translation>
 <translation id="495170559598752135">Radnje</translation>
 <translation id="3612673635130633812">Datoteku je preuzelo proširenje &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="6395403722585816044">Preuzeto u anonimnom načinu</translation>
+<translation id="6395403722585816044">Preuzeto u stavku Privatno</translation>
 <translation id="4551763574344810652">Pritisnite <ph name="MODIFIER_KEY_DESCRIPTION"/> za poništavanje</translation>
 <translation id="2079545284768500474">Poništi</translation>
 <translation id="2490481887078769936">Datoteka "<ph name="FILE_NAME"/>" uklonjena je s popisa</translation>
@@ -411,10 +411,10 @@
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Preuzimanje u tijeku}one{Preuzimanja u tijeku}few{Preuzimanja u tijeku}other{Preuzimanja u tijeku}}</translation>
 <translation id="5425042808445046667">Nastavi preuzimanje</translation>
 <translation id="5284445933715251131">Nastavi preuzimanje</translation>
-<translation id="203837651858678035">Želite li svejedno zatvoriti anonimni način?</translation>
+<translation id="203837651858678035">Svejedno izaći iz privatnog načina?</translation>
 <translation id="8951465597020890363">Svejedno želite zatvoriti način rada za goste?</translation>
 <translation id="9148058034647219655">Izlaz</translation>
-<translation id="7376221878517288144">Želite li svejedno zatvoriti anonimni način?</translation>
+<translation id="7376221878517288144">Svejedno odustati od privatnog načina?</translation>
 <translation id="973473557718930265">Odustani</translation>
 <translation id="7707599169365957976">Možete pomoći da se Sigurno pregledavanje poboljša tako što ćete Brave Softwareu slati neke podatke o sustavu i sadržaj web-stranice.</translation>
 <translation id="4923279099980110923">Da, želim pomoći</translation>
@@ -596,6 +596,24 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Vrijednost potpisa certifikata</translation>
 <translation id="4104163789986725820">I&amp;zvoz...</translation>
+<translation id="2029156652561216312">CN</translation>
+<translation id="7822286184239325970">ST</translation>
+<translation id="8180262569555229595">O</translation>
+<translation id="7252376466538759696">OU</translation>
+<translation id="5734574586460918465">dnQualifier</translation>
+<translation id="964324710553558337">C</translation>
+<translation id="511291565806773566">Serijski broj</translation>
+<translation id="5912292566401425135">L</translation>
+<translation id="5725734596824080201">DC</translation>
+<translation id="2948789661744572780">POŠTA</translation>
+<translation id="7481079953250545971">UID</translation>
+<translation id="4196967880387277612">E</translation>
+<translation id="5887772116581657016">Poslovna kategorija</translation>
+<translation id="6561757256477115975">Naziv mjesta sudske nadležnosti</translation>
+<translation id="7150038968052501583">Naziv države ili provincije sudske nadležnosti</translation>
+<translation id="8904360804686555987">Naziv države sudske nadležnosti</translation>
+<translation id="8718098216622210506">ULICA</translation>
+<translation id="6969275223369931223">Poštanski broj</translation>
 <translation id="5434065355175441495">PKCS br. 1 RSA enkripcija</translation>
 <translation id="1221024147024329929">PKCS br. 1 MD2 s RSA enkripcijom</translation>
 <translation id="1640283014264083726">PKCS br. 1 MD4 s RSA enkripcijom</translation>
@@ -767,11 +785,11 @@
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/> (najviše <ph name="NUM_KILOBYTES_LIVE"/>)</translation>
 <translation id="8004582292198964060">Preglednik</translation>
 <translation id="3678156199662914018">Proširenje: <ph name="EXTENSION_NAME"/></translation>
-<translation id="5053701565089446556">Anonimno proširenje: <ph name="EXTENSION_NAME"/></translation>
+<translation id="5053701565089446556">Privatni dodatak: <ph name="EXTENSION_NAME"/></translation>
 <translation id="6508261954199872201">Aplikacija: <ph name="APP_NAME"/></translation>
-<translation id="611296870688433505">Anonimna aplikacija: <ph name="APP_NAME"/></translation>
+<translation id="611296870688433505">Privatna aplikacija: <ph name="APP_NAME"/></translation>
 <translation id="7629827748548208700">Kartica: <ph name="TAB_NAME"/></translation>
-<translation id="9048137919253433011">Anonimna kartica: <ph name="TAB_NAME"/></translation>
+<translation id="9048137919253433011">Privatna kartica: <ph name="TAB_NAME"/></translation>
 <translation id="6900284862687837908">Aplikacija u pozadini: <ph name="BACKGROUND_APP_URL"/></translation>
 <translation id="7427348830195639090">Pozadinska stranica: <ph name="BACKGROUND_PAGE_URL"/></translation>
 <translation id="6798954102094737107">Dodatak: <ph name="PLUGIN_NAME"/></translation>
@@ -786,7 +804,7 @@
 <translation id="2282146716419988068">GPU proces</translation>
 <translation id="2087822576218954668">Ispis: <ph name="PRINT_NAME"/></translation>
 <translation id="8859174528519900719">Podokvir: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="1799432502220762862">Anonimni podokvir: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="1799432502220762862">Privatni podokvir: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="2348176352564285430">Aplikacija: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="786073089922909430">Usluga: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7663719505383602579">Prijemnik: <ph name="ARC_PROCESS_NAME"/></translation>
@@ -1060,7 +1078,7 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="5483785310822538350">Opozovi pristup datotekama i uređaju</translation>
 <translation id="93766956588638423">Popravi proširenje</translation>
 <translation id="3905761538810670789">Popravi aplikaciju</translation>
-<translation id="8808478386290700967">Web Store</translation>
+<translation id="8808478386290700967">Mrežna trgovina</translation>
 <translation id="488785315393301722">Pokaži pojedinosti</translation>
 <translation id="8962083179518285172">Sakrij pojedinosti</translation>
 <translation id="7287143125007575591">Pristup je odbijen.</translation>
@@ -1350,7 +1368,7 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="192494336144674234">Otvaranje aplikacijom</translation>
 <translation id="9053893665344928494">Zapamti odabir</translation>
 <translation id="5340857474604400806">Ostani u Braveu</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Anonimno)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privatno)</translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (Gost)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Dostupno je ažuriranje)</translation>
@@ -1382,10 +1400,10 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="4400963414856942668">Karticu možete označiti klikom na zvjezdicu</translation>
 <translation id="8379991678458444070">Označite ovu karticu da biste se brzo vratili na nju</translation>
 <translation id="7174199383876220879">Novo! Upravljate glazbom, videozapisima i drugim medijima.</translation>
-<translation id="4369414322596874629">Možete pregledavati privatno u anonimnom prozoru</translation>
-<translation id="3772947852642271642">Pomoću anonimnog prozora surfajte na webu bez spremanja povijesti pregledavanja</translation>
-<translation id="3871738366246972820">Upotrebljavate dijeljeno računalo? Preporučujemo vam da radite u anonimnom prozoru.</translation>
-<translation id="5808622652939943719">Da biste pregledavali privatno, kliknite ikonu izbornika s točkama kako biste otvorili anoniman prozor</translation>
+<translation id="4369414322596874629">Možete pretraživati internet privatno korištenjem privatnim prozorom</translation>
+<translation id="3772947852642271642">Pretražujte internet bez spremanja povijesti pretraživanja uporabom privatnog prozora</translation>
+<translation id="3871738366246972820">Upotrebljavate dijeljeno računalo? Pokušajte otvoriti privatni prozor.</translation>
+<translation id="5808622652939943719">Kako biste privatno pretraživali internet, kliknite na izbornik u obliku točkica za otvaranje privatnog prozora.</translation>
 <translation id="8803953437405899238">Otvaranje nove kartice jednim klikom</translation>
 <translation id="3071624960923923138">Ovdje možete kliknuti za otvaranje nove kartice</translation>
 <translation id="4908811072292128752">Otvorite novu karticu za istodobni pregled dvije stranice</translation>
@@ -1601,13 +1619,13 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="4620809267248568679">Ovom postavkom upravlja proširenje.</translation>
 <translation id="4846680374085650406">Vi pratite preporuku administratora za ovu postavku.</translation>
 <translation id="1223853788495130632">Administrator preporučuje određenu vrijednost za tu postavku.</translation>
-<translation id="8839398440242019256">Nije iz web-trgovine Brave.</translation>
+<translation id="8839398440242019256">Ne iz mrežne trgovine.</translation>
 <translation id="5337771866151525739">Instalirala treća strana.</translation>
 <translation id="4538792345715658285">Instalirano pravilima tvrtke.</translation>
 <translation id="4359408040881008151">Instalirano zbog ovisnih proširenja.</translation>
 <translation id="4980805016576257426">Proširenje sadrži zlonamjerni softver.</translation>
 <translation id="5522156646677899028">To proširenje sadrži ozbiljni sigurnosni propust.</translation>
-<translation id="6945695820322143954">To proširenje krši pravila Brave web-trgovine.</translation>
+<translation id="6945695820322143954">Ovim se dodatkom krši pravilnik za mrežnu trgovinu.</translation>
 <translation id="177808131755847449">Onemogućio Brave. To proširenje možda nije sigurno.</translation>
 <translation id="1434696352799406980">Polazna stranica, web-stranica nove kartice, tražilica i prikvačene kartice vratit će se na zadano. Onemogućit će se sva proširenja i izbrisati privremeni podaci kao što su kolačići. Vaše oznake, povijest i spremljene zaporke neće se izbrisati.</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/> želi vratiti vaše postavke na zadano.</translation>
@@ -1674,6 +1692,7 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="622537739776246443">Profil će se izbrisati</translation>
 <translation id="5632566673632479864">Vaš račun <ph name="EMAIL"/> više nije dopušten kao primarni račun. Budući da tim računom upravlja <ph name="DOMAIN"/>, vaše oznake, povijest, zaporke i druge postavke izbrisat će se s ovog uređaja.</translation>
 <translation id="3797739167230984533">Vašim <ph name="BEGIN_LINK"/>uređajem <ph name="DEVICE_TYPE"/> upravlja<ph name="END_LINK"/> vaša organizacija</translation>
+<translation id="1722460139690167654">Vašim uređajem <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> upravlja<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8118488170956489476">Vašim <ph name="BEGIN_LINK"/>preglednikom upravlja<ph name="END_LINK"/> vaša organizacija</translation>
 <translation id="1365180424462182382">Vašim <ph name="BEGIN_LINK"/>preglednikom upravlja<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Sadržaj</translation>
@@ -1711,6 +1730,7 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Pohrana predmemorije</translation>
+<translation id="3169132535805984622">ecdsa_prijava</translation>
 <translation id="2805756323405976993">Aplikacije</translation>
 <translation id="542872847390508405">Pregledavate kao gost</translation>
 <translation id="537813040452600081">Stranice koje gledate u ovom prozoru neće se pojaviti u povijesti preglednika niti će ostaviti druge tragove, na primjer, kolačiće, na računalu nakon što se odjavite. Datoteke koje preuzmete i oznake koje stvorite neće se sačuvati.</translation>
@@ -1924,7 +1944,7 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="881799181680267069">Sakrij ostale</translation>
 <translation id="4708849949179781599">Izađi iz programa <ph name="PRODUCT_NAME"/></translation>
 <translation id="8795916974678578410">Novi prozor</translation>
-<translation id="1676595396635191120">&amp;Novi anoniman prozor</translation>
+<translation id="1676595396635191120">Novi privatni prozor</translation>
 <translation id="406070391919917862">Aplikacije u pozadini</translation>
 <translation id="3335947283844343239">Ponovo otvori zatvorenu karticu</translation>
 <translation id="8214489666383623925">Otvori datoteku...</translation>
@@ -2050,6 +2070,7 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="2650609753175229582"><ph name="URL"/> želi reproducirati zaštićeni sadržaj. Brave Software će potvrditi identitet vašeg uređaja i ta će mu web-lokacija moći pristupiti.</translation>
 <translation id="1746402432151920942">Identifikator zaštićenog medija</translation>
 <translation id="1322046419516468189">Spremljene zaporke možete pregledati i upravljati njima ovdje: <ph name="SAVED_PASSWORDS_STORE"/></translation>
+<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Zaporka je spremljena. Spremljene zaporke možete pregledati i upravljati njima ovdje: <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Brave Software Račun</translation>
 <translation id="3785727820640310185">Spremljene zaporke za tu web-lokaciju</translation>
@@ -2162,7 +2183,7 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="7339898014177206373">Novi prozor</translation>
 <translation id="7551643184018910560">Prikvači na policu</translation>
 <translation id="8335587457941836791">Otkvači s police</translation>
-<translation id="4471385409549756595">Novi anonimni prozor</translation>
+<translation id="4471385409549756595">Novi privatni prozor</translation>
 <translation id="8249048954461686687">OEM mapa</translation>
 <translation id="8440630305826533614">Linux aplikacije</translation>
 <translation id="4742746985488890273">Prikvači na policu</translation>
@@ -2266,8 +2287,8 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
         <ph name="FILE_INFO"/>
         <ph name="EVENT_NAME"/></translation>
-<translation id="4540437243849625078">Ova će web-lokacija dijeliti podatke s aplikacijom izvan anonimnog načina.</translation>
-<translation id="1227836882233136433">Želite li napustiti anonimno?</translation>
+<translation id="4540437243849625078">Ovim se mrežnim mjestom dijele informacije s aplikacijom izvan privatnog načina.</translation>
+<translation id="1227836882233136433">Napustiti privatni način?</translation>
 <translation id="662080504995468778">Ostani</translation>
 <translation id="2593289874938379417">Brave nema pristup zatraženom resursu.</translation>
 <translation id="760197030861754408">Otvorite <ph name="LANDING_PAGE"/> za povezivanje.</translation>
@@ -2310,6 +2331,7 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="8750155211039279868"><ph name="ORIGIN"/> želi se povezati sa serijskim priključkom</translation>
 <translation id="4943691134276646401">"<ph name="CHROME_EXTENSION_NAME"/>" želi se povezati sa serijskim priključkom</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
+<translation id="1587562069597918292"><ph name="DEVICE_PATH"/></translation>
 <translation id="1171515578268894665"><ph name="ORIGIN"/> želi se povezati s HID uređajem</translation>
 <translation id="6078769373519310690">Proširenje "<ph name="CHROME_EXTENSION_NAME"/>" želi se povezati s HID uređajem</translation>
 <translation id="4419610272958564173">Nepoznati uređaj (dobavljač: <ph name="VENDOR_ID"/>, proizvod: <ph name="PRODUCT_ID"/>)</translation>
@@ -2450,12 +2472,15 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="7235737137505019098">Na sigurnosnom ključu nema dovoljno prostora za izradu novih računa.</translation>
 <translation id="3984431586879874039">Želite li dopustiti web-lokaciji prikaz vašeg sigurnosnog ključa?</translation>
 <translation id="8948939328578167195"><ph name="WEBSITE"/> želi vidjeti marku i model vašeg sigurnosnog ključa</translation>
-<translation id="7618452966706304788">Želite li koristiti Touch ID s aplikacijom <ph name="APP_NAME"/> anonimno?</translation>
-<translation id="3098826269712097986">Podaci za prijavu pohranit će se u Braveu nakon što izađete iz anonimnog načina. Na taj ćete način kasnije opet moći koristiti Touch ID s ovom web-lokacijom.</translation>
+<translation id="7618452966706304788">Želite li upotrebljavati Touch ID s <ph name="APP_NAME"/> u privatnom načinu?</translation>
+<translation id="3098826269712097986">Vjerodajnice za prijavu spremaju se u pregledniku Brave nakon što napustite privatni način. Tako vam se omogućava uporaba Touch ID-ja kasnije na ovom mrežnom mjestu.</translation>
 <translation id="2172784515318616985">Nastavi</translation>
-<translation id="5186185447130319458">Anonimno</translation>
+<translation id="5186185447130319458">Privatno</translation>
 <translation id="7643842463591647490">{0,plural, =1{# otvoreni prozor}one{# otvoreni prozor}few{# otvorena prozora}other{# otvorenih prozora}}</translation>
-<translation id="2579188629646253712">Zatvori anonimnu upotrebu</translation>
+<translation id="2579188629646253712">Izađi iz privatnog</translation>
+<translation id="479219453908726046">Sudjeluj u anketi</translation>
+<translation id="7581273696622423628">Sudjeluj u anketi</translation>
+<translation id="4406504596603350105">Vaše su nam povratne informacije važne.</translation>
 <translation id="4349828822184870497">Korisno</translation>
 <translation id="6876469544038980967">Nije korisno</translation>
 <translation id="6428450836711225518">Potvrdite svoj telefonski broj</translation>
@@ -2468,17 +2493,20 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="399179161741278232">Uvezeno</translation>
 <translation id="5225324770654022472">Prikaži prečac za aplikacije</translation>
 <translation id="5072836811783999860">Prikaži upravljane oznake</translation>
+<translation id="3613134908380545408">Prikaži <ph name="FOLDER_NAME"/></translation>
 <translation id="3785308913036335955">Prikaži prečac za Aplikacije</translation>
 <translation id="711840821796638741">Prikaži upravljane oznake</translation>
-<translation id="3613134908380545408">Prikaži <ph name="FOLDER_NAME"/></translation>
 <translation id="2367972762794486313">Prikaz aplikacija</translation>
 <translation id="8368859634510605990">&amp;Otvori sve oznake</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{&amp;Otvori sve}=1{&amp;Otvori oznaku}one{&amp;Otvori sve (#)}few{&amp;Otvori sve (#)}other{&amp;Otvori sve (#)}}</translation>
 <translation id="1016437870506746108">{COUNT,plural, =0{Otvori sve u &amp;novom prozoru}=1{Otvori u &amp;novom prozoru}one{Otvori sve (#) u &amp;novom prozoru}few{Otvori sve (#) u &amp;novom prozoru}other{Otvori sve (#) u &amp;novom prozoru}}</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Otvori sve u &amp;anonimnom prozoru}=1{Otvori u &amp;anonimnom prozoru}one{Otvori sve (#) u &amp;anonimnom prozoru}few{Otvori sve (#) u &amp;anonimnom prozoru}other{Otvori sve (#) u &amp;anonimnom prozoru}}</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Otvori sve u &amp;privatnih prozora}
+          =1 {Otvori u &amp;privatom prozoru}
+          other {Otvori sve u (#) in &amp;privatna/ih prozora}}</translation>
 <translation id="3613422051106148727">&amp;Otvori u novoj kartici</translation>
 <translation id="4853020600495124913">Otvaranje u &amp;novom prozoru</translation>
-<translation id="2431625704210501303">Otvaranje u &amp;anonimnom prozoru</translation>
+<translation id="2431625704210501303">Otvori u &amp;privatnom prozoru</translation>
 <translation id="6702639462873609204">&amp;Uređivanje...</translation>
 <translation id="3088325635286126843">&amp;Preimenuj...</translation>
 <translation id="713122686776214250">Dodavanje stra&amp;nice...</translation>
@@ -2487,10 +2515,13 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="6466988389784393586">&amp;Otvaranje svih oznaka</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Otvori sve}=1{&amp;Otvori oznaku}one{&amp;Otvori sve (#)}few{&amp;Otvori sve (#)}other{&amp;Otvori sve (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Otvori sve u &amp;novom prozoru}=1{Otvori u &amp;novom prozoru}one{Otvori sve (#) u &amp;novom prozoru}few{Otvori sve (#) u &amp;novom prozoru}other{Otvori sve (#) u &amp;novom prozoru}}</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Otvori sve u &amp;anonimnom prozoru}=1{Otvori sve u &amp;anonimnom prozoru}one{Otvori sve (#) u &amp;anonimnom prozoru}few{Otvori sve (#) u &amp;anonimnom prozoru}other{Otvori sve (#) u &amp;anonimnom prozoru}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Otvori sve u &amp;privatnih prozora}
+          =1 {Otvori u &amp;privatnom prozoru}
+          other {Otvori sve (#) u &amp;privatna/ih prozora}}</translation>
 <translation id="9024127637873500333">&amp;Otvaranje u novoj kartici</translation>
 <translation id="665061930738760572">Otvaranje u &amp;novom prozoru</translation>
-<translation id="1985165269306590797">Otvori u &amp;anonimnom prozoru</translation>
+<translation id="1985165269306590797">Otvori u &amp;privatnom prozoru</translation>
 <translation id="8824701697284169214">Dodavanje stra&amp;nice...</translation>
 <translation id="2489918096470125693">Dodavanje &amp;mape...</translation>
 <translation id="421182450098841253">&amp;Prikaz trake oznake</translation>
@@ -2542,10 +2573,10 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="8457451314607652708">Uvezi oznake</translation>
 <translation id="5101042277149003567">Otvori sve oznake</translation>
 <translation id="7007648447224463482">Otvori sve u novom prozoru</translation>
-<translation id="642436385689435488">Otvori sve u anonimnom prozoru</translation>
+<translation id="642436385689435488">Otvori sve u privatnom prozoru</translation>
 <translation id="4195643157523330669">Otvori u novoj kartici</translation>
 <translation id="2979639724566107830">Otvori u novom prozoru</translation>
-<translation id="5463021359602611602">Otvori u anonimnom prozoru</translation>
+<translation id="5463021359602611602">Otvori u privatnom prozoru</translation>
 <translation id="1173894706177603556">Preimenuj</translation>
 <translation id="6825184156888454064">Poredaj prema nazivu</translation>
 <translation id="3440663250074896476">Više radnji za oznaku <ph name="BOOKMARK_NAME"/></translation>
@@ -2623,9 +2654,15 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="4159681666905192102">Ovo je račun za djecu kojim upravljaju <ph name="CUSTODIAN_EMAIL"/> i <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Nadzirani korisnik</translation>
 <translation id="5720705177508910913">Trenutačni korisnik:</translation>
-<translation id="1850357845349976573">{0,plural, =1{Anonimno}one{# otvoreni anonimni prozor}few{# otvorena anonimna prozora}other{# otvorenih anonimnih prozora}}</translation>
-<translation id="37784332082579802">{0,plural, =1{Anonimno}one{Anonimno (#)}few{Anonimno (#)}other{Anonimno (#)}}</translation>
-<translation id="5070556616376997776">Nalazite se u anonimnom načinu</translation>
+<translation id="1850357845349976573">{0, plural,
+        =1 {Privatan}
+        other {# otvori privatne prozore}
+      }</translation>
+<translation id="37784332082579802">{0, plural,
+      =1 {Privatan}
+      other {Privatno (#)}
+    }</translation>
+<translation id="5070556616376997776">Ovo je privatni prozor</translation>
 <translation id="2199298570273670671">Pogreška</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: sinkronizacija ne funkcionira</translation>
 <translation id="7307129035224081534">Pauzirano</translation>
@@ -2634,8 +2671,8 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (račun za djecu)</translation>
 <translation id="8182664696082410784"><ph name="REASON"/>
 Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
-<translation id="5832813618714645810">Ljudi</translation>
-<translation id="7171000599584840888">Dodavanje osobe...</translation>
+<translation id="5832813618714645810">Profili</translation>
+<translation id="7171000599584840888">Dodaj profil...</translation>
 <translation id="1781771911845953849">Računi i sinkronizacija</translation>
 <translation id="4974733135013075877">Zatvori i zaključaj</translation>
 <translation id="3965965397408324205">Zatvori profil <ph name="PROFILE_NAME"/></translation>
@@ -2654,21 +2691,21 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8473863474539038330">Adrese i više</translation>
 <translation id="5287425679749926365">Vaši računi</translation>
 <translation id="4801448226354548035">Sakrij račune</translation>
-<translation id="2935225303485967257">Upravljaj korisnicima</translation>
+<translation id="2935225303485967257">Upravljaj profilima</translation>
 <translation id="7388222713940428051">Otvori prozor u načinu rada za goste</translation>
 <translation id="127668050356036882">Zatvori sve prozore</translation>
 <translation id="1464258312790801189">Vaši računi</translation>
 <translation id="6655458902729017087">Sakrij račune</translation>
-<translation id="688280436658139163">Upravljaj korisnicima</translation>
+<translation id="688280436658139163">Upravljaj profilima</translation>
 <translation id="2666990579225592931">Otvori prozor u načinu rada za goste</translation>
 <translation id="5869948122057593679">Zatvori sve prozore</translation>
-<translation id="4133080584509825342">Uređivanje osobe, <ph name="PROFILE_NAME"/></translation>
-<translation id="4848862725510532982">Uređivanje osobe, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4133080584509825342">Uredi profil, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Uredi profil, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="3294437725009624529">Gost</translation>
 <translation id="475088594373173692">Prvi korisnik</translation>
 <translation id="4535127706710932914">Zadani profil</translation>
 <translation id="4389091756366370506">Korisnik <ph name="VALUE"/></translation>
-<translation id="4536111748245793305">Osoba <ph name="VALUE"/></translation>
+<translation id="4536111748245793305">Profil <ph name="VALUE"/></translation>
 <translation id="5397794290049113714">Vi</translation>
 <translation id="3031417829280473749">Agentica X</translation>
 <translation id="412730574613779332">Elastični</translation>
@@ -2756,7 +2793,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="2871813825302180988">Ovaj se račun već upotrebljava na ovom uređaju.</translation>
 <translation id="7654941827281939388">Ovaj se račun već upotrebljava na ovom računalu.</translation>
 <translation id="9022847679183471841"><ph name="AVATAR_NAME"/> već upotrebljava taj račun na ovom računalu.</translation>
-<translation id="6921634551681321094">Dodaj osobu</translation>
+<translation id="6921634551681321094">Dodaj profil</translation>
 <translation id="5389237414310520250">Izrada novog korisnika nije uspjela. Provjerite imate li dovoljno prostora na tvrdom disku i potrebna dopuštenja, pa pokušajte ponovo.</translation>
 <translation id="2673589024369449924">Stvori prečac na radnoj površini za ovog korisnika</translation>
 <translation id="2731710757838467317">Izrađuje se zaštićeni korisnik. To može potrajati nekoliko trenutaka.</translation>
@@ -2764,13 +2801,13 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="6690751852586194791">Odaberite zaštićenog korisnika kojeg ćete dodati na ovaj uređaj.</translation>
 <translation id="5525677322972469346">Izradi novog nadziranog korisnika</translation>
 <translation id="8630903300770275248">Uvezi zaštićenog korisnika</translation>
-<translation id="4904061654709986277">Dodaj osobu</translation>
-<translation id="6114945161119872228">Ukloni ovu osobu</translation>
-<translation id="769308100792069196">Dodaj nadziranog korisnika</translation>
+<translation id="4904061654709986277">Dodaj profil</translation>
+<translation id="6114945161119872228">Ukloni ovaj profil</translation>
+<translation id="769308100792069196">Dodaj nadzirani profil</translation>
 <translation id="3470442499439619530">Uklanjanje tog korisnika</translation>
 <translation id="4296575653627536209">Dodaj nadziranog korisnika</translation>
-<translation id="8006143138282906848">Ukloni ovu osobu</translation>
-<translation id="6912187023601892621">Dodaj nadziranog korisnika</translation>
+<translation id="8006143138282906848">Ukloni ovaj profil</translation>
+<translation id="6912187023601892621">Dodaj nadzirani profil</translation>
 <translation id="1608626060424371292">Ukloni tog korisnika</translation>
 <translation id="493571969993549666">Dodaj nadziranog korisnika</translation>
 <translation id="9101691533782776290">Pokreni aplikaciju</translation>
@@ -2792,8 +2829,8 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="6164005077879661055">Sve datoteke i lokalni podaci povezani sa zaštićenim korisnikom trajno će se izbrisati kada se taj korisnik ukloni. Web-lokacije koje je taj korisnik posjetio i njegove postavke mogu i dalje biti vidljive upravitelju na adresi <ph name="MANAGEMENT_URL"/>.</translation>
 <translation id="3410832398355316179">Sve datoteke i lokalni podaci povezani s ovim korisnikom trajno će se izbrisati nakon uklanjanja korisnika. Korisnik <ph name="USER_EMAIL"/> može se prijaviti i kasnije.</translation>
 <translation id="672213144943476270">Otključajte profil da biste mogli pregledavati kao gost.</translation>
-<translation id="8086119151297127544">Otključajte profil da biste mogli ukloniti osobu.</translation>
-<translation id="7805701378418968629">Otključajte profil da biste mogli dodati osobu.</translation>
+<translation id="8086119151297127544">Otključajte svoj profil prije uklanjanja profila.</translation>
+<translation id="7805701378418968629">Otključajte svoj profil prije dodavanja profila.</translation>
 <translation id="8978225823042133615">Da biste upotrebljavali Brave, prijavite se</translation>
 <translation id="4893336867552636863">Time će se trajno izbrisati podaci o pregledavanju s ovog uređaja.</translation>
 <translation id="2496180316473517155">Povijest pregledavanja</translation>
@@ -2851,8 +2888,9 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="6850286078059909152">Boja teksta</translation>
 <translation id="8042142357103597104">Prozirnost teksta</translation>
 <translation id="1656528038316521561">Prozirnost pozadine</translation>
-<translation id="5750288053043553775">0</translation>
-<translation id="8689998525144040851">100</translation>
+<translation id="8838601485495657486">Neprozirno</translation>
+<translation id="5826993284769733527">Poluprozirno</translation>
+<translation id="4438043733494739848">Prozirno</translation>
 <translation id="2442916515643169563">Sjenčanje teksta</translation>
 <translation id="3599221874935822507">Izdignuto</translation>
 <translation id="274029851662193272">Utisnuto</translation>
@@ -2867,7 +2905,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="161042844686301425">Cijan</translation>
 <translation id="4115378294792113321">Magenta</translation>
 <translation id="6981982820502123353">Pristupačnost</translation>
-<translation id="5840822070878669614">Otvori Brave web-trgovinu</translation>
+<translation id="5840822070878669614">Otvori mrežnu trgovinu</translation>
 <translation id="6073903501322152803">Dodajte značajke pristupačnosti</translation>
 <translation id="7988355189918024273">Omogući značajke dostupnosti</translation>
 <translation id="5499063270485366718">Ako slika nema koristan opis, Brave će ga pokušati pružiti. Da bi se izradili opisi, slike se šalju Brave Softwareu.</translation>
@@ -2963,6 +3001,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="4430019312045809116">Glasnoća</translation>
 <translation id="3677657024345889897">Najtiše</translation>
 <translation id="167160931442925455">Najglasnije</translation>
+<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (zadano)</translation>
 <translation id="7037509989619051237">Tekst za pregled</translation>
 <translation id="5471768120198416576">Bok! Ja sam vaš glas alata za pretvaranje teksta u govor.</translation>
@@ -3227,10 +3266,13 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="4058720513957747556">AppSocket (TCP/IP)</translation>
 <translation id="6619058681307408113">Line Printer Daemon (LPD)</translation>
 <translation id="2266957463645820432">IPP putem USB-a (IPPUSB)</translation>
+<translation id="8086015605808120405">Konfiguriranje pisača <ph name="PRINTER_NAME"/>...</translation>
 <translation id="4665014895760275686">Proizvođač</translation>
 <translation id="4561098487691395071">Ili navedite PPD pisača</translation>
 <translation id="1989112275319619282">Pregledaj</translation>
 <translation id="3625481642044239431">Odabrana je nevažeća datoteka. Pokušajte ponovo.</translation>
+<translation id="2462752602710430187">Dodano: <ph name="PRINTER_NAME"/></translation>
+<translation id="7380768571499464492">Ažurirano: <ph name="PRINTER_NAME"/></translation>
 <translation id="8002670234429879764">Pisač <ph name="PRINTER_NAME"/> više nije dostupan</translation>
 <translation id="3976108569178263973">Nema dostupnih pisača.</translation>
 <translation id="3213187967168344806">Dodavanje pisača nije uspjelo. Ponovo pokrenite računalo i pokušajte opet.</translation>
@@ -3795,9 +3837,9 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="6196640612572343990">Blokiraj kolačiće trećih strana</translation>
 <translation id="6782111308708962316">Onemogući web-lokacijama treće strane da spremaju i čitaju podatke kolačića.</translation>
 <translation id="1274977772557788323">Postavke pohrane Adobe Flash Playera</translation>
-<translation id="1281501490173223206">Samo trenutačna anonimna sesija</translation>
-<translation id="3479035826743782247">Trenutačna anonimna sesija</translation>
-<translation id="4750220700975225">Trenutačna anonimna sesija (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Samo trenutačna privatna sesija</translation>
+<translation id="3479035826743782247">Trenutačna privatna sesija</translation>
+<translation id="4750220700975225">Trenutačna privatna sesija (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Nijedna web-lokacija nije povećana ili smanjena</translation>
 <translation id="3566721612727112615">Nema dodanih web-lokacija</translation>
 <translation id="8098574385249290065">Neka Brave odluči kada web-lokacije mogu reproducirati zvuk (preporučeno)</translation>
@@ -3824,8 +3866,8 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="4590324241397107707">Pohrana baze podataka</translation>
 <translation id="8016266267177410919">Privremena pohrana</translation>
 <translation id="4175737294868205930">Stalna pohrana</translation>
-<translation id="3707212204259470604">Upravljaj drugim osobama</translation>
-<translation id="8907706281008466056">Fotografija Brave Software profila</translation>
+<translation id="3707212204259470604">Upravljaj drugim profilima</translation>
+<translation id="8907706281008466056">Profilna fotografija Brave</translation>
 <translation id="2408955596600435184">Unesite PIN</translation>
 <translation id="6619990499523117484">Potvrdite PIN</translation>
 <translation id="2023167225947895179">PIN se može lako pogoditi</translation>
@@ -3859,6 +3901,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="2458379781610688953">Ažuriranje računa, <ph name="EMAIL"/></translation>
 <translation id="2701737434167469065">Prijavite se, <ph name="EMAIL"/></translation>
 <translation id="2923234477033317484">Ukloni taj račun</translation>
+<translation id="8995603266996330174">Upravlja <ph name="DOMAIN"/></translation>
 <translation id="4659077111144409915">Primarni račun</translation>
 <translation id="8864458770072227512">Račun <ph name="EMAIL"/> uklonjen je s ovog uređaja</translation>
 <translation id="3158033540161634471">Postavljanje otiska prsta</translation>
@@ -3891,12 +3934,11 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="3608576286259426129">Pregled korisnikove slike</translation>
 <translation id="2114896190328250491">Fotografija, <ph name="NAME"/></translation>
 <translation id="7155171745945906037">Postojeća fotografija s fotoaparata ili iz datoteke</translation>
-<translation id="8995603266996330174">Upravlja <ph name="DOMAIN"/></translation>
 <translation id="9125982323641182972">Brave Softwareove značajke za Brave</translation>
 <translation id="1692115862433274081">Upotrijebite neki drugi račun</translation>
 <translation id="5244474230056479698">Sinkronizacija s računom <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Budući da ovim računom upravlja <ph name="DOMAIN"/>, vaše oznake, povijest, zaporke i druge postavke izbrisat će se s ovog uređaja. No vaši podaci ostat će pohranjeni na vašem Brave Software računu i možete upravljati njima na <ph name="BEGIN_LINK"/>Brave Software nadzornoj ploči<ph name="END_LINK"/>.</translation>
-<translation id="6906406176003824042">Uređivanje osobe</translation>
+<translation id="6906406176003824042">Uredi profil</translation>
 <translation id="6739923123728562974">Prikaži prečac na radnoj površini</translation>
 <translation id="2450310832094867474">Želite li isključiti sinkronizaciju i odjaviti se?</translation>
 <translation id="3699920817649120894">Želite li isključiti sinkronizaciju i prilagođavanje?</translation>
@@ -3986,7 +4028,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="437184764829821926">Napredne postavke fonta</translation>
 <translation id="323803881985677942">Otvori opcije proširenja</translation>
 <translation id="2166369534954157698">Đačić sjedi u hladu i čita zanimljivu knjigu, u džepu mu šljiva, boca, frula i puž.</translation>
-<translation id="8911765336506423117">Zahtijeva proširenje iz Brave web-trgovine</translation>
+<translation id="8911765336506423117">Zahtijeva se dodatak iz mrežne trgovine</translation>
 <translation id="6965978654500191972">Uređaj</translation>
 <translation id="8260864402787962391">Miš</translation>
 <translation id="155865706765934889">Dodirna površina</translation>
@@ -4110,7 +4152,6 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8781980678064919987">Isključi računalo kada se zatvori poklopac</translation>
 <translation id="3636766455281737684"><ph name="PERCENTAGE"/>% – još <ph name="TIME"/></translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% – <ph name="TIME"/> do kraja</translation>
-<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="2620436844016719705">Sustav</translation>
 <translation id="2077129598763517140">Upotrijebi hardversko ubrzanje kada je dostupno</translation>
 <translation id="3817524650114746564">Otvorite proxy postavke računala</translation>
@@ -4233,7 +4274,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="329838636886466101">Popravak</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Neaktivno)</translation>
-<translation id="3860292630623580294">(Anonimno)</translation>
+<translation id="3860292630623580294">(Privatno)</translation>
 <translation id="6655190889273724601">Način za razvojne programere</translation>
 <translation id="2868746137289129307">Proširenje je zastarjelo, pa su ga pravila tvrtke onemogućila. Možda će se automatski omogućiti kada postane dostupna novija verzija.</translation>
 <translation id="6841186874966388268">Pogreške</translation>
@@ -4269,7 +4310,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="1805822111539868586">Provjerite prikaze</translation>
 <translation id="181577467034453336">Još <ph name="NUMBER_OF_VIEWS"/>...</translation>
 <translation id="2450849356604136918">nema aktivnih prikaza</translation>
-<translation id="4854477725773269949">Dopusti u anonimnom načinu</translation>
+<translation id="4854477725773269949">Dopusti u privatnom</translation>
 <translation id="6124650939968185064">O tom proširenju ovise sljedeća proširenja:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="3866249974567520381">Opis</translation>
@@ -4296,14 +4337,14 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="7235716375204803342">Dohvaćanje aktivnosti...</translation>
 <translation id="8314381333424235892">Proširenje nedostaje ili je nevažeće</translation>
 <translation id="7647403192093989392">Nema nedavne aktivnosti</translation>
-<translation id="38046578254905003">Pronađite proširenja i teme u <ph name="BEGIN_LINK"/>Brave web-trgovini<ph name="END_LINK"/></translation>
+<translation id="38046578254905003">Pronađite dodatke i teme u stavci <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
 <translation id="7272674038937250585">Nije naveden opis</translation>
 <translation id="3855441664322950881">Zapakiraj proširenje</translation>
 <translation id="2958721676848865875">Upozorenje proširenja paketa</translation>
 <translation id="8652400352452647993">Pogreška proširenja paketa</translation>
 <translation id="8398877366907290961">Svejedno nastavi</translation>
 <translation id="8770406935328356739">Korijenski direktorij proširirenja</translation>
-<translation id="6226777517901268232">Datoteka privatnog ključa (neobavezno)</translation>
+<translation id="6226777517901268232">Datoteka s privatnim ključem (dodatno)</translation>
 <translation id="2916745397441987255">Pretražite proširenja</translation>
 <translation id="1992397118740194946">Nije postavljeno</translation>
 <translation id="6706210727756204531">Opseg</translation>
@@ -4323,7 +4364,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="1688935057616748272">Upišite slovo</translation>
 <translation id="4479424953165245642">Upravljanje aplikacijama kioska</translation>
 <translation id="6619801788773578757">Dodaj aplikaciju kioska</translation>
-<translation id="8045923671629973368">Unesite ID aplikacije ili URL web-trgovine</translation>
+<translation id="8045923671629973368">Upišite identifikacijsku oznaku aplikacije ili URL mrežne trgovine</translation>
 <translation id="7059858479264779982">Postavi na automatsko pokretanje</translation>
 <translation id="6325191661371220117">Onemogući automatsko pokretanje</translation>
 <translation id="4699357559218762027">(pokrenuto automatski)</translation>

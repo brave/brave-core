@@ -43,6 +43,22 @@
     "message": "授權",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "詳情",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "您的餘額",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT 點數",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "可用於 Brave 獎勵來捐助您最喜愛的內容創作者。BAT 點數不可兌換 BAT。",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "在",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "每月貢獻",
+    "message": "每月給此網站小費",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "您已指定 {{reservedAmount}} BAT 給尚未登記接受提撥金的建立者。您的瀏覽器會不斷嘗試提撥，直到他們驗證或 90 天過後為止。",
+    "message": "您已指定 {{reservedAmount}} {{currency}} 給尚未登記接受資助的創作者。您的瀏覽器會不斷嘗試捐助，直到他們驗證或 90 天過後為止。",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave 廣告獎勵",
+    "message": "您得到了一份廣告獎勵！",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "您即將獲得從 Brave 廣告而來的獎勵。",
+    "message": "您的獎勵已撥給 Brave 獎勵電子錢包。",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "您的 Brave 廣告代幣",
+    "message": "您的獎勵額",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "完成電子錢包驗證",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "設定……",
-    "description": "Button text for setting monthly contribution"
   }
 }

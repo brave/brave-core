@@ -61,7 +61,7 @@
 <translation id="1163931534039071049">&amp;Vis rammekilde</translation>
 <translation id="6886871292305414135">Åpne linken i en ny &amp;fane</translation>
 <translation id="8899851313684471736">Å&amp;pne linken i et nytt vindu</translation>
-<translation id="658539216370629794">Åpne linken i inko&amp;gnitovindu</translation>
+<translation id="658539216370629794">Åpne lenke i &amp;privat vindu</translation>
 <translation id="3144647712221361880">Åpne linken som</translation>
 <translation id="9137916601698928395">Åpne linken som <ph name="USER"/></translation>
 <translation id="1137673463384776352">Åpne linken i <ph name="APP"/></translation>
@@ -122,7 +122,7 @@
 <translation id="3021678814754966447">&amp;Vis rammekilde</translation>
 <translation id="9027459031423301635">Åpne link i ny &amp;fane</translation>
 <translation id="1769104665586091481">&amp;Åpne link i nytt vindu</translation>
-<translation id="1432267168815937878">Åpne linken i inko&amp;gnitovindu</translation>
+<translation id="1432267168815937878">Åpne lenke i &amp;Privat vindu</translation>
 <translation id="2142328300403846845">Åpne linken som</translation>
 <translation id="6892812721183419409">Åpne linken som <ph name="USER"/></translation>
 <translation id="2006638907958895361">Åpne linken i <ph name="APP"/></translation>
@@ -172,7 +172,7 @@
 <translation id="4200983522494130825">&amp;Ny fane</translation>
 <translation id="8418445294933751433">Vi&amp;s som fane</translation>
 <translation id="1723824996674794290">&amp;Nytt vindu</translation>
-<translation id="6516243500644829484">Nytt &amp;inkognitovindu</translation>
+<translation id="6516243500644829484">Nytt &amp;privat vindu</translation>
 <translation id="6120205520491252677">Fest denne siden til startsiden</translation>
 <translation id="9065203028668620118">Endre</translation>
 <translation id="5329858601952122676">&amp;Slett</translation>
@@ -192,7 +192,7 @@
 <translation id="3285322247471302225">Ny &amp;fane</translation>
 <translation id="8879284080359814990">Vi&amp;s som fane</translation>
 <translation id="176587472219019965">&amp;Nytt vindu</translation>
-<translation id="7973394300052703468">Nytt &amp;inkognitovindu</translation>
+<translation id="7973394300052703468">Nytt &amp;privat vindu</translation>
 <translation id="5157635116769074044">Fest denne siden til startsiden</translation>
 <translation id="5830720307094128296">L&amp;agre side som</translation>
 <translation id="4672657274720418656">Destiller siden</translation>
@@ -364,7 +364,7 @@
 <translation id="2902312830803030883">Flere handlinger</translation>
 <translation id="495170559598752135">Handlinger</translation>
 <translation id="3612673635130633812">Lastet ned via &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="6395403722585816044">Lastet ned i inkognitomodus</translation>
+<translation id="6395403722585816044">Lastet ned i privat modus</translation>
 <translation id="4551763574344810652">Trykk på <ph name="MODIFIER_KEY_DESCRIPTION"/> for å angre</translation>
 <translation id="2079545284768500474">Angre</translation>
 <translation id="2490481887078769936">Fjernet «<ph name="FILE_NAME"/>» fra listen</translation>
@@ -387,7 +387,7 @@
 <translation id="3807747707162121253">&amp;Avbryt</translation>
 <translation id="253434972992662860">&amp;Stans midlertidig</translation>
 <translation id="2135787500304447609">&amp;Fortsett</translation>
-<translation id="1507246803636407672">&amp;amp;Forkast</translation>
+<translation id="1507246803636407672">&amp;Forkast</translation>
 <translation id="4645676300727003670">&amp;Behold</translation>
 <translation id="3592260987370335752">&amp;Les mer</translation>
 <translation id="2233502537820838181">Mer informasjon</translation>
@@ -411,10 +411,10 @@
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Nedlasting pågår}other{Nedlastinger pågår}}</translation>
 <translation id="5425042808445046667">Fortsett nedlastingen</translation>
 <translation id="5284445933715251131">Fortsett nedlastingen</translation>
-<translation id="203837651858678035">Vil du avslutte inkognitomodus likevel?</translation>
+<translation id="203837651858678035">Avslutte privat modus allikevel?</translation>
 <translation id="8951465597020890363">Vil du avslutte gjestemodus likevel?</translation>
 <translation id="9148058034647219655">Avslutt</translation>
-<translation id="7376221878517288144">Vil du avslutte inkognitomodus likevel?</translation>
+<translation id="7376221878517288144">Avslutte privat modus allikevel?</translation>
 <translation id="973473557718930265">Avslutt</translation>
 <translation id="7707599169365957976">Du kan bidra til å forbedre Safe Browsing ved å sende noe systeminformasjon og sideinnhold til Brave Software.</translation>
 <translation id="4923279099980110923">Ja, jeg ønsker å hjelpe</translation>
@@ -604,7 +604,16 @@
 <translation id="964324710553558337">C</translation>
 <translation id="511291565806773566">serienummer</translation>
 <translation id="5912292566401425135">L</translation>
+<translation id="5725734596824080201">DC</translation>
+<translation id="2948789661744572780">POST</translation>
+<translation id="7481079953250545971">UID</translation>
 <translation id="4196967880387277612">E</translation>
+<translation id="5887772116581657016">forretningskategori</translation>
+<translation id="6561757256477115975">jurisdiksjonLokalitetNavn</translation>
+<translation id="7150038968052501583">jurisdiksjonStatEllerProvinsNavn</translation>
+<translation id="8904360804686555987">jurisdiksjonLandNavn</translation>
+<translation id="8718098216622210506">GATE</translation>
+<translation id="6969275223369931223">postnummer</translation>
 <translation id="5434065355175441495">PKCS #1 RSA-kryptering</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 med RSA-kryptering</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 med RSA-kryptering</translation>
@@ -776,11 +785,11 @@
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/> (<ph name="NUM_KILOBYTES_LIVE"/> toppverdi)</translation>
 <translation id="8004582292198964060">Nettleser</translation>
 <translation id="3678156199662914018">Utvidelse: <ph name="EXTENSION_NAME"/></translation>
-<translation id="5053701565089446556">Inkognitoutvidelse: <ph name="EXTENSION_NAME"/></translation>
+<translation id="5053701565089446556">Privat utvidelse: <ph name="EXTENSION_NAME"/></translation>
 <translation id="6508261954199872201">Program: <ph name="APP_NAME"/></translation>
-<translation id="611296870688433505">Inkognitoprogram: <ph name="APP_NAME"/></translation>
+<translation id="611296870688433505">Privat app: <ph name="APP_NAME"/></translation>
 <translation id="7629827748548208700">Fane: <ph name="TAB_NAME"/></translation>
-<translation id="9048137919253433011">Inkognitofane: <ph name="TAB_NAME"/></translation>
+<translation id="9048137919253433011">Privat fane: <ph name="TAB_NAME"/></translation>
 <translation id="6900284862687837908">Bakgrunnsapp: <ph name="BACKGROUND_APP_URL"/></translation>
 <translation id="7427348830195639090">Bakgrunnsside: <ph name="BACKGROUND_PAGE_URL"/></translation>
 <translation id="6798954102094737107">Programtillegg: <ph name="PLUGIN_NAME"/></translation>
@@ -795,7 +804,7 @@
 <translation id="2282146716419988068">GPU-prosess</translation>
 <translation id="2087822576218954668">Skriv ut: <ph name="PRINT_NAME"/></translation>
 <translation id="8859174528519900719">Underramme: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="1799432502220762862">Inkognito-underramme: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="1799432502220762862">Privat underramme: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="2348176352564285430">App: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="786073089922909430">Tjeneste: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7663719505383602579">Mottaker: <ph name="ARC_PROCESS_NAME"/></translation>
@@ -1359,7 +1368,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="192494336144674234">Åpne med</translation>
 <translation id="9053893665344928494">Husk valget mitt</translation>
 <translation id="5340857474604400806">Bli værende i Brave</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Inkognito)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privat)</translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (gjest)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (oppdatering er tilgjengelig)</translation>
@@ -1391,10 +1400,10 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="4400963414856942668">Du kan klikke på stjernen for å bokmerke en fane</translation>
 <translation id="8379991678458444070">Kom raskt tilbake hit ved å bokmerke denne fanen</translation>
 <translation id="7174199383876220879">Nyhet! Styr musikk, video og mer.</translation>
-<translation id="4369414322596874629">Med et inkognitovindu kan du besøke nettsteder anonymt</translation>
-<translation id="3772947852642271642">Med et inkognitovindu kan du bruke nettet uten at nettlesingsloggen lagres</translation>
-<translation id="3871738366246972820">Bruker du en delt datamaskin? Prøv å åpne et inkognitovindu.</translation>
-<translation id="5808622652939943719">Hvis du vil besøke nettsteder privat, klikker du på menyen med de tre prikkene og åpner et inkognitovindu</translation>
+<translation id="4369414322596874629">Du kan surfe privat i et privat vindu</translation>
+<translation id="3772947852642271642">Bruk nettet uten å lagre surfehistorikken din med et privat vindu</translation>
+<translation id="3871738366246972820">Bruker du en delt datamaskin? Prøv å åpne et privat vindu.</translation>
+<translation id="5808622652939943719">For å surfe privat, klikk på ikonmenyen for å åpne et privat vindu</translation>
 <translation id="8803953437405899238">Åpne en ny fane med ett klikk</translation>
 <translation id="3071624960923923138">Du kan klikke her for å åpne en ny fane</translation>
 <translation id="4908811072292128752">Åpne en ny fane for å surfe på to nettsteder samtidig</translation>
@@ -1608,13 +1617,13 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="4620809267248568679">Denne innstillingen håndheves av en utvidelse.</translation>
 <translation id="4846680374085650406">Du følger administratorens anbefaling for denne innstillingen.</translation>
 <translation id="1223853788495130632">Administratoren din anbefaler en spesifikk verdi for denne innstillingen.</translation>
-<translation id="8839398440242019256">Ikke fra Brave Nettmarked.</translation>
+<translation id="8839398440242019256">Ikke fra nettmarked</translation>
 <translation id="5337771866151525739">Installert av en tredjepart.</translation>
 <translation id="4538792345715658285">Installert av bedriftsinnstillingen.</translation>
 <translation id="4359408040881008151">Installert på grunn av avhengige utvidelser.</translation>
 <translation id="4980805016576257426">Denne utvidelsen inneholder skadelig programvare.</translation>
 <translation id="5522156646677899028">Denne utvidelsen inneholder et alvorlig sikkerhetsproblem.</translation>
-<translation id="6945695820322143954">Denne utvidelsen strider med retningslinjene for Brave Nettmarked.</translation>
+<translation id="6945695820322143954">Denne utvidelsen bryter med nettbutikkens retningslinjer.</translation>
 <translation id="177808131755847449">Deaktivert av Brave. Denne utvidelsen kan være usikker.</translation>
 <translation id="1434696352799406980">Dette tilbakestiller oppstartssiden, nye faner, søkemotoren og eventuelle festede faner. I tillegg slår det av alle utvidelser og fjerner midlertidige data, for eksempel informasjonskapsler. Bokmerker, loggoppføringer og lagrede passord slettes ikke.</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/> vil tilbakestille innstillingene dine.</translation>
@@ -1681,6 +1690,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="622537739776246443">Profilen blir slettet</translation>
 <translation id="5632566673632479864">Kontoen din (<ph name="EMAIL"/>) er ikke tillatt som primærkonto lenger. Siden denne kontoen administreres av <ph name="DOMAIN"/>, slettes bokmerkene, loggen, passordene og andre innstillinger du har, fra denne enheten.</translation>
 <translation id="3797739167230984533"><ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> administreres<ph name="END_LINK"/> av organisasjonen din</translation>
+<translation id="1722460139690167654"><ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> administreres<ph name="END_LINK"/> av <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8118488170956489476"><ph name="BEGIN_LINK"/>Nettleseren administreres<ph name="END_LINK"/> av organisasjonen din</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Nettleseren administreres<ph name="END_LINK"/> av <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Innhold</translation>
@@ -1718,6 +1728,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Delte arbeidere (SharedWorker)</translation>
 <translation id="2927017729816812676">Bufferlagring</translation>
+<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Apper</translation>
 <translation id="542872847390508405">Du surfer som gjest</translation>
 <translation id="537813040452600081">Sider i dette vinduet vises ikke i nettleserloggen, og de legger ikke igjen andre spor (f.eks. informasjonskapsler) på datamaskinen etter at du har logget av. Filer du laster ned og bokmerker du oppretter, lagres ikke.</translation>
@@ -1931,7 +1942,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="881799181680267069">Skjul andre</translation>
 <translation id="4708849949179781599">Avslutt <ph name="PRODUCT_NAME"/></translation>
 <translation id="8795916974678578410">Nytt vindu</translation>
-<translation id="1676595396635191120">Nytt inkognitovindu</translation>
+<translation id="1676595396635191120">Nytt privat vindu</translation>
 <translation id="406070391919917862">Bakgrunnsprogrammer</translation>
 <translation id="3335947283844343239">Åpne lukkede faner igjen</translation>
 <translation id="8214489666383623925">Åpne fil</translation>
@@ -2170,7 +2181,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="7339898014177206373">Nytt vindu</translation>
 <translation id="7551643184018910560">Fest til hyllen</translation>
 <translation id="8335587457941836791">Løsne fra hyllen</translation>
-<translation id="4471385409549756595">Nytt inkognitovindu</translation>
+<translation id="4471385409549756595">Nytt privat vindu</translation>
 <translation id="8249048954461686687">OEM-mappe</translation>
 <translation id="8440630305826533614">Linux-apper</translation>
 <translation id="4742746985488890273">Fest til hyllen</translation>
@@ -2274,8 +2285,8 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
         <ph name="FILE_INFO"/>
         <ph name="EVENT_NAME"/></translation>
-<translation id="4540437243849625078">Dette nettstedet er i ferd med å dele informasjon med en app utenfor inkognitomodus.</translation>
-<translation id="1227836882233136433">Vil du avslutte inkognitomodus?</translation>
+<translation id="4540437243849625078">Denne siden er i ferd med å dele informasjon med en app utenfor privat modus.</translation>
+<translation id="1227836882233136433">Forlate privat modus?</translation>
 <translation id="662080504995468778">Bli her</translation>
 <translation id="2593289874938379417">Brave har ikke tilgang til den forespurte ressursen.</translation>
 <translation id="760197030861754408">Gå til <ph name="LANDING_PAGE"/> for å koble til.</translation>
@@ -2318,6 +2329,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="8750155211039279868"><ph name="ORIGIN"/> vil koble til en seriell port</translation>
 <translation id="4943691134276646401">«<ph name="CHROME_EXTENSION_NAME"/>» vil koble til en seriell port</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
+<translation id="1587562069597918292"><ph name="DEVICE_PATH"/></translation>
 <translation id="1171515578268894665"><ph name="ORIGIN"/> vil koble til en HID-enhet</translation>
 <translation id="6078769373519310690">«<ph name="CHROME_EXTENSION_NAME"/>» vil koble til en HID-enhet</translation>
 <translation id="4419610272958564173">Ukjent enhet (leverandør: <ph name="VENDOR_ID"/>, produkt: <ph name="PRODUCT_ID"/>)</translation>
@@ -2458,12 +2470,15 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="7235737137505019098">Sikkerhetsnøkkelen har ikke plass til flere kontoer.</translation>
 <translation id="3984431586879874039">Vil du la dette nettstedet se sikkerhetsnøkkelen din?</translation>
 <translation id="8948939328578167195"><ph name="WEBSITE"/> ber om å se merket og modellen til sikkerhetsnøkkelen din</translation>
-<translation id="7618452966706304788">Vil du bruke Touch ID med <ph name="APP_NAME"/> i inkognitomodus?</translation>
-<translation id="3098826269712097986">Påloggingsdata lagres i Brave når du går ut av inkognitomodus. Det betyr at du kan bruke Touch ID på dette nettstedet igjen senere.</translation>
+<translation id="7618452966706304788">Ønsker du å bruke berørings-ID med <ph name="APP_NAME"/> i privat modus?</translation>
+<translation id="3098826269712097986">Innloggingsdata blir lagret i Brave etter at du avslutter privat modus. Dette gjør at du kan bruke berørings-ID på denne nettsiden senere.</translation>
 <translation id="2172784515318616985">Fortsett</translation>
-<translation id="5186185447130319458">Inkognito</translation>
+<translation id="5186185447130319458">Privat</translation>
 <translation id="7643842463591647490">{0,plural, =1{# åpent vindu}other{# åpne vinduer}}</translation>
-<translation id="2579188629646253712">Avslutt inkognitomodus</translation>
+<translation id="2579188629646253712">Avslutt privat modus</translation>
+<translation id="479219453908726046">Ta undersøkelse</translation>
+<translation id="7581273696622423628">Ta undersøkelse</translation>
+<translation id="4406504596603350105">Dine tilbakemeldinger er viktige for oss.</translation>
 <translation id="4349828822184870497">Nyttig</translation>
 <translation id="6876469544038980967">Ikke nyttig</translation>
 <translation id="6428450836711225518">Bekreft telefonnummeret ditt</translation>
@@ -2476,17 +2491,20 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="399179161741278232">Importert</translation>
 <translation id="5225324770654022472">Vis appsnarveien</translation>
 <translation id="5072836811783999860">Vis administrerte bokmerker</translation>
+<translation id="3613134908380545408">Vis <ph name="FOLDER_NAME"/></translation>
 <translation id="3785308913036335955">Vis appsnarveien</translation>
 <translation id="711840821796638741">Vis administrerte bokmerker</translation>
-<translation id="3613134908380545408">Vis <ph name="FOLDER_NAME"/></translation>
 <translation id="2367972762794486313">Vis apper</translation>
 <translation id="8368859634510605990">&amp;Åpne alle bokmerker</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{&amp;Åpne alle}=1{&amp;Åpne bokmerket}other{&amp;Åpne alle (#)}}</translation>
 <translation id="1016437870506746108">{COUNT,plural, =0{Åpne alle i &amp;nye vinduer}=1{Åpne i et &amp;nytt vindu}other{Åpne alle (#) i &amp;nye vinduer}}</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Åpne alle i &amp;inkognitovinduer}=1{Åpne i et &amp;inkognitovindu}other{Åpne alle (#) i &amp;inkognitovinduer}}</translation>
+<translation id="6744651634043798597">{ANTALL, flertall,
+          =0 {Åpne alle i &amp;privat vindu}
+          =1 {Åpne i &amp;privat vindu}
+          andre {Åpne alle (#) i &amp;privat vindu}}</translation>
 <translation id="3613422051106148727">&amp;Åpne i ny fane</translation>
 <translation id="4853020600495124913">Åpne i &amp;nytt vindu</translation>
-<translation id="2431625704210501303">Åpne i &amp;inkognitovindu</translation>
+<translation id="2431625704210501303">Åpne i &amp;privat vindu</translation>
 <translation id="6702639462873609204">&amp;Rediger</translation>
 <translation id="3088325635286126843">&amp;Gi nytt navn</translation>
 <translation id="713122686776214250">Legg til si&amp;de</translation>
@@ -2495,10 +2513,13 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="6466988389784393586">&amp;Åpne alle bokmerker</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Åpne alle}=1{&amp;Åpne bokmerket}other{&amp;Åpne alle (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Åpne alle i &amp;nye vinduer}=1{Åpne i et &amp;nytt vindu}other{Åpne alle (#) i &amp;nye vinduer}}</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Åpne alle i &amp;inkognitovinduer}=1{Åpne i et &amp;inkognitovindu}other{Åpne alle (#) i &amp;inkognitovinduer}}</translation>
+<translation id="2633634757060186848">{ANTALL, flertall,
+          =0 {Åpne alle i &amp;Privat vindu}
+          =1 {Åpne i &amp;Privat vindu}
+          andre {Åpne alle (#) i &amp;Privat vindu}}</translation>
 <translation id="9024127637873500333">&amp;Åpne i ny fane</translation>
 <translation id="665061930738760572">Åpne i &amp;nytt vindu</translation>
-<translation id="1985165269306590797">Åpne i &amp;inkognitovindu</translation>
+<translation id="1985165269306590797">Åpne i &amp;privat vindu</translation>
 <translation id="8824701697284169214">Legg til si&amp;de</translation>
 <translation id="2489918096470125693">Legg til &amp;mappe</translation>
 <translation id="421182450098841253">&amp;Vis bokmerkerad</translation>
@@ -2550,10 +2571,10 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="8457451314607652708">Importér bokmerker</translation>
 <translation id="5101042277149003567">Åpne alle bokmerker</translation>
 <translation id="7007648447224463482">Åpne alt i et nytt vindu</translation>
-<translation id="642436385689435488">Åpne alt i et inkognitovindu</translation>
+<translation id="642436385689435488">Åpne alle i privat vindu</translation>
 <translation id="4195643157523330669">Åpne i ny fane</translation>
 <translation id="2979639724566107830">Åpne i nytt vindu</translation>
-<translation id="5463021359602611602">Åpne i inkognitovindu</translation>
+<translation id="5463021359602611602">Åpne i privat vindu</translation>
 <translation id="1173894706177603556">Gi nytt navn</translation>
 <translation id="6825184156888454064">Sortér etter navn</translation>
 <translation id="3440663250074896476">Flere handlinger for <ph name="BOOKMARK_NAME"/></translation>
@@ -2631,9 +2652,15 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="4159681666905192102">Dette er en konto for barn som administreres av <ph name="CUSTODIAN_EMAIL"/> og <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Administrert bruker</translation>
 <translation id="5720705177508910913">Gjeldende bruker</translation>
-<translation id="1850357845349976573">{0,plural, =1{Inkognito}other{# åpne inkognitovinduer}}</translation>
-<translation id="37784332082579802">{0,plural, =1{Inkognito}other{Inkognito (#)}}</translation>
-<translation id="5070556616376997776">Du er inkognito</translation>
+<translation id="1850357845349976573">{0, flertall,
+        =1 {Privat}
+        andre {# åpne private vinduer}
+      }</translation>
+<translation id="37784332082579802">{0, flertall,
+      =1 {Privat}
+      andre {Private (#)}
+    }</translation>
+<translation id="5070556616376997776">Dette er et privat vindu</translation>
 <translation id="2199298570273670671">Feil</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: Synkroniseringen fungerer ikke</translation>
 <translation id="7307129035224081534">Satt på pause</translation>
@@ -2642,8 +2669,8 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (Konto for barn)</translation>
 <translation id="8182664696082410784"><ph name="REASON"/>
 Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
-<translation id="5832813618714645810">Personer</translation>
-<translation id="7171000599584840888">Legg til person …</translation>
+<translation id="5832813618714645810">Profiler</translation>
+<translation id="7171000599584840888">Legg til profil...</translation>
 <translation id="1781771911845953849">Kontoer og synkronisering</translation>
 <translation id="4974733135013075877">Avslutt og barnelås</translation>
 <translation id="3965965397408324205">Gå ut av <ph name="PROFILE_NAME"/></translation>
@@ -2662,21 +2689,21 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="8473863474539038330">Adresser med mer</translation>
 <translation id="5287425679749926365">Dine kontoer</translation>
 <translation id="4801448226354548035">Skjul kontoer</translation>
-<translation id="2935225303485967257">Administrer personer</translation>
+<translation id="2935225303485967257">Administrer profiler</translation>
 <translation id="7388222713940428051">Åpne et gjestevindu</translation>
 <translation id="127668050356036882">Lukk alle vinduene dine</translation>
 <translation id="1464258312790801189">Kontoene dine</translation>
 <translation id="6655458902729017087">Skjul kontoer</translation>
-<translation id="688280436658139163">Administrer personer</translation>
+<translation id="688280436658139163">Administrer profiler</translation>
 <translation id="2666990579225592931">Åpne et gjestevindu</translation>
 <translation id="5869948122057593679">Lukk alle vinduene dine</translation>
-<translation id="4133080584509825342">Endre personen <ph name="PROFILE_NAME"/></translation>
-<translation id="4848862725510532982">Endre personen <ph name="PROFILE_NAME"/> (<ph name="USERNAME"/>)</translation>
+<translation id="4133080584509825342">Rediger profil, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Endre profil <ph name="PROFILE_NAME"/> (<ph name="USERNAME"/>)</translation>
 <translation id="3294437725009624529">Gjest</translation>
 <translation id="475088594373173692">Første bruker</translation>
 <translation id="4535127706710932914">Standardprofil</translation>
 <translation id="4389091756366370506">Bruker <ph name="VALUE"/></translation>
-<translation id="4536111748245793305">Person <ph name="VALUE"/></translation>
+<translation id="4536111748245793305">Profil <ph name="VALUE"/></translation>
 <translation id="5397794290049113714">Deg</translation>
 <translation id="3031417829280473749">Agent X</translation>
 <translation id="412730574613779332">Superhelt</translation>
@@ -2764,7 +2791,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="2871813825302180988">Denne kontoen er allerede i bruk på denne enheten.</translation>
 <translation id="7654941827281939388">Denne kontoen er allerede i bruk på denne datamaskinen.</translation>
 <translation id="9022847679183471841">Denne kontoen er allerede i bruk på denne datamaskinen, av <ph name="AVATAR_NAME"/>.</translation>
-<translation id="6921634551681321094">Legg til person</translation>
+<translation id="6921634551681321094">Legg til profil</translation>
 <translation id="5389237414310520250">Den nye brukeren kunne ikke opprettes. Sjekk hvor mye plass du har på harddisken og hvilke tillatelser som er aktive, og prøv på nytt.</translation>
 <translation id="2673589024369449924">Opprett en skrivebordssnarvei for denne brukeren</translation>
 <translation id="2731710757838467317">Oppretter den administrerte brukeren din. Dette kan ta litt tid.</translation>
@@ -2772,13 +2799,13 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="6690751852586194791">Velg en administrert bruker som skal legges til på denne enheten.</translation>
 <translation id="5525677322972469346">Opprett en ny administrert bruker</translation>
 <translation id="8630903300770275248">Importér den administrerte brukeren</translation>
-<translation id="4904061654709986277">Legg til person</translation>
-<translation id="6114945161119872228">Fjern denne personen</translation>
-<translation id="769308100792069196">Legg til en administrert person</translation>
+<translation id="4904061654709986277">Legg til profil</translation>
+<translation id="6114945161119872228">Fjern denne profilen</translation>
+<translation id="769308100792069196">Legg til overvåket profil</translation>
 <translation id="3470442499439619530">Fjern denne brukeren</translation>
 <translation id="4296575653627536209">Legg til en administrert bruker</translation>
-<translation id="8006143138282906848">Fjern denne personen</translation>
-<translation id="6912187023601892621">Legg til en administrert person</translation>
+<translation id="8006143138282906848">Fjern denne profilen</translation>
+<translation id="6912187023601892621">Legg til overvåket profil</translation>
 <translation id="1608626060424371292">Fjern denne brukeren</translation>
 <translation id="493571969993549666">Legg til en administrert bruker</translation>
 <translation id="9101691533782776290">Start appen</translation>
@@ -2800,8 +2827,8 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="6164005077879661055">Alle filer og lokale data tilknyttet den administrerte brukeren slettes permanent når den administrerte brukeren fjernes. Besøkte nettsteder og innstillinger for denne administrerte brukeren kan fortsatt ses av administratoren på <ph name="MANAGEMENT_URL"/>.</translation>
 <translation id="3410832398355316179">Alle filer og lokale data som er tilknyttet denne brukeren, slettes permanent når brukeren fjernes. <ph name="USER_EMAIL"/> kan fortsatt logge på senere.</translation>
 <translation id="672213144943476270">Du må låse opp profilen din før du kan surfe som gjest.</translation>
-<translation id="8086119151297127544">Du må låse opp profilen din før du kan fjerne en person.</translation>
-<translation id="7805701378418968629">Du må låse opp profilen din før du kan legge til en person.</translation>
+<translation id="8086119151297127544">Vennligst lås opp profilen din før du fjerner en profil.</translation>
+<translation id="7805701378418968629">Vennligst lås opp profilen din før du legger til en profil.</translation>
 <translation id="8978225823042133615">Logg på for å bruke Brave</translation>
 <translation id="4893336867552636863">Dette sletter nettlesingsdataene dine permanent fra denne enheten.</translation>
 <translation id="2496180316473517155">Nettleserlogg</translation>
@@ -2859,8 +2886,9 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="6850286078059909152">Tekstfarge</translation>
 <translation id="8042142357103597104">Tekstopasitet</translation>
 <translation id="1656528038316521561">Bakgrunnsopasitet</translation>
-<translation id="5750288053043553775">0</translation>
-<translation id="8689998525144040851">100</translation>
+<translation id="8838601485495657486">Ugjennomsiktig</translation>
+<translation id="5826993284769733527">Halvgjennomsiktig</translation>
+<translation id="4438043733494739848">Gjennomsiktig</translation>
 <translation id="2442916515643169563">Tekstskygge</translation>
 <translation id="3599221874935822507">Hevet</translation>
 <translation id="274029851662193272">Preget</translation>
@@ -2875,7 +2903,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="161042844686301425">Cyan</translation>
 <translation id="4115378294792113321">Magenta</translation>
 <translation id="6981982820502123353">Tilgjengelighet</translation>
-<translation id="5840822070878669614">Åpne Brave Nettmarked</translation>
+<translation id="5840822070878669614">Åpne nettmarked</translation>
 <translation id="6073903501322152803">Legg til tilgjengelighetsfunksjoner</translation>
 <translation id="7988355189918024273">Aktiver funksjoner for tilgjengelighet</translation>
 <translation id="5499063270485366718">Hvis et bilde ikke har noen nyttig beskrivelse, prøver Brave å finne en til deg. For å opprette beskrivelser blir bilder sendt til Brave Software.</translation>
@@ -2971,6 +2999,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="4430019312045809116">Volum</translation>
 <translation id="3677657024345889897">Stillest</translation>
 <translation id="167160931442925455">Høyest</translation>
+<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/> % (standard)</translation>
 <translation id="7037509989619051237">Tekst til forhåndsvisning</translation>
 <translation id="5471768120198416576">Heisann! Jeg er tekst til tale-stemmen din.</translation>
@@ -3235,10 +3264,13 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="4058720513957747556">AppSocket (TCP/IP)</translation>
 <translation id="6619058681307408113">Line Printer Daemon (LPD)</translation>
 <translation id="2266957463645820432">IPP over USB (IPPUSB)</translation>
+<translation id="8086015605808120405">Konfigurerer <ph name="PRINTER_NAME"/> …</translation>
 <translation id="4665014895760275686">Produsent</translation>
 <translation id="4561098487691395071">Eller spesifiser skriverens PPD-fil</translation>
 <translation id="1989112275319619282">Bla gjennom</translation>
 <translation id="3625481642044239431">En ugyldig fil er valgt. Prøv på nytt.</translation>
+<translation id="2462752602710430187"><ph name="PRINTER_NAME"/> er lagt til</translation>
+<translation id="7380768571499464492"><ph name="PRINTER_NAME"/> er oppdatert</translation>
 <translation id="8002670234429879764"><ph name="PRINTER_NAME"/> er ikke tilgjengelig lenger</translation>
 <translation id="3976108569178263973">Det er ingen tilgjengelige skrivere.</translation>
 <translation id="3213187967168344806">Kan ikke legge til skriver. Start datamaskinen på nytt, og prøv igjen.</translation>
@@ -3803,9 +3835,9 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="6196640612572343990">Blokkér informasjonskapsler fra tredjeparter</translation>
 <translation id="6782111308708962316">Forhindrer at nettsteder fra tredjeparter lagrer og leser data i informasjonskapsler</translation>
 <translation id="1274977772557788323">Lagringsinnstillinger for Adobe Flash Player</translation>
-<translation id="1281501490173223206">Bare denne inkognitoøkten</translation>
-<translation id="3479035826743782247">Denne inkognitoøkten</translation>
-<translation id="4750220700975225">Denne inkognitoøkten (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Kun for gjeldende private økt</translation>
+<translation id="3479035826743782247">Gjeldende private økt</translation>
+<translation id="4750220700975225">Gjeldende private økt (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Det er ikke zoomet inn eller ut på noen nettsteder</translation>
 <translation id="3566721612727112615">Ingen nettsteder er lagt til</translation>
 <translation id="8098574385249290065">La Brave velge når nettsteder kan spille av lyd (anbefalt)</translation>
@@ -3832,8 +3864,8 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="4590324241397107707">Databaselagring</translation>
 <translation id="8016266267177410919">Midlertidig lagring</translation>
 <translation id="4175737294868205930">Permanent lagring</translation>
-<translation id="3707212204259470604">Administrer andre</translation>
-<translation id="8907706281008466056">Brave Software-profilbilde</translation>
+<translation id="3707212204259470604">Administrer andre profiler</translation>
+<translation id="8907706281008466056">Brave profilbilde</translation>
 <translation id="2408955596600435184">Skriv inn PIN-koden din</translation>
 <translation id="6619990499523117484">Bekreft PIN-koden din</translation>
 <translation id="2023167225947895179">Det kan være lett å gjette seg til PIN-koden</translation>
@@ -3867,6 +3899,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="2458379781610688953">Oppdater kontoen, <ph name="EMAIL"/></translation>
 <translation id="2701737434167469065">Logg på, <ph name="EMAIL"/></translation>
 <translation id="2923234477033317484">Fjern denne kontoen</translation>
+<translation id="8995603266996330174">Administrert av <ph name="DOMAIN"/></translation>
 <translation id="4659077111144409915">Primærkonto</translation>
 <translation id="8864458770072227512"><ph name="EMAIL"/> ble fjernet fra denne enheten</translation>
 <translation id="3158033540161634471">Konfigurer fingeravtrykket ditt</translation>
@@ -3899,12 +3932,11 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="3608576286259426129">Forhåndsvisning av brukerbilde</translation>
 <translation id="2114896190328250491">Bildet er tatt av <ph name="NAME"/></translation>
 <translation id="7155171745945906037">Eksisterende bilde fra kamera eller fil</translation>
-<translation id="8995603266996330174">Drevet av <ph name="DOMAIN"/></translation>
 <translation id="9125982323641182972">Få Brave Softwares smarte funksjoner i Brave</translation>
 <translation id="1692115862433274081">Bruk en annen konto</translation>
 <translation id="5244474230056479698">Synkroniserer til <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Siden denne kontoen administreres av <ph name="DOMAIN"/>, slettes bokmerkene, loggen, passordene og andre innstillinger du har, fra denne enheten. Data du har lagret i Brave Software-kontoen din, blir imidlertid værende og kan administreres ved hjelp av <ph name="BEGIN_LINK"/>Brave Software Oversikt<ph name="END_LINK"/>.</translation>
-<translation id="6906406176003824042">Endre person</translation>
+<translation id="6906406176003824042">Rediger profil</translation>
 <translation id="6739923123728562974">Vis skrivebordssnarvei</translation>
 <translation id="2450310832094867474">Vil du slå av synkronisering og logge av?</translation>
 <translation id="3699920817649120894">Vil du slå av synkronisering og persontilpasning?</translation>
@@ -3994,7 +4026,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="437184764829821926">Avanserte innstillinger for skrifttype</translation>
 <translation id="323803881985677942">Åpne utvidelsesalternativer</translation>
 <translation id="2166369534954157698">Høvdingens kjære squaw får litt pizza i Mexico by</translation>
-<translation id="8911765336506423117">Krever utvidelse fra Brave Nettmarked</translation>
+<translation id="8911765336506423117">Krever utvidelse fra nettmarkedet</translation>
 <translation id="6965978654500191972">Enhet</translation>
 <translation id="8260864402787962391">Mus</translation>
 <translation id="155865706765934889">Styreflate</translation>
@@ -4118,7 +4150,6 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="8781980678064919987">Slå av maskinen når den lukkes</translation>
 <translation id="3636766455281737684"><ph name="PERCENTAGE"/> % – <ph name="TIME"/> til batteriet er tomt</translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/> % – <ph name="TIME"/> til batteriet er fullt</translation>
-<translation id="6247708409970142803"><ph name="PERCENTAGE"/> %</translation>
 <translation id="2620436844016719705">System</translation>
 <translation id="2077129598763517140">Bruk maskinvareakselerasjon når det er tilgjengelig</translation>
 <translation id="3817524650114746564">Åpne proxy-tjenerinnstillingene for datamaskinen</translation>
@@ -4241,7 +4272,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="329838636886466101">Reparer</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Inaktiv)</translation>
-<translation id="3860292630623580294">(Inkognito)</translation>
+<translation id="3860292630623580294">(Privat)</translation>
 <translation id="6655190889273724601">Utviklermodus</translation>
 <translation id="2868746137289129307">Denne utvidelsen er utdatert og avslått av bedriftsretningslinjene. Den kan slås på automatisk når en nyere versjon er tilgjengelig.</translation>
 <translation id="6841186874966388268">Feil</translation>
@@ -4277,7 +4308,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="1805822111539868586">Inspiser visninger</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> til …</translation>
 <translation id="2450849356604136918">Ingen aktive visninger</translation>
-<translation id="4854477725773269949">Tillat i inkognitomodus</translation>
+<translation id="4854477725773269949">Tillat i privat modus</translation>
 <translation id="6124650939968185064">Disse utvidelsene er avhengige av denne utvidelsen:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="3866249974567520381">Beskrivelse</translation>
@@ -4304,14 +4335,14 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="7235716375204803342">Henter aktiviteter …</translation>
 <translation id="8314381333424235892">Manglende eller avinstallert utvidelse</translation>
 <translation id="7647403192093989392">Ingen nylige aktiviteter</translation>
-<translation id="38046578254905003">Finn utvidelser og temaer i <ph name="BEGIN_LINK"/>Brave Nettmarked<ph name="END_LINK"/></translation>
+<translation id="38046578254905003">Finn utvidelser og temaer i <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Nettmarked<ph name="END_LINK">&lt;/a&gt;</ph></translation>
 <translation id="7272674038937250585">Ingen beskrivelse er oppgitt</translation>
 <translation id="3855441664322950881">Pakk utvidelsen</translation>
 <translation id="2958721676848865875">Advarsel om pakkeutvidelse</translation>
 <translation id="8652400352452647993">Feil med pakkeutvidelse</translation>
 <translation id="8398877366907290961">Fortsett likevel</translation>
 <translation id="8770406935328356739">Rotkatalog for utvidelser</translation>
-<translation id="6226777517901268232">Privat nøkkelfil (valgfritt)</translation>
+<translation id="6226777517901268232">Privat nøkkelfil (valgfri)</translation>
 <translation id="2916745397441987255">Søk i utvidelser</translation>
 <translation id="1992397118740194946">Ikke angitt</translation>
 <translation id="6706210727756204531">Omfang</translation>
@@ -4331,7 +4362,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="1688935057616748272">Skriv inn en bokstav</translation>
 <translation id="4479424953165245642">Administrer kiosk-apper</translation>
 <translation id="6619801788773578757">Legg til kioskapp</translation>
-<translation id="8045923671629973368">Skriv inn app-ID-en eller nettadressen til nettbutikken</translation>
+<translation id="8045923671629973368">Angi applikasjonens ID eller nettbutikkens URL</translation>
 <translation id="7059858479264779982">Angi automatisk oppstart</translation>
 <translation id="6325191661371220117">Deaktiver automatisk oppstart</translation>
 <translation id="4699357559218762027">(automatisk oppstart)</translation>
@@ -4497,8 +4528,8 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="6041155700700864984">Avslutt fullskjermmodus</translation>
 <translation id="6112294629795967147">Trykk for å endre størrelsen</translation>
 <translation id="2453860139492968684">Fullfør</translation>
-<translation id="6336451774241870485">Ny privatfane</translation>
-<translation id="6610147964972079463">Lukk privatfaner</translation>
+<translation id="6336451774241870485">Ny privat fane</translation>
+<translation id="6610147964972079463">Lukk private faner</translation>
 <translation id="8076492880354921740">Faner</translation>
 <translation id="2794233252405721443">Nettstedet er blokkert</translation>
 <translation id="1721312023322545264">Du trenger tillatelse fra <ph name="NAME"/> for å besøke dette nettstedet</translation>

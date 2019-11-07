@@ -43,6 +43,22 @@
     "message": "Yardımlar",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "Ayrıntılar",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Bakiyeniz",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT Puanları",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "en sevdiğiniz içerik yaratıcılarına katkıda bulunmak için Brave Ödüller'de kullanılabilir. BAT Puanları, BAT almak için kullanılamaz.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "açık",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Aylık Katkı",
+    "message": "Bu siteye aylık bahşiş verin",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Henüz katkı almak için kaydolmamış oluşturucular  için {{ayrılmışMiktar}} BAT belirlediniz. Tarayıcınız, onlar doğrulayana veya 90 gün geçene kadar katkıda bulunmaya çalışmaya devam edecektir.",
+    "message": "Katkı payı almak için henüz kaydolmamış içerik oluşturucular için size {{reservedAmount}} {{currency}} atandı. Tarayıcınız, onlar doğrulayana veya 90 gün geçene kadar katkıda bulunmayı denemeye devam edecektir.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave Ads Ödülleri!",
+    "message": "Bir Reklam Ödülü kazandınız!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Brave Ads'ten verilen ödülleriniz yolda.",
+    "message": "Ödülünüz, Brave Ödülleri cüzdanınıza geliyor.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Brave Ads Token'iniz Verildi",
+    "message": "Ödül Tutarınız",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "Tam cüzdan onayı",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "Ayarla...",
-    "description": "Button text for setting monthly contribution"
   }
 }

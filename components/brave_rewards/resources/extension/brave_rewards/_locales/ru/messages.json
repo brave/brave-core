@@ -43,6 +43,22 @@
     "message": "Гранты",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "Детали",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Ваш баланс",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "Очки BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "можно использовать в наградах Brave, чтобы пожертвовать средства своим любимым создателям контента. Очки BAT нельзя обменять на BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "вкл.",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Ежемесячное пожертвование",
+    "message": "Давать чаевые этому сайт ежемесячно",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -64,11 +80,11 @@
     "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
-    "message": "Отправить пожертвование...",
+    "message": "Отправить чаевые...",
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
-    "message": "Включить советы",
+    "message": "Включить дачу чаевых",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
@@ -144,7 +160,7 @@
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
-    "message": "Разовая поддержка",
+    "message": "Разовые чаевые",
     "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
@@ -152,7 +168,7 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Месячные платежи",
+    "message": "Ежемесячные чаевые",
     "description": "Title for monthly tips section in wallet summary"
   },
   "off": {
@@ -190,7 +206,7 @@
     }
   },
   "grantNotification": {
-    "message": "Ваш ожидает грант.",
+    "message": "Вас ожидает грант.",
     "description": "Description for new grant notification"
   },
   "backupNow": {
@@ -222,7 +238,7 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "Ваш запланированный ежемесячный платеж (Автоматический Взнос) и ежемесячное пожертвование не завершены из-за недостатка средств. Мы попробуем еще раз через 30 дней.",
+    "message": "Ваш запланированный ежемесячный платеж (Автоматический Взнос) и ежемесячные чаевые не завершены из-за недостатка средств. Мы попробуем еще раз через 30 дней.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Не удалось отправить грант в размере BAT {{reservedAmount}}, поскольку его получатель еще не участвует в программе дарения. Браузер будет повторять попытку до успешного результата, но не более 90 дней.",
+    "message": "Вы выделили {{reservedAmount}} {{currency}} для создателей, которые еще не зарегистрировались для получения пожертвований. Ваш браузер будет пытаться внести пожертвование, пока они не верифицируют свои аккаунты или же пока не пройдет 90 дней.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -382,11 +398,11 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Ваши ежемесячные пожертвования были обработаны!",
+    "message": "Ваши ежемесячные чаевые были обработаны!",
     "description": "Message for monthly tips processed notification"
   },
   "contributionTips": {
-    "message": "Пожертвования и поддержка",
+    "message": "Пожертвования и чаевые",
     "description": "Title for monthly tips processed notification"
   },
   "serviceTextPanelWelcome": {
@@ -406,11 +422,11 @@
     "description": "Description text for ad grants in grant details"
   },
   "twitterTipsHoverText": {
-    "message": "Поддержать за этот твит",
+    "message": "Дать чаевые за этот твит",
     "description": "Hover text for Twitter tips action"
   },
   "twitterTipsIconLabel": {
-    "message": "Поддержать",
+    "message": "Дать чаевые",
     "description": "Icon label for Twitter tips"
   },
   "redditTipsHoverText": {
@@ -418,7 +434,7 @@
     "description": "Hover text for Reddit tips action"
   },
   "redditTipsIconLabel": {
-    "message": "Поддержать",
+    "message": "Дать чаевые",
     "description": "Icon label for Reddit tips"
   },
   "githubTipsHoverText": {
@@ -426,7 +442,7 @@
     "description": "Hover text for GitHub tips action"
   },
   "githubTipsIconLabel": {
-    "message": "Поддержать",
+    "message": "Дать чаевые",
     "description": "Icon label for GitHub tips"
   },
   "verifiedPublisherNotification": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Награды за рекламу Brave!",
+    "message": "Вы заработали награду за рекламу!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Ваша награда от рекламы Brave уже отправлена.",
+    "message": "Ваша награда уже на пути к вашему кошельку наград Brave.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Ваши токены за рекламу Brave",
+    "message": "Ваша сумма награды",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -522,15 +538,11 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Этот верифицированный создатель Brave еще не настроил свой аккаунт для получения пожертвований от пользователей Brave. Любые отправленные вами пожертвования будут оставаться в вашем кошельке до тех пор, пока пользователь не завершит этот процесс. ",
+    "message": "Этот верифицированный создатель Brave еще не настроил свой аккаунт для получения пожертвований от пользователей Brave. Любые отправленные вами чаевые будут оставаться в вашем кошельке до тех пор, пока пользователь не завершит этот процесс. ",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
     "message": "Завершить проверку кошелька",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "Установить...",
-    "description": "Button text for setting monthly contribution"
   }
 }

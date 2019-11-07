@@ -43,6 +43,22 @@
     "message": "Dodjele",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "Detalji",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Vaš raspoloživi iznos",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "Bodovi BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "može se upotrebljavati u stavci Nagrade Brave za doprinošenje vašim omiljenim stvarateljima sadržaja. Bodovi se BAT ne mogu zamijeniti za BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "uključeno",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": " Mjesečni doprinos",
+    "message": "Daj mjesečnu napojnicu ovom mrežnom mjestu",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Odredili ste {{reservedAmount}} BAT za stvaratelje koji se još nisu prijavili za primanje doprinosa. Vašim se preglednikom pokušavaju ustupiti doprinosi dok se ne provjere ili do isteka 90 dana.",
+    "message": "Namijenili ste {{reservedAmount}} {{currency}} za stvaratelje koji se još nisu registrirali za primanje doprinosa. Vašim se preglednikom pokušavaju ustupiti doprinosi dok se ne provjere ili do isteka 90 dana. ",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Nagrade Brave za oglase!",
+    "message": "Osvojili ste nagrade za oglase!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Vaše su nagrade od usluge Brave za oglase na putu.",
+    "message": "Vaša je nagrada poslana u vaš novčanik za nagrade Brave.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Odobrenje za token Brave za oglase",
+    "message": "Vaš raspoloživi iznos nagrada",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "Završi provjeru novčanika",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "Postavi...",
-    "description": "Button text for setting monthly contribution"
   }
 }
