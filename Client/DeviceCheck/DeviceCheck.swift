@@ -6,6 +6,9 @@ import Foundation
 import DeviceCheck
 import BraveRewards
 import BraveShared
+import Shared
+
+private let log = Logger.browserLogger
 
 /// A structure used to register a device for Brave's DeviceCheck enrollment
 public struct DeviceCheckRegistration: Codable {
@@ -148,6 +151,13 @@ public class DeviceCheckClient {
     let hasPrivateKey = Cryptography.keyExists(id: DeviceCheckClient.privateKeyId)
     let didEnrollSuccessfully = Preferences.Rewards.didEnrollDeviceCheck.value
     return hasPrivateKey && didEnrollSuccessfully
+  }
+  
+  public class func resetDeviceEnrollment() {
+    Preferences.Rewards.didEnrollDeviceCheck.value = false
+    if let error = Cryptography.delete(id: DeviceCheckClient.privateKeyId) {
+      log.error(error)
+    }
   }
   
   // MARK: - Server calls for DeviceCheck

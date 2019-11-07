@@ -214,6 +214,7 @@ public class QASettingsViewController: TableViewController {
         let message = error?.localizedDescription ?? "Restore Complete. Brave must be restarted to ensure expected Rewards behavior"
         let completionAlert = UIAlertController(title: "Restore Wallet", message: message, preferredStyle: .alert)
         if error == nil {
+          DeviceCheckClient.resetDeviceEnrollment()
           completionAlert.addAction(UIAlertAction(title: "Exit Now", style: .destructive, handler: { _ in
             fatalError()
           }))
