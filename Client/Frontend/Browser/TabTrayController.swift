@@ -62,7 +62,7 @@ class TabCell: UICollectionViewCell, Themeable {
     var margin = CGFloat(0)
 
     override init(frame: CGRect) {
-        self.backgroundHolder.backgroundColor = UIColor.Photon.White100
+        self.backgroundHolder.backgroundColor = .white
         self.backgroundHolder.layer.cornerRadius = TabTrayControllerUX.CornerRadius
         self.backgroundHolder.clipsToBounds = true
 
@@ -196,7 +196,6 @@ class TabCell: UICollectionViewCell, Themeable {
         
         // TabCell doesn't use much theming atm, using non-themable values for some views here.
         titleText.appearanceTextColor = .black
-        backgroundHolder.backgroundColor = theme.colors.home
         screenshotView.backgroundColor = backgroundHolder.backgroundColor
         favicon.tintColor = theme.colors.tints.home
     }
