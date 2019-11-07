@@ -57,6 +57,7 @@ const char kForbesExtraCookies[] =
     "forbes_ab=true; welcomeAd=true; adblock_session=Off; "
     "dailyWelcomeCookie=true";
 const char kTwitterPattern[] = "https://*.twitter.com/*";
+const char kGoogleOAuthPattern[] = "https://accounts.google.com/*";
 
 const char kCookieHeader[] = "Cookie";
 // Intentional misspelling on referrer to match HTTP spec

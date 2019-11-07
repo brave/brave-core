@@ -77,6 +77,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   registry->RegisterBooleanPref(kShieldsAdvancedViewEnabled,
                                 is_new_user == false);
+
+  // Google-oauth should work by default
+  registry->RegisterBooleanPref(kGoogleLoginControlType, true);
   registry->RegisterBooleanPref(kFBEmbedControlType, true);
   registry->RegisterBooleanPref(kTwitterEmbedControlType, true);
   registry->RegisterBooleanPref(kLinkedInEmbedControlType, false);

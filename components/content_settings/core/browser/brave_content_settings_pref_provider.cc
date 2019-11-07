@@ -10,10 +10,13 @@
 
 #include "base/bind.h"
 #include "base/task/post_task.h"
+#include "brave/common/network_constants.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "components/content_settings/core/browser/content_settings_pref.h"
 #include "components/content_settings/core/browser/website_settings_registry.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 
@@ -96,6 +99,10 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
     : PrefProvider(prefs, off_the_record, store_last_modified),
       weak_factory_(this) {
   brave_pref_change_registrar_.Init(prefs_);
+  brave_pref_change_registrar_.Add(
+      kGoogleLoginControlType,
+      base::BindRepeating(&BravePrefProvider::OnCookiePrefsChanged,
+                          base::Unretained(this)));
 
   WebsiteSettingsRegistry* website_settings =
       WebsiteSettingsRegistry::GetInstance();
@@ -193,7 +200,23 @@ std::unique_ptr<RuleIterator> BravePrefProvider::GetRuleIterator(
 void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
                                           bool incognito) {
   auto& rules = cookie_rules_[incognito];
+  auto old_rules = std::move(brave_cookie_rules_[incognito]);
+
   rules.clear();
+
+  // kGoogleLoginControlType preference adds an exception for
+  // accounts.google.com to access cookies in 3p context to allow login using
+  // google oauth. The exception is added before all overrides to allow google
+  // oauth to work when the user sets custom overrides for a site.
+  // For example: Google OAuth will be allowed if the user allows all cookies
+  // and sets 3p cookie blocking for a site.
+  if (prefs_->GetBoolean(kGoogleLoginControlType)) {
+      auto rule = Rule(ContentSettingsPattern::FromString(kGoogleOAuthPattern),
+                       ContentSettingsPattern::Wildcard(),
+                       ContentSettingToValue(CONTENT_SETTING_ALLOW)->Clone());
+      rules.push_back(CloneRule(rule));
+      brave_cookie_rules_[incognito].push_back(CloneRule(rule));
+  }
 
   // add chromium cookies
   auto chromium_cookies_iterator = PrefProvider::GetRuleIterator(
@@ -223,8 +246,6 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
       CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kCookies,
       incognito);
-
-  auto old_rules = std::move(brave_cookie_rules_[incognito]);
 
   // Matching cookie rules against shield rules.
   while (brave_cookies_iterator && brave_cookies_iterator->HasNext()) {
@@ -314,6 +335,12 @@ void BravePrefProvider::NotifyChanges(const std::vector<Rule>& rules,
            "");
   }
 }
+
+void BravePrefProvider::OnCookiePrefsChanged(
+    const std::string& pref) {
+  OnCookieSettingsChanged(CONTENT_SETTINGS_TYPE_PLUGINS);
+}
+
 void BravePrefProvider::OnCookieSettingsChanged(
     ContentSettingsType content_type) {
   UpdateCookieRules(content_type, true);

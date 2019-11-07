@@ -38,6 +38,7 @@ extern const char kCRLSetPrefix3[];
 extern const char kCRLSetPrefix4[];
 extern const char kChromeCastPrefix[];
 extern const char kTwitterPattern[];
+extern const char kGoogleOAuthPattern[];
 
 extern const char kCookieHeader[];
 extern const char kRefererHeader[];
