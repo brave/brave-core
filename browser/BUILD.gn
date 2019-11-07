@@ -49,8 +49,6 @@ source_set("browser_process") {
     "brave_local_state_prefs.h",
     "brave_profile_prefs.cc",
     "brave_profile_prefs.h",
-    "brave_startup_data.cc",
-    "brave_startup_data.h",
     "brave_stats_updater.cc",
     "brave_stats_updater.h",
     "brave_stats_updater_params.cc",

@@ -15,7 +15,6 @@
 #include "build/build_config.h"
 #include "brave/app/brave_command_line_helper.h"
 #include "brave/browser/brave_content_browser_client.h"
-#include "brave/browser/brave_startup_data.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/resource_bundle_helper.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
@@ -76,7 +75,7 @@ BraveMainDelegate::CreateContentBrowserClient() {
 #else
   if (chrome_content_browser_client_ == nullptr) {
     DCHECK(!startup_data_);
-    startup_data_ = std::make_unique<BraveStartupData>();
+    startup_data_ = std::make_unique<StartupData>();
     chrome_content_browser_client_ =
         std::make_unique<BraveContentBrowserClient>(startup_data_.get());
   }
