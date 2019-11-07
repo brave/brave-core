@@ -212,6 +212,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsWidgetEnableTitle", IDS_REWARDS_WIDGET_ENABLE_TITLE },
         { "rewardsWidgetReEnableSubTitle", IDS_REWARDS_WIDGET_REENABLE_SUBTITLE },        // NOLINT
         { "rewardsWidgetEnableSubTitle", IDS_REWARDS_WIDGET_ENABLE_SUBTITLE },            // NOLINT
+        { "rewardsWidgetAdsNotSupported", IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED },    // NOLINT
         { "rewardsWidgetNotificationTitle", IDS_REWARDS_WIDGET_NOTIFICATION_TITLE },      // NOLINT
         { "rewardsWidgetNotificationTextAds", IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_ADS }, // NOLINT
         { "rewardsWidgetNotificationTextUGP", IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_UGP }  // NOLINT

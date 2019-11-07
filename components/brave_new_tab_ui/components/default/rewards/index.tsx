@@ -26,7 +26,8 @@ import {
   Amount,
   ConvertedAmount,
   LearnMoreLink,
-  TurnOnAdsButton
+  TurnOnAdsButton,
+  UnsupportedMessage
 } from './style'
 import Notification from './notification'
 import { BatColorIcon } from 'brave-ui/components/icons'
@@ -43,6 +44,7 @@ export interface RewardsProps {
   walletCorrupted: boolean
   adsEstimatedEarnings: number
   onlyAnonWallet?: boolean
+  adsSupported?: boolean
   onCreateWallet: () => void
   onEnableAds: () => void
   onEnableRewards: () => void
@@ -135,11 +137,12 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
       onEnableAds,
       adsEstimatedEarnings,
       onlyAnonWallet,
-      totalContribution
+      totalContribution,
+      adsSupported
     } = this.props
 
     const rates = balance.rates || {}
-    const showEnableAds = type === AmountItemType.ADS && !enabledAds
+    const showEnableAds = type === AmountItemType.ADS && !enabledAds && adsSupported
     const amount = type === AmountItemType.TIPS
       ? totalContribution
       : adsEstimatedEarnings.toFixed(1)
@@ -147,7 +150,14 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     const batFormatString = onlyAnonWallet ? getLocale('rewardsWidgetBatPoints') : getLocale('rewardsWidgetBat')
 
     return (
-      <AmountItem>
+      <AmountItem isLast={type === AmountItemType.TIPS}>
+        <AmountDescription>
+          {
+            type === AmountItemType.ADS
+            ? getLocale('rewardsWidgetEstimatedEarnings')
+            : getLocale('rewardsWidgetMonthlyTips')
+          }
+        </AmountDescription>
         {
           showEnableAds
           ? <TurnOnAdsButton onClick={onEnableAds}>
@@ -156,7 +166,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
           : null
         }
         {
-          !showEnableAds
+          !showEnableAds && !(type === AmountItemType.ADS && !adsSupported)
           ? <AmountInformation data-test-id={`widget-amount-total-${type}`}>
               <Amount>{amount}</Amount>
               <ConvertedAmount>
@@ -165,13 +175,13 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
             </AmountInformation>
           : null
         }
-        <AmountDescription>
-          {
-            type === AmountItemType.ADS
-            ? getLocale('rewardsWidgetEstimatedEarnings')
-            : getLocale('rewardsWidgetMonthlyTips')
-          }
-        </AmountDescription>
+        {
+          type === AmountItemType.ADS && !adsSupported
+          ? <UnsupportedMessage>
+              {getLocale('rewardsWidgetAdsNotSupported')}
+            </UnsupportedMessage>
+          : null
+        }
       </AmountItem>
     )
   }
