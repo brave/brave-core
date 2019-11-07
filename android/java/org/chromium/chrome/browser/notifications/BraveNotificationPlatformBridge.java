@@ -11,10 +11,24 @@ import android.app.Notification;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import org.chromium.base.annotations.CalledByNative;
+
 public class BraveNotificationPlatformBridge extends NotificationPlatformBridge {
     private @NotificationType int mNotificationType;
+    private static BraveNotificationPlatformBridge sInstance;
 
-    public BraveNotificationPlatformBridge(long nativeNotificationPlatformBridge) {
+    @CalledByNative
+    private static BraveNotificationPlatformBridge create(long nativeNotificationPlatformBridge) {
+        if (sInstance != null) {
+            throw new IllegalStateException(
+                "There must only be a single NotificationPlatformBridge.");
+        }
+
+        sInstance = new BraveNotificationPlatformBridge(nativeNotificationPlatformBridge);
+        return sInstance;
+    }
+
+    private BraveNotificationPlatformBridge(long nativeNotificationPlatformBridge) {
         super(nativeNotificationPlatformBridge);
     }
 
