@@ -364,6 +364,7 @@ class BraveRewardsBrowserTest
       *response = brave_test_resp::captcha_;
     } else if (URLMatches(url, RECONCILE_CONTRIBUTION, PREFIX_V2,
                           SERVER_TYPES::LEDGER)) {
+      first_url_ac_called_ = true;
       *response = brave_test_resp::contribution_;
     } else if (URLMatches(url, REGISTER_VIEWING, PREFIX_V2,
                           SERVER_TYPES::LEDGER)) {
@@ -1577,6 +1578,7 @@ class BraveRewardsBrowserTest
   double verified_wallet_ = false;
   const std::string external_wallet_address_ =
       "abe5f454-fedd-4ea9-9203-470ae7315bb3";
+  bool first_url_ac_called_ = false;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
@@ -2074,6 +2076,57 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
   // Check that summary table shows the appropriate contribution
   ASSERT_NE(ElementInnerText("[color=contribute]").find("-20.0BAT"),
       std::string::npos);
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContributeWhenACOff) {
+    // Observe the Rewards service
+  rewards_service_->AddObserver(this);
+
+  EnableRewards();
+
+  // Claim grant using panel
+  const bool use_panel = true;
+  ClaimGrant(use_panel);
+
+  // Visit verified publisher
+  const bool verified = true;
+  VisitPublisher("duckduckgo.com", verified);
+
+  // toggle auto contribute off
+  content::EvalJsResult toggleOffResult = EvalJs(contents(),
+    "let toggleClicked = false;"
+    "new Promise((resolve) => {"
+    "var count = 10;"
+    "var interval = setInterval(function() {"
+    "  if (count == 0) {"
+    "    clearInterval(interval);"
+    "    resolve(false);"
+    "  } else {"
+    "    count -= 1;"
+    "  }"
+    "  if (document.querySelector(\"[data-test-id2='autoContribution']\")) {"
+    "    if (!toggleClicked) {"
+    "      toggleClicked = true;"
+    "      document.querySelector("
+    "          \"[data-test-id2='autoContribution']\").click();"
+    "    } else {"
+    "      clearInterval(interval);"
+    "      resolve(document.querySelector("
+    "          \"[data-test-id2='autoContribution']\")"
+    "        .getAttribute(\"data-toggled\") === 'false');"
+    "    }"
+    "  }"
+    "}, 500);});",
+    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+    content::ISOLATED_WORLD_ID_CONTENT_END);
+  ASSERT_TRUE(toggleOffResult.ExtractBool());
+
+  // Trigger contribution process
+  rewards_service()->StartMonthlyContributionForTest();
+  ASSERT_FALSE(first_url_ac_called_);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
