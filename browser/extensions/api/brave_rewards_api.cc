@@ -1084,5 +1084,24 @@ void BraveRewardsGetWalletExistsFunction::OnGetWalletExists(
   Respond(OneArgument(std::make_unique<base::Value>(exists)));
 }
 
+BraveRewardsGetAdsSupportedFunction::
+~BraveRewardsGetAdsSupportedFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetAdsSupportedFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  AdsService* ads_service_ =
+      AdsServiceFactory::GetForProfile(profile);
+
+  if (!ads_service_) {
+    return RespondNow(Error("Ads service is not initialized"));
+  }
+
+  const bool supported = ads_service_->IsSupportedRegion();
+  return RespondNow(
+      OneArgument(std::make_unique<base::Value>(supported)));
+}
+
 }  // namespace api
 }  // namespace extensions

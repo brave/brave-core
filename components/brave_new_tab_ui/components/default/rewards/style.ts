@@ -5,6 +5,10 @@
 import styled from 'styled-components'
 import palette from 'brave-ui/theme/colors'
 
+interface StyleProps {
+  isLast?: boolean
+}
+
 export const WidgetWrapper = styled<{}, 'div'>('div')`
   color: white;
   padding: 10px 15px;
@@ -93,16 +97,17 @@ export const TurnOnButton = styled<{}, 'button'>('button')`
 
 export const TurnOnAdsButton = styled(TurnOnButton)`
   width: 100%;
-  margin-bottom: 5px;
+  margin-top: 8px;
   display: block;
 `
 
-export const AmountItem = styled<{}, 'div'>('div')`
-  margin-top: 10px;
+export const AmountItem = styled<StyleProps, 'div'>('div')`
+  margin-top: ${p => p.isLast ? 20 : 10}px;
+  margin-bottom: ${p => p.isLast ? -10 : 0}px;
 `
 
 export const AmountInformation = styled<{}, 'div'>('div')`
-  margin-bottom: 5px;
+  margin-top: 5px;
 `
 
 export const Amount = styled<{}, 'span'>('span')`
@@ -118,6 +123,7 @@ export const ConvertedAmount = styled<{}, 'span'>('span')`
 export const AmountDescription = styled<{}, 'span'>('span')`
   font-size: 14px;
   color: #fff;
+  margin-bottom: 5px;
 `
 
 export const NotificationWrapper = styled(WidgetWrapper)`
@@ -150,4 +156,11 @@ export const CloseIcon = styled<{}, 'div'>('div')`
   height: 20px;
   float: right;
   cursor: pointer;
+`
+
+export const UnsupportedMessage = styled<{}, 'div'>('div')`
+  color: rgba(255, 255, 255, 0.70);
+  font-size: 14px;
+  max-width: 235px;
+  margin-top: 8px;
 `
