@@ -101,6 +101,7 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (enabledMain: boolean) => void) => void
   }
   const getAdsEnabled: (callback: (enabled: boolean) => void) => {}
+  const getAdsSupported: (callback: (supported: boolean) => void) => {}
   const getBalanceReports: (callback: (reports: Record<string, Rewards.Report>) => void) => {}
   const getAdsEstimatedEarnings: (callback: (amount: number) => void) => {}
   const getRewardsMainEnabled: (callback: (enabled: boolean) => void) => {}
