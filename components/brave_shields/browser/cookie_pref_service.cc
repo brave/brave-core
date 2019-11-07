@@ -57,10 +57,28 @@ void SetCookiePrefDefaults(HostContentSettingsMap* map, PrefService* prefs) {
 
 }  // namespace
 
+CookiePrefService::Lock::Lock() : locked_(false) {}
+
+CookiePrefService::Lock::~Lock() {}
+
+bool CookiePrefService::Lock::Try() {
+  if (locked_)
+    return false;
+
+  locked_ = true;
+  return locked_;
+}
+
+void CookiePrefService::Lock::Release() {
+  DCHECK(locked_);
+  locked_ = false;
+}
+
 CookiePrefService::CookiePrefService(
     HostContentSettingsMap* host_content_settings_map,
     PrefService* prefs)
-    : host_content_settings_map_(host_content_settings_map), prefs_(prefs) {
+    : host_content_settings_map_(host_content_settings_map),
+      prefs_(prefs) {
   SetCookiePrefDefaults(host_content_settings_map, prefs);
   host_content_settings_map_->AddObserver(this);
   pref_change_registrar_.Init(prefs_);
@@ -79,7 +97,10 @@ CookiePrefService::~CookiePrefService() {
 }
 
 void CookiePrefService::OnPreferenceChanged() {
-  SetCookieControlTypeFromPrefs(host_content_settings_map_, prefs_);
+  if (lock_.Try()) {
+    SetCookieControlTypeFromPrefs(host_content_settings_map_, prefs_);
+    lock_.Release();
+  }
 }
 
 void CookiePrefService::OnContentSettingChanged(
@@ -91,7 +112,10 @@ void CookiePrefService::OnContentSettingChanged(
       secondary_pattern == ContentSettingsPattern::Wildcard() &&
       content_type == CONTENT_SETTINGS_TYPE_PLUGINS &&
       resource_identifier == brave_shields::kCookies) {
-    SetCookiePrefDefaults(host_content_settings_map_, prefs_);
+     if (lock_.Try()) {
+       SetCookiePrefDefaults(host_content_settings_map_, prefs_);
+       lock_.Release();
+     }
   }
 }
 
