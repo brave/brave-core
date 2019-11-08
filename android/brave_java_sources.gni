@@ -3,6 +3,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/browser/android/java_sources.gni")
+
 brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveBadge.java",
@@ -69,5 +72,8 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BookmarksButton.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/util/PackageUtils.java",
-  "../../brave/android/java/org/chromium/chrome/browser/util/SafetyNetCheck.java",
 ]
+
+if (brave_rewards_enabled) {
+  brave_java_sources += brave_rewards_java_sources
+}

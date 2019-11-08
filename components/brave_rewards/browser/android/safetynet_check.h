@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_SAFETYNET_CHECK_H_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_SAFETYNET_CHECK_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_ANDROID_SAFETYNET_CHECK_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_ANDROID_SAFETYNET_CHECK_H_
 
 #include <jni.h>
 #include <memory>
@@ -54,4 +54,4 @@ class SafetyNetCheckRunner {
 
 }  // namespace safetynet_check
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_SAFETYNET_CHECK_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_ANDROID_SAFETYNET_CHECK_H_

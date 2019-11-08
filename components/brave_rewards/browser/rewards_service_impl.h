@@ -38,7 +38,7 @@
 #endif
 
 #if defined(OS_ANDROID) && defined(BRAVE_CHROMIUM_BUILD)
-#include "brave/components/brave_rewards/browser/safetynet_check.h"
+#include "brave/components/brave_rewards/browser/android/safetynet_check.h"
 #elif defined(OS_ANDROID)
 #include "chrome/browser/android/brave/safetynet_check.h"
 #endif
