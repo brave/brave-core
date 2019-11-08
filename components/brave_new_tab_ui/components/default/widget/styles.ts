@@ -13,7 +13,8 @@ interface WidgetContainerProps {
 export const StyledWidgetContainer = styled<WidgetContainerProps, 'div'>('div')`
   display: ${p => p.showWidget ? 'flex' : 'none'};
   align-items: center;
-  flex-direction: ${p => p.menuPosition === 'right' ? 'row' : 'row-reverse'}
+  flex-direction: ${p => p.menuPosition === 'right' ? 'row' : 'row-reverse'};
+  height: fit-content;
 
   @media screen and (max-width: 1150px) {
     flex-direction: row;
