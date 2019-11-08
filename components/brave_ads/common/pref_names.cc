@@ -42,7 +42,7 @@ const char kSupportedRegionsLastSchemaVersion[] =
 const char kSupportedRegionsSchemaVersion[] =
     "brave.brave_ads.supported_regions_schema_version_number";
 
-const int kSupportedRegionsSchemaVersionNumber = 4;
+const int kSupportedRegionsSchemaVersionNumber = 5;
 
 // Stores the preferences version number
 const char kVersion[] = "brave.brave_ads.prefs.version";
