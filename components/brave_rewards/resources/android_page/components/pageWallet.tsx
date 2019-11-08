@@ -112,7 +112,7 @@ class PageWallet extends React.Component<Props, State> {
       ui,
       pendingContributionTotal
     } = this.props.rewardsData
-    const { emptyWallet } = ui
+    const { emptyWallet, onlyAnonWallet } = ui
     const { total } = balance
     const pendingTotal = parseFloat((pendingContributionTotal || 0).toFixed(1))
 
@@ -133,10 +133,11 @@ class PageWallet extends React.Component<Props, State> {
               actions={[]}
               compact={true}
               isMobile={true}
-              showCopy={true}
+              showCopy={false}
               showSecActions={false}
               grants={this.getGrants()}
               alert={this.walletAlerts()}
+              onlyAnonWallet={onlyAnonWallet}
             >
               {
                 enabledMain

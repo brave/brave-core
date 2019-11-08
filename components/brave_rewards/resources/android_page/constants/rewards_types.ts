@@ -53,5 +53,7 @@ export const enum types {
   GET_EXCLUDED_SITES = '@@rewards/GET_EXCLUDED_SITES',
   ON_EXCLUDED_LIST = '@@rewards/ON_EXCLUDED_LIST',
   GET_BALANCE = '@@rewards/GET_BALANCE',
-  ON_BALANCE = '@@rewards/ON_BALANCE'
+  ON_BALANCE = '@@rewards/ON_BALANCE',
+  ONLY_ANON_WALLET = '@@rewards/ONLY_ANON_WALLET',
+  ON_ONLY_ANON_WALLET = '@@rewards/ON_ONLY_ANON_WALLET'
 }

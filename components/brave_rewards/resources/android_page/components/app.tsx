@@ -41,6 +41,8 @@ export class App extends React.Component<Props, State> {
         this.props.actions.onAdsSettingSave('adsEnabledMigrated', adsEnabled)
       }
     }
+
+    this.actions.onlyAnonWallet()
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {

@@ -83,6 +83,7 @@ class AdsBox extends React.Component<Props, {}> {
       balance,
       safetyNetFailed
     } = this.props.rewardsData
+    const { onlyAnonWallet } = this.props.rewardsData.ui
 
     if (adsData) {
       adsEnabled = adsData.adsEnabled
@@ -121,13 +122,14 @@ class AdsBox extends React.Component<Props, {}> {
       <BoxMobile
         title={getLocale('adsTitle')}
         type={'ads'}
-        description={getLocale('adsDesc')}
+        description={getLocale(onlyAnonWallet ? 'adsDescPoints' : 'adsDesc')}
         settingsChild={this.adsSettings(adsEnabled && enabledMain)}
         {...boxPropsExtra}
       >
         <List title={<StyledListContent>{getLocale('adsCurrentEarnings')}</StyledListContent>}>
           <StyledTotalContent>
             <Tokens
+              onlyAnonWallet={onlyAnonWallet}
               value={estimatedPendingRewards}
               converted={utils.convertBalance(estimatedPendingRewards, balance.rates)}
             />
@@ -143,6 +145,7 @@ class AdsBox extends React.Component<Props, {}> {
         <List title={<StyledListContent>{getLocale('adsNotificationsReceived')}</StyledListContent>}>
           <StyledListContent>
             <Tokens
+              onlyAnonWallet={onlyAnonWallet}
               value={adNotificationsReceivedThisMonth.toString()}
               hideText={true}
             />

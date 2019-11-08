@@ -177,7 +177,7 @@ class TipBox extends React.Component<Props, State> {
       ui,
       tipsList
     } = this.props.rewardsData
-    const { walletImported } = ui
+    const { walletImported, onlyAnonWallet } = ui
     const showDisabled = firstLoad !== false || !enabledMain
     const tipRows = this.getTipsRows()
     const topRows = tipRows.slice(0, 5)
@@ -207,13 +207,14 @@ class TipBox extends React.Component<Props, State> {
           : null
         }
         <List title={getLocale('donationTotalDonations')}>
-          <Tokens value={total} converted={converted} />
+          <Tokens onlyAnonWallet={onlyAnonWallet} value={total} converted={converted} />
         </List>
         <TableDonation
           rows={topRows}
           allItems={allSites}
           numItems={numRows}
           headerColor={true}
+          onlyAnonWallet={onlyAnonWallet}
           onShowAll={this.onModalToggle}
         >
           {getLocale('donationVisitSome')}

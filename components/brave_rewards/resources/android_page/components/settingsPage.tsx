@@ -125,7 +125,7 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   getGrantClaims = () => {
-    const { grants } = this.props.rewardsData
+    const { grants, ui } = this.props.rewardsData
 
     if (!grants) {
       return null
@@ -140,7 +140,7 @@ class SettingsPage extends React.Component<Props, State> {
 
           return (
             <div key={`grant-${index}`}>
-              <Grant grant={grant} />
+              <Grant grant={grant} onlyAnonWallet={ui.onlyAnonWallet} />
             </div>
           )
         })}
@@ -154,6 +154,7 @@ class SettingsPage extends React.Component<Props, State> {
 
   render () {
     const { enabledMain, balance } = this.props.rewardsData
+    const { onlyAnonWallet } = this.props.rewardsData.ui
     const { total } = balance
     const convertedBalance = utils.convertBalance((total || 0).toString(), balance.rates)
 
@@ -187,6 +188,7 @@ class SettingsPage extends React.Component<Props, State> {
           onClick={this.onToggleWallet}
           balance={total.toFixed(1).toString()}
           id={'mobile-wallet'}
+          onlyAnonWallet={onlyAnonWallet}
           converted={`${convertedBalance} USD`}
         />
         <AdsBox />
