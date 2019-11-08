@@ -192,7 +192,7 @@
 <translation id="3285322247471302225">New &amp;Tab</translation>
 <translation id="8879284080359814990">&amp;Show As Tab</translation>
 <translation id="176587472219019965">&amp;New Window</translation>
-<translation id="7973394300052703468">New &amp;private window</translation>
+<translation id="7973394300052703468">New &amp;Private Window</translation>
 <translation id="5157635116769074044">Pin this Page to Start Screen...</translation>
 <translation id="5830720307094128296">Save Page &amp;As...</translation>
 <translation id="4672657274720418656">Distill Page</translation>
@@ -1944,7 +1944,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="881799181680267069">Hide Others</translation>
 <translation id="4708849949179781599">Quit <ph name="PRODUCT_NAME"/></translation>
 <translation id="8795916974678578410">New Window</translation>
-<translation id="1676595396635191120">New private window</translation>
+<translation id="1676595396635191120">New Private Window</translation>
 <translation id="406070391919917862">Background Apps</translation>
 <translation id="3335947283844343239">Re-open Closed Tab</translation>
 <translation id="8214489666383623925">Open File...</translation>
