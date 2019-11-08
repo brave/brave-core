@@ -56,6 +56,7 @@ export interface Props {
   id?: string
   optInAction: () => void
   creating?: boolean
+  onlyAnonWallet?: boolean
   onReTry?: () => void
   onTOSClick?: () => void
   onPrivacyClick?: () => void
@@ -212,7 +213,8 @@ class WelcomePage extends React.PureComponent<Props, {}> {
     )
   }
 
-  get infoCards (): CardProps[] {
+  infoCards = (): CardProps[] => {
+    const { onlyAnonWallet } = this.props
     return [
       {
         title: getLocale('turnOnRewardsTitle'),
@@ -221,7 +223,7 @@ class WelcomePage extends React.PureComponent<Props, {}> {
       },
       {
         title: getLocale('braveAdsTitle'),
-        description: getLocale('braveAdsDesc'),
+        description: onlyAnonWallet ? getLocale('braveAdsDescPoints') : getLocale('braveAdsDesc'),
         icon: <AdsMegaphoneIcon />
       },
       {
@@ -265,7 +267,7 @@ class WelcomePage extends React.PureComponent<Props, {}> {
             <StyledInfoContent>
               <InfoCard
                 id='rewards-info'
-                cards={this.infoCards}
+                cards={this.infoCards()}
               />
             </StyledInfoContent>
             <StyledTakeActionContent>
