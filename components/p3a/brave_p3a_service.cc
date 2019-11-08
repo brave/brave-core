@@ -51,11 +51,13 @@ constexpr uint64_t kDefaultUploadIntervalSeconds = 60 * 60;  // 1 hour.
 constexpr const char* kCollectedHistograms[] = {
     "Brave.P3A.SentAnswersCount",
     "Brave.Sync.Status",
-    "DefaultBrowser.State",
+    // Deprecated:
+    // "DefaultBrowser.State",
     "Brave.Importer.ImporterSource",
     "Brave.Shields.UsageStatus",
     // Do not gather detailed info regarding TOR usage for now.
     // "Brave.Core.LastTimeTorUsed",
+    "Brave.Core.IsDefault",
     "Brave.Core.TorEverUsed",
     "Brave.Core.LastTimeIncognitoUsed",
     "Brave.Core.NumberOfExtensions",
