@@ -29,6 +29,7 @@ interface State {
 
 interface Props extends Rewards.ComponentProps {
   grant: Rewards.Grant
+  onlyAnonWallet?: boolean
 }
 
 type GrantWrapperContentProps = {
@@ -114,6 +115,7 @@ class Grant extends React.Component<Props, State> {
 
   render () {
     const { grant } = this.props
+    const { onlyAnonWallet } = this.props
 
     if (!grant) {
       return null
@@ -163,6 +165,7 @@ class Grant extends React.Component<Props, State> {
                 onClose={this.onSuccess}
                 amount={tokens}
                 date={date}
+                onlyAnonWallet={onlyAnonWallet}
                 {...getGrantCompleteContentProps(type)}
               />
             </GrantWrapper>
