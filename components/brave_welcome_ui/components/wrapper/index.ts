@@ -73,6 +73,9 @@ export const Content = styled<ContentProps, 'section'>('section')`
   transform: translateX(${p => p.isPrevious ? '-' + p.screenPosition : p.screenPosition}) scale(0.8);
   transition: opacity 600ms, transform 600ms ease-in-out;
   position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: ${p => p.zIndex};
   display: flex;
   flex-direction: column;
@@ -81,6 +84,7 @@ export const Content = styled<ContentProps, 'section'>('section')`
   flex: 1;
   max-width: 580px;
   padding: 24px;
+  margin: auto;
 
   /*
     prevents focus on all content's child elements if the parent is not active.
