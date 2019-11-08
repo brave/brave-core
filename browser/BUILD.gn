@@ -205,13 +205,19 @@ source_set("browser_process") {
         "//brave/vendor/bat-native-ledger",
       ]
     }
+
     if (brave_ads_enabled) {
       sources += [
         "brave_ads/android/brave_ads_native_helper.cc",
       ]
+
+      deps += [
+        "brave_ads/android:jni_headers",
+      ]
     }
 
     deps += [
+      "//brave/build/android:jni_headers",
       "//chrome/android:jni_headers",
     ]
   }

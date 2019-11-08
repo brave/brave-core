@@ -22,8 +22,8 @@ class LocaleHelperAndroid : public LocaleHelper {
       const std::string& locale);
 
  private:
-  LocaleHelperAndroid();
-  ~LocaleHelperAndroid() override;
+  LocaleHelperAndroid() = default;
+  ~LocaleHelperAndroid() override = default;
 
   // LocaleHelper impl
   const std::string GetLocale() const override;

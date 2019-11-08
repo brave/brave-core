@@ -61,6 +61,9 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterUint64Pref(prefs::kStateServerPublisherListStamp, 0ull);
   registry->RegisterStringPref(prefs::kStateUpholdAnonAddress, "");
   registry->RegisterStringPref(prefs::kRewardsBadgeText, "1");
+#if defined(OS_ANDROID)
+  registry->RegisterBooleanPref(prefs::kUseRewardsStagingServer, false);
+#endif
 }
 
 }  // namespace brave_rewards

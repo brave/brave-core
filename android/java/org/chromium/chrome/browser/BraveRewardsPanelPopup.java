@@ -53,21 +53,18 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.SysUtils;
 import org.chromium.base.task.AsyncTask;
-// TODO
-// import org.chromium.chrome.browser.BraveAdsNativeHelper;
+import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
-// TODO
-// import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
+import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelImpl;
 import org.chromium.chrome.browser.tabmodel.TabLaunchType;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorImpl;
-// TODO
-// import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.R;
 import org.chromium.content_public.browser.LoadUrlParams;
 import org.chromium.base.ContextUtils;
@@ -988,8 +985,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     public void OnWalletInitialized(int error_code) {
         if (BraveRewardsNativeWorker.WALLET_CREATED == error_code) {
             walletInitialized = true;
-            // TODO
-            // BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
+            BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
             ShowWebSiteView(false);
         } else if (BraveRewardsNativeWorker.SAFETYNET_ATTESTATION_FAILED == error_code) {
             dismiss();
