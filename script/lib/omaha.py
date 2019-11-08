@@ -92,6 +92,14 @@ def get_app_info(appinfo, args):
     chrome_major = get_chrome_version().split('.')[0]
     chrome_minor = get_chrome_version().split('.')[1]
 
+    # The Sparkle CFBundleVersion is no longer tied to the Chrome version,
+    # instead we derive it from the package.json['version'] string. The 2nd
+    # digit is adjusted, and then we utilize that combined with the 3rd digit as
+    # the CFBundleVersion. (This is also used in build/mac/tweak_info_plist.py)
+    version_values = get_upload_version().split('.')
+    if int(version_values[0]) >= 1:
+        adjusted_minor = int(version_values[1]) + (100 * int(version_values[0]))
+
     appinfo['appguid'] = get_appguid(release_channel(), appinfo['platform'])
     appinfo['channel'] = release_channel()
     appinfo['chrome_version'] = get_chrome_version()
@@ -104,8 +112,8 @@ def get_app_info(appinfo, args):
         appinfo['version'] = chrome_major + '.' + get_upload_version()
     if appinfo['platform'] in 'darwin':
         appinfo['short_version'] = chrome_major + '.' + get_upload_version()
-        appinfo['version'] = appinfo['short_version'].split('.')[2] + \
-            '.' + appinfo['short_version'].split('.')[3]
+        appinfo['version'] = str(adjusted_minor) + \
+            '.' + version_values[2]
     appinfo['release_notes'] = 'Brave Browser version: {}\n\n<a href="{}">Brave Changelog</a>'\
         .format(appinfo['version'] if appinfo['platform'] in 'win32' else appinfo['short_version'],
                 changelog_url)
