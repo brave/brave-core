@@ -20,7 +20,11 @@ declare namespace Rewards {
     GRANT_NOT_FOUND = 13
   }
 
+  export type AddressesType = 'BTC' | 'ETH' | 'BAT' | 'LTC'
+  export type Address = { address: string, qr: string | null }
+
   export interface State {
+    addresses?: Record<AddressesType, Address>
     adsData: AdsData
     adsHistory: AdsHistoryData[]
     autoContributeList: Publisher[]
@@ -55,6 +59,7 @@ declare namespace Rewards {
     recurringList: Publisher[]
     recurringLoad: boolean
     reports: Record<string, Report>
+    safetyNetFailed?: boolean
     tipsList: Publisher[]
     tipsLoad: boolean
     ui: {

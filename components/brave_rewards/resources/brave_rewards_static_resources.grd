@@ -9,6 +9,7 @@
   <release seq="1">
     <includes>
       <!-- WebUI Brave Rewards Page resources -->
+      <include name="IDR_BRAVE_REWARDS_ANDROID_PAGE_HTML" file="android_page/brave_rewards_page.html" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_PAGE_HTML" file="page/brave_rewards_page.html" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_WALLET_BG" file="page/img/wallet_bg.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_CAPTCHA_BAT" file="page/img/captcha_bat.png" type="BINDATA" />

@@ -18,13 +18,15 @@ export interface Props {
   id?: string
   balance: string
   converted?: string
+  onlyAnonWallet?: boolean
   onClick: () => void
 }
 
 export default class WalletInfoHeader extends React.PureComponent<Props, {}> {
 
   render () {
-    const { id, balance, converted, onClick } = this.props
+    const { id, balance, converted, onlyAnonWallet, onClick } = this.props
+    const batFormatString = onlyAnonWallet ? 'bap' : 'bat'
 
     return (
       <StyledWrapper
@@ -35,7 +37,7 @@ export default class WalletInfoHeader extends React.PureComponent<Props, {}> {
           <StyledTitle>{getLocale('yourWallet')}</StyledTitle>
             <StyledBalance>
               <StyledBalanceTokens>
-                {balance} <StyledBalanceCurrency>BAT</StyledBalanceCurrency>
+                {balance} <StyledBalanceCurrency>{getLocale(batFormatString)}</StyledBalanceCurrency>
               </StyledBalanceTokens>
               {
                 converted

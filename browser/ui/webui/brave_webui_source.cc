@@ -212,7 +212,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsWidgetEnableTitle", IDS_REWARDS_WIDGET_ENABLE_TITLE },
         { "rewardsWidgetReEnableSubTitle", IDS_REWARDS_WIDGET_REENABLE_SUBTITLE },        // NOLINT
         { "rewardsWidgetEnableSubTitle", IDS_REWARDS_WIDGET_ENABLE_SUBTITLE },            // NOLINT
-        { "rewardsWidgetAdsNotSupported", IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED },    // NOLINT
+        { "rewardsWidgetAdsNotSupported", IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_REGION },    // NOLINT
         { "rewardsWidgetNotificationTitle", IDS_REWARDS_WIDGET_NOTIFICATION_TITLE },      // NOLINT
         { "rewardsWidgetNotificationTextAds", IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_ADS }, // NOLINT
         { "rewardsWidgetNotificationTextUGP", IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_UGP }  // NOLINT
@@ -257,7 +257,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "adsDisabledTextOne",  IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_ONE },                // NOLINT
         { "adsDisabledTextTwo",  IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_TWO },                // NOLINT
         { "adsNotificationsReceived",  IDS_BRAVE_REWARDS_LOCAL_ADS_NOTIFICATIONS_RECEIVED },     // NOLINT
-        { "adsNotSupported", IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED },
+        { "adsNotSupportedRegion", IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_REGION },           // NOLINT
         { "adsNotSupportedDevice", IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_DEVICE },           // NOLINT
         { "adsPaymentDate",  IDS_BRAVE_REWARDS_LOCAL_ADS_PAYMENT_DATE },
         { "adsPagesViewed",  IDS_BRAVE_REWARDS_LOCAL_ADS_PAGES_VIEWED },
@@ -551,6 +551,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "turnOnRewardsTitle", IDS_BRAVE_UI_TURN_ON_REWARDS_TITLE },
         { "type", IDS_BRAVE_UI_TYPE },
         { "verifiedPublisher", IDS_BRAVE_UI_VERIFIED_PUBLISHER },
+        { "viewDetails" , IDS_BRAVE_UI_VIEW_DETAILS },
         { "viewMonthly", IDS_BRAVE_UI_VIEW_MONTHLY },
         { "walletActivity", IDS_BRAVE_UI_WALLET_ACTIVITY },
         { "walletAddress", IDS_BRAVE_UI_WALLET_ADDRESS },

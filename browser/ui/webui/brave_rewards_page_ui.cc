@@ -1675,17 +1675,22 @@ void RewardsDOMHandler::OnlyAnonWallet(const base::ListValue* args) {
 
 }  // namespace
 
-BraveRewardsPageUI::BraveRewardsPageUI(
-    content::WebUI* web_ui,
-    const std::string& name)
-    : BasicUI(web_ui, name,
+BraveRewardsPageUI::BraveRewardsPageUI(content::WebUI* web_ui,
+                                       const std::string& name)
+    : BasicUI(web_ui,
+              name,
 #if defined(BRAVE_CHROMIUM_BUILD)
-    kBraveRewardsPageGenerated,
-    kBraveRewardsPageGeneratedSize,
+              kBraveRewardsPageGenerated,
+              kBraveRewardsPageGeneratedSize,
 #else
-    kBraveRewardsSettingsGenerated, kBraveRewardsSettingsGeneratedSize,
+              kBraveRewardsSettingsGenerated,
+              kBraveRewardsSettingsGeneratedSize,
 #endif
-    IDR_BRAVE_REWARDS_PAGE_HTML) {
+#if defined(OS_ANDROID)
+              IDR_BRAVE_REWARDS_ANDROID_PAGE_HTML) {
+#else
+              IDR_BRAVE_REWARDS_PAGE_HTML) {
+#endif
   auto handler_owner = std::make_unique<RewardsDOMHandler>();
   RewardsDOMHandler * handler = handler_owner.get();
   web_ui->AddMessageHandler(std::move(handler_owner));

@@ -50,7 +50,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
               <span
                 className="sc-kAzzGY jAiQRn"
               >
-                BAT
+                MISSING: bat
               </span>
             </span>
             <span
@@ -92,7 +92,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
               <span
                 className="sc-kAzzGY jAiQRn"
               >
-                BAT
+                MISSING: bat
               </span>
             </span>
             <span
@@ -134,7 +134,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
               <span
                 className="sc-kAzzGY jAiQRn"
               >
-                BAT
+                MISSING: bat
               </span>
             </span>
             <span
@@ -176,7 +176,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
               <span
                 className="sc-kAzzGY jAiQRn"
               >
-                BAT
+                MISSING: bat
               </span>
             </span>
             <span
@@ -218,7 +218,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
               <span
                 className="sc-kAzzGY jAiQRn"
               >
-                BAT
+                MISSING: bat
               </span>
             </span>
             <span

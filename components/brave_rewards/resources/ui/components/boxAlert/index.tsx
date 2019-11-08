@@ -130,7 +130,7 @@ export default class BoxAlert extends React.PureComponent<Props, State> {
                 </StyledMonthlyTips>
               </>
             : <StyledMessage>
-                {getLocale('adsNotSupported')}
+                {getLocale('adsNotSupportedRegion')}
               </StyledMessage>
           }
         </StyledInfo>

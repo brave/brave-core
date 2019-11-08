@@ -28,7 +28,7 @@ exports[`ListToken tests basic tests matches the snapshot 1`] = `
         <span
           className="sc-gzVnrw cbUCCn"
         >
-          BAT
+          MISSING: bat
         </span>
       </span>
     </span>
