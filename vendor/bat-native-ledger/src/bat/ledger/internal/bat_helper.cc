@@ -194,22 +194,14 @@ bool TRANSACTION_ST::loadFromJson(const std::string & json) {
   if (!error) {
     error = !(d.HasMember("viewingId") && d["viewingId"].IsString() &&
       d.HasMember("surveyorId") && d["surveyorId"].IsString() &&
-      d.HasMember("contribution_fiat_amount") &&
-      d["contribution_fiat_amount"].IsString() &&
-      d.HasMember("contribution_fiat_currency") &&
-      d["contribution_fiat_currency"].IsString() &&
       d.HasMember("rates") && d["rates"].IsObject() &&
       d["rates"].HasMember("ETH") &&
       d["rates"].HasMember("LTC") &&
       d["rates"].HasMember("BTC") &&
       d["rates"].HasMember("USD") &&
       d["rates"].HasMember("EUR") &&
-      d.HasMember("contribution_altcurrency") &&
-      d["contribution_altcurrency"].IsString() &&
       d.HasMember("contribution_probi") && d["contribution_probi"].IsString() &&
-      d.HasMember("contribution_fee") && d["contribution_fee"].IsString() &&
       d.HasMember("submissionStamp") && d["submissionStamp"].IsString() &&
-      d.HasMember("submissionId") && d["submissionId"].IsString() &&
       d.HasMember("anonizeViewingId") && d["anonizeViewingId"].IsString() &&
       d.HasMember("registrarVK") && d["registrarVK"].IsString() &&
       d.HasMember("masterUserToken") && d["masterUserToken"].IsString() &&
