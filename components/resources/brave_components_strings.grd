@@ -227,6 +227,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_5" desc="">5 ads per hour</message>
       <message name="IDS_BRAVE_UI_BAT_REWARDS_TEXT" desc="">BAT</message>
       <message name="IDS_BRAVE_UI_BAP_REWARDS_TEXT" desc="">BAP</message>
+      <message name="IDS_BRAVE_UI_BAT_POINTS_TEXT" desc="">BAT Points</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DEVICE_OFFLINE" desc="">The device is offline, please try again later.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_MONTHLY" desc="">Monthly Payment</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_CONTR_NEXT_DATE" desc="">Next contribution date</message>
