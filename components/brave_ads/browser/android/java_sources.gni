@@ -1,0 +1,7 @@
+brave_ads_java_sources = [
+  "../../brave/components/brave_ads/browser/android/java/org/chromium/chrome/browser/BraveAdsNativeHelper.java",
+  "../../brave/components/brave_ads/browser/android/java/org/chromium/chrome/browser/dialogs/BraveAdsSignupDialog.java",
+  "../../brave/components/brave_ads/browser/android/java/org/chromium/chrome/browser/notifications/BraveAds.java",
+  "../../brave/components/brave_ads/browser/android/java/org/chromium/chrome/browser/notifications/BraveAdsNotificationBuilder.java",
+  "../../brave/components/brave_ads/browser/android/java/org/chromium/chrome/browser/onboarding/BraveAdsOnboardingFragment.java",
+]

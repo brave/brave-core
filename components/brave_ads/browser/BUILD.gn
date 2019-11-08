@@ -97,6 +97,7 @@ source_set("browser") {
 
     if (is_android) {
       deps += [
+        "android:jni_headers",
         "//brave/build/android:jni_headers",
         "//chrome/android:jni_headers",
       ]
