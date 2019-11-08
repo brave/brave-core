@@ -108,6 +108,26 @@ def main():
 
     remove_files_older_x_days(dist_dir, delete_age, act=True)
 
+    # If release channel, unlock GPG signing key which has a cache timeout of 30
+    # minutes set in the gpg-agent.conf
+    if channel in ['release']:
+        cmd = ['gpg2', '--batch', '--pinentry-mode', 'loopback', '--passphrase',
+               gpg_passphrase, '--sign']
+        log_cmd = ['gpg2', '--batch', '--pinentry-mode', 'loopback', '--passphrase',
+               'NOTAREALPASSWORD', '--sign']
+        logging.info("Running command: \"{}\"".format(log_cmd))
+        try:
+            p1 = subprocess.Popen(['echo'], stdout=subprocess.PIPE)
+            p2 = subprocess.Popen(cmd, stdin=p1.stdout, stdout=subprocess.PIPE)
+            p1.stdout.close()
+            (stdoutdata,stderrdata) = p2.communicate()
+            if stderrdata is not None:
+                logging.error("subprocess.Popen.communicate() error: {}".format(stderrdata))
+            logging.info("gpg2 unlock signing key successful!")
+        except Exception as e:
+            logging.error("Error running command: \"{}\"".format(log_cmd))
+            exit(1)
+
     # Now upload to aptly and rpm repos
 
     for item in ['upload_to_aptly', 'upload_to_rpm_repo']:
