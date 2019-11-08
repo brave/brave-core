@@ -430,6 +430,16 @@ class BraveRewardsGetWalletExistsFunction
   void OnGetWalletExists(const bool exists);
 };
 
+class BraveRewardsGetAdsSupportedFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getAdsSupported", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetAdsSupportedFunction() override;
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 
