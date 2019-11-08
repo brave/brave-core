@@ -455,6 +455,7 @@ if (is_mac) {
       "--brave_product_dir_name=" + brave_product_dir_name,
       "--brave_feed_url=" + brave_feed_url,
       "--brave_dsa_file=" + brave_dsa_file,
+      "--brave_version=" + brave_version,
     ]
 
     deps = [
