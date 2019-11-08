@@ -112,9 +112,7 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
             } else {
                 make.left.greaterThanOrEqualTo(self.searchEngineScrollView).priority(1000)
             }
-            make.right.lessThanOrEqualTo(self.searchEngineScrollView).priority(1000)
-            make.top.equalTo(self.searchEngineScrollView)
-            make.bottom.equalTo(self.searchEngineScrollView)
+            make.bottom.right.top.equalTo(self.searchEngineScrollView)
         }
 
         blur.snp.makeConstraints { make in
@@ -143,6 +141,7 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
         searchEngineScrollView.snp.remakeConstraints { make in
             make.left.right.equalTo(self.view)
             make.bottom.equalTo(self.view).offset(-keyboardHeight)
+            make.height.equalTo(SearchViewControllerUX.EngineButtonHeight)
         }
     }
     
@@ -289,7 +288,6 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
             searchEngineScrollViewContent.addSubview(engineButton)
             engineButton.snp.makeConstraints { make in
                 make.width.equalTo(SearchViewControllerUX.EngineButtonWidth)
-                make.height.equalTo(SearchViewControllerUX.EngineButtonHeight)
                 make.left.equalTo(leftEdge)
                 make.top.equalTo(self.searchEngineScrollViewContent)
                 make.bottom.equalTo(self.searchEngineScrollViewContent)
