@@ -111,6 +111,14 @@ def main():
     # If release channel, unlock GPG signing key which has a cache timeout of 30
     # minutes set in the gpg-agent.conf
     if channel in ['release']:
+        gpgconf_cmd = ['gpgconf', '--kill', 'gpg-agent']
+        logging.info("Running command: \"{}\"".format(gpgconf_cmd))
+        try:
+            subprocess.check_output(gpgconf_cmd, shell=True)
+            logging.info("\"gpgconf --kill gpg-agent\" succeeded")
+        except subprocess.CalledProcessError as cpe:
+            loggint.error("Error: {}".format(cpe))
+            exit(1)
         cmd = ['gpg2', '--batch', '--pinentry-mode', 'loopback', '--passphrase',
                gpg_passphrase, '--sign']
         log_cmd = ['gpg2', '--batch', '--pinentry-mode', 'loopback', '--passphrase',
