@@ -120,6 +120,14 @@ const publishersReducer: Reducer<RewardsTip.State> = (state: RewardsTip.State = 
       state.externalWallet = payload.wallet
       break
     }
+    case types.ONLY_ANON_WALLET: {
+      chrome.send('brave_rewards_tip.onlyAnonWallet')
+      break
+    }
+    case types.ON_ONLY_ANON_WALLET: {
+      state.onlyAnonWallet = !!action.payload.only
+      break
+    }
   }
 
   return state

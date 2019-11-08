@@ -17,11 +17,12 @@ export interface Props {
   onClose: () => void
   onRemoveAll?: () => void
   id?: string
+  onlyAnonWallet?: boolean
 }
 
 export default class ModalPending extends React.PureComponent<Props, {}> {
   render () {
-    const { id, onClose, rows, onRemoveAll } = this.props
+    const { id, onClose, rows, onRemoveAll, onlyAnonWallet } = this.props
 
     return (
       <Modal id={id} onClose={onClose}>
@@ -39,6 +40,7 @@ export default class ModalPending extends React.PureComponent<Props, {}> {
           <TablePending
             id={'pendingContributionTable'}
             rows={rows}
+            onlyAnonWallet={onlyAnonWallet}
             children={getLocale('pendingContributionEmpty')}
           />
         </StyledWrapper>

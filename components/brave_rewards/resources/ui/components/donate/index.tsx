@@ -41,6 +41,7 @@ export interface Props {
   children?: React.ReactNode
   isMobile?: boolean
   addFundsLink?: string
+  onlyAnonWallet?: boolean
 }
 
 interface State {
@@ -103,9 +104,11 @@ export default class Donate extends React.PureComponent<Props, State> {
       currentAmount,
       donateType,
       isMobile,
-      addFundsLink
+      addFundsLink,
+      onlyAnonWallet
     } = this.props
     const disabled = parseInt(currentAmount, 10) === 0
+    const tokenString = onlyAnonWallet ? 'points' : 'tokens'
 
     return (
       <StyledWrapper donateType={donateType} disabled={disabled} isMobile={isMobile}>
@@ -122,6 +125,7 @@ export default class Donate extends React.PureComponent<Props, State> {
                       onSelect={this.onAmountChange}
                       converted={donation.converted}
                       type={donateType}
+                      onlyAnonWallet={onlyAnonWallet}
                     />
                   </div>
                 })
@@ -146,7 +150,7 @@ export default class Donate extends React.PureComponent<Props, State> {
                 <EmoteSadIcon />
               </StyledIconFace>
               <StyledFundsText>
-                {getLocale('notEnoughTokens')} <a href={addFundsLink} target={'_blank'}>{getLocale('addFunds')}</a>.
+                {getLocale('notEnoughTokens', { currency: getLocale(tokenString) })} <a href={addFundsLink} target={'_blank'}>{getLocale('addFunds')}</a>.
               </StyledFundsText>
             </StyledFunds>
             : null

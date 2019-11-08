@@ -28,6 +28,10 @@ export class App extends React.Component<Props, {}> {
     return this.props.actions
   }
 
+  componentDidMount () {
+    this.actions.onlyAnonWallet()
+  }
+
   getTipBanner = (url: string, publisher: RewardsTip.Publisher, mediaMetaData: RewardsTip.MediaMetaData | undefined) => {
     if (!mediaMetaData) {
       return (

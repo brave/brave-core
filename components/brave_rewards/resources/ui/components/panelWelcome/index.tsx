@@ -30,6 +30,7 @@ export interface Props {
   variant?: Variant
   creating?: boolean
   error?: boolean
+  onlyAnonWallet?: boolean
   moreLink?: () => void
   optInAction: () => void
   optInErrorAction: () => void
@@ -39,6 +40,8 @@ export interface Props {
 
 export default class PanelWelcome extends React.PureComponent<Props, {}> {
   get locale () {
+    const { onlyAnonWallet, variant } = this.props
+
     return {
       one: {
         header: 'welcomeHeaderOne',
@@ -50,11 +53,11 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
       two: {
         header: 'welcomeHeaderTwo',
         title: 'braveRewards',
-        desc: 'welcomeDescTwo',
+        desc: onlyAnonWallet ? 'welcomeDescPoints' : 'welcomeDescTwo',
         button: 'welcomeButtonTextTwo',
         footer: 'welcomeFooterTextTwo'
       }
-    }[this.props.variant || 'one']
+    }[variant || 'one']
   }
 
   render () {
