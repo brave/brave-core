@@ -88,22 +88,31 @@ void UpdateAdsP3AOnPreferenceChange(PrefService *prefs,
   if (pref == brave_ads::prefs::kEnabled) {
     if (prefs->GetBoolean(brave_ads::prefs::kEnabled)) {
       brave_rewards::RecordAdsState(AdsP3AState::kAdsEnabled);
-      prefs->SetBoolean(brave_ads::prefs::kBraveAdsWereDisabled, false);
+      prefs->SetBoolean(brave_ads::prefs::kAdsWereDisabled, false);
     } else {
       // Apparently, the pref was disabled.
       brave_rewards::RecordAdsState(
           rewards_enabled ? AdsP3AState::kAdsEnabledThenDisabledRewardsOn :
                             AdsP3AState::kAdsEnabledThenDisabledRewardsOff);
-      prefs->SetBoolean(brave_ads::prefs::kBraveAdsWereDisabled, true);
+      prefs->SetBoolean(brave_ads::prefs::kAdsWereDisabled, true);
     }
   } else if (pref == brave_rewards::prefs::kBraveRewardsEnabled) {
     // Rewards pref was changed
-    if (prefs->GetBoolean(brave_ads::prefs::kBraveAdsWereDisabled)) {
+    if (prefs->GetBoolean(brave_ads::prefs::kAdsWereDisabled)) {
       brave_rewards::RecordAdsState(
           rewards_enabled ? AdsP3AState::kAdsEnabledThenDisabledRewardsOn :
                             AdsP3AState::kAdsEnabledThenDisabledRewardsOff);
     }
     // Otherwise do nothing, the needed value should be already recorded.
+  }
+}
+
+void MaybeRecordInitialAdsP3AState(PrefService* prefs) {
+  if (not prefs->GetBoolean(brave_ads::prefs::kHasAdsP3AState)) {
+    const bool ads_state = prefs->GetBoolean(brave_ads::prefs::kEnabled);
+    RecordAdsState(ads_state ? AdsP3AState::kAdsEnabled
+                             : AdsP3AState::kAdsDisabled);
+    prefs->SetBoolean(brave_ads::prefs::kHasAdsP3AState, true);
   }
 }
 
