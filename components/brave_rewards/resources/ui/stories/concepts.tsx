@@ -124,6 +124,10 @@ storiesOf('Rewards/Concepts/Desktop', module)
       console.log('onDonate')
     }
 
+    const onTweet = () => {
+      console.log('onTweet')
+    }
+
     const onAmountSelection = (tokens: string) => {
       store.set({ currentAmount: tokens })
     }
@@ -151,6 +155,7 @@ storiesOf('Rewards/Concepts/Desktop', module)
           store.state.showBanner
             ? <div style={{ position: 'fixed', top: 0, left: 0, height: '100vh', width: '100%', backgroundColor: 'rgba(12,13,33,0.85)' }}>
               <SiteBanner
+                onTweet={onTweet}
                 type={select('Banner Type', {
                   'one-time': 'one-time',
                   monthly: 'monthly'
