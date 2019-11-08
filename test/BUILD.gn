@@ -544,11 +544,16 @@ test("brave_browser_tests") {
     "//chrome/browser/extensions/updater/extension_cache_fake.h",
     "//chrome/browser/ui/test/test_browser_dialog.cc",
     "//chrome/browser/ui/test/test_browser_dialog.h",
-    "//chrome/browser/ui/test/test_browser_dialog_mac.h",
-    "//chrome/browser/ui/test/test_browser_dialog_mac.mm",
     "//chrome/browser/ui/test/test_browser_ui.cc",
     "//chrome/browser/ui/test/test_browser_ui.h",
   ]
+
+  if (is_mac) {
+    sources += [
+      "//chrome/browser/ui/test/test_browser_dialog_mac.h",
+      "//chrome/browser/ui/test/test_browser_dialog_mac.mm",
+    ]
+  }
 
   deps = []
   if (bundle_widevine_cdm || enable_widevine_cdm_component) {
