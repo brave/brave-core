@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -90,4 +91,52 @@ TEST(BatHelperTest, HasSameDomainAndPath) {
   result = braveledger_bat_helper::HasSameDomainAndPath(
       url, url_portion, path);
   ASSERT_EQ(result, false);
+}
+
+TEST(BatHelperTest, TransactionSerialization) {
+  braveledger_bat_helper::TRANSACTION_ST transaction;
+  transaction.viewingId_ = "VIEWING_ID";
+  transaction.surveyorId_ = "SURVEYOR_ID";
+  transaction.contribution_probi_ = "CONTRIBUTION_PROBI";
+  transaction.submissionStamp_ = "SUBMISSION_STAMP";
+  transaction.anonizeViewingId_ = "ANONIZE_VIEWING_ID";
+  transaction.registrarVK_ = "REGISTRAR_VK";
+  transaction.masterUserToken_ = "MASTER_USER_TOKEN";
+  transaction.surveyorIds_ = { "SURVEYOR_ID" };
+  transaction.votes_ = 5;
+  transaction.contribution_rates_ = {
+    { "BAT", 1.0 },
+    { "ETH", 2.0 },
+    { "LTC", 3.0 },
+    { "BTC", 4.0 },
+    { "USD", 5.0 },
+    { "EUR", 6.0 },
+  };
+
+  braveledger_bat_helper::TRANSACTION_BALLOT_ST ballot;
+  ballot.publisher_ = "brave.com";
+  ballot.offset_ = 5;
+  transaction.ballots_.push_back(ballot);
+
+  std::string json;
+  braveledger_bat_helper::saveToJsonString(transaction, &json);
+  ASSERT_FALSE(json.empty());
+
+  braveledger_bat_helper::TRANSACTION_ST deserialized;
+  ASSERT_TRUE(deserialized.loadFromJson(json));
+
+  ASSERT_EQ(deserialized.viewingId_, transaction.viewingId_);
+  ASSERT_EQ(deserialized.surveyorId_, transaction.surveyorId_);
+  ASSERT_EQ(deserialized.contribution_probi_, transaction.contribution_probi_);
+  ASSERT_EQ(deserialized.submissionStamp_, transaction.submissionStamp_);
+  ASSERT_EQ(deserialized.anonizeViewingId_, transaction.anonizeViewingId_);
+  ASSERT_EQ(deserialized.registrarVK_, transaction.registrarVK_);
+  ASSERT_EQ(deserialized.masterUserToken_, transaction.masterUserToken_);
+  ASSERT_EQ(deserialized.surveyorIds_, transaction.surveyorIds_);
+  ASSERT_EQ(deserialized.votes_, transaction.votes_);
+  ASSERT_EQ(deserialized.contribution_rates_, transaction.contribution_rates_);
+  ASSERT_EQ(deserialized.ballots_[0].publisher_,
+    transaction.ballots_[0].publisher_);
+  ASSERT_EQ(deserialized.ballots_[0].offset_,
+    transaction.ballots_[0].offset_);
 }
