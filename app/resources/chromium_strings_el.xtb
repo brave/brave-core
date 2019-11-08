@@ -3,6 +3,9 @@
 <translationbundle lang="el">
 <translation id="5194812628624740897">Με την αποσύνδεση του λογαριασμού <ph name="USERNAME"/>, θα διαγραφεί το ιστορικό, οι σελιδοδείκτες, οι ρυθμίσεις σας και άλλα δεδομένα Brave που έχουν αποθηκευτεί σε αυτήν τη συσκευή. Τα δεδομένα που έχουν αποθηκευτεί στον Λογαριασμό σας Brave Software δεν θα διαγραφούν και μπορείτε να τα διαχειριστείτε μέσω του <ph name="GOOGLE_DASHBOARD_LINK"/>Πίνακα ελέγχου Brave Software<ph name="END_GOOGLE_DASHBOARD_LINK"/>.</translation>
 <translation id="939305735877869636">Brave</translation>
+<translation id="2069994121511856876">Brave Nightly</translation>
+<translation id="4947625801334180582">Brave Beta</translation>
+<translation id="2566435362010629810">Brave Dev</translation>
 <translation id="6373767849825830651">Το Brave είναι ένα πρόγραμμα περιήγησης ιστού που εκτελεί εφαρμογές και ιστοσελίδες με απίστευτη ταχύτητα. Είναι γρήγορο, σταθερό και εύχρηστο. Περιηγηθείτε στον ιστό με μεγαλύτερη ασφάλεια με την ενσωματωμένη προστασία από κακόβουλα προγράμματα και ηλεκτρονικό "ψάρεμα" (phishing).</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Λογότυπο Brave</translation>
@@ -21,6 +24,8 @@
 <translation id="4651430425715739110">Πνευματικά δικαιώματα <ph name="YEAR"/> Οι συντάκτες του Brave. Με επιφύλαξη παντός δικαιώματος.</translation>
 <translation id="2310890394934209120">Το Brave OS υλοποιήθηκε με τη βοήθεια επιπλέον <ph name="BEGIN_LINK_CROS_OSS"/>λογισμικού ανοιχτού κώδικα<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8160794320557846790">Το Brave OS έγινε πραγματικότητα χάρη στα πρόσθετα <ph name="BEGIN_LINK_CROS_OSS"/>λογισμικά ανοικτού κώδικα<ph name="END_LINK_CROS_OSS"/>, όπως το <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (Beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
+<translation id="8948097099929452692">Δεν χρησιμοποιείται στο Brave. Διατήρηση θέσης για την κράτηση των πληροφοριών των πόρων σε συγχρονισμό.</translation>
+<translation id="5009217320733452434">Δεν χρησιμοποιείται στο Brave. Διατήρηση θέσης για την κράτηση των πληροφοριών των πόρων σε συγχρονισμό. Περιμένει ένα όρισμα: <ph name="ARGUMENT"/>.</translation>
 <translation id="6913582816347128893">Το Brave μπορεί να μην λειτουργεί σωστά επειδή δεν υποστηρίζεται πλέον στο Mac OS X 10.9.</translation>
 <translation id="7977787072794666032">Το Brave μπορεί να μην λειτουργεί σωστά, επειδή δεν υποστηρίζεται πια σε Windows XP και Windows Vista</translation>
 <translation id="189297655255130768">Το Brave δεν ανταποκρίνεται. Να γίνει επανεκκίνηση τώρα;</translation>
@@ -168,7 +173,13 @@
 <translation id="2433912322225810055">Επίσης, ελέγχει τη σελίδα που εμφανίζεται κατά την εκκίνηση του Brave ή όταν κάνετε αναζήτηση από το κύριο πλαίσιο.</translation>
 <translation id="2871190378186459992">Ανακαλύψτε καταπληκτικές εφαρμογές, παιχνίδια, επεκτάσεις και θέματα για το Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="5846303060623790781">Brave Beta (mDNS-In)</translation>
+<translation id="3599046180970731601">Brave Nightly (mDNS-In)</translation>
+<translation id="7881806463410697784">Brave Dev (mDNS-In)</translation>
 <translation id="1912973375560256099">Εισερχόμενος κανόνας για το Brave για να επιτρέπεται η κυκλοφορία του mDNS.</translation>
+<translation id="7272074097076644710">Εισερχόμενος κανόνας για το Brave Beta για να επιτρέψει την κυκλοφορία mDNS.</translation>
+<translation id="4991512282053949769">Εισερχόμενος κανόνας για το Brave Nightly για να επιτρέψει την κυκλοφορία του mDNS.</translation>
+<translation id="3856641371299712128">Εισερχόμενος κανόνας για το Brave Dev για να επιτρέψει την κυκλοφορία του mDNS.</translation>
 <translation id="8207657266087451193">Εάν μια εικόνα δεν έχει κάποια χρήσιμη περιγραφή, το Brave θα προσπαθήσει να σας προσφέρει μια περιγραφή. Για τη δημιουργία περιγραφών, αποστέλλονται εικόνες στην Brave Software. Μπορείτε να απενεργοποιήσετε αυτήν τη λειτουργία στις ρυθμίσεις οποιαδήποτε στιγμή.</translation>
 <translation id="5499063270485366718">Εάν μια εικόνα δεν έχει κάποια χρήσιμη περιγραφή, το Brave θα προσπαθήσει να σας προσφέρει μια περιγραφή. Για τη δημιουργία περιγραφών, αποστέλλονται εικόνες στην Brave Software.</translation>
 <translation id="215320507915280336">Αυτό χρησιμοποιεί τον ίδιο ορθογραφικό έλεγχο που χρησιμοποιείται στην Αναζήτηση Brave Software. Το κείμενο που πληκτρολογείτε στο πρόγραμμα περιήγησης αποστέλλεται στην Brave Software. Μπορείτε ανά πάσα στιγμή να αλλάξετε αυτήν τη συμπεριφορά στις ρυθμίσεις.</translation>
@@ -230,14 +241,14 @@
 <translation id="1197672524850678392">Δεν ήταν δυνατή η εκκίνηση του Brave. Προσπάθησε ξανά.</translation>
 <translation id="6040143037577758943">Κλείσιμο</translation>
 <translation id="5147525139567260139">Μοιραστείτε μια καρτέλα του Brave</translation>
+<translation id="2076319850279844250">Βοηθήστε μας να βελτιώσουμε το Brave</translation>
 <translation id="8541922081612557424">Σχετικά με το Brave</translation>
 <translation id="3262506503470845422">Λήψη βοήθειας σχετικά με το Brave</translation>
 <translation id="1864557848095568223">Ενημέρωση του Brave</translation>
 <translation id="1786715389543715322">Ενημέρωση του Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="8208853227947884571">Το Brave έχει ενημερωθεί</translation>
-<translation id="6756417787837743699">Για λεπτομέρειες σχετικά με το Brave OS, ανατρέξτε στην ενότητα <ph name="LINK_BEGIN"/>
-      Σχετικά με το Brave OS<ph name="LINK_END"/></translation>
 <translation id="6686872257969654608">Σχετικά με το Brave OS</translation>
+<translation id="7674116293463255181">Για να διαπιστώσετε εάν η συσκευή σας είναι ενημερωμένη, μεταβείτε στις <ph name="LINK_BEGIN"/>Ρυθμίσεις του Brave OS<ph name="LINK_END"/></translation>
 <translation id="2280363356796735201">Λήψη βοήθειας σχετικά με το Brave OS</translation>
 <translation id="38898988211673781">Διαγραφή cookie και δεδομένων ιστοτόπου κατά τον τερματισμό του Brave.</translation>
 <translation id="5253815230176279256">Brave Software Pay (αντιγράφηκε στο Brave)</translation>

@@ -244,9 +244,8 @@ Yine de oturum açarsanız, yer işaretleriniz, geçmişiniz ve diğer ayarları
 <translation id="1864557848095568223">Brave güncelleniyor</translation>
 <translation id="1786715389543715322">Brave güncelleniyor (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="8208853227947884571">Brave güncel durumda</translation>
-<translation id="6756417787837743699">Brave OS ayrıntıları için lütfen <ph name="LINK_BEGIN"/>
-      Brave OS Hakkında<ph name="LINK_END"/> sayfasına bakın</translation>
 <translation id="6686872257969654608">Brave OS hakkında</translation>
+<translation id="7674116293463255181">Cihazınızın güncel olup olmadığını görmek için <ph name="LINK_BEGIN"/>Brave OS Ayarları<ph name="LINK_END"/>'na gidin</translation>
 <translation id="2280363356796735201">Brave OS ile ilgili yardım alın</translation>
 <translation id="38898988211673781">Brave'dan çıktığımda çerezleri ve site verilerini temizle</translation>
 <translation id="5253815230176279256">Brave Software Pay (Brave'a kopyalandı)</translation>

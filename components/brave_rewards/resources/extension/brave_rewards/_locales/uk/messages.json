@@ -43,6 +43,22 @@
     "message": "Пожертвування",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "Деталі",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Ваш баланс",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT Points",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "можуть бути використані у Brave Rewards для підтримки ваших улюблених творців контенту. BAT Points не можуть бути обміняні на BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "увімкнути",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Щомісячний внесок",
+    "message": "Давайте цьому сайту гроші щомісяця",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Ви призначили {{reservedAmount}} BAT для творців, які ще не зареєструвались для отримання внесків. Ваш браузер буде продовжувати спроби зробити внесок, доки вони не будуть верифіковані, або доки не пройде 90 днів.",
+    "message": "Ви призначили {{reservedAmount}} {{currency}} авторам, які ще не підписалися на отримання внесків. Ваш браузер намагатиметься зробити внесок поки вони не будуть перевірені, або поки не сплинуть 90 днів.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Винагороди Brave Ads!",
+    "message": "Ви заробили Ads Reward!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Винагороди від Brave Ads скоро будуть у вас.",
+    "message": "Ваша Нагорода прямує до вашого гаманця Brave Rewards.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Надані вам токени Brave Ads",
+    "message": "Сума вашої винагороди",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "Завершити підтвердження гаманця",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "Встановити...",
-    "description": "Button text for setting monthly contribution"
   }
 }

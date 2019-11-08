@@ -43,6 +43,22 @@
     "message": "付与トークン",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "詳細",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "あなたの残高",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BATポイント",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "はBrave Rewardsにおいて、あなたの気に入ったコンテンツの制作者に寄付するために利用できます。BATポイントはBATに交換できません。",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": ":",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "毎月の寄付",
+    "message": "毎月このサイトにチップを払う",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "{{reservedAmount}} BAT を贈る相手に、支援を受け取る登録を行っていないクリエイターを指名しました。あなたのブラウザは、クリエイターからの認証を受けるか、90日が経過するまで試し続けます。",
+    "message": "あなたは{{reservedAmount}} {{currency}}分を、まだ寄付の受け取り登録をしていないクリエイターに宛てて指定しています。あなたのブラウザはその相手が検証されるまで、もしくは90日間が経過するまで、寄付の実行を試み続けます。",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -342,7 +358,7 @@
     "description": "Button for adding funds"
   },
   "rewardsSettings": {
-    "message": "[Rewards]設定",
+    "message": "Rewards設定",
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave Adsの報酬！",
+    "message": "広告報酬を獲得しました! ",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Brave Adsから付与された報酬はもうすぐ届きます。",
+    "message": "報酬をあなたのBrave Rewardsウォレットに入金中です。",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "あなたに付与されたBrave Ads Token",
+    "message": "あなたの報酬額",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "ウォレットの検証を完了",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "設定…",
-    "description": "Button text for setting monthly contribution"
   }
 }

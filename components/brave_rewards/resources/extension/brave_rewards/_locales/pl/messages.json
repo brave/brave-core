@@ -43,6 +43,22 @@
     "message": "Przyznane środki",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "Szczegóły",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Twoje saldo",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "Punkty BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "można używać jako nagrody Brave, aby wspierać ulubionych twórców treści. Punktów BAT nie można wymienić na BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "na",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Miesięczny wkład",
+    "message": "Ustaw comiesięczne napiwki dla tej strony",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Przeznaczyłeś {{reservedAmount}} BAT dla twórców, którzy nie zarejestrowali się jeszcze, aby otrzymywać wsparcie. Twoja przeglądarka będzie próbowała wnieść wsparcie do czasu, gdy zostaną zweryfikowani, lub gdy minie 90 dni.",
+    "message": "Przeznaczono {{reservedAmount}} {{currency}} dla twórców, którzy jeszcze nie zarejestrowali się, aby móc otrzymywać darowizny. Twoja przeglądarka będzie próbowała przekazać darowiznę, aż dokonają potwierdzenia lub upłynie 90 dni.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Nagrody z reklam Brave!",
+    "message": "Zyskujesz nagrodę za reklamy!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Twoje nagrody z reklam Brave są już w drodze.",
+    "message": "Twoja nagroda jest w drodze do portfela Brave.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Twoje tokeny z reklam Brave",
+    "message": "Wysokość Twojej nagrody",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "Zakończ weryfikację portfela",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "Określ...",
-    "description": "Button text for setting monthly contribution"
   }
 }

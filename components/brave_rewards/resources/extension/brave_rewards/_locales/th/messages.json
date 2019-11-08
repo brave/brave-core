@@ -43,6 +43,22 @@
     "message": "Grants",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "รายละเอียด",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "ยอดของคุณ",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "แต้ม BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "สามารถใช้ใน Brave Rewards เพื่อส่งรายได้ให้แก่ผู้สร้างสรรค์เนื้อหาคนโปรดของคุณ แต้ม BAT ไม่สามารถแลกเปลี่ยนเป็น BAT ได้",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "เปิด",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "การสนับสนุนรายเดือน",
+    "message": "เคล็ดลับประจำเดือนในเว็บไซต์นี้",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "คุณได้มอบ {{reservedAmount}} BAT ให้กับผู้สร้างที่ยังไม่ได้ลงทะเบียนรับเงินสนับสนุน เบราว์เซอร์ของคุณจะพยายามส่งเงินสนับสนุนไปเรื่อย ๆ จนกว่าผู้สร้างจะยืนยัน หรือจนกระทั่งเวลาผ่านไป 90 วัน",
+    "message": "คุณได้กำหนดจำนวนเงิน {{reservedAmount}} {{currency}} ไว้ให้แก่ผู้สร้างสรรค์ที่ยังไม่ได้สมัครรับรายได้ เบราว์เซอร์ของคุณจะพยายามส่งรายได้ให้จนกว่าพวกเขาจะยืนยัน หรือจนกว่าจะครบ 90 วัน",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave Ads Rewards!",
+    "message": "คุณได้รับรางวัลโฆษณา!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "การจัดสรรรางวัลของคุณจาก Brave Ads กำลังมาถึง",
+    "message": "รางวัลของคุณกำลังอยู่ระหว่างทางไปสู่กระเป๋าสตางค์ Brave Rewards ของคุณ",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "การจัดสรรโทเค็น Brave Ads ของคุณ",
+    "message": "ปริมาณรางวัลของคุณ",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "ยืนยันวอลเล็ตให้เสร็จสิ้น",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "ตั้งค่า...",
-    "description": "Button text for setting monthly contribution"
   }
 }

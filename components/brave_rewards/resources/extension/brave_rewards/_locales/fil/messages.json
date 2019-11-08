@@ -43,6 +43,22 @@
     "message": "Mga grant",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "Mga Detalye",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Ang Iyong Balanse",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT Points",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "magagamit sa Brave Rewards para mag-ambag sa iyong mga paboritong content creator. Hindi maipapalit ang BAT Points para sa BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "naka-on",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Buwanang Kontribusyon",
+    "message": "Nagbigay ng tip sa site na ito buwan-buwan",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Nagtakda ka ng {{reservedAmount}} (na) BAT para sa mga creator na hindi pa nagsa-sign up upang makatanggap ng mga ambag. Patuloy na susubukan ng iyong browser na mag-ambag hangang sa mag-verify sila, o hanggang sa lumipas ang 90 araw.",
+    "message": "Nagtalaga ka ng {{reservedAmount}} {{currency}} para sa mga creator na hindi pa nagsa-sign up para makatanggap ng mga kontribusyon. Patuloy na susubukan ng iyong browser na mag-ambag hanggang sa mag-verify sila, o hanggang sa lumipas ang 90 araw.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave Ads Rewards!",
+    "message": "Nakakuha ka ng Ads Reward!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Paparating na ang iyong grant mula sa Brave Ads.",
+    "message": "Paparating na ang iyong Reward sa iyong Brave Rewards wallet.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Iyong Token Grant sa Brave Ads",
+    "message": "Ang Halaga ng Iyong Reward",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "Kumpletuhin ang pag-verify ng wallet",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "Magtakda...",
-    "description": "Button text for setting monthly contribution"
   }
 }

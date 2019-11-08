@@ -61,7 +61,7 @@
 <translation id="1163931534039071049">&amp;Ver fonte da moldura</translation>
 <translation id="6886871292305414135">Abrir link num novo &amp;separador</translation>
 <translation id="8899851313684471736">Abrir link numa nova &amp;janela</translation>
-<translation id="658539216370629794">Abrir link numa janela sem re&amp;gisto</translation>
+<translation id="658539216370629794">Abrir link em &amp;janela privada</translation>
 <translation id="3144647712221361880">Abrir link como</translation>
 <translation id="9137916601698928395">Abrir link como <ph name="USER"/></translation>
 <translation id="1137673463384776352">Abrir link na aplicação <ph name="APP"/></translation>
@@ -122,7 +122,7 @@
 <translation id="3021678814754966447">&amp;Ver Origem da Moldura</translation>
 <translation id="9027459031423301635">Abrir Link num Novo &amp;Separador</translation>
 <translation id="1769104665586091481">Abrir Link Numa Nova &amp;Janela</translation>
-<translation id="1432267168815937878">Abrir Link numa Janela de Nave&amp;gação Anónima</translation>
+<translation id="1432267168815937878">Abri Link em &amp;Janela Privada</translation>
 <translation id="2142328300403846845">Abrir link como</translation>
 <translation id="6892812721183419409">Abrir link como <ph name="USER"/></translation>
 <translation id="2006638907958895361">Abrir link na aplicação <ph name="APP"/></translation>
@@ -172,7 +172,7 @@
 <translation id="4200983522494130825">Novo &amp;separador</translation>
 <translation id="8418445294933751433">Mo&amp;strar como separador</translation>
 <translation id="1723824996674794290">&amp;Nova janela</translation>
-<translation id="6516243500644829484">&amp;Nova janela sem registo</translation>
+<translation id="6516243500644829484">Nova &amp;janela privada</translation>
 <translation id="6120205520491252677">Fixar esta página ao ecrã Inicial...</translation>
 <translation id="9065203028668620118">Editar</translation>
 <translation id="5329858601952122676">E&amp;liminar</translation>
@@ -192,7 +192,7 @@
 <translation id="3285322247471302225">Novo &amp;Separador</translation>
 <translation id="8879284080359814990">Mo&amp;strar Como Separador</translation>
 <translation id="176587472219019965">&amp;Nova Janela</translation>
-<translation id="7973394300052703468">Nova Janela de Navegação Anón&amp;ima</translation>
+<translation id="7973394300052703468">Nova &amp;Janela Privada</translation>
 <translation id="5157635116769074044">Fixar esta página ao Ecrã inicial...</translation>
 <translation id="5830720307094128296">Guard&amp;ar Página Como...</translation>
 <translation id="4672657274720418656">Página de destilação</translation>
@@ -364,7 +364,7 @@
 <translation id="2902312830803030883">Mais ações</translation>
 <translation id="495170559598752135">Ações</translation>
 <translation id="3612673635130633812">Transferido por &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="6395403722585816044">Transferido em modo de navegação anónima</translation>
+<translation id="6395403722585816044">Descarregado em Privado</translation>
 <translation id="4551763574344810652">Prima <ph name="MODIFIER_KEY_DESCRIPTION"/> para anular</translation>
 <translation id="2079545284768500474">Anular</translation>
 <translation id="2490481887078769936">"<ph name="FILE_NAME"/>" foi removido da lista</translation>
@@ -411,10 +411,10 @@
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Transferência em curso}other{Transferências em curso}}</translation>
 <translation id="5425042808445046667">Continuar a transferir</translation>
 <translation id="5284445933715251131">Continuar a transferir</translation>
-<translation id="203837651858678035">Pretende sair do modo de navegação anónima mesmo assim?</translation>
+<translation id="203837651858678035">Sair do modo privado?</translation>
 <translation id="8951465597020890363">Pretende sair do modo convidado mesmo assim?</translation>
 <translation id="9148058034647219655">Sair</translation>
-<translation id="7376221878517288144">Pretende sair do modo de navegação anónima mesmo assim?</translation>
+<translation id="7376221878517288144">Sair do modo privado?</translation>
 <translation id="973473557718930265">Sair</translation>
 <translation id="7707599169365957976">Pode ajudar a melhorar a Navegação segura ao enviar algumas informações do sistema e conteúdo da página para a Brave Software.</translation>
 <translation id="4923279099980110923">Sim, quero ajudar</translation>
@@ -596,6 +596,24 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Valor de assinatura do certificado</translation>
 <translation id="4104163789986725820">E&amp;xportar...</translation>
+<translation id="2029156652561216312">CN</translation>
+<translation id="7822286184239325970">ST</translation>
+<translation id="8180262569555229595">O</translation>
+<translation id="7252376466538759696">OU</translation>
+<translation id="5734574586460918465">dnQualifier</translation>
+<translation id="964324710553558337">C</translation>
+<translation id="511291565806773566">serialNumber</translation>
+<translation id="5912292566401425135">L</translation>
+<translation id="5725734596824080201">DC</translation>
+<translation id="2948789661744572780">E-MAIL</translation>
+<translation id="7481079953250545971">UID</translation>
+<translation id="4196967880387277612">E</translation>
+<translation id="5887772116581657016">businessCategory</translation>
+<translation id="6561757256477115975">jurisdictionLocalityName</translation>
+<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
+<translation id="8904360804686555987">jurisdictionCountryName</translation>
+<translation id="8718098216622210506">RUA</translation>
+<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">PKCS #1 Encriptação RSA</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 Com encriptação RSA</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 Com encriptação RSA</translation>
@@ -768,11 +786,11 @@ Certifique-se de que não revela informações confidenciais.</translation>
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/> (pico de <ph name="NUM_KILOBYTES_LIVE"/>)</translation>
 <translation id="8004582292198964060">Navegador</translation>
 <translation id="3678156199662914018">Extensão: <ph name="EXTENSION_NAME"/></translation>
-<translation id="5053701565089446556">Extensão da navegação anónima: <ph name="EXTENSION_NAME"/></translation>
+<translation id="5053701565089446556">Extensão Privada: <ph name="EXTENSION_NAME"/></translation>
 <translation id="6508261954199872201">Aplicação: <ph name="APP_NAME"/></translation>
-<translation id="611296870688433505">Aplicação em navegação anónima: <ph name="APP_NAME"/></translation>
+<translation id="611296870688433505">Aplicação Privada: <ph name="APP_NAME"/></translation>
 <translation id="7629827748548208700">Separador: <ph name="TAB_NAME"/></translation>
-<translation id="9048137919253433011">Separador de navegação anónima: <ph name="TAB_NAME"/></translation>
+<translation id="9048137919253433011">Aba Privada: <ph name="TAB_NAME"/></translation>
 <translation id="6900284862687837908">Aplicação em segundo plano: <ph name="BACKGROUND_APP_URL"/></translation>
 <translation id="7427348830195639090">Página de fundo: <ph name="BACKGROUND_PAGE_URL"/></translation>
 <translation id="6798954102094737107">Plug-in: <ph name="PLUGIN_NAME"/></translation>
@@ -787,7 +805,7 @@ Certifique-se de que não revela informações confidenciais.</translation>
 <translation id="2282146716419988068">Processo GPU</translation>
 <translation id="2087822576218954668">Imprimir: <ph name="PRINT_NAME"/></translation>
 <translation id="8859174528519900719">Subestrutura: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="1799432502220762862">Subestrutura da navegação anónima: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="1799432502220762862">Subframe Privada: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="2348176352564285430">Aplicação: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="786073089922909430">Serviço: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7663719505383602579">Recetor: <ph name="ARC_PROCESS_NAME"/></translation>
@@ -1351,7 +1369,7 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="192494336144674234">Abrir com</translation>
 <translation id="9053893665344928494">Memorizar a minha escolha</translation>
 <translation id="5340857474604400806">Permanecer no Brave</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Navegação anónima)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privado)</translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (convidado)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Atualização disponível)</translation>
@@ -1383,10 +1401,10 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="4400963414856942668">Pode clicar na estrela para adicionar um separador aos marcadores</translation>
 <translation id="8379991678458444070">Volte aqui rapidamente ao adicionar este separador aos marcadores</translation>
 <translation id="7174199383876220879">Novo! Controle a sua música, vídeos e muito mais.</translation>
-<translation id="4369414322596874629">Pode navegar em privado com uma janela de navegação anónima</translation>
-<translation id="3772947852642271642">Navegue na Web sem guardar o seu histórico de navegação com uma janela de navegação anónima</translation>
-<translation id="3871738366246972820">Está a utilizar um computador partilhado? Experimente abrir uma janela de navegação anónima.</translation>
-<translation id="5808622652939943719">Para navegar em privado, clique no menu dos três pontos de forma a abrir uma janela de navegação anónima</translation>
+<translation id="4369414322596874629">Pode navegar em privado pelo uso de uma janela privada</translation>
+<translation id="3772947852642271642">Use a web sem guardar o seu histórico de navegação com uma janela privada</translation>
+<translation id="3871738366246972820">A usar um computador partilhado? Tente abrir uma janela privada.</translation>
+<translation id="5808622652939943719">Para navegar em privado, clique no menu do ícone dos pontinhos para abrir uma janela privada</translation>
 <translation id="8803953437405899238">Abra um novo separador com um clique.</translation>
 <translation id="3071624960923923138">Pode clicar aqui para abrir um novo separador</translation>
 <translation id="4908811072292128752">Abra um novo separador para navegar em dois sites em simultâneo</translation>
@@ -1603,13 +1621,13 @@ Pretende pará-lo?</translation>
 <translation id="4620809267248568679">Esta definição é gerida por uma extensão.</translation>
 <translation id="4846680374085650406">Está a seguir a recomendação do gestor para esta definição.</translation>
 <translation id="1223853788495130632">O gestor recomenda um valor específico para esta definição.</translation>
-<translation id="8839398440242019256">Não é da Brave Web Store</translation>
+<translation id="8839398440242019256">Não é da Web Store.</translation>
 <translation id="5337771866151525739">Instalada por terceiros.</translation>
 <translation id="4538792345715658285">Instalada pela política da empresa.</translation>
 <translation id="4359408040881008151">Instalada devido a extensão(ões) dependente(s).</translation>
 <translation id="4980805016576257426">Esta extensão contém um software malicioso.</translation>
 <translation id="5522156646677899028">Esta extensão contém uma vulnerabilidade de segurança grave.</translation>
-<translation id="6945695820322143954">Esta extensão viola a política da Brave Web Store.</translation>
+<translation id="6945695820322143954">Esta extensão viola a política da Web Store.</translation>
 <translation id="177808131755847449">Desativada pelo Brave. Esta extensão pode ser insegura.</translation>
 <translation id="1434696352799406980">Repõe a página inicial, a página novo separador, o motor de pesquisa e os separadores fixos. Também desativa todas as extensões e limpa os dados temporários como os cookies. Os marcadores, o histórico e as palavras-passe guardadas não são limpos.</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/> pretende repor as suas definições.</translation>
@@ -1676,6 +1694,7 @@ Pretende pará-lo?</translation>
 <translation id="622537739776246443">O perfil será eliminado</translation>
 <translation id="5632566673632479864">A sua conta <ph name="EMAIL"/> já não é permitida como a conta principal. Como esta conta é gerida por <ph name="DOMAIN"/>, os marcadores, o histórico, as palavras-passe e outras definições serão apagados deste dispositivo.</translation>
 <translation id="3797739167230984533">O <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> é gerido<ph name="END_LINK"/> pela sua entidade.</translation>
+<translation id="1722460139690167654">O <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> é gerido<ph name="END_LINK"/> por <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8118488170956489476">O seu <ph name="BEGIN_LINK"/>navegador é gerido<ph name="END_LINK"/> pela sua entidade.</translation>
 <translation id="1365180424462182382">O <ph name="BEGIN_LINK"/>navegador é gerido<ph name="END_LINK"/> por <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Conteúdo</translation>
@@ -1713,6 +1732,7 @@ Pretende pará-lo?</translation>
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Armazenamento de cache</translation>
+<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Aplicações</translation>
 <translation id="542872847390508405">Está a navegar como Convidado</translation>
 <translation id="537813040452600081">As páginas visualizadas nesta janela não serão apresentadas no histórico do navegador nem no histórico de pesquisas e não deixarão outros vestígios, como cookies, no computador depois de terminar sessão. Os ficheiros transferidos e os marcadores criados não serão preservados.</translation>
@@ -1924,7 +1944,7 @@ Pretende pará-lo?</translation>
 <translation id="881799181680267069">Ocultar as outras</translation>
 <translation id="4708849949179781599">Sair do <ph name="PRODUCT_NAME"/></translation>
 <translation id="8795916974678578410">Nova janela</translation>
-<translation id="1676595396635191120">Nova janela de navegação anónima</translation>
+<translation id="1676595396635191120">Nova Janela Privada</translation>
 <translation id="406070391919917862">Aplicações em segundo plano</translation>
 <translation id="3335947283844343239">Reabrir separador fechado</translation>
 <translation id="8214489666383623925">Abrir ficheiro...</translation>
@@ -2050,6 +2070,7 @@ Pretende pará-lo?</translation>
 <translation id="2650609753175229582"><ph name="URL"/> pretende reproduzir conteúdo protegido. A identidade do seu dispositivo será validada pela Brave Software e este site poderá aceder à mesma.</translation>
 <translation id="1746402432151920942">Identificador de multimédia protegido</translation>
 <translation id="1322046419516468189">Veja e faça a gestão das palavras-passe guardadas em <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
+<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Palavra-passe guardada. Veja e faça a gestão das palavras-passe guardadas em <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Conta Brave Software</translation>
 <translation id="3785727820640310185">Palavras-passe guardadas para este site</translation>
@@ -2162,7 +2183,7 @@ Pretende pará-lo?</translation>
 <translation id="7339898014177206373">Nova janela</translation>
 <translation id="7551643184018910560">Fixar na prateleira</translation>
 <translation id="8335587457941836791">Soltar da prateleira</translation>
-<translation id="4471385409549756595">Nova janela de navegação anónima</translation>
+<translation id="4471385409549756595">Nova janela privada</translation>
 <translation id="8249048954461686687">Pasta OEM</translation>
 <translation id="8440630305826533614">Aplicações para Linux</translation>
 <translation id="4742746985488890273">Afixar na prateleira</translation>
@@ -2266,8 +2287,8 @@ Pretende pará-lo?</translation>
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
         <ph name="FILE_INFO"/>
         <ph name="EVENT_NAME"/></translation>
-<translation id="4540437243849625078">Este site está prestes a partilhar informações com uma aplicação fora do modo de navegação anónima.</translation>
-<translation id="1227836882233136433">Sair da navegação anónima?</translation>
+<translation id="4540437243849625078">O presente site está prestes a partilhar informação com uma aplicação fora do modo privado.</translation>
+<translation id="1227836882233136433">Sair do modo privado?</translation>
 <translation id="662080504995468778">Ficar</translation>
 <translation id="2593289874938379417">O Brave não tem acesso ao recurso solicitado.</translation>
 <translation id="760197030861754408">Aceda a <ph name="LANDING_PAGE"/> para ligar.</translation>
@@ -2310,6 +2331,7 @@ Pretende pará-lo?</translation>
 <translation id="8750155211039279868"><ph name="ORIGIN"/> pretende estabelecer ligação a uma porta de série</translation>
 <translation id="4943691134276646401">"<ph name="CHROME_EXTENSION_NAME"/>" pretende estabelecer ligação a uma porta de série</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
+<translation id="1587562069597918292"><ph name="DEVICE_PATH"/></translation>
 <translation id="1171515578268894665"><ph name="ORIGIN"/> pretende estabelecer ligação a um dispositivo HID</translation>
 <translation id="6078769373519310690">"<ph name="CHROME_EXTENSION_NAME"/>" pretende estabelecer ligação a um dispositivo HID</translation>
 <translation id="4419610272958564173">Dispositivo desconhecido (fornecedor: <ph name="VENDOR_ID"/>, produto: <ph name="PRODUCT_ID"/>)</translation>
@@ -2450,12 +2472,15 @@ Pretende pará-lo?</translation>
 <translation id="7235737137505019098">A sua chave de segurança não tem espaço suficiente para mais contas.</translation>
 <translation id="3984431586879874039">Pretende permitir que este site veja a sua chave de segurança?</translation>
 <translation id="8948939328578167195"><ph name="WEBSITE"/> pretende ver a marca e o modelo da sua chave de segurança.</translation>
-<translation id="7618452966706304788">Pretende utilizar o Touch ID com a aplicação <ph name="APP_NAME"/> no modo de navegação anónima?</translation>
-<translation id="3098826269712097986">Os dados de início de sessão são armazenados no Brave depois de sair do modo de navegação anónima. Isto permite-lhe utilizar novamente o Touch ID neste Website mais tarde.</translation>
+<translation id="7618452966706304788">Quer usar o Touch ID com <ph name="APP_NAME"/> em modo privado?</translation>
+<translation id="3098826269712097986">Os dados de login serão armazenados no Brave depois que sair do modo privado.  Isto permitir-lhe-á voltar a usar o Touch ID com este website.</translation>
 <translation id="2172784515318616985">Continuar</translation>
-<translation id="5186185447130319458">Navegação anónima</translation>
+<translation id="5186185447130319458">Privado</translation>
 <translation id="7643842463591647490">{0,plural, =1{# janela aberta}other{# janelas abertas}}</translation>
-<translation id="2579188629646253712">Sair do modo de navegação anónima</translation>
+<translation id="2579188629646253712">Sair do Privado</translation>
+<translation id="479219453908726046">Responder à Pesquisa</translation>
+<translation id="7581273696622423628">Responder à pesquisa</translation>
+<translation id="4406504596603350105">O seu feedback é importante para nós.</translation>
 <translation id="4349828822184870497">Útil</translation>
 <translation id="6876469544038980967">Inútil</translation>
 <translation id="6428450836711225518">Valide o seu número de telefone</translation>
@@ -2468,17 +2493,20 @@ Pretende pará-lo?</translation>
 <translation id="399179161741278232">Importado</translation>
 <translation id="5225324770654022472">Mostrar atalho das aplicações</translation>
 <translation id="5072836811783999860">Mostrar marcadores geridos</translation>
+<translation id="3613134908380545408">Mostrar <ph name="FOLDER_NAME"/></translation>
 <translation id="3785308913036335955">Mostrar Atalho das Aplicações</translation>
 <translation id="711840821796638741">Mostrar marcadores geridos</translation>
-<translation id="3613134908380545408">Mostrar <ph name="FOLDER_NAME"/></translation>
 <translation id="2367972762794486313">Mostrar aplicações</translation>
 <translation id="8368859634510605990">&amp;Abrir todos os marcadores</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{&amp;Abrir todos}=1{&amp;Abrir marcador}other{&amp;Abrir todos (#)}}</translation>
 <translation id="1016437870506746108">{COUNT,plural, =0{Abrir todos numa &amp;nova janela}=1{Abrir numa &amp;nova janela}other{Abrir todos (#) numa &amp;nova janela}}</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Abrir todos numa &amp;janela de navegação anónima}=1{Abrir numa &amp;janela de navegação anónima}other{Abrir todos (#) numa &amp;janela de navegação anónima}}</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Abrir todos em &amp;janela privada}
+          =1 {Abrir em &amp;janela privada}
+          outro {Abrir todos (#) em &amp;janela privada}}</translation>
 <translation id="3613422051106148727">&amp;Abrir num novo separador</translation>
 <translation id="4853020600495124913">Abrir numa &amp;nova janela</translation>
-<translation id="2431625704210501303">Abrir na janela de &amp;navegação anónima</translation>
+<translation id="2431625704210501303">Abrir em &amp; janela privada</translation>
 <translation id="6702639462873609204">&amp;Editar...</translation>
 <translation id="3088325635286126843">&amp;Mudar o nome...</translation>
 <translation id="713122686776214250">Adicionar pá&amp;gina...</translation>
@@ -2487,10 +2515,13 @@ Pretende pará-lo?</translation>
 <translation id="6466988389784393586">&amp;Abrir Todos os Marcadores</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Abrir todos}=1{&amp;Abrir marcador}other{&amp;Abrir todos (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Abrir todos numa &amp;nova janela}=1{Abrir numa &amp;nova janela}other{Abrir todos (#) numa &amp;nova janela}}</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Abrir todos numa janela de &amp;navegação anónima}=1{Abrir numa janela de &amp;navegação anónima}other{Abrir todos (#) numa janela de &amp;navegação anónima}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Abrir Todos em &amp;Janela Privada}
+           =1 {Abrir em &amp;Janela Privada}
+          Janela Privada}}</translation>
 <translation id="9024127637873500333">&amp;Abrir num novo separador</translation>
 <translation id="665061930738760572">Abrir numa &amp;Nova Janela</translation>
-<translation id="1985165269306590797">Abrir na Janela de &amp;Navegação Anónima</translation>
+<translation id="1985165269306590797">Abrir em &amp;Janela Privada</translation>
 <translation id="8824701697284169214">Adicionar Pá&amp;gina...</translation>
 <translation id="2489918096470125693">Adicionar &amp;Pasta...</translation>
 <translation id="421182450098841253">&amp;Mostrar Barra de Marcadores</translation>
@@ -2542,10 +2573,10 @@ Pretende pará-lo?</translation>
 <translation id="8457451314607652708">Importar marcadores</translation>
 <translation id="5101042277149003567">Abrir todos os marcadores</translation>
 <translation id="7007648447224463482">Abrir tudo numa nova janela</translation>
-<translation id="642436385689435488">Abrir tudo numa janela de navegação anónima</translation>
+<translation id="642436385689435488">Abrir todos em janela privada</translation>
 <translation id="4195643157523330669">Abrir num novo separador</translation>
 <translation id="2979639724566107830">Abrir numa nova janela</translation>
-<translation id="5463021359602611602">Abrir na janela de navegação anónima</translation>
+<translation id="5463021359602611602">Abrir em janela privada</translation>
 <translation id="1173894706177603556">Mudar nome</translation>
 <translation id="6825184156888454064">Ordenar por nome</translation>
 <translation id="3440663250074896476">Mais ações para <ph name="BOOKMARK_NAME"/></translation>
@@ -2623,9 +2654,15 @@ Pretende pará-lo?</translation>
 <translation id="4159681666905192102">Esta é uma conta para crianças gerida por <ph name="CUSTODIAN_EMAIL"/> e <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Utilizador supervisionado</translation>
 <translation id="5720705177508910913">Utilizador atual</translation>
-<translation id="1850357845349976573">{0,plural, =1{Navegação anónima}other{# janelas de navegação anónima abertas}}</translation>
-<translation id="37784332082579802">{0,plural, =1{Navegação anónima}other{Navegação anónima (#)}}</translation>
-<translation id="5070556616376997776">Está em modo anónimo.</translation>
+<translation id="1850357845349976573">(0, plural,
+        =1 {Privado}
+        outro {# abrir janelas privadas}
+      }</translation>
+<translation id="37784332082579802">(0, plural,
+      =1 {Privado}
+      outro {Privado (#)}
+    }</translation>
+<translation id="5070556616376997776">Esta é uma janela privada</translation>
 <translation id="2199298570273670671">Erro</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: a sincronização não está a funcionar</translation>
 <translation id="7307129035224081534">Em pausa</translation>
@@ -2634,8 +2671,8 @@ Pretende pará-lo?</translation>
 <translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (Conta para crianças)</translation>
 <translation id="8182664696082410784"><ph name="REASON"/>
     Acho que este site não deveria estar bloqueado.</translation>
-<translation id="5832813618714645810">Pessoas</translation>
-<translation id="7171000599584840888">Adicionar pessoa...</translation>
+<translation id="5832813618714645810">Perfis</translation>
+<translation id="7171000599584840888">Adicionar Perfil...</translation>
 <translation id="1781771911845953849">Contas e sincronização</translation>
 <translation id="4974733135013075877">Sair e bloqueio para crianças</translation>
 <translation id="3965965397408324205">Sair de <ph name="PROFILE_NAME"/></translation>
@@ -2654,21 +2691,21 @@ Pretende pará-lo?</translation>
 <translation id="8473863474539038330">Endereços e mais</translation>
 <translation id="5287425679749926365">As suas contas</translation>
 <translation id="4801448226354548035">Ocultar contas</translation>
-<translation id="2935225303485967257">Gerir pessoas</translation>
+<translation id="2935225303485967257">Gerir perfis</translation>
 <translation id="7388222713940428051">Abrir janela de convidado</translation>
 <translation id="127668050356036882">Fechar todas as janelas</translation>
 <translation id="1464258312790801189">As suas contas</translation>
 <translation id="6655458902729017087">Ocultar contas</translation>
-<translation id="688280436658139163">Gerir pessoas</translation>
+<translation id="688280436658139163">Gerir Perfis</translation>
 <translation id="2666990579225592931">Abrir janela de convidado</translation>
 <translation id="5869948122057593679">Fechar todas as janelas</translation>
-<translation id="4133080584509825342">Editar pessoa: <ph name="PROFILE_NAME"/></translation>
-<translation id="4848862725510532982">Editar pessoa: <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4133080584509825342">Editar perfil, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Editar perfil , <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="3294437725009624529">Convidado</translation>
 <translation id="475088594373173692">Primeiro utilizador</translation>
 <translation id="4535127706710932914">Perfil Predefinido</translation>
 <translation id="4389091756366370506">Utilizador <ph name="VALUE"/></translation>
-<translation id="4536111748245793305">Pessoa <ph name="VALUE"/></translation>
+<translation id="4536111748245793305">Perfil <ph name="VALUE"/></translation>
 <translation id="5397794290049113714">Utilizador</translation>
 <translation id="3031417829280473749">Agente X</translation>
 <translation id="412730574613779332">Spandex</translation>
@@ -2756,7 +2793,7 @@ Pretende pará-lo?</translation>
 <translation id="2871813825302180988">Esta conta já está a ser utilizada neste dispositivo móvel.</translation>
 <translation id="7654941827281939388">Esta conta já está a ser utilizada neste computador.</translation>
 <translation id="9022847679183471841">Esta conta já está a ser utilizada neste computador por <ph name="AVATAR_NAME"/>.</translation>
-<translation id="6921634551681321094">Adicionar pessoa</translation>
+<translation id="6921634551681321094">Adicionar perfil</translation>
 <translation id="5389237414310520250">Não foi possível criar o novo utilizador. Verifique o espaço no disco rígido e as autorizações e tente novamente.</translation>
 <translation id="2673589024369449924">Criar atalho no ambiente de trabalho para este perfil</translation>
 <translation id="2731710757838467317">A criar o utilizador supervisionado. Isto poderá demorar alguns momentos.</translation>
@@ -2764,13 +2801,13 @@ Pretende pará-lo?</translation>
 <translation id="6690751852586194791">Escolha um utilizador supervisionado para adicionar a este dispositivo.</translation>
 <translation id="5525677322972469346">Criar um novo utilizador supervisionado</translation>
 <translation id="8630903300770275248">Importar utilizador supervisionado</translation>
-<translation id="4904061654709986277">Adicionar pessoa</translation>
-<translation id="6114945161119872228">Remover esta pessoa</translation>
-<translation id="769308100792069196">Adicionar pessoa supervisionada</translation>
+<translation id="4904061654709986277">Adicionar Perfil</translation>
+<translation id="6114945161119872228">Remover Este Perfil</translation>
+<translation id="769308100792069196">Adicionar Perfil Supervisionado</translation>
 <translation id="3470442499439619530">Remover Este Utilizador</translation>
 <translation id="4296575653627536209">Adicionar utilizador supervisionado</translation>
-<translation id="8006143138282906848">Remover esta pessoa</translation>
-<translation id="6912187023601892621">Adicionar pessoa supervisionada</translation>
+<translation id="8006143138282906848">Remover este perfil</translation>
+<translation id="6912187023601892621">Adicionar perfil supervisionado</translation>
 <translation id="1608626060424371292">Remover este utilizador</translation>
 <translation id="493571969993549666">Adicionar utilizador supervisionado</translation>
 <translation id="9101691533782776290">Iniciar aplicação</translation>
@@ -2792,8 +2829,8 @@ Pretende pará-lo?</translation>
 <translation id="6164005077879661055">Todos os ficheiros e dados locais associados ao utilizador supervisionado serão definitivamente eliminados depois de este utilizador supervisionado ser removido. Os Sites visitados e as definições deste utilizador supervisionado poderão continuar visíveis para o gestor em <ph name="MANAGEMENT_URL"/>.</translation>
 <translation id="3410832398355316179">Todos os ficheiros e dados locais associados a este utilizador são permanentemente eliminados assim que este utilizador é removido. <ph name="USER_EMAIL"/> pode iniciar sessão mais tarde.</translation>
 <translation id="672213144943476270">Desbloqueie o seu perfil antes de navegar como convidado</translation>
-<translation id="8086119151297127544">Desbloqueie o seu perfil antes de remover uma pessoa.</translation>
-<translation id="7805701378418968629">Desbloqueie o seu perfil antes de adicionar uma pessoa.</translation>
+<translation id="8086119151297127544">Por favor, desbloqueie o seu perfil antes de remover um perfil.</translation>
+<translation id="7805701378418968629">Por favor, desbloqueie o seu perfil antes de adicionar um perfil.</translation>
 <translation id="8978225823042133615">Para utilizar o Brave, inicie sessão.</translation>
 <translation id="4893336867552636863">Esta ação elimina permanentemente os dados de navegação deste dispositivo.</translation>
 <translation id="2496180316473517155">Histórico de navegação</translation>
@@ -2851,8 +2888,9 @@ Pretende pará-lo?</translation>
 <translation id="6850286078059909152">Cor do texto</translation>
 <translation id="8042142357103597104">Opacidade do texto</translation>
 <translation id="1656528038316521561">Opacidade do fundo</translation>
-<translation id="5750288053043553775">0</translation>
-<translation id="8689998525144040851">100</translation>
+<translation id="8838601485495657486">Opaco</translation>
+<translation id="5826993284769733527">Semitransparente</translation>
+<translation id="4438043733494739848">Transparente</translation>
 <translation id="2442916515643169563">Sombra do texto</translation>
 <translation id="3599221874935822507">Elevada</translation>
 <translation id="274029851662193272">Reduzida</translation>
@@ -2867,7 +2905,7 @@ Pretende pará-lo?</translation>
 <translation id="161042844686301425">Turquesa</translation>
 <translation id="4115378294792113321">Magenta</translation>
 <translation id="6981982820502123353">Acessibilidade</translation>
-<translation id="5840822070878669614">Abrir a Web Store do Brave</translation>
+<translation id="5840822070878669614">Abrir Web Store</translation>
 <translation id="6073903501322152803">Adicionar funcionalidades de acessibilidade</translation>
 <translation id="7988355189918024273">Activar funcionalidades de acessibilidade</translation>
 <translation id="5499063270485366718">Se uma imagem não tiver uma descrição útil, o Brave tenta fornecer uma. Para criar as descrições, são enviadas imagens para a Brave Software.</translation>
@@ -2963,6 +3001,7 @@ Pretende pará-lo?</translation>
 <translation id="4430019312045809116">Volume</translation>
 <translation id="3677657024345889897">O mais baixo</translation>
 <translation id="167160931442925455">O mais alto</translation>
+<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (predefinição)</translation>
 <translation id="7037509989619051237">Texto para pré-visualização</translation>
 <translation id="5471768120198416576">Olá! Sou a sua voz para a síntese de voz.</translation>
@@ -3227,10 +3266,13 @@ Pretende pará-lo?</translation>
 <translation id="4058720513957747556">AppSocket (TCP/IP)</translation>
 <translation id="6619058681307408113">Line Printer Daemon (LPD)</translation>
 <translation id="2266957463645820432">IPP através de USB (IPPUSB)</translation>
+<translation id="8086015605808120405">A configurar <ph name="PRINTER_NAME"/>…</translation>
 <translation id="4665014895760275686">Fabricante</translation>
 <translation id="4561098487691395071">Em alternativa, especifique o PPD da impressora</translation>
 <translation id="1989112275319619282">Procurar</translation>
 <translation id="3625481642044239431">Foi selecionado um ficheiro inválido. Tente novamente.</translation>
+<translation id="2462752602710430187"><ph name="PRINTER_NAME"/> adicionada</translation>
+<translation id="7380768571499464492"><ph name="PRINTER_NAME"/> foi atualizada.</translation>
 <translation id="8002670234429879764"><ph name="PRINTER_NAME"/> já não está disponível.</translation>
 <translation id="3976108569178263973">Não existem impressoras disponíveis.</translation>
 <translation id="3213187967168344806">Não é possível adicionar a impressora. Reinicie o computador e tente novamente.</translation>
@@ -3795,9 +3837,9 @@ Pretende pará-lo?</translation>
 <translation id="6196640612572343990">Bloquear cookies de terceiros</translation>
 <translation id="6782111308708962316">Impedir que os Sites de terceiros guardem e leiam dados de cookies</translation>
 <translation id="1274977772557788323">Definições de armazenamento do Adobe Flash Player</translation>
-<translation id="1281501490173223206">Apenas para a sessão no modo de navegação anónima atual</translation>
-<translation id="3479035826743782247">Sessão no modo de navegação anónima atual</translation>
-<translation id="4750220700975225">Sessão no modo de navegação anónima atual (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Apenas a sessão privada atual</translation>
+<translation id="3479035826743782247">Sessão privada atual</translation>
+<translation id="4750220700975225">Sessão particular atual (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">O zoom dos sites não foi aumentado nem diminuído</translation>
 <translation id="3566721612727112615">Nenhum site adicionado</translation>
 <translation id="8098574385249290065">Permitir que o Brave escolha quando os sites podem reproduzir som (recomendado)</translation>
@@ -3824,8 +3866,8 @@ Pretende pará-lo?</translation>
 <translation id="4590324241397107707">Armazenamento de bases de dados</translation>
 <translation id="8016266267177410919">Armazenamento temporário</translation>
 <translation id="4175737294868205930">Armazenamento persistente</translation>
-<translation id="3707212204259470604">Gerir outras pessoas</translation>
-<translation id="8907706281008466056">Fotografia do Perfil do Brave Software</translation>
+<translation id="3707212204259470604">Gerir outros perfis</translation>
+<translation id="8907706281008466056">Foto do Perfil Brave</translation>
 <translation id="2408955596600435184">Introduza o PIN</translation>
 <translation id="6619990499523117484">Confirme o PIN</translation>
 <translation id="2023167225947895179">O PIN pode ser fácil de adivinhar</translation>
@@ -3859,6 +3901,7 @@ Pretende pará-lo?</translation>
 <translation id="2458379781610688953">Atualize a conta, <ph name="EMAIL"/></translation>
 <translation id="2701737434167469065">Inicie sessão, <ph name="EMAIL"/></translation>
 <translation id="2923234477033317484">Remover esta conta</translation>
+<translation id="8995603266996330174">Administrado por <ph name="DOMAIN"/></translation>
 <translation id="4659077111144409915">Conta principal</translation>
 <translation id="8864458770072227512">O email <ph name="EMAIL"/> foi removido deste dispositivo.</translation>
 <translation id="3158033540161634471">Configurar a sua impressão digital</translation>
@@ -3891,12 +3934,11 @@ Pretende pará-lo?</translation>
 <translation id="3608576286259426129">Pré-visualização da imagem do utilizador</translation>
 <translation id="2114896190328250491">Foto de <ph name="NAME"/></translation>
 <translation id="7155171745945906037">Foto existente da câmara ou do ficheiro</translation>
-<translation id="8995603266996330174">Gerido por <ph name="DOMAIN"/></translation>
 <translation id="9125982323641182972">Inteligên. Brave Software no Brave</translation>
 <translation id="1692115862433274081">Utilizar outra conta</translation>
 <translation id="5244474230056479698">A sincronizar com <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Como esta conta é gerida por <ph name="DOMAIN"/>, os seus marcadores, histórico, palavras-passe e outras definições serão apagados deste dispositivo. No entanto, os seus dados continuarão armazenados na sua Conta Brave Software e podem ser geridos no <ph name="BEGIN_LINK"/>Painel de Controlo Brave Software<ph name="END_LINK"/>.</translation>
-<translation id="6906406176003824042">Editar pessoa</translation>
+<translation id="6906406176003824042">Editar perfil</translation>
 <translation id="6739923123728562974">Mostrar atalho no ambiente de trabalho</translation>
 <translation id="2450310832094867474">Pretende desativar a sincronização e terminar a sessão?</translation>
 <translation id="3699920817649120894">Pretende desativar a sincronização e a personalização?</translation>
@@ -3986,7 +4028,7 @@ Pretende pará-lo?</translation>
 <translation id="437184764829821926">Definições avançadas do tipo de letra</translation>
 <translation id="323803881985677942">Abrir opções de extensão</translation>
 <translation id="2166369534954157698">A ligeira raposa marrom salta sobre o cão preguiçoso</translation>
-<translation id="8911765336506423117">Requer extensão da Web Store do Brave</translation>
+<translation id="8911765336506423117">Necessária extensão da Web Store</translation>
 <translation id="6965978654500191972">Dispositivo</translation>
 <translation id="8260864402787962391">Rato</translation>
 <translation id="155865706765934889">Touchpad</translation>
@@ -4110,7 +4152,6 @@ Pretende pará-lo?</translation>
 <translation id="8781980678064919987">Encerrar quando a tampa for fechada</translation>
 <translation id="3636766455281737684"><ph name="PERCENTAGE"/>% – <ph name="TIME"/> restantes</translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% – <ph name="TIME"/> até ficar completa</translation>
-<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="2620436844016719705">Sistema</translation>
 <translation id="2077129598763517140">Utilizar aceleração de hardware sempre que estiver disponível</translation>
 <translation id="3817524650114746564">Abrir definições do proxy do seu computador</translation>
@@ -4233,7 +4274,7 @@ Pretende pará-lo?</translation>
 <translation id="329838636886466101">Reparar</translation>
 <translation id="3012631534724231212">(iFrame)</translation>
 <translation id="1708338024780164500">(Inativa)</translation>
-<translation id="3860292630623580294">(Navegação anónima)</translation>
+<translation id="3860292630623580294">(Privado)</translation>
 <translation id="6655190889273724601">Modo de programador</translation>
 <translation id="2868746137289129307">Esta extensão está desatualizada e foi desativada por uma política empresarial; pode ser ativada automaticamente quando estiver disponível uma versão mais recente.</translation>
 <translation id="6841186874966388268">Erros</translation>
@@ -4269,7 +4310,7 @@ Pretende pará-lo?</translation>
 <translation id="1805822111539868586">Inspecionar vistas</translation>
 <translation id="181577467034453336">Mais <ph name="NUMBER_OF_VIEWS"/>…</translation>
 <translation id="2450849356604136918">Sem vistas ativas</translation>
-<translation id="4854477725773269949">Permitir em modo de navegação anónima</translation>
+<translation id="4854477725773269949">Permitir em privado</translation>
 <translation id="6124650939968185064">As seguintes extensões dependem desta extensão:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="3866249974567520381">Descrição</translation>
@@ -4296,14 +4337,14 @@ Pretende pará-lo?</translation>
 <translation id="7235716375204803342">A obter atividades…</translation>
 <translation id="8314381333424235892">Extensão em falta ou desinstalada.</translation>
 <translation id="7647403192093989392">Não existem atividades recentes.</translation>
-<translation id="38046578254905003">Encontre extensões e temas na <ph name="BEGIN_LINK"/>Web Store do Brave<ph name="END_LINK"/>.</translation>
+<translation id="38046578254905003">Encontre extensões e temas em <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
 <translation id="7272674038937250585">Nenhuma descrição fornecida</translation>
 <translation id="3855441664322950881">Comprimir extensão</translation>
 <translation id="2958721676848865875">Aviso de extensão do pacote</translation>
 <translation id="8652400352452647993">Erro de extensão do pacote</translation>
 <translation id="8398877366907290961">Prosseguir</translation>
 <translation id="8770406935328356739">Diretório raiz da extensão</translation>
-<translation id="6226777517901268232">Ficheiro de chave privada (opcional)</translation>
+<translation id="6226777517901268232">Arquivo de chava privada (opcional)</translation>
 <translation id="2916745397441987255">Pesquisar extensões</translation>
 <translation id="1992397118740194946">Não definida</translation>
 <translation id="6706210727756204531">Âmbito</translation>
@@ -4323,7 +4364,7 @@ Pretende pará-lo?</translation>
 <translation id="1688935057616748272">Introduza uma letra.</translation>
 <translation id="4479424953165245642">Gerir aplicações de quiosque</translation>
 <translation id="6619801788773578757">Adicionar aplicação de quiosque</translation>
-<translation id="8045923671629973368">Introduza o ID da aplicação ou o URL da loja online.</translation>
+<translation id="8045923671629973368">Insira a ID da aplicação ou o URL da webstore</translation>
 <translation id="7059858479264779982">Definir para iniciação automática</translation>
 <translation id="6325191661371220117">Desativar a iniciação automática</translation>
 <translation id="4699357559218762027">(com iniciação automática)</translation>
@@ -4489,8 +4530,8 @@ Pretende pará-lo?</translation>
 <translation id="6041155700700864984">Sair do ecrã inteiro</translation>
 <translation id="6112294629795967147">Tocar para redimensionar</translation>
 <translation id="2453860139492968684">Concluir</translation>
-<translation id="6336451774241870485">Novo separador privado</translation>
-<translation id="6610147964972079463">Fechar separadores privados</translation>
+<translation id="6336451774241870485">Nova aba privada</translation>
+<translation id="6610147964972079463">Fechar abas privadas</translation>
 <translation id="8076492880354921740">Separadores</translation>
 <translation id="2794233252405721443">Site bloqueado</translation>
 <translation id="1721312023322545264">Precisa da autorização de <ph name="NAME"/> para visitar este site</translation>

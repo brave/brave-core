@@ -61,7 +61,7 @@
 <translation id="1163931534039071049">&amp;Xem nguồn khung</translation>
 <translation id="6886871292305414135">Mở liên kết trong &amp;tab mới</translation>
 <translation id="8899851313684471736">Mở liên kết bằng cửa sổ &amp;mới</translation>
-<translation id="658539216370629794">Mở liên kết bằn&amp;g cửa số ẩn danh</translation>
+<translation id="658539216370629794">Mở liên kết trong &amp;cửa sổ riêng tư</translation>
 <translation id="3144647712221361880">Mở liên kết bằng tài khoản</translation>
 <translation id="9137916601698928395">Mở liên kết bằng tài khoản <ph name="USER"/></translation>
 <translation id="1137673463384776352">Mở liên kết trong <ph name="APP"/></translation>
@@ -122,7 +122,7 @@
 <translation id="3021678814754966447">&amp;Xem Nguồn Khung</translation>
 <translation id="9027459031423301635">Mở Liên kết trong &amp;Tab Mới</translation>
 <translation id="1769104665586091481">Mở Liên kết bằng Cửa sổ &amp;Mới</translation>
-<translation id="1432267168815937878">Mở Liên kết bằn&amp;g Cửa sổ Ẩn danh</translation>
+<translation id="1432267168815937878">Mở liên kết trong &amp;Cửa sổ Riêng tư</translation>
 <translation id="2142328300403846845">Mở liên kết dưới dạng</translation>
 <translation id="6892812721183419409">Mở liên kết bằng tài khoản <ph name="USER"/></translation>
 <translation id="2006638907958895361">Mở liên kết trong <ph name="APP"/></translation>
@@ -172,7 +172,7 @@
 <translation id="4200983522494130825">&amp;Tab mới</translation>
 <translation id="8418445294933751433">&amp;Hiển thị dưới dạng tab</translation>
 <translation id="1723824996674794290">Cửa sổ &amp;Mới</translation>
-<translation id="6516243500644829484">Cửa sổ ẩn &amp;danh mới</translation>
+<translation id="6516243500644829484">Cửa sổ &amp;riêng tư mới</translation>
 <translation id="6120205520491252677">Ghim trang này vào màn hình Bắt đầu...</translation>
 <translation id="9065203028668620118">Chỉnh sửa</translation>
 <translation id="5329858601952122676">&amp;Xoá</translation>
@@ -192,7 +192,7 @@
 <translation id="3285322247471302225">&amp;Tab Mới</translation>
 <translation id="8879284080359814990">&amp;Hiển thị Dưới dạng Tab</translation>
 <translation id="176587472219019965">Cửa sổ &amp;Mới</translation>
-<translation id="7973394300052703468">Cửa sổ ẩn &amp;danh mới</translation>
+<translation id="7973394300052703468">Cửa sổ &amp;Riêng tư Mới</translation>
 <translation id="5157635116769074044">Ghim trang này vào màn hình bắt đầu...</translation>
 <translation id="5830720307094128296">Lưu Trang &amp;Dưới dạng...</translation>
 <translation id="4672657274720418656">Lọc trang</translation>
@@ -364,7 +364,7 @@
 <translation id="2902312830803030883">Thao tác khác</translation>
 <translation id="495170559598752135">Tác vụ</translation>
 <translation id="3612673635130633812">Đã tải xuống bởi &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="6395403722585816044">Đã tải xuống ở chế độ Ẩn danh</translation>
+<translation id="6395403722585816044">Tải xuống ở chế độ Riêng tư</translation>
 <translation id="4551763574344810652">Nhấn <ph name="MODIFIER_KEY_DESCRIPTION"/> để hủy thao tác</translation>
 <translation id="2079545284768500474">Hoàn tác</translation>
 <translation id="2490481887078769936">Đã xóa '<ph name="FILE_NAME"/>' khỏi danh sách</translation>
@@ -411,10 +411,10 @@
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Đang tải xuống}other{Đang tải xuống}}</translation>
 <translation id="5425042808445046667">Tiếp tục tải xuống</translation>
 <translation id="5284445933715251131">Tiếp tục tải xuống</translation>
-<translation id="203837651858678035">Bạn vẫn muốn thoát khỏi chế độ ẩn danh?</translation>
+<translation id="203837651858678035">Vẫn thoát khỏi chế độ riêng tư?</translation>
 <translation id="8951465597020890363">Vẫn thoát khỏi chế độ khách?</translation>
 <translation id="9148058034647219655">Thoát</translation>
-<translation id="7376221878517288144">Bạn vẫn muốn thoát khỏi chế độ ẩn danh?</translation>
+<translation id="7376221878517288144">Vẫn thoát khỏi chế độ riêng tư?</translation>
 <translation id="973473557718930265">Thoát</translation>
 <translation id="7707599169365957976">Bạn có thể giúp cải tiến tính năng Duyệt web an toàn bằng cách gửi một số thông tin hệ thống và nội dung trang tới Brave Software.</translation>
 <translation id="4923279099980110923">Vâng, tôi muốn được trợ giúp</translation>
@@ -596,6 +596,24 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Giá trị Chữ ký Chứng chỉ</translation>
 <translation id="4104163789986725820">X&amp;uất...</translation>
+<translation id="2029156652561216312">CN</translation>
+<translation id="7822286184239325970">ST</translation>
+<translation id="8180262569555229595">O</translation>
+<translation id="7252376466538759696">OU</translation>
+<translation id="5734574586460918465">dnQualifier</translation>
+<translation id="964324710553558337">C</translation>
+<translation id="511291565806773566">serialNumber</translation>
+<translation id="5912292566401425135">L</translation>
+<translation id="5725734596824080201">DC</translation>
+<translation id="2948789661744572780">MAIL</translation>
+<translation id="7481079953250545971">UID</translation>
+<translation id="4196967880387277612">E</translation>
+<translation id="5887772116581657016">businessCategory</translation>
+<translation id="6561757256477115975">jurisdictionLocalityName</translation>
+<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
+<translation id="8904360804686555987">jurisdictionCountryName</translation>
+<translation id="8718098216622210506">STREET</translation>
+<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">PKCS #1 Mã hóa RSA</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 Với Mã hóa RSA</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 Với Mã hóa RSA</translation>
@@ -767,11 +785,11 @@
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/> (tối đa <ph name="NUM_KILOBYTES_LIVE"/>)</translation>
 <translation id="8004582292198964060">Trình duyệt</translation>
 <translation id="3678156199662914018">Tiện ích: <ph name="EXTENSION_NAME"/></translation>
-<translation id="5053701565089446556">Tiện ích Ẩn danh: <ph name="EXTENSION_NAME"/></translation>
+<translation id="5053701565089446556">Phần mở rộng Riêng tư: <ph name="EXTENSION_NAME"/></translation>
 <translation id="6508261954199872201">Ứng dụng: <ph name="APP_NAME"/></translation>
-<translation id="611296870688433505">Ứng dụng Ẩn danh: <ph name="APP_NAME"/></translation>
+<translation id="611296870688433505">Ứng dụng Riêng tư: <ph name="APP_NAME"/></translation>
 <translation id="7629827748548208700">Tab: <ph name="TAB_NAME"/></translation>
-<translation id="9048137919253433011">Tab ẩn danh: <ph name="TAB_NAME"/></translation>
+<translation id="9048137919253433011">Thẻ Riêng tư: <ph name="TAB_NAME"/></translation>
 <translation id="6900284862687837908">Ứng dụng nền: <ph name="BACKGROUND_APP_URL"/></translation>
 <translation id="7427348830195639090">Trang nền: <ph name="BACKGROUND_PAGE_URL"/></translation>
 <translation id="6798954102094737107">Plugin: <ph name="PLUGIN_NAME"/></translation>
@@ -786,7 +804,7 @@
 <translation id="2282146716419988068">Quá trình GPU</translation>
 <translation id="2087822576218954668">Bản in: <ph name="PRINT_NAME"/></translation>
 <translation id="8859174528519900719">Khung phụ: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="1799432502220762862">Khung ẩn danh phụ: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="1799432502220762862">Khung phụ Riêng tư: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="2348176352564285430">Ứng dụng: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="786073089922909430">Dịch vụ: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7663719505383602579">Bộ thu: <ph name="ARC_PROCESS_NAME"/></translation>
@@ -1350,7 +1368,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="192494336144674234">Mở bằng</translation>
 <translation id="9053893665344928494">Ghi nhớ lựa chọn của tôi</translation>
 <translation id="5340857474604400806">Tiếp tục điều hướng trong Brave</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Ẩn danh)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Riêng tư)</translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (Khách)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Có bản cập nhật)</translation>
@@ -1382,10 +1400,10 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="4400963414856942668">Bạn có thể nhấp vào dấu sao để đánh dấu một tab</translation>
 <translation id="8379991678458444070">Đánh dấu tab này để quay lại đây nhanh chóng</translation>
 <translation id="7174199383876220879">Mới! Điều khiển nhạc, video và nhiều nội dung khác.</translation>
-<translation id="4369414322596874629">Bạn có thể duyệt web riêng tư bằng cách sử dụng cửa sổ ẩn danh</translation>
-<translation id="3772947852642271642">Duyệt web mà không lưu lịch sử bằng cửa sổ ẩn danh</translation>
-<translation id="3871738366246972820">Bạn đang sử dụng máy tính dùng chung? Hãy thử mở cửa sổ ẩn danh.</translation>
-<translation id="5808622652939943719">Để duyệt web riêng tư, hãy nhấp vào menu biểu tượng ba dấu chấm để mở cửa sổ ẩn danh</translation>
+<translation id="4369414322596874629">Bạn có thể duyệt web riêng tư bằng cách sử dụng một cửa sổ riêng tư</translation>
+<translation id="3772947852642271642">Sử dụng web mà không lưu lịch sử duyệt của bạn với một cửa sổ riêng tư</translation>
+<translation id="3871738366246972820">Sử dụng máy tính công cộng? Hãy tìm cách mở một cửa sổ riêng tư.</translation>
+<translation id="5808622652939943719">Để duyệt riêng tư, hãy bấm vào menu biểu tượng dấu chấm để mở một cửa sổ riêng tư</translation>
 <translation id="8803953437405899238">Mở tab mới bằng một cú nhấp</translation>
 <translation id="3071624960923923138">Bạn có thể nhấp vào đây để mở tab mới</translation>
 <translation id="4908811072292128752">Mở tab mới để duyệt hai trang web cùng lúc</translation>
@@ -1601,13 +1619,13 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="4620809267248568679">Cài đặt này được tiện ích thực hiện.</translation>
 <translation id="4846680374085650406">Bạn đang theo khuyến cáo của quản trị viên về cài đặt này.</translation>
 <translation id="1223853788495130632">Quản trị viên của bạn đề xuất một giá trị cụ thể cho cài đặt này.</translation>
-<translation id="8839398440242019256">Không phải từ Cửa hàng Brave trực tuyến.</translation>
+<translation id="8839398440242019256">Không phải từ Web Store.</translation>
 <translation id="5337771866151525739">Được cài đặt bởi bên thứ ba.</translation>
 <translation id="4538792345715658285">Được cài đặt theo chính sách doanh nghiệp.</translation>
 <translation id="4359408040881008151">Đã được cài đặt vì (các) tiện ích phụ thuộc.</translation>
 <translation id="4980805016576257426">Tiện ích này có chứa phần mềm độc hại.</translation>
 <translation id="5522156646677899028">Tiện ích này chứa lỗ hổng bảo mật nghiêm trọng.</translation>
-<translation id="6945695820322143954">Tiện ích này vi phạm chính sách của Cửa hàng Brave trực tuyến.</translation>
+<translation id="6945695820322143954">Phần mở rộng này vi phạm chính sách Web Store.</translation>
 <translation id="177808131755847449">Đã bị Brave vô hiệu hóa. Tiện ích này có thể không an toàn.</translation>
 <translation id="1434696352799406980">Thao tác này sẽ đặt lại trang khởi động, trang tab mới, công cụ tìm kiếm và tab được ghim. Thao tác này cũng sẽ vô hiệu hóa tất cả các tiện ích và xóa dữ liệu tạm thời như cookie. Dấu trang, lịch sử và mật khẩu đã lưu của bạn sẽ không bị xóa.</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/> muốn đặt lại cài đặt của bạn.</translation>
@@ -1674,6 +1692,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="622537739776246443">Hồ sơ này sẽ bị xóa</translation>
 <translation id="5632566673632479864">Tài khoản <ph name="EMAIL"/> của bạn không còn được phép làm tài khoản chính nữa. Vì tài khoản này do <ph name="DOMAIN"/> quản lý, nên dấu trang, lịch sử, mật khẩu và các tùy chọn cài đặt khác sẽ bị xóa khỏi thiết bị này.</translation>
 <translation id="3797739167230984533"><ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> của bạn do<ph name="END_LINK"/> tổ chức của bạn quản lý</translation>
+<translation id="1722460139690167654"><ph name="ENROLLMENT_DOMAIN"/> <ph name="BEGIN_LINK"/>quản lý <ph name="DEVICE_TYPE"/><ph name="END_LINK"/> của bạn</translation>
 <translation id="8118488170956489476">Tổ chức bạn <ph name="BEGIN_LINK"/>quản lý trình duyệt<ph name="END_LINK"/> của bạn</translation>
 <translation id="1365180424462182382"><ph name="ENROLLMENT_DOMAIN"/> <ph name="BEGIN_LINK"/>quản lý trình duyệt<ph name="END_LINK"/> của bạn</translation>
 <translation id="8168435359814927499">Nội dung</translation>
@@ -1711,6 +1730,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Bộ nhớ đệm</translation>
+<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Ứng dụng</translation>
 <translation id="542872847390508405">Bạn đang duyệt với tư cách khách</translation>
 <translation id="537813040452600081">Các trang bạn xem trong cửa sổ này sẽ không xuất hiện trong lịch sử trình duyệt đồng thời sẽ không để lại dấu vết khác, như cookie, trên máy tính sau khi bạn đăng xuất. Các tệp bạn tải xuống và các dấu trang bạn tạo sẽ không được lưu giữ.</translation>
@@ -1924,7 +1944,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="881799181680267069">Ẩn Cửa sổ khác</translation>
 <translation id="4708849949179781599">Thoát <ph name="PRODUCT_NAME"/></translation>
 <translation id="8795916974678578410">Cửa sổ mới</translation>
-<translation id="1676595396635191120">Cửa sổ ẩn danh mới</translation>
+<translation id="1676595396635191120">Cửa sổ Riêng tư Mới</translation>
 <translation id="406070391919917862">Ứng dụng nền</translation>
 <translation id="3335947283844343239">Mở lại Tab đã Đóng</translation>
 <translation id="8214489666383623925">Mở Tệp...</translation>
@@ -2050,6 +2070,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="2650609753175229582"><ph name="URL"/> muốn phát nội dung được bảo vệ. Thông tin định danh của thiết bị sẽ được Brave Software xác minh và trang web này có thể truy cập vào thông tin đó.</translation>
 <translation id="1746402432151920942">Mã nhận dạng nội dung đa phương tiện được bảo vệ</translation>
 <translation id="1322046419516468189">Xem và quản lý mật khẩu đã lưu trong <ph name="SAVED_PASSWORDS_STORE"/> của bạn</translation>
+<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Đã lưu mật khẩu. Hãy xem và quản lý mật khẩu đã lưu trong <ph name="SAVED_PASSWORDS_STORE"/> của bạn.</translation>
 <translation id="5713644099811900409">Tài khoản Brave Software</translation>
 <translation id="3785727820640310185">Đã lưu mật khẩu cho trang web này</translation>
@@ -2162,7 +2183,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="7339898014177206373">Cửa sổ mới</translation>
 <translation id="7551643184018910560">Ghim vào giá</translation>
 <translation id="8335587457941836791">Bỏ ghim khỏi giá</translation>
-<translation id="4471385409549756595">Cửa sổ ẩn danh mới</translation>
+<translation id="4471385409549756595">Cửa sổ riêng tư mới</translation>
 <translation id="8249048954461686687">Thư mục OEM</translation>
 <translation id="8440630305826533614">Ứng dụng Linux</translation>
 <translation id="4742746985488890273">Ghim vào giá</translation>
@@ -2266,8 +2287,8 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
         <ph name="FILE_INFO"/>
         <ph name="EVENT_NAME"/></translation>
-<translation id="4540437243849625078">Trang web này sắp chia sẻ thông tin với một ứng dụng bên ngoài chế độ ẩn danh.</translation>
-<translation id="1227836882233136433">Thoát chế độ ẩn danh?</translation>
+<translation id="4540437243849625078">Trang này sẽ chia sẻ thông tin với một ứng dụng khác ở ngoài chế độ riêng tư.</translation>
+<translation id="1227836882233136433">Rời khỏi chế độ riêng tư?</translation>
 <translation id="662080504995468778">Ở lại</translation>
 <translation id="2593289874938379417">Brave không có quyền truy cập vào tài nguyên đã yêu cầu.</translation>
 <translation id="760197030861754408">Truy cập <ph name="LANDING_PAGE"/> để kết nối.</translation>
@@ -2310,6 +2331,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8750155211039279868"><ph name="ORIGIN"/> muốn kết nối với một cổng nối tiếp</translation>
 <translation id="4943691134276646401">"<ph name="CHROME_EXTENSION_NAME"/>" muốn kết nối với một cổng nối tiếp</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
+<translation id="1587562069597918292"><ph name="DEVICE_PATH"/></translation>
 <translation id="1171515578268894665"><ph name="ORIGIN"/> muốn kết nối với một thiết bị HID (thiết bị giao diện tương tác với con người)</translation>
 <translation id="6078769373519310690">"<ph name="CHROME_EXTENSION_NAME"/>" muốn kết nối với một thiết bị HID (thiết bị giao diện tương tác với con người)</translation>
 <translation id="4419610272958564173">Thiết bị không xác định (Nhà cung cấp: <ph name="VENDOR_ID"/>, Sản phẩm: <ph name="PRODUCT_ID"/>)</translation>
@@ -2450,12 +2472,15 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="7235737137505019098">Khóa bảo mật của bạn không có đủ dung lượng cho bất kỳ tài khoản nào khác nữa.</translation>
 <translation id="3984431586879874039">Cho phép trang web này xem khóa bảo mật của bạn?</translation>
 <translation id="8948939328578167195"><ph name="WEBSITE"/> muốn xem nhãn hiệu và mẫu khóa bảo mật của bạn</translation>
-<translation id="7618452966706304788">Bạn có muốn sử dụng Touch ID với <ph name="APP_NAME"/> trong chế độ Ẩn danh không?</translation>
-<translation id="3098826269712097986">Brave sẽ lưu dữ liệu đăng nhập sau khi bạn thoát chế độ Ẩn danh. Nhờ đó, bạn có thể sử dụng lại Touch ID với trang web này vào thời điểm khác.</translation>
+<translation id="7618452966706304788">Bạn có muốn sử dụng ID Cảm ứng với <ph name="APP_NAME"/> trong chế độ Riêng tư không?</translation>
+<translation id="3098826269712097986">Dữ liệu đăng nhập sẽ được lưu trong Brave sau khi bạn thoát khỏi chế độ Riêng tư. Điều này cho phép bạn sử dụng ID Cảm ứng với trang web này một lần nữa sau này.</translation>
 <translation id="2172784515318616985">Tiếp tục</translation>
-<translation id="5186185447130319458">Ẩn danh</translation>
+<translation id="5186185447130319458">Riêng tư</translation>
 <translation id="7643842463591647490">{0,plural, =1{# cửa sổ đang mở}other{# cửa sổ đang mở}}</translation>
-<translation id="2579188629646253712">Thoát khỏi chế độ ẩn danh</translation>
+<translation id="2579188629646253712">Thoát khỏi chế độ Riêng tư</translation>
+<translation id="479219453908726046">Thực hiện Khảo sát</translation>
+<translation id="7581273696622423628">Thực hiện khảo sát</translation>
+<translation id="4406504596603350105">Phản hồi của bạn rất quan trọng với chúng tôi.</translation>
 <translation id="4349828822184870497">Hữu ích</translation>
 <translation id="6876469544038980967">Không hữu ích</translation>
 <translation id="6428450836711225518">Xác minh số điện thoại của bạn</translation>
@@ -2468,17 +2493,20 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="399179161741278232">Đã nhập</translation>
 <translation id="5225324770654022472">Hiển thị lối tắt cho ứng dụng</translation>
 <translation id="5072836811783999860">Hiển thị dấu trang được quản lý</translation>
+<translation id="3613134908380545408">Hiển thị <ph name="FOLDER_NAME"/></translation>
 <translation id="3785308913036335955">Hiển thị lối tắt cho ứng dụng</translation>
 <translation id="711840821796638741">Hiển thị dấu trang được quản lý</translation>
-<translation id="3613134908380545408">Hiển thị <ph name="FOLDER_NAME"/></translation>
 <translation id="2367972762794486313">Hiển thị ứng dụng</translation>
 <translation id="8368859634510605990">&amp;Mở tất cả dấu trang</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{&amp;Mở tất cả}=1{&amp;Mở dấu trang}other{&amp;Mở tất cả (#)}}</translation>
 <translation id="1016437870506746108">{COUNT,plural, =0{Mở tất cả trong &amp;cửa sổ mới}=1{Mở trong &amp;cửa sổ mới}other{Mở tất cả (#) trong &amp;cửa sổ mới}}</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Mở tất cả trong &amp;cửa sổ ẩn danh}=1{Mở trong &amp;cửa sổ ẩn danh}other{Mở tất cả (#) trong &amp;cửa sổ ẩn danh}}</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Mở tất cả trong &amp;cửa sổ riêng tư}
+          =1 {Mở trong &amp;cửa sổ riêng tư}
+          other {Mở tất cả (#) trong &amp;cửa sổ riêng tư}}</translation>
 <translation id="3613422051106148727">&amp;Mở trong tab mới</translation>
 <translation id="4853020600495124913">Mở trong &amp;cửa sổ mới</translation>
-<translation id="2431625704210501303">Mở trong cửa sổ ẩ&amp;n danh</translation>
+<translation id="2431625704210501303">Mở trong &amp;cửa sổ riêng tư</translation>
 <translation id="6702639462873609204">&amp;Chỉnh sửa...</translation>
 <translation id="3088325635286126843">Đổ&amp;i tên...</translation>
 <translation id="713122686776214250">Thêm tran&amp;g...</translation>
@@ -2487,10 +2515,13 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6466988389784393586">&amp;Mở tất cả dấu trang</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Mở tất cả}=1{&amp;Mở dấu trang}other{&amp;Mở tất cả (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Mở tất cả trong &amp;cửa sổ mới}=1{Mở trong &amp;cửa sổ mới}other{Mở tất cả (#) trong &amp;cửa sổ mới}}</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Mở tất cả trong &amp;cửa sổ ẩn danh}=1{Mở trong &amp;cửa sổ ẩn danh}other{Mở tất cả (#) trong cửa sổ ẩn danh}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Mở Tất cả trong &amp;Cửa sổ Riêng tư}
+          =1 {Mở trong &amp;Cửa sổ Riêng tư}
+          other {Mở Tất cả (#) trong &amp;Cửa sổ Riêng tư}}</translation>
 <translation id="9024127637873500333">&amp;Mở trong Tab mới</translation>
 <translation id="665061930738760572">Mở trong cửa sổ &amp;mới</translation>
-<translation id="1985165269306590797">Mở trong &amp;Cửa sổ ẩn danh</translation>
+<translation id="1985165269306590797">Mở trong &amp;Cửa sổ riêng tư</translation>
 <translation id="8824701697284169214">Thêm tran&amp;g...</translation>
 <translation id="2489918096470125693">Thêm &amp;thư mục...</translation>
 <translation id="421182450098841253">&amp;Hiển thị thanh dấu trang</translation>
@@ -2542,10 +2573,10 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8457451314607652708">Nhập dấu trang</translation>
 <translation id="5101042277149003567">Mở tất cả dấu trang</translation>
 <translation id="7007648447224463482">Mở tất cả trong cửa sổ mới</translation>
-<translation id="642436385689435488">Mở tất cả trong cửa sổ ẩn danh</translation>
+<translation id="642436385689435488">Mở tất cả trong cửa sổ riêng tư</translation>
 <translation id="4195643157523330669">Mở bằng tab mới</translation>
 <translation id="2979639724566107830">Mở trong cửa sổ mới</translation>
-<translation id="5463021359602611602">Mở trong cửa sổ ẩn danh</translation>
+<translation id="5463021359602611602">Mở trong cửa sổ riêng tư</translation>
 <translation id="1173894706177603556">Đổi tên</translation>
 <translation id="6825184156888454064">Sắp xếp theo tên</translation>
 <translation id="3440663250074896476">Thao tác khác cho <ph name="BOOKMARK_NAME"/></translation>
@@ -2623,9 +2654,15 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="4159681666905192102">Đây là tài khoản cho trẻ em do <ph name="CUSTODIAN_EMAIL"/> và <ph name="SECOND_CUSTODIAN_EMAIL"/> quản lý.</translation>
 <translation id="5958529069007801266">Người dùng được giám sát</translation>
 <translation id="5720705177508910913">Người dùng hiện tại</translation>
-<translation id="1850357845349976573">{0,plural, =1{Ẩn danh}other{# cửa sổ ẩn danh đang mở}}</translation>
-<translation id="37784332082579802">{0,plural, =1{Ẩn danh}other{Ẩn danh (#)}}</translation>
-<translation id="5070556616376997776">Bạn đang ở chế độ ẩn danh</translation>
+<translation id="1850357845349976573">{0, plural,
+        =1 {riêng tư}
+        other {# mở cửa sổ riêng tư}
+      }</translation>
+<translation id="37784332082579802">{0, plural,
+      =1 {Riêng tư}
+      other {Riêng tư (#)}
+    }</translation>
+<translation id="5070556616376997776">Đây là cửa sổ riêng tư</translation>
 <translation id="2199298570273670671">Lỗi</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: Tính năng đồng bộ hóa hiện không hoạt động</translation>
 <translation id="7307129035224081534">Đã tạm dừng</translation>
@@ -2634,8 +2671,8 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (Tài khoản cho trẻ em)</translation>
 <translation id="8182664696082410784"><ph name="REASON"/>
     Tôi không cho rằng nên chặn trang web này!</translation>
-<translation id="5832813618714645810">Mọi người</translation>
-<translation id="7171000599584840888">Thêm người...</translation>
+<translation id="5832813618714645810">Hồ sơ</translation>
+<translation id="7171000599584840888">Thêm hồ sơ...</translation>
 <translation id="1781771911845953849">Tài khoản và đồng bộ hóa</translation>
 <translation id="4974733135013075877">Thoát và khóa chặn trẻ em</translation>
 <translation id="3965965397408324205">Thoát khỏi <ph name="PROFILE_NAME"/></translation>
@@ -2654,21 +2691,21 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8473863474539038330">Địa chỉ và các tùy chọn khác</translation>
 <translation id="5287425679749926365">Tài khoản của bạn</translation>
 <translation id="4801448226354548035">Ẩn tài khoản</translation>
-<translation id="2935225303485967257">Quản lý mọi người</translation>
+<translation id="2935225303485967257">Quản lý hồ sơ</translation>
 <translation id="7388222713940428051">Mở Cửa sổ khách</translation>
 <translation id="127668050356036882">Đóng tất cả các cửa sổ</translation>
 <translation id="1464258312790801189">Tài khoản của bạn</translation>
 <translation id="6655458902729017087">Ẩn tài khoản</translation>
-<translation id="688280436658139163">Quản lý mọi người</translation>
+<translation id="688280436658139163">Quản lý Hồ sơ</translation>
 <translation id="2666990579225592931">Mở cửa sổ khách</translation>
 <translation id="5869948122057593679">Đóng tất cả các cửa sổ</translation>
-<translation id="4133080584509825342">Chỉnh sửa người, <ph name="PROFILE_NAME"/></translation>
-<translation id="4848862725510532982">Chỉnh sửa người, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4133080584509825342">Sửa hồ sơ, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Sửa hồ sơ, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="3294437725009624529">Khách</translation>
 <translation id="475088594373173692">Người dùng đầu tiên</translation>
 <translation id="4535127706710932914">Hồ sơ mặc định</translation>
 <translation id="4389091756366370506">Người dùng <ph name="VALUE"/></translation>
-<translation id="4536111748245793305">Cá nhân <ph name="VALUE"/></translation>
+<translation id="4536111748245793305">Hồ sơ <ph name="VALUE"/></translation>
 <translation id="5397794290049113714">Bạn</translation>
 <translation id="3031417829280473749">Đặc vụ X</translation>
 <translation id="412730574613779332">Spandex</translation>
@@ -2756,7 +2793,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="2871813825302180988">Tài khoản này đã đang được sử dụng trên thiết bị này.</translation>
 <translation id="7654941827281939388">Tài khoản này đã đang được sử dụng trên máy tính này.</translation>
 <translation id="9022847679183471841">Tài khoản này đang được sử dụng trên máy tính này bởi <ph name="AVATAR_NAME"/>.</translation>
-<translation id="6921634551681321094">Thêm người</translation>
+<translation id="6921634551681321094">Thêm hồ sơ</translation>
 <translation id="5389237414310520250">Không thể tạo người dùng mới. Vui lòng kiểm tra dung lượng ổ đĩa cứng và quyền của bạn rồi thử lại.</translation>
 <translation id="2673589024369449924">Tạo lối tắt trên màn hình cho người dùng này</translation>
 <translation id="2731710757838467317">Tạo người dùng được giám sát của bạn. Quá trình này có thể mất ít phút.</translation>
@@ -2764,13 +2801,13 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6690751852586194791">Chọn người dùng được giám sát để thêm vào thiết bị này.</translation>
 <translation id="5525677322972469346">Tạo người dùng được giám sát mới</translation>
 <translation id="8630903300770275248">Nhập người dùng được giám sát</translation>
-<translation id="4904061654709986277">Thêm người</translation>
-<translation id="6114945161119872228">Xóa người này</translation>
-<translation id="769308100792069196">Thêm người được giám sát</translation>
+<translation id="4904061654709986277">Thêm Hồ sơ</translation>
+<translation id="6114945161119872228">Xóa Hồ sơ Này</translation>
+<translation id="769308100792069196">Thêm Hồ sơ Giám sát</translation>
 <translation id="3470442499439619530">Xóa người dùng này</translation>
 <translation id="4296575653627536209">Thêm người dùng được giám sát</translation>
-<translation id="8006143138282906848">Xóa người này</translation>
-<translation id="6912187023601892621">Thêm người được giám sát</translation>
+<translation id="8006143138282906848">Xóa hồ sơ này</translation>
+<translation id="6912187023601892621">Thêm hồ sơ giám sát</translation>
 <translation id="1608626060424371292">Xóa người dùng này</translation>
 <translation id="493571969993549666">Thêm người dùng được giám sát</translation>
 <translation id="9101691533782776290">Chạy ứng dụng</translation>
@@ -2792,8 +2829,8 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6164005077879661055">Tất cả các tệp và dữ liệu trên máy được liên kết với người dùng được giám sát sẽ vĩnh viễn bị xóa khi người dùng được giám sát này bị xóa. Các trang web đã truy cập và các cài đặt của người dùng được giám sát này có thể vẫn hiển thị với người quản lý tại <ph name="MANAGEMENT_URL"/>.</translation>
 <translation id="3410832398355316179">Tất cả các tệp và dữ liệu trên máy liên kết với người dùng này sẽ bị xóa vĩnh viễn sau khi xóa người dùng này. <ph name="USER_EMAIL"/> vẫn có thể đăng nhập vào lúc khác.</translation>
 <translation id="672213144943476270">Vui lòng mở khóa hồ sơ của bạn trước khi duyệt với tư cách khách.</translation>
-<translation id="8086119151297127544">Vui lòng mở khóa hồ sơ của bạn trước khi xóa một người.</translation>
-<translation id="7805701378418968629">Vui lòng mở khóa hồ sơ của bạn trước khi thêm một người.</translation>
+<translation id="8086119151297127544">Vui lòng mở khóa hồ sơ của bạn trước khi xóa hồ sơ.</translation>
+<translation id="7805701378418968629">Vui lòng mở khóa hồ sơ của bạn trước khi thêm hồ sơ.</translation>
 <translation id="8978225823042133615">Để sử dụng Brave, vui lòng đăng nhập</translation>
 <translation id="4893336867552636863">Thao tác này sẽ xóa vĩnh viễn dữ liệu duyệt web của bạn khỏi thiết bị này.</translation>
 <translation id="2496180316473517155">Lịch sử duyệt web</translation>
@@ -2851,8 +2888,9 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6850286078059909152">Màu văn bản</translation>
 <translation id="8042142357103597104">Độ mờ văn bản</translation>
 <translation id="1656528038316521561">Độ mờ của nền</translation>
-<translation id="5750288053043553775">0</translation>
-<translation id="8689998525144040851">100</translation>
+<translation id="8838601485495657486">Mờ</translation>
+<translation id="5826993284769733527">Nửa trong suốt</translation>
+<translation id="4438043733494739848">Trong suốt</translation>
 <translation id="2442916515643169563">Đổ bóng văn bản</translation>
 <translation id="3599221874935822507">Nhô lên</translation>
 <translation id="274029851662193272">Hạ xuống</translation>
@@ -2867,7 +2905,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="161042844686301425">Lục lam</translation>
 <translation id="4115378294792113321">Đỏ thẫm</translation>
 <translation id="6981982820502123353">Truy cập</translation>
-<translation id="5840822070878669614">Mở cửa hàng Brave trực tuyến</translation>
+<translation id="5840822070878669614">Mở Web Store</translation>
 <translation id="6073903501322152803">Thêm tính năng trợ năng</translation>
 <translation id="7988355189918024273">Bật các tính năng hỗ trợ truy cập</translation>
 <translation id="5499063270485366718">Brave sẽ cố gắng mô tả cho bạn những hình ảnh không có nội dung mô tả hữu ích. Để tạo nội dung mô tả, các hình ảnh sẽ được gửi đến Brave Software.</translation>
@@ -2963,6 +3001,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="4430019312045809116">Âm lượng</translation>
 <translation id="3677657024345889897">Nhỏ nhất</translation>
 <translation id="167160931442925455">To nhất</translation>
+<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (mặc định)</translation>
 <translation id="7037509989619051237">Văn bản để xem trước</translation>
 <translation id="5471768120198416576">Chào bạn! Đây là giọng nói của tính năng chuyển văn bản sang lời nói.</translation>
@@ -3227,10 +3266,13 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="4058720513957747556">AppSocket (TCP/IP)</translation>
 <translation id="6619058681307408113">Line Printer Daemon (LPD)</translation>
 <translation id="2266957463645820432">IPP qua USB (IPPUSB)</translation>
+<translation id="8086015605808120405">Đang định cấu hình <ph name="PRINTER_NAME"/> ...</translation>
 <translation id="4665014895760275686">Nhà sản xuất</translation>
 <translation id="4561098487691395071">Hoặc chỉ định tệp PPD cho máy in của bạn</translation>
 <translation id="1989112275319619282">Duyệt qua</translation>
 <translation id="3625481642044239431">Bạn đã chọn tệp không hợp lệ. Hãy thử lại.</translation>
+<translation id="2462752602710430187">Đã thêm <ph name="PRINTER_NAME"/></translation>
+<translation id="7380768571499464492">Đã cập nhật <ph name="PRINTER_NAME"/></translation>
 <translation id="8002670234429879764"><ph name="PRINTER_NAME"/> không sử dụng được nữa</translation>
 <translation id="3976108569178263973">Không có máy in nào.</translation>
 <translation id="3213187967168344806">Không thể thêm máy in. Hãy khởi động lại máy tính của bạn rồi thử lại.</translation>
@@ -3795,9 +3837,9 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6196640612572343990">Chặn cookie của bên thứ ba</translation>
 <translation id="6782111308708962316">Ngăn các trang web của bên thứ ba lưu và đọc dữ liệu cookie</translation>
 <translation id="1274977772557788323">Cài đặt bộ nhớ của Adobe Flash Player</translation>
-<translation id="1281501490173223206">Chỉ phiên ẩn danh hiện tại</translation>
-<translation id="3479035826743782247">Phiên ẩn danh hiện tại</translation>
-<translation id="4750220700975225">Phiên ẩn danh hiện tại (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Chỉ riêng phiên riêng tư hiện tại</translation>
+<translation id="3479035826743782247">Phiên riêng tư hiện tại</translation>
+<translation id="4750220700975225">Phiên riêng tư hiện tại (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Không có trang web nào được phóng to hoặc thu nhỏ</translation>
 <translation id="3566721612727112615">Chưa thêm trang web nào</translation>
 <translation id="8098574385249290065">Cho phép Brave chọn thời điểm trang web có thể phát âm thanh (khuyên dùng)</translation>
@@ -3824,8 +3866,8 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="4590324241397107707">Bộ nhớ cơ sở dữ liệu</translation>
 <translation id="8016266267177410919">Bộ nhớ tạm thời</translation>
 <translation id="4175737294868205930">Bộ nhớ liên tục</translation>
-<translation id="3707212204259470604">Quản lý những người khác</translation>
-<translation id="8907706281008466056">Ảnh hồ sơ trên Brave Software</translation>
+<translation id="3707212204259470604">Quản lý các hồ sơ khác</translation>
+<translation id="8907706281008466056">Ảnh Hồ sơ Brave</translation>
 <translation id="2408955596600435184">Nhập mã PIN của bạn</translation>
 <translation id="6619990499523117484">Xác nhận mã PIN của bạn</translation>
 <translation id="2023167225947895179">Mã PIN có thể dễ đoán</translation>
@@ -3859,6 +3901,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="2458379781610688953">Cập nhật tài khoản, <ph name="EMAIL"/></translation>
 <translation id="2701737434167469065">Đăng nhập, <ph name="EMAIL"/></translation>
 <translation id="2923234477033317484">Xóa tài khoản này</translation>
+<translation id="8995603266996330174">Quản lý bởi <ph name="DOMAIN"/></translation>
 <translation id="4659077111144409915">Tài khoản chính</translation>
 <translation id="8864458770072227512">Đã xóa <ph name="EMAIL"/> khỏi thiết bị này</translation>
 <translation id="3158033540161634471">Thiết lập vân tay</translation>
@@ -3891,12 +3934,11 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="3608576286259426129">Bản xem trước hình ảnh dành cho người dùng</translation>
 <translation id="2114896190328250491">Ảnh của <ph name="NAME"/></translation>
 <translation id="7155171745945906037">Ảnh hiện có từ máy ảnh hoặc tệp</translation>
-<translation id="8995603266996330174">Được quản lý bởi <ph name="DOMAIN"/></translation>
 <translation id="9125982323641182972">Trải nghiệm Brave Software thông minh trong Brave</translation>
 <translation id="1692115862433274081">Sử dụng một tài khoản khác</translation>
 <translation id="5244474230056479698">Đang đồng bộ hóa với <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Vì tài khoản này do <ph name="DOMAIN"/> quản lý nên dấu trang, lịch sử, mật khẩu và các cài đặt khác của bạn sẽ bị xóa khỏi thiết bị này. Tuy nhiên, dữ liệu của bạn sẽ vẫn được lưu trữ trong Tài khoản Brave Software và có thể được quản lý trên <ph name="BEGIN_LINK"/>Trang tổng quan Brave Software<ph name="END_LINK"/>.</translation>
-<translation id="6906406176003824042">Chỉnh sửa người</translation>
+<translation id="6906406176003824042">Sửa hồ sơ</translation>
 <translation id="6739923123728562974">Hiển thị lối tắt trên màn hình</translation>
 <translation id="2450310832094867474">Bạn muốn tắt tính năng đồng bộ hóa và đăng xuất?</translation>
 <translation id="3699920817649120894">Bạn có muốn tắt tính năng đồng bộ hóa và cá nhân hóa không?</translation>
@@ -3986,7 +4028,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="437184764829821926">Cài đặt phông chữ nâng cao</translation>
 <translation id="323803881985677942">Mở tùy chọn tiện ích</translation>
 <translation id="2166369534954157698">Lươn ngắn lại chê trạch dài</translation>
-<translation id="8911765336506423117">Yêu cầu tiện ích từ Cửa hàng Brave trực tuyến</translation>
+<translation id="8911765336506423117">Yêu cầu phần mở rộng từ Web Store</translation>
 <translation id="6965978654500191972">Thiết bị</translation>
 <translation id="8260864402787962391">Chuột</translation>
 <translation id="155865706765934889">Ô di chuột</translation>
@@ -4110,7 +4152,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8781980678064919987">Tắt máy khi đóng nắp</translation>
 <translation id="3636766455281737684"><ph name="PERCENTAGE"/>% - còn lại <ph name="TIME"/></translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - <ph name="TIME"/> cho đến khi pin đầy</translation>
-<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="2620436844016719705">Hệ thống</translation>
 <translation id="2077129598763517140">Sử dụng chế độ tăng tốc phần cứng khi khả dụng</translation>
 <translation id="3817524650114746564">Mở tùy chọn cài đặt proxy trên máy tính của bạn</translation>
@@ -4233,7 +4274,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="329838636886466101">Sửa</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Không hoạt động)</translation>
-<translation id="3860292630623580294">(Ẩn danh)</translation>
+<translation id="3860292630623580294">(Riêng tư)</translation>
 <translation id="6655190889273724601">Chế độ dành cho nhà phát triển</translation>
 <translation id="2868746137289129307">Tiện ích này là đã lỗi thời và bị chính sách doanh nghiệp vô hiệu hóa. Tiện ích có thể được bật tự động khi có phiên bản mới hơn.</translation>
 <translation id="6841186874966388268">Lỗi</translation>
@@ -4269,7 +4310,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="1805822111539868586">Kiểm tra chế độ xem</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> lượt xem khác...</translation>
 <translation id="2450849356604136918">Không có chế độ xem đang hoạt động nào</translation>
-<translation id="4854477725773269949">Cho phép ở chế độ ẩn danh</translation>
+<translation id="4854477725773269949">Cho phép trong chế độ riêng tư</translation>
 <translation id="6124650939968185064">Các tiện ích sau phụ thuộc vào tiện ích này:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="3866249974567520381">Mô tả</translation>
@@ -4296,14 +4337,14 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="7235716375204803342">Đang tìm nạp hoạt động...</translation>
 <translation id="8314381333424235892">Thiếu hoặc chưa cài đặt tiện ích</translation>
 <translation id="7647403192093989392">Không có hoạt động nào gần đây</translation>
-<translation id="38046578254905003">Tìm tiện ích và chủ đề trong <ph name="BEGIN_LINK"/>Cửa hàng Brave trực tuyến<ph name="END_LINK"/></translation>
+<translation id="38046578254905003">Tìm các phần mở rộng và chủ đề trong <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
 <translation id="7272674038937250585">Chưa có mô tả</translation>
 <translation id="3855441664322950881">Đóng gói tiện ích</translation>
 <translation id="2958721676848865875">Cảnh báo đóng gói tiện ích</translation>
 <translation id="8652400352452647993">Lỗi đóng gói tiện ích</translation>
 <translation id="8398877366907290961">Tiếp tục truy cập</translation>
 <translation id="8770406935328356739">Thư mục gốc của tiện ích</translation>
-<translation id="6226777517901268232">Tệp khóa cá nhân (tùy chọn)</translation>
+<translation id="6226777517901268232">Tệp khóa riêng tư (tùy chọn)</translation>
 <translation id="2916745397441987255">Tìm kiếm trong tiện ích</translation>
 <translation id="1992397118740194946">Chưa đặt</translation>
 <translation id="6706210727756204531">Phạm vi</translation>
@@ -4323,7 +4364,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="1688935057616748272">Nhập một chữ cái</translation>
 <translation id="4479424953165245642">Quản lý ứng dụng kiosk</translation>
 <translation id="6619801788773578757">Thêm ứng dụng kiosk</translation>
-<translation id="8045923671629973368">Hãy nhập ID ứng dụng hoặc URL cửa hàng trực tuyến</translation>
+<translation id="8045923671629973368">Nhập ID ứng dụng hoặc URL webstore</translation>
 <translation id="7059858479264779982">Đặt thành tự động chạy</translation>
 <translation id="6325191661371220117">Tắt tính năng tự động chạy</translation>
 <translation id="4699357559218762027">(tự động chạy)</translation>
@@ -4489,8 +4530,8 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6041155700700864984">Thoát chế độ toàn màn hình</translation>
 <translation id="6112294629795967147">Chạm để đổi kích thước</translation>
 <translation id="2453860139492968684">Kết thúc</translation>
-<translation id="6336451774241870485">Tab riêng tư mới</translation>
-<translation id="6610147964972079463">Đóng tab riêng tư</translation>
+<translation id="6336451774241870485">Thẻ riêng tư mới</translation>
+<translation id="6610147964972079463">Đóng các thẻ riêng tư</translation>
 <translation id="8076492880354921740">Tab</translation>
 <translation id="2794233252405721443">Trang web đã bị chặn</translation>
 <translation id="1721312023322545264">Bạn cần được <ph name="NAME"/> cấp quyền để truy cập vào trang web này</translation>

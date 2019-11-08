@@ -43,6 +43,22 @@
     "message": "ADományok",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "Részletek",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Az ön egyenlege",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT-pontok",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "felhasználható a Brave Rewardsban a kedvenc tartalomkészítőinek küldött hozzájáruláshoz. A BAT-pontok nem cserélhetők be BAT-ra.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "bekapcsolva",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Havi hozzájárulás",
+    "message": "Adakozz havonta ennek az oldalnak",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Megjelöltél {{reservedAmount}} BAT-ot olyan alkotóknak, akik még nem regisztráltak, hogy fogadhassák a hozzájárulásokat. Böngésződ próbálkozni fog a folyósítással, amíg igazolnak, vagy eltelik 90 nap.",
+    "message": "Ön meghatározott {{reservedAmount}} {{currency}} összeget olyan alkotók számára, akik még nem iratkoztak fel illetményre. Böngészője mindaddig próbálkozik a hozzájárulással, amíg nem igazolják magukat, vagy amíg 90 nap el nem telik.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave Ads jutalmak!",
+    "message": "Hirdetési jutalmat kapott!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Brave Ads jutalmaid jóváírása úton van.",
+    "message": "Jutalma úton van Brave Rewards pénztárcájához.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Brave Ads token jóváírásod",
+    "message": "A jutalom összege",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "Komplett pénztárca ellenőrzés",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "Beállítás...",
-    "description": "Button text for setting monthly contribution"
   }
 }

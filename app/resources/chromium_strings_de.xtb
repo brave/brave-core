@@ -108,7 +108,7 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="8148611988012584308">Brave anpassen und einstellen</translation>
 <translation id="5849446944780602366">Brave anpassen und Einstellungen festlegen. Ein Update ist verfügbar.</translation>
 <translation id="6315734375101223238">Sie können Brave anpassen und Einstellungen festlegen. Etwas erfordert Ihre Aufmerksamkeit – klicken Sie, um mehr zu erfahren.</translation>
-<translation id="9071554113102421877">&amp;amp;In Brave öffnen</translation>
+<translation id="9071554113102421877">&amp;In Brave öffnen</translation>
 <translation id="2176825726964012531">Über &amp;Brave</translation>
 <translation id="5450493308072741203">&amp;Brave aktualisieren</translation>
 <translation id="1421502046520299169">Über &amp;Brave OS</translation>
@@ -247,9 +247,8 @@ Sollten Sie sich trotzdem anmelden, werden die Brave-Daten wie Lesezeichen, Verl
 <translation id="1864557848095568223">Brave wird aktualisiert</translation>
 <translation id="1786715389543715322">Brave wird aktualisiert (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="8208853227947884571">Brave ist auf dem neuesten Stand</translation>
-<translation id="6756417787837743699">Details zu Brave OS finden Sie unter <ph name="LINK_BEGIN"/>
-      Über Brave OS<ph name="LINK_END"/></translation>
 <translation id="6686872257969654608">Über Brave OS</translation>
+<translation id="7674116293463255181">Sie können anhand der <ph name="LINK_BEGIN"/>Einstellungen von Brave OS<ph name="LINK_END"/> sehen, ob Ihr Gerät auf dem neuesten Stand ist</translation>
 <translation id="2280363356796735201">Hilfe für Brave OS aufrufen</translation>
 <translation id="38898988211673781">Cookies und Websitedaten beim Beenden von Brave löschen</translation>
 <translation id="5253815230176279256">Brave Software Pay (in Brave kopiert)</translation>

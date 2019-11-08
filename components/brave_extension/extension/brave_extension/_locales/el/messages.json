@@ -8,11 +8,11 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "πάνω",
+    "message": "πανω",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "κάτω",
+    "message": "κατω",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {

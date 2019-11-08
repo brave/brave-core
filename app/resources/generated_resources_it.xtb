@@ -61,7 +61,7 @@
 <translation id="1163931534039071049">&amp;Visualizza sorgente frame</translation>
 <translation id="6886871292305414135">Apri link in un'altra &amp;scheda</translation>
 <translation id="8899851313684471736">Apri link in un'altra &amp;finestra</translation>
-<translation id="658539216370629794">Apri link in finestra di navigazione in inco&amp;gnito</translation>
+<translation id="658539216370629794">Apri link in una &amp;finestra privata</translation>
 <translation id="3144647712221361880">Apri link come</translation>
 <translation id="9137916601698928395">Apri link come <ph name="USER"/></translation>
 <translation id="1137673463384776352">Apri link in <ph name="APP"/></translation>
@@ -122,7 +122,7 @@
 <translation id="3021678814754966447">&amp;Visualizza sorgente frame</translation>
 <translation id="9027459031423301635">Apri link in un'altra &amp;scheda</translation>
 <translation id="1769104665586091481">Apri link in un'altra &amp;finestra</translation>
-<translation id="1432267168815937878">Apri link in finestra di navigazione in inco&amp;gnito</translation>
+<translation id="1432267168815937878">Apri link in una &amp;Finestra Privata</translation>
 <translation id="2142328300403846845">Apri link come</translation>
 <translation id="6892812721183419409">Apri link come <ph name="USER"/></translation>
 <translation id="2006638907958895361">Apri link in <ph name="APP"/></translation>
@@ -172,7 +172,7 @@
 <translation id="4200983522494130825">Nuova &amp;scheda</translation>
 <translation id="8418445294933751433">&amp;Mostra come scheda</translation>
 <translation id="1723824996674794290">&amp;Nuova finestra</translation>
-<translation id="6516243500644829484">Nuova f&amp;inestra di navigazione in incognito</translation>
+<translation id="6516243500644829484">Nuova &amp;finestra privata</translation>
 <translation id="6120205520491252677">Blocca questa pagina in schermata iniziale...</translation>
 <translation id="9065203028668620118">Modifica</translation>
 <translation id="5329858601952122676">&amp;Elimina</translation>
@@ -192,7 +192,7 @@
 <translation id="3285322247471302225">Nuova &amp;scheda</translation>
 <translation id="8879284080359814990">Mostra come &amp;scheda</translation>
 <translation id="176587472219019965">&amp;Nuova finestra</translation>
-<translation id="7973394300052703468">Nuova finestra di navigazione in &amp;incognito</translation>
+<translation id="7973394300052703468">Nuova &amp;Finestra Privata</translation>
 <translation id="5157635116769074044">Esponi questa pagina nella schermata iniziale...</translation>
 <translation id="5830720307094128296">S&amp;alva pagina con nome...</translation>
 <translation id="4672657274720418656">Pagina Distill</translation>
@@ -364,7 +364,7 @@
 <translation id="2902312830803030883">Altre azioni</translation>
 <translation id="495170559598752135">Azioni</translation>
 <translation id="3612673635130633812">Scaricato da &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="6395403722585816044">Scaricato in modalità in incognito</translation>
+<translation id="6395403722585816044">Scarica in Privato</translation>
 <translation id="4551763574344810652">Premi <ph name="MODIFIER_KEY_DESCRIPTION"/> per annullare</translation>
 <translation id="2079545284768500474">Annulla operazione</translation>
 <translation id="2490481887078769936">"<ph name="FILE_NAME"/>" rimosso dall'elenco</translation>
@@ -411,10 +411,10 @@
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Download in corso}other{Download in corso}}</translation>
 <translation id="5425042808445046667">Continua il download</translation>
 <translation id="5284445933715251131">Continua il download</translation>
-<translation id="203837651858678035">Vuoi uscire comunque dalla modalità di navigazione in incognito?</translation>
+<translation id="203837651858678035">Uscire comunque da modalità privata?</translation>
 <translation id="8951465597020890363">Vuoi uscire comunque dalla modalità ospite?</translation>
 <translation id="9148058034647219655">Esci</translation>
-<translation id="7376221878517288144">Vuoi uscire comunque dalla modalità di navigazione in incognito?</translation>
+<translation id="7376221878517288144">Uscire comunque da modalità privata?</translation>
 <translation id="973473557718930265">Esci</translation>
 <translation id="7707599169365957976">Puoi contribuire a migliorare la Navigazione sicura, grazie all'invio di informazioni di sistema e contenuti delle pagine a Brave Software.</translation>
 <translation id="4923279099980110923">Sì, desidero dare il mio contributo</translation>
@@ -785,11 +785,11 @@
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/> (picco di <ph name="NUM_KILOBYTES_LIVE"/>)</translation>
 <translation id="8004582292198964060">Browser</translation>
 <translation id="3678156199662914018">Estensione: <ph name="EXTENSION_NAME"/></translation>
-<translation id="5053701565089446556">Estensione in incognito: <ph name="EXTENSION_NAME"/></translation>
+<translation id="5053701565089446556">Estensione Privata: <ph name="EXTENSION_NAME"/></translation>
 <translation id="6508261954199872201">Applicazione: <ph name="APP_NAME"/></translation>
-<translation id="611296870688433505">Applicazione in incognito: <ph name="APP_NAME"/></translation>
+<translation id="611296870688433505">App Privata: <ph name="APP_NAME"/></translation>
 <translation id="7629827748548208700">Scheda: <ph name="TAB_NAME"/></translation>
-<translation id="9048137919253433011">Scheda di navigazione in incognito: <ph name="TAB_NAME"/></translation>
+<translation id="9048137919253433011">Scheda Privata: <ph name="TAB_NAME"/></translation>
 <translation id="6900284862687837908">App in background: <ph name="BACKGROUND_APP_URL"/></translation>
 <translation id="7427348830195639090">Pagina di sfondo: <ph name="BACKGROUND_PAGE_URL"/></translation>
 <translation id="6798954102094737107">Plug-in: <ph name="PLUGIN_NAME"/></translation>
@@ -804,7 +804,7 @@
 <translation id="2282146716419988068">Processo GPU</translation>
 <translation id="2087822576218954668">Stampa: <ph name="PRINT_NAME"/></translation>
 <translation id="8859174528519900719">Frame secondario: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="1799432502220762862">Frame secondario modalità di navigazione in incognito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="1799432502220762862">Subframe privato: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="2348176352564285430">App: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="786073089922909430">Servizio: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7663719505383602579">Ricevitore: <ph name="ARC_PROCESS_NAME"/></translation>
@@ -1368,7 +1368,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="192494336144674234">Apri con</translation>
 <translation id="9053893665344928494">Memorizza la mia scelta</translation>
 <translation id="5340857474604400806">Rimani in Brave</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (In incognito)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privato)</translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (Ospite)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (aggiornamento disponibile)</translation>
@@ -1400,10 +1400,10 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="4400963414856942668">Puoi fare clic sulla stella per aggiungere una scheda ai preferiti</translation>
 <translation id="8379991678458444070">Aggiungi questa scheda ai preferiti per ritrovarla rapidamente</translation>
 <translation id="7174199383876220879">Novità! Gestisci la tua musica, i tuoi video e altro ancora.</translation>
-<translation id="4369414322596874629">Puoi navigare in privato usando una finestra di navigazione in incognito</translation>
-<translation id="3772947852642271642">Apri una finestra di navigazione in incognito per esplorare il Web senza salvare la tua cronologia di navigazione</translation>
-<translation id="3871738366246972820">Condividi il computer con altre persone? Prova ad aprire una finestra di navigazione in incognito.</translation>
-<translation id="5808622652939943719">Per navigare in privato, fai clic sul menu con un'icona con tre puntini per aprire una finestra di navigazione in incognito</translation>
+<translation id="4369414322596874629">Puoi navigare in privato usando una finestra privata</translation>
+<translation id="3772947852642271642">Esplora il web senza salvare la tua cronologia con una finestra privata</translation>
+<translation id="3871738366246972820">Stai usando un computer condiviso? Prova a aprire una finestra privata.</translation>
+<translation id="5808622652939943719">Per navigare in privato, clicca l'icona di menu con i puntini per aprire una finestra privata</translation>
 <translation id="8803953437405899238">Apri una nuova scheda con un clic</translation>
 <translation id="3071624960923923138">Puoi fare clic qui per aprire una nuova scheda</translation>
 <translation id="4908811072292128752">Apri una nuova scheda per visitare due siti contemporaneamente</translation>
@@ -1619,13 +1619,13 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="4620809267248568679">Questa impostazione è applicata da un'estensione.</translation>
 <translation id="4846680374085650406">Stai seguendo il consiglio dell'amministratore per questa impostazione.</translation>
 <translation id="1223853788495130632">L'amministratore consiglia un valore specifico per questa impostazione.</translation>
-<translation id="8839398440242019256">Non dal Brave Web Store.</translation>
+<translation id="8839398440242019256">Non dal Web Store.</translation>
 <translation id="5337771866151525739">Installata da una terza parte.</translation>
 <translation id="4538792345715658285">Installata per norma aziendale.</translation>
 <translation id="4359408040881008151">Installata a causa di estensioni dipendenti.</translation>
 <translation id="4980805016576257426">Questa estensione contiene malware.</translation>
 <translation id="5522156646677899028">Questa estensione contiene una grave vulnerabilità di sicurezza.</translation>
-<translation id="6945695820322143954">Questa estensione vìola le norme del Brave Web Store.</translation>
+<translation id="6945695820322143954">Questa estensione viola il regolamento del Web Store.</translation>
 <translation id="177808131755847449">Estensione disattivata da Brave perché potrebbe non essere sicura.</translation>
 <translation id="1434696352799406980">L'operazione reimposterà la pagina iniziale, la pagina Nuova scheda, il motore di ricerca e le schede bloccate. Inoltre, disattiverà tutte le estensioni e rimuoverà i dati temporanei, come i cookie. La cronologia, le password salvate e i preferiti non saranno invece cancellati.</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/> vuole ripristinare le impostazioni.</translation>
@@ -1692,6 +1692,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="622537739776246443">Il profilo verrà eliminato</translation>
 <translation id="5632566673632479864">Il tuo account <ph name="EMAIL"/> non è più consentito come account principale. Siccome l'account è gestito da <ph name="DOMAIN"/>, i preferiti, la cronologia, le password e altre impostazioni verranno cancellati da questo dispositivo.</translation>
 <translation id="3797739167230984533">Il tuo <ph name="BEGIN_LINK"/>dispositivo <ph name="DEVICE_TYPE"/> è gestito<ph name="END_LINK"/> dalla tua organizzazione</translation>
+<translation id="1722460139690167654">Il tuo dispositivo <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> è gestito<ph name="END_LINK"/> da <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8118488170956489476">Il tuo <ph name="BEGIN_LINK"/>browser è gestito<ph name="END_LINK"/> dalla tua organizzazione</translation>
 <translation id="1365180424462182382">Il tuo <ph name="BEGIN_LINK"/>browser è gestito<ph name="END_LINK"/> da <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Contenuti</translation>
@@ -1941,7 +1942,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="881799181680267069">Nascondi altre</translation>
 <translation id="4708849949179781599">Esci da <ph name="PRODUCT_NAME"/></translation>
 <translation id="8795916974678578410">Nuova finestra</translation>
-<translation id="1676595396635191120">Nuova finestra di navigazione in incognito</translation>
+<translation id="1676595396635191120">Nuova Finestra Privata</translation>
 <translation id="406070391919917862">Applicazioni in background</translation>
 <translation id="3335947283844343239">Riapri scheda chiusa</translation>
 <translation id="8214489666383623925">Apri file...</translation>
@@ -2180,7 +2181,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="7339898014177206373">Nuova finestra</translation>
 <translation id="7551643184018910560">Fissa sullo shelf</translation>
 <translation id="8335587457941836791">Stacca dallo shelf</translation>
-<translation id="4471385409549756595">Nuova finestra di navigazione in incognito</translation>
+<translation id="4471385409549756595">Nuova finestra privata</translation>
 <translation id="8249048954461686687">Cartella OEM</translation>
 <translation id="8440630305826533614">App Linux</translation>
 <translation id="4742746985488890273">Fissa sullo shelf</translation>
@@ -2284,8 +2285,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
         <ph name="FILE_INFO"/>
         <ph name="EVENT_NAME"/></translation>
-<translation id="4540437243849625078">Questo sito sta per condividere informazioni con un'app esterna alla modalità di navigazione in incognito.</translation>
-<translation id="1227836882233136433">Uscire da modalità in incognito?</translation>
+<translation id="4540437243849625078">Questo sito sta per condividere informazioni con una app al di fuori della modalità privata.</translation>
+<translation id="1227836882233136433">Uscire da modalità privata?</translation>
 <translation id="662080504995468778">Rimani</translation>
 <translation id="2593289874938379417">Brave non ha accesso alla risorsa richiesta.</translation>
 <translation id="760197030861754408">Vai alla pagina <ph name="LANDING_PAGE"/> per la connessione.</translation>
@@ -2469,13 +2470,14 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="7235737137505019098">Sul token di sicurezza non c'è spazio a sufficienza per altri account.</translation>
 <translation id="3984431586879874039">Consentire a questo sito di visualizzare il tuo token di sicurezza?</translation>
 <translation id="8948939328578167195"><ph name="WEBSITE"/> vuole accedere a marca e modello del token di sicurezza</translation>
-<translation id="7618452966706304788">Vuoi usare Touch ID con <ph name="APP_NAME"/> in modalità di navigazione in incognito?</translation>
-<translation id="3098826269712097986">I dati di accesso verranno memorizzati in Brave quando uscirai dalla modalità di navigazione in incognito. In questo modo potrai usare di nuovo Touch ID con questo sito web in un secondo momento.</translation>
+<translation id="7618452966706304788">Vuoi usare Touch ID con <ph name="APP_NAME"/> in modalità Privata?</translation>
+<translation id="3098826269712097986">I dati di accesso saranno memorizzati in Brave dopo che sarai uscito dalla modalità Privata. Questo ti consentirà di usare ancora Touch ID più tardi con questo sito.</translation>
 <translation id="2172784515318616985">Continua</translation>
 <translation id="5186185447130319458">Privato</translation>
 <translation id="7643842463591647490">{0,plural, =1{# finestra aperta}other{# finestre aperte}}</translation>
-<translation id="2579188629646253712">Esci dalla modalità in incognito</translation>
+<translation id="2579188629646253712">Esci da Privato</translation>
 <translation id="479219453908726046">Partecipa al sondaggio</translation>
+<translation id="7581273696622423628">Partecipa al sondaggio</translation>
 <translation id="4406504596603350105">La tua opinione è importante per noi.</translation>
 <translation id="4349828822184870497">Utili</translation>
 <translation id="6876469544038980967">Non utili</translation>
@@ -2496,10 +2498,13 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8368859634510605990">&amp;Apri tutti i Preferiti</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{&amp;Apri tutti}=1{&amp;Apri preferito}other{&amp;Apri tutti (#)}}</translation>
 <translation id="1016437870506746108">{COUNT,plural, =0{Apri tutti in &amp;un'altra finestra}=1{Apri in &amp;un'altra finestra}other{Apri tutti (#) in &amp;un'altra finestra}}</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Apri tutti in finestra di navigazione in &amp;incognito}=1{Apri in finestra di navigazione in &amp;incognito}other{Apri tutti (#) in finestra di navigazione in &amp;incognito}}</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Apri tutto in una &amp;finestra privata}
+          =1 {Apri in una &amp;finestra privata}
+          other {Apri tutto (#) in una &amp;finestra privata}}</translation>
 <translation id="3613422051106148727">&amp;Apri in un'altra scheda</translation>
 <translation id="4853020600495124913">Apri in &amp;un'altra finestra</translation>
-<translation id="2431625704210501303">Apri in finestra di navigazione in &amp;incognito</translation>
+<translation id="2431625704210501303">Apri in una &amp;finestra privata</translation>
 <translation id="6702639462873609204">&amp;Modifica...</translation>
 <translation id="3088325635286126843">&amp;Rinomina...</translation>
 <translation id="713122686776214250">Aggiungi pa&amp;gina...</translation>
@@ -2508,10 +2513,13 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6466988389784393586">&amp;Apri tutti i Preferiti</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Apri tutti}=1{&amp;Apri preferito}other{&amp;Apri tutti (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Apri tutti in &amp;un'altra finestra}=1{Apri in &amp;un'altra finestra}other{Apri tutti (#) in &amp;un'altra finestra}}</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Apri tutti in finestra di navigazione in &amp;incognito}=1{Apri in finestra di navigazione in &amp;incognito}other{Apri tutti (#) in finestra di navigazione in &amp;incognito}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Apri tutto in una &amp;Finestra Privata}
+          =1 {Apri in una &amp;Finestra Privata}
+          other {Apri Tutto (#) in una &amp;Finestra Privata}}</translation>
 <translation id="9024127637873500333">&amp;Apri in un'altra scheda</translation>
 <translation id="665061930738760572">Apri in &amp;un'altra finestra</translation>
-<translation id="1985165269306590797">Apri in finestra di navigazione in &amp;incognito</translation>
+<translation id="1985165269306590797">Apri in una &amp;Finestra Privata</translation>
 <translation id="8824701697284169214">Aggiungi pa&amp;gina...</translation>
 <translation id="2489918096470125693">Aggiungi &amp;cartella...</translation>
 <translation id="421182450098841253">&amp;Mostra barra dei Preferiti</translation>
@@ -2563,10 +2571,10 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8457451314607652708">Importa Preferiti</translation>
 <translation id="5101042277149003567">Apri tutti i Preferiti</translation>
 <translation id="7007648447224463482">Apri tutto in una nuova finestra</translation>
-<translation id="642436385689435488">Apri tutto nella finestra di navigazione in incognito</translation>
+<translation id="642436385689435488">Apri tutto in una finestra privata</translation>
 <translation id="4195643157523330669">Apri in un'altra scheda</translation>
 <translation id="2979639724566107830">Apri in un'altra finestra</translation>
-<translation id="5463021359602611602">Apri nella finestra di navigazione in incognito</translation>
+<translation id="5463021359602611602">Apri in una finestra privata</translation>
 <translation id="1173894706177603556">Rinomina</translation>
 <translation id="6825184156888454064">Ordina per nome</translation>
 <translation id="3440663250074896476">Altre azioni per <ph name="BOOKMARK_NAME"/></translation>
@@ -2644,9 +2652,15 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="4159681666905192102">Si tratta di un account di minori gestito da <ph name="CUSTODIAN_EMAIL"/> e <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Utente supervisionato</translation>
 <translation id="5720705177508910913">Utente corrente</translation>
-<translation id="1850357845349976573">{0,plural, =1{Navigazione in incognito}other{# finestre di navigazione in incognito aperte}}</translation>
-<translation id="37784332082579802">{0,plural, =1{In incognito}other{In incognito (#)}}</translation>
-<translation id="5070556616376997776">Stai navigando in incognito</translation>
+<translation id="1850357845349976573">{0, plural,
+        =1 {Privato}
+        other {# apri finestre private}
+      }</translation>
+<translation id="37784332082579802">{0, plural,
+      =1 {Privato}
+      other {Privato (#)}
+    }</translation>
+<translation id="5070556616376997776">Questa è una finestra privata</translation>
 <translation id="2199298570273670671">Errore</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: la sincronizzazione non funziona</translation>
 <translation id="7307129035224081534">In pausa</translation>
@@ -2655,8 +2669,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (account di minori)</translation>
 <translation id="8182664696082410784"><ph name="REASON"/>
     Non credo che questo sito debba essere bloccato.</translation>
-<translation id="5832813618714645810">Persone</translation>
-<translation id="7171000599584840888">Aggiungi persona...</translation>
+<translation id="5832813618714645810">Profili</translation>
+<translation id="7171000599584840888">Aggiungi Profilo...</translation>
 <translation id="1781771911845953849">Account e sincronizzazioni</translation>
 <translation id="4974733135013075877">Esci e blocca</translation>
 <translation id="3965965397408324205">Esci da <ph name="PROFILE_NAME"/></translation>
@@ -2675,21 +2689,21 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="8473863474539038330">Indirizzi e altro</translation>
 <translation id="5287425679749926365">I tuoi account</translation>
 <translation id="4801448226354548035">Nascondi account</translation>
-<translation id="2935225303485967257">Gestisci utenti</translation>
+<translation id="2935225303485967257">Gestisci profili</translation>
 <translation id="7388222713940428051">Apri finestra Ospite</translation>
 <translation id="127668050356036882">Chiudi tutte le finestre</translation>
 <translation id="1464258312790801189">I tuoi account</translation>
 <translation id="6655458902729017087">Nascondi account</translation>
-<translation id="688280436658139163">Gestisci utenti</translation>
+<translation id="688280436658139163">Gestisci Profili</translation>
 <translation id="2666990579225592931">Apri finestra Ospite</translation>
 <translation id="5869948122057593679">Chiudi tutte le finestre</translation>
-<translation id="4133080584509825342">Modifica persona, <ph name="PROFILE_NAME"/></translation>
-<translation id="4848862725510532982">Modifica persona, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4133080584509825342">Modifica profilo, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Modifica profilo, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="3294437725009624529">Ospite</translation>
 <translation id="475088594373173692">Primo utente</translation>
 <translation id="4535127706710932914">Profilo predefinito</translation>
 <translation id="4389091756366370506">Utente <ph name="VALUE"/></translation>
-<translation id="4536111748245793305">Persona <ph name="VALUE"/></translation>
+<translation id="4536111748245793305">Profilo <ph name="VALUE"/></translation>
 <translation id="5397794290049113714">Tu</translation>
 <translation id="3031417829280473749">Agente X</translation>
 <translation id="412730574613779332">Spandex</translation>
@@ -2777,7 +2791,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="2871813825302180988">Questo account è già in uso su questo dispositivo.</translation>
 <translation id="7654941827281939388">Questo account è già in uso su questo computer.</translation>
 <translation id="9022847679183471841">L'account è già utilizzato su questo computer da <ph name="AVATAR_NAME"/>.</translation>
-<translation id="6921634551681321094">Aggiungi persona</translation>
+<translation id="6921634551681321094">Aggiungi profilo</translation>
 <translation id="5389237414310520250">Impossibile creare il nuovo utente. Controlla lo spazio disponibile sul disco rigido e le autorizzazioni e riprova.</translation>
 <translation id="2673589024369449924">Crea un collegamento sul desktop per questo utente</translation>
 <translation id="2731710757838467317">Creazione dell'utente controllato in corso. Potrebbero essere necessari alcuni istanti.</translation>
@@ -2785,13 +2799,13 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6690751852586194791">Scegli un utente controllato da aggiungere a questo dispositivo.</translation>
 <translation id="5525677322972469346">Crea un nuovo utente supervisionato</translation>
 <translation id="8630903300770275248">Importa utente controllato</translation>
-<translation id="4904061654709986277">Aggiungi persona</translation>
-<translation id="6114945161119872228">Rimuovi questa persona</translation>
-<translation id="769308100792069196">Aggiungi persona supervisionata</translation>
+<translation id="4904061654709986277">Aggiungi Profilo</translation>
+<translation id="6114945161119872228">Rimuovi Questo Profilo</translation>
+<translation id="769308100792069196">Aggiungi Profilo Vigilato</translation>
 <translation id="3470442499439619530">Rimuovi questo utente</translation>
 <translation id="4296575653627536209">Aggiungi utente supervisionato</translation>
-<translation id="8006143138282906848">Rimuovi questa persona</translation>
-<translation id="6912187023601892621">Aggiungi persona supervisionata</translation>
+<translation id="8006143138282906848">Rimuovi questo profilo</translation>
+<translation id="6912187023601892621">Aggiungi profilo vigilato</translation>
 <translation id="1608626060424371292">Rimuovi questo utente</translation>
 <translation id="493571969993549666">Aggiungi utente supervisionato</translation>
 <translation id="9101691533782776290">Avvia app</translation>
@@ -2813,8 +2827,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6164005077879661055">Tutti i file e i dati locali associati all'utente controllato verranno eliminati definitivamente in seguito alla rimozione dell'utente. Le impostazioni e i siti web visitati relativi all'utente controllato potrebbero essere ancora visibili al gestore all'indirizzo <ph name="MANAGEMENT_URL"/>.</translation>
 <translation id="3410832398355316179">Tutti i file e i dati locali associati a questo utente verranno eliminati definitivamente in seguito alla rimozione dell'utente. <ph name="USER_EMAIL"/> può ancora accedere in seguito.</translation>
 <translation id="672213144943476270">Sblocca il tuo profilo prima di navigare come ospite.</translation>
-<translation id="8086119151297127544">Sblocca il tuo profilo prima di rimuovere una persona.</translation>
-<translation id="7805701378418968629">Sblocca il tuo profilo prima di aggiungere una persona.</translation>
+<translation id="8086119151297127544">Sblocca il tuo profilo prima di rimuovere un profilo.</translation>
+<translation id="7805701378418968629">Sblocca il tuo profilo prima di aggiungere un profilo.</translation>
 <translation id="8978225823042133615">Accedi per usare Brave</translation>
 <translation id="4893336867552636863">I tuoi dati di navigazione verranno eliminati definitivamente da questo dispositivo.</translation>
 <translation id="2496180316473517155">Cronologia di navigazione</translation>
@@ -2872,8 +2886,9 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6850286078059909152">Colore testo</translation>
 <translation id="8042142357103597104">Opacità testo</translation>
 <translation id="1656528038316521561">Opacità sfondo</translation>
-<translation id="5750288053043553775">0</translation>
-<translation id="8689998525144040851">100</translation>
+<translation id="8838601485495657486">Opaca</translation>
+<translation id="5826993284769733527">Semitrasparente</translation>
+<translation id="4438043733494739848">Trasparente</translation>
 <translation id="2442916515643169563">Ombreggiatura testo</translation>
 <translation id="3599221874935822507">In rilievo</translation>
 <translation id="274029851662193272">Incassato</translation>
@@ -2888,7 +2903,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="161042844686301425">Ciano</translation>
 <translation id="4115378294792113321">Magenta</translation>
 <translation id="6981982820502123353">Accessibilità</translation>
-<translation id="5840822070878669614">Apri Brave Web Store</translation>
+<translation id="5840822070878669614">Apri Web Store</translation>
 <translation id="6073903501322152803">Aggiungi funzioni di accessibilità</translation>
 <translation id="7988355189918024273">Attiva funzioni di accessibilità</translation>
 <translation id="5499063270485366718">Se un'immagine è senza descrizione utile, Brave proverà a fornirne una. Per la creazione delle descrizioni, le immagini vengono inviate a Brave Software.</translation>
@@ -3249,10 +3264,13 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="4058720513957747556">AppSocket (TCP/IP)</translation>
 <translation id="6619058681307408113">Line Printer Daemon (LPD)</translation>
 <translation id="2266957463645820432">IPP over USB (IPPUSB)</translation>
+<translation id="8086015605808120405">Configurazione di <ph name="PRINTER_NAME"/>…</translation>
 <translation id="4665014895760275686">Produttore</translation>
 <translation id="4561098487691395071">Oppure specifica il file PPD della stampante</translation>
 <translation id="1989112275319619282">Esplora</translation>
 <translation id="3625481642044239431">File non valido selezionato. Riprova.</translation>
+<translation id="2462752602710430187">È stata aggiunta la stampante <ph name="PRINTER_NAME"/></translation>
+<translation id="7380768571499464492"><ph name="PRINTER_NAME"/> è stata aggiornata</translation>
 <translation id="8002670234429879764">La stampante <ph name="PRINTER_NAME"/> non è più disponibile</translation>
 <translation id="3976108569178263973">Non ci sono stampanti disponibili.</translation>
 <translation id="3213187967168344806">Impossibile aggiungere la stampante. Riavvia il computer e riprova.</translation>
@@ -3817,9 +3835,9 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6196640612572343990">Blocca cookie di terze parti</translation>
 <translation id="6782111308708962316">Impedisci ai siti web di terze parti di salvare e leggere i dati dei cookie</translation>
 <translation id="1274977772557788323">Impostazioni di archiviazione Adobe Flash Player</translation>
-<translation id="1281501490173223206">Solo per la sessione di navigazione in incognito corrente</translation>
-<translation id="3479035826743782247">Sessione di navigazione in incognito corrente</translation>
-<translation id="4750220700975225">Sessione di navigazione in incognito corrente (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Solo sessione privata corrente</translation>
+<translation id="3479035826743782247">Sessione privata corrente</translation>
+<translation id="4750220700975225">Sessione privata corrente (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Non è stato aumentato o diminuito lo zoom di alcun sito</translation>
 <translation id="3566721612727112615">Nessun sito aggiunto</translation>
 <translation id="8098574385249290065">Consenti a Brave di scegliere quando i siti possono riprodurre audio (opzione consigliata)</translation>
@@ -3846,8 +3864,8 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="4590324241397107707">Archiviazione database</translation>
 <translation id="8016266267177410919">Archiviazione temporanea</translation>
 <translation id="4175737294868205930">Archiviazione persistente</translation>
-<translation id="3707212204259470604">Gestisci altre persone</translation>
-<translation id="8907706281008466056">Foto profilo Brave Software</translation>
+<translation id="3707212204259470604">Gestisci altri profili</translation>
+<translation id="8907706281008466056">Foto Profilo Brave</translation>
 <translation id="2408955596600435184">Inserisci il codice PIN</translation>
 <translation id="6619990499523117484">Conferma il codice PIN</translation>
 <translation id="2023167225947895179">Il PIN potrebbe essere facile da scoprire</translation>
@@ -3918,7 +3936,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1692115862433274081">Utilizza un altro account</translation>
 <translation id="5244474230056479698">Sincronizzazione con <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Questo account è gestito da <ph name="DOMAIN"/>, pertanto i preferiti, la cronologia, le password e altre impostazioni verranno cancellati da questo dispositivo. I tuoi dati rimarranno però memorizzati nel tuo account Brave Software e potrai gestirli su <ph name="BEGIN_LINK"/>Brave Software Dashboard<ph name="END_LINK"/>.</translation>
-<translation id="6906406176003824042">Modifica persona</translation>
+<translation id="6906406176003824042">Modifica profilo</translation>
 <translation id="6739923123728562974">Mostra collegamento sul desktop</translation>
 <translation id="2450310832094867474">Vuoi disattivare la sincronizzazione e uscire?</translation>
 <translation id="3699920817649120894">Disattivare la sincronizzazione e la personalizzazione?</translation>
@@ -4008,7 +4026,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="437184764829821926">Impostazioni avanzate carattere</translation>
 <translation id="323803881985677942">Apri opzioni estensione</translation>
 <translation id="2166369534954157698">Pranzo d'acqua fa volti sghembi</translation>
-<translation id="8911765336506423117">Richiede estensione dal Brave Web Store</translation>
+<translation id="8911765336506423117">È richiesta estensione dal Web Store</translation>
 <translation id="6965978654500191972">Dispositivo</translation>
 <translation id="8260864402787962391">Mouse</translation>
 <translation id="155865706765934889">Touchpad</translation>
@@ -4254,7 +4272,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="329838636886466101">Ripara</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Non attiva)</translation>
-<translation id="3860292630623580294">(In incognito)</translation>
+<translation id="3860292630623580294">(Privato)</translation>
 <translation id="6655190889273724601">Modalità sviluppatore</translation>
 <translation id="2868746137289129307">Questa estensione è obsoleta e disattivata in base ai criteri aziendali. Potrebbe essere attivata automaticamente quando sarà disponibile una nuova versione.</translation>
 <translation id="6841186874966388268">Errori</translation>
@@ -4290,7 +4308,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1805822111539868586">Esamina visualizzazioni</translation>
 <translation id="181577467034453336">Altre <ph name="NUMBER_OF_VIEWS"/>...</translation>
 <translation id="2450849356604136918">Nessuna visualizzazione attiva</translation>
-<translation id="4854477725773269949">Consenti modalità in incognito</translation>
+<translation id="4854477725773269949">Abilita in privato</translation>
 <translation id="6124650939968185064">Le seguenti estensioni dipendono da questa estensione:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="3866249974567520381">Descrizione</translation>
@@ -4317,14 +4335,14 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="7235716375204803342">Recupero delle attività in corso...</translation>
 <translation id="8314381333424235892">Estensione mancante o non installata</translation>
 <translation id="7647403192093989392">Nessuna attività recente</translation>
-<translation id="38046578254905003">Trova estensioni e temi nel <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
+<translation id="38046578254905003">Trova estensioni e temi nel <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
 <translation id="7272674038937250585">Nessuna descrizione fornita</translation>
 <translation id="3855441664322950881">Crea pacchetto estensione</translation>
 <translation id="2958721676848865875">Avviso sul pacchetto estensione</translation>
 <translation id="8652400352452647993">Errore nel pacchetto estensione</translation>
 <translation id="8398877366907290961">Procedi comunque</translation>
 <translation id="8770406935328356739">Directory principale dell'estensione</translation>
-<translation id="6226777517901268232">File chiave privata (facoltativo)</translation>
+<translation id="6226777517901268232">File chiave privato (opzionale)</translation>
 <translation id="2916745397441987255">Cerca tra le estensioni</translation>
 <translation id="1992397118740194946">Non impostata</translation>
 <translation id="6706210727756204531">Ambito</translation>
@@ -4344,7 +4362,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1688935057616748272">Digita una lettera</translation>
 <translation id="4479424953165245642">Gestisci applicazioni kiosk</translation>
 <translation id="6619801788773578757">Aggiungi applicazione kiosk</translation>
-<translation id="8045923671629973368">Inserisci l'ID applicazione o l'URL del webstore</translation>
+<translation id="8045923671629973368">Inserisci ID applicazione o URL sito</translation>
 <translation id="7059858479264779982">Imposta avvio automatico</translation>
 <translation id="6325191661371220117">Disattiva avvio automatico</translation>
 <translation id="4699357559218762027">(avviata automaticamente)</translation>

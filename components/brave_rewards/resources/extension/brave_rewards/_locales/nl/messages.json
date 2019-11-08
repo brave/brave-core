@@ -43,6 +43,22 @@
     "message": "Beurzen",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "Details",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Je saldo",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT-punten",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "kan worden gebruikt in Brave Rewards om je favoriete makers van inhoud te helpen. BAT-punten kunnen niet worden ingewisseld voor BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "op",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Maandelijkse bijdrage",
+    "message": "Tip deze site maandelijks",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Je hebt BAT {{reservedAmount}} toegewezen aan makers die zich nog niet hebben aangemeld voor het ontvangen van bijdragen. Je browser zal blijven proberen bij te dragen tot ze verifiëren of tot er 90 dagen zijn verstreken.",
+    "message": "Je hebt {{reservedAmount}} {{currency}} toegewezen aan makers die zich nog niet hebben aangemeld voor het ontvangen van bijdragen. Je browser blijft proberen je bijdragen te versturen tot ze verifiëren of tot er 90 dagen zijn verstreken.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave Ads-beloningen!",
+    "message": "Je hebt een Ads Reward verdiend!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Uw beloningstoelage van Brave Ads is onderweg.",
+    "message": "Je Reward is onderweg naar je Brave Rewards-wallet.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Uw Brave Ads Token-toelage",
+    "message": "Je Reward-bedrag",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "Rond walletverificatie af",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "Instellen...",
-    "description": "Button text for setting monthly contribution"
   }
 }

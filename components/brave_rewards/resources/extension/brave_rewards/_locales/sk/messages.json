@@ -43,6 +43,22 @@
     "message": "Príspevky",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "Podrobnosti",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Váš zostatok",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT body",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "dá sa použiť v odmenách Brave ako príspevok najobľúbenejším tvorcom obsahu. BAT body sa nedajú vymeniť za BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "na",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Mesačný príspevok",
+    "message": "Podporiť túto stránku každý mesiac",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Určili ste {{reservedAmount}} BAT pre tvorcov, ktorí sa zatiaľ nezaregistrovali, aby dostávali príspevky. Váš prehliadač sa bude snažiť prispievať, kým nedôjde k overeniu alebo kým neprejde 90 dní.",
+    "message": "{{reservedAmount}} {{currency}} ste vyhradili pre tvorcov, ktorí nepožiadali o zasielanie príspevkov. Váš prehliadač sa bude pokúšať poskytnúť príspevok dovtedy, kým ho tvorca neschváli alebo kým neuplynie 90 dní.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave odmeny za sledovanie reklám!",
+    "message": "Získali ste odmenu za reklamu!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Váš grant odmien od Brave reklám je už na ceste.",
+    "message": "Vaša odmena je na ceste do vašej peňaženky odmien Brave",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Grant vášho tokenu Brave reklamy",
+    "message": "Objem vašich odmien",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "Dokončiť verifikáciu peňaženky",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "Nastaviť...",
-    "description": "Button text for setting monthly contribution"
   }
 }

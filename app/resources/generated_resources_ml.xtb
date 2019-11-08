@@ -61,7 +61,6 @@
 <translation id="1163931534039071049">&amp;ഫ്രെയിം ഉറവിടം കാണുക</translation>
 <translation id="6886871292305414135">പുതിയ &amp;ടാബിലെ ലിങ്ക് തുറക്കുക</translation>
 <translation id="8899851313684471736">പുതിയ &amp;വിന്‍ഡോയിലെ ലിങ്ക് തുറക്കുക</translation>
-<translation id="658539216370629794">അദൃ&amp;ശ്യ വിന്‍ഡോയിലെ ലിങ്ക് തുറക്കുക</translation>
 <translation id="3144647712221361880">ലിങ്ക് ഇനിപ്പറയുന്നതായി തുറക്കുക</translation>
 <translation id="9137916601698928395">ലിങ്ക് <ph name="USER"/> എന്നതായി തുറക്കുക</translation>
 <translation id="1137673463384776352"><ph name="APP"/> ആപ്പില്‍ ലിങ്ക് തുറക്കുക</translation>
@@ -122,7 +121,6 @@
 <translation id="3021678814754966447">&amp;ഫ്രെയിം ഉറവിടം കാണുക</translation>
 <translation id="9027459031423301635">ലിങ്ക് പുതിയ &amp;ടാബില്‍ തുറക്കുക</translation>
 <translation id="1769104665586091481">ലിങ്ക് ഒരു പു‌തിയ &amp;വിന്‍‌ഡോയില്‍ തുറക്കുക</translation>
-<translation id="1432267168815937878">വേഷ‍‌&amp;പ്രച്ഛന്ന വിന്‍ഡോയില്‍ ലിങ്ക് തുറക്കുക</translation>
 <translation id="2142328300403846845">ലിങ്ക്  ഇനിപ്പറയുന്നതായി തുറക്കുക</translation>
 <translation id="6892812721183419409">ലിങ്ക് <ph name="USER"/> എന്നതായി തുറക്കുക</translation>
 <translation id="2006638907958895361"><ph name="APP"/> ആപ്പില്‍ ലിങ്ക് തുറക്കുക</translation>
@@ -172,7 +170,6 @@
 <translation id="4200983522494130825">പുതിയ &amp;ടാബ്</translation>
 <translation id="8418445294933751433">&amp;ടാബ് പോലെ കാണിക്കുക</translation>
 <translation id="1723824996674794290">&amp;പുതിയ വിന്‍‌ഡോ</translation>
-<translation id="6516243500644829484">പുതിയ &amp;അദൃശ്യ വിന്‍ഡോ</translation>
 <translation id="6120205520491252677">ഈ പേജ് ആരംഭ സ്‌ക്രീനിലേക്ക് പിൻ ചെയ്യുക...</translation>
 <translation id="9065203028668620118">എഡിറ്റുചെയ്യുക</translation>
 <translation id="5329858601952122676">&amp;ഇല്ലാതാക്കൂ</translation>
@@ -192,7 +189,6 @@
 <translation id="3285322247471302225">പുതിയ &amp;ടാബ്</translation>
 <translation id="8879284080359814990">&amp;ടാബായി കാണിക്കുക</translation>
 <translation id="176587472219019965">&amp;പുതിയ വിന്‍ഡോ</translation>
-<translation id="7973394300052703468">പുതിയത് &amp;വേഷപ്രച്ഛന്ന വിന്‍ഡോ</translation>
 <translation id="5157635116769074044">ഈ പേജ് ആരംഭ സ്‌ക്രീനിലേക്ക് പിൻ ചെയ്യുക...</translation>
 <translation id="5830720307094128296">പേജ് ഇതായി &amp;സംരക്ഷിക്കുക</translation>
 <translation id="4672657274720418656">പേജ് ഡിസ്റ്റിൽ ചെയ്യുക</translation>
@@ -364,7 +360,6 @@
 <translation id="2902312830803030883">കൂടുതൽ‍ പ്രവര്‍ത്തനങ്ങള്‍</translation>
 <translation id="495170559598752135">പ്രവര്‍ത്തനങ്ങള്‍</translation>
 <translation id="3612673635130633812">&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;, ഡൗൺലോഡുചെയ്‌തു</translation>
-<translation id="6395403722585816044">ആൾമാറാട്ട മോഡിൽ ഡൗൺലോഡുചെയ്‌തു</translation>
 <translation id="4551763574344810652">പഴയപടിയാക്കാൻ <ph name="MODIFIER_KEY_DESCRIPTION"/> അമർത്തുക</translation>
 <translation id="2079545284768500474">പഴയപടിയാക്കുക</translation>
 <translation id="2490481887078769936">ലിസ്‌റ്റിൽ നിന്ന് '<ph name="FILE_NAME"/>' നീക്കം ചെയ്‌തു</translation>
@@ -411,10 +406,8 @@
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{ഡൗൺലോഡ് പുരോഗമിക്കുന്നു}other{ഡൗൺലോഡുകൾ പുരോഗമിക്കുന്നു}}</translation>
 <translation id="5425042808445046667">ഡൗൺലോഡ് ചെയ്യുന്നത് തുടരുക</translation>
 <translation id="5284445933715251131">ഡൗൺലോഡ് ചെയ്യുന്നത് തുടരുക</translation>
-<translation id="203837651858678035">എന്തായാലും, അദൃശ്യ മോഡ് വിടണോ?</translation>
 <translation id="8951465597020890363">എന്തായാലും അതിഥി മോഡിൽ നിന്ന് പുറത്തുകടക്കണോ?</translation>
 <translation id="9148058034647219655">പുറത്തുകടക്കുക</translation>
-<translation id="7376221878517288144">ഡൗൺലോഡ് ചെയ്യൽ പുരോഗമിക്കുന്നു, അദൃശ്യ മോഡ് അവസാനിപ്പിക്കണോ?</translation>
 <translation id="973473557718930265">പുറത്തുകടക്കുക</translation>
 <translation id="7707599169365957976">ചില സിസ്‌റ്റം വിവരങ്ങളും പേജ് ഉള്ളടക്കവും Brave Software-ന് അയച്ച്, സുരക്ഷിത ബ്രൗസിംഗ് മെച്ചപ്പെടുത്താൻ നിങ്ങൾക്ക് സഹായിക്കാനാകും.</translation>
 <translation id="4923279099980110923">അതെ, ഞാൻ സഹായിക്കാൻ താൽപ്പര്യപ്പെടുന്നു</translation>
@@ -767,11 +760,8 @@
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/> (<ph name="NUM_KILOBYTES_LIVE"/> പീക്ക്)</translation>
 <translation id="8004582292198964060">ബ്രൗസര്‍</translation>
 <translation id="3678156199662914018">വിപുലീകരണം: <ph name="EXTENSION_NAME"/></translation>
-<translation id="5053701565089446556">ആള്‍മാറാട്ട വിപുലീകരണം: <ph name="EXTENSION_NAME"/></translation>
 <translation id="6508261954199872201">അപ്ലിക്കേഷന്‍: <ph name="APP_NAME"/></translation>
-<translation id="611296870688433505">ആള്‍മാറാട്ട അപ്ലിക്കേഷന്‍: <ph name="APP_NAME"/></translation>
 <translation id="7629827748548208700">ടാബ്: <ph name="TAB_NAME"/></translation>
-<translation id="9048137919253433011">ആൾമാറാട്ട ടാബ്: <ph name="TAB_NAME"/></translation>
 <translation id="6900284862687837908">പശ്ചാത്തല ആപ്പ്: <ph name="BACKGROUND_APP_URL"/></translation>
 <translation id="7427348830195639090">പശ്ചാത്തല പേജ്: <ph name="BACKGROUND_PAGE_URL"/></translation>
 <translation id="6798954102094737107">പ്ലഗിൻ: <ph name="PLUGIN_NAME"/></translation>
@@ -786,7 +776,6 @@
 <translation id="2282146716419988068">GPU പ്രോസസ്സ്</translation>
 <translation id="2087822576218954668">പ്രിന്റുചെയ്യുക: <ph name="PRINT_NAME"/></translation>
 <translation id="8859174528519900719">സബ്ഫ്രെയിം: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="1799432502220762862">ആൾമാറാട്ട സബ്‌ഫ്രെയിം: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="2348176352564285430">ആപ്പ്: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="786073089922909430">സേവനം: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7663719505383602579">റിസീവർ: <ph name="ARC_PROCESS_NAME"/></translation>
@@ -1060,7 +1049,6 @@
 <translation id="5483785310822538350">ഫയലിലേക്കും ഉപകരണത്തിലേക്കുമുള്ള ആക്‌സസ്സ് റദ്ദാക്കുക</translation>
 <translation id="93766956588638423">വിപുലീകരണം റിപ്പയർ ചെയ്യുക</translation>
 <translation id="3905761538810670789">ആപ്പ് റിപ്പയർ ചെയ്യുക</translation>
-<translation id="8808478386290700967">വെബ് സ്റ്റോര്‍</translation>
 <translation id="488785315393301722">വിശദാംശങ്ങൾ‌ കാണിക്കുക</translation>
 <translation id="8962083179518285172">വിശദാംശങ്ങൾ മറയ്ക്കുക</translation>
 <translation id="7287143125007575591">ആക്‌സസ് നിരസിച്ചു.</translation>
@@ -1350,7 +1338,6 @@
 <translation id="192494336144674234">ഇനിപ്പറയുന്നത് ഉപയോഗിച്ച് തുറക്കുക</translation>
 <translation id="9053893665344928494">എന്റെ ചോയ്‌സ് ഓർമ്മിക്കുക</translation>
 <translation id="5340857474604400806">Brave-ൽ തുടരുക</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ആള്‍മാറാട്ടം)</translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (അതിഥി)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (അപ്‌ഡേറ്റ് ലഭ്യമാണ്)</translation>
@@ -1382,10 +1369,6 @@
 <translation id="4400963414856942668">ഒരു ടാബ് ബുക്ക്‌മാർക്ക് ചെയ്യാൻ നക്ഷത്ര ചിഹ്നത്തിൽ ക്ലിക്ക് ചെയ്യുക</translation>
 <translation id="8379991678458444070">ഈ ടാബ് ബുക്ക്‌മാർക്ക് ചെയ്‌താൽ വേഗത്തിൽ ഇവിടേക്ക് മടങ്ങിയെത്താൻ കഴിയും</translation>
 <translation id="7174199383876220879">പുതിയത്! നിങ്ങളുടെ സംഗീതം, വീഡിയോകൾ എന്നിവയും മറ്റും നിയന്ത്രിക്കുക.</translation>
-<translation id="4369414322596874629">അദൃശ്യ വിൻഡോ ഉപയോഗിച്ച് നിങ്ങൾക്ക് സ്വകാര്യമായി ബ്രൗസ് ചെയ്യാനാകും</translation>
-<translation id="3772947852642271642">അദൃശ്യ വിൻഡോ ഉപയോഗിച്ച്, നിങ്ങളുടെ ബ്രൗസിംഗ് ചരിത്രം സംരക്ഷിക്കാതെ, വെബ് ഉപയോഗിക്കുക</translation>
-<translation id="3871738366246972820">പങ്കിട്ട കമ്പ്യൂട്ടറാണോ ഉപയോഗിക്കുന്നത്? അദൃശ്യ വിൻഡോ പരീക്ഷിച്ചുനോക്കൂ.</translation>
-<translation id="5808622652939943719">സ്വകാര്യമായി ബ്രൗസ് ചെയ്യാൻ, അദൃശ്യ വിൻഡോ തുറക്കാൻ, ഡോട്ട് ഐക്കൺ ‌മെനുവിൽ ക്ലിക്ക് ചെയ്യുക</translation>
 <translation id="8803953437405899238">ഒറ്റ ക്ലിക്കിലൂടെ ഒരു പുതിയ ടാബ് തുറക്കുക</translation>
 <translation id="3071624960923923138">ഒരു പുതിയ ടാബ് തുറക്കാൻ നിങ്ങൾക്ക് ഇവിടെ ക്ലിക്കുചെയ്യാം</translation>
 <translation id="4908811072292128752">ഒരേസമയം രണ്ട് സൈറ്റുകൾ ബ്രൗസുചെയ്യാൻ ഒരു പുതിയ ടാബ് തുറക്കുക</translation>
@@ -1600,13 +1583,11 @@
 <translation id="4620809267248568679">ഈ ക്രമീകരണം നടപ്പിലാക്കുന്നത് ഒരു വിപുലീകരണമാണ്.</translation>
 <translation id="4846680374085650406">നിങ്ങൾ ഈ ക്രമീകരണത്തിനായി അഡ്‌മിനിസ്‌ട്രേറ്ററുടെ ശുപാർശ പാലിക്കുന്നു.</translation>
 <translation id="1223853788495130632">നിങ്ങളുടെ അഡ്‌മിനിസ്‌ട്രേറ്റർ ഈ ക്രമീകരണത്തിനായി ഒരു നിർദ്ദിഷ്ട മൂല്യം ശുപാർശ ചെയ്യുന്നു.</translation>
-<translation id="8839398440242019256">Brave വെബ് സ്റ്റോറിൽ നിന്നല്ല.</translation>
 <translation id="5337771866151525739">ഒരു മൂന്നാം കക്ഷി ഇൻസ്റ്റാളുചെയ്‌തത്.</translation>
 <translation id="4538792345715658285">എന്റർപ്രൈസ് നയം ഇൻസ്റ്റാളുചെയ്‌തത്.</translation>
 <translation id="4359408040881008151">ആശ്രയിച്ചിരിക്കുന്ന വിപുലീകരണം (വിപുലീകരണങ്ങൾ) കാരണം ഇൻസ്‌റ്റാളുചെയ്തു.</translation>
 <translation id="4980805016576257426">ഈ വിപുലീകരണത്തിൽ മാൽവേർ അടങ്ങിയിരിക്കുന്നു.</translation>
 <translation id="5522156646677899028">ഈ വിപുലീകരണത്തിൽ ഗുരുതരമായ സുരക്ഷാ പ്രശ്നമടങ്ങിയിരിക്കുന്നു.</translation>
-<translation id="6945695820322143954">ഈ വിപുലീകരണം Brave വെബ് സ്റ്റോർ നയം ലംഘിക്കുന്നു.</translation>
 <translation id="177808131755847449">Brave പ്രവർത്തനരഹിതമാക്കി. ഈ വിപുലീകരണം സുരക്ഷിതമല്ലായിരിക്കാം.</translation>
 <translation id="1434696352799406980">ഇത് നിങ്ങളുടെ ആരംഭ പേജ്, പുതിയ ടാബ് പേജ്, തിരയൽ എഞ്ചിൻ, പിൻ ചെയ്‌ത ടാബുകൾ എന്നിവ റീസെറ്റ് ചെയ്യും. ഒപ്പം ഇത് എല്ലാ വിപുലീകരണങ്ങളെയും പ്രവർത്തനരഹിതമാക്കുകയും കുക്കികൾ പോലുള്ള താൽക്കാലിക ഡാറ്റ മായ്‌ക്കുകയും ചെയ്യും. നിങ്ങളുടെ ബുക്ക്‌മാർക്കുകൾ, ചരിത്രം, സംരക്ഷിച്ച പാസ്‌വേഡുകൾ എന്നിവ മായ്‌ക്കില്ല.</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/>, നിങ്ങളുടെ ക്രമീകരണം റീസെറ്റുചെയ്യാൻ താൽപ്പര്യപ്പെടുന്നു.</translation>
@@ -1673,6 +1654,7 @@
 <translation id="622537739776246443">പ്രൊഫൈല്‍ ഇല്ലാതാക്കപ്പെടും</translation>
 <translation id="5632566673632479864">നിങ്ങളുടെ അക്കൗണ്ട് <ph name="EMAIL"/>, ഇനി പ്രാഥമിക അക്കൗണ്ടായി അംഗീകരിക്കില്ല. <ph name="DOMAIN"/> ഈ അക്കൗണ്ട് മാനേജ് ചെയ്യുന്നതിനാൽ, നിങ്ങളുടെ ബുക്ക്‌മാർക്കുകളും ചരിത്രവും പാസ്‌വേഡുകളും മറ്റ് ക്രമീകരവും ഈ ഉപകരണത്തിൽ നിന്ന് മായ്‌ക്കുന്നതാണ്.</translation>
 <translation id="3797739167230984533">നിങ്ങളുടെ സ്ഥാപനമാണ് <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> മാനേജ് ചെയ്യുന്നത്<ph name="END_LINK"/></translation>
+<translation id="1722460139690167654">നിങ്ങളുടെ <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> മാനേജ് ചെയ്യുന്നത്<ph name="END_LINK"/> <ph name="ENROLLMENT_DOMAIN"/> ആണ്</translation>
 <translation id="8118488170956489476">നിങ്ങളുടെ സ്ഥാപനമാണ് നിങ്ങളുടെ <ph name="BEGIN_LINK"/>ബ്രൗസർ മാനേജ് ചെയ്യുന്നത്<ph name="END_LINK"/></translation>
 <translation id="1365180424462182382">നിങ്ങളുടെ <ph name="BEGIN_LINK"/>ബ്രൗസർ മാനേജ് ചെയ്യുന്നത്<ph name="END_LINK"/><ph name="ENROLLMENT_DOMAIN"/> ആണ്</translation>
 <translation id="8168435359814927499">ഉള്ളടക്കം</translation>
@@ -1923,7 +1905,6 @@
 <translation id="881799181680267069">മറ്റുള്ളവ മറയ്‌ക്കുക</translation>
 <translation id="4708849949179781599"><ph name="PRODUCT_NAME"/> പുറത്തുകടക്കുക</translation>
 <translation id="8795916974678578410">പുതിയ വിന്‍ഡോ</translation>
-<translation id="1676595396635191120">പുതിയ വേഷ പ്രച്ഛന്ന വിന്‍ഡോ</translation>
 <translation id="406070391919917862">പശ്ചാത്തല അപ്ലിക്കേഷനുകള്‍</translation>
 <translation id="3335947283844343239">അടച്ച ടാബ് വീണ്ടും തുറക്കുക</translation>
 <translation id="8214489666383623925">ഫയല്‍ തുറക്കുക...</translation>
@@ -2160,7 +2141,6 @@
 <translation id="7339898014177206373">പുതിയ വിന്‍ഡോ</translation>
 <translation id="7551643184018910560">ഷെൽഫിലേക്ക് പിൻ ചെയ്യുക</translation>
 <translation id="8335587457941836791">ഷെൽഫിൽ നിന്ന് അൺപിൻ ചെയ്യുക</translation>
-<translation id="4471385409549756595">പുതിയ ആൾമാറാട്ട വിൻഡോ</translation>
 <translation id="8249048954461686687">OEM ഫോൾഡർ</translation>
 <translation id="8440630305826533614">Linux ആപ്പുകൾ</translation>
 <translation id="4742746985488890273">ഷെൽഫിൽ പിൻ ചെയ്യുക</translation>
@@ -2168,6 +2148,7 @@
 <translation id="469230890969474295">OEM ഫോൾഡർ</translation>
 <translation id="6201792273624501289">Linux ആപ്പുകൾ</translation>
 <translation id="29488703364906173">ആധുനിക വെബിനായി സൃഷ്‌ടിച്ചിരിക്കുന്ന വേഗതയാർന്നതും ലളിതവും സുരക്ഷിതവുമായ വെബ് ബ്രൗസർ.</translation>
+<translation id="8808478386290700967">വെബ് സ്റ്റോര്‍</translation>
 <translation id="8910146161325739742">നിങ്ങളുടെ സ്‌ക്രീൻ പങ്കിടുക</translation>
 <translation id="8621979332865976405">നിങ്ങളുടെ സ്‌ക്രീൻ പൂർണ്ണമായും പങ്കിടുക</translation>
 <translation id="8225265270453771718">ഒരു ആപ്പ് വിൻഡോ പങ്കിടുക</translation>
@@ -2264,8 +2245,6 @@
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
         <ph name="FILE_INFO"/>
         <ph name="EVENT_NAME"/></translation>
-<translation id="4540437243849625078">അദൃശ്യതാ സംവിധാനത്തിനു പുറത്തുള്ള ഒരു ആപ്പുമായി ഈ സൈറ്റ് വിവരങ്ങൾ പങ്കിടാൻ പോകുന്നു.</translation>
-<translation id="1227836882233136433">അദൃശ്യതാ സംവിധാനം വിടണോ?</translation>
 <translation id="662080504995468778">തുടരുക</translation>
 <translation id="2593289874938379417">അഭ്യർത്ഥിച്ച ഉറവിടത്തിലേക്ക് Brave-ന് ആക്‌സസ് ഇല്ല്ല.</translation>
 <translation id="760197030861754408">കണക്റ്റുചെയ്യാൻ <ph name="LANDING_PAGE"/> പേജിൽ പോകുക.</translation>
@@ -2448,12 +2427,8 @@
 <translation id="7235737137505019098">കൂടുതൽ അക്കൗണ്ടുകൾ സൃഷ്‌ടിക്കാൻ ആവശ്യമായ സ്‌പെയ്‌സ് നിങ്ങളുടെ സുരക്ഷാ കീയിൽ ഇല്ല.</translation>
 <translation id="3984431586879874039">നിങ്ങളുടെ സുരക്ഷാ കീ കാണാൻ ഈ സൈറ്റിനെ അനുവദിക്കണോ?</translation>
 <translation id="8948939328578167195">നിങ്ങളുടെ സുരക്ഷാ കീയുടെ നിർമ്മാതാവ്, മോഡൽ എന്നിവ <ph name="WEBSITE"/>-ന് കാണണം</translation>
-<translation id="7618452966706304788">അദൃശ്യ മോഡിൽ <ph name="APP_NAME"/> ആപ്പിൽ ടച്ച് ഐഡി ഉപയോഗിക്കാൻ നിങ്ങൾക്ക് താൽപ്പര്യമുണ്ടോ?</translation>
-<translation id="3098826269712097986">നിങ്ങൾ അദൃശ്യ മോഡിന് പുറത്തുകടന്ന ശേഷം സൈൻ ഇൻ ഡാറ്റ Brave-ൽ സംഭരിക്കും. ഈ വെബ്‌സൈറ്റിൽ ടച്ച് ഐഡി വീണ്ടും ഉപയോഗിക്കാൻ ഇത് നിങ്ങളെ അനുവദിക്കും.</translation>
 <translation id="2172784515318616985">തുടരുക</translation>
-<translation id="5186185447130319458">ആള്‍‌മാറാട്ടം</translation>
 <translation id="7643842463591647490">{0,plural, =1{# തുറന്ന വിൻഡോ}other{# തുറന്ന വിൻഡോകൾ}}</translation>
-<translation id="2579188629646253712">അദൃശ്യ മോഡിൽ നിന്ന് പുറത്തുകടക്കുക</translation>
 <translation id="4349828822184870497">സഹായകരം</translation>
 <translation id="6876469544038980967">സഹായകരമല്ല</translation>
 <translation id="6428450836711225518">നിങ്ങളുടെ ഫോൺ നമ്പർ പരിശോധിച്ചുറപ്പിക്കുക</translation>
@@ -2473,10 +2448,8 @@
 <translation id="8368859634510605990">എല്ലാ ബുക്ക്‍മാര്‍ക്കുകളും &amp;തുറക്കുക</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{&amp;എല്ലാം തുറക്കുക}=1{&amp;ബുക്ക്‌മാർക്ക് തുറക്കുക}other{&amp;എല്ലാം (#) തുറക്കുക}}</translation>
 <translation id="1016437870506746108">{COUNT,plural, =0{എല്ലാം &amp;പുതിയ വിൻഡോയിൽ തുറക്കുക}=1{&amp;പുതിയ വിന്‍‌ഡോയിൽ തുറക്കുക}other{എല്ലാം (#) &amp;പുതിയ വിൻഡോയിൽ തുറക്കുക}}</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{എല്ലാം &amp;അദൃശ്യ വിൻഡോയിൽ തുറക്കുക}=1{&amp;അദൃശ്യ വിൻഡോയിൽ തുറക്കുക}other{എല്ലാം (#) &amp;അദൃശ്യ വിൻഡോയിൽ തുറക്കുക}}</translation>
 <translation id="3613422051106148727">പുതിയ ടാബിൽ &amp;തുറക്കുക</translation>
 <translation id="4853020600495124913">&amp;പുതിയ വിന്‍‌ഡോയില്‍‌ തുറക്കുക</translation>
-<translation id="2431625704210501303">&amp;വേഷ പ്രച്ഛന്ന വിന്‍ഡോയില്‍ തുറക്കുക</translation>
 <translation id="6702639462873609204">&amp;എഡിറ്റുചെയ്യുക...</translation>
 <translation id="3088325635286126843">&amp;പേരുമാറ്റുക...</translation>
 <translation id="713122686776214250">പേ&amp;ജ് ചേർക്കുക...</translation>
@@ -2485,10 +2458,8 @@
 <translation id="6466988389784393586">&amp;എല്ലാ ബുക്ക്‍മാര്‍ക്കുകളും തുറക്കുക</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{എല്ലാം &amp;തുറക്കുക}=1{ബുക്ക്‌മാർക്ക് &amp;തുറക്കുക}other{എല്ലാം (#) &amp;തുറക്കുക}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{എല്ലാം &amp;പുതിയ വിൻഡോയിൽ തുറക്കുക}=1{&amp;പുതിയ വിന്‍‌ഡോയില്‍‌ തുറക്കുക}other{എല്ലാം (#) &amp;പുതിയ വിൻഡോയിൽ തുറക്കുക}}</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{എല്ലാം &amp;അദൃശ്യ വിൻഡോയിൽ തുറക്കുക}=1{&amp;അദൃശ്യ വിൻഡോയിൽ തുറക്കുക}other{എല്ലാം (#) &amp;അദൃശ്യ വിൻഡോയിൽ തുറക്കുക}}</translation>
 <translation id="9024127637873500333">&amp;പുതിയ ടാബില്‍ തുറക്കുക</translation>
 <translation id="665061930738760572">&amp;പുതിയ വിൻഡോയിൽ തുറക്കുക</translation>
-<translation id="1985165269306590797">&amp;വേഷ പ്രച്ഛന്ന വിന്‍ഡോയില്‍ തുറക്കുക</translation>
 <translation id="8824701697284169214">പേ&amp;ജ് ചേർക്കുക...</translation>
 <translation id="2489918096470125693">&amp;ഫോൾഡർ ചേർക്കുക...</translation>
 <translation id="421182450098841253">ബുക്ക്മാർക്കുകൾ ബാർ &amp;കാണിക്കുക</translation>
@@ -2540,10 +2511,8 @@
 <translation id="8457451314607652708">ബുക്ക്‌മാർക്കുകൾ ഇമ്പോർട്ടുചെയ്യുക</translation>
 <translation id="5101042277149003567">എല്ലാ ബുക്‌മാര്‍ക്കുകളും തുറക്കുക</translation>
 <translation id="7007648447224463482">എല്ലാം പുതിയ വിൻഡോയിൽ തുറക്കുക</translation>
-<translation id="642436385689435488">എല്ലാം അദൃശ്യ വിൻഡോയിൽ തുറക്കുക</translation>
 <translation id="4195643157523330669">പുതിയ ടാബില്‍ തുറക്കുക</translation>
 <translation id="2979639724566107830">പുതിയ വിന്‍ഡോയില്‍ തുറക്കുക</translation>
-<translation id="5463021359602611602">അദൃശ്യ വിന്‍ഡോയില്‍ തുറക്കുക</translation>
 <translation id="1173894706177603556">പേരുമാറ്റുക</translation>
 <translation id="6825184156888454064">പേര് പ്രകാരം അടുക്കുക</translation>
 <translation id="3440663250074896476"><ph name="BOOKMARK_NAME"/> എന്നതിനുള്ള കൂടുതൽ പ്രവർത്തനങ്ങൾ</translation>
@@ -2621,9 +2590,6 @@
 <translation id="4159681666905192102">ഇത് <ph name="CUSTODIAN_EMAIL"/>, <ph name="SECOND_CUSTODIAN_EMAIL"/> എന്നിവർ നിയന്ത്രിക്കുന്ന കുട്ടികൾക്കുള്ള അക്കൗണ്ടാണ്.</translation>
 <translation id="5958529069007801266">സൂപ്പർവൈസുചെയ്‌ത ഉപയോക്താവ്</translation>
 <translation id="5720705177508910913">നിലവിലെ ഉപയോക്താവ്</translation>
-<translation id="1850357845349976573">{0,plural, =1{അദൃശ്യ മോഡ്}other{# അദൃശ്യ വിൻഡോകൾ തുറക്കുക}}</translation>
-<translation id="37784332082579802">{0,plural, =1{അദൃശ്യ മോഡ്}other{അദൃശ്യ മോഡ് (#)}}</translation>
-<translation id="5070556616376997776">നിങ്ങൾ അദൃശ്യ മോഡിലാണ്</translation>
 <translation id="2199298570273670671">പിശക്</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: സമന്വയം പ്രവർത്തിക്കുന്നില്ല</translation>
 <translation id="7307129035224081534">താൽക്കാലികമായി നിർത്തി</translation>
@@ -2632,8 +2598,6 @@
 <translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (കുട്ടികൾക്കായുള്ള അക്കൗണ്ട്)</translation>
 <translation id="8182664696082410784"><ph name="REASON"/>
     ഈ സൈറ്റ് ബ്ലോക്ക് ചെയ്യണമെന്ന് ഞാൻ കരുതുന്നില്ല!</translation>
-<translation id="5832813618714645810">ആളുകള്‍‌</translation>
-<translation id="7171000599584840888">ഉപയോക്താവിനെ ചേർക്കുക...</translation>
 <translation id="1781771911845953849">അക്കൗണ്ടുകളും സമന്വയവും</translation>
 <translation id="4974733135013075877">പുറത്തുകടക്കലും കുട്ടികൾക്കുള്ള ലോക്കും</translation>
 <translation id="3965965397408324205"><ph name="PROFILE_NAME"/> എന്നതിൽ നിന്ന് പുറത്ത് കടക്കുക</translation>
@@ -2652,21 +2616,16 @@
 <translation id="8473863474539038330">വിലാസങ്ങളും മറ്റും</translation>
 <translation id="5287425679749926365">നിങ്ങളുടെ അക്കൗണ്ടുകൾ</translation>
 <translation id="4801448226354548035">അക്കൗണ്ടുകൾ മറയ്‌ക്കുക</translation>
-<translation id="2935225303485967257">ആളുകളെ മാനേജുചെയ്യുക</translation>
 <translation id="7388222713940428051">അതിഥി വിൻഡോ തുറക്കുക</translation>
 <translation id="127668050356036882">എല്ലാ വിൻഡോകളും അടയ്‌ക്കുക</translation>
 <translation id="1464258312790801189">നിങ്ങളുടെ അക്കൗണ്ടുകൾ</translation>
 <translation id="6655458902729017087">അക്കൗണ്ടുകൾ മറയ്‌ക്കുക</translation>
-<translation id="688280436658139163">ആളുകളെ മാനേജുചെയ്യുക</translation>
 <translation id="2666990579225592931">അതിഥി വിൻഡോ തുറക്കുക</translation>
 <translation id="5869948122057593679">നിങ്ങളുടെ എല്ലാ വിൻഡോകളും അവസാനിപ്പിക്കുക</translation>
-<translation id="4133080584509825342">വ്യക്തിയുടെ പ്രൊഫൈൽ എഡിറ്റുചെയ്യുക, <ph name="PROFILE_NAME"/></translation>
-<translation id="4848862725510532982"><ph name="USERNAME"/> എന്നയാളിന്റെ <ph name="PROFILE_NAME"/> പ്രൊഫൈൽ എഡിറ്റുചെയ്യുക</translation>
 <translation id="3294437725009624529">അതിഥി</translation>
 <translation id="475088594373173692">ആദ്യ ഉപയോക്താവ്</translation>
 <translation id="4535127706710932914">സ്ഥിരസ്ഥിതി  പ്രൊഫൈൽ</translation>
 <translation id="4389091756366370506">ഉപയോക്താവ്<ph name="VALUE"/></translation>
-<translation id="4536111748245793305">വ്യക്തി <ph name="VALUE"/></translation>
 <translation id="5397794290049113714">നിങ്ങള്‍</translation>
 <translation id="3031417829280473749">ഏജന്റ് X</translation>
 <translation id="412730574613779332">സ്‌പാൻഡെക്‌സ്</translation>
@@ -2754,7 +2713,6 @@
 <translation id="2871813825302180988">ഈ ഉപകരണത്തിൽ ഈ അക്കൗണ്ട് ഇതിനകം ഉപയോഗിക്കുന്നുണ്ട്.</translation>
 <translation id="7654941827281939388">ഈ അക്കൗണ്ട് ഇതിനകം ഈ കമ്പ്യൂട്ടറിൽ ഉപയോഗിച്ചുകൊണ്ടിരിക്കുന്നു.</translation>
 <translation id="9022847679183471841"><ph name="AVATAR_NAME"/>, നിലവിൽ ഈ അക്കൗണ്ട് ഈ കമ്പ്യൂട്ടറിൽ ഉപയോഗിക്കുകയാണ്.</translation>
-<translation id="6921634551681321094">വ്യക്തിയെ ചേർക്കുക</translation>
 <translation id="5389237414310520250">പുതിയ ഉപയോക്താവിനെ സൃഷ്‌ടിക്കാനായില്ല. നിങ്ങളുടെ ഹാർഡ് ഡ്രൈവിലെ ഇടവും അനുമതികളും പരിശോധിച്ച് വീണ്ടും ശ്രമിക്കുക.</translation>
 <translation id="2673589024369449924">ഈ ഉപയോക്താവിനായി ഒരു ഡെസ്‌ക്‌ടോപ്പ് കുറുക്കുവഴി സൃഷ്‌ടിക്കുക</translation>
 <translation id="2731710757838467317">നിങ്ങളുടെ സൂപ്പർവൈസുചെയ്‌ത ഉപയോക്താവിനെ സൃഷ്‌ടിക്കുന്നു. ഇതിന് കുറച്ചുസമയമെടുക്കാം.</translation>
@@ -2762,13 +2720,8 @@
 <translation id="6690751852586194791">ഈ ഉപകരണത്തിൽ ചേർക്കാൻ ഒരു സൂപ്പർവൈസ് ചെയ്‌ത ഉപയോക്താവിനെ തിരഞ്ഞെടുക്കുക.</translation>
 <translation id="5525677322972469346">ഒരു പുതിയ സൂപ്പർവൈസുചെയ്‌ത ഉപയോക്താവിനെ സൃഷ്ടിക്കുക</translation>
 <translation id="8630903300770275248">സൂപ്പർവൈസുചെയ്‌ത ഉപയോക്താവിനെ ഇമ്പോർട്ടുചെയ്യുക</translation>
-<translation id="4904061654709986277">വ്യക്തിയെ ചേർക്കുക</translation>
-<translation id="6114945161119872228">ഈ വ്യക്തിയെ നീക്കംചെയ്യുക</translation>
-<translation id="769308100792069196">സൂപ്പർവൈസ് ചെയ്‌ത വ്യക്തിയെ ചേർക്കുക</translation>
 <translation id="3470442499439619530">ഈ ഉപയോക്താവിനെ നീക്കംചെയ്യുക</translation>
 <translation id="4296575653627536209">സൂപ്പർവൈസ് ചെയ്‌ത ഉപയോക്താവിനെ ചേർക്കുക</translation>
-<translation id="8006143138282906848">ഈ ഉപയോക്താവിനെ നീക്കംചെയ്യുക</translation>
-<translation id="6912187023601892621">സൂപ്പർവൈസ് ചെയ്‌ത വ്യക്തിയെ ചേർക്കുക</translation>
 <translation id="1608626060424371292">ഈ ഉപയോക്താവിനെ നീക്കംചെയ്യുക</translation>
 <translation id="493571969993549666">സൂപ്പർവൈസ് ചെയ്‌ത ഉപയോക്താവിനെ ചേർക്കുക</translation>
 <translation id="9101691533782776290">അപ്ലിക്കേഷൻ സമാരംഭിക്കുക</translation>
@@ -2790,8 +2743,6 @@
 <translation id="6164005077879661055">സൂപ്പർവൈസുചെയ്‌ത ഉപയോക്താവിനെ നീക്കംചെയ്‌താൽ, സൂപ്പർവൈസുചെയ്‌ത ഉപയോക്താവുമായി ബന്ധപ്പെടുത്തിയിട്ടുള്ള എല്ലാ ഫയലുകളും പ്രാദേശിക ഡാറ്റയും ശാശ്വതമായി ഇല്ലാതാക്കപ്പെടും. സൂപ്പർവൈസുചെയ്‌ത ഈ ഉപയോക്താവിനായി സന്ദർശിച്ച വെബ്‌സൈറ്റുകളും ക്രമീകരണങ്ങളും <ph name="MANAGEMENT_URL"/>-ൽ മാനേജർക്ക് തുടർന്നും കാണാനായേക്കും.</translation>
 <translation id="3410832398355316179">ഈ ഉപയോക്താവിനെ നീക്കം ചെയ്‌തു കഴിഞ്ഞാൽ, അയാളുമായി ബന്ധപ്പെട്ട എല്ലാ ഫയലുകളും പ്രാദേശിക ഡാറ്റയും ശാശ്വതമായി ഇല്ലാതാക്കപ്പെടും. <ph name="USER_EMAIL"/> എന്നതിന് പിന്നീട്, തുടർന്നും സൈൻ ഇൻ ചെയ്യാനാവും.</translation>
 <translation id="672213144943476270">ഒരു അതിഥിയായി ബ്രൗസിംഗ് ആരംഭിക്കുന്നതിന് മുമ്പ് നിങ്ങളുടെ പ്രൊഫൈൽ അൺലോക്കുചെയ്യുക.</translation>
-<translation id="8086119151297127544">ഒരാളെ നീക്കംചെയ്യുന്നതിന് മുമ്പ് നിങ്ങളുടെ പ്രൊഫൈൽ അൺലോക്ക് ചെയ്യുക.</translation>
-<translation id="7805701378418968629">ഒരാളെ ചേർക്കുന്നതിന് മുമ്പ് നിങ്ങളുടെ പ്രൊഫൈൽ അൺലോക്ക് ചെയ്യുക.</translation>
 <translation id="8978225823042133615">Brave ഉപയോഗിക്കാൻ സൈൻ ഇൻ ചെയ്യുക</translation>
 <translation id="4893336867552636863">ഇത് ഈ ഉപകരണത്തിൽ നിന്നും നിങ്ങളുടെ ബ്രൗസിംഗ് ഡാറ്റയെ ശാശ്വതമായി ഇല്ലാതാക്കും.</translation>
 <translation id="2496180316473517155">ബ്രൌസിംഗ് ചരിത്രം</translation>
@@ -2849,8 +2800,9 @@
 <translation id="6850286078059909152">ടെക്‌സ്‌റ്റ് വർണ്ണം</translation>
 <translation id="8042142357103597104">ടെക്‌സ്‌റ്റ് അതാര്യത</translation>
 <translation id="1656528038316521561">പശ്ചാത്തല അതാര്യത</translation>
-<translation id="5750288053043553775">0</translation>
-<translation id="8689998525144040851">100</translation>
+<translation id="8838601485495657486">അതാര്യം</translation>
+<translation id="5826993284769733527">ഭാഗികമായി സുതാര്യം</translation>
+<translation id="4438043733494739848">സുതാര്യം</translation>
 <translation id="2442916515643169563">ടെക്‌സ്‌റ്റ് ഷാഡോ</translation>
 <translation id="3599221874935822507">ഉയർന്ന് നിൽക്കുന്നത്</translation>
 <translation id="274029851662193272">താഴ്ന്ന് നിൽക്കുന്നത്</translation>
@@ -2865,7 +2817,6 @@
 <translation id="161042844686301425">സിയാൻ</translation>
 <translation id="4115378294792113321">മജന്ത</translation>
 <translation id="6981982820502123353">ഉപയോഗസഹായി</translation>
-<translation id="5840822070878669614">Brave വെബ് സ്‌റ്റോർ തുറക്കുക</translation>
 <translation id="6073903501322152803">ഉപയോഗസഹായി ഫീച്ചറുകൾ ചേർക്കുക</translation>
 <translation id="7988355189918024273">ഉപയോഗസഹായി സവിശേഷതകള്‍ സാദ്ധ്യമാക്കുക</translation>
 <translation id="5499063270485366718">ചിത്രത്തിൽ ഉപകാരപ്രദമായ വിവരണമില്ലെങ്കിൽ നിങ്ങൾക്കായി ഒരു വിവരണം നൽകാൻ Brave ശ്രമിക്കും. വിവരണങ്ങൾ സൃഷ്‌ടിക്കാൻ, ചിത്രങ്ങൾ Brave Software-ലേക്ക് അയയ്ക്കുന്നു.</translation>
@@ -2961,6 +2912,7 @@
 <translation id="4430019312045809116">അളവ്</translation>
 <translation id="3677657024345889897">തീരെ ശബ്ജം കുറഞ്ഞ</translation>
 <translation id="167160931442925455">ഏറ്റവും ശബ്‌ദതീവ്രത</translation>
+<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (ഡിഫോൾട്ട്)</translation>
 <translation id="7037509989619051237">പ്രിവ്യൂ ചെയ്യുന്നതിനുള്ള ടെക്‌സ്റ്റ്</translation>
 <translation id="5471768120198416576">അവിടെയുണ്ടോ! ഞാനാണ് നിങ്ങളുടെ ടെക്‌സ്റ്റ്-ടു-സ്‌പീച്ച് വോയ്‌സ്.</translation>
@@ -3225,10 +3177,13 @@
 <translation id="4058720513957747556">AppSocket (TCP/IP)</translation>
 <translation id="6619058681307408113">ലൈൻ പ്രിന്റർ ഡെമൺ (LPD)</translation>
 <translation id="2266957463645820432">USB (IPPUSB) വഴി IPP</translation>
+<translation id="8086015605808120405"><ph name="PRINTER_NAME"/> കോൺഫിഗർ ചെയ്യുന്നു ...</translation>
 <translation id="4665014895760275686">നിര്‍മ്മാതാവ്</translation>
 <translation id="4561098487691395071">അല്ലെങ്കിൽ നിങ്ങളുടെ പ്രിൻ്റർ PPD വ്യക്തമാക്കുക</translation>
 <translation id="1989112275319619282">ബ്രൗസുചെയ്യുക</translation>
 <translation id="3625481642044239431">അസാധുവായ ഫയൽ തിരഞ്ഞെടുത്തു. വീണ്ടും ശ്രമിക്കുക.</translation>
+<translation id="2462752602710430187"><ph name="PRINTER_NAME"/> ചേർത്തു</translation>
+<translation id="7380768571499464492"><ph name="PRINTER_NAME"/> അപ്ഡേറ്റ് ചെയ്‌തു</translation>
 <translation id="8002670234429879764"><ph name="PRINTER_NAME"/> ഇനി ലഭ്യമല്ല</translation>
 <translation id="3976108569178263973">ലഭ്യമായ പ്രിന്ററുകളൊന്നുമില്ല.</translation>
 <translation id="3213187967168344806">പ്രിന്‍റർ ചേർക്കാനാവുന്നില്ല. കമ്പ്യൂട്ടർ പുനരാരംഭിച്ച് വീണ്ടും ശ്രമിക്കുക.</translation>
@@ -3793,9 +3748,6 @@
 <translation id="6196640612572343990">മൂന്നാം കക്ഷി കുക്കികള്‍ ബ്ലോക്കുചെയ്യുക</translation>
 <translation id="6782111308708962316">കുക്കി വിവരം സംരക്ഷിക്കുകയും വായിക്കുകയും ചെയ്യുന്നതിൽ നിന്ന് മൂന്നാംകക്ഷി വെബ്‌സൈറ്റുകളെ തടയുക</translation>
 <translation id="1274977772557788323">Adobe Flash Player സ്റ്റോറേജ് ക്രമീകരണം</translation>
-<translation id="1281501490173223206">നിലവിലെ അദൃശ്യ സെഷന് മാത്രം</translation>
-<translation id="3479035826743782247">നിലവിലെ അദൃശ്യ സെഷൻ</translation>
-<translation id="4750220700975225">നിലവിലെ അദൃശ്യ സെഷൻ (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">സൈറ്റുകളൊന്നും സൂം ഇൻ അല്ലെങ്കിൽ സൂം ഔട്ട് ചെയ്‌തിട്ടില്ല</translation>
 <translation id="3566721612727112615">സൈറ്റുകൾ ചേർത്തിട്ടില്ല</translation>
 <translation id="8098574385249290065">സൈറ്റുകൾക്ക് എപ്പോൾ ശബ്‌ദം പ്ലേ ചെയ്യാനാവും എന്നത് (ശുപാർശ ചെയ്‌തത്) തിരഞ്ഞെടുക്കാൻ Brave-നെ അനുവദിക്കുക</translation>
@@ -3822,8 +3774,6 @@
 <translation id="4590324241397107707">ഡാറ്റാബേസ് സംഭരണം</translation>
 <translation id="8016266267177410919">താൽക്കാലിക സ്‌റ്റോറേജ്</translation>
 <translation id="4175737294868205930">സ്ഥിരമായ സ്‌റ്റോറേജ്</translation>
-<translation id="3707212204259470604">മറ്റുള്ളവരെ മാനേജുചെയ്യുക</translation>
-<translation id="8907706281008466056">Brave Software പ്രൊഫൈൽ ഫോട്ടോ</translation>
 <translation id="2408955596600435184">നിങ്ങളുടെ പിൻ നൽകുക</translation>
 <translation id="6619990499523117484">നിങ്ങളുടെ പിൻ സ്ഥിരീകരിക്കുക</translation>
 <translation id="2023167225947895179">പിൻ നമ്പർ ഊഹിക്കാൻ എളുപ്പമുള്ളതാകാം</translation>
@@ -3894,7 +3844,6 @@
 <translation id="1692115862433274081">മറ്റൊരു അക്കൗണ്ട് ഉപയോഗിക്കുക</translation>
 <translation id="5244474230056479698"><ph name="EMAIL"/> ഇമെയിലിലേക്ക് സമന്വയിപ്പിക്കുന്നു</translation>
 <translation id="4326270470840334364"><ph name="DOMAIN"/> ഈ അക്കൗണ്ട് മാനേജുചെയ്യുന്നതിനാൽ നിങ്ങളുടെ ബുക്ക്‌മാർക്കുകൾ, ചരിത്രം, പാസ്‌വേഡുകൾ, മറ്റ് ക്രമീകരണം എന്നിവ ഈ ഉപകരണത്തിൽ നിന്ന്‌ മായ്‌ക്കുന്നതാണ്. എന്നിരുന്നാലും, നിങ്ങളുടെ വിവരങ്ങൾ Brave Software അക്കൗണ്ടിൽ സൂക്ഷിക്കുന്നതും <ph name="BEGIN_LINK"/>Brave Software ഡാഷ്‌ബോർഡിൽ<ph name="END_LINK"/> മാനേജുചെയ്യാവുന്നതുമാണ്‌.</translation>
-<translation id="6906406176003824042">വ്യക്തിയെ എഡിറ്റുചെയ്യുക</translation>
 <translation id="6739923123728562974">ഡെസ്‌ക്‌ടോപ്പ് കുറുക്കുവഴി കാണിക്കുക</translation>
 <translation id="2450310832094867474">സമന്വയം ഓഫാക്കി സൈൻ ഔട്ട് ചെയ്യണോ?</translation>
 <translation id="3699920817649120894">സമന്വയവും വ്യക്തിപരമാക്കലും ഓഫാക്കണോ?</translation>
@@ -3959,6 +3908,7 @@
 <translation id="4138267921960073861">പ്രവേശന സ്ക്രീനില്‍ ഫോട്ടോകളും ഉപയോക്തൃനാമങ്ങളും  കാണിക്കുക</translation>
 <translation id="6828153365543658583">ഇനിപ്പറയുന്ന ഉപയോക്താക്കള്‍ക്കായി പ്രവേശനം നിയന്ത്രിക്കുക:</translation>
 <translation id="7645176681409127223"><ph name="USER_NAME"/> (ഉടമ)</translation>
+<translation id="6921634551681321094">വ്യക്തിയെ ചേർക്കുക</translation>
 <translation id="3699624789011381381">ഇമെയില്‍ വിലാസങ്ങള്‍</translation>
 <translation id="2813094189969465044">രക്ഷാകർതൃ നിയന്ത്രണങ്ങൾ</translation>
 <translation id="3557101512409028104">Family Link ഉപയോഗിച്ച് വെബ്സൈറ്റ് നിയന്ത്രണങ്ങളും സ്ക്രീൻ സമയ പരിധികളും സജ്ജീകരിക്കുക</translation>
@@ -3984,7 +3934,6 @@
 <translation id="437184764829821926">വിപുലീകരിച്ച ഫോണ്ട് ക്രമീകരണങ്ങൾ</translation>
 <translation id="323803881985677942">വിപുലീകരണ ഓപ്‌ഷനുകൾ തുറക്കുക</translation>
 <translation id="2166369534954157698">അജവും ആനയും ഐരാവതവും ഗരുഡനും കഠോര സ്വരം പൊഴിക്കെ ഹാരവും ഒഢ്യാണവും ഫാലത്തിൽ മഞ്ഞളും ഈറൻ കേശത്തിൽ ഔഷധ എണ്ണയുമായി ഋതുമതിയും അനഘയും ഭൂനാഥയുമായ ഉമ ദു:ഖഛവിയോടെ ഇടതു പാദം ഏന്തി നിർഝരിയിലെ ചിറ്റലകളെ ഓമനിക്കുമ്പോൾ ബാ‍ലയുടെ കൺകളിൽ നീർ ഊർന്നു വിങ്ങി.</translation>
-<translation id="8911765336506423117">Brave വെബ് സ്റ്റോറിൽ നിന്നുള്ള വിപുലീകരണം ആവശ്യമാണ്</translation>
 <translation id="6965978654500191972">ഉപാധി</translation>
 <translation id="8260864402787962391">മൗസ്</translation>
 <translation id="155865706765934889">ടച്ച്‌പാഡ്</translation>
@@ -4108,7 +4057,6 @@
 <translation id="8781980678064919987">ലിഡ് അടഞ്ഞിരിക്കുമ്പോൾ ഷട്ട് ഡൗൺ ചെയ്യുക</translation>
 <translation id="3636766455281737684"><ph name="PERCENTAGE"/>% - <ph name="TIME"/> ശേഷിക്കുന്നു</translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - പൂർണ്ണമായി ചാർജ്ജാകാൻ <ph name="TIME"/> ശേഷിക്കുന്നു</translation>
-<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="2620436844016719705">സിസ്റ്റം</translation>
 <translation id="2077129598763517140">ലഭ്യമാകുമ്പോൾ ഹാർഡ്‌വെയർ ത്വരിതപ്പെടുത്തൽ ഉപയോഗിക്കുക</translation>
 <translation id="3817524650114746564">നിങ്ങളുടെ കമ്പ്യൂട്ടറിൻ്റെ പ്രോക്‌സി ക്രമീകരണം തുറക്കുക</translation>
@@ -4231,7 +4179,6 @@
 <translation id="329838636886466101">റിപ്പയർ ചെയ്യുക</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(നിഷ്‌ക്രിയം)</translation>
-<translation id="3860292630623580294">(ആള്‍മാറാട്ടം)</translation>
 <translation id="6655190889273724601">ഡെവലപ്പര്‍ മോഡ്</translation>
 <translation id="2868746137289129307">ഈ വിപുലീകരണം എന്റർപ്രൈസ്‌ നയം ഉപയോഗിച്ച് കാലഹരണപ്പെടുത്തുകയും പ്രവർത്തനരഹിതമാക്കുകയും ചെയ്‌തു. ഒരു പുതിയ പതിപ്പ് ലഭ്യമാകുമ്പോൾ അത് സ്വയമേ പ്രവർത്തനക്ഷമമായേക്കാം.</translation>
 <translation id="6841186874966388268">പിശകുകൾ</translation>
@@ -4267,7 +4214,6 @@
 <translation id="1805822111539868586">കാഴ്‌ചകൾ പരിശോധിക്കുക</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> കൂടി...</translation>
 <translation id="2450849356604136918">വിവരങ്ങളുടെ പ്രദർശമൊന്നും ഇപ്പോൾ സജീവമല്ല</translation>
-<translation id="4854477725773269949">ആള്‍‌മാറാട്ടത്തില്‍‌ അനുവദിക്കുക</translation>
 <translation id="6124650939968185064">ഇനിപ്പറയുന്ന വിപുലീകരണങ്ങൾ ഈ വിപുലീകരണത്തെ ആശ്രയിച്ചിരിക്കുന്നു:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ഐഡി: <ph name="ID_PH"/>)</translation>
 <translation id="3866249974567520381">വിവരണം</translation>
@@ -4294,14 +4240,12 @@
 <translation id="7235716375204803342">ആക്റ്റിവിറ്റികൾ ലഭ്യമാക്കുന്നു...</translation>
 <translation id="8314381333424235892">വിപുലീകരണം കാണുന്നില്ല അല്ലെങ്കിൽ അൺഇൻസ്‌റ്റാൾ ചെയ്‌തു</translation>
 <translation id="7647403192093989392">സമീപകാല പ്രവര്‍‌ത്തനങ്ങളൊന്നുമില്ല</translation>
-<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave വെബ് സ്‌റ്റോറിൽ<ph name="END_LINK"/> വിപുലീകരണങ്ങളും തീമുകളും കണ്ടെത്തുക</translation>
 <translation id="7272674038937250585">വിവരണമൊന്നും നൽകിയിട്ടില്ല</translation>
 <translation id="3855441664322950881">പായ്‌ക്ക് വിപുലീകരണം</translation>
 <translation id="2958721676848865875">പായ്‌ക്ക് വിപുലീകരണ മുന്നറിയിപ്പ്</translation>
 <translation id="8652400352452647993">പായ്‌ക്ക് വിപുലീകരണ പിശക്</translation>
 <translation id="8398877366907290961">എങ്ങനെയാണെങ്കിലും മുന്നോട്ട് പോകുക</translation>
 <translation id="8770406935328356739">വിപുലീകരണ റൂട്ട് ഡയറക്‌ടറി</translation>
-<translation id="6226777517901268232">സ്വകാര്യ കീ ഫയല്‍‌ (ഓപ്‌ഷണൽ)</translation>
 <translation id="2916745397441987255">വിപുലീകരണങ്ങൾ തിരയുക</translation>
 <translation id="1992397118740194946">സജ്ജമാക്കിയിട്ടില്ല</translation>
 <translation id="6706210727756204531">വ്യാപ്‌തി</translation>
@@ -4321,7 +4265,6 @@
 <translation id="1688935057616748272">ഒരു അക്ഷരം ടൈപ്പ് ചെയ്യുക</translation>
 <translation id="4479424953165245642">കിയോസ്‌ക് അപ്ലിക്കേഷനുകൾ നിയന്ത്രിക്കുക</translation>
 <translation id="6619801788773578757">കിയോസ്ക് ആപ്പ് ചേർക്കുക</translation>
-<translation id="8045923671629973368">അപ്ലിക്കേഷൻ ഐഡി അല്ലെങ്കിൽ വെബ്സ്റ്റോർ URL നൽകുക</translation>
 <translation id="7059858479264779982">യാന്ത്രിക-സമാരംഭത്തിലേക്ക് സജ്ജമാക്കുക</translation>
 <translation id="6325191661371220117">യാന്ത്രിക സമാരംഭിക്കൽ പ്രവർത്തനരഹിതമാക്കുക</translation>
 <translation id="4699357559218762027">(സ്വയമേവ-സമാരംഭിച്ചു)</translation>
@@ -4488,8 +4431,6 @@
 <translation id="6041155700700864984">മുഴുവൻസ്‌ക്രീനിൽ നിന്നും നിർഗമിക്കുക</translation>
 <translation id="6112294629795967147">വലുപ്പം മാറ്റാൻ സ്പർശിക്കുക</translation>
 <translation id="2453860139492968684">പൂര്‍ത്തിയാക്കുക</translation>
-<translation id="6336451774241870485">പുതിയ സ്വകാര്യ ടാബ്</translation>
-<translation id="6610147964972079463">സ്വകാര്യ ടാബുകൾ അടയ്ക്കുക</translation>
 <translation id="8076492880354921740">ടാബുകള്‍‌</translation>
 <translation id="2794233252405721443">സൈറ്റ് ബ്ലോക്ക് ചെയ്‌തു</translation>
 <translation id="1721312023322545264">ഈ സൈറ്റ് സന്ദർശിക്കാൻ നിങ്ങൾക്ക് <ph name="NAME"/> എന്നയാളിൽ നിന്നുള്ള അനുമതി ആവശ്യമാണ്</translation>

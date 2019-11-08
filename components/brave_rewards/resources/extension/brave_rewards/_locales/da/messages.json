@@ -43,6 +43,22 @@
     "message": "Tilskud",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "Detaljer",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Din saldo ",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT Points",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "Kan bruges i Brave Præmier til at donere til dine foretrukne indholdsskabere. BAT points kan ikke veksles til BAT. ",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "til",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Månedligt bidrag",
+    "message": "Donér månedligt til denne side ",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Du har angivet {{reservedAmount}} BAT for skabere som endnu ikke har skrevet sig op til at modtage bidrag. Din browser vil fortsat forsøge at bidrage indtil de godkender, eller indtil 90 dage er gået. ",
+    "message": "Du har afsat {{reservedAmount}} {{currency}} til skabere som endnu ikke har tilmeldt sig modtagelse af donationer. Din browser vil fortsat prøve at donere indtil de godkender, eller indtil der er gået 90 dage.  ",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave Ads-bonusser!",
+    "message": "Du har optjent en Reklamepræmie! ",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Din bonustildeling fra Brave Ads er på vej.",
+    "message": "Din præmie er på vej til din Brave Præmier tegnebog. ",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Din Brave Ads token-tildeling",
+    "message": "Dit præmiebeløb ",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "Gennemfør tegnebogsverificering",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "Opret...",
-    "description": "Button text for setting monthly contribution"
   }
 }

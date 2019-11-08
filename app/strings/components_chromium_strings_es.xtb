@@ -37,7 +37,7 @@
 <translation id="130631256467250065">Los cambios se aplicarán la próxima vez que reinicies el dispositivo.</translation>
 <translation id="7999989146447764333">Los informes de errores no se encuentran disponibles en Brave.</translation>
 <translation id="7932149101545999102">Brave se ha creado gracias al proyecto de software libre <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> y a otro <ph name="BEGIN_LINK_OSS"/>software libre<ph name="END_LINK_OSS"/>.</translation>
-<translation id="1953231710324290369">Estás viendo una página de Brave segura</translation>
+<translation id="1953231710324290369">Estás viendo una página segura de Brave</translation>
 <translation id="2305018990464327944">Brave ha verificado que <ph name="ISSUER"/> emitió el certificado de este sitio web.</translation>
-<translation id="88187049159266777">Brave no se ha cerrado correctamente.</translation>
+<translation id="88187049159266777">Brave no se cerró correctamente.</translation>
 </translationbundle>

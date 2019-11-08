@@ -61,7 +61,7 @@
 <translation id="1163931534039071049">&amp;Keret forrásának megtekintése</translation>
 <translation id="6886871292305414135">Link megnyitása új &amp;lapon</translation>
 <translation id="8899851313684471736">Link megnyitása új &amp;ablakban</translation>
-<translation id="658539216370629794">Link megnyitása inko&amp;gnitóablakban</translation>
+<translation id="658539216370629794">Hivatkozás megnyitása privát ablakban</translation>
 <translation id="3144647712221361880">Link megnyitása mint</translation>
 <translation id="9137916601698928395">Link megnyitása mint <ph name="USER"/></translation>
 <translation id="1137673463384776352">Link megnyitása a következőben: <ph name="APP"/></translation>
@@ -122,7 +122,7 @@
 <translation id="3021678814754966447">&amp;Keret forrásának megtekintése</translation>
 <translation id="9027459031423301635">Link megnyitása új &amp;lapon</translation>
 <translation id="1769104665586091481">Link megnyitása új &amp;ablakban</translation>
-<translation id="1432267168815937878">Link megnyitása inko&amp;gnitóablakban</translation>
+<translation id="1432267168815937878">Hivatkozás megnyitása &amp; privát ablakban</translation>
 <translation id="2142328300403846845">Link megnyitása mint</translation>
 <translation id="6892812721183419409">Link megnyitása mint <ph name="USER"/></translation>
 <translation id="2006638907958895361">Link megnyitása a következőben: <ph name="APP"/></translation>
@@ -172,7 +172,7 @@
 <translation id="4200983522494130825">Új &amp;lap</translation>
 <translation id="8418445294933751433">&amp;Megjelenítés lapként</translation>
 <translation id="1723824996674794290">&amp;Új ablak</translation>
-<translation id="6516243500644829484">Új &amp;inkognitóablak</translation>
+<translation id="6516243500644829484">Új &amp;privát ablak</translation>
 <translation id="6120205520491252677">Az oldal rögzítése a kezdőképernyőn...</translation>
 <translation id="9065203028668620118">Szerkesztés</translation>
 <translation id="5329858601952122676">&amp;Törlés</translation>
@@ -192,7 +192,7 @@
 <translation id="3285322247471302225">Új lap</translation>
 <translation id="8879284080359814990">Megjeleníté&amp;s lapként</translation>
 <translation id="176587472219019965">Új &amp;ablak</translation>
-<translation id="7973394300052703468">Új &amp;inkognitóablak</translation>
+<translation id="7973394300052703468">Új &amp; Privát ablak</translation>
 <translation id="5157635116769074044">Az oldal rögzítése a kezdőképernyőn...</translation>
 <translation id="5830720307094128296">Oldal mentése &amp;másként...</translation>
 <translation id="4672657274720418656">Oldal előállítása</translation>
@@ -364,7 +364,7 @@
 <translation id="2902312830803030883">További műveletek</translation>
 <translation id="495170559598752135">Műveletek</translation>
 <translation id="3612673635130633812">Letöltötte: &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="6395403722585816044">Letöltve inkognitó módban</translation>
+<translation id="6395403722585816044">Letöltés privát ablakban</translation>
 <translation id="4551763574344810652">Nyomja meg a <ph name="MODIFIER_KEY_DESCRIPTION"/> billentyűparancsot a visszavonáshoz</translation>
 <translation id="2079545284768500474">Visszavonás</translation>
 <translation id="2490481887078769936">„<ph name="FILE_NAME"/>” eltávolítva a listából</translation>
@@ -411,10 +411,10 @@
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Letöltés folyamatban}other{Letöltések folyamatban}}</translation>
 <translation id="5425042808445046667">Letöltés folytatása</translation>
 <translation id="5284445933715251131">Letöltés folytatása</translation>
-<translation id="203837651858678035">Mindenképp bezárja az inkognitómódot?</translation>
+<translation id="203837651858678035">Mindenképp kilépsz a privát módból?</translation>
 <translation id="8951465597020890363">Mindenképp kilép a vendég módból?</translation>
 <translation id="9148058034647219655">Kilépés</translation>
-<translation id="7376221878517288144">Mindenképp kilép az inkognitómódból?</translation>
+<translation id="7376221878517288144">Mindenképp kilépsz a webáruházból?</translation>
 <translation id="973473557718930265">Kilépés</translation>
 <translation id="7707599169365957976">Ön is segíthet a Biztonságos Böngészés fejlesztésében, ha elküld bizonyos rendszer-információkat és oldaltartalmakat a Brave Software-nak.</translation>
 <translation id="4923279099980110923">Igen, szeretnék segíteni</translation>
@@ -596,6 +596,24 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Tanúsítvány aláírási értéke</translation>
 <translation id="4104163789986725820">E&amp;xportálás...</translation>
+<translation id="2029156652561216312">CN</translation>
+<translation id="7822286184239325970">ST</translation>
+<translation id="8180262569555229595">O</translation>
+<translation id="7252376466538759696">OU</translation>
+<translation id="5734574586460918465">dnQualifier</translation>
+<translation id="964324710553558337">C</translation>
+<translation id="511291565806773566">sorozatSzám</translation>
+<translation id="5912292566401425135">L</translation>
+<translation id="5725734596824080201">DC</translation>
+<translation id="2948789661744572780">LEVÉL</translation>
+<translation id="7481079953250545971">UID</translation>
+<translation id="4196967880387277612">E</translation>
+<translation id="5887772116581657016">üzletKategória</translation>
+<translation id="6561757256477115975">hatáskörHelységNév</translation>
+<translation id="7150038968052501583">hatáskörÁllamVagyMegyeNév</translation>
+<translation id="8904360804686555987">hatáskörOrszágNév</translation>
+<translation id="8718098216622210506">UTCA</translation>
+<translation id="6969275223369931223">postaKód</translation>
 <translation id="5434065355175441495">PKCS #1 RSA titkosítás</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 RSA titkosítással</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 RSA titkosítással</translation>
@@ -768,11 +786,11 @@ Győződjön meg arról, hogy nem ad ki bizalmas adatokat.</translation>
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/> (csúcs: <ph name="NUM_KILOBYTES_LIVE"/>)</translation>
 <translation id="8004582292198964060">Böngésző</translation>
 <translation id="3678156199662914018">Bővítmény: <ph name="EXTENSION_NAME"/></translation>
-<translation id="5053701565089446556">Inkognitómód bővítmény: <ph name="EXTENSION_NAME"/></translation>
+<translation id="5053701565089446556">Privát bővítmény: <ph name="EXTENSION_NAME"/></translation>
 <translation id="6508261954199872201">Alkalmazás: <ph name="APP_NAME"/></translation>
-<translation id="611296870688433505">Inkognitómódú alkalmazás: <ph name="APP_NAME"/></translation>
+<translation id="611296870688433505">Privát alkalmazás: <ph name="APP_NAME"/></translation>
 <translation id="7629827748548208700">Lap: <ph name="TAB_NAME"/></translation>
-<translation id="9048137919253433011">Inkognitólap: <ph name="TAB_NAME"/></translation>
+<translation id="9048137919253433011">Privát fül: <ph name="TAB_NAME"/></translation>
 <translation id="6900284862687837908">Háttéralkalmazás: <ph name="BACKGROUND_APP_URL"/></translation>
 <translation id="7427348830195639090">Háttéroldal: <ph name="BACKGROUND_PAGE_URL"/></translation>
 <translation id="6798954102094737107">Beépülő modul: <ph name="PLUGIN_NAME"/></translation>
@@ -787,7 +805,7 @@ Győződjön meg arról, hogy nem ad ki bizalmas adatokat.</translation>
 <translation id="2282146716419988068">GPU-folyamat</translation>
 <translation id="2087822576218954668">Nyomtatás: <ph name="PRINT_NAME"/></translation>
 <translation id="8859174528519900719">Subframe: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="1799432502220762862">Inkognitó subframe: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="1799432502220762862">Privát Subframe: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="2348176352564285430">Alkalmazás: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="786073089922909430">Szolgáltatás: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7663719505383602579">Fogadó fél: <ph name="ARC_PROCESS_NAME"/></translation>
@@ -1061,7 +1079,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="5483785310822538350">Fájl- és eszközhozzáférés visszavonása</translation>
 <translation id="93766956588638423">Bővítmény javítása</translation>
 <translation id="3905761538810670789">Alkalmazás javítása</translation>
-<translation id="8808478386290700967">Brave internetes áruház</translation>
+<translation id="8808478386290700967">Webáruház</translation>
 <translation id="488785315393301722">Részletek megjelenítése</translation>
 <translation id="8962083179518285172">Részletek elrejtése</translation>
 <translation id="7287143125007575591">Hozzáférés megtagadva.</translation>
@@ -1351,7 +1369,7 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="192494336144674234">Megnyitás ezzel:</translation>
 <translation id="9053893665344928494">Jegyezze meg a döntésemet</translation>
 <translation id="5340857474604400806">A Brave használatának folytatása</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Inkognitómód)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privát)</translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (vendég)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Frissítés érhető el)</translation>
@@ -1383,10 +1401,10 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="4400963414856942668">A lapot úgy is hozzáadhatja a könyvjelzőkhöz, hogy a csillagra kattint</translation>
 <translation id="8379991678458444070">Gyorsan visszajuthat ide, ha hozzáadja a lapot a könyvjelzőkhöz</translation>
 <translation id="7174199383876220879">Új! Zeneszámok, videók és további tartalmak vezérlése.</translation>
-<translation id="4369414322596874629">Privát módban böngészhet, ha inkognitóablakot használ</translation>
-<translation id="3772947852642271642">Internetezzen a böngészési előzmények mentése nélkül inkognitóablakban</translation>
-<translation id="3871738366246972820">Közös használatú számítógépet használ? Nyisson inkognitóablakot.</translation>
-<translation id="5808622652939943719">Privát böngészéshez kattintson a három pontból álló („Továbbiak”) ikonra, és nyisson inkognitóablakot.</translation>
+<translation id="4369414322596874629">Egy privát ablakban privát böngészést végezhetsz</translation>
+<translation id="3772947852642271642">Használd a webet böngészési előzményeid mentése nélkül egy privát ablakkal</translation>
+<translation id="3871738366246972820">Közös számítógépet használsz? Próbálj indítani egy privát ablakot.</translation>
+<translation id="5808622652939943719">Privát böngészéshez kattints a pontot ábrázoló ikon menüre hogy megnyiss egy privát ablakot</translation>
 <translation id="8803953437405899238">Nyisson új lapot egy kattintással</translation>
 <translation id="3071624960923923138">Ide kattintva új lapot nyithat meg</translation>
 <translation id="4908811072292128752">Új lap megnyitása két webhely egyidejű böngészéséhez</translation>
@@ -1601,13 +1619,13 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="4620809267248568679">Ezt a beállítást egy bővítmény kényszeríti ki.</translation>
 <translation id="4846680374085650406">A rendszergazda javaslatát fogadja el ennél a beállításnál.</translation>
 <translation id="1223853788495130632">Rendszergazdája egy meghatározott értéket javasol ehhez a beállításhoz.</translation>
-<translation id="8839398440242019256">Nem a Brave Internetes áruházból származik.</translation>
+<translation id="8839398440242019256">Nem a webáruházból.</translation>
 <translation id="5337771866151525739">Harmadik fél telepítette.</translation>
 <translation id="4538792345715658285">Vállalati házirend által telepítve.</translation>
 <translation id="4359408040881008151">Telepítve az ezt nélkülözni nem tudó bővítmény(ek) miatt.</translation>
 <translation id="4980805016576257426">Ez a bővítmény rosszindulatú programot tartalmaz.</translation>
 <translation id="5522156646677899028">Ez a bővítmény komoly biztonsági rést tartalmaz.</translation>
-<translation id="6945695820322143954">A bővítmény sérti a Brave Internetes áruház irányelvét.</translation>
+<translation id="6945695820322143954">Ez a bővítmény megszegi a webáruház szabályzatát</translation>
 <translation id="177808131755847449">A Brave letiltotta. Ez a bővítmény nem biztonságos.</translation>
 <translation id="1434696352799406980">Ez a művelet visszaállítja a kezdőoldalt, az új lap oldalt, a keresőmotort és a rögzített lapokat. Kikapcsol továbbá minden bővítményt, és törli az ideiglenes adatokat, például a cookie-kat. Könyvjelzői, előzményei és mentett jelszavai megmaradnak.</translation>
 <translation id="1242633766021457174">A(z) <ph name="THIRD_PARTY_TOOL_NAME"/> vissza akarja állítani a beállításokat.</translation>
@@ -1674,6 +1692,7 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="622537739776246443">A profil törölve lesz</translation>
 <translation id="5632566673632479864">Fiókja (<ph name="EMAIL"/>) többé nincs elsődleges fiókként engedélyezve. Mivel ezt a fiókot a(z) <ph name="DOMAIN"/> domain kezeli, könyvjelzői, előzményei, jelszavai és más beállításai törlődnek erről az eszközről.</translation>
 <translation id="3797739167230984533">A(z) <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> kezelését<ph name="END_LINK"/> az Ön szervezete végzi</translation>
+<translation id="1722460139690167654">A(z) <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> kezelője<ph name="END_LINK"/>: <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8118488170956489476"><ph name="BEGIN_LINK"/>Böngészőjének kezelését<ph name="END_LINK"/> a szervezete végzi</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Böngészőjét<ph name="END_LINK"/> a(z) <ph name="ENROLLMENT_DOMAIN"/> felügyeli</translation>
 <translation id="8168435359814927499">Tartalom</translation>
@@ -1711,6 +1730,7 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared workers</translation>
 <translation id="2927017729816812676">Gyorsítótár</translation>
+<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Alkalmazások</translation>
 <translation id="542872847390508405">Vendégként böngészik</translation>
 <translation id="537813040452600081">Az oldalak, melyeket ebben az ablakban megtekint, a kijelentkezést követően nem fognak megjelenni a böngészési előzmények között, és nem hagynak egyéb nyomokat a számítógépen (mint pl. cookie-k). Az Ön által letöltött fájlokat és a létrehozott könyvjelzőket a rendszer nem őrzi meg.</translation>
@@ -1924,7 +1944,7 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="881799181680267069">Többi elrejtése</translation>
 <translation id="4708849949179781599">Kilépés a <ph name="PRODUCT_NAME"/>-ból</translation>
 <translation id="8795916974678578410">Új ablak</translation>
-<translation id="1676595396635191120">Új &amp;inkognitóablak</translation>
+<translation id="1676595396635191120">Új privát ablak</translation>
 <translation id="406070391919917862">Háttéralkalmazások</translation>
 <translation id="3335947283844343239">Bezárt lap megnyitása</translation>
 <translation id="8214489666383623925">Fájl megnyitása...</translation>
@@ -2050,6 +2070,7 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="2650609753175229582">A(z) <ph name="URL"/> védett tartalmat szeretne lejátszani. Miután a Brave Software azonosítja az eszközt, hozzáférést adhat a webhely számára.</translation>
 <translation id="1746402432151920942">Védett médiaelem azonosítója</translation>
 <translation id="1322046419516468189">A mentett jelszavakat itt láthatja és kezelheti: <ph name="SAVED_PASSWORDS_STORE"/></translation>
+<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Jelszó elmentve. A mentett jelszavakat itt láthatja és kezelheti: <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Brave Software Fiókjába</translation>
 <translation id="3785727820640310185">A webhelyhez mentett jelszavak</translation>
@@ -2162,7 +2183,7 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="7339898014177206373">Új ablak</translation>
 <translation id="7551643184018910560">Rögzítés a polcra</translation>
 <translation id="8335587457941836791">Rögzítés feloldása a polcon</translation>
-<translation id="4471385409549756595">Új inkognitóablak</translation>
+<translation id="4471385409549756595">Új privát ablak</translation>
 <translation id="8249048954461686687">OEM mappa</translation>
 <translation id="8440630305826533614">Linux-alkalmazások</translation>
 <translation id="4742746985488890273">Rögzítés a polcra</translation>
@@ -2266,8 +2287,8 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
         <ph name="FILE_INFO"/>
         <ph name="EVENT_NAME"/></translation>
-<translation id="4540437243849625078">A webhely adatokat kíván megosztani az inkognitómódon kívüli alkalmazással.</translation>
-<translation id="1227836882233136433">Kilép az inkognitómódból?</translation>
+<translation id="4540437243849625078">Ez a webhely információkat akar megosztani egy alkalmazással a privát módon kívül.</translation>
+<translation id="1227836882233136433">Kilépsz a privát módból?</translation>
 <translation id="662080504995468778">Mégse</translation>
 <translation id="2593289874938379417">A Brave nem fér hozzá a kért forráshoz.</translation>
 <translation id="760197030861754408">A csatlakozáshoz keresse fel a következőt: <ph name="LANDING_PAGE"/>.</translation>
@@ -2310,6 +2331,7 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="8750155211039279868">A(z) <ph name="ORIGIN"/> soros porthoz szeretne csatlakozni</translation>
 <translation id="4943691134276646401">A(z) „<ph name="CHROME_EXTENSION_NAME"/>” soros porthoz szeretne csatlakozni</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
+<translation id="1587562069597918292"><ph name="DEVICE_PATH"/></translation>
 <translation id="1171515578268894665">A(z) <ph name="ORIGIN"/> HID-eszközhöz szeretne csatlakozni</translation>
 <translation id="6078769373519310690">A(z) „<ph name="CHROME_EXTENSION_NAME"/>” HID-eszközhöz szeretne csatlakozni</translation>
 <translation id="4419610272958564173">Ismeretlen eszköz (gyártó: <ph name="VENDOR_ID"/>, termék: <ph name="PRODUCT_ID"/>)</translation>
@@ -2450,12 +2472,15 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="7235737137505019098">A biztonsági hardverkulcson nincs elég hely további fiókok számára.</translation>
 <translation id="3984431586879874039">Engedélyezi a webhelynek, hogy lássa a biztonsági hardverkulcsot?</translation>
 <translation id="8948939328578167195">A(z) <ph name="WEBSITE"/> szeretné látni a biztonsági hardverkulcs márkáját és típusát.</translation>
-<translation id="7618452966706304788">Szeretné használni inkognitómódban a Touch ID funkciót a következővel: <ph name="APP_NAME"/>?</translation>
-<translation id="3098826269712097986">A Brave az inkognitómód elhagyása után tárolja a bejelentkezési adatokat. Így később ismét használhatja a Touch ID funkciót ezen a webhelyen.</translation>
+<translation id="7618452966706304788">Szeretnél privát módban Touch ID-t használni ehhez: <ph name="APP_NAME"/>?</translation>
+<translation id="3098826269712097986">A belépési adatok a Brave-ben lesznek tárolva a privát módból való kilépés után. Így később újra használhatod a Touch ID-t ezzel a webhellyel.</translation>
 <translation id="2172784515318616985">Tovább</translation>
-<translation id="5186185447130319458">Inkognitómód</translation>
+<translation id="5186185447130319458">Privát</translation>
 <translation id="7643842463591647490">{0,plural, =1{# megnyitott ablak}other{# megnyitott ablak}}</translation>
-<translation id="2579188629646253712">Kilépés az inkognitómódból</translation>
+<translation id="2579188629646253712">Kilépés privátból</translation>
+<translation id="479219453908726046">Felmérés elvégzése</translation>
+<translation id="7581273696622423628">Felmérés elvégzése</translation>
+<translation id="4406504596603350105">Visszajelzéseid értékesek számunkra.</translation>
 <translation id="4349828822184870497">Hasznos</translation>
 <translation id="6876469544038980967">Nem hasznos</translation>
 <translation id="6428450836711225518">Telefonszám ellenőrzése</translation>
@@ -2468,17 +2493,20 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="399179161741278232">Importált</translation>
 <translation id="5225324770654022472">Alkalmazások parancsikon megjelenítése</translation>
 <translation id="5072836811783999860">Kezelt könyvjelzők megjelenítése</translation>
+<translation id="3613134908380545408">Mutatás <ph name="FOLDER_NAME"/></translation>
 <translation id="3785308913036335955">Alkalmazások gyorsparancs megjelenítése</translation>
 <translation id="711840821796638741">Kezelt könyvjelzők megjelenítése</translation>
-<translation id="3613134908380545408"><ph name="FOLDER_NAME"/> megjelenítése</translation>
 <translation id="2367972762794486313">Alkalmazások megjelenítése</translation>
 <translation id="8368859634510605990">&amp;Az összes könyvjelző megnyitása</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{Összes &amp;megnyitása}=1{Könyvjelző &amp;megnyitása}other{Összes (#) &amp;megnyitása}}</translation>
 <translation id="1016437870506746108">{COUNT,plural, =0{Összes meg&amp;nyitása új ablakban}=1{Meg&amp;nyitás új ablakban}other{Összes (#) meg&amp;nyitása új ablakban}}</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Összes megnyitása &amp;inkognitóablakban}=1{Megnyitás &amp;inkognitóablakban}other{Összes (#) megnyitása &amp;inkognitóablakban}}</translation>
+<translation id="6744651634043798597">{SZÁM, többes,
+          =0 {Összes megnyitása &amp;privát ablakban}
+          =1 {megnyitása &amp;privát ablakban}
+          egyéb {Összes (#) megnyitása &amp;privát ablakban}}</translation>
 <translation id="3613422051106148727">&amp;Megnyitás új lapon</translation>
 <translation id="4853020600495124913">Megnyitás új &amp;ablakban</translation>
-<translation id="2431625704210501303">Megnyitás &amp;inkognitóablakban</translation>
+<translation id="2431625704210501303">Megnyitás &amp; privát ablakban</translation>
 <translation id="6702639462873609204">&amp;Szerkesztés...</translation>
 <translation id="3088325635286126843">Át&amp;nevezés...</translation>
 <translation id="713122686776214250">Ol&amp;dal hozzáadása...</translation>
@@ -2487,10 +2515,13 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="6466988389784393586">&amp;Az összes könyvjelző megnyitása</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{Összes &amp;megnyitása}=1{Könyvjelző &amp;megnyitása}other{Összes (#) &amp;megnyitása}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Összes meg&amp;nyitása új ablakban}=1{Meg&amp;nyitás új ablakban}other{Összes (#) meg&amp;nyitása új ablakban}}</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Összes megnyitása &amp;inkognitóablakban}=1{Megnyitás &amp;inkognitóablakban}other{Összes (#) megnyitása &amp;inkognitóablakban}}</translation>
+<translation id="2633634757060186848">{SZÁM, többes,
+          =0 {Összes megnyitása &amp;privát ablakban}
+          =1 {megnyitása &amp;privát ablakban}
+          más {Összes (#) megnyitása &amp;privát ablakban}}</translation>
 <translation id="9024127637873500333">&amp;Megnyitás új lapon</translation>
 <translation id="665061930738760572">Megnyitás új &amp;ablakban</translation>
-<translation id="1985165269306590797">Megnyitás &amp;inkognitóablakban</translation>
+<translation id="1985165269306590797">Megnyitás &amp;Privát ablakban</translation>
 <translation id="8824701697284169214">Ol&amp;dal hozzáadása...</translation>
 <translation id="2489918096470125693">Mappa &amp;hozzáadása...</translation>
 <translation id="421182450098841253">&amp;Könyvjelzősáv megjelenítése</translation>
@@ -2542,10 +2573,10 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="8457451314607652708">Könyvjelzők importálása</translation>
 <translation id="5101042277149003567">Az összes könyvjelző megnyitása</translation>
 <translation id="7007648447224463482">Összes megnyitása új ablakban</translation>
-<translation id="642436385689435488">Összes megnyitása inkognitóablakban</translation>
+<translation id="642436385689435488">Összes megnyitása privát ablakban</translation>
 <translation id="4195643157523330669">Megnyitás új lapon</translation>
 <translation id="2979639724566107830">Megnyitás új ablakban</translation>
-<translation id="5463021359602611602">Megnyitás inkognitóablakban</translation>
+<translation id="5463021359602611602">Megnyitás privát ablakban</translation>
 <translation id="1173894706177603556">Átnevezés</translation>
 <translation id="6825184156888454064">Rendezés név szerint</translation>
 <translation id="3440663250074896476">További műveletek a(z) <ph name="BOOKMARK_NAME"/> könyvjelzőhöz</translation>
@@ -2623,9 +2654,15 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="4159681666905192102">Ez a fiók gyerekeknek készült; <ph name="CUSTODIAN_EMAIL"/> és <ph name="SECOND_CUSTODIAN_EMAIL"/> felügyelete mellett.</translation>
 <translation id="5958529069007801266">Felügyelt felhasználó</translation>
 <translation id="5720705177508910913">Jelenlegi felhasználó</translation>
-<translation id="1850357845349976573">{0,plural, =1{Inkognitó}other{# megnyitott inkognitóablak}}</translation>
-<translation id="37784332082579802">{0,plural, =1{Inkognitó}other{Inkognitó (#)}}</translation>
-<translation id="5070556616376997776">Inkognitómódban van</translation>
+<translation id="1850357845349976573">{0, több,
+        =1 {Privát}
+        egyéb {megnyitott privát ablakok #}
+      }</translation>
+<translation id="37784332082579802">0, többes,
+      =1 {Privát}
+      más {Privát (#)}
+    }</translation>
+<translation id="5070556616376997776">Ez egy privát ablak</translation>
 <translation id="2199298570273670671">Hiba</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: A szinkronizálás nem működik</translation>
 <translation id="7307129035224081534">Szüneteltetve</translation>
@@ -2634,8 +2671,8 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (Gyermekeknek készített fiók)</translation>
 <translation id="8182664696082410784"><ph name="REASON"/>
     Úgy gondolom, hogy ezt a webhelyet nem kellene letiltani!</translation>
-<translation id="5832813618714645810">Személy</translation>
-<translation id="7171000599584840888">Személy hozzáadása…</translation>
+<translation id="5832813618714645810">Profilok</translation>
+<translation id="7171000599584840888">Profil hozzáadása...</translation>
 <translation id="1781771911845953849">Fiókok és szinkronizálás</translation>
 <translation id="4974733135013075877">Kilépés és gyermekzár</translation>
 <translation id="3965965397408324205">Kilépés a(z) <ph name="PROFILE_NAME"/> profilból</translation>
@@ -2654,21 +2691,21 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="8473863474539038330">Címek és egyebek</translation>
 <translation id="5287425679749926365">Az Ön fiókjai</translation>
 <translation id="4801448226354548035">Fiókok elrejtése</translation>
-<translation id="2935225303485967257">Személyek kezelése</translation>
+<translation id="2935225303485967257">Profilok rendezése</translation>
 <translation id="7388222713940428051">Vendég módú ablak megnyitása</translation>
 <translation id="127668050356036882">Az összes ablak bezárása</translation>
 <translation id="1464258312790801189">Az Ön fiókjai</translation>
 <translation id="6655458902729017087">Fiókok elrejtése</translation>
-<translation id="688280436658139163">Személyek kezelése</translation>
+<translation id="688280436658139163">Profilok rendezése</translation>
 <translation id="2666990579225592931">Vendég módú ablak megnyitása</translation>
 <translation id="5869948122057593679">Az összes ablak bezárása</translation>
-<translation id="4133080584509825342">Személy szerkesztése, <ph name="PROFILE_NAME"/></translation>
-<translation id="4848862725510532982">Személy szerkesztése, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4133080584509825342">Profil módosítása, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Profil módosítása, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="3294437725009624529">Vendég</translation>
 <translation id="475088594373173692">Első felhasználó</translation>
 <translation id="4535127706710932914">Alapértelmezett profil</translation>
 <translation id="4389091756366370506"><ph name="VALUE"/> felhasználó</translation>
-<translation id="4536111748245793305">Személy: <ph name="VALUE"/></translation>
+<translation id="4536111748245793305">Profil <ph name="VALUE"/></translation>
 <translation id="5397794290049113714">Ön</translation>
 <translation id="3031417829280473749">X ügynök</translation>
 <translation id="412730574613779332">Hős</translation>
@@ -2756,7 +2793,7 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="2871813825302180988">Ez a fiók már használatban van ezen az eszközön.</translation>
 <translation id="7654941827281939388">Ezt a fiókot már használják ezen a számítógépen.</translation>
 <translation id="9022847679183471841">Ezt a fiókot <ph name="AVATAR_NAME"/> már használja ezen a számítógépen.</translation>
-<translation id="6921634551681321094">Személy hozzáadása</translation>
+<translation id="6921634551681321094">Profil hozzáadása</translation>
 <translation id="5389237414310520250">Nem sikerült létrehozni az új felhasználót. Kérjük, ellenőrizze a merevlemezen rendelkezésre álló helyet és az engedélyeket, majd próbálja újra.</translation>
 <translation id="2673589024369449924">Asztali parancsikon létrehozása ehhez a felhasználóhoz</translation>
 <translation id="2731710757838467317">Felügyelt felhasználó létrehozása. Ez eltarthat egy ideig.</translation>
@@ -2764,13 +2801,13 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="6690751852586194791">Válasszon egy felügyelt felhasználót, akit hozzá szeretne adni az eszközhöz.</translation>
 <translation id="5525677322972469346">Új felügyelt felhasználó létrehozása</translation>
 <translation id="8630903300770275248">Felügyelt felhasználó importálása</translation>
-<translation id="4904061654709986277">Személy hozzáadása</translation>
-<translation id="6114945161119872228">Személy eltávolítása</translation>
-<translation id="769308100792069196">Felügyelt személy hozzáadása</translation>
+<translation id="4904061654709986277">Profil hozzáadása</translation>
+<translation id="6114945161119872228">A profil eltávolítása</translation>
+<translation id="769308100792069196">Felügyelt profil hozzáadása</translation>
 <translation id="3470442499439619530">Felhasználó eltávolítása</translation>
 <translation id="4296575653627536209">Felügyelt felhasználók hozzáadása</translation>
-<translation id="8006143138282906848">Személy eltávolítása</translation>
-<translation id="6912187023601892621">Felügyelt személy hozzáadása</translation>
+<translation id="8006143138282906848">A profil eltávolítása</translation>
+<translation id="6912187023601892621">Felügyelt profil hozzáadása</translation>
 <translation id="1608626060424371292">Felhasználó eltávolítása</translation>
 <translation id="493571969993549666">Felügyelt felhasználó hozzáadása</translation>
 <translation id="9101691533782776290">Alkalmazás indítása</translation>
@@ -2792,8 +2829,8 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="6164005077879661055">Amikor ezt a felügyelt felhasználót eltávolítják, minden hozzá tartozó fájl és helyi adat véglegesen törlődik. A felügyelt felhasználó felkeresett webhelyeit és beállításait a kezelő továbbra is láthatja a következő címen: <ph name="MANAGEMENT_URL"/>.</translation>
 <translation id="3410832398355316179">A felhasználó eltávolításakor az összes hozzá tartozó fájl és helyi adat is véglegesen törlődik. <ph name="USER_EMAIL"/> később be tud jelentkezni.</translation>
 <translation id="672213144943476270">Kérjük, oldja fel profilját, mielőtt vendégként kezdene böngészni.</translation>
-<translation id="8086119151297127544">Mielőtt eltávolítana valakit, oldja fel profilját.</translation>
-<translation id="7805701378418968629">Mielőtt hozzáadna valakit, oldja fel profilját.</translation>
+<translation id="8086119151297127544">Oldd ki profilodat mielőtt eltávolítasz egy profilt</translation>
+<translation id="7805701378418968629">Oldd ki profilodat, mielőtt egy profilt adsz hozzá.</translation>
 <translation id="8978225823042133615">A Brave használatához jelentkezzen be</translation>
 <translation id="4893336867552636863">Ezzel az eszközön lévő összes böngészési adat véglegesen törlődik.</translation>
 <translation id="2496180316473517155">Böngészés előzményei</translation>
@@ -2851,8 +2888,9 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="6850286078059909152">Szöveg színe</translation>
 <translation id="8042142357103597104">Szöveg átlátszatlansága</translation>
 <translation id="1656528038316521561">Háttér átlátszatlansága</translation>
-<translation id="5750288053043553775">0</translation>
-<translation id="8689998525144040851">100</translation>
+<translation id="8838601485495657486">Átlátszatlan</translation>
+<translation id="5826993284769733527">Félig átlátszó</translation>
+<translation id="4438043733494739848">Átlátszó</translation>
 <translation id="2442916515643169563">Szövegárnyék</translation>
 <translation id="3599221874935822507">Megemelt</translation>
 <translation id="274029851662193272">Süllyesztett</translation>
@@ -2867,7 +2905,7 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="161042844686301425">Cián</translation>
 <translation id="4115378294792113321">Magenta</translation>
 <translation id="6981982820502123353">Kisegítő lehetőségek</translation>
-<translation id="5840822070878669614">A Brave Internetes áruház megnyitása</translation>
+<translation id="5840822070878669614">Webáruház megnyitása</translation>
 <translation id="6073903501322152803">Kisegítő lehetőségek hozzáadása</translation>
 <translation id="7988355189918024273">Kisegítő lehetőségek bekapcsolása</translation>
 <translation id="5499063270485366718">Ha valamelyik kép nem rendelkezik hasznos leírással, akkor a Brave igyekszik leírást adni róla. A Brave Software automatikusan megkapja a leírások létrehozásához szükséges képeket.</translation>
@@ -2963,6 +3001,7 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="4430019312045809116">Hangerő</translation>
 <translation id="3677657024345889897">Leghalkabb</translation>
 <translation id="167160931442925455">Leghangosabb</translation>
+<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (alapértelmezett)</translation>
 <translation id="7037509989619051237">Szövegfelolvasó előnézete</translation>
 <translation id="5471768120198416576">Üdvözlöm! A szövegfelolvasó az én hangomon szólal majd meg.</translation>
@@ -3227,10 +3266,13 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="4058720513957747556">AppSocket (TCP/IP)</translation>
 <translation id="6619058681307408113">Line Printer Daemon (LPD)</translation>
 <translation id="2266957463645820432">IPP over USB (IPPUSB)</translation>
+<translation id="8086015605808120405">A(z) <ph name="PRINTER_NAME"/> konfigurálása...</translation>
 <translation id="4665014895760275686">Gyártó</translation>
 <translation id="4561098487691395071">Vagy adja meg a nyomtatóhoz tartozó PPD-fájlt</translation>
 <translation id="1989112275319619282">Böngészés</translation>
 <translation id="3625481642044239431">A kiválasztott fájl érvénytelen. Próbálja újra.</translation>
+<translation id="2462752602710430187"><ph name="PRINTER_NAME"/> hozzáadva</translation>
+<translation id="7380768571499464492">Frissítve: <ph name="PRINTER_NAME"/></translation>
 <translation id="8002670234429879764">A nyomtató (<ph name="PRINTER_NAME"/>) már nem áll rendelkezésre</translation>
 <translation id="3976108569178263973">Nincsenek rendelkezésre álló nyomtatók.</translation>
 <translation id="3213187967168344806">Nem sikerült a nyomtató hozzáadása. Indítsa újra a számítógépet, majd próbálja meg ismét.</translation>
@@ -3796,9 +3838,9 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="6196640612572343990">Harmadik féltől származó cookie-k letiltása</translation>
 <translation id="6782111308708962316">Megakadályozza, hogy harmadik felek webhelyei mentsék és olvassák a cookie-adatokat.</translation>
 <translation id="1274977772557788323">Adobe Flash Player tárolási beállítások</translation>
-<translation id="1281501490173223206">Csak a jelenlegi inkognitó munkamenet</translation>
-<translation id="3479035826743782247">Jelenlegi inkognitó munkamenet</translation>
-<translation id="4750220700975225">Jelenlegi inkognitó munkamenet (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Csak az aktuális privát munkamenet</translation>
+<translation id="3479035826743782247">Aktuális privát munkamenet</translation>
+<translation id="4750220700975225">Aktuális privát munkamenet (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Nincs nagyított vagy kicsinyített webhely</translation>
 <translation id="3566721612727112615">Nincsenek hozzáadva webhelyek</translation>
 <translation id="8098574385249290065">A Brave dönthet arról, hogy a webhelyek lejátszhatnak-e hangot (ajánlott)</translation>
@@ -3825,8 +3867,8 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="4590324241397107707">Adatbázis-tároló</translation>
 <translation id="8016266267177410919">Ideiglenes tárhely</translation>
 <translation id="4175737294868205930">Állandó tárhely</translation>
-<translation id="3707212204259470604">Más személyek kezelése</translation>
-<translation id="8907706281008466056">Brave Software-profil fotó</translation>
+<translation id="3707212204259470604">Más profilok kezelése</translation>
+<translation id="8907706281008466056">Brave-profilkép</translation>
 <translation id="2408955596600435184">PIN-kód megadása</translation>
 <translation id="6619990499523117484">PIN-kód megerősítése</translation>
 <translation id="2023167225947895179">A PIN-kód könnyen kitalálható</translation>
@@ -3860,6 +3902,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="2458379781610688953">Fiók frissítése, <ph name="EMAIL"/></translation>
 <translation id="2701737434167469065">Bejelentkezés, <ph name="EMAIL"/></translation>
 <translation id="2923234477033317484">A fiók eltávolítása</translation>
+<translation id="8995603266996330174">Kezelője: <ph name="DOMAIN"/></translation>
 <translation id="4659077111144409915">Elsődleges fiók</translation>
 <translation id="8864458770072227512">A(z) <ph name="EMAIL"/> fiókot eltávolítottuk erről az eszközről</translation>
 <translation id="3158033540161634471">Az ujjlenyomat beállítása</translation>
@@ -3892,12 +3935,11 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="3608576286259426129">Felhasználói kép előnézete</translation>
 <translation id="2114896190328250491">A fotót készítette: <ph name="NAME"/></translation>
 <translation id="7155171745945906037">Meglévő fénykép a fényképezőgépről vagy fájlból</translation>
-<translation id="8995603266996330174">Kezelő: <ph name="DOMAIN"/></translation>
 <translation id="9125982323641182972">Brave Software-funkciók a Brave-ban</translation>
 <translation id="1692115862433274081">Másik fiók használata</translation>
 <translation id="5244474230056479698">Szinkronizálás a következővel: <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Mivel ezt a fiókot a(z) <ph name="DOMAIN"/> domain kezeli, könyvjelzői, előzményei, jelszavai és más beállításai törlődnek erről az eszközről. Meglévő adatait azonban továbbra is tárolni fogja Brave Software-fiókja, és azokat a <ph name="BEGIN_LINK"/>Brave Software Irányítópulton<ph name="END_LINK"/> kezelheti.</translation>
-<translation id="6906406176003824042">Személy adatainak szerkesztése</translation>
+<translation id="6906406176003824042">Profil módosítása</translation>
 <translation id="6739923123728562974">Asztali parancsikon megjelenítése</translation>
 <translation id="2450310832094867474">Kikapcsolja a szinkronizálást, és kijelentkezik?</translation>
 <translation id="3699920817649120894">Kikapcsolja a szinkronizálást és a személyre szabást?</translation>
@@ -3987,7 +4029,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="437184764829821926">Speciális betűtípus-beállítások</translation>
 <translation id="323803881985677942">Bővítmények lehetőségeinek megnyitása</translation>
 <translation id="2166369534954157698">Árvíztűrő tükörfúrógép</translation>
-<translation id="8911765336506423117">Bővítményre van szüksége a Brave Internetes áruházból</translation>
+<translation id="8911765336506423117">Bővítményre van szükség a webáruházból</translation>
 <translation id="6965978654500191972">Készülék</translation>
 <translation id="8260864402787962391">Egér</translation>
 <translation id="155865706765934889">Érintőpad</translation>
@@ -4111,7 +4153,6 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="8781980678064919987">Kikapcsolás, ha le van zárva a fedél</translation>
 <translation id="3636766455281737684"><ph name="PERCENTAGE"/>% – <ph name="TIME"/> maradt</translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% – <ph name="TIME"/> a teljes feltöltésig</translation>
-<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="2620436844016719705">Rendszer</translation>
 <translation id="2077129598763517140">Hardveres gyorsítás alkalmazása lehetőség szerint</translation>
 <translation id="3817524650114746564">A számítógép proxybeállításainak megnyitása</translation>
@@ -4234,7 +4275,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="329838636886466101">Javítás</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Inaktív)</translation>
-<translation id="3860292630623580294">(Inkognitómód)</translation>
+<translation id="3860292630623580294">(Privát)</translation>
 <translation id="6655190889273724601">Fejlesztői mód</translation>
 <translation id="2868746137289129307">Ez a bővítmény elavult, így a vállalati házirend letiltotta. A bővítményt automatikusan ismét engedélyezheti a rendszer akkor, amikor egy újabb verzió elérhetővé válik.</translation>
 <translation id="6841186874966388268">Hibák</translation>
@@ -4270,7 +4311,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="1805822111539868586">Nézetek megvizsgálása</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> további…</translation>
 <translation id="2450849356604136918">Nincs aktív nézet</translation>
-<translation id="4854477725773269949">Engedélyezés inkognitó módban</translation>
+<translation id="4854477725773269949">Engedélyezés privátban</translation>
 <translation id="6124650939968185064">Ettől a bővítménytől a következő bővítmények függnek:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (azonosító: <ph name="ID_PH"/>)</translation>
 <translation id="3866249974567520381">Leírás</translation>
@@ -4297,14 +4338,14 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="7235716375204803342">Tevékenységek lekérése…</translation>
 <translation id="8314381333424235892">Hiányzó vagy eltávolított bővítmény</translation>
 <translation id="7647403192093989392">Nem volt tevékenység mostanában</translation>
-<translation id="38046578254905003">Bővítményeket és témákat a <ph name="BEGIN_LINK"/>Brave Internetes áruházban<ph name="END_LINK"/> kereshet</translation>
+<translation id="38046578254905003">Bővítmények és témák keresése: <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
 <translation id="7272674038937250585">Nincs leírás</translation>
 <translation id="3855441664322950881">Bővítmény becsomagolása</translation>
 <translation id="2958721676848865875">Csomagbővítménnyel kapcsolatos figyelmeztetés</translation>
 <translation id="8652400352452647993">Csomagbővítmény-hiba</translation>
 <translation id="8398877366907290961">Továbblépés</translation>
 <translation id="8770406935328356739">A bővítmény gyökérkönyvtára</translation>
-<translation id="6226777517901268232">Privátkulcs-fájl (nem kötelező)</translation>
+<translation id="6226777517901268232">Privát kulcsfájl (opcionális)</translation>
 <translation id="2916745397441987255">Bővítmények keresése</translation>
 <translation id="1992397118740194946">Nincs beállítva</translation>
 <translation id="6706210727756204531">Hatáskör</translation>
@@ -4324,7 +4365,7 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="1688935057616748272">Írja be a kívánt karaktert</translation>
 <translation id="4479424953165245642">Kiosk-alkalmazások kezelése</translation>
 <translation id="6619801788773578757">Kioszkalkalmazás hozzáadása</translation>
-<translation id="8045923671629973368">Adja meg az alkalmazás azonosítóját vagy internetes áruházi URL-jét</translation>
+<translation id="8045923671629973368">Írd be az alkalmazás azonosítóját vagy a webáruház URL-jét</translation>
 <translation id="7059858479264779982">Beállítás automatikus indításra</translation>
 <translation id="6325191661371220117">Automatikus indítás tiltása</translation>
 <translation id="4699357559218762027">(automatikusan indított)</translation>
@@ -4490,8 +4531,8 @@ Egyes webhelyek például válaszolhatnak rá úgy, hogy olyan hirdetéseket jel
 <translation id="6041155700700864984">Kilépés a teljes képernyős módból</translation>
 <translation id="6112294629795967147">Érintse meg az átméretezéshez</translation>
 <translation id="2453860139492968684">Befejezés</translation>
-<translation id="6336451774241870485">Új privát lap</translation>
-<translation id="6610147964972079463">Privát lapok bezárása</translation>
+<translation id="6336451774241870485">Új privát fül</translation>
+<translation id="6610147964972079463">Privát ablakok bezárása</translation>
 <translation id="8076492880354921740">Lapok</translation>
 <translation id="2794233252405721443">A webhely le van tiltva</translation>
 <translation id="1721312023322545264">A webhely felkereséséhez <ph name="NAME"/> engedélyére van szükség</translation>

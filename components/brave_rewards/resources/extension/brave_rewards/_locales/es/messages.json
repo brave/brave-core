@@ -36,15 +36,31 @@
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
-    "message": "Tu Wallet",
+    "message": "Tu monedero",
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
     "message": "Concesiones",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "Detalles",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Tu saldo",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "Puntos BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "pueden utilizarse en Brave Rewards para contribuir con tus creadores de contenido favoritos. Los Puntos BAT no pueden cambiarse por BAT.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
-    "message": "encendido",
+    "message": "en",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
@@ -56,11 +72,11 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Contribución mensual",
+    "message": "Donar a este sitio web mensualmente",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
-    "message": "Incluir en Auto-Contribución ",
+    "message": "Incluir en Contribución Automática",
     "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
@@ -194,15 +210,15 @@
     "description": "Description for new grant notification"
   },
   "backupNow": {
-    "message": "Respaldar ahora",
+    "message": "Respaldar Ahora",
     "description": "Notification button text when we ask user to backup wallet"
   },
   "backupWalletTitle": {
-    "message": "Copia de seguridad del monedero",
+    "message": "Respaldar Monedero",
     "description": "Notification title when we ask user to backup wallet"
   },
   "backupWalletNotification": {
-    "message": "Haz una copia de seguridad de tu Brave Wallet.",
+    "message": "Haz una respaldo de tu monedero Brave.",
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
@@ -214,7 +230,7 @@
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
-    "message": "Creando wallet",
+    "message": "Creando monedero",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Ha asignado {{reservedAmount}} BAT para los creadores que aún no se han registrado para recibir contribuciones. El navegador intentará contribuir hasta que se verifiquen o hasta que hayan transcurrido noventa días.",
+    "message": "Has designado {{reservedAmount}} {{currency}} para los creadores que todavía no se han registrado para recibir contribuciones. Tu navegador seguirá intentando contribuir hasta que verifiquen o hasta que pasen 90 días.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -330,7 +346,7 @@
     "description": "Title for Panel's disabled state"
   },
   "walletFailedTitle": {
-    "message": "Creación de Wallet fallida",
+    "message": "Creación de monedero fallida",
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
@@ -398,7 +414,7 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "turnOnAds": {
-    "message": "Activar anuncios",
+    "message": "Activar Ads",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
@@ -406,7 +422,7 @@
     "description": "Description text for ad grants in grant details"
   },
   "twitterTipsHoverText": {
-    "message": "Contribuye económicamente por este tuit",
+    "message": "Contribuir a este tweet",
     "description": "Hover text for Twitter tips action"
   },
   "twitterTipsIconLabel": {
@@ -422,7 +438,7 @@
     "description": "Icon label for Reddit tips"
   },
   "githubTipsHoverText": {
-    "message": "Enviar una propina",
+    "message": "Enviar una Propina",
     "description": "Hover text for GitHub tips action"
   },
   "githubTipsIconLabel": {
@@ -444,11 +460,11 @@
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Contribución pendiente",
+    "message": "Contribución Pendiente",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
-    "message": "¡Es su día de suerte!",
+    "message": "¡Es tu día de suerte!",
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave Ads Rewards!",
+    "message": "¡Ha ganado una Recompensa de anuncios!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Tu autorización de recompensas de publicidad de Brave está en camino.",
+    "message": "Su recompensa está de camino a su cartera de Recompensas Brave.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Tu autorización del testigo de publicidad de Brave",
+    "message": "Tu cantidad de recompensas",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -476,15 +492,15 @@
     "description": "CTA in the footer to verify"
   },
   "walletButtonDisconnected":  {
-    "message": "Desconectada",
+    "message": "Desconectado",
     "description": "CTA status button"
   },
   "walletButtonUnverified":  {
-    "message": "Verificar cartera",
+    "message": "Verificar Monedero",
     "description": "CTA to verify wallet in the wallet "
   },
   "walletButtonVerified":  {
-    "message": "Monedero confirmado",
+    "message": "Monedero Verificado",
     "description": "Displayed in wallet that tells users that he is verified"
   },
   "walletGoToUphold":  {
@@ -496,11 +512,11 @@
     "description": "CTA to disconnect user wallet from rewards"
   },
   "walletVerified":  {
-    "message": "Verificada",
+    "message": "Verificado",
     "description": "Status button that tells user that he is verified"
   },
   "walletVerifiedNotification":  {
-    "message": "¡Se ha verificado tu cartera!",
+    "message": "¡Se ha verificado tu monedero!",
     "description": "Title for notification when wallet becomes verified"
   },
   "walletVerifiedTextNotification":  {
@@ -514,7 +530,7 @@
     }
   },
   "walletDisconnectedNotification":  {
-    "message": "¡Vaya! Tu cartera no está disponible.",
+    "message": "¡Vaya! Tu monedero no está disponible.",
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
@@ -522,15 +538,11 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Este editor verificado de Brave aún no ha configurado su cuenta para recibir las contribuciones de los usuarios de Brave. Cualquier propina que envíe permanecerá en su billetera hasta que completen este proceso.",
+    "message": "Este Editor Verificado de Brave aún no ha configurado su cuenta para recibir contribuciones de los usuarios de Brave. Cualquier propina que envíes permanecerá en tu monedero hasta que completen este proceso.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
-    "message": "Finaliza la confirmación de tu monedero",
+    "message": "Finaliza la verificación de tu monedero",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "Establecer...",
-    "description": "Button text for setting monthly contribution"
   }
 }

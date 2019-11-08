@@ -61,7 +61,7 @@
 <translation id="1163931534039071049">Frame-Quelltext &amp;anzeigen</translation>
 <translation id="6886871292305414135">Link in neuem &amp;Tab öffnen</translation>
 <translation id="8899851313684471736">Link in neuem &amp;Fenster öffnen</translation>
-<translation id="658539216370629794">Link in Inko&amp;gnito-Fenster öffnen</translation>
+<translation id="658539216370629794">Verknüpfung in Privatfenster öffnen</translation>
 <translation id="3144647712221361880">Link öffnen als</translation>
 <translation id="9137916601698928395">Link als <ph name="USER"/> öffnen</translation>
 <translation id="1137673463384776352">Link in <ph name="APP"/> öffnen</translation>
@@ -122,7 +122,7 @@
 <translation id="3021678814754966447">Frame-Quelltext &amp;anzeigen</translation>
 <translation id="9027459031423301635">Link in neuem Tab öffnen</translation>
 <translation id="1769104665586091481">Link in neuem &amp;Fenster öffnen</translation>
-<translation id="1432267168815937878">Link in Inko&amp;gnito-Fenster öffnen</translation>
+<translation id="1432267168815937878">Verknüpfung in privatem Fenster öffnen</translation>
 <translation id="2142328300403846845">Link öffnen als</translation>
 <translation id="6892812721183419409">Link als <ph name="USER"/> öffnen</translation>
 <translation id="2006638907958895361">Link in <ph name="APP"/> öffnen</translation>
@@ -364,7 +364,7 @@
 <translation id="2902312830803030883">Weitere Aktionen</translation>
 <translation id="495170559598752135">Aktionen</translation>
 <translation id="3612673635130633812">Heruntergeladen von &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="6395403722585816044">In privaten Fenstern heruntergeladen</translation>
+<translation id="6395403722585816044">Im Privatmodus heruntergeladen</translation>
 <translation id="4551763574344810652">"<ph name="MODIFIER_KEY_DESCRIPTION"/>" drücken, um Aktion rückgängig zu machen</translation>
 <translation id="2079545284768500474">Rückgängig machen</translation>
 <translation id="2490481887078769936">"<ph name="FILE_NAME"/>" wurde aus der Liste entfernt</translation>
@@ -411,10 +411,10 @@
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Download wird ausgeführt}other{Downloads werden ausgeführt}}</translation>
 <translation id="5425042808445046667">Download fortsetzen</translation>
 <translation id="5284445933715251131">Download fortsetzen</translation>
-<translation id="203837651858678035">Private Fenster trotzdem schließen?</translation>
+<translation id="203837651858678035">Privatmodus trotzdem verlassen?</translation>
 <translation id="8951465597020890363">Gastmodus trotzdem beenden?</translation>
 <translation id="9148058034647219655">Beenden</translation>
-<translation id="7376221878517288144">Private Fenster trotzdem schließen?</translation>
+<translation id="7376221878517288144">Privatmodus trotzdem verlassen?</translation>
 <translation id="973473557718930265">Beenden</translation>
 <translation id="7707599169365957976">Sie können uns dabei helfen, Safe Browsing weiter zu verbessern, indem Sie einige Systeminformationen und Seiteninhalte an Brave Software senden.</translation>
 <translation id="4923279099980110923">Ja, ich möchte helfen.</translation>
@@ -785,11 +785,11 @@
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/> (Spitzenwert <ph name="NUM_KILOBYTES_LIVE"/>)</translation>
 <translation id="8004582292198964060">Browser</translation>
 <translation id="3678156199662914018">Erweiterung: <ph name="EXTENSION_NAME"/></translation>
-<translation id="5053701565089446556">Anonyme Erweiterung: <ph name="EXTENSION_NAME"/></translation>
+<translation id="5053701565089446556">Private Erweiterung: <ph name="EXTENSION_NAME"/></translation>
 <translation id="6508261954199872201">App: <ph name="APP_NAME"/></translation>
-<translation id="611296870688433505">Anonyme App: <ph name="APP_NAME"/></translation>
+<translation id="611296870688433505">Private App: <ph name="APP_NAME"/></translation>
 <translation id="7629827748548208700">Tab: <ph name="TAB_NAME"/></translation>
-<translation id="9048137919253433011">Privater Tab: <ph name="TAB_NAME"/></translation>
+<translation id="9048137919253433011">Privater Reiter: <ph name="TAB_NAME"/></translation>
 <translation id="6900284862687837908">Hintergrund-App: <ph name="BACKGROUND_APP_URL"/></translation>
 <translation id="7427348830195639090">Hintergrundseite: <ph name="BACKGROUND_PAGE_URL"/></translation>
 <translation id="6798954102094737107">Plug-in: <ph name="PLUGIN_NAME"/></translation>
@@ -804,7 +804,7 @@
 <translation id="2282146716419988068">GPU-Verarbeitung</translation>
 <translation id="2087822576218954668">Drucken: <ph name="PRINT_NAME"/></translation>
 <translation id="8859174528519900719">Subframe: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="1799432502220762862">Privates Subframe: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="1799432502220762862">Privater Subframe: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="2348176352564285430">App: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="786073089922909430">Dienst: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7663719505383602579">Empfänger: <ph name="ARC_PROCESS_NAME"/></translation>
@@ -1078,7 +1078,7 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="5483785310822538350">Datei- und Gerätezugriff aufheben</translation>
 <translation id="93766956588638423">Erweiterung reparieren</translation>
 <translation id="3905761538810670789">App reparieren</translation>
-<translation id="8808478386290700967">Web Store</translation>
+<translation id="8808478386290700967">Webshop</translation>
 <translation id="488785315393301722">Details ansehen</translation>
 <translation id="8962083179518285172">Details ausblenden</translation>
 <translation id="7287143125007575591">Zugriff verweigert</translation>
@@ -1368,7 +1368,7 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="192494336144674234">Öffnen mit</translation>
 <translation id="9053893665344928494">Meine Auswahl merken</translation>
 <translation id="5340857474604400806">In Brave bleiben</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (anonym)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privat)</translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (Gast)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Update verfügbar)</translation>
@@ -1400,10 +1400,10 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="4400963414856942668">Sie können auf den Stern klicken, um einen Tab als Lesezeichen zu speichern</translation>
 <translation id="8379991678458444070">Sie können diesen Tab als Lesezeichen speichern, um schnell wieder hierher zurückzukehren</translation>
 <translation id="7174199383876220879">Neu! Sie können nun Musik, Videos und andere Medien steuern.</translation>
-<translation id="4369414322596874629">In einem privaten Fenster können Sie privat surfen</translation>
-<translation id="3772947852642271642">In einem privaten Fenster können Sie surfen, ohne dass Ihr Browserverlauf gespeichert wird</translation>
-<translation id="3871738366246972820">Sie teilen sich einen Computer mit anderen? Dann können Sie ganz einfach ein privates Fenster nutzen.</translation>
-<translation id="5808622652939943719">Wenn Sie privat surfen möchten, klicken Sie auf das Punktesymbol und öffnen Sie ein privates Fenster</translation>
+<translation id="4369414322596874629">Sie können privat browsen, wenn Sie ein Privatfenster nutzen</translation>
+<translation id="3772947852642271642">Surfen Sie dank Privatfenster im Web, ohne Ihren Browserverlauf zu speichern</translation>
+<translation id="3871738366246972820">Sie verwenden einen öffentlichen Computer? Versuchen Sie doch einmal ein privates Fenster.</translation>
+<translation id="5808622652939943719">Zum privaten Browsen öffnen Sie im Menü unter dem Punkte-Symbol ein privates Fenster</translation>
 <translation id="8803953437405899238">Neuen Tab mit nur einem Klick öffnen</translation>
 <translation id="3071624960923923138">Wenn Sie einen neuen Tab öffnen möchten, klicken Sie hier</translation>
 <translation id="4908811072292128752">Wenn Sie zwei Websites gleichzeitig ansehen möchten, öffnen Sie einen neuen Tab</translation>
@@ -1619,13 +1619,13 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="4620809267248568679">Diese Einstellung wird durch eine Erweiterung erzwungen.</translation>
 <translation id="4846680374085650406">Sie folgen der Empfehlung des Administrators für diese Einstellung.</translation>
 <translation id="1223853788495130632">Ihr Administrator empfiehlt einen bestimmten Wert für diese Einstellung.</translation>
-<translation id="8839398440242019256">Nicht aus dem Brave Web Store</translation>
+<translation id="8839398440242019256">Nicht aus dem Webshop.</translation>
 <translation id="5337771866151525739">Von einem Drittanbieter installiert</translation>
 <translation id="4538792345715658285">Durch Unternehmensrichtlinie installiert</translation>
 <translation id="4359408040881008151">Wurde aufgrund der abhängigen Erweiterungen installiert</translation>
 <translation id="4980805016576257426">Diese Erweiterung enthält Malware.</translation>
 <translation id="5522156646677899028">Diese Erweiterung enthält eine schwere Sicherheitslücke.</translation>
-<translation id="6945695820322143954">Diese Erweiterung verletzt die Brave Web Store-Richtlinien.</translation>
+<translation id="6945695820322143954">Diese Erweiterung verletzt die Richtlinien des Webshops.</translation>
 <translation id="177808131755847449">Von Brave deaktiviert. Diese Erweiterung könnte unsicher sein.</translation>
 <translation id="1434696352799406980">Mit dieser Funktion werden Ihre "Beim Start"-Seite, Ihre Suchmaschine, die "Neuer Tab"-Seite und angeheftete Tabs zurückgesetzt. Außerdem werden alle Erweiterungen deaktiviert und temporäre Daten wie Cookies gelöscht. Ihre Lesezeichen, der Verlauf und gespeicherte Passwörter werden nicht gelöscht.</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/> möchte Ihre Einstellungen zurücksetzen.</translation>
@@ -1942,7 +1942,7 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="881799181680267069">Andere ausblenden</translation>
 <translation id="4708849949179781599"><ph name="PRODUCT_NAME"/> beenden</translation>
 <translation id="8795916974678578410">Neues Fenster</translation>
-<translation id="1676595396635191120">Neues &amp;privates Fenster</translation>
+<translation id="1676595396635191120">Neues privates Fenster</translation>
 <translation id="406070391919917862">Apps im Hintergrund</translation>
 <translation id="3335947283844343239">Geschlossenen Tab wieder öffnen</translation>
 <translation id="8214489666383623925">Datei öffnen...</translation>
@@ -2181,7 +2181,7 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="7339898014177206373">Neues Fenster</translation>
 <translation id="7551643184018910560">An Ablage anpinnen</translation>
 <translation id="8335587457941836791">Von Ablage loslösen</translation>
-<translation id="4471385409549756595">Neues privates Fenster</translation>
+<translation id="4471385409549756595">Neues Privatfenster</translation>
 <translation id="8249048954461686687">OEM-Ordner</translation>
 <translation id="8440630305826533614">Linux-Apps</translation>
 <translation id="4742746985488890273">An Ablage anpinnen</translation>
@@ -2285,8 +2285,8 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
         <ph name="FILE_INFO"/>
         <ph name="EVENT_NAME"/></translation>
-<translation id="4540437243849625078">Diese Website ist im Begriff, Informationen mit einer App außerhalb des privaten Fensters zu teilen.</translation>
-<translation id="1227836882233136433">Den privaten Modus verlassen?</translation>
+<translation id="4540437243849625078">Diese Website möchte Informationen an eine App außerhalb des Privatmodus weitergeben.</translation>
+<translation id="1227836882233136433">Privatmodus verlassen</translation>
 <translation id="662080504995468778">Bleiben</translation>
 <translation id="2593289874938379417">Brave hat keinen Zugriff auf die angeforderte Ressource.</translation>
 <translation id="760197030861754408">Zum Verbinden <ph name="LANDING_PAGE"/> aufrufen.</translation>
@@ -2470,12 +2470,12 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="7235737137505019098">Auf Ihrem Sicherheitsschlüssel ist nicht genügend Platz für weitere Konten.</translation>
 <translation id="3984431586879874039">Zulassen, dass diese Website Ihren Sicherheitsschlüssel ausliest?</translation>
 <translation id="8948939328578167195"><ph name="WEBSITE"/> möchte den Hersteller und das Modell Ihres Sicherheitsschlüssels aufrufen</translation>
-<translation id="7618452966706304788">Möchten Sie Touch ID mit <ph name="APP_NAME"/> in privaten Fenstern verwenden?</translation>
-<translation id="3098826269712097986">Anmeldedaten werden nach dem Schließen der privaten Fenster in Brave gespeichert. Hierdurch können Sie Touch ID später wieder mit dieser Website verwenden.</translation>
+<translation id="7618452966706304788">Möchten Sie auf <ph name="APP_NAME"/> im Privatmodus Touch ID nutzen?</translation>
+<translation id="3098826269712097986">Die Anmeldedaten werden nach Verlassen des Privatmodus in Brave gespeichert. So können Sie auf dieser Website später wieder Touch ID nutzen.</translation>
 <translation id="2172784515318616985">Weiter</translation>
 <translation id="5186185447130319458">Privat</translation>
 <translation id="7643842463591647490">{0,plural, =1{# offenes Fenster}other{# offene Fenster}}</translation>
-<translation id="2579188629646253712">Private Fenster schließen</translation>
+<translation id="2579188629646253712">Privatmodus verlassen</translation>
 <translation id="479219453908726046">Umfrage starten</translation>
 <translation id="7581273696622423628">Umfrage starten</translation>
 <translation id="4406504596603350105">Ihr Feedback ist uns wichtig.</translation>
@@ -2499,12 +2499,12 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{Alle &amp;öffnen}=1{Lesezeichen &amp;öffnen}other{Alle (#) &amp;öffnen}}</translation>
 <translation id="1016437870506746108">{COUNT,plural, =0{Alle in &amp;neuem Fenster öffnen}=1{In &amp;neuem Fenster öffnen}other{Alle (#) in &amp;neuem Fenster öffnen}}</translation>
 <translation id="6744651634043798597">{COUNT, plural,
-          =0 {Alle in privatem Fenster öffnen}
-          =1 {In privatem Fenster öffnen}
-          other {Alle (#) in privatem Fenster öffnen}}</translation>
+          =0 {Alle in Privatfenster öffnen}
+          =1 {In Privatfenster öffnen}
+          other {Alle (#) in Privatfenster öffnen}}</translation>
 <translation id="3613422051106148727">In &amp;neuem Tab öffnen</translation>
 <translation id="4853020600495124913">In &amp;neuem Fenster öffnen</translation>
-<translation id="2431625704210501303">In &amp;privatem Fenster öffnen</translation>
+<translation id="2431625704210501303">In Privatfenster öffnen</translation>
 <translation id="6702639462873609204">&amp;Bearbeiten...</translation>
 <translation id="3088325635286126843">&amp;Umbenennen...</translation>
 <translation id="713122686776214250">&amp;Seite hinzufügen...</translation>
@@ -2514,12 +2514,12 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{Alle &amp;öffnen}=1{Lesezeichen &amp;öffnen}other{Alle (#) &amp;öffnen}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Alle in &amp;neuem Fenster öffnen}=1{In &amp;neuem Fenster öffnen}other{Alle (#) in &amp;neuem Fenster öffnen}}</translation>
 <translation id="2633634757060186848">{COUNT, plural,
-          =0 {Alle in privatem Fenster öffnen}
-          =1 {In privatem Fenster öffnen}
-          other {Alle (#) in privatem Fenster öffnen}}</translation>
+          =0 {Alle in Privatfenster öffnen}
+          =1 {In Privatfenster öffnen}
+          other {Alle (#) in Privatfenster öffnen}}</translation>
 <translation id="9024127637873500333">In &amp;neuem Tab öffnen</translation>
 <translation id="665061930738760572">In &amp;neuem Fenster öffnen</translation>
-<translation id="1985165269306590797">In &amp;privatem Fenster öffnen</translation>
+<translation id="1985165269306590797">In Privatfenster öffnen</translation>
 <translation id="8824701697284169214">&amp;Seite hinzufügen...</translation>
 <translation id="2489918096470125693">&amp;Ordner hinzufügen...</translation>
 <translation id="421182450098841253">&amp;Lesezeichenleiste anzeigen</translation>
@@ -2571,10 +2571,10 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="8457451314607652708">Lesezeichen importieren</translation>
 <translation id="5101042277149003567">Alle Lesezeichen öffnen</translation>
 <translation id="7007648447224463482">Alle in neuem Fenster öffnen</translation>
-<translation id="642436385689435488">Alle in privatem Fenster öffnen</translation>
+<translation id="642436385689435488">Alle in Privatfenster öffnen</translation>
 <translation id="4195643157523330669">In neuem Tab öffnen</translation>
 <translation id="2979639724566107830">In neuem Fenster öffnen</translation>
-<translation id="5463021359602611602">In privatem Fenster öffnen</translation>
+<translation id="5463021359602611602">In Privatfenster öffnen</translation>
 <translation id="1173894706177603556">Umbenennen</translation>
 <translation id="6825184156888454064">Nach Namen sortieren</translation>
 <translation id="3440663250074896476">Weitere Aktionen für <ph name="BOOKMARK_NAME"/></translation>
@@ -2654,13 +2654,13 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="5720705177508910913">Aktueller Nutzer</translation>
 <translation id="1850357845349976573">{0, plural,
         =1 {Privat}
-        other {# offene private Fenster}
+        other {# private Fenster öffnen}
       }</translation>
 <translation id="37784332082579802">{0, plural,
       =1 {Privat}
       other {Privat (#)}
     }</translation>
-<translation id="5070556616376997776">Dieses Fenster ist privat</translation>
+<translation id="5070556616376997776">Dies ist ein privates Fenster</translation>
 <translation id="2199298570273670671">Fehler</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: Synchronisierung funktioniert nicht</translation>
 <translation id="7307129035224081534">Pausiert</translation>
@@ -2669,8 +2669,8 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (Konto für Kinder)</translation>
 <translation id="8182664696082410784"><ph name="REASON"/>
     Meiner Meinung nach sollte diese Website nicht blockiert werden.</translation>
-<translation id="5832813618714645810">Personen</translation>
-<translation id="7171000599584840888">Person hinzufügen...</translation>
+<translation id="5832813618714645810">Profile</translation>
+<translation id="7171000599584840888">Profil hinzufügen ...</translation>
 <translation id="1781771911845953849">Konten und Synchronisierung</translation>
 <translation id="4974733135013075877">Beenden und Kindersicherung aktivieren</translation>
 <translation id="3965965397408324205"><ph name="PROFILE_NAME"/> beenden</translation>
@@ -2689,21 +2689,21 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="8473863474539038330">AutoFill-Einstellungen</translation>
 <translation id="5287425679749926365">Meine Konten</translation>
 <translation id="4801448226354548035">Konten ausblenden</translation>
-<translation id="2935225303485967257">Nutzer verwalten</translation>
+<translation id="2935225303485967257">Profile verwalten</translation>
 <translation id="7388222713940428051">Gastfenster öffnen</translation>
 <translation id="127668050356036882">Alle Fenster schließen</translation>
 <translation id="1464258312790801189">Meine Konten</translation>
 <translation id="6655458902729017087">Konten ausblenden</translation>
-<translation id="688280436658139163">Nutzer verwalten</translation>
+<translation id="688280436658139163">Profile verwalten</translation>
 <translation id="2666990579225592931">Gastfenster öffnen</translation>
 <translation id="5869948122057593679">Alle Fenster schließen</translation>
-<translation id="4133080584509825342">Person bearbeiten: <ph name="PROFILE_NAME"/></translation>
-<translation id="4848862725510532982">Person bearbeiten: <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4133080584509825342">Profil bearbeiten, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Profil bearbeiten, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="3294437725009624529">Gast</translation>
 <translation id="475088594373173692">Erster Nutzer</translation>
 <translation id="4535127706710932914">Standardprofil</translation>
 <translation id="4389091756366370506">Nutzer <ph name="VALUE"/></translation>
-<translation id="4536111748245793305">Profil <ph name="VALUE"/></translation>
+<translation id="4536111748245793305">Profile <ph name="VALUE"/></translation>
 <translation id="5397794290049113714">Ich</translation>
 <translation id="3031417829280473749">Agentin X</translation>
 <translation id="412730574613779332">Superheld</translation>
@@ -2791,7 +2791,7 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="2871813825302180988">Dieses Konto wird bereits auf diesem Gerät verwendet.</translation>
 <translation id="7654941827281939388">Dieses Konto wird bereits auf dem Computer verwendet.</translation>
 <translation id="9022847679183471841">Dieses Konto wird bereits von <ph name="AVATAR_NAME"/> auf diesem Computer verwendet.</translation>
-<translation id="6921634551681321094">Person hinzufügen</translation>
+<translation id="6921634551681321094">Profil hinzufügen</translation>
 <translation id="5389237414310520250">Der neue Nutzer konnte nicht erstellt werden. Bitte überprüfen Sie Ihren Festplattenspeicherplatz und Ihre Berechtigungen und versuchen Sie es dann erneut.</translation>
 <translation id="2673589024369449924">Desktopverknüpfung für diesen Nutzer erstellen</translation>
 <translation id="2731710757838467317">Der betreute Nutzer wird erstellt. Bitte warten...</translation>
@@ -2799,13 +2799,13 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="6690751852586194791">Wählen Sie einen betreuten Nutzer aus, der zu diesem Gerät hinzugefügt werden soll.</translation>
 <translation id="5525677322972469346">Neuen betreuten Nutzer erstellen</translation>
 <translation id="8630903300770275248">Betreuten Nutzer importieren</translation>
-<translation id="4904061654709986277">Person hinzufügen</translation>
-<translation id="6114945161119872228">Diese Person entfernen</translation>
-<translation id="769308100792069196">Betreuten Nutzer hinzufügen</translation>
+<translation id="4904061654709986277">Profil hinzufügen</translation>
+<translation id="6114945161119872228">Dieses Profil entfernen</translation>
+<translation id="769308100792069196">Überwachtes Profil hinzufügen</translation>
 <translation id="3470442499439619530">Diesen Nutzer entfernen</translation>
 <translation id="4296575653627536209">Betreuten Nutzer hinzufügen</translation>
-<translation id="8006143138282906848">Diese Person entfernen</translation>
-<translation id="6912187023601892621">Betreuten Nutzer hinzufügen</translation>
+<translation id="8006143138282906848">Dieses Profil entfernen</translation>
+<translation id="6912187023601892621">Überwachtes Profil hinzufügen</translation>
 <translation id="1608626060424371292">Diesen Nutzer entfernen</translation>
 <translation id="493571969993549666">Betreuten Nutzer hinzufügen</translation>
 <translation id="9101691533782776290">App starten</translation>
@@ -2827,8 +2827,8 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="6164005077879661055">Durch das Entfernen des betreuten Nutzers werden alle mit ihm verknüpften Dateien und lokalen Daten endgültig gelöscht. Besuchte Websites und Einstellungen des betreuten Nutzers kann der Manager möglicherweise weiterhin unter <ph name="MANAGEMENT_URL"/> einsehen.</translation>
 <translation id="3410832398355316179">Durch das Entfernen des Nutzers werden alle mit ihm verknüpften Dateien und lokalen Daten endgültig gelöscht. <ph name="USER_EMAIL"/> kann sich später weiterhin anmelden.</translation>
 <translation id="672213144943476270">Bitte entsperren Sie Ihr Profil, bevor Sie als Gast surfen.</translation>
-<translation id="8086119151297127544">Entsperren Sie Ihr Profil, bevor Sie eine Person entfernen.</translation>
-<translation id="7805701378418968629">Entsperren Sie Ihr Profil, bevor Sie eine Person hinzufügen.</translation>
+<translation id="8086119151297127544">Bitte entsperren Sie vor der Entfernung eines Profils Ihr Profil.</translation>
+<translation id="7805701378418968629">Bitte entsperren Sie vor dem Hinzufügen eines Profils Ihr Profil.</translation>
 <translation id="8978225823042133615">Melden Sie sich bitte an, wenn Sie Brave verwenden möchten</translation>
 <translation id="4893336867552636863">Dadurch werden die Browserdaten dauerhaft von diesem Gerät gelöscht.</translation>
 <translation id="2496180316473517155">Browserverlauf</translation>
@@ -2886,8 +2886,9 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="6850286078059909152">Schriftfarbe</translation>
 <translation id="8042142357103597104">Texttransparenz</translation>
 <translation id="1656528038316521561">Deckkraft des Hintergrunds</translation>
-<translation id="5750288053043553775">0</translation>
-<translation id="8689998525144040851">100</translation>
+<translation id="8838601485495657486">Opak</translation>
+<translation id="5826993284769733527">Halbtransparent</translation>
+<translation id="4438043733494739848">Transparent</translation>
 <translation id="2442916515643169563">Textschatten</translation>
 <translation id="3599221874935822507">Erhöht</translation>
 <translation id="274029851662193272">Vertieft</translation>
@@ -2902,7 +2903,7 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="161042844686301425">Cyan</translation>
 <translation id="4115378294792113321">Magenta</translation>
 <translation id="6981982820502123353">Bedienungshilfen</translation>
-<translation id="5840822070878669614">Brave Web Store öffnen</translation>
+<translation id="5840822070878669614">Webshop öffnen</translation>
 <translation id="6073903501322152803">Bedienungshilfen hinzufügen</translation>
 <translation id="7988355189918024273">Bedienungshilfen aktivieren</translation>
 <translation id="5499063270485366718">Wenn ein Bild keine brauchbare Beschreibung hat, versucht Brave, eine für Sie zu finden. Damit entsprechende Beschreibungen erstellt werden können, werden die Bilder an Brave Software gesendet.</translation>
@@ -3863,8 +3864,8 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="4590324241397107707">Datenbankspeicher</translation>
 <translation id="8016266267177410919">Temporärer Speicher</translation>
 <translation id="4175737294868205930">Permanentspeicher</translation>
-<translation id="3707212204259470604">Andere Nutzer verwalten</translation>
-<translation id="8907706281008466056">Brave Software Profile-Foto</translation>
+<translation id="3707212204259470604">Andere Profile verwalten</translation>
+<translation id="8907706281008466056">Brave-Profilfoto</translation>
 <translation id="2408955596600435184">PIN eingeben</translation>
 <translation id="6619990499523117484">PIN bestätigen</translation>
 <translation id="2023167225947895179">Diese PIN kann leicht erraten werden</translation>
@@ -3935,7 +3936,7 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="1692115862433274081">Anderes Konto verwenden</translation>
 <translation id="5244474230056479698">Mit <ph name="EMAIL"/> synchronisieren</translation>
 <translation id="4326270470840334364">Da dieses Konto von <ph name="DOMAIN"/> verwaltet wird, werden Ihr Verlauf sowie Ihre Lesezeichen, Passwörter und sonstigen Einstellungen von diesem Gerät gelöscht. Die Daten bleiben jedoch in Ihrem Brave Software-Konto gespeichert und Sie können sie über das <ph name="BEGIN_LINK"/>Brave Software Dashboard<ph name="END_LINK"/> verwalten.</translation>
-<translation id="6906406176003824042">Person bearbeiten</translation>
+<translation id="6906406176003824042">Profil bearbeiten</translation>
 <translation id="6739923123728562974">Desktopverknüpfung einblenden</translation>
 <translation id="2450310832094867474">Synchronisierung deaktivieren und abmelden?</translation>
 <translation id="3699920817649120894">Synchronisierung und Personalisierung deaktivieren?</translation>
@@ -4025,7 +4026,7 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="437184764829821926">Erweiterte Schriftarteinstellungen</translation>
 <translation id="323803881985677942">Erweiterungsoptionen öffnen</translation>
 <translation id="2166369534954157698">Zwölf Boxkämpfer jagen Viktor quer über den großen Sylter Deich</translation>
-<translation id="8911765336506423117">Erweiterung aus dem Brave Web Store erforderlich</translation>
+<translation id="8911765336506423117">Erweiterung aus dem Webshop erforderlich</translation>
 <translation id="6965978654500191972">Gerät</translation>
 <translation id="8260864402787962391">Maus</translation>
 <translation id="155865706765934889">Touchpad</translation>
@@ -4271,7 +4272,7 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="329838636886466101">Reparieren</translation>
 <translation id="3012631534724231212">(iFrame)</translation>
 <translation id="1708338024780164500">(Inaktiv)</translation>
-<translation id="3860292630623580294">(Anonym)</translation>
+<translation id="3860292630623580294">(Privat)</translation>
 <translation id="6655190889273724601">Entwicklermodus</translation>
 <translation id="2868746137289129307">Diese Erweiterung ist veraltet und wurde aufgrund der Unternehmensrichtlinie deaktiviert. Die Erweiterung kann automatisch aktiviert werden, wenn eine neuere Version verfügbar ist.</translation>
 <translation id="6841186874966388268">Fehler</translation>
@@ -4307,7 +4308,7 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="1805822111539868586">Ansichten prüfen</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> weitere...</translation>
 <translation id="2450849356604136918">Keine aktiven Ansichten</translation>
-<translation id="4854477725773269949">In privaten Fenstern zulassen</translation>
+<translation id="4854477725773269949">In Privatmodus zulassen</translation>
 <translation id="6124650939968185064">Die folgenden Erweiterungen hängen von dieser Erweiterung ab:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="3866249974567520381">Beschreibung</translation>
@@ -4334,7 +4335,7 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="7235716375204803342">Aktivitäten werden abgerufen...</translation>
 <translation id="8314381333424235892">Erweiterung fehlt oder wurde deinstalliert</translation>
 <translation id="7647403192093989392">Keine neuen Aktivitäten</translation>
-<translation id="38046578254905003">Im <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> nach Erweiterungen und Designs suchen</translation>
+<translation id="38046578254905003">Finden Sie Erweiterungen und Themes im <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Webshop<ph name="END_LINK">&lt;/a&gt;</ph></translation>
 <translation id="7272674038937250585">Keine Beschreibung vorhanden</translation>
 <translation id="3855441664322950881">Erweiterung packen</translation>
 <translation id="2958721676848865875">Erweiterung packen: Warnung</translation>
@@ -4361,7 +4362,7 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="1688935057616748272">Geben Sie einen Buchstaben ein</translation>
 <translation id="4479424953165245642">Kioskanwendungen verwalten</translation>
 <translation id="6619801788773578757">Kioskanwendung hinzufügen</translation>
-<translation id="8045923671629973368">Anwendungs-ID oder Webstore-URL eingeben</translation>
+<translation id="8045923671629973368">Anwendungs-ID oder Webshop-URL eingeben</translation>
 <translation id="7059858479264779982">Automatisch starten</translation>
 <translation id="6325191661371220117">Automatisches Starten deaktivieren</translation>
 <translation id="4699357559218762027">(wird automatisch gestartet)</translation>
@@ -4527,8 +4528,8 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="6041155700700864984">Vollbildmodus beenden</translation>
 <translation id="6112294629795967147">Zum Anpassen der Größe tippen</translation>
 <translation id="2453860139492968684">Fertig</translation>
-<translation id="6336451774241870485">Neuer privater Tab</translation>
-<translation id="6610147964972079463">Private Tabs schließen</translation>
+<translation id="6336451774241870485">Neuer Privatreiter</translation>
+<translation id="6610147964972079463">Private Reiter schließen</translation>
 <translation id="8076492880354921740">Tabs</translation>
 <translation id="2794233252405721443">Website blockiert</translation>
 <translation id="1721312023322545264">Du benötigst die Berechtigung von <ph name="NAME"/>, um diese Website zu besuchen</translation>

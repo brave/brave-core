@@ -43,6 +43,22 @@
     "message": "ስጦታ",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "ዝርዝሮች",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "ቀሪ ሂሳብዎ",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "የ BAT ነጥቦች",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "ለተወዳጅ ይዘት ፈጣሪዎችዎ አስተዋጽኦ ለማድረግ Brave Rewards ውስጥ ሊያገለግል ይችላል። የ BAT ነጥቦችን በ BAT መለወጥ አይቻልም።",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "በርቷል",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "ወርሐዊ መዋጮ",
+    "message": "ይህን ገፅ በወር ምክር ይስጡ",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "{{reservedAmount}} BAT የሚያክል መጠንን መዋጮ ለመቀበል ላልተዘጋጀው ሰው አስቀምጠዋል። አሳሽዎ እነርሱ እስከሚያረጋግጡ ድረስ ለማዋጣት ይሞክራል ወይም 90 ቀናት እስከሚያልፍ ድረስ።",
+    "message": "{{reservedAmount}} {{currency}} የሚያክል መጠንን መዋጮ ለመቀበል ላልተዘጋጀው ሰው አስቀምጠዋል። አሳሽዎ እነርሱ እስከሚያረጋግጡ ድረስ ወይም 90 ቀናት እስከሚያልፍ ድረስ ለማዋጣት ይሞክራል።",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "የ Brave ማስታወቂያ ሽልማቶች!",
+    "message": "የማስታወቂያ ሽልማት አግኝተዋል!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "ከ Brave ማስታወቂያዎች የተላከልዎ ሽልማት እየመጣ ነው።",
+    "message": "ሽልማትዎ ወደ Brave የሽልማቶች ዋሌትዎ እየመጣ ነው።",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "የ Brave ማስታወቂያዎ የተለዋጭ ስም ግራንት ",
+    "message": "የሽልማትዎ መጠን",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "የኪስ ቦርሳ ማረጋገጥ ተጠናቋል",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "አዘጋጅ...",
-    "description": "Button text for setting monthly contribution"
   }
 }

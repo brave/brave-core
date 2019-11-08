@@ -43,6 +43,22 @@
     "message": "মঞ্জুরিসমূহ",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "বিশদ বিবরণ",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "আপনার ব্যালেন্স",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT পয়েন্ট",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "আপনার পছন্দের বিষয়বস্তু প্রস্তুতকারকদের অবদান রাখতে Brave পুরস্কারগুলি ব্যবহার করা যাবে। BAT পয়েন্টগুলি BAT এ বিনিময় করা যাবে না।",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "চালু",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "মাসিক অবদান",
+    "message": "প্রতি মাসে সাইটে টিপ দিন",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "অবদানগুলি পেতে যে নির্মাতারা এখনও সাইন আপ করেননি তাদের জন্য আপনি {{reservedAmount}} BAT নির্ধারণ করেছেন। আপনার ব্রাউজারটি যাচাই করা না হলে অথবা 90 দিন পেরিয়ে না গেলে অবদান দেওয়া চালিয়ে যাব।",
+    "message": "অবদানগুলি পাওয়ার জন্য যে নির্মাতারা এখনও সাইন আপ করেননি আপনি তাদের জন্য {{reservedAmount}} {{currency}} নির্ধারণ করেছেন। তারা যাচাই না করা পর্যন্ত বা 90 দিন পেরিয়ে না যাওয়া পর্যন্ত আপনার ব্রাউজার অবদান রাখার চেষ্টা চালিয়ে যাবে।",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave বিজ্ঞাপনের পুরস্কারগুলি!",
+    "message": "আপনি একটি বিজ্ঞাপনের পুরস্কার উপার্জন করেছেন!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Brave বিজ্ঞাপনগুলি থেকে আপনার মঞ্জুর হওয়া পুরস্কার আসছে।",
+    "message": "আপনার পুরস্কারগুলি আপনার Brave পুরস্কারের ওয়ালেটে আসছে।",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "আপনার Brave বিজ্ঞাপনগুলির টোকেন অনুদান",
+    "message": "আপনার পুরস্কারের অর্থরাশি",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "সম্পূর্ণ ওয়ালেট যাচাইকরণ",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "সেট করুন...",
-    "description": "Button text for setting monthly contribution"
   }
 }

@@ -61,7 +61,7 @@
 <translation id="1163931534039071049">&amp;Lihat sumber bingkai</translation>
 <translation id="6886871292305414135">Buka pautan dalam &amp;tab baharu</translation>
 <translation id="8899851313684471736">Buka pautan dalam tetingkap &amp;baharu</translation>
-<translation id="658539216370629794">Buka pautan dalam tetingkap inko&amp;gnito</translation>
+<translation id="658539216370629794">Buka pautan di dalam &amp;tetingkap sulit</translation>
 <translation id="3144647712221361880">Buka pautan sebagai</translation>
 <translation id="9137916601698928395">Buka pautan sebagai <ph name="USER"/></translation>
 <translation id="1137673463384776352">Buka pautan dalam <ph name="APP"/></translation>
@@ -122,7 +122,7 @@
 <translation id="3021678814754966447">&amp;Lihat Sumber Bingkai</translation>
 <translation id="9027459031423301635">Buka Pautan dalam Tab &amp;Baharu</translation>
 <translation id="1769104665586091481">Buka Pautan dalam Tetingkap &amp;Baharu</translation>
-<translation id="1432267168815937878">Buka Pautan dalam Tetingkap Inko&amp;gnito</translation>
+<translation id="1432267168815937878">Buka Pautan di dalam &amp;Tetingkap Sulit</translation>
 <translation id="2142328300403846845">Buka Pautan sebagai</translation>
 <translation id="6892812721183419409">Buka Pautan sebagai <ph name="USER"/></translation>
 <translation id="2006638907958895361">Buka Pautan dalam <ph name="APP"/></translation>
@@ -172,7 +172,7 @@
 <translation id="4200983522494130825">Tab &amp;baharu</translation>
 <translation id="8418445294933751433">&amp;Paparkan sebagai tab</translation>
 <translation id="1723824996674794290">&amp;Tetingkap baharu</translation>
-<translation id="6516243500644829484">Tetingkap &amp;inkognito baharu</translation>
+<translation id="6516243500644829484">Tetingkap &amp;sulit baru</translation>
 <translation id="6120205520491252677">Pin halaman ini pada skrin Mula...</translation>
 <translation id="9065203028668620118">Edit</translation>
 <translation id="5329858601952122676">&amp;Padam</translation>
@@ -192,7 +192,7 @@
 <translation id="3285322247471302225">&amp;Tab Baharu</translation>
 <translation id="8879284080359814990">&amp;Paparkan Sebagai Tab</translation>
 <translation id="176587472219019965">&amp;Tetingkap Baharu</translation>
-<translation id="7973394300052703468">Tetingkap &amp;Inkognito Baharu</translation>
+<translation id="7973394300052703468">Tetingkap &amp;Sulit Baru</translation>
 <translation id="5157635116769074044">Pin halaman ini pada Skrin Mula...</translation>
 <translation id="5830720307094128296">Simpan Halaman &amp;Sebagai...</translation>
 <translation id="4672657274720418656">Menyuling Halaman</translation>
@@ -364,7 +364,7 @@
 <translation id="2902312830803030883">Lagi tindakan</translation>
 <translation id="495170559598752135">Tindakan</translation>
 <translation id="3612673635130633812">Dimuat turun oleh &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="6395403722585816044">Dimuat turun dalam Inkognito</translation>
+<translation id="6395403722585816044">Dimuat Turun secara Sulit</translation>
 <translation id="4551763574344810652">Tekan <ph name="MODIFIER_KEY_DESCRIPTION"/> untuk buat asal</translation>
 <translation id="2079545284768500474">Buat asal</translation>
 <translation id="2490481887078769936">'<ph name="FILE_NAME"/>' telah dialih keluar daripada senarai</translation>
@@ -411,10 +411,10 @@
 <translation id="8212008074015601248">{NUM_DOWNLOAD,plural, =1{Muat turun sedang berlangsung}other{Muat turun sedang berlangsung}}</translation>
 <translation id="5425042808445046667">Teruskan memuat turun</translation>
 <translation id="5284445933715251131">Teruskan Memuat Turun</translation>
-<translation id="203837651858678035">Keluar daripada mod inkognito juga?</translation>
+<translation id="203837651858678035">Tetap keluar daripada mod sulit?</translation>
 <translation id="8951465597020890363">Keluar daripada mod tetamu juga?</translation>
 <translation id="9148058034647219655">Keluar</translation>
-<translation id="7376221878517288144">Keluar daripada mod inkognito juga?</translation>
+<translation id="7376221878517288144">Tetap berhenti menggunakan mod sulit?</translation>
 <translation id="973473557718930265">Keluar</translation>
 <translation id="7707599169365957976">Anda boleh membantu dalam meningkatkan Penyemakan Imbas Selamat dengan menghantar beberapa maklumat sistem dan kandungan halaman kepada Brave Software.</translation>
 <translation id="4923279099980110923">Ya, saya ingin membantu</translation>
@@ -596,6 +596,24 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Nilai Tandatangan Sijil</translation>
 <translation id="4104163789986725820">E&amp;ksport...</translation>
+<translation id="2029156652561216312">CN</translation>
+<translation id="7822286184239325970">ST</translation>
+<translation id="8180262569555229595">O</translation>
+<translation id="7252376466538759696">OU</translation>
+<translation id="5734574586460918465">dnQualifier</translation>
+<translation id="964324710553558337">C</translation>
+<translation id="511291565806773566">nomborSiri</translation>
+<translation id="5912292566401425135">L</translation>
+<translation id="5725734596824080201">DC</translation>
+<translation id="2948789661744572780">MEL</translation>
+<translation id="7481079953250545971">UID</translation>
+<translation id="4196967880387277612">E</translation>
+<translation id="5887772116581657016">kategoriPerniagaan</translation>
+<translation id="6561757256477115975">namaKawasanBidangKuasa</translation>
+<translation id="7150038968052501583">namaNegeriAtauWilayahBidangKuasa</translation>
+<translation id="8904360804686555987">namaNegaraBidangKuasa</translation>
+<translation id="8718098216622210506">JALAN</translation>
+<translation id="6969275223369931223">poskod</translation>
 <translation id="5434065355175441495">PKCS #1 Penyulitan RSA</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 Dengan Penyulitan RSA</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 Dengan Penyulitan RSA</translation>
@@ -767,11 +785,11 @@
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/> (<ph name="NUM_KILOBYTES_LIVE"/> puncak)</translation>
 <translation id="8004582292198964060">Penyemak Imbas</translation>
 <translation id="3678156199662914018">Sambungan: <ph name="EXTENSION_NAME"/></translation>
-<translation id="5053701565089446556">Sambungan Inkognito: <ph name="EXTENSION_NAME"/></translation>
+<translation id="5053701565089446556">Sambungan Sulit: <ph name="EXTENSION_NAME"/></translation>
 <translation id="6508261954199872201">Apl: <ph name="APP_NAME"/></translation>
-<translation id="611296870688433505">Apl Inkognito: <ph name="APP_NAME"/></translation>
+<translation id="611296870688433505">Aplikasi Sulit: <ph name="APP_NAME"/></translation>
 <translation id="7629827748548208700">Tab: <ph name="TAB_NAME"/></translation>
-<translation id="9048137919253433011">Tab Inkognito: <ph name="TAB_NAME"/></translation>
+<translation id="9048137919253433011">Tab Sulit: <ph name="TAB_NAME"/></translation>
 <translation id="6900284862687837908">Apl Latar Belakang: <ph name="BACKGROUND_APP_URL"/></translation>
 <translation id="7427348830195639090">Halaman Latar Belakang: <ph name="BACKGROUND_PAGE_URL"/></translation>
 <translation id="6798954102094737107">Pemalam: <ph name="PLUGIN_NAME"/></translation>
@@ -786,7 +804,7 @@
 <translation id="2282146716419988068">Proses GPU</translation>
 <translation id="2087822576218954668">Cetak: <ph name="PRINT_NAME"/></translation>
 <translation id="8859174528519900719">Subbingkai: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="1799432502220762862">Subbingkai Inkognito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="1799432502220762862">Subkerangka Sulit: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="2348176352564285430">Apl: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="786073089922909430">Perkhidmatan: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7663719505383602579">Penerima: <ph name="ARC_PROCESS_NAME"/></translation>
@@ -1060,7 +1078,7 @@ Simpan fail kunci anda di tempat selamat. Anda akan memerlukannya untuk mencipta
 <translation id="5483785310822538350">Batalkan akses fail dan peranti</translation>
 <translation id="93766956588638423">Baiki sambungan</translation>
 <translation id="3905761538810670789">Baiki apl</translation>
-<translation id="8808478386290700967">Kedai Web</translation>
+<translation id="8808478386290700967">Gedung Web</translation>
 <translation id="488785315393301722">Tunjukkan Butiran</translation>
 <translation id="8962083179518285172">Sembunyikan Butiran</translation>
 <translation id="7287143125007575591">Akses ditolak.</translation>
@@ -1351,7 +1369,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="192494336144674234">Buka dengan</translation>
 <translation id="9053893665344928494">Ingat pilihan saya</translation>
 <translation id="5340857474604400806">Kekal dalam Brave</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Inkognito)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Sulit)</translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (Tetamu)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Kemas kini tersedia)</translation>
@@ -1383,10 +1401,10 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="4400963414856942668">Anda boleh mengklik bintang untuk menandai tab</translation>
 <translation id="8379991678458444070">Tandai tab ini untuk kembali ke sini dengan cepat</translation>
 <translation id="7174199383876220879">Baharu! Kawal muzik, video anda dan banyak lagi.</translation>
-<translation id="4369414322596874629">Anda boleh menyemak imbas secara tertutup menggunakan tetingkap inkognito</translation>
-<translation id="3772947852642271642">Gunakan web tanpa menyimpan sejarah penyemakan imbas anda menggunakan tetingkap inkognito</translation>
-<translation id="3871738366246972820">Menggunakan komputer yang dikongsi? Cuba buka tetingkap inkognito.</translation>
-<translation id="5808622652939943719">Untuk menyemak imbas secara tertutup, klik menu ikon titik untuk membuka tetingkap inkognito</translation>
+<translation id="4369414322596874629">Anda boleh melayari web secara sulit menggunakan tetingkap sulit</translation>
+<translation id="3772947852642271642">Layari web tanpa menyimpan sejarah pelayaran anda menggunakan tetingkap sulit</translation>
+<translation id="3871738366246972820">Menggunakan komputer kongsi? Cuba buka tetingkap sulit.</translation>
+<translation id="5808622652939943719">Untuk melayari web secara sulit, klik pada menu ikon titik untuk membuka tetingkap sulit</translation>
 <translation id="8803953437405899238">Buka tab baharu dengan satu klik</translation>
 <translation id="3071624960923923138">Anda boleh klik di sini untuk membuka tab baharu</translation>
 <translation id="4908811072292128752">Buka tab baharu untuk menyemak imbas dua tapak pada masa yang sama</translation>
@@ -1602,13 +1620,13 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="4620809267248568679">Tetapan ini dikuatkuasakan oleh sambungan.</translation>
 <translation id="4846680374085650406">Anda sedang mengikut cadangan pentadbir untuk tetapan ini.</translation>
 <translation id="1223853788495130632">Pentadbir anda mencadangkan nilai khusus untuk tetapan ini.</translation>
-<translation id="8839398440242019256">Bukan dari Kedai Web Brave.</translation>
+<translation id="8839398440242019256">Bukan daripada Gedung Web.</translation>
 <translation id="5337771866151525739">Dipasang oleh pihak ketiga.</translation>
 <translation id="4538792345715658285">Dipasang oleh dasar perusahaan.</translation>
 <translation id="4359408040881008151">Dipasang kerana sambungan yang bergantung.</translation>
 <translation id="4980805016576257426">Sambungan ini mengandungi perisian hasad.</translation>
 <translation id="5522156646677899028">Sambungan ini mengandungi kelemahan keselamatan yang serius.</translation>
-<translation id="6945695820322143954">Sambungan ini melanggar dasar Kedai Web Brave.</translation>
+<translation id="6945695820322143954">Sambungan ini melanggar dasar Gedung Web.</translation>
 <translation id="177808131755847449">Dilumpuhkan oleh Brave. Sambungan ini mungkin tidak selamat.</translation>
 <translation id="1434696352799406980">Ini akan menetapkan semula halaman permulaan, halaman tab baharu, enjin carian dan tab tersemat anda. Selain itu, semua sambungan akan dilumpuhkan dan data sementara seperti kuki akan dikosongkan. Sejarah penanda halaman anda dan kata laluan yang disimpan tidak akan dikosongkan.</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/> mahu menetapkan semula tetapan anda.</translation>
@@ -1675,6 +1693,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="622537739776246443">Profil akan dipadamkan</translation>
 <translation id="5632566673632479864">Akaun <ph name="EMAIL"/> anda tidak dibenarkan menjadi akaun utama lagi. Oleh sebab akaun ini diurus oleh <ph name="DOMAIN"/>, penanda halaman, sejarah, kata laluan dan tetapan anda yang lain akan dipadamkan daripada peranti ini.</translation>
 <translation id="3797739167230984533"><ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> anda diurus<ph name="END_LINK"/> oleh organisasi anda</translation>
+<translation id="1722460139690167654"><ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> anda diurus<ph name="END_LINK"/> oleh <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8118488170956489476"><ph name="BEGIN_LINK"/>Penyemak imbas anda diurus<ph name="END_LINK"/> oleh organisasi anda</translation>
 <translation id="1365180424462182382"><ph name="BEGIN_LINK"/>Penyemak imbas anda diurus<ph name="END_LINK"/> oleh <ph name="ENROLLMENT_DOMAIN"/></translation>
 <translation id="8168435359814927499">Kandungan</translation>
@@ -1712,6 +1731,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="1234808891666923653">Pekerja Perkhidmatan</translation>
 <translation id="3432762828853624962">Pekerja Kongsi</translation>
 <translation id="2927017729816812676">Storan Cache</translation>
+<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Apl</translation>
 <translation id="542872847390508405">Anda menyemak imbas sebagai Tetamu</translation>
 <translation id="537813040452600081">Halaman yang anda lihat dalam tetingkap ini tidak akan dipaparkan dalam sejarah penyemak imbas dan halaman ini tidak akan meninggalkan kesan lain, seperti kuki, pada komputer selepas anda log keluar. Fail yang anda muat turun dan penanda halaman yang anda buat tidak akan disimpan.</translation>
@@ -1925,7 +1945,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="881799181680267069">Sembunyikan Yang Lain</translation>
 <translation id="4708849949179781599">Keluar dari <ph name="PRODUCT_NAME"/></translation>
 <translation id="8795916974678578410">Tetingkap Baharu</translation>
-<translation id="1676595396635191120">Tetingkap Inkognito Baharu</translation>
+<translation id="1676595396635191120">Tetingkap Sulit Baru</translation>
 <translation id="406070391919917862">Apl Latar Belakang</translation>
 <translation id="3335947283844343239">Buka Semula Tab Yang Ditutup</translation>
 <translation id="8214489666383623925">Buka Fail...</translation>
@@ -2051,6 +2071,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> mahu memainkan kandungan yang dilindungi. Identiti peranti anda akan disahkan oleh Brave Software dan mungkin diakses oleh tapak ini.</translation>
 <translation id="1746402432151920942">Pengecam Media Dilindungi</translation>
 <translation id="1322046419516468189">Lihat dan urus kata laluan yang disimpan dalam <ph name="SAVED_PASSWORDS_STORE"/> anda</translation>
+<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Kata laluan disimpan. Lihat dan urus kata laluan yang disimpan dalam <ph name="SAVED_PASSWORDS_STORE"/> anda.</translation>
 <translation id="5713644099811900409">Akaun Brave Software</translation>
 <translation id="3785727820640310185">Kata laluan disimpan untuk tapak ini</translation>
@@ -2163,7 +2184,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="7339898014177206373">Tetingkap baharu</translation>
 <translation id="7551643184018910560">Sematkan pada rak</translation>
 <translation id="8335587457941836791">Nyahsemat dari rak</translation>
-<translation id="4471385409549756595">Tetingkap incognito baharu</translation>
+<translation id="4471385409549756595">Tetingkap sulit baru</translation>
 <translation id="8249048954461686687">Folder OEM</translation>
 <translation id="8440630305826533614">Apl Linux</translation>
 <translation id="4742746985488890273">Sematkan pada Rak</translation>
@@ -2267,8 +2288,8 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
         <ph name="FILE_INFO"/>
         <ph name="EVENT_NAME"/></translation>
-<translation id="4540437243849625078">Tapak ini akan berkongsi maklumat dengan apl di luar daripada mod inkognito.</translation>
-<translation id="1227836882233136433">Tinggalkan mod inkognito?</translation>
+<translation id="4540437243849625078">Laman web ini akan berkongsi maklumat dengan aplikasi di luar mod sulit.</translation>
+<translation id="1227836882233136433">Tinggalkan mod sulit?</translation>
 <translation id="662080504995468778">Kekal di sini</translation>
 <translation id="2593289874938379417">Brave tidak boleh mengakses sumber yang diminta.</translation>
 <translation id="760197030861754408">Pergi ke <ph name="LANDING_PAGE"/> untuk menyambung.</translation>
@@ -2311,6 +2332,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8750155211039279868"><ph name="ORIGIN"/> mahu menyambung ke port siri</translation>
 <translation id="4943691134276646401">"<ph name="CHROME_EXTENSION_NAME"/>" ingin menyambung ke port siri</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
+<translation id="1587562069597918292"><ph name="DEVICE_PATH"/></translation>
 <translation id="1171515578268894665"><ph name="ORIGIN"/> mahu menyambung ke peranti HID</translation>
 <translation id="6078769373519310690">"<ph name="CHROME_EXTENSION_NAME"/>" mahu menyambung ke peranti HID</translation>
 <translation id="4419610272958564173">Peranti Tidak Diketahui (Vendor: <ph name="VENDOR_ID"/>, Produk: <ph name="PRODUCT_ID"/>)</translation>
@@ -2451,12 +2473,15 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="7235737137505019098">Kunci keselamatan anda tiada ruang yang mencukupi untuk menambahkan sebarang akaun lagi.</translation>
 <translation id="3984431586879874039">Benarkan tapak ini melihat kunci keselamatan anda?</translation>
 <translation id="8948939328578167195"><ph name="WEBSITE"/> ingin melihat jenama dan model kunci keselamatan anda</translation>
-<translation id="7618452966706304788">Adakah anda ingin menggunakan Touch ID pada <ph name="APP_NAME"/> dalam mod Inkognito?</translation>
-<translation id="3098826269712097986">Data log masuk akan disimpan dalam Brave selepas anda keluar daripada mod Inkognito. Ini akan membolehkan anda menggunakan Touch ID pada tapak web ini lagi nanti.</translation>
+<translation id="7618452966706304788">Adakah anda mahu menggunakan ID Sentuh dengan <ph name="APP_NAME"/> dalam mod Sulit?</translation>
+<translation id="3098826269712097986">Data daftar masuk akan disimpan di dalam Brave selepas anda keluar daripada mod Sulit. Ini akan membolehkan anda menggunakan ID Sentuh dengan laman web ini lagi nanti.</translation>
 <translation id="2172784515318616985">Teruskan</translation>
-<translation id="5186185447130319458">Inkognito</translation>
+<translation id="5186185447130319458">Sulit</translation>
 <translation id="7643842463591647490">{0,plural, =1{# tetingkap terbuka}other{# tetingkap terbuka}}</translation>
-<translation id="2579188629646253712">Keluar daripada tetingkap Inkognito</translation>
+<translation id="2579188629646253712">Keluar Daripada Sulit</translation>
+<translation id="479219453908726046">Jawab Survei</translation>
+<translation id="7581273696622423628">Jawab survei</translation>
+<translation id="4406504596603350105">Maklum balas anda penting buat kami.</translation>
 <translation id="4349828822184870497">Membantu</translation>
 <translation id="6876469544038980967">Tidak Membantu</translation>
 <translation id="6428450836711225518">Sahkan nombor telefon anda</translation>
@@ -2469,17 +2494,20 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="399179161741278232">Diimport</translation>
 <translation id="5225324770654022472">Paparkan pintasan apl</translation>
 <translation id="5072836811783999860">Tunjukkan penanda halaman terurus</translation>
+<translation id="3613134908380545408">Tunjukkan <ph name="FOLDER_NAME"/></translation>
 <translation id="3785308913036335955">Paparkan Pintasan Apl</translation>
 <translation id="711840821796638741">Tunjukkan Penanda Halaman Terurus</translation>
-<translation id="3613134908380545408">Tunjukkan <ph name="FOLDER_NAME"/></translation>
 <translation id="2367972762794486313">Paparkan apl</translation>
 <translation id="8368859634510605990">&amp;Buka semua penanda halaman</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{&amp;Buka semua}=1{&amp;Buka penanda halaman}other{&amp;Buka semua (#)}}</translation>
 <translation id="1016437870506746108">{COUNT,plural, =0{Buka semua dalam tetingkap &amp;baharu}=1{Buka dalam tetingkap &amp;baharu}other{Buka semua (#) dalam tetingkap &amp;baharu}}</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Buka semua dalam tetingkap &amp;inkognito}=1{Buka dalam tetingkap &amp;inkognito}other{Buka semua (#) dalam tetingkap &amp;inkognito}}</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Buka semua di dalam &amp;tetingkap sulit}
+          =1 {Buka di dalam &amp;tetingkap sulit}
+          other {Buka semua (#) di dalam &amp;tetingkap sulit}}</translation>
 <translation id="3613422051106148727">&amp;Buka dalam tab baharu</translation>
 <translation id="4853020600495124913">Buka dalam tetingkap &amp;baharu</translation>
-<translation id="2431625704210501303">Buka dalam tetingkap &amp;inkognito</translation>
+<translation id="2431625704210501303">Buka di dalam &amp;tetingkap sulit</translation>
 <translation id="6702639462873609204">&amp;Edit...</translation>
 <translation id="3088325635286126843">&amp;Namakan semula...</translation>
 <translation id="713122686776214250">Tambah ha&amp;laman...</translation>
@@ -2488,10 +2516,13 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6466988389784393586">&amp;Buka Semua Penanda Halaman</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Buka Semua}=1{&amp;Buka Penanda Halaman}other{&amp;Buka Semua (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Buka Semua dalam Tetingkap &amp;Baharu}=1{Buka dalam Tetingkap &amp;Baharu}other{Buka Semua (#) dalam Tetingkap &amp;Baharu}}</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Buka Semua dalam Tetingkap &amp;Inkognito}=1{Buka dalam Tetingkap &amp;Inkognito}other{Buka Semua (#) dalam Tetingkap &amp;Inkognito}}</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Buka Semua di dalam &amp;Tetingkap Sulit}
+          =1 {Buka di dalam &amp;Tetingkap Sulit}
+          other {Buka Semua (#) di dalam &amp;Tetingkap Sulit}}</translation>
 <translation id="9024127637873500333">&amp;Buka dalam Tab Baharu</translation>
 <translation id="665061930738760572">Buka dalam &amp;Tetingkap Baharu</translation>
-<translation id="1985165269306590797">Buka dalam Tetingkap &amp;Inkognito</translation>
+<translation id="1985165269306590797">Buka di dalam &amp;Tetingkap Sulit</translation>
 <translation id="8824701697284169214">Tambah Ha&amp;laman...</translation>
 <translation id="2489918096470125693">Tambah &amp;Folder...</translation>
 <translation id="421182450098841253">&amp;Tunjukkan Bar Penanda Halaman</translation>
@@ -2543,10 +2574,10 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8457451314607652708">Import penanda halaman</translation>
 <translation id="5101042277149003567">Buka semua penanda halaman</translation>
 <translation id="7007648447224463482">Buka semua dalam tetingkap baharu</translation>
-<translation id="642436385689435488">Buka semua dalam tetingkap inkognito</translation>
+<translation id="642436385689435488">Buka semua di dalam tetingkap sulit</translation>
 <translation id="4195643157523330669">Buka dalam tab baharu</translation>
 <translation id="2979639724566107830">Buka dalam tetingkap baharu</translation>
-<translation id="5463021359602611602">Buka dalam tetingkap inkognito</translation>
+<translation id="5463021359602611602">Buka di dalam tetingkap sulit</translation>
 <translation id="1173894706177603556">Namakan semula</translation>
 <translation id="6825184156888454064">Isih mengikut nama</translation>
 <translation id="3440663250074896476">Lagi tindakan untuk <ph name="BOOKMARK_NAME"/></translation>
@@ -2624,9 +2655,15 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="4159681666905192102">Ini ialah akaun untuk kanak-kanak yang diurus oleh <ph name="CUSTODIAN_EMAIL"/> dan <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Pengguna diselia</translation>
 <translation id="5720705177508910913">Pengguna semasa</translation>
-<translation id="1850357845349976573">{0,plural, =1{Inkognito}other{# tetingkap inkognito terbuka}}</translation>
-<translation id="37784332082579802">{0,plural, =1{Inkognito}other{Inkognito (#)}}</translation>
-<translation id="5070556616376997776">Anda dalam mod inkognito</translation>
+<translation id="1850357845349976573">{0, plural,
+        =1 {Sulit}
+        other {# buka tetingkap sulit}
+      }</translation>
+<translation id="37784332082579802">{0, plural,
+      =1 {Sulit}
+      other {Sulit (#)}
+    }</translation>
+<translation id="5070556616376997776">Ini ialah tetingkap sulit</translation>
 <translation id="2199298570273670671">Ralat</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: Penyegerakan tidak berfungsi</translation>
 <translation id="7307129035224081534">Dijeda</translation>
@@ -2635,8 +2672,8 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="2932330436172705843"><ph name="PROFILE_DISPLAY_NAME"/> (Akaun untuk kanak-kanak)</translation>
 <translation id="8182664696082410784"><ph name="REASON"/>
     Pada pendapat saya, tapak ini tidak perlu disekat!</translation>
-<translation id="5832813618714645810">Orang</translation>
-<translation id="7171000599584840888">Tambah Orang...</translation>
+<translation id="5832813618714645810">Profil</translation>
+<translation id="7171000599584840888">Tambah Profil...</translation>
 <translation id="1781771911845953849">Akaun dan penyegerakan</translation>
 <translation id="4974733135013075877">Keluar dan kunci kanak-kanak</translation>
 <translation id="3965965397408324205">Keluar daripada <ph name="PROFILE_NAME"/></translation>
@@ -2655,21 +2692,21 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8473863474539038330">Alamat dan pelbagai lagi</translation>
 <translation id="5287425679749926365">Akaun anda</translation>
 <translation id="4801448226354548035">Sembunyikan akaun</translation>
-<translation id="2935225303485967257">Urus orang</translation>
+<translation id="2935225303485967257">Uruskan profil</translation>
 <translation id="7388222713940428051">Buka tetingkap Tetamu</translation>
 <translation id="127668050356036882">Tutup semua tetingkap anda</translation>
 <translation id="1464258312790801189">Akaun Anda</translation>
 <translation id="6655458902729017087">Sembunyikan Akaun</translation>
-<translation id="688280436658139163">Urus Orang</translation>
+<translation id="688280436658139163">Uruskan Profil</translation>
 <translation id="2666990579225592931">Buka Tetingkap Tetamu</translation>
 <translation id="5869948122057593679">Tutup Semua Tetingkap Anda</translation>
-<translation id="4133080584509825342">Edit orang, <ph name="PROFILE_NAME"/></translation>
-<translation id="4848862725510532982">Edit orang, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4133080584509825342">Edit profil, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Edit profil, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="3294437725009624529">Tetamu</translation>
 <translation id="475088594373173692">Pengguna pertama</translation>
 <translation id="4535127706710932914">Profil Lalai</translation>
 <translation id="4389091756366370506">Pengguna <ph name="VALUE"/></translation>
-<translation id="4536111748245793305"><ph name="VALUE"/> orang</translation>
+<translation id="4536111748245793305">Profil <ph name="VALUE"/></translation>
 <translation id="5397794290049113714">Anda</translation>
 <translation id="3031417829280473749">Ejen X</translation>
 <translation id="412730574613779332">Spandex</translation>
@@ -2757,7 +2794,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="2871813825302180988">Akaun ini telah digunakan pada peranti ini.</translation>
 <translation id="7654941827281939388">Akaun ini telah digunakan pada komputer ini.</translation>
 <translation id="9022847679183471841">Akaun ini telah digunakan pada komputer ini oleh <ph name="AVATAR_NAME"/></translation>
-<translation id="6921634551681321094">Tambah orang</translation>
+<translation id="6921634551681321094">Tambah profil</translation>
 <translation id="5389237414310520250">Pengguna baharu tidak dapat dibuat. Sila semak ruang cakera keras serta kebenaran anda dan cuba lagi.</translation>
 <translation id="2673589024369449924">Buat pintasan desktop untuk pengguna ini</translation>
 <translation id="2731710757838467317">Menghasilkan pengguna diselia anda. Proses Ini mungkin mengambil sedkit masa.</translation>
@@ -2765,13 +2802,13 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6690751852586194791">Pilih pengguna diselia untuk ditambahkan pada peranti ini.</translation>
 <translation id="5525677322972469346">Buat pengguna di bawah seliaan baharu</translation>
 <translation id="8630903300770275248">Import pengguna diselia</translation>
-<translation id="4904061654709986277">Tambah Orang</translation>
-<translation id="6114945161119872228">Alih Keluar Orang Ini</translation>
-<translation id="769308100792069196">Tambahkan Orang di Bawah Seliaan</translation>
+<translation id="4904061654709986277">Tambah Profil</translation>
+<translation id="6114945161119872228">Buang Profil Ini</translation>
+<translation id="769308100792069196">Tambah Profil Berpenyelia</translation>
 <translation id="3470442499439619530">Alih Keluar Pengguna Ini</translation>
 <translation id="4296575653627536209">Tambahkan Pengguna di Bawah Seliaan</translation>
-<translation id="8006143138282906848">Alih keluar orang ini</translation>
-<translation id="6912187023601892621">Tambahkan orang di bawah seliaan</translation>
+<translation id="8006143138282906848">Buang profil ini</translation>
+<translation id="6912187023601892621">Tambah profil berpenyelia</translation>
 <translation id="1608626060424371292">Alih keluar pengguna ini</translation>
 <translation id="493571969993549666">Tambahkan pengguna di bawah seliaan</translation>
 <translation id="9101691533782776290">Lancarkan apl</translation>
@@ -2793,8 +2830,8 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6164005077879661055">Semua fail dan data setempat yang dikaitkan dengan pengguna diselia akan dipadamkan secara kekal apabila pengguna diselia ini dialih keluar. Tapak web yang dilawati dan tetapan untuk pengguna diselia ini masih boleh dilihat oleh pengurus di <ph name="MANAGEMENT_URL"/>.</translation>
 <translation id="3410832398355316179">Semua fail dan data setempat yang berkaitan dengan pengguna ini akan dipadamkan secara kekal selepas pengguna ini dialih keluar. <ph name="USER_EMAIL"/> masih dapat log masuk nanti.</translation>
 <translation id="672213144943476270">Sila buka kunci profil anda sebelum menyemak imbas sebagai tetamu.</translation>
-<translation id="8086119151297127544">Sila buka kunci profil anda sebelum mengalih keluar seseorang.</translation>
-<translation id="7805701378418968629">Sila buka kunci profil anda sebelum menambahkan seseorang.</translation>
+<translation id="8086119151297127544">Sila buka kunci profil anda sebelum membuang profil.</translation>
+<translation id="7805701378418968629">Sila buka kunci profil anda sebelum menambah profil.</translation>
 <translation id="8978225823042133615">Untuk menggunakan Brave, sila log masuk</translation>
 <translation id="4893336867552636863">Tindakan ini akan memadamkan data penyemakan imbas anda daripada peranti ini selama-lamanya.</translation>
 <translation id="2496180316473517155">Sejarah penyemakan imbas</translation>
@@ -2852,8 +2889,9 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6850286078059909152">Warna teks</translation>
 <translation id="8042142357103597104">Kelegapan teks</translation>
 <translation id="1656528038316521561">Kelegapan latar</translation>
-<translation id="5750288053043553775">0</translation>
-<translation id="8689998525144040851">100</translation>
+<translation id="8838601485495657486">Legap</translation>
+<translation id="5826993284769733527">Separa lut sinar</translation>
+<translation id="4438043733494739848">Lutsinar</translation>
 <translation id="2442916515643169563">Bayangan teks</translation>
 <translation id="3599221874935822507">Ditinggikan</translation>
 <translation id="274029851662193272">Direndahkan</translation>
@@ -2868,7 +2906,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="161042844686301425">Sian</translation>
 <translation id="4115378294792113321">Magenta</translation>
 <translation id="6981982820502123353">Kebolehcapaian</translation>
-<translation id="5840822070878669614">Buka Gedung Web Brave</translation>
+<translation id="5840822070878669614">Buka Gedung Web</translation>
 <translation id="6073903501322152803">Tambahkan ciri kebolehaksesan</translation>
 <translation id="7988355189918024273">Dayakan ciri kebolehcapaian</translation>
 <translation id="5499063270485366718">Jika imej tiada perihalan yang berguna, Brave akan cuba memberikan perihalan untuk anda. Untuk membuat perihalan, imej dihantar kepada Brave Software.</translation>
@@ -2964,6 +3002,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="4430019312045809116">Kelantangan</translation>
 <translation id="3677657024345889897">Paling senyap</translation>
 <translation id="167160931442925455">Paling lantang</translation>
+<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (lalai)</translation>
 <translation id="7037509989619051237">Teks ke pratonton</translation>
 <translation id="5471768120198416576">Hai! Saya ialah suara teks ke pertuturan anda.</translation>
@@ -3228,10 +3267,13 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="4058720513957747556">AppSocket (TCP/IP)</translation>
 <translation id="6619058681307408113">Daemon Pencetak Talian (LPD)</translation>
 <translation id="2266957463645820432">IPP melalui USB (IPPUSB)</translation>
+<translation id="8086015605808120405">Mengkonfigurasi <ph name="PRINTER_NAME"/> ...</translation>
 <translation id="4665014895760275686">Pengeluar</translation>
 <translation id="4561098487691395071">Atau nyatakan PPD pencetak anda</translation>
 <translation id="1989112275319619282">Semak Imbas</translation>
 <translation id="3625481642044239431">Fail tidak sah dipilih. Cuba lagi.</translation>
+<translation id="2462752602710430187"><ph name="PRINTER_NAME"/> ditambahkan</translation>
+<translation id="7380768571499464492">Dikemas kini <ph name="PRINTER_NAME"/></translation>
 <translation id="8002670234429879764"><ph name="PRINTER_NAME"/>tidak lagi tersedia.</translation>
 <translation id="3976108569178263973">Pencetak tidak tersedia.</translation>
 <translation id="3213187967168344806">Tidak dapat menambahkan pencetak. Mulakan semula komputer anda dan cuba lagi.</translation>
@@ -3796,9 +3838,9 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6196640612572343990">Sekat kuki pihak ketiga</translation>
 <translation id="6782111308708962316">Halang tapak web pihak ketiga daripada menyimpan dan membaca data kuki</translation>
 <translation id="1274977772557788323">Tetapan Storan Adobe Flash Player</translation>
-<translation id="1281501490173223206">Sesi inkognito semasa sahaja</translation>
-<translation id="3479035826743782247">Sesi inkognito semasa</translation>
-<translation id="4750220700975225">Sesi inkognito semasa (<ph name="EMBEDDING"/>)</translation>
+<translation id="1281501490173223206">Sesi sulit semasa sahaja</translation>
+<translation id="3479035826743782247">Sesi sulit semasa</translation>
+<translation id="4750220700975225">Sesi sulit semasa (<ph name="EMBEDDING"/>)</translation>
 <translation id="383891835335927981">Tiada tapak yang telah dizum masuk atau keluar</translation>
 <translation id="3566721612727112615">Tiada tapak ditambahkan</translation>
 <translation id="8098574385249290065">Benarkan Brave memilih masa tapak boleh memainkan bunyi (disyorkan)</translation>
@@ -3825,8 +3867,8 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="4590324241397107707">Storan pangkalan data</translation>
 <translation id="8016266267177410919">Storan sementara</translation>
 <translation id="4175737294868205930">Storan berterusan</translation>
-<translation id="3707212204259470604">Urus orang lain</translation>
-<translation id="8907706281008466056">Foto Profil Brave Software</translation>
+<translation id="3707212204259470604">Uruskan profil lain</translation>
+<translation id="8907706281008466056">Foto Profil Brave</translation>
 <translation id="2408955596600435184">Masukkan PIN anda</translation>
 <translation id="6619990499523117484">Sahkan PIN anda</translation>
 <translation id="2023167225947895179">PIN mungkin mudah untuk diteka</translation>
@@ -3860,6 +3902,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="2458379781610688953">Kemas kini akaun, <ph name="EMAIL"/></translation>
 <translation id="2701737434167469065">Log masuk, <ph name="EMAIL"/></translation>
 <translation id="2923234477033317484">Alih keluar akaun ini</translation>
+<translation id="8995603266996330174">Diuruskan oleh <ph name="DOMAIN"/></translation>
 <translation id="4659077111144409915">Akaun utama</translation>
 <translation id="8864458770072227512"><ph name="EMAIL"/> telah dialih keluar daripada peranti ini</translation>
 <translation id="3158033540161634471">Sediakan cap jari anda</translation>
@@ -3892,12 +3935,11 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="3608576286259426129">Pratonton imej pengguna</translation>
 <translation id="2114896190328250491">Foto oleh <ph name="NAME"/></translation>
 <translation id="7155171745945906037">Foto sedia ada daripada kamera atau fail</translation>
-<translation id="8995603266996330174">Diuruskan oleh <ph name="DOMAIN"/></translation>
 <translation id="9125982323641182972">Brave Software pintar di Brave</translation>
 <translation id="1692115862433274081">Gunakan akaun lain</translation>
 <translation id="5244474230056479698">Menyegerak ke <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Oleh sebab akaun ini diurus oleh <ph name="DOMAIN"/>, penanda halaman, sejarah, kata laluan dan tetapan anda yang lain akan dikosongkan daripada peranti ini. Namun begitu, data anda akan terus disimpan dalam Akaun Brave Software anda dan boleh diurus di <ph name="BEGIN_LINK"/>Papan Pemuka Brave Software<ph name="END_LINK"/>.</translation>
-<translation id="6906406176003824042">Edit orang</translation>
+<translation id="6906406176003824042">Edit profil</translation>
 <translation id="6739923123728562974">Tunjukkan pintasan desktop</translation>
 <translation id="2450310832094867474">Matikan penyegerakan dan log keluar?</translation>
 <translation id="3699920817649120894">Matikan penyegerakan dan pemperibadian?</translation>
@@ -3987,7 +4029,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="437184764829821926">Tetapan fon terperinci</translation>
 <translation id="323803881985677942">Buka pilihan sambungan</translation>
 <translation id="2166369534954157698">The quick brown fox jumps over the lazy dog</translation>
-<translation id="8911765336506423117">Memerlukan sambungan daripada Gedung Web Brave</translation>
+<translation id="8911765336506423117">Memerlukan sambungan daripada Gedung Web</translation>
 <translation id="6965978654500191972">Peranti</translation>
 <translation id="8260864402787962391">Tetikus</translation>
 <translation id="155865706765934889">Pad sentuh</translation>
@@ -4111,7 +4153,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="8781980678064919987">Matikan apabila penutup ditutup</translation>
 <translation id="3636766455281737684"><ph name="PERCENTAGE"/>% - berbaki <ph name="TIME"/></translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% - <ph name="TIME"/> hingga penuh</translation>
-<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="2620436844016719705">Sistem</translation>
 <translation id="2077129598763517140">Gunakan pecutan perkakasan apabila tersedia</translation>
 <translation id="3817524650114746564">Buka tetapan proksi komputer anda</translation>
@@ -4234,7 +4275,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="329838636886466101">Baiki</translation>
 <translation id="3012631534724231212">(iframe)</translation>
 <translation id="1708338024780164500">(Tidak Aktif)</translation>
-<translation id="3860292630623580294">(Inkognito)</translation>
+<translation id="3860292630623580294">(Sulit)</translation>
 <translation id="6655190889273724601">Mod pembangun</translation>
 <translation id="2868746137289129307">Sambungan ini sudah lapuk dan dilumpuhkan oleh dasar perusahaan. Ia mungkin menjadi aktif secara automatik apabila versi yang lebih baharu tersedia.</translation>
 <translation id="6841186874966388268">Ralat</translation>
@@ -4270,7 +4311,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="1805822111539868586">Periksa paparan</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> lagi...</translation>
 <translation id="2450849356604136918">Tiada paparan aktif</translation>
-<translation id="4854477725773269949">Benarkan dalam inkognito</translation>
+<translation id="4854477725773269949">Benarkan dalam sulit</translation>
 <translation id="6124650939968185064">Sambungan berikut bergantung kepada sambungan ini:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
 <translation id="3866249974567520381">Huraian</translation>
@@ -4297,14 +4338,14 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="7235716375204803342">Mengambil aktiviti...</translation>
 <translation id="8314381333424235892">Sambungan tiada atau dinyahpasang</translation>
 <translation id="7647403192093989392">Tiada aktiviti baru-baru ini</translation>
-<translation id="38046578254905003">Cari sambungan dan tema di <ph name="BEGIN_LINK"/>Gedung Web Brave<ph name="END_LINK"/></translation>
+<translation id="38046578254905003">Cari sambungan dan tema di <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Gedung Web<ph name="END_LINK">&lt;/a&gt;</ph></translation>
 <translation id="7272674038937250585">Tiada perihalan disediakan</translation>
 <translation id="3855441664322950881">Sambungan pek</translation>
 <translation id="2958721676848865875">Amaran sambungan pek</translation>
 <translation id="8652400352452647993">Ralat sambungan pek</translation>
 <translation id="8398877366907290961">Teruskan juga</translation>
 <translation id="8770406935328356739">Direktori akar sambungan</translation>
-<translation id="6226777517901268232">Fail kunci peribadi (pilihan)</translation>
+<translation id="6226777517901268232">Fail kekunci sulit (pilihan)</translation>
 <translation id="2916745397441987255">Cari sambungan</translation>
 <translation id="1992397118740194946">Tidak ditetapkan</translation>
 <translation id="6706210727756204531">Skop</translation>
@@ -4324,7 +4365,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="1688935057616748272">Taip huruf</translation>
 <translation id="4479424953165245642">Urus aplikasi kios</translation>
 <translation id="6619801788773578757">Tambahkan aplikasi kios</translation>
-<translation id="8045923671629973368">Masukkan ID aplikasi atau URL gedung web</translation>
+<translation id="8045923671629973368">Masukkan ID Aplikasi atau URL gedung web</translation>
 <translation id="7059858479264779982">Tetapkan kepada autolancar</translation>
 <translation id="6325191661371220117">Lumpuhkan autolancar</translation>
 <translation id="4699357559218762027">(dilancarkan secara automatik)</translation>
@@ -4490,8 +4531,8 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6041155700700864984">Keluar Daripada Skrin Penuh</translation>
 <translation id="6112294629795967147">Sentuh untuk mengubah saiz</translation>
 <translation id="2453860139492968684">Selesai</translation>
-<translation id="6336451774241870485">Tab peribadi baharu</translation>
-<translation id="6610147964972079463">Tutup tab peribadi</translation>
+<translation id="6336451774241870485">Tab sulit baru</translation>
+<translation id="6610147964972079463">Tutup tab sulit</translation>
 <translation id="8076492880354921740">Tab</translation>
 <translation id="2794233252405721443">Tapak disekat</translation>
 <translation id="1721312023322545264">Anda memerlukan kebenaran daripada <ph name="NAME"/> untuk melawat tapak ini</translation>

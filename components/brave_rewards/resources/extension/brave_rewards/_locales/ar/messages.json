@@ -43,6 +43,22 @@
     "message": "المنح",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "التفاصيل",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "رصيدك",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "نقاط الرموز الأساسية للاهتمام",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "يمكن استخدام ذلك في مكافآت Brave لدعم منشئي المحتوى المفضل لديك. لا يمكن استبدال نقاط الرموز الأساسية للاهتمام بالرموز الأساسية للاهتمام.",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": "على",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -56,7 +72,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "المساهمة الشهرية",
+    "message": "امنح المال لهذا الموقع شهرياً",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -306,7 +322,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "قمت بتخصيص {{reservedAmount}} BAT للمؤلفين الذين لم يسجلوا بعد لتلقي المساهمات. سيستمر متصفحك في المحاولة للمساهمة حتى يقوموا بتأكيد حساباتهم، أو حتى مرور 90 يومًا.",
+    "message": "لقد حددت {{ReservedAmount}} {{currency}} لمنشئي المحتوى الذين لم يشتركوا بعد لتلقي المساهمات. سيظل متصفحك يحاول المساهمة حتى يؤكدوا، أو حتى مرور 90 يومًا.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -460,15 +476,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "مكافآت إعلانات Brave!",
+    "message": "لقد ربحتَ مكافأة إعلانات!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "إن مكافآتك الممنوحة من إعلانات Brave في طريقها إليك.",
+    "message": "المكافأة الخاصة بك في طريقها إلى محفظة مكافآت Brave الخاصة بك.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "المنحة الرمزية الخاصة بك من إعلانات Brave",
+    "message": "مبلغ مكافأتك",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -528,9 +544,5 @@
   "walletGoToVerifyPage":  {
     "message": "أكمل التحقق من المحفظة",
     "description": "CTA for completing wallet verification"
-  },
-  "set": {
-    "message": "تعيين...",
-    "description": "Button text for setting monthly contribution"
   }
 }
