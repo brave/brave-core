@@ -17,6 +17,7 @@ extension ShieldsViewController {
             sv.spacing = 15.0
             sv.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
             sv.isLayoutMarginsRelativeArrangement = true
+            sv.translatesAutoresizingMaskIntoConstraints = false
             return sv
         }()
         
@@ -38,29 +39,33 @@ extension ShieldsViewController {
         override init(frame: CGRect) {
             super.init(frame: frame)
             
-            addSubview(scrollView)
-            scrollView.addSubview(stackView)
-            
-            scrollView.snp.makeConstraints {
-                $0.edges.equalTo(self)
-            }
-            
-            scrollView.contentLayoutGuide.snp.makeConstraints {
-                $0.width.equalTo(self)
-            }
-            
-            stackView.snp.makeConstraints {
-                $0.edges.equalTo(scrollView.contentLayoutGuide)
-            }
-            
             stackView.addArrangedSubview(shieldOverrideControl)
             stackView.addArrangedSubview(overviewStackView)
             stackView.addArrangedSubview(shieldsContainerStackView)
+            
+            addSubview(scrollView)
+            scrollView.addSubview(stackView)
         }
         
         @available(*, unavailable)
         required init?(coder aDecoder: NSCoder) {
             fatalError()
+        }
+        
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            
+            scrollView.snp.remakeConstraints {
+                $0.edges.equalToSuperview()
+            }
+            
+            scrollView.contentLayoutGuide.snp.remakeConstraints {
+                $0.left.right.equalTo(self)
+            }
+            
+            stackView.snp.remakeConstraints {
+                $0.edges.equalToSuperview()
+            }
         }
         
         // MARK: - Themeable
@@ -227,6 +232,7 @@ extension ShieldsViewController {
             addSubview(valueLabel)
             addSubview(titleLabel)
             
+            translatesAutoresizingMaskIntoConstraints = false
             titleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
             
             valueLabel.snp.makeConstraints {

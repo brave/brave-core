@@ -203,15 +203,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
         addSubview(mainStackView)
         
         helper = ToolbarHelper(toolbar: self)
-        setupConstraints()
         
-        Preferences.General.showBookmarkToolbarShortcut.observe(from: self)
-        
-        // Make sure we hide any views that shouldn't be showing in non-overlay mode.
-        updateViewsForOverlayModeAndToolbarChanges()
-    }
-    
-    private func setupConstraints() {
         // Buttons won't take unnecessary space and won't shrink
         actionButtons.forEach {
             $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
@@ -220,10 +212,6 @@ class TopToolbarView: UIView, ToolbarProtocol {
         
         // Url bar will expand while keeping space for other items on the address bar.
         locationContainer.setContentHuggingPriority(.defaultLow, for: .horizontal)
-        
-        locationContainer.snp.makeConstraints {
-            $0.height.equalTo(TopToolbarViewUX.LocationHeight)
-        }
         
         navigationStackView.addArrangedSubview(backButton)
         navigationStackView.addArrangedSubview(forwardButton)
@@ -238,7 +226,20 @@ class TopToolbarView: UIView, ToolbarProtocol {
         
         mainStackView.setCustomSpacing(16, after: locationContainer)
         
-        mainStackView.snp.makeConstraints { make in
+        setupConstraints()
+        
+        Preferences.General.showBookmarkToolbarShortcut.observe(from: self)
+        
+        // Make sure we hide any views that shouldn't be showing in non-overlay mode.
+        updateViewsForOverlayModeAndToolbarChanges()
+    }
+    
+    private func setupConstraints() {
+        locationContainer.snp.remakeConstraints {
+            $0.height.equalTo(TopToolbarViewUX.LocationHeight)
+        }
+        
+        mainStackView.snp.remakeConstraints { make in
             make.top.bottom.equalTo(self)
             make.leading.equalTo(self.safeArea.leading).inset(topToolbarPadding)
             make.trailing.equalTo(self.safeArea.trailing).inset(topToolbarPadding)
