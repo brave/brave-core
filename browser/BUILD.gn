@@ -212,7 +212,7 @@ source_set("browser_process") {
       ]
 
       deps += [
-        "//brave/components/brave_ads/browser/android:jni_headers",
+        "brave_ads/android:jni_headers",
       ]
     }
 
