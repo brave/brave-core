@@ -194,9 +194,12 @@ void BraveProfileManager::MigrateProfileNames() {
       storage.GetAllProfilesAttributesSortedByName();
   // Make sure we keep the numbering the same.
   for (auto* entry : entries) {
-    // Rename the necessary profiles.
+    // Rename the necessary profiles. Don't check for legacy names as profile
+    // info cache should have migrated them by now.
     if (entry->IsUsingDefaultName() &&
-        !storage.IsDefaultProfileName(entry->GetName())) {
+        !storage.IsDefaultProfileName(
+            entry->GetName(),
+            /*include_check_for_legacy_profile_name=*/false)) {
       auto icon_index = entry->GetAvatarIconIndex();
       entry->SetLocalProfileName(storage.ChooseNameForNewProfile(icon_index));
     }
