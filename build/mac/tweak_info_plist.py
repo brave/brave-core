@@ -43,6 +43,21 @@ def _RemoveKeys(plist, *keys):
       pass
 
 
+def _OverrideVersionKey(plist, brave_version):
+  """ `minor.build` version string is used for update.
+  When we begin to use the Major version component, Brave version string will
+  be `1.0.0` for example and `Minor.Build` (`0.0`) would be used for update
+  check. Without modifying these numbers, update will fail as `0.0` is lower
+  than `70.121` for example.
+
+  To ensure minor version is higher than existing minor versions, we can
+  multiply the major version by 100 and set it to `CFBundleVersion`."""
+  version_values = brave_version.split('.')
+  if int(version_values[0]) >= 1:
+    adjusted_minor = int(version_values[1]) + (100 * int(version_values[0]))
+    plist['CFBundleVersion'] = str(adjusted_minor) + '.' + version_values[2]
+
+
 def Main(argv):
   parser = optparse.OptionParser('%prog [options]')
   parser.add_option('--plist', dest='plist_path', action='store',
@@ -59,6 +74,8 @@ def Main(argv):
       type='string', default=None, help='Target url for update feed')
   parser.add_option('--brave_dsa_file', dest='brave_dsa_file', action='store',
       type='string', default=None, help='Public DSA file for update')
+  parser.add_option('--brave_version', dest='brave_version', action='store',
+      type='string', default=None, help='brave version string')
   parser.add_option('--format', choices=('binary1', 'xml1', 'json'),
       default='xml1', help='Format to use when writing property list '
           '(default: %(default)s)')
@@ -94,6 +111,8 @@ def Main(argv):
 
   if options.brave_dsa_file:
     plist['SUPublicDSAKeyFile'] = options.brave_dsa_file
+
+  _OverrideVersionKey(plist, options.brave_version)
 
   # Explicitly disable profiling
   plist['SUEnableSystemProfiling'] = False
