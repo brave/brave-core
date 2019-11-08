@@ -195,6 +195,10 @@ class InjectedObject {
         console.log(`"compacted-sync-category" category=${JSON.stringify(arg1)} `);
         chrome.braveSync.onCompactComplete(arg1/*categoryName*/);
         break;
+      case "sent-sync-records":
+        console.log(`"sent-sync-records" categoryName=${JSON.stringify(arg1)} records=${JSON.stringify(arg2)}`);
+        chrome.braveSync.onRecordsSent(arg1/*categoryName*/, arg2/*records*/);
+        break;
       default:
         console.log('background.js TAGAB InjectedObject.handleMessage unknown message', message, arg1, arg2, arg3, arg4);
         console.log('background.js TAGAB message=' + message);

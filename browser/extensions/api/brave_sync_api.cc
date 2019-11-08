@@ -168,6 +168,24 @@ BraveSyncOnCompactCompleteFunction::Run() {
   return RespondNow(NoArguments());
 }
 
+ExtensionFunction::ResponseAction
+BraveSyncOnRecordsSentFunction::Run() {
+  std::unique_ptr<brave_sync::OnRecordsSent::Params> params(
+      brave_sync::OnRecordsSent::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  auto records = std::make_unique<std::vector<::brave_sync::SyncRecordPtr>>();
+  ::brave_sync::ConvertSyncRecords(params->records, records.get());
+
+  BraveSyncService* sync_service = GetSyncService(browser_context());
+  DCHECK(sync_service);
+  sync_service->GetBraveSyncClient()
+      ->sync_message_handler()
+      ->OnRecordsSent(params->category_name, std::move(records));
+
+  return RespondNow(NoArguments());
+}
+
 ExtensionFunction::ResponseAction BraveSyncExtensionInitializedFunction::Run() {
   // Also inform sync client extension started
   BraveSyncService* sync_service = GetSyncService(browser_context());

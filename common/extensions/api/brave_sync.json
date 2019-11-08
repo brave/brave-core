@@ -418,6 +418,21 @@
             "name": "category_name"
           }
         ]
+      },
+      {
+        "name": "onRecordsSent",
+        "type": "function",
+        "description": "Notify browser that records are successfully uploaded",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "category_name"
+          },
+          {
+            "type": "array", "items": {"$ref": "SyncRecord"},
+            "name": "records"
+          }
+        ]
       }
     ]
   }

@@ -608,6 +608,17 @@ void BraveProfileSyncServiceImpl::OnCompactComplete(
     brave_sync_prefs_->SetLastCompactTimeBookmarks(base::Time::Now());
 }
 
+void BraveProfileSyncServiceImpl::OnRecordsSent(
+    const std::string& category,
+    std::unique_ptr<brave_sync::RecordsList> records) {
+  for (auto& record : *records) {
+    if (category == kBookmarks) {
+      // Remove Acked sent records
+      brave_sync_prefs_->RemoveFromRecordsToResend(record->objectId);
+    }
+  }
+}
+
 int BraveProfileSyncServiceImpl::GetDisableReasons() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -805,8 +816,6 @@ void BraveProfileSyncServiceImpl::CreateResolveList(
   for (const auto& record : records) {
     // Ignore records from ourselves to avoid mess on merge
     if (record->deviceId == this_device_id) {
-      // Remove Acked sent records
-      brave_sync_prefs_->RemoveFromRecordsToResend(record->objectId);
       continue;
     }
     auto resolved_record = std::make_unique<SyncRecordAndExisting>();
