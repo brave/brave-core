@@ -223,11 +223,11 @@ void Contribution::ResetReconcileStamp() {
 }
 
 void Contribution::StartMonthlyContribution() {
-  BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Staring monthly contribution";
   if (!ledger_->GetRewardsMainEnabled()) {
     ResetReconcileStamp();
     return;
   }
+  BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Staring monthly contribution";
 
   auto callback = std::bind(&Contribution::OnStartRecurringTips,
       this,
@@ -250,6 +250,11 @@ bool Contribution::ShouldStartAutoContribute() {
 }
 
 void Contribution::StartAutoContribute(uint64_t reconcile_stamp) {
+  if (!ShouldStartAutoContribute()) {
+    return;
+  }
+
+  BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Staring auto contribution";
   auto filter = ledger_->CreateActivityFilter(
       "",
       ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
