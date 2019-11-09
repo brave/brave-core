@@ -815,6 +815,7 @@ TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode_Reset_SetupAgain) {
 }
 
 TEST_F(BraveSyncServiceTest, ExponentialResend) {
+  using brave_sync::jslib_const::kBookmarks;
   bookmarks::AddIfNotBookmarked(model(), GURL("https://a.com/"),
                                 base::ASCIIToUTF16("A.com"));
   // Explicitly set sync_timestamp, object_id and order because it is supposed
@@ -836,8 +837,8 @@ TEST_F(BraveSyncServiceTest, ExponentialResend) {
       "A.com - title", record_a_order, "",
       brave_sync_prefs()->GetThisDeviceId()));
 
-  EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(1);
-  sync_service()->SendSyncRecords("BOOKMARKS", std::move(records));
+  EXPECT_CALL(*sync_client(), SendSyncRecords(kBookmarks, _)).Times(1);
+  sync_service()->SendSyncRecords(kBookmarks, std::move(records));
 
   EXPECT_EQ(brave_sync_prefs()->GetRecordsToResend().size(), 1u);
   const base::DictionaryValue* meta =
@@ -876,9 +877,9 @@ TEST_F(BraveSyncServiceTest, ExponentialResend) {
     auto time_override = OverrideForTimeDelta(base::TimeDelta::FromMinutes(i));
     bool is_send_expected = contains(should_sent_at, i);
     int expect_call_times = is_send_expected ? 1 : 0;
-    EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _))
+    EXPECT_CALL(*sync_client(), SendSyncRecords(kBookmarks, _))
         .Times(expect_call_times);
-    sync_service()->ResendSyncRecords("BOOKMARKS");
+    sync_service()->ResendSyncRecords(kBookmarks);
 
     if (is_send_expected) {
       if (++expected_send_retry_number > max_send_retries)
@@ -891,15 +892,13 @@ TEST_F(BraveSyncServiceTest, ExponentialResend) {
   }
 
   // resolve to confirm records
-  RecordsList records_to_resolve;
-  records_to_resolve.push_back(SimpleBookmarkSyncRecord(
+  std::unique_ptr<RecordsList> sent_records = std::make_unique<RecordsList>();
+  sent_records->push_back(SimpleBookmarkSyncRecord(
       SyncRecord::Action::A_CREATE, record_a_object_id, "https://a.com/",
       "A.com", "1.1.1.1", "", brave_sync_prefs()->GetThisDeviceId()));
   auto timestamp_resolve = base::Time::Now();
-  records_to_resolve.at(0)->syncTimestamp = timestamp_resolve;
-  brave_sync::SyncRecordAndExistingList records_and_existing_objects;
-  sync_service()->CreateResolveList(records_to_resolve,
-                                    &records_and_existing_objects);
+  sent_records->at(0)->syncTimestamp = timestamp_resolve;
+  sync_service()->OnRecordsSent(kBookmarks, std::move(sent_records));
 
   EXPECT_EQ(brave_sync_prefs()->GetRecordsToResend().size(), 0u);
   EXPECT_EQ(brave_sync_prefs()->GetRecordToResendMeta(record_a_object_id),

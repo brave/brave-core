@@ -65,6 +65,12 @@ class BraveSyncOnCompactCompleteFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveSyncOnRecordsSentFunction : public ExtensionFunction {
+  ~BraveSyncOnRecordsSentFunction() override {}
+  DECLARE_EXTENSION_FUNCTION("braveSync.onRecordsSent", UNKNOWN)
+  ResponseAction Run() override;
+};
+
 class BraveSyncExtensionInitializedFunction : public ExtensionFunction {
   ~BraveSyncExtensionInitializedFunction() override {}
   DECLARE_EXTENSION_FUNCTION("braveSync.extensionInitialized", UNKNOWN)

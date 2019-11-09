@@ -53,6 +53,8 @@ class SyncMessageHandler {
   virtual void OnSaveBookmarksBaseOrder(const std::string& order) = 0;
   // COMOACTED_SYNC_CATEGORY
   virtual void OnCompactComplete(const std::string& category_name) = 0;
+  virtual void OnRecordsSent(const std::string &category_name,
+                             std::unique_ptr<RecordsList> records) = 0;
 };
 
 class BraveSyncClient {
