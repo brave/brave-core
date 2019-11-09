@@ -1,0 +1,30 @@
+diff --git a/tools/licenses.py b/tools/licenses.py
+index 791efb55b47141db7b961784f80f1dedd57e8823..3bf6e8298ebd870d8f769bc3ab268a78bb393423 100755
+--- a/tools/licenses.py
++++ b/tools/licenses.py
+@@ -31,6 +31,7 @@ import tempfile
+ _REPOSITORY_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+ sys.path.insert(0, os.path.join(_REPOSITORY_ROOT, 'build/android/gyp'))
+ from util import build_utils
++from brave_license_helper import AddBraveCredits, BRAVE_THIRD_PARTY_DIRS
+ 
+ 
+ # Paths from the root of the tree to directories to skip.
+@@ -290,6 +291,7 @@ SPECIAL_CASES = {
+         "License File": "/third_party/swiftshader/LICENSE.txt",
+     },
+ }
++(PRUNE_DIRS, ADDITIONAL_PATHS) = AddBraveCredits(PRUNE_PATHS, SPECIAL_CASES, PRUNE_DIRS, ADDITIONAL_PATHS)
+ 
+ # Special value for 'License File' field used to indicate that the license file
+ # should not be used in about:credits.
+@@ -475,7 +477,8 @@ def FindThirdPartyDirs(prune_paths, root):
+             if skip in dirs:
+                 dirs.remove(skip)
+ 
+-        if os.path.basename(path) == 'third_party':
++        if (os.path.basename(path) == 'third_party' or
++            os.path.basename(path) in BRAVE_THIRD_PARTY_DIRS):
+             # Add all subdirectories that are not marked for skipping.
+             for dir in dirs:
+                 dirpath = os.path.join(path, dir)
