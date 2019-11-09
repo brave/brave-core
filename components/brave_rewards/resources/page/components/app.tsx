@@ -41,6 +41,7 @@ export class App extends React.Component<Props, State> {
         this.props.actions.onAdsSettingSave('adsEnabledMigrated', adsEnabled)
       }
     }
+    this.props.actions.onlyAnonWallet()
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {
@@ -75,7 +76,8 @@ export class App extends React.Component<Props, State> {
   }
 
   render () {
-    const { walletCreated, walletCreateFailed } = this.props.rewardsData
+    const { walletCreated, walletCreateFailed, ui } = this.props.rewardsData
+    const { onlyAnonWallet } = ui
 
     let props: {onReTry?: () => void} = {}
 
@@ -91,6 +93,7 @@ export class App extends React.Component<Props, State> {
           !walletCreated
           ? <WelcomePage
             onTOSClick={this.openTOS}
+            onlyAnonWallet={onlyAnonWallet}
             onPrivacyClick={this.openPrivacyPolicy}
             optInAction={this.onCreateWalletClicked}
             creating={this.state.creating}

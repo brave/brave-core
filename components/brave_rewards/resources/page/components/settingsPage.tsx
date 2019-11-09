@@ -65,7 +65,6 @@ class SettingsPage extends React.Component<Props, State> {
       this.actions.onSettingSave('firstLoad', false)
     }
 
-    this.actions.onlyAnonWallet()
     this.actions.getWalletProperties()
     this.actions.getBalance()
     this.balanceTimerId = setInterval(() => {
