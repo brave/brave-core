@@ -353,6 +353,7 @@
       <message name="IDS_BRAVE_UI_AMOUNT" desc="">Amount</message>
       <message name="IDS_BRAVE_UI_BACKUP" desc="">Backup</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_DESC" desc="">Get paid to view relevant ads that respect your privacy.</message>
+      <message name="IDS_BRAVE_UI_BRAVE_ADS_DESC_POINTS" desc="">Collect points when you view relevant ads that respect your privacy.</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_LAUNCH_MSG" desc="">Now you can earn by viewing ads.</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_LAUNCH_TITLE" desc="">Brave Ads has arrived!</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_TITLE" desc="">Ads</message>
