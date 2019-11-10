@@ -657,6 +657,23 @@
         ]
       },
       {
+        "name": "getAdsSupported",
+        "type": "function",
+        "description": "Gets whether ads is supported in the user's region",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "supported",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "getAdsEstimatedEarnings",
         "type": "function",
         "description": "Gets estimated ads earnings for the current month",
