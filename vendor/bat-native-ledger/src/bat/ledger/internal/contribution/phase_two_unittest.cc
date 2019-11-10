@@ -102,4 +102,27 @@ TEST_F(PhaseTwoTest, AssignPrepareBallotsRespectsViewingID) {
   ASSERT_TRUE(ballots[1].prepareBallot_.empty());
 }
 
+// Surveyor IDs may be reused between transactions. Ensure that proofs for
+// ballots for one viewing ID will not be assigned to ballots for another
+// viewing ID, even if they share a surveyor ID.
+TEST_F(PhaseTwoTest, AssignProofsRespectsViewingID) {
+  const std::vector<std::string> proofs = { "proof 1", "proof 2" };
+  const std::string shared_surveyor_id =
+      "Ad5pNzrwhWokTOR8/hC83LWJfEy8aY7mFwPQWe6CpRF";
+
+  braveledger_bat_helper::Ballots ballots(2);
+  ballots[0].viewingId_ = "00000000-0000-0000-0000-000000000000";
+  ballots[0].surveyorId_ = shared_surveyor_id;
+  ballots[1].viewingId_ = "ffffffff-ffff-ffff-ffff-ffffffffffff";
+  ballots[1].surveyorId_ = shared_surveyor_id;
+
+  braveledger_bat_helper::BatchProofs batch_proofs(2);
+  batch_proofs[0].ballot_ = ballots[0];
+  batch_proofs[1].ballot_ = ballots[1];
+
+  PhaseTwo::AssignProofs(batch_proofs, proofs, &ballots);
+  ASSERT_EQ(ballots[0].proofBallot_, proofs[0]);
+  ASSERT_EQ(ballots[1].proofBallot_, proofs[1]);
+}
+
 }  // namespace braveledger_contribution
