@@ -64,6 +64,8 @@ source_set("ui") {
       "webui/brave_settings_ui.h",
       "webui/navigation_bar_data_provider.cc",
       "webui/navigation_bar_data_provider.h",
+      "webui/settings/brave_about_handler.cc",
+      "webui/settings/brave_about_handler.h",
       "webui/settings/brave_privacy_handler.cc",
       "webui/settings/brave_privacy_handler.h",
       "webui/settings/default_brave_shields_handler.cc",
@@ -182,7 +184,10 @@ source_set("ui") {
   }
 
   if (!is_android) {
-    deps += [ "//brave/app:brave_generated_resources_grit" ]
+    deps += [
+      "//brave/app:brave_generated_resources_grit",
+      "//brave/browser:version_info",
+    ]
   }
 
   if (enable_extensions && toolkit_views) {
