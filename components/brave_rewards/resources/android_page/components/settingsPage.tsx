@@ -7,7 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import Grant from './grant'
+import Promotion from './promotion'
 import AdsBox from './adsBox'
 import ContributeBox from './contributeBox'
 import TipBox from './tipsBox'
@@ -124,23 +124,23 @@ class SettingsPage extends React.Component<Props, State> {
     })
   }
 
-  getGrantClaims = () => {
-    const { grants, ui } = this.props.rewardsData
+  getPromotionsClaim = () => {
+    const { promotions, ui } = this.props.rewardsData
 
-    if (!grants) {
+    if (!promotions) {
       return null
     }
 
     return (
       <>
-        {grants.map((grant?: Rewards.Grant, index?: number) => {
-          if (!grant || !grant.promotionId) {
+        {promotions.map((promotion?: Rewards.Promotion, index?: number) => {
+          if (!promotion || !promotion.promotionId) {
             return null
           }
 
           return (
             <div key={`grant-${index}`}>
-              <Grant grant={grant} onlyAnonWallet={ui.onlyAnonWallet} />
+              <Promotion promotion={promotion} onlyAnonWallet={ui.onlyAnonWallet} />
             </div>
           )
         })}
@@ -181,7 +181,7 @@ class SettingsPage extends React.Component<Props, State> {
         }
         {
           enabledMain
-          ? this.getGrantClaims()
+          ? this.getPromotionsClaim()
           : null
         }
         <WalletInfoHeader
