@@ -362,7 +362,7 @@ void BraveRewardsNativeWorker::GetGrant(JNIEnv* env,
     const base::android::JavaParamRef<jobject>& obj,
     const base::android::JavaParamRef<jstring>& promotionId) {
   if (brave_rewards_service_) {
-    // TODO need to call new API for promotion FetchPromotion
+    // TODO(anyone): need to call new API for promotion FetchPromotion
 //      brave_rewards_service_->GetGrantViaSafetynetCheck(
 //        base::android::ConvertJavaStringToUTF8(env, promotionId));
   }
@@ -597,9 +597,10 @@ void BraveRewardsNativeWorker::OnGrant(
   // We receive notification about deletion
 }
 
-void BraveRewardsNativeWorker::OnGrantFinish(
-    brave_rewards::RewardsService* rewards_service, unsigned int result,
-    brave_rewards::Grant grant) {
+void BraveRewardsNativeWorker::OnPromotionFinished(
+    brave_rewards::RewardsService* rewards_service,
+    const uint32_t result,
+    brave_rewards::Promotion promotion) {
   JNIEnv* env = base::android::AttachCurrentThread();
 
   Java_BraveRewardsNativeWorker_OnGrantFinish(env,

@@ -46,15 +46,15 @@ class RewardsNotificationServiceImpl
   bool Exists(RewardsNotificationID id) const override;
 
  private:
-  bool IsUGP(const std::string& promotion_type);
-  std::string GetPromotionIdPrefix(const std::string& promotion_type);
+  bool IsAds(const uint32_t promotion_type);
+  std::string GetPromotionIdPrefix(const uint32_t promotion_type);
 
   // RewardsServiceObserver impl
   void OnFetchPromotions(
       RewardsService* rewards_service,
       const uint32_t result,
-      Promotion promotion) override;
-  void OnGrantFinish(
+      const std::vector<Promotion>& list) override;
+  void OnPromotionFinished(
       RewardsService* rewards_service,
       const uint32_t result,
       Promotion promotion) override;

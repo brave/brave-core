@@ -158,11 +158,16 @@ class PageWallet extends React.Component<Props, State> {
       return []
     }
 
-    return promotions.map((promotion: Rewards.Promotion) => {
+    let claimedPromotions = promotions.filter((promotion: Rewards.Promotion) => {
+      return promotion.status === 4 // PromotionStatus::FINISHED
+    })
+
+    const typeUGP = 0
+    return claimedPromotions.map((promotion: Rewards.Promotion) => {
       return {
         amount: promotion.amount,
-        expiresAt: new Date(promotion.expiresAt * 1000).toLocaleDateString(),
-        type: promotion.type || 0
+        expiresAt: new Date(promotion.expiresAt).toLocaleDateString(),
+        type: promotion.type || typeUGP
       }
     })
   }

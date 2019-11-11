@@ -149,6 +149,8 @@ interface BatLedger {
   ExternalWalletAuthorization(string wallet_type, map<string, string> args) => (ledger.mojom.Result result, map<string, string> args);
 
   DisconnectWallet(string wallet_type) => (ledger.mojom.Result result);
+
+  GetAnonWalletStatus() => (ledger.mojom.Result result);
 };
 
 interface BatLedgerClient {

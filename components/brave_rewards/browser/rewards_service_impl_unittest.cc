@@ -29,13 +29,15 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
   MOCK_METHOD3(OnWalletProperties, void(RewardsService*,
       int,
       std::unique_ptr<brave_rewards::WalletProperties>));
-  MOCK_METHOD3(OnFetchPromotions,
-      void(RewardsService*, const uint32_t, brave_rewards::Promotion));
+  MOCK_METHOD3(OnFetchPromotions, void(RewardsService*,
+      const uint32_t,
+      const std::vector<brave_rewards::Promotion>& list));
   MOCK_METHOD3(OnRecoverWallet, void(RewardsService*,
                                      unsigned int,
                                      double));
-  MOCK_METHOD3(OnGrantFinish,
-      void(RewardsService*, const uint32_t, brave_rewards::Promotion));
+  MOCK_METHOD3(OnPromotionFinished, void(RewardsService*,
+      const uint32_t,
+      brave_rewards::Promotion));
   MOCK_METHOD1(OnContentSiteUpdated, void(RewardsService*));
   MOCK_METHOD5(OnReconcileComplete, void(RewardsService*,
                                          unsigned int,

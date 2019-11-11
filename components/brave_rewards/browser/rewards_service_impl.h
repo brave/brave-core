@@ -295,6 +295,8 @@ class RewardsServiceImpl : public RewardsService,
 
   bool OnlyAnonWallet() override;
 
+  void GetAnonWalletStatus(GetAnonWalletStatusCallback callback) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void StartMonthlyContributionForTest();
@@ -506,6 +508,10 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& nonce,
       bool result,
       const std::string& token);
+
+  void OnGetAnonWalletStatus(
+      GetAnonWalletStatusCallback callback,
+      const ledger::Result result);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;

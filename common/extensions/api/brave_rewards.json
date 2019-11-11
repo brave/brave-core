@@ -22,13 +22,42 @@
         ]
       },
       {
-        "name": "onPromotion",
+        "name": "onPromotions",
         "type": "function",
-        "description": "Fired when grant is received",
+        "description": "Fired when promotion list is received",
         "parameters": [
           {
-            "name": "properties",
-            "type": "any"
+            "name": "result",
+            "type": "integer"
+          },
+          {
+            "name": "promotions",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "promotionId": {
+                  "type": "string",
+                  "description": "promotion id"
+                },
+                "type": {
+                  "type": "integer",
+                  "description": "promotion type"
+                },
+                "status": {
+                  "type": "integer",
+                  "description": "promotion status"
+                },
+                "expiresAt": {
+                  "type": "integer",
+                  "description": "when promotion expires"
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "how much is this promotion worth"
+                }
+              }
+            }
           }
         ]
       },
@@ -322,6 +351,12 @@
             }
           }
         ]
+      },
+      {
+        "name": "onUnblindedTokensReady",
+        "type": "function",
+        "description": "Fired when we get unblinded tokens",
+        "parameters": []
       }
     ],
     "functions": [
@@ -583,18 +618,20 @@
               {
                 "name": "promotion",
                 "type": "object",
-                "optional": true,
                 "properties": {
                   "promotionId": {
                     "type": "string"
                   },
                   "expiresAt": {
+                    "optional": true,
                     "type": "integer"
                   },
                   "amount": {
+                    "optional": true,
                     "type": "number"
                   },
                   "type": {
+                    "optional": true,
                     "type": "integer"
                   }
                 }
@@ -1025,6 +1062,23 @@
               {
                 "name": "only",
                 "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getAnonWalletStatus",
+        "type": "function",
+        "description": "Gets wallet status fo anon wallet",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "result",
+                "type": "integer"
               }
             ]
           }

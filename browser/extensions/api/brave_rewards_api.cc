@@ -417,8 +417,8 @@ ExtensionFunction::ResponseAction BraveRewardsGetCurrentReportFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsFetchPromotionsFunction::~BraveRewardsFetchPromotionsFunction() {
-}
+BraveRewardsFetchPromotionsFunction::
+~BraveRewardsFetchPromotionsFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsFetchPromotionsFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
@@ -430,8 +430,8 @@ ExtensionFunction::ResponseAction BraveRewardsFetchPromotionsFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsClaimPromotionFunction::~BraveRewardsClaimPromotionFunction() {
-}
+BraveRewardsClaimPromotionFunction::
+~BraveRewardsClaimPromotionFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsClaimPromotionFunction::Run() {
   std::unique_ptr<brave_rewards::ClaimPromotion::Params> params(
@@ -469,8 +469,7 @@ void BraveRewardsClaimPromotionFunction::OnClaimPromotion(
 }
 
 BraveRewardsAttestPromotionFunction::
-~BraveRewardsAttestPromotionFunction() {
-}
+~BraveRewardsAttestPromotionFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsAttestPromotionFunction::Run() {
   std::unique_ptr<brave_rewards::AttestPromotion::Params> params(
@@ -485,20 +484,24 @@ ExtensionFunction::ResponseAction BraveRewardsAttestPromotionFunction::Run() {
   rewards_service->AttestPromotion(params->promotion_id, params->solution,
       base::BindOnce(
         &BraveRewardsAttestPromotionFunction::OnAttestPromotion,
-        this));
+        this,
+        params->promotion_id));
   return RespondLater();
 }
 
 void BraveRewardsAttestPromotionFunction::OnAttestPromotion(
+    const std::string& promotion_id,
     const int32_t result,
     std::unique_ptr<::brave_rewards::Promotion> promotion) {
+  auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+  data->SetStringKey("promotionId", promotion_id);
+
   if (!promotion) {
-    Respond(OneArgument(std::make_unique<base::Value>(result)));
+    Respond(
+        TwoArguments(std::make_unique<base::Value>(result), std::move(data)));
     return;
   }
 
-  auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-  data->SetStringKey("promotionId", promotion->promotion_id);
   data->SetIntKey("expiresAt", promotion->expires_at);
   data->SetDoubleKey("amount", promotion->amount);
   data->SetIntKey("type", promotion->type);
@@ -1130,6 +1133,30 @@ BraveRewardsGetAdsSupportedFunction::Run() {
   const bool supported = ads_service_->IsSupportedLocale();
   return RespondNow(
       OneArgument(std::make_unique<base::Value>(supported)));
+}
+
+BraveRewardsGetAnonWalletStatusFunction::
+~BraveRewardsGetAnonWalletStatusFunction() = default;
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetAnonWalletStatusFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+    RewardsServiceFactory::GetForProfile(profile);
+
+  if (!rewards_service) {
+    return RespondNow(Error("Rewards service is not initialized"));
+  }
+
+  rewards_service->GetAnonWalletStatus(base::Bind(
+        &BraveRewardsGetAnonWalletStatusFunction::OnGetAnonWalletStatus,
+        this));
+  return RespondLater();
+}
+
+void BraveRewardsGetAnonWalletStatusFunction::OnGetAnonWalletStatus(
+    const uint32_t result) {
+  Respond(OneArgument(std::make_unique<base::Value>(static_cast<int>(result))));
 }
 
 }  // namespace api

@@ -43,7 +43,7 @@ export default class RewardsNotification extends React.PureComponent<Notificatio
           </Title>
           <SubTitle>
             {
-              this.props.promotion.type === 'ads'
+              this.props.promotion.type === 1
               ? getLocale('rewardsWidgetNotificationTextAds')
               : getLocale('rewardsWidgetNotificationTextUGP')
             }

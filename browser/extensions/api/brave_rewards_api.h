@@ -173,6 +173,7 @@ class BraveRewardsAttestPromotionFunction : public ExtensionFunction {
 
  private:
   void OnAttestPromotion(
+      const std::string& promotion_id,
       const int32_t result,
       std::unique_ptr<::brave_rewards::Promotion> promotion);
 };
@@ -442,6 +443,20 @@ class BraveRewardsGetAdsSupportedFunction : public ExtensionFunction {
   ~BraveRewardsGetAdsSupportedFunction() override;
 
   ResponseAction Run() override;
+};
+
+class BraveRewardsGetAnonWalletStatusFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getAnonWalletStatus", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetAnonWalletStatusFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnGetAnonWalletStatus(const uint32_t result);
 };
 
 }  // namespace api

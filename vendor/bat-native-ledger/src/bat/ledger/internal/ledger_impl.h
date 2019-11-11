@@ -592,6 +592,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void UnblindedTokensReady();
 
+  void GetAnonWalletStatus(ledger::ResultCallback callback) override;
+
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;

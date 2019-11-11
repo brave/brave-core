@@ -333,6 +333,8 @@ class LEDGER_EXPORT Ledger {
       ledger::DisconnectWalletCallback callback) = 0;
 
   virtual void GetAllPromotions(ledger::GetAllPromotionsCallback callback) = 0;
+
+  virtual void GetAnonWalletStatus(ledger::ResultCallback callback) = 0;
 };
 
 }  // namespace ledger

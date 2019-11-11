@@ -1541,4 +1541,8 @@ void LedgerImpl::UnblindedTokensReady() {
   return ledger_client_->UnblindedTokensReady();
 }
 
+void LedgerImpl::GetAnonWalletStatus(ledger::ResultCallback callback) {
+  bat_wallet_->GetAnonWalletStatus(callback);
+}
+
 }  // namespace bat_ledger

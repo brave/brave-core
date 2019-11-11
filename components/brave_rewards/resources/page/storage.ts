@@ -58,7 +58,6 @@ export const defaultState: Rewards.State = {
   adsHistory: [],
   pendingContributionTotal: 0,
   promotions: [],
-  currentPromotion: undefined,
   inlineTip: {
     twitter: true,
     reddit: true,

@@ -33,25 +33,32 @@ Create::~Create() {
 void Create::Start(const std::string& safetynet_token,
       ledger::CreateWalletCallback callback) {
   if (!safetynet_token.empty()) {
-    // TODO refactor as we don't need to do this
-//    std::string safetynet_prefix = PREFIX_V5;
-//#if defined (OS_ANDROID) && defined(ARCH_CPU_X86_FAMILY)\
-//    && defined(OFFICIAL_BUILD)
-//    safetynet_prefix = PREFIX_V3;
-//#endif
-//    std::vector<std::string> headers;
-//    headers.push_back("safetynet-token:" + safetynet_token);
-//    auto safetynet_callback = std::bind(&Create::StartSafetyNetCallback,
-//                                    this,
-//                                    _1,
-//                                    _2,
-//                                    _3,
-//                                    std::move(callback));
-//    ledger_->LoadURL(braveledger_request_util::BuildUrl(
-//          (std::string)GET_SET_PROMOTION, safetynet_prefix),
-//        headers, "", "", ledger::UrlMethod::GET, safetynet_callback);
-//    return;
+    std::string safetynet_prefix = PREFIX_V5;
+#if defined (OS_ANDROID) && defined(ARCH_CPU_X86_FAMILY)\
+    && defined(OFFICIAL_BUILD)
+    safetynet_prefix = PREFIX_V3;
+#endif
+    std::vector<std::string> headers;
+    headers.push_back("safetynet-token:" + safetynet_token);
+    auto safetynet_callback = std::bind(&Create::StartSafetyNetCallback,
+                                    this,
+                                    _1,
+                                    _2,
+                                    _3,
+                                    std::move(callback));
+    const std::string url = braveledger_request_util::BuildUrl(
+        "/grants",
+        safetynet_prefix);
+    ledger_->LoadURL(
+        url,
+        headers,
+        "",
+        "",
+        ledger::UrlMethod::GET,
+        safetynet_callback);
+    return;
   }
+
   auto on_req = std::bind(&Create::RequestCredentialsCallback,
                             this,
                             _1,

@@ -229,7 +229,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     const { promotions, onDismissNotification } = this.props
 
     if (!promotions) {
-      return null;
+      return null
     }
 
     return (

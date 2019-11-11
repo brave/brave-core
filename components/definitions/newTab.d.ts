@@ -119,15 +119,12 @@ declare namespace NewTab {
   }
 
   export interface PromotionResponse {
-    status: number
-    promotionId: string
-    amount: number
-    expiresAt: number
-    type: PromotionTypes
+    result: number
+    promotions: Promotion[]
   }
 
   export interface Promotion {
-    type: string
+    type: PromotionTypes
     promotionId: string
   }
 

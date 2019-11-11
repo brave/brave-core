@@ -295,10 +295,6 @@
     "message": "Grant Expiration Date",
     "description": "Grant expiry label"
   },
-  "grantAlreadyClaimedText": {
-    "message": "Sorry, it appears that this grant has already been claimed.",
-    "description": "Description of the error when grant is already claimed."
-  },
   "grantGeneralErrorButton": {
     "message": "OK",
     "description": "Button text for clearing the error."
@@ -310,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "Oops, something is wrong. Please try again later.",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "OK",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "Sorry, it appears that this grant has already expired.",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "This grant is no longer available.",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "Refresh Status",

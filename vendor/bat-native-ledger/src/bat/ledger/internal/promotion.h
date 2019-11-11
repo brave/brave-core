@@ -6,9 +6,10 @@
 #ifndef BRAVELEDGER_PROMOTION_H_
 #define BRAVELEDGER_PROMOTION_H_
 
+#include <map>
+#include <memory>
 #include <string>
 #include <vector>
-#include <map>
 
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/mojom_structs.h"
@@ -97,8 +98,13 @@ class Promotion {
       const std::string promotion_string,
       ledger::ResultCallback callback);
 
-  void UnBlindTokens(
+  bool UnBlindTokens(
       ledger::PromotionPtr promotion,
+      std::vector<std::string>* unblinded_encoded_tokens);
+
+  void FinishPromotion(
+      ledger::PromotionPtr promotion,
+      const std::vector<std::string>& unblinded_encoded_tokens,
       ledger::ResultCallback callback);
 
   std::unique_ptr<braveledger_attestation::AttestationImpl> attestation_;

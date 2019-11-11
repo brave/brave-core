@@ -54,8 +54,9 @@ export const includeInAutoContribution = (publisherKey: string, exclude: boolean
 
 export const fetchPromotions = () => action(types.FETCH_PROMOTIONS)
 
-export const onPromotion = (properties: RewardsExtension.PromotionResponse) => action(types.ON_PROMOTION, {
-  properties
+export const onPromotions = (result: number, promotions: RewardsExtension.Promotion[]) => action(types.ON_PROMOTIONS, {
+  result,
+  promotions
 })
 export const promotionFinished = (result: number, promotion: RewardsExtension.Promotion) => action(types.ON_PROMOTION_FINISH, {
   result,
@@ -66,9 +67,13 @@ export const onClaimPromotion = (properties: RewardsExtension.Captcha) => action
   properties
 })
 
-export const onResetGrant = () => action(types.ON_GRANT_RESET)
+export const resetPromotion = (promotionId: string) => action(types.RESET_PROMOTION, {
+  promotionId
+})
 
-export const onDeleteGrant = () => action(types.ON_GRANT_DELETE)
+export const deletePromotion = (promotionId: string) => action(types.DELETE_PROMOTION, {
+  promotionId
+})
 
 export const OnPendingContributionsTotal = (amount: number) => action(types.ON_PENDING_CONTRIBUTIONS_TOTAL, {
   amount
@@ -134,4 +139,8 @@ export const onBalance = (balance: RewardsExtension.Balance) => action(types.ON_
 
 export const onExternalWallet = (wallet: RewardsExtension.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
   wallet
+})
+
+export const onAnonWalletStatus = (result: RewardsExtension.Result) => action(types.ON_ANON_WALLET_STATUS, {
+  result
 })

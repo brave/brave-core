@@ -14,10 +14,10 @@ export const enum types {
   DELETE_NOTIFICATION = '@@rewards_panel/DELETE_NOTIFICATION',
   INCLUDE_IN_AUTO_CONTRIBUTION = '@@rewards_panel/INCLUDE_IN_AUTO_CONTRIBUTION',
   FETCH_PROMOTIONS = '@@rewards_panel/FETCH_PROMOTIONS',
-  ON_PROMOTION = '@@rewards_panel/ON_PROMOTION',
+  ON_PROMOTIONS = '@@rewards_panel/ON_PROMOTIONS',
   ON_CLAIM_PROMOTION = '@@rewards_panel/ON_CLAIM_PROMOTION',
-  ON_GRANT_RESET = '@@rewards_panel/ON_GRANT_RESET',
-  ON_GRANT_DELETE = '@@rewards_panel/ON_GRANT_DELETE',
+  RESET_PROMOTION = '@@rewards_panel/RESET_PROMOTION',
+  DELETE_PROMOTION = '@@rewards_panel/DELETE_PROMOTION',
   ON_PROMOTION_FINISH = '@@rewards_panel/ON_PROMOTION_FINISH',
   ON_PENDING_CONTRIBUTIONS_TOTAL = '@@rewards_panel/ON_PENDING_CONTRIBUTIONS_TOTAL',
   ON_ENABLED_MAIN = '@@rewards_panel/ON_ENABLED_MAIN',
@@ -33,7 +33,8 @@ export const enum types {
   ON_ALL_NOTIFICATIONS = '@@rewards_panel/ON_ALL_NOTIFICATIONS',
   ON_INIT = '@@rewards_panel/ON_INIT',
   ON_BALANCE = '@@rewards_panel/ON_BALANCE',
-  ON_EXTERNAL_WALLET = '@@rewards_panel/ON_EXTERNAL_WALLET'
+  ON_EXTERNAL_WALLET = '@@rewards_panel/ON_EXTERNAL_WALLET',
+  ON_ANON_WALLET_STATUS = '@@rewards_panel/ON_ANON_WALLET_STATUS'
 }
 
 // Note: This declaration must match the RewardsNotificationType enum in

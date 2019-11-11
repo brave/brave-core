@@ -29,7 +29,7 @@ export const onWalletProperties = (properties: {status: number, wallet: Rewards.
 
 export const fetchPromotions = () => action(types.FETCH_PROMOTIONS)
 
-export const onPromotion = (properties: Rewards.PromotionResponse) => action(types.ON_PROMOTION, {
+export const onPromotions = (properties: Rewards.PromotionResponse) => action(types.ON_PROMOTIONS, {
   properties
 })
 
@@ -41,7 +41,8 @@ export const onClaimPromotion = (properties: Rewards.Captcha) => action(types.ON
   properties
 })
 
-export const attestPromotion = (x: number, y: number) => action(types.ATTEST_PROMOTION, {
+export const attestPromotion = (promotionId: string, x: number, y: number) => action(types.ATTEST_PROMOTION, {
+  promotionId,
   x,
   y
 })
@@ -50,9 +51,13 @@ export const onPromotionFinish = (properties: Rewards.PromotionFinish) => action
   properties
 })
 
-export const onResetGrant = () => action(types.ON_GRANT_RESET)
+export const resetPromotion = (promotionId: string) => action(types.RESET_PROMOTION, {
+  promotionId
+})
 
-export const onDeleteGrant = () => action(types.ON_GRANT_DELETE)
+export const deletePromotion = (promotionId: string) => action(types.DELETE_PROMOTION, {
+  promotionId
+})
 
 export const getWalletPassphrase = () => action(types.GET_WALLLET_PASSPHRASE)
 

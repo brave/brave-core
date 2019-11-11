@@ -6,6 +6,7 @@
 #ifndef BRAVELEDGER_ATTESTATION_ATTESTATION_ANDROID_H_
 #define BRAVELEDGER_ATTESTATION_ATTESTATION_ANDROID_H_
 
+#include <map>
 #include <string>
 
 #include "bat/ledger/internal/attestation/attestation.h"

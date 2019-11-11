@@ -446,4 +446,23 @@ void Wallet::OnTransferAnonToExternalWalletAddress(
       transfer_callback);
 }
 
+void Wallet::GetAnonWalletStatus(ledger::ResultCallback callback) {
+  const std::string payment_id = ledger_->GetPaymentId();
+  const std::string passphrase = GetWalletPassphrase();
+  const uint64_t stamp = ledger_->GetBootStamp();
+  const std::string persona_id = ledger_->GetPersonaId();
+
+  if (!payment_id.empty() && stamp != 0 && !persona_id.empty()) {
+    callback(ledger::Result::WALLET_CREATED);
+    return;
+  }
+
+  if (payment_id.empty() || passphrase.empty()) {
+    callback(ledger::Result::CORRUPTED_WALLET);
+    return;
+  }
+
+  callback(ledger::Result::LEDGER_OK);
+}
+
 }  // namespace braveledger_wallet

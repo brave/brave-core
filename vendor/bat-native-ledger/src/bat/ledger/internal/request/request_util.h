@@ -7,6 +7,7 @@
 #define BRAVELEDGER_COMMON_REQUEST_UTIL_H_
 
 #include <string>
+#include <vector>
 
 namespace braveledger_request_util {
 

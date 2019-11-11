@@ -207,6 +207,8 @@ class BatLedgerImpl : public mojom::BatLedger,
     const std::string& wallet_type,
     DisconnectWalletCallback callback) override;
 
+  void GetAnonWalletStatus(GetAnonWalletStatusCallback callback) override;
+
  private:
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;
@@ -367,6 +369,10 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnDisconnectWallet(
     CallbackHolder<DisconnectWalletCallback>* holder,
     ledger::Result result);
+
+  static void OnGetAnonWalletStatus(
+      CallbackHolder<GetAnonWalletStatusCallback>* holder,
+      const ledger::Result result);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

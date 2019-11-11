@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_rewards/browser/database/database_promotion.h"
 
-#include <string>
 #include <utility>
 
 #include "base/bind.h"
@@ -176,7 +175,7 @@ ledger::PromotionMap DatabasePromotion::GetAllRecords(sql::Database* db) {
 
   ledger::PromotionMap map;
 
-  while(statement.Step()) {
+  while (statement.Step()) {
     auto info = ledger::Promotion::New();
     info->id = statement.ColumnString(0);
     info->version = statement.ColumnInt(1);

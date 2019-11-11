@@ -246,16 +246,30 @@ class Contribution {
       double* fee,
       const double balance);
 
+  bool ProcessReconcileUnblindedTokens(
+      ledger::BalancePtr info,
+      ledger::RewardsType type,
+      double* fee,
+      braveledger_bat_helper::Directions directions,
+      braveledger_bat_helper::Directions* leftovers);
+
+  bool ProcessReconcileAnonize(
+      ledger::BalancePtr info,
+      ledger::RewardsType type,
+      double* fee,
+      braveledger_bat_helper::Directions directions,
+      braveledger_bat_helper::Directions* leftovers);
+
   void ProcessReconcile(
-    ledger::ContributionQueuePtr contribution,
-    ledger::BalancePtr info);
+      ledger::ContributionQueuePtr contribution,
+      ledger::BalancePtr info);
 
   void DeleteContributionQueue(ledger::ContributionQueuePtr contribution);
 
   void AdjustTipsAmounts(
-    braveledger_bat_helper::Directions directions,
-    braveledger_bat_helper::Directions* wallet_directions,
-    braveledger_bat_helper::Directions* anon_directions,
+    braveledger_bat_helper::Directions original_directions,
+    braveledger_bat_helper::Directions* primary_directions,
+    braveledger_bat_helper::Directions* rest_directions,
     double reduce_fee_for);
 
   void OnExternalWallets(

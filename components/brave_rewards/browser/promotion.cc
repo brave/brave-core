@@ -16,6 +16,7 @@ Promotion::Promotion(const Promotion &properties) {
   promotion_id = properties.promotion_id;
   expires_at = properties.expires_at;
   type = properties.type;
+  status = properties.status;
 }
 
 }  // namespace brave_rewards

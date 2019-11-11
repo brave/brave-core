@@ -4,7 +4,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <utility>
-#include <vector>
 
 #include "base/base64.h"
 #include "base/json/json_writer.h"
@@ -34,7 +33,7 @@ Unblinded::~Unblinded() {
 }
 
 std::string ConvertTypeToString(const ledger::RewardsType type) {
-  switch(static_cast<int>(type)) {
+  switch (static_cast<int>(type)) {
     case static_cast<int>(ledger::RewardsType::AUTO_CONTRIBUTE): {
       return "auto-contribute";
     }
@@ -176,7 +175,7 @@ bool Unblinded::GetStatisticalVotingWinner(
       current_value = winners->at(item.publisher_key_);
       winners->at(item.publisher_key_) = current_value + 1;
     } else {
-      winners->emplace(item.publisher_key_,1);
+      winners->emplace(item.publisher_key_, 1);
     }
 
     return true;
@@ -210,7 +209,7 @@ void Unblinded::PrepareAutoContribution(
   GetStatisticalVotingWinners(list.size(), reconcile.directions_, &winners);
 
   uint32_t current_position = 0;
-  for (auto & winner: winners) {
+  for (auto & winner : winners) {
     if (winner.second == 0) {
       continue;
     }
