@@ -99,6 +99,9 @@ def get_app_info(appinfo, args):
     version_values = get_upload_version().split('.')
     if int(version_values[0]) >= 1:
         adjusted_minor = int(version_values[1]) + (100 * int(version_values[0]))
+    else:
+        # Fall back to returning the actual minor value
+        adjusted_minor = int(version_values[1])
 
     appinfo['appguid'] = get_appguid(release_channel(), appinfo['platform'])
     appinfo['channel'] = release_channel()
