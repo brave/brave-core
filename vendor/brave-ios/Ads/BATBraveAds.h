@@ -103,8 +103,9 @@ NS_SWIFT_NAME(BraveAds)
 
 #pragma mark - Reporting
 
-/// Report that a page has loaded in the current browser tab, and the HTML is available for analysis
-- (void)reportLoadedPageWithURL:(NSURL *)url html:(NSString *)html;
+/// Report that a page has loaded in the current browser tab, and the inner text
+/// within the page loaded for classification
+- (void)reportLoadedPageWithURL:(NSURL *)url innerText:(NSString *)text;
 
 /// Report that media has started on a tab with a given id
 - (void)reportMediaStartedWithTabId:(NSInteger)tabId NS_SWIFT_NAME(reportMediaStarted(tabId:));

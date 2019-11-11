@@ -147,11 +147,11 @@
                      faviconURL:(nullable NSURL *)faviconURL
                           tabId:(UInt32)tabId
                            html:(NSString *)html
-           shouldClassifyForAds:(BOOL)shouldClassify
+                   adsInnerText:(nullable NSString *)adsInnerText
 {
   [self onTabRetrieved:tabId url:url faviconURL:faviconURL html:html];
-  if (shouldClassify) {
-    [self.ads reportLoadedPageWithURL:url html:html];
+  if (adsInnerText != nil) {
+    [self.ads reportLoadedPageWithURL:url innerText:adsInnerText];
   }
   [self.ledger reportLoadedPageWithURL:url tabId:tabId];
 }
