@@ -122,7 +122,7 @@
 <translation id="3021678814754966447">&amp;View Frame Source</translation>
 <translation id="9027459031423301635">Open Link in New &amp;Tab</translation>
 <translation id="1769104665586091481">Open Link in New &amp;Window</translation>
-<translation id="1432267168815937878">Open link in &amp;private window</translation>
+<translation id="1432267168815937878">Open link in &amp;Private window</translation>
 <translation id="2142328300403846845">Open Link as</translation>
 <translation id="6892812721183419409">Open Link as <ph name="USER"/></translation>
 <translation id="2006638907958895361">Open Link in <ph name="APP"/></translation>
@@ -364,7 +364,7 @@
 <translation id="2902312830803030883">More actions</translation>
 <translation id="495170559598752135">Actions</translation>
 <translation id="3612673635130633812">Downloaded by &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
-<translation id="6395403722585816044">Downloaded in private</translation>
+<translation id="6395403722585816044">Downloaded in Private</translation>
 <translation id="4551763574344810652">Press <ph name="MODIFIER_KEY_DESCRIPTION"/> to undo</translation>
 <translation id="2079545284768500474">Undo</translation>
 <translation id="2490481887078769936">Removed '<ph name="FILE_NAME"/>' from list</translation>
@@ -785,11 +785,11 @@
 <translation id="5963453369025043595"><ph name="NUM_HANDLES"/> (<ph name="NUM_KILOBYTES_LIVE"/> peak)</translation>
 <translation id="8004582292198964060">Browser</translation>
 <translation id="3678156199662914018">Extension: <ph name="EXTENSION_NAME"/></translation>
-<translation id="5053701565089446556">Private extension: <ph name="EXTENSION_NAME"/></translation>
+<translation id="5053701565089446556">Private Extension: <ph name="EXTENSION_NAME"/></translation>
 <translation id="6508261954199872201">App: <ph name="APP_NAME"/></translation>
-<translation id="611296870688433505">Private app: <ph name="APP_NAME"/></translation>
+<translation id="611296870688433505">Private App: <ph name="APP_NAME"/></translation>
 <translation id="7629827748548208700">Tab: <ph name="TAB_NAME"/></translation>
-<translation id="9048137919253433011">Private tab: <ph name="TAB_NAME"/></translation>
+<translation id="9048137919253433011">Private Tab: <ph name="TAB_NAME"/></translation>
 <translation id="6900284862687837908">Background App: <ph name="BACKGROUND_APP_URL"/></translation>
 <translation id="7427348830195639090">Background Page: <ph name="BACKGROUND_PAGE_URL"/></translation>
 <translation id="6798954102094737107">Plug-in: <ph name="PLUGIN_NAME"/></translation>
@@ -804,7 +804,7 @@
 <translation id="2282146716419988068">GPU Process</translation>
 <translation id="2087822576218954668">Print: <ph name="PRINT_NAME"/></translation>
 <translation id="8859174528519900719">Subframe: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="1799432502220762862">Private subframe: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="1799432502220762862">Private Subframe: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="2348176352564285430">App: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="786073089922909430">Service: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="7663719505383602579">Receiver: <ph name="ARC_PROCESS_NAME"/></translation>
@@ -1368,7 +1368,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="192494336144674234">Open with</translation>
 <translation id="9053893665344928494">Remember my choice</translation>
 <translation id="5340857474604400806">Stay in Brave</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (private)</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Private)</translation>
 <translation id="1572139610531470719"><ph name="WINDOW_TITLE"/> (Guest)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Update is available)</translation>
@@ -2472,12 +2472,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7235737137505019098">Your security key does not have enough space for any more accounts.</translation>
 <translation id="3984431586879874039">Allow this site to see your security key?</translation>
 <translation id="8948939328578167195"><ph name="WEBSITE"/> wants to see the make and model of your security key</translation>
-<translation id="7618452966706304788">Do you want to use Touch ID with <ph name="APP_NAME"/> in private mode?</translation>
-<translation id="3098826269712097986">Sign-in data will be stored in Brave after you exit private mode. This will let you use Touch ID with this website again later.</translation>
+<translation id="7618452966706304788">Do you want to use Touch ID with <ph name="APP_NAME"/> in Private mode?</translation>
+<translation id="3098826269712097986">Sign-in data will be stored in Brave after you exit Private mode. This will let you use Touch ID with this website again later.</translation>
 <translation id="2172784515318616985">Continue</translation>
 <translation id="5186185447130319458">Private</translation>
 <translation id="7643842463591647490">{0,plural, =1{# open window}other{# open windows}}</translation>
-<translation id="2579188629646253712">Exit private</translation>
+<translation id="2579188629646253712">Exit Private</translation>
 <translation id="479219453908726046">Take survey</translation>
 <translation id="7581273696622423628">Take survey</translation>
 <translation id="4406504596603350105">Your feedback is important to us.</translation>
@@ -2516,12 +2516,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Open All}=1{&amp;Open Bookmark}other{&amp;Open All (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Open All in &amp;New Window}=1{Open in &amp;New Window}other{Open All (#) in &amp;New Window}}</translation>
 <translation id="2633634757060186848">{COUNT, plural,
-          =0 {Open all in &amp;private window}
-          =1 {Open in &amp;private window}
-          other {Open all (#) in &amp;private window}}</translation>
+          =0 {Open all in &amp;Private window}
+          =1 {Open in &amp;Private window}
+          other {Open all (#) in &amp;Private window}}</translation>
 <translation id="9024127637873500333">&amp;Open in New Tab</translation>
 <translation id="665061930738760572">Open in &amp;New Window</translation>
-<translation id="1985165269306590797">Open in &amp;private window</translation>
+<translation id="1985165269306590797">Open in &amp;Private window</translation>
 <translation id="8824701697284169214">Add Pa&amp;ge...</translation>
 <translation id="2489918096470125693">Add &amp;Folder...</translation>
 <translation id="421182450098841253">&amp;Show Bookmarks Bar</translation>
@@ -2655,12 +2655,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5958529069007801266">Supervised user</translation>
 <translation id="5720705177508910913">Current user</translation>
 <translation id="1850357845349976573">{0, plural,
-        =1 {private}
+        =1 {Private}
         other {# open private windows}
       }</translation>
 <translation id="37784332082579802">{0, plural,
-      =1 {private}
-      other {private (#)}
+      =1 {Private}
+      other {{Private (#)}
     }</translation>
 <translation id="5070556616376997776">This is a private window</translation>
 <translation id="2199298570273670671">Error</translation>
