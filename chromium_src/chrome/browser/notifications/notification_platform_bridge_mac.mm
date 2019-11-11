@@ -2,6 +2,8 @@
 
 #import <Foundation/Foundation.h>
 
+#include "base/mac/mac_util.h"
+
 @interface NotificationTimeoutMac : NSObject
 
 - (void)startTimer:(NSUserNotification *)notification;
@@ -61,6 +63,20 @@
 }
 
 @end
+
+#define IsAtLeastOS10_15 IsAtLeastOS10_15_ChromiumImpl
+#include "../../../../../chrome/browser/notifications/notification_platform_bridge_mac.mm"  // NOLINT
+#undef IsAtLeastOS10_15
+
+namespace base {
+namespace mac {
+
+bool IsAtLeastOS10_15() {
+  return false;
+}
+
+}  // namespace mac
+}  // namespace base
 
 static NotificationTimeoutMac*
     g_notification_platform_bridge_notification_timeout =
