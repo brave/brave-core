@@ -6,6 +6,8 @@
 #ifndef BRAVELEDGER_COMMON_SECURITY_HELPER_H_
 #define BRAVELEDGER_COMMON_SECURITY_HELPER_H_
 
+#include <map>
+#include <string>
 #include <vector>
 
 #include "wrapper.hpp"

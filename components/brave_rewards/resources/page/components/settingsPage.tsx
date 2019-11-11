@@ -148,9 +148,14 @@ class SettingsPage extends React.Component<Props, State> {
       return null
     }
 
+    let remainingPromotions = promotions.filter((promotion: Rewards.Promotion) => {
+      return promotion.status !== 4 || // PromotionStatus::FINISHED
+        (promotion.status === 4 && promotion.captchaStatus === 'finished')
+    })
+
     return (
       <div style={{ width: '100%' }}>
-        {promotions.map((promotion?: Rewards.Promotion, index?: number) => {
+        {remainingPromotions.map((promotion?: Rewards.Promotion, index?: number) => {
           if (!promotion || !promotion.promotionId) {
             return null
           }

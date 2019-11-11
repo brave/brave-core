@@ -166,21 +166,26 @@ export class Panel extends React.Component<Props, State> {
     this.actions.deleteNotification(id)
   }
 
-  onPromotionHide = () => {
-    this.actions.onResetGrant()
+  onPromotionHide = (promotionId: string) => {
+    this.actions.resetPromotion(promotionId)
   }
 
-  onFinish = () => {
-    this.actions.onDeleteGrant()
+  onFinish = (promotionId: string) => {
+    this.actions.deletePromotion(promotionId)
   }
 
-  onSolution = (x: number, y: number) => {
-    let { currentPromotion } = this.props.rewardsPanelData
+  onSolution = (promotionId: string, x: number, y: number) => {
+    let { promotions } = this.props.rewardsPanelData
+    if (!promotionId || !promotions) {
+      return
+    }
+
+    const currentPromotion = promotions.find((promotion: RewardsExtension.Promotion) => promotion.promotionId === promotionId)
+
     if (!currentPromotion) {
       return
     }
 
-    const promotionId = currentPromotion.promotionId
     if (!promotionId) {
       this.actions.promotionFinished(1)
       return
@@ -191,7 +196,6 @@ export class Panel extends React.Component<Props, State> {
       x: parseInt(x.toFixed(1), 10),
       y: parseInt(y.toFixed(1), 10)
     })
-
 
     chrome.braveRewards.attestPromotion(promotionId, data, (result: number, promotion?: RewardsExtension.Promotion) => {
       // if wrong position try again
@@ -635,6 +639,24 @@ export class Panel extends React.Component<Props, State> {
     }])
   }
 
+  getCurrentPromotion = (onlyAnonWallet: boolean) => {
+    const { promotions } = this.props.rewardsPanelData
+
+    if (!promotions) {
+      return undefined
+    }
+
+    let currentPromotion = promotions.filter((promotion: RewardsExtension.Promotion) => {
+      return promotion.captchaStatus !== null
+    })
+
+    if (currentPromotion.length === 0) {
+      return undefined
+    }
+
+    return utils.getPromotion(currentPromotion[0], onlyAnonWallet)
+  }
+
   render () {
     const { pendingContributionTotal, enabledAC, externalWallet, balance, promotions } = this.props.rewardsPanelData
     const { rates } = this.props.rewardsPanelData.balance
@@ -645,7 +667,6 @@ export class Panel extends React.Component<Props, State> {
     const notificationId = this.getNotificationProp('id', notification)
     const notificationType = this.getNotificationProp('type', notification)
     const notificationClick = this.getNotificationClickEvent(notificationType, notificationId)
-    let { currentPromotion } = this.props.rewardsPanelData
     const defaultContribution = this.getContribution(publisher)
     const checkmark = publisher && utils.isPublisherConnectedOrVerified(publisher.status)
     const tipAmounts = defaultContribution !== '0.0'
@@ -670,7 +691,7 @@ export class Panel extends React.Component<Props, State> {
       }
     }
 
-    currentPromotion = utils.getPromotion(currentPromotion, onlyAnonWallet)
+    let currentPromotion = this.getCurrentPromotion(onlyAnonWallet)
 
     let walletStatus: WalletState | undefined = undefined
     let onVerifyClick = undefined

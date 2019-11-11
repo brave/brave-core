@@ -30,7 +30,6 @@ export const defaultState: RewardsExtension.State = {
   enabledMain: false,
   enabledAC: false,
   promotions: [],
-  currentPromotion: undefined,
   recurringTips: [],
   tipAmounts: {},
   balance: {

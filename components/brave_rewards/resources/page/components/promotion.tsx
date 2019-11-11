@@ -46,18 +46,18 @@ class Promotion extends React.Component<Props, State> {
   }
 
   onHide = () => {
-    this.actions.onResetGrant()
+    this.actions.resetPromotion(this.props.promotion.promotionId)
   }
 
   onFinish = () => {
     this.setState({
       promotionShow: false
     })
-    this.actions.onDeleteGrant()
+    this.actions.deletePromotion(this.props.promotion.promotionId)
   }
 
   onSolution = (x: number, y: number) => {
-    this.actions.attestPromotion(x, y)
+    this.actions.attestPromotion(this.props.promotion.promotionId, x, y)
   }
 
   getCaptcha = () => {
@@ -67,39 +67,7 @@ class Promotion extends React.Component<Props, State> {
       return
     }
 
-    if (promotion.status === 'grantGone') {
-      return (
-        <GrantWrapper
-          onClose={this.onFinish}
-          title={getLocale('grantGoneTitle')}
-          text={''}
-        >
-          <GrantError
-            buttonText={getLocale('grantGoneButton')}
-            text={getLocale('grantGoneText')}
-            onButtonClick={this.onFinish}
-          />
-        </GrantWrapper>
-      )
-    }
-
-    if (promotion.status === 'grantAlreadyClaimed') {
-      return (
-        <GrantWrapper
-          onClose={this.onFinish}
-          title={getLocale('grantGoneTitle')}
-          text={''}
-        >
-          <GrantError
-            buttonText={getLocale('grantGoneButton')}
-            text={getLocale('grantAlreadyClaimedText')}
-            onButtonClick={this.onFinish}
-          />
-        </GrantWrapper>
-      )
-    }
-
-    if (promotion.status === 'generalError') {
+    if (promotion.captchaStatus === 'generalError') {
       return (
         <GrantWrapper
           onClose={this.onHide}
@@ -122,7 +90,7 @@ class Promotion extends React.Component<Props, State> {
     return (
       <GrantWrapper
         onClose={this.onHide}
-        title={promotion.status === 'wrongPosition' ? getLocale('notQuite') : getLocale('almostThere')}
+        title={promotion.captchaStatus === 'wrongPosition' ? getLocale('notQuite') : getLocale('almostThere')}
         text={getLocale('proveHuman')}
       >
         <GrantCaptcha
@@ -196,6 +164,7 @@ class Promotion extends React.Component<Props, State> {
     if (promotion.type) {
       type = this.convertPromotionTypesToType(promotion.type)
     }
+
     if (promotion.promotionId) {
       promoId = promotion.promotionId
     }
@@ -215,12 +184,12 @@ class Promotion extends React.Component<Props, State> {
             : null
         }
         {
-          !promotion.expiresAt
+          promotion.captchaImage && promotion.captchaStatus !== 'finished'
             ? this.getCaptcha()
             : null
         }
         {
-          promotion.expiresAt
+          promotion.captchaStatus === 'finished'
             ? this.getFinish(type, tokens, date)
             : null
         }

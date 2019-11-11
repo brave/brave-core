@@ -8,6 +8,9 @@
 
 #include <stdint.h>
 
+#include <memory>
+#include <string>
+
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/database/database_promotion_creds.h"
 #include "brave/components/brave_rewards/browser/database/database_table.h"

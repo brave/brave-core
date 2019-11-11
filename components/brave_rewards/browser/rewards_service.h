@@ -107,6 +107,7 @@ using ClaimPromotionCallback = base::OnceCallback<void(
 using AttestPromotionCallback = base::OnceCallback<void(
     const int32_t,
     std::unique_ptr<brave_rewards::Promotion> promotion)>;
+using GetAnonWalletStatusCallback = base::OnceCallback<void(const uint32_t)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -282,6 +283,8 @@ class RewardsService : public KeyedService {
   virtual void DisconnectWallet(const std::string& wallet_type) = 0;
 
   virtual bool OnlyAnonWallet() = 0;
+
+  virtual void GetAnonWalletStatus(GetAnonWalletStatusCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

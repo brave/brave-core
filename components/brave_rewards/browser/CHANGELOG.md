@@ -6,8 +6,8 @@
 ##### Related PR
 [https://github.com/brave/brave-core/pull/3918](https://github.com/brave/brave-core/pull/3918)
 ##### Description
-With this PR we changed complete logic of how grants work. Instead of using anonize we now used blinded tokens. 
-You can reade more about what is done in this issue [https://github.com/brave/brave-browser/issues/6078](https://github.com/brave/brave-browser/issues/6078).
+With this PR we completely changed the logic of how grants work. Instead of using anonize we now used blinded tokens. 
+You can read more about what is done in this issue [https://github.com/brave/brave-browser/issues/6078](https://github.com/brave/brave-browser/issues/6078).
 For `ClaimPromotion` Android should use the one with `promotion_id` param
 
 ##### Change
@@ -74,7 +74,7 @@ Renamed `RewardsCategory` to `RewardsType` and added migration path.
 We added new API which allows us to get information if we should only show anonymous wallet functionality.
 It's based on user location, country. List of countries is located in `static_values.h`. 
 We use [Chromium api](https://cs.chromium.org/chromium/src/components/country_codes/country_codes.h?type=cs&q=GetCountryIDFromPrefs&g=0&l=53)
-to determinate which country user is in.
+to determine which country user is in.
 
 ##### Change
 

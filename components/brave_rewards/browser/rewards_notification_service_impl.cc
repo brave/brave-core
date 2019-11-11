@@ -309,62 +309,59 @@ void RewardsNotificationServiceImpl::OnGetAllNotifications(
   TriggerOnGetAllNotifications(rewards_notifications_list);
 }
 
-bool RewardsNotificationServiceImpl::IsUGP(const std::string& promotion_type) {
-#if defined(OS_ANDROID)
-  return promotion_type == "android";
-#else
-  return promotion_type == "ugp";
-#endif
+bool RewardsNotificationServiceImpl::IsAds(const uint32_t promotion_type) {
+  return promotion_type == 1;  // ledger:PromotionType::ADS
 }
 
 std::string RewardsNotificationServiceImpl::GetPromotionIdPrefix(
-    const std::string& grant_type) {
-  std::string prefix = IsUGP(grant_type)
-      ? "rewards_notification_grant_"
-      : "rewards_notification_grant_ads_";
-  return prefix;
+    const uint32_t promotion_type) {
+  return IsAds(promotion_type)
+      ? "rewards_notification_grant_ads_"
+      : "rewards_notification_grant_";
 }
 
 void RewardsNotificationServiceImpl::OnFetchPromotions(
     RewardsService* rewards_service,
     const uint32_t result,
-    Promotion promotion) {
+    const std::vector<Promotion>& list) {
   if (static_cast<ledger::Result>(result) != ledger::Result::LEDGER_OK) {
     return;
   }
 
-  // TODO add conversion to string
-  const std::string promotion_type = "ugp";
-  const std::string prefix = GetPromotionIdPrefix(promotion_type);
-  auto notification_type = IsUGP(promotion_type)
-      ? RewardsNotificationService::REWARDS_NOTIFICATION_GRANT
-      : RewardsNotificationService::REWARDS_NOTIFICATION_GRANT_ADS;
+  for (auto & item : list) {
+    if (item.status == 4) {  // ledger::PromotionStatus::FINISHED
+      continue;
+    }
 
-  RewardsNotificationService::RewardsNotificationArgs args;
+    const std::string prefix = GetPromotionIdPrefix(item.type);
+    auto notification_type = IsAds(item.type)
+        ? RewardsNotificationService::REWARDS_NOTIFICATION_GRANT_ADS
+        : RewardsNotificationService::REWARDS_NOTIFICATION_GRANT;
 
-  bool only_once = true;
-#if defined(OS_ANDROID)
-  only_once = false;
-#endif
+    RewardsNotificationService::RewardsNotificationArgs args;
 
-  AddNotification(
-      notification_type,
-      args,
-      prefix + promotion.promotion_id,
-      only_once);
+    bool only_once = true;
+  #if defined(OS_ANDROID)
+    only_once = false;
+  #endif
+
+    AddNotification(
+        notification_type,
+        args,
+        prefix + item.promotion_id,
+        only_once);
+  }
 }
 
-void RewardsNotificationServiceImpl::OnGrantFinish(
+void RewardsNotificationServiceImpl::OnPromotionFinished(
     RewardsService* rewards_service,
     const uint32_t result,
     Promotion promotion) {
-  // TODO add conversion to string
-  const std::string promotion_type = "ugp";
-  std::string prefix = GetPromotionIdPrefix(promotion_type);
+  std::string prefix = GetPromotionIdPrefix(promotion.type);
 
   DeleteNotification(prefix + promotion.promotion_id);
   // We keep it for back compatibility
-  if (IsUGP(promotion_type)) {
+  if (!IsAds(promotion.type)) {
     DeleteNotification("rewards_notification_grant");
   }
 }

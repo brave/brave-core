@@ -97,7 +97,6 @@ declare namespace NewTab {
     REGISTRATION_VERIFICATION_FAILED = 10,
     BAD_REGISTRATION_RESPONSE = 11,
     WALLET_CREATED = 12,
-    GRANT_NOT_FOUND = 13,
     WALLET_CORRUPT = 17
   }
 
@@ -119,15 +118,12 @@ declare namespace NewTab {
   }
 
   export interface PromotionResponse {
-    status: number
-    promotionId: string
-    amount: number
-    expiresAt: number
-    type: PromotionTypes
+    result: number
+    promotions: Promotion[]
   }
 
   export interface Promotion {
-    type: string
+    type: PromotionTypes
     promotionId: string
   }
 
@@ -135,13 +131,6 @@ declare namespace NewTab {
     total: number
     rates: Record<string, number>
     wallets: Record<string, number>
-  }
-
-  export interface GrantFinish {
-    result: RewardsResult,
-    statusCode: number,
-    expiryTime: number,
-    promotionId: string
   }
 
   // In-memory state is a superset of PersistentState

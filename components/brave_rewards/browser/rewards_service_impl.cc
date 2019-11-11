@@ -1486,9 +1486,24 @@ void RewardsServiceImpl::FetchWalletProperties() {
 void RewardsServiceImpl::OnFetchPromotions(
     const ledger::Result result,
     ledger::PromotionList promotions) {
+  std::vector<brave_rewards::Promotion> list;
+
   for (auto & promotion : promotions) {
-    TriggerOnPromotion(result, std::move(promotion));
+    if (!promotion) {
+      continue;
+    }
+
+    brave_rewards::Promotion properties;
+    properties.promotion_id = promotion->id;
+    properties.amount = promotion->approximate_value;
+    properties.expires_at = promotion->expires_at;
+    properties.type = static_cast<uint32_t>(promotion->type);
+    properties.status = static_cast<uint32_t>(promotion->status);
+    list.push_back(properties);
   }
+
+  for (auto& observer : observers_)
+    observer.OnFetchPromotions(this, static_cast<int>(result), list);
 }
 
 void RewardsServiceImpl::FetchPromotions() {
@@ -1499,23 +1514,6 @@ void RewardsServiceImpl::FetchPromotions() {
   bat_ledger_->FetchPromotions(base::BindOnce(
       &RewardsServiceImpl::OnFetchPromotions,
       AsWeakPtr()));
-}
-
-void RewardsServiceImpl::TriggerOnPromotion(
-    const ledger::Result result,
-    ledger::PromotionPtr promotion) {
-  if (!promotion) {
-    return;
-  }
-
-  brave_rewards::Promotion properties;
-  properties.promotion_id = promotion->id;
-  properties.amount = promotion->approximate_value;
-  properties.expires_at = promotion->expires_at;
-  properties.type = static_cast<uint32_t>(promotion->type);
-
-  for (auto& observer : observers_)
-    observer.OnFetchPromotions(this, static_cast<int>(result), properties);
 }
 
 void ParseCaptchaResponse(
@@ -1711,14 +1709,22 @@ void RewardsServiceImpl::OnAttestPromotion(
     return;
   }
 
-  auto brave_promotion = std::make_unique<brave_rewards::Promotion>();
-  brave_promotion->amount = promotion->approximate_value;
-  brave_promotion->promotion_id = promotion->id;
-  brave_promotion->expires_at = promotion->expires_at;
-  brave_promotion->type = static_cast<int>(promotion->type);
+  brave_rewards::Promotion brave_promotion;
+  brave_promotion.amount = promotion->approximate_value;
+  brave_promotion.promotion_id = promotion->id;
+  brave_promotion.expires_at = promotion->expires_at;
+  brave_promotion.type = static_cast<int>(promotion->type);
 
-  std::move(callback).Run(result_converted, std::move(brave_promotion));
-  // TODO I still need to trigger observer as others needs to know to update data
+  for (auto& observer : observers_) {
+    observer.OnPromotionFinished(
+        this,
+        result_converted,
+        brave_promotion);
+  }
+
+  auto brave_promotion_ptr =
+      std::make_unique<brave_rewards::Promotion>(brave_promotion);
+  std::move(callback).Run(result_converted, std::move(brave_promotion_ptr));
 }
 
 void RewardsServiceImpl::GetReconcileStamp(
@@ -4364,7 +4370,23 @@ ledger::ClientInfoPtr RewardsServiceImpl::GetClientInfo() {
 }
 
 void RewardsServiceImpl::UnblindedTokensReady() {
-  // TODO add observer and report it to UI, UI should fetch balance on it
+  for (auto& observer : observers_) {
+    observer.OnUnblindedTokensReady(this);
+  }
+}
+
+void RewardsServiceImpl::GetAnonWalletStatus(
+    GetAnonWalletStatusCallback callback) {
+  bat_ledger_->GetAnonWalletStatus(
+      base::BindOnce(&RewardsServiceImpl::OnGetAnonWalletStatus,
+                     AsWeakPtr(),
+                     std::move(callback)));
+}
+
+void RewardsServiceImpl::OnGetAnonWalletStatus(
+    GetAnonWalletStatusCallback callback,
+    const ledger::Result result) {
+  std::move(callback).Run(static_cast<uint32_t>(result));
 }
 
 }  // namespace brave_rewards

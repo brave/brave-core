@@ -911,4 +911,24 @@ void BatLedgerImpl::DisconnectWallet(
                 _1));
 }
 
+// static
+void BatLedgerImpl::OnGetAnonWalletStatus(
+    CallbackHolder<GetAnonWalletStatusCallback>* holder,
+    const ledger::Result result) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::GetAnonWalletStatus(GetAnonWalletStatusCallback callback) {
+  auto* holder = new CallbackHolder<GetAnonWalletStatusCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->GetAnonWalletStatus(
+      std::bind(BatLedgerImpl::OnGetAnonWalletStatus,
+                holder,
+                _1));
+}
+
 }  // namespace bat_ledger

@@ -15,13 +15,23 @@ const getPromotion = (id: string, promotions?: RewardsExtension.Promotion[]) => 
   })
 }
 
-const updatePromotion = (newPromotion: RewardsExtension.Promotion, promotions: RewardsExtension.Promotion[]) => {
+const updatePromotions = (newPromotion: RewardsExtension.Promotion, promotions: RewardsExtension.Promotion[]) => {
   return promotions.map((promotion: RewardsExtension.Promotion) => {
     if (newPromotion.promotionId === promotion.promotionId) {
-      return Object.assign(newPromotion, promotion)
+      return Object.assign(promotion, newPromotion)
     }
     return promotion
   })
+}
+
+const updatePromotion = (newPromotion: RewardsExtension.Promotion, promotions: RewardsExtension.Promotion[]): RewardsExtension.Promotion => {
+  const oldPromotion = promotions.filter((promotion: RewardsExtension.Promotion) => newPromotion.promotionId === promotion.promotionId)
+
+  if (oldPromotion.length === 0) {
+    return newPromotion
+  }
+
+  return Object.assign(oldPromotion[0], newPromotion)
 }
 
 export const promotionPanelReducer = (state: RewardsExtension.State | undefined, action: any) => {
@@ -34,10 +44,9 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
       chrome.braveRewards.fetchPromotions()
       break
     }
-    case types.ON_PROMOTION: {
+    case types.ON_PROMOTIONS: {
       state = { ...state }
-      const promotion = payload.properties
-      if (promotion.status === 1) {
+      if (payload.result === 1) {
         break
       }
 
@@ -45,20 +54,25 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
         state.promotions = []
       }
 
-      const promotionId = promotion.promotionId
+      let promotions = payload.promotions
 
-      if (!getPromotion(promotionId, state.promotions)) {
-        state.promotions.push({
-          promotionId: promotionId,
-          expiresAt: 0,
-          amount: 0,
-          type: promotion.type
-        })
+      if (!promotions || promotions.length === 0) {
+        break
       }
+
+      const toMilliseconds = 1000
+      promotions = promotions.map((promotion: RewardsExtension.Promotion) => {
+        if (!promotion || !state) {
+          return promotion
+        }
+
+        promotion.expiresAt = promotion.expiresAt * toMilliseconds
+        return updatePromotion(promotion, state.promotions || [])
+      })
 
       state = {
         ...state,
-        promotions: state.promotions
+        promotions
       }
 
       break
@@ -69,25 +83,15 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
         break
       }
 
-      let currentPromotion = state.currentPromotion
-      if (!state.currentPromotion) {
-        currentPromotion = getPromotion(promotionId, state.promotions)
-      }
-
-      if (!currentPromotion || payload.properties.result !== 0) {
-        state = {
-          ...state,
-          currentPromotion: undefined
-        }
-        break
-      }
-
       const hint = payload.properties.hint
       const captchaImage = payload.properties.captchaImage
       const captchaId = payload.properties.captchaId
 
       const promotions = state.promotions.map((item: RewardsExtension.Promotion) => {
         if (promotionId === item.promotionId) {
+          if (item.captchaStatus !== 'wrongPosition') {
+            item.captchaStatus = 'start'
+          }
           item.captchaImage = captchaImage
           item.captchaId = captchaId
           item.hint = hint
@@ -97,100 +101,108 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
 
       state = {
         ...state,
-        promotions,
-        currentPromotion
+        promotions
       }
       break
     }
-    case types.ON_GRANT_RESET: {
-      if (state.currentPromotion && state.promotions) {
-        let currentPromotion: any = state.currentPromotion
+    case types.RESET_PROMOTION: {
+      const promotionId = payload.promotionId
+      if (!state.promotions || !promotionId) {
+        break
+      }
 
-        const promotions = state.promotions.map((item: RewardsExtension.Promotion) => {
-          if (currentPromotion.promotionId === item.promotionId) {
-            return {
-              promotionId: currentPromotion.promotionId,
-              expiresAt: currentPromotion.expiresAt,
-              amount: currentPromotion.amount,
-              type: currentPromotion.type
-            }
-          }
-          return item
-        })
+      const currentPromotion = getPromotion(promotionId, state.promotions)
 
-        currentPromotion = undefined
+      if (!currentPromotion) {
+        break
+      }
 
-        state = {
-          ...state,
-          promotions,
-          currentPromotion
+      const promotions = state.promotions.map((item: RewardsExtension.Promotion) => {
+        if (currentPromotion.promotionId === item.promotionId) {
+          item.captchaStatus = null
+          item.captchaImage = ''
+          item.captchaId = ''
+          item.hint = ''
         }
+        return item
+      })
+
+      state = {
+        ...state,
+        promotions
       }
       break
     }
-    case types.ON_GRANT_DELETE: {
-      if (state.currentPromotion && state.promotions) {
-        let promotionIndex = -1
-        let currentPromotion: any = state.currentPromotion
+    case types.DELETE_PROMOTION: {
+      const promotionId = payload.promotionId
+      if (!state.promotions || !promotionId) {
+        break
+      }
+      const currentPromotion = getPromotion(promotionId, state.promotions)
 
-        state.promotions.map((item: RewardsExtension.Promotion, i: number) => {
-          if (currentPromotion.promotionId === item.promotionId) {
-            promotionIndex = i
-          }
-        })
+      if (!currentPromotion) {
+        break
+      }
 
-        if (promotionIndex > -1) {
-          state.promotions.splice(promotionIndex, 1)
-          currentPromotion = undefined
+      let promotions = state.promotions.map((item: RewardsExtension.Promotion) => {
+        if (currentPromotion.promotionId === item.promotionId) {
+          item.captchaStatus = null
+          item.status = 4
         }
 
-        state = {
-          ...state,
-          currentPromotion
-        }
+        return item
+      })
+
+      state = {
+        ...state,
+        promotions
       }
       break
     }
     case types.ON_PROMOTION_FINISH: {
       state = { ...state }
-      let currentPromotion: any = state.currentPromotion
+      let newPromotion: any = {}
       const result = payload.result
 
-      if (!state.promotions || !state.currentPromotion) {
+      if (!state.promotions) {
         break
       }
 
+      let promotionId = payload.promotion.promotionId
+      newPromotion.promotionId = promotionId
+
+      const currentPromotion = getPromotion(promotionId, state.promotions)
+
       switch (result) {
-        case 0: {
-          const promotion: RewardsExtension.Promotion = payload.promotion
-          currentPromotion.expiresAt = promotion.expiresAt * 1000
-          currentPromotion.amount = promotion.amount
-          currentPromotion.type = promotion.type
-          currentPromotion.status = null
+        case 0:
+          if (currentPromotion) {
+            if (currentPromotion.hint) {
+              newPromotion.captchaStatus = 'finished'
+            } else {
+              newPromotion.status = 4
+            }
+          }
+          newPromotion.captchaImage = ''
+          newPromotion.captchaId = ''
+          newPromotion.hint = ''
           break
-        }
         case 6:
-          currentPromotion.status = 'wrongPosition'
-          break
-        case 13:
-          currentPromotion.status = 'grantGone'
-          break
-        case 18:
-          currentPromotion.status = 'grantAlreadyClaimed'
+          newPromotion.captchaStatus = 'wrongPosition'
           break
         default:
-          currentPromotion.status = 'generalError'
+          newPromotion.captchaStatus = 'generalError'
           break
       }
 
       if (state.promotions) {
-        const promotions = updatePromotion(currentPromotion, state.promotions)
+        const promotions = updatePromotions(newPromotion, state.promotions)
 
         state = {
           ...state,
           promotions
         }
       }
+
       break
     }
   }

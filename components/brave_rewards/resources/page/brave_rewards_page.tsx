@@ -61,8 +61,8 @@ window.cr.define('brave_rewards', function () {
     getActions().onWalletProperties(properties)
   }
 
-  function promotion (properties: Rewards.PromotionResponse) {
-    getActions().onPromotion(properties)
+  function promotions (properties: Rewards.PromotionResponse) {
+    getActions().onPromotions(properties)
   }
 
   function claimPromotion (properties: Rewards.Captcha) {
@@ -233,12 +233,16 @@ window.cr.define('brave_rewards', function () {
     getActions().onOnlyAnonWallet(only)
   }
 
+  function unblindedTokensReady () {
+    getActions().getBalance()
+  }
+
   return {
     initialize,
     walletCreated,
     walletCreateFailed,
     walletProperties,
-    promotion,
+    promotions,
     claimPromotion,
     walletPassphrase,
     recoverWalletData,
@@ -276,7 +280,8 @@ window.cr.define('brave_rewards', function () {
     externalWallet,
     processRewardsPageUrl,
     disconnectWallet,
-    onlyAnonWallet
+    onlyAnonWallet,
+    unblindedTokensReady
   }
 })
 

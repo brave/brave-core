@@ -75,8 +75,11 @@ declare namespace chrome.braveRewards {
   const onCurrentReport: {
     addListener: (callback: (properties: RewardsExtension.Report) => void) => void
   }
-  const onPromotion: {
-    addListener: (callback: (properties: RewardsExtension.PromotionResponse) => void) => void
+  const onPromotions: {
+    addListener: (callback: (result: RewardsExtension.Result, promotions: RewardsExtension.Promotion[]) => void) => void
+  }
+  const onPromotionFinish: {
+    addListener: (callback: (result: RewardsExtension.Result, promotion: RewardsExtension.Promotion) => void) => void
   }
   const includeInAutoContribution: (publisherKey: string, exclude: boolean) => {}
   const fetchPromotions: () => {}
@@ -137,6 +140,12 @@ declare namespace chrome.braveRewards {
   const onlyAnonWallet: (callback: (only: boolean) => void) => {}
 
   const openBrowserActionUI: (path?: string) => {}
+
+  const onUnblindedTokensReady: {
+    addListener: (callback: () => void) => void
+  }
+
+  const getAnonWalletStatus: (callback: (result: RewardsExtension.Result) => void) => {}
 }
 
 declare namespace chrome.rewardsNotifications {

@@ -20,6 +20,7 @@ struct Promotion {
   std::string promotion_id;
   uint64_t expires_at;
   uint32_t type;
+  uint32_t status;
 };
 
 }  // namespace brave_rewards

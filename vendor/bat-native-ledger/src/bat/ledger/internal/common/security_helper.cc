@@ -83,7 +83,8 @@ std::string Security::Sign(
     header_values.push_back(value);
   }
 
-  std::vector<uint8_t> secret_key = braveledger_bat_helper::getHKDF(private_key);
+  std::vector<uint8_t> secret_key =
+      braveledger_bat_helper::getHKDF(private_key);
   std::vector<uint8_t> public_key;
   std::vector<uint8_t> new_secret_key;
   bool success = braveledger_bat_helper::getPublicKeyFromSeed(

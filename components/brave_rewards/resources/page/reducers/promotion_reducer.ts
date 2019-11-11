@@ -18,13 +18,23 @@ const getPromotion = (id: string, promotions?: Rewards.Promotion[]) => {
   })
 }
 
-const updatePromotion = (newPromotion: Rewards.Promotion, promotions: Rewards.Promotion[]) => {
+const updatePromotions = (newPromotion: Rewards.Promotion, promotions: Rewards.Promotion[]): Rewards.Promotion[] => {
   return promotions.map((promotion: Rewards.Promotion) => {
     if (newPromotion.promotionId === promotion.promotionId) {
       return Object.assign(promotion, newPromotion)
     }
     return promotion
   })
+}
+
+const updatePromotion = (newPromotion: Rewards.Promotion, promotions: Rewards.Promotion[]): Rewards.Promotion => {
+  const oldPromotion = promotions.filter((promotion: Rewards.Promotion) => newPromotion.promotionId === promotion.promotionId)
+
+  if (oldPromotion.length === 0) {
+    return newPromotion
+  }
+
+  return Object.assign(oldPromotion[0], newPromotion)
 }
 
 const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
@@ -34,9 +44,9 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
       chrome.send('brave_rewards.fetchPromotions')
       break
     }
-    case types.ON_PROMOTION: {
+    case types.ON_PROMOTIONS: {
       state = { ...state }
-      if (payload.properties.status === 1) {
+      if (payload.properties.result === 1) {
         break
       }
 
@@ -44,20 +54,21 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
         state.promotions = []
       }
 
-      const promotionId = payload.properties.promotionId
+      let promotions = payload.properties.promotions
 
-      if (!getPromotion(promotionId, state.promotions)) {
-        state.promotions.push({
-          promotionId: promotionId,
-          expiresAt: 0,
-          amount: 0,
-          type: payload.properties.type
-        })
+      if (!promotions || promotions.length === 0) {
+        break
       }
+
+      const toMilliseconds = 1000
+      promotions = promotions.map((promotion: Rewards.Promotion) => {
+        promotion.expiresAt = promotion.expiresAt * toMilliseconds
+        return updatePromotion(promotion, state.promotions || [])
+      })
 
       state = {
         ...state,
-        promotions: state.promotions
+        promotions
       }
 
       break
@@ -65,10 +76,6 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
     case types.CLAIM_PROMOTION: {
       const promotionId = action.payload.promotionId
       if (!promotionId) {
-        state = {
-          ...state,
-          currentPromotion: undefined
-        }
         break
       }
       chrome.send('brave_rewards.claimPromotion', [promotionId])
@@ -77,19 +84,6 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
     case types.ON_CLAIM_PROMOTION: {
       const promotionId = payload.properties.promotionId
       if (!state.promotions || !promotionId) {
-        break
-      }
-
-      let currentPromotion = state.currentPromotion
-      if (!state.currentPromotion) {
-        currentPromotion = getPromotion(promotionId, state.promotions)
-      }
-
-      if (!currentPromotion || payload.properties.result !== 0) {
-        state = {
-          ...state,
-          currentPromotion: undefined
-        }
         break
       }
 
@@ -108,13 +102,12 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
 
       state = {
         ...state,
-        promotions,
-        currentPromotion
+        promotions
       }
       break
     }
     case types.ATTEST_PROMOTION: {
-      const promotionId = state.currentPromotion && state.currentPromotion.promotionId
+      const promotionId = payload.promotionId
 
       if (!promotionId || !payload.x || !payload.y) {
         break
@@ -133,93 +126,88 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
       })])
       break
     }
-    case types.ON_GRANT_RESET: {
-      if (state.currentPromotion && state.promotions) {
-        let currentPromotion: any = state.currentPromotion
+    case types.RESET_PROMOTION: {
+      const promotionId = payload.promotionId
+      if (!state.promotions || !promotionId) {
+        break
+      }
 
-        const promotions = state.promotions.map((item: Rewards.Promotion) => {
-          if (currentPromotion.promotionId === item.promotionId) {
-            return {
-              promotionId: currentPromotion.promotionId,
-              amount: currentPromotion.amount,
-              expiresAt: currentPromotion.expiresAt,
-              type: currentPromotion.type
-            }
-          }
-          return item
-        })
+      const currentPromotion = getPromotion(promotionId, state.promotions)
 
-        currentPromotion = undefined
+      if (!currentPromotion) {
+        break
+      }
 
-        state = {
-          ...state,
-          promotions,
-          currentPromotion
+      const promotions = state.promotions.map((item: Rewards.Promotion) => {
+        if (currentPromotion.promotionId === item.promotionId) {
+          item.captchaStatus = null
+          item.captchaImage = ''
+          item.captchaId = ''
+          item.hint = ''
         }
+        return item
+      })
+
+      state = {
+        ...state,
+        promotions
       }
       break
     }
-    case types.ON_GRANT_DELETE: {
-      if (state.currentPromotion && state.promotions) {
-        let promotionIndex = -1
-        let currentPromotion: any = state.currentPromotion
+    case types.DELETE_PROMOTION: {
+      const promotionId = payload.promotionId
+      if (!state.promotions || !promotionId) {
+        break
+      }
+      const currentPromotion = getPromotion(promotionId, state.promotions)
 
-        state.promotions.map((item: Rewards.Promotion, i: number) => {
-          if (currentPromotion.promotionId === item.promotionId) {
-            promotionIndex = i
-          }
-        })
+      if (!currentPromotion) {
+        break
+      }
 
-        if (promotionIndex > -1) {
-          state.promotions.splice(promotionIndex, 1)
-          currentPromotion = undefined
+      let promotions = state.promotions.map((item: Rewards.Promotion) => {
+        if (currentPromotion.promotionId === item.promotionId) {
+          item.captchaStatus = null
+          item.status = 4
         }
 
-        state = {
-          ...state,
-          currentPromotion
-        }
+        return item
+      })
+
+      state = {
+        ...state,
+        promotions
       }
       break
     }
     case types.ON_PROMOTION_FINISH: {
       state = { ...state }
       let newPromotion: any = {}
-      const promotion: Rewards.Promotion = payload.properties.promotion
       const result = payload.properties.result
 
       if (!state.promotions) {
         break
       }
 
-      if (!state.currentPromotion) {
-        state.firstLoad = false
-        state.promotions = []
-        let ui = state.ui
-        chrome.send('brave_rewards.fetchPromotions', ['', ''])
+      let promotionId = payload.properties.promotion.promotionId
+      newPromotion.promotionId = promotionId
 
-        if (result === 0) {
-          ui.emptyWallet = false
-          chrome.send('brave_rewards.getWalletProperties')
-          chrome.send('brave_rewards.fetchBalance')
-        }
-
-        state = {
-          ...state,
-          ui
-        }
-        break
-      }
-
-      newPromotion.promotionId = state.currentPromotion.promotionId
+      const currentPromotion = getPromotion(promotionId, state.promotions)
 
       switch (result) {
         case 0:
           let ui = state.ui
-          newPromotion.expiresAt = promotion.expiresAt * 1000
-          newPromotion.amount = promotion.amount
-          newPromotion.type = promotion.type
-          newPromotion.status = null
+          if (currentPromotion) {
+            if (currentPromotion.hint) {
+              newPromotion.captchaStatus = 'finished'
+            } else {
+              newPromotion.status = 4
+            }
+          }
+
+          newPromotion.captchaImage = ''
+          newPromotion.captchaId = ''
+          newPromotion.hint = ''
           ui.emptyWallet = false
 
           state = {
@@ -231,27 +219,19 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
           chrome.send('brave_rewards.fetchBalance')
           break
         case 6:
-          newPromotion.status = 'wrongPosition'
-          if (!state.currentPromotion.promotionId) {
-            break
-          }
-          const promotionId = state.currentPromotion.promotionId
+          newPromotion.captchaStatus = 'wrongPosition'
           if (!promotionId) {
-            state = {
-              ...state,
-              currentPromotion: undefined
-            }
             break
           }
           chrome.send('brave_rewards.claimPromotion', [promotionId])
           break
         default:
-          newPromotion.status = 'generalError'
+          newPromotion.captchaStatus = 'generalError'
           break
       }
 
       if (state.promotions) {
-        const promotions = updatePromotion(newPromotion, state.promotions)
+        const promotions = updatePromotions(newPromotion, state.promotions)
 
         state = {
           ...state,

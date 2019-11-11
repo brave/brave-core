@@ -173,7 +173,7 @@ bool ParseFetchResponse(
       if (!approximate_value || !approximate_value->is_string()) {
         continue;
       }
-      promotion->approximate_value =std::stod(approximate_value->GetString());
+      promotion->approximate_value = std::stod(approximate_value->GetString());
 
       auto* available = item.FindKey("available");
       if (!available || !available->is_bool()) {
@@ -366,9 +366,13 @@ void Promotion::OnGetAllPromotions(
   if (list.size() > 0) {
     for (auto & item : list) {
       auto it = promotions.find(item->id);
-      if (it != promotions.end() &&
-          promotions.at(item->id)->status != ledger::PromotionStatus::ACTIVE) {
-        item->status = promotions.at(item->id)->status;
+      if (it != promotions.end()) {
+        if (
+        promotions.at(item->id)->status != ledger::PromotionStatus::ACTIVE) {
+          item->status = promotions.at(item->id)->status;
+        }
+      } else {
+        promotions.insert(std::make_pair(item->id, item->Clone()));
       }
 
       ledger_->InsertOrUpdatePromotion(
@@ -377,9 +381,19 @@ void Promotion::OnGetAllPromotions(
     }
   }
 
+
+  ledger::PromotionList promotions_ui;
+  for (auto & item : promotions) {
+    if (item.second->status == ledger::PromotionStatus::ACTIVE ||
+        item.second->status == ledger::PromotionStatus::ATTESTED ||
+        item.second->status == ledger::PromotionStatus::FINISHED) {
+      promotions_ui.push_back(item.second->Clone());
+    }
+  }
+
   ProcessFetchedPromotions(
       ledger::Result::LEDGER_OK,
-      std::move(list),
+      std::move(promotions_ui),
       callback);
 }
 
@@ -724,25 +738,50 @@ void Promotion::OnFetchSignedTokens(
   ledger_->InsertOrUpdatePromotion(
         promotion->Clone(),
         [](const ledger::Result _){});
-  UnBlindTokens(std::move(promotion), callback);
-}
 
-void Promotion::UnBlindTokens(
-    ledger::PromotionPtr promotion,
-    ledger::ResultCallback callback) {
-  if (!promotion || !promotion->credentials) {
+  std::vector<std::string> unblinded_encoded_tokens;
+  bool result = UnBlindTokens(promotion->Clone(), &unblinded_encoded_tokens);
+
+  if (!result) {
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
+  FinishPromotion(
+      std::move(promotion),
+      unblinded_encoded_tokens,
+      callback);
+}
+
+bool Promotion::UnBlindTokens(
+    ledger::PromotionPtr promotion,
+    std::vector<std::string>* unblinded_encoded_tokens) {
+  if (!promotion || !promotion->credentials) {
+    return false;
+  }
+
   auto batch_proof =
       BatchDLEQProof::decode_base64(promotion->credentials->batch_proof);
+
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "UnBlindTokens: " << e.what();
+    return false;
+  }
 
   auto tokens_base64 = ParseStringToBaseList(promotion->credentials->tokens);
   std::vector<Token> tokens;
   for (auto& item : *tokens_base64) {
     const auto token = Token::decode_base64(item.GetString());
     tokens.push_back(token);
+  }
+
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "UnBlindTokens: " << e.what();
+    return false;
   }
 
   auto blinded_tokens_base64 = ParseStringToBaseList(
@@ -753,12 +792,26 @@ void Promotion::UnBlindTokens(
     blinded_tokens.push_back(blinded_token);
   }
 
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "UnBlindTokens: " << e.what();
+    return false;
+  }
+
   auto signed_tokens_base64 = ParseStringToBaseList(
       promotion->credentials->signed_creds);
   std::vector<SignedToken> signed_tokens;
   for (auto& item : *signed_tokens_base64) {
     const auto signed_token = SignedToken::decode_base64(item.GetString());
     signed_tokens.push_back(signed_token);
+  }
+
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "UnBlindTokens: " << e.what();
+    return false;
   }
 
   const auto public_key = PublicKey::decode_base64(
@@ -770,10 +823,27 @@ void Promotion::UnBlindTokens(
      signed_tokens,
      public_key);
 
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) << "UnBlindTokens: " << e.what();
+    return false;
+  }
+
   for (auto & token : unblinded_tokens) {
-    const std::string encoded = token.encode_base64();
+    unblinded_encoded_tokens->push_back(token.encode_base64());
+  }
+
+  return true;
+}
+
+void Promotion::FinishPromotion(
+    ledger::PromotionPtr promotion,
+    const std::vector<std::string>& unblinded_encoded_tokens,
+    ledger::ResultCallback callback) {
+  for (auto & token : unblinded_encoded_tokens) {
     auto token_info = ledger::UnblindedToken::New();
-    token_info->token_value = encoded;
+    token_info->token_value = token;
     token_info->public_key = promotion->credentials->public_key;
     token_info->value = promotion->approximate_value / promotion->suggestions;
     token_info->promotion_id = promotion->id;

@@ -278,15 +278,11 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_NOT_QUITE" desc="">Hmmm, not quite...</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_SERVER_NOT_RESPONDING" desc="">The Brave Rewards server is not responding. We will fix this as soon as possible.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_UH_OH" desc="">Uh oh!</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_GRANT_GONE_TITLE" desc="">This grant is no longer available.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_GRANT_GONE_BUTTON" desc="">OK</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_GRANT_GONE_TEXT" desc="">Sorry, it appears that this grant has already expired.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_TITLE" desc="">Oops, something is wrong. Please try again later.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_BUTTON" desc="">OK</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_GENERAL_GRANT_ERROR_TEXT" desc="">Brave Rewards is having an issue. Please try again later.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_CORRUPTED" desc="">We detected that something is wrong with your wallet. You must recover your backup wallet before any transactions can be processed.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_CORRUPTED_NOW" desc="">Recover now!</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_GRANT_ALREADY_CLAIMED_TEXT" desc="">Sorry, it appears that this grant has already been claimed.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_NEXT_DATE" desc="Description of the date in the donation box">Next monthly tip date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET" desc="">
         I just tipped <ph name="NAME">$1<ex>user</ex></ph> using the Brave Browser. Check it out at https://brave.com/tips.

@@ -77,6 +77,8 @@ class Wallet {
       const bool allow_zero_balance,
       ledger::TransferAnonToExternalWalletCallback callback);
 
+  void GetAnonWalletStatus(ledger::ResultCallback callback);
+
  private:
   void WalletPropertiesCallback(
       int response_status_code,

@@ -320,8 +320,9 @@ class BraveRewardsBrowserTest
                                                      "/",
                                                      base::TRIM_WHITESPACE,
                                                      base::SPLIT_WANT_ALL);
-    if (url.find(braveledger_request_util::BuildUrl(REGISTER_PERSONA, PREFIX_V2)) == 0
-      && tmp.size() == 6) {
+    const std::string persona_url =
+        braveledger_request_util::BuildUrl(REGISTER_PERSONA, PREFIX_V2);
+    if (url.find(persona_url) == 0 && tmp.size() == 6) {
       *response = brave_test_resp::registrarVK_;
     } else if (URLMatches(url, REGISTER_PERSONA, PREFIX_V2,
                           ServerTypes::LEDGER) &&
@@ -1375,17 +1376,17 @@ class BraveRewardsBrowserTest
       wait_for_captcha_loop_->Quit();
   }
 
-  // TODO fix me
-//  void OnGrantFinish(brave_rewards::RewardsService* rewards_service,
-//                     unsigned int result,
-//                     brave_rewards::Promotion promotion) {
-//    ASSERT_EQ(static_cast<ledger::Result>(result), ledger::Result::LEDGER_OK);
-//    grant_finished_ = true;
-//    grant_ = promotion;
-//    balance_ += 30.0;
-//    if (wait_for_grant_finished_loop_)
-//      wait_for_grant_finished_loop_->Quit();
-//  }
+  void OnPromotionFinished(
+      brave_rewards::RewardsService* rewards_service,
+      const uint32_t result,
+      brave_rewards::Promotion promotion) {
+    ASSERT_EQ(static_cast<ledger::Result>(result), ledger::Result::LEDGER_OK);
+    grant_finished_ = true;
+    grant_ = promotion;
+    balance_ += 30.0;
+    if (wait_for_grant_finished_loop_)
+      wait_for_grant_finished_loop_->Quit();
+  }
 
   void OnPublisherListNormalized(brave_rewards::RewardsService* rewards_service,
                                  const brave_rewards::ContentSiteList& list) {

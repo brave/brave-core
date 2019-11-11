@@ -185,6 +185,10 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnFetchPromotions(
       brave_rewards::RewardsService* rewards_service,
       const uint32_t result,
+      const std::vector<brave_rewards::Promotion>& list) override;
+  void OnPromotionFinished(
+      brave_rewards::RewardsService* rewards_service,
+      const uint32_t result,
       brave_rewards::Promotion promotion) override;
   void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
                        unsigned int result,
@@ -244,8 +248,12 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       const std::string& captcha_id);
 
   void OnAttestPromotion(
+      const std::string& promotion_id,
       const int32_t result,
       std::unique_ptr<brave_rewards::Promotion> promotion);
+
+  void OnUnblindedTokensReady(
+    brave_rewards::RewardsService* rewards_service) override;
 
   // RewardsNotificationsServiceObserver implementation
   void OnNotificationAdded(
@@ -560,17 +568,27 @@ void RewardsDOMHandler::OnWalletProperties(
 void RewardsDOMHandler::OnFetchPromotions(
     brave_rewards::RewardsService* rewards_service,
     const uint32_t result,
-    brave_rewards::Promotion promotion) {
-  if (web_ui()->CanCallJavascript()) {
-    base::DictionaryValue dict;
-    dict.SetInteger("status", result);
-    dict.SetString("promotionId", promotion.promotion_id);
-    dict.SetInteger("type", promotion.type);
-    dict.SetInteger("expiresAt", promotion.expires_at);
-    dict.SetDouble("amount", promotion.amount);
-
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.promotion", dict);
+    const std::vector<brave_rewards::Promotion>& list) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
   }
+
+  base::ListValue promotions;
+  for (auto & item : list) {
+    auto dict = std::make_unique<base::DictionaryValue>();
+    dict->SetString("promotionId", item.promotion_id);
+    dict->SetInteger("type", item.type);
+    dict->SetInteger("status", item.status);
+    dict->SetInteger("expiresAt", item.expires_at);
+    dict->SetDouble("amount", item.amount);
+    promotions.Append(std::move(dict));
+  }
+
+  base::DictionaryValue dict;
+  dict.SetInteger("result", result);
+  dict.SetKey("promotions", std::move(promotions));
+
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.promotions", dict);
 }
 
 void RewardsDOMHandler::FetchPromotions(const base::ListValue* args) {
@@ -632,31 +650,51 @@ void RewardsDOMHandler::AttestPromotion(const base::ListValue *args) {
       solution,
       base::BindOnce(
         &RewardsDOMHandler::OnAttestPromotion,
-        weak_factory_.GetWeakPtr()));
+        weak_factory_.GetWeakPtr(),
+        promotion_id));
 }
 
 void RewardsDOMHandler::OnAttestPromotion(
+    const std::string& promotion_id,
     const int32_t result,
     std::unique_ptr<brave_rewards::Promotion> promotion) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
 
-  base::DictionaryValue finish;
-  finish.SetInteger("result", result);
+  base::DictionaryValue promotion_dict;
+  promotion_dict.SetString("promotionId", promotion_id);
+
   if (promotion) {
-    base::DictionaryValue promotion_dict;
-    promotion_dict.SetString("promotionId", promotion->promotion_id);
     promotion_dict.SetInteger("expiresAt", promotion->expires_at);
     promotion_dict.SetDouble("amount", promotion->amount);
     promotion_dict.SetInteger("type", promotion->type);
-    finish.SetKey("promotion", std::move(promotion_dict));
   }
+
+  base::DictionaryValue finish;
+  finish.SetInteger("result", result);
+  finish.SetKey("promotion", std::move(promotion_dict));
 
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards.promotionFinish",
       finish);
   GetAllBalanceReports();
+}
+
+void RewardsDOMHandler::OnPromotionFinished(
+    brave_rewards::RewardsService* rewards_service,
+    const uint32_t result,
+    brave_rewards::Promotion promotion) {
+  if (result != 0) {
+    return;
+  }
+
+  auto promotion_ptr = std::make_unique<brave_rewards::Promotion>(promotion);
+
+  OnAttestPromotion(
+      promotion.promotion_id,
+      result,
+      std::move(promotion_ptr));
 }
 
 void RewardsDOMHandler::OnGetWalletPassphrase(const std::string& pass) {
@@ -1671,6 +1709,15 @@ void RewardsDOMHandler::OnlyAnonWallet(const base::ListValue* args) {
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards.onlyAnonWallet",
       base::Value(allow));
+}
+
+void RewardsDOMHandler::OnUnblindedTokensReady(
+    brave_rewards::RewardsService* rewards_service) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.unblindedTokensReady");
 }
 
 }  // namespace
