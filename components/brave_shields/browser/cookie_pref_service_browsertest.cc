@@ -9,6 +9,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
@@ -24,6 +25,11 @@ class CookiePrefServiceTest : public InProcessBrowserTest {
   ContentSetting GetCookiePref() {
     return IntToContentSetting(profile()->GetPrefs()->GetInteger(
         "profile.default_content_setting_values.cookies"));
+  }
+
+  void SetThirdPartyCookiePref(bool setting) {
+    profile()->GetPrefs()->SetBoolean(
+        prefs::kBlockThirdPartyCookies, setting);
   }
 
   void SetCookiePref(ContentSetting setting) {
@@ -62,7 +68,14 @@ IN_PROC_BROWSER_TEST_F(CookiePrefServiceTest, CookieControlType_Preference) {
 
   /* ALLOW */
   SetCookiePref(CONTENT_SETTING_ALLOW);
+  SetThirdPartyCookiePref(false);
   EXPECT_EQ(ControlType::ALLOW,
+            brave_shields::GetCookieControlType(profile(), GURL()));
+
+  /* BLOCK_THIRD_PARTY */
+  SetCookiePref(CONTENT_SETTING_ALLOW);
+  SetThirdPartyCookiePref(true);
+  EXPECT_EQ(ControlType::BLOCK_THIRD_PARTY,
             brave_shields::GetCookieControlType(profile(), GURL()));
 
   // Preserve CONTENT_SETTING_SESSION_ONLY
@@ -70,9 +83,11 @@ IN_PROC_BROWSER_TEST_F(CookiePrefServiceTest, CookieControlType_Preference) {
   EXPECT_EQ(ControlType::BLOCK,
             brave_shields::GetCookieControlType(profile(), GURL()));
   SetCookiePref(CONTENT_SETTING_SESSION_ONLY);
+  SetThirdPartyCookiePref(false);
   EXPECT_EQ(ControlType::ALLOW,
             brave_shields::GetCookieControlType(profile(), GURL()));
   SetCookiePref(CONTENT_SETTING_ALLOW);
+  SetThirdPartyCookiePref(false);
   EXPECT_EQ(ControlType::ALLOW,
             brave_shields::GetCookieControlType(profile(), GURL()));
 }

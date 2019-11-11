@@ -8,8 +8,9 @@
 
 #include <string>
 
-#include "components/keyed_service/core/keyed_service.h"
+#include "base/macros.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
+#include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 
 class HostContentSettingsMap;
@@ -21,24 +22,37 @@ namespace brave_shields {
 class CookiePrefService : public KeyedService,
                           public content_settings::Observer {
  public:
-  explicit CookiePrefService(
-      HostContentSettingsMap* host_content_settings_map,
-      PrefService* prefs);
+  explicit CookiePrefService(HostContentSettingsMap* host_content_settings_map,
+                             PrefService* prefs);
   ~CookiePrefService() override;
 
  private:
+  class Lock {
+   public:
+    Lock();
+    ~Lock();
+    bool Try();
+    void Release();
+
+   private:
+    bool locked_;
+    DISALLOW_COPY_AND_ASSIGN(Lock);
+  };
+
   void OnPreferenceChanged();
 
   // content_settings::Observer overrides:
-  void OnContentSettingChanged(
-    const ContentSettingsPattern& primary_pattern,
-    const ContentSettingsPattern& secondary_pattern,
-    ContentSettingsType content_type,
-    const std::string& resource_identifier) override;
+  void OnContentSettingChanged(const ContentSettingsPattern& primary_pattern,
+                               const ContentSettingsPattern& secondary_pattern,
+                               ContentSettingsType content_type,
+                               const std::string& resource_identifier) override;
 
+  Lock lock_;
   HostContentSettingsMap* host_content_settings_map_;
   PrefService* prefs_;
   PrefChangeRegistrar pref_change_registrar_;
+
+  DISALLOW_COPY_AND_ASSIGN(CookiePrefService);
 };
 
 }  // namespace brave_shields
