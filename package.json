@@ -340,11 +340,11 @@
     "jszip": "^3.2.2",
     "prettier-bytes": "^1.0.4",
     "qr-image": "^3.2.0",
-    "react-chrome-redux": "^1.5.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "throttleit": "^1.0.0",
     "unique-selector": "^0.4.1",
+    "webext-redux": "^2.1.4",
     "webtorrent": "^0.107.16"
   }
 }

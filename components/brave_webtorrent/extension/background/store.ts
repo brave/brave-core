@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { createStore } from 'redux'
-import { wrapStore } from 'react-chrome-redux'
+import { wrapStore } from 'webext-redux'
 
 import reducers from './reducers'
 
