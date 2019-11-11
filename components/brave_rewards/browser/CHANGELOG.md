@@ -1,6 +1,69 @@
 ### Rewards service public facing API changelog
 
 ---
+
+### Changed API (11th November 2019)
+##### Related PR
+[https://github.com/brave/brave-core/pull/3918](https://github.com/brave/brave-core/pull/3918)
+##### Description
+With this PR we changed complete logic of how grants work. Instead of using anonize we now used blinded tokens. 
+You can reade more about what is done in this issue [https://github.com/brave/brave-browser/issues/6078](https://github.com/brave/brave-browser/issues/6078).
+For `ClaimPromotion` Android should use the one with `promotion_id` param
+
+##### Change
+
+| | Old version | New version |
+|---|---|---|
+|  Signature    |  `FetchGrants`  | `FetchPromotions`  |
+|  Return value | | |
+|  Parameters   | `const std::string& lang`      | |
+|               | `const std::string& paymentId` | | 
+
+| | Old version | New version |
+|---|---|---|
+|  Signature    |  `GetGrantCaptcha`  | `ClaimPromotion`  |
+|  Return value | | |
+|  Parameters   | `const std::string& promotion_id`   | `ClaimPromotionCallback callback` |
+|               | `const std::string& promotion_type` | | 
+
+| | Old version | New version |
+|---|---|---|
+|  Signature    | | `ClaimPromotion`  |
+|  Return value | | |
+|  Parameters   | | `const std::string& promotion_id` |
+|               | | `AttestPromotionCallback callback` | 
+
+| | Old version | New version |
+|---|---|---|
+|  Signature    |  `SolveGrantCaptcha`  | `AttestPromotion`  |
+|  Return value | | |
+|  Parameters   | `const std::string& solution`    | `const std::string& promotion_id` |
+|               | `const std::string& promotionId` | `const std::string& solution` | 
+|               |                                  | `AttestPromotionCallback callback` | 
+
+| | Old version | New version |
+|---|---|---|
+|  Signature    |  `GetGrantViaSafetynetCheck`  | |
+|  Return value | | |
+|  Parameters   | `const std::string& promotion_id` | |
+
+---
+
+### Refactoring (9th October 2019)
+##### Related PR
+
+[https://github.com/brave/brave-core/pull/3630](https://github.com/brave/brave-core/pull/3630)
+
+##### Description
+
+Refactored and migrated Rewards category from `category` to `type`. This will also effect JS return data so please update any UI which is using `category`
+
+##### Change
+
+Renamed `RewardsCategory` to `RewardsType` and added migration path.
+
+---
+
 ### New API (16th September 2019)
 ##### Related PR
 
@@ -20,19 +83,3 @@ to determinate which country user is in.
 |  Signature    |    | `bool OnlyAnonWallet()`  |
 |  Return value |    | `true` or `false`        |
 |  Parameters   |    |                          |
-
----
-### Refactoring (9th October 2019)
-##### Related PR
-
-[https://github.com/brave/brave-core/pull/3630](https://github.com/brave/brave-core/pull/3630)
-
-##### Description
-
-Refactored and migrated Rewards category from `category` to `type`. This will also effect JS return data so please update any UI which is using `category`
-
-##### Change
-
-Renamed `RewardsCategory` to `RewardsType` and added migration path.
-
----

@@ -21,6 +21,7 @@
 #include "base/guid.h"
 #include "base/i18n/time_formatting.h"
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/json/json_string_value_serializer.h"
 #include "base/time/time.h"
 #include "base/logging.h"
@@ -42,6 +43,7 @@
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_rewards/browser/android_util.h"
 #include "brave/components/brave_rewards/browser/auto_contribution_props.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
@@ -1516,70 +1518,124 @@ void RewardsServiceImpl::TriggerOnPromotion(
     observer.OnFetchPromotions(this, static_cast<int>(result), properties);
 }
 
-void RewardsServiceImpl::OnClaimPromotion(
-    ClaimPromotionCallback callback,
-    const ledger::Result result,
-    const std::string& response) {
-  if (result != ledger::Result::LEDGER_OK) {
-    std::move(callback).Run(static_cast<int32_t>(result), "", "", "");
-    return;
-  }
-
+void ParseCaptchaResponse(
+    const std::string& response,
+    std::string* image,
+    std::string* id,
+    std::string* hint) {
   base::Optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
-    std::move(callback).Run(
-        static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
-        "",
-        "",
-        "");
     return;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
-    std::move(callback).Run(
-        static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
-        "",
-        "",
-        "");
     return;
   }
 
   auto* captcha_image = dictionary->FindKey("captchaImage");
   if (!captcha_image || !captcha_image->is_string()) {
-    std::move(callback).Run(
-        static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
-        "",
-        "",
-        "");
     return;
   }
 
-  auto* hint = dictionary->FindKey("hint");
-  if (!hint || !hint->is_string()) {
-    std::move(callback).Run(
-        static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
-        "",
-        "",
-        "");
+  auto* captcha_hint = dictionary->FindKey("hint");
+  if (!captcha_hint || !captcha_hint->is_string()) {
     return;
   }
 
   auto* captcha_id = dictionary->FindKey("captchaId");
   if (!captcha_id || !captcha_id->is_string()) {
-    std::move(callback).Run(
-        static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
-        "",
-        "",
-        "");
+    return;
+  }
+
+  *image = captcha_image->GetString();
+  *hint = captcha_hint->GetString();
+  *id = captcha_id->GetString();
+}
+
+void RewardsServiceImpl::OnClaimPromotion(
+    ClaimPromotionCallback callback,
+    const ledger::Result result,
+    const std::string& response) {
+  std::string image;
+  std::string hint;
+  std::string id;
+
+  if (result != ledger::Result::LEDGER_OK) {
+    std::move(callback).Run(static_cast<int32_t>(result), image, hint, id);
+    return;
+  }
+
+  ParseCaptchaResponse(response, &image, &id, &hint);
+
+  if (image.empty() || hint.empty() || id.empty()) {
+    std::move(callback).Run(static_cast<int32_t>(result), "", "", "");
     return;
   }
 
   std::move(callback).Run(
       static_cast<int32_t>(result),
-      captcha_image->GetString(),
-      hint->GetString(),
-      captcha_id->GetString());
+      image,
+      hint,
+      id);
+}
+
+void RewardsServiceImpl::AttestationAndroid(
+    const std::string& promotion_id,
+    AttestPromotionCallback callback,
+    const ledger::Result result,
+    const std::string& response) {
+  if (result != ledger::Result::LEDGER_OK) {
+    std::move(callback).Run(static_cast<int32_t>(result), nullptr);
+    return;
+  }
+
+  const std::string nonce = android_util::ParseClaimPromotionResponse(response);
+  if (nonce.empty()) {
+    std::move(callback).Run(
+        static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
+        nullptr);
+    return;
+  }
+
+  #if defined(OS_ANDROID)
+    auto attest_callback =
+        base::BindOnce(&RewardsServiceImpl::OnAttestationAndroid,
+            AsWeakPtr(),
+            promotion_id,
+            callback,
+            nonce);
+    safetynet_check_runner_.performSafetynetCheck(
+        nonce,
+        std::move(attest_callback));
+  #endif
+}
+
+void RewardsServiceImpl::OnAttestationAndroid(
+    const std::string& promotion_id,
+    AttestPromotionCallback callback,
+    const std::string& nonce,
+    bool result,
+    const std::string& token) {
+  if (!result) {
+    std::move(callback).Run(
+        static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
+        nullptr);
+  }
+
+  base::Value solution(base::Value::Type::DICTIONARY);
+  solution.SetStringKey("nonce", nonce);
+  solution.SetStringKey("token", token);
+
+  std::string json;
+  base::JSONWriter::Write(solution, &json);
+
+  bat_ledger_->AttestPromotion(
+      promotion_id,
+      json,
+      base::BindOnce(&RewardsServiceImpl::OnAttestPromotion,
+          AsWeakPtr(),
+          std::move(callback)));
 }
 
 void RewardsServiceImpl::ClaimPromotion(
@@ -1588,11 +1644,26 @@ void RewardsServiceImpl::ClaimPromotion(
     return;
   }
 
-  bat_ledger_->ClaimPromotion(
-      "",
-      base::BindOnce(&RewardsServiceImpl::OnClaimPromotion,
-          AsWeakPtr(),
-          std::move(callback)));
+  auto claim_callback = base::BindOnce(&RewardsServiceImpl::OnClaimPromotion,
+      AsWeakPtr(),
+      std::move(callback));
+
+  bat_ledger_->ClaimPromotion("", std::move(claim_callback));
+}
+
+void RewardsServiceImpl::ClaimPromotion(
+    const std::string& promotion_id,
+    AttestPromotionCallback callback) {
+  if (!Connected()) {
+    return;
+  }
+
+  auto claim_callback = base::BindOnce(&RewardsServiceImpl::AttestationAndroid,
+      AsWeakPtr(),
+      promotion_id,
+      std::move(callback));
+
+  bat_ledger_->ClaimPromotion("", std::move(claim_callback));
 }
 
 void RewardsServiceImpl::GetWalletPassphrase(
@@ -4005,19 +4076,6 @@ void RewardsServiceImpl::RecordBackendP3AStats() const {
 }
 
 #if defined(OS_ANDROID)
-void RewardsServiceImpl::GrantAttestationResult(
-    const std::string& promotion_id, bool result,
-    const std::string& result_string) {
-//  if (result) {
-//    return bat_ledger_->ApplySafetynetToken(promotion_id, result_string);
-//  } else {
-//    LOG(ERROR) << "GrantAttestationResult error: " << result_string;
-//    TriggerOnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED, nullptr);
-//  }
-}
-#endif
-
-#if defined(OS_ANDROID)
 ledger::Environment RewardsServiceImpl::GetServerEnvironmentForAndroid() {
   auto result = ledger::Environment::PRODUCTION;
   bool use_staging = false;
@@ -4281,13 +4339,6 @@ void RewardsServiceImpl::DeleteUnblindedToken(
         callback));
 }
 
-ledger::ClientInfoPtr GetAndroidClientInfo() {
-  auto info = ledger::ClientInfo::New();
-  info->platform = ledger::Platform::ANDROID;
-  info->os = ledger::OperatingSystem::UNDEFINED;
-  return info;
-}
-
 ledger::ClientInfoPtr GetDesktopClientInfo() {
   auto info = ledger::ClientInfo::New();
   info->platform = ledger::Platform::DESKTOP;
@@ -4306,7 +4357,7 @@ ledger::ClientInfoPtr GetDesktopClientInfo() {
 
 ledger::ClientInfoPtr RewardsServiceImpl::GetClientInfo() {
   #if defined(OS_ANDROID)
-    return GetAndroidClientInfo();
+    return android_util::GetAndroidClientInfo();
   #else
     return GetDesktopClientInfo();
   #endif

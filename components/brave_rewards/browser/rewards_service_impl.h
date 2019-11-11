@@ -105,6 +105,9 @@ class RewardsServiceImpl : public RewardsService,
   void FetchWalletProperties() override;
   void FetchPromotions() override;
   void ClaimPromotion(ClaimPromotionCallback callback) override;
+  void ClaimPromotion(
+      const std::string& promotion_id,
+      AttestPromotionCallback callback) override;
   void AttestPromotion(
       const std::string& promotion_id,
       const std::string& solution,
@@ -486,12 +489,26 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnWalletInitialized(ledger::Result result);
 
+  void OnClaimPromotion(
+      ClaimPromotionCallback callback,
+      const ledger::Result result,
+      const std::string& response);
+
+  void AttestationAndroid(
+      const std::string& promotion_id,
+      AttestPromotionCallback callback,
+      const ledger::Result result,
+      const std::string& response);
+
+  void OnAttestationAndroid(
+      const std::string& promotion_id,
+      AttestPromotionCallback callback,
+      const std::string& nonce,
+      bool result,
+      const std::string& token);
+
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
-  void OnClaimPromotion(
-    ClaimPromotionCallback callback,
-    const ledger::Result result,
-    const std::string& response);
   void OnRecoverWallet(
       ledger::Result result,
       double balance);
