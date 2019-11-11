@@ -140,6 +140,16 @@ class DAUTests: XCTestCase {
         XCTAssertNil(params2)
     }
     
+    func testMondayOfCurrentWeekFormatted() {
+        // Making sure gregorian year is showing
+        let yearString = Date().mondayOfCurrentWeekFormatted?.truncate(length: 4, trailing: "")
+        let year = Int(yearString!)!
+        
+        // There is no easy way to mock a different calendar in unit tests, just checking if
+        // year we get looks 'correct' should be good enough.
+        XCTAssert(year > 2018 && year < 2025)
+    }
+    
     func testNonDefaultWoiExplicitDate() {
         let correctWoi = "2018-02-26"
         
