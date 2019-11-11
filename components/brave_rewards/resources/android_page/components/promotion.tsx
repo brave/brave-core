@@ -12,23 +12,22 @@ import {
   GrantComplete,
   GrantWrapper
 } from '../../ui/components'
-import { Type as GrantType } from '../../ui/components/grantClaim'
+import { Type as PromotionType } from '../../ui/components/grantClaim'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
-import { convertProbiToFixed } from '../utils'
 
 type Step = '' | 'complete'
 
 interface State {
-  grantShown: boolean
-  grantStep: Step
+  promotionShow: boolean
+  promotionStep: Step
   loading: boolean
 }
 
 interface Props extends Rewards.ComponentProps {
-  grant: Rewards.Grant
+  promotion: Rewards.Promotion
   onlyAnonWallet?: boolean
 }
 
@@ -42,7 +41,7 @@ type GrantCompleteContentProps = {
   dateTitleText: string
 }
 
-function getGrantWrapperContentProps (grantType: GrantType): GrantWrapperContentProps {
+function getGrantWrapperContentProps (grantType: PromotionType): GrantWrapperContentProps {
   if (grantType === 'ads') {
     return {
       title: getLocale('grantTitleAds'),
@@ -55,7 +54,7 @@ function getGrantWrapperContentProps (grantType: GrantType): GrantWrapperContent
   }
 }
 
-function getGrantCompleteContentProps (grantType: GrantType): GrantCompleteContentProps {
+function getGrantCompleteContentProps (grantType: PromotionType): GrantCompleteContentProps {
   if (grantType === 'ads') {
     return {
       amountTitleText: getLocale('grantAmountTitleAds'),
@@ -69,12 +68,12 @@ function getGrantCompleteContentProps (grantType: GrantType): GrantCompleteConte
 }
 
 // TODO add local when we know what we will get from the server
-class Grant extends React.Component<Props, State> {
+class Promotion extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      grantShown: true,
-      grantStep: '',
+      promotionShow: true,
+      promotionStep: '',
       loading: false
     }
   }
@@ -85,23 +84,23 @@ class Grant extends React.Component<Props, State> {
 
   onClaim = (promotionId?: string) => {
     this.setState({ loading: true })
-    this.actions.getGrantCaptcha(promotionId)
-    this.setState({ grantStep: 'complete' })
+    this.actions.claimPromotion(promotionId)
+    this.setState({ promotionStep: 'complete' })
   }
 
-  onSuccess = () => {
+  onSuccess = (promotionId: string) => {
     this.setState({
-      grantShown: false,
+      promotionShow: false,
       loading: false
     })
-    this.actions.onDeleteGrant()
+    this.actions.deletePromotion(promotionId)
   }
 
-  validateGrant = (tokens?: string) => {
-    const { grant } = this.props
+  validPromotion = (tokens?: string) => {
+    const { promotion } = this.props
     const { safetyNetFailed } = this.props.rewardsData
 
-    if (!tokens || !grant) {
+    if (!tokens || !promotion) {
       return false
     }
 
@@ -110,41 +109,42 @@ class Grant extends React.Component<Props, State> {
       return false
     }
 
-    return (tokens !== '0.0' && grant.expiryTime)
+    return (tokens !== '0.0' && promotion.expiresAt)
   }
 
   render () {
-    const { grant } = this.props
+    const { promotion } = this.props
     const { onlyAnonWallet } = this.props
 
-    if (!grant) {
+    if (!promotion) {
       return null
     }
 
     // Handle that ugp type string can actually be 'android' on android
-    let type: GrantType = grant.type === 'ads' ? 'ads' : 'ugp'
+    let type: PromotionType = promotion.type === 1 ? 'ads' : 'ugp'
     let promoId
     let tokens = '0.0'
     let date = ''
 
-    if (grant.promotionId) {
-      promoId = grant.promotionId
-    }
-    if (grant.probi) {
-      tokens = convertProbiToFixed(grant.probi)
+    if (promotion.promotionId) {
+      promoId = promotion.promotionId
     }
 
-    if (grant.type !== 'ads') {
-      date = new Date(grant.expiryTime).toLocaleDateString()
+    if (promotion.amount) {
+      tokens = promotion.amount.toFixed(1)
     }
 
-    // Guard against null grant statuses
-    const validGrant = this.validateGrant(tokens)
+    if (promotion.type !== 1) { // Rewards.PromotionTypes.ADS
+      date = new Date(promotion.expiresAt).toLocaleDateString()
+    }
+
+    // Guard against null promotion statuses
+    const validPromotion = this.validPromotion(tokens)
 
     return (
       <React.Fragment>
         {
-          (this.state.grantShown && type)
+          (this.state.promotionShow && type)
           ? <GrantClaim
             type={type}
             isMobile={true}
@@ -154,15 +154,15 @@ class Grant extends React.Component<Props, State> {
           : null
         }
         {
-          this.state.grantStep === 'complete' && validGrant
+          this.state.promotionStep === 'complete' && validPromotion
             ? <GrantWrapper
               fullScreen={true}
-              onClose={this.onSuccess}
+              onClose={this.onSuccess.bind(this, promoId)}
               {...getGrantWrapperContentProps(type)}
             >
               <GrantComplete
                 isMobile={true}
-                onClose={this.onSuccess}
+                onClose={this.onSuccess.bind(this, promoId)}
                 amount={tokens}
                 date={date}
                 onlyAnonWallet={onlyAnonWallet}
@@ -187,4 +187,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Grant)
+)(Promotion)
