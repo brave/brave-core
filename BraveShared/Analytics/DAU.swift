@@ -270,7 +270,7 @@ extension Date {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        
+        dateFormatter.calendar = Calendar(identifier: .gregorian)
         return dateFormatter.string(from: monday)
     }
     
