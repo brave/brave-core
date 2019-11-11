@@ -7,6 +7,8 @@ source_set("browser") {
   ]
 
   sources = [
+    "android_util.cc",
+    "android_util.h",
     "switches.cc",
     "switches.h",
     "auto_contribution_props.cc",
