@@ -2,6 +2,8 @@
 
 #import <Foundation/Foundation.h>
 
+#include "base/mac/mac_util.h"
+
 @interface NotificationTimeoutMac : NSObject
 
 - (void)startTimer:(NSUserNotification *)notification;
@@ -62,6 +64,16 @@
 
 @end
 
+namespace base {
+namespace mac {
+
+bool BraveIsAtLeastOS10_15() {
+  return false;
+}
+
+}  // namespace mac
+}  // namespace base
+
 static NotificationTimeoutMac*
     g_notification_platform_bridge_notification_timeout =
         [[[NotificationTimeoutMac alloc] init] retain];
@@ -69,4 +81,6 @@ static NotificationTimeoutMac*
 #define BRAVE_DISPLAY_ \
   [g_notification_platform_bridge_notification_timeout startTimer:toast];
 
+#define IsAtLeastOS10_15 BraveIsAtLeastOS10_15
 #include "../../../../../chrome/browser/notifications/notification_platform_bridge_mac.mm"  // NOLINT
+#undef IsAtLeastOS10_15
