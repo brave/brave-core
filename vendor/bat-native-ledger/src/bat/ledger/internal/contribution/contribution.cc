@@ -13,6 +13,7 @@
 
 #include "base/time/time.h"
 #include "bat/ledger/global_constants.h"
+#include "bat/ledger/internal/bat_util.h"
 #include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
@@ -597,7 +598,7 @@ void Contribution::StartPhaseTwo(const std::string& viewing_id) {
 
 void Contribution::DoDirectTip(
     const std::string& publisher_key,
-    int amount,
+    double amount,
     const std::string& currency,
     ledger::DoDirectTipCallback callback) {
   if (publisher_key.empty()) {
@@ -640,7 +641,7 @@ void Contribution::SavePendingContribution(
 void Contribution::OnDoDirectTipServerPublisher(
     ledger::ServerPublisherInfoPtr server_info,
     const std::string& publisher_key,
-    int amount,
+    double amount,
     const std::string& currency,
     ledger::DoDirectTipCallback callback) {
   auto status = ledger::PublisherStatus::NOT_VERIFIED;
@@ -652,7 +653,7 @@ void Contribution::OnDoDirectTipServerPublisher(
   if (status == ledger::PublisherStatus::NOT_VERIFIED) {
     SavePendingContribution(
         publisher_key,
-        static_cast<double>(amount),
+        amount,
         ledger::RewardsType::ONE_TIME_TIP,
         callback);
     return;
@@ -901,12 +902,12 @@ void Contribution::OnExternalWallets(
 void Contribution::OnExternalWalletServerPublisherInfo(
     ledger::ServerPublisherInfoPtr info,
     const std::string& viewing_id,
-    int amount,
+    double amount,
     const ledger::ExternalWallet& wallet) {
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
   if (!info) {
     const auto probi =
-        braveledger_uphold::ConvertToProbi(std::to_string(amount));
+        braveledger_bat_util::ConvertToProbi(std::to_string(amount));
     ledger_->OnReconcileComplete(
         ledger::Result::LEDGER_ERROR,
         viewing_id,
@@ -922,7 +923,7 @@ void Contribution::OnExternalWalletServerPublisherInfo(
   if (info->status != ledger::PublisherStatus::VERIFIED) {
     SavePendingContribution(
         info->publisher_key,
-        static_cast<double>(amount),
+        amount,
         static_cast<ledger::RewardsType>(reconcile.type_),
         [](const ledger::Result _){});
     return;
@@ -931,7 +932,7 @@ void Contribution::OnExternalWalletServerPublisherInfo(
   uphold_->StartContribution(
       viewing_id,
       info->address,
-      static_cast<double>(amount),
+      amount,
       ledger::ExternalWallet::New(wallet));
 }
 

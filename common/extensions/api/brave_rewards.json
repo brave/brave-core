@@ -799,7 +799,7 @@
           },
           {
             "name": "new_amount",
-            "type": "integer"
+            "type": "number"
           }
         ]
       },

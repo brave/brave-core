@@ -180,7 +180,7 @@ class Contribution {
 
   void DoDirectTip(
       const std::string& publisher_key,
-      int amount,
+      double amount,
       const std::string& currency,
       ledger::DoDirectTipCallback callback);
 
@@ -244,7 +244,7 @@ class Contribution {
   void OnDoDirectTipServerPublisher(
     ledger::ServerPublisherInfoPtr server_info,
     const std::string& publisher_key,
-    int amount,
+    double amount,
     const std::string& currency,
     ledger::DoDirectTipCallback callback);
 
@@ -273,7 +273,7 @@ class Contribution {
   void OnExternalWalletServerPublisherInfo(
       ledger::ServerPublisherInfoPtr info,
       const std::string& viewing_id,
-      int amount,
+      double amount,
       const ledger::ExternalWallet& wallet);
 
   void OnUpholdAC(ledger::Result result,

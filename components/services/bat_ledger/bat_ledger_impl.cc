@@ -430,7 +430,7 @@ void BatLedgerImpl::OnDoDirectTip(
 }
 
 void BatLedgerImpl::DoDirectTip(const std::string& publisher_id,
-                                int32_t amount,
+                                double amount,
                                 const std::string& currency,
                                 DoDirectTipCallback callback) {
   // deleted in OnDoDirectTip

@@ -180,9 +180,9 @@ class RewardsService : public KeyedService {
   virtual void GetPublisherBanner(const std::string& publisher_id,
                                   GetPublisherBannerCallback callback) = 0;
   virtual void OnTip(const std::string& publisher_key,
-                     int amount,
+                     double amount,
                      bool recurring) = 0;
-  virtual void OnTip(const std::string& publisher_key, int amount,
+  virtual void OnTip(const std::string& publisher_key, double amount,
       bool recurring, std::unique_ptr<brave_rewards::ContentSite> site) = 0;
   virtual void RemoveRecurringTipUI(const std::string& publisher_key) = 0;
   virtual void GetRecurringTipsUI(GetRecurringTipsCallback callback) = 0;
@@ -236,7 +236,7 @@ class RewardsService : public KeyedService {
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
   virtual void SaveRecurringTipUI(const std::string& publisher_key,
-                                  const int amount,
+                                  const double amount,
                                   SaveRecurringTipCallback callback) = 0;
 
   virtual const RewardsNotificationService::RewardsNotificationsMap&

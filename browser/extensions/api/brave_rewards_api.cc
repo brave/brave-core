@@ -672,7 +672,7 @@ void BraveRewardsGetRecurringTipsFunction::OnGetRecurringTips(
     for (auto const& item : *list) {
       auto tip = std::make_unique<base::DictionaryValue>();
       tip->SetString("publisherKey", item.id);
-      tip->SetInteger("amount", item.weight);
+      tip->SetDouble("amount", item.weight);
       recurringTips->Append(std::move(tip));
     }
   }

@@ -99,7 +99,7 @@ interface BatLedger {
       (ledger.mojom.PublisherBanner? banner);
 
   DoDirectTip(string publisher_id,
-              int32 amount,
+              double amount,
               string currency) => (ledger.mojom.Result result);
 
   RemoveRecurringTip(string publisher_key) => (ledger.mojom.Result result);

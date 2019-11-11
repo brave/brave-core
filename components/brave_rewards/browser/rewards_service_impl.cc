@@ -2352,7 +2352,7 @@ void RewardsServiceImpl::OnTipPublisherInfoSaved(const ledger::Result result,
 }
 
 void RewardsServiceImpl::OnTip(const std::string& publisher_key,
-                               int amount,
+                               double amount,
                                bool recurring,
                                ledger::PublisherInfoPtr publisher_info) {
   if (recurring) {
@@ -2437,7 +2437,7 @@ void RewardsServiceImpl::OnSaveRecurringTipUI(
 
 void RewardsServiceImpl::SaveRecurringTipUI(
     const std::string& publisher_key,
-    const int amount,
+    const double amount,
     SaveRecurringTipCallback callback) {
   ledger::ContributionInfoPtr info = ledger::ContributionInfo::New();
   info->publisher = publisher_key;
@@ -2972,7 +2972,7 @@ void RewardsServiceImpl::GetRewardsInternalsInfo(
 
 void RewardsServiceImpl::OnTip(
     const std::string& publisher_key,
-    int amount,
+    double amount,
     bool recurring) {
   OnTip(publisher_key, amount, recurring,
       static_cast<ledger::PublisherInfoPtr>(nullptr));
@@ -2980,7 +2980,7 @@ void RewardsServiceImpl::OnTip(
 
 void RewardsServiceImpl::OnTip(
     const std::string& publisher_key,
-    const int amount,
+    const double amount,
     const bool recurring,
     std::unique_ptr<brave_rewards::ContentSite> site) {
 

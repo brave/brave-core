@@ -7,7 +7,6 @@
 
 #include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
@@ -48,27 +47,6 @@ std::string GetFeeAddress() {
   return ledger::_environment == ledger::Environment::PRODUCTION
       ? kFeeAddressProduction
       : kFeeAddressStaging;
-}
-
-std::string ConvertToProbi(const std::string& amount) {
-  if (amount.empty()) {
-    return "0";
-  }
-
-  auto vec = base::SplitString(
-      amount, ".", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-
-  const std::string probi = "000000000000000000";
-
-  if (vec.size() == 1) {
-    return vec.at(0) + probi;
-  }
-
-  const auto before_dot = vec.at(0);
-  const auto after_dot = vec.at(1);
-  const auto rest_probi = probi.substr(after_dot.size());
-
-  return before_dot + after_dot + rest_probi;
 }
 
 std::string GetVerifyUrl(const std::string& state) {

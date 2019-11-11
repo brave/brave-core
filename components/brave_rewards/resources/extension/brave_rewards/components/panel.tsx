@@ -454,7 +454,7 @@ export class Panel extends React.Component<Props, State> {
   }
 
   onContributionAmountChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newValue = parseInt(event.target.value, 10)
+    const newValue = parseFloat(event.target.value)
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
 
     if (!publisher || !publisher.publisher_key) {
