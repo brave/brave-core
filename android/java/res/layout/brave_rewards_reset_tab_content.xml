@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<!-- Used by BraveRewardsPreferences to replace the default layout
+     of a PreferenceFragment and add a footer button. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+  <TextView
+      android:id="@+id/reset_brave_rewards"
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:layout_marginTop="10dp"
+      android:layout_marginStart="20dp"
+      android:layout_marginEnd="20dp"
+      android:textSize="16sp"
+      android:text="@string/reset_brave_rewards_option_description" />
+
+</LinearLayout>
+
