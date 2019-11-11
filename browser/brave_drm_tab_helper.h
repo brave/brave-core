@@ -40,10 +40,10 @@ class BraveDrmTabHelper final
   // chooses dismiss/deny, additional request is added again only when new
   // main frame navigation is started.
   bool is_permission_requested_ = false;
-#endif
 
   // True if we are notified that a page requested widevine availability.
   bool is_widevine_requested_ = false;
+#endif
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_DRM_TAB_HELPER_H_

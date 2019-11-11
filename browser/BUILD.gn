@@ -161,6 +161,7 @@ source_set("browser_process") {
     "themes",
     "//services/network/public/cpp",
     "//services/service_manager/embedder",
+    "//third_party/widevine/cdm:buildflags",
     "//ui/base",
   ]
 
@@ -256,7 +257,6 @@ source_set("browser_process") {
   if (bundle_widevine_cdm || enable_widevine_cdm_component) {
     deps += [
       "//brave/browser/widevine",
-      "//third_party/widevine/cdm:buildflags",
     ]
   }
 
