@@ -255,11 +255,11 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
 
 #pragma mark - Reporting
 
-- (void)reportLoadedPageWithURL:(NSURL *)url html:(NSString *)html
+- (void)reportLoadedPageWithURL:(NSURL *)url innerText:(NSString *)text
 {
   if (![self isAdsServiceRunning]) { return; }
   const auto urlString = std::string(url.absoluteString.UTF8String);
-  ads->OnPageLoaded(urlString, std::string(html.UTF8String));
+  ads->OnPageLoaded(urlString, std::string(text.UTF8String));
 }
 
 - (void)reportMediaStartedWithTabId:(NSInteger)tabId
