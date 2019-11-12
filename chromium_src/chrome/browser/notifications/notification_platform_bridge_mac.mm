@@ -64,14 +64,10 @@
 
 @end
 
-#define IsAtLeastOS10_15 IsAtLeastOS10_15_ChromiumImpl
-#include "../../../../../chrome/browser/notifications/notification_platform_bridge_mac.mm"  // NOLINT
-#undef IsAtLeastOS10_15
-
 namespace base {
 namespace mac {
 
-bool IsAtLeastOS10_15() {
+bool BraveIsAtLeastOS10_15() {
   return false;
 }
 
@@ -85,4 +81,6 @@ static NotificationTimeoutMac*
 #define BRAVE_DISPLAY_ \
   [g_notification_platform_bridge_notification_timeout startTimer:toast];
 
+#define IsAtLeastOS10_15 BraveIsAtLeastOS10_15
 #include "../../../../../chrome/browser/notifications/notification_platform_bridge_mac.mm"  // NOLINT
+#undef IsAtLeastOS10_15
