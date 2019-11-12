@@ -16,6 +16,12 @@ struct WalletActionNotification {
       action: Strings.CLAIM.uppercased()
     )
     
+    static let adGrant = Category(
+      icon: UIImage(frameworkResourceNamed: "icn-ads"),
+      title: Strings.NotificationAdsTitle,
+      action: Strings.CLAIM.uppercased()
+    )
+    
     static let tipsProcessed = Category(
       icon: UIImage(frameworkResourceNamed: "icn-contribute"),
       title: Strings.NotificationRecurringTipTitle,

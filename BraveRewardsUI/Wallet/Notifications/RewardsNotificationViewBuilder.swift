@@ -70,7 +70,7 @@ struct RewardsNotificationViewBuilder {
       category = .grant
     case .grantAds:
       body = Strings.NotificationEarningsClaimDefault
-      category = .grant
+      category = .adGrant
     case .tipsProcessed:
       body = Strings.NotificationTipsProcessedBody
       category = .tipsProcessed
