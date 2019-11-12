@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Ολοκλήρωση επαλήθευσης πορτοφολιού",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "διακριτικά",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Διακριτικό",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Επιχορηγήσεις Κέρματος",
+    "description": "BAT Tokens Grant Text"
   }
 }

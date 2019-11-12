@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "সম্পূর্ণ ওয়ালেট যাচাইকরণ",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "টোকেনসমূহ",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "টোকেন",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "টোকেন মঞ্জুরি",
+    "description": "BAT Tokens Grant Text"
   }
 }

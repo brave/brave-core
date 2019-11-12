@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Baigti piniginės patvirtinimą",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "žetonai",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Žetonas",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Atpažinimo ženklo suteikimas",
+    "description": "BAT Tokens Grant Text"
   }
 }

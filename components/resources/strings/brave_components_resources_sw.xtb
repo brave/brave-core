@@ -284,7 +284,8 @@
 <translation id="5736183007277264868">Kwa sasa hakuna ruzuku ya kianzio.</translation>
 <translation id="8307851765167460403">Hakuna shughuli bado…</translation>
 <translation id="8589748782214271192">Hapana, asante</translation>
-<translation id="8051372105644249165">Hakunza vianzio vya kutosha. Tafadhali</translation>
+<translation id="4420084541981425487">Hakunza {{currency}} vya kutosha.</translation>
+<translation id="6330068272761277483">Hakunza {{currency}} vya kutosha. Tafadhali</translation>
 <translation id="3630697955794050612">zima</translation>
 <translation id="4921250468871504777">sawa</translation>
 <translation id="7866482334467279021">washa</translation>
@@ -364,7 +365,9 @@
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Ruzuku za Kianzio Zilizoombwa</translation>
+<translation id="5015443703424816075">Kianzio</translation>
 <translation id="1634828734222219955">Jumla</translation>
+<translation id="1726566769229204312">Ruzuku za Kianzio</translation>
 <translation id="3535654229833214438">Miamala</translation>
 <translation id="1605521356929094020">Washa Matangazo</translation>
 <translation id="8987812599455325915">Hii inawezesha matangazo pamoja na michango ya kiotomati.  Unaweza kuyawasha au kuzima kila moja kivyake muda wowote.</translation>

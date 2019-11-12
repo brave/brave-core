@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Zakończ weryfikację portfela",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "tokeny",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Token",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Przyznane tokeny",
+    "description": "BAT Tokens Grant Text"
   }
 }

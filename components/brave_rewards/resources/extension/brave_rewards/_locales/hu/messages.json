@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Komplett pénztárca ellenőrzés",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "tokenek",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Token",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Tokenadományok",
+    "description": "BAT Tokens Grant Text"
   }
 }

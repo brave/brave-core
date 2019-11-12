@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Hoàn thành xác thực ví",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "mã thông báo",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Token",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Tặng Token",
+    "description": "BAT Tokens Grant Text"
   }
 }

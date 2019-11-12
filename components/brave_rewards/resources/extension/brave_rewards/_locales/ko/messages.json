@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "지갑 인증 완료",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "토큰",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "토큰",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "토큰 보조금",
+    "description": "BAT Tokens Grant Text"
   }
 }

@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Gennemfør tegnebogsverificering",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "poletter",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Token",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Mønttilskud ",
+    "description": "BAT Tokens Grant Text"
   }
 }

@@ -79,7 +79,7 @@
 <translation id="3829010735958850433">לדלג על סיור קבלת הפנים</translation>
 <translation id="1201402288615127009">הבא</translation>
 <translation id="1919345977826869612">פרסומות</translation>
-<translation id="5946611334574299206">אגרו Tokens על ידי צפייה בפרסומות ב-Brave. הפרסומות המוצגות לכם מבוססות על תחומי העניין שלכם, כפי שנגזרו מהתנהגות הגלישה שלכם. שום מידע אישי או היסטוריית גלישה לעולם לא יוצאים מהדפדפן.</translation>
+<translation id="5698387814910197501">אגרו {{currency}} על ידי צפייה בפרסומות ב-Brave. הפרסומות המוצגות לכם מבוססות על תחומי העניין שלכם, כפי שנגזרו מהתנהגות הגלישה שלכם. שום מידע אישי או היסטוריית גלישה לעולם לא יוצאים מהדפדפן.</translation>
 <translation id="6112368337882254910">תרומה אוטומטית</translation>
 <translation id="3742599705619405136">שיטה אוטומטית לתמיכה במו"לים וביוצרי תוכן. הגדר/י תשלום חודשים והמשך/י לגלוש כרגיל. האתרים המאומתים ע"י Brave שביקרת בהם יקבלו את התרומות שלך באופן אוטומטי, על פי מידת העניין שלך שנמדדת על ידי Brave.</translation>
 <translation id="20281847067919078">תגמולים מוערכים שממתינים</translation>
@@ -261,7 +261,7 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="418343137736963579">המספר הכולל של האתרים שאין באפשרותכם "לתרום להם אוטומטית":</translation>
 <translation id="1759104587873258696">פג תוקף ב-</translation>
 <translation id="6149218349077925111">עבור</translation>
-<translation id="7314491422865740556">Tokens שפג תוקפם לפני השימוש יוחזרו באופן אוטומטי למאגר גידול המשתמשים של Brave.</translation>
+<translation id="7513117072433487074">{{currency}} שפג תוקפם לפני השימוש יוחזרו באופן אוטומטי למאגר גידול המשתמשים של Brave.</translation>
 <translation id="279567716178902927">תאריך תפוגת מענק</translation>
 <translation id="2104073734684466851">מענקים</translation>
 <translation id="1389143276807887637">ייבוא</translation>
@@ -287,7 +287,8 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="5736183007277264868">בשלב זה מענקי אסימונים אינם זמינים.</translation>
 <translation id="8307851765167460403">אין פעילויות עדיין…</translation>
 <translation id="8589748782214271192">לא, תודה</translation>
-<translation id="8051372105644249165">אין מספיק אימונים. בבקשה</translation>
+<translation id="4420084541981425487">אין מספיק {{currency}}.</translation>
+<translation id="6330068272761277483">אין מספיק {{currency}}. בבקשה</translation>
 <translation id="3630697955794050612">כבוי</translation>
 <translation id="4921250468871504777">אוקיי</translation>
 <translation id="7866482334467279021">פעיל</translation>
@@ -367,7 +368,9 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">לייטקוין (LTC)</translation>
 <translation id="4914597931214386232">מענקי אסימון נתבעו</translation>
+<translation id="5015443703424816075">טוקן</translation>
 <translation id="1634828734222219955">סך הכל</translation>
+<translation id="1726566769229204312">מענק אסימונים</translation>
 <translation id="3535654229833214438">העברות</translation>
 <translation id="1605521356929094020">הפעל פרסומות</translation>
 <translation id="8987812599455325915">פעולה זו מאפשרת הן פרסומות והן תרומות אוטומטיות. ניתן להפעיל או לכבות אפשרויות אלו בנפרד בכל עת.</translation>

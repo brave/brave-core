@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Завершити підтвердження гаманця",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "токени",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Токен",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Гранти з токенів",
+    "description": "BAT Tokens Grant Text"
   }
 }

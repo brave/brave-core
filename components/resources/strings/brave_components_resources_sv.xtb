@@ -79,7 +79,7 @@
 <translation id="3829010735958850433">Hoppa över välkomsttur</translation>
 <translation id="1201402288615127009">Nästa</translation>
 <translation id="1919345977826869612">Annonser</translation>
-<translation id="5946611334574299206">Tjäna token genom att visa annonser i Brave. Annonser som visas baseras på dina intressen, taget från ditt surfbeteende. Ingen personlig information eller sökhistorik lämnar någonsin din webbläsare.</translation>
+<translation id="5698387814910197501">Tjäna {{currency}} genom att se annonser i Brave. Annonser som visas baseras på dina intressen, taget från ditt surfbeteende. Ingen personlig information eller sökhistorik lämnar någonsin din webbläsare.</translation>
 <translation id="6112368337882254910">Bidra automatiskt</translation>
 <translation id="3742599705619405136">Ett automatiskt sätt att stödja utgivare och contentskapare. Ställ in en månatlig betalning och surfa som vanligt. De Braveverifierade webbplatserna du besöker kommer att ta emot dina bidrag automatiskt, baserat på din uppmärksamhet som den mätts av Brave.</translation>
 <translation id="20281847067919078">Beräknade väntande belöningar</translation>
@@ -258,7 +258,7 @@
 <translation id="418343137736963579">Totala antalet sidor du exluderade från auto-bidrag:</translation>
 <translation id="1759104587873258696">Går ut den</translation>
 <translation id="6149218349077925111">för</translation>
-<translation id="7314491422865740556">Token som inte används innan utgångsdatum skickas automatiskt tillbaka till Braves tillväxtpool för användare.</translation>
+<translation id="7513117072433487074">{{currency}} som inte används innan utgångsdatum återgår automatiskt till Braves pool för användartillväxt.</translation>
 <translation id="279567716178902927">Medgivandets utgångsdatum</translation>
 <translation id="2104073734684466851">Utgivningar</translation>
 <translation id="1389143276807887637">importera</translation>
@@ -284,7 +284,8 @@
 <translation id="5736183007277264868">Just nu finns inget erbjudande om token tillgängligt.</translation>
 <translation id="8307851765167460403">Ingen aktivitet än…</translation>
 <translation id="8589748782214271192">Nej tack</translation>
-<translation id="8051372105644249165">Inte tillräckligt många token. Vänligen</translation>
+<translation id="4420084541981425487">Inte tillräckligt med {{currency}}.</translation>
+<translation id="6330068272761277483">Inte tillräckligt med {{currency}}. Vänligen</translation>
 <translation id="3630697955794050612">av</translation>
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">på</translation>
@@ -364,7 +365,9 @@
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Tilldelning av token utnyttjades</translation>
+<translation id="5015443703424816075">Token</translation>
 <translation id="1634828734222219955">Total</translation>
+<translation id="1726566769229204312">Tilldelning av token</translation>
 <translation id="3535654229833214438">Transaktioner</translation>
 <translation id="1605521356929094020">Aktivera annonser</translation>
 <translation id="8987812599455325915">Detta sätter på både Brave-annonser och Auto-bidrag. Du kan stänga av eller sätta på dem separat när som helst.</translation>

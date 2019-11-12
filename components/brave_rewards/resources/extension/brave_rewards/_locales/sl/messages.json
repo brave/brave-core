@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Zaključi preverjanje denarnice",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "žetoni",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Žeton",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Dodeljeni žetoni",
+    "description": "BAT Tokens Grant Text"
   }
 }

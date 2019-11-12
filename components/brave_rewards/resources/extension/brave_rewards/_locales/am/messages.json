@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "የኪስ ቦርሳ ማረጋገጥ ተጠናቋል",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "ቶክንስ",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "ተለዋጭ ስም",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "የቶክን ፍቃዶች",
+    "description": "BAT Tokens Grant Text"
   }
 }

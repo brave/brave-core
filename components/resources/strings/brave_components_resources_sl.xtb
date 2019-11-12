@@ -79,7 +79,7 @@
 <translation id="3829010735958850433">Preskoči uvodno predstavitev</translation>
 <translation id="1201402288615127009">Naprej</translation>
 <translation id="1919345977826869612">Oglasi</translation>
-<translation id="5946611334574299206">Pridobite žetone z ogledom oglasov v brskalniku Brave. Oglasi so izbrani glede na vaša zanimanja oziroma vaše izbire med brskanjem. Nobeni osebni podatki ali zgodovina brskanja nikoli ne zapustijo vašega brskalnika.</translation>
+<translation id="5698387814910197501">Pridobite {{currency}} z ogledom oglasov v brskalniku Brave. Oglasi so izbrani glede na vaša zanimanja oziroma vaše izbire med brskanjem. Nobeni osebni podatki ali zgodovina brskanja nikoli ne zapustijo vašega brskalnika.</translation>
 <translation id="6112368337882254910">Samodejni prispevek</translation>
 <translation id="3742599705619405136">Samodejni način, s katerim lahko podpirate osebe, ki objavljajo vsebino, in ustvarjalce vsebine. Izberite mesečno plačilo in brskajte kot običajno. Strani, preverjene s strani preverjene osebe Brave, ki jih obiščete, bodo samodejno prejele vaše prispevke na podlagi vaše pozornosti, ki jo izmeri Brave.</translation>
 <translation id="20281847067919078">Ocenjene čakajoče nagrade</translation>
@@ -258,7 +258,7 @@
 <translation id="418343137736963579">Skupno število spletnih mest, ki ste jih izključili iz samodejnih donacij:</translation>
 <translation id="1759104587873258696">poteče</translation>
 <translation id="6149218349077925111">za</translation>
-<translation id="7314491422865740556">Žetoni, ki ne bodo izkoriščeni do datuma izteka veljavnosti, bodo samodejno vrnjeni v zbirko Brave User Growth Pool.</translation>
+<translation id="7513117072433487074">{{currency}}, ki ne bodo izkoriščeni do datuma izteka veljavnosti, bodo samodejno vrnjeni v zbirko Brave User Growth Pool.</translation>
 <translation id="279567716178902927">Datum izteka veljavnosti sredstev</translation>
 <translation id="2104073734684466851">Sredstva</translation>
 <translation id="1389143276807887637">uvoz</translation>
@@ -284,7 +284,8 @@
 <translation id="5736183007277264868">Trenutno ni na voljo sredstev v obliki žetonov.</translation>
 <translation id="8307851765167460403">Ni še dejavnosti…</translation>
 <translation id="8589748782214271192">Ne, hvala.</translation>
-<translation id="8051372105644249165">Ni dovolj žetonov.</translation>
+<translation id="4420084541981425487">Ni dovolj {{currency}}.</translation>
+<translation id="6330068272761277483">Ni dovolj {{currency}}.</translation>
 <translation id="3630697955794050612">izklop</translation>
 <translation id="4921250468871504777">V redu</translation>
 <translation id="7866482334467279021">vklop</translation>
@@ -364,7 +365,9 @@
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Zahteva za sredstva v obliki žetonov</translation>
+<translation id="5015443703424816075">Žeton</translation>
 <translation id="1634828734222219955">Skupno</translation>
+<translation id="1726566769229204312">Dodeljeni žetoni</translation>
 <translation id="3535654229833214438">Transakcije</translation>
 <translation id="1605521356929094020">Vklopite oglase</translation>
 <translation id="8987812599455325915">Omogoča tako oglase kot tudi samodejne donacije. Lahko jih vklopite ali izklopite kadar koli.</translation>

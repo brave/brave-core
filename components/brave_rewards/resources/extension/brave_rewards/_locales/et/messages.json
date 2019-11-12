@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Lõpetage rahakoti kinnitamine",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "tokenid",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Luba",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Tokenivõimalused",
+    "description": "BAT Tokens Grant Text"
   }
 }

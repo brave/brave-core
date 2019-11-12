@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Kamilisha uthibitishaji pochi",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "vianzio",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Kianzio",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Ruzuku za Kianzio",
+    "description": "BAT Tokens Grant Text"
   }
 }

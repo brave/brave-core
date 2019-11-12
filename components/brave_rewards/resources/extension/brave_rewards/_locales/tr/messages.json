@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Tam cüzdan onayı",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "tokenler",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Token",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Token Bağışları",
+    "description": "BAT Tokens Grant Text"
   }
 }

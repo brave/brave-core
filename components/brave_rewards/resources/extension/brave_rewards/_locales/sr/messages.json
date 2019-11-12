@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Dovršite verifikaciju novčanika",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "tokeni",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Token",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Žeton Grants",
+    "description": "BAT Tokens Grant Text"
   }
 }

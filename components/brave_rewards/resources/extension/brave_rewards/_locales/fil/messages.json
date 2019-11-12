@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Kumpletuhin ang pag-verify ng wallet",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "mga token",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Token",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Mga Token Grant",
+    "description": "BAT Tokens Grant Text"
   }
 }

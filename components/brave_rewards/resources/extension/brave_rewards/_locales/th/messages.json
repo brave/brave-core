@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "ยืนยันวอลเล็ตให้เสร็จสิ้น",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "เหรียญ",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Token",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "จำนวนโทเคนที่ให้",
+    "description": "BAT Tokens Grant Text"
   }
 }
