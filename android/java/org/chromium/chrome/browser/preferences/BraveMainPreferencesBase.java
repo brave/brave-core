@@ -40,6 +40,7 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
     private static final String PREF_CONTENT_SETTINGS = "content_settings";
     private static final String PREF_ABOUT_CHROME = "about_chrome";
     private static final String PREF_WELCOME_TOUR = "welcome_tour";
+    private static final String PREF_BRAVE_REWARDS = "brave_rewards";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
 
@@ -106,6 +107,7 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
         int order = findPreference(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE).getOrder();
         findPreference(PREF_ADVANCED_SECTION).setOrder(++order);
         findPreference(PREF_PRIVACY).setOrder(++order);
+        findPreference(PREF_BRAVE_REWARDS).setOrder(++order);
         findPreference(PREF_SYNC).setOrder(++order);
         findPreference(PREF_ACCESSIBILITY).setOrder(++order);
         findPreference(PREF_CONTENT_SETTINGS).setOrder(++order);

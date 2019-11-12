@@ -728,6 +728,21 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BRAVE_ADS_OFFER_TEXT" desc="Text for Brave Ads offer.">
         Earn Basic Attention Token for viewing privacy preserving ads in Brave Rewards.
       </message>
+      <message name="IDS_RESET_BRAVE_REWARDS_ERROR_TITLE" desc="Title for Brave Rewards reset error dialog.">
+        Reset Error
+      </message>
+      <message name="IDS_RESET_BRAVE_REWARDS_ERROR_DESCRIPTION" desc="Description for Brave Rewards reset error dialog.">
+        There was an error resetting Brave Rewards. Please relaunch Brave and try again.
+      </message>
+      <message name="IDS_SHOW_ADS_WHEN_BRAVE_IS_NOT_IN_USE" desc="Title for Show Ads when Brave is not in use option in Brave rewards settings.">
+        Show Ads when Brave is not in use
+      </message>
+      <message name="IDS_RESET_BRAVE_REWARDS_OPTION" desc="Title for preference to reset Brave Rewards.">
+        Reset Brave Rewards
+      </message>
+      <message name="IDS_RESET_BRAVE_REWARDS_OPTION_DESCRIPTION" desc="Description for preference to reset Brave Rewards.">
+        This will delete your Brave wallet and reset all of your Brave Rewards data
+      </message>
     </messages>
   </release>
 </grit>

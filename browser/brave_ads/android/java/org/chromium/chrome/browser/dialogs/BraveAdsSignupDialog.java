@@ -9,32 +9,32 @@ package org.chromium.chrome.browser.dialogs;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
-import android.widget.ImageView;
 import android.view.View;
-import java.lang.System;
+import android.widget.ImageView;
 
-import org.chromium.base.annotations.CalledByNative;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
+import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
-import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.ChromeFeatureList;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.preferences.BraveRewardsPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.PackageUtils;
-import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-// TODO(jocelyn): import this after rewards page are added.
-// import org.chromium.chrome.browser.preferences.BraveRewardsPreferences;
+
+import java.lang.System;
 
 public class BraveAdsSignupDialog {
 
@@ -95,9 +95,7 @@ public class BraveAdsSignupDialog {
 
     @CalledByNative
     public static boolean showAdsInBackground() {
-      return false;
-      // TODO(jocelyn): Remove above and uncomment this when rewards page are added.
-      // return BraveRewardsPreferences.getPrefAdsInBackgroundEnabled();
+        return BraveRewardsPreferences.getPrefAdsInBackgroundEnabled();
     }
 
     private static void enqueueOnboardingNotification(Context context) {

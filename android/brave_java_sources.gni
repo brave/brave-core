@@ -5,8 +5,8 @@
 
 import("//brave/browser/brave_ads/android/java_sources.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
-import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/android/java_sources.gni")
+import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 
 brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveActivity.java",
@@ -52,6 +52,9 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePreferenceManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePrefServiceBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePrivateSearchEnginePreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/preferences/BraveRewardsPreferences.java",
+  "../../brave/android/java/org/chromium/chrome/browser/preferences/BraveRewardsResetPreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/preferences/BraveRewardsResetPreferenceDialog.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BraveSearchEngineAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BraveSearchEnginePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BraveSearchEngineUtils.java",
