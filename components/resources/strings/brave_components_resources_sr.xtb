@@ -79,7 +79,7 @@
 <translation id="3829010735958850433">Preskočite obilazak dobrodošlice</translation>
 <translation id="1201402288615127009">Даље</translation>
 <translation id="1919345977826869612">Oglasi</translation>
-<translation id="5946611334574299206">Zaradite tokene tako što ćete gledati oglase u Brave-u. Oglasi su prikazani na osnovu vaših interesa, kako je zaključeno iz vašeg ponašanja na pregledaču. Nijedna privatna informacija ili istorija pregledanja nikad ne napušta vaš pregledač.</translation>
+<translation id="5698387814910197501">Zaradite {{currency}} tako što ćete gledati oglase u Brave-u. Oglasi su prikazani na osnovu vaših interesa, kako je zaključeno iz vašeg ponašanja na pregledaču. Nijedna privatna informacija ili istorija pregledanja nikad ne napušta vaš pregledač.</translation>
 <translation id="6112368337882254910">Automatski doprinosi</translation>
 <translation id="3742599705619405136">Automatski način podrške izdavačima i kreatorima sadržaja. Podesite mesečno plaćanje i normalno pregledavajte. Porvrđene lokacije od strane Brave-a koje posetite automatski će primiti vaše doprinose, na osnovu vaše pažnje koju meri Brave.</translation>
 <translation id="20281847067919078">Procenjene nagrade na čekanju</translation>
@@ -258,7 +258,7 @@
 <translation id="418343137736963579">Ukupan broj lokacija koje ste isključili iz automatskog doprinošenja:</translation>
 <translation id="1759104587873258696">ističe</translation>
 <translation id="6149218349077925111">za</translation>
-<translation id="7314491422865740556">Tokeni koji se ne iskoriste pre datuma isteka će se automatski vratiti u Brave skup novih korisnika.</translation>
+<translation id="7513117072433487074">{{currency}} koji se ne iskoriste pre datuma isteka će se automatski vratiti u Brave skup novih korisnika.</translation>
 <translation id="279567716178902927">Datum isteka odobrenja</translation>
 <translation id="2104073734684466851">Grants</translation>
 <translation id="1389143276807887637">Uvezi</translation>
@@ -284,7 +284,8 @@
 <translation id="5736183007277264868">Trenutno nema dostupnih dodela tokena.</translation>
 <translation id="8307851765167460403">Još uvek nema aktivnosti…</translation>
 <translation id="8589748782214271192">Ne, hvala</translation>
-<translation id="8051372105644249165">Nema dovoljno tokena. Molimo</translation>
+<translation id="4420084541981425487">Nema dovoljno {{currency}}.</translation>
+<translation id="6330068272761277483">Nema dovoljno {{currency}}. Molimo</translation>
 <translation id="3630697955794050612">Isključeno</translation>
 <translation id="4921250468871504777">u redu</translation>
 <translation id="7866482334467279021">uključeno</translation>
@@ -364,7 +365,9 @@
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Traženi tokeni odobrenja</translation>
+<translation id="5015443703424816075">Token</translation>
 <translation id="1634828734222219955">Ukupno</translation>
+<translation id="1726566769229204312">Žeton Grants</translation>
 <translation id="3535654229833214438">Transakcije</translation>
 <translation id="1605521356929094020">Uključite Ads</translation>
 <translation id="8987812599455325915">Ovo omogućava i oglase i automatske doprinose. Možete ih uključiti ili isključiti odvojeno u bilo kom trenutku.</translation>

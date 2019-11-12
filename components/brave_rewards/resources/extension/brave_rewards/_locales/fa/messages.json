@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "تکمیل تأیید کیف پول",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "توکن‌ها",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "رمزیاب",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "امتیازهای توکن",
+    "description": "BAT Tokens Grant Text"
   }
 }

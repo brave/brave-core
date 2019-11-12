@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Viimeistele lompakon vahvistus",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "poletit",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Poletti",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Token-tuet",
+    "description": "BAT Tokens Grant Text"
   }
 }

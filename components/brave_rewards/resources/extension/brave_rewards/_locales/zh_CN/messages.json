@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "完成钱包验证",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "令牌",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "代币",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "代币发放",
+    "description": "BAT Tokens Grant Text"
   }
 }

@@ -79,7 +79,7 @@
 <translation id="3829010735958850433">Spring over velkomsttur</translation>
 <translation id="1201402288615127009">Næste</translation>
 <translation id="1919345977826869612">Reklamer</translation>
-<translation id="5946611334574299206">Optjen tokens ved at se annoncer i Brave. Annoncer præsenteres på baggrund af dine interesser, udledt af din browseradfærd. Ingen personlige data eller browserhistorik forlader nogensinde din browser.</translation>
+<translation id="5698387814910197501">Optjen {{currency}} ved at se annoncer i Brave. Annoncer præsenteres på baggrund af dine interesser, udledt af din browseradfærd. Ingen personlige data eller browserhistorik forlader nogensinde din browser.</translation>
 <translation id="6112368337882254910">Auto-Bidrag</translation>
 <translation id="3742599705619405136">En automatisk måde at støtte udgivere og indholdsskabere på. Indstil en månedlig betaling og browse som normalt. De Brave-verificerede sider du besøger, vil modtage dine donationer automatisk baseret på din opmærksomhed målt af Brave.</translation>
 <translation id="20281847067919078">Anslåede afventende bonusser</translation>
@@ -258,7 +258,7 @@
 <translation id="418343137736963579">Totale antal sider du har udeladt fra Automatisk Bidrage</translation>
 <translation id="1759104587873258696">udløber den</translation>
 <translation id="6149218349077925111">til</translation>
-<translation id="7314491422865740556">Poletter, der ikke er brugt inden udløbsdatoen vil automatisk blive returneret til Brave Brugerudviklingspuljen</translation>
+<translation id="7513117072433487074">{{currency}}, der ikke er brugt inden udløbsdatoen vil automatisk blive returneret til Brave Brugerudviklingspuljen</translation>
 <translation id="279567716178902927">Tilskuddets Udløbsdato</translation>
 <translation id="2104073734684466851">Bevillinger</translation>
 <translation id="1389143276807887637">importer</translation>
@@ -284,7 +284,8 @@
 <translation id="5736183007277264868">Der er ingen token-gaver tilgængelige i øjeblikket.</translation>
 <translation id="8307851765167460403">Ingen aktiviteter endnu…</translation>
 <translation id="8589748782214271192">Nej, tak</translation>
-<translation id="8051372105644249165">Ikke nok mønter. Venligst</translation>
+<translation id="4420084541981425487">Ikke nok {{currency}}.</translation>
+<translation id="6330068272761277483">Ikke nok {{currency}}. Venligst</translation>
 <translation id="3630697955794050612">fra</translation>
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">til</translation>
@@ -364,7 +365,9 @@
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Token-Tilskud Taget</translation>
+<translation id="5015443703424816075">Token</translation>
 <translation id="1634828734222219955">Total</translation>
+<translation id="1726566769229204312">Mønttilskud</translation>
 <translation id="3535654229833214438">Transaktioner</translation>
 <translation id="1605521356929094020">Slå reklamer til</translation>
 <translation id="8987812599455325915">Dette aktiverer både reklamer og automatiske bidrag. Du kan når som helst slå dem til eller fra separat.</translation>

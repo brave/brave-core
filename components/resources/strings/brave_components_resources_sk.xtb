@@ -79,7 +79,7 @@
 <translation id="3829010735958850433">Preskočiť prehliadku na uvítanie</translation>
 <translation id="1201402288615127009">Ďalej</translation>
 <translation id="1919345977826869612">Reklamy</translation>
-<translation id="5946611334574299206">Získajte žetóny za sledovanie reklám v Brave. Tieto reklamy sú založené na Vašich záujmoch, ktoré vyplývajú z vášho surfovania. Vaše osobné údaje a história prehliadania nikdy neopustia váš prehliadač.</translation>
+<translation id="5698387814910197501">Získajte {{currency}} za sledovanie reklám v Brave. Tieto reklamy sú založené na Vašich záujmoch, ktoré vyplývajú z vášho surfovania. Vaše osobné údaje a história prehliadania nikdy neopustia váš prehliadač.</translation>
 <translation id="6112368337882254910">Automaticky prispieť</translation>
 <translation id="3742599705619405136">Automatická podpora autorov a tvorcov obsahu. Nastavte mesačné platby a normálne surfujte. Overeným stránkam Brave, ktoré navštívite, bude automaticky odoslaný príspevok. Výšku príspevku vypočíta Brave podľa miery vašej pozornosti venovanej jednotlilvým stránkam.</translation>
 <translation id="20281847067919078">Odhadované čakajúce odmeny</translation>
@@ -258,7 +258,7 @@
 <translation id="418343137736963579">Celkový počet stránok, ktoré ste vylúčili z automatického prispievania:</translation>
 <translation id="1759104587873258696">uplynie v</translation>
 <translation id="6149218349077925111">pre</translation>
-<translation id="7314491422865740556">Žetóny, ktoré neboli použité pred dátumom expirácie, budú automaticky zaradené naspäť do rastového fondu používateľov Brave.</translation>
+<translation id="7513117072433487074">{{currency}}, ktoré neboli použité pred dátumom expirácie, budú automaticky zaradené naspäť do rastového fondu používateľov Brave.</translation>
 <translation id="279567716178902927">Dátum vypršania grantu</translation>
 <translation id="2104073734684466851">Príspevky</translation>
 <translation id="1389143276807887637">importovať</translation>
@@ -284,7 +284,8 @@
 <translation id="5736183007277264868">Momentálne nie je dostupná žiadna dotácia žetónov.</translation>
 <translation id="8307851765167460403">Zatiaľ žiadne aktivity</translation>
 <translation id="8589748782214271192">Nie, ďakujem</translation>
-<translation id="8051372105644249165">Nedostatok žetónov. Prosím</translation>
+<translation id="4420084541981425487">Nedostatok {{currency}}.</translation>
+<translation id="6330068272761277483">Nedostatok {{currency}}. Prosím</translation>
 <translation id="3630697955794050612">vypnutý</translation>
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">na</translation>
@@ -364,7 +365,9 @@
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Kupónové granty nárokované</translation>
+<translation id="5015443703424816075">Token</translation>
 <translation id="1634828734222219955">Súčet</translation>
+<translation id="1726566769229204312">Udelenia tokenov</translation>
 <translation id="3535654229833214438">Transakcie</translation>
 <translation id="1605521356929094020">Zapnúť reklamy</translation>
 <translation id="8987812599455325915">Toto aktivuje reklamy a automatické príspevky. Môžete si ich kedykoľvek osobitne zapnúť alebo vypnúť.</translation>

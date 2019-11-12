@@ -79,7 +79,7 @@
 <translation id="3829010735958850433">Ohita tervetuliaiskierros</translation>
 <translation id="1201402288615127009">Seuraava</translation>
 <translation id="1919345977826869612">Mainokset</translation>
-<translation id="5946611334574299206">Ansaitse poletteja katsomalla mainoksia Bravessa. Näytetyt mainokset perustuvat mieltymyksiisi, jotka määritellään selainkäyttäytymisesi perusteella. Henkilökohtaisia tietojasi tai selaushistoriaasi ei koskaan lähetetä selaimesi ulkopuolelle.</translation>
+<translation id="5698387814910197501">Ansaitse {{currency}} katsomalla mainoksia Bravessa. Näytetyt mainokset perustuvat mieltymyksiisi, jotka määritellään selainkäyttäytymisesi perusteella. Henkilökohtaisia tietojasi tai selaushistoriaasi ei koskaan lähetetä selaimesi ulkopuolelle.</translation>
 <translation id="6112368337882254910">Osallistu automaattisesti</translation>
 <translation id="3742599705619405136">Automaattinen tapa tukea julkaisijoita ja sisällönluojia. Määrää kuukausittainen maksu ja selaa tavalliseen tapaan. Braven vahvistamat sivut, joilla vierailet, saavat kannatusmaksusi automaattisesti sen mukaan, miten Brave on mitannut sinun osoittavan niille huomiotasi.</translation>
 <translation id="20281847067919078">Arvioidut odottavat palkkiot</translation>
@@ -258,7 +258,7 @@
 <translation id="418343137736963579">Automaattiselta lahjoitukselta estettyjen sivustojen kokonaismäärä:</translation>
 <translation id="1759104587873258696">voimassaolo päättyy</translation>
 <translation id="6149218349077925111">kohteelle</translation>
-<translation id="7314491422865740556">Voimassaolon päättymiseen mennessä käyttämättä jääneet poletit palautetaan automaattisesti Brave -käyttäjäkasvuvarantoihin.</translation>
+<translation id="7513117072433487074">Voimassaolon päättymiseen mennessä käyttämättä jääneet {{currency}} palautetaan automaattisesti Brave -käyttäjäkasvuvarantoihin.</translation>
 <translation id="279567716178902927">Lahjoituksen umpeutumispäivä</translation>
 <translation id="2104073734684466851">Lahjoitukset</translation>
 <translation id="1389143276807887637">tuo</translation>
@@ -284,7 +284,8 @@
 <translation id="5736183007277264868">Tällä hetkellä ei ole polettilahjoituksia saatavilla.</translation>
 <translation id="8307851765167460403">Ei vielä aktiviteetteja…</translation>
 <translation id="8589748782214271192">Ei kiitos</translation>
-<translation id="8051372105644249165">Ei riittävästi poletteja. Ole hyvä ja</translation>
+<translation id="4420084541981425487">Ei riittävästi {{currency}}.</translation>
+<translation id="6330068272761277483">Ei riittävästi {{currency}}. Ole hyvä ja</translation>
 <translation id="3630697955794050612">pois päältä</translation>
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">päällä</translation>
@@ -364,7 +365,9 @@
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Lunastetut tunnuslahjoitukset</translation>
+<translation id="5015443703424816075">Poletti</translation>
 <translation id="1634828734222219955">Yhteensä</translation>
+<translation id="1726566769229204312">Token-tuet</translation>
 <translation id="3535654229833214438">Liiketapahtumat</translation>
 <translation id="1605521356929094020">Aseta mainokset päälle</translation>
 <translation id="8987812599455325915">Tämä sallii sekä mainokset että automaattiset lahjoitukset. Voit ottaa ne erikseen pois käytöstä milloin tahansa.</translation>

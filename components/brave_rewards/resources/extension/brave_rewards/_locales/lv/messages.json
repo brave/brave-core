@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Pabeigt maka verifikāciju",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "marķieri",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Marķieris",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Pilnvaras piešķiršana",
+    "description": "BAT Tokens Grant Text"
   }
 }

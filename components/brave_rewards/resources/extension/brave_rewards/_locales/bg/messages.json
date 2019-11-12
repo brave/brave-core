@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Завършете проверката на портфейла",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "жетони",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Жетон",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Субсидии за жетони",
+    "description": "BAT Tokens Grant Text"
   }
 }

@@ -79,7 +79,7 @@
 <translation id="3829010735958850433">Praleisti pristatymą</translation>
 <translation id="1201402288615127009">Toliau</translation>
 <translation id="1919345977826869612">Reklama</translation>
-<translation id="5946611334574299206">Pelnykite žetonų už reklamos peržiūrą „Brave“. Pateikiamos reklamos paremtos jūsų interesais ir susijusios su jūsų naršymo elgesiu. Iš jūsų naršyklės neperduodami jokie asmens duomenys ar naršymo istorija.</translation>
+<translation id="5698387814910197501">Pelnykite {{currency}} už reklamos peržiūrą „Brave“. Pateikiamos reklamos paremtos jūsų interesais ir susijusios su jūsų naršymo elgesiu. Iš jūsų naršyklės neperduodami jokie asmens duomenys ar naršymo istorija.</translation>
 <translation id="6112368337882254910">Automatinis indėlis</translation>
 <translation id="3742599705619405136">Automatinis būdas paremti leidėjus ir turinio kūrėjus. Nustatykite mėnesinį mokėjimą ir naršykite įprastai. Jūsų lankomos „Brave“ patvirtintos svetainės gaus jūsų įmokas automatiškai, atsižvelgdama į jūsų dėmesį, kurį vertina „Brave“.</translation>
 <translation id="20281847067919078">Numatomi laukiantys atlygiai</translation>
@@ -258,7 +258,7 @@
 <translation id="418343137736963579">Bendras svetainių skaičius, kurių neįtraukėte į automatinį indėlį:</translation>
 <translation id="1759104587873258696">galiojimo laikas baigiasi</translation>
 <translation id="6149218349077925111">skirta</translation>
-<translation id="7314491422865740556">Žetonai, nepanaudoti iki galiojimo pabaigos datos, bus automatiškai grąžinti į „Brave“ naudotojų skaičiaus augimo telkinį.</translation>
+<translation id="7513117072433487074">{{currency}}, nepanaudoti iki galiojimo pabaigos datos, bus automatiškai grąžinti į „Brave“ naudotojų skaičiaus augimo telkinį.</translation>
 <translation id="279567716178902927">Išmokos galiojimo laiko pabaigos data</translation>
 <translation id="2104073734684466851">Išmokos</translation>
 <translation id="1389143276807887637">importuoti</translation>
@@ -284,7 +284,8 @@
 <translation id="5736183007277264868">Dabar nėra galimų žetonų išmokų.</translation>
 <translation id="8307851765167460403">Kol kas veiklos nėra…</translation>
 <translation id="8589748782214271192">Ačiū, ne</translation>
-<translation id="8051372105644249165">Nepakanka žetonų. Prašom</translation>
+<translation id="4420084541981425487">Nepakanka {{currency}}.</translation>
+<translation id="6330068272761277483">Nepakanka {{currency}}. Prašom</translation>
 <translation id="3630697955794050612">išjungti</translation>
 <translation id="4921250468871504777">gerai</translation>
 <translation id="7866482334467279021">įjungti</translation>
@@ -364,7 +365,9 @@
 <translation id="4837149400263828922">Eteris (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Atsiimtos žetonų išmokos</translation>
+<translation id="5015443703424816075">Žetonas</translation>
 <translation id="1634828734222219955">Iš viso</translation>
+<translation id="1726566769229204312">Atpažinimo ženklo suteikimas</translation>
 <translation id="3535654229833214438">Operacijos</translation>
 <translation id="1605521356929094020">Įjungti reklamas</translation>
 <translation id="8987812599455325915">Šiuo veiksmu aktyvinamos ir reklamos, ir automatiniai indėliai. Juos galite atskirai įjungti arba išjungti bet kuriuo metu.</translation>

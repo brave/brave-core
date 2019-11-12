@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Finaliza la verificación de tu monedero",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "tokens",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Token",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Donaciones de vales",
+    "description": "BAT Tokens Grant Text"
   }
 }

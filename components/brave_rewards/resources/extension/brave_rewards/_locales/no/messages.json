@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Fullfør lommebokverifiseringen",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "sjetonger",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Token ",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Tilskudd til polletter",
+    "description": "BAT Tokens Grant Text"
   }
 }

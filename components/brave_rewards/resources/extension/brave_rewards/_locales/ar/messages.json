@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "أكمل التحقق من المحفظة",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "الرموز المميزة",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "عملة رمزية",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "منح العملة الرمزية",
+    "description": "BAT Tokens Grant Text"
   }
 }

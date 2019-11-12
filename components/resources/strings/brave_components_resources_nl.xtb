@@ -79,7 +79,7 @@
 <translation id="3829010735958850433">Welkomstour overslaan</translation>
 <translation id="1201402288615127009">Volgende</translation>
 <translation id="1919345977826869612">Advertenties</translation>
-<translation id="5946611334574299206">Verdien tokens door advertenties te bekijken in Brave. Advertenties worden getoond op basis van je interesses, door analyse van je browsing geschiedenis. Geen persoonlijke data van je browsing geschiedenis zal de browser verlaten.</translation>
+<translation id="5698387814910197501">Verdien {{currency}} door advertenties te bekijken in Brave. Advertenties worden getoond op basis van je interesses, door analyse van je browsing geschiedenis. Geen persoonlijke data van je browsing geschiedenis zal de browser verlaten.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="3742599705619405136">Een automatische manier om uitgevers en makers van inhoud te ondersteunen. Stel een maandelijkse betaling in en browse zoals je normaal doet. De dor Brave geverifieerde sites die je bezoekt ontvangen je bijdragen automatisch, op basis van jouw aandacht zoals gemeten door Brave.</translation>
 <translation id="20281847067919078">Geschatte openstaande beloningen</translation>
@@ -258,7 +258,7 @@
 <translation id="418343137736963579">Totaal aantal websites die je het uitgesloten van Auto-Contribute:</translation>
 <translation id="1759104587873258696">loopt af op</translation>
 <translation id="6149218349077925111">voor</translation>
-<translation id="7314491422865740556">Tokens die niet gebruikt zijn op de verloopdatum worden automatisch aan de Brave User Growth Pool teruggekeerd.</translation>
+<translation id="7513117072433487074">{{currency}} die niet gebruikt zijn op de verloopdatum worden automatisch aan de Brave User Growth Pool teruggekeerd.</translation>
 <translation id="279567716178902927">Vervaldatum gift</translation>
 <translation id="2104073734684466851">Donaties</translation>
 <translation id="1389143276807887637">importeer</translation>
@@ -284,7 +284,8 @@
 <translation id="5736183007277264868">Op dit moment is geen tokendonatie beschikbaar.</translation>
 <translation id="8307851765167460403">Nog geen activiteiten…</translation>
 <translation id="8589748782214271192">Nee, bedankt</translation>
-<translation id="8051372105644249165">Niet genoeg tokens. Alsjeblieft,</translation>
+<translation id="4420084541981425487">Niet genoeg {{currency}}.</translation>
+<translation id="6330068272761277483">Niet genoeg {{currency}}. Alsjeblieft,</translation>
 <translation id="3630697955794050612">uit</translation>
 <translation id="4921250468871504777">Oké</translation>
 <translation id="7866482334467279021">op</translation>
@@ -364,7 +365,9 @@
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Geclaimde giften</translation>
+<translation id="5015443703424816075">Token</translation>
 <translation id="1634828734222219955">Totaal</translation>
+<translation id="1726566769229204312">Tokentoewijzingen</translation>
 <translation id="3535654229833214438">Transacties</translation>
 <translation id="1605521356929094020">Schakel advertenties in</translation>
 <translation id="8987812599455325915">Dit maakt zowel advertenties als automatische bijdragen mogelijk. Je kunt ze op elk gewenst moment afzonderlijk in- of uitschakelen.</translation>

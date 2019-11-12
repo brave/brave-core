@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "השלמת אימות הארנק",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "Tokens",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "טוקן",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "מענק אסימונים",
+    "description": "BAT Tokens Grant Text"
   }
 }

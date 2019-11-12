@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Finalizați verificarea portofelului",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "token-uri",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Indicativ",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Donații în jetoane",
+    "description": "BAT Tokens Grant Text"
   }
 }

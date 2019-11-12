@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "ಸಂಪೂರ್ಣ ವ್ಯಾಲೆಟ್ ಪರಿಶೀಲನೆ",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "ಟೋಕನ್‌ಗಳು",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "ಟೋಕನ್",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "ಟೋಕನ್ ಅನುದಾನಗಳು",
+    "description": "BAT Tokens Grant Text"
   }
 }

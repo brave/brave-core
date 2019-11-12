@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "Slutför verifiering av plånbok",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "token",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "Token",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "Tilldelning av token",
+    "description": "BAT Tokens Grant Text"
   }
 }

@@ -79,7 +79,7 @@
 <translation id="3829010735958850433">Salta il tour di benvenuto</translation>
 <translation id="1201402288615127009">Successivo</translation>
 <translation id="1919345977826869612">Annunci pubblicitari</translation>
-<translation id="5946611334574299206">Guadagna gettoni visualizzando annunci pubblicitari su Brave. La pubblicità che ti viene proposta è basata sui tuoi interessi dedotti dal tuo comportamento di navigazione. Nessun dato personale o cronologia di navigazione lascia mai il tuo browser.</translation>
+<translation id="5698387814910197501">Guadagna {{currency}} visualizzando annunci pubblicitari su Brave. La pubblicità che ti viene proposta è basata sui tuoi interessi dedotti dal tuo comportamento di navigazione. Nessun dato personale o cronologia di navigazione lascia mai il tuo browser.</translation>
 <translation id="6112368337882254910">Auto-contributo</translation>
 <translation id="3742599705619405136">Un metodo autentico per supportare editori e creatori di contenuti. Imposta un pagamento mensile e naviga liberamente. I siti Verificati Brave che visiti riceveranno i tuoi contributi automaticamente. Basato sulla frequenza di visita misurata da Brave.</translation>
 <translation id="20281847067919078">Ricompense stimate in sospeso</translation>
@@ -258,7 +258,7 @@
 <translation id="418343137736963579">Numero totale di siti che hai escluso dal Contributo Automatico:</translation>
 <translation id="1759104587873258696">scade il</translation>
 <translation id="6149218349077925111">per</translation>
-<translation id="7314491422865740556">I token non utilizzati entro la data di scadenza verranno restituiti automaticamente al Fondo per la Crescita degli Utenti di Brave</translation>
+<translation id="7513117072433487074">I {{currency}} non utilizzati entro la data di scadenza verranno restituiti automaticamente al Fondo per la Crescita degli Utenti di Brave</translation>
 <translation id="279567716178902927">Data di Scadenza Contributo</translation>
 <translation id="2104073734684466851">Contributi</translation>
 <translation id="1389143276807887637">importa</translation>
@@ -284,7 +284,8 @@
 <translation id="5736183007277264868">Attualmente non è disponibile alcun contributo di token.</translation>
 <translation id="8307851765167460403">Ancora nessuna attività…</translation>
 <translation id="8589748782214271192">No, grazie</translation>
-<translation id="8051372105644249165">Token non sufficienti. Per favore</translation>
+<translation id="4420084541981425487">{{currency}} non sufficienti.</translation>
+<translation id="6330068272761277483">{{currency}} non sufficienti. Per favore</translation>
 <translation id="3630697955794050612">spento</translation>
 <translation id="4921250468871504777">ok</translation>
 <translation id="7866482334467279021">attivo</translation>
@@ -364,7 +365,9 @@
 <translation id="4837149400263828922">Ethereum (ETH)</translation>
 <translation id="8746837129291133068">Litecoin (LTC)</translation>
 <translation id="4914597931214386232">Contributi in Token Riscossi</translation>
+<translation id="5015443703424816075">Token</translation>
 <translation id="1634828734222219955">Totale</translation>
+<translation id="1726566769229204312">Contributi in token</translation>
 <translation id="3535654229833214438">Transazioni</translation>
 <translation id="1605521356929094020">Attiva gli Annunci Pubblicitari</translation>
 <translation id="8987812599455325915">Questo attiva sia gli annunci pubblicitari che i contributi automatici. Puoi attivarli o disattivarli separatamente in qualsiasi momento.</translation>

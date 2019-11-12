@@ -544,5 +544,17 @@
   "walletGoToVerifyPage":  {
     "message": "वॉलेट सत्यापन पूरा करें",
     "description": "CTA for completing wallet verification"
+  },
+  "tokens":  {
+    "message": "टोकंस ",
+    "description": "Standard tokens text"
+  },
+  "token":  {
+    "message": "टोकन",
+    "description": "BAT Token text"
+  },
+  "tokenGrants":  {
+    "message": "टोकन ग्रांट्स",
+    "description": "BAT Tokens Grant Text"
   }
 }
