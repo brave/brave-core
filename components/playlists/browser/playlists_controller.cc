@@ -213,12 +213,12 @@ bool PlaylistsController::Init(const base::FilePath& base_dir) {
   db_controller_.reset(
       new PlaylistsDBController(base_dir.Append(kDatabaseDirName)));
   video_media_file_controller_.reset(new PlaylistsMediaFileController(
-      this, context_, FILE_PATH_LITERAL("video_file"),
-      kPlaylistsVideoMediaFilePathKey,
+      this, context_, FILE_PATH_LITERAL("video_source_files"),
+      FILE_PATH_LITERAL("video_file"), kPlaylistsVideoMediaFilePathKey,
       kPlaylistsCreateParamsVideoMediaFilesPathKey));
   audio_media_file_controller_.reset(new PlaylistsMediaFileController(
-      this, context_, FILE_PATH_LITERAL("audio_file"),
-      kPlaylistsAudioMediaFilePathKey,
+      this, context_, FILE_PATH_LITERAL("audio_source_files"),
+      FILE_PATH_LITERAL("audio_file"), kPlaylistsAudioMediaFilePathKey,
       kPlaylistsCreateParamsAudioMediaFilesPathKey));
 
   return base::PostTaskAndReplyWithResult(
@@ -245,6 +245,10 @@ void PlaylistsController::OnDBInitialized(bool initialized) {
 
 void PlaylistsController::NotifyPlaylistChanged(
     const PlaylistsChangeParams& params) {
+  LOG(INFO) << __func__ << ": params="
+            << PlaylistsChangeParams::GetPlaylistsChangeTypeAsString(
+                   params.change_type);
+
   for (PlaylistsControllerObserver& obs : observers_)
     obs.OnPlaylistsChanged(params);
 }
@@ -475,7 +479,6 @@ void PlaylistsController::OnGetAllPlaylists(
 
   base::Value playlists(base::Value::Type::LIST);
   for (const std::string& playlist_info_json : playlist_info_jsons) {
-    LOG(ERROR) << playlist_info_json;
     playlists.GetList().push_back(
         GetPlaylistValueFromPlaylistInfoJSON(playlist_info_json));
   }

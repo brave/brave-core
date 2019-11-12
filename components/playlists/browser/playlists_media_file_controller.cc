@@ -28,8 +28,6 @@
 namespace {
 
 constexpr unsigned int kRetriesCountOnNetworkChange = 1;
-const base::FilePath::StringType kSourceMediaFilesDir(
-    FILE_PATH_LITERAL("source_files"));
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTagForURLLoad() {
   return net::DefineNetworkTrafficAnnotation("playlists_controller", R"(
@@ -113,10 +111,11 @@ bool AppendToFileThenDelete(const base::FilePath& source_path,
 // Return 1 if some of source files are skipped for generation.
 int DoGenerateSingleMediaFileOnIOThread(
     const base::FilePath& playlist_dir_path,
+    const std::string& source_media_files_dir,
     const std::string& unified_media_file_name,
     int num_source_files) {
   const base::FilePath source_files_dir =
-      playlist_dir_path.Append(kSourceMediaFilesDir);
+      playlist_dir_path.Append(source_media_files_dir);
 
   const base::FilePath unified_media_file_path =
       playlist_dir_path.Append(unified_media_file_name);
@@ -170,6 +169,7 @@ base::FilePath::StringType GetPlaylistIDDirName(
 PlaylistsMediaFileController::PlaylistsMediaFileController(
     Client* client,
     content::BrowserContext* context,
+    base::FilePath::StringType source_media_files_dir,
     base::FilePath::StringType unified_media_file_name,
     std::string media_file_path_key,
     std::string create_params_path_key)
@@ -177,6 +177,7 @@ PlaylistsMediaFileController::PlaylistsMediaFileController(
       url_loader_factory_(
           content::BrowserContext::GetDefaultStoragePartition(context)
               ->GetURLLoaderFactoryForBrowserProcess()),
+      source_media_files_dir_(source_media_files_dir),
       unified_media_file_name_(unified_media_file_name),
       media_file_path_key_(media_file_path_key),
       create_params_path_key_(create_params_path_key),
@@ -223,7 +224,7 @@ void PlaylistsMediaFileController::GenerateSingleMediaFile(
 
 void PlaylistsMediaFileController::CreateSourceFilesDirThenDownloads() {
   const base::FilePath source_files_dir =
-      playlist_dir_path_.Append(kSourceMediaFilesDir);
+      playlist_dir_path_.Append(source_media_files_dir_);
   base::PostTaskAndReplyWithResult(
       io_task_runner(), FROM_HERE,
       base::BindOnce(&base::CreateDirectory, source_files_dir),
@@ -279,7 +280,7 @@ void PlaylistsMediaFileController::DownloadMediaFile(const GURL& url,
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(loader));
 
   const base::FilePath file_path =
-      playlist_dir_path_.Append(kSourceMediaFilesDir)
+      playlist_dir_path_.Append(source_media_files_dir_)
           .Append(GetFileNameStringFromIndex(index));
   iter->get()->DownloadToFile(
       url_loader_factory_.get(),
@@ -321,7 +322,8 @@ void PlaylistsMediaFileController::StartSingleMediaFileGeneration() {
   base::PostTaskAndReplyWithResult(
       io_task_runner(), FROM_HERE,
       base::BindOnce(&DoGenerateSingleMediaFileOnIOThread, playlist_dir_path_,
-                     unified_media_file_name_, media_file_source_files_count_),
+                     source_media_files_dir_, unified_media_file_name_,
+                     media_file_source_files_count_),
       base::BindOnce(&PlaylistsMediaFileController::OnSingleMediaFileGenerated,
                      weak_factory_.GetWeakPtr()));
 }

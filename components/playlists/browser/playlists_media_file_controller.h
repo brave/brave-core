@@ -50,6 +50,7 @@ class PlaylistsMediaFileController {
   PlaylistsMediaFileController(
       Client* client,
       content::BrowserContext* context,
+      base::FilePath::StringType source_media_files_dir,
       base::FilePath::StringType unified_media_file_name,
       std::string media_file_path_key,
       std::string create_params_path_key);
@@ -97,6 +98,7 @@ class PlaylistsMediaFileController {
   Client* client_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
+  base::FilePath::StringType source_media_files_dir_;
   base::FilePath::StringType unified_media_file_name_;
   std::string media_file_path_key_;
   std::string create_params_path_key_;
