@@ -18,7 +18,7 @@ namespace ads {
 #define STAGING_SERVER "https://ads-serve.bravesoftware.com"
 #define DEVELOPMENT_SERVER "https://ads-serve.brave.software.com"
 
-#define CATALOG_PATH "/v1/catalog"
+#define CATALOG_PATH "/v2/catalog"
 
 const int kIdleThresholdInSeconds = 15;
 
