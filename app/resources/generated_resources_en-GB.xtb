@@ -122,7 +122,7 @@
 <translation id="3021678814754966447">&amp;View Frame Source</translation>
 <translation id="9027459031423301635">Open Link in New &amp;Tab</translation>
 <translation id="1769104665586091481">Open Link in New &amp;Window</translation>
-<translation id="1432267168815937878">Open link in &amp;Private window</translation>
+<translation id="1432267168815937878">Open Link in &amp;Private Window</translation>
 <translation id="2142328300403846845">Open Link as</translation>
 <translation id="6892812721183419409">Open Link as <ph name="USER"/></translation>
 <translation id="2006638907958895361">Open Link in <ph name="APP"/></translation>
@@ -2516,12 +2516,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Open All}=1{&amp;Open Bookmark}other{&amp;Open All (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Open All in &amp;New Window}=1{Open in &amp;New Window}other{Open All (#) in &amp;New Window}}</translation>
 <translation id="2633634757060186848">{COUNT, plural,
-          =0 {Open all in &amp;Private window}
-          =1 {Open in &amp;Private window}
-          other {Open all (#) in &amp;Private window}}</translation>
+          =0 {Open All in &amp;Private Window}
+          =1 {Open in &amp;Private Window}
+          other {Open All (#) in &amp;Private Window}}</translation>
 <translation id="9024127637873500333">&amp;Open in New Tab</translation>
 <translation id="665061930738760572">Open in &amp;New Window</translation>
-<translation id="1985165269306590797">Open in &amp;Private window</translation>
+<translation id="1985165269306590797">Open in &amp;Private Window</translation>
 <translation id="8824701697284169214">Add Pa&amp;ge...</translation>
 <translation id="2489918096470125693">Add &amp;Folder...</translation>
 <translation id="421182450098841253">&amp;Show Bookmarks Bar</translation>
@@ -2660,7 +2660,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
       }</translation>
 <translation id="37784332082579802">{0, plural,
       =1 {Private}
-      other {{Private (#)}
+      other {Private (#)}
     }</translation>
 <translation id="5070556616376997776">This is a private window</translation>
 <translation id="2199298570273670671">Error</translation>
