@@ -101,6 +101,47 @@ const std::map<int, std::map<std::string, bool>> kSupportedRegionsSchemas = {
     4, {
       { "KY", true  }   // Cayman Islands
     }
+  },
+  {
+    5, {
+      { "AE", false },  // United Arab Emirates
+      { "AL", false },  // Albania
+      { "AZ", false },  // Azerbaijan
+      { "BD", false },  // Bangladesh
+      { "BE", false },  // Belgium
+      { "BG", false },  // Bulgaria
+      { "CN", false },  // China
+      { "CZ", false },  // Czechia
+      { "DZ", false },  // Algeria
+      { "EG", false },  // Egypt
+      { "ES", false },  // Spain
+      { "FI", false },  // Finland
+      { "GR", false },  // Greece
+      { "HK", false },  // Hong Kong
+      { "HR", false },  // Croatia
+      { "HU", false },  // Hungary
+      { "ID", false },  // Indonesia
+      { "IQ", false },  // Iraq
+      { "KH", false },  // Cambodia
+      { "LT", false },  // Lithuania
+      { "MA", false },  // Morocco
+      { "MY", false },  // Malaysia
+      { "NG", false },  // Nigeria
+      { "NO", false },  // Norway
+      { "PK", false },  // Pakistan
+      { "PT", false },  // Portugal
+      { "RO", false },  // Romania
+      { "RS", false },  // Serbia
+      { "RU", false },  // Russian Federation
+      { "SA", false },  // Saudi Arabia
+      { "SI", false },  // Slovenia
+      { "SK", false },  // Slovakia
+      { "TH", false },  // Thailand
+      { "TR", false },  // Turkey
+      { "TW", false },  // Taiwan
+      { "UA", false },  // Ukraine
+      { "VN", false }   // Vietnam
+    }
   }
 };
 
