@@ -231,7 +231,7 @@ bool AdsImpl::IsInitialized() {
 void AdsImpl::Shutdown(
     ShutdownCallback callback) {
   if (!is_initialized_) {
-    BLOG(WARNING) << "Failed to shutdown ads as not initialized";
+    BLOG(WARNING) << "Shutdown failed as not initialized";
 
     callback(FAILED);
     return;
@@ -300,10 +300,6 @@ bool AdsImpl::GetNotificationForId(
 }
 
 void AdsImpl::OnForeground() {
-  if (!IsInitialized()) {
-    return;
-  }
-
   is_foreground_ = true;
   GenerateAdReportingForegroundEvent();
 
@@ -313,10 +309,6 @@ void AdsImpl::OnForeground() {
 }
 
 void AdsImpl::OnBackground() {
-  if (!IsInitialized()) {
-    return;
-  }
-
   is_foreground_ = false;
   GenerateAdReportingBackgroundEvent();
 
@@ -339,6 +331,11 @@ void AdsImpl::OnIdle() {
 void AdsImpl::OnUnIdle() {
   // TODO(Terry Mancey): Implement Log (#44)
   // 'Idle state changed', { idleState: action.get('idleState') }
+
+  if (!IsInitialized()) {
+    BLOG(WARNING) << "OnUnIdle failed as not initialized";
+    return;
+  }
 
   BLOG(INFO) << "Browser state changed to unidle";
 
@@ -660,7 +657,7 @@ void AdsImpl::OnPageLoaded(
     const std::string& url,
     const std::string& html) {
   if (!IsInitialized()) {
-    BLOG(INFO) << "Site visited " << url << ", not initialized";
+    BLOG(WARNING) << "OnPageLoaded failed as not initialized";
     return;
   }
 
@@ -805,7 +802,7 @@ void AdsImpl::CachePageScore(
 void AdsImpl::TestShoppingData(
     const std::string& url) {
   if (!IsInitialized()) {
-    BLOG(WARNING) << "Failed to test shopping data as not initialized";
+    BLOG(WARNING) << "TestShoppingData failed as not initialized";
     return;
   }
 
@@ -819,7 +816,7 @@ void AdsImpl::TestShoppingData(
 bool AdsImpl::TestSearchState(
     const std::string& url) {
   if (!IsInitialized()) {
-    BLOG(WARNING) << "Failed to test search state as not initialized";
+    BLOG(WARNING) << "TestSearchState failed as not initialized";
     return false;
   }
 
@@ -835,7 +832,7 @@ bool AdsImpl::TestSearchState(
 
 void AdsImpl::ServeSampleAd() {
   if (!IsInitialized()) {
-    BLOG(WARNING) << "Failed to serve sample Ad as not initialized";
+    BLOG(WARNING) << "ServeSampleAd failed as not initialized";
     return;
   }
 
@@ -1299,7 +1296,7 @@ void AdsImpl::StartCollectingActivity(
 
 void AdsImpl::CollectActivity() {
   if (!IsInitialized()) {
-    BLOG(WARNING) << "Failed to collect activity as not initialized";
+    BLOG(WARNING) << "CollectActivity failed as not initialized";
     return;
   }
 
