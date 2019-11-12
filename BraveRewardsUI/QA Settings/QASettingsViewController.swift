@@ -178,6 +178,9 @@ public class QASettingsViewController: TableViewController {
       ),
       Section(
         rows: [
+          Row(text: "Share Rewards Database", selection: {
+            self.tappedShareRewardsDatabase()
+          }, cellClass: ButtonCell.self),
           Row(text: "Reset Rewards", selection: {
             self.tappedReset()
           }, cellClass: ButtonCell.self)
@@ -192,6 +195,13 @@ public class QASettingsViewController: TableViewController {
       alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
       self.present(alert, animated: true, completion: nil)
     }
+  }
+  
+  private func tappedShareRewardsDatabase() {
+    guard let appSupportPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true).first else { return }
+    let dbPath = (appSupportPath as NSString).appendingPathComponent("rewards")
+    let activity = UIActivityViewController(activityItems: [URL(fileURLWithPath: dbPath)], applicationActivities: nil)
+    self.present(activity, animated: true)
   }
   
   @objc private func tappedRestoreWallet() {
