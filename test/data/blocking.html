@@ -33,6 +33,25 @@ function xhr(src) {
   xhr.send();
 }
 
+// Performs an XHR for the specified src and reports successful,
+// only if the content matches expected_content.
+function xhr_expect_content(src, expected_content) {
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', src, true);
+  xhr.onload = function(e) {
+    if (xhr.response === expected_content) {
+      numXHRLoaded++
+    }
+    onLoad()
+  }
+  xhr.onerror = function(e) {
+    console.log(e)
+    numXHRBlocked++
+    onLoad()
+  }
+  xhr.send();
+}
+
 // Adds an image to the DOM with the specified src
 function addImage(src) {
   const img = document.createElement('img')

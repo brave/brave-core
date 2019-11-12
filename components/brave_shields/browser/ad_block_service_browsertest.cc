@@ -86,9 +86,10 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
     ASSERT_TRUE(g_brave_browser_process->ad_block_service()->IsInitialized());
   }
 
-  void UpdateAdBlockInstanceWithRules(const char* rules) {
+  void UpdateAdBlockInstanceWithRules(const std::string& rules,
+      const std::string& resources = "") {
     g_brave_browser_process->ad_block_service()
-        ->ResetForTest(rules);
+        ->ResetForTest(rules, resources);
   }
 
   void AssertTagExists(const std::string& tag, bool expected_exists) const {
@@ -740,6 +741,37 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CancelRequestOptionTest) {
                                             "setExpectations(0, 0, 1, 0, 0, 0);"
                                             "addImage('%s')",
                                             resource_url.spec().c_str()),
+                                          &as_expected));
+  EXPECT_TRUE(as_expected);
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
+}
+
+// Load a page with a script which uses a redirect.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+    RedirectRulesAreRespected) {
+  UpdateAdBlockInstanceWithRules("js_mock_me.js$redirect=noopjs",
+    "["
+    "{\"name\":\"noop.js\",\"aliases\":[\"noopjs\"],"
+    "\"kind\":{\"mime\":\"application/javascript\"},"
+    "\"content\":\"KGZ1bmN0aW9uKCkgewogICAgJ3VzZSBzdHJpY3QnOwp9KSgpOwo=\"}"
+    "]");
+  EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+
+  GURL url = embedded_test_server()->GetURL("example.com", kAdBlockTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  std::string noopjs = "(function() {\\n    \\'use strict\\';\\n})();\\n";
+  bool as_expected = false;
+  GURL resource_url =
+    embedded_test_server()->GetURL("example.com", "/js_mock_me.js");
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(contents,
+                                          base::StringPrintf(
+                                            "setExpectations(0, 0, 0, 1, 0, 0);"
+                                            "xhr_expect_content('%s', '%s');",
+                                            resource_url.spec().c_str(),
+                                            noopjs.c_str()),
                                           &as_expected));
   EXPECT_TRUE(as_expected);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);

@@ -244,12 +244,16 @@ bool AdBlockBaseService::Init() {
   return true;
 }
 
-void AdBlockBaseService::ResetForTest(const std::string& rules) {
+void AdBlockBaseService::ResetForTest(const std::string& rules,
+    const std::string& resources) {
   // This is temporary until adblock-rust supports incrementally adding
   // filter rules to an existing instance. At which point the hack below
   // will dissapear.
   ad_block_client_.reset(new adblock::Engine(rules));
   AddKnownTagsToAdBlockInstance();
+  if (!resources.empty()) {
+    resources_ = resources;
+  }
   AddKnownResourcesToAdBlockInstance();
 }
 

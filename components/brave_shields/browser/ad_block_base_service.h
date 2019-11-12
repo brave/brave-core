@@ -54,7 +54,7 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   void GetDATFileData(const base::FilePath& dat_file_path);
   void AddKnownTagsToAdBlockInstance();
   void AddKnownResourcesToAdBlockInstance();
-  void ResetForTest(const std::string& rules);
+  void ResetForTest(const std::string& rules, const std::string& resources);
 
   std::unique_ptr<adblock::Engine> ad_block_client_;
 
