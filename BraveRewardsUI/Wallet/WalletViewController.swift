@@ -124,6 +124,10 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
     if presentedViewController == nil {
       navigationController?.setNavigationBarHidden(false, animated: animated)
     }
+    
+    if rewardsSummaryView.transform.ty != 0 {
+      tappedRewardsSummaryButton()
+    }
   }
   
   deinit {
