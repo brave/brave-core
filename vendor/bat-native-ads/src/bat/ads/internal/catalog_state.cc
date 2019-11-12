@@ -64,11 +64,10 @@ Result CatalogState::FromJson(
 
     campaign_info.campaign_id = campaign["campaignId"].GetString();
     campaign_info.advertiser_id = campaign["advertiserId"].GetString();
-    campaign_info.name = campaign["name"].GetString();
+    campaign_info.priority = campaign["priority"].GetUint();
     campaign_info.start_at = campaign["startAt"].GetString();
     campaign_info.end_at = campaign["endAt"].GetString();
     campaign_info.daily_cap = campaign["dailyCap"].GetUint();
-    campaign_info.budget = campaign["budget"].GetUint();
 
     // Geo targets
     for (const auto& geo_target : campaign["geoTargets"].GetArray()) {
@@ -80,23 +79,23 @@ Result CatalogState::FromJson(
       campaign_info.geo_targets.push_back(geo_target_info);
     }
 
+    // Day parts
+    for (const auto& day_part : campaign["dayParts"].GetArray()) {
+      DayPartInfo day_part_info;
+
+      day_part_info.dow = day_part["dow"].GetString();
+      day_part_info.startMinute = day_part["startMinute"].GetUint();
+      day_part_info.endMinute = day_part["endMinute"].GetUint();
+
+      campaign_info.day_parts.push_back(day_part_info);
+    }
+
     // Creative sets
     for (const auto& creative_set : campaign["creativeSets"].GetArray()) {
       CreativeSetInfo creative_set_info;
 
       creative_set_info.creative_set_id =
           creative_set["creativeSetId"].GetString();
-
-      std::string execution = creative_set["execution"].GetString();
-      if (execution != "per_click") {
-        if (error_description != nullptr) {
-          *error_description = "Catalog invalid: creativeSet has unknown "
-              "execution: " + execution;
-        }
-
-        return FAILED;
-      }
-      creative_set_info.execution = execution;
 
       creative_set_info.per_day = creative_set["perDay"].GetUint();
 
@@ -120,6 +119,18 @@ Result CatalogState::FromJson(
         segment_info.name = segment["name"].GetString();
 
         creative_set_info.segments.push_back(segment_info);
+      }
+
+      // Oses
+      auto oses = creative_set["oses"].GetArray();
+
+      for (const auto& os : oses) {
+        OsInfo os_info;
+
+        os_info.code = os["code"].GetString();
+        os_info.name = os["name"].GetString();
+
+        creative_set_info.oses.push_back(os_info);
       }
 
       // Creatives

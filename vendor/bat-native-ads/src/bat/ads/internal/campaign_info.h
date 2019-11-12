@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "bat/ads/internal/catalog_geo_target_info.h"
+#include "bat/ads/internal/catalog_day_part_info.h"
 #include "bat/ads/internal/catalog_creative_set_info.h"
 
 namespace ads {
@@ -21,13 +22,14 @@ struct CampaignInfo {
   ~CampaignInfo();
 
   std::string campaign_id;
+  unsigned int priority;
   std::string name;
   std::string start_at;
   std::string end_at;
   unsigned int daily_cap;
-  unsigned int budget;
   std::string advertiser_id;
   std::vector<GeoTargetInfo> geo_targets;
+  std::vector<DayPartInfo> day_parts;
   std::vector<CreativeSetInfo> creative_sets;
 };
 
