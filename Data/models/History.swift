@@ -72,7 +72,8 @@ public final class History: NSManagedObject, WebsitePresentable, CRUD {
             var item = History.getExisting(url, context: context)
             if item == nil {
                 item = History(entity: History.entity(context), insertInto: context)
-                item?.domain = Domain.getOrCreateInternal(url, context: context)
+                item?.domain = Domain.getOrCreateInternal(url, context: context,
+                                                          saveStrategy: .delayedPersistentStore)
                 item?.url = url.absoluteString
             }
             item?.title = title

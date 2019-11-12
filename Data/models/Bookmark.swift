@@ -266,7 +266,8 @@ extension Bookmark {
             bk.lastVisited = bk.created
             
             if let location = site?.location, let url = URL(string: location) {
-                bk.domain = Domain.getOrCreateInternal(url, context: context, save: false)
+                bk.domain = Domain.getOrCreateInternal(url, context: context,
+                                                       saveStrategy: .delayedPersistentStore)
             }
             
             // Update parent folder if one exists
@@ -363,7 +364,9 @@ extension Bookmark {
             if let u = url, !u.isEmpty {
                 bookmarkToUpdate.url = url
                 if let theURL = URL(string: u) {
-                    bookmarkToUpdate.domain = Domain.getOrCreateInternal(theURL, context: context)
+                    bookmarkToUpdate.domain =
+                        Domain.getOrCreateInternal(theURL, context: context,
+                                                   saveStrategy: .delayedPersistentStore)
                 } else {
                     bookmarkToUpdate.domain = nil
                 }

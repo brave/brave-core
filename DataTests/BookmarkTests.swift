@@ -522,11 +522,13 @@ class BookmarkTests: CoreDataTestCase {
         
         DataController.viewContext.refreshAllObjects()
         
-        XCTAssertEqual(object.title, newTitle)
-        XCTAssertEqual(object.url, newUrl)
+        let newObject = try! DataController.viewContext.fetch(fetchRequest).first!
         
-        XCTAssertEqual(object.created, oldCreated)
-        XCTAssertNotEqual(object.lastVisited, oldLastVisited)
+        XCTAssertEqual(newObject.title, newTitle)
+        XCTAssertEqual(newObject.url, newUrl)
+        
+        XCTAssertEqual(newObject.created, oldCreated)
+        XCTAssertNotEqual(newObject.lastVisited, oldLastVisited)
     }
     
     func testAsDictionary() {

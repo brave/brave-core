@@ -4,6 +4,9 @@ import UIKit
 import CoreData
 import Foundation
 import BraveShared
+import Shared
+
+private let log = Logger.browserLogger
 
 public final class Domain: NSManagedObject, CRUD {
     
@@ -27,11 +30,33 @@ public final class Domain: NSManagedObject, CRUD {
         return URLComponents(string: url ?? "")
     }
     
+    /// A domain can be created in many places,
+    /// different save strategies are used depending on its relationship(eg. attached to a Bookmark) or browsing mode.
+    enum SaveStrategy {
+        /// Immediately saves to the persistent store.
+        case persistentStore
+        /// Targets persistent store but the database save will occur at other place in code, for example after a whole Bookmark is saved.
+        case delayedPersistentStore
+        /// Saves to an in-memory store. Usually only used when in private browsing mode.
+        case inMemory
+        
+        fileprivate var saveContext: NSManagedObjectContext {
+            switch self {
+            case .persistentStore, .delayedPersistentStore:
+                return DataController.newBackgroundContext()
+            case .inMemory:
+                return DataController.newBackgroundContextInMemory()
+            }
+        }
+    }
+    
     // MARK: - Public interface
     
     public class func getOrCreate(forUrl url: URL, persistent: Bool) -> Domain {
         let context = persistent ? DataController.viewContext : DataController.viewContextInMemory
-        return getOrCreateInternal(url, context: context, save: true)
+        let saveStrategy: SaveStrategy = persistent ? .persistentStore : .inMemory
+        
+        return getOrCreateInternal(url, context: context, saveStrategy: saveStrategy)
     }
     
     // MARK: Shields
@@ -103,28 +128,44 @@ extension Domain {
         return NSEntityDescription.entity(forEntityName: "Domain", in: context)!
     }
     
+    /// Returns a Domain for given URL or creates a new object if it doesn't exist.
+    /// Note: Save operation can block main thread.
     class func getOrCreateInternal(_ url: URL,
                                    context: NSManagedObjectContext = DataController.viewContext,
-                                   save: Bool = true) -> Domain {
+                                   saveStrategy: SaveStrategy) -> Domain {
         let domainString = url.domainURL.absoluteString
         if let domain = Domain.first(where: NSPredicate(format: "url == %@", domainString), context: context) {
             return domain
         }
-        
-        // See #409:
-        //  A larger refactor is probably wanted here.
-        //  This can easily lead to a Domain being created on the `viewContext`
-        //  A solution to consider is creating a new background context here, creating, saving, and then re-fetching
-        //   that object in the requested context (regardless if it is `viewContext` or not)
+
         var newDomain: Domain!
-        context.performAndWait {
-            newDomain = Domain(entity: Domain.entity(context), insertInto: context)
+
+        // Domains are usually accesed on view context, but when the Domain doesn't exist,
+        // we have to switch to a background context to avoid writing on view context(bad practice).
+        let writeContext = context.concurrencyType ==
+            .mainQueueConcurrencyType ? saveStrategy.saveContext : context
+        
+        writeContext.performAndWait {
+            newDomain = Domain(entity: Domain.entity(writeContext), insertInto: writeContext)
             newDomain.url = domainString
-            if save {
-                DataController.save(context: context)
+            
+            let shouldSave = saveStrategy == .persistentStore || saveStrategy == .inMemory
+            
+            if shouldSave && writeContext.hasChanges {
+                do {
+                    try writeContext.save()
+                } catch {
+                    log.error("Domain save error: \(error)")
+                }
             }
         }
-        return newDomain
+        
+        guard let domainOnCorrectContext = context.object(with: newDomain.objectID) as? Domain else {
+            assertionFailure("Could not retrieve domain on correct context")
+            return newDomain
+        }
+        
+        return domainOnCorrectContext
     }
     
     class func deleteNonBookmarkedAndClearSiteVisits(context: NSManagedObjectContext,
@@ -166,7 +207,9 @@ extension Domain {
     
     class func setBraveShieldInternal(forUrl url: URL, shield: BraveShield, isOn: Bool?, context: WriteContext = .new(inMemory: false)) {
         DataController.perform(context: context) { context in
-            let domain = Domain.getOrCreateInternal(url, context: context)
+            // Not saving here, save happens in `perform` method.
+            let domain = Domain.getOrCreateInternal(url, context: context,
+                                                    saveStrategy: .delayedPersistentStore)
             domain.setBraveShield(shield: shield, isOn: isOn, context: context)
         }
     }
@@ -223,7 +266,8 @@ extension Domain {
         
         guard let url = urlComponents.url else { return nil }
         
-        // Return the flipped scheme version of `url`
-        return Domain.getOrCreateInternal(url, context: context, save: true)
+        // Return the flipped scheme version of `url`.
+        // Not saving here, save happens in at higher level in `perform` method.
+        return Domain.getOrCreateInternal(url, context: context, saveStrategy: .delayedPersistentStore)
     }
 }
