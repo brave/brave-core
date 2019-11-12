@@ -335,7 +335,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
       let isAdGrant = promotion.type == .ads
       let claimedVC = GrantClaimedViewController(
         grantAmount: grantAmount,
-        expirationDate: isAdGrant ? nil : Date(timeIntervalSince1970: TimeInterval(promotion.expiresAt))
+        kind: isAdGrant ? .ads : .ugp(expirationDate: Date(timeIntervalSince1970: TimeInterval(promotion.expiresAt)))
       )
       self.present(claimedVC, animated: true) {
         self.tappedNotificationClose()

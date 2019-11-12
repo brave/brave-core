@@ -185,7 +185,7 @@ class SettingsViewController: UIViewController {
       
       let claimedVC = GrantClaimedViewController(
         grantAmount: amount,
-        expirationDate: isAdGrant ? nil : Date(timeIntervalSince1970: TimeInterval(promotion.expiresAt))
+        kind: isAdGrant ? .ads : .ugp(expirationDate: Date(timeIntervalSince1970: TimeInterval(promotion.expiresAt)))
       )
       self.present(claimedVC, animated: true)
     }

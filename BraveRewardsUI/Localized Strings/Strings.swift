@@ -41,6 +41,7 @@ internal extension Strings {
   static let SettingsAutoContributeTitle = NSLocalizedString("BraveRewardsSettingsAutoContributeTitle", bundle: Bundle.RewardsUI, value: "Auto-Contribute", comment: "")
   static let NotYetVerified = NSLocalizedString("BraveRewardsNotYetVerified", bundle: Bundle.RewardsUI, value: "Not yet verified", comment: "")
   static let GrantsClaimedTitle = NSLocalizedString("BraveRewardsGrantsClaimedTitle", bundle: Bundle.RewardsUI, value: "It's your lucky day!", comment: "")
+  static let AdsGrantsClaimedTitle = NSLocalizedString("BraveRewardsAdsGrantsClaimedTitle", bundle: Bundle.RewardsUI, value: "Brave Ads Rewards!", comment: "")
   static let NotificationAdsTitle = NSLocalizedString("BraveRewardsNotificationAdsTitle", bundle: Bundle.RewardsUI, value: "Brave Ads", comment: "")
   static let MinimumVisitsChoices2 = NSLocalizedString("BraveRewardsMinimumVisitsChoices2", bundle: Bundle.RewardsUI, value: "10 visits", comment: "")
   static let MinimumVisitsChoices1 = NSLocalizedString("BraveRewardsMinimumVisitsChoices1", bundle: Bundle.RewardsUI, value: "5 visits", comment: "")
@@ -123,6 +124,7 @@ internal extension Strings {
     }
     return NSLocalizedString("BraveRewardsGrantsClaimedSubtitle", bundle: Bundle.RewardsUI, value: "Your token grant is on its way.", comment: "")
   }
+  static let AdsGrantsClaimedSubtitle = NSLocalizedString("BraveRewardsAdsGrantsClaimedSubtitle", bundle: Bundle.RewardsUI, value: "Your rewards grant from Brave Ads is on its way.", comment: "")
   static let AutoContributeRestoreExcludedSites = NSLocalizedString("BraveRewardsAutoContributeRestoreExcludedSites", bundle: Bundle.RewardsUI, value: "Restore %ld excluded sites", comment: "")
   static let SettingsViewDetails = NSLocalizedString("BraveRewardsSettingsViewDetails", bundle: Bundle.RewardsUI, value: "View Details", comment: "")
   static let AutoContributeMonthlyPaymentTitle = NSLocalizedString("BraveRewardsAutoContributeMonthlyPaymentTitle", bundle: Bundle.RewardsUI, value: "Monthly Payment", comment: "")
@@ -191,6 +193,12 @@ internal extension Strings {
       return NSLocalizedString("BraveRewardsGrantsClaimedAmountTitleJapan", bundle: Bundle.RewardsUI, value: "Free Points Grant", comment: "")
     }
     return NSLocalizedString("BraveRewardsGrantsClaimedAmountTitle", bundle: Bundle.RewardsUI, value: "Free Token Grant", comment: "")
+  }
+  static var AdsGrantsClaimedAmountTitle: String {
+    if Locale.current.isJapan {
+      return NSLocalizedString("BraveRewardsAdsGrantsClaimedAmountTitleJapan", bundle: Bundle.RewardsUI, value: "Your Brave Ads Point Grant", comment: "")
+    }
+    return NSLocalizedString("BraveRewardsAdsGrantsClaimedAmountTitle", bundle: Bundle.RewardsUI, value: "Your Brave Ads Token Grant", comment: "")
   }
   static let SettingsAdsComingSoonText = NSLocalizedString("BraveRewardsSettingsAdsComingSoonText", bundle: Bundle.RewardsUI, value: "Coming soon.", comment: "")
   static let SettingsTipsTitle = NSLocalizedString("BraveRewardsSettingsTipsTitle", bundle: Bundle.RewardsUI, value: "Tips", comment: "")

@@ -11,12 +11,24 @@ private let claimGrantDateFormatter = DateFormatter().then {
 
 class GrantClaimedViewController: UIViewController {
   
-  let grantAmount: String
-  let expirationDate: Date?
+  enum GrantKind {
+    case ugp(expirationDate: Date)
+    case ads
+    
+    var isAdsGrant: Bool {
+      switch self {
+      case .ads: return true
+      case .ugp: return false
+      }
+    }
+  }
   
-  init(grantAmount: String, expirationDate: Date?) {
+  let grantAmount: String
+  let kind: GrantKind
+  
+  init(grantAmount: String, kind: GrantKind) {
     self.grantAmount = grantAmount
-    self.expirationDate = expirationDate
+    self.kind = kind
     
     super.init(nibName: nil, bundle: nil)
     
@@ -33,19 +45,15 @@ class GrantClaimedViewController: UIViewController {
   }
   
   override func loadView() {
-    view = View()
+    view = View(kind: self.kind)
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
     grantView.infoView.freeTokenAmountLabel.text = grantAmount + " " + Strings.BAT
-    if let expirationDate = expirationDate {
+    if case .ugp(let expirationDate) = kind {
       grantView.infoView.expirationDateLabel.text = claimGrantDateFormatter.string(from: expirationDate)
-    } else {
-      // No expiration
-      grantView.infoView.expirationDateTitleLabel.isHidden = true
-      grantView.infoView.expirationDateLabel.isHidden = true
     }
     grantView.okButton.addTarget(self, action: #selector(dismissController), for: .touchUpInside)
   }
@@ -59,7 +67,7 @@ extension GrantClaimedViewController {
   
   private class View: UIView {
     
-    let infoView = InfoView()
+    let infoView: InfoView
     
     let okButton = ActionButton(type: .system).then {
       $0.backgroundColor = BraveUX.braveOrange
@@ -67,10 +75,14 @@ extension GrantClaimedViewController {
       $0.setTitle(Strings.OK, for: .normal)
     }
     
-    override init(frame: CGRect) {
-      super.init(frame: frame)
+    init(kind: GrantClaimedViewController.GrantKind) {
+      infoView = InfoView(kind: kind)
+      
+      super.init(frame: .zero)
       
       backgroundColor = .white
+      
+      let isAdsGrant = kind.isAdsGrant
       
       let scrollView = UIScrollView().then {
         $0.alwaysBounceVertical = true
@@ -87,14 +99,14 @@ extension GrantClaimedViewController {
       let titleLabel = UILabel().then {
         $0.numberOfLines = 0
         $0.appearanceTextColor = BraveUX.braveOrange
-        $0.text = Strings.GrantsClaimedTitle
+        $0.text = isAdsGrant ? Strings.AdsGrantsClaimedTitle : Strings.GrantsClaimedTitle
         $0.font = .systemFont(ofSize: 20.0)
         $0.textAlignment = .center
       }
       let subtitleLabel = UILabel().then {
         $0.numberOfLines = 0
         $0.appearanceTextColor = SettingsUX.subtitleTextColor
-        $0.text = Strings.GrantsClaimedSubtitle
+        $0.text = isAdsGrant ? Strings.AdsGrantsClaimedSubtitle : Strings.GrantsClaimedSubtitle
         $0.font = .systemFont(ofSize: 12.0)
         $0.textAlignment = .center
       }
@@ -150,7 +162,12 @@ extension GrantClaimedViewController {
       $0.font = .systemFont(ofSize: 13.0)
     }
     
-    override init(frame: CGRect) {
+    let amountTitleLabel = UILabel().then {
+      $0.appearanceTextColor = SettingsUX.subtitleTextColor
+      $0.font = .systemFont(ofSize: 13.0)
+    }
+    
+    init(kind: GrantClaimedViewController.GrantKind) {
       let infoLabelConfig: (UILabel) -> Void = {
         $0.appearanceTextColor = UX.infoAccentTextColor
         $0.font = .systemFont(ofSize: 14.0)
@@ -159,7 +176,11 @@ extension GrantClaimedViewController {
       freeTokenAmountLabel = UILabel().then(infoLabelConfig)
       expirationDateLabel = UILabel().then(infoLabelConfig)
       
-      super.init(frame: frame)
+      super.init(frame: .zero)
+      
+      let isAdsGrant = kind.isAdsGrant
+      
+      amountTitleLabel.text = isAdsGrant ? Strings.AdsGrantsClaimedAmountTitle : Strings.GrantsClaimedAmountTitle
       
       backgroundColor = Colors.neutral800
       
@@ -170,18 +191,16 @@ extension GrantClaimedViewController {
         $0.alignment = .center
         $0.spacing = 4.0
       }
-      let amountTitleLabel = UILabel().then {
-        $0.text = Strings.GrantsClaimedAmountTitle
-        $0.appearanceTextColor = SettingsUX.subtitleTextColor
-        $0.font = .systemFont(ofSize: 13.0)
-      }
       
       addSubview(stackView)
       stackView.addArrangedSubview(amountTitleLabel)
       stackView.addArrangedSubview(freeTokenAmountLabel)
       stackView.setCustomSpacing(8.0, after: freeTokenAmountLabel)
-      stackView.addArrangedSubview(expirationDateTitleLabel)
-      stackView.addArrangedSubview(expirationDateLabel)
+      
+      if !isAdsGrant {
+        stackView.addArrangedSubview(expirationDateTitleLabel)
+        stackView.addArrangedSubview(expirationDateLabel)
+      }
       
       stackView.snp.makeConstraints {
         $0.edges.equalToSuperview().inset(15.0)
