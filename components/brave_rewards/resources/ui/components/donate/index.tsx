@@ -94,6 +94,31 @@ export default class Donate extends React.PureComponent<Props, State> {
     }
   }
 
+  generateMissingFunds = () => {
+    const {
+      addFundsLink,
+      onlyAnonWallet
+    } = this.props
+
+    let link = undefined
+    let locale = 'notEnoughTokens'
+    if (!onlyAnonWallet) {
+      link = (<a href={addFundsLink} target={'_blank'}>{getLocale('addFunds')}</a>)
+      locale = 'notEnoughTokensLink'
+    }
+
+    const tokenString = onlyAnonWallet ? 'points' : 'tokens'
+    return (
+      <StyledFunds>
+        <StyledIconFace>
+          <EmoteSadIcon />
+        </StyledIconFace>
+        <StyledFundsText>
+          {getLocale(locale, { currency: getLocale(tokenString) })} {link}
+        </StyledFundsText>
+      </StyledFunds>)
+  }
+
   render () {
     const {
       id,
@@ -104,11 +129,9 @@ export default class Donate extends React.PureComponent<Props, State> {
       currentAmount,
       donateType,
       isMobile,
-      addFundsLink,
       onlyAnonWallet
     } = this.props
     const disabled = parseInt(currentAmount, 10) === 0
-    const tokenString = onlyAnonWallet ? 'points' : 'tokens'
 
     return (
       <StyledWrapper donateType={donateType} disabled={disabled} isMobile={isMobile}>
@@ -145,14 +168,7 @@ export default class Donate extends React.PureComponent<Props, State> {
         </StyledSend>
         {
           this.state.missingFunds
-            ? <StyledFunds>
-              <StyledIconFace>
-                <EmoteSadIcon />
-              </StyledIconFace>
-              <StyledFundsText>
-                {getLocale('notEnoughTokens', { currency: getLocale(tokenString) })} <a href={addFundsLink} target={'_blank'}>{getLocale('addFunds')}</a>.
-              </StyledFundsText>
-            </StyledFunds>
+            ? this.generateMissingFunds()
             : null
         }
       </StyledWrapper>
