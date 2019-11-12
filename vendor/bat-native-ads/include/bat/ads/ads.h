@@ -19,10 +19,9 @@
 #include "bat/ads/notification_event_type.h"
 #include "bat/ads/notification_info.h"
 #include "bat/ads/public/interfaces/ads.mojom.h"
+#include "bat/ads/ads_history.h"
 
 namespace ads {
-
-struct AdsHistory;
 
 using Environment = mojom::Environment;
 
@@ -206,7 +205,8 @@ class ADS_EXPORT Ads {
 
   // Should be called to get ads history. Returns |std::map<uint64_t,
   // std::vector<AdsHistory>>| in the format |{timestamp, array<AdsHistory>}|
-  virtual std::map<uint64_t, std::vector<AdsHistory>> GetAdsHistory() = 0;
+  virtual std::map<uint64_t, std::vector<AdsHistory>> GetAdsHistory(
+      const AdsHistoryFilterType ad_history_filterype) = 0;
 
   // Should be called to indicate interest in the specified ad. This is a
   // toggle, so calling it again returns the setting to the neutral state

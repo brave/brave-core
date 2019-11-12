@@ -16,6 +16,11 @@ namespace ads {
 
 struct AdHistoryDetail;
 
+enum class AdsHistoryFilterType {
+  kNone = 0,
+  kConfirmationType
+};
+
 struct ADS_EXPORT AdsHistory {
   AdsHistory();
   explicit AdsHistory(const AdsHistory& history);
