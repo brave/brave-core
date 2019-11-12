@@ -45,7 +45,7 @@ export const StyledBalanceTokens = styled<{}, 'div'>('div')`
   letter-spacing: -0.4px;
   color: #fff;
   font-weight: 300;
-  margin-top: 10px;
+  margin-top: 25px;
 `
 
 export const StyledBalanceConverted = styled<{}, 'div'>('div')`
