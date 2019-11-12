@@ -64,7 +64,7 @@ export default class SelectMobile extends React.PureComponent<Props, {}> {
       return null
     }
 
-    const batFormatString = onlyAnonWallet ? 'bap' : 'bat'
+    const batFormatString = onlyAnonWallet ? getLocale('batPoints') : getLocale('bat')
 
     return (
       <>
@@ -74,7 +74,7 @@ export default class SelectMobile extends React.PureComponent<Props, {}> {
               key={`k-${amount.value}`}
               value={amount.dataValue}
             >
-              {amount.value} {getLocale(batFormatString)} ({amount.converted} USD)
+              {amount.value} {batFormatString} ({amount.converted} USD)
             </option>
           )
         })}
