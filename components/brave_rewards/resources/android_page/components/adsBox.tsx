@@ -118,11 +118,13 @@ class AdsBox extends React.Component<Props, {}> {
       boxPropsExtra.extraDescriptionChild = <AdsOnboarding />
     }
 
+    const tokenString = getLocale(onlyAnonWallet ? 'points' : 'tokens')
+
     return (
       <BoxMobile
         title={getLocale('adsTitle')}
         type={'ads'}
-        description={getLocale(onlyAnonWallet ? 'adsDescPoints' : 'adsDesc')}
+        description={getLocale('adsDesc', { currency : tokenString })}
         settingsChild={this.adsSettings(adsEnabled && enabledMain)}
         {...boxPropsExtra}
       >
