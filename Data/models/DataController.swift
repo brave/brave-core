@@ -251,7 +251,7 @@ public class DataController: NSObject {
         return docURL.appendingPathComponent(DataController.databaseName)
     }
     
-    private static func newBackgroundContext() -> NSManagedObjectContext {
+    static func newBackgroundContext() -> NSManagedObjectContext {
         let backgroundContext = DataController.shared.container.newBackgroundContext()
         // In theory, the merge policy should not matter
         // since all operations happen on a synchronized operation queue.
@@ -260,7 +260,7 @@ public class DataController: NSObject {
         return backgroundContext
     }
     
-    private static func newBackgroundContextInMemory() -> NSManagedObjectContext {
+    static func newBackgroundContextInMemory() -> NSManagedObjectContext {
         let backgroundContext = DataController.sharedInMemory.container.newBackgroundContext()
         backgroundContext.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump
         return backgroundContext

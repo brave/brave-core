@@ -23,7 +23,8 @@ public final class FaviconMO: NSManagedObject, CRUD {
                 item!.url = favicon.url
             }
             if item?.domain == nil {
-                item!.domain = Domain.getOrCreateInternal(siteUrl, context: context)
+                item!.domain = Domain.getOrCreateInternal(siteUrl, context: context,
+                                                          saveStrategy: .delayedPersistentStore)
             }
             
             let w = Int16(favicon.width ?? 0)
