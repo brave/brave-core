@@ -75,6 +75,13 @@
       "js": [
         "assets/siteHack-glennbeck.com.js"
       ]
+    }, {
+      "run_at": "document_start",
+      "all_frames": true,
+      "matches": ["https://www.google.*"],
+      "js": [
+        "assets/siteHack-googlemic.js"
+      ]
     }
   ],
   "permissions": [ "contentSettings", "settingsPrivate", "management", "tabs", "storage", "webNavigation", "contextMenus", "cookies", "*://*/*", "chrome://favicon/*" ],
