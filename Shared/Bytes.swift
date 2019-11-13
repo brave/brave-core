@@ -13,11 +13,13 @@ open class Bytes {
     open class func generateRandomBytes(_ len: UInt) -> Data {
         let len = Int(len)
         var data = Data(count: len)
-        data.withUnsafeMutableBytes { (p: UnsafeMutablePointer<UInt8>) in
-            if SecRandomCopyBytes(kSecRandomDefault, len, p) != errSecSuccess {
+        data.withUnsafeMutableBytes {
+            if let baseAddress = $0.baseAddress,
+                SecRandomCopyBytes(kSecRandomDefault, len, baseAddress) != errSecSuccess {
                 fatalError("Random byte generation failed.")
             }
         }
+        
         return data
     }
 

@@ -43,23 +43,14 @@ extension Data {
     public var hexEncodedString: String {
         var result = String()
         result.reserveCapacity(count * 2)
-        withUnsafeBytes { (p: UnsafePointer<UInt8>) in
+        withUnsafeBytes {
             for i in 0..<count {
-                result.append(HexDigits[Int((p[i] & 0xf0) >> 4)])
-                result.append(HexDigits[Int(p[i] & 0x0f)])
+                result.append(HexDigits[Int(($0[i] & 0xf0) >> 4)])
+                result.append(HexDigits[Int($0[i] & 0x0f)])
             }
         }
+        
         return String(result)
-    }
-
-    public static func randomOfLength(_ length: UInt) -> Data? {
-        let length = Int(length)
-        var data = Data(count: length)
-        var result: Int32 = 0
-        data.withUnsafeMutableBytes { (p: UnsafeMutablePointer<UInt8>) in
-            result = SecRandomCopyBytes(kSecRandomDefault, length, p)
-        }
-        return result == 0 ? data : nil
     }
 }
 
