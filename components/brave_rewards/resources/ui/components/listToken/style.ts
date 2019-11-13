@@ -23,13 +23,13 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   color: #4b4c5c;
   flex-grow: 1;
   flex-shrink: 1;
-  flex-basis: 40%;
+  flex-basis: 60%;
 `
 
 export const StyledContentWrapper = styled<{}, 'div'>('div')`
   flex-grow: 1;
   flex-shrink: 1;
-  flex-basis: 50%;
+  flex-basis: 40%;
   text-align: right;
 
   @media (max-width: 385px) {
