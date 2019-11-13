@@ -544,7 +544,7 @@ class BraveRewardsBrowserTest
       {"BraveAdsLocaleIsSupported", "en_US"},
       {"BraveAdsLocaleIsNotSupported", "en_XX"},
       {"BraveAdsLocaleIsNewlySupported", "ja_JP"},
-      {"BraveAdsLocaleIsNewlySupportedForLatestSchemaVersion", "en_KY"},
+      {"BraveAdsLocaleIsNewlySupportedForLatestSchemaVersion", "en_VN"},
       {"BraveAdsLocaleIsNotNewlySupported", "en_XX"},
       {"PRE_AutoEnableAdsForSupportedLocales", "en_US"},
       {"AutoEnableAdsForSupportedLocales", "en_US"},
