@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.13](https://github.com/brave/brave-ios/releases/tag/v1.13)
+ 
+ - Added Brave Rewards and Ads. ([#1920](https://github.com/brave/brave-ios/issues/1920))
+ - Added new preview menu on iOS13. ([#1499](https://github.com/brave/brave-ios/issues/1499))
+ - Added bookmarklet support. ([#1119](https://github.com/brave/brave-ios/issues/1119))
+ - Updated text size and colors on new tab stats to match desktop. ([#1641](https://github.com/brave/brave-ios/issues/1641))
+ - Updated StartPage icon. ([#1598](https://github.com/brave/brave-ios/issues/1598))
+ - Fixed wrong device name being shown when tapping on sync devices. ([#1587](https://github.com/brave/brave-ios/issues/1587))
+ - Fixed readability of website/tab names in dark mode. ([#1551](https://github.com/brave/brave-ios/issues/1551))
+ - Fixed button border visibility under Brave Shields when using the light theme. ([#1548](https://github.com/brave/brave-ios/issues/1548))
+ - Fixed missing long press context menu on image search results. ([#1547](https://github.com/brave/brave-ios/issues/1547))
+ - Fixed "Download Cancelled" not visible after cancelling a download under iOS 12. ([#1516](https://github.com/brave/brave-ios/issues/1516))
+ - Removed "www" from the URL bar. ([#1533](https://github.com/brave/brave-ios/issues/1533))
+ - Removed Alexa top sites recommendations from showing up as search suggestions. ([#868](https://github.com/brave/brave-ios/issues/868))
+ - Removed URL autocomplete while editing an existing URL. ([#807](https://github.com/brave/brave-ios/issues/807))
+
 ## [1.12.1](https://github.com/brave/brave-ios/releases/tag/v1.12.1)
 
  - Fixed data loss on upgrade to 1.12 under certain scenarios. ([#1554](https://github.com/brave/brave-ios/issues/1554))
