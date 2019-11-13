@@ -229,7 +229,6 @@ class BraveSyncServiceTest : public testing::Test {
   // When this is set, class should not install any other MessageLoops, like
   // base::test::ScopedTaskEnvironment
   content::TestBrowserThreadBundle thread_bundle_;
-
   std::unique_ptr<Profile> profile_;
   BraveProfileSyncServiceImpl* sync_service_;
   MockBraveSyncClient* sync_client_;
@@ -248,8 +247,7 @@ TEST_F(BraveSyncServiceTest, SetSyncEnabled) {
   sync_service()->OnSetSyncEnabled(true);
   EXPECT_TRUE(
       profile()->GetPrefs()->GetBoolean(brave_sync::prefs::kSyncEnabled));
-  EXPECT_FALSE(sync_service()->IsBraveSyncInitialized());
-  EXPECT_FALSE(sync_service()->IsBraveSyncConfigured());
+  EXPECT_FALSE(sync_service()->brave_sync_ready_);
 }
 
 TEST_F(BraveSyncServiceTest, SetSyncDisabled) {
@@ -264,24 +262,46 @@ TEST_F(BraveSyncServiceTest, SetSyncDisabled) {
   sync_service()->OnSetSyncEnabled(false);
   EXPECT_FALSE(
       profile()->GetPrefs()->GetBoolean(brave_sync::prefs::kSyncEnabled));
-  EXPECT_FALSE(sync_service()->IsBraveSyncInitialized());
-  EXPECT_FALSE(sync_service()->IsBraveSyncConfigured());
+  EXPECT_FALSE(sync_service()->brave_sync_ready_);
 }
 
-TEST_F(BraveSyncServiceTest, IsSyncConfiguredOnNewProfile) {
-  EXPECT_FALSE(sync_service()->IsBraveSyncConfigured());
+TEST_F(BraveSyncServiceTest, IsSyncReadyOnNewProfile) {
+  EXPECT_FALSE(sync_service()->brave_sync_ready_);
 }
 
-TEST_F(BraveSyncServiceTest, IsSyncInitializedOnNewProfile) {
-  EXPECT_FALSE(sync_service()->IsBraveSyncInitialized());
-}
+const char kTestWords1[] =
+    "absurd avoid scissors anxiety gather lottery category door "
+    "army half long cage bachelor another expect people blade "
+    "school educate curtain scrub monitor lady beyond";
 
 TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode) {
   EXPECT_CALL(*sync_client(), OnSyncEnabledChanged);
   // Expecting sync state changed twice: for enabled state and for device name
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(2);
-  sync_service()->OnSetupSyncHaveCode("word1 word2 word3", "test_device");
+  sync_service()->OnSetupSyncHaveCode(kTestWords1, "test_device");
   EXPECT_TRUE(
+      profile()->GetPrefs()->GetBoolean(brave_sync::prefs::kSyncEnabled));
+}
+
+TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCodeIncorrectCode) {
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(0);
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(0);
+  EXPECT_CALL(*observer(),
+              OnSyncSetupError(sync_service(), "ERR_SYNC_WRONG_WORDS"))
+      .Times(1);
+  sync_service()->OnSetupSyncHaveCode("wrong code", "test_device");
+  EXPECT_FALSE(
+      profile()->GetPrefs()->GetBoolean(brave_sync::prefs::kSyncEnabled));
+}
+
+TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCodeEmptyCode) {
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(0);
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(0);
+  EXPECT_CALL(*observer(),
+              OnSyncSetupError(sync_service(), "ERR_SYNC_WRONG_WORDS"))
+      .Times(1);
+  sync_service()->OnSetupSyncHaveCode("", "test_device");
+  EXPECT_FALSE(
       profile()->GetPrefs()->GetBoolean(brave_sync::prefs::kSyncEnabled));
 }
 
@@ -289,7 +309,7 @@ TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCodeEmptyDeviceName) {
   EXPECT_CALL(*sync_client(), OnSyncEnabledChanged);
   // Expecting sync state changed twice: for enabled state and for device name
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(2);
-  sync_service()->OnSetupSyncHaveCode("word1 word2 word3", "");
+  sync_service()->OnSetupSyncHaveCode(kTestWords1, "");
   EXPECT_TRUE(
       profile()->GetPrefs()->GetBoolean(brave_sync::prefs::kSyncEnabled));
   EXPECT_EQ(
@@ -408,6 +428,7 @@ TEST_F(BraveSyncServiceTest, OnDeleteDevice) {
                               ContainsDeviceRecord(SyncRecord::Action::A_DELETE,
                                                    "device3")))
       .Times(1);
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, _, _));
   sync_service()->OnDeleteDevice("3");
 
   RecordsList resolved_records;
@@ -446,6 +467,7 @@ TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenOneDevice) {
   EXPECT_TRUE(DevicesContains(devices.get(), "2", "device2"));
 
   EXPECT_CALL(*sync_client(), SendSyncRecords).Times(1);
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, _, _));
   sync_service()->OnDeleteDevice("2");
 
   RecordsList resolved_records;
@@ -455,34 +477,24 @@ TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenOneDevice) {
   // Expecting to be called one time to set the new devices list
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
 
-  EXPECT_CALL(*sync_client(), SendSyncRecords).Times(1);
+  EXPECT_CALL(*sync_client(), SendSyncRecords).Times(0);
+
+  // Still enabled
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(0);
 
   sync_service()->OnResolvedPreferences(resolved_records);
 
   auto devices_semi_final = brave_sync_prefs()->GetSyncDevices();
   EXPECT_FALSE(DevicesContains(devices_semi_final.get(), "2", "device2"));
   EXPECT_TRUE(DevicesContains(devices_semi_final.get(), "1", "device1"));
-
-  // Enabled->Disabled
-  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
-
-  // Emulate sending DELETE for this device
-  RecordsList resolved_records2;
-  auto resolved_record2 = SyncRecord::Clone(*records.at(0));
-  resolved_record2->action = SyncRecord::Action::A_DELETE;
-  resolved_records2.push_back(std::move(resolved_record2));
-  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(3);
-
-  sync_service()->OnResolvedPreferences(resolved_records2);
-
-  auto devices_final = brave_sync_prefs()->GetSyncDevices();
-  EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "device1"));
-  EXPECT_FALSE(DevicesContains(devices_final.get(), "2", "device2"));
-  EXPECT_FALSE(sync_service()->IsBraveSyncConfigured());
 }
 
-TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenSelfDeleted) {
+TEST_F(BraveSyncServiceTest,
+       OnDeleteDeviceWhenSelfDeleted) {
   brave_sync_prefs()->SetThisDeviceId("1");
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
+  brave_sync_prefs()->SetSyncEnabled(true);
   RecordsList records;
   records.push_back(
       SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "1", "device1"));
@@ -501,11 +513,11 @@ TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenSelfDeleted) {
                               ContainsDeviceRecord(SyncRecord::Action::A_DELETE,
                                                    "device1")))
       .Times(1);
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, _, _));
   sync_service()->OnDeleteDevice("1");
 
   // Enabled->Disabled
   EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
-
   RecordsList resolved_records;
   auto resolved_record = SyncRecord::Clone(*records.at(0));
   resolved_record->action = SyncRecord::Action::A_DELETE;
@@ -514,11 +526,11 @@ TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenSelfDeleted) {
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(3);
   sync_service()->OnResolvedPreferences(resolved_records);
 
+  EXPECT_FALSE(brave_sync_prefs()->GetSyncEnabled());
+
   auto devices_final = brave_sync_prefs()->GetSyncDevices();
   EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "device1"));
   EXPECT_FALSE(DevicesContains(devices_final.get(), "2", "device2"));
-
-  EXPECT_FALSE(sync_service()->IsBraveSyncConfigured());
 }
 
 TEST_F(BraveSyncServiceTest, OnResetSync) {
@@ -549,11 +561,13 @@ TEST_F(BraveSyncServiceTest, OnResetSync) {
                                                    "this_device")))
       .Times(1);
 
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords);
   sync_service()->OnResetSync();
   RecordsList resolved_records;
   auto resolved_record = SyncRecord::Clone(*records.at(0));
   resolved_record->action = SyncRecord::Action::A_DELETE;
   resolved_records.push_back(std::move(resolved_record));
+
   sync_service()->OnResolvedPreferences(resolved_records);
 
   auto devices_final = brave_sync_prefs()->GetSyncDevices();
@@ -598,8 +612,7 @@ TEST_F(BraveSyncServiceTest, OnResetSync) {
       profile()->GetPrefs()->GetString(brave_sync::prefs::kSyncApiVersion),
       "0");
 
-  EXPECT_FALSE(sync_service()->IsBraveSyncInitialized());
-  EXPECT_FALSE(sync_service()->IsBraveSyncConfigured());
+  EXPECT_FALSE(sync_service()->brave_sync_ready_);
 
   EXPECT_FALSE(sync_prefs()->IsSyncRequested());
   EXPECT_FALSE(
@@ -680,25 +693,27 @@ TEST_F(BraveSyncServiceTest, OnBraveSyncPrefsChanged) {
   sync_service()->OnBraveSyncPrefsChanged(brave_sync::prefs::kSyncEnabled);
 }
 
-TEST_F(BraveSyncServiceTest, StartSyncNonDeviceRecords) {
-  EXPECT_FALSE(sync_service()->IsBraveSyncInitialized());
-  sync_service()->OnSetSyncEnabled(true);
-  profile()->GetPrefs()->SetString(brave_sync::prefs::kSyncBookmarksBaseOrder,
-                                   "1.1.");
-  profile()->GetPrefs()->SetBoolean(brave_sync::prefs::kSyncBookmarksEnabled,
-                                    true);
-  EXPECT_FALSE(
-      profile()->GetPrefs()->GetBoolean(syncer::prefs::kSyncBookmarks));
+void OnGetRecordsStub(std::unique_ptr<RecordsList> records) {
+}
+
+TEST_F(BraveSyncServiceTest, SetThisDeviceCreatedTime) {
+  EXPECT_TRUE(brave_sync::tools::IsTimeEmpty(
+      sync_service()->this_device_created_time_));
+
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
+  EXPECT_CALL(*observer(), OnSyncStateChanged);
+  brave_sync_prefs()->SetSyncEnabled(true);
   brave_sync_prefs()->SetThisDeviceId("1");
-  RecordsList records;
-  records.push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "1", "device1"));
-  records.push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "2", "device2"));
-  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
-  sync_service()->OnResolvedPreferences(records);
-  EXPECT_TRUE(
-      !brave_sync::tools::IsTimeEmpty(sync_service()->chain_created_time_));
+
+  brave_sync::GetRecordsCallback on_get_records =
+      base::BindOnce(&OnGetRecordsStub);
+  base::WaitableEvent we;
+  EXPECT_CALL(*sync_client(), SendSyncRecords("PREFERENCES", _));
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords);
+  sync_service()->OnPollSyncCycle(std::move(on_get_records), &we);
+
+  EXPECT_FALSE(brave_sync::tools::IsTimeEmpty(
+      sync_service()->this_device_created_time_));
 }
 
 TEST_F(BraveSyncServiceTest, OnSyncReadyNewToSync) {
@@ -737,6 +752,8 @@ TEST_F(BraveSyncServiceTest, GetDisableReasons) {
   EXPECT_EQ(sync_service()->GetDisableReasons(),
             syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY |
                 syncer::SyncService::DISABLE_REASON_USER_CHOICE);
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnSetSyncEnabled(true);
   EXPECT_EQ(sync_service()->GetDisableReasons(),
             syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY |
@@ -744,17 +761,18 @@ TEST_F(BraveSyncServiceTest, GetDisableReasons) {
   brave_sync_prefs()->SetMigratedBookmarksVersion(2);
   EXPECT_EQ(sync_service()->GetDisableReasons(),
             syncer::SyncService::DISABLE_REASON_NONE);
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnSetSyncEnabled(false);
   EXPECT_TRUE(sync_service()->HasDisableReason(
       syncer::SyncService::DISABLE_REASON_ENTERPRISE_POLICY));
 }
 
 TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode_Reset_SetupAgain) {
-  EXPECT_FALSE(sync_service()->GetResettingForTest());
   EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
   // Expecting sync state changed twice: for enabled state and for device name
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(2);
-  sync_service()->OnSetupSyncHaveCode("word1 word2 word3", "test_device");
+  sync_service()->OnSetupSyncHaveCode(kTestWords1, "test_device");
   EXPECT_TRUE(
       profile()->GetPrefs()->GetBoolean(brave_sync::prefs::kSyncEnabled));
 
@@ -778,37 +796,34 @@ TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode_Reset_SetupAgain) {
                               ContainsDeviceRecord(SyncRecord::Action::A_DELETE,
                                                    "this_device")))
       .Times(1);
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords);
   sync_service()->OnResetSync();
-  // Here we have marked service as in resetting state
+
   // Actual kSyncEnabled will go to false after receiving confirmation of
   // this_device DELETE
   EXPECT_TRUE(
       profile()->GetPrefs()->GetBoolean(brave_sync::prefs::kSyncEnabled));
 
-  EXPECT_TRUE(sync_service()->GetResettingForTest());
+  // Emulating resolved with DELETE
+  records.at(0)->action = SyncRecord::Action::A_DELETE;
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
+  // Sync state is changed 4 times:
+  // 1) we do save updated devices list
+  // 2,3,4) we do ResetSyncInternal() which clears this device name,
+  //        sync enabled and devices list
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(4);
+  sync_service()->OnResolvedPreferences(records);
 
-  // OnSyncStateChanged actually is invoked 9 times:
-  // ForceCompleteReset
-  //    ResetSyncInternal
-  //        brave_sync::Prefs::Clear()
-  //            device_name
-  //            enabled => false
-  //            bookmarks_enabled
-  //            site_settings_enabled
-  //            history_enabled
-  //            device_list
-  //       enabled => false
-  // OnSetupSyncHaveCode()
-  //     device_name
-  //     enabled => true
+  EXPECT_FALSE(
+      profile()->GetPrefs()->GetBoolean(brave_sync::prefs::kSyncEnabled));
 
-  // OnSyncEnabledChanged is actually invoked 3 times:
-  // see preference enabled in abobe list
-  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service()))
-      .Times(AtLeast(1));
-  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(AtLeast(1));
-  sync_service()->OnSetupSyncHaveCode("word1 word2 word5", "test_device");
-  EXPECT_FALSE(sync_service()->GetResettingForTest());
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(2);
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
+  sync_service()->OnSetupSyncHaveCode(
+      "anxiety path library anxiety gather lottery category door army half "
+      "long cage bachelor another expect people blade school "
+      "educate curtain scrub monitor lady arctic",
+      "test_device");
 
   EXPECT_TRUE(
       profile()->GetPrefs()->GetBoolean(brave_sync::prefs::kSyncEnabled));
@@ -908,15 +923,28 @@ TEST_F(BraveSyncServiceTest, ExponentialResend) {
 TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
   using brave_sync::jslib_const::kPreferences;
 
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
+  EXPECT_CALL(*observer(), OnSyncStateChanged);
+  brave_sync_prefs()->SetSyncEnabled(true);
+  brave_sync_prefs()->SetThisDeviceId("1");
+
   // Expecting SendFetchSyncRecords will be invoked
+  // after sync_service()->OnPollSyncCycle
   EXPECT_EQ(brave_sync_prefs()->GetLastFetchTime(), base::Time());
   EXPECT_EQ(brave_sync_prefs()->GetLatestDeviceRecordTime(), base::Time());
-  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _))
-      .Times(1);
-  sync_service()->FetchDevices();
+
+  using brave_sync::tools::IsTimeEmpty;
+  EXPECT_TRUE(IsTimeEmpty(sync_service()->this_device_created_time_));
+
+  brave_sync::GetRecordsCallback on_get_records =
+      base::BindOnce(&OnGetRecordsStub);
+  base::WaitableEvent we;
+  EXPECT_CALL(*sync_client(), SendSyncRecords("PREFERENCES", _));
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _));
+  sync_service()->OnPollSyncCycle(std::move(on_get_records), &we);
+  EXPECT_FALSE(IsTimeEmpty(sync_service()->this_device_created_time_));
 
   // Emulate we received this device
-  brave_sync_prefs()->SetThisDeviceId("1");
   auto records = std::make_unique<brave_sync::RecordsList>();
   records->push_back(
       SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "1", "device1"));
@@ -935,27 +963,7 @@ TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedSyncRecords(kPreferences, std::move(records));
 
-  // When there is only on device in chain, expect fetching sync records with
-  // start_at==0
-  ASSERT_EQ(brave_sync_prefs()->GetSyncDevices()->size(), 1u);
-  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _))
-      .Times(1);
-  sync_service()->FetchDevices();
-
-  // If number of devices becomes 2 or more we should next 70 sec use s3
-  // with epmty start_at_time and then switch to sqs with non-empty
-  // start_at_time
-  records = std::make_unique<brave_sync::RecordsList>();
-  records->push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "2", "device2"));
-  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
-  sync_service()->OnResolvedSyncRecords(kPreferences, std::move(records));
-
-  // Chain has been created but 70 sec not yet passed
-  ASSERT_EQ(brave_sync_prefs()->GetSyncDevices()->size(), 2u);
-  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _))
-      .Times(1);
-  sync_service()->FetchDevices();
+  EXPECT_FALSE(IsTimeEmpty(sync_service()->this_device_created_time_));
 
   // Less than 70 seconds have passed, we should fetch with empty start_at
   {
@@ -979,20 +987,25 @@ TEST_F(BraveSyncServiceTest, SendCompact) {
   using brave_sync::jslib_const::kBookmarks;
   EXPECT_EQ(brave_sync_prefs()->GetLastCompactTimeBookmarks(), base::Time());
   EXPECT_CALL(*sync_client(), SendCompact(kBookmarks)).Times(1);
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
   sync_service()->FetchSyncRecords(true, false, true, 1000);
   // timestamp is not writtend until we get CompactedSyncCategory
   EXPECT_CALL(*sync_client(), SendCompact(kBookmarks)).Times(1);
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
   sync_service()->FetchSyncRecords(true, false, true, 1000);
   sync_service()->OnCompactComplete(kBookmarks);
   EXPECT_CALL(*sync_client(), SendCompact(kBookmarks)).Times(0);
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
   sync_service()->FetchSyncRecords(true, false, true, 1000);
   {
     auto time_override = OverrideForTimeDelta(base::TimeDelta::FromDays(
         sync_service()->GetCompactPeriodInDaysForTests()));
     EXPECT_CALL(*sync_client(), SendCompact(kBookmarks)).Times(1);
+    EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
     sync_service()->FetchSyncRecords(true, false, true, 1000);
     sync_service()->OnCompactComplete(kBookmarks);
   }
   EXPECT_CALL(*sync_client(), SendCompact(kBookmarks)).Times(0);
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
   sync_service()->FetchSyncRecords(true, false, true, 1000);
 }
