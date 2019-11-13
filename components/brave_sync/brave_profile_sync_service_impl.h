@@ -41,6 +41,10 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest,
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, ExponentialResend);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, SendCompact);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, SetSyncEnabled);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, SetSyncDisabled);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, IsSyncReadyOnNewProfile);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, SetThisDeviceCreatedTime);
 
 class BraveSyncServiceTest;
 
@@ -116,8 +120,6 @@ class BraveProfileSyncServiceImpl
 #endif
 
   bool IsBraveSyncEnabled() const override;
-  bool IsBraveSyncInitialized() const;
-  bool IsBraveSyncConfigured() const;
 
   syncer::ModelTypeSet GetPreferredDataTypes() const override;
 
@@ -152,6 +154,11 @@ class BraveProfileSyncServiceImpl
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
                            GetDevicesWithFetchSyncRecords);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, SendCompact);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, SetSyncEnabled);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, SetSyncDisabled);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, IsSyncReadyOnNewProfile);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, SetThisDeviceCreatedTime);
+
   friend class ::BraveSyncServiceTest;
 
   void SignalWaitableEvent();
@@ -172,8 +179,6 @@ class BraveProfileSyncServiceImpl
   void NotifyHaveSyncWords(const std::string& sync_words);
 
   void ResetSyncInternal();
-  void ForceCompleteReset();
-  bool GetResettingForTest() const { return reseting_; }
 
   void SetPermanentNodesOrder(const std::string& base_order);
 
@@ -189,8 +194,6 @@ class BraveProfileSyncServiceImpl
       SyncRecordAndExistingList* records_and_existing_objects);
   std::unique_ptr<SyncRecordAndExistingList> PrepareResolvedPreferences(
       const RecordsList& records);
-
-  void SendAndPurgePendingRecords();
 
   void SendSyncRecords(const std::string& category_name,
                        RecordsListPtr records);
@@ -208,19 +211,17 @@ class BraveProfileSyncServiceImpl
   }
 
   std::unique_ptr<brave_sync::prefs::Prefs> brave_sync_prefs_;
-  // True when is in active sync chain
-  bool brave_sync_configured_ = false;
 
   // True if we have received SyncReady from JS lib
-  bool brave_sync_initialized_ = false;
+  // This is used only to prevent out of sequence invocation of OnSaveInitData
+  // and prevent double invocation of OnSyncReady
+  bool brave_sync_ready_ = false;
 
   // Prevent two sequential calls OnSetupSyncHaveCode or OnSetupSyncNewToSync
   // while being initializing
   bool brave_sync_initializing_ = false;
 
-  bool reseting_ = false;
-
-  std::string brave_sync_words_;
+  Uint8Array seed_;
 
   brave_sync::GetRecordsCallback get_record_cb_;
   base::WaitableEvent* wevent_ = nullptr;
@@ -232,9 +233,9 @@ class BraveProfileSyncServiceImpl
 
   std::unique_ptr<BraveSyncClient> brave_sync_client_;
 
-  base::Time chain_created_time_;
-  std::vector<RecordsListPtr> pending_send_records_;
   std::unique_ptr<RecordsList> pending_received_records_;
+  // Time when current device sent CREATE device record
+  base::Time this_device_created_time_;
 
   // Used to ensure that certain operations are performed on the sequence that
   // this object was created on.
