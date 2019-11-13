@@ -1,0 +1,235 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+
+  <message name="IDS_AUTOCOMPLETE_SEARCH_DESCRIPTION" desc="Description for the default search match.">
+    <ph name="ENGINE">$1<ex>Brave</ex></ph> Search
+  </message>
+  <message name="IDS_EMPTY_KEYWORD_VALUE" desc="Shown in the location bar drop down when the user enters a string that matches a chrome keyword, but they haven't entered any text following the chrome keyword">
+    &lt;Type search term&gt;
+  </message>
+  <if expr="use_titlecase">
+    <message name="IDS_LINK_FROM_CLIPBOARD" desc="The label in the omnibox dropdown explaining that the link has been extracted from the user's clipboard." meaning="Length: 35em">
+      Link You Copied
+    </message>
+    <message name="IDS_TEXT_FROM_CLIPBOARD" desc="The label in the omnibox dropdown explaining that the text has been extracted from the user's clipboard." meaning="Length: 35em">
+      Text You Copied
+    </message>
+    <message name="IDS_IMAGE_FROM_CLIPBOARD" desc="The label in the omnibox dropdown explaining that the image has been extracted from the user's clipboard." meaning="Length: 35em">
+      Image You Copied
+    </message>
+  </if>
+  <if expr="not use_titlecase">
+    <message name="IDS_LINK_FROM_CLIPBOARD" desc="The label in the omnibox dropdown explaining that the link has been extracted from the user's clipboard." meaning="Length: 21em">
+      Link you copied
+    </message>
+    <message name="IDS_TEXT_FROM_CLIPBOARD" desc="The label in the omnibox dropdown explaining that the text has been extracted from the user's clipboard." meaning="Length: 21em">
+      Text you copied
+    </message>
+    <message name="IDS_IMAGE_FROM_CLIPBOARD" desc="The label in the omnibox dropdown explaining that the image has been extracted from the user's clipboard." meaning="Length: 21em">
+      Image you copied
+    </message>
+  </if>
+  <message name="IDS_COPIED_TEXT_FROM_CLIPBOARD" desc="The actual text the user copied, surrounded by quotation marks.">
+    "<ph name="TEXT">$1<ex>search string</ex></ph>"
+  </message>
+  <message name="IDS_SECURE_CONNECTION_EV" desc="Short text shown in the location bar when the connection is secure with an EV cert.">
+    <ph name="ORGANIZATION">$1<ex>Paypal Inc.</ex></ph> [<ph name="COUNTRY">$2<ex>US</ex></ph>]
+  </message>
+
+  <message name="IDS_SECURE_VERBOSE_STATE" desc="An adjective or short adjective phrase shown next to the green lock icon in the omnibox to describe a secure site (valid HTTPS connection). Note that 'secure' in this case primarily refers to HTTPS connection security, so prefer translations with a connotation of 'private' (no one can intercept your communication with the site) rather than 'trustworthy' (which would be a judgment of site reputation). This phrase takes away space from the URL in the omnibox, so it should ideally be as short as possible while staying accurate. This phrase should also make sense compared to the companion phrase 'Not Secure'." meaning="Omnibox phrase to describe a secure site.">
+    Secure
+  </message>
+  <if expr="use_titlecase">
+    <then>
+      <message name="IDS_NOT_SECURE_VERBOSE_STATE" desc="An adjective or short adjective phrase shown next to the security indicator icon in the omnibox to describe a site that is not secure (unencrypted HTTP or invalid HTTPS connection). Note that 'not secure' in this case primarily refers to HTTPS connection security, so prefer translations with a connotation of 'not private' (someone can intercept your communication with the site) rather than 'not trustworthy' (which would be a judgment of site reputation). This phrase takes away space from the URL in the omnibox, so it should ideally be as short as possible while staying accurate. This phrase should also make sense compared to the companion phrase 'Secure'." meaning="Omnibox phrase to describe a site that is not secure.">
+        Not Secure
+      </message>
+    </then>
+    <else>
+      <message name="IDS_NOT_SECURE_VERBOSE_STATE" desc="An adjective or short adjective phrase shown next to the security indicator icon in the omnibox to describe a site that is not secure (unencrypted HTTP or invalid HTTPS connection). Note that 'not secure' in this case primarily refers to HTTPS connection security, so prefer translations with a connotation of 'not private' (someone can intercept your communication with the site) rather than 'not trustworthy' (which would be a judgment of site reputation). This phrase takes away space from the URL in the omnibox, so it should ideally be as short as possible while staying accurate. This phrase should also make sense compared to the companion phrase 'Secure'." meaning="Omnibox phrase to describe a site that is not secure.">
+        Not secure
+      </message>
+    </else>
+  </if>
+  <message name="IDS_DANGEROUS_VERBOSE_STATE" desc="Text for the Dangerous Omnibox Verbose State. Displayed when the current page fails the malware check.">
+    Dangerous
+  </message>
+  <message name="IDS_OFFLINE_VERBOSE_STATE" desc="Text for the Offline Omnibox Verbose state. Displayed when the current page is loaded from a previously-downloaded cache.">
+    Offline
+  </message>
+  <if expr="is_ios">
+    <message name="IDS_OMNIBOX_EMPTY_HINT" desc="The text displayed in the omnibox when it is empty.">
+      Search or type URL
+    </message>
+  </if>
+  <message name="IDS_OMNIBOX_TAB_SUGGEST_HINT" desc="The button text contents to say that this suggestion will switch to another tab.">
+    Switch to this tab
+  </message>
+  <message name="IDS_OMNIBOX_TAB_SUGGEST_SHORT_HINT" desc="A shortened, one word version of button text to say that this suggestion will switch to another tab.">
+    Switch
+  </message>
+  <message name="IDS_PHYSICAL_WEB_OVERFLOW_DESCRIPTION" desc="The description in the omnibox dropdown indicating that multiple nearby devices are broadcasting URLs.">
+    Physical Web suggestions
+  </message>
+  <message name="IDS_PHYSICAL_WEB_OVERFLOW" desc="A label in the omnibox dropdown indicating the number of additional nearby devices broadcasting URLs.">
+    {URL_count, plural, =1 {and 1 more web page} other {and # more web pages}}
+  </message>
+  <message name="IDS_PHYSICAL_WEB_OVERFLOW_EMPTY_TITLE" desc="A label in the omnibox dropdown indicating the number of additional nearby devices broadcasting URLs. This version is used when the title of the top result is empty.">
+    {URL_count, plural, =1 {1 web page nearby} other {# web pages nearby}}
+  </message>
+  <message name="IDS_OMNIBOX_FILE" desc="Text shown in the omnibox to indicate a user is viewing a file.">
+    File
+  </message>
+  <message name="IDS_DRIVE_SUGGESTION_DOCUMENT" desc="Brave Docs product name, for use in omnibox Docs result descriptions.">
+    Brave Docs
+  </message>
+  <message name="IDS_DRIVE_SUGGESTION_FORM" desc="Brave Docs product name, for use in omnibox Form result descriptions.">
+    Brave Forms
+  </message>
+  <message name="IDS_DRIVE_SUGGESTION_SPREADSHEET" desc="Brave Sheets product name, for use in omnibox Sheets result descriptions.">
+    Brave Sheets
+  </message>
+    <message name="IDS_DRIVE_SUGGESTION_PRESENTATION" desc="Brave Slides product name, for use in omnibox Slides result descriptions.">
+    Brave Slides
+  </message>
+  <message name="IDS_DRIVE_SUGGESTION_GENERAL" desc="Brave Drive product name, for use in general omnibox Drive file result descriptions.">
+    Brave Drive
+  </message>
+  <message name="IDS_DRIVE_SUGGESTION_DESCRIPTION_TEMPLATE" desc="Product description for Brave Drive omnibox results.">
+    <ph name="RESULT_MODIFIED_DATE">$1<ex>12/31/2018</ex></ph> - <ph name="RESULT_PRODUCT_SOURCE">$2<ex>Brave Docs</ex></ph>
+  </message>
+
+  <!-- Omnibox Pedals -->
+  <message name="IDS_OMNIBOX_PEDAL_CLEAR_BROWSING_DATA_HINT" desc="The button text contents to suggest pedal action, clear browsing data.">
+    Clear Data
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_CLEAR_BROWSING_DATA_HINT_SHORT" desc="The short one-word button text contents to suggest pedal action, clear browsing data.">
+    Clear
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_CLEAR_BROWSING_DATA_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, clear browsing data.">
+    Clear Brave's browsing history data
+  </message>
+
+  <message name="IDS_OMNIBOX_PEDAL_CHANGE_SEARCH_ENGINE_HINT" desc="The button text contents to suggest pedal action, change search engine.">
+    Change Search Engine
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_CHANGE_SEARCH_ENGINE_HINT_SHORT" desc="The short one-word button text contents to suggest pedal action, change search engine.">
+    Change
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_CHANGE_SEARCH_ENGINE_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, change search engine.">
+    Change Search Engine settings in Brave
+  </message>
+
+  <message name="IDS_OMNIBOX_PEDAL_MANAGE_PASSWORDS_HINT" desc="The button text contents to suggest pedal action, manage passwords.">
+    Manage Passwords
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_MANAGE_PASSWORDS_HINT_SHORT" desc="The short one-word button text contents to suggest pedal action, change language.">
+    Manage
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_MANAGE_PASSWORDS_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, change language.">
+    Manage passwords in Brave settings
+  </message>
+
+  <message name="IDS_OMNIBOX_PEDAL_CHANGE_HOME_PAGE_HINT" desc="The button text contents to suggest pedal action, change home page.">
+    Change Home Page
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_CHANGE_HOME_PAGE_HINT_SHORT" desc="The short one-word button text contents to suggest pedal action, change home page.">
+    Change
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_CHANGE_HOME_PAGE_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, change home page.">
+    Change home page in Brave settings
+  </message>
+
+  <message name="IDS_OMNIBOX_PEDAL_UPDATE_CREDIT_CARD_HINT" desc="The button text contents to suggest pedal action, update credit card.">
+    Update Credit Card
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_UPDATE_CREDIT_CARD_HINT_SHORT" desc="The short one-word button text contents to suggest pedal action, update credit card.">
+    Update
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_UPDATE_CREDIT_CARD_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, update credit card.">
+    Update credit card autofill info in Brave settings
+  </message>
+
+  <message name="IDS_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_HINT" desc="The button text contents to suggest pedal action, launch private.">
+    Open Private Window
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_HINT_SHORT" desc="The short one-word button text contents to suggest pedal action, launch private.">
+    Open
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, launch private.">
+    Open new Brave private window
+  </message>
+
+  <message name="IDS_OMNIBOX_PEDAL_TRANSLATE_HINT" desc="The button text contents to suggest pedal action, translate.">
+    Translate Page
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_TRANSLATE_HINT_SHORT" desc="The short one-word button text contents to suggest pedal action, translate.">
+    Translate
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_TRANSLATE_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, translate.">
+    Translate this page
+  </message>
+
+  <message name="IDS_OMNIBOX_PEDAL_UPDATE_CHROME_HINT" desc="The button text contents to suggest pedal action, update chrome.">
+    Relaunch to Update
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_UPDATE_CHROME_HINT_SHORT" desc="The short one-word button text contents to suggest pedal action, update chrome.">
+    Relaunch
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_UPDATE_CHROME_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, update chrome.">
+    Relaunch
+  </message>
+
+  <!-- Accessibility labels for autocomplete match types.
+       These are parameterized on the text being completed into the omnibox.
+  -->
+  <message name="IDS_ACC_AUTOCOMPLETE_HISTORY" desc="Text for screenreaders describing a URL from history.">
+    <ph name="LOCATION_TITLE">$2<ex>The Brave Projects</ex></ph> <ph name="SHORT_URL">$1<ex>www.chromium.org</ex> location from history</ph>
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_SEARCH_HISTORY" desc="Text for screenreaders describing a search from history.">
+    <ph name="TEXT">$1<ex>dogs</ex></ph> search from history
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_SEARCH" desc="Text for screenreaders describing a generic search.">
+    <ph name="TEXT">$1<ex>dogs</ex></ph> search
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_SUGGESTED_SEARCH" desc="Text for screenreaders describing a suggested search.">
+    <ph name="TEXT">$1<ex>dogs</ex></ph> search suggestion
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_SUGGESTED_SEARCH_ENTITY" desc="Text for screenreaders describing a suggested search for an entity with a description. The commas are significant as they will introduce a pause in the spoken text.">
+    <ph name="ENTITY">$1<ex>muhammad ali</ex></ph>, <ph name="DESCRIPTION">$2<ex>american professional boxer</ex></ph>, search suggestion
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_QUICK_ANSWER" desc="Text for screenreaders describing a query, followed by an indication that an answer to that query will follow, followed by the answer. The commas are significant as they will introduce a pause in the spoken text.">
+    <ph name="QUERY">$1<ex>weather in los angeles</ex></ph>, answer, <ph name="ANSWER">$2<ex>sunny and 84 degrees</ex></ph>
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_BOOKMARK" desc="Text for screenreaders describing a URL from a bookmark.">
+    <ph name="LOCATION_TITLE">$2<ex>The Brave Projects</ex></ph> <ph name="SHORT_URL">$1<ex>www.chromium.org</ex> bookmark</ph>
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_CLIPBOARD_IMAGE" desc="Text for screenreaders describing an image from a clipboard.">
+    Search for clipboard image
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_CLIPBOARD_TEXT" desc="Text for screenreaders describing text from a clipboard.">
+    Search for clipboard text, <ph name="TEXT">$2<ex>Paris, france</ex></ph>
+  </message>
+  <message name="IDS_ACC_AUTOCOMPLETE_CLIPBOARD_URL" desc="Text for screenreaders describing a URL from a clipboard.">
+    Search for clipboard URL, <ph name="SHORT_URL">$2<ex>www.chromium.org</ex></ph>
+  </message>
+  <message name="IDS_ACC_SEARCH_ICON" desc="Text for screenreaders describing a search icon image.">
+    Search icon
+  </message>
+  <!-- Supplement accessibility label with item position, e.g. "1 of 3" -->
+  <message name="IDS_ACC_AUTOCOMPLETE_N_OF_M" desc="Text for screenreaders describing the current match's position in the list of suggestions.">
+    <ph name="FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, <ph name="MATCH_POSITION">$2<ex>2</ex></ph> of <ph name="NUM_MATCHES">$3<ex>3</ex></ph>
+  </message>
+  <!-- Accessibility suffix for suggestions with a tab switch match. Commas are important as they add pauses. -->
+  <message name="IDS_ACC_TAB_SWITCH_SUFFIX" desc="Suffix for tab switch suggestions to explain keystroke used to switch.">
+    <ph name="TAB_SWITCH_SUFFIX">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, currently open, press Tab then Enter to switch to the open tab
+  </message>
+  <!-- Accessibility prefix for suggestions where the tab switch button is focused. Commas are important as they add pauses. -->
+  <message name="IDS_ACC_TAB_SWITCH_BUTTON_FOCUSED_PREFIX" desc="Announcement when tab switch button focused.">
+    Tab switch button, press Enter to switch to the open tab, <ph name="TAB_SWITCH_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>
+  </message>
+  <message name="IDS_ACC_TAB_SWITCH_BUTTON" desc="Announcement when tab switch button focused.">
+    Tab switch button, press Enter to switch to this tab
+  </message>
+</grit-part>
