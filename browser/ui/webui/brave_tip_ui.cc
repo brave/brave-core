@@ -62,6 +62,7 @@ class RewardsTipDOMHandler : public WebUIMessageHandler,
   void OnGetRecurringTips(
       std::unique_ptr<brave_rewards::ContentSiteList> list);
   void TweetTip(const base::ListValue *args);
+  void OnlyAnonWallet(const base::ListValue* args);
   void GetExternalWallet(const base::ListValue* args);
   void OnExternalWallet(
       const int32_t result,
@@ -144,6 +145,11 @@ void RewardsTipDOMHandler::RegisterMessages() {
       "brave_rewards_tip.getExternalWallet",
       base::BindRepeating(
           &RewardsTipDOMHandler::GetExternalWallet,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards_tip.onlyAnonWallet",
+      base::BindRepeating(
+          &RewardsTipDOMHandler::OnlyAnonWallet,
           base::Unretained(this)));
 }
 
@@ -468,4 +474,16 @@ void RewardsTipDOMHandler::OnExternalWallet(
 
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards_tip.externalWallet", data);
+}
+
+void RewardsTipDOMHandler::OnlyAnonWallet(const base::ListValue* args) {
+  if (!rewards_service_ || !web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  const bool allow = rewards_service_->OnlyAnonWallet();
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards_tip.onlyAnonWallet",
+      base::Value(allow));
 }

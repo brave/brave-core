@@ -39,10 +39,13 @@ export interface Props {
   id?: string
   children?: React.ReactNode
   rows?: DetailRow[]
+  onlyAnonWallet?: boolean
 }
 
 export default class TableDonation extends React.PureComponent<Props, {}> {
   getRows (rows?: DetailRow[]): Row[] | undefined {
+    const { onlyAnonWallet } = this.props
+
     if (!rows) {
       return
     }
@@ -75,6 +78,7 @@ export default class TableDonation extends React.PureComponent<Props, {}> {
           {
             content: (
               <Tokens
+                onlyAnonWallet={onlyAnonWallet}
                 value={row.amount.tokens}
                 converted={row.amount.converted}
                 size={'small'}

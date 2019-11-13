@@ -63,3 +63,9 @@ export const getExternalWallet = () => action(types.GET_EXTERNAL_WALLET)
 export const onExternalWallet = (wallet: RewardsTip.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
   wallet
 })
+
+export const onlyAnonWallet = () => action(types.ONLY_ANON_WALLET)
+
+export const onOnlyAnonWallet = (only: boolean) => action(types.ON_ONLY_ANON_WALLET, {
+  only
+})

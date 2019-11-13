@@ -29,6 +29,10 @@ export class App extends React.Component<Props, {}> {
     return this.props.actions
   }
 
+  componentDidMount () {
+    this.actions.onlyAnonWallet()
+  }
+
   getTipBanner = (url: string, publisher: RewardsTip.Publisher, mediaMetaData: RewardsTip.MediaMetaData | undefined) => {
     const monthly = this.props.dialogArgs.monthly
 
