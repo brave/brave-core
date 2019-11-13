@@ -127,7 +127,8 @@ class AdsImpl : public Ads {
   void SetConfirmationsIsReady(
       const bool is_ready) override;
 
-  std::map<uint64_t, std::vector<AdsHistory>> GetAdsHistory() override;
+  std::map<uint64_t, std::vector<AdsHistory>> GetAdsHistory(
+      const AdsHistoryFilterType ads_history_filter_type) override;
   AdContent::LikeAction ToggleAdThumbUp(
       const std::string& id,
       const std::string& creative_set_id,

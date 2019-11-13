@@ -31,6 +31,7 @@
 #include "bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/ads_per_day_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/ads_per_hour_frequency_cap.h"
+#include "bat/ads/internal/filters/ad_history_confirmation_filter.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
@@ -547,11 +548,28 @@ void AdsImpl::SetConfirmationsIsReady(
   is_confirmations_ready_ = is_ready;
 }
 
-std::map<uint64_t, std::vector<AdsHistory>> AdsImpl::GetAdsHistory() {
+std::map<uint64_t, std::vector<AdsHistory>> AdsImpl::GetAdsHistory(
+    const AdsHistoryFilterType ads_history_filter_type) {
   std::map<uint64_t, std::vector<AdsHistory>> ads_history;
   base::Time now = base::Time::Now().LocalMidnight();
 
   auto ad_history_details = client_->GetAdsShownHistory();
+
+  std::unique_ptr<AdHistoryFilter> ad_history_filter;
+  switch (ads_history_filter_type) {
+    case AdsHistoryFilterType::kNone: {
+      break;
+    }
+    case AdsHistoryFilterType::kConfirmationType: {
+      ad_history_filter = std::make_unique<AdHistoryConfirmationFilter>();
+      break;
+    }
+  }
+
+  if (ad_history_filter) {
+    ad_history_details = ad_history_filter->ApplyFilter(ad_history_details);
+  }
+
   for (auto& detail_item : ad_history_details) {
     auto history_item = std::make_unique<AdsHistory>();
     history_item->details.push_back(detail_item);

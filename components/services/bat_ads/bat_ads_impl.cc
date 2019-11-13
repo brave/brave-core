@@ -159,13 +159,14 @@ void BatAdsImpl::GetAdsHistory(
     GetAdsHistoryCallback callback) {
   std::map<uint64_t, std::vector<std::string>> result;
 
-  auto ads_history_map = ads_->GetAdsHistory();
-  for (const auto& entry : ads_history_map) {
-    std::vector<std::string> ads_history;
-    for (const auto& ads_history_entry : entry.second) {
-      ads_history.push_back(ads_history_entry.ToJson());
+  auto ads_histories = ads_->GetAdsHistory(
+      ads::AdsHistoryFilterType::kConfirmationType);
+  for (const auto& ads_history : ads_histories) {
+    std::vector<std::string> ads_history_json;
+    for (const auto& ads_history_entry : ads_history.second) {
+      ads_history_json.push_back(ads_history_entry.ToJson());
     }
-    result[entry.first] = ads_history;
+    result[ads_history.first] = ads_history_json;
   }
 
   std::move(callback).Run(mojo::MapToFlatMap(result));
