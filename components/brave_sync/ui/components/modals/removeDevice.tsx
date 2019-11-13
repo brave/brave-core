@@ -59,12 +59,7 @@ export default class RemoveMainDeviceModal extends React.PureComponent<Props, St
   }
 
   onClickConfirmRemoveDeviceButton = () => {
-    const { syncData, deviceName, deviceId } = this.props
-    // if there aren't enough devices, reset sync
-    if (syncData.devices.length < 2) {
-      this.props.actions.onSyncReset()
-      return
-    }
+    const { deviceName, deviceId } = this.props
     this.props.actions.onRemoveDevice(Number(deviceId), deviceName)
     this.setState({ willRemoveDevice: true })
   }
