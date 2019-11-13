@@ -137,10 +137,14 @@ class Grant extends React.Component<Props, State> {
   }
 
   grantFinish = (type: string, tokens: string, date: string) => {
-    let title = getLocale('grantFinishTitleUGP')
-    let text = getLocale('grantFinishTextUGP')
-    let tokenTitle = getLocale('grantFinishTokenUGP')
     const { onlyAnonWallet } = this.props
+    const tokenString = onlyAnonWallet ? getLocale('point') : getLocale('token')
+
+    let title = getLocale('grantFinishTitleUGP')
+    let text = getLocale('grantFinishTextUGP', { currency: tokenString })
+    let tokenTitle = onlyAnonWallet
+      ? getLocale('grantFinishPointUGP')
+      : getLocale('grantFinishTokenUGP')
 
     if (type === 'ads') {
       title = getLocale('grantFinishTitleAds')

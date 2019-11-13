@@ -48,7 +48,7 @@ class TipMediaUser extends React.Component<Props, {}> {
   }
 
   render () {
-    const { finished, error } = this.props.rewardsDonateData
+    const { finished, error, onlyAnonWallet } = this.props.rewardsDonateData
 
     const publisher = this.props.publisher
     const monthly = this.props.monthly
@@ -84,6 +84,7 @@ class TipMediaUser extends React.Component<Props, {}> {
               monthly={monthly}
               publisher={publisher}
               mediaMetaData={mediaMetaData}
+              onlyAnonWallet={onlyAnonWallet}
           />
           : null
         }
