@@ -16,6 +16,7 @@ import * as utils from '../utils'
 
 interface Props extends RewardsTip.ComponentProps {
   monthly: boolean
+  onlyAnonWallet?: boolean
   publisher: RewardsTip.Publisher
   tipComplete?: boolean
   onTweet: () => void
@@ -211,9 +212,8 @@ class Banner extends React.Component<Props, State> {
   render () {
     const { balance } = this.props.rewardsDonateData
     const { total } = balance
+    const { onlyAnonWallet, publisher, mediaMetaData } = this.props
 
-    const mediaMetaData = this.props.mediaMetaData
-    const publisher = this.props.publisher
     const checkmark = utils.isPublisherConnectedOrVerified(publisher.status)
     const bannerType = this.props.monthly ? 'monthly' : 'one-time'
     let logo = publisher.logo
@@ -230,6 +230,7 @@ class Banner extends React.Component<Props, State> {
     return (
       <SiteBanner
         type={bannerType}
+        onlyAnonWallet={onlyAnonWallet}
         domain={publisher.publisherKey}
         title={publisher.title}
         name={publisher.name}

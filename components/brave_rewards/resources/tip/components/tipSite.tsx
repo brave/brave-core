@@ -37,7 +37,7 @@ class TipSite extends React.Component<Props, {}> {
   }
 
   render () {
-    const { finished, error } = this.props.rewardsDonateData
+    const { finished, error, onlyAnonWallet } = this.props.rewardsDonateData
 
     return (
       <>
@@ -48,6 +48,7 @@ class TipSite extends React.Component<Props, {}> {
               monthly={this.props.monthly}
               publisher={this.props.publisher}
               onTweet={this.onTweet}
+              onlyAnonWallet={onlyAnonWallet}
           />
           : null
         }

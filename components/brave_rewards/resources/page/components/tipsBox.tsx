@@ -185,6 +185,7 @@ class TipBox extends React.Component<Props, State> {
     const allSites = !(numRows > 5)
     const total = utils.tipsListTotal(tipsList, true)
     const converted = utils.convertBalance(total, balance.rates)
+    const { onlyAnonWallet } = ui
 
     return (
       <Box
@@ -207,13 +208,14 @@ class TipBox extends React.Component<Props, State> {
           : null
         }
         <List title={getLocale('donationTotalDonations')}>
-          <Tokens value={total} converted={converted} />
+          <Tokens onlyAnonWallet={onlyAnonWallet} value={total} converted={converted} />
         </List>
         <TableDonation
           rows={topRows}
           allItems={allSites}
           numItems={numRows}
           headerColor={true}
+          onlyAnonWallet={onlyAnonWallet}
           onShowAll={this.onModalToggle}
         >
           {getLocale('donationVisitSome')}

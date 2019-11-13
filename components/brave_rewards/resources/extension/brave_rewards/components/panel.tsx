@@ -303,6 +303,7 @@ export class Panel extends React.Component<Props, State> {
 
   getNotification = () => {
     const { notifications, currentNotification } = this.props.rewardsPanelData
+    const { onlyAnonWallet } = this.props
 
     if (
       currentNotification === undefined ||
@@ -335,8 +336,9 @@ export class Panel extends React.Component<Props, State> {
         // 16 - error while tipping
 
         if (result === '0') {
+          const currency = onlyAnonWallet ? getMessage('bap') : getMessage('bat')
           const fixed = utils.convertProbiToFixed(notification.args[3])
-          text = getMessage('contributeNotificationSuccess', [fixed])
+          text = getMessage('contributeNotificationSuccess', [fixed, currency])
         } else if (result === '15') {
           text = getMessage('contributeNotificationNotEnoughFunds')
           isAlert = 'warning'
@@ -624,6 +626,7 @@ export class Panel extends React.Component<Props, State> {
     const tipAmounts = defaultContribution !== '0.0'
       ? this.generateAmounts(publisher)
       : undefined
+    const { onlyAnonWallet } = this.props
 
     if (notification &&
         notification.notification &&
@@ -642,7 +645,7 @@ export class Panel extends React.Component<Props, State> {
       }
     }
 
-    currentGrant = utils.getGrant(currentGrant)
+    currentGrant = utils.getGrant(currentGrant, this.props.onlyAnonWallet)
 
     let walletStatus: WalletState | undefined = undefined
     let onVerifyClick = undefined
@@ -704,6 +707,7 @@ export class Panel extends React.Component<Props, State> {
               refreshingPublisher={this.state.refreshingPublisher}
               publisherRefreshed={this.state.publisherRefreshed}
               setMonthlyAction={this.showTipSiteDetail.bind(this, true)}
+              onlyAnonWallet={onlyAnonWallet}
             />
             : null
           }
