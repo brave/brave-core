@@ -100,6 +100,7 @@ Device::~Device() = default;
 std::unique_ptr<Device> Device::Clone(const Device& device) {
   auto ret_val = std::make_unique<Device>();
   ret_val->name = device.name;
+  ret_val->deviceIdV2 = device.deviceIdV2;
   return ret_val;
 }
 

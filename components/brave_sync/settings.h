@@ -14,6 +14,7 @@ public:
   Settings();
   std::string this_device_name_;
   std::string this_device_id_;
+  std::string this_device_id_v2_;
   bool sync_this_device_;
   bool sync_bookmarks_;
   bool sync_settings_;
