@@ -2137,6 +2137,7 @@ extension BrowserViewController: TabDelegate {
 
     func showBar(_ bar: SnackBar, animated: Bool) {
         view.layoutIfNeeded()
+        self.view.bringSubviewToFront(self.alertStackView)
         UIView.animate(withDuration: animated ? 0.25 : 0, animations: {
             self.alertStackView.insertArrangedSubview(bar, at: 0)
             self.view.layoutIfNeeded()

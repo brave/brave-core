@@ -62,6 +62,9 @@ extension BrowserViewController: WKNavigationDelegate {
                 return true
             }
         }
+        if url.scheme == "itms-appss" || url.scheme == "itmss" {
+            return true
+        }
         return false
     }
 
