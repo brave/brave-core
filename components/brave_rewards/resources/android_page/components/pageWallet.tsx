@@ -116,6 +116,11 @@ class PageWallet extends React.Component<Props, State> {
     const { total } = balance
     const pendingTotal = parseFloat((pendingContributionTotal || 0).toFixed(1))
 
+    let showCopy = false
+    if (!onlyAnonWallet) {
+      showCopy = true
+    }
+
     if (!visible) {
       return null
     }
@@ -133,7 +138,7 @@ class PageWallet extends React.Component<Props, State> {
               actions={[]}
               compact={true}
               isMobile={true}
-              showCopy={false}
+              showCopy={showCopy}
               showSecActions={false}
               grants={this.getGrants()}
               alert={this.walletAlerts()}
