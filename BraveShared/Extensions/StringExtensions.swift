@@ -14,4 +14,18 @@ extension String {
         }
         return nil
     }
+    
+    /// Obtain a list of words in a given string
+    public var words: [String] {
+        var words: [String] = []
+        enumerateSubstrings(
+            in: startIndex..<endIndex,
+            options: .byWords
+        ) { (word, _, _, _) in
+            if let word = word {
+                words.append(word)
+            }
+        }
+        return words
+    }
 }

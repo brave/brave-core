@@ -27,4 +27,19 @@ class StringExtensionTests: XCTestCase {
         let schemelessURL = "brave.com"
         XCTAssertNotNil(schemelessURL.firstURL)
     }
+    
+    func testWords() {
+        let longMultilinedText = """
+        Multiple words
+
+        On multiple lines.
+        
+        That will get stripped!\r
+        """
+        
+        XCTAssertEqual(longMultilinedText.words, ["Multiple", "words", "On", "multiple", "lines", "That", "will", "get", "stripped"])
+        
+        let wordsWithPunctuation = "\"It's a wonderful life—isn't it…\""
+        XCTAssertEqual(wordsWithPunctuation.words, ["It's", "a", "wonderful", "life", "isn't", "it"])
+    }
 }

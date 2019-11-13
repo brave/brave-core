@@ -115,18 +115,34 @@ extension Tab {
     func reportPageLoad(to rewards: BraveRewards) {
         guard let webView = webView, let url = webView.url else { return }
         if url.isLocal || PrivateBrowsingManager.shared.isPrivateBrowsing { return }
+                
+        var htmlBlob: String?
+        var classifierText: String?
         
-        let getHtmlToStringJSCall = "document.documentElement.outerHTML.toString()"
-        // Copy to var, as `shouldClassifyLoadsForAds` can be reset before JS completes
-        let shouldClassify = shouldClassifyLoadsForAds
-        webView.evaluateJavaScript(getHtmlToStringJSCall, completionHandler: { html, _ in
-            guard let htmlString = html as? String else { return }
+        let group = DispatchGroup()
+        group.enter()
+        webView.evaluateJavaScript("document.documentElement.outerHTML.toString()", completionHandler: { html, _ in
+            htmlBlob = html as? String
+            group.leave()
+        })
+        
+        if shouldClassifyLoadsForAds {
+            group.enter()
+            webView.evaluateJavaScript("document.body.innerText", completionHandler: { text, _ in
+                // Get the list of words in the page and join them together with a space
+                // to send to the classifier
+                classifierText = (text as? String)?.words.joined(separator: " ")
+                group.leave()
+            })
+        }
+        
+        group.notify(queue: .main) {
             let faviconURL = URL(string: self.displayFavicon?.url ?? "")
             if faviconURL == nil {
                 log.warning("No favicon found in \(self) to report to rewards panel")
             }
-            rewards.reportLoadedPage(url: url, faviconUrl: faviconURL, tabId: self.rewardsId, html: htmlString, shouldClassifyForAds: shouldClassify)
-        })
+            rewards.reportLoadedPage(url: url, faviconUrl: faviconURL, tabId: self.rewardsId, html: htmlBlob ?? "", adsInnerText: classifierText)
+        }
     }
     
     func reportPageNaviagtion(to rewards: BraveRewards) {
