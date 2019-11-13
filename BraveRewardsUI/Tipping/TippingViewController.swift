@@ -175,7 +175,7 @@ class TippingViewController: UIViewController, UIViewControllerTransitioningDele
           // TODO: Handle started tip process
         }
       } else {
-        self.state.ledger.tipPublisherDirectly(self.publisherInfo, amount: Int32(amount), currency: "BAT") { _ in
+        self.state.ledger.tipPublisherDirectly(self.publisherInfo, amount: Double(amount), currency: "BAT") { _ in
           // TODO: Handle started tip process
         }
       }
