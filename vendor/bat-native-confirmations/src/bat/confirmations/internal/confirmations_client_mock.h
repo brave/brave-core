@@ -121,11 +121,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
       ledger::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoListCallback callback));
 
-  MOCK_METHOD2(FetchPromotions, void());
-
-  MOCK_METHOD2(OnGrant, void(
-      ledger::Result result,
-      ledger::GrantPtr grant));
+  MOCK_METHOD0(FetchPromotions, void());
 
   MOCK_METHOD1(ClaimPromotion, void(const std::string& promotion_id));
 
@@ -377,6 +373,8 @@ class MockConfirmationsClient : public ConfirmationsClient {
     ledger::ResultCallback callback));
 
   MOCK_METHOD0(GetClientInfo, ledger::ClientInfoPtr());
+
+  MOCK_METHOD0(UnblindedTokensReady, void());
 };
 
 }  // namespace confirmations

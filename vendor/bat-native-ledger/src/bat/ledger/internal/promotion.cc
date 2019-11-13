@@ -271,6 +271,23 @@ std::unique_ptr<base::ListValue> ParseStringToBaseList(
   return std::make_unique<base::ListValue>(value->GetList());
 }
 
+bool UnBlindTokensMock(
+    ledger::PromotionPtr promotion,
+    std::vector<std::string>* unblinded_encoded_tokens) {
+  if (!promotion || !promotion->credentials) {
+    return false;
+  }
+
+  auto signed_tokens_base64 = ParseStringToBaseList(
+      promotion->credentials->signed_creds);
+
+  for (auto& item : *signed_tokens_base64) {
+    unblinded_encoded_tokens->push_back(item.GetString());
+  }
+
+  return true;
+}
+
 void Promotion::Initialize() {
   auto claim_callback = std::bind(&Promotion::Retry,
       this,
@@ -740,7 +757,12 @@ void Promotion::OnFetchSignedTokens(
         [](const ledger::Result _){});
 
   std::vector<std::string> unblinded_encoded_tokens;
-  bool result = UnBlindTokens(promotion->Clone(), &unblinded_encoded_tokens);
+  bool result;
+  if (ledger::is_testing) {
+    result = UnBlindTokensMock(promotion->Clone(), &unblinded_encoded_tokens);
+  } else {
+    result = UnBlindTokens(promotion->Clone(), &unblinded_encoded_tokens);
+  }
 
   if (!result) {
     callback(ledger::Result::LEDGER_ERROR);
@@ -806,11 +828,12 @@ void Promotion::FinishPromotion(
     ledger::PromotionPtr promotion,
     const std::vector<std::string>& unblinded_encoded_tokens,
     ledger::ResultCallback callback) {
+  const double value = promotion->approximate_value / promotion->suggestions;
   for (auto & token : unblinded_encoded_tokens) {
     auto token_info = ledger::UnblindedToken::New();
     token_info->token_value = token;
     token_info->public_key = promotion->credentials->public_key;
-    token_info->value = promotion->approximate_value / promotion->suggestions;
+    token_info->value = value;
     token_info->promotion_id = promotion->id;
     ledger_->InsertOrUpdateUnblindedToken(
         std::move(token_info),

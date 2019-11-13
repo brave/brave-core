@@ -15,6 +15,7 @@
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
+#include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/ledger.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
@@ -126,7 +127,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
 bool URLMatches(const std::string& url,
                 const std::string& path,
                 const std::string& prefix,
-                const SERVER_TYPES& server) {
+                const ServerTypes& server) {
   const std::string target_url =
       braveledger_request_util::BuildUrl(path, prefix, server);
   return (url.find(target_url) == 0);
@@ -137,17 +138,11 @@ bool URLMatches(const std::string& url,
 namespace brave_test_resp {
   std::string registrarVK_;
   std::string verification_;
-  std::string grant_;
-  std::string grant_v4_;
+  std::string promotions_;
+  std::string promotion_claim_;
+  std::string promotion_tokens_;
   std::string captcha_;
-  std::string captcha_solution_;
-  std::string contribution_;
-  std::string reconcile_;
-  std::string current_reconcile_;
-  std::string register_;
-  std::string register_credential_;
-  std::string surveyor_voting_;
-  std::string surveyor_voting_credential_;
+  std::string wallet_properties_;
   std::string uphold_auth_resp_;
   std::string uphold_transactions_resp_;
   std::string uphold_commit_resp_;
@@ -241,42 +236,6 @@ class BraveRewardsBrowserTest
     return ads_service_->IsEnabled();
   }
 
-  std::string GetWalletProperties() {
-    return
-    "{"
-      "\"altcurrency\": \"BAT\","
-      "\"probi\": \"0\","
-      "\"balance\": \"" + GetAnonBalance() + ".0000\","
-      "\"unconfirmed\": \"0.0000\","
-      "\"rates\": {"
-        "\"BTC\": 0.00003105,"
-        "\"ETH\": 0.0007520713830465265,"
-        "\"XRP\": 0.6385015608740894,"
-        "\"BCH\": 0.000398527449465635,"
-        "\"LTC\": 0.003563298490127758,"
-        "\"DASH\": 0.0011736801836266257,"
-        "\"BTG\": 0.009819171067370777,"
-        "\"USD\": 0.214100307359946,"
-        "\"EUR\": 0.18357217273398782"
-      "},"
-      "\"parameters\": {"
-        "\"adFree\": {"
-          "\"currency\": \"BAT\","
-          "\"fee\": {"
-            "\"BAT\": 20"
-          "},"
-          "\"choices\": {"
-            "\"BAT\": [10,15,20,30,50,100]"
-          "},"
-          "\"range\": {"
-            "\"BAT\": [10,100]"
-          "},"
-          "\"days\": 30"
-        "}"
-      "}"
-    "}";
-  }
-
   std::string GetUpholdCard() {
     return
     "{"
@@ -330,56 +289,22 @@ class BraveRewardsBrowserTest
       *response = brave_test_resp::verification_;
     } else if (URLMatches(url, WALLET_PROPERTIES, PREFIX_V2,
                           ServerTypes::BALANCE)) {
-      *response = GetWalletProperties();
-    } else if (URLMatches(url, WALLET_PROPERTIES, PREFIX_V2,
-                          ServerTypes::LEDGER)) {
-      GURL gurl(url);
-      if (gurl.has_query()) {
-        *response = brave_test_resp::reconcile_;
+      *response = brave_test_resp::wallet_properties_;
+    } else if (URLMatches(url, "/promotions?", PREFIX_V1,
+                          ServerTypes::kPromotion)) {
+      *response = brave_test_resp::promotions_;
+    } else if (URLMatches(url, "/promotions/", PREFIX_V1,
+                          ServerTypes::kPromotion)) {
+      if (url.find("claims") != std::string::npos) {
+        *response = brave_test_resp::promotion_tokens_;
       } else {
-        if (ac_low_amount_) {
-          *response = "";
-          *response_status_code = net::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE;
-        } else {
-          *response = brave_test_resp::current_reconcile_;
-        }
+        *response = brave_test_resp::promotion_claim_;
       }
-
-    } else if (URLMatches(url, GET_SET_PROMOTION, PREFIX_V2,
-                          SERVER_TYPES::LEDGER)) {
-      GURL gurl(url);
-      if (gurl.has_query())
-        *response = brave_test_resp::grant_;
-      else
-        *response = brave_test_resp::captcha_solution_;
-    } else if (URLMatches(url, GET_SET_PROMOTION, PREFIX_V4,
-                          SERVER_TYPES::LEDGER)) {
-      *response = brave_test_resp::grant_v4_;
-    } else if (URLMatches(url, GET_PROMOTION_CAPTCHA, PREFIX_V4,
-                          SERVER_TYPES::LEDGER)) {
-      // The hint we use doesn't matter since we mock the server's
-      // responses anyway, but ledger verifies that the response headers contain
-      // a hint so we must add one
-      (*headers)["captcha-hint"] = "Triangle";
+    } else if (URLMatches(url, "/captchas", PREFIX_V1,
+                          ServerTypes::kPromotion)) {
       *response = brave_test_resp::captcha_;
-    } else if (URLMatches(url, RECONCILE_CONTRIBUTION, PREFIX_V2,
-                          SERVER_TYPES::LEDGER)) {
-      first_url_ac_called_ = true;
-      *response = brave_test_resp::contribution_;
-    } else if (URLMatches(url, REGISTER_VIEWING, PREFIX_V2,
-                          SERVER_TYPES::LEDGER)) {
-      if (url.find(REGISTER_VIEWING "/") != std::string::npos)
-        *response = brave_test_resp::register_credential_;
-      else
-        *response = brave_test_resp::register_;
-    } else if (URLMatches(url, SURVEYOR_BATCH_VOTING, PREFIX_V2,
-                          SERVER_TYPES::LEDGER)) {
-      if (url.find(SURVEYOR_BATCH_VOTING "/") != std::string::npos)
-        *response = brave_test_resp::surveyor_voting_credential_;
-      else
-        *response = brave_test_resp::surveyor_voting_;
     } else if (URLMatches(url, GET_PUBLISHERS_LIST, "",
-                          SERVER_TYPES::PUBLISHER_DISTRO)) {
+                          ServerTypes::PUBLISHER_DISTRO)) {
       if (alter_publisher_list_) {
         *response =
             "["
@@ -435,25 +360,18 @@ class BraveRewardsBrowserTest
     wait_for_wallet_initialization_loop_->Run();
   }
 
-  void WaitForGrantInitialization() {
+  void WaitForPromotionInitialization() {
     if (promotion_initialized_)
       return;
     wait_for_promotion_initialization_loop_.reset(new base::RunLoop);
     wait_for_promotion_initialization_loop_->Run();
   }
 
-  void WaitForGrantFinished() {
-    if (grant_finished_)
+  void WaitForPromotionFinished() {
+    if (promotion_finished_)
       return;
-    wait_for_grant_finished_loop_.reset(new base::RunLoop);
-    wait_for_grant_finished_loop_->Run();
-  }
-
-  void WaitForCaptcha() {
-    if (captcha_received_)
-      return;
-    wait_for_captcha_loop_.reset(new base::RunLoop);
-    wait_for_captcha_loop_->Run();
+    wait_for_promotion_finished_loop_.reset(new base::RunLoop);
+    wait_for_promotion_finished_loop_->Run();
   }
 
   void WaitForPublisherListNormalized() {
@@ -523,6 +441,76 @@ class BraveRewardsBrowserTest
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
         content::ISOLATED_WORLD_ID_CONTENT_END);
     ASSERT_TRUE(js_result.ExtractBool());
+  }
+
+  void DragAndDrop(
+      content::WebContents* contents,
+      const std::string& drag_selector,
+      const std::string& drop_selector) {
+    const std::string js_code = base::StringPrintf(
+        R"(
+					var triggerDragAndDrop = function (selectorDrag, selectorDrop) {
+
+					  // function for triggering mouse events
+					  var fireMouseEvent = function (type, elem, centerX, centerY) {
+					    var evt = document.createEvent('MouseEvents');
+					    evt.initMouseEvent(type, true, true, window, 1, 1, 1, centerX,
+					                       centerY, false, false, false, false, 0, elem);
+					    elem.dispatchEvent(evt);
+					  };
+
+					  // fetch target elements
+					  var elemDrag = document.querySelector(selectorDrag);
+					  var elemDrop = document.querySelector(selectorDrop);
+					  if (!elemDrag || !elemDrop) return false;
+
+					  // calculate positions
+					  var pos = elemDrag.getBoundingClientRect();
+					  var center1X = Math.floor((pos.left + pos.right) / 2);
+					  var center1Y = Math.floor((pos.top + pos.bottom) / 2);
+					  pos = elemDrop.getBoundingClientRect();
+					  var center2X = Math.floor((pos.left + pos.right) / 2);
+					  var center2Y = Math.floor((pos.top + pos.bottom) / 2);
+
+					  // mouse over dragged element and mousedown
+					  fireMouseEvent('mousemove', elemDrag, center1X, center1Y);
+					  fireMouseEvent('mouseenter', elemDrag, center1X, center1Y);
+					  fireMouseEvent('mouseover', elemDrag, center1X, center1Y);
+					  fireMouseEvent('mousedown', elemDrag, center1X, center1Y);
+
+					  // start dragging process over to drop target
+					  fireMouseEvent('dragstart', elemDrag, center1X, center1Y);
+					  fireMouseEvent('drag', elemDrag, center1X, center1Y);
+					  fireMouseEvent('mousemove', elemDrag, center1X, center1Y);
+					  fireMouseEvent('drag', elemDrag, center2X, center2Y);
+					  fireMouseEvent('mousemove', elemDrop, center2X, center2Y);
+
+					  // trigger dragging process on top of drop target
+					  fireMouseEvent('mouseenter', elemDrop, center2X, center2Y);
+					  fireMouseEvent('dragenter', elemDrop, center2X, center2Y);
+					  fireMouseEvent('mouseover', elemDrop, center2X, center2Y);
+					  fireMouseEvent('dragover', elemDrop, center2X, center2Y);
+
+					  // release dragged element on top of drop target
+					  fireMouseEvent('drop', elemDrop, center2X, center2Y);
+					  fireMouseEvent('dragend', elemDrag, center2X, center2Y);
+					  fireMouseEvent('mouseup', elemDrag, center2X, center2Y);
+
+					  return true;
+					};
+
+					triggerDragAndDrop(
+						'%s',
+						'%s')
+        )",
+        drag_selector.c_str(),
+        drop_selector.c_str());
+    content::EvalJsResult jsResult = EvalJs(
+        contents,
+        js_code,
+        content::EXECUTE_SCRIPT_NO_RESOLVE_PROMISES,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+    ASSERT_TRUE(jsResult.ExtractBool());
   }
 
   void WaitForBraveAdsHaveArrivedNotification() {
@@ -784,35 +772,20 @@ class BraveRewardsBrowserTest
         base::ReadFileToString(path.AppendASCII("verify_persona_resp.json"),
                                &brave_test_resp::verification_));
 
-    ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("ugp_grant_resp.json"),
-                                       &brave_test_resp::grant_));
-    ASSERT_TRUE(
-        base::ReadFileToString(path.AppendASCII("ugp_grant_v4_resp.json"),
-                               &brave_test_resp::grant_v4_));
-    ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("captcha_resp.png"),
+    ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("promotions_resp.json"),
+                                       &brave_test_resp::promotions_));
+
+    ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("captcha_resp.json"),
                                        &brave_test_resp::captcha_));
     ASSERT_TRUE(
-        base::ReadFileToString(path.AppendASCII("captcha_solution_resp.json"),
-                               &brave_test_resp::captcha_solution_));
+        base::ReadFileToString(path.AppendASCII("promotion_claim_resp.json"),
+                               &brave_test_resp::promotion_claim_));
     ASSERT_TRUE(
-        base::ReadFileToString(path.AppendASCII("contribution_resp.json"),
-                               &brave_test_resp::contribution_));
-    ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("reconcile_resp.json"),
-                                       &brave_test_resp::reconcile_));
+        base::ReadFileToString(path.AppendASCII("promotion_tokens_resp.json"),
+                               &brave_test_resp::promotion_tokens_));
     ASSERT_TRUE(
-        base::ReadFileToString(path.AppendASCII("current_reconcile_resp.json"),
-                               &brave_test_resp::current_reconcile_));
-    ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("register_resp.json"),
-                                       &brave_test_resp::register_));
-    ASSERT_TRUE(base::ReadFileToString(
-        path.AppendASCII("register_credential_resp.json"),
-        &brave_test_resp::register_credential_));
-    ASSERT_TRUE(
-        base::ReadFileToString(path.AppendASCII("surveyor_voting_resp.json"),
-                               &brave_test_resp::surveyor_voting_));
-    ASSERT_TRUE(base::ReadFileToString(
-        path.AppendASCII("surveyor_voting_credential_resp.json"),
-        &brave_test_resp::surveyor_voting_credential_));
+        base::ReadFileToString(path.AppendASCII("wallet_properties_resp.json"),
+                               &brave_test_resp::wallet_properties_));
     ASSERT_TRUE(base::ReadFileToString(
         path.AppendASCII("uphold_auth_resp.json"),
         &brave_test_resp::uphold_auth_resp_));
@@ -916,22 +889,23 @@ class BraveRewardsBrowserTest
     return rewards_service_;
   }
 
-  void ClaimGrant(bool use_panel) {
-    // Wait for grant to initialize
-    WaitForGrantInitialization();
+  void ClaimPromotion(bool use_panel) {
+    // Wait for promotion to initialize
+    WaitForPromotionInitialization();
 
     // Use the appropriate WebContents
-    content::WebContents* contents =
+    content::WebContents *contents =
         use_panel ? OpenRewardsPopup() : BraveRewardsBrowserTest::contents();
     ASSERT_TRUE(contents);
 
-    // Claim grant via settings page or panel, as instructed
+    // Claim promotion via settings page or panel, as instructed
     if (use_panel) {
       ASSERT_TRUE(ExecJs(contents,
                          "document.getElementsByTagName('button')[0].click();",
                          content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                          content::ISOLATED_WORLD_ID_CONTENT_END));
     } else {
+      WaitForSelector(contents, "[data-test-id='claimGrant']");
       ASSERT_TRUE(ExecJs(
           contents,
           "document.querySelector(\"[data-test-id='claimGrant']\").click();",
@@ -940,25 +914,29 @@ class BraveRewardsBrowserTest
     }
 
     // Wait for CAPTCHA
-    WaitForCaptcha();
+    WaitForSelector(contents, "[data-test-id='captcha']");
 
-    // Solve the CAPTCHA (response is mocked, so the contents of the
-    // solution aren't important)
-    const std::string promotion_id = "d9033f51-6d83-4d19-a016-1c11f693f147";
-    rewards_service_->SolveGrantCaptcha("{\"x\":1,\"y\":1}", promotion_id);
+    DragAndDrop(
+        contents,
+        "[data-test-id=\"captcha-triangle\"]",
+        "[data-test-id=\"captcha-drop\"]");
 
-    // Wait for grant to finish
-    WaitForGrantFinished();
+    WaitForPromotionFinished();
 
-    // Ensure that grant looks as expected
-    EXPECT_STREQ(grant_.altcurrency.c_str(), "BAT");
-    EXPECT_STREQ(grant_.probi.c_str(), "30000000000000000000");
-    EXPECT_STREQ(grant_.promotionId.c_str(), promotion_id.c_str());
-    EXPECT_STREQ(grant_.type.c_str(), "ugp");
+    // Ensure that promotion looks as expected
+    const std::string promotion_id = "6820f6a4-c6ef-481d-879c-d2c30c8928c3";
+    EXPECT_STREQ(std::to_string(promotion_.amount).c_str(), "30.000000");
+    EXPECT_STREQ(promotion_.promotion_id.c_str(), promotion_id.c_str());
+    EXPECT_EQ(promotion_.type, 0u);
+    EXPECT_EQ(promotion_.expires_at, 1740816427ull);
+    balance_ += 30;
 
-    // Check that grant notification shows the appropriate amount
+    // Check that promotion notification shows the appropriate amount
     const std::string selector =
         use_panel ? "[id='root']" : "[data-test-id='newTokenGrant']";
+
+    WaitForSelector(contents, selector);
+
     content::EvalJsResult js_result = EvalJs(
         contents,
         content::JsReplace(
@@ -972,7 +950,7 @@ class BraveRewardsBrowserTest
               std::string::npos);
     EXPECT_NE(js_result.ExtractString().find("30.0 BAT"), std::string::npos);
 
-    // Dismiss the grant notification
+    // Dismiss the promotion notification
     if (use_panel) {
       content::EvalJsResult jsResult = EvalJs(contents,
       "new Promise((resolve) => {"
@@ -1352,22 +1330,14 @@ class BraveRewardsBrowserTest
       wait_for_wallet_initialization_loop_->Quit();
   }
 
-  void TriggerOnPromotion(
+  void OnFetchPromotions(
       brave_rewards::RewardsService* rewards_service,
       unsigned int result,
-      brave_rewards::Promotion promotion) {
+      const std::vector<brave_rewards::Promotion>& promotions) {
     ASSERT_EQ(static_cast<ledger::Result>(result), ledger::Result::LEDGER_OK);
     promotion_initialized_ = true;
     if (wait_for_promotion_initialization_loop_)
       wait_for_promotion_initialization_loop_->Quit();
-  }
-
-  void OnGrantCaptcha(brave_rewards::RewardsService* rewards_service,
-                      std::string image,
-                      std::string hint) {
-    captcha_received_ = true;
-    if (wait_for_captcha_loop_)
-      wait_for_captcha_loop_->Quit();
   }
 
   void OnPromotionFinished(
@@ -1375,11 +1345,11 @@ class BraveRewardsBrowserTest
       const uint32_t result,
       brave_rewards::Promotion promotion) {
     ASSERT_EQ(static_cast<ledger::Result>(result), ledger::Result::LEDGER_OK);
-    grant_finished_ = true;
-    grant_ = promotion;
-    balance_ += 30.0;
-    if (wait_for_grant_finished_loop_)
-      wait_for_grant_finished_loop_->Quit();
+    promotion_finished_ = true;
+    promotion_ = promotion;
+    if (wait_for_promotion_finished_loop_) {
+      wait_for_promotion_finished_loop_->Quit();
+    }
   }
 
   void OnPublisherListNormalized(brave_rewards::RewardsService* rewards_service,
@@ -1440,10 +1410,6 @@ class BraveRewardsBrowserTest
         }
       }
     }
-  }
-
-  void ACLowAmount() {
-    ac_low_amount_ = true;
   }
 
   void OnNotificationAdded(
@@ -1536,7 +1502,7 @@ class BraveRewardsBrowserTest
   std::unique_ptr<brave_ads::LocaleHelperMock> locale_helper_mock_;
   std::unique_ptr<brave_ads::NotificationHelperMock> notification_helper_mock_;
 
-  brave_rewards::Promotion grant_;
+  brave_rewards::Promotion promotion_;
 
   std::unique_ptr<base::RunLoop> wait_for_wallet_initialization_loop_;
   bool wallet_initialized_ = false;
@@ -1544,11 +1510,8 @@ class BraveRewardsBrowserTest
   std::unique_ptr<base::RunLoop> wait_for_promotion_initialization_loop_;
   bool promotion_initialized_ = false;
 
-  std::unique_ptr<base::RunLoop> wait_for_grant_finished_loop_;
-  bool grant_finished_ = false;
-
-  std::unique_ptr<base::RunLoop> wait_for_captcha_loop_;
-  bool captcha_received_ = false;
+  std::unique_ptr<base::RunLoop> wait_for_promotion_finished_loop_;
+  bool promotion_finished_ = false;
 
   std::unique_ptr<base::RunLoop> wait_for_publisher_list_normalized_loop_;
   bool publisher_list_normalized_ = false;
@@ -1571,7 +1534,8 @@ class BraveRewardsBrowserTest
   std::unique_ptr<base::RunLoop> brave_ads_have_arrived_notification_run_loop_;
   bool brave_ads_have_arrived_notification_was_already_shown_ = false;
 
-  bool ac_low_amount_ = false;
+  std::unique_ptr<base::RunLoop> wait_for_attestation_loop_;
+
   bool last_publisher_added_ = false;
   bool alter_publisher_list_ = false;
   double balance_ = 0;
@@ -1920,33 +1884,33 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsWrongInput) {
   RunUntilIdle();
 }
 
-// #1 - Claim grant via settings page
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ClaimGrantViaSettingsPage) {
+// #1 - Claim promotion via settings page
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ClaimPromotionViaSettingsPage) {
   // Observe the Rewards service
   rewards_service_->AddObserver(this);
 
   // Enable Rewards
   EnableRewards();
 
-  // Claim and verify grant using settings page
+  // Claim and verify promotion using settings page
   const bool use_panel = false;
-  ClaimGrant(use_panel);
+  ClaimPromotion(use_panel);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
 }
 
-// #2 - Claim grant via panel
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ClaimGrantViaPanel) {
+// #2 - Claim promotion via panel
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ClaimPromotionViaPanel) {
   // Observe the Rewards service
   rewards_service_->AddObserver(this);
 
   // Enable Rewards
   EnableRewards();
 
-  // Claim and verify grant using panel
+  // Claim and verify promotion using panel
   const bool use_panel = true;
-  ClaimGrant(use_panel);
+  ClaimPromotion(use_panel);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2058,9 +2022,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
   // Enable Rewards
   EnableRewards();
 
-  // Claim grant using panel
+  // Claim promotion using panel
   const bool use_panel = true;
-  ClaimGrant(use_panel);
+  ClaimPromotion(use_panel);
 
   // Visit verified publisher
   const bool verified = true;
@@ -2090,9 +2054,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContributeWhenACOff) {
 
   EnableRewards();
 
-  // Claim grant using panel
+  // Claim promotion using panel
   const bool use_panel = true;
-  ClaimGrant(use_panel);
+  ClaimPromotion(use_panel);
 
   // Visit verified publisher
   const bool verified = true;
@@ -2143,9 +2107,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipVerifiedPublisher) {
   // Enable Rewards
   EnableRewards();
 
-  // Claim grant using settings page
+  // Claim promotion using settings page
   const bool use_panel = true;
-  ClaimGrant(use_panel);
+  ClaimPromotion(use_panel);
 
   // Tip verified publisher
   TipPublisher("duckduckgo.com", true);
@@ -2162,9 +2126,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipUnverifiedPublisher) {
   // Enable Rewards
   EnableRewards();
 
-  // Claim grant using settings page
+  // Claim promotion using settings page
   const bool use_panel = true;
-  ClaimGrant(use_panel);
+  ClaimPromotion(use_panel);
 
   // Tip unverified publisher
   TipPublisher("brave.com");
@@ -2182,9 +2146,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Enable Rewards
   EnableRewards();
 
-  // Claim grant using settings page
+  // Claim promotion using settings page
   const bool use_panel = true;
-  ClaimGrant(use_panel);
+  ClaimPromotion(use_panel);
 
   // Tip verified publisher
   const bool monthly = true;
@@ -2203,46 +2167,13 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Enable Rewards
   EnableRewards();
 
-  // Claim grant using settings page
+  // Claim promotion using settings page
   const bool use_panel = true;
-  ClaimGrant(use_panel);
+  ClaimPromotion(use_panel);
 
   // Tip verified publisher
   const bool monthly = true;
   TipPublisher("brave.com", false, monthly);
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
-}
-
-// Tip is below server threshold
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
-                       ContributionWithLowAmount) {
-  // Observe the Rewards service
-  rewards_service_->AddObserver(this);
-
-  // Enable Rewards
-  EnableRewards();
-
-  // Claim grant using panel
-  const bool use_panel = true;
-  ClaimGrant(use_panel);
-
-  // Set monthly to 0.2 BAT
-  rewards_service()->SetContributionAmount(0.2);
-
-  // Visit verified publisher
-  const bool verified = true;
-  VisitPublisher("duckduckgo.com", verified);
-
-  ACLowAmount();
-
-  // Trigger contribution process
-  rewards_service()->StartMonthlyContributionForTest();
-
-  // Wait for reconciliation to complete successfully
-  WaitForACReconcileCompleted();
-  ASSERT_EQ(ac_reconcile_status_, ledger::Result::CONTRIBUTION_AMOUNT_TOO_LOW);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2423,9 +2354,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Enable Rewards
   EnableRewards();
 
-  // Claim grant using settings page
+  // Claim promotion using settings page
   const bool use_panel = true;
-  ClaimGrant(use_panel);
+  ClaimPromotion(use_panel);
 
   // Tip unverified publisher
   TipPublisher(publisher);
@@ -2536,9 +2467,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   rewards_service_->AddObserver(this);
   rewards_service_->GetNotificationService()->AddObserver(this);
   EnableRewards();
-  // Claim grant using panel
+  // Claim promotion using panel
   const bool use_panel = true;
-  ClaimGrant(use_panel);
+  ClaimPromotion(use_panel);
 
   const bool verified = true;
   VisitPublisher("duckduckgo.com", verified);
@@ -2571,9 +2502,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   rewards_service_->AddObserver(this);
   rewards_service_->GetNotificationService()->AddObserver(this);
   EnableRewards();
-  // Claim grant using panel
+  // Claim promotion using panel
   const bool use_panel = true;
-  ClaimGrant(use_panel);
+  ClaimPromotion(use_panel);
 
   const bool verified = true;
   VisitPublisher("duckduckgo.com", verified);
@@ -2622,8 +2553,8 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   EnableRewards();
 
-  // Claim grant using panel
-  ClaimGrant(true);
+  // Claim promotion using panel
+  ClaimPromotion(true);
 
   // Tip unverified publisher
   TipPublisher("brave.com");
@@ -2778,9 +2709,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipConnectedPublisherAnon) {
   // Enable Rewards
   EnableRewards();
 
-  // Claim grant using settings page
+  // Claim promotion using settings page
   const bool use_panel = true;
-  ClaimGrant(use_panel);
+  ClaimPromotion(use_panel);
 
   // Tip verified publisher
   TipPublisher("bumpsmack.com", true);
@@ -2809,9 +2740,9 @@ IN_PROC_BROWSER_TEST_F(
   // Enable Rewards
   EnableRewards();
 
-  // Claim grant using settings page
+  // Claim promotion using settings page
   const bool use_panel = true;
-  ClaimGrant(use_panel);
+  ClaimPromotion(use_panel);
 
   // Tip verified publisher
   TipPublisher("bumpsmack.com", true);
@@ -2881,7 +2812,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipNonIntegralAmount) {
   EnableRewards();
 
   const bool use_panel = true;
-  ClaimGrant(use_panel);
+  ClaimPromotion(use_panel);
 
   // TODO(jhoneycutt): Test that this works through the tipping UI.
   rewards_service()->OnTip("duckduckgo.com", 2.5, false);
@@ -2900,7 +2831,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RecurringTipNonIntegralAmount) {
   EnableRewards();
 
   const bool use_panel = true;
-  ClaimGrant(use_panel);
+  ClaimPromotion(use_panel);
 
   const bool verified = true;
   VisitPublisher("duckduckgo.com", verified);
@@ -2923,9 +2854,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Enable Rewards
   EnableRewards();
 
-  // Claim grant using panel (30 BAT)
+  // Claim promotion using panel (30 BAT)
   const bool use_panel = true;
-  ClaimGrant(use_panel);
+  ClaimPromotion(use_panel);
 
   // Visit verified publisher
   const bool verified = true;
@@ -2970,9 +2901,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Enable Rewards
   EnableRewards();
 
-  // Claim grant using panel (30 BAT)
+  // Claim promotion using panel (30 BAT)
   const bool use_panel = true;
-  ClaimGrant(use_panel);
+  ClaimPromotion(use_panel);
 
   // Visit verified publisher
   const bool verified = true;

@@ -47,8 +47,10 @@ class MockRewardsService : public RewardsService {
            bool,
            const brave_rewards::GetContentSiteListCallback&));
   MOCK_METHOD0(FetchPromotions, void());
-  MOCK_METHOD1(ClaimPromotion, void(const std::string&));
-  MOCK_CONST_METHOD2(AttestPromotion,void(const std::string&,
+  MOCK_METHOD1(ClaimPromotion, void(brave_rewards::ClaimPromotionCallback));
+  MOCK_METHOD2(ClaimPromotion, void(const std::string&,
+      brave_rewards::AttestPromotionCallback));
+  MOCK_METHOD3(AttestPromotion, void(const std::string&,
       const std::string&,
       brave_rewards::AttestPromotionCallback));
   MOCK_METHOD1(GetWalletPassphrase,
@@ -196,6 +198,9 @@ class MockRewardsService : public RewardsService {
       void(RewardsServicePrivateObserver* observer));
   MOCK_METHOD1(ResetTheWholeState,
       void(const base::Callback<void(bool)>& callback));
+
+  MOCK_METHOD1(GetAnonWalletStatus,
+      void(brave_rewards::GetAnonWalletStatusCallback callback));
 };
 
 class AdsServiceTest : public testing::Test {

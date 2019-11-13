@@ -51,6 +51,19 @@ std::string ConvertTypeToString(const ledger::RewardsType type) {
   }
 }
 
+void GenerateSuggestionMock(
+    ledger::UnblindedTokenPtr token,
+    const std::string& suggestion_encoded,
+    base::Value* result) {
+  if (!token) {
+    return;
+  }
+
+  result->SetStringKey("t", token->token_value);
+  result->SetStringKey("publicKey", token->public_key);
+  result->SetStringKey("signature", token->token_value);
+}
+
 void GenerateSuggestion(
     ledger::UnblindedTokenPtr token,
     const std::string& suggestion_encoded,
@@ -85,7 +98,11 @@ std::string GenerateTokenPayload(
   base::Value credentials(base::Value::Type::LIST);
   for (auto & item : list) {
     base::Value token(base::Value::Type::DICTIONARY);
-    GenerateSuggestion(std::move(item), suggestion_encoded, &token);
+    if (ledger::is_testing) {
+      GenerateSuggestionMock(std::move(item), suggestion_encoded, &token);
+    } else {
+      GenerateSuggestion(std::move(item), suggestion_encoded, &token);
+    }
     credentials.GetList().push_back(std::move(token));
   }
 
