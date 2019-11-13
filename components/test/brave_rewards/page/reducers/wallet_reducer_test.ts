@@ -120,7 +120,6 @@ describe('wallet reducer', () => {
 
       const expectedState = {
         ...defaultState,
-        grants: [],
         walletInfo: {
           ...defaultState.walletInfo
         },

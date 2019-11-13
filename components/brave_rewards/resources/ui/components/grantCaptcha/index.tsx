@@ -98,10 +98,11 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
       <StyledWrapper
         id={id}
         innerRef={this.refWrapper}
+        data-test-id={'captcha'}
       >
         <StyledDrag innerRef={this.refDrag}>
           <StyledImageWrap>
-            <StyledImage src={batUrl} onDragStart={this.onCaptchaDrag} draggable={true} />
+            <StyledImage data-test-id={'captcha-triangle'} src={batUrl} onDragStart={this.onCaptchaDrag} draggable={true} />
           </StyledImageWrap>
           {
             !isPanel
@@ -111,7 +112,7 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
             : null
           }
         </StyledDrag>
-        <StyledDropArea src={captchaImage} draggable={false} onDrop={this.onCaptchaDrop} onDragOver={this.preventDefault} />
+        <StyledDropArea data-test-id={'captcha-drop'} src={captchaImage} draggable={false} onDrop={this.onCaptchaDrop} onDragOver={this.preventDefault} />
       </StyledWrapper>
     )
   }
