@@ -1601,7 +1601,7 @@ void RewardsServiceImpl::AttestationAndroid(
         base::BindOnce(&RewardsServiceImpl::OnAttestationAndroid,
             AsWeakPtr(),
             promotion_id,
-            callback,
+            std::move(callback),
             nonce);
     safetynet_check_runner_.performSafetynetCheck(
         nonce,

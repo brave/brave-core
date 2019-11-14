@@ -23,4 +23,5 @@ public interface BraveRewardsObserver {
   public void OnRecurringDonationUpdated();
   public void OnResetTheWholeState(boolean success);
   public void OnRewardsMainEnabled(boolean enabled);
+  public void OnFetchPromotions();
 }

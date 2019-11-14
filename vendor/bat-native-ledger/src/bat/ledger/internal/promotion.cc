@@ -76,7 +76,7 @@ std::string ParseClientInfoToString(ledger::ClientInfoPtr info) {
   }
 
   switch (static_cast<int>(info->platform)) {
-    case static_cast<int>(ledger::Platform::ANDROID):  {
+    case static_cast<int>(ledger::Platform::ANDROID_R):  {
       return "android";
     }
     case static_cast<int>(ledger::Platform::IOS):  {

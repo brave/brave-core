@@ -446,6 +446,13 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    @CalledByNative
+    public void OnFetchPromotions() {
+        for(BraveRewardsObserver observer : observers_) {
+            observer.OnFetchPromotions();
+        }
+    }
+
     private native void nativeInit();
     private native void nativeDestroy(long nativeBraveRewardsNativeWorker);
     private native void nativeCreateWallet(long nativeBraveRewardsNativeWorker);

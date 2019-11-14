@@ -10,7 +10,7 @@ namespace android_util {
 
 ledger::ClientInfoPtr GetAndroidClientInfo() {
   auto info = ledger::ClientInfo::New();
-  info->platform = ledger::Platform::ANDROID;
+  info->platform = ledger::Platform::ANDROID_R;
   info->os = ledger::OperatingSystem::UNDEFINED;
   return info;
 }
