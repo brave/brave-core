@@ -74,7 +74,7 @@ for arch in $TMP_REPO/x86_64 ; do
 	createrepo -v --update --deltas "$arch/"
 done
 
-gpg --detach-sign --armor ${TMP_REPO}/x86_64/repodata/repomd.xml
+gpg --detach-sign --armor --local-user "${GPG_KEY_ID}!" ${TMP_REPO}/x86_64/repodata/repomd.xml
 gpg --export --armor "${GPG_KEY_ID}!" | aws s3 cp --acl public-read - "s3://${S3_BUCKET}/${KEY_NAME}"
 aws s3 sync --acl public-read "$TMP_REPO/" "s3://${S3_BUCKET}/"
 
