@@ -400,6 +400,7 @@
       <message name="IDS_BRAVE_UI_DND_CAPTCHA_TEXT_2" desc="">target</message>
       <message name="IDS_BRAVE_UI_DONATION" desc="">Tip</message>
       <message name="IDS_BRAVE_UI_DONATION_AMOUNT" desc="">Tip amount</message>
+      <message name="IDS_BRAVE_UI_CONTRIBUTION_AMOUNT" desc="">Contribution amount</message>
       <message name="IDS_BRAVE_UI_DONATE_MONTHLY" desc="">Tip this site Monthly</message>
       <message name="IDS_BRAVE_UI_DONATE_NOW" desc="">Send a Tip…</message>
       <message name="IDS_BRAVE_UI_DONE" desc="">Done</message>
@@ -535,6 +536,7 @@
       <message name="IDS_BRAVE_UI_TELL_OTHERS" desc="">Tell others about your tip.</message>
       <message name="IDS_BRAVE_UI_THANK_YOU" desc="">Thank you</message>
       <message name="IDS_BRAVE_UI_TIP_SENT" desc="">Tip sent!</message>
+      <message name="IDS_BRAVE_UI_CONTRIBUTION_SET" desc="">Monthly contribution has been set!</message>
       <message name="IDS_BRAVE_UI_TIP_TEXT" desc="">You've just sent a tip to:</message>
       <message name="IDS_BRAVE_UI_TIP_ON_LIKE" desc="">Tip on like</message>
       <message name="IDS_BRAVE_UI_TITLE_BAT" desc="">Basic Attention Token (BAT)</message>

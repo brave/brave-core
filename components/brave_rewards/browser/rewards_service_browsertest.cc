@@ -1238,6 +1238,9 @@ class BraveRewardsBrowserTest
     // Wait for thank you banner to load
     ASSERT_TRUE(WaitForLoadStop(site_banner_contents));
 
+    const std::string confirmationText = monthly
+        ? "Monthly contribution has been set!"
+        : "Tip sent!";
     // Make sure that thank you banner shows correct publisher data
     // (domain and amount)
     {
@@ -1248,7 +1251,10 @@ class BraveRewardsBrowserTest
           "  document.documentElement.innerText);",
           content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
           content::ISOLATED_WORLD_ID_CONTENT_END);
-      EXPECT_NE(js_result.ExtractString().find("Tip sent!"), std::string::npos);
+      EXPECT_NE(js_result.ExtractString().find(
+          confirmationText), std::string::npos);
+      EXPECT_NE(js_result.ExtractString().find(
+           "" + amount_str + ".0 BAT"), std::string::npos);
       EXPECT_NE(js_result.ExtractString().find(
           "Share the good news:"), std::string::npos);
     }

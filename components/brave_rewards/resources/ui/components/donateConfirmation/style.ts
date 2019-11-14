@@ -29,7 +29,7 @@ export const StyledTitle = styled<{}, 'span'>('span')`
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0px;
-  margin-top: 25px;
+  margin-top: 15px;
 `
 
 export const StyledSubTitle = styled<{}, 'span'>('span')`
@@ -53,4 +53,14 @@ export const StyledTwitterIcon = styled<{}, 'div'>('div')`
   height: 80px;
   padding-top: 16px;
   color: #fff;
+`
+
+export const StyledInfo = styled<{}, 'div'>('div')`
+  margin: 10px 0;
+`
+
+export const StyledInfoItem = styled<{}, 'span'>('span')`
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 300;
 `
