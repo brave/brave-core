@@ -10,6 +10,7 @@
 #include <memory>
 #include <map>
 #include <string>
+#include <vector>
 
 #include "base/android/jni_weak_ref.h"
 #include "base/memory/weak_ptr.h"
@@ -212,11 +213,8 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
       const brave_rewards::RewardsNotificationService::RewardsNotification&
         notification) override;
 
-    void OnGrant(brave_rewards::RewardsService* rewards_service,
-        unsigned int result, brave_rewards::Grant grant) override;
-
-    void OnGrantFinish(brave_rewards::RewardsService* rewards_service,
-        unsigned int result, brave_rewards::Grant grant) override;
+    void OnPromotionFinished(brave_rewards::RewardsService* rewards_service,
+        unsigned int result, brave_rewards::Promotion grant) override;
 
     void OnGetRecurringTips(
         std::unique_ptr<brave_rewards::ContentSiteList> list);
@@ -224,10 +222,17 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void OnRewardsMainEnabled(brave_rewards::RewardsService* rewards_service,
         bool rewards_main_enabled) override;
 
+    void OnFetchPromotions(brave_rewards::RewardsService* rewards_service,
+        const uint32_t result,
+        const std::vector<brave_rewards::Promotion>& list) override;
+
+    void OnClaimPromotion(const int32_t result,
+        std::unique_ptr<brave_rewards::Promotion> promotion);
+
  private:
     void OnGetAddresses(const std::map<std::string, std::string>& addresses);
     void OnBalance(int32_t result,
-        std::unique_ptr<::brave_rewards::Balance> balance);
+        std::unique_ptr<brave_rewards::Balance> balance);
     JavaObjectWeakGlobalRef weak_java_brave_rewards_native_worker_;
     brave_rewards::RewardsService* brave_rewards_service_;
     brave_rewards::WalletProperties wallet_properties_;
@@ -237,6 +242,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     std::map<std::string, brave_rewards::ContentSite>
         map_recurrent_publishers_;           // <publisher, reconcile_stampt>
     std::map<std::string, std::string> addresses_;
+    std::vector<brave_rewards::Promotion> promotions_;
     base::WeakPtrFactory<BraveRewardsNativeWorker> weak_factory_;
 };
 }  // namespace android

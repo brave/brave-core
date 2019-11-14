@@ -491,4 +491,7 @@ public class BraveRewardsSiteBannerActivity extends Activity implements BraveRew
 
     @Override
     public void OnRewardsMainEnabled(boolean enabled) {}
+
+    @Override
+    public void OnFetchPromotions() {}
 }
