@@ -44,24 +44,24 @@
         "type": "object",
         "additionalProperties": false,
         "required": [
+          "priority",
           "campaignId",
           "advertiserId",
-          "name",
           "startAt",
           "endAt",
           "dailyCap",
-          "budget",
           "geoTargets",
+          "dayParts",
           "creativeSets"
         ],
         "properties": {
           "campaignId": {
             "type": "string"
           },
-          "advertiserId": {
-            "type": "string"
+          "priority": {
+            "type": "number"
           },
-          "name": {
+          "advertiserId": {
             "type": "string"
           },
           "startAt": {
@@ -73,8 +73,28 @@
           "dailyCap": {
             "type": "number"
           },
-          "budget": {
-            "type": "number"
+          "dayParts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "dow",
+                "startMinute",
+                "endMinute"
+              ],
+              "properties": {
+                "dow": {
+                  "type": "string"
+                },
+                "startMinute": {
+                  "type": "number"
+                },
+                "endMinute": {
+                  "type": "number"
+                }
+              }
+            }
           },
           "geoTargets": {
             "type": "array",
@@ -102,17 +122,14 @@
               "additionalProperties": false,
               "required": [
                 "creativeSetId",
-                "execution",
                 "perDay",
                 "totalMax",
                 "segments",
-                "creatives"
+                "creatives",
+                "oses"
               ],
               "properties": {
                 "creativeSetId": {
-                  "type": "string"
-                },
-                "execution": {
                   "type": "string"
                 },
                 "perDay": {
@@ -120,6 +137,29 @@
                 },
                 "totalMax": {
                   "type": "number"
+                },
+                "conversions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "urlPattern",
+                      "type",
+                      "observationWindow"
+                    ],
+                    "properties": {
+                      "urlPattern": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      },
+                      "observationWindow": {
+                        "type": "number"
+                      }
+                    }
+                  }
                 },
                 "segments": {
                   "type": "array",
@@ -138,6 +178,25 @@
                         "type": "string"
                       },
                       "parentCode": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "oses": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "code",
+                      "name"
+                    ],
+                    "properties": {
+                      "code": {
+                        "type": "string"
+                      },
+                      "name": {
                         "type": "string"
                       }
                     }
