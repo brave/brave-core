@@ -1274,7 +1274,7 @@ class BrowserViewController: UIViewController {
             self.topToolbar.locationView.rewardsButton.isVerified = false
         }
         
-        self.topToolbar.locationView.rewardsButton.isHidden = PrivateBrowsingManager.shared.isPrivateBrowsing
+        updateRewardsButtonState()
         
         topToolbar.currentURL = tab.url?.displayURL
         
