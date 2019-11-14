@@ -80,7 +80,8 @@ declare namespace RewardsExtension {
   export interface GrantFinish {
     result: Result,
     statusCode: number,
-    expiryTime: number
+    expiryTime: number,
+    promotionId: string
   }
 
   export const enum Result {

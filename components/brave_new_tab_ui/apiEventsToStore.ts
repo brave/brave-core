@@ -100,3 +100,7 @@ chrome.braveRewards.onAdsEnabled.addListener((enabled: boolean) => {
 chrome.braveRewards.onGrant.addListener((properties: NewTab.GrantResponse) => {
   getActions().onGrant(properties)
 })
+
+chrome.braveRewards.onGrantFinish.addListener((properties: any | NewTab.GrantFinish) => {
+  getActions().onGrantFinish(properties)
+})

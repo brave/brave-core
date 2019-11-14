@@ -121,3 +121,7 @@ export const onWalletExists = (exists: boolean) => action(types.ON_WALLET_EXISTS
 export const setInitialRewardsData = (initialRewardsData: InitialRewardsData) => action(types.SET_INITIAL_REWARDS_DATA, initialRewardsData)
 
 export const setPreInitialRewardsData = (preInitialRewardsData: PreInitialRewardsData) => action(types.SET_PRE_INITIAL_REWARDS_DATA, preInitialRewardsData)
+
+export const onGrantFinish = (properties: NewTab.GrantFinish) => action(types.ON_GRANT_FINISH, {
+  properties
+})

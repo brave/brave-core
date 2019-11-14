@@ -130,6 +130,13 @@ declare namespace NewTab {
     wallets: Record<string, number>
   }
 
+  export interface GrantFinish {
+    result: RewardsResult,
+    statusCode: number,
+    expiryTime: number,
+    promotionId: string
+  }
+
   // In-memory state is a superset of PersistentState
   export type State = PersistentState & EphemeralState
 }

@@ -211,6 +211,7 @@ void ExtensionRewardsServiceObserver::OnGrantFinish(
   properties.expiry_time = grant.expiryTime;
   properties.probi = grant.probi;
   properties.type = grant.type;
+  properties.promotion_id = grant.promotionId;
 
   std::unique_ptr<base::ListValue> args(
       extensions::api::brave_rewards::OnGrantFinish::Create(properties)
