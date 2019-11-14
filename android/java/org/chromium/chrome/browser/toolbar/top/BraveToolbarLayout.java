@@ -21,6 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
@@ -48,6 +49,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabObserver;
 import org.chromium.chrome.browser.tabmodel.TabSelectionType;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.util.AccessibilityUtil;
+import org.chromium.chrome.browser.util.ColorUtils;
 import org.chromium.chrome.browser.util.MathUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
@@ -72,6 +74,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   private BraveShieldsContentSettings mBraveShieldsContentSettings;
   private BraveShieldsContentSettingsObserver mBraveShieldsContentSettingsObserver;
   private TextView mBraveRewardsNotificationsCount;
+  private boolean mShieldsLayoutIsColorBackground;
 
   public BraveToolbarLayout(Context context, AttributeSet attrs) {
       super(context, attrs);
@@ -157,9 +160,16 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
               && !sharedPreferences.getBoolean(
                       AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON, false)) {
-          if (mRewardsLayout != null) {
+          if (mRewardsLayout != null && mShieldsLayout != null) {
+              if (this instanceof ToolbarTablet) {
+                  mShieldsLayout.setBackgroundColor(ColorUtils.getDefaultThemeColor(getResources(), isIncognito()));
+                  mShieldsLayoutIsColorBackground = true;
+              }
               mRewardsLayout.setVisibility(View.VISIBLE);
           }
+      }
+      if (mShieldsLayout != null) {
+          mShieldsLayout.setVisibility(View.VISIBLE);
       }
       mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
       if (mBraveRewardsNativeWorker != null) {
@@ -359,8 +369,13 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   public void OnWalletInitialized(int error_code) {
       if (error_code == BraveRewardsNativeWorker.SAFETYNET_ATTESTATION_FAILED) {
           BravePrefServiceBridge.getInstance().setSafetynetCheckFailed(true);
-          if (mRewardsLayout != null) {
+          if (mRewardsLayout != null && mShieldsLayout != null) {
               mRewardsLayout.setVisibility(View.GONE);
+              if (this instanceof ToolbarTablet) {
+                  mShieldsLayout.setBackgroundDrawable(
+                      ApiCompatibilityUtils.getDrawable(getContext().getResources(), R.drawable.modern_toolbar_background_grey_end_segment));
+                  mShieldsLayoutIsColorBackground = false;
+              }
           }
           // Show message
           AlertDialog.Builder alert = new AlertDialog.Builder(getContext(), R.style.Theme_Chromium_AlertDialog);
@@ -518,5 +533,16 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
       mBraveRewardsNotificationsCount.setText("");
       mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
+  }
+
+  @Override
+  public void onThemeColorChanged(int color, boolean shouldAnimate) {
+      final int textBoxColor = ColorUtils.getTextBoxColorForToolbarBackground(
+              getResources(), false, color, isIncognito());
+      mShieldsLayout.getBackground().setColorFilter(textBoxColor, PorterDuff.Mode.SRC_IN);
+      if (mShieldsLayoutIsColorBackground) {
+          mShieldsLayout.setBackgroundColor(ColorUtils.getDefaultThemeColor(getResources(), isIncognito()));
+      }
+      mRewardsLayout.getBackground().setColorFilter(textBoxColor, PorterDuff.Mode.SRC_IN);
   }
 }
