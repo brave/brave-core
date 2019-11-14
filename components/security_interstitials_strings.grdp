@@ -66,17 +66,17 @@
   </message>
 
   <!-- Lookalike URL warning -->
-  <message name="IDS_LOOKALIKE_URL_TITLE" desc="Tab title. Context: the requested URL might be trying to trick the user since it looks like a more popular URL.">
-    Continue to <ph name="DOMAIN">$1<ex>example.com</ex></ph>?
+  <message name="IDS_LOOKALIKE_URL_TITLE" desc="Tab title. Context: the requested URL might be trying to trick the user since it looks like a more popular URL. This interstitial points the user to the safe site instead.">
+    Did you mean?
   </message>
-  <message name="IDS_LOOKALIKE_URL_HEADING" desc="Large heading. Context: the error page that's shown when the requested URL might be trying to trick the user since it looks like a more popular URL.">
-    Continue to &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN">$1<ex>example.com</ex></ph>&lt;/a&gt;?
+  <message name="IDS_LOOKALIKE_URL_HEADING" desc="Large heading. Context: the error page that's shown when the requested URL might be trying to trick the user since it looks like a more popular URL. This interstitial points the user to the safe site instead.">
+    Did you mean &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN">$1<ex>example.com</ex></ph>&lt;/a&gt;?
   </message>
   <message name="IDS_LOOKALIKE_URL_IGNORE" desc="Button text. Context: the error page that's shown when the requested URL might be trying to trick the user since it looks like a more popular URL. This button dismisses the interstitial and navigates to the originally-requested URL.">
     Ignore
   </message>
   <message name="IDS_LOOKALIKE_URL_CONTINUE" desc="Button text. Context: the error page that's shown when the requested URL might be trying to trick the user since it looks like a more popular URL. This button dismisses the interstitial and navigates to the suggested (safe) URL.">
-    Continue
+    Go to <ph name="DOMAIN">$1<ex>example.com</ex></ph>
   </message>
   <message name="IDS_LOOKALIKE_URL_PRIMARY_PARAGRAPH" desc="Main paragraph of an error message. Context: the error page that's shown when the requested URL might be trying to trick the user since it looks like a more popular URL.">
     The site you just tried to visit looks fake. Attackers sometimes mimic sites by making small, hard-to-see changes to the URL.
@@ -407,12 +407,11 @@
     Origin Policy Error
   </message>
   <message name="IDS_ORIGIN_POLICY_HEADING" desc="The large heading at the top of the Origin Policy Error Interstitial">
-    Blocked according to <ph name="ORIGIN">$2</ph>'s security policy.
+    Blocked according to <ph name="ORIGIN">$2</ph>'s origin policy.
   </message>
   <message name="IDS_ORIGIN_POLICY_INFO" desc="The primary explanatory paragraph for the Origin Policy Error interstitial.">
-    The site <ph name="ORIGIN">$2</ph> has requested that a security policy
-    will apply to all its request, and this policy presently deems the site
-    unsafe.
+    The site <ph name="ORIGIN">$2</ph> has requested that an origin policy
+    will apply to all its request, but this policy cannot presently be applied.
   </message>
   <message name="IDS_ORIGIN_POLICY_INFO2" desc="The second paragrpah of the text of the Origin Policy Error Interstitial. (Presently intentionally left blank.)" />
   <message name="IDS_ORIGIN_POLICY_BUTTON" desc="The text for the Origin Policy Error Interstitial button that takes the user back to the previous page">
@@ -423,43 +422,44 @@
   </message>
   <message name="IDS_ORIGIN_POLICY_EXPLANATION_CANNOT_LOAD" desc="The text of the Origin Policy Error Interstitial that will be displayed when the user presses the 'Advanced' button for additional information, for the case where the policy could not be loaded.">
     The server you are going to, <ph name="ORIGIN">$2</ph>, has requested that
-    a security policy will be applied to all requests to it. But it has now
+    an origin policy will be applied to all requests to it. But it has now
     failed to deliver a policy, which prevents the browser from fulfilling
-    your request for <ph name="SITE">$1</ph>.
+    your request for <ph name="SITE">$1</ph>. Origin policies can be used by
+    site operators to configure security and other properties for a site.
   </message>
   <message name="IDS_ORIGIN_POLICY_EXPLANATION_SHOULD_NOT_REDIRECT" desc="The text of the Origin Policy Error Interstitial that will be displayed when the user presses the 'Advanced' button for additional information, for the case where the policy request was met with a 'redirect' response.">
     The server you are going to, <ph name="ORIGIN">$2</ph>, has requested that
-    a security policy will be applied to all requests to it. But instead of
+    an origin policy will be applied to all requests to it. But instead of
     delivering a policy it has redirected the browser elsewhere, which prevents
-    the browser from fulfilling your request for <ph name="SITE">$1</ph>.
+    the browser from fulfilling your request for <ph name="SITE">$1</ph>. Origin
+    policies can be used by site operators to configure security and other
+    properties for a site.
   </message>
   <message name="IDS_ORIGIN_POLICY_EXPLANATION_OTHER" desc="The text of the Origin Policy Error Interstitial that will be displayed when the user presses the 'Advanced' button for additional information, for cases other than redirect or load error.">
     The server you are going to, <ph name="ORIGIN">$2</ph>, has requested that
-    a security policy will be applied to all requests to it. But it has now
-    delivered an invalid policy, which prevents the browser from
-    fulfilling your request for <ph name="SITE">$1</ph>.
+    an origin policy will be applied to all requests to it. But it has now
+    delivered an invalid policy, which means the browser cannot fullfil your
+    request for <ph name="SITE">$1</ph>. Origin policies can be used by
+    site operators to configure security and other properties for a site.
   </message>
   <message name="IDS_ORIGIN_POLICY_FINAL_PARAGRAPH" desc="The text of the Origin Policy Error Interstitial that a user can click to proceed to the site, despite the error.">
-    <ph name="BEGIN_LINK">&lt;a href="#" id="proceed-link"&gt;</ph>Proceed to <ph name="SITE">$1<ex>example.com</ex></ph> (unsafe)<ph name="END_LINK">&lt;/a&gt;</ph>
+    <ph name="BEGIN_LINK">&lt;a href="#" id="proceed-link"&gt;</ph>Proceed to <ph name="SITE">$1<ex>example.com</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_ORIGIN_POLICY_CLOSE" desc="The text of the Origin Policy Error Interstitial that will hide the 'advanced' section again.">
     Hide advanced
   </message>
 
   <!-- Safety Tip summary strings for Android (Desktop is in page_info_strings.grdp) -->
-  <message name="IDS_SAFETY_TIP_ANDROID_NAME" desc="Name of safety tips in general, displayed in bold as part of the title of the safety tip infobar.">
-    Safety tip:
-  </message>
-  <message name="IDS_SAFETY_TIP_ANDROID_BAD_REPUTATION_TITLE" desc="Title of Safety Tip infobar.">
-    <ph name="SAFETY_TIP">$1<ex>Safety tip:</ex></ph> suspicious site
-  </message>
-  <message name="IDS_SAFETY_TIP_ANDROID_BAD_REPUTATION_DESCRIPTION" desc="Body of an infobar warning when the user visits a page that triggered a Safety Tip.">
-    This site could be fake or fraudulent. Brave recommends leaving now.
-  </message>
   <message name="IDS_SAFETY_TIP_ANDROID_IGNORE_BUTTON" desc="Text of button to leave a suspicious page. Shown on the safety tip infobar.">
-    IGNORE
+    Ignore
   </message>
   <message name="IDS_SAFETY_TIP_ANDROID_LEAVE_BUTTON" desc="Text of button to ignore the warning on a suspicious page. Shown on the safety tip infobar.">
-    LEAVE SITE
+    Leave site
+  </message>
+  <message name="IDS_SAFETY_TIP_ANDROID_LOOKALIKE_TITLE" desc="Title of Safety Tip infobar on a domain that looks like another domain.">
+    Is this the right site?
+  </message>
+  <message name="IDS_SAFETY_TIP_ANDROID_LOOKALIKE_DESCRIPTION" desc="Body of an infobar warning when the user visits a page that triggered a Safety Tip because the domain looked like another domain.">
+    <ph name="LOOKALIKE_DOMAIN">$1<ex>fake-google.com</ex></ph> looks similar to <ph name="SUGGESTED_DOMAIN">$2<ex>google.com</ex></ph>. Attackers sometimes mimic sites by using similar URLs.
   </message>
 </grit-part>

@@ -221,6 +221,39 @@
       <message name="IDS_AUTOFILL_ENABLE_CREDIT_CARDS_TOGGLE_LABEL" desc="Label for a toggle that allows users to control whether credit cards should be saved and forms should be autofilled with it. Sentence-Cased." formatter_data="android_java">
         Save and fill payment methods
       </message>
+      <!-- WebAuthn titles -->
+      <if expr="is_macosx">
+        <message name="IDS_ENABLE_CREDIT_CARD_FIDO_AUTH_LABEL" desc="The product name of the fingerprint reader on macOS. Label for a toggle that allows users to control whether or not to use FIDO authentication for credit card unmasking. Title-Cased.">
+          Touch ID
+        </message>
+        <message name="IDS_ENABLE_CREDIT_CARD_FIDO_AUTH_SUBLABEL" desc="Sublabel for a toggle that allows users to control whether or not to use FIDO authentication for credit card unmasking on macOS. Sentence-Cased.">
+          Use Touch ID to verify your saved payment methods.
+        </message>
+      </if>
+      <if expr="is_win">
+        <message name="IDS_ENABLE_CREDIT_CARD_FIDO_AUTH_LABEL" desc="The product name of the authentication system on Windows. Label for a toggle that allows users to control whether or not to use FIDO authentication for credit card unmasking. Title-Cased.">
+          Windows Hello
+        </message>
+        <message name="IDS_ENABLE_CREDIT_CARD_FIDO_AUTH_SUBLABEL" desc="Sublabel for a toggle that allows users to control whether or not to use FIDO authentication for credit card unmasking on Windows. Sentence-Cased.">
+          Use Windows Hello to verify your saved payment methods.
+        </message>
+      </if>
+      <if expr="is_android">
+        <message name="IDS_ENABLE_CREDIT_CARD_FIDO_AUTH_LABEL" desc="The authentication mechanism on Android. Label for a toggle that allows users to control whether or not to use FIDO authentication for credit card unmasking. Title-Cased.">
+          Screen lock
+        </message>
+        <message name="IDS_ENABLE_CREDIT_CARD_FIDO_AUTH_SUBLABEL" desc="Sublabel for a toggle that allows users to control whether or not to use FIDO authentication for credit card unmasking for Android. Sentence-Cased.">
+          Use screen lock to verify your saved payment methods.
+        </message>
+      </if>
+      <if expr="not is_macosx and not is_win and not is_android">
+        <message name="IDS_ENABLE_CREDIT_CARD_FIDO_AUTH_LABEL" desc="Label for a toggle that allows users to control whether or not to use FIDO authentication for credit card unmasking. Title-Cased.">
+          Biometrics
+        </message>
+        <message name="IDS_ENABLE_CREDIT_CARD_FIDO_AUTH_SUBLABEL" desc="Sublabel for a toggle that allows users to control whether or not to use FIDO authentication for credit card unmasking. Sentence-Cased.">
+          This feature is not available on your device.
+        </message>
+      </if>
     </then>
     <else>
       <message name="IDS_AUTOFILL_ADDRESSES_SETTINGS_TITLE" desc="Title for the Autofill settings page that allows user to manage their list of saved addresses and Autofill preferences for addresses. Title-Cased.">

@@ -28,10 +28,7 @@
   </message>
   <if expr="chromeos">
     <message name="IDS_SETTINGS_ABOUT_PAGE_DETAILED_BUILD_INFO" desc="Label describing the section that shows detailed information about the current Brave build.">
-      Detailed build information
-    </message>
-    <message name="IDS_SETTINGS_ABOUT_PAGE_ARC_VERSION" desc="Label for ARC version">
-      ARC Version
+      Additional details
     </message>
     <message name="IDS_SETTINGS_ABOUT_PAGE_CHANNEL" desc="The channel label under Detailed build info.">
       Channel
@@ -54,11 +51,14 @@
     <message name="IDS_SETTINGS_ABOUT_PAGE_CURRENT_CHANNEL" desc="The message about current channel.">
       Currently on <ph name="CHANNEL_NAME">$1<ex>stable</ex></ph>
     </message>
-    <message name="IDS_SETTINGS_ABOUT_PAGE_FIRMWARE" desc="Label used for Brave OS BIOS firmware version.">
-      Firmware
+    <message name="IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_TITLE" desc="Title used for End of Life section on the About Page.">
+      Update schedule
     </message>
-    <message name="IDS_SETTINGS_ABOUT_PAGE_PLATFORM" desc="Label for Platform">
-      Platform
+    <message name="IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_MESSAGE" desc="Message used for End of Life section on the About Page.">
+      This device will get automatic software and security updates until <ph name="MONTH_AND_YEAR">$1<ex>September 2020</ex></ph>.
+      <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>
+        Learn more
+      <ph name="LINK_END">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_SETTINGS_ABOUT_PAGE_RELAUNCH" desc="The label for the relaunch button that relaunches the browser once update is complete">
       Restart
@@ -458,8 +458,8 @@
     <message name="IDS_SETTINGS_ACCESSIBILITY_APPEARANCE_SETTINGS_TITLE" desc="In the settings tab, the title of a link to open appearance settings.">
       Open appearance settings
     </message>
-    <message name="IDS_SETTINGS_ACCESSIBILITY_AUDIO_HEADING" desc="In the settings tab, the heading for the section on audio / sound settings.">
-      Audio
+    <message name="IDS_SETTINGS_ACCESSIBILITY_AUDIO_AND_CAPTIONS_HEADING" desc="In the settings tab, the heading for the section on audio / sound and caption settings.">
+      Audio and captions
     </message>
     <message name="IDS_SETTINGS_ACCESSIBILITY_CARET_HIGHLIGHT_DESCRIPTION" desc="In the settings tab, the text next to the checkbox to highlight the caret (the text insertion point) to make it easier to see.">
       Highlight the text caret when it appears or moves
@@ -705,6 +705,9 @@
     </message>
     <message name="IDS_SETTINGS_ANDROID_APPS_REMOVE" desc="Label for the control to open a dialog confirming removal of the Brave Play Store.">
       Remove Brave Play Store
+    </message>
+    <message name="IDS_SETTINGS_ANDROID_APPS_REMOVE_BUTTON" desc="Label for the button for the removal of the Brave Play Store">
+      Remove
     </message>
 
     <message name="IDS_SETTINGS_ANDROID_APPS_DISABLE_DIALOG_TITLE" desc="Title of the confirmation dialog for disabling android apps.">
@@ -962,16 +965,10 @@
     Automatically sign in to websites using stored credentials. If disabled, you will be asked for confirmation every time before signing in to a website.
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_LEAK_DETECTION_LABEL" desc="Label for a checkbox that allows users to choose whether chrome should check that credentials have been part of a leak.">
-    Check password safety
-  </message>
-  <message name="IDS_SETTINGS_PASSWORDS_LEAK_DETECTION_SIGNED_IN_DESC" desc="Text that describes the 'Password Leak Detection' functionality to signed-in users.">
-    Warns you if a password you use was part of a data breach
-  </message>
-  <message name="IDS_SETTINGS_PASSWORDS_LEAK_DETECTION_SIGNED_OUT_DISABLED_DESC" desc="Text that describes the 'Password Leak Detection' functionality to signed-out users who have disabled the feature.">
-    Brave can check if your passwords were part of a data breach
+    Warn you if passwords are compromised
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_LEAK_DETECTION_SIGNED_OUT_ENABLED_DESC" desc="Text that describes the 'Password Leak Detection' functionality to signed-out users who have not disabled the feature.">
-    Brave can check if your passwords were part of a data breach. This will be turned on when you sign in with your Brave Account.
+    When you sign in to your Brave Account, this feature is turned on
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_SAVED_HEADING" desc="The title for a list of username/site/password items. These items are already saved by the browser and can be deleted/edited.">
     Saved Passwords
@@ -1489,7 +1486,7 @@
       Save detected printers to your profile, or add a new printer.
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_AVAILABLE_PRINTERS" desc="In CUPS printing settings subpage, title for the nearby printers list.">
-      Available printers to save
+      Add printers to your profile
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_EDIT" desc="Text for the drop down menu which allows the user to edit the printer details.">
       Edit
@@ -1508,6 +1505,9 @@
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_SAVED_PRINTERS_TITLE" desc="Text for the title of the user's saved printers list.">
       Your saved printers
+    </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_SHOW_MORE" desc="Text for the button to show more printers when there are more printers than currently displayed to the user.">
+      Show more
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_ADD_PRINTERS_NEARBY_TITLE" desc="Text for the title of the dialog that is used to add nearby printers.">
       Add a nearby printer
@@ -1758,6 +1758,9 @@
     </message>
     <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_KERBEROS_AUTHENTICATION" desc="Authentication method option to use a users Kerberos ticket to authenticate. Only availible for Active Directory users.">
       SSO
+    </message>
+    <message name="IDS_SETTINGS_DOWNLOADS_ADD_SHARE_DISCOVERY_MESSAGE" desc="The message shown next to the loading spinner shown when searching for SMB shares.">
+      Looking for file shares
     </message>
   </if>
 
@@ -2762,8 +2765,9 @@
     Show language options
   </message>
   <if expr="chromeos">
+    <!-- Ends with "." because a "Learn more" link appears next to it. -->
     <message name="IDS_SETTINGS_LANGUAGES_LANGUAGES_LIST_ORDERING_INSTRUCTIONS" desc="Explanatory message about ordering the list of languages.">
-      Add languages or reorder list
+      Add languages or reorder list.
     </message>
     <!-- The non-Brave OS string is in settings_google_chrome_strings.grdp -->
     <message name="IDS_SETTINGS_LANGUAGES_IS_DISPLAYED_IN_THIS_LANGUAGE" desc="The label for a language that is currently used as the UI display language.">
@@ -2873,6 +2877,9 @@
     </message>
     <message name="IDS_SETTINGS_LANGUAGES_ADD_DICTIONARY_WORD_LENGTH_ERROR" desc="Error message displayed to the user when the word is too long in the text input used to add a new word to the custom spell check dictionary.">
       Cannot exceed 99 letters
+    </message>
+    <message name="IDS_SETTINGS_LANGUAGES_DELETE_DICTIONARY_WORD_BUTTON" desc="Message shown over the button to delete a custom word.">
+      Delete word
     </message>
     <message name="IDS_SETTINGS_LANGUAGES_DICTIONARY_WORDS" desc="Header for the list of custom dictionary words used for spell check.">
       Custom words
@@ -3052,6 +3059,9 @@
     <message name="IDS_SETTINGS_FACTORY_RESET_WARNING" desc="Warning text in the 'Factory Reset' window">
       A restart is required before your device can be reset with Powerwash.
     </message>
+    <message name="IDS_SETTINGS_FACTORY_RESET_BUTTON_LABEL" desc="Label for the factory reset button.">
+      Reset
+    </message>
   </if>
 
   <!-- Search Page -->
@@ -3137,10 +3147,10 @@
     "Ok Brave"
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_DESCRIPTION" desc="Sub label for hotword-enable toggle.">
-    Access your Assistant any time you say "Ok Brave"
+    Access your Assistant when you say "Ok Brave."
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_WITHOUT_DSP_DESCRIPTION" desc="Sub label for hotword-enable dropdown without DSP support.">
-    Activate the Assistant when anyone says “Ok Brave”. To save battery, “Ok Brave” is on only when your device is connected to a power source.
+    Access your Assistant when you say "Ok Brave." To save battery, choose “On (Recommended.)” Your Assistant will respond only when your device is plugged in or charging.
   </message>
   <message name="IDS_SETTINGS_GOOGLE_ASSISTANT_ENABLE_HOTWORD_WITHOUT_DSP_RECOMMENDED" desc="Default label for hotword-enable dropdown without DSP support.">
     On (Recommended)
@@ -3255,6 +3265,12 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_IMAGES" desc="Label for the images site settings.">
     Images
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_INSECURE_CONTENT" desc="Label for the insecure content site settings. This setting controls whether HTTP content will be displayed on HTTPS sites.">
+    Insecure content
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_INSECURE_CONTENT_BLOCK" desc="Label explaining that insecure content is blocked by default in secure sites. Insecure content refers to content served over HTTP, secure sites refers to sites served over HTTPS.">
+    Insecure content is blocked by default on secure sites
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_JAVASCRIPT" desc="Label for the javascript site settings.">
     JavaScript
@@ -3601,6 +3617,9 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_CLEAR_THIRD_PARTY_COOKIES" desc="Label for the confirmation dialog button to delete all cookies and site data for third-party contexts.">
     Clear third-party cookies
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_THIRD_PARTY_COOKIES_EXCEPTION_LABEL" desc="Label for site exceptions that affect third party cookies.">
+    All cookies, on this site only
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIE_REMOVE_DIALOG_TITLE" desc="Title of the dialog that warns about deleting all site data.">
     Clear site data
   </message>
@@ -3650,7 +3669,7 @@
     Block third-party cookies
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_THIRD_PARTY_COOKIE_SUBLABEL" desc="A sub-label below the Block 3rd-party cookie checkbox.">
-    Prevent third-party websites from saving and reading cookie data
+    When turned on, sites can't use cookies that track you across the web. Some websites might break.
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ADOBE_FLASH_SETTINGS" desc="The text for the link that points the user to the Adobe Flash Player Storage settings on the web">
     Adobe Flash Player Storage settings
@@ -3902,16 +3921,25 @@
       Add account
     </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_DESCRIPTION" desc="Description of the Account Manager Settings page. Shown just below the title of the page.">
-      Manage your signed-in Brave Accounts. Websites, apps, and extensions in Brave and Brave Play may use these accounts to customize your experience, depending on permissions.
+      Manage your signed-in accounts. Websites, apps, and extensions in Brave and Brave Play may use these accounts to customize your experience, depending on permissions.
     </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_LIST_HEADER" desc="List header for Account List in Account Manager Settings page.">
       Accounts
     </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_PAGE_TITLE" desc="Title of Account Manager Settings page.">
-      Brave Accounts
+      My accounts
     </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SUBMENU_LABEL" desc="Label of Account Manager submenu in Settings page.">
       Brave Accounts
+    </message>
+    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_PRIMARY_ACCOUNT_TOOLTIP" desc="Tooltip for the primary account in accounts list in Settings describing how to sign out.">
+      To sign out of the primary account on this device, click the time on your screen. In the menu that appears, click "Sign out".
+    </message>
+    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SECONDARY_ACCOUNTS_DISABLED_TEXT" desc="Text for 'secondary accounts disabled' message in Settings page.">
+      Your administrator has disabled the addition of more Brave Accounts
+    </message>
+    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SECONDARY_ACCOUNTS_DISABLED_CHILD_TEXT" desc="Text for 'secondary accounts disabled' message for child accounts in Settings page.">
+      Addition of more Brave Accounts is disabled
     </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SIGNED_OUT_ACCOUNT_PLACEHOLDER" desc="Placeholder text for the full name of a signed out account in Account Manager.">
       Sign in again
@@ -4331,10 +4359,13 @@
       Remove
     </message>
     <message name="IDS_SETTINGS_USERS_ADD_USERS" desc="Label the dialog for adding users.">
-      Add profile
+      Add user
     </message>
     <message name="IDS_SETTINGS_USERS_ADD_USERS_EMAIL" desc="Label for the email input field for adding users.">
       Email address
+    </message>
+    <message name="IDS_SETTINGS_USER_EXISTS_ERROR" desc="Error message for attempting to add a user that already exists">
+      This user already exists
     </message>
   </if>
 
@@ -4493,8 +4524,11 @@
     <message name="IDS_SETTINGS_MOUSE_REVERSE_SCROLL_LABEL" desc="In Device Settings, the text next to the checkbox to set reverse scrolling.">
       Reverse scrolling
     </message>
-    <message name="IDS_SETTINGS_POINTER_ACCELERATION_LABEL" desc="In Device Settings, the text next to the checkbox to disable mouse or touchpad acceleration.">
-      Pointer acceleration
+    <message name="IDS_SETTINGS_MOUSE_ACCELERATION_LABEL" desc="In Device Settings, the text next to the checkbox to disable mouse acceleration.">
+      Enable mouse acceleration
+    </message>
+    <message name="IDS_SETTINGS_TOUCHPAD_ACCELERATION_LABEL" desc="In Device Settings, the text next to the checkbox to disable touchpad acceleration.">
+      Enable touchpad acceleration
     </message>
     <!-- Keyboard -->
     <message name="IDS_SETTINGS_KEYBOARD_KEY_SEARCH" desc="In Device Settings, the label and dropdown list item for the Search key.">
@@ -4770,9 +4804,6 @@
     <message name="IDS_SETTINGS_STORAGE_ITEM_DOWNLOADS" desc="In Device Settings &gt; Storage, label for the size of Downloads directory.">
       Downloads
     </message>
-    <message name="IDS_SETTINGS_STORAGE_ITEM_DRIVE_CACHE" desc="In Device Settings &gt; Storage, label for the size of Brave Drive's offline files.">
-      Offline files
-    </message>
     <message name="IDS_SETTINGS_STORAGE_ITEM_BROWSING_DATA" desc="In Device Settings &gt; Storage, label for the size of browsing data.">
       Browsing data
     </message>
@@ -4809,20 +4840,11 @@
     <message name="IDS_SETTINGS_STORAGE_SPACE_CRITICALLY_LOW_MESSAGE_LINE_2" desc="The second paragraph of a warning message indicating device's available disk space is critically low.">
       If you don’t free up space, users and data may be automatically removed.
     </message>
-    <message name="IDS_SETTINGS_STORAGE_CLEAR_DRIVE_CACHE_DIALOG_TITLE" desc="Title for the storage manager confirmation dialog tab to remove Brave Drive offline files.">
-      Delete offline files?
-    </message>
-    <message name="IDS_SETTINGS_STORAGE_CLEAR_DRIVE_CACHE_DESCRIPTION" desc="Description in the storage manager confirmation dialog to remove Brave Drive offline files.">
-      Temporary Brave Drive offline files will be deleted. Files that you’ve set as available offline won’t be deleted from this device.
-    </message>
-    <message name="IDS_SETTINGS_STORAGE_DELETE_ALL_BUTTON_TITLE" desc="In storage manager confirmation dialog, label for the button to delete offline files.">
-      Delete files
-    </message>
     <message name="IDS_SETTINGS_STORAGE_EXTERNAL" desc="In Device Settings &gt; Storage, label for the subpage for setting preferences for external storage.">
       External storage preferences
     </message>
     <message name="IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE" desc="Label for the additional note for the subpage for setting preferences for external storage.">
-      Apps from Brave Play may require full file system access to read and write files on external storage devices. Files and folders created on the device are visible to anyone who uses the external drive.
+      Apps from Brave Play may require full file system access to read and write files on external storage devices. Files and folders created on the device are visible to anyone who uses the external drive. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_SETTINGS_STORAGE_EXTERNAL_STORAGE_LIST_HEADER" desc="Header of the list of external storage devices for the subpage for setting preferences for external storage.">
       Available devices will appear here.
@@ -4953,6 +4975,9 @@
     </message>
     <message name="IDS_SETTINGS_MULTIDEVICE_FORGET_DEVICE_DIALOG_MESSAGE" desc="Text of a dialog that lets the user choose if their Bravebook should forget their phone. This means they will no longer have access to multidevice features.">
       Disconnect your phone from your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. They will no longer connect automatically.
+    </message>
+    <message name="IDS_SETTINGS_MULTIDEVICE_FORGET_THIS_DEVICE_DISCONNECT" desc="Text for the button that lets the user choose if their Bravebook should forget their phone. This means they will no longer have access to multidevice features.">
+      Disconnect
     </message>
   </if>
 
@@ -5212,9 +5237,6 @@
   <message name="IDS_SETTINGS_SECURITY_KEYS_PIN" desc="A label shown above a text box where the user is expected to enter a new PIN for a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
     PIN
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_ERROR_TOO_SHORT" desc="A validation error shown beneath a text box where the user is expected to enter a PIN for a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
-    PIN must be at least 4 characters
-  </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_ERROR_TOO_SHORT_SMALL" desc="A validation error shown beneath a text box where the user is expected to enter a PIN for a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people. This message has limited horizontal space.">
     Too short
   </message>
@@ -5299,14 +5321,20 @@
   <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_TOUCH" desc="A label instructing the user to physically touch the activation button on their security key (an authentication hardware device).">
     To manage your fingerprints, insert and touch your security key.
   </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_CHOOSE_NAME" desc="A label instructing the user to provide a descriptive name for a fingerprint enrolled to a security key.">
+    Choose a name for this fingerprint
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_NAME_LABEL" desc="A label for a text input field containing a descriptive name for a fingerprint enrolled to a security key.">
+    Name
+  </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_PIN_PROMPT" desc="A label instructing the user to enter the PIN (short, often numeric codes that are often used with, for example, ATM cards) for their security key (an authentication hardware device).">
     To manage your fingerprints, enter the PIN for your security key. If you don’t know the PIN, you’ll need to reset the security key.
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_NO_ENROLLMENTS" desc="A label informing the user that there are no fingerprints stored on their security key (authentication hardware device).">
     Your security key has no fingerprints stored.
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_LABEL" desc="A label informing the user that they may add, remove, or rename fingerprints on their security key (authentication hardware device).">
-    You may add, remove, or rename fingerprints here.
+  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_LABEL" desc="A label describing a list of fingerprints enrolled with a security key (authentication hardware device).">
+    Fingerprints on this security key
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_ENROLLING_LABEL" desc="A label instructing the user to repeatedly touch the fingerprint sensor on their security key (authentication hardware device) to take samples for a new fingerprint.">
     Keep touching your security key to save your fingerprint.

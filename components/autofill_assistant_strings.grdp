@@ -26,8 +26,5 @@
     <message name="IDS_AUTOFILL_ASSISTANT_STOPPED" desc="Text label that is shown when stopping the Autofill Assistant.">
       Brave Assistant in Brave stopping
     </message>
-    <message name="IDS_AUTOFILL_ASSISTANT_3RD_PARTY_TERMS_ACCEPT" desc="Message that indicates that the user agrees to the terms and conditions of a 3rd party's domain, e.g., 'odeon.co.uk'.">
-      I agree to the terms &amp; conditions, privacy policy, and right of withdrawal of <ph name="BEGIN_BOLD">&lt;b&gt;</ph><ph name="DOMAIN">%1$s<ex>google.com</ex></ph><ph name="END_BOLD">&lt;/b&gt;</ph>
-    </message>
   </if>
 </grit-part>
