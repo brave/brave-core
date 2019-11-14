@@ -250,14 +250,6 @@ class TabLocationView: UIView {
         let dragInteraction = UIDragInteraction(delegate: self)
         dragInteraction.allowsSimultaneousRecognitionDuringLift = true
         self.addInteraction(dragInteraction)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(privateBrowsingModeChanged), name: Notification.Name.PrivacyModeChanged, object: nil)
-    }
-    
-    @objc private func privateBrowsingModeChanged() {
-        #if !NO_REWARDS
-        rewardsButton.isHidden = PrivateBrowsingManager.shared.isPrivateBrowsing
-        #endif
     }
 
     required init(coder: NSCoder) {
