@@ -81,13 +81,13 @@ export const StyledText = styled<{}, 'div'>('div')`
 export const StyledGrantIcon = styled<{}, 'img'>('img')`
   height: 53px;
   width: 53px;
-  margin: 25px auto 15px;
+  margin: 20px auto 10px;
 `
 
 export const StyledPanelText = styled<{}, 'div'>('div')`
   padding: 7px;
   font-size: 12px;
-  margin: 7px auto 0px;
+  margin: 5px auto 0px;
   background: rgba(241, 241, 245, 0.70);
   border-radius: 8px 8px 8px 8px;
 `
