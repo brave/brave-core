@@ -49,6 +49,12 @@ class WalletDetailsViewController: UIViewController, RewardsSummaryProtocol {
         $0.labels = disclaimerLabels
       }
     }
+    detailsView.activityView.disclaimerView?.labels.forEach {
+      $0.onLinkedTapped = { [weak self] _ in
+        guard let self = self, let url = URL(string: DisclaimerLinks.unclaimedFundsURL) else { return }
+        self.state.delegate?.loadNewTabWithURL(url)
+      }
+    }
   }
   
   // MARK: - Actions
