@@ -137,8 +137,7 @@ public final class TabMO: NSManagedObject, CRUD {
     public class func deleteAllPrivateTabs() {
         deleteAll(predicate: NSPredicate(format: "isPrivate == true"), context: .new(inMemory: false))
     }
-
-    }
+}
 
 // MARK: - Internal implementations
 extension TabMO {
