@@ -201,6 +201,12 @@ class ClearPrivateDataTableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: false)
         
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            let cell = tableView.cellForRow(at: indexPath)
+            actionSheet.popoverPresentationController?.sourceView = cell
+            actionSheet.popoverPresentationController?.sourceRect = cell?.bounds ?? .zero
+            actionSheet.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+        }
         let clearAction = UIAlertAction(title: Strings.ClearPrivateData, style: .destructive) { (_) in
             Preferences.Privacy.clearPrivateDataToggles.value = self.toggles
             self.clearButtonEnabled = false

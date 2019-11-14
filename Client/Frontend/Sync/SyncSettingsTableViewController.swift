@@ -108,7 +108,13 @@ class SyncSettingsTableViewController: UITableViewController {
         guard let frc = frc, let deviceCount = frc.fetchedObjects?.count else { return }
         let device = frc.object(at: indexPath)
         
-        let actionShet = UIAlertController(title: device.name, message: nil, preferredStyle: .actionSheet)
+        let actionSheet = UIAlertController(title: device.name, message: nil, preferredStyle: .actionSheet)
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            let cell = tableView.cellForRow(at: indexPath)
+            actionSheet.popoverPresentationController?.sourceView = cell
+            actionSheet.popoverPresentationController?.sourceRect = cell?.bounds ?? .zero
+            actionSheet.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+        }
         
         let removeAction = UIAlertAction(title: Strings.SyncRemoveDeviceAction, style: .destructive) { _ in
             if !DeviceInfo.hasConnectivity() {
@@ -129,10 +135,10 @@ class SyncSettingsTableViewController: UITableViewController {
         
         let cancelAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil)
         
-        actionShet.addAction(removeAction)
-        actionShet.addAction(cancelAction)
+        actionSheet.addAction(removeAction)
+        actionSheet.addAction(cancelAction)
         
-        present(actionShet, animated: true)
+        present(actionSheet, animated: true)
     }
     
     private func presentAlertPopup(for type: DeviceRemovalType, device: Device) {
