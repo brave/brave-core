@@ -15,7 +15,9 @@
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/common/url_constants.h"
+#include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
 #if !defined(OS_ANDROID)
@@ -122,6 +124,14 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 
 WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
       content::BrowserContext* browser_context, const GURL& url) {
+#if defined(OS_ANDROID)
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  if (profile &&
+      profile->GetPrefs() &&
+      profile->GetPrefs()->GetBoolean(kSafetynetCheckFailed)) {
+    return WebUI::kNoWebUI;
+  }
+#endif  // defined(OS_ANDROID)
   WebUIFactoryFunction function = GetWebUIFactoryFunction(NULL, url);
   if (function) {
     return reinterpret_cast<WebUI::TypeID>(function);
