@@ -912,8 +912,7 @@ class BrowserViewController: UIViewController {
 
         alertStackView.snp.remakeConstraints { make in
             make.centerX.equalTo(self.view)
-            make.width.equalTo(self.view.snp.width)
-            make.height.equalTo(UIConstants.ToolbarHeight)
+            make.width.equalTo(self.view.safeArea.width)
             if let keyboardHeight = keyboardState?.intersectionHeightForView(self.view), keyboardHeight > 0 {
                 make.bottom.equalTo(self.view).offset(-keyboardHeight)
             } else if let toolbar = self.toolbar {
