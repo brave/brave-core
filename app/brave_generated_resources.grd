@@ -340,6 +340,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_NO_SCRIPT_CONTROL_LABEL" desc="Default Brave script blocking control setting label">
         Block scripts
       </message>
+      <message name="IDS_SETTINGS_BRAVE_SHIELDS_GOOGLE_LOGINS_LABEL" desc="Label for a switch control which allows Google logins">
+        Allow Google logins
+      </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_FACEBOOK_EMBEDDED_POSTS_LABEL" desc="Label for a switch control which allows Facebook embedded posts">
         Allow Facebook logins and embedded posts
       </message>

@@ -48,6 +48,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kNoScriptControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[kGoogleLoginControlType] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kFBEmbedControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kTwitterEmbedControlType] =
