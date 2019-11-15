@@ -6,7 +6,6 @@
 import os
 
 BRAVE_THIRD_PARTY_DIRS = [
-    'fonts',
     'vendor',
 ]
 
