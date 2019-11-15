@@ -122,13 +122,13 @@ def main():
         cmd = ['gpg2', '--batch', '--pinentry-mode', 'loopback', '--passphrase',
                gpg_passphrase, '--sign']
         log_cmd = ['gpg2', '--batch', '--pinentry-mode', 'loopback', '--passphrase',
-               'NOTAREALPASSWORD', '--sign']
+                   'NOTAREALPASSWORD', '--sign']
         logging.info("Running command: \"{}\"".format(log_cmd))
         try:
             p1 = subprocess.Popen(['echo'], stdout=subprocess.PIPE)
             p2 = subprocess.Popen(cmd, stdin=p1.stdout, stdout=subprocess.PIPE)
             p1.stdout.close()
-            (stdoutdata,stderrdata) = p2.communicate()
+            (stdoutdata, stderrdata) = p2.communicate()
             if stderrdata is not None:
                 logging.error("subprocess.Popen.communicate() error: {}".format(stderrdata))
             logging.info("gpg2 unlock signing key successful!")
