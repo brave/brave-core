@@ -63,7 +63,6 @@ bool DatabasePromotion::CreateTable(sql::Database* db) {
         "public_keys TEXT NOT NULL,"
         "suggestions INTEGER NOT NULL DEFAULT 0,"
         "approximate_value DOUBLE NOT NULL DEFAULT 0,"
-        "claimed INTEGER NOT NULL DEFAULT 0,"
         "status INTEGER NOT NULL DEFAULT 0,"
         "expires_at TIMESTAMP NOT NULL,"
         "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"
@@ -96,8 +95,8 @@ bool DatabasePromotion::InsertOrUpdate(
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(%s_id, version, type, public_keys, suggestions, "
-      "approximate_value, claimed, status, expires_at) "
-      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "approximate_value, status, expires_at) "
+      "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
       table_name_,
       table_name_);
 
@@ -110,9 +109,8 @@ bool DatabasePromotion::InsertOrUpdate(
   statement.BindString(3, info->public_keys);
   statement.BindInt64(4, info->suggestions);
   statement.BindDouble(5, info->approximate_value);
-  statement.BindBool(6, info->claimed);
-  statement.BindInt(7, static_cast<int>(info->status));
-  statement.BindInt64(8, info->expires_at);
+  statement.BindInt(6, static_cast<int>(info->status));
+  statement.BindInt64(7, info->expires_at);
 
   if (!statement.Run()) {
     return false;
@@ -137,7 +135,7 @@ ledger::PromotionPtr DatabasePromotion::GetRecord(
 
   const std::string query = base::StringPrintf(
       "SELECT %s_id, version, type, public_keys, suggestions, "
-      "approximate_value, claimed, status, expires_at FROM %s WHERE %s_id=?",
+      "approximate_value, status, expires_at FROM %s WHERE %s_id=?",
       table_name_,
       table_name_,
       table_name_);
@@ -156,9 +154,8 @@ ledger::PromotionPtr DatabasePromotion::GetRecord(
   info->public_keys = statement.ColumnString(3);
   info->suggestions = statement.ColumnInt64(4);
   info->approximate_value = statement.ColumnDouble(5);
-  info->claimed = statement.ColumnBool(6);
-  info->status = static_cast<ledger::PromotionStatus>(statement.ColumnInt(7));
-  info->expires_at = statement.ColumnInt64(8);
+  info->status = static_cast<ledger::PromotionStatus>(statement.ColumnInt(6));
+  info->expires_at = statement.ColumnInt64(7);
   info->credentials = creds_->GetRecord(db, info->id);
 
   return info;
@@ -167,7 +164,7 @@ ledger::PromotionPtr DatabasePromotion::GetRecord(
 ledger::PromotionMap DatabasePromotion::GetAllRecords(sql::Database* db) {
   const std::string query = base::StringPrintf(
       "SELECT %s_id, version, type, public_keys, suggestions, "
-      "approximate_value, claimed, status, expires_at FROM %s",
+      "approximate_value, status, expires_at FROM %s",
       table_name_,
       table_name_);
 
@@ -183,9 +180,8 @@ ledger::PromotionMap DatabasePromotion::GetAllRecords(sql::Database* db) {
     info->public_keys = statement.ColumnString(3);
     info->suggestions = statement.ColumnInt64(4);
     info->approximate_value = statement.ColumnDouble(5);
-    info->claimed = statement.ColumnBool(6);
-    info->status = static_cast<ledger::PromotionStatus>(statement.ColumnInt(7));
-    info->expires_at = statement.ColumnInt64(8);
+    info->status = static_cast<ledger::PromotionStatus>(statement.ColumnInt(6));
+    info->expires_at = statement.ColumnInt64(7);
     info->credentials = creds_->GetRecord(db, info->id);
 
     map.insert(std::make_pair(info->id, std::move(info)));

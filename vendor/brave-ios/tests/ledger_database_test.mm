@@ -1281,7 +1281,6 @@
   for (NSUInteger i = 0; i < numberOfPromos; i++) {
     const auto promo = [[BATPromotion alloc] init];
     promo.status = BATPromotionStatusFinished;
-    promo.claimed = NO;
     promo.credentials = [[BATPromotionCreds alloc] init];
     promo.credentials.tokens = @"Test";
     promo.credentials.claimId = [NSString stringWithFormat:@"%ld", i];
@@ -1303,7 +1302,6 @@
 - (void)testInsertPromotion
 {
   const auto promo = [[BATPromotion alloc] init];
-  promo.claimed = NO;
   promo.credentials = [[BATPromotionCreds alloc] init];
   promo.credentials.tokens = @"Test";
   promo.credentials.claimId = @"1";
@@ -1318,7 +1316,6 @@
   
   const auto queried = [BATLedgerDatabase promotionWithID:promo.id];
   XCTAssertNotNil(queried);
-  XCTAssertEqual(promo.claimed, queried.claimed);
   XCTAssertNotNil(queried.credentials);
   XCTAssert([queried.credentials.claimId isEqualToString:promo.credentials.claimId]);
   XCTAssert([promo.id isEqualToString:queried.id]);

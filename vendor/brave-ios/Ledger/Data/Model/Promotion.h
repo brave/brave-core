@@ -23,7 +23,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *publicKeys;
 @property (nonatomic) int32_t suggestions;
 @property (nonatomic) double approximateValue;
-@property (nonatomic) BOOL claimed;
 @property (nonatomic) int32_t status;
 @property (nonatomic, copy) NSDate *expiryDate;
 

@@ -1029,7 +1029,6 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   promotion.publicKeys = dbPromo.publicKeys;
   promotion.suggestions = dbPromo.suggestions;
   promotion.approximateValue = dbPromo.approximateValue;
-  promotion.claimed = dbPromo.claimed;
   promotion.status = static_cast<BATPromotionStatus>(dbPromo.status);
   promotion.expiresAt = [dbPromo.expiryDate timeIntervalSince1970];
   promotion.credentials = ^BATPromotionCreds * _Nullable {
@@ -1081,7 +1080,6 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     promo.publicKeys = promotion.publicKeys;
     promo.suggestions = promotion.suggestions;
     promo.approximateValue = promotion.approximateValue;
-    promo.claimed = promotion.claimed;
     promo.status = static_cast<int32_t>(promotion.status);
     promo.expiryDate = [NSDate dateWithTimeIntervalSince1970:promotion.expiresAt];
     if (promotion.credentials != nil) {

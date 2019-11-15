@@ -112,7 +112,6 @@ std::string FromPromotionToString(ledger::PromotionPtr info) {
   promotion.SetIntKey("version", info->version);
   promotion.SetIntKey("type", static_cast<int>(info->type));
   promotion.SetIntKey("suggestions", info->suggestions);
-  promotion.SetBoolKey("claimed", info->claimed);
   promotion.SetBoolKey("status", static_cast<int>(info->status));
   promotion.SetKey("credentials", std::move(credentials));
 
@@ -168,11 +167,6 @@ ledger::PromotionPtr FromStringToPromotion(const std::string& data) {
   auto suggestions = dictionary->FindIntKey("suggestions");
   if (suggestions) {
     promotion->suggestions = *suggestions;
-  }
-
-  auto claimed = dictionary->FindBoolKey("claimed");
-  if (claimed) {
-    promotion->claimed = *claimed;
   }
 
   auto status = dictionary->FindIntKey("status");

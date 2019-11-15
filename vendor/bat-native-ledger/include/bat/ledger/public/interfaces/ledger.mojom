@@ -331,7 +331,6 @@ struct Promotion {
   string public_keys; // JSONStringArray
   uint32 suggestions;
   double approximate_value;
-  bool claimed;
   PromotionStatus status;
   uint64 expires_at;
   PromotionCreds? credentials;

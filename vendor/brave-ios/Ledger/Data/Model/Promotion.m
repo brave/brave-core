@@ -20,7 +20,6 @@
 @dynamic publicKeys;
 @dynamic suggestions;
 @dynamic approximateValue;
-@dynamic claimed;
 @dynamic status;
 @dynamic expiryDate;
 
