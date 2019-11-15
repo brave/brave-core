@@ -15,6 +15,7 @@ import org.chromium.base.Log;
 import org.chromium.base.ObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
@@ -24,12 +25,14 @@ import org.chromium.chrome.browser.toolbar.ToolbarManager;
 public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegateImpl {
     private Menu mMenu;
 
-    public BraveAppMenuPropertiesDelegateImpl(Context context, ActivityTabProvider activityTabProvider,
+    public BraveAppMenuPropertiesDelegateImpl(Context context,
+            ActivityTabProvider activityTabProvider,
             MultiWindowModeStateDispatcher multiWindowModeStateDispatcher,
             TabModelSelector tabModelSelector, ToolbarManager toolbarManager, View decorView,
-            @Nullable ObservableSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier) {
+            @Nullable ObservableSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
+            ObservableSupplier<BookmarkBridge> bookmarkBridgeSupplier) {
         super(context, activityTabProvider, multiWindowModeStateDispatcher, tabModelSelector,
-              toolbarManager, decorView, overviewModeBehaviorSupplier);
+                toolbarManager, decorView, overviewModeBehaviorSupplier, bookmarkBridgeSupplier);
     }
 
     @Override
