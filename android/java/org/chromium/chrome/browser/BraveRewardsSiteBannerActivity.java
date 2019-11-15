@@ -35,7 +35,7 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.chrome.browser.widget.RoundedIconGenerator;
+import org.chromium.chrome.browser.ui.widget.RoundedIconGenerator;
 import org.chromium.base.task.AsyncTask;
 import android.graphics.BitmapFactory;
 import org.chromium.base.annotations.CalledByNative;
