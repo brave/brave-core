@@ -30,3 +30,8 @@ vendor/bat-native-ledger/src/bat/ledger/internal/static_values.h @gdregalo
 
 # Network
 browser/net/ @iefremov
+
+# Licensing of third-party components
+common_licenses/ @fmarier
+components/brave_new_tab_ui/data/backgrounds.ts @fmarier
+script/brave_license_helper.py @fmarier
