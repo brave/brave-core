@@ -56,7 +56,7 @@ class PlaylistsBrowserTest : public InProcessBrowserTest,
 
     host_resolver()->AddRule("*", "127.0.0.1");
 
-    // Setup up embedded test server for handling fake response.
+    // Set up embedded test server to handle fake responses.
     https_server_.reset(new net::EmbeddedTestServer(
         net::test_server::EmbeddedTestServer::TYPE_HTTPS));
     https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
@@ -140,6 +140,20 @@ class PlaylistsBrowserTest : public InProcessBrowserTest,
     return params;
   }
 
+  CreatePlaylistParams GetValidCreateParamsWithSeparateAudio() {
+    CreatePlaylistParams params;
+    params.playlist_name = "Valid playlist creation params";
+    params.playlist_thumbnail_url =
+        https_server()->GetURL("thumbnail.com", "/valid_thumbnail").spec();
+    params.video_media_files.emplace_back(
+        https_server()->GetURL("song.com", "/valid_media_file_1").spec(),
+        "title 1");
+    params.audio_media_files.emplace_back(
+        https_server()->GetURL("song.com", "/valid_media_file_2").spec(),
+        "title 2");
+    return params;
+  }
+
   CreatePlaylistParams GetValidCreateParamsForPartialReady() {
     CreatePlaylistParams params;
     params.playlist_name = "Valid playlist creation params";
@@ -212,6 +226,29 @@ IN_PROC_BROWSER_TEST_F(PlaylistsBrowserTest, CreatePlaylist) {
   // When a playlist is created and all goes well, we will receive 4
   // notifications: added, thumbnail ready, play ready partial, and play ready.
   controller->CreatePlaylist(GetValidCreateParams());
+  WaitForEvents(4);
+  EXPECT_TRUE(IsPlaylistsChangeTypeCalled(
+      PlaylistsChangeParams::ChangeType::CHANGE_TYPE_ADDED));
+  EXPECT_TRUE(IsPlaylistsChangeTypeCalled(
+      PlaylistsChangeParams::ChangeType::CHANGE_TYPE_THUMBNAIL_READY));
+  EXPECT_TRUE(IsPlaylistsChangeTypeCalled(
+      PlaylistsChangeParams::ChangeType::CHANGE_TYPE_PLAY_READY_PARTIAL));
+  EXPECT_TRUE(IsPlaylistsChangeTypeCalled(
+      PlaylistsChangeParams::ChangeType::CHANGE_TYPE_PLAY_READY));
+}
+
+IN_PROC_BROWSER_TEST_F(PlaylistsBrowserTest, CreatePlaylistWithSeparateAudio) {
+  auto* controller = GetPlaylistsController();
+
+  // Check initialization is done properly.
+  EXPECT_FALSE(controller->initialized());
+  GetPlaylistsService()->Init();
+  Run();
+  EXPECT_TRUE(controller->initialized());
+
+  // When a playlist is created and all goes well, we will receive 4
+  // notifications: added, thumbnail ready, play ready partial, and play ready.
+  controller->CreatePlaylist(GetValidCreateParamsWithSeparateAudio());
   WaitForEvents(4);
   EXPECT_TRUE(IsPlaylistsChangeTypeCalled(
       PlaylistsChangeParams::ChangeType::CHANGE_TYPE_ADDED));
