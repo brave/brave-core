@@ -729,6 +729,10 @@ bool Contribution::ProcessReconcileUnblindedTokens(
     double* fee,
     braveledger_bat_helper::Directions directions,
     braveledger_bat_helper::Directions* leftovers) {
+  if (!fee) {
+    return false;
+  }
+
   auto reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
   reconcile.viewingId_ = ledger_->GenerateGUID();
   reconcile.fee_ = *fee;
@@ -780,6 +784,10 @@ bool Contribution::ProcessReconcileAnonize(
     double* fee,
     braveledger_bat_helper::Directions directions,
     braveledger_bat_helper::Directions* leftovers) {
+  if (!fee) {
+    return false;
+  }
+
   auto reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
   reconcile.viewingId_ = ledger_->GenerateGUID();
   reconcile.fee_ = *fee;
@@ -895,6 +903,10 @@ void Contribution::AdjustTipsAmounts(
     braveledger_bat_helper::Directions* primary_directions,
     braveledger_bat_helper::Directions* rest_directions,
     double reduce_fee_for) {
+  if (!primary_directions || !rest_directions) {
+    return;
+  }
+
   for (auto item : original_directions) {
     if (reduce_fee_for == 0) {
       rest_directions->push_back(item);

@@ -44,7 +44,7 @@ class Unblinded {
   bool GetStatisticalVotingWinner(
       double dart,
       const braveledger_bat_helper::Directions& directions,
-      Winners* winners);
+      Winners* winners) const;
 
   void PrepareAutoContribution(
       const std::string& viewing_id,
@@ -53,7 +53,7 @@ class Unblinded {
   void GetStatisticalVotingWinners(
       uint32_t total_votes,
       const braveledger_bat_helper::Directions& directions,
-      Winners* winners);
+      Winners* winners) const;
 
   void SendTokens(
       const std::string& publisher_key,

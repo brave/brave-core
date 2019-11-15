@@ -29,8 +29,7 @@ namespace braveledger_contribution {
 Unblinded::Unblinded(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
 }
 
-Unblinded::~Unblinded() {
-}
+Unblinded::~Unblinded() = default;
 
 std::string ConvertTypeToString(const ledger::RewardsType type) {
   switch (static_cast<int>(type)) {
@@ -179,7 +178,7 @@ void Unblinded::MakeContribution(
 bool Unblinded::GetStatisticalVotingWinner(
     double dart,
     const braveledger_bat_helper::Directions& directions,
-    Winners* winners) {
+    Winners* winners) const {
   if (!winners) {
     return false;
   }
@@ -210,7 +209,7 @@ bool Unblinded::GetStatisticalVotingWinner(
 void Unblinded::GetStatisticalVotingWinners(
     uint32_t total_votes,
     const braveledger_bat_helper::Directions& directions,
-    Winners* winners) {
+    Winners* winners) const {
   while (total_votes > 0) {
     double dart = brave_base::random::Uniform_01();
     if (GetStatisticalVotingWinner(dart, directions, winners)) {

@@ -92,7 +92,7 @@ ledger::ContributionQueuePtr FromStringToContributionQueue(
   return queue;
 }
 
-std::string FromPromotionToString(ledger::PromotionPtr info) {
+std::string FromPromotionToString(const ledger::PromotionPtr info) {
   base::Value credentials(base::Value::Type::DICTIONARY);
   if (info->credentials) {
     credentials.SetStringKey("tokens", info->credentials->tokens);

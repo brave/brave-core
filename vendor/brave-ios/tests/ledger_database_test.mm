@@ -1277,7 +1277,7 @@
 
 - (void)testQueryAllPromotions
 {
-  NSUInteger numberOfPromos = 3;
+  const auto numberOfPromos = 3;
   for (NSUInteger i = 0; i < numberOfPromos; i++) {
     const auto promo = [[BATPromotion alloc] init];
     promo.status = BATPromotionStatusFinished;

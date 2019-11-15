@@ -46,8 +46,7 @@ Promotion::Promotion(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger) {
 }
 
-Promotion::~Promotion() {
-}
+Promotion::~Promotion() = default;
 
 std::string ParseOSToString(ledger::OperatingSystem os) {
   switch (static_cast<int>(os)) {
@@ -274,7 +273,7 @@ std::unique_ptr<base::ListValue> ParseStringToBaseList(
 bool UnBlindTokensMock(
     ledger::PromotionPtr promotion,
     std::vector<std::string>* unblinded_encoded_tokens) {
-  if (!promotion || !promotion->credentials) {
+  if (!promotion || !promotion->credentials || !unblinded_encoded_tokens) {
     return false;
   }
 
@@ -384,8 +383,8 @@ void Promotion::OnGetAllPromotions(
     for (auto & item : list) {
       auto it = promotions.find(item->id);
       if (it != promotions.end()) {
-        if (
-        promotions.at(item->id)->status != ledger::PromotionStatus::ACTIVE) {
+        if (promotions.at(item->id)->status !=
+            ledger::PromotionStatus::ACTIVE) {
           item->status = promotions.at(item->id)->status;
         }
       } else {
@@ -778,7 +777,7 @@ void Promotion::OnFetchSignedTokens(
 bool Promotion::UnBlindTokens(
     ledger::PromotionPtr promotion,
     std::vector<std::string>* unblinded_encoded_tokens) {
-  if (!promotion || !promotion->credentials) {
+  if (!promotion || !promotion->credentials || !unblinded_encoded_tokens) {
     return false;
   }
 

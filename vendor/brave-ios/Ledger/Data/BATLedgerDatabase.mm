@@ -41,7 +41,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
   
   return fetchedObjects.firstObject;
@@ -104,7 +104,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
 
   return fetchedObjects.firstObject;
@@ -192,7 +192,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%@", error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
 
   const auto publishers = [[NSMutableArray<BATPublisherInfo *> alloc] init];
@@ -221,7 +221,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
 
     if (error) {
-      NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+      BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
     }
 
     for (PublisherInfo *info in fetchedObjects) {
@@ -241,7 +241,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto count = [context countForFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
   return count;
 }
@@ -275,7 +275,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%@", error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
 
   const auto publishers = [[NSMutableArray<BATPublisherInfo *> alloc] init];
@@ -479,7 +479,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%@", error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
 
   const auto publishers = [[NSMutableArray<BATPublisherInfo *> alloc] init];
@@ -518,7 +518,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     NSError *error;
     const auto fetchedObjects = [context executeFetchRequest:request error:&error];
     if (error) {
-      NSLog(@"%@", error);
+      BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
       dispatch_async(dispatch_get_main_queue(), ^{
         completion(NO);
       });
@@ -571,7 +571,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%@", error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
 
   const auto publishers = [[NSMutableArray<BATPublisherInfo *> alloc] init];
@@ -639,7 +639,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%@", error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
 
   const auto publishers = [[NSMutableArray<BATPendingContributionInfo *> alloc] init];
@@ -709,7 +709,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     NSError *error;
     const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
-      NSLog(@"%@", error);
+      BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
       completion(NO);
       return;
     }
@@ -730,7 +730,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (!fetchedObjects) {
-    NSLog(@"%@", error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
 
 #pragma clang diagnostic push
@@ -837,7 +837,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
           if (newContext.hasChanges) {
             NSError *error;
             if (![newContext save:&error]) {
-              BLOG(ledger::LogLevel::LOG_ERROR) << "CoreData: Save error: " << error.debugDescription << std::endl;
+              BLOG(ledger::LogLevel::LOG_ERROR) << "CoreData: Save error: " << error.debugDescription.UTF8String << std::endl;
             }
           }
         }];
@@ -910,7 +910,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
   
   const auto amounts = [[NSMutableArray<NSNumber *> alloc] init];
@@ -958,7 +958,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
   
   const auto links = [[NSMutableDictionary<NSString *, NSString *> alloc] init];
@@ -1057,7 +1057,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
     return @[];
   }
   
@@ -1128,7 +1128,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
     return @[];
   }
   
@@ -1155,7 +1155,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     NSError *error;
     const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
-      NSLog(@"%@", error);
+      BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
       completion(NO);
       return;
     }

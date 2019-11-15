@@ -174,12 +174,12 @@ NS_SWIFT_NAME(BraveLedger)
 @property (nonatomic, readonly) NSArray<BATPromotion *> *finishedPromotions;
 
 /// Updates `pendingPromotions` and `finishedPromotions` based on the database
-- (void)updatePromotions:(nullable void (^)())completion;
+- (void)updatePendingAndFinishedPromotions:(nullable void (^)())completion;
 
 - (void)fetchPromotions:(nullable void (^)(NSArray<BATPromotion *> *grants))completion;
 
 - (void)claimPromotion:(NSString *)deviceCheckPublicKey
-            completion:(void (^)(BATResult result, NSString * _Nonnull json))completion;
+            completion:(void (^)(BATResult result, NSString * _Nonnull nonce))completion;
 
 - (void)attestPromotion:(NSString *)promotionId
                solution:(BATPromotionSolution *)solution

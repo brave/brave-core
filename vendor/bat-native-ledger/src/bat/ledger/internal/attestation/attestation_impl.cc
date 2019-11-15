@@ -18,11 +18,11 @@ namespace braveledger_attestation {
 AttestationImpl::AttestationImpl(bat_ledger::LedgerImpl* ledger) :
     Attestation(ledger) {
   #if defined(OS_IOS)
-    instance_ = std::make_unique<AttestationIOS>(ledger);
+    platform_instance_ = std::make_unique<AttestationIOS>(ledger);
   #elif defined(OS_ANDROID)
-    instance_ = std::make_unique<AttestationAndroid>(ledger);
+    platform_instance_ = std::make_unique<AttestationAndroid>(ledger);
   #else
-    instance_ = std::make_unique<AttestationDesktop>(ledger);
+    platform_instance_ = std::make_unique<AttestationDesktop>(ledger);
   #endif
 }
 
@@ -31,13 +31,13 @@ AttestationImpl::~AttestationImpl() = default;
 void AttestationImpl::Start(
     const std::string& payload,
     StartCallback callback) {
-  instance_->Start(payload, callback);
+  platform_instance_->Start(payload, callback);
 }
 
 void AttestationImpl::Confirm(
     const std::string& solution,
     ConfirmCallback callback) {
-  instance_->Confirm(solution, callback);
+  platform_instance_->Confirm(solution, callback);
 }
 
 }  // namespace braveledger_attestation

@@ -25,7 +25,7 @@ std::string FromContributionQueueToString(ledger::ContributionQueuePtr info);
 ledger::ContributionQueuePtr FromStringToContributionQueue(
     const std::string& data);
 
-std::string FromPromotionToString(ledger::PromotionPtr info);
+std::string FromPromotionToString(const ledger::PromotionPtr info);
 
 ledger::PromotionPtr FromStringToPromotion(const std::string& data);
 

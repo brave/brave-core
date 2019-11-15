@@ -4,6 +4,10 @@
 
 #import "DataController.h"
 
+#import "ledger.mojom.objc.h"
+#import "RewardsLogStream.h"
+#define BLOG(__severity) RewardsLogStream(__FILE__, __LINE__, __severity).stream()
+
 @interface DataController ()
 @property (nonatomic) NSOperationQueue *operationQueue;
 @property (nonatomic) NSPersistentContainer *container;
@@ -99,13 +103,13 @@ static DataController *_dataController = nil;
 + (void)save:(NSManagedObjectContext *)context
 {
   if (context == DataController.viewContext) {
-    NSLog(@"Writing to view context, this should be avoided.");
+    BLOG(ledger::LogLevel::LOG_WARNING) << "Writing to view context, this should be avoided." << std::endl;
   }
   [context performBlock:^{
     if (!context.hasChanges) { return; }
     NSError *error;
     if (![context save:&error]) {
-      NSLog(@"Error saving DB: %@", error);
+      BLOG(ledger::LogLevel::LOG_ERROR) << "Error saving DB: " << error.debugDescription.UTF8String << std::endl;
     }
   }];
 }
@@ -141,7 +145,7 @@ static DataController *_dataController = nil;
         assert(![NSThread isMainThread]);
         NSError *error;
         if (![backgroundContext save:&error]) {
-          NSLog(@"performTask save error: %@", error);
+          BLOG(ledger::LogLevel::LOG_ERROR) << "performTask save error: " << error.debugDescription.UTF8String << std::endl;
         }
         if (completion) { completion(error); }
       } else {

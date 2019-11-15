@@ -27,6 +27,8 @@
 #import "url/gurl.h"
 #import "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
+#define BLOG(__severity) RewardsLogStream(__FILE__, __LINE__, __severity).stream()
+
 #define BATLedgerReadonlyBridge(__type, __objc_getter, __cpp_getter) \
 - (__type)__objc_getter { return ledger->__cpp_getter(); }
 
@@ -571,7 +573,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   return [NSString stringWithFormat:@"%@%@", prefix, promotionId];
 }
 
-- (void)updatePromotions:(void (^)())completion
+- (void)updatePendingAndFinishedPromotions:(void (^)())completion
 {
   ledger->GetAllPromotions(^(ledger::PromotionMap map) {
     NSMutableArray *promos = [[NSMutableArray alloc] init];
@@ -620,7 +622,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
     if (result != ledger::Result::LEDGER_OK) {
       return;
     }
-    [self updatePromotions:^{
+    [self updatePendingAndFinishedPromotions:^{
       if (completion) {
         completion(self.pendingPromotions);
       }
@@ -628,21 +630,21 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   });
 }
 
-- (void)claimPromotion:(NSString *)deviceCheckPublicKey completion:(void (^)(BATResult result, NSString * _Nonnull noonce))completion
+- (void)claimPromotion:(NSString *)deviceCheckPublicKey completion:(void (^)(BATResult result, NSString * _Nonnull nonce))completion
 {
   const auto payload = [NSDictionary dictionaryWithObject:deviceCheckPublicKey forKey:@"publicKey"];
   const auto jsonData = [NSJSONSerialization dataWithJSONObject:payload options:0 error:nil];
   if (!jsonData) {
-    NSLog(@"Missing JSON payload while attempting to claim promotion");
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Missing JSON payload while attempting to claim promotion" << std::endl;
     return;
   }
   const auto jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
   ledger->ClaimPromotion(jsonString.UTF8String, ^(const ledger::Result result, const std::string& json) {
     const auto jsonData = [[NSString stringWithUTF8String:json.c_str()] dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *noonce = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
+    NSDictionary *nonce = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
     dispatch_async(dispatch_get_main_queue(), ^{
       completion(static_cast<BATResult>(result),
-                 noonce[@"nonce"]);
+                 nonce[@"nonce"]);
     });
   });
 }
@@ -1336,7 +1338,7 @@ BATLedgerBridge(BOOL,
   if (!self.mNotifications) {
     self.mNotifications = [[NSMutableArray alloc] init];
     if (error) {
-      NSLog(@"Failed to unarchive notifications on disk: %@", error);
+      BLOG(ledger::LogLevel::LOG_ERROR) << "Failed to unarchive notifications on disk: " << error.debugDescription.UTF8String << std::endl;
     }
   }
 }
@@ -1358,7 +1360,7 @@ BATLedgerBridge(BOOL,
                                                           error:&error];
   if (!data) {
     if (error) {
-      NSLog(@"Failed to write notifications to disk: %@", error);
+      BLOG(ledger::LogLevel::LOG_ERROR) << "Failed to write notifications to disk: " << error.debugDescription.UTF8String << std::endl;
     }
     return;
   }

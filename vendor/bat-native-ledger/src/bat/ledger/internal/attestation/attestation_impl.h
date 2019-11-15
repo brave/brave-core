@@ -33,7 +33,7 @@ class AttestationImpl : public Attestation {
       ConfirmCallback callback) override;
 
  private:
-  std::unique_ptr<Attestation> instance_;
+  std::unique_ptr<Attestation> platform_instance_;
 };
 
 }  // namespace braveledger_attestation
