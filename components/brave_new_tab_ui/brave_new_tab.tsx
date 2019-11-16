@@ -19,8 +19,8 @@ import store from './store'
 import 'emptykit.css'
 
 // Fonts
-import '../fonts/poppins.css'
-import '../fonts/muli.css'
+import '../../ui/webui/resources/fonts/poppins.css'
+import '../../ui/webui/resources/fonts/muli.css'
 
 function initialize () {
   console.timeStamp('loaded')

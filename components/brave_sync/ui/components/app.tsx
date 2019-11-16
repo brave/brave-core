@@ -14,8 +14,8 @@ import EnabledContent from './enabledContent'
 import * as syncActions from '../actions/sync_actions'
 
 // Assets
-require('../../../fonts/muli.css')
-require('../../../fonts/poppins.css')
+require('../../../../ui/webui/resources/fonts/muli.css')
+require('../../../../ui/webui/resources/fonts/poppins.css')
 require('emptykit.css')
 
 interface Props {

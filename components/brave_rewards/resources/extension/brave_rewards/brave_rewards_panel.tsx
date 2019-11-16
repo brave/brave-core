@@ -11,8 +11,8 @@ import Theme from 'brave-ui/theme/brave-default'
 import { ThemeProvider } from 'brave-ui/theme'
 import { initLocale } from 'brave-ui/helpers'
 require('emptykit.css')
-require('../../../../fonts/muli.css')
-require('../../../../fonts/poppins.css')
+require('../../../../../ui/webui/resources/fonts/muli.css')
+require('../../../../../ui/webui/resources/fonts/poppins.css')
 
 // Components
 import App from './components/app'

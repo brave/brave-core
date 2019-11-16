@@ -24,8 +24,8 @@ import { Background, BackgroundContainer } from '../components/images'
 import * as welcomeActions from '../actions/welcome_actions'
 
 // Assets
-import '../../fonts/muli.css'
-import '../../fonts/poppins.css'
+import '../../../ui/webui/resources/fonts/muli.css'
+import '../../../ui/webui/resources/fonts/poppins.css'
 import 'emptykit.css'
 
 interface Props {
