@@ -41,9 +41,15 @@ public class AdsViewController: UIViewController {
       $0.leading.greaterThanOrEqualTo(view).inset(8)
       $0.trailing.lessThanOrEqualTo(view).inset(8)
       $0.centerX.equalTo(view)
-      $0.width.equalTo(400).priority(.high)
       $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
       $0.top.greaterThanOrEqualTo(view).offset(4) // Makes sure in landscape its at least 4px from the top
+      
+      if UIDevice.current.userInterfaceIdiom == .pad {
+        let isWidthLarger = UIScreen.main.bounds.width > UIScreen.main.bounds.height
+        $0.width.equalTo(isWidthLarger ? view.snp.width : view.snp.height).multipliedBy(0.40).priority(.high)
+      } else {
+        $0.width.equalTo(view).priority(.high)
+      }
     }
     view.layoutIfNeeded()
     
@@ -299,15 +305,18 @@ extension AdsViewController: UIGestureRecognizerDelegate {
 }
 
 extension AdsViewController {
+  
   /// Display a "My First Ad" on a presenting controller and be notified if they tap it
   public static func displayFirstAd(on presentingController: UIViewController, completion: @escaping (AdsNotificationHandler.Action, URL) -> Void) {
     let adsViewController = AdsViewController()
     
-    presentingController.addChild(adsViewController)
-    presentingController.view.addSubview(adsViewController.view)
-    adsViewController.didMove(toParent: presentingController)
+    guard let window = presentingController.view.window else {
+      return
+    }
+    
+    window.addSubview(adsViewController.view)
     adsViewController.view.snp.makeConstraints {
-      $0.edges.equalToSuperview()
+      $0.edges.equalTo(window.safeAreaLayoutGuide.snp.edges)
     }
     
     let notification = AdsNotification.customAd(
@@ -319,9 +328,7 @@ extension AdsViewController {
     adsViewController.display(ad: notification, handler: { (notification, action) in
       completion(action, notification.url)
     }, animatedOut: {
-      adsViewController.willMove(toParent: nil)
       adsViewController.view.removeFromSuperview()
-      adsViewController.removeFromParent()
     })
   }
 }
