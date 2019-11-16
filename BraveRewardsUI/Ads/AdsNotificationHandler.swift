@@ -47,12 +47,14 @@ public class AdsNotificationHandler: BraveAdsNotificationHandler {
   private func displayAd(notification: AdsNotification) {
     guard let presentingController = presentingController else { return }
     
+    guard let window = presentingController.view.window else {
+      return
+    }
+    
     if adsViewController.parent == nil {
-      presentingController.addChild(adsViewController)
-      presentingController.view.addSubview(adsViewController.view)
-      adsViewController.didMove(toParent: presentingController)
+      window.addSubview(adsViewController.view)
       adsViewController.view.snp.makeConstraints {
-        $0.edges.equalToSuperview()
+        $0.edges.equalTo(window.safeAreaLayoutGuide.snp.edges)
       }
     }
     
