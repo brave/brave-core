@@ -62,7 +62,16 @@ extension BasePasscodeViewController {
     }
 
     func displayLockoutError() {
-        displayError(Strings.AuthenticationMaximumAttemptsReachedNoTime)
+        if let timeLeft = authenticationInfo?.lockoutTimeLeft {
+            let inMinutes = Int(ceil(timeLeft / 60))
+            if inMinutes == 1 {
+                displayError(Strings.AuthenticationMaximumAttemptsReachedOneMinute)
+            } else {
+                displayError(String.localizedStringWithFormat(Strings.AuthenticationMaximumAttemptsReached, inMinutes))
+            }
+        } else {
+            displayError(Strings.AuthenticationMaximumAttemptsReachedNoTime)
+        }
     }
 
     func failMismatchPasscode() {
