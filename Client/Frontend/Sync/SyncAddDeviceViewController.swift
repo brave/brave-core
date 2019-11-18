@@ -82,8 +82,8 @@ class SyncAddDeviceViewController: SyncViewController {
 
         view.addSubview(stackView)
         stackView.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeArea.top)
-            make.left.right.equalTo(self.view)
+            make.top.equalTo(self.view.safeArea.top).inset(10)
+            make.left.right.equalTo(self.view).inset(16)
             make.bottom.equalTo(self.view.safeArea.bottom).inset(24)
         }
         
@@ -142,8 +142,8 @@ class SyncAddDeviceViewController: SyncViewController {
         modeControl.selectedSegmentIndex = 0
         modeControl.addTarget(self, action: #selector(SEL_changeMode), for: .valueChanged)
         modeControl.isHidden = deviceType == .computer
-        controlContainerView.addSubview(modeControl)
-        stackView.addArrangedSubview(controlContainerView)
+        modeControl.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        stackView.addArrangedSubview(modeControl)
         
         let titleDescriptionStackView = UIStackView()
         titleDescriptionStackView.axis = .vertical
@@ -153,6 +153,7 @@ class SyncAddDeviceViewController: SyncViewController {
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.semibold)
+        titleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         titleDescriptionStackView.addArrangedSubview(titleLabel)
 
         descriptionLabel = UILabel()
@@ -162,29 +163,21 @@ class SyncAddDeviceViewController: SyncViewController {
         descriptionLabel.textAlignment = .center
         descriptionLabel.adjustsFontSizeToFitWidth = true
         descriptionLabel.minimumScaleFactor = 0.5
+        descriptionLabel.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
         titleDescriptionStackView.addArrangedSubview(descriptionLabel)
 
-        let textStackView = UIStackView(arrangedSubviews: [UIView.spacer(.horizontal, amount: 32),
-                                                           titleDescriptionStackView,
-                                                           UIView.spacer(.horizontal, amount: 32)])
-        textStackView.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 100), for: .vertical)
-
-        stackView.addArrangedSubview(textStackView)
+        stackView.addArrangedSubview(titleDescriptionStackView)
         
         codewordsView.isHidden = true
         containerView.addSubview(codewordsView)
-        
         stackView.addArrangedSubview(containerView)
         
-        let copyPasteStackView = UIStackView()
-        copyPasteStackView.axis = .vertical
-        copyPasteStackView.spacing = 1
-        copyPasteStackView.addArrangedSubview(copyPasteButton)
-        stackView.addArrangedSubview(copyPasteStackView)
-
         let doneEnterWordsStackView = UIStackView()
         doneEnterWordsStackView.axis = .vertical
         doneEnterWordsStackView.spacing = 4
+        doneEnterWordsStackView.distribution = .fillEqually
+        
+        doneEnterWordsStackView.addArrangedSubview(copyPasteButton)
 
         doneButton = RoundInterfaceButton(type: .roundedRect)
         doneButton.translatesAutoresizingMaskIntoConstraints = false
@@ -203,31 +196,12 @@ class SyncAddDeviceViewController: SyncViewController {
         enterWordsButton.setTitleColor(BraveUX.GreyH, for: .normal)
         enterWordsButton.addTarget(self, action: #selector(SEL_showCodewords), for: .touchUpInside)
 
-        let buttonsStackView = UIStackView(arrangedSubviews: [UIView.spacer(.horizontal, amount: 16),
-                                                              doneEnterWordsStackView,
-                                                              UIView.spacer(.horizontal, amount: 16)])
-        buttonsStackView.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .vertical)
+        doneEnterWordsStackView.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .vertical)
 
-        stackView.addArrangedSubview(buttonsStackView)
-        
-        controlContainerView.snp.makeConstraints { (make) in
-            make.top.equalTo(0)
-            make.left.right.equalTo(self.view)
-            make.height.greaterThanOrEqualTo(44)
-        }
+        stackView.addArrangedSubview(doneEnterWordsStackView)
 
-        modeControl.snp.makeConstraints { (make) in
-            make.top.equalTo(0).offset(10)
-            make.left.right.equalTo(self.controlContainerView).inset(8)
-        }
-        
-        containerView.snp.makeConstraints { (make) in
-            make.left.right.equalTo(self.view).inset(22)
-        }
-
-        codewordsView.snp.makeConstraints { (make) in
-            make.top.bottom.equalTo(self.containerView).inset(8)
-            make.left.right.equalTo(self.containerView).inset(22)
+        codewordsView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
 
         doneButton.snp.makeConstraints { (make) in
