@@ -5,6 +5,7 @@
 import UIKit
 import Shared
 import Storage
+import QuickLook
 
 private struct DownloadsPanelUX {
     static let WelcomeScreenPadding: CGFloat = 15
@@ -295,13 +296,6 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
         return configureDownloadedFile(cell, for: indexPath)
     }
     
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        if let header = view as? UITableViewHeaderFooterView {
-            header.textLabel?.textColor = UIColor.Photon.Grey90
-            header.contentView.backgroundColor = UIColor.Photon.Grey10
-        }
-    }
-    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         guard groupedDownloadedFiles.numberOfItemsForSection(section) > 0 else { return nil }
         
@@ -324,10 +318,21 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
         return cell
     }
     
+    private var previewingFileDataSource: PreviewingDataSource?
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
         if let downloadedFile = downloadedFileForIndexPath(indexPath) {
+            let previewingItem = PreviewingDataSource(file: downloadedFile)
+            if QLPreviewController.canPreview(previewingItem.file.path as QLPreviewItem) {
+                previewingFileDataSource = previewingItem
+                let quickLook = QLPreviewController()
+                quickLook.dataSource = previewingFileDataSource
+                quickLook.delegate = self
+                present(quickLook, animated: true)
+                return
+            }
             
             guard downloadedFile.canShowInWebView else {
                 shareDownloadedFile(downloadedFile, indexPath: indexPath)
@@ -393,5 +398,27 @@ extension DownloadsPanel: Themeable {
         logoImageView.tintColor = theme.colors.tints.home
         
         tableView.reloadData()
+    }
+}
+
+extension DownloadsPanel: QLPreviewControllerDelegate {
+    func previewControllerDidDismiss(_ controller: QLPreviewController) {
+        previewingFileDataSource = nil
+    }
+}
+
+private class PreviewingDataSource: NSObject, QLPreviewControllerDataSource {
+    let file: DownloadedFile
+    
+    init(file: DownloadedFile) {
+        self.file = file
+    }
+    
+    func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return 1
+    }
+    
+    func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return file.path as QLPreviewItem
     }
 }
