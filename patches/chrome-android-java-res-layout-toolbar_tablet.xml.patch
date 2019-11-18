@@ -1,12 +1,21 @@
 diff --git a/chrome/android/java/res/layout/toolbar_tablet.xml b/chrome/android/java/res/layout/toolbar_tablet.xml
-index 12630f4cd02676d1676eaea5617bf20689192697..b7a56a2411f439d3ac476bcf33f5996d5ef047ac 100644
+index 12630f4cd02676d1676eaea5617bf20689192697..0ae57f0e6ae66341fb4f4441458ebc56dec35545 100644
 --- a/chrome/android/java/res/layout/toolbar_tablet.xml
 +++ b/chrome/android/java/res/layout/toolbar_tablet.xml
+@@ -58,7 +58,7 @@
+             android:layout_height="@dimen/modern_toolbar_background_size"
+             android:layout_weight="1"
+             android:layout_gravity="center_vertical"
+-            android:background="@drawable/modern_toolbar_text_box_background"
++            android:background="@drawable/brave_modern_toolbar_text_box_background"
+             android:paddingEnd="@dimen/location_bar_lateral_padding"
+             android:paddingStart="2dp" />
+ 
 @@ -75,6 +75,7 @@
              style="@style/ToolbarButton"
              android:contentDescription="@string/accessibility_toolbar_btn_tabswitcher_toggle_default"
              android:visibility="gone" />
-+        <include layout="@layout/brave_toolbar" android:layout_height="wrap_content" android:layout_width="match_parent" />
++        <include layout="@layout/brave_toolbar" android:layout_height="wrap_content" android:layout_width="wrap_content" />
  
          <org.chromium.chrome.browser.toolbar.MenuButton
              android:layout_width="wrap_content"

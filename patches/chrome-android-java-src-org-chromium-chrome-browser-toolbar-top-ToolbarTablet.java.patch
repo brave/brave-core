@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
-index 8d1e0bc5bb3613a9fb0a1390814786d3032a05be..b40fc42aa63078a1fbfc1a718f5e0305720f0578 100644
+index 8d1e0bc5bb3613a9fb0a1390814786d3032a05be..6c3e257ccbee7a19823e4d6e3b856d77fd4d02fc 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/ToolbarTablet.java
 @@ -51,7 +51,7 @@ import java.util.Collection;
@@ -19,3 +19,11 @@ index 8d1e0bc5bb3613a9fb0a1390814786d3032a05be..b40fc42aa63078a1fbfc1a718f5e0305
      }
  
      @Override
+@@ -390,6 +391,7 @@ public class ToolbarTablet extends ToolbarLayout
+         mLocationBar.getBackground().setColorFilter(textBoxColor, PorterDuff.Mode.SRC_IN);
+ 
+         mLocationBar.updateVisualsForState();
++        super.onThemeColorChanged(color, shouldAnimate);
+     }
+ 
+     /**
