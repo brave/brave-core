@@ -141,6 +141,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/media/youtube.cc",
     "src/bat/ledger/internal/promotion/promotion.cc",
     "src/bat/ledger/internal/promotion/promotion.h",
+    "src/bat/ledger/internal/promotion/promotion_util.cc",
+    "src/bat/ledger/internal/promotion/promotion_util.h",
     "src/bat/ledger/internal/publisher/publisher.cc",
     "src/bat/ledger/internal/publisher/publisher.h",
     "src/bat/ledger/internal/publisher/publisher_server_list.cc",
