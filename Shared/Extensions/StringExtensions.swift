@@ -102,19 +102,6 @@ extension String {
         return cleaned.trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: string)
     }
     
-    /// Makes a part of the string bold and returns a NSAttributedString.
-    /// Text size must be provided for bold system font and to make font size the same as rest of the string.
-    public func makePartiallyBoldAttributedString(stringToBold text: String, boldTextSize: CGFloat) -> NSAttributedString? {
-        let addWordsDescriptionBolded = NSMutableAttributedString(string: self)
-        guard let rangeOfBoldedText = self.range(of: text) else { return nil }
-        // NSMutableAttributedString still uses NSRange, a conversion from Swift's range is required.
-        let nsRangeOfBoldedText = NSRange(rangeOfBoldedText, in: self)
-        // Make sure we use the same font size for the bolded text.
-        let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.boldSystemFont(ofSize: boldTextSize)]
-        addWordsDescriptionBolded.setAttributes(attributes, range: nsRangeOfBoldedText)
-        return addWordsDescriptionBolded
-    }
-    
     /*
      Truncates the string to the specified length number of characters and appends an optional trailing string if longer.
      - Parameter length: Desired maximum lengths of a string
