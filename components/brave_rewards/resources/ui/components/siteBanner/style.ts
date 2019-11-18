@@ -24,7 +24,7 @@ const getBgStyle = (monthly?: boolean) => {
 }
 
 export const StyledWrapper = styled<StyleProps, 'div'>('div')`
-  overflow-y: scroll;
+  overflow-y: auto;
   height: auto;
   padding: 0px;
   font-family: Poppins, sans-serif;
