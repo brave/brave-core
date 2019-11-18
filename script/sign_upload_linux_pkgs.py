@@ -37,6 +37,12 @@ def main():
             gpg_passphrase = args.gpg_passphrase
     s3_test_buckets = args.s3_test_buckets
 
+    if os.environ.get('BRAVE_CORE_DIR'):
+        brave_core_dir = os.environ.get('BRAVE_CORE_DIR')
+    else:
+        logging.error("Error: Required environment variable \'BRAVE_CORE_DIR\' not set! Exiting...")
+        exit(1)
+
     if args.debug:
         logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
         logging.debug('brave_version: {}'.format(get_raw_version()))
@@ -46,6 +52,7 @@ def main():
         logging.debug('gpg_full_key_id: {}'.format(gpg_full_key_id))
         logging.debug('gpg_passphrase: {}'.format("NOTAREALPASSWORD"))
         logging.debug('s3_test_buckets: {}'.format(s3_test_buckets))
+        logging.debug('brave_core_dir: {}'.format(brave_core_dir))
 
     # verify we have the the GPG key we're expecting in the public keyring
     list_keys_cmd = "/usr/bin/gpg2 --list-keys --with-subkey-fingerprints | grep {}".format(
@@ -145,8 +152,7 @@ def main():
         else:
             bucket = 'brave-browser-apt-staging-'
 
-        # the upload scripts should be run from the same path as this script
-        upload_script = os.path.join('./', item)
+        upload_script = os.path.join(brave_core_dir, 'script', item)
 
         TESTCHANNEL = 'test'
 
