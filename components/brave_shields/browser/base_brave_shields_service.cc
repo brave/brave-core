@@ -60,7 +60,7 @@ bool BaseBraveShieldsService::ShouldStartRequest(const GURL& url,
     const std::string& tab_host,
     bool* did_match_exception,
     bool* cancel_request_explicitly,
-    std::string* redirect) {
+    std::string* mock_data_url) {
   if (did_match_exception) {
     *did_match_exception = false;
   }

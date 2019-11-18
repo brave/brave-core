@@ -106,8 +106,7 @@ namespace brave_shields {
 AdBlockBaseService::AdBlockBaseService(BraveComponent::Delegate* delegate)
     : BaseBraveShieldsService(delegate),
       ad_block_client_(new adblock::Engine()),
-      weak_factory_(this) {
-}
+      weak_factory_(this) {}
 
 AdBlockBaseService::~AdBlockBaseService() {
   Cleanup();
@@ -118,22 +117,26 @@ void AdBlockBaseService::Cleanup() {
 }
 
 bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
-    content::ResourceType resource_type, const std::string& tab_host,
-    bool* did_match_exception, bool* cancel_request_explicitly,
-    std::string* redirect) {
+                                            content::ResourceType resource_type,
+                                            const std::string& tab_host,
+                                            bool* did_match_exception,
+                                            bool* cancel_request_explicitly,
+                                            std::string* mock_data_url) {
   DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
 
   // Determine third-party here so the library doesn't need to figure it out.
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
   // a URL or origin and not a string to a host name.
-  bool is_third_party = !SameDomainOrHost(url,
+  bool is_third_party = !SameDomainOrHost(
+      url,
       url::Origin::CreateFromNormalizedTuple("https", tab_host.c_str(), 80),
       INCLUDE_PRIVATE_REGISTRIES);
   bool explicit_cancel;
   bool saved_from_exception;
-  if (ad_block_client_->matches(url.spec(), url.host(),
-        tab_host, is_third_party, ResourceTypeToString(resource_type),
-        &explicit_cancel, &saved_from_exception, redirect)) {
+  if (ad_block_client_->matches(
+          url.spec(), url.host(), tab_host, is_third_party,
+          ResourceTypeToString(resource_type), &explicit_cancel,
+          &saved_from_exception, mock_data_url)) {
     if (cancel_request_explicitly) {
       *cancel_request_explicitly = explicit_cancel;
     }
@@ -157,10 +160,9 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
 
 void AdBlockBaseService::EnableTag(const std::string& tag, bool enabled) {
   if (BrowserThread::CurrentlyOn(BrowserThread::UI)) {
-    GetTaskRunner()->PostTask(FROM_HERE,
-                              base::BindOnce(&AdBlockBaseService::EnableTag,
-                                             base::Unretained(this),
-                                             tag, enabled));
+    GetTaskRunner()->PostTask(
+        FROM_HERE, base::BindOnce(&AdBlockBaseService::EnableTag,
+                                  base::Unretained(this), tag, enabled));
     return;
   }
 
@@ -179,10 +181,9 @@ void AdBlockBaseService::EnableTag(const std::string& tag, bool enabled) {
 
 void AdBlockBaseService::AddResources(const std::string& resources) {
   if (BrowserThread::CurrentlyOn(BrowserThread::UI)) {
-    GetTaskRunner()->PostTask(FROM_HERE,
-                              base::BindOnce(&AdBlockBaseService::AddResources,
-                                             base::Unretained(this),
-                                             resources));
+    GetTaskRunner()->PostTask(
+        FROM_HERE, base::BindOnce(&AdBlockBaseService::AddResources,
+                                  base::Unretained(this), resources));
     return;
   }
 
@@ -197,9 +198,8 @@ bool AdBlockBaseService::TagExists(const std::string& tag) {
 void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path) {
   base::PostTaskWithTraitsAndReplyWithResult(
       FROM_HERE, {base::ThreadPool(), base::MayBlock()},
-      base::BindOnce(
-          &brave_component_updater::LoadDATFileData<adblock::Engine>,
-          dat_file_path),
+      base::BindOnce(&brave_component_updater::LoadDATFileData<adblock::Engine>,
+                     dat_file_path),
       base::BindOnce(&AdBlockBaseService::OnGetDATFileData,
                      weak_factory_.GetWeakPtr()));
 }
@@ -215,8 +215,7 @@ void AdBlockBaseService::OnGetDATFileData(GetDATFileDataResult result) {
   }
   GetTaskRunner()->PostTask(
       FROM_HERE, base::BindOnce(&AdBlockBaseService::UpdateAdBlockClient,
-                                base::Unretained(this),
-                                std::move(result.first),
+                                base::Unretained(this), std::move(result.first),
                                 std::move(result.second)));
 }
 
@@ -231,9 +230,8 @@ void AdBlockBaseService::UpdateAdBlockClient(
 }
 
 void AdBlockBaseService::AddKnownTagsToAdBlockInstance() {
-  std::for_each(tags_.begin(), tags_.end(), [&](const std::string tag) {
-    ad_block_client_->addTag(tag);
-  });
+  std::for_each(tags_.begin(), tags_.end(),
+                [&](const std::string tag) { ad_block_client_->addTag(tag); });
 }
 
 void AdBlockBaseService::AddKnownResourcesToAdBlockInstance() {
@@ -245,7 +243,7 @@ bool AdBlockBaseService::Init() {
 }
 
 void AdBlockBaseService::ResetForTest(const std::string& rules,
-    const std::string& resources) {
+                                      const std::string& resources) {
   // This is temporary until adblock-rust supports incrementally adding
   // filter rules to an existing instance. At which point the hack below
   // will dissapear.

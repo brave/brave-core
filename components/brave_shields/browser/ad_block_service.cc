@@ -53,7 +53,7 @@ std::string AdBlockService::g_ad_block_component_base64_public_key_(
 
 AdBlockService::AdBlockService(
     brave_component_updater::BraveComponent::Delegate* delegate)
-    : AdBlockBaseService(delegate), weak_factory_(this) {
+    : AdBlockBaseService(delegate) {
 }
 
 AdBlockService::~AdBlockService() {}
@@ -83,7 +83,7 @@ void AdBlockService::OnComponentReady(const std::string& component_id,
                      weak_factory_.GetWeakPtr()));
 }
 
-void AdBlockService::OnResourcesFileDataReady(std::string resources) {
+void AdBlockService::OnResourcesFileDataReady(const std::string& resources) {
   g_brave_browser_process->ad_block_service()->AddResources(resources);
   g_brave_browser_process->ad_block_regional_service_manager()->AddResources(
       resources);

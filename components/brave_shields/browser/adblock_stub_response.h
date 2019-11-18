@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_ADBLOCK_STUB_RESPONSE_H_
 
 #include <string>
+#include "base/optional.h"
 
 namespace network {
 struct ResourceResponseHead;
@@ -17,7 +18,7 @@ namespace brave_shields {
 
 // Intercepts certain requests and blocks them by silently returning 200 OK
 // and not allowing them to hit the network.
-void MakeStubResponse(const std::string& redirect,
+void MakeStubResponse(const base::Optional<std::string>& data_url,
                       const network::ResourceRequest& request,
                       network::ResourceResponseHead* response,
                       std::string* data);

@@ -129,12 +129,12 @@ bool AdBlockRegionalServiceManager::ShouldStartRequest(
     const std::string& tab_host,
     bool* matching_exception_filter,
     bool* cancel_request_explicitly,
-    std::string* redirect) {
+    std::string* mock_data_url) {
   base::AutoLock lock(regional_services_lock_);
   for (const auto& regional_service : regional_services_) {
     if (!regional_service.second->ShouldStartRequest(
             url, resource_type, tab_host, matching_exception_filter,
-            cancel_request_explicitly, redirect)) {
+            cancel_request_explicitly, mock_data_url)) {
       return false;
     }
     if (matching_exception_filter && *matching_exception_filter) {

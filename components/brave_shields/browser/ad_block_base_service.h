@@ -41,7 +41,7 @@ class AdBlockBaseService : public BaseBraveShieldsService {
 
   bool ShouldStartRequest(const GURL &url, content::ResourceType resource_type,
     const std::string& tab_host, bool* did_match_exception,
-    bool* cancel_request_explicitly, std::string* redirect) override;
+    bool* cancel_request_explicitly, std::string* mock_data_url) override;
   void AddResources(const std::string& resources);
   void EnableTag(const std::string& tag, bool enabled);
   bool TagExists(const std::string& tag);

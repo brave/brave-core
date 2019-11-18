@@ -90,7 +90,7 @@ struct BraveRequestInfo {
   const base::ListValue* referral_headers_list = nullptr;
   BlockedBy blocked_by = kNotBlocked;
   bool cancel_request_explicitly = false;
-  std::string redirect;
+  std::string mock_data_url;
 
   // Default to invalid type for resource_type, so delegate helpers
   // can properly detect that the info couldn't be obtained.

@@ -13,8 +13,8 @@
 #include "base/strings/string_split.h"
 #include "net/base/data_url.h"
 #include "net/http/http_util.h"
-#include "services/network/public/cpp/resource_response.h"
 #include "services/network/public/cpp/resource_request.h"
+#include "services/network/public/cpp/resource_response.h"
 
 namespace brave_shields {
 namespace {
@@ -55,8 +55,7 @@ const unsigned char kJpeg1x1[] = {
 // craft a custom 'Accept', for example, using XHR, so we provide stubs for
 // other popular mime types.
 std::string GetContentForMimeType(const std::string& mime_type) {
-  static const base::NoDestructor<
-      base::flat_map<std::string, std::string>>
+  static const base::NoDestructor<base::flat_map<std::string, std::string>>
       content({
           {"image/webp", {kWebp1x1, std::end(kWebp1x1)}},
           {"image/*", {kPng1x1, std::end(kPng1x1)}},
@@ -75,7 +74,7 @@ std::string GetContentForMimeType(const std::string& mime_type) {
 
 }  // namespace
 
-void MakeStubResponse(const std::string& redirect,
+void MakeStubResponse(const base::Optional<std::string>& data_url,
                       const network::ResourceRequest& request,
                       network::ResourceResponseHead* response,
                       std::string* data) {
@@ -100,13 +99,14 @@ void MakeStubResponse(const std::string& redirect,
     *data = GetContentForMimeType(response->mime_type);
   }
 
-  if (!redirect.empty()) {
+  if (data_url.has_value()) {
     std::string charset;
     std::string mime_type;
-    if (!net::DataURL::Parse(GURL(redirect), &mime_type, &charset, data)) {
-      LOG(ERROR) << "Could not parse ad-block data URL: " << redirect;
-    } else if (!mime_type.empty()) {
-        response->mime_type = mime_type;
+    if (!net::DataURL::Parse(GURL(data_url.value()), &mime_type, &charset,
+                             data)) {
+      LOG(ERROR) << "Could not parse ad-block data URL: " << data_url.value();
+    } else if (!mime_type.empty() && data_url.value().find("data:,") != 0) {
+      response->mime_type = mime_type;
     }
   }
 
@@ -116,10 +116,10 @@ void MakeStubResponse(const std::string& redirect,
   std::string raw_headers =
       "HTTP/1.1 200 OK\r\n"
       "Access-Control-Allow-Origin: *\r\n"
-      "Content-Type: " + response->mime_type + "\r\n";
-  response->headers =
-      new net::HttpResponseHeaders(net::HttpUtil::AssembleRawHeaders(
-          raw_headers));
+      "Content-Type: " +
+      response->mime_type + "\r\n";
+  response->headers = new net::HttpResponseHeaders(
+      net::HttpUtil::AssembleRawHeaders(raw_headers));
 }
 
 }  // namespace brave_shields
