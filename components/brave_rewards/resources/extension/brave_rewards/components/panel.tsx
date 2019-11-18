@@ -62,7 +62,10 @@ export class Panel extends React.Component<Props, State> {
       })
     }
 
-    this.getBalance()
+    chrome.braveRewards.getACEnabled((enabled: boolean) => {
+      this.props.actions.onEnabledAC(enabled)
+    })
+
     this.actions.getGrants()
     this.actions.getWalletProperties()
     this.actions.getCurrentReport()
@@ -71,8 +74,9 @@ export class Panel extends React.Component<Props, State> {
       this.actions.OnPendingContributionsTotal(amount)
     }))
 
-    const { externalWallet } = this.props.rewardsPanelData
-    utils.getExternalWallet(this.actions, externalWallet)
+    chrome.braveRewards.getRecurringTips((tips: RewardsExtension.RecurringTips) => {
+      this.props.actions.onRecurringTips(tips)
+    })
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {
@@ -92,15 +96,8 @@ export class Panel extends React.Component<Props, State> {
     }
 
     if (!prevProps.rewardsPanelData.enabledMain && this.props.rewardsPanelData.enabledMain) {
-      this.getBalance()
       this.actions.getGrants()
     }
-  }
-
-  getBalance () {
-    chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
-      this.actions.onBalance(balance)
-    })
   }
 
   componentWillUnmount () {
