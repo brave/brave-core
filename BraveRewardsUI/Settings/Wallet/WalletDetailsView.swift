@@ -4,6 +4,7 @@
 
 import UIKit
 import BraveRewards
+import BraveShared
 
 extension WalletDetailsViewController {
   class View: UIView {
@@ -24,7 +25,7 @@ extension WalletDetailsViewController {
       } else {
         stackView.addArrangedSubview(activityView)
       }
-      if !Locale.current.isJapan {
+      if Preferences.Rewards.isUsingBAP.value == false {
         stackView.addArrangedSubview(PoweredByUpholdView())
       }
       
