@@ -329,6 +329,8 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
 
       if (data.walletType === 'uphold') {
+        chrome.send('brave_rewards.fetchBalance')
+
         if (data.action === 'authorization') {
           const url = data.args['redirect_url']
           if (url && url.length > 0) {
