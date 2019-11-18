@@ -34,7 +34,7 @@
 #include "components/gcm_driver/gcm_channel_status_syncer.h"
 #endif
 
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+#if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_utils.h"
 #endif
 
@@ -44,7 +44,7 @@ namespace brave {
 
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+#if BUILDFLAG(ENABLE_WIDEVINE)
   RegisterWidevineProfilePrefsForMigration(registry);
 #endif
 }
@@ -59,6 +59,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   brave_sync::prefs::Prefs::RegisterProfilePrefs(registry);
 
+  // TODO(shong): Move this pref to ENABLE_WIDEVINE.
+  // We don't need to display "don't ask widevine prompt option" in settings
+  // if widevine is disabled.
   registry->RegisterBooleanPref(kAskWidevineInstall, true);
 
   // Default Brave shields

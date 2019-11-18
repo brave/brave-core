@@ -32,7 +32,7 @@
 #include "brave/components/p3a/p3a_core_metrics.h"
 #endif  // !defined(OS_ANDROID)
 
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+#if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_utils.h"
 #endif
 
@@ -63,12 +63,13 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_shields::RegisterShieldsP3APrefs(registry);
 #if !defined(OS_ANDROID)
   RegisterPrefsForMuonMigration(registry);
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  RegisterWidevineLocalstatePrefs(registry);
-#endif
 
   BraveWindowTracker::RegisterPrefs(registry);
   BraveUptimeTracker::RegisterPrefs(registry);
+#endif
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  RegisterWidevineLocalstatePrefs(registry);
 #endif
 }
 

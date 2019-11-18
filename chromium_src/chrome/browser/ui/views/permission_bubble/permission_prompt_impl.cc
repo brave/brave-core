@@ -5,19 +5,24 @@
 
 #include <vector>
 
+#include "chrome/browser/permissions/permission_request.h"
+#include "third_party/widevine/cdm/buildflags.h"
+#include "ui/views/window/dialog_delegate.h"
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/permissions/permission_request.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "ui/gfx/text_constants.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/views/controls/button/checkbox.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/style/typography.h"
-#include "ui/views/window/dialog_delegate.h"
+#endif
 
 namespace {
 
+#if BUILDFLAG(ENABLE_WIDEVINE)
 class DontAskAgainCheckbox : public views::Checkbox,
                              public views::ButtonListener {
  public:
@@ -76,7 +81,12 @@ void AddAdditionalWidevineViewControlsIfNeeded(
   dialog_delegate->AddChildView(text);
   dialog_delegate->AddChildView(new DontAskAgainCheckbox(widevine_request));
 }
-
+#else
+void AddAdditionalWidevineViewControlsIfNeeded(
+    views::DialogDelegateView* dialog_delegate,
+    const std::vector<PermissionRequest*>& requests) {
+}
+#endif
 }  // namespace
 
 #include "../../../../../../../chrome/browser/ui/views/permission_bubble/permission_prompt_impl.cc"  // NOLINT

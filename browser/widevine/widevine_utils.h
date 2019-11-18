@@ -31,7 +31,6 @@ std::string GetWidevineInstalledVersion();
 void EnableWidevineCdmComponent(content::WebContents* web_contents);
 #endif
 
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 void RegisterWidevineProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry);
 int GetWidevinePermissionRequestTextFrangmentResourceId();
@@ -41,6 +40,5 @@ void DontAskWidevineInstall(content::WebContents* web_contents, bool dont_ask);
 bool IsWidevineOptedIn();
 void SetWidevineOptedIn(bool opted_in);
 void MigrateWidevinePrefs(Profile* profile);
-#endif
 
 #endif  // BRAVE_BROWSER_WIDEVINE_WIDEVINE_UTILS_H_

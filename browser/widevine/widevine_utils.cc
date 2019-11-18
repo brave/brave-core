@@ -36,12 +36,6 @@ using content::BrowserThread;
 
 namespace {
 
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-PrefService* GetLocalState() {
-  DCHECK(g_browser_process);
-  return g_browser_process->local_state();
-}
-
 void ClearWidevinePrefs(Profile* profile) {
   PrefService* prefs = profile->GetPrefs();
   prefs->ClearPref(kWidevineOptedIn);
@@ -50,7 +44,6 @@ void ClearWidevinePrefs(Profile* profile) {
   prefs->ClearPref(kWidevineInstalledVersion);
 #endif
 }
-#endif
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 content::WebContents* GetActiveWebContents() {
@@ -121,15 +114,15 @@ void InstallBundleOrRestartBrowser() {
 }
 
 void SetWidevineInstalledVersion(const std::string& version) {
-  GetLocalState()->SetString(kWidevineInstalledVersion, version);
+  g_browser_process->local_state()->SetString(kWidevineInstalledVersion,
+                                              version);
 }
 
 std::string GetWidevineInstalledVersion() {
-  return GetLocalState()->GetString(kWidevineInstalledVersion);
+  return g_browser_process->local_state()->GetString(kWidevineInstalledVersion);
 }
 #endif
 
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 int GetWidevinePermissionRequestTextFrangmentResourceId() {
   int message_id = -1;
 
@@ -177,32 +170,31 @@ void RegisterWidevineLocalstatePrefs(PrefRegistrySimple* registry) {
 }
 
 bool IsWidevineOptedIn() {
-  return GetLocalState()->GetBoolean(kWidevineOptedIn);
+  return g_browser_process->local_state()->GetBoolean(kWidevineOptedIn);
 }
 
 void SetWidevineOptedIn(bool opted_in) {
-  GetLocalState()->SetBoolean(kWidevineOptedIn, opted_in);
+  g_browser_process->local_state()->SetBoolean(kWidevineOptedIn, opted_in);
 }
 
 void MigrateWidevinePrefs(Profile* profile) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
 
+  auto* local_state = g_browser_process->local_state();
   // If migration is done, local state doesn't have default value because
   // they were explicitly set by primary prefs' value. After that, we don't
   // need to try migration again and prefs from profiles are already cleared.
-  if (GetLocalState()->FindPreference(kWidevineOptedIn)->IsDefaultValue()) {
+  if (local_state->FindPreference(kWidevineOptedIn)->IsDefaultValue()) {
     PrefService* prefs = profile->GetPrefs();
-    GetLocalState()->SetBoolean(kWidevineOptedIn,
-                                prefs->GetBoolean(kWidevineOptedIn));
+    local_state->SetBoolean(kWidevineOptedIn,
+                            prefs->GetBoolean(kWidevineOptedIn));
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-    GetLocalState()->SetString(kWidevineInstalledVersion,
-                               prefs->GetString(kWidevineInstalledVersion));
+    local_state->SetString(kWidevineInstalledVersion,
+                           prefs->GetString(kWidevineInstalledVersion));
 #endif
   }
 
   // Clear deprecated prefs.
   ClearWidevinePrefs(profile);
 }
-
-#endif

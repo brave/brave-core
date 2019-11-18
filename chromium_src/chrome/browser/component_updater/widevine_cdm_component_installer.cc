@@ -8,18 +8,12 @@
 #undef RegisterWidevineCdmComponent
 
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/widevine/widevine_utils.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/ui/webui/components_ui.h"
 #include "components/component_updater/component_updater_service.h"
-#include "third_party/widevine/cdm/buildflags.h"
-
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
-#include "brave/browser/widevine/widevine_utils.h"
-#endif
 
 namespace component_updater {
-
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
 
 void OnWidevineRegistered() {
   ComponentsUI::OnDemandUpdate(widevine_extension_id);
@@ -35,15 +29,11 @@ void RegisterAndInstallWidevine() {
       base::Bind(&OnWidevineRegistered));
 }
 
-#endif
-
 // Do nothing unless the user opts in!
 void RegisterWidevineCdmComponent(ComponentUpdateService* cus) {
-#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (IsWidevineOptedIn())
     RegisterAndInstallWidevine();
-#endif  // defined(ENABLE_WIDEVINE_CDM_COMPONENT)
 }
 
 }  // namespace component_updater

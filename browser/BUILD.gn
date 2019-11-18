@@ -43,8 +43,6 @@ source_set("browser_process") {
     "brave_browser_process_impl.h",
     "brave_content_browser_client.cc",
     "brave_content_browser_client.h",
-    "brave_drm_tab_helper.cc",
-    "brave_drm_tab_helper.h",
     "brave_local_state_prefs.cc",
     "brave_local_state_prefs.h",
     "brave_profile_prefs.cc",
@@ -254,10 +252,12 @@ source_set("browser_process") {
     ]
   }
 
-  if (bundle_widevine_cdm || enable_widevine_cdm_component) {
-    deps += [
-      "//brave/browser/widevine",
+  if (enable_widevine) {
+    sources += [
+      "brave_drm_tab_helper.cc",
+      "brave_drm_tab_helper.h",
     ]
+    deps += [ "//brave/browser/widevine" ]
   }
 
   if (is_win && is_official_build) {
