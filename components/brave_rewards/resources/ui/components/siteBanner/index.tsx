@@ -81,6 +81,8 @@ export interface Props {
   onTweet: () => void
   nextContribution?: string
   onlyAnonWallet?: boolean
+  monthlyDate?: string
+  amount?: string
 }
 
 export default class SiteBanner extends React.PureComponent<Props, {}> {
@@ -228,12 +230,15 @@ export default class SiteBanner extends React.PureComponent<Props, {}> {
   }
 
   renderConfirmation = () => {
-    const { type, onTweet } = this.props
+    const { type, onTweet, onlyAnonWallet, monthlyDate, amount } = this.props
 
     return (
       <DonateConfirmation
         onTweet={onTweet}
+        onlyAnonWallet={onlyAnonWallet}
         isMonthly={type === 'monthly'}
+        monthlyDate={monthlyDate}
+        amount={amount}
       />
     )
   }
