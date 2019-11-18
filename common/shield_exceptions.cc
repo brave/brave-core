@@ -43,13 +43,17 @@ bool IsWhitelistedFingerprintingException(const GURL& firstPartyOrigin,
   static std::map<URLPattern, std::vector<URLPattern> > whitelist_patterns = {
     {
       URLPattern(URLPattern::SCHEME_ALL, "https://uphold.com/"),
-      std::vector<URLPattern>({URLPattern(URLPattern::SCHEME_ALL,
-            "https://uphold.netverify.com/*")})
+      std::vector<URLPattern>({
+        URLPattern(URLPattern::SCHEME_ALL, "https://uphold.netverify.com/*"),
+        URLPattern(URLPattern::SCHEME_ALL, "https://*.veriff.me/*"),
+      })
     },
     {
       URLPattern(URLPattern::SCHEME_ALL, "https://sandbox.uphold.com/"),
-      std::vector<URLPattern>({URLPattern(URLPattern::SCHEME_ALL,
-            "https://*.netverify.com/*")})
+      std::vector<URLPattern>({
+        URLPattern(URLPattern::SCHEME_ALL, "https://*.netverify.com/*"),
+        URLPattern(URLPattern::SCHEME_ALL, "https://*.veriff.me/*"),
+      })
     },
     {
       URLPattern(URLPattern::SCHEME_ALL, "https://*.1password.com/*"),
