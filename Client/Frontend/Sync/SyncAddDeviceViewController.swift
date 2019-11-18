@@ -138,11 +138,16 @@ class SyncAddDeviceViewController: SyncViewController {
     func setupVisuals() {
         modeControl = UISegmentedControl(items: [Strings.QRCode, Strings.CodeWords])
         modeControl.translatesAutoresizingMaskIntoConstraints = false
-        modeControl.tintColor = BraveUX.BraveOrange
         modeControl.selectedSegmentIndex = 0
         modeControl.addTarget(self, action: #selector(SEL_changeMode), for: .valueChanged)
         modeControl.isHidden = deviceType == .computer
         modeControl.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
+        
+        if #available(iOS 13.0, *) {
+            modeControl.selectedSegmentTintColor = BraveUX.BraveOrange
+        } else {
+            modeControl.tintColor = BraveUX.BraveOrange
+        }
         stackView.addArrangedSubview(modeControl)
         
         let titleDescriptionStackView = UIStackView()
@@ -196,7 +201,7 @@ class SyncAddDeviceViewController: SyncViewController {
         enterWordsButton.setTitleColor(BraveUX.GreyH, for: .normal)
         enterWordsButton.addTarget(self, action: #selector(SEL_showCodewords), for: .touchUpInside)
 
-        doneEnterWordsStackView.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 1000), for: .vertical)
+        doneEnterWordsStackView.setContentCompressionResistancePriority(.required, for: .vertical)
 
         stackView.addArrangedSubview(doneEnterWordsStackView)
 
@@ -225,17 +230,35 @@ class SyncAddDeviceViewController: SyncViewController {
         titleLabel.text = isFirstIndex ? Strings.SyncAddDeviceScan : Strings.SyncAddDeviceWords
         
         if isFirstIndex {
-            descriptionLabel.text = Strings.SyncAddDeviceScanDescription
+            let description = Strings.SyncAddDeviceScanDescription
+            let attributedDescription = NSMutableAttributedString(string: description)
+            
+            if let lastSentenceRange = lastSentenceRange(text: description) {
+                attributedDescription.addAttribute(.foregroundColor, value: BraveUX.Red, range: lastSentenceRange)
+            }
+            
+            descriptionLabel.attributedText = attributedDescription
         } else {
             // The button name should be the same as in codewords instructions.
             let buttonName = Strings.ScanSyncCode
             let addDeviceWords = String(format: Strings.SyncAddDeviceWordsDescription, buttonName)
+            let description = NSMutableAttributedString(string: addDeviceWords)
             let fontSize = descriptionLabel.font.pointSize
             
-            // For codewords instructions copy, we want to bold the button name which needs to be tapped.
-            descriptionLabel.attributedText =
-                addDeviceWords.makePartiallyBoldAttributedString(stringToBold: buttonName, boldTextSize: fontSize)
+            let boldRange = (addDeviceWords as NSString).range(of: buttonName)
+            description.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: fontSize), range: boldRange)
+            
+            if let lastSentenceRange = lastSentenceRange(text: addDeviceWords) {
+                description.addAttribute(.foregroundColor, value: BraveUX.Red, range: lastSentenceRange)
+            }
+            
+            descriptionLabel.attributedText = description
         }
+    }
+    
+    private func lastSentenceRange(text: String) -> NSRange? {
+        guard let lastSentence = text.split(separator: "\n").last else { return nil }
+        return (text as NSString).range(of: String(lastSentence))
     }
     
     @objc func SEL_showCodewords() {
