@@ -190,7 +190,7 @@ class SyncAddDeviceViewController: SyncViewController {
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         doneButton.setTitle(Strings.Done, for: .normal)
         doneButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.bold)
-        doneButton.setTitleColor(UIColor.white, for: .normal)
+        doneButton.appearanceTextColor = .white
         doneButton.backgroundColor = BraveUX.BraveOrange
         doneButton.addTarget(self, action: #selector(SEL_done), for: .touchUpInside)
 
