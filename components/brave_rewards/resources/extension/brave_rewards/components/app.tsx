@@ -46,28 +46,20 @@ export class RewardsPanel extends React.Component<Props, State> {
     })
 
     chrome.windows.getCurrent({}, this.onWindowCallback)
+
     chrome.braveRewards.getRewardsMainEnabled(((enabled: boolean) => {
       this.props.actions.onEnabledMain(enabled)
     }))
-
-    chrome.braveRewards.getACEnabled(((enabled: boolean) => {
-      this.props.actions.onEnabledAC(enabled)
-    }))
-
-    chrome.braveRewards.getRecurringTips((tips: RewardsExtension.RecurringTips) => {
-      this.props.actions.onRecurringTips(tips)
-    })
 
     chrome.braveRewards.getAllNotifications((list: RewardsExtension.Notification[]) => {
       this.props.actions.onAllNotifications(list)
     })
 
-    if (!this.props.rewardsPanelData.enabledMain) {
-      const { externalWallet } = this.props.rewardsPanelData
-      utils.getExternalWallet(this.actions, externalWallet)
-    }
+    const { externalWallet } = this.props.rewardsPanelData
+    utils.getExternalWallet(this.actions, externalWallet)
 
     this.handleGrantNotification()
+    this.getBalance()
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {
@@ -79,7 +71,14 @@ export class RewardsPanel extends React.Component<Props, State> {
     }
     if (!prevProps.rewardsPanelData.enabledMain && this.props.rewardsPanelData.enabledMain) {
       chrome.windows.getCurrent({}, this.onWindowCallback)
+      this.getBalance()
     }
+  }
+
+  getBalance () {
+    chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
+      this.actions.onBalance(balance)
+    })
   }
 
   handleGrantNotification = () => {
