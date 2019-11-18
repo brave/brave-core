@@ -288,7 +288,9 @@ extension Strings {
     
     public static let AuthenticationIncorrectAttemptsRemaining = NSLocalizedString("AuthenticationIncorrectAttemptsRemaining", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Incorrect passcode. Try again (Attempts remaining: %d).", comment: "Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining")
     
-    public static let AuthenticationMaximumAttemptsReached = NSLocalizedString("AuthenticationMaximumAttemptsReached", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Maximum attempts reached. Please try again in an hour.", comment: "Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts.")
+    public static let AuthenticationMaximumAttemptsReached = NSLocalizedString("AuthenticationMaximumAttemptsReached", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Too many failed attempts. Please try again in %d minutes.", comment: "Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts.")
+    
+    public static let AuthenticationMaximumAttemptsReachedOneMinute = NSLocalizedString("AuthenticationMaximumAttemptsReachedOneMinute", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Too many failed attempts. Please try again in 1 minute.", comment: "Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts.")
     
     public static let AuthenticationMaximumAttemptsReachedNoTime = NSLocalizedString("AuthenticationMaximumAttemptsReachedNoTime", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Maximum attempts reached. Please try again later.", comment: "Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts.")
     
