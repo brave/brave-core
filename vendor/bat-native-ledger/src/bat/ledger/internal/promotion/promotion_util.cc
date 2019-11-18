@@ -6,8 +6,9 @@
 #include <utility>
 
 #include "bat/ledger/internal/promotion/promotion_util.h"
-#include "base/time/time.h"
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
+#include "base/time/time.h"
 
 namespace braveledger_promotion {
 
@@ -159,6 +160,15 @@ bool ParseFetchResponse(
         promotion->expires_at = time.ToDoubleT();
       }
 
+      auto* public_keys = item.FindListKey("publicKeys");
+      if (!public_keys) {
+        continue;
+      }
+
+      std::string keys_json;
+      base::JSONWriter::Write(*public_keys, &keys_json);
+      promotion->public_keys = keys_json;
+
       list->push_back(std::move(promotion));
     }
 
@@ -248,6 +258,27 @@ bool UnBlindTokensMock(
   }
 
   return true;
+}
+
+bool VerifyPublicKey(const ledger::PromotionPtr promotion) {
+  if (!promotion || !promotion->credentials) {
+    return false;
+  }
+
+  auto promotion_keys = ParseStringToBaseList(promotion->public_keys);
+
+  if (!promotion_keys) {
+    return false;
+  }
+
+
+  for (auto& item : *promotion_keys) {
+    if (item.GetString() == promotion->credentials->public_key) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 }  // namespace braveledger_promotion

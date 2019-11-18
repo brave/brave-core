@@ -516,8 +516,14 @@ void Promotion::OnFetchSignedTokens(
         promotion->Clone(),
         [](const ledger::Result _){});
 
+  bool result = VerifyPublicKey(promotion->Clone());
+
+  if (!result) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
   std::vector<std::string> unblinded_encoded_tokens;
-  bool result;
   if (ledger::is_testing) {
     result = UnBlindTokensMock(promotion->Clone(), &unblinded_encoded_tokens);
   } else {
