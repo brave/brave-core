@@ -53,7 +53,7 @@ extension OnboardingAdsAvailableController {
         private let titleLabel = CommonViews.primaryText(Strings.OBAdsOptInTitle)
         
         private let descriptionLabel = CommonViews.secondaryText("").then {
-            let text = Locale.current.isJapan ? Strings.OBAdsOptInMessageJapan : Strings.OBAdsOptInMessage
+            let text = Preferences.Rewards.isUsingBAP.value == true ? Strings.OBAdsOptInMessageJapan : Strings.OBAdsOptInMessage
             $0.attributedText = text.boldWords(with: $0.font, amount: 2)
         }
         

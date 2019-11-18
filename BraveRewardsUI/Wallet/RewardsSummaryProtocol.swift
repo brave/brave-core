@@ -4,6 +4,7 @@
 
 import Foundation
 import BraveRewards
+import BraveShared
 
 /// Shared resources for showing summary of all BAT rewards.
 protocol RewardsSummaryProtocol {
@@ -74,7 +75,7 @@ extension RewardsSummaryProtocol {
   var disclaimerLabels: [LinkLabel] {
     var labels: [LinkLabel] = []
     
-    if Locale.current.isJapan {
+    if Preferences.Rewards.isUsingBAP.value == true {
       labels.append(LinkLabel().then {
         $0.attributedText = {
           let str = NSMutableAttributedString(string: Strings.BATPointsDisclaimer, attributes: [.font: UIFont.systemFont(ofSize: 12.0)])

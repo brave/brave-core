@@ -2,10 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import BraveShared
+
 internal struct Strings {
   /// "BAT" or "BAT Points" depending on the region
   static var BAT: String {
-    if Locale.current.isJapan {
+    if Preferences.Rewards.isUsingBAP.value == true {
       return "BAP"
     }
     return "BAT"
@@ -14,7 +16,7 @@ internal struct Strings {
 
 internal extension Strings {
   static var WalletBalanceType: String {
-    if Locale.current.isJapan {
+    if Preferences.Rewards.isUsingBAP.value == true {
       return NSLocalizedString("BATPoints", bundle: Bundle.RewardsUI, value: "BAT Points", comment: "")
     }
     return Strings.BAT
@@ -25,13 +27,13 @@ internal extension Strings {
   static let CheckAgain = NSLocalizedString("BraveRewardsCheckAgain", bundle: Bundle.RewardsUI, value: "Refresh Status", comment: "")
   static let RewardsOptInLearnMore = NSLocalizedString("RewardsOptInLearnMore", bundle: Bundle.RewardsUI, value: "Learn More", comment: "")
   static var SettingsAdsBody: String {
-    if Locale.current.isJapan {
+    if Preferences.Rewards.isUsingBAP.value == true {
       return NSLocalizedString("BraveRewardsSettingsAdsBodyJapan", bundle: Bundle.RewardsUI, value: "Earn points by viewing ads in Brave. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.", comment: "")
     }
     return NSLocalizedString("BraveRewardsSettingsAdsBody", bundle: Bundle.RewardsUI, value: "Earn tokens by viewing ads in Brave. Ads presented are based on your interests, as inferred from your browsing behavior. No personal data or browsing history ever leaves your browser.", comment: "")
   }
   static var WalletHeaderGrants: String {
-    if Locale.current.isJapan {
+    if Preferences.Rewards.isUsingBAP.value == true {
       return NSLocalizedString("BraveRewardsWalletHeaderDetails", bundle: Bundle.RewardsUI, value: "Details", comment: "")
     }
     return NSLocalizedString("BraveRewardsWalletHeaderGrants", bundle: Bundle.RewardsUI, value: "Grants", comment: "")
@@ -72,7 +74,7 @@ internal extension Strings {
   static let BraveRewards = NSLocalizedString("BraveRewards", bundle: Bundle.RewardsUI, value: "Brave Rewards™", comment: "")
   static let PublisherSendTip = NSLocalizedString("BraveRewardsPublisherSendTip", bundle: Bundle.RewardsUI, value: "Send a tip…", comment: "")
   static var TippingWalletBalanceTitle: String {
-    if Locale.current.isJapan {
+    if Preferences.Rewards.isUsingBAP.value == true {
       return NSLocalizedString("BraveRewardsTippingBalanceTitle", bundle: Bundle.RewardsUI, value: "balance", comment: "")
     }
     return NSLocalizedString("BraveRewardsTippingWalletBalanceTitle", bundle: Bundle.RewardsUI, value: "wallet balance", comment: "")
@@ -92,7 +94,7 @@ internal extension Strings {
   static let AutoContributeMinimumVisitsMessage = NSLocalizedString("BraveRewardsAutoContributeMinimumVisitsMessage", bundle: Bundle.RewardsUI, value: "Minimum visits for publisher relevancy", comment: "")
   static let AutoContributeMinimumLengthMessage = NSLocalizedString("BraveRewardsAutoContributeMinimumLengthMessage", bundle: Bundle.RewardsUI, value: "Minimum page time before logging a visit", comment: "")
   static var NotificationTokenGrantTitle: String {
-    if Locale.current.isJapan {
+    if Preferences.Rewards.isUsingBAP.value == true {
         return NSLocalizedString("BraveRewardsNotificationPointGrantTitle", bundle: Bundle.RewardsUI, value: "Point Grants", comment: "")
     }
     return NSLocalizedString("BraveRewardsNotificationTokenGrantTitle", bundle: Bundle.RewardsUI, value: "Token Grants", comment: "")
@@ -108,7 +110,7 @@ internal extension Strings {
   static let SettingsDisabledTitle2 = NSLocalizedString("BraveRewardsSettingsDisabledTitle2", bundle: Bundle.RewardsUI, value: "Today, Brave welcomes you to the new internet.", comment: "")
   static let SummaryTitle = NSLocalizedString("BraveRewardsSummaryTitle", bundle: Bundle.RewardsUI, value: "Rewards Summary", comment: "")
   static var SettingsGrantText: String {
-    if Locale.current.isJapan {
+    if Preferences.Rewards.isUsingBAP.value == true {
       return NSLocalizedString("BraveRewardsSettingsGrantTextJapan", bundle: Bundle.RewardsUI, value: "A free point grant is available.", comment: "")
     }
     return NSLocalizedString("BraveRewardsSettingsGrantText", bundle: Bundle.RewardsUI, value: "A free token grant is available.", comment: "")
@@ -119,7 +121,7 @@ internal extension Strings {
   static let LearnMoreTipsBody = NSLocalizedString("BraveRewardsLearnMoreTipsBody", bundle: Bundle.RewardsUI, value: "Support your favorite sites just by browsing – or tip a site any time you like.", comment: "")
   static let WalletDetailsTitle = NSLocalizedString("BraveRewardsWalletDetailsTitle", bundle: Bundle.RewardsUI, value: "Wallet Details", comment: "")
   static var GrantsClaimedSubtitle: String {
-    if Locale.current.isJapan {
+    if Preferences.Rewards.isUsingBAP.value == true {
       return NSLocalizedString("BraveRewardsGrantsClaimedSubtitleJapan", bundle: Bundle.RewardsUI, value: "Your point grant is on its way.", comment: "")
     }
     return NSLocalizedString("BraveRewardsGrantsClaimedSubtitle", bundle: Bundle.RewardsUI, value: "Your token grant is on its way.", comment: "")
@@ -130,14 +132,14 @@ internal extension Strings {
   static let AutoContributeMonthlyPaymentTitle = NSLocalizedString("BraveRewardsAutoContributeMonthlyPaymentTitle", bundle: Bundle.RewardsUI, value: "Monthly Payment", comment: "")
   static let AutoContributeMonthlyPayment = NSLocalizedString("BraveRewardsAutoContributeMonthlyPayment", bundle: Bundle.RewardsUI, value: "Monthly payment", comment: "")
   static var Tokens: String {
-    if Locale.current.isJapan {
+    if Preferences.Rewards.isUsingBAP.value == true {
       return NSLocalizedString("BraveRewardsPoints", bundle: Bundle.RewardsUI, value: "Points", comment: "")
     }
     return NSLocalizedString("BraveRewardsTokens", bundle: Bundle.RewardsUI, value: "Tokens", comment: "")
   }
   static let LearnMoreTurnOnRewardsBody = NSLocalizedString("BraveRewardsLearnMoreTurnOnRewardsBody", bundle: Bundle.RewardsUI, value: "This enables both ads and automatic contributions. You can turn them on or off separately at any time.", comment: "")
   static var TippingNotEnoughTokens: String {
-    if Locale.current.isJapan {
+    if Preferences.Rewards.isUsingBAP.value == true {
       return NSLocalizedString("BraveRewardsTippingNotEnoughPoints", bundle: Bundle.RewardsUI, value: "Not enough points.", comment: "")
     }
     return NSLocalizedString("BraveRewardsTippingNotEnoughTokens", bundle: Bundle.RewardsUI, value: "Not enough tokens.", comment: "")
@@ -173,13 +175,13 @@ internal extension Strings {
   static let PanelTitle = NSLocalizedString("BraveRewardsPanelTitle", bundle: Bundle.RewardsUI, value: "Rewards", comment: "")
   static let CreatingWallet = NSLocalizedString("BraveRewardsCreatingWallet", bundle: Bundle.RewardsUI, value: "Creating wallet", comment: "")
   static var RewardsOptInDescription: String {
-    if Locale.current.isJapan {
+    if Preferences.Rewards.isUsingBAP.value == true {
       return NSLocalizedString("RewardsOptInDescriptionJapan", bundle: Bundle.RewardsUI, value: "You can now earn points for watching privacy-respecting ads.", comment: "")
     }
     return NSLocalizedString("RewardsOptInDescription", bundle: Bundle.RewardsUI, value: "You can now earn tokens for watching privacy-respecting ads.", comment: "")
   }
   static var WalletHeaderTitle: String {
-    if Locale.current.isJapan {
+    if Preferences.Rewards.isUsingBAP.value == true {
       return NSLocalizedString("BraveRewardsWalletHeaderTitleJapan", bundle: Bundle.RewardsUI, value: "Your balance", comment: "")
     }
     return NSLocalizedString("BraveRewardsWalletHeaderTitle", bundle: Bundle.RewardsUI, value: "Your wallet", comment: "")
@@ -189,13 +191,13 @@ internal extension Strings {
   static let GrantsClaimedExpirationDateTitle = NSLocalizedString("BraveRewardsGrantsClaimedExpirationDateTitle", bundle: Bundle.RewardsUI, value: "Grant Expiration Date", comment: "")
   static let SettingsAutoContributeBody = NSLocalizedString("BraveRewardsSettingsAutoContributeBody", bundle: Bundle.RewardsUI, value: "An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The sites you visit receive your contributions automatically, based on your attention as measured by Brave.", comment: "")
   static var GrantsClaimedAmountTitle: String {
-    if Locale.current.isJapan {
+    if Preferences.Rewards.isUsingBAP.value == true {
       return NSLocalizedString("BraveRewardsGrantsClaimedAmountTitleJapan", bundle: Bundle.RewardsUI, value: "Free Points Grant", comment: "")
     }
     return NSLocalizedString("BraveRewardsGrantsClaimedAmountTitle", bundle: Bundle.RewardsUI, value: "Free Token Grant", comment: "")
   }
   static var AdsGrantsClaimedAmountTitle: String {
-    if Locale.current.isJapan {
+    if Preferences.Rewards.isUsingBAP.value == true {
       return NSLocalizedString("BraveRewardsAdsGrantsClaimedAmountTitleJapan", bundle: Bundle.RewardsUI, value: "Your Brave Ads Point Grant", comment: "")
     }
     return NSLocalizedString("BraveRewardsAdsGrantsClaimedAmountTitle", bundle: Bundle.RewardsUI, value: "Your Brave Ads Token Grant", comment: "")
@@ -224,7 +226,7 @@ internal extension Strings {
   static let AdsPayoutDateFormat = NSLocalizedString("BraveRewardsAdsPayoutDateFormat", bundle: Bundle.RewardsUI, value: "MMM d", comment: "")
   static let AutoContributeDateFormat = NSLocalizedString("BraveRewardsAutoContributeDateFormat", bundle: Bundle.RewardsUI, value: "MMM d", comment: "")
   static var TotalGrantsClaimed: String {
-    if Locale.current.isJapan {
+    if Preferences.Rewards.isUsingBAP.value == true {
       return NSLocalizedString("BraveRewardsTotalGrantsClaimedJapan", bundle: Bundle.RewardsUI, value: "Point Grants Claimed", comment: "")
     }
     return NSLocalizedString("BraveRewardsTotalGrantsClaimed", bundle: Bundle.RewardsUI, value: "Token Grants Claimed", comment: "")
