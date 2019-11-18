@@ -53,6 +53,8 @@ extension Theme {
         // Sync items
         SyncViewController.SyncView.appearance(whenContainedInInstancesOf: [UINavigationController.self]).appearanceBackgroundColor = colors.home
         SyncDeviceTypeButton.appearance().appearanceBackgroundColor = colors.header
+        UIButton.appearance(
+            whenContainedInInstancesOf: [SyncViewController.self]).appearanceTextColor = colors.tints.home
         
         // Search
         UIView.appearance(whenContainedInInstancesOf: [SearchViewController.self]).appearanceBackgroundColor = colors.home

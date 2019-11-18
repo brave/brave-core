@@ -11,6 +11,7 @@ class SyncCodewordsView: UIView, UITextViewDelegate {
         textView.autocorrectionType = .yes
         textView.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.medium)
         textView.textColor = BraveUX.GreyJ
+        textView.backgroundColor = .white
         return textView
     }()
     
@@ -18,7 +19,7 @@ class SyncCodewordsView: UIView, UITextViewDelegate {
         let label = UILabel()
         label.text = Strings.CodeWordInputHelp
         label.font = UIFont.systemFont(ofSize: 18, weight: UIFont.Weight.regular)
-        label.textColor = BraveUX.GreyE
+        label.appearanceTextColor = BraveUX.GreyE
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
         return label

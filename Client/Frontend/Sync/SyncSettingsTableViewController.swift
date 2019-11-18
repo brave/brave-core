@@ -41,13 +41,13 @@ class SyncSettingsTableViewController: UITableViewController {
         
         let text = UITextView().then {
             $0.text = Strings.SyncSettingsHeader
-            $0.textContainerInset = UIEdgeInsets(top: 36, left: 16, bottom: 16, right: 16)
+            $0.textContainerInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
             $0.isEditable = false
             $0.isSelectable = false
             $0.textColor = BraveUX.GreyH
             $0.textAlignment = .center
             $0.font = UIFont.systemFont(ofSize: 15)
-            $0.sizeToFit()
+            $0.isScrollEnabled = false
             $0.backgroundColor = UIColor.clear
         }
         
@@ -56,6 +56,8 @@ class SyncSettingsTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        tableView.tableHeaderView?.sizeToFit()
         
         if disableBackButton {
             navigationController?.interactivePopGestureRecognizer?.isEnabled = false
@@ -214,32 +216,25 @@ class SyncSettingsTableViewController: UITableViewController {
             
             cell.textLabel?.text = deviceName
         case Sections.buttons.rawValue:
-            // By default all cells have separators with left inset. Our buttons are based on table cells,
-            // we need to style them so they look more like buttons with full width separator between them.
-            setFullWidthSeparator(for: cell)
-            configureButtonCell(cell, buttonIndex: indexPath.row)
+            configureButtonCell(cell)
         default:
             log.error("Section index out of bounds.")
         }
     }
     
-    private func setFullWidthSeparator(for cell: UITableViewCell) {
+    private func configureButtonCell(_ cell: UITableViewCell) {
+        // By default all cells have separators with left inset. Our buttons are based on table cells,
+        // we need to style them so they look more like buttons with full width separator between them.
         cell.preservesSuperviewLayoutMargins = false
         cell.separatorInset = UIEdgeInsets.zero
         cell.layoutMargins = UIEdgeInsets.zero
-    }
-    
-    private func configureButtonCell(_ cell: UITableViewCell, buttonIndex: Int) {
-        func attributedString(for text: String, color: UIColor) -> NSAttributedString {
-            return NSAttributedString(string: text, attributes:
-                [NSAttributedString.Key.foregroundColor: color,
-                 NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular)])
+        
+        cell.textLabel?.do {
+            $0.text = Strings.SyncAddAnotherDevice
+            $0.textAlignment = .center
+            $0.appearanceTextColor = BraveUX.BraveOrange
+            $0.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular)
         }
-        
-        let decoratedText = attributedString(for: Strings.SyncAddAnotherDevice, color: BraveUX.BraveOrange)
-        
-        cell.textLabel?.attributedText = decoratedText
-        cell.textLabel?.textAlignment = .center
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
