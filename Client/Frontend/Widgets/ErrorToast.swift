@@ -7,27 +7,21 @@ import SnapKit
 
 private struct ErrorToastDefaultUX {
     static let cornerRadius: CGFloat = 40
-    static let fillColor = UIColor.Photon.Red70
     static let margins = UIEdgeInsets(top: 10, left: 12, bottom: 10, right: 12)
-    static let textColor = UIColor.Photon.White100
+    static let textColor = UIColor(rgb: 0xBD1531)
 }
 
 class ErrorToast: UIView {
     lazy var textLabel: UILabel = {
         let label = UILabel()
-        label.textColor = ErrorToastDefaultUX.textColor
+        label.appearanceTextColor = ErrorToastDefaultUX.textColor
+        label.appearanceBackgroundColor = .clear
         label.textAlignment = .center
         label.numberOfLines = 0
         return label
     }()
 
     var cornerRadius: CGFloat = ErrorToastDefaultUX.cornerRadius {
-        didSet {
-            setNeedsDisplay()
-        }
-    }
-
-    var fillColor: UIColor = ErrorToastDefaultUX.fillColor {
         didSet {
             setNeedsDisplay()
         }
@@ -44,12 +38,5 @@ class ErrorToast: UIView {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    override func draw(_ rect: CGRect) {
-        super.draw(rect)
-        fillColor.setFill()
-        let path = UIBezierPath(roundedRect: rect, cornerRadius: cornerRadius)
-        path.fill()
     }
 }
