@@ -32,18 +32,6 @@ TEST(BraveAdBlockTPNetworkDelegateHelperTest, EmptyRequestURL) {
   EXPECT_EQ(rc, net::OK);
 }
 
-TEST(BraveAdBlockTPNetworkDelegateHelperTest, RedirectsToStubs) {
-  const std::vector<const GURL> urls(
-      {GURL(kGoogleTagManagerPattern), GURL(kGoogleTagServicesPattern)});
-  for (const auto& url : urls) {
-    auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
-    int rc =
-        OnBeforeURLRequest_AdBlockTPPreWork(ResponseCallback(), request_info);
-    EXPECT_EQ(rc, net::OK);
-    EXPECT_TRUE(GURL(request_info->new_url_spec).SchemeIs("data"));
-  }
-}
-
 TEST(BraveAdBlockTPNetworkDelegateHelperTest, Blocking) {
   const std::vector<const GURL> urls({
       GURL("https://pdfjs.robwu.nl/ping"),
@@ -55,67 +43,4 @@ TEST(BraveAdBlockTPNetworkDelegateHelperTest, Blocking) {
     EXPECT_EQ(request_info->new_url_spec, kEmptyDataURI);
     EXPECT_EQ(rc, net::OK);
   }
-}
-
-TEST(BraveAdBlockTPNetworkDelegateHelperTest, GetPolyfill) {
-  using brave::GetPolyfillForAdBlock;
-
-  const GURL tab_origin("https://test.com");
-  const GURL google_analytics_url(kGoogleAnalyticsPattern);
-  const GURL tag_manager_url(kGoogleTagManagerPattern);
-  const GURL tag_services_url(kGoogleTagServicesPattern);
-  const GURL normal_url("https://a.com");
-
-  std::string out_url_spec;
-  // Shields up, block ads, google analytics should get polyfill
-  ASSERT_TRUE(GetPolyfillForAdBlock(true, false, tab_origin,
-                                    google_analytics_url, &out_url_spec));
-  // Shields up, block ads, tag manager should get polyfill
-  ASSERT_TRUE(GetPolyfillForAdBlock(true, false, tab_origin, tag_manager_url,
-                                    &out_url_spec));
-  // Shields up, block ads, tag services should get polyfill
-  ASSERT_TRUE(GetPolyfillForAdBlock(true, false, tab_origin, tag_services_url,
-                                    &out_url_spec));
-  // Shields up, block ads, normal URL should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(true, false, tab_origin, normal_url,
-                                     &out_url_spec));
-
-  // Shields up, allow ads, google analytics should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(true, true, tab_origin,
-                                     google_analytics_url, &out_url_spec));
-  // Shields up, allow ads, tag manager should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(true, true, tab_origin, tag_manager_url,
-                                     &out_url_spec));
-  // Shields up, allow ads, tag services should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(true, true, tab_origin, tag_services_url,
-                                     &out_url_spec));
-  // Shields up, allow ads, normal URL should NOT get polyfill
-  ASSERT_FALSE(
-      GetPolyfillForAdBlock(true, true, tab_origin, normal_url, &out_url_spec));
-
-  // Shields down, allow ads, google analytics should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(false, true, tab_origin,
-                                     google_analytics_url, &out_url_spec));
-  // Shields down, allow ads, tag manager should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(false, true, tab_origin, tag_manager_url,
-                                     &out_url_spec));
-  // Shields down, allow ads, tag services should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(false, true, tab_origin, tag_services_url,
-                                     &out_url_spec));
-  // Shields down, allow ads, normal URL should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(false, true, tab_origin, normal_url,
-                                     &out_url_spec));
-
-  // Shields down, block ads, google analytics should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(false, false, tab_origin,
-                                     google_analytics_url, &out_url_spec));
-  // Shields down, block ads, tag manager should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(false, false, tab_origin, tag_manager_url,
-                                     &out_url_spec));
-  // Shields down, block ads, tag services should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(false, false, tab_origin, tag_services_url,
-                                     &out_url_spec));
-  // Shields down, block ads, normal URL should NOT get polyfill
-  ASSERT_FALSE(GetPolyfillForAdBlock(false, false, tab_origin, normal_url,
-                                     &out_url_spec));
 }

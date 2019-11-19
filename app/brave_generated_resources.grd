@@ -649,10 +649,5 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         You can read <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instructions on how to download and build for yourself<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> the specific <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>source code used to create this copy<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.
       </message>
     </messages>
-    <includes>
-      <include name="IDR_BRAVE_GOOGLE_ANALYTICS_POLYFILL" file="resources/js/google_analytics_polyfill.js" type="BINDATA" />
-      <include name="IDR_BRAVE_TAG_SERVICES_POLYFILL" file="resources/js/tag_services_polyfill.js" type="BINDATA" />
-      <include name="IDR_BRAVE_TAG_MANAGER_POLYFILL" file="resources/js/tag_manager_polyfill.js" type="BINDATA" />
-    </includes>
   </release>
 </grit>

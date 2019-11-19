@@ -1,7 +1,7 @@
 use_relative_paths = True
 
 deps = {
-  "vendor/adblock_rust_ffi": "https://github.com/brave/adblock-rust-ffi.git@2360813922ceed63e3798737a268858c11e24d80",
+  "vendor/adblock_rust_ffi": "https://github.com/brave/adblock-rust-ffi.git@89127a30655eaf54cf73794309846084ea8b91b9",
   "vendor/autoplay-whitelist": "https://github.com/brave/autoplay-whitelist.git@ea527a4d36051daedb34421e129c98eda06cb5d3",
   "vendor/extension-whitelist": "https://github.com/brave/extension-whitelist.git@7843f62e26a23c51336330e220e9d7992680aae9",
   "vendor/hashset-cpp": "https://github.com/brave/hashset-cpp.git@6eab0271d014ff09bd9f38abe1e0c117e13e9aa9",

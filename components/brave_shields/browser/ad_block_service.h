@@ -25,6 +25,7 @@ using brave_component_updater::BraveComponent;
 
 namespace brave_shields {
 
+const char kAdBlockResourcesFilename[] = "resources.json";
 const char kAdBlockComponentName[] = "Brave Ad Block Updater";
 const char kAdBlockComponentId[] = "cffkpbalmllkdoenhmdmpbkajipdjfam";
 const char kAdBlockComponentBase64PublicKey[] =
@@ -47,6 +48,7 @@ class AdBlockService : public AdBlockBaseService {
   void OnComponentReady(const std::string& component_id,
                         const base::FilePath& install_dir,
                         const std::string& manifest) override;
+  void OnResourcesFileDataReady(const std::string& resources);
 
  private:
   friend class ::AdBlockServiceTest;
@@ -57,6 +59,7 @@ class AdBlockService : public AdBlockBaseService {
       const std::string& component_id,
       const std::string& component_base64_public_key);
 
+  base::WeakPtrFactory<AdBlockService> weak_factory_{this};
   DISALLOW_COPY_AND_ASSIGN(AdBlockService);
 };
 

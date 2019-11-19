@@ -110,7 +110,7 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::RestartInternal() {
 
   base::RepeatingCallback<void(int)> continuation =
       base::BindRepeating(&InProgressRequest::ContinueToBeforeSendHeaders,
-                            weak_factory_.GetWeakPtr());
+                          weak_factory_.GetWeakPtr());
   redirect_url_ = GURL();
   ctx_ = std::make_shared<brave::BraveRequestInfo>();
   brave::BraveRequestInfo::FillCTX(request_, render_process_id_,
@@ -211,8 +211,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::OnUploadProgress(
                                    std::move(callback));
 }
 
-void BraveProxyingURLLoaderFactory::InProgressRequest::
-    OnReceiveCachedMetadata(mojo_base::BigBuffer data) {
+void BraveProxyingURLLoaderFactory::InProgressRequest::OnReceiveCachedMetadata(
+    mojo_base::BigBuffer data) {
   target_client_->OnReceiveCachedMetadata(std::move(data));
 }
 
@@ -337,7 +337,8 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     }
     network::ResourceResponseHead response;
     std::string response_data;
-    brave_shields::MakeStubResponse(request_, &response, &response_data);
+    brave_shields::MakeStubResponse(ctx_->mock_data_url, request_, &response,
+                                    &response_data);
 
     target_client_->OnReceiveResponse(response);
 
@@ -626,10 +627,8 @@ bool BraveProxyingURLLoaderFactory::MaybeProxyRequest(
   network::mojom::URLLoaderFactoryPtrInfo target_factory_info;
   *factory_receiver = mojo::MakeRequest(&target_factory_info);
 
-
   ResourceContextData::StartProxying(
-      browser_context,
-      render_process_id,
+      browser_context, render_process_id,
       render_frame_host ? render_frame_host->GetFrameTreeNodeId() : 0,
       std::move(proxied_receiver), std::move(target_factory_info));
   return true;
@@ -651,11 +650,10 @@ void BraveProxyingURLLoaderFactory::CreateLoaderAndStart(
   // unique, so we don't use it for identity here.
   const uint64_t brave_request_id = request_id_generator_->Generate();
 
-  auto result = requests_.emplace(
-      std::make_unique<InProgressRequest>(
-          this, brave_request_id, request_id, routing_id, render_process_id_,
-          frame_tree_node_id_, options, request, browser_context_,
-          traffic_annotation, std::move(loader_request), std::move(client)));
+  auto result = requests_.emplace(std::make_unique<InProgressRequest>(
+      this, brave_request_id, request_id, routing_id, render_process_id_,
+      frame_tree_node_id_, options, request, browser_context_,
+      traffic_annotation, std::move(loader_request), std::move(client)));
   (*result.first)->Restart();
 }
 

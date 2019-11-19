@@ -36,7 +36,8 @@ class BaseBraveShieldsService : public BraveComponent {
       content::ResourceType resource_type,
       const std::string& tab_host,
       bool* did_match_exception,
-      bool* cancel_request_explicitly);
+      bool* cancel_request_explicitly,
+      std::string* mock_data_url);
 
  protected:
   virtual bool Init() = 0;
