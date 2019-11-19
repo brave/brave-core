@@ -147,7 +147,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
       ? totalContribution
       : adsEstimatedEarnings.toFixed(1)
     const converted = convertBalance(amount, rates)
-    const batFormatString = onlyAnonWallet ? getLocale('rewardsWidgetBatPoints') : getLocale('rewardsWidgetBat')
+    const batFormatString = onlyAnonWallet ? getLocale('rewardsWidgetBap') : getLocale('rewardsWidgetBat')
 
     return (
       <AmountItem isLast={type === AmountItemType.TIPS}>

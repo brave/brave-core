@@ -149,8 +149,10 @@ class ContributeBox extends React.Component<Props, State> {
       contributionNonVerified,
       contributionVideos,
       contributionMonthly,
-      enabledMain
+      enabledMain,
+      ui
     } = this.props.rewardsData
+    const { onlyAnonWallet } = ui
 
     if (!enabledMain) {
       return null
@@ -170,6 +172,7 @@ class ContributeBox extends React.Component<Props, State> {
                     <Tokens
                       value={choice.tokens}
                       converted={choice.converted}
+                      onlyAnonWallet={onlyAnonWallet}
                     />
                   </div>
                 })
@@ -228,7 +231,8 @@ class ContributeBox extends React.Component<Props, State> {
       reconcileStamp,
       autoContributeList,
       excludedList,
-      balance
+      balance,
+      ui
     } = this.props.rewardsData
     const monthlyList: MonthlyChoice[] = utils.generateContributionMonthly(walletInfo.choices, balance.rates)
     const contributeRows = this.getContributeRows(autoContributeList)
@@ -238,6 +242,7 @@ class ContributeBox extends React.Component<Props, State> {
     const numExcludedRows = excludedRows && excludedRows.length
     const allSites = !(excludedRows.length > 0 || numRows > 5)
     const showDisabled = firstLoad !== false || !enabledMain || !enabledContribute
+    const { onlyAnonWallet } = ui
 
     return (
       <Box
@@ -276,7 +281,7 @@ class ContributeBox extends React.Component<Props, State> {
               monthlyList.map((choice: MonthlyChoice) => {
                 return (
                   <div key={`choice-${choice.tokens}`} data-value={choice.tokens.toString()}>
-                    {getLocale('contributionUpTo')} <Tokens value={choice.tokens} converted={choice.converted} />
+                    {getLocale('contributionUpTo')} <Tokens onlyAnonWallet={onlyAnonWallet} value={choice.tokens} converted={choice.converted} />
                   </div>
                 )
               })

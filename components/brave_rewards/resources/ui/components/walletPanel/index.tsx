@@ -66,6 +66,7 @@ export interface Props {
   moreLink?: string
   acEnabled?: boolean
   setMonthlyAction: () => void
+  onlyAnonWallet?: boolean
 }
 
 export default class WalletPanel extends React.PureComponent<Props, {}> {
@@ -92,8 +93,9 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
   }
 
   donationDropDown () {
-    const { donationAmounts } = this.props
+    const { donationAmounts, onlyAnonWallet } = this.props
     const monthlyAmount = this.props.monthlyAmount || '5.0'
+    const batFormatString = onlyAnonWallet ? 'bap' : 'bat'
 
     if (!donationAmounts) {
       return null
@@ -111,7 +113,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
                 key={`k-${token.tokens}`}
                 value={token.tokens}
               >
-                {token.tokens} {getLocale('bat')} ({token.converted} USD)
+                {token.tokens} {getLocale(batFormatString)} ({token.converted} USD)
               </option>
             )
           }).concat(
@@ -120,7 +122,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
                value={'show'}
                disabled={true}
              >
-               {monthlyAmount} {getLocale('bat')}
+               {monthlyAmount} {getLocale(batFormatString)}
              </StyledOptionShown>
           )}
         </StyledSelect>

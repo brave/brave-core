@@ -31,7 +31,7 @@ export default class Tokens extends React.PureComponent<Props, {}> {
 
   render () {
     const { id, converted, value, hideText, isNegative, size, color, currency, onlyAnonWallet } = this.props
-    const batFormatString = onlyAnonWallet ? getLocale('batPoints') : getLocale('bat')
+    const batFormatString = onlyAnonWallet ? getLocale('bap') : getLocale('bat')
 
     return (
       <StyledWrapper id={id} size={size} color={color}>
