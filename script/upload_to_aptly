@@ -127,11 +127,14 @@ done
 
 # TODO: Add some sanity checks for the repos
 
-set +x
 for i in ${DIST}; do
+    echo Publishing distro ${i}
     if [ "${i}" = "stable" ]; then
-        STABLE_ARGS="-origin='Brave Software' -label='Brave Browser'"
+        STABLE_ARGS="-origin=\"Brave Software\" -label=\"Brave Browser\""
+        echo Running command: aptly publish snapshot "${STABLE_ARGS}" -force-overwrite=true -gpg-key="${GPG_KEY_ID}!" "${i}-snapshot" "s3:${S3_BUCKET}:"
+        aptly publish snapshot "${STABLE_ARGS}" -force-overwrite=true -gpg-key="${GPG_KEY_ID}!" "${i}-snapshot" "s3:${S3_BUCKET}:"
+    else
+        echo Running command: aptly publish snapshot -force-overwrite=true -gpg-key="${GPG_KEY_ID}!" "${i}-snapshot" "s3:${S3_BUCKET}:"
+        aptly publish snapshot -force-overwrite=true -gpg-key="${GPG_KEY_ID}!" "${i}-snapshot" "s3:${S3_BUCKET}:"
     fi
-	  aptly publish snapshot ${STABLE_ARGS} -force-overwrite=true -gpg-key="${GPG_KEY_ID}!" -passphrase="${GPG_PASS}" "${i}-snapshot" "s3:${S3_BUCKET}:"
 done
-set -x
