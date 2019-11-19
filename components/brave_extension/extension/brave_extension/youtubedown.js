@@ -41,8 +41,6 @@
 
    TODO:
 
-   - Return thumbnail image as well.
-
    - Because this runs synchronously, it's uninterruptible until the
      video starts downloading (except by hitting reload).
 
@@ -77,7 +75,7 @@
 
 (function() {
 
-var version = '$Revision: 1.11 $'.replace(/^.*\s(\d[.\d]+)\s.*$/s, '$1');
+var version = '$Revision: 1.16 $'.replace(/^.*\s(\d[.\d]+)\s.*$/s, '$1');
 
 var verbose = 2;
 
@@ -544,6 +542,7 @@ function cipher_localstorage (load_p) {
         LOG ("load cipher cache:", e);
       }
     }
+    if (ciphers == null) ciphers = {};
   } else {
     if (n > 0) {
       // Only save the last few, sorted by STS.
@@ -1245,10 +1244,12 @@ var blocked_re = ['(available|blocked it) in your country',
                   'invalid parameters',
                   'RTMPE DRM',
                   'Private video\?',
+                  'video is private',
                   'piece of shit',
                   'you are a human',
-                  '^[^:]+: exists: ',
+                  '\bCAPCHA required',
                   '\b429 Too Many Requests',
+                  '^[^:]+: exists: ',
                   ].join('|');
 
 
@@ -1302,12 +1303,17 @@ function load_youtube_formats_html (id, url, fmts) {
     if (body.match(RX('<( div | h1 ) \\s+   \n\
                            (?: id | class ) =    \n\
                           "(?: error-box |   \n\
-                               yt-alert-content |   \n\
                                unavailable-message )"   \n\
                           [^<>]* > \\s*    \n\
-                          ( [^<>]+? ) \\s*   \n\
+                          ( .+? ) \\s*   \n\
                           </ \\1 >')))
       err = RegExp.$2;
+    if (err) {
+      err = err.replace(/^.*="yt-uix-button-content"[^<>]*>([^<>]+).*/si,
+                        '$1');
+      err = err.replace(/<[^<>]*>/gs, '');
+    }
+
     if (!err && body.match(/large volume of requests/))
       err = "Rate limited: CAPCHA required";
     if (err) {
@@ -1365,7 +1371,8 @@ function load_youtube_formats_html (id, url, fmts) {
                    'adaptive_fmts',
                    'dashmpd',
                    'player_response']) {
-    var v = (args.match(new RegExp('"' + key + '": *"(.*?[^\\\\])"', 's'))
+    var v = (args &&
+             args.match(new RegExp('"' + key + '": *"(.*?[^\\\\])"', 's'))
              ? RegExp.$1 : '');
     if (v == '",') v = '';
     v = v.replace(/\\/gs, '');
@@ -1509,9 +1516,18 @@ function load_youtube_formats_video_info (id, url, fmts) {
 
       done = (count >= 3 && title);
 
-      if (body.match(/\bstatus=fail\b/si) &&
+      // Don't let "Invalid parameters" override "This video is private".
+      if ((!err || err.match(/invalid param/si)) &&
+          body.match(/\bstatus=fail\b/si) &&
           body.match(/\breason=([^?&]+)/si))
-        err = decodeURIComponent (RegExp.$1)
+        err = decodeURIComponent (RegExp.$1);
+
+      // This gets us "This video is private" instead of "Invalid parameters".
+      if (body.match(/player_response=([^&]+)/s)) {
+        var s = decodeURIComponent (RegExp.$1);
+        if (s.match(/"reason":"(.*?)"/si))
+          err = RegExp.$1;
+      }
     }
     if (done) break;
     //sleep (1); // for retries
@@ -1588,7 +1604,8 @@ function load_youtube_formats (id, url, size_p) {
   err = err || err2;
 
   err2 = load_youtube_formats_video_info (id, url, fmts);
-  err = err || err2;
+  // Which error sucks less? Hard to say.
+  err = err2 || err;
 
   // It's rare, but there can be only one format available.
   // Keys: 18, cipher, title.
@@ -1597,6 +1614,9 @@ function load_youtube_formats (id, url, size_p) {
     if (err) error (id + ": " + err);
     errorI (id + ": no formats available: " + err);
   }
+
+  if (!fmts['thumb'])
+    fmts['thumb'] = "https://img.youtube.com/vi/" + id + "/0.jpg";
 
   return fmts;
 }
@@ -1697,6 +1717,9 @@ function load_vimeo_formats (id, url, size_p) {
 
   var files    = (files0 || '') + (files1 || '') + (files2 || '');
 
+  var thumb = (body.match(/"thumbs":{"\d+":"(.*?)"/)
+               ? RegExp.$1 : null);
+
   // Sometimes we get empty-ish data for "Private Video", but HTTP 200.
   if (!err && !title && !files)
     err = "No video info (Private video?)";
@@ -1760,6 +1783,8 @@ function load_vimeo_formats (id, url, size_p) {
       i++;
     }
   }
+
+  if (thumb) fmts['thumb'] = thumb;
 
   return fmts;
 }
@@ -1861,6 +1886,9 @@ function load_instagram_formats (id, url, size_p) {
   var ct    = (body.match(RX('<meta \\s+ property="og:video:type" \\s+   \n\
 			   content="([^<>]*n?)"'))
                ? RegExp.$1 : null);
+  var thumb = (body.match(RX('<meta \\s+ property="og:image"      \\s+   \n\
+			   content="([^<>]*n?)"'))
+               ? RegExp.$1 : null);
   var year  = (body.match (/\bdatetime=\"(\d{4})-/si)
               ? RegExp.$1 : null);
 
@@ -1884,6 +1912,7 @@ function load_instagram_formats (id, url, size_p) {
   fmts[i]       = v;
   fmts['title'] = title;
   fmts['year']  = year;
+  if (thumb) fmts['thumb'] = thumb;
 
   return fmts;
 }
@@ -2153,7 +2182,7 @@ function pick_download_format (id, site, url, force_fmt, fmts) {
   {
     var unk = [];
     for (var k in fmts) {
-      if (k === 'title' || k === 'year' || k === 'cipher')
+      if (k === 'title' || k === 'year' || k === 'cipher' || k === 'thumb')
         continue;
       if (! known_formats[k]) unk.push(k);
     }
@@ -2164,10 +2193,10 @@ function pick_download_format (id, site, url, force_fmt, fmts) {
   if (verbose > 1) {
     LOG (id + ": available formats:");
     for (var k of Object.keys(fmts).sort()) {
-      if (k === 'title' || k === 'year' || k === 'cipher')
+      if (k === 'title' || k === 'year' || k === 'cipher' || k === 'thumb')
         continue;
       LOG (k + " " +
-           (known_formats[k]['desc'] || '?') +
+           ((known_formats[k] && known_formats[k]['desc']) || '?') +
            (fmts[k]['dashp']
             ? (' dash' +
                ((typeof (fmts[k]['url']) === 'object')
@@ -2175,6 +2204,10 @@ function pick_download_format (id, site, url, force_fmt, fmts) {
                 : ''))
             : ''));
     }
+  }
+
+  if (!vfmt && !mfmt && Object.keys(fmts).length <= 3) {
+    error (id + ": No formats; private video?");
   }
 
 //mfmt=137; //####
@@ -2626,6 +2659,7 @@ function download_video_url (url, size_p, force_fmt) {
   var fmts = load_formats (url, size_p);
 
   var title = munge_title (fmts['title']);
+  var thumb = fmts['thumb'];
 
   // Now that we have the video info, decide what to download.
   // If we're doing --fmt all, this is all of them.
@@ -2652,7 +2686,6 @@ function download_video_url (url, size_p, force_fmt) {
     var abr   = fmt['abr'];
     var size  = fmt['size'];
     var url2  = fmt['url'];
-    var dashp = fmt['dashp'];
 
     if (size_p) {
       if (! ((w && h) || abr)) {
@@ -2691,6 +2724,7 @@ function download_video_url (url, size_p, force_fmt) {
       file += '.' + content_type_ext (ct);
 
       fmt['file'] = file;
+      if (thumb) fmt['thumb'] = thumb;
 
       ret.push (fmt);
     }
@@ -2708,7 +2742,8 @@ function download_video_url (url, size_p, force_fmt) {
 //
 //       [ { url: "https...",
 //           w: WIDTH, h: HEIGHT, abr: AUDIO_BITRATE, size: BYTES,
-//           file: "recommended download file name.mp4" } ]
+//           file: "recommended download file name.mp4",
+//           thumb: "https...jpg" } ]
 //
 //   - A single multi-segment URL, where each segment must be concatenated:
 //
