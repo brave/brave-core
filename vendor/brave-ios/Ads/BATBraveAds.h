@@ -101,6 +101,14 @@ NS_SWIFT_NAME(BraveAds)
 
 - (nullable BATAdsNotification *)adsNotificationForIdentifier:(NSString *)identifier;
 
+#pragma mark - History
+
+/// Get a list of dates of when the user has viewed ads
+- (NSArray<NSDate *> *)getAdsHistoryDates;
+
+/// Return true if the user has viewed ads in the previous cycle/month
+- (BOOL)hasViewedAdsInPreviousCycle;
+
 #pragma mark - Reporting
 
 /// Report that a page has loaded in the current browser tab, and the inner text

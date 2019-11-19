@@ -253,6 +253,43 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
   ads->OnBackground();
 }
 
+#pragma mark - History
+
+- (NSArray<NSDate *> *)getAdsHistoryDates
+{
+  if (![self isAdsServiceRunning]) { return @[]; }
+  const auto history = ads->GetAdsHistory(ads::AdsHistoryFilterType::kNone);
+  const auto dates = [[NSMutableArray<NSDate *> alloc] init];
+  for (auto it = history.begin(); it != history.end(); ++it) {
+    for (auto& item : it->second) {
+      for (auto& detail : item.details) {
+        const auto date = [NSDate dateWithTimeIntervalSince1970:
+                           detail.timestamp_in_seconds];
+        [dates addObject:date];
+      }
+    }
+  }
+  return dates;
+}
+
+- (BOOL)hasViewedAdsInPreviousCycle
+{
+  const auto calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];
+  const auto now = NSDate.date;
+  const auto previousCycleDate = [calendar dateByAddingUnit:NSCalendarUnitMonth value:-1 toDate:now options:0];
+  const auto previousCycleMonth = [calendar component:NSCalendarUnitMonth fromDate:previousCycleDate];
+  const auto previousCycleYear = [calendar component:NSCalendarUnitYear fromDate:previousCycleDate];
+  const auto viewedDates = [self getAdsHistoryDates];
+  for (NSDate *date in viewedDates) {
+    const auto components = [calendar components:NSCalendarUnitMonth|NSCalendarUnitYear fromDate:date];
+    if (components.month == previousCycleMonth && components.year == previousCycleYear) {
+      // Was from previous cycle
+      return YES;
+    }
+  }
+  return NO;
+}
+
 #pragma mark - Reporting
 
 - (void)reportLoadedPageWithURL:(NSURL *)url innerText:(NSString *)text

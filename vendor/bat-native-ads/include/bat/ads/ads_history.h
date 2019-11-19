@@ -11,10 +11,9 @@
 
 #include "bat/ads/export.h"
 #include "bat/ads/result.h"
+#include "bat/ads/ad_history_detail.h"
 
 namespace ads {
-
-struct AdHistoryDetail;
 
 enum class AdsHistoryFilterType {
   kNone = 0,
