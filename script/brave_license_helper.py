@@ -42,6 +42,11 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
             "URL": "https://github.com/brave/adblock-rust-ffi",
             "License": "MPL-2.0",
         },
+        os.path.join('brave', 'vendor', 'https-everywhere-lib-cpp'): {
+            "Name": "https-everywhere-lib-cpp",
+            "URL": "https://github.com/brave/https-everywhere-lib-cpp",
+            "License": "MPL-2.0",
+        },
         os.path.join('brave', 'vendor', 'bat-native-anonize'): {
             "Name": "bat-native-anonize",
             "URL": "https://github.com/brave-intl/bat-native-anonize",

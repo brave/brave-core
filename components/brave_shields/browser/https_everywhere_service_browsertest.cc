@@ -100,11 +100,16 @@ class HTTPSEverywhereServiceTest : public ExtensionBrowserTest {
 IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, RedirectsKnownSite) {
   ASSERT_TRUE(InstallHTTPSEverywhereExtension());
 
-  GURL url = embedded_test_server()->GetURL("www.digg.com", "/");
+  GURL url = embedded_test_server()->GetURL("www.01.org", "/");
   ui_test_utils::NavigateToURL(browser(), url);
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  EXPECT_EQ(GURL("https://www.digg.com/"), contents->GetLastCommittedURL());
+
+  GURL::Replacements clear_port;
+  clear_port.ClearPort();
+
+  EXPECT_EQ(GURL("https://www.01.org/"),
+            contents->GetLastCommittedURL().ReplaceComponents(clear_port));
 }
 
 // Load a URL which has no HTTPSE rule and verify we did not rewrite it.
@@ -130,7 +135,7 @@ IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, RedirectsKnownSiteInIframe) {
   GURL url = embedded_test_server()->GetURL("a.com", "/iframe.html");
   ui_test_utils::NavigateToURL(browser(), url);
 
-  GURL iframe_url = embedded_test_server()->GetURL("www.digg.com", "/");
+  GURL iframe_url = embedded_test_server()->GetURL("www.01.org", "/");
   const char kIframeID[] = "test";
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
@@ -138,6 +143,11 @@ IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, RedirectsKnownSiteInIframe) {
   content::RenderFrameHost* iframe_contents =
       ChildFrameAt(contents->GetMainFrame(), 0);
   WaitForLoadStop(contents);
-  EXPECT_EQ(GURL("https://www.digg.com/"),
-            iframe_contents->GetLastCommittedURL());
+
+  GURL::Replacements clear_port;
+  clear_port.ClearPort();
+
+  EXPECT_EQ(GURL("https://www.01.org/"),
+            iframe_contents->GetLastCommittedURL()
+                .ReplaceComponents(clear_port));
 }

@@ -12,76 +12,29 @@
 
 #include "base/base_paths.h"
 #include "base/bind.h"
-#include "base/json/json_reader.h"
+#include "base/files/file_util.h"
 #include "base/logging.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/threading/scoped_blocking_call.h"
-#include "base/values.h"
-#include "third_party/leveldatabase/src/include/leveldb/db.h"
-#include "third_party/re2/src/re2/re2.h"
+#include "brave/browser/component_updater/brave_component_installer.h"
+#include "brave/common/pref_names.h"
+#include "brave/vendor/https-everywhere-lib-cpp/src/wrapper.h"
+#include "chrome/browser/browser_process_impl.h"
+#include "chrome/browser/first_run/first_run.h"
+#include "components/component_updater/component_updater_service.h"
+#include "components/prefs/pref_service.h"
 #include "third_party/zlib/google/zip.h"
 
-#define DAT_FILE "httpse.leveldb.zip"
-#define DAT_FILE_VERSION "6.0"
+#define DAT_FILE "httpse-rs.json.zip"
+#define DAT_FILE_VERSION "7.0"
 #define HTTPSE_URLS_REDIRECTS_COUNT_QUEUE   1
 #define HTTPSE_URL_MAX_REDIRECTS_COUNT      5
 
 namespace {
 
-std::vector<std::string> Split(const std::string& s, char delim) {
-  std::stringstream ss(s);
-  std::string item;
-  std::vector<std::string> result;
-  while (getline(ss, item, delim)) {
-    result.push_back(item);
-  }
-  return result;
-}
-
-// returns parts in reverse order, makes list of lookup domains like com.foo.*
-std::vector<std::string> ExpandDomainForLookup(const std::string& domain) {
-  std::vector<std::string> resultDomains;
-  std::vector<std::string> domainParts = Split(domain, '.');
-  if (domainParts.empty()) {
-    return resultDomains;
-  }
-
-  for (size_t i = 0; i < domainParts.size() - 1; i++) {
-    // i < size()-1 is correct: don't want 'com.*' added to resultDomains
-    std::string slice = "";
-    std::string dot = "";
-    for (int j = domainParts.size() - 1; j >= static_cast<int>(i); j--) {
-      slice += dot + domainParts[j];
-      dot = ".";
-    }
-    if (0 != i) {
-      // We don't want * on the top URL
-      resultDomains.push_back(slice + ".*");
-    } else {
-      resultDomains.push_back(slice);
-    }
-  }
-  return resultDomains;
-}
-std::string leveldbGet(leveldb::DB* db, const std::string &key) {
-  if (!db) {
-    return "";
-  }
-
-  std::string value;
-  leveldb::Status s = db->Get(leveldb::ReadOptions(), key, &value);
-  return s.ok() ? value : "";
-}
-
-}  // namespace
-
-namespace brave_shields {
-
-const char kHTTPSEverywhereComponentName[] = "Brave HTTPS Everywhere Updater";
-const char kHTTPSEverywhereComponentId[] = "oofiananboodjbbmdelgdommihjbkfag";
-const char kHTTPSEverywhereComponentBase64PublicKey[] =
+// Legacy component ID, unregistered at startup
+const char kHTTPSEverywhere6ComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvn9zSMjTmhkQyrZu5UdN"
     "350nPqLoSeCYngcC7yDFwaUHjoBQXCZqGeDC69ciCQ2mlRhcV2nxXqlUDkiC6+7m"
     "651nI+gi4oVqHagc7EFUyGA0yuIk7qIMvCBdH7wbET27de0rzbRzRht9EKzEjIhC"
@@ -89,6 +42,40 @@ const char kHTTPSEverywhereComponentBase64PublicKey[] =
     "+YcC9obL4g5krVrfrlKLfFNpIewUcJyBpSlCgfxEyEhgDkK9cILTMUi5vC7GxS3P"
     "OtZqgfRg8Da4i+NwmjQqrz0JFtPMMSyUnmeMj+mSOL4xZVWr8fU2/GOCXs9gczDp"
     "JwIDAQAB";
+
+void NoopReadyCallback(const base::FilePath&, const std::string&) {}
+
+void OnLegacyHTTPSEverywhereRegistered(
+    scoped_refptr<component_updater::ComponentInstaller> installer
+) {
+  installer->Uninstall();
+}
+
+void MigrateHTTPSEverywhere6Prefs() {
+  auto* updater = g_browser_process->component_updater();
+  auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
+      std::make_unique<brave::BraveComponentInstallerPolicy>(
+          brave_shields::kHTTPSEverywhereComponentName,
+          kHTTPSEverywhere6ComponentBase64PublicKey,
+          base::BindRepeating(NoopReadyCallback)));
+  installer->Register(updater,
+      base::BindOnce(OnLegacyHTTPSEverywhereRegistered, installer));
+}
+
+}  // namespace
+
+namespace brave_shields {
+
+const char kHTTPSEverywhereComponentName[] = "Brave HTTPS Everywhere Updater";
+const char kHTTPSEverywhereComponentId[] = "nceadfeaijjaobpigjldlbaogfokgajf";
+const char kHTTPSEverywhereComponentBase64PublicKey[] =
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnlSgb99knPRN5YtflR0x"
+    "gi6eO3K4XYzF1shgACd40ccwSGyuYwqdBK6f8jAJOL5leBnmvXgHTeiXc1K+l0K8"
+    "FgQMO9Y1EtzBHfdXxN3u7NKoQmCO9m5dlz771m4Qgg+JtB6hsmqNAMkqee50wQn3"
+    "q8+tcS8xM63zOGM0E9ub/tFAxPTAfLJlka2Qn0iFj7ON2OzfpJNQguPx4rJS34zi"
+    "BfXagFF+tlNzdy0BOHIHOiqtZ09sOgHaptIZdWVef6Y9v4fjOlVNlrn45rt98whr"
+    "YFAgbOutakZNf6PEQ/brga6zAhu6B/0kIOEFZhDC198gqqaAacV8bHmryUxjWPEi"
+    "qwIDAQAB";
 
 bool HTTPSEverywhereService::g_ignore_port_for_test_(false);
 std::string HTTPSEverywhereService::g_https_everywhere_component_id_(
@@ -100,15 +87,29 @@ HTTPSEverywhereService::g_https_everywhere_component_base64_public_key_(
 HTTPSEverywhereService::HTTPSEverywhereService(
     BraveComponent::Delegate* delegate)
     : BaseBraveShieldsService(delegate),
-      level_db_(nullptr) {
+      rust_client_(httpse::HttpsEverywhereClient()) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
 HTTPSEverywhereService::~HTTPSEverywhereService() {
-  GetTaskRunner()->DeleteSoon(FROM_HERE, level_db_);
 }
 
 bool HTTPSEverywhereService::Init() {
+  PrefService* local_state = g_browser_process->local_state();
+  if (!local_state) {
+    return false;
+  }
+
+  bool hasMigratedHTTPSEverywhere6 =
+      local_state->GetBoolean(kMigratedHTTPSEverywhere6);
+
+  if (!hasMigratedHTTPSEverywhere6) {
+    local_state->SetBoolean(kMigratedHTTPSEverywhere6, true);
+    if (!first_run::IsChromeFirstRun()) {
+      MigrateHTTPSEverywhere6Prefs();
+    }
+  }
+
   Register(kHTTPSEverywhereComponentName,
            g_https_everywhere_component_id_,
            g_https_everywhere_component_base64_public_key_);
@@ -117,30 +118,20 @@ bool HTTPSEverywhereService::Init() {
 
 void HTTPSEverywhereService::InitDB(const base::FilePath& install_dir) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  base::FilePath zip_db_file_path =
+
+  base::FilePath zip_file_path =
       install_dir.AppendASCII(DAT_FILE_VERSION).AppendASCII(DAT_FILE);
-  base::FilePath unzipped_level_db_path = zip_db_file_path.RemoveExtension();
-  base::FilePath destination = zip_db_file_path.DirName();
-  if (!zip::Unzip(zip_db_file_path, destination)) {
-    LOG(ERROR) << "Failed to unzip database file "
-               << zip_db_file_path.value().c_str();
+  base::FilePath json_ruleset_path = zip_file_path.RemoveExtension();
+  base::FilePath destination = zip_file_path.DirName();
+  if (!zip::Unzip(zip_file_path, destination)) {
+    LOG(ERROR) << "Failed to unzip HTTPSE rules file "
+               << zip_file_path.value().c_str();
     return;
   }
 
-  CloseDatabase();
-
-  leveldb::Options options;
-  leveldb::Status status =
-      leveldb::DB::Open(options,
-                        unzipped_level_db_path.AsUTF8Unsafe(),
-                        &level_db_);
-  if (!status.ok() || !level_db_) {
-    LOG(ERROR) << "Level db open error "
-               << unzipped_level_db_path.value().c_str()
-               << ", error: " << status.ToString();
-    CloseDatabase();
-    return;
-  }
+  std::string rules;
+  base::ReadFileToString(json_ruleset_path, &rules);
+  rust_client_.LoadRules(rules);
 }
 
 void HTTPSEverywhereService::OnComponentReady(
@@ -163,7 +154,7 @@ bool HTTPSEverywhereService::GetHTTPSURL(
   if (!url->is_valid())
     return false;
 
-  if (!IsInitialized() || !level_db_ || url->scheme() == url::kHttpsScheme) {
+  if (!IsInitialized() || url->scheme() == url::kHttpsScheme) {
     return false;
   }
   if (!ShouldHTTPSERedirect(request_identifier)) {
@@ -182,18 +173,12 @@ bool HTTPSEverywhereService::GetHTTPSURL(
     candidate_url = candidate_url.ReplaceComponents(replacements);
   }
 
-  const std::vector<std::string> domains =
-      ExpandDomainForLookup(candidate_url.host());
-  for (auto domain : domains) {
-    std::string value = leveldbGet(level_db_, domain);
-    if (!value.empty()) {
-      *new_url = ApplyHTTPSRule(candidate_url.spec(), value);
-      if (0 != new_url->length()) {
-        recently_used_cache_.add(candidate_url.spec(), *new_url);
-        AddHTTPSEUrlToRedirectList(request_identifier);
-        return true;
-      }
-    }
+  auto rewrite_result = rust_client_.RewriteUrl(candidate_url.spec());
+  if (rewrite_result.action == httpse::RewriteAction::REWRITE_URL) {
+    *new_url = rewrite_result.new_url;
+    recently_used_cache_.add(candidate_url.spec(), *new_url);
+    AddHTTPSEUrlToRedirectList(request_identifier);
+    return true;
   }
   recently_used_cache_.remove(candidate_url.spec());
   return false;
@@ -262,124 +247,8 @@ void HTTPSEverywhereService::AddHTTPSEUrlToRedirectList(
   }
 }
 
-std::string HTTPSEverywhereService::ApplyHTTPSRule(
-    const std::string& originalUrl,
-    const std::string& rule) {
-  base::Optional<base::Value> json_object = base::JSONReader::Read(rule);
-  if (base::nullopt == json_object || !json_object->is_list()) {
-    return "";
-  }
-
-  base::Value::ConstListView topValues = json_object->GetList();
-  for (auto it = topValues.cbegin(); it != topValues.cend(); ++it) {
-    if (!it->is_dict()) {
-      continue;
-    }
-    const base::DictionaryValue* childTopDictionary = nullptr;
-    it->GetAsDictionary(&childTopDictionary);
-    if (nullptr == childTopDictionary) {
-      continue;
-    }
-
-    const base::Value* exclusion = nullptr;
-    if (childTopDictionary->Get("e", &exclusion)) {
-      const base::ListValue* eValues = nullptr;
-      exclusion->GetAsList(&eValues);
-      if (nullptr != eValues) {
-        for (size_t j = 0; j < eValues->GetSize(); ++j) {
-          const base::Value* pValue = nullptr;
-          if (!eValues->Get(j, &pValue)) {
-            continue;
-          }
-          const base::DictionaryValue* pDictionary = nullptr;
-          pValue->GetAsDictionary(&pDictionary);
-          if (nullptr == pDictionary) {
-            continue;
-          }
-          const base::Value* patternValue = nullptr;
-          if (!pDictionary->Get("p", &patternValue)) {
-            continue;
-          }
-          std::string pattern;
-          if (!patternValue->GetAsString(&pattern)) {
-            continue;
-          }
-          pattern = CorrecttoRuleToRE2Engine(pattern);
-          if (RE2::FullMatch(originalUrl, pattern)) {
-            return "";
-          }
-        }
-      }
-    }
-
-    const base::Value* rules = nullptr;
-    if (!childTopDictionary->Get("r", &rules)) {
-      return "";
-    }
-    const base::ListValue* rValues = nullptr;
-    rules->GetAsList(&rValues);
-    if (nullptr == rValues) {
-      return "";
-    }
-
-    for (size_t j = 0; j < rValues->GetSize(); ++j) {
-      const base::Value* pValue = nullptr;
-      if (!rValues->Get(j, &pValue)) {
-        continue;
-      }
-      const base::DictionaryValue* pDictionary = nullptr;
-      pValue->GetAsDictionary(&pDictionary);
-      if (nullptr == pDictionary) {
-        continue;
-      }
-      const base::Value* patternValue = nullptr;
-      if (pDictionary->Get("d", &patternValue)) {
-        std::string newUrl(originalUrl);
-        return newUrl.insert(4, "s");
-      }
-
-      const base::Value* from_value = nullptr;
-      const base::Value* to_value = nullptr;
-      if (!pDictionary->Get("f", &from_value) ||
-          !pDictionary->Get("t", &to_value)) {
-        continue;
-      }
-      std::string from, to;
-      if (!from_value->GetAsString(&from) ||
-          !to_value->GetAsString(&to)) {
-        continue;
-      }
-
-      to = CorrecttoRuleToRE2Engine(to);
-      std::string newUrl(originalUrl);
-      RE2 regExp(from);
-
-      if (RE2::Replace(&newUrl, regExp, to) && newUrl != originalUrl) {
-        return newUrl;
-      }
-    }
-  }
-  return "";
-}
-
-std::string HTTPSEverywhereService::CorrecttoRuleToRE2Engine(
-    const std::string& to) {
-  std::string correctedto(to);
-  size_t pos = to.find("$");
-  while (std::string::npos != pos) {
-    correctedto[pos] = '\\';
-    pos = correctedto.find("$");
-  }
-
-  return correctedto;
-}
-
 void HTTPSEverywhereService::CloseDatabase() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (level_db_) {
-    delete level_db_;
-    level_db_ = nullptr;
-  }
 }
 
 // static
@@ -402,6 +271,10 @@ void HTTPSEverywhereService::SetIgnorePortForTest(bool ignore) {
 std::unique_ptr<HTTPSEverywhereService> HTTPSEverywhereServiceFactory(
     BraveComponent::Delegate* delegate) {
   return std::make_unique<HTTPSEverywhereService>(delegate);
+}
+
+void RegisterPrefsForHTTPSEverywhereService(PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(kMigratedHTTPSEverywhere6, false);
 }
 
 }  // namespace brave_shields

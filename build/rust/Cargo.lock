@@ -10,7 +10,7 @@ dependencies = [
  "base64 0.10.1",
  "bitflags",
  "flate2",
- "hashbrown",
+ "hashbrown 0.6.3",
  "idna 0.2.0",
  "itertools",
  "lazy_static",
@@ -30,12 +30,12 @@ dependencies = [
 [[package]]
 name = "adblock"
 version = "0.3.1"
-source = "git+https://github.com/brave/adblock-rust?rev=1f8dd4273ebc0339babb1cc3e38bd6f14d44e7e1#1f8dd4273ebc0339babb1cc3e38bd6f14d44e7e1"
+source = "git+https://github.com/brave/adblock-rust?rev=9032b8bb07bb71879120fc8228c0d4d1d75a0894#9032b8bb07bb71879120fc8228c0d4d1d75a0894"
 dependencies = [
  "base64 0.10.1",
  "bitflags",
  "flate2",
- "hashbrown",
+ "hashbrown 0.6.3",
  "idna 0.2.0",
  "itertools",
  "lazy_static",
@@ -97,6 +97,12 @@ checksum = "6f33b5018f120946c1dcf279194f238a9f146725593ead1c08fa47ff22b0b5d3"
 dependencies = [
  "const-random",
 ]
+
+[[package]]
+name = "ahash"
+version = "0.3.8"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e8fd72866655d1904d6b0997d0b07ba561047d070fbe29de039031c641b61217"
 
 [[package]]
 name = "aho-corasick"
@@ -185,6 +191,7 @@ version = "0.1.0"
 dependencies = [
  "adblock-ffi",
  "challenge-bypass-ristretto-ffi",
+ "https-everywhere-lib-cpp",
  "speedreader-ffi",
 ]
 
@@ -495,9 +502,19 @@ version = "0.6.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8e6073d0ca812575946eb5f35ff68dbe519907b25c42530389ff946dc84c6ead"
 dependencies = [
- "ahash",
+ "ahash 0.2.18",
  "autocfg 0.1.7",
  "serde",
+]
+
+[[package]]
+name = "hashbrown"
+version = "0.8.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e91b62f79061a0bc2e046024cb7ba44b08419ed238ecbd9adbd787434b9e8c25"
+dependencies = [
+ "ahash 0.3.8",
+ "autocfg 1.0.0",
 ]
 
 [[package]]
@@ -522,6 +539,28 @@ dependencies = [
  "proc-macro2 1.0.19",
  "quote 1.0.7",
  "syn 1.0.38",
+]
+
+[[package]]
+name = "https-everywhere-lib-core"
+version = "0.1.2"
+source = "git+https://github.com/EFForg/https-everywhere-lib-core?rev=8157ca5c804d83d99031f91cfd8e288fda96a8c7#8157ca5c804d83d99031f91cfd8e288fda96a8c7"
+dependencies = [
+ "lazy_static",
+ "log",
+ "lru",
+ "regex",
+ "serde_json",
+ "url 2.1.1",
+]
+
+[[package]]
+name = "https-everywhere-lib-cpp"
+version = "0.1.0"
+dependencies = [
+ "https-everywhere-lib-core",
+ "libc",
+ "serde_json",
 ]
 
 [[package]]
@@ -616,6 +655,15 @@ dependencies = [
  "safemem",
  "selectors",
  "thiserror",
+]
+
+[[package]]
+name = "lru"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "111b945ac72ec09eb7bc62a0fbdc3cc6e80555a7245f52a69d3921a75b53b153"
+dependencies = [
+ "hashbrown 0.8.2",
 ]
 
 [[package]]

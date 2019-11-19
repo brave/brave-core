@@ -51,12 +51,15 @@ source_set("browser") {
 
   deps = [
     "//base",
+    "//brave/common",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_shields/common",
     "//brave/components/content_settings/core/browser",
     "//brave/content:common",
     "//brave/vendor/adblock_rust_ffi",
+    "//brave/vendor/https-everywhere-lib-cpp",
     "//chrome/common",
+    "//components/component_updater",
     "//components/content_settings/core/common",
     "//components/content_settings/core/browser",
     "//components/keyed_service/core",
