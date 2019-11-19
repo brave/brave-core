@@ -389,7 +389,7 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
     }
 
     func loader(dataLoaded data: [Site]) {
-        self.data = data
+        self.data = Array(data.prefix(5))
         tableView.reloadData()
     }
 
