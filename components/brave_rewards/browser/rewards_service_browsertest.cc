@@ -21,6 +21,7 @@
 #include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/components/brave_rewards/browser/rewards_service_browsertest_utils.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
@@ -55,6 +56,8 @@ using ::testing::NiceMock;
 using ::testing::Return;
 
 using braveledger_request_util::ServerTypes;
+
+using namespace rewards_service_browsertest_utils;
 
 using RewardsNotificationType =
     brave_rewards::RewardsNotificationService::RewardsNotificationType;
@@ -415,34 +418,6 @@ class BraveRewardsBrowserTest
     wait_for_insufficient_notification_loop_->Run();
   }
 
-  void WaitForSelector(content::WebContents* contents,
-      const std::string& selector) const {
-    auto script = content::JsReplace(
-        "new Promise((resolve) => {"
-        "  let count = 20;"
-        "  let interval = setInterval(function() {"
-        "    if (count == 0) {"
-        "      clearInterval(interval);"
-        "      resolve(false);"
-        "    } else {"
-        "      count -= 1;"
-        "    }"
-        "    const element = document.querySelector($1);"
-        "    if (element) {"
-        "      clearInterval(interval);"
-        "      resolve(true);"
-        "    }"
-        "  }, 500);"
-        "});",
-        selector);
-    auto js_result = EvalJs(
-        contents,
-        script,
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    ASSERT_TRUE(js_result.ExtractBool());
-  }
-
   void DragAndDrop(
       content::WebContents* contents,
       const std::string& drag_selector,
@@ -750,7 +725,7 @@ class BraveRewardsBrowserTest
         static_cast<const content::Source<content::WebContents>&>(
             popup_observer.source());
 
-    WaitForSelector(source.ptr(), "#panel-slider");
+    WaitForElementToAppear(source.ptr(), "#panel-slider");
     return source.ptr();
   }
 
@@ -861,28 +836,8 @@ class BraveRewardsBrowserTest
     ui_test_utils::NavigateToURL(browser(), page_url);
     WaitForLoadStop(contents());
     // Opt in and create wallet to enable rewards
-    ASSERT_TRUE(ExecJs(contents(),
-      "document.querySelector(\"[data-test-id='optInAction']\").click();",
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END));
-    content::EvalJsResult jsResult = EvalJs(contents(),
-      "new Promise((resolve) => {"
-      "var count = 10;"
-      "var interval = setInterval(function() {"
-      "  if (count == 0) {"
-      "    clearInterval(interval);"
-      "    resolve(false);"
-      "  } else {"
-      "    count -= 1;"
-      "  }"
-      "  if (document.querySelector(\"[data-test-id2='enableMain']\")) {"
-      "    clearInterval(interval);"
-      "    resolve(true);"
-      "  }"
-      "}, 500);});",
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
-    ASSERT_TRUE(jsResult.ExtractBool());
+    WaitForElementThenClick(contents(), "[data-test-id='optInAction']");
+    WaitForElementToAppear(contents(), "[data-test-id2='enableMain']");
   }
 
   brave_rewards::RewardsServiceImpl* rewards_service() {
@@ -900,21 +855,13 @@ class BraveRewardsBrowserTest
 
     // Claim promotion via settings page or panel, as instructed
     if (use_panel) {
-      ASSERT_TRUE(ExecJs(contents,
-                         "document.getElementsByTagName('button')[0].click();",
-                         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                         content::ISOLATED_WORLD_ID_CONTENT_END));
+      WaitForElementThenClick(contents, "button");
     } else {
-      WaitForSelector(contents, "[data-test-id='claimGrant']");
-      ASSERT_TRUE(ExecJs(
-          contents,
-          "document.querySelector(\"[data-test-id='claimGrant']\").click();",
-          content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-          content::ISOLATED_WORLD_ID_CONTENT_END));
+      WaitForElementThenClick(contents, "[data-test-id='claimGrant']");
     }
 
     // Wait for CAPTCHA
-    WaitForSelector(contents, "[data-test-id='captcha']");
+    WaitForElementToAppear(contents, "[data-test-id='captcha']");
 
     DragAndDrop(
         contents,
@@ -934,44 +881,12 @@ class BraveRewardsBrowserTest
     // Check that promotion notification shows the appropriate amount
     const std::string selector =
         use_panel ? "[id='root']" : "[data-test-id='newTokenGrant']";
-
-    WaitForSelector(contents, selector);
-
-    content::EvalJsResult js_result = EvalJs(
-        contents,
-        content::JsReplace(
-            "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-            "delay(0).then(() => "
-            "  document.querySelector($1).innerText);",
-            selector),
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_NE(js_result.ExtractString().find("Free Token Grant"),
-              std::string::npos);
-    EXPECT_NE(js_result.ExtractString().find("30.0 BAT"), std::string::npos);
+    WaitForElementToContain(contents, selector, "Free Token Grant");
+    WaitForElementToContain(contents, selector, "30.0 BAT");
 
     // Dismiss the promotion notification
     if (use_panel) {
-      content::EvalJsResult jsResult = EvalJs(contents,
-      "new Promise((resolve) => {"
-      "let count = 10;"
-      "let interval = setInterval(function() {"
-      "  if (count == 0) {"
-      "    clearInterval(interval);"
-      "    resolve(false);"
-      "  } else {"
-      "    count -= 1;"
-      "  }"
-      "  const button = document.getElementById(\"grant-completed-ok\");"
-      "  if (button) {"
-      "    clearInterval(interval);"
-      "    button.click();"
-      "    resolve(true);"
-      "  }"
-      "}, 500);});",
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
-      ASSERT_TRUE(jsResult.ExtractBool());
+      WaitForElementThenClick(contents, "#grant-completed-ok");
     }
   }
 
@@ -994,15 +909,8 @@ class BraveRewardsBrowserTest
     WaitForPublisherListNormalized();
 
     // Make sure site appears in auto-contribute table
-    content::EvalJsResult js_result = EvalJs(
-        contents(),
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(1000).then(() => "
-        "  document.querySelector(\"[data-test-id='ac_link_" + publisher + "']"
-        "\").innerText);",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_STREQ(js_result.ExtractString().c_str(), publisher.c_str());
+    WaitForElementToEqual(contents(),
+        "[data-test-id='ac_link_" + publisher + "']", publisher);
 
     if (verified) {
       // A verified site has two images associated with it, the site's
@@ -1031,49 +939,6 @@ class BraveRewardsBrowserTest
     }
   }
 
-  std::string ElementInnerText(const std::string& selector,
-                               int delay_ms = 0) const {
-    auto script = content::JsReplace(
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay($1).then(() => document.querySelector($2).innerText);",
-        delay_ms,
-        selector);
-
-    auto js_result = EvalJs(
-        contents(),
-        script,
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-
-    return js_result.ExtractString();
-  }
-
-  std::string RewardsPageBalance() const {
-    return ElementInnerText("[data-test-id='balance']", 1000);
-  }
-
-  std::string RewardsPagePendingContributions() const {
-    std::string pending_text = ElementInnerText(
-        "[data-test-id='pending-contribution-box']",
-        500);
-
-    // The pending text is of the form "You’ve designated 1.0 BAT for..."
-    size_t start = pending_text.find("designated ");
-    assert(start != std::string::npos);
-    start += 11;
-
-    size_t end = pending_text.find(" for");
-    assert(start != std::string::npos);
-
-    return pending_text.substr(start, end - start);
-  }
-
-  std::string RewardsPageTipSummaryAmount() const {
-    std::string amount = ElementInnerText(
-        "[data-test-id=summary-tips] [color=donation] span span");
-    return amount + " BAT";
-  }
-
   std::string ExpectedPendingBalanceString() const {
     return GetPendingBalance() + " BAT";
   }
@@ -1085,7 +950,7 @@ class BraveRewardsBrowserTest
   std::string ExpectedTipSummaryAmountString() const {
     // The tip summary page formats 2.4999 as 2.4, so we do the same here.
     double truncated_amount = floor(reconciled_tip_total_ * 10) / 10;
-    return BalanceDoubleToString(-truncated_amount) + " BAT";
+    return BalanceDoubleToString(-truncated_amount);
   }
 
   void ActivateTabAtIndex(int index) const {
@@ -1095,28 +960,9 @@ class BraveRewardsBrowserTest
   }
 
   void RefreshPublisherListUsingRewardsPopup() const {
-    content::EvalJsResult js_result = EvalJs(
+    WaitForElementThenClick(
         OpenRewardsPopup(),
-        "new Promise((resolve) => {"
-        "let count = 10;"
-        "let interval = setInterval(function() {"
-        "  if (count == 0) {"
-        "    clearInterval(interval);"
-        "    resolve(false);"
-        "  } else {"
-        "    count -= 1;"
-        "  }"
-        "  const button = "
-        "document.querySelector(\"[data-test-id='unverified-check-button']\");"
-        "  if (button) {"
-        "    clearInterval(interval);"
-        "    button.click();"
-        "    resolve(true);"
-        "  }"
-        "}, 500);});",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-      ASSERT_TRUE(js_result.ExtractBool());
+        "[data-test-id='unverified-check-button']");
   }
 
   void TipPublisher(
@@ -1147,29 +993,8 @@ class BraveRewardsBrowserTest
         ? "[type='tip-monthly']"
         : "[type='tip']";
 
-    // Click button to initiate sending a tip
-    content::EvalJsResult js_result = EvalJs(
-      popup_contents,
-      content::JsReplace(
-      "new Promise((resolve) => {"
-      "let count = 10;"
-      "var interval = setInterval(function() {"
-      "  if (count === 0) {"
-      "    clearInterval(interval);"
-      "    resolve('');"
-      "  } else {"
-      "    count -= 1;"
-      "  }"
-      "  const tipButton = document.querySelector($1);"
-      "  if (tipButton) {"
-      "    clearInterval(interval);"
-      "    tipButton.click();"
-      "    resolve(true);"
-      "  }"
-      "}, 500);});",
-      buttonSelector),
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
+    // Click button to initiate sending a tip.
+    WaitForElementThenClick(popup_contents, buttonSelector);
 
     // Wait for the site banner to load
     site_banner_observer.Wait();
@@ -1186,26 +1011,14 @@ class BraveRewardsBrowserTest
     const std::string amount_str = std::to_string(static_cast<int32_t>(amount));
 
     // Select the tip amount (default is 1.0 BAT)
-    ASSERT_TRUE(ExecJs(
-        site_banner_contents,
-        content::JsReplace(
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(0).then(() => "
-        "  document.querySelectorAll(\"[data-test-id='amount-wrapper']\")[$1]"
-        "  .click());",
-        selection),
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END));
+    std::string amount_selector = base::StringPrintf(
+        "div:nth-of-type(%u)>[data-test-id=amount-wrapper]",
+        selection + 1);
+    WaitForElementThenClick(site_banner_contents, amount_selector);
 
     // Send the tip
-    ASSERT_TRUE(ExecJs(
-        site_banner_contents,
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(0).then(() => "
-        "  document.querySelector(\"[data-test-id='send-tip-button']\")"
-        "  .click());",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END));
+    WaitForElementThenClick(site_banner_contents,
+        "[data-test-id='send-tip-button']");
 
     // Signal that direct tip was made and update wallet with new
     // balance
@@ -1221,21 +1034,11 @@ class BraveRewardsBrowserTest
         : "Tip sent!";
     // Make sure that thank you banner shows correct publisher data
     // (domain and amount)
-    {
-      content::EvalJsResult js_result = EvalJs(
-          site_banner_contents,
-          "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-          "delay(0).then(() => "
-          "  document.documentElement.innerText);",
-          content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-          content::ISOLATED_WORLD_ID_CONTENT_END);
-      EXPECT_NE(js_result.ExtractString().find(
-          confirmationText), std::string::npos);
-      EXPECT_NE(js_result.ExtractString().find(
-           "" + amount_str + ".0 BAT"), std::string::npos);
-      EXPECT_NE(js_result.ExtractString().find(
-          "Share the good news:"), std::string::npos);
-    }
+    WaitForElementToContain(site_banner_contents, "body", confirmationText);
+    WaitForElementToContain(site_banner_contents, "body",
+        amount_str + ".0 BAT");
+    WaitForElementToContain(site_banner_contents, "body",
+        "Share the good news:");
 
     // Activate the Rewards settings page tab
     ActivateTabAtIndex(0);
@@ -1266,26 +1069,31 @@ class BraveRewardsBrowserTest
 
     if (should_contribute) {
       // Make sure that balance is updated correctly
-      ASSERT_EQ(RewardsPageBalance(), ExpectedBalanceString());
+      WaitForElementToEqual(contents(), "[data-test-id='balance']",
+          ExpectedBalanceString());
 
       // Check that tip table shows the appropriate tip amount
       const std::string selector = monthly
           ? "[data-test-id='summary-donation']"
           : "[data-test-id='summary-tips']";
 
-      std::string page_amount = ElementInnerText(selector);
-      ASSERT_NE(page_amount.find("-" + BalanceDoubleToString(amount) + "BAT"),
-          std::string::npos);
+      WaitForElementToContain(contents(), selector,
+          "-" + BalanceDoubleToString(amount) + "BAT");
     } else {
       // Make sure that balance did not change
-      ASSERT_EQ(RewardsPageBalance(), ExpectedBalanceString());
+      WaitForElementToEqual(contents(), "[data-test-id='balance']",
+          ExpectedBalanceString());
 
       // Make sure that pending contribution box shows the correct
       // amount
-      ASSERT_EQ(RewardsPagePendingContributions(),
+      WaitForElementToContain(
+          contents(),
+          "[data-test-id='pending-contribution-box']",
           ExpectedPendingBalanceString());
 
       // Check that tip table shows no tip
+      // TODO(jhoneycutt): There isn't a good selector for this element. Make it
+      // identifiable.
       {
         content::EvalJsResult js_result = EvalJs(
             contents(),
@@ -1675,26 +1483,8 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ToggleAutoContribute) {
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ActivateSettingsModal) {
   EnableRewards();
 
-  content::EvalJsResult modalResult = EvalJs(
-      contents(),
-      "document.querySelector(\"[data-test-id='settingsButton']\").click();"
-      "new Promise((resolve) => {"
-      "var count = 10;"
-      "var interval = setInterval(function() {"
-      "  if (count == 0) {"
-      "    clearInterval(interval);"
-      "    resolve(false);"
-      "  } else {"
-      "    count -= 1;"
-      "  }"
-      "  if (document.getElementById('modal')) {"
-      "    clearInterval(interval);"
-      "    resolve(document.getElementById('modal') != null);"
-      "  }"
-      "}, 500);});",
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
-  ASSERT_TRUE(modalResult.ExtractBool());
+  WaitForElementThenClick(contents(), "[data-test-id='settingsButton']");
+  WaitForElementToAppear(contents(), "#modal");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, HandleFlagsSingleArg) {
@@ -1944,33 +1734,13 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   // Retrieve the inner text of the wallet panel and verify that it
   // looks as expected
-  {
-    content::EvalJsResult js_result = EvalJs(
-      popup_contents,
-      "new Promise((resolve) => {"
-      "let count = 10;"
-      "var interval = setInterval(function() {"
-      "  if (count === 0) {"
-      "    clearInterval(interval);"
-      "    resolve('');"
-      "  } else {"
-      "    count -= 1;"
-      "  }"
-      "  const walletPanel = document.querySelector(\"[id='wallet-panel']\");"
-      "  if (walletPanel) {"
-      "    clearInterval(interval);"
-      "    resolve(walletPanel.innerText);"
-      "  }"
-      "}, 500);});",
-      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-      content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_NE(js_result.ExtractString().find("Brave Verified Creator"),
-              std::string::npos);
-    EXPECT_NE(js_result.ExtractString().find(publisher), std::string::npos);
-  }
+  WaitForElementToContain(popup_contents, "[id='wallet-panel']",
+      "Brave Verified Creator");
+  WaitForElementToContain(popup_contents, "[id='wallet-panel']", publisher);
 
   // Retrieve the inner HTML of the wallet panel and verify that it
   // contains the expected favicon
+  // TODO(jhoneycutt): WaitForElementHTMLToContain? Or WaitForScriptToSucceed?
   {
     content::EvalJsResult js_result = EvalJs(
         popup_contents,
@@ -2044,11 +1814,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
   ASSERT_EQ(ac_reconcile_status_, ledger::Result::LEDGER_OK);
 
   // Make sure that balance is updated correctly
-  ASSERT_EQ(RewardsPageBalance(), ExpectedBalanceString());
+  WaitForElementToEqual(contents(), "[data-test-id='balance']",
+      ExpectedBalanceString());
 
   // Check that summary table shows the appropriate contribution
-  ASSERT_NE(ElementInnerText("[color=contribute]").find("-20.0BAT"),
-      std::string::npos);
+  WaitForElementToContain(contents(), "[color=contribute]", "-20.0BAT");
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2368,6 +2138,8 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   TipPublisher(publisher);
 
   // Check that link for pending is shown
+  // TODO(jhoneycutt): There isn't a good selector for this element. Make it
+  // identifiable.
   {
     content::EvalJsResult js_result = EvalJs(
         contents(),
@@ -2383,30 +2155,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   }
 
   // Open modal
-  {
-    ASSERT_TRUE(ExecJs(contents(),
-        "if (document.querySelector(\"[data-test-id='reservedAllLink']\")) {"
-        "  document.querySelector("
-        "      \"[data-test-id='reservedAllLink']\").click();"
-        "}",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END));
-  }
+  WaitForElementThenClick(contents(), "[data-test-id='reservedAllLink']");
 
   // Make sure that table is populated
-  {
-    content::EvalJsResult js_result = EvalJs(
-        contents(),
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(0).then(() => "
-        " document.querySelector(\"[id='pendingContributionTable']\")"
-        "    .getElementsByTagName('a')[0].innerText);",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_NE(
-        js_result.ExtractString().find(publisher),
-        std::string::npos);
-  }
+  WaitForElementToContain(contents(), "[id='pendingContributionTable'] a",
+      publisher);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2538,7 +2291,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   rewards_service_->RemoveObserver(this);
 }
 
-// Test whether rewards is diabled in private profile.
+// Test whether rewards is disabled in private profile.
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PrefsTestInPrivateWindow) {
   EnableRewards();
   auto* profile = browser()->profile();
@@ -2573,7 +2326,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   // Make sure that pending contribution box shows the correct
   // amount
-  ASSERT_EQ(RewardsPagePendingContributions(), ExpectedPendingBalanceString());
+  WaitForElementToContain(
+      contents(),
+      "[data-test-id='pending-contribution-box']",
+      ExpectedPendingBalanceString());
 
   alter_publisher_list_ = false;
 
@@ -2591,49 +2347,34 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   UpdateContributionBalance(-25.0, false);  // update pending balance
 
   // Make sure that balance is updated correctly
-  ASSERT_EQ(RewardsPageBalance(), ExpectedBalanceString());
+  WaitForElementToEqual(contents(), "[data-test-id='balance']",
+      ExpectedBalanceString());
 
   // Check that wallet summary shows the appropriate tip amount
-  ASSERT_EQ(RewardsPageTipSummaryAmount(), ExpectedTipSummaryAmountString());
+  WaitForElementToEqual(
+      contents(),
+      "[data-test-id=summary-tips] [color=donation] span span",
+      ExpectedTipSummaryAmountString());
 
   // Make sure that pending contribution box shows the correct
   // amount
-  ASSERT_EQ(RewardsPagePendingContributions(), ExpectedPendingBalanceString());
+  WaitForElementToContain(
+      contents(),
+      "[data-test-id='pending-contribution-box']",
+      ExpectedPendingBalanceString());
 
   // Open the Rewards popup
-  {
-    content::WebContents* popup_contents = OpenRewardsPopup();
-    ASSERT_TRUE(popup_contents);
+  content::WebContents* popup_contents = OpenRewardsPopup();
+  ASSERT_TRUE(popup_contents);
 
-    // Check if verified notification is shown
-    content::EvalJsResult js_result = EvalJs(
-        popup_contents,
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(500).then(() => "
-        "  document.querySelector(\"[id='root']\").innerText);",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_NE(js_result.ExtractString().find("3zsistemi.si"),
-          std::string::npos);
+  // Check if verified notification is shown
+  WaitForElementToContain(popup_contents, "#root", "3zsistemi.si");
 
-    // Close notification
-    ASSERT_TRUE(ExecJs(popup_contents,
-        "  document.querySelector("
-        "      \"[data-test-id='notification-close']\").click();",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END));
+  // Close notification
+  WaitForElementThenClick(popup_contents, "[data-test-id=notification-close]");
 
-    // Check if insufficient funds notification is shown
-    content::EvalJsResult js_result2 = EvalJs(
-        popup_contents,
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(500).then(() => "
-        "  document.querySelector(\"[id='root']\").innerText);",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_NE(js_result2.ExtractString().find("Insufficient Funds"),
-          std::string::npos);
-  }
+  // Check if insufficient funds notification is shown
+  WaitForElementToContain(popup_contents, "#root", "Insufficient Funds");
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2644,20 +2385,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   EnableRewards();
 
   // Click on verify button
-  {
-    ASSERT_TRUE(ExecJs(contents(),
-        "  document.getElementById(\"verify-wallet-button\").click();",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END));
-  }
+  WaitForElementThenClick(contents(), "#verify-wallet-button");
 
   // Click on verify button in on boarding
-  {
-    ASSERT_TRUE(ExecJs(contents(),
-        "  document.getElementById(\"on-boarding-verify-button\").click();",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END));
-  }
+  WaitForElementThenClick(contents(), "#on-boarding-verify-button");
 
   // Check if we are redirected to uphold
   {
@@ -2884,16 +2615,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   ASSERT_EQ(ac_reconcile_status_, ledger::Result::LEDGER_OK);
 
   // Make sure that balance is updated correctly
-  {
-    const std::string result = RewardsPageBalance();
-    EXPECT_NE(result.find(ExpectedBalanceString()), std::string::npos);
-  }
+  WaitForElementToEqual(contents(), "[data-test-id='balance']",
+      ExpectedBalanceString());
 
   // Check that summary table shows the appropriate contribution
-  {
-    const std::string result = ElementInnerText("[color='contribute']");
-    EXPECT_NE(result.find("-5.0BAT"), std::string::npos);
-  }
+  WaitForElementToContain(contents(), "[color='contribute']", "-5.0BAT");
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2934,16 +2660,11 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   ASSERT_EQ(ac_reconcile_status_, ledger::Result::LEDGER_OK);
 
   // Make sure that balance is updated correctly
-  {
-    const std::string result = RewardsPageBalance();
-    EXPECT_NE(result.find(ExpectedBalanceString()), std::string::npos);
-  }
+  WaitForElementToEqual(contents(), "[data-test-id='balance']",
+      ExpectedBalanceString());
 
   // Check that summary table shows the appropriate contribution
-  {
-    const std::string result = ElementInnerText("[color='contribute']");
-    EXPECT_NE(result.find("-5.0BAT"), std::string::npos);
-  }
+  WaitForElementToContain(contents(), "[color='contribute']", "-5.0BAT");
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
