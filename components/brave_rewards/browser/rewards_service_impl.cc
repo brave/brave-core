@@ -1457,15 +1457,6 @@ void RewardsServiceImpl::LoadURL(
     for (auto const& header : headers) {
       headers_log += "> headers: " + header + "\n";
     }
-
-    VLOG(ledger::LogLevel::LOG_REQUEST) << std::endl
-      << "[ REQUEST ]" << std::endl
-      << "> url: " << url << std::endl
-      << "> method: " << request_method << std::endl
-      << "> content: " << content << std::endl
-      << "> contentType: " << contentType << std::endl
-      << headers_log
-      << "[ END REQUEST ]";
   }
 
   loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
