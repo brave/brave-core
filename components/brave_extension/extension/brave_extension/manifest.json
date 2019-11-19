@@ -34,7 +34,7 @@
       "all_frames": true
     }, {
       "matches": [
-        "https://chrome.google.com/webstore/detail/*"
+        "https://chrome.google.com/webstore/*"
       ],
       "js": [
         "out/webstore.bundle.js"
