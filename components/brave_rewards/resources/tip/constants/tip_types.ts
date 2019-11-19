@@ -18,5 +18,7 @@ export const enum types {
   GET_BALANCE = '@@rewards/GET_BALANCE',
   ON_BALANCE = '@@rewards/ON_BALANCE',
   GET_EXTERNAL_WALLET = '@@rewards/GET_EXTERNAL_WALLET',
-  ON_EXTERNAL_WALLET = '@@rewards/ON_EXTERNAL_WALLET'
+  ON_EXTERNAL_WALLET = '@@rewards/ON_EXTERNAL_WALLET',
+  ONLY_ANON_WALLET = '@@rewards/ONLY_ANON_WALLET',
+  ON_ONLY_ANON_WALLET = '@@rewards/ON_ONLY_ANON_WALLET'
 }

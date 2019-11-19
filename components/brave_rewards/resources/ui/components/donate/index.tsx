@@ -46,6 +46,7 @@ export interface Props {
   addFundsLink?: string
   type: BannerType
   nextContribution?: string
+  onlyAnonWallet?: boolean
 }
 
 interface State {
@@ -132,12 +133,14 @@ export default class Donate extends React.PureComponent<Props, State> {
       donateType,
       addFundsLink,
       type,
-      nextContribution
+      nextContribution,
+      onlyAnonWallet
     } = this.props
 
     const isMonthly = type === 'monthly'
     const disabled = parseInt(currentAmount, 10) === 0
     const SendButton = isMonthly ? StyledMonthlySendButton : StyledSendButton
+    const tokenString = onlyAnonWallet ? 'points' : 'tokens'
 
     return (
       <StyledWrapper donateType={donateType} disabled={disabled}>
@@ -156,6 +159,7 @@ export default class Donate extends React.PureComponent<Props, State> {
                       onSelect={this.onAmountChange}
                       converted={donation.converted}
                       type={donateType}
+                      onlyAnonWallet={onlyAnonWallet}
                     />
                   </div>
                 })
@@ -198,7 +202,7 @@ export default class Donate extends React.PureComponent<Props, State> {
                 <EmoteSadIcon />
               </StyledIconFace>
               <StyledFundsText>
-                {getLocale('notEnoughTokens')} <a href={addFundsLink} target={'_blank'}>{getLocale('addFunds')}</a>.
+                {getLocale('notEnoughTokens', { currency: getLocale(tokenString) })} <a href={addFundsLink} target={'_blank'}>{getLocale('addFunds')}</a>.
               </StyledFundsText>
             </StyledFunds>
             : null
