@@ -222,12 +222,13 @@ class LedgerImpl : public ledger::Ledger,
       std::vector<ledger::GrantPtr> grants,
       ledger::RecoverWalletCallback callback);
 
-  void LoadURL(const std::string& url,
-               const std::vector<std::string>& headers,
-               const std::string& content,
-               const std::string& contentType,
-               const ledger::UrlMethod method,
-               ledger::LoadURLCallback callback);
+  void LoadURL(
+      const std::string& url,
+      const std::vector<std::string>& headers,
+      const std::string& content,
+      const std::string& content_type,
+      const ledger::UrlMethod method,
+      ledger::LoadURLCallback callback);
 
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
@@ -248,6 +249,13 @@ class LedgerImpl : public ledger::Ledger,
       ledger::SetPublisherExcludeCallback callback) override;
 
   void RestorePublishers(ledger::RestorePublishersCallback callback) override;
+
+  void LogRequest(
+      const std::string& url,
+      const std::vector<std::string>& headers,
+      const std::string& content,
+      const std::string& content_type,
+      const ledger::UrlMethod method);
 
   void OnRestorePublishers(
     const ledger::Result result,

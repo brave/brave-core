@@ -378,18 +378,43 @@ std::string LedgerImpl::GenerateGUID() const {
   return ledger_client_->GenerateGUID();
 }
 
-void LedgerImpl::LoadURL(const std::string& url,
-                         const std::vector<std::string>& headers,
-                         const std::string& content,
-                         const std::string& contentType,
-                         const ledger::UrlMethod method,
-                         ledger::LoadURLCallback callback) {
-  ledger_client_->LoadURL(url,
-                          headers,
-                          content,
-                          contentType,
-                          method,
-                          callback);
+void LedgerImpl::LogRequest(
+    const std::string& url,
+    const std::vector<std::string>& headers,
+    const std::string& content,
+    const std::string& content_type,
+    const ledger::UrlMethod method) {
+  std::string formatted_headers = "";
+  for (const auto & header : headers) {
+    formatted_headers += "> header: " + header + "\n";
+  }
+
+  BLOG(this, ledger::LogLevel::LOG_REQUEST) << std::endl
+      << "[ REQUEST ]" << std::endl
+      << "> url: " << url << std::endl
+      << "> method: " << method << std::endl
+      << "> content: " << content << std::endl
+      << "> contentType: " << content_type << std::endl
+      << formatted_headers
+      << "[ END REQUEST ]";
+}
+
+void LedgerImpl::LoadURL(
+    const std::string& url,
+    const std::vector<std::string>& headers,
+    const std::string& content,
+    const std::string& content_type,
+    const ledger::UrlMethod method,
+    ledger::LoadURLCallback callback) {
+  LogRequest(url, headers, content, content_type, method);
+
+  ledger_client_->LoadURL(
+      url,
+      headers,
+      content,
+      content_type,
+      method,
+      callback);
 }
 
 std::string LedgerImpl::URIEncode(const std::string& value) {
@@ -927,6 +952,7 @@ void LedgerImpl::LogResponse(
     << "[ RESPONSE - " << func_name << " ]" << std::endl
     << "> time: " << std::time(nullptr) << std::endl
     << "> result: " << stat << std::endl
+    << "> http code: " << response_status_code << std::endl
     << "> response: " << response_data << std::endl
     << formatted_headers
     << "[ END RESPONSE ]";
