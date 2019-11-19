@@ -25,14 +25,9 @@ class FilePath;
 class SequencedTaskRunner;
 }
 
-namespace user_prefs {
-class PrefRegistrySyncable;
-}
-
 class BraveWidevineBundleManager {
  public:
   static char kWidevineInvalidVersion[];
-  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
   // Called when install process is finished.
   using DoneCallback = base::OnceCallback<void(const std::string& error)>;

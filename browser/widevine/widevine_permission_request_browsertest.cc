@@ -9,8 +9,6 @@
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/permissions/permission_request_manager.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ssl/cert_verifier_browser_test.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -150,9 +148,8 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, BubbleTest) {
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
 IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
                        CheckOptedInPrefStateForComponent) {
-  PrefService* prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
   // Before we allow, opted in should be false
-  EXPECT_FALSE(prefs->GetBoolean(kWidevineOptedIn));
+  EXPECT_FALSE(IsWidevineOptedIn());
 
   GetPermissionRequestManager()->set_auto_response_for_test(
       PermissionRequestManager::ACCEPT_ALL);
@@ -161,7 +158,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest,
   content::RunAllTasksUntilIdle();
 
   // After we allow, opted in pref should be true
-  EXPECT_TRUE(prefs->GetBoolean(kWidevineOptedIn));
+  EXPECT_TRUE(IsWidevineOptedIn());
   EXPECT_TRUE(observer.bubble_added_);
 
   // Reset observer and check permission bubble isn't created again.

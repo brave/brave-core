@@ -18,6 +18,7 @@
 #include "chrome/browser/first_run/first_run.h"
 #include "components/metrics/metrics_pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
@@ -30,6 +31,10 @@
 #if !defined(OS_ANDROID)
 #include "brave/components/p3a/p3a_core_metrics.h"
 #endif  // !defined(OS_ANDROID)
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+#include "brave/browser/widevine/widevine_utils.h"
+#endif
 
 namespace brave {
 
@@ -47,9 +52,6 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService::RegisterLocalStatePrefs(registry);
 #endif
-#if !defined(OS_ANDROID)
-  RegisterPrefsForMuonMigration(registry);
-#endif
   registry->SetDefaultPrefValue(
       metrics::prefs::kMetricsReportingEnabled,
       base::Value(GetDefaultPrefValueForMetricsReporting()));
@@ -60,8 +62,14 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
   brave_shields::RegisterShieldsP3APrefs(registry);
 #if !defined(OS_ANDROID)
+  RegisterPrefsForMuonMigration(registry);
+
   BraveWindowTracker::RegisterPrefs(registry);
   BraveUptimeTracker::RegisterPrefs(registry);
+#endif
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  RegisterWidevineLocalstatePrefs(registry);
 #endif
 }
 

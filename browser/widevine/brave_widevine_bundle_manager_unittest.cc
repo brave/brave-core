@@ -7,14 +7,13 @@
 
 #include <vector>
 
-#include "base/files/scoped_temp_dir.h"
-#include "brave/common/pref_names.h"
+#include "brave/browser/brave_local_state_prefs.h"
+#include "brave/browser/widevine/widevine_utils.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/test/base/testing_browser_process.h"
-#include "chrome/test/base/testing_profile.h"
-#include "chrome/test/base/testing_profile_manager.h"
-#include "components/user_prefs/user_prefs.h"
+#include "components/prefs/testing_pref_service.h"
 #include "content/public/browser/cdm_registry.h"
 #include "content/public/common/cdm_info.h"
 #include "content/public/test/browser_task_environment.h"
@@ -54,16 +53,18 @@ class TestClient : public content::TestContentClient {
 
 class BraveWidevineBundleManagerTest : public testing::Test {
  public:
-  BraveWidevineBundleManagerTest()
-      : testing_profile_manager_(TestingBrowserProcess::GetGlobal()) {
-  }
+  BraveWidevineBundleManagerTest() {}
   ~BraveWidevineBundleManagerTest() override {}
 
  protected:
   void SetUp() override {
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    ASSERT_TRUE(testing_profile_manager_.SetUp(temp_dir_.GetPath()));
     manager_.is_test_ = true;
+    RegisterLocalState(local_state_.registry());
+    TestingBrowserProcess::GetGlobal()->SetLocalState(&local_state_);
+  }
+
+  void TearDown() override {
+    TestingBrowserProcess::GetGlobal()->SetLocalState(nullptr);
   }
 
   void PrepareCdmRegistry(bool empty_cdms) {
@@ -76,31 +77,23 @@ class BraveWidevineBundleManagerTest : public testing::Test {
     PrepareCdmRegistry(empty_cdms);
   }
 
-  PrefService* pref_service() {
-    return ProfileManager::GetActiveUserProfile()->GetPrefs();
-  }
-
   void CheckPrefsStatesAreInitialState() {
-    EXPECT_EQ(initial_opted_in_value_,
-              pref_service()->GetBoolean(kWidevineOptedIn));
-    EXPECT_EQ(initial_version_string_,
-              pref_service()->GetString(kWidevineInstalledVersion));
+    EXPECT_EQ(initial_opted_in_value_, IsWidevineOptedIn());
+    EXPECT_EQ(initial_version_string_, GetWidevineInstalledVersion());
   }
 
   void CheckPrefsStatesAreInstalledState() {
-    EXPECT_EQ(true, pref_service()->GetBoolean(kWidevineOptedIn));
-    EXPECT_EQ(WIDEVINE_CDM_VERSION_STRING,
-              pref_service()->GetString(kWidevineInstalledVersion));
+    EXPECT_EQ(true, IsWidevineOptedIn());
+    EXPECT_EQ(WIDEVINE_CDM_VERSION_STRING, GetWidevineInstalledVersion());
   }
 
   content::TestBrowserThreadBundle threads_;
   BraveWidevineBundleManager manager_;
-  TestingProfileManager testing_profile_manager_;
-  base::ScopedTempDir temp_dir_;
   TestClient client_;
   bool initial_opted_in_value_ = false;
   std::string initial_version_string_ =
       BraveWidevineBundleManager::kWidevineInvalidVersion;
+  TestingPrefServiceSimple local_state_;
 };
 
 TEST_F(BraveWidevineBundleManagerTest, InitialPrefsTest) {
@@ -123,9 +116,8 @@ TEST_F(BraveWidevineBundleManagerTest, PrefsResetTestWithEmptyCdmRegistry) {
   PrepareTest(true);
 
   // When only prefs are set w/o cdm library, reset prefs to initial state.
-  pref_service()->SetBoolean(kWidevineOptedIn, true);
-  pref_service()->SetString(kWidevineInstalledVersion,
-                            WIDEVINE_CDM_VERSION_STRING);
+  SetWidevineOptedIn(true);
+  SetWidevineInstalledVersion(WIDEVINE_CDM_VERSION_STRING);
 
   manager_.StartupCheck();
   CheckPrefsStatesAreInitialState();
@@ -211,8 +203,8 @@ TEST_F(BraveWidevineBundleManagerTest, UpdateTriggerTest) {
   PrepareTest(false);
 
   // Set installed state with different version to trigger update.
-  pref_service()->SetBoolean(kWidevineOptedIn, true);
-  pref_service()->SetString(kWidevineInstalledVersion, "1.0.0.0");
+  SetWidevineOptedIn(true);
+  SetWidevineInstalledVersion("1.0.0.0");
 
 
   EXPECT_FALSE(manager_.update_requested_);
@@ -233,8 +225,8 @@ TEST_F(BraveWidevineBundleManagerTest, UpdateFailTest) {
   initial_version_string_ = "1.0.0.0";
 
   // Set installed state with different version to trigger update.
-  pref_service()->SetBoolean(kWidevineOptedIn, initial_opted_in_value_);
-  pref_service()->SetString(kWidevineInstalledVersion, initial_version_string_);
+  SetWidevineOptedIn(initial_opted_in_value_);
+  SetWidevineInstalledVersion(initial_version_string_);
 
   manager_.StartupCheck();
   manager_.DoDelayedBackgroundUpdate();
@@ -251,8 +243,8 @@ TEST_F(BraveWidevineBundleManagerTest, UpdateRetryAndFinallyFailedTest) {
   initial_version_string_ = "1.0.0.0";
 
   // Set installed state with different version to trigger update.
-  pref_service()->SetBoolean(kWidevineOptedIn, initial_opted_in_value_);
-  pref_service()->SetString(kWidevineInstalledVersion, initial_version_string_);
+  SetWidevineOptedIn(initial_opted_in_value_);
+  SetWidevineInstalledVersion(initial_version_string_);
 
   manager_.StartupCheck();
 
@@ -291,8 +283,8 @@ TEST_F(BraveWidevineBundleManagerTest, UpdateRetryAndFinallySuccessTest) {
   initial_version_string_ = "1.0.0.0";
 
   // Set installed state with different version to trigger update.
-  pref_service()->SetBoolean(kWidevineOptedIn, initial_opted_in_value_);
-  pref_service()->SetString(kWidevineInstalledVersion, initial_version_string_);
+  SetWidevineOptedIn(initial_opted_in_value_);
+  SetWidevineInstalledVersion(initial_version_string_);
 
   manager_.StartupCheck();
 

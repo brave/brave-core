@@ -31,6 +31,9 @@ vendor/bat-native-ledger/src/bat/ledger/internal/static_values.h @gdregalo
 # Network
 browser/net/ @iefremov
 
+# Widevine
+browser/widevine @simonhong
+
 # Licensing of third-party components
 common/licenses/ @fmarier
 components/brave_new_tab_ui/data/backgrounds.ts @fmarier

@@ -5,7 +5,6 @@
 
 #include "brave/browser/brave_tab_helpers.h"
 
-#include "brave/browser/brave_drm_tab_helper.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/brave_ads/browser/ads_tab_helper.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
@@ -13,6 +12,7 @@
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "content/public/browser/web_contents.h"
+#include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/browser/greaselion/greaselion_tab_helper.h"
@@ -32,6 +32,10 @@
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #endif
 
+#if BUILDFLAG(ENABLE_WIDEVINE)
+#include "brave/browser/brave_drm_tab_helper.h"
+#endif
+
 namespace brave {
 
 void AttachTabHelpers(content::WebContents* web_contents) {
@@ -46,7 +50,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   BackgroundVideoPlaybackTabHelper::CreateForWebContents(web_contents);
 #else
   // Add tab helpers here unless they are intended for android too
-  BraveDrmTabHelper::CreateForWebContents(web_contents);
   BraveBookmarkTabHelper::CreateForWebContents(web_contents);
 #endif
 
@@ -58,6 +61,10 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   if (TrackingProtectionService::IsSmartTrackingProtectionEnabled()) {
     brave_shields::TrackingProtectionHelper::CreateForWebContents(web_contents);
   }
+#endif
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  BraveDrmTabHelper::CreateForWebContents(web_contents);
 #endif
 
   brave_ads::AdsTabHelper::CreateForWebContents(web_contents);

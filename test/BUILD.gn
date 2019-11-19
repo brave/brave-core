@@ -277,12 +277,6 @@ test("brave_unit_tests") {
     ]
   }
 
-  if (is_win || is_mac) {
-    sources += [
-      "//brave/chromium_src/chrome/browser/component_updater/widevine_cdm_component_installer_unittest.cc",
-    ]
-  }
-
   if (is_mac) {
     sources += [
       "//brave/chromium_src/chrome/common/chrome_constants_unittest_mac.cc",
@@ -366,11 +360,15 @@ test("brave_unit_tests") {
     ]
   }
 
-  if (bundle_widevine_cdm) {
-    sources += [
-      "//brave/browser/widevine/brave_widevine_bundle_manager_unittest.cc",
-    ]
-    deps += [ "//third_party/widevine/cdm:headers" ]
+  if (enable_widevine) {
+    if (is_win || is_mac) {
+      sources += [ "//brave/chromium_src/chrome/browser/component_updater/widevine_cdm_component_installer_unittest.cc" ]
+    }
+
+    if (is_linux) {
+      sources += [ "//brave/browser/widevine/brave_widevine_bundle_manager_unittest.cc" ]
+    }
+    deps += [ "//brave/browser/widevine" ]
   }
 
   public_deps = [
@@ -545,10 +543,12 @@ test("brave_browser_tests") {
   ]
 
   deps = []
-  if (bundle_widevine_cdm || enable_widevine_cdm_component) {
+  if (enable_widevine) {
     sources += [
       "//brave/browser/widevine/widevine_permission_request_browsertest.cc",
+      "//brave/browser/widevine/widevine_prefs_migration_browsertest.cc",
     ]
+    deps += [ "//brave/browser/widevine" ]
   }
 
   if (enable_greaselion) {

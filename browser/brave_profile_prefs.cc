@@ -22,10 +22,6 @@
 #include "extensions/common/feature_switch.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-#include "brave/browser/widevine/brave_widevine_bundle_manager.h"
-#endif
-
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #endif
@@ -38,9 +34,20 @@
 #include "components/gcm_driver/gcm_channel_status_syncer.h"
 #endif
 
+#if BUILDFLAG(ENABLE_WIDEVINE)
+#include "brave/browser/widevine/widevine_utils.h"
+#endif
+
 using extensions::FeatureSwitch;
 
 namespace brave {
+
+void RegisterProfilePrefsForMigration(
+    user_prefs::PrefRegistrySyncable* registry) {
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  RegisterWidevineProfilePrefsForMigration(registry);
+#endif
+}
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_shields::BraveShieldsWebContentsObserver::RegisterProfilePrefs(
@@ -52,11 +59,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   brave_sync::prefs::Prefs::RegisterProfilePrefs(registry);
 
-  registry->RegisterBooleanPref(kWidevineOptedIn, false);
+  // TODO(shong): Migrate this to local state also and guard in ENABLE_WIDEVINE.
+  // We don't need to display "don't ask widevine prompt option" in settings
+  // if widevine is disabled.
+  // F/u issue: https://github.com/brave/brave-browser/issues/7000
   registry->RegisterBooleanPref(kAskWidevineInstall, true);
-#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  BraveWidevineBundleManager::RegisterProfilePrefs(registry);
-#endif
 
   // Default Brave shields
   registry->RegisterBooleanPref(kHTTPSEVerywhereControlType, true);
@@ -169,6 +176,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kBraveWalletAES256GCMSivNonce, "");
   registry->RegisterStringPref(kBraveWalletEncryptedSeed, "");
   registry->RegisterBooleanPref(kBraveWalletEnabled, true);
+
+  RegisterProfilePrefsForMigration(registry);
 }
 
 }  // namespace brave

@@ -10,6 +10,7 @@
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "third_party/widevine/cdm/buildflags.h"
 
 WidevinePermissionRequest::WidevinePermissionRequest(
     content::WebContents* web_contents)
