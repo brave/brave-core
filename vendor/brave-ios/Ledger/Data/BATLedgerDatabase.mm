@@ -41,7 +41,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
   
   return fetchedObjects.firstObject;
@@ -104,7 +104,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
 
   return fetchedObjects.firstObject;
@@ -192,7 +192,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%@", error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
 
   const auto publishers = [[NSMutableArray<BATPublisherInfo *> alloc] init];
@@ -221,7 +221,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
 
     if (error) {
-      NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+      BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
     }
 
     for (PublisherInfo *info in fetchedObjects) {
@@ -241,7 +241,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto count = [context countForFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
   return count;
 }
@@ -275,7 +275,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%@", error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
 
   const auto publishers = [[NSMutableArray<BATPublisherInfo *> alloc] init];
@@ -479,18 +479,22 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%@", error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
 
   const auto publishers = [[NSMutableArray<BATPublisherInfo *> alloc] init];
   for (ActivityInfo *activity in fetchedObjects) {
+    const auto status = static_cast<BATPublisherStatus>([self getServerPublisherInfoWithPublisherID:activity.publisherID context:context].status);
+    if (!filter.nonVerified && status == BATPublisherStatusNotVerified) {
+      continue;
+    }
     auto info = [[BATPublisherInfo alloc] init];
     info.id = activity.publisherID;
     info.duration = activity.duration;
     info.score = activity.score;
     info.percent = activity.percent;
     info.weight = activity.weight;
-    info.status = static_cast<BATPublisherStatus>([self getServerPublisherInfoWithPublisherID:activity.publisherID context:context].status);
+    info.status = status;
     info.excluded = (BATPublisherExclude)activity.publisher.excluded;
     info.name = activity.publisher.name;
     info.url = activity.publisher.url;
@@ -514,7 +518,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     NSError *error;
     const auto fetchedObjects = [context executeFetchRequest:request error:&error];
     if (error) {
-      NSLog(@"%@", error);
+      BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
       dispatch_async(dispatch_get_main_queue(), ^{
         completion(NO);
       });
@@ -567,7 +571,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%@", error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
 
   const auto publishers = [[NSMutableArray<BATPublisherInfo *> alloc] init];
@@ -635,7 +639,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%@", error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
 
   const auto publishers = [[NSMutableArray<BATPendingContributionInfo *> alloc] init];
@@ -705,7 +709,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     NSError *error;
     const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
     if (error) {
-      NSLog(@"%@", error);
+      BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
       completion(NO);
       return;
     }
@@ -726,7 +730,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (!fetchedObjects) {
-    NSLog(@"%@", error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
 
 #pragma clang diagnostic push
@@ -833,7 +837,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
           if (newContext.hasChanges) {
             NSError *error;
             if (![newContext save:&error]) {
-              BLOG(ledger::LogLevel::LOG_ERROR) << "CoreData: Save error: " << error.debugDescription << std::endl;
+              BLOG(ledger::LogLevel::LOG_ERROR) << "CoreData: Save error: " << error.debugDescription.UTF8String << std::endl;
             }
           }
         }];
@@ -906,7 +910,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
   
   const auto amounts = [[NSMutableArray<NSNumber *> alloc] init];
@@ -954,7 +958,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
-    NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
   }
   
   const auto links = [[NSMutableDictionary<NSString *, NSString *> alloc] init];
@@ -988,6 +992,178 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     spl.provider = provider;
     spl.link = banner.links[provider];
   }
+}
+
+#pragma mark - Promotions
+
++ (nullable Promotion *)getPromotionWithID:(NSString *)promoID context:(NSManagedObjectContext *)context
+{
+  return [self firstOfClass:Promotion.class
+                 predicates:@[[NSPredicate predicateWithFormat:@"promotionID == %@", promoID]]
+            sortDescriptors:@[]
+                    context:context];
+}
+
++ (nullable PromotionCredentials *)getPromoCredsWithPromotionID:(NSString *)promotionID context:(NSManagedObjectContext *)context
+{
+  return [self firstOfClass:PromotionCredentials.class
+                 predicates:@[[NSPredicate predicateWithFormat:@"promotionID == %@", promotionID]]
+            sortDescriptors:@[]
+                    context:context];
+}
+
++ (nullable UnblindedToken *)getUnblindedTokenWithID:(UInt64)tokenID context:(NSManagedObjectContext *)context
+{
+  return [self firstOfClass:UnblindedToken.class
+                 predicates:@[[NSPredicate predicateWithFormat:@"tokenID == %lld", tokenID]]
+            sortDescriptors:@[]
+                    context:context];
+}
+
++ (BATPromotion *)promotiomFromDBPromotion:(Promotion *)dbPromo context:(NSManagedObjectContext *)context
+{
+  const auto promotion = [[BATPromotion alloc] init];
+  promotion.id = dbPromo.promotionID;
+  promotion.version = dbPromo.version;
+  promotion.type = static_cast<BATPromotionType>(dbPromo.type);
+  promotion.publicKeys = dbPromo.publicKeys;
+  promotion.suggestions = dbPromo.suggestions;
+  promotion.approximateValue = dbPromo.approximateValue;
+  promotion.status = static_cast<BATPromotionStatus>(dbPromo.status);
+  promotion.expiresAt = [dbPromo.expiryDate timeIntervalSince1970];
+  promotion.credentials = ^BATPromotionCreds * _Nullable {
+    const auto dbCreds = [self getPromoCredsWithPromotionID:dbPromo.promotionID context:context];
+    if (!dbCreds) {
+      return nil;
+    }
+    const auto creds = [[BATPromotionCreds alloc] init];
+    creds.claimId = dbCreds.claimID;
+    creds.blindedCreds = dbCreds.blindedCredentials;
+    creds.signedCreds = dbCreds.signedCredentials;
+    creds.publicKey = dbCreds.publicKey;
+    creds.batchProof = dbCreds.batchProof;
+    creds.tokens = dbCreds.tokens;
+    return creds;
+  }();
+  return promotion;
+}
+
++ (NSArray<BATPromotion *> *)allPromotions
+{
+  const auto context = DataController.viewContext;
+  const auto fetchRequest = [Promotion fetchRequest];
+  fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(Promotion.class)
+                                    inManagedObjectContext:context];
+  NSError *error;
+  const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+  if (error) {
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
+    return @[];
+  }
+  
+  auto promos = [[NSMutableArray<BATPromotion *> alloc] init];
+  for (Promotion *dbPromotion in fetchedObjects) {
+    [promos addObject:[self promotiomFromDBPromotion:dbPromotion context:context]];
+  }
+  return [promos copy];
+}
+
++ (void)insertOrUpdatePromotion:(BATPromotion *)promotion
+                     completion:(nullable BATLedgerDatabaseWriteCompletion)completion
+{
+  [DataController.shared performOnContext:DataController.viewContext task:^(NSManagedObjectContext * _Nonnull context) {
+    auto promo = [self getPromotionWithID:promotion.id context:context] ?: [[Promotion alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(Promotion.class) inManagedObjectContext:context]
+                                                                                             insertIntoManagedObjectContext:context];
+    promo.promotionID = promotion.id;
+    promo.version = promotion.version;
+    promo.type = static_cast<int64_t>(promotion.type);
+    promo.publicKeys = promotion.publicKeys;
+    promo.suggestions = promotion.suggestions;
+    promo.approximateValue = promotion.approximateValue;
+    promo.status = static_cast<int32_t>(promotion.status);
+    promo.expiryDate = [NSDate dateWithTimeIntervalSince1970:promotion.expiresAt];
+    if (promotion.credentials != nil) {
+      auto creds = [self getPromoCredsWithPromotionID:promotion.id context:context] ?: [[PromotionCredentials alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(PromotionCredentials.class) inManagedObjectContext:context] insertIntoManagedObjectContext:context];
+      creds.promotionID = promotion.id;
+      creds.claimID = promotion.credentials.claimId;
+      creds.batchProof = promotion.credentials.batchProof;
+      creds.publicKey = promotion.credentials.publicKey;
+      creds.signedCredentials = promotion.credentials.signedCreds;
+      creds.blindedCredentials = promotion.credentials.blindedCreds;
+      creds.tokens = promotion.credentials.tokens;
+    }
+  } completion:WriteToDataControllerCompletion(completion)];
+}
+
++ (nullable BATPromotion *)promotionWithID:(NSString *)promoID
+{
+  const auto context = DataController.viewContext;
+  const auto dbPromo = [self getPromotionWithID:promoID context:context];
+  if (!dbPromo) {
+    return nil;
+  }
+  return [self promotiomFromDBPromotion:dbPromo context:context];
+}
+
++ (void)insertOrUpdateUnblindedToken:(BATUnblindedToken *)unblindedToken
+                          completion:(nullable BATLedgerDatabaseWriteCompletion)completion
+{
+  [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
+    auto token = [self getUnblindedTokenWithID:unblindedToken.id context:context] ?: [[UnblindedToken alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(UnblindedToken.class) inManagedObjectContext:context]
+                                                                                                   insertIntoManagedObjectContext:context];
+    token.tokenID = unblindedToken.id;
+    token.publicKey = unblindedToken.publicKey;
+    token.value = unblindedToken.value;
+    token.promotionID = unblindedToken.promotionId;
+    token.tokenValue = unblindedToken.tokenValue;
+  } completion:WriteToDataControllerCompletion(completion)];
+}
+
++ (NSArray<BATUnblindedToken *> *)allUnblindedTokens
+{
+  const auto context = DataController.viewContext;
+  const auto fetchRequest = [UnblindedToken fetchRequest];
+  fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(UnblindedToken.class)
+                                    inManagedObjectContext:context];
+  NSError *error;
+  const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+  if (error) {
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
+    return @[];
+  }
+  
+  auto tokens = [[NSMutableArray<BATUnblindedToken *> alloc] init];
+  for (UnblindedToken *dbToken in fetchedObjects) {
+    BATUnblindedToken *token = [[BATUnblindedToken alloc] init];
+    token.id = dbToken.tokenID;
+    token.publicKey = dbToken.publicKey;
+    token.value = dbToken.value;
+    token.tokenValue = dbToken.tokenValue;
+    token.promotionId = dbToken.promotionID;
+    [tokens addObject:token];
+  }
+  return [tokens copy];
+}
+
++ (void)deleteUnblindedTokens:(NSArray<NSNumber *> *)idList completion:(nullable BATLedgerDatabaseWriteCompletion)completion
+{
+  [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
+    const auto fetchRequest = UnblindedToken.fetchRequest;
+    fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(UnblindedToken.class)
+                                      inManagedObjectContext:context];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"ANY tokenID IN %@", idList];
+    NSError *error;
+    const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+      BLOG(ledger::LogLevel::LOG_ERROR) << "Failed CoreData fetch request: " << error.debugDescription.UTF8String << std::endl;
+      completion(NO);
+      return;
+    }
+    
+    for (UnblindedToken *token in fetchedObjects) {
+      [context deleteObject:token];
+    }
+  } completion:WriteToDataControllerCompletion(completion)];
 }
 
 @end

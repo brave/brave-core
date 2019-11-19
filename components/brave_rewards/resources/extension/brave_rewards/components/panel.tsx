@@ -66,8 +66,7 @@ export class Panel extends React.Component<Props, State> {
       this.props.actions.onEnabledAC(enabled)
     })
 
-    this.actions.getGrants()
-    this.actions.getWalletProperties()
+    this.actions.fetchPromotions()
     this.actions.getCurrentReport()
 
     chrome.braveRewards.getPendingContributionsTotal(((amount: number) => {
@@ -96,7 +95,7 @@ export class Panel extends React.Component<Props, State> {
     }
 
     if (!prevProps.rewardsPanelData.enabledMain && this.props.rewardsPanelData.enabledMain) {
-      this.actions.getGrants()
+      this.actions.fetchPromotions()
     }
   }
 
@@ -149,10 +148,13 @@ export class Panel extends React.Component<Props, State> {
     notification = notification && notification.notification
 
     if (notification && notification.id) {
+      this.actions.deleteNotification(notification.id)
       const split = notification.id.split('_')
       const promoId = split[split.length - 1]
       if (promoId) {
-        this.actions.getGrantCaptcha(promoId)
+        chrome.braveRewards.claimPromotion(promoId, (properties: RewardsExtension.Captcha) => {
+          this.actions.onClaimPromotion(properties)
+        })
       }
     }
   }
@@ -164,16 +166,47 @@ export class Panel extends React.Component<Props, State> {
     this.actions.deleteNotification(id)
   }
 
-  onGrantHide = () => {
-    this.actions.onResetGrant()
+  onPromotionHide = (promotionId: string) => {
+    this.actions.resetPromotion(promotionId)
   }
 
-  onFinish = () => {
-    this.actions.onDeleteGrant()
+  onFinish = (promotionId: string) => {
+    this.actions.deletePromotion(promotionId)
   }
 
-  onSolution = (x: number, y: number) => {
-    this.actions.solveGrantCaptcha(x, y)
+  onSolution = (promotionId: string, x: number, y: number) => {
+    let { promotions } = this.props.rewardsPanelData
+    if (!promotionId || !promotions) {
+      return
+    }
+
+    const currentPromotion = promotions.find((promotion: RewardsExtension.Promotion) => promotion.promotionId === promotionId)
+
+    if (!currentPromotion) {
+      return
+    }
+
+    if (!promotionId) {
+      this.actions.promotionFinished(1)
+      return
+    }
+
+    const data = JSON.stringify({
+      captchaId: currentPromotion.captchaId,
+      x: parseInt(x.toFixed(1), 10),
+      y: parseInt(y.toFixed(1), 10)
+    })
+
+    chrome.braveRewards.attestPromotion(promotionId, data, (result: number, promotion?: RewardsExtension.Promotion) => {
+      // if wrong position try again
+      if (result === 6) {
+        chrome.braveRewards.claimPromotion(promotionId, (properties: RewardsExtension.Captcha) => {
+          this.actions.onClaimPromotion(properties)
+        })
+      }
+
+      this.actions.promotionFinished(result, promotion)
+    })
   }
 
   getWalletSummary = () => {
@@ -606,10 +639,27 @@ export class Panel extends React.Component<Props, State> {
     }])
   }
 
+  getCurrentPromotion = (onlyAnonWallet: boolean) => {
+    const { promotions } = this.props.rewardsPanelData
+
+    if (!promotions) {
+      return undefined
+    }
+
+    let currentPromotion = promotions.filter((promotion: RewardsExtension.Promotion) => {
+      return promotion.captchaStatus !== null
+    })
+
+    if (currentPromotion.length === 0) {
+      return undefined
+    }
+
+    return utils.getPromotion(currentPromotion[0], onlyAnonWallet)
+  }
+
   render () {
-    const { pendingContributionTotal, enabledAC, externalWallet, balance } = this.props.rewardsPanelData
+    const { pendingContributionTotal, enabledAC, externalWallet, balance, promotions } = this.props.rewardsPanelData
     const { rates } = this.props.rewardsPanelData.balance
-    const { grants } = this.props.rewardsPanelData.walletProperties
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const total = balance.total || 0
     const converted = utils.convertBalance(total.toString(), rates)
@@ -617,7 +667,6 @@ export class Panel extends React.Component<Props, State> {
     const notificationId = this.getNotificationProp('id', notification)
     const notificationType = this.getNotificationProp('type', notification)
     const notificationClick = this.getNotificationClickEvent(notificationType, notificationId)
-    let { currentGrant } = this.props.rewardsPanelData
     const defaultContribution = this.getContribution(publisher)
     const checkmark = publisher && utils.isPublisherConnectedOrVerified(publisher.status)
     const tipAmounts = defaultContribution !== '0.0'
@@ -642,7 +691,7 @@ export class Panel extends React.Component<Props, State> {
       }
     }
 
-    currentGrant = utils.getGrant(currentGrant, this.props.onlyAnonWallet)
+    let currentPromotion = this.getCurrentPromotion(onlyAnonWallet)
 
     let walletStatus: WalletState | undefined = undefined
     let onVerifyClick = undefined
@@ -661,13 +710,12 @@ export class Panel extends React.Component<Props, State> {
         actions={this.getActions()}
         showCopy={false}
         showSecActions={false}
-        grant={currentGrant}
-        onGrantHide={this.onGrantHide}
+        grant={currentPromotion}
+        onGrantHide={this.onPromotionHide}
         onNotificationClick={notificationClick}
         onSolution={this.onSolution}
         onFinish={this.onFinish}
-        convertProbiToFixed={utils.convertProbiToFixed}
-        grants={utils.getGrants(grants)}
+        grants={utils.generatePromotions(promotions)}
         walletState={walletStatus}
         onVerifyClick={onVerifyClick}
         onDisconnectClick={this.onDisconnectClick}

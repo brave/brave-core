@@ -31,6 +31,9 @@ using BalancePtr = mojom::BalancePtr;
 using BalanceReportInfo = mojom::BalanceReportInfo;
 using BalanceReportInfoPtr = mojom::BalanceReportInfoPtr;
 
+using ClientInfo = mojom::ClientInfo;
+using ClientInfoPtr = mojom::ClientInfoPtr;
+
 using ContributionInfo = mojom::ContributionInfo;
 using ContributionInfoPtr = mojom::ContributionInfoPtr;
 
@@ -53,11 +56,12 @@ using ExcludeFilter = mojom::ExcludeFilter;
 using ExternalWallet = mojom::ExternalWallet;
 using ExternalWalletPtr = mojom::ExternalWalletPtr;
 
-using Grant = mojom::Grant;
-using GrantPtr = mojom::GrantPtr;
-
 using MediaEventInfo = mojom::MediaEventInfo;
 using MediaEventInfoPtr = mojom::MediaEventInfoPtr;
+
+using OperatingSystem = mojom::OperatingSystem;
+
+using Platform = mojom::Platform;
 
 using PendingContribution = mojom::PendingContribution;
 using PendingContributionPtr = mojom::PendingContributionPtr;
@@ -66,6 +70,18 @@ using PendingContributionList = std::vector<PendingContributionPtr>;
 using PendingContributionInfo = mojom::PendingContributionInfo;
 using PendingContributionInfoPtr = mojom::PendingContributionInfoPtr;
 using PendingContributionInfoList = std::vector<PendingContributionInfoPtr>;
+
+using Promotion = mojom::Promotion;
+using PromotionPtr = mojom::PromotionPtr;
+using PromotionList = std::vector<PromotionPtr>;
+using PromotionMap = std::map<std::string, PromotionPtr>;
+
+using PromotionType = mojom::PromotionType;
+
+using PromotionCreds = mojom::PromotionCreds;
+using PromotionCredsPtr = mojom::PromotionCredsPtr;
+
+using PromotionStatus = mojom::PromotionStatus;
 
 using PublisherBanner = mojom::PublisherBanner;
 using PublisherBannerPtr = mojom::PublisherBannerPtr;
@@ -96,6 +112,10 @@ using ServerPublisherInfoList = std::vector<ServerPublisherInfoPtr>;
 using TransferFee = mojom::TransferFee;
 using TransferFeePtr = mojom::TransferFeePtr;
 using TransferFeeList = std::map<std::string, TransferFeePtr>;
+
+using UnblindedToken = mojom::UnblindedToken;
+using UnblindedTokenPtr = mojom::UnblindedTokenPtr;
+using UnblindedTokenList = std::vector<UnblindedTokenPtr>;
 
 using UrlMethod = mojom::UrlMethod;
 

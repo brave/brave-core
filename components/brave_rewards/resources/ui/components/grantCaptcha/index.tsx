@@ -20,7 +20,7 @@ export interface Props {
   isPanel?: true
   isWindows?: boolean
   onSolution: (x: number, y: number) => void
-  dropBgImage: string
+  captchaImage: string
   hint: string
 }
 
@@ -92,16 +92,17 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, isPanel, dropBgImage, hint } = this.props
+    const { id, isPanel, captchaImage, hint } = this.props
 
     return (
       <StyledWrapper
         id={id}
         innerRef={this.refWrapper}
+        data-test-id={'captcha'}
       >
         <StyledDrag innerRef={this.refDrag}>
           <StyledImageWrap>
-            <StyledImage src={batUrl} onDragStart={this.onCaptchaDrag} draggable={true} />
+            <StyledImage data-test-id={'captcha-triangle'} src={batUrl} onDragStart={this.onCaptchaDrag} draggable={true} />
           </StyledImageWrap>
           {
             !isPanel
@@ -111,7 +112,7 @@ export default class GrantCaptcha extends React.PureComponent<Props, {}> {
             : null
           }
         </StyledDrag>
-        <StyledDropArea src={dropBgImage} draggable={false} onDrop={this.onCaptchaDrop} onDragOver={this.preventDefault} />
+        <StyledDropArea data-test-id={'captcha-drop'} src={captchaImage} draggable={false} onDrop={this.onCaptchaDrop} onDragOver={this.preventDefault} />
       </StyledWrapper>
     )
   }

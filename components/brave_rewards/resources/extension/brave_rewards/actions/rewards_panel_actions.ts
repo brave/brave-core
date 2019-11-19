@@ -24,12 +24,6 @@ export const onPublisherData = (windowId: number, publisher: RewardsExtension.Pu
   publisher
 })
 
-export const getWalletProperties = () => action(types.GET_WALLET_PROPERTIES, {})
-
-export const onWalletProperties = (properties: RewardsExtension.WalletProperties) => action(types.ON_WALLET_PROPERTIES, {
-  properties
-})
-
 export const getCurrentReport = () => action(types.GET_CURRENT_REPORT, {})
 
 export const onCurrentReport = (properties: RewardsExtension.Report) => action(types.ON_CURRENT_REPORT, {
@@ -58,32 +52,28 @@ export const includeInAutoContribution = (publisherKey: string, exclude: boolean
   exclude
 })
 
-export const getGrants = () => action(types.GET_GRANTS)
+export const fetchPromotions = () => action(types.FETCH_PROMOTIONS)
 
-export const onGrant = (properties: RewardsExtension.GrantResponse) => action(types.ON_GRANT, {
+export const onPromotions = (result: RewardsExtension.Result, promotions: RewardsExtension.Promotion[]) => action(types.ON_PROMOTIONS, {
+  result,
+  promotions
+})
+export const promotionFinished = (result: RewardsExtension.Result, promotion: RewardsExtension.Promotion) => action(types.ON_PROMOTION_FINISH, {
+  result,
+  promotion
+})
+
+export const onClaimPromotion = (properties: RewardsExtension.Captcha) => action(types.ON_CLAIM_PROMOTION, {
   properties
 })
 
-export const getGrantCaptcha = (promotionId?: string) => action(types.GET_GRANT_CAPTCHA, {
+export const resetPromotion = (promotionId: string) => action(types.RESET_PROMOTION, {
   promotionId
 })
 
-export const onGrantCaptcha = (captcha: RewardsExtension.Captcha) => action(types.ON_GRANT_CAPTCHA, {
-  captcha
+export const deletePromotion = (promotionId: string) => action(types.DELETE_PROMOTION, {
+  promotionId
 })
-
-export const solveGrantCaptcha = (x: number, y: number) => action(types.SOLVE_GRANT_CAPTCHA, {
-  x,
-  y
-})
-
-export const onGrantFinish = (properties: RewardsExtension.GrantFinish) => action(types.ON_GRANT_FINISH, {
-  properties
-})
-
-export const onResetGrant = () => action(types.ON_GRANT_RESET)
-
-export const onDeleteGrant = () => action(types.ON_GRANT_DELETE)
 
 export const OnPendingContributionsTotal = (amount: number) => action(types.ON_PENDING_CONTRIBUTIONS_TOTAL, {
   amount
@@ -149,4 +139,8 @@ export const onBalance = (balance: RewardsExtension.Balance) => action(types.ON_
 
 export const onExternalWallet = (wallet: RewardsExtension.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
   wallet
+})
+
+export const onAnonWalletStatus = (result: RewardsExtension.Result) => action(types.ON_ANON_WALLET_STATUS, {
+  result
 })

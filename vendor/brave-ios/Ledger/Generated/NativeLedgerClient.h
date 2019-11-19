@@ -35,11 +35,9 @@ private:
   void LoadState(const std::string & name, ledger::OnLoadCallback callback) override;
   void LoadURL(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & contentType, const ledger::UrlMethod method, ledger::LoadURLCallback callback) override;
   std::unique_ptr<ledger::LogStream> Log(const char * file, int line, const ledger::LogLevel log_level) const override;
-  void OnGrantFinish(ledger::Result result, ledger::GrantPtr grant) override;
   void OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) override;
   void OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const std::string & probi, const ledger::RewardsType type) override;
   void RemoveRecurringTip(const std::string & publisher_key, ledger::RemoveRecurringTipCallback callback) override;
-  void OnGrantViaSafetynetCheck(const std::string & promotion_id, const std::string & nonce) override;
   void RestorePublishers(ledger::RestorePublishersCallback callback) override;
   void OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) override;
   void RemoveAllPendingContributions(ledger::RemovePendingContributionCallback callback) override;
@@ -90,4 +88,12 @@ private:
   void InsertOrUpdateContributionQueue(ledger::ContributionQueuePtr info, ledger::ResultCallback callback) override;
   void DeleteContributionQueue(const uint64_t id, ledger::ResultCallback callback) override;
   void GetFirstContributionQueue(ledger::GetFirstContributionQueueCallback callback) override;
+  void GetAllPromotions(ledger::GetAllPromotionsCallback callback) override;
+  void InsertOrUpdatePromotion(ledger::PromotionPtr info, ledger::ResultCallback callback) override;
+  void GetPromotion(const std::string& id, ledger::GetPromotionCallback callback) override;
+  void InsertOrUpdateUnblindedToken(ledger::UnblindedTokenPtr info, ledger::ResultCallback callback) override;
+  void GetAllUnblindedTokens(ledger::GetAllUnblindedTokensCallback callback) override;
+  void DeleteUnblindedToken(const std::vector<std::string>& id_list, ledger::ResultCallback callback) override;
+  ledger::ClientInfoPtr GetClientInfo() override;
+  void UnblindedTokensReady() override;
 };

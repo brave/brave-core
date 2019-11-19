@@ -5,6 +5,10 @@
 #import "BATCommonOperations.h"
 #include <vector>
 
+#import "ledger.mojom.objc.h"
+#import "RewardsLogStream.h"
+#define BLOG(__severity) RewardsLogStream(__FILE__, __LINE__, __severity).stream()
+
 @interface BATCommonOperations ()
 @property (nonatomic, copy) NSString *storagePath;
 @property (nonatomic, assign) uint32_t currentTimerID;
@@ -156,7 +160,7 @@
   const auto path = [self dataPathForFilename:filename];
   const auto result = [nscontents writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error];
   if (error) {
-    NSLog(@"Failed to save data for %@: %@", filename, error.localizedDescription);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed to save data for " << name << ": " << error.debugDescription.UTF8String << std::endl;
   }
   return result;
 }
@@ -166,10 +170,10 @@
   const auto filename = [NSString stringWithUTF8String:name.c_str()];
   NSError *error = nil;
   const auto path = [self dataPathForFilename:filename];
-  NSLog(@"Loading contents from file: %@", path);
+  BLOG(ledger::LogLevel::LOG_INFO) << "Loading contents from file: " << path.UTF8String << std::endl;
   const auto contents = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
   if (error) {
-    NSLog(@"Failed to load data for %@: %@", filename, error.localizedDescription);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed to load data for " << name << ": " << error.debugDescription.UTF8String << std::endl;
     return "";
   }
   return std::string(contents.UTF8String);
@@ -182,7 +186,7 @@
   const auto path = [self dataPathForFilename:filename];
   const auto result = [NSFileManager.defaultManager removeItemAtPath:path error:&error];
   if (error) {
-    NSLog(@"Failed to remove data for filename: %@", filename);
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed to remove data for filename: " << name << std::endl;
     return false;
   }
   return result;

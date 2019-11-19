@@ -152,17 +152,22 @@ class PageWallet extends React.Component<Props, State> {
     return utils.convertBalance(balance.total.toString(), balance.rates)
   }
 
-  getGrants = () => {
-    const grants = this.props.rewardsData.walletInfo.grants
-    if (!grants) {
+  generatePromotions = () => {
+    const promotions = this.props.rewardsData.promotions
+    if (!promotions) {
       return []
     }
 
-    return grants.map((grant: Rewards.Grant) => {
+    let claimedPromotions = promotions.filter((promotion: Rewards.Promotion) => {
+      return promotion.status === 4 // PromotionStatus::FINISHED
+    })
+
+    const typeUGP = 0
+    return claimedPromotions.map((promotion: Rewards.Promotion) => {
       return {
-        tokens: utils.convertProbiToFixed(grant.probi),
-        expireDate: new Date(grant.expiryTime * 1000).toLocaleDateString(),
-        type: grant.type || 'ugp'
+        amount: promotion.amount,
+        expiresAt: new Date(promotion.expiresAt).toLocaleDateString(),
+        type: promotion.type || typeUGP
       }
     })
   }
@@ -502,7 +507,7 @@ class PageWallet extends React.Component<Props, State> {
           onActivityClick={this.onModalActivityToggle}
           showCopy={showCopy}
           showSecActions={true}
-          grants={this.getGrants()}
+          grants={this.generatePromotions()}
           alert={this.walletAlerts()}
           walletState={this.getWalletStatus()}
           onVerifyClick={onVerifyClick}

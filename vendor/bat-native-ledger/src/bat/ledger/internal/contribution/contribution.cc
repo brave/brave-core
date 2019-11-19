@@ -16,6 +16,7 @@
 #include "bat/ledger/internal/bat_util.h"
 #include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/contribution/contribution.h"
+#include "bat/ledger/internal/contribution/contribution_unblinded.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
 #include "bat/ledger/internal/contribution/phase_one.h"
 #include "bat/ledger/internal/contribution/phase_two.h"
@@ -37,6 +38,7 @@ Contribution::Contribution(bat_ledger::LedgerImpl* ledger) :
     phase_one_(std::make_unique<PhaseOne>(ledger, this)),
     phase_two_(std::make_unique<PhaseTwo>(ledger, this)),
     unverified_(std::make_unique<Unverified>(ledger, this)),
+    unblinded_(std::make_unique<Unblinded>(ledger)),
     uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)),
     last_reconcile_timer_id_(0u),
     queue_timer_id_(0u) {
@@ -721,6 +723,115 @@ void Contribution::DeleteContributionQueue(
       [](const ledger::Result _){});
 }
 
+bool Contribution::ProcessReconcileUnblindedTokens(
+    ledger::BalancePtr info,
+    ledger::RewardsType type,
+    double* fee,
+    braveledger_bat_helper::Directions directions,
+    braveledger_bat_helper::Directions* leftovers) {
+  if (!fee) {
+    return false;
+  }
+
+  auto reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
+  reconcile.viewingId_ = ledger_->GenerateGUID();
+  reconcile.fee_ = *fee;
+  reconcile.directions_ = directions;
+  reconcile.type_ = type;
+
+  if (ledger_->ReconcileExists(reconcile.viewingId_)) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+      << "Unable to reconcile with the same viewing id: "
+      << reconcile.viewingId_;
+    return false;
+  }
+
+  const double balance =
+      braveledger_wallet::Balance::GetPerWalletBalance(
+          ledger::kWalletUnBlinded,
+          info->wallets);
+  if (balance == 0) {
+    return false;
+  }
+
+  if (balance >= *fee) {
+    ledger_->AddReconcile(reconcile.viewingId_, reconcile);
+    unblinded_->Start(reconcile.viewingId_);
+    return true;
+  }
+
+  *fee = *fee - balance;
+  reconcile.fee_ = balance;
+
+  if (type == ledger::RewardsType::RECURRING_TIP ||
+      type == ledger::RewardsType::ONE_TIME_TIP) {
+    braveledger_bat_helper::Directions new_directions;
+    AdjustTipsAmounts(directions,
+                      &new_directions,
+                      leftovers,
+                      balance);
+    reconcile.directions_ = new_directions;
+  }
+
+  ledger_->AddReconcile(reconcile.viewingId_, reconcile);
+  unblinded_->Start(reconcile.viewingId_);
+  return false;
+}
+
+bool Contribution::ProcessReconcileAnonize(
+    ledger::BalancePtr info,
+    ledger::RewardsType type,
+    double* fee,
+    braveledger_bat_helper::Directions directions,
+    braveledger_bat_helper::Directions* leftovers) {
+  if (!fee) {
+    return false;
+  }
+
+  auto reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
+  reconcile.viewingId_ = ledger_->GenerateGUID();
+  reconcile.fee_ = *fee;
+  reconcile.directions_ = directions;
+  reconcile.type_ = type;
+
+  if (ledger_->ReconcileExists(reconcile.viewingId_)) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+      << "Unable to reconcile with the same viewing id: "
+      << reconcile.viewingId_;
+    return false;
+  }
+
+  const double balance = braveledger_wallet::Balance::GetPerWalletBalance(
+      ledger::kWalletAnonymous,
+      info->wallets);
+  if (balance == 0) {
+    return false;
+  }
+
+  if (balance >= *fee) {
+    ledger_->AddReconcile(reconcile.viewingId_, reconcile);
+    phase_one_->Start(reconcile.viewingId_);
+    return true;
+  }
+
+  *fee = *fee - balance;
+  reconcile.fee_ = balance;
+
+  if (type == ledger::RewardsType::RECURRING_TIP ||
+      type == ledger::RewardsType::ONE_TIME_TIP) {
+    braveledger_bat_helper::Directions new_direction;
+    AdjustTipsAmounts(directions,
+                      &new_direction,
+                      leftovers,
+                      balance);
+    reconcile.directions_ = new_direction;
+  }
+
+  ledger_->AddReconcile(reconcile.viewingId_, reconcile);
+  phase_one_->Start(reconcile.viewingId_);
+  return false;
+}
+
 void Contribution::ProcessReconcile(
     ledger::ContributionQueuePtr contribution,
     ledger::BalancePtr info) {
@@ -743,54 +854,30 @@ void Contribution::ProcessReconcile(
   const auto directions = FromContributionQueuePublishersToReconcileDirections(
       std::move(contribution->publishers));
 
-  auto anon_reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
-  anon_reconcile.viewingId_ = ledger_->GenerateGUID();
-  anon_reconcile.fee_ = fee;
-  // TODO(tmancey): Temp conversion as we are moving everything into DB
-  // so this can be remove at that point
-  anon_reconcile.directions_ = directions;
-  anon_reconcile.type_ = contribution->type;
-
-  if (ledger_->ReconcileExists(anon_reconcile.viewingId_)) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-      << "Unable to reconcile with the same viewing id: "
-      << anon_reconcile.viewingId_;
+  braveledger_bat_helper::Directions anon_directions = directions;
+  bool result = ProcessReconcileUnblindedTokens(
+      info->Clone(),
+      contribution->type,
+      &fee,
+      directions,
+      &anon_directions);
+  if (result) {
+    // contribution was processed in full
     DeleteContributionQueue(contribution->Clone());
     return;
   }
 
-  // Check if we can process contribution with anon wallet only
-  const double anon_balance = braveledger_wallet::Balance::GetPerWalletBalance(
-      ledger::kWalletAnonymous,
-      info->wallets);
-  if (anon_balance >= fee) {
-    ledger_->AddReconcile(anon_reconcile.viewingId_, anon_reconcile);
+  braveledger_bat_helper::Directions wallet_directions = anon_directions;
+  result = ProcessReconcileAnonize(
+      info->Clone(),
+      contribution->type,
+      &fee,
+      anon_directions,
+      &wallet_directions);
+  if (result) {
+    // contribution was processed in full
     DeleteContributionQueue(contribution->Clone());
-    phase_one_->Start(anon_reconcile.viewingId_);
     return;
-  }
-
-  // We need to first use all anon balance and what is left should
-  // go through connected wallet
-  braveledger_bat_helper::Directions wallet_directions;
-  if (anon_balance > 0) {
-    fee = fee - anon_balance;
-    anon_reconcile.fee_ = anon_balance;
-
-    if (contribution->type == ledger::RewardsType::RECURRING_TIP ||
-        contribution->type == ledger::RewardsType::ONE_TIME_TIP) {
-      braveledger_bat_helper::Directions anon_directions;
-      AdjustTipsAmounts(directions,
-                        &wallet_directions,
-                        &anon_directions,
-                        anon_balance);
-      anon_reconcile.directions_ = anon_directions;
-    }
-
-    ledger_->AddReconcile(anon_reconcile.viewingId_, anon_reconcile);
-    phase_one_->Start(anon_reconcile.viewingId_);
-  } else {
-    wallet_directions = directions;
   }
 
   auto wallet_reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
@@ -800,30 +887,34 @@ void Contribution::ProcessReconcile(
   wallet_reconcile.type_ = contribution->type;
   ledger_->AddReconcile(wallet_reconcile.viewingId_, wallet_reconcile);
 
-  auto tokens_callback = std::bind(&Contribution::OnExternalWallets,
-                                   this,
-                                   wallet_reconcile.viewingId_,
-                                   info->wallets,
-                                   _1);
+  auto wallets_callback = std::bind(&Contribution::OnExternalWallets,
+      this,
+      wallet_reconcile.viewingId_,
+      info->wallets,
+      _1);
 
   // Check if we have token
-  ledger_->GetExternalWallets(tokens_callback);
+  ledger_->GetExternalWallets(wallets_callback);
   DeleteContributionQueue(contribution->Clone());
 }
 
 void Contribution::AdjustTipsAmounts(
-    braveledger_bat_helper::Directions directions,
-    braveledger_bat_helper::Directions* wallet_directions,
-    braveledger_bat_helper::Directions* anon_directions,
+    braveledger_bat_helper::Directions original_directions,
+    braveledger_bat_helper::Directions* primary_directions,
+    braveledger_bat_helper::Directions* rest_directions,
     double reduce_fee_for) {
-  for (auto item : directions) {
+  if (!primary_directions || !rest_directions) {
+    return;
+  }
+
+  for (auto item : original_directions) {
     if (reduce_fee_for == 0) {
-      wallet_directions->push_back(item);
+      rest_directions->push_back(item);
       continue;
     }
 
     if (item.amount_percent_ <= reduce_fee_for) {
-      anon_directions->push_back(item);
+      primary_directions->push_back(item);
       reduce_fee_for -= item.amount_percent_;
       continue;
     }
@@ -832,11 +923,11 @@ void Contribution::AdjustTipsAmounts(
       // anon wallet
       const auto original_weight = item.amount_percent_;
       item.amount_percent_ = reduce_fee_for;
-      anon_directions->push_back(item);
+      primary_directions->push_back(item);
 
       // rest to normal wallet
       item.amount_percent_ = original_weight - reduce_fee_for;
-      wallet_directions->push_back(item);
+      rest_directions->push_back(item);
 
       reduce_fee_for = 0;
     }

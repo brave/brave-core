@@ -81,20 +81,18 @@ class BatLedgerImpl : public mojom::BatLedger,
       int32_t year,
       uint32_t data) override;
 
-  void FetchGrants(
-      const std::string& lang,
-      const std::string& payment_id,
-      const std::string& result_string,
-      FetchGrantsCallback callback) override;
-  void GetGrantCaptcha(const std::vector<std::string>& headers,
-      GetGrantCaptchaCallback callback) override;
+  void FetchPromotions(FetchPromotionsCallback callback) override;
+  void ClaimPromotion(
+      const std::string& payload,
+      ClaimPromotionCallback callback) override;
+  void AttestPromotion(
+      const std::string& promotion_id,
+      const std::string& solution,
+      AttestPromotionCallback callback) override;
   void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
   void RecoverWallet(
       const std::string& pass_phrase,
       RecoverWalletCallback callback) override;
-  void SolveGrantCaptcha(
-      const std::string& solution,
-      const std::string& promotionId) override;
 
   void SetRewardsMainEnabled(bool enabled) override;
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) override;
@@ -137,11 +135,6 @@ class BatLedgerImpl : public mojom::BatLedger,
       GetRewardsMainEnabledCallback callback) override;
   void HasSufficientBalanceToReconcile(
       HasSufficientBalanceToReconcileCallback callback) override;
-
-  void GetGrantViaSafetynetCheck(const std::string& promotion_id) override;
-  void ApplySafetynetToken(
-      const std::string& promotion_id,
-      const std::string& result_string) override;
 
   void GetTransactionHistory(
       GetTransactionHistoryCallback callback) override;
@@ -214,6 +207,8 @@ class BatLedgerImpl : public mojom::BatLedger,
     const std::string& wallet_type,
     DisconnectWalletCallback callback) override;
 
+  void GetAnonWalletStatus(GetAnonWalletStatusCallback callback) override;
+
  private:
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;
@@ -243,10 +238,15 @@ class BatLedgerImpl : public mojom::BatLedger,
       const bool result,
       ledger::BalanceReportInfoPtr report_info);
 
-  static void OnGetGrantCaptcha(
-      CallbackHolder<GetGrantCaptchaCallback>* holder,
-      const std::string& image,
-      const std::string& hint);
+  static void OnClaimPromotion(
+      CallbackHolder<ClaimPromotionCallback>* holder,
+      const ledger::Result result,
+      const std::string& response);
+
+  static void OnAttestPromotion(
+      CallbackHolder<AttestPromotionCallback>* holder,
+      const ledger::Result result,
+      ledger::PromotionPtr promotion);
 
   static void OnCreateWallet(
       CallbackHolder<CreateWalletCallback>* holder,
@@ -259,8 +259,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnRecoverWallet(
       CallbackHolder<RecoverWalletCallback>* holder,
       ledger::Result result,
-      double balance,
-      std::vector<ledger::GrantPtr> grants);
+      double balance);
 
   static void OnFetchWalletProperties(
       CallbackHolder<FetchWalletPropertiesCallback>* holder,
@@ -343,10 +342,10 @@ class BatLedgerImpl : public mojom::BatLedger,
     CallbackHolder<GetPendingContributionsTotalCallback>* holder,
     double amount);
 
-  static void OnFetchGrants(
-    CallbackHolder<FetchGrantsCallback>* holder,
-    ledger::Result result,
-    std::vector<ledger::GrantPtr> grants);
+  static void OnFetchPromotions(
+    CallbackHolder<FetchPromotionsCallback>* holder,
+    const ledger::Result result,
+    ledger::PromotionList promotions);
 
   static void OnHasSufficientBalanceToReconcile(
     CallbackHolder<HasSufficientBalanceToReconcileCallback>* holder,
@@ -370,6 +369,10 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnDisconnectWallet(
     CallbackHolder<DisconnectWalletCallback>* holder,
     ledger::Result result);
+
+  static void OnGetAnonWalletStatus(
+      CallbackHolder<GetAnonWalletStatusCallback>* holder,
+      const ledger::Result result);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

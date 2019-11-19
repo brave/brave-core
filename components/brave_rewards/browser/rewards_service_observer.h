@@ -13,7 +13,7 @@
 #include "base/observer_list_types.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
-#include "brave/components/brave_rewards/browser/grant.h"
+#include "brave/components/brave_rewards/browser/promotion.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
 
@@ -32,23 +32,18 @@ class RewardsServiceObserver : public base::CheckedObserver {
       RewardsService* rewards_service,
       int error_code,
       std::unique_ptr<brave_rewards::WalletProperties> properties) {}
-  virtual void OnGrant(
+  virtual void OnFetchPromotions(
       RewardsService* rewards_service,
-      unsigned int result,
-      brave_rewards::Grant properties) {}
-  virtual void OnGrantCaptcha(
-      RewardsService* rewards_service,
-      std::string image,
-      std::string hint) {}
+      const uint32_t result,
+      const std::vector<Promotion>& list) {}
   virtual void OnRecoverWallet(
       RewardsService* rewards_service,
       unsigned int result,
-      double balance,
-      std::vector<brave_rewards::Grant> grants) {}
-  virtual void OnGrantFinish(
+      double balance) {}
+  virtual void OnPromotionFinished(
       RewardsService* rewards_service,
-      unsigned int result,
-      brave_rewards::Grant grant) {}
+      const uint32_t result,
+      brave_rewards::Promotion promotion) {}
   virtual void OnContentSiteUpdated(
       RewardsService* rewards_service) {}
   virtual void OnExcludedSitesChanged(
@@ -92,6 +87,8 @@ class RewardsServiceObserver : public base::CheckedObserver {
       brave_rewards::RewardsService* rewards_service,
       int32_t result,
       const std::string& wallet_type) {}
+  virtual void OnUnblindedTokensReady(
+      brave_rewards::RewardsService* rewards_service) {}
   // DO NOT ADD ANY MORE METHODS HERE UNLESS IT IS A BROADCAST NOTIFICATION
   // RewardsServiceObserver should not be used to return responses to the
   // caller. Method calls on RewardsService should use callbacks to return

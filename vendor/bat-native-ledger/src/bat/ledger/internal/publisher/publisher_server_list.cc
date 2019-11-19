@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/publisher/publisher_server_list.h"
 #include "bat/ledger/internal/state_keys.h"
+#include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/option_keys.h"
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
@@ -43,10 +44,10 @@ void PublisherServerList::Download(
   std::vector<std::string> headers;
   headers.push_back("Accept-Encoding: gzip");
 
-  const std::string url = braveledger_bat_helper::buildURL(
+  const std::string url = braveledger_request_util::BuildUrl(
       GET_PUBLISHERS_LIST,
       "",
-      braveledger_bat_helper::SERVER_TYPES::PUBLISHER_DISTRO);
+      braveledger_request_util::ServerTypes::PUBLISHER_DISTRO);
 
   const ledger::LoadURLCallback download_callback = std::bind(
       &PublisherServerList::OnDownload,

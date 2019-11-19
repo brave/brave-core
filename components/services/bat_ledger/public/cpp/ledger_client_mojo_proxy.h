@@ -35,9 +35,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const std::string& viewing_id,
       const std::string& probi,
       const ledger::RewardsType type) override;
-  void OnGrantFinish(
-    const ledger::Result result,
-    ledger::GrantPtr grant) override;
 
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
   void SaveLedgerState(const std::string& ledger_state,
@@ -164,8 +161,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void SetConfirmationsIsReady(const bool is_ready) override;
 
   void ConfirmationsTransactionHistoryDidChange() override;
-  void OnGrantViaSafetynetCheck(
-      const std::string& promotion_id, const std::string& nonce) override;
 
   void GetPendingContributions(
       GetPendingContributionsCallback callback) override;
@@ -231,6 +226,33 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   void GetFirstContributionQueue(
     GetFirstContributionQueueCallback callback) override;
+
+  void InsertOrUpdatePromotion(
+    ledger::PromotionPtr info,
+    InsertOrUpdatePromotionCallback callback) override;
+
+  void GetPromotion(
+    const std::string& id,
+    GetPromotionCallback callback) override;
+
+  void GetAllPromotions(
+    GetAllPromotionsCallback callback) override;
+
+  void InsertOrUpdateUnblindedToken(
+    ledger::UnblindedTokenPtr info,
+    InsertOrUpdateUnblindedTokenCallback callback) override;
+
+  void GetAllUnblindedTokens(
+    GetAllUnblindedTokensCallback callback) override;
+
+  void DeleteUnblindedToken(
+      const std::vector<std::string>& id_list,
+      DeleteUnblindedTokenCallback callback) override;
+
+  void GetClientInfo(
+      GetClientInfoCallback callback) override;
+
+  void UnblindedTokensReady() override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind
@@ -411,6 +433,30 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnGetFirstContributionQueue(
     CallbackHolder<GetFirstContributionQueueCallback>* holder,
     ledger::ContributionQueuePtr info);
+
+  static void OnInsertOrUpdatePromotion(
+    CallbackHolder<InsertOrUpdatePromotionCallback>* holder,
+    const ledger::Result result);
+
+  static void OnGetPromotion(
+    CallbackHolder<GetPromotionCallback>* holder,
+    ledger::PromotionPtr info);
+
+  static void OnGetAllPromotions(
+      CallbackHolder<GetAllPromotionsCallback>* holder,
+     ledger::PromotionMap promotions);
+
+  static void OnInsertOrUpdateUnblindedToken(
+    CallbackHolder<InsertOrUpdateUnblindedTokenCallback>* holder,
+    const ledger::Result result);
+
+  static void OnGetAllUnblindedTokens(
+    CallbackHolder<GetAllUnblindedTokensCallback>* holder,
+    ledger::UnblindedTokenList list);
+
+  static void OnDeleteUnblindedToken(
+    CallbackHolder<DeleteUnblindedTokenCallback>* holder,
+    const ledger::Result result);
 
   ledger::LedgerClient* ledger_client_;
 

@@ -13,9 +13,6 @@ export const defaultState: RewardsExtension.State = {
   walletCreating: false,
   walletCreateFailed: false,
   publishers: {},
-  walletProperties: {
-    grants: []
-  },
   report: {
     ads: '0',
     closing: '0',
@@ -32,8 +29,7 @@ export const defaultState: RewardsExtension.State = {
   pendingContributionTotal: 0,
   enabledMain: false,
   enabledAC: false,
-  grants: [],
-  currentGrant: undefined,
+  promotions: [],
   recurringTips: [],
   tipAmounts: {},
   balance: {

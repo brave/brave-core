@@ -97,10 +97,10 @@ chrome.braveRewards.onAdsEnabled.addListener((enabled: boolean) => {
   getActions().onAdsEnabled(enabled)
 })
 
-chrome.braveRewards.onGrant.addListener((properties: NewTab.GrantResponse) => {
-  getActions().onGrant(properties)
+chrome.braveRewards.onPromotions.addListener((result: number, promotions: NewTab.Promotion[]) => {
+  getActions().onPromotions(result, promotions)
 })
 
-chrome.braveRewards.onGrantFinish.addListener((properties: any | NewTab.GrantFinish) => {
-  getActions().onGrantFinish(properties)
+chrome.braveRewards.onPromotionFinish.addListener((result: number, promotion: NewTab.Promotion) => {
+  getActions().onPromotionFinish(result, promotion)
 })

@@ -100,18 +100,15 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
     case types.ON_RECOVER_WALLET_DATA: {
       state = { ...state }
       const result = action.payload.properties.result
-      const grants = action.payload.properties.grants
       let ui = state.ui
-      let walletInfo = state.walletInfo
       let balance = state.balance
 
       // TODO NZ check why enum can't be used inside Rewards namespace
       ui.walletRecoverySuccess = result === 0
       if (result === 0) {
         balance.total = action.payload.properties.balance
-        walletInfo.grants = grants || []
         chrome.send('brave_rewards.getWalletPassphrase')
-        chrome.send('brave_rewards.getGrants', ['', ''])
+        chrome.send('brave_rewards.fetchPromotions')
         ui.emptyWallet = balance.total <= 0
         ui.modalBackup = false
         ui.walletCorrupted = false
@@ -120,7 +117,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state = {
         ...state,
         ui,
-        walletInfo,
         balance
       }
       break

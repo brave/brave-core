@@ -20,6 +20,8 @@
 #include "base/files/important_file_writer.h"
 #include "base/guid.h"
 #include "base/i18n/time_formatting.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/json/json_string_value_serializer.h"
 #include "base/time/time.h"
 #include "base/logging.h"
@@ -41,6 +43,7 @@
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_rewards/browser/android_util.h"
 #include "brave/components/brave_rewards/browser/auto_contribution_props.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
@@ -943,17 +946,6 @@ void RewardsServiceImpl::OnWalletProperties(
       wallet_properties.reset(new brave_rewards::WalletProperties);
       wallet_properties->parameters_choices = properties->parameters_choices;
       wallet_properties->monthly_amount = properties->fee_amount;
-
-      for (size_t i = 0; i < properties->grants.size(); i ++) {
-        brave_rewards::Grant grant;
-
-        grant.altcurrency = properties->grants[i]->altcurrency;
-        grant.probi = properties->grants[i]->probi;
-        grant.expiryTime = properties->grants[i]->expiry_time;
-        grant.type = properties->grants[i]->type;
-
-        wallet_properties->grants.push_back(grant);
-      }
     }
     // webui
     observer.OnWalletProperties(this,
@@ -1021,58 +1013,15 @@ void RewardsServiceImpl::GetAutoContributeProps(
         &RewardsServiceImpl::OnGetAutoContributeProps, AsWeakPtr(), callback));
 }
 
-void RewardsServiceImpl::OnGrantCaptcha(const std::string& image,
-    const std::string& hint) {
-  TriggerOnGrantCaptcha(image, hint);
-}
-
 void RewardsServiceImpl::OnRecoverWallet(
     ledger::Result result,
-    double balance,
-    std::vector<ledger::GrantPtr> grants) {
-  std::vector<brave_rewards::Grant> new_grants;
-  for (size_t i = 0; i < grants.size(); i ++) {
-    if (!grants[i]) {
-      continue;
-    }
-
-    brave_rewards::Grant grant;
-    grant.altcurrency = grants[i]->altcurrency;
-    grant.probi = grants[i]->probi;
-    grant.expiryTime = grants[i]->expiry_time;
-    grant.type = grants[i]->type;
-
-    new_grants.push_back(grant);
-  }
-
+    double balance) {
   for (auto& observer : observers_) {
     observer.OnRecoverWallet(
       this,
       static_cast<int>(result),
-      balance,
-      new_grants);
+      balance);
   }
-}
-
-void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
-                                       ledger::GrantPtr grant) {
-  auto now = base::Time::Now();
-  if (grant && result == ledger::Result::LEDGER_OK) {
-    if (!Connected()) {
-      return;
-    }
-
-    ledger::ReportType report_type = grant->type == "ads"
-      ? ledger::ReportType::ADS
-      : ledger::ReportType::GRANT;
-    bat_ledger_->SetBalanceReportItem(GetPublisherMonth(now),
-                                      GetPublisherYear(now),
-                                      report_type,
-                                      grant->probi);
-  }
-
-  GetCurrentBalanceReport();
-  TriggerOnGrantFinish(result, std::move(grant));
 }
 
 void RewardsServiceImpl::OnReconcileComplete(
@@ -1525,81 +1474,185 @@ void RewardsServiceImpl::FetchWalletProperties() {
   }
 }
 
-void RewardsServiceImpl::OnFetchGrants(
+void RewardsServiceImpl::OnFetchPromotions(
     const ledger::Result result,
-    std::vector<ledger::GrantPtr> grants) {
-  for (size_t i = 0; i < grants.size(); i ++) {
-    TriggerOnGrant(result, std::move(grants[i]));
-  }
-}
+    ledger::PromotionList promotions) {
+  std::vector<brave_rewards::Promotion> list;
 
-void RewardsServiceImpl::FetchGrants(const std::string& lang,
-    const std::string& payment_id) {
-  if (!Connected()) {
-    return;
-  }
-#if !defined(OS_ANDROID)
-  bat_ledger_->FetchGrants(lang, payment_id, "", base::BindOnce(
-      &RewardsServiceImpl::OnFetchGrants,
-      AsWeakPtr()));
-#else
-  safetynet_check::ClientAttestationCallback attest_callback =
-      base::BindOnce(&RewardsServiceImpl::FetchGrantAttestationResult,
-          AsWeakPtr(), lang, payment_id);
-  safetynet_check_runner_.performSafetynetCheck("",
-      std::move(attest_callback));
-#endif
-}
+  for (auto & promotion : promotions) {
+    if (!promotion) {
+      continue;
+    }
 
-#if defined(OS_ANDROID)
-void RewardsServiceImpl::FetchGrantAttestationResult(const std::string& lang,
-    const std::string& payment_id,
-    bool result, const std::string& result_string) {
-  if (result) {
-    bat_ledger_->FetchGrants(lang, payment_id, result_string, base::BindOnce(
-      &RewardsServiceImpl::OnFetchGrants,
-      AsWeakPtr()));
-  } else {
-    LOG(ERROR) << "FetchGrantAttestationResult error: " << result_string;
-    TriggerOnGrantFinish(ledger::Result::LEDGER_ERROR, nullptr);
-  }
-}
-#endif
-
-void RewardsServiceImpl::TriggerOnGrant(const ledger::Result result,
-                                        ledger::GrantPtr grant) {
-  brave_rewards::Grant properties;
-
-  if (grant) {
-    properties.promotionId = grant->promotion_id;
-    properties.altcurrency = grant->altcurrency;
-    properties.probi = grant->probi;
-    properties.expiryTime = grant->expiry_time;
-    properties.type = grant->type;
+    brave_rewards::Promotion properties;
+    properties.promotion_id = promotion->id;
+    properties.amount = promotion->approximate_value;
+    properties.expires_at = promotion->expires_at;
+    properties.type = static_cast<uint32_t>(promotion->type);
+    properties.status = static_cast<uint32_t>(promotion->status);
+    list.push_back(properties);
   }
 
   for (auto& observer : observers_)
-    observer.OnGrant(this, static_cast<int>(result), properties);
+    observer.OnFetchPromotions(this, static_cast<int>(result), list);
 }
 
-void RewardsServiceImpl::GetGrantCaptcha(
+void RewardsServiceImpl::FetchPromotions() {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_->FetchPromotions(base::BindOnce(
+      &RewardsServiceImpl::OnFetchPromotions,
+      AsWeakPtr()));
+}
+
+void ParseCaptchaResponse(
+    const std::string& response,
+    std::string* image,
+    std::string* id,
+    std::string* hint) {
+  base::Optional<base::Value> value = base::JSONReader::Read(response);
+  if (!value || !value->is_dict()) {
+    return;
+  }
+
+  base::DictionaryValue* dictionary = nullptr;
+  if (!value->GetAsDictionary(&dictionary)) {
+    return;
+  }
+
+  auto* captcha_image = dictionary->FindKey("captchaImage");
+  if (!captcha_image || !captcha_image->is_string()) {
+    return;
+  }
+
+  auto* captcha_hint = dictionary->FindKey("hint");
+  if (!captcha_hint || !captcha_hint->is_string()) {
+    return;
+  }
+
+  auto* captcha_id = dictionary->FindKey("captchaId");
+  if (!captcha_id || !captcha_id->is_string()) {
+    return;
+  }
+
+  *image = captcha_image->GetString();
+  *hint = captcha_hint->GetString();
+  *id = captcha_id->GetString();
+}
+
+void RewardsServiceImpl::OnClaimPromotion(
+    ClaimPromotionCallback callback,
+    const ledger::Result result,
+    const std::string& response) {
+  std::string image;
+  std::string hint;
+  std::string id;
+
+  if (result != ledger::Result::LEDGER_OK) {
+    std::move(callback).Run(static_cast<int32_t>(result), image, hint, id);
+    return;
+  }
+
+  ParseCaptchaResponse(response, &image, &id, &hint);
+
+  if (image.empty() || hint.empty() || id.empty()) {
+    std::move(callback).Run(static_cast<int32_t>(result), "", "", "");
+    return;
+  }
+
+  std::move(callback).Run(
+      static_cast<int32_t>(result),
+      image,
+      hint,
+      id);
+}
+
+void RewardsServiceImpl::AttestationAndroid(
     const std::string& promotion_id,
-    const std::string& promotion_type) {
+    AttestPromotionCallback callback,
+    const ledger::Result result,
+    const std::string& response) {
+  if (result != ledger::Result::LEDGER_OK) {
+    std::move(callback).Run(static_cast<int32_t>(result), nullptr);
+    return;
+  }
+
+  const std::string nonce = android_util::ParseClaimPromotionResponse(response);
+  if (nonce.empty()) {
+    std::move(callback).Run(
+        static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
+        nullptr);
+    return;
+  }
+
+  #if defined(OS_ANDROID)
+    auto attest_callback =
+        base::BindOnce(&RewardsServiceImpl::OnAttestationAndroid,
+            AsWeakPtr(),
+            promotion_id,
+            std::move(callback),
+            nonce);
+    safetynet_check_runner_.performSafetynetCheck(
+        nonce,
+        std::move(attest_callback));
+  #endif
+}
+
+void RewardsServiceImpl::OnAttestationAndroid(
+    const std::string& promotion_id,
+    AttestPromotionCallback callback,
+    const std::string& nonce,
+    bool result,
+    const std::string& token) {
+  if (!result) {
+    std::move(callback).Run(
+        static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
+        nullptr);
+  }
+
+  base::Value solution(base::Value::Type::DICTIONARY);
+  solution.SetStringKey("nonce", nonce);
+  solution.SetStringKey("token", token);
+
+  std::string json;
+  base::JSONWriter::Write(solution, &json);
+
+  bat_ledger_->AttestPromotion(
+      promotion_id,
+      json,
+      base::BindOnce(&RewardsServiceImpl::OnAttestPromotion,
+          AsWeakPtr(),
+          std::move(callback)));
+}
+
+void RewardsServiceImpl::ClaimPromotion(
+    ClaimPromotionCallback callback) {
   if (!Connected()) {
     return;
   }
-  std::vector<std::string> headers;
-  headers.push_back("brave-product:brave-core");
-  headers.push_back("promotion-id:" + promotion_id);
-  headers.push_back("promotion-type:" + promotion_type);
-  bat_ledger_->GetGrantCaptcha(headers,
-      base::BindOnce(&RewardsServiceImpl::OnGrantCaptcha, AsWeakPtr()));
+
+  auto claim_callback = base::BindOnce(&RewardsServiceImpl::OnClaimPromotion,
+      AsWeakPtr(),
+      std::move(callback));
+
+  bat_ledger_->ClaimPromotion("", std::move(claim_callback));
 }
 
-void RewardsServiceImpl::TriggerOnGrantCaptcha(const std::string& image,
-    const std::string& hint) {
-  for (auto& observer : observers_)
-    observer.OnGrantCaptcha(this, image, hint);
+void RewardsServiceImpl::ClaimPromotion(
+    const std::string& promotion_id,
+    AttestPromotionCallback callback) {
+  if (!Connected()) {
+    return;
+  }
+
+  auto claim_callback = base::BindOnce(&RewardsServiceImpl::AttestationAndroid,
+      AsWeakPtr(),
+      promotion_id,
+      std::move(callback));
+
+  bat_ledger_->ClaimPromotion("", std::move(claim_callback));
 }
 
 void RewardsServiceImpl::GetWalletPassphrase(
@@ -1621,30 +1674,48 @@ void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) {
       AsWeakPtr()));
 }
 
-void RewardsServiceImpl::SolveGrantCaptcha(const std::string& solution,
-                                         const std::string& promotionId) const {
+void RewardsServiceImpl::AttestPromotion(
+    const std::string& promotion_id,
+    const std::string& solution,
+    AttestPromotionCallback callback) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->SolveGrantCaptcha(solution, promotionId);
+  bat_ledger_->AttestPromotion(
+      promotion_id,
+      solution,
+      base::BindOnce(&RewardsServiceImpl::OnAttestPromotion,
+          AsWeakPtr(),
+          std::move(callback)));
 }
 
-void RewardsServiceImpl::TriggerOnGrantFinish(ledger::Result result,
-                                              ledger::GrantPtr grant) {
-  brave_rewards::Grant properties;
-
-  if (grant) {
-    properties.promotionId = grant->promotion_id;
-    properties.altcurrency = grant->altcurrency;
-    properties.probi = grant->probi;
-    properties.expiryTime = grant->expiry_time;
-    properties.type = grant->type;
+void RewardsServiceImpl::OnAttestPromotion(
+    AttestPromotionCallback callback,
+    const ledger::Result result,
+    ledger::PromotionPtr promotion) {
+  const auto result_converted = static_cast<int>(result);
+  if (result != ledger::Result::LEDGER_OK) {
+    std::move(callback).Run(result_converted, nullptr);
+    return;
   }
+
+  brave_rewards::Promotion brave_promotion;
+  brave_promotion.amount = promotion->approximate_value;
+  brave_promotion.promotion_id = promotion->id;
+  brave_promotion.expires_at = promotion->expires_at;
+  brave_promotion.type = static_cast<int>(promotion->type);
 
   for (auto& observer : observers_) {
-    observer.OnGrantFinish(this, static_cast<int>(result), properties);
+    observer.OnPromotionFinished(
+        this,
+        result_converted,
+        brave_promotion);
   }
+
+  auto brave_promotion_ptr =
+      std::make_unique<brave_rewards::Promotion>(brave_promotion);
+  std::move(callback).Run(result_converted, std::move(brave_promotion_ptr));
 }
 
 void RewardsServiceImpl::GetReconcileStamp(
@@ -2763,7 +2834,7 @@ void RewardsServiceImpl::OnNotificationTimerFired() {
   GetReconcileStamp(
       base::Bind(&RewardsServiceImpl::MaybeShowAddFundsNotification,
         AsWeakPtr()));
-  FetchGrants(std::string(), std::string());
+  FetchPromotions();
 }
 
 void RewardsServiceImpl::MaybeShowNotificationAddFunds() {
@@ -3000,7 +3071,7 @@ void RewardsServiceImpl::SetLedgerEnvForTesting() {
 
   SetPublisherMinVisitTime(1);
 
-  // this is needed because we are using braveledger_bat_helper::buildURL
+  // this is needed because we are using braveledger_request_util::buildURL
   // directly in BraveRewardsBrowserTest
   #if defined(OFFICIAL_BUILD)
   ledger::_environment = ledger::Environment::PRODUCTION;
@@ -4001,36 +4072,6 @@ void RewardsServiceImpl::RecordBackendP3AStats() const {
                  auto_contributions_enabled_));
 }
 
-void RewardsServiceImpl::GetGrantViaSafetynetCheck(
-    const std::string& promotion_id) const {
-  bat_ledger_->GetGrantViaSafetynetCheck(promotion_id);
-}
-
-void RewardsServiceImpl::OnGrantViaSafetynetCheck(
-    const std::string& promotion_id, const std::string& nonce) {
-// This is used on Android only
-#if defined(OS_ANDROID)
-  safetynet_check::ClientAttestationCallback attest_callback =
-      base::BindOnce(&RewardsServiceImpl::GrantAttestationResult,
-          AsWeakPtr(), promotion_id);
-  safetynet_check_runner_.performSafetynetCheck(nonce,
-      std::move(attest_callback));
-#endif
-}
-
-#if defined(OS_ANDROID)
-void RewardsServiceImpl::GrantAttestationResult(
-    const std::string& promotion_id, bool result,
-    const std::string& result_string) {
-  if (result) {
-    return bat_ledger_->ApplySafetynetToken(promotion_id, result_string);
-  } else {
-    LOG(ERROR) << "GrantAttestationResult error: " << result_string;
-    TriggerOnGrantFinish(ledger::Result::LEDGER_ERROR, nullptr);
-  }
-}
-#endif
-
 #if defined(OS_ANDROID)
 ledger::Environment RewardsServiceImpl::GetServerEnvironmentForAndroid() {
   auto result = ledger::Environment::PRODUCTION;
@@ -4126,6 +4167,217 @@ void RewardsServiceImpl::OnGetFirstContributionQueue(
     ledger::GetFirstContributionQueueCallback callback,
     ledger::ContributionQueuePtr info) {
   callback(std::move(info));
+}
+
+ledger::Result InsertOrUpdatePromotionFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    ledger::PromotionPtr info) {
+  if (!backend) {
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  const bool result = backend->InsertOrUpdatePromotion(std::move(info));
+
+  return result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
+}
+
+void RewardsServiceImpl::InsertOrUpdatePromotion(
+    ledger::PromotionPtr info,
+    ledger::ResultCallback callback) {
+  auto info_clone = info->Clone();
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&InsertOrUpdatePromotionFileTaskRunner,
+        publisher_info_backend_.get(),
+        std::move(info_clone)),
+    base::BindOnce(&RewardsServiceImpl::OnResult,
+        AsWeakPtr(),
+        callback));
+}
+
+ledger::PromotionPtr GetPromotionOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    const std::string& id) {
+  if (!backend) {
+    return nullptr;
+  }
+
+  return backend->GetPromotion(id);
+}
+
+void RewardsServiceImpl::GetPromotion(
+    const std::string& id,
+    ledger::GetPromotionCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&GetPromotionOnFileTaskRunner,
+        publisher_info_backend_.get(),
+        id),
+    base::BindOnce(&RewardsServiceImpl::OnGetPromotion,
+        AsWeakPtr(),
+        callback));
+}
+
+void RewardsServiceImpl::OnGetPromotion(
+    ledger::GetPromotionCallback callback,
+    ledger::PromotionPtr info) {
+  callback(std::move(info));
+}
+
+
+ledger::PromotionMap GetAllPromotionsOnFileTaskRunner(
+    PublisherInfoDatabase* backend) {
+  if (!backend) {
+    return {};
+  }
+
+  return backend->GetAllPromotions();
+}
+
+void RewardsServiceImpl::GetAllPromotions(
+    ledger::GetAllPromotionsCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&GetAllPromotionsOnFileTaskRunner,
+        publisher_info_backend_.get()),
+    base::BindOnce(&RewardsServiceImpl::OnGetAllPromotions,
+        AsWeakPtr(),
+        callback));
+}
+
+void RewardsServiceImpl::OnGetAllPromotions(
+    ledger::GetAllPromotionsCallback callback,
+    ledger::PromotionMap promotions) {
+  callback(std::move(promotions));
+}
+
+ledger::Result InsertOrUpdateUnblindedTokenFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    ledger::UnblindedTokenPtr info) {
+  if (!backend) {
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  const bool result = backend->InsertOrUpdateUnblindedToken(std::move(info));
+
+  return result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
+}
+
+void RewardsServiceImpl::InsertOrUpdateUnblindedToken(
+    ledger::UnblindedTokenPtr info,
+    ledger::ResultCallback callback) {
+  auto info_clone = info->Clone();
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&InsertOrUpdateUnblindedTokenFileTaskRunner,
+        publisher_info_backend_.get(),
+        std::move(info_clone)),
+    base::BindOnce(&RewardsServiceImpl::OnResult,
+        AsWeakPtr(),
+        callback));
+}
+
+ledger::UnblindedTokenList GetAllUnblindedTokensOnFileTaskRunner(
+    PublisherInfoDatabase* backend) {
+  if (!backend) {
+    ledger::UnblindedTokenList empty_list;
+    return empty_list;
+  }
+
+  return backend->GetAllUnblindedTokens();
+}
+
+void RewardsServiceImpl::GetAllUnblindedTokens(
+    ledger::GetAllUnblindedTokensCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&GetAllUnblindedTokensOnFileTaskRunner,
+        publisher_info_backend_.get()),
+    base::BindOnce(&RewardsServiceImpl::OnGetAllUnblindedTokens,
+        AsWeakPtr(),
+        callback));
+}
+
+void RewardsServiceImpl::OnGetAllUnblindedTokens(
+    ledger::GetAllUnblindedTokensCallback callback,
+    ledger::UnblindedTokenList list) {
+  callback(std::move(list));
+}
+
+
+ledger::Result DeleteUnblindedTokenOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    const std::vector<std::string>& id_list) {
+  if (!backend) {
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  const bool result = backend->DeleteUnblindedToken(id_list);
+
+  return result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
+}
+
+void RewardsServiceImpl::DeleteUnblindedToken(
+    const std::vector<std::string>& id_list,
+    ledger::ResultCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&DeleteUnblindedTokenOnFileTaskRunner,
+        publisher_info_backend_.get(),
+        id_list),
+    base::BindOnce(&RewardsServiceImpl::OnResult,
+        AsWeakPtr(),
+        callback));
+}
+
+ledger::ClientInfoPtr GetDesktopClientInfo() {
+  auto info = ledger::ClientInfo::New();
+  info->platform = ledger::Platform::DESKTOP;
+  #if defined(OS_MACOSX)
+    info->os = ledger::OperatingSystem::MACOS;
+  #elif defined(OS_WIN)
+    info->os = ledger::OperatingSystem::WINDOWS;
+  #elif defined(OS_LINUX)
+    info->os = ledger::OperatingSystem::LINUX;
+  #else
+    info->os = ledger::OperatingSystem::UNDEFINED;
+  #endif
+
+  return info;
+}
+
+ledger::ClientInfoPtr RewardsServiceImpl::GetClientInfo() {
+  #if defined(OS_ANDROID)
+    return android_util::GetAndroidClientInfo();
+  #else
+    return GetDesktopClientInfo();
+  #endif
+}
+
+void RewardsServiceImpl::UnblindedTokensReady() {
+  for (auto& observer : observers_) {
+    observer.OnUnblindedTokensReady(this);
+  }
+}
+
+void RewardsServiceImpl::GetAnonWalletStatus(
+    GetAnonWalletStatusCallback callback) {
+  bat_ledger_->GetAnonWalletStatus(
+      base::BindOnce(&RewardsServiceImpl::OnGetAnonWalletStatus,
+                     AsWeakPtr(),
+                     std::move(callback)));
+}
+
+void RewardsServiceImpl::OnGetAnonWalletStatus(
+    GetAnonWalletStatusCallback callback,
+    const ledger::Result result) {
+  std::move(callback).Run(static_cast<uint32_t>(result));
 }
 
 }  // namespace brave_rewards

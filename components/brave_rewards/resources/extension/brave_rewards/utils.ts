@@ -35,40 +35,45 @@ export const convertProbiToFixed = (probi: string, places: number = 1) => {
   return result
 }
 
-export const getGrants = (grants?: RewardsExtension.Grant[]) => {
-  if (!grants) {
+export const generatePromotions = (promotions?: RewardsExtension.Promotion[]) => {
+  if (!promotions) {
     return []
   }
 
-  return grants.map((grant: RewardsExtension.Grant) => {
+  let claimedPromotions = promotions.filter((promotion: Rewards.Promotion) => {
+    return promotion.status === 4 // PromotionStatus::FINISHED
+  })
+
+  const typeUGP = 0
+  return claimedPromotions.map((promotion: RewardsExtension.Promotion) => {
     return {
-      tokens: convertProbiToFixed(grant.probi),
-      expireDate: new Date(grant.expiryTime * 1000).toLocaleDateString(),
-      type: grant.type || 'ugp'
+      amount: promotion.amount,
+      expiresAt: new Date(promotion.expiresAt).toLocaleDateString(),
+      type: promotion.type || typeUGP
     }
   })
 }
 
-export const getGrant = (grant?: RewardsExtension.GrantInfo, onlyAnonWallet?: boolean) => {
-  if (!grant) {
-    return grant
+export const getPromotion = (promotion: RewardsExtension.Promotion, onlyAnonWallet: boolean) => {
+  if (!promotion) {
+    return promotion
   }
 
   const tokenString = onlyAnonWallet ? getMessage('point') : getMessage('token')
-  grant.finishTitle = getMessage('grantFinishTitleUGP')
-  grant.finishText = getMessage('grantFinishTextUGP', [tokenString])
-  grant.finishTokenTitle = onlyAnonWallet
+  promotion.finishTitle = getMessage('grantFinishTitleUGP')
+  promotion.finishText = getMessage('grantFinishTextUGP', [tokenString])
+  promotion.finishTokenTitle = onlyAnonWallet
     ? getMessage('grantFinishPointTitleUGP')
     : getMessage('grantFinishTokenTitleUGP')
 
-  if (grant.type === 'ads') {
-    grant.expiryTime = 0
-    grant.finishTitle = getMessage('grantFinishTitleAds')
-    grant.finishText = getMessage('grantFinishTextAds')
-    grant.finishTokenTitle = getMessage('grantFinishTokenTitleAds')
+  if (promotion.type === 1) { // Rewards.PromotionTypes.ADS
+    promotion.expiresAt = 0
+    promotion.finishTitle = getMessage('grantFinishTitleAds')
+    promotion.finishText = getMessage('grantFinishTextAds')
+    promotion.finishTokenTitle = getMessage('grantFinishTokenTitleAds')
   }
 
-  return grant
+  return promotion
 }
 
 export const isPublisherVerified = (status?: RewardsExtension.PublisherStatus) => {
@@ -167,4 +172,10 @@ export const onVerifyClick = (actions: any, externalWallet?: RewardsExtension.Ex
   }
 
   handleUpholdLink(externalWallet.verifyUrl)
+}
+
+export const getClaimedPromotions = (promotions: RewardsExtension.Promotion[]) => {
+  return promotions.filter((promotion: RewardsExtension.Promotion) => {
+    return promotion.status === 4 // PromotionStatus::FINISHED
+  })
 }

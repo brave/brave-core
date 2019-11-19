@@ -13,7 +13,6 @@ namespace brave_rewards {
 
   WalletProperties::WalletProperties(const WalletProperties &properties) {
     parameters_choices = properties.parameters_choices;
-    grants = properties.grants;
   }
 
 }  // namespace brave_rewards

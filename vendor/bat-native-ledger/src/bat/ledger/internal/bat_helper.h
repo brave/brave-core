@@ -129,34 +129,6 @@ struct BATCH_VOTES_ST {
   std::vector<BATCH_VOTES_INFO_ST> batchVotesInfo_;
 };
 
-struct GRANT {
-  GRANT();
-  GRANT(const GRANT& properties);
-  ~GRANT();
-
-  // load from json string
-  bool loadFromJson(const std::string & json);
-  std::string altcurrency;
-  std::string probi;
-  uint64_t expiryTime;
-  std::string promotionId;
-  std::string type;
-};
-
-struct GRANT_RESPONSE {
-  GRANT_RESPONSE();
-  GRANT_RESPONSE(const GRANT_RESPONSE& properties);
-  ~GRANT_RESPONSE();
-
-  // load from json string
-  bool loadFromJson(const std::string & json);
-
-  std::string promotionId;
-  uint64_t minimumReconcileTimestamp;
-  uint64_t protocolVersion;
-  std::string type;
-};
-
 struct WALLET_PROPERTIES_ST {
   WALLET_PROPERTIES_ST();
   ~WALLET_PROPERTIES_ST();
@@ -167,7 +139,6 @@ struct WALLET_PROPERTIES_ST {
 
   double fee_amount_;
   std::vector<double> parameters_choices_;
-  std::vector<GRANT> grants_;
 };
 
 struct REPORT_BALANCE_ST {
@@ -305,7 +276,6 @@ struct CURRENT_RECONCILE {
   std::string proof_;
 };
 
-typedef std::vector<GRANT> Grants;
 typedef std::vector<TRANSACTION_ST> Transactions;
 typedef std::vector<BALLOT_ST> Ballots;
 typedef std::vector<BATCH_VOTES_ST> BatchVotes;
@@ -323,7 +293,6 @@ struct CLIENT_STATE_ST {
   WALLET_PROPERTIES_ST walletProperties_;
   uint64_t bootStamp_ = 0u;
   uint64_t reconcileStamp_ = 0u;
-  uint64_t last_grant_fetch_stamp_ = 0u;
   std::string personaId_;
   std::string userId_;
   std::string registrarVK_;
@@ -339,21 +308,10 @@ struct CLIENT_STATE_ST {
   std::string ruleset_;
   std::string rulesetV2_;
   BatchVotes batch_;
-  Grants grants_;
   CurrentReconciles current_reconciles_;
   bool auto_contribute_ = false;
   bool rewards_enabled_ = false;
   std::map<std::string, bool> inline_tip_;
-};
-
-struct GRANTS_PROPERTIES_ST {
-  GRANTS_PROPERTIES_ST();
-  ~GRANTS_PROPERTIES_ST();
-  GRANTS_PROPERTIES_ST(const GRANTS_PROPERTIES_ST& properties);
-
-  //  load from json string
-  bool loadFromJson(const std::string & json);
-  std::vector<GRANT_RESPONSE> grants_;
 };
 
 struct BATCH_PROOF {
@@ -365,13 +323,6 @@ struct BATCH_PROOF {
 };
 
 typedef std::vector<braveledger_bat_helper::BATCH_PROOF> BatchProofs;
-
-enum class SERVER_TYPES {
-  LEDGER,
-  BALANCE,
-  PUBLISHER,
-  PUBLISHER_DISTRO
-};
 
 using SaveVisitSignature = void(const std::string&, uint64_t);
 using SaveVisitCallback = std::function<SaveVisitSignature>;
@@ -405,8 +356,7 @@ bool getJSONBatchSurveyors(const std::string& json,
                            std::vector<std::string>* surveyors);
 
 bool getJSONRecoverWallet(const std::string& json,
-                          double* balance,
-                          std::vector<GRANT>* grants);
+                          double* balance);
 
 bool getJSONResponse(const std::string& json,
                      unsigned int* statusCode,
@@ -446,17 +396,13 @@ std::string getBase64(const std::vector<uint8_t>& in);
 bool getFromBase64(const std::string& in, std::vector<uint8_t>* out);
 
 // Sign using ed25519 algorithm
-std::string sign(std::string* keys,
-                 std::string* values,
-                 const unsigned int size,
-                 const std::string& keyId,
-                 const std::vector<uint8_t>& secretKey);
+std::string sign(
+    const std::vector<std::string>& keys,
+    const std::vector<std::string>& values,
+    const std::string& key_id,
+    const std::vector<uint8_t>& secretKey);
 
 uint64_t currentTime();
-
-std::string buildURL(const std::string& path,
-                     const std::string& prefix = "",
-                     const SERVER_TYPES& server = SERVER_TYPES::LEDGER);
 
 std::vector<std::string> split(const std::string& s, char delim);
 

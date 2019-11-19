@@ -16,8 +16,7 @@ declare namespace Rewards {
     NOT_FOUND = 9,
     REGISTRATION_VERIFICATION_FAILED = 10,
     BAD_REGISTRATION_RESPONSE = 11,
-    WALLET_CREATED = 12,
-    GRANT_NOT_FOUND = 13
+    WALLET_CREATED = 12
   }
 
   export type AddressesType = 'BTC' | 'ETH' | 'BAT' | 'LTC'
@@ -36,7 +35,6 @@ declare namespace Rewards {
     contributionNonVerified: boolean
     contributionVideos: boolean
     createdTimestamp: number | null
-    currentGrant?: Grant
     donationAbilityTwitter: boolean
     donationAbilityYT: boolean
     enabledAds: boolean
@@ -51,7 +49,7 @@ declare namespace Rewards {
     }
     excludedList: ExcludedPublisher[]
     firstLoad: boolean | null
-    grants?: Grant[]
+    promotions?: Promotion[]
     pendingContributions: PendingContribution[]
     pendingContributionTotal: number
     reconcileStamp: number
@@ -84,41 +82,51 @@ declare namespace Rewards {
     actions: any
   }
 
-  export type GrantStatus = 'wrongPosition' | 'grantGone' | 'generalError' | 'grantAlreadyClaimed' | number | null
+  export type CaptchaStatus = 'start' | 'wrongPosition' | 'generalError' | 'finished' | null
 
-  export interface Grant {
-    promotionId?: string
-    altcurrency?: string
-    probi: string
-    expiryTime: number
-    captcha?: string
-    hint?: string
-    status?: GrantStatus
-    type?: string
-    showClaim?: boolean
+  export enum PromotionTypes {
+    UGP = 0,
+    ADS = 1
   }
 
-  export interface GrantResponse {
-    promotionId?: string
-    status?: number
-    type?: string
+  export enum PromotionStatus {
+    ACTIVE = 0,
+    ATTESTED = 1,
+    CLAIMED = 2,
+    SIGNED_TOKENS = 3,
+    FINISHED = 4,
+    OVER = 5
+  }
+
+  export interface Promotion {
+    promotionId: string
+    amount: number
+    expiresAt: number
+    status: PromotionStatus
+    type: PromotionTypes
+    captchaImage?: string
+    captchaId?: string
+    hint?: string
+    captchaStatus?: CaptchaStatus
+  }
+
+  export interface PromotionResponse {
+    result: number
+    promotions: Promotion[]
   }
 
   export interface WalletProperties {
     choices: number[]
-    grants?: Grant[]
   }
 
   export interface RecoverWallet {
     result: Result
     balance: number
-    grants?: Grant[]
   }
 
-  export interface GrantFinish {
+  export interface PromotionFinish {
     result: Result,
-    statusCode: number,
-    expiryTime: number
+    promotion?: Promotion
   }
 
   export enum ExcludeStatus {
@@ -168,7 +176,9 @@ declare namespace Rewards {
   }
 
   export interface Captcha {
-    image: string
+    result: number
+    promotionId: string
+    captchaImage: string
     hint: string
   }
 

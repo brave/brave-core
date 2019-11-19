@@ -61,12 +61,12 @@ window.cr.define('brave_rewards', function () {
     getActions().onWalletProperties(properties)
   }
 
-  function grant (properties: Rewards.GrantResponse) {
-    getActions().onGrant(properties)
+  function promotions (properties: Rewards.PromotionResponse) {
+    getActions().onPromotions(properties)
   }
 
-  function grantCaptcha (captcha: Rewards.Captcha) {
-    getActions().onGrantCaptcha(captcha)
+  function claimPromotion (properties: Rewards.Captcha) {
+    getActions().onClaimPromotion(properties)
   }
 
   function walletPassphrase (pass: string) {
@@ -77,8 +77,8 @@ window.cr.define('brave_rewards', function () {
     getActions().onRecoverWalletData(properties)
   }
 
-  function grantFinish (properties: Rewards.GrantFinish) {
-    getActions().onGrantFinish(properties)
+  function promotionFinish (properties: Rewards.PromotionFinish) {
+    getActions().onPromotionFinish(properties)
   }
 
   function reconcileStamp (stamp: number) {
@@ -233,16 +233,20 @@ window.cr.define('brave_rewards', function () {
     getActions().onOnlyAnonWallet(only)
   }
 
+  function unblindedTokensReady () {
+    getActions().getBalance()
+  }
+
   return {
     initialize,
     walletCreated,
     walletCreateFailed,
     walletProperties,
-    grant,
-    grantCaptcha,
+    promotions,
+    claimPromotion,
     walletPassphrase,
     recoverWalletData,
-    grantFinish,
+    promotionFinish,
     reconcileStamp,
     contributeList,
     excludedList,
@@ -276,7 +280,8 @@ window.cr.define('brave_rewards', function () {
     externalWallet,
     processRewardsPageUrl,
     disconnectWallet,
-    onlyAnonWallet
+    onlyAnonWallet,
+    unblindedTokensReady
   }
 })
 

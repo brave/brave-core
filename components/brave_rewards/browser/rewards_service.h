@@ -19,6 +19,7 @@
 #include "brave/components/brave_rewards/browser/external_wallet.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/pending_contribution.h"
+#include "brave/components/brave_rewards/browser/promotion.h"
 #include "brave/components/brave_rewards/browser/rewards_internals_info.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "build/build_config.h"
@@ -98,6 +99,15 @@ using ProcessRewardsPageUrlCallback = base::OnceCallback<void(
     const std::string&,
     const std::map<std::string, std::string>&)>;
 using CreateWalletCallback = base::OnceCallback<void(int32_t)>;
+using ClaimPromotionCallback = base::OnceCallback<void(
+    const int32_t,
+    const std::string&,
+    const std::string&,
+    const std::string&)>;
+using AttestPromotionCallback = base::OnceCallback<void(
+    const int32_t,
+    std::unique_ptr<brave_rewards::Promotion> promotion)>;
+using GetAnonWalletStatusCallback = base::OnceCallback<void(const uint32_t)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -115,19 +125,21 @@ class RewardsService : public KeyedService {
       uint32_t min_visits,
       bool fetch_excluded,
       const GetContentSiteListCallback& callback) = 0;
-  virtual void FetchGrants(const std::string& lang,
-                           const std::string& paymentId) = 0;
-  virtual void GetGrantCaptcha(
+  virtual void FetchPromotions() = 0;
+  // Used by desktop
+  virtual void ClaimPromotion(ClaimPromotionCallback callback) = 0;
+  // Used by Android
+  virtual void ClaimPromotion(
       const std::string& promotion_id,
-      const std::string& promotion_type) = 0;
-  virtual void SolveGrantCaptcha(const std::string& solution,
-                                 const std::string& promotionId) const = 0;
+      AttestPromotionCallback callback) = 0;
+  virtual void AttestPromotion(
+      const std::string& promotion_id,
+      const std::string& solution,
+      AttestPromotionCallback callback) = 0;
   virtual void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) = 0;
   virtual void RecoverWallet(const std::string& passPhrase) = 0;
   virtual void RestorePublishersUI() = 0;
-  virtual void GetGrantViaSafetynetCheck(
-      const std::string& promotion_id) const = 0;
   virtual void OnLoad(SessionID tab_id, const GURL& gurl) = 0;
   virtual void OnUnload(SessionID tab_id) = 0;
   virtual void OnShow(SessionID tab_id) = 0;
@@ -271,6 +283,8 @@ class RewardsService : public KeyedService {
   virtual void DisconnectWallet(const std::string& wallet_type) = 0;
 
   virtual bool OnlyAnonWallet() = 0;
+
+  virtual void GetAnonWalletStatus(GetAnonWalletStatusCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

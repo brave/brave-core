@@ -16,6 +16,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/request/request_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -38,10 +39,10 @@ void Balance::Fetch(ledger::FetchBalanceCallback callback) {
   std::string path = (std::string)WALLET_PROPERTIES
       + payment_id
       + WALLET_PROPERTIES_END;
-  const std::string url = braveledger_bat_helper::buildURL(
+  const std::string url = braveledger_request_util::BuildUrl(
       path,
       PREFIX_V2,
-      braveledger_bat_helper::SERVER_TYPES::BALANCE);
+      braveledger_request_util::ServerTypes::BALANCE);
   auto load_callback = std::bind(&Balance::OnWalletProperties,
                             this,
                             _1,
@@ -106,7 +107,38 @@ void Balance::OnWalletProperties(
 
   balance->wallets.insert(std::make_pair(ledger::kWalletAnonymous, total_anon));
 
-  // Fetch other wallets
+
+  GetUnBlindedTokens(std::move(balance), callback);
+}
+
+void Balance::GetUnBlindedTokens(
+    ledger::BalancePtr balance,
+    ledger::FetchBalanceCallback callback) {
+  auto tokens_callback = std::bind(&Balance::OnGetUnBlindedTokens,
+      this,
+      *balance,
+      callback,
+      _1);
+  ledger_->GetAllUnblindedTokens(tokens_callback);
+}
+
+void Balance::OnGetUnBlindedTokens(
+    ledger::Balance info,
+    ledger::FetchBalanceCallback callback,
+    ledger::UnblindedTokenList list) {
+  auto info_ptr = ledger::Balance::New(info);
+  double total = 0.0;
+  for (auto & item : list) {
+    total+=item->value;
+  }
+  info_ptr->total += total;
+  info_ptr->wallets.insert(std::make_pair(ledger::kWalletUnBlinded, total));
+  ExternalWallets(std::move(info_ptr), callback);
+}
+
+void Balance::ExternalWallets(
+    ledger::BalancePtr balance,
+    ledger::FetchBalanceCallback callback) {
   auto tokens_callback = std::bind(&Balance::OnExternalWallets,
                                    this,
                                    *balance,

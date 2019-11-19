@@ -38,6 +38,13 @@
 #define PUBLISHER_DISTRO_DEVELOPMENT_SERVER  \
 "https://creators-distro.brave.software"
 
+#define PROMOTION_STAGING_SERVER              \
+"https://grant.rewards.bravesoftware.com"
+#define PROMOTION_PRODUCTION_SERVER           \
+"https://grant.rewards.brave.com"
+#define PROMOTION_DEVELOPMENT_SERVER            \
+"https://grant.rewards.brave.software"
+
 #define PREFIX_V1                       "/v1"
 #define PREFIX_V2                       "/v2"
 #define PREFIX_V3                       "/v3"
@@ -55,7 +62,6 @@
 #define UPDATE_RULES_V2                 \
 "/v2/publisher/ruleset?limit=512&excludedOnly=false"
 #define RECOVER_WALLET_PUBLIC_KEY       "/wallet?publicKey="
-#define GET_SET_PROMOTION               "/grants"
 #define GET_PROMOTION_CAPTCHA           "/captchas/"
 #define GET_PUBLISHERS_LIST             "/api/v3/public/channels"
 #define GET_PROMOTION_ATTESTATION       "/attestations/"
@@ -142,7 +148,7 @@ static const uint64_t _publishers_list_load_interval = 24 * 60 * 60;
 static const uint64_t _reconcile_default_interval = 30 * 24 * 60 * 60;
 
 // 1 day in seconds
-static const uint64_t _grant_load_interval = 24 * 60 * 60;
+static const uint64_t _promotion_load_interval = 24 * 60 * 60;
 
 // pending contribution expiration in seconds (90 days)
 static const uint64_t _pending_contribution_expiration = 90 * 24 * 60 * 60;

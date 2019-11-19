@@ -65,7 +65,6 @@ declare namespace chrome.braveRewards {
   const tipRedditUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
   const tipGitHubUser: (tabId: number, githubMetaData: RewardsTip.MediaMetaData) => {}
   const getPublisherData: (windowId: number, url: string, faviconUrl: string, publisherBlob: string | undefined) => {}
-  const getWalletProperties: () => {}
   const getCurrentReport: () => {}
   const onWalletInitialized: {
     addListener: (callback: (result: RewardsExtension.Result) => void) => void
@@ -73,25 +72,19 @@ declare namespace chrome.braveRewards {
   const onPublisherData: {
     addListener: (callback: (windowId: number, publisher: RewardsExtension.Publisher) => void) => void
   }
-  const onWalletProperties: {
-    addListener: (callback: (properties: RewardsExtension.WalletProperties) => void) => void
-  }
   const onCurrentReport: {
     addListener: (callback: (properties: RewardsExtension.Report) => void) => void
   }
-  const onGrant: {
-    addListener: (callback: (properties: RewardsExtension.GrantResponse) => void) => void
+  const onPromotions: {
+    addListener: (callback: (result: RewardsExtension.Result, promotions: RewardsExtension.Promotion[]) => void) => void
   }
-  const onGrantFinish: {
-    addListener: (callback: (properties: RewardsExtension.GrantFinish) => void) => void
-  }
-  const onGrantCaptcha: {
-    addListener: (callback: (properties: RewardsExtension.Captcha) => void) => void
+  const onPromotionFinish: {
+    addListener: (callback: (result: RewardsExtension.Result, promotion: RewardsExtension.Promotion) => void) => void
   }
   const includeInAutoContribution: (publisherKey: string, exclude: boolean) => {}
-  const getGrants: () => {}
-  const getGrantCaptcha: (promotionId: string, type: string) => {}
-  const solveGrantCaptcha: (solution: string, promotionId: string) => {}
+  const fetchPromotions: () => {}
+  const claimPromotion: (promotionId: string, callback: (properties: RewardsExtension.Captcha) => void) => {}
+  const attestPromotion: (promotionId: string, solution: string, callback: (result: number, promotion?: RewardsExtension.Promotion) => void) => {}
   const getPendingContributionsTotal: (callback: (amount: number) => void) => {}
   const getNonVerifiedSettings: (callback: (nonVerified: boolean) => void) => {}
   const onAdsEnabled: {
@@ -147,6 +140,12 @@ declare namespace chrome.braveRewards {
   const onlyAnonWallet: (callback: (only: boolean) => void) => {}
 
   const openBrowserActionUI: (path?: string) => {}
+
+  const onUnblindedTokensReady: {
+    addListener: (callback: () => void) => void
+  }
+
+  const getAnonWalletStatus: (callback: (result: RewardsExtension.Result) => void) => {}
 }
 
 declare namespace chrome.rewardsNotifications {

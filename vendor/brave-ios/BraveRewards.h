@@ -21,3 +21,4 @@ FOUNDATION_EXPORT const unsigned char BraveRewardsVersionString[];
 #import <BraveRewards/Records.h>
 #import <BraveRewards/ledger.mojom.objc.h>
 #import <BraveRewards/BATRewardsNotification.h>
+#import <BraveRewards/BATPromotionSolution.h>

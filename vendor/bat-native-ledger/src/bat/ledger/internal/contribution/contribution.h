@@ -82,23 +82,16 @@ namespace bat_ledger {
 class LedgerImpl;
 }
 
-namespace braveledger_contribution {
-class PhaseOne;
-}
-
-namespace braveledger_contribution {
-class PhaseTwo;
-}
-
-namespace braveledger_contribution {
-class Unverified;
-}
-
 namespace braveledger_uphold {
 class Uphold;
 }
 
 namespace braveledger_contribution {
+
+class PhaseOne;
+class PhaseTwo;
+class Unverified;
+class Unblinded;
 
 static const uint64_t phase_one_timers[] = {
     1 * 60 * 60,  // 1h
@@ -253,16 +246,30 @@ class Contribution {
       double* fee,
       const double balance);
 
+  bool ProcessReconcileUnblindedTokens(
+      ledger::BalancePtr info,
+      ledger::RewardsType type,
+      double* fee,
+      braveledger_bat_helper::Directions directions,
+      braveledger_bat_helper::Directions* leftovers);
+
+  bool ProcessReconcileAnonize(
+      ledger::BalancePtr info,
+      ledger::RewardsType type,
+      double* fee,
+      braveledger_bat_helper::Directions directions,
+      braveledger_bat_helper::Directions* leftovers);
+
   void ProcessReconcile(
-    ledger::ContributionQueuePtr contribution,
-    ledger::BalancePtr info);
+      ledger::ContributionQueuePtr contribution,
+      ledger::BalancePtr info);
 
   void DeleteContributionQueue(ledger::ContributionQueuePtr contribution);
 
   void AdjustTipsAmounts(
-    braveledger_bat_helper::Directions directions,
-    braveledger_bat_helper::Directions* wallet_directions,
-    braveledger_bat_helper::Directions* anon_directions,
+    braveledger_bat_helper::Directions original_directions,
+    braveledger_bat_helper::Directions* primary_directions,
+    braveledger_bat_helper::Directions* rest_directions,
     double reduce_fee_for);
 
   void OnExternalWallets(
@@ -284,6 +291,7 @@ class Contribution {
   std::unique_ptr<PhaseOne> phase_one_;
   std::unique_ptr<PhaseTwo> phase_two_;
   std::unique_ptr<Unverified> unverified_;
+  std::unique_ptr<Unblinded> unblinded_;
   std::unique_ptr<braveledger_uphold::Uphold> uphold_;
   uint32_t last_reconcile_timer_id_;
   std::map<std::string, uint32_t> retry_timers_;

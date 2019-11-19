@@ -20,27 +20,12 @@ chrome.braveRewards.onPublisherData.addListener((windowId: number, publisher: Re
   }
 })
 
-chrome.braveRewards.onWalletProperties.addListener((properties: RewardsExtension.WalletProperties) => {
-  rewardsPanelActions.onWalletProperties(properties)
-})
-
 chrome.braveRewards.onCurrentReport.addListener((properties: RewardsExtension.Report) => {
   rewardsPanelActions.onCurrentReport(properties)
 })
 
-chrome.braveRewards.onGrant.addListener((properties: RewardsExtension.GrantResponse) => {
-  rewardsPanelActions.onGrant(properties)
-})
-
-chrome.braveRewards.onGrantCaptcha.addListener((captcha: RewardsExtension.Captcha) => {
-  rewardsPanelActions.onGrantCaptcha(captcha)
-})
-
-chrome.braveRewards.onGrantFinish.addListener((properties: RewardsExtension.GrantFinish) => {
-  rewardsPanelActions.onGrantFinish(properties)
-  chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
-    rewardsPanelActions.onBalance(balance)
-  })
+chrome.braveRewards.onPromotions.addListener((result: number, promotions: RewardsExtension.Promotion[]) => {
+  rewardsPanelActions.onPromotions(result, promotions)
 })
 
 chrome.rewardsNotifications.onNotificationAdded.addListener((id: string, type: number, timestamp: number, args: string[]) => {
@@ -115,14 +100,26 @@ chrome.braveRewards.onDisconnectWallet.addListener((properties: {result: number,
   }
 })
 
+chrome.braveRewards.onUnblindedTokensReady.addListener(() => {
+  chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
+    rewardsPanelActions.onBalance(balance)
+  })
+})
+
+chrome.braveRewards.onPromotionFinish.addListener((result: RewardsExtension.Result, promotion: RewardsExtension.Promotion) => {
+  rewardsPanelActions.promotionFinished(result, promotion)
+})
+
 // Fetch initial data required to refresh state, keeping in mind
 // that the extension process be restarted at any time.
 // TODO(petemill): Move to initializer function or single 'init' action.
 chrome.braveRewards.getRewardsMainEnabled((enabledMain: boolean) => {
   rewardsPanelActions.onEnabledMain(enabledMain)
   if (enabledMain) {
-    chrome.braveRewards.getWalletProperties()
-    chrome.braveRewards.getGrants()
+    chrome.braveRewards.getAnonWalletStatus((result: RewardsExtension.Result) => {
+      rewardsPanelActions.onAnonWalletStatus(result)
+    })
+    chrome.braveRewards.fetchPromotions()
     chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
       rewardsPanelActions.onBalance(balance)
     })

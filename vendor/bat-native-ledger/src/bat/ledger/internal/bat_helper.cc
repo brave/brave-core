@@ -777,7 +777,6 @@ WALLET_PROPERTIES_ST::WALLET_PROPERTIES_ST(
     const WALLET_PROPERTIES_ST &properties) {
   fee_amount_ = properties.fee_amount_;
   parameters_choices_ = properties.parameters_choices_;
-  grants_ = properties.grants_;
 }
 
 bool WALLET_PROPERTIES_ST::loadFromJson(const std::string & json) {
@@ -796,32 +795,6 @@ bool WALLET_PROPERTIES_ST::loadFromJson(const std::string & json) {
     }
 
     fee_amount_ = d["parameters"]["adFree"]["fee"]["BAT"].GetDouble();
-
-    if (d.HasMember("grants") && d["grants"].IsArray()) {
-      for (auto &i : d["grants"].GetArray()) {
-        GRANT grant;
-        auto obj = i.GetObject();
-        if (obj.HasMember("probi")) {
-          grant.probi = obj["probi"].GetString();
-        }
-
-        if (obj.HasMember("altcurrency")) {
-          grant.altcurrency = obj["altcurrency"].GetString();
-        }
-
-        if (obj.HasMember("expiryTime")) {
-          grant.expiryTime = obj["expiryTime"].GetUint64();
-        }
-
-        if (obj.HasMember("type")) {
-          grant.type = obj["type"].GetString();
-        }
-
-        grants_.push_back(grant);
-      }
-    } else {
-      grants_.clear();
-    }
   }
   return !error;
 }
@@ -856,189 +829,6 @@ void saveToJson(JsonWriter* writer, const WALLET_PROPERTIES_ST& data) {
 
   writer->EndObject();
   writer->EndObject();
-
-  writer->String("grants");
-  writer->StartArray();
-  for (auto & grant : data.grants_) {
-    saveToJson(writer, grant);
-  }
-  writer->EndArray();
-
-  writer->EndObject();
-}
-
-/////////////////////////////////////////////////////////////////////////////
-GRANTS_PROPERTIES_ST::GRANTS_PROPERTIES_ST() {}
-
-GRANTS_PROPERTIES_ST::GRANTS_PROPERTIES_ST(
-    const GRANTS_PROPERTIES_ST& properties) {
-  grants_ = properties.grants_;
-}
-
-GRANTS_PROPERTIES_ST::~GRANTS_PROPERTIES_ST() {}
-
-bool GRANTS_PROPERTIES_ST::loadFromJson(const std::string & json) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  bool error = d.HasParseError();
-  if (!error) {
-    error = !(d.HasMember("grants") && d["grants"].IsArray());
-  }
-
-  if (!error) {
-    for (auto &i : d["grants"].GetArray()) {
-      GRANT_RESPONSE grant;
-      auto obj = i.GetObject();
-
-      if (obj.HasMember("promotionId")) {
-        grant.promotionId = obj["promotionId"].GetString();
-      }
-
-      if (obj.HasMember("minimumReconcileTimestamp")) {
-        grant.minimumReconcileTimestamp =
-            obj["minimumReconcileTimestamp"].GetUint64();
-      }
-
-      if (obj.HasMember("protocolVersion")) {
-        grant.protocolVersion = obj["protocolVersion"].GetUint64();
-      }
-
-      if (obj.HasMember("type")) {
-        grant.type = obj["type"].GetString();
-      }
-
-      grants_.push_back(grant);
-    }
-  } else {
-    grants_.clear();
-  }
-  return !error;
-}
-
-/////////////////////////////////////////////////////////////////////////////
-
-GRANT::GRANT() : expiryTime(0) {}
-
-GRANT::~GRANT() {}
-
-GRANT::GRANT(const GRANT &properties) {
-  promotionId = properties.promotionId;
-  altcurrency = properties.altcurrency;
-  expiryTime = properties.expiryTime;
-  probi = properties.probi;
-  type = properties.type;
-}
-
-bool GRANT::loadFromJson(const std::string & json) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  // has parser errors or wrong types
-  bool error = d.HasParseError();
-  if (error) {
-    return !error;
-  }
-
-  // First grant get
-  error = !(
-      d.HasMember("promotionId") && d["promotionId"].IsString());
-
-  if (!error) {
-    promotionId = d["promotionId"].GetString();
-
-    if (d.HasMember("type") && d["type"].IsString()) {
-      type = d["type"].GetString();
-    }
-    return !error;
-  }
-
-  // On successful grant
-  error = !(
-      d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
-      d.HasMember("expiryTime") && d["expiryTime"].IsNumber() &&
-      d.HasMember("probi") && d["probi"].IsString());
-
-  if (!error) {
-    altcurrency = d["altcurrency"].GetString();
-    expiryTime = d["expiryTime"].GetUint64();
-    probi = d["probi"].GetString();
-    if (d.HasMember("type") && d["type"].IsString()) {
-      type = d["type"].GetString();
-    }
-
-#if defined(OS_ANDROID)
-    if (type == "ugp") {
-      type = "android";
-    }
-#endif
-  }
-
-  return !error;
-}
-
-GRANT_RESPONSE::GRANT_RESPONSE() {}
-
-GRANT_RESPONSE::~GRANT_RESPONSE() {}
-
-GRANT_RESPONSE::GRANT_RESPONSE(const GRANT_RESPONSE &properties) {
-  promotionId = properties.promotionId;
-  minimumReconcileTimestamp = properties.minimumReconcileTimestamp;
-  protocolVersion = properties.protocolVersion;
-  type = properties.type;
-}
-
-bool GRANT_RESPONSE::loadFromJson(const std::string & json) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  // has parser errors or wrong types
-  bool error = d.HasParseError();
-  if (error) {
-    return !error;
-  }
-
-  // First grant get
-  error = !(d.HasMember("promotionId") && d["promotionId"].IsString());
-
-  if (!error) {
-    promotionId = d["promotionId"].GetString();
-    return !error;
-  }
-
-  // On successful grant
-  error = !(
-      d.HasMember("protocolVersion") && d["protocolVersion"].IsNumber() &&
-      d.HasMember("minimumReconcileTimestamp") &&
-      d["minimumReconcileTimestamp"].IsNumber() &&
-      d.HasMember("type") && d["type"].IsString());
-
-  if (!error) {
-    minimumReconcileTimestamp = d["minimumReconcileTimestamp"].GetUint64();
-    protocolVersion = d["protocolVersion"].GetUint64();
-    type = d["type"].GetString();
-  }
-
-  return !error;
-}
-
-void saveToJson(JsonWriter* writer, const GRANT& data) {
-  writer->StartObject();
-
-  writer->String("altcurrency");
-  writer->String(data.altcurrency.c_str());
-
-  writer->String("probi");
-  writer->String(data.probi.c_str());
-
-  writer->String("expiryTime");
-  writer->Uint64(data.expiryTime);
-
-  writer->String("promotionId");
-  writer->String(data.promotionId.c_str());
-
-  writer->String("type");
-  writer->String(data.type.c_str());
 
   writer->EndObject();
 }
@@ -1316,7 +1106,6 @@ void saveToJson(JsonWriter* writer, const CURRENT_RECONCILE& data) {
 CLIENT_STATE_ST::CLIENT_STATE_ST():
   bootStamp_(0),
   reconcileStamp_(0),
-  last_grant_fetch_stamp_(0),
   settings_(AD_FREE_SETTINGS),
   fee_amount_(0),
   user_changed_fee_(false),
@@ -1329,7 +1118,6 @@ CLIENT_STATE_ST::CLIENT_STATE_ST(const CLIENT_STATE_ST& other) {
   walletInfo_ = other.walletInfo_;
   bootStamp_ = other.bootStamp_;
   reconcileStamp_ = other.reconcileStamp_;
-  last_grant_fetch_stamp_ = other.last_grant_fetch_stamp_;
   personaId_ = other.personaId_;
   userId_ = other.userId_;
   registrarVK_ = other.registrarVK_;
@@ -1349,7 +1137,6 @@ CLIENT_STATE_ST::CLIENT_STATE_ST(const CLIENT_STATE_ST& other) {
   rewards_enabled_ = other.rewards_enabled_;
   current_reconciles_ = other.current_reconciles_;
   inline_tip_ = other.inline_tip_;
-  grants_ = other.grants_;
 }
 
 CLIENT_STATE_ST::~CLIENT_STATE_ST() {}
@@ -1394,14 +1181,6 @@ bool CLIENT_STATE_ST::loadFromJson(const std::string & json) {
 
     bootStamp_ = d["bootStamp"].GetUint64();
     reconcileStamp_ = d["reconcileStamp"].GetUint64();
-
-    if (d.HasMember("last_grant_fetch_stamp") &&
-        d["last_grant_fetch_stamp"].IsUint64()) {
-      last_grant_fetch_stamp_ = d["last_grant_fetch_stamp"].GetUint64();
-    } else {
-      last_grant_fetch_stamp_ = 0u;
-    }
-
     personaId_ = d["personaId"].GetString();
     userId_ = d["userId"].GetString();
     registrarVK_ = d["registrarVK"].GetString();
@@ -1491,9 +1270,6 @@ void saveToJson(JsonWriter* writer, const CLIENT_STATE_ST& data) {
 
   writer->String("reconcileStamp");
   writer->Uint64(data.reconcileStamp_);
-
-  writer->String("last_grant_fetch_stamp");
-  writer->Uint64(data.last_grant_fetch_stamp_);
 
   writer->String("personaId");
   writer->String(data.personaId_.c_str());
@@ -1808,8 +1584,7 @@ bool getJSONWalletInfo(const std::string& json,
 }
 
 bool getJSONRecoverWallet(const std::string& json,
-                          double* balance,
-                          std::vector<GRANT>* grants) {
+                          double* balance) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 
@@ -1821,32 +1596,6 @@ bool getJSONRecoverWallet(const std::string& json,
 
   if (!error) {
     *balance = std::stod(d["balance"].GetString());
-
-    if (d.HasMember("grants") && d["grants"].IsArray()) {
-      for (auto &i : d["grants"].GetArray()) {
-        GRANT grant;
-        auto obj = i.GetObject();
-        if (obj.HasMember("probi")) {
-          grant.probi = obj["probi"].GetString();
-        }
-
-        if (obj.HasMember("altcurrency")) {
-          grant.altcurrency = obj["altcurrency"].GetString();
-        }
-
-        if (obj.HasMember("expiryTime")) {
-          grant.expiryTime = obj["expiryTime"].GetUint64();
-        }
-
-        if (obj.HasMember("type")) {
-          grant.type = obj["type"].GetString();
-        }
-
-        grants->push_back(grant);
-      }
-    } else {
-      grants->clear();
-    }
   }
   return !error;
 }
@@ -1867,22 +1616,6 @@ bool getJSONResponse(const std::string& json,
   if (!hasError) {
     *statusCode = d["statusCode"].GetUint();
     *error = d["error"].GetString();
-  }
-  return !hasError;
-}
-
-bool getJSONGrant(const std::string& json, uint64_t* expiryTime) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  // has parser errors or wrong types
-  bool hasError = d.HasParseError();
-  if (!hasError) {
-    hasError = !(d.HasMember("expiryTime") && d["expiryTime"].IsNumber());
-  }
-
-  if (!hasError) {
-    *expiryTime = d["expiryTime"].GetUint();
   }
   return !hasError;
 }
@@ -2156,14 +1889,16 @@ bool getFromBase64(const std::string& in, std::vector<uint8_t>* out) {
   return succeded;
 }
 
-std::string sign(std::string* keys,
-                 std::string* values,
-                 const unsigned int size,
-                 const std::string& keyId,
-                 const std::vector<uint8_t>& secretKey) {
+std::string sign(
+    const std::vector<std::string>& keys,
+    const std::vector<std::string>& values,
+    const std::string& key_id,
+    const std::vector<uint8_t>& secretKey) {
+  DCHECK(keys.size() == values.size());
+
   std::string headers;
   std::string message;
-  for (unsigned int i = 0; i < size; i++) {
+  for (unsigned int i = 0; i < keys.size(); i++) {
     if (i != 0) {
       headers += " ";
       message += "\n";
@@ -2185,7 +1920,7 @@ std::string sign(std::string* keys,
             signedMsg.begin() + crypto_sign_BYTES,
             signature.begin());
 
-  return "keyId=\"" + keyId + "\",algorithm=\"" + SIGNATURE_ALGORITHM +
+  return "keyId=\"" + key_id + "\",algorithm=\"" + SIGNATURE_ALGORITHM +
     "\",headers=\"" + headers + "\",signature=\"" + getBase64(signature) + "\"";
 }
 
@@ -2202,68 +1937,6 @@ bool HasSameDomainAndPath(
       gurl.DomainIs(domain_to_match) &&
       gurl.has_path() && !path_to_match.empty() &&
       gurl.path().substr(0, path_to_match.size()) == path_to_match;
-}
-
-std::string buildURL(const std::string& path,
-                     const std::string& prefix,
-                     const SERVER_TYPES& server) {
-  std::string url;
-  switch (server) {
-    case SERVER_TYPES::BALANCE:
-      switch (ledger::_environment) {
-        case ledger::Environment::STAGING:
-          url = BALANCE_STAGING_SERVER;
-          break;
-        case ledger::Environment::PRODUCTION:
-          url = BALANCE_PRODUCTION_SERVER;
-          break;
-        case ledger::Environment::DEVELOPMENT:
-          url = BALANCE_DEVELOPMENT_SERVER;
-          break;
-      }
-      break;
-    case SERVER_TYPES::PUBLISHER:
-      switch (ledger::_environment) {
-        case ledger::Environment::STAGING:
-          url = PUBLISHER_STAGING_SERVER;
-          break;
-        case ledger::Environment::PRODUCTION:
-          url = PUBLISHER_PRODUCTION_SERVER;
-          break;
-        case ledger::Environment::DEVELOPMENT:
-          url = PUBLISHER_DEVELOPMENT_SERVER;
-          break;
-      }
-      break;
-    case SERVER_TYPES::PUBLISHER_DISTRO:
-      switch (ledger::_environment) {
-        case ledger::Environment::STAGING:
-          url = PUBLISHER_DISTRO_STAGING_SERVER;
-          break;
-        case ledger::Environment::PRODUCTION:
-          url = PUBLISHER_DISTRO_PRODUCTION_SERVER;
-          break;
-        case ledger::Environment::DEVELOPMENT:
-          url = PUBLISHER_DISTRO_DEVELOPMENT_SERVER;
-          break;
-      }
-      break;
-    case SERVER_TYPES::LEDGER:
-      switch (ledger::_environment) {
-        case ledger::Environment::STAGING:
-          url = LEDGER_STAGING_SERVER;
-          break;
-        case ledger::Environment::PRODUCTION:
-          url = LEDGER_PRODUCTION_SERVER;
-          break;
-        case ledger::Environment::DEVELOPMENT:
-          url = LEDGER_DEVELOPMENT_SERVER;
-          break;
-      }
-      break;
-  }
-
-  return url + prefix + path;
 }
 
 std::vector<std::string> split(const std::string& s, char delim) {

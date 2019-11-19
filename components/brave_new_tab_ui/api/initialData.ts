@@ -99,7 +99,7 @@ export async function getRewardsInitialData (): Promise<InitialRewardsData> {
         resolve(balance)
       })),
       new Promise(resolve => {
-        chrome.braveRewards.getGrants()
+        chrome.braveRewards.fetchPromotions()
         resolve(true)
       })
     ])

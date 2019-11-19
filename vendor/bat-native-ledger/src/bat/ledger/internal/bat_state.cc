@@ -168,30 +168,12 @@ void BatState::ResetReconcileStamp() {
   SaveState();
 }
 
-uint64_t BatState::GetLastGrantLoadTimestamp() const {
-  return state_->last_grant_fetch_stamp_;
-}
-
-void BatState::SetLastGrantLoadTimestamp(uint64_t stamp) {
-  state_->last_grant_fetch_stamp_ = stamp;
-  SaveState();
-}
-
 bool BatState::IsWalletCreated() const {
   return state_->bootStamp_ != 0u;
 }
 
 const std::string& BatState::GetPaymentId() const {
   return state_->walletInfo_.paymentId_;
-}
-
-const braveledger_bat_helper::Grants& BatState::GetGrants() const {
-  return state_->grants_;
-}
-
-void BatState::SetGrants(braveledger_bat_helper::Grants grants) {
-  state_->grants_ = grants;
-  SaveState();
 }
 
 const std::string& BatState::GetPersonaId() const {

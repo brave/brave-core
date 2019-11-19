@@ -71,9 +71,6 @@ void NativeLedgerClient::LoadURL(const std::string & url, const std::vector<std:
 std::unique_ptr<ledger::LogStream> NativeLedgerClient::Log(const char * file, int line, const ledger::LogLevel log_level) const {
   return [bridge_ log:file line:line logLevel:log_level];
 }
-void NativeLedgerClient::OnGrantFinish(ledger::Result result, ledger::GrantPtr grant) {
-  [bridge_ onGrantFinish:result grant:std::move(grant)];
-}
 void NativeLedgerClient::OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) {
   [bridge_ onPanelPublisherInfo:result publisherInfo:std::move(publisher_info) windowId:windowId];
 }
@@ -82,10 +79,6 @@ void NativeLedgerClient::OnReconcileComplete(ledger::Result result, const std::s
 }
 void NativeLedgerClient::RemoveRecurringTip(const std::string & publisher_key, ledger::RemoveRecurringTipCallback callback) {
   [bridge_ removeRecurringTip:publisher_key callback:callback];
-}
-
-void NativeLedgerClient::OnGrantViaSafetynetCheck(const std::string & promotion_id, const std::string & nonce) {
-  //Android specific callback, should be refactored and removed from here
 }
 
 void NativeLedgerClient::RestorePublishers(ledger::RestorePublishersCallback callback) {
@@ -237,4 +230,28 @@ void NativeLedgerClient::DeleteContributionQueue(const uint64_t id, ledger::Resu
 }
 void NativeLedgerClient::GetFirstContributionQueue(ledger::GetFirstContributionQueueCallback callback) {
   return [bridge_ getFirstContributionQueue:callback];
+}
+void NativeLedgerClient::InsertOrUpdatePromotion(ledger::PromotionPtr info, ledger::ResultCallback callback) {
+  return [bridge_ insertOrUpdatePromotion:std::move(info) callback:callback];
+}
+void NativeLedgerClient::GetPromotion(const std::string& id, ledger::GetPromotionCallback callback) {
+  return [bridge_ getPromotion:id callback:callback];
+}
+void NativeLedgerClient::InsertOrUpdateUnblindedToken(ledger::UnblindedTokenPtr info, ledger::ResultCallback callback) {
+  return [bridge_ insertOrUpdateUnblindedToken:std::move(info) callback:callback];
+}
+void NativeLedgerClient::GetAllUnblindedTokens(ledger::GetAllUnblindedTokensCallback callback) {
+  return [bridge_ getAllUnblindedTokens:callback];
+}
+void NativeLedgerClient::DeleteUnblindedToken(const std::vector<std::string>& id_list, ledger::ResultCallback callback) {
+  [bridge_ deleteUnblindedToken:id_list callback:callback];
+}
+ledger::ClientInfoPtr NativeLedgerClient::GetClientInfo() {
+  return [bridge_ getClientInfo];
+}
+void NativeLedgerClient::UnblindedTokensReady() {
+  [bridge_ unblindedTokensReady];
+}
+void NativeLedgerClient::GetAllPromotions(ledger::GetAllPromotionsCallback callback) {
+  [bridge_ getAllPromotions:callback];
 }

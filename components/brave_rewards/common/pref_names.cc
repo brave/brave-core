@@ -30,5 +30,7 @@ const char kStateUpholdAnonAddress[] =
     "brave.rewards.uphold_anon_address";
 const char kRewardsBadgeText[] = "brave.rewards.badge_text";
 const char kUseRewardsStagingServer[] = "brave.rewards.use_staging_server";
+const char kStatePromotionLastFetchStamp[] =
+    "brave.rewards.promotion_last_fetch_stamp";
 }  // namespace prefs
 }  // namespace brave_rewards

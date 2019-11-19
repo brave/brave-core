@@ -126,20 +126,6 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       }
       break
     }
-    case types.GET_WALLET_PROPERTIES:
-      chrome.braveRewards.getWalletProperties()
-      break
-    case types.ON_WALLET_PROPERTIES: {
-      state = {
-        ...state,
-        walletCreated: true,
-        walletCreateFailed: false,
-        walletCreating: false,
-        walletCorrupted: false,
-        walletProperties: payload.properties
-      }
-      break
-    }
     case types.GET_CURRENT_REPORT:
       chrome.braveRewards.getCurrentReport()
       break
@@ -451,6 +437,20 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       state = { ...state }
       state.externalWallet = payload.wallet
       break
+    }
+    case types.ON_ANON_WALLET_STATUS: {
+      state = { ...state }
+
+      state.walletCorrupted = false
+      state.walletCreating = false
+      state.walletCreated = false
+      state.walletCreateFailed = false
+
+      if (payload.result === RewardsExtension.Result.WALLET_CORRUPT) {
+        state.walletCorrupted = true
+      } else if (payload.result === RewardsExtension.Result.WALLET_CREATED) {
+        state.walletCreated = true
+      }
     }
   }
   return state

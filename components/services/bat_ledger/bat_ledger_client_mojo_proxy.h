@@ -35,8 +35,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                            const std::string& viewing_id,
                            const std::string& probi,
                            const ledger::RewardsType type) override;
-  void OnGrantFinish(ledger::Result result,
-                     ledger::GrantPtr grant) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
   void SaveLedgerState(const std::string& ledger_state,
@@ -110,9 +108,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
 
   void SaveNormalizedPublisherList(
       ledger::PublisherInfoList normalized_list) override;
-
-  void OnGrantViaSafetynetCheck(
-      const std::string& promotion_id, const std::string& nonce) override;
 
   void SaveState(const std::string& name,
                  const std::string& value,
@@ -211,6 +206,32 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
 
   void GetFirstContributionQueue(
       ledger::GetFirstContributionQueueCallback callback) override;
+
+  void InsertOrUpdatePromotion(
+      ledger::PromotionPtr info,
+      ledger::ResultCallback callback) override;
+
+  void GetPromotion(
+      const std::string& id,
+      ledger::GetPromotionCallback callback) override;
+
+  void GetAllPromotions(
+    ledger::GetAllPromotionsCallback callback) override;
+
+  void InsertOrUpdateUnblindedToken(
+      ledger::UnblindedTokenPtr info,
+      ledger::ResultCallback callback) override;
+
+  void GetAllUnblindedTokens(
+      ledger::GetAllUnblindedTokensCallback callback) override;
+
+  void DeleteUnblindedToken(
+      const std::vector<std::string>& id_list,
+      ledger::ResultCallback callback) override;
+
+  ledger::ClientInfoPtr GetClientInfo() override;
+
+  void UnblindedTokensReady() override;
 
  private:
   bool Connected() const;

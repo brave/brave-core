@@ -7,22 +7,18 @@ export const enum types {
   ON_WALLET_INITIALIZED = '@@rewards_panel/ON_WALLET_INITIALIZED',
   ON_TAB_RETRIEVED = '@@rewards_panel/ON_TAB_RETRIEVED',
   ON_PUBLISHER_DATA = '@@rewards_panel/ON_PUBLISHER_DATA',
-  GET_WALLET_PROPERTIES = '@@rewards_panel/GET_WALLET_PROPERTIES',
-  ON_WALLET_PROPERTIES = '@@rewards_panel/ON_WALLET_PROPERTIES',
   GET_CURRENT_REPORT = '@@rewards_panel/GET_CURRENT_REPORT',
   ON_CURRENT_REPORT = '@@rewards_panel/ON_CURRENT_REPORT',
   ON_NOTIFICATION_ADDED = '@@rewards_panel/ON_NOTIFICATION_ADDED',
   ON_NOTIFICATION_DELETED = '@@rewards_panel/ON_NOTIFICATION_DELETED',
   DELETE_NOTIFICATION = '@@rewards_panel/DELETE_NOTIFICATION',
   INCLUDE_IN_AUTO_CONTRIBUTION = '@@rewards_panel/INCLUDE_IN_AUTO_CONTRIBUTION',
-  GET_GRANTS = '@@rewards_panel/GET_GRANTS',
-  ON_GRANT = '@@rewards_panel/ON_GRANT',
-  GET_GRANT_CAPTCHA = '@@rewards_panel/GET_GRANT_CAPTCHA',
-  ON_GRANT_CAPTCHA = '@@rewards_panel/ON_GRANT_CAPTCHA',
-  SOLVE_GRANT_CAPTCHA = '@@rewards_panel/SOLVE_GRANT_CAPTCHA',
-  ON_GRANT_RESET = '@@rewards_panel/ON_GRANT_RESET',
-  ON_GRANT_DELETE = '@@rewards_panel/ON_GRANT_DELETE',
-  ON_GRANT_FINISH = '@@rewards_panel/ON_GRANT_FINISH',
+  FETCH_PROMOTIONS = '@@rewards_panel/FETCH_PROMOTIONS',
+  ON_PROMOTIONS = '@@rewards_panel/ON_PROMOTIONS',
+  ON_CLAIM_PROMOTION = '@@rewards_panel/ON_CLAIM_PROMOTION',
+  RESET_PROMOTION = '@@rewards_panel/RESET_PROMOTION',
+  DELETE_PROMOTION = '@@rewards_panel/DELETE_PROMOTION',
+  ON_PROMOTION_FINISH = '@@rewards_panel/ON_PROMOTION_FINISH',
   ON_PENDING_CONTRIBUTIONS_TOTAL = '@@rewards_panel/ON_PENDING_CONTRIBUTIONS_TOTAL',
   ON_ENABLED_MAIN = '@@rewards_panel/ON_ENABLED_MAIN',
   ON_ENABLED_AC = '@@rewards_panel/ON_ENABLED_AC',
@@ -37,7 +33,8 @@ export const enum types {
   ON_ALL_NOTIFICATIONS = '@@rewards_panel/ON_ALL_NOTIFICATIONS',
   ON_INIT = '@@rewards_panel/ON_INIT',
   ON_BALANCE = '@@rewards_panel/ON_BALANCE',
-  ON_EXTERNAL_WALLET = '@@rewards_panel/ON_EXTERNAL_WALLET'
+  ON_EXTERNAL_WALLET = '@@rewards_panel/ON_EXTERNAL_WALLET',
+  ON_ANON_WALLET_STATUS = '@@rewards_panel/ON_ANON_WALLET_STATUS'
 }
 
 // Note: This declaration must match the RewardsNotificationType enum in

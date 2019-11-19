@@ -25,7 +25,6 @@ struct TRANSACTION_BALLOT_ST;
 struct TRANSACTION_ST;
 struct WALLET_INFO_ST;
 struct WALLET_PROPERTIES_ST;
-struct GRANT;
 
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
@@ -38,13 +37,10 @@ void saveToJson(JsonWriter* writer, const CLIENT_STATE_ST&);
 void saveToJson(JsonWriter* writer, const TRANSACTION_BALLOT_ST&);
 void saveToJson(JsonWriter* writer, const TRANSACTION_ST&);
 void saveToJson(JsonWriter* writer, const WALLET_INFO_ST&);
-void saveToJson(JsonWriter* writer, const GRANTS_PROPERTIES_ST&);
-void saveToJson(JsonWriter* writer, const ledger::Grant&);
 void saveToJson(JsonWriter* writer, const ledger::ReconcileInfo&);
 void saveToJson(JsonWriter* writer, const ledger::RewardsInternalsInfo&);
 void saveToJson(JsonWriter* writer, const ledger::WalletProperties&);
 void saveToJson(JsonWriter* writer, const WALLET_PROPERTIES_ST&);
-void saveToJson(JsonWriter* writer, const GRANT&);
 
 template <typename T>
 void saveToJsonString(const T& t, std::string* json) {

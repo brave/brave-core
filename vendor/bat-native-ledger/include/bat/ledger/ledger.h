@@ -46,23 +46,24 @@ using DisconnectWalletCallback = std::function<void(ledger::Result)>;
 using TransferAnonToExternalWalletCallback =
     std::function<void(ledger::Result)>;
 using DoDirectTipCallback = std::function<void(ledger::Result)>;
-using FetchGrantsCallback =
-    std::function<void(ledger::Result, std::vector<ledger::GrantPtr>)>;
+using FetchPromotionCallback =
+    std::function<void(ledger::Result, ledger::PromotionList)>;
 using SetPublisherExcludeCallback = std::function<void(ledger::Result)>;
-using GetGrantCaptchaCallback = std::function<void(const std::string&,
-                                                   const std::string&)>;
+using ClaimPromotionCallback =
+    std::function<void(const ledger::Result, const std::string&)>;
 using RewardsInternalsInfoCallback =
     std::function<void(ledger::RewardsInternalsInfoPtr)>;
 using CreateWalletCallback = std::function<void(ledger::Result)>;
 using InitializeCallback = std::function<void(ledger::Result)>;
+using AttestPromotionCallback =
+    std::function<void(const ledger::Result, ledger::PromotionPtr promotion)>;
 
 using GetBalanceReportCallback =
     std::function<void(bool, ledger::BalanceReportInfoPtr)>;
 
 using RecoverWalletCallback = std::function<void(
     const ledger::Result,
-    const double balance,
-    std::vector<ledger::GrantPtr>)>;
+    const double balance)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -167,23 +168,42 @@ class LEDGER_EXPORT Ledger {
   virtual void FetchWalletProperties(
       OnWalletPropertiesCallback callback) const = 0;
 
-  virtual void FetchGrants(const std::string& lang,
-                           const std::string& paymentId,
-                           const std::string& safetynet_token,
-                           ledger::FetchGrantsCallback callback) const = 0;
+  virtual void FetchPromotions(
+      ledger::FetchPromotionCallback callback) const = 0;
 
-  virtual void SolveGrantCaptcha(const std::string& solution,
-                                 const std::string& promotionId) const = 0;
+  // |payload|:
+  // desktop and Android: empty
+  // iOS: { "publicKey": "{{publicKey}}" }
+  // =====================================
+  // |callback| returns result as json
+  // desktop: { "captchaImage": "{{captchaImage}}", "hint": "{{hint}}" }
+  // iOS and Android: { "nonce": "{{nonce}}" }
+  virtual void ClaimPromotion(
+      const std::string& payload,
+      ClaimPromotionCallback callback) const = 0;
 
-  virtual void GetGrantCaptcha(
-      const std::vector<std::string>& headers,
-      GetGrantCaptchaCallback callback) const = 0;
-
-  virtual void ApplySafetynetToken(const std::string& promotion_id,
-      const std::string& token) const = 0;
-
-  virtual void GetGrantViaSafetynetCheck(
-      const std::string& promotion_id) const = 0;
+  // |solution|:
+  // desktop:
+  //  {
+  //    "captchaId": "{{captchaId}}",
+  //    "x": "{{x}}",
+  //    "y": "{{y}}"
+  //  }
+  // iOS:
+  //  {
+  //    "nonce": "{{nonce}}",
+  //    "blob": "{{blob}}",
+  //    "signature": "{{signature}}"
+  //  }
+  // android:
+  //  {
+  //    "nonce": "{{nonce}}",
+  //    "token": "{{token}}"
+  //  }
+  virtual void AttestPromotion(
+      const std::string& promotion_id,
+      const std::string& solution,
+      AttestPromotionCallback callback) const = 0;
 
   virtual std::string GetWalletPassphrase() const = 0;
 
@@ -311,6 +331,10 @@ class LEDGER_EXPORT Ledger {
   virtual void DisconnectWallet(
       const std::string& wallet_type,
       ledger::DisconnectWalletCallback callback) = 0;
+
+  virtual void GetAllPromotions(ledger::GetAllPromotionsCallback callback) = 0;
+
+  virtual void GetAnonWalletStatus(ledger::ResultCallback callback) = 0;
 };
 
 }  // namespace ledger

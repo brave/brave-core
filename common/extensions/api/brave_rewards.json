@@ -22,55 +22,77 @@
         ]
       },
       {
-        "name": "onGrant",
+        "name": "onPromotions",
         "type": "function",
-        "description": "Fired when grant is received",
+        "description": "Fired when promotion list is received",
         "parameters": [
           {
-            "name": "properties",
-            "type": "any"
+            "name": "result",
+            "type": "integer"
+          },
+          {
+            "name": "promotions",
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "promotionId": {
+                  "type": "string",
+                  "description": "promotion id"
+                },
+                "type": {
+                  "type": "integer",
+                  "description": "promotion type"
+                },
+                "status": {
+                  "type": "integer",
+                  "description": "promotion status"
+                },
+                "expiresAt": {
+                  "type": "integer",
+                  "description": "when promotion expires"
+                },
+                "amount": {
+                  "type": "number",
+                  "description": "how much is this promotion worth"
+                }
+              }
+            }
           }
         ]
       },
       {
-        "name": "onGrantCaptcha",
+        "name": "onPromotionFinish",
         "type": "function",
-        "description": "Fired when grant captcha is received",
+        "description": "Fired when promotion is successfully claimed",
         "parameters": [
           {
-            "name": "captcha",
-            "type": "any"
-          }
-        ]
-      },
-      {
-        "name": "onGrantFinish",
-        "type": "function",
-        "description": "Fired when grant process is finished",
-        "parameters": [
+            "name": "result",
+            "type": "integer"
+          },
           {
-            "name": "properties",
+            "name": "promotion",
             "type": "object",
             "properties": {
-              "status": {
-                "type": "integer",
-                "description": "grant process status"
-              },
-              "expiryTime": {
-                "type": "integer",
-                "description": "grant expiry time"
-              },
-              "probi": {
-                "type": "string",
-                "description": "value of the grant"
-              },
-              "type": {
-                "type": "string",
-                "description": "type of the grant (ugp or ads)"
-              },
               "promotionId": {
                 "type": "string",
-                "description": "promotionId of claimed grant"
+                "description": "promotion id"
+              },
+              "type": {
+                "type": "integer",
+                "description": "promotion type"
+              },
+              "status": {
+                "type": "integer",
+                "description": "promotion status"
+              },
+              "expiresAt": {
+                "type": "integer",
+                "description": "when promotion expires"
+              },
+              "amount": {
+                "type": "number",
+                "description": "how much is this promotion worth"
               }
             }
           }
@@ -161,31 +183,6 @@
                   "EUR": {
                     "type": "double",
                     "description": "EUR rate"
-                  }
-                }
-              },
-              "grants": {
-                "type": "array",
-                "description": "user claimed grants",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "altcurrency": {
-                      "type": "string",
-                      "description": "currency in which grant is served"
-                    },
-                    "probi": {
-                      "type": "string",
-                      "description": "amount of the grant represented in probis"
-                    },
-                    "expiryTime": {
-                      "type": "integer",
-                      "description": "when grant expires, timestamp in seconds"
-                    },
-                    "type": {
-                      "type": "string",
-                      "description": "grant type, ugp or ads"
-                    }
                   }
                 }
               }
@@ -391,6 +388,12 @@
             }
           }
         ]
+      },
+      {
+        "name": "onUnblindedTokensReady",
+        "type": "function",
+        "description": "Fired when we get unblinded tokens",
+        "parameters": []
       }
     ],
     "functions": [
@@ -564,12 +567,6 @@
         ]
       },
       {
-        "name": "getWalletProperties",
-        "type": "function",
-        "description": "Get wallet data (balance, grant)",
-        "parameters": []
-      },
-      {
         "name": "getCurrentReport",
         "type": "function",
         "description": "Get current month wallet report",
@@ -591,38 +588,92 @@
         ]
       },
       {
-        "name": "getGrants",
+        "name": "fetchPromotions",
         "type": "function",
-        "description": "Retrieves grant when panel is mounted",
+        "description": "Retrieves promotions when panel is mounted",
         "parameters": []
       },
       {
-        "name": "getGrantCaptcha",
+        "name": "claimPromotion",
         "type": "function",
-        "description": "Retrieves grant captcha data",
+        "description": "Starts claim process for selected promotion",
         "parameters": [
           {
             "name": "promotionId",
             "type": "string"
           },
           {
-            "name": "type",
-            "type": "string"
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "properties",
+                "type": "object",
+                "properties": {
+                  "result": {
+                    "type": "integer"
+                  },
+                  "promotionId": {
+                    "type": "string"
+                  },
+                  "captchaId": {
+                    "type": "string"
+                  },
+                  "captchaImage": {
+                    "type": "string"
+                  },
+                  "hint": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
           }
         ]
       },
       {
-        "name": "solveGrantCaptcha",
+        "name": "attestPromotion",
         "type": "function",
         "description": "Sends the user solution to the grant claim captcha",
         "parameters": [
+          {
+            "name": "promotionId",
+            "type": "string"
+          },
           {
             "name": "solution",
             "type": "string"
           },
           {
-            "name": "promotionId",
-            "type": "string"
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "result",
+                "type": "integer"
+              },
+              {
+                "name": "promotion",
+                "type": "object",
+                "properties": {
+                  "promotionId": {
+                    "type": "string"
+                  },
+                  "expiresAt": {
+                    "optional": true,
+                    "type": "integer"
+                  },
+                  "amount": {
+                    "optional": true,
+                    "type": "number"
+                  },
+                  "type": {
+                    "optional": true,
+                    "type": "integer"
+                  }
+                }
+              }
+            ]
           }
         ]
       },
@@ -1048,6 +1099,23 @@
               {
                 "name": "only",
                 "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getAnonWalletStatus",
+        "type": "function",
+        "description": "Gets wallet status fo anon wallet",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "result",
+                "type": "integer"
               }
             ]
           }

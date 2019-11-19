@@ -317,62 +317,65 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       dismissedNotifications.push(payload.id)
       state.rewardsState.dismissedNotifications = dismissedNotifications
 
-      state.rewardsState.grants = state.rewardsState.grants.filter((grant) => {
-        return grant.promotionId !== payload.id
+      state.rewardsState.promotions = state.rewardsState.promotions.filter((promotion) => {
+        return promotion.promotionId !== payload.id
       })
       break
 
-    case types.ON_GRANT:
-      if (action.payload.properties.status === 1) {
+    case types.ON_PROMOTIONS: {
+      if (action.payload.result === 1) {
         break
       }
 
-      const promotionId = payload.properties.promotionId
-      if (!promotionId) {
-        break
-      }
+      const promotions = payload.promotions
 
       state = { ...state }
 
-      if (!state.rewardsState.dismissedNotifications) {
-        state.rewardsState.dismissedNotifications = []
-      }
+      promotions.forEach((promotion: NewTab.Promotion) => {
+        if (!state || !state.rewardsState) {
+          return
+        }
 
-      if (state.rewardsState.dismissedNotifications.indexOf(promotionId) > -1) {
-        break
-      }
+        if (!state.rewardsState.dismissedNotifications) {
+          state.rewardsState.dismissedNotifications = []
+        }
 
-      const hasGrant = state.rewardsState.grants.find((grant: NewTab.GrantRecord) => {
-        return grant.promotionId === promotionId
+        if (state.rewardsState.dismissedNotifications.indexOf(promotion.promotionId) > -1) {
+          return
+        }
+
+        const hasPromotion = state.rewardsState.promotions.find((promotion: NewTab.Promotion) => {
+          return promotion.promotionId === promotion.promotionId
+        })
+        if (hasPromotion) {
+          return
+        }
+
+        const updatedPromotions = state.rewardsState.promotions
+        updatedPromotions.push({
+          promotionId: promotion.promotionId,
+          type: promotion.type
+        })
+
+        state.rewardsState.promotions = updatedPromotions
       })
-      if (hasGrant) {
-        break
-      }
 
-      const updatedGrants = state.rewardsState.grants
-      updatedGrants.push({
-        promotionId: promotionId,
-        type: payload.properties.type
-      })
-
-      state.rewardsState.grants = updatedGrants
       break
+    }
 
-    case types.ON_GRANT_FINISH:
-      const properties = payload.properties
-
-      if (properties.status !== 0) {
+    case types.ON_PROMOTION_FINISH:
+      if (payload.result !== 0) {
         break
       }
 
       state = { ...state }
       const oldNotifications = state.rewardsState.dismissedNotifications
 
-      oldNotifications.push(payload.id)
+      oldNotifications.push(payload.promotion.promotionId)
       state.rewardsState.dismissedNotifications = oldNotifications
 
-      state.rewardsState.grants = state.rewardsState.grants.filter((grant) => {
-        return grant.promotionId !== properties.promotionId
+      state.rewardsState.promotions = state.rewardsState.promotions.filter((promotion: NewTab.Promotion) => {
+        return promotion.promotionId !== payload.promotion.promotionId
       })
       break
 

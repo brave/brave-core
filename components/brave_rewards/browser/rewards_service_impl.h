@@ -103,18 +103,18 @@ class RewardsServiceImpl : public RewardsService,
   void StartLedger();
   void CreateWallet(CreateWalletCallback callback) override;
   void FetchWalletProperties() override;
-  void FetchGrants(const std::string& lang,
-                   const std::string& paymentId) override;
-  void GetGrantCaptcha(
+  void FetchPromotions() override;
+  void ClaimPromotion(ClaimPromotionCallback callback) override;
+  void ClaimPromotion(
       const std::string& promotion_id,
-      const std::string& promotion_type) override;
-  void SolveGrantCaptcha(const std::string& solution,
-                         const std::string& promotionId) const override;
+      AttestPromotionCallback callback) override;
+  void AttestPromotion(
+      const std::string& promotion_id,
+      const std::string& solution,
+      AttestPromotionCallback callback) override;
   void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) override;
   void RecoverWallet(const std::string& passPhrase) override;
-  void GetGrantViaSafetynetCheck(
-      const std::string& promotion_id) const override;
   void GetContentSiteList(
       uint32_t start,
       uint32_t limit,
@@ -295,6 +295,8 @@ class RewardsServiceImpl : public RewardsService,
 
   bool OnlyAnonWallet() override;
 
+  void GetAnonWalletStatus(GetAnonWalletStatusCallback callback) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void StartMonthlyContributionForTest();
@@ -323,12 +325,12 @@ class RewardsServiceImpl : public RewardsService,
                               const std::string& data);
   void OnFetchWalletProperties(const ledger::Result result,
                                ledger::WalletPropertiesPtr properties);
-  void OnFetchGrants(
+  void OnFetchPromotions(
     const ledger::Result result,
-    std::vector<ledger::GrantPtr> grants);
-  void TriggerOnGrant(const ledger::Result result, ledger::GrantPtr grant);
-  void TriggerOnGrantCaptcha(const std::string& image, const std::string& hint);
-  void TriggerOnGrantFinish(ledger::Result result, ledger::GrantPtr grant);
+    ledger::PromotionList promotions);
+  void TriggerOnPromotion(
+      const ledger::Result result,
+      ledger::PromotionPtr promotion);
   void TriggerOnRewardsMainEnabled(bool rewards_main_enabled);
   void OnPublisherInfoSaved(ledger::PublisherInfoCallback callback,
                             ledger::PublisherInfoPtr info,
@@ -489,23 +491,43 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnWalletInitialized(ledger::Result result);
 
+  void OnClaimPromotion(
+      ClaimPromotionCallback callback,
+      const ledger::Result result,
+      const std::string& response);
+
+  void AttestationAndroid(
+      const std::string& promotion_id,
+      AttestPromotionCallback callback,
+      const ledger::Result result,
+      const std::string& response);
+
+  void OnAttestationAndroid(
+      const std::string& promotion_id,
+      AttestPromotionCallback callback,
+      const std::string& nonce,
+      bool result,
+      const std::string& token);
+
+  void OnGetAnonWalletStatus(
+      GetAnonWalletStatusCallback callback,
+      const ledger::Result result);
+
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
-  void OnGrantCaptcha(const std::string& image,
-                      const std::string& hint);
-  void OnRecoverWallet(ledger::Result result,
-                      double balance,
-                      std::vector<ledger::GrantPtr> grants);
+  void OnRecoverWallet(
+      ledger::Result result,
+      double balance);
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
                            const std::string& probi,
                            const ledger::RewardsType type) override;
-  void OnGrantFinish(ledger::Result result,
-                     ledger::GrantPtr grant) override;
+  void OnAttestPromotion(
+      AttestPromotionCallback callback,
+      const ledger::Result result,
+      ledger::PromotionPtr promotion);
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
-  void OnGrantViaSafetynetCheck(const std::string& promotion_id,
-                    const std::string& nonce) override;
   void SaveLedgerState(const std::string& ledger_state,
                        ledger::LedgerCallbackHandler* handler) override;
   void SavePublisherState(const std::string& publisher_state,
@@ -684,6 +706,32 @@ class RewardsServiceImpl : public RewardsService,
   void GetFirstContributionQueue(
     ledger::GetFirstContributionQueueCallback callback) override;
 
+  void InsertOrUpdatePromotion(
+      ledger::PromotionPtr info,
+      ledger::ResultCallback callback) override;
+
+  void GetPromotion(
+      const std::string& id,
+      ledger::GetPromotionCallback callback) override;
+
+  void GetAllPromotions(
+      ledger::GetAllPromotionsCallback callback) override;
+
+  void InsertOrUpdateUnblindedToken(
+      ledger::UnblindedTokenPtr info,
+      ledger::ResultCallback callback) override;
+
+  void GetAllUnblindedTokens(
+      ledger::GetAllUnblindedTokensCallback callback) override;
+
+  void DeleteUnblindedToken(
+    const std::vector<std::string>& id_list,
+    ledger::ResultCallback callback) override;
+
+  ledger::ClientInfoPtr GetClientInfo() override;
+
+  void UnblindedTokensReady() override;
+
   // end ledger::LedgerClient
 
   // Mojo Proxy methods
@@ -735,14 +783,23 @@ class RewardsServiceImpl : public RewardsService,
     ledger::GetFirstContributionQueueCallback callback,
     ledger::ContributionQueuePtr info);
 
+  void OnGetPromotion(
+      ledger::GetPromotionCallback callback,
+      ledger::PromotionPtr info);
+
+  void OnGetAllUnblindedTokens(
+      ledger::GetAllUnblindedTokensCallback callback,
+      ledger::UnblindedTokenList list);
+
+  void OnGetAllPromotions(
+      ledger::GetAllPromotionsCallback callback,
+      ledger::PromotionMap promotions);
+
 #if defined(OS_ANDROID)
   ledger::Environment GetServerEnvironmentForAndroid();
   void CreateWalletAttestationResult(
       bat_ledger::mojom::BatLedger::CreateWalletCallback callback,
       bool result, const std::string& result_string);
-  void FetchGrantAttestationResult(const std::string& lang,
-                                const std::string& payment_id,
-                                bool result, const std::string& result_string);
   void GrantAttestationResult(
       const std::string& promotion_id, bool result,
       const std::string& result_string);

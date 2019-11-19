@@ -28,8 +28,8 @@ namespace base {
 class SequencedTaskRunner;
 }
 
-namespace braveledger_grant {
-class Grants;
+namespace braveledger_promotion {
+class Promotion;
 }
 
 namespace braveledger_media {
@@ -182,33 +182,16 @@ class LedgerImpl : public ledger::Ledger,
   void FetchWalletProperties(
       ledger::OnWalletPropertiesCallback callback) const override;
 
-  void FetchGrants(const std::string& lang,
-                   const std::string& paymentId,
-                   const std::string& safetynet_token,
-                   ledger::FetchGrantsCallback callback) const override;
+  void FetchPromotions(ledger::FetchPromotionCallback callback) const override;
 
-  void OnGrants(ledger::Result result,
-                const braveledger_bat_helper::Grants& grants,
-                ledger::FetchGrantsCallback callback);
+  void ClaimPromotion(
+      const std::string& payload,
+      ledger::ClaimPromotionCallback callback) const override;
 
-  void GetGrantCaptcha(
-      const std::vector<std::string>& headers,
-      ledger::GetGrantCaptchaCallback callback) const override;
-
-  void SolveGrantCaptcha(const std::string& solution,
-                         const std::string& promotionId) const override;
-
-  void ApplySafetynetToken(
+  void AttestPromotion(
       const std::string& promotion_id,
-      const std::string& token) const override;
-
-  void OnGrantFinish(ledger::Result result,
-                     const braveledger_bat_helper::GRANT& grant);
-
-  void GetGrantViaSafetynetCheck(
-      const std::string& promotion_id) const override;
-  void OnGrantViaSafetynetCheck(
-      const std::string& promotion_id, const std::string& nonce);
+      const std::string& solution,
+      ledger::AttestPromotionCallback callback) const override;
 
   std::string GetWalletPassphrase() const override;
 
@@ -219,7 +202,6 @@ class LedgerImpl : public ledger::Ledger,
   void OnRecoverWallet(
       const ledger::Result result,
       double balance,
-      std::vector<ledger::GrantPtr> grants,
       ledger::RecoverWalletCallback callback);
 
   void LoadURL(
@@ -339,9 +321,6 @@ class LedgerImpl : public ledger::Ledger,
 
   const std::string& GetPaymentId() const;
 
-  const braveledger_bat_helper::Grants& GetGrants() const;
-
-  void SetGrants(braveledger_bat_helper::Grants grants);
   const std::string& GetPersonaId() const;
 
   void SetPersonaId(const std::string& persona_id);
@@ -393,8 +372,6 @@ class LedgerImpl : public ledger::Ledger,
   const std::string& GetCurrency() const;
 
   void SetCurrency(const std::string& currency);
-
-  void SetLastGrantLoadTimestamp(uint64_t stamp);
 
   uint64_t GetBootStamp() const override;
 
@@ -597,6 +574,34 @@ class LedgerImpl : public ledger::Ledger,
   void GetFirstContributionQueue(
     ledger::GetFirstContributionQueueCallback callback);
 
+  void InsertOrUpdatePromotion(
+    ledger::PromotionPtr info,
+    ledger::ResultCallback callback);
+
+  void GetPromotion(
+    const std::string& id,
+    ledger::GetPromotionCallback callback);
+
+  void GetAllPromotions(
+    ledger::GetAllPromotionsCallback callback) override;
+
+  void InsertOrUpdateUnblindedToken(
+    ledger::UnblindedTokenPtr info,
+    ledger::ResultCallback callback);
+
+  void GetAllUnblindedTokens(
+    ledger::GetAllUnblindedTokensCallback callback);
+
+  void DeleteUnblindedToken(
+    const std::vector<std::string>& id_list,
+    ledger::ResultCallback callback);
+
+  ledger::ClientInfoPtr GetClientInfo();
+
+  void UnblindedTokensReady();
+
+  void GetAnonWalletStatus(ledger::ResultCallback callback) override;
+
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;
@@ -651,9 +656,7 @@ class LedgerImpl : public ledger::Ledger,
                            const std::string& data,
                            ledger::InitializeCallback callback) override;
 
-  void RefreshGrant(bool retryAfterError);
-
-  uint64_t retryRequestSetup(uint64_t min_time, uint64_t max_time);
+  void RefreshPromotions(bool retryAfterError);
 
   void OnPublisherInfoSavedInternal(
       ledger::Result result,
@@ -670,7 +673,7 @@ class LedgerImpl : public ledger::Ledger,
       ledger::OnRefreshPublisherCallback callback);
 
   ledger::LedgerClient* ledger_client_;
-  std::unique_ptr<braveledger_grant::Grants> bat_grants_;
+  std::unique_ptr<braveledger_promotion::Promotion> bat_promotion_;
   std::unique_ptr<braveledger_publisher::Publisher> bat_publisher_;
   std::unique_ptr<braveledger_media::Media> bat_media_;
   std::unique_ptr<braveledger_bat_state::BatState> bat_state_;
@@ -687,7 +690,6 @@ class LedgerImpl : public ledger::Ledger,
   uint64_t last_tab_active_time_;
   uint32_t last_shown_tab_id_;
   uint32_t last_pub_load_timer_id_;
-  uint32_t last_grant_check_timer_id_;
 };
 
 }  // namespace bat_ledger

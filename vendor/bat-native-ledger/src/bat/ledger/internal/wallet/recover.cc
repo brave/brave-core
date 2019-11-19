@@ -9,6 +9,7 @@
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/request/request_util.h"
 #include "net/http/http_status_code.h"
 
 #include "anon/anon.h"
@@ -76,8 +77,7 @@ void Recover::OnNicewareListLoaded(
 
   BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
     << "Failed to load niceware list";
-  std::vector<ledger::GrantPtr> empty;
-  callback(result, 0, std::move(empty));
+  callback(result, 0);
   return;
 }
 
@@ -92,8 +92,7 @@ void Recover::ContinueRecover(
       << result
       << " Size: "
       << *written;
-    std::vector<ledger::GrantPtr> empty;
-    callback(ledger::Result::LEDGER_ERROR, 0, std::move(empty));
+    callback(ledger::Result::LEDGER_ERROR, 0);
     return;
   }
 
@@ -112,7 +111,7 @@ void Recover::ContinueRecover(
                             _3,
                             newSeed,
                             std::move(callback));
-  const auto url = braveledger_bat_helper::buildURL(
+  const auto url = braveledger_request_util::BuildUrl(
         (std::string)RECOVER_WALLET_PUBLIC_KEY + publicKeyHex,
         PREFIX_V2);
   ledger_->LoadURL(
@@ -133,8 +132,7 @@ void Recover::RecoverWalletPublicKeyCallback(
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (response_status_code != net::HTTP_OK) {
-    std::vector<ledger::GrantPtr> empty;
-    callback(ledger::Result::LEDGER_ERROR, 0, std::move(empty));
+    callback(ledger::Result::LEDGER_ERROR, 0);
     return;
   }
   std::string recoveryId;
@@ -148,7 +146,7 @@ void Recover::RecoverWalletPublicKeyCallback(
                             recoveryId,
                             new_seed,
                             std::move(callback));
-  ledger_->LoadURL(braveledger_bat_helper::buildURL(
+  ledger_->LoadURL(braveledger_request_util::BuildUrl(
         (std::string)WALLET_PROPERTIES + recoveryId, PREFIX_V2),
       std::vector<std::string>(), "", "", ledger::UrlMethod::GET, on_recover);
 }
@@ -162,8 +160,7 @@ void Recover::RecoverWalletCallback(
     ledger::RecoverWalletCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
   if (response_status_code != net::HTTP_OK) {
-    std::vector<ledger::GrantPtr> empty;
-    callback(ledger::Result::LEDGER_ERROR, 0, std::move(empty));
+    callback(ledger::Result::LEDGER_ERROR, 0);
     return;
   }
 
@@ -182,8 +179,7 @@ void Recover::RecoverWalletCallback(
       &days);
   braveledger_bat_helper::getJSONRecoverWallet(
       response,
-      &balance,
-      &properties.grants_);
+      &balance);
   ledger_->SetCurrency(currency);
   if (!ledger_->GetUserChangedContribution()) {
     ledger_->SetContributionAmount(fee_amount);
@@ -194,25 +190,7 @@ void Recover::RecoverWalletCallback(
   wallet_info.paymentId_ = recoveryId;
   wallet_info.keyInfoSeed_ = new_seed;
   ledger_->SetWalletInfo(wallet_info);
-
-  std::vector<ledger::GrantPtr> ledgerGrants;
-  std::vector<braveledger_bat_helper::GRANT> grants = properties.grants_;
-
-  for (size_t i = 0; i < grants.size(); i ++) {
-    ledger::GrantPtr tempGrant = ledger::Grant::New();
-
-    tempGrant->altcurrency = grants[i].altcurrency;
-    tempGrant->probi = grants[i].probi;
-    tempGrant->expiry_time = grants[i].expiryTime;
-    tempGrant->type = grants[i].type;
-
-    ledgerGrants.push_back(std::move(tempGrant));
-  }
-
-  callback(
-      ledger::Result::LEDGER_OK,
-      balance,
-      std::move(ledgerGrants));
+  callback(ledger::Result::LEDGER_OK, balance);
 }
 
 }  // namespace braveledger_wallet

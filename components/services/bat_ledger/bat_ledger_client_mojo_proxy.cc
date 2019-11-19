@@ -160,14 +160,6 @@ std::unique_ptr<ledger::LogStream> BatLedgerClientMojoProxy::VerboseLog(
   return std::make_unique<LogStreamImpl>(file, line, level);
 }
 
-void BatLedgerClientMojoProxy::OnGrantFinish(ledger::Result result,
-                                             ledger::GrantPtr grant) {
-  if (!Connected())
-    return;
-
-  bat_ledger_client_->OnGrantFinish(result, std::move(grant));
-}
-
 void BatLedgerClientMojoProxy::OnLoadLedgerState(
     ledger::OnLoadCallback callback,
     const ledger::Result result,
@@ -568,11 +560,6 @@ void OnGetActivityInfoList(const ledger::PublisherInfoListCallback& callback,
     ledger::PublisherInfoList publisher_info_list,
     uint32_t next_record) {
   callback(std::move(publisher_info_list), next_record);
-}
-
-void BatLedgerClientMojoProxy::OnGrantViaSafetynetCheck(
-    const std::string& promotion_id, const std::string& nonce) {
-  bat_ledger_client_->OnGrantViaSafetynetCheck(promotion_id, nonce);
 }
 
 void BatLedgerClientMojoProxy::GetActivityInfoList(uint32_t start,
@@ -978,6 +965,77 @@ void BatLedgerClientMojoProxy::GetFirstContributionQueue(
     ledger::GetFirstContributionQueueCallback callback) {
   bat_ledger_client_->GetFirstContributionQueue(
       base::BindOnce(&OnGetFirstContributionQueue, std::move(callback)));
+}
+
+void BatLedgerClientMojoProxy::InsertOrUpdatePromotion(
+    ledger::PromotionPtr info,
+    ledger::ResultCallback callback) {
+  bat_ledger_client_->InsertOrUpdatePromotion(
+      std::move(info),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
+}
+
+void OnGetPromotion(
+    const ledger::GetPromotionCallback& callback,
+    ledger::PromotionPtr info) {
+  callback(std::move(info));
+}
+
+void BatLedgerClientMojoProxy::GetPromotion(
+    const std::string& id,
+    ledger::GetPromotionCallback callback) {
+  bat_ledger_client_->GetPromotion(
+      id,
+      base::BindOnce(&OnGetPromotion, std::move(callback)));
+}
+void OnGetAllPromotions(
+    const ledger::GetAllPromotionsCallback& callback,
+    base::flat_map<std::string, ledger::PromotionPtr> promotions) {
+  callback(mojo::FlatMapToMap(std::move(promotions)));
+}
+
+void BatLedgerClientMojoProxy::GetAllPromotions(
+    ledger::GetAllPromotionsCallback callback) {
+  bat_ledger_client_->GetAllPromotions(
+      base::BindOnce(&OnGetAllPromotions, std::move(callback)));
+}
+
+void BatLedgerClientMojoProxy::InsertOrUpdateUnblindedToken(
+    ledger::UnblindedTokenPtr info,
+    ledger::ResultCallback callback) {
+  bat_ledger_client_->InsertOrUpdateUnblindedToken(
+      std::move(info),
+      base::BindOnce(&OnResultCallback, std::move(callback)));
+}
+
+void OnGetAllUnblindedTokens(
+    const ledger::GetAllUnblindedTokensCallback& callback,
+    ledger::UnblindedTokenList list) {
+  callback(std::move(list));
+}
+
+void BatLedgerClientMojoProxy::GetAllUnblindedTokens(
+    ledger::GetAllUnblindedTokensCallback callback) {
+  bat_ledger_client_->GetAllUnblindedTokens(
+      base::BindOnce(&OnGetAllUnblindedTokens, std::move(callback)));
+}
+
+void BatLedgerClientMojoProxy::DeleteUnblindedToken(
+    const std::vector<std::string>& id_list,
+    ledger::ResultCallback callback) {
+  bat_ledger_client_->DeleteUnblindedToken(
+      id_list,
+      base::BindOnce(&OnResultCallback, std::move(callback)));
+}
+
+ledger::ClientInfoPtr BatLedgerClientMojoProxy::GetClientInfo() {
+  auto info = ledger::ClientInfo::New();
+  bat_ledger_client_->GetClientInfo(&info);
+  return info;
+}
+
+void BatLedgerClientMojoProxy::UnblindedTokensReady() {
+  bat_ledger_client_->UnblindedTokensReady();
 }
 
 }  // namespace bat_ledger

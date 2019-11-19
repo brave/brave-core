@@ -43,10 +43,23 @@ class Balance {
       const std::map<std::string, std::string>& headers,
       ledger::FetchBalanceCallback callback);
 
+  void GetUnBlindedTokens(
+      ledger::BalancePtr balance,
+      ledger::FetchBalanceCallback callback);
+
+  void OnGetUnBlindedTokens(
+      ledger::Balance info,
+      ledger::FetchBalanceCallback callback,
+      ledger::UnblindedTokenList list);
+
+  void ExternalWallets(
+      ledger::BalancePtr balance,
+      ledger::FetchBalanceCallback callback);
+
   void OnExternalWallets(
-    ledger::Balance info,
-    ledger::FetchBalanceCallback callback,
-    std::map<std::string, ledger::ExternalWalletPtr> wallets);
+      ledger::Balance info,
+      ledger::FetchBalanceCallback callback,
+      std::map<std::string, ledger::ExternalWalletPtr> wallets);
 
   void OnUpholdFetchBalance(ledger::Balance info,
                             ledger::FetchBalanceCallback callback,

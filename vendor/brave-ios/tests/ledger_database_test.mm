@@ -1273,6 +1273,189 @@
   XCTAssertEqual(queried.publishers[pub2Index].amountPercent, pub2.amountPercent);
 }
 
+#pragma mark - Promotions
+
+- (void)testQueryAllPromotions
+{
+  const auto numberOfPromos = 3;
+  for (NSUInteger i = 0; i < numberOfPromos; i++) {
+    const auto promo = [[BATPromotion alloc] init];
+    promo.status = BATPromotionStatusFinished;
+    promo.credentials = [[BATPromotionCreds alloc] init];
+    promo.credentials.tokens = @"Test";
+    promo.credentials.claimId = [NSString stringWithFormat:@"%ld", i];
+    promo.id = [NSString stringWithFormat:@"%ld", i];
+    
+    [self waitForCompletion:^(XCTestExpectation *expectation) {
+      [BATLedgerDatabase insertOrUpdatePromotion:promo completion:^(BOOL success) {
+        XCTAssert(success);
+        [expectation fulfill];
+      }];
+    }];
+  }
+  
+  const auto queried = [BATLedgerDatabase allPromotions];
+  XCTAssertEqual(queried.count, numberOfPromos);
+  XCTAssertEqual(queried[0].status, BATPromotionStatusFinished);
+}
+
+- (void)testInsertPromotion
+{
+  const auto promo = [[BATPromotion alloc] init];
+  promo.credentials = [[BATPromotionCreds alloc] init];
+  promo.credentials.tokens = @"Test";
+  promo.credentials.claimId = @"1";
+  promo.id = @"1";
+  
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase insertOrUpdatePromotion:promo completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto queried = [BATLedgerDatabase promotionWithID:promo.id];
+  XCTAssertNotNil(queried);
+  XCTAssertNotNil(queried.credentials);
+  XCTAssert([queried.credentials.claimId isEqualToString:promo.credentials.claimId]);
+  XCTAssert([promo.id isEqualToString:queried.id]);
+}
+
+- (void)testInsertPromotionCredentials
+{
+  const auto creds = [[BATPromotionCreds alloc] init];
+  creds.batchProof = @"1234";
+  creds.publicKey = @"2341";
+  creds.signedCreds = @"3412";
+  creds.blindedCreds = @"4123";
+  creds.claimId = @"1";
+  
+  const auto promo = [[BATPromotion alloc] init];
+  promo.id = @"1";
+  promo.credentials = creds;
+  
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase insertOrUpdatePromotion:promo completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto queried = [BATLedgerDatabase promotionWithID:promo.id];
+  XCTAssertNotNil(queried);
+  XCTAssertNotNil(queried.credentials);
+  XCTAssert([queried.credentials.claimId isEqualToString:creds.claimId]);
+  XCTAssert([queried.credentials.batchProof isEqualToString:creds.batchProof]);
+  XCTAssert([queried.credentials.publicKey isEqualToString:creds.publicKey]);
+  XCTAssert([queried.credentials.signedCreds isEqualToString:creds.signedCreds]);
+  XCTAssert([queried.credentials.blindedCreds isEqualToString:creds.blindedCreds]);
+}
+
+- (void)testInsertUnblindedToken
+{
+  const auto token = [[BATUnblindedToken alloc] init];
+  token.id = 1;
+  token.value = 10;
+  token.publicKey = @"1234";
+  
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase insertOrUpdateUnblindedToken:token completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto queried = [[BATLedgerDatabase allUnblindedTokens] firstObject];
+  XCTAssertNotNil(queried);
+  XCTAssertEqual(token.id, queried.id);
+  XCTAssertEqual(token.value, queried.value);
+  XCTAssert([token.publicKey isEqualToString:queried.publicKey]);
+}
+
+- (void)testQueryAllUnblindedTokens
+{
+  const auto token = [[BATUnblindedToken alloc] init];
+  token.id = 1;
+  
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase insertOrUpdateUnblindedToken:token completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto token2 = [[BATUnblindedToken alloc] init];
+  token2.id = 2;
+  
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase insertOrUpdateUnblindedToken:token2 completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto queried = [BATLedgerDatabase allUnblindedTokens];
+  XCTAssertEqual(queried.count, 2);
+}
+
+- (void)testDeletingUnblindedTokens
+{
+  const auto token = [[BATUnblindedToken alloc] init];
+  token.id = 1;
+  
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase insertOrUpdateUnblindedToken:token completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto token2 = [[BATUnblindedToken alloc] init];
+  token2.id = 2;
+  
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase insertOrUpdateUnblindedToken:token2 completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto token3 = [[BATUnblindedToken alloc] init];
+  token3.id = 3;
+  
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase insertOrUpdateUnblindedToken:token3 completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto firstQuery = [BATLedgerDatabase allUnblindedTokens];
+  XCTAssertEqual(firstQuery.count, 3);
+  
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase deleteUnblindedTokens:@[@1, @3] completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  const auto queried = [BATLedgerDatabase allUnblindedTokens];
+  XCTAssertEqual(queried.count, 1);
+  XCTAssertEqual(queried.firstObject.id, 2);
+  
+  [self waitForCompletion:^(XCTestExpectation *expectation) {
+    [BATLedgerDatabase deleteUnblindedTokens:@[@2] completion:^(BOOL success) {
+      XCTAssert(success);
+      [expectation fulfill];
+    }];
+  }];
+  
+  
+  const auto lastQuery = [BATLedgerDatabase allUnblindedTokens];
+  XCTAssertEqual(lastQuery.count, 0);
+}
+
 #pragma mark -
 
 - (void)waitForCompletion:(void (^)(XCTestExpectation *))task

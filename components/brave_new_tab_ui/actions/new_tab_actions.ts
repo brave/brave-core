@@ -102,8 +102,9 @@ export const onBalanceReports = (reports: Record<string, NewTab.RewardsReport>) 
   reports
 })
 
-export const onGrant = (properties: NewTab.GrantResponse) => action(types.ON_GRANT, {
-  properties
+export const onPromotions = (result: number, promotions: NewTab.Promotion[]) => action(types.ON_PROMOTIONS, {
+  result,
+  promotions
 })
 
 export const dismissNotification = (id: string) => action(types.DISMISS_NOTIFICATION, {
@@ -122,6 +123,7 @@ export const setInitialRewardsData = (initialRewardsData: InitialRewardsData) =>
 
 export const setPreInitialRewardsData = (preInitialRewardsData: PreInitialRewardsData) => action(types.SET_PRE_INITIAL_REWARDS_DATA, preInitialRewardsData)
 
-export const onGrantFinish = (properties: NewTab.GrantFinish) => action(types.ON_GRANT_FINISH, {
-  properties
+export const onPromotionFinish = (result: NewTab.RewardsResult, promotion: NewTab.Promotion) => action(types.ON_PROMOTION_FINISH, {
+  result,
+  promotion
 })

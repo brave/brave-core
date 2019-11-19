@@ -74,18 +74,9 @@ struct VisitData {
   string favicon_url;
 };
 
-struct Grant {
-  string altcurrency;
-  string probi;
-  string promotion_id;
-  uint64 expiry_time;
-  string type;
-};
-
 struct WalletProperties {
   double fee_amount;
   array<double> parameters_choices;
-  array<Grant> grants;
 };
 
 struct Balance {
@@ -206,7 +197,6 @@ enum Result {
   REGISTRATION_VERIFICATION_FAILED = 10,
   BAD_REGISTRATION_RESPONSE = 11,
   WALLET_CREATED = 12,
-  GRANT_NOT_FOUND = 13,
 
   AC_TABLE_EMPTY = 14,
   NOT_ENOUGH_FUNDS = 15,
@@ -318,4 +308,65 @@ enum Environment {
   STAGING = 0,
   PRODUCTION = 1,
   DEVELOPMENT = 2
+};
+
+enum PromotionType {
+  UGP = 0,
+  ADS = 1
+};
+
+enum PromotionStatus {
+  ACTIVE = 0,
+  ATTESTED = 1,
+  CLAIMED = 2,
+  SIGNED_TOKENS = 3,
+  FINISHED = 4,
+  OVER = 5
+};
+
+struct Promotion {
+  string id;
+  uint32 version;
+  PromotionType type;
+  string public_keys; // JSONStringArray
+  uint32 suggestions;
+  double approximate_value;
+  PromotionStatus status;
+  uint64 expires_at;
+  PromotionCreds? credentials;
+};
+
+struct PromotionCreds {
+  string tokens; // JSONStringArray
+  string blinded_creds; // JSONStringArray
+  string signed_creds; // JSONStringArray
+  string public_key;
+  string batch_proof;
+  string claim_id;
+};
+
+struct UnblindedToken {
+  uint64 id;
+  string token_value;
+  string public_key;
+  double value;
+  string promotion_id;
+};
+
+enum Platform {
+  DESKTOP = 0,
+  ANDROID_R = 1,
+  IOS = 2
+};
+
+enum OperatingSystem {
+  WINDOWS = 0,
+  MACOS = 1,
+  LINUX = 2,
+  UNDEFINED = 3
+};
+
+struct ClientInfo {
+  Platform platform;
+  OperatingSystem os;
 };

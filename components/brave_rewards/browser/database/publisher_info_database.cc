@@ -25,7 +25,7 @@ namespace brave_rewards {
 
 namespace {
 
-const int kCurrentVersionNumber = 9;
+const int kCurrentVersionNumber = 10;
 const int kCompatibleVersionNumber = 1;
 
 }  // namespace
@@ -43,6 +43,12 @@ PublisherInfoDatabase::PublisherInfoDatabase(
 
   contribution_queue_ =
       std::make_unique<DatabaseContributionQueue>(GetCurrentVersion());
+
+  promotion_ =
+      std::make_unique<DatabasePromotion>(GetCurrentVersion());
+
+  unblinded_token_ =
+      std::make_unique<DatabaseUnblindedToken>(GetCurrentVersion());
 }
 
 PublisherInfoDatabase::~PublisherInfoDatabase() {
@@ -88,6 +94,14 @@ bool PublisherInfoDatabase::Init() {
   }
 
   if (!contribution_queue_->Init(&GetDB())) {
+    return false;
+  }
+
+  if (!promotion_->Init(&GetDB())) {
+    return false;
+  }
+
+  if (!unblinded_token_->Init(&GetDB())) {
     return false;
   }
 
@@ -1131,6 +1145,100 @@ bool PublisherInfoDatabase::DeleteContributionQueue(const uint64_t id) {
   return contribution_queue_->DeleteRecord(&GetDB(), id);
 }
 
+/**
+ *
+ * PROMOTION
+ *
+ */
+bool PublisherInfoDatabase::InsertOrUpdatePromotion(
+    ledger::PromotionPtr info) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
+  return promotion_->InsertOrUpdate(&GetDB(), std::move(info));
+}
+
+ledger::PromotionPtr
+PublisherInfoDatabase::GetPromotion(const std::string& id) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return nullptr;
+  }
+
+  return promotion_->GetRecord(&GetDB(), id);
+}
+
+ledger::PromotionMap PublisherInfoDatabase::GetAllPromotions() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return {};
+  }
+
+  return promotion_->GetAllRecords(&GetDB());
+}
+
+/**
+ *
+ * UNBLINDED TOKEN
+ *
+ */
+bool PublisherInfoDatabase::InsertOrUpdateUnblindedToken(
+    ledger::UnblindedTokenPtr info) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
+  return unblinded_token_->InsertOrUpdate(&GetDB(), std::move(info));
+}
+
+ledger::UnblindedTokenList
+PublisherInfoDatabase::GetAllUnblindedTokens()  {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    ledger::UnblindedTokenList empty_list;
+    return empty_list;
+  }
+
+  return unblinded_token_->GetAllRecords(&GetDB());
+}
+
+bool PublisherInfoDatabase::DeleteUnblindedToken(
+    const std::vector<std::string>& id_list) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
+  return unblinded_token_->DeleteRecord(&GetDB(), id_list);
+}
+
 // Other -------------------------------------------------------------------
 
 void PublisherInfoDatabase::RecordP3AStats(bool auto_contributions_on) {
@@ -1753,6 +1861,12 @@ bool PublisherInfoDatabase::MigrateV8toV9() {
   return true;
 }
 
+bool PublisherInfoDatabase::MigrateV9toV10() {
+  // no need to call any script as database has min version for
+  // promotion and unblinded token tables
+  return true;
+}
+
 bool PublisherInfoDatabase::Migrate(int version) {
   switch (version) {
     case 2: {
@@ -1778,6 +1892,9 @@ bool PublisherInfoDatabase::Migrate(int version) {
     }
     case 9: {
       return MigrateV8toV9();
+    }
+    case 10: {
+      return MigrateV9toV10();
     }
     default:
       return false;

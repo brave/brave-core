@@ -62,15 +62,11 @@ interface BatLedger {
   OnReconcileCompleteSuccess(string viewing_id, ledger.mojom.RewardsType type, string probi,
       ledger.mojom.ActivityMonth month, int32 year, uint32 data);
 
-  FetchGrants(string lang, string payment_id, string safetynet_token) =>
-      (ledger.mojom.Result result, array<ledger.mojom.Grant> grants);
-  GetGrantCaptcha(array<string> headers) => (string image, string hint);
+  FetchPromotions() => (ledger.mojom.Result result, array<ledger.mojom.Promotion> promotion);
+  ClaimPromotion(string payload) => (ledger.mojom.Result result, string response);
+  AttestPromotion(string promotion_id, string solution) => (ledger.mojom.Result result, ledger.mojom.Promotion? promotion);
   GetWalletPassphrase() => (string wallet_passphrase);
-  RecoverWallet(string passPhrase) => (ledger.mojom.Result result, double balance, array<ledger.mojom.Grant?> grants);
-  SolveGrantCaptcha(string solution, string promotionId);
-
-  GetGrantViaSafetynetCheck(string promotion_id);
-  ApplySafetynetToken(string promotion_id, string result_string);
+  RecoverWallet(string passPhrase) => (ledger.mojom.Result result, double balance);
   
   SetRewardsMainEnabled(bool enabled);
   SetPublisherMinVisitTime(uint64 duration_in_seconds);
@@ -153,6 +149,8 @@ interface BatLedger {
   ExternalWalletAuthorization(string wallet_type, map<string, string> args) => (ledger.mojom.Result result, map<string, string> args);
 
   DisconnectWallet(string wallet_type) => (ledger.mojom.Result result);
+
+  GetAnonWalletStatus() => (ledger.mojom.Result result);
 };
 
 interface BatLedgerClient {
@@ -166,7 +164,6 @@ interface BatLedgerClient {
   OnWalletProperties(ledger.mojom.Result result, ledger.mojom.WalletProperties? properties);
   OnReconcileComplete(ledger.mojom.Result result, string viewing_id,
       string probi, ledger.mojom.RewardsType type);
-  OnGrantFinish(ledger.mojom.Result result, ledger.mojom.Grant? grant);
 
   SavePublisherInfo(ledger.mojom.PublisherInfo publisher_info) =>
       (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
@@ -192,7 +189,6 @@ interface BatLedgerClient {
 
   LoadNicewareList() => (ledger.mojom.Result result, string data);
   RemoveRecurringTip(string publisher_key) => (ledger.mojom.Result result);
-  OnGrantViaSafetynetCheck(string promotion_id, string nonce);
 
   LoadURL(string url, array<string> headers, string content,
       string content_type, ledger.mojom.UrlMethod method) => (int32 status_code, string response,
@@ -294,4 +290,13 @@ interface BatLedgerClient {
   InsertOrUpdateContributionQueue(ledger.mojom.ContributionQueue info) => (ledger.mojom.Result result);
   DeleteContributionQueue(uint64 id) => (ledger.mojom.Result result);
   GetFirstContributionQueue() => (ledger.mojom.ContributionQueue? info);
+  InsertOrUpdatePromotion(ledger.mojom.Promotion info) => (ledger.mojom.Result result);
+  GetPromotion(string id) => (ledger.mojom.Promotion? info);
+  GetAllPromotions() => (map<string, ledger.mojom.Promotion> promotions);
+  InsertOrUpdateUnblindedToken(ledger.mojom.UnblindedToken info) => (ledger.mojom.Result result);
+  GetAllUnblindedTokens() => (array<ledger.mojom.UnblindedToken> info);
+  DeleteUnblindedToken(array<string> id_list) => (ledger.mojom.Result result);
+  [Sync]
+  GetClientInfo() => (ledger.mojom.ClientInfo info);
+  UnblindedTokensReady();
 };

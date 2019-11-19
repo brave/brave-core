@@ -64,6 +64,7 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
 #if defined(OS_ANDROID)
   registry->RegisterBooleanPref(prefs::kUseRewardsStagingServer, false);
 #endif
+  registry->RegisterUint64Pref(prefs::kStatePromotionLastFetchStamp, 0ull);
 }
 
 }  // namespace brave_rewards

@@ -62,17 +62,9 @@ class BatState {
 
   void ResetReconcileStamp();
 
-  uint64_t GetLastGrantLoadTimestamp() const;
-
-  void SetLastGrantLoadTimestamp(uint64_t stamp);
-
   bool IsWalletCreated() const;
 
   const std::string& GetPaymentId() const;
-
-  const braveledger_bat_helper::Grants& GetGrants() const;
-
-  void SetGrants(braveledger_bat_helper::Grants grants);
 
   const std::string& GetPersonaId() const;
 

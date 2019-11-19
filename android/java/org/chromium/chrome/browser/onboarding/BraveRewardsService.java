@@ -115,4 +115,7 @@ public class BraveRewardsService extends Service implements BraveRewardsObserver
 
     @Override
     public void OnRewardsMainEnabled(boolean enabled){};
+
+    @Override
+    public void OnFetchPromotions() {}
 }

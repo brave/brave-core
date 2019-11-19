@@ -92,7 +92,15 @@ export class RewardsPanel extends React.Component<Props, State> {
       return
     }
 
-    this.actions.getGrantCaptcha(hash.split('#grant_')[1])
+    let promotionId = hash.split('#grant_')[1]
+
+    if (!promotionId) {
+      return
+    }
+
+    chrome.braveRewards.claimPromotion(promotionId, (properties: RewardsExtension.Captcha) => {
+      this.actions.onClaimPromotion(properties)
+    })
   }
 
   goToUphold = () => {
@@ -266,14 +274,15 @@ export class RewardsPanel extends React.Component<Props, State> {
       walletCreateFailed,
       walletCreated,
       walletCreating,
-      walletProperties,
       walletCorrupted,
       balance,
-      externalWallet
+      externalWallet,
+      promotions
     } = this.props.rewardsPanelData
 
     const total = balance.total || 0
     const converted = utils.convertBalance(total.toString(), balance.rates)
+    const claimedPromotions = utils.getClaimedPromotions(promotions || [])
 
     if (!walletCreated || walletCorrupted) {
       return (
@@ -315,9 +324,8 @@ export class RewardsPanel extends React.Component<Props, State> {
                 showSecActions={false}
                 showCopy={false}
                 onlyAnonWallet={this.state.onlyAnonWallet}
-                grants={utils.getGrants(walletProperties.grants)}
+                grants={utils.generatePromotions(claimedPromotions)}
                 converted={utils.formatConverted(converted)}
-                convertProbiToFixed={utils.convertProbiToFixed}
                 walletState={walletStatus}
                 onVerifyClick={onVerifyClick}
                 onDisconnectClick={this.onDisconnectClick}
