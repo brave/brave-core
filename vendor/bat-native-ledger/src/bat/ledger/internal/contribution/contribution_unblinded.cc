@@ -314,7 +314,7 @@ void Unblinded::OnSendTokens(
     return;
   }
 
-  ledger_->DeleteUnblindedToken(token_id_list, [](const ledger::Result _){});
+  ledger_->DeleteUnblindedTokens(token_id_list, [](const ledger::Result _){});
   callback(ledger::Result::LEDGER_OK);
 }
 

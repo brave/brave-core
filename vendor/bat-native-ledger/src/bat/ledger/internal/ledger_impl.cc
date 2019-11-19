@@ -1541,10 +1541,10 @@ void LedgerImpl::GetAllUnblindedTokens(
   ledger_client_->GetAllUnblindedTokens(callback);
 }
 
-void LedgerImpl::DeleteUnblindedToken(
+void LedgerImpl::DeleteUnblindedTokens(
     const std::vector<std::string>& id_list,
     ledger::ResultCallback callback) {
-  ledger_client_->DeleteUnblindedToken(id_list, callback);
+  ledger_client_->DeleteUnblindedTokens(id_list, callback);
 }
 
 ledger::ClientInfoPtr LedgerImpl::GetClientInfo() {

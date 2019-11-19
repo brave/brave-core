@@ -31,7 +31,9 @@ class DatabaseUnblindedToken: public DatabaseTable {
 
   ledger::UnblindedTokenList GetAllRecords(sql::Database* db);
 
-  bool DeleteRecord(sql::Database* db, const std::vector<std::string>& id_list);
+  bool DeleteRecords(
+      sql::Database* db,
+      const std::vector<std::string>& id_list);
 
  private:
   const char* table_name_ = "unblinded_tokens";

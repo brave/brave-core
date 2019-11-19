@@ -137,7 +137,7 @@ ledger::UnblindedTokenList DatabaseUnblindedToken::GetAllRecords(
   return list;
 }
 
-bool DatabaseUnblindedToken::DeleteRecord(
+bool DatabaseUnblindedToken::DeleteRecords(
     sql::Database* db,
     const std::vector<std::string>& id_list) {
   if (id_list.size() == 0) {

@@ -584,7 +584,7 @@ class LedgerImpl : public ledger::Ledger,
   void GetAllUnblindedTokens(
     ledger::GetAllUnblindedTokensCallback callback);
 
-  void DeleteUnblindedToken(
+  void DeleteUnblindedTokens(
     const std::vector<std::string>& id_list,
     ledger::ResultCallback callback);
 
