@@ -5,6 +5,7 @@
 
 #include <memory>
 
+#include "base/test/task_environment.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
 #include "bat/ledger/internal/ledger_client_mock.h"
 #include "bat/ledger/internal/ledger_impl_mock.h"
@@ -21,12 +22,15 @@ class UnblindedTest : public ::testing::Test {
   std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<Unblinded> unblinded_;
 
-  UnblindedTest() :
-      mock_ledger_client_(std::make_unique<ledger::MockLedgerClient>()),
-      mock_ledger_impl_(std::make_unique<bat_ledger::MockLedgerImpl>
-          (mock_ledger_client_.get())),
-      unblinded_(std::make_unique<Unblinded>(mock_ledger_impl_.get())) {
+  UnblindedTest() {
+      mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
+      mock_ledger_impl_ = std::make_unique<bat_ledger::MockLedgerImpl>
+          (mock_ledger_client_.get());
+      unblinded_ = std::make_unique<Unblinded>(mock_ledger_impl_.get());
   }
+
+ private:
+  base::test::ScopedTaskEnvironment scoped_task_environment_;
 };
 
 TEST_F(UnblindedTest, PromotionExpiredDeleteTokens) {
