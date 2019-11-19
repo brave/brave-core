@@ -58,6 +58,60 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
     <output filename="values-zh-rCN/android_brave_strings.xml" lang="zh-CN" type="android" />
     <output filename="values-zh-rTW/android_brave_strings.xml" lang="zh-TW" type="android" />
   </outputs>
+  <translations>
+    <file lang="am" path="translations/android_brave_strings_am.xtb" />
+    <file lang="ar" path="translations/android_brave_strings_ar.xtb" />
+    <file lang="bg" path="translations/android_brave_strings_bg.xtb" />
+    <file lang="bn" path="translations/android_brave_strings_bn.xtb" />
+    <file lang="ca" path="translations/android_brave_strings_ca.xtb" />
+    <file lang="cs" path="translations/android_brave_strings_cs.xtb" />
+    <file lang="da" path="translations/android_brave_strings_da.xtb" />
+    <file lang="de" path="translations/android_brave_strings_de.xtb" />
+    <file lang="el" path="translations/android_brave_strings_el.xtb" />
+    <file lang="en-GB" path="translations/android_brave_strings_en-GB.xtb" />
+    <file lang="es" path="translations/android_brave_strings_es.xtb" />
+    <file lang="es-419" path="translations/android_brave_strings_es-419.xtb" />
+    <file lang="et" path="translations/android_brave_strings_et.xtb" />
+    <file lang="fa" path="translations/android_brave_strings_fa.xtb" />
+    <file lang="fi" path="translations/android_brave_strings_fi.xtb" />
+    <file lang="fil" path="translations/android_brave_strings_fil.xtb" />
+    <file lang="fr" path="translations/android_brave_strings_fr.xtb" />
+    <file lang="gu" path="translations/android_brave_strings_gu.xtb" />
+    <file lang="hi" path="translations/android_brave_strings_hi.xtb" />
+    <file lang="hr" path="translations/android_brave_strings_hr.xtb" />
+    <file lang="hu" path="translations/android_brave_strings_hu.xtb" />
+    <file lang="id" path="translations/android_brave_strings_id.xtb" />
+    <file lang="it" path="translations/android_brave_strings_it.xtb" />
+    <file lang="iw" path="translations/android_brave_strings_iw.xtb" />
+    <file lang="ja" path="translations/android_brave_strings_ja.xtb" />
+    <file lang="ko" path="translations/android_brave_strings_ko.xtb" />
+    <file lang="kn" path="translations/android_brave_strings_kn.xtb" />
+    <file lang="lt" path="translations/android_brave_strings_lt.xtb" />
+    <file lang="lv" path="translations/android_brave_strings_lv.xtb" />
+    <file lang="ml" path="translations/android_brave_strings_ml.xtb" />
+    <file lang="mr" path="translations/android_brave_strings_mr.xtb" />
+    <file lang="ms" path="translations/android_brave_strings_ms.xtb" />
+    <file lang="nl" path="translations/android_brave_strings_nl.xtb" />
+    <file lang="no" path="translations/android_brave_strings_no.xtb" />
+    <file lang="pl" path="translations/android_brave_strings_pl.xtb" />
+    <file lang="pt-BR" path="translations/android_brave_strings_pt-BR.xtb" />
+    <file lang="pt-PT" path="translations/android_brave_strings_pt-PT.xtb" />
+    <file lang="ro" path="translations/android_brave_strings_ro.xtb" />
+    <file lang="ru" path="translations/android_brave_strings_ru.xtb" />
+    <file lang="sk" path="translations/android_brave_strings_sk.xtb" />
+    <file lang="sl" path="translations/android_brave_strings_sl.xtb" />
+    <file lang="sr" path="translations/android_brave_strings_sr.xtb" />
+    <file lang="sv" path="translations/android_brave_strings_sv.xtb" />
+    <file lang="sw" path="translations/android_brave_strings_sw.xtb" />
+    <file lang="ta" path="translations/android_brave_strings_ta.xtb" />
+    <file lang="te" path="translations/android_brave_strings_te.xtb" />
+    <file lang="th" path="translations/android_brave_strings_th.xtb" />
+    <file lang="tr" path="translations/android_brave_strings_tr.xtb" />
+    <file lang="uk" path="translations/android_brave_strings_uk.xtb" />
+    <file lang="vi" path="translations/android_brave_strings_vi.xtb" />
+    <file lang="zh-CN" path="translations/android_brave_strings_zh-CN.xtb" />
+    <file lang="zh-TW" path="translations/android_brave_strings_zh-TW.xtb" />
+  </translations>
   <release seq="1" allow_pseudo="false">
     <messages fallback_to_english="true">
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_SHIELDS" desc="Content description for the button that is enable, disable Brave Shields.">
