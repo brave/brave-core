@@ -43,6 +43,9 @@ class UnblindedTest : public ::testing::Test {
           return reconcile;
         }));
   }
+
+ private:
+  base::test::ScopedTaskEnvironment scoped_task_environment_;
 };
 
 TEST_F(UnblindedTest, NotEnoughFunds) {
