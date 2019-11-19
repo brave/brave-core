@@ -374,11 +374,19 @@ void RewardsNotificationServiceImpl::OnReconcileComplete(
     const int32_t type) {
   auto converted_result = static_cast<ledger::Result>(result);
   auto converted_type = static_cast<ledger::RewardsType>(type);
-  if ((converted_result == ledger::Result::LEDGER_OK &&
-       converted_type == ledger::RewardsType::AUTO_CONTRIBUTE) ||
-       converted_result == ledger::Result::LEDGER_ERROR ||
-       converted_result == ledger::Result::NOT_ENOUGH_FUNDS ||
-       converted_result == ledger::Result::TIP_ERROR) {
+
+  if (converted_type == ledger::RewardsType::ONE_TIME_TIP) {
+    return;
+  }
+
+  const bool completed_auto_contribute =
+      converted_result == ledger::Result::LEDGER_OK &&
+      converted_type == ledger::RewardsType::AUTO_CONTRIBUTE;
+
+  if (completed_auto_contribute ||
+      converted_result == ledger::Result::NOT_ENOUGH_FUNDS ||
+      converted_result == ledger::Result::LEDGER_ERROR ||
+      converted_result == ledger::Result::TIP_ERROR) {
     RewardsNotificationService::RewardsNotificationArgs args;
     args.push_back(viewing_id);
     args.push_back(std::to_string(result));

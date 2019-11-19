@@ -118,7 +118,9 @@ ledger::UnblindedTokenList DatabaseUnblindedToken::GetAllRecords(
     sql::Database* db) {
   ledger::UnblindedTokenList list;
   const std::string query = base::StringPrintf(
-      "SELECT token_id, token_value, public_key, value, promotion_id FROM %s",
+      "SELECT u.token_id, u.token_value, u.public_key, u.value, "
+      "u.promotion_id, p.expires_at FROM %s as u "
+      "LEFT JOIN promotion as p ON p.promotion_id = u.promotion_id",
       table_name_);
 
   sql::Statement statement(db->GetUniqueStatement(query.c_str()));
@@ -130,6 +132,7 @@ ledger::UnblindedTokenList DatabaseUnblindedToken::GetAllRecords(
     info->public_key = statement.ColumnString(2);
     info->value = statement.ColumnDouble(3);
     info->promotion_id = statement.ColumnString(4);
+    info->expires_at = statement.ColumnInt64(5);
 
     list.push_back(std::move(info));
   }
