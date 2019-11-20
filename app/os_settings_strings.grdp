@@ -3,6 +3,11 @@
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
 <if expr="chromeos">
+  <!-- About (OS Settings) -->
+  <message name="IDS_OS_SETTINGS_ABOUT_PAGE_BUILD_DETAILS" desc="Label of the row button that clicks into Build details">
+    Build Details
+  </message>
+
   <!-- Profiles (OS settings) -->
   <message name="IDS_OS_SETTINGS_PROFILE_LABEL" desc="Label underneath the profile's real name, listing the email address and optionally the number of additional accounts">
     {COUNT, plural,
@@ -40,7 +45,7 @@
     Preferred search engine
   </message>
   <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_TOOLTIP" desc="Tooltip in OS settings explaining that search engine is used in both the Brave browser and the Brave OS app launcher.">
-    Used by Brave browser and <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> launcher
+    Used by Brave browser and <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> Launcher
   </message>
 
   <!-- Files Page (OS settings) -->

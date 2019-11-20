@@ -108,9 +108,18 @@
       Confirm
     </message>
   </if>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_CONTINUE" desc="Text to show for the Autofill upload save credit card prompt accept button when more information (e.g., CVC) was needed in order to save the card and was entered.">
-    Continue
-  </message>
+  <if expr="is_ios">
+    <then>
+      <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_CONTINUE" desc="Text to show for the Autofill upload save credit card prompt accept button when more information (e.g., CVC) was needed in order to save the card and was entered.">
+        Save...
+      </message>
+    </then>
+    <else>
+      <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_CONTINUE" desc="Text to show for the Autofill upload save credit card prompt accept button when more information (e.g., CVC) was needed in order to save the card and was entered.">
+        Continue
+      </message>
+    </else>
+  </if>
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_LOCAL" desc="Title text for the Autofill save card prompt when the card is to be saved locally. The prompt can be either a bubble or an infobar.">
     Save card?
   </message>
@@ -165,9 +174,19 @@
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_V3_WITH_NAME_AND_DEVICE" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments and also saved locally, according to April 2018 UI guidelines. The prompt can be either a bubble or an infobar.">
     To pay faster next time, save your card, name, and billing address to your Brave Account and to this device.
   </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_CARDHOLDER_NAME" desc="The label text for the cardholder name textfield.">
-    Cardholder name
-  </message>
+
+  <if expr="is_ios">
+    <then>
+      <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_CARDHOLDER_NAME" desc="The label text for the cardholder name textfield.">
+        Name on Card
+      </message>
+    </then>
+    <else>
+      <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_CARDHOLDER_NAME" desc="The label text for the cardholder name textfield.">
+        Cardholder name
+      </message>
+    </else>
+  </if>
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_CARDHOLDER_NAME_TOOLTIP" desc="The tooltip text for the cardholder name textfield. Note that the translation should not have period" formatter_data="android_java">
     This name is from your Brave Account
   </message>
@@ -440,6 +459,9 @@
       <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_TITLE" desc="Headline asking the user if they want to use their device's platform authenticator to confirm their cards in the future instead of CVC.">
         Use Touch ID instead of CVC?
       </message>
+      <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_TITLE_ERROR" desc="Headline explaining to users there were errors in the attempt to opt in using platform's authenticator.">
+        Couldn't use Touch ID
+      </message>
       <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_OK_BUTTON_LABEL" desc="Button that allows the user to use their device's platform authenticator to confirm card use in the future.">
         Use Touch ID
       </message>
@@ -447,6 +469,9 @@
     <if expr="is_win">
       <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_TITLE" desc="Headline asking the user if they want to use their device's platform authenticator to confirm their cards in the future instead of CVC.">
         Use Windows Hello instead of CVC?
+      </message>
+      <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_TITLE_ERROR" desc="Headline explaining to users there were errors in the attempt to opt in using platform's authenticator.">
+        Couldn't use Windows Hello
       </message>
       <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_OK_BUTTON_LABEL" desc="Button that allows the user to use their device's platform authenticator to confirm card use in the future.">
         Use Windows Hello
@@ -456,6 +481,9 @@
       <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_TITLE" desc="Headline asking the user if they want to use their device's platform authenticator to confirm their cards in the future instead of CVC.">
         Use WebAuthn instead of CVC?
       </message>
+      <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_TITLE_ERROR" desc="Headline explaining to users there were errors in the attempt to opt in using platform's authenticator.">
+        Couldn't use WebAuthn
+      </message>
       <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_OK_BUTTON_LABEL" desc="Button that allows the user to use their device's platform authenticator to confirm card use in the future.">
         Use WebAuthn
       </message>
@@ -463,8 +491,25 @@
     <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_INSTRUCTION" desc="Subheading that appears below the headline explaining to the user that they won't have to enter their card's security code if they decide to use their device's platform authenticator in the future.">
       You won't need to enter a card security code from now on
     </message>
+    <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_INSTRUCTION_ERROR" desc="Subheading that appears below the headline, acknowledging the current error and encouraging users to retry later.">
+      Please try again next time
+    </message>
     <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_CANCEL_BUTTON_LABEL" desc="Button that allows the user to decline the option of using their device's platform authenticator for card confirmation.">
       Not now
+    </message>
+    <message name="IDS_AUTOFILL_WEBAUTHN_OPT_IN_DIALOG_CANCEL_BUTTON_LABEL_ERROR" desc="Button that allows the user to close the dialog.">
+      Close
+    </message>
+  </if>
+
+
+  <!-- Verify pending dialog (Desktop only) -->
+  <if expr="not is_ios and not is_android">
+    <message name="IDS_AUTOFILL_VERIFY_PENDING_DIALOG_TITLE" desc="Headline showing the card verification is in progress.">
+        Verifying your identity...
+    </message>
+    <message name="IDS_AUTOFILL_VERIFY_PENDING_DIALOG_CANCEL_BUTTON_LABEL" desc="Button that allows the user to cancel the card verification.">
+        Cancel
     </message>
   </if>
 
