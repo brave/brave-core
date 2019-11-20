@@ -20,9 +20,7 @@ PlaylistsDBController::PlaylistsDBController(const base::FilePath& db_path)
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
-PlaylistsDBController::~PlaylistsDBController() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-}
+PlaylistsDBController::~PlaylistsDBController() = default;
 
 bool PlaylistsDBController::Put(const std::string& key,
                                 const std::string& value) {
