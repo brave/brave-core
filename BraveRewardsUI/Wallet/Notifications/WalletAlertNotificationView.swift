@@ -43,6 +43,7 @@ class WalletAlertNotificationView: WalletNotificationView {
     
     let label = UILabel().then {
       $0.numberOfLines = 0
+      $0.appearanceTextColor = nil
       $0.attributedText = bodyAttributedString()
 //      $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     }

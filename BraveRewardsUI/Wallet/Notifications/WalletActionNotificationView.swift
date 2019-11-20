@@ -64,6 +64,7 @@ class WalletActionNotificationView: WalletNotificationView {
     let bodyLabel = UILabel().then {
       $0.numberOfLines = 0
       $0.textAlignment = .center
+      $0.appearanceTextColor = nil
       $0.attributedText = bodyAttributedString()
     }
     actionButton.do {
