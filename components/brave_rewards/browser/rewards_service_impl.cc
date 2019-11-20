@@ -2439,7 +2439,7 @@ void RewardsServiceImpl::OnTip(const std::string& publisher_key,
 bool SaveContributionInfoOnFileTaskRunner(
     const brave_rewards::ContributionInfo info,
   PublisherInfoDatabase* backend) {
-  if (backend && backend->InsertContributionInfo(info))
+  if (backend && backend->InsertOrUpdateContributionInfo(info))
     return true;
 
   return false;

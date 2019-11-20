@@ -5,8 +5,6 @@
 
 #include <utility>
 
-#include "brave/components/brave_rewards/browser/database/publisher_info_database.h"
-
 #include "bat/ledger/global_constants.h"
 #include "base/bind.h"
 #include "base/command_line.h"
@@ -20,6 +18,8 @@
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/recurring_donation.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
+#include "brave/components/brave_rewards/browser/database/publisher_info_database.h"
+#include "brave/components/brave_rewards/browser/database/database_util.h"
 
 namespace brave_rewards {
 
@@ -49,6 +49,9 @@ PublisherInfoDatabase::PublisherInfoDatabase(
 
   unblinded_token_ =
       std::make_unique<DatabaseUnblindedToken>(GetCurrentVersion());
+
+  contribution_info_ =
+      std::make_unique<DatabaseContributionInfo>(GetCurrentVersion());
 }
 
 PublisherInfoDatabase::~PublisherInfoDatabase() {
@@ -76,7 +79,6 @@ bool PublisherInfoDatabase::Init() {
   }
 
   if (!CreatePublisherInfoTable() ||
-      !CreateContributionInfoTable() ||
       !CreateActivityInfoTable() ||
       !CreateMediaPublisherInfoTable() ||
       !CreateRecurringTipsTable() ||
@@ -84,7 +86,6 @@ bool PublisherInfoDatabase::Init() {
     return false;
   }
 
-  CreateContributionInfoIndex();
   CreateActivityInfoIndex();
   CreateRecurringTipsIndex();
   CreatePendingContributionsIndex();
@@ -102,6 +103,10 @@ bool PublisherInfoDatabase::Init() {
   }
 
   if (!unblinded_token_->Init(&GetDB())) {
+    return false;
+  }
+
+  if (!contribution_info_->Init(&GetDB())) {
     return false;
   }
 
@@ -128,16 +133,7 @@ bool PublisherInfoDatabase::Init() {
  * CONTRIBUTION INFO
  *
  */
-
-bool PublisherInfoDatabase::CreateContributionInfoTable() {
-  return CreateV8ContributionInfoTable();
-}
-
-bool PublisherInfoDatabase::CreateContributionInfoIndex() {
-  return CreateV8ContributionInfoIndex();
-}
-
-bool PublisherInfoDatabase::InsertContributionInfo(
+bool PublisherInfoDatabase::InsertOrUpdateContributionInfo(
     const brave_rewards::ContributionInfo& info) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -148,25 +144,13 @@ bool PublisherInfoDatabase::InsertContributionInfo(
     return false;
   }
 
-  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "INSERT INTO contribution_info "
-      "(publisher_id, probi, date, "
-      "type, month, year) "
-      "VALUES (?, ?, ?, ?, ?, ?)"));
-
-  statement.BindString(0, info.publisher_key);
-  statement.BindString(1, info.probi);
-  statement.BindInt64(2, info.date);
-  statement.BindInt(3, info.type);
-  statement.BindInt(4, info.month);
-  statement.BindInt(5, info.year);
-
-  return statement.Run();
+  return contribution_info_->InsertOrUpdate(&GetDB(), info);
 }
 
-void PublisherInfoDatabase::GetOneTimeTips(ledger::PublisherInfoList* list,
-                                           ledger::ActivityMonth month,
-                                           int year) {
+void PublisherInfoDatabase::GetOneTimeTips(
+    ledger::PublisherInfoList* list,
+    const ledger::ActivityMonth month,
+    const int year) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -176,34 +160,7 @@ void PublisherInfoDatabase::GetOneTimeTips(ledger::PublisherInfoList* list,
     return;
   }
 
-  sql::Statement info_sql(db_.GetUniqueStatement(
-      "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-      "ci.probi, ci.date, spi.status, pi.provider "
-      "FROM contribution_info as ci "
-      "INNER JOIN publisher_info AS pi ON ci.publisher_id = pi.publisher_id "
-      "LEFT JOIN server_publisher_info AS spi "
-      "ON spi.publisher_key = pi.publisher_id "
-      "WHERE ci.month = ? AND ci.year = ? AND ci.type = ?"));
-
-  info_sql.BindInt(0, static_cast<int>(month));
-  info_sql.BindInt(1, year);
-  info_sql.BindInt(2, static_cast<int>(ledger::RewardsType::ONE_TIME_TIP));
-
-  while (info_sql.Step()) {
-    auto publisher = ledger::PublisherInfo::New();
-
-    publisher->id = info_sql.ColumnString(0);
-    publisher->name = info_sql.ColumnString(1);
-    publisher->url = info_sql.ColumnString(2);
-    publisher->favicon_url = info_sql.ColumnString(3);
-    publisher->weight = info_sql.ColumnDouble(4);
-    publisher->reconcile_stamp = info_sql.ColumnInt64(5);
-    publisher->status =
-        static_cast<ledger::mojom::PublisherStatus>(info_sql.ColumnInt64(6));
-    publisher->provider = info_sql.ColumnString(7);
-
-    list->push_back(std::move(publisher));
-  }
+  contribution_info_->GetOneTimeTips(&GetDB(), list, month, year);
 }
 
 /**
@@ -1701,7 +1658,7 @@ bool PublisherInfoDatabase::MigrateV7toV8() {
     return false;
   }
 
-  if (!MigrateToV8ContributionInfoTable()) {
+  if (!contribution_info_->Migrate(&GetDB(), 8)) {
     return false;
   }
 
@@ -1712,84 +1669,11 @@ bool PublisherInfoDatabase::MigrateV7toV8() {
   return transaction.Commit();
 }
 
-bool PublisherInfoDatabase::MigrateToV8ContributionInfoTable() {
-  const std::string table_name = "contribution_info";
-  const std::string temp_table_name = "contribution_info_temp";
-
-  if (!RenameDBTable(table_name, temp_table_name)) {
-    return false;
-  }
-
-  const std::string sql =
-      "DROP INDEX IF EXISTS contribution_info_publisher_id_index;";
-  if (!GetDB().Execute(sql.c_str())) {
-    return false;
-  }
-
-  if (!CreateV8ContributionInfoTable()) {
-    return false;
-  }
-
-  if (!CreateV8ContributionInfoIndex()) {
-    return false;
-  }
-
-  const std::map<std::string, std::string> columns = {
-    { "publisher_id", "publisher_id" },
-    { "probi", "probi" },
-    { "date", "date" },
-    { "category", "type" },
-    { "month", "month" },
-    { "year", "year" }
-  };
-
-  if (!MigrateDBTable(temp_table_name, table_name, columns, true)) {
-    return false;
-  }
-
-  return true;
-}
-
-bool PublisherInfoDatabase::CreateV8ContributionInfoTable() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  const std::string name = "contribution_info";
-  if (GetDB().DoesTableExist(name.c_str())) {
-    return true;
-  }
-
-  std::string sql;
-  sql.append("CREATE TABLE ");
-  sql.append(name);
-  sql.append(
-      "("
-      "publisher_id LONGVARCHAR,"
-      "probi TEXT \"0\"  NOT NULL,"
-      "date INTEGER NOT NULL,"
-      "type INTEGER NOT NULL,"
-      "month INTEGER NOT NULL,"
-      "year INTEGER NOT NULL,"
-      "CONSTRAINT fk_contribution_info_publisher_id"
-      "    FOREIGN KEY (publisher_id)"
-      "    REFERENCES publisher_info (publisher_id)"
-      "    ON DELETE CASCADE)");
-
-  return GetDB().Execute(sql.c_str());
-}
-
-bool PublisherInfoDatabase::CreateV8ContributionInfoIndex() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  return GetDB().Execute(
-      "CREATE INDEX IF NOT EXISTS contribution_info_publisher_id_index "
-      "ON contribution_info (publisher_id)");
-}
-
 bool PublisherInfoDatabase::MigrateToV8PendingContributionsTable() {
   const std::string table_name = "pending_contribution";
   const std::string temp_table_name = "pending_contribution_temp";
 
-  if (!RenameDBTable(table_name, temp_table_name)) {
+  if (!RenameDBTable(&GetDB(), table_name, temp_table_name)) {
     return false;
   }
 
@@ -1815,7 +1699,7 @@ bool PublisherInfoDatabase::MigrateToV8PendingContributionsTable() {
     { "category", "type" }
   };
 
-  if (!MigrateDBTable(temp_table_name, table_name, columns, true)) {
+  if (!MigrateDBTable(&GetDB(), temp_table_name, table_name, columns, true)) {
     return false;
   }
 
@@ -1899,77 +1783,6 @@ bool PublisherInfoDatabase::Migrate(int version) {
     default:
       return false;
   }
-}
-
-bool PublisherInfoDatabase::MigrateDBTable(
-    const std::string& from,
-    const std::string& to,
-    const std::vector<std::string>& columns,
-    const bool should_drop) {
-  std::map<std::string, std::string> new_columns;
-  for (const auto& column : columns) {
-    new_columns[column] = column;
-  }
-
-  return MigrateDBTable(from, to, new_columns, should_drop);
-}
-
-bool PublisherInfoDatabase::MigrateDBTable(
-    const std::string& from,
-    const std::string& to,
-    const std::map<std::string, std::string>& columns,
-    const bool should_drop) {
-  DCHECK_NE(from, to);
-  DCHECK(!from.empty());
-  DCHECK(!to.empty());
-
-  std::string sql = "PRAGMA foreign_keys = off;";
-
-  if (!columns.empty()) {
-    const auto insert = GenerateDBInsertQuery(from, to, columns);
-    sql.append(insert);
-  }
-
-  if (should_drop) {
-    sql.append(base::StringPrintf("DROP TABLE %s;", from.c_str()));
-  }
-
-  sql.append("PRAGMA foreign_keys = on;");
-
-  return GetDB().Execute(sql.c_str());
-}
-
-bool PublisherInfoDatabase::RenameDBTable(
-    const std::string& from,
-    const std::string& to) {
-  DCHECK_NE(from, to);
-
-  const auto sql = base::StringPrintf("ALTER TABLE %s RENAME TO %s;",
-      from.c_str(), to.c_str());
-
-  return GetDB().Execute(sql.c_str());
-}
-
-std::string PublisherInfoDatabase::GenerateDBInsertQuery(
-    const std::string& from,
-    const std::string& to,
-    const std::map<std::string, std::string>& columns) {
-  DCHECK_GT(columns.size(), 0UL);
-
-  std::vector<std::string> from_columns;
-  std::vector<std::string> to_columns;
-
-  for (const auto& column : columns) {
-    from_columns.push_back(column.first);
-    to_columns.push_back(column.second);
-  }
-
-  const auto comma_separated_from_columns = base::JoinString(from_columns, ",");
-  const auto comma_separated_to_columns = base::JoinString(to_columns, ",");
-
-  return base::StringPrintf("INSERT INTO %s (%s) SELECT %s FROM %s;",
-      to.c_str(), comma_separated_to_columns.c_str(),
-          comma_separated_from_columns.c_str(), from.c_str());
 }
 
 sql::InitStatus PublisherInfoDatabase::EnsureCurrentVersion() {

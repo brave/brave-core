@@ -138,7 +138,7 @@ class PublisherInfoDatabaseTest : public ::testing::Test {
   std::unique_ptr<PublisherInfoDatabase> publisher_info_database_;
 };
 
-TEST_F(PublisherInfoDatabaseTest, InsertContributionInfo) {
+TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateContributionInfo) {
   /**
    * Good path
    */
@@ -154,7 +154,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertContributionInfo) {
   info.date = base::Time::Now().ToJsTime();
   info.publisher_key = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-  bool success = publisher_info_database_->InsertContributionInfo(info);
+  bool success = publisher_info_database_->InsertOrUpdateContributionInfo(info);
   EXPECT_TRUE(success);
 
   std::string query = "SELECT * FROM contribution_info WHERE publisher_id=?";
