@@ -616,11 +616,6 @@ class BrowserViewController: UIViewController {
             make.height.equalTo(BrowserViewControllerUX.ShowHeaderTapAreaHeight)
         }
 
-        readerModeBar?.snp.makeConstraints { make in
-            make.top.equalTo(self.header.snp.bottom)
-            make.height.equalTo(UIConstants.ToolbarHeight)
-            make.leading.trailing.equalTo(self.view)
-        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -2687,6 +2682,12 @@ extension BrowserViewController {
             readerModeBar.delegate = self
             view.insertSubview(readerModeBar, belowSubview: header)
             self.readerModeBar = readerModeBar
+            
+            readerModeBar.snp.makeConstraints { make in
+                make.top.equalTo(self.header.snp.bottom)
+                make.height.equalTo(UIConstants.ToolbarHeight)
+                make.leading.trailing.equalTo(self.view)
+            }
         }
 
         updateReaderModeBar()
