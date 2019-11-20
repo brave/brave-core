@@ -38,7 +38,7 @@ class MockLogStreamImpl : public ledger::LogStream {
 
 class MockLedgerImpl : public LedgerImpl {
  public:
-  MockLedgerImpl(ledger::LedgerClient* client);
+  explicit MockLedgerImpl(ledger::LedgerClient* client);
 
   ~MockLedgerImpl() override;
 
@@ -187,11 +187,12 @@ class MockLedgerImpl : public LedgerImpl {
           const ledger::UrlMethod,
           ledger::LoadURLCallback));
 
-  MOCK_METHOD4(OnReconcileComplete,
+  MOCK_METHOD5(ReconcileComplete,
       void(ledger::Result,
+          const double,
           const std::string&,
-          const std::string&,
-          const ledger::RewardsType));
+          const ledger::RewardsType,
+          const bool));
 
   MOCK_METHOD1(URIEncode, std::string(const std::string&));
 
@@ -257,7 +258,7 @@ class MockLedgerImpl : public LedgerImpl {
           const uint32_t));
 
   MOCK_METHOD2(SaveRecurringTip,
-      void(ledger::ContributionInfoPtr, ledger::SaveRecurringTipCallback));
+      void(ledger::RecurringTipPtr, ledger::SaveRecurringTipCallback));
 
   MOCK_METHOD1(GetRecurringTips, void(ledger::PublisherInfoListCallback));
 

@@ -22,7 +22,6 @@ std::ostream& MockLogStreamImpl::stream() {
 
 MockLedgerImpl::MockLedgerImpl(ledger::LedgerClient* client) :
     LedgerImpl(client)  {
-
 }
 
 MockLedgerImpl::~MockLedgerImpl() = default;
