@@ -22,6 +22,14 @@ cr.define('settings', function() {
      */
     setP3AEnabled(value) {}
     /**
+     * @return {!Promise<string>}
+     */
+    getRemoteDebuggingEnabled() {}
+    /**
+     * @param {boolean} enabled (true/false).
+     */
+    setRemoteDebuggingEnabled(value) {}
+    /**
      * @return {boolean}
      */
     wasPushMessagingEnabledAtStartup() {}
@@ -31,24 +39,29 @@ cr.define('settings', function() {
    * @implements {settings.BravePrivacyBrowserProxy}
    */
   class BravePrivacyBrowserProxyImpl {
-    /** @override */
+    /** @overrides */
     getWebRTCPolicy() {
       return cr.sendWithPromise('getWebRTCPolicy');
     }
 
-    /** @override */
     setWebRTCPolicy(policy) {
       chrome.send('setWebRTCPolicy', [policy]);
     }
 
-    /** @override */
     getP3AEnabled() {
       return cr.sendWithPromise('getP3AEnabled');
     }
 
-    /** @override */
     setP3AEnabled(value) {
       chrome.send('setP3AEnabled', [value])
+    }
+
+    getRemoteDebuggingEnabled() {
+      return cr.sendWithPromise('getRemoteDebuggingEnabled');
+    }
+
+    setRemoteDebuggingEnabled(value) {
+      chrome.send('setRemoteDebuggingEnabled', [value])
     }
 
     wasPushMessagingEnabledAtStartup() {

@@ -33,6 +33,9 @@ class BravePrivacyHandler : public settings::SettingsPageUIHandler {
   void SetP3AEnabled(const base::ListValue* args);
   void GetP3AEnabled(const base::ListValue* args);
 
+  void SetRemoteDebuggingEnabled(const base::ListValue* args);
+  void GetRemoteDebuggingEnabled(const base::ListValue* args);
+
   Profile* profile_ = nullptr;
 
   DISALLOW_COPY_AND_ASSIGN(BravePrivacyHandler);

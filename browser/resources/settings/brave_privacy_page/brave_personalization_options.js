@@ -23,7 +23,8 @@ Polymer({
     },
 
     webRTCPolicy_: String,
-    p3aEnabled_: Boolean
+    p3aEnabled_: Boolean,
+    remoteDebuggingEnabled_: Boolean
   },
 
   /** @private {?settings.BravePrivacyBrowserProxy} */
@@ -46,6 +47,9 @@ Polymer({
     this.browserProxy_.getP3AEnabled().then(enabled => {
       this.p3aEnabled_ = enabled;
     });
+    this.browserProxy_.getRemoteDebuggingEnabled().then(enabled => {
+      this.remoteDebuggingEnabled_ = enabled;
+    });
   },
 
   /**
@@ -65,7 +69,11 @@ Polymer({
   onP3AEnabledChange_: function() {
     this.browserProxy_.setP3AEnabled(this.$.p3aEnabled.checked);
   },
-  
+
+  onRemoteDebuggingEnabledChange_: function() {
+    this.browserProxy_.setRemoteDebuggingEnabled(this.$.remoteDebuggingEnabled.checked);
+  },
+
   shouldShowRestart_: function(enabled) {
     return enabled != this.browserProxy_.wasPushMessagingEnabledAtStartup();
   },

@@ -9,6 +9,7 @@
 
 #include "base/bind.h"
 #include "base/values.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -16,8 +17,8 @@
 #include "components/gcm_driver/gcm_buildflags.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
-#include "content/public/common/webrtc_ip_handling_policy.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "content/public/common/webrtc_ip_handling_policy.h"
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 #include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
@@ -40,6 +41,14 @@ void BravePrivacyHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "getP3AEnabled", base::BindRepeating(&BravePrivacyHandler::GetP3AEnabled,
                                            base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setRemoteDebuggingEnabled",
+      base::BindRepeating(&BravePrivacyHandler::SetRemoteDebuggingEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getRemoteDebuggingEnabled",
+      base::BindRepeating(&BravePrivacyHandler::GetRemoteDebuggingEnabled,
+                          base::Unretained(this)));
 }
 
 // static
@@ -93,6 +102,28 @@ void BravePrivacyHandler::GetP3AEnabled(const base::ListValue* args) {
 
   PrefService* local_state = g_browser_process->local_state();
   bool enabled = local_state->GetBoolean(brave::kP3AEnabled);
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args->GetList()[0].Clone(), base::Value(enabled));
+}
+
+void BravePrivacyHandler::SetRemoteDebuggingEnabled(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+
+  bool enabled;
+  args->GetBoolean(0, &enabled);
+
+  PrefService* local_state = g_browser_process->local_state();
+  local_state->SetBoolean(kRemoteDebuggingEnabled, enabled);
+}
+
+void BravePrivacyHandler::GetRemoteDebuggingEnabled(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+
+  PrefService* local_state = g_browser_process->local_state();
+  bool enabled = local_state->GetBoolean(kRemoteDebuggingEnabled);
 
   AllowJavascript();
   ResolveJavascriptCallback(args->GetList()[0].Clone(), base::Value(enabled));
