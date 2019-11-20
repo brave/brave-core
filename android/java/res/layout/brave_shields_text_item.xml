@@ -13,5 +13,5 @@
         android:textSize="14sp"
         android:fontFamily="sans-serif"
         android:textStyle="normal"
-        android:textColor="#6b6b6b" />
+        android:textColor="@color/standard_mode_tint" />
 </RelativeLayout>

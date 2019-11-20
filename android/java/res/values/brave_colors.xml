@@ -23,11 +23,17 @@
     <color name="onboarding_progress_mid_color">#FF1893</color>
     <color name="onboarding_progress_end_color">#4F30AB</color>
 
+    <color name="brave_shield_bg_color">@color/default_primary_color</color>
+    <color name="brave_state_time_count_color">#222326</color>
+
     <!-- Sync colors -->
     <color name="brave_sync_bg_color">@color/modern_grey_50</color>
     <color name="brave_sync_border_color">@color/modern_grey_50</color>
     <color name="brave_sync_bg_secondary_color">@android:color/white</color>
 
+    <color name="brave_set_default_dialog_text_color">@color/modern_grey_700</color>
+
     <!-- Theme colors -->
     <color name="brave_theme_color">#fb542b</color>
+    <color name="brave_rewards_theme_color">#392DD1</color>
 </resources>
