@@ -6,13 +6,13 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// The solution to claiming a promotion on iOS. Obtain the `noonce` through
+/// The solution to claiming a promotion on iOS. Obtain the `nonce` through
 /// `[BATBraveLedger claimPromotion:completion:]` method, and obtain the
 /// blob and signature from the users keychain
 NS_SWIFT_NAME(PromotionSolution)
 @interface BATPromotionSolution : NSObject
 
-@property (nonatomic, copy) NSString *noonce;
+@property (nonatomic, copy) NSString *nonce;
 @property (nonatomic, copy) NSString *blob;
 @property (nonatomic, copy) NSString *signature;
 

@@ -14,6 +14,9 @@ final public class MonthlyAdsGrantReminder {
     @available(*, unavailable)
     init() { }
     
+    /// The day of the month the reminder is scheduled for
+    static private let dayOfReminder = 7
+    
     /// The prefix for all notifications scheduled
     static private let idPrefix = "rewards.notification.monthly-claim"
     
@@ -42,21 +45,43 @@ final public class MonthlyAdsGrantReminder {
         log.debug("Cancelled monthly ad grant reminder for month: \(month)")
     }
     
-    /// Retrieve the next month as an integer (1-12). For example, if the current month was december,
+    /// Retrieve the month as an integer (1-12) for the given ads payout cycle.
+    /// For example, for the `current` cycle, if the current month was december,
     /// this would return `1` for January.
-    static private func nextMonth() -> Int? {
-        guard let nextMonthsDate = calendar.date(byAdding: .month, value: 1, to: Date()) else {
-            assertionFailure("Apocalypse...")
-            return nil
+    static private func month(for cycle: AdsPayoutCycle) -> Int? {
+        let now = Date()
+        let currentDay = calendar.component(.day, from: now)
+        switch cycle {
+        case .previous:
+            if currentDay < dayOfReminder {
+                return calendar.component(.month, from: now)
+            }
+            fallthrough
+        case .current:
+            guard let nextMonthsDate = calendar.date(byAdding: .month, value: 1, to: now) else {
+                assertionFailure("Apocalypse...")
+                return nil
+            }
+            return calendar.component(.month, from: nextMonthsDate)
         }
-        return calendar.component(.month, from: nextMonthsDate)
+    }
+    
+    /// The ads payout cycle
+    public enum AdsPayoutCycle {
+        /// The current ads cycle payout. Example: It is Nov 15, this ad cycle payout would
+        /// be the Dec 5 (the 5th of the following month)
+        case current
+        /// The previous ads cycle payout. Example: It is Nov 1, the previous ad cycle payout would
+        /// be Nov 5 for ads viewed in October. If it is already past the payout date then this will
+        /// be the same as `current`.
+        case previous
     }
     
     /// Schedules a notification for the following month if one doesn't already exist for that month
     ///
     /// Trigger this when the user views an ad
-    static public func schedule() {
-        guard let month = nextMonth() else {
+    static public func schedule(for cycle: AdsPayoutCycle = .current) {
+        guard let month = month(for: cycle) else {
             log.error("Failed to obtain month to schedule notification")
             return
         }
