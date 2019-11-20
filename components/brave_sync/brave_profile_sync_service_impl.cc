@@ -78,9 +78,9 @@ std::string GetDeviceName() {
 }
 
 RecordsListPtr CreateDeviceRecord(const std::string& device_name,
-                                           const std::string& object_id,
-                                           const SyncRecord::Action& action,
-                                           const std::string& device_id) {
+                                  const std::string& object_id,
+                                  const SyncRecord::Action& action,
+                                  const std::string& device_id) {
   RecordsListPtr records = std::make_unique<RecordsList>();
 
   SyncRecordPtr record = std::make_unique<SyncRecord>();
@@ -426,16 +426,8 @@ void BraveProfileSyncServiceImpl::OnSaveInitData(const Uint8Array& seed,
   std::string seed_str = StrFromUint8Array(seed);
   std::string device_id_str = StrFromUint8Array(device_id);
 
-  std::string prev_seed_str = brave_sync_prefs_->GetPrevSeed();
-
   seed_.clear();
   DCHECK(!seed_str.empty());
-
-  if (prev_seed_str == seed_str) {  // reconnecting to previous sync chain
-    brave_sync_prefs_->SetPrevSeed(std::string());
-  } else if (!prev_seed_str.empty()) {  // connect/create to new sync chain
-    brave_sync_prefs_->SetPrevSeed(std::string());
-  }
 
   brave_sync_prefs_->SetSeed(seed_str);
   brave_sync_prefs_->SetThisDeviceId(device_id_str);
@@ -650,7 +642,6 @@ void BraveProfileSyncServiceImpl::NotifyHaveSyncWords(
 
 void BraveProfileSyncServiceImpl::ResetSyncInternal() {
   SignalWaitableEvent();
-  brave_sync_prefs_->SetPrevSeed(brave_sync_prefs_->GetSeed());
   brave_sync_prefs_->Clear();
 
   brave_sync_ready_ = false;
@@ -845,9 +836,9 @@ void BraveProfileSyncServiceImpl::SendDeviceSyncRecord(
     const std::string& device_id,
     const std::string& object_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  RecordsListPtr records = CreateDeviceRecord(
-      device_name, object_id, static_cast<SyncRecord::Action>(action),
-      device_id);
+  RecordsListPtr records =
+      CreateDeviceRecord(device_name, object_id,
+                         static_cast<SyncRecord::Action>(action), device_id);
   SendSyncRecords(SyncRecordType_PREFERENCES, std::move(records));
 }
 

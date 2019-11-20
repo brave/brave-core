@@ -398,11 +398,9 @@ TEST_F(BraveSyncServiceTest, GetSeed) {
   // Service gets seed from client via BraveSyncServiceImpl::OnSaveInitData
   const auto binary_seed = brave_sync::Uint8Array(16, 77);
 
-  EXPECT_TRUE(brave_sync_prefs()->GetPrevSeed().empty());
   sync_service()->OnSaveInitData(binary_seed, {0});
   std::string expected_seed = brave_sync::StrFromUint8Array(binary_seed);
   EXPECT_EQ(sync_service()->GetSeed(), expected_seed);
-  EXPECT_TRUE(brave_sync_prefs()->GetPrevSeed().empty());
 }
 
 TEST_F(BraveSyncServiceTest, OnDeleteDevice) {
@@ -489,8 +487,7 @@ TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenOneDevice) {
   EXPECT_TRUE(DevicesContains(devices_semi_final.get(), "1", "device1"));
 }
 
-TEST_F(BraveSyncServiceTest,
-       OnDeleteDeviceWhenSelfDeleted) {
+TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenSelfDeleted) {
   brave_sync_prefs()->SetThisDeviceId("1");
   EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
@@ -693,8 +690,7 @@ TEST_F(BraveSyncServiceTest, OnBraveSyncPrefsChanged) {
   sync_service()->OnBraveSyncPrefsChanged(brave_sync::prefs::kSyncEnabled);
 }
 
-void OnGetRecordsStub(std::unique_ptr<RecordsList> records) {
-}
+void OnGetRecordsStub(std::unique_ptr<RecordsList> records) {}
 
 TEST_F(BraveSyncServiceTest, SetThisDeviceCreatedTime) {
   EXPECT_TRUE(brave_sync::tools::IsTimeEmpty(
@@ -1008,4 +1004,11 @@ TEST_F(BraveSyncServiceTest, SendCompact) {
   EXPECT_CALL(*sync_client(), SendCompact(kBookmarks)).Times(0);
   EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
   sync_service()->FetchSyncRecords(true, false, true, 1000);
+}
+
+TEST_F(BraveSyncServiceTest, MigratePrevSeed) {
+  profile()->GetPrefs()->SetString(brave_sync::prefs::kSyncPrevSeed, "1,2,3");
+  MigrateBraveSyncPrefs(profile());
+  EXPECT_EQ(profile()->GetPrefs()->GetString(brave_sync::prefs::kSyncPrevSeed),
+            "");
 }
