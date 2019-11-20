@@ -331,6 +331,10 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
 
       state = { ...state }
 
+      if (!state.rewardsState.promotions) {
+        state.rewardsState.promotions = []
+      }
+
       promotions.forEach((promotion: NewTab.Promotion) => {
         if (!state || !state.rewardsState) {
           return
@@ -366,6 +370,10 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
     case types.ON_PROMOTION_FINISH:
       if (payload.result !== 0) {
         break
+      }
+
+      if (!state.rewardsState.promotions) {
+        state.rewardsState.promotions = []
       }
 
       state = { ...state }
