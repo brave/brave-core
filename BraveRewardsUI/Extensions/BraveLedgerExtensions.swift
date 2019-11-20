@@ -5,6 +5,7 @@
 import Foundation
 import BraveRewards
 import Shared
+import BraveShared
 
 private let log = Logger.rewardsLogger
 
@@ -205,6 +206,9 @@ extension BraveLedger {
             
             self.attestPromotion(promotion.id, solution: solution) { result, promotion in
               if result == .ledgerOk {
+                if promotion?.type == .ads {
+                  MonthlyAdsGrantReminder.cancelCurrentMonth()
+                }
                 self.updatePromotions {
                   completion(true)
                 }

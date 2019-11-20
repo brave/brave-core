@@ -7,6 +7,7 @@ import UIKit
 import BraveRewards
 import pop
 import SnapKit
+import BraveShared
 
 public class AdsNotificationHandler: BraveAdsNotificationHandler {
   /// An action type occuring on the ad
@@ -59,6 +60,8 @@ public class AdsNotificationHandler: BraveAdsNotificationHandler {
     }
     
     self.ads.reportNotificationEvent(notification.id, eventType: .viewed)
+    MonthlyAdsGrantReminder.schedule()
+    
     adsViewController.display(ad: notification, handler: { [weak self] (notification, action) in
       guard let self = self else { return }
       switch action {

@@ -92,6 +92,8 @@ extension BrowserViewController {
         }
         // Hide the current tab
         rewards.ledger.selectedTabId = 0
+        // Fetch new promotions
+        rewards.ledger.fetchPromotions(nil)
     }
 }
 
