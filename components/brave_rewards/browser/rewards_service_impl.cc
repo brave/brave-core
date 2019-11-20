@@ -4336,6 +4336,32 @@ void RewardsServiceImpl::DeleteUnblindedToken(
         callback));
 }
 
+ledger::Result DeleteUnblindedTokensForPromotionOnFileTaskRunner(
+    PublisherInfoDatabase* backend,
+    const std::string& promotion_id) {
+  if (!backend) {
+    return ledger::Result::LEDGER_ERROR;
+  }
+
+  const bool result = backend->DeleteUnblindedTokensForPromotion(promotion_id);
+
+  return result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
+}
+
+void RewardsServiceImpl::DeleteUnblindedTokensForPromotion(
+    const std::string& promotion_id,
+    ledger::ResultCallback callback) {
+  base::PostTaskAndReplyWithResult(
+    file_task_runner_.get(),
+    FROM_HERE,
+    base::BindOnce(&DeleteUnblindedTokensForPromotionOnFileTaskRunner,
+        publisher_info_backend_.get(),
+        promotion_id),
+    base::BindOnce(&RewardsServiceImpl::OnResult,
+        AsWeakPtr(),
+        callback));
+}
+
 ledger::ClientInfoPtr GetDesktopClientInfo() {
   auto info = ledger::ClientInfo::New();
   info->platform = ledger::Platform::DESKTOP;

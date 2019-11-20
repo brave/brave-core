@@ -123,6 +123,9 @@ class PublisherInfoDatabase {
 
   bool DeleteUnblindedToken(const std::vector<std::string>& id_list);
 
+  bool DeleteUnblindedTokensForPromotion(
+      const std::string& promotion_id);
+
   void RecordP3AStats(bool auto_contributions_on);
 
   // Returns the current version of the publisher info database

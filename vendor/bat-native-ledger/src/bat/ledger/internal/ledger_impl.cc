@@ -1559,6 +1559,12 @@ void LedgerImpl::DeleteUnblindedToken(
   ledger_client_->DeleteUnblindedToken(id_list, callback);
 }
 
+void LedgerImpl::DeleteUnblindedTokensForPromotion(
+    const std::string& promotion_id,
+    ledger::ResultCallback callback) {
+  ledger_client_->DeleteUnblindedTokensForPromotion(promotion_id, callback);
+}
+
 ledger::ClientInfoPtr LedgerImpl::GetClientInfo() {
   return ledger_client_->GetClientInfo();
 }

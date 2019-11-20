@@ -728,6 +728,10 @@ class RewardsServiceImpl : public RewardsService,
     const std::vector<std::string>& id_list,
     ledger::ResultCallback callback) override;
 
+  void DeleteUnblindedTokensForPromotion(
+    const std::string& id_list,
+    ledger::ResultCallback callback) override;
+
   ledger::ClientInfoPtr GetClientInfo() override;
 
   void UnblindedTokensReady() override;

@@ -249,6 +249,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const std::vector<std::string>& id_list,
       DeleteUnblindedTokenCallback callback) override;
 
+  void DeleteUnblindedTokensForPromotion(
+    const std::string& promotion_id,
+    DeleteUnblindedTokensForPromotionCallback callback) override;
+
   void GetClientInfo(
       GetClientInfoCallback callback) override;
 
@@ -456,6 +460,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   static void OnDeleteUnblindedToken(
     CallbackHolder<DeleteUnblindedTokenCallback>* holder,
+    const ledger::Result result);
+
+  static void OnDeleteUnblindedTokensForPromotion(
+    CallbackHolder<DeleteUnblindedTokensForPromotionCallback>* holder,
     const ledger::Result result);
 
   ledger::LedgerClient* ledger_client_;

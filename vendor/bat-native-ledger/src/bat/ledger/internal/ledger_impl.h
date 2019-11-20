@@ -596,6 +596,10 @@ class LedgerImpl : public ledger::Ledger,
     const std::vector<std::string>& id_list,
     ledger::ResultCallback callback);
 
+  void DeleteUnblindedTokensForPromotion(
+    const std::string& promotion_id,
+    ledger::ResultCallback callback);
+
   ledger::ClientInfoPtr GetClientInfo();
 
   void UnblindedTokensReady();

@@ -1174,6 +1174,30 @@ void LedgerClientMojoProxy::DeleteUnblindedToken(
                 _1));
 }
 
+// static
+void LedgerClientMojoProxy::OnDeleteUnblindedTokensForPromotion(
+    CallbackHolder<DeleteUnblindedTokensForPromotionCallback>* holder,
+    const ledger::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::DeleteUnblindedTokensForPromotion(
+    const std::string& promotion_id,
+    DeleteUnblindedTokensForPromotionCallback callback) {
+  auto* holder = new CallbackHolder<DeleteUnblindedTokensForPromotionCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->DeleteUnblindedTokensForPromotion(
+      promotion_id,
+      std::bind(LedgerClientMojoProxy::OnDeleteUnblindedTokensForPromotion,
+                holder,
+                _1));
+}
+
 void LedgerClientMojoProxy::GetClientInfo(
     GetClientInfoCallback callback) {
   auto info = ledger_client_->GetClientInfo();

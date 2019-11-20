@@ -40,6 +40,34 @@ using challenge_bypass_ristretto::UnblindedToken;
 
 namespace braveledger_promotion {
 
+namespace {
+
+void HandleExpiredPromotions(
+    bat_ledger::LedgerImpl* ledger,
+    ledger::PromotionMap* promotions) {
+  // TODO(https://github.com/brave/brave-browser/issues/6363): Filtering logic
+  // should occur in the database
+
+  DCHECK(promotions);
+  if (!promotions) {
+    return;
+  }
+
+  const uint64_t current_time =
+      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+
+  for (auto& item : *promotions) {
+    if (item.second->expires_at <= current_time)  {
+      item.second->status = ledger::PromotionStatus::OVER;
+
+      ledger->DeleteUnblindedTokensForPromotion(item.second->id,
+          [](const ledger::Result _){});
+    }
+  }
+}
+
+}  // namespace
+
 Promotion::Promotion(bat_ledger::LedgerImpl* ledger) :
     attestation_(std::make_unique<braveledger_attestation::AttestationImpl>
         (ledger)),
@@ -367,6 +395,8 @@ void Promotion::OnGetAllPromotions(
     ledger::PromotionMap promotions,
     const std::string& response,
     ledger::FetchPromotionCallback callback) {
+  HandleExpiredPromotions(ledger_, &promotions);
+
   ledger::PromotionList list;
   bool success = ParseFetchResponse(response, &list);
 
@@ -523,6 +553,8 @@ void Promotion::OnTimer(const uint32_t timer_id) {
 }
 
 void Promotion::Retry(ledger::PromotionMap promotions) {
+  HandleExpiredPromotions(ledger_, &promotions);
+
   for (auto & promotion : promotions) {
     if (promotion.second->status == ledger::PromotionStatus::CLAIMED) {
       FetchSignedTokens(

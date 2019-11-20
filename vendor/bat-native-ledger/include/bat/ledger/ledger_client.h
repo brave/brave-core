@@ -317,6 +317,10 @@ class LEDGER_EXPORT LedgerClient {
     const std::vector<std::string>& id_list,
     ledger::ResultCallback callback) = 0;
 
+  virtual void DeleteUnblindedTokensForPromotion(
+    const std::string& promotion_id,
+    ledger::ResultCallback callback) = 0;
+
   virtual ledger::ClientInfoPtr GetClientInfo() = 0;
 
   virtual void UnblindedTokensReady() = 0;

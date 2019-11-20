@@ -229,6 +229,10 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const std::vector<std::string>& id_list,
       ledger::ResultCallback callback) override;
 
+  void DeleteUnblindedTokensForPromotion(
+      const std::string& promotion_id,
+      ledger::ResultCallback callback) override;
+
   ledger::ClientInfoPtr GetClientInfo() override;
 
   void UnblindedTokensReady() override;
