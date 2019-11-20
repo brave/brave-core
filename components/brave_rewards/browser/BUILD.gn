@@ -96,6 +96,8 @@ source_set("browser") {
       "database/database_table.h",
       "database/database_unblinded_token.cc",
       "database/database_unblinded_token.h",
+      "database/database_util.cc",
+      "database/database_util.h",
       "database/publisher_info_database.cc",
       "database/publisher_info_database.h",
       "net/network_delegate_helper.cc",

@@ -5,8 +5,6 @@
 
 #include <utility>
 
-#include "brave/components/brave_rewards/browser/database/publisher_info_database.h"
-
 #include "bat/ledger/global_constants.h"
 #include "base/bind.h"
 #include "base/command_line.h"
@@ -20,6 +18,8 @@
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/recurring_donation.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
+#include "brave/components/brave_rewards/browser/database/publisher_info_database.h"
+#include "brave/components/brave_rewards/browser/database/database_util.h"
 
 namespace brave_rewards {
 
@@ -1716,7 +1716,7 @@ bool PublisherInfoDatabase::MigrateToV8ContributionInfoTable() {
   const std::string table_name = "contribution_info";
   const std::string temp_table_name = "contribution_info_temp";
 
-  if (!RenameDBTable(table_name, temp_table_name)) {
+  if (!RenameDBTable(&GetDB(), table_name, temp_table_name)) {
     return false;
   }
 
@@ -1743,7 +1743,7 @@ bool PublisherInfoDatabase::MigrateToV8ContributionInfoTable() {
     { "year", "year" }
   };
 
-  if (!MigrateDBTable(temp_table_name, table_name, columns, true)) {
+  if (!MigrateDBTable(&GetDB(), temp_table_name, table_name, columns, true)) {
     return false;
   }
 
@@ -1789,7 +1789,7 @@ bool PublisherInfoDatabase::MigrateToV8PendingContributionsTable() {
   const std::string table_name = "pending_contribution";
   const std::string temp_table_name = "pending_contribution_temp";
 
-  if (!RenameDBTable(table_name, temp_table_name)) {
+  if (!RenameDBTable(&GetDB(), table_name, temp_table_name)) {
     return false;
   }
 
@@ -1815,7 +1815,7 @@ bool PublisherInfoDatabase::MigrateToV8PendingContributionsTable() {
     { "category", "type" }
   };
 
-  if (!MigrateDBTable(temp_table_name, table_name, columns, true)) {
+  if (!MigrateDBTable(&GetDB(), temp_table_name, table_name, columns, true)) {
     return false;
   }
 
@@ -1899,77 +1899,6 @@ bool PublisherInfoDatabase::Migrate(int version) {
     default:
       return false;
   }
-}
-
-bool PublisherInfoDatabase::MigrateDBTable(
-    const std::string& from,
-    const std::string& to,
-    const std::vector<std::string>& columns,
-    const bool should_drop) {
-  std::map<std::string, std::string> new_columns;
-  for (const auto& column : columns) {
-    new_columns[column] = column;
-  }
-
-  return MigrateDBTable(from, to, new_columns, should_drop);
-}
-
-bool PublisherInfoDatabase::MigrateDBTable(
-    const std::string& from,
-    const std::string& to,
-    const std::map<std::string, std::string>& columns,
-    const bool should_drop) {
-  DCHECK_NE(from, to);
-  DCHECK(!from.empty());
-  DCHECK(!to.empty());
-
-  std::string sql = "PRAGMA foreign_keys = off;";
-
-  if (!columns.empty()) {
-    const auto insert = GenerateDBInsertQuery(from, to, columns);
-    sql.append(insert);
-  }
-
-  if (should_drop) {
-    sql.append(base::StringPrintf("DROP TABLE %s;", from.c_str()));
-  }
-
-  sql.append("PRAGMA foreign_keys = on;");
-
-  return GetDB().Execute(sql.c_str());
-}
-
-bool PublisherInfoDatabase::RenameDBTable(
-    const std::string& from,
-    const std::string& to) {
-  DCHECK_NE(from, to);
-
-  const auto sql = base::StringPrintf("ALTER TABLE %s RENAME TO %s;",
-      from.c_str(), to.c_str());
-
-  return GetDB().Execute(sql.c_str());
-}
-
-std::string PublisherInfoDatabase::GenerateDBInsertQuery(
-    const std::string& from,
-    const std::string& to,
-    const std::map<std::string, std::string>& columns) {
-  DCHECK_GT(columns.size(), 0UL);
-
-  std::vector<std::string> from_columns;
-  std::vector<std::string> to_columns;
-
-  for (const auto& column : columns) {
-    from_columns.push_back(column.first);
-    to_columns.push_back(column.second);
-  }
-
-  const auto comma_separated_from_columns = base::JoinString(from_columns, ",");
-  const auto comma_separated_to_columns = base::JoinString(to_columns, ",");
-
-  return base::StringPrintf("INSERT INTO %s (%s) SELECT %s FROM %s;",
-      to.c_str(), comma_separated_to_columns.c_str(),
-          comma_separated_from_columns.c_str(), from.c_str());
 }
 
 sql::InitStatus PublisherInfoDatabase::EnsureCurrentVersion() {

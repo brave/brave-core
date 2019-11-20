@@ -184,11 +184,17 @@ class PublisherInfoDatabase {
   bool MigrateV6toV7();
 
   bool MigrateV7toV8();
+
   bool MigrateToV8ContributionInfoTable();
+
   bool CreateV8ContributionInfoTable();
+
   bool CreateV8ContributionInfoIndex();
+
   bool MigrateToV8PendingContributionsTable();
+
   bool CreateV8PendingContributionsTable();
+
   bool CreateV8PendingContributionsIndex();
 
   bool MigrateV8toV9();
@@ -196,24 +202,6 @@ class PublisherInfoDatabase {
   bool MigrateV9toV10();
 
   bool Migrate(int version);
-
-  bool MigrateDBTable(
-      const std::string& from,
-      const std::string& to,
-      const std::vector<std::string>& columns,
-      const bool should_drop);
-  bool MigrateDBTable(
-      const std::string& from,
-      const std::string& to,
-      const std::map<std::string, std::string>& columns,
-      const bool should_drop);
-  bool RenameDBTable(
-      const std::string& from,
-      const std::string& to);
-  std::string GenerateDBInsertQuery(
-      const std::string& from,
-      const std::string& to,
-      const std::map<std::string, std::string>& columns);
 
   sql::InitStatus EnsureCurrentVersion();
 
