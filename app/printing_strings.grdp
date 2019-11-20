@@ -89,10 +89,10 @@
     <message name="IDS_PRINT_PREVIEW_SCALING_LABEL" desc="Scaling option label.">
       Scale
     </message>
-    <message name="IDS_PRINT_PREVIEW_OPTION_DEFAULT_SCALING" desc="Option to print with default (100%) scaling.">
+    <message name="IDS_PRINT_PREVIEW_OPTION_DEFAULT_SCALING" desc="Dropdown option to print with default (100%) scaling.">
       Default
     </message>
-    <message name="IDS_PRINT_PREVIEW_OPTION_CUSTOM_SCALING" desc="Option to print with custom scaling.">
+    <message name="IDS_PRINT_PREVIEW_OPTION_CUSTOM_SCALING" desc="Dropdown option to print with custom scaling.">
       Custom
     </message>
     <message name="IDS_PRINT_PREVIEW_PAGES_PER_SHEET_LABEL" desc="Pages per sheet option label.">
@@ -146,8 +146,11 @@
     <message name="IDS_PRINT_PREVIEW_OPTION_HEADER_FOOTER" desc="Checkbox label that provides a choice to print the headers and footers.">
       Headers and footers
     </message>
-    <message name="IDS_PRINT_PREVIEW_OPTION_FIT_TO_PAGE" desc="Checkbox label shown in print preview page to auto fit the PDF page.">
-      Fit to page
+    <message name="IDS_PRINT_PREVIEW_OPTION_FIT_TO_PAGE" desc="Dropdown option shown in print preview page to auto fit the PDF page to the paper's printable area.">
+      Fit to printable area
+    </message>
+    <message name="IDS_PRINT_PREVIEW_OPTION_FIT_TO_PAPER" desc="Dropdown option shown in print preview page to auto fit the PDF page to the paper size.">
+      Fit to paper
     </message>
     <message name="IDS_PRINT_PREVIEW_OPTION_BACKGROUND_COLORS_AND_IMAGES" desc="Checkbox label shown in print preview page to print webpage backgrounds.">
       Background graphics
