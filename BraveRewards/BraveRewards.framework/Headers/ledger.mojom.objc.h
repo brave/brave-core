@@ -158,7 +158,7 @@ typedef NS_ENUM(NSInteger, BATPromotionStatus) {
 
 typedef NS_ENUM(NSInteger, BATPlatform) {
   BATPlatformDesktop = 0,
-  BATPlatformAndroid = 1,
+  BATPlatformAndroidR = 1,
   BATPlatformIos = 2,
 } NS_SWIFT_NAME(Platform);
 
@@ -386,7 +386,6 @@ NS_SWIFT_NAME(Promotion)
 @property (nonatomic, copy) NSString * publicKeys;
 @property (nonatomic) uint32_t suggestions;
 @property (nonatomic) double approximateValue;
-@property (nonatomic) bool claimed;
 @property (nonatomic) BATPromotionStatus status;
 @property (nonatomic) uint64_t expiresAt;
 @property (nonatomic, copy, nullable) BATPromotionCreds * credentials;

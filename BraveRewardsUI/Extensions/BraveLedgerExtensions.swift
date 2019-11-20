@@ -183,20 +183,20 @@ extension BraveLedger {
           completion(false)
           return
         }
-        self.claimPromotion(attestation.publicKeyHash) { result, noonce in
+        self.claimPromotion(attestation.publicKeyHash) { result, nonce in
           if result != .ledgerOk {
             completion(false)
             return
           }
           
-          deviceCheck.generateAttestationVerification(nonce: noonce) { verification, error in
+          deviceCheck.generateAttestationVerification(nonce: nonce) { verification, error in
             guard let verification = verification else {
               completion(false)
               return
             }
             
             let solution = PromotionSolution()
-            solution.noonce = noonce
+            solution.nonce = nonce
             solution.signature = verification.signature
             do {
               solution.blob = try verification.attestationBlob.bsonData().base64EncodedString()
@@ -209,7 +209,7 @@ extension BraveLedger {
                 if promotion?.type == .ads {
                   MonthlyAdsGrantReminder.cancelCurrentMonth()
                 }
-                self.updatePromotions {
+                self.updatePendingAndFinishedPromotions {
                   completion(true)
                 }
               } else {
