@@ -37,6 +37,11 @@ using ClientInfoPtr = mojom::ClientInfoPtr;
 using ContributionInfo = mojom::ContributionInfo;
 using ContributionInfoPtr = mojom::ContributionInfoPtr;
 
+using ContributionPublisher = mojom::ContributionPublisher;
+using ContributionPublisherPtr = mojom::ContributionPublisherPtr;
+using ContributionPublisherList =
+    std::vector<ledger::mojom::ContributionPublisherPtr>;
+
 using ContributionQueue = ledger::mojom::ContributionQueue;
 using ContributionQueuePtr = ledger::mojom::ContributionQueuePtr;
 using ContributionQueueList = std::vector<ledger::mojom::ContributionQueuePtr>;

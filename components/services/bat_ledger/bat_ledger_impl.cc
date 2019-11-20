@@ -214,22 +214,6 @@ void BatLedgerImpl::SetBalanceReportItem(
   ledger_->SetBalanceReportItem(month, year, type, probi);
 }
 
-void BatLedgerImpl::OnReconcileCompleteSuccess(
-    const std::string& viewing_id,
-    const ledger::RewardsType type,
-    const std::string& probi,
-    ledger::ActivityMonth month,
-    int32_t year,
-    uint32_t data) {
-  ledger_->OnReconcileCompleteSuccess(
-      viewing_id,
-      type,
-      probi,
-      month,
-      year,
-      data);
-}
-
 void BatLedgerImpl::OnFetchPromotions(
     CallbackHolder<FetchPromotionsCallback>* holder,
     const ledger::Result result,

@@ -715,8 +715,9 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 #pragma mark - Reconcile
 
-- (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id type:(const ledger::RewardsType)type probi:(const std::string &)probi
+- (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id type:(const ledger::RewardsType)type amount:(const double)amount
 {
+  // TODO we changed from probi to amount, so from string to double
   if (result == ledger::Result::LEDGER_OK) {
     const auto now = [NSDate date];
     const auto nowTimestamp = [now timeIntervalSince1970];
@@ -725,13 +726,6 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
       [self showTipsProcessedNotificationIfNeccessary];
     }
     [self fetchBalance:nil];
-
-    ledger->OnReconcileCompleteSuccess(viewing_id,
-                                       type,
-                                       probi,
-                                       BATGetPublisherMonth(now),
-                                       BATGetPublisherYear(now),
-                                       nowTimestamp);
   }
 
   if ((result == ledger::Result::LEDGER_OK && type == ledger::RewardsType::AUTO_CONTRIBUTE) ||
@@ -1675,8 +1669,9 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)saveContributionInfo:(const std::string &)probi month:(const ledger::ActivityMonth)month year:(const int)year date:(const uint32_t)date publisherKey:(const std::string &)publisher_key type:(const ledger::RewardsType)type
+- (void)saveContributionInfo:(ledger::ContributionInfoPtr)info callback:(ledger::ResultCallback)callback
 {
+  // TODO please insert as we changed DB structure
   [BATLedgerDatabase insertContributionInfo:[NSString stringWithUTF8String:probi.c_str()]
                                       month:(BATActivityMonth)month
                                        year:year

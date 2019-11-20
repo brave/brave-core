@@ -74,8 +74,8 @@ std::unique_ptr<ledger::LogStream> NativeLedgerClient::Log(const char * file, in
 void NativeLedgerClient::OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) {
   [bridge_ onPanelPublisherInfo:result publisherInfo:std::move(publisher_info) windowId:windowId];
 }
-void NativeLedgerClient::OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const std::string & probi, const ledger::RewardsType type) {
-  [bridge_ onReconcileComplete:result viewingId:viewing_id type:type probi:probi];
+void NativeLedgerClient::OnReconcileComplete(ledger::Result result, const std::string & viewing_id, const double amount, const ledger::RewardsType type) {
+  [bridge_ onReconcileComplete:result viewingId:viewing_id type:type amount:amount];
 }
 void NativeLedgerClient::RemoveRecurringTip(const std::string & publisher_key, ledger::RemoveRecurringTipCallback callback) {
   [bridge_ removeRecurringTip:publisher_key callback:callback];
@@ -99,8 +99,8 @@ void NativeLedgerClient::ResetState(const std::string & name, ledger::OnResetCal
 void NativeLedgerClient::SaveActivityInfo(ledger::PublisherInfoPtr publisher_info, ledger::PublisherInfoCallback callback) {
   [bridge_ saveActivityInfo:std::move(publisher_info) callback:callback];
 }
-void NativeLedgerClient::SaveContributionInfo(const std::string & probi, const ledger::ActivityMonth month, const int year, const uint32_t date, const std::string & publisher_key, const ledger::RewardsType type) {
-  [bridge_ saveContributionInfo:probi month:month year:year date:date publisherKey:publisher_key type:type];
+void NativeLedgerClient::SaveContributionInfo(ledger::ContributionInfoPtr info, ledger::ResultCallback callback) {
+  [bridge_ saveContributionInfo:std::move(info) callback:callback];
 }
 void NativeLedgerClient::SaveLedgerState(const std::string & ledger_state, ledger::LedgerCallbackHandler * handler) {
   [bridge_ saveLedgerState:ledger_state handler:handler];

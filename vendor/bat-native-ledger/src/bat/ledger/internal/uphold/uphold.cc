@@ -84,8 +84,6 @@ void Uphold::ContributionCompleted(
     const double fee,
     const ledger::ExternalWallet& wallet) {
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
-  const auto amount =
-      braveledger_bat_util::ConvertToProbi(std::to_string(reconcile.fee_));
 
   if (result == ledger::Result::LEDGER_OK) {
     const auto current_time_seconds = base::Time::Now().ToDoubleT();
@@ -97,17 +95,11 @@ void Uphold::ContributionCompleted(
     SaveTransferFee(std::move(transfer_fee));
   }
 
-  ledger_->OnReconcileComplete(result,
-                               viewing_id,
-                               amount,
-                               reconcile.type_);
-
-  if (result != ledger::Result::LEDGER_OK) {
-    if (!viewing_id.empty()) {
-      ledger_->RemoveReconcileById(viewing_id);
-    }
-    return;
-  }
+  ledger_->ReconcileComplete(
+      result,
+      reconcile.fee_,
+      viewing_id,
+      reconcile.type_);
 }
 
 void Uphold::FetchBalance(

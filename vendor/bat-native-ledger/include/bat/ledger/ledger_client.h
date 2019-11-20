@@ -87,10 +87,11 @@ class LEDGER_EXPORT LedgerClient {
       Result result,
       ledger::WalletPropertiesPtr properties) = 0;
 
-  virtual void OnReconcileComplete(Result result,
-                                   const std::string& viewing_id,
-                                   const std::string& probi,
-                                   const ledger::RewardsType type) = 0;
+  virtual void OnReconcileComplete(
+      const Result result,
+      const std::string& viewing_id,
+      const double amount,
+      const ledger::RewardsType type) = 0;
 
   virtual void LoadLedgerState(OnLoadCallback callback) = 0;
 
@@ -138,12 +139,8 @@ class LEDGER_EXPORT LedgerClient {
                             FetchIconCallback callback) = 0;
 
   virtual void SaveContributionInfo(
-      const std::string& probi,
-      const ledger::ActivityMonth month,
-      const int year,
-      const uint32_t date,
-      const std::string& publisher_key,
-      const ledger::RewardsType type) = 0;
+      ledger::ContributionInfoPtr info,
+      ledger::ResultCallback callback) = 0;
 
   virtual void SaveRecurringTip(
       ledger::RecurringTipPtr info,

@@ -33,10 +33,6 @@ void MockLedgerClient::Shutdown() {
   ledger_.reset();
 }
 
-void MockLedgerClient::OnReconcileComplete(ledger::Result result,
-                                           const std::string& viewing_id) {
-}
-
 void MockLedgerClient::LoadLedgerState(ledger::LedgerCallbackHandler* handler) {
   handler->OnLedgerStateLoaded(ledger::Result::OK, ledger_state_);
 }

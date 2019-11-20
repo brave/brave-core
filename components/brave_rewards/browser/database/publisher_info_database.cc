@@ -24,7 +24,7 @@ namespace brave_rewards {
 
 namespace {
 
-const int kCurrentVersionNumber = 10;
+const int kCurrentVersionNumber = 11;
 const int kCompatibleVersionNumber = 1;
 
 }  // namespace
@@ -133,7 +133,7 @@ bool PublisherInfoDatabase::Init() {
  *
  */
 bool PublisherInfoDatabase::InsertOrUpdateContributionInfo(
-    const brave_rewards::ContributionInfo& info) {
+    ledger::ContributionInfoPtr info) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -143,7 +143,7 @@ bool PublisherInfoDatabase::InsertOrUpdateContributionInfo(
     return false;
   }
 
-  return contribution_info_->InsertOrUpdate(&GetDB(), info);
+  return contribution_info_->InsertOrUpdate(&GetDB(), std::move(info));
 }
 
 void PublisherInfoDatabase::GetOneTimeTips(
@@ -1750,6 +1750,19 @@ bool PublisherInfoDatabase::MigrateV9toV10() {
   return true;
 }
 
+bool PublisherInfoDatabase::MigrateV10toV11() {
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    return false;
+  }
+
+  if (!contribution_info_->Migrate(&GetDB(), 11)) {
+    return false;
+  }
+
+  return transaction.Commit();
+}
+
 bool PublisherInfoDatabase::Migrate(int version) {
   switch (version) {
     case 2: {
@@ -1778,6 +1791,9 @@ bool PublisherInfoDatabase::Migrate(int version) {
     }
     case 10: {
       return MigrateV9toV10();
+    }
+    case 11: {
+      return MigrateV10toV11();
     }
     default:
       return false;

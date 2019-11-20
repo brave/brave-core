@@ -137,13 +137,11 @@ class Contribution {
 
   // Does final stage in contribution
   // Sets reports and contribution info
-  void OnReconcileCompleteSuccess(
+  void ReconcileSuccess(
       const std::string& viewing_id,
-      const ledger::RewardsType type,
-      const std::string& probi,
-      ledger::ActivityMonth month,
-      int year,
-      uint32_t date);
+      const double amount,
+      const bool delete_reconcile);
+
   void HasSufficientBalance(
     ledger::HasSufficientBalanceToReconcileCallback callback);
 

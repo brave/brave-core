@@ -15,6 +15,7 @@
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/bat_util.h"
 #include "bat/ledger/internal/common/bind_util.h"
+#include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
@@ -392,42 +393,44 @@ void Contribution::SetTimer(uint32_t* timer_id, uint64_t start_timer_in) {
   ledger_->SetTimer(start_timer_in, timer_id);
 }
 
-void Contribution::OnReconcileCompleteSuccess(
+void Contribution::ReconcileSuccess(
     const std::string& viewing_id,
-    const ledger::RewardsType type,
-    const std::string& probi,
-    ledger::ActivityMonth month,
-    int year,
-    uint32_t date) {
-  if (type == ledger::RewardsType::AUTO_CONTRIBUTE) {
-    ledger_->SetBalanceReportItem(
-        month,
-        year,
-        GetReportTypeFromRewardsType(type),
+    const double amount,
+    const bool delete_reconcile) {
+  const auto reconcile = ledger_->GetReconcileById(viewing_id);
+  const std::string probi =
+      braveledger_bat_util::ConvertToProbi(std::to_string(amount));
+
+  ledger_->SetBalanceReportItem(
+        braveledger_time_util::GetCurrentMonth(),
+        braveledger_time_util::GetCurrentYear(),
+        GetReportTypeFromRewardsType(reconcile.type_),
         probi);
-    ledger_->SaveContributionInfo(probi, month, year, date, "", type);
-    return;
+
+  ledger::ContributionPublisherList publisher_list;
+  for (auto& item : reconcile.directions_) {
+    auto publisher = ledger::ContributionPublisher::New();
+    publisher->contribution_id = viewing_id;
+    publisher->publisher_key = item.publisher_key_;
+    publisher->total_amount = (item.amount_percent_ * amount) / 100;
+    publisher->contributed_amount = publisher->total_amount;
+    publisher_list.push_back(std::move(publisher));
   }
 
-  if (type == ledger::RewardsType::ONE_TIME_TIP ||
-      type == ledger::RewardsType::RECURRING_TIP) {
-    ledger_->SetBalanceReportItem(
-        month,
-        year,
-        GetReportTypeFromRewardsType(type),
-        probi);
-    const auto reconcile = ledger_->GetReconcileById(viewing_id);
-    const auto donations = reconcile.directions_;
-    if (donations.size() > 0) {
-      std::string publisher_key = donations[0].publisher_key_;
-      ledger_->SaveContributionInfo(probi,
-                                    month,
-                                    year,
-                                    date,
-                                    publisher_key,
-                                    type);
-    }
-    return;
+  const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+  auto info = ledger::ContributionInfo::New();
+  info->contribution_id = viewing_id;
+  info->amount = amount;
+  info->type = reconcile.type_;
+  info->step = -1;
+  info->retry_count = -1;
+  info->created_at = now;
+  info->publishers = std::move(publisher_list);
+
+  ledger_->SaveContributionInfo(std::move(info), [](ledger::Result _){});
+
+  if (!viewing_id.empty() && delete_reconcile) {
+      ledger_->RemoveReconcileById(viewing_id);
   }
 }
 
@@ -997,17 +1000,11 @@ void Contribution::OnExternalWalletServerPublisherInfo(
     const ledger::ExternalWallet& wallet) {
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
   if (!info) {
-    const auto probi =
-        braveledger_bat_util::ConvertToProbi(std::to_string(amount));
-    ledger_->OnReconcileComplete(
+    ledger_->ReconcileComplete(
         ledger::Result::LEDGER_ERROR,
+        amount,
         viewing_id,
-        probi,
         reconcile.type_);
-
-    if (!viewing_id.empty()) {
-      ledger_->RemoveReconcileById(viewing_id);
-    }
     return;
   }
 

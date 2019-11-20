@@ -607,14 +607,25 @@ uint64_t LedgerImpl::GetReconcileStamp() const {
   return bat_state_->GetReconcileStamp();
 }
 
-void LedgerImpl::OnReconcileComplete(ledger::Result result,
-                                     const std::string& viewing_id,
-                                     const std::string& probi,
-                                     const ledger::RewardsType type) {
+void LedgerImpl::ReconcileComplete(
+    const ledger::Result result,
+    const double amount,
+    const std::string& viewing_id,
+    const ledger::RewardsType type,
+    const bool delete_reconcile) {
+  const auto reconcile = GetReconcileById(viewing_id);
+
+  if (result == ledger::Result::LEDGER_OK) {
+    bat_contribution_->ReconcileSuccess(
+      viewing_id,
+      amount,
+      delete_reconcile);
+  }
+
   ledger_client_->OnReconcileComplete(
       result,
       viewing_id,
-      probi,
+      amount,
       type);
 }
 
@@ -779,21 +790,6 @@ void LedgerImpl::FetchFavIcon(const std::string& url,
 void LedgerImpl::GetPublisherBanner(const std::string& publisher_id,
                                     ledger::PublisherBannerCallback callback) {
   bat_publisher_->GetPublisherBanner(publisher_id, callback);
-}
-
-void LedgerImpl::OnReconcileCompleteSuccess(
-    const std::string& viewing_id,
-    const ledger::RewardsType type,
-    const std::string& probi,
-    const ledger::ActivityMonth month,
-    const int year,
-    const uint32_t date) {
-  bat_contribution_->OnReconcileCompleteSuccess(viewing_id,
-                                                type,
-                                                probi,
-                                                month,
-                                                year,
-                                                date);
 }
 
 void LedgerImpl::RemoveRecurringTip(
@@ -1084,18 +1080,9 @@ bool LedgerImpl::ReconcileExists(const std::string& viewingId) {
 }
 
 void LedgerImpl::SaveContributionInfo(
-    const std::string& probi,
-    const ledger::ActivityMonth month,
-    const int year,
-    const uint32_t date,
-    const std::string& publisher_key,
-    const ledger::RewardsType type) {
-  ledger_client_->SaveContributionInfo(probi,
-                                       month,
-                                       year,
-                                       date,
-                                       publisher_key,
-                                       type);
+    ledger::ContributionInfoPtr info,
+    ledger::ResultCallback callback) {
+  ledger_client_->SaveContributionInfo(std::move(info), callback);
 }
 
 void LedgerImpl::NormalizeContributeWinners(

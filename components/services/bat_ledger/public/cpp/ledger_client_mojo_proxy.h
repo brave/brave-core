@@ -33,7 +33,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void OnReconcileComplete(
       const ledger::Result result,
       const std::string& viewing_id,
-      const std::string& probi,
+      const double amount,
       const ledger::RewardsType type) override;
 
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
@@ -71,13 +71,11 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const ledger::Result result,
       ledger::PublisherInfoPtr info,
       uint64_t window_id) override;
+
   void SaveContributionInfo(
-      const std::string& probi,
-      ledger::ActivityMonth month,
-      int32_t year,
-      uint32_t date,
-      const std::string& publisher_key,
-      const ledger::RewardsType type) override;
+      ledger::ContributionInfoPtr info,
+      SaveContributionInfoCallback callback) override;
+
   void SaveMediaPublisherInfo(const std::string& media_key,
       const std::string& publisher_id) override;
 
@@ -334,6 +332,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   static void OnRemoveRecurringTip(
       CallbackHolder<RemoveRecurringTipCallback>* holder,
+      const ledger::Result result);
+
+  static void OnSaveContributionInfo(
+      CallbackHolder<SaveContributionInfoCallback>* holder,
       const ledger::Result result);
 
   static void OnLoadURL(

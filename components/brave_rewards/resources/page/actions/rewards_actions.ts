@@ -248,11 +248,6 @@ export const onRecurringTipRemoved = (success: boolean) => action(types.ON_RECUR
   success
 })
 
-export const onContributionSaved = (properties: Rewards.ContributionSaved) =>
-  action(types.ON_CONTRIBUTION_SAVED, {
-    properties
-  })
-
 export const onInlineTipSettingChange = (key: string, value: boolean) => action(types.ON_INLINE_TIP_SETTINGS_CHANGE, {
   key,
   value

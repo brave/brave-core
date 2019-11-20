@@ -29,4 +29,15 @@ std::string ConvertToProbi(const std::string& amount) {
   return before_dot + after_dot + rest_probi;
 }
 
+double ProbiToDouble(const std::string& probi) {
+  const size_t size = probi.size();
+  std::string amount = "0";
+  if (size > 18) {
+    amount = probi;
+    amount.insert(size - 18, ".");
+  }
+
+  return std::stod(amount);
+}
+
 }  // namespace braveledger_bat_util

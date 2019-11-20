@@ -136,7 +136,7 @@ void BatLedgerClientMojoProxy::OnWalletProperties(
 void BatLedgerClientMojoProxy::OnReconcileComplete(
     ledger::Result result,
     const std::string& viewing_id,
-    const std::string& probi,
+    const double amount,
     const ledger::RewardsType type) {
   if (!Connected())
     return;
@@ -144,7 +144,7 @@ void BatLedgerClientMojoProxy::OnReconcileComplete(
   bat_ledger_client_->OnReconcileComplete(
       result,
       viewing_id,
-      probi,
+      amount,
       type);
 }
 
@@ -447,23 +447,21 @@ void BatLedgerClientMojoProxy::RemoveRecurringTip(
       base::BindOnce(&OnRemoveRecurringTip, std::move(callback)));
 }
 
+void OnSaveContributionInfo(
+    const ledger::ResultCallback& callback,
+    const ledger::Result result) {
+  callback(result);
+}
+
 void BatLedgerClientMojoProxy::SaveContributionInfo(
-    const std::string& probi,
-    const ledger::ActivityMonth month,
-    const int year,
-    const uint32_t date,
-    const std::string& publisher_key,
-    const ledger::RewardsType type) {
+    ledger::ContributionInfoPtr info,
+    ledger::ResultCallback callback) {
   if (!Connected())
     return;
 
   bat_ledger_client_->SaveContributionInfo(
-      probi,
-      month,
-      year,
-      date,
-      publisher_key,
-      type);
+      std::move(info),
+      base::BindOnce(&OnSaveContributionInfo, std::move(callback)));
 }
 
 void BatLedgerClientMojoProxy::SaveMediaPublisherInfo(

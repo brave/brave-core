@@ -9,6 +9,21 @@
 
 namespace brave_rewards {
 
+bool DropTable(
+    sql::Database* db,
+    const std::string& table_name) {
+  DCHECK(!table_name.empty());
+  if (!db) {
+    return false;
+  }
+
+  std::string sql = "PRAGMA foreign_keys = off;";
+  sql.append(base::StringPrintf("DROP TABLE %s;", table_name.c_str()));
+  sql.append("PRAGMA foreign_keys = on;");
+
+  return db->Execute(sql.c_str());
+}
+
 std::string GenerateDBInsertQuery(
     sql::Database* db,
     const std::string& from,

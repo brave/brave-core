@@ -179,10 +179,6 @@ window.cr.define('brave_rewards', function () {
     getActions().onRecurringTipRemoved(success)
   }
 
-  function onContributionSaved (properties: Rewards.ContributionSaved) {
-    getActions().onContributionSaved(properties)
-  }
-
   function pendingContributions (list: Rewards.PendingContribution[]) {
     getActions().onPendingContributions(list)
   }
@@ -207,6 +203,10 @@ window.cr.define('brave_rewards', function () {
     getActions().getContributeList()
     getActions().getBalance()
     getActions().getWalletProperties()
+
+    if (properties.type === 8) { // Rewards.RewardsType.ONE_TIME_TIP
+      chrome.send('brave_rewards.getOneTimeTips')
+    }
 
     // EXPIRED TOKEN
     if (properties.result === 24) {
@@ -272,7 +272,6 @@ window.cr.define('brave_rewards', function () {
     transactionHistoryChanged,
     recurringTipSaved,
     recurringTipRemoved,
-    onContributionSaved,
     onRemovePendingContribution,
     excludedSiteChanged,
     balance,

@@ -32,8 +32,6 @@ class MockLedgerClient : public ledger::LedgerClient {
  protected:
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
-  void OnReconcileComplete(ledger::Result result,
-                           const std::string& viewing_id) override;
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler) override;
   void LoadPublisherState(ledger::LedgerCallbackHandler* handler) override;
   void SaveLedgerState(const std::string& ledger_state,

@@ -16,6 +16,7 @@
 #include "base/path_service.h"
 #include "base/strings/string_util.h"
 #include "base/strings/string_split.h"
+#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/brave_paths.h"
 #include "bat/ledger/global_constants.h"
@@ -146,30 +147,31 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateContributionInfo) {
   base::FilePath db_file;
   CreateTempDatabase(&temp_dir, &db_file);
 
-  ContributionInfo info;
-  info.probi = "12345678901234567890123456789012345678901234";
-  info.month = static_cast<int>(ledger::ActivityMonth::JANUARY);
-  info.year = 1970;
-  info.type = static_cast<int>(ledger::RewardsType::AUTO_CONTRIBUTE);
-  info.date = base::Time::Now().ToJsTime();
-  info.publisher_key = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  auto info = ledger::ContributionInfo::New();
+  info->contribution_id = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  info->amount = 5.0;
+  info->type = ledger::RewardsType::AUTO_CONTRIBUTE;
+  info->step = -1;
+  info->retry_count = -1;
+  info->created_at = base::Time::Now().ToJsTime();
 
-  bool success = publisher_info_database_->InsertOrUpdateContributionInfo(info);
+  bool success =
+      publisher_info_database_->InsertOrUpdateContributionInfo(info->Clone());
   EXPECT_TRUE(success);
 
-  std::string query = "SELECT * FROM contribution_info WHERE publisher_id=?";
+  std::string query = "SELECT * FROM contribution_info WHERE contribution_id=?";
   sql::Statement info_sql(GetDB().GetUniqueStatement(query.c_str()));
 
-  info_sql.BindString(0, info.publisher_key);
+  info_sql.BindString(0, info->contribution_id);
 
   EXPECT_TRUE(info_sql.Step());
   EXPECT_EQ(CountTableRows("contribution_info"), 1);
-  EXPECT_EQ(info_sql.ColumnString(0), info.publisher_key);
-  EXPECT_EQ(info_sql.ColumnString(1), info.probi);
-  EXPECT_EQ(info_sql.ColumnInt64(2), info.date);
-  EXPECT_EQ(info_sql.ColumnInt(3), info.type);
-  EXPECT_EQ(info_sql.ColumnInt(4), info.month);
-  EXPECT_EQ(info_sql.ColumnInt(5), info.year);
+  EXPECT_EQ(info_sql.ColumnString(0), info->contribution_id);
+  EXPECT_EQ(info_sql.ColumnDouble(1), info->amount);
+  EXPECT_EQ(info_sql.ColumnInt(2), static_cast<int>(info->type));
+  EXPECT_EQ(info_sql.ColumnInt(3), info->step);
+  EXPECT_EQ(info_sql.ColumnInt(4), info->retry_count);
+  EXPECT_EQ(info_sql.ColumnInt64(5), static_cast<int64_t>(info->created_at));
 }
 
 TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
@@ -572,56 +574,56 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateRecurringTip) {
   base::FilePath db_file;
   CreateTempDatabase(&temp_dir, &db_file);
 
-  brave_rewards::RecurringDonation info;
-  info.publisher_key = "key";
-  info.amount = 20;
-  info.added_date = base::Time::Now().ToJsTime();
+  auto info = ledger::RecurringTip::New();
+  info->publisher_key = "key";
+  info->amount = 20;
+  info->created_at = base::Time::Now().ToJsTime();
 
   bool success = publisher_info_database_->InsertOrUpdateRecurringTip(
-      info);
+      info->Clone());
   EXPECT_TRUE(success);
 
   std::string query = "SELECT * FROM recurring_donation WHERE publisher_id=?";
   sql::Statement info_sql(GetDB().GetUniqueStatement(query.c_str()));
 
-  info_sql.BindString(0, info.publisher_key);
+  info_sql.BindString(0, info->publisher_key);
 
   EXPECT_TRUE(info_sql.Step());
   EXPECT_EQ(CountTableRows("recurring_donation"), 1);
-  EXPECT_EQ(info_sql.ColumnString(0), info.publisher_key);
-  EXPECT_EQ(info_sql.ColumnDouble(1), info.amount);
-  EXPECT_EQ(info_sql.ColumnInt64(2), info.added_date);
+  EXPECT_EQ(info_sql.ColumnString(0), info->publisher_key);
+  EXPECT_EQ(info_sql.ColumnDouble(1), info->amount);
+  EXPECT_EQ(info_sql.ColumnInt64(2), static_cast<int64_t>(info->created_at));
 
   /**
    * Make sure that second insert is update and not insert
    */
-  info.amount = 30;
+  info->amount = 30;
 
-  success = publisher_info_database_->InsertOrUpdateRecurringTip(info);
+  success = publisher_info_database_->InsertOrUpdateRecurringTip(info->Clone());
   EXPECT_TRUE(success);
 
   query ="SELECT * FROM recurring_donation WHERE publisher_id=?";
   sql::Statement info_sql_1(GetDB().GetUniqueStatement(query.c_str()));
 
-  info_sql_1.BindString(0, info.publisher_key);
+  info_sql_1.BindString(0, info->publisher_key);
 
   EXPECT_TRUE(info_sql_1.Step());
   EXPECT_EQ(CountTableRows("recurring_donation"), 1);
-  EXPECT_EQ(info_sql_1.ColumnString(0), info.publisher_key);
-  EXPECT_EQ(info_sql_1.ColumnDouble(1), info.amount);
-  EXPECT_EQ(info_sql_1.ColumnInt64(2), info.added_date);
+  EXPECT_EQ(info_sql_1.ColumnString(0), info->publisher_key);
+  EXPECT_EQ(info_sql_1.ColumnDouble(1), info->amount);
+  EXPECT_EQ(info_sql_1.ColumnInt64(2), static_cast<int64_t>(info->created_at));
 
   /**
    * Publisher key is missing
    */
-  info.publisher_key = "";
-  success = publisher_info_database_->InsertOrUpdateRecurringTip(info);
+  info->publisher_key = "";
+  success = publisher_info_database_->InsertOrUpdateRecurringTip(info->Clone());
   EXPECT_FALSE(success);
 
   query = "SELECT * FROM recurring_donation WHERE publisher_id=?";
   sql::Statement info_sql_2(GetDB().GetUniqueStatement(query.c_str()));
 
-  info_sql_2.BindString(0, info.publisher_key);
+  info_sql_2.BindString(0, info->publisher_key);
 
   EXPECT_FALSE(info_sql_2.Step());
 }
@@ -1106,27 +1108,23 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv7tov8_ContributionInfo) {
   CreateMigrationDatabase(&temp_dir, &db_file, 7, 8);
   EXPECT_TRUE(publisher_info_database_->Init());
 
-  ContributionInfo contribution;
-  contribution.probi = "1000000000000000000";
-  contribution.month = static_cast<int>(ledger::ActivityMonth::OCTOBER);
-  contribution.year = 2019;
-  contribution.type = static_cast<int>(ledger::RewardsType::ONE_TIME_TIP);
-  contribution.date = 1570614352;
-  contribution.publisher_key = "3zsistemi.si";
+  const std::string publisher_key = "3zsistemi.si";
 
   std::string query = "SELECT * FROM contribution_info WHERE publisher_id=?";
   sql::Statement info_sql(GetDB().GetUniqueStatement(query.c_str()));
 
-  info_sql.BindString(0, contribution.publisher_key);
+  info_sql.BindString(0, publisher_key);
 
   EXPECT_TRUE(info_sql.Step());
   EXPECT_EQ(CountTableRows("contribution_info"), 1);
-  EXPECT_EQ(info_sql.ColumnString(0), contribution.publisher_key);
-  EXPECT_EQ(info_sql.ColumnString(1), contribution.probi);
-  EXPECT_EQ(info_sql.ColumnInt64(2), contribution.date);
-  EXPECT_EQ(info_sql.ColumnInt(3), contribution.type);
-  EXPECT_EQ(info_sql.ColumnInt(4), contribution.month);
-  EXPECT_EQ(info_sql.ColumnInt(5), contribution.year);
+  EXPECT_EQ(info_sql.ColumnString(0), publisher_key);
+  EXPECT_EQ(info_sql.ColumnString(1), "1000000000000000000");
+  EXPECT_EQ(info_sql.ColumnInt64(2), 1570614352);
+  EXPECT_EQ(info_sql.ColumnInt(3),
+      static_cast<int>(ledger::RewardsType::ONE_TIME_TIP));
+  EXPECT_EQ(info_sql.ColumnInt(4),
+      static_cast<int>(ledger::ActivityMonth::OCTOBER));
+  EXPECT_EQ(info_sql.ColumnInt(5), 2019);
 }
 
 TEST_F(PublisherInfoDatabaseTest, Migrationv7tov8_PendingContribution) {
@@ -1180,6 +1178,65 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv9tov10) {
 
   const std::string schema = publisher_info_database_->GetSchema();
   EXPECT_EQ(schema, GetSchemaString(10));
+}
+
+TEST_F(PublisherInfoDatabaseTest, Migrationv10tov11) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateMigrationDatabase(&temp_dir, &db_file, 10, 11);
+  EXPECT_TRUE(publisher_info_database_->Init());
+
+  EXPECT_EQ(publisher_info_database_->GetTableVersionNumber(), 11);
+
+  const std::string schema = publisher_info_database_->GetSchema();
+  EXPECT_EQ(schema, GetSchemaString(11));
+}
+
+TEST_F(PublisherInfoDatabaseTest, Migrationv10tov11_ContributionInfo) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateMigrationDatabase(&temp_dir, &db_file, 10, 11);
+  EXPECT_TRUE(publisher_info_database_->Init());
+  EXPECT_EQ(CountTableRows("contribution_info"), 5);
+  EXPECT_EQ(CountTableRows("contribution_info_publishers"), 4);
+
+  const std::string query =
+      "SELECT ci.contribution_id, ci.amount, ci.type, ci.created_at, "
+      "cip.publisher_key, cip.total_amount, cip.contributed_amount "
+      "FROM contribution_info as ci "
+      "LEFT JOIN contribution_info_publishers AS cip "
+      "ON ci.contribution_id = cip.contribution_id "
+      "WHERE ci.contribution_id = ?";
+
+  // one time tip
+  const std::string tip_id = "id_1570614352_0";
+  sql::Statement tip_sql(GetDB().GetUniqueStatement(query.c_str()));
+  tip_sql.BindString(0, tip_id);
+
+  ASSERT_TRUE(tip_sql.Step());
+  EXPECT_EQ(tip_sql.ColumnString(0), tip_id);
+  EXPECT_EQ(tip_sql.ColumnDouble(1), 1.0);
+  EXPECT_EQ(tip_sql.ColumnInt(2),
+      static_cast<int>(ledger::RewardsType::ONE_TIME_TIP));;
+  EXPECT_EQ(tip_sql.ColumnInt64(3), 1570614352);
+  EXPECT_EQ(tip_sql.ColumnString(4), "3zsistemi.si");
+  EXPECT_EQ(tip_sql.ColumnDouble(5), 1.0);
+  EXPECT_EQ(tip_sql.ColumnDouble(6), 1.0);
+
+  // Auto contribute
+  const std::string ac_id = "id_1574671381_4";
+  sql::Statement ac_sql(GetDB().GetUniqueStatement(query.c_str()));
+  ac_sql.BindString(0, ac_id);
+
+  ASSERT_TRUE(ac_sql.Step());
+  EXPECT_EQ(ac_sql.ColumnString(0), ac_id);
+  EXPECT_EQ(ac_sql.ColumnDouble(1), 10.0);
+  EXPECT_EQ(ac_sql.ColumnInt(2),
+      static_cast<int>(ledger::RewardsType::AUTO_CONTRIBUTE));;
+  EXPECT_EQ(ac_sql.ColumnInt64(3), 1574671381);
+  EXPECT_EQ(ac_sql.ColumnString(4), "");
+  EXPECT_EQ(ac_sql.ColumnDouble(5), 0.0);
+  EXPECT_EQ(ac_sql.ColumnDouble(6), 0.0);
 }
 
 TEST_F(PublisherInfoDatabaseTest, DeleteActivityInfo) {

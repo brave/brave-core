@@ -19,7 +19,6 @@
 #include "base/memory/memory_pressure_listener.h"
 #include "base/sequence_checker.h"
 #include "bat/ledger/mojom_structs.h"
-#include "brave/components/brave_rewards/browser/contribution_info.h"
 #include "brave/components/brave_rewards/browser/database/database_contribution_info.h"
 #include "brave/components/brave_rewards/browser/database/database_contribution_queue.h"
 #include "brave/components/brave_rewards/browser/database/database_promotion.h"
@@ -46,8 +45,7 @@ class PublisherInfoDatabase {
     db_.set_error_callback(error_callback);
   }
 
-  bool InsertOrUpdateContributionInfo(
-      const brave_rewards::ContributionInfo& info);
+  bool InsertOrUpdateContributionInfo(ledger::ContributionInfoPtr info);
 
   void GetOneTimeTips(
       ledger::PublisherInfoList* list,
@@ -192,6 +190,8 @@ class PublisherInfoDatabase {
   bool MigrateV8toV9();
 
   bool MigrateV9toV10();
+
+  bool MigrateV10toV11();
 
   bool Migrate(int version);
 

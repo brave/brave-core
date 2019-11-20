@@ -370,7 +370,7 @@ void RewardsNotificationServiceImpl::OnReconcileComplete(
     RewardsService* rewards_service,
     unsigned int result,
     const std::string& viewing_id,
-    const std::string& probi,
+    const double amount,
     const int32_t type) {
   auto converted_result = static_cast<ledger::Result>(result);
   auto converted_type = static_cast<ledger::RewardsType>(type);
@@ -383,7 +383,7 @@ void RewardsNotificationServiceImpl::OnReconcileComplete(
     args.push_back(viewing_id);
     args.push_back(std::to_string(result));
     args.push_back(std::to_string(type));
-    args.push_back(probi);
+    args.push_back(std::to_string(amount));
 
     AddNotification(
         RewardsNotificationService::REWARDS_NOTIFICATION_AUTO_CONTRIBUTE,

@@ -196,11 +196,12 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service,
                               std::string publisher_id,
                               bool excluded) override;
-  void OnReconcileComplete(brave_rewards::RewardsService* rewards_service,
-                           unsigned int result,
-                           const std::string& viewing_id,
-                           const std::string& probi,
-                           const int32_t type) override;
+  void OnReconcileComplete(
+      brave_rewards::RewardsService* rewards_service,
+      unsigned int result,
+      const std::string& viewing_id,
+      const double amount,
+      const int32_t type) override;
   void OnPendingContributionSaved(
       brave_rewards::RewardsService* rewards_service,
       int result) override;
@@ -221,11 +222,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   void OnRecurringTipRemoved(brave_rewards::RewardsService* rewards_service,
                              bool success) override;
-
-  void OnContributionSaved(
-    brave_rewards::RewardsService* rewards_service,
-    bool success,
-    int type) override;
 
   void OnPendingContributionRemoved(
       brave_rewards::RewardsService* rewards_service,
@@ -992,7 +988,7 @@ void RewardsDOMHandler::OnReconcileComplete(
     brave_rewards::RewardsService* rewards_service,
     unsigned int result,
     const std::string& viewing_id,
-    const std::string& probi,
+    const double amount,
     const int32_t type) {
   if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue complete;
@@ -1445,22 +1441,6 @@ void RewardsDOMHandler::OnRecurringTipRemoved(
 
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards.recurringTipRemoved", base::Value(success));
-}
-
-void RewardsDOMHandler::OnContributionSaved(
-    brave_rewards::RewardsService* rewards_service,
-    bool success,
-    int type) {
-  if (!web_ui()->CanCallJavascript()) {
-     return;
-  }
-
-  base::DictionaryValue result;
-  result.SetBoolean("success", success);
-  result.SetInteger("type", type);
-
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards.onContributionSaved", result);
 }
 
 void RewardsDOMHandler::SetInlineTipSetting(const base::ListValue* args) {

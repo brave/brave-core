@@ -246,14 +246,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.getRewardsMainEnabled', [])
       break
     }
-    case types.ON_CONTRIBUTION_SAVED: {
-      const properties = action.payload.properties
-      console.log(properties)
-      if (properties && properties.success && properties.type === 8) {
-        chrome.send('brave_rewards.getOneTimeTips')
-      }
-      break
-    }
     case types.ON_INLINE_TIP_SETTINGS_CHANGE: {
       if (!state.inlineTip) {
         state.inlineTip = {
