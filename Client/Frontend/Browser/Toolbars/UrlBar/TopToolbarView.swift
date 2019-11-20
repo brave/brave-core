@@ -406,10 +406,11 @@ class TopToolbarView: UIView, ToolbarProtocol {
                 self.setLocation(locationText, search: search)
             }
         } else {
-            // Copy the current URL to the editable text field, then activate it.
-            self.setLocation(locationText, search: search)
             DispatchQueue.main.async {
                 self.locationTextField?.becomeFirstResponder()
+                // Need to set location again so text could be immediately selected.
+                self.setLocation(locationText, search: search)
+                self.locationTextField?.selectAll(nil)
             }
         }
     }
