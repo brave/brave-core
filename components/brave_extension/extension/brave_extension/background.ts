@@ -57,15 +57,14 @@ function createPlaylist (url: string) {
     audioMediaFiles = makeMediaItems(ytdItems[1])
   }
 
-  const arr = Array.from({ length: 20 })
-  const randomNumber = arr[Math.floor((Math.random() * arr.length))]
+  const randomNumber = Math.floor((Math.random() * 10000))
 
   console.log('audio', audioMediaFiles)
   console.log('video', videoMediaFiles)
 
   chrome.bravePlaylists.createPlaylist({
     thumbnailUrl: '',
-    playlistName: `Untitled-${randomNumber}`,
+    playlistName: `CustomPlaylistName-${randomNumber}`,
     videoMediaFiles,
     audioMediaFiles
   })

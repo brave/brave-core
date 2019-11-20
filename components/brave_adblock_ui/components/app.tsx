@@ -31,7 +31,6 @@ export class AdblockPage extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = { playlists: [] }
-    this.getPlaylist()
   }
 
   get actions () {
@@ -44,15 +43,36 @@ export class AdblockPage extends React.Component<Props, State> {
     })
   }
 
-  componentDidUpdate(prevProps: any, prevState: any) {
-    chrome.bravePlaylists.onPlaylistsChanged.addListener((changeType, id) => {
-      if (
-        JSON.stringify(prevState.playlists) !==
-        JSON.stringify(this.state.playlists)
-      ) {
-        this.getPlaylist()
+  componentDidMount () {
+    chrome.bravePlaylists.isInitialized((init) => {
+      if (init) {
+        return
       }
+      chrome.bravePlaylists.onInitialized.addListener(() => {
+        // fetch the playist as soon as it can.
+        // todo: cezaraugusto this should be stored in a persistent state
+        this.getPlaylist()
+      })
     })
+
+    chrome.bravePlaylists.onPlaylistsChanged.addListener((changeType, id) => {
+      // cc mark. this shows the change type and the id of the changed video
+      // as expected, but does not update the playlist `partialReady` attr
+      // audio/video are not often updated, even with the file available on disk
+      console.log('changeType:', changeType, 'id', id)
+      chrome.bravePlaylists.getPlaylist(id, (something: any) => {
+        console.time('changeType')
+        console.log('something', something)
+        console.timeEnd('changeType')
+      })
+      this.getPlaylist()
+    })
+  }
+
+  componentDidUpdate (prevProps: any, prevState: any) {
+    if (JSON.stringify(prevState.playlists) !== JSON.stringify(this.state.playlists)) {
+      this.getPlaylist()
+    }
   }
 
   getPlaylistHeader = (): Cell[] => {
@@ -70,7 +90,6 @@ export class AdblockPage extends React.Component<Props, State> {
     }
 
     return playlist.map((video: any, index: any): any => {
-      console.log('some cool video data', video)
       const lazyButtonStyle: any = {
         alignItems: 'center',
         WebkitAppearance: 'none',
@@ -121,6 +140,16 @@ export class AdblockPage extends React.Component<Props, State> {
   render () {
     const { actions, adblockData } = this.props
     const { playlists } = this.state
+
+    // chrome.bravePlaylists.onPlaylistsChanged.addListener((changeType, id) => {
+    //   // cc mark. this shows the change type and the id of the changed video
+    //   // as expected, but does not update the playlist `partialReady` atrr
+    //   // and no audio/video/thumbnail is shown
+    //   console.log('changeType:', changeType, 'id', id)
+    //   chrome.bravePlaylists.getPlaylist(id, (something: any) => {
+    //     console.log('something', something)
+    //   })
+    // })
 
     return (
       <div id='adblockPage'>
