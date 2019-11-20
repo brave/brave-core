@@ -1116,7 +1116,20 @@ class BrowserViewController: UIViewController {
     }
 
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        guard let webView = object as? WKWebView, let tab = tabManager[webView], let kp = keyPath, let path = KVOConstants(rawValue: kp) else {
+        
+        guard let webView = object as? WKWebView else {
+            log.error("An object of type: \(String(describing: object)) is being observed instead of a WKWebView")
+            return  //False alarm.. the source MUST be a web view.
+        }
+        
+        //WebView is a zombie and somehow still has an observer attached to it
+        guard let tab = tabManager[webView] else {
+            log.error("WebView: \(webView) has been removed from TabManager but still has attached observers")
+            return
+        }
+        
+        //Must handle ALL keypaths
+        guard let kp = keyPath, let path = KVOConstants(rawValue: kp) else {
             assertionFailure("Unhandled KVO key: \(keyPath ?? "nil")")
             return
         }
@@ -3321,6 +3334,11 @@ extension BrowserViewController: PreferencesObserver {
             if isPrivate { //When PBO is turned ON, we remove all tabs and configurations.
                 tabManager.removeAll()
                 tabManager.resetConfiguration()
+                
+                // Clear ALL data when going from normal mode to private
+                // The other way around is handled in `removeTab`
+                let clearables: [Clearable] = [HistoryClearable(), CookiesAndCacheClearable()]
+                _ = ClearPrivateDataTableViewController.clearPrivateData(clearables)
             }
         case Preferences.General.alwaysRequestDesktopSite.key:
             tabManager.reset()
