@@ -229,10 +229,7 @@ def get_grd_message_string_tags(grd_file_path):
     for element in elements:
         grd_base_path = os.path.dirname(grd_file_path)
         grd_part_filename = element.get('file')
-        if grd_part_filename in ['chromeos_strings.grdp',
-                                 'media_router_resources.grdp',
-                                 'os_settings_strings.grdp',
-                                 'xr_consent_ui_strings.grdp']:
+        if grd_part_filename in ['chromeos_strings.grdp']:
             continue
         grd_part_path = os.path.join(grd_base_path, grd_part_filename)
         part_output_elements = get_grd_message_string_tags(grd_part_path)
