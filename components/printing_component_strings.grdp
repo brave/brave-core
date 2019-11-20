@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+  <if expr="enable_print_preview">
+    <if expr="is_win">
+      <message name="IDS_PRINT_PREVIEW_FRIENDLY_WIN_NETWORK_PRINTER_NAME" desc="Friendly name for a printer with a given name on a given server. This uses the same format as the Windows print dialog.">
+        <ph name="PRINTER_NAME">$1<ex>HP LaserJet</ex></ph> on <ph name="SERVER_NAME">$2<ex>printserver</ex></ph>
+      </message>
+    </if>
+  </if>
+
+  <message name="IDS_PDF_COMPOSITOR_SERVICE_DISPLAY_NAME" desc="The display name (in the system task manager, etc) of the service process used for PDF compositing.">
+    PDF Compositor Service
+  </message>
+</grit-part>
