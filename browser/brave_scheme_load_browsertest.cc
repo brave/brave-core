@@ -39,7 +39,7 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override {
     if (change.type() == TabStripModelChange::kInserted) {
-      WaitForLoadStop(active_contents());
+      quit_closure_.Run();
     }
   }
 
@@ -69,23 +69,29 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
 
     browser()->tab_strip_model()->AddObserver(this);
 
+    base::RunLoop run_loop;
+    quit_closure_ = run_loop.QuitClosure();
+
     // Load url to private window.
     NavigateParams params(
         private_browser, GURL(url), ui::PAGE_TRANSITION_TYPED);
     Navigate(&params);
+
+    run_loop.Run();
 
     browser()->tab_strip_model()->RemoveObserver(this);
 
     EXPECT_STREQ(url.c_str(),
                  base::UTF16ToUTF8(browser()->location_bar_model()
                       ->GetFormattedFullURL()).c_str());
-    // EXPECT_EQ(url, active_contents()->GetVisibleURL());
     EXPECT_EQ(2, browser()->tab_strip_model()->count());
     // Private window stays as initial state.
     EXPECT_EQ("about:blank",
               private_model->GetActiveWebContents()->GetVisibleURL().spec());
     EXPECT_EQ(1, private_browser->tab_strip_model()->count());
   }
+
+  base::RepeatingClosure quit_closure_;
 };
 
 // Test whether brave page is not loaded from different host by window.open().
