@@ -20,6 +20,7 @@
 #include "base/sequence_checker.h"
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/contribution_info.h"
+#include "brave/components/brave_rewards/browser/database/database_contribution_info.h"
 #include "brave/components/brave_rewards/browser/database/database_contribution_queue.h"
 #include "brave/components/brave_rewards/browser/database/database_promotion.h"
 #include "brave/components/brave_rewards/browser/database/database_server_publisher_info.h"
@@ -46,11 +47,13 @@ class PublisherInfoDatabase {
     db_.set_error_callback(error_callback);
   }
 
-  bool InsertContributionInfo(const brave_rewards::ContributionInfo& info);
+  bool InsertOrUpdateContributionInfo(
+      const brave_rewards::ContributionInfo& info);
 
-  void GetOneTimeTips(ledger::PublisherInfoList* list,
-                      ledger::ActivityMonth month,
-                      int year);
+  void GetOneTimeTips(
+      ledger::PublisherInfoList* list,
+      const ledger::ActivityMonth month,
+      const int year);
 
   bool InsertOrUpdatePublisherInfo(const ledger::PublisherInfo& info);
 
@@ -146,10 +149,6 @@ class PublisherInfoDatabase {
   std::string GetSchema();
 
  private:
-  bool CreateContributionInfoTable();
-
-  bool CreateContributionInfoIndex();
-
   bool CreatePublisherInfoTable();
 
   bool CreateActivityInfoTable();
@@ -186,11 +185,6 @@ class PublisherInfoDatabase {
   bool MigrateV7toV8();
 
   bool MigrateToV8ContributionInfoTable();
-
-  bool CreateV8ContributionInfoTable();
-
-  bool CreateV8ContributionInfoIndex();
-
   bool MigrateToV8PendingContributionsTable();
 
   bool CreateV8PendingContributionsTable();
@@ -216,6 +210,7 @@ class PublisherInfoDatabase {
   std::unique_ptr<DatabaseContributionQueue> contribution_queue_;
   std::unique_ptr<DatabasePromotion> promotion_;
   std::unique_ptr<DatabaseUnblindedToken> unblinded_token_;
+  std::unique_ptr<DatabaseContributionInfo> contribution_info_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   DISALLOW_COPY_AND_ASSIGN(PublisherInfoDatabase);
