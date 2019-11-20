@@ -1,0 +1,12 @@
+diff --git a/components/omnibox/browser/omnibox_client.h b/components/omnibox/browser/omnibox_client.h
+index 19029a0ab31dfa75dc2ae05c894e2508cdd3d5b2..dae74e3248acebf4d73aede1e64050bf59637446 100644
+--- a/components/omnibox/browser/omnibox_client.h
++++ b/components/omnibox/browser/omnibox_client.h
+@@ -170,6 +170,7 @@ class OmniboxClient {
+ 
+   // Presents prompt to update Chrome.
+   virtual void OpenUpdateChromeDialog() {}
++  BRAVE_OMNIBOX_CLIENT_H
+ };
+ 
+ #endif  // COMPONENTS_OMNIBOX_BROWSER_OMNIBOX_CLIENT_H_

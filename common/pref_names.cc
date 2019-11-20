@@ -73,6 +73,8 @@ const char kBraveWalletEnabled[] = "brave.wallet.enabled";
 const char kAlwaysShowBookmarkBarOnNTP[] =
     "brave.always_show_bookmark_bar_on_ntp";
 const char kRemoteDebuggingEnabled[] = "brave.remote_debugging_enabled";
+const char kAutocompleteEnabledInAddressBar[] =
+    "brave.autocomplete_enabled_in_address_bar";
 
 #if defined(OS_ANDROID)
 const char kDesktopModeEnabled[] = "brave.desktop_mode_enabled";
