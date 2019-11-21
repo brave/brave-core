@@ -16,4 +16,10 @@
         android:title="@string/bottom_toolbar_enable"
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off" />
+
+    <Preference
+        android:fragment="org.chromium.chrome.browser.preferences.themes.BraveThemePreferences"
+        android:key="ui_theme"
+        android:title="@string/prefs_themes" />
+
 </android.support.v7.preference.PreferenceScreen>
