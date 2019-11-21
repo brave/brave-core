@@ -23,38 +23,4 @@ bool IsBraveProtectedUrl(const GURL& url) {
 
 }  // namespace extensions
 
-namespace {
-
-const char kCannotScriptWalletLinking[] =
-    "Pages part of the wallet linking flow cannot be scripted without user "
-    "interaction.";
-
-bool IsBraveRestrictedUrl(const GURL& document_url,
-    const extensions::ExtensionId& extension_id,
-    extensions::Manifest::Location location,
-    std::string* error) {
-
-  if (extensions::PermissionsData::CanExecuteScriptEverywhere(extension_id,
-                                                              location)) {
-    return false;
-  }
-
-  if (extensions::IsBraveProtectedUrl(document_url)) {
-    if (error) {
-      *error = kCannotScriptWalletLinking;
-    }
-    return true;
-  }
-
-  return false;
-}
-
-}  // namespace
-
-// Disable some content scripts until users click on the extension icon
-#define BRAVE_CAN_RUN_ON_PAGE \
-if (IsBraveRestrictedUrl(document_url, extension_id_, location_, error)) { \
-  return PageAccess::kWithheld;\
-}
-
 #include "../../../../../extensions/common/permissions/permissions_data.cc"
