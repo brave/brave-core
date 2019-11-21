@@ -135,8 +135,8 @@ class BrowserViewController: UIViewController {
     
     let safeBrowsing: SafeBrowsing?
     
-    let rewards: BraveRewards?
-    let rewardsObserver: LedgerObserver?
+    let rewards: BraveRewards
+    let rewardsObserver: LedgerObserver
     private var notificationsHandler: AdsNotificationHandler?
     private(set) var publisher: PublisherInfo?
 
@@ -148,10 +148,6 @@ class BrowserViewController: UIViewController {
         self.crashedLastSession = crashedLastSession
         self.safeBrowsing = safeBrowsingManager
         
-        #if NO_REWARDS
-        rewards = nil
-        rewardsObserver = nil
-        #else
         RewardsHelper.configureRewardsLogs()
         let configuration: BraveRewardsConfiguration
         if AppConstants.BuildChannel.isPublic {
@@ -173,9 +169,8 @@ class BrowserViewController: UIViewController {
             }
         }
         rewards = BraveRewards(configuration: configuration)
-        rewardsObserver = LedgerObserver(ledger: rewards!.ledger)
+        rewardsObserver = LedgerObserver(ledger: rewards.ledger)
         deviceCheckClient = DeviceCheckClient(environment: configuration.environment)
-        #endif
 
         super.init(nibName: nil, bundle: nil)
         didInit()
@@ -236,26 +231,24 @@ class BrowserViewController: UIViewController {
         
         setupRewardsObservers()
         
-        if let rewards = rewards, !Preferences.Rewards.checkedPreviousCycleForAdsViewing.value {
+        if !Preferences.Rewards.checkedPreviousCycleForAdsViewing.value {
             Preferences.Rewards.checkedPreviousCycleForAdsViewing.value = true
             if rewards.ads.hasViewedAdsInPreviousCycle() {
                 MonthlyAdsGrantReminder.schedule(for: .previous)
             }
         }
         
-        if let rewards = rewards {
-            notificationsHandler = AdsNotificationHandler(ads: rewards.ads, presentingController: self)
-            notificationsHandler?.canShowNotifications = { [weak self] in
-                guard let self = self else { return false }
-                return !PrivateBrowsingManager.shared.isPrivateBrowsing &&
-                    !self.topToolbar.inOverlayMode
-            }
-            notificationsHandler?.actionOccured = { [weak self] notification, action in
-                guard let self = self else { return }
-                if action == .opened {
-                    let request = URLRequest(url: notification.url)
-                    self.tabManager.addTabAndSelect(request, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
-                }
+        notificationsHandler = AdsNotificationHandler(ads: rewards.ads, presentingController: self)
+        notificationsHandler?.canShowNotifications = { [weak self] in
+            guard let self = self else { return false }
+            return !PrivateBrowsingManager.shared.isPrivateBrowsing &&
+                !self.topToolbar.inOverlayMode
+        }
+        notificationsHandler?.actionOccured = { [weak self] notification, action in
+            guard let self = self else { return }
+            if action == .opened {
+                let request = URLRequest(url: notification.url)
+                self.tabManager.addTabAndSelect(request, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
             }
         }
     }
@@ -263,24 +256,23 @@ class BrowserViewController: UIViewController {
     let deviceCheckClient: DeviceCheckClient?
     
     private func setupRewardsObservers() {
-        guard let rewards = rewards, let observer = rewardsObserver else { return }
-        rewards.ledger.add(observer)
-        observer.walletInitalized = { [weak self] result in
-            guard let self = self, let rewards = self.rewards, let client = self.deviceCheckClient else { return }
+        rewards.ledger.add(rewardsObserver)
+        rewardsObserver.walletInitalized = { [weak self] result in
+            guard let self = self, let client = self.deviceCheckClient else { return }
             if result == .walletCreated {
-                rewards.ledger.setupDeviceCheckEnrollment(client) { }
+                self.rewards.ledger.setupDeviceCheckEnrollment(client) { }
             }
         }
-        observer.fetchedPanelPublisher = { [weak self] publisher, tabId in
+        rewardsObserver.fetchedPanelPublisher = { [weak self] publisher, tabId in
             guard let self = self, self.isViewLoaded, let tab = self.tabManager.selectedTab, tab.rewardsId == tabId else { return }
             self.publisher = publisher
             self.updateRewardsButtonState()
         }
-        observer.notificationAdded = { [weak self] _ in
+        rewardsObserver.notificationAdded = { [weak self] _ in
             guard let self = self, self.isViewLoaded else { return }
             self.updateRewardsButtonState()
         }
-        observer.notificationsRemoved = { [weak self] _ in
+        rewardsObserver.notificationsRemoved = { [weak self] _ in
             guard let self = self, self.isViewLoaded else { return }
             self.updateRewardsButtonState()
         }
@@ -288,7 +280,7 @@ class BrowserViewController: UIViewController {
     
     // Display first ad when the user gets back to this controller if they havent seen one before
     func displayMyFirstAdIfAvailable() {
-        guard let rewards = rewards, rewards.ledger.isEnabled && rewards.ads.isEnabled else { return }
+        if !rewards.ledger.isEnabled || !rewards.ads.isEnabled { return }
         if Preferences.Rewards.myFirstAdShown.value { return }
         // Check if ads are eligible
         if BraveAds.isCurrentLocaleSupported() {
@@ -651,8 +643,8 @@ class BrowserViewController: UIViewController {
         clipboardBarDisplayHandler?.checkIfShouldDisplayBar()
         favoritesViewController?.updateDuckDuckGoVisibility()
         
-        if let tabId = tabManager.selectedTab?.rewardsId, rewards?.ledger.selectedTabId == 0 {
-            rewards?.ledger.selectedTabId = tabId
+        if let tabId = tabManager.selectedTab?.rewardsId, rewards.ledger.selectedTabId == 0 {
+            rewards.ledger.selectedTabId = tabId
         }
     }
     
@@ -738,7 +730,7 @@ class BrowserViewController: UIViewController {
         }
         
         // The user either skipped or didn't complete onboarding.
-        let isRewardsEnabled = rewards?.ledger.isEnabled == true
+        let isRewardsEnabled = rewards.ledger.isEnabled
         
         // 1. Existing user.
         // 2. The user skipped onboarding before.
@@ -753,7 +745,7 @@ class BrowserViewController: UIViewController {
             if daysUntilNextPrompt <= Date() {
                 guard let onboarding = OnboardingNavigationController(
                     profile: profile,
-                    onboardingType: isRewardsEnabled ? .existingUserRewardsOn : .existingUserRewardsOff,
+                    onboardingType: rewards.ledger.isEnabled ? .existingUserRewardsOn : .existingUserRewardsOff,
                     rewards: rewards,
                     theme: Theme.of(tabManager.selectedTab)
                     ) else { return }
@@ -868,7 +860,7 @@ class BrowserViewController: UIViewController {
         screenshotHelper.viewIsVisible = false
         super.viewWillDisappear(animated)
         
-        rewards?.ledger.selectedTabId = 0
+        rewards.ledger.selectedTabId = 0
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -1278,7 +1270,7 @@ class BrowserViewController: UIViewController {
         guard let tab = tabManager.selectedTab else { return }
         if let url = tab.url, !url.isLocal {
             // Notify Rewards of new page load.
-            if let rewards = rewards, let rewardsURL = rewardsXHRLoadURL,
+            if let rewardsURL = rewardsXHRLoadURL,
                 url.host == rewardsURL.host,
                 url.isMediaSiteURL {
                 tabManager.selectedTab?.reportPageNaviagtion(to: rewards)
@@ -2126,10 +2118,8 @@ extension BrowserViewController: TabDelegate {
         
         tab.addContentScript(WindowRenderHelperScript(tab: tab), name: WindowRenderHelperScript.name())
         
-        if let rewards = self.rewards {
-            tab.addContentScript(RewardsReporting(rewards: rewards, tab: tab), name: RewardsReporting.name())
-            tab.addContentScript(AdsMediaReporting(rewards: rewards, tab: tab), name: AdsMediaReporting.name())
-        }
+        tab.addContentScript(RewardsReporting(rewards: rewards, tab: tab), name: RewardsReporting.name())
+        tab.addContentScript(AdsMediaReporting(rewards: rewards, tab: tab), name: AdsMediaReporting.name())
     }
 
     func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
@@ -2324,7 +2314,7 @@ extension BrowserViewController: TabManagerDelegate {
         }
         updateTabsBarVisibility()
         
-        rewards?.reportTabClosed(tabId: tab.rewardsId)
+        rewards.reportTabClosed(tabId: tab.rewardsId)
     }
 
     func tabManagerDidAddTabs(_ tabManager: TabManager) {

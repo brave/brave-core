@@ -384,7 +384,7 @@ extension BrowserViewController: WKNavigationDelegate {
         tab.url = webView.url
         self.scrollController.resetZoomState()
 
-        rewards?.reportTabNavigation(tabId: tab.rewardsId)
+        rewards.reportTabNavigation(tabId: tab.rewardsId)
         
         if tabManager.selectedTab === tab {
             updateUIForReaderHomeStateForTab(tab)
@@ -394,19 +394,17 @@ extension BrowserViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if let tab = tabManager[webView] {
             navigateInTab(tab: tab, to: navigation)
-            if let rewards = rewards {
-                if let url = tab.url, tab.shouldClassifyLoadsForAds {
-                    let faviconURL = URL(string: tab.displayFavicon?.url ?? "")
-                    rewards.reportTabUpdated(
-                        Int(tab.rewardsId),
-                        url: url,
-                        faviconURL: faviconURL,
-                        isSelected: tabManager.selectedTab == tab,
-                        isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing
-                    )
-                }
-                tab.reportPageLoad(to: rewards)
+            if let url = tab.url, tab.shouldClassifyLoadsForAds {
+                let faviconURL = URL(string: tab.displayFavicon?.url ?? "")
+                rewards.reportTabUpdated(
+                    Int(tab.rewardsId),
+                    url: url,
+                    faviconURL: faviconURL,
+                    isSelected: tabManager.selectedTab == tab,
+                    isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing
+                )
             }
+            tab.reportPageLoad(to: rewards)
             if webView.url?.isLocal == false {
                 // Reset should classify
                 tab.shouldClassifyLoadsForAds = true
