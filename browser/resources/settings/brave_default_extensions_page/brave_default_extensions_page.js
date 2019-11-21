@@ -16,19 +16,18 @@ Polymer({
     WebUIListenerBehavior,
   ],
 
+  properties: {
+    showRestartToast_: Boolean,
+    torEnabled_: Boolean,
+    disableTorOption_: Boolean,
+  },
+
   /** @private {?settings.BraveDefaultExtensionsBrowserProxy} */
   browserProxy_: null,
-  showRestartToast: false,
 
   /** @override */
   created: function() {
     this.browserProxy_ = settings.BraveDefaultExtensionsBrowserProxyImpl.getInstance();
-    this.browserProxy_.getRestartNeeded().then(show => {
-      this.showRestartToast = show;
-    });
-    this.addWebUIListener('brave-needs-restart-changed', (needsRestart) => {
-      this.showRestartToast = needsRestart
-    })
   },
 
   /** @override */
@@ -39,6 +38,24 @@ Polymer({
     this.onIPFSCompanionEnabledChange_ = this.onIPFSCompanionEnabledChange_.bind(this)
     this.openExtensionsPage_ = this.openExtensionsPage_.bind(this)
     this.restartBrowser_ = this.restartBrowser_.bind(this)
+    this.onTorEnabledChange_ = this.onTorEnabledChange_.bind(this)
+
+    this.addWebUIListener('brave-needs-restart-changed', (needsRestart) => {
+      this.showRestartToast_ = needsRestart
+    })
+    this.addWebUIListener('tor-enabled-changed', (enabled) => {
+      this.torEnabled_ = enabled
+    })
+
+    this.browserProxy_.getRestartNeeded().then(show => {
+      this.showRestartToast_ = show;
+    });
+    this.browserProxy_.getTorEnabled().then(enabled => {
+      this.torEnabled_ = enabled
+    })
+    this.browserProxy_.getEnableTorOption().then(enableTorOption => {
+      this.disableTorOption_ = !enableTorOption
+    })
   },
 
   onWebTorrentEnabledChange_: function() {
@@ -63,6 +80,10 @@ Polymer({
 
   onMediaRouterEnabledChange_: function() {
     this.browserProxy_.setMediaRouterEnabled(this.$.mediaRouterEnabled.checked);
+  },
+
+  onTorEnabledChange_: function() {
+    this.browserProxy_.setTorEnabled(this.$.torEnabled.checked);
   },
 
   openExtensionsPage_: function() {

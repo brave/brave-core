@@ -65,6 +65,16 @@ bool TorProfileService::IsTorDisabled() {
   return g_browser_process->local_state()->GetBoolean(prefs::kTorDisabled);
 }
 
+bool TorProfileService::IsTorDisabledManaged() {
+  return g_browser_process->local_state()->
+      FindPreference(prefs::kTorDisabled)->IsManaged();
+}
+
+// static
+void TorProfileService::SetTorDisabled(bool disabled) {
+  g_browser_process->local_state()->SetBoolean(prefs::kTorDisabled, disabled);
+}
+
 std::string TorProfileService::GetTorProxyURI() {
   return g_browser_process->local_state()->GetString(prefs::kTorProxyString);
 }

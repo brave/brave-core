@@ -101,6 +101,14 @@
         sub-label="$i18n{mediaRouterEnabledDesc}"
         on-settings-boolean-control-change="onMediaRouterEnabledChange_">
     </settings-toggle-button>
+    <settings-toggle-button id="torEnabled"
+        pref=""
+        checked="[[torEnabled_]]"
+        label="$i18n{torEnabledLabel}"
+        sub-label="$i18n{torEnabledDesc}"
+        disabled="[[disableTorOption_]]"
+        on-settings-boolean-control-change="onTorEnabledChange_">
+    </settings-toggle-button>
     <div class="settings-row" id="manageExtensionsRow">
       <cr-link-row icon-class="icon-external"
         label="$i18n{manageExtensionsLabel}" on-click="openExtensionsPage_">
@@ -113,7 +121,7 @@
         on-click="openWebStoreUrl_" external>
       </cr-link-row>
     </div>
-  <template is="dom-if" if="{{ showRestartToast }}">
+  <template is="dom-if" if="{{ showRestartToast_ }}">
     <div id="needsRestart">
         <div class="flex-container">
           <div class="flex restart-notice" jstcache="0">$i18n{restartNotice}</div>

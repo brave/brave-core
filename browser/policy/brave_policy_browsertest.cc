@@ -5,6 +5,7 @@
 
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -59,6 +60,8 @@ class TorDisabledPolicyBrowserTest : public BravePolicyTest {
 };
 
 IN_PROC_BROWSER_TEST_F(TorDisabledPolicyBrowserTest, TorDisabledPrefValueTest) {
+  // When policy is set, explicit setting doesn't change its pref value.
+  g_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled, false);
   EXPECT_TRUE(tor::TorProfileService::IsTorDisabled());
 }
 
@@ -79,6 +82,8 @@ class TorEnabledPolicyBrowserTest : public BravePolicyTest {
 };
 
 IN_PROC_BROWSER_TEST_F(TorEnabledPolicyBrowserTest, TorDisabledPrefValueTest) {
+  // When policy is set, explicit setting doesn't change its pref value.
+  g_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled, true);
   EXPECT_FALSE(tor::TorProfileService::IsTorDisabled());
 }
 
@@ -86,6 +91,10 @@ IN_PROC_BROWSER_TEST_F(TorEnabledPolicyBrowserTest, TorDisabledPrefValueTest) {
 IN_PROC_BROWSER_TEST_F(NoTorPolicyBrowserTest,
                        DefaultTorDisabledPrefValueTest) {
   EXPECT_FALSE(tor::TorProfileService::IsTorDisabled());
+
+  // If policy is not set, explicit setting change its pref value.
+  g_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled, true);
+  EXPECT_TRUE(tor::TorProfileService::IsTorDisabled());
 }
 #endif  // OS_WIN
 #endif  // ENABLE_TOR
