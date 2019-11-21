@@ -33,7 +33,8 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
         return #imageLiteral(resourceName: "defaultFavicon")
     }()
 
-    static var colors: [String: UIColor] = [:] //An in-Memory data store that stores background colors domains. Stored using url.baseDomain.
+    // An in-Memory data store that stores background colors domains. Stored using url.baseDomain.
+    static var colors: [String: UIColor] = ["brave.com": UIColor.Photon.White100]
 
     // Sites can be accessed via their baseDomain.
     static var defaultIcons: [String: (color: UIColor, url: String)] = {
