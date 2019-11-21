@@ -9,28 +9,6 @@
 
 namespace extensions {
 
-const char k1PasswordId[] = "aomjjhallfgjeglblehebfpbcfeobpgk";
-const char k1PasswordXId[] = "aeblfdkhhhdcdjpifhhbdiojplfjncoa";
-const char kBitWardenId[] = "nngceckbapebfimnlniiiahkandclblb";
-const char kDashlaneId[] = "fdjamakpfbbddfjaooikfcpapjohcfmg";
-const char kEnPassId[] = "kmcfomidfpdkfieipokbalgegidffkal";
-const char kKeePassXCId[] = "oboonakemofpalcgghocfoadofidjkkk";
-const char kKeeperId[] = "bfogiafebfohielmmehodmfbbebbbpei";
-const char kLastPassId[] = "hdokiejnpimakedhajhdlcegeplioahd";
-const char kPainFreePasswordsId[] = "hplhaekjfmjfnfdllkpjpeenlbclffgh";
-const char kRoboFormId[] = "pnlccmojcmeohlpggmfnbbiapkmbliob";
-const char kSafeInCloudId[] = "lchdigjbcmdgcfeijpfkpadacbijihjl";
-
-bool IsKnownPasswordManagerExtension(
-    const extensions::ExtensionId& extension_id) {
-  return (extension_id == k1PasswordId) || (extension_id == k1PasswordXId) ||
-         (extension_id == kBitWardenId) || (extension_id == kDashlaneId) ||
-         (extension_id == kEnPassId) || (extension_id == kKeePassXCId) ||
-         (extension_id == kKeeperId) || (extension_id == kLastPassId) ||
-         (extension_id == kPainFreePasswordsId) ||
-         (extension_id == kRoboFormId) || (extension_id == kSafeInCloudId);
-}
-
 bool IsBraveProtectedUrl(const GURL& url) {
   const url::Origin origin = url::Origin::Create(url);
   const base::StringPiece path = url.path_piece();
@@ -58,10 +36,6 @@ bool IsBraveRestrictedUrl(const GURL& document_url,
 
   if (extensions::PermissionsData::CanExecuteScriptEverywhere(extension_id,
                                                               location)) {
-    return false;
-  }
-
-  if (extensions::IsKnownPasswordManagerExtension(extension_id)) {
     return false;
   }
 
