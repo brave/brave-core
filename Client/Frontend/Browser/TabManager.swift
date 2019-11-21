@@ -252,8 +252,9 @@ class TabManager: NSObject {
         }
         
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-            let rewards = appDelegate.browserViewController.rewards,
             let newSelectedTab = tab, let previousTab = previous, let newTabUrl = newSelectedTab.url, let previousTabUrl = previousTab.url else { return }
+        
+        let rewards = appDelegate.browserViewController.rewards
         
         if !PrivateBrowsingManager.shared.isPrivateBrowsing {
             let previousFaviconURL = URL(string: previousTab.displayFavicon?.url ?? "")
