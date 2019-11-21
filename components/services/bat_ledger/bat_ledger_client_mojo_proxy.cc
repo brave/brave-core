@@ -365,7 +365,7 @@ void OnSaveRecurringTip(const ledger::SaveRecurringTipCallback& callback,
 }
 
 void BatLedgerClientMojoProxy::SaveRecurringTip(
-    ledger::ContributionInfoPtr info,
+    ledger::RecurringTipPtr info,
     ledger::SaveRecurringTipCallback callback) {
   if (!Connected()) {
     callback(ledger::Result::LEDGER_ERROR);

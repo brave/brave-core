@@ -146,7 +146,7 @@ class LEDGER_EXPORT LedgerClient {
       const ledger::RewardsType type) = 0;
 
   virtual void SaveRecurringTip(
-      ledger::ContributionInfoPtr info,
+      ledger::RecurringTipPtr info,
       ledger::SaveRecurringTipCallback callback) = 0;
 
   virtual void GetRecurringTips(

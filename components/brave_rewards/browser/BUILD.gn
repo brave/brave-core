@@ -39,8 +39,6 @@ source_set("browser") {
     "contribution_info.h",
     "reconcile_info.cc",
     "reconcile_info.h",
-    "recurring_donation.cc",
-    "recurring_donation.h",
     "rewards_internals_info.cc",
     "rewards_internals_info.h",
     "balance.cc",

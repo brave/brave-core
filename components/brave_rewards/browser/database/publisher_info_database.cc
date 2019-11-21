@@ -16,7 +16,6 @@
 #include "sql/statement.h"
 #include "sql/transaction.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
-#include "brave/components/brave_rewards/browser/recurring_donation.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/database/publisher_info_database.h"
 #include "brave/components/brave_rewards/browser/database/database_util.h"
@@ -792,13 +791,13 @@ bool PublisherInfoDatabase::CreateRecurringTipsIndex() {
 }
 
 bool PublisherInfoDatabase::InsertOrUpdateRecurringTip(
-    const brave_rewards::RecurringDonation& info) {
+    ledger::RecurringTipPtr info) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
   DCHECK(initialized);
 
-  if (!initialized || info.publisher_key.empty()) {
+  if (!initialized || !info || info->publisher_key.empty()) {
     return false;
   }
 
@@ -808,9 +807,9 @@ bool PublisherInfoDatabase::InsertOrUpdateRecurringTip(
       "(publisher_id, amount, added_date) "
       "VALUES (?, ?, ?)"));
 
-  statement.BindString(0, info.publisher_key);
-  statement.BindDouble(1, info.amount);
-  statement.BindInt64(2, info.added_date);
+  statement.BindString(0, info->publisher_key);
+  statement.BindDouble(1, info->amount);
+  statement.BindInt64(2, info->created_at);
 
   return statement.Run();
 }

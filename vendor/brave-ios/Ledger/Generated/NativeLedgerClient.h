@@ -22,7 +22,7 @@ private:
   void GetOneTimeTips(ledger::PublisherInfoListCallback callback) override;
   void GetPendingContributions(ledger::PendingContributionInfoListCallback callback) override;
   void GetPendingContributionsTotal(ledger::PendingContributionsTotalCallback callback) override;
-  void SaveRecurringTip(ledger::ContributionInfoPtr info, ledger::SaveRecurringTipCallback callback) override;
+  void SaveRecurringTip(ledger::RecurringTipPtr info, ledger::SaveRecurringTipCallback callback) override;
   void GetRecurringTips(ledger::PublisherInfoListCallback callback) override;
   void KillTimer(const uint32_t timer_id) override;
   void LoadActivityInfo(ledger::ActivityInfoFilterPtr filter, ledger::PublisherInfoCallback callback) override;

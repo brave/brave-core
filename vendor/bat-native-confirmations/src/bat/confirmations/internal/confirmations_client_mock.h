@@ -148,7 +148,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const ledger::RewardsType type));
 
   MOCK_METHOD2(SaveRecurringTip, void(
-      ledger::ContributionInfoPtr info,
+      ledger::RecurringTipPtr info,
       ledger::SaveRecurringTipCallback callback));
 
   MOCK_METHOD1(GetRecurringTips, void(

@@ -714,10 +714,11 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
 }
 
 void LedgerImpl::SaveRecurringTip(
-    ledger::ContributionInfoPtr info,
+    ledger::RecurringTipPtr info,
     ledger::SaveRecurringTipCallback callback) {
-  ledger_client_->SaveRecurringTip(std::move(info),
-                                   callback);
+  ledger_client_->SaveRecurringTip(
+      std::move(info),
+      callback);
 }
 
 void LedgerImpl::GetRecurringTips(

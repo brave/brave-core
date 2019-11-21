@@ -590,7 +590,7 @@ class RewardsServiceImpl : public RewardsService,
                             const std::string& publisher_key,
                             const ledger::RewardsType type) override;
   void SaveRecurringTip(
-      ledger::ContributionInfoPtr info,
+      ledger::RecurringTipPtr info,
       ledger::SaveRecurringTipCallback callback) override;
 
   void GetRecurringTips(

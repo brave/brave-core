@@ -2476,15 +2476,6 @@ void RewardsServiceImpl::SaveContributionInfo(const std::string& probi,
                      type));
 }
 
-bool SaveRecurringTipOnFileTaskRunner(
-    const brave_rewards::RecurringDonation info,
-  PublisherInfoDatabase* backend) {
-  if (backend && backend->InsertOrUpdateRecurringTip(info))
-    return true;
-
-  return false;
-}
-
 void RewardsServiceImpl::OnSaveRecurringTipUI(
     SaveRecurringTipCallback callback,
     const ledger::Result result) {
@@ -2501,10 +2492,10 @@ void RewardsServiceImpl::SaveRecurringTipUI(
     const std::string& publisher_key,
     const double amount,
     SaveRecurringTipCallback callback) {
-  ledger::ContributionInfoPtr info = ledger::ContributionInfo::New();
-  info->publisher = publisher_key;
-  info->value = amount;
-  info->date = GetCurrentTimestamp();
+  ledger::RecurringTipPtr info = ledger::RecurringTip::New();
+  info->publisher_key = publisher_key;
+  info->amount = amount;
+  info->created_at = GetCurrentTimestamp();
 
   bat_ledger_->SaveRecurringTip(
       std::move(info),
@@ -2524,24 +2515,28 @@ void RewardsServiceImpl::OnRecurringTipSaved(
                    : ledger::Result::LEDGER_ERROR);
 }
 
+bool SaveRecurringTipOnFileTaskRunner(
+    ledger::RecurringTipPtr info,
+    PublisherInfoDatabase* backend) {
+  if (backend && backend->InsertOrUpdateRecurringTip(std::move(info)))
+    return true;
+
+  return false;
+}
+
 void RewardsServiceImpl::SaveRecurringTip(
-    ledger::ContributionInfoPtr info,
+    ledger::RecurringTipPtr info,
     ledger::SaveRecurringTipCallback callback) {
   if (!info) {
     callback(ledger::Result::NOT_FOUND);
     return;
   }
 
-  brave_rewards::RecurringDonation new_info;
-  new_info.publisher_key = info->publisher;
-  new_info.amount = info->value;
-  new_info.added_date = info->date;
-
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&SaveRecurringTipOnFileTaskRunner,
-                    new_info,
+      base::BindOnce(&SaveRecurringTipOnFileTaskRunner,
+                    std::move(info),
                     publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnRecurringTipSaved,
+      base::BindOnce(&RewardsServiceImpl::OnRecurringTipSaved,
                      AsWeakPtr(),
                      callback));
 }

@@ -146,7 +146,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   void StartMonthlyContribution() override;
 
   void SaveRecurringTip(
-      ledger::ContributionInfoPtr info,
+      ledger::RecurringTipPtr info,
       SaveRecurringTipCallback callback) override;
   void GetRecurringTips(GetRecurringTipsCallback callback) override;
 

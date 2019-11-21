@@ -110,7 +110,7 @@ interface BatLedger {
   GetTransactionHistory() => (string transactions);
   GetRewardsInternalsInfo() => (ledger.mojom.RewardsInternalsInfo info);
 
-  SaveRecurringTip(ledger.mojom.ContributionInfo info) => (ledger.mojom.Result result);
+  SaveRecurringTip(ledger.mojom.RecurringTip info) => (ledger.mojom.Result result);
   GetRecurringTips() => (array<ledger.mojom.PublisherInfo> list);
   GetOneTimeTips() => (array<ledger.mojom.PublisherInfo> list);
 
@@ -179,7 +179,7 @@ interface BatLedgerClient {
                        uint64 window_id);
   FetchFavIcon(string url, string favicon_key) => (bool success,
       string favicon_url);
-  SaveRecurringTip(ledger.mojom.ContributionInfo info) => (ledger.mojom.Result result);
+  SaveRecurringTip(ledger.mojom.RecurringTip info) => (ledger.mojom.Result result);
   GetRecurringTips() => (
       array<ledger.mojom.PublisherInfo> publisher_info_list,
       uint32 next_record);

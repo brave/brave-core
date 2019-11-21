@@ -516,10 +516,10 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)addRecurringTipToPublisherWithId:(NSString *)publisherId amount:(double)amount completion:(void (^)(BOOL success))completion
 {
-  ledger::ContributionInfoPtr info = ledger::ContributionInfo::New();
-  info->publisher = publisherId.UTF8String;
-  info->value = amount;
-  info->date = [[NSDate date] timeIntervalSince1970];
+  ledger::RecurringTipPtr info = ledger::RecurringTip::New();
+  info->publisher_key = publisherId.UTF8String;
+  info->amount = amount;
+  info->created_at = [[NSDate date] timeIntervalSince1970];
   ledger->SaveRecurringTip(std::move(info), ^(ledger::Result result){
     const auto success = (result == ledger::Result::LEDGER_OK);
     if (success) {
@@ -1557,11 +1557,11 @@ BATLedgerBridge(BOOL,
   [self handlePublisherListing:publishers start:0 limit:0 callback:callback];
 }
 
-- (void)saveRecurringTip:(ledger::ContributionInfoPtr)info callback:(ledger::SaveRecurringTipCallback)callback
+- (void)saveRecurringTip:(ledger::RecurringTipPtr)info callback:(ledger::SaveRecurringTipCallback)callback
 {
-  [BATLedgerDatabase insertOrUpdateRecurringTipWithPublisherID:[NSString stringWithUTF8String:info->publisher.c_str()]
-                                                        amount:info->value
-                                                     dateAdded:info->date
+  [BATLedgerDatabase insertOrUpdateRecurringTipWithPublisherID:[NSString stringWithUTF8String:info->publisher_key.c_str()]
+                                                        amount:info->amount
+                                                     dateAdded:info->created_at
                                                     completion:^(BOOL success) {
                                                       if (!success) {
                                                         callback(ledger::Result::LEDGER_ERROR);

@@ -370,3 +370,9 @@ struct ClientInfo {
   Platform platform;
   OperatingSystem os;
 };
+
+struct RecurringTip {
+  string publisher_key;
+  double amount;
+  uint64 created_at;
+};

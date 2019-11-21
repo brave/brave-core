@@ -96,6 +96,9 @@ using PublisherExclude = mojom::PublisherExclude;
 using ReconcileInfo = mojom::ReconcileInfo;
 using ReconcileInfoPtr = mojom::ReconcileInfoPtr;
 
+using RecurringTip = mojom::RecurringTip;
+using RecurringTipPtr = mojom::RecurringTipPtr;
+
 using ReportType = mojom::ReportType;
 
 using Result = mojom::Result;

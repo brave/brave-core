@@ -280,7 +280,7 @@ class LEDGER_EXPORT Ledger {
       ledger::RewardsInternalsInfoCallback callback) = 0;
 
   virtual void SaveRecurringTip(
-      ledger::ContributionInfoPtr info,
+      ledger::RecurringTipPtr info,
       ledger::SaveRecurringTipCallback callback) = 0;
   virtual void GetRecurringTips(ledger::PublisherInfoListCallback callback) = 0;
 

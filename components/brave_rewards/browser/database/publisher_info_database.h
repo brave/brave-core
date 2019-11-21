@@ -26,7 +26,6 @@
 #include "brave/components/brave_rewards/browser/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/browser/database/database_unblinded_token.h"
 #include "brave/components/brave_rewards/browser/pending_contribution.h"
-#include "brave/components/brave_rewards/browser/recurring_donation.h"
 #include "build/build_config.h"
 #include "sql/database.h"
 #include "sql/init_status.h"
@@ -82,8 +81,7 @@ class PublisherInfoDatabase {
   ledger::PublisherInfoPtr GetMediaPublisherInfo(
       const std::string& media_key);
 
-  bool InsertOrUpdateRecurringTip(
-      const brave_rewards::RecurringDonation& info);
+  bool InsertOrUpdateRecurringTip(ledger::RecurringTipPtr info);
 
   void GetRecurringTips(ledger::PublisherInfoList* list);
 

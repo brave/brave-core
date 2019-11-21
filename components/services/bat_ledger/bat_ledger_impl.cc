@@ -557,7 +557,7 @@ void BatLedgerImpl::OnSaveRecurringTip(
 }
 
 void BatLedgerImpl::SaveRecurringTip(
-    ledger::ContributionInfoPtr info,
+    ledger::RecurringTipPtr info,
     SaveRecurringTipCallback callback) {
   // deleted in OnSaveRecurringTip
   auto* holder = new CallbackHolder<SaveRecurringTipCallback>(
