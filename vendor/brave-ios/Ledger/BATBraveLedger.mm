@@ -380,6 +380,10 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
                         publisherBlob:(nullable NSString *)publisherBlob
                                 tabId:(uint64_t)tabId
 {
+  if (!URL.absoluteString) {
+    return;
+  }
+  
   GURL parsedUrl(URL.absoluteString.UTF8String);
 
   if (!parsedUrl.is_valid()) {
@@ -399,7 +403,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   visitData->path = parsedUrl.PathForRequest();
   visitData->url = origin.spec();
   
-  if (faviconURL) {
+  if (faviconURL.absoluteString) {
     visitData->favicon_url = std::string(faviconURL.absoluteString.UTF8String);
   }
 
@@ -413,13 +417,18 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)deleteActivityInfo:(const std::string &)publisher_key callback:(ledger::DeleteActivityInfoCallback )callback
 {
-  const auto bridgedKey = [NSString stringWithUTF8String:publisher_key.c_str()];
+  if (publisher_key.size() == 0) {
+    // Nothing to delete?
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+  const auto __block bridgedKey = [NSString stringWithUTF8String:publisher_key.c_str()];
   const auto stamp = ledger->GetReconcileStamp();
   [BATLedgerDatabase deleteActivityInfoWithPublisherID:bridgedKey reconcileStamp:stamp completion:^(BOOL success) {
     if (success) {
       for (BATBraveLedgerObserver *observer in [self.observers copy]) {
         if (observer.activityRemoved) {
-          observer.activityRemoved([NSString stringWithUTF8String:publisher_key.c_str()]);
+          observer.activityRemoved(bridgedKey);
         }
       }
     }
