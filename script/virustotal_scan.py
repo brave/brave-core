@@ -2,21 +2,22 @@ import os
 import sys
 import argparse
 import hashlib
+import logging
 
 from time import sleep
 from virustotal_python import Virustotal
 
-API_KEY = os.environ['VT_API_KEY']
+LOGGER = logging.getLogger(__name__)
+
 WAIT_TIME = 60  # seconds
 
 RC_NOT_FOUND = 0
 RC_OK = 1
 
 SCAN_THREATS_FOUND = 255
+SCAN_ERROR = 1
 SCAN_CLEAN = 0
 SCAN_NOT_FOUND = -1
-
-vt = Virustotal(API_KEY)
 
 
 def sha256sum(filename):
@@ -30,6 +31,10 @@ def sha256sum(filename):
 
 
 def parse_response(response):
+    if not response or 'json_resp' not in response.keys():
+        LOGGER.error(f"Error on VT request: {response}")
+        return SCAN_ERROR
+
     rc = response['json_resp']['response_code']
 
     if 'total' in response['json_resp'].keys():
@@ -37,7 +42,7 @@ def parse_response(response):
         positives = response['json_resp']['positives']
         permalink = response['json_resp']['permalink']
         if positives > 0:
-            print(f"Threats detected: {positives}")
+            LOGGER.warn(f"Threats detected: {positives}")
             return SCAN_THREATS_FOUND
         else:
             return SCAN_CLEAN
@@ -46,10 +51,18 @@ def parse_response(response):
 
 def main():
 
-    parser = argparse.ArgumentParser(description="Scan a single file in VirusTotal and waits until report is complete")
+    parser = argparse.ArgumentParser(
+        description="Scan a single file in VirusTotal and waits until report is complete")
     parser.add_argument('file', help='File to be scanned')
 
     args = parser.parse_args()
+
+    if 'VT_API_KEY' not in os.environ:
+        LOGGER.error('VT_API_KEY environment variable not set')
+        sys.exit(SCAN_ERROR)
+
+    vt_api_key = os.environ['VT_API_KEY']
+    vt = Virustotal(vt_api_key)
 
     # Hash file
     file_hash = sha256sum(args.file)
