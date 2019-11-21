@@ -1,5 +1,5 @@
 diff --git a/build/config/android/rules.gni b/build/config/android/rules.gni
-index c99d7820ca022184168be26ffa6897e292b17c20..477ea611ddc43a359960ca65f4b3d8303128d3fb 100644
+index c99d7820ca022184168be26ffa6897e292b17c20..79fcf4c510ea0bd9136c4552b6eda2ad3334479c 100644
 --- a/build/config/android/rules.gni
 +++ b/build/config/android/rules.gni
 @@ -553,6 +553,7 @@ if (enable_java_templates) {
@@ -7,6 +7,14 @@ index c99d7820ca022184168be26ffa6897e292b17c20..477ea611ddc43a359960ca65f4b3d830
    template("java_cpp_enum") {
      set_sources_assignment_filter([])
 +    foreach(source, invoker.sources) { foreach(filter, brave_java_cpp_enum_filter) { if(source == filter) { invoker.sources -= [filter] }}}
+     action_with_pydeps(target_name) {
+       forward_variables_from(invoker,
+                              [
+@@ -675,6 +676,7 @@ if (enable_java_templates) {
+   #     output = "$target_gen_dir/AndroidManifest.xml"
+   #   }
+   template("jinja_template") {
++    if (defined(invoker.includes)) { invoker.includes += brave_android_manifest_includes } else { invoker.includes = brave_android_manifest_includes }
      action_with_pydeps(target_name) {
        forward_variables_from(invoker,
                               [
