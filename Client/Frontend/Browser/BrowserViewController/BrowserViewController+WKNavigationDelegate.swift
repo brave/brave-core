@@ -22,6 +22,29 @@ extension WKNavigationAction {
     }
 }
 
+extension URL {
+    /// Obtain a schemeless absolute string
+    fileprivate var schemelessAbsoluteString: String {
+        guard let scheme = self.scheme else { return absoluteString }
+        return absoluteString.replacingOccurrences(of: "\(scheme)://", with: "")
+    }
+}
+
+extension BrowserViewController {
+    fileprivate func handleExternalURL(_ url: URL, openedURLCompletionHandler: ((Bool) -> Void)? = nil) {
+        let alertController = UIAlertController(
+            title: Strings.OpenExternalAppURLTitle,
+            message: String(format: Strings.OpenExternalAppURLMessage, url.relativeString),
+            preferredStyle: .alert
+        )
+        alertController.addAction(UIAlertAction(title: Strings.OpenExternalAppURLDontAllow, style: .cancel))
+        alertController.addAction(UIAlertAction(title: Strings.OpenExternalAppURLAllow, style: .default) { result in
+            UIApplication.shared.open(url, options: [:], completionHandler: openedURLCompletionHandler)
+        })
+        self.present(alertController, animated: true)
+    }
+}
+
 extension BrowserViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         if tabManager.selectedTab?.webView !== webView {
@@ -116,7 +139,7 @@ extension BrowserViewController: WKNavigationDelegate {
         // First special case are some schemes that are about Calling. We prompt the user to confirm this action. This
         // gives us the exact same behaviour as Safari.
         if url.scheme == "tel" || url.scheme == "facetime" || url.scheme == "facetime-audio" {
-            UIApplication.shared.open(url, options: [:])
+            handleExternalURL(url)
             decisionHandler(.cancel)
             return
         }
@@ -126,25 +149,20 @@ extension BrowserViewController: WKNavigationDelegate {
         // iOS will always say yes. TODO Is this the same as isWhitelisted?
 
         if isAppleMapsURL(url) {
-            UIApplication.shared.open(url, options: [:])
+            handleExternalURL(url)
             decisionHandler(.cancel)
             return
         }
 
-        if let tab = tabManager.selectedTab, isStoreURL(url) {
+        if isStoreURL(url) {
+            handleExternalURL(url)
             decisionHandler(.cancel)
-
-            let alreadyShowingSnackbarOnThisTab = tab.bars.count > 0
-            if !alreadyShowingSnackbarOnThisTab {
-                TimerSnackBar.showAppStoreConfirmationBar(forTab: tab, appStoreURL: url)
-            }
-
             return
         }
 
         // Handles custom mailto URL schemes.
         if url.scheme == "mailto" {
-            UIApplication.shared.open(url, options: [:])
+            handleExternalURL(url)
             decisionHandler(.cancel)
             return
         }
@@ -225,8 +243,8 @@ extension BrowserViewController: WKNavigationDelegate {
 
         // Ignore JS navigated links, the intention is to match Safari and native WKWebView behaviour.
         if navigationAction.navigationType == .linkActivated {
-            UIApplication.shared.open(url, options: [:]) { openedURL in
-                if !openedURL {
+            handleExternalURL(url) { didOpenURL in
+                if !didOpenURL {
                     let alert = UIAlertController(title: Strings.UnableToOpenURLErrorTitle, message: Strings.UnableToOpenURLError, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
