@@ -85,7 +85,8 @@ Polymer({
     return enabled != this.browserProxy_.wasPushMessagingEnabledAtStartup();
   },
 
-  restartBrowser_: function() {
+  restartBrowser_: function(e) {
+    e.stopPropagation();
     window.open("chrome://restart", "_self");
   },
 
