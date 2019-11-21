@@ -68,7 +68,8 @@ void Wallet::GetWalletProperties(
 
   if (payment_id.empty() || passphrase.empty()) {
     braveledger_bat_helper::WALLET_PROPERTIES_ST properties;
-    ledger_->OnWalletProperties(ledger::Result::CORRUPTED_WALLET, properties);
+    callback(ledger::Result::CORRUPTED_WALLET,
+             WalletPropertiesToWalletInfo(properties));
     return;
   }
 
@@ -109,7 +110,8 @@ void Wallet::WalletPropertiesCallback(
   braveledger_bat_helper::WALLET_PROPERTIES_ST properties;
   ledger_->LogResponse(__func__, response_status_code, response, headers);
   if (response_status_code != net::HTTP_OK) {
-    ledger_->OnWalletProperties(ledger::Result::LEDGER_ERROR, properties);
+    callback(ledger::Result::LEDGER_ERROR,
+             WalletPropertiesToWalletInfo(properties));
     return;
   }
 
