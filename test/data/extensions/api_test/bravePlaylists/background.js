@@ -83,12 +83,12 @@ function createPlaylistAndWait(thumbnail_url, video_url, audio_url, expected_cha
   chrome.bravePlaylists.onInitialized.addListener(function(init) {
     if (!init) { chrome.test.fail(); }
     if (video_url) {
-      video_media_files = [{url:video_url, title:'test'}];
+      video_media_files = [{url:video_url, title:'test', thumb:''}];
     } else {
       video_media_files = [];
     }
     if (audio_url) {
-      audio_media_files = [{url:audio_url, title:'test'}];
+      audio_media_files = [{url:audio_url, title:'test', thumb:''}];
     } else {
       audio_media_files = [];
     }

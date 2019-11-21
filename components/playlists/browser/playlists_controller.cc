@@ -212,13 +212,15 @@ bool PlaylistsController::Init(const base::FilePath& base_dir) {
   base_dir_ = base_dir;
   db_controller_.reset(
       new PlaylistsDBController(base_dir.Append(kDatabaseDirName)));
+  // TODO(pilgrim) dynamically set file extensions based on format
+  // (may require changes to youtubedown parser)
   video_media_file_controller_.reset(new PlaylistsMediaFileController(
       this, context_, FILE_PATH_LITERAL("video_source_files"),
-      FILE_PATH_LITERAL("video_file"), kPlaylistsVideoMediaFilePathKey,
+      FILE_PATH_LITERAL("video_file.mp4"), kPlaylistsVideoMediaFilePathKey,
       kPlaylistsCreateParamsVideoMediaFilesPathKey));
   audio_media_file_controller_.reset(new PlaylistsMediaFileController(
       this, context_, FILE_PATH_LITERAL("audio_source_files"),
-      FILE_PATH_LITERAL("audio_file"), kPlaylistsAudioMediaFilePathKey,
+      FILE_PATH_LITERAL("audio_file.m4a"), kPlaylistsAudioMediaFilePathKey,
       kPlaylistsCreateParamsAudioMediaFilesPathKey));
 
   return base::PostTaskAndReplyWithResult(
