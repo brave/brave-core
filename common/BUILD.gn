@@ -18,6 +18,13 @@ source_set("channel_info") {
   }
 }
 
+source_set("network_constants") {
+  sources = [
+    "network_constants.cc",
+    "network_constants.h",
+  ]
+}
+
 source_set("pref_names") {
   sources = [
     "pref_names.cc",
@@ -51,8 +58,6 @@ source_set("common") {
     "importer/brave_referral.h",
     "importer/imported_browser_window.cc",
     "importer/imported_browser_window.h",
-    "network_constants.cc",
-    "network_constants.h",
     "resource_bundle_helper.cc",
     "resource_bundle_helper.h",
     "translate_network_constants.cc",
@@ -91,6 +96,7 @@ source_set("common") {
   }
 
   deps = [
+    ":network_constants",
     ":pref_names",
     ":shield_exceptions",
     ":switches",
