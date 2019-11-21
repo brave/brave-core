@@ -17,6 +17,7 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.ChromePreferenceManager;
 import org.chromium.chrome.browser.preferences.ChromeSwitchPreference;
+import org.chromium.chrome.browser.util.FeatureUtilities;
 import org.chromium.ui.base.DeviceFormFactor;
 
 public class AppearancePreferences
@@ -61,7 +62,7 @@ public class AppearancePreferences
                     ContextUtils.getApplicationContext());
             ((ChromeSwitchPreference) enableBottomToolbar)
                     .setChecked(!isTablet
-                            && ChromePreferenceManager.getInstance().isBottomToolbarEnabled());
+                            && FeatureUtilities.isBottomToolbarEnabled());
         }
 
         Preference hideBraveRewardsIconPref = findPreference(PREF_HIDE_BRAVE_REWARDS_ICON);
@@ -77,7 +78,7 @@ public class AppearancePreferences
         String key = preference.getKey();
         if (ChromePreferenceManager.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY.equals(key)) {
             SharedPreferences prefs = ContextUtils.getAppSharedPreferences();
-            Boolean originalStatus = ChromePreferenceManager.getInstance().isBottomToolbarEnabled();
+            Boolean originalStatus = FeatureUtilities.isBottomToolbarEnabled();
             prefs.edit()
                     .putBoolean(ChromePreferenceManager.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
                             !originalStatus)
