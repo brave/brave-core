@@ -146,6 +146,10 @@
                     "title": {
                       "type": "string",
                       "description": "Title for this media file"
+                    },
+                    "thumb": {
+                      "type": "string",
+                      "description": "Thumbnail for this media file"
                     }
                   }
                 }
@@ -163,6 +167,10 @@
                     "title": {
                       "type": "string",
                       "description": "Title for this media file"
+                    },
+                    "thumb": {
+                      "type": "string",
+                      "description": "Thumbnail for this media file"
                     }
                   }
                 }

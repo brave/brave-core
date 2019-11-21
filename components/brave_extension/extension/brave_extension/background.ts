@@ -57,31 +57,29 @@ function createPlaylist (url: string) {
     audioMediaFiles = makeMediaItems(ytdItems[1])
   }
 
-  const randomNumber = Math.floor((Math.random() * 10000))
-
-  console.log('audio', audioMediaFiles)
-  console.log('video', videoMediaFiles)
+  const thumbnailUrl = audioMediaFiles[0].thumb || videoMediaFiles[0].thumb
+  const playlistName = getCleanPlaylistName(audioMediaFiles[0].title) || getCleanPlaylistName(videoMediaFiles[0].title)
 
   chrome.bravePlaylists.createPlaylist({
-    thumbnailUrl: '',
-    playlistName: `CustomPlaylistName-${randomNumber}`,
+    thumbnailUrl,
+    playlistName,
     videoMediaFiles,
     audioMediaFiles
   })
+}
+
+function getCleanPlaylistName (fileName: string) {
+  return fileName && fileName.replace(/\[.*$/,'')
 }
 
 function makeMediaItems (item: chrome.bravePlaylists.YTDMediaItem) {
   let mediaFiles: chrome.bravePlaylists.CreateParamsMediaItem[]
   if (typeof item.url === 'string') {
     // Video is all in one file, but we'll pretend it's an array of 1 segment
-    mediaFiles = [{ url: item.url, title: item.file }]
+    mediaFiles = [{ url: item.url, title: item.file, thumb: item.thumb }]
   } else {
     // Video is split into segments, which we will concatenate later
-    const urls: string[] = item.url
-    mediaFiles = urls.map(
-      segment => {
-        return { url: segment, title: item.file }
-      })
+    mediaFiles = item.url.map(segment => ({ url: segment, title: item.file, thumb: item.thumb }))
   }
   return mediaFiles
 }

@@ -44,16 +44,7 @@ export class AdblockPage extends React.Component<Props, State> {
   }
 
   componentDidMount () {
-    chrome.bravePlaylists.isInitialized((init) => {
-      if (init) {
-        return
-      }
-      chrome.bravePlaylists.onInitialized.addListener(() => {
-        // fetch the playist as soon as it can.
-        // todo: cezaraugusto this should be stored in a persistent state
-        this.getPlaylist()
-      })
-    })
+    this.getPlaylist()
 
     chrome.bravePlaylists.onPlaylistsChanged.addListener((changeType, id) => {
       // cc mark. this shows the change type and the id of the changed video
@@ -84,41 +75,56 @@ export class AdblockPage extends React.Component<Props, State> {
     ]
   }
 
+  get lazyButtonStyle () {
+    const lazyButtonStyle: any = {
+      alignItems: 'center',
+      WebkitAppearance: 'none',
+      width: '50px',
+      height: '50px',
+      display: 'flex',
+      borderRadius: '4px'
+    }
+    return lazyButtonStyle
+  }
+
   getPlaylistRows = (playlist?: any): Row[] | undefined => {
     if (playlist == null) {
       return
     }
 
-    return playlist.map((video: any, index: any): any => {
-      const lazyButtonStyle: any = {
-        alignItems: 'center',
-        WebkitAppearance: 'none',
-        width: '50px',
-        height: '50px',
-        display: 'flex'
-      }
-
+    return playlist.map((item: any, index: any): any => {
+      console.log('video file', item.videoMediaFilePath)
+      console.log('audio file', item.audioMediaFilePath)
       const cell: Row = {
         content: [
-          { content: (<span>{index}</span>) },
+          { content: (<div style={{ textAlign: 'center' }}>{index}</div>) },
           { content: (
             <div>
-              <video
-                src={video.videoMediaFilePath}
-                controls={true}
-                muted={true}
-                width={400}
-                height={400}
-              />
-              <audio
-                controls={true}
-                src={video.audioMediaFilePath}
-              />
-              <h3>{video.titles[0]}</h3>
+              {
+                item.audioMediaFilePath && item.videoMediaFilePath
+                  ? (
+                    <>
+                      <video
+                        controls={true}
+                        muted={true}
+                        width={640}
+                        height={320}
+                        poster={item.thumbnailUrl}
+                      >
+                        <source src={item.videoMediaFilePath} type='video/mp4' />
+                      </video>
+                      <audio controls={true}>
+                        <source src={item.audioMediaFilePath} type='audio/mp4' />
+                      </audio>
+                    </>
+                  )
+                  : <h2>Video is being downloaded. It will show here once available</h2>
+              }
+              <h3>{item.playlistName}</h3>
             </div>
           ) },
-          { content: (<span>{video.partialReady ? 'Completed' : 'In progress'}</span>) },
-          { content: (<button style={lazyButtonStyle} onClick={this.onClickRemoveVideo}><CloseCircleOIcon /></button>) }
+          { content: (<span>{item.audioMediaFilePath && item.videoMediaFilePath ? 'Completed' : 'In progress'}</span>) },
+          { content: (<button style={this.lazyButtonStyle} onClick={this.onClickRemoveVideo}><CloseCircleOIcon /></button>) }
         ]
       }
       return cell
@@ -153,8 +159,18 @@ export class AdblockPage extends React.Component<Props, State> {
 
     return (
       <div id='adblockPage'>
-        <div style={{ minHeight: '600px' }}>
-          <button>Delete all playlists</button>
+        <div style={{ minHeight: '600px', width: '1200px' }}>
+          <button
+            style={
+              Object.assign(
+                {},
+                this.lazyButtonStyle,
+                { width: 'fit-content', fontSize: '16px' }
+              )
+            }
+          >
+            Delete all playlists
+          </button>
           <Table header={this.getPlaylistHeader()} rows={this.getPlaylistRows(playlists)}>
             YOUR PLAYLIST IS NOW EMPTY
           </Table>
