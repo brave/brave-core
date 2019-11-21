@@ -413,13 +413,18 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)deleteActivityInfo:(const std::string &)publisher_key callback:(ledger::DeleteActivityInfoCallback )callback
 {
-  const auto bridgedKey = [NSString stringWithUTF8String:publisher_key.c_str()];
+  if (publisher_key.size() == 0) {
+    // Nothing to delete?
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+  const auto __block bridgedKey = [NSString stringWithUTF8String:publisher_key.c_str()];
   const auto stamp = ledger->GetReconcileStamp();
   [BATLedgerDatabase deleteActivityInfoWithPublisherID:bridgedKey reconcileStamp:stamp completion:^(BOOL success) {
     if (success) {
       for (BATBraveLedgerObserver *observer in [self.observers copy]) {
         if (observer.activityRemoved) {
-          observer.activityRemoved([NSString stringWithUTF8String:publisher_key.c_str()]);
+          observer.activityRemoved(bridgedKey);
         }
       }
     }
