@@ -57,7 +57,7 @@ function createPlaylist (url: string) {
     audioMediaFiles = makeMediaItems(ytdItems[1])
   }
 
-  const thumbnailUrl = audioMediaFiles[0].thumb || videoMediaFiles[0].thumb
+  const thumbnailUrl = audioMediaFiles && audioMediaFiles[0].thumb || videoMediaFiles && videoMediaFiles[0].thumb
   const playlistName = getCleanPlaylistName(audioMediaFiles[0].title) || getCleanPlaylistName(videoMediaFiles[0].title)
 
   chrome.bravePlaylists.createPlaylist({
