@@ -44,11 +44,11 @@ const donationAmounts = [
 ]
 
 const defaultGrant = {
+  amount: 2.5,
+  expiresAt: 1574451334789,
+  type: 1,
+  status: 0,
   promotionId: 'test',
-  altcurrency: 'none',
-  probi: '',
-  expiryTime: 0,
-  captcha: '',
   hint: '',
   finishTitle: 'It\'s your lucky day!',
   finishText: 'Your token grant is on its way.',
@@ -87,19 +87,19 @@ storiesOf('Rewards/Concepts/Desktop', module)
     const walletProps = {
       grants: object('Claimed grants', [
         {
-          tokens: '8.0',
-          expireDate: '7/15/2018',
-          type: 'ugp'
+          amount: 2.5,
+          expiresAt: '1574451334789',
+          type: 1
         },
         {
-          tokens: '10.0',
-          expireDate: '9/10/2018',
-          type: 'ugp'
+          amount: 5.0,
+          expiresAt: '1574451334789',
+          type: 1
         },
         {
-          tokens: '10.0',
-          expireDate: '10/10/2018',
-          type: 'ads'
+          amount: 7.5,
+          expiresAt: '1574451334789',
+          type: 1
         }
       ]),
       content,
@@ -326,22 +326,19 @@ storiesOf('Rewards/Concepts/Desktop', module)
           showSecActions={false}
           grants={object('Grants', [
             {
-              tokens: '8.0',
-              expireDate: '7/15/2018',
-              type: 'ugp',
-              tokenText: 'Free Token Grant'
+              amount: 2.5,
+              expiresAt: '1574451334789',
+              type: 1
             },
             {
-              tokens: '10.0',
-              expireDate: '9/10/2018',
-              type: 'ugp',
-              tokenText: 'Free Token Grant'
+              amount: 5.0,
+              expiresAt: '1574451334789',
+              type: 1
             },
             {
-              tokens: '10.0',
-              expireDate: '10/10/2018',
-              type: 'ads',
-              tokenText: 'Your Brave Ads Token Grant'
+              amount: 7.5,
+              expiresAt: '1574451334789',
+              type: 1
             }
           ])}
         >
@@ -418,7 +415,7 @@ storiesOf('Rewards/Concepts/Desktop', module)
       store.set({ grant: newGrant })
     }
 
-    const onSolution = (x: number, y: number) => {
+    const onSolution = (promotionId: string, x: number, y: number) => {
       const expiryTime = 99
       const newGrant = {
         ...store.state.grant,
@@ -438,10 +435,6 @@ storiesOf('Rewards/Concepts/Desktop', module)
 
     const onVerifyClick = () => console.log('onVerifyClick')
     const onDisconnectClick = () => console.log('onDisconnectClick')
-
-    const convertProbiToFixed = (probi: string, places: number = 1) => {
-      return '0.0'
-    }
 
     return (
       <div style={{ position: 'relative' }}>
@@ -470,19 +463,19 @@ storiesOf('Rewards/Concepts/Desktop', module)
           showSecActions={false}
           grants={object('Grants', [
             {
-              tokens: '8.0',
-              expireDate: '7/15/2018',
-              type: 'ugp'
+              amount: 2.5,
+              expiresAt: '1574451334789',
+              type: 1
             },
             {
-              tokens: '10.0',
-              expireDate: '9/10/2018',
-              type: 'ugp'
+              amount: 5.0,
+              expiresAt: '1574451334789',
+              type: 1
             },
             {
-              tokens: '10.0',
-              expireDate: '10/10/2018',
-              type: 'ads'
+              amount: 7.5,
+              expiresAt: '1574451334789',
+              type: 1
             }
           ])}
           grant={store.state.grant}
@@ -490,7 +483,6 @@ storiesOf('Rewards/Concepts/Desktop', module)
           onNotificationClick={onFetchCaptcha}
           onSolution={onSolution}
           onFinish={onFinish}
-          convertProbiToFixed={convertProbiToFixed}
           walletState={select('wallet status', {
             unverified: 'unverified',
             verified: 'verified',

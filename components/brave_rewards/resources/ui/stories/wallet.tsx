@@ -72,19 +72,19 @@ storiesOf('Rewards/Wallet/Desktop', module)
         ]}
         grants={showGrant ? [
           {
-            tokens: '8.0',
-            expireDate: '7/15/2018',
-            type: 'ugp'
+            amount: 2.5,
+            expiresAt: '1574451334789',
+            type: 1
           },
           {
-            tokens: '10.0',
-            expireDate: '9/10/2018',
-            type: 'ugp'
+            amount: 5.0,
+            expiresAt: '1574451334789',
+            type: 1
           },
           {
-            tokens: '10.0',
-            expireDate: '10/10/2018',
-            type: 'ads'
+            amount: 7.5,
+            expiresAt: '1574451334789',
+            type: 1
           }
         ] : []}
         alert={showAlert ? alert : undefined}
