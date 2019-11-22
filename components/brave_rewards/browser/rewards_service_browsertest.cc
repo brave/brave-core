@@ -13,6 +13,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
 #include "base/memory/weak_ptr.h"
+#include "base/test/bind_test_util.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/request/request_util.h"
@@ -730,9 +731,24 @@ class BraveRewardsBrowserTest
 
   content::WebContents* OpenRewardsPopup() const {
     // Construct an observer to wait for the popup to load
-    content::WindowedNotificationObserver popup_observer(
-        content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
-        content::NotificationService::AllSources());
+    content::WebContents* popup_contents = nullptr;
+    auto check_load_is_rewards_panel =
+        [&](const content::NotificationSource& source,
+            const content::NotificationDetails&) -> bool {
+          auto web_contents_source =
+              static_cast<const content::Source<content::WebContents>&>(source);
+          popup_contents = web_contents_source.ptr();
+
+          // Check that this notification is for the Rewards panel and not, say,
+          // the extension background page.
+          std::string url = popup_contents->GetLastCommittedURL().spec();
+          std::string rewards_panel_url = std::string("chrome-extension://") +
+              brave_rewards_extension_id + "/brave_rewards_panel.html";
+          return url == rewards_panel_url;
+        };
+     content::WindowedNotificationObserver popup_observer(
+         content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
+         base::BindLambdaForTesting(check_load_is_rewards_panel));
 
     // Ask the popup to open
     std::string error;
@@ -744,14 +760,9 @@ class BraveRewardsBrowserTest
 
     // Wait for the popup to load
     popup_observer.Wait();
+    WaitForSelector(popup_contents, "#panel-slider");
 
-    // Retrieve the notification source
-    const auto& source =
-        static_cast<const content::Source<content::WebContents>&>(
-            popup_observer.source());
-
-    WaitForSelector(source.ptr(), "#panel-slider");
-    return source.ptr();
+    return popup_contents;
   }
 
   void GetTestDataDir(base::FilePath* test_data_dir) {
@@ -883,6 +894,24 @@ class BraveRewardsBrowserTest
       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
       content::ISOLATED_WORLD_ID_CONTENT_END);
     ASSERT_TRUE(jsResult.ExtractBool());
+  }
+
+  void EnableRewardsViaCode() {
+    base::RunLoop run_loop;
+    bool wallet_created = false;
+    rewards_service_->CreateWallet(
+        base::BindLambdaForTesting([&](int32_t result) {
+          wallet_created =
+              (result == static_cast<int32_t>(ledger::Result::WALLET_CREATED));
+          run_loop.Quit();
+        }));
+
+    run_loop.Run();
+
+    ads_service_->SetEnabled(
+        wallet_created && ads_service_->IsSupportedLocale());
+    ASSERT_TRUE(wallet_created);
+    ASSERT_TRUE(IsRewardsEnabled());
   }
 
   brave_rewards::RewardsServiceImpl* rewards_service() {
@@ -1929,7 +1958,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   rewards_service_->AddObserver(this);
 
   // Enable Rewards
-  EnableRewards();
+  EnableRewardsViaCode();
 
   // Navigate to a verified site in a new tab
   const std::string publisher = "duckduckgo.com";
@@ -2188,7 +2217,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 // Brave tip icon is injected when visiting Twitter
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TwitterTipsInjectedOnTwitter) {
   // Enable Rewards
-  EnableRewards();
+  EnableRewardsViaCode();
 
   // Navigate to Twitter in a new tab
   GURL url = https_server()->GetURL("twitter.com", "/twitter");
@@ -2218,7 +2247,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        TwitterTipsInjectedOnOldTwitter) {
   // Enable Rewards
-  EnableRewards();
+  EnableRewardsViaCode();
 
   // Navigate to Twitter in a new tab
   GURL url = https_server()->GetURL("twitter.com", "/oldtwitter");
@@ -2248,7 +2277,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        TwitterTipsNotInjectedOnNonTwitter) {
   // Enable Rewards
-  EnableRewards();
+  EnableRewardsViaCode();
 
   // Navigate to a non-Twitter site in a new tab
   GURL url = https_server()->GetURL("brave.com", "/twitter");
@@ -2263,7 +2292,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 // Brave tip icon is injected when visiting Reddit
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RedditTipsInjectedOnReddit) {
   // Enable Rewards
-  EnableRewards();
+  EnableRewardsViaCode();
 
   // Navigate to Reddit in a new tab
   GURL url = https_server()->GetURL("reddit.com", "/reddit");
@@ -2292,7 +2321,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        RedditTipsNotInjectedOnNonReddit) {
   // Enable Rewards
-  EnableRewards();
+  EnableRewardsViaCode();
 
   // Navigate to Reddit in a new tab
   GURL url = https_server()->GetURL("brave.com", "/reddit");
@@ -2307,7 +2336,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 // Brave tip icon is injected when visiting GitHub
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, GitHubTipsInjectedOnGitHub) {
   // Enable Rewards
-  EnableRewards();
+  EnableRewardsViaCode();
 
   // Navigate to GitHub in a new tab
   GURL url = https_server()->GetURL("github.com", "/github");
@@ -2337,7 +2366,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
                        GitHubTipsNotInjectedOnNonGitHub) {
   // Enable Rewards
-  EnableRewards();
+  EnableRewardsViaCode();
 
   // Navigate to GitHub in a new tab
   GURL url = https_server()->GetURL("brave.com", "/github");
@@ -2415,7 +2444,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     InsufficientNotificationForZeroAmountZeroPublishers) {
   rewards_service_->GetNotificationService()->AddObserver(this);
-  EnableRewards();
+  EnableRewardsViaCode();
   CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();
   const brave_rewards::RewardsNotificationService::RewardsNotificationsMap&
@@ -2999,7 +3028,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     PRE_AutoEnableAdsForSupportedLocales) {
-  EnableRewards();
+  EnableRewardsViaCode();
 
   EXPECT_TRUE(IsAdsEnabled());
 }
@@ -3011,7 +3040,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     PRE_DoNotAutoEnableAdsForUnsupportedLocales) {
-  EnableRewards();
+  EnableRewardsViaCode();
 
   EXPECT_FALSE(IsAdsEnabled());
 }
@@ -3023,7 +3052,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     PRE_ShowBraveAdsHaveArrivedNotificationForNewLocale) {
-  EnableRewards();
+  EnableRewardsViaCode();
 
   EXPECT_FALSE(IsAdsEnabled());
 }
@@ -3039,7 +3068,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     PRE_DoNotShowBraveAdsHaveArrivedNotificationForUnsupportedLocale) {
-  EnableRewards();
+  EnableRewardsViaCode();
 
   EXPECT_FALSE(IsAdsEnabled());
 }
