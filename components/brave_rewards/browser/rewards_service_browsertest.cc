@@ -33,6 +33,8 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/browser/locale_helper_mock.h"
 #include "brave/components/brave_ads/browser/notification_helper_mock.h"
+#include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
+#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/chrome_constants.h"
@@ -225,11 +227,11 @@ class BraveRewardsBrowserTest
     loop.RunUntilIdle();
   }
 
-  PrefService* GetPrefs() {
+  PrefService* GetPrefs() const {
     return browser()->profile()->GetPrefs();
   }
 
-  bool IsRewardsEnabled() {
+  bool IsRewardsEnabled() const {
     return GetPrefs()->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled);
   }
 
@@ -276,6 +278,7 @@ class BraveRewardsBrowserTest
                        int* response_status_code,
                        std::string* response,
                        std::map<std::string, std::string>* headers) {
+    request_made_ = true;
     std::vector<std::string> tmp = base::SplitString(url,
                                                      "/",
                                                      base::TRIM_WHITESPACE,
@@ -729,6 +732,29 @@ class BraveRewardsBrowserTest
           base::Unretained(this)));
   }
 
+  void OpenRewardsPopupRewardsEnabled() const {
+    // Ask the popup to open
+    std::string error;
+    bool popup_shown = extensions::BraveActionAPI::ShowActionUI(
+      browser(), brave_rewards_extension_id, nullptr, &error);
+    if (!popup_shown) {
+      LOG(ERROR) << "Could not open rewards popup: " << error;
+    }
+    EXPECT_TRUE(popup_shown);
+  }
+
+  void OpenRewardsPopupRewardsDisabled() const {
+    BrowserView* browser_view =
+      BrowserView::GetBrowserViewForBrowser(browser());
+    BraveLocationBarView* brave_location_bar_view =
+        static_cast<BraveLocationBarView*>(browser_view->GetLocationBarView());
+    ASSERT_NE(brave_location_bar_view, nullptr);
+    auto* brave_actions = brave_location_bar_view->brave_actions_;
+    ASSERT_NE(brave_actions, nullptr);
+
+    brave_actions->OnRewardsStubButtonClicked();
+  }
+
   content::WebContents* OpenRewardsPopup() const {
     // Construct an observer to wait for the popup to load
     content::WebContents* popup_contents = nullptr;
@@ -750,17 +776,15 @@ class BraveRewardsBrowserTest
          content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
          base::BindLambdaForTesting(check_load_is_rewards_panel));
 
-    // Ask the popup to open
-    std::string error;
-    bool popup_shown = extensions::BraveActionAPI::ShowActionUI(
-      browser(), brave_rewards_extension_id, nullptr, &error);
-    if (!popup_shown)
-      LOG(ERROR) << "Could not open rewards popup: " << error;
-    EXPECT_TRUE(popup_shown);
+    if (IsRewardsEnabled()) {
+      OpenRewardsPopupRewardsEnabled();
+    } else {
+      OpenRewardsPopupRewardsDisabled();
+    }
 
     // Wait for the popup to load
     popup_observer.Wait();
-    WaitForSelector(popup_contents, "#panel-slider");
+    WaitForSelector(popup_contents, "[data-test-id='rewards-panel']");
 
     return popup_contents;
   }
@@ -1573,6 +1597,7 @@ class BraveRewardsBrowserTest
 
   bool last_publisher_added_ = false;
   bool alter_publisher_list_ = false;
+  bool request_made_ = false;
   double balance_ = 0;
   double reconciled_tip_total_ = 0;
   double pending_balance_ = 0;
@@ -3085,6 +3110,21 @@ IN_PROC_BROWSER_TEST_F(
   BraveRewardsBrowserTest,
   NewTabPageWidgetEnableRewards) {
   EnableRewards(true);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PanelDontDoRequests) {
+  // Observe the Rewards service
+  rewards_service_->AddObserver(this);
+
+  // Open the Rewards popup
+  content::WebContents *popup_contents = OpenRewardsPopup();
+  ASSERT_TRUE(popup_contents);
+
+  // Make sure that no request was made
+  ASSERT_FALSE(request_made_);
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
 }
 
 struct BraveAdsUpgradePathParamInfo {

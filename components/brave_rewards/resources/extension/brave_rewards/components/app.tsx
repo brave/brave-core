@@ -55,11 +55,14 @@ export class RewardsPanel extends React.Component<Props, State> {
       this.props.actions.onAllNotifications(list)
     })
 
-    const { externalWallet } = this.props.rewardsPanelData
-    utils.getExternalWallet(this.actions, externalWallet)
-
     this.handleGrantNotification()
-    this.getBalance()
+
+    const { externalWallet, walletCreated } = this.props.rewardsPanelData
+
+    if (walletCreated) {
+      utils.getExternalWallet(this.actions, externalWallet)
+      this.getBalance()
+    }
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {
@@ -286,17 +289,19 @@ export class RewardsPanel extends React.Component<Props, State> {
 
     if (!walletCreated || walletCorrupted) {
       return (
-        <PanelWelcome
-          error={walletCreateFailed}
-          creating={walletCreating}
-          variant={'two'}
-          optInAction={this.onCreate}
-          optInErrorAction={this.onCreate}
-          moreLink={this.openRewards}
-          onTOSClick={this.openTOS}
-          onlyAnonWallet={this.state.onlyAnonWallet}
-          onPrivacyClick={this.openPrivacyPolicy}
-        />
+        <div data-test-id={'rewards-panel'}>
+          <PanelWelcome
+            error={walletCreateFailed}
+            creating={walletCreating}
+            variant={'two'}
+            optInAction={this.onCreate}
+            optInErrorAction={this.onCreate}
+            moreLink={this.openRewards}
+            onTOSClick={this.openTOS}
+            onlyAnonWallet={this.state.onlyAnonWallet}
+            onPrivacyClick={this.openPrivacyPolicy}
+          />
+        </div>
       )
     }
 
@@ -308,7 +313,7 @@ export class RewardsPanel extends React.Component<Props, State> {
     }
 
     return (
-      <>
+      <div data-test-id={'rewards-panel'}>
         {
           enabledMain
           ? <Panel
@@ -341,7 +346,7 @@ export class RewardsPanel extends React.Component<Props, State> {
               </WalletWrapper>
             </>
         }
-      </>
+      </div>
     )
   }
 }
