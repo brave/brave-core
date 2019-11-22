@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#define BRAVE_FEATURE_ENTRIES ;
+
 #define SetFeatureEntryEnabled SetFeatureEntryEnabled_ChromiumImpl
 #include "../../../../chrome/browser/about_flags.cc"       // NOLINT
 #include "../../../../components/flags_ui/flags_state.cc"  // NOLINT
