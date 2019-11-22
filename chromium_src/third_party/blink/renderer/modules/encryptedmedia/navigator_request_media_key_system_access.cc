@@ -29,7 +29,8 @@ void MaybeOnWidevineRequest(MediaKeySystemAccessInitializer* initializer,
                             LocalFrame* frame) {
   if (initializer->KeySystem() == "com.widevine.alpha") {
     if (frame->Client()->GetRemoteNavigationAssociatedInterfaces()) {
-      mojo::AssociatedRemote<brave_drm::mojom::blink::BraveDRM> brave_drm_binding;
+      mojo::AssociatedRemote<brave_drm::mojom::blink::BraveDRM>
+          brave_drm_binding;
       frame->Client()->GetRemoteNavigationAssociatedInterfaces()->GetInterface(
           &brave_drm_binding);
       DCHECK(brave_drm_binding.is_bound());
