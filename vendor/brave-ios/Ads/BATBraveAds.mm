@@ -17,6 +17,8 @@
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
 
+#import "base/strings/sys_string_conversions.h"
+
 #define BATClassAdsBridge(__type, __objc_getter, __objc_setter, __cpp_var) \
   + (__type)__objc_getter { return ads::__cpp_var; } \
   + (void)__objc_setter:(__type)newValue { ads::__cpp_var = newValue; }
@@ -295,8 +297,8 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
 - (void)reportLoadedPageWithURL:(NSURL *)url innerText:(NSString *)text
 {
   if (![self isAdsServiceRunning]) { return; }
-  const auto urlString = std::string(url.absoluteString.UTF8String);
-  ads->OnPageLoaded(urlString, std::string(text.UTF8String));
+  const auto urlString = base::SysNSStringToUTF8(url.absoluteString);
+  ads->OnPageLoaded(urlString, base::SysNSStringToUTF8(text));
 }
 
 - (void)reportMediaStartedWithTabId:(NSInteger)tabId
