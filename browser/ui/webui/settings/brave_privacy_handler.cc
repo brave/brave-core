@@ -51,6 +51,18 @@ void BravePrivacyHandler::RegisterMessages() {
                           base::Unretained(this)));
 }
 
+void BravePrivacyHandler::OnJavascriptAllowed() {
+  local_state_change_registrar_.Init(g_browser_process->local_state());
+  local_state_change_registrar_.Add(
+      kRemoteDebuggingEnabled,
+      base::Bind(&BravePrivacyHandler::OnRemoteDebuggingEnabledChanged,
+                 base::Unretained(this)));
+}
+
+void BravePrivacyHandler::OnJavascriptDisallowed() {
+  local_state_change_registrar_.RemoveAll();
+}
+
 // static
 void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
                                           Profile* profile) {
@@ -127,4 +139,13 @@ void BravePrivacyHandler::GetRemoteDebuggingEnabled(
 
   AllowJavascript();
   ResolveJavascriptCallback(args->GetList()[0].Clone(), base::Value(enabled));
+}
+
+void BravePrivacyHandler::OnRemoteDebuggingEnabledChanged() {
+  if (IsJavascriptAllowed()) {
+    PrefService* local_state = g_browser_process->local_state();
+    bool enabled = local_state->GetBoolean(kRemoteDebuggingEnabled);
+
+    FireWebUIListener("remote-debugging-enabled-changed", base::Value(enabled));
+  }
 }

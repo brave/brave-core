@@ -8,6 +8,10 @@
 Polymer({
   is: 'settings-brave-personalization-options',
 
+  behaviors: [
+    WebUIListenerBehavior,
+  ],
+
   properties: {
     webRTCPolicies_: {
       readOnly: true,
@@ -50,6 +54,9 @@ Polymer({
     this.browserProxy_.getRemoteDebuggingEnabled().then(enabled => {
       this.remoteDebuggingEnabled_ = enabled;
     });
+    this.addWebUIListener('remote-debugging-enabled-changed', (enabled) => {
+      this.remoteDebuggingEnabled_ = enabled
+    })
   },
 
   /**
