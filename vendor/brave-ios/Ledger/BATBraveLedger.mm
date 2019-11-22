@@ -26,6 +26,7 @@
 #import "base/time/time.h"
 #import "url/gurl.h"
 #import "net/base/registry_controlled_domains/registry_controlled_domain.h"
+#import "base/strings/sys_string_conversions.h"
 
 #define BLOG(__severity) RewardsLogStream(__FILE__, __LINE__, __severity).stream()
 
@@ -384,7 +385,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
     return;
   }
   
-  GURL parsedUrl(URL.absoluteString.UTF8String);
+  GURL parsedUrl(base::SysNSStringToUTF8(URL.absoluteString));
 
   if (!parsedUrl.is_valid()) {
       return;
@@ -404,12 +405,12 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   visitData->url = origin.spec();
   
   if (faviconURL.absoluteString) {
-    visitData->favicon_url = std::string(faviconURL.absoluteString.UTF8String);
+    visitData->favicon_url = base::SysNSStringToUTF8(faviconURL.absoluteString);
   }
 
   std::string blob = std::string();
   if (publisherBlob) {
-    blob = std::string(publisherBlob.UTF8String);
+    blob = base::SysNSStringToUTF8(publisherBlob);
   }
 
   ledger->GetPublisherActivityFromUrl(tabId, std::move(visitData), blob);
