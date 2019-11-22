@@ -19,6 +19,10 @@
     "message": "Nu kan du tjäna token genom att titta på annonser som respekterar din integritet.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
+  "welcomeDescPoints": {
+    "message": "Nu kan du tjäna poäng genom att titta på annonser som respekterar din integritet.",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
   "welcomeFooterTextOne": {
     "message": "Kolla in vad som har förbättrats",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
@@ -42,6 +46,22 @@
   "grants": {
     "message": "Tilldelningar",
     "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "Info",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Ditt saldo",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT-poäng",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "kan användas i Brave Rewards för att bidra till dina favoriter bland contentskaparna. BAT-poäng kan inte växlas till BAT.",
+    "description": "Text for BAT Point helper message"
   },
   "on": {
     "message": "på",
@@ -128,12 +148,22 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Tilldelning av token",
-    "description": "Title for grant notification"
+    "message": "$currency$ Grants",
+    "description": "Title for grant notification",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "Token"
+      }
+    }
   },
   "tokenGrantClaimed": {
     "message": "Tilldelning av token utnyttjades",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Point Grants Claimed",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Intäkter från annonser",
@@ -180,12 +210,16 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "Du har bidragit med $amount$ BAT",
+    "message": "Du har bidragit med $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
         "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
       }
     }
   },
@@ -261,10 +295,6 @@
     "message": "Medgivandets utgångsdatum",
     "description": "Grant expiry label"
   },
-  "grantAlreadyClaimedText": {
-    "message": "Tyvärr verkar det som att detta medgivande redan har hämtats.",
-    "description": "Description of the error when grant is already claimed."
-  },
   "grantGeneralErrorButton": {
     "message": "OK",
     "description": "Button text for clearing the error."
@@ -276,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "Oj, något gick fel. Försök igen senare.",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "OK",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "Tyvärr verkar det som att detta medgivande redan har gått ut.",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "Detta medgivande är inte längre tillgängligt.",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "Uppdatera status",
@@ -306,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Du har avsatt {{reservedAmount}} BAT till skapare som ännu inte har registrerat sig för att ta emot bidrag. Din webbläsare fortsätter att försöka ge bidrag tills de verifierar sig eller tills 90 dagar har gått.",
+    "message": "Du har tilldelat {{reservedAmount}} {{currency}} till skapare som ännu inte registrerat sig för att ta emot bidrag. Din webbläsare kommer att fortsätta försöka bidra till dess de bekräftats eller till dess 90 dagar gått.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -397,6 +415,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Aktivera annonser",
     "description": "Prompt to turn on Ads via notification"
@@ -452,23 +474,33 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "Din tilldelning av token är på väg.",
-    "description": "Cosmetic text indicating grant funds are on the way"
+    "message": "Your $currency$ grant is on its way.",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
   },
   "grantFinishTokenTitleUGP": {
     "message": "Tilldelning av gratis token",
     "description": "Token title on success screen"
   },
+  "grantFinishPointTitleUGP": {
+    "message": "Free Point Grant",
+    "description": "Point title on success screen"
+  },
   "grantFinishTitleAds": {
-    "message": "Belöningar för Brave-annonser!",
+    "message": "Du har tjänat in en annonsbelöning!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Din belöning från Brave Annonser är på väg.",
+    "message": "Din belöning är på väg till din Brave Rewards-plånbok.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Din tilldelning av token för Brave-annonser",
+    "message": "Din belöningssumma",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -532,5 +564,29 @@
   "set": {
     "message": "Ställ in ...",
     "description": "Button text for setting monthly contribution"
+  },
+  "tokens":  {
+    "message": "token",
+    "description": "Standard tokens text"
+  },
+  "point":  {
+    "message": "Point",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "Token",
+    "description": "BAT Token text"
+  },
+  "points":  {
+    "message": "poäng",
+    "description": "BAT Points text"
+  },
+  "tokenGrants":  {
+    "message": "Tilldelning av token",
+    "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Point Grants",
+    "description": "BAT Points Grant Text"
   }
 }

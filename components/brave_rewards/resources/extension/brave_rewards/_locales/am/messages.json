@@ -19,6 +19,10 @@
     "message": "ግላዊነት የሚያከብሩ ማስታወቅያዎችን በማየቶ ቶክን ማግኘት ይችላሉ፡፡",
     "description": "Entry text for welcome screen in the panel, new user"
   },
+  "welcomeDescPoints": {
+    "message": "You can now earn points for watching privacy-respecting ads.",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
   "welcomeFooterTextOne": {
     "message": "የተሻሻለውን ይመልከቱ",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
@@ -42,6 +46,22 @@
   "grants": {
     "message": "ስጦታ",
     "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "ዝርዝሮች",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "ቀሪ ሂሳብዎ",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "የ BAT ነጥቦች",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "ለተወዳጅ ይዘት ፈጣሪዎችዎ አስተዋጽኦ ለማድረግ Brave Rewards ውስጥ ሊያገለግል ይችላል። የ BAT ነጥቦችን በ BAT መለወጥ አይቻልም።",
+    "description": "Text for BAT Point helper message"
   },
   "on": {
     "message": "በርቷል",
@@ -128,12 +148,22 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "የቶክን ፍቃዶች",
-    "description": "Title for grant notification"
+    "message": "$currency$ Grants",
+    "description": "Title for grant notification",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "Token"
+      }
+    }
   },
   "tokenGrantClaimed": {
     "message": "የቶክን ብድር ተጠይቋል",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Point Grants Claimed",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "ከማስታወቅያ ማትረፍ",
@@ -180,12 +210,16 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "አዋጥተዋል $amount$ BAT",
+    "message": "You've contributed $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
         "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
       }
     }
   },
@@ -261,10 +295,6 @@
     "message": "ድጋፉ የሚያበቃበት ቀን",
     "description": "Grant expiry label"
   },
-  "grantAlreadyClaimedText": {
-    "message": "ይቅርታ፣ ይህ ግራንት በሌለ ሰው ቀድሞ የተያዘ ይመስላል",
-    "description": "Description of the error when grant is already claimed."
-  },
   "grantGeneralErrorButton": {
     "message": "እሺ",
     "description": "Button text for clearing the error."
@@ -276,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "ውይ; የሆነ ችግር አለ፤ እባክዎ እንደገና ይሞክሩ::",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "እሺ",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "ይቅርታ ይህ ስጦታ ጊዜው አልፎበታል::",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "ይህ ስጦታ ከአሁን በኋላ አይገኝም",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "ኩነትን አድስ",
@@ -306,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "{{reservedAmount}} BAT የሚያክል መጠንን መዋጮ ለመቀበል ላልተዘጋጀው ሰው አስቀምጠዋል። አሳሽዎ እነርሱ እስከሚያረጋግጡ ድረስ ለማዋጣት ይሞክራል ወይም 90 ቀናት እስከሚያልፍ ድረስ።",
+    "message": "{{reservedAmount}} {{currency}} የሚያክል መጠንን መዋጮ ለመቀበል ላልተዘጋጀው ሰው አስቀምጠዋል። አሳሽዎ እነርሱ እስከሚያረጋግጡ ድረስ ወይም 90 ቀናት እስከሚያልፍ ድረስ ለማዋጣት ይሞክራል።",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -397,6 +415,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "ማስታወቂያዎችን ያብሩ ",
     "description": "Prompt to turn on Ads via notification"
@@ -452,23 +474,33 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "የቶክን ግራንትዎ በመንገድ ላይ ነው።",
-    "description": "Cosmetic text indicating grant funds are on the way"
+    "message": "Your $currency$ grant is on its way.",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
   },
   "grantFinishTokenTitleUGP": {
     "message": "ነፃ የቶክን ብድር",
     "description": "Token title on success screen"
   },
+  "grantFinishPointTitleUGP": {
+    "message": "Free Point Grant",
+    "description": "Point title on success screen"
+  },
   "grantFinishTitleAds": {
-    "message": "የ Brave ማስታወቂያ ሽልማቶች!",
+    "message": "የማስታወቂያ ሽልማት አግኝተዋል!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "ከ Brave ማስታወቂያዎች የተላከልዎ ሽልማት እየመጣ ነው።",
+    "message": "ሽልማትዎ ወደ Brave የሽልማቶች ዋሌትዎ እየመጣ ነው።",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "የ Brave ማስታወቂያዎ የተለዋጭ ስም ግራንት ",
+    "message": "የሽልማትዎ መጠን",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -532,5 +564,29 @@
   "set": {
     "message": "አዘጋጅ...",
     "description": "Button text for setting monthly contribution"
+  },
+  "tokens":  {
+    "message": "ቶክንስ",
+    "description": "Standard tokens text"
+  },
+  "point":  {
+    "message": "Point",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "ተለዋጭ ስም",
+    "description": "BAT Token text"
+  },
+  "points":  {
+    "message": "points",
+    "description": "BAT Points text"
+  },
+  "tokenGrants":  {
+    "message": "የቶክን ፍቃዶች",
+    "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Point Grants",
+    "description": "BAT Points Grant Text"
   }
 }

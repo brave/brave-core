@@ -8,11 +8,11 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "activados",
+    "message": "activos",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "desactivados",
+    "message": "inactivos",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
@@ -64,7 +64,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Cookies de terceros bloqueadas.",
+    "message": "Cookies de terceros bloqueadas",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -84,7 +84,7 @@
     "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "Intentos de reconocimiento del dispositivo permitidos.",
+    "message": "Intentos totales de reconocimiento del dispositivo permitidos.",
     "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
@@ -152,19 +152,19 @@
     "description": "Message for context menu that adds a filter for the cosmetic filtering"
   },
   "resetSiteFilterSettings": {
-    "message": "Borra las reglas CSS para esta página",
+    "message": "Borra las reglas CSS para este sitio web",
     "description": "Message for context menu that resets the site filters for cosmetic filtering"
   },
   "resetAllFilterSettings": {
-    "message": "Borrar las reglas CSS para todas las páginas",
+    "message": "Borrar las reglas CSS para todas los sitios web",
     "description": "Message for context menu that resets all cosmetic filters"
   },
   "advancedView": {
-    "message": "Vista avanzada",
+    "message": "Vista Avanzada",
     "description": "Message for the advanced view option"
   },
   "simpleView": {
-    "message": "Vista simple",
+    "message": "Vista Simple",
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
@@ -176,7 +176,7 @@
     "description": "Message for the main trackers count in Shields simple view"
   },
   "webCompatWarning": {
-    "message": "El cambio de la configuración del escudo es esta vista puede afectar a la compatibilidad de esta página.",
+    "message": "Cambiar la configuración del Escudo en esta vista puede afectar a la compatibilidad de este sitio web.",
     "description": "Message for web compat warning when switching from simple to advanced view"
   },
   "gotIt": {
