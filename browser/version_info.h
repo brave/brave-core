@@ -11,6 +11,7 @@
 namespace version_info {
 std::string GetBraveVersionWithoutChromiumMajorVersion();
 std::string GetBraveVersionNumberForDisplay();
+std::string GetBraveChromiumVersionNumber();
 }  // namespace version_info
 
 #endif  // BRAVE_BROWSER_VERSION_INFO_H_
