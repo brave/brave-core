@@ -77,6 +77,7 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
         removePreferenceIfPresent(MainPreferences.PREF_SYNC_AND_SERVICES);
         removePreferenceIfPresent(MainPreferences.PREF_DEVELOPER);
         removePreferenceIfPresent(MainPreferences.PREF_SEARCH_ENGINE);
+        removePreferenceIfPresent(MainPreferences.PREF_UI_THEME);
 
         updateSearchEnginePreference();
         updateControlSectionPreferences();

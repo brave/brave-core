@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java b/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
-index 3b19402872ef636a37019cc6fb95b61607b8e281..f4cf9c43834262269e97dbbe512b4f3c79a0a165 100644
+index 3b19402872ef636a37019cc6fb95b61607b8e281..bdeae179afa42404f7f90eeae1417933904693b7 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
 @@ -444,6 +444,7 @@ public class FeatureUtilities {
@@ -10,3 +10,12 @@ index 3b19402872ef636a37019cc6fb95b61607b8e281..f4cf9c43834262269e97dbbe512b4f3c
          if (sIsBottomToolbarEnabled == null) {
              ChromePreferenceManager prefManager = ChromePreferenceManager.getInstance();
  
+@@ -504,7 +505,7 @@ public class FeatureUtilities {
+             ChromePreferenceManager prefManager = ChromePreferenceManager.getInstance();
+ 
+             sIsNightModeAvailable = prefManager.readBoolean(
+-                    ChromePreferenceManager.NIGHT_MODE_AVAILABLE_KEY, false);
++                    ChromePreferenceManager.NIGHT_MODE_AVAILABLE_KEY, true);
+         }
+         return sIsNightModeAvailable;
+     }
