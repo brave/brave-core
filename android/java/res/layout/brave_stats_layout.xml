@@ -80,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="#222326"
+                android:textColor="@color/brave_state_time_count_color"
                 android:textStyle="bold"
                 android:textSize="24sp" />
             <TextView

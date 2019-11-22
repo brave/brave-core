@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.preferences;
 
+import static org.chromium.chrome.browser.preferences.MainPreferences.PREF_UI_THEME;
+
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
@@ -15,6 +17,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.ChromeFeatureList;
+import org.chromium.chrome.browser.night_mode.NightModeUtils;
 import org.chromium.chrome.browser.preferences.ChromePreferenceManager;
 import org.chromium.chrome.browser.preferences.ChromeSwitchPreference;
 import org.chromium.chrome.browser.util.FeatureUtilities;
@@ -33,6 +36,10 @@ public class AppearancePreferences
                 ContextUtils.getApplicationContext());
         if (isTablet) {
             removePreferenceIfPresent(ChromePreferenceManager.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
+        }
+
+        if (!NightModeUtils.isNightModeSupported() || !FeatureUtilities.isNightModeAvailable()) {
+            removePreferenceIfPresent(PREF_UI_THEME);
         }
 
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)) {

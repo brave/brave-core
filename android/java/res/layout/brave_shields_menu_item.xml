@@ -22,7 +22,7 @@
         android:textSize="16sp"
         android:fontFamily="sans-serif"
         android:textStyle="normal"
-        android:textColor="#696969"
+        android:textColor="@color/standard_mode_tint"
         android:gravity="start|center_vertical"
         android:layout_gravity="center_vertical"
         android:paddingStart="10dp" />

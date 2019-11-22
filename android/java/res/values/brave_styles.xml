@@ -14,7 +14,9 @@
         <item name="windowNoTitle">true</item>
     </style>
     <style name="BraveRewardsSwitchTheme">
-        <item name="colorControlActivated">#392DD1</item>
+        <item name="colorControlActivated">@color/brave_rewards_theme_color</item>
+        <item name="colorSwitchThumbNormal">@color/modern_grey_600</item>
+        <item name="android:colorForeground">@color/modern_grey_600</item>
     </style>
 
     <!-- Buttons for Brave Sync -->

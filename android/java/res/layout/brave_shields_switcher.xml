@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeightSmall"
-    android:paddingStart="15dp"
-    android:paddingEnd="15dp" >
-    <TextView
-        android:id="@+id/brave_shields"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start|center_vertical"
-        android:layout_weight="1"
-        android:text="@string/brave_shields"
-        android:orientation="horizontal"
-        android:fontFamily="sans-serif-medium"
-        android:textColor="#000000"
-        android:textSize="18sp" />
-    <Switch
-        android:id="@+id/brave_shields_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|center_vertical"
-        android:layout_weight="1"
-        android:orientation="horizontal"
-        android:switchMinWidth="56dp"
-        android:theme="@style/BraveSwitchTheme" />
-</LinearLayout>
+    android:orientation="horizontal"
+    android:background="@color/brave_shield_bg_color" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/listPreferredItemHeightSmall"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp" >
+        <TextView
+            android:id="@+id/brave_shields"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_weight="1"
+            android:text="@string/brave_shields"
+            android:orientation="horizontal"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/standard_mode_tint"
+            android:textSize="18sp" />
+        <Switch
+            android:id="@+id/brave_shields_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:switchMinWidth="56dp"
+            android:theme="@style/BraveSwitchTheme" />
+    </LinearLayout>
+</RelativeLayout>
