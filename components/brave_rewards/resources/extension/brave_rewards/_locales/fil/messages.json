@@ -19,6 +19,10 @@
     "message": "Maaari ka na ngayong makakuha ng mga token sa pamamagitan ng panonood ng mga ad na nagpapahalaga sa privacy.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
+  "welcomeDescPoints": {
+    "message": "You can now earn points for watching privacy-respecting ads.",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
   "welcomeFooterTextOne": {
     "message": "Tingnan kung ano ang pinahusay",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
@@ -42,6 +46,22 @@
   "grants": {
     "message": "Mga grant",
     "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "Mga Detalye",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Ang Iyong Balanse",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT Points",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "magagamit sa Brave Rewards para mag-ambag sa iyong mga paboritong content creator. Hindi maipapalit ang BAT Points para sa BAT.",
+    "description": "Text for BAT Point helper message"
   },
   "on": {
     "message": "naka-on",
@@ -128,12 +148,22 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Mga Token Grant",
-    "description": "Title for grant notification"
+    "message": "$currency$ Grants",
+    "description": "Title for grant notification",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "Token"
+      }
+    }
   },
   "tokenGrantClaimed": {
     "message": "Mga Na-claim na Grant para sa Token",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Point Grants Claimed",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Mga kita mula sa Mga Ad",
@@ -180,12 +210,16 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "Nag-ambag ka ng $amount$ BAT",
+    "message": "You've contributed $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
         "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
       }
     }
   },
@@ -261,10 +295,6 @@
     "message": "Petsa ng Pag-expire ng Grant",
     "description": "Grant expiry label"
   },
-  "grantAlreadyClaimedText": {
-    "message": "Paumanhin, mukhang na-claim na ang grant na ito.",
-    "description": "Description of the error when grant is already claimed."
-  },
   "grantGeneralErrorButton": {
     "message": "OK",
     "description": "Button text for clearing the error."
@@ -276,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "Naku, may mali. Pakisubukang muli sa ibang pagkakataon.",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "OK",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "Paumanhin, mukhang nag-expire na ang grant na ito.",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "Hindi na available ang grant na ito.",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "I-refresh ang Status",
@@ -306,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Nagtakda ka ng {{reservedAmount}} (na) BAT para sa mga creator na hindi pa nagsa-sign up upang makatanggap ng mga ambag. Patuloy na susubukan ng iyong browser na mag-ambag hangang sa mag-verify sila, o hanggang sa lumipas ang 90 araw.",
+    "message": "Nagtalaga ka ng {{reservedAmount}} {{currency}} para sa mga creator na hindi pa nagsa-sign up para makatanggap ng mga kontribusyon. Patuloy na susubukan ng iyong browser na mag-ambag hanggang sa mag-verify sila, o hanggang sa lumipas ang 90 araw.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -397,6 +415,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "I-on ang Ads",
     "description": "Prompt to turn on Ads via notification"
@@ -452,23 +474,33 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "Paparating na ang iyong grant para sa token.",
-    "description": "Cosmetic text indicating grant funds are on the way"
+    "message": "Your $currency$ grant is on its way.",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
   },
   "grantFinishTokenTitleUGP": {
     "message": "Libreng Grant para sa Token",
     "description": "Token title on success screen"
   },
+  "grantFinishPointTitleUGP": {
+    "message": "Free Point Grant",
+    "description": "Point title on success screen"
+  },
   "grantFinishTitleAds": {
-    "message": "Brave Ads Rewards!",
+    "message": "Nakakuha ka ng Ads Reward!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Paparating na ang iyong grant mula sa Brave Ads.",
+    "message": "Paparating na ang iyong Reward sa iyong Brave Rewards wallet.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Iyong Token Grant sa Brave Ads",
+    "message": "Ang Halaga ng Iyong Reward",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -532,5 +564,29 @@
   "set": {
     "message": "Magtakda...",
     "description": "Button text for setting monthly contribution"
+  },
+  "tokens":  {
+    "message": "mga token",
+    "description": "Standard tokens text"
+  },
+  "point":  {
+    "message": "Point",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "Token",
+    "description": "BAT Token text"
+  },
+  "points":  {
+    "message": "points",
+    "description": "BAT Points text"
+  },
+  "tokenGrants":  {
+    "message": "Mga Token Grant",
+    "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Point Grants",
+    "description": "BAT Points Grant Text"
   }
 }

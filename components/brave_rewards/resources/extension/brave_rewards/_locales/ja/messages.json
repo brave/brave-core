@@ -19,6 +19,10 @@
     "message": "プライバシーを尊重する広告を見ることでトークンを獲得できます。",
     "description": "Entry text for welcome screen in the panel, new user"
   },
+  "welcomeDescPoints": {
+    "message": "あなたはプライバシーを尊重する広告を見ることでポイントを得られるようになりました。",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
   "welcomeFooterTextOne": {
     "message": "改善点をチェックする",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
@@ -43,6 +47,22 @@
     "message": "付与トークン",
     "description": "Title for grant section in wallet summary"
   },
+  "details": {
+    "message": "詳細",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "あなたの残高",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BATポイント",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "はBrave Rewardsにおいて、あなたの気に入ったコンテンツの制作者に寄付するために利用できます。BATポイントはBATに交換できません。",
+    "description": "Text for BAT Point helper message"
+  },
   "on": {
     "message": ":",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
@@ -60,7 +80,7 @@
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
-    "message": "自動支援に含める",
+    "message": "自動支援の対象にする",
     "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
@@ -128,12 +148,22 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "トークン付与の通知",
-    "description": "Title for grant notification"
+    "message": "$currency$付与",
+    "description": "Title for grant notification",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "Token"
+      }
+    }
   },
   "tokenGrantClaimed": {
     "message": "取得された付与トークン",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "取得済みの付与ポイント",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "広告収益",
@@ -180,12 +210,16 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "あなたは$amount$ BAT支援しました",
+    "message": "$amount$$currency$ 支援しました。$currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
         "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
       }
     }
   },
@@ -261,10 +295,6 @@
     "message": "付与トークンの有効期限",
     "description": "Grant expiry label"
   },
-  "grantAlreadyClaimedText": {
-    "message": "申し訳ありません、この付与トークンはすでに取得されているようです。",
-    "description": "Description of the error when grant is already claimed."
-  },
   "grantGeneralErrorButton": {
     "message": "OK",
     "description": "Button text for clearing the error."
@@ -276,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "おや、問題が発生しました。後からもう一度試してみてください。",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "OK",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "申し訳ありません、この付与トークンはすでに期限が切れているようです。",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "この付与トークンは、すでにご利用になれません。",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "ステータスを更新する",
@@ -306,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "{{reservedAmount}} BAT を贈る相手に、支援を受け取る登録を行っていないクリエイターを指名しました。あなたのブラウザは、クリエイターからの認証を受けるか、90日が経過するまで試し続けます。",
+    "message": "あなたは{{reservedAmount}} {{currency}}分を、まだ支援の受け取り登録が完了していないクリエイターに送信しました。あなたのブラウザはそのクリエイターが受け取り設定を完了するかもしくは90日間が経過するまで、寄付の実行を試み続けます。",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -342,7 +360,7 @@
     "description": "Button for adding funds"
   },
   "rewardsSettings": {
-    "message": "[Rewards]設定",
+    "message": "Rewards設定",
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
@@ -396,6 +414,10 @@
   "bat": {
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
+  },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
     "message": "広告表示を有効にする",
@@ -452,23 +474,33 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "あなたの付与トークンは処理中です。",
-    "description": "Cosmetic text indicating grant funds are on the way"
+    "message": "あなたの$currency$は処理中です。",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
   },
   "grantFinishTokenTitleUGP": {
     "message": "無料のトークン付与",
     "description": "Token title on success screen"
   },
+  "grantFinishPointTitleUGP": {
+    "message": "無料のポイント付与",
+    "description": "Point title on success screen"
+  },
   "grantFinishTitleAds": {
-    "message": "Brave Adsの報酬！",
+    "message": "広告報酬を獲得しました! ",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Brave Adsから付与された報酬はもうすぐ届きます。",
+    "message": "報酬をあなたのBrave Rewardsウォレットに入金中です。",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "あなたに付与されたBrave Ads Token",
+    "message": "あなたの報酬額",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -532,5 +564,29 @@
   "set": {
     "message": "設定…",
     "description": "Button text for setting monthly contribution"
+  },
+  "tokens":  {
+    "message": "ポイント",
+    "description": "Standard tokens text"
+  },
+  "point":  {
+    "message": "ポイント",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "トークン",
+    "description": "BAT Token text"
+  },
+  "points":  {
+    "message": "ポイント",
+    "description": "BAT Points text"
+  },
+  "tokenGrants":  {
+    "message": "トークン付与の通知",
+    "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "ポイント付与",
+    "description": "BAT Points Grant Text"
   }
 }
