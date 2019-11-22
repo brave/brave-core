@@ -419,6 +419,14 @@ class BraveRewardsBrowserTest
     wait_for_insufficient_notification_loop_->Run();
   }
 
+  void WaitForRecurringTipToBeSaved() {
+    if (recurring_tip_saved_) {
+      return;
+    }
+    wait_for_recurring_tip_saved_loop_.reset(new base::RunLoop);
+    wait_for_recurring_tip_saved_loop_->Run();
+  }
+
   void WaitForSelector(content::WebContents* contents,
       const std::string& selector) const {
     auto script = content::JsReplace(
@@ -1236,7 +1244,7 @@ class BraveRewardsBrowserTest
     ASSERT_TRUE(site_banner_contents);
 
     const double amount = tip_amounts_.at(selection);
-    const std::string amount_str = std::to_string(static_cast<int32_t>(amount));
+    const std::string amount_str = base::StringPrintf("%2.1f", amount);
 
     // Select the tip amount (default is 1.0 BAT)
     ASSERT_TRUE(ExecJs(
@@ -1272,28 +1280,9 @@ class BraveRewardsBrowserTest
     const std::string confirmationText = monthly
         ? "Monthly contribution has been set!"
         : "Tip sent!";
-    // Make sure that thank you banner shows correct publisher data
-    // (domain and amount)
-    {
-      content::EvalJsResult js_result = EvalJs(
-          site_banner_contents,
-          "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-          "delay(0).then(() => "
-          "  document.documentElement.innerText);",
-          content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-          content::ISOLATED_WORLD_ID_CONTENT_END);
-      EXPECT_NE(js_result.ExtractString().find(
-          confirmationText), std::string::npos);
-      EXPECT_NE(js_result.ExtractString().find(
-           "" + amount_str + ".0 BAT"), std::string::npos);
-      EXPECT_NE(js_result.ExtractString().find(
-          "Share the good news:"), std::string::npos);
-    }
-
-    // Activate the Rewards settings page tab
-    ActivateTabAtIndex(0);
 
     if (monthly) {
+      WaitForRecurringTipToBeSaved();
       // Trigger contribution process
       rewards_service()->StartMonthlyContributionForTest();
 
@@ -1316,6 +1305,29 @@ class BraveRewardsBrowserTest
       WaitForTipReconcileCompleted();
       ASSERT_EQ(tip_reconcile_status_, ledger::Result::LEDGER_OK);
     }
+
+    // Make sure that thank you banner shows correct publisher data
+    // (domain and amount)
+    {
+      content::EvalJsResult js_result = EvalJs(
+          site_banner_contents,
+          "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
+          "delay(1000).then(() => "
+          "  document.documentElement.innerText);",
+          content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+          content::ISOLATED_WORLD_ID_CONTENT_END);
+      EXPECT_NE(js_result.ExtractString().find(
+          confirmationText), std::string::npos);
+      EXPECT_NE(js_result.ExtractString().find(
+           "" + amount_str + " BAT"), std::string::npos);
+      EXPECT_NE(js_result.ExtractString().find(
+          "Share the good news:"), std::string::npos);
+      EXPECT_NE(js_result.ExtractString().find(
+           "" + GetBalance() + " BAT"), std::string::npos);
+    }
+
+    // Activate the Rewards settings page tab
+    ActivateTabAtIndex(0);
 
     if (should_contribute) {
       // Make sure that balance is updated correctly
@@ -1471,6 +1483,19 @@ class BraveRewardsBrowserTest
     }
   }
 
+  void OnRecurringTipSaved(
+      brave_rewards::RewardsService* rewards_service,
+      bool success) {
+    if (!success) {
+      return;
+    }
+
+    recurring_tip_saved_ = true;
+    if (wait_for_recurring_tip_saved_loop_) {
+      wait_for_recurring_tip_saved_loop_->Quit();
+    }
+  }
+
   void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
       const brave_rewards::RewardsNotificationService::RewardsNotification&
@@ -1592,6 +1617,9 @@ class BraveRewardsBrowserTest
 
   std::unique_ptr<base::RunLoop> brave_ads_have_arrived_notification_run_loop_;
   bool brave_ads_have_arrived_notification_was_already_shown_ = false;
+
+  std::unique_ptr<base::RunLoop> wait_for_recurring_tip_saved_loop_;
+  bool recurring_tip_saved_ = false;
 
   std::unique_ptr<base::RunLoop> wait_for_attestation_loop_;
 
