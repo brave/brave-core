@@ -18,15 +18,13 @@
 #include "chrome/grit/generated_resources.h"
 #include "ui/views/controls/button/button.h"
 
-int BraveIncognitoMenuView::GetProfileMenuTitleId()
-{
+int BraveIncognitoMenuView::GetProfileMenuTitleId() {
   return brave::IsTorProfile(browser()->profile())
              ? IDS_TOR_PROFILE_NAME
              : IDS_INCOGNITO_PROFILE_MENU_TITLE;
 }
 
-int BraveIncognitoMenuView::GetProfileMenuCloseButtonTextId()
-{
+int BraveIncognitoMenuView::GetProfileMenuCloseButtonTextId() {
   return brave::IsTorProfile(browser()->profile())
              ? IDS_PROFILES_EXIT_TOR
              : IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON;
