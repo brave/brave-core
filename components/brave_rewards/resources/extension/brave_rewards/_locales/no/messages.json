@@ -19,6 +19,10 @@
     "message": "Du kan nå tjene tokens for å se på reklame som respekterer personvern.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
+  "welcomeDescPoints": {
+    "message": "You can now earn points for watching privacy-respecting ads.",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
   "welcomeFooterTextOne": {
     "message": "Sjekk hva som er forbedret",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
@@ -42,6 +46,22 @@
   "grants": {
     "message": "Stipend",
     "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "Detaljer",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Saldoen din",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT-poeng",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "kan brukes i Brave-belønninger for å bidra til dine foretrukne innholdsskapere. BAT-poeng kan ikke veksles inn i BAT.",
+    "description": "Text for BAT Point helper message"
   },
   "on": {
     "message": "på",
@@ -128,12 +148,22 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Tilskudd til polletter",
-    "description": "Title for grant notification"
+    "message": "$currency$ Grants",
+    "description": "Title for grant notification",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "Token"
+      }
+    }
   },
   "tokenGrantClaimed": {
     "message": "Tokenstipender gjort krav på",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Point Grants Claimed",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Opptjente midler fra reklamer",
@@ -180,12 +210,16 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "Du har bidratt med $amount$ BAT",
+    "message": "You've contributed $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
         "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
       }
     }
   },
@@ -261,10 +295,6 @@
     "message": "Utløpsdato for stipend",
     "description": "Grant expiry label"
   },
-  "grantAlreadyClaimedText": {
-    "message": "Beklager, men det ser ut til at dette stipendet allerede er gjort krav på.",
-    "description": "Description of the error when grant is already claimed."
-  },
   "grantGeneralErrorButton": {
     "message": "OK",
     "description": "Button text for clearing the error."
@@ -276,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "Opp sann, noe er galt. Prøv igjen senere.",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "OK",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "Beklager, men det ser ut til at dette stipendet allerede er utløpt.",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "Dette stipendet er ikke tilgjengelig lenger.",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "Oppdater status",
@@ -306,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Du har tildelt {{reservedAmount}} BAT til skapere som ikke har registrert seg for å motta bidrag ennå. Nettleseren din vil fortsette å prøve å bidra helt til de verifiserer bidraget eller til det har gått 90 dager.",
+    "message": "Du har satt av {{reservedAmount}} {{currency}} til skapere som ennå ikke har registrert seg for å motta bidrag. Nettleseren din fortsetter å prøve å bidra til vedkommende har verifisert seg, eller til det har gått 90 dager.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -397,6 +415,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Slå på annonser",
     "description": "Prompt to turn on Ads via notification"
@@ -452,23 +474,33 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "Tokenstipendet ditt er på vei.",
-    "description": "Cosmetic text indicating grant funds are on the way"
+    "message": "Your $currency$ grant is on its way.",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
   },
   "grantFinishTokenTitleUGP": {
     "message": "Gratis tokenstipend",
     "description": "Token title on success screen"
   },
+  "grantFinishPointTitleUGP": {
+    "message": "Free Point Grant",
+    "description": "Point title on success screen"
+  },
   "grantFinishTitleAds": {
-    "message": "Brave annonsebelønninger!",
+    "message": "Du har tjent en annonsebelønning!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Belønningen din fra Brave Ads er på vei.",
+    "message": "Belønningen er på vei til Brave-belønningslommeboken din.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Din token fra Brave Ads",
+    "message": "Belønningsbeløpet ditt",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -532,5 +564,29 @@
   "set": {
     "message": "Angi …",
     "description": "Button text for setting monthly contribution"
+  },
+  "tokens":  {
+    "message": "sjetonger",
+    "description": "Standard tokens text"
+  },
+  "point":  {
+    "message": "Point",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "Token ",
+    "description": "BAT Token text"
+  },
+  "points":  {
+    "message": "points",
+    "description": "BAT Points text"
+  },
+  "tokenGrants":  {
+    "message": "Tilskudd til polletter",
+    "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Point Grants",
+    "description": "BAT Points Grant Text"
   }
 }

@@ -19,6 +19,10 @@
     "message": "您現在可以透過觀看尊重隱私的廣告來賺取代幣。",
     "description": "Entry text for welcome screen in the panel, new user"
   },
+  "welcomeDescPoints": {
+    "message": "您現在可以透過觀看尊重隱私的廣告來賺取點數了。",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
   "welcomeFooterTextOne": {
     "message": "查看改進的地方",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
@@ -42,6 +46,22 @@
   "grants": {
     "message": "授權",
     "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "詳情",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "您的餘額",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT 點數",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "可用於 Brave 獎勵來捐助您最喜愛的內容創作者。BAT 點數不可兌換 BAT。",
+    "description": "Text for BAT Point helper message"
   },
   "on": {
     "message": "在",
@@ -128,12 +148,22 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "代幣授予",
-    "description": "Title for grant notification"
+    "message": "$currency$ 經費",
+    "description": "Title for grant notification",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "Token"
+      }
+    }
   },
   "tokenGrantClaimed": {
     "message": "代幣經費已領",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "點數經廢已領",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "自廣告而來的收益",
@@ -180,12 +210,16 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "你已捐贈了 $amount$ BAT",
+    "message": "您已貢獻 $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
         "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
       }
     }
   },
@@ -261,10 +295,6 @@
     "message": "經費到期日",
     "description": "Grant expiry label"
   },
-  "grantAlreadyClaimedText": {
-    "message": "抱歉，看來這筆經費已經被領了。",
-    "description": "Description of the error when grant is already claimed."
-  },
   "grantGeneralErrorButton": {
     "message": "OK",
     "description": "Button text for clearing the error."
@@ -276,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "唉呀，發生問題了。請待會再試一次。",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "OK",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "抱歉，看來這筆經費已經過期了。",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "不再提供這筆經費。",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "重新整理狀態",
@@ -306,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "您已指定 {{reservedAmount}} BAT 給尚未登記接受提撥金的建立者。您的瀏覽器會不斷嘗試提撥，直到他們驗證或 90 天過後為止。",
+    "message": "您已指定 {{reservedAmount}} {{currency}} 給尚未登記接受資助的創作者。您的瀏覽器會不斷嘗試捐助，直到他們驗證或 90 天過後為止。",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -397,6 +415,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "開啟廣告",
     "description": "Prompt to turn on Ads via notification"
@@ -452,23 +474,33 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "您的代幣經費已經發放。",
-    "description": "Cosmetic text indicating grant funds are on the way"
+    "message": "您的 $currency$ 已經發放。",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
   },
   "grantFinishTokenTitleUGP": {
     "message": "免費代幣經費",
     "description": "Token title on success screen"
   },
+  "grantFinishPointTitleUGP": {
+    "message": "免費點數經費",
+    "description": "Point title on success screen"
+  },
   "grantFinishTitleAds": {
-    "message": "Brave 廣告獎勵",
+    "message": "您得到了一份廣告獎勵！",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "您即將獲得從 Brave 廣告而來的獎勵。",
+    "message": "您的獎勵已撥給 Brave 獎勵電子錢包。",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "您的 Brave 廣告代幣",
+    "message": "您的獎勵額",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -532,5 +564,29 @@
   "set": {
     "message": "設定……",
     "description": "Button text for setting monthly contribution"
+  },
+  "tokens":  {
+    "message": "代幣",
+    "description": "Standard tokens text"
+  },
+  "point":  {
+    "message": "點數",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "代碼",
+    "description": "BAT Token text"
+  },
+  "points":  {
+    "message": "點數",
+    "description": "BAT Points text"
+  },
+  "tokenGrants":  {
+    "message": "代幣授予",
+    "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "點數經費",
+    "description": "BAT Points Grant Text"
   }
 }
