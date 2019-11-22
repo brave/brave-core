@@ -255,3 +255,6 @@ void NativeLedgerClient::UnblindedTokensReady() {
 void NativeLedgerClient::GetAllPromotions(ledger::GetAllPromotionsCallback callback) {
   [bridge_ getAllPromotions:callback];
 }
+void NativeLedgerClient::DeleteUnblindedTokensForPromotion(const std::string& promotion_id, ledger::ResultCallback callback) {
+  [bridge_ deleteUnblindedTokensForPromotion:promotion_id callback:callback];
+}

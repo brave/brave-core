@@ -368,6 +368,10 @@ class MockConfirmationsClient : public ConfirmationsClient {
     const std::vector<std::string>& id_list,
     ledger::ResultCallback callback));
 
+  MOCK_METHOD2(DeleteUnblindedTokensForPromotion, void(
+    const std::string& promotion_id,
+    ledger::ResultCallback callback));
+
   MOCK_METHOD0(GetClientInfo, ledger::ClientInfoPtr());
 
   MOCK_METHOD0(UnblindedTokensReady, void());

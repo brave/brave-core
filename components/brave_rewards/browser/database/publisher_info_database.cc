@@ -527,6 +527,17 @@ bool PublisherInfoDatabase::DeleteUnblindedTokens(
   return unblinded_token_->DeleteRecords(&GetDB(), id_list);
 }
 
+bool PublisherInfoDatabase::DeleteUnblindedTokensForPromotion(
+    const std::string& promotion_id) {
+  if (!IsInitialized()) {
+    return false;
+  }
+
+  return DatabaseUnblindedToken::DeleteRecordsForPromotion(
+      &GetDB(),
+      promotion_id);
+}
+
 // Other -------------------------------------------------------------------
 
 bool PublisherInfoDatabase::IsInitialized() {
