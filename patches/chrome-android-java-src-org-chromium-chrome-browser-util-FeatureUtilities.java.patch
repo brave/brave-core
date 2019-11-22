@@ -1,21 +1,22 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java b/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
-index 3b19402872ef636a37019cc6fb95b61607b8e281..bdeae179afa42404f7f90eeae1417933904693b7 100644
+index 6afd8a49935f8541b94cbc69c6ce459bfbccbf84..b2608ce57b4ac1e2fd437830150d3a57ae7978c0 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
-@@ -444,6 +444,7 @@ public class FeatureUtilities {
-      * @return Whether or not the bottom toolbar is enabled.
+@@ -368,7 +368,7 @@ public class FeatureUtilities {
       */
      public static boolean isBottomToolbarEnabled() {
-+        sIsBottomToolbarEnabled = ChromePreferenceManager.getInstance().isBottomToolbarEnabled();
-         if (sIsBottomToolbarEnabled == null) {
-             ChromePreferenceManager prefManager = ChromePreferenceManager.getInstance();
- 
-@@ -504,7 +505,7 @@ public class FeatureUtilities {
-             ChromePreferenceManager prefManager = ChromePreferenceManager.getInstance();
- 
-             sIsNightModeAvailable = prefManager.readBoolean(
--                    ChromePreferenceManager.NIGHT_MODE_AVAILABLE_KEY, false);
-+                    ChromePreferenceManager.NIGHT_MODE_AVAILABLE_KEY, true);
-         }
-         return sIsNightModeAvailable;
+         // TODO(crbug.com/944228): TabGroupsAndroid and ChromeDuet are incompatible for now.
+-        return isFlagEnabled(BOTTOM_TOOLBAR_ENABLED_KEY, false)
++        return ChromePreferenceManager.getInstance().isBottomToolbarEnabled()
+                 && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(
+                         ContextUtils.getApplicationContext())
+                 && !isTabGroupsAndroidEnabled();
+@@ -413,7 +413,7 @@ public class FeatureUtilities {
+      *         enabled).
+      */
+     public static boolean isNightModeAvailable() {
+-        return isFlagEnabled(NIGHT_MODE_AVAILABLE_KEY, false);
++        return isFlagEnabled(NIGHT_MODE_AVAILABLE_KEY, true);
      }
+ 
+     /**
