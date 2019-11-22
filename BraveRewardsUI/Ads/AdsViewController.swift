@@ -332,3 +332,15 @@ extension AdsViewController {
     })
   }
 }
+
+extension AdsViewController {
+  public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    
+    if #available(iOS 13.0, *) {
+        if UITraitCollection.current.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+          visibleAdView?.adContentButton.applyTheme(for: traitCollection)
+        }
+    }
+  }
+}
