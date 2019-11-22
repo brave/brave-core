@@ -35,9 +35,9 @@ class DatabaseUnblindedToken: public DatabaseTable {
       sql::Database* db,
       const std::vector<std::string>& id_list);
 
- private:
-  const char* table_name_ = "unblinded_tokens";
-  const int minimum_version_ = 10;
+  static bool DeleteRecordsForPromotion(
+      sql::Database* db,
+      const std::string& promotion_id);
 };
 
 }  // namespace brave_rewards

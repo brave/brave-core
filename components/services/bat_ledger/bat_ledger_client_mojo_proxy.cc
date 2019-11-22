@@ -1026,6 +1026,14 @@ void BatLedgerClientMojoProxy::DeleteUnblindedTokens(
       base::BindOnce(&OnResultCallback, std::move(callback)));
 }
 
+void BatLedgerClientMojoProxy::DeleteUnblindedTokensForPromotion(
+    const std::string& promotion_id,
+    ledger::ResultCallback callback) {
+  bat_ledger_client_->DeleteUnblindedTokensForPromotion(
+      promotion_id,
+      base::BindOnce(&OnResultCallback, std::move(callback)));
+}
+
 ledger::ClientInfoPtr BatLedgerClientMojoProxy::GetClientInfo() {
   auto info = ledger::ClientInfo::New();
   bat_ledger_client_->GetClientInfo(&info);

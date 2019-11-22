@@ -371,6 +371,9 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD0(GetClientInfo, ledger::ClientInfoPtr());
 
   MOCK_METHOD0(UnblindedTokensReady, void());
+
+  MOCK_METHOD2(DeleteUnblindedTokensForPromotion,
+      void(const std::string& promotion_id, ledger::ResultCallback));
 };
 
 }  // namespace ledger
