@@ -27,6 +27,7 @@ export interface Props {
   showClock: boolean
   showTopSites: boolean
   brandedWallpaperOptIn: boolean
+  allowBrandedWallpaperUI: boolean
   showRewards: boolean
 }
 
@@ -80,6 +81,7 @@ export default class Settings extends React.PureComponent<Props, {}> {
       showTopSites,
       showRewards,
       brandedWallpaperOptIn,
+      allowBrandedWallpaperUI,
       onClick
     } = this.props
     return (
@@ -96,6 +98,7 @@ export default class Settings extends React.PureComponent<Props, {}> {
                 size='small'
               />
             </SettingsRow>
+            {allowBrandedWallpaperUI &&
             <SettingsRow isChildSetting={true}>
               <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>
               <Toggle
@@ -105,6 +108,7 @@ export default class Settings extends React.PureComponent<Props, {}> {
                 size='small'
               />
             </SettingsRow>
+            }
             <SettingsRow>
               <SettingsText>{getLocale('showRewards')}</SettingsText>
               <Toggle

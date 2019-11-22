@@ -34,6 +34,7 @@ interface Props {
   showTopSites: boolean
   showRewards: boolean
   brandedWallpaperOptIn: boolean
+  allowBrandedWallpaperUI: boolean
 }
 
 export default class FooterInfo extends React.PureComponent<Props, {}> {
@@ -56,6 +57,7 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
       showStats,
       showTopSites,
       brandedWallpaperOptIn,
+      allowBrandedWallpaperUI,
       toggleShowRewards,
       showRewards
     } = this.props
@@ -89,6 +91,7 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
               showStats={showStats}
               showTopSites={showTopSites}
               brandedWallpaperOptIn={brandedWallpaperOptIn}
+              allowBrandedWallpaperUI={allowBrandedWallpaperUI}
               toggleShowRewards={toggleShowRewards}
               showRewards={showRewards}
             />

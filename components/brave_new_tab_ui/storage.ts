@@ -10,6 +10,7 @@ const keyName = 'new-tab-data'
 const defaultState: NewTab.State = {
   initialDataLoaded: false,
   textDirection: window.loadTimeData.getString('textdirection'),
+  featureFlagBraveNTPBrandedWallpaper: window.loadTimeData.getBoolean('featureFlagBraveNTPBrandedWallpaper'),
   showBackgroundImage: false,
   showStats: false,
   showClock: false,

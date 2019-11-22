@@ -320,6 +320,7 @@ class NewTabPage extends React.Component<Props, State> {
               showTopSites={newTabData.showTopSites}
               showRewards={newTabData.showRewards}
               brandedWallpaperOptIn={newTabData.brandedWallpaperOptIn}
+              allowBrandedWallpaperUI={newTabData.featureFlagBraveNTPBrandedWallpaper}
               toggleShowRewards={this.toggleShowRewards}
             />
           </Footer>

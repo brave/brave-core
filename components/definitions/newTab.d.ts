@@ -70,6 +70,7 @@ declare namespace NewTab {
   export interface EphemeralState {
     initialDataLoaded: boolean
     textDirection: string
+    featureFlagBraveNTPBrandedWallpaper: boolean
     isIncognito: boolean
     useAlternativePrivateSearchEngine: boolean
     isTor: boolean

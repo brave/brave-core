@@ -17,6 +17,7 @@
 #include "brave/browser/ui/webui/new_tab_page/new_tab_page_branded_view_counter.h" //  NOLINT
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/chrome_features.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -97,6 +98,9 @@ BraveNewTabMessageHandler* BraveNewTabMessageHandler::Create(
   // Initial Values
   // Should only contain data that is static
   //
+  source->AddBoolean(
+      "featureFlagBraveNTPBrandedWallpaper",
+      base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaper));
   // Private Tab info
   if (IsPrivateNewTab(profile)) {
     source->AddBoolean(

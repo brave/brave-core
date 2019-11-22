@@ -11,6 +11,7 @@
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/chrome_features.h"
 #include "content/public/browser/browser_context.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h" //  NOLINT
@@ -81,7 +82,10 @@ NewTabPageBrandedViewCounter::NewTabPageBrandedViewCounter(Profile* profile)
   // TODO(petemill): Update the private var when the data source gets
   // new content, when we have a data source!
   // Set demo wallpaper if a flag is set.
-  current_wallpaper_ = GetDemoWallpaper();
+  if (base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaper) &&
+      base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaperDemo)) {
+    current_wallpaper_ = GetDemoWallpaper();
+  }
   // Observe relevant preferences that affect whether we should show
   // wallpaper or count views.
   SetShouldShowFromPreferences();
@@ -110,6 +114,9 @@ void NewTabPageBrandedViewCounter::RegisterPageView() {
 }
 
 bool NewTabPageBrandedViewCounter::IsBrandedWallpaperActive() {
+  if (!base::FeatureList::IsEnabled(features::kBraveNTPBrandedWallpaper)) {
+    return false;
+  }
   return (current_wallpaper_ != nullptr && has_user_opted_in_ == true);
 }
 

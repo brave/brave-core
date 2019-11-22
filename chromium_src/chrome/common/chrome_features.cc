@@ -6,4 +6,10 @@
 #include "../../../../chrome/common/chrome_features.cc"
 
 namespace features {
-}
+const base::Feature kBraveNTPBrandedWallpaper{
+    "BraveNTPBrandedWallpaperName",
+    base::FEATURE_DISABLED_BY_DEFAULT};
+const base::Feature kBraveNTPBrandedWallpaperDemo{
+    "BraveNTPBrandedWallpaperDemoName",
+    base::FEATURE_DISABLED_BY_DEFAULT};
+}  // namespace features
