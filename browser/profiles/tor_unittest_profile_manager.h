@@ -17,7 +17,8 @@ class TorUnittestProfileManager : public ProfileManagerWithoutInit {
   ~TorUnittestProfileManager() override = default;
 
  protected:
-  std::unique_ptr<Profile> CreateProfileHelper(const base::FilePath& path) override;
+  std::unique_ptr<Profile> CreateProfileHelper(
+      const base::FilePath& path) override;
 
   std::unique_ptr<Profile> CreateProfileAsyncHelper(
       const base::FilePath& path,

@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 
+#include <memory>
+
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -35,7 +37,7 @@ class BraveLocationBarViewFocusRingHighlightPathGenerator
   DISALLOW_COPY_AND_ASSIGN(BraveLocationBarViewFocusRingHighlightPathGenerator);
 };
 
-}  // namepsace
+}  // namespace
 
 void BraveLocationBarView::Init() {
   // base method calls Update and Layout
