@@ -203,6 +203,7 @@ declare namespace chrome.braveShields {
   const allowScriptsOnce: any
   const setBraveShieldsEnabledAsync: any
   const getBraveShieldsEnabledAsync: any
+  const getCosmeticFilteringEnabledAsync: any
   const setAdControlTypeAsync: any
   const getAdControlTypeAsync: any
   const setCookieControlTypeAsync: any

@@ -154,6 +154,23 @@
         ]
       },
       {
+        "name": "getCosmeticFilteringEnabled",
+        "type": "function",
+        "description": "Get whether or not the cosmetic filtering feature flag is enabled",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "enabled",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "setAdControlType",
         "type": "function",
         "description": "Set ads control type for a url",

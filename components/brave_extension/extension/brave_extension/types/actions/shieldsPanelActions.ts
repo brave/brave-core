@@ -7,7 +7,7 @@ import { BlockTypes, BlockOptions, BlockFPOptions, BlockJSOptions, BlockCookiesO
 
 export interface ShieldDetails {
   id: number
-  cosmeticBlocking: BlockOptions
+  cosmeticBlocking: boolean
   ads: BlockOptions
   trackers: BlockOptions
   httpUpgradableResources: BlockOptions

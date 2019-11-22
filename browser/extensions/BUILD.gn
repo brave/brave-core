@@ -70,6 +70,7 @@ source_set("extensions") {
     "//brave/components/brave_extension:static_resources",
     "//brave/components/brave_shields/browser",
     "//chrome/browser/extensions",
+    "//chrome/common",
     "//components/gcm_driver:gcm_driver",
     "//components/gcm_driver:gcm_buildflags",
     "//components/prefs",

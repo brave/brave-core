@@ -25,6 +25,7 @@
 #include "chrome/browser/extensions/chrome_extension_function_details.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/chrome_features.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_util.h"
 
@@ -149,6 +150,14 @@ BraveShieldsGetBraveShieldsEnabledFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto enabled = ::brave_shields::GetBraveShieldsEnabled(profile, url);
   auto result = std::make_unique<base::Value>(enabled);
+
+  return RespondNow(OneArgument(std::move(result)));
+}
+
+ExtensionFunction::ResponseAction
+BraveShieldsGetCosmeticFilteringEnabledFunction::Run() {
+  auto result = std::make_unique<base::Value>(
+      base::FeatureList::IsEnabled(features::kBraveAdblockCosmeticFiltering));
 
   return RespondNow(OneArgument(std::move(result)));
 }

@@ -19,6 +19,7 @@
 #include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/common/chrome_features.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -785,8 +786,57 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, RedirectRulesAreRespected) {
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
-// Test simple cosmetic filtering
+class CosmeticFilteringEnabledTest : public AdBlockServiceTest {
+ public:
+  CosmeticFilteringEnabledTest() {
+    feature_list_.InitAndEnableFeature(
+            features::kBraveAdblockCosmeticFiltering);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// Ensure no cosmetic filtering occurs when the feature flag has not been
+// enabled
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
+  UpdateAdBlockInstanceWithRules(
+      "b.com###ad-banner\n"
+      "##.ad");
+
+  WaitForBraveExtensionShieldsDataReady();
+
+  GURL tab_url = embedded_test_server()->GetURL("b.com",
+                                                "/cosmetic_filtering.html");
+  ui_test_utils::NavigateToURL(browser(), tab_url);
+
+  content::WebContents* contents =
+    browser()->tab_strip_model()->GetActiveWebContents();
+
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+              contents,
+              "checkSelector('#ad-banner', 'display', 'block')",
+              &as_expected));
+  EXPECT_TRUE(as_expected);
+
+  as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+              contents,
+              "checkSelector('.ad-banner', 'display', 'block')",
+              &as_expected));
+  EXPECT_TRUE(as_expected);
+
+  as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+              contents,
+              "checkSelector('.ad', 'display', 'block')",
+              &as_expected));
+  EXPECT_TRUE(as_expected);
+}
+
+// Test simple cosmetic filtering
+IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest, CosmeticFilteringSimple) {
   UpdateAdBlockInstanceWithRules(
       "b.com###ad-banner\n"
       "##.ad");
@@ -823,7 +873,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringSimple) {
 }
 
 // Test cosmetic filtering on elements added dynamically
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamic) {
+IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest, CosmeticFilteringDynamic) {
   UpdateAdBlockInstanceWithRules("##.blockme");
 
   WaitForBraveExtensionShieldsDataReady();
@@ -852,7 +902,8 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringDynamic) {
 }
 
 // Test custom style rules
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringCustomStyle) {
+IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest,
+                       CosmeticFilteringCustomStyle) {
   UpdateAdBlockInstanceWithRules("b.com##.ad:style(padding-bottom: 10px)");
 
   WaitForBraveExtensionShieldsDataReady();
@@ -873,7 +924,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringCustomStyle) {
 }
 
 // Test rules overridden by hostname-specific exception rules
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CosmeticFilteringUnhide) {
+IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest, CosmeticFilteringUnhide) {
   UpdateAdBlockInstanceWithRules(
       "##.ad\n"
       "b.com#@#.ad\n"

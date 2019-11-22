@@ -347,7 +347,20 @@ export default function shieldsPanelReducer (
       break
     }
     case shieldsPanelTypes.CONTENT_SCRIPTS_LOADED: {
-      applyAdblockCosmeticFilters(action.tabId, getHostname(action.url))
+      const tabData = state.tabs[action.tabId]
+      if (!tabData) {
+        console.error('Active tab not found')
+        break
+      }
+      const cosmeticBlockingEnabled = tabData.cosmeticBlocking
+      chrome.braveShields.getBraveShieldsEnabledAsync(action.url)
+        .then((braveShieldsEnabled: boolean) => {
+          const doCosmeticBlocking = braveShieldsEnabled && cosmeticBlockingEnabled
+          if (doCosmeticBlocking) {
+            applyAdblockCosmeticFilters(action.tabId, getHostname(action.url))
+          }
+        })
+      break
     }
   }
 
