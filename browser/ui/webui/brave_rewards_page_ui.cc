@@ -1713,7 +1713,7 @@ BraveRewardsPageUI::BraveRewardsPageUI(content::WebUI* web_ui,
               kBraveRewardsSettingsGenerated,
               kBraveRewardsSettingsGeneratedSize,
 #endif
-#if defined(OS_ANDROID)
+#if defined(OS_ANDROID) && defined(BRAVE_CHROMIUM_BUILD)
               IDR_BRAVE_REWARDS_ANDROID_PAGE_HTML) {
 #else
               IDR_BRAVE_REWARDS_PAGE_HTML) {

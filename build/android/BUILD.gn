@@ -1,35 +1,35 @@
 import("//brave/build/config.gni")
 import("//build/config/android/rules.gni")
 
-copy("brave") {
-  visibility = [ "*" ]
-  deps = []
-  sources = []
-  file_name_part = ""
-  if (target_apk_base == "modern") {
-    assert(target_cpu != "arm64" && target_cpu != "x64")
-    deps += ["//chrome/android:chrome_modern_public_apk"]
-    file_name_part = "Modern"
-    sources += [
-      "$root_out_dir/apks/ChromeModernPublic.apk"
-    ]
-  } else if (target_cpu == "arm64" || target_cpu == "x64" ||
-      target_apk_base == "mono") {
-    deps += ["//chrome/android:monochrome_public_apk"]
-    file_name_part = "Mono"
-    sources += [
-      "$root_out_dir/apks/MonochromePublic.apk"
-    ]
-  } else {
-    deps += ["//chrome/android:chrome_public_apk"]
-    sources += [
-      "$root_out_dir/apks/ChromePublic.apk"
-    ]
-  }
-  outputs = [
-    "$root_out_dir/apks/Brave$file_name_part$target_cpu.apk",
-  ]
-}
+# copy("brave") {
+#  visibility = [ "*" ]
+#  deps = []
+#  sources = []
+#  file_name_part = ""
+#  if (target_apk_base == "modern") {
+#    assert(target_cpu != "arm64" && target_cpu != "x64")
+#    deps += ["//chrome/android:chrome_modern_public_apk"]
+#    file_name_part = "Modern"
+#    sources += [
+#      "$root_out_dir/apks/ChromeModernPublic.apk"
+#    ]
+#  } else if (target_cpu == "arm64" || target_cpu == "x64" ||
+#      target_apk_base == "mono") {
+#    deps += ["//chrome/android:monochrome_public_apk"]
+#    file_name_part = "Mono"
+#    sources += [
+#      "$root_out_dir/apks/MonochromePublic.apk"
+#    ]
+#  } else {
+#    deps += ["//chrome/android:chrome_public_apk"]
+#    sources += [
+#      "$root_out_dir/apks/ChromePublic.apk"
+#    ]
+#  }
+#  outputs = [
+#    "$root_out_dir/apks/Brave$file_name_part$target_cpu.apk",
+#  ]
+# }
 
 java_strings_grd("android_brave_strings_grd") {
   grd_file = "//brave/android/java/strings/android_brave_strings.grd"

@@ -40,7 +40,7 @@ base::FilePath GetResourcesPakFilePath() {
 }
 #endif  // OS_ANDROID
 
-#if !defined(OS_ANDROID)
+#if !defined(BRAVE_CHROMIUM_BUILD) || !defined(OS_ANDROID)
 base::FilePath GetScaledResourcesPakFilePath(ui::ScaleFactor scale_factor) {
   DCHECK(scale_factor == ui::SCALE_FACTOR_100P ||
          scale_factor == ui::SCALE_FACTOR_200P);
