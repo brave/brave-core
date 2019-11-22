@@ -24,6 +24,18 @@
 #include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
 #endif
 
+BravePrivacyHandler::BravePrivacyHandler() {
+  local_state_change_registrar_.Init(g_browser_process->local_state());
+  local_state_change_registrar_.Add(
+      kRemoteDebuggingEnabled,
+      base::Bind(&BravePrivacyHandler::OnRemoteDebuggingEnabledChanged,
+                 base::Unretained(this)));
+}
+
+BravePrivacyHandler::~BravePrivacyHandler() {
+  local_state_change_registrar_.RemoveAll();
+}
+
 void BravePrivacyHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
 
@@ -49,18 +61,6 @@ void BravePrivacyHandler::RegisterMessages() {
       "getRemoteDebuggingEnabled",
       base::BindRepeating(&BravePrivacyHandler::GetRemoteDebuggingEnabled,
                           base::Unretained(this)));
-}
-
-void BravePrivacyHandler::OnJavascriptAllowed() {
-  local_state_change_registrar_.Init(g_browser_process->local_state());
-  local_state_change_registrar_.Add(
-      kRemoteDebuggingEnabled,
-      base::Bind(&BravePrivacyHandler::OnRemoteDebuggingEnabledChanged,
-                 base::Unretained(this)));
-}
-
-void BravePrivacyHandler::OnJavascriptDisallowed() {
-  local_state_change_registrar_.RemoveAll();
 }
 
 // static

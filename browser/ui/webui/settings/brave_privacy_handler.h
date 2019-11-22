@@ -17,16 +17,16 @@ class Profile;
 
 class BravePrivacyHandler : public settings::SettingsPageUIHandler {
  public:
-  BravePrivacyHandler() = default;
-  ~BravePrivacyHandler() override = default;
+  BravePrivacyHandler();
+  ~BravePrivacyHandler() override;
   static void AddLoadTimeData(content::WebUIDataSource* data_source,
                               Profile* profile);
 
  private:
   // SettingsPageUIHandler overrides:
   void RegisterMessages() override;
-  void OnJavascriptAllowed() override;
-  void OnJavascriptDisallowed() override;
+  void OnJavascriptAllowed() override {}
+  void OnJavascriptDisallowed() override {}
 
   void SetWebRTCPolicy(const base::ListValue* args);
   void GetWebRTCPolicy(const base::ListValue* args);
