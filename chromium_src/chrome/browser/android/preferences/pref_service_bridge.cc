@@ -3,7 +3,9 @@
  * License, v. 3.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/version_info.h"
 #include "chrome/android/chrome_jni_headers/PrefServiceBridge_jni.h"
+
 #define JNI_PrefServiceBridge_GetAboutVersionStrings \
   JNI_PrefServiceBridge_GetAboutVersionStrings_ChromiumImpl
 #include "../../../../../chrome/browser/android/preferences/pref_service_bridge.cc"
@@ -23,7 +25,7 @@ static ScopedJavaLocalRef<jobject> JNI_PrefServiceBridge_GetAboutVersionStrings(
   application.append(" ");
   application.append(android_build_info->package_version_name());
   application.append(", Chromium ");
-  application.append(version_info::GetVersionNumber());
+  application.append(version_info::GetBraveChromiumVersionNumber());
 
   return Java_PrefServiceBridge_createAboutVersionStrings(
       env, ConvertUTF8ToJavaString(env, application),
