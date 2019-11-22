@@ -38,10 +38,6 @@ class AdContentButton: UIControl {
     return backgroundView
   }()
   
-  private var isDarkMode: Bool {
-    return traitCollection.userInterfaceStyle == .dark
-  }
-  
   override public init(frame: CGRect) {
     super.init(frame: frame)
     
@@ -86,7 +82,7 @@ class AdContentButton: UIControl {
     layer.shadowOffset = CGSize(width: 0, height: 1)
     layer.shadowRadius = 2
     
-    applyTheme()
+    applyTheme(for: traitCollection)
   }
   
   public override func layoutSubviews() {
@@ -111,7 +107,8 @@ class AdContentButton: UIControl {
     }
   }
   
-  func applyTheme() {
+  func applyTheme(for traitCollection: UITraitCollection) {
+    let isDarkMode = traitCollection.userInterfaceStyle == .dark
     appNameLabel.appearanceTextColor = (isDarkMode ? UIColor.white : UIColor.black).withAlphaComponent(0.5)
     titleLabel.appearanceTextColor = isDarkMode ? .white : .black
     bodyLabel.appearanceTextColor = isDarkMode ? .white : .black
@@ -120,6 +117,6 @@ class AdContentButton: UIControl {
   
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
-    applyTheme()
+    applyTheme(for: traitCollection)
   }
 }

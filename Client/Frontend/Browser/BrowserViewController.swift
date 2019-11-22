@@ -383,6 +383,8 @@ class BrowserViewController: UIViewController {
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
         if #available(iOS 13.0, *) {
             if UITraitCollection.current.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
                 // Reload UI
