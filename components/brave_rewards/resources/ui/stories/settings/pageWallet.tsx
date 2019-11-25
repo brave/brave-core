@@ -28,9 +28,9 @@ const wiki = require('../img/wiki.jpg')
 
 export interface Props {
   grants: {
-    tokens: string,
-    expireDate: string,
-    type: string
+    amount: number,
+    expiresAt: string,
+    type: number
   }[]
   content: 'empty' | 'summary' | 'off'
   walletState: WalletState

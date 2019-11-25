@@ -49,7 +49,7 @@ storiesOf('Rewards/Grant', module)
       <div style={{ width: '373px', height: '715px', position: 'relative' }}>
         <GrantCaptcha
           onSolution={dummyClick}
-          dropBgImage={captchaDrop}
+          captchaImage={captchaDrop}
           hint={'blue'}
         />
       </div>

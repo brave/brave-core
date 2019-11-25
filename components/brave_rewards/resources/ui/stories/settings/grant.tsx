@@ -70,7 +70,7 @@ class Grant extends React.Component<Props, State > {
               title={'Almost there…'}
               text={'Prove that you are human!'}
           >
-            <GrantCaptcha onSolution={this.onSolution} dropBgImage={captchaDrop} hint={'blue'} />
+            <GrantCaptcha onSolution={this.onSolution} captchaImage={captchaDrop} hint={'blue'} />
           </GrantWrapper>
           : null
         }
