@@ -95,7 +95,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
     walletView.headerView.grantsButton.addTarget(self, action: #selector(tappedGrantsButton), for: .touchUpInside)
 
     updateWalletHeader()
-    state.ledger.fetchBalance(nil)
+    updateWalletState()
     
     rewardsSummaryView.monthYearLabel.text = summaryPeriod
     rewardsSummaryView.rows = summaryRows
@@ -176,6 +176,21 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
   }
   
   // MARK: -
+  
+  func updateWalletState() {
+    state.ledger.fetchBalance { balance in
+      if balance == nil && self.state.ledger.balance == nil {
+        // No balance to display: Error
+        self.showServerErrorNotification()
+      }
+    }
+    state.ledger.fetchWalletDetails { properties in
+      if properties == nil && self.state.ledger.walletInfo == nil {
+        // No wallet properties to display: Error
+        self.showServerErrorNotification()
+      }
+    }
+  }
   
   private lazy var publisherSummaryView = PublisherSummaryView()
   private lazy var rewardsDisabledView = RewardsDisabledView().then {
@@ -468,21 +483,25 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
 }
 
 extension WalletViewController {
+  func showServerErrorNotification() {
+    let notification = RewardsNotificationViewBuilder.networkUnavailableNotification
+    notification.closeButton.isHidden = true
+    self.walletView.setNotificationView(notification, animated: true)
+  }
+  
   func startNetworkObserver() {
     networkMonitor.pathUpdateHandler = {[weak self] path in
       guard let self = self else {
         return
       }
-        if path.status == .satisfied {
-            //hide network not available banner
-            self.walletView.setNotificationView(nil, animated: true)
-            self.loadNextNotification()
-        } else {
-            //Show network not available banner
-            let notification = RewardsNotificationViewBuilder.networkUnavailableNotification
-            notification.closeButton.isHidden = true
-            self.walletView.setNotificationView(notification, animated: true)
-        }
+      if path.status == .satisfied && (self.state.ledger.balance != nil && self.state.ledger.walletInfo != nil) {
+        //hide network not available banner
+        self.walletView.setNotificationView(nil, animated: true)
+        self.loadNextNotification()
+      } else {
+        //Show network not available banner
+        self.showServerErrorNotification()
+      }
     }
     networkMonitor.start(queue: .main)
   }
@@ -513,6 +532,11 @@ extension WalletViewController {
   }
   
   private func loadNextNotification() {
+    if state.ledger.balance == nil || state.ledger.walletInfo == nil {
+      // Showing error
+      return
+    }
+    
     if let notification = state.ledger.notifications.first {
       currentNotification = notification
       if let notificationView = RewardsNotificationViewBuilder.get(notification: notification) {
