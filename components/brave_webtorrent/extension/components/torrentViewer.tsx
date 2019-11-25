@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Assets
-require('../../../fonts/muli.css')
+require('../../../../ui/webui/resources/fonts/muli.css')
 require('../styles/styles.css')
 
 // Components
