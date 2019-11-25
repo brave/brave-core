@@ -94,6 +94,12 @@ window.cr.define('brave_rewards_tip', function () {
     getActions().onOnlyAnonWallet(only)
   }
 
+  function reconcileComplete (properties: {type: number, result: number}) {
+    if (properties.result === 0) {
+      getActions().getBalance()
+    }
+  }
+
   return {
     initialize,
     publisherBanner,
@@ -104,7 +110,8 @@ window.cr.define('brave_rewards_tip', function () {
     recurringTipSaved,
     balance,
     externalWallet,
-    onlyAnonWallet
+    onlyAnonWallet,
+    reconcileComplete
   }
 })
 

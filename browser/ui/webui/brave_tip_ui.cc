@@ -91,6 +91,13 @@ class RewardsTipDOMHandler : public WebUIMessageHandler,
   void OnRecurringTipRemoved(brave_rewards::RewardsService* rewards_service,
                              bool success) override;
 
+  void OnReconcileComplete(
+      brave_rewards::RewardsService* rewards_service,
+      unsigned int result,
+      const std::string& viewing_id,
+      const std::string& probi,
+      const int32_t type) override;
+
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
   base::WeakPtrFactory<RewardsTipDOMHandler> weak_factory_;
 
@@ -476,4 +483,23 @@ void RewardsTipDOMHandler::OnlyAnonWallet(const base::ListValue* args) {
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards_tip.onlyAnonWallet",
       base::Value(allow));
+}
+
+void RewardsTipDOMHandler::OnReconcileComplete(
+    brave_rewards::RewardsService* rewards_service,
+    unsigned int result,
+    const std::string& viewing_id,
+    const std::string& probi,
+    const int32_t type) {
+  if (!web_ui()->CanCallJavascript()) {
+     return;
+  }
+
+  base::DictionaryValue complete;
+  complete.SetKey("result", base::Value(static_cast<int>(result)));
+  complete.SetKey("type", base::Value(type));
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards_tip.reconcileComplete",
+      complete);
 }
