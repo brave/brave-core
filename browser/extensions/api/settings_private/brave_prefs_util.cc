@@ -60,7 +60,7 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   // appearance prefs
   (*s_brave_whitelist)[kLocationBarIsWide] =
     settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kAutocompleteEnabledInAddressBar] =
+  (*s_brave_whitelist)[kAutocompleteEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kHideBraveRewardsButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

@@ -26,5 +26,5 @@ const AutocompleteSchemeClassifier&
 }
 
 bool BraveOmniboxClient::IsAutocompleteEnabled() const {
-  return profile_->GetPrefs()->GetBoolean(kAutocompleteEnabledInAddressBar);
+  return profile_->GetPrefs()->GetBoolean(kAutocompleteEnabled);
 }

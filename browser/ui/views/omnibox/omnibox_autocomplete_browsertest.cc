@@ -38,7 +38,7 @@ IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
 
   // Initially autocomplete is enabled.
   EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
-      kAutocompleteEnabledInAddressBar));
+      kAutocompleteEnabled));
 
   edit_model()->SetUserText(base::ASCIIToUTF16("foo"));
   edit_model()->StartAutocomplete(false, false);
@@ -49,7 +49,7 @@ IN_PROC_BROWSER_TEST_F(OmniboxAutocompleteTest, AutocompleteDisabledTest) {
 
   edit_model()->StopAutocomplete();
 
-  browser()->profile()->GetPrefs()->SetBoolean(kAutocompleteEnabledInAddressBar,
+  browser()->profile()->GetPrefs()->SetBoolean(kAutocompleteEnabled,
                                                false);
   edit_model()->SetUserText(base::ASCIIToUTF16("bar"));
   edit_model()->StartAutocomplete(false, false);

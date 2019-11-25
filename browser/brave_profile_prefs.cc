@@ -178,7 +178,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kBraveWalletEnabled, true);
 
   // Autocomplete in address bar
-  registry->RegisterBooleanPref(kAutocompleteEnabledInAddressBar, true);
+  registry->RegisterBooleanPref(kAutocompleteEnabled, true);
 
   RegisterProfilePrefsForMigration(registry);
 }
