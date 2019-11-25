@@ -24,6 +24,8 @@ namespace user_prefs {
 class PrefRegistrySyncable;
 }
 
+void MigrateBraveSyncPrefs(Profile* profile);
+
 namespace brave_sync {
 
 class Settings;
@@ -37,6 +39,7 @@ extern const char kSyncDeviceId[];
 // like "145,58,125,111,85,164,236,38,204,67,40,31,182,114,14,152,242,..."
 extern const char kSyncSeed[];
 // For storing previous seed after reset. It won't be cleared by Clear()
+// Now is deprecated.
 extern const char kSyncPrevSeed[];
 // String of current device namefor sync
 extern const char kSyncDeviceName[];
@@ -78,8 +81,6 @@ class Prefs {
 
   std::string GetSeed() const;
   void SetSeed(const std::string& seed);
-  std::string GetPrevSeed() const;
-  void SetPrevSeed(const std::string& seed);
   std::string GetThisDeviceId() const;
   void SetThisDeviceId(const std::string& device_id);
   std::string GetThisDeviceName() const;

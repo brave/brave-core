@@ -9,9 +9,17 @@
 
 #include "brave/components/brave_sync/settings.h"
 #include "brave/components/brave_sync/sync_devices.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "content/public/browser/browser_thread.h"
+
+void MigrateBraveSyncPrefs(Profile* profile) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  PrefService* prefs = profile->GetPrefs();
+  prefs->ClearPref(brave_sync::prefs::kSyncPrevSeed);
+}
 
 namespace brave_sync {
 namespace prefs {
@@ -73,14 +81,6 @@ std::string Prefs::GetSeed() const {
 void Prefs::SetSeed(const std::string& seed) {
   DCHECK(!seed.empty());
   pref_service_->SetString(kSyncSeed, seed);
-}
-
-std::string Prefs::GetPrevSeed() const {
-  return pref_service_->GetString(kSyncPrevSeed);
-}
-
-void Prefs::SetPrevSeed(const std::string& seed) {
-  pref_service_->SetString(kSyncPrevSeed, seed);
 }
 
 std::string Prefs::GetThisDeviceId() const {

@@ -39,7 +39,7 @@ export class SyncPage extends React.PureComponent<Props, {}> {
     return (
       <div id='syncPage'>
         {
-          syncData.isSyncConfigured && syncData.devices.length > 1
+          syncData.isSyncConfigured
             ? <EnabledContent syncData={syncData} actions={actions} />
             : <DisabledContent syncData={syncData} actions={actions} />
         }

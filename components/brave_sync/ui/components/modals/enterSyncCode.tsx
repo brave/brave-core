@@ -53,8 +53,7 @@ export default class EnterSyncCodeModal extends React.PureComponent<Props, State
       (
         this.state.willCreateNewSyncChainFromCode &&
         prevProps.syncData.isSyncConfigured !==
-        this.props.syncData.isSyncConfigured &&
-        this.props.syncData.devices.length > 1
+        this.props.syncData.isSyncConfigured
       )
     ) {
       this.setState({ willCreateNewSyncChainFromCode: false })
@@ -87,8 +86,8 @@ export default class EnterSyncCodeModal extends React.PureComponent<Props, State
   }
 
   onClickConfirmSyncCode = () => {
-    const { error, thisDeviceName } = this.props.syncData
-    if (thisDeviceName !== '' || error) {
+    const { error } = this.props.syncData
+    if (error) {  // Important for the STR
       return
     }
     const { passphrase } = this.state

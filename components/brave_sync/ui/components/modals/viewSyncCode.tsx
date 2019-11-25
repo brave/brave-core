@@ -48,7 +48,6 @@ export default class ViewSyncCodeModal extends React.PureComponent<Props, State>
 
   componentDidUpdate (prevProps: Readonly<Props>) {
     if (
-        this.props.syncData.devices.length > 1 &&
         prevProps.syncData.devices.length !==
         this.props.syncData.devices.length
     ) {
@@ -74,10 +73,10 @@ export default class ViewSyncCodeModal extends React.PureComponent<Props, State>
   }
 
   onDismissModal = () => {
-    const { devices, isSyncConfigured } = this.props.syncData
+    const { isSyncConfigured } = this.props.syncData
     // if user is still trying to build a sync chain,
     // open the confirmation modal. otherwise close it
-    isSyncConfigured && devices.length < 2
+    isSyncConfigured
       ? this.setState({ willCancelViewCode: true })
       : this.dismissAllModals()
   }
@@ -87,12 +86,12 @@ export default class ViewSyncCodeModal extends React.PureComponent<Props, State>
   }
 
   onConfirmDismissModal = () => {
-    const { devices, isSyncConfigured } = this.props.syncData
+    const { isSyncConfigured } = this.props.syncData
     // sync is enabled when at least 2 devices are in the chain.
     // this modal works both with sync enabled and disabled states.
     // in case user opens it in the enabled content screen,
     // check there are 2 devices in chain before reset
-    if (isSyncConfigured && devices.length < 2) {
+    if (isSyncConfigured) {
       this.props.actions.onSyncReset()
       this.dismissAllModals()
     }
