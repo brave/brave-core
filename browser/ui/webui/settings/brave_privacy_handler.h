@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_PRIVACY_HANDLER_H_
 
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
+#include "components/prefs/pref_change_registrar.h"
 
 namespace content {
 class WebUIDataSource;
@@ -16,8 +17,8 @@ class Profile;
 
 class BravePrivacyHandler : public settings::SettingsPageUIHandler {
  public:
-  BravePrivacyHandler() = default;
-  ~BravePrivacyHandler() override = default;
+  BravePrivacyHandler();
+  ~BravePrivacyHandler() override;
   static void AddLoadTimeData(content::WebUIDataSource* data_source,
                               Profile* profile);
 
@@ -33,7 +34,12 @@ class BravePrivacyHandler : public settings::SettingsPageUIHandler {
   void SetP3AEnabled(const base::ListValue* args);
   void GetP3AEnabled(const base::ListValue* args);
 
+  void SetRemoteDebuggingEnabled(const base::ListValue* args);
+  void GetRemoteDebuggingEnabled(const base::ListValue* args);
+  void OnRemoteDebuggingEnabledChanged();
+
   Profile* profile_ = nullptr;
+  PrefChangeRegistrar local_state_change_registrar_;
 
   DISALLOW_COPY_AND_ASSIGN(BravePrivacyHandler);
 };

@@ -390,6 +390,10 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_PUSH_MESSAGING" desc="Select value">
         Use Google Services for Push Messaging
       </message>
+      <!-- Remote Debugging -->
+      <message name="IDS_SETTINGS_REMOTE_DEBUGGING_TITLE" desc="Select value">
+        Remote debugging
+      </message>
       <!-- Brave Sync Settings -->
       <message name="IDS_SETTINGS_BRAVE_SYNC_TITLE" desc="The title for Brave Sync in settings">
         Sync
