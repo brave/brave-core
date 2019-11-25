@@ -24,7 +24,9 @@ namespace user_prefs {
 class PrefRegistrySyncable;
 }
 
+#if !defined(OS_IOS)
 void MigrateBraveSyncPrefs(Profile* profile);
+#endif  // !defined(OS_IOS)
 
 namespace brave_sync {
 

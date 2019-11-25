@@ -13,6 +13,9 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+
+#if !defined(OS_IOS)
+
 #include "content/public/browser/browser_thread.h"
 
 void MigrateBraveSyncPrefs(Profile* profile) {
@@ -20,6 +23,7 @@ void MigrateBraveSyncPrefs(Profile* profile) {
   PrefService* prefs = profile->GetPrefs();
   prefs->ClearPref(brave_sync::prefs::kSyncPrevSeed);
 }
+#endif  // !defined(OS_IOS)
 
 namespace brave_sync {
 namespace prefs {
