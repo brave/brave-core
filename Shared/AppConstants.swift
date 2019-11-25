@@ -26,7 +26,7 @@ public enum AppBuildChannel: String {
     public var serverChannelParam: String {
         switch self {
         case .release:
-            return "stable"
+            return "release"
         case .beta:
             return "beta"
          case .enterprise:
