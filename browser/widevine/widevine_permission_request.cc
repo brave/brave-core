@@ -12,6 +12,12 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
+#if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
+#include "base/bind.h"
+#include "base/task/post_task.h"
+#include "base/task/task_traits.h"
+#endif
+
 WidevinePermissionRequest::WidevinePermissionRequest(
     content::WebContents* web_contents)
     : web_contents_(web_contents) {
@@ -39,7 +45,11 @@ void WidevinePermissionRequest::PermissionGranted() {
 #endif
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  InstallBundleOrRestartBrowser();
+  // Run next commands at the next loop turn to prevent this is destroyed
+  // by restarting process. This should be destroyed by RequestFinished().
+  PostTask(FROM_HERE,
+           { base::CurrentThread(), base::TaskPriority::BEST_EFFORT },
+           base::BindOnce(&InstallBundleOrRestartBrowser));
 #endif
 }
 
