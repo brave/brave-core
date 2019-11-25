@@ -21,6 +21,7 @@ source_set("renderer") {
     "//chrome/common",
     "//components/content_settings/core/common",
     "//content/public/renderer",
+    "//mojo/public/cpp/bindings",
     "//services/service_manager/public/cpp",
     "//third_party/blink/public:blink",
     "//brave/content:common",
