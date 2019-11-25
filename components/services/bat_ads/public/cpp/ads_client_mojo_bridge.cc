@@ -368,26 +368,27 @@ void AdsClientMojoBridge::SaveBundleState(const std::string& bundle_state_json,
 void AdsClientMojoBridge::OnGetAds(
     CallbackHolder<GetAdsCallback>* holder,
     ads::Result result,
-    const std::string& category,
+    const std::vector<std::string>& categories,
     const std::vector<ads::AdInfo>& ad_info) {
   if (holder->is_valid()) {
     std::vector<std::string> ad_info_json;
     for (const auto it : ad_info) {
       ad_info_json.push_back(it.ToJson());
     }
-    std::move(holder->get()).Run(ToMojomResult(result), category, ad_info_json);
+    std::move(holder->get()).Run(ToMojomResult(result), categories,
+        ad_info_json);
   }
   delete holder;
 }
 
 void AdsClientMojoBridge::GetAds(
-    const std::string& category,
+    const std::vector<std::string>& categories,
     GetAdsCallback callback) {
   // this gets deleted in OnSaveBundleState
   auto* holder = new CallbackHolder<GetAdsCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ads_client_->GetAds(category, std::bind(AdsClientMojoBridge::OnGetAds,
+  ads_client_->GetAds(categories, std::bind(AdsClientMojoBridge::OnGetAds,
       holder, _1, _2, _3));
 }
 

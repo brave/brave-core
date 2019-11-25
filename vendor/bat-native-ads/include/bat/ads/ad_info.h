@@ -33,6 +33,7 @@ struct ADS_EXPORT AdInfo {
   unsigned int total_max;
   std::vector<std::string> regions;
   std::string advertiser;
+  std::string category;
   std::string notification_text;
   std::string notification_url;
   std::string uuid;

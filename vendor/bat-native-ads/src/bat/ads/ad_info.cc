@@ -10,18 +10,9 @@
 namespace ads {
 
 AdInfo::AdInfo() :
-    creative_set_id(""),
-    campaign_id(""),
-    start_timestamp(""),
-    end_timestamp(""),
     daily_cap(0),
     per_day(0),
-    total_max(0),
-    regions({}),
-    advertiser(""),
-    notification_text(""),
-    notification_url(""),
-    uuid("") {}
+    total_max(0) {}
 
 AdInfo::AdInfo(const AdInfo& info) :
     creative_set_id(info.creative_set_id),
@@ -33,6 +24,7 @@ AdInfo::AdInfo(const AdInfo& info) :
     total_max(info.total_max),
     regions(info.regions),
     advertiser(info.advertiser),
+    category(info.category),
     notification_text(info.notification_text),
     notification_url(info.notification_url),
     uuid(info.uuid) {}
@@ -99,6 +91,10 @@ Result AdInfo::FromJson(
     advertiser = document["advertiser"].GetString();
   }
 
+  if (document.HasMember("category")) {
+    category = document["category"].GetString();
+  }
+
   if (document.HasMember("notification_text")) {
     notification_text = document["notification_text"].GetString();
   }
@@ -147,6 +143,9 @@ void SaveToJson(JsonWriter* writer, const AdInfo& info) {
 
   writer->String("advertiser");
   writer->String(info.advertiser.c_str());
+
+  writer->String("category");
+  writer->String(info.category.c_str());
 
   writer->String("notification_text");
   writer->String(info.notification_text.c_str());

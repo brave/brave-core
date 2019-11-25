@@ -367,6 +367,7 @@ bool BundleStateDatabase::GetAdsForCategory(
     ads::AdInfo info;
     info.creative_set_id = info_sql.ColumnString(0);
     info.advertiser = info_sql.ColumnString(1);
+    info.category = category;
     info.notification_text = info_sql.ColumnString(2);
     info.notification_url = info_sql.ColumnString(3);
     info.start_timestamp = info_sql.ColumnString(4);

@@ -121,7 +121,7 @@ class MockAdsClient : public AdsClient {
       OnResetCallback callback));
 
   MOCK_METHOD2(GetAds, void(
-      const std::string& category,
+      const std::vector<std::string>& categories,
       OnGetAdsCallback callback));
 
   MOCK_CONST_METHOD1(EventLog, void(

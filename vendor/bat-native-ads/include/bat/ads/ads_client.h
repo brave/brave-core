@@ -48,8 +48,8 @@ using OnLoadCallback = std::function<void(const Result, const std::string&)>;
 
 using OnResetCallback = std::function<void(const Result)>;
 
-using OnGetAdsCallback = std::function<void(const Result, const std::string&,
-    const std::vector<AdInfo>&)>;
+using OnGetAdsCallback = std::function<void(const Result,
+    const std::vector<std::string>&, const std::vector<AdInfo>&)>;
 
 using OnLoadSampleBundleCallback = std::function<void(const Result,
     const std::string&)>;
@@ -229,7 +229,7 @@ class ADS_EXPORT AdsClient {
   // |category| should contain the category. |ads| should contain an array of
   // ads
   virtual void GetAds(
-      const std::string& category,
+      const std::vector<std::string>& categories,
       OnGetAdsCallback callback) = 0;
 
   // Should log an event

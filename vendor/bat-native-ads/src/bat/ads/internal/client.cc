@@ -352,7 +352,7 @@ const std::map<std::string, uint64_t> Client::GetAdsUUIDSeen() {
 
 void Client::ResetAdsUUIDSeen(
     const std::vector<AdInfo>& ads) {
-  BLOG(INFO) << "Resetting seen Ads";
+  BLOG(INFO) << "Resetting seen ads";
 
   for (const auto& ad : ads) {
     auto ad_uuid_seen = client_state_->ads_uuid_seen.find(ad.uuid);
