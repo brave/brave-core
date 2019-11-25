@@ -65,9 +65,10 @@ def parse_args():
         description=desc, formatter_class=RawTextHelpFormatter)
     parser.add_argument('-d', '--debug', action='store_true',
                         help='Print debug statements')
-    parser.add_argument('-o', '--output', help='Output format: markdown or html', required=True)
+    parser.add_argument('-o', '--output', help='Output format: markdown or html (required)', required=True)
     parser.add_argument('-t', '--tag',
-                        help='Brave version tag (allowed format: "v0.60.45" or "refs/tags/v0.60.45")', required=True)
+                        help='Brave version tag (allowed format: "v0.60.45" or "refs/tags/v0.60.45") (required)',
+                        required=True)
     parser.add_argument('-u', '--url', help='URL for Brave Browser raw markdown file (required)', required=True)
     return parser.parse_args()
 
