@@ -107,7 +107,7 @@ static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
 
 + (BOOL)isCurrentLocaleSupported
 {
-  return [self isSupportedLocale:[NSLocale currentLocale].localeIdentifier];
+  return [self isSupportedLocale:[[NSLocale preferredLanguages] firstObject]];
 }
 
 BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
