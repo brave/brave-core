@@ -28,7 +28,7 @@ var $<documentHasFullscreenFunctions> = document.documentElement.requestFullscre
 
 var $<videosSupportFullscreen> = HTMLVideoElement.prototype.webkitEnterFullscreen !== undefined;
 
-if (!$<isFullscreenSupportedNatively> && $<videosSupportFullscreen>) {
+if (!$<isFullscreenSupportedNatively> && $<videosSupportFullscreen> && !/mobile/i.test(navigator.userAgent)) {
     
     HTMLElement.prototype.requestFullscreen = function() {
         if (this.webkitRequestFullscreen !== undefined) {
