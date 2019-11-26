@@ -31,6 +31,7 @@ const defaultState: NewTab.State = {
     httpsUpgradesStat: 0,
     fingerprintingBlockedStat: 0
   },
+  shouldShowBrandedWallpaper: false,
   rewardsState: {
     adsEstimatedEarnings: 0,
     balance: {

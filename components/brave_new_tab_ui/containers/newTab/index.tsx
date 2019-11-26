@@ -16,6 +16,7 @@ import {
   Gradient,
   RewardsWidget as Rewards
 } from '../../components/default'
+import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 
 // Components
 import Stats from './stats'
@@ -39,6 +40,22 @@ interface State {
   backgroundHasLoaded: boolean
 }
 
+function GetBackgroundImageSrc (props: Props) {
+  if (!props.newTabData.showBackgroundImage) {
+    return undefined
+  }
+  if (props.newTabData.shouldShowBrandedWallpaper) {
+    const wallpaperData = props.newTabData.brandedWallpaperData
+    if (wallpaperData && wallpaperData.wallpaperImageUrl) {
+      return wallpaperData.wallpaperImageUrl
+    }
+  }
+  if (props.newTabData.backgroundImage && props.newTabData.backgroundImage.source) {
+    return props.newTabData.backgroundImage.source
+  }
+  return undefined
+}
+
 class NewTabPage extends React.Component<Props, State> {
   state = {
     onlyAnonWallet: false,
@@ -46,30 +63,33 @@ class NewTabPage extends React.Component<Props, State> {
     backgroundHasLoaded: false
   }
 
+  imageSource?: string = undefined
+
   componentDidMount () {
     // if a notification is open at component mounting time, close it
     this.props.actions.onHideSiteRemovalNotification()
+    this.imageSource = GetBackgroundImageSrc(this.props)
     this.trackCachedImage()
   }
 
   componentDidUpdate (prevProps: Props) {
-    if (!prevProps.newTabData.showBackgroundImage &&
-          this.props.newTabData.showBackgroundImage) {
+    const oldImageSource = GetBackgroundImageSrc(prevProps)
+    const newImageSource = GetBackgroundImageSrc(this.props)
+    this.imageSource = newImageSource
+    if (newImageSource && oldImageSource !== newImageSource) {
       this.trackCachedImage()
     }
-    if (prevProps.newTabData.showBackgroundImage &&
-      !this.props.newTabData.showBackgroundImage) {
+    if (oldImageSource &&
+      !newImageSource) {
       // reset loaded state
       this.setState({ backgroundHasLoaded: false })
     }
   }
 
   trackCachedImage () {
-    if (this.props.newTabData.showBackgroundImage &&
-        this.props.newTabData.backgroundImage &&
-        this.props.newTabData.backgroundImage.source) {
+    if (this.imageSource) {
       const imgCache = new Image()
-      imgCache.src = this.props.newTabData.backgroundImage.source
+      imgCache.src = this.imageSource
       console.timeStamp('image start loading...')
       imgCache.onload = () => {
         console.timeStamp('image loaded')
@@ -171,17 +191,21 @@ class NewTabPage extends React.Component<Props, State> {
       return null
     }
 
+    const hasImage = this.imageSource !== undefined
+    const isShowingBrandedWallpaper = (newTabData.shouldShowBrandedWallpaper &&
+        newTabData.brandedWallpaperData) ? true : false
+
     return (
       <App dataIsReady={newTabData.initialDataLoaded}>
         <PosterBackground
-          hasImage={newTabData.showBackgroundImage}
+          hasImage={hasImage}
           imageHasLoaded={this.state.backgroundHasLoaded}
         >
-          {newTabData.showBackgroundImage && newTabData.backgroundImage &&
-            <img src={newTabData.backgroundImage.source} />
+          {hasImage &&
+            <img src={this.imageSource} />
           }
         </PosterBackground>
-        {newTabData.showBackgroundImage &&
+        {hasImage &&
           <Gradient
             imageHasLoaded={this.state.backgroundHasLoaded}
           />
@@ -246,13 +270,22 @@ class NewTabPage extends React.Component<Props, State> {
             }
           </Header>
           <Footer>
+            {isShowingBrandedWallpaper && newTabData.brandedWallpaperData &&
+             newTabData.brandedWallpaperData.logo &&
+              <BrandedWallpaperLogo
+                showWidget={isShowingBrandedWallpaper}
+                menuPosition={'right'}
+                hideWidget={() => {console.error('TODO')}}
+                textDirection={newTabData.textDirection}
+                data={newTabData.brandedWallpaperData.logo}
+              />}
             <FooterInfo
               textDirection={newTabData.textDirection}
               onClickOutside={this.closeSettings}
               backgroundImageInfo={newTabData.backgroundImage}
               onClickSettings={this.toggleSettings}
               showSettingsMenu={showSettingsMenu}
-              showPhotoInfo={newTabData.showBackgroundImage}
+              showPhotoInfo={!isShowingBrandedWallpaper && newTabData.showBackgroundImage}
               toggleShowBackgroundImage={this.toggleShowBackgroundImage}
               toggleShowClock={this.toggleShowClock}
               toggleShowStats={this.toggleShowStats}

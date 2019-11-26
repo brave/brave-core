@@ -57,16 +57,17 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
 
     return (
       <>
-        <div>
-          {showPhotoInfo && backgroundImageInfo &&
-          <PhotoName>
-            {`${getLocale('photoBy')} `}
-            <Link href={backgroundImageInfo.link} rel='noreferrer noopener' target='_blank'>
-              {backgroundImageInfo.author}
-            </Link>
-          </PhotoName>}
-        </div>
-        <Navigation>
+        { showPhotoInfo && backgroundImageInfo &&
+          <div className="credit">
+            <PhotoName>
+              {`${getLocale('photoBy')} `}
+              <Link href={backgroundImageInfo.link} rel='noreferrer noopener' target='_blank'>
+                {backgroundImageInfo.author}
+              </Link>
+            </PhotoName>
+          </div>
+        }
+        <Navigation className="navigation">
           <Settings
             textDirection={textDirection}
             showSettingsMenu={showSettingsMenu}

@@ -7,12 +7,15 @@ import * as preferencesAPI from './preferences'
 import * as statsAPI from './stats'
 import * as privateTabDataAPI from './privateTabData'
 import * as topSitesAPI from './topSites'
+import * as brandedWallpaper from './brandedWallpaper'
 
 export type InitialData = {
   preferences: preferencesAPI.Preferences
   stats: statsAPI.Stats
   privateTabData: privateTabDataAPI.PrivateTabData
-  topSites: topSitesAPI.TopSitesData
+  topSites: topSitesAPI.TopSitesData,
+  brandedWallpaperData: NewTab.BrandedWallpaper,
+  shouldShowBrandedWallpaper: boolean
 }
 
 export type PreInitialRewardsData = {
@@ -32,18 +35,29 @@ export type InitialRewardsData = {
 export async function getInitialData (): Promise<InitialData> {
   try {
     console.timeStamp('Getting initial data...')
-    const [preferences, stats, privateTabData, topSites] = await Promise.all([
+    const [
+      preferences,
+      stats,
+      privateTabData,
+      topSites,
+      brandedWallpaperData,
+      shouldShowBrandedWallpaper
+    ] = await Promise.all([
       preferencesAPI.getPreferences(),
       statsAPI.getStats(),
       privateTabDataAPI.getPrivateTabData(),
-      topSitesAPI.getTopSites()
+      topSitesAPI.getTopSites(),
+      brandedWallpaper.getBrandedWallpaper(),
+      brandedWallpaper.getShouldShow()
     ])
     console.timeStamp('Got all initial data.')
     return {
       preferences,
       stats,
       privateTabData,
-      topSites
+      topSites,
+      brandedWallpaperData,
+      shouldShowBrandedWallpaper
     }
   } catch (e) {
     console.error(e)

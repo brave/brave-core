@@ -16,13 +16,18 @@ import * as gridAPI from '../api/topSites/grid'
 import { InitialData, InitialRewardsData, PreInitialRewardsData } from '../api/initialData'
 import * as bookmarksAPI from '../api/topSites/bookmarks'
 import * as dndAPI from '../api/topSites/dnd'
+import { registerViewCount } from '../api/brandedWallpaper'
 import * as storage from '../storage'
 import { getTotalContributions } from '../rewards-utils'
 
 const initialState = storage.load()
 
-function addToDispatchQueue (fn: Function): void {
-  window.setTimeout(fn, 0)
+let sideEffectState: NewTab.State = initialState
+
+type SideEffectFunction = (currentState: NewTab.State) => void
+
+function performSideEffect (fn: SideEffectFunction): void {
+  window.setTimeout(() => fn(sideEffectState), 0)
 }
 
 export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State | undefined, action: any) => {
@@ -43,8 +48,13 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         ...initialDataPayload.preferences,
         stats: initialDataPayload.stats,
         ...initialDataPayload.privateTabData,
-        topSites: initialDataPayload.topSites
+        topSites: initialDataPayload.topSites,
+        brandedWallpaperData: initialDataPayload.brandedWallpaperData
       }
+      // TODO(petemill): only get backgroundImage if no sponsored background this time.
+      // ...We would also have to set the value at the action
+      // the branded wallpaper is turned off. Since this is a cheap string API
+      // (no image will be downloaded), we can afford to leave this here for now.
       if (initialDataPayload.preferences.showBackgroundImage) {
         state.backgroundImage = backgroundAPI.randomBackgroundImage()
       }
@@ -59,8 +69,16 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       // UI render time.
       // We at least schedule to run after the reducer has finished
       // and the resulting new state is available.
-      addToDispatchQueue(() => {
+      performSideEffect((state) => {
         gridAPI.calculateGridSites(state)
+      })
+      // Run side-effects
+      performSideEffect(async function (state) {
+        try {
+          await registerViewCount()
+        } catch (e) {
+          console.error('Error calling registerViewCount', e)
+        }
       })
       break
     case types.BOOKMARK_ADDED:
@@ -102,7 +120,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       // UI render time.
       // We at least schedule to run after the reducer has finished
       // and the resulting new state is available.
-      addToDispatchQueue(() => {
+      performSideEffect((state) => {
         gridAPI.calculateGridSites(state)
       })
       break
@@ -126,7 +144,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       // UI render time.
       // We at least schedule to run after the reducer has finished
       // and the resulting new state is available.
-      addToDispatchQueue(() => {
+      performSideEffect((state) => {
         gridAPI.calculateGridSites(state)
       })
       break
@@ -148,7 +166,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       // UI render time.
       // We at least schedule to run after the reducer has finished
       // and the resulting new state is available.
-      addToDispatchQueue(() => {
+      performSideEffect((state) => {
         gridAPI.calculateGridSites(state)
       })
       break
@@ -170,7 +188,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       // UI render time.
       // We at least schedule to run after the reducer has finished
       // and the resulting new state is available.
-      addToDispatchQueue(() => {
+      performSideEffect((state) => {
         gridAPI.calculateGridSites(state)
       })
       break
@@ -190,7 +208,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       // UI render time.
       // We at least schedule to run after the reducer has finished
       // and the resulting new state is available.
-      addToDispatchQueue(() => {
+      performSideEffect((state) => {
         gridAPI.calculateGridSites(state)
       })
       break
@@ -438,6 +456,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
     storage.debouncedSave(state)
   }
 
+  sideEffectState = state
   return state
 }
 

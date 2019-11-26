@@ -89,11 +89,11 @@ export const Footer = styled<{}, 'footer'>('footer')`
   grid-gap: 0;
   grid-template-areas: "credits actions";
 
-    > *:first-child {
+    > .credit {
       grid-area: credits;
     }
 
-    > *:nth-child(2) {
+    > .navigation {
       grid-area: actions;
     }
 
