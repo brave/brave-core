@@ -47,19 +47,14 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.PackageUtils;
 
-public class BraveRewardsOnboardingFragment extends Fragment implements View.OnTouchListener {
+public class BraveRewardsOnboardingFragment extends Fragment {
     private OnViewPagerAction onViewPagerAction;
 
     private ImageView bgImage;
 
     private TextView tvTitle, tvText, tvAgree;
 
-    private CheckBox chkAgreeTerms;
-
-    private LinearLayout termAndAgreeLayout;
-
     private Button btnSkip, btnNext;
-    private boolean isAgree;
 
     private static final String BRAVE_TERMS_PAGE =
             "https://basicattentiontoken.org/user-terms-of-service/";
@@ -79,12 +74,8 @@ public class BraveRewardsOnboardingFragment extends Fragment implements View.OnT
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         isAdsAvailable = OnboardingPrefManager.getInstance().isAdsAvailable();
 
-        isAgree = false;
-
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_brave_rewards_onboarding, container, false);
-
-        root.setOnTouchListener(this);
 
         initializeViews(root);
 
@@ -93,25 +84,13 @@ public class BraveRewardsOnboardingFragment extends Fragment implements View.OnT
         return root;
     }
 
-    @Override
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        if (isAgree && chkAgreeTerms != null && !chkAgreeTerms.isChecked()) {
-            chkAgreeTerms.startAnimation(AnimationUtils.loadAnimation(getActivity(), R.anim.shake));
-        }
-        return true;
-    }
-
     private void initializeViews(View root) {
         bgImage = root.findViewById(R.id.bg_image);
 
         tvTitle = root.findViewById(R.id.section_title);
         tvText = root.findViewById(R.id.section_text);
 
-        termAndAgreeLayout = root.findViewById(R.id.terms_agree_layout);
-
         tvAgree = root.findViewById(R.id.agree_text);
-
-        chkAgreeTerms = root.findViewById(R.id.chk_agree_terms);
 
         btnSkip = root.findViewById(R.id.btn_skip);
         btnNext = root.findViewById(R.id.btn_next);
@@ -176,54 +155,12 @@ public class BraveRewardsOnboardingFragment extends Fragment implements View.OnT
         tvAgree.setMovementMethod(LinkMovementMethod.getInstance());
         tvAgree.setText(ss);
 
-        chkAgreeTerms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked) {
-                    btnNext.setCompoundDrawablesWithIntrinsicBounds(
-                            0, 0, R.drawable.chevron_right, 0);
-                    btnNext.setTextColor(getResources().getColor(R.color.onboarding_orange));
-                } else {
-                    btnNext.setCompoundDrawablesWithIntrinsicBounds(
-                            0, 0, R.drawable.chevron_right_inactive, 0);
-                    btnNext.setTextColor(
-                            getResources().getColor(R.color.onboarding_disable_text_color));
-                }
-            }
-        });
-
         btnSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (onboardingType == OnboardingPrefManager.EXISTING_USER_REWARDS_ON_ONBOARDING) {
-                    assert onViewPagerAction != null;
-                    if (onViewPagerAction != null) onViewPagerAction.onSkip();
-                } else {
-                    if (isAgree) {
-                        termAndAgreeLayout.setVisibility(View.GONE);
-
-                        chkAgreeTerms.setChecked(false);
-
-                        btnSkip.setText(getResources().getString(R.string.no_thanks));
-                        btnNext.setText(getResources().getString(R.string.join));
-                        btnNext.setCompoundDrawablesWithIntrinsicBounds(
-                                0, 0, R.drawable.chevron_right, 0);
-                        btnNext.setTextColor(getResources().getColor(R.color.onboarding_orange));
-
-                        tvTitle.setText(
-                                getResources().getString(R.string.brave_rewards_onboarding_title));
-                        tvText.setText(textToInsert);
-                        tvText.setVisibility(View.VISIBLE);
-
-                        bgImage.setVisibility(View.VISIBLE);
-
-                        isAgree = false;
-
-                    } else {
-                        assert onViewPagerAction != null;
-                        if (onViewPagerAction != null) onViewPagerAction.onSkip();
-                    }
-                }
+                assert onViewPagerAction != null;
+                if (onViewPagerAction != null)
+                    onViewPagerAction.onSkip();
             }
         });
 
@@ -242,53 +179,18 @@ public class BraveRewardsOnboardingFragment extends Fragment implements View.OnT
                     assert onViewPagerAction != null;
                     if (onViewPagerAction != null) onViewPagerAction.onNext();
                 } else {
-                    if (!isAgree) {
-                        tvText.setVisibility(View.GONE);
+                    AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                    Intent broadcast_intent = new Intent(getActivity(), BraveRewardsServiceReceiver.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0,  broadcast_intent, 0);
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, 0, pendingIntent);
 
-                        btnSkip.setText(getResources().getString(R.string.do_not_agree));
-                        btnNext.setText(getResources().getString(R.string.agree));
-
-                        BraveRewardsHelper.crossfade(null, tvTitle, View.GONE, 1f,
-                                BraveRewardsHelper.CROSS_FADE_DURATION);
-                        BraveRewardsHelper.crossfade(null, termAndAgreeLayout, View.GONE, 1f,
-                                BraveRewardsHelper.CROSS_FADE_DURATION);
-
-                        tvTitle.setText(getResources().getString(R.string.terms_title));
-
-                        bgImage.setVisibility(View.VISIBLE);
-                        termAndAgreeLayout.setVisibility(View.VISIBLE);
-
-                        if (!chkAgreeTerms.isChecked()) {
-                            btnNext.setCompoundDrawablesWithIntrinsicBounds(
-                                    0, 0, R.drawable.chevron_right_inactive, 0);
-                            btnNext.setTextColor(
-                                    getResources().getColor(R.color.onboarding_disable_text_color));
-                        }
-
-                        isAgree = true;
-
+                    if (PackageUtils.isFirstInstall(getActivity()) && !isAdsAvailable) {
+                        OnboardingPrefManager.getInstance().setPrefOnboardingEnabled(false);
+                        getActivity().finish();
                     } else {
-                        if (!chkAgreeTerms.isChecked()) {
-                            chkAgreeTerms.startAnimation(
-                                    AnimationUtils.loadAnimation(getActivity(), R.anim.shake));
-                        } else {
-                            AlarmManager alarmManager =
-                                    (AlarmManager) getActivity().getSystemService(
-                                            Context.ALARM_SERVICE);
-                            Intent broadcast_intent =
-                                    new Intent(getActivity(), BraveRewardsServiceReceiver.class);
-                            PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                                    getActivity(), 0, broadcast_intent, 0);
-                            alarmManager.set(AlarmManager.RTC_WAKEUP, 0, pendingIntent);
-
-                            if (PackageUtils.isFirstInstall(getActivity()) && !isAdsAvailable) {
-                                OnboardingPrefManager.getInstance().setPrefOnboardingEnabled(false);
-                                getActivity().finish();
-                            } else {
-                                assert onViewPagerAction != null;
-                                if (onViewPagerAction != null) onViewPagerAction.onNext();
-                            }
-                        }
+                        assert onViewPagerAction != null;
+                        if (onViewPagerAction != null)
+                            onViewPagerAction.onNext();
                     }
                 }
             }
