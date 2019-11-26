@@ -421,7 +421,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         NOTE: This creator has not yet signed up to receive contributions from Brave users. We'll keep trying to contribute until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_BRAVE_UI_SITE_BANNER_WELCOME" desc="Tipping page title">
-        Thanks for stopping by!
+        Welcome!
       </message>
       <message name="IDS_BRAVE_UI_REWARDS_BANNER_TEXT1" desc="Tipping page description">
         You can support this site by sending a tip. It's a way of thanking them for making great content. Verified content creators get paid for their tips during the first week of each calendar month.
