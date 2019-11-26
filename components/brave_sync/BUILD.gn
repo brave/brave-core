@@ -73,10 +73,6 @@ source_set("prefs") {
   deps = [
     "//components/prefs",
   ]
-
-  if (!is_ios) {
-    deps += [ "//content/public/browser" ]
-  }
 }
 
 source_set("switches") {

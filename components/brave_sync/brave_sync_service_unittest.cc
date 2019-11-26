@@ -1008,7 +1008,7 @@ TEST_F(BraveSyncServiceTest, SendCompact) {
 
 TEST_F(BraveSyncServiceTest, MigratePrevSeed) {
   profile()->GetPrefs()->SetString(brave_sync::prefs::kSyncPrevSeed, "1,2,3");
-  MigrateBraveSyncPrefs(profile());
+  MigrateBraveSyncPrefs(profile()->GetPrefs());
   EXPECT_EQ(profile()->GetPrefs()->GetString(brave_sync::prefs::kSyncPrevSeed),
             "");
 }

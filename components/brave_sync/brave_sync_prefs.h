@@ -14,7 +14,6 @@
 #include "base/values.h"
 
 class PrefService;
-class Profile;
 
 namespace base {
 class Time;
@@ -24,9 +23,7 @@ namespace user_prefs {
 class PrefRegistrySyncable;
 }
 
-#if !defined(OS_IOS)
-void MigrateBraveSyncPrefs(Profile* profile);
-#endif  // !defined(OS_IOS)
+void MigrateBraveSyncPrefs(PrefService* prefs);
 
 namespace brave_sync {
 

@@ -6,6 +6,7 @@
 #include "brave/browser/brave_local_state_prefs.h"
 #include "brave/browser/brave_profile_prefs.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "chrome/browser/profiles/profile.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -25,6 +26,5 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
   MigrateWidevinePrefs(profile);
 #endif
   // Added 11/2019.
-  MigrateBraveSyncPrefs(profile);
+  MigrateBraveSyncPrefs(profile->GetPrefs());
 }
-

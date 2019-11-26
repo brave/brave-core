@@ -9,21 +9,13 @@
 
 #include "brave/components/brave_sync/settings.h"
 #include "brave/components/brave_sync/sync_devices.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 
-#if !defined(OS_IOS)
-
-#include "content/public/browser/browser_thread.h"
-
-void MigrateBraveSyncPrefs(Profile* profile) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  PrefService* prefs = profile->GetPrefs();
+void MigrateBraveSyncPrefs(PrefService* prefs) {
   prefs->ClearPref(brave_sync::prefs::kSyncPrevSeed);
 }
-#endif  // !defined(OS_IOS)
 
 namespace brave_sync {
 namespace prefs {
