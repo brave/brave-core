@@ -190,6 +190,16 @@
                     android:baselineAlignBottom="true"
                     android:cropToPadding="true"
                     android:visibility="gone"/>
+
+                <ImageView
+                    android:id="@+id/publisher_favicon_verified"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:contentDescription="@null"
+                    android:src="@drawable/verified_creator_large"
+                    android:layout_gravity="top|end"
+                    android:visibility="gone"/>
+
             </FrameLayout>
 
         <TextView
