@@ -43,8 +43,11 @@ void BraveLocationBarView::Init() {
   // base method calls Update and Layout
   LocationBarView::Init();
   // Change focus ring highlight path
-  focus_ring_->SetPathGenerator(
-      std::make_unique<BraveLocationBarViewFocusRingHighlightPathGenerator>());
+  if (focus_ring_) {
+    focus_ring_->SetPathGenerator(
+        std::make_unique<
+            BraveLocationBarViewFocusRingHighlightPathGenerator>());
+  }
   // brave action buttons
   brave_actions_ = new BraveActionsContainer(browser_, profile());
   brave_actions_->Init();
