@@ -24,6 +24,7 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/resource_response.h"
+#include "services/network/public/mojom/ip_endpoint.mojom.h"
 #include "services/network/public/mojom/network_context.mojom.h"
 #include "services/network/public/mojom/websocket.mojom.h"
 #include "url/gurl.h"
@@ -147,10 +148,10 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
   network::ResourceRequest request_;
   network::ResourceResponseHead response_;
   scoped_refptr<net::HttpResponseHeaders> override_headers_;
+  net::IPEndPoint remote_endpoint_;
 
   GURL redirect_url_;
   bool is_done_ = false;
-  bool waiting_for_header_client_headers_received_ = false;
   uint64_t request_id_ = 0;
 
   // chrome websocket proxy
