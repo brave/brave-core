@@ -298,8 +298,9 @@ public class BraveRewardsSiteBannerActivity extends Activity implements BraveRew
                     return false;
                 }
             });
+        } else {
+            findViewById(R.id.publisher_favicon_verified).setVisibility(View.VISIBLE);
         }
-
 
         RelativeLayout monthly_layout = ((RelativeLayout)findViewById(R.id.monthly_contribution));
         if (mBraveRewardsNativeWorker.IsCurrentPublisherInRecurrentDonations(mBraveRewardsNativeWorker.GetPublisherId(currentTabId_))) {
