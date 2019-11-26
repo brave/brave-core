@@ -35,6 +35,9 @@ class BraveAlertIndicator::BraveAlertBackground : public views::Background {
 
   // views::Background overrides:
   void Paint(gfx::Canvas* canvas, views::View* view) const override {
+    if (!host_view_->IsTabAudioToggleable())
+      return;
+
     gfx::Point center = host_view_->GetContentsBounds().CenterPoint();
     SkPath path;
     path.setFillType(SkPath::kEvenOdd_FillType);
@@ -58,7 +61,7 @@ BraveAlertIndicator::BraveAlertIndicator(Tab* parent_tab)
 
 SkColor BraveAlertIndicator::GetBackgroundColor() const {
   TabStyle::TabColors colors = parent_tab_->tab_style()->CalculateColors();
-  if (!IsAudioState(alert_state_) || !IsMouseHovered())
+  if (!IsTabAudioToggleable() || !IsMouseHovered())
     return colors.background_color;
 
   // Approximating the InkDrop behavior of the close button.
@@ -70,7 +73,7 @@ bool BraveAlertIndicator::OnMousePressed(const ui::MouseEvent& event) {
   mouse_pressed_ = true;
   SchedulePaint();
 
-  if (!IsAudioState(alert_state_))
+  if (!IsTabAudioToggleable())
     return AlertIndicator::OnMousePressed(event);
 
   return true;
@@ -80,7 +83,7 @@ void BraveAlertIndicator::OnMouseReleased(const ui::MouseEvent& event) {
   mouse_pressed_ = false;
   SchedulePaint();
 
-  if (!IsAudioState(alert_state_) || !IsMouseHovered())
+  if (!IsTabAudioToggleable() || !IsMouseHovered())
     return AlertIndicator::OnMouseReleased(event);
 
   auto* tab_strip = static_cast<TabStrip*>(parent_tab_->controller());
@@ -99,19 +102,26 @@ void BraveAlertIndicator::OnMouseReleased(const ui::MouseEvent& event) {
 }
 
 void BraveAlertIndicator::OnMouseEntered(const ui::MouseEvent& event) {
-  if (IsAudioState(alert_state_))
+  if (IsTabAudioToggleable())
     SchedulePaint();
   AlertIndicator::OnMouseExited(event);
 }
 
 void BraveAlertIndicator::OnMouseExited(const ui::MouseEvent& event) {
-  if (IsAudioState(alert_state_))
+  if (IsTabAudioToggleable())
     SchedulePaint();
   AlertIndicator::OnMouseExited(event);
 }
 
 bool BraveAlertIndicator::OnMouseDragged(const ui::MouseEvent& event) {
-  if (IsAudioState(alert_state_))
+  if (IsTabAudioToggleable())
     SchedulePaint();
   return AlertIndicator::OnMouseDragged(event);
+}
+
+bool BraveAlertIndicator::IsTabAudioToggleable() const {
+  if (parent_tab_->controller()->IsTabPinned(parent_tab_))
+    return false;
+
+  return IsAudioState(alert_state_);
 }

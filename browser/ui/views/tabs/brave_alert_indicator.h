@@ -24,6 +24,8 @@ class BraveAlertIndicator : public AlertIndicator {
 
   SkColor GetBackgroundColor() const;
 
+  bool IsTabAudioToggleable() const;
+
   bool mouse_pressed_ = false;
 
   DISALLOW_COPY_AND_ASSIGN(BraveAlertIndicator);
