@@ -5,15 +5,25 @@
 
 #include "brave/browser/extensions/api/brave_extensions_api_client.h"
 
+#include "base/strings/string_piece.h"
 #include "extensions/common/permissions/permissions_data.h"
+#include "url/origin.h"
 
 namespace extensions {
 
 bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
     content::BrowserContext* context,
     const WebRequestInfo& request) const {
-  if (IsBraveProtectedUrl(request.url)) {
-    return true;
+  const url::Origin origin = url::Origin::Create(request.url);
+  const base::StringPiece path = request.url.path_piece();
+  if (((origin.DomainIs("sandbox.uphold.com") ||
+        origin.DomainIs("uphold.com")) &&
+       base::StartsWith(path, "/authorize/",
+                        base::CompareCase::INSENSITIVE_ASCII)) ||
+      (origin.DomainIs("api.uphold.com") &&
+       base::StartsWith(path, "/oauth2/token",
+                        base::CompareCase::INSENSITIVE_ASCII))) {
+    return true;  // protected URL
   }
   return ChromeExtensionsAPIClient::ShouldHideBrowserNetworkRequest(context,
                                                                     request);

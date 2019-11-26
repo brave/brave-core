@@ -223,14 +223,17 @@ test("brave_unit_tests") {
   if (enable_extensions) {
     sources += [
       "//brave/chromium_src/extensions/browser/sandboxed_unpacker_unittest.cc",
-      "//brave/chromium_src/extensions/common/permissions/permissions_data_unittest.cc",
+      "//brave/browser/extensions/api/brave_extensions_api_client_unittest.cc",
       "//chrome/browser/extensions/extension_service_test_base.cc",
       "//chrome/browser/extensions/extension_service_test_base.h",
       "//chrome/browser/extensions/api/bookmarks/bookmarks_api_unittest.cc",
     ]
 
     deps += [
+      "//brave/browser/extensions",
       "//extensions/browser:test_support",
+      "//extensions/browser/api/web_request",
+      "//url",
     ]
   }
 
