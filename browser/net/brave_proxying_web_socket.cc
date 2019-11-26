@@ -187,6 +187,7 @@ void BraveProxyingWebSocket::OnConnectionEstablished(
     mojo::ScopedDataPipeConsumerHandle readable) {
   DCHECK(forwarding_handshake_client_);
   DCHECK(!is_done_);
+  remote_endpoint_ = response->remote_endpoint;
   forwarding_handshake_client_->OnConnectionEstablished(
       std::move(websocket), std::move(client_receiver), selected_protocol,
       extensions, std::move(response), std::move(readable));
@@ -219,16 +220,9 @@ void BraveProxyingWebSocket::OnHeadersReceived(
     OnHeadersReceivedCallback callback) {
   DCHECK(proxy_has_extra_headers());
 
-  // Note: since there are different pipes used for WebSocketClient and
-  // TrustedHeaderClient, there are no guarantees whether this or
-  // OnResponseReceived are called first.
   on_headers_received_callback_ = std::move(callback);
   response_.headers = base::MakeRefCounted<net::HttpResponseHeaders>(headers);
 
-  if (!waiting_for_header_client_headers_received_)
-    return;
-
-  waiting_for_header_client_headers_received_ = false;
   ContinueToHeadersReceived();
 }
 
@@ -310,6 +304,11 @@ void BraveProxyingWebSocket::OnBeforeSendHeadersComplete(int error_code) {
 }
 
 void BraveProxyingWebSocket::ContinueToStartRequest(int error_code) {
+  if (error_code != net::OK) {
+    OnError(error_code);
+    return;
+  }
+
   std::vector<network::mojom::HttpHeaderPtr> additional_headers;
   if (!proxy_has_extra_headers()) {
     for (net::HttpRequestHeaders::Iterator it(request_.headers);
@@ -367,7 +366,7 @@ void BraveProxyingWebSocket::OnHeadersReceivedComplete(int error_code) {
   if (proxy_has_extra_headers()) {
     proxy_trusted_header_client_->OnHeadersReceived(
         headers,
-        ::net::IPEndPoint(),
+        remote_endpoint_,
         base::BindOnce(
             &BraveProxyingWebSocket::OnHeadersReceivedCompleteFromProxy,
             weak_factory_.GetWeakPtr()));
