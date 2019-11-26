@@ -72,6 +72,8 @@ source_set("ui") {
       "webui/navigation_bar_data_provider.h",
       "webui/settings/brave_about_handler.cc",
       "webui/settings/brave_about_handler.h",
+      "webui/settings/brave_help_tips_handler.cc",
+      "webui/settings/brave_help_tips_handler.h",
       "webui/settings/brave_privacy_handler.cc",
       "webui/settings/brave_privacy_handler.h",
       "webui/settings/default_brave_shields_handler.cc",

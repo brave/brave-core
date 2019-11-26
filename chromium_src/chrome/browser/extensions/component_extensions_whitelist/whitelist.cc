@@ -13,8 +13,12 @@
 #include "components/grit/brave_components_resources.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_sync/grit/brave_sync_resources.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/grit/brave_wayback_machine_resources.h"
+#endif
 
 namespace extensions {
 
@@ -25,7 +29,9 @@ namespace extensions {
       brave_sync_extension_id,
       ethereum_remote_client_extension_id,
       brave_webtorrent_extension_id,
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
       brave_wayback_machine_extension_id,
+#endif
     };
 
     for (size_t i = 0; i < base::size(kAllowed); ++i) {
@@ -43,7 +49,9 @@ namespace extensions {
       case IDR_BRAVE_REWARDS:
       case IDR_BRAVE_SYNC_EXTENSION:
       case IDR_BRAVE_WEBTORRENT:
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
       case IDR_BRAVE_WAYBACK_MACHINE:
+#endif
         return true;
     }
 

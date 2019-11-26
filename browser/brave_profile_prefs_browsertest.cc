@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -45,8 +46,10 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       browser()->profile()->GetPrefs()->GetBoolean(kLinkedInEmbedControlType));
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
-  EXPECT_TRUE(
-      browser()->profile()->GetPrefs()->GetBoolean(kBraveWaybackMachineEnabled));
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
+      kBraveWaybackMachineEnabled));
+#endif
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
   EXPECT_FALSE(

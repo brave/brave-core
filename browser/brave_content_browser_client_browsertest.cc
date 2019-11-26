@@ -14,6 +14,7 @@
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -405,14 +406,15 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
       << "No changes on the real URL";
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,
                        BraveWaybackMachineExtensionEnabledByDefault) {
-  ASSERT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kBraveWaybackMachineEnabled));
   extensions::ExtensionRegistry* registry =
       extensions::ExtensionRegistry::Get(browser()->profile());
-  ASSERT_TRUE(
-      registry->enabled_extensions().Contains(brave_wayback_machine_extension_id));
+  ASSERT_TRUE(registry->enabled_extensions().Contains(
+      brave_wayback_machine_extension_id));
 }
+#endif
 
 #if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest,

@@ -353,7 +353,7 @@ BravePatching.RegisterPolymerTemplateModifications({
       for (const boxEl of templateEl.content.querySelectorAll('.settings-box')) {
         boxEl.classList.remove('first')
       }
-    }   
+    }
   },
   'settings-people-page': (templateContent) => {
     // People page needs to think it's in the getStarted section, since it is

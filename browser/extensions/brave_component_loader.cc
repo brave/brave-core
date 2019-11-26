@@ -18,8 +18,8 @@
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
-#include "brave/components/brave_wayback_machine/grit/brave_wayback_machine_resources.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/components_ui.h"
@@ -30,6 +30,10 @@
 #include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/grit/brave_wayback_machine_resources.h"
+#endif
 
 namespace extensions {
 
@@ -105,14 +109,15 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
   HandleRewardsEnabledStatus();
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   if (!command_line.HasSwitch(switches::kDisableBraveWaybackMachineExtension) &&
-      (!profile_prefs_->FindPreference(kBraveWaybackMachineEnabled) ||
-      profile_prefs_->GetBoolean(kBraveWaybackMachineEnabled))) {
+      (profile_prefs_->GetBoolean(kBraveWaybackMachineEnabled))) {
     base::FilePath brave_wayback_machine_path(FILE_PATH_LITERAL(""));
-    brave_wayback_machine_path =
-      brave_wayback_machine_path.Append(FILE_PATH_LITERAL("brave_wayback_machine"));
+    brave_wayback_machine_path = brave_wayback_machine_path.Append(
+        FILE_PATH_LITERAL("brave_wayback_machine"));
     Add(IDR_BRAVE_WAYBACK_MACHINE, brave_wayback_machine_path);
   }
+#endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   // If brave://wallet has been loaded at least once, then load it again.

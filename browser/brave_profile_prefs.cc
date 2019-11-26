@@ -8,8 +8,8 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
-#include "brave/components/brave_wayback_machine/browser/buildflags/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/common/pref_names.h"
@@ -25,10 +25,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-#include "brave/components/brave_wayback_machine/browser/wayback_machine_util.h"
 #endif
 
 #if !defined(OS_ANDROID)
@@ -103,7 +99,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // wayback machine
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  brave_wayback_machine::RegisterProfilePrefs(registry);
+  registry->RegisterBooleanPref(kBraveWaybackMachineEnabled, true);
 #endif
 
 #if defined(OS_ANDROID)
