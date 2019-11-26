@@ -96,7 +96,7 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getTorEnabled",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::GetTorEnabled,
+      base::BindRepeating(&BraveDefaultExtensionsHandler::IsTorEnabled,
                           base::Unretained(this)));
 #endif
   web_ui()->RegisterMessageCallback(
@@ -257,7 +257,7 @@ void BraveDefaultExtensionsHandler::SetTorEnabled(
   tor::TorProfileService::SetTorDisabled(!enabled);
 }
 
-void BraveDefaultExtensionsHandler::GetTorEnabled(
+void BraveDefaultExtensionsHandler::IsTorEnabled(
     const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
 

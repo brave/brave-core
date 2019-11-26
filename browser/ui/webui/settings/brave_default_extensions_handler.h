@@ -36,7 +36,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   void SetBraveWalletEnabled(const base::ListValue* args);
 #if BUILDFLAG(ENABLE_TOR)
   void SetTorEnabled(const base::ListValue* args);
-  void GetTorEnabled(const base::ListValue* args);
+  void IsTorEnabled(const base::ListValue* args);
   void OnTorEnabledChanged();
 #endif
   // Return false when tor is mananaged by group policy or tor feature is not

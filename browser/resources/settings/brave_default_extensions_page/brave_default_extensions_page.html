@@ -72,12 +72,6 @@
         sub-label="$i18n{braveWalletEnabledDesc}"
         on-settings-boolean-control-change="onBraveWalletEnabledChange_">
     </settings-toggle-button>
-    <settings-toggle-button id="webTorrentEnabled"
-        pref="{{prefs.brave.webtorrent_enabled}}"
-        label="WebTorrent"
-        sub-label="$i18n{webTorrentEnabledDesc}"
-        on-settings-boolean-control-change="onWebTorrentEnabledChange_">
-    </settings-toggle-button>
     <settings-toggle-button id="hangoutsEnabled"
         pref="{{prefs.brave.hangouts_enabled}}"
         label="Hangouts"
@@ -89,11 +83,6 @@
         label="IPFS Companion"
         sub-label="$i18n{ipfsCompanionEnabledDesc}"
         on-settings-boolean-control-change="onIPFSCompanionEnabledChange_">
-    </settings-toggle-button>
-    <settings-toggle-button
-        pref="{{prefs.brave.ask_widevine_install}}"
-        label="Widevine"
-        sub-label="$i18n{appearanceSettingsAskWidevineInstallDesc}">
     </settings-toggle-button>
     <settings-toggle-button id="mediaRouterEnabled"
         pref="{{prefs.brave.enable_media_router}}"
@@ -108,6 +97,17 @@
         sub-label="$i18n{torEnabledDesc}"
         disabled="[[disableTorOption_]]"
         on-settings-boolean-control-change="onTorEnabledChange_">
+    </settings-toggle-button>
+    <settings-toggle-button id="webTorrentEnabled"
+        pref="{{prefs.brave.webtorrent_enabled}}"
+        label="WebTorrent"
+        sub-label="$i18n{webTorrentEnabledDesc}"
+        on-settings-boolean-control-change="onWebTorrentEnabledChange_">
+    </settings-toggle-button>
+    <settings-toggle-button
+        pref="{{prefs.brave.ask_widevine_install}}"
+        label="Widevine"
+        sub-label="$i18n{appearanceSettingsAskWidevineInstallDesc}">
     </settings-toggle-button>
     <div class="settings-row" id="manageExtensionsRow">
       <cr-link-row icon-class="icon-external"
