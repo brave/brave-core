@@ -21,7 +21,7 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/onboarding_bottom_sheet_height"
+        android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:gravity="center"
         android:background="@color/onboarding_bg_color"
@@ -46,19 +46,19 @@
             android:id="@+id/btn_start_browsing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/start_browsing"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/orange_rounded_button"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
             android:paddingStart="32dp"
             android:paddingEnd="32dp"
-            android:textColor="@android:color/white"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
+            android:text="@string/start_browsing"
             android:textAllCaps="false"
+            android:textColor="@android:color/white"
             android:textSize="@dimen/onboarding_text_size"
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@drawable/orange_rounded_button"/>
+            style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>
 
