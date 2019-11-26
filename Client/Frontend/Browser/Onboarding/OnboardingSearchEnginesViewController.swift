@@ -40,6 +40,16 @@ class OnboardingSearchEnginesViewController: OnboardingViewController {
         let tablebackground = UIView()
         tablebackground.backgroundColor = OnboardingViewController.colorForTheme(theme)
         contentView.searchEnginesTable.backgroundView = tablebackground
+        
+        // This selection should only ever happen once.
+        // We initially select the default search engine's cell
+        DispatchQueue.main.async {
+            for searchEngine in self.searchEngines.orderedEngines.enumerated() where
+                searchEngine.element == self.searchEngines.defaultEngine() {
+                let indexPath = IndexPath(row: searchEngine.offset, section: 0)
+                self.contentView.searchEnginesTable.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+            }
+        }
     }
     
     @objc override func continueTapped() {
@@ -100,18 +110,11 @@ extension OnboardingSearchEnginesViewController: UITableViewDataSource {
             return cell
         }
         
-        let defaultEngine = searchEngines.defaultEngine()
-        
         cell.searchEngineName = searchEngine.shortName
         cell.searchEngineImage = searchEngine.image
         cell.selectedBackgroundColor = dark ? UIColor(rgb: 0x495057) : UIColor(rgb: 0xF0F2FF)
         cell.textLabel?.textColor = dark ? UIColor.lightText : UIColor.darkText
         cell.backgroundColor = .clear
-        
-        if searchEngine == defaultEngine {
-            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .middle)
-        }
-        
         return cell
     }
 }

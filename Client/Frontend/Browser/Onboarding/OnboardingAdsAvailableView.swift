@@ -21,10 +21,12 @@ extension OnboardingAdsAvailableController {
         
         let continueButton = CommonViews.primaryButton(text: Strings.OBTurnOnButton).then {
             $0.accessibilityIdentifier = "OnboardingRewardsViewController.OBTurnOnButton"
+            $0.titleLabel?.minimumScaleFactor = 0.75
         }
         
         let skipButton = CommonViews.secondaryButton().then {
             $0.accessibilityIdentifier = "OnboardingRewardsViewController.SkipButton"
+            $0.titleLabel?.minimumScaleFactor = 0.75
         }
         
         private let mainStackView = UIStackView().then {
@@ -69,7 +71,9 @@ extension OnboardingAdsAvailableController {
         }
         
         private let buttonsStackView = UIStackView().then {
-            $0.distribution = .equalCentering
+            $0.axis = .horizontal
+            $0.alignment = .center
+            $0.spacing = 15.0
         }
         
         init(theme: Theme) {
@@ -93,13 +97,13 @@ extension OnboardingAdsAvailableController {
             
             mainStackView.addArrangedSubview(descriptionView)
 
-            [skipButton, continueButton, UIView.spacer(.horizontal, amount: 0)]
+            [skipButton, continueButton]
                 .forEach(buttonsStackView.addArrangedSubview(_:))
             
             [textStackView, buttonsStackView].forEach(descriptionStackView.addArrangedSubview(_:))
             
-            continueButton.snp.makeConstraints {
-                $0.centerX.equalTo(self.snp.centerX)
+            skipButton.snp.makeConstraints {
+                $0.width.equalTo(continueButton.snp.width).priority(.low)
             }
         }
         
@@ -120,7 +124,9 @@ extension OnboardingAdsAvailableController {
             let scaleFactor = bounds.width / size.width
             let newSize = CGSize(width: size.width * scaleFactor, height: size.height * scaleFactor)
             
-            imageView.frame = CGRect(x: 0.0, y: UX.animationContentInset, width: newSize.width, height: newSize.height)
+            // Design wants LESS offset on iPhone 8 than on iPhone X
+            let offset = self.safeAreaInsets.top > 30 ? 0 : -UX.animationContentInset
+            imageView.frame = CGRect(x: 0.0, y: UX.animationContentInset + offset, width: newSize.width, height: newSize.height)
         }
         
         @available(*, unavailable)

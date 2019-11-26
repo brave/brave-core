@@ -11,9 +11,9 @@ import SnapKit
 extension OnboardingSearchEnginesViewController {
     
     private struct UX {
-        static let topInset: CGFloat = 48
+        static var topInset: CGFloat = 48
         static let contentInset: CGFloat = 25
-        static let logoSizeAfterAnimation: CGFloat = 100
+        static var logoSizeAfterAnimation: CGFloat = 100
         static let logoSizeBeforeAnimation: CGFloat = 150
         
         struct SearchEngineCell {
@@ -29,15 +29,17 @@ extension OnboardingSearchEnginesViewController {
             $0.separatorStyle = .none
             $0.allowsMultipleSelection = false
             $0.alwaysBounceVertical = false
+            $0.showsVerticalScrollIndicator = true
         }
         
         let continueButton = CommonViews.primaryButton(text: Strings.OBSaveButton).then {
             $0.accessibilityIdentifier = "OnboardingSearchEnginesViewController.SaveButton"
-            $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+            $0.titleLabel?.minimumScaleFactor = 0.75
         }
         
         let skipButton = CommonViews.secondaryButton().then {
             $0.accessibilityIdentifier = "OnboardingSearchEnginesViewController.SkipButton"
+            $0.titleLabel?.minimumScaleFactor = 0.75
         }
         
         private let mainStackView = UIStackView().then {
@@ -65,8 +67,9 @@ extension OnboardingSearchEnginesViewController {
         }
         
         private let buttonsStackView = UIStackView().then {
-            $0.distribution = .equalCentering
+            $0.axis = .horizontal
             $0.alignment = .center
+            $0.spacing = 15.0
         }
         
         private let containerView = UIView()
@@ -89,8 +92,7 @@ extension OnboardingSearchEnginesViewController {
             containerView.addSubview(braveLogo)
             [titlePrimary, titleSecondary].forEach(titleStackView.addArrangedSubview(_:))
             
-            let spacer = UIView()
-            [skipButton, continueButton, spacer]
+            [skipButton, continueButton]
                 .forEach(buttonsStackView.addArrangedSubview(_:))
             
             [titleStackView, searchEnginesTable, buttonsStackView]
@@ -111,23 +113,24 @@ extension OnboardingSearchEnginesViewController {
                 $0.bottom.equalTo(containerView.safeArea.bottom).inset(UX.contentInset)
             }
             
-            // Make width the same as skip button to make save button always centered.
-            spacer.snp.makeConstraints {
-                $0.width.equalTo(skipButton)
-            }
-            
             // Hiding views in prepration to animations.
             // Alpha is used instead of `isHidden` to make the views participate in auto-layout.
             [titlePrimary, titleSecondary, searchEnginesTable, buttonsStackView].forEach {
                 $0.alpha = CGFloat.leastNormalMagnitude
             }
             
-            continueButton.snp.makeConstraints {
-                $0.centerX.equalTo(self.snp.centerX)
+            skipButton.snp.makeConstraints {
+                $0.width.equalTo(continueButton.snp.width).priority(.low)
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-                self?.startAnimations()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                if self.bounds.height < 660.0 {
+                    UX.topInset = 10.0
+                    UX.logoSizeAfterAnimation = 50.0
+                }
+                
+                print(UX.topInset)
+                self.startAnimations()
             }
         }
         
