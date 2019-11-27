@@ -80,6 +80,8 @@ source_set("browser") {
       "database/database_contribution_queue.h",
       "database/database_contribution_queue_publishers.cc",
       "database/database_contribution_queue_publishers.h",
+      "database/database_pending_contribution.cc",
+      "database/database_pending_contribution.h",
       "database/database_promotion.cc",
       "database/database_promotion.h",
       "database/database_promotion_creds.cc",

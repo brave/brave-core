@@ -21,6 +21,7 @@
 #include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/database/database_contribution_info.h"
 #include "brave/components/brave_rewards/browser/database/database_contribution_queue.h"
+#include "brave/components/brave_rewards/browser/database/database_pending_contribution.h"
 #include "brave/components/brave_rewards/browser/database/database_promotion.h"
 #include "brave/components/brave_rewards/browser/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/browser/database/database_unblinded_token.h"
@@ -85,7 +86,7 @@ class PublisherInfoDatabase {
 
   bool RemoveRecurringTip(const std::string& publisher_key);
 
-  bool InsertPendingContribution(const ledger::PendingContributionList& list);
+  bool InsertPendingContribution(ledger::PendingContributionList list);
 
   double GetReservedAmount();
 
@@ -157,10 +158,6 @@ class PublisherInfoDatabase {
 
   bool CreateRecurringTipsIndex();
 
-  bool CreatePendingContributionsTable();
-
-  bool CreatePendingContributionsIndex();
-
   void OnMemoryPressure(
     base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
 
@@ -179,13 +176,6 @@ class PublisherInfoDatabase {
   bool MigrateV6toV7();
 
   bool MigrateV7toV8();
-
-  bool MigrateToV8ContributionInfoTable();
-  bool MigrateToV8PendingContributionsTable();
-
-  bool CreateV8PendingContributionsTable();
-
-  bool CreateV8PendingContributionsIndex();
 
   bool MigrateV8toV9();
 
@@ -209,6 +199,7 @@ class PublisherInfoDatabase {
   std::unique_ptr<DatabasePromotion> promotion_;
   std::unique_ptr<DatabaseUnblindedToken> unblinded_token_;
   std::unique_ptr<DatabaseContributionInfo> contribution_info_;
+  std::unique_ptr<DatabasePendingContribution> pending_contribution_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   DISALLOW_COPY_AND_ASSIGN(PublisherInfoDatabase);

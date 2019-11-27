@@ -51,6 +51,9 @@ PublisherInfoDatabase::PublisherInfoDatabase(
 
   contribution_info_ =
       std::make_unique<DatabaseContributionInfo>(GetCurrentVersion());
+
+  pending_contribution_ =
+      std::make_unique<DatabasePendingContribution>(GetCurrentVersion());
 }
 
 PublisherInfoDatabase::~PublisherInfoDatabase() {
@@ -80,14 +83,12 @@ bool PublisherInfoDatabase::Init() {
   if (!CreatePublisherInfoTable() ||
       !CreateActivityInfoTable() ||
       !CreateMediaPublisherInfoTable() ||
-      !CreateRecurringTipsTable() ||
-      !CreatePendingContributionsTable()) {
+      !CreateRecurringTipsTable()) {
     return false;
   }
 
   CreateActivityInfoIndex();
   CreateRecurringTipsIndex();
-  CreatePendingContributionsIndex();
 
   if (!server_publisher_info_->Init(&GetDB())) {
     return false;
@@ -106,6 +107,10 @@ bool PublisherInfoDatabase::Init() {
   }
 
   if (!contribution_info_->Init(&GetDB())) {
+    return false;
+  }
+
+  if (!pending_contribution_->Init(&GetDB())) {
     return false;
   }
 
@@ -875,16 +880,8 @@ bool PublisherInfoDatabase::RemoveRecurringTip(
  *
  */
 
-bool PublisherInfoDatabase::CreatePendingContributionsTable() {
-  return CreateV8PendingContributionsTable();
-}
-
-bool PublisherInfoDatabase::CreatePendingContributionsIndex() {
-  return CreateV8PendingContributionsIndex();
-}
-
-bool PublisherInfoDatabase::InsertPendingContribution
-(const ledger::PendingContributionList& list) {
+bool PublisherInfoDatabase::InsertPendingContribution(
+    ledger::PendingContributionList list) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -894,29 +891,7 @@ bool PublisherInfoDatabase::InsertPendingContribution
     return false;
   }
 
-  base::Time now = base::Time::Now();
-  double now_seconds = now.ToDoubleT();
-
-  sql::Transaction transaction(&GetDB());
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  for (const auto& item : list) {
-    sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "INSERT INTO pending_contribution "
-      "(publisher_id, amount, added_date, viewing_id, type) "
-      "VALUES (?, ?, ?, ?, ?)"));
-
-    statement.BindString(0, item->publisher_key);
-    statement.BindDouble(1, item->amount);
-    statement.BindInt64(2, now_seconds);
-    statement.BindString(3, item->viewing_id);
-    statement.BindInt(4, static_cast<int>(item->type));
-    statement.Run();
-  }
-
-  return transaction.Commit();
+  return pending_contribution_->InsertOrUpdate(&GetDB(), std::move(list));
 }
 
 double PublisherInfoDatabase::GetReservedAmount() {
@@ -931,14 +906,7 @@ double PublisherInfoDatabase::GetReservedAmount() {
     return amount;
   }
 
-  sql::Statement info_sql(
-      db_.GetUniqueStatement("SELECT sum(amount) FROM pending_contribution"));
-
-  if (info_sql.Step()) {
-    amount = info_sql.ColumnDouble(0);
-  }
-
-  return amount;
+  return pending_contribution_->GetReservedAmount(&GetDB());
 }
 
 void PublisherInfoDatabase::GetPendingContributions(
@@ -952,32 +920,7 @@ void PublisherInfoDatabase::GetPendingContributions(
     return;
   }
 
-  sql::Statement info_sql(db_.GetUniqueStatement(
-      "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-      "spi.status, pi.provider, pc.amount, pc.added_date, "
-      "pc.viewing_id, pc.type "
-      "FROM pending_contribution as pc "
-      "INNER JOIN publisher_info AS pi ON pc.publisher_id = pi.publisher_id "
-      "LEFT JOIN server_publisher_info AS spi "
-      "ON spi.publisher_key = pi.publisher_id "));
-
-  while (info_sql.Step()) {
-    auto info = ledger::PendingContributionInfo::New();
-    info->publisher_key = info_sql.ColumnString(0);
-    info->name = info_sql.ColumnString(1);
-    info->url = info_sql.ColumnString(2);
-    info->favicon_url = info_sql.ColumnString(3);
-    info->status =
-        static_cast<ledger::mojom::PublisherStatus>(info_sql.ColumnInt64(4));
-    info->provider = info_sql.ColumnString(5);
-    info->amount = info_sql.ColumnDouble(6);
-    info->added_date = info_sql.ColumnInt64(7);
-    info->viewing_id = info_sql.ColumnString(8);
-    info->type =
-        static_cast<ledger::RewardsType>(info_sql.ColumnInt(9));
-
-    list->push_back(std::move(info));
-  }
+  return pending_contribution_->GetAllRecords(&GetDB(), list);
 }
 
 bool PublisherInfoDatabase::RemovePendingContributions(
@@ -993,16 +936,11 @@ bool PublisherInfoDatabase::RemovePendingContributions(
     return false;
   }
 
-  sql::Statement statement(GetDB().GetCachedStatement(
-      SQL_FROM_HERE,
-      "DELETE FROM pending_contribution "
-      "WHERE publisher_id = ? AND viewing_id=? AND added_date=?"));
-
-  statement.BindString(0, publisher_key);
-  statement.BindString(1, viewing_id);
-  statement.BindInt64(2, added_date);
-
-  return statement.Run();
+  return pending_contribution_->DeleteRecord(
+      &GetDB(),
+      publisher_key,
+      viewing_id,
+      added_date);
 }
 
 bool PublisherInfoDatabase::RemoveAllPendingContributions() {
@@ -1015,11 +953,7 @@ bool PublisherInfoDatabase::RemoveAllPendingContributions() {
     return false;
   }
 
-  sql::Statement statement(GetDB().GetCachedStatement(
-      SQL_FROM_HERE,
-      "DELETE FROM pending_contribution"));
-
-  return statement.Run();
+  return pending_contribution_->DeleteAllRecords(&GetDB());
 }
 
 /**
@@ -1382,39 +1316,11 @@ bool PublisherInfoDatabase::MigrateV1toV2() {
 bool PublisherInfoDatabase::MigrateV2toV3() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  std::string sql;
-  const char* name = "pending_contribution";
-  // pending_contribution
-  const char* pending_contribution = "pending_contribution";
-  if (GetDB().DoesTableExist(pending_contribution)) {
-    sql.append(" DROP TABLE ");
-    sql.append(pending_contribution);
-    sql.append(" ; ");
-  }
-  if (!GetDB().Execute(sql.c_str())) {
+  if (!pending_contribution_->Migrate(&GetDB(), 3)) {
     return false;
   }
 
-  sql = "CREATE TABLE ";
-  sql.append(name);
-  sql.append(
-      "("
-      "publisher_id LONGVARCHAR NOT NULL,"
-      "amount DOUBLE DEFAULT 0 NOT NULL,"
-      "added_date INTEGER DEFAULT 0 NOT NULL,"
-      "viewing_id LONGVARCHAR NOT NULL,"
-      "category INTEGER NOT NULL,"
-      "CONSTRAINT fk_pending_contribution_publisher_id"
-      "    FOREIGN KEY (publisher_id)"
-      "    REFERENCES publisher_info (publisher_id)"
-      "    ON DELETE CASCADE)");
-  if (!GetDB().Execute(sql.c_str())) {
-    return false;
-  }
-
-  return GetDB().Execute(
-      "CREATE INDEX IF NOT EXISTS pending_contribution_publisher_id_index "
-      "ON pending_contribution (publisher_id)");
+  return true;
 }
 
 bool PublisherInfoDatabase::MigrateV3toV4() {
@@ -1661,81 +1567,11 @@ bool PublisherInfoDatabase::MigrateV7toV8() {
     return false;
   }
 
-  if (!MigrateToV8PendingContributionsTable()) {
+  if (!pending_contribution_->Migrate(&GetDB(), 8)) {
     return false;
   }
 
   return transaction.Commit();
-}
-
-bool PublisherInfoDatabase::MigrateToV8PendingContributionsTable() {
-  const std::string table_name = "pending_contribution";
-  const std::string temp_table_name = "pending_contribution_temp";
-
-  if (!RenameDBTable(&GetDB(), table_name, temp_table_name)) {
-    return false;
-  }
-
-  const std::string sql =
-      "DROP INDEX IF EXISTS pending_contribution_publisher_id_index;";
-  if (!GetDB().Execute(sql.c_str())) {
-    return false;
-  }
-
-  if (!CreateV8PendingContributionsTable()) {
-    return false;
-  }
-
-  if (!CreateV8PendingContributionsIndex()) {
-    return false;
-  }
-
-  const std::map<std::string, std::string> columns = {
-    { "publisher_id", "publisher_id" },
-    { "amount", "amount" },
-    { "added_date", "added_date" },
-    { "viewing_id", "viewing_id" },
-    { "category", "type" }
-  };
-
-  if (!MigrateDBTable(&GetDB(), temp_table_name, table_name, columns, true)) {
-    return false;
-  }
-
-  return true;
-}
-
-bool PublisherInfoDatabase::CreateV8PendingContributionsTable() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  const std::string name = "pending_contribution";
-  if (GetDB().DoesTableExist(name.c_str())) {
-    return true;
-  }
-
-  std::string sql;
-  sql.append("CREATE TABLE ");
-  sql.append(name);
-  sql.append(
-      "("
-      "publisher_id LONGVARCHAR NOT NULL,"
-      "amount DOUBLE DEFAULT 0 NOT NULL,"
-      "added_date INTEGER DEFAULT 0 NOT NULL,"
-      "viewing_id LONGVARCHAR NOT NULL,"
-      "type INTEGER NOT NULL,"
-      "CONSTRAINT fk_pending_contribution_publisher_id"
-      "    FOREIGN KEY (publisher_id)"
-      "    REFERENCES publisher_info (publisher_id)"
-      "    ON DELETE CASCADE)");
-  return GetDB().Execute(sql.c_str());
-}
-
-bool PublisherInfoDatabase::CreateV8PendingContributionsIndex() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  return GetDB().Execute(
-      "CREATE INDEX IF NOT EXISTS pending_contribution_publisher_id_index "
-      "ON pending_contribution (publisher_id)");
 }
 
 bool PublisherInfoDatabase::MigrateV8toV9() {

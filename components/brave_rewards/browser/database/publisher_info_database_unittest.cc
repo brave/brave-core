@@ -1356,7 +1356,7 @@ void PublisherInfoDatabaseTest::PreparePendingContributions() {
   list.push_back(std::move(contribution4));
 
   success = publisher_info_database_->InsertPendingContribution(
-      list);
+      std::move(list));
   EXPECT_TRUE(success);
   EXPECT_EQ(CountTableRows("pending_contribution"), 4);
 }
