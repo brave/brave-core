@@ -136,6 +136,11 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
         ad_info.notification_url = creative.payload.target_url;
         ad_info.uuid = creative.creative_instance_id;
 
+        // OSes
+        if (!DoesOsSupportCreativeSet(creative_set)) {
+          continue;
+        }
+
         // Segments
         for (const auto& segment : creative_set.segments) {
           auto segment_name = base::ToLowerASCII(segment.name);
@@ -186,6 +191,50 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
   state->categories = categories;
 
   return state;
+}
+
+bool Bundle::DoesOsSupportCreativeSet(
+    const CreativeSetInfo& creative_set) {
+  if (creative_set.oses.empty()) {
+    // Creative set supports all OSes
+    return true;
+  }
+
+  const std::string client_os = GetClientOS();
+  for (const auto& os : creative_set.oses) {
+    if (os.name == client_os) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+std::string Bundle::GetClientOS() {
+  ClientInfo client_info;
+  ads_client_->GetClientInfo(&client_info);
+
+  switch (client_info.platform) {
+    case UNKNOWN: {
+      NOTREACHED();
+      return "";
+    }
+    case WINDOWS: {
+      return "windows";
+    }
+    case MACOS: {
+      return "macos";
+    }
+    case IOS: {
+      return "ios";
+    }
+    case ANDROID_OS: {
+      return "android";
+    }
+    case LINUX: {
+      return "linux";
+    }
+  }
 }
 
 void Bundle::OnStateSaved(

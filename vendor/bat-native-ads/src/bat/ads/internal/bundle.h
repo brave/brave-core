@@ -38,6 +38,11 @@ class Bundle {
  private:
   std::unique_ptr<BundleState> GenerateFromCatalog(const Catalog& catalog);
 
+  bool DoesOsSupportCreativeSet(
+    const CreativeSetInfo& creative_set);
+
+  std::string GetClientOS();
+
   void SaveState();
   void OnStateSaved(
       const std::string& catalog_id,
