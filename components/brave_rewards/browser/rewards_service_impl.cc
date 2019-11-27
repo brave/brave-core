@@ -1025,25 +1025,13 @@ void RewardsServiceImpl::OnRecoverWallet(
 }
 
 void RewardsServiceImpl::OnReconcileComplete(
-    ledger::Result result,
+    const ledger::Result result,
     const std::string& viewing_id,
-    const std::string& probi,
+    const double amount,
     const ledger::RewardsType type) {
-  if (result == ledger::Result::LEDGER_OK) {
-    auto now = base::Time::Now();
-    if (!Connected())
-      return;
-
-    if (type == ledger::RewardsType::RECURRING_TIP) {
-      MaybeShowNotificationTipsPaid();
-    }
-
-    bat_ledger_->OnReconcileCompleteSuccess(viewing_id,
-        type,
-        probi,
-        GetPublisherMonth(now),
-        GetPublisherYear(now),
-        GetCurrentTimestamp());
+  if (result == ledger::Result::LEDGER_OK &&
+      type == ledger::RewardsType::RECURRING_TIP) {
+    MaybeShowNotificationTipsPaid();
   }
 
   GetCurrentBalanceReport();
@@ -1051,7 +1039,7 @@ void RewardsServiceImpl::OnReconcileComplete(
     observer.OnReconcileComplete(this,
                                  static_cast<int>(result),
                                  viewing_id,
-                                 probi,
+                                 amount,
                                  static_cast<int>(type));
 }
 
@@ -2436,53 +2424,31 @@ void RewardsServiceImpl::OnTip(const std::string& publisher_key,
   bat_ledger_->DoDirectTip(publisher_key, amount, "BAT", base::DoNothing());
 }
 
-bool SaveContributionInfoOnFileTaskRunner(
-    const brave_rewards::ContributionInfo info,
-  PublisherInfoDatabase* backend) {
-  if (backend && backend->InsertOrUpdateContributionInfo(info))
-    return true;
+ledger::Result SaveContributionInfoOnFileTaskRunner(
+    ledger::ContributionInfoPtr info,
+    PublisherInfoDatabase* backend) {
+  const bool result =
+      backend && backend->InsertOrUpdateContributionInfo(std::move(info));
 
-  return false;
+  return result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
 }
 
 void RewardsServiceImpl::OnContributionInfoSaved(
-    const ledger::RewardsType type,
-    bool success) {
-  for (auto& observer : observers_) {
-    observer.OnContributionSaved(this, success, static_cast<int>(type));
-  }
+    ledger::ResultCallback callback,
+    const ledger::Result result) {
+  callback(result);
 }
 
-void RewardsServiceImpl::SaveContributionInfo(const std::string& probi,
-  const ledger::ActivityMonth month,
-  const int year,
-  const uint32_t date,
-  const std::string& publisher_key,
-  const ledger::RewardsType type) {
-  brave_rewards::ContributionInfo info;
-  info.probi = probi;
-  info.month = static_cast<int>(month);
-  info.year = year;
-  info.date = date;
-  info.publisher_key = publisher_key;
-  info.type = static_cast<int>(type);
-
+void RewardsServiceImpl::SaveContributionInfo(
+    ledger::ContributionInfoPtr info,
+    ledger::ResultCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&SaveContributionInfoOnFileTaskRunner,
-                    info,
+      base::BindOnce(&SaveContributionInfoOnFileTaskRunner,
+                    std::move(info),
                     publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnContributionInfoSaved,
+      base::BindOnce(&RewardsServiceImpl::OnContributionInfoSaved,
                      AsWeakPtr(),
-                     type));
-}
-
-bool SaveRecurringTipOnFileTaskRunner(
-    const brave_rewards::RecurringDonation info,
-  PublisherInfoDatabase* backend) {
-  if (backend && backend->InsertOrUpdateRecurringTip(info))
-    return true;
-
-  return false;
+                     callback));
 }
 
 void RewardsServiceImpl::OnSaveRecurringTipUI(
@@ -2501,10 +2467,10 @@ void RewardsServiceImpl::SaveRecurringTipUI(
     const std::string& publisher_key,
     const double amount,
     SaveRecurringTipCallback callback) {
-  ledger::ContributionInfoPtr info = ledger::ContributionInfo::New();
-  info->publisher = publisher_key;
-  info->value = amount;
-  info->date = GetCurrentTimestamp();
+  ledger::RecurringTipPtr info = ledger::RecurringTip::New();
+  info->publisher_key = publisher_key;
+  info->amount = amount;
+  info->created_at = GetCurrentTimestamp();
 
   bat_ledger_->SaveRecurringTip(
       std::move(info),
@@ -2524,24 +2490,28 @@ void RewardsServiceImpl::OnRecurringTipSaved(
                    : ledger::Result::LEDGER_ERROR);
 }
 
+bool SaveRecurringTipOnFileTaskRunner(
+    ledger::RecurringTipPtr info,
+    PublisherInfoDatabase* backend) {
+  if (backend && backend->InsertOrUpdateRecurringTip(std::move(info)))
+    return true;
+
+  return false;
+}
+
 void RewardsServiceImpl::SaveRecurringTip(
-    ledger::ContributionInfoPtr info,
+    ledger::RecurringTipPtr info,
     ledger::SaveRecurringTipCallback callback) {
   if (!info) {
     callback(ledger::Result::NOT_FOUND);
     return;
   }
 
-  brave_rewards::RecurringDonation new_info;
-  new_info.publisher_key = info->publisher;
-  new_info.amount = info->value;
-  new_info.added_date = info->date;
-
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&SaveRecurringTipOnFileTaskRunner,
-                    new_info,
+      base::BindOnce(&SaveRecurringTipOnFileTaskRunner,
+                    std::move(info),
                     publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnRecurringTipSaved,
+      base::BindOnce(&RewardsServiceImpl::OnRecurringTipSaved,
                      AsWeakPtr(),
                      callback));
 }

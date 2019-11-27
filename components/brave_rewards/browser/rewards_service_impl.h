@@ -28,7 +28,6 @@
 #include "mojo/public/cpp/bindings/associated_binding.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
-#include "brave/components/brave_rewards/browser/contribution_info.h"
 #include "ui/gfx/image/image.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
@@ -365,8 +364,10 @@ class RewardsServiceImpl : public RewardsService,
              ledger::PublisherInfoPtr publisher_info);
   void OnResetTheWholeState(base::Callback<void(bool)> callback,
                                  bool success);
-  void OnContributionInfoSaved(const ledger::RewardsType type,
-                               bool success);
+  void OnContributionInfoSaved(
+      ledger::ResultCallback callback,
+      const ledger::Result result);
+
   void OnRecurringTipSaved(
       ledger::SaveRecurringTipCallback callback,
       const bool success);
@@ -518,10 +519,11 @@ class RewardsServiceImpl : public RewardsService,
   void OnRecoverWallet(
       ledger::Result result,
       double balance);
-  void OnReconcileComplete(ledger::Result result,
-                           const std::string& viewing_id,
-                           const std::string& probi,
-                           const ledger::RewardsType type) override;
+  void OnReconcileComplete(
+      const ledger::Result result,
+      const std::string& viewing_id,
+      const double amount,
+      const ledger::RewardsType type) override;
   void OnAttestPromotion(
       AttestPromotionCallback callback,
       const ledger::Result result,
@@ -583,14 +585,12 @@ class RewardsServiceImpl : public RewardsService,
   void OnSetOnDemandFaviconComplete(const std::string& favicon_url,
                                     ledger::FetchIconCallback callback,
                                     bool success);
-  void SaveContributionInfo(const std::string& probi,
-                            const ledger::ActivityMonth month,
-                            const int year,
-                            const uint32_t date,
-                            const std::string& publisher_key,
-                            const ledger::RewardsType type) override;
-  void SaveRecurringTip(
+  void SaveContributionInfo(
       ledger::ContributionInfoPtr info,
+      ledger::ResultCallback callback) override;
+
+  void SaveRecurringTip(
+      ledger::RecurringTipPtr info,
       ledger::SaveRecurringTipCallback callback) override;
 
   void GetRecurringTips(

@@ -246,14 +246,6 @@ class LEDGER_EXPORT Ledger {
       const std::string& publisher_id,
       ledger::PublisherBannerCallback callback) = 0;
 
-  virtual void OnReconcileCompleteSuccess(
-      const std::string& viewing_id,
-      const ledger::RewardsType type,
-      const std::string& probi,
-      const ledger::ActivityMonth month,
-      const int year,
-      const uint32_t date) = 0;
-
   virtual void RemoveRecurringTip(
     const std::string& publisher_key,
     RemoveRecurringTipCallback callback) = 0;
@@ -280,7 +272,7 @@ class LEDGER_EXPORT Ledger {
       ledger::RewardsInternalsInfoCallback callback) = 0;
 
   virtual void SaveRecurringTip(
-      ledger::ContributionInfoPtr info,
+      ledger::RecurringTipPtr info,
       ledger::SaveRecurringTipCallback callback) = 0;
   virtual void GetRecurringTips(ledger::PublisherInfoListCallback callback) = 0;
 

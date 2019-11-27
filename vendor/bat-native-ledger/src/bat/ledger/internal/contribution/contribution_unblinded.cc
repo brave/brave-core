@@ -222,19 +222,26 @@ void Unblinded::PrepareAutoContribution(
     const std::string& viewing_id,
     ledger::UnblindedTokenList list) {
   if (list.size() == 0) {
-    ContributionCompleted(ledger::Result::LEDGER_ERROR, viewing_id);
+    ContributionCompleted(ledger::Result::AC_TABLE_EMPTY, viewing_id);
     return;
   }
 
-  const auto reconcile = ledger_->GetReconcileById(viewing_id);
+  auto reconcile = ledger_->GetReconcileById(viewing_id);
+  const double total_votes = static_cast<double>(list.size());
   Winners winners;
-  GetStatisticalVotingWinners(list.size(), reconcile.directions_, &winners);
+  GetStatisticalVotingWinners(total_votes, reconcile.directions_, &winners);
 
+  braveledger_bat_helper::Directions new_directions;
   uint32_t current_position = 0;
   for (auto & winner : winners) {
     if (winner.second == 0) {
       continue;
     }
+
+    braveledger_bat_helper::RECONCILE_DIRECTION direction;
+    direction.publisher_key_ = winner.first;
+    direction.amount_percent_ = (winner.second / total_votes) * 100;
+    new_directions.push_back(direction);
 
     const uint32_t new_position = current_position + winner.second;
     ledger::UnblindedTokenList new_list;
@@ -249,6 +256,9 @@ void Unblinded::PrepareAutoContribution(
         std::move(new_list),
         [](const ledger::Result _){});
   }
+
+  reconcile.directions_ = new_directions;
+  ledger_->UpdateReconcile(reconcile);
 
   ContributionCompleted(ledger::Result::LEDGER_OK, viewing_id);
 }
@@ -312,20 +322,11 @@ void Unblinded::ContributionCompleted(
     const ledger::Result result,
     const std::string& viewing_id) {
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
-  const auto amount =
-      braveledger_bat_util::ConvertToProbi(std::to_string(reconcile.fee_));
-
-  ledger_->OnReconcileComplete(result,
-                               viewing_id,
-                               amount,
-                               reconcile.type_);
-
-  if (result != ledger::Result::LEDGER_OK) {
-    if (!viewing_id.empty()) {
-      ledger_->RemoveReconcileById(viewing_id);
-    }
-    return;
-  }
+  ledger_->ReconcileComplete(
+      result,
+      reconcile.fee_,
+      viewing_id,
+      reconcile.type_);
 }
 
 }  // namespace braveledger_contribution

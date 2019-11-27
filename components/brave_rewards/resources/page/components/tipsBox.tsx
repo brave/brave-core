@@ -72,7 +72,7 @@ class TipBox extends React.Component<Props, State> {
         faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
       }
 
-      const token = utils.convertProbiToFixed(item.percentage.toString())
+      const token = item.percentage.toFixed(1)
 
       return {
         profile: {
@@ -183,7 +183,7 @@ class TipBox extends React.Component<Props, State> {
     const topRows = tipRows.slice(0, 5)
     const numRows = tipRows && tipRows.length
     const allSites = !(numRows > 5)
-    const total = utils.tipsListTotal(tipsList, true)
+    const total = utils.tipsListTotal(tipsList)
     const converted = utils.convertBalance(total, balance.rates)
     const { onlyAnonWallet } = ui
 

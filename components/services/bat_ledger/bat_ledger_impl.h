@@ -73,13 +73,6 @@ class BatLedgerImpl : public mojom::BatLedger,
       int32_t year,
       ledger::ReportType type,
       const std::string& probi) override;
-  void OnReconcileCompleteSuccess(
-      const std::string& viewing_id,
-      const ledger::RewardsType type,
-      const std::string& probi,
-      ledger::ActivityMonth month,
-      int32_t year,
-      uint32_t data) override;
 
   void FetchPromotions(FetchPromotionsCallback callback) override;
   void ClaimPromotion(
@@ -146,7 +139,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   void StartMonthlyContribution() override;
 
   void SaveRecurringTip(
-      ledger::ContributionInfoPtr info,
+      ledger::RecurringTipPtr info,
       SaveRecurringTipCallback callback) override;
   void GetRecurringTips(GetRecurringTipsCallback callback) override;
 

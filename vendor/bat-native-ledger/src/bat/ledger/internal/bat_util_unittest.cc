@@ -32,3 +32,23 @@ TEST(BatUtilTest, ConvertToProbi) {
   result = braveledger_bat_util::ConvertToProbi("5.45");
   ASSERT_EQ(result, "5450000000000000000");
 }
+
+TEST(BatUtilTest, ProbiToDouble) {
+  // empty string
+  double result = braveledger_bat_util::ProbiToDouble("");
+  ASSERT_EQ(result, 0);
+
+  // wrong probi
+  result = braveledger_bat_util::ProbiToDouble("10");
+  ASSERT_EQ(result, 0);
+
+  // full number probi
+  result =
+      braveledger_bat_util::ProbiToDouble("5000000000000000000");
+  ASSERT_EQ(result, 5.0);
+
+  // full number probi
+  result =
+      braveledger_bat_util::ProbiToDouble("1125600000000000000000");
+  ASSERT_EQ(result, 1125.6);
+}

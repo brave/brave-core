@@ -1432,20 +1432,13 @@ class BraveRewardsBrowserTest
       wait_for_publisher_list_normalized_loop_->Quit();
   }
 
-  void OnReconcileComplete(brave_rewards::RewardsService* rewards_service,
-                           unsigned int result,
-                           const std::string& viewing_id,
-                           const std::string& probi,
-                           const int32_t type) {
-    const size_t size = probi.size();
-    std::string amount = "0";
-    if (size > 18) {
-      amount = probi;
-      amount.insert(size - 18, ".");
-    }
-
-    double amount_double = std::stod(amount);
-    UpdateContributionBalance(amount_double, true);
+  void OnReconcileComplete(
+      brave_rewards::RewardsService* rewards_service,
+      unsigned int result,
+      const std::string& viewing_id,
+      const double amount,
+      const int32_t type) {
+    UpdateContributionBalance(amount, true);
 
     const auto converted_result = static_cast<ledger::Result>(result);
     const auto converted_type =
@@ -1461,7 +1454,7 @@ class BraveRewardsBrowserTest
 
     if (converted_type == ledger::RewardsType::ONE_TIME_TIP ||
         converted_type == ledger::RewardsType::RECURRING_TIP) {
-      reconciled_tip_total_ += amount_double;
+      reconciled_tip_total_ += amount;
 
       // Single tip tracking
       tip_reconcile_completed_ = true;

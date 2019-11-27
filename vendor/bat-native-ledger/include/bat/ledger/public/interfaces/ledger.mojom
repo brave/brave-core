@@ -4,9 +4,21 @@
 module ledger.mojom;
 
 struct ContributionInfo {
-  string publisher;  // Filled only for recurrent tips
-  double value;
-  uint64 date;
+  string contribution_id;
+  double amount;
+  RewardsType type;
+  int32 step;
+  int32 retry_count;
+  uint64 created_at;
+
+  array<ContributionPublisher> publishers;
+};
+
+struct ContributionPublisher {
+  string contribution_id;
+  string publisher_key;
+  double total_amount;
+  double contributed_amount;
 };
 
 struct PublisherInfo {
@@ -24,8 +36,6 @@ struct PublisherInfo {
   string url;
   string provider;
   string favicon_url;
-
-  array<ContributionInfo> contributions;
 };
 
 struct PublisherBanner {
@@ -369,4 +379,10 @@ enum OperatingSystem {
 struct ClientInfo {
   Platform platform;
   OperatingSystem os;
+};
+
+struct RecurringTip {
+  string publisher_key;
+  double amount;
+  uint64 created_at;
 };

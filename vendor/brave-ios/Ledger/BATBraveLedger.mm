@@ -516,10 +516,10 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)addRecurringTipToPublisherWithId:(NSString *)publisherId amount:(double)amount completion:(void (^)(BOOL success))completion
 {
-  ledger::ContributionInfoPtr info = ledger::ContributionInfo::New();
-  info->publisher = publisherId.UTF8String;
-  info->value = amount;
-  info->date = [[NSDate date] timeIntervalSince1970];
+  ledger::RecurringTipPtr info = ledger::RecurringTip::New();
+  info->publisher_key = publisherId.UTF8String;
+  info->amount = amount;
+  info->created_at = [[NSDate date] timeIntervalSince1970];
   ledger->SaveRecurringTip(std::move(info), ^(ledger::Result result){
     const auto success = (result == ledger::Result::LEDGER_OK);
     if (success) {
@@ -715,23 +715,14 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 #pragma mark - Reconcile
 
-- (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id type:(const ledger::RewardsType)type probi:(const std::string &)probi
+- (void)onReconcileComplete:(ledger::Result)result viewingId:(const std::string &)viewing_id type:(const ledger::RewardsType)type amount:(const double)amount
 {
+  // TODO we changed from probi to amount, so from string to double
   if (result == ledger::Result::LEDGER_OK) {
-    const auto now = [NSDate date];
-    const auto nowTimestamp = [now timeIntervalSince1970];
-
     if (type == ledger::RewardsType::RECURRING_TIP) {
       [self showTipsProcessedNotificationIfNeccessary];
     }
     [self fetchBalance:nil];
-
-    ledger->OnReconcileCompleteSuccess(viewing_id,
-                                       type,
-                                       probi,
-                                       BATGetPublisherMonth(now),
-                                       BATGetPublisherYear(now),
-                                       nowTimestamp);
   }
 
   if ((result == ledger::Result::LEDGER_OK && type == ledger::RewardsType::AUTO_CONTRIBUTE) ||
@@ -742,7 +733,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
     const auto info = @{ @"viewingId": viewingId,
                          @"result": @((BATResult)result),
                          @"type": @((BATRewardsType)type),
-                         @"amount": [NSString stringWithUTF8String:probi.c_str()] };
+                         @"amount": [@(amount) stringValue] };
 
     [self addNotificationOfKind:BATRewardsNotificationKindAutoContribute
                        userInfo:info
@@ -757,7 +748,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
       observer.reconcileCompleted(static_cast<BATResult>(result),
                                   [NSString stringWithUTF8String:viewing_id.c_str()],
                                   static_cast<BATRewardsType>(type),
-                                  [NSString stringWithUTF8String:probi.c_str()]);
+                                  [@(amount) stringValue]);
     }
   }
 }
@@ -1557,11 +1548,11 @@ BATLedgerBridge(BOOL,
   [self handlePublisherListing:publishers start:0 limit:0 callback:callback];
 }
 
-- (void)saveRecurringTip:(ledger::ContributionInfoPtr)info callback:(ledger::SaveRecurringTipCallback)callback
+- (void)saveRecurringTip:(ledger::RecurringTipPtr)info callback:(ledger::SaveRecurringTipCallback)callback
 {
-  [BATLedgerDatabase insertOrUpdateRecurringTipWithPublisherID:[NSString stringWithUTF8String:info->publisher.c_str()]
-                                                        amount:info->value
-                                                     dateAdded:info->date
+  [BATLedgerDatabase insertOrUpdateRecurringTipWithPublisherID:[NSString stringWithUTF8String:info->publisher_key.c_str()]
+                                                        amount:info->amount
+                                                     dateAdded:info->created_at
                                                     completion:^(BOOL success) {
                                                       if (!success) {
                                                         callback(ledger::Result::LEDGER_ERROR);
@@ -1675,21 +1666,10 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)saveContributionInfo:(const std::string &)probi month:(const ledger::ActivityMonth)month year:(const int)year date:(const uint32_t)date publisherKey:(const std::string &)publisher_key type:(const ledger::RewardsType)type
+- (void)saveContributionInfo:(ledger::ContributionInfoPtr)info callback:(ledger::ResultCallback)callback
 {
-  [BATLedgerDatabase insertContributionInfo:[NSString stringWithUTF8String:probi.c_str()]
-                                      month:(BATActivityMonth)month
-                                       year:year
-                                       date:date
-                               publisherKey:[NSString stringWithUTF8String:publisher_key.c_str()]
-                                       type:(BATRewardsType)type
-                                 completion:^(BOOL success) {
-                                   for (BATBraveLedgerObserver *observer in [self.observers copy]) {
-                                     if (observer.contributionAdded) {
-                                       observer.contributionAdded(success, static_cast<BATRewardsType>(type));
-                                     }
-                                   }
-                                 }];
+  BLOG(ledger::LogLevel::LOG_ERROR) << "Cannot save contribution info; Neccessary DB update not available" << std::endl;
+  callback(ledger::Result::LEDGER_ERROR);
 }
 
 - (void)saveMediaPublisherInfo:(const std::string &)media_key publisherId:(const std::string &)publisher_id

@@ -16,7 +16,6 @@
 #include "sql/statement.h"
 #include "sql/transaction.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
-#include "brave/components/brave_rewards/browser/recurring_donation.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/database/publisher_info_database.h"
 #include "brave/components/brave_rewards/browser/database/database_util.h"
@@ -25,7 +24,7 @@ namespace brave_rewards {
 
 namespace {
 
-const int kCurrentVersionNumber = 10;
+const int kCurrentVersionNumber = 11;
 const int kCompatibleVersionNumber = 1;
 
 }  // namespace
@@ -134,7 +133,7 @@ bool PublisherInfoDatabase::Init() {
  *
  */
 bool PublisherInfoDatabase::InsertOrUpdateContributionInfo(
-    const brave_rewards::ContributionInfo& info) {
+    ledger::ContributionInfoPtr info) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -144,7 +143,7 @@ bool PublisherInfoDatabase::InsertOrUpdateContributionInfo(
     return false;
   }
 
-  return contribution_info_->InsertOrUpdate(&GetDB(), info);
+  return contribution_info_->InsertOrUpdate(&GetDB(), std::move(info));
 }
 
 void PublisherInfoDatabase::GetOneTimeTips(
@@ -792,13 +791,13 @@ bool PublisherInfoDatabase::CreateRecurringTipsIndex() {
 }
 
 bool PublisherInfoDatabase::InsertOrUpdateRecurringTip(
-    const brave_rewards::RecurringDonation& info) {
+    ledger::RecurringTipPtr info) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
   DCHECK(initialized);
 
-  if (!initialized || info.publisher_key.empty()) {
+  if (!initialized || !info || info->publisher_key.empty()) {
     return false;
   }
 
@@ -808,9 +807,9 @@ bool PublisherInfoDatabase::InsertOrUpdateRecurringTip(
       "(publisher_id, amount, added_date) "
       "VALUES (?, ?, ?)"));
 
-  statement.BindString(0, info.publisher_key);
-  statement.BindDouble(1, info.amount);
-  statement.BindInt64(2, info.added_date);
+  statement.BindString(0, info->publisher_key);
+  statement.BindDouble(1, info->amount);
+  statement.BindInt64(2, info->created_at);
 
   return statement.Run();
 }
@@ -1751,6 +1750,19 @@ bool PublisherInfoDatabase::MigrateV9toV10() {
   return true;
 }
 
+bool PublisherInfoDatabase::MigrateV10toV11() {
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    return false;
+  }
+
+  if (!contribution_info_->Migrate(&GetDB(), 11)) {
+    return false;
+  }
+
+  return transaction.Commit();
+}
+
 bool PublisherInfoDatabase::Migrate(int version) {
   switch (version) {
     case 2: {
@@ -1779,6 +1791,9 @@ bool PublisherInfoDatabase::Migrate(int version) {
     }
     case 10: {
       return MigrateV9toV10();
+    }
+    case 11: {
+      return MigrateV10toV11();
     }
     default:
       return false;

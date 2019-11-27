@@ -12,7 +12,7 @@
 #include <string>
 
 #include "bat/ledger/mojom_structs.h"
-#include "brave/components/brave_rewards/browser/contribution_info.h"
+#include "brave/components/brave_rewards/browser/database/database_contribution_info_publishers.h"
 #include "brave/components/brave_rewards/browser/database/database_table.h"
 
 namespace brave_rewards {
@@ -28,11 +28,9 @@ class DatabaseContributionInfo: public DatabaseTable {
 
   bool CreateIndex(sql::Database* db) override;
 
-  bool Migrate(sql::Database* db, const int to);
+  bool Migrate(sql::Database* db, const int target);
 
-  bool InsertOrUpdate(
-      sql::Database* db,
-      const brave_rewards::ContributionInfo& info);
+  bool InsertOrUpdate(sql::Database* db, ledger::ContributionInfoPtr info);
 
   bool GetOneTimeTips(
       sql::Database* db,
@@ -43,12 +41,17 @@ class DatabaseContributionInfo: public DatabaseTable {
  private:
   const char* table_name_ = "contribution_info";
   const int minimum_version_ = 2;
+  std::unique_ptr<DatabaseContributionInfoPublishers> publishers_;
 
   bool CreateTableV8(sql::Database* db);
+
+  bool CreateTableV11(sql::Database* db);
 
   bool CreateIndexV8(sql::Database* db);
 
   bool MigrateToV8(sql::Database* db);
+
+  bool MigrateToV11(sql::Database* db);
 };
 
 }  // namespace brave_rewards

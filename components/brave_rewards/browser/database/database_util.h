@@ -39,6 +39,10 @@ bool RenameDBTable(
     const std::string& from,
     const std::string& to);
 
+bool DropTable(
+    sql::Database* db,
+    const std::string& table_name);
+
 }  // namespace brave_rewards
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_DATABASE_DATABASE_UTIL_H_

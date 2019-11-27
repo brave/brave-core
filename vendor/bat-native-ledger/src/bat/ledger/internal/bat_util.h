@@ -12,6 +12,8 @@ namespace braveledger_bat_util {
 
 std::string ConvertToProbi(const std::string& amount);
 
+double ProbiToDouble(const std::string& probi);
+
 }  // namespace braveledger_bat_util
 
 #endif  // BRAVELEDGER_BAT_UTIL_H_

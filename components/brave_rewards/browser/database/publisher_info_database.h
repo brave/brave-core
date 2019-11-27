@@ -19,14 +19,12 @@
 #include "base/memory/memory_pressure_listener.h"
 #include "base/sequence_checker.h"
 #include "bat/ledger/mojom_structs.h"
-#include "brave/components/brave_rewards/browser/contribution_info.h"
 #include "brave/components/brave_rewards/browser/database/database_contribution_info.h"
 #include "brave/components/brave_rewards/browser/database/database_contribution_queue.h"
 #include "brave/components/brave_rewards/browser/database/database_promotion.h"
 #include "brave/components/brave_rewards/browser/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/browser/database/database_unblinded_token.h"
 #include "brave/components/brave_rewards/browser/pending_contribution.h"
-#include "brave/components/brave_rewards/browser/recurring_donation.h"
 #include "build/build_config.h"
 #include "sql/database.h"
 #include "sql/init_status.h"
@@ -47,8 +45,7 @@ class PublisherInfoDatabase {
     db_.set_error_callback(error_callback);
   }
 
-  bool InsertOrUpdateContributionInfo(
-      const brave_rewards::ContributionInfo& info);
+  bool InsertOrUpdateContributionInfo(ledger::ContributionInfoPtr info);
 
   void GetOneTimeTips(
       ledger::PublisherInfoList* list,
@@ -82,8 +79,7 @@ class PublisherInfoDatabase {
   ledger::PublisherInfoPtr GetMediaPublisherInfo(
       const std::string& media_key);
 
-  bool InsertOrUpdateRecurringTip(
-      const brave_rewards::RecurringDonation& info);
+  bool InsertOrUpdateRecurringTip(ledger::RecurringTipPtr info);
 
   void GetRecurringTips(ledger::PublisherInfoList* list);
 
@@ -194,6 +190,8 @@ class PublisherInfoDatabase {
   bool MigrateV8toV9();
 
   bool MigrateV9toV10();
+
+  bool MigrateV10toV11();
 
   bool Migrate(int version);
 

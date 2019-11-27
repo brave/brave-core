@@ -135,12 +135,12 @@ void LedgerClientMojoProxy::CallbackHolder<
 void LedgerClientMojoProxy::OnReconcileComplete(
     const ledger::Result result,
     const std::string& viewing_id,
-    const std::string& probi,
+    const double amount,
     const ledger::RewardsType type) {
   ledger_client_->OnReconcileComplete(
       result,
       viewing_id,
-      probi,
+      amount,
       type);
 }
 
@@ -281,7 +281,7 @@ void LedgerClientMojoProxy::OnSaveRecurringTip(
 }
 
 void LedgerClientMojoProxy::SaveRecurringTip(
-    ledger::ContributionInfoPtr info,
+    ledger::RecurringTipPtr info,
     SaveRecurringTipCallback callback) {
   // deleted in OnSaveRecurringTip
   auto* holder = new CallbackHolder<SaveRecurringTipCallback>(
@@ -356,20 +356,25 @@ void LedgerClientMojoProxy::RemoveRecurringTip(const std::string& publisher_key,
       std::bind(LedgerClientMojoProxy::OnRemoveRecurringTip, holder, _1));
 }
 
+// static
+void LedgerClientMojoProxy::OnSaveContributionInfo(
+    CallbackHolder<SaveContributionInfoCallback>* holder,
+    const ledger::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result);
+  delete holder;
+}
+
 void LedgerClientMojoProxy::SaveContributionInfo(
-    const std::string& probi,
-    ledger::ActivityMonth month,
-    int32_t year,
-    uint32_t date,
-    const std::string& publisher_key,
-    const ledger::RewardsType type) {
+    ledger::ContributionInfoPtr info,
+    SaveContributionInfoCallback callback) {
+    // deleted in OnSaveContributionInfo
+  auto* holder = new CallbackHolder<RemoveRecurringTipCallback>(
+      AsWeakPtr(), std::move(callback));
   ledger_client_->SaveContributionInfo(
-    probi,
-    month,
-    year,
-    date,
-    publisher_key,
-    type);
+      std::move(info),
+      std::bind(LedgerClientMojoProxy::OnSaveContributionInfo, holder, _1));
 }
 
 void LedgerClientMojoProxy::SaveMediaPublisherInfo(

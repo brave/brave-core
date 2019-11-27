@@ -54,7 +54,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
       RewardsService* rewards_service,
       unsigned int result,
       const std::string& viewing_id,
-      const std::string& probi,
+      const double amount,
       const int32_t type) {}
   virtual void OnAdsEnabled(
       brave_rewards::RewardsService* rewards_service,
@@ -76,10 +76,6 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnRecurringTipRemoved(
       brave_rewards::RewardsService* rewards_service,
       bool success) {}
-  virtual void OnContributionSaved(
-      brave_rewards::RewardsService* rewards_service,
-      bool success,
-      int type) {}
   virtual void OnPendingContributionRemoved(
       brave_rewards::RewardsService* rewards_service,
       int32_t result) {}

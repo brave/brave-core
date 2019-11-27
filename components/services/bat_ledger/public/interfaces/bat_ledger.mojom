@@ -59,8 +59,6 @@ interface BatLedger {
   RestorePublishers() => (ledger.mojom.Result result);
 
   SetBalanceReportItem(ledger.mojom.ActivityMonth month, int32 year, ledger.mojom.ReportType type, string probi);
-  OnReconcileCompleteSuccess(string viewing_id, ledger.mojom.RewardsType type, string probi,
-      ledger.mojom.ActivityMonth month, int32 year, uint32 data);
 
   FetchPromotions() => (ledger.mojom.Result result, array<ledger.mojom.Promotion> promotion);
   ClaimPromotion(string payload) => (ledger.mojom.Result result, string response);
@@ -110,7 +108,7 @@ interface BatLedger {
   GetTransactionHistory() => (string transactions);
   GetRewardsInternalsInfo() => (ledger.mojom.RewardsInternalsInfo info);
 
-  SaveRecurringTip(ledger.mojom.ContributionInfo info) => (ledger.mojom.Result result);
+  SaveRecurringTip(ledger.mojom.RecurringTip info) => (ledger.mojom.Result result);
   GetRecurringTips() => (array<ledger.mojom.PublisherInfo> list);
   GetOneTimeTips() => (array<ledger.mojom.PublisherInfo> list);
 
@@ -163,7 +161,7 @@ interface BatLedgerClient {
 
   OnWalletProperties(ledger.mojom.Result result, ledger.mojom.WalletProperties? properties);
   OnReconcileComplete(ledger.mojom.Result result, string viewing_id,
-      string probi, ledger.mojom.RewardsType type);
+      double amount, ledger.mojom.RewardsType type);
 
   SavePublisherInfo(ledger.mojom.PublisherInfo publisher_info) =>
       (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
@@ -179,7 +177,7 @@ interface BatLedgerClient {
                        uint64 window_id);
   FetchFavIcon(string url, string favicon_key) => (bool success,
       string favicon_url);
-  SaveRecurringTip(ledger.mojom.ContributionInfo info) => (ledger.mojom.Result result);
+  SaveRecurringTip(ledger.mojom.RecurringTip info) => (ledger.mojom.Result result);
   GetRecurringTips() => (
       array<ledger.mojom.PublisherInfo> publisher_info_list,
       uint32 next_record);
@@ -197,8 +195,7 @@ interface BatLedgerClient {
   [Sync]
   SetTimer(uint64 time_offset) => (uint32 timer_id);
   KillTimer(uint32 timer_id);
-  SaveContributionInfo(string probi, ledger.mojom.ActivityMonth month, int32 year, uint32 date,
-      string publisher_key, ledger.mojom.RewardsType type);
+  SaveContributionInfo(ledger.mojom.ContributionInfo info) => (ledger.mojom.Result result);
   SaveMediaPublisherInfo(string media_key, string publisher_id);
 
   [Sync]

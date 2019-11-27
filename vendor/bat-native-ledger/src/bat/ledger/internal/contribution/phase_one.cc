@@ -76,9 +76,7 @@ void PhaseOne::ReconcileCallback(
 
   success = ledger_->UpdateReconcile(reconcile);
   if (!success) {
-    Complete(ledger::Result::LEDGER_ERROR,
-             viewing_id,
-             reconcile.type_);
+    Complete(ledger::Result::LEDGER_ERROR, viewing_id, reconcile.type_);
     return;
   }
 
@@ -170,9 +168,7 @@ void PhaseOne::CurrentReconcileCallback(
   success = ledger_->UpdateReconcile(reconcile);
 
   if (!success) {
-    Complete(ledger::Result::LEDGER_ERROR,
-             viewing_id,
-             reconcile.type_);
+    Complete(ledger::Result::LEDGER_ERROR, viewing_id, reconcile.type_);
     return;
   }
 
@@ -260,9 +256,10 @@ void PhaseOne::ReconcilePayloadCallback(
 
   if (response_status_code != net::HTTP_OK) {
     if (response_status_code == net::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE) {
-      Complete(ledger::Result::CONTRIBUTION_AMOUNT_TOO_LOW,
-               viewing_id,
-               reconcile.type_);
+      Complete(
+          ledger::Result::CONTRIBUTION_AMOUNT_TOO_LOW,
+          viewing_id,
+          reconcile.type_);
     } else {
       contribution_->AddRetry(ledger::ContributionRetry::STEP_PAYLOAD,
                               viewing_id);
@@ -352,9 +349,7 @@ void PhaseOne::RegisterViewingCallback(
 
   success = ledger_->UpdateReconcile(reconcile);
   if (!success) {
-    Complete(ledger::Result::LEDGER_ERROR,
-             viewing_id,
-             reconcile.type_);
+    Complete(ledger::Result::LEDGER_ERROR, viewing_id, reconcile.type_);
     return;
   }
 
@@ -460,9 +455,7 @@ void PhaseOne::ViewingCredentialsCallback(
 
   success = ledger_->UpdateReconcile(reconcile);
   if (!success) {
-    Complete(ledger::Result::LEDGER_ERROR,
-             viewing_id,
-             reconcile.type_);
+    Complete(ledger::Result::LEDGER_ERROR, viewing_id, reconcile.type_);
     return;
   }
 
@@ -500,21 +493,22 @@ void PhaseOne::ViewingCredentialsCallback(
            probi);
 }
 
-void PhaseOne::Complete(ledger::Result result,
-                        const std::string& viewing_id,
-                        const ledger::RewardsType type,
-                        const std::string& probi) {
-  ledger_->OnReconcileComplete(result, viewing_id, probi, type);
+void PhaseOne::Complete(
+    ledger::Result result,
+    const std::string& viewing_id,
+    const ledger::RewardsType type,
+    const std::string& probi) {
+  const bool error = result != ledger::Result::LEDGER_OK;
+  const double amount = braveledger_bat_util::ProbiToDouble(probi);
+  ledger_->ReconcileComplete(result, amount, viewing_id, type, error);
 
-  if (result != ledger::Result::LEDGER_OK) {
-    if (!viewing_id.empty()) {
-      ledger_->RemoveReconcileById(viewing_id);
-    }
+  if (error) {
     return;
   }
 
-  ledger_->AddReconcileStep(viewing_id,
-                            ledger::ContributionRetry::STEP_WINNERS);
+  ledger_->AddReconcileStep(
+      viewing_id,
+      ledger::ContributionRetry::STEP_WINNERS);
 
   contribution_->StartPhaseTwo(viewing_id);
 }

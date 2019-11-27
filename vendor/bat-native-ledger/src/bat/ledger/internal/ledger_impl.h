@@ -212,10 +212,12 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::UrlMethod method,
       ledger::LoadURLCallback callback);
 
-  void OnReconcileComplete(ledger::Result result,
-                           const std::string& viewing_id,
-                           const std::string& probi,
-                           const ledger::RewardsType type);
+  void ReconcileComplete(
+      const ledger::Result result,
+      const double amount,
+      const std::string& viewing_id,
+      const ledger::RewardsType type,
+      const bool delete_reconcile = true);
 
   std::string URIEncode(const std::string& value) override;
 
@@ -277,15 +279,8 @@ class LedgerImpl : public ledger::Ledger,
   void GetPublisherBanner(const std::string& publisher_id,
                           ledger::PublisherBannerCallback callback) override;
 
-  void OnReconcileCompleteSuccess(const std::string& viewing_id,
-                                  const ledger::RewardsType type,
-                                  const std::string& probi,
-                                  const ledger::ActivityMonth month,
-                                  const int year,
-                                  const uint32_t date) override;
-
   void SaveRecurringTip(
-      ledger::ContributionInfoPtr info,
+      ledger::RecurringTipPtr info,
       ledger::SaveRecurringTipCallback callback) override;
 
   void GetRecurringTips(ledger::PublisherInfoListCallback callback) override;
@@ -383,12 +378,9 @@ class LedgerImpl : public ledger::Ledger,
 
   bool ReconcileExists(const std::string& viewingId);
 
-  void SaveContributionInfo(const std::string& probi,
-                            const ledger::ActivityMonth month,
-                            const int year,
-                            const uint32_t date,
-                            const std::string& publisher_key,
-                            const ledger::RewardsType type);
+  void SaveContributionInfo(
+      ledger::ContributionInfoPtr info,
+      ledger::ResultCallback callback);
 
   void NormalizeContributeWinners(
       ledger::PublisherInfoList* newList,
