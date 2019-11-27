@@ -22,7 +22,7 @@
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/publisher/publisher.h"
 #include "bat/ledger/internal/bat_state.h"
-#include "bat/ledger/internal/promotion.h"
+#include "bat/ledger/internal/promotion/promotion.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
