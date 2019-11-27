@@ -46,8 +46,8 @@ module.exports = (env, argv) => ({
       },
       // Loads font files for Font Awesome
       {
-        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'url-loader?limit=13000&minetype=application/font-woff'
+        test: /\.woff(2)|m4a|mp4?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'url-loader?limit=13000'
       },
       {
         test: /\.(ttf|eot|ico|svg|png|jpg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,

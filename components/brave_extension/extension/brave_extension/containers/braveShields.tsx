@@ -56,7 +56,10 @@ interface Props {
   settings: any
 }
 
-import Table, { Cell, Row } from 'brave-ui/components/dataTables/table'
+import { Cell } from 'brave-ui/components/dataTables/table'
+
+const VideoFile = require('../video_file.mp4')
+const AudioFile = require('../audio_file.m4a')
 
 interface State {
   url: string
@@ -64,6 +67,8 @@ interface State {
 }
 
 export default class Shields extends React.PureComponent<{}, State> {
+  videoRef: React.RefObject<any>
+  audioRef: React.RefObject<any>
   constructor (props: {}) {
     super(props)
     this.state = {
@@ -72,6 +77,12 @@ export default class Shields extends React.PureComponent<{}, State> {
     }
     // fetch playlists right away
     this.getPlaylist()
+    // create refs for audio/video
+    // TODO: cezaraugusto this won't work with multiple videos
+    // good way to solve this is to create a separate component
+    // that we can then map and so encapsulate state for each of them
+    this.videoRef = React.createRef()
+    this.audioRef = React.createRef()
   }
 
   getPlaylist = () => {
@@ -85,6 +96,21 @@ export default class Shields extends React.PureComponent<{}, State> {
     chrome.bravePlaylists.onPlaylistsChanged.addListener((changeType, id) => {
       this.getPlaylist()
     })
+  }
+
+
+  onPlayVideo = () => {
+    // play event is called whenever user change the video timeline
+    // ensure we're in sync with audio by adopting the same current time from video
+    this.audioRef.current.currentTime = this.videoRef.current.currentTime
+    // the play event will take care of playing the video,
+    // we just need to call the audio to play along
+    this.audioRef.current.play()
+  }
+
+  onPauseVideo = () => {
+    // video is paused. pause the audio too so they remain in sync
+    this.audioRef.current.pause()
   }
 
   get pageHasDownloadableVideo () {
@@ -128,44 +154,6 @@ export default class Shields extends React.PureComponent<{}, State> {
     return lazyButtonStyle
   }
 
-  getPlaylistRows = (playlist?: any): Row[] | undefined => {
-    if (playlist == null) {
-      return
-    }
-
-    return playlist.map((item: any, index: any): any => {
-      // console.log('video file', item.videoMediaFilePath)
-      // console.log('audio file', item.audioMediaFilePath)
-      const cell: Row = {
-        content: [
-          { content: (
-            <div>
-              {
-                item.audioMediaFilePath || item.videoMediaFilePath
-                  ? (
-                    <>
-                      <h3>{item.playlistName}</h3>
-                      <video
-                        controls={true}
-                        width={370}
-                        poster={'file://' + item.thumbnailUrl}
-                      >
-                        <source src={'file://' + item.videoMediaFilePath} type='video/mp4' />
-                      </video>
-                      <video controls={true} style={{ display: 'none' }}><source src={'file://' + item.audioMediaFilePath} type='audio/x-m4a' /></video>
-                      <hr />
-                    </>
-                  )
-                  : <h2>The video <span style={{ color: 'red' }}>{item.playlistName}</span> is being downloaded. It will show here once available</h2>
-              }
-            </div>
-          ) }
-        ]
-      }
-      return cell
-    })
-  }
-
   onClickRemoveALlVideos = () => {
     console.log('nothing')
   }
@@ -179,34 +167,39 @@ export default class Shields extends React.PureComponent<{}, State> {
   }
 
   render () {
-    const { url, playlists } = this.state
+    const { url } = this.state
 
-    return this.pageHasDownloadableVideo
-      ? (
-        <div>
-          <h1>This page has a video you can download</h1>
-          <button
-            style={Object.assign(
-              {},
-              this.lazyButtonStyle,
-              { width: 'fit-content', fontSize: '16px' }
-            )}
-            onClick={this.onClickDownloadVideo.bind(this, url)}
+    return (
+      <div>
+        <h1>This page has a video you can download</h1>
+        <button
+          style={Object.assign(
+            {},
+            this.lazyButtonStyle,
+            { width: 'fit-content', fontSize: '16px' }
+          )}
+          onClick={this.onClickDownloadVideo.bind(this, url)}
+        >
+          Click here to download
+        </button>
+        <hr />
+        <div style={{ minHeight: '600px', width: '100%' }}>
+          <h1>Your playlist</h1>
+          <video
+            ref={this.videoRef}
+            controls={true}
+            width={370}
+            poster={''}
+            onPlay={this.onPlayVideo}
+            onPause={this.onPauseVideo}
           >
-            Click here to download
-          </button>
-          <hr />
-          <div id='adblockPage'>
-            <div style={{ minHeight: '600px', width: '100%' }}>
-            <h1>Your playlist</h1>
-              <Table header={this.getPlaylistHeader()} rows={this.getPlaylistRows(playlists)}>
-                YOUR PLAYLIST IS NOW EMPTY
-              </Table>
-            </div>
-          </div>
+            <source src={VideoFile} type='video/mp4' />
+          </video>
+          <video ref={this.audioRef} style={{ display: 'none' }}>
+            <source src={AudioFile} type='audio/m4a' />
+          </video>
         </div>
-      ) : (
-        <h1>Nothing to see here. Go to a YT video to see the magic</h1>
-      )
+      </div>
+    )
   }
 }
