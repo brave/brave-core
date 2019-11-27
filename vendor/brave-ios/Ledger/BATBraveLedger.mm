@@ -719,9 +719,6 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 {
   // TODO we changed from probi to amount, so from string to double
   if (result == ledger::Result::LEDGER_OK) {
-    const auto now = [NSDate date];
-    const auto nowTimestamp = [now timeIntervalSince1970];
-
     if (type == ledger::RewardsType::RECURRING_TIP) {
       [self showTipsProcessedNotificationIfNeccessary];
     }
@@ -736,7 +733,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
     const auto info = @{ @"viewingId": viewingId,
                          @"result": @((BATResult)result),
                          @"type": @((BATRewardsType)type),
-                         @"amount": [NSString stringWithUTF8String:probi.c_str()] };
+                         @"amount": [@(amount) stringValue] };
 
     [self addNotificationOfKind:BATRewardsNotificationKindAutoContribute
                        userInfo:info
@@ -751,7 +748,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
       observer.reconcileCompleted(static_cast<BATResult>(result),
                                   [NSString stringWithUTF8String:viewing_id.c_str()],
                                   static_cast<BATRewardsType>(type),
-                                  [NSString stringWithUTF8String:probi.c_str()]);
+                                  [@(amount) stringValue]);
     }
   }
 }
@@ -1671,20 +1668,8 @@ BATLedgerBridge(BOOL,
 
 - (void)saveContributionInfo:(ledger::ContributionInfoPtr)info callback:(ledger::ResultCallback)callback
 {
-  // TODO please insert as we changed DB structure
-  [BATLedgerDatabase insertContributionInfo:[NSString stringWithUTF8String:probi.c_str()]
-                                      month:(BATActivityMonth)month
-                                       year:year
-                                       date:date
-                               publisherKey:[NSString stringWithUTF8String:publisher_key.c_str()]
-                                       type:(BATRewardsType)type
-                                 completion:^(BOOL success) {
-                                   for (BATBraveLedgerObserver *observer in [self.observers copy]) {
-                                     if (observer.contributionAdded) {
-                                       observer.contributionAdded(success, static_cast<BATRewardsType>(type));
-                                     }
-                                   }
-                                 }];
+  BLOG(ledger::LogLevel::LOG_ERROR) << "Cannot save contribution info; Neccessary DB update not available" << std::endl;
+  callback(ledger::Result::LEDGER_ERROR);
 }
 
 - (void)saveMediaPublisherInfo:(const std::string &)media_key publisherId:(const std::string &)publisher_id
