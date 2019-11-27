@@ -57,6 +57,7 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
       let promotions = payload.properties.promotions
 
       if (!promotions || promotions.length === 0) {
+        state.promotions = []
         break
       }
 

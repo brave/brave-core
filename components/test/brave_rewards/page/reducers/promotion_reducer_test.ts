@@ -63,9 +63,46 @@ describe('Promotion Reducer', () => {
         type: types.ON_PROMOTIONS,
         payload: {
           properties: {
-            promotionId: 'test-promotion-id',
             status: 1,
-            type: 0
+            promotions: []
+          }
+        }
+      })
+
+      const expectedState: Rewards.State = { ...defaultState }
+
+      expect(assertion).toEqual({
+        rewardsData: expectedState
+      })
+    })
+
+    it('clears promotions if no promotions', () => {
+      const initialState = {
+        ...defaultState
+      }
+      initialState.promotions = [
+        {
+          promotionId: 'test-promotion-id',
+          status: 0,
+          type: 0,
+          expiresAt: 140000
+        },
+        {
+          promotionId: 'test-promotion-id-2',
+          status: 0,
+          type: 1,
+          expiresAt: 140000
+        }
+      ]
+
+      const assertion = reducers({
+        rewardsData: initialState
+      }, {
+        type: types.ON_PROMOTIONS,
+        payload: {
+          properties: {
+            promotions: [],
+            status: 0
           }
         }
       })
