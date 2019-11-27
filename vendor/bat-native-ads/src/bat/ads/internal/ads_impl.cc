@@ -1081,6 +1081,12 @@ bool AdsImpl::ServeAdFromParentCategories(
     }
 
     std::string parent_category = category.substr(0, pos);
+
+    if (std::find(parent_categories.begin(), parent_categories.end(),
+        parent_category) != parent_categories.end()) {
+      continue;
+    }
+
     parent_categories.push_back(parent_category);
   }
 
