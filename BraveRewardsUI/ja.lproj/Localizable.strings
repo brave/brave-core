@@ -44,6 +44,18 @@
 "BraveRewardsAdsEstimatedEarnings" = "保留中の推定報酬額";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedAmountTitle" = "Brave Adsから得たポイント";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedAmountTitleJapan" = "Brave Adsから得たポイント";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedSubtitle" = "広告報酬ポイントの付与処理が進行中です。";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedTitle" = "Brave Adsの報酬です!";
+
+/* No comment provided by engineer. */
 "BraveRewardsAdsMaxPerDay" = "広告の最大表示件数";
 
 /* No comment provided by engineer. */

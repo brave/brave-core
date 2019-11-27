@@ -44,6 +44,18 @@
 "BraveRewardsAdsEstimatedEarnings" = "Anslåtte ventende belønninger";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedAmountTitle" = "Din tildelte gave for Brave-annonser";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedAmountTitleJapan" = "Dine tildelte poeng for Brave-annonser";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedSubtitle" = "Din tildelte belønning for Brave-annonser er på vei.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedTitle" = "Belønning for Brave-annonser!";
+
+/* No comment provided by engineer. */
 "BraveRewardsAdsMaxPerDay" = "Maksimalt antall annonser som vises";
 
 /* No comment provided by engineer. */

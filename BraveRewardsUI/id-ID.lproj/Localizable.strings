@@ -44,6 +44,18 @@
 "BraveRewardsAdsEstimatedEarnings" = "Perkiraan hadiah yang tertunda";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedAmountTitle" = "Hadiah Token Iklan Brave Anda";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedAmountTitleJapan" = "Hadiah Poin Iklan Brave Anda";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedSubtitle" = "Hadiah penghargaan untuk Anda dari Iklan Brave sebentar lagi datang.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedTitle" = "Penghargaan Iklan Brave!";
+
+/* No comment provided by engineer. */
 "BraveRewardsAdsMaxPerDay" = "Jumlah maksimum iklan yang ditampilkan";
 
 /* No comment provided by engineer. */

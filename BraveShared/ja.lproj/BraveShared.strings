@@ -68,9 +68,6 @@
 "AuthenticationLoginsTouchReason" = "ログイン情報にアクセスするには指紋認証が必要です。";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "試行回数が上限に達しました。1 時間後にやり直してください。";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "試行回数が上限に達しました。しばらくしてからやり直してください。";
 
 /* Label for the Passcode item in Settings */
@@ -606,6 +603,9 @@
 
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "常にプライベートモード";
+
+/* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
+"PrivateBrowsingOnlyWarning" = "プライベートブラウジングのみモードでは、現在のタブがすべて閉じられ、すべてのサイトからログアウトされます。";
 
 /* Private tab details */
 "PrivateTabBody" = "プライベートタブはBraveには保存されませんが、オンラインで匿名化されることはありません。 プライベートタブでアクセスしたサイトは履歴に表示されず、Cookieを閉じると常に消えます。Braveにはそれらの痕跡は残りません。 ただし、ダウンロードしたファイルは保存されます。携帯通信会社（または接続しているWiFiネットワークまたはVPNの所有者）は、アクセスしたサイトを確認できます。プライベートタブを使っていても、パブリックIPアドレスは利用したサイト側で確認可能です。";

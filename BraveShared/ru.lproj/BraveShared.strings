@@ -68,9 +68,6 @@
 "AuthenticationLoginsTouchReason" = "Для доступа к учетным данным требуется отпечаток пальца.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "Попытки исчерпаны. Повторите вход через час.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "Попытки исчерпаны. Повторите вход позже.";
 
 /* Label for the Passcode item in Settings */
@@ -606,6 +603,9 @@
 
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Только приватный просмотр";
+
+/* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
+"PrivateBrowsingOnlyWarning" = "В режиме «Приватный просмотр» будут закрыты все открытые вкладки и будет выполнен выход со всех сайтов.";
 
 /* Private tab details */
 "PrivateTabBody" = "Использование приватных вкладок не дает вам полной анонимности в Интернете. При включении этого режима в Brave не сохраняется история браузера, а файлы cookie удаляются сразу после выхода из него. Если вы скачивали файлы, то они останутся на устройстве.\nМобильный оператор, владелец сети Wi-Fi или провайдер VPN сможет увидеть, какие сайты вы посещали, а у сайтов будет доступ к вашему внешнему IP-адресу, даже если вы открывали страницы в приватных вкладках.";

@@ -44,6 +44,18 @@
 "BraveRewardsAdsEstimatedEarnings" = "Примерная сумма наград, ожидающих обработки";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedAmountTitle" = "Выдача токенов Brave Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedAmountTitleJapan" = "Выдача баллов Brave Ads";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedSubtitle" = "Скоро вы получите вознаграждение в виде бонуса от Brave Ads.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedTitle" = "Вознаграждение от Brave Ads!";
+
+/* No comment provided by engineer. */
 "BraveRewardsAdsMaxPerDay" = "Максимальное количество отображаемых объявлений";
 
 /* No comment provided by engineer. */

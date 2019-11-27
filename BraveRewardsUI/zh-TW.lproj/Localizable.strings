@@ -44,6 +44,18 @@
 "BraveRewardsAdsEstimatedEarnings" = "估計待處理的獎勵";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedAmountTitle" = "您的 Brave Ads 贈與代幣";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedAmountTitleJapan" = "您的 Brave Ads 贈與點數";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedSubtitle" = "正在處理您的 Brave Ads 獎勵。";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedTitle" = "Brave Ads 獎勵！";
+
+/* No comment provided by engineer. */
 "BraveRewardsAdsMaxPerDay" = "顯示的最大廣告數量";
 
 /* No comment provided by engineer. */
