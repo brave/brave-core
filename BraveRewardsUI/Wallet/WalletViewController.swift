@@ -494,10 +494,13 @@ extension WalletViewController {
       guard let self = self else {
         return
       }
-      if path.status == .satisfied && (self.state.ledger.balance != nil && self.state.ledger.walletInfo != nil) {
-        //hide network not available banner
-        self.walletView.setNotificationView(nil, animated: true)
-        self.loadNextNotification()
+      if path.status == .satisfied {
+        if self.state.ledger.balance != nil &&
+          self.state.ledger.walletInfo != nil {
+          //hide network not available banner
+          self.walletView.setNotificationView(nil, animated: true)
+          self.loadNextNotification()
+        }
       } else {
         //Show network not available banner
         self.showServerErrorNotification()
