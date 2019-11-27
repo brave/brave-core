@@ -99,7 +99,7 @@ void MakeStubResponse(const base::Optional<std::string>& data_url,
     *data = GetContentForMimeType(response->mime_type);
   }
 
-  if (data_url.has_value()) {
+  if (data_url.has_value() && !data_url->empty()) {
     std::string charset;
     std::string mime_type;
     if (!net::DataURL::Parse(GURL(data_url.value()), &mime_type, &charset,
