@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/notifications/notification_display_service_impl.cc b/chrome/browser/notifications/notification_display_service_impl.cc
+index 46f516b5f2d3b719e058aecbad875dfc0dd88bb5..ea46af4caada6f5eec1cb92bb97dce436befdf3a 100644
+--- a/chrome/browser/notifications/notification_display_service_impl.cc
++++ b/chrome/browser/notifications/notification_display_service_impl.cc
+@@ -144,6 +144,7 @@ NotificationDisplayServiceImpl::NotificationDisplayServiceImpl(Profile* profile)
+     AddNotificationHandler(NotificationHandler::Type::SHARING,
+                            std::make_unique<SharingNotificationHandler>());
+ #endif
++    BRAVE_ADD_BRAVE_ADS_NOTIFICATION_HANDLER;
+   }
+ 
+   // Initialize the bridge if native notifications are available, otherwise
