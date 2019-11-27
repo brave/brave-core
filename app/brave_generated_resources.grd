@@ -126,6 +126,9 @@
       <message name="IDS_SHOW_BRAVE_ADBLOCK" desc="The show Brave Ad Block menu in the app menu">
         Brave Ad Block
       </message>
+      <message name="IDS_SHOW_BRAVE_WEBCOMPAT_REPORTER" desc="The menu item to report a broken site in the app menu">
+        Report a Broken Site
+      </message>
       <message name="IDS_SHOW_BRAVE_SYNC" desc="The show brave sync menu in the app menu">
         Sync
       </message>
@@ -424,6 +427,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <if expr="is_macosx">
         <message name="IDS_BRAVE_THEME_TYPE_SYSTEM" desc="Text for system theme type">
           Same as macOS
+        </message>
+      </if>
+      <!-- Mac Menubar Menus -->
+      <if expr="is_macosx">
+        <message name="IDS_REPORT_BROKEN_SITE_MAC" desc="The Mac menu item to report a broken site in the Help menu.">
+          Report a Broken Site
         </message>
       </if>
       <!-- Brave Default Extensions -->

@@ -772,6 +772,19 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "viewingId", IDS_BRAVE_REWARDS_INTERNALS_VIEWING_ID },
         { "walletPaymentId", IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID },
       }
+    }, {
+      std::string("webcompat"), {
+        // Report modal
+        { "reportModalTitle", IDS_BRAVE_WEBCOMPATREPORTER_REPORT_MODAL_TITLE },
+        { "reportExplanation", IDS_BRAVE_WEBCOMPATREPORTER_REPORT_EXPLANATION },
+        { "reportDisclaimer", IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DISCLAIMER },
+        { "cancel", IDS_BRAVE_WEBCOMPATREPORTER_CANCEL },
+        { "submit", IDS_BRAVE_WEBCOMPATREPORTER_SUBMIT },
+        // Confirmation modal
+        { "thankYou", IDS_BRAVE_WEBCOMPATREPORTER_THANK_YOU },
+        { "confirmationNotice",
+            IDS_BRAVE_WEBCOMPATREPORTER_CONFIRMATION_NOTICE },
+      }
     }
   };
   AddLocalizedStringsBulk(source, localized_strings[name]);

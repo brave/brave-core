@@ -428,11 +428,11 @@ export const BlockedListFooterWithOptions = styled<{}, 'footer'>('footer')`
 export const DisabledContentView = styled<{}, 'section'>('section')`
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: 2fr 5fr;
-  grid-gap: 4px;
-  align-items: center;
-  max-width: 80%;
-  margin: 5px auto 8px;
+  grid-template-rows: auto auto;
+  grid-gap: 12px;
+  justify-items: center;
+  max-width: 70%;
+  margin: 12px auto 0;
 `
 
 /**

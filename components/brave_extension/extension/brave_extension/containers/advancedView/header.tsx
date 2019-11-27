@@ -19,7 +19,7 @@ import {
   TotalBlockedStatsNumber,
   TotalBlockedStatsText,
   DisabledContentView,
-  ShieldIcon,
+  ShieldsButton,
   DisabledContentText,
   Toggle
 } from '../../components'
@@ -41,6 +41,7 @@ interface CommonProps {
   hostname: string
   isBlockedListOpen: boolean
   shieldsToggled: ShieldsToggled
+  reportBrokenSite: () => void
 }
 
 interface BlockedItemsProps {
@@ -73,6 +74,11 @@ export default class Header extends React.PureComponent<Props, {}> {
   onToggleShieldsMain = (event: React.ChangeEvent<HTMLInputElement>) => {
     const shieldsOption: BlockOptions = event.target.checked ? 'allow' : 'block'
     this.props.shieldsToggled(shieldsOption)
+  }
+
+  onReportBrokenSite = () => {
+    this.props.reportBrokenSite()
+    window.close()
   }
 
   render () {
@@ -109,8 +115,8 @@ export default class Header extends React.PureComponent<Props, {}> {
             )
             : (
               <DisabledContentView>
-                <div><ShieldIcon /></div>
                 <DisabledContentText>{getLocale('disabledMessage')}</DisabledContentText>
+                <ShieldsButton level='secondary' type='default' size='small' onClick={this.onReportBrokenSite} text={getLocale('reportBrokenSite')} />
               </DisabledContentView>
             )
           }

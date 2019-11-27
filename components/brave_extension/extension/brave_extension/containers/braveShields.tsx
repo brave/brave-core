@@ -19,6 +19,7 @@ import * as shieldsAPI from '../background/api/shieldsAPI'
 import { Tab, PersistentData } from '../types/state/shieldsPannelState'
 import {
   ShieldsToggled,
+  ReportBrokenSite,
   BlockAdsTrackers,
   HttpsEverywhereToggled,
   BlockJavaScript,
@@ -36,6 +37,7 @@ import {
 interface Props {
   actions: {
     shieldsToggled: ShieldsToggled
+    reportBrokenSite: ReportBrokenSite
     blockAdsTrackers: BlockAdsTrackers
     httpsEverywhereToggled: HttpsEverywhereToggled
     blockJavaScript: BlockJavaScript

@@ -11,6 +11,7 @@ class Browser;
 namespace brave {
 
 void ShowBraveAdblock(Browser* browser);
+void ShowWebcompatReporter(Browser* browser);
 void ShowBraveRewards(Browser* browser);
 void ShowBraveSync(Browser* browser);
 void ShowBraveWallet(Browser* browser);

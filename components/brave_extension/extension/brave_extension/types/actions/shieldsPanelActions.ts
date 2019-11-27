@@ -41,6 +41,14 @@ export interface ShieldsToggled {
   (setting: BlockOptions): ShieldsToggledReturn
 }
 
+interface ReportBrokenSiteReturn {
+  type: types.REPORT_BROKEN_SITE
+}
+
+export interface ReportBrokenSite {
+  (): ReportBrokenSiteReturn
+}
+
 interface ResourceBlockedReturn {
   type: types.RESOURCE_BLOCKED
   details: BlockDetails
@@ -167,6 +175,7 @@ export interface ShieldsReady {
 export type shieldPanelActions =
   ShieldsPanelDataUpdatedReturn |
   ShieldsToggledReturn |
+  ReportBrokenSiteReturn |
   ResourceBlockedReturn |
   BlockAdsTrackersReturn |
   ControlsToggledReturn |

@@ -3,14 +3,14 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import ITheme from 'brave-ui/theme/theme-interface'
-import defaultTheme from 'brave-ui/theme/brave-default'
+import darkTheme from 'brave-ui/theme/brave-dark'
 import colors from 'brave-ui/theme/colors'
 
 const shieldsDarkTheme: ITheme = {
-  ...defaultTheme,
+  ...darkTheme,
   name: 'Shields Dark',
   color: {
-    ...defaultTheme.color,
+    ...darkTheme.color,
     lionLogo: colors.grey700,
     text: colors.white,
     panelBackground: '#17171F',

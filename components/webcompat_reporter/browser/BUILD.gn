@@ -1,0 +1,29 @@
+import("//build/config/features.gni")
+
+declare_args() {
+  webcompat_report_api_endpoint = "https://webcompat.brave.com/1/webcompat"
+}
+
+config("webcompat_reporter_config") {
+  defines = [
+    "WEBCOMPAT_REPORT_ENDPOINT=\"$webcompat_report_api_endpoint\""
+  ]
+}
+
+source_set("browser") {
+  public_configs = [ ":webcompat_reporter_config" ]
+
+  sources = [
+    "webcompat_report_uploader.cc",
+    "webcompat_report_uploader.h",
+  ]
+
+  deps = [
+    "//base",
+    "//net",
+    "//content/public/browser",
+    "//services/network/public/cpp",
+    "//brave/components/brave_referrals/browser",
+    "//brave/common",
+  ]
+}

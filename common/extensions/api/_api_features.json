@@ -115,7 +115,8 @@
     "matches": [
       "chrome://welcome/*",
       "chrome://settings/*",
-      "chrome://newtab/*"
+      "chrome://newtab/*",
+      "chrome://webcompat/*"
     ]
   }]
 }
