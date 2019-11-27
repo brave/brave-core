@@ -169,6 +169,8 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       features::kLookalikeUrlNavigationSuggestionsUI.name,
       features::kNotificationTriggers.name,
       features::kSmsReceiver.name,
+      features::kWebXr.name,
+      features::kWebXrGamepadModule.name,
       unified_consent::kUnifiedConsent.name,
       switches::kSyncUSSBookmarks.name,
   };

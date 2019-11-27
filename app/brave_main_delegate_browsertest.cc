@@ -48,6 +48,8 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kDefaultEnableOopRasterization,
       &features::kNotificationTriggers,
       &features::kSmsReceiver,
+      &features::kWebXr,
+      &features::kWebXrGamepadModule,
       &unified_consent::kUnifiedConsent,
       &features::kLookalikeUrlNavigationSuggestionsUI,
       &switches::kSyncUSSBookmarks,
