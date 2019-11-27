@@ -736,6 +736,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void UnblindedTokensReady() override;
 
+  std::string GetDatabasePath() const override;
+
   // end ledger::LedgerClient
 
   // Mojo Proxy methods

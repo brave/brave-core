@@ -1209,4 +1209,8 @@ void LedgerClientMojoProxy::UnblindedTokensReady() {
   ledger_client_->UnblindedTokensReady();
 }
 
+void LedgerClientMojoProxy::GetDatabasePath(GetDatabasePathCallback callback) {
+  std::move(callback).Run(ledger_client_->GetDatabasePath());
+}
+
 }  // namespace bat_ledger

@@ -216,6 +216,9 @@ double NativeLedgerClient::GetDoubleOption(const std::string& name) const {
 std::string NativeLedgerClient::GetStringOption(const std::string& name) const {
   return [bridge_ getStringOption:name];
 }
+std::string NativeLedgerClient::GetDatabasePath() const {
+  return [bridge_ getDatabasePath];
+}
 int64_t NativeLedgerClient::GetInt64Option(const std::string& name) const {
   return [bridge_ getInt64Option:name];
 }

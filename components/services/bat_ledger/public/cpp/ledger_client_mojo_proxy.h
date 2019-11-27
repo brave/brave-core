@@ -254,6 +254,8 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   void UnblindedTokensReady() override;
 
+  void GetDatabasePath(GetDatabasePathCallback callback) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   // also serves as a wrapper for passing ledger::LedgerCallbackHandler*

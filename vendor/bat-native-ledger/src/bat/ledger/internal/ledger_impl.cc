@@ -34,6 +34,7 @@ using namespace braveledger_media; //  NOLINT
 using namespace braveledger_bat_state; //  NOLINT
 using namespace braveledger_contribution; //  NOLINT
 using namespace braveledger_wallet; //  NOLINT
+using namespace braveledger_database; //  NOLINT
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -58,6 +59,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     bat_state_(new BatState(this)),
     bat_contribution_(new Contribution(this)),
     bat_wallet_(new Wallet(this)),
+    bat_database_(new Database(this)),
     initialized_task_scheduler_(false),
     initialized_(false),
     initializing_(false),
@@ -98,6 +100,7 @@ void LedgerImpl::OnWalletInitializedInternal(
     bat_promotion_->Refresh(false);
     bat_contribution_->Initialize();
     bat_promotion_->Initialize();
+    bat_database_->Initialize();
   } else {
     BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to initialize wallet";
   }
@@ -1556,6 +1559,10 @@ void LedgerImpl::UnblindedTokensReady() {
 
 void LedgerImpl::GetAnonWalletStatus(ledger::ResultCallback callback) {
   bat_wallet_->GetAnonWalletStatus(callback);
+}
+
+std::string LedgerImpl::GetDatabasePath() const {
+  return ledger_client_->GetDatabasePath();
 }
 
 }  // namespace bat_ledger

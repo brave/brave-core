@@ -234,6 +234,8 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
 
   void UnblindedTokensReady() override;
 
+  std::string GetDatabasePath() const override;
+
  private:
   bool Connected() const;
 

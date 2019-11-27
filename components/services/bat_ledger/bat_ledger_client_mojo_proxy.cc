@@ -1040,4 +1040,10 @@ void BatLedgerClientMojoProxy::UnblindedTokensReady() {
   bat_ledger_client_->UnblindedTokensReady();
 }
 
+std::string BatLedgerClientMojoProxy::GetDatabasePath() const {
+  std::string value;
+  bat_ledger_client_->GetDatabasePath(&value);
+  return value;
+}
+
 }  // namespace bat_ledger

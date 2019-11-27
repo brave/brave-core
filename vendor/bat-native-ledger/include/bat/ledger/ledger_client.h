@@ -319,6 +319,8 @@ class LEDGER_EXPORT LedgerClient {
   virtual ledger::ClientInfoPtr GetClientInfo() = 0;
 
   virtual void UnblindedTokensReady() = 0;
+
+  virtual std::string GetDatabasePath() const = 0;
 };
 
 }  // namespace ledger

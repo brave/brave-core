@@ -17,6 +17,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/ledger/internal/contribution/contribution.h"
+#include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/logging.h"
 #include "bat/ledger/internal/properties/ballot_properties.h"
 #include "bat/ledger/internal/properties/publisher_votes_properties.h"
@@ -53,6 +54,10 @@ class Contribution;
 
 namespace braveledger_wallet {
 class Wallet;
+}
+
+namespace braveledger_database {
+class Database;
 }
 
 namespace confirmations {
@@ -598,6 +603,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void GetAnonWalletStatus(ledger::ResultCallback callback) override;
 
+  std::string GetDatabasePath() const;
+
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;
@@ -675,6 +682,7 @@ class LedgerImpl : public ledger::Ledger,
   std::unique_ptr<braveledger_bat_state::BatState> bat_state_;
   std::unique_ptr<braveledger_contribution::Contribution> bat_contribution_;
   std::unique_ptr<braveledger_wallet::Wallet> bat_wallet_;
+  std::unique_ptr<braveledger_database::Database> bat_database_;
   std::unique_ptr<confirmations::Confirmations> bat_confirmations_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;

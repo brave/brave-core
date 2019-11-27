@@ -295,4 +295,6 @@ interface BatLedgerClient {
   [Sync]
   GetClientInfo() => (ledger.mojom.ClientInfo info);
   UnblindedTokensReady();
+  [Sync]
+  GetDatabasePath() => (string value);
 };
