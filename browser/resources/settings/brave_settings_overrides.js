@@ -103,8 +103,37 @@ const BraveClearSettingsMenuHighlightBehavior = {
   }
 }
 
+const BraveAddZoomLevelsBehavior = {
+  ready: function() {
+    this._setPageZoomLevels_([
+        1 / 4,
+        1 / 3,
+        1 / 2,
+        2 / 3,
+        3 / 4,
+        4 / 5,
+        9 / 10,
+        1,
+        11 / 10,
+        5 / 4,
+        4 / 3,
+        7 / 5,
+        3 / 2,
+        7 / 4,
+        2,
+        5 / 2,
+        3,
+        4,
+        5,
+      ])
+  }
+}
+
 // Polymer Component Behavior injection (like superclasses)
 BravePatching.RegisterPolymerComponentBehaviors({
+  'settings-appearance-page': [
+    BraveAddZoomLevelsBehavior
+  ],
   'settings-clear-browsing-data-dialog': [
     BraveClearBrowsingDataOnExitBehavior
   ],
