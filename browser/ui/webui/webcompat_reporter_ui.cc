@@ -15,6 +15,7 @@
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 #include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
 
