@@ -26,7 +26,9 @@
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/extensions/extensions_container.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/toolbar/toolbar_actions_bar_bubble_delegate.h"
 #include "chrome/browser/ui/toolbar/toolbar_action_view_controller.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
 #include "components/prefs/pref_service.h"
@@ -36,6 +38,44 @@
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/grid_layout.h"
 #include "ui/views/view.h"
+
+class BraveActionsContainer::EmptyExtensionsContainer
+    : public ExtensionsContainer {
+ public:
+  EmptyExtensionsContainer() = default;
+  virtual ~EmptyExtensionsContainer() = default;
+
+  ToolbarActionViewController* GetActionForId(
+      const std::string& action_id) override { return nullptr; }
+
+  ToolbarActionViewController* GetPoppedOutAction() const override {
+    return nullptr;
+  }
+
+  bool IsActionVisibleOnToolbar(
+    const ToolbarActionViewController* action) const override { return false; }
+
+  void UndoPopOut() override {}
+
+  void SetPopupOwner(ToolbarActionViewController* popup_owner) override {}
+
+  void HideActivePopup() override {}
+
+  bool CloseOverflowMenuIfOpen() override { return false; }
+
+  void PopOutAction(ToolbarActionViewController* action,
+                    bool is_sticky,
+                    const base::Closure& closure) override {}
+
+  void ShowToolbarActionBubble(
+      std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) override {}
+
+  void ShowToolbarActionBubbleAsync(
+      std::unique_ptr<ToolbarActionsBarBubbleDelegate> bubble) override {}
+
+ private:
+  DISALLOW_COPY_AND_ASSIGN(EmptyExtensionsContainer);
+};
 
 BraveActionsContainer::BraveActionInfo::BraveActionInfo()
     : position_(ACTION_ANY_POSITION) {}
@@ -64,6 +104,7 @@ BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
       extension_registry_observer_(this),
       extension_action_observer_(this),
       brave_action_observer_(this),
+      empty_extensions_container_(new EmptyExtensionsContainer),
       weak_ptr_factory_(this) {
   // Handle when the extension system is ready
   extension_system_->ready().Post(
@@ -150,13 +191,14 @@ void BraveActionsContainer::AddAction(const extensions::Extension* extension) {
     // Remove existing stub view, if present
     actions_[id].Reset();
     // Create a ExtensionActionViewController for the extension
-    // Passing |nullptr| instead of ToolbarActionsBar since we
+    // Passing stub ExtensionsContainer instead of ToolbarActionsBar since we
     // do not require that logic.
     // If we do require notifications when popups are open or closed,
     // then we should inherit and pass |this| through.
     actions_[id].view_controller_ = std::make_unique<BraveActionViewController>(
         extension, browser_,
-        extension_action_manager_->GetExtensionAction(*extension), nullptr,
+        extension_action_manager_->GetExtensionAction(*extension),
+        empty_extensions_container_.get(),
         /*in_overflow_mode*/false);
     // The button view
     actions_[id].view_ = std::make_unique<BraveActionView>(
