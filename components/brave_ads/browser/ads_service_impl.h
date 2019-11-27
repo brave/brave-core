@@ -205,9 +205,9 @@ class AdsServiceImpl : public AdsService,
       ads::URLRequestCallback callback,
       const std::unique_ptr<std::string> response_body);
 
-  void OnGetAdsForCategory(
+  void OnGetAdsForCategories(
       const ads::OnGetAdsCallback& callback,
-      const std::string& category,
+      const std::vector<std::string>& categories,
       const std::vector<ads::AdInfo>& ads);
 
   void OnGetAdsHistory(
@@ -410,7 +410,7 @@ class AdsServiceImpl : public AdsService,
       ads::OnSaveCallback callback) override;
 
   void GetAds(
-      const std::string& category,
+      const std::vector<std::string>& categories,
       ads::OnGetAdsCallback callback) override;
 
   void EventLog(

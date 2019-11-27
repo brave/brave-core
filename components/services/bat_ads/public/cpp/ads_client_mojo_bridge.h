@@ -122,7 +122,7 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
       const std::string& bundle_state,
       SaveBundleStateCallback callback) override;
   void GetAds(
-      const std::string& category,
+      const std::vector<std::string>& categories,
       GetAdsCallback callback) override;
 
  private:
@@ -171,7 +171,7 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   static void OnGetAds(
       CallbackHolder<GetAdsCallback>* holder,
       ads::Result result,
-      const std::string& category,
+      const std::vector<std::string>& categories,
       const std::vector<ads::AdInfo>& ad_info);
 
   ads::AdsClient* ads_client_;

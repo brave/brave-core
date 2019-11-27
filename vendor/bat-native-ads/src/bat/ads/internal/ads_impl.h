@@ -167,7 +167,7 @@ class AdsImpl : public Ads {
       const std::string& url,
       const std::string& html);
 
-  std::string GetWinnerOverTimeCategory();
+  std::vector<std::string> GetWinningCategories();
   std::string GetWinningCategory(
       const std::vector<double>& page_score);
 
@@ -191,22 +191,20 @@ class AdsImpl : public Ads {
 
   void CheckReadyAdServe(
       const bool forced);
-  void ServeAdFromCategory(
-      const std::string& category);
-  void OnServeAdFromCategory(
+  void ServeAdFromCategories(
+      const std::vector<std::string>& categories);
+  void OnServeAdFromCategories(
       const Result result,
-      const std::string& category,
+      const std::vector<std::string>& categories,
       const std::vector<AdInfo>& ads);
-  bool ServeAdFromParentCategory(
-      const std::string& category,
-      const std::vector<AdInfo>& ads);
+  bool ServeAdFromParentCategories(
+      const std::vector<std::string>& categories);
   void ServeUntargetedAd();
   void OnServeUntargetedAd(
       const Result result,
-      const std::string& category,
+      const std::vector<std::string>& categories,
       const std::vector<AdInfo>& ads);
   void ServeAd(
-      const std::string& category,
       const std::vector<AdInfo>& ads);
 
   void SuccessfullyServedAd();
@@ -224,8 +222,7 @@ class AdsImpl : public Ads {
       const AdInfo& ad_info);
   NotificationInfo last_shown_notification_info_;
   bool ShowAd(
-      const AdInfo& ad_info,
-      const std::string& category);
+      const AdInfo& ad_info);
   bool IsAllowedToServeAds();
 
   uint32_t collect_activity_timer_id_;

@@ -97,7 +97,7 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
       ads::OnSaveCallback callback) override;
 
   void GetAds(
-      const std::string& category,
+      const std::vector<std::string>& categories,
       ads::OnGetAdsCallback callback) override;
 
   void EventLog(

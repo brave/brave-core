@@ -3,10 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <fstream>
-#include <vector>
 #include <algorithm>
+#include <fstream>
+#include <functional>
 #include <utility>
+#include <vector>
 
 #include "bat/ads/ad_history_detail.h"
 #include "bat/ads/ads_client.h"
@@ -59,6 +60,8 @@ using std::placeholders::_3;
 namespace {
 
 const int kDaysOfAdsHistory = 7;
+
+const char kCategoryDelimiter = '-';
 
 std::string GetDisplayUrl(const std::string& url) {
   GURL gurl(url);
@@ -762,24 +765,26 @@ std::string AdsImpl::ClassifyPage(
 
   CachePageScore(active_tab_url_, page_score);
 
+  const auto winning_categories = GetWinningCategories();
+
   BLOG(INFO) << "Successfully classified page at " << url << " as "
       << winning_category << ". Winning category over time is "
-      << GetWinnerOverTimeCategory();
+      << winning_categories.front();
 
   return winning_category;
 }
 
-std::string AdsImpl::GetWinnerOverTimeCategory() {
+std::vector<std::string> AdsImpl::GetWinningCategories() {
   auto page_score_history = client_->GetPageScoreHistory();
   if (page_score_history.size() == 0) {
-    return "";
+    return {};
   }
 
   uint64_t count = page_score_history.front().size();
 
-  std::vector<double> winner_over_time_page_score(count);
-  std::fill(winner_over_time_page_score.begin(),
-      winner_over_time_page_score.end(), 0);
+  std::vector<double> winning_category_page_scores(count);
+  std::fill(winning_category_page_scores.begin(),
+      winning_category_page_scores.end(), 0.0);
 
   for (const auto& page_score : page_score_history) {
     DCHECK(page_score.size() == count);
@@ -793,11 +798,41 @@ std::string AdsImpl::GetWinnerOverTimeCategory() {
         continue;
       }
 
-      winner_over_time_page_score[i] += page_score[i];
+      winning_category_page_scores[i] += page_score[i];
     }
   }
 
-  return GetWinningCategory(winner_over_time_page_score);
+  auto sorted_winning_category_page_scores = winning_category_page_scores;
+  std::sort(sorted_winning_category_page_scores.begin(),
+      sorted_winning_category_page_scores.end(), std::greater<double>());
+
+  std::vector<std::string> winning_categories;
+  for (const auto& page_score : sorted_winning_category_page_scores) {
+    if (page_score == 0.0) {
+      continue;
+    }
+
+    auto it = std::find(winning_category_page_scores.begin(),
+        winning_category_page_scores.end(), page_score);
+    const int index = std::distance(winning_category_page_scores.begin(), it);
+    const std::string category = user_model_->GetTaxonomyAtIndex(index);
+    if (category.empty()) {
+      continue;
+    }
+
+    if (std::find(winning_categories.begin(), winning_categories.end(),
+        category) != winning_categories.end()) {
+      continue;
+    }
+
+    winning_categories.push_back(category);
+
+    if (winning_categories.size() == kWinningCategoryCountForServingAds) {
+      break;
+    }
+  }
+
+  return winning_categories;
 }
 
 std::string AdsImpl::GetWinningCategory(
@@ -917,7 +952,7 @@ void AdsImpl::OnLoadSampleBundle(
 
   auto ad_rand = base::RandInt(0, ads_count - 1);
   auto ad = ads.at(ad_rand);
-  ShowAd(ad, category);
+  ShowAd(ad);
 }
 
 void AdsImpl::CheckEasterEgg(
@@ -944,8 +979,13 @@ void AdsImpl::CheckEasterEgg(
 
 void AdsImpl::CheckReadyAdServe(
     const bool forced) {
-  if (!IsInitialized() || !bundle_->IsReady()) {
+  if (!IsInitialized()) {
     FailedToServeAd("Not initialized");
+    return;
+  }
+
+  if (!bundle_->IsReady()) {
+    FailedToServeAd("Bundle not ready");
     return;
   }
 
@@ -980,99 +1020,112 @@ void AdsImpl::CheckReadyAdServe(
     }
   }
 
-  auto category = GetWinnerOverTimeCategory();
-  ServeAdFromCategory(category);
+  auto categories = GetWinningCategories();
+  ServeAdFromCategories(categories);
 }
 
-void AdsImpl::ServeAdFromCategory(
-    const std::string& category) {
-  BLOG(INFO) << "Serving ad for category: " << category;
-
+void AdsImpl::ServeAdFromCategories(
+    const std::vector<std::string>& categories) {
   std::string catalog_id = bundle_->GetCatalogId();
   if (catalog_id.empty()) {
     FailedToServeAd("No ad catalog");
     return;
   }
 
-  if (!category.empty()) {
-    auto callback =
-        std::bind(&AdsImpl::OnServeAdFromCategory, this, _1, _2, _3);
-    ads_client_->GetAds(category, callback);
+  if (categories.empty()) {
+    BLOG(INFO) << "No categories";
+    ServeUntargetedAd();
     return;
   }
 
-  BLOG(INFO) << "Category is empty, trying again with untargeted category";
+  BLOG(INFO) << "Serving ad from categories:";
+  for (const auto& category : categories) {
+    BLOG(INFO) << "  " << category;
+  }
 
-  ServeUntargetedAd();
+  auto callback =
+      std::bind(&AdsImpl::OnServeAdFromCategories, this, _1, _2, _3);
+  ads_client_->GetAds(categories, callback);
 }
 
-void AdsImpl::OnServeAdFromCategory(
+void AdsImpl::OnServeAdFromCategories(
     const Result result,
-    const std::string& category,
+    const std::vector<std::string>& categories,
     const std::vector<AdInfo>& ads) {
   auto eligible_ads = GetEligibleAds(ads);
   if (!eligible_ads.empty()) {
-    ServeAd(category, eligible_ads);
+    BLOG(INFO) << "Found " << eligible_ads.size() << " eligible ads";
+    ServeAd(eligible_ads);
     return;
   }
 
-  if (ServeAdFromParentCategory(category, eligible_ads)) {
-    return;
+  BLOG(INFO) << "No eligible ads found in categories:";
+  for (const auto& category : categories) {
+    BLOG(INFO) << "  " << category;
   }
 
-  BLOG(INFO) << "No ads found in \"" << category
-      << "\" category, trying again with untargeted category";
+  if (ServeAdFromParentCategories(categories)) {
+    return;
+  }
 
   ServeUntargetedAd();
 }
 
-bool AdsImpl::ServeAdFromParentCategory(
-    const std::string& category,
-    const std::vector<AdInfo>& ads) {
-  auto pos = category.find_last_of('-');
-  if (pos == std::string::npos) {
-    return false;
+bool AdsImpl::ServeAdFromParentCategories(
+    const std::vector<std::string>& categories) {
+  std::vector<std::string> parent_categories;
+  for (const auto& category : categories) {
+    auto pos = category.find_last_of(kCategoryDelimiter);
+    if (pos == std::string::npos) {
+      return false;
+    }
+
+    std::string parent_category = category.substr(0, pos);
+    parent_categories.push_back(parent_category);
   }
 
-  std::string parent_category = category.substr(0, pos);
+  BLOG(INFO) << "Serving ad from parent categories:";
+  for (const auto& parent_category : parent_categories) {
+    BLOG(INFO) << "  " << parent_category;
+  }
 
-  BLOG(INFO) << "No ads found in \"" << category
-      << "\" category, trying again with \"" << parent_category
-      << "\" category";
-
-  auto callback = std::bind(&AdsImpl::OnServeAdFromCategory, this, _1, _2, _3);
-  ads_client_->GetAds(parent_category, callback);
+  auto callback =
+      std::bind(&AdsImpl::OnServeAdFromCategories, this, _1, _2, _3);
+  ads_client_->GetAds(parent_categories, callback);
 
   return true;
 }
 
 void AdsImpl::ServeUntargetedAd() {
+  BLOG(INFO) << "Serving ad from untargeted category";
+
+  std::vector<std::string> categories = {
+    kUntargetedPageClassification
+  };
+
   auto callback = std::bind(&AdsImpl::OnServeUntargetedAd, this, _1, _2, _3);
-  ads_client_->GetAds(kUntargetedPageClassification, callback);
+  ads_client_->GetAds(categories, callback);
 }
 
 void AdsImpl::OnServeUntargetedAd(
     const Result result,
-    const std::string& category,
+    const std::vector<std::string>& categories,
     const std::vector<AdInfo>& ads) {
   auto eligible_ads = GetEligibleAds(ads);
-  if (!eligible_ads.empty()) {
-    ServeAd(category, eligible_ads);
+  if (eligible_ads.empty()) {
+    FailedToServeAd("No eligible ads found");
     return;
   }
 
-  FailedToServeAd("No eligible ads found");
+  BLOG(INFO) << "Found " << eligible_ads.size() << " eligible ads";
+  ServeAd(eligible_ads);
 }
 
 void AdsImpl::ServeAd(
-    const std::string& category,
     const std::vector<AdInfo>& ads) {
-  BLOG(INFO) << "Found " << ads.size() << " eligible ads for \"" << category
-      << "\" category";
-
   auto rand = base::RandInt(0, ads.size() - 1);
   auto ad = ads.at(rand);
-  ShowAd(ad, category);
+  ShowAd(ad);
 
   SuccessfullyServedAd();
 }
@@ -1161,8 +1214,14 @@ std::vector<AdInfo> AdsImpl::GetEligibleAds(
 
 std::vector<AdInfo> AdsImpl::GetUnseenAdsAndRoundRobinIfNeeded(
     const std::vector<AdInfo>& ads) const {
+  if (ads.empty()) {
+    return ads;
+  }
+
   auto unseen_ads = GetUnseenAds(ads);
   if (unseen_ads.empty()) {
+    BLOG(INFO) << "All ads have been shown, so round robin";
+
     client_->ResetAdsUUIDSeen(ads);
 
     unseen_ads = GetUnseenAds(ads);
@@ -1210,8 +1269,7 @@ bool AdsImpl::IsAdValid(
 }
 
 bool AdsImpl::ShowAd(
-    const AdInfo& ad,
-    const std::string& category) {
+    const AdInfo& ad) {
   if (!IsAdValid(ad)) {
     return false;
   }
@@ -1228,7 +1286,7 @@ bool AdsImpl::ShowAd(
   auto notification_info = std::make_unique<NotificationInfo>();
   notification_info->id = base::GenerateGUID();
   notification_info->advertiser = ad.advertiser;
-  notification_info->category = category;
+  notification_info->category = ad.category;
   notification_info->text = ad.notification_text;
   notification_info->url = helper::Uri::GetUri(ad.notification_url);
   notification_info->creative_set_id = ad.creative_set_id;
@@ -1238,10 +1296,9 @@ bool AdsImpl::ShowAd(
   // 'Notification shown', {category, winnerOverTime, arbitraryKey,
   // notificationUrl, notificationText, advertiser, uuid, hierarchy}
 
-  BLOG(INFO) << "Notification shown:"
+  BLOG(INFO) << "Ad notification shown:"
       << std::endl << "  id: " << notification_info->id
       << std::endl << "  campaign_id: " << ad.campaign_id
-      << std::endl << "  winnerOverTime: " << GetWinnerOverTimeCategory()
       << std::endl << "  advertiser: " << notification_info->advertiser
       << std::endl << "  category: " << notification_info->category
       << std::endl << "  text: " << notification_info->text

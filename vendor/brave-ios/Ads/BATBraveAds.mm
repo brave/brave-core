@@ -362,16 +362,21 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
                         type:[NSString stringWithUTF8String:std::string(type).c_str()]];
 }
 
-- (void)getAds:(const std::string &)category callback:(ads::OnGetAdsCallback)callback
+- (void)getAds:(const std::vector<std::string> &)categories callback:(ads::OnGetAdsCallback)callback
 {
   if (![self isAdsServiceRunning]) { return; }
-  auto categories = bundleState->categories.find(category);
-  if (categories == bundleState->categories.end()) {
-    callback(ads::Result::FAILED, category, {});
-    return;
+
+  std::vector<ads::AdInfo> found_ads;
+  for (const auto & category : categories) {
+    auto it = bundleState->categories.find(category);
+    if (it == bundleState->categories.end()) {
+      continue;
+    }
+
+    found_ads.insert(found_ads.end(), it->second.begin(), it->second.end());
   }
 
-  callback(ads::Result::SUCCESS, category, categories->second);
+  callback(ads::Result::SUCCESS, categories, found_ads);
 }
 
 - (void)setCatalogIssuers:(std::unique_ptr<ads::IssuersInfo>)info

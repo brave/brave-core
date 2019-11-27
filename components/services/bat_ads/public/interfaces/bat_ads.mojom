@@ -56,7 +56,7 @@ interface BatAdsClient {
   Load(string name) => (int32 result, string value);
   LoadSampleBundle() => (int32 result, string value);
   Reset(string name) => (int32 result);
-  GetAds(string category) => (int32 result, string category, array<string> ad_info);
+  GetAds(array<string> categories) => (int32 result, array<string> categories, array<string> ad_info);
   EventLog(string json);
 };
 
