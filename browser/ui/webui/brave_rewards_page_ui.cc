@@ -289,10 +289,10 @@ void RewardsDOMHandler::RegisterMessages() {
 #if defined(OS_ANDROID)
   // TODO(sergz) figure out why we have link error here
   // Create our favicon data source.
-  // Profile* profile = Profile::FromWebUI(web_ui());
-  // content::URLDataSource::Add(profile,
-  //                            std::make_unique<FaviconSource>(profile,
-  //                            chrome::FaviconUrlFormat::kFaviconLegacy));
+  Profile* profile = Profile::FromWebUI(web_ui());
+  content::URLDataSource::Add(profile,
+                             std::make_unique<FaviconSource>(profile,
+                             chrome::FaviconUrlFormat::kFaviconLegacy));
 #endif
 
   web_ui()->RegisterMessageCallback("brave_rewards.createWalletRequested",
