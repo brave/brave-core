@@ -3125,12 +3125,12 @@ void RewardsServiceImpl::SetShortRetries(bool short_retries) {
 
 ledger::Result SavePendingContributionOnFileTaskRunner(
     PublisherInfoDatabase* backend,
-    const ledger::PendingContributionList& list) {
+    ledger::PendingContributionList list) {
   if (!backend) {
     return ledger::Result::LEDGER_ERROR;
   }
 
-  bool result = backend->InsertPendingContribution(list);
+  bool result = backend->InsertPendingContribution(std::move(list));
 
   return result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
 }
@@ -3150,10 +3150,10 @@ void RewardsServiceImpl::SavePendingContribution(
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(),
       FROM_HERE,
-      base::Bind(&SavePendingContributionOnFileTaskRunner,
+      base::BindOnce(&SavePendingContributionOnFileTaskRunner,
                  publisher_info_backend_.get(),
                  std::move(list)),
-      base::Bind(&RewardsServiceImpl::OnSavePendingContribution,
+      base::BindOnce(&RewardsServiceImpl::OnSavePendingContribution,
                  AsWeakPtr(),
                  std::move(callback)));
 }
