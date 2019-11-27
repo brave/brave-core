@@ -44,6 +44,18 @@
 "BraveRewardsAdsEstimatedEarnings" = "보류 중인 Rewards 예상액";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedAmountTitle" = "보유한 Brave Ads 제공 토큰";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedAmountTitleJapan" = "보유한 Brave Ads 제공 포인트";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedSubtitle" = "Brave Ads에서 제공하는 리워드가 전달되고 있습니다.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedTitle" = "Brave Ads 리워드!";
+
+/* No comment provided by engineer. */
 "BraveRewardsAdsMaxPerDay" = "광고 표시 최대 한도";
 
 /* No comment provided by engineer. */

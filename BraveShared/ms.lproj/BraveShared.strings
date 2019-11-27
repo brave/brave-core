@@ -68,9 +68,6 @@
 "AuthenticationLoginsTouchReason" = "Gunakan cap jari anda untuk mengakses Log Masuk sekarang.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "Bilangan percubaan maksimum tercapai. Sila cuba lagi dalam satu jam.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "Bilangan percubaan maksimum tercapai. Sila cuba lagi sebentar lagi.";
 
 /* Label for the Passcode item in Settings */
@@ -606,6 +603,9 @@
 
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Semakan Lalu Peribadi Sahaja";
+
+/* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
+"PrivateBrowsingOnlyWarning" = "Mod Penyemakan Imbas Peribadi Sahaja akan menutup semua tab semasa anda dan mengelog anda keluar daripada semua tapak.";
 
 /* Private tab details */
 "PrivateTabBody" = "Tab Peribadi tidak disimpan dalam Brave, namun ia tidak merahsiakan kehadiran anda dalam talian. Laman yang anda lawati dalam tab peribadi tidak akan ditunjukkan dalam sejarah anda dan kuki laman tersebut sentiasa hilang apabila anda menutupnya — tidak akan ada apa-apa jejak kuki tersebut dalam Brave. Namun begitu, muat turun akan disimpan. \nPembawa mudah alih anda (atau pemilik sambungan VPN atau rangkaian Wi-Fi anda) boleh melihat laman yang anda lawati dan laman tersebut akan mengetahui alamat IP awam anda, walaupun dalam Tab Peribadi.";

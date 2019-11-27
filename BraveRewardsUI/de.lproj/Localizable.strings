@@ -44,6 +44,18 @@
 "BraveRewardsAdsEstimatedEarnings" = "Geschätzte ausstehende Rewards";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedAmountTitle" = "Ihr Brave Ads Token-Zuschuss";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedAmountTitleJapan" = "Ihr Brave Ads Punkte-Zuschuss";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedSubtitle" = "Ihr Prämienzuschuss von Brave Ads ist unterwegs.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedTitle" = "Brave Ads Prämien!";
+
+/* No comment provided by engineer. */
 "BraveRewardsAdsMaxPerDay" = "Maximale Anzahl der angezeigten Ads";
 
 /* No comment provided by engineer. */

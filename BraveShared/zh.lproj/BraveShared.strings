@@ -68,9 +68,6 @@
 "AuthenticationLoginsTouchReason" = "使用指纹立即访问“登录”。";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "达到最大尝试次数。请一小时后重试。";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "达到最大尝试次数。请稍后重试。";
 
 /* Label for the Passcode item in Settings */
@@ -606,6 +603,9 @@
 
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "仅限私人浏览";
+
+/* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
+"PrivateBrowsingOnlyWarning" = "“仅私人浏览”模式会关闭所有当前选项卡，而且还会将你退出所有站点。";
 
 /* Private tab details */
 "PrivateTabBody" = "私人标签未保存在 Brave 中，但它们不会让您在线匿名。您在私人标签中访问的网站将不会在您的历史记录中显示，并且当您关闭它们时，其 Cookie 总是会消失 - 不会在 Brave 中留下任何痕迹。您的移动运营商（或您所连接的 WiFi 网络或 VPN  的所有者）可以查看您访问的网站，这些网站将学习您的公共IP地址，即使在私人标签中也是如此。";

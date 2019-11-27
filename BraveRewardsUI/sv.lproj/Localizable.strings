@@ -44,6 +44,18 @@
 "BraveRewardsAdsEstimatedEarnings" = "Uppskattade väntande belöningar";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedAmountTitle" = "Dina Brave Ads myntbidrag";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedAmountTitleJapan" = "Dina Brave Ads poängbidrag";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedSubtitle" = "Ditt belöningsbidrag från Brave Ads är på väg.";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsGrantsClaimedTitle" = "Brave Ads Rewards!";
+
+/* No comment provided by engineer. */
 "BraveRewardsAdsMaxPerDay" = "Maximalt antal annonser visade";
 
 /* No comment provided by engineer. */

@@ -68,9 +68,6 @@
 "AuthenticationLoginsTouchReason" = "立即使用您的指紋登入。";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "已達嘗試次數上限，請一小時後再試。";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "已達嘗試次數上限，請稍後再試。";
 
 /* Label for the Passcode item in Settings */
@@ -606,6 +603,9 @@
 
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "僅限隱私瀏覽";
+
+/* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
+"PrivateBrowsingOnlyWarning" = "「僅限私人瀏覽」模式將關閉所有當前分頁，將您登出所有網站。";
 
 /* Private tab details */
 "PrivateTabBody" = "私密標籤頁不會儲存在 Brave ，但也不會讓您於網站上匿名。 您在私密標籤頁瀏覽的網站不會在歷史記錄中顯示，且當您關閉網站後，cookie 一率會消失，在 Brave 中不會留下任何痕跡。但所有下載將會被儲存。\n您的行動裝置電信業者（或您所連線的 WiFi 或 VPN 的所有人）可以查看您所瀏覽的網站，而透過這些網站將獲悉您的 IP 位址，即使是在私密標籤頁也是如此。";

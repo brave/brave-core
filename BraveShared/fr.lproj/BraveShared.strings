@@ -68,9 +68,6 @@
 "AuthenticationLoginsTouchReason" = "Utilisez votre empreinte digitale pour accéder aux identifiants de connexion.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "Nombre maximum de tentatives atteint. Réessayez dans une heure.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "Nombre maximum de tentatives atteint. Réessayez ultérieurement.";
 
 /* Label for the Passcode item in Settings */
@@ -431,7 +428,7 @@
 "FindOnPageSectionHeader" = "Sur cette page";
 
 /* individual blocking statistic title */
-"FingerprintingMethods" = "Méthodes avec création d’empreinte digitale";
+"FingerprintingMethods" = "Méthodes de création d'empreinte numérique";
 
 /* blocking stat title */
 "FingerprintingnProtection" = "Protection contre les\nempreintes digitales";
@@ -606,6 +603,9 @@
 
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Navigation privée uniquement";
+
+/* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
+"PrivateBrowsingOnlyWarning" = "Le mode«  Navigation privée uniquement » fermera tous vos onglets actuels et vous déconnectera de tous les sites.";
 
 /* Private tab details */
 "PrivateTabBody" = "Même si les onglets privés ne sont pas enregistrés dans Brave, ces derniers ne vous rendent pas anonymes sur Internet. Les sites que vous consultez dans un onglet privé ne s'affichent pas dans votre historique, et leurs cookies sont toujours supprimés (ils ne sont pas conservés dans Brave) lorsque vous fermez leur onglet. Vos téléchargements sont toutefois enregistrés.\nLes onglets privés n'empêchent pas votre opérateur mobile (ou le propriétaire du réseau Wi-Fi ou du VPN auquel vous êtes connecté) de voir les sites que vous consultez, ni ces sites d'obtenir votre adresse IP publique.";

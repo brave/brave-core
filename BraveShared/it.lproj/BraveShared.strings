@@ -68,9 +68,6 @@
 "AuthenticationLoginsTouchReason" = "Usa l’impronta digitale per visualizzare ora i dati di accesso.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "Numero massimo di tentativi raggiunto. Riprova tra un’ora.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "Numero massimo di tentativi raggiunto. Riprova più tardi.";
 
 /* Label for the Passcode item in Settings */
@@ -606,6 +603,9 @@
 
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Solo navigazione privata";
+
+/* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
+"PrivateBrowsingOnlyWarning" = "Con la modalità “Solo navigazione privata”, verranno chiuse tutte le schede aperte e uscirai da tutti i siti.";
 
 /* Private tab details */
 "PrivateTabBody" = "Le schede private non vengono salvate su Brave, ma non garantiscono l’anonimato online. I siti che visiti in una scheda privata non appariranno nella cronologia, e quando chiudi la scheda i loro cookie scompaiono sempre: non ne resterà traccia su Brave.\nIl tuo gestore di telefonia mobile (o il proprietario della rete Wi-Fi o VPN con cui ti connetti) può vedere quali siti visiti, e questi siti memorizzeranno il tuo indirizzo IP pubblico, anche nelle schede private.";

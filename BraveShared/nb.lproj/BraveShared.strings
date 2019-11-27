@@ -68,9 +68,6 @@
 "AuthenticationLoginsTouchReason" = "Bruk fingeravtrykket ditt for å få tilgang til innlogginger nå.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
-"AuthenticationMaximumAttemptsReached" = "Maksimalt antall forsøk nådd. Vennligst prøv igjen om en time.";
-
-/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "Maksimalt antall forsøk nådd. Vennligst prøv igjen senere.";
 
 /* Label for the Passcode item in Settings */
@@ -606,6 +603,9 @@
 
 /* Setting to keep app in private mode */
 "PrivateBrowsingOnly" = "Kun privat surfing";
+
+/* When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed */
+"PrivateBrowsingOnlyWarning" = "Modusen Kun privat nettlesing vil lukke alle de gjeldende fanene og logge deg ut av alle nettstedene.";
 
 /* Private tab details */
 "PrivateTabBody" = "Private faner blir ikke lagret i Brave, men de gjør deg ikke anonym på nett. Sidene du besøker i private faner, vises ikke i historikken din, og informasjonskapslene deres forsvinner alltid når du lukker dem – det vil ikke være spor etter dem i Brave. Nedlastinger vil derimot lagres.\nMobilleverandøren din (eller eieren av WiFi-nettverket eller VPN du er tilkoblet) kan se hvilke sider du besøker, og disse sidene vil ha din offentlige IP-adresse, selv i private faner.";
