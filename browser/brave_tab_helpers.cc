@@ -6,6 +6,7 @@
 #include "brave/browser/brave_tab_helpers.h"
 
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
+#include "brave/browser/brave_wayback_machine/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_tab_helper.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
@@ -34,6 +35,10 @@
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/brave_drm_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/browser/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
 #endif
 
 namespace brave {
@@ -65,6 +70,10 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
   BraveDrmTabHelper::CreateForWebContents(web_contents);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  BraveWaybackMachineTabHelper::AttachTabHelperIfNeeded(web_contents);
 #endif
 
   brave_ads::AdsTabHelper::CreateForWebContents(web_contents);

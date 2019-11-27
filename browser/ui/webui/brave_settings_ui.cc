@@ -13,7 +13,6 @@
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
-#include "brave/browser/ui/webui/settings/brave_help_tips_handler.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
 #include "brave/browser/version_info.h"
@@ -38,7 +37,6 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
   web_ui->AddMessageHandler(std::make_unique<BravePrivacyHandler>());
   web_ui->AddMessageHandler(std::make_unique<DefaultBraveShieldsHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveDefaultExtensionsHandler>());
-  web_ui->AddMessageHandler(std::make_unique<BraveHelpTipsHandler>());
 #if BUILDFLAG(ENABLE_SPARKLE)
   // Use sparkle's relaunch api for browser relaunch on update.
   web_ui->AddMessageHandler(std::make_unique<BraveRelaunchHandler>());

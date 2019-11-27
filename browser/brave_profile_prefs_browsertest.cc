@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/brave_wayback_machine/buildflags.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -47,8 +47,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
-      kBraveWaybackMachineEnabled));
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->
+      GetBoolean(kBraveWaybackMachineEnabled));
 #endif
   EXPECT_TRUE(
       browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));

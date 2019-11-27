@@ -1,0 +1,25 @@
+import("//build/buildflag_header.gni")
+import("buildflags/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "ENABLE_BRAVE_WAYBACK_MACHINE=$enable_brave_wayback_machine" ]
+}
+
+source_set("brave_wayback_machine") {
+  sources = [
+    "brave_wayback_machine_tab_helper.cc",
+    "brave_wayback_machine_tab_helper.h",
+  ]
+
+  deps = [
+    "//brave/common",
+    "//components/prefs",
+    "//content/public/browser",
+    "//net",
+  ]
+
+  public_deps = [
+    ":buildflags",
+  ]
+}

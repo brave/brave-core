@@ -17,7 +17,6 @@
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
-#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "chrome/browser/net/proxy_config_monitor.h"
 #include "chrome/browser/profiles/profile.h"
@@ -41,11 +40,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 #include "ui/base/l10n/l10n_util.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-#include "brave/common/extensions/extension_constants.h"
-#include "extensions/browser/extension_registry.h"
-#endif
 
 namespace {
 
@@ -242,25 +236,6 @@ TEST_F(BraveProfileManagerTest, NoWebtorrentInTorProfile) {
 
   EXPECT_FALSE(webtorrent::IsWebtorrentEnabled(profile));
 }
-
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-TEST_F(BraveProfileManagerTest, NoWaybackMachineInTorProfile) {
-  base::FilePath tor_parent_profile_path =
-      temp_dir_.GetPath().AppendASCII(TestingProfile::kTestUserProfileDir);
-  ProfileManager* profile_manager = g_browser_process->profile_manager();
-  base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
-  Profile* parent_profile =
-      profile_manager->GetProfile(tor_parent_profile_path);
-  Profile* profile = profile_manager->GetProfile(tor_path);
-  ASSERT_TRUE(profile);
-  EXPECT_EQ(brave::GetParentProfile(profile), parent_profile);
-
-  extensions::ExtensionRegistry* registry =
-      extensions::ExtensionRegistry::Get(profile);
-  EXPECT_FALSE(registry->enabled_extensions().Contains(
-      brave_wayback_machine_extension_id));
-}
-#endif
 
 TEST_F(BraveProfileManagerTest, ProxyConfigMonitorInTorProfile) {
   ScopedTorLaunchPreventerForTest prevent_tor_process;

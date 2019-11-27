@@ -9,7 +9,6 @@
 #include "brave/components/brave_extension/grit/brave_extension_resources_map.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
-#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_generated_map.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources_map.h"
 
@@ -21,11 +20,6 @@
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
 #include "brave/components/brave_sync/grit/brave_sync_generated_map.h"
 #include "brave/components/brave_sync/grit/brave_sync_resources_map.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-#include "brave/components/brave_wayback_machine/grit/brave_wayback_machine_generated_map.h"
-#include "brave/components/brave_wayback_machine/grit/brave_wayback_machine_resources_map.h"
 #endif
 
 namespace extensions {
@@ -65,16 +59,6 @@ BraveComponentExtensionResourceManager() {
   AddComponentResourceEntries(
       kBraveWebtorrentGenerated,
       kBraveWebtorrentGeneratedSize);
-
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  AddComponentResourceEntries(
-      kBraveWaybackMachineResources,
-      kBraveWaybackMachineResourcesSize);
-#endif
-
-  AddComponentResourceEntries(
-      kBraveWaybackMachineGenerated,
-      kBraveWaybackMachineGeneratedSize);
 }
 
 BraveComponentExtensionResourceManager::

@@ -24,7 +24,6 @@
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
-#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/content/browser/webui/brave_shared_resources_data_source.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
@@ -101,11 +100,6 @@ void BraveProfileManager::InitTorProfileUserPrefs(Profile* profile) {
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   pref_service->SetBoolean(kWebTorrentEnabled, false);
 #endif
-
-#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  pref_service->SetBoolean(kBraveWaybackMachineEnabled, false);
-#endif
-
   // Disable the automatic translate bubble in Tor because we currently don't
   // support extensions in Tor mode and users cannot disable this through
   // settings page for Tor windows.
