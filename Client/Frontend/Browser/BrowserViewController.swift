@@ -1120,16 +1120,16 @@ class BrowserViewController: UIViewController {
         
         guard let webView = object as? WKWebView else {
             log.error("An object of type: \(String(describing: object)) is being observed instead of a WKWebView")
-            return  //False alarm.. the source MUST be a web view.
+            return  // False alarm.. the source MUST be a web view.
         }
         
-        //WebView is a zombie and somehow still has an observer attached to it
+        // WebView is a zombie and somehow still has an observer attached to it
         guard let tab = tabManager[webView] else {
             log.error("WebView: \(webView) has been removed from TabManager but still has attached observers")
             return
         }
         
-        //Must handle ALL keypaths
+        // Must handle ALL keypaths
         guard let kp = keyPath, let path = KVOConstants(rawValue: kp) else {
             assertionFailure("Unhandled KVO key: \(keyPath ?? "nil")")
             return
@@ -3336,7 +3336,7 @@ extension BrowserViewController: PreferencesObserver {
                 
                 // Clear ALL data when going from normal mode to private
                 // The other way around is handled in `removeTab`
-                let clearables: [Clearable] = [HistoryClearable(), CookiesAndCacheClearable()]
+                let clearables: [Clearable] = [CookiesAndCacheClearable()]
                 _ = ClearPrivateDataTableViewController.clearPrivateData(clearables)
             }
         case Preferences.General.alwaysRequestDesktopSite.key:
