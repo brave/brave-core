@@ -14,7 +14,6 @@
 #include <vector>
 
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 
 namespace bat_ledger {

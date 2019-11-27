@@ -12,11 +12,10 @@
 
 #include "base/json/json_reader.h"
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold.h"
-#include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;

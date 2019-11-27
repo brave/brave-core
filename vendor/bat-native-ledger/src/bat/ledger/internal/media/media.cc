@@ -8,6 +8,7 @@
 
 #include "bat/ledger/internal/media/media.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/static_values.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;

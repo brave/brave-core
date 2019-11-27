@@ -131,7 +131,7 @@ static const uint8_t g_hkdfSalt[] = {
 
 static const double _d = 1.0 / (30.0 * 1000.0);
 
-static const uint64_t _default_min_publisher_duration = 8;  // In seconds
+static const uint64_t _default_min_page_time_before_logging_a_visit = 8;
 
 static const uint64_t _milliseconds_day = 24 * 60 * 60 * 1000;
 

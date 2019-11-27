@@ -19,13 +19,12 @@
 #include "bat/ads/notification_info.h"
 #include "bat/confirmations/confirmations.h"
 #include "bat/ledger/internal/media/media.h"
-#include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/publisher/publisher.h"
+#include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/bat_state.h"
 #include "bat/ledger/internal/promotion/promotion.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
-#include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 
@@ -134,7 +133,7 @@ void LedgerImpl::CreateWallet(const std::string& safetynet_token,
   bat_wallet_->CreateWalletIfNecessary(safetynet_token, std::move(on_wallet));
 }
 
-braveledger_bat_helper::CURRENT_RECONCILE LedgerImpl::GetReconcileById(
+ledger::CurrentReconcileProperties LedgerImpl::GetReconcileById(
     const std::string& viewingId) {
   return bat_state_->GetReconcileById(viewingId);
 }
@@ -320,7 +319,7 @@ void LedgerImpl::OnLedgerStateLoaded(
 }
 
 void LedgerImpl::SetConfirmationsWalletInfo(
-    const braveledger_bat_helper::WALLET_INFO_ST& wallet_info) {
+    const ledger::WalletInfoProperties& wallet_info) {
   if (!bat_confirmations_) {
     confirmations::_environment = ledger::_environment;
     confirmations::_is_debug = ledger::is_debug;
@@ -631,7 +630,7 @@ void LedgerImpl::ReconcileComplete(
 
 void LedgerImpl::OnWalletProperties(
     ledger::Result result,
-    const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties) {
+    const ledger::WalletProperties& properties) {
   ledger::WalletPropertiesPtr wallet;
 
   if (result == ledger::Result::LEDGER_OK) {
@@ -879,13 +878,13 @@ void LedgerImpl::ResetReconcileStamp() {
 }
 
 bool LedgerImpl::UpdateReconcile(
-    const braveledger_bat_helper::CURRENT_RECONCILE& reconcile) {
+    const ledger::CurrentReconcileProperties& reconcile) {
   return bat_state_->UpdateReconcile(reconcile);
 }
 
 void LedgerImpl::AddReconcile(
       const std::string& viewing_id,
-      const braveledger_bat_helper::CURRENT_RECONCILE& reconcile) {
+      const ledger::CurrentReconcileProperties& reconcile) {
   bat_state_->AddReconcile(viewing_id, reconcile);
 }
 
@@ -925,29 +924,28 @@ void LedgerImpl::SetPreFlight(const std::string& pre_flight) {
   bat_state_->SetPreFlight(pre_flight);
 }
 
-const braveledger_bat_helper::WALLET_INFO_ST&
-LedgerImpl::GetWalletInfo() const {
+const ledger::WalletInfoProperties& LedgerImpl::GetWalletInfo() const {
   return bat_state_->GetWalletInfo();
 }
 
 void LedgerImpl::SetWalletInfo(
-    const braveledger_bat_helper::WALLET_INFO_ST& info) {
+    const ledger::WalletInfoProperties& info) {
   bat_state_->SetWalletInfo(info);
 
   SetConfirmationsWalletInfo(info);
 }
 
 const confirmations::WalletInfo LedgerImpl::GetConfirmationsWalletInfo(
-    const braveledger_bat_helper::WALLET_INFO_ST& info) const {
+    const ledger::WalletInfoProperties& info) const {
   confirmations::WalletInfo wallet_info;
 
-  wallet_info.payment_id = info.paymentId_;
+  wallet_info.payment_id = info.payment_id;
 
-  if (info.keyInfoSeed_.empty()) {
+  if (info.key_info_seed.empty()) {
     return wallet_info;
   }
 
-  auto seed = braveledger_bat_helper::getHKDF(info.keyInfoSeed_);
+  auto seed = braveledger_bat_helper::getHKDF(info.key_info_seed);
   std::vector<uint8_t> publicKey = {};
   std::vector<uint8_t> secretKey = {};
   braveledger_bat_helper::getPublicKeyFromSeed(seed, &publicKey, &secretKey);
@@ -974,13 +972,12 @@ void LedgerImpl::GetRewardsInternalsInfo(
   info->boot_stamp = bat_state_->GetBootStamp();
 
   // Retrieve the key info seed and validate it.
-  const braveledger_bat_helper::WALLET_INFO_ST wallet_info =
-      bat_state_->GetWalletInfo();
-  if (wallet_info.keyInfoSeed_.size() != SEED_LENGTH) {
+  const ledger::WalletInfoProperties wallet_info = bat_state_->GetWalletInfo();
+  if (wallet_info.key_info_seed.size() != SEED_LENGTH) {
     info->is_key_info_seed_valid = false;
   } else {
     std::vector<uint8_t> secret_key =
-        braveledger_bat_helper::getHKDF(wallet_info.keyInfoSeed_);
+        braveledger_bat_helper::getHKDF(wallet_info.key_info_seed);
     std::vector<uint8_t> public_key;
     std::vector<uint8_t> new_secret_key;
     info->is_key_info_seed_valid = braveledger_bat_helper::getPublicKeyFromSeed(
@@ -988,16 +985,15 @@ void LedgerImpl::GetRewardsInternalsInfo(
   }
 
   // Retrieve the current reconciles.
-  const braveledger_bat_helper::CurrentReconciles current_reconciles =
-      GetCurrentReconciles();
+  const ledger::CurrentReconciles current_reconciles = GetCurrentReconciles();
   for (const auto& reconcile : current_reconciles) {
     ledger::ReconcileInfoPtr reconcile_info = ledger::ReconcileInfo::New();
-    reconcile_info->viewing_id = reconcile.second.viewingId_;
-    reconcile_info->amount = reconcile.second.amount_;
-    reconcile_info->retry_step = reconcile.second.retry_step_;
-    reconcile_info->retry_level = reconcile.second.retry_level_;
+    reconcile_info->viewing_id = reconcile.second.viewing_id;
+    reconcile_info->amount = reconcile.second.amount;
+    reconcile_info->retry_step = reconcile.second.retry_step;
+    reconcile_info->retry_level = reconcile.second.retry_level;
     info->current_reconciles.insert(
-        std::make_pair(reconcile.second.viewingId_, std::move(reconcile_info)));
+        std::make_pair(reconcile.second.viewing_id, std::move(reconcile_info)));
   }
 
   callback(std::move(info));
@@ -1007,13 +1003,12 @@ void LedgerImpl::StartMonthlyContribution() {
   bat_contribution_->StartMonthlyContribution();
 }
 
-const braveledger_bat_helper::WALLET_PROPERTIES_ST&
-LedgerImpl::GetWalletProperties() const {
+const ledger::WalletProperties& LedgerImpl::GetWalletProperties() const {
   return bat_state_->GetWalletProperties();
 }
 
 void LedgerImpl::SetWalletProperties(
-    braveledger_bat_helper::WALLET_PROPERTIES_ST* properties) {
+    ledger::WalletProperties* properties) {
   bat_state_->SetWalletProperties(properties);
 }
 
@@ -1025,30 +1020,30 @@ void LedgerImpl::SetDays(unsigned int days) {
   bat_state_->SetDays(days);
 }
 
-const braveledger_bat_helper::Transactions&
-LedgerImpl::GetTransactions() const {
+const ledger::Transactions& LedgerImpl::GetTransactions() const {
   return bat_state_->GetTransactions();
 }
 
 void LedgerImpl::SetTransactions(
-    const braveledger_bat_helper::Transactions& transactions) {
+    const ledger::Transactions& transactions) {
   bat_state_->SetTransactions(transactions);
 }
 
-const braveledger_bat_helper::Ballots& LedgerImpl::GetBallots() const {
+const ledger::Ballots& LedgerImpl::GetBallots() const {
   return bat_state_->GetBallots();
 }
 
-void LedgerImpl::SetBallots(const braveledger_bat_helper::Ballots& ballots) {
+void LedgerImpl::SetBallots(const ledger::Ballots& ballots) {
   bat_state_->SetBallots(ballots);
 }
 
-const braveledger_bat_helper::BatchVotes& LedgerImpl::GetBatch() const {
-  return bat_state_->GetBatch();
+const ledger::PublisherVotes& LedgerImpl::GetPublisherVotes() const {
+  return bat_state_->GetPublisherVotes();
 }
 
-void LedgerImpl::SetBatch(const braveledger_bat_helper::BatchVotes& votes) {
-  bat_state_->SetBatch(votes);
+void LedgerImpl::SetPublisherVotes(
+    const ledger::PublisherVotes& publisher_votes) {
+  bat_state_->SetPublisherVotes(publisher_votes);
 }
 
 const std::string& LedgerImpl::GetCurrency() const {
@@ -1108,8 +1103,7 @@ bool LedgerImpl::AddReconcileStep(
   return bat_state_->AddReconcileStep(viewing_id, step, level);
 }
 
-const braveledger_bat_helper::CurrentReconciles&
-LedgerImpl::GetCurrentReconciles() const {
+const ledger::CurrentReconciles& LedgerImpl::GetCurrentReconciles() const {
   return bat_state_->GetCurrentReconciles();
 }
 

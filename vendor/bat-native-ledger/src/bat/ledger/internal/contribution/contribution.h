@@ -14,7 +14,7 @@
 
 #include "base/gtest_prod_util.h"
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/properties/current_reconcile_properties.h"
 
 // Contribution has two big phases. PHASE 1 is starting the contribution,
 // getting surveyors and transferring BAT from the wallet.
@@ -157,7 +157,7 @@ class Contribution {
   void AddRetry(
     ledger::ContributionRetry step,
     const std::string& viewing_id,
-    braveledger_bat_helper::CURRENT_RECONCILE reconcile = {});
+    ledger::CurrentReconcileProperties reconcile = {});
 
   // Resets reconcile stamps
   void ResetReconcileStamp();
@@ -206,7 +206,7 @@ class Contribution {
 
   uint64_t GetRetryTimer(ledger::ContributionRetry step,
                          const std::string& viewing_id,
-                         braveledger_bat_helper::CURRENT_RECONCILE* reconcile);
+                         ledger::CurrentReconcileProperties* reconcile);
 
   int GetRetryPhase(ledger::ContributionRetry step);
 
@@ -248,15 +248,15 @@ class Contribution {
       ledger::BalancePtr info,
       ledger::RewardsType type,
       double* fee,
-      braveledger_bat_helper::Directions directions,
-      braveledger_bat_helper::Directions* leftovers);
+      ledger::ReconcileDirections directions,
+      ledger::ReconcileDirections* leftovers);
 
   bool ProcessReconcileAnonize(
       ledger::BalancePtr info,
       ledger::RewardsType type,
       double* fee,
-      braveledger_bat_helper::Directions directions,
-      braveledger_bat_helper::Directions* leftovers);
+      ledger::ReconcileDirections directions,
+      ledger::ReconcileDirections* leftovers);
 
   void ProcessReconcile(
       ledger::ContributionQueuePtr contribution,
@@ -265,9 +265,9 @@ class Contribution {
   void DeleteContributionQueue(ledger::ContributionQueuePtr contribution);
 
   void AdjustTipsAmounts(
-    braveledger_bat_helper::Directions original_directions,
-    braveledger_bat_helper::Directions* primary_directions,
-    braveledger_bat_helper::Directions* rest_directions,
+    ledger::ReconcileDirections original_directions,
+    ledger::ReconcileDirections* primary_directions,
+    ledger::ReconcileDirections* rest_directions,
     double reduce_fee_for);
 
   void OnExternalWallets(

@@ -9,19 +9,19 @@
 
 namespace braveledger_contribution {
 
-braveledger_bat_helper::Directions
+ledger::ReconcileDirections
 FromContributionQueuePublishersToReconcileDirections(
     ledger::ContributionQueuePublisherList list) {
-  braveledger_bat_helper::Directions directions;
+  ledger::ReconcileDirections directions;
 
   for (auto& item : list) {
     if (!item || item->publisher_key.empty()) {
       continue;
     }
 
-    const auto direction = braveledger_bat_helper::RECONCILE_DIRECTION(
-      item->publisher_key,
-      item->amount_percent);
+    ledger::ReconcileDirectionProperties direction;
+    direction.publisher_key = item->publisher_key,
+    direction.amount_percent = item->amount_percent;
 
     directions.push_back(direction);
   }

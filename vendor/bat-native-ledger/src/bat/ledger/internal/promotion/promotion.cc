@@ -14,9 +14,9 @@
 #include "base/time/time.h"
 #include "bat/ledger/internal/bat_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/state_keys.h"
 #include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/properties/wallet_info_properties.h"
 #include "bat/ledger/internal/request/promotion_requests.h"
 #include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/common/bind_util.h"
@@ -63,7 +63,7 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
   if (wallet_payment_id.empty() || passphrase.empty()) {
     ledger::PromotionList empty_list;
     callback(ledger::Result::CORRUPTED_WALLET, std::move(empty_list));
-    braveledger_bat_helper::WALLET_PROPERTIES_ST properties;
+    ledger::WalletProperties properties;
     ledger_->OnWalletProperties(ledger::Result::CORRUPTED_WALLET, properties);
     return;
   }
@@ -384,13 +384,13 @@ void Promotion::ClaimTokens(
   std::string json;
   base::JSONWriter::Write(body, &json);
 
-  braveledger_bat_helper::WALLET_INFO_ST wallet_info = ledger_->GetWalletInfo();
+  ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
 
   const auto headers = braveledger_request_util::BuildSignHeaders(
       "post /v1/promotions/" + promotion->id,
       json,
       ledger_->GetPaymentId(),
-      wallet_info.keyInfoSeed_);
+      wallet_info.key_info_seed);
 
   const std::string url =
       braveledger_request_util::ClaimTokensUrl(promotion->id);

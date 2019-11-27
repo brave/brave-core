@@ -97,9 +97,9 @@ void Uphold::ContributionCompleted(
 
   ledger_->ReconcileComplete(
       result,
-      reconcile.fee_,
+      reconcile.fee,
       viewing_id,
-      reconcile.type_);
+      reconcile.type);
 }
 
 void Uphold::FetchBalance(

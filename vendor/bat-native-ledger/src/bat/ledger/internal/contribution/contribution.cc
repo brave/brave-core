@@ -53,16 +53,15 @@ void Contribution::Initialize() {
   uphold_->Initialize();
 
   // Resume in progress contributions
-  braveledger_bat_helper::CurrentReconciles currentReconciles =
-      ledger_->GetCurrentReconciles();
+  ledger::CurrentReconciles currentReconciles = ledger_->GetCurrentReconciles();
 
   for (const auto& value : currentReconciles) {
-    braveledger_bat_helper::CURRENT_RECONCILE reconcile = value.second;
+    ledger::CurrentReconcileProperties reconcile = value.second;
 
-    if (reconcile.retry_step_ == ledger::ContributionRetry::STEP_FINAL) {
-      ledger_->RemoveReconcileById(reconcile.viewingId_);
+    if (reconcile.retry_step == ledger::ContributionRetry::STEP_FINAL) {
+      ledger_->RemoveReconcileById(reconcile.viewing_id);
     } else {
-      DoRetry(reconcile.viewingId_);
+      DoRetry(reconcile.viewing_id);
     }
   }
 
@@ -404,15 +403,15 @@ void Contribution::ReconcileSuccess(
   ledger_->SetBalanceReportItem(
         braveledger_time_util::GetCurrentMonth(),
         braveledger_time_util::GetCurrentYear(),
-        GetReportTypeFromRewardsType(reconcile.type_),
+        GetReportTypeFromRewardsType(reconcile.type),
         probi);
 
   ledger::ContributionPublisherList publisher_list;
-  for (auto& item : reconcile.directions_) {
+  for (auto& item : reconcile.directions) {
     auto publisher = ledger::ContributionPublisher::New();
     publisher->contribution_id = viewing_id;
-    publisher->publisher_key = item.publisher_key_;
-    publisher->total_amount = (item.amount_percent_ * amount) / 100;
+    publisher->publisher_key = item.publisher_key;
+    publisher->total_amount = (item.amount_percent * amount) / 100;
     publisher->contributed_amount = publisher->total_amount;
     publisher_list.push_back(std::move(publisher));
   }
@@ -421,7 +420,7 @@ void Contribution::ReconcileSuccess(
   auto info = ledger::ContributionInfo::New();
   info->contribution_id = viewing_id;
   info->amount = amount;
-  info->type = reconcile.type_;
+  info->type = reconcile.type;
   info->step = -1;
   info->retry_count = -1;
   info->created_at = now;
@@ -437,33 +436,33 @@ void Contribution::ReconcileSuccess(
 void Contribution::AddRetry(
     ledger::ContributionRetry step,
     const std::string& viewing_id,
-    braveledger_bat_helper::CURRENT_RECONCILE reconcile) {
+    ledger::CurrentReconcileProperties reconcile) {
   BLOG(ledger_, ledger::LogLevel::LOG_WARNING)
       << "Re-trying contribution for step"
       << std::to_string(static_cast<int32_t>(step))
       << "for" << viewing_id;
 
-  if (reconcile.viewingId_.empty()) {
+  if (reconcile.viewing_id.empty()) {
     reconcile = ledger_->GetReconcileById(viewing_id);
   }
 
   // Don't retry one-time tip if in phase 1
   if (GetRetryPhase(step) == 1 &&
-      reconcile.type_ == ledger::RewardsType::ONE_TIME_TIP) {
+      reconcile.type == ledger::RewardsType::ONE_TIME_TIP) {
     phase_one_->Complete(ledger::Result::TIP_ERROR,
                          viewing_id,
-                         reconcile.type_);
+                         reconcile.type);
     return;
   }
 
   uint64_t start_timer_in = GetRetryTimer(step, viewing_id, &reconcile);
   bool success = ledger_->AddReconcileStep(viewing_id,
-                                           reconcile.retry_step_,
-                                           reconcile.retry_level_);
+                                           reconcile.retry_step,
+                                           reconcile.retry_level);
   if (!success || start_timer_in == 0) {
     phase_one_->Complete(ledger::Result::LEDGER_ERROR,
                          viewing_id,
-                         reconcile.type_);
+                         reconcile.type);
     return;
   }
 
@@ -474,25 +473,25 @@ void Contribution::AddRetry(
 uint64_t Contribution::GetRetryTimer(
     ledger::ContributionRetry step,
     const std::string& viewing_id,
-    braveledger_bat_helper::CURRENT_RECONCILE* reconcile) {
-  ledger::ContributionRetry old_step = reconcile->retry_step_;
+    ledger::CurrentReconcileProperties* reconcile) {
+  ledger::ContributionRetry old_step = reconcile->retry_step;
 
   int phase = GetRetryPhase(step);
   if (phase > GetRetryPhase(old_step)) {
-    reconcile->retry_level_ = 0;
+    reconcile->retry_level = 0;
   } else {
-    reconcile->retry_level_++;
+    reconcile->retry_level++;
   }
 
-  reconcile->retry_step_ = step;
+  reconcile->retry_step = step;
 
   if (phase == 1) {
     // TODO(nejczdovc) get size from the list
-    if (reconcile->retry_level_ < 5) {
+    if (reconcile->retry_level < 5) {
       if (ledger::short_retries) {
-        return phase_one_debug_timers[reconcile->retry_level_];
+        return phase_one_debug_timers[reconcile->retry_level];
       } else {
-        return phase_one_timers[reconcile->retry_level_];
+        return phase_one_timers[reconcile->retry_level];
       }
 
     } else {
@@ -502,7 +501,7 @@ uint64_t Contribution::GetRetryTimer(
 
   if (phase == 2) {
     // TODO(nejczdovc) get size from the list
-    if (reconcile->retry_level_ > 2) {
+    if (reconcile->retry_level > 2) {
       if (ledger::short_retries) {
         return phase_two_debug_timers[2];
       } else {
@@ -510,9 +509,9 @@ uint64_t Contribution::GetRetryTimer(
       }
     } else {
       if (ledger::short_retries) {
-        return phase_two_debug_timers[reconcile->retry_level_];
+        return phase_two_debug_timers[reconcile->retry_level];
       } else {
-        return phase_two_timers[reconcile->retry_level_];
+        return phase_two_timers[reconcile->retry_level];
       }
     }
   }
@@ -550,7 +549,7 @@ int Contribution::GetRetryPhase(ledger::ContributionRetry step) {
 void Contribution::DoRetry(const std::string& viewing_id) {
   auto reconcile = ledger_->GetReconcileById(viewing_id);
 
-  switch (reconcile.retry_step_) {
+  switch (reconcile.retry_step) {
     case ledger::ContributionRetry::STEP_RECONCILE: {
       phase_one_->Start(viewing_id);
       break;
@@ -730,22 +729,22 @@ bool Contribution::ProcessReconcileUnblindedTokens(
     ledger::BalancePtr info,
     ledger::RewardsType type,
     double* fee,
-    braveledger_bat_helper::Directions directions,
-    braveledger_bat_helper::Directions* leftovers) {
+    ledger::ReconcileDirections directions,
+    ledger::ReconcileDirections* leftovers) {
   if (!fee) {
     return false;
   }
 
-  auto reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
-  reconcile.viewingId_ = ledger_->GenerateGUID();
-  reconcile.fee_ = *fee;
-  reconcile.directions_ = directions;
-  reconcile.type_ = type;
+  auto reconcile = ledger::CurrentReconcileProperties();
+  reconcile.viewing_id = ledger_->GenerateGUID();
+  reconcile.fee = *fee;
+  reconcile.directions = directions;
+  reconcile.type = type;
 
-  if (ledger_->ReconcileExists(reconcile.viewingId_)) {
+  if (ledger_->ReconcileExists(reconcile.viewing_id)) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
       << "Unable to reconcile with the same viewing id: "
-      << reconcile.viewingId_;
+      << reconcile.viewing_id;
     return false;
   }
 
@@ -758,26 +757,26 @@ bool Contribution::ProcessReconcileUnblindedTokens(
   }
 
   if (balance >= *fee) {
-    ledger_->AddReconcile(reconcile.viewingId_, reconcile);
-    unblinded_->Start(reconcile.viewingId_);
+    ledger_->AddReconcile(reconcile.viewing_id, reconcile);
+    unblinded_->Start(reconcile.viewing_id);
     return true;
   }
 
   *fee = *fee - balance;
-  reconcile.fee_ = balance;
+  reconcile.fee = balance;
 
   if (type == ledger::RewardsType::RECURRING_TIP ||
       type == ledger::RewardsType::ONE_TIME_TIP) {
-    braveledger_bat_helper::Directions new_directions;
+    ledger::ReconcileDirections new_directions;
     AdjustTipsAmounts(directions,
                       &new_directions,
                       leftovers,
                       balance);
-    reconcile.directions_ = new_directions;
+    reconcile.directions = new_directions;
   }
 
-  ledger_->AddReconcile(reconcile.viewingId_, reconcile);
-  unblinded_->Start(reconcile.viewingId_);
+  ledger_->AddReconcile(reconcile.viewing_id, reconcile);
+  unblinded_->Start(reconcile.viewing_id);
   return false;
 }
 
@@ -785,22 +784,22 @@ bool Contribution::ProcessReconcileAnonize(
     ledger::BalancePtr info,
     ledger::RewardsType type,
     double* fee,
-    braveledger_bat_helper::Directions directions,
-    braveledger_bat_helper::Directions* leftovers) {
+    ledger::ReconcileDirections directions,
+    ledger::ReconcileDirections* leftovers) {
   if (!fee) {
     return false;
   }
 
-  auto reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
-  reconcile.viewingId_ = ledger_->GenerateGUID();
-  reconcile.fee_ = *fee;
-  reconcile.directions_ = directions;
-  reconcile.type_ = type;
+  auto reconcile = ledger::CurrentReconcileProperties();
+  reconcile.viewing_id = ledger_->GenerateGUID();
+  reconcile.fee = *fee;
+  reconcile.directions = directions;
+  reconcile.type = type;
 
-  if (ledger_->ReconcileExists(reconcile.viewingId_)) {
+  if (ledger_->ReconcileExists(reconcile.viewing_id)) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
       << "Unable to reconcile with the same viewing id: "
-      << reconcile.viewingId_;
+      << reconcile.viewing_id;
     return false;
   }
 
@@ -812,26 +811,26 @@ bool Contribution::ProcessReconcileAnonize(
   }
 
   if (balance >= *fee) {
-    ledger_->AddReconcile(reconcile.viewingId_, reconcile);
-    phase_one_->Start(reconcile.viewingId_);
+    ledger_->AddReconcile(reconcile.viewing_id, reconcile);
+    phase_one_->Start(reconcile.viewing_id);
     return true;
   }
 
   *fee = *fee - balance;
-  reconcile.fee_ = balance;
+  reconcile.fee = balance;
 
   if (type == ledger::RewardsType::RECURRING_TIP ||
       type == ledger::RewardsType::ONE_TIME_TIP) {
-    braveledger_bat_helper::Directions new_direction;
+    ledger::ReconcileDirections new_direction;
     AdjustTipsAmounts(directions,
                       &new_direction,
                       leftovers,
                       balance);
-    reconcile.directions_ = new_direction;
+    reconcile.directions = new_direction;
   }
 
-  ledger_->AddReconcile(reconcile.viewingId_, reconcile);
-  phase_one_->Start(reconcile.viewingId_);
+  ledger_->AddReconcile(reconcile.viewing_id, reconcile);
+  phase_one_->Start(reconcile.viewing_id);
   return false;
 }
 
@@ -857,7 +856,7 @@ void Contribution::ProcessReconcile(
   const auto directions = FromContributionQueuePublishersToReconcileDirections(
       std::move(contribution->publishers));
 
-  braveledger_bat_helper::Directions anon_directions = directions;
+  ledger::ReconcileDirections anon_directions = directions;
   bool result = ProcessReconcileUnblindedTokens(
       info->Clone(),
       contribution->type,
@@ -870,7 +869,7 @@ void Contribution::ProcessReconcile(
     return;
   }
 
-  braveledger_bat_helper::Directions wallet_directions = anon_directions;
+  ledger::ReconcileDirections wallet_directions = anon_directions;
   result = ProcessReconcileAnonize(
       info->Clone(),
       contribution->type,
@@ -883,16 +882,16 @@ void Contribution::ProcessReconcile(
     return;
   }
 
-  auto wallet_reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
-  wallet_reconcile.viewingId_ = ledger_->GenerateGUID();
-  wallet_reconcile.fee_ = fee;
-  wallet_reconcile.directions_ = wallet_directions;
-  wallet_reconcile.type_ = contribution->type;
-  ledger_->AddReconcile(wallet_reconcile.viewingId_, wallet_reconcile);
+  auto wallet_reconcile = ledger::CurrentReconcileProperties();
+  wallet_reconcile.viewing_id = ledger_->GenerateGUID();
+  wallet_reconcile.fee = fee;
+  wallet_reconcile.directions = wallet_directions;
+  wallet_reconcile.type = contribution->type;
+  ledger_->AddReconcile(wallet_reconcile.viewing_id, wallet_reconcile);
 
   auto wallets_callback = std::bind(&Contribution::OnExternalWallets,
       this,
-      wallet_reconcile.viewingId_,
+      wallet_reconcile.viewing_id,
       info->wallets,
       _1);
 
@@ -902,9 +901,9 @@ void Contribution::ProcessReconcile(
 }
 
 void Contribution::AdjustTipsAmounts(
-    braveledger_bat_helper::Directions original_directions,
-    braveledger_bat_helper::Directions* primary_directions,
-    braveledger_bat_helper::Directions* rest_directions,
+    ledger::ReconcileDirections original_directions,
+    ledger::ReconcileDirections* primary_directions,
+    ledger::ReconcileDirections* rest_directions,
     double reduce_fee_for) {
   if (!primary_directions || !rest_directions) {
     return;
@@ -916,20 +915,20 @@ void Contribution::AdjustTipsAmounts(
       continue;
     }
 
-    if (item.amount_percent_ <= reduce_fee_for) {
+    if (item.amount_percent <= reduce_fee_for) {
       primary_directions->push_back(item);
-      reduce_fee_for -= item.amount_percent_;
+      reduce_fee_for -= item.amount_percent;
       continue;
     }
 
-    if (item.amount_percent_ > reduce_fee_for) {
+    if (item.amount_percent > reduce_fee_for) {
       // anon wallet
-      const auto original_weight = item.amount_percent_;
-      item.amount_percent_ = reduce_fee_for;
+      const auto original_weight = item.amount_percent;
+      item.amount_percent = reduce_fee_for;
       primary_directions->push_back(item);
 
       // rest to normal wallet
-      item.amount_percent_ = original_weight - reduce_fee_for;
+      item.amount_percent = original_weight - reduce_fee_for;
       rest_directions->push_back(item);
 
       reduce_fee_for = 0;
@@ -950,10 +949,10 @@ void Contribution::OnExternalWallets(
                                                        wallet_balances);
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
 
-  if (wallets.size() == 0 || uphold_balance < reconcile.fee_) {
+  if (wallets.size() == 0 || uphold_balance < reconcile.fee) {
     phase_one_->Complete(ledger::Result::NOT_ENOUGH_FUNDS,
                          viewing_id,
-                         reconcile.type_);
+                         reconcile.type);
     return;
   }
 
@@ -962,25 +961,25 @@ void Contribution::OnExternalWallets(
   if (!wallet || wallet->token.empty()) {
     phase_one_->Complete(ledger::Result::LEDGER_ERROR,
                          viewing_id,
-                         reconcile.type_);
+                         reconcile.type);
     return;
   }
 
-  if (reconcile.type_ == ledger::RewardsType::AUTO_CONTRIBUTE) {
+  if (reconcile.type == ledger::RewardsType::AUTO_CONTRIBUTE) {
     auto callback = std::bind(&Contribution::OnUpholdAC,
                               this,
                               _1,
                               _2,
                               viewing_id);
-    uphold_->TransferFunds(reconcile.fee_,
+    uphold_->TransferFunds(reconcile.fee,
                            ledger_->GetCardIdAddress(),
                            std::move(wallet),
                            callback);
     return;
   }
 
-  for (const auto& item : reconcile.directions_) {
-    const auto amount = (item.amount_percent_ * reconcile.fee_) / 100;
+  for (const auto& direction : reconcile.directions) {
+    const auto amount = (direction.amount_percent * reconcile.fee) / 100;
     auto callback =
         std::bind(&Contribution::OnExternalWalletServerPublisherInfo,
           this,
@@ -989,7 +988,7 @@ void Contribution::OnExternalWallets(
           static_cast<int>(amount),
           *wallet);
 
-    ledger_->GetServerPublisherInfo(item.publisher_key_, callback);
+    ledger_->GetServerPublisherInfo(direction.publisher_key, callback);
   }
 }
 
@@ -1004,7 +1003,7 @@ void Contribution::OnExternalWalletServerPublisherInfo(
         ledger::Result::LEDGER_ERROR,
         amount,
         viewing_id,
-        reconcile.type_);
+        reconcile.type);
     return;
   }
 
@@ -1012,7 +1011,7 @@ void Contribution::OnExternalWalletServerPublisherInfo(
     SavePendingContribution(
         info->publisher_key,
         amount,
-        static_cast<ledger::RewardsType>(reconcile.type_),
+        static_cast<ledger::RewardsType>(reconcile.type),
         [](const ledger::Result _){});
     return;
   }

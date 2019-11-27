@@ -38,8 +38,8 @@ class UnblindedTest : public ::testing::Test {
     ON_CALL(*mock_ledger_impl_, GetReconcileById(_))
       .WillByDefault(
         Invoke([](const std::string& viewing_id) {
-          braveledger_bat_helper::CURRENT_RECONCILE reconcile;
-          reconcile.fee_ = 5.0;
+          ledger::CurrentReconcileProperties reconcile;
+          reconcile.fee = 5.0;
           return reconcile;
         }));
   }

@@ -7,7 +7,6 @@
 #include <utility>
 #include <vector>
 
-#include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/logging.h"
 #include "bat/ledger/internal/ledger_impl.h"

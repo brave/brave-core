@@ -144,7 +144,7 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD1(LoadNicewareList, void(ledger::GetNicewareListCallback));
 
   MOCK_METHOD1(SetConfirmationsWalletInfo,
-      void(const braveledger_bat_helper::WALLET_INFO_ST&));
+      void(const ledger::WalletInfoProperties&));
 
   MOCK_METHOD1(LoadLedgerState, void(ledger::OnLoadCallback));
 
@@ -155,7 +155,7 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD2(OnWalletProperties,
       void(ledger::Result,
-          const braveledger_bat_helper::WALLET_PROPERTIES_ST&));
+          const ledger::WalletProperties&));
 
   MOCK_CONST_METHOD1(FetchWalletProperties,
       void(const ledger::OnWalletPropertiesCallback));
@@ -237,7 +237,7 @@ class MockLedgerImpl : public LedgerImpl {
 
 
   MOCK_METHOD1(GetReconcileById,
-      braveledger_bat_helper::CURRENT_RECONCILE(const std::string&));
+      ledger::CurrentReconcileProperties(const std::string&));
 
   MOCK_METHOD1(RemoveReconcileById, void(const std::string&));
 
@@ -284,11 +284,11 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD0(ResetReconcileStamp, void());
 
   MOCK_METHOD1(UpdateReconcile,
-      bool(const braveledger_bat_helper::CURRENT_RECONCILE&));
+      bool(const ledger::CurrentReconcileProperties&));
 
   MOCK_METHOD2(AddReconcile,
       void(const std::string&,
-          const braveledger_bat_helper::CURRENT_RECONCILE&));
+          const ledger::CurrentReconcileProperties&));
 
   MOCK_CONST_METHOD0(GetPaymentId, const std::string&());
 
@@ -309,38 +309,38 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD1(SetPreFlight, void(const std::string&));
 
   MOCK_CONST_METHOD0(GetWalletInfo,
-      const braveledger_bat_helper::WALLET_INFO_ST&());
+      const ledger::WalletInfoProperties&());
 
   MOCK_METHOD1(SetWalletInfo,
-      void(const braveledger_bat_helper::WALLET_INFO_ST&));
+      void(const ledger::WalletInfoProperties&));
 
   MOCK_METHOD1(GetConfirmationsWalletInfo,
       const confirmations::WalletInfo(
-          const braveledger_bat_helper::WALLET_INFO_ST&));
+          const ledger::WalletInfoProperties&));
 
   MOCK_CONST_METHOD0(GetWalletProperties,
-      const braveledger_bat_helper::WALLET_PROPERTIES_ST&());
+      const ledger::WalletProperties&());
 
   MOCK_METHOD1(SetWalletProperties,
-      void(braveledger_bat_helper::WALLET_PROPERTIES_ST*));
+      void(ledger::WalletProperties*));
 
   MOCK_CONST_METHOD0(GetDays, unsigned int());
 
   MOCK_METHOD1(SetDays, void(unsigned int));
 
   MOCK_CONST_METHOD0(GetTransactions,
-      const braveledger_bat_helper::Transactions&());
+      const ledger::Transactions&());
 
   MOCK_METHOD1(SetTransactions,
-      void(const braveledger_bat_helper::Transactions&));
+      void(const ledger::Transactions&));
 
-  MOCK_CONST_METHOD0(GetBallots, const braveledger_bat_helper::Ballots&());
+  MOCK_CONST_METHOD0(GetBallots, const ledger::Ballots&());
 
-  MOCK_METHOD1(SetBallots, void(const braveledger_bat_helper::Ballots&));
+  MOCK_METHOD1(SetBallots, void(const ledger::Ballots&));
 
-  MOCK_CONST_METHOD0(GetBatch, const braveledger_bat_helper::BatchVotes&());
+  MOCK_CONST_METHOD0(GetBatch, const ledger::BatchVotes&());
 
-  MOCK_METHOD1(SetBatch, void(const braveledger_bat_helper::BatchVotes&));
+  MOCK_METHOD1(SetBatch, void(const ledger::BatchVotes&));
 
   MOCK_CONST_METHOD0(GetCurrency, const std::string&());
 
@@ -377,7 +377,7 @@ class MockLedgerImpl : public LedgerImpl {
           int));
 
   MOCK_CONST_METHOD0(GetCurrentReconciles,
-      const braveledger_bat_helper::CurrentReconciles&());
+      const ledger::CurrentReconciles&());
 
   MOCK_METHOD0(GetDefaultContributionAmount, double());
 

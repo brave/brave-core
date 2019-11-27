@@ -156,7 +156,7 @@ void Unblinded::OnUnblindedTokens(
       continue;
     }
 
-    if (item->value + current_amount > reconcile.fee_) {
+    if (item->value + current_amount > reconcile.fee) {
       break;
     }
 
@@ -168,7 +168,7 @@ void Unblinded::OnUnblindedTokens(
     ledger_->DeleteUnblindedTokens(delete_list, [](const ledger::Result _){});
   }
 
-  if (current_amount < reconcile.fee_) {
+  if (current_amount < reconcile.fee) {
     ContributionCompleted(ledger::Result::NOT_ENOUGH_FUNDS, viewing_id);
     return;
   }
@@ -181,28 +181,28 @@ void Unblinded::MakeContribution(
     ledger::UnblindedTokenList list) {
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
 
-  if (reconcile.type_ == ledger::RewardsType::ONE_TIME_TIP ||
-      reconcile.type_ == ledger::RewardsType::RECURRING_TIP) {
+  if (reconcile.type == ledger::RewardsType::ONE_TIME_TIP ||
+      reconcile.type == ledger::RewardsType::RECURRING_TIP) {
     const auto callback = std::bind(&Unblinded::ContributionCompleted,
         this,
         _1,
         viewing_id);
     SendTokens(
-        reconcile.directions_.front().publisher_key_,
-        reconcile.type_,
+        reconcile.directions.front().publisher_key,
+        reconcile.type,
         std::move(list),
         callback);
     return;
   }
 
-  if (reconcile.type_ == ledger::RewardsType::AUTO_CONTRIBUTE) {
+  if (reconcile.type == ledger::RewardsType::AUTO_CONTRIBUTE) {
     PrepareAutoContribution(viewing_id, std::move(list));
   }
 }
 
 bool Unblinded::GetStatisticalVotingWinner(
     double dart,
-    const braveledger_bat_helper::Directions& directions,
+    const ledger::ReconcileDirections& directions,
     Winners* winners) const {
   if (!winners) {
     return false;
@@ -210,19 +210,19 @@ bool Unblinded::GetStatisticalVotingWinner(
 
   double upper = 0.0;
   for (const auto& item : directions) {
-    upper += item.amount_percent_ / 100.0;
+    upper += item.amount_percent / 100.0;
     if (upper < dart) {
       continue;
     }
 
-    auto iter = winners->find(item.publisher_key_);
+    auto iter = winners->find(item.publisher_key);
 
     uint32_t current_value = 0;
     if (iter != winners->end()) {
-      current_value = winners->at(item.publisher_key_);
-      winners->at(item.publisher_key_) = current_value + 1;
+      current_value = winners->at(item.publisher_key);
+      winners->at(item.publisher_key) = current_value + 1;
     } else {
-      winners->emplace(item.publisher_key_, 1);
+      winners->emplace(item.publisher_key, 1);
     }
 
     return true;
@@ -233,7 +233,7 @@ bool Unblinded::GetStatisticalVotingWinner(
 
 void Unblinded::GetStatisticalVotingWinners(
     uint32_t total_votes,
-    const braveledger_bat_helper::Directions& directions,
+    const ledger::ReconcileDirections& directions,
     Winners* winners) const {
   while (total_votes > 0) {
     double dart = brave_base::random::Uniform_01();
@@ -254,18 +254,18 @@ void Unblinded::PrepareAutoContribution(
   auto reconcile = ledger_->GetReconcileById(viewing_id);
   const double total_votes = static_cast<double>(list.size());
   Winners winners;
-  GetStatisticalVotingWinners(total_votes, reconcile.directions_, &winners);
+  GetStatisticalVotingWinners(total_votes, reconcile.directions, &winners);
 
-  braveledger_bat_helper::Directions new_directions;
+  ledger::ReconcileDirections new_directions;
   uint32_t current_position = 0;
   for (auto & winner : winners) {
     if (winner.second == 0) {
       continue;
     }
 
-    braveledger_bat_helper::RECONCILE_DIRECTION direction;
-    direction.publisher_key_ = winner.first;
-    direction.amount_percent_ = (winner.second / total_votes) * 100;
+    ledger::ReconcileDirectionProperties direction;
+    direction.publisher_key = winner.first;
+    direction.amount_percent = (winner.second / total_votes) * 100;
     new_directions.push_back(direction);
 
     const uint32_t new_position = current_position + winner.second;
@@ -282,7 +282,7 @@ void Unblinded::PrepareAutoContribution(
         [](const ledger::Result _){});
   }
 
-  reconcile.directions_ = new_directions;
+  reconcile.directions = new_directions;
   ledger_->UpdateReconcile(reconcile);
 
   ContributionCompleted(ledger::Result::LEDGER_OK, viewing_id);
@@ -349,9 +349,9 @@ void Unblinded::ContributionCompleted(
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
   ledger_->ReconcileComplete(
       result,
-      reconcile.fee_,
+      reconcile.fee,
       viewing_id,
-      reconcile.type_);
+      reconcile.type);
 }
 
 }  // namespace braveledger_contribution

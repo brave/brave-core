@@ -12,6 +12,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/media/reddit.h"
+#include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 #include "url/url_canon.h"
 #include "url/gurl.h"
