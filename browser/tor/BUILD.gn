@@ -19,6 +19,7 @@ source_set("tor") {
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//content/public/browser",
+    "//mojo/public/cpp/bindings",
   ]
 
   public_deps = [
