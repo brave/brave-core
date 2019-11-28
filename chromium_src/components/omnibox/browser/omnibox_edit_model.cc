@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/omnibox/browser/brave_omnibox_client.h"
 #include "components/omnibox/browser/omnibox_client.h"
 #include "components/omnibox/browser/omnibox_controller.h"
 
@@ -11,8 +12,7 @@ class BraveOmniboxController : public OmniboxController {
   BraveOmniboxController(OmniboxEditModel* omnibox_edit_model,
                          OmniboxClient* client)
       : OmniboxController(omnibox_edit_model, client),
-        client_(client) {
-  }
+        client_(static_cast<BraveOmniboxClient*>(client)) {}
   ~BraveOmniboxController() override = default;
 
   // OmniboxController overrides:
@@ -24,7 +24,7 @@ class BraveOmniboxController : public OmniboxController {
   }
 
  private:
-  OmniboxClient* client_;
+  BraveOmniboxClient* client_ = nullptr;
 
   DISALLOW_COPY_AND_ASSIGN(BraveOmniboxController);
 };
