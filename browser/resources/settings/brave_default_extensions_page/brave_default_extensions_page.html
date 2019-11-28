@@ -90,6 +90,7 @@
         sub-label="$i18n{mediaRouterEnabledDesc}"
         on-settings-boolean-control-change="onMediaRouterEnabledChange_">
     </settings-toggle-button>
+    <if expr="enable_tor">
     <settings-toggle-button id="torEnabled"
         pref=""
         checked="[[torEnabled_]]"
@@ -98,6 +99,7 @@
         disabled="[[disableTorOption_]]"
         on-settings-boolean-control-change="onTorEnabledChange_">
     </settings-toggle-button>
+    </if>
     <settings-toggle-button id="webTorrentEnabled"
         pref="{{prefs.brave.webtorrent_enabled}}"
         label="WebTorrent"

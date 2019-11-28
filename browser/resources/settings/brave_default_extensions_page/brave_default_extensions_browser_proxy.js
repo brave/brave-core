@@ -14,7 +14,7 @@ cr.define('settings', function() {
     setIPFSCompanionEnabled(value) {}
     setTorEnabled(value) {}
     getTorEnabled() {}
-    getEnableTorOption() {}
+    getTorManaged() {}
     getRestartNeeded() {}
   }
 
@@ -44,8 +44,8 @@ cr.define('settings', function() {
     getTorEnabled() {
       return cr.sendWithPromise('getTorEnabled');
     }
-    getEnableTorOption() {
-      return cr.sendWithPromise('getEnableTorOption');
+    getTorManaged() {
+      return cr.sendWithPromise('isTorManaged');
     }
     getRestartNeeded() {
       return cr.sendWithPromise('getRestartNeeded');

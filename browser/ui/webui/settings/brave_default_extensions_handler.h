@@ -38,10 +38,8 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   void SetTorEnabled(const base::ListValue* args);
   void IsTorEnabled(const base::ListValue* args);
   void OnTorEnabledChanged();
+  void IsTorManaged(const base::ListValue* args);
 #endif
-  // Return false when tor is mananaged by group policy or tor feature is not
-  // included. In those cases, tor option should be disabled.
-  void GetEnableTorOption(const base::ListValue* args);
 
   void InitializePrefCallbacks();
 

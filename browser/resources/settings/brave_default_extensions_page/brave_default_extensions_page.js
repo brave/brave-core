@@ -53,8 +53,8 @@ Polymer({
     this.browserProxy_.getTorEnabled().then(enabled => {
       this.torEnabled_ = enabled
     })
-    this.browserProxy_.getEnableTorOption().then(enableTorOption => {
-      this.disableTorOption_ = !enableTorOption
+    this.browserProxy_.getTorManaged().then(managed => {
+      this.disableTorOption_ = managed
     })
   },
 

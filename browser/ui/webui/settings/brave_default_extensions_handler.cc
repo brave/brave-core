@@ -98,11 +98,11 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "getTorEnabled",
       base::BindRepeating(&BraveDefaultExtensionsHandler::IsTorEnabled,
                           base::Unretained(this)));
-#endif
   web_ui()->RegisterMessageCallback(
-      "getEnableTorOption",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::GetEnableTorOption,
+      "isTorManaged",
+      base::BindRepeating(&BraveDefaultExtensionsHandler::IsTorManaged,
                           base::Unretained(this)));
+#endif
 
   // Can't call this in ctor because it needs to access web_ui().
   InitializePrefCallbacks();
@@ -275,23 +275,17 @@ void BraveDefaultExtensionsHandler::OnTorEnabledChanged() {
                       base::Value(!tor::TorProfileService::IsTorDisabled()));
   }
 }
-#endif
 
-void BraveDefaultExtensionsHandler::GetEnableTorOption(
+void BraveDefaultExtensionsHandler::IsTorManaged(
     const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
 
-  bool enable_tor_option =
-#if BUILDFLAG(ENABLE_TOR)
-      !tor::TorProfileService::IsTorDisabledManaged();
-#else
-      false;
-#endif
-
   AllowJavascript();
-  ResolveJavascriptCallback(args->GetList()[0],
-                            base::Value(enable_tor_option));
+  ResolveJavascriptCallback(
+      args->GetList()[0],
+      base::Value(tor::TorProfileService::IsTorDisabledManaged()));
 }
+#endif
 
 void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
     const base::ListValue* args) {
