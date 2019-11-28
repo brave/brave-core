@@ -57,6 +57,7 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/extensions/brave_tor_client_updater.h"
+#include "brave/browser/tor/tor_profile_service.h"
 #endif
 
 #if defined(OS_ANDROID)
@@ -100,6 +101,10 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   brave_p3a_service();
   brave::SetupHistogramsBraveization();
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
+
+#if BUILDFLAG(ENABLE_TOR)
+  tor::TorProfileService::InitializeTorPrefs();
+#endif
 }
 
 brave_component_updater::BraveComponent::Delegate*

@@ -35,7 +35,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   void SetMediaRouterEnabled(const base::ListValue* args);
   void SetBraveWalletEnabled(const base::ListValue* args);
 #if BUILDFLAG(ENABLE_TOR)
-  void SetTorEnabled(const base::ListValue* args);
+  void SetTorEnabledAtNextLaunching(const base::ListValue* args);
   void IsTorEnabled(const base::ListValue* args);
   void OnTorEnabledChanged();
   void IsTorManaged(const base::ListValue* args);

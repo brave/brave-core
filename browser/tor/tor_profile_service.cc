@@ -56,8 +56,26 @@ void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   const std::string tor_proxy_uri =
       std::string(kTorProxyScheme) + std::string(kTorProxyAddress) + ":" + port;
   registry->RegisterStringPref(prefs::kTorProxyString, tor_proxy_uri);
-  // Tor for group policy. Only can be true by group policy.
+  // kTorDisabled is managed prefs.
+  // User can only change it via settiongs option if it's not managed.
   registry->RegisterBooleanPref(prefs::kTorDisabled, false);
+  // kTorDisabledAtNextLaunching has the value that user changed via settings.
+  // If this value is changed, it is exposed to settings page. At the next
+  // launching, this value is copied to kTorDisabled.
+  registry->RegisterBooleanPref(prefs::kTorDisabledAtNextLaunching, false);
+}
+
+// static
+void TorProfileService::InitializeTorPrefs() {
+  auto* state = g_browser_process->local_state();
+  if (state->FindPreference(
+          prefs::kTorDisabledAtNextLaunching)->IsDefaultValue()) {
+    return;
+  }
+
+  state->SetBoolean(prefs::kTorDisabled,
+                    state->GetBoolean(prefs::kTorDisabledAtNextLaunching));
+  state->ClearPref(prefs::kTorDisabledAtNextLaunching);
 }
 
 // static
@@ -65,14 +83,28 @@ bool TorProfileService::IsTorDisabled() {
   return g_browser_process->local_state()->GetBoolean(prefs::kTorDisabled);
 }
 
-bool TorProfileService::IsTorDisabledManaged() {
-  return g_browser_process->local_state()->
-      FindPreference(prefs::kTorDisabled)->IsManaged();
+// static
+bool TorProfileService::IsTorDisabledAtNextLaunching() {
+  return g_browser_process->local_state()->GetBoolean(
+      prefs::kTorDisabledAtNextLaunching);
 }
 
 // static
-void TorProfileService::SetTorDisabled(bool disabled) {
-  g_browser_process->local_state()->SetBoolean(prefs::kTorDisabled, disabled);
+bool TorProfileService::IsTorDisabledChanged() {
+  auto* state = g_browser_process->local_state();
+  if (state->FindPreference(
+         prefs::kTorDisabledAtNextLaunching)->IsDefaultValue()) {
+    return false;
+  }
+
+  return state->GetBoolean(prefs::kTorDisabledAtNextLaunching) !=
+         state->GetBoolean(prefs::kTorDisabled);
+}
+
+// static
+void TorProfileService::SetTorDisabledAtNextLaunching(bool disabled) {
+  g_browser_process->local_state()->SetBoolean(
+      prefs::kTorDisabledAtNextLaunching, disabled);
 }
 
 std::string TorProfileService::GetTorProxyURI() {
