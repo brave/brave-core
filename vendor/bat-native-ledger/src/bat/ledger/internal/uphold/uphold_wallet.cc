@@ -47,6 +47,12 @@ void UpholdWallet::Generate(
     wallet->one_time_string = GenerateRandomString(ledger::is_testing);
   }
 
+  if (wallet->token.empty() &&
+      (wallet->status == ledger::WalletStatus::PENDING ||
+       wallet->status == ledger::WalletStatus::CONNECTED)) {
+    wallet->status = ledger::WalletStatus::NOT_CONNECTED;
+  }
+
   wallet = GenerateLinks(std::move(wallet));
 
   if (wallet->status == ledger::WalletStatus::CONNECTED ||
