@@ -1,6 +1,7 @@
-// Copyright 2015 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "components/zoom/page_zoom_constants.h"
 
@@ -17,5 +18,5 @@ const double kPresetZoomFactors[] = {0.25, 1 / 3.0, 0.5, 2 / 3.0, 0.75, 0.8,
                                      3.0, 4.0, 5.0};
 const std::size_t kPresetZoomFactorsSize = base::size(kPresetZoomFactors);
 
-}  // namespace ui_zoom
+}  // namespace zoom
 
