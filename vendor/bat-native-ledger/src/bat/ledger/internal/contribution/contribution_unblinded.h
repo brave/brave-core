@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "bat/ledger/ledger.h"
+#include "bat/ledger/internal/bat_helper.h"
 
 namespace bat_ledger {
 class LedgerImpl;

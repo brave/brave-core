@@ -361,6 +361,7 @@ struct UnblindedToken {
   string public_key;
   double value;
   string promotion_id;
+  uint64 expires_at;
 };
 
 enum Platform {

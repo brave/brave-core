@@ -1157,7 +1157,7 @@ void LedgerClientMojoProxy::GetAllUnblindedTokens(
 
 // static
 void LedgerClientMojoProxy::OnDeleteUnblindedToken(
-    CallbackHolder<DeleteUnblindedTokenCallback>* holder,
+    CallbackHolder<DeleteUnblindedTokensCallback>* holder,
     const ledger::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
@@ -1166,13 +1166,13 @@ void LedgerClientMojoProxy::OnDeleteUnblindedToken(
   delete holder;
 }
 
-void LedgerClientMojoProxy::DeleteUnblindedToken(
+void LedgerClientMojoProxy::DeleteUnblindedTokens(
     const std::vector<std::string>& id_list,
-    DeleteUnblindedTokenCallback callback) {
-  auto* holder = new CallbackHolder<DeleteUnblindedTokenCallback>(
+    DeleteUnblindedTokensCallback callback) {
+  auto* holder = new CallbackHolder<DeleteUnblindedTokensCallback>(
       AsWeakPtr(),
       std::move(callback));
-  ledger_client_->DeleteUnblindedToken(
+  ledger_client_->DeleteUnblindedTokens(
       id_list,
       std::bind(LedgerClientMojoProxy::OnDeleteUnblindedToken,
                 holder,

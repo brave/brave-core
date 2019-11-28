@@ -87,6 +87,16 @@ void GenerateSuggestion(
   result->SetStringKey("signature", signature.encode_base64());
 }
 
+bool HasTokenExpired(ledger::UnblindedTokenPtr token) {
+  if (!token) {
+    return true;
+  }
+
+  const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+
+  return token->expires_at > 0 && token->expires_at < now;
+}
+
 std::string GenerateTokenPayload(
     const std::string& publisher_key,
     const ledger::RewardsType type,
@@ -139,13 +149,28 @@ void Unblinded::OnUnblindedTokens(
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
   double current_amount = 0.0;
   ledger::UnblindedTokenList token_list;
+  std::vector<std::string> delete_list;
   for (auto & item : list) {
+    if (HasTokenExpired(item->Clone())) {
+      delete_list.push_back(std::to_string(item->id));
+      continue;
+    }
+
     if (item->value + current_amount > reconcile.fee_) {
       break;
     }
 
     current_amount += item->value;
     token_list.push_back(std::move(item));
+  }
+
+  if (delete_list.size() > 0) {
+    ledger_->DeleteUnblindedTokens(delete_list, [](const ledger::Result _){});
+  }
+
+  if (current_amount < reconcile.fee_) {
+    ContributionCompleted(ledger::Result::NOT_ENOUGH_FUNDS, viewing_id);
+    return;
   }
 
   MakeContribution(viewing_id, std::move(token_list));
@@ -314,7 +339,7 @@ void Unblinded::OnSendTokens(
     return;
   }
 
-  ledger_->DeleteUnblindedToken(token_id_list, [](const ledger::Result _){});
+  ledger_->DeleteUnblindedTokens(token_id_list, [](const ledger::Result _){});
   callback(ledger::Result::LEDGER_OK);
 }
 

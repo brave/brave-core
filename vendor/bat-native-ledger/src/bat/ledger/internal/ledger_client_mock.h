@@ -3,22 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_CONFIRMATIONS_INTERNAL_CONFIRMATIONS_CLIENT_MOCK_H_
-#define BAT_CONFIRMATIONS_INTERNAL_CONFIRMATIONS_CLIENT_MOCK_H_
+#ifndef BAT_LEDGER_LEDGER_CLIENT_MOCK_H_
+#define BAT_LEDGER_LEDGER_CLIENT_MOCK_H_
 
 #include <stdint.h>
+
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
-#include "bat/confirmations/confirmations_client.h"
-#include "bat/confirmations/confirmations.h"
+#include "bat/ledger/ledger_client.h"
 
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace confirmations {
+namespace ledger {
 
 class MockLogStreamImpl : public ledger::LogStream {
  public:
@@ -48,10 +48,10 @@ class MockVerboseLogStreamImpl : public ledger::LogStream {
   MockVerboseLogStreamImpl& operator=(const MockVerboseLogStreamImpl&) = delete;
 };
 
-class MockConfirmationsClient : public ConfirmationsClient {
+class MockLedgerClient : public LedgerClient {
  public:
-  MockConfirmationsClient();
-  ~MockConfirmationsClient() override;
+  MockLedgerClient();
+  ~MockLedgerClient() override;
 
   MOCK_CONST_METHOD0(GenerateGUID, std::string());
 
@@ -172,8 +172,8 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const std::vector<std::string>& headers,
       const std::string& content,
       const std::string& content_type,
-      const URLRequestMethod method,
-      URLRequestCallback callback));
+      const ledger::UrlMethod method,
+      ledger::LoadURLCallback callback));
 
   MOCK_METHOD2(SetPublisherExclude, void(
       const std::string& publisher_key,
@@ -373,6 +373,6 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD0(UnblindedTokensReady, void());
 };
 
-}  // namespace confirmations
+}  // namespace ledger
 
-#endif  // BAT_CONFIRMATIONS_INTERNAL_CONFIRMATIONS_CLIENT_MOCK_H_
+#endif  // BAT_LEDGER_LEDGER_CLIENT_MOCK_H_

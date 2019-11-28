@@ -1140,6 +1140,10 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     token.value = dbToken.value;
     token.tokenValue = dbToken.tokenValue;
     token.promotionId = dbToken.promotionID;
+    const auto promotion = [self getPromotionWithID:dbToken.promotionID context:context];
+    if (promotion) {
+      token.expiresAt = promotion.expiryDate.timeIntervalSince1970;
+    }
     [tokens addObject:token];
   }
   return [tokens copy];

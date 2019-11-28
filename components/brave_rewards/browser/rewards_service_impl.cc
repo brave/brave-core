@@ -4287,12 +4287,12 @@ ledger::Result DeleteUnblindedTokenOnFileTaskRunner(
     return ledger::Result::LEDGER_ERROR;
   }
 
-  const bool result = backend->DeleteUnblindedToken(id_list);
+  const bool result = backend->DeleteUnblindedTokens(id_list);
 
   return result ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR;
 }
 
-void RewardsServiceImpl::DeleteUnblindedToken(
+void RewardsServiceImpl::DeleteUnblindedTokens(
     const std::vector<std::string>& id_list,
     ledger::ResultCallback callback) {
   base::PostTaskAndReplyWithResult(

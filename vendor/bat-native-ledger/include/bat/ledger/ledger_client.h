@@ -310,7 +310,7 @@ class LEDGER_EXPORT LedgerClient {
   virtual void GetAllUnblindedTokens(
     ledger::GetAllUnblindedTokensCallback callback) = 0;
 
-  virtual void DeleteUnblindedToken(
+  virtual void DeleteUnblindedTokens(
     const std::vector<std::string>& id_list,
     ledger::ResultCallback callback) = 0;
 

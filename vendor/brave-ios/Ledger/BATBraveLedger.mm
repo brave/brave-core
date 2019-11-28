@@ -1969,7 +1969,7 @@ BATLedgerBridge(BOOL,
   }));
 }
 
-- (void)deleteUnblindedToken:(const std::vector<std::string>&)list callback:(ledger::ResultCallback)callback
+- (void)deleteUnblindedTokens:(const std::vector<std::string>&)list callback:(ledger::ResultCallback)callback
 {
   const auto ids = NSArrayFromVector(list, ^NSNumber *(const std::string &str){
     return @([[NSString stringWithUTF8String:str.c_str()] integerValue]);
