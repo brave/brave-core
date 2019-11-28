@@ -57,6 +57,7 @@ export const promotionPanelReducer = (state: RewardsExtension.State | undefined,
       let promotions = payload.promotions
 
       if (!promotions || promotions.length === 0) {
+        state.promotions = []
         break
       }
 

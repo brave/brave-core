@@ -55,6 +55,11 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
 
       let promotions = payload.properties.promotions
 
+      if (!promotions || promotions.length === 0) {
+        state.promotions = []
+        break
+      }
+
       promotions = promotions.map((promotion: Rewards.Promotion) => {
         promotion.expiresAt = promotion.expiresAt * 1000
         return updatePromotion(promotion, state.promotions || [])
