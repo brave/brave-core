@@ -578,7 +578,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "walletVerificationNote1", IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE1 },
         { "walletVerificationNote2", IDS_BRAVE_UI_WALLET_VERIFICATION_NOTE2 },
         { "walletVerificationTitle1", IDS_BRAVE_UI_WALLET_VERIFICATION_TITLE1 },
-        { "walletVerificationTitle2", IDS_BRAVE_UI_WALLET_VERIFICATION_TITLE2 },
         { "walletVerified", IDS_BRAVE_UI_WALLET_VERIFIED },
 
         { "walletFailedButton", IDS_BRAVE_UI_WALLET_FAILED_BUTTON },

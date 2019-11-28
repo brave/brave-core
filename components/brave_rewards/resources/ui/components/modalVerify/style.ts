@@ -44,7 +44,7 @@ export const StyledWalletIcon = styled<{}, 'div'>('div')`
 export const StyledHeaderText = styled<{}, 'div'>('div')`
   vertical-align: middle;
   display: inline-block;
-  padding-left: 22px;
+  padding: 3px 0 0 22px;
 `
 
 export const StyledTitle = styled(Heading)`
@@ -54,20 +54,12 @@ export const StyledTitle = styled(Heading)`
   font-weight: 600;
 `
 
-export const StyledSubtitle = styled(Heading)`
-  color: ${p => p.theme.palette.white};
-  font-family: ${p => p.theme.fontFamily.body};
-  font-size: 14px;
-  line-height: 24px;
-`
-
 export const StyledListTitle = styled(Heading)`
   font-weight: 600;
   font-size: 17px;
   line-height: 25px;
-  padding: 0 0 0 36px;
+  padding: 0;
   color: ${p => p.theme.palette.white};
-  margin-bottom: -7px;
 `
 
 export const StyledListItem = styled<StyleProps, 'div'>('div')`
@@ -96,7 +88,7 @@ export const StyledButton = styled(Button as ComponentType<ButtonProps>)`
   padding: 11px 40px;
   width: auto;
   min-height: auto;
-  margin-top: -20px;
+  margin-top: -25px;
 `
 
 export const StyledFooter = styled<StyleProps, 'div'>('div')`
@@ -121,6 +113,7 @@ export const StyledContent = styled<{}, 'div'>('div')`
 export const StyledLeftSide = styled<{}, 'div'>('div')`
   width: 50%;
   padding-right: 10px;
+  margin-top: 9px;
 `
 
 export const StyledRightSide = styled<{}, 'div'>('div')`

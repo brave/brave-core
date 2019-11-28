@@ -288,7 +288,6 @@ const locale: Record<string, string> = {
   walletVerificationNote1: 'Uphold may require you to verify your identity based on services requested.',
   walletVerificationNote2: 'Brave Software Inc. does not process, store, or access any of the personal information that you provide to Uphold when you establish an account with them.',
   walletVerificationTitle1: 'Ready to verify your wallet?',
-  walletVerificationTitle2: 'Verification is not necessary to earn rewards for creator contributions',
   walletVerified: 'Verified',
   welcome: 'Welcome!',
   welcomeBack: 'Welcome Back!',
