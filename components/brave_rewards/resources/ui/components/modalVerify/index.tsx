@@ -12,7 +12,6 @@ import {
   StyledWalletIcon,
   StyledHeaderText,
   StyledTitle,
-  StyledSubtitle,
   StyledListTitle,
   StyledListItem,
   StyledListIcon,
@@ -65,9 +64,6 @@ export default class ModalVerify extends React.PureComponent<Props, {}> {
           <StyledTitle level={1}>
             {getLocale('walletVerificationTitle1')}
           </StyledTitle>
-          <StyledSubtitle level={2}>
-            {getLocale('walletVerificationTitle2')}
-          </StyledSubtitle>
         </StyledHeaderText>
       </StyledHeader>
     </>
