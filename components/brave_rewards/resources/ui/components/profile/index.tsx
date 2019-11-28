@@ -44,6 +44,7 @@ export interface Props {
   showUnVerifiedHelpIcon?: boolean
   refreshingPublisher?: boolean
   publisherRefreshed?: boolean
+  showUnVerified?: boolean
   onRefreshPublisher?: () => void
 }
 
@@ -91,10 +92,20 @@ export default class Profile extends React.PureComponent<Props, {}> {
   }
 
   getDefaultVerifiedPanelWrap = () => {
+    const { showUnVerified } = this.props
+
     return (
       <StyledProviderWrap>
         {
           this.getVerifiedInfo()
+        }
+        {
+          showUnVerified
+          ? <>
+              <StyledVerifiedDivider />
+              {this.getUnverifiedAction()}
+            </>
+          : null
         }
       </StyledProviderWrap>
     )
@@ -118,11 +129,23 @@ export default class Profile extends React.PureComponent<Props, {}> {
   }
 
   getVerifiedPanelWrapRefreshFinished = () => {
+    const { showUnVerified } = this.props
+
     return (
       <>
         <StyledProviderWrapRefreshFinished>
           {
             this.getVerifiedInfo()
+          }
+          {
+            showUnVerified
+            ? <>
+                <StyledVerifiedDivider />
+                <StyledVerifiedCheckNoLink>
+                  {getLocale('unVerifiedCheck')}
+                </StyledVerifiedCheckNoLink>
+              </>
+            : null
           }
         </StyledProviderWrapRefreshFinished>
         <StyledRefreshOverlayFinished>
@@ -170,15 +193,14 @@ export default class Profile extends React.PureComponent<Props, {}> {
   }
 
   getDefaultUnverifiedPanelWrap = () => {
-    const { onRefreshPublisher } = this.props
     return (
       <StyledProviderWrap>
         {
           this.getUnverifiedInfo()
         }
-        <StyledVerifiedCheckLink onClick={onRefreshPublisher} data-test-id={'unverified-check-button'}>
-          {getLocale('unVerifiedCheck')}
-        </StyledVerifiedCheckLink>
+        {
+          this.getUnverifiedAction()
+        }
       </StyledProviderWrap>
     )
   }
@@ -225,6 +247,16 @@ export default class Profile extends React.PureComponent<Props, {}> {
           </StyledRefreshFinished>
         </StyledRefreshCheckOverlayFinished>
       </>
+    )
+  }
+
+  getUnverifiedAction = () => {
+    const { onRefreshPublisher } = this.props
+
+    return (
+      <StyledVerifiedCheckLink onClick={onRefreshPublisher} data-test-id={'unverified-check-button'}>
+        {getLocale('unVerifiedCheck')}
+      </StyledVerifiedCheckLink>
     )
   }
 
