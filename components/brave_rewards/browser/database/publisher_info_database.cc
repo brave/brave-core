@@ -54,6 +54,9 @@ PublisherInfoDatabase::PublisherInfoDatabase(
 
   pending_contribution_ =
       std::make_unique<DatabasePendingContribution>(GetCurrentVersion());
+
+  media_publisher_info_ =
+      std::make_unique<DatabaseMediaPublisherInfo>(GetCurrentVersion());
 }
 
 PublisherInfoDatabase::~PublisherInfoDatabase() {
@@ -82,7 +85,6 @@ bool PublisherInfoDatabase::Init() {
 
   if (!CreatePublisherInfoTable() ||
       !CreateActivityInfoTable() ||
-      !CreateMediaPublisherInfoTable() ||
       !CreateRecurringTipsTable()) {
     return false;
   }
@@ -111,6 +113,10 @@ bool PublisherInfoDatabase::Init() {
   }
 
   if (!pending_contribution_->Init(&GetDB())) {
+    return false;
+  }
+
+  if (!media_publisher_info_->Init(&GetDB())) {
     return false;
   }
 
@@ -357,6 +363,51 @@ bool PublisherInfoDatabase::RestorePublishers() {
       ledger::PublisherExclude::EXCLUDED));
 
   return restore_q.Run();
+}
+
+bool PublisherInfoDatabase::GetExcludedList(
+    ledger::PublisherInfoList* list) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK(list);
+
+  if (!list) {
+    return false;
+  }
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
+  // We will use every attribute from publisher_info
+  const std::string query =
+      "SELECT pi.publisher_id, spi.status, pi.name,"
+      "pi.favicon, pi.url, pi.provider "
+      "FROM publisher_info as pi "
+      "LEFT JOIN server_publisher_info AS spi "
+      "ON spi.publisher_key = pi.publisher_id "
+      "WHERE pi.excluded = 1";
+
+  sql::Statement info_sql(db_.GetUniqueStatement(query.c_str()));
+
+  while (info_sql.Step()) {
+    std::string id(info_sql.ColumnString(0));
+
+    auto info = ledger::PublisherInfo::New();
+    info->id = info_sql.ColumnString(0);
+    info->status =
+        static_cast<ledger::mojom::PublisherStatus>(info_sql.ColumnInt64(1));
+    info->name = info_sql.ColumnString(2);
+    info->favicon_url = info_sql.ColumnString(3);
+    info->url = info_sql.ColumnString(4);
+    info->provider = info_sql.ColumnString(5);
+
+    list->push_back(std::move(info));
+  }
+
+  return true;
 }
 
 /**
@@ -630,50 +681,22 @@ bool PublisherInfoDatabase::DeleteActivityInfo(
  * MEDIA PUBLISHER INFO
  *
  */
-bool PublisherInfoDatabase::CreateMediaPublisherInfoTable() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  const char* name = "media_publisher_info";
-  if (GetDB().DoesTableExist(name)) {
-    return true;
-  }
-
-  std::string sql;
-  sql.append("CREATE TABLE ");
-  sql.append(name);
-  sql.append(
-      "("
-      "media_key TEXT NOT NULL PRIMARY KEY UNIQUE,"
-      "publisher_id LONGVARCHAR NOT NULL,"
-      "CONSTRAINT fk_media_publisher_info_publisher_id"
-      "    FOREIGN KEY (publisher_id)"
-      "    REFERENCES publisher_info (publisher_id)"
-      "    ON DELETE CASCADE)");
-
-  return GetDB().Execute(sql.c_str());
-}
-
 bool PublisherInfoDatabase::InsertOrUpdateMediaPublisherInfo(
-    const std::string& media_key, const std::string& publisher_id) {
+    const std::string& media_key,
+    const std::string& publisher_key) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
   DCHECK(initialized);
 
-  if (!initialized || media_key.empty() || publisher_id.empty()) {
+  if (!initialized) {
     return false;
   }
 
-  sql::Statement statement(GetDB().GetCachedStatement(
-      SQL_FROM_HERE,
-      "INSERT OR REPLACE INTO media_publisher_info "
-      "(media_key, publisher_id) "
-      "VALUES (?, ?)"));
-
-  statement.BindString(0, media_key);
-  statement.BindString(1, publisher_id);
-
-  return statement.Run();
+  return media_publisher_info_->InsertOrUpdate(
+      &GetDB(),
+      media_key,
+      publisher_key);
 }
 
 ledger::PublisherInfoPtr
@@ -687,74 +710,7 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
     return nullptr;
   }
 
-  sql::Statement info_sql(db_.GetUniqueStatement(
-      "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-      "pi.provider, spi.status, pi.excluded "
-      "FROM media_publisher_info as mpi "
-      "INNER JOIN publisher_info AS pi ON mpi.publisher_id = pi.publisher_id "
-      "LEFT JOIN server_publisher_info AS spi "
-      "ON spi.publisher_key = pi.publisher_id "
-      "WHERE mpi.media_key=?"));
-
-  info_sql.BindString(0, media_key);
-
-  if (info_sql.Step()) {
-    auto info = ledger::PublisherInfo::New();
-    info->id = info_sql.ColumnString(0);
-    info->name = info_sql.ColumnString(1);
-    info->url = info_sql.ColumnString(2);
-    info->favicon_url = info_sql.ColumnString(3);
-    info->provider = info_sql.ColumnString(4);
-    info->status =
-        static_cast<ledger::mojom::PublisherStatus>(info_sql.ColumnInt64(5));
-    info->excluded = static_cast<ledger::PublisherExclude>(
-        info_sql.ColumnInt(6));
-
-    return info;
-  }
-
-  return nullptr;
-}
-
-bool PublisherInfoDatabase::GetExcludedList(
-    ledger::PublisherInfoList* list) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  CHECK(list);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
-    return false;
-  }
-
-  // We will use every attribute from publisher_info
-  std::string query = "SELECT pi.publisher_id, spi.status, pi.name,"
-                      "pi.favicon, pi.url, pi.provider "
-                      "FROM publisher_info as pi "
-                      "LEFT JOIN server_publisher_info AS spi "
-                      "ON spi.publisher_key = pi.publisher_id "
-                      "WHERE pi.excluded = 1";
-
-  sql::Statement info_sql(db_.GetUniqueStatement(query.c_str()));
-
-  while (info_sql.Step()) {
-    std::string id(info_sql.ColumnString(0));
-
-    auto info = ledger::PublisherInfo::New();
-    info->id = info_sql.ColumnString(0);
-    info->status =
-        static_cast<ledger::mojom::PublisherStatus>(info_sql.ColumnInt64(1));
-    info->name = info_sql.ColumnString(2);
-    info->favicon_url = info_sql.ColumnString(3);
-    info->url = info_sql.ColumnString(4);
-    info->provider = info_sql.ColumnString(5);
-
-    list->push_back(std::move(info));
-  }
-
-  return true;
+  return media_publisher_info_->GetRecord(&GetDB(), media_key);
 }
 
 /**
