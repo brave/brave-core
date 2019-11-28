@@ -224,6 +224,9 @@ class BraveSyncServiceTest : public testing::Test {
   }
   syncer::SyncPrefs* sync_prefs() { return sync_prefs_.get(); }
 
+  // Common part of OnResetSync and OnResetSyncWhenOffline tests
+  void VerifyResetDone();
+
  private:
   // Need this as a very first member to run tests in UI thread
   // When this is set, class should not install any other MessageLoops, like
@@ -530,47 +533,7 @@ TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenSelfDeleted) {
   EXPECT_FALSE(DevicesContains(devices_final.get(), "2", "device2"));
 }
 
-TEST_F(BraveSyncServiceTest, OnResetSync) {
-  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(AtLeast(1));
-  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service()))
-      .Times(AtLeast(3));
-  sync_service()->OnSetupSyncNewToSync("this_device");
-  EXPECT_TRUE(
-      profile()->GetPrefs()->GetBoolean(brave_sync::prefs::kSyncEnabled));
-  brave_sync_prefs()->SetThisDeviceId("0");
-
-  RecordsList records;
-  records.push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "0", "this_device"));
-  records.push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "1", "device1"));
-
-  sync_service()->OnResolvedPreferences(records);
-
-  auto devices = brave_sync_prefs()->GetSyncDevices();
-
-  EXPECT_TRUE(DevicesContains(devices.get(), "0", "this_device"));
-  EXPECT_TRUE(DevicesContains(devices.get(), "1", "device1"));
-
-  EXPECT_CALL(*sync_client(),
-              SendSyncRecords("PREFERENCES",
-                              ContainsDeviceRecord(SyncRecord::Action::A_DELETE,
-                                                   "this_device")))
-      .Times(1);
-
-  EXPECT_CALL(*sync_client(), SendFetchSyncRecords);
-  sync_service()->OnResetSync();
-  RecordsList resolved_records;
-  auto resolved_record = SyncRecord::Clone(*records.at(0));
-  resolved_record->action = SyncRecord::Action::A_DELETE;
-  resolved_records.push_back(std::move(resolved_record));
-
-  sync_service()->OnResolvedPreferences(resolved_records);
-
-  auto devices_final = brave_sync_prefs()->GetSyncDevices();
-  EXPECT_FALSE(DevicesContains(devices_final.get(), "0", "this_device"));
-  EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "device1"));
-
+void BraveSyncServiceTest::VerifyResetDone() {
   EXPECT_TRUE(profile()
                   ->GetPrefs()
                   ->GetString(brave_sync::prefs::kSyncDeviceId)
@@ -614,6 +577,96 @@ TEST_F(BraveSyncServiceTest, OnResetSync) {
   EXPECT_FALSE(sync_prefs()->IsSyncRequested());
   EXPECT_FALSE(
       profile()->GetPrefs()->GetBoolean(syncer::prefs::kSyncBookmarks));
+}
+
+TEST_F(BraveSyncServiceTest, OnResetSync) {
+  using brave_sync::jslib_const::kPreferences;
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(AtLeast(1));
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service()))
+      .Times(AtLeast(3));
+  sync_service()->OnSetupSyncNewToSync("this_device");
+  EXPECT_TRUE(
+      profile()->GetPrefs()->GetBoolean(brave_sync::prefs::kSyncEnabled));
+  brave_sync_prefs()->SetThisDeviceId("0");
+
+  RecordsList records;
+  records.push_back(
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "0", "this_device"));
+  records.push_back(
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "1", "device1"));
+
+  sync_service()->OnResolvedPreferences(records);
+
+  auto devices = brave_sync_prefs()->GetSyncDevices();
+
+  EXPECT_TRUE(DevicesContains(devices.get(), "0", "this_device"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "1", "device1"));
+
+  EXPECT_CALL(*sync_client(),
+              SendSyncRecords(kPreferences,
+                              ContainsDeviceRecord(SyncRecord::Action::A_DELETE,
+                                                   "this_device")))
+      .Times(1);
+
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords);
+  sync_service()->OnResetSync();
+  RecordsList resolved_records;
+  auto resolved_record = SyncRecord::Clone(*records.at(0));
+  resolved_record->action = SyncRecord::Action::A_DELETE;
+  resolved_records.push_back(std::move(resolved_record));
+
+  sync_service()->OnResolvedPreferences(resolved_records);
+
+  auto devices_final = brave_sync_prefs()->GetSyncDevices();
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "0", "this_device"));
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "device1"));
+
+  VerifyResetDone();
+}
+
+TEST_F(BraveSyncServiceTest, OnResetSyncWhenOffline) {
+  using brave_sync::jslib_const::kPreferences;
+  EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(AtLeast(1));
+  EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service()))
+      .Times(AtLeast(3));
+  sync_service()->OnSetupSyncNewToSync("this_device");
+  EXPECT_TRUE(
+      profile()->GetPrefs()->GetBoolean(brave_sync::prefs::kSyncEnabled));
+  brave_sync_prefs()->SetThisDeviceId("0");
+
+  RecordsList records;
+  records.push_back(
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "0", "this_device"));
+  records.push_back(
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "1", "device1"));
+
+  sync_service()->OnResolvedPreferences(records);
+
+  auto devices = brave_sync_prefs()->GetSyncDevices();
+
+  EXPECT_TRUE(DevicesContains(devices.get(), "0", "this_device"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "1", "device1"));
+
+  EXPECT_CALL(*sync_client(),
+              SendSyncRecords(kPreferences,
+                              ContainsDeviceRecord(SyncRecord::Action::A_DELETE,
+                                                   "this_device")))
+      .Times(1);
+
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords);
+  EXPECT_FALSE(sync_service()->pending_self_reset_);
+  sync_service()->OnResetSync();
+  EXPECT_TRUE(sync_service()->pending_self_reset_);
+
+  auto recordsSent = std::make_unique<RecordsList>();
+  sync_service()->OnRecordsSent(kPreferences, std::move(recordsSent));
+  EXPECT_FALSE(sync_service()->pending_self_reset_);
+
+  auto devices_final = brave_sync_prefs()->GetSyncDevices();
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "0", "this_device"));
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "device1"));
+
+  VerifyResetDone();
 }
 
 TEST_F(BraveSyncServiceTest, OnSetSyncBookmarks) {

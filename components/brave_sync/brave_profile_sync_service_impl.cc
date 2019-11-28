@@ -289,6 +289,12 @@ void BraveProfileSyncServiceImpl::OnDeleteDevice(const std::string& device_id) {
     const std::string object_id = device->object_id_;
     SendDeviceSyncRecord(SyncRecord::Action::A_DELETE, device_name, device_id,
                          object_id);
+    if (device_id == brave_sync_prefs_->GetThisDeviceId()) {
+      // Mark state we have sent DELETE for own device and we are going to
+      // call ResetSyncInternal() at OnRecordsSent after ensuring we had made
+      // a proper attemp to send the record
+      pending_self_reset_ = true;
+    }
     FetchDevices();
   }
 }
@@ -578,11 +584,14 @@ void BraveProfileSyncServiceImpl::OnCompactComplete(
 void BraveProfileSyncServiceImpl::OnRecordsSent(
     const std::string& category,
     std::unique_ptr<brave_sync::RecordsList> records) {
-  for (auto& record : *records) {
-    if (category == kBookmarks) {
+  if (category == kBookmarks) {
+    for (auto& record : *records) {
       // Remove Acked sent records
       brave_sync_prefs_->RemoveFromRecordsToResend(record->objectId);
     }
+  } else if (category == kPreferences && pending_self_reset_) {
+    ResetSyncInternal();
+    pending_self_reset_ = false;
   }
 }
 

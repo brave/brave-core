@@ -28,6 +28,7 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnDeleteDevice);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnDeleteDeviceWhenOneDevice);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnDeleteDeviceWhenSelfDeleted);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnResetSync);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnResetSyncWhenOffline);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, ClientOnGetInitData);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnGetInitData);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSaveBookmarksBaseOrder);
@@ -140,6 +141,7 @@ class BraveProfileSyncServiceImpl
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
                            OnDeleteDeviceWhenSelfDeleted);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnResetSync);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnResetSyncWhenOffline);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, ClientOnGetInitData);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSaveBookmarksBaseOrder);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnGetInitData);
@@ -236,6 +238,8 @@ class BraveProfileSyncServiceImpl
   std::unique_ptr<RecordsList> pending_received_records_;
   // Time when current device sent CREATE device record
   base::Time this_device_created_time_;
+
+  bool pending_self_reset_ = false;
 
   // Used to ensure that certain operations are performed on the sequence that
   // this object was created on.
