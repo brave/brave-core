@@ -57,6 +57,9 @@ PublisherInfoDatabase::PublisherInfoDatabase(
 
   media_publisher_info_ =
       std::make_unique<DatabaseMediaPublisherInfo>(GetCurrentVersion());
+
+  recurring_tip_ =
+      std::make_unique<DatabaseRecurringTip>(GetCurrentVersion());
 }
 
 PublisherInfoDatabase::~PublisherInfoDatabase() {
@@ -84,13 +87,11 @@ bool PublisherInfoDatabase::Init() {
   }
 
   if (!CreatePublisherInfoTable() ||
-      !CreateActivityInfoTable() ||
-      !CreateRecurringTipsTable()) {
+      !CreateActivityInfoTable()) {
     return false;
   }
 
   CreateActivityInfoIndex();
-  CreateRecurringTipsIndex();
 
   if (!server_publisher_info_->Init(&GetDB())) {
     return false;
@@ -117,6 +118,10 @@ bool PublisherInfoDatabase::Init() {
   }
 
   if (!media_publisher_info_->Init(&GetDB())) {
+    return false;
+  }
+
+  if (!recurring_tip_->Init(&GetDB())) {
     return false;
   }
 
@@ -718,39 +723,6 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
  * RECURRING TIPS
  *
  */
-bool PublisherInfoDatabase::CreateRecurringTipsTable() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  // TODO(nejczdovc): migrate name of this table from donation to tips
-  const char* name = "recurring_donation";
-  if (GetDB().DoesTableExist(name)) {
-    return true;
-  }
-
-  std::string sql;
-  sql.append("CREATE TABLE ");
-  sql.append(name);
-  sql.append(
-      "("
-      "publisher_id LONGVARCHAR NOT NULL PRIMARY KEY UNIQUE,"
-      "amount DOUBLE DEFAULT 0 NOT NULL,"
-      "added_date INTEGER DEFAULT 0 NOT NULL,"
-      "CONSTRAINT fk_recurring_donation_publisher_id"
-      "    FOREIGN KEY (publisher_id)"
-      "    REFERENCES publisher_info (publisher_id)"
-      "    ON DELETE CASCADE)");
-
-  return GetDB().Execute(sql.c_str());
-}
-
-bool PublisherInfoDatabase::CreateRecurringTipsIndex() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  return GetDB().Execute(
-      "CREATE INDEX IF NOT EXISTS recurring_donation_publisher_id_index "
-      "ON recurring_donation (publisher_id)");
-}
-
 bool PublisherInfoDatabase::InsertOrUpdateRecurringTip(
     ledger::RecurringTipPtr info) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -758,21 +730,11 @@ bool PublisherInfoDatabase::InsertOrUpdateRecurringTip(
   bool initialized = Init();
   DCHECK(initialized);
 
-  if (!initialized || !info || info->publisher_key.empty()) {
+  if (!initialized) {
     return false;
   }
 
-  sql::Statement statement(GetDB().GetCachedStatement(
-      SQL_FROM_HERE,
-      "INSERT OR REPLACE INTO recurring_donation "
-      "(publisher_id, amount, added_date) "
-      "VALUES (?, ?, ?)"));
-
-  statement.BindString(0, info->publisher_key);
-  statement.BindDouble(1, info->amount);
-  statement.BindInt64(2, info->created_at);
-
-  return statement.Run();
+  return recurring_tip_->InsertOrUpdate(&GetDB(), std::move(info));
 }
 
 void PublisherInfoDatabase::GetRecurringTips(
@@ -786,28 +748,7 @@ void PublisherInfoDatabase::GetRecurringTips(
     return;
   }
 
-  sql::Statement info_sql(db_.GetUniqueStatement(
-      "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-      "rd.amount, rd.added_date, spi.status, pi.provider "
-      "FROM recurring_donation as rd "
-      "INNER JOIN publisher_info AS pi ON rd.publisher_id = pi.publisher_id "
-      "LEFT JOIN server_publisher_info AS spi "
-      "ON spi.publisher_key = pi.publisher_id "));
-
-  while (info_sql.Step()) {
-    auto publisher = ledger::PublisherInfo::New();
-    publisher->id = info_sql.ColumnString(0);
-    publisher->name = info_sql.ColumnString(1);
-    publisher->url = info_sql.ColumnString(2);
-    publisher->favicon_url = info_sql.ColumnString(3);
-    publisher->weight = info_sql.ColumnDouble(4);
-    publisher->reconcile_stamp = info_sql.ColumnInt64(5);
-    publisher->status =
-        static_cast<ledger::mojom::PublisherStatus>(info_sql.ColumnInt64(6));
-    publisher->provider = info_sql.ColumnString(7);
-
-    list->push_back(std::move(publisher));
-  }
+  recurring_tip_->GetAllRecords(&GetDB(), list);
 }
 
 bool PublisherInfoDatabase::RemoveRecurringTip(
@@ -821,13 +762,7 @@ bool PublisherInfoDatabase::RemoveRecurringTip(
     return false;
   }
 
-  sql::Statement statement(GetDB().GetCachedStatement(
-      SQL_FROM_HERE,
-      "DELETE FROM recurring_donation WHERE publisher_id = ?"));
-
-  statement.BindString(0, publisher_key);
-
-  return statement.Run();
+  return recurring_tip_->DeleteRecord(&GetDB(), publisher_key);
 }
 
 /**
@@ -1237,36 +1172,11 @@ bool PublisherInfoDatabase::MigrateV1toV2() {
     return false;
   }
 
-  // Recurring_donation
-  name = "recurring_donation";
-  if (GetDB().DoesTableExist(name)) {
-    sql = " DROP TABLE ";
-    sql.append(name);
-    sql.append(" ; ");
-  }
-
-  if (!GetDB().Execute(sql.c_str())) {
+  if (!recurring_tip_->Migrate(&GetDB(), 2)) {
     return false;
   }
 
-  sql = "CREATE TABLE ";
-  sql.append(name);
-  sql.append(
-      "("
-      "publisher_id LONGVARCHAR NOT NULL PRIMARY KEY UNIQUE,"
-      "amount DOUBLE DEFAULT 0 NOT NULL,"
-      "added_date INTEGER DEFAULT 0 NOT NULL,"
-      "CONSTRAINT fk_recurring_donation_publisher_id"
-      "    FOREIGN KEY (publisher_id)"
-      "    REFERENCES publisher_info (publisher_id)"
-      "    ON DELETE CASCADE)");
-  if (!GetDB().Execute(sql.c_str())) {
-    return false;
-  }
-
-  return GetDB().Execute(
-      "CREATE INDEX IF NOT EXISTS recurring_donation_publisher_id_index "
-      "ON recurring_donation (publisher_id)");
+  return true;
 }
 
 bool PublisherInfoDatabase::MigrateV2toV3() {
