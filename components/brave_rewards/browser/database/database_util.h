@@ -15,24 +15,27 @@
 namespace brave_rewards {
 
 std::string GenerateDBInsertQuery(
-  sql::Database* db,
-  const std::string& from,
-  const std::string& to,
-  const std::map<std::string, std::string>& columns);
+    sql::Database* db,
+    const std::string& from,
+    const std::string& to,
+    const std::map<std::string, std::string>& columns,
+    const std::string group_by);
 
 bool MigrateDBTable(
-  sql::Database* db,
-  const std::string& from,
-  const std::string& to,
-  const std::map<std::string, std::string>& columns,
-  const bool should_drop);
+    sql::Database* db,
+    const std::string& from,
+    const std::string& to,
+    const std::map<std::string, std::string>& columns,
+    const bool should_drop,
+    const std::string group_by = "");
 
 bool MigrateDBTable(
     sql::Database* db,
     const std::string& from,
     const std::string& to,
     const std::vector<std::string>& columns,
-    const bool should_drop);
+    const bool should_drop,
+    const std::string group_by = "");
 
 bool RenameDBTable(
     sql::Database* db,
