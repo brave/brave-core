@@ -1,3 +1,12 @@
+These licenses do not apply to any of the code shipped with the Brave Browser, but apply to the Tor client which may be downloaded after installation for use with the Brave Private Windows with Tor feature. The Brave Browser and Tor are separate and independent works.
+
+Name: Tor Daemon
+URL: https://www.torproject.org/download/tor/
+License: BSD-3-Clause
+
+--------------------------------------------------------------------------------
+BSD-3-Clause:
+
                     This file contains the license for Tor,
         a free software project to provide anonymity on the Internet.
 
