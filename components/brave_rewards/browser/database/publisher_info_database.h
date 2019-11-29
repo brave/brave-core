@@ -24,6 +24,7 @@
 #include "brave/components/brave_rewards/browser/database/database_media_publisher_info.h"
 #include "brave/components/brave_rewards/browser/database/database_pending_contribution.h"
 #include "brave/components/brave_rewards/browser/database/database_promotion.h"
+#include "brave/components/brave_rewards/browser/database/database_publisher_info.h"
 #include "brave/components/brave_rewards/browser/database/database_recurring_tip.h"
 #include "brave/components/brave_rewards/browser/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/browser/database/database_unblinded_token.h"
@@ -55,7 +56,7 @@ class PublisherInfoDatabase {
       const ledger::ActivityMonth month,
       const int year);
 
-  bool InsertOrUpdatePublisherInfo(const ledger::PublisherInfo& info);
+  bool InsertOrUpdatePublisherInfo(ledger::PublisherInfoPtr info);
 
   ledger::PublisherInfoPtr GetPublisherInfo(
      const std::string& media_key);
@@ -65,9 +66,9 @@ class PublisherInfoDatabase {
 
   bool RestorePublishers();
 
-  bool InsertOrUpdateActivityInfo(const ledger::PublisherInfo& info);
+  bool InsertOrUpdateActivityInfo(ledger::PublisherInfoPtr info);
 
-  bool InsertOrUpdateActivityInfos(const ledger::PublisherInfoList& list);
+  bool InsertOrUpdateActivityInfos(ledger::PublisherInfoList list);
 
   bool GetActivityList(int start,
                        int limit,
@@ -149,8 +150,6 @@ class PublisherInfoDatabase {
   std::string GetSchema();
 
  private:
-  bool CreatePublisherInfoTable();
-
   bool CreateActivityInfoTable();
 
   bool CreateActivityInfoIndex();
@@ -199,6 +198,7 @@ class PublisherInfoDatabase {
   std::unique_ptr<DatabasePendingContribution> pending_contribution_;
   std::unique_ptr<DatabaseMediaPublisherInfo> media_publisher_info_;
   std::unique_ptr<DatabaseRecurringTip> recurring_tip_;
+  std::unique_ptr<DatabasePublisherInfo> publisher_info_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   DISALLOW_COPY_AND_ASSIGN(PublisherInfoDatabase);
