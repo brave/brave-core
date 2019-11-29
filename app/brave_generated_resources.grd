@@ -244,6 +244,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP" desc="The label for settings switch controlling the visibility of bookmarks bar on NTP">
         Always show bookmarks on New Tab page
       </message>
+      <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR" desc="The label for settings switch controlling the showing of autocomplete in address bar">
+        Show autocomplete in address bar
+      </message>
       <!-- Tor -->
       <message name="IDS_NEW_TOR_IDENTITY" desc="The text label of a menu item for requesting new Tor identity">
         New Tor Identity
