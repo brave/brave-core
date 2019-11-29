@@ -106,12 +106,13 @@ static const unsigned int kRetriesCountOnNetworkChange = 1;
 
 class LogStreamImpl : public ledger::LogStream {
  public:
-  LogStreamImpl(const char* file,
-                int line,
-                const ledger::LogLevel log_level) {
+  LogStreamImpl(
+      const char* file,
+      int line,
+      const ledger::LogLevel level) {
     logging::LogSeverity severity;
 
-    switch (log_level) {
+    switch (level) {
       case ledger::LogLevel::LOG_INFO:
         severity = logging::LOG_INFO;
         break;
@@ -129,12 +130,15 @@ class LogStreamImpl : public ledger::LogStream {
     log_message_ = std::make_unique<logging::LogMessage>(file, line, severity);
   }
 
-  LogStreamImpl(const char* file,
-                int line,
-                int log_level) {
-    // VLOG has negative log level
-    log_message_ =
-        std::make_unique<logging::LogMessage>(file, line, -log_level);
+  LogStreamImpl(
+      const char* file,
+      int line,
+      const ledger::VLogLevel level) {
+    if (VLOG_IS_ON(level)) {
+      // VLOG has negative log level
+      log_message_ =
+          std::make_unique<logging::LogMessage>(file, line, -level);
+    }
   }
 
   std::ostream& stream() override {
@@ -1388,13 +1392,6 @@ void RewardsServiceImpl::LoadURL(
 
   if (!content.empty())
     loader->AttachStringForUpload(content, contentType);
-
-  if (VLOG_IS_ON(ledger::LogLevel::LOG_REQUEST)) {
-    std::string headers_log = "";
-    for (auto const& header : headers) {
-      headers_log += "> headers: " + header + "\n";
-    }
-  }
 
   loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       content::BrowserContext::GetDefaultStoragePartition(profile_)
@@ -2865,15 +2862,15 @@ void RewardsServiceImpl::ShowNotificationTipsPaid(bool ac_enabled) {
 std::unique_ptr<ledger::LogStream> RewardsServiceImpl::Log(
     const char* file,
     int line,
-    const ledger::LogLevel log_level) const {
-  return std::make_unique<LogStreamImpl>(file, line, log_level);
+    const ledger::LogLevel level) const {
+  return std::make_unique<LogStreamImpl>(file, line, level);
 }
 
 std::unique_ptr<ledger::LogStream> RewardsServiceImpl::VerboseLog(
-                     const char* file,
-                     int line,
-                     int log_level) const {
-  return std::make_unique<LogStreamImpl>(file, line, log_level);
+    const char* file,
+    int line,
+    const ledger::VLogLevel level) const {
+  return std::make_unique<LogStreamImpl>(file, line, level);
 }
 
 // static

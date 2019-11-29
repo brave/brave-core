@@ -596,14 +596,14 @@ class RewardsServiceImpl : public RewardsService,
   void GetRecurringTips(
       ledger::PublisherInfoListCallback callback) override;
   std::unique_ptr<ledger::LogStream> Log(
-                     const char* file,
-                     int line,
-                     const ledger::LogLevel log_level) const override;
+      const char* file,
+      int line,
+      const ledger::LogLevel level) const override;
 
   std::unique_ptr<ledger::LogStream> VerboseLog(
-                     const char* file,
-                     int line,
-                     int log_level) const override;
+      const char* file,
+      int line,
+      const ledger::VLogLevel level) const override;
   void SaveState(const std::string& name,
                  const std::string& value,
                  ledger::OnSaveCallback callback) override;

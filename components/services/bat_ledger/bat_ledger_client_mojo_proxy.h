@@ -74,12 +74,15 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       ledger::SaveRecurringTipCallback callback) override;
   void GetRecurringTips(ledger::PublisherInfoListCallback callback) override;
   void GetOneTimeTips(ledger::PublisherInfoListCallback callback) override;
-  std::unique_ptr<ledger::LogStream> Log(const char* file,
-                                         int line,
-                                         ledger::LogLevel level) const override;
-  std::unique_ptr<ledger::LogStream> VerboseLog(const char* file,
-                                         int line,
-                                         int verbosity_level) const override;
+  std::unique_ptr<ledger::LogStream> Log(
+      const char* file,
+      int line,
+      ledger::LogLevel level) const override;
+  std::unique_ptr<ledger::LogStream> VerboseLog(
+      const char* file,
+      int line,
+      const ledger::VLogLevel level) const override;
+
   void LoadMediaPublisherInfo(
       const std::string& media_key,
       ledger::PublisherInfoCallback callback) override;

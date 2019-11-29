@@ -298,7 +298,7 @@ void Twitch::ProcessMedia(const std::map<std::string, std::string>& parts,
 
   std::string media_key = braveledger_media::GetMediaKey(media_id,
                                                          TWITCH_MEDIA_TYPE);
-  BLOG(ledger_, ledger::LogLevel::LOG_DEBUG) << "Media key: " << media_key;
+  BVLOG(ledger_, ledger::VLogLevel::LOG_DEBUG) << "Media key: " << media_key;
 
   ledger::MediaEventInfo twitch_info;
   std::map<std::string, std::string>::const_iterator iter = parts.find("event");

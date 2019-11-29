@@ -27,10 +27,13 @@ namespace ledger {
 LEDGER_EXPORT enum LogLevel {
   LOG_ERROR = 1,
   LOG_WARNING = 2,
-  LOG_INFO = 3,
-  LOG_DEBUG = 4,
-  LOG_REQUEST = 5,
-  LOG_RESPONSE = 6
+  LOG_INFO = 3
+};
+
+LEDGER_EXPORT enum VLogLevel {
+  LOG_DEBUG = 1,
+  LOG_REQUEST = 2,
+  LOG_RESPONSE = 3
 };
 
 class LEDGER_EXPORT LogStream {
@@ -179,12 +182,12 @@ class LEDGER_EXPORT LedgerClient {
   virtual std::unique_ptr<LogStream> Log(
       const char* file,
       int line,
-      const ledger::LogLevel log_level) const = 0;
+      const ledger::LogLevel level) const = 0;
 
   virtual std::unique_ptr<LogStream> VerboseLog(
       const char* file,
       int line,
-      int vlog_level) const = 0;
+      const ledger::VLogLevel level) const = 0;
 
   virtual void RestorePublishers(
     ledger::RestorePublishersCallback callback) = 0;

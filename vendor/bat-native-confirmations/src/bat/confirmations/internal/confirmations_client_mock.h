@@ -186,12 +186,12 @@ class MockConfirmationsClient : public ConfirmationsClient {
   std::unique_ptr<ledger::LogStream> Log(
       const char* file,
       const int line,
-      const ledger::LogLevel log_level) const;
+      const ledger::LogLevel level) const;
 
   std::unique_ptr<ledger::LogStream> VerboseLog(
       const char* file,
       int line,
-      int vlog_level) const;
+      const ledger::VLogLevel level) const;
 
   MOCK_METHOD3(SaveState, void(
       const std::string& name,

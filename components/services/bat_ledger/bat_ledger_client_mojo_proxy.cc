@@ -155,7 +155,9 @@ std::unique_ptr<ledger::LogStream> BatLedgerClientMojoProxy::Log(
 }
 
 std::unique_ptr<ledger::LogStream> BatLedgerClientMojoProxy::VerboseLog(
-    const char* file, int line, int level) const {
+    const char* file,
+    int line,
+    const ledger::VLogLevel level) const {
   // There's no need to proxy this
   return std::make_unique<LogStreamImpl>(file, line, level);
 }

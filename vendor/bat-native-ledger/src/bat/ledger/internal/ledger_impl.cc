@@ -293,7 +293,7 @@ void LedgerImpl::OnLedgerStateLoaded(
     if (!bat_state_->LoadState(data)) {
       BLOG(this, ledger::LogLevel::LOG_ERROR) <<
         "Successfully loaded but failed to parse ledger state.";
-      BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
+      BVLOG(this, ledger::VLogLevel::LOG_DEBUG) <<
         "Failed ledger state: " << data;
 
       callback(ledger::Result::INVALID_LEDGER_STATE);
@@ -312,7 +312,7 @@ void LedgerImpl::OnLedgerStateLoaded(
   }
   if (result != ledger::Result::NO_LEDGER_STATE) {
     BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to load ledger state";
-    BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
+    BVLOG(this, ledger::VLogLevel::LOG_DEBUG) <<
       "Failed ledger state: " <<
       data;
   }
@@ -347,7 +347,7 @@ void LedgerImpl::OnPublisherStateLoaded(
     if (!bat_publisher_->loadState(data)) {
       BLOG(this, ledger::LogLevel::LOG_ERROR) <<
         "Successfully loaded but failed to parse ledger state.";
-      BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
+      BVLOG(this, ledger::VLogLevel::LOG_DEBUG) <<
         "Failed publisher state: " << data;
 
       result = ledger::Result::INVALID_PUBLISHER_STATE;
@@ -355,7 +355,7 @@ void LedgerImpl::OnPublisherStateLoaded(
   } else {
     BLOG(this, ledger::LogLevel::LOG_ERROR) <<
       "Failed to load publisher state";
-      BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
+    BVLOG(this, ledger::VLogLevel::LOG_DEBUG) <<
         "Failed publisher state: " << data;
   }
   if (GetPaymentId().empty() || GetWalletPassphrase().empty()) {
@@ -389,7 +389,7 @@ void LedgerImpl::LogRequest(
     formatted_headers += "> header: " + header + "\n";
   }
 
-  BLOG(this, ledger::LogLevel::LOG_REQUEST) << std::endl
+  BVLOG(this, ledger::VLogLevel::LOG_REQUEST) << std::endl
       << "[ REQUEST ]" << std::endl
       << "> url: " << url << std::endl
       << "> method: " << method << std::endl
@@ -832,7 +832,6 @@ ledger::ActivityInfoFilterPtr LedgerImpl::CreateActivityFilter(
                                                min_visits);
 }
 
-
 std::unique_ptr<ledger::LogStream> LedgerImpl::Log(
     const char* file,
     int line,
@@ -841,6 +840,13 @@ std::unique_ptr<ledger::LogStream> LedgerImpl::Log(
   // client however the ledger impl is exposed so for now we will proxy logging
   // via from the ledger impl to the client
   return ledger_client_->Log(file, line, log_level);
+}
+
+std::unique_ptr<ledger::LogStream> LedgerImpl::LogVerbose(
+    const char* file,
+    int line,
+    const ledger::VLogLevel level) const {
+  return ledger_client_->VerboseLog(file, line, level);
 }
 
 void LedgerImpl::LogResponse(
@@ -860,7 +866,7 @@ void LedgerImpl::LogResponse(
   }
 
   std::string response_data = IsPNG(response) ? "<PNG>" : response;
-  BLOG(this, ledger::LogLevel::LOG_RESPONSE) << std::endl
+  BVLOG(this, ledger::VLogLevel::LOG_RESPONSE) << std::endl
     << "[ RESPONSE - " << func_name << " ]" << std::endl
     << "> time: " << std::time(nullptr) << std::endl
     << "> result: " << stat << std::endl
@@ -1100,7 +1106,7 @@ bool LedgerImpl::AddReconcileStep(
     const std::string& viewing_id,
     ledger::ContributionRetry step,
     int level) {
-  BLOG(this, ledger::LogLevel::LOG_DEBUG)
+  BVLOG(this, ledger::VLogLevel::LOG_DEBUG)
     << "Contribution step "
     << std::to_string(static_cast<int32_t>(step))
     << " for "

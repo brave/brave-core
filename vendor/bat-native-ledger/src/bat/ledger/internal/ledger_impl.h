@@ -416,6 +416,11 @@ class LedgerImpl : public ledger::Ledger,
       const int line,
       const ledger::LogLevel log_level) const;
 
+  std::unique_ptr<ledger::LogStream> LogVerbose(
+      const char* file,
+      int line,
+      const ledger::VLogLevel level) const;
+
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
   void GetRewardsInternalsInfo(
       ledger::RewardsInternalsInfoCallback callback) override;
