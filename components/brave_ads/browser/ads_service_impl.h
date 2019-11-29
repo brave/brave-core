@@ -185,7 +185,8 @@ class AdsServiceImpl : public AdsService,
   void StartCheckIdleStateTimer();
   void CheckIdleState();
   void ProcessIdleState(
-      const ui::IdleState idle_state);
+      const ui::IdleState idle_state,
+      const uint64_t idle_time);
   int GetIdleThreshold();
 
   void OnShow(
@@ -476,6 +477,7 @@ class AdsServiceImpl : public AdsService,
 
   uint32_t remove_onboarding_timer_id_;
 
+  uint64_t last_idle_time_;
   ui::IdleState last_idle_state_;
 
   base::RepeatingTimer idle_poll_timer_;

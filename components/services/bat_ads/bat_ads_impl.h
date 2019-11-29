@@ -53,7 +53,9 @@ class BatAdsImpl :
   void OnTimer(
       const uint32_t timer_id) override;
 
-  void OnUnIdle() override;
+  void OnUnIdle(
+      const uint64_t idle_time,
+      const bool was_locked) override;
   void OnIdle() override;
 
   void OnForeground() override;

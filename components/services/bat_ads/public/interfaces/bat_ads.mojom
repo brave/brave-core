@@ -72,7 +72,7 @@ interface BatAds {
   OnPageLoaded(string url, string html);
   ServeSampleAd();
   OnTimer(uint32 timer_id);
-  OnUnIdle();
+  OnUnIdle(uint64 idle_time, bool was_locked);
   OnIdle();
   OnForeground();
   OnBackground();

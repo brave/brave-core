@@ -296,6 +296,7 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
     base_path_(profile_->GetPath().AppendASCII("ads_service")),
     next_timer_id_(0),
     remove_onboarding_timer_id_(0),
+    last_idle_time_(0),
     last_idle_state_(ui::IdleState::IDLE_STATE_ACTIVE),
     bundle_state_backend_(new BundleStateDatabase(
         base_path_.AppendASCII("bundle_state"))),
@@ -773,19 +774,34 @@ void AdsServiceImpl::StartCheckIdleStateTimer() {
 
 void AdsServiceImpl::CheckIdleState() {
   auto idle_state = ui::CalculateIdleState(GetIdleThreshold());
-  ProcessIdleState(idle_state);
+  ProcessIdleState(idle_state, last_idle_time_);
+
+  last_idle_time_ = ui::CalculateIdleTime();
 }
 
 void AdsServiceImpl::ProcessIdleState(
-    const ui::IdleState idle_state) {
+    const ui::IdleState idle_state,
+    const uint64_t idle_time) {
   if (!connected() || idle_state == last_idle_state_) {
     return;
   }
 
-  if (idle_state == ui::IdleState::IDLE_STATE_ACTIVE) {
-    bat_ads_->OnUnIdle();
-  } else {
-    bat_ads_->OnIdle();
+  switch (idle_state) {
+    case ui::IdleState::IDLE_STATE_ACTIVE: {
+      auto was_locked = last_idle_state_ == ui::IdleState::IDLE_STATE_LOCKED;
+      bat_ads_->OnUnIdle(idle_time, was_locked);
+      break;
+    }
+
+    case ui::IdleState::IDLE_STATE_IDLE:
+    case ui::IdleState::IDLE_STATE_LOCKED: {
+      bat_ads_->OnIdle();
+      break;
+    }
+
+    case ui::IdleState::IDLE_STATE_UNKNOWN: {
+      break;
+    }
   }
 
   last_idle_state_ = idle_state;

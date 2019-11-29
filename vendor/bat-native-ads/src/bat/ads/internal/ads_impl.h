@@ -87,7 +87,7 @@ class AdsImpl : public Ads {
   bool IsForeground() const;
 
   void OnIdle() override;
-  void OnUnIdle() override;
+  void OnUnIdle(const uint64_t idle_time, const bool was_locked) override;
 
   std::map<int32_t, bool> media_playing_;
   void OnMediaPlaying(

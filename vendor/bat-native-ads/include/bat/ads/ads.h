@@ -144,7 +144,9 @@ class ADS_EXPORT Ads {
 
   // Should be called when a user is no longer idle. This call is optional for
   // mobile devices
-  virtual void OnUnIdle() = 0;
+  virtual void OnUnIdle(
+      const uint64_t idle_time,
+      const bool was_locked) = 0;
 
   // Should be called when a user is idle for the specified threshold set in
   // |SetIdleThreshold|. This call is optional for mobile devices

@@ -362,17 +362,25 @@ void AdsImpl::OnIdle() {
   BLOG(INFO) << "Browser state changed to idle";
 }
 
-void AdsImpl::OnUnIdle() {
+void AdsImpl::OnUnIdle(
+    const uint64_t idle_time,
+    const bool was_locked) {
   if (!IsInitialized()) {
     BLOG(WARNING) << "OnUnIdle failed as not initialized";
     return;
   }
 
-  BLOG(INFO) << "Browser state changed to unidle";
+  BLOG(INFO) << "Browser state changed to unidle after " << idle_time
+      << " seconds";
 
   client_->UpdateLastUserIdleStopTime();
 
   if (IsMobile()) {
+    return;
+  }
+
+  if (was_locked) {
+    BLOG(INFO) << "Notification not made: Device was locked";
     return;
   }
 
