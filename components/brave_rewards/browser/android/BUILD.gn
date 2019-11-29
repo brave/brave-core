@@ -5,9 +5,9 @@ declare_args() {
 }
 
 group("android") {
-  public_deps = [
-    ":safetynet",
-  ]
+  # public_deps = [
+  #   ":safetynet",
+  # ]
 }
 
 source_set("safetynet") {
