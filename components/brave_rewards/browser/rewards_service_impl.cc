@@ -267,7 +267,7 @@ bool SavePublisherInfoOnFileTaskRunner(
     ledger::PublisherInfoPtr publisher_info,
     PublisherInfoDatabase* backend) {
   if (backend &&
-      backend->InsertOrUpdatePublisherInfo(*publisher_info))
+      backend->InsertOrUpdatePublisherInfo(std::move(publisher_info)))
     return true;
 
   return false;
@@ -277,7 +277,7 @@ bool SaveActivityInfoOnFileTaskRunner(
     ledger::PublisherInfoPtr publisher_info,
     PublisherInfoDatabase* backend) {
   if (backend &&
-      backend->InsertOrUpdateActivityInfo(*publisher_info))
+      backend->InsertOrUpdateActivityInfo(std::move(publisher_info)))
     return true;
 
   return false;
@@ -1183,10 +1183,9 @@ void RewardsServiceImpl::LoadNicewareList(
 void RewardsServiceImpl::SavePublisherInfo(
     ledger::PublisherInfoPtr publisher_info,
     ledger::PublisherInfoCallback callback) {
-  ledger::PublisherInfoPtr copy = publisher_info->Clone();
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&SavePublisherInfoOnFileTaskRunner,
-                    std::move(copy),
+                    std::move(publisher_info),
                     publisher_info_backend_.get()),
       base::BindOnce(&RewardsServiceImpl::OnPublisherInfoSaved,
                      AsWeakPtr(),
@@ -3200,7 +3199,7 @@ bool SaveNormalizedPublisherListOnFileTaskRunner(
     return false;
   }
 
-  return backend->InsertOrUpdateActivityInfos(list);
+  return backend->InsertOrUpdateActivityInfos(std::move(list));
 }
 
 void RewardsServiceImpl::SaveNormalizedPublisherList(
