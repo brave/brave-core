@@ -14,11 +14,11 @@ namespace confirmations {
 
 #define BAT_ADS_PRODUCTION_SERVER "https://ads-serve.brave.com"
 #define BAT_ADS_STAGING_SERVER "https://ads-serve.bravesoftware.com"
-#define BAT_ADS_DEVELOPMENT_SERVER "https://ads-serve.brave.software.com"
+#define BAT_ADS_DEVELOPMENT_SERVER "https://ads-serve.brave.software"
 
 #define BAT_LEDGER_PRODUCTION_SERVER "https://ledger.mercury.basicattentiontoken.org"  // NOLINT
 #define BAT_LEDGER_STAGING_SERVER "https://ledger-staging.mercury.basicattentiontoken.org"  // NOLINT
-#define BAT_LEDGER_DEVELOPMENT_SERVER "https://ledger.rewards.brave.software.org"  // NOLINT
+#define BAT_LEDGER_DEVELOPMENT_SERVER "https://ledger.rewards.brave.software"  // NOLINT
 
 static const int kNextPaymentDay = 5;
 
