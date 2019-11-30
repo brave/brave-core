@@ -23,6 +23,7 @@ namespace ads {
 #define GETSTATE_PATH "/v5/getstate"
 
 const int kIdleThresholdInSeconds = 15;
+const int kMaximumIdleThresholdInSeconds = 120;
 
 const uint64_t kMaximumPageProbabilityHistoryEntries = 5;
 const int kTopWinningCategoryCountForServingAds = 3;
