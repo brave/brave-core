@@ -34,8 +34,6 @@ class RefillTokens {
 
   void Refill(const WalletInfo& wallet_info, const std::string& public_key);
 
-  void OnRefill(const Result result);
-
   void RetryGettingSignedTokens();
 
  private:
@@ -61,6 +59,10 @@ class RefillTokens {
       const int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
+
+  void OnRefill(
+      const Result result,
+      const bool should_retry = true);
 
   bool ShouldRefillTokens() const;
   int CalculateAmountOfTokensToRefill() const;
