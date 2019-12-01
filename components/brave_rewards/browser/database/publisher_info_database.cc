@@ -795,42 +795,7 @@ bool PublisherInfoDatabase::MigrateV1toV2() {
     return false;
   }
 
-  std::string sql;
-
-  // Contribution info
-  const char* contribution = "contribution_info";
-  if (GetDB().DoesTableExist(contribution)) {
-    sql.append(" DROP TABLE ");
-    sql.append(contribution);
-    sql.append(" ; ");
-  }
-
-  if (!GetDB().Execute(sql.c_str())) {
-    return false;
-  }
-
-  const char* name = "contribution_info";
-  sql = "CREATE TABLE ";
-  sql.append(name);
-  sql.append(
-      "("
-      "publisher_id LONGVARCHAR,"
-      "probi TEXT \"0\"  NOT NULL,"
-      "date INTEGER NOT NULL,"
-      "category INTEGER NOT NULL,"
-      "month INTEGER NOT NULL,"
-      "year INTEGER NOT NULL,"
-      "CONSTRAINT fk_contribution_info_publisher_id"
-      "    FOREIGN KEY (publisher_id)"
-      "    REFERENCES publisher_info (publisher_id)"
-      "    ON DELETE CASCADE)");
-  if (!GetDB().Execute(sql.c_str())) {
-    return false;
-  }
-
-  if (!GetDB().Execute(
-      "CREATE INDEX IF NOT EXISTS contribution_info_publisher_id_index "
-      "ON contribution_info (publisher_id)")) {
+  if (!contribution_info_->Migrate(&GetDB(), 2)) {
     return false;
   }
 

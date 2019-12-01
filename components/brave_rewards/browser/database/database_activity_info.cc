@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <map>
 #include <string>
 #include <utility>
 
@@ -294,27 +295,29 @@ bool DatabaseActivityInfo::Migrate(sql::Database* db, const int target) {
 
 bool DatabaseActivityInfo::MigrateToV2(sql::Database* db) {
   if (!db->DoesTableExist(table_name_)) {
-    const char* column = "reconcile_stamp";
-    if (!db->DoesColumnExist(table_name_, column)) {
-      const std::string query = base::StringPrintf(
-          "ALTER TABLE %s ADD %s INTEGER DEFAULT 0 NOT NULL;",
-          table_name_,
-          column);
-
-      sql::Statement statement(
-          db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
-
-      if (!statement.Run()) {
-        return false;
-      }
+    if (!CreateTableV2(db)) {
+      return false;
     }
+  }
+
+  const char* column = "reconcile_stamp";
+  if (!db->DoesColumnExist(table_name_, column)) {
+    const std::string query = base::StringPrintf(
+        "ALTER TABLE %s ADD %s INTEGER DEFAULT 0 NOT NULL;",
+        table_name_,
+        column);
+
+    sql::Statement statement(
+        db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
+
+    return statement.Run();
   }
 
   return true;
 }
 
 bool DatabaseActivityInfo::MigrateToV4(sql::Database* db) {
-    const std::string temp_table_name = base::StringPrintf(
+  const std::string temp_table_name = base::StringPrintf(
       "%s_temp",
       table_name_);
 
@@ -393,8 +396,7 @@ bool DatabaseActivityInfo::MigrateToV5(sql::Database* db) {
 }
 
 bool DatabaseActivityInfo::MigrateToV6(sql::Database* db) {
-
-    const std::string temp_table_name = base::StringPrintf(
+  const std::string temp_table_name = base::StringPrintf(
       "%s_temp",
       table_name_);
 
@@ -532,8 +534,8 @@ bool DatabaseActivityInfo::DeleteRecord(
   }
 
   const std::string query = base::StringPrintf(
-    "DELETE FROM %s WHERE publisher_id = ? AND reconcile_stamp = ?",
-    table_name_);
+      "DELETE FROM %s WHERE publisher_id = ? AND reconcile_stamp = ?",
+      table_name_);
 
   sql::Statement statement(
       db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
