@@ -28,7 +28,8 @@ std::string GenerateDBInsertQuery(
     sql::Database* db,
     const std::string& from,
     const std::string& to,
-    const std::map<std::string, std::string>& columns) {
+    const std::map<std::string, std::string>& columns,
+    const std::string group_by) {
   DCHECK_GT(columns.size(), 0UL);
 
   std::vector<std::string> from_columns;
@@ -42,9 +43,13 @@ std::string GenerateDBInsertQuery(
   const auto comma_separated_from_columns = base::JoinString(from_columns, ",");
   const auto comma_separated_to_columns = base::JoinString(to_columns, ",");
 
-  return base::StringPrintf("INSERT INTO %s (%s) SELECT %s FROM %s;",
-      to.c_str(), comma_separated_to_columns.c_str(),
-          comma_separated_from_columns.c_str(), from.c_str());
+  return base::StringPrintf(
+      "INSERT INTO %s (%s) SELECT %s FROM %s %s;",
+      to.c_str(),
+      comma_separated_to_columns.c_str(),
+      comma_separated_from_columns.c_str(),
+      from.c_str(),
+      group_by.c_str());
 }
 
 bool MigrateDBTable(
@@ -52,7 +57,8 @@ bool MigrateDBTable(
     const std::string& from,
     const std::string& to,
     const std::map<std::string, std::string>& columns,
-    const bool should_drop) {
+    const bool should_drop,
+    const std::string group_by) {
   DCHECK_NE(from, to);
   DCHECK(!from.empty());
   DCHECK(!to.empty());
@@ -60,7 +66,7 @@ bool MigrateDBTable(
   std::string sql = "PRAGMA foreign_keys = off;";
 
   if (!columns.empty()) {
-    const auto insert = GenerateDBInsertQuery(db, from, to, columns);
+    const auto insert = GenerateDBInsertQuery(db, from, to, columns, group_by);
     sql.append(insert);
   }
 
@@ -78,13 +84,14 @@ bool MigrateDBTable(
     const std::string& from,
     const std::string& to,
     const std::vector<std::string>& columns,
-    const bool should_drop) {
+    const bool should_drop,
+    const std::string group_by) {
   std::map<std::string, std::string> new_columns;
   for (const auto& column : columns) {
     new_columns[column] = column;
   }
 
-  return MigrateDBTable(db, from, to, new_columns, should_drop);
+  return MigrateDBTable(db, from, to, new_columns, should_drop, group_by);
 }
 
 bool RenameDBTable(

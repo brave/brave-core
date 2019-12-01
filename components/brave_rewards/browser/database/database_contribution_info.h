@@ -43,11 +43,17 @@ class DatabaseContributionInfo: public DatabaseTable {
   const int minimum_version_ = 2;
   std::unique_ptr<DatabaseContributionInfoPublishers> publishers_;
 
+  bool CreateTableV2(sql::Database* db);
+
   bool CreateTableV8(sql::Database* db);
 
   bool CreateTableV11(sql::Database* db);
 
+  bool CreateIndexV2(sql::Database* db);
+
   bool CreateIndexV8(sql::Database* db);
+
+  bool MigrateToV2(sql::Database* db);
 
   bool MigrateToV8(sql::Database* db);
 

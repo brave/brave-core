@@ -68,6 +68,29 @@ bool DatabaseContributionInfo::CreateIndex(sql::Database* db) {
   return true;
 }
 
+bool DatabaseContributionInfo::CreateTableV2(sql::Database* db) {
+  if (db->DoesTableExist(table_name_)) {
+    return true;
+  }
+
+  const std::string query = base::StringPrintf(
+      "CREATE TABLE %s ("
+        "publisher_id LONGVARCHAR,"
+        "probi TEXT \"0\"  NOT NULL,"
+        "date INTEGER NOT NULL,"
+        "category INTEGER NOT NULL,"
+        "month INTEGER NOT NULL,"
+        "year INTEGER NOT NULL,"
+        "CONSTRAINT fk_contribution_info_publisher_id"
+        "    FOREIGN KEY (publisher_id)"
+        "    REFERENCES publisher_info (publisher_id)"
+        "    ON DELETE CASCADE"
+      ")",
+      table_name_);
+
+  return db->Execute(query.c_str());
+}
+
 bool DatabaseContributionInfo::CreateTableV8(sql::Database* db) {
   if (db->DoesTableExist(table_name_)) {
     return true;
@@ -111,12 +134,19 @@ bool DatabaseContributionInfo::CreateTableV11(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
+bool DatabaseContributionInfo::CreateIndexV2(sql::Database* db) {
+  return this->InsertIndex(db, table_name_, "publisher_id");
+}
+
 bool DatabaseContributionInfo::CreateIndexV8(sql::Database* db) {
   return this->InsertIndex(db, table_name_, "publisher_id");
 }
 
 bool DatabaseContributionInfo::Migrate(sql::Database* db, const int target) {
   switch (target) {
+    case 2: {
+      return MigrateToV2(db);
+    }
     case 8: {
       return MigrateToV8(db);
     }
@@ -128,6 +158,22 @@ bool DatabaseContributionInfo::Migrate(sql::Database* db, const int target) {
       return false;
     }
   }
+}
+
+bool DatabaseContributionInfo::MigrateToV2(sql::Database* db) {
+  if (db->DoesTableExist(table_name_)) {
+    DropTable(db, table_name_);
+  }
+
+  if (!CreateTableV2(db)) {
+    return false;
+  }
+
+  if (!CreateIndexV2(db)) {
+    return false;
+  }
+
+  return true;
 }
 
 bool DatabaseContributionInfo::MigrateToV8(sql::Database* db) {
