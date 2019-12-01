@@ -18,31 +18,31 @@ IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, BasicTest) {
 #if BUILDFLAG(ENABLE_TOR)
     // Tor is enabled by default.
   EXPECT_FALSE(tor::TorProfileService::IsTorDisabled());
-  EXPECT_FALSE(tor::TorProfileService::IsTorDisabledAtNextLaunching());
-  EXPECT_FALSE(tor::TorProfileService::IsTorDisabledChanged());
 #endif
 }
 
 #if BUILDFLAG(ENABLE_TOR)
 IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, PRE_TorDisabledTest) {
+  EXPECT_EQ(tor::TorProfileService::IsTorDisabled(),
+            tor::TorProfileService::GetTorDisabledPref());
+
   // Set to same value(enable) to next launching prefs, doesn't affect anything.
-  tor::TorProfileService::SetTorDisabledAtNextLaunching(false);
-  EXPECT_FALSE(tor::TorProfileService::IsTorDisabled());
-  EXPECT_FALSE(tor::TorProfileService::IsTorDisabledAtNextLaunching());
-  EXPECT_FALSE(tor::TorProfileService::IsTorDisabledChanged());
+  tor::TorProfileService::SetTorDisabledPref(false);
+  EXPECT_EQ(tor::TorProfileService::IsTorDisabled(),
+            tor::TorProfileService::GetTorDisabledPref());
 
   // Check setting to disable to next launching prefs doesn't affect
   // IsTorDisabled().
-  tor::TorProfileService::SetTorDisabledAtNextLaunching(true);
+  tor::TorProfileService::SetTorDisabledPref(true);
   EXPECT_FALSE(tor::TorProfileService::IsTorDisabled());
-  EXPECT_TRUE(tor::TorProfileService::IsTorDisabledAtNextLaunching());
-  EXPECT_TRUE(tor::TorProfileService::IsTorDisabledChanged());
+  EXPECT_NE(tor::TorProfileService::IsTorDisabled(),
+            tor::TorProfileService::GetTorDisabledPref());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, TorDisabledTest) {
   // Check IsTorDisabled() is changed from previous test run.
   EXPECT_TRUE(tor::TorProfileService::IsTorDisabled());
-  EXPECT_FALSE(tor::TorProfileService::IsTorDisabledAtNextLaunching());
-  EXPECT_FALSE(tor::TorProfileService::IsTorDisabledChanged());
+  EXPECT_EQ(tor::TorProfileService::IsTorDisabled(),
+            tor::TorProfileService::GetTorDisabledPref());
 }
 #endif

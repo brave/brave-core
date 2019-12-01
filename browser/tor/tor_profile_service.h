@@ -28,6 +28,7 @@ class PrefRegistrySyncable;
 }
 
 class PrefRegistrySimple;
+class BraveAppMenuBrowserTestWithTorDisabled;
 
 namespace tor {
 
@@ -39,11 +40,9 @@ class TorProfileService : public KeyedService {
   ~TorProfileService() override;
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
-  static void SetTorDisabledAtNextLaunching(bool disabled);
+  static void SetTorDisabledPref(bool disabled);
+  static bool GetTorDisabledPref();
   static bool IsTorDisabled();
-  static bool IsTorDisabledAtNextLaunching();
-  static bool IsTorDisabledChanged();
-  static void InitializeTorPrefs();
 
   virtual void SetNewTorCircuit(content::WebContents* web_contents) = 0;
   virtual std::unique_ptr<net::ProxyConfigService>

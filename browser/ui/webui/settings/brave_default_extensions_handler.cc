@@ -79,11 +79,11 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "setTorEnabled",
       base::BindRepeating(
-          &BraveDefaultExtensionsHandler::SetTorEnabledAtNextLaunching,
+          &BraveDefaultExtensionsHandler::SetTorEnabledPref,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getTorEnabled",
-      base::BindRepeating(&BraveDefaultExtensionsHandler::IsTorEnabled,
+      base::BindRepeating(&BraveDefaultExtensionsHandler::GetTorEnabledPref,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "isTorManaged",
@@ -109,8 +109,8 @@ void BraveDefaultExtensionsHandler::InitializePrefCallbacks() {
 #if BUILDFLAG(ENABLE_TOR)
   local_state_change_registrar_.Init(g_brave_browser_process->local_state());
   local_state_change_registrar_.Add(
-      tor::prefs::kTorDisabledAtNextLaunching,
-      base::Bind(&BraveDefaultExtensionsHandler::OnTorEnabledChanged,
+      tor::prefs::kTorDisabled,
+      base::Bind(&BraveDefaultExtensionsHandler::OnTorEnabledPrefChanged,
                  base::Unretained(this)));
 #endif
 }
@@ -128,7 +128,8 @@ bool BraveDefaultExtensionsHandler::IsRestartNeeded() {
     return true;
 
 #if BUILDFLAG(ENABLE_TOR)
-  if (tor::TorProfileService::IsTorDisabledChanged())
+  if (tor::TorProfileService::IsTorDisabled() !=
+      tor::TorProfileService::GetTorDisabledPref())
     return true;
 #endif
 
@@ -234,36 +235,31 @@ void BraveDefaultExtensionsHandler::SetMediaRouterEnabled(
 }
 
 #if BUILDFLAG(ENABLE_TOR)
-void BraveDefaultExtensionsHandler::SetTorEnabledAtNextLaunching(
+void BraveDefaultExtensionsHandler::SetTorEnabledPref(
     const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   bool enabled;
   args->GetBoolean(0, &enabled);
-
   AllowJavascript();
-  tor::TorProfileService::SetTorDisabledAtNextLaunching(!enabled);
+  tor::TorProfileService::SetTorDisabledPref(!enabled);
 }
 
-void BraveDefaultExtensionsHandler::IsTorEnabled(
+void BraveDefaultExtensionsHandler::GetTorEnabledPref(
     const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
-  bool enabled = false;
-  if (tor::TorProfileService::IsTorDisabledChanged()) {
-    enabled = !tor::TorProfileService::IsTorDisabledAtNextLaunching();
-  } else {
-    enabled = !tor::TorProfileService::IsTorDisabled();
-  }
-
   AllowJavascript();
-  ResolveJavascriptCallback(args->GetList()[0], base::Value(enabled));
+  ResolveJavascriptCallback(
+      args->GetList()[0],
+      base::Value(!tor::TorProfileService::GetTorDisabledPref()));
 }
 
-void BraveDefaultExtensionsHandler::OnTorEnabledChanged() {
+void BraveDefaultExtensionsHandler::OnTorEnabledPrefChanged() {
   OnRestartNeededChanged();
 
   if (IsJavascriptAllowed()) {
-    FireWebUIListener("tor-enabled-changed",
-                      base::Value(!tor::TorProfileService::IsTorDisabled()));
+    FireWebUIListener(
+        "tor-enabled-pref-changed",
+        base::Value(!tor::TorProfileService::GetTorDisabledPref()));
   }
 }
 

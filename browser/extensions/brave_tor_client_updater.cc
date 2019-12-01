@@ -123,7 +123,7 @@ BraveTorClientUpdater::~BraveTorClientUpdater() {
 void BraveTorClientUpdater::Register() {
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
-  if (tor::TorProfileService::IsTorDisabled() ||
+  if (tor::TorProfileService::GetTorDisabledPref() ||
       command_line.HasSwitch(switches::kDisableTorClientUpdaterExtension) ||
       registered_) {
     return;

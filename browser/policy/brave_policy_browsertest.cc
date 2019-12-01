@@ -62,7 +62,8 @@ class TorDisabledPolicyBrowserTest : public BravePolicyTest {
 IN_PROC_BROWSER_TEST_F(TorDisabledPolicyBrowserTest, TorDisabledPrefValueTest) {
   // When policy is set, explicit setting doesn't change its pref value.
   g_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled, false);
-  EXPECT_TRUE(tor::TorProfileService::IsTorDisabled());
+  EXPECT_TRUE(
+      g_browser_process->local_state()->GetBoolean(tor::prefs::kTorDisabled));
 }
 
 class TorEnabledPolicyBrowserTest : public BravePolicyTest {
@@ -84,17 +85,8 @@ class TorEnabledPolicyBrowserTest : public BravePolicyTest {
 IN_PROC_BROWSER_TEST_F(TorEnabledPolicyBrowserTest, TorDisabledPrefValueTest) {
   // When policy is set, explicit setting doesn't change its pref value.
   g_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled, true);
-  EXPECT_FALSE(tor::TorProfileService::IsTorDisabled());
-}
-
-// W/o TorDisabled group policy, kTorDisabled pref value should be false.
-IN_PROC_BROWSER_TEST_F(NoTorPolicyBrowserTest,
-                       DefaultTorDisabledPrefValueTest) {
-  EXPECT_FALSE(tor::TorProfileService::IsTorDisabled());
-
-  // If policy is not set, explicit setting change its pref value.
-  g_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled, true);
-  EXPECT_TRUE(tor::TorProfileService::IsTorDisabled());
+  EXPECT_FALSE(
+      g_browser_process->local_state()->GetBoolean(tor::prefs::kTorDisabled));
 }
 #endif  // OS_WIN
 #endif  // ENABLE_TOR

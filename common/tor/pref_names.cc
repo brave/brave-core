@@ -10,8 +10,6 @@ namespace prefs {
 
 const char kTorProxyString[] = "tor.tor_proxy_string";
 const char kTorDisabled[] = "tor.tor_disabled";
-const char kTorDisabledAtNextLaunching[] =
-    "tor.tor_disabled_at_next_launching";
 
 }  // namespace prefs
 }  // namespace tor

@@ -43,7 +43,7 @@ Polymer({
     this.addWebUIListener('brave-needs-restart-changed', (needsRestart) => {
       this.showRestartToast_ = needsRestart
     })
-    this.addWebUIListener('tor-enabled-changed', (enabled) => {
+    this.addWebUIListener('tor-enabled-pref-changed', (enabled) => {
       this.torEnabled_ = enabled
     })
 

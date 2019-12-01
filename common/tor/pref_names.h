@@ -11,7 +11,6 @@ namespace prefs {
 
 extern const char kTorProxyString[];
 extern const char kTorDisabled[];
-extern const char kTorDisabledAtNextLaunching[];
 
 }  // namespace prefs
 }  // namespace tor
