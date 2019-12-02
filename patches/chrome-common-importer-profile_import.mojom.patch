@@ -1,5 +1,5 @@
 diff --git a/chrome/common/importer/profile_import.mojom b/chrome/common/importer/profile_import.mojom
-index a61e549f6eacfe8dbe144407a58de0c04054bb22..da56fe8e8fa9329ddb0baf1bdb2657cf5d6c8f79 100644
+index 6ea9e8f6935382908a46a53f955251fd7016f546..10e3f0e6baed9991002c4382cd6fd93b698e3814 100644
 --- a/chrome/common/importer/profile_import.mojom
 +++ b/chrome/common/importer/profile_import.mojom
 @@ -6,6 +6,7 @@ module chrome.mojom;

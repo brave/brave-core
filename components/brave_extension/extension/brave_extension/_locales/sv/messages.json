@@ -1,6 +1,6 @@
 {
   "appName": {
-    "message": "Brave-utvidgningen",
+    "message": "Brave-tillägget",
     "description": "The name of the the extension."
   },
   "shields": {
@@ -64,15 +64,15 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Cross-site-cookies blockerade",
+    "message": "Kakor för flera webbplatser blockerade",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
-    "message": "Cookies blockerade",
+    "message": "Kakor blockerades",
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "Alla cookies tillåtna",
+    "message": "Alla kakor tillåts",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
@@ -168,7 +168,7 @@
     "description": "Message for the simple view option"
   },
   "shieldsExplanation": {
-    "message": "Det finns ofta cookies och skript på webbplatser som försöker identifiera dig och din enhet (ofta inbäddade i annonser). De vill ta reda på vem du är och följer och spårar dig på internet och vad du gör på olika webbplatser. Med Brave blockerar du de funktionerna så att du kan surfa i fred.",
+    "message": "Det finns ofta kakor och skript på webbplatser som försöker identifiera dig och din enhet (ofta inbäddade i annonser). De vill ta reda på vem du är och följer och spårar dig på internet och vad du gör på olika webbplatser. Med Brave blockerar du de funktionerna så att du kan surfa i fred.",
     "description": "Message in read-only view explaining what Brave Shields do"
   },
   "blockedResoucesExplanation": {

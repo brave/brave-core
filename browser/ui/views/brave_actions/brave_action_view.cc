@@ -18,22 +18,45 @@
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/size.h"
 #include "ui/views/controls/button/menu_button.h"
+#include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view.h"
 #include "ui/views/view_class_properties.h"
 
-void BraveActionView::OnBoundsChanged(const gfx::Rect& previous_bounds) {
+namespace {
+
+class BraveActionViewHighlightPathGenerator
+    : public views::HighlightPathGenerator {
+ public:
+  BraveActionViewHighlightPathGenerator() = default;
+
+  // HighlightPathGenerator
+  SkPath GetHighlightPath(const views::View* view) override {
+    return static_cast<const BraveActionView*>(view)->GetHighlightPath();
+  }
+
+ private:
+  DISALLOW_COPY_AND_ASSIGN(BraveActionViewHighlightPathGenerator);
+};
+
+}  // namespace
+
+BraveActionView::BraveActionView(ToolbarActionViewController* view_controller,
+                                 ToolbarActionView::Delegate* delegate)
+    : ToolbarActionView(view_controller, delegate) {
+  views::HighlightPathGenerator::Install(
+      this, std::make_unique<BraveActionViewHighlightPathGenerator>());
+}
+
+SkPath BraveActionView::GetHighlightPath() const {
   // Set the highlight path for the toolbar button,
   // making it inset so that the badge can show outside it in the
   // fake margin on the right that we are creating.
+  SkPath path;
   gfx::Insets highlight_insets(0, 0, 0, brave_actions::kBraveActionRightMargin);
   gfx::Rect rect(size());
   rect.Inset(highlight_insets);
   const int radii = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
       views::EMPHASIS_MAXIMUM, rect.size());
-
-  auto path = std::make_unique<SkPath>();
-  path->addRoundRect(gfx::RectToSkRect(rect), radii, radii);
-  SetProperty(views::kHighlightPathKey, path.release());
-
-  MenuButton::OnBoundsChanged(previous_bounds);
+  path.addRoundRect(gfx::RectToSkRect(rect), radii, radii);
+  return path;
 }

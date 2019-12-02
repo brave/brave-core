@@ -39,6 +39,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       bool is_main_frame,
       ui::PageTransition page_transition,
       bool has_user_gesture,
+      const base::Optional<url::Origin>& initiating_origin,
       network::mojom::URLLoaderFactoryPtr* out_factory) override;
 
   content::ContentBrowserClient::AllowWebBluetoothResult AllowWebBluetooth(

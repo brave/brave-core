@@ -78,9 +78,9 @@ bool HandleRewardsProtocol(
     ui::PageTransition page_transition,
     bool has_user_gesture) {
   if (url.SchemeIs(kRewardsScheme)) {
-    base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::UI},
-        base::BindOnce(&LoadRewardsURL, url, web_contents_getter,
-        page_transition, has_user_gesture));
+    base::PostTask(FROM_HERE, {content::BrowserThread::UI},
+                   base::BindOnce(&LoadRewardsURL, url, web_contents_getter,
+                                  page_transition, has_user_gesture));
     return true;
   }
 

@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -13,7 +14,6 @@
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-#include "base/native_library.h"
 #include "chrome/common/chrome_paths.h"
 #include "third_party/widevine/cdm/widevine_cdm_common.h"
 #endif
@@ -49,16 +49,13 @@ void RegisterPathProvider() {
 void OverridePath() {
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
   // Brave downloads cdm lib to user dir when user accepts instead of shippig by
-  // default. So, override |FILE_WIDEVINE_CDM| to new path in user dir.
+  // default. So, override |DIR_BUNDLED_WIDEVINE_CDM| to new path in user dir.
   base::FilePath widevine_cdm_path;
   if (base::PathService::Get(chrome::DIR_USER_DATA, &widevine_cdm_path)) {
     widevine_cdm_path =
-        widevine_cdm_path.AppendASCII(kWidevineCdmBaseDirectory)
-            .AppendASCII(base::GetNativeLibraryName(kWidevineCdmLibraryName));
-    base::PathService::OverrideAndCreateIfNeeded(chrome::FILE_WIDEVINE_CDM,
-                                                 widevine_cdm_path,
-                                                 true,
-                                                 false);
+        widevine_cdm_path.AppendASCII(kWidevineCdmBaseDirectory);
+    base::PathService::OverrideAndCreateIfNeeded(
+        chrome::DIR_BUNDLED_WIDEVINE_CDM, widevine_cdm_path, true, false);
   }
 #endif
 }

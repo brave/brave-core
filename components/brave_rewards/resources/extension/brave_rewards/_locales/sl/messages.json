@@ -19,6 +19,10 @@
     "message": "Zdaj lahko pridobite žetone z ogledom oglasov, ki spoštujejo vašo zasebnost.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
+  "welcomeDescPoints": {
+    "message": "You can now earn points for watching privacy-respecting ads.",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
   "welcomeFooterTextOne": {
     "message": "Oglejte si izboljšave",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
@@ -42,6 +46,22 @@
   "grants": {
     "message": "Sredstva",
     "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "Podrobnosti",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Vaš znesek",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "Točke BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "se lahko uporabijo v programu nagrad Brave Rewards za prispevanje vašim najljubšim ustvarjalcem vsebin. Točk BAT ni mogoče zamenjati za BAT.",
+    "description": "Text for BAT Point helper message"
   },
   "on": {
     "message": "vklop",
@@ -128,12 +148,22 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Dodeljeni žetoni",
-    "description": "Title for grant notification"
+    "message": "$currency$ Grants",
+    "description": "Title for grant notification",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "Token"
+      }
+    }
   },
   "tokenGrantClaimed": {
     "message": "Zahteva za sredstva v obliki žetonov",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Point Grants Claimed",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Zaslužek z ogledom oglasov",
@@ -180,12 +210,16 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "Donirali ste $amount$ BAT",
+    "message": "You've contributed $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
         "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
       }
     }
   },
@@ -261,10 +295,6 @@
     "message": "Datum izteka veljavnosti sredstev",
     "description": "Grant expiry label"
   },
-  "grantAlreadyClaimedText": {
-    "message": "Žal je videti, da je bilo to sredstvo že uveljavljeno.",
-    "description": "Description of the error when grant is already claimed."
-  },
   "grantGeneralErrorButton": {
     "message": "V redu",
     "description": "Button text for clearing the error."
@@ -276,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "Ups, nekaj je šlo narobe. Poskusite znova kasneje.",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "V redu",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "Žal so ta sredstva potekla.",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "Sredstva niso več na voljo.",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "Osveži status",
@@ -306,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Ustvarjalcem, ki se niso še vpisali, da bi prejeli donacije, ste namenili {{reservedAmount}} BAT. Vaš brskalnik bo poskušal prenesti donacije, dokler se ustvarjalec ne vpiše ali do poteka 90 dni.",
+    "message": "Ustvarjalcem, ki se niso še vpisali, da bi prejeli donacije, ste namenili {{reservedAmount}} {{currency}}. Vaš brskalnik bo poskušal prenesti donacije, dokler se ustvarjalec ne vpiše ali do poteka 90 dni.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -397,6 +415,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Vklopi oglase",
     "description": "Prompt to turn on Ads via notification"
@@ -452,23 +474,33 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "Vaše sredstvo v obliki žetonov je na poti.",
-    "description": "Cosmetic text indicating grant funds are on the way"
+    "message": "Your $currency$ grant is on its way.",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
   },
   "grantFinishTokenTitleUGP": {
     "message": "Brezplačna sredstva v obliki žetonov",
     "description": "Token title on success screen"
   },
+  "grantFinishPointTitleUGP": {
+    "message": "Free Point Grant",
+    "description": "Point title on success screen"
+  },
   "grantFinishTitleAds": {
-    "message": "Nagrade za oglase Brave!",
+    "message": "Zaslužili ste nagrado za oglase!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Vaša nagrada za oglase Brave je na poti.",
+    "message": "Vaša nagrada je na poti v vašo v denarnico Brave Rewards.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Vaš nagradni žeton za oglase Brave",
+    "message": "Vaš znesek nagrade",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -532,5 +564,29 @@
   "set": {
     "message": "Nastavi ...",
     "description": "Button text for setting monthly contribution"
+  },
+  "tokens":  {
+    "message": "žetoni",
+    "description": "Standard tokens text"
+  },
+  "point":  {
+    "message": "Point",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "Žeton",
+    "description": "BAT Token text"
+  },
+  "points":  {
+    "message": "points",
+    "description": "BAT Points text"
+  },
+  "tokenGrants":  {
+    "message": "Dodeljeni žetoni",
+    "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Point Grants",
+    "description": "BAT Points Grant Text"
   }
 }

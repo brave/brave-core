@@ -19,6 +19,10 @@
     "message": "เดี๋ยวนี้คุณสามารถได้รับโทเค็นจากการชมโฆษณาที่เคารพความเป็นส่วนตัวแล้ว",
     "description": "Entry text for welcome screen in the panel, new user"
   },
+  "welcomeDescPoints": {
+    "message": "You can now earn points for watching privacy-respecting ads.",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
   "welcomeFooterTextOne": {
     "message": "มาดูว่ามีอะไรปรับปรุงเปลี่ยนแปลงไปแล้วบ้าง",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
@@ -42,6 +46,22 @@
   "grants": {
     "message": "Grants",
     "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "รายละเอียด",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "ยอดของคุณ",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "แต้ม BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "สามารถใช้ใน Brave Rewards เพื่อส่งรายได้ให้แก่ผู้สร้างสรรค์เนื้อหาคนโปรดของคุณ แต้ม BAT ไม่สามารถแลกเปลี่ยนเป็น BAT ได้",
+    "description": "Text for BAT Point helper message"
   },
   "on": {
     "message": "เปิด",
@@ -128,12 +148,22 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "จำนวนโทเคนที่ให้",
-    "description": "Title for grant notification"
+    "message": "$currency$ Grants",
+    "description": "Title for grant notification",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "Token"
+      }
+    }
   },
   "tokenGrantClaimed": {
     "message": "โทเค็นเงินบริจาคที่เบิกแล้ว",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Point Grants Claimed",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "ได้รายได้จากโฆษณา",
@@ -180,12 +210,16 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "คุณได้บริจาค $amount$ BAT",
+    "message": "You've contributed $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
         "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
       }
     }
   },
@@ -261,10 +295,6 @@
     "message": "วันที่เงินบริจาคหมดอายุ",
     "description": "Grant expiry label"
   },
-  "grantAlreadyClaimedText": {
-    "message": "ขออภัย ดูเหมือนว่าเงินบริจาคนี้จะได้รับการเบิกไปแล้ว",
-    "description": "Description of the error when grant is already claimed."
-  },
   "grantGeneralErrorButton": {
     "message": "ตกลง",
     "description": "Button text for clearing the error."
@@ -276,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "อุ๊ย มีบางอย่างผิดปกติ โปรดลองใหม่ภายหลัง",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "ตกลง",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "ขออภัย ดูเหมือนว่าเงินบริจาคนี้จะหมดอายุแล้ว",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "เงินบริจาคนี้ใช้ไม่ได้แล้ว",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "รีเฟรชสถานะ",
@@ -306,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "คุณได้มอบ {{reservedAmount}} BAT ให้กับผู้สร้างที่ยังไม่ได้ลงทะเบียนรับเงินสนับสนุน เบราว์เซอร์ของคุณจะพยายามส่งเงินสนับสนุนไปเรื่อย ๆ จนกว่าผู้สร้างจะยืนยัน หรือจนกระทั่งเวลาผ่านไป 90 วัน",
+    "message": "คุณได้กำหนดจำนวนเงิน {{reservedAmount}} {{currency}} ไว้ให้แก่ผู้สร้างสรรค์ที่ยังไม่ได้สมัครรับรายได้ เบราว์เซอร์ของคุณจะพยายามส่งรายได้ให้จนกว่าพวกเขาจะยืนยัน หรือจนกว่าจะครบ 90 วัน",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -397,6 +415,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "เปิดโฆษณา",
     "description": "Prompt to turn on Ads via notification"
@@ -452,23 +474,33 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "โทเค็นเงินบริจาคกำลังจะไปถึงคุณแล้ว",
-    "description": "Cosmetic text indicating grant funds are on the way"
+    "message": "Your $currency$ grant is on its way.",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
   },
   "grantFinishTokenTitleUGP": {
     "message": "โทเค็นเงินบริจาคฟรี",
     "description": "Token title on success screen"
   },
+  "grantFinishPointTitleUGP": {
+    "message": "Free Point Grant",
+    "description": "Point title on success screen"
+  },
   "grantFinishTitleAds": {
-    "message": "Brave Ads Rewards!",
+    "message": "คุณได้รับรางวัลโฆษณา!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "การจัดสรรรางวัลของคุณจาก Brave Ads กำลังมาถึง",
+    "message": "รางวัลของคุณกำลังอยู่ระหว่างทางไปสู่กระเป๋าสตางค์ Brave Rewards ของคุณ",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "การจัดสรรโทเค็น Brave Ads ของคุณ",
+    "message": "ปริมาณรางวัลของคุณ",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -532,5 +564,29 @@
   "set": {
     "message": "ตั้งค่า...",
     "description": "Button text for setting monthly contribution"
+  },
+  "tokens":  {
+    "message": "เหรียญ",
+    "description": "Standard tokens text"
+  },
+  "point":  {
+    "message": "Point",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "Token",
+    "description": "BAT Token text"
+  },
+  "points":  {
+    "message": "points",
+    "description": "BAT Points text"
+  },
+  "tokenGrants":  {
+    "message": "จำนวนโทเคนที่ให้",
+    "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Point Grants",
+    "description": "BAT Points Grant Text"
   }
 }

@@ -56,7 +56,7 @@ class RankerModelLoaderImplTest : public ::testing::Test {
   void OnModelAvailable(std::unique_ptr<RankerModel> model);
 
   // Sets up the task scheduling/task-runner environment for each test.
-  base::test::ScopedTaskEnvironment scoped_task_environment_;
+  base::test::TaskEnvironment task_environment_;
 
   // Override the default URL loader to return custom responses for tests.
   network::TestURLLoaderFactory test_loader_factory_;
@@ -97,7 +97,7 @@ bool RankerModelLoaderImplTest::DoLoaderTest(const base::FilePath& model_path,
       test_shared_loader_factory_, model_path, model_url,
       "RankerModelLoaderImplTest");
   loader->NotifyOfRankerActivity();
-  scoped_task_environment_.RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   return true;
 }

@@ -19,6 +19,10 @@
     "message": "Можете да печелите жетони чрез гледане на спазващите поверителността реклами.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
+  "welcomeDescPoints": {
+    "message": "You can now earn points for watching privacy-respecting ads.",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
   "welcomeFooterTextOne": {
     "message": "Вижте какво е подобрено",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
@@ -42,6 +46,22 @@
   "grants": {
     "message": "Дарения",
     "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "Подробности",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Вашият баланс",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT точки",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "може да се използва в Brave награди, за да допринесе на любимите ви създатели на съдържание. ВАТ точки не могат да бъдат разменени за ВАТ.",
+    "description": "Text for BAT Point helper message"
   },
   "on": {
     "message": "на",
@@ -128,12 +148,22 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Субсидии за жетони",
-    "description": "Title for grant notification"
+    "message": "$currency$ Grants",
+    "description": "Title for grant notification",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "Token"
+      }
+    }
   },
   "tokenGrantClaimed": {
     "message": "Изискани субсидии на жетони",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Point Grants Claimed",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Приходи от реклами",
@@ -180,12 +210,16 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "Вие дарихте $amount$ BAT",
+    "message": "You've contributed $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
         "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
       }
     }
   },
@@ -261,10 +295,6 @@
     "message": "Дата на изтичане на субсидията",
     "description": "Grant expiry label"
   },
-  "grantAlreadyClaimedText": {
-    "message": "Съжаляваме, тази субсидия вече беше поискана.",
-    "description": "Description of the error when grant is already claimed."
-  },
   "grantGeneralErrorButton": {
     "message": "OK",
     "description": "Button text for clearing the error."
@@ -276,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "Упс, нещо се обърка. Моля, опитайте отново по-късно.",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "OK",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "Съжаляваме, тази субсидия вече е изтекла.",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "Тази субсидия вече не е налична.",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "Обновяване на състоянието",
@@ -306,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Определихте {{reservedAmount}} BAT за създатели, които все още не са се регистрирали за получаване на вноски. Вашият браузър ще продължава да се опитва да прави вноски докато те потвърдят или до 90 дена.",
+    "message": "Определили сте {{servedAmount}} {{валута}} за създатели, които все още не са се регистрирали да получават вноски. Вашият браузър ще продължава да се опитва да даде своя принос, докато те не потвърдят или изминат 90 дни.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -397,6 +415,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Включване на реклами",
     "description": "Prompt to turn on Ads via notification"
@@ -452,23 +474,33 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "Субсидията на вашия жетон е на път.",
-    "description": "Cosmetic text indicating grant funds are on the way"
+    "message": "Your $currency$ grant is on its way.",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
   },
   "grantFinishTokenTitleUGP": {
     "message": "Безплатна субсидия жетон",
     "description": "Token title on success screen"
   },
+  "grantFinishPointTitleUGP": {
+    "message": "Free Point Grant",
+    "description": "Point title on success screen"
+  },
   "grantFinishTitleAds": {
-    "message": "Награди за реклами в Brave!",
+    "message": "Спечелихте награда за реклама!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Вашето възнаграждение от Brave Ads е на път.",
+    "message": "Вашата награда е на път към портфейла ви Brave.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Предоставяне на маркер за реклама в Brave",
+    "message": "Вашата Сума За Възнаграждение",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -532,5 +564,29 @@
   "set": {
     "message": "Настройване...",
     "description": "Button text for setting monthly contribution"
+  },
+  "tokens":  {
+    "message": "жетони",
+    "description": "Standard tokens text"
+  },
+  "point":  {
+    "message": "Point",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "Жетон",
+    "description": "BAT Token text"
+  },
+  "points":  {
+    "message": "points",
+    "description": "BAT Points text"
+  },
+  "tokenGrants":  {
+    "message": "Субсидии за жетони",
+    "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Point Grants",
+    "description": "BAT Points Grant Text"
   }
 }

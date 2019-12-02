@@ -1,27 +1,27 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index dd3a098632d49d82d20a1dba87cc151e626a4966..f33ae5877a39455eda7d0b123f23df8a41b1ae6b 100644
+index 16653e1529b61e4418009cb72f977b161a782688..33b980cd14d1a13a879ffd04b11ff472e629fe00 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -190,6 +190,10 @@ if (!is_android && !is_mac) {
-           "common/crash_keys.cc",
-           "common/crash_keys.h",
-         ]
-+        if (brave_chromium_build) {
-+          sources -= [ "app/chrome_exe.rc", ]
-+          sources += [ "//brave/app/brave_exe.rc", ]
-+        }
+@@ -188,6 +188,10 @@ if (!is_android && !is_mac) {
+         "common/crash_keys.cc",
+         "common/crash_keys.h",
+       ]
++      if (brave_chromium_build) {
++        sources -= [ "app/chrome_exe.rc", ]
++        sources += [ "//brave/app/brave_exe.rc", ]
++      }
  
-         deps += [
-           ":chrome_dll",
-@@ -277,6 +281,7 @@ if (!is_android && !is_mac) {
-           "//headless:headless_shell_lib",
-           "//services/service_manager/embedder",
-         ]
-+        deps += [ "//components/unified_consent" ]
+       deps += [
+         ":chrome_dll",
+@@ -279,6 +283,7 @@ if (!is_android && !is_mac) {
+         "//headless:headless_shell_lib",
+         "//services/service_manager/embedder",
+       ]
++      deps += [ "//components/unified_consent" ]
  
-         public_deps = [
-           ":xdg_mime",  # Needs to be public for installer to consume files.
-@@ -412,6 +417,7 @@ if (is_win) {
+       public_deps = [
+         ":xdg_mime",  # Needs to be public for installer to consume files.
+@@ -399,6 +404,7 @@ if (is_win) {
        "//third_party/wtl",
        "//ui/views",
      ]
@@ -29,7 +29,7 @@ index dd3a098632d49d82d20a1dba87cc151e626a4966..f33ae5877a39455eda7d0b123f23df8a
  
      configs += [ "//build/config/win:delayloads" ]
      if (is_multi_dll_chrome) {
-@@ -488,6 +494,7 @@ if (is_win) {
+@@ -475,6 +481,7 @@ if (is_win) {
          "//headless:headless_shell_child_lib",
          "//services/service_manager/embedder",
        ]
@@ -37,7 +37,7 @@ index dd3a098632d49d82d20a1dba87cc151e626a4966..f33ae5877a39455eda7d0b123f23df8a
  
        configs += [ "//build/config/win:delayloads" ]
  
-@@ -579,6 +586,11 @@ if (is_win) {
+@@ -566,6 +573,11 @@ if (is_win) {
      ]
    }
  
@@ -49,15 +49,15 @@ index dd3a098632d49d82d20a1dba87cc151e626a4966..f33ae5877a39455eda7d0b123f23df8a
    mac_app_bundle("chrome_app") {
      output_name = chrome_product_full_name
  
-@@ -612,6 +624,7 @@ if (is_win) {
-                   rebase_path("app/app.exports", root_build_dir) ]
+@@ -611,6 +623,7 @@ if (is_win) {
+       ]
      }
    }
 +}
  
    compiled_action("chrome_app_strings") {
      tool = "//chrome/tools/build/mac:infoplist_strings_tool"
-@@ -641,7 +654,7 @@ if (is_win) {
+@@ -640,7 +653,7 @@ if (is_win) {
      args =
          [
            "-b",
@@ -66,7 +66,7 @@ index dd3a098632d49d82d20a1dba87cc151e626a4966..f33ae5877a39455eda7d0b123f23df8a
            "-v",
            rebase_path(chrome_version_file, root_build_dir),
            "-g",
-@@ -722,7 +735,7 @@ if (is_win) {
+@@ -721,7 +734,7 @@ if (is_win) {
        # framework itself, that would cause a cyclical dependency. Instead,
        # this dependency directly copies the file into the framework's
        # resources directory.
@@ -75,7 +75,7 @@ index dd3a098632d49d82d20a1dba87cc151e626a4966..f33ae5877a39455eda7d0b123f23df8a
      }
    }
  
-@@ -1149,6 +1162,7 @@ if (is_win) {
+@@ -1148,6 +1161,7 @@ if (is_win) {
        "//services/service_manager/embedder",
        "//third_party/cld_3/src/src:cld_3",
      ]
@@ -83,7 +83,7 @@ index dd3a098632d49d82d20a1dba87cc151e626a4966..f33ae5877a39455eda7d0b123f23df8a
  
      if (is_component_build) {
        libs = [ "Carbon.framework" ]
-@@ -1213,6 +1227,10 @@ if (is_win) {
+@@ -1212,6 +1226,10 @@ if (is_win) {
      if (is_chrome_branded) {
        deps += [ ":default_apps" ]
      }
@@ -94,7 +94,7 @@ index dd3a098632d49d82d20a1dba87cc151e626a4966..f33ae5877a39455eda7d0b123f23df8a
  
      ldflags = [ "-Wl,-install_name,@executable_path/../Frameworks/$chrome_framework_name.framework/Versions/$chrome_version_full/$chrome_framework_name" ]
  
-@@ -1381,6 +1399,7 @@ if (is_win) {
+@@ -1380,6 +1398,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -102,7 +102,7 @@ index dd3a098632d49d82d20a1dba87cc151e626a4966..f33ae5877a39455eda7d0b123f23df8a
      "//chrome/browser",
      "//chrome/common",
      "//components/gwp_asan/buildflags",
-@@ -1453,13 +1472,14 @@ group("child_dependencies") {
+@@ -1452,13 +1471,14 @@ group("child_dependencies") {
        # this is OK because all of content is linked into one library.
        "//content/browser",
      ]
@@ -118,7 +118,7 @@ index dd3a098632d49d82d20a1dba87cc151e626a4966..f33ae5877a39455eda7d0b123f23df8a
      ]
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
-@@ -1522,6 +1542,7 @@ group("resources") {
+@@ -1521,6 +1541,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
@@ -126,7 +126,7 @@ index dd3a098632d49d82d20a1dba87cc151e626a4966..f33ae5877a39455eda7d0b123f23df8a
    ]
  }
  
-@@ -1780,6 +1801,7 @@ if (is_android) {
+@@ -1773,6 +1794,7 @@ if (is_android) {
        "//content/public/common:service_names",
        "//services/service_manager/embedder",
      ]

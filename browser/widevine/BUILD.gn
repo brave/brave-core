@@ -33,6 +33,7 @@ source_set("widevine") {
       "//components/prefs",
       "//components/pref_registry",
       "//components/services/unzip/public/cpp",
+      "//media/cdm:cdm_paths",
       "//services/network/public/cpp",
       "//services/service_manager/public/cpp",
       "//third_party/widevine/cdm:headers",
