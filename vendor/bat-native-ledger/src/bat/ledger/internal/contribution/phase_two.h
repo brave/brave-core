@@ -13,8 +13,12 @@
 #include <vector>
 
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/contribution/contribution.h"
+#include "bat/ledger/internal/properties/ballot_properties.h"
+#include "bat/ledger/internal/properties/transaction_properties.h"
+#include "bat/ledger/internal/properties/reconcile_direction_properties.h"
+#include "bat/ledger/internal/properties/winner_properties.h"
+#include "bat/ledger/internal/properties/batch_proof_properties.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -47,30 +51,30 @@ class PhaseTwo {
 
   bool GetStatisticalVotingWinner(
       double dart,
-      const braveledger_bat_helper::Directions& list,
-      braveledger_bat_helper::WINNERS_ST* winner);
+      const ledger::ReconcileDirections& list,
+      ledger::WinnerProperties* winner);
 
-  braveledger_bat_helper::Winners GetStatisticalVotingWinners(
+  ledger::Winners GetStatisticalVotingWinners(
       uint32_t total_votes,
-      const braveledger_bat_helper::Directions& list);
+      const ledger::ReconcileDirections& list);
 
   void GetContributeWinners(
       const unsigned int ballots,
       const std::string& viewing_id,
-      const braveledger_bat_helper::Directions& list);
+      const ledger::ReconcileDirections& list);
 
   void GetTipsWinners(const unsigned int ballots,
                       const std::string& viewing_id);
 
-  void VotePublishers(const braveledger_bat_helper::Winners& winners,
+  void VotePublishers(const ledger::Winners& winners,
                       const std::string& viewing_id);
 
   void VotePublisher(const std::string& publisher,
                      const std::string& viewing_id);
 
   void PrepareBatch(
-      const braveledger_bat_helper::BALLOT_ST& ballot,
-      const braveledger_bat_helper::TRANSACTION_ST& transaction);
+      const ledger::BallotProperties& ballot,
+      const ledger::TransactionProperties& transaction);
 
   void PrepareBatchCallback(
       const std::string& viewing_id,
@@ -81,20 +85,20 @@ class PhaseTwo {
   static void AssignPrepareBallots(
       const std::string& viewing_id,
       const std::vector<std::string>& surveyors,
-      braveledger_bat_helper::Ballots* ballots);
+      ledger::Ballots* ballots);
 
   std::vector<std::string> ProofBatch(
-      const braveledger_bat_helper::BatchProofs& batch_proofs);
+      const ledger::BatchProofs& batch_proofs);
 
   void PrepareVoteBatch();
 
   static void AssignProofs(
-      const braveledger_bat_helper::BatchProofs& batch_proofs,
+      const ledger::BatchProofs& batch_proofs,
       const std::vector<std::string>& proofs,
-      braveledger_bat_helper::Ballots* ballots);
+      ledger::Ballots* ballots);
 
   void ProofBatchCallback(
-      const braveledger_bat_helper::BatchProofs& batch_proofs,
+      const ledger::BatchProofs& batch_proofs,
       const std::vector<std::string>& proofs);
 
   void VoteBatchCallback(

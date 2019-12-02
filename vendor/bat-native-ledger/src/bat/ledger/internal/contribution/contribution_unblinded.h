@@ -13,7 +13,7 @@
 #include <vector>
 
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/properties/reconcile_direction_properties.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -44,7 +44,7 @@ class Unblinded {
 
   bool GetStatisticalVotingWinner(
       double dart,
-      const braveledger_bat_helper::Directions& directions,
+      const ledger::ReconcileDirections& directions,
       Winners* winners) const;
 
   void PrepareAutoContribution(
@@ -53,7 +53,7 @@ class Unblinded {
 
   void GetStatisticalVotingWinners(
       uint32_t total_votes,
-      const braveledger_bat_helper::Directions& directions,
+      const ledger::ReconcileDirections& directions,
       Winners* winners) const;
 
   void SendTokens(

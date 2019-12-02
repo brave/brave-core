@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 
+#include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/media/youtube.h"

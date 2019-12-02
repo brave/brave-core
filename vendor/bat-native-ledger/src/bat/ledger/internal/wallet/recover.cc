@@ -8,7 +8,7 @@
 
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/properties/wallet_info_properties.h"
 #include "bat/ledger/internal/request/request_util.h"
 #include "net/http/http_status_code.h"
 
@@ -164,9 +164,8 @@ void Recover::RecoverWalletCallback(
     return;
   }
 
-  braveledger_bat_helper::WALLET_INFO_ST wallet_info = ledger_->GetWalletInfo();
-  braveledger_bat_helper::WALLET_PROPERTIES_ST properties =
-      ledger_->GetWalletProperties();
+  ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
+  ledger::WalletProperties properties = ledger_->GetWalletProperties();
   unsigned int days;
   double fee_amount = .0;
   double balance = .0;
@@ -187,8 +186,8 @@ void Recover::RecoverWalletCallback(
   ledger_->SetDays(days);
   ledger_->SetWalletProperties(&properties);
 
-  wallet_info.paymentId_ = recoveryId;
-  wallet_info.keyInfoSeed_ = new_seed;
+  wallet_info.payment_id = recoveryId;
+  wallet_info.key_info_seed = new_seed;
   ledger_->SetWalletInfo(wallet_info);
   callback(ledger::Result::LEDGER_OK, balance);
 }

@@ -8,7 +8,6 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/static_values.h"
-#include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/common/security_helper.h"
 

@@ -14,6 +14,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/media/twitter.h"
+#include "bat/ledger/internal/static_values.h"
 #include "net/base/url_util.h"
 #include "net/http/http_status_code.h"
 #include "url/gurl.h"

@@ -7,9 +7,9 @@
 #include <utility>
 #include <vector>
 
-#include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/contribution/phase_two.h"
 #include "bat/ledger/internal/logging.h"
+#include "bat/ledger/internal/properties/ballot_properties.h"
 #include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -19,27 +19,27 @@ namespace braveledger_contribution {
 
 class PhaseTwoTest : public testing::Test {
  protected:
-  void PopulateDirectionsList(braveledger_bat_helper::Directions* list) {
-    braveledger_bat_helper::RECONCILE_DIRECTION publisher;
+  void PopulateDirectionsList(ledger::ReconcileDirections* list) {
+    ledger::ReconcileDirectionProperties publisher;
 
-    publisher.publisher_key_ = "publisher1";
-    publisher.amount_percent_ = 2.0;
+    publisher.publisher_key = "publisher1";
+    publisher.amount_percent = 2.0;
     list->push_back(publisher);
 
-    publisher.publisher_key_ = "publisher2";
-    publisher.amount_percent_ = 13.0;
+    publisher.publisher_key = "publisher2";
+    publisher.amount_percent = 13.0;
     list->push_back(publisher);
 
-    publisher.publisher_key_ = "publisher3";
-    publisher.amount_percent_ = 14.0;
+    publisher.publisher_key = "publisher3";
+    publisher.amount_percent = 14.0;
     list->push_back(publisher);
 
-    publisher.publisher_key_ = "publisher4";
-    publisher.amount_percent_ = 23.0;
+    publisher.publisher_key = "publisher4";
+    publisher.amount_percent = 23.0;
     list->push_back(publisher);
 
-    publisher.publisher_key_ = "publisher5";
-    publisher.amount_percent_ = 38.0;
+    publisher.publisher_key = "publisher5";
+    publisher.amount_percent = 38.0;
     list->push_back(publisher);
   }
 };
@@ -48,7 +48,7 @@ TEST_F(PhaseTwoTest, GetStatisticalVotingWinners) {
   auto phase_two =
       std::make_unique<braveledger_contribution::PhaseTwo>(nullptr, nullptr);
 
-  braveledger_bat_helper::Directions list;
+  ledger::ReconcileDirections list;
   PopulateDirectionsList(&list);
 
   struct {
@@ -69,11 +69,11 @@ TEST_F(PhaseTwoTest, GetStatisticalVotingWinners) {
   };
 
   for (size_t i = 0; i < base::size(cases); i++) {
-    braveledger_bat_helper::WINNERS_ST winner;
+    ledger::WinnerProperties winner;
     bool result = phase_two->GetStatisticalVotingWinner(
         cases[i].dart, list, &winner);
     EXPECT_TRUE(result);
-    EXPECT_STREQ(winner.direction_.publisher_key_.c_str(), cases[i].publisher);
+    EXPECT_STREQ(winner.direction.publisher_key.c_str(), cases[i].publisher);
   }
 }
 
@@ -88,18 +88,18 @@ TEST_F(PhaseTwoTest, AssignPrepareBallotsRespectsViewingID) {
   };
 
   // Create ballots with different viewing IDs but the same surveyor ID.
-  braveledger_bat_helper::Ballots ballots(2);
-  ballots[0].viewingId_ = "00000000-0000-0000-0000-000000000000";
-  ballots[0].surveyorId_ = shared_surveyor_id;
-  ballots[1].viewingId_ = "ffffffff-ffff-ffff-ffff-ffffffffffff";
-  ballots[1].surveyorId_ = shared_surveyor_id;
+  ledger::Ballots ballots(2);
+  ballots[0].viewing_id = "00000000-0000-0000-0000-000000000000";
+  ballots[0].surveyor_id = shared_surveyor_id;
+  ballots[1].viewing_id = "ffffffff-ffff-ffff-ffff-ffffffffffff";
+  ballots[1].surveyor_id = shared_surveyor_id;
 
   // Check that only ballot[0] with the matching viewing ID is updated. Ballot 1
   // should remain unmodified.
   PhaseTwo::AssignPrepareBallots("00000000-0000-0000-0000-000000000000",
       surveyors, &ballots);
-  ASSERT_FALSE(ballots[0].prepareBallot_.empty());
-  ASSERT_TRUE(ballots[1].prepareBallot_.empty());
+  ASSERT_FALSE(ballots[0].prepare_ballot.empty());
+  ASSERT_TRUE(ballots[1].prepare_ballot.empty());
 }
 
 // Surveyor IDs may be reused between transactions. Ensure that proofs for
@@ -110,19 +110,19 @@ TEST_F(PhaseTwoTest, AssignProofsRespectsViewingID) {
   const std::string shared_surveyor_id =
       "Ad5pNzrwhWokTOR8/hC83LWJfEy8aY7mFwPQWe6CpRF";
 
-  braveledger_bat_helper::Ballots ballots(2);
-  ballots[0].viewingId_ = "00000000-0000-0000-0000-000000000000";
-  ballots[0].surveyorId_ = shared_surveyor_id;
-  ballots[1].viewingId_ = "ffffffff-ffff-ffff-ffff-ffffffffffff";
-  ballots[1].surveyorId_ = shared_surveyor_id;
+  ledger::Ballots ballots(2);
+  ballots[0].viewing_id = "00000000-0000-0000-0000-000000000000";
+  ballots[0].surveyor_id = shared_surveyor_id;
+  ballots[1].viewing_id = "ffffffff-ffff-ffff-ffff-ffffffffffff";
+  ballots[1].surveyor_id = shared_surveyor_id;
 
-  braveledger_bat_helper::BatchProofs batch_proofs(2);
-  batch_proofs[0].ballot_ = ballots[0];
-  batch_proofs[1].ballot_ = ballots[1];
+  ledger::BatchProofs batch_proofs(2);
+  batch_proofs[0].ballot = ballots[0];
+  batch_proofs[1].ballot = ballots[1];
 
   PhaseTwo::AssignProofs(batch_proofs, proofs, &ballots);
-  ASSERT_EQ(ballots[0].proofBallot_, proofs[0]);
-  ASSERT_EQ(ballots[1].proofBallot_, proofs[1]);
+  ASSERT_EQ(ballots[0].proof_ballot, proofs[0]);
+  ASSERT_EQ(ballots[1].proof_ballot, proofs[1]);
 }
 
 }  // namespace braveledger_contribution

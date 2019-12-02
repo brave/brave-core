@@ -6,41 +6,43 @@
 #include <algorithm>
 #include <utility>
 
+#include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/bat_state.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/state/client_state.h"
 
 namespace braveledger_bat_state {
 
 BatState::BatState(bat_ledger::LedgerImpl* ledger) :
       ledger_(ledger),
-      state_(new braveledger_bat_helper::CLIENT_STATE_ST()) {
+      state_(new ledger::ClientProperties()) {
 }
 
 BatState::~BatState() {
 }
 
 bool BatState::LoadState(const std::string& data) {
-  braveledger_bat_helper::CLIENT_STATE_ST state;
-  if (!braveledger_bat_helper::loadFromJson(&state, data.c_str())) {
+  ledger::ClientProperties state;
+  const ledger::ClientState client_state;
+  if (!client_state.FromJson(data, &state)) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
       "Failed to load client state: " << data;
     return false;
   }
 
-  state_.reset(new braveledger_bat_helper::CLIENT_STATE_ST(state));
+  state_.reset(new ledger::ClientProperties(state));
 
   bool stateChanged = false;
 
   // fix timestamp ms to s conversion
-  if (std::to_string(state_->reconcileStamp_).length() > 10) {
-    state_->reconcileStamp_ = state_->reconcileStamp_ / 1000;
+  if (std::to_string(state_->reconcile_timestamp).length() > 10) {
+    state_->reconcile_timestamp = state_->reconcile_timestamp / 1000;
     stateChanged = true;
   }
 
   // fix timestamp ms to s conversion
-  if (std::to_string(state_->bootStamp_).length() > 10) {
-    state_->bootStamp_ = state_->bootStamp_ / 1000;
+  if (std::to_string(state_->boot_timestamp).length() > 10) {
+    state_->boot_timestamp = state_->boot_timestamp / 1000;
     stateChanged = true;
   }
 
@@ -52,200 +54,198 @@ bool BatState::LoadState(const std::string& data) {
 }
 
 void BatState::SaveState() {
-  std::string data;
-  braveledger_bat_helper::saveToJsonString(*state_, &data);
+  const ledger::ClientState client_state;
+  const std::string data = client_state.ToJson(*state_);
   ledger_->SaveLedgerState(data);
 }
 
 void BatState::AddReconcile(const std::string& viewing_id,
-      const braveledger_bat_helper::CURRENT_RECONCILE& reconcile) {
-  state_->current_reconciles_.insert(std::make_pair(viewing_id, reconcile));
+      const ledger::CurrentReconcileProperties& reconcile) {
+  state_->current_reconciles.insert(std::make_pair(viewing_id, reconcile));
   SaveState();
 }
 
 bool BatState::UpdateReconcile(
-    const braveledger_bat_helper::CURRENT_RECONCILE& reconcile) {
-  if (state_->current_reconciles_.count(reconcile.viewingId_) == 0) {
+    const ledger::CurrentReconcileProperties& reconcile) {
+  if (state_->current_reconciles.count(reconcile.viewing_id) == 0) {
     return false;
   }
 
-  state_->current_reconciles_[reconcile.viewingId_] = reconcile;
+  state_->current_reconciles[reconcile.viewing_id] = reconcile;
   SaveState();
   return true;
 }
 
-braveledger_bat_helper::CURRENT_RECONCILE BatState::GetReconcileById(
+ledger::CurrentReconcileProperties BatState::GetReconcileById(
     const std::string& viewingId) const {
-  if (state_->current_reconciles_.count(viewingId) == 0) {
+  if (state_->current_reconciles.count(viewingId) == 0) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
       "Could not find any reconcile tasks with the id " << viewingId;
-    return braveledger_bat_helper::CURRENT_RECONCILE();
+    return ledger::CurrentReconcileProperties();
   }
 
-  return state_->current_reconciles_[viewingId];
+  return state_->current_reconciles[viewingId];
 }
 
 bool BatState::ReconcileExists(const std::string& viewingId) const {
-  return state_->current_reconciles_.count(viewingId) > 0;
+  return state_->current_reconciles.count(viewingId) > 0;
 }
 
 void BatState::RemoveReconcileById(const std::string& viewingId) {
-  braveledger_bat_helper::CurrentReconciles::iterator it =
-      state_->current_reconciles_.find(viewingId);
-  if (it != state_->current_reconciles_.end()) {
-    state_->current_reconciles_.erase(it);
+  ledger::CurrentReconciles::iterator it =
+      state_->current_reconciles.find(viewingId);
+  if (it != state_->current_reconciles.end()) {
+    state_->current_reconciles.erase(it);
     SaveState();
   }
 }
 
 void BatState::SetRewardsMainEnabled(bool enabled) {
-  state_->rewards_enabled_ = enabled;
+  state_->rewards_enabled = enabled;
   SaveState();
 }
 
 bool BatState::GetRewardsMainEnabled() const {
-  return state_->rewards_enabled_;
+  return state_->rewards_enabled;
 }
 
 void BatState::SetContributionAmount(double amount) {
-  braveledger_bat_helper::WALLET_PROPERTIES_ST properties =
-      GetWalletProperties();
-  auto hasAmount = std::find(properties.parameters_choices_.begin(),
-                             properties.parameters_choices_.end(),
+  ledger::WalletProperties properties = GetWalletProperties();
+  auto hasAmount = std::find(properties.parameters_choices.begin(),
+                             properties.parameters_choices.end(),
                              amount);
 
-  if (hasAmount == properties.parameters_choices_.end()) {
+  if (hasAmount == properties.parameters_choices.end()) {
     // amount is missing in the list
-    properties.parameters_choices_.push_back(amount);
-    std::sort(properties.parameters_choices_.begin(),
-              properties.parameters_choices_.end());
+    properties.parameters_choices.push_back(amount);
+    std::sort(properties.parameters_choices.begin(),
+              properties.parameters_choices.end());
     ledger_->OnWalletProperties(ledger::Result::LEDGER_OK, properties);
-    state_->walletProperties_ = properties;
+    state_->wallet = properties;
   }
 
-  state_->fee_amount_ = amount;
+  state_->fee_amount = amount;
   SaveState();
 }
 
 double BatState::GetContributionAmount() const {
-  return state_->fee_amount_;
+  return state_->fee_amount;
 }
 
 void BatState::SetUserChangedContribution() {
-  state_->user_changed_fee_ = true;
+  state_->user_changed_fee = true;
   SaveState();
 }
 
 bool BatState::GetUserChangedContribution() const {
-  return state_->user_changed_fee_;
+  return state_->user_changed_fee;
 }
 
 void BatState::SetAutoContribute(bool enabled) {
-  state_->auto_contribute_ = enabled;
+  state_->auto_contribute = enabled;
   SaveState();
 }
 
 bool BatState::GetAutoContribute() const {
-  return state_->auto_contribute_;
+  return state_->auto_contribute;
 }
 
 const std::string& BatState::GetCardIdAddress() const {
-  return state_->walletInfo_.addressCARD_ID_;
+  return state_->wallet_info.address_card_id;
 }
 
 uint64_t BatState::GetReconcileStamp() const {
-  return state_->reconcileStamp_;
+  return state_->reconcile_timestamp;
 }
 
 void BatState::ResetReconcileStamp() {
   if (ledger::reconcile_time > 0) {
-    state_->reconcileStamp_ = braveledger_bat_helper::currentTime() +
+    state_->reconcile_timestamp = braveledger_bat_helper::currentTime() +
                                 ledger::reconcile_time * 60;
   } else {
-    state_->reconcileStamp_ = braveledger_bat_helper::currentTime() +
+    state_->reconcile_timestamp = braveledger_bat_helper::currentTime() +
                                 braveledger_ledger::_reconcile_default_interval;
   }
   SaveState();
 }
 
 bool BatState::IsWalletCreated() const {
-  return state_->bootStamp_ != 0u;
+  return state_->boot_timestamp != 0u;
 }
 
 const std::string& BatState::GetPaymentId() const {
-  return state_->walletInfo_.paymentId_;
+  return state_->wallet_info.payment_id;
 }
 
 const std::string& BatState::GetPersonaId() const {
-  return state_->personaId_;
+  return state_->persona_id;
 }
 
 void BatState::SetPersonaId(const std::string& persona_id) {
-  state_->personaId_ = persona_id;
+  state_->persona_id = persona_id;
   SaveState();
 }
 
 const std::string& BatState::GetUserId() const {
-  return state_->userId_;
+  return state_->user_id;
 }
 
 void BatState::SetUserId(const std::string& user_id) {
-  state_->userId_ = user_id;
+  state_->user_id = user_id;
   SaveState();
 }
 
 const std::string& BatState::GetRegistrarVK() const {
-  return state_->registrarVK_;
+  return state_->registrar_vk;
 }
 
 void BatState::SetRegistrarVK(const std::string& registrar_vk) {
-  state_->registrarVK_ = registrar_vk;
+  state_->registrar_vk = registrar_vk;
   SaveState();
 }
 
 const std::string& BatState::GetPreFlight() const {
-  return state_->preFlight_;
+  return state_->pre_flight;
 }
 
 void BatState::SetPreFlight(const std::string& pre_flight) {
-  state_->preFlight_ = pre_flight;
+  state_->pre_flight = pre_flight;
   SaveState();
 }
 
-const braveledger_bat_helper::WALLET_INFO_ST& BatState::GetWalletInfo() const {
-  return state_->walletInfo_;
+const ledger::WalletInfoProperties& BatState::GetWalletInfo() const {
+  return state_->wallet_info;
 }
 
 void BatState::SetWalletInfo(
-    const braveledger_bat_helper::WALLET_INFO_ST& wallet_info) {
-  state_->walletInfo_ = wallet_info;
+    const ledger::WalletInfoProperties& wallet_info) {
+  state_->wallet_info = wallet_info;
   SaveState();
 }
 
-const braveledger_bat_helper::WALLET_PROPERTIES_ST&
-BatState::GetWalletProperties() const {
-  return state_->walletProperties_;
+const ledger::WalletProperties& BatState::GetWalletProperties() const {
+  return state_->wallet;
 }
 
 void BatState::SetWalletProperties(
-    braveledger_bat_helper::WALLET_PROPERTIES_ST* properties) {
+    ledger::WalletProperties* properties) {
   double amount = GetContributionAmount();
-  double new_amount = properties->fee_amount_;
+  double new_amount = properties->fee_amount;
   bool amount_changed = GetUserChangedContribution();
   if (amount_changed) {
-    auto hasAmount = std::find(properties->parameters_choices_.begin(),
-                               properties->parameters_choices_.end(),
+    auto hasAmount = std::find(properties->parameters_choices.begin(),
+                               properties->parameters_choices.end(),
                                amount);
 
-    if (hasAmount == properties->parameters_choices_.end()) {
+    if (hasAmount == properties->parameters_choices.end()) {
       // amount is missing in the list
-      properties->parameters_choices_.push_back(amount);
-      std::sort(properties->parameters_choices_.begin(),
-                properties->parameters_choices_.end());
+      properties->parameters_choices.push_back(amount);
+      std::sort(properties->parameters_choices.begin(),
+                properties->parameters_choices.end());
     }
   }
 
-  state_->walletProperties_ = *properties;
+  state_->wallet = *properties;
 
   if (!amount_changed && amount != new_amount) {
     SetContributionAmount(new_amount);
@@ -255,110 +255,109 @@ void BatState::SetWalletProperties(
 }
 
 unsigned int BatState::GetDays() const {
-  return state_->days_;
+  return state_->days;
 }
 
 void BatState::SetDays(unsigned int days) {
-  state_->days_ = days;
+  state_->days = days;
   SaveState();
 }
 
-const braveledger_bat_helper::Transactions& BatState::GetTransactions() const {
-  return state_->transactions_;
+const ledger::Transactions& BatState::GetTransactions() const {
+  return state_->transactions;
 }
 
 void BatState::SetTransactions(
-    const braveledger_bat_helper::Transactions& transactions) {
-  state_->transactions_ = transactions;
+    const ledger::Transactions& transactions) {
+  state_->transactions = transactions;
   SaveState();
 }
 
-const braveledger_bat_helper::Ballots& BatState::GetBallots() const {
-  return state_->ballots_;
+const ledger::Ballots& BatState::GetBallots() const {
+  return state_->ballots;
 }
 
-void BatState::SetBallots(const braveledger_bat_helper::Ballots& ballots) {
-  state_->ballots_ = ballots;
+void BatState::SetBallots(const ledger::Ballots& ballots) {
+  state_->ballots = ballots;
   SaveState();
 }
 
-const braveledger_bat_helper::BatchVotes& BatState::GetBatch() const {
-  return state_->batch_;
+const ledger::PublisherVotes& BatState::GetPublisherVotes() const {
+  return state_->publisher_votes;
 }
 
-void BatState::SetBatch(const braveledger_bat_helper::BatchVotes& votes) {
-  state_->batch_ = votes;
+void BatState::SetPublisherVotes(
+    const ledger::PublisherVotes& publisher_votes) {
+  state_->publisher_votes = publisher_votes;
   SaveState();
 }
 
 const std::string& BatState::GetCurrency() const {
-  return state_->fee_currency_;
+  return state_->fee_currency;
 }
 
 void BatState::SetCurrency(const std::string &currency) {
-  state_->fee_currency_ = currency;
+  state_->fee_currency = currency;
   SaveState();
 }
 
 uint64_t BatState::GetBootStamp() const {
-  return state_->bootStamp_;
+  return state_->boot_timestamp;
 }
 
 void BatState::SetBootStamp(uint64_t stamp) {
-  state_->bootStamp_ = stamp;
+  state_->boot_timestamp = stamp;
   SaveState();
 }
 
 const std::string& BatState::GetMasterUserToken() const {
-  return state_->masterUserToken_;
+  return state_->master_user_token;
 }
 
 void BatState::SetMasterUserToken(const std::string &token) {
-  state_->masterUserToken_ = token;
+  state_->master_user_token = token;
   SaveState();
 }
 
 bool BatState::AddReconcileStep(const std::string& viewing_id,
                                 ledger::ContributionRetry step,
                                 int level) {
-  braveledger_bat_helper::CURRENT_RECONCILE reconcile =
-      GetReconcileById(viewing_id);
+  ledger::CurrentReconcileProperties reconcile = GetReconcileById(viewing_id);
 
-  if (reconcile.viewingId_.empty()) {
+  if (reconcile.viewing_id.empty()) {
     return false;
   }
 
   // don't save step when you are already in the same step
-  if (reconcile.retry_step_ == step && level == -1) {
+  if (reconcile.retry_step == step && level == -1) {
     return true;
   }
 
-  reconcile.retry_step_ = step;
-  reconcile.retry_level_ = level;
+  reconcile.retry_step = step;
+  reconcile.retry_level = level;
 
   return UpdateReconcile(reconcile);
 }
 
-const braveledger_bat_helper::CurrentReconciles&
-BatState::GetCurrentReconciles() const {
-  return state_->current_reconciles_;
+const ledger::CurrentReconciles& BatState::GetCurrentReconciles() const {
+  return state_->current_reconciles;
 }
 
 double BatState::GetDefaultContributionAmount() {
-  return state_->walletProperties_.fee_amount_;
+  return state_->wallet.fee_amount;
 }
 
 void BatState::SetInlineTipSetting(const std::string& key, bool enabled) {
-  state_->inline_tip_[key] = enabled;
+  state_->inline_tips[key] = enabled;
   SaveState();
 }
 
 bool BatState::GetInlineTipSetting(const std::string& key) const {
-  if (state_->inline_tip_.find(key) == state_->inline_tip_.end()) {
+  if (state_->inline_tips.find(key) == state_->inline_tips.end()) {
     // not found, all tips are on by default
     return true;
   } else {
-    return state_->inline_tip_[key];
+    return state_->inline_tips[key];
   }
 }
 

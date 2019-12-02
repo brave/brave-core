@@ -9,11 +9,11 @@
 
 #include "base/json/json_reader.h"
 #include "base/time/time.h"
-#include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/publisher/publisher_server_list.h"
 #include "bat/ledger/internal/state_keys.h"
 #include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/option_keys.h"
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"

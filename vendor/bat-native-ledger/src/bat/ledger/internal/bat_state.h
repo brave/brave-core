@@ -11,7 +11,12 @@
 #include <string>
 
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/properties/ballot_properties.h"
+#include "bat/ledger/internal/properties/publisher_votes_properties.h"
+#include "bat/ledger/internal/properties/client_properties.h"
+#include "bat/ledger/internal/properties/current_reconcile_properties.h"
+#include "bat/ledger/internal/properties/transaction_properties.h"
+#include "bat/ledger/internal/properties/wallet_info_properties.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -28,12 +33,12 @@ class BatState {
 
   void AddReconcile(
       const std::string& viewing_id,
-      const braveledger_bat_helper::CURRENT_RECONCILE& reconcile);
+      const ledger::CurrentReconcileProperties& reconcile);
 
   bool UpdateReconcile(
-      const braveledger_bat_helper::CURRENT_RECONCILE& reconcile);
+      const ledger::CurrentReconcileProperties& reconcile);
 
-  braveledger_bat_helper::CURRENT_RECONCILE GetReconcileById(
+  ledger::CurrentReconcileProperties GetReconcileById(
       const std::string& viewingId) const;
 
   void RemoveReconcileById(const std::string& viewingId);
@@ -82,32 +87,32 @@ class BatState {
 
   void SetPreFlight(const std::string& pre_flight);
 
-  const braveledger_bat_helper::WALLET_INFO_ST& GetWalletInfo() const;
+  const ledger::WalletInfoProperties& GetWalletInfo() const;
 
-  void SetWalletInfo(const braveledger_bat_helper::WALLET_INFO_ST& info);
+  void SetWalletInfo(const ledger::WalletInfoProperties& info);
 
-  const braveledger_bat_helper::WALLET_PROPERTIES_ST&
-  GetWalletProperties() const;
+  const ledger::WalletProperties& GetWalletProperties() const;
 
   void SetWalletProperties(
-      braveledger_bat_helper::WALLET_PROPERTIES_ST* properties);
+      ledger::WalletProperties* properties);
 
   unsigned int GetDays() const;
 
   void SetDays(unsigned int days);
 
-  const braveledger_bat_helper::Transactions& GetTransactions() const;
+  const ledger::Transactions& GetTransactions() const;
 
   void SetTransactions(
-      const braveledger_bat_helper::Transactions& transactions);
+      const ledger::Transactions& transactions);
 
-  const braveledger_bat_helper::Ballots& GetBallots() const;
+  const ledger::Ballots& GetBallots() const;
 
-  void SetBallots(const braveledger_bat_helper::Ballots& ballots);
+  void SetBallots(const ledger::Ballots& ballots);
 
-  const braveledger_bat_helper::BatchVotes& GetBatch() const;
+  const ledger::PublisherVotes& GetPublisherVotes() const;
 
-  void SetBatch(const braveledger_bat_helper::BatchVotes& votes);
+  void SetPublisherVotes(
+      const ledger::PublisherVotes& publisher_votes);
 
   const std::string& GetCurrency() const;
 
@@ -125,7 +130,7 @@ class BatState {
                         ledger::ContributionRetry step,
                         int level);
 
-  const braveledger_bat_helper::CurrentReconciles& GetCurrentReconciles() const;
+  const ledger::CurrentReconciles& GetCurrentReconciles() const;
 
   double GetDefaultContributionAmount();
 
@@ -137,7 +142,7 @@ class BatState {
   void SaveState();
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<braveledger_bat_helper::CLIENT_STATE_ST> state_;
+  std::unique_ptr<ledger::ClientProperties> state_;
 };
 
 }  // namespace braveledger_bat_state

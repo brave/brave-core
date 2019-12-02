@@ -9,8 +9,16 @@
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/properties/ballot_properties.h"
+#include "bat/ledger/internal/properties/batch_proof_properties.h"
+#include "bat/ledger/internal/properties/reconcile_direction_properties.h"
+#include "bat/ledger/internal/properties/transaction_ballot_properties.h"
+#include "bat/ledger/internal/properties/transaction_properties.h"
+#include "bat/ledger/internal/properties/winner_properties.h"
+#include "bat/ledger/internal/state/publisher_vote_state.h"
+#include "bat/ledger/internal/state/surveyor_state.h"
 #include "brave_base/random.h"
 #include "net/http/http_status_code.h"
 
@@ -44,20 +52,20 @@ void PhaseTwo::Start(const std::string& viewing_id) {
   unsigned int ballots_count = GetBallotsCount(viewing_id);
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
 
-  switch (reconcile.type_) {
+  switch (reconcile.type) {
     case ledger::RewardsType::AUTO_CONTRIBUTE: {
-      GetContributeWinners(ballots_count, viewing_id, reconcile.directions_);
+      GetContributeWinners(ballots_count, viewing_id, reconcile.directions);
       break;
     }
 
     case ledger::RewardsType::RECURRING_TIP:
     case ledger::RewardsType::ONE_TIME_TIP: {
-      braveledger_bat_helper::WINNERS_ST winner;
-      winner.votes_ = ballots_count;
-      winner.direction_.publisher_key_ =
-          reconcile.directions_.front().publisher_key_;
-      winner.direction_.amount_percent_ = 100.0;
-      VotePublishers(braveledger_bat_helper::Winners { winner }, viewing_id);
+      ledger::WinnerProperties winner;
+      winner.vote_count = ballots_count;
+      winner.direction.publisher_key =
+          reconcile.directions.front().publisher_key;
+      winner.direction.amount_percent = 100.0;
+      VotePublishers(ledger::Winners { winner }, viewing_id);
       break;
     }
 
@@ -70,12 +78,11 @@ void PhaseTwo::Start(const std::string& viewing_id) {
 unsigned int PhaseTwo::GetBallotsCount(
     const std::string& viewing_id) {
   unsigned int count = 0;
-  braveledger_bat_helper::Transactions transactions =
-      ledger_->GetTransactions();
+  ledger::Transactions transactions = ledger_->GetTransactions();
   for (size_t i = 0; i < transactions.size(); i++) {
-    if (transactions[i].votes_ < transactions[i].surveyorIds_.size()
-        && transactions[i].viewingId_ == viewing_id) {
-      count += transactions[i].surveyorIds_.size() - transactions[i].votes_;
+    if (transactions[i].vote_count < transactions[i].surveyor_ids.size()
+        && transactions[i].viewing_id == viewing_id) {
+      count += transactions[i].surveyor_ids.size() - transactions[i].vote_count;
     }
   }
 
@@ -84,16 +91,16 @@ unsigned int PhaseTwo::GetBallotsCount(
 
 bool PhaseTwo::GetStatisticalVotingWinner(
     double dart,
-    const braveledger_bat_helper::Directions& directions,
-    braveledger_bat_helper::WINNERS_ST* winner) {
+    const ledger::ReconcileDirections& directions,
+    ledger::WinnerProperties* winner) {
   double upper = 0.0;
-  for (const auto& item : directions) {
-    upper += item.amount_percent_ / 100.0;
+  for (const auto& direction : directions) {
+    upper += direction.amount_percent / 100.0;
     if (upper < dart)
       continue;
 
-    winner->votes_ = 1;
-    winner->direction_ = item;
+    winner->vote_count = 1;
+    winner->direction = direction;
 
     return true;
   }
@@ -101,14 +108,14 @@ bool PhaseTwo::GetStatisticalVotingWinner(
   return false;
 }
 
-braveledger_bat_helper::Winners PhaseTwo::GetStatisticalVotingWinners(
+ledger::Winners PhaseTwo::GetStatisticalVotingWinners(
     uint32_t total_votes,
-    const braveledger_bat_helper::Directions& directions) {
-  braveledger_bat_helper::Winners winners;
+    const ledger::ReconcileDirections& directions) {
+  ledger::Winners winners;
 
   while (total_votes > 0) {
     double dart = brave_base::random::Uniform_01();
-    braveledger_bat_helper::WINNERS_ST winner;
+    ledger::WinnerProperties winner;
     if (GetStatisticalVotingWinner(dart, directions, &winner)) {
       winners.push_back(winner);
       --total_votes;
@@ -121,19 +128,18 @@ braveledger_bat_helper::Winners PhaseTwo::GetStatisticalVotingWinners(
 void PhaseTwo::GetContributeWinners(
     const unsigned int ballots,
     const std::string& viewing_id,
-    const braveledger_bat_helper::Directions& directions) {
-  braveledger_bat_helper::Winners winners =
-      GetStatisticalVotingWinners(ballots, directions);
+    const ledger::ReconcileDirections& directions) {
+  ledger::Winners winners = GetStatisticalVotingWinners(ballots, directions);
   VotePublishers(winners, viewing_id);
 }
 
 void PhaseTwo::VotePublishers(
-    const braveledger_bat_helper::Winners& winners,
+    const ledger::Winners& winners,
     const std::string& viewing_id) {
   std::vector<std::string> publishers;
   for (size_t i = 0; i < winners.size(); i++) {
-    for (size_t j = 0; j < winners[i].votes_; j++) {
-      publishers.push_back(winners[i].direction_.publisher_key_);
+    for (size_t j = 0; j < winners[i].vote_count; j++) {
+      publishers.push_back(winners[i].direction.publisher_key);
     }
   }
 
@@ -154,11 +160,10 @@ void PhaseTwo::VotePublisher(const std::string& publisher,
     return;
   }
 
-  braveledger_bat_helper::BALLOT_ST ballot;
+  ledger::BallotProperties ballot;
   int i = 0;
 
-  braveledger_bat_helper::Transactions transactions =
-      ledger_->GetTransactions();
+  ledger::Transactions transactions = ledger_->GetTransactions();
 
   if (transactions.size() == 0) {
     // TODO(nejczdovc) what should we do in this case?
@@ -166,11 +171,11 @@ void PhaseTwo::VotePublisher(const std::string& publisher,
   }
 
   for (i = transactions.size() - 1; i >=0; i--) {
-    if (transactions[i].votes_ >= transactions[i].surveyorIds_.size()) {
+    if (transactions[i].vote_count >= transactions[i].surveyor_ids.size()) {
       continue;
     }
 
-    if (transactions[i].viewingId_ == viewing_id || viewing_id.empty()) {
+    if (transactions[i].viewing_id == viewing_id || viewing_id.empty()) {
       break;
     }
   }
@@ -181,13 +186,13 @@ void PhaseTwo::VotePublisher(const std::string& publisher,
     return;
   }
 
-  ballot.viewingId_ = transactions[i].viewingId_;
-  ballot.surveyorId_ = transactions[i].surveyorIds_[transactions[i].votes_];
-  ballot.publisher_ = publisher;
-  ballot.offset_ = transactions[i].votes_;
-  transactions[i].votes_++;
+  ballot.viewing_id = transactions[i].viewing_id;
+  ballot.surveyor_id = transactions[i].surveyor_ids[transactions[i].vote_count];
+  ballot.publisher = publisher;
+  ballot.count = transactions[i].vote_count;
+  transactions[i].vote_count++;
 
-  braveledger_bat_helper::Ballots ballots = ledger_->GetBallots();
+  ledger::Ballots ballots = ledger_->GetBallots();
   ballots.push_back(ballot);
 
   ledger_->SetTransactions(transactions);
@@ -195,9 +200,8 @@ void PhaseTwo::VotePublisher(const std::string& publisher,
 }
 
 void PhaseTwo::PrepareBallots() {
-  braveledger_bat_helper::Transactions transactions =
-      ledger_->GetTransactions();
-  braveledger_bat_helper::Ballots ballots = ledger_->GetBallots();
+  ledger::Transactions transactions = ledger_->GetTransactions();
+  ledger::Ballots ballots = ledger_->GetBallots();
 
   if (ballots.size() == 0) {
     // skip ballots and start sending votes
@@ -207,13 +211,13 @@ void PhaseTwo::PrepareBallots() {
 
   for (int i = ballots.size() - 1; i >= 0; i--) {
     for (size_t j = 0; j < transactions.size(); j++) {
-      if (transactions[j].viewingId_ == ballots[i].viewingId_) {
-        if (ballots[i].prepareBallot_.empty()) {
+      if (transactions[j].viewing_id == ballots[i].viewing_id) {
+        if (ballots[i].prepare_ballot.empty()) {
           PrepareBatch(ballots[i], transactions[j]);
           return;
         }
 
-        if (ballots[i].proofBallot_.empty()) {
+        if (ballots[i].proof_ballot.empty()) {
           Proof();
           return;
         }
@@ -226,16 +230,16 @@ void PhaseTwo::PrepareBallots() {
 }
 
 void PhaseTwo::PrepareBatch(
-    const braveledger_bat_helper::BALLOT_ST& ballot,
-    const braveledger_bat_helper::TRANSACTION_ST& transaction) {
+    const ledger::BallotProperties& ballot,
+    const ledger::TransactionProperties& transaction) {
   std::string url = braveledger_request_util::BuildUrl(
       (std::string)SURVEYOR_BATCH_VOTING +
       "/" +
-      transaction.anonizeViewingId_, PREFIX_V2);
+      transaction.anonize_viewing_id, PREFIX_V2);
 
   auto callback = std::bind(&PhaseTwo::PrepareBatchCallback,
                             this,
-                            transaction.viewingId_,
+                            transaction.viewing_id,
                             _1,
                             _2,
                             _3);
@@ -250,7 +254,7 @@ void PhaseTwo::PrepareBatch(
 void PhaseTwo::AssignPrepareBallots(
     const std::string& viewing_id,
     const std::vector<std::string>& surveyors,
-    braveledger_bat_helper::Ballots* ballots) {
+    ledger::Ballots* ballots) {
   for (size_t j = 0; j < surveyors.size(); j++) {
     std::string error;
     braveledger_bat_helper::getJSONValue("error", surveyors[j], &error);
@@ -269,9 +273,9 @@ void PhaseTwo::AssignPrepareBallots(
     }
 
     for (auto& ballot : *ballots) {
-      if (ballot.surveyorId_ == surveyor_id &&
-          ballot.viewingId_ == viewing_id) {
-        ballot.prepareBallot_ = surveyors[j];
+      if (ballot.surveyor_id == surveyor_id &&
+          ballot.viewing_id == viewing_id) {
+        ballot.prepare_ballot = surveyors[j];
       }
     }
   }
@@ -297,7 +301,7 @@ void PhaseTwo::PrepareBatchCallback(
     return;
   }
 
-  braveledger_bat_helper::Ballots ballots = ledger_->GetBallots();
+  ledger::Ballots ballots = ledger_->GetBallots();
 
   AssignPrepareBallots(viewing_id, surveyors, &ballots);
 
@@ -306,25 +310,24 @@ void PhaseTwo::PrepareBatchCallback(
 }
 
 void PhaseTwo::Proof() {
-  braveledger_bat_helper::BatchProofs batch_proofs;
+  ledger::BatchProofs batch_proofs;
 
-  braveledger_bat_helper::Transactions transactions =
-    ledger_->GetTransactions();
-  braveledger_bat_helper::Ballots ballots = ledger_->GetBallots();
+  ledger::Transactions transactions = ledger_->GetTransactions();
+  ledger::Ballots ballots = ledger_->GetBallots();
 
   for (int i = ballots.size() - 1; i >= 0; i--) {
     for (size_t k = 0; k < transactions.size(); k++) {
-      if (transactions[k].viewingId_ == ballots[i].viewingId_) {
-        if (ballots[i].prepareBallot_.empty()) {
+      if (transactions[k].viewing_id == ballots[i].viewing_id) {
+        if (ballots[i].prepare_ballot.empty()) {
           // TODO(nejczdovc) what should we do here
           return;
         }
 
-        if (ballots[i].proofBallot_.empty()) {
-          braveledger_bat_helper::BATCH_PROOF batch_proof_el;
-          batch_proof_el.transaction_ = transactions[k];
-          batch_proof_el.ballot_ = ballots[i];
-          batch_proofs.push_back(batch_proof_el);
+        if (ballots[i].proof_ballot.empty()) {
+          ledger::BatchProofProperties batch_proof;
+          batch_proof.transaction = transactions[k];
+          batch_proof.ballot = ballots[i];
+          batch_proofs.push_back(batch_proof);
         }
       }
     }
@@ -352,27 +355,27 @@ void PhaseTwo::Proof() {
 }
 
 std::vector<std::string> PhaseTwo::ProofBatch(
-    const braveledger_bat_helper::BatchProofs& batch_proofs) {
+    const ledger::BatchProofs& batch_proofs) {
   std::vector<std::string> proofs;
 
   for (size_t i = 0; i < batch_proofs.size(); i++) {
-    braveledger_bat_helper::SURVEYOR_ST surveyor;
-    bool success = braveledger_bat_helper::loadFromJson(
-        &surveyor,
-        batch_proofs[i].ballot_.prepareBallot_);
+    ledger::SurveyorProperties surveyor;
+    const ledger::SurveyorState surveyor_state;
+    bool success = surveyor_state.FromJson(
+        batch_proofs[i].ballot.prepare_ballot, &surveyor);
 
     if (!success) {
       BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
         "Failed to load surveyor state: " <<
-        batch_proofs[i].ballot_.prepareBallot_;
+            batch_proofs[i].ballot.prepare_ballot;
       continue;
     }
 
     std::string signature_to_send;
-    size_t delimeter_pos = surveyor.signature_.find(',');
+    size_t delimeter_pos = surveyor.signature.find(',');
     if (std::string::npos != delimeter_pos &&
-        delimeter_pos + 1 <= surveyor.signature_.length()) {
-      signature_to_send = surveyor.signature_.substr(delimeter_pos + 1);
+        delimeter_pos + 1 <= surveyor.signature.length()) {
+      signature_to_send = surveyor.signature.substr(delimeter_pos + 1);
 
       if (signature_to_send.length() > 1 && signature_to_send[0] == ' ') {
         signature_to_send.erase(0, 1);
@@ -384,16 +387,16 @@ std::vector<std::string> PhaseTwo::ProofBatch(
     }
 
     std::string msg_key[1] = {"publisher"};
-    std::string msg_value[1] = {batch_proofs[i].ballot_.publisher_};
+    std::string msg_value[1] = {batch_proofs[i].ballot.publisher};
     std::string msg = braveledger_bat_helper::stringify(msg_key, msg_value, 1);
 
     const char* proof = submitMessage(
         msg.c_str(),
-        batch_proofs[i].transaction_.masterUserToken_.c_str(),
-        batch_proofs[i].transaction_.registrarVK_.c_str(),
+        batch_proofs[i].transaction.master_user_token.c_str(),
+        batch_proofs[i].transaction.registrar_vk.c_str(),
         signature_to_send.c_str(),
-        surveyor.surveyorId_.c_str(),
-        surveyor.surveyVK_.c_str());
+        surveyor.surveyor_id.c_str(),
+        surveyor.survey_vk.c_str());
 
     std::string annon_proof;
     if (proof != nullptr) {
@@ -410,23 +413,23 @@ std::vector<std::string> PhaseTwo::ProofBatch(
 }
 
 void PhaseTwo::AssignProofs(
-    const braveledger_bat_helper::BatchProofs& batch_proofs,
+    const ledger::BatchProofs& batch_proofs,
     const std::vector<std::string>& proofs,
-    braveledger_bat_helper::Ballots* ballots) {
+    ledger::Ballots* ballots) {
   for (size_t i = 0; i < batch_proofs.size(); i++) {
     for (auto& ballot : *ballots) {
-      if (ballot.surveyorId_ == batch_proofs[i].ballot_.surveyorId_ &&
-          ballot.viewingId_ == batch_proofs[i].ballot_.viewingId_) {
-        ballot.proofBallot_ = proofs[i];
+      if (ballot.surveyor_id == batch_proofs[i].ballot.surveyor_id &&
+          ballot.viewing_id == batch_proofs[i].ballot.viewing_id) {
+        ballot.proof_ballot = proofs[i];
       }
     }
   }
 }
 
 void PhaseTwo::ProofBatchCallback(
-    const braveledger_bat_helper::BatchProofs& batch_proofs,
+    const ledger::BatchProofs& batch_proofs,
     const std::vector<std::string>& proofs) {
-  braveledger_bat_helper::Ballots ballots = ledger_->GetBallots();
+  ledger::Ballots ballots = ledger_->GetBallots();
 
   AssignProofs(batch_proofs, proofs, &ballots);
 
@@ -441,10 +444,9 @@ void PhaseTwo::ProofBatchCallback(
 }
 
 void PhaseTwo::PrepareVoteBatch() {
-  braveledger_bat_helper::Transactions transactions =
-      ledger_->GetTransactions();
-  braveledger_bat_helper::Ballots ballots = ledger_->GetBallots();
-  braveledger_bat_helper::BatchVotes batch = ledger_->GetBatch();
+  ledger::Transactions transactions = ledger_->GetTransactions();
+  ledger::Ballots ballots = ledger_->GetBallots();
+  ledger::PublisherVotes publisher_votes = ledger_->GetPublisherVotes();
 
   if (ballots.size() == 0) {
     contribution_->SetTimer(&last_vote_batch_timer_id_);
@@ -452,28 +454,30 @@ void PhaseTwo::PrepareVoteBatch() {
   }
 
   for (int i = ballots.size() - 1; i >= 0; i--) {
-    if (ballots[i].prepareBallot_.empty() || ballots[i].proofBallot_.empty()) {
+    if (ballots[i].prepare_ballot.empty() || ballots[i].proof_ballot.empty()) {
       // TODO(nejczdovc) what to do in this case
       continue;
     }
 
     bool transaction_exit = false;
     for (size_t k = 0; k < transactions.size(); k++) {
-      if (transactions[k].viewingId_ == ballots[i].viewingId_) {
+      if (transactions[k].viewing_id == ballots[i].viewing_id) {
         bool ballot_exit = false;
-        for (size_t j = 0; j < transactions[k].ballots_.size(); j++) {
-          if (transactions[k].ballots_[j].publisher_ == ballots[i].publisher_) {
-            transactions[k].ballots_[j].offset_++;
+        for (size_t j = 0; j < transactions[k].transaction_ballots.size();
+            j++) {
+          if (transactions[k].transaction_ballots[j].publisher ==
+              ballots[i].publisher) {
+            transactions[k].transaction_ballots[j].count++;
             ballot_exit = true;
             break;
           }
         }
 
         if (!ballot_exit) {
-          braveledger_bat_helper::TRANSACTION_BALLOT_ST transactionBallot;
-          transactionBallot.publisher_ = ballots[i].publisher_;
-          transactionBallot.offset_++;
-          transactions[k].ballots_.push_back(transactionBallot);
+          ledger::TransactionBallotProperties transactionBallot;
+          transactionBallot.publisher = ballots[i].publisher;
+          transactionBallot.count++;
+          transactions[k].transaction_ballots.push_back(transactionBallot);
         }
         transaction_exit = true;
         break;
@@ -486,22 +490,22 @@ void PhaseTwo::PrepareVoteBatch() {
     }
 
     bool exist_batch = false;
-    braveledger_bat_helper::BATCH_VOTES_INFO_ST batchVotesInfoSt;
-    batchVotesInfoSt.surveyorId_ = ballots[i].surveyorId_;
-    batchVotesInfoSt.proof_ = ballots[i].proofBallot_;
+    ledger::PublisherVoteProperties publisher_vote;
+    publisher_vote.surveyor_id = ballots[i].surveyor_id;
+    publisher_vote.proof = ballots[i].proof_ballot;
 
-    for (size_t k = 0; k < batch.size(); k++) {
-      if (batch[k].publisher_ == ballots[i].publisher_) {
+    for (size_t k = 0; k < publisher_votes.size(); k++) {
+      if (publisher_votes[k].publisher == ballots[i].publisher) {
         exist_batch = true;
-        batch[k].batchVotesInfo_.push_back(batchVotesInfoSt);
+        publisher_votes[k].batch_votes.push_back(publisher_vote);
       }
     }
 
     if (!exist_batch) {
-      braveledger_bat_helper::BATCH_VOTES_ST batchVotesSt;
-      batchVotesSt.publisher_ = ballots[i].publisher_;
-      batchVotesSt.batchVotesInfo_.push_back(batchVotesInfoSt);
-      batch.push_back(batchVotesSt);
+      ledger::PublisherVotesProperties new_publisher_votes;
+      new_publisher_votes.publisher = ballots[i].publisher;
+      new_publisher_votes.batch_votes.push_back(publisher_vote);
+      publisher_votes.push_back(new_publisher_votes);
     }
 
     ballots.erase(ballots.begin() + i);
@@ -509,34 +513,36 @@ void PhaseTwo::PrepareVoteBatch() {
 
   ledger_->SetTransactions(transactions);
   ledger_->SetBallots(ballots);
-  ledger_->SetBatch(batch);
+  ledger_->SetPublisherVotes(publisher_votes);
   contribution_->SetTimer(&last_vote_batch_timer_id_);
 }
 
 void PhaseTwo::VoteBatch() {
-  braveledger_bat_helper::BatchVotes batch = ledger_->GetBatch();
-  if (batch.size() == 0) {
+  ledger::PublisherVotes publisher_votes = ledger_->GetPublisherVotes();
+  if (publisher_votes.size() == 0) {
     return;
   }
 
-  braveledger_bat_helper::BATCH_VOTES_ST batch_votes = batch[0];
-  std::vector<braveledger_bat_helper::BATCH_VOTES_INFO_ST> vote_batch;
+  ledger::PublisherVotesProperties publisher_votes_properties =
+      publisher_votes[0];
+  ledger::BatchVotes batch_votes;
 
-  if (batch_votes.batchVotesInfo_.size() > VOTE_BATCH_SIZE) {
-    vote_batch.assign(batch_votes.batchVotesInfo_.begin(),
-                     batch_votes.batchVotesInfo_.begin() + VOTE_BATCH_SIZE);
+  if (publisher_votes_properties.batch_votes.size() > VOTE_BATCH_SIZE) {
+    batch_votes.assign(publisher_votes_properties.batch_votes.begin(),
+        publisher_votes_properties.batch_votes.begin() + VOTE_BATCH_SIZE);
   } else {
-    vote_batch = batch_votes.batchVotesInfo_;
+    batch_votes = publisher_votes_properties.batch_votes;
   }
 
-  std::string payload = braveledger_bat_helper::stringifyBatch(vote_batch);
+  const ledger::PublisherVoteState publisher_vote_state;
+  std::string payload = publisher_vote_state.ToJson(batch_votes);
 
   std::string url = braveledger_request_util::BuildUrl(
-      (std::string)SURVEYOR_BATCH_VOTING ,
-      PREFIX_V2);
+      (std::string)SURVEYOR_BATCH_VOTING,
+          PREFIX_V2);
   auto callback = std::bind(&PhaseTwo::VoteBatchCallback,
                             this,
-                            batch_votes.publisher_,
+                            publisher_votes_properties.publisher,
                             _1,
                             _2,
                             _3);
@@ -568,13 +574,13 @@ void PhaseTwo::VoteBatchCallback(
     return;
   }
 
-  braveledger_bat_helper::BatchVotes batch = ledger_->GetBatch();
+  ledger::PublisherVotes publisher_votes = ledger_->GetPublisherVotes();
 
-  for (size_t i = 0; i < batch.size(); i++) {
-    if (batch[i].publisher_ == publisher) {
+  for (size_t i = 0; i < publisher_votes.size(); i++) {
+    if (publisher_votes[i].publisher == publisher) {
       size_t sizeToCheck = VOTE_BATCH_SIZE;
-      if (batch[i].batchVotesInfo_.size() < VOTE_BATCH_SIZE) {
-        sizeToCheck = batch[i].batchVotesInfo_.size();
+      if (publisher_votes[i].batch_votes.size() < VOTE_BATCH_SIZE) {
+        sizeToCheck = publisher_votes[i].batch_votes.size();
       }
 
       for (int j = sizeToCheck - 1; j >= 0; j--) {
@@ -588,24 +594,24 @@ void PhaseTwo::VoteBatchCallback(
             continue;
           }
 
-          if (surveyor_id == batch[i].batchVotesInfo_[j].surveyorId_) {
-            batch[i].batchVotesInfo_.erase(
-                batch[i].batchVotesInfo_.begin() + j);
+          if (surveyor_id == publisher_votes[i].batch_votes[j].surveyor_id) {
+            publisher_votes[i].batch_votes.erase(
+                publisher_votes[i].batch_votes.begin() + j);
             break;
           }
         }
       }
 
-      if (batch[i].batchVotesInfo_.size() == 0) {
-        batch.erase(batch.begin() + i);
+      if (publisher_votes[i].batch_votes.size() == 0) {
+        publisher_votes.erase(publisher_votes.begin() + i);
       }
       break;
     }
   }
 
-  ledger_->SetBatch(batch);
+  ledger_->SetPublisherVotes(publisher_votes);
 
-  if (batch.size() > 0) {
+  if (publisher_votes.size() > 0) {
     contribution_->SetTimer(&last_vote_batch_timer_id_);
   }
 }

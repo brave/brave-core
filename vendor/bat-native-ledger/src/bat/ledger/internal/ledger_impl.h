@@ -17,12 +17,15 @@
 #include "base/memory/scoped_refptr.h"
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/ledger/internal/contribution/contribution.h"
-#include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/logging.h"
+#include "bat/ledger/internal/properties/ballot_properties.h"
+#include "bat/ledger/internal/properties/publisher_votes_properties.h"
+#include "bat/ledger/internal/properties/transaction_properties.h"
+#include "bat/ledger/internal/properties/wallet_info_properties.h"
 #include "bat/ledger/internal/wallet/wallet.h"
-#include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_client.h"
+#include "bat/ledger/ledger.h"
 
 namespace base {
 class SequencedTaskRunner;
@@ -167,7 +170,7 @@ class LedgerImpl : public ledger::Ledger,
   void LoadNicewareList(ledger::GetNicewareListCallback callback);
 
   void SetConfirmationsWalletInfo(
-      const braveledger_bat_helper::WALLET_INFO_ST& wallet_info);
+      const ledger::WalletInfoProperties& wallet_info);
 
   void LoadLedgerState(ledger::OnLoadCallback callback);
 
@@ -177,7 +180,7 @@ class LedgerImpl : public ledger::Ledger,
                                    ledger::InitializeCallback callback);
 
   void OnWalletProperties(ledger::Result result,
-                          const braveledger_bat_helper::WALLET_PROPERTIES_ST&);
+                          const ledger::WalletProperties&);
 
   void FetchWalletProperties(
       ledger::OnWalletPropertiesCallback callback) const override;
@@ -267,7 +270,7 @@ class LedgerImpl : public ledger::Ledger,
                             ledger::ReportType type,
                             const std::string& probi) override;
 
-  virtual braveledger_bat_helper::CURRENT_RECONCILE GetReconcileById(
+  virtual ledger::CurrentReconcileProperties GetReconcileById(
       const std::string& viewingId);
 
   void RemoveReconcileById(const std::string& viewingId);
@@ -308,11 +311,11 @@ class LedgerImpl : public ledger::Ledger,
   void ResetReconcileStamp();
 
   bool UpdateReconcile(
-    const braveledger_bat_helper::CURRENT_RECONCILE& reconcile);
+      const ledger::CurrentReconcileProperties& reconcile);
 
   void AddReconcile(
       const std::string& viewing_id,
-      const braveledger_bat_helper::CURRENT_RECONCILE& reconcile);
+      const ledger::CurrentReconcileProperties& reconcile);
 
   const std::string& GetPaymentId() const;
 
@@ -332,37 +335,36 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetPreFlight(const std::string& pre_flight);
 
-  const braveledger_bat_helper::WALLET_INFO_ST& GetWalletInfo() const;
+  const ledger::WalletInfoProperties& GetWalletInfo() const;
 
-  void SetWalletInfo(const braveledger_bat_helper::WALLET_INFO_ST& info);
+  void SetWalletInfo(const ledger::WalletInfoProperties& info);
 
   const confirmations::WalletInfo GetConfirmationsWalletInfo(
-      const braveledger_bat_helper::WALLET_INFO_ST& info) const;
+      const ledger::WalletInfoProperties& info) const;
 
-  const braveledger_bat_helper::WALLET_PROPERTIES_ST&
-  GetWalletProperties() const;
+  const ledger::WalletProperties& GetWalletProperties() const;
 
   void SetWalletProperties(
-      braveledger_bat_helper::WALLET_PROPERTIES_ST* properties);
+      ledger::WalletProperties* properties);
 
   unsigned int GetDays() const;
 
   void SetDays(unsigned int days);
 
-  const braveledger_bat_helper::Transactions& GetTransactions() const;
+  const ledger::Transactions& GetTransactions() const;
 
   void SetTransactions(
-      const braveledger_bat_helper::Transactions& transactions);
+      const ledger::Transactions& transactions);
 
-  const braveledger_bat_helper::Ballots& GetBallots() const;
+  const ledger::Ballots& GetBallots() const;
 
   void SetBallots(
-      const braveledger_bat_helper::Ballots& ballots);
+      const ledger::Ballots& ballots);
 
-  const braveledger_bat_helper::BatchVotes& GetBatch() const;
+  const ledger::PublisherVotes& GetPublisherVotes() const;
 
-  void SetBatch(
-      const braveledger_bat_helper::BatchVotes& votes);
+  void SetPublisherVotes(
+      const ledger::PublisherVotes& publisher_votes);
 
   const std::string& GetCurrency() const;
 
@@ -393,7 +395,7 @@ class LedgerImpl : public ledger::Ledger,
                         ledger::ContributionRetry step,
                         int level = -1);
 
-  const braveledger_bat_helper::CurrentReconciles& GetCurrentReconciles() const;
+  const ledger::CurrentReconciles& GetCurrentReconciles() const;
 
   double GetDefaultContributionAmount() override;
 

@@ -10,7 +10,7 @@
 #include "base/json/json_writer.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/properties/wallet_info_properties.h"
 #include "bat/ledger/internal/request/request_util.h"
 #include "net/http/http_status_code.h"
 
@@ -198,10 +198,10 @@ void Create::RequestCredentialsCallback(
     return;
   }
 
-  braveledger_bat_helper::WALLET_INFO_ST wallet_info;
+  ledger::WalletInfoProperties wallet_info;
   std::vector<uint8_t> key_info_seed = braveledger_bat_helper::generateSeed();
 
-  wallet_info.keyInfoSeed_ = key_info_seed;
+  wallet_info.key_info_seed = key_info_seed;
   ledger_->SetWalletInfo(wallet_info);
   std::vector<uint8_t> secretKey =
       braveledger_bat_helper::getHKDF(key_info_seed);
@@ -294,7 +294,7 @@ void Create::RegisterPersonaCallback(
     return;
   }
 
-  braveledger_bat_helper::WALLET_INFO_ST wallet_info = ledger_->GetWalletInfo();
+  ledger::WalletInfoProperties wallet_info = ledger_->GetWalletInfo();
   unsigned int days;
   double fee_amount = .0;
   std::string currency;
