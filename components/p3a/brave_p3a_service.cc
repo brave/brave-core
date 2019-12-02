@@ -207,6 +207,14 @@ std::string BraveP3AService::Serialize(base::StringPiece histogram_name,
   return message.SerializeAsString();
 }
 
+bool
+BraveP3AService::IsActualMetric(base::StringPiece histogram_name) const {
+  static const base::NoDestructor<base::flat_set<base::StringPiece>>
+      metric_names {std::begin(kCollectedHistograms),
+                    std::end(kCollectedHistograms)};
+  return metric_names->contains(histogram_name);
+}
+
 void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
   base::CommandLine* cmdline = base::CommandLine::ForCurrentProcess();
 
