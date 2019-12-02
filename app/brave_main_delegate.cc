@@ -165,6 +165,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   // Disabled features.
   const std::unordered_set<const char*> disabled_features = {
       autofill::features::kAutofillServerCommunication.name,
+      features::kAllowPopupsDuringPageUnload.name,
       features::kAudioServiceOutOfProcess.name,
       features::kLookalikeUrlNavigationSuggestionsUI.name,
       features::kNotificationTriggers.name,
