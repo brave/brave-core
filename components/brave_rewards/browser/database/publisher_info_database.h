@@ -151,6 +151,8 @@ class PublisherInfoDatabase {
   std::string GetSchema();
 
  private:
+  bool IsInitialized();
+
   void OnMemoryPressure(
     base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
 

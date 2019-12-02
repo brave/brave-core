@@ -157,12 +157,7 @@ bool PublisherInfoDatabase::Init() {
  */
 bool PublisherInfoDatabase::InsertOrUpdateContributionInfo(
     ledger::ContributionInfoPtr info) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -173,12 +168,7 @@ void PublisherInfoDatabase::GetOneTimeTips(
     ledger::PublisherInfoList* list,
     const ledger::ActivityMonth month,
     const int year) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return;
   }
 
@@ -193,12 +183,7 @@ void PublisherInfoDatabase::GetOneTimeTips(
 
 bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
     ledger::PublisherInfoPtr info) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -207,12 +192,7 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
 
 ledger::PublisherInfoPtr
 PublisherInfoDatabase::GetPublisherInfo(const std::string& publisher_key) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return nullptr;
   }
 
@@ -222,12 +202,7 @@ PublisherInfoDatabase::GetPublisherInfo(const std::string& publisher_key) {
 ledger::PublisherInfoPtr
 PublisherInfoDatabase::GetPanelPublisher(
     ledger::ActivityInfoFilterPtr filter) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return nullptr;
   }
 
@@ -235,12 +210,7 @@ PublisherInfoDatabase::GetPanelPublisher(
 }
 
 bool PublisherInfoDatabase::RestorePublishers() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -249,12 +219,7 @@ bool PublisherInfoDatabase::RestorePublishers() {
 
 bool PublisherInfoDatabase::GetExcludedList(
     ledger::PublisherInfoList* list) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -268,12 +233,7 @@ bool PublisherInfoDatabase::GetExcludedList(
  */
 bool PublisherInfoDatabase::InsertOrUpdateActivityInfo(
     ledger::PublisherInfoPtr info) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -286,12 +246,7 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfo(
 
 bool PublisherInfoDatabase::InsertOrUpdateActivityInfos(
     ledger::PublisherInfoList list) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -319,12 +274,7 @@ bool PublisherInfoDatabase::GetActivityList(
     int limit,
     ledger::ActivityInfoFilterPtr filter,
     ledger::PublisherInfoList* list) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -339,12 +289,7 @@ bool PublisherInfoDatabase::GetActivityList(
 bool PublisherInfoDatabase::DeleteActivityInfo(
     const std::string& publisher_key,
     uint64_t reconcile_stamp) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -359,12 +304,7 @@ bool PublisherInfoDatabase::DeleteActivityInfo(
 bool PublisherInfoDatabase::InsertOrUpdateMediaPublisherInfo(
     const std::string& media_key,
     const std::string& publisher_key) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -376,12 +316,7 @@ bool PublisherInfoDatabase::InsertOrUpdateMediaPublisherInfo(
 
 ledger::PublisherInfoPtr
 PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return nullptr;
   }
 
@@ -395,12 +330,7 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
  */
 bool PublisherInfoDatabase::InsertOrUpdateRecurringTip(
     ledger::RecurringTipPtr info) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -409,12 +339,7 @@ bool PublisherInfoDatabase::InsertOrUpdateRecurringTip(
 
 void PublisherInfoDatabase::GetRecurringTips(
     ledger::PublisherInfoList* list) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return;
   }
 
@@ -423,12 +348,7 @@ void PublisherInfoDatabase::GetRecurringTips(
 
 bool PublisherInfoDatabase::RemoveRecurringTip(
     const std::string& publisher_key) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -442,12 +362,7 @@ bool PublisherInfoDatabase::RemoveRecurringTip(
  */
 bool PublisherInfoDatabase::InsertPendingContribution(
     ledger::PendingContributionList list) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -455,15 +370,8 @@ bool PublisherInfoDatabase::InsertPendingContribution(
 }
 
 double PublisherInfoDatabase::GetReservedAmount() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  double amount = 0.0;
-
-  if (!initialized) {
-    return amount;
+  if (!IsInitialized()) {
+    return 0.0;
   }
 
   return pending_contribution_->GetReservedAmount(&GetDB());
@@ -471,12 +379,7 @@ double PublisherInfoDatabase::GetReservedAmount() {
 
 void PublisherInfoDatabase::GetPendingContributions(
     ledger::PendingContributionInfoList* list) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return;
   }
 
@@ -487,12 +390,7 @@ bool PublisherInfoDatabase::RemovePendingContributions(
     const std::string& publisher_key,
     const std::string& viewing_id,
     uint64_t added_date) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -504,12 +402,7 @@ bool PublisherInfoDatabase::RemovePendingContributions(
 }
 
 bool PublisherInfoDatabase::RemoveAllPendingContributions() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -523,12 +416,7 @@ bool PublisherInfoDatabase::RemoveAllPendingContributions() {
  */
 bool PublisherInfoDatabase::ClearAndInsertServerPublisherList(
     const ledger::ServerPublisherInfoList& list) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -537,12 +425,7 @@ bool PublisherInfoDatabase::ClearAndInsertServerPublisherList(
 
 ledger::ServerPublisherInfoPtr PublisherInfoDatabase::GetServerPublisherInfo(
     const std::string& publisher_key) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return nullptr;
   }
 
@@ -556,12 +439,7 @@ ledger::ServerPublisherInfoPtr PublisherInfoDatabase::GetServerPublisherInfo(
  */
 bool PublisherInfoDatabase::InsertOrUpdateContributionQueue(
     ledger::ContributionQueuePtr info) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -570,12 +448,7 @@ bool PublisherInfoDatabase::InsertOrUpdateContributionQueue(
 
 ledger::ContributionQueuePtr
 PublisherInfoDatabase::GetFirstContributionQueue() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return nullptr;
   }
 
@@ -583,12 +456,7 @@ PublisherInfoDatabase::GetFirstContributionQueue() {
 }
 
 bool PublisherInfoDatabase::DeleteContributionQueue(const uint64_t id) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -602,12 +470,7 @@ bool PublisherInfoDatabase::DeleteContributionQueue(const uint64_t id) {
  */
 bool PublisherInfoDatabase::InsertOrUpdatePromotion(
     ledger::PromotionPtr info) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -616,12 +479,7 @@ bool PublisherInfoDatabase::InsertOrUpdatePromotion(
 
 ledger::PromotionPtr
 PublisherInfoDatabase::GetPromotion(const std::string& id) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return nullptr;
   }
 
@@ -629,12 +487,7 @@ PublisherInfoDatabase::GetPromotion(const std::string& id) {
 }
 
 ledger::PromotionMap PublisherInfoDatabase::GetAllPromotions() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return {};
   }
 
@@ -648,12 +501,7 @@ ledger::PromotionMap PublisherInfoDatabase::GetAllPromotions() {
  */
 bool PublisherInfoDatabase::InsertOrUpdateUnblindedToken(
     ledger::UnblindedTokenPtr info) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -662,12 +510,7 @@ bool PublisherInfoDatabase::InsertOrUpdateUnblindedToken(
 
 ledger::UnblindedTokenList
 PublisherInfoDatabase::GetAllUnblindedTokens()  {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     ledger::UnblindedTokenList empty_list;
     return empty_list;
   }
@@ -677,12 +520,7 @@ PublisherInfoDatabase::GetAllUnblindedTokens()  {
 
 bool PublisherInfoDatabase::DeleteUnblindedTokens(
     const std::vector<std::string>& id_list) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
+  if (!IsInitialized()) {
     return false;
   }
 
@@ -690,6 +528,13 @@ bool PublisherInfoDatabase::DeleteUnblindedTokens(
 }
 
 // Other -------------------------------------------------------------------
+
+bool PublisherInfoDatabase::IsInitialized() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  bool initialized = Init();
+  DCHECK(initialized);
+  return initialized;
+}
 
 void PublisherInfoDatabase::RecordP3AStats(bool auto_contributions_on) {
   if (!initialized_) {
