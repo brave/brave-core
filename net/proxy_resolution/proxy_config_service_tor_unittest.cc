@@ -20,7 +20,7 @@
 
 namespace net {
 
-class ProxyConfigServiceTorTest : public TestWithScopedTaskEnvironment {
+class ProxyConfigServiceTorTest : public TestWithTaskEnvironment {
  public:
   ProxyConfigServiceTorTest() {}
   ~ProxyConfigServiceTorTest() override {}

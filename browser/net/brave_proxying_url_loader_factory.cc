@@ -19,6 +19,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/common/url_utils.h"
+#include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/public/cpp/system/data_pipe_producer.h"
 #include "mojo/public/cpp/system/string_data_source.h"
 #include "net/base/completion_repeating_callback.h"
@@ -587,7 +588,7 @@ BraveProxyingURLLoaderFactory::BraveProxyingURLLoaderFactory(
     content::BrowserContext* browser_context,
     int render_process_id,
     int frame_tree_node_id,
-    network::mojom::URLLoaderFactoryRequest loader_request,
+    mojo::PendingReceiver<network::mojom::URLLoaderFactory> receiver,
     network::mojom::URLLoaderFactoryPtrInfo target_factory,
     scoped_refptr<RequestIDGenerator> request_id_generator,
     DisconnectCallback on_disconnect)
@@ -599,7 +600,7 @@ BraveProxyingURLLoaderFactory::BraveProxyingURLLoaderFactory(
       disconnect_callback_(std::move(on_disconnect)),
       weak_factory_(this) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  DCHECK(proxy_bindings_.empty());
+  DCHECK(proxy_receivers_.empty());
   DCHECK(!target_factory_.is_bound());
 
   target_factory_.Bind(std::move(target_factory));
@@ -607,8 +608,8 @@ BraveProxyingURLLoaderFactory::BraveProxyingURLLoaderFactory(
       base::BindOnce(&BraveProxyingURLLoaderFactory::OnTargetFactoryError,
                      base::Unretained(this)));
 
-  proxy_bindings_.AddBinding(this, std::move(loader_request));
-  proxy_bindings_.set_connection_error_handler(
+  proxy_receivers_.Add(this, std::move(receiver));
+  proxy_receivers_.set_disconnect_handler(
       base::BindRepeating(&BraveProxyingURLLoaderFactory::OnProxyBindingError,
                           base::Unretained(this)));
 }
@@ -660,19 +661,19 @@ void BraveProxyingURLLoaderFactory::CreateLoaderAndStart(
 }
 
 void BraveProxyingURLLoaderFactory::Clone(
-    network::mojom::URLLoaderFactoryRequest loader_request) {
-  proxy_bindings_.AddBinding(this, std::move(loader_request));
+    mojo::PendingReceiver<network::mojom::URLLoaderFactory> loader_receiver) {
+  proxy_receivers_.Add(this, std::move(loader_receiver));
 }
 
 void BraveProxyingURLLoaderFactory::OnTargetFactoryError() {
   // Stop calls to CreateLoaderAndStart() when |target_factory_| is invalid.
   target_factory_.reset();
-  proxy_bindings_.CloseAllBindings();
+  proxy_receivers_.Clear();
   MaybeRemoveProxy();
 }
 
 void BraveProxyingURLLoaderFactory::OnProxyBindingError() {
-  if (proxy_bindings_.empty())
+  if (proxy_receivers_.empty())
     target_factory_.reset();
 
   MaybeRemoveProxy();

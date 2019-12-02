@@ -10,12 +10,14 @@ import android.content.Context;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.components.signin.AccountTrackerService;
+import org.chromium.components.signin.identitymanager.IdentityManager;
+import org.chromium.components.signin.identitymanager.IdentityMutator;
 import org.chromium.components.sync.AndroidSyncSettings;
 
 public class BraveSigninManager extends SigninManager {
-    BraveSigninManager(Context context, long nativeSigninManagerAndroid,
-            AccountTrackerService accountTrackerService) {
-        super(context, nativeSigninManagerAndroid, accountTrackerService,
+    BraveSigninManager(long nativeSigninManagerAndroid, AccountTrackerService accountTrackerService,
+            IdentityManager identityManager, IdentityMutator identityMutator) {
+        super(nativeSigninManagerAndroid, accountTrackerService, identityManager, identityMutator,
                 AndroidSyncSettings.get());
     }
 
@@ -30,11 +32,14 @@ public class BraveSigninManager extends SigninManager {
     }
 
     @CalledByNative
-    private static SigninManager create(
-            long nativeSigninManagerAndroid, AccountTrackerService accountTrackerService) {
+    private static SigninManager create(long nativeSigninManagerAndroid,
+            AccountTrackerService accountTrackerService, IdentityManager identityManager,
+            IdentityMutator identityMutator) {
         assert nativeSigninManagerAndroid != 0;
         assert accountTrackerService != null;
-        return new BraveSigninManager(ContextUtils.getApplicationContext(),
-                nativeSigninManagerAndroid, accountTrackerService);
+        assert identityManager != null;
+        assert identityMutator != null;
+        return new BraveSigninManager(nativeSigninManagerAndroid, accountTrackerService,
+                identityManager, identityMutator);
     }
 }

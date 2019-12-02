@@ -101,7 +101,7 @@ def get_transifex_languages(grd_file_path):
 def get_transifex_translation_file_content(source_file_path, filename,
                                            lang_code):
     """Obtains a translation Android xml format and returns the string"""
-    lang_code = lang_code.replace('-', '_')
+    lang_code = lang_code.replace('-', '_').replace('iw', 'he')
     url_part = 'project/%s/resource/%s/translation/%s?mode=default' % (
         transifex_project_name,
         transifex_name_from_filename(source_file_path, filename), lang_code)
@@ -282,8 +282,9 @@ def get_grd_strings(grd_file_path):
         message_desc = message_tag.get('desc') or ''
         message_value = textify(message_tag)
         assert not not message_name, 'Message name is empty'
-        assert message_name.startswith('IDS_'), (
-            'Invalid message ID: %s' % message_name)
+        assert (message_name.startswith('IDS_') or
+                message_name.startswith('PRINT_PREVIEW_MEDIA_')), (
+                    'Invalid message ID: %s' % message_name)
         string_name = message_name[4:].lower()
         string_fp = get_fingerprint_for_xtb(message_tag)
         string_tuple = (string_name, message_value, string_fp, message_desc)

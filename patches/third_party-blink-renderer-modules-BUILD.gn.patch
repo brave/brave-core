@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/BUILD.gn b/third_party/blink/renderer/modules/BUILD.gn
-index 30dcfb2b62cef2d2bed178fac002ac1f93f7924a..48d1853cf0bb61d178a6a3f9645cf18c7f99b6f1 100644
+index e2b05af5f104e7cbb2c3d9229949c79730c9ddd9..83ff1798006d9b2718b031efa8fb727dd2a2ae98 100644
 --- a/third_party/blink/renderer/modules/BUILD.gn
 +++ b/third_party/blink/renderer/modules/BUILD.gn
-@@ -188,6 +188,7 @@ target("jumbo_" + modules_target_type, "modules") {
+@@ -175,6 +175,7 @@ jumbo_component("modules") {
      "//third_party/webrtc_overrides:task_queue_factory",
      "//third_party/zlib",
    ]

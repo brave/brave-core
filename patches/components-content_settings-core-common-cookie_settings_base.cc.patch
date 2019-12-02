@@ -1,12 +1,12 @@
 diff --git a/components/content_settings/core/common/cookie_settings_base.cc b/components/content_settings/core/common/cookie_settings_base.cc
-index afbff0630db7d705d381f059b8bfa08145fbe9a2..c6b6274bc39b52aa560dcfb8eafeaf2fd34e7928 100644
+index eb4304f5021fa80be245100c5db995bf42319331..8e777c0e55b1bc411a22c92cea5b0c43da1e48c0 100644
 --- a/components/content_settings/core/common/cookie_settings_base.cc
 +++ b/components/content_settings/core/common/cookie_settings_base.cc
-@@ -78,6 +78,7 @@ bool CookieSettingsBase::IsCookieAccessAllowed(
+@@ -86,6 +86,7 @@ bool CookieSettingsBase::IsCookieAccessAllowed(
      const GURL& url,
      const GURL& site_for_cookies,
      const base::Optional<url::Origin>& top_frame_origin) const {
 +  BRAVE_IS_COOKIE_ACCESS_ALLOWED
-   // TODO(crbug.com/988398): top_frame_origin is not yet always available.
-   // Ensure that the DCHECK always passes and remove the FeatureList check.
-   if (!base::FeatureList::IsEnabled(kImprovedCookieControls))
+   ContentSetting setting;
+   GetCookieSettingInternal(
+       url, top_frame_origin ? top_frame_origin->GetURL() : site_for_cookies,

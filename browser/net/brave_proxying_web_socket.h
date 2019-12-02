@@ -24,6 +24,7 @@
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/resource_response.h"
+#include "services/network/public/mojom/ip_endpoint.mojom.h"
 #include "services/network/public/mojom/network_context.mojom.h"
 #include "services/network/public/mojom/websocket.mojom.h"
 #include "url/gurl.h"
@@ -75,13 +76,12 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
   // network::mojom::WebSocketHandshakeClient methods:
   void OnOpeningHandshakeStarted(
       network::mojom::WebSocketHandshakeRequestPtr request) override;
-  void OnResponseReceived(
-      network::mojom::WebSocketHandshakeResponsePtr response) override;
   void OnConnectionEstablished(
       mojo::PendingRemote<network::mojom::WebSocket> websocket,
       mojo::PendingReceiver<network::mojom::WebSocketClient> client_receiver,
       const std::string& selected_protocol,
       const std::string& extensions,
+      network::mojom::WebSocketHandshakeResponsePtr response,
       mojo::ScopedDataPipeConsumerHandle readable) override;
 
   // network::mojom::AuthenticationHandler method:
@@ -94,6 +94,7 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
   void OnBeforeSendHeaders(const net::HttpRequestHeaders& headers,
                            OnBeforeSendHeadersCallback callback) override;
   void OnHeadersReceived(const std::string& headers,
+                         const ::net::IPEndPoint& remote_endpoint,
                          OnHeadersReceivedCallback callback) override;
 
  private:
@@ -147,10 +148,10 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
   network::ResourceRequest request_;
   network::ResourceResponseHead response_;
   scoped_refptr<net::HttpResponseHeaders> override_headers_;
+  net::IPEndPoint remote_endpoint_;
 
   GURL redirect_url_;
   bool is_done_ = false;
-  bool waiting_for_header_client_headers_received_ = false;
   uint64_t request_id_ = 0;
 
   // chrome websocket proxy

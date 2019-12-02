@@ -154,10 +154,12 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     bool is_main_frame,
     ui::PageTransition page_transition,
     bool has_user_gesture,
+    const base::Optional<url::Origin>& initiating_origin,
     network::mojom::URLLoaderFactoryPtr* out_factory) {
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   if (webtorrent::HandleMagnetProtocol(url, web_contents_getter,
-                                       page_transition, has_user_gesture)) {
+                                       page_transition, has_user_gesture,
+                                       initiating_origin)) {
     return true;
   }
 #endif
@@ -171,7 +173,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
       url, web_contents_getter, child_id, navigation_data, is_main_frame,
-      page_transition, has_user_gesture, out_factory);
+      page_transition, has_user_gesture, initiating_origin, out_factory);
 }
 
 base::Optional<service_manager::Manifest>
@@ -270,7 +272,7 @@ void BraveContentBrowserClient::CreateWebSocket(
         url,
         site_for_cookies,
         user_agent,
-        std::move(proxy->handshake_client().Unbind()));
+        proxy->handshake_client().Unbind());
   } else {
     proxy->Start();
   }

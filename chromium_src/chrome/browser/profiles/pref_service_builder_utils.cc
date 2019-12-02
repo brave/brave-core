@@ -64,7 +64,7 @@ std::unique_ptr<sync_preferences::PrefServiceSyncable> CreatePrefService(
     PrefStore* extension_pref_store,
     policy::PolicyService* policy_service,
     policy::ChromeBrowserPolicyConnector* browser_policy_connector,
-    prefs::mojom::TrackedPreferenceValidationDelegatePtr
+    mojo::PendingRemote<prefs::mojom::TrackedPreferenceValidationDelegate>
         pref_validation_delegate,
     scoped_refptr<base::SequencedTaskRunner> io_task_runner,
     SimpleFactoryKey* key,

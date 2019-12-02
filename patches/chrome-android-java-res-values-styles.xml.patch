@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/res/values/styles.xml b/chrome/android/java/res/values/styles.xml
-index 048e9e516ee3b5f0c3b58cc4e0968ab8d02f834e..684b33845c9f65ff288fbfa03c7a55a21d1e3a60 100644
+index 156410af17cd38f1fa6228bc150e906849368fea..2d48e7782e33ba58e44b66ada65af573331bc564 100644
 --- a/chrome/android/java/res/values/styles.xml
 +++ b/chrome/android/java/res/values/styles.xml
-@@ -972,4 +972,5 @@
+@@ -961,4 +961,5 @@
      <style name="DarkModeCompatibleVerticalScrolling">
          <item name="android:scrollbarThumbVertical">@color/default_scroll_thumb</item>
      </style>
