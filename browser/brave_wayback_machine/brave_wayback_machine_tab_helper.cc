@@ -6,32 +6,12 @@
 #include "brave/browser/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
 
 #include "base/command_line.h"
-#include "base/containers/flat_set.h"
+#include "brave/browser/brave_wayback_machine/brave_wayback_machine_util.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_switches.h"
-#include "brave/common/pref_names.h"
-#include "chrome/browser/profiles/profile.h"
-#include "components/prefs/pref_service.h"
-#include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "net/http/http_response_headers.h"
-
-namespace {
-
-bool ShouldUseWaybackMachine(int response) {
-  static base::flat_set<int> responses =
-      { 404, 408, 410, 451, 500, 502, 503, 504,
-        509, 520, 521, 523, 524, 525, 526 };
-  return responses.find(response) != responses.end();
-}
-
-bool IsWaybackMachinePrefsEnabled(content::BrowserContext* context) {
-  Profile* profile = Profile::FromBrowserContext(context);
-  return profile->GetPrefs()->GetBoolean(kBraveWaybackMachineEnabled);
-}
-
-}  // namespace
 
 // static
 void BraveWaybackMachineTabHelper::AttachTabHelperIfNeeded(
@@ -53,16 +33,15 @@ BraveWaybackMachineTabHelper::BraveWaybackMachineTabHelper(
 
 void BraveWaybackMachineTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  if (!IsWaybackMachinePrefsEnabled(web_contents()->GetBrowserContext()) ||
+  if (!IsWaybackMachineEnabled(web_contents()->GetBrowserContext()) ||
       !navigation_handle->IsInMainFrame() ||
       navigation_handle->IsSameDocument()) {
     return;
   }
 
-  const net::HttpResponseHeaders* header =
-      navigation_handle->GetResponseHeaders();
-  if (header && ShouldUseWaybackMachine(header->response_code())) {
-    // Do Wayback!
+  if (const net::HttpResponseHeaders* header =
+          navigation_handle->GetResponseHeaders()) {
+    CheckWaybackMachineIfNeeded(web_contents(), header->response_code());
   }
 }
 

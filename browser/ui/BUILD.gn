@@ -1,3 +1,4 @@
+import("//brave/browser/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
@@ -109,6 +110,13 @@ source_set("ui") {
       "views/toolbar/bookmark_button.cc",
       "views/toolbar/bookmark_button.h",
     ]
+
+    if (enable_brave_wayback_machine) {
+      sources += [
+        "views/infobars/brave_wayback_machine_infobar_view.cc",
+        "views/infobars/brave_wayback_machine_infobar_view.h",
+      ]
+    }
 
     if (enable_sparkle) {
       sources += [

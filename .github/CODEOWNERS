@@ -34,6 +34,10 @@ browser/net/ @iefremov
 # Widevine
 browser/widevine @simonhong
 
+# Wayback machine
+browser/brave_wayback_machine @simonhong
+browser/ui/views/infobars @simonhong
+
 # Licensing of third-party components
 common/licenses/ @fmarier
 components/brave_new_tab_ui/data/backgrounds.ts @fmarier

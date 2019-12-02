@@ -19,11 +19,11 @@ class BraveWaybackMachineTabHelper
   explicit BraveWaybackMachineTabHelper(content::WebContents* contents);
   ~BraveWaybackMachineTabHelper() override = default;
 
+  WEB_CONTENTS_USER_DATA_KEY_DECL();
+ private:
   // content::WebContentsObserver overrides:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
-
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
 
   DISALLOW_COPY_AND_ASSIGN(BraveWaybackMachineTabHelper);
 };

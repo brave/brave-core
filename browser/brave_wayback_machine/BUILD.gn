@@ -8,12 +8,17 @@ buildflag_header("buildflags") {
 
 source_set("brave_wayback_machine") {
   sources = [
+    "brave_wayback_machine_infobar_delegate.cc",
+    "brave_wayback_machine_infobar_delegate.h",
     "brave_wayback_machine_tab_helper.cc",
     "brave_wayback_machine_tab_helper.h",
+    "brave_wayback_machine_util.cc",
+    "brave_wayback_machine_util.h",
   ]
 
   deps = [
     "//brave/common",
+    "//components/infobars/core",
     "//components/prefs",
     "//content/public/browser",
     "//net",
