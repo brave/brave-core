@@ -9,9 +9,8 @@
 
 namespace zoom {
 
-// This list is duplicated in chrome/browser/resources/pdf/viewport.js and in
-// chrome/browser/resources/settings/appearance_page/appearance_page.js. Please
-// make sure the three match.
+// This list is duplicated in brave/browser/resources/settings/zoom_factors.json
+// When changing this list, please make sure that gets updated also.
 const double kPresetZoomFactors[] = {0.25, 1 / 3.0, 0.5, 2 / 3.0, 0.75, 0.8,
                                      0.9, 1.0, 1.1, 1.25, 4 / 3.0, 7 / 5.0,
                                      1.5, 1.75, 2.0, 2.5,
