@@ -217,10 +217,7 @@ std::string GenerateVerifyLink(ledger::ExternalWalletPtr wallet) {
   }
 
   switch (wallet->status) {
-    case ledger::WalletStatus::PENDING: {
-      url = GetSecondStepVerify();
-      break;
-    }
+    case ledger::WalletStatus::PENDING:
     case ledger::WalletStatus::CONNECTED: {
       url = GetSecondStepVerify();
       break;
