@@ -1,4 +1,5 @@
 import("//brave/components/brave_shields/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//brave/vendor/adblock_rust_ffi/config.gni")
 
@@ -71,6 +72,10 @@ source_set("browser") {
     "//net",
     "//third_party/leveldatabase",
     "//url",
+  ]
+
+  deps += [
+    "//brave/components/brave_perf_predictor/browser",
   ]
 }
 

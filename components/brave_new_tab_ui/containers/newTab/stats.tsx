@@ -25,6 +25,39 @@ class Stats extends React.Component<Props, {}> {
     return this.props.stats.httpsUpgradesStat || 0
   }
 
+  get estimatedBandwidthSaved () {
+    const estimatedBWSaved = this.props.stats.bandwidthSavedStat
+    if (estimatedBWSaved) {
+      const bytes = estimatedBWSaved < 1024
+      const kilobytes = estimatedBWSaved < 1024 * 1024
+      const megabytes = estimatedBWSaved < 1024 * 1024 * 1024
+
+      let counter
+      let id
+      if (bytes) {
+        counter = estimatedBWSaved
+        id = 'B'
+      } else if (kilobytes) {
+        counter = (estimatedBWSaved / 1024).toFixed(0)
+        id = 'KB'
+      } else if (megabytes) {
+        counter = (estimatedBWSaved / 1024 / 1024).toFixed(1)
+        id = 'MB'
+      } else {
+        counter = (estimatedBWSaved / 1024 / 1024 / 1024).toFixed(2)
+        id = 'GB'
+      }
+
+      return {
+        id,
+        value: counter,
+        args: JSON.stringify({ value: counter })
+      }
+    } else {
+      return false
+    }
+  }
+
   get estimatedTimeSaved () {
     const estimatedMillisecondsSaved = this.adblockCount * this.millisecondsPerItem || 0
     const hours = estimatedMillisecondsSaved < 1000 * 60 * 60 * 24
@@ -61,6 +94,7 @@ class Stats extends React.Component<Props, {}> {
     const trackedBlockersCount = this.adblockCount.toLocaleString()
     const httpsUpgradedCount = this.httpsUpgradedCount.toLocaleString()
     const timeSaved = this.estimatedTimeSaved
+    const bandwidthSaved = this.estimatedBandwidthSaved
 
     return (
       <StatsContainer>
@@ -77,6 +111,13 @@ class Stats extends React.Component<Props, {}> {
           text={getLocale(timeSaved.id)}
           description={getLocale('estimatedTimeSaved')}
         />
+        {bandwidthSaved &&
+          <StatsItem
+            counter={bandwidthSaved.value}
+            text={getLocale(bandwidthSaved.id)}
+            description={getLocale('estimatedBandwidthSaved')}
+          />
+        }
       </StatsContainer>
     )
   }

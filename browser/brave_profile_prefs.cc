@@ -9,6 +9,7 @@
 #include "brave/common/brave_wallet_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#include "brave/components/brave_perf_predictor/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
@@ -51,6 +52,10 @@
 #include "brave/browser/brave_wallet/brave_wallet_utils.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+#endif
+
 using extensions::FeatureSwitch;
 
 namespace brave {
@@ -71,6 +76,11 @@ void RegisterProfilePrefsForMigration(
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_shields::BraveShieldsWebContentsObserver::RegisterProfilePrefs(
       registry);
+
+#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
+  brave_perf_predictor::PerfPredictorTabHelper::RegisterProfilePrefs(
+      registry);
+#endif
 
   // appearance
   registry->RegisterBooleanPref(kLocationBarIsWide, false);

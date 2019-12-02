@@ -45,6 +45,7 @@ declare namespace NewTab {
     javascriptBlockedStat: number
     httpsUpgradesStat: number
     fingerprintingBlockedStat: number
+    bandwidthSavedStat: number
   }
 
   export interface Bookmark {

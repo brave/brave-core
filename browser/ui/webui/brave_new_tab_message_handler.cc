@@ -17,6 +17,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
+#include "brave/components/brave_perf_predictor/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_sponsored_images/browser/features.h"
 #include "brave/components/ntp_sponsored_images/browser/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_sponsored_images/browser/view_counter_service.h"
@@ -69,6 +70,11 @@ base::DictionaryValue GetStatsDictionary(PrefService* prefs) {
   stats_data.SetInteger(
     "fingerprintingBlockedStat",
     prefs->GetUint64(kFingerprintingBlocked));
+#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
+  stats_data.SetInteger(
+    "bandwidthSavedStat",
+    prefs->GetUint64(kBandwidthSavedBytes));
+#endif
   return stats_data;
 }
 

@@ -16,6 +16,7 @@
 #include "brave/common/render_messages.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_perf_predictor/browser/buildflags/buildflags.h"
 #include "brave/content/common/frame_messages.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -44,6 +45,11 @@
 
 using extensions::Event;
 using extensions::EventRouter;
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+using brave_perf_predictor::PerfPredictorTabHelper;
 #endif
 
 using content::Referrer;
@@ -255,6 +261,14 @@ void BraveShieldsWebContentsObserver::DispatchBlockedEvent(
             prefs->GetUint64(kFingerprintingBlocked) + 1);
       }
     }
+
+#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
+    PerfPredictorTabHelper* blocking_observer =
+        PerfPredictorTabHelper::FromWebContents(web_contents);
+    if (blocking_observer) {
+      blocking_observer->OnBlockedSubresource(subresource);
+    }
+#endif
   }
 }
 
