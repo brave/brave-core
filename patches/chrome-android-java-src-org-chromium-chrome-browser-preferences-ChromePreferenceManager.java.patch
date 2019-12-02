@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/preferences/ChromePreferenceManager.java b/chrome/android/java/src/org/chromium/chrome/browser/preferences/ChromePreferenceManager.java
-index 9b7768fdb9a8dd52a412b1e4900478114a6ff2cd..c47b1911f140ffb953d888e7d501ac7e32f6066c 100644
+index e1572513249fe7e7676505f11db4504036404fb4..30ea6db50f2c93befc2b9d3bd11c2e25349b2d3e 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/preferences/ChromePreferenceManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/preferences/ChromePreferenceManager.java
-@@ -21,7 +21,7 @@ import java.util.Set;
+@@ -22,7 +22,7 @@ import java.util.Set;
  /**
   * ChromePreferenceManager stores and retrieves various values in Android shared preferences.
   */

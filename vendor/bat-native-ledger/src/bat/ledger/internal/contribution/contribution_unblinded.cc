@@ -7,6 +7,7 @@
 
 #include "base/base64.h"
 #include "base/json/json_writer.h"
+#include "base/values.h"
 #include "bat/ledger/internal/bat_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"

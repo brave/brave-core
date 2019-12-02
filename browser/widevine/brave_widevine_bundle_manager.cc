@@ -15,6 +15,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
+#include "base/native_library.h"
 #include "base/path_service.h"
 #include "base/strings/string_piece.h"
 #include "base/task/post_task.h"
@@ -98,6 +99,7 @@ void BraveWidevineBundleManager::InstallWidevineBundle(
       GURL(WIDEVINE_CDM_DOWNLOAD_URL_STRING),
       base::BindOnce(&BraveWidevineBundleManager::OnBundleDownloaded,
                      base::Unretained(this)));
+  DeleteDeprecatedWidevineCdmLib();
 }
 
 void BraveWidevineBundleManager::DownloadWidevineBundle(
@@ -277,6 +279,26 @@ void BraveWidevineBundleManager::StartupCheck() {
   DVLOG(1) << __func__ << ": latest widevine version is installed.";
 }
 
+void BraveWidevineBundleManager::DeleteDeprecatedWidevineCdmLib() {
+  if (is_test_) return;
+
+  file_task_runner()->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          []() {
+            base::FilePath deprecated_widevine_cdm_lib;
+            if (base::PathService::Get(chrome::DIR_USER_DATA,
+                                       &deprecated_widevine_cdm_lib)) {
+              base::DeleteFile(
+                  deprecated_widevine_cdm_lib
+                      .Append(kWidevineCdmBaseDirectory)
+                      .Append(base::GetNativeLibraryName(
+                          kWidevineCdmLibraryName)),
+                  false);
+            }
+          }));
+}
+
 void BraveWidevineBundleManager::ScheduleBackgroundUpdate() {
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
       FROM_HERE,
@@ -335,7 +357,7 @@ void BraveWidevineBundleManager::WillRestart() const {
 scoped_refptr<base::SequencedTaskRunner>
 BraveWidevineBundleManager::file_task_runner() {
   if (!file_task_runner_) {
-    file_task_runner_ = base::CreateSequencedTaskRunnerWithTraits(
+    file_task_runner_ = base::CreateSequencedTaskRunner(
         {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT,
          base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   }

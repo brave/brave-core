@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="no">
-<translation id="5194812628624740897">Hvis du kobler fra <ph name="USERNAME"/>, slettes loggen din, bokmerkene, innstillingene og andre Brave-data som er lagret på denne enheten. Data som er lagret i Brave Software-kontoen din, blir ikke tømt og kan administreres på <ph name="GOOGLE_DASHBOARD_LINK"/>Brave Software Oversikt<ph name="END_GOOGLE_DASHBOARD_LINK"/>.</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="2069994121511856876">Brave Nightly</translation>
 <translation id="4947625801334180582">Brave Beta</translation>
@@ -18,8 +17,6 @@
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> – betaversjon av Brave</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave for utviklere</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
-<translation id="4685833011652060085">Få hjelp med å bruke Brave</translation>
-<translation id="6474707902830053522">Få hjelp med å bruke Brave OS</translation>
 <translation id="8992261409816268381">The Brave Authors</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> – The Brave Authors. Med enerett.</translation>
 <translation id="2310890394934209120">Brave OS er gjort mulig av ytterligere <ph name="BEGIN_LINK_CROS_OSS"/>åpen kilde-programvare<ph name="END_LINK_CROS_OSS"/>.</translation>
@@ -69,7 +66,6 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="2770231113462710648">Endre standardnettleser til:</translation>
 <translation id="2485422356828889247">Avinstaller</translation>
 <translation id="3343095737966473035">Brave er ikke standardnettleseren din</translation>
-<translation id="6715663530666325392">Konfigurer Synkronisering til å lagre de personlig tilpassede nettleserfunksjonene dine på nettet slik at du kan bruke dem fra Brave på enhver datamaskin.</translation>
 <translation id="5536657158619734169">En nyere versjon av Brave er tilgjengelig.</translation>
 <translation id="505042220086416644">En nyere versjon av Brave er tilgjengelig, og den er raskere enn noen gang.</translation>
 <translation id="5616153642055197778">En ny, sikrere versjon av Brave er tilgjengelig.</translation>
@@ -85,19 +81,10 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="3834935463915107022">Vil du avslutte Brave likevel?</translation>
 <translation id="8797356639448065696">Brave er i bakgrunnsmodus.</translation>
 <translation id="2339258256897053758">API-nøkler for Brave Software mangler. Noe funksjonalitet i Brave blir deaktivert.</translation>
-<translation id="2182657378556811785">Nå er oppdateringen snart ferdig! Start Brave på nytt for å fullføre oppdateringen.</translation>
-<translation id="5906655207909574370">Nå er oppdateringen snart ferdig! Start enheten på nytt for å fullføre oppdateringen.</translation>
-<translation id="5877064549588274448">Kanalen ble endret. Start enheten på nytt for å aktivere endringene.</translation>
-<translation id="5131485705787281074">Brave er oppdatert.</translation>
-<translation id="8667808506758191620"><ph name="DEVICE_TYPE"/>-enheten er oppdatert.</translation>
-<translation id="5047208012586153436">Oppdaterer Brave …</translation>
-<translation id="6970811910055250180">Oppdaterer enheten ...</translation>
-<translation id="8030318113982266900">Oppdaterer enheten din til <ph name="CHANNEL_NAME"/>-kanalen ...</translation>
 <translation id="7861579472672677409"><ph name="EXTENSION_NAME"/> er lagt til i Brave</translation>
 <translation id="8516116288943000095">Fjern dataene fra Brave også (<ph name="URL"/>)</translation>
 <translation id="4054452651944170004">Skjul i Brave-menyen</translation>
 <translation id="5660079256336839395">Skjul i Brave-menyen</translation>
-<translation id="7456658570432774853">Bidra til å gjøre Brave bedre ved å rapportere inn de gjeldende innstillingene</translation>
 <translation id="6134859571175647580">Advarsel: Brave kan ikke hindre utvidelser fra å spille inn nettlesingsloggen. For å slå av denne utvidelsen i inkognitomodus, fjern avmerkingen for dette alternativet.</translation>
 <translation id="777113543093865885">Fjern fra Brave</translation>
 <translation id="6078442581074612226">I Brave</translation>
@@ -113,18 +100,9 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="2534623228451928732">Oppdater &amp;Brave OS</translation>
 <translation id="8447483940522230788">Brave-hjelper</translation>
 <translation id="5477319665405831211">Synkroniser og gi Brave et personlig preg på alle enhetene dine</translation>
-<translation id="4934157190377700991">Du er logget på Brave</translation>
-<translation id="4100716194836114130">Dette er din Brave</translation>
-<translation id="8296145982386097283">Deler du datamaskinen din med andre? Nå kan du konfigurere Brave akkurat slik du vil.</translation>
-<translation id="1672124279374861424">Når du har fjernet kontoen din fra Brave, kan det hende at du må laste inn de åpne fanene på nytt før endringene trer i kraft.</translation>
-<translation id="9197493712748167998">Du bruker <ph name="PROFILE_EMAIL"/> for synkronisering av Brave-tingene dine. For å oppdatere alternativene for synkronisering eller bruke Brave uten Brave Software-konto, kan du gå til <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="8132634101975074716">Du er logget på Brave.</translation>
 <translation id="4567424176335768812">Du er logget på som <ph name="USER_EMAIL_ADDRESS"/>. Nå kan du bruke bokmerkene, loggen og andre innstillinger på alle enhetene du er logget på.</translation>
-<translation id="6888049487162027489">Du er nå logget på Brave. Synkronisering er deaktivert av administratoren din.</translation>
 <translation id="2925193881330501265">Du ble logget på Brave som <ph name="USER_EMAIL_ADDRESS"/>. Du må logge deg på igjen med samme konto.</translation>
-<translation id="386092803020435298">Noen har tidligere logget seg på Brave på denne datamaskinen som <ph name="ACCOUNT_EMAIL_LAST"/>. Hvis det ikke er kontoen din, må du opprette en ny Brave-bruker for å holde informasjonen din atskilt.
-
-Hvis du logger deg på allikevel, blir Brave-informasjon som bokmerker, loggen og andre innstillinger slått sammen med <ph name="ACCOUNT_EMAIL_NEW"/>.</translation>
 <translation id="847561904663814268">Noen har tidligere logget på Brave på denne datamaskinen som <ph name="ACCOUNT_EMAIL_LAST"/>. Opprett en ny Brave-bruker for å holde informasjonen din atskilt.</translation>
 <translation id="1853997773668795891">Vil du koble Brave-dataene dine til denne kontoen?</translation>
 <translation id="1326766910007115955">Du logger deg på med en administrert konto og gir tilhørende administratorer kontroll over Brave-profilen din. Brave-dataene dine, slik som apper, bokmerker, loggen, passord og andre innstillinger, knyttes permanent til <ph name="USER_NAME"/>. Du kan slette disse dataene via oversikten for Brave Software-kontoer, men du kan ikke knytte disse dataene til en annen konto. <ph name="LEARN_MORE"/></translation>
@@ -144,10 +122,6 @@ Hvis du logger deg på allikevel, blir Brave-informasjon som bokmerker, loggen o
 <translation id="1459786048951724030">Brave OS kunne ikke synkronisere dataene dine på grunn av en feil under pålogging.</translation>
 <translation id="6813094029720377619">Du sletter informasjonskapsler når du avslutter Brave. For å fortsette å synkronisere, endre denne <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">innstillinger</translation>
-<translation id="663059986967017181">Kopiert til Brave</translation>
-<translation id="1457432835062259213">Brave-appvelger</translation>
-<translation id="82609232232243542">Logg på Brave</translation>
-<translation id="2924628237198507508">Du må være logget på Brave for å bruke apper. På denne måten kan Brave synkronisere appene, bokmerkene og passordene dine, samt loggen din og andre innstillinger, på alle enheter.</translation>
 <translation id="380197516434040304">Fjern fra Brave</translation>
 <translation id="300669147395456190">Brave-apper</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> krever at du leser og godtar følgende vilkår før du bruker denne enheten. Disse vilkårene utvider, endrer eller begrenser ikke Brave OS-vilkårene.</translation>
@@ -159,6 +133,7 @@ Hvis du logger deg på allikevel, blir Brave-informasjon som bokmerker, loggen o
 <translation id="669092380621816981">Denne personens nettlesingsdata slettes fra denne enheten. For å gjenopprette dataene, logg på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">Nå er Brave blitt enda bedre</translation>
 <translation id="7192666605334070839">Nå er det enklere å bruke Brave med Brave Software-kontoen din og på datamaskiner du deler med andre.</translation>
+<translation id="4100716194836114130">Dette er din Brave</translation>
 <translation id="3511996232906761537">Her finner du nettinnholdet, bokmerkene og de andre Brave-tingene dine.</translation>
 <translation id="7406627712452599344">Gjester kan bruke Brave uten å etterlate seg spor.</translation>
 <translation id="5659384504794665581">Hvis du deler en datamaskin med andre, kan venner og familie surfe hver for seg og konfigurere Brave akkurat slik de vil.</translation>
@@ -180,7 +155,7 @@ Hvis du logger deg på allikevel, blir Brave-informasjon som bokmerker, loggen o
 <translation id="7863882214613921971">Åpne linken i en ny &amp;fane i Brave</translation>
 <translation id="6554952862405000915">Åpne linken i et inkognitovindu i Brave</translation>
 <translation id="4805806622840861220">Start Brave på nytt</translation>
-<translation id="2560046583427795596">En ny oppdatering for Brave er tilgjengelig og tas i bruk når du starter Brave på nytt.</translation>
+<translation id="8274659559228306809">{COUNT,plural, =0{En ny oppdatering for Brave er tilgjengelig og tas i bruk når du starter Brave på nytt.}=1{En ny oppdatering for Brave er tilgjengelig og tas i bruk når du starter Brave på nytt. Inkognitovinduet ditt blir ikke gjenåpnet.}other{En ny oppdatering for Brave er tilgjengelig og tas i bruk når du starter Brave på nytt. De # inkognitovinduene dine blir ikke gjenåpnet.}}</translation>
 <translation id="2799223571221894425">Start på nytt</translation>
 <translation id="2522086024276534909">Start Brave OS på nytt</translation>
 <translation id="8183252473547465084">Brave OS må startes på nytt for at oppdateringen skal tas i bruk.</translation>
@@ -199,48 +174,38 @@ Hvis du logger deg på allikevel, blir Brave-informasjon som bokmerker, loggen o
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave startes på nytt om 1 sekund}other{Brave startes på nytt om # sekunder}}</translation>
 <translation id="5646769069113654257">Start Brave på nytt nå</translation>
 <translation id="8668413672647811944">En spesiell sikkerhetsoppdatering for Brave ble nettopp installert. Start på nytt nå, så gjenoppretter vi fanene dine.</translation>
-<translation id="763369711159699222">Bidra til å gjøre Brave bedre</translation>
-<translation id="1156940037717341650">Du kan bidra til å gjøre Brave tryggere og enklere å bruke ved å rapportere detaljer om mulige sikkerhetsbrudd til Brave Software automatisk.</translation>
 <translation id="6791166902140255175">Brave-fane</translation>
 <translation id="2555639463117073782">Start Brave på nytt for å slå på <ph name="PLUGIN_NAME"/></translation>
-<translation id="8899693649891674038">Installer Brave på telefonen din. Vi sender deg en SMS.</translation>
-<translation id="1570795130102031380">Installer Brave på telefonen din. Vi sender deg en SMS på <ph name="PHONE_NUMBER"/></translation>
-<translation id="1609678321160597289">Installer Brave på telefonen din. Vi sender en SMS til telefonnummeret ditt for kontogjenoppretting.</translation>
-<translation id="2965084188004448871">Installer Brave på telefonen din. Vi sender en SMS til telefonnummeret ditt for kontogjenoppretting (<ph name="PHONE_NUMBER"/>)</translation>
-<translation id="8358191771897395012">få Brave på iPhone</translation>
 <translation id="2034072705932785495">Brave trenger tilgang til kameraet ditt for dette nettstedet</translation>
 <translation id="3335606533094650083">Brave trenger tilgang til mikrofonen din for dette nettstedet</translation>
 <translation id="4831743161813926460">Brave trenger tilgang til kameraet ditt og mikrofonen din for dette nettstedet</translation>
 <translation id="696826782632239602">Brave trenger tilgang til posisjonen din for å kunne dele den med dette nettstedet</translation>
 <translation id="7798069806040634998">Brave må ha lagringstilgang for å laste ned filer</translation>
 <translation id="7685904775439037072">Når Brave har fått tilgang, kan nettsteder spørre deg om tilgang.</translation>
-<translation id="5805364706385912897">Denne siden bruker for mye minne, så Brave har satt den på pause.</translation>
-<translation id="5138664332909611586">Denne siden bruker for mye minne, så Brave har fjernet noe av innholdet.</translation>
 <translation id="1744365871163268756">Vent mens Brave installerer de nyeste systemoppdateringene.</translation>
-<translation id="5693614905241031118">Brave oppdateres automatisk, sånn at du alltid har den nyeste versjonen.</translation>
-<translation id="6141293433381251973">Brave oppdateres automatisk, sånn at du alltid har den nyeste versjonen. Når denne nedlastingen er fullført, kommer Brave til å starte på nytt, og du er i gang.</translation>
+<translation id="8000338990735917615">Fremtidige versjoner av Brave blir installert automatisk.</translation>
+<translation id="2975476470948647918">Fremtidige versjoner av Brave blir installert automatisk. Når denne nedlastingen er fullført, startes Brave på nytt, og da er du klar til dyst.</translation>
 <translation id="7808415789955822133">Vilkår for Brave OS</translation>
 <translation id="7207456302801184289">Velkommen til Brave</translation>
 <translation id="3507835409099344374">Gå til innstillinger for Brave-varsler</translation>
 <translation id="1026406809507858026">{0,plural, =0{En Brave-oppdatering er tilgjengelig}=1{En Brave-oppdatering er tilgjengelig}other{En Brave-oppdatering har vært tilgjengelig i # dager}}</translation>
-<translation id="720532315408041257">Administratoren din ber deg om å starte Brave på nytt for at denne oppdateringen skal tas i bruk</translation>
+<translation id="3829358914761176693">{COUNT,plural, =0{Administratoren din ber deg om å starte Brave på nytt for å ta i bruk denne oppdateringen}=1{Administratoren din ber deg om å starte Brave på nytt for å ta i bruk denne oppdateringen. Inkognitovinduet ditt blir ikke gjenåpnet.}other{Administratoren din ber deg om å starte Brave på nytt for å ta i bruk denne oppdateringen. De # inkognitovinduene dine blir ikke gjenåpnet.}}</translation>
 <translation id="5337999052834672687">{0,plural, =1{Start Brave på nytt innen én dag}other{Start Brave på nytt innen # dager}}</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave startes på nytt om en time}other{Brave startes på nytt om # timer}}</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave startes på nytt om 1 minutt}other{Brave startes på nytt om # minutter}}</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave startes på nytt nå}=1{Brave startes på nytt om 1 sekund}other{Brave startes på nytt om # sekunder}}</translation>
-<translation id="7595187113648413294">Administratoren din krever at du starter Brave på nytt for at en oppdatering skal tas i bruk</translation>
+<translation id="552349673358711446">{COUNT,plural, =0{Administratoren din krever at du starter Brave på nytt for å ta i bruk en oppdatering}=1{Administratoren din krever at du starter Brave på nytt for å ta i bruk en oppdatering. Inkognitovinduet ditt blir ikke gjenåpnet.}other{Administratoren din krever at du starter Brave på nytt for å ta i bruk en oppdatering. De # inkognitovinduene dine blir ikke gjenåpnet.}}</translation>
 <translation id="3052349005266761501">Starter Brave ...</translation>
 <translation id="1197672524850678392">Kunne ikke starte Brave. Prøv på nytt.</translation>
-<translation id="6040143037577758943">Lukk</translation>
 <translation id="5147525139567260139">Del en Brave-fane</translation>
 <translation id="8541922081612557424">Om Brave</translation>
 <translation id="3262506503470845422">Få hjelp med Brave</translation>
 <translation id="1864557848095568223">Oppdaterer Brave</translation>
 <translation id="1786715389543715322">Oppdaterer Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="2182657378556811785">Nå er oppdateringen snart ferdig! Start Brave på nytt for å fullføre oppdateringen.</translation>
 <translation id="8208853227947884571">Brave er oppdatert</translation>
-<translation id="6756417787837743699">For detaljer om Brave OS, se <ph name="LINK_BEGIN"/>
-      Om Brave OS<ph name="LINK_END"/></translation>
 <translation id="6686872257969654608">Om Brave OS</translation>
+<translation id="7674116293463255181">For å se om enheten er oppdatert, gå til <ph name="LINK_BEGIN"/>Innstillinger for Brave OS<ph name="LINK_END"/></translation>
 <translation id="2280363356796735201">Få hjelp med Brave OS</translation>
 <translation id="38898988211673781">Slett informasjonskapsler og nettstedsdata når du avslutter Brave</translation>
 <translation id="5253815230176279256">Brave Software Pay (kopiert til Brave)</translation>
@@ -260,6 +225,7 @@ Hvis du logger deg på allikevel, blir Brave-informasjon som bokmerker, loggen o
 <translation id="5853262807109651878">Dette sletter <ph name="ITEMS_COUNT"/> elementer fra denne enheten. For å hente dataene dine igjen senere må du logge på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Dette sletter nettlesingsdataene dine fra denne enheten. For å hente dataene dine igjen senere må du logge på Brave som <ph name="USER_EMAIL"/>.</translation>
 <translation id="4518479204315969707">Navn og bilde i Brave</translation>
+<translation id="82609232232243542">Logg på Brave</translation>
 <translation id="8372880274820509128">Brave krypterer dataene dine for å øke sikkerheten.</translation>
 <translation id="7445061995866044926">Vil du logge av Brave?</translation>
 <translation id="7453070689008684791">Brave får tilgang til Disk-lagringen din for å kunne gi deg forslag i adressefeltet</translation>

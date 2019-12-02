@@ -19,6 +19,10 @@
     "message": "अब आप गोपनीयता सम्बन्धी विज्ञापन देखने के लिए टोकन कमा सकते हैं।",
     "description": "Entry text for welcome screen in the panel, new user"
   },
+  "welcomeDescPoints": {
+    "message": "You can now earn points for watching privacy-respecting ads.",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
   "welcomeFooterTextOne": {
     "message": "जानिये कि क्या बेहतर हुआ है",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
@@ -42,6 +46,22 @@
   "grants": {
     "message": "अनुदान",
     "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "विवरण",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "आपकी शेष राशि",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT पॉइंट्स",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "Brave रिवार्ड्स का उपयोग अपने पसंदीदा सामग्री रचनाकारों में योगदान देने के लिए किया जा सकता है।  BAT के लिए BAT पॉइंट्स का आदान-प्रदान नहीं किया जा सकता है।",
+    "description": "Text for BAT Point helper message"
   },
   "on": {
     "message": "पर",
@@ -128,12 +148,22 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "टोकन ग्रांट्स",
-    "description": "Title for grant notification"
+    "message": "$currency$ Grants",
+    "description": "Title for grant notification",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "Token"
+      }
+    }
   },
   "tokenGrantClaimed": {
     "message": "टोकन अनुदान पर दावा किया गया",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Point Grants Claimed",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "विज्ञापनों द्वारा कमाई",
@@ -180,12 +210,16 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "आपने $amount$ के BAT का योगदान किया है",
+    "message": "You've contributed $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
         "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
       }
     }
   },
@@ -261,10 +295,6 @@
     "message": "अनुदान समाप्ति तिथि",
     "description": "Grant expiry label"
   },
-  "grantAlreadyClaimedText": {
-    "message": "क्षमा करें, ऐसा लगता है कि इस अनुदान पर पहले ही दावा किया जा चुका है।",
-    "description": "Description of the error when grant is already claimed."
-  },
   "grantGeneralErrorButton": {
     "message": "ठीक ",
     "description": "Button text for clearing the error."
@@ -276,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "ओह, कुछ गड़बड़ी है। कृपया पुनः प्रयास करें।",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "ठीक",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "क्षमा करें, ऐसा लगता है कि यह अनुदान पहले ही समाप्त हो चुकी है।",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "यह अनुदान अब उपलब्ध नहीं है।",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "स्टेटस रिफ्रेश करें",
@@ -306,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "आपने {{reservedAmount}} BAT उन निर्माताओं के लिए निर्धारित किये हैं जिन्होंने अभी तक योगदान पाने के लिए साइन अप नहीं किया है।  जब तक कि वो सत्यापित न कर दें, या 90 दिनों के बीतने तक आपका ब्राउज़र निरंतर प्रयास करता रहेगा।",
+    "message": "आपने उन रचनाकारों के लिए {{reservedAmount}} {{currency}} निर्दिष्ट किए हैं, जिन्होंने योगदान प्राप्त करने के लिए अभी तक साइन अप नहीं किया है।  आपका ब्राउज़र सत्यापन करने तक या 90 दिन बीत जाने तक योगदान देने का प्रयास करता रहेगा।",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -397,6 +415,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "विज्ञापन चालू करें",
     "description": "Prompt to turn on Ads via notification"
@@ -452,23 +474,33 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "आपकी टोकन अनुदान पहुँच रही है। ",
-    "description": "Cosmetic text indicating grant funds are on the way"
+    "message": "Your $currency$ grant is on its way.",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
   },
   "grantFinishTokenTitleUGP": {
     "message": "मुफ़्त टोकन अनुदान",
     "description": "Token title on success screen"
   },
+  "grantFinishPointTitleUGP": {
+    "message": "Free Point Grant",
+    "description": "Point title on success screen"
+  },
   "grantFinishTitleAds": {
-    "message": "Brave विज्ञापनों के पुरस्कार!",
+    "message": "आपने एक विज्ञापन पुरस्कार अर्जित किया है!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Brave विज्ञापनों से प्राप्त आपके पुरस्कार अनुदान शीघ्र ही आने वाले है।",
+    "message": "आपका रिवार्ड आपके ब्रेव रिवार्ड्स वॉलेट में आएगा है।",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "आपके Brave विज्ञापन टोकन अनुदान",
+    "message": "आपकी रिवॉर्ड राशि",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -532,5 +564,29 @@
   "set": {
     "message": "सेट...",
     "description": "Button text for setting monthly contribution"
+  },
+  "tokens":  {
+    "message": "टोकंस ",
+    "description": "Standard tokens text"
+  },
+  "point":  {
+    "message": "Point",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "टोकन",
+    "description": "BAT Token text"
+  },
+  "points":  {
+    "message": "points",
+    "description": "BAT Points text"
+  },
+  "tokenGrants":  {
+    "message": "टोकन ग्रांट्स",
+    "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Point Grants",
+    "description": "BAT Points Grant Text"
   }
 }

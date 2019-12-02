@@ -1,8 +1,8 @@
 diff --git a/tools/licenses.py b/tools/licenses.py
-index 791efb55b47141db7b961784f80f1dedd57e8823..3bf6e8298ebd870d8f769bc3ab268a78bb393423 100755
+index 350141f680604b297a115c8443812f9c2b8ab60a..29790d32fa05770ce26bb679222c5fa4981b5350 100755
 --- a/tools/licenses.py
 +++ b/tools/licenses.py
-@@ -31,6 +31,7 @@ import tempfile
+@@ -35,6 +35,7 @@ else:
  _REPOSITORY_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
  sys.path.insert(0, os.path.join(_REPOSITORY_ROOT, 'build/android/gyp'))
  from util import build_utils
@@ -10,7 +10,7 @@ index 791efb55b47141db7b961784f80f1dedd57e8823..3bf6e8298ebd870d8f769bc3ab268a78
  
  
  # Paths from the root of the tree to directories to skip.
-@@ -290,6 +291,7 @@ SPECIAL_CASES = {
+@@ -294,6 +295,7 @@ SPECIAL_CASES = {
          "License File": "/third_party/swiftshader/LICENSE.txt",
      },
  }
@@ -18,7 +18,7 @@ index 791efb55b47141db7b961784f80f1dedd57e8823..3bf6e8298ebd870d8f769bc3ab268a78
  
  # Special value for 'License File' field used to indicate that the license file
  # should not be used in about:credits.
-@@ -475,7 +477,8 @@ def FindThirdPartyDirs(prune_paths, root):
+@@ -479,7 +481,8 @@ def FindThirdPartyDirs(prune_paths, root):
              if skip in dirs:
                  dirs.remove(skip)
  

@@ -16,6 +16,7 @@
 #include "brave/components/brave_prochlo/brave_prochlo_message.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
 #include "chrome/browser/browser_process.h"
+#include "url/gurl.h"
 
 class PrefRegistrySimple;
 

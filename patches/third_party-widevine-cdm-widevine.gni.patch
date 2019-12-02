@@ -1,14 +1,13 @@
 diff --git a/third_party/widevine/cdm/widevine.gni b/third_party/widevine/cdm/widevine.gni
-index 1fe47e92ffb1442159ead7b696884bc8cc4bda83..cef3cb33eb2d7f396830540b7c7086aceae47ec0 100644
+index 580e5bbcfcb4e90810d9aac53a2bd03776070b92..ba09d096bfbe598251eeca01e9ef155f9408953c 100644
 --- a/third_party/widevine/cdm/widevine.gni
 +++ b/third_party/widevine/cdm/widevine.gni
-@@ -37,6 +37,9 @@ enable_widevine_cdm_component =
+@@ -37,6 +37,8 @@ enable_widevine_cdm_component =
  
  # Widevine CDM is bundled as part of Google Chrome builds.
  bundle_widevine_cdm = enable_library_widevine_cdm && is_chrome_branded
-+if (brave_chromium_build) {
-+  bundle_widevine_cdm = enable_library_widevine_cdm && is_desktop_linux
-+}
++bundle_widevine_cdm = enable_library_widevine_cdm && is_desktop_linux
++enable_widevine_cdm_component = enable_library_widevine_cdm && (is_win || is_mac)
  
  enable_widevine_cdm_host_verification =
      enable_library_widevine_cdm && enable_cdm_host_verification

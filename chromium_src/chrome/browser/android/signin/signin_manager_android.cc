@@ -12,7 +12,7 @@ namespace {
 class UnusedClass {
  private:
   void test() {
-    Java_SigninManager_create(nullptr, 0ll, nullptr);
+    Java_SigninManager_create(nullptr, 0ll, nullptr, nullptr, nullptr);
   }
 };
 }  // namespace
@@ -20,4 +20,3 @@ class UnusedClass {
 #define Java_SigninManager_create Java_BraveSigninManager_create
 #include "../../../../../../chrome/browser/android/signin/signin_manager_android.cc"  // NOLINT
 #undef Java_SigninManager_create
-

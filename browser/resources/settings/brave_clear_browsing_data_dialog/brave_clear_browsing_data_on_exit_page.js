@@ -54,11 +54,6 @@ Polymer({
     return changed;
   },
 
-  siteSettingsLabel_: function (siteSettings, contentSettings) {
-    return loadTimeData.getBoolean('enableSiteSettings') ? siteSettings :
-                                                           contentSettings;
-  },
-
   updateModified_: function (checkbox) {
     let modified = false;
     const boxes = this.$.checkboxes.querySelectorAll('settings-checkbox');

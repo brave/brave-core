@@ -31,7 +31,7 @@ source_set("profiles") {
     "//chrome/common",
     "//components/gcm_driver:gcm_buildflags",
     "//components/translate/core/browser",
-    "//content/public/common",
+    "//third_party/blink/public/common",
     "//ui/base",
   ]
 }

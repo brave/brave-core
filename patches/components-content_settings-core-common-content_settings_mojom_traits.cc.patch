@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/common/content_settings_mojom_traits.cc b/components/content_settings/core/common/content_settings_mojom_traits.cc
-index e4faf6a2a5c451e4f8bf561d762a7f44d6f811d5..7e238dea36f562770068b460bc4a99b70b48a123 100644
+index 84eceacac92268b43302fed7ce3358e1aa4b5adb..863e78557ba5cb2fd91a9c7596921d4aa3288c13 100644
 --- a/components/content_settings/core/common/content_settings_mojom_traits.cc
 +++ b/components/content_settings/core/common/content_settings_mojom_traits.cc
 @@ -101,6 +101,8 @@ bool StructTraits<content_settings::mojom::RendererContentSettingRulesDataView,
@@ -8,6 +8,6 @@ index e4faf6a2a5c451e4f8bf561d762a7f44d6f811d5..7e238dea36f562770068b460bc4a99b7
           data.ReadClientHintsRules(&out->client_hints_rules) &&
 +         data.ReadFingerprintingRules(&out->fingerprinting_rules) &&
 +         data.ReadBraveShieldsRules(&out->brave_shields_rules) &&
-          data.ReadPopupRedirectRules(&out->popup_redirect_rules);
+          data.ReadPopupRedirectRules(&out->popup_redirect_rules) &&
+          data.ReadMixedContentRules(&out->mixed_content_rules);
  }
- 

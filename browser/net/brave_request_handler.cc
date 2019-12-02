@@ -191,8 +191,8 @@ void BraveRequestHandler::RunCallbackForRequestIdentifier(
       callbacks_.find(request_identifier);
   // We intentionally do the async call to maintain the proper flow
   // of URLLoader callbacks.
-  base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::UI},
-                           base::BindOnce(std::move(it->second), rv));
+  base::PostTask(FROM_HERE, {content::BrowserThread::UI},
+                 base::BindOnce(std::move(it->second), rv));
 }
 
 // TODO(iefremov): Merge all callback containers into one and run only one loop

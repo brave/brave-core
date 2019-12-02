@@ -18,7 +18,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
-#include "content/public/common/webrtc_ip_handling_policy.h"
+#include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
 #include "brave/browser/gcm_driver/brave_gcm_channel_status.h"

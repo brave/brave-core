@@ -1,10 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_UTILITY_IMPORTER_BRAVE_EXTERNAL_PROCESS_IMPORTER_BRIDGE_H_
 #define BRAVE_UTILITY_IMPORTER_BRAVE_EXTERNAL_PROCESS_IMPORTER_BRIDGE_H_
 
+#include <string>
 #include <vector>
 
 #include "chrome/utility/importer/external_process_importer_bridge.h"
@@ -16,8 +18,7 @@ class BraveExternalProcessImporterBridge :
   // |observer| must outlive this object.
   BraveExternalProcessImporterBridge(
       const base::flat_map<uint32_t, std::string>& localized_strings,
-      scoped_refptr<chrome::mojom::ThreadSafeProfileImportObserverPtr>
-          observer);
+      mojo::SharedRemote<chrome::mojom::ProfileImportObserver> observer);
 
   void SetCookies(const std::vector<net::CanonicalCookie>& cookies) override;
   void UpdateStats(const BraveStats& stats) override;

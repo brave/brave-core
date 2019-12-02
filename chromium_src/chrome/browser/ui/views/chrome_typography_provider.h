@@ -8,12 +8,22 @@
 
 #include "ui/views/style/typography_provider.h"
 
-#define GetColor \
-        GetColor_ChromiumImpl(const views::View& view, \
-                   int context, \
-                   int style) const; \
-        SkColor GetColor
+#define ChromeTypographyProvider ChromeTypographyProvider_ChromiumImpl
 #include "../../../../../../chrome/browser/ui/views/chrome_typography_provider.h"
-#undef GetColor
+#undef ChromeTypographyProvider
+
+class ChromeTypographyProvider : public ChromeTypographyProvider_ChromiumImpl {
+ public:
+  using ChromeTypographyProvider_ChromiumImpl::
+      ChromeTypographyProvider_ChromiumImpl;
+
+  // TypographyProvider:
+  SkColor GetColor(const views::View& view,
+                   int context,
+                   int style) const override;
+
+ private:
+  DISALLOW_COPY_AND_ASSIGN(ChromeTypographyProvider);
+};
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_CHROME_TYPOGRAPHY_PROVIDER_H_

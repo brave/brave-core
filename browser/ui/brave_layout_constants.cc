@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -13,12 +14,9 @@ base::Optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
   // const bool hybrid = mode == ui::MaterialDesignController::MATERIAL_HYBRID;
   // const bool touch_optimized_material =
   //     ui::MaterialDesignController::touch_ui();
-  // const bool newer_material = ui::MaterialDesignController::IsNewerMaterialUi();
+  // const bool newer_material =
+  //     ui::MaterialDesignController::IsNewerMaterialUi();
   switch (constant) {
-    case LOCATION_BAR_BUBBLE_CORNER_RADIUS:
-      // Note: this is likely to be moved in to views/layout_provider.h
-      // in a future chromium version.
-      return 4;
     case TAB_HEIGHT: {
       return (touch ? 41 : 30) + GetLayoutConstant(TABSTRIP_TOOLBAR_OVERLAP);
     }

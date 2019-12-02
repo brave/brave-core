@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="pt-BR">
-<translation id="5194812628624740897">Ao desconectar <ph name="USERNAME"/>, o histórico, os favoritos, as configurações e outros dados do Brave armazenados neste dispositivo serão excluídos. Os dados armazenados na sua Conta do Brave Software não serão apagados e poderão ser gerenciados no <ph name="GOOGLE_DASHBOARD_LINK"/>Painel de Controle do Brave Software<ph name="END_GOOGLE_DASHBOARD_LINK"/>.</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="2069994121511856876">Brave Nightly</translation>
 <translation id="4947625801334180582">Brave Beta</translation>
@@ -18,8 +17,6 @@
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/>: Brave Beta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/>: Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/>: Brave Canary</translation>
-<translation id="4685833011652060085">Obter ajuda para usar o Brave</translation>
-<translation id="6474707902830053522">Obter ajuda para usar o Brave OS</translation>
 <translation id="8992261409816268381">Autores do Brave</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> Autores do Brave. Todos os direitos reservados.</translation>
 <translation id="2310890394934209120">O Brave OS tornou-se possível graças a um <ph name="BEGIN_LINK_CROS_OSS"/>software de código aberto<ph name="END_LINK_CROS_OSS"/> adicional.</translation>
@@ -65,7 +62,6 @@
 <translation id="2770231113462710648">Alterar navegador padrão para:</translation>
 <translation id="2485422356828889247">Desinstalar</translation>
 <translation id="3343095737966473035">O Brave não é seu navegador padrão</translation>
-<translation id="6715663530666325392">Configure a sincronização para salvar suas características de navegador personalizadas na web e acessá-las do Brave em qualquer computador.</translation>
 <translation id="5536657158619734169">Há uma nova versão do Brave disponível.</translation>
 <translation id="505042220086416644">Há uma nova versão ainda mais rápida do Brave disponível.</translation>
 <translation id="5616153642055197778">Há uma nova versão mais segura do Brave disponível.</translation>
@@ -81,19 +77,10 @@
 <translation id="3834935463915107022">Sair do Brave mesmo assim?</translation>
 <translation id="8797356639448065696">O Brave está em modo de segundo plano.</translation>
 <translation id="2339258256897053758">As chaves da API do Brave Software não foram encontradas. Algumas funcionalidades do Brave serão desativadas.</translation>
-<translation id="2182657378556811785">Atualização quase concluída. Reinicie o Brave para concluí-la.</translation>
-<translation id="5906655207909574370">Atualização quase concluída. Reinicie o dispositivo para concluí-la.</translation>
-<translation id="5877064549588274448">Canal alterado. Reinicie o dispositivo para aplicar as alterações.</translation>
-<translation id="5131485705787281074">O Brave está atualizado.</translation>
-<translation id="8667808506758191620">Seu dispositivo <ph name="DEVICE_TYPE"/> está atualizado.</translation>
-<translation id="5047208012586153436">Atualizando o Brave....</translation>
-<translation id="6970811910055250180">Atualizando o dispositivo...</translation>
-<translation id="8030318113982266900">Atualizando seu dispositivo para o canal <ph name="CHANNEL_NAME"/>...</translation>
 <translation id="7861579472672677409">A extensão <ph name="EXTENSION_NAME"/> foi adicionada ao Brave</translation>
 <translation id="8516116288943000095">Limpar também os dados do Brave (<ph name="URL"/>)</translation>
 <translation id="4054452651944170004">Esconder no menu do Brave</translation>
 <translation id="5660079256336839395">Esconder no menu do Brave</translation>
-<translation id="7456658570432774853">Ajude a melhorar o Brave informando as configurações atuais</translation>
 <translation id="6134859571175647580">Aviso: o Brave não pode impedir que as extensões gravem seu histórico de navegação. Para desativar essa extensão no modo de navegação sem rastros, desmarque esta opção.</translation>
 <translation id="777113543093865885">Remover do Brave</translation>
 <translation id="6078442581074612226">No Brave</translation>
@@ -109,18 +96,9 @@
 <translation id="2534623228451928732">Atualizar o &amp;Brave OS</translation>
 <translation id="8447483940522230788">Assistente do Brave</translation>
 <translation id="5477319665405831211">Sincronize e personalize o Brave em todos os seus dispositivos</translation>
-<translation id="4934157190377700991">Você está conectado ao Brave no momento</translation>
-<translation id="4100716194836114130">Este é seu Brave</translation>
-<translation id="8296145982386097283">Você compartilha um computador? Agora é possível configurar o Brave do jeito que você gosta.</translation>
-<translation id="1672124279374861424">Depois de remover sua conta do Brave, pode ser necessário recarregar as guias abertas para que a alteração entre em vigor.</translation>
-<translation id="9197493712748167998">Você está usando <ph name="PROFILE_EMAIL"/> para sincronizar suas informações do Brave. Para atualizar suas preferências de sincronização ou usar o Brave sem uma Conta do Brave Software, vá para <ph name="SETTINGS_LINK"/>.</translation>
 <translation id="8132634101975074716">Você está conectado ao Brave.</translation>
 <translation id="4567424176335768812">Você está conectado como <ph name="USER_EMAIL_ADDRESS"/>. Agora você pode acessar seus favoritos, histórico e outras configurações em todos os seus dispositivos conectados.</translation>
-<translation id="6888049487162027489">Agora, você está conectado ao Brave. A sincronização está desativada por seu administrador.</translation>
 <translation id="2925193881330501265">Você estava conectado ao Brave como <ph name="USER_EMAIL_ADDRESS"/>. Use a mesma conta para fazer login novamente.</translation>
-<translation id="386092803020435298">Anteriormente, alguém fez login no Brave neste computador como <ph name="ACCOUNT_EMAIL_LAST"/>. Se esta não for sua conta, crie um novo usuário do Brave para manter suas informações separadas.
-
-Se você decidir fazer login assim mesmo, as informações do Brave, como favoritos, histórico e outras configurações serão mescladas com as informações de <ph name="ACCOUNT_EMAIL_NEW"/>.</translation>
 <translation id="847561904663814268">Anteriormente, alguém fez login no Brave neste computador como <ph name="ACCOUNT_EMAIL_LAST"/>. Crie um novo usuário do Brave para manter suas informações separadas.</translation>
 <translation id="1853997773668795891">Vincular seus dados do Brave a esta conta?</translation>
 <translation id="1326766910007115955">Você está fazendo login com uma conta gerenciada e concedendo ao administrador da conta o controle sobre seu perfil do Brave. Seus dados do Brave, como aplicativos, favoritos, histórico, senhas e outras configurações serão permanentemente vinculados a <ph name="USER_NAME"/>. Você pode excluir esses dados pelo painel das Contas do Brave Software, mas não pode associá-los a outra conta. <ph name="LEARN_MORE"/></translation>
@@ -140,10 +118,6 @@ Se você decidir fazer login assim mesmo, as informações do Brave, como favori
 <translation id="1459786048951724030">O Brave OS não pôde sincronizar seus dados devido a um erro durante o login.</translation>
 <translation id="6813094029720377619">Você limpa os cookies ao sair do Brave. Para retomar a sincronização, altere as <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">configurações</translation>
-<translation id="663059986967017181">Copiado no Brave</translation>
-<translation id="1457432835062259213">Iniciador de aplicativos do Brave</translation>
-<translation id="82609232232243542">Fazer login no Brave Software Brave</translation>
-<translation id="2924628237198507508">É necessário estar conectado ao Brave para usar os aplicativos. Isso permite que o Brave sincronize seus aplicativos, favoritos, histórico, senhas e outras configurações entre diferentes dispositivos.</translation>
 <translation id="380197516434040304">Remover do Brave...</translation>
 <translation id="300669147395456190">Aplicativos do Brave Software Brave</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> requer que você leia e aceite os Termos de Serviço a seguir antes de utilizar o serviço. Esses termos não ampliam, modificam nem limitam os Termos do Brave OS.</translation>
@@ -155,6 +129,7 @@ Se você decidir fazer login assim mesmo, as informações do Brave, como favori
 <translation id="669092380621816981">Os dados de navegação dessa pessoa serão excluídos deste dispositivo. Para recuperar os dados, faça login no Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="2827121003398607864">O Brave ficou ainda melhor</translation>
 <translation id="7192666605334070839">Agora ficou mais fácil usar o Brave com sua Conta do Brave Software e em computadores compartilhados.</translation>
+<translation id="4100716194836114130">Este é seu Brave</translation>
 <translation id="3511996232906761537">Sua Web, seus favoritos e demais conteúdo do Brave estão aqui.</translation>
 <translation id="7406627712452599344">Convidados podem usar o Brave sem deixar nada para trás.</translation>
 <translation id="5659384504794665581">Se você usa um computador compartilhado, seus amigos e familiares podem navegar separadamente e configurar o Brave da maneira que desejarem.</translation>
@@ -182,7 +157,7 @@ Se você decidir fazer login assim mesmo, as informações do Brave, como favori
 <translation id="7863882214613921971">Abrir link em nova &amp;guia do Brave</translation>
 <translation id="6554952862405000915">Abrir link na janela &amp;sem rastros do Brave</translation>
 <translation id="4805806622840861220">Reiniciar Brave</translation>
-<translation id="2560046583427795596">Uma nova atualização está disponível para o Brave e será aplicada assim que você reiniciá-lo.</translation>
+<translation id="8274659559228306809">{COUNT,plural, =0{Uma nova atualização está disponível para o Brave e será feita assim que você reiniciá-lo.}=1{Uma nova atualização está disponível para o Brave e será feita assim que você reiniciá-lo. Sua janela anônima não será aberta novamente.}one{Uma nova atualização está disponível para o Brave e será feita assim que você reiniciá-lo. Sua janela anônima não será aberta novamente.}other{Uma nova atualização está disponível para o Brave e será feita assim que você reiniciá-lo. Suas # janelas anônimas não serão abertas novamente.}}</translation>
 <translation id="2799223571221894425">Reiniciar</translation>
 <translation id="2522086024276534909">Reiniciar o Brave OS</translation>
 <translation id="8183252473547465084">É necessário reiniciar o Brave OS para que a atualização seja aplicada.</translation>
@@ -201,48 +176,38 @@ Se você decidir fazer login assim mesmo, as informações do Brave, como favori
 <translation id="2513524988380267210">{SECONDS,plural, =1{O Brave será reiniciado em 1 segundo}one{O Brave será reiniciado em # segundo}other{O Brave será reiniciado em # segundos}}</translation>
 <translation id="5646769069113654257">Reinicie o Brave agora</translation>
 <translation id="8668413672647811944">Uma atualização de segurança especial para o Brave acabou de ser aplicada. Reinicie agora, e suas guias serão restauradas.</translation>
-<translation id="763369711159699222">Ajudar a melhorar o Brave</translation>
-<translation id="1156940037717341650">Você pode ajudar a tornar o Brave mais seguro e mais fácil de usar ao informar automaticamente ao Brave Software detalhes sobre possíveis incidentes de segurança.</translation>
 <translation id="6791166902140255175">Guia do Brave</translation>
 <translation id="2555639463117073782">Reiniciar o Brave para ativar o plug-in <ph name="PLUGIN_NAME"/></translation>
-<translation id="8899693649891674038">Instale o Brave no seu smartphone. Enviaremos um SMS para seu número.</translation>
-<translation id="1570795130102031380">Instale o Brave no seu smartphone. Enviaremos um SMS para seu número: <ph name="PHONE_NUMBER"/></translation>
-<translation id="1609678321160597289">Instale o Brave no seu smartphone. Enviaremos um SMS para o número de recuperação da sua conta.</translation>
-<translation id="2965084188004448871">Instale o Brave no seu smartphone. Enviaremos um SMS para o número de recuperação da sua conta: <ph name="PHONE_NUMBER"/></translation>
-<translation id="8358191771897395012">use o Brave no seu iPhone</translation>
 <translation id="2034072705932785495">O Brave precisa de permissão para este site acessar sua câmera</translation>
 <translation id="3335606533094650083">O Brave precisa de permissão para este site acessar seu microfone</translation>
 <translation id="4831743161813926460">O Brave precisa de permissão para este site acessar sua câmera e seu microfone</translation>
 <translation id="696826782632239602">O Brave precisa acessar seu local para compartilhá-lo com este site</translation>
 <translation id="7798069806040634998">O Brave precisa de acesso de armazenamento para fazer o download de arquivos</translation>
 <translation id="7685904775439037072">Assim que o Brave tiver acesso, os sites poderão solicitar acesso.</translation>
-<translation id="5805364706385912897">Como esta página usa muita memória, o Brave a pausou.</translation>
-<translation id="5138664332909611586">Como esta página usa muita memória, o Brave removeu parte do conteúdo.</translation>
 <translation id="1744365871163268756">Aguarde enquanto o Brave instala as últimas atualizações do sistema.</translation>
-<translation id="5693614905241031118">O Brave é atualizado automaticamente para que você sempre tenha a versão mais recente.</translation>
-<translation id="6141293433381251973">O Brave é atualizado automaticamente para que você sempre tenha a versão mais recente. Quando o download estiver concluído, o Brave será reiniciado e você estará pronto.</translation>
+<translation id="8000338990735917615">As versões futuras do Brave serão instaladas automaticamente.</translation>
+<translation id="2975476470948647918">As versões futuras do Brave serão instaladas automaticamente. Quando o download terminar, o Brave será reiniciado e estará tudo pronto para você.</translation>
 <translation id="7808415789955822133">Termos do Brave OS</translation>
 <translation id="7207456302801184289">Bem-vindo ao Brave</translation>
 <translation id="3507835409099344374">Acessar as configurações de notificação do Brave</translation>
 <translation id="1026406809507858026">{0,plural, =0{Uma atualização do Brave está disponível}=1{Uma atualização do Brave está disponível}one{Uma atualização do Brave está disponível há # dia}other{Uma atualização do Brave está disponível há # dias}}</translation>
-<translation id="720532315408041257">Seu administrador pede que você reinicie o Brave para que essa atualização seja aplicada</translation>
+<translation id="3829358914761176693">{COUNT,plural, =0{Seu administrador pede que você reinicie o Brave para que esta atualização seja feita.}=1{Seu administrador pede que você reinicie o Brave para que esta atualização seja feita. Sua janela anônima não será aberta novamente.}one{Seu administrador pede que você reinicie o Brave para que esta atualização seja feita. Sua janela anônima não será aberta novamente.}other{Seu administrador pede que você reinicie o Brave para que esta atualização seja feita. Suas # janelas anônimas não serão abertas novamente.}}</translation>
 <translation id="5337999052834672687">{0,plural, =1{Reiniciar o Brave em 1 dia}one{Reiniciar o Brave em # dia}other{Reiniciar o Brave em # dias}}</translation>
 <translation id="310518206836658214">{0,plural, =1{O Brave será reiniciado em 1 hora}one{O Brave será reiniciado em # hora}other{O Brave será reiniciado em # horas}}</translation>
 <translation id="3186363903915641692">{0,plural, =1{O Brave será reiniciado em 1 minuto}one{O Brave será reiniciado em # minuto}other{O Brave será reiniciado em # minutos}}</translation>
 <translation id="3574823187131579180">{0,plural, =0{O Brave será reiniciado agora}=1{O Brave será reiniciado em 1 segundo}one{O Brave será reiniciado em # segundo}other{O Brave será reiniciado em # segundos}}</translation>
-<translation id="7595187113648413294">Seu administrador exige que você reinicie o Brave para que uma atualização seja aplicada</translation>
+<translation id="552349673358711446">{COUNT,plural, =0{Seu administrador exige que você reinicie o Brave para que uma atualização seja feita.}=1{Seu administrador exige que você reinicie o Brave para que uma atualização seja feita. Sua janela anônima não será aberta novamente.}one{Seu administrador exige que você reinicie o Brave para que uma atualização seja feita. Sua janela anônima não será aberta novamente.}other{Seu administrador exige que você reinicie o Brave para que uma atualização seja feita. Suas # janelas anônimas não serão abertas novamente.}}</translation>
 <translation id="3052349005266761501">Iniciando o Brave…</translation>
 <translation id="1197672524850678392">Não foi possível iniciar o Brave. Tente novamente.</translation>
-<translation id="6040143037577758943">Fechar</translation>
 <translation id="5147525139567260139">Compartilhar uma guia do Brave</translation>
 <translation id="8541922081612557424">Sobre o Brave</translation>
 <translation id="3262506503470845422">Ajuda com o Brave</translation>
 <translation id="1864557848095568223">Atualizando o Brave</translation>
 <translation id="1786715389543715322">Atualizando o Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
+<translation id="2182657378556811785">Atualização quase concluída. Reinicie o Brave para concluí-la.</translation>
 <translation id="8208853227947884571">O Brave está atualizado</translation>
-<translation id="6756417787837743699">Para detalhes do Brave OS, veja <ph name="LINK_BEGIN"/>
-Sobre o Brave OS<ph name="LINK_END"/></translation>
 <translation id="6686872257969654608">Sobre o Brave OS</translation>
+<translation id="7674116293463255181">Para verificar se o dispositivo está atualizado, acesse as <ph name="LINK_BEGIN"/>Configurações do Brave OS<ph name="LINK_END"/></translation>
 <translation id="2280363356796735201">Ajuda com o Brave OS</translation>
 <translation id="38898988211673781">Limpar cookies e dados de sites ao sair do Brave</translation>
 <translation id="5253815230176279256">Brave Software Pay (copiado para o Brave)</translation>
@@ -260,6 +225,7 @@ Sobre o Brave OS<ph name="LINK_END"/></translation>
 <translation id="5853262807109651878">Essa ação excluirá <ph name="ITEMS_COUNT"/> itens deste dispositivo. Para recuperar seus dados mais tarde, faça login no Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="4784414698887946907">Essa ação excluirá seus dados de navegação deste dispositivo. Para recuperá-los mais tarde, faça login no Brave como <ph name="USER_EMAIL"/>.</translation>
 <translation id="4518479204315969707">Nome e foto do Brave</translation>
+<translation id="82609232232243542">Fazer login no Brave Software Brave</translation>
 <translation id="8372880274820509128">Para maior segurança, o Brave criptografará seus dados.</translation>
 <translation id="7445061995866044926">Sair do Brave?</translation>
 <translation id="7453070689008684791">O Brave acessará seu Drive para fazer sugestões na barra de endereço</translation>

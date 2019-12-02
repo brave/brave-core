@@ -186,6 +186,7 @@ source_set("ui") {
     "//components/sessions",
     "//content/public/browser",
     "//content/public/common",
+    "//services/network/public/cpp",
     "//skia",
     "//ui/accessibility",
     "//ui/base",
@@ -206,6 +207,7 @@ source_set("ui") {
     deps += [
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser:version_info",
+      "//third_party/blink/public/common",
     ]
   }
 
@@ -225,6 +227,8 @@ source_set("ui") {
       "views/brave_actions/brave_actions_container.h",
       "views/location_bar/brave_location_bar_view.cc",
       "views/location_bar/brave_location_bar_view.h",
+      "views/location_bar/brave_star_view.cc",
+      "views/location_bar/brave_star_view.h",
       "views/profiles/brave_avatar_toolbar_button.cc",
       "views/profiles/brave_avatar_toolbar_button.h",
       "views/tabs/brave_alert_indicator.cc",

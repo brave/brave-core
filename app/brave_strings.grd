@@ -125,9 +125,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         <part file="settings_brave_strings.grdp" />
       </if>
 
-      <message name="IDS_PROFILES_DISCONNECT_MANAGED_PROFILE_TEXT" desc="Message explaining to the user what will happen if they disconnect the managed profile.">
-        Disconnecting <ph name="USERNAME">$1<ex>someone@example.com</ex></ph> will clear your history, bookmarks, settings, and other Brave data stored on this device. Data stored in your Brave Account will not be cleared and can be managed on <ph name="GOOGLE_DASHBOARD_LINK">&lt;a target="_blank" href="$2"&gt;</ph>Brave Dashboard<ph name="END_GOOGLE_DASHBOARD_LINK">&lt;/a&gt;</ph>.
-      </message>
       <message name="IDS_PRODUCT_NAME" desc="The Brave application name">
         Brave
       </message>
@@ -195,16 +192,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <message name="IDS_ACCESSIBLE_CANARY_BROWSER_WINDOW_TITLE_FORMAT" desc="The format for the accessible name of a tabbed browser window for the canary (nightly build) channel version of the browser">
         <ph name="PAGE_TITLE">$1<ex>Brave</ex></ph> - Brave Canary
       </message>
-      <if expr="not chromeos">
-        <message name="IDS_GET_HELP_USING_CHROME" desc="Text of the button which takes the user to the Brave help page.">
-          Get help with using Brave
-        </message>
-      </if>
-      <if expr="chromeos">
-        <message name="IDS_GET_HELP_USING_CHROME" desc="Text of the button which takes the user to the Brave help page.">
-          Get help with using Brave OS
-        </message>
-      </if>
       <message name="IDS_ABOUT_VERSION_COMPANY_NAME" desc="Company name on the about pages">
         Brave Software Inc
       </message>
@@ -389,11 +376,6 @@ Brave is unable to recover your settings.
       <message name="IDS_DEFAULT_BROWSER_INFOBAR_TEXT" desc="Text to show in an infobar when Brave is not the current default browser.">
         Brave isn't your default browser
       </message>
-      <if expr="chromeos">
-        <message name="IDS_SYNC_OVERVIEW" desc="Brave OS: The message that appears in the options dialog when sync has not been set up by the user.">
-          Set up Sync to save your personalized browser features to the web and access them from Brave on any computer.
-        </message>
-      </if>
       <if expr="is_win">
         <!-- Try Brave Toast Dialog -->
         <message name="IDS_TRY_TOAST_HEADING" desc="Top line of the try-chrome-again dialog">
@@ -464,48 +446,6 @@ Brave is unable to recover your settings.
         Brave API keys are missing. Some functionality of Brave will be disabled.
       </message>
 
-      <!-- About Brave page -->
-      <if expr="not chromeos">
-        <message name="IDS_UPGRADE_SUCCESSFUL_RELAUNCH" desc="Status label: Successfully updated Brave">
-          Nearly up to date! Relaunch Brave to finish updating.
-        </message>
-      </if>
-      <if expr="chromeos">
-        <message name="IDS_UPGRADE_SUCCESSFUL_RELAUNCH" desc="Status label: Successfully updated Brave OS">
-          Nearly up to date! Restart your device to finish updating.
-        </message>
-      </if>
-      <if expr="chromeos">
-        <message name="IDS_UPGRADE_SUCCESSFUL_CHANNEL_SWITCH" desc="Status label: Channel was successfully switched on Brave OS">
-          Channel changed. Restart your device to apply changes.
-        </message>
-      </if>
-      <if expr="not chromeos">
-        <message name="IDS_UPGRADE_UP_TO_DATE" desc="Status label: Already up to date (Brave)">
-          Brave is up to date.
-        </message>
-      </if>
-      <if expr="chromeos">
-        <message name="IDS_UPGRADE_UP_TO_DATE" desc="Status label: Already up to date (Brave OS)">
-          Your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> is up to date.
-        </message>
-      </if>
-      <if expr="not chromeos">
-        <message name="IDS_UPGRADE_UPDATING" desc="Status label: Updating Brave">
-          Updating Brave...
-        </message>
-      </if>
-      <if expr="chromeos">
-        <message name="IDS_UPGRADE_UPDATING" desc="Status label: Updating Brave OS">
-          Updating your device...
-        </message>
-      </if>
-      <if expr="chromeos">
-        <message name="IDS_UPGRADE_UPDATING_CHANNEL_SWITCH" desc="Status label: Updating Brave OS to a specified channel">
-          Updating your device to <ph name="CHANNEL_NAME">$1<ex>stable</ex></ph> channel...
-        </message>
-      </if>
-
       <!-- Extension/App install prompt -->
       <if expr="enable_extensions">
         <!-- Extension installed bubble -->
@@ -533,11 +473,6 @@ Brave is unable to recover your settings.
           </message>
         </if>
       </if>
-
-      <!-- settings reset bubble messages -->
-      <message name="IDS_REPORT_BUBBLE_TEXT" desc="Text for the settings reset bubble reporting checkbox.">
-        Help make Brave better by reporting the current settings
-      </message>
 
       <!-- chrome://settings/extensions page -->
       <message name="IDS_EXTENSIONS_INCOGNITO_WARNING" desc="Warns the user that Brave cannot prevent extensions from recording history in private mode. Displayed in extensions management UI after an extension is selected to be run in private mode.">
@@ -626,25 +561,6 @@ Brave is unable to recover your settings.
         Sync and personalize Brave across your devices
       </message>
 
-      <!-- Tutorial card in the avatar menu bubble -->
-      <message name="IDS_PROFILES_CONFIRM_SIGNIN_TUTORIAL_TITLE" desc="The title of the tutorial card in the avatar menu bubble view shown when a user signs in to Brave.">
-        You're now signed in to Brave
-      </message>
-      <message name="IDS_PROFILES_WELCOME_UPGRADE_TUTORIAL_TITLE" desc="Title of the tutorial card in the avatar menu bubble view that introduces an upgrade user to the new profile management UI.">
-        This is your Brave
-      </message>
-      <message name="IDS_PROFILES_WELCOME_UPGRADE_TUTORIAL_CONTENT_TEXT" desc="The main content of the tutorial card in the avatar menu bubble view that introduces an upgrade user to the new profile management UI.">
-        Share a computer? Now you can set up Brave just the way you like it.
-      </message>
-
-      <!-- Account removal view in the avatar menu bubble -->
-      <message name="IDS_PROFILES_ACCOUNT_REMOVAL_TEXT" desc="Main text of the account removal view when removing a secondary account.">
-        After removing your account from Brave, you may need to reload your open tabs to take effect.
-      </message>
-      <message name="IDS_PROFILES_PRIMARY_ACCOUNT_REMOVAL_TEXT" desc="Main text of the account removal view when removing a primary account.">
-        You're using <ph name="PROFILE_EMAIL">$1<ex>jessica@gmail.com</ex></ph> to sync your Brave stuff. To update your sync preference or to use Brave without a Brave account, visit <ph name="SETTINGS_LINK">$2<ex>settings</ex></ph>.
-      </message>
-
       <!-- One click sign-in infobar -->
       <if expr="not chromeos">
         <!-- New one-click sign-in dialog contents for SAML support -->
@@ -654,16 +570,8 @@ Brave is unable to recover your settings.
         <message name="IDS_ONE_CLICK_SIGNIN_DIALOG_MESSAGE_NEW" desc="The message of the one click sign-in dialog.">
           You're signed in as <ph name="USER_EMAIL_ADDRESS">$1<ex>foo@gmail.com</ex></ph>. Now you can access your bookmarks, history, and other settings on all your signed in devices.
         </message>
-        <message name="IDS_ONE_CLICK_SIGNIN_BUBBLE_SYNC_DISABLED_MESSAGE" desc="The body of the sign-in bubble, when sync has been disabled.">
-          You're now signed in to Brave! Sync is disabled by your administrator.
-        </message>
         <message name="IDS_SYNC_WRONG_EMAIL" desc="Message shown when sync setup failed due to the user entering the wrong email address for sign-in.">
           You were signed in to Brave as <ph name="USER_EMAIL_ADDRESS">$1<ex>foo@gmail.com</ex></ph>. Please use the same account to sign in again.
-        </message>
-        <message name="IDS_ONE_CLICK_SIGNIN_CONFIRM_EMAIL_DIALOG_MESSAGE" desc="Error message to display when setting up sync for a second time and the user name is different from the previous user name.">
-          Someone previously signed in to Brave on this computer as <ph name="ACCOUNT_EMAIL_LAST">$1<ex>user@example.com</ex></ph>. If that isn't your account, create a new Brave user to keep your information separate.
-
-Signing in anyway will merge Brave information like bookmarks, history, and other settings to <ph name="ACCOUNT_EMAIL_NEW">$2<ex>user@example.com</ex></ph>.
         </message>
         <message name="IDS_SYNC_USED_PROFILE_ERROR" desc="An error message shown when user tries to sign in to a profile that is used by other user name before.">
           Someone previously signed in to Brave on this computer as <ph name="ACCOUNT_EMAIL_LAST">$1<ex>user@example.com</ex></ph>. Please create a new Brave user to keep your information separate.
@@ -748,28 +656,8 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
         settings
       </message>
 
-      <if expr="is_android">
-        <message name="IDS_AUTOFILL_DESCRIBE_LOCAL_COPY" desc="Text label that described a Wallet credit card which has been copied to the local Brave instance.">
-          Copied to Brave
-        </message>
-      </if>
-
       <!-- App list -->
       <if expr="enable_app_list">
-        <message name="IDS_APP_LIST_SHORTCUT_NAME" desc="Name for the Brave App List to appear in the taskbar and in any shortcuts to it.">
-          Brave App Launcher
-        </message>
-        <if expr="is_win or is_macosx">
-          <message name="IDS_APP_LIST_SHORTCUT_NAME_CANARY" desc="Name for the Brave App List to appear in the taskbar and in any shortcuts to it.">
-            Brave App Launcher
-          </message>
-        </if>
-        <message name="IDS_APP_LIST_SIGNIN_HEADING" desc="Heading for when the launcher needs to sign in.">
-          Sign in to Brave
-        </message>
-        <message name="IDS_APP_LIST_SIGNIN_TEXT" desc="Text for when the launcher needs to sign in.">
-          You need to be signed in to Brave to use apps. This allows Brave to sync your apps, bookmarks, history, passwords and other settings across devices.
-        </message>
         <if expr="not use_titlecase">
           <message name="IDS_APP_LIST_EXTENSIONS_UNINSTALL" desc="Title text for the context menu item of a non-platform-app app list item that removes the app.">
             Remove from Brave...
@@ -926,19 +814,16 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
         </if>
       </if>
 
-      <if expr="not is_android">
-        <message name="IDS_RESET_PROFILE_SETTINGS_FEEDBACK" desc="Feedback label in the Reset Profile Settings dialog">
-          Help make Brave better by reporting the current settings
-        </message>
-      </if>
-
       <!-- Update Recommended dialog -->
       <if expr="not chromeos">
         <message name="IDS_UPDATE_RECOMMENDED_DIALOG_TITLE" desc="The window title for the Update Recommended dialog.">
           Relaunch Brave
         </message>
-        <message name="IDS_UPDATE_RECOMMENDED" desc="The main text of the Update Recommended dialog.">
-          A new update for Brave is available and will be applied as soon as you relaunch.
+        <message name="IDS_UPDATE_RECOMMENDED" desc="The main text of the Update Recommended dialog with a count of open private windows.">
+          {COUNT, plural,
+          =0 {A new update for Brave is available and will be applied as soon as you relaunch.}
+          =1 {A new update for Brave is available and will be applied as soon as you relaunch. Your Private window won't reopen.}
+          other {A new update for Brave is available and will be applied as soon as you relaunch. Your # Private windows won't reopen.}}
         </message>
         <message name="IDS_RELAUNCH_AND_UPDATE" desc="The button in the Update Recommended dialog which updates and relaunches Brave.">
           Relaunch
@@ -1037,14 +922,6 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
         A special security update for Brave was just applied. Restart now and we'll restore your tabs.
       </message>
 
-      <!-- Dialog that asks whether user wants to participate in Safe Browsing Extended Reporting -->
-      <message name="IDS_FEEDBACK_SERVICE_DIALOG_TITLE" desc="Title of the dialog asking whether the user wants to upload suspected malicious files for analysis">
-        Help make Brave better
-      </message>
-      <message name="IDS_FEEDBACK_SERVICE_DIALOG_EXPLANATION" desc="Explanation of the dialog asking whether the user wants to upload suspected malicious files for analysis">
-        You can help make Brave safer and easier to use by automatically reporting details of possible security incidents to Brave.
-      </message>
-
       <!-- Desktop Capture -->
       <message name="IDS_DESKTOP_MEDIA_PICKER_SOURCE_TYPE_TAB" desc="Text for the button on the window picker dialog, clicking which takes one to tab sharing">
         Brave Tab
@@ -1056,23 +933,6 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
           Restart Brave to enable <ph name="PLUGIN_NAME">$1<ex>Flash</ex></ph>
         </message>
       </if>
-
-      <!-- Desktop to iOS promotion -->
-      <message name="IDS_PASSWORD_MANAGER_DESKTOP_TO_IOS_PROMO_TEXT" desc="Text for Brave iOS Promotion appearing in the password bubble after a password is saved.">
-        Install Brave on your phone. We’ll send an SMS to your phone.
-      </message>
-      <message name="IDS_PASSWORD_MANAGER_DESKTOP_TO_IOS_PROMO_TEXT_WITH_PHONE_NUMBER" desc="Text for Brave iOS Promotion appearing in the password bubble after a password is saved.">
-        Install Brave on your phone. We’ll send an SMS to your phone: <ph name="PHONE_NUMBER">$1<ex>(650) 123-4567</ex></ph>
-      </message>
-      <message name="IDS_PASSWORD_MANAGER_DESKTOP_TO_IOS_PROMO_TEXT_V2" desc="Text for Brave iOS Promotion appearing in the password bubble after a password is saved, this one mentioning explicitly that the SMS will be sent to the recovery phone number.">
-        Install Brave on your phone. We’ll send an SMS to your account recovery phone number.
-      </message>
-      <message name="IDS_PASSWORD_MANAGER_DESKTOP_TO_IOS_PROMO_TEXT_WITH_PHONE_NUMBER_V2" desc="Text for Brave iOS Promotion appearing in the password bubble after a password is saved, this one mentioning explicitly that the SMS will be sent to the recovery phone number.">
-        Install Brave on your phone. We’ll send an SMS to your account recovery phone number: <ph name="PHONE_NUMBER">$1<ex>(650) 123-4567</ex></ph>
-      </message>
-      <message name="IDS_FOOTNOTE_DESKTOP_TO_IOS_PROMO_LINK" desc="Text of the link to get Brave on the iPhone from the Brave iOS promotion displayed on the bottom of bubbles.">
-        get Brave on your iPhone
-      </message>
 
       <!-- Runtime permission strings -->
       <if expr="is_android">
@@ -1099,30 +959,16 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
         </message>
       </if>
 
-      <!-- OOM intervention message -->
-      <if expr="is_android">
-        <message name="IDS_NEAR_OOM_INTERVENTION_MESSAGE" desc="The message stating that the browser intervened to stop the page using too much memory.">
-           This page uses too much memory, so Brave paused it.
-        </message>
-      </if>
-
-      <!-- OOM intervention message -->
-      <if expr="is_android">
-        <message name="IDS_NEAR_OOM_REDUCTION_MESSAGE" desc="The message stating that the browser removed some content of the page using too much memory.">
-           This page uses too much memory, so Brave removed some content.
-        </message>
-      </if>
-
       <!-- OOBE -->
       <if expr="chromeos">
         <message name="IDS_INSTALLING_UPDATE" desc="Label shown on the updates installation screen during OOBE">
           Please wait while Brave installs the latest system updates.
         </message>
         <message name="IDS_CHECKING_FOR_UPDATE_MSG" desc="Brave OS OOBE: message shown during checking for update stage.">
-          Brave updates automatically so you always have the freshest version.
+          Future versions of Brave will install automatically.
         </message>
         <message name="IDS_UPDATE_MSG" desc="Brave OS OOBE: message shown during update stage.">
-          Brave updates automatically so you always have the freshest version. When this download completes, Brave will restart and you'll be on your way.
+          Future versions of Brave will install automatically. When this download completes, Brave will restart and you'll be on your way.
         </message>
         <message name="IDS_EULA_SCREEN_ACCESSIBLE_TITLE" desc="Title to be spoken on opening the OOBE EULA screen">
           Brave OS terms
@@ -1151,8 +997,11 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
               =1 {A Brave update is available}
               other {A Brave update has been available for # days}}
           </message>
-          <message name="IDS_RELAUNCH_RECOMMENDED_BODY" desc="The body text of a dialog that tells users that a browser relaunch is recommended for an update.">
-            Your administrator asks that you relaunch Brave to apply this update
+          <message name="IDS_RELAUNCH_RECOMMENDED_BODY" desc="The body text of a dialog that tells users that a browser relaunch is recommended for an update with Private counter.">
+             {COUNT, plural,
+              =0 {Your administrator asks that you relaunch Brave to apply this update}
+              =1 {Your administrator asks that you relaunch Brave to apply this update. Your Private window won't reopen.}
+              other {Your administrator asks that you relaunch Brave to apply this update. Your # Private windows won't reopen.}}
           </message>
           <message name="IDS_RELAUNCH_REQUIRED_TITLE_DAYS" desc="The title of a dialog that tells users the browser must be relaunched within two or more days.">
             {0, plural,
@@ -1175,8 +1024,11 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
               =1 {Brave will relaunch in 1 second}
               other {Brave will relaunch in # seconds}}
           </message>
-          <message name="IDS_RELAUNCH_REQUIRED_BODY" desc="The body text of a dialog that tells users the browser must be relaunched.">
-            Your administrator requires that you relaunch Brave to apply an update
+          <message name="IDS_RELAUNCH_REQUIRED_BODY" desc="The body text of a dialog that tells users the browser must be relaunched with Private counter.">
+             {COUNT, plural,
+              =0 {Your administrator requires that you relaunch Brave to apply an update}
+              =1 {Your administrator requires that you relaunch Brave to apply an update. Your Private window won't reopen.}
+              other {Your administrator requires that you relaunch Brave to apply an update. Your # Private windows won't reopen.}}
           </message>
         </if>
       </if>
@@ -1190,9 +1042,6 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
         </message>
         <message name="IDS_ENTERPRISE_STARTUP_RELAUNCH_BUTTON" desc="The text of relaunch button of Brave launch blocking dialog.">
           Relaunch Brave
-        </message>
-        <message name="IDS_ENTERPRISE_STARTUP_CANCEL_BUTTON" desc="The text of cancel button of Brave launch blocking dialog.">
-          Close
         </message>
       </if>
       <message name="IDS_DESKTOP_MEDIA_PICKER_TITLE_WEB_CONTENTS_ONLY" desc="Title for the window picker dialog shown when desktop capture of a tab is requested by an app.">

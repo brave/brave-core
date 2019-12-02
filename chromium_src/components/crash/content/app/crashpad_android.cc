@@ -17,7 +17,7 @@ class BraveCrashpadClient {
  public:
 #if defined(OS_ANDROID)
 
-  static bool StartJavaHandlerAtCrash(
+  bool StartJavaHandlerAtCrash(
       const std::string& class_name,
       const std::vector<std::string>* env,
       const base::FilePath& database,
@@ -36,7 +36,7 @@ class BraveCrashpadClient {
       const std::vector<std::string>& arguments,
       int socket);
 
-  static bool StartHandlerWithLinkerAtCrash(
+  bool StartHandlerWithLinkerAtCrash(
       const std::string& handler_trampoline,
       const std::string& handler_library,
       bool is_64_bit,
@@ -103,7 +103,6 @@ namespace crashpad {
 
 #if defined(OS_ANDROID)
 
-// static
 bool BraveCrashpadClient::StartJavaHandlerAtCrash(
     const std::string& class_name,
     const std::vector<std::string>* env,
@@ -112,7 +111,7 @@ bool BraveCrashpadClient::StartJavaHandlerAtCrash(
     const std::string& url,
     const std::map<std::string, std::string>& annotations,
     const std::vector<std::string>& arguments) {
-  return CrashpadClient::StartJavaHandlerAtCrash(
+  return crash_reporter::GetCrashpadClient().StartJavaHandlerAtCrash(
       class_name, env, database, metrics_dir,
       brave_crash_url, annotations, arguments);
 }
@@ -132,7 +131,6 @@ bool BraveCrashpadClient::StartJavaHandlerForClient(
       annotations, arguments, socket);
 }
 
-// static
 bool BraveCrashpadClient::StartHandlerWithLinkerAtCrash(
     const std::string& handler_trampoline,
     const std::string& handler_library,
@@ -143,7 +141,7 @@ bool BraveCrashpadClient::StartHandlerWithLinkerAtCrash(
     const std::string& url,
     const std::map<std::string, std::string>& annotations,
     const std::vector<std::string>& arguments) {
-  return CrashpadClient::StartHandlerWithLinkerAtCrash(
+  return crash_reporter::GetCrashpadClient().StartHandlerWithLinkerAtCrash(
       handler_trampoline, handler_library, is_64_bit, env, database,
       metrics_dir, brave_crash_url, annotations, arguments);
 }

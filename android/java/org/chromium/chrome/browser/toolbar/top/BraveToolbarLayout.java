@@ -48,11 +48,11 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabObserver;
 import org.chromium.chrome.browser.tabmodel.TabSelectionType;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
-import org.chromium.chrome.browser.util.AccessibilityUtil;
 import org.chromium.chrome.browser.util.ColorUtils;
 import org.chromium.chrome.browser.util.MathUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
+import org.chromium.ui.widget.Toast;
 
 import java.net.URL;
 import java.util.List;
@@ -266,7 +266,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           description = resources.getString(R.string.accessibility_toolbar_btn_brave_rewards);
       }*/
 
-      return AccessibilityUtil.showAccessibilityToast(context, v, description);
+      return Toast.showAnchoredToast(context, v, description);
   }
 
   public void populateUrlAnimatorSet(boolean hasFocus, int urlFocusToolbarButtonsDuration,

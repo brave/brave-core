@@ -19,6 +19,10 @@
     "message": "Sie können jetzt Tokens verdienen, indem Sie sich Werbung ansehen, die gleichzeitig Ihre Privatsphäre respektiert.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
+  "welcomeDescPoints": {
+    "message": "You can now earn points for watching privacy-respecting ads.",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
   "welcomeFooterTextOne": {
     "message": "Sehen Sie sich an, was sich verbessert hat",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
@@ -40,8 +44,24 @@
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "Einkünfte",
+    "message": "Zuschüsse",
     "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "Details",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Ihr Kontostand",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT-Punkte",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "können für \"Brave\"-Belohnungen eingesetzt werden, um Ihre Lieblingsurheber zu unterstützen. BAT-Punkte können nicht in BAT getauscht werden.",
+    "description": "Text for BAT Point helper message"
   },
   "on": {
     "message": "auf",
@@ -128,12 +148,22 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Gratis Token",
-    "description": "Title for grant notification"
+    "message": "$currency$ Grants",
+    "description": "Title for grant notification",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "Token"
+      }
+    }
   },
   "tokenGrantClaimed": {
-    "message": "Token-Zuwendungen beansprucht",
+    "message": "Kostenlose Tokens erhalten",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Point Grants Claimed",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Einnahmen durch Werbung",
@@ -180,12 +210,16 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "Sie haben $amount$ BAT beigetragen",
+    "message": "Sie haben $amount$ $currency$ beigetragen",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
         "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
       }
     }
   },
@@ -202,7 +236,7 @@
     "description": "Notification title when we ask user to backup wallet"
   },
   "backupWalletNotification": {
-    "message": "Bitte erstellen Sie ein Backup Ihres Brave-Wallets.",
+    "message": "Bitte erstellen Sie ein Backup Ihrer Brave-Wallet.",
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
@@ -250,7 +284,7 @@
     "description": "Message upon failing captcha"
   },
   "claim": {
-    "message": "Beanspruchen",
+    "message": "Öffnen",
     "description": "Claim text"
   },
   "newTokenGrant": {
@@ -260,10 +294,6 @@
   "grantExpire": {
     "message": "Zuwendungs-Ablaufdatum",
     "description": "Grant expiry label"
-  },
-  "grantAlreadyClaimedText": {
-    "message": "Leider scheint es, dass diese Zuwendung bereits beansprucht wurde.",
-    "description": "Description of the error when grant is already claimed."
   },
   "grantGeneralErrorButton": {
     "message": "OK",
@@ -276,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "Hoppla, etwas stimmt nicht. Bitte versuchen Sie es später erneut.",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "OK",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "Leider scheint es, dass diese Zuwendung bereits ausgelaufen ist.",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "Diese Zuwendung ist nicht mehr erhältlich.",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "Status aktualisieren",
@@ -306,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Sie haben {{reservedAmount}} BAT für Ersteller bestimmt, die sich noch nicht für den Empfang von Beiträgen angemeldet haben. Ihr Browser wird weiterhin versuchen, ihnen Beiträge zukommen zu lassen, bis sie sich verifiziert haben oder bis 90 Tage verstrichen sind.",
+    "message": "Sie haben {{reservedAmount}} {{currency}} für Urheber vorgesehen, die sich noch nicht bei uns angemeldet haben, um Beträge zu erhalten. Ihr Browser wird weiter versuchen, die Beträge zuzustellen, bis diese Urheber sich anmelden oder bis 90 Tage vergangen sind.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -397,12 +415,16 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Werbung anschalten",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
-    "message": "verdient aus Werbeanzeigen",
+    "message": "durch Werbung verdient",
     "description": "Description text for ad grants in grant details"
   },
   "twitterTipsHoverText": {
@@ -452,23 +474,33 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "Ihre Token-Zuwendung ist unterwegs.",
-    "description": "Cosmetic text indicating grant funds are on the way"
+    "message": "Ihre $currency$ sind auf dem Weg.",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
   },
   "grantFinishTokenTitleUGP": {
     "message": "Kostenlose Token-Zuwendung",
     "description": "Token title on success screen"
   },
+  "grantFinishPointTitleUGP": {
+    "message": "Free Point Grant",
+    "description": "Point title on success screen"
+  },
   "grantFinishTitleAds": {
-    "message": "Brave-Ads-Vergütungen!",
+    "message": "Sie haben sich eine Belohnung für Anzeigen verdient!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Ihre Vergütungszuteilung von Brave Ads ist unterwegs.",
+    "message": "Ihre Belohnung ist auf dem Weg zu Ihrer \"Brave Rewards\"-Wallet.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Ihre Brave-Ads-Tokenzuteilung",
+    "message": "Ihr Belohnungsbetrag",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -500,11 +532,11 @@
     "description": "Status button that tells user that he is verified"
   },
   "walletVerifiedNotification":  {
-    "message": "Ihr Wallet ist verifiziert!",
+    "message": "Ihre Wallet ist verifiziert!",
     "description": "Title for notification when wallet becomes verified"
   },
   "walletVerifiedTextNotification":  {
-    "message": "Herzlichen Glückwunsch! Ihr $name$ Wallet wurde erfolgreich verifiziert und steht für die Ein- und Auszahlung von Geldmitteln bereit.",
+    "message": "Herzlichen Glückwunsch! Ihre $name$ Wallet wurde erfolgreich verifiziert und steht für die Ein- und Auszahlung von Geldmitteln bereit.",
     "description": "Title for notification when wallet becomes verified",
     "placeholders": {
       "name": {
@@ -514,7 +546,7 @@
     }
   },
   "walletDisconnectedNotification":  {
-    "message": "Oh oh, Ihr Wallet kann nicht erreicht werden.",
+    "message": "Oh oh, Ihre Wallet kann nicht erreicht werden.",
     "description": "Title for notification when wallet is disconnected."
   },
   "walletDisconnectedTextNotification":  {
@@ -532,5 +564,29 @@
   "set": {
     "message": "Festlegen ...",
     "description": "Button text for setting monthly contribution"
+  },
+  "tokens":  {
+    "message": "Tokens",
+    "description": "Standard tokens text"
+  },
+  "point":  {
+    "message": "Point",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "Token",
+    "description": "BAT Token text"
+  },
+  "points":  {
+    "message": "points",
+    "description": "BAT Points text"
+  },
+  "tokenGrants":  {
+    "message": "Gratis Token",
+    "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Point Grants",
+    "description": "BAT Points Grant Text"
   }
 }
