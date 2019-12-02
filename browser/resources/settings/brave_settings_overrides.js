@@ -103,8 +103,17 @@ const BraveClearSettingsMenuHighlightBehavior = {
   }
 }
 
+const BraveAddZoomLevelsBehavior = {
+  ready: function() {
+    this._setPageZoomLevels_(<include src="./zoom_factors.json">)
+  }
+}
+
 // Polymer Component Behavior injection (like superclasses)
 BravePatching.RegisterPolymerComponentBehaviors({
+  'settings-appearance-page': [
+    BraveAddZoomLevelsBehavior
+  ],
   'settings-clear-browsing-data-dialog': [
     BraveClearBrowsingDataOnExitBehavior
   ],
