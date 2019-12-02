@@ -92,10 +92,10 @@ void LedgerImpl::OnWalletInitializedInternal(
     ledger::InitializeCallback callback) {
   initializing_ = false;
   // TODO should we create DB even if init failes?
+  bat_database_->Initialize();
   if (result == ledger::Result::LEDGER_OK ||
       result == ledger::Result::WALLET_CREATED) {
     initialized_ = true;
-    bat_database_->Initialize();
     bat_publisher_->SetPublisherServerListTimer();
     bat_contribution_->Initialize();
     bat_contribution_->SetReconcileTimer();

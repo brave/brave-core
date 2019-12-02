@@ -39,11 +39,15 @@ class Database {
 
   int GetCurrentVersion();
 
+  sql::Database& GetDB();
+
  private:
   void OnMemoryPressure(
     base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
 
   bool InitializeTables();
+
+  void OnInserted(bool success);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   sql::Database db_;

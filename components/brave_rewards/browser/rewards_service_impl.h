@@ -826,6 +826,7 @@ class RewardsServiceImpl : public RewardsService,
   const base::FilePath ledger_state_path_;
   const base::FilePath publisher_state_path_;
   const base::FilePath publisher_info_db_path_;
+  const base::FilePath publisher_info_db_path_temp_;
   const base::FilePath publisher_list_path_;
   const base::FilePath rewards_base_path_;
   std::unique_ptr<PublisherInfoDatabase> publisher_info_backend_;
