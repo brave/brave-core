@@ -59,16 +59,19 @@ class Banner extends React.Component<Props, State> {
     const { balance, walletInfo } = this.props.rewardsDonateData
 
     const publisherAmounts = this.props.publisher.amounts
-    const walletAmounts = monthly
-        ? walletInfo.defaultMonthlyTipChoices
-        : walletInfo.defaultTipChoices
 
     // Prefer the publisher amounts, then the wallet's defaults. Fall back to defaultTipAmounts.
     let amounts = this.defaultTipAmounts
     if (publisherAmounts && publisherAmounts.length) {
       amounts = publisherAmounts
-    } else if (walletAmounts.length) {
-      amounts = walletAmounts
+    } else if (walletInfo) {
+      const walletAmounts = monthly
+        ? walletInfo.defaultMonthlyTipChoices
+        : walletInfo.defaultTipChoices
+
+      if (walletAmounts.length) {
+        amounts = walletAmounts
+      }
     }
 
     return amounts.map((value: number) => {

@@ -60,6 +60,7 @@ declare namespace chrome.settingsPrivate {
 
 declare namespace chrome.braveRewards {
   const createWallet: () => {}
+  const getWalletProperties: () => {}
   const tipSite: (tabId: number, publisherKey: string, monthly: boolean) => {}
   const tipTwitterUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
   const tipRedditUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
@@ -80,6 +81,9 @@ declare namespace chrome.braveRewards {
   }
   const onPromotionFinish: {
     addListener: (callback: (result: RewardsExtension.Result, promotion: RewardsExtension.Promotion) => void) => void
+  }
+  const onWalletProperties: {
+    addListener: (callback: (properties: RewardsExtension.WalletProperties) => void) => void
   }
   const includeInAutoContribution: (publisherKey: string, exclude: boolean) => {}
   const fetchPromotions: () => {}

@@ -81,7 +81,7 @@ export default class Donate extends React.PureComponent<Props, State> {
       return false
     }
 
-    return a.every(({}, index) => a[index].tokens === b[index].tokens)
+    return a.every(({}, index) => a[index].tokens === b[index].tokens && a[index].converted === b[index].converted)
   }
 
   componentDidUpdate (prevProps: Props) {

@@ -13,6 +13,7 @@ declare namespace RewardsExtension {
     walletCreated: boolean
     walletCreating: boolean
     walletCreateFailed: boolean
+    walletProperties: WalletProperties
     recurringTips: Record<string, number>[]
     tipAmounts: Record<string, number[]>
     externalWallet?: ExternalWallet

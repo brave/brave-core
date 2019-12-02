@@ -512,14 +512,15 @@ export class Panel extends React.Component<Props, State> {
       publisherAmounts = tipAmounts[publisherKey]
     }
 
-    const walletAmounts = walletProperties.defaultMonthlyTipChoices
-
     // Prefer the publisher amounts, then the wallet's defaults. Fall back to defaultTipAmounts.
     let initialAmounts = this.defaultTipAmounts
     if (publisherAmounts) {
       initialAmounts = publisherAmounts
-    } else if (walletAmounts.length) {
-      initialAmounts = walletAmounts
+    } else if (walletProperties) {
+      const walletAmounts = walletProperties.defaultMonthlyTipChoices
+      if (walletAmounts.length) {
+        initialAmounts = walletAmounts
+      }
     }
 
     const amounts = [0, ...initialAmounts]

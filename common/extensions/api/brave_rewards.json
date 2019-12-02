@@ -156,14 +156,6 @@
             "name": "properties",
             "type": "object",
             "properties": {
-              "probi": {
-                "type": "string",
-                "description": "balance represented in probis"
-              },
-              "balance": {
-                "type": "double",
-                "description": "balance"
-              },
               "defaultTipChoices": {
                 "type": "array",
                 "description": "default tip choices for one-time tips",
@@ -178,28 +170,6 @@
                 "items": {
                   "type": "number",
                   "minimum": 0
-                }
-              },
-              "rates": {
-                "type": "object",
-                "description": "rates for different currencies",
-                "properties": {
-                  "BTC": {
-                    "type": "double",
-                    "description": "BTC rate"
-                  },
-                  "ETH": {
-                    "type": "double",
-                    "description": "ETH rate"
-                  },
-                  "USD": {
-                    "type": "double",
-                    "description": "USD rate"
-                  },
-                  "EUR": {
-                    "type": "double",
-                    "description": "EUR rate"
-                  }
                 }
               }
             }
@@ -581,6 +551,12 @@
             "type": "string"
           }
         ]
+      },
+      {
+        "name": "getWalletProperties",
+        "type": "function",
+        "description": "Get default values that we get from the server",
+        "parameters": []
       },
       {
         "name": "getCurrentReport",

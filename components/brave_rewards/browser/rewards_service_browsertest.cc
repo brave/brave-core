@@ -136,6 +136,8 @@ bool URLMatches(const std::string& url,
   return (url.find(target_url) == 0);
 }
 
+enum class ContributionType { OneTimeTip, MonthlyTip };
+
 }  // namespace
 
 namespace brave_test_resp {
@@ -146,6 +148,7 @@ namespace brave_test_resp {
   std::string promotion_tokens_;
   std::string captcha_;
   std::string wallet_properties_;
+  std::string wallet_properties_defaults_;
   std::string uphold_auth_resp_;
   std::string uphold_transactions_resp_;
   std::string uphold_commit_resp_;
@@ -273,8 +276,9 @@ class BraveRewardsBrowserTest
       verified.c_str());
   }
 
-  static std::vector<double> GetSiteBannerTipOptions(
+  std::vector<double> GetSiteBannerTipOptions(
       content::WebContents* site_banner) {
+    WaitForSelector(site_banner, "[data-test-id=amount-wrapper] div span");
     auto options = content::EvalJs(
         site_banner,
         R"(
@@ -336,7 +340,11 @@ class BraveRewardsBrowserTest
       *response = brave_test_resp::verification_;
     } else if (URLMatches(url, WALLET_PROPERTIES, PREFIX_V2,
                           ServerTypes::BALANCE)) {
-      *response = brave_test_resp::wallet_properties_;
+      if (show_defaults_in_properties_) {
+        *response = brave_test_resp::wallet_properties_defaults_;
+      } else {
+        *response = brave_test_resp::wallet_properties_;
+      }
     } else if (URLMatches(url, "/promotions?", PREFIX_V1,
                           ServerTypes::kPromotion)) {
       *response = brave_test_resp::promotions_;
@@ -356,7 +364,9 @@ class BraveRewardsBrowserTest
         *response =
             "["
             "[\"bumpsmack.com\",\"publisher_verified\",false,\"address1\",{}],"
-            "[\"duckduckgo.com\",\"wallet_connected\",false,\"address2\",{}]"
+            "[\"duckduckgo.com\",\"wallet_connected\",false,\"address2\",{}],"
+            "[\"laurenwags.github.io\",\"wallet_connected\",false,\"address2\","
+              "{\"donationAmounts\": [5,10,20]}]"
             "]";
       } else {
         *response =
@@ -366,7 +376,9 @@ class BraveRewardsBrowserTest
             "[\"3zsistemi.si\",\"wallet_connected\",false,\"address3\",{}],"
             "[\"site1.com\",\"wallet_connected\",false,\"address4\",{}],"
             "[\"site2.com\",\"wallet_connected\",false,\"address5\",{}],"
-            "[\"site3.com\",\"wallet_connected\",false,\"address6\",{}]"
+            "[\"site3.com\",\"wallet_connected\",false,\"address6\",{}],"
+            "[\"laurenwags.github.io\",\"wallet_connected\",false,\"address2\","
+              "{\"donationAmounts\": [5,10,20]}]"
             "]";
       }
     } else if (base::StartsWith(
@@ -873,6 +885,9 @@ class BraveRewardsBrowserTest
         base::ReadFileToString(path.AppendASCII("wallet_properties_resp.json"),
                                &brave_test_resp::wallet_properties_));
     ASSERT_TRUE(base::ReadFileToString(
+        path.AppendASCII("wallet_properties_resp_defaults.json"),
+        &brave_test_resp::wallet_properties_defaults_));
+    ASSERT_TRUE(base::ReadFileToString(
         path.AppendASCII("uphold_auth_resp.json"),
         &brave_test_resp::uphold_auth_resp_));
     ASSERT_TRUE(base::ReadFileToString(
@@ -1225,14 +1240,14 @@ class BraveRewardsBrowserTest
 
   content::WebContents* OpenSiteBanner(ContributionType banner_type) const {
     content::WebContents* popup_contents = OpenRewardsPopup();
-    ASSERT_TRUE(popup_contents);
 
     // Construct an observer to wait for the site banner to load.
     content::WindowedNotificationObserver site_banner_observer(
         content::NOTIFICATION_LOAD_COMPLETED_MAIN_FRAME,
         content::NotificationService::AllSources());
 
-    const std::string buttonSelector = banner_type == ContributionType::MonthlyTip
+    const std::string buttonSelector =
+        banner_type == ContributionType::MonthlyTip
         ? "[type='tip-monthly']"
         : "[type='tip']";
 
@@ -1325,14 +1340,14 @@ class BraveRewardsBrowserTest
 
     // Signal that direct tip was made and update wallet with new
     // balance
-    if (!monthly && !should_contribute) {
+    if (type == ContributionType::OneTimeTip && !should_contribute) {
       UpdateContributionBalance(amount, should_contribute);
     }
 
     // Wait for thank you banner to load
     ASSERT_TRUE(WaitForLoadStop(site_banner_contents));
 
-    const std::string confirmationText = monthly
+    const std::string confirmationText = type == ContributionType::MonthlyTip
         ? "Monthly contribution has been set!"
         : "Tip sent!";
 
@@ -1623,8 +1638,6 @@ class BraveRewardsBrowserTest
   MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
   MOCK_METHOD1(OnGetShortRetries, void(bool));
 
-  enum class ContributionType { OneTimeTip, MonthlyTip };
-
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
 
   brave_rewards::RewardsServiceImpl* rewards_service_;
@@ -1673,6 +1686,7 @@ class BraveRewardsBrowserTest
 
   bool last_publisher_added_ = false;
   bool alter_publisher_list_ = false;
+  bool show_defaults_in_properties_ = false;
   bool request_made_ = false;
   double balance_ = 0;
   double reconciled_tip_total_ = 0;
@@ -1682,8 +1696,6 @@ class BraveRewardsBrowserTest
   const std::string external_wallet_address_ =
       "abe5f454-fedd-4ea9-9203-470ae7315bb3";
   bool first_url_ac_called_ = false;
-  std::vector<double> default_tip_choices_;
-  std::vector<double> default_monthly_tip_choices_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
@@ -2309,7 +2321,6 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   ClaimPromotion(use_panel);
 
   // Tip verified publisher
-  const bool monthly = true;
   TipPublisher("brave.com", ContributionType::MonthlyTip, false);
 
   // Stop observing the Rewards service
@@ -2771,11 +2782,12 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RewardsPanelDefaultTipChoices) {
+  show_defaults_in_properties_ = true;
   rewards_service_->AddObserver(this);
   EnableRewards();
 
   bool use_panel = true;
-  ClaimGrant(use_panel);
+  ClaimPromotion(use_panel);
 
   GURL url = https_server()->GetURL("3zsistemi.si", "/index.html");
   ui_test_utils::NavigateToURLWithDisposition(
@@ -2786,18 +2798,15 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RewardsPanelDefaultTipChoices) {
   bool monthly = true;
   TipViaCode("3zsistemi.si", 10, monthly, ledger::PublisherStatus::VERIFIED);
 
-  // Set the default monthly tip choices, and verify that those are the options
-  // in the rewards popup (along with 0, which disables the contribution).
-  default_monthly_tip_choices_ = { 10, 20, 50 };
-
   content::WebContents* popup = OpenRewardsPopup();
-  std::vector<double> tip_options = GetRewardsPopupTipOptions(popup);
+  const auto tip_options = GetRewardsPopupTipOptions(popup);
   ASSERT_EQ(tip_options, std::vector<double>({ 0, 10, 20, 50 }));
 
   rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, SiteBannerDefaultTipChoices) {
+  show_defaults_in_properties_ = true;
   rewards_service_->AddObserver(this);
   EnableRewards();
 
@@ -2806,25 +2815,34 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, SiteBannerDefaultTipChoices) {
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
 
-  // The UI defaults to [1, 5, 10] if no default is provided.
-  content::WebContents* site_banner = OpenSiteBanner(ContributionType::OneTimeTip);
-  std::vector<double> tip_options = GetSiteBannerTipOptions(site_banner);
-  ASSERT_EQ(tip_options, std::vector<double>({ 1, 5, 10 }));
+  content::WebContents* site_banner =
+      OpenSiteBanner(ContributionType::OneTimeTip);
+  auto tip_options = GetSiteBannerTipOptions(site_banner);
+  ASSERT_EQ(tip_options, std::vector<double>({ 5, 10, 20 }));
 
-  default_tip_choices_ = { 5, 10, 20 };
-  site_banner = OpenSiteBanner(ContributionType::OneTimeTip);
-  tip_options = GetSiteBannerTipOptions(site_banner);
-  ASSERT_EQ(tip_options, default_tip_choices_);
-
-  // The UI defaults to [1, 5, 10] if no default is provided.
   site_banner = OpenSiteBanner(ContributionType::MonthlyTip);
   tip_options = GetSiteBannerTipOptions(site_banner);
-  ASSERT_EQ(tip_options, std::vector<double>({ 1, 5, 10 }));
+  ASSERT_EQ(tip_options, std::vector<double>({ 10, 20, 50 }));
 
-  default_monthly_tip_choices_ = { 25, 50, 100 };
-  site_banner = OpenSiteBanner(ContributionType::MonthlyTip);
-  tip_options = GetSiteBannerTipOptions(site_banner);
-  ASSERT_EQ(tip_options, default_monthly_tip_choices_);
+  rewards_service_->RemoveObserver(this);
+}
+
+IN_PROC_BROWSER_TEST_F(
+    BraveRewardsBrowserTest,
+    SiteBannerDefaultPublisherAmounts) {
+  show_defaults_in_properties_ = true;
+  rewards_service_->AddObserver(this);
+  EnableRewards();
+
+  GURL url = https_server()->GetURL("laurenwags.github.io", "/index.html");
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+
+  content::WebContents* site_banner =
+      OpenSiteBanner(ContributionType::OneTimeTip);
+  const auto tip_options = GetSiteBannerTipOptions(site_banner);
+  ASSERT_EQ(tip_options, std::vector<double>({ 5, 10, 20 }));
 
   rewards_service_->RemoveObserver(this);
 }
@@ -2941,7 +2959,7 @@ IN_PROC_BROWSER_TEST_F(
   ClaimPromotion(use_panel);
 
   // Tip verified publisher
-  TipPublisher("bumpsmack.com",ContributionType::OneTimeTip, true);
+  TipPublisher("bumpsmack.com", ContributionType::OneTimeTip, true);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
