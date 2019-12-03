@@ -356,7 +356,7 @@ void PlaylistsMediaFileController::OnSingleMediaFileGenerated(int result) {
 
 base::SequencedTaskRunner* PlaylistsMediaFileController::io_task_runner() {
   if (!io_task_runner_) {
-    io_task_runner_ = base::CreateSequencedTaskRunnerWithTraits(
+    io_task_runner_ = base::CreateSequencedTaskRunner(
         {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT,
          base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   }
