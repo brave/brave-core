@@ -169,6 +169,9 @@ bool ParseFetchResponse(
       base::JSONWriter::Write(*public_keys, &keys_json);
       promotion->public_keys = keys_json;
 
+      auto legacy_claimed = item.FindBoolKey("legacyClaimed");
+      promotion->legacy_claimed = legacy_claimed.value_or(false);
+
       list->push_back(std::move(promotion));
     }
 

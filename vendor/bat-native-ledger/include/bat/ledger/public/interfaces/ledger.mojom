@@ -344,6 +344,7 @@ struct Promotion {
   PromotionStatus status;
   uint64 expires_at;
   PromotionCreds? credentials;
+  bool legacy_claimed;
 };
 
 struct PromotionCreds {
