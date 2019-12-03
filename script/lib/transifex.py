@@ -269,6 +269,9 @@ def get_grd_strings(grd_file_path):
     dupe_dict = defaultdict(int)
     all_message_tags = get_grd_message_string_tags(grd_file_path)
     for message_tag in all_message_tags:
+        # Skip translateable="false" strings
+        if message_tag.get('translateable') == 'false':
+            continue
         message_name = message_tag.get('name')
         dupe_dict[message_name] += 1
 
