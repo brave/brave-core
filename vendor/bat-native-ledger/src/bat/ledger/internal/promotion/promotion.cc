@@ -170,14 +170,19 @@ void Promotion::OnGetAllPromotions(
 
   if (list.size() > 0) {
     for (auto & item : list) {
-      auto it = promotions.find(item->id);
-      if (it != promotions.end()) {
-        if (promotions.at(item->id)->status !=
-            ledger::PromotionStatus::ACTIVE) {
-          item->status = promotions.at(item->id)->status;
-        }
+      if (item->legacy_claimed) {
+        item->status = ledger::PromotionStatus::CLAIMED;
+        ClaimTokens(item->Clone(), [](const ledger::Result _){});
       } else {
-        promotions.insert(std::make_pair(item->id, item->Clone()));
+        auto it = promotions.find(item->id);
+        if (it != promotions.end()) {
+          if (it->second->status !=
+              ledger::PromotionStatus::ACTIVE) {
+            item->status = it->second->status;
+          }
+        } else {
+          promotions.insert(std::make_pair(item->id, item->Clone()));
+        }
       }
 
       ledger_->InsertOrUpdatePromotion(

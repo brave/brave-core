@@ -16,7 +16,7 @@ std::string GetFetchPromotionUrl(
     const std::string& payment_id,
     const std::string& platform) {
   const std::string& arguments = base::StringPrintf(
-      "paymentId=%s&platform=%s",
+      "migrate=true&paymentId=%s&platform=%s",
       payment_id.c_str(),
       platform.c_str());
 
