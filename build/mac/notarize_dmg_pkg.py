@@ -47,7 +47,7 @@ def create_config(config_args, development, mac_provisioning_profile):
     Returns:
         An instance of |model.CodeSignConfig|.
     """
-    config_class = ChromiumCodeSignConfig
+    config_class = chromium_config.ChromiumCodeSignConfig
 
     if development:
 
@@ -96,11 +96,11 @@ def main():
     args = parse_args()
 
     if args.mac_provisioning_profile and args.development is not True:
-        config = create_config((args.identity, args.keychain, args.notary_user,
+        config = create_config((args.identity, None, args.keychain, args.notary_user,
                                args.notary_password, args.notary_asc_provider),
                                args.development, args.mac_provisioning_profile)
     else:
-        config = create_config((args.identity, args.keychain, args.notary_user,
+        config = create_config((args.identity, None, args.keychain, args.notary_user,
                                args.notary_password, args.notary_asc_provider),
                                args.development)
     paths = model.Paths(args.pkgdir, args.outdir, None)
