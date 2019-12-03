@@ -456,6 +456,14 @@ class BraveRewardsBrowserTest
     wait_for_tip_completed_loop_->Run();
   }
 
+  void WaitForPendingTipToBeSaved() {
+    if (pending_tip_saved_) {
+      return;
+    }
+    wait_for_pending_tip_saved_loop_.reset(new base::RunLoop);
+    wait_for_pending_tip_saved_loop_->Run();
+  }
+
   void WaitForMultipleTipReconcileCompleted(int32_t needed) {
     multiple_tip_reconcile_needed_ = needed;
     if (multiple_tip_reconcile_completed_) {
@@ -1341,6 +1349,7 @@ class BraveRewardsBrowserTest
     // Signal that direct tip was made and update wallet with new
     // balance
     if (type == ContributionType::OneTimeTip && !should_contribute) {
+      WaitForPendingTipToBeSaved();
       UpdateContributionBalance(amount, should_contribute);
     }
 
@@ -1396,6 +1405,18 @@ class BraveRewardsBrowserTest
            "" + GetBalance() + " BAT"), std::string::npos);
     }
 
+    VerifyTip(amount, should_contribute, type == ContributionType::MonthlyTip);
+  }
+
+  void VerifyTip(
+      const double amount,
+      const bool should_contribute,
+      const bool monthly,
+      const bool via_code = false) {
+    if (via_code && monthly) {
+      return;
+    }
+
     // Activate the Rewards settings page tab
     ActivateTabAtIndex(0);
 
@@ -1404,7 +1425,7 @@ class BraveRewardsBrowserTest
       ASSERT_EQ(RewardsPageBalance(), ExpectedBalanceString());
 
       // Check that tip table shows the appropriate tip amount
-      const std::string selector = type == ContributionType::MonthlyTip
+      const std::string selector = monthly
           ? "[data-test-id='summary-donation']"
           : "[data-test-id='summary-tips']";
 
@@ -1559,6 +1580,19 @@ class BraveRewardsBrowserTest
     }
   }
 
+  void OnPendingContributionSaved(
+      brave_rewards::RewardsService* rewards_service,
+      int result) {
+    if (result != 0) {
+      return;
+    }
+
+    pending_tip_saved_ = true;
+    if (wait_for_pending_tip_saved_loop_) {
+      wait_for_pending_tip_saved_loop_->Quit();
+    }
+  }
+
   void OnNotificationAdded(
       brave_rewards::RewardsNotificationService* rewards_notification_service,
       const brave_rewards::RewardsNotificationService::RewardsNotification&
@@ -1620,9 +1654,10 @@ class BraveRewardsBrowserTest
 
   void TipViaCode(
       const std::string publisher_key,
-      int amount,
-      bool recurring,
-      ledger::PublisherStatus status) {
+      const double amount,
+      const ledger::PublisherStatus status,
+      const bool should_contribute = false,
+      const bool recurring = false) {
     auto site = std::make_unique<brave_rewards::ContentSite>();
     site->id = publisher_key;
     site->name = publisher_key;
@@ -1631,6 +1666,21 @@ class BraveRewardsBrowserTest
     site->provider = "";
     site->favicon_url = "";
     rewards_service_->OnTip(publisher_key, amount, recurring, std::move(site));
+
+    if (recurring) {
+      return;
+    }
+
+    if (should_contribute) {
+      // Wait for reconciliation to complete
+      WaitForTipReconcileCompleted();
+      ASSERT_EQ(tip_reconcile_status_, ledger::Result::LEDGER_OK);
+      return;
+    }
+
+    // Signal to update pending contribution balance
+    WaitForPendingTipToBeSaved();
+    UpdateContributionBalance(amount, should_contribute);
   }
 
   MOCK_METHOD1(OnGetEnvironment, void(ledger::Environment));
@@ -1681,6 +1731,9 @@ class BraveRewardsBrowserTest
 
   std::unique_ptr<base::RunLoop> wait_for_recurring_tip_saved_loop_;
   bool recurring_tip_saved_ = false;
+
+  std::unique_ptr<base::RunLoop> wait_for_pending_tip_saved_loop_;
+  bool pending_tip_saved_ = false;
 
   std::unique_ptr<base::RunLoop> wait_for_attestation_loop_;
 
@@ -2619,12 +2672,19 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   const bool use_panel = true;
   ClaimPromotion(use_panel);
 
-  const bool verified = true;
-  VisitPublisher("duckduckgo.com", verified);
-  rewards_service_->OnTip("duckduckgo.com", 20, true);
+  TipViaCode(
+      "duckduckgo.com",
+      20.0,
+      ledger::PublisherStatus::VERIFIED,
+      false,
+      true);
 
-  VisitPublisher("brave.com", !verified);
-  rewards_service_->OnTip("brave.com", 50, true);
+  TipViaCode(
+      "brave.com",
+      50.0,
+      ledger::PublisherStatus::NOT_VERIFIED,
+      false,
+      true);
 
   CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();
@@ -2654,12 +2714,19 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   const bool use_panel = true;
   ClaimPromotion(use_panel);
 
-  const bool verified = true;
-  VisitPublisher("duckduckgo.com", verified);
-  rewards_service_->OnTip("duckduckgo.com", 50, true);
+  TipViaCode(
+      "duckduckgo.com",
+      50.0,
+      ledger::PublisherStatus::VERIFIED,
+      false,
+      true);
 
-  VisitPublisher("brave.com", !verified);
-  rewards_service_->OnTip("brave.com", 50, true);
+  TipViaCode(
+      "brave.com",
+      50.0,
+      ledger::PublisherStatus::NOT_VERIFIED,
+      false,
+      true);
 
   CheckInsufficientFundsForTesting();
   WaitForInsufficientFundsNotification();
@@ -2701,25 +2768,28 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   EnableRewards();
 
+  contents()->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(contents()));
+
+  // Tip unverified publisher
+  TipViaCode("brave.com", 1.0, ledger::PublisherStatus::NOT_VERIFIED);
+  TipViaCode("brave.com", 5.0, ledger::PublisherStatus::NOT_VERIFIED);
+  TipViaCode("3zsistemi.si", 10.0, ledger::PublisherStatus::NOT_VERIFIED);
+  TipViaCode("3zsistemi.si", 5.0, ledger::PublisherStatus::NOT_VERIFIED);
+  TipViaCode("3zsistemi.si", 10.0, ledger::PublisherStatus::NOT_VERIFIED);
+  TipViaCode("3zsistemi.si", 10.0, ledger::PublisherStatus::NOT_VERIFIED);
+
   // Claim promotion using panel
   ClaimPromotion(true);
 
-  // Tip unverified publisher
-  TipPublisher("brave.com", ContributionType::OneTimeTip);
-  rewards_service_->OnTip("brave.com", 5.0, false);
-  UpdateContributionBalance(5.0, false);  // update pending balance
-  TipPublisher("3zsistemi.si", ContributionType::OneTimeTip, false, 2);
-  TipPublisher("3zsistemi.si", ContributionType::OneTimeTip, false, 1);
-  TipPublisher("3zsistemi.si", ContributionType::OneTimeTip, false, 2);
-  TipPublisher("3zsistemi.si", ContributionType::OneTimeTip, false, 2);
-
-  // Make sure that pending contribution box shows the correct
-  // amount
-  ASSERT_EQ(RewardsPagePendingContributions(), ExpectedPendingBalanceString());
-
   alter_publisher_list_ = false;
+  VerifyTip(41.0, false, false, true);
 
-  ActivateTabAtIndex(2);
+  // Visit publisher
+  GURL url = https_server()->GetURL("3zsistemi.si", "/index.html");
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
 
   // Refresh publisher list
   RefreshPublisherListUsingRewardsPopup();
@@ -2795,8 +2865,12 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RewardsPanelDefaultTipChoices) {
       ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
 
   // Add a recurring tip of 10 BAT.
-  bool monthly = true;
-  TipViaCode("3zsistemi.si", 10, monthly, ledger::PublisherStatus::VERIFIED);
+  TipViaCode(
+      "3zsistemi.si",
+      10.0,
+      ledger::PublisherStatus::VERIFIED,
+      false,
+      true);
 
   content::WebContents* popup = OpenRewardsPopup();
   const auto tip_options = GetRewardsPopupTipOptions(popup);
@@ -2909,8 +2983,14 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Enable Rewards
   EnableRewards();
 
-  // Tip verified publisher
-  TipPublisher("duckduckgo.com", ContributionType::OneTimeTip, true);
+  const double amount = 5.0;
+  const bool should_contribute = true;
+  TipViaCode(
+      "duckduckgo.com",
+      amount,
+      ledger::PublisherStatus::VERIFIED,
+      should_contribute);
+  VerifyTip(amount, should_contribute, false, true);
 
   // Stop observing the Rewards service
   rewards_service()->RemoveObserver(this);
@@ -2928,7 +3008,14 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipConnectedPublisherAnon) {
   ClaimPromotion(use_panel);
 
   // Tip verified publisher
-  TipPublisher("bumpsmack.com", ContributionType::OneTimeTip, true);
+  const double amount = 5.0;
+  const bool should_contribute = true;
+  TipViaCode(
+      "bumpsmack.com",
+      amount,
+      ledger::PublisherStatus::CONNECTED,
+      should_contribute);
+  VerifyTip(amount, should_contribute, false, true);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2959,7 +3046,14 @@ IN_PROC_BROWSER_TEST_F(
   ClaimPromotion(use_panel);
 
   // Tip verified publisher
-  TipPublisher("bumpsmack.com", ContributionType::OneTimeTip, true);
+  const double amount = 5.0;
+  const bool should_contribute = true;
+  TipViaCode(
+      "bumpsmack.com",
+      amount,
+      ledger::PublisherStatus::CONNECTED,
+      should_contribute);
+  VerifyTip(amount, should_contribute, false, true);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -2984,9 +3078,18 @@ IN_PROC_BROWSER_TEST_F(
 
   // Enable Rewards
   EnableRewards();
+  contents()->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(contents()));
 
-  // Tip verified publisher
-  TipPublisher("bumpsmack.com", ContributionType::OneTimeTip, false);
+  // Tip connected publisher
+  const double amount = 5.0;
+  const bool should_contribute = false;
+  TipViaCode(
+      "bumpsmack.com",
+      amount,
+      ledger::PublisherStatus::CONNECTED,
+      should_contribute);
+  VerifyTip(amount, should_contribute, false, true);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -3011,9 +3114,18 @@ IN_PROC_BROWSER_TEST_F(
 
   // Enable Rewards
   EnableRewards();
+  contents()->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(contents()));
 
   // Tip verified publisher
-  TipPublisher("bumpsmack.com", ContributionType::OneTimeTip, false);
+  const double amount = 5.0;
+  const bool should_contribute = false;
+  TipViaCode(
+      "bumpsmack.com",
+      amount,
+      ledger::PublisherStatus::CONNECTED,
+      should_contribute);
+  VerifyTip(amount, should_contribute, false, true);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -3075,10 +3187,16 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Visit verified publisher
   const bool verified = true;
   VisitPublisher("duckduckgo.com", verified);
-  VisitPublisher("brave.com", !verified);
 
   // Set monthly recurring
-  rewards_service_->OnTip("duckduckgo.com", 25, true);
+  TipViaCode(
+      "duckduckgo.com",
+      25.0,
+      ledger::PublisherStatus::VERIFIED,
+      false,
+      true);
+
+  VisitPublisher("brave.com", !verified);
 
   // Trigger contribution process
   rewards_service()->StartMonthlyContributionForTest();
@@ -3115,6 +3233,34 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Enable Rewards
   EnableRewards();
 
+  TipViaCode(
+      "duckduckgo.com",
+      5.0,
+      ledger::PublisherStatus::VERIFIED,
+      false,
+      true);
+
+  TipViaCode(
+      "site1.com",
+      10.0,
+      ledger::PublisherStatus::VERIFIED,
+      false,
+      true);
+
+  TipViaCode(
+      "site2.com",
+      10.0,
+      ledger::PublisherStatus::VERIFIED,
+      false,
+      true);
+
+  TipViaCode(
+      "site3.com",
+      10.0,
+      ledger::PublisherStatus::VERIFIED,
+      false,
+      true);
+
   // Claim promotion using panel (30 BAT)
   const bool use_panel = true;
   ClaimPromotion(use_panel);
@@ -3122,13 +3268,6 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Visit verified publisher
   const bool verified = true;
   VisitPublisher("duckduckgo.com", verified);
-
-  // Set monthly recurring
-  rewards_service_->OnTip("duckduckgo.com", 5, true);
-
-  TipViaCode("site1.com", 10, true, ledger::PublisherStatus::VERIFIED);
-  TipViaCode("site2.com", 10, true, ledger::PublisherStatus::VERIFIED);
-  TipViaCode("site3.com", 10, true, ledger::PublisherStatus::VERIFIED);
 
   // Trigger contribution process
   rewards_service()->StartMonthlyContributionForTest();
