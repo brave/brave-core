@@ -15,7 +15,6 @@
 #include "components/prefs/pref_change_registrar.h"
 
 class Profile;
-class PrefChangeRegistrar;
 
 class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
  public:
@@ -35,9 +34,9 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   void SetMediaRouterEnabled(const base::ListValue* args);
   void SetBraveWalletEnabled(const base::ListValue* args);
 #if BUILDFLAG(ENABLE_TOR)
-  void SetTorEnabledPref(const base::ListValue* args);
-  void GetTorEnabledPref(const base::ListValue* args);
-  void OnTorEnabledPrefChanged();
+  void SetTorEnabled(const base::ListValue* args);
+  void IsTorEnabled(const base::ListValue* args);
+  void OnTorEnabledChanged();
   void IsTorManaged(const base::ListValue* args);
 #endif
 

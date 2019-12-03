@@ -43,17 +43,17 @@ Polymer({
     this.addWebUIListener('brave-needs-restart-changed', (needsRestart) => {
       this.showRestartToast_ = needsRestart
     })
-    this.addWebUIListener('tor-enabled-pref-changed', (enabled) => {
+    this.addWebUIListener('tor-enabled-changed', (enabled) => {
       this.torEnabled_ = enabled
     })
 
     this.browserProxy_.getRestartNeeded().then(show => {
       this.showRestartToast_ = show;
     });
-    this.browserProxy_.getTorEnabled().then(enabled => {
+    this.browserProxy_.isTorEnabled().then(enabled => {
       this.torEnabled_ = enabled
     })
-    this.browserProxy_.getTorManaged().then(managed => {
+    this.browserProxy_.isTorManaged().then(managed => {
       this.disableTorOption_ = managed
     })
   },

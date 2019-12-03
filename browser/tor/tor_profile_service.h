@@ -40,8 +40,7 @@ class TorProfileService : public KeyedService {
   ~TorProfileService() override;
 
   static void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
-  static void SetTorDisabledPref(bool disabled);
-  static bool GetTorDisabledPref();
+  static void SetTorDisabled(bool disabled);
   static bool IsTorDisabled();
 
   virtual void SetNewTorCircuit(content::WebContents* web_contents) = 0;

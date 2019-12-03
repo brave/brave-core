@@ -137,13 +137,10 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BasicTest) {
 }
 
 #if BUILDFLAG(ENABLE_TOR)
-// Tor is enabled by default. Change pref to disable it at next test run.
-IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, PRE_TorAppMenuTest) {
-  tor::TorProfileService::SetTorDisabledPref(true);
-}
-
-// If tor is disabled, corresponding menu and commands should be also disabled.
 IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, TorAppMenuTest) {
+  // Tor is enabled by default. Change pref to disable.
+  tor::TorProfileService::SetTorDisabled(true);
+
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   BraveAppMenuModel normal_model(browser_view->toolbar(), browser());
   normal_model.Init();

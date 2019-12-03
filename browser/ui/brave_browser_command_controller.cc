@@ -143,13 +143,13 @@ void BraveBrowserCommandController::UpdateCommandForWebcompatReporter() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER, true);
 }
 
-void BraveBrowserCommandController::UpdateCommandForTor() {
 #if BUILDFLAG(ENABLE_TOR)
+void BraveBrowserCommandController::UpdateCommandForTor() {
   const bool is_tor_enabled = !tor::TorProfileService::IsTorDisabled();
   UpdateCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE, is_tor_enabled);
   UpdateCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR, is_tor_enabled);
-#endif
 }
+#endif
 
 void BraveBrowserCommandController::UpdateCommandForBraveSync() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_SYNC, true);

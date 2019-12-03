@@ -61,8 +61,6 @@ class BraveTorClientUpdater : public BraveComponent {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
-  bool registered() const { return registered_; }
-
  protected:
   void OnComponentReady(const std::string& component_id,
       const base::FilePath& install_dir,

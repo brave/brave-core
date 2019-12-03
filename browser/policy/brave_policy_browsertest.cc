@@ -16,7 +16,6 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service.h"
-#include "brave/common/tor/pref_names.h"
 #endif
 
 using testing::_;
@@ -40,7 +39,6 @@ class BravePolicyTest : public InProcessBrowserTest {
 };
 
 #if BUILDFLAG(ENABLE_TOR)
-#if defined(OS_WIN)
 // This policy only exists on Windows.
 // Sets the tor policy before the browser is started.
 class TorDisabledPolicyBrowserTest : public BravePolicyTest {
@@ -61,9 +59,8 @@ class TorDisabledPolicyBrowserTest : public BravePolicyTest {
 
 IN_PROC_BROWSER_TEST_F(TorDisabledPolicyBrowserTest, TorDisabledPrefValueTest) {
   // When policy is set, explicit setting doesn't change its pref value.
-  g_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled, false);
-  EXPECT_TRUE(
-      g_browser_process->local_state()->GetBoolean(tor::prefs::kTorDisabled));
+  tor::TorProfileService::SetTorDisabled(false);
+  EXPECT_TRUE(tor::TorProfileService::IsTorDisabled());
 }
 
 class TorEnabledPolicyBrowserTest : public BravePolicyTest {
@@ -84,11 +81,9 @@ class TorEnabledPolicyBrowserTest : public BravePolicyTest {
 
 IN_PROC_BROWSER_TEST_F(TorEnabledPolicyBrowserTest, TorDisabledPrefValueTest) {
   // When policy is set, explicit setting doesn't change its pref value.
-  g_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled, true);
-  EXPECT_FALSE(
-      g_browser_process->local_state()->GetBoolean(tor::prefs::kTorDisabled));
+  tor::TorProfileService::SetTorDisabled(true);
+  EXPECT_FALSE(tor::TorProfileService::IsTorDisabled());
 }
-#endif  // OS_WIN
 #endif  // ENABLE_TOR
 
 }  // namespace policy

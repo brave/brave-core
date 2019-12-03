@@ -13,8 +13,8 @@ cr.define('settings', function() {
     setHangoutsEnabled(value) {}
     setIPFSCompanionEnabled(value) {}
     setTorEnabled(value) {}
-    getTorEnabled() {}
-    getTorManaged() {}
+    isTorEnabled() {}
+    isTorManaged() {}
     getRestartNeeded() {}
   }
 
@@ -41,10 +41,10 @@ cr.define('settings', function() {
     setTorEnabled(value) {
       chrome.send('setTorEnabled', [value]);
     }
-    getTorEnabled() {
-      return cr.sendWithPromise('getTorEnabled');
+    isTorEnabled() {
+      return cr.sendWithPromise('isTorEnabled');
     }
-    getTorManaged() {
+    isTorManaged() {
       return cr.sendWithPromise('isTorManaged');
     }
     getRestartNeeded() {

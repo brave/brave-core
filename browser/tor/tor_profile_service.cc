@@ -56,32 +56,16 @@ void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   const std::string tor_proxy_uri =
       std::string(kTorProxyScheme) + std::string(kTorProxyAddress) + ":" + port;
   registry->RegisterStringPref(prefs::kTorProxyString, tor_proxy_uri);
-  // This pref value and current tor enabled state might be different because
-  // user can change pref value. But, this pref changes doesn't affect current
-  // tor enabled state. Instead, this pref value uses whether tor component is
-  // registered or not at startup. Tor component is only registered if this has
-  // false.
-  // kTorDisabled could be managed. User can only change it via settings if it's
-  // not managed. For now, only Windows support tor group policy.
   registry->RegisterBooleanPref(prefs::kTorDisabled, false);
 }
 
 // static
 bool TorProfileService::IsTorDisabled() {
-  // In test, |g_brave_browser_process| could be null.
-  if (!g_brave_browser_process) {
-    return false;
-  }
-  return !g_brave_browser_process->tor_client_updater()->registered();
-}
-
-// static
-bool TorProfileService::GetTorDisabledPref() {
   return g_browser_process->local_state()->GetBoolean(prefs::kTorDisabled);
 }
 
 // static
-void TorProfileService::SetTorDisabledPref(bool disabled) {
+void TorProfileService::SetTorDisabled(bool disabled) {
   g_browser_process->local_state()->SetBoolean(prefs::kTorDisabled, disabled);
 }
 

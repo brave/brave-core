@@ -93,8 +93,15 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   brave::BraveStatsUpdater* brave_stats_updater();
 
  private:
+  // BrowserProcessImpl overrides:
+  void Init() override;
+
   void CreateProfileManager();
   void CreateNotificationPlatformBridge();
+
+#if BUILDFLAG(ENABLE_TOR)
+  void OnTorEnabledChanged();
+#endif
 
   BraveComponent::Delegate* brave_component_updater_delegate();
 

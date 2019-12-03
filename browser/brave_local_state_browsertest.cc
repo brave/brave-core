@@ -9,7 +9,6 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service.h"
-#include "brave/common/tor/pref_names.h"
 #endif
 
 using BraveLocalStateBrowserTest = InProcessBrowserTest;
@@ -20,29 +19,3 @@ IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, BasicTest) {
   EXPECT_FALSE(tor::TorProfileService::IsTorDisabled());
 #endif
 }
-
-#if BUILDFLAG(ENABLE_TOR)
-IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, PRE_TorDisabledTest) {
-  EXPECT_EQ(tor::TorProfileService::IsTorDisabled(),
-            tor::TorProfileService::GetTorDisabledPref());
-
-  // Set to same value(enable) to next launching prefs, doesn't affect anything.
-  tor::TorProfileService::SetTorDisabledPref(false);
-  EXPECT_EQ(tor::TorProfileService::IsTorDisabled(),
-            tor::TorProfileService::GetTorDisabledPref());
-
-  // Check setting to disable to next launching prefs doesn't affect
-  // IsTorDisabled().
-  tor::TorProfileService::SetTorDisabledPref(true);
-  EXPECT_FALSE(tor::TorProfileService::IsTorDisabled());
-  EXPECT_NE(tor::TorProfileService::IsTorDisabled(),
-            tor::TorProfileService::GetTorDisabledPref());
-}
-
-IN_PROC_BROWSER_TEST_F(BraveLocalStateBrowserTest, TorDisabledTest) {
-  // Check IsTorDisabled() is changed from previous test run.
-  EXPECT_TRUE(tor::TorProfileService::IsTorDisabled());
-  EXPECT_EQ(tor::TorProfileService::IsTorDisabled(),
-            tor::TorProfileService::GetTorDisabledPref());
-}
-#endif
