@@ -90,11 +90,11 @@ void Prefs::SetThisDeviceId(const std::string& device_id) {
   pref_service_->SetString(kSyncDeviceId, device_id);
 }
 
-std::string Prefs::GetDeviceIdV2() const {
+std::string Prefs::GetThisDeviceIdV2() const {
   return pref_service_->GetString(kSyncDeviceIdV2);
 }
 
-void Prefs::SetDeviceIdV2(const std::string& device_id_v2) {
+void Prefs::SetThisDeviceIdV2(const std::string& device_id_v2) {
   DCHECK(!device_id_v2.empty());
   pref_service_->SetString(kSyncDeviceIdV2, device_id_v2);
 }
@@ -152,7 +152,7 @@ std::unique_ptr<brave_sync::Settings> Prefs::GetBraveSyncSettings() const {
 
   settings->this_device_name_ = GetThisDeviceName();
   settings->this_device_id_ = GetThisDeviceId();
-  settings->this_device_id_v2_ = GetDeviceIdV2();
+  settings->this_device_id_v2_ = GetThisDeviceIdV2();
   settings->sync_this_device_ = GetSyncEnabled();
   settings->sync_bookmarks_ = GetSyncBookmarksEnabled();
   settings->sync_settings_ = GetSyncSiteSettingsEnabled();

@@ -412,8 +412,8 @@ void BraveProfileSyncServiceImpl::OnGetInitData(
   }
 
   std::string device_id_v2;
-  if (!brave_sync_prefs_->GetDeviceIdV2().empty()) {
-    device_id_v2 = brave_sync_prefs_->GetDeviceIdV2();
+  if (!brave_sync_prefs_->GetThisDeviceIdV2().empty()) {
+    device_id_v2 = brave_sync_prefs_->GetThisDeviceIdV2();
     VLOG(1) << "[Brave Sync] Init device id_v2 from prefs: " << device_id_v2;
   } else {
     VLOG(1) << "[Brave Sync] Init empty device id_v2";
@@ -449,9 +449,10 @@ void BraveProfileSyncServiceImpl::OnSaveInitData(
 
   brave_sync_prefs_->SetSeed(seed_str);
   brave_sync_prefs_->SetThisDeviceId(device_id_str);
-  if (!brave_sync_initializing_ && brave_sync_prefs_->GetDeviceIdV2().empty())
+  if (!brave_sync_initializing_ &&
+      brave_sync_prefs_->GetThisDeviceIdV2().empty())
     send_device_id_v2_update_ = true;
-  brave_sync_prefs_->SetDeviceIdV2(device_id_v2);
+  brave_sync_prefs_->SetThisDeviceIdV2(device_id_v2);
 
   brave_sync_initializing_ = false;
 }
@@ -875,7 +876,7 @@ void BraveProfileSyncServiceImpl::SendCreateDevice() {
   std::string device_name = brave_sync_prefs_->GetThisDeviceName();
   std::string object_id = tools::GenerateObjectId();
   std::string device_id = brave_sync_prefs_->GetThisDeviceId();
-  std::string device_id_v2 = brave_sync_prefs_->GetDeviceIdV2();
+  std::string device_id_v2 = brave_sync_prefs_->GetThisDeviceIdV2();
   CHECK(!device_id.empty());
 
   SendDeviceSyncRecord(SyncRecord::Action::A_CREATE, device_name, device_id,
@@ -887,7 +888,7 @@ void BraveProfileSyncServiceImpl::SendUpdateDevice() {
 
   std::string device_id = brave_sync_prefs_->GetThisDeviceId();
   std::string device_name = brave_sync_prefs_->GetThisDeviceName();
-  std::string device_id_v2 = brave_sync_prefs_->GetDeviceIdV2();
+  std::string device_id_v2 = brave_sync_prefs_->GetThisDeviceIdV2();
   auto sync_devices = brave_sync_prefs_->GetSyncDevices();
   // TODO(darkdh): need to get device by object id
   const SyncDevice* device = sync_devices->GetByDeviceId(device_id);
@@ -915,7 +916,7 @@ void BraveProfileSyncServiceImpl::SendDeviceSyncRecord(
 
 void BraveProfileSyncServiceImpl::OnResolvedPreferences(
     const RecordsList& records) {
-  const std::string this_device_id = brave_sync_prefs_->GetThisDeviceId();
+  const std::string this_device_id_v2 = brave_sync_prefs_->GetThisDeviceIdV2();
   bool this_device_deleted = false;
 
   auto sync_devices = brave_sync_prefs_->GetSyncDevices();
@@ -931,7 +932,7 @@ void BraveProfileSyncServiceImpl::OnResolvedPreferences(
           record->action, &actually_merged);
       this_device_deleted =
           this_device_deleted ||
-          (record->deviceId == this_device_id &&
+          (device.deviceIdV2 == this_device_id_v2 &&
            record->action == SyncRecord::Action::A_DELETE && actually_merged);
     }
   }  // for each device
@@ -987,7 +988,9 @@ void BraveProfileSyncServiceImpl::OnPollSyncCycle(GetRecordsCallback cb,
     this_device_created_time_ = base::Time::Now();
   }
   if (send_device_id_v2_update_) {
-    SendUpdateDevice();
+    // SendUpdateDevice();
+    OnDeleteDevice(brave_sync_prefs_->GetThisDeviceId());
+    SendCreateDevice();
     send_device_id_v2_update_ = false;
   }
 

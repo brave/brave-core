@@ -83,8 +83,8 @@ class Prefs {
   void SetSeed(const std::string& seed);
   std::string GetThisDeviceId() const;
   void SetThisDeviceId(const std::string& device_id);
-  std::string GetDeviceIdV2() const;
-  void SetDeviceIdV2(const std::string& device_id_v2);
+  std::string GetThisDeviceIdV2() const;
+  void SetThisDeviceIdV2(const std::string& device_id_v2);
   std::string GetThisDeviceName() const;
   void SetThisDeviceName(const std::string& device_name);
   std::string GetBookmarksBaseOrder();
