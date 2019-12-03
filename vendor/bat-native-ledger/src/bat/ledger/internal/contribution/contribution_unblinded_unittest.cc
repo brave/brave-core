@@ -20,7 +20,7 @@ namespace braveledger_contribution {
 
 class UnblindedTest : public ::testing::Test {
  private:
-  base::test::ScopedTaskEnvironment scoped_task_environment_;
+  base::test::TaskEnvironment scoped_task_environment_;
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
