@@ -56,8 +56,7 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     let claimedPromotions = promotions.filter((promotion: Rewards.Promotion) => {
-      return promotion.status === 4 || // PromotionStatus::FINISHED
-        promotion.status === 5 // PromotionStatus::OVER
+      return promotion.status === 4 // PromotionStatus::FINISHED
     })
 
     return claimedPromotions.map((promotion: Rewards.Promotion) => {
