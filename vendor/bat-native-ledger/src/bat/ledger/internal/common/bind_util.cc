@@ -114,6 +114,7 @@ std::string FromPromotionToString(const ledger::PromotionPtr info) {
   promotion.SetIntKey("suggestions", info->suggestions);
   promotion.SetBoolKey("status", static_cast<int>(info->status));
   promotion.SetKey("credentials", std::move(credentials));
+  promotion.SetBoolKey("legacy_claimed", info->legacy_claimed);
 
   std::string json;
   base::JSONWriter::Write(promotion, &json);
@@ -172,6 +173,11 @@ ledger::PromotionPtr FromStringToPromotion(const std::string& data) {
   auto status = dictionary->FindIntKey("status");
   if (status) {
     promotion->status = static_cast<ledger::PromotionStatus>(*status);
+  }
+
+  auto legacy_claimed = dictionary->FindBoolKey("legacy_claimed");
+  if (legacy_claimed) {
+    promotion->legacy_claimed = *legacy_claimed;
   }
 
   auto* credentials = dictionary->FindDictKey("credentials");
