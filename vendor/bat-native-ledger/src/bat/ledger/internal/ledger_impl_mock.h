@@ -565,6 +565,9 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD0(UnblindedTokensReady, void());
 
   MOCK_METHOD1(GetAnonWalletStatus, void(ledger::ResultCallback));
+
+  MOCK_METHOD2(DeleteUnblindedTokensForPromotion,
+      void(const std::string& promotion_id, ledger::ResultCallback));
 };
 
 }  // namespace bat_ledger

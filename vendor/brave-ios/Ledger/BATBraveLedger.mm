@@ -1997,4 +1997,9 @@ BATLedgerBridge(BOOL,
   }
 }
 
+- (void)deleteUnblindedTokensForPromotion:(const std::string&)promotion_id callback:(ledger::ResultCallback)callback
+{
+  // TODO please implement
+}
+
 @end

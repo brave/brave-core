@@ -41,7 +41,8 @@ export const generatePromotions = (promotions?: RewardsExtension.Promotion[]) =>
   }
 
   let claimedPromotions = promotions.filter((promotion: Rewards.Promotion) => {
-    return promotion.status === 4 // PromotionStatus::FINISHED
+    return promotion.status === 4 || // PromotionStatus::FINISHED
+      promotion.status === 5 // PromotionStatus::OVER
   })
 
   const typeUGP = 0

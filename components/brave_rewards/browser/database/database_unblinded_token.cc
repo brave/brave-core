@@ -16,6 +16,13 @@
 
 namespace brave_rewards {
 
+namespace  {
+
+const char* table_name_ = "unblinded_tokens";
+const int minimum_version_ = 10;
+
+}  // namespace
+
 DatabaseUnblindedToken::DatabaseUnblindedToken(
     int current_db_version) :
     DatabaseTable(current_db_version) {
@@ -151,6 +158,24 @@ bool DatabaseUnblindedToken::DeleteRecords(
       "DELETE FROM %s WHERE token_id IN (%s)",
       table_name_,
       base::JoinString(id_list, ", ").c_str());
+
+  sql::Statement statement(db->GetUniqueStatement(query.c_str()));
+
+  return statement.Run();
+}
+
+// static
+bool DatabaseUnblindedToken::DeleteRecordsForPromotion(
+    sql::Database* db,
+    const std::string& promotion_id) {
+  if (promotion_id.empty()) {
+    return false;
+  }
+
+  const std::string query = base::StringPrintf(
+      "DELETE FROM %s WHERE promotion_id = '%s'",
+      table_name_,
+      promotion_id.c_str());
 
   sql::Statement statement(db->GetUniqueStatement(query.c_str()));
 

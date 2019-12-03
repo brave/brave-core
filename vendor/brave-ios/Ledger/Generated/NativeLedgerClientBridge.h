@@ -89,5 +89,6 @@
 - (ledger::ClientInfoPtr)getClientInfo;
 - (void)unblindedTokensReady;
 - (void)getAllPromotions:(ledger::GetAllPromotionsCallback)callback;
+- (void)deleteUnblindedTokensForPromotion:(const std::string&)promotion_id callback:(ledger::ResultCallback)callback;
 
 @end
