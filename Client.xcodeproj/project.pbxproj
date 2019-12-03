@@ -922,6 +922,7 @@
 		F84B21DA1A090F8100AAB793 /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B21D91A090F8100AAB793 /* ClientTests.swift */; };
 		F84B22041A0910F600AAB793 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B21E51A0910F600AAB793 /* AppDelegate.swift */; };
 		F84B220B1A0910F600AAB793 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F84B21EF1A0910F600AAB793 /* Images.xcassets */; };
+		F926647C234D4EF400359492 /* CoreNFC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F926647A234D4EF400359492 /* CoreNFC.framework */; };
 		F930CDAC227000F200A23FE1 /* U2F.js in Resources */ = {isa = PBXBuildFile; fileRef = F930CDAB227000F200A23FE1 /* U2F.js */; };
 		F930CDAE2270015C00A23FE1 /* U2FExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F930CDAD2270015C00A23FE1 /* U2FExtensions.swift */; };
 		F930CDB82270040D00A23FE1 /* WebAuthnClientData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F930CDB72270040D00A23FE1 /* WebAuthnClientData.swift */; };
@@ -931,6 +932,7 @@
 		F939FBFE22A596B900D9CD3F /* U2FTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F939FBFD22A596B900D9CD3F /* U2FTests.swift */; };
 		F98E1EA122B6D70E0018AF29 /* libYubiKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8E23A22A6C56D0064F3FA /* libYubiKit.a */; };
 		F99505FF22937E3900CC6543 /* U2F-low-level.js in Resources */ = {isa = PBXBuildFile; fileRef = F99505FE22937E3900CC6543 /* U2F-low-level.js */; };
+		F9C6B7D623886EF8003F7D16 /* SceneObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C6B7D523886EF8003F7D16 /* SceneObserver.swift */; };
 		FA6B2AC21D41F02D00429414 /* Punycode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B2AC11D41F02D00429414 /* Punycode.swift */; };
 		FA9293D41D6580E100AC8D33 /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9293D31D6580E100AC8D33 /* QRCodeViewController.swift */; };
 		FA9294011D6584A200AC8D33 /* QRCode.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA9294001D6584A200AC8D33 /* QRCode.xcassets */; };
@@ -2369,6 +2371,7 @@
 		F84B21E51A0910F600AAB793 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppDelegate.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		F84B21EF1A0910F600AAB793 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F84B22431A09165600AAB793 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F926647A234D4EF400359492 /* CoreNFC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreNFC.framework; path = System/Library/Frameworks/CoreNFC.framework; sourceTree = SDKROOT; };
 		F930CDAB227000F200A23FE1 /* U2F.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = U2F.js; sourceTree = "<group>"; };
 		F930CDAD2270015C00A23FE1 /* U2FExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = U2FExtensions.swift; sourceTree = "<group>"; };
 		F930CDB72270040D00A23FE1 /* WebAuthnClientData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthnClientData.swift; sourceTree = "<group>"; };
@@ -2377,6 +2380,7 @@
 		F930CDD62270F14300A23FE1 /* WebAuthnUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthnUtils.swift; sourceTree = "<group>"; };
 		F939FBFD22A596B900D9CD3F /* U2FTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = U2FTests.swift; sourceTree = "<group>"; };
 		F99505FE22937E3900CC6543 /* U2F-low-level.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "U2F-low-level.js"; sourceTree = "<group>"; };
+		F9C6B7D523886EF8003F7D16 /* SceneObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneObserver.swift; sourceTree = "<group>"; };
 		FA6B2AC11D41F02D00429414 /* Punycode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Punycode.swift; sourceTree = "<group>"; };
 		FA9293D31D6580E100AC8D33 /* QRCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
 		FA9294001D6584A200AC8D33 /* QRCode.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = QRCode.xcassets; sourceTree = "<group>"; };
@@ -2404,6 +2408,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F926647C234D4EF400359492 /* CoreNFC.framework in Frameworks */,
 				2777275A22EB4C7700F0214C /* BraveShared.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3947,6 +3952,7 @@
 			children = (
 				27AC169623834510004BE19C /* UserNotifications.framework */,
 				27FA2D4F234CC9FB004D5D2D /* BraveRewards.framework */,
+				F926647A234D4EF400359492 /* CoreNFC.framework */,
 				0AC8E23A22A6C56D0064F3FA /* libYubiKit.a */,
 				272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */,
 				0AC0D399233E7CAF0091EFA5 /* ObjcExceptionBridging.framework */,
@@ -4691,6 +4697,7 @@
 				F930CDD62270F14300A23FE1 /* WebAuthnUtils.swift */,
 				F930CDB72270040D00A23FE1 /* WebAuthnClientData.swift */,
 				F930CDAD2270015C00A23FE1 /* U2FExtensions.swift */,
+				F9C6B7D523886EF8003F7D16 /* SceneObserver.swift */,
 			);
 			path = WebAuthN;
 			sourceTree = "<group>";
@@ -6156,6 +6163,7 @@
 				0A1E84402190A57F0042F782 /* SyncSelectDeviceTypeViewController.swift in Sources */,
 				392ED7E41D0AEF56009D9B62 /* NewTabAccessors.swift in Sources */,
 				276E7A3C22F21DBE00939424 /* RewardsReporting.swift in Sources */,
+				F9C6B7D623886EF8003F7D16 /* SceneObserver.swift in Sources */,
 				4422D50421BFFB7600BF1855 /* memtable.cc in Sources */,
 				D3A9949D1A3686BD008AD1AC /* Tab.swift in Sources */,
 				0A4BEFD8221EE78E0005551A /* CachedNetworkResource.swift in Sources */,
