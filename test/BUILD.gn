@@ -171,7 +171,6 @@ test("brave_unit_tests") {
       "../browser/importer/chrome_profile_lock_unittest.cc",
       "../utility/importer/chrome_importer_unittest.cc",
       "../utility/importer/brave_importer_unittest.cc",
-      "../utility/importer/firefox_importer_unittest.cc",
 
       # These tests should probably work on Android and compile, but don't pass currently
       "//brave/browser/autocomplete/brave_autocomplete_provider_client_unittest.cc",

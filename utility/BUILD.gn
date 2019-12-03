@@ -30,8 +30,6 @@ source_set("utility") {
       "importer/brave_importer.h",
       "importer/chrome_importer.cc",
       "importer/chrome_importer.h",
-      "importer/firefox_importer.cc",
-      "importer/firefox_importer.h",
     ]
 
     deps += [
