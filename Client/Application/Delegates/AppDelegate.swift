@@ -56,9 +56,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // Hold references to willFinishLaunching parameters for delayed app launch
         self.application = application
         self.launchOptions = launchOptions
-
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window!.backgroundColor = UIColor.Photon.White100
+        
+        SceneObserver.setupApplication(window: self.window!)
 
         AdBlockStats.shared.startLoading()
         HttpsEverywhereStats.shared.startLoading()
