@@ -7,55 +7,6 @@ import * as React from 'react'
 // CSS normalizer
 import 'emptykit.css'
 
-// Components group
-import AdvancedView from './advancedView'
-import SimpleView from './simpleView'
-import ReadOnlyView from './readOnlyView'
-
-// API
-import * as shieldsAPI from '../background/api/shieldsAPI'
-
-// Types
-import { Tab, PersistentData } from '../types/state/shieldsPannelState'
-import {
-  ShieldsToggled,
-  ReportBrokenSite,
-  BlockAdsTrackers,
-  HttpsEverywhereToggled,
-  BlockJavaScript,
-  BlockFingerprinting,
-  BlockCookies,
-  AllowScriptOriginsOnce,
-  SetScriptBlockedCurrentState,
-  SetGroupedScriptsBlockedCurrentState,
-  SetAllScriptsBlockedCurrentState,
-  SetFinalScriptsBlockedState,
-  SetAdvancedViewFirstAccess,
-  ShieldsReady
-} from '../types/actions/shieldsPanelActions'
-
-interface Props {
-  actions: {
-    shieldsToggled: ShieldsToggled
-    reportBrokenSite: ReportBrokenSite
-    blockAdsTrackers: BlockAdsTrackers
-    httpsEverywhereToggled: HttpsEverywhereToggled
-    blockJavaScript: BlockJavaScript
-    blockFingerprinting: BlockFingerprinting
-    blockCookies: BlockCookies
-    allowScriptOriginsOnce: AllowScriptOriginsOnce
-    setScriptBlockedCurrentState: SetScriptBlockedCurrentState
-    setGroupedScriptsBlockedCurrentState: SetGroupedScriptsBlockedCurrentState
-    setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
-    setFinalScriptsBlockedState: SetFinalScriptsBlockedState
-    setAdvancedViewFirstAccess: SetAdvancedViewFirstAccess
-    shieldsReady: ShieldsReady
-  }
-  shieldsPanelTabData: Tab
-  persistentData: PersistentData
-  settings: any
-}
-
 import { Cell } from 'brave-ui/components/dataTables/table'
 
 const VideoFile = require('../video_file.mp4')
