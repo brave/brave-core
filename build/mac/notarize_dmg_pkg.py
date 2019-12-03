@@ -24,7 +24,7 @@ packaging_signing_path = os.path.realpath(os.path.dirname(os.path.realpath(__fil
 sys.path.append(packaging_signing_path)
 
 # Import the entire module to avoid circular dependencies in the functions
-from signing import config, commands, model, notarize, pipeline, signing  # noqa: E402
+from signing import chromium_config, config, commands, model, notarize, pipeline, signing  # noqa: E402
 from signing_helper import GetBraveSigningConfig
 
 def run_command(args, **kwargs):
@@ -47,7 +47,7 @@ def create_config(config_args, development, mac_provisioning_profile):
     Returns:
         An instance of |model.CodeSignConfig|.
     """
-    config_class = config.CodeSignConfig
+    config_class = ChromiumCodeSignConfig
 
     if development:
 
