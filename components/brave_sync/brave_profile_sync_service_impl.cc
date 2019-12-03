@@ -875,6 +875,7 @@ void BraveProfileSyncServiceImpl::SendCreateDevice() {
 
   std::string device_name = brave_sync_prefs_->GetThisDeviceName();
   std::string object_id = tools::GenerateObjectId();
+  brave_sync_prefs_->SetThisDeviceObjectId(object_id);
   std::string device_id = brave_sync_prefs_->GetThisDeviceId();
   std::string device_id_v2 = brave_sync_prefs_->GetThisDeviceIdV2();
   CHECK(!device_id.empty());
