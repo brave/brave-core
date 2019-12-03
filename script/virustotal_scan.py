@@ -7,12 +7,19 @@ import logging
 from time import sleep
 from virustotal_python import Virustotal
 
-LOGGER = logging.getLogger(__name__)
+from requests.exceptions import ConnectionError
 
-WAIT_TIME = 60  # seconds
+logging.basicConfig()
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.INFO)
+
+WAIT_TIME = 300  # seconds  (5 min)
 
 RC_NOT_FOUND = 0
 RC_OK = 1
+
+RET_STR_CLEAN = 'CLEAN'
+RET_STR_INFECTED = 'THREAT DETECTED'
 
 SCAN_THREATS_FOUND = 255
 SCAN_ERROR = 1
@@ -58,31 +65,55 @@ def main():
     args = parser.parse_args()
 
     if 'VT_API_KEY' not in os.environ:
-        LOGGER.error('VT_API_KEY environment variable not set')
+        LOGGER.error('VT_API_KEY environment variable not set.')
         sys.exit(SCAN_ERROR)
 
+    LOGGER.debug('Initialzing VirusTotal API')
     vt_api_key = os.environ['VT_API_KEY']
     vt = Virustotal(vt_api_key)
 
     # Hash file
+    LOGGER.info('Checking if report already exists via file hash.')
     file_hash = sha256sum(args.file)
-    response = vt.file_report([file_hash])
+    try:
+        response = vt.file_report([file_hash])
+    except ConnectionError as e:
+        err_str = str(e)
+        LOGGER.error(f"Connection error to VT: {err_str}.")
+        sys.exit(SCAN_ERROR)
+
     ret = parse_response(response)
 
     # If report is available, just exit with the appropriate RC
     if ret != SCAN_NOT_FOUND:
+        ret_str = RET_STR_INFECTED if ret else RET_STR_CLEAN
+        LOGGER.info(f"Report found. Status: {ret_str}.")
         sys.exit(ret)
 
     # Send file to VT for scanning
-    vt.file_scan(args.file)
+    try:
+        LOGGER.info('Report not found. Sending file to VirusTotal for scanning.')
+        vt.file_scan(args.file)
+    except ConnectionError as e:
+        err_str = str(e)
+        LOGGER.error(f"Connection error to VT: {err_str}")
+        sys.exit(SCAN_ERROR)
 
     while ret == SCAN_NOT_FOUND:
-        LOGGER.info("Scan still running, sleeping")
+        LOGGER.info(f"Scan still running, sleeping for {WAIT_TIME} seconds.")
         sleep(WAIT_TIME)
         # Try again
-        response = vt.file_report([file_hash])
+        try:
+            response = vt.file_report([file_hash])
+        except ConnectionError as e:
+            err_str = str(e)
+            LOGGER.error(f"Temporary connection error to VT: {err_str}... Retrying in {WAIT_TIME} seconds.")
+            continue
+
         ret = parse_response(response)
 
+    ret_str = RET_STR_INFECTED if ret else RET_STR_CLEAN
+    LOGGER.info(f"Scan finished. Status: {ret_str}.")
     sys.exit(ret)
 
 
