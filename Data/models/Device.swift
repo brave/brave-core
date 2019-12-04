@@ -10,7 +10,7 @@ private let log = Logger.browserLogger
 public final class Device: NSManagedObject, Syncable, CRUD {
     
     // Check if this can be nested inside the method
-    static var sharedCurrentDevice: Device?
+    static var sharedCurrentDeviceId: NSManagedObjectID?
     
     // Assign on parent model via CD
     @NSManaged public var isSynced: Bool
@@ -56,14 +56,14 @@ extension Device {
     
     /// Returns a current device and assings it to a shared variable.
     static func currentDevice(context: NSManagedObjectContext = DataController.viewContext) -> Device? {
-        if sharedCurrentDevice == nil {
+        guard let deviceId = sharedCurrentDeviceId else {
             let predicate = NSPredicate(format: "isCurrentDevice == true")
-            sharedCurrentDevice = first(where: predicate, context: context)
-        } else if let sharedDevice = sharedCurrentDevice {
-            sharedCurrentDevice = context.object(with: sharedDevice.objectID) as? Device
+            let device = first(where: predicate, context: context)
+            sharedCurrentDeviceId = device?.objectID
+            return device
         }
         
-        return sharedCurrentDevice
+        return context.object(with: deviceId) as? Device
     }
     
     class func add(name: String?, isCurrent: Bool = false) {
