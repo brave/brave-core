@@ -127,4 +127,6 @@ class PlaylistsMediaFileController {
   DISALLOW_COPY_AND_ASSIGN(PlaylistsMediaFileController);
 };
 
+base::FilePath::StringType GetPlaylistIDDirName(const std::string& playlist_id);
+
 #endif  // BRAVE_COMPONENTS_PLAYLISTS_BROWSER_PLAYLISTS_MEDIA_FILE_CONTROLLER_H_

@@ -297,6 +297,18 @@
             "description": "URL to download"
           }
         ]
+      },
+      {
+        "name": "play",
+        "type": "function",
+        "description": "displays platform-specific UI to play the given playlist",
+        "parameters": [
+          {
+            "name": "id",
+            "type": "string",
+            "description": "id of playlist to play"
+          }
+        ]
       }
     ]
   }

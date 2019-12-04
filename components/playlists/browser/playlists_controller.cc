@@ -21,8 +21,13 @@
 #include "brave/components/playlists/browser/playlists_constants.h"
 #include "brave/components/playlists/browser/playlists_controller_observer.h"
 #include "brave/components/playlists/browser/playlists_db_controller.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/scoped_tabbed_browser_displayer.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/page_navigator.h"
 #include "content/public/browser/storage_partition.h"
+#include "net/base/filename_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 
@@ -33,15 +38,6 @@ const base::FilePath::StringType kDatabaseDirName(
     FILE_PATH_LITERAL("playlists_db"));
 const base::FilePath::StringType kThumbnailFileName(
     FILE_PATH_LITERAL("thumbnail"));
-
-base::FilePath::StringType GetPlaylistIDDirName(
-    const std::string& playlist_id) {
-#if defined(OS_WIN)
-  return base::UTF8ToUTF16(playlist_id);
-#else
-  return playlist_id;
-#endif
-}
 
 PlaylistInfo CreatePlaylistInfo(const CreatePlaylistParams& params) {
   PlaylistInfo p;
@@ -636,6 +632,48 @@ void PlaylistsController::OnDeleteAllPlaylists(
     NotifyPlaylistChanged(
         {PlaylistsChangeParams::ChangeType::CHANGE_TYPE_ALL_DELETED, ""});
   }
+}
+
+void PlaylistsController::DoPlay(const std::string& id,
+                                 const std::string& playlist_info_json) {
+  base::Optional<base::Value> playlist_info =
+      base::JSONReader::Read(playlist_info_json);
+  if (!playlist_info) {
+    VLOG(1) << __func__ << ": "
+            << "Invalid playlist id for play: " << id;
+    return;
+  }
+
+  base::Optional<bool> partial_ready =
+      playlist_info->FindBoolPath(kPlaylistsPartialReadyKey);
+  if (partial_ready != base::nullopt && !partial_ready.value()) {
+    VLOG(1) << __func__ << ": "
+            << "Playlist is not ready to play: " << id;
+    return;
+  }
+  base::FilePath html_file_path = base_dir_.Append(GetPlaylistIDDirName(id))
+                                      .Append(FILE_PATH_LITERAL("index.html"));
+  // TODO(pilgrim) move this logic to browser/ui/webui/ to remove chrome/
+  // dependencies from this component
+  GURL html_file_url = net::FilePathToFileURL(html_file_path);
+  LOG(INFO) << "opening " << html_file_url.spec();
+  chrome::ScopedTabbedBrowserDisplayer browser_displayer(
+      Profile::FromBrowserContext(context_));
+  content::OpenURLParams open_url_params(
+      html_file_url, content::Referrer(),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
+  browser_displayer.browser()->OpenURL(open_url_params);
+}
+
+bool PlaylistsController::Play(const std::string& id) {
+  DCHECK(initialized_);
+  return base::PostTaskAndReplyWithResult(
+      io_task_runner(), FROM_HERE,
+      base::BindOnce(&PlaylistsDBController::Get,
+                     base::Unretained(db_controller_.get()), id),
+      base::BindOnce(&PlaylistsController::DoPlay, weak_factory_.GetWeakPtr(),
+                     id));
 }
 
 void PlaylistsController::AddObserver(PlaylistsControllerObserver* observer) {

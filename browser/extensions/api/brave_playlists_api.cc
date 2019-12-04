@@ -197,5 +197,17 @@ ExtensionFunction::ResponseAction BravePlaylistsRequestDownloadFunction::Run() {
   return RespondNow(Error(kUnknownError));
 }
 
+ExtensionFunction::ResponseAction BravePlaylistsPlayFunction::Run() {
+  if (!GetPlaylistsController(browser_context())->initialized())
+    return RespondNow(Error(kNotInitializedError));
+
+  std::unique_ptr<GetPlaylist::Params> params(
+      GetPlaylist::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  GetPlaylistsController(browser_context())->Play(params->id);
+  return RespondNow(NoArguments());
+}
+
 }  // namespace api
 }  // namespace extensions

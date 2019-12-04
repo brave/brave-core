@@ -155,6 +155,8 @@ int DoGenerateSingleMediaFileOnIOThread(
   return has_skipped_source_files ? 1 : 0;
 }
 
+}  // namespace
+
 base::FilePath::StringType GetPlaylistIDDirName(
     const std::string& playlist_id) {
 #if defined(OS_WIN)
@@ -163,8 +165,6 @@ base::FilePath::StringType GetPlaylistIDDirName(
   return playlist_id;
 #endif
 }
-
-}  // namespace
 
 PlaylistsMediaFileController::PlaylistsMediaFileController(
     Client* client,

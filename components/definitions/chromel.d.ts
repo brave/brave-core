@@ -264,6 +264,7 @@ declare namespace chrome.bravePlaylists {
   const deleteAllPlaylists: (callback: (deleted: boolean) => void) => void
   const deletePlaylist: (id: string) => void
   const requestDownload: (url: string) => void
+  const play: (id: string) => void
 }
 
 declare namespace chrome.braveTheme {

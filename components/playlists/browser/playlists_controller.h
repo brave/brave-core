@@ -60,6 +60,7 @@ class PlaylistsController : PlaylistsMediaFileController::Client {
   bool DeletePlaylist(const std::string& id);
   bool DeleteAllPlaylists(base::OnceCallback<void(bool)> callback);
   bool RequestDownload(const std::string& url);
+  bool Play(const std::string& id);
 
   void AddObserver(PlaylistsControllerObserver* observer);
   void RemoveObserver(PlaylistsControllerObserver* observer);
@@ -111,6 +112,8 @@ class PlaylistsController : PlaylistsMediaFileController::Client {
   void DoRecoverPlaylist(const std::string& id,
                          const std::string& playlist_info_json);
 
+  void DoPlay(const std::string& id, const std::string& playlist_info_json);
+
   base::SequencedTaskRunner* io_task_runner();
 
   // Delete orphaned playlist directory that are not included in db.
@@ -133,8 +136,9 @@ class PlaylistsController : PlaylistsMediaFileController::Client {
   //         doesn't have thumbnail.
   // Step 1. Getting basic infos for showing this playlist to users. Currently
   //         it is only thumbnail image for this playlist.
-  //         When thumbnail is fetched, it goes to step 2 and notifying to user
-  //         about this playlist has thumbnail. But, still not ready to play.
+  //         When thumbnail is fetched, it goes to step 2 and notifying to
+  //         user about this playlist has thumbnail. But, still not ready to
+  //         play.
   // Step 2. Getting media files and combining them as a single media file.
   //         Then, user can get notification about this playlist is ready to
   //         play.

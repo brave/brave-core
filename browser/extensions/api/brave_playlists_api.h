@@ -120,6 +120,17 @@ class BravePlaylistsRequestDownloadFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BravePlaylistsPlayFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("bravePlaylists.play", UNKNOWN)
+
+ protected:
+  ~BravePlaylistsPlayFunction() override {}
+
+  // ExtensionFunction:
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 
