@@ -1,5 +1,5 @@
 diff --git a/components/search_engines/prepopulated_engines.json b/components/search_engines/prepopulated_engines.json
-index af61d0c5d7502a8d8e7802d4f1d348f418244141..6df139a3002ee6faa8259246b5adc49ff193a8e7 100644
+index d4679b35bdc554ed2dabc03fc88c8ba21e072467..5882da3e1997904394cfc2235ed6973f1909fe72 100644
 --- a/components/search_engines/prepopulated_engines.json
 +++ b/components/search_engines/prepopulated_engines.json
 @@ -91,17 +91,6 @@
@@ -34,6 +34,6 @@ index af61d0c5d7502a8d8e7802d4f1d348f418244141..6df139a3002ee6faa8259246b5adc49f
 -      "id": 94
 -    },
 -
-     "seznam": {
+     "seznam_cz": {
        "name": "Seznam",
        "keyword": "seznam.cz",

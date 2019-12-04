@@ -1,8 +1,8 @@
 diff --git a/android_webview/browser/cookie_manager.cc b/android_webview/browser/cookie_manager.cc
-index 0ad2b9f6eddbbd3fc7bd50fbfbb14fe917d68864..89a803426db728b93bde3f59933364ae04de8ae6 100644
+index 984dc5b55e1d75e2e408c4108baf1fd98d927de6..b092a1ff66365ff41485baa9f209ee38262eaf58 100644
 --- a/android_webview/browser/cookie_manager.cc
 +++ b/android_webview/browser/cookie_manager.cc
-@@ -435,7 +435,7 @@ void CookieManager::SetCookieHelper(const GURL& host,
+@@ -438,7 +438,7 @@ void CookieManager::SetCookieHelper(const GURL& host,
  
    net::CanonicalCookie::CookieInclusionStatus status;
    std::unique_ptr<net::CanonicalCookie> cc(

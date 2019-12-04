@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/MainPreferences.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/MainPreferences.java
+index 32213f862d26a7ab447fd5961d35e872eae73fa2..d4cd969199fc191dfc2762b1f6fea359a26ed45a 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/settings/MainPreferences.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/MainPreferences.java
+@@ -43,7 +43,7 @@ import java.util.Map;
+ /**
+  * The main settings screen, shown when the user first opens Settings.
+  */
+-public class MainPreferences extends PreferenceFragmentCompat
++public class MainPreferences extends BraveMainPreferencesBase
+         implements TemplateUrlService.LoadListener, ProfileSyncService.SyncStateChangedListener,
+                    SigninManager.SignInStateObserver {
+     public static final String PREF_ACCOUNT_SECTION = "account_section";

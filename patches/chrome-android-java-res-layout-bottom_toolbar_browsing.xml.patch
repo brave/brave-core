@@ -1,20 +1,20 @@
 diff --git a/chrome/android/java/res/layout/bottom_toolbar_browsing.xml b/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
-index 0a3a1a7c8944c3b9be7fe8d02e90759677b3ad63..ea5409afa2d35876319ff5f9b1260274574b9885 100644
+index 76d517641db816c12bd35ae6497cd172eea71fd0..e56cffeee66034c659ac7719899f2512a1851c72 100644
 --- a/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
 +++ b/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
-@@ -35,6 +35,7 @@
- 
-     <include layout="@layout/toolbar_space" />
+@@ -62,6 +62,7 @@
+         android:contentDescription="@string/accessibility_toolbar_btn_tabswitcher_toggle_default"
+         app:menuVerticalOverlapAnchor="false" />
  
 +<!--
-     <LinearLayout
-         android:id="@+id/share_button_wrapper"
-         style="@style/BottomToolbarButtonWrapper"
-@@ -52,6 +53,7 @@
-             android:text="@string/share" />
+     <org.chromium.chrome.browser.toolbar.bottom.ShareButton
+         android:id="@+id/bottom_share_button"
+         android:src="@drawable/ic_share_white_24dp"
+@@ -71,6 +72,7 @@
+         android:contentDescription="@string/share"
+         style="@style/SplitToolbarButton" />
  
-     </LinearLayout>
 +--> <include layout="@layout/brave_bookmark_toolbar" />
- 
      <include layout="@layout/toolbar_space" />
  
+ </org.chromium.chrome.browser.toolbar.bottom.BrowsingModeBottomToolbarLinearLayout>

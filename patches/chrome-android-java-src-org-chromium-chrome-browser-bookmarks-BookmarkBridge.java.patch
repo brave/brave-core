@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkBridge.java
-index 84e2ad8a3de7ec0e3eda276d0890593b9de3620d..d32c6876e89a6fa679986b865cf3e33cfa1b140a 100644
+index ff905abf4bfcdb3831ce6eb2a1d353688252efdf..ea32d9cfc5555462837e05996d4c4cb7eed8cd1d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkBridge.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkBridge.java
-@@ -863,12 +863,12 @@ public class BookmarkBridge {
+@@ -901,12 +901,12 @@ public class BookmarkBridge {
      }
  
      @CalledByNative
@@ -17,7 +17,7 @@ index 84e2ad8a3de7ec0e3eda276d0890593b9de3620d..d32c6876e89a6fa679986b865cf3e33c
          mIsDoingExtensiveChanges = false;
          bookmarkModelChanged();
      }
-@@ -890,7 +890,7 @@ public class BookmarkBridge {
+@@ -928,7 +928,7 @@ public class BookmarkBridge {
      }
  
      @CalledByNative

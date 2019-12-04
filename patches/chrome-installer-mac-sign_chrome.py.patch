@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mac/sign_chrome.py b/chrome/installer/mac/sign_chrome.py
-index 2ccdfc99c46be9bd86baee175531cfd10a702068..664c6e67d8b468f52a07ac0e56cda4b3b37b31dd 100755
+index db35e6560b8a20d72414250649dac6873fd71022..07145d7e2d467bf15d97c8a7ca97e34366ef8494 100755
 --- a/chrome/installer/mac/sign_chrome.py
 +++ b/chrome/installer/mac/sign_chrome.py
-@@ -31,6 +31,7 @@ def create_config(config_args, development):
+@@ -44,6 +44,7 @@ def create_config(config_args, development):
      from signing.chromium_config import ChromiumCodeSignConfig
      config_class = ChromiumCodeSignConfig
  
@@ -10,7 +10,7 @@ index 2ccdfc99c46be9bd86baee175531cfd10a702068..664c6e67d8b468f52a07ac0e56cda4b3
      # Then search for the internal config for Google Chrome.
      try:
          from signing.internal_config import InternalCodeSignConfig
-@@ -40,6 +41,7 @@ def create_config(config_args, development):
+@@ -53,6 +54,7 @@ def create_config(config_args, development):
          # internal config has to be available.
          if config_class(*config_args).product == 'Google Chrome':
              raise e
@@ -18,7 +18,7 @@ index 2ccdfc99c46be9bd86baee175531cfd10a702068..664c6e67d8b468f52a07ac0e56cda4b3
  
      if development:
  
-@@ -61,6 +63,8 @@ def create_config(config_args, development):
+@@ -74,6 +76,8 @@ def create_config(config_args, development):
  
          config_class = DevelopmentCodeSignConfig
  

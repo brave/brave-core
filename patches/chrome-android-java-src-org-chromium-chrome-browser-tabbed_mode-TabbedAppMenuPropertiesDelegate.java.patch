@@ -1,16 +1,16 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java
-index d7470472aa695b3c6b040e024fe7eebbd0157678..f38091c5bc9d24abeb52bc4fa7efe83a51bc8055 100644
+index 46cb7743562ebcfedc2975d86506bbae4bf4229a..63fbe4dda2b97a2892ea0790d4da88b3ef904275 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedAppMenuPropertiesDelegate.java
-@@ -14,6 +14,7 @@ import org.chromium.chrome.browser.appmenu.AppMenuDelegate;
- import org.chromium.chrome.browser.appmenu.AppMenuHandler;
+@@ -12,6 +12,7 @@ import org.chromium.chrome.R;
+ import org.chromium.chrome.browser.ActivityTabProvider;
  import org.chromium.chrome.browser.appmenu.AppMenuIconRowFooter;
  import org.chromium.chrome.browser.appmenu.AppMenuPropertiesDelegateImpl;
 +import org.chromium.chrome.browser.appmenu.BraveAppMenuPropertiesDelegateImpl;
  import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
  import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
  import org.chromium.chrome.browser.datareduction.DataReductionMainMenuItem;
-@@ -25,7 +26,7 @@ import org.chromium.chrome.browser.toolbar.ToolbarManager;
+@@ -25,7 +26,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
  /**
   * An {@link AppMenuPropertiesDelegateImpl} for ChromeTabbedActivity.
   */
