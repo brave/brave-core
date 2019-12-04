@@ -367,8 +367,8 @@ export class Panel extends React.Component<Props, State> {
 
         if (result === '0') {
           const currency = onlyAnonWallet ? getMessage('bap') : getMessage('bat')
-          const fixed = utils.convertProbiToFixed(notification.args[3])
-          text = getMessage('contributeNotificationSuccess', [fixed, currency])
+          const contributionAmount = parseFloat(notification.args[3]).toFixed(1)
+          text = getMessage('contributeNotificationSuccess', [contributionAmount, currency])
         } else if (result === '15') {
           text = getMessage('contributeNotificationNotEnoughFunds')
           isAlert = 'warning'
