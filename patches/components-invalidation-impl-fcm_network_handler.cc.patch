@@ -1,8 +1,8 @@
 diff --git a/components/invalidation/impl/fcm_network_handler.cc b/components/invalidation/impl/fcm_network_handler.cc
-index c36ddd6d51272f6aabc2af475e525e42bc240f1e..98836035ac9366f6ccced06d5e6841b638e1c951 100644
+index 5383e8872b71bd5d18a839b2a623407d5aeb1368..e31e19f057a528cdeb6b1d8e0df1b5f3b9a621b2 100644
 --- a/components/invalidation/impl/fcm_network_handler.cc
 +++ b/components/invalidation/impl/fcm_network_handler.cc
-@@ -122,6 +122,7 @@ std::unique_ptr<syncer::FCMNetworkHandler> FCMNetworkHandler::Create(
+@@ -126,6 +126,7 @@ std::unique_ptr<syncer::FCMNetworkHandler> FCMNetworkHandler::Create(
  }
  
  void FCMNetworkHandler::StartListening() {

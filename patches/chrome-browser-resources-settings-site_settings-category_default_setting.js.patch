@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/site_settings/category_default_setting.js b/chrome/browser/resources/settings/site_settings/category_default_setting.js
-index a3e2d3277ebdabe3ce30273788c5596a16319e93..995a5209cde28826efb3d100bfe9bfa97deac244 100644
+index 22fb6525482457dc45b44a2f3b8f0ee286224868..cbed2b759cab344df6a9005835d689377cefd270 100644
 --- a/chrome/browser/resources/settings/site_settings/category_default_setting.js
 +++ b/chrome/browser/resources/settings/site_settings/category_default_setting.js
-@@ -117,6 +117,7 @@ Polymer({
+@@ -171,6 +171,7 @@ Polymer({
                                     settings.ContentSetting.BLOCK);
          break;
        case settings.ContentSettingsTypes.AUTOMATIC_DOWNLOADS:

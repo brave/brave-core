@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc b/chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc
+index efb8151b68738525a897f87300200d7fae71e974..2c12a3ce21250408ac4908337cc584297ff38777 100644
+--- a/chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc
++++ b/chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc
+@@ -53,6 +53,7 @@ PermissionPromptBubbleView::PermissionPromptBubbleView(
+ 
+   for (PermissionRequest* request : delegate_->Requests())
+     AddPermissionRequestLine(request);
++  AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests());
+ 
+   Show();
+ 

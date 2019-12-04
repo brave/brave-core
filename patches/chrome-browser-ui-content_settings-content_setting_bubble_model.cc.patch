@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/content_settings/content_setting_bubble_model.cc b/chrome/browser/ui/content_settings/content_setting_bubble_model.cc
-index ed9227ffd6611b0299fb7d2cd1d74c48d608da73..246a2b23aee39d083c853c55355f532a0c6a2a62 100644
+index 5f600f81d7bb2f9ec7935ea899a5690a5d1a1a4b..88c6bf05dd9efdf91efa2b90569500e1f07fc481 100644
 --- a/chrome/browser/ui/content_settings/content_setting_bubble_model.cc
 +++ b/chrome/browser/ui/content_settings/content_setting_bubble_model.cc
 @@ -15,6 +15,7 @@
@@ -13,9 +13,9 @@ index ed9227ffd6611b0299fb7d2cd1d74c48d608da73..246a2b23aee39d083c853c55355f532a
 @@ -1696,7 +1697,7 @@ ContentSettingBubbleModel::CreateContentSettingBubbleModel(
          delegate, web_contents, content_type);
    }
-   if (content_type == CONTENT_SETTINGS_TYPE_PLUGINS) {
+   if (content_type == ContentSettingsType::PLUGINS) {
 -    return std::make_unique<ContentSettingPluginBubbleModel>(delegate,
 +    return std::make_unique<BraveContentSettingPluginBubbleModel>(delegate,
                                                               web_contents);
    }
-   if (content_type == CONTENT_SETTINGS_TYPE_MIXEDSCRIPT) {
+   if (content_type == ContentSettingsType::MIXEDSCRIPT) {

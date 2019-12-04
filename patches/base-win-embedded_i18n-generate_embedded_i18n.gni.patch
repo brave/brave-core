@@ -1,8 +1,8 @@
 diff --git a/base/win/embedded_i18n/generate_embedded_i18n.gni b/base/win/embedded_i18n/generate_embedded_i18n.gni
-index cf734db30123eaf79063f2e2fdf1dc0ed508be87..1f9dd8c7e5e7be4f46f1a158b62b1aff578f2e60 100644
+index e515c8b01c73dadefcae183d6c4d4d2e51987160..701939a5c136bd36ff6343190e63890366057138 100644
 --- a/base/win/embedded_i18n/generate_embedded_i18n.gni
 +++ b/base/win/embedded_i18n/generate_embedded_i18n.gni
-@@ -90,6 +90,10 @@ template("generate_embedded_i18n") {
+@@ -98,6 +98,10 @@ template("generate_embedded_i18n") {
        output_rc,
      ]
  

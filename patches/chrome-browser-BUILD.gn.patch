@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index d3c018287325265d723f46cd5a02f4616868f301..23a79559a60fa73cf2d50f4dad0d47e104026d27 100644
+index d5684b2e3301bd39ce8196f6d459ef4d1c98d7cc..78705be46ccbfea7f4a193378bc6af15b58d545a 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2170,6 +2170,7 @@ jumbo_static_library("browser") {
+@@ -2249,6 +2249,7 @@ jumbo_static_library("browser") {
      "//ui/strings",
      "//ui/surface",
      "//ui/web_dialogs",
 +    "//brave/browser:browser_process",
    ]
  
-   if (is_posix || is_fuchsia) {
+   if (is_win) {
