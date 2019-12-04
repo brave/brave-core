@@ -1,8 +1,8 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index f0c7c5c7f7ebb088375e41c2292071cb734d823b..af14f2c5fa4ee6c466337efa2fec498e40af4624 100644
+index 0c08b7b49a030bbf194bf471ad8e96ddea893bf3..77f35f7b4fc7f9fe56b06c9d9648a0b28cb09791 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -34,7 +34,7 @@ import("java_sources.gni")
+@@ -35,7 +35,7 @@ import("java_sources.gni")
  import("static_initializers.gni")
  import("trichrome.gni")
  
@@ -11,7 +11,7 @@ index f0c7c5c7f7ebb088375e41c2292071cb734d823b..af14f2c5fa4ee6c466337efa2fec498e
  chrome_public_test_manifest_package = "org.chromium.chrome.tests"
  
  chrome_public_jinja_variables =
-@@ -118,6 +118,7 @@ android_resources("chrome_app_java_resources") {
+@@ -134,6 +134,7 @@ android_resources("chrome_app_java_resources") {
      "//third_party/android_deps:com_android_support_preference_v7_java",
      "//third_party/android_deps:com_android_support_recyclerview_v7_java",
    ]
@@ -19,7 +19,7 @@ index f0c7c5c7f7ebb088375e41c2292071cb734d823b..af14f2c5fa4ee6c466337efa2fec498e
    custom_package = "org.chromium.chrome"
  }
  
-@@ -390,6 +391,7 @@ android_library("chrome_java") {
+@@ -353,6 +354,7 @@ android_library("chrome_java") {
    ]
  
    deps += feed_deps
@@ -27,7 +27,7 @@ index f0c7c5c7f7ebb088375e41c2292071cb734d823b..af14f2c5fa4ee6c466337efa2fec498e
  
    srcjar_deps = [
      ":chrome_android_java_enums_srcjar",
-@@ -438,6 +440,7 @@ android_library("chrome_java") {
+@@ -402,6 +404,7 @@ android_library("chrome_java") {
      "//net:effective_connection_type_java",
      ":vr_build_config",
    ]
@@ -35,19 +35,19 @@ index f0c7c5c7f7ebb088375e41c2292071cb734d823b..af14f2c5fa4ee6c466337efa2fec498e
  
    android_manifest_for_lint = chrome_public_android_manifest
  
-@@ -522,6 +525,7 @@ group("jni_headers") {
+@@ -504,6 +507,7 @@ group("jni_headers") {
      "//chrome/browser/touch_to_fill/android:jni_headers",
-     "//chrome/browser/util/android:jni_headers",
+     "//chrome/browser/util:jni_headers",
    ]
 +  public_deps += ["//brave/build/android:jni_headers"]
  }
  
  android_library("bundle_canary_java") {
-@@ -1410,6 +1414,7 @@ if (current_toolchain == default_toolchain) {
+@@ -1394,6 +1398,7 @@ if (current_toolchain == default_toolchain) {
          ":${_variant}_locale_pak_assets",
          ":${_variant}_paks",
        ]
 +      deps += [ "//brave:brave_pak_assets" ]
        if (_is_monochrome) {
          deps += [ "//android_webview:locale_pak_assets" ]
-         if (webview_includes_weblayer) {
+         if (webview_includes_weblayer && !_is_bundle_module) {

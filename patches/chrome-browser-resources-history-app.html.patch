@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/history/app.html b/chrome/browser/resources/history/app.html
-index 2e14bd06efe2f8e9df369a24129c4223b3e1cbad..b7a59a270f43fb291d62e7fc00e7b274bed72756 100644
+index 92e110e89e7d96e3318fe5c6e7d9a255e88bd862..ab27a97538a82aabc149f0d0e8398cd91bf30666 100644
 --- a/chrome/browser/resources/history/app.html
 +++ b/chrome/browser/resources/history/app.html
-@@ -89,6 +89,7 @@
+@@ -87,6 +87,7 @@
              query-result="[[queryResult_]]"
              path="history">
          </history-list>
@@ -10,7 +10,7 @@ index 2e14bd06efe2f8e9df369a24129c4223b3e1cbad..b7a59a270f43fb291d62e7fc00e7b274
          <template is="dom-if" if="[[syncedTabsSelected_(selectedPage_)]]">
            <history-synced-device-manager id="synced-devices"
                session-list="[[queryResult_.sessionList]]"
-@@ -97,6 +98,7 @@
+@@ -95,6 +96,7 @@
                path="syncedTabs">
            </history-synced-device-manager>
          </template>

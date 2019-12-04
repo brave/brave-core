@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_menu_view.cc b/chrome/browser/ui/views/profiles/profile_menu_view.cc
-index c956f8c3a0a24a4f49c4b5a4c4e915c232e16fa0..271d329dd9e3242265767e3f7a4aabf91586403b 100644
+index 439f206fe669e62a2c862262258eca33b69e93d9..514045d629829086df1075f204cc411e58746de3 100644
 --- a/chrome/browser/ui/views/profiles/profile_menu_view.cc
 +++ b/chrome/browser/ui/views/profiles/profile_menu_view.cc
-@@ -1048,6 +1048,7 @@ void ProfileMenuView::AddOptionsView(bool display_lock,
+@@ -1066,6 +1066,7 @@ void ProfileMenuView::AddOptionsView(bool display_lock,
    if (is_guest) {
      CreateAndAddButton(
          CreateVectorIcon(kCloseAllIcon),

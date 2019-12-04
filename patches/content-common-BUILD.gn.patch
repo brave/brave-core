@@ -1,13 +1,12 @@
 diff --git a/content/common/BUILD.gn b/content/common/BUILD.gn
-index 7070753ef7274dbfbf73888caa98110c8187f315..362c34c307ae1bc666289d2db004055eec38ddfe 100644
+index fcec38ffa98a3def0017f5f61e5635d20ed10727..92d31e74a1aa8df2d87f08ac71be39f9f26fc048 100644
 --- a/content/common/BUILD.gn
 +++ b/content/common/BUILD.gn
-@@ -33,7 +33,7 @@ source_set("common") {
-   # In addition, targets outside of the content component (shell and tests)
-   # must not link to this because it will duplicate the code in the component
-   # build.
--  visibility = [ "//content/*" ]
-+  visibility = [ "//content/*", "//brave/content/*" ]
+@@ -36,6 +36,7 @@ source_set("common") {
+   visibility = [
+     "//content/*",
+     "//tools/ipc_fuzzer/message_replay:ipc_fuzzer_replay",
++    "//brave/content/*",
+   ]
  
    sources = [
-     "accessibility_messages.h",

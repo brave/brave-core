@@ -1,5 +1,5 @@
 diff --git a/chrome/test/base/testing_profile.cc b/chrome/test/base/testing_profile.cc
-index b524cddd0d77992168064e3534b1600ed9368066..c0e4e2cbb4ac8b09db64483a1f67a85592d77f6b 100644
+index 18f52454a61bdf6d5325a80c67ec6f3e3e64626b..2961f2ba4de951542f24cc24ffda57ee82a8b781 100644
 --- a/chrome/test/base/testing_profile.cc
 +++ b/chrome/test/base/testing_profile.cc
 @@ -414,6 +414,7 @@ void TestingProfile::Init() {

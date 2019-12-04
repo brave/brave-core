@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine/sync_engine.h b/components/sync/engine/sync_engine.h
-index 41b2d996b520d4775bb0a9feab6b7e4f72bc4d2f..ed094db2ac96a3b7fad84df83c46b5d4bcf87ca1 100644
+index 2babecda7d711609cdd6ca8231327175f630c1cf..387d9a3ffcb24ed8c42d80cabd149328c05216c5 100644
 --- a/components/sync/engine/sync_engine.h
 +++ b/components/sync/engine/sync_engine.h
-@@ -84,6 +84,7 @@ class SyncEngine : public ModelTypeConfigurer {
+@@ -79,6 +79,7 @@ class SyncEngine : public ModelTypeConfigurer {
  
      // Define the polling interval. Must not be zero.
      base::TimeDelta poll_interval;

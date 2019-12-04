@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/svg/svg_path_element.cc b/third_party/blink/renderer/core/svg/svg_path_element.cc
-index 497baf56704b1f4c0910b1c3af46000f164bb8f0..340b6609ff193f00c67027c4dd4c043607a582b2 100644
+index a25977e6e7cb22a923bf9363adaa75e055eb0085..854f893135bd7eb2865f97839fd80f5a23787439 100644
 --- a/third_party/blink/renderer/core/svg/svg_path_element.cc
 +++ b/third_party/blink/renderer/core/svg/svg_path_element.cc
 @@ -20,6 +20,7 @@

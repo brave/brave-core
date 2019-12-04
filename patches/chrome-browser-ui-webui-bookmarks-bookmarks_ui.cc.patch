@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-index 094a943ac95d0f159b223d3948e3b2e4b1759e76..f378bfe93dcaa890abb2221e5f3ffbfd45401fe0 100644
+index dd3afef2ef41bc9f1444290cf12df8804f7ce73d..e21f6e5112b7ed4f856441f65ae460df63f93c69 100644
 --- a/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
 +++ b/chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc
-@@ -46,6 +46,7 @@ content::WebUIDataSource* CreateBookmarksUIHTMLSource(Profile* profile) {
+@@ -52,6 +52,7 @@ content::WebUIDataSource* CreateBookmarksUIHTMLSource(Profile* profile) {
    content::WebUIDataSource* source =
        content::WebUIDataSource::Create(chrome::kChromeUIBookmarksHost);
  
 +  BraveCustomizeBookmarksDataSource(source);
-   // Build an Accelerator to describe undo shortcut
-   // NOTE: the undo shortcut is also defined in bookmarks/command_manager.js
-   // TODO(crbug/893033): de-duplicate shortcut by moving all shortcut
+ #if BUILDFLAG(OPTIMIZE_WEBUI)
+   webui::SetupBundledWebUIDataSource(source, "bookmarks.js",
+                                      IDR_BOOKMARKS_BOOKMARKS_ROLLUP_JS,

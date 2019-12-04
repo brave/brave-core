@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index 34d663a378fddf7abb940696ff9b702724385372..0d430852ef4e45aa30bccab3c20a507034410d6e 100644
+index 72b171bf718ac6895676cbc571ea2f3b528c2d90..b1a60544fb7467b1b1b9ba5f8c5d8839dd8117b5 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
 @@ -12,6 +12,9 @@
@@ -12,7 +12,7 @@ index 34d663a378fddf7abb940696ff9b702724385372..0d430852ef4e45aa30bccab3c20a5070
  
  <!--
   * Note: If a synced pref is added/removed from this file, the method
-@@ -37,14 +40,19 @@
+@@ -37,10 +40,12 @@
          label="$i18n{searchSuggestPref}"
          sub-label="$i18n{searchSuggestPrefDesc}">
      </settings-toggle-button>
@@ -22,33 +22,29 @@ index 34d663a378fddf7abb940696ff9b702724385372..0d430852ef4e45aa30bccab3c20a5070
          sub-label="$i18n{linkDoctorPrefDesc}">
      </settings-toggle-button>
 +    </if>
-     <settings-toggle-button pref="{{prefs.safebrowsing.enabled}}"
-         label="$i18n{safeBrowsingEnableProtection}"
-         sub-label="$i18n{safeBrowsingEnableProtectionDesc}">
+     <template is="dom-if" if="[[!privacySettingsRedesignEnabled_]]">
+       <settings-toggle-button id="safeBrowsingToggle"
+           pref="{{prefs.safebrowsing.enabled}}"
+@@ -59,6 +64,10 @@
+         disabled="[[getDisabledLeakDetection_(
+             userSignedIn_, prefs.*)]]">
      </settings-toggle-button>
 +    <if expr="not _google_chrome">
 +      <settings-brave-personalization-options prefs="{{prefs}}"></settings-brave-personalization-options>
 +    </if>
-    <settings-toggle-button id="passwordsLeakDetectionCheckbox"
-       pref="{{prefs.profile.password_manager_leak_detection}}"
-       checked="[[getCheckedLeakDetection_(
-@@ -56,6 +64,7 @@
-       disabled="[[getDisabledLeakDetection_(
-           userSignedIn_, prefs.*)]]">
-     </settings-toggle-button>
 +    <if expr="_google_chrome">
-     <settings-toggle-button
-         pref="{{prefs.safebrowsing.scout_reporting_enabled}}"
-         checked="[[getCheckedExtendedSafeBrowsing_(prefs.*)]]"
-@@ -63,6 +72,7 @@
-         sub-label="$i18n{safeBrowsingEnableExtendedReportingDesc}"
-         disabled="[[getDisabledExtendedSafeBrowsing_(prefs.*)]]">
-     </settings-toggle-button>
+     <template is="dom-if" if="[[!privacySettingsRedesignEnabled_]]">
+       <settings-toggle-button id="safeBrowsingReportingToggle"
+           pref="{{prefs.safebrowsing.scout_reporting_enabled}}"
+@@ -68,6 +77,7 @@
+           disabled="[[getDisabledExtendedSafeBrowsing_(prefs.*)]]">
+       </settings-toggle-button>
+     </template>
 +    </if>
  <if expr="_google_chrome">
  <if expr="chromeos">
      <settings-toggle-button pref="{{prefs.cros.metrics.reportingEnabled}}"
-@@ -70,6 +80,8 @@
+@@ -75,6 +85,8 @@
          sub-label="$i18n{enableLoggingDesc}">
      </settings-toggle-button>
  </if><!-- chromeos -->
@@ -57,12 +53,12 @@ index 34d663a378fddf7abb940696ff9b702724385372..0d430852ef4e45aa30bccab3c20a5070
  <if expr="not chromeos">
      <settings-toggle-button id="metricsReportingControl"
          pref="[[metricsReportingPref_]]" label="$i18n{enableLogging}"
-@@ -83,7 +95,7 @@
+@@ -88,7 +100,7 @@
        </template>
      </settings-toggle-button>
  </if><!-- not chromeos -->
 -</if><!-- _google_chrome -->
 +</if><!-- _chromium -->
-     <template is="dom-if" if="[[unifiedConsentEnabled]]">
-       <settings-toggle-button
-           pref="{{prefs.url_keyed_anonymized_data_collection.enabled}}"
+     <settings-toggle-button
+         pref="{{prefs.url_keyed_anonymized_data_collection.enabled}}"
+         label="$i18n{urlKeyedAnonymizedDataCollection}"

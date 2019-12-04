@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
-index e2c68071542ede82ed6dbc5f4beeaf3696156825..614b5e6234518f800534533ceede07ded68365be 100644
+index 6774451f659c260201b289fb33f21fe2c94b89e9..ce227dbec1772601ca22d9f4d6d35ea9fa6037bf 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
 @@ -35,6 +35,7 @@

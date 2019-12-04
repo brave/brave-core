@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc b/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
-index c2e3a3f85a8cacf983cabf7f4a09af0d29712c37..91a907262a3440bf96e8c0928ade5b2a8fe5291e 100644
+index 36bd9c4e2538617070592f2ec51061c7a3c37101..d6650ee394a8d3bad38b8d1c77a43ef0b4f76b60 100644
 --- a/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
 +++ b/chrome/browser/ui/views/bookmarks/bookmark_bubble_view.cc
-@@ -62,7 +62,7 @@ views::Widget* BookmarkBubbleView::ShowBubble(
+@@ -73,7 +73,7 @@ views::Widget* BookmarkBubbleView::ShowBubble(
    // Bookmark bubble should always anchor TOP_RIGHT, but the
    // LocationBarBubbleDelegateView does not know that and may use different
    // arrow anchoring.

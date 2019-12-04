@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/common/content_settings.h b/components/content_settings/core/common/content_settings.h
-index 824c42112ec33d18796cfe50bbec8cc4b62de660..2a54e9451e2a947a676495e4df3ff6528dbb0094 100644
+index 4eb3cf18e06d5c9169c69d6cb313de62692f8b22..c7a3917e0bc4cc54cb1203f43ab1f4279cdda988 100644
 --- a/components/content_settings/core/common/content_settings.h
 +++ b/components/content_settings/core/common/content_settings.h
 @@ -76,6 +76,8 @@ struct RendererContentSettingRules {
