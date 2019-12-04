@@ -68,7 +68,13 @@
 "AuthenticationLoginsTouchReason" = "지금 로그인에 액세스하려면 지문을 사용하십시오.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReached" = "시도 횟수가 너무 많습니다. %d분 후에 다시 시도해주세요.";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "최대 시도 횟수에 도달했습니다. 나중에 다시 시도하십시오.";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReachedOneMinute" = "시도 횟수가 너무 많습니다. 1분 후에 다시 시도해주세요.";
 
 /* Label for the Passcode item in Settings */
 "AuthenticationPasscode" = "로그인용 암호";
@@ -235,6 +241,9 @@
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "확인";
 
+/* Button title to close a menu. */
+"Close" = "닫기";
+
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "모든 %i 탭 닫기";
 
@@ -361,6 +370,9 @@
 /* Button to edit a favorite */
 "EditFavorite" = "즐겨찾기 편집";
 
+/* Title for editing a favorite bookmark */
+"EditFavoriteTitle" = "즐겨찾기 편집";
+
 /* Title for editing a folder */
 "EditFolderTitle" = "폴더 편집";
 
@@ -402,6 +414,18 @@
 
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "절약된 \n예상 시간";
+
+/* %@ will launch an external application */
+"ExternalAppURLAlertMessage" = "%@에서 외부 프로그램을 실행합니다.";
+
+/* Allow link to switch apps? */
+"ExternalAppURLAlertTitle" = "앱 전환 링크를 허용하시겠습니까?";
+
+/* Allow Brave to open the external app URL */
+"ExternalAppURLAllow" = "허용";
+
+/* Don't allow Brave to open the external app URL */
+"ExternalAppURLDontAllow" = "허용하지 않음";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
 "FavoritesLocationFooterText" = "즐겨찾기는 홈 화면에 있습니다. 이 북마크는 다른 기기와 동기화되지 않습니다.";
@@ -544,6 +568,21 @@
 /* New Tab title */
 "NewTab" = "새 탭";
 
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"NewTabPageSettingsAutoOpenKeyboard" = "키보드 자동으로 열기";
+
+/* A setting to enable or disable background images on the main screen. */
+"NewTabPageSettingsBackgroundImages" = "백그라운드 이미지 표시";
+
+/* A setting to enable or disable sponsored images from showing on the main screen. */
+"NewTabPageSettingsSponsoredImages" = "스폰서 이미지 표시";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"NewTabPageSettingsTitle" = "새 탭 페이지";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"NewTabPageShowMoreFavorites" = "더보기";
+
 /* Sync Alert */
 "NotEnoughWordsDescription" = "모든 단어를 입력한 후 다시 시도하십시오.";
 
@@ -565,6 +604,9 @@
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "설정 열기";
 
+/* Button title to that opens a website. */
+"OpenWebsite" = "웹사이트 열기";
+
 /* Section name for other settings. */
 "OtherSettingsSection" = "기타 설정";
 
@@ -576,6 +618,9 @@
 
 /* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
 "PasscodeMatchOldErrorText" = "새 암호는 기존 암호와 달라야 합니다.";
+
+/* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
+"PhotoBy" = "사진 제공: %@";
 
 /* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
 "PreviewActionAddToBookmarksActionTitle" = "북마크에 추가";
@@ -1089,6 +1134,9 @@
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "버전 %1$@(%2$@)";
+
+/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
+"ViewOn" = "%@에서 보기";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "월렛 생성 날짜";

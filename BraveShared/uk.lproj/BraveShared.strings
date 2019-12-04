@@ -68,7 +68,13 @@
 "AuthenticationLoginsTouchReason" = "Щоб отримати доступ до «Облікових даних», скористайтеся відбитком пальця.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReached" = "Забагато невдалих спроб. Повторіть спробу через %d хв.";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "Досягнуто максимальної кількості спроб. Спробуйте ще раз пізніше.";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReachedOneMinute" = "Забагато невдалих спроб. Повторіть спробу через 1 хв.";
 
 /* Label for the Passcode item in Settings */
 "AuthenticationPasscode" = "Код доступу до облікових даних ";
@@ -235,6 +241,9 @@
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "OK";
 
+/* Button title to close a menu. */
+"Close" = "Закрити";
+
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Закрити усі вкладки (%i)";
 
@@ -361,6 +370,9 @@
 /* Button to edit a favorite */
 "EditFavorite" = "Редагування списку обраного";
 
+/* Title for editing a favorite bookmark */
+"EditFavoriteTitle" = "Редагувати вибране";
+
 /* Title for editing a folder */
 "EditFolderTitle" = "Редагування папки";
 
@@ -402,6 +414,18 @@
 
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Заощаджено\nчасу (приблизно)";
+
+/* %@ will launch an external application */
+"ExternalAppURLAlertMessage" = "%@ запустить зовнішню програму";
+
+/* Allow link to switch apps? */
+"ExternalAppURLAlertTitle" = "Дозволити перемикання програм за допомогою посилання?";
+
+/* Allow Brave to open the external app URL */
+"ExternalAppURLAllow" = "Дозволити";
+
+/* Don't allow Brave to open the external app URL */
+"ExternalAppURLDontAllow" = "Не дозволяти";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
 "FavoritesLocationFooterText" = "Розділ обраного розташовано на головному екрані. Ці закладки не синхронізуються з іншими пристроями.";
@@ -544,6 +568,21 @@
 /* New Tab title */
 "NewTab" = "Нова вкладка";
 
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"NewTabPageSettingsAutoOpenKeyboard" = "Автоматично відкривати клавіатуру";
+
+/* A setting to enable or disable background images on the main screen. */
+"NewTabPageSettingsBackgroundImages" = "Показувати фонові зображення";
+
+/* A setting to enable or disable sponsored images from showing on the main screen. */
+"NewTabPageSettingsSponsoredImages" = "Показувати рекламні зображення";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"NewTabPageSettingsTitle" = "Сторінка нової вкладки";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"NewTabPageShowMoreFavorites" = "Показати інші";
+
 /* Sync Alert */
 "NotEnoughWordsDescription" = "Введіть усі слова і спробуйте знову.";
 
@@ -565,6 +604,9 @@
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Відкрити налаштування";
 
+/* Button title to that opens a website. */
+"OpenWebsite" = "Відкрити вебсайт";
+
 /* Section name for other settings. */
 "OtherSettingsSection" = "Інші налаштування";
 
@@ -576,6 +618,9 @@
 
 /* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
 "PasscodeMatchOldErrorText" = "Новий код доступу має відрізнятися від старого. ";
+
+/* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
+"PhotoBy" = "Фото від %@";
 
 /* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
 "PreviewActionAddToBookmarksActionTitle" = "Додати до закладок";
@@ -1089,6 +1134,9 @@
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Версія %1$@ (%2$@)";
+
+/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
+"ViewOn" = "Переглянути в %@";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Дата створення гаманця";

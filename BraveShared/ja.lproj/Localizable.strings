@@ -1,3 +1,9 @@
+/* The body of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationBody" = "Braveで表示した広告に対する報酬を受け取りましょう！";
+
+/* The title of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationTitle" = "Brave Adsの報酬を受け取る";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "いいえ";
 

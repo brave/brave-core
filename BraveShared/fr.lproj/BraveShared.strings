@@ -8,7 +8,7 @@
 "AccessPhotoDeniedAlertTitle" = "Brave souhaite accéder à vos photos";
 
 /* Button to add a bookmark */
-"AddBookmark" = "Ajouter le favori";
+"AddBookmark" = "Ajouter un marque-page";
 
 /* Cell title for add folder action */
 "AddFolderActionCellTitle" = "Nouveau dossier";
@@ -17,7 +17,7 @@
 "AddToFavorites" = "Ajouter aux favoris";
 
 /* Title for the button to add a new website bookmark. */
-"AddToMenuItem" = "Ajouter le favori";
+"AddToMenuItem" = "Ajouter un marque-page";
 
 /* individual blocking statistic title */
 "AdsAndTrackers" = "Publicités et traceurs";
@@ -68,7 +68,13 @@
 "AuthenticationLoginsTouchReason" = "Utilisez votre empreinte digitale pour accéder aux identifiants de connexion.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReached" = "Trop de tentatives ont échoué. Réessayez dans %d minutes.";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "Nombre maximum de tentatives atteint. Réessayez ultérieurement.";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReachedOneMinute" = "Trop de tentatives ont échoué. Réessayez dans 1 minute.";
 
 /* Label for the Passcode item in Settings */
 "AuthenticationPasscode" = "Code d'accès pour les identifiants";
@@ -158,19 +164,19 @@
 "BlockScripts" = "Bloquer les scripts";
 
 /* Bookmark Folder Section Title */
-"BookmarkFolder" = "Dossier Favoris";
+"BookmarkFolder" = "Dossier Marque-pages";
 
 /* Bookmark Info Section Title */
-"BookmarkInfo" = "Informations sur le favori";
+"BookmarkInfo" = "Informations sur le marque-page";
 
 /* Title for root level bookmarks cell */
-"BookmarkRootLevelCellTitle" = "Favoris";
+"BookmarkRootLevelCellTitle" = "Marque-pages";
 
 /* title for bookmarks panel */
-"Bookmarks" = "Favoris";
+"Bookmarks" = "Marque-pages";
 
 /* Title for bookmarks menu item */
-"BookmarksMenuItem" = "Favoris";
+"BookmarksMenuItem" = "Marque-pages";
 
 /* Placeholder text for adding or editing a bookmark */
 "BookmarkTitlePlaceholderText" = "Nom";
@@ -234,6 +240,9 @@
 
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "OK";
+
+/* Button title to close a menu. */
+"Close" = "Fermer";
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Fermer les %i onglets";
@@ -299,7 +308,7 @@
 "Delete" = "Supprimer";
 
 /* Message for the alert shown when the user tries to delete a bookmarks folder */
-"DeleteBookmarksFolderAlertMessage" = "Tous les dossiers et les favoris qu'ils contiennent seront supprimés. Voulez-vous vraiment continuer ?";
+"DeleteBookmarksFolderAlertMessage" = "Tous les dossiers et les marque-pages qu'ils contiennent seront supprimés. Voulez-vous vraiment continuer ?";
 
 /* Title for the alert shown when the user tries to delete a bookmarks folder */
 "DeleteBookmarksFolderAlertTitle" = "Supprimer le dossier ?";
@@ -350,16 +359,19 @@
 "Edit" = "Modifier";
 
 /* Button to edit a bookmark */
-"EditBookmark" = "Modifier le favori";
+"EditBookmark" = "Modifier le marque-page";
 
 /* Header title for bookmark save location */
 "EditBookmarkTableLocationHeader" = "Emplacement";
 
 /* Title for editing a bookmark */
-"EditBookmarkTitle" = "Modifier le favori";
+"EditBookmarkTitle" = "Modifier le marque-page";
 
 /* Button to edit a favorite */
 "EditFavorite" = "Modifier les favoris";
+
+/* Title for editing a favorite bookmark */
+"EditFavoriteTitle" = "Modifier le favori";
 
 /* Title for editing a folder */
 "EditFolderTitle" = "Modifier le dossier";
@@ -402,6 +414,18 @@
 
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Temps économisé \nest.";
+
+/* %@ will launch an external application */
+"ExternalAppURLAlertMessage" = "%@ va lancer une application externe";
+
+/* Allow link to switch apps? */
+"ExternalAppURLAlertTitle" = "Autoriser le lien à changer d'app ?";
+
+/* Allow Brave to open the external app URL */
+"ExternalAppURLAllow" = "Autoriser";
+
+/* Don't allow Brave to open the external app URL */
+"ExternalAppURLDontAllow" = "Ne pas autoriser";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
 "FavoritesLocationFooterText" = "Les favoris se trouvent sur votre écran d'accueil. Ces marque-pages ne sont pas synchronisés avec d'autres appareils.";
@@ -524,10 +548,10 @@
 "NeverShow" = "Ne jamais afficher";
 
 /* Default name for creating a new bookmark. */
-"NewBookmarkDefaultName" = "Nouveau favori";
+"NewBookmarkDefaultName" = "Nouveau marque-page";
 
 /* Title for adding new bookmark */
-"NewBookmarkTitle" = "Nouveau favori";
+"NewBookmarkTitle" = "Nouveau marque-page";
 
 /* Title for new folder popup */
 "NewFolder" = "Nouveau dossier";
@@ -543,6 +567,21 @@
 
 /* New Tab title */
 "NewTab" = "Nouvel onglet";
+
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"NewTabPageSettingsAutoOpenKeyboard" = "Ouverture automatique du clavier";
+
+/* A setting to enable or disable background images on the main screen. */
+"NewTabPageSettingsBackgroundImages" = "Afficher les images en arrière-plan";
+
+/* A setting to enable or disable sponsored images from showing on the main screen. */
+"NewTabPageSettingsSponsoredImages" = "Afficher les images sponsorisées";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"NewTabPageSettingsTitle" = "Page Nouvel onglet";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"NewTabPageShowMoreFavorites" = "Afficher plus";
 
 /* Sync Alert */
 "NotEnoughWordsDescription" = "Saisissez tous les mots et réessayez.";
@@ -565,6 +604,9 @@
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Accédez au menu Réglages";
 
+/* Button title to that opens a website. */
+"OpenWebsite" = "Ouvrir le site";
+
 /* Section name for other settings. */
 "OtherSettingsSection" = "Autres paramètres";
 
@@ -577,8 +619,11 @@
 /* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
 "PasscodeMatchOldErrorText" = "Le nouveau code d'accès doit être différent du code actuel.";
 
+/* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
+"PhotoBy" = "Photo par %@";
+
 /* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
-"PreviewActionAddToBookmarksActionTitle" = "Ajouter aux favoris";
+"PreviewActionAddToBookmarksActionTitle" = "Ajouter aux marque-pages";
 
 /* Label for preview action on Tab Tray Tab to close the current tab */
 "PreviewActionCloseTabActionTitle" = "Fermer l'onglet";
@@ -740,7 +785,7 @@
 "SearchesForSuggestionButtonAccessibilityText" = "Recherches pour la suggestion";
 
 /* Section header for history and bookmarks option */
-"SearchHistorySectionHeader" = "Historique et favoris";
+"SearchHistorySectionHeader" = "Historique et marque-pages";
 
 /* Accessibility message e.g. spoken by VoiceOver after the user taps the close button in the search field to clear the search and exit search mode */
 "SearchInputViewClearButtonTitle" = "Effacer la recherche";
@@ -824,10 +869,10 @@
 "ShortcutItemTitleQRCode" = "Scanner le code QR";
 
 /* Setting to show a bookmark button on the top level menu that triggers a panel of the user's bookmarks. */
-"ShowBookmarkButtonInTopToolbar" = "Afficher le raccourci vers les favoris";
+"ShowBookmarkButtonInTopToolbar" = "Afficher le raccourci vers les marque-pages";
 
 /* Button to show the bookmarks list */
-"ShowBookmarks" = "Afficher les favoris";
+"ShowBookmarks" = "Afficher les marque-pages";
 
 /* Show code words instead */
 "ShowCodeWords" = "Afficher plutôt les mots codés";
@@ -1089,6 +1134,9 @@
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Version %1$@ (%2$@)";
+
+/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
+"ViewOn" = "Afficher sur %@";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Date de création du portefeuille";
