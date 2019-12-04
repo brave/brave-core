@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/shell_integration_win.cc b/chrome/browser/shell_integration_win.cc
-index 9b05880c7b94700e2cbfdddcd8e0b95cd11f7c4e..f6b4919378cc72bffe1e95d261566364e3a06e4b 100644
+index 23dd8287e43095bfc1d27f58e442fd6033d3983d..898ba81db449c3c95cd698ac91e4a1ecc8d0f039 100644
 --- a/chrome/browser/shell_integration_win.cc
 +++ b/chrome/browser/shell_integration_win.cc
-@@ -492,6 +492,15 @@ void IsPinnedToTaskbarHelper::OnIsPinnedToTaskbarResult(
-   delete this;
+@@ -502,6 +502,15 @@ void MigrateChromeAndChromeProxyShortcuts(
+   win::MigrateShortcutsInPathInternal(chrome_proxy_path, shortcut_path);
  }
  
 +base::string16 GetHttpProtocolUserChoiceProgId() {
@@ -18,7 +18,7 @@ index 9b05880c7b94700e2cbfdddcd8e0b95cd11f7c4e..f6b4919378cc72bffe1e95d261566364
  }  // namespace
  
  bool SetAsDefaultBrowser() {
-@@ -569,23 +578,28 @@ DefaultWebClientState GetDefaultBrowser() {
+@@ -579,31 +588,28 @@ DefaultWebClientState GetDefaultBrowser() {
        ShellUtil::GetChromeDefaultState());
  }
  
@@ -56,9 +56,14 @@ index 9b05880c7b94700e2cbfdddcd8e0b95cd11f7c4e..f6b4919378cc72bffe1e95d261566364
 +                       app_cmd.end());
 +  }
 +  return std::string();
-+}
-+
-+bool IsIEDefaultBrowser() {
+ }
+ 
+ bool IsIEDefaultBrowser() {
+-  base::string16 app_cmd;
+-  base::win::RegKey key(HKEY_CURRENT_USER, ShellUtil::kRegVistaUrlPrefs,
+-                        KEY_READ);
+-  return key.Valid() && key.ReadValue(L"Progid", &app_cmd) == ERROR_SUCCESS &&
+-         app_cmd == L"IE.HTTP";
 +  return GetHttpProtocolUserChoiceProgId() == L"IE.HTTP";
  }
  

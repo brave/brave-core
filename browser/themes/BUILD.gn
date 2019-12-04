@@ -3,16 +3,24 @@ source_set("themes") {
     sources = [
       "brave_theme_service.cc",
       "brave_theme_service.h",
-      "brave_theme_service_win.cc",
-      "brave_theme_service_win.h",
       "brave_theme_utils.cc",
       "brave_theme_utils.h",
       "brave_theme_utils_internal.cc",
       "brave_theme_utils_internal.h",
-      "brave_theme_utils_mac.mm",
       "theme_properties.cc",
       "theme_properties.h",
     ]
+
+    if (is_mac) {
+      sources += [ "brave_theme_utils_mac.mm" ]
+    }
+
+    if (is_win) {
+      sources += [
+        "brave_theme_service_win.cc",
+        "brave_theme_service_win.h",
+      ]
+    }
 
     deps = [
       "//base",

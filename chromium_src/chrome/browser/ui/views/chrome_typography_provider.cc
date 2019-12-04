@@ -13,9 +13,9 @@ namespace {
   const SkColor kBraveGrey800 = SkColorSetRGB(0x3b, 0x3e, 0x4f);
 }
 
-#define GetColor GetColor_ChromiumImpl
+#define ChromeTypographyProvider ChromeTypographyProvider_ChromiumImpl
 #include "../../../../../../chrome/browser/ui/views/chrome_typography_provider.cc"
-#undef GetColor
+#undef ChromeTypographyProvider
 
 SkColor ChromeTypographyProvider::GetColor(const views::View& view,
                                            int context,
@@ -40,5 +40,5 @@ SkColor ChromeTypographyProvider::GetColor(const views::View& view,
                                                    : kBraveGrey800;
     }
   }
-  return GetColor_ChromiumImpl(view, context, style);
+  return ChromeTypographyProvider_ChromiumImpl::GetColor(view, context, style);
 }

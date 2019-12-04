@@ -37,8 +37,6 @@ source_set("browser_process") {
     "brave_browser_main_extra_parts.h",
     "brave_browser_main_parts.cc",
     "brave_browser_main_parts.h",
-    "brave_browser_main_parts_mac.mm",
-    "brave_browser_main_parts_mac.h",
     "brave_browser_process_impl.cc",
     "brave_browser_process_impl.h",
     "brave_content_browser_client.cc",
@@ -87,6 +85,13 @@ source_set("browser_process") {
     "update_util.h",
   ]
 
+  if (is_mac) {
+    sources += [
+      "brave_browser_main_parts_mac.h",
+      "brave_browser_main_parts_mac.mm",
+    ]
+  }
+
   if (enable_tor) {
     sources += [
       # TODO(bridiver) - change the directory for these
@@ -96,8 +101,8 @@ source_set("browser_process") {
   }
   if (enable_sparkle) {
     sources += [
-      "mac/sparkle_glue.mm",
       "mac/sparkle_glue.h",
+      "mac/sparkle_glue.mm",
       "mac/su_updater.h",
     ]
   }

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/devtools_ui_data_source.cc b/chrome/browser/ui/webui/devtools_ui_data_source.cc
-index 95e73c57300e7426d70c669439c18efb68be5337..b177eedddda5d5e4b740d6dee2ae870ac188f938 100644
+index 53b632a539a1661e048fe3e0e60972bfbc8005cf..243e66aedec9386419f7335dd5128d6d11a76155 100644
 --- a/chrome/browser/ui/webui/devtools_ui_data_source.cc
 +++ b/chrome/browser/ui/webui/devtools_ui_data_source.cc
-@@ -191,6 +191,7 @@ void DevToolsDataSource::StartBundledDataRequest(
+@@ -198,6 +198,7 @@ void DevToolsDataSource::StartBundledDataRequest(
  void DevToolsDataSource::StartRemoteDataRequest(
      const GURL& url,
      const content::URLDataSource::GotDataCallback& callback) {

@@ -1,15 +1,11 @@
 diff --git a/chrome/browser/shell_integration.h b/chrome/browser/shell_integration.h
-index a7bd5219a9b9a433036db3a82e579c53158ce798..c4e668791cf82b6269634c5a97381aae3b58034e 100644
+index fdb4c9d1d59009577d4521ba32374984b109e864..c4e668791cf82b6269634c5a97381aae3b58034e 100644
 --- a/chrome/browser/shell_integration.h
 +++ b/chrome/browser/shell_integration.h
-@@ -92,6 +92,19 @@ DefaultWebClientState GetDefaultBrowser();
+@@ -96,6 +96,13 @@ bool IsFirefoxDefaultBrowser();
+ // Returns true if IE is likely to be the default browser for the current
  // user. This method is very fast so it can be invoked in the UI thread.
- bool IsFirefoxDefaultBrowser();
- 
-+#if defined(OS_WIN)
-+// Returns true if IE is likely to be the default browser for the current
-+// user. This method is very fast so it can be invoked in the UI thread.
-+bool IsIEDefaultBrowser();
+ bool IsIEDefaultBrowser();
 +
 +// Returns the install id of the installation set as default browser. If no
 +// installation of Firefox is set as the default browser, returns an empty
@@ -17,8 +13,6 @@ index a7bd5219a9b9a433036db3a82e579c53158ce798..c4e668791cf82b6269634c5a97381aae
 +// TODO(crbug/1011830): This should return the install id of the stable
 +// version if no version of Firefox is set as default browser.
 +std::string GetFirefoxProgIdSuffix();
-+#endif
-+
+ #endif
+ 
  // Attempt to determine if this instance of Chrome is the default client
- // application for the given protocol and return the appropriate state.
- DefaultWebClientState IsDefaultProtocolClient(const std::string& protocol);

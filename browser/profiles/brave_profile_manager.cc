@@ -40,8 +40,8 @@
 #include "components/translate/core/browser/translate_pref_names.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/url_data_source.h"
-#include "content/public/common/webrtc_ip_handling_policy.h"
 #include "extensions/buildflags/buildflags.h"
+#include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
 #include "ui/base/l10n/l10n_util.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -94,7 +94,7 @@ void BraveProfileManager::InitTorProfileUserPrefs(Profile* profile) {
     ->SetString(prefs::kProfileName,
                 l10n_util::GetStringUTF8(IDS_PROFILES_TOR_PROFILE_NAME));
   pref_service->SetString(prefs::kWebRTCIPHandlingPolicy,
-                          content::kWebRTCIPHandlingDisableNonProxiedUdp);
+                          blink::kWebRTCIPHandlingDisableNonProxiedUdp);
   pref_service->SetBoolean(prefs::kSafeBrowsingEnabled, false);
   // https://blog.torproject.org/bittorrent-over-tor-isnt-good-idea
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -194,11 +194,14 @@ void BraveProfileManager::MigrateProfileNames() {
       storage.GetAllProfilesAttributesSortedByName();
   // Make sure we keep the numbering the same.
   for (auto* entry : entries) {
-    // Rename the necessary profiles.
+    // Rename the necessary profiles. Don't check for legacy names as profile
+    // info cache should have migrated them by now.
     if (entry->IsUsingDefaultName() &&
-        !storage.IsDefaultProfileName(entry->GetName())) {
+        !storage.IsDefaultProfileName(
+            entry->GetName(),
+            /*include_check_for_legacy_profile_name=*/false)) {
       auto icon_index = entry->GetAvatarIconIndex();
-      entry->SetName(storage.ChooseNameForNewProfile(icon_index));
+      entry->SetLocalProfileName(storage.ChooseNameForNewProfile(icon_index));
     }
   }
 #endif

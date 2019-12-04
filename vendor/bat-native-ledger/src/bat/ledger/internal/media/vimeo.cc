@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/json/json_reader.h"
+#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"

@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/build.sh b/chrome/installer/linux/debian/build.sh
-index 306b59c138b7cb5df21ad6e9d502bb7a46a104c6..9e6da48138b26754e9e5b000451e65db2f317728 100755
+index 15f9b02202331e9e0a107f682cfd169e0ab31f4e..162e4afe2770e68a3b44d75e9e77b82c3e677e40 100755
 --- a/chrome/installer/linux/debian/build.sh
 +++ b/chrome/installer/linux/debian/build.sh
 @@ -21,7 +21,7 @@ gen_changelog() {
@@ -38,18 +38,18 @@ index 306b59c138b7cb5df21ad6e9d502bb7a46a104c6..9e6da48138b26754e9e5b000451e65db
        grep '^ Depends: ' | sed 's/^ Depends: //' | sed 's/, /\n/g' | \
        LANG=C sort > "${ACTUAL_DEPENDS}"
    BAD_DIFF=0
-@@ -157,8 +157,11 @@ verify_channel() {
+@@ -161,8 +161,11 @@ verify_channel() {
        ;;
-     unstable|dev|alpha )
+     dev|unstable|alpha )
        CHANNEL=unstable
 +      CHANNEL=dev
-       RELEASENOTES="http://googlechromereleases.blogspot.com/search/label/Dev%20updates"
+       RELEASENOTES="https://chromereleases.googleblog.com/search/label/Dev%20updates"
        ;;
 +    nightly )
 +      ;;
-     testing|beta )
-       CHANNEL=beta
-       RELEASENOTES="http://googlechromereleases.blogspot.com/search/label/Beta%20updates"
+     * )
+       echo
+       echo "ERROR: '$CHANNEL' is not a valid channel type."
 @@ -170,6 +173,7 @@ verify_channel() {
        exit 1
        ;;

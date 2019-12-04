@@ -15,6 +15,7 @@
 #include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_registry.h"
 #include "net/http/http_content_disposition.h"
+#include "net/http/http_response_headers.h"
 
 namespace webtorrent {
 

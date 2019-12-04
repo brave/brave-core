@@ -19,6 +19,10 @@
     "message": "Μπορείτε τώρα να κερδίζετε μάρκες για να παρακολουθείτε διαφημίσεις που σέβονται την ιδιωτικότητα.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
+  "welcomeDescPoints": {
+    "message": "You can now earn points for watching privacy-respecting ads.",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
   "welcomeFooterTextOne": {
     "message": "Δείτε τι έχει βελτιωθεί",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
@@ -42,6 +46,22 @@
   "grants": {
     "message": "Επιχορηγήσεις ",
     "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "Λεπτομέρειες",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Το Υπόλοιπό Σας",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "Πόντοι BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "μπορεί να χρησιμοποιηθεί στις Ανταμοιβές Brave για συνεισφορά στους αγαπημένους σας δημιουργούς περιεχομένου. Οι Πόντοι BAT δεν μπορούν να ανταλλαγούν με BAT.",
+    "description": "Text for BAT Point helper message"
   },
   "on": {
     "message": "ανοιχτό ",
@@ -128,12 +148,22 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Επιχορηγήσεις Κέρματος",
-    "description": "Title for grant notification"
+    "message": "$currency$ Grants",
+    "description": "Title for grant notification",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "Token"
+      }
+    }
   },
   "tokenGrantClaimed": {
     "message": "Οι Χορηγίες Τόκεν Αποκτήθηκαν",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Point Grants Claimed",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Κέρδη από Διαφημίσεις",
@@ -180,12 +210,16 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "Έχετε συνεισφέρει $amount$ BAT",
+    "message": "You've contributed $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
         "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
       }
     }
   },
@@ -261,10 +295,6 @@
     "message": "Ημερομηνία Λήξης Χορηγίας",
     "description": "Grant expiry label"
   },
-  "grantAlreadyClaimedText": {
-    "message": "Λυπούμαστε, φαίνεται ότι έχετε ήδη διεκδικήσει αυτή τη χορηγία.",
-    "description": "Description of the error when grant is already claimed."
-  },
   "grantGeneralErrorButton": {
     "message": "ΟΚ",
     "description": "Button text for clearing the error."
@@ -276,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "Ωχ, κάτι πήγε λάθος. Παρακαλώ προσπαθήστε ξανά αργότερα.",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "ΟΚ",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "Λυπούμαστε, φαίνεται ότι αυτή η χορηγία έχει ήδη λήξει.",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "Αυτή η χορηγία δεν είναι πλέον διαθέσιμη.",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "Ανανέωση Κατάστασης",
@@ -306,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Έχετε ορίσει {{reservedAmount}} BAT για  τους δημιουργούς που δεν έχουν ακόμη εγγραφεί για να λάβουν συνεισφορές. Το πρόγραμμα περιήγησης σας θα συνεχίσει να προσπαθεί να πραγματοποιήσει συνεισφορά μέχρι να την επιβεβαιώσουν, ή μέχρι να περάσουν 90 ημέρες.",
+    "message": "Έχετε ορίσει {{reservedAmount}} {{currency}} για δημιουργούς που δεν έχουν ακόμη εγγραφεί για να λαμβάνουν συνεισφορές. Το πρόγραμμα περιήγησής σας θα συνεχίσει να προσπαθεί για τη συνεισφορά μέχρι να γίνει επαλήθευσή τους ή μέχρι να περάσουν 90 ημέρες.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -397,6 +415,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Ενεργοποίηση Διαφημίσεων",
     "description": "Prompt to turn on Ads via notification"
@@ -452,23 +474,33 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "Σε λίγο θα λάβετε την τοκέν χορηγία σας.",
-    "description": "Cosmetic text indicating grant funds are on the way"
+    "message": "Your $currency$ grant is on its way.",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
   },
   "grantFinishTokenTitleUGP": {
     "message": "Δωρεάν Χορηγία Τόκεν",
     "description": "Token title on success screen"
   },
+  "grantFinishPointTitleUGP": {
+    "message": "Free Point Grant",
+    "description": "Point title on success screen"
+  },
   "grantFinishTitleAds": {
-    "message": "Ανταμοιβές Των Διαφημίσεων Brave!",
+    "message": "Κερδίσατε μια Ανταμοιβή Διαφημίσεων!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Το επίδομα επιβράβευσής σας από τις διαφημίσεις Brave είναι σε εξέλιξη.",
+    "message": "Η Ανταμοιβή σας βρίσκεται καθ' οδόν για το πορτοφόλι σας Ανταμοιβών Brave.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Η Απόδειξη Του Επιδόματος Των Brave Διαφημίσεών Σας",
+    "message": "Το Ποσό Ανταμοιβής Σας",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -532,5 +564,29 @@
   "set": {
     "message": "Ορίστε...",
     "description": "Button text for setting monthly contribution"
+  },
+  "tokens":  {
+    "message": "διακριτικά",
+    "description": "Standard tokens text"
+  },
+  "point":  {
+    "message": "Point",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "Διακριτικό",
+    "description": "BAT Token text"
+  },
+  "points":  {
+    "message": "points",
+    "description": "BAT Points text"
+  },
+  "tokenGrants":  {
+    "message": "Επιχορηγήσεις Κέρματος",
+    "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Point Grants",
+    "description": "BAT Points Grant Text"
   }
 }

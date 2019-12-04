@@ -11,7 +11,7 @@
 class BraveActionsContainer;
 class BraveActionsContainerTest;
 class BraveRewardsBrowserTest;
-enum class OmniboxTint;
+class SkPath;
 
 // The purposes of this subclass are to:
 // - Add the BraveActionsContainer to the location bar
@@ -29,13 +29,14 @@ class BraveLocationBarView : public LocationBarView {
   void OnThemeChanged() override;
   void ChildPreferredSizeChanged(views::View* child) override;
 
+  int GetBorderRadius() const override;
+
+  SkPath GetFocusRingHighlightPath() const;
   ContentSettingImageView* GetContentSettingsImageViewForTesting(size_t idx);
 
  private:
   friend class ::BraveActionsContainerTest;
   friend class ::BraveRewardsBrowserTest;
-  void UpdateBookmarkStarVisibility() override;
-  OmniboxTint CalculateTint() const override;
   BraveActionsContainer* brave_actions_ = nullptr;
 
   DISALLOW_COPY_AND_ASSIGN(BraveLocationBarView);

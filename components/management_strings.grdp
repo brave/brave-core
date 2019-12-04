@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+  Strings for the management disclosure panel
+
+  Disclosing admin capabilities to managed users is an important part of
+  striking a balance between the data needs of admins and the privacy
+  expectations of users.
+
+  Please consult with the privacy team when adding or changing strings.
+-->
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+  <!-- Title of the page -->
+  <message name="IDS_MANAGEMENT_TITLE" desc="Title of management page.">
+    Settings - Management
+  </message>
+  <message name="IDS_MANAGEMENT_TOOLBAR_TITLE" desc="Title of the toolbar in the management page.">
+    Settings
+  </message>
+
+  <!-- Subtitles of the Brave OS version of the management page -->
+ <if expr="chromeos">
+    <message name="IDS_MANAGEMENT_SUBTITLE_MANAGED" desc="Title of chrome://management page, shows when device is managed by unknown organization">
+      Your <ph name="DEVICE_NAME">$1<ex>Bravebook</ex></ph> is managed
+    </message>
+    <message name="IDS_MANAGEMENT_SUBTITLE_MANAGED_BY" desc="Title of chrome://management page, shows when device managed by known organization">
+      Your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> is managed by <ph name="ENROLLMENT_DOMAIN">$2<ex>example.com</ex></ph>
+    </message>
+    <message name="IDS_MANAGEMENT_NOT_MANAGED_SUBTITLE" desc="Message indicating that the device is not managed">
+      Your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> is not managed
+    </message>
+  </if>
+
+  <!-- Subtitles of the browser version of the management page -->
+  <if expr="not chromeos">
+      <message name="IDS_MANAGEMENT_SUBTITLE" desc="Title of chrome://management page, which shows the administrator's capabilities in a managed environment">
+      Your browser is managed
+    </message>
+    <message name="IDS_MANAGEMENT_SUBTITLE_MANAGED_BY" desc="Title of chrome://management page, which shows the administrator's capabilities in a managed environment">
+      Your browser is managed by <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph>
+    </message>
+    <message name="IDS_MANAGEMENT_NOT_MANAGED_SUBTITLE" desc="Title of chrome://management page for a browser that is not managed">
+      Your browser is not managed
+    </message>
+  </if>
+
+  <!-- Browser managed status section -->
+  <if expr="not chromeos">
+    <message name="IDS_MANAGEMENT_BROWSER_NOTICE" desc="Message shown when the browser is managed, it indicates what the administrator can do on the browser.">
+      Your administrator can change your browser setup remotely. Activity on this device may also be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn More<ph name="END_LINK">&lt;/a&gt;</ph>
+    </message>
+    <message name="IDS_MANAGEMENT_NOT_MANAGED_NOTICE" desc="Message indicating that the browser is not managed">
+      This browser is not managed by a company or other organization. Activity on this device may be managed outside of Brave. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn More<ph name="END_LINK">&lt;/a&gt;</ph>
+    </message>
+  </if>
+
+  <!-- Brave OS managed status section -->
+  <if expr="chromeos">
+    <message name="IDS_MANAGEMENT_DEVICE_NOT_MANAGED" desc="Message indicating that the device and account are not managed">
+      This device and account are not managed by a company or other organization.
+    </message>
+    <message name="IDS_MANAGEMENT_DEVICE_MANAGED_BY_ACCOUNT_MANAGED_BY" desc="Message indicating that the device is enterprise enrolled to be managed by an administrator, from a specific domain. And account is managed by an administrator, from another specific domain.">
+      Your device is managed by <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph> and your account is managed by <ph name="ACCOUNT_DOMAIN">$2<ex>example.com</ex></ph>.
+    </message>
+    <message name="IDS_MANAGEMENT_DEVICE_AND_ACCOUNT_MANAGED_BY" desc="Message indicating that the device and account are enterprise enrolled to be managed by an administrator, from a specific domain">
+      Your device and account are managed by <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph>.
+    </message>
+    <message name="IDS_MANAGEMENT_ACCOUNT_MANAGED_BY" desc="Message indicating that the account is enterprise enrolled to be managed by an administrator">
+      Your account is managed by <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph>.
+    </message>
+  </if>
+
+  <if expr="chromeos">
+    <!-- Strings related to Local trust roots section -->
+    <message name="IDS_MANAGEMENT_LOCAL_TRUST_ROOTS" desc="Title of the types of local trust roots section of the page">
+      Custom root certificates
+    </message>
+    <message name="IDS_MANAGEMENT_TRUST_ROOTS_CONFIGURED" desc="Message describing that the administrators have installed their own certificates">
+      Administrators of this device have set up security certificates that may allow them to see the content of websites you visit.
+    </message>
+    <!-- Strings related to device reporting section of the management page -->
+    <message name="IDS_MANAGEMENT_DEVICE_REPORTING" desc="Title of the types of device reporting section of the page">
+      Device
+    </message>
+    <message name="IDS_MANAGEMENT_DEVICE_CONFIGURATION" desc="Message telling users that their administrator has set some specific policies on their device">
+      Your administrator can see:
+    </message>
+    <message name="IDS_MANAGEMENT_REPORT_DEVICE_USERS" desc="Message stating that administrators see all users that have used the device recently.">
+      Who has used the device recently
+    </message>
+    <message name="IDS_MANAGEMENT_REPORT_DEVICE_ACTIVITY_TIMES" desc="Message stating that administrators see device activity times.">
+      Who has used the device recently and when
+    </message>
+    <message name="IDS_MANAGEMENT_REPORT_DEVICE_HARDWARE_STATUS" desc="Message stating that administrators see device hardware status.">
+      Device statistics such as CPU/RAM usage
+    </message>
+    <message name="IDS_MANAGEMENT_LOG_UPLOAD_ENABLED" desc="Message stating that administrators have access to system logs on user's device.">
+      Detailed system logs
+    </message>
+    <message name="IDS_MANAGEMENT_REPORT_DEVICE_NETWORK_INTERFACES" desc="Message stating that administrators see device network interfaces.">
+      Network addresses
+    </message>
+    <message name="IDS_MANAGEMENT_REPORT_PRINTING" desc="Message stating that administrators can see names of printed files.">
+      Names of files that you print
+    </message>
+    <message name="IDS_MANAGEMENT_CROSTINI" desc="Message stating that administrators can see Crostini usage">
+      Linux apps installed and when they were last used
+    </message>
+  </if>
+
+  <!-- Strings related to extension reporting section of the management page -->
+  <message name="IDS_MANAGEMENT_EXTENSION_REPORTING" desc="Title of the force installed extensions section of the page">
+    Extensions
+  </message>
+  <message name="IDS_MANAGEMENT_EXTENSIONS_INSTALLED" desc="Message describing that the administrator has installed some powerful extensions on the managed user's browser">
+    The administrator of this device has installed extensions for additional functions. Extensions have access to some of your data.
+  </message>
+  <message name="IDS_MANAGEMENT_EXTENSIONS_INSTALLED_BY" desc="Message describing that the administrator has installed some powerful extensions on the managed user's browser from a specific domain">
+    <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph> has installed extensions for additional functions. Extensions have access to some of your data.
+  </message>
+  <message name="IDS_MANAGEMENT_EXTENSIONS_NAME" desc="Title of a column of the extension table showing the name of the extension">
+    Name
+  </message>
+  <message name="IDS_MANAGEMENT_EXTENSIONS_PERMISSIONS" desc="Title of a column of the extension table showing the permissions of the extension">
+    Permissions
+  </message>
+
+  <!-- Strings related to browser reporting section of the management page -->
+  <message name="IDS_MANAGEMENT_BROWSER_REPORTING" desc="Title of the types of browser reporting section of the page">
+    Browser
+  </message>
+  <message name="IDS_MANAGEMENT_BROWSER_REPORTING_EXPLANATION" desc="Message explaining browser reporting">
+    Your administrator can see:
+  </message>
+  <message name="IDS_MANAGEMENT_EXTENSION_REPORT_MACHINE_NAME" desc="Message explaining that an extension currently reports the user's machine name">
+    Your device name
+  </message>
+  <message name="IDS_MANAGEMENT_EXTENSION_REPORT_MACHINE_NAME_ADDRESS" desc="Message explaining that an extension currently reports the user's machine name and address">
+    Your device name and network address
+  </message>
+  <message name="IDS_MANAGEMENT_EXTENSION_REPORT_USERNAME" desc="Message explaining that an extension currently reports the user's username">
+    Your device username and Brave username
+  </message>
+  <message name="IDS_MANAGEMENT_EXTENSION_REPORT_VERSION" desc="Message explaining that an extension currently reports the user's browser and machine version">
+    Version information about your device and browser
+  </message>
+  <message name="IDS_MANAGEMENT_EXTENSION_REPORT_EXTENSIONS_PLUGINS" desc="Message explaining that an extension currently reports the user's exensions and plugins">
+    Information about installed extensions and plugins
+  </message>
+  <message name="IDS_MANAGEMENT_EXTENSION_REPORT_SAFE_BROWSING_WARNINGS" desc="Message explaining that an extension currently reports the user's Safe Browsing warnings and ignored warnings">
+    <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;<ex>&lt;a target="_blank" href="https://example.com"&gt;</ex></ph>Safe Browsing<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph> warnings
+  </message>
+  <message name="IDS_MANAGEMENT_EXTENSION_REPORT_USER_BROWSING_DATA" desc="Message explaining that an extension currently reports the user's browsing data">
+    Websites you visit and time spent on them
+  </message>
+  <message name="IDS_MANAGEMENT_EXTENSION_REPORT_PERF_CRASH" desc="Message explaining that an extension currently reports the user's  performance data and crash report">
+    Performance data and crash reports
+  </message>
+
+  <!-- Strings related to Brave Enterprise Threat Protection -->
+  <message name="IDS_MANAGEMENT_THREAT_PROTECTION" desc="Title of the Brave Enterprise Threat Protection section of the page">
+    Brave Enterprise Threat Protection
+  </message>
+  <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION" desc="Description of the Brave Enterprise Threat Protection section of the page">
+    Your administrator has enabled Brave Enterprise Threat Protection on your browser. Brave Enterprise Threat Protection has access to some of your data.
+  </message>
+  <message name="IDS_MANAGEMENT_THREAT_PROTECTION_DESCRIPTION_BY" desc="Description of the Brave Enterprise Threat Protection section of the page">
+    <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph> has enabled Brave Enterprise Threat Protection on your browser. Brave Enterprise Threat Protection has access to some of your data.
+  </message>
+  <message name="IDS_MANAGEMENT_DATA_LOSS_PREVENTION_NAME" desc="Name for the data loss prevention feature">
+    Data Loss Prevention
+  </message>
+  <message name="IDS_MANAGEMENT_DATA_LOSS_PREVENTION_PERMISSIONS" desc="Permissions description for the data loss prevention feature">
+    Scan the contents of the cache and files that you download or upload in Brave.
+  </message>
+  <message name="IDS_MANAGEMENT_MALWARE_SCANNING_NAME" desc="Name for the malware scanning feature">
+    Malware Scanning
+  </message>
+  <message name="IDS_MANAGEMENT_MALWARE_SCANNING_PERMISSIONS" desc="Permissions description for the malware scanning feature">
+    Scan files that you download or upload in Brave.
+  </message>
+  <message name="IDS_MANAGEMENT_ENTERPRISE_REPORTING_NAME" desc="Name for the enterprise reporting feature">
+    Enterprise Reporting
+  </message>
+  <message name="IDS_MANAGEMENT_ENTERPRISE_REPORTING_PERMISSIONS" desc="Permissions description for the enterprise reporting feature">
+    Share data about security events that have been flagged by Brave Enterprise Threat Protection with your Administrator. These may include page urls, file name and file metadata, your device username and Brave username.
+  </message>
+</grit-part>

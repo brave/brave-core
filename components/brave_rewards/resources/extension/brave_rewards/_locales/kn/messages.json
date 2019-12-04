@@ -19,6 +19,10 @@
     "message": "ಗೌಪ್ಯತೆಯನ್ನು-ಗೌರವಿಸುವ ಜಾಹೀರಾತುಗಳನ್ನು ವೀಕ್ಷಿಸುವ ಮೂಲಕ ನೀವು ಇದೀಗ ಟೋಕನ್‌ಗಳನ್ನು ಸಂಪಾದಿಸಬಹುದು.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
+  "welcomeDescPoints": {
+    "message": "You can now earn points for watching privacy-respecting ads.",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
   "welcomeFooterTextOne": {
     "message": "ಏನೆಲ್ಲಾ ಸುಧಾರಣೆಗಳಾಗಿವೆ ಎಂಬುದನ್ನು ಪರಿಶೀಲಿಸಿ",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
@@ -42,6 +46,22 @@
   "grants": {
     "message": "ಅನುದಾನಗಳು",
     "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "ವಿವರಗಳು",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "ನಿಮ್ಮ ಬ್ಯಾಲೆನ್ಸ್",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT ಪಾಯಿಂಟ್‍ಗಳು",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "ನಿಮ್ಮ ಮೆಚ್ಚಿನ ವಿಷಯ ರಚನೆಕಾರರಿಗೆ ಕೊಡುಗೆಯನ್ನು ನೀಡಲು Brave Rewards ನಲ್ಲಿ ಬಳಸಬಹುದು. BAT ಪಾಯಿಂಟ್‌ಗಳನ್ನು BAT ಗೆ ವಿನಿಮಯ ಮಾಡಲಾಗುವುದಿಲ್ಲ.",
+    "description": "Text for BAT Point helper message"
   },
   "on": {
     "message": "ಆನ್",
@@ -128,12 +148,22 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "ಟೋಕನ್ ಅನುದಾನಗಳು",
-    "description": "Title for grant notification"
+    "message": "$currency$ Grants",
+    "description": "Title for grant notification",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "Token"
+      }
+    }
   },
   "tokenGrantClaimed": {
     "message": "ಟೋಕನ್ ಅನುದಾನಗಳು ಕ್ಲೈಮ್ ಮಾಡಿರುವುದು",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Point Grants Claimed",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "ಜಾಹೀರಾತುಗಳಿಂದ ಸಂಪಾದನೆಗಳು",
@@ -180,12 +210,16 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "ನೀವು $amount$ BAT ಕೊಡುಗೆ ನೀಡಿರುವಿರಿ",
+    "message": "You've contributed $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
         "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
       }
     }
   },
@@ -261,10 +295,6 @@
     "message": "ಅನುದಾನ ಅವಧಿ ಮೀರುವ ದಿನಾಂಕ",
     "description": "Grant expiry label"
   },
-  "grantAlreadyClaimedText": {
-    "message": "ಕ್ಷಮಿಸಿ, ಈ ಅನುದಾನವನ್ನು ಈಗಾಗಲೇ ಕ್ಲೈಮ್ ಮಾಡಲಾಗಿದೆ ಎಂಬಂತೆ ಕಾಣುತ್ತಿದೆ.",
-    "description": "Description of the error when grant is already claimed."
-  },
   "grantGeneralErrorButton": {
     "message": "ಸರಿ",
     "description": "Button text for clearing the error."
@@ -276,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "ಓಹೋ, ಏನೋ ತಪ್ಪಾಗಿದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "ಸರಿ",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "ಕ್ಷಮಿಸಿ, ಈ ಅನುದಾನ ಈಗಾಗಲೇ ಅವಧಿ ಮೀರಿರುವಂತಿದೆ.",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "ಈ ಅನುದಾನ ಇನ್ನು ಮುಂದೆ ಲಭ್ಯವಿರುವುದಿಲ್ಲ.",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "ಸ್ಥಿತಿ ರಿಫ್ರೆಶ್ ಮಾಡಿ",
@@ -306,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಇನ್ನೂ ಸೈನ್ ಅಪ್ ಮಾಡದ ರಚನೆಕಾರರಿಗಾಗಿ ನೀವು {{reservedAmount}} BAT ಅನ್ನು ಗೊತ್ತುಪಡಿಸಿದ್ದೀರಿ. ನಿಮ್ಮ ಬ್ರೌಸರ್ ಅನ್ನು ಪರಿಶೀಲಿಸುವವರೆಗೆ ಅಥವಾ 90 ದಿನಗಳು ಮುಗಿಯುವವರೆಗೆ, ಕೊಡುಗೆ ನೀಡಲು ಅವು ಪ್ರಯತ್ನಿಸುತ್ತವೆ.",
+    "message": "ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಇನ್ನೂ ಸೈನ್ ಅಪ್ ಮಾಡದ ರಚನೆಕಾರರಿಗೆ ನೀವು {{reservedAmount}} {{currency}} ಅನ್ನು ನಿಯೋಜಿಸಿದ್ದೀರಿ. ಅವರು ಅವುಗಳನ್ನು ಪರಿಶೀಲಿಸುವ ತನಕ ಅಥವಾ 90 ದಿನಗಳು ಮುಗಿಯುವ ತನಕ ನಿಮ್ಮ ಬ್ರೌಸರ್ ಕೊಡುಗೆ ನೀಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಲೇ ಇರುತ್ತದೆ.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -397,6 +415,10 @@
     "message": "ಬಿಎಟಿ",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "ಜಾಹೀರಾತುಗಳನ್ನು ಆನ್ ಮಾಡಿ",
     "description": "Prompt to turn on Ads via notification"
@@ -452,23 +474,33 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "ನಿಮ್ಮ ಟೋಕನ್ ಅನುದಾನವು ಶೀಘ್ರದಲ್ಲೇ ನಿಮ್ಮ ಕೈತಲುಪಲಿದೆ.",
-    "description": "Cosmetic text indicating grant funds are on the way"
+    "message": "Your $currency$ grant is on its way.",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
   },
   "grantFinishTokenTitleUGP": {
     "message": "ಉಚಿತ ಟೋಕನ್ ಅನುದಾನ",
     "description": "Token title on success screen"
   },
+  "grantFinishPointTitleUGP": {
+    "message": "Free Point Grant",
+    "description": "Point title on success screen"
+  },
   "grantFinishTitleAds": {
-    "message": "Brave ಆ್ಯಡ್ಸ್ ಬಹುಮಾನಗಳು!",
+    "message": "ನೀವು ಜಾಹೀರಾತುಗಳ ರಿವಾರ್ಡ್ ಅನ್ನು ಗಳಿಸಿದ್ದೀರಿ!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Brave ಆ್ಯಡ್ಸ್ ನಿಂದ ಗಳಿಸಿದ ನಿಮ್ಮ ಬಹುಮಾನಗಳು ಸದ್ಯದಲ್ಲೆ ನಿಮ್ಮನ್ನು ತಲುಪಲಿವೆ.",
+    "message": "ನಿಮ್ಮ ರಿವಾರ್ಡ್ ನಿಮ್ಮ Brave Rewards ವ್ಯಾಲೆಟ್‌ನಲ್ಲಿ ಇನ್ನೇನು ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತದೆ.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "ನಿಮ್ಮ Brave ಆ್ಯಡ್ಸ್ ಟೋಕನ್ ನೀಡಿಕೆ",
+    "message": "ನಿಮ್ಮ ರಿವಾರ್ಡ್ ಮೊತ್ತ",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -532,5 +564,29 @@
   "set": {
     "message": "ಹೊಂದಿಸಿ...",
     "description": "Button text for setting monthly contribution"
+  },
+  "tokens":  {
+    "message": "ಟೋಕನ್‌ಗಳು",
+    "description": "Standard tokens text"
+  },
+  "point":  {
+    "message": "Point",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "ಟೋಕನ್",
+    "description": "BAT Token text"
+  },
+  "points":  {
+    "message": "points",
+    "description": "BAT Points text"
+  },
+  "tokenGrants":  {
+    "message": "ಟೋಕನ್ ಅನುದಾನಗಳು",
+    "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Point Grants",
+    "description": "BAT Points Grant Text"
   }
 }

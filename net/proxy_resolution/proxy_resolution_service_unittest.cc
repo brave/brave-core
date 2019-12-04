@@ -21,7 +21,7 @@ using net::test::IsOk;
 
 namespace net {
 
-class ProxyResolutionServiceTest : public TestWithScopedTaskEnvironment {
+class ProxyResolutionServiceTest : public TestWithTaskEnvironment {
  public:
   ProxyResolutionServiceTest() = default;
   ~ProxyResolutionServiceTest() override = default;

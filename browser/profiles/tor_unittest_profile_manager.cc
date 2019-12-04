@@ -20,13 +20,13 @@
 
 #include "brave/test/base/brave_testing_profile.h"
 
-Profile* TorUnittestProfileManager::CreateProfileHelper(
+std::unique_ptr<Profile> TorUnittestProfileManager::CreateProfileHelper(
     const base::FilePath& path) {
   if (!base::PathExists(path)) {
     if (!base::CreateDirectory(path))
       return nullptr;
   }
-  return CreateProfile(path, nullptr).release();
+  return CreateProfile(path, nullptr);
 }
 
 std::unique_ptr<Profile> TorUnittestProfileManager::CreateProfileAsyncHelper(

@@ -19,6 +19,10 @@
     "message": "Ora puoi guadagnare dei gettoni guardando annunci pubblicitari che rispettano la privacy.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
+  "welcomeDescPoints": {
+    "message": "You can now earn points for watching privacy-respecting ads.",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
   "welcomeFooterTextOne": {
     "message": "Scopri che cosa è migliorato",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
@@ -42,6 +46,22 @@
   "grants": {
     "message": "Contributi",
     "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "Dettagli",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "Il tuo saldo",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "Punti BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "può essere usato nei Premi Brave per contribuire al tuo creatore di contenuti preferito. I punti BAT non possono essere scambiati per BAT.",
+    "description": "Text for BAT Point helper message"
   },
   "on": {
     "message": "attivo",
@@ -128,12 +148,22 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "Contributi in token",
-    "description": "Title for grant notification"
+    "message": "$currency$ Grants",
+    "description": "Title for grant notification",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "Token"
+      }
+    }
   },
   "tokenGrantClaimed": {
     "message": "Contributi in token Riscossi",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Point Grants Claimed",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "Guadagni da Annunci Pubblicitari",
@@ -180,12 +210,16 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "Hai contribuito per $amount$ BAT",
+    "message": "You've contributed $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
         "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
       }
     }
   },
@@ -261,10 +295,6 @@
     "message": "Data Scadenza Contributo",
     "description": "Grant expiry label"
   },
-  "grantAlreadyClaimedText": {
-    "message": "Ci dispiace, sembra che questo contributo sia già stato riscosso.",
-    "description": "Description of the error when grant is already claimed."
-  },
   "grantGeneralErrorButton": {
     "message": "OK",
     "description": "Button text for clearing the error."
@@ -276,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "Ops, qualcosa è andato storto. Per favore, riprova più tardi.",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "OK",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "Ci dispiace, sembra che questo contributo sia già scaduto.",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "Questo contributo non è più disponibile.",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "Aggiorna status",
@@ -306,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Hai designato {{reservedAmount}} BAT per i creatori che non si sono ancora iscritti per ricevere i contributi. Il tuo browser continuerà a provare a contribuire fino a quando non si saranno verificati o fino a quando non saranno passati 90 giorni.",
+    "message": "Hai predisposto {{reservedAmount}} {{currency}} per ideatori che non sono ancora entrati per ricevere il contributo. Il tuo browser continuerà a provare a dare il contributo finché non avranno effettuato la verifica, fino a 90 giorni.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -397,6 +415,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "Attiva gli Annunci Pubblicitari",
     "description": "Prompt to turn on Ads via notification"
@@ -452,23 +474,33 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "Il tuo contributo di token è in arrivo.",
-    "description": "Cosmetic text indicating grant funds are on the way"
+    "message": "Your $currency$ grant is on its way.",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
   },
   "grantFinishTokenTitleUGP": {
     "message": "Contributo di Token Gratuito",
     "description": "Token title on success screen"
   },
+  "grantFinishPointTitleUGP": {
+    "message": "Free Point Grant",
+    "description": "Point title on success screen"
+  },
   "grantFinishTitleAds": {
-    "message": "Ricompense Brave Ads!",
+    "message": "Hai ottenuto un Premio Pubblicità!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "La tua ricompensa da Brave Ads è in arrivo.",
+    "message": "Il tuo premio è sulla via verso il tuo portafoglio Premi Brave ",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Il tuo token di Brave Ads",
+    "message": "Quantità Premio",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -532,5 +564,29 @@
   "set": {
     "message": "Imposta...",
     "description": "Button text for setting monthly contribution"
+  },
+  "tokens":  {
+    "message": "token",
+    "description": "Standard tokens text"
+  },
+  "point":  {
+    "message": "Point",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "Token",
+    "description": "BAT Token text"
+  },
+  "points":  {
+    "message": "points",
+    "description": "BAT Points text"
+  },
+  "tokenGrants":  {
+    "message": "Contributi in token",
+    "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Point Grants",
+    "description": "BAT Points Grant Text"
   }
 }
