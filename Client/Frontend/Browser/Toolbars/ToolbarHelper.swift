@@ -27,11 +27,17 @@ class ToolbarHelper: NSObject {
         toolbar.shareButton.accessibilityLabel = Strings.TabToolbarShareButtonAccessibilityLabel
         toolbar.shareButton.addTarget(self, action: #selector(didClickShare), for: UIControl.Event.touchUpInside)
         
-        toolbar.addTabButton.setImage(#imageLiteral(resourceName: "add_tab"), for: .normal)
+        toolbar.addTabButton.setImage(#imageLiteral(resourceName: "add_tab").template, for: .normal)
         toolbar.addTabButton.accessibilityLabel = Strings.TabToolbarAddTabButtonAccessibilityLabel
         toolbar.addTabButton.addTarget(self, action: #selector(didClickAddTab), for: UIControl.Event.touchUpInside)
         toolbar.addTabButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(didLongPressAddTab(_:))))
         
+        toolbar.searchButton.setImage(#imageLiteral(resourceName: "ntp-search").template, for: .normal)
+        // Accessibility label not needed, since overriden in the bottom tool bar class.
+        toolbar.searchButton.addTarget(self, action: #selector(didClickSearch), for: UIControl.Event.touchUpInside)
+        // Same long press gesture allows creating tab on NTP, esp private tab easily
+        toolbar.searchButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(didLongPressAddTab(_:))))
+
         toolbar.menuButton.setImage(#imageLiteral(resourceName: "menu_more").template, for: .normal)
         toolbar.menuButton.accessibilityLabel = Strings.TabToolbarMenuButtonAccessibilityLabel
         toolbar.menuButton.addTarget(self, action: #selector(didClickMenu), for: UIControl.Event.touchUpInside)
@@ -81,6 +87,10 @@ class ToolbarHelper: NSObject {
     
     func didClickAddTab() {
         toolbar.tabToolbarDelegate?.tabToolbarDidPressAddTab(toolbar, button: toolbar.shareButton)
+    }
+    
+    func didClickSearch() {
+        toolbar.tabToolbarDelegate?.tabToolbarDidPressSearch(toolbar, button: toolbar.searchButton)
     }
     
     func didLongPressAddTab(_ longPress: UILongPressGestureRecognizer) {

@@ -64,6 +64,6 @@ class QuickActions: NSObject {
     }
 
     fileprivate func handleOpenNewTab(withBrowserViewController bvc: BrowserViewController, isPrivate: Bool) {
-        bvc.openBlankNewTab(focusLocationField: true, isPrivate: isPrivate)
+        bvc.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: isPrivate)
     }
 }

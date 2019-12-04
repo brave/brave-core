@@ -144,7 +144,7 @@ class StatView: UIView {
     
     fileprivate var titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UX.HomePanel.StatTitleColor
+        label.appearanceTextColor = .white
         label.textAlignment = .center
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 10, weight: UIFont.Weight.medium)

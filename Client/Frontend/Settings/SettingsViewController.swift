@@ -159,6 +159,15 @@ class SettingsViewController: TableViewController {
         }
         display.rows.append(row)
         
+        row = Row(text: Strings.NewTabPageSettingsTitle,
+            selection: { [unowned self] in
+                self.navigationController?.pushViewController(NewTabPageTableViewController(), animated: true)
+            },
+            accessory: .disclosureIndicator,
+            cellClass: MultilineValue1Cell.self
+        )
+        display.rows.append(row)
+        
         if UIDevice.current.userInterfaceIdiom == .pad {
             display.rows.append(
                 Row(text: Strings.Show_Tabs_Bar, accessory: .switchToggle(value: Preferences.General.tabBarVisibility.value == TabBarVisibility.always.rawValue, { Preferences.General.tabBarVisibility.value = $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue }), cellClass: MultilineValue1Cell.self)

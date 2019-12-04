@@ -76,11 +76,11 @@ enum NavigationPath: Equatable {
         if let newURL = url {
             bvc.switchToTabForURLOrOpen(newURL, isPrivate: isPrivate, isPrivileged: false)
         } else {
-            bvc.openBlankNewTab(focusLocationField: true, isPrivate: isPrivate)
+            bvc.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: isPrivate)
         }
     }
 
     private static func handleText(text: String, with bvc: BrowserViewController) {
-        bvc.openBlankNewTab(focusLocationField: true, searchFor: text)
+        bvc.openBlankNewTab(attemptLocationFieldFocus: true, searchFor: text)
     }
 }

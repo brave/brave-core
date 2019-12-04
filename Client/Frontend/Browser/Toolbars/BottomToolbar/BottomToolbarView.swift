@@ -15,6 +15,9 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     let backButton = ToolbarButton(top: false)
     let shareButton = ToolbarButton(top: false)
     let addTabButton = ToolbarButton(top: false)
+    let searchButton = ToolbarButton(top: false).then {
+        $0.isHidden = true
+    }
     let menuButton = ToolbarButton(top: false)
     let actionButtons: [Themeable & UIButton]
 
@@ -22,7 +25,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     private let contentView = UIStackView()
 
     fileprivate override init(frame: CGRect) {
-        actionButtons = [backButton, forwardButton, addTabButton, tabsButton, menuButton]
+        actionButtons = [backButton, forwardButton, addTabButton, searchButton, tabsButton, menuButton]
         super.init(frame: frame)
         setupAccessibility()
 
@@ -33,6 +36,17 @@ class BottomToolbarView: UIView, ToolbarProtocol {
         contentView.distribution = .fillEqually
         
         addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(didSwipeToolbar(_:))))
+    }
+    
+    private var isSearchButtonEnabled: Bool = false {
+        didSet {
+            addTabButton.isHidden = isSearchButtonEnabled
+            searchButton.isHidden = !addTabButton.isHidden
+        }
+    }
+    
+    func setSearchButtonState(url: URL?) {
+        isSearchButtonEnabled = url?.isAboutHomeURL == true
     }
 
     override func updateConstraints() {
@@ -49,6 +63,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
         tabsButton.accessibilityIdentifier = "TabToolbar.tabsButton"
         shareButton.accessibilityIdentifier = "TabToolbar.shareButton"
         addTabButton.accessibilityIdentifier = "TabToolbar.addTabButton"
+        searchButton.accessibilityIdentifier = "TabToolbar.searchButton"
         accessibilityNavigationStyle = .combined
         accessibilityLabel = Strings.TabToolbarAccessibilityLabel
     }

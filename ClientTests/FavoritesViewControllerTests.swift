@@ -141,4 +141,8 @@ class MockTopSitesDelegate: TopSitesDelegate {
         guard let input = self.input else { return false }
         return URL(string: input) != nil
     }
+    
+    func didTapShowMoreFavorites() {
+        // Protocol conformance
+    }
 }

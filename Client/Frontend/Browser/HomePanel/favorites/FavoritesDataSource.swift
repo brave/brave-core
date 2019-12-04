@@ -11,6 +11,8 @@ private let log = Logger.browserLogger
 class FavoritesDataSource: NSObject, UICollectionViewDataSource {
     var frc: NSFetchedResultsController<Bookmark>?
     weak var collectionView: UICollectionView?
+    
+    var favoriteDeletedHandler: (() -> Void)?
 
     var isEditing: Bool = false {
         didSet {
@@ -37,6 +39,45 @@ class FavoritesDataSource: NSObject, UICollectionViewDataSource {
         }
     }
     
+    /// The number of times that each row contains
+    var columnsPerRow: Int {
+        guard let size = collectionView?.bounds.size,
+            let traitCollection = collectionView?.traitCollection else {
+                return 0
+        }
+        
+        var cols = 0
+        if traitCollection.horizontalSizeClass == .compact {
+            // Landscape iPhone
+            if traitCollection.verticalSizeClass == .compact {
+                cols = 5
+            }
+                // Split screen iPad width
+            else if size.widthLargerOrEqualThanHalfIPad() {
+                cols = 4
+            }
+                // iPhone portrait
+            else {
+                cols = 3
+            }
+        } else {
+            // Portrait iPad
+            if size.height > size.width {
+                cols = 4
+            }
+                // Landscape iPad
+            else {
+                cols = 5
+            }
+        }
+        return cols + 1
+    }
+    
+    /// If there are more favorites than are being shown
+    var hasOverflow: Bool {
+        return columnsPerRow < frc?.fetchedObjects?.count ?? 0
+    }
+    
     func refetch() {
         try? frc?.performFetch()
     }
@@ -48,7 +89,7 @@ class FavoritesDataSource: NSObject, UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return frc?.fetchedObjects?.count ?? 0
+        return min(columnsPerRow, frc?.fetchedObjects?.count ?? 0)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -89,9 +130,14 @@ extension FavoritesDataSource: NSFetchedResultsControllerDelegate {
                 collectionView?.insertItems(at: [indexPath])
             }
         case .delete:
-            if let indexPath = indexPath {
-                collectionView?.deleteItems(at: [indexPath])
-            }
+            // Not all favorites must be visible at the time, so we can't just call `deleteItems` here.
+            // Example:
+            // There's 10 favorites total, 4 are visible on iPhone.
+            // We delete second favorite(index=1), visible favorites count should still be 4.
+            // Favorites from places 3 and 4 are moved back to 2 and 3
+            // a new, previously hidden favorite item is now shown at position 4.
+            collectionView?.reloadData()
+            favoriteDeletedHandler?()
         case .update:
             if let indexPath = indexPath, let cell = collectionView?.cellForItem(at: indexPath) as? FavoriteCell {
                 configureCell(cell: cell, at: indexPath)

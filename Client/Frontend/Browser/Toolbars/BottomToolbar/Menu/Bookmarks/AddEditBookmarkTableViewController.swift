@@ -50,7 +50,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
             return BookmarkDetailsView(title: title, url: url)
         case .addFolder(let title):
             return FolderDetailsViewTableViewCell(title: title, viewHeight: UX.cellHeight)
-        case .editBookmark(let bookmark):
+        case .editBookmark(let bookmark), .editFavorite(let bookmark):
             return BookmarkDetailsView(title: bookmark.displayTitle, url: bookmark.url)
         case .editFolder(let folder):
             return FolderDetailsViewTableViewCell(title: folder.displayTitle, viewHeight: UX.cellHeight)
@@ -72,7 +72,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
     private var specialButtonsCount: Int {
         switch mode {
         case .addFolder(_), .editFolder(_): return 1
-        case .addBookmark(_, _), .editBookmark(_): return 3
+        case .addBookmark(_, _), .editBookmark(_), .editFavorite(_): return 3
         }
     }
     
@@ -285,6 +285,25 @@ class AddEditBookmarkTableViewController: UITableViewController {
                 fatalError("Folders can't be saved to favorites")
             case .folder(let folderSaveLocation):
                 folder.updateWithNewLocation(customTitle: title, url: nil, location: folderSaveLocation)
+            }
+            
+        case .editFavorite(let favorite):
+            guard let urlString = bookmarkDetailsView.urlTextField?.text,
+                let url = URL(string: urlString) ?? urlString.bookmarkletURL else {
+                    return earlyReturn()
+            }
+            
+            if !favorite.existsInPersistentStore() { break }
+            
+            switch saveLocation {
+            case .rootLevel:
+                favorite.delete()
+                Bookmark.add(url: url, title: title)
+            case .favorites:
+                favorite.update(customTitle: title, url: url.absoluteString)
+            case .folder(let folder):
+                favorite.delete()
+                Bookmark.add(url: url, title: title, parentFolder: folder)
             }
         }
         

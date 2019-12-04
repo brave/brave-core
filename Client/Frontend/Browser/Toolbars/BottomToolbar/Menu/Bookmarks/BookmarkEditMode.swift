@@ -13,6 +13,7 @@ enum BookmarkEditMode {
     case addFolder(title: String)
     case editBookmark(_ bookmark: Bookmark)
     case editFolder(_ folder: Bookmark)
+    case editFavorite(_ favorite: Bookmark)
     
     /// Returns a initial, default save location if none is provided
     var initialSaveLocation: BookmarkSaveLocation {
@@ -24,6 +25,8 @@ enum BookmarkEditMode {
             return folderOrRoot(bookmarkOrFolder: bookmark)
         case .editFolder(let folder):
             return folderOrRoot(bookmarkOrFolder: folder)
+        case .editFavorite(_):
+            return .favorites
         }
     }
     
@@ -44,6 +47,7 @@ enum BookmarkEditMode {
         case .addFolder(_): return  Strings.NewFolderTitle
         case .editBookmark(_): return  Strings.EditBookmarkTitle
         case .editFolder(_): return  Strings.EditFolderTitle
+        case .editFavorite(_): return  Strings.EditFavoriteTitle
         }
     }
     
@@ -56,7 +60,7 @@ enum BookmarkEditMode {
         // Order of cells matters.
         switch self {
         case .addFolder(_), .editFolder(_): return [.rootLevel]
-        case .addBookmark(_), .editBookmark(_): return [.addFolder, .favorites, .rootLevel]
+        case .addBookmark(_), .editBookmark(_), .editFavorite(_): return [.addFolder, .favorites, .rootLevel]
         }
     }
 }

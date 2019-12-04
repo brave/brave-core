@@ -12,6 +12,13 @@ class RoundInterfaceButton: UIButton {
     }
 }
 
+class RoundInterfaceView: UIView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.cornerRadius = min(bounds.height, bounds.width) / 2.0
+    }
+}
+
 class SyncViewController: UIViewController {
 
     override func loadView() {
