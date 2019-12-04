@@ -14,14 +14,19 @@ source_set("brave_wayback_machine") {
     "brave_wayback_machine_tab_helper.h",
     "brave_wayback_machine_util.cc",
     "brave_wayback_machine_util.h",
+    "wayback_machine_url_fetcher.cc",
+    "wayback_machine_url_fetcher.h",
   ]
 
   deps = [
+    "//base",
     "//brave/common",
     "//components/infobars/core",
     "//components/prefs",
     "//content/public/browser",
     "//net",
+    "//services/network/public/cpp",
+    "//url",
   ]
 
   public_deps = [

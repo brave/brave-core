@@ -6,28 +6,27 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_WAYBACK_MACHINE_INFOBAR_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_WAYBACK_MACHINE_INFOBAR_VIEW_H_
 
-#include <memory>
-#include <string>
-
+#include "brave/browser/brave_wayback_machine/wayback_machine_url_fetcher.h"
 #include "chrome/browser/ui/views/infobars/infobar_view.h"
-#include "services/network/public/cpp/simple_url_loader.h"
 
 namespace content {
 class WebContents;
 }  // namespace content
 
-namespace network {
-class SharedURLLoaderFactory;
-}  // network
-
 class BraveWaybackMachineInfoBarDelegate;
 
-class BraveWaybackMachineInfoBarView : public InfoBarView {
+class BraveWaybackMachineInfoBarView : public InfoBarView,
+                                       public WaybackMachineURLFetcher::Client {
  public:
   BraveWaybackMachineInfoBarView(
       std::unique_ptr<BraveWaybackMachineInfoBarDelegate> delegate,
       content::WebContents* contents);
   ~BraveWaybackMachineInfoBarView() override;
+
+  BraveWaybackMachineInfoBarView(
+      const BraveWaybackMachineInfoBarView&) = delete;
+  BraveWaybackMachineInfoBarView& operator=(
+      const BraveWaybackMachineInfoBarView&) = delete;
 
  private:
   class InfoBarViewSubViews;
@@ -35,16 +34,15 @@ class BraveWaybackMachineInfoBarView : public InfoBarView {
   // InfoBarView overrides:
   void Layout() override;
 
-  void OnWaybackURLFetched(std::unique_ptr<std::string> response_body);
-  void LoadURL(const std::string& last_wayback_url);
+  // WaybackMachineURLFetcher::Client overrides:
+  void OnWaybackURLFetched(const GURL& latest_wayback_url) override;
+
   void FetchWaybackURL();
+  void LoadURL(const GURL& url);
 
   InfoBarViewSubViews* sub_views_ = nullptr;
   content::WebContents* contents_;
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  std::unique_ptr<network::SimpleURLLoader> wayback_url_fetcher_;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveWaybackMachineInfoBarView);
+  WaybackMachineURLFetcher wayback_machine_url_fetcher_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_WAYBACK_MACHINE_INFOBAR_VIEW_H_

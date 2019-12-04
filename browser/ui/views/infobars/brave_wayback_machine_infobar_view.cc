@@ -5,10 +5,10 @@
 
 #include "brave/browser/ui/views/infobars/brave_wayback_machine_infobar_view.h"
 
+#include <string>
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
 #include "brave/browser/brave_wayback_machine/brave_wayback_machine_infobar_delegate.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/infobar_service.h"
@@ -19,9 +19,6 @@
 #include "components/grit/components_scaled_resources.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
-#include "net/traffic_annotation/network_traffic_annotation.h"
-#include "services/network/public/cpp/resource_request.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
@@ -36,36 +33,9 @@
 #include "url/gurl.h"
 
 namespace {
-
-constexpr char kWaybackQueryURL[] =
-    "https://archive.org/wayback/available?url=";
-constexpr int kMaxBodySize = 1024 * 1024;
-
 // IDs of the colors to use for infobar elements.
 constexpr int kInfoBarLabelBackgroundColor = ThemeProperties::COLOR_INFOBAR;
 constexpr int kInfoBarLabelTextColor = ThemeProperties::COLOR_BOOKMARK_TEXT;
-
-const net::NetworkTrafficAnnotationTag& GetNetworkTrafficAnnotationTag() {
-  static const net::NetworkTrafficAnnotationTag network_traffic_annotation_tag =
-      net::DefineNetworkTrafficAnnotation("wayback_machine_infobar", R"(
-        semantics {
-          sender:
-            "Brave Wayback Machine"
-          description:
-            "Download wayback url"
-          trigger:
-            "When user gets 404 page"
-          data: "current tab's url"
-          destination: WEBSITE
-        }
-        policy {
-          cookies_allowed: NO
-          policy_exception_justification:
-            "Not implemented."
-        })");
-  return network_traffic_annotation_tag;
-}
-
 }  // namespace
 
 // Includes all view controls except close button that managed by InfoBarView.
@@ -243,8 +213,9 @@ BraveWaybackMachineInfoBarView::BraveWaybackMachineInfoBarView(
       content::WebContents* contents)
     : InfoBarView(std::move(delegate)),
       contents_(contents),
-      url_loader_factory_(SystemNetworkContextManager::GetInstance()->
-          GetSharedURLLoaderFactory()) {
+      wayback_machine_url_fetcher_(this,
+                                   SystemNetworkContextManager::GetInstance()->
+                                       GetSharedURLLoaderFactory()) {
   sub_views_ = new InfoBarViewSubViews(this);
   sub_views_->SizeToPreferredSize();
   AddChildView(sub_views_);
@@ -260,43 +231,24 @@ void BraveWaybackMachineInfoBarView::Layout() {
 }
 
 void BraveWaybackMachineInfoBarView::FetchWaybackURL() {
-  auto request = std::make_unique<network::ResourceRequest>();
-  std::string wayback_fetch_url =
-      std::string(kWaybackQueryURL) + contents_->GetVisibleURL().spec();
-  request->url = GURL(wayback_fetch_url);
-  wayback_url_fetcher_ = network::SimpleURLLoader::Create(
-      std::move(request), GetNetworkTrafficAnnotationTag());
-  wayback_url_fetcher_->DownloadToString(
-      url_loader_factory_.get(),
-      base::BindOnce(&BraveWaybackMachineInfoBarView::OnWaybackURLFetched,
-                     base::Unretained(this)),
-      kMaxBodySize);
+  wayback_machine_url_fetcher_.Fetch(contents_->GetVisibleURL());
 }
 
 void BraveWaybackMachineInfoBarView::OnWaybackURLFetched(
-    std::unique_ptr<std::string> response_body) {
-  if (!response_body) {
+    const GURL& latest_wayback_url) {
+  if (latest_wayback_url.is_empty()) {
     sub_views_->OnWaybackURLFetchFailed();
     return;
   }
 
-  std::string wayback_response_json = std::move(*response_body);
-  const auto result = base::JSONReader::Read(wayback_response_json);
-  if (!result || !result->FindPath("archived_snapshots.closest.url")) {
-    sub_views_->OnWaybackURLFetchFailed();
-    return;
-  }
-
-  LoadURL(result->FindPath("archived_snapshots.closest.url")->GetString());
+  LoadURL(latest_wayback_url);
   // After loading to archived url, don't need to show infobar anymore.
   InfoBarService::FromWebContents(contents_)->RemoveInfoBar(this);
 }
 
-void BraveWaybackMachineInfoBarView::LoadURL(
-    const std::string& last_wayback_url) {
-  DVLOG(2) << __func__ << ": wayback url(" << last_wayback_url
-           << ") fetched for" << contents_->GetVisibleURL().spec();
-  contents_->GetController().LoadURL(GURL(last_wayback_url),
+void BraveWaybackMachineInfoBarView::LoadURL(const GURL& url) {
+
+  contents_->GetController().LoadURL(url,
                                      content::Referrer(),
                                      ui::PAGE_TRANSITION_LINK,
                                      std::string());
