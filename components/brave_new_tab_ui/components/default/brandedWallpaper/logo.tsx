@@ -13,8 +13,7 @@ interface Props {
 }
 
 const LogoImage = styled('img')`
-  width: 100%;
-  max-width: 170px;
+  width: 170px;
 `
 
 function Logo ({data}: Props) {

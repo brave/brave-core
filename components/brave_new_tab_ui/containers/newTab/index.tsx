@@ -23,6 +23,7 @@ import Stats from './stats'
 import Block from './block'
 import FooterInfo from './footerInfo'
 import SiteRemovalNotification from './notification'
+import * as S from '../../components/default/page'
 
 interface Props {
   newTabData: NewTab.State
@@ -212,34 +213,29 @@ class NewTabPage extends React.Component<Props, State> {
         }
         <Page>
           <Header>
-            <Stats
-              textDirection={newTabData.textDirection}
-              stats={newTabData.stats}
-              showWidget={newTabData.showStats}
-              hideWidget={this.toggleShowStats}
-              menuPosition={'right'}
-            />
-            <Clock
-              textDirection={newTabData.textDirection}
-              showWidget={newTabData.showClock}
-              hideWidget={this.toggleShowClock}
-              menuPosition={'left'}
-            />
-            <Rewards
-              {...rewardsState}
-              onCreateWallet={this.createWallet}
-              onEnableAds={this.enableAds}
-              onEnableRewards={this.enableRewards}
-              textDirection={newTabData.textDirection}
-              showWidget={newTabData.showRewards}
-              hideWidget={this.toggleShowRewards}
-              onDismissNotification={this.dismissNotification}
-              menuPosition={'left'}
-            />
-            {this.props.newTabData.gridSites.length ? <List
+            {newTabData.showStats &&
+            <S.GridItemStats>
+              <Stats
+                textDirection={newTabData.textDirection}
+                stats={newTabData.stats}
+                hideWidget={this.toggleShowStats}
+                menuPosition={'right'}
+              />
+            </S.GridItemStats>
+            }
+            {newTabData.showClock &&
+            <S.GridItemClock>
+              <Clock
+                textDirection={newTabData.textDirection}
+                hideWidget={this.toggleShowClock}
+                menuPosition={'left'}
+              />
+            </S.GridItemClock>
+            }
+            {this.props.newTabData.gridSites.length && newTabData.showTopSites &&
+            <S.GridItemTopSites><List
               blockNumber={this.props.newTabData.gridSites.length}
               textDirection={newTabData.textDirection}
-              showWidget={newTabData.showTopSites}
               menuPosition={'right'}
               hideWidget={this.toggleShowTopSites}
             >
@@ -262,23 +258,40 @@ class NewTabPage extends React.Component<Props, State> {
                   />
                 )
               }
-            </List> : null}
+            </List></S.GridItemTopSites>}
             {
               this.props.newTabData.showSiteRemovalNotification
-              ? <SiteRemovalNotification actions={actions} />
+              ? <S.GridItemNotification>
+                  <SiteRemovalNotification actions={actions} />
+                </S.GridItemNotification>
               : null
+            }
+            {newTabData.showRewards &&
+            <S.GridItemRewards>
+              <Rewards
+                {...rewardsState}
+                onCreateWallet={this.createWallet}
+                onEnableAds={this.enableAds}
+                onEnableRewards={this.enableRewards}
+                textDirection={newTabData.textDirection}
+                hideWidget={this.toggleShowRewards}
+                onDismissNotification={this.dismissNotification}
+                menuPosition={'left'}
+              />
+            </S.GridItemRewards>
             }
           </Header>
           <Footer>
             {isShowingBrandedWallpaper && newTabData.brandedWallpaperData &&
              newTabData.brandedWallpaperData.logo &&
+             <S.GridItemCredits>
               <BrandedWallpaperLogo
-                showWidget={isShowingBrandedWallpaper}
                 menuPosition={'right'}
                 hideWidget={() => {console.error('TODO')}}
                 textDirection={newTabData.textDirection}
                 data={newTabData.brandedWallpaperData.logo}
-              />}
+              />
+            </S.GridItemCredits>}
             <FooterInfo
               textDirection={newTabData.textDirection}
               onClickOutside={this.closeSettings}

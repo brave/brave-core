@@ -6,15 +6,21 @@ import * as React from 'react'
 
 // Feature-specific components
 import { Page, Header, Footer, App, PosterBackground, Gradient, ClockWidget as Clock, RewardsWidget as Rewards } from '../../components/default'
+import * as S from '../../components/default/page'
+import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 
 import TopSitesList from './topSites/topSitesList'
 import Stats from './stats'
-import SiteRemovalNotification from './siteRemovalNotification'
+import TopSitesNotification from '../../containers/newTab/notification'
 import FooterInfo from './footerInfo'
 
 // Assets
 import { getRandomBackgroundData } from './helpers'
 import { images } from './data/background'
+
+// Data
+// TODO: move to stories/data
+import { getBrandedWallpaper } from '../../api/brandedWallpaper'
 
 const generateRandomBackgroundData = getRandomBackgroundData(images)
 interface State {
@@ -23,6 +29,7 @@ interface State {
   showStats: boolean
   showClock: boolean
   showTopSites: boolean
+  showTopSitesNotification: boolean
   showRewards: boolean
   adsEstimatedEarnings: number
   balance: NewTab.RewardsBalance
@@ -33,11 +40,14 @@ interface State {
   walletCreated: boolean
   walletCreating: boolean
   walletCreateFailed: boolean
-  walletCorrupted: boolean
+  walletCorrupted: boolean,
+  brandedWallpaper?: NewTab.BrandedWallpaper
 }
 
 interface Props {
   textDirection: string
+  showBrandedWallpaper: boolean
+  showTopSitesNotification: boolean
 }
 
 export default class NewTabPage extends React.PureComponent<Props, State> {
@@ -49,6 +59,7 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
       showStats: true,
       showClock: true,
       showTopSites: true,
+      showTopSitesNotification: props.showTopSitesNotification,
       showRewards: true,
       adsEstimatedEarnings: 5,
       enabledAds: false,
@@ -107,6 +118,10 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
     this.setState({ enabledMain: true })
   }
 
+  hideSiteRemovalNotification = () => {
+    this.setState({ showTopSitesNotification: false })
+  }
+
   createWallet = () => {
     this.setState({ walletCreating: true })
     setTimeout(() => {
@@ -114,6 +129,16 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
       this.enableAds()
       this.enableRewards()
     }, 1000)
+  }
+
+  async componentDidUpdate (prevProps: Props) {
+    if (!prevProps.showBrandedWallpaper && this.props.showBrandedWallpaper) {
+      const brandedWallpaper: NewTab.BrandedWallpaper = await getBrandedWallpaper()
+      this.setState({ brandedWallpaper })
+    }
+    if (prevProps.showTopSitesNotification !== this.props.showTopSitesNotification) {
+      this.setState({ showTopSitesNotification: this.props.showTopSitesNotification })
+    }
   }
 
   render () {
@@ -130,64 +155,112 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
       balance,
       totalContribution
     } = this.state
-    const { textDirection } = this.props
+    const { textDirection, showBrandedWallpaper } = this.props
+
+    const hasImage = showBackgroundImage
+    let imageSource
+    if (hasImage) {
+      imageSource = this.state.brandedWallpaper ? this.state.brandedWallpaper.wallpaperImageUrl : generateRandomBackgroundData.source
+    }
 
     return (
-      <App dataIsReady={true} dir={textDirection}>
-      <PosterBackground hasImage={showBackgroundImage} imageHasLoaded={true}>
-        {showBackgroundImage && <img src={generateRandomBackgroundData.source} />}
-      </PosterBackground>
-        {showBackgroundImage && <Gradient imageHasLoaded={true} />}
+      <App dataIsReady={true}>
+        <PosterBackground
+          hasImage={hasImage}
+          imageHasLoaded={true}
+        >
+          {hasImage &&
+            <img src={imageSource} />
+          }
+        </PosterBackground>
+        {hasImage &&
+          <Gradient
+            imageHasLoaded={true}
+          />
+        }
         <Page>
           <Header>
-            <Stats
-              textDirection={textDirection}
-              showWidget={showStats}
-              menuPosition={'right'}
-              hideWidget={this.toggleShowStats}
-            />
-            <Clock
-              textDirection={textDirection}
-              showWidget={showClock}
-              menuPosition={'left'}
-              hideWidget={this.toggleShowClock}
-            />
-            <TopSitesList
-              textDirection={textDirection}
-              showWidget={showTopSites}
-              menuPosition={'right'}
-              hideWidget={this.toggleShowTopSites}
-            />
-            <Rewards
-              promotions={promotions}
-              balance={balance}
-              enabledAds={enabledAds}
-              enabledMain={enabledMain}
-              walletCreated={walletCreated}
-              walletCorrupted={walletCorrupted}
-              walletCreateFailed={walletCreateFailed}
-              walletCreating={walletCreating}
-              adsEstimatedEarnings={adsEstimatedEarnings}
-              onEnableAds={this.enableAds}
-              onCreateWallet={this.createWallet}
-              onEnableRewards={this.enableRewards}
-              textDirection={textDirection}
-              showWidget={showRewards}
-              menuPosition={'left'}
-              hideWidget={this.toggleShowRewards}
-              onDismissNotification={this.doNothing}
-              totalContribution={totalContribution}
-            />
-            <SiteRemovalNotification />
+            {showStats &&
+            <S.GridItemStats>
+              <Stats
+                textDirection={textDirection}
+                menuPosition={'right'}
+                hideWidget={this.toggleShowStats}
+              />
+            </S.GridItemStats>
+            }
+            {showClock &&
+            <S.GridItemClock>
+              <Clock
+                textDirection={textDirection}
+                menuPosition={'left'}
+                hideWidget={this.toggleShowClock}
+              />
+            </S.GridItemClock>
+            }
+            {showTopSites &&
+            <S.GridItemTopSites>
+              <TopSitesList
+                textDirection={textDirection}
+                menuPosition={'right'}
+                hideWidget={this.toggleShowTopSites}
+              />
+            </S.GridItemTopSites>
+            }
+            {this.state.showTopSitesNotification &&
+            <S.GridItemNotification>
+              <TopSitesNotification
+                actions={{
+                  undoSiteIgnored: () => {},
+                  onUndoAllSiteIgnored: () => {},
+                  onHideSiteRemovalNotification: () => this.hideSiteRemovalNotification()
+                }}
+              />
+            </S.GridItemNotification>
+            }
+            {showRewards &&
+            <S.GridItemRewards>
+              <Rewards
+                promotions={promotions}
+                balance={balance}
+                enabledAds={enabledAds}
+                enabledMain={enabledMain}
+                walletCreated={walletCreated}
+                walletCorrupted={walletCorrupted}
+                walletCreateFailed={walletCreateFailed}
+                walletCreating={walletCreating}
+                adsEstimatedEarnings={adsEstimatedEarnings}
+                onEnableAds={this.enableAds}
+                onCreateWallet={this.createWallet}
+                onEnableRewards={this.enableRewards}
+                textDirection={textDirection}
+                menuPosition={'left'}
+                hideWidget={this.toggleShowRewards}
+                onDismissNotification={this.doNothing}
+                totalContribution={totalContribution}
+              />
+            </S.GridItemRewards>
+            }
           </Header>
           <Footer>
+            {showBrandedWallpaper && this.state.brandedWallpaper &&
+              this.state.brandedWallpaper.logo &&
+            <S.GridItemCredits>
+              <BrandedWallpaperLogo
+                menuPosition={'right'}
+                hideWidget={() => {console.error('TODO')}}
+                textDirection={textDirection}
+                data={this.state.brandedWallpaper.logo}
+              />
+            </S.GridItemCredits>
+            }
             <FooterInfo
               textDirection={textDirection}
               onClickOutside={this.closeSettings}
               backgroundImageInfo={generateRandomBackgroundData}
               onClickSettings={this.toggleSettings}
               showSettingsMenu={showSettingsMenu}
-              showPhotoInfo={showBackgroundImage}
+              showPhotoInfo={!showBrandedWallpaper && showBackgroundImage}
               toggleShowBackgroundImage={this.toggleShowBackgroundImage}
               toggleShowClock={this.toggleShowClock}
               toggleShowStats={this.toggleShowStats}

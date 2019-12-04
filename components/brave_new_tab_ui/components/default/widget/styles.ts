@@ -5,13 +5,12 @@
 import styled from 'styled-components'
 
 interface WidgetContainerProps {
-  showWidget: boolean
   menuPosition: 'right' | 'left'
   textDirection: string
 }
 
 export const StyledWidgetContainer = styled<WidgetContainerProps, 'div'>('div')`
-  display: ${p => p.showWidget ? 'flex' : 'none'};
+  display: flex;
   align-items: center;
   flex-direction: ${p => p.menuPosition === 'right' ? 'row' : 'row-reverse'};
   height: fit-content;

@@ -2,22 +2,108 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'brave-ui/theme'
+import styled, { css } from 'brave-ui/theme'
+
+const breakpointLargeBlocks = '1150px'
+const breakpointEveryBlock = '1070px'
+const breakpointFooter = '530px'
+
+const singleColumnSmallViewport = css`
+ @media screen and (max-width: ${breakpointEveryBlock}) {
+   grid-column: 1;
+   grid-column-end: span 3;
+   text-align: center;
+ }
+`
 
 export const Page = styled<{}, 'div'>('div')`
+  /* Increase the explicit row count when adding new widgets
+     so that the footer goes in the correct location always,
+     yet can still merge upwards to previous rows. */
+  --ntp-page-rows: 4;
+  @media screen and (max-width: ${breakpointLargeBlocks}) {
+    --ntp-page-rows: 6;
+  }
+  @media screen and (max-width: ${breakpointEveryBlock}) {
+    justify-content: center;
+    --ntp-page-rows: 7;
+  }
+  @media screen and (max-width: ${breakpointFooter}) {
+    --ntp-page-rows: 8;
+  }
+
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
   position: relative;
   z-index: 3;
   top: 0;
   left: 0;
-  display: flex;
+  display: grid;
+  grid-template-rows: repeat(calc(var(--ntp-page-rows) - 1), min-content) auto;
+  /* grid-template-columns: max-content min-content minmax(max-content, 323px); */
+  grid-auto-flow: row dense;
+  padding: 12px;
+  overflow: hidden;
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
   min-height: 100vh;
+  align-items: flex-start;
 `
+
+export const GridItemStats = styled('section')`
+  grid-column: 1;
+  ${singleColumnSmallViewport}
+`
+
+export const GridItemClock = styled('section')`
+  grid-column: 3;
+  justify-self: center;
+  ${singleColumnSmallViewport}
+`
+
+export const GridItemRewards = styled('section')`
+  grid-column: 3;
+  grid-row-end: span 2;
+  @media screen and (max-width: ${breakpointLargeBlocks}) {
+    grid-column: 1 / span 3;
+  }
+`
+
+export const GridItemTopSites = styled('section')`
+  grid-column: 1;
+  ${singleColumnSmallViewport}
+`
+
+export const GridItemNotification = styled('section')`
+  position: fixed;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+`
+
+export const GridItemCredits = styled('section')`
+  grid-column: 1 / span 2;
+  grid-row: -3;
+  grid-row-end: span 2;
+  align-self: end;
+  margin: 0 0 36px 36px;
+  @media screen and (max-width: ${breakpointFooter}) {
+    grid-column: 1 / span 3;
+  }
+`
+
+export const GridItemNavigation = styled('section')`
+  grid-column: 3;
+  grid-row-start: -2;
+  align-self: end;
+  margin: 0 24px 24px 0;
+  @media screen and (max-width: ${breakpointFooter}) {
+    grid-column: 1 / span 3;
+  }
+`
+
 
 interface ImageLoadProps {
   imageHasLoaded: boolean
@@ -96,6 +182,7 @@ export const Link = styled<{}, 'a'>('a')`
 `
 
 export const PhotoName = styled<{}, 'div'>('div')`
+  align-self: flex-end;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
   font-size: 12px;
@@ -104,7 +191,9 @@ export const PhotoName = styled<{}, 'div'>('div')`
 `
 
 export const Navigation = styled<{}, 'nav'>('nav')`
+  align-self: flex-end;
   display: flex;
+  justify-content: flex-end;
 `
 
 interface IconButtonProps {

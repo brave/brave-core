@@ -6,6 +6,7 @@ import * as React from 'react'
 
 // Feature-specific components
 import { Link, Navigation, IconLink, PhotoName } from '../../components/default'
+import * as S from '../../components/default/page'
 
 // Icons
 import { SettingsAdvancedIcon, BookmarkBook, HistoryIcon } from 'brave-ui/components/icons'
@@ -58,42 +59,44 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
     return (
       <>
         { showPhotoInfo && backgroundImageInfo &&
-          <div className="credit">
+          <S.GridItemCredits>
             <PhotoName>
               {`${getLocale('photoBy')} `}
               <Link href={backgroundImageInfo.link} rel='noreferrer noopener' target='_blank'>
                 {backgroundImageInfo.author}
               </Link>
             </PhotoName>
-          </div>
+          </S.GridItemCredits>
         }
-        <Navigation className="navigation">
-          <Settings
-            textDirection={textDirection}
-            showSettingsMenu={showSettingsMenu}
-            onClickOutside={onClickOutside}
-            onClick={onClickSettings}
-            toggleShowBackgroundImage={toggleShowBackgroundImage}
-            toggleShowClock={toggleShowClock}
-            toggleShowStats={toggleShowStats}
-            toggleShowTopSites={toggleShowTopSites}
-            showBackgroundImage={showBackgroundImage}
-            showClock={showClock}
-            showStats={showStats}
-            showTopSites={showTopSites}
-            toggleShowRewards={toggleShowRewards}
-            showRewards={showRewards}
-          />
-          <IconLink title={getLocale('preferencesPageTitle')} href='chrome://settings'>
-            <SettingsAdvancedIcon />
-          </IconLink>
-          <IconLink title={getLocale('bookmarksPageTitle')} href='chrome://bookmarks'>
-            <BookmarkBook />
-          </IconLink>
-          <IconLink title={getLocale('historyPageTitle')} href='chrome://history'>
-            <HistoryIcon />
-          </IconLink>
-        </Navigation>
+        <S.GridItemNavigation>
+          <Navigation>
+            <Settings
+              textDirection={textDirection}
+              showSettingsMenu={showSettingsMenu}
+              onClickOutside={onClickOutside}
+              onClick={onClickSettings}
+              toggleShowBackgroundImage={toggleShowBackgroundImage}
+              toggleShowClock={toggleShowClock}
+              toggleShowStats={toggleShowStats}
+              toggleShowTopSites={toggleShowTopSites}
+              showBackgroundImage={showBackgroundImage}
+              showClock={showClock}
+              showStats={showStats}
+              showTopSites={showTopSites}
+              toggleShowRewards={toggleShowRewards}
+              showRewards={showRewards}
+            />
+            <IconLink title={getLocale('preferencesPageTitle')} href='chrome://settings'>
+              <SettingsAdvancedIcon />
+            </IconLink>
+            <IconLink title={getLocale('bookmarksPageTitle')} href='chrome://bookmarks'>
+              <BookmarkBook />
+            </IconLink>
+            <IconLink title={getLocale('historyPageTitle')} href='chrome://history'>
+              <HistoryIcon />
+            </IconLink>
+          </Navigation>
+        </S.GridItemNavigation>
       </>
     )
   }

@@ -6,24 +6,20 @@ import styled from 'brave-ui/theme'
 
 export const StyledStatsItemContainer = styled<{}, 'ul'>('ul')`
   -webkit-font-smoothing: antialiased;
-  display: grid;
-  grid-template-columns: repeat(3, fit-content(100%));
-  grid-gap: 25px 50px;
+  display: flex;
+  flex-wrap: wrap;
+  >:not(:last-child) * {
+    margin-right: 50px;
+    margin-bottom: 25px;
+  }
+  justify-content: center;
+  align-items: start;
   font-weight: 400;
   margin: 0;
   padding: 0;
   color: inherit;
   font-size: inherit;
   font-family: inherit;
-
-  @media screen and (max-width: 700px) {
-    grid-template-columns: repeat(2, fit-content(100%));
-  }
-
-
-  @media screen and (max-width: 390px) {
-    grid-template-columns: repeat(1, fit-content(100%));
-  }
 `
 
 export const StyledStatsItem = styled<{}, 'li'>('li')`
@@ -51,6 +47,7 @@ export const StyledStatsItemCounter = styled<{}, 'span'>('span')`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  word-wrap: none;
 `
 
 export const StyledStatsItemText = styled<{}, 'span'>('span')`

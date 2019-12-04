@@ -7,7 +7,6 @@ import { StyledWidget, StyledWidgetContainer } from './styles'
 import WidgetMenu from './widgetMenu'
 
 export interface WidgetProps {
-  showWidget: boolean
   menuPosition: 'right' | 'left'
   hideWidget: () => void
   textDirection: string
@@ -35,11 +34,10 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
     }
 
     render () {
-      const { showWidget, menuPosition, hideWidget, textDirection } = this.props
+      const { menuPosition, hideWidget, textDirection } = this.props
       const { widgetMenuPersist } = this.state
       return (
         <StyledWidgetContainer
-          showWidget={showWidget}
           menuPosition={menuPosition}
           textDirection={textDirection}
         >

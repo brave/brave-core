@@ -3,45 +3,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'brave-ui/theme'
+// import { StyledStatsItemContainer } from '../stats/style'
 
 export const Header = styled<{}, 'header'>('header')`
-  box-sizing: border-box;
-  display: grid;
-  margin: 46px 0 0;
-  grid-template-columns: fit-content(100%) auto fit-content(100%);
-  grid-template-rows: fit-content(100%) fit-content(100%) fit-content(100%) fit-content(100%);
-  grid-template-areas:
-    "stats . clock"
-    ". . clock"
-    "topsites . rewards"
-    ". . ."
-    "notification notification notification";
-
-  > *:nth-child(1) {
-    grid-area: stats;
-    margin: 0 46px 0 46px;
-  }
-
-  > *:nth-child(2) {
-    grid-area: clock;
-    margin: 0 46px 0 46px;
-  }
-
-  > *:nth-child(3) {
-    grid-area: rewards;
-  }
-
-  > *:nth-child(4) {
-    grid-area: topsites;
-    margin: 0 46px 0 46px;
-    justify-self: start;
-    align-items: normal;
-  }
-
-  > *:nth-child(5) {
-    grid-area: notification;
-    justify-self: center;
-  }
+  display: contents;
 
   @media screen and (max-width: 1150px) {
     grid-row-gap: 4px;
@@ -79,15 +44,15 @@ export const Main = styled<{}, 'main'>('main')`
 `
 
 export const Footer = styled<{}, 'footer'>('footer')`
-  box-sizing: border-box;
-  display: grid;
-  height: 100%;
-  margin: 70px;
+  display: contents;
+  /* display: grid;
   align-items: center;
   grid-template-columns: 1fr auto;
   grid-template-rows: auto;
   grid-gap: 0;
-  grid-template-areas: "credits actions";
+  grid-template-areas: "credits actions"; */
+  /* Extra margin since there is no widget box padding */
+  margin: 0 12px 12px 12px;
 
     > .credit {
       grid-area: credits;
@@ -98,10 +63,6 @@ export const Footer = styled<{}, 'footer'>('footer')`
     }
 
   @media screen and (max-width: 1150px) {
-    margin: 70px 40px;
-
-    grid-template-areas:
-      "credits actions";
 
     > *:nth-child(2) {
       justify-content: flex-end;
