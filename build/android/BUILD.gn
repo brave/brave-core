@@ -61,7 +61,7 @@ copy("brave") {
 }
 
 java_strings_grd("android_brave_strings_grd") {
-  grd_file = "//brave/android/java/strings/android_brave_strings.grd"
+  grd_file = "//brave/browser/ui/android/strings/android_brave_strings.grd"
   outputs = [
     "values/android_brave_strings.xml",
     "values-am/android_brave_strings.xml",
