@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
-index 5ad18e2ea4e5b15e5be9edbf41f6ee371dd95115..64d92c53e5ee97c28ed9ea22b2cc4ff04c6d6d29 100644
+index 53c5a939a9362a1901fe2541a77fbf00d37df43f..e12d75744494b391a68cd6949baa0af849b29535 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h
 @@ -50,7 +50,7 @@ class MODULES_EXPORT BaseRenderingContext2D : public GarbageCollectedMixin,

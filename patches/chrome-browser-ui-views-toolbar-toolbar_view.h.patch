@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
-index b34b283f56ce5c150a70300bea9ee59c04f7751d..eda44cf8e8c9ef5846f17259fc5b4c555d14604b 100644
+index ff8fb4e808f750770cb5ab78bb6d546e2a6044bf..dc915911b41e97361170b9570aa436a5189ed3ba 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.h
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
-@@ -95,12 +95,14 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -94,12 +94,14 @@ class ToolbarView : public views::AccessiblePaneView,
    ~ToolbarView() override;
  
    // Create the contents of the Browser Toolbar.
@@ -17,7 +17,7 @@ index b34b283f56ce5c150a70300bea9ee59c04f7751d..eda44cf8e8c9ef5846f17259fc5b4c55
    void Update(content::WebContents* tab);
  
    // Updates the visibility of the custom tab bar, potentially animating the
-@@ -127,6 +129,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -130,6 +132,7 @@ class ToolbarView : public views::AccessiblePaneView,
        IntentPickerResponse callback);
  
    // Shows a bookmark bubble and anchors it appropriately.
@@ -25,7 +25,7 @@ index b34b283f56ce5c150a70300bea9ee59c04f7751d..eda44cf8e8c9ef5846f17259fc5b4c55
    void ShowBookmarkBubble(const GURL& url,
                            bool already_bookmarked,
                            bookmarks::BookmarkBubbleObserver* observer);
-@@ -198,6 +201,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -196,6 +199,7 @@ class ToolbarView : public views::AccessiblePaneView,
    void ChildPreferredSizeChanged(views::View* child) override;
  
   protected:

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/res/layout/bottom_toolbar_browsing.xml b/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
-index 0a3a1a7c8944c3b9be7fe8d02e90759677b3ad63..ea5409afa2d35876319ff5f9b1260274574b9885 100644
+index 98226bb07625759cc96e7e20ea7459b5bd2b0f60..2b9f08e9acb30703d84018688f7ae0de353e74a4 100644
 --- a/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
 +++ b/chrome/android/java/res/layout/bottom_toolbar_browsing.xml
 @@ -35,6 +35,7 @@

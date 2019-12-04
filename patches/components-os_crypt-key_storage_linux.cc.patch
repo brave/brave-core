@@ -1,5 +1,5 @@
 diff --git a/components/os_crypt/key_storage_linux.cc b/components/os_crypt/key_storage_linux.cc
-index 48810de20eb7d855f39670b451226253ca87d5ee..de5ed751147e9080c3c57dbe0be644663cf7c642 100644
+index 7a29616990e78fc5a6c4700a5dd4aa47c82de7bc..0615b2b597cc2b37f9f328b3585a2d2b9e8e11c2 100644
 --- a/components/os_crypt/key_storage_linux.cc
 +++ b/components/os_crypt/key_storage_linux.cc
 @@ -30,8 +30,8 @@
@@ -12,4 +12,4 @@ index 48810de20eb7d855f39670b451226253ca87d5ee..de5ed751147e9080c3c57dbe0be64466
 +const char KeyStorageLinux::kKey[] = "Brave Safe Storage";
  #endif
  
- // static
+ #if defined(USE_LIBSECRET) || defined(USE_KEYRING) || defined(USE_KWALLET)

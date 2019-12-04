@@ -1,5 +1,5 @@
 diff --git a/chrome/utility/importer/profile_import_impl.cc b/chrome/utility/importer/profile_import_impl.cc
-index d5044a30dd5cd657e9e2f484f681743d53788afd..68a53a7c6ace3c4b98e2e4cab56f45ccf9190f6e 100644
+index 9e862274dd1f7fc0a2ef263cde894998eec39c80..7b421f9b7918c5888356327d0b27defbe2e72fff 100644
 --- a/chrome/utility/importer/profile_import_impl.cc
 +++ b/chrome/utility/importer/profile_import_impl.cc
 @@ -8,11 +8,14 @@

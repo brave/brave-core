@@ -1,8 +1,8 @@
 diff --git a/components/strings/BUILD.gn b/components/strings/BUILD.gn
-index 0317fd69c368022e584ff6e63201a35beeaf7464..ac221fa7a55018ad9196953de934330bd5658c1b 100644
+index a75698138c8d1449ae803181fccc9f77be9e2dd3..bcb19139148b72ab9c3d54cae55cf7bb9d3a5949 100644
 --- a/components/strings/BUILD.gn
 +++ b/components/strings/BUILD.gn
-@@ -106,7 +106,7 @@ if (is_android) {
+@@ -56,7 +56,7 @@ if (is_android) {
  }
  
  grit("components_chromium_strings") {

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/res/layout/toolbar_phone.xml b/chrome/android/java/res/layout/toolbar_phone.xml
-index fe66549d3ac660c12186e0c9c78c7ed525f2015d..9f2fad8590812ececbf1b9d04ec493c2ed7da425 100644
+index ec4bcf12f7acb943b4702f10d8a90a1379d63e71..df1a10e96a979a3bf03ed3e74674b85597a0eca0 100644
 --- a/chrome/android/java/res/layout/toolbar_phone.xml
 +++ b/chrome/android/java/res/layout/toolbar_phone.xml
 @@ -31,6 +31,7 @@
