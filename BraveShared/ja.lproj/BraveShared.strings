@@ -68,7 +68,13 @@
 "AuthenticationLoginsTouchReason" = "ログイン情報にアクセスするには指紋認証が必要です。";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReached" = "試行回数が上限に達しました。%d 分後にやり直してください。";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "試行回数が上限に達しました。しばらくしてからやり直してください。";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReachedOneMinute" = "試行回数が上限に達しました。1分後にやり直してください。";
 
 /* Label for the Passcode item in Settings */
 "AuthenticationPasscode" = "ログイン情報のパスコード";
@@ -235,6 +241,9 @@
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "了解";
 
+/* Button title to close a menu. */
+"Close" = "閉じる";
+
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "%i 個のタブをすべて閉じる";
 
@@ -361,6 +370,9 @@
 /* Button to edit a favorite */
 "EditFavorite" = "お気に入りを編集";
 
+/* Title for editing a favorite bookmark */
+"EditFavoriteTitle" = "お気に入りを編集";
+
 /* Title for editing a folder */
 "EditFolderTitle" = "フォルダを編集";
 
@@ -402,6 +414,18 @@
 
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "節約できた\n時間(推定)";
+
+/* %@ will launch an external application */
+"ExternalAppURLAlertMessage" = "%@ は他のアプリケーションを起動します";
+
+/* Allow link to switch apps? */
+"ExternalAppURLAlertTitle" = "アプリを切り替えるリンクを許可しますか？";
+
+/* Allow Brave to open the external app URL */
+"ExternalAppURLAllow" = "許可する";
+
+/* Don't allow Brave to open the external app URL */
+"ExternalAppURLDontAllow" = "許可しない";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
 "FavoritesLocationFooterText" = "お気に入りはホームスクリーンに表示されます。お気に入りの項目は他の端末と同期されません。";
@@ -544,6 +568,21 @@
 /* New Tab title */
 "NewTab" = "新しいタブ";
 
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"NewTabPageSettingsAutoOpenKeyboard" = "自動的にキーボードを開く";
+
+/* A setting to enable or disable background images on the main screen. */
+"NewTabPageSettingsBackgroundImages" = "背景画像を表示する";
+
+/* A setting to enable or disable sponsored images from showing on the main screen. */
+"NewTabPageSettingsSponsoredImages" = "スポンサー背景画像を表示する";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"NewTabPageSettingsTitle" = "新規タブページ";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"NewTabPageShowMoreFavorites" = "もっと見る";
+
 /* Sync Alert */
 "NotEnoughWordsDescription" = "すべてのワードを入力して、もう一度やり直してください。";
 
@@ -565,6 +604,9 @@
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "設定を開く";
 
+/* Button title to that opens a website. */
+"OpenWebsite" = "ウェブサイトを開く";
+
 /* Section name for other settings. */
 "OtherSettingsSection" = "その他の設定";
 
@@ -576,6 +618,9 @@
 
 /* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
 "PasscodeMatchOldErrorText" = "新しいパスコードは既存のコードと異なるものにする必要があります。";
+
+/* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
+"PhotoBy" = "Photo by %@";
 
 /* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
 "PreviewActionAddToBookmarksActionTitle" = "ブックマークに追加";
@@ -1089,6 +1134,9 @@
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "バージョン %1$@ (%2$@)";
+
+/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
+"ViewOn" = "View on %@";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "ウォレット作成日";

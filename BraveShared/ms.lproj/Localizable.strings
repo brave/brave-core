@@ -1,3 +1,9 @@
+/* The body of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationBody" = "Masa untuk mendapat ganjaran untuk iklan-iklan yang telah anda lihat dalam Brave.";
+
+/* The title of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationTitle" = "Tuntut hadiah iklan Brave anda";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "Tidak";
 

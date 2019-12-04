@@ -68,7 +68,13 @@
 "AuthenticationLoginsTouchReason" = "立即使用您的指紋登入。";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReached" = "已達嘗試次數上限，請 %d 分鐘後再試。";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "已達嘗試次數上限，請稍後再試。";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReachedOneMinute" = "已達嘗試次數上限，請一分鐘後再試。";
 
 /* Label for the Passcode item in Settings */
 "AuthenticationPasscode" = "登入密碼";
@@ -235,6 +241,9 @@
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "確定";
 
+/* Button title to close a menu. */
+"Close" = "關閉";
+
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "關閉全部 %i 個分頁";
 
@@ -361,6 +370,9 @@
 /* Button to edit a favorite */
 "EditFavorite" = "編輯我的最愛 ";
 
+/* Title for editing a favorite bookmark */
+"EditFavoriteTitle" = "編輯我的最愛";
+
 /* Title for editing a folder */
 "EditFolderTitle" = "編輯資料夾";
 
@@ -402,6 +414,18 @@
 
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "預計節省\n時間";
+
+/* %@ will launch an external application */
+"ExternalAppURLAlertMessage" = "%@ 將會打開外部應用程序";
+
+/* Allow link to switch apps? */
+"ExternalAppURLAlertTitle" = "要允許連結切換應用程序嗎？";
+
+/* Allow Brave to open the external app URL */
+"ExternalAppURLAllow" = "允許";
+
+/* Don't allow Brave to open the external app URL */
+"ExternalAppURLDontAllow" = "不允許";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
 "FavoritesLocationFooterText" = "我的最愛位於主畫面。這些書籤與其他裝置不同步。";
@@ -544,6 +568,21 @@
 /* New Tab title */
 "NewTab" = "新增分頁";
 
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"NewTabPageSettingsAutoOpenKeyboard" = "自動打開鍵盤";
+
+/* A setting to enable or disable background images on the main screen. */
+"NewTabPageSettingsBackgroundImages" = "顯示背景圖片";
+
+/* A setting to enable or disable sponsored images from showing on the main screen. */
+"NewTabPageSettingsSponsoredImages" = "顯示贊助圖片";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"NewTabPageSettingsTitle" = "新增分頁";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"NewTabPageShowMoreFavorites" = "顯示更多";
+
 /* Sync Alert */
 "NotEnoughWordsDescription" = "請輸入所有詞語並重試。";
 
@@ -565,6 +604,9 @@
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "開啟設定";
 
+/* Button title to that opens a website. */
+"OpenWebsite" = "開啟網站";
+
 /* Section name for other settings. */
 "OtherSettingsSection" = "其他設定";
 
@@ -576,6 +618,9 @@
 
 /* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
 "PasscodeMatchOldErrorText" = "新密碼必須與現有密碼不同。";
+
+/* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
+"PhotoBy" = "圖片由 %@ 提供";
 
 /* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
 "PreviewActionAddToBookmarksActionTitle" = "新增至書籤";
@@ -1089,6 +1134,9 @@
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "%1$@ 版 (%2$@)";
+
+/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
+"ViewOn" = "瀏覽於 ％@";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "錢包建立日期";

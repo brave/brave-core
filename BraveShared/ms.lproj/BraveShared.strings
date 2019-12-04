@@ -68,7 +68,13 @@
 "AuthenticationLoginsTouchReason" = "Gunakan cap jari anda untuk mengakses Log Masuk sekarang.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReached" = "Terlalu banyak percubaan yang gagal. Sila cuba lagi dalam %d minit.";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "Bilangan percubaan maksimum tercapai. Sila cuba lagi sebentar lagi.";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReachedOneMinute" = "Terlalu banyak percubaan yang gagal. Sila cuba lagi dalam 1 minit.";
 
 /* Label for the Passcode item in Settings */
 "AuthenticationPasscode" = "Kod Laluan Untuk Log Masuk";
@@ -235,6 +241,9 @@
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "OK";
 
+/* Button title to close a menu. */
+"Close" = "Tutup";
+
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Tutup Semua %i Tab";
 
@@ -361,6 +370,9 @@
 /* Button to edit a favorite */
 "EditFavorite" = "Edit Kegemaran";
 
+/* Title for editing a favorite bookmark */
+"EditFavoriteTitle" = "Edit kegemaran";
+
 /* Title for editing a folder */
 "EditFolderTitle" = "Edit folder";
 
@@ -402,6 +414,18 @@
 
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Masa Jangkaan\nDisimpan";
+
+/* %@ will launch an external application */
+"ExternalAppURLAlertMessage" = "% @ akan melancarkan aplikasi luaran";
+
+/* Allow link to switch apps? */
+"ExternalAppURLAlertTitle" = "Benarkan pautan untuk menukar apl?";
+
+/* Allow Brave to open the external app URL */
+"ExternalAppURLAllow" = "Benarkan";
+
+/* Don't allow Brave to open the external app URL */
+"ExternalAppURLDontAllow" = "Tidak Benarkan";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
 "FavoritesLocationFooterText" = "Kegemaran terletak pada skrin halaman utama anda. Penanda buku ini tidak disegerakkan dengan peranti lain.";
@@ -544,6 +568,21 @@
 /* New Tab title */
 "NewTab" = "Tab Baharu";
 
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"NewTabPageSettingsAutoOpenKeyboard" = "Papan Kekunci Terbuka Auto";
+
+/* A setting to enable or disable background images on the main screen. */
+"NewTabPageSettingsBackgroundImages" = "Tunjukkan Imej Latar Belakang";
+
+/* A setting to enable or disable sponsored images from showing on the main screen. */
+"NewTabPageSettingsSponsoredImages" = "Tunjukkan Imej Tajaan";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"NewTabPageSettingsTitle" = "Halaman Tab Baru";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"NewTabPageShowMoreFavorites" = "Tunjukkan Selanjutnya";
+
 /* Sync Alert */
 "NotEnoughWordsDescription" = "Sila masukkan semua perkataan dan cuba lagi.";
 
@@ -565,6 +604,9 @@
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Buka Tetapan";
 
+/* Button title to that opens a website. */
+"OpenWebsite" = "Buka Laman Web";
+
 /* Section name for other settings. */
 "OtherSettingsSection" = "Tetapan Lain";
 
@@ -576,6 +618,9 @@
 
 /* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
 "PasscodeMatchOldErrorText" = "Kod laluan baru mestilah berbeza daripada kod yang sedia ada.";
+
+/* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
+"PhotoBy" = "Foto oleh %@";
 
 /* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
 "PreviewActionAddToBookmarksActionTitle" = "Tambah kepada Penanda Buku";
@@ -1089,6 +1134,9 @@
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Versi %1$@ (%2$@)";
+
+/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
+"ViewOn" = "Lihat di %@";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Tarikh Penciptaan Dompet";

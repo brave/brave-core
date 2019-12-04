@@ -1,3 +1,9 @@
+/* The body of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationBody" = "又到了为你在 Brave 中看的那些广告获得奖励的时候了。";
+
+/* The title of the notification that goes out monthly to users who can claim an ads grant */
+"MonthlyAdsClaimNotificationTitle" = "领取你的 Brave ads 奖励";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "否";
 

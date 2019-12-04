@@ -68,7 +68,13 @@
 "AuthenticationLoginsTouchReason" = "Greifen Sie mit Ihrem Fingerabdruck jetzt auf Ihre Anmeldedaten zu.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReached" = "Zu viele fehlgeschlagene Versuche. Bitte versuchen Sie es in %d Minuten erneut.";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "Maximale Versuche erreicht. Bitte versuchen Sie es später erneut.";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReachedOneMinute" = "Zu viele fehlgeschlagene Versuche. Bitte versuchen Sie es in 1 Minute erneut.";
 
 /* Label for the Passcode item in Settings */
 "AuthenticationPasscode" = "Passcode für Anmeldedaten";
@@ -235,6 +241,9 @@
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "OK";
 
+/* Button title to close a menu. */
+"Close" = "Schließen";
+
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Alle %i Tabs schließen";
 
@@ -361,6 +370,9 @@
 /* Button to edit a favorite */
 "EditFavorite" = "Favorit bearbeiten";
 
+/* Title for editing a favorite bookmark */
+"EditFavoriteTitle" = "Favoriten bearbeiten";
+
 /* Title for editing a folder */
 "EditFolderTitle" = "Ordner bearbeiten";
 
@@ -402,6 +414,18 @@
 
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Geschätzte \nZeitersparnis";
+
+/* %@ will launch an external application */
+"ExternalAppURLAlertMessage" = "%@ startet eine externe Applikation";
+
+/* Allow link to switch apps? */
+"ExternalAppURLAlertTitle" = "Link erlauben, Apps zu wechseln?";
+
+/* Allow Brave to open the external app URL */
+"ExternalAppURLAllow" = "Erlauben";
+
+/* Don't allow Brave to open the external app URL */
+"ExternalAppURLDontAllow" = "Nicht erlauben";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
 "FavoritesLocationFooterText" = "Favoriten befinden sich auf Ihrem Startbildschirm. Diese Lesezeichen werden nicht mit anderen Geräten synchronisiert.";
@@ -544,6 +568,21 @@
 /* New Tab title */
 "NewTab" = "Neuer Tab";
 
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"NewTabPageSettingsAutoOpenKeyboard" = "Tastatur automatisch öffnen";
+
+/* A setting to enable or disable background images on the main screen. */
+"NewTabPageSettingsBackgroundImages" = "Hintergrundbilder anzeigen";
+
+/* A setting to enable or disable sponsored images from showing on the main screen. */
+"NewTabPageSettingsSponsoredImages" = "Gesponserte Bilder anzeigen";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"NewTabPageSettingsTitle" = "Neuer Tab";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"NewTabPageShowMoreFavorites" = "Mehr anzeigen";
+
 /* Sync Alert */
 "NotEnoughWordsDescription" = "Bitte geben Sie alle Wörter ein und versuchen Sie es erneut.";
 
@@ -565,6 +604,9 @@
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Einstellungen öffnen";
 
+/* Button title to that opens a website. */
+"OpenWebsite" = "Website öffnen";
+
 /* Section name for other settings. */
 "OtherSettingsSection" = "Andere Einstellungen";
 
@@ -576,6 +618,9 @@
 
 /* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
 "PasscodeMatchOldErrorText" = "Der neue Passcode muss sich vom bestehenden Code unterscheiden.";
+
+/* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
+"PhotoBy" = "Foto von %@";
 
 /* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
 "PreviewActionAddToBookmarksActionTitle" = "Zu Lesezeichen hinzufügen";
@@ -1089,6 +1134,9 @@
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Version %1$@ (%2$@)";
+
+/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
+"ViewOn" = "Anzeigen in %@";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Erstellungsdatum der Wallet";

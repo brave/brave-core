@@ -68,7 +68,13 @@
 "AuthenticationLoginsTouchReason" = "Använd ditt fingeravtryck för att komma inloggningar nu.";
 
 /* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReached" = "För många misslyckade försök. Försök igen om %d minuter.";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
 "AuthenticationMaximumAttemptsReachedNoTime" = "Maximala antalet försök har nåtts. Försök igen senare.";
+
+/* Error message displayed when user enters incorrect passcode and has reached the maximum number of attempts. */
+"AuthenticationMaximumAttemptsReachedOneMinute" = "För många misslyckade försök. Försök igen om 1 minut.";
 
 /* Label for the Passcode item in Settings */
 "AuthenticationPasscode" = "Lösenord för inloggning";
@@ -235,6 +241,9 @@
 /* The confirmation button that clears history even when Sync is connected. */
 "ClearSyncedHistoryAlertOkButtoTitle" = "OK";
 
+/* Button title to close a menu. */
+"Close" = "Stäng";
+
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Stäng alla %i flikar";
 
@@ -361,6 +370,9 @@
 /* Button to edit a favorite */
 "EditFavorite" = "Ändra favorit";
 
+/* Title for editing a favorite bookmark */
+"EditFavoriteTitle" = "Ändra favorit";
+
 /* Title for editing a folder */
 "EditFolderTitle" = "Redigera mapp";
 
@@ -402,6 +414,18 @@
 
 /* Shields Time Saved Stat */
 "EstTimerSaved" = "Uppskattad tid\nsparad";
+
+/* %@ will launch an external application */
+"ExternalAppURLAlertMessage" = "%@ startar ett externt program";
+
+/* Allow link to switch apps? */
+"ExternalAppURLAlertTitle" = "Tillåt länk att byta appar?";
+
+/* Allow Brave to open the external app URL */
+"ExternalAppURLAllow" = "Tillåt";
+
+/* Don't allow Brave to open the external app URL */
+"ExternalAppURLDontAllow" = "Tillåt inte";
 
 /* Footer text when user selects to save to favorites when editing a bookmark */
 "FavoritesLocationFooterText" = "Favoriter finns på din hemskärm. De här bokmärkena är inte synkroniserade med andra enheter.";
@@ -544,6 +568,21 @@
 /* New Tab title */
 "NewTab" = "Ny flik";
 
+/* A setting to enable or disable the device's keyboard from opening automatically when creating a new tab. */
+"NewTabPageSettingsAutoOpenKeyboard" = "Öppna tangentbord automatiskt";
+
+/* A setting to enable or disable background images on the main screen. */
+"NewTabPageSettingsBackgroundImages" = "Visa bakgrundsbilder";
+
+/* A setting to enable or disable sponsored images from showing on the main screen. */
+"NewTabPageSettingsSponsoredImages" = "Visa sponsrade bilder";
+
+/* Title on settings page to adjust the primary home screen functionality. */
+"NewTabPageSettingsTitle" = "Ny flikssida";
+
+/* A button title to show more bookmarks, that opens a new menu. */
+"NewTabPageShowMoreFavorites" = "Visa mer";
+
 /* Sync Alert */
 "NotEnoughWordsDescription" = "Ange alla ord och försök igen.";
 
@@ -565,6 +604,9 @@
 /* See http://mzl.la/1G7uHo7 */
 "OpenPhoneSettingsActionTitle" = "Öppna inställningar";
 
+/* Button title to that opens a website. */
+"OpenWebsite" = "Öppne hemsida";
+
 /* Section name for other settings. */
 "OtherSettingsSection" = "Andra inställningar";
 
@@ -576,6 +618,9 @@
 
 /* Error message displayed when user tries to enter the same passcode as their existing code when changing it. */
 "PasscodeMatchOldErrorText" = "Ditt nya lösenord får inte vara samma som ditt befintliga.";
+
+/* Label that says who took a photograph that will be displayed to the user. '%@' is a placeholder and will include be a specific person's name, example 'Bill Gates'. */
+"PhotoBy" = "Foto av %@";
 
 /* Label for preview action on Tab Tray Tab to add current tab to Bookmarks */
 "PreviewActionAddToBookmarksActionTitle" = "Lägg till i bokmärken";
@@ -1089,6 +1134,9 @@
 
 /* Version number of Brave shown in settings */
 "VersionTemplate" = "Version %1$@ (%2$@)";
+
+/* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
+"ViewOn" = "Visa på %@";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "Plånboken skapades";
