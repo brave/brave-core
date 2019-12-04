@@ -19,6 +19,10 @@
     "message": "আপনি এখন গোপনীয়তা কেন্দ্রিক Brave বিজ্ঞাপন দেখে টোকেন উপার্জন করতে পারেন| আপনার অবদান একই থাকে|",
     "description": "Entry text for welcome screen in the panel, new user"
   },
+  "welcomeDescPoints": {
+    "message": "You can now earn points for watching privacy-respecting ads.",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
   "welcomeFooterTextOne": {
     "message": "কি উন্নতি হয়েছে তা পরীক্ষা করুন",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
@@ -42,6 +46,22 @@
   "grants": {
     "message": "মঞ্জুরিসমূহ",
     "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "বিশদ বিবরণ",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "আপনার ব্যালেন্স",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT পয়েন্ট",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "আপনার পছন্দের বিষয়বস্তু প্রস্তুতকারকদের অবদান রাখতে Brave পুরস্কারগুলি ব্যবহার করা যাবে। BAT পয়েন্টগুলি BAT এ বিনিময় করা যাবে না।",
+    "description": "Text for BAT Point helper message"
   },
   "on": {
     "message": "চালু",
@@ -128,12 +148,22 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "টোকেন মঞ্জুরি",
-    "description": "Title for grant notification"
+    "message": "$currency$ Grants",
+    "description": "Title for grant notification",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "Token"
+      }
+    }
   },
   "tokenGrantClaimed": {
     "message": "মঞ্জুরি দেওয়া টোকেনের দাবি করা হয়েছে",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Point Grants Claimed",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "বিজ্ঞাপন থেকে করা উপার্জন",
@@ -180,12 +210,16 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "আপনি BAT এ $amount$ অনুদান করেছেন",
+    "message": "You've contributed $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
         "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
       }
     }
   },
@@ -261,10 +295,6 @@
     "message": "মেয়াদত্তির্ণের তারিখ মঞ্জুর করুন",
     "description": "Grant expiry label"
   },
-  "grantAlreadyClaimedText": {
-    "message": "দুঃখিত, দেখে মনে হচ্ছে এই অনুমোদনটির ইতিমধ্যে দাবি করা হয়েছে।",
-    "description": "Description of the error when grant is already claimed."
-  },
   "grantGeneralErrorButton": {
     "message": "ঠিক আছে",
     "description": "Button text for clearing the error."
@@ -276,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "ওহো, কিছু ভুল হয়েছে। অনুগ্রহ করে পরে আবার চেষ্টা করুন।",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "ঠিক আছে",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "দুঃখিত, দেখা যাচ্ছে যে এই অনুমোদনের মেয়াদ ইতিমধ্যেই শেষ হয়েছে।",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "এই অনুমতি আর উপলব্ধ হবে না।",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "রিফ্রেশের স্থিতি",
@@ -306,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "অবদানগুলি পেতে যে নির্মাতারা এখনও সাইন আপ করেননি তাদের জন্য আপনি {{reservedAmount}} BAT নির্ধারণ করেছেন। আপনার ব্রাউজারটি যাচাই করা না হলে অথবা 90 দিন পেরিয়ে না গেলে অবদান দেওয়া চালিয়ে যাব।",
+    "message": "অবদানগুলি পাওয়ার জন্য যে নির্মাতারা এখনও সাইন আপ করেননি আপনি তাদের জন্য {{reservedAmount}} {{currency}} নির্ধারণ করেছেন। তারা যাচাই না করা পর্যন্ত বা 90 দিন পেরিয়ে না যাওয়া পর্যন্ত আপনার ব্রাউজার অবদান রাখার চেষ্টা চালিয়ে যাবে।",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -397,6 +415,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "চালু করুন",
     "description": "Prompt to turn on Ads via notification"
@@ -452,23 +474,33 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "আপনার টোকেন অনুমোদন হচ্ছে।",
-    "description": "Cosmetic text indicating grant funds are on the way"
+    "message": "Your $currency$ grant is on its way.",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
   },
   "grantFinishTokenTitleUGP": {
     "message": "মুক্ত টোকেন মঞ্জুরি",
     "description": "Token title on success screen"
   },
+  "grantFinishPointTitleUGP": {
+    "message": "Free Point Grant",
+    "description": "Point title on success screen"
+  },
   "grantFinishTitleAds": {
-    "message": "Brave বিজ্ঞাপনের পুরস্কারগুলি!",
+    "message": "আপনি একটি বিজ্ঞাপনের পুরস্কার উপার্জন করেছেন!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Brave বিজ্ঞাপনগুলি থেকে আপনার মঞ্জুর হওয়া পুরস্কার আসছে।",
+    "message": "আপনার পুরস্কারগুলি আপনার Brave পুরস্কারের ওয়ালেটে আসছে।",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "আপনার Brave বিজ্ঞাপনগুলির টোকেন অনুদান",
+    "message": "আপনার পুরস্কারের অর্থরাশি",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -532,5 +564,29 @@
   "set": {
     "message": "সেট করুন...",
     "description": "Button text for setting monthly contribution"
+  },
+  "tokens":  {
+    "message": "টোকেনসমূহ",
+    "description": "Standard tokens text"
+  },
+  "point":  {
+    "message": "Point",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "টোকেন",
+    "description": "BAT Token text"
+  },
+  "points":  {
+    "message": "points",
+    "description": "BAT Points text"
+  },
+  "tokenGrants":  {
+    "message": "টোকেন মঞ্জুরি",
+    "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Point Grants",
+    "description": "BAT Points Grant Text"
   }
 }

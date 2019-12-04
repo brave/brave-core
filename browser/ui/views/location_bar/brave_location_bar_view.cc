@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 
+#include <memory>
+
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -13,13 +15,39 @@
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
+#include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
-#include "chrome/browser/ui/views/location_bar/star_view.h"
 #include "components/version_info/channel.h"
+#include "ui/views/controls/highlight_path_generator.h"
+
+namespace {
+
+class BraveLocationBarViewFocusRingHighlightPathGenerator
+    : public views::HighlightPathGenerator {
+ public:
+  BraveLocationBarViewFocusRingHighlightPathGenerator() = default;
+
+  // HighlightPathGenerator
+  SkPath GetHighlightPath(const views::View* view) override {
+    return static_cast<const BraveLocationBarView*>(view)
+        ->GetFocusRingHighlightPath();
+  }
+
+ private:
+  DISALLOW_COPY_AND_ASSIGN(BraveLocationBarViewFocusRingHighlightPathGenerator);
+};
+
+}  // namespace
 
 void BraveLocationBarView::Init() {
   // base method calls Update and Layout
   LocationBarView::Init();
+  // Change focus ring highlight path
+  if (focus_ring_) {
+    focus_ring_->SetPathGenerator(
+        std::make_unique<
+            BraveLocationBarViewFocusRingHighlightPathGenerator>());
+  }
   // brave action buttons
   brave_actions_ = new BraveActionsContainer(browser_, profile());
   brave_actions_->Init();
@@ -45,12 +73,6 @@ void BraveLocationBarView::Update(const content::WebContents* contents) {
   LocationBarView::Update(contents);
 }
 
-void BraveLocationBarView::UpdateBookmarkStarVisibility() {
-  if (star_view_) {
-    star_view_->SetVisible(false);
-  }
-}
-
 void BraveLocationBarView::OnChanged() {
   if (brave_actions_) {
     // Do not show actions whilst omnibar is open or url is being edited
@@ -74,35 +96,6 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
   return min_size;
 }
 
-OmniboxTint BraveLocationBarView::CalculateTint() const {
-#if defined(OS_LINUX)
-  // If gtk theme is selected, respect it.
-  if (ThemeServiceFactory::GetForProfile(profile())->UsingSystemTheme())
-    return LocationBarView::CalculateTint();
-#endif
-
-  // Match the user-selectable brave theme, even if there is a theme extension
-  // installed, allowing non-extension-themeable elements to fit in better with
-  // a theme extension.
-  if (profile()->IsIncognitoProfile() ||
-      brave::IsTorProfile(profile()) ||
-      brave::IsGuestProfile(profile())) {
-    return OmniboxTint::PRIVATE;  // special extra enum value
-  }
-  // TODO(petemill): BraveThemeService can have a simpler get dark / light
-  // function
-  switch (BraveThemeService::GetActiveBraveThemeType(profile())) {
-    case BraveThemeType::BRAVE_THEME_TYPE_LIGHT:
-      return OmniboxTint::LIGHT;
-    case BraveThemeType::BRAVE_THEME_TYPE_DARK:
-      return OmniboxTint::DARK;
-    default:
-      NOTREACHED();
-      return OmniboxTint::LIGHT;
-  }
-}
-
-
 void BraveLocationBarView::OnThemeChanged() {
   LocationBarView::OnThemeChanged();
 
@@ -120,6 +113,17 @@ void BraveLocationBarView::ChildPreferredSizeChanged(views::View* child) {
     return;
 
   Layout();
+}
+
+int BraveLocationBarView::GetBorderRadius() const {
+  return ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
+      views::EMPHASIS_HIGH, size());
+}
+
+SkPath BraveLocationBarView::GetFocusRingHighlightPath() const {
+  const SkScalar radius = GetBorderRadius();
+  return SkPath().addRoundRect(gfx::RectToSkRect(GetLocalBounds()),
+                               radius, radius);
 }
 
 ContentSettingImageView*

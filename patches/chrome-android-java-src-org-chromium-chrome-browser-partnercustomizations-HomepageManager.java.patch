@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/partnercustomizations/HomepageManager.java b/chrome/android/java/src/org/chromium/chrome/browser/partnercustomizations/HomepageManager.java
-index deb4b5594e41ed3f5f1d2ffb7b2df012d1e522d2..da829ac6616bc1e99a69c4ada39e173e8f5812e2 100644
+index 412167e0aa1ccce193ecbe1c1e4ea4c584e3bcbd..affe1336985efac1d37eb764125c962cfa7515d6 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/partnercustomizations/HomepageManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/partnercustomizations/HomepageManager.java
-@@ -94,8 +94,9 @@ public class HomepageManager {
+@@ -89,8 +89,9 @@ public class HomepageManager {
       * @return Whether to close the app when the user has zero tabs.
       */
      public static boolean shouldCloseAppWithZeroTabs() {

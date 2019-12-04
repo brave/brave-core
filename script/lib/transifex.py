@@ -101,7 +101,7 @@ def get_transifex_languages(grd_file_path):
 def get_transifex_translation_file_content(source_file_path, filename,
                                            lang_code):
     """Obtains a translation Android xml format and returns the string"""
-    lang_code = lang_code.replace('-', '_')
+    lang_code = lang_code.replace('-', '_').replace('iw', 'he')
     url_part = 'project/%s/resource/%s/translation/%s?mode=default' % (
         transifex_project_name,
         transifex_name_from_filename(source_file_path, filename), lang_code)
@@ -229,10 +229,7 @@ def get_grd_message_string_tags(grd_file_path):
     for element in elements:
         grd_base_path = os.path.dirname(grd_file_path)
         grd_part_filename = element.get('file')
-        if grd_part_filename in ['chromeos_strings.grdp',
-                                 'media_router_resources.grdp',
-                                 'os_settings_strings.grdp',
-                                 'xr_consent_ui_strings.grdp']:
+        if grd_part_filename in ['chromeos_strings.grdp']:
             continue
         grd_part_path = os.path.join(grd_base_path, grd_part_filename)
         part_output_elements = get_grd_message_string_tags(grd_part_path)
@@ -285,8 +282,9 @@ def get_grd_strings(grd_file_path):
         message_desc = message_tag.get('desc') or ''
         message_value = textify(message_tag)
         assert not not message_name, 'Message name is empty'
-        assert message_name.startswith('IDS_'), (
-            'Invalid message ID: %s' % message_name)
+        assert (message_name.startswith('IDS_') or
+                message_name.startswith('PRINT_PREVIEW_MEDIA_')), (
+                    'Invalid message ID: %s' % message_name)
         string_name = message_name[4:].lower()
         string_fp = get_fingerprint_for_xtb(message_tag)
         string_tuple = (string_name, message_value, string_fp, message_desc)

@@ -116,7 +116,9 @@ BraveConfigurator::GetNetworkFetcherFactory() {
     network_fetcher_factory_ =
         base::MakeRefCounted<update_client::NetworkFetcherChromiumFactory>(
             g_browser_process->system_network_context_manager()
-                ->GetSharedURLLoaderFactory());
+                ->GetSharedURLLoaderFactory(),
+            // Never send cookies for component update downloads.
+            base::BindRepeating([](const GURL& url) { return false; }));
   }
   return network_fetcher_factory_;
 }

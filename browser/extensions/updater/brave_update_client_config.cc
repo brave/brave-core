@@ -174,7 +174,10 @@ BraveUpdateClientConfig::GetNetworkFetcherFactory() {
     network_fetcher_factory_ =
         base::MakeRefCounted<update_client::NetworkFetcherChromiumFactory>(
             content::BrowserContext::GetDefaultStoragePartition(context_)
-                ->GetURLLoaderFactoryForBrowserProcess());
+                ->GetURLLoaderFactoryForBrowserProcess(),
+            // Unlike ChromeUpdateClientConfig, which allows to send cookies for
+            // chrome.google.com, we won't be sending any cookies.
+            base::BindRepeating([](const GURL& url) { return false; }));
   }
   return network_fetcher_factory_;
 }

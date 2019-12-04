@@ -98,6 +98,11 @@ class BraveWidevineBundleManager {
   void ScheduleBackgroundUpdate();
   void OnBackgroundUpdateFinished(const std::string& error);
 
+  // Delete user-dir/WidevineCdm/libwidevinecdm.so if exists.
+  // After c79, libwidevinecdm.so is located under
+  // user-dir/WidevineCdm/_platform_specific/linux_x64/ and old one is not used.
+  void DeleteDeprecatedWidevineCdmLib();
+
   scoped_refptr<base::SequencedTaskRunner> file_task_runner();
 
   bool is_test_ = false;

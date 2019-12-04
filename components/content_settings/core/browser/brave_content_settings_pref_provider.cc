@@ -295,13 +295,12 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   // Notify brave cookie changes as CONTENT_SETTINGS_TYPE_COOKIES
   if (content_type == CONTENT_SETTINGS_TYPE_PLUGINS) {
     // PostTask here to avoid content settings autolock DCHECK
-    base::PostTaskWithTraits(
-          FROM_HERE,
-          {content::BrowserThread::UI, base::TaskPriority::USER_VISIBLE},
-          base::BindOnce(&BravePrefProvider::NotifyChanges,
-                         weak_factory_.GetWeakPtr(),
-                         std::move(brave_cookie_updates),
-                         incognito));
+    base::PostTask(
+        FROM_HERE,
+        {content::BrowserThread::UI, base::TaskPriority::USER_VISIBLE},
+        base::BindOnce(&BravePrefProvider::NotifyChanges,
+                       weak_factory_.GetWeakPtr(),
+                       std::move(brave_cookie_updates), incognito));
   }
 }
 

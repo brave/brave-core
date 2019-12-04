@@ -13,6 +13,11 @@
 #include "bat/ledger/export.h"
 #include "bat/ledger/transaction_info.h"
 
+namespace base {
+class DictionaryValue;
+class Value;
+}  // namespace base
+
 namespace ledger {
 
 LEDGER_EXPORT struct TransactionsInfo {

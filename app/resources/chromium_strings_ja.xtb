@@ -1,7 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ja">
-<translation id="5194812628624740897"><ph name="USERNAME"/> の接続を解除すると、履歴、ブックマーク、設定、このデバイスに保存されたその他の Brave データが消去されます。ただし、Brave Software アカウントに保存されたデータは消去されず、引き続き <ph name="GOOGLE_DASHBOARD_LINK"/>Brave Software ダッシュボード<ph name="END_GOOGLE_DASHBOARD_LINK"/>で管理できます。</translation>
 <translation id="939305735877869636">Brave</translation>
 <translation id="2069994121511856876">Brave Nightly</translation>
 <translation id="4947625801334180582">Brave Beta</translation>
@@ -18,8 +17,6 @@
 <translation id="1403270718080126244"><ph name="PAGE_TITLE"/> - Brave Beta</translation>
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
-<translation id="4685833011652060085">Brave の使用に関するアドバイス</translation>
-<translation id="6474707902830053522">Brave OS の使用に関するアドバイス</translation>
 <translation id="8992261409816268381">Brave 開発者</translation>
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> The Brave Authors. All rights reserved.</translation>
 <translation id="2310890394934209120">Brave OS は、さらに追加の<ph name="BEGIN_LINK_CROS_OSS"/>オープンソース ソフトウェア<ph name="END_LINK_CROS_OSS"/>によって実現しました。</translation>
@@ -71,7 +68,6 @@
 <translation id="2770231113462710648">既定のブラウザを変更:</translation>
 <translation id="2485422356828889247">アンインストール</translation>
 <translation id="3343095737966473035">Brave はデフォルトのブラウザとして設定されていません</translation>
-<translation id="6715663530666325392">同期を設定すると、パーソナライズされたブラウザ機能をウェブ上に保存して、どのパソコンの Brave からでも使用できるようになります。</translation>
 <translation id="5536657158619734169">Brave の最新バージョンをぜひお試しください。</translation>
 <translation id="505042220086416644">Brave がさらに速くなりました！最新バージョンをぜひお試しください。</translation>
 <translation id="5616153642055197778">Brave がさらに安全になりました。最新バージョンをぜひお試しください。</translation>
@@ -87,19 +83,10 @@
 <translation id="3834935463915107022">今すぐ Brave を終了しますか？</translation>
 <translation id="8797356639448065696">Brave はバックグラウンド モードです。</translation>
 <translation id="2339258256897053758">Brave Software API キーが欠落しています。Brave の一部の機能は無効になります。</translation>
-<translation id="2182657378556811785">Brave を再起動して更新を完了してください。</translation>
-<translation id="5906655207909574370">端末を再起動して更新を完了してください。</translation>
-<translation id="5877064549588274448">チャンネルが変更されました。変更を適用するには、デバイスを再起動してください。</translation>
-<translation id="5131485705787281074">Brave は最新版です。</translation>
-<translation id="8667808506758191620">お使いの <ph name="DEVICE_TYPE"/> は最新です。</translation>
-<translation id="5047208012586153436">Brave を更新しています...</translation>
-<translation id="6970811910055250180">お使いの端末を更新しています...</translation>
-<translation id="8030318113982266900">デバイスを <ph name="CHANNEL_NAME"/> チャンネルに更新しています...</translation>
 <translation id="7861579472672677409">「<ph name="EXTENSION_NAME"/>」が Brave に追加されました</translation>
 <translation id="8516116288943000095">Brave のデータ（<ph name="URL"/>）も消去する</translation>
 <translation id="4054452651944170004">Brave メニューで非表示</translation>
 <translation id="5660079256336839395">Brave メニューで非表示</translation>
-<translation id="7456658570432774853">現在の設定を送信して Brave の品質向上にご協力ください</translation>
 <translation id="6134859571175647580">警告: 拡張機能による閲覧履歴の記録を Brave で停止することはできません。シークレット モードでこの拡張機能を無効にするには、このオプションの選択を解除してください。</translation>
 <translation id="777113543093865885">Brave から削除...</translation>
 <translation id="6078442581074612226">Brave 内</translation>
@@ -115,18 +102,9 @@
 <translation id="2534623228451928732">Brave OS を更新(&amp;C)</translation>
 <translation id="8447483940522230788">Brave Helper</translation>
 <translation id="5477319665405831211">同期してカスタマイズした Brave をどの端末でも使用できます</translation>
-<translation id="4934157190377700991">Brave にログイン済み</translation>
-<translation id="4100716194836114130">自分好みに設定</translation>
-<translation id="8296145982386097283">共有パソコンにするなど、Brave をお好みの方法で設定できるようになりました。</translation>
-<translation id="1672124279374861424">Brave からアカウントを削除したら、場合によっては開いているタブを再読み込みして変更を反映させる必要があります。</translation>
-<translation id="9197493712748167998">Brave データの同期に <ph name="PROFILE_EMAIL"/> を使用しています。同期設定を更新する、または Brave Software アカウントなしで Brave を使用するには、<ph name="SETTINGS_LINK"/> にアクセスしてください。</translation>
 <translation id="8132634101975074716">Brave にログインしました</translation>
 <translation id="4567424176335768812"><ph name="USER_EMAIL_ADDRESS"/> としてログインしています。ログインしているすべてのデバイスで、ブックマーク、履歴、その他の設定にアクセスできます。</translation>
-<translation id="6888049487162027489">Brave にログインしています。同期は管理者によって無効にされています。</translation>
 <translation id="2925193881330501265">Brave に <ph name="USER_EMAIL_ADDRESS"/> としてログインしていました。再度ログインするには同じアカウントを使用してください。</translation>
-<translation id="386092803020435298">別のユーザーが前回このパソコンから <ph name="ACCOUNT_EMAIL_LAST"/> として Brave にログインしました。このメール アドレスがご自分のアカウントでない場合は、新しい Brave ユーザーを作成して情報を個別に保持してください。
-
-このままログインすると、ブックマーク、履歴、その他の設定などの Brave データが <ph name="ACCOUNT_EMAIL_NEW"/> と統合されます。</translation>
 <translation id="847561904663814268">前回このパソコンで別のユーザー（<ph name="ACCOUNT_EMAIL_LAST"/>）が Brave にログインしました。情報を個別に保持するには、新しい Brave ユーザーを作成してください。</translation>
 <translation id="1853997773668795891">Brave データをこのアカウントにリンクしますか？</translation>
 <translation id="1326766910007115955">現在、管理対象アカウントでログインしており、あなたの Brave プロフィールを管理者が制御できる状態になっています。あなたの Brave データ（アプリ、ブックマーク、履歴、パスワードなどの設定）は永続的に <ph name="USER_NAME"/> に関連付けられます。このデータは Brave Software アカウントのダッシュボードを介して削除できますが、このデータを別のアカウントに関連付けることはできなくなります。<ph name="LEARN_MORE"/></translation>
@@ -146,10 +124,6 @@
 <translation id="1459786048951724030">ログイン時にエラーが発生したため、Brave OS はデータを同期できませんでした。</translation>
 <translation id="6813094029720377619">Brave の終了時に Cookie を削除するよう設定しています。同期を継続するにはこちらの<ph name="COOKIE_SETTINGS_LINK"/>を変更してください。</translation>
 <translation id="3340978935015468852">設定</translation>
-<translation id="663059986967017181">Brave にコピー済み</translation>
-<translation id="1457432835062259213">Brave アプリ ランチャー</translation>
-<translation id="82609232232243542">Brave にログイン</translation>
-<translation id="2924628237198507508">アプリを使用するには Brave にログインする必要があります。ログインすると、Brave ではアプリ、ブックマーク、履歴、パスワードなどの設定をデバイス間で同期できるようになります。</translation>
 <translation id="380197516434040304">Brave から削除...</translation>
 <translation id="300669147395456190">Brave アプリ</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> では、このデバイスを使用する前に下記の利用規約を確認しこれに同意していただく必要があります。これらの規約は Brave OS 利用規約を拡張、変更、制限するものではありません。</translation>
@@ -161,6 +135,7 @@
 <translation id="669092380621816981">この操作を行うと、このユーザーの閲覧データがこのデバイスから削除されます。データを復元するには、<ph name="USER_EMAIL"/> として Brave にログインしてください。</translation>
 <translation id="2827121003398607864">進化する Brave</translation>
 <translation id="7192666605334070839">共有パソコンの Brave で Brave Software アカウントが簡単に使用できるようになりました。</translation>
+<translation id="4100716194836114130">自分好みに設定</translation>
 <translation id="3511996232906761537">ウェブ、ブックマーク、その他の Brave データを好みに設定できます。</translation>
 <translation id="7406627712452599344">ゲスト ユーザーは、記録を残さずに Brave を使用できます。</translation>
 <translation id="5659384504794665581">パソコンを共有している場合、友だちや家族はそれぞれ Brave を自分専用のブラウザとして自分用の設定をして使うことができます。</translation>
@@ -188,7 +163,7 @@
 <translation id="7863882214613921971">新しい Brave タブでリンクを開く(&amp;T)</translation>
 <translation id="6554952862405000915">Brave のシークレット ウインドウでリンクを開く(&amp;G)</translation>
 <translation id="4805806622840861220">Brave を再起動します</translation>
-<translation id="2560046583427795596">Brave の新しいアップデートを利用できます。再起動するとすぐにアップデートが適用されます。</translation>
+<translation id="8274659559228306809">{COUNT,plural, =0{Brave の新しいアップデートを利用できます。再起動するとすぐにアップデートが適用されます。}=1{Brave の新しいアップデートを利用できます。再起動するとすぐにアップデートが適用されます。シークレット ウィンドウは、再起動後は自動的には開きません。}other{Brave の新しいアップデートを利用できます。再起動するとすぐにアップデートが適用されます。現在開いている # 個のシークレット ウィンドウは、再起動後は自動的には開きません。}}</translation>
 <translation id="2799223571221894425">再起動</translation>
 <translation id="2522086024276534909">Brave OS を再起動してください</translation>
 <translation id="8183252473547465084">アップデートを適用するには Brave OS を再起動する必要があります。</translation>
@@ -207,47 +182,39 @@
 <translation id="2513524988380267210">{SECONDS,plural, =1{Brave は 1 秒後に再起動します}other{Brave は # 秒後に再起動します}}</translation>
 <translation id="5646769069113654257">今すぐ Brave を再起動してください</translation>
 <translation id="8668413672647811944">Brave の特別なセキュリティ アップデートが適用されました。今すぐ再起動してください。タブは復元されます。</translation>
-<translation id="763369711159699222">Brave の品質向上にご協力ください</translation>
-<translation id="1156940037717341650">セキュリティに関する事象についての詳細を Brave Software に自動送信して、Brave の安全性と利便性の向上にご協力ください。</translation>
 <translation id="6791166902140255175">Brave タブ</translation>
 <translation id="2555639463117073782"><ph name="PLUGIN_NAME"/> を有効にするには Brave を再起動してください</translation>
-<translation id="8899693649891674038">Brave をスマートフォンにインストールしませんか。お客様の電話番号に、Brave Software より SMS をお送りします。</translation>
-<translation id="1570795130102031380">Brave をスマートフォンにインストールしませんか。お客様のアカウント再設定用の電話番号（<ph name="PHONE_NUMBER"/>）に、Brave Software より SMS をお送りします。</translation>
-<translation id="1609678321160597289">Brave をスマートフォンにインストールしませんか。お客様のアカウント再設定用の電話番号に、Brave Software より SMS をお送りします。</translation>
-<translation id="2965084188004448871">Brave をスマートフォンにインストールしませんか。お客様のアカウント再設定用の電話番号（<ph name="PHONE_NUMBER"/>）に、Brave Software より SMS をお送りします。</translation>
-<translation id="8358191771897395012">iPhone に Brave をインストール</translation>
 <translation id="2034072705932785495">このサイトを利用するには、Brave でカメラの使用を許可する必要があります</translation>
 <translation id="3335606533094650083">このサイトを利用するには、Brave でマイクの使用を許可する必要があります</translation>
 <translation id="4831743161813926460">このサイトを利用するには、Brave でカメラとマイクの使用を許可する必要があります</translation>
 <translation id="696826782632239602">このサイトで現在地を共有するには、Brave で位置情報の使用を許可する必要があります</translation>
 <translation id="7798069806040634998">ファイルをダウンロードするには、Brave でストレージへのアクセスを許可する必要があります</translation>
 <translation id="7685904775439037072">Brave にアクセスを許可すると、ウェブサイトからアクセスをリクエストできるようになります。</translation>
-<translation id="5805364706385912897">このページは大量のメモリを使用しているため、Brave により一時停止されました。</translation>
-<translation id="5138664332909611586">このページは大量のメモリを使用しているため、Brave により一部のコンテンツが削除されました。</translation>
 <translation id="1744365871163268756">Brave は最新のシステム アップデートをインストールしています。しばらくお待ちください。</translation>
-<translation id="5693614905241031118">Brave は自動的に更新されるため、常に最新版をご利用になれます。</translation>
-<translation id="6141293433381251973">Brave は自動的に更新されるため、常に最新版をご利用になれます。このダウンロードが完了すると、Brave が再起動し、すぐにお使いいただけます。</translation>
+<translation id="8000338990735917615">Brave の今後のバージョンは自動的にインストールされます。</translation>
+<translation id="2975476470948647918">Brave の今後のバージョンは自動的にインストールされます。このダウンロードが完了すると Brave が再起動し、すぐにお使いいただけます。</translation>
 <translation id="7808415789955822133">Brave OS 利用規約</translation>
 <translation id="7207456302801184289">Brave へようこそ</translation>
 <translation id="3507835409099344374">Brave の通知設定に移動</translation>
 <translation id="1026406809507858026">{0,plural, =0{Brave のアップデートが利用可能です}=1{Brave のアップデートが利用可能です}other{Brave のアップデートが利用可能になってから # 日経過しています}}</translation>
-<translation id="720532315408041257">管理者が、このアップデートを適用するために Brave を再起動するよう求めています</translation>
+<translation id="3829358914761176693">{COUNT,plural, =0{管理者が、このアップデートを適用するために Brave を再起動するよう求めています}=1{管理者が、このアップデートを適用するために Brave を再起動するよう求めています。シークレット ウィンドウは、再起動後は自動的には開きません。}other{管理者が、このアップデートを適用するために Brave を再起動するよう求めています。現在開いている # 個のシークレット ウィンドウは、再起動後は自動的には開きません。}}</translation>
 <translation id="5337999052834672687">{0,plural, =1{1 日以内に Brave を再起動してください}other{# 日以内に Brave を再起動してください}}</translation>
 <translation id="310518206836658214">{0,plural, =1{Brave は 1 時間後に再起動されます}other{Brave は # 時間後に再起動されます}}</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave は 1 分後に再起動されます}other{Brave は # 分後に再起動されます}}</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave は今すぐ再起動されます}=1{Brave は 1 秒後に再起動されます}other{Brave は # 秒後に再起動されます}}</translation>
-<translation id="7595187113648413294">管理者が、アップデートを適用するために Brave を再起動するよう求めています</translation>
+<translation id="552349673358711446">{COUNT,plural, =0{管理者が、アップデートを適用するために Brave を再起動するよう求めています}=1{管理者が、アップデートを適用するために Brave を再起動するよう求めています。シークレット ウィンドウは、再起動後は自動的には開きません。}other{管理者が、アップデートを適用するために Brave を再起動するよう求めています。現在開いている # 個のシークレット ウィンドウは、再起動後は自動的には開きません。}}</translation>
 <translation id="3052349005266761501">Brave を起動しています...</translation>
 <translation id="1197672524850678392">Brave を起動できませんでした。もう一度お試しください。</translation>
-<translation id="6040143037577758943">閉じる</translation>
 <translation id="5147525139567260139">Brave タブの共有</translation>
+<translation id="2076319850279844250">Brave の改善に協力する</translation>
 <translation id="8541922081612557424">Brave について</translation>
 <translation id="3262506503470845422">Brave のヘルプを見る</translation>
 <translation id="1864557848095568223">Brave を更新しています</translation>
 <translation id="1786715389543715322">Brave を更新しています（<ph name="PROGRESS_PERCENT"/>）</translation>
+<translation id="2182657378556811785">Brave を再起動して更新を完了してください。</translation>
 <translation id="8208853227947884571">Brave は最新版です</translation>
-<translation id="6756417787837743699">Brave OS の詳細については、<ph name="LINK_BEGIN"/>Brave OS について<ph name="LINK_END"/>をご覧ください</translation>
 <translation id="6686872257969654608">Brave OS について</translation>
+<translation id="7674116293463255181">デバイスが最新の状態かどうか確認するには、<ph name="LINK_BEGIN"/>Brave OS の設定<ph name="LINK_END"/>をご覧ください</translation>
 <translation id="2280363356796735201">Brave OS のヘルプを見る</translation>
 <translation id="38898988211673781">Brave の終了時に Cookie とサイトデータを削除する</translation>
 <translation id="5253815230176279256">Brave Software Pay（Brave にコピー）</translation>
@@ -267,6 +234,7 @@
 <translation id="5853262807109651878">この端末から <ph name="ITEMS_COUNT"/> 件の項目を削除します。後でデータを取得するには、<ph name="USER_EMAIL"/> として Brave にログインしてください。</translation>
 <translation id="4784414698887946907">この端末から閲覧データを削除します。後でデータを取得するには、<ph name="USER_EMAIL"/> として Brave にログインしてください。</translation>
 <translation id="4518479204315969707">Brave の名前と画像</translation>
+<translation id="82609232232243542">Brave にログイン</translation>
 <translation id="8372880274820509128">セキュリティ強化のため、Brave ではデータが暗号化されます。</translation>
 <translation id="7445061995866044926">Brave からログアウトしますか？</translation>
 <translation id="7453070689008684791">Brave からお客様のドライブにアクセスして、アドレスバーに候補を表示します</translation>

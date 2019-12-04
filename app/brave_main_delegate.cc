@@ -32,7 +32,6 @@
 #include "components/sync/driver/sync_driver_switches.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/content_switches.h"
-#include "extensions/common/extension_features.h"
 #include "services/network/public/cpp/features.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/ui_base_features.h"
@@ -156,9 +155,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 
   // Enabled features.
   const std::unordered_set<const char*> enabled_features = {
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-      extensions_features::kNewExtensionUpdaterService.name,
-#endif
       password_manager::features::kPasswordImport.name,
     // Enable webui dark theme: @media (prefers-color-scheme: dark) is gated on
     // this feature.
@@ -169,10 +165,13 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   // Disabled features.
   const std::unordered_set<const char*> disabled_features = {
       autofill::features::kAutofillServerCommunication.name,
+      features::kAllowPopupsDuringPageUnload.name,
       features::kAudioServiceOutOfProcess.name,
       features::kLookalikeUrlNavigationSuggestionsUI.name,
       features::kNotificationTriggers.name,
       features::kSmsReceiver.name,
+      features::kWebXr.name,
+      features::kWebXrGamepadModule.name,
       unified_consent::kUnifiedConsent.name,
       switches::kSyncUSSBookmarks.name,
   };
@@ -181,9 +180,9 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   bool ret = ChromeMainDelegate::BasicStartupComplete(exit_code);
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
-  // Override chrome::FILE_WIDEVINE_CDM path because we install it in user data
-  // dir. Must call after ChromeMainDelegate::BasicStartupComplete() to use
-  // chrome paths.
+  // Override chrome::DIR_BUNDLED_WIDEVINE_CDM path because we install it in
+  // user data dir. Must call after ChromeMainDelegate::BasicStartupComplete()
+  // to use chrome paths.
   brave::OverridePath();
 #endif
 

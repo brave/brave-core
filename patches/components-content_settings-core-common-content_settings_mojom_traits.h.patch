@@ -1,9 +1,9 @@
 diff --git a/components/content_settings/core/common/content_settings_mojom_traits.h b/components/content_settings/core/common/content_settings_mojom_traits.h
-index c8b57f679adf9b72c9ee73af3a73d1de2a8ee609..1c71d35f336e56f3e3b9f14cd948517b5711142f 100644
+index 13cae3069f606248b2c4850f61a57f2fae51c6e7..61c587170582566737eaf570527bd43e08e24f06 100644
 --- a/components/content_settings/core/common/content_settings_mojom_traits.h
 +++ b/components/content_settings/core/common/content_settings_mojom_traits.h
-@@ -145,6 +145,16 @@ struct StructTraits<
-     return r.popup_redirect_rules;
+@@ -150,6 +150,16 @@ struct StructTraits<
+     return r.mixed_content_rules;
    }
  
 +  static const std::vector<ContentSettingPatternSource>& fingerprinting_rules(

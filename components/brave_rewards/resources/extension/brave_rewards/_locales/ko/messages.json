@@ -19,6 +19,10 @@
     "message": "이제 개인 신상이 보호되는 광고 시청으로 토큰을 벌 수 있습니다.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
+  "welcomeDescPoints": {
+    "message": "You can now earn points for watching privacy-respecting ads.",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
   "welcomeFooterTextOne": {
     "message": "무엇이 개선되었는지 확인하기 ",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
@@ -42,6 +46,22 @@
   "grants": {
     "message": "그랜트",
     "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "세부사항",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "귀하의 잔액",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "BAT 포인트",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "Brave 리워드에서 사용하여 가장 좋아하는 콘텐츠 제작자들에게 기부할 수 있습니다. BAT 포인트는 BAT로 환전될 수 없습니다.",
+    "description": "Text for BAT Point helper message"
   },
   "on": {
     "message": "켜기",
@@ -128,12 +148,22 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "토큰 보조금",
-    "description": "Title for grant notification"
+    "message": "$currency$ Grants",
+    "description": "Title for grant notification",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "Token"
+      }
+    }
   },
   "tokenGrantClaimed": {
     "message": "토큰 승인 요청됨",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Point Grants Claimed",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "광고 수입",
@@ -180,12 +210,16 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "$amount$ BAT를 기부했습니다",
+    "message": "You've contributed $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
         "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
       }
     }
   },
@@ -261,10 +295,6 @@
     "message": "만료 일자 승인",
     "description": "Grant expiry label"
   },
-  "grantAlreadyClaimedText": {
-    "message": "죄송합니다, 이미 승인이 요청된 것 같습니다.",
-    "description": "Description of the error when grant is already claimed."
-  },
   "grantGeneralErrorButton": {
     "message": "오케이",
     "description": "Button text for clearing the error."
@@ -276,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "이런, 뭔가 잘못되었습니다. 나중에 다시 시도해 주세요.",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "오케이",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "죄송합니다, 이 승인은 이미 만료된 것 같습니다.",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "이 승인은 더 이상 유효하지 않습니다.",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "상태 새로 고침",
@@ -306,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "귀하께서는 아직 기부를 받기 위해 회원 가입을 하지 않은 크리에이터에 대하여 {{reservedAmount}} 의 배트(BAT)를 지정했습니다. 귀하의 브라우저는 그들이 확인 할 때까지 혹은 90일이 지나기까지 계속 기부를 시도하게 됩니다.",
+    "message": "아직 기부금을 받기 위해 가입하지 않은 제작자들에게 {{reservedAmount}} {{currency}}을/를 지정하셨습니다. 그들이 확인할 때까지, 또는 90일이 지날 때까지, 귀하의 브라우저가 계속 기부하려고 시도할 것입니다.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -397,6 +415,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "광고 켜기",
     "description": "Prompt to turn on Ads via notification"
@@ -452,23 +474,33 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "귀하의 토큰 승인이 진행 중입니다.",
-    "description": "Cosmetic text indicating grant funds are on the way"
+    "message": "Your $currency$ grant is on its way.",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
   },
   "grantFinishTokenTitleUGP": {
     "message": "무료 토큰 승인",
     "description": "Token title on success screen"
   },
+  "grantFinishPointTitleUGP": {
+    "message": "Free Point Grant",
+    "description": "Point title on success screen"
+  },
   "grantFinishTitleAds": {
-    "message": "Brave Ads 보상!",
+    "message": "광고 리워드를 획득하셨습니다!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Brave Ads의 보상금이 곧 수령됩니다.",
+    "message": "귀하의 리워드는 귀하의 Brave 월렛으로 이동하는 중입니다. ",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "귀하의 Brave Ads 토큰 보상금",
+    "message": "귀하의 리워드 금액",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -532,5 +564,29 @@
   "set": {
     "message": "설정...",
     "description": "Button text for setting monthly contribution"
+  },
+  "tokens":  {
+    "message": "토큰",
+    "description": "Standard tokens text"
+  },
+  "point":  {
+    "message": "Point",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "토큰",
+    "description": "BAT Token text"
+  },
+  "points":  {
+    "message": "points",
+    "description": "BAT Points text"
+  },
+  "tokenGrants":  {
+    "message": "토큰 보조금",
+    "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Point Grants",
+    "description": "BAT Points Grant Text"
   }
 }

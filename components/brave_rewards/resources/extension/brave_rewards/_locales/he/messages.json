@@ -19,6 +19,10 @@
     "message": "כעת תוכלו לצבור קופונים עבור צפייה בפרסומות מכבדות פרטיות.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
+  "welcomeDescPoints": {
+    "message": "You can now earn points for watching privacy-respecting ads.",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
   "welcomeFooterTextOne": {
     "message": "בדקו מה יובא",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
@@ -42,6 +46,22 @@
   "grants": {
     "message": "מענקים",
     "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "פרטים",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "היתרה שלך",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "נקודות BAT",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "ניתן להשתמש בו ב-Brave Rewards כדי לתרום ליוצרי התוכן החביבים עליך. לא ניתן להמיר נקודות BAT ב-BAT.",
+    "description": "Text for BAT Point helper message"
   },
   "on": {
     "message": "פעיל",
@@ -128,12 +148,22 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "מענק אסימונים",
-    "description": "Title for grant notification"
+    "message": "$currency$ Grants",
+    "description": "Title for grant notification",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "Token"
+      }
+    }
   },
   "tokenGrantClaimed": {
     "message": "מענקי אסימון נתבעו",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Point Grants Claimed",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "צבירה מפרסומות",
@@ -180,12 +210,16 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "תרמתם $amount$ BAT",
+    "message": "You've contributed $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
         "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
       }
     }
   },
@@ -261,10 +295,6 @@
     "message": "תאריך תפוגת מענק",
     "description": "Grant expiry label"
   },
-  "grantAlreadyClaimedText": {
-    "message": "מצטערים, נראה שמענק זה כבר נתבע.",
-    "description": "Description of the error when grant is already claimed."
-  },
   "grantGeneralErrorButton": {
     "message": "אוקיי",
     "description": "Button text for clearing the error."
@@ -276,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "אופס, משהו לא בסדר. אנא נסו שוב מאוחר יותר.",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "אוקיי",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "מצטערים, נראה שמענק זה אינו תקף עוד.",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "מענק זה אינו זמין עוד.",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "רענן סטטוס",
@@ -306,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "ביצעתם הקצאה של {{ }} BAT ליוצרים שטרם נרשמו לקבלת תגמולים. הדפדפן ימשיך לנסות לתרום עד אשר יאומתו או עד שיחלפו 90 יום.",
+    "message": "הקצית {{reservedAmount}} {{currency}} ליוצרים שלא נרשמו לקבלת תרומות. הדפדפן שלך ימשיך לנסות לתרום עד שהם יאומתו, אך לא יותר מ-90 יום.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -397,6 +415,10 @@
     "message": "BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "הפעל פרסומות",
     "description": "Prompt to turn on Ads via notification"
@@ -452,23 +474,33 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "מענק האסימון שלכם בדרכו אליכם.",
-    "description": "Cosmetic text indicating grant funds are on the way"
+    "message": "Your $currency$ grant is on its way.",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
   },
   "grantFinishTokenTitleUGP": {
     "message": "מענק אסימון חינם ",
     "description": "Token title on success screen"
   },
+  "grantFinishPointTitleUGP": {
+    "message": "Free Point Grant",
+    "description": "Point title on success screen"
+  },
   "grantFinishTitleAds": {
-    "message": "תגמולים של Brave Ads!",
+    "message": "זכית בתגמול על פרסומות!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "מענק התגמולים שלכם מ-Brave Ads בדרך.",
+    "message": "התגמול שלך בדרך לארנק תגמולי ה-Brave שלך.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "מענק הטוקן של Brave Ads שלכם",
+    "message": "סכום התגמול שלך",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -532,5 +564,29 @@
   "set": {
     "message": "הגדר...",
     "description": "Button text for setting monthly contribution"
+  },
+  "tokens":  {
+    "message": "Tokens",
+    "description": "Standard tokens text"
+  },
+  "point":  {
+    "message": "Point",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "טוקן",
+    "description": "BAT Token text"
+  },
+  "points":  {
+    "message": "points",
+    "description": "BAT Points text"
+  },
+  "tokenGrants":  {
+    "message": "מענק אסימונים",
+    "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Point Grants",
+    "description": "BAT Points Grant Text"
   }
 }

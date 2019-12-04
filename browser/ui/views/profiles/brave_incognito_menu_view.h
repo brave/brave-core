@@ -13,11 +13,11 @@ class BraveIncognitoMenuView : public IncognitoMenuView {
   using IncognitoMenuView::IncognitoMenuView;
   ~BraveIncognitoMenuView() override = default;
 
-  // ProfileMenuViewBase:
-  void BuildMenu() override;
-
  private:
   friend class IncognitoMenuView;
+
+  int GetProfileMenuTitleId();
+  int GetProfileMenuCloseButtonTextId();
 
   void AddTorButton();
   void OnTorProfileButtonClicked();

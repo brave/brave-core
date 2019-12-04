@@ -80,6 +80,7 @@
 #include "ui/gfx/image/image.h"
 #include "url/gurl.h"
 #include "url/url_canon_stdstring.h"
+#include "url/url_util.h"
 
 #if !defined(OS_ANDROID)
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
@@ -440,7 +441,7 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       extension_rewards_service_observer_(
           std::make_unique<ExtensionRewardsServiceObserver>(profile_)),
 #endif
-      file_task_runner_(base::CreateSequencedTaskRunnerWithTraits(
+      file_task_runner_(base::CreateSequencedTaskRunner(
           {base::ThreadPool(), base::MayBlock(),
            base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),

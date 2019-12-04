@@ -19,6 +19,10 @@
     "message": " يمكنك الآن أن تربح الرموز من الإعلانات التي تحترم الخصوصية.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
+  "welcomeDescPoints": {
+    "message": "You can now earn points for watching privacy-respecting ads.",
+    "description": "Entry text for welcome screen in the panel, points"
+  },
   "welcomeFooterTextOne": {
     "message": "تحقَّق من ما تم تحسينه",
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, existing user"
@@ -42,6 +46,22 @@
   "grants": {
     "message": "المنح",
     "description": "Title for grant section in wallet summary"
+  },
+  "details": {
+    "message": "التفاصيل",
+    "description": "Title for grant section in wallet panel summary"
+  },
+  "yourBalance": {
+    "message": "رصيدك",
+    "description": "Wallet panel title for anon wallets"
+  },
+  "batPoints": {
+    "message": "نقاط الرموز الأساسية للاهتمام",
+    "description": "BAT Points text"
+  },
+  "batPointsMessage": {
+    "message": "يمكن استخدام ذلك في مكافآت Brave لدعم منشئي المحتوى المفضل لديك. لا يمكن استبدال نقاط الرموز الأساسية للاهتمام بالرموز الأساسية للاهتمام.",
+    "description": "Text for BAT Point helper message"
   },
   "on": {
     "message": "على",
@@ -128,12 +148,22 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "منح العملة الرمزية",
-    "description": "Title for grant notification"
+    "message": "$currency$ Grants",
+    "description": "Title for grant notification",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "Token"
+      }
+    }
   },
   "tokenGrantClaimed": {
     "message": "تم جمع المكافأة المالية التي منحت لك",
     "description": "Title for grant section in wallet summary"
+  },
+  "pointGrantClaimed": {
+    "message": "Point Grants Claimed",
+    "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
     "message": "المكاسب من الإعلانات",
@@ -180,12 +210,16 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "لقد أسهمت بقيمة $amount$ BAT",
+    "message": "You've contributed $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
         "content": "$1",
         "example": "10.0"
+      },
+      "currency": {
+        "content": "$2",
+        "example": "BAT"
       }
     }
   },
@@ -261,10 +295,6 @@
     "message": "تاريخ انتهاء صلاحية المكافأة",
     "description": "Grant expiry label"
   },
-  "grantAlreadyClaimedText": {
-    "message": "عذرًا، يبدو أن المكافأة أخذت مسبقًا.",
-    "description": "Description of the error when grant is already claimed."
-  },
   "grantGeneralErrorButton": {
     "message": "حسنًا",
     "description": "Button text for clearing the error."
@@ -276,18 +306,6 @@
   "grantGeneralErrorTitle": {
     "message": "عذرًا، حدث خطأ ما. الرجاء المحاولة مرة أخرى لاحقًا.",
     "description": "Error title when user is having problems claiming a grant."
-  },
-  "grantGoneButton": {
-    "message": "حسنًا",
-    "description": "Button text for clearing the error."
-  },
-  "grantGoneText": {
-    "message": "عذرًا، يبدو أن هذه المكافأة انتهت صلاحيتها.",
-    "description": "Error text when user missed a grant."
-  },
-  "grantGoneTitle": {
-    "message": "لم تعد هذه المكافأة متاحة.",
-    "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
     "message": "تحديث الحالة",
@@ -306,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "قمت بتخصيص {{reservedAmount}} BAT للمؤلفين الذين لم يسجلوا بعد لتلقي المساهمات. سيستمر متصفحك في المحاولة للمساهمة حتى يقوموا بتأكيد حساباتهم، أو حتى مرور 90 يومًا.",
+    "message": "لقد حددت {{ReservedAmount}} {{currency}} لمنشئي المحتوى الذين لم يشتركوا بعد لتلقي المساهمات. سيظل متصفحك يحاول المساهمة حتى يؤكدوا، أو حتى مرور 90 يومًا.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -397,6 +415,10 @@
     "message": "صيغة BAT",
     "description": "BAT text for displaying converted tip amount."
   },
+  "bap": {
+    "message": "BAP",
+    "description": "BAT Points abbreviation text"
+  },
   "turnOnAds": {
     "message": "قم بتشغيل الإعلانات",
     "description": "Prompt to turn on Ads via notification"
@@ -452,23 +474,33 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "هديتك المالية في طريقها إليك.",
-    "description": "Cosmetic text indicating grant funds are on the way"
+    "message": "Your $currency$ grant is on its way.",
+    "description": "Cosmetic text indicating grant funds are on the way",
+    "placeholders": {
+      "currency": {
+        "content": "$1",
+        "example": "token"
+      }
+    }
   },
   "grantFinishTokenTitleUGP": {
     "message": "الحصول على أموال مجانًا",
     "description": "Token title on success screen"
   },
+  "grantFinishPointTitleUGP": {
+    "message": "Free Point Grant",
+    "description": "Point title on success screen"
+  },
   "grantFinishTitleAds": {
-    "message": "مكافآت إعلانات Brave!",
+    "message": "لقد ربحتَ مكافأة إعلانات!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "إن مكافآتك الممنوحة من إعلانات Brave في طريقها إليك.",
+    "message": "المكافأة الخاصة بك في طريقها إلى محفظة مكافآت Brave الخاصة بك.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "المنحة الرمزية الخاصة بك من إعلانات Brave",
+    "message": "مبلغ مكافأتك",
     "description": "Token title on success screen for ads"
   },
   "rewardsPanelTextVerify":  {
@@ -532,5 +564,29 @@
   "set": {
     "message": "تعيين...",
     "description": "Button text for setting monthly contribution"
+  },
+  "tokens":  {
+    "message": "الرموز المميزة",
+    "description": "Standard tokens text"
+  },
+  "point":  {
+    "message": "Point",
+    "description": "BAT Point text"
+  },
+  "token":  {
+    "message": "عملة رمزية",
+    "description": "BAT Token text"
+  },
+  "points":  {
+    "message": "points",
+    "description": "BAT Points text"
+  },
+  "tokenGrants":  {
+    "message": "منح العملة الرمزية",
+    "description": "BAT Tokens Grant Text"
+  },
+  "pointGrants":  {
+    "message": "Point Grants",
+    "description": "BAT Points Grant Text"
   }
 }
