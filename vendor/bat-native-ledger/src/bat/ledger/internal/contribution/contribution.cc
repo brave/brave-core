@@ -78,6 +78,10 @@ void Contribution::CheckContributionQueue() {
 }
 
 void Contribution::ProcessContributionQueue() {
+  if (queue_in_progress_) {
+    return;
+  }
+
   const auto callback = std::bind(&Contribution::OnProcessContributionQueue,
       this,
       _1);
@@ -87,11 +91,13 @@ void Contribution::ProcessContributionQueue() {
 void Contribution::OnProcessContributionQueue(
     ledger::ContributionQueuePtr info) {
   if (!info) {
+    queue_in_progress_ = false;
     return;
   }
 
+  queue_in_progress_ = true;
+
   InitReconcile(std::move(info));
-  CheckContributionQueue();
 }
 
 void Contribution::HasSufficientBalance(
@@ -318,6 +324,7 @@ void Contribution::OnBalanceForReconcile(
   auto const contribution =
       braveledger_bind_util::FromStringToContributionQueue(contribution_queue);
   if (result != ledger::Result::LEDGER_OK || !info) {
+    queue_in_progress_ = false;
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
          "We couldn't get balance from the server.";
     phase_one_->Complete(ledger::Result::LEDGER_ERROR,
@@ -714,15 +721,24 @@ bool Contribution::HaveReconcileEnoughFunds(
   return true;
 }
 
+void Contribution::OnDeleteContributionQueue(const ledger::Result result) {
+  queue_in_progress_ = false;
+  CheckContributionQueue();
+}
+
 void Contribution::DeleteContributionQueue(
     ledger::ContributionQueuePtr contribution) {
   if (!contribution || contribution->id == 0) {
     return;
   }
 
+  auto callback = std::bind(&Contribution::OnDeleteContributionQueue,
+      this,
+      _1);
+
   ledger_->DeleteContributionQueue(
       contribution->id,
-      [](const ledger::Result _){});
+      callback);
 }
 
 bool Contribution::ProcessReconcileUnblindedTokens(
