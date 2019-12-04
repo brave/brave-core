@@ -438,9 +438,9 @@ void Contribution::AddRetry(
     const std::string& viewing_id,
     ledger::CurrentReconcileProperties reconcile) {
   BLOG(ledger_, ledger::LogLevel::LOG_WARNING)
-      << "Re-trying contribution for step"
+      << "Re-trying contribution for step "
       << std::to_string(static_cast<int32_t>(step))
-      << "for" << viewing_id;
+      << " for " << viewing_id;
 
   if (reconcile.viewing_id.empty()) {
     reconcile = ledger_->GetReconcileById(viewing_id);
