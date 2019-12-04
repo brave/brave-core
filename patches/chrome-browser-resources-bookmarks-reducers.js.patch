@@ -1,23 +1,23 @@
 diff --git a/chrome/browser/resources/bookmarks/reducers.js b/chrome/browser/resources/bookmarks/reducers.js
-index 94589aaae07e4e128cfecce2b854f7d143501984..898c2442e6c05b464d1400c139dcbc5dd71ce1a2 100644
+index 287b94e6aad661be5006364a2173d11e2c2df3e2..25351742d003c8829ac672da6f89352c41bb9728 100644
 --- a/chrome/browser/resources/bookmarks/reducers.js
 +++ b/chrome/browser/resources/bookmarks/reducers.js
-@@ -246,6 +246,9 @@ cr.define('bookmarks', function() {
-   NodeState.moveBookmark = function(nodes, action) {
-     const nodeModifications = {};
-     const id = action.id;
-+    // Skip when new/old parent is invisible (Pending Bookmarks)
-+    if (!nodes[action.oldParentId] || !nodes[action.parentId])
-+      return nodes;
+@@ -245,6 +245,9 @@ function editBookmark(nodes, action) {
+ function moveBookmark(nodes, action) {
+   const nodeModifications = {};
+   const id = action.id;
++  // Skip when new/old parent is invisible (Pending Bookmarks)
++  if (!nodes[action.oldParentId] || !nodes[action.parentId])
++    return nodes;
  
-     // Change node's parent.
-     nodeModifications[id] =
-@@ -424,7 +427,7 @@ cr.define('bookmarks', function() {
-         return FolderOpenState.openFolderAndAncestors(
-             folderOpenState, nodes[action.id].parentId, nodes);
-       case 'move-bookmark':
--        if (!nodes[action.id].children) {
-+        if (!nodes[action.id] || !nodes[action.id].children) {
-           return folderOpenState;
-         }
+   // Change node's parent.
+   nodeModifications[id] =
+@@ -415,7 +418,7 @@ export function updateFolderOpenState(folderOpenState, action, nodes) {
+       return openFolderAndAncestors(
+           folderOpenState, nodes[action.id].parentId, nodes);
+     case 'move-bookmark':
+-      if (!nodes[action.id].children) {
++      if (!nodes[action.id] || !nodes[action.id].children) {
+         return folderOpenState;
+       }
  

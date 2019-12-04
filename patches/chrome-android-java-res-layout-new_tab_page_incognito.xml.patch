@@ -1,12 +1,12 @@
 diff --git a/chrome/android/java/res/layout/new_tab_page_incognito.xml b/chrome/android/java/res/layout/new_tab_page_incognito.xml
-index 29a20b7d6ad21a9ada0b720542f2efa33703a4db..2a391bfccd9e3c68d771470a971638daff9c58f8 100644
+index fe50af78f8a9d0473925454720438a38791060f9..7cdb470b5b8820950ed84ad86257aa178214b934 100644
 --- a/chrome/android/java/res/layout/new_tab_page_incognito.xml
 +++ b/chrome/android/java/res/layout/new_tab_page_incognito.xml
-@@ -84,6 +84,7 @@
-                 android:textAppearance="@style/TextAppearance.IncognitoNewTabLearnMoreLinkModern"
-                 android:lineSpacingExtra="@dimen/md_incognito_ntp_line_spacing" />
+@@ -22,6 +22,7 @@
+         android:requiresFadingEdge="vertical" >
  
-+	    <org.chromium.chrome.browser.ntp.BraveDuckDuckGoOfferView android:id="@+id/brave_duck_duck_go_offer_view" android:layout_width="match_parent" android:layout_height="match_parent" > <include layout="@layout/brave_ddg_offer_link" /> </org.chromium.chrome.browser.ntp.BraveDuckDuckGoOfferView>
-         </LinearLayout>
+         <include layout="@layout/incognito_description_layout" />
++        <org.chromium.chrome.browser.ntp.BraveDuckDuckGoOfferView android:id="@+id/brave_duck_duck_go_offer_view" android:layout_width="match_parent" android:layout_height="match_parent" > <include layout="@layout/brave_ddg_offer_link" /> </org.chromium.chrome.browser.ntp.BraveDuckDuckGoOfferView>
  
      </org.chromium.chrome.browser.ntp.NewTabPageScrollView>
+ 

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/external_protocol/external_protocol_handler.cc b/chrome/browser/external_protocol/external_protocol_handler.cc
-index c4eafbf805808731d2d8597e81ff7b80dc062d39..4b52cd17abb5958ea64e142bb49f6102fca02d28 100644
+index 3af4b53b21c8969bdfb211ac98309698191d5dc2..f6e655078066fa254c52c333c562888b655c64d3 100644
 --- a/chrome/browser/external_protocol/external_protocol_handler.cc
 +++ b/chrome/browser/external_protocol/external_protocol_handler.cc
 @@ -240,7 +240,7 @@ ExternalProtocolHandler::BlockState ExternalProtocolHandler::GetBlockState(

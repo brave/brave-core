@@ -1,8 +1,8 @@
 diff --git a/content/browser/devtools/devtools_url_loader_interceptor.cc b/content/browser/devtools/devtools_url_loader_interceptor.cc
-index 6b7d04e1d0c70273c9f28d5136c6847c399b5a71..64b282c7f00baba38779f3bf6561d5f688069810 100644
+index 8ae432c3db1f6dc98bb213184119c51db5bc5e8d..ccb87fb58a39da0605e83e5ef69fd862fd88f7a2 100644
 --- a/content/browser/devtools/devtools_url_loader_interceptor.cc
 +++ b/content/browser/devtools/devtools_url_loader_interceptor.cc
-@@ -1025,6 +1025,7 @@ void InterceptionJob::ProcessSetCookies(const net::HttpResponseHeaders& headers,
+@@ -1072,6 +1072,7 @@ void InterceptionJob::ProcessSetCookies(const net::HttpResponseHeaders& headers,
    size_t iter = 0;
    while (headers.EnumerateHeader(&iter, name, &cookie_line)) {
      std::unique_ptr<net::CanonicalCookie> cookie = net::CanonicalCookie::Create(

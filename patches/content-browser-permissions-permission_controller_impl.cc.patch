@@ -1,12 +1,12 @@
 diff --git a/content/browser/permissions/permission_controller_impl.cc b/content/browser/permissions/permission_controller_impl.cc
-index 09fe4c54389a1d997f1fe5abbeae3444715f0ca2..5ea5d925b52b9e7cccacf7ba4203d2089b701d24 100644
+index 28c6934a6aa623ab783a485d01da7e4aafe88c8b..c3b65d6b93d8649d95f7ab8ee7fbf9e82bef63be 100644
 --- a/content/browser/permissions/permission_controller_impl.cc
 +++ b/content/browser/permissions/permission_controller_impl.cc
 @@ -59,6 +59,7 @@ PermissionToSchedulingFeature(PermissionType permission_name) {
-     case PermissionType::IDLE_DETECTION:
-     case PermissionType::WAKE_LOCK_SCREEN:
-     case PermissionType::WAKE_LOCK_SYSTEM:
-+    BRAVE_PERMISSION_TYPES
+     case PermissionType::NFC:
      case PermissionType::NUM:
+     case PermissionType::SENSORS:
++    BRAVE_PERMISSION_TYPES
        return base::nullopt;
    }
+ }

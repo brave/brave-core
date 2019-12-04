@@ -1,5 +1,5 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index d9a9a0efe12b64d399182622fd1333a1a4f0bb78..13fa0192679df3e6c865ac2703a132534954bb83 100755
+index 85291b0e4635d261bed90e5499af4ffa8e0d34f0..87a6d3a3b14195c3b416e3caf65ed5cab924eb44 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
 @@ -20,7 +20,7 @@ import os
@@ -11,16 +11,15 @@ index d9a9a0efe12b64d399182622fd1333a1a4f0bb78..13fa0192679df3e6c865ac2703a13253
  
  ARCHIVE_DIR = "installer_archive"
  
-@@ -110,7 +110,7 @@ def CopyAllFilesToStagingDir(config, distribution, staging_dir, build_dir,
-                                    staging_dir, build_dir)
+@@ -112,6 +112,7 @@ def CopyAllFilesToStagingDir(config, distribution, staging_dir, build_dir,
    if enable_hidpi == '1':
-     CopySectionFilesToStagingDir(config, 'HIDPI', staging_dir, build_dir)
--
+     CopySectionFilesToStagingDir(config, 'HIDPI', staging_dir, build_dir,
+                                  verbose)
 +  BraveCopyAllFilesToStagingDir(config, staging_dir, g_archive_inputs)
-   if include_snapshotblob == '1':
-     CopySectionFilesToStagingDir(config, 'SNAPSHOTBLOB', staging_dir, build_dir)
  
-@@ -533,6 +533,7 @@ def main(options):
+   if include_snapshotblob == '1':
+     CopySectionFilesToStagingDir(config, 'SNAPSHOTBLOB', staging_dir, build_dir,
+@@ -540,6 +541,7 @@ def main(options):
    if prev_version:
      version_numbers = prev_version.split('.')
      prev_build_number = version_numbers[2] + '.' + version_numbers[3]
@@ -28,7 +27,7 @@ index d9a9a0efe12b64d399182622fd1333a1a4f0bb78..13fa0192679df3e6c865ac2703a13253
  
    # Name of the archive file built (for example - chrome.7z or
    # patch-<old_version>-<new_version>.7z or patch-<new_version>.7z
-@@ -604,6 +605,7 @@ def _ParseOptions():
+@@ -611,6 +613,7 @@ def _ParseOptions():
             'with the installer archive {x86|x64}.')
    parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
                      default=False)

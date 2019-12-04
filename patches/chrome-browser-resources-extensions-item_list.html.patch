@@ -1,20 +1,11 @@
 diff --git a/chrome/browser/resources/extensions/item_list.html b/chrome/browser/resources/extensions/item_list.html
-index 339e774de80e09c6b14247b1a0e2b6f917064db9..ce87c3fa000e46697841800ff2d6717eb8dfe8ca 100644
+index 2ea1c0f87ae69aee38ae60d3228eb99169fec430..901854a7a85cf89d91c29856d92f27eb7499ce68 100644
 --- a/chrome/browser/resources/extensions/item_list.html
 +++ b/chrome/browser/resources/extensions/item_list.html
-@@ -7,6 +7,7 @@
- <link rel="import" href="chrome://resources/polymer/v1_0/iron-a11y-announcer/iron-a11y-announcer.html">
- <link rel="import" href="item.html">
- <link rel="import" href="shared_style.html">
-+<link rel="import" href="brave_item_list_more_items.html">
- 
- <dom-module id="extensions-item-list">
-   <template>
-@@ -126,6 +127,7 @@
-             </template>
-           </div>
-         </div>
-+        <extensions-brave-item-list-more-items apps="{{apps}}" extensions="{{extensions}}" />
+@@ -114,5 +114,6 @@
+         </template>
        </div>
      </div>
-   </template>
++    <extensions-brave-item-list-more-items apps="{{apps}}" extensions="{{extensions}}" />
+   </div>
+ </div>

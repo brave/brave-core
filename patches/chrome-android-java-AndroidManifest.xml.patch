@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 5a71180c427c05a62e09b3a56c23c50fe03a0b36..ed14dc6aa36e44fbc9c7dd3ec4bfd2ba5da2f99f 100644
+index 12198ae8ae9b6d3702b6d0265e20a748e5893954..61a1dd2cc9a1f386237cd85295f21ad2c1c56dce 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
-@@ -961,7 +961,7 @@ by a child template that "extends" this file.
+@@ -979,7 +979,7 @@ by a child template that "extends" this file.
          </provider>
  
          <!-- Sync adapter for browser invalidation. -->
@@ -11,7 +11,7 @@ index 5a71180c427c05a62e09b3a56c23c50fe03a0b36..ed14dc6aa36e44fbc9c7dd3ec4bfd2ba
              android:exported="false">
              <intent-filter>
                  <action android:name="android.content.SyncAdapter" />
-@@ -1285,6 +1285,7 @@ android:value="true" />
+@@ -1304,6 +1304,7 @@ android:value="true" />
          </activity>
          {% endif %}
  

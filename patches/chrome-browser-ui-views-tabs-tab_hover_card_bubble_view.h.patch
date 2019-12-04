@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h b/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h
-index 983db636682e9b0167c9328bd84aec762fa07646..c52cb1f14c891ea67616a92c5b82ac6ed1cbf7dd 100644
+index bd434c4dcd6a52727d0180de54e000e3d32bbdbf..b87206c59508c1eddd4ed1d34fa96b0fa0a9264d 100644
 --- a/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h
 +++ b/chrome/browser/ui/views/tabs/tab_hover_card_bubble_view.h
-@@ -64,6 +64,7 @@ class TabHoverCardBubbleView : public views::BubbleDialogDelegateView,
+@@ -60,6 +60,7 @@ class TabHoverCardBubbleView : public views::BubbleDialogDelegateView {
      last_mouse_exit_timestamp_ = last_mouse_exit_timestamp;
    }
  

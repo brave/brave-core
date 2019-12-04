@@ -1,5 +1,5 @@
 diff --git a/components/network_time/network_time_tracker.cc b/components/network_time/network_time_tracker.cc
-index 8e0bdfc086b81fb00bdd1c8ea4d229567a5d5f7f..7202b3e6806afef1dd8cecd87841dfd48da8f86e 100644
+index 3a4bed488a162d51b443176c3f380d1db549c0fb..828a5bf1532ad5dd3cf48673bf527e5852149f9a 100644
 --- a/components/network_time/network_time_tracker.cc
 +++ b/components/network_time/network_time_tracker.cc
 @@ -276,7 +276,7 @@ void NetworkTimeTracker::UpdateNetworkTime(base::Time network_time,
