@@ -37,7 +37,7 @@ protocol TopToolbarDelegate: class {
     // Returns either (search query, true) or (url, false).
     func topToolbarDisplayTextForURL(_ url: URL?) -> (String?, Bool)
     func topToolbarDidBeginDragInteraction(_ topToolbar: TopToolbarView)
-    func topToolbarDidTapBookmarkButton(_ topToolbar: TopToolbarView)
+    func topToolbarDidTapBookmarkButton(_ topToolbar: TopToolbarView?, favorites: Bool)
     func topToolbarDidTapBraveShieldsButton(_ topToolbar: TopToolbarView)
     func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView)
     func topToolbarDidTapMenuButton(_ topToolbar: TopToolbarView)
@@ -145,6 +145,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
     var forwardButton = ToolbarButton(top: true)
     var shareButton = ToolbarButton(top: true)
     var addTabButton = ToolbarButton(top: true)
+    // Do nothing with this, just required for protocol conformance
+    var searchButton = ToolbarButton(top: true)
     lazy var menuButton = ToolbarButton(top: true).then {
         $0.contentMode = .center
         $0.accessibilityIdentifier = "topToolbarView-menuButton"
@@ -470,7 +472,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     }
     
     @objc func didClickBookmarkButton() {
-        delegate?.topToolbarDidTapBookmarkButton(self)
+        delegate?.topToolbarDidTapBookmarkButton(self, favorites: false)
     }
     
     @objc func didClickMenu() {

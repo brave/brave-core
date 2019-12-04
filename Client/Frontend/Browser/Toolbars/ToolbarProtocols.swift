@@ -12,6 +12,7 @@ protocol ToolbarProtocol: class {
     var forwardButton: ToolbarButton { get }
     var shareButton: ToolbarButton { get }
     var addTabButton: ToolbarButton { get }
+    var searchButton: ToolbarButton { get }
     var menuButton: ToolbarButton { get }
     var actionButtons: [Themeable & UIButton] { get }
     
@@ -48,6 +49,7 @@ protocol ToolbarDelegate: class {
     func tabToolbarDidLongPressTabs(_ tabToolbar: ToolbarProtocol, button: UIButton)
     func tabToolbarDidPressShare()
     func tabToolbarDidPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton)
+    func tabToolbarDidPressSearch(_ tabToolbar: ToolbarProtocol, button: UIButton)
     func tabToolbarDidLongPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton)
     func tabToolbarDidSwipeToChangeTabs(_ tabToolbar: ToolbarProtocol, direction: UISwipeGestureRecognizer.Direction)
 }

@@ -334,6 +334,7 @@ class BrowserViewController: UIViewController {
 
         if showToolbar {
             toolbar = BottomToolbarView()
+            toolbar?.setSearchButtonState(url: tabManager.selectedTab?.url)
             footer.addSubview(toolbar!)
             toolbar?.tabToolbarDelegate = self
 
@@ -1327,22 +1328,23 @@ class BrowserViewController: UIViewController {
         switchToPrivacyMode(isPrivate: isPrivate)
         _ = tabManager.addTabAndSelect(request, isPrivate: isPrivate)
         if url == nil && NewTabAccessors.getNewTabPage() == .blankPage {
-            topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
+            focusLocationField()
         }
     }
 
-    func openBlankNewTab(focusLocationField: Bool, isPrivate: Bool = false, searchFor searchText: String? = nil) {
+    func openBlankNewTab(attemptLocationFieldFocus: Bool, isPrivate: Bool = false, searchFor searchText: String? = nil) {
         popToBVC()
         openURLInNewTab(nil, isPrivate: isPrivate, isPrivileged: true)
         let freshTab = tabManager.selectedTab
         
-        if focusLocationField {
+        // Focus field only if requested and background images are not supported
+        if attemptLocationFieldFocus && Preferences.NewTabPage.autoOpenKeyboard.value {
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
                 // Without a delay, the text field fails to become first responder
                 // Check that the newly created tab is still selected.
                 // This let's the user spam the Cmd+T button without lots of responder changes.
                 guard freshTab == self.tabManager.selectedTab else { return }
-                self.topToolbar.tabLocationViewDidTapLocation(self.topToolbar.locationView)
+                self.focusLocationField()
                 if let text = searchText {
                     self.topToolbar.setLocation(text, search: true)
                 }
@@ -1473,6 +1475,9 @@ class BrowserViewController: UIViewController {
         }
 
         if let url = webView.url {
+            // Whether to show search icon or + icon
+            toolbar?.setSearchButtonState(url: url)
+            
             if !url.isErrorPageURL, !url.isAboutHomeURL, !url.isFileURL {
                 // Fire the readability check. This is here and not in the pageShow event handler in ReaderMode.js anymore
                 // because that event wil not always fire due to unreliable page caching. This will either let us know that
@@ -1519,6 +1524,10 @@ class BrowserViewController: UIViewController {
                 tab.desktopSite = Preferences.General.alwaysRequestDesktopSite.value
             }
         }
+    }
+    
+    private func focusLocationField() {
+        topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
     }
     
     // MARK: - Browser PIN Callout
@@ -1617,12 +1626,12 @@ extension BrowserViewController: ClipboardBarDisplayHandlerDelegate {
 
 extension BrowserViewController: QRCodeViewControllerDelegate {
     func didScanQRCodeWithURL(_ url: URL) {
-        openBlankNewTab(focusLocationField: false)
+        openBlankNewTab(attemptLocationFieldFocus: false)
         finishEditingAndSubmit(url, visitType: VisitType.typed)
     }
 
     func didScanQRCodeWithText(_ text: String) {
-        openBlankNewTab(focusLocationField: false)
+        openBlankNewTab(attemptLocationFieldFocus: false)
         submitSearchText(text)
     }
 }
@@ -1864,8 +1873,11 @@ extension BrowserViewController: TopToolbarDelegate {
     
     // TODO: This logic should be fully abstracted away and share logic from current MenuViewController
     // See: https://github.com/brave/brave-ios/issues/1452
-    func topToolbarDidTapBookmarkButton(_ topToolbar: TopToolbarView) {
-        let vc = BookmarksViewController(folder: nil, isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
+    func topToolbarDidTapBookmarkButton(_ topToolbar: TopToolbarView?, favorites: Bool) {
+        let mode: BookmarksViewController.Mode = favorites ? .favorites : .bookmarks(inFolder: nil)
+        
+        let vc = BookmarksViewController(mode: mode,
+                                         isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
         vc.toolbarUrlActionsDelegate = self
         
         let nav = SettingsNavigationController(rootViewController: vc)
@@ -1887,6 +1899,10 @@ extension BrowserViewController: TopToolbarDelegate {
 }
 
 extension BrowserViewController: ToolbarDelegate {
+    func tabToolbarDidPressSearch(_ tabToolbar: ToolbarProtocol, button: UIButton) {
+        focusLocationField()
+    }
+    
     func tabToolbarDidPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton) {
         tabManager.selectedTab?.goBack()
     }
@@ -1938,7 +1954,7 @@ extension BrowserViewController: ToolbarDelegate {
     }
     
     func tabToolbarDidPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-        self.openBlankNewTab(focusLocationField: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+        self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
     }
 
     func tabToolbarDidLongPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton) {
@@ -1951,13 +1967,13 @@ extension BrowserViewController: ToolbarDelegate {
             let newPrivateTabAction = UIAlertAction(title: Strings.NewPrivateTabTitle, style: .default, handler: { [unowned self] _ in
                 // BRAVE TODO: Add check for DuckDuckGo popup (and based on 1.6, whether the browser lock is enabled?)
                 // before focusing on the url bar
-                self.openBlankNewTab(focusLocationField: true, isPrivate: true)
+                self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: true)
             })
             actions.append(newPrivateTabAction)
         }
         let bottomActionTitle = PrivateBrowsingManager.shared.isPrivateBrowsing ? Strings.NewPrivateTabTitle : Strings.NewTabTitle
         actions.append(UIAlertAction(title: bottomActionTitle, style: .default, handler: { [unowned self] _ in
-            self.openBlankNewTab(focusLocationField: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
+            self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
         }))
         return actions
     }
@@ -2220,7 +2236,8 @@ extension BrowserViewController: TabManagerDelegate {
             wv.accessibilityIdentifier = nil
             wv.removeFromSuperview()
         }
-
+        
+        toolbar?.setSearchButtonState(url: selected?.url)
         if let tab = selected, let webView = tab.webView {
             updateURLBar()
             
@@ -3314,6 +3331,10 @@ extension BrowserViewController: TopSitesDelegate {
     
     func didTapDuckDuckGoCallout() {
         presentDuckDuckGoCallout(force: true)
+    }
+    
+    func didTapShowMoreFavorites() {
+        topToolbarDidTapBookmarkButton(nil, favorites: true)
     }
 }
 

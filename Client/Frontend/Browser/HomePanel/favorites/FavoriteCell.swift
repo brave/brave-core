@@ -19,7 +19,6 @@ class FavoriteCell: UICollectionViewCell {
         /// Ratio of width:height of the thumbnail image.
         static let cornerRadius: CGFloat = 8
         
-        static let labelColor = UIAccessibility.isDarkerSystemColorsEnabled ? UX.GreyJ : UX.GreyH
         static let labelAlignment: NSTextAlignment = .center
         static let labelInsets = UIEdgeInsets(top: 0, left: 3, bottom: 2, right: 3)
         
@@ -35,7 +34,7 @@ class FavoriteCell: UICollectionViewCell {
     let textLabel = UILabel().then {
         $0.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: NSLayoutConstraint.Axis.vertical)
         $0.font = DynamicFontHelper.defaultHelper.DefaultSmallFont
-        $0.textColor = UI.labelColor
+        $0.appearanceTextColor = .white
         $0.textAlignment = UI.labelAlignment
         $0.lineBreakMode = NSLineBreakMode.byWordWrapping
         $0.numberOfLines = 2
@@ -130,9 +129,6 @@ class FavoriteCell: UICollectionViewCell {
         super.prepareForReuse()
         editButton.isHidden = true
         backgroundColor = UIColor.clear
-        textLabel.font = DynamicFontHelper.defaultHelper.DefaultSmallFont
-        textLabel.textColor = 
-            PrivateBrowsingManager.shared.isPrivateBrowsing ? UX.Favorites.cellLabelColorPrivate : UX.Favorites.cellLabelColorNormal
         imageView.backgroundColor = UIColor.clear
         imageView.image = nil
     }

@@ -96,5 +96,13 @@ extension Preferences {
         /// The toggles states for clear private data screen
         static let clearPrivateDataToggles = Option<[Bool]>(key: "privacy.clear-data-toggles", default: [])
     }
+    final class NewTabPage {
+        /// Whether bookmark image are enabled / shown
+        static let backgroundImages = Option<Bool>(key: "newtabpage.background-images", default: true)
+        /// Whether sponsored images are included into the background image rotation
+        static let backgroundSponsoredImages = Option<Bool>(key: "newtabpage.background-sponsored-images", default: true)
+        /// Whether the iOS keyboard auto-opens on a NTP or not
+        static let autoOpenKeyboard = Option<Bool>(key: "newtabpage.auto-open-keyboard", default: false)
+    }
 }
 

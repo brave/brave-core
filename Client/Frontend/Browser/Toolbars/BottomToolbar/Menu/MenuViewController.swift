@@ -218,7 +218,7 @@ class MenuViewController: UITableViewController {
     }
     
     private func openBookmarks() {
-        let vc = BookmarksViewController(folder: nil, isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
+        let vc = BookmarksViewController(mode: .bookmarks(inFolder: nil), isPrivateBrowsing: PrivateBrowsingManager.shared.isPrivateBrowsing)
         vc.toolbarUrlActionsDelegate = bvc
         
         open(vc, doneButton: DoneButton(style: .done, position: .right))

@@ -594,11 +594,31 @@
 		5D24AF8221BA459000F9506A /* BlocklistName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D24AF8121BA459000F9506A /* BlocklistName.swift */; };
 		5D24AF8421BA489A00F9506A /* ContentBlocker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D24AF8321BA489A00F9506A /* ContentBlocker.swift */; };
 		5D24AF9021BA4D7700F9506A /* ContentBlockerRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D24AF8F21BA4D7700F9506A /* ContentBlockerRegion.swift */; };
+		5D53749C23846FFC00A2B587 /* anton-repponen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53748D23846FFA00A2B587 /* anton-repponen.jpg */; };
+		5D53749D23846FFC00A2B587 /* dc-cavalleri.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53748E23846FFA00A2B587 /* dc-cavalleri.jpg */; };
+		5D53749E23846FFC00A2B587 /* louis-kim.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53748F23846FFA00A2B587 /* louis-kim.jpg */; };
+		5D53749F23846FFC00A2B587 /* Svalbard_Jerol_Soibam.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749023846FFA00A2B587 /* Svalbard_Jerol_Soibam.jpeg */; };
+		5D5374A023846FFC00A2B587 /* joe-gardner.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749123846FFB00A2B587 /* joe-gardner.jpg */; };
+		5D5374A123846FFC00A2B587 /* xavier-balderas-cejudo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749223846FFB00A2B587 /* xavier-balderas-cejudo.jpg */; };
+		5D5374A223846FFC00A2B587 /* anders-jilden.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749323846FFB00A2B587 /* anders-jilden.jpg */; };
+		5D5374A323846FFC00A2B587 /* will_christiansen_glacier_peak.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749423846FFB00A2B587 /* will_christiansen_glacier_peak.jpg */; };
+		5D5374A423846FFC00A2B587 /* will_christiansen_ice.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749523846FFB00A2B587 /* will_christiansen_ice.jpg */; };
+		5D5374A523846FFC00A2B587 /* ben-karpinski.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749623846FFB00A2B587 /* ben-karpinski.jpg */; };
+		5D5374A623846FFC00A2B587 /* oliwier gesla.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749723846FFB00A2B587 /* oliwier gesla.jpg */; };
+		5D5374A723846FFC00A2B587 /* andreas-gucklhorn.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749823846FFC00A2B587 /* andreas-gucklhorn.jpg */; };
+		5D5374A823846FFC00A2B587 /* annie-spratt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749923846FFC00A2B587 /* annie-spratt.jpg */; };
+		5D5374A923846FFC00A2B587 /* matt-palmer.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749A23846FFC00A2B587 /* matt-palmer.jpg */; };
+		5D5374AA23846FFC00A2B587 /* andy-mai.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D53749B23846FFC00A2B587 /* andy-mai.jpg */; };
+		5D5374B723887E7400A2B587 /* ntp-sponsored.json in Resources */ = {isa = PBXBuildFile; fileRef = 5D5374B623887E7400A2B587 /* ntp-sponsored.json */; };
+		5D5374B923887E7D00A2B587 /* EAFF_JA_soccer_Background_final.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 5D5374B823887E7D00A2B587 /* EAFF_JA_soccer_Background_final.jpg */; };
+		5D5374BB238895B100A2B587 /* BackgroundImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5374BA238895B100A2B587 /* BackgroundImage.swift */; };
+		5D5E2361238C386B00AD6FBD /* NewTabPageTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5E2360238C386B00AD6FBD /* NewTabPageTableViewController.swift */; };
 		5D6DDEF3214003A6001FF0AE /* DAU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6DDEE6214003A6001FF0AE /* DAU.swift */; };
 		5D6DDEFE2141B6A1001FF0AE /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6DDEF62141B6A0001FF0AE /* Preferences.swift */; };
 		5D6DDF0021428CF0001FF0AE /* DAUTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6DDEFF21428CF0001FF0AE /* DAUTests.swift */; };
 		5D7001C222249F7B00E576FB /* ShortNameToFileMapping.json in Resources */ = {isa = PBXBuildFile; fileRef = 5D7001BA22249F7A00E576FB /* ShortNameToFileMapping.json */; };
 		5D8AE6AF230C76B60096C845 /* AppearanceExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8AE6AE230C76B60096C845 /* AppearanceExtensions.swift */; };
+		5DB474F1237F4CC9007B7652 /* ntp-data.json in Resources */ = {isa = PBXBuildFile; fileRef = 5DB474F0237F4CC9007B7652 /* ntp-data.json */; };
 		5DE5250D218CE92C000DFAA6 /* block-ads.json in Resources */ = {isa = PBXBuildFile; fileRef = 5DE52508218CE92B000DFAA6 /* block-ads.json */; };
 		5DE5250E218CE92C000DFAA6 /* block-images.json in Resources */ = {isa = PBXBuildFile; fileRef = 5DE52509218CE92B000DFAA6 /* block-images.json */; };
 		5DE5250F218CE92C000DFAA6 /* upgrade-http.json in Resources */ = {isa = PBXBuildFile; fileRef = 5DE5250A218CE92B000DFAA6 /* upgrade-http.json */; };
@@ -2010,11 +2030,31 @@
 		5D24AF8121BA459000F9506A /* BlocklistName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlocklistName.swift; sourceTree = "<group>"; };
 		5D24AF8321BA489A00F9506A /* ContentBlocker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentBlocker.swift; sourceTree = "<group>"; };
 		5D24AF8F21BA4D7700F9506A /* ContentBlockerRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentBlockerRegion.swift; sourceTree = "<group>"; };
+		5D53748D23846FFA00A2B587 /* anton-repponen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "anton-repponen.jpg"; sourceTree = "<group>"; };
+		5D53748E23846FFA00A2B587 /* dc-cavalleri.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "dc-cavalleri.jpg"; sourceTree = "<group>"; };
+		5D53748F23846FFA00A2B587 /* louis-kim.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "louis-kim.jpg"; sourceTree = "<group>"; };
+		5D53749023846FFA00A2B587 /* Svalbard_Jerol_Soibam.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Svalbard_Jerol_Soibam.jpeg; sourceTree = "<group>"; };
+		5D53749123846FFB00A2B587 /* joe-gardner.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "joe-gardner.jpg"; sourceTree = "<group>"; };
+		5D53749223846FFB00A2B587 /* xavier-balderas-cejudo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "xavier-balderas-cejudo.jpg"; sourceTree = "<group>"; };
+		5D53749323846FFB00A2B587 /* anders-jilden.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "anders-jilden.jpg"; sourceTree = "<group>"; };
+		5D53749423846FFB00A2B587 /* will_christiansen_glacier_peak.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = will_christiansen_glacier_peak.jpg; sourceTree = "<group>"; };
+		5D53749523846FFB00A2B587 /* will_christiansen_ice.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = will_christiansen_ice.jpg; sourceTree = "<group>"; };
+		5D53749623846FFB00A2B587 /* ben-karpinski.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "ben-karpinski.jpg"; sourceTree = "<group>"; };
+		5D53749723846FFB00A2B587 /* oliwier gesla.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "oliwier gesla.jpg"; sourceTree = "<group>"; };
+		5D53749823846FFC00A2B587 /* andreas-gucklhorn.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "andreas-gucklhorn.jpg"; sourceTree = "<group>"; };
+		5D53749923846FFC00A2B587 /* annie-spratt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "annie-spratt.jpg"; sourceTree = "<group>"; };
+		5D53749A23846FFC00A2B587 /* matt-palmer.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "matt-palmer.jpg"; sourceTree = "<group>"; };
+		5D53749B23846FFC00A2B587 /* andy-mai.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "andy-mai.jpg"; sourceTree = "<group>"; };
+		5D5374B623887E7400A2B587 /* ntp-sponsored.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "ntp-sponsored.json"; sourceTree = "<group>"; };
+		5D5374B823887E7D00A2B587 /* EAFF_JA_soccer_Background_final.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = EAFF_JA_soccer_Background_final.jpg; sourceTree = "<group>"; };
+		5D5374BA238895B100A2B587 /* BackgroundImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundImage.swift; sourceTree = "<group>"; };
+		5D5E2360238C386B00AD6FBD /* NewTabPageTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTabPageTableViewController.swift; sourceTree = "<group>"; };
 		5D6DDEE6214003A6001FF0AE /* DAU.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DAU.swift; sourceTree = "<group>"; };
 		5D6DDEF62141B6A0001FF0AE /* Preferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		5D6DDEFF21428CF0001FF0AE /* DAUTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DAUTests.swift; sourceTree = "<group>"; };
 		5D7001BA22249F7A00E576FB /* ShortNameToFileMapping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ShortNameToFileMapping.json; sourceTree = "<group>"; };
 		5D8AE6AE230C76B60096C845 /* AppearanceExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceExtensions.swift; sourceTree = "<group>"; };
+		5DB474F0237F4CC9007B7652 /* ntp-data.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "ntp-data.json"; sourceTree = "<group>"; };
 		5DE52508218CE92B000DFAA6 /* block-ads.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "block-ads.json"; sourceTree = "<group>"; };
 		5DE52509218CE92B000DFAA6 /* block-images.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "block-images.json"; sourceTree = "<group>"; };
 		5DE5250A218CE92B000DFAA6 /* upgrade-http.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "upgrade-http.json"; sourceTree = "<group>"; };
@@ -2744,6 +2784,11 @@
 				0AADC4CD20D2A6A200FDE368 /* favorites */,
 				0AADC4D620D2B03900FDE368 /* BraveShieldStatsView.swift */,
 				0AADC4C720D2A55A00FDE368 /* FavoritesViewController.swift */,
+				5D5374BA238895B100A2B587 /* BackgroundImage.swift */,
+				5D5374B623887E7400A2B587 /* ntp-sponsored.json */,
+				5DB474F0237F4CC9007B7652 /* ntp-data.json */,
+				5D5374B42388733A00A2B587 /* NTO_Sponsored */,
+				5DB474CE237F4BE9007B7652 /* NTP_Images */,
 			);
 			path = HomePanel;
 			sourceTree = "<group>";
@@ -3315,6 +3360,7 @@
 				2F44FC711A9E840300FD20CC /* SettingsNavigationController.swift */,
 				2F44FCC41A9E85E900FD20CC /* SettingsTableSectionHeaderFooterView.swift */,
 				A1F66A7220DD71C400303328 /* SettingsViewController.swift */,
+				5D5E2360238C386B00AD6FBD /* NewTabPageTableViewController.swift */,
 				A1CA29C320E1746A00CB9126 /* OptionSelectionViewController.swift */,
 				A16DC67E20E585D90069C8E1 /* PasscodeSettingsViewController.swift */,
 				0AEFB84822244135007AF600 /* AdblockDebugMenuTableViewController.swift */,
@@ -3858,6 +3904,14 @@
 			path = Themes;
 			sourceTree = "<group>";
 		};
+		5D5374B42388733A00A2B587 /* NTO_Sponsored */ = {
+			isa = PBXGroup;
+			children = (
+				5D5374B823887E7D00A2B587 /* EAFF_JA_soccer_Background_final.jpg */,
+			);
+			path = NTO_Sponsored;
+			sourceTree = "<group>";
+		};
 		5D6DDEDF214003A6001FF0AE /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
@@ -3871,6 +3925,28 @@
 				5E0FCD242342544C00AC831E /* URLSession+Requests.swift */,
 			);
 			path = Analytics;
+			sourceTree = "<group>";
+		};
+		5DB474CE237F4BE9007B7652 /* NTP_Images */ = {
+			isa = PBXGroup;
+			children = (
+				5D53749323846FFB00A2B587 /* anders-jilden.jpg */,
+				5D53749823846FFC00A2B587 /* andreas-gucklhorn.jpg */,
+				5D53749B23846FFC00A2B587 /* andy-mai.jpg */,
+				5D53749923846FFC00A2B587 /* annie-spratt.jpg */,
+				5D53748D23846FFA00A2B587 /* anton-repponen.jpg */,
+				5D53749623846FFB00A2B587 /* ben-karpinski.jpg */,
+				5D53748E23846FFA00A2B587 /* dc-cavalleri.jpg */,
+				5D53749123846FFB00A2B587 /* joe-gardner.jpg */,
+				5D53748F23846FFA00A2B587 /* louis-kim.jpg */,
+				5D53749A23846FFC00A2B587 /* matt-palmer.jpg */,
+				5D53749723846FFB00A2B587 /* oliwier gesla.jpg */,
+				5D53749023846FFA00A2B587 /* Svalbard_Jerol_Soibam.jpeg */,
+				5D53749423846FFB00A2B587 /* will_christiansen_glacier_peak.jpg */,
+				5D53749523846FFB00A2B587 /* will_christiansen_ice.jpg */,
+				5D53749223846FFB00A2B587 /* xavier-balderas-cejudo.jpg */,
+			);
+			path = NTP_Images;
 			sourceTree = "<group>";
 		};
 		5DE7688520B3456D00FF5533 /* BraveShared */ = {
@@ -5364,12 +5440,14 @@
 			files = (
 				5E0FCD212342526700AC831E /* FullscreenHelper.js in Resources */,
 				D38A1EE01CB458EC0080C842 /* CertError.html in Resources */,
+				5D5374A523846FFC00A2B587 /* ben-karpinski.jpg in Resources */,
 				0BA1E0301B051A07007675AF /* NetError.css in Resources */,
 				59871C1921E4D83900316590 /* block-cookies.json in Resources */,
 				3BC659491E5BA4AE006D560F /* TopSites in Resources */,
 				E4B7B77E1A793CF20022C5E0 /* FiraSans-SemiBold.ttf in Resources */,
 				F84B220B1A0910F600AAB793 /* Images.xcassets in Resources */,
 				2755AB7D23107BC600F0721F /* AdsReporting.js in Resources */,
+				5DB474F1237F4CC9007B7652 /* ntp-data.json in Resources */,
 				595E0EDB21CAD97C00813D49 /* CookieControl.js in Resources */,
 				0A0D3D3C21A4BE6400BEE65B /* adblock-list.txt in Resources */,
 				27658272217130D900754B2F /* GlobalSign_r3.cer in Resources */,
@@ -5384,16 +5462,21 @@
 				E4CD9F541A71506400318571 /* Reader.html in Resources */,
 				C6345ECB2113B3A000CFB983 /* SearchPlugins in Resources */,
 				F930CDAC227000F200A23FE1 /* U2F.js in Resources */,
+				5D5374B923887E7D00A2B587 /* EAFF_JA_soccer_Background_final.jpg in Resources */,
 				5D7001C222249F7B00E576FB /* ShortNameToFileMapping.json in Resources */,
 				4422D55921BFFB7F00BF1855 /* unicode.py in Resources */,
 				7B2142FE1E5E055000CDD3FC /* InfoPlist.strings in Resources */,
 				E69922171B94E3EF007C480D /* Licenses.html in Resources */,
+				5D5374A223846FFC00A2B587 /* anders-jilden.jpg in Resources */,
 				E4CD9F5B1A71506C00318571 /* Reader.css in Resources */,
+				5D5374B723887E7400A2B587 /* ntp-sponsored.json in Resources */,
 				D0FCF8061FE4772D004A7995 /* AllFramesAtDocumentEnd.js in Resources */,
 				27658273217130D900754B2F /* DigiCertHighAssurance.cer in Resources */,
 				E4B7B7611A793CF20022C5E0 /* CharisSILB.ttf in Resources */,
 				4422D56E21BFFB7F00BF1855 /* make_perl_groups.pl in Resources */,
 				E4B7B7621A793CF20022C5E0 /* CharisSILBI.ttf in Resources */,
+				5D5374A723846FFC00A2B587 /* andreas-gucklhorn.jpg in Resources */,
+				5D53749E23846FFC00A2B587 /* louis-kim.jpg in Resources */,
 				27658271217130D900754B2F /* GlobalSign_r1.cer in Resources */,
 				39F4C0FA2045D87400746155 /* FocusHelper.js in Resources */,
 				E4B7B7861A793CF20022C5E0 /* FiraSans-UltraLight.ttf in Resources */,
@@ -5405,27 +5488,38 @@
 				59D4161B232681080087A6E1 /* Localizable.strings in Resources */,
 				D0FCF8081FE4772D004A7995 /* MainFrameAtDocumentStart.js in Resources */,
 				0A0D3D5021A5609600BEE65B /* SafeBrowsingError.html in Resources */,
+				5D5374A623846FFC00A2B587 /* oliwier gesla.jpg in Resources */,
 				74821FFE1DB6D3AC00EEEA72 /* MailSchemes.plist in Resources */,
 				5EC1DDBC2356883800CA4028 /* onboarding-shields.json in Resources */,
+				5D53749C23846FFC00A2B587 /* anton-repponen.jpg in Resources */,
 				0AA4AA99231849450009AAEF /* ABPFilterParserData.dat in Resources */,
 				5EC1DDBE2356892900CA4028 /* onboarding-ads.json in Resources */,
 				4422D57621C05DE600BF1855 /* httpse.leveldb.tgz in Resources */,
 				FA9294011D6584A200AC8D33 /* QRCode.xcassets in Resources */,
 				D308EE561CBF0BF5006843F2 /* CertError.css in Resources */,
 				4422D4AD21BFFB7600BF1855 /* LICENSE in Resources */,
+				5D5374AA23846FFC00A2B587 /* andy-mai.jpg in Resources */,
 				E4B7B7641A793CF20022C5E0 /* CharisSILR.ttf in Resources */,
 				5D21AE082303B70E00B30D97 /* Themes in Resources */,
 				4422D56D21BFFB7F00BF1855 /* make_unicode_groups.py in Resources */,
 				E4B7B7681A793CF20022C5E0 /* FiraSans-Bold.ttf in Resources */,
 				E4B7B7781A793CF20022C5E0 /* FiraSans-Italic.ttf in Resources */,
+				5D53749D23846FFC00A2B587 /* dc-cavalleri.jpg in Resources */,
 				5EC1DDBD2356888000CA4028 /* onboarding-rewards.json in Resources */,
 				0BA1E00E1B03FB0B007675AF /* NetError.html in Resources */,
 				5DE5250E218CE92C000DFAA6 /* block-images.json in Resources */,
+				5D5374A823846FFC00A2B587 /* annie-spratt.jpg in Resources */,
 				E4A961381AC06FA50069AD6F /* ReaderViewLoading.html in Resources */,
 				59C8119922D754D4005D5BBC /* BraveShared.strings in Resources */,
 				E4ECCDAE1AB131770005E717 /* FiraSans-Medium.ttf in Resources */,
 				E4424B3C1AC71FB400F44C38 /* FiraSans-Book.ttf in Resources */,
+				5D5374A423846FFC00A2B587 /* will_christiansen_ice.jpg in Resources */,
+				5D53749F23846FFC00A2B587 /* Svalbard_Jerol_Soibam.jpeg in Resources */,
 				0AA21E4C2302C4CC00358988 /* webauth_touch_key.json in Resources */,
+				5D5374A023846FFC00A2B587 /* joe-gardner.jpg in Resources */,
+				5D5374A123846FFC00A2B587 /* xavier-balderas-cejudo.jpg in Resources */,
+				5D5374A923846FFC00A2B587 /* matt-palmer.jpg in Resources */,
+				5D5374A323846FFC00A2B587 /* will_christiansen_glacier_peak.jpg in Resources */,
 				5DE52511218CE92C000DFAA6 /* block-trackers.json in Resources */,
 				39A35AED1C0662A3006B9E87 /* SpotlightHelper.js in Resources */,
 				D0FCF8071FE4772D004A7995 /* MainFrameAtDocumentEnd.js in Resources */,
@@ -5916,6 +6010,7 @@
 				592F521E2217327C0078395E /* HttpCookieExtension.swift in Sources */,
 				4422D4D721BFFB7600BF1855 /* table.cc in Sources */,
 				0A4BEF62221B26610005551A /* LocalAdblockResourceProtocol.swift in Sources */,
+				5D5E2361238C386B00AD6FBD /* NewTabPageTableViewController.swift in Sources */,
 				E4CD9F6D1A77DD2800318571 /* ReaderModeStyleViewController.swift in Sources */,
 				D0FCF7F51FE45842004A7995 /* UserScriptManager.swift in Sources */,
 				E4A960061ABB9C450069AD6F /* ReaderModeUtils.swift in Sources */,
@@ -6128,6 +6223,7 @@
 				4422D50121BFFB7600BF1855 /* repair.cc in Sources */,
 				E660BDD91BB06521009AC090 /* TabsButton.swift in Sources */,
 				4422D55721BFFB7F00BF1855 /* unicode_groups.cc in Sources */,
+				5D5374BB238895B100A2B587 /* BackgroundImage.swift in Sources */,
 				4422D55421BFFB7E00BF1855 /* re2_fuzzer.cc in Sources */,
 				2F44FCCB1A9E972E00FD20CC /* SearchEnginePicker.swift in Sources */,
 				C6B81B8C212D989200996084 /* ImageCacheOptions.swift in Sources */,
