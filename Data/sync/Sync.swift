@@ -181,7 +181,7 @@ public class Sync: JSInjector {
                 self.sendSyncRecords(action: .delete, records: [device], context: context)
             }
             
-            Device.sharedCurrentDevice = nil
+            Device.sharedCurrentDeviceId = nil
             Device.deleteAll(context: .existing(context))
         }
         
