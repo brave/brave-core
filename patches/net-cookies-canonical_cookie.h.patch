@@ -1,8 +1,8 @@
 diff --git a/net/cookies/canonical_cookie.h b/net/cookies/canonical_cookie.h
-index 3385122c6409c65a016cae313bb96b55a1fee79b..b826780d4d2e6d7c29db829f4537e77052a80ebf 100644
+index a29d1887e0f51e924e23847b959cc182614f3982..8c37c1fc319a92c2eaef1eff77956368be7b9a54 100644
 --- a/net/cookies/canonical_cookie.h
 +++ b/net/cookies/canonical_cookie.h
-@@ -77,6 +77,7 @@ class NET_EXPORT CanonicalCookie {
+@@ -80,6 +80,7 @@ class NET_EXPORT CanonicalCookie {
    //
    // If a cookie is returned, |cookie->IsCanonical()| will be true.
    static std::unique_ptr<CanonicalCookie> Create(

@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarCoordinator.java
-index 4535d30d38fcc7ace68618b30dde54c86101b30c..73eabf9e9ebf1b0b72161c107cee249bb7eb2073 100644
+index 52b652b7453528343373b6d3a24999a94c3b3ada..db4d2bbcb71f3545f28ccae768d751454b9c8ee5 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarCoordinator.java
-@@ -39,7 +39,7 @@ public class BrowsingModeBottomToolbarCoordinator {
+@@ -41,7 +41,7 @@ public class BrowsingModeBottomToolbarCoordinator {
      private final HomeButton mHomeButton;
  
      /** The share button that lives in the bottom toolbar. */
@@ -11,7 +11,7 @@ index 4535d30d38fcc7ace68618b30dde54c86101b30c..73eabf9e9ebf1b0b72161c107cee249b
  
      /** The search accelerator that lives in the bottom toolbar. */
      private final SearchAccelerator mSearchAccelerator;
-@@ -185,4 +185,5 @@ public class BrowsingModeBottomToolbarCoordinator {
+@@ -286,4 +286,5 @@ public class BrowsingModeBottomToolbarCoordinator {
          mTabSwitcherButtonCoordinator.destroy();
          mMenuButton.destroy();
      }
