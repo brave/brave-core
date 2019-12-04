@@ -72,12 +72,6 @@
         sub-label="$i18n{braveWalletEnabledDesc}"
         on-settings-boolean-control-change="onBraveWalletEnabledChange_">
     </settings-toggle-button>
-    <settings-toggle-button id="webTorrentEnabled"
-        pref="{{prefs.brave.webtorrent_enabled}}"
-        label="WebTorrent"
-        sub-label="$i18n{webTorrentEnabledDesc}"
-        on-settings-boolean-control-change="onWebTorrentEnabledChange_">
-    </settings-toggle-button>
     <settings-toggle-button id="hangoutsEnabled"
         pref="{{prefs.brave.hangouts_enabled}}"
         label="Hangouts"
@@ -90,16 +84,32 @@
         sub-label="$i18n{ipfsCompanionEnabledDesc}"
         on-settings-boolean-control-change="onIPFSCompanionEnabledChange_">
     </settings-toggle-button>
-    <settings-toggle-button
-        pref="{{prefs.brave.ask_widevine_install}}"
-        label="Widevine"
-        sub-label="$i18n{appearanceSettingsAskWidevineInstallDesc}">
-    </settings-toggle-button>
     <settings-toggle-button id="mediaRouterEnabled"
         pref="{{prefs.brave.enable_media_router}}"
         label="Media Router"
         sub-label="$i18n{mediaRouterEnabledDesc}"
         on-settings-boolean-control-change="onMediaRouterEnabledChange_">
+    </settings-toggle-button>
+    <if expr="enable_tor">
+    <settings-toggle-button id="torEnabled"
+        pref=""
+        checked="[[torEnabled_]]"
+        label="$i18n{torEnabledLabel}"
+        sub-label="$i18n{torEnabledDesc}"
+        disabled="[[disableTorOption_]]"
+        on-settings-boolean-control-change="onTorEnabledChange_">
+    </settings-toggle-button>
+    </if>
+    <settings-toggle-button id="webTorrentEnabled"
+        pref="{{prefs.brave.webtorrent_enabled}}"
+        label="WebTorrent"
+        sub-label="$i18n{webTorrentEnabledDesc}"
+        on-settings-boolean-control-change="onWebTorrentEnabledChange_">
+    </settings-toggle-button>
+    <settings-toggle-button
+        pref="{{prefs.brave.ask_widevine_install}}"
+        label="Widevine"
+        sub-label="$i18n{appearanceSettingsAskWidevineInstallDesc}">
     </settings-toggle-button>
     <div class="settings-row" id="manageExtensionsRow">
       <cr-link-row icon-class="icon-external"
@@ -113,7 +123,7 @@
         on-click="openWebStoreUrl_" external>
       </cr-link-row>
     </div>
-  <template is="dom-if" if="{{ showRestartToast }}">
+  <template is="dom-if" if="{{ showRestartToast_ }}">
     <div id="needsRestart">
         <div class="flex-container">
           <div class="flex restart-notice" jstcache="0">$i18n{restartNotice}</div>

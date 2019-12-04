@@ -169,6 +169,7 @@ source_set("ui") {
     "//brave/components/webcompat_reporter/browser",
     "//brave/common",
     "//brave/common:pref_names",
+    "//brave/common/tor",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/webcompat_reporter/ui:generated_resources",
     "//brave/components/brave_new_tab_ui:generated_resources",
@@ -237,9 +238,14 @@ source_set("ui") {
       "views/tabs/brave_new_tab_button.h",
       "views/toolbar/brave_toolbar_view.cc",
       "views/toolbar/brave_toolbar_view.h",
-      "webui/settings/brave_default_extensions_handler.cc",
-      "webui/settings/brave_default_extensions_handler.h",
     ]
+
+    if (enable_extensions) {
+      sources += [
+        "webui/settings/brave_default_extensions_handler.cc",
+        "webui/settings/brave_default_extensions_handler.h",
+      ]
+    }
 
     if (brave_rewards_enabled) {
       sources += [

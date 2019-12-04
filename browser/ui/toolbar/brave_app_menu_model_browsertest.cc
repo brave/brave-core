@@ -15,9 +15,7 @@
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
-#include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_browser_main.h"
-#include "chrome/browser/chrome_browser_main_extra_parts.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_window.h"
@@ -28,6 +26,10 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/test_utils.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service.h"
+#endif
 
 using BraveAppMenuBrowserTest = InProcessBrowserTest;
 
@@ -135,32 +137,10 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BasicTest) {
 }
 
 #if BUILDFLAG(ENABLE_TOR)
-class ChromeBrowserMainExtraPartsTor : public ChromeBrowserMainExtraParts {
- public:
-  ChromeBrowserMainExtraPartsTor() = default;
+IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, TorAppMenuTest) {
+  // Tor is enabled by default. Change pref to disable.
+  tor::TorProfileService::SetTorDisabled(true);
 
-  // ChromeBrowserMainExtraParts:
-  void PostProfileInit() override {
-    g_browser_process->local_state()->SetBoolean(tor::prefs::kTorDisabled,
-                                                 true);
-  }
-
- private:
-  DISALLOW_COPY_AND_ASSIGN(ChromeBrowserMainExtraPartsTor);
-};
-
-class BraveAppMenuBrowserTestWithTorDisabledPolicy
-    : public InProcessBrowserTest {
- public:
-  void CreatedBrowserMainParts(content::BrowserMainParts* parts) override {
-    static_cast<ChromeBrowserMainParts*>(parts)->AddParts(
-        new ChromeBrowserMainExtraPartsTor);
-  }
-};
-
-// If tor is disabled, corresponding menu and commands should be also disabled.
-IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTestWithTorDisabledPolicy,
-                       TorDisabledTest) {
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   BraveAppMenuModel normal_model(browser_view->toolbar(), browser());
   normal_model.Init();

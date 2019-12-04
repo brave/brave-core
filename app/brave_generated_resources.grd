@@ -178,6 +178,12 @@
       <message name="IDS_SETTINGS_ASK_WIDEVINE_INSTALL_DESC" desc="Text fragment for asking widevine install or not">
         Ask when a site wants to install Widevine on your computer.
       </message>
+      <message name="IDS_SETTINGS_ENABLE_TOR_TITLE" desc="Text fragment for enabling tor component">
+        Private Window with Tor
+      </message>
+      <message name="IDS_SETTINGS_ENABLE_TOR_DESC" desc="Text fragment for enabling tor component">
+        Tor hides your IP address from the sites you visit.
+      </message>
       <if expr="is_linux">
         <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
           Install Widevine

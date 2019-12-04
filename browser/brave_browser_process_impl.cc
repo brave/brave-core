@@ -16,6 +16,7 @@
 #include "brave/browser/component_updater/brave_component_updater_delegate.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/tor/buildflags.h"
+#include "brave/browser/ui/brave_browser_command_controller.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
@@ -27,6 +28,7 @@
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/brave_histogram_rewrite.h"
 #include "brave/components/p3a/brave_p3a_service.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "chrome/common/buildflags.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
@@ -57,11 +59,14 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/extensions/brave_tor_client_updater.h"
+#include "brave/common/tor/pref_names.h"
 #endif
 
 #if defined(OS_ANDROID)
 #include "chrome/browser/android/chrome_feature_list.h"
 #include "chrome/browser/android/component_updater/background_task_update_scheduler.h"
+#else
+#include "chrome/browser/ui/browser.h"
 #endif
 
 BraveBrowserProcessImpl* g_brave_browser_process = nullptr;
@@ -100,6 +105,17 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
   brave_p3a_service();
   brave::SetupHistogramsBraveization();
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
+}
+
+void BraveBrowserProcessImpl::Init() {
+  BrowserProcessImpl::Init();
+
+#if BUILDFLAG(ENABLE_TOR)
+  pref_change_registrar_.Add(
+      tor::prefs::kTorDisabled,
+      base::Bind(&BraveBrowserProcessImpl::OnTorEnabledChanged,
+                 base::Unretained(this)));
+#endif
 }
 
 brave_component_updater::BraveComponent::Delegate*
@@ -245,6 +261,14 @@ BraveBrowserProcessImpl::tor_client_updater() {
   tor_client_updater_ = extensions::BraveTorClientUpdaterFactory(
       brave_component_updater_delegate());
   return tor_client_updater_.get();
+}
+
+void BraveBrowserProcessImpl::OnTorEnabledChanged() {
+  // Update all browsers' tor command status.
+  for (Browser* browser : *BrowserList::GetInstance()) {
+    static_cast<chrome::BraveBrowserCommandController*>(
+        browser->command_controller())->UpdateCommandForTor();
+  }
 }
 #endif
 
