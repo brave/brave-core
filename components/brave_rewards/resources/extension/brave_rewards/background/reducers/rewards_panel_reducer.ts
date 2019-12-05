@@ -451,6 +451,18 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       } else if (payload.result === RewardsExtension.Result.WALLET_CREATED) {
         state.walletCreated = true
       }
+      break
+    }
+    case types.ON_WALLET_PROPERTIES: {
+      state = {
+        ...state,
+        walletCreated: true,
+        walletCreateFailed: false,
+        walletCreating: false,
+        walletCorrupted: false,
+        walletProperties: payload.properties
+      }
+      break
     }
   }
   return state

@@ -15,7 +15,9 @@ export const defaultState: RewardsTip.State = {
   currentTipRecurring: false,
   recurringDonations: [],
   walletInfo: {
-    choices: []
+    choices: [],
+    defaultTipChoices: [],
+    defaultMonthlyTipChoices: []
   },
   reconcileStamp: 0,
   balance: {
