@@ -113,7 +113,9 @@ class BackgroundImage {
     
     private static func randomBackground() -> Background? {
         // Determine what type of background to display
-        let useSponsor = hasSponsor && Int.random(in: 0..<sponsorshipShowRate) == 0
+        let useSponsor = Preferences.NewTabPage.backgroundSponsoredImages.value
+            && hasSponsor
+            && Int.random(in: 0..<sponsorshipShowRate) == 0
         guard let dataSet = useSponsor ? sponsors : standardBackgrounds else { return nil }
         if dataSet.isEmpty { return nil }
         
