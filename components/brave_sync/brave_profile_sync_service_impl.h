@@ -70,7 +70,7 @@ class BraveProfileSyncServiceImpl
   void OnSetupSyncHaveCode(const std::string& sync_words,
                            const std::string& device_name) override;
   void OnSetupSyncNewToSync(const std::string& device_name) override;
-  void OnDeleteDevice(const std::string& device_id) override;
+  void OnDeleteDevice(const std::string& device_id_v2) override;
   void OnResetSync() override;
   void GetSettingsAndDevices(
       const GetSettingsAndDevicesCallback& callback) override;
@@ -173,7 +173,7 @@ class BraveProfileSyncServiceImpl
                         int max_records);
   void FetchDevices();
   void SendCreateDevice();
-  void SendUpdateDevice();
+  void SendDeleteDevice();
   void SendDeviceSyncRecord(const int action,
                             const std::string& device_name,
                             const std::string& device_id,

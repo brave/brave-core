@@ -184,9 +184,22 @@ SyncDevice* SyncDevices::GetByObjectId(const std::string &object_id) {
   return nullptr;
 }
 
-const SyncDevice* SyncDevices::GetByDeviceId(const std::string &device_id) {
+std::vector<const SyncDevice*>
+SyncDevices::GetByDeviceId(const std::string &device_id) {
+  std::vector<const SyncDevice*> devices;
   for (const auto& device : devices_) {
     if (device.device_id_ == device_id) {
+      devices.push_back(&device);
+    }
+  }
+
+  return devices;
+}
+
+const SyncDevice*
+SyncDevices::GetByDeviceIdV2(const std::string &device_id_v2) {
+  for (const auto& device : devices_) {
+    if (device.device_id_v2_ == device_id_v2) {
       return &device;
     }
   }

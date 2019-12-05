@@ -283,18 +283,19 @@ void BraveProfileSyncServiceImpl::OnSetupSyncNewToSync(
   brave_sync_prefs_->SetSyncEnabled(true);
 }
 
-void BraveProfileSyncServiceImpl::OnDeleteDevice(const std::string& device_id) {
+void BraveProfileSyncServiceImpl::OnDeleteDevice(
+    const std::string& device_id_v2) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   auto sync_devices = brave_sync_prefs_->GetSyncDevices();
 
-  const SyncDevice* device = sync_devices->GetByDeviceId(device_id);
+  const SyncDevice* device = sync_devices->GetByDeviceIdV2(device_id_v2);
   if (device) {
     const std::string device_name = device->name_;
-    const std::string device_id_v2 = device->device_id_v2_;
+    const std::string device_id = device->device_id_;
     const std::string object_id = device->object_id_;
     SendDeviceSyncRecord(SyncRecord::Action::A_DELETE, device_name, device_id,
                          device_id_v2, object_id);
-    if (device_id == brave_sync_prefs_->GetThisDeviceId()) {
+    if (device_id_v2 == brave_sync_prefs_->GetThisDeviceIdV2()) {
       // Mark state we have sent DELETE for own device and we are going to
       // call ResetSyncInternal() at OnRecordsSent after ensuring we had made
       // a proper attemp to send the record
@@ -315,8 +316,8 @@ void BraveProfileSyncServiceImpl::OnResetSync() {
   } else {
     // We have to send delete record and wait for library deleted response then
     // we can reset it by ResetSyncInternal()
-    const std::string device_id = brave_sync_prefs_->GetThisDeviceId();
-    OnDeleteDevice(device_id);
+    const std::string device_id_v2 = brave_sync_prefs_->GetThisDeviceIdV2();
+    OnDeleteDevice(device_id_v2);
   }
 }
 
@@ -878,25 +879,35 @@ void BraveProfileSyncServiceImpl::SendCreateDevice() {
   brave_sync_prefs_->SetThisDeviceObjectId(object_id);
   std::string device_id = brave_sync_prefs_->GetThisDeviceId();
   std::string device_id_v2 = brave_sync_prefs_->GetThisDeviceIdV2();
-  CHECK(!device_id.empty());
+  DCHECK(!device_id_v2.empty());
 
   SendDeviceSyncRecord(SyncRecord::Action::A_CREATE, device_name, device_id,
                        device_id_v2, object_id);
 }
 
-void BraveProfileSyncServiceImpl::SendUpdateDevice() {
+void BraveProfileSyncServiceImpl::SendDeleteDevice() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  std::string device_id = brave_sync_prefs_->GetThisDeviceId();
   std::string device_name = brave_sync_prefs_->GetThisDeviceName();
+  std::string object_id = brave_sync_prefs_->GetThisDeviceObjectId();
+  std::string device_id = brave_sync_prefs_->GetThisDeviceId();
   std::string device_id_v2 = brave_sync_prefs_->GetThisDeviceIdV2();
-  auto sync_devices = brave_sync_prefs_->GetSyncDevices();
-  // TODO(darkdh): need to get device by object id
-  const SyncDevice* device = sync_devices->GetByDeviceId(device_id);
-  if (device) {
-    std::string object_id = device->object_id_;
+  if (object_id.empty()) {
+    auto sync_devices = brave_sync_prefs_->GetSyncDevices();
+    std::vector<const SyncDevice*> devices =
+      sync_devices->GetByDeviceId(device_id);
+    for (auto* device : devices) {
+      if (device) {
+        object_id = device->object_id_;
+      }
+      SendDeviceSyncRecord(SyncRecord::Action::A_DELETE, device_name, device_id,
+                           device_id_v2, object_id);
+    }
+    DCHECK(!object_id.empty());
+  } else {
+    DCHECK(!device_id_v2.empty());
 
-    SendDeviceSyncRecord(SyncRecord::Action::A_UPDATE, device_name, device_id,
+    SendDeviceSyncRecord(SyncRecord::Action::A_DELETE, device_name, device_id,
                          device_id_v2, object_id);
   }
 }
@@ -917,7 +928,8 @@ void BraveProfileSyncServiceImpl::SendDeviceSyncRecord(
 
 void BraveProfileSyncServiceImpl::OnResolvedPreferences(
     const RecordsList& records) {
-  const std::string this_device_id_v2 = brave_sync_prefs_->GetThisDeviceIdV2();
+  const std::string this_device_object_id =
+    brave_sync_prefs_->GetThisDeviceObjectId();
   bool this_device_deleted = false;
 
   auto sync_devices = brave_sync_prefs_->GetSyncDevices();
@@ -933,13 +945,12 @@ void BraveProfileSyncServiceImpl::OnResolvedPreferences(
           record->action, &actually_merged);
       this_device_deleted =
           this_device_deleted ||
-          (device.deviceIdV2 == this_device_id_v2 &&
+          (record->objectId == this_device_object_id &&
            record->action == SyncRecord::Action::A_DELETE && actually_merged);
     }
   }  // for each device
 
   brave_sync_prefs_->SetSyncDevices(*sync_devices);
-
   if (this_device_deleted) {
     ResetSyncInternal();
   }
@@ -989,8 +1000,11 @@ void BraveProfileSyncServiceImpl::OnPollSyncCycle(GetRecordsCallback cb,
     this_device_created_time_ = base::Time::Now();
   }
   if (send_device_id_v2_update_) {
-    // SendUpdateDevice();
-    OnDeleteDevice(brave_sync_prefs_->GetThisDeviceId());
+    // Because device id might get duplicated and we didn't save object id for
+    // this device so there is no way to send update to propagate device id v2,
+    // We have to delete previous device records by device id and create a new
+    // one.
+    SendDeleteDevice();
     SendCreateDevice();
     send_device_id_v2_update_ = false;
   }

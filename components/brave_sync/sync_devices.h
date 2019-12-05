@@ -48,7 +48,9 @@ public:
    void FromJson(const std::string &str_json);
    void Merge(const SyncDevice& device, int action, bool* actually_merged);
 
-   const SyncDevice* GetByDeviceId(const std::string& device_id);
+   // deprecated. only used for migration and backward compatibility
+   std::vector<const SyncDevice*> GetByDeviceId(const std::string& device_id);
+   const SyncDevice* GetByDeviceIdV2(const std::string& device_id_v2);
    SyncDevice* GetByObjectId(const std::string& object_id);
    void DeleteByObjectId(const std::string& object_id);
 };

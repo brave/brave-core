@@ -92,10 +92,10 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       break
 
     case types.SYNC_ON_REMOVE_DEVICE:
-      if (typeof payload.id === 'undefined' || typeof payload.deviceName === 'undefined') {
+      if (typeof payload.idv2 === 'undefined' || typeof payload.deviceName === 'undefined') {
         break
       }
-      chrome.send('deleteDevice', [payload.id])
+      chrome.send('deleteDevice', [payload.idv2])
       break
 
     case types.SYNC_BOOKMARKS:
