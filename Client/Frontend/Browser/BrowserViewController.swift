@@ -1523,6 +1523,7 @@ class BrowserViewController: UIViewController {
     }
     
     private func focusLocationField() {
+        if browserLockPopup != nil || duckDuckGoPopup != nil { return }
         topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
     }
     
@@ -1896,7 +1897,7 @@ extension BrowserViewController: TopToolbarDelegate {
 
 extension BrowserViewController: ToolbarDelegate {
     func tabToolbarDidPressSearch(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-        focusLocationField()
+        topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
     }
     
     func tabToolbarDidPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton) {
