@@ -151,6 +151,11 @@ export const onRecurringTipRemoved = (success: boolean) => action(types.ON_RECUR
   success
 })
 
+export const onInlineTipSettingChange = (key: string, value: boolean) => action(types.ON_INLINE_TIP_SETTINGS_CHANGE, {
+  key,
+  value
+})
+
 export const getExcludedSites = () => action(types.GET_EXCLUDED_SITES)
 
 export const onExcludedList = (list: Rewards.ExcludedPublisher[]) => action(types.ON_EXCLUDED_LIST, {
