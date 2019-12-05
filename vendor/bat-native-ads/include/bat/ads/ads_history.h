@@ -15,15 +15,21 @@
 
 namespace ads {
 
-enum class AdsHistoryFilterType {
-  kNone = 0,
-  kConfirmationType
-};
-
 struct ADS_EXPORT AdsHistory {
   AdsHistory();
   explicit AdsHistory(const AdsHistory& history);
   ~AdsHistory();
+
+  enum class FilterType {
+    kNone = 0,
+    kConfirmationType
+  };
+
+  enum class SortType {
+    kNone = 0,
+    kAscendingOrder,
+    kDescendingOrder
+  };
 
   const std::string ToJson() const;
   Result FromJson(
