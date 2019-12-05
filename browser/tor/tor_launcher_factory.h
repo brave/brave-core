@@ -12,6 +12,7 @@
 #include "base/observer_list.h"
 #include "brave/common/tor/tor_common.h"
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 namespace tor {
 class TorProfileServiceImpl;
@@ -45,7 +46,7 @@ class TorLauncherFactory {
 
   bool is_starting_;
 
-  tor::mojom::TorLauncherPtr tor_launcher_;
+  mojo::Remote<tor::mojom::TorLauncher> tor_launcher_;
 
   int64_t tor_pid_;
 
