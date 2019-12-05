@@ -28,7 +28,8 @@
         "https://*/*"
       ],
       "js": [
-        "out/content.bundle.js"
+        "out/content.bundle.js",
+        "out/content_cosmetic.bundle.js"
       ],
       "run_at": "document_start",
       "all_frames": true
