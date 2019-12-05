@@ -34,13 +34,11 @@ TorLauncherFactory::TorLauncherFactory()
 }
 
 void TorLauncherFactory::Init() {
-  content::ServiceManagerConnection::GetForProcess()->GetConnector()
-    ->BindInterface(tor::mojom::kServiceName,
-                    &tor_launcher_);
+  content::ServiceManagerConnection::GetForProcess()->GetConnector()->Connect(
+      tor::mojom::kServiceName, tor_launcher_.BindNewPipeAndPassReceiver());
 
-  tor_launcher_.set_connection_error_handler(
-    base::BindOnce(&TorLauncherFactory::OnTorLauncherCrashed,
-                   base::Unretained(this)));
+  tor_launcher_.set_disconnect_handler(base::BindOnce(
+      &TorLauncherFactory::OnTorLauncherCrashed, base::Unretained(this)));
 
   tor_launcher_->SetCrashHandler(base::Bind(
                         &TorLauncherFactory::OnTorCrashed,

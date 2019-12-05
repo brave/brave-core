@@ -9,22 +9,16 @@
 
 #include "build/build_config.h"
 #include "brave/components/services/tor/tor_launcher_impl.h"
-#include "mojo/public/cpp/bindings/strong_binding.h"
 
 namespace tor {
 
-namespace {
-
-void OnTorLauncherRequest(
+void TorLauncherService::BindTorLauncherReceiver(
     service_manager::ServiceKeepalive* keepalive,
-    tor::mojom::TorLauncherRequest request) {
-
-  mojo::MakeStrongBinding(
+    mojo::PendingReceiver<tor::mojom::TorLauncher> receiver) {
+  receivers_.Add(
       std::make_unique<tor::TorLauncherImpl>(keepalive->CreateRef()),
-      std::move(request));
+      std::move(receiver));
 }
-
-}  // namespace
 
 TorLauncherService::TorLauncherService(
         service_manager::mojom::ServiceRequest request) :
@@ -35,15 +29,17 @@ TorLauncherService::TorLauncherService(
 TorLauncherService::~TorLauncherService() {}
 
 void TorLauncherService::OnStart() {
-  registry_.AddInterface(
-      base::BindRepeating(&OnTorLauncherRequest, &service_keepalive_));
+  binders_.Add(base::BindRepeating(
+      &TorLauncherService::BindTorLauncherReceiver,
+      base::Unretained(this),
+      &service_keepalive_));
 }
 
-void TorLauncherService::OnBindInterface(
-    const service_manager::BindSourceInfo& source_info,
+void TorLauncherService::OnConnect(
+    const service_manager::ConnectSourceInfo& source_info,
     const std::string& interface_name,
-    mojo::ScopedMessagePipeHandle interface_pipe) {
-  registry_.BindInterface(interface_name, std::move(interface_pipe));
+    mojo::ScopedMessagePipeHandle receiver_pipe) {
+  binders_.TryBind(interface_name, &receiver_pipe);
 }
 
 }  // namespace tor

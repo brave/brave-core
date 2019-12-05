@@ -9,7 +9,9 @@
 #include <memory>
 #include <string>
 
-#include "services/service_manager/public/cpp/binder_registry.h"
+#include "brave/components/services/tor/public/interfaces/tor.mojom.h"
+#include "mojo/public/cpp/bindings/unique_receiver_set.h"
+#include "services/service_manager/public/cpp/binder_map.h"
 #include "services/service_manager/public/cpp/service.h"
 #include "services/service_manager/public/cpp/service_binding.h"
 #include "services/service_manager/public/cpp/service_keepalive.h"
@@ -24,14 +26,18 @@ class TorLauncherService : public service_manager::Service {
 
   // Lifescycle events that occur after the service has started to spinup.
   void OnStart() override;
-  void OnBindInterface(const service_manager::BindSourceInfo& source_info,
-                       const std::string& interface_name,
-                       mojo::ScopedMessagePipeHandle interface_pipe) override;
+  void OnConnect(const service_manager::ConnectSourceInfo& source_info,
+                 const std::string& interface_name,
+                 mojo::ScopedMessagePipeHandle receiver_pipe) override;
 
  private:
   service_manager::ServiceBinding service_binding_;
   service_manager::ServiceKeepalive service_keepalive_;
-  service_manager::BinderRegistry registry_;
+  service_manager::BinderMap binders_;
+  mojo::UniqueReceiverSet<tor::mojom::TorLauncher> receivers_;
+  void BindTorLauncherReceiver(
+      service_manager::ServiceKeepalive* keepalive,
+      mojo::PendingReceiver<tor::mojom::TorLauncher> receiver);
 
   DISALLOW_COPY_AND_ASSIGN(TorLauncherService);
 };
