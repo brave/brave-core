@@ -47,6 +47,7 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabObserver;
 import org.chromium.chrome.browser.tabmodel.TabSelectionType;
+import org.chromium.chrome.browser.toolbar.HomeButton;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.util.ColorUtils;
 import org.chromium.chrome.browser.util.MathUtils;
@@ -64,6 +65,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   private ImageButton mBraveShieldsButton;
   private ImageButton mBraveRewardsButton;
+  private HomeButton mHomeButton;
   private FrameLayout mShieldsLayout;
   private FrameLayout mRewardsLayout;
   private ChromeActivity mMainActivity;
@@ -100,6 +102,12 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       mBraveRewardsNotificationsCount = (TextView) findViewById(R.id.br_notifications_count);
       mBraveShieldsButton = (ImageButton) findViewById(R.id.brave_shields_button);
       mBraveRewardsButton = (ImageButton) findViewById(R.id.brave_rewards_button);
+      mHomeButton = (HomeButton) findViewById(R.id.home_button);
+
+      if (mHomeButton != null) {
+          mHomeButton.setOnLongClickListener(this);
+      }
+
       if (mBraveShieldsButton != null) {
           mBraveShieldsButton.setClickable(true);
           mBraveShieldsButton.setOnClickListener(this);
@@ -261,10 +269,12 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       Resources resources = context.getResources();
 
       if (v == mBraveShieldsButton) {
-          description = description = resources.getString(R.string.accessibility_toolbar_btn_brave_shields);
-      } /*else if (v == mBraveRewardsPanelButton) {
+          description = resources.getString(R.string.accessibility_toolbar_btn_brave_shields);
+      } else if (v == mBraveRewardsButton) {
           description = resources.getString(R.string.accessibility_toolbar_btn_brave_rewards);
-      }*/
+      } else if (v == mHomeButton) {
+          description = resources.getString(R.string.accessibility_toolbar_btn_home);
+      }
 
       return Toast.showAnchoredToast(context, v, description);
   }
