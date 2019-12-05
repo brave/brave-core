@@ -18,13 +18,27 @@ namespace ads {
 AdHistory::AdHistory()
     : timestamp_in_seconds(0) {}
 
-AdHistory::AdHistory(const AdHistory& properties)
+AdHistory::AdHistory(
+    const AdHistory& properties)
     : timestamp_in_seconds(properties.timestamp_in_seconds),
       uuid(properties.uuid),
       ad_content(properties.ad_content),
       category_content(properties.category_content) {}
 
 AdHistory::~AdHistory() = default;
+
+bool AdHistory::operator==(
+    const AdHistory& rhs) const {
+  return timestamp_in_seconds == rhs.timestamp_in_seconds &&
+      uuid == rhs.uuid &&
+      ad_content == rhs.ad_content &&
+      category_content == rhs.category_content;
+}
+
+bool AdHistory::operator!=(
+    const AdHistory& rhs) const {
+  return !(*this == rhs);
+}
 
 const std::string AdHistory::ToJson() const {
   std::string json;

@@ -18,8 +18,15 @@ namespace ads {
 
 struct ADS_EXPORT AdHistory {
   AdHistory();
-  explicit AdHistory(const AdHistory& properties);
+  AdHistory(
+      const AdHistory& properties);
   ~AdHistory();
+
+  bool operator==(
+      const AdHistory& rhs) const;
+
+  bool operator!=(
+      const AdHistory& rhs) const;
 
   const std::string ToJson() const;
   Result FromJson(
