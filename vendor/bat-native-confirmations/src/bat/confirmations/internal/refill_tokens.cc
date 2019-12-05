@@ -53,11 +53,18 @@ void RefillTokens::Refill(
 
   public_key_ = public_key;
 
+  nonce_ = "";
+
   RequestSignedTokens();
 }
 
 void RefillTokens::RetryGettingSignedTokens() {
   BLOG(INFO) << "Retry getting signed tokens";
+
+  if (nonce_.empty()) {
+    RequestSignedTokens();
+    return;
+  }
 
   GetSignedTokens();
 }
@@ -309,8 +316,8 @@ void RefillTokens::OnRefill(
     BLOG(ERROR) << "Failed to refill tokens";
 
     if (should_retry) {
-    confirmations_->StartRetryingToGetRefillSignedTokens(
-        kRetryGettingRefillSignedTokensAfterSeconds);
+      confirmations_->StartRetryingToGetRefillSignedTokens(
+          kRetryGettingRefillSignedTokensAfterSeconds);
     }
 
     return;
