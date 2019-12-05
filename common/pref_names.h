@@ -52,6 +52,7 @@ extern const char kHangoutsEnabled[];
 extern const char kHideBraveRewardsButton[];
 extern const char kIPFSCompanionEnabled[];
 extern const char kNewTabPageShowBackgroundImage[];
+extern const char kNewTabPageShowBrandedBackgroundImage[];
 extern const char kNewTabPageShowClock[];
 extern const char kNewTabPageShowTopSites[];
 extern const char kNewTabPageShowStats[];

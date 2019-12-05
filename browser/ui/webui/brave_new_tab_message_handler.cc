@@ -6,22 +6,129 @@
 #include "brave/browser/ui/webui/brave_new_tab_message_handler.h"
 
 #include <string>
+#include <memory>
+#include <utility>
 
 #include "base/bind.h"
+#include "base/no_destructor.h"
 #include "base/values.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
 #include "brave/common/pref_names.h"
+#include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "components/keyed_service/content/browser_context_keyed_service_factory.h" //  NOLINT
+#include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 
 namespace {
 
+struct BrandedWallpaperLogo {
+  std::string imageUrl;
+  std::string altText;
+  std::string destinationUrl;
+};
+
+struct BrandedWallpaper {
+  std::string wallpaperImageUrl;
+  struct BrandedWallpaperLogo logo;
+};
+
+const BrandedWallpaper kDemoWallpaper = {
+  "ntp-dummy-brandedwallpaper-background.jpg",
+  {
+    "ntp-dummy-brandedwallpaper-logo.png",
+    "Technikke: For music lovers.",
+    "https://brave.com"
+  }
+};
+
+constexpr int kInitialCountToBrandedWallpaper = 1;
+constexpr int kRegularCountToBrandedWallpaper = 3;
+class NewTabPageViewCounter : public KeyedService {
+ public:
+  NewTabPageViewCounter() {}
+
+  void RegisterPageView() {
+    if (!GetHasBrandedWallpaper()) {
+      return;
+    }
+    this->count_to_branded_wallpaper_--;
+    if (this->count_to_branded_wallpaper_ < 0)
+      this->count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
+  }
+
+  bool GetShouldShowBrandedWallpaper() {
+    return GetHasBrandedWallpaper() && (
+        this->count_to_branded_wallpaper_ == 0);
+  }
+
+  const BrandedWallpaper* GetBrandedWallpaper() {
+    // TODO(petemill): lookup flag to choose between demo and real
+    return &kDemoWallpaper;
+  }
+
+ private:
+  bool GetHasBrandedWallpaper() {
+    return true;
+    // TODO(petemill): lookup flag to always use demo wallpaper
+  }
+
+  int count_to_branded_wallpaper_ = kInitialCountToBrandedWallpaper;
+
+  DISALLOW_COPY_AND_ASSIGN(NewTabPageViewCounter);
+};
+
+class NewTabPageViewCounterFactory : public BrowserContextKeyedServiceFactory {
+ public:
+  // Returns the CaptivePortalService for |profile|.
+  static NewTabPageViewCounter* GetForProfile(Profile* profile) {
+    return static_cast<NewTabPageViewCounter*>(
+    GetInstance()->GetServiceForBrowserContext(profile, true));
+  }
+
+  static NewTabPageViewCounterFactory* GetInstance() {
+    static base::NoDestructor<NewTabPageViewCounterFactory> instance;
+    return instance.get();
+  }
+  NewTabPageViewCounterFactory() : BrowserContextKeyedServiceFactory(
+        "NewTabPageViewCounter",
+        BrowserContextDependencyManager::GetInstance()) { }
+  ~NewTabPageViewCounterFactory() override { }
+
+ private:
+  // BrowserContextKeyedServiceFactory:
+  KeyedService* BuildServiceInstanceFor(
+      content::BrowserContext* profile) const override {
+    return new NewTabPageViewCounter();
+  }
+  content::BrowserContext* GetBrowserContextToUse(
+      content::BrowserContext* context) const override {
+    return chrome::GetBrowserContextRedirectedInIncognito(context);
+  }
+
+  DISALLOW_COPY_AND_ASSIGN(NewTabPageViewCounterFactory);
+};
+
 bool IsPrivateNewTab(Profile* profile) {
   return brave::IsTorProfile(profile) || profile->IsIncognitoProfile();
+}
+
+base::DictionaryValue GetBrandedWallpaperDictionary(
+    const BrandedWallpaper* wallpaper) {
+  base::DictionaryValue data;
+  data.SetString("wallpaperImageUrl", wallpaper->wallpaperImageUrl);
+  auto logo_data = std::make_unique<base::DictionaryValue>();
+  logo_data->SetString("image", wallpaper->logo.imageUrl);
+  logo_data->SetString("alt", wallpaper->logo.altText);
+  logo_data->SetString("destintationUrl", wallpaper->logo.destinationUrl);
+  data.SetDictionary("logo", std::move(logo_data));
+  return data;
 }
 
 base::DictionaryValue GetStatsDictionary(PrefService* prefs) {
@@ -46,6 +153,9 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
   pref_data.SetBoolean(
       "showBackgroundImage",
       prefs->GetBoolean(kNewTabPageShowBackgroundImage));
+  pref_data.SetBoolean(
+      "showBrandedBackgroundImage",
+      prefs->GetBoolean(kNewTabPageShowBrandedBackgroundImage));
   pref_data.SetBoolean(
       "showClock",
       prefs->GetBoolean(kNewTabPageShowClock));
@@ -126,6 +236,16 @@ void BraveNewTabMessageHandler::RegisterMessages() {
     base::BindRepeating(
       &BraveNewTabMessageHandler::HandleSaveNewTabPagePref,
       base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+    "registerNewTabPageView",
+    base::BindRepeating(
+      &BraveNewTabMessageHandler::HandleRegisterNewTabPageView,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+    "getBrandedWallpaperData",
+    base::BindRepeating(
+      &BraveNewTabMessageHandler::HandleGetBrandedWallpaperData,
+      base::Unretained(this)));
 }
 
 void BraveNewTabMessageHandler::OnJavascriptAllowed() {
@@ -160,6 +280,9 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   }
   // New Tab Page preferences
   pref_change_registrar_.Add(kNewTabPageShowBackgroundImage,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
+  pref_change_registrar_.Add(kNewTabPageShowBrandedBackgroundImage,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
   pref_change_registrar_.Add(kNewTabPageShowClock,
@@ -229,6 +352,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   std::string settingsKey;
   if (settingsKeyInput == "showBackgroundImage") {
     settingsKey = kNewTabPageShowBackgroundImage;
+  } else if (settingsKeyInput == "showBrandedBackgroundImage") {
+    settingsKey = kNewTabPageShowBrandedBackgroundImage;
   } else if (settingsKeyInput == "showClock") {
     settingsKey = kNewTabPageShowClock;
   } else if (settingsKeyInput == "showTopSites") {
@@ -242,6 +367,28 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     return;
   }
   prefs->SetBoolean(settingsKey, settingsValueBool);
+}
+
+void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
+    const base::ListValue* args) {
+  AllowJavascript();
+  // Decrement original value only if there's actual branded content
+
+  NewTabPageViewCounterFactory::GetForProfile(profile_)->RegisterPageView();
+}
+
+void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(
+    const base::ListValue* args) {
+  AllowJavascript();
+
+  auto* service = NewTabPageViewCounterFactory::GetForProfile(profile_);
+  if (!service->GetShouldShowBrandedWallpaper()) {
+    ResolveJavascriptCallback(args->GetList()[0], base::Value());
+    return;
+  }
+  auto data = GetBrandedWallpaperDictionary(
+      service->GetBrandedWallpaper());
+  ResolveJavascriptCallback(args->GetList()[0], data);
 }
 
 void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {

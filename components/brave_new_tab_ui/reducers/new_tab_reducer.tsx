@@ -49,6 +49,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
         stats: initialDataPayload.stats,
         ...initialDataPayload.privateTabData,
         topSites: initialDataPayload.topSites,
+        shouldShowBrandedWallpaper: !!(initialDataPayload.brandedWallpaperData),
         brandedWallpaperData: initialDataPayload.brandedWallpaperData
       }
       // TODO(petemill): only get backgroundImage if no sponsored background this time.

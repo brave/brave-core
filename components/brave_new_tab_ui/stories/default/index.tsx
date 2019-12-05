@@ -17,10 +17,7 @@ import FooterInfo from './footerInfo'
 // Assets
 import { getRandomBackgroundData } from './helpers'
 import { images } from './data/background'
-
-// Data
-// TODO: move to stories/data
-import { getBrandedWallpaper } from '../../api/brandedWallpaper'
+import dummyBrandedWallpaper from './data/brandedWallpaper'
 
 const generateRandomBackgroundData = getRandomBackgroundData(images)
 interface State {
@@ -131,9 +128,9 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
     }, 1000)
   }
 
-  async componentDidUpdate (prevProps: Props) {
+  componentDidUpdate (prevProps: Props) {
     if (!prevProps.showBrandedWallpaper && this.props.showBrandedWallpaper) {
-      const brandedWallpaper: NewTab.BrandedWallpaper = await getBrandedWallpaper()
+      const brandedWallpaper = dummyBrandedWallpaper
       this.setState({ brandedWallpaper })
     }
     if (prevProps.showTopSitesNotification !== this.props.showTopSitesNotification) {

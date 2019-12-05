@@ -79,7 +79,10 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "ntp-14.webp", IDR_BRAVE_NEW_TAB_BACKGROUND14 },
         { "ntp-15.webp", IDR_BRAVE_NEW_TAB_BACKGROUND15 },
         { "ntp-16.webp", IDR_BRAVE_NEW_TAB_BACKGROUND16 },
-
+        { "ntp-dummy-brandedwallpaper-background.jpg",
+            IDR_BRAVE_NEW_TAB_DUMMY_BRANDED_WALLPAPER_BG },
+        { "ntp-dummy-brandedwallpaper-logo.png",
+            IDR_BRAVE_NEW_TAB_DUMMY_BRANDED_WALLPAPER_LOGO },
         // private tab
         { "c168145d6bf1abf2c0322636366f7dbe.svg", IDR_BRAVE_PRIVATE_TAB_TOR_IMG },               // NOLINT
         { "dbdc336ccc651b8a7c925b3482d6e65a.svg", IDR_BRAVE_PRIVATE_TAB_IMG }
