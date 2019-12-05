@@ -15,8 +15,15 @@ namespace ads {
 
 struct ADS_EXPORT CategoryContent {
   CategoryContent();
-  explicit CategoryContent(const CategoryContent& content);
+  CategoryContent(
+      const CategoryContent& properties);
   ~CategoryContent();
+
+  bool operator==(
+      const CategoryContent& rhs) const;
+
+  bool operator!=(
+      const CategoryContent& rhs) const;
 
   const std::string ToJson() const;
   Result FromJson(
