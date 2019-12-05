@@ -39,7 +39,7 @@ export const StyledStatsItem = styled<{}, 'li'>('li')`
 export const StyledStatsItemCounter = styled<{}, 'span'>('span')`
   color: inherit;
   font-family: ${p => p.theme.fontFamily.heading};
-  font-size: 46px;
+  font-size: 40px;
   font-weight: 400;
   width: 7ch;
   text-overflow: ellipsis;
@@ -49,7 +49,7 @@ export const StyledStatsItemCounter = styled<{}, 'span'>('span')`
 `
 
 export const StyledStatsItemText = styled<{}, 'span'>('span')`
-  font-size: 20px;
+  font-size: 24px;
   font-family: ${p => p.theme.fontFamily.heading};
   margin-left: 4px;
   display: inline;
@@ -57,8 +57,9 @@ export const StyledStatsItemText = styled<{}, 'span'>('span')`
 `
 
 export const StyledStatsItemDescription = styled<{}, 'div'>('div')`
-  font-size: 14px;
-  font-weight: 400;
+  font-size: 16px;
+  font-weight: 500;
   color: #FFFFFF;
+  margin-top: 8px;
   font-family: ${p => p.theme.fontFamily.heading};
 `
