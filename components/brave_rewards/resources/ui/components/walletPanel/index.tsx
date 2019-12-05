@@ -134,10 +134,6 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
   donationControls () {
     const { donationAmounts, acEnabled, setMonthlyAction } = this.props
 
-    if (!donationAmounts && !acEnabled) {
-      return null
-    }
-
     const firstColSpan = donationAmounts ? '5' : '4'
     const secColSpan = donationAmounts ? '1' : '2'
 
@@ -161,7 +157,7 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
           </StyledGrid>
           : null
         }
-        <StyledGrid>
+        <StyledGrid id={'panel-donate-monthly'}>
           <StyledColumn size={firstColSpan}>
             <StyledDonateText>
               {getLocale('donateMonthly')}
