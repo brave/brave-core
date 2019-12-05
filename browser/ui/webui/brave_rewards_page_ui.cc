@@ -99,7 +99,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void CheckImported(const base::ListValue* args);
   void GetAdsData(const base::ListValue* args);
   void GetAdsHistory(const base::ListValue* args);
-  void OnGetAdsHistory(const base::ListValue& ads_history);
+  void OnGetAdsHistory(const base::ListValue& history);
   void ToggleAdThumbUp(const base::ListValue* args);
   void OnToggleAdThumbUp(const std::string& id, int action);
   void ToggleAdThumbDown(const base::ListValue* args);

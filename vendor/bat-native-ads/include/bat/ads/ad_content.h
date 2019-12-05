@@ -16,7 +16,7 @@ namespace ads {
 
 struct ADS_EXPORT AdContent {
   AdContent();
-  explicit AdContent(const AdContent& content);
+  explicit AdContent(const AdContent& properties);
   ~AdContent();
 
   const std::string ToJson() const;

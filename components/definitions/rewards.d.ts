@@ -257,10 +257,10 @@ declare namespace Rewards {
     [key: string]: any
     id: string
     date: string
-    adDetailRows: AdHistoryDetail[]
+    adDetailRows: AdHistory[]
   }
 
-  export interface AdHistoryDetail {
+  export interface AdHistory {
     id: string
     adContent: AdContent
     categoryContent: CategoryContent

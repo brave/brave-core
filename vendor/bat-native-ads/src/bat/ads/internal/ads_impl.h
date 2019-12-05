@@ -14,7 +14,6 @@
 #include <memory>
 
 #include "bat/ads/ads.h"
-#include "bat/ads/ad_history_detail.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/notification_event_type.h"
 #include "bat/ads/notification_info.h"
