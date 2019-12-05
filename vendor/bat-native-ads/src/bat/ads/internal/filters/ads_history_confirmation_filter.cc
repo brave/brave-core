@@ -3,14 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <algorithm>
-#include <memory>
+#include <map>
 #include <string>
 
-#include "bat/ads/internal/filters/ad_history_confirmation_filter.h"
+#include "bat/ads/internal/filters/ads_history_confirmation_filter.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/ad_history_detail.h"
-
 #include "bat/ads/ads_history.h"
 
 namespace ads {
@@ -88,42 +85,39 @@ bool DoesConfirmationTypeATrumpB(
   return does_type_a_trump_type_b;
 }
 
-AdHistoryConfirmationFilter::~AdHistoryConfirmationFilter() = default;
+AdsHistoryConfirmationFilter::~AdsHistoryConfirmationFilter() = default;
 
-std::deque<AdHistoryDetail> AdHistoryConfirmationFilter::ApplyFilter(
-    const std::deque<AdHistoryDetail>& ad_history_details) const {
+std::deque<AdHistory> AdsHistoryConfirmationFilter::Apply(
+    const std::deque<AdHistory>& history) const {
 
-  std::map<std::string, AdHistoryDetail> filtered_ad_history;
+  std::map<std::string, AdHistory> filtered_ad_history;
 
-  for (const AdHistoryDetail& ad_history_detail : ad_history_details) {
-    if (!IsConfirmationTypeOfInterest(ad_history_detail.ad_content.ad_action)) {
+  for (const AdHistory& entry : history) {
+    if (!IsConfirmationTypeOfInterest(entry.ad_content.ad_action)) {
       continue;
     }
-    if (filtered_ad_history.count(ad_history_detail.ad_content.uuid) != 0) {
-      const AdHistoryDetail& check_ad_history_detail =
-          filtered_ad_history[ad_history_detail.ad_content.uuid];
+    if (filtered_ad_history.count(entry.ad_content.uuid) != 0) {
+      const AdHistory& check_entry =
+          filtered_ad_history[entry.ad_content.uuid];
 
-      if (ad_history_detail.timestamp_in_seconds >=
-          check_ad_history_detail.timestamp_in_seconds) {
-        if (DoesConfirmationTypeATrumpB(ad_history_detail.ad_content.ad_action,
-            check_ad_history_detail.ad_content.ad_action)) {
-          filtered_ad_history[ad_history_detail.ad_content.uuid] =
-              ad_history_detail;
+      if (entry.timestamp_in_seconds >= check_entry.timestamp_in_seconds) {
+        if (DoesConfirmationTypeATrumpB(entry.ad_content.ad_action,
+            check_entry.ad_content.ad_action)) {
+          filtered_ad_history[entry.ad_content.uuid] = entry;
         }
       }
     } else {
-      filtered_ad_history[ad_history_detail.ad_content.uuid] =
-          ad_history_detail;
+      filtered_ad_history[entry.ad_content.uuid] = entry;
     }
   }
 
-  std::deque<AdHistoryDetail> filtered_ad_history_details;
+  std::deque<AdHistory> filtered_history;
 
   for (const auto& ad_history : filtered_ad_history) {
-    filtered_ad_history_details.push_back(ad_history.second);
+    filtered_history.push_back(ad_history.second);
   }
 
-  return filtered_ad_history_details;
+  return filtered_history;
 }
 
 }  // namespace ads
