@@ -68,6 +68,7 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
     const { showMenu } = this.state
     return (
       <StyledWidgetMenuContainer
+        menuPosition={menuPosition}
         innerRef={this.settingsMenuRef}
         widgetMenuPersist={widgetMenuPersist}
       >

@@ -42,7 +42,7 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
           textDirection={textDirection}
         >
           <StyledWidget widgetMenuPersist={widgetMenuPersist}>
-            <WrappedComponent {...this.props as P}/>
+              <WrappedComponent {...this.props as P}/>
           </StyledWidget>
           <WidgetMenu
             widgetMenuPersist={widgetMenuPersist}

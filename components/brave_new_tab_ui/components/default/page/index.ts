@@ -4,14 +4,11 @@
 
 import styled, { css } from 'brave-ui/theme'
 
-const breakpointLargeBlocks = '1150px'
-const breakpointEveryBlock = '1070px'
-const breakpointFooter = '530px'
+const breakpointLargeBlocks = '980px'
+const breakpointEveryBlock = '870px'
 
 const singleColumnSmallViewport = css`
  @media screen and (max-width: ${breakpointEveryBlock}) {
-   grid-column: 1;
-   grid-column-end: span 3;
    text-align: center;
  }
 `
@@ -21,15 +18,12 @@ export const Page = styled<{}, 'div'>('div')`
      so that the footer goes in the correct location always,
      yet can still merge upwards to previous rows. */
   --ntp-page-rows: 4;
+  --ntp-item-justify: start;
   @media screen and (max-width: ${breakpointLargeBlocks}) {
-    --ntp-page-rows: 6;
+    --ntp-page-rows: 5;
   }
   @media screen and (max-width: ${breakpointEveryBlock}) {
-    justify-content: center;
-    --ntp-page-rows: 7;
-  }
-  @media screen and (max-width: ${breakpointFooter}) {
-    --ntp-page-rows: 8;
+    --ntp-item-justify: center;
   }
 
   -webkit-font-smoothing: antialiased;
@@ -40,7 +34,7 @@ export const Page = styled<{}, 'div'>('div')`
   left: 0;
   display: grid;
   grid-template-rows: repeat(calc(var(--ntp-page-rows) - 1), min-content) auto;
-  /* grid-template-columns: max-content min-content minmax(max-content, 323px); */
+  grid-template-columns: min-content auto min-content;
   grid-auto-flow: row dense;
   padding: 12px;
   overflow: hidden;
@@ -50,10 +44,16 @@ export const Page = styled<{}, 'div'>('div')`
   height: 100%;
   min-height: 100vh;
   align-items: flex-start;
+
+  @media screen and (max-width: ${breakpointEveryBlock}) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `
 
 export const GridItemStats = styled('section')`
-  grid-column: 1;
+  grid-column: 1 / span 2;
   ${singleColumnSmallViewport}
 `
 
@@ -64,15 +64,16 @@ export const GridItemClock = styled('section')`
 `
 
 export const GridItemRewards = styled('section')`
-  grid-column: 3;
+  grid-column: 3 / span 1;
   grid-row-end: span 2;
   @media screen and (max-width: ${breakpointLargeBlocks}) {
-    grid-column: 1 / span 3;
+    grid-column: 2 / span 2;
+    justify-self: end;
   }
 `
 
 export const GridItemTopSites = styled('section')`
-  grid-column: 1;
+  grid-column: 1 / span 2;
   ${singleColumnSmallViewport}
 `
 
@@ -84,26 +85,40 @@ export const GridItemNotification = styled('section')`
 `
 
 export const GridItemCredits = styled('section')`
-  grid-column: 1 / span 2;
+  grid-column: 1 / span 1;
   grid-row: -3;
   grid-row-end: span 2;
   align-self: end;
   margin: 0 0 36px 36px;
-  @media screen and (max-width: ${breakpointFooter}) {
-    grid-column: 1 / span 3;
+  @media screen and (max-width: ${breakpointEveryBlock}) {
+    align-self: center;
+    margin: 0;
   }
 `
 
 export const GridItemNavigation = styled('section')`
-  grid-column: 3;
+  grid-column: 3 / span 1;
   grid-row-start: -2;
   align-self: end;
   margin: 0 24px 24px 0;
-  @media screen and (max-width: ${breakpointFooter}) {
-    grid-column: 1 / span 3;
+  @media screen and (max-width: ${breakpointEveryBlock}) {
+    margin: 0;
+    align-self: unset;
   }
 `
 
+export const Footer = styled<{}, 'footer'>('footer')`
+  display: contents;
+
+  @media screen and (max-width: ${breakpointEveryBlock}) {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+  }
+`
 
 interface ImageLoadProps {
   imageHasLoaded: boolean
@@ -188,6 +203,7 @@ export const PhotoName = styled<{}, 'div'>('div')`
   font-size: 12px;
   font-family: Muli, sans-serif;
   color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
 `
 
 export const Navigation = styled<{}, 'nav'>('nav')`

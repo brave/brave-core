@@ -15,10 +15,7 @@ export const List = styled<ListProps, 'div'>('div')`
   height: 100%;
   display: grid;
   grid-template-columns: repeat(${p => Math.min(p.blockNumber, 6).toString()}, 92px);
-
-  @media screen and (max-width: 1150px) {
-    justify-content: center;
-  }
+  justify-content: var(--ntp-item-justify, start);
 
   @media screen and (max-width: 700px) {
     grid-template-columns: repeat(${p => Math.min(p.blockNumber, 3).toString()}, 92px);

@@ -16,7 +16,7 @@ export const WidgetWrapper = styled<{}, 'div'>('div')`
   position: relative;
   font-family: Muli, sans-serif;
   overflow-x: hidden;
-  max-width: 305px;
+  width: 305px;
   background-image: linear-gradient(140deg, #392DD1 0%, #8E2995 100%);
 `
 

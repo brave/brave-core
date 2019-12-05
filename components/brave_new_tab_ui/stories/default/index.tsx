@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Page, Header, Footer, App, PosterBackground, Gradient, ClockWidget as Clock, RewardsWidget as Rewards } from '../../components/default'
+import { Page, App, PosterBackground, Gradient, ClockWidget as Clock, RewardsWidget as Rewards } from '../../components/default'
 import * as S from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 
@@ -176,70 +176,68 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
           />
         }
         <Page>
-          <Header>
-            {showStats &&
-            <S.GridItemStats>
-              <Stats
-                textDirection={textDirection}
-                menuPosition={'right'}
-                hideWidget={this.toggleShowStats}
-              />
-            </S.GridItemStats>
-            }
-            {showClock &&
-            <S.GridItemClock>
-              <Clock
-                textDirection={textDirection}
-                menuPosition={'left'}
-                hideWidget={this.toggleShowClock}
-              />
-            </S.GridItemClock>
-            }
-            {showTopSites &&
-            <S.GridItemTopSites>
-              <TopSitesList
-                textDirection={textDirection}
-                menuPosition={'right'}
-                hideWidget={this.toggleShowTopSites}
-              />
-            </S.GridItemTopSites>
-            }
-            {this.state.showTopSitesNotification &&
-            <S.GridItemNotification>
-              <TopSitesNotification
-                actions={{
-                  undoSiteIgnored: () => {},
-                  onUndoAllSiteIgnored: () => {},
-                  onHideSiteRemovalNotification: () => this.hideSiteRemovalNotification()
-                }}
-              />
-            </S.GridItemNotification>
-            }
-            {showRewards &&
-            <S.GridItemRewards>
-              <Rewards
-                promotions={promotions}
-                balance={balance}
-                enabledAds={enabledAds}
-                enabledMain={enabledMain}
-                walletCreated={walletCreated}
-                walletCorrupted={walletCorrupted}
-                walletCreateFailed={walletCreateFailed}
-                walletCreating={walletCreating}
-                adsEstimatedEarnings={adsEstimatedEarnings}
-                onEnableAds={this.enableAds}
-                onCreateWallet={this.createWallet}
-                onEnableRewards={this.enableRewards}
-                textDirection={textDirection}
-                menuPosition={'left'}
-                hideWidget={this.toggleShowRewards}
-                onDismissNotification={this.doNothing}
-                totalContribution={totalContribution}
-              />
-            </S.GridItemRewards>
-            }
-          </Header>
-          <Footer>
+          {showStats &&
+          <S.GridItemStats>
+            <Stats
+              textDirection={textDirection}
+              menuPosition={'right'}
+              hideWidget={this.toggleShowStats}
+            />
+          </S.GridItemStats>
+          }
+          {showClock &&
+          <S.GridItemClock>
+            <Clock
+              textDirection={textDirection}
+              menuPosition={'left'}
+              hideWidget={this.toggleShowClock}
+            />
+          </S.GridItemClock>
+          }
+          {showTopSites &&
+          <S.GridItemTopSites>
+            <TopSitesList
+              textDirection={textDirection}
+              menuPosition={'right'}
+              hideWidget={this.toggleShowTopSites}
+            />
+          </S.GridItemTopSites>
+          }
+          {this.state.showTopSitesNotification &&
+          <S.GridItemNotification>
+            <TopSitesNotification
+              actions={{
+                undoSiteIgnored: () => { console.log('undo site ignored') },
+                onUndoAllSiteIgnored: () => { console.log('undo all site ignored') },
+                onHideSiteRemovalNotification: () => this.hideSiteRemovalNotification()
+              }}
+            />
+          </S.GridItemNotification>
+          }
+          {showRewards &&
+          <S.GridItemRewards>
+            <Rewards
+              promotions={promotions}
+              balance={balance}
+              enabledAds={enabledAds}
+              enabledMain={enabledMain}
+              walletCreated={walletCreated}
+              walletCorrupted={walletCorrupted}
+              walletCreateFailed={walletCreateFailed}
+              walletCreating={walletCreating}
+              adsEstimatedEarnings={adsEstimatedEarnings}
+              onEnableAds={this.enableAds}
+              onCreateWallet={this.createWallet}
+              onEnableRewards={this.enableRewards}
+              textDirection={textDirection}
+              menuPosition={'left'}
+              hideWidget={this.toggleShowRewards}
+              onDismissNotification={this.doNothing}
+              totalContribution={totalContribution}
+            />
+          </S.GridItemRewards>
+          }
+          <S.Footer>
             {showBrandedWallpaper && this.state.brandedWallpaper &&
               this.state.brandedWallpaper.logo &&
             <S.GridItemCredits>
@@ -269,7 +267,7 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
               showTopSites={showTopSites}
               showRewards={showRewards}
             />
-          </Footer>
+          </S.Footer>
         </Page>
       </App>
     )

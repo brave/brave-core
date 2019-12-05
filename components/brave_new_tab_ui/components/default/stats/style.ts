@@ -8,11 +8,7 @@ export const StyledStatsItemContainer = styled<{}, 'ul'>('ul')`
   -webkit-font-smoothing: antialiased;
   display: flex;
   flex-wrap: wrap;
-  >:not(:last-child) * {
-    margin-right: 50px;
-    margin-bottom: 25px;
-  }
-  justify-content: center;
+  justify-content: var(--ntp-item-justify, start);
   align-items: start;
   font-weight: 400;
   margin: 0;
@@ -26,6 +22,7 @@ export const StyledStatsItem = styled<{}, 'li'>('li')`
   list-style-type: none;
   font-size: inherit;
   font-family: inherit;
+  margin: 10px 16px;
 
   &:first-child {
     color: #FB542B;
@@ -35,6 +32,7 @@ export const StyledStatsItem = styled<{}, 'li'>('li')`
   }
   &:last-child {
     color: #FFFFFF;
+    margin-right: 0;
   }
 `
 

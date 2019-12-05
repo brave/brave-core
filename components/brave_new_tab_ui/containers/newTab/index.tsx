@@ -5,9 +5,14 @@
 import * as React from 'react'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
+
+// Components
+import Stats from './stats'
+import Block from './block'
+import FooterInfo from './footerInfo'
+import SiteRemovalNotification from './notification'
 import {
   Page,
-  Header,
   ClockWidget as Clock,
   ListWidget as List,
   Footer,
@@ -16,14 +21,8 @@ import {
   Gradient,
   RewardsWidget as Rewards
 } from '../../components/default'
-import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
-
-// Components
-import Stats from './stats'
-import Block from './block'
-import FooterInfo from './footerInfo'
-import SiteRemovalNotification from './notification'
 import * as S from '../../components/default/page'
+import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 
 interface Props {
   newTabData: NewTab.State
@@ -212,75 +211,73 @@ class NewTabPage extends React.Component<Props, State> {
           />
         }
         <Page>
-          <Header>
-            {newTabData.showStats &&
-            <S.GridItemStats>
-              <Stats
-                textDirection={newTabData.textDirection}
-                stats={newTabData.stats}
-                hideWidget={this.toggleShowStats}
-                menuPosition={'right'}
-              />
-            </S.GridItemStats>
-            }
-            {newTabData.showClock &&
-            <S.GridItemClock>
-              <Clock
-                textDirection={newTabData.textDirection}
-                hideWidget={this.toggleShowClock}
-                menuPosition={'left'}
-              />
-            </S.GridItemClock>
-            }
-            {this.props.newTabData.gridSites.length && newTabData.showTopSites &&
-            <S.GridItemTopSites><List
-              blockNumber={this.props.newTabData.gridSites.length}
+          {newTabData.showStats &&
+          <S.GridItemStats>
+            <Stats
               textDirection={newTabData.textDirection}
+              stats={newTabData.stats}
+              hideWidget={this.toggleShowStats}
               menuPosition={'right'}
-              hideWidget={this.toggleShowTopSites}
-            >
-              {
-                this.props.newTabData.gridSites.map((site: NewTab.Site) =>
-                  <Block
-                    key={site.url}
-                    id={site.url}
-                    title={site.title}
-                    href={site.url}
-                    favicon={site.favicon}
-                    style={{ backgroundColor: site.themeColor || site.computedThemeColor }}
-                    onToggleBookmark={this.onToggleBookmark.bind(this, site)}
-                    onPinnedTopSite={this.onTogglePinnedTopSite.bind(this, site)}
-                    onIgnoredTopSite={this.onIgnoredTopSite.bind(this, site)}
-                    onDraggedSite={this.onDraggedSite}
-                    onDragEnd={this.onDragEnd}
-                    isPinned={site.pinned}
-                    isBookmarked={site.bookmarked !== undefined}
-                  />
-                )
-              }
-            </List></S.GridItemTopSites>}
+            />
+          </S.GridItemStats>
+          }
+          {newTabData.showClock &&
+          <S.GridItemClock>
+            <Clock
+              textDirection={newTabData.textDirection}
+              hideWidget={this.toggleShowClock}
+              menuPosition={'left'}
+            />
+          </S.GridItemClock>
+          }
+          {this.props.newTabData.gridSites.length && newTabData.showTopSites &&
+          <S.GridItemTopSites><List
+            blockNumber={this.props.newTabData.gridSites.length}
+            textDirection={newTabData.textDirection}
+            menuPosition={'right'}
+            hideWidget={this.toggleShowTopSites}
+          >
             {
-              this.props.newTabData.showSiteRemovalNotification
-              ? <S.GridItemNotification>
-                  <SiteRemovalNotification actions={actions} />
-                </S.GridItemNotification>
-              : null
+              this.props.newTabData.gridSites.map((site: NewTab.Site) =>
+                <Block
+                  key={site.url}
+                  id={site.url}
+                  title={site.title}
+                  href={site.url}
+                  favicon={site.favicon}
+                  style={{ backgroundColor: site.themeColor || site.computedThemeColor }}
+                  onToggleBookmark={this.onToggleBookmark.bind(this, site)}
+                  onPinnedTopSite={this.onTogglePinnedTopSite.bind(this, site)}
+                  onIgnoredTopSite={this.onIgnoredTopSite.bind(this, site)}
+                  onDraggedSite={this.onDraggedSite}
+                  onDragEnd={this.onDragEnd}
+                  isPinned={site.pinned}
+                  isBookmarked={site.bookmarked !== undefined}
+                />
+              )
             }
-            {newTabData.showRewards &&
-            <S.GridItemRewards>
-              <Rewards
-                {...rewardsState}
-                onCreateWallet={this.createWallet}
-                onEnableAds={this.enableAds}
-                onEnableRewards={this.enableRewards}
-                textDirection={newTabData.textDirection}
-                hideWidget={this.toggleShowRewards}
-                onDismissNotification={this.dismissNotification}
-                menuPosition={'left'}
-              />
-            </S.GridItemRewards>
-            }
-          </Header>
+          </List></S.GridItemTopSites>}
+          {
+            this.props.newTabData.showSiteRemovalNotification
+            ? <S.GridItemNotification>
+                <SiteRemovalNotification actions={actions} />
+              </S.GridItemNotification>
+            : null
+          }
+          {newTabData.showRewards &&
+          <S.GridItemRewards>
+            <Rewards
+              {...rewardsState}
+              onCreateWallet={this.createWallet}
+              onEnableAds={this.enableAds}
+              onEnableRewards={this.enableRewards}
+              textDirection={newTabData.textDirection}
+              hideWidget={this.toggleShowRewards}
+              onDismissNotification={this.dismissNotification}
+              menuPosition={'left'}
+            />
+          </S.GridItemRewards>
+          }
           <Footer>
             {isShowingBrandedWallpaper && newTabData.brandedWallpaperData &&
              newTabData.brandedWallpaperData.logo &&
