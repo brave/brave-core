@@ -1,8 +1,8 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.h b/chrome/renderer/chrome_content_renderer_client.h
-index 63be9235f7f6c66f49698ec05fed8581caaddac5..3c0fdb88d24cf0180a7bcfed705f8e07f11ed31a 100644
+index d306846f872ee27a07a67f80fc4dd8740458e47c..c811bd8de9c861b466ceea8f00815ae8c8507c08 100644
 --- a/chrome/renderer/chrome_content_renderer_client.h
 +++ b/chrome/renderer/chrome_content_renderer_client.h
-@@ -236,6 +236,7 @@ class ChromeContentRendererClient
+@@ -241,6 +241,7 @@ class ChromeContentRendererClient
    ChromeRenderThreadObserver* GetChromeObserver() const;
  
   private:
