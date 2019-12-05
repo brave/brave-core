@@ -112,4 +112,8 @@ extension String {
     public func truncate(length: Int, trailing: String = "…") -> String {
         return (self.count > length) ? self.prefix(length) + trailing : self
     }
+    
+    public var capitalizeFirstLetter: String {
+        return prefix(1).capitalized + dropFirst()
+    }
 }

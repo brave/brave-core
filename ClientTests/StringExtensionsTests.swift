@@ -50,5 +50,13 @@ class StringExtensionsTests: XCTestCase {
         roundtripTest("http://www.cnn.com/2017/09/25/politics/north-korea-fm-us-bombers/index.html", "http://www.cnn.com/2017/09/25/politics/north-korea-fm-us-bombers/index.html")
         roundtripTest("http://mozilla.com/?a=foo&b=bar", "http://mozilla.com/%3Fa%3Dfoo%26b%3Dbar")
     }
+    
+    func testCapitalizeFirst() {
+        XCTAssertEqual("test".capitalizeFirstLetter, "Test")
+        XCTAssertEqual("TEST".capitalizeFirstLetter, "TEST")
+        XCTAssertEqual("Test".capitalizeFirstLetter, "Test")
+        XCTAssertEqual("tEST".capitalizeFirstLetter, "TEST")
+        XCTAssertEqual("test test".capitalizeFirstLetter, "Test test")
+    }
 
 }
