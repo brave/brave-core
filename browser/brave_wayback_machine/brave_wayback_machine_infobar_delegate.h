@@ -19,6 +19,11 @@ class BraveWaybackMachineInfoBarDelegate : public infobars::InfoBarDelegate {
   static void Create(content::WebContents* contents);
   ~BraveWaybackMachineInfoBarDelegate() override = default;
 
+  BraveWaybackMachineInfoBarDelegate(
+      const BraveWaybackMachineInfoBarDelegate&) = delete;
+  BraveWaybackMachineInfoBarDelegate& operator=(
+      const BraveWaybackMachineInfoBarDelegate&) = delete;
+
  private:
   BraveWaybackMachineInfoBarDelegate();
 
@@ -31,8 +36,6 @@ class BraveWaybackMachineInfoBarDelegate : public infobars::InfoBarDelegate {
   InfoBarIdentifier GetIdentifier() const override;
   bool EqualsDelegate(
       infobars::InfoBarDelegate* delegate) const override;
-
-  DISALLOW_COPY_AND_ASSIGN(BraveWaybackMachineInfoBarDelegate);
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_WAYBACK_MACHINE_BRAVE_WAYBACK_MACHINE_INFOBAR_DELEGATE_H_

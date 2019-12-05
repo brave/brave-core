@@ -6,17 +6,17 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_WAYBACK_MACHINE_INFOBAR_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_WAYBACK_MACHINE_INFOBAR_VIEW_H_
 
-#include "brave/browser/brave_wayback_machine/wayback_machine_url_fetcher.h"
+#include <memory>
+
 #include "chrome/browser/ui/views/infobars/infobar_view.h"
 
 namespace content {
 class WebContents;
-}  // namespace content
+}
 
 class BraveWaybackMachineInfoBarDelegate;
 
-class BraveWaybackMachineInfoBarView : public InfoBarView,
-                                       public WaybackMachineURLFetcher::Client {
+class BraveWaybackMachineInfoBarView : public InfoBarView {
  public:
   BraveWaybackMachineInfoBarView(
       std::unique_ptr<BraveWaybackMachineInfoBarDelegate> delegate,
@@ -29,20 +29,10 @@ class BraveWaybackMachineInfoBarView : public InfoBarView,
       const BraveWaybackMachineInfoBarView&) = delete;
 
  private:
-  class InfoBarViewSubViews;
-
   // InfoBarView overrides:
   void Layout() override;
 
-  // WaybackMachineURLFetcher::Client overrides:
-  void OnWaybackURLFetched(const GURL& latest_wayback_url) override;
-
-  void FetchWaybackURL();
-  void LoadURL(const GURL& url);
-
-  InfoBarViewSubViews* sub_views_ = nullptr;
-  content::WebContents* contents_;
-  WaybackMachineURLFetcher wayback_machine_url_fetcher_;
+  views::View* sub_views_ = nullptr;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_WAYBACK_MACHINE_INFOBAR_VIEW_H_

@@ -9,7 +9,7 @@
 namespace content {
 class BrowserContext;
 class WebContents;
-}  // namespace
+}  // namespace content
 
 void CheckWaybackMachineIfNeeded(content::WebContents* contents,
                                  int response_code);

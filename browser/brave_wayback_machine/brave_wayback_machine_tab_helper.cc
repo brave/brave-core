@@ -5,7 +5,10 @@
 
 #include "brave/browser/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
 
+#include "base/bind.h"
 #include "base/command_line.h"
+#include "base/task/post_task.h"
+#include "base/task/task_traits.h"
 #include "brave/browser/brave_wayback_machine/brave_wayback_machine_util.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_switches.h"
@@ -28,7 +31,11 @@ void BraveWaybackMachineTabHelper::AttachTabHelperIfNeeded(
 
 BraveWaybackMachineTabHelper::BraveWaybackMachineTabHelper(
     content::WebContents* contents)
-    : WebContentsObserver(contents) {
+    : WebContentsObserver(contents),
+      weak_factory_(this) {
+}
+
+BraveWaybackMachineTabHelper::~BraveWaybackMachineTabHelper() {
 }
 
 void BraveWaybackMachineTabHelper::DidFinishNavigation(
@@ -41,8 +48,17 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
 
   if (const net::HttpResponseHeaders* header =
           navigation_handle->GetResponseHeaders()) {
-    CheckWaybackMachineIfNeeded(web_contents(), header->response_code());
+    // Create infobar in the next loop for prevening navigation blocking.
+    PostTask(FROM_HERE,
+             { base::CurrentThread(), base::TaskPriority::BEST_EFFORT },
+             base::BindOnce(&BraveWaybackMachineTabHelper::CreateInfoBar,
+                            weak_factory_.GetWeakPtr(),
+                            header->response_code()));
   }
+}
+
+void BraveWaybackMachineTabHelper::CreateInfoBar(int response_code) {
+  CheckWaybackMachineIfNeeded(web_contents(), response_code);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveWaybackMachineTabHelper)
