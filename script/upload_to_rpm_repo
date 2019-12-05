@@ -39,6 +39,11 @@ fi
 case "$GPG_KEY_ID" in
     "D8BAD4DE7EE17AF52A834B2D0BB75829C2D4E821"|"9BD198A2D848C482E3550697A8580BDC82D3DC6C"|"E85FFA8E2E90B40B33ED39274FE13824E3FFC656")  # Release keys
         KEY_NAME=brave-core.asc
+        for pubkey in $(rpm -q gpg-pubkey --qf '%{NAME}-%{VERSION}-%{RELEASE}\t%{SUMMARY}\n'|grep Brave|awk '{ print $1 }'); do
+          sudo rpm -e $pubkey
+        done
+        gpg --export --armor "${GPG_KEY_ID}!" > $KEY_NAME
+        sudo rpm --import $KEY_NAME
         ;;
     "9228DBCE20DDE5EC46488DE90B31DBA06A8A26F9") # Nightly key
         KEY_NAME=brave-core-nightly.asc
