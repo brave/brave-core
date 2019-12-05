@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
-index a72a7f8d99927fd4950fed12ef9093cd3dc32464..539b3a832f547595e64e305ee153ccae41d34cbd 100644
+index 72fd16d8323cf2f58e953f7e50c3d6acf20a5294..ef2c84f4fd046843a2cd31f91f5f71b7be195dd5 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarManager.java
 @@ -757,6 +757,7 @@ public class ToolbarManager implements ScrimObserver, ToolbarTabController, UrlF
