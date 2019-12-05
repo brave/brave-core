@@ -117,7 +117,8 @@
       "chrome://welcome/*",
       "chrome://settings/*",
       "chrome://newtab/*",
-      "chrome://webcompat/*"
+      "chrome://webcompat/*",
+      "chrome://adblock/*"
     ]
   }]
 }
