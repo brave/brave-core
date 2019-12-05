@@ -25,7 +25,7 @@ declare namespace Rewards {
   export interface State {
     addresses?: Record<AddressesType, Address>
     adsData: AdsData
-    adsHistory: AdsHistoryData[]
+    adsHistory: AdsHistory[]
     autoContributeList: Publisher[]
     balance: Balance
     contributeLoad: boolean
@@ -253,7 +253,7 @@ declare namespace Rewards {
     args: Record<string, string>
   }
 
-  export interface AdsHistoryData {
+  export interface AdsHistory {
     [key: string]: any
     id: string
     date: string

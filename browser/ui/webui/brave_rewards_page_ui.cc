@@ -278,6 +278,12 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   DISALLOW_COPY_AND_ASSIGN(RewardsDOMHandler);
 };
 
+namespace {
+
+const int kDaysOfAdsHistory = 7;
+
+}  // namespace
+
 RewardsDOMHandler::RewardsDOMHandler() : weak_factory_(this) {}
 
 RewardsDOMHandler::~RewardsDOMHandler() {
@@ -1125,8 +1131,17 @@ void RewardsDOMHandler::GetAdsHistory(const base::ListValue* args) {
     return;
   }
 
-  ads_service_->GetAdsHistory(base::Bind(&RewardsDOMHandler::OnGetAdsHistory,
-                                         weak_factory_.GetWeakPtr()));
+  const base::Time to_time = base::Time::Now();
+  const uint64_t to_timestamp = to_time.ToDoubleT();
+
+  const base::Time from_time = to_time -
+      base::TimeDelta::FromDays(kDaysOfAdsHistory - 1);
+  const base::Time from_time_local_midnight = from_time.LocalMidnight();
+  const uint64_t from_timestamp = from_time_local_midnight.ToDoubleT();
+
+  ads_service_->GetAdsHistory(from_timestamp, to_timestamp,
+      base::BindOnce(&RewardsDOMHandler::OnGetAdsHistory,
+          weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::OnGetAdsHistory(const base::ListValue& ads_history) {

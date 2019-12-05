@@ -19,7 +19,7 @@ std::deque<AdHistory> AdsHistoryDescendingSort::Apply(
 
   std::sort(sorted_history.begin(), sorted_history.end(),
       [](const AdHistory& a, const AdHistory& b) {
-    return a.timestamp_in_seconds < b.timestamp_in_seconds;
+    return a.timestamp_in_seconds > b.timestamp_in_seconds;
   });
 
   return sorted_history;

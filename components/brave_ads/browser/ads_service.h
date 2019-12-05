@@ -80,6 +80,8 @@ class AdsService : public KeyedService {
       const SessionID& tab_id) = 0;
 
   virtual void GetAdsHistory(
+      const uint64_t from_timestamp,
+      const uint64_t to_timestamp,
       OnGetAdsHistoryCallback callback) = 0;
 
   virtual void ToggleAdThumbUp(

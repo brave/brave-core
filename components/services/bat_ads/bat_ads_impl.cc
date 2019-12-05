@@ -156,20 +156,15 @@ void BatAdsImpl::RemoveAllHistory(
 }
 
 void BatAdsImpl::GetAdsHistory(
+    const uint64_t from_timestamp,
+    const uint64_t to_timestamp,
     GetAdsHistoryCallback callback) {
-  std::map<uint64_t, std::vector<std::string>> result;
+  ads::AdsHistory history = ads_->GetAdsHistory(
+      ads::AdsHistory::FilterType::kConfirmationType,
+          ads::AdsHistory::SortType::kDescendingOrder, from_timestamp,
+              to_timestamp);
 
-  auto ads_histories = ads_->GetAdsHistory(
-      ads::AdsHistoryFilterType::kConfirmationType);
-  for (const auto& ads_history : ads_histories) {
-    std::vector<std::string> ads_history_json;
-    for (const auto& ads_history_entry : ads_history.second) {
-      ads_history_json.push_back(ads_history_entry.ToJson());
-    }
-    result[ads_history.first] = ads_history_json;
-  }
-
-  std::move(callback).Run(mojo::MapToFlatMap(result));
+  std::move(callback).Run(history.ToJson());
 }
 
 void BatAdsImpl::ToggleAdThumbUp(
