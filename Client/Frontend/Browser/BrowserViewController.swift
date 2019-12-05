@@ -1327,9 +1327,6 @@ class BrowserViewController: UIViewController {
 
         switchToPrivacyMode(isPrivate: isPrivate)
         _ = tabManager.addTabAndSelect(request, isPrivate: isPrivate)
-        if url == nil && NewTabAccessors.getNewTabPage() == .blankPage {
-            focusLocationField()
-        }
     }
 
     func openBlankNewTab(attemptLocationFieldFocus: Bool, isPrivate: Bool = false, searchFor searchText: String? = nil) {
@@ -1344,7 +1341,6 @@ class BrowserViewController: UIViewController {
                 // Check that the newly created tab is still selected.
                 // This let's the user spam the Cmd+T button without lots of responder changes.
                 guard freshTab == self.tabManager.selectedTab else { return }
-                self.focusLocationField()
                 if let text = searchText {
                     self.topToolbar.setLocation(text, search: true)
                 }
@@ -2307,6 +2303,20 @@ extension BrowserViewController: TabManagerDelegate {
         }
 
         updateInContentHomePanel(selected?.url as URL?)
+        
+        // Kind of a goofy work around for specific edge-case
+        // If creating a new tab from the tab tray, the focus behavior is kind of weird.
+        // Also, due to the significant time required before url focus (closing tab tray, creating tab, selecting)
+        //   the time delay here is pretty significant, hence a check inside to prevent highlighting the url bar
+        //   if the user navigated to a new tab.
+        if Preferences.NewTabPage.autoOpenKeyboard.value {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(800)) {
+                // Only highlight location bar if still on a NTP.
+                if tabManager.selectedTab?.url?.isAboutHomeURL == true {
+                    self.focusLocationField()
+                }
+            }
+        }
     }
 
     func tabManager(_ tabManager: TabManager, willAddTab tab: Tab) {
