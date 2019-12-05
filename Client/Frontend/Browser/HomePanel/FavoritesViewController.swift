@@ -394,7 +394,8 @@ class FavoritesViewController: UIViewController, Themeable {
     private func setupBackgroundImage() {
         guard var background = backgroundImage.info,
             let image = background.image else {
-            return
+                imageCreditButton.isHidden = true
+                return
         }
         
         setupImageCredit()
