@@ -13,6 +13,7 @@
 #import "BATBraveAds.h"
 #import "BATCommonOperations.h"
 #import "NSURL+Extensions.h"
+#import "BATExternalWallet+DictionaryValue.h"
 
 #import "NativeLedgerClient.h"
 #import "NativeLedgerClientBridge.h"
@@ -44,6 +45,9 @@
 NSString * const BATBraveLedgerErrorDomain = @"BATBraveLedgerErrorDomain";
 NSNotificationName const BATBraveLedgerNotificationAdded = @"BATBraveLedgerNotificationAdded";
 
+BATBraveGeneralLedgerNotificationID const BATBraveGeneralLedgerNotificationIDWalletNowVerified = @"wallet_new_verified";
+BATBraveGeneralLedgerNotificationID const BATBraveGeneralLedgerNotificationIDWalletDisconnected = @"wallet_disconnected";
+
 static NSString * const kNextAddFundsDateNotificationKey = @"BATNextAddFundsDateNotification";
 static NSString * const kBackupNotificationIntervalKey = @"BATBackupNotificationInterval";
 static NSString * const kBackupNotificationFrequencyKey = @"BATBackupNotificationFrequency";
@@ -52,6 +56,8 @@ static NSString * const kBackupSucceededKey = @"BATRewardsBackupSucceeded";
 
 static NSString * const kContributionQueueAutoincrementID = @"BATContributionQueueAutoincrementID";
 static NSString * const kUnblindedTokenAutoincrementID = @"BATUnblindedTokenAutoincrementID";
+
+static NSString * const kExternalWalletsPrefKey = @"external_wallets";
 
 static const auto kOneDay = base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 
@@ -355,6 +361,85 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 {
   ledger->HasSufficientBalanceToReconcile(completion);
 }
+
+#pragma mark - User Wallets
+
+- (void)externalWalletForType:(BATExternalWalletType)walletType
+                   completion:(void (^)(BATExternalWallet * _Nullable wallet))completion
+{
+  ledger->GetExternalWallet(walletType.UTF8String, ^(ledger::Result result, ledger::ExternalWalletPtr walletPtr) {
+    if (result == ledger::Result::LEDGER_OK && walletPtr.get() != nullptr) {
+      const auto bridgedWallet = [[BATExternalWallet alloc] initWithExternalWallet:*walletPtr];
+      completion(bridgedWallet);
+    } else {
+      completion(nil);
+    }
+  });
+}
+
+- (void)disconnectWalletOfType:(BATExternalWalletType)walletType
+                    completion:(nullable void (^)(BATResult result))completion
+{
+  ledger->DisconnectWallet(walletType.UTF8String, ^(ledger::Result result){
+    if (completion) {
+      completion(static_cast<BATResult>(result));
+    }
+    
+    for (BATBraveLedgerObserver *observer in self.observers) {
+      if (observer.externalWalletDisconnected) {
+        observer.externalWalletDisconnected(walletType);
+      }
+    }
+  });
+}
+
+- (void)authorizeExternalWalletOfType:(BATExternalWalletType)walletType
+                           queryItems:(NSDictionary<NSString *, NSString *> *)queryItems
+                           completion:(void (^)(BATResult result, NSURL * _Nullable redirectURL))completion
+{
+  ledger->ExternalWalletAuthorization(walletType.UTF8String,
+                                      MapFromNSDictionary(queryItems),
+                                      ^(ledger::Result result, std::map<std::string, std::string> args) {
+    const auto it = args.find("redirect_url");
+    std::string redirect;
+    if (it != args.end()) {
+      redirect = it->second;
+    }
+    NSURL *url = redirect.empty() ? nil : [NSURL URLWithString:[NSString stringWithUTF8String:redirect.c_str()]];
+    completion(static_cast<BATResult>(result), url);
+    
+    if (result == ledger::Result::LEDGER_OK) {
+      for (BATBraveLedgerObserver *observer in self.observers) {
+        if (observer.externalWalletAuthorized) {
+          observer.externalWalletAuthorized(walletType);
+        }
+      }
+    }
+  });
+}
+
+- (void)getExternalWallets:(ledger::GetExternalWalletsCallback)callback
+{
+  std::map<std::string, ledger::ExternalWalletPtr> wallets;
+  NSDictionary *externalWallets = self.prefs[kExternalWalletsPrefKey] ?: [[NSDictionary alloc] init];
+  for (NSString *walletTypeKey in externalWallets) {
+    const auto wallet = [[BATExternalWallet alloc] initWithDictionaryValue:externalWallets[walletTypeKey]];
+    wallets.insert(std::make_pair(walletTypeKey.UTF8String, wallet.cppObjPtr));
+  }
+  callback(std::move(wallets));
+}
+
+- (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::ExternalWalletPtr)wallet
+{
+  if (wallet.get() == nullptr) { return; }
+  const auto bridgedWallet = [[BATExternalWallet alloc] initWithExternalWallet:*wallet];
+  const auto bridgedType = [NSString stringWithUTF8String:wallet_type.c_str()];
+  NSMutableDictionary *externalWallets = [self.prefs[kExternalWalletsPrefKey] mutableCopy] ?: [[NSMutableDictionary alloc] init];
+  externalWallets[bridgedType] = [bridgedWallet dictionaryValue];
+  self.prefs[kExternalWalletsPrefKey] = externalWallets;
+  [self savePrefs];
+}
+
 
 #pragma mark - Publishers
 
@@ -990,7 +1075,9 @@ BATLedgerBridge(BOOL,
 - (std::string)getStringState:(const std::string&)name
 {
   const auto key = [NSString stringWithUTF8String:name.c_str()];
-  return ((NSString *)self.prefs[key]).UTF8String;
+  const auto value = (NSString *)self.prefs[key];
+  if (!value) { return ""; }
+  return value.UTF8String;
 }
 
 - (void)setInt64State:(const std::string&)name value:(int64_t)value
@@ -1823,21 +1910,17 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)getExternalWallets:(ledger::GetExternalWalletsCallback)callback
-{
-  // For uphold wallets (not implemented)
-  std::map<std::string, ledger::ExternalWalletPtr> wallets;
-  callback(std::move(wallets));
-}
-
-- (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::ExternalWalletPtr)wallet
-{
-  // For uphold wallets (not implemented)
-}
-
 - (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(ledger::ShowNotificationCallback)callback
 {
-  // TODO: Add notifications
+  const auto notificationID = [NSString stringWithUTF8String:type.c_str()];
+  const auto info = [[NSMutableDictionary<NSNumber *, NSString *> alloc] init];
+  for (NSInteger i = 0; i < args.size(); i++) {
+    info[@(i)] = [NSString stringWithUTF8String:args[i].c_str()];
+  }
+  [self addNotificationOfKind:BATRewardsNotificationKindGeneralLedger
+                     userInfo:info
+               notificationID:notificationID
+                     onlyOnce:NO];
 }
 
 - (void)getServerPublisherInfo:(const std::string &)publisher_key callback:(ledger::GetServerPublisherInfoCallback)callback

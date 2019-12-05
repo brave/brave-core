@@ -71,4 +71,16 @@
   XCTAssertTrue([foo1.numbers isEqualToArray:numbers2]);
 }
 
+- (void)testStringNSDictionaryToStringMap
+{
+  const auto d = @{
+    @"1": @"2",
+    @"3": @"4"
+  };
+  std::map<std::string, std::string> map = MapFromNSDictionary(d);
+  XCTAssert(map["1"] == "2");
+  XCTAssert(map["3"] == "4");
+  XCTAssert(map.find("5") == map.end());
+}
+
 @end

@@ -259,3 +259,12 @@ NS_INLINE NSDictionary<KObjC, VObjC> *NSDictionaryFromMap(base::flat_map<K, V> m
   }
   return d;
 }
+
+/// Converts an NSDictionary that has NSString keys & values to a C++ map with std::string keys & values
+NS_INLINE std::map<std::string, std::string> MapFromNSDictionary(NSDictionary<NSString *, NSString *> *d) {
+  std::map<std::string, std::string> map;
+  for (NSString *key in d) {
+    map.insert(std::make_pair(key.UTF8String, d[key].UTF8String));
+  }
+  return map;
+};
