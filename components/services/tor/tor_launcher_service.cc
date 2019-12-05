@@ -9,7 +9,6 @@
 
 #include "build/build_config.h"
 #include "brave/components/services/tor/tor_launcher_impl.h"
-#include "mojo/public/cpp/bindings/strong_binding.h"
 
 namespace tor {
 
@@ -31,9 +30,9 @@ TorLauncherService::~TorLauncherService() {}
 
 void TorLauncherService::OnStart() {
   binders_.Add(base::BindRepeating(
-        &TorLauncherService::BindTorLauncherReceiver,
-        base::Unretained(this),
-        &service_keepalive_));
+      &TorLauncherService::BindTorLauncherReceiver,
+      base::Unretained(this),
+      &service_keepalive_));
 }
 
 void TorLauncherService::OnConnect(
