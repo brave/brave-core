@@ -34,13 +34,13 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsRegistryBrowserTest,
                        WithoutWildcardContentSetting) {
   ContentSetting brave_url_shields_setting =
       content_settings()->GetContentSetting(
-          kBraveURL, kBraveURL, CONTENT_SETTINGS_TYPE_PLUGINS,
+          kBraveURL, kBraveURL, ContentSettingsType::PLUGINS,
           brave_shields::kBraveShields);
   EXPECT_EQ(CONTENT_SETTING_DEFAULT, brave_url_shields_setting);
 
   ContentSetting brave_url_shields_setting_private =
       private_content_settings()->GetContentSetting(
-          kBraveURL, kBraveURL, CONTENT_SETTINGS_TYPE_PLUGINS,
+          kBraveURL, kBraveURL, ContentSettingsType::PLUGINS,
           brave_shields::kBraveShields);
   EXPECT_EQ(CONTENT_SETTING_DEFAULT, brave_url_shields_setting_private);
 }
@@ -53,19 +53,19 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsRegistryBrowserTest,
   content_settings()->SetContentSettingCustomScope(
       brave_url_pattern,
       brave_url_pattern,
-      CONTENT_SETTINGS_TYPE_PLUGINS,
+      ContentSettingsType::PLUGINS,
       brave_shields::kBraveShields,
       CONTENT_SETTING_ALLOW);
 
   ContentSetting brave_url_shields_setting =
       content_settings()->GetContentSetting(
-          kBraveURL, kBraveURL, CONTENT_SETTINGS_TYPE_PLUGINS,
+          kBraveURL, kBraveURL, ContentSettingsType::PLUGINS,
           brave_shields::kBraveShields);
   EXPECT_EQ(CONTENT_SETTING_ALLOW, brave_url_shields_setting);
 
   ContentSetting brave_url_shields_setting_private =
       private_content_settings()->GetContentSetting(
-          kBraveURL, kBraveURL, CONTENT_SETTINGS_TYPE_PLUGINS,
+          kBraveURL, kBraveURL, ContentSettingsType::PLUGINS,
           brave_shields::kBraveShields);
   EXPECT_EQ(CONTENT_SETTING_ALLOW, brave_url_shields_setting_private);
 }

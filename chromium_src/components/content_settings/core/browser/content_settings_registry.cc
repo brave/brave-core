@@ -5,9 +5,9 @@
 
 #define BRAVE_INIT { \
   /* Add CONTENT_SETTING_ASK and make it default for autoplay*/ \
-  content_settings_info_.erase(CONTENT_SETTINGS_TYPE_AUTOPLAY); \
-  website_settings_registry_->UnRegister(CONTENT_SETTINGS_TYPE_AUTOPLAY); \
-  Register(CONTENT_SETTINGS_TYPE_AUTOPLAY, "autoplay", CONTENT_SETTING_BLOCK, \
+  content_settings_info_.erase(ContentSettingsType::AUTOPLAY); \
+  website_settings_registry_->UnRegister(ContentSettingsType::AUTOPLAY); \
+  Register(ContentSettingsType::AUTOPLAY, "autoplay", CONTENT_SETTING_BLOCK, \
            WebsiteSettingsInfo::UNSYNCABLE, WhitelistedSchemes(), \
            ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, \
                          CONTENT_SETTING_ASK), \
@@ -19,10 +19,10 @@
            ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS); \
   \
   /* Change plugins default to CONTENT_SETTING_BLOCK*/ \
-  content_settings_info_.erase(CONTENT_SETTINGS_TYPE_PLUGINS); \
-  website_settings_registry_->UnRegister(CONTENT_SETTINGS_TYPE_PLUGINS); \
+  content_settings_info_.erase(ContentSettingsType::PLUGINS); \
+  website_settings_registry_->UnRegister(ContentSettingsType::PLUGINS); \
   Register( \
-      CONTENT_SETTINGS_TYPE_PLUGINS, "plugins", \
+      ContentSettingsType::PLUGINS, "plugins", \
       CONTENT_SETTING_BLOCK, WebsiteSettingsInfo::SYNCABLE, \
       WhitelistedSchemes(kChromeUIScheme, kChromeDevToolsScheme), \
       ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK, \
@@ -36,11 +36,11 @@
       ContentSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS); \
   \
   /* Disable background sync by default (brave/brave-browser#4709)*/ \
-  content_settings_info_.erase(CONTENT_SETTINGS_TYPE_BACKGROUND_SYNC); \
+  content_settings_info_.erase(ContentSettingsType::BACKGROUND_SYNC); \
   website_settings_registry_->UnRegister( \
-      CONTENT_SETTINGS_TYPE_BACKGROUND_SYNC); \
+      ContentSettingsType::BACKGROUND_SYNC); \
   Register( \
-      CONTENT_SETTINGS_TYPE_BACKGROUND_SYNC, "background-sync", \
+      ContentSettingsType::BACKGROUND_SYNC, "background-sync", \
       CONTENT_SETTING_BLOCK, WebsiteSettingsInfo::UNSYNCABLE, \
       WhitelistedSchemes(), \
       ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK), \
@@ -52,10 +52,10 @@
       ContentSettingsInfo::EXCEPTIONS_ON_SECURE_ORIGINS_ONLY); \
   \
   /* Disable motion sensors by default (brave/brave-browser#4789)*/ \
-  content_settings_info_.erase(CONTENT_SETTINGS_TYPE_SENSORS); \
-  website_settings_registry_->UnRegister(CONTENT_SETTINGS_TYPE_SENSORS); \
+  content_settings_info_.erase(ContentSettingsType::SENSORS); \
+  website_settings_registry_->UnRegister(ContentSettingsType::SENSORS); \
   Register( \
-      CONTENT_SETTINGS_TYPE_SENSORS, "sensors", CONTENT_SETTING_BLOCK, \
+      ContentSettingsType::SENSORS, "sensors", CONTENT_SETTING_BLOCK, \
       WebsiteSettingsInfo::UNSYNCABLE, WhitelistedSchemes(), \
       ValidSettings(CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK), \
       WebsiteSettingsInfo::SINGLE_ORIGIN_ONLY_SCOPE, \

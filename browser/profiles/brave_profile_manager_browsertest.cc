@@ -114,13 +114,13 @@ class BraveProfileManagerTest : public InProcessBrowserTest {
                         ContentSetting setting) {
     content_settings->SetContentSettingCustomScope(
         primary_pattern, ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_JAVASCRIPT, "", setting);
+        ContentSettingsType::JAVASCRIPT, "", setting);
   }
 
   ContentSetting GetScriptSetting(HostContentSettingsMap* content_settings,
                                   const GURL& primary_url) {
     return content_settings->GetContentSetting(
-        primary_url, GURL(), CONTENT_SETTINGS_TYPE_JAVASCRIPT, "");
+        primary_url, GURL(), ContentSettingsType::JAVASCRIPT, "");
   }
 };
 

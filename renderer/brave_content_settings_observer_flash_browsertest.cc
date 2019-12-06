@@ -105,7 +105,7 @@ class BraveContentSettingsObserverFlashBrowserTest : public InProcessBrowserTest
       content_settings()->SetContentSettingCustomScope(
           top_level_page_pattern_,
           ContentSettingsPattern::Wildcard(),
-          CONTENT_SETTINGS_TYPE_PLUGINS,
+          ContentSettingsType::PLUGINS,
           std::string(),
           CONTENT_SETTING_DETECT_IMPORTANT_CONTENT);
     }
@@ -114,7 +114,7 @@ class BraveContentSettingsObserverFlashBrowserTest : public InProcessBrowserTest
       content_settings()->SetContentSettingCustomScope(
           top_level_page_pattern_,
           ContentSettingsPattern::Wildcard(),
-          CONTENT_SETTINGS_TYPE_PLUGINS,
+          ContentSettingsType::PLUGINS,
           std::string(),
           CONTENT_SETTING_ALLOW);
     }
