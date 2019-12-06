@@ -145,6 +145,34 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.getRewardsMainEnabled', [])
       break
     }
+    case types.ON_INLINE_TIP_SETTINGS_CHANGE: {
+      if (!state.inlineTip) {
+        state.inlineTip = {
+          twitter: true,
+          reddit: true,
+          github: true
+        }
+      }
+
+      const key = action.payload.key
+      const value = action.payload.value
+
+      if (key == null || key.length === 0 || value == null) {
+        break
+      }
+
+      let inlineTip = state.inlineTip
+
+      inlineTip[key] = value
+      chrome.send('brave_rewards.setInlineTipSetting', [key, value.toString()])
+
+      state = {
+        ...state,
+        inlineTip
+      }
+
+      break
+    }
     case types.ONLY_ANON_WALLET: {
       chrome.send('brave_rewards.onlyAnonWallet')
       break
