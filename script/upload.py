@@ -15,8 +15,8 @@ import subprocess
 import sys
 import tempfile
 
-from lib.config import (PLATFORM, DIST_URL, get_target_arch,
-                        get_env_var, s3_config,
+from lib.config import (PLATFORM, get_target_arch,
+                        get_env_var,
                         get_zip_name, product_name, project_name,
                         SOURCE_ROOT, dist_dir, output_dir, get_brave_version,
                         get_raw_version)
@@ -205,9 +205,6 @@ def parse_args():
     parser.add_argument('-v', '--version',
                         help='Specify the version',
                         default=get_brave_version())
-    parser.add_argument('-d', '--dist-url',
-                        help='The base dist url for '
-                        'download', default=DIST_URL)
     return parser.parse_args()
 
 
@@ -337,9 +334,6 @@ def upload_brave(github, release, file_path, filename=None, force=False):
             catch=requests.exceptions.ConnectionError, retries=3
         )
 
-    # Upload the checksum file.
-    upload_sha256_checksum(release['tag_name'], file_path)
-
     # Upload ARM assets without the v7l suffix for backwards compatibility
     # TODO Remove for 2.0
     if 'armv7l' in filename:
@@ -357,20 +351,6 @@ def upload_io_to_github(github, release, name, io, content_type):
         data=io,
         verify=False
     )
-
-
-def upload_sha256_checksum(version, file_path):
-    bucket, access_key, secret_key = s3_config()
-    checksum_path = '{}.sha256sum'.format(file_path)
-    sha256 = hashlib.sha256()
-    with open(file_path, 'rb') as f:
-        sha256.update(f.read())
-
-    filename = os.path.basename(file_path)
-    with open(checksum_path, 'w') as checksum:
-        checksum.write('{} *{}'.format(sha256.hexdigest(), filename))
-    s3put(bucket, access_key, secret_key, os.path.dirname(checksum_path),
-          'releases/tmp/{0}'.format(version), [checksum_path])
 
 
 def auth_token():

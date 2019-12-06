@@ -19,7 +19,6 @@ SOURCE_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..', '..'))
 CHROMIUM_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..', '..', '..'))
-DIST_URL = 'https://brave-brave-binaries.s3.amazonaws.com/releases/'
 BRAVE_CORE_ROOT = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..', '..'))
 BRAVE_BROWSER_ROOT = os.path.abspath(
@@ -112,17 +111,6 @@ def get_target_arch():
 def get_env_var(name):
     return (os.environ.get('BRAVE_' + name) or
             os.environ.get('npm_config_BRAVE_' + name, ''))
-
-
-def s3_config():
-    config = (get_env_var('S3_BUCKET'),
-              get_env_var('S3_ACCESS_KEY'),
-              get_env_var('S3_SECRET_KEY'))
-    message = ('Error: Please set the $BRAVE_S3_BUCKET, '
-               '$BRAVE_S3_ACCESS_KEY, and '
-               '$BRAVE_S3_SECRET_KEY environment variables')
-    assert all(len(c) for c in config), message
-    return config
 
 
 def enable_verbose_mode():
