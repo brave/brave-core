@@ -332,7 +332,6 @@ if (!is_android && !is_ios) {
       ]
 
       if (v8_use_external_startup_data) {
-        sources += [ "$root_out_dir/natives_blob.bin" ]
         deps += [ "//v8" ]
 
         if (use_v8_context_snapshot) {
