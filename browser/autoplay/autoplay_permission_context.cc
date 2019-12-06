@@ -18,7 +18,7 @@
 AutoplayPermissionContext::AutoplayPermissionContext(Profile* profile)
     : PermissionContextBase(
           profile,
-          CONTENT_SETTINGS_TYPE_AUTOPLAY,
+          ContentSettingsType::AUTOPLAY,
           blink::mojom::FeaturePolicyFeature::kAutoplay) {}
 
 AutoplayPermissionContext::~AutoplayPermissionContext() = default;
@@ -46,7 +46,7 @@ void AutoplayPermissionContext::UpdateTabContext(
     return;
 
   if (!allowed) {
-    content_settings->OnContentBlocked(CONTENT_SETTINGS_TYPE_AUTOPLAY);
+    content_settings->OnContentBlocked(ContentSettingsType::AUTOPLAY);
   }
 }
 

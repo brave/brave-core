@@ -8,6 +8,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "chrome/app/vector_icons/vector_icons.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -16,7 +17,7 @@ using content::WebContents;
 
 BraveAutoplayBlockedImageModel::BraveAutoplayBlockedImageModel()
     : ContentSettingSimpleImageModel(ImageType::PLUGINS,
-                                     CONTENT_SETTINGS_TYPE_AUTOPLAY) {}
+                                     ContentSettingsType::AUTOPLAY) {}
 
 bool BraveAutoplayBlockedImageModel::UpdateAndGetVisibility(WebContents* web_contents) {
   if (!web_contents)
