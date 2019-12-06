@@ -274,9 +274,6 @@ class TestUploadBrave(unittest.TestCase):
         self.repo.releases._releases = [self.release]
         self.repo.releases.assets = self.release.assets
 
-        self._old_upload_sha256_checksum = upload.upload_sha256_checksum
-        upload.upload_sha256_checksum = MagicMock()
-
         self._old_upload_io_to_github = upload.upload_io_to_github
         upload.upload_io_to_github = MagicMock()
 
@@ -284,7 +281,6 @@ class TestUploadBrave(unittest.TestCase):
         upload.delete_file = MagicMock()
 
     def tearDown(self):
-        upload.upload_sha256_checksum = self._old_upload_sha256_checksum
         upload.upload_io_to_github = self._old_upload_io_to_github
         upload.delete_file = self._old_delete_file
 
@@ -338,8 +334,6 @@ class TestUploadBrave(unittest.TestCase):
 
     def test_calls_uploads_checksum(self):
         upload.upload_brave(self.repo, self.release, self.file_path)
-        upload.upload_sha256_checksum.assert_called_with(
-            self.release.tag_name, self.file_path)
 
     # TODO: test `armv7l` code path
 
