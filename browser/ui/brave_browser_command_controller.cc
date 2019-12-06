@@ -146,8 +146,10 @@ void BraveBrowserCommandController::UpdateCommandForWebcompatReporter() {
 #if BUILDFLAG(ENABLE_TOR)
 void BraveBrowserCommandController::UpdateCommandForTor() {
   const bool is_tor_enabled = !tor::TorProfileService::IsTorDisabled();
+  const bool is_guest_session = browser_->profile()->IsGuestSession();
   UpdateCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE, is_tor_enabled);
-  UpdateCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR, is_tor_enabled);
+  UpdateCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR,
+                       is_tor_enabled && !is_guest_session);
 }
 #endif
 
