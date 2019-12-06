@@ -5,6 +5,7 @@ export default {
   wallpaperImageUrl,
   logo: {
     image: brandingImageUrl,
+    companyName: 'Technikke',
     alt: 'Technikke: For music lovers.',
     destinationUrl: 'https://brave.com'
   }

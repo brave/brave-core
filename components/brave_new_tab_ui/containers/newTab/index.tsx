@@ -281,6 +281,10 @@ class NewTabPage extends React.Component<Props, State> {
               onCreateWallet={this.createWallet}
               onEnableAds={this.enableAds}
               onEnableRewards={this.enableRewards}
+              isShowingBrandedWallpaper={isShowingBrandedWallpaper}
+              showBrandedWallpaperNotification={isShowingBrandedWallpaper && !newTabData.dismissedBrandedWallpaperNotification}
+              onDisableBrandedWallpaper={this.disableBrandedWallpaper}
+              brandedWallpaperData={newTabData.brandedWallpaperData}
               textDirection={newTabData.textDirection}
               hideWidget={this.toggleShowRewards}
               onDismissNotification={this.dismissNotification}

@@ -28,6 +28,7 @@ interface State {
   showTopSites: boolean
   showTopSitesNotification: boolean
   showRewards: boolean
+  brandedWallpaperOptIn: boolean
   adsEstimatedEarnings: number
   balance: NewTab.RewardsBalance
   promotions: NewTab.Promotion[]
@@ -58,6 +59,7 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
       showTopSites: true,
       showTopSitesNotification: props.showTopSitesNotification,
       showRewards: true,
+      brandedWallpaperOptIn: true,
       adsEstimatedEarnings: 5,
       enabledAds: false,
       enabledMain: false,
@@ -76,7 +78,7 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
   }
 
   doNothing = (s: string) => {
-    /* no-op */
+    console.log('doNothing called:', s)
   }
 
   toggleShowBackgroundImage = () => {
@@ -156,13 +158,16 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
       balance,
       totalContribution
     } = this.state
-    const { textDirection, showBrandedWallpaper } = this.props
+    const { textDirection } = this.props
 
     const hasImage = showBackgroundImage
     let imageSource
     if (hasImage) {
       imageSource = this.state.brandedWallpaper ? this.state.brandedWallpaper.wallpaperImageUrl : generateRandomBackgroundData.source
     }
+
+    const showBrandedWallpaper = this.props.showBrandedWallpaper &&
+      this.state.brandedWallpaperOptIn
 
     return (
       <App dataIsReady={true}>
@@ -238,6 +243,10 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
               hideWidget={this.toggleShowRewards}
               onDismissNotification={this.doNothing}
               totalContribution={totalContribution}
+              showBrandedWallpaperNotification={showBrandedWallpaper}
+              brandedWallpaperData={this.state.brandedWallpaper}
+              isShowingBrandedWallpaper={showBrandedWallpaper}
+              onDisableBrandedWallpaper={this.doNothing.bind(this, 'onDisableBrandedWallpaper')}
             />
           </S.GridItemRewards>
           }

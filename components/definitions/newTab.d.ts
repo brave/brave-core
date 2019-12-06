@@ -7,6 +7,7 @@ declare namespace NewTab {
 
   export type BrandedWallpaperLogo = {
     image: string
+    companyName: string
     alt: string
     destinationUrl: string
   }

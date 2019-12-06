@@ -139,7 +139,7 @@
       <message name="IDS_BRAVE_NEW_TAB_BOOKMARKS_PAGE_TITLE" desc="Title for bookmarks page">View and Manage Bookmarks</message>
       <message name="IDS_BRAVE_NEW_TAB_HISTORY_PAGE_TITLE" desc="Title for history page">View your browsing history</message>
       <message name="IDS_BRAVE_NEW_TAB_DASHBOARD_SETTINGS_TITLE" desc="Title for dashboard settings">Dashboard Settings</message>
-      <message name="IDS_BRAVE_NEW_TAB_SHOW_BACKGROUND_IMAGE" desc="Text for settings background option">Show background image</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_BACKGROUND_IMAGE" desc="Text for settings background option">Show Background Image</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_BRAVE_STATS" desc="Text for settings show stats option">Show Brave Stats</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_CLOCK" desc="Text for settings show clock option">Show Clock</message>
       <message name="IDS_BRAVE_NEW_TAB_SHOW_TOP_SITES" desc="Text for settings show top sites option">Show Top Sites</message>
@@ -647,11 +647,22 @@
       <message name="IDS_REWARDS_WIDGET_TURN_ON_REWARDS" desc="">Turn on Rewards</message>
       <message name="IDS_REWARDS_WIDGET_REENABLE_TITLE" desc="">Feeling Generous?</message>
       <message name="IDS_REWARDS_WIDGET_ENABLE_TITLE" desc="">Ready to start earning?</message>
+      <message name="IDS_REWARDS_WIDGET_ENABLE_BRANDED_WALLPAPER_TITLE" desc="Title for prompt to enable Brave Rewards when a Branded Wallpaper is currently being displayed">Get paid to see this background image.</message>
       <message name="IDS_REWARDS_WIDGET_REENABLE_SUBTITLE" desc="">Try Brave Rewards again and pay it forward as you earn!</message>
       <message name="IDS_REWARDS_WIDGET_ENABLE_SUBTITLE" desc="">Turn on Brave Rewards and get paid to view privacy respecting ads.</message>
+      <message name="IDS_REWARDS_WIDGET_ENABLE_BRANDED_WALLPAPER_SUBTITLE" desc="Description for prompt to enable Brave Rewards when a Branded Wallpaper is currently being displayed">You'll receive 70% of the ad revenue for this private sponsorship which can be used to support web content creators. Turn on Brave Rewards to claim your share. You can also choose to <ph name="LINK_BEGIN">|</ph>hide sponsored images<ph name="LINK_END">|</ph>.</message>
       <message name="IDS_REWARDS_WIDGET_NOTIFICATION_TITLE" desc="">Way to Go!</message>
       <message name="IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_ADS" desc="">Your rewards from Ads are here</message>
       <message name="IDS_REWARDS_WIDGET_NOTIFICATION_TEXT_UGP" desc="">You have a UGP grant from Brave.</message>
+      <message name="IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_TITLE" desc="Title for notification that the user is seeing a branded wallpaper and they are getting paid for it">
+        You’re getting paid to see this background image.
+      </message>
+      <message name="IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_DESCRIPTION" desc="Description for notification that the user is seeing a branded wallpaper and they are getting paid for it">
+        This sponsored image is brought to you by <ph name="BRAND_NAME">$1<ex>A company</ex></ph>. You’ll receive 70% of the ad revenue for every sponsorship.
+      </message>
+      <message name="IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_ACTION" desc="Action for notification that the user is seeing a branded wallpaper and they are getting paid for it">
+        Hide sponsored images
+      </message>
 
       <!-- WebUI brave sync resources -->
       <!-- WebUI brave sync resources: Shared Content -->

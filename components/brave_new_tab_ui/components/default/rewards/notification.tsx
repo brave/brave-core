@@ -18,6 +18,7 @@ import { getLocale } from '../../../../common/locale'
 interface NotificationProps {
   promotion: NewTab.Promotion
   onDismissNotification: (id: string) => void
+  order: number
 }
 
 export default class RewardsNotification extends React.PureComponent<NotificationProps, {}> {
@@ -32,8 +33,11 @@ export default class RewardsNotification extends React.PureComponent<Notificatio
   }
 
   render () {
+    const styleVars = { '--notification-counter': this.props.order } as React.CSSProperties
     return (
-      <NotificationWrapper>
+      <NotificationWrapper
+        style={styleVars}
+      >
         <CloseIcon onClick={this.dismissNotification}>
           <CloseStrokeIcon />
         </CloseIcon>

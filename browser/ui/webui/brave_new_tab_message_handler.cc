@@ -31,6 +31,7 @@ namespace {
 struct BrandedWallpaperLogo {
   std::string imageUrl;
   std::string altText;
+  std::string companyName;
   std::string destinationUrl;
 };
 
@@ -44,6 +45,7 @@ const BrandedWallpaper kDemoWallpaper = {
   {
     "ntp-dummy-brandedwallpaper-logo.png",
     "Technikke: For music lovers.",
+    "Technikke",
     "https://brave.com"
   }
 };
@@ -134,6 +136,7 @@ base::DictionaryValue GetBrandedWallpaperDictionary(
   data.SetString("wallpaperImageUrl", wallpaper->wallpaperImageUrl);
   auto logo_data = std::make_unique<base::DictionaryValue>();
   logo_data->SetString("image", wallpaper->logo.imageUrl);
+  logo_data->SetString("companyName", wallpaper->logo.companyName);
   logo_data->SetString("alt", wallpaper->logo.altText);
   logo_data->SetString("destintationUrl", wallpaper->logo.destinationUrl);
   data.SetDictionary("logo", std::move(logo_data));

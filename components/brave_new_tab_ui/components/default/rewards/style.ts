@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled from 'styled-components'
+import styled from 'brave-ui/theme'
 import palette from 'brave-ui/theme/colors'
 
 interface StyleProps {
@@ -63,20 +63,31 @@ export const LearnMoreText = styled<{}, 'div'>('div')`
 `
 
 export const PreOptInInfo = styled<{}, 'div'>('div')`
-  margin-top: 20px;
+  margin-top: 14px;
 `
 
 export const Title = styled<{}, 'span'>('span')`
   font-size: 19px;
   display: block;
   font-family: Poppins, sans-serif;
+  line-height: 1.5;
 `
 
 export const SubTitle = styled<{}, 'span'>('span')`
   font-size: 14px;
   display: block;
-  margin-top: 10px;
+  margin-top: 15px;
   max-width: 250px;
+  line-height: 1.4;
+`
+
+export const SubTitleLink = styled<{}, 'a'>('a')`
+  color: ${p => p.theme.color.brandBrave};
+  text-decoration: none;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
 `
 
 export const PreOptInAction = styled<{}, 'div'>('div')`
@@ -130,11 +141,14 @@ export const AmountDescription = styled<{}, 'span'>('span')`
 
 export const NotificationWrapper = styled(WidgetWrapper)`
   position: absolute;
-  bottom: 0;
+  /* Stack the notifications offset from each other
+     and make sure they all cover the panel */
+  --ntp-rewards-notification-offset: calc(var(--notification-counter) * 48px);
+  top: var(--ntp-rewards-notification-offset);
+  min-height: calc(100% - var(--ntp-rewards-notification-offset));
   left: 0;
   width: 100%;
-  min-height: 210px;
-  box-shadow: 5px 10px 8px 10px #000;
+  box-shadow: -7px 0px 10px 1px rgba(0, 0, 0, .5);
 `
 
 export const NotificationButton = styled(TurnOnButton)`
@@ -148,8 +162,22 @@ export const NotificationButton = styled(TurnOnButton)`
   font-size: 13px;
 `
 
+export const NotificationAction = styled<{}, 'a'>('a')`
+  margin-top: 20px;
+  max-width: 250px;
+  display: block;
+  cursor: pointer;
+  font-size: 14px;
+  color: ${p => p.theme.color.brandBrave};
+  text-decoration: none;
+  &:hover {
+    color: ${p => p.theme.color.brandBrave};
+    text-decoration: underline;
+  }
+`
+
 export const Content = styled<{}, 'div'>('div')`
-  margin-top: 30px;
+  padding: 10px 0;
 `
 
 export const CloseIcon = styled<{}, 'div'>('div')`

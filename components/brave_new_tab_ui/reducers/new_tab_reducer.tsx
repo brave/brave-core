@@ -339,6 +339,10 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
     case types.DISMISS_NOTIFICATION:
       state = { ...state }
 
+      if (payload.id === 'brandedWallpaper') {
+        state.dismissedBrandedWallpaperNotification = true
+      }
+
       const dismissedNotifications = state.rewardsState.dismissedNotifications
       dismissedNotifications.push(payload.id)
       state.rewardsState.dismissedNotifications = dismissedNotifications

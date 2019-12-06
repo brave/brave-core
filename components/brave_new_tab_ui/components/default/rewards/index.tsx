@@ -18,6 +18,7 @@ import {
   PreOptInInfo,
   Title,
   SubTitle,
+  SubTitleLink,
   PreOptInAction,
   TurnOnButton,
   AmountItem,
@@ -30,6 +31,7 @@ import {
   UnsupportedMessage
 } from './style'
 import Notification from './notification'
+import BrandedWallpaperNotification from './brandedWallpaperNotification'
 import { BatColorIcon } from 'brave-ui/components/icons'
 
 export interface RewardsProps {
@@ -45,10 +47,14 @@ export interface RewardsProps {
   adsEstimatedEarnings: number
   onlyAnonWallet?: boolean
   adsSupported?: boolean
+  isShowingBrandedWallpaper: boolean
+  showBrandedWallpaperNotification: boolean
+  brandedWallpaperData?: NewTab.BrandedWallpaper
   onCreateWallet: () => void
   onEnableAds: () => void
   onEnableRewards: () => void
   onDismissNotification: (id: string) => void
+  onDisableBrandedWallpaper: () => void
 }
 
 const enum AmountItemType {
@@ -91,7 +97,8 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
   renderPreOptIn = () => {
     const {
       enabledMain,
-      walletCreated
+      walletCreated,
+      isShowingBrandedWallpaper
     } = this.props
 
     if (enabledMain && walletCreated) {
@@ -99,23 +106,41 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     }
 
     const hasEnabled = !enabledMain && walletCreated
+    let titleText: string | JSX.Element
+    let subTitleText: string | JSX.Element
+    if (isShowingBrandedWallpaper) {
+      titleText = getLocale('rewardsWidgetBrandedWallpaperTitle')
+      const text = getLocale('rewardsWidgetBrandedWallpaperSubTitle')
+      const linkStartIndex: number = text.indexOf('|')
+      const linkEndIndex: number = text.lastIndexOf('|')
+      const beforeLinkText = text.substring(0, linkStartIndex)
+      const duringLinkText = text.substring(linkStartIndex + 1, linkEndIndex)
+      const afterLinkText = text.substring(linkEndIndex + 1)
+      subTitleText = (
+        <>
+          {beforeLinkText}
+          <SubTitleLink onClick={this.props.onDisableBrandedWallpaper}>
+            {duringLinkText}
+          </SubTitleLink>
+          {afterLinkText}
+        </>
+      )
+    } else if (hasEnabled) {
+      titleText = getLocale('rewardsWidgetReEnableTitle')
+      subTitleText = getLocale('rewardsWidgetReEnableSubTitle')
+    } else {
+      titleText = getLocale('rewardsWidgetEnableTitle')
+      subTitleText = getLocale('rewardsWidgetEnableSubTitle')
+    }
 
     return (
       <>
         <PreOptInInfo>
           <Title>
-            {
-              hasEnabled
-              ? getLocale('rewardsWidgetReEnableTitle')
-              : getLocale('rewardsWidgetEnableTitle')
-            }
+            {titleText}
           </Title>
           <SubTitle>
-            {
-              hasEnabled
-              ? getLocale('rewardsWidgetReEnableSubTitle')
-              : getLocale('rewardsWidgetEnableSubTitle')
-            }
+            {subTitleText}
           </SubTitle>
         </PreOptInInfo>
         <PreOptInAction>
@@ -226,23 +251,38 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
   }
 
   renderNotifications = () => {
-    const { promotions, onDismissNotification } = this.props
+    let { promotions, onDismissNotification } = this.props
 
-    if (!promotions) {
-      return null
-    }
+    // Uncomment for demo promotion notifications data:
+    //
+    // const showDummyPromotion = true
+    // if (showDummyPromotion) {
+    //   promotions = [{
+    //     type: 1,
+    //     promotionId: '1234'
+    //   }]
+    // }
 
     return (
       <>
-        {promotions.map((promotion: NewTab.Promotion, index) => {
+        {promotions && promotions.map((promotion: NewTab.Promotion, index) => {
           return (
             <Notification
               promotion={promotion}
               key={`notification-${index}`}
               onDismissNotification={onDismissNotification}
+              order={index + 1}
             />
           )
         })}
+        { this.props.showBrandedWallpaperNotification &&
+        <BrandedWallpaperNotification
+          onDismissNotification={onDismissNotification}
+          brandedWallpaperData={this.props.brandedWallpaperData}
+          onNotificationAction={this.props.onDisableBrandedWallpaper}
+          order={promotions ? promotions.length + 1 : 1}
+        />
+        }
       </>
     )
   }
