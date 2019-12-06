@@ -3059,6 +3059,28 @@ IN_PROC_BROWSER_TEST_F(
   EnableRewards(true);
 }
 
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowMonthlyIfACOff) {
+  // Observe the Rewards service
+  rewards_service_->AddObserver(this);
+
+  EnableRewards();
+  rewards_service_->SetAutoContribute(false);
+
+  GURL url = https_server()->GetURL("3zsistemi.si", "/");
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+
+  // Open the Rewards popup
+  content::WebContents *popup_contents = OpenRewardsPopup();
+  ASSERT_TRUE(popup_contents);
+
+  WaitForSelector(popup_contents, "#panel-donate-monthly");
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
+}
+
 struct BraveAdsUpgradePathParamInfo {
   // |preferences| should be set to the name of the preferences filename located
   // at "src/brave/test/data/rewards-data/migration"

@@ -295,6 +295,8 @@ class RewardsServiceImpl : public RewardsService,
 
   bool OnlyAnonWallet() override;
 
+  void SetAutoContribute(bool enabled) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void StartMonthlyContributionForTest();
@@ -535,7 +537,6 @@ class RewardsServiceImpl : public RewardsService,
   void SetPublisherAllowNonVerified(bool allow) const override;
   void SetPublisherAllowVideos(bool allow) const override;
   void SetUserChangedContribution() const override;
-  void SetAutoContribute(bool enabled) override;
   void UpdateAdsRewards() const override;
   void SetCatalogIssuers(const std::string& json) override;
   void ConfirmAd(const std::string& json) override;
