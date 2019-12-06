@@ -31,7 +31,8 @@ describe('Rewards Panel extension - Browser Action', () => {
 
       expect(spyText).toHaveBeenCalled()
       expect(spyText.mock.calls[0][0]).toEqual({
-        text: ''
+        text: '',
+        tabId: undefined
       })
     })
 
@@ -48,7 +49,8 @@ describe('Rewards Panel extension - Browser Action', () => {
 
       expect(spyText).toHaveBeenCalled()
       expect(spyText.mock.calls[0][0]).toEqual({
-        text: '1'
+        text: '1',
+        tabId: undefined
       })
     })
 
@@ -83,13 +85,14 @@ describe('Rewards Panel extension - Browser Action', () => {
       setBadgeText(state, true, 1)
 
       expect(spyText).toHaveBeenCalled()
-      const data = spyText.mock.calls[0][0]
-      expect(data.tabId).toEqual(1)
-      expect(data.text).toEqual('✓️')
+      expect(spyText.mock.calls[0][0]).toEqual({
+        text: '1',
+        tabId: 1
+      })
 
       expect(spyColor).toHaveBeenCalled()
       expect(spyColor.mock.calls[0][0]).toEqual({
-        color: '#4C54D2',
+        color: '#FB542B',
         tabId: 1
       })
     })
