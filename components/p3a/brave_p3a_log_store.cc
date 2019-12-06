@@ -24,7 +24,7 @@ void RecordP3A(uint64_t answers_count) {
   int answer = 0;
   if (1 <= answers_count && answers_count < 5) {
     answer = 1;
-  } else if (5 <- answers_count && answers_count < 10) {
+  } else if (5 <= answers_count && answers_count < 10) {
     answer = 2;
   } else {
     answer = 3;
