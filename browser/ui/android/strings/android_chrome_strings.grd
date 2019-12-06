@@ -86,10 +86,15 @@ CHAR-LIMIT guidelines:
     <output filename="values-zh-rTW/android_chrome_strings.xml" lang="zh-TW" type="android" />
   </outputs>
   <translations>
+    <file lang="af" path="translations/android_chrome_strings_af.xtb" />
     <file lang="am" path="translations/android_chrome_strings_am.xtb" />
     <file lang="ar" path="translations/android_chrome_strings_ar.xtb" />
+    <file lang="as" path="translations/android_chrome_strings_as.xtb" />
+    <file lang="az" path="translations/android_chrome_strings_az.xtb" />
+    <file lang="be" path="translations/android_chrome_strings_be.xtb" />
     <file lang="bg" path="translations/android_chrome_strings_bg.xtb" />
     <file lang="bn" path="translations/android_chrome_strings_bn.xtb" />
+    <file lang="bs" path="translations/android_chrome_strings_bs.xtb" />
     <file lang="ca" path="translations/android_chrome_strings_ca.xtb" />
     <file lang="cs" path="translations/android_chrome_strings_cs.xtb" />
     <file lang="da" path="translations/android_chrome_strings_da.xtb" />
@@ -99,34 +104,52 @@ CHAR-LIMIT guidelines:
     <file lang="es" path="translations/android_chrome_strings_es.xtb" />
     <file lang="es-419" path="translations/android_chrome_strings_es-419.xtb" />
     <file lang="et" path="translations/android_chrome_strings_et.xtb" />
+    <file lang="eu" path="translations/android_chrome_strings_eu.xtb" />
     <file lang="fa" path="translations/android_chrome_strings_fa.xtb" />
     <file lang="fi" path="translations/android_chrome_strings_fi.xtb" />
     <file lang="fil" path="translations/android_chrome_strings_fil.xtb" />
     <file lang="fr" path="translations/android_chrome_strings_fr.xtb" />
+    <file lang="fr-CA" path="translations/android_chrome_strings_fr-CA.xtb" />
+    <file lang="gl" path="translations/android_chrome_strings_gl.xtb" />
     <file lang="gu" path="translations/android_chrome_strings_gu.xtb" />
     <file lang="hi" path="translations/android_chrome_strings_hi.xtb" />
     <file lang="hr" path="translations/android_chrome_strings_hr.xtb" />
     <file lang="hu" path="translations/android_chrome_strings_hu.xtb" />
+    <file lang="hy" path="translations/android_chrome_strings_hy.xtb" />
     <file lang="id" path="translations/android_chrome_strings_id.xtb" />
+    <file lang="is" path="translations/android_chrome_strings_is.xtb" />
     <file lang="it" path="translations/android_chrome_strings_it.xtb" />
     <file lang="iw" path="translations/android_chrome_strings_iw.xtb" />
     <file lang="ja" path="translations/android_chrome_strings_ja.xtb" />
-    <file lang="ko" path="translations/android_chrome_strings_ko.xtb" />
+    <file lang="ka" path="translations/android_chrome_strings_ka.xtb" />
+    <file lang="kk" path="translations/android_chrome_strings_kk.xtb" />
+    <file lang="km" path="translations/android_chrome_strings_km.xtb" />
     <file lang="kn" path="translations/android_chrome_strings_kn.xtb" />
+    <file lang="ko" path="translations/android_chrome_strings_ko.xtb" />
+    <file lang="ky" path="translations/android_chrome_strings_ky.xtb" />
+    <file lang="lo" path="translations/android_chrome_strings_lo.xtb" />
     <file lang="lt" path="translations/android_chrome_strings_lt.xtb" />
     <file lang="lv" path="translations/android_chrome_strings_lv.xtb" />
+    <file lang="mk" path="translations/android_chrome_strings_mk.xtb" />
     <file lang="ml" path="translations/android_chrome_strings_ml.xtb" />
+    <file lang="mn" path="translations/android_chrome_strings_mn.xtb" />
     <file lang="mr" path="translations/android_chrome_strings_mr.xtb" />
     <file lang="ms" path="translations/android_chrome_strings_ms.xtb" />
+    <file lang="my" path="translations/android_chrome_strings_my.xtb" />
+    <file lang="ne" path="translations/android_chrome_strings_ne.xtb" />
     <file lang="nl" path="translations/android_chrome_strings_nl.xtb" />
     <file lang="no" path="translations/android_chrome_strings_no.xtb" />
+    <file lang="or" path="translations/android_chrome_strings_or.xtb" />
+    <file lang="pa" path="translations/android_chrome_strings_pa.xtb" />
     <file lang="pl" path="translations/android_chrome_strings_pl.xtb" />
     <file lang="pt-BR" path="translations/android_chrome_strings_pt-BR.xtb" />
     <file lang="pt-PT" path="translations/android_chrome_strings_pt-PT.xtb" />
     <file lang="ro" path="translations/android_chrome_strings_ro.xtb" />
     <file lang="ru" path="translations/android_chrome_strings_ru.xtb" />
+    <file lang="si" path="translations/android_chrome_strings_si.xtb" />
     <file lang="sk" path="translations/android_chrome_strings_sk.xtb" />
     <file lang="sl" path="translations/android_chrome_strings_sl.xtb" />
+    <file lang="sq" path="translations/android_chrome_strings_sq.xtb" />
     <file lang="sr" path="translations/android_chrome_strings_sr.xtb" />
     <file lang="sv" path="translations/android_chrome_strings_sv.xtb" />
     <file lang="sw" path="translations/android_chrome_strings_sw.xtb" />
@@ -135,9 +158,13 @@ CHAR-LIMIT guidelines:
     <file lang="th" path="translations/android_chrome_strings_th.xtb" />
     <file lang="tr" path="translations/android_chrome_strings_tr.xtb" />
     <file lang="uk" path="translations/android_chrome_strings_uk.xtb" />
+    <file lang="ur" path="translations/android_chrome_strings_ur.xtb" />
+    <file lang="uz" path="translations/android_chrome_strings_uz.xtb" />
     <file lang="vi" path="translations/android_chrome_strings_vi.xtb" />
     <file lang="zh-CN" path="translations/android_chrome_strings_zh-CN.xtb" />
+    <file lang="zh-HK" path="translations/android_chrome_strings_zh-HK.xtb" />
     <file lang="zh-TW" path="translations/android_chrome_strings_zh-TW.xtb" />
+    <file lang="zu" path="translations/android_chrome_strings_zu.xtb" />
   </translations>
   <release allow_pseudo="false" seq="1">
     <messages fallback_to_english="true">
@@ -335,6 +362,9 @@ CHAR-LIMIT guidelines:
       </message>
       <message name="IDS_NOTIFICATION_CATEGORY_PERMISSION_REQUESTS" desc="Label for permission requests, within a list of notification categories. [CHAR-LIMIT=32]">
        Permission requests
+      </message>
+      <message name="IDS_UNSUPPORTED" desc="Message displayed to the user when an attempted action is not supported.">
+        Unsupported
       </message>
 
       <!-- Sign-in, sync and personalization preferences -->
@@ -845,13 +875,6 @@ Your Brave account may have other forms of browsing history like searches and ac
         <ph name="NUMBER_OF_ITEMS">%1$s<ex>3</ex></ph> items deleted
       </message>
 
-      <message name="IDS_USAGE_AND_CRASH_REPORTS_TITLE_LEGACY" desc="Title for 'Usage and crash reports' preference">
-        Usage and crash reports
-      </message>
-      <message name="IDS_USAGE_AND_CRASH_REPORTS_DESCRIPTION_LEGACY" desc="Description for 'Usage and crash reports' preference">
-        Automatically send crash reports to Brave
-      </message>
-
       <!-- Accessibility preferences -->
       <message name="IDS_PREFS_ACCESSIBILITY" desc="Title of Accessibility settings, which allows the user to change webpage font sizes. [CHAR-LIMIT=32]">
         Accessibility
@@ -897,9 +920,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_ADS_PERMISSION_TITLE" desc="Title for the ads permission [CHAR-LIMIT=32]">
          Ads
       </message>
-      <message name="IDS_AUTOPLAY_TITLE" desc="Title for the Autoplay settings screen [CHAR-LIMIT=32]">
-        Autoplay
-      </message>
       <message name="IDS_COOKIES_TITLE" desc="Title for the Cookies settings screen [CHAR-LIMIT=32]">
         Cookies
       </message>
@@ -912,11 +932,11 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_JAVASCRIPT_PERMISSION_TITLE" desc="Title of the permission to run javascript [CHAR-LIMIT=32]">
         JavaScript
       </message>
-      <message name="IDS_MEDIA_PERMISSION_TITLE" desc="Title of the menu containing the media permissions [CHAR-LIMIT=32]">
-        Media
-      </message>
       <message name="IDS_POPUP_PERMISSION_TITLE" desc="Title of the permission to display pop-up windows and redirects [CHAR-LIMIT=32]">
         Pop-ups and redirects
+      </message>
+      <message name="IDS_NFC_PERMISSION_TITLE" desc="Title of the permission to use NFC [CHAR-LIMIT=32]">
+        NFC devices
       </message>
       <message name="IDS_PUSH_NOTIFICATIONS_PERMISSION_TITLE" desc="Title for the permission for showing push notifications [CHAR-LIMIT=32]">
         Notifications
@@ -959,9 +979,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_TOAST" desc="The toast shown when a new site has been added to the whitelist.">
         Site <ph name="SITE_NAME">%1$s<ex>google.com</ex></ph> added
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DESCRIPTION_AUTOPLAY" desc="The description for the allow autoplay of muted videos for website dialog.">
-        Allow autoplay of muted videos for a specific site.
       </message>
       <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DESCRIPTION_JAVASCRIPT_ALLOW" desc="The description for the allow Javascript for website dialog.">
         Allow JavaScript for a specific site.
@@ -1041,9 +1058,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_ALLOWED" desc="Summary text explaining that sites are allowed to use cookies and that it is the recommended setting.">
         Allow sites to save and read cookie data (recommended)
       </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_AUTOPLAY_ALLOWED" desc="Summary text explaining that sites are allowed to automatically play muted videos and that it is the recommended setting.">
-        Allow sites to automatically play muted videos (recommended)
-      </message>
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_JAVASCRIPT_ALLOWED" desc="Summary text explaining that sites are allowed to run Javascript and that it is the recommended setting.">
         Allow sites to run JavaScript (recommended)
       </message>
@@ -1070,6 +1084,12 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_PROTECTED_CONTENT_BLOCKED" desc="Summary text explaining that sites are blocked from playing protected content.">
         Block sites from playing protected content
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_NFC_ASK" desc="Summary text explaining that sites need to ask for permission before using NFC and that it is the recommended setting.">
+        Ask before allowing sites to send and receive info when you tap NFC devices (recommended)
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_NFC_BLOCKED" desc="Summary text explaining that sites are blocked from using NFC.">
+        Block sites from sending and receiving info when you tap NFC devices
       </message>
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_SENSORS_ALLOWED" desc="Summary text explaining that sites are allowed to use device's sensors and that it is the recommended setting.">
         Allow sites to access sensors (recommended)
@@ -1113,8 +1133,17 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_LOCATION_ASK" desc="Summary text explaining that sites need to ask for permission before knowing location and that it is the recommended setting.">
         Ask before allowing sites to know your location (recommended)
       </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_NOTIFICATIONS_ASK" desc="Summary text explaining that sites need to ask for permission before sending notifications and that it is the recommended setting.">
-        Ask before allowing sites to send notifications (recommended)
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_NOTIFICATIONS_ASK" desc="Summary text explaining that sites need to ask for permission before sending notifications.">
+        Sites can ask to send notifications
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_NOTIFICATIONS_BLOCK" desc="Summary text explaining that sites will not be able to send notifications.">
+        Sites can't ask to send notifications
+      </message>
+      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_NOTIFICATIONS_QUIET" desc="A setting that, if turned on will enable a quieter permission prompt for notifications.">
+        Use quieter messaging (blocks notification prompts from interrupting you)
+      </message>
+      <message name="IDS_NOTIFICATIONS_IPH" desc="A message that explains to the users that notification permission requests will appear as an infobar from now on because the user repeatedly denied the notification permission in the past.">
+        You usually block notifications. To allow, tap Details.
       </message>
       <message name="IDS_WEBSITE_SETTINGS_CATEGORY_CAMERA_ASK" desc="Summary text explaining that sites need to ask for permission before accessing the camera and that it is the recommended setting.">
         Ask first before allowing sites to use your camera (recommended)
@@ -1797,6 +1826,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SYNC_ERROR_CARD_TITLE" desc="Title of the Sync Error Card. [CHAR-LIMIT=32]">
         Sync isn't working
       </message>
+      <message name="IDS_SYNC_PASSWORDS_ERROR_CARD_TITLE" desc="Title of the Sync Error Card when it affects passwords only. [CHAR-LIMIT=32]">
+        Error syncing passwords
+      </message>
       <message name="IDS_SYNC_SETTINGS_NOT_CONFIRMED_TITLE" desc="Title of the error message shown when sync setup was not complete. [CHAR-LIMIT=60]">
         Initial sync setup not finished
       </message>
@@ -1805,6 +1837,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_HINT_SYNC_AUTH_ERROR" desc="Hint message to resolve sync auth error.">
         Sign in again to start sync
+      </message>
+      <message name="IDS_HINT_SYNC_RETRIEVE_KEYS" desc="Hint message to resolve sync encryption error.">
+        Fix now
       </message>
       <message name="IDS_HINT_PASSPHRASE_REQUIRED" desc="Hint message to resolve passphrase required error.">
         Enter your passphrase to start sync
@@ -2282,10 +2317,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Drag from top and touch the back button to exit full screen.
       </message>
 
-      <message name="IDS_FULLSCREEN_API_NOTIFICATION" desc="Notification message when a site has entered non-immsersive fullscreen and the directions of how to exit.">
-        Touch the back button to exit full screen.
-      </message>
-
       <!-- Download UI -->
       <message name="IDS_DOWNLOAD_NOTIFICATION_CANCEL_BUTTON" desc="Text on the button that cancels a download.">
         Cancel
@@ -2465,6 +2496,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_DOWNLOAD_MANAGER_UI_IMAGES" desc="Indicates that clicking on this button shows only downloaded images.">
         Images
+      </message>
+      <message name="IDS_DOWNLOAD_MANAGER_UI_CARD_PAGINATION" desc="Indicates that clicking on this button will show more items in the card.">
+        See more
+      </message>
+      <message name="IDS_DOWNLOAD_MANAGER_UI_LIST_PAGINATION" desc="Indicates that clicking on this button will show more items in the list.">
+        More
       </message>
       <message name="IDS_DOWNLOAD_MANAGER_UI_DOCUMENTS" desc="Indicates that clicking on this button shows only documents.">
         Documents
@@ -2686,8 +2723,14 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- New Tab Page strings -->
-      <message name="IDS_EXPLORE_OFFLINE_CARD_MESSAGE" desc="Text informing the user that they are currently offline and they can tap here to explore the offline feed. ">
-        You are currently offline.\n<ph name="BEGIN_LINK">&lt;link&gt;</ph>Explore your offline feed.<ph name="END_LINK">&lt;/link&gt;</ph>
+      <message name="IDS_EXPLORE_OFFLINE_CARD_TITLE" desc="Card title text informing the user that they can explore the offline feed. ">
+        Keep exploring offline
+      </message>
+      <message name="IDS_EXPLORE_OFFLINE_CARD_DESCRIPTION" desc="Card description text informing the user that they can consume the videos, articles and other content even though they are offline. ">
+        Get articles, videos, and other content from sites you like, even if you’re offline or your connection is poor.
+      </message>
+      <message name="IDS_EXPLORE_OFFLINE_CARD_EXPLORE" desc="Button text on the explore offline card on new tab page that shows up when the user is offline. Clicking on this button will take the user to downloads home where they can consume articles, audios and videos while being offline.">
+        Explore
       </message>
       <message name="IDS_RECENT_TABS" desc="Text for button to show 'Recent tabs', i.e. recently closed tabs and tabs that are open on other devices [CHAR-LIMIT=20]">
         Recent tabs
@@ -3194,6 +3237,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCESSIBILITY_CANCEL_SELECTION" desc="Content description for the cancel selection button that deselects the selected items in a selectable list view.">
         Cancel selection
       </message>
+      <message name="IDS_ACCESSIBILITY_LIST_MENU_BUTTON" desc="Content description for the button that shows option menu for a list item.">
+        <ph name="NAME_OF_LIST_ITEM">%1$s<ex>Movie Title</ex></ph> Options
+      </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_SCREEN_POSITION" desc="Accessibility announcement to inform users about a toolbar's location.">
         <ph name="ITEM_COUNT">%1$s<ex>3</ex></ph> selected.  Options available near top of the screen
       </message>
@@ -3308,13 +3354,13 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Undo Bar -->
-      <message name="IDS_UNDO_BAR_CLOSE_MESSAGE" desc="Message shown when you can undo a tab close action.">
+      <message name="IDS_UNDO_BAR_CLOSE_MESSAGE" desc="Message shown when you can undo a tab close action. This message is short for a sentence &quot;TAB_TITLE has been closed&quot;, not a noun &quot;TAB_TITLE, which is a closed tab&quot;.">
         Closed <ph name="TAB_TITLE">%1$s<ex>YouTube</ex></ph>
       </message>
       <message name="IDS_UNDO_BAR_CLOSE_ALL_MESSAGE" desc="Message shown when you can undo a close all tabs action.">
         <ph name="TAB_COUNT">%1$s<ex>3</ex></ph> tabs closed
       </message>
-      <message name="IDS_DELETE_MESSAGE" desc="Message shown or announced when an item has been deleted.">
+      <message name="IDS_DELETE_MESSAGE" desc="Message shown or announced when an item has been deleted. This message is short for a sentence &quot;ITEM_TITLE has been deleted&quot;, not a noun &quot;ITEM_TITLE, which is a deleted item&quot;.">
         Deleted <ph name="ITEM_TITLE">%1$s<ex>YouTube</ex></ph>
       </message>
       <message name="IDS_UNDO_BAR_MULTIPLE_DELETE_MESSAGE" desc="Message shown when you can undo several bookmark delete actions.">
@@ -3473,11 +3519,17 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_TOP_VIEW_NAMES_FILTER_LABEL" desc="The label shown for the names filter toggle button (allowing the user to exclude names).">
         Names
       </message>
+      <message name="IDS_TOP_VIEW_ADDRESS_FILTER_LABEL" desc="The label shown for the address filter toggle button (allowing the user to exclude names).">
+        Addresses
+      </message>
       <message name="IDS_TOP_VIEW_EMAIL_FILTER_LABEL" desc="The label shown for the email filter toggle button (allowing the user to exclude emails).">
         Email addresses
       </message>
-      <message name="IDS_TOP_VIEW_TELEPHONE_FILTER_LABEL" desc="The label shown for the telephone filter toggle button (allowing the user to exclude emails).">
+      <message name="IDS_TOP_VIEW_TELEPHONE_FILTER_LABEL" desc="The label shown for the telephone filter toggle button (allowing the user to exclude telephones).">
         Phone numbers
+      </message>
+      <message name="IDS_TOP_VIEW_ICON_FILTER_LABEL" desc="The label shown for the icon filter toggle button (allowing the user to exclude icons).">
+        Profile photos
       </message>
       <message name="IDS_CONTACTS_PICKER_MORE_DETAILS" desc="Label describing that the user has one or more telephone/emails (used for either).">
         {DETAIL_COUNT, plural,
@@ -3875,11 +3927,23 @@ The site does NOT gain access to the camera. The camera images are only visible 
       </message>
 
       <!-- Brave Duet -->
-      <message name="IDS_IPH_DUET_TITLE" desc="This string appears in an overlay that explains a new UI to users. 'Search' refers to searching the web, and 'explore' refers to Brave's suggested content.">
+      <message name="IDS_IPH_DUET_HOME_BUTTON_TITLE" desc="This string appears in an overlay that explains a new UI to users. The title of the feature highlight bubble that explains what is home button in bottom toolbar for.">
+        Get back home easily
+      </message>
+      <message name="IDS_IPH_DUET_HOME_BUTTON_DESCRIPTION" desc="This string appears in an overlay that explains a new UI to users. The text in the feature highlight bubble that explains what is home button in bottom toolbar for.">
+        Tap here to quickly access your homepage from anywhere
+      </message>
+      <message name="IDS_IPH_DUET_SEARCH_TITLE" desc="This string appears in an overlay that explains a new UI to users. 'Search' refers to searching the web, and 'explore' refers to Brave's suggested content.">
         Search &amp; explore
       </message>
-      <message name="IDS_IPH_DUET_DESCRIPTION" desc="This string appears in an overlay that explains a new UI to users. 'From here' is a generic directional cue: don't worry about the direction, as it is clarified by the way the overlay is shown.">
+      <message name="IDS_IPH_DUET_SEARCH_DESCRIPTION" desc="This string appears in an overlay that explains a new UI to users. 'From here' is a generic directional cue: don't worry about the direction, as it is clarified by the way the overlay is shown.">
         From here, you can search the web, share with friends, and see open pages
+      </message>
+      <message name="IDS_IPH_DUET_TAB_SWITCHER_TITLE" desc="This string appears in an overlay that explains a new UI to users. The title of the feature highlight bubble that explains what is tab switcher in bottom toolbar for.">
+        See all your open tabs
+      </message>
+      <message name="IDS_IPH_DUET_TAB_SWITCHER_DESCRIPTION" desc="This string appears in an overlay that explains a new UI to users. The text in the feature highlight bubble that explains what is tab switcher in bottom toolbar for.">
+        Tap here to create new tabs and go back to previous ones
       </message>
 
       <!-- Photo picker -->
@@ -3966,10 +4030,44 @@ The site does NOT gain access to the camera. The camera images are only visible 
         Test Dummy
       </message>
 
+      <message name="IDS_STACK_UNWINDER_MODULE_TITLE" desc="Text shown when the stack unwinder module is referenced in install start, success,               failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to               'Installing Stack Unwinder for Brave…').">
+        Stack Unwinder
+      </message>
+
       <message name="IDS_EXTRA_ICU_MODULE_TITLE" desc="Text shown when the extra ICU module is referenced in install start, success,               failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to               'Installing Extra ICU for Brave…').">
         Extra ICU
       </message>
 
+      <!-- QR Code -->
+      <message name="IDS_QR_CODE_SHARE_ICON_LABEL" desc="Icon label for sharing with QR Code activity.">
+        QR Code
+      </message>
+
+      <message name="IDS_QR_CODE_SHARE_TAB_LABEL" desc="Share tab label for QR Code sharing activity." meaning="Sharing QR code">
+        Share
+      </message>
+
+      <message name="IDS_QR_CODE_SCAN_TAB_LABEL" desc="Scan tab label for QR Code sharing activity.">
+        Scan
+      </message>
+
+      <message name="IDS_QR_CODE_SHARE_DESCRIPTION" desc="Text on QR code sharing tab describing how to use the QR code.">
+        To share with profiles nearby, let them scan this QR code
+      </message>
+
+      <message name="IDS_QR_CODE_DOWNLOAD" desc="Text on QR code download button.">
+        Download
+      </message>
+
+      <!-- Chime DFM module strings -->
+      <message name="IDS_CHIME_MODULE_TITLE" desc="Text shown when the chime module is referenced in install start, success, failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to 'Installing Brave Notifications Platform for Brave…').">
+        Brave Notifications Platform
+      </message>
+
+      <!-- Image Editor DFM module strings -->
+      <message name="IDS_IMAGE_EDITOR_MODULE_TITLE" desc="Text shown when the image editor module is referenced in install start, success, failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to 'Installing Image Editor for Brave…').">
+        Image Editor
+      </message>
     </messages>
   </release>
 </grit>
