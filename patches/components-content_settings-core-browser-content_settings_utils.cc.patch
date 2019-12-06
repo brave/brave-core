@@ -7,11 +7,11 @@ index a66ca0ac3f01cc6a92c54bbaaef031b7e6414510..259023be6103322c999fe781e1033c8f
    map->GetSettingsForOneType(ContentSettingsType::POPUPS, ResourceIdentifier(),
                               &(rules->popup_redirect_rules));
 +  map->GetSettingsForOneType(
-+      CONTENT_SETTINGS_TYPE_PLUGINS,
++      ContentSettingsType::PLUGINS,
 +      "fingerprinting",
 +      &(rules->fingerprinting_rules));
 +  map->GetSettingsForOneType(
-+      CONTENT_SETTINGS_TYPE_PLUGINS,
++      ContentSettingsType::PLUGINS,
 +      "braveShields",
 +      &(rules->brave_shields_rules));
  }

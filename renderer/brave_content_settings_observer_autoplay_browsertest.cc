@@ -75,7 +75,7 @@ class BraveContentSettingsObserverAutoplayTest : public InProcessBrowserTest {
       content_settings()->SetContentSettingCustomScope(
           user_blocklist_pattern_,
           ContentSettingsPattern::Wildcard(),
-          CONTENT_SETTINGS_TYPE_AUTOPLAY,
+          ContentSettingsType::AUTOPLAY,
           std::string(),
           CONTENT_SETTING_BLOCK);
     }
