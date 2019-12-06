@@ -9,9 +9,9 @@ import logging
 import os
 import sys
 from lib.github import GitHub
-from lib.config import (PLATFORM, DIST_URL, get_target_arch,
+from lib.config import (PLATFORM, get_target_arch,
                         get_env_var,
-                        s3_config, get_zip_name, product_name,
+                        get_zip_name, product_name,
                         project_name, SOURCE_ROOT, dist_dir,
                         output_dir, get_brave_version,
                         get_raw_version)
