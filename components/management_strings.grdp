@@ -183,6 +183,6 @@
     Enterprise Reporting
   </message>
   <message name="IDS_MANAGEMENT_ENTERPRISE_REPORTING_PERMISSIONS" desc="Permissions description for the enterprise reporting feature">
-    Share data about security events that have been flagged by Brave Enterprise Threat Protection with your Administrator. These may include page urls, file name and file metadata, your device username and Brave username.
+    Share data about security events that have been flagged by Brave Enterprise Threat Protection with your Administrator. This may include URLs of pages you visit, file names or metadata, and the username you use to sign in to your device and Brave.
   </message>
 </grit-part>

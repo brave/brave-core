@@ -65,9 +65,29 @@
     Applications that can cause this error include antivirus, firewall, and web-filtering or proxy software.
   </message>
 
+  <message name="IDS_BLOCKED_INTERCEPTION_HEADING" desc="Large heading of the known interception interstitial.">
+    Your activity on <ph name="HOSTNAME">$1<ex>example.com</ex></ph> is being monitored
+  </message>
+
+  <message name="IDS_BLOCKED_INTERCEPTION_PRIMARY_PARAGRAPH" desc="Main paragraph of the known interception interstitial. A user visits a website, a known interception certificate intercepts their connection, and they are shown this error. Page title and additional description of the error are shown above.">
+    Anything you type, any pages you view, or any other activity on the web is being watched, and content on sites may be changed without your knowledge.
+    <ph name="BEGIN_LEARN_MORE_LINK">&lt;a href="#" id="learn-more-link"&gt;</ph>Learn more<ph name="END_LEARN_MORE_LINK">&lt;/a&gt;</ph>
+  </message>
+
+  <if expr="_google_chrome">
+  <message name="IDS_BLOCKED_INTERCEPTION_EXPLANATION" desc="Part of an extended description hidden behind an 'Advanced' button on an error page. A user visits a website, a known interception certificate intercepts their connection, and they are shown this error. Page title and additional description of the error are shown above.">
+    The certificate for this connection is not trusted by Brave, because it is known to be used for network interception and monitoring.
+  </message>
+  </if>
+  <if expr="not _google_chrome">
+  <message name="IDS_BLOCKED_INTERCEPTION_EXPLANATION" desc="Part of an extended description hidden behind an 'Advanced' button on an error page. A user visits a website, a known interception certificate intercepts their connection, and they are shown this error. Page title and additional description of the error are shown above.">
+    The certificate for this connection is not trusted by Brave, because it is known to be used for network interception and monitoring.
+  </message>
+  </if>
+
   <!-- Lookalike URL warning -->
   <message name="IDS_LOOKALIKE_URL_TITLE" desc="Tab title. Context: the requested URL might be trying to trick the user since it looks like a more popular URL. This interstitial points the user to the safe site instead.">
-    Did you mean?
+    Safety warning
   </message>
   <message name="IDS_LOOKALIKE_URL_HEADING" desc="Large heading. Context: the error page that's shown when the requested URL might be trying to trick the user since it looks like a more popular URL. This interstitial points the user to the safe site instead.">
     Did you mean &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN">$1<ex>example.com</ex></ph>&lt;/a&gt;?
@@ -461,5 +481,76 @@
   </message>
   <message name="IDS_SAFETY_TIP_ANDROID_LOOKALIKE_DESCRIPTION" desc="Body of an infobar warning when the user visits a page that triggered a Safety Tip because the domain looked like another domain.">
     <ph name="LOOKALIKE_DOMAIN">$1<ex>fake-google.com</ex></ph> looks similar to <ph name="SUGGESTED_DOMAIN">$2<ex>google.com</ex></ph>. Attackers sometimes mimic sites by using similar URLs.
+  </message>
+
+  <!-- Known interception disclosure WebUI strings -->
+  <if expr="not is_ios">
+    <!-- Title of the page -->
+    <message name="IDS_KNOWN_INTERCEPTION_TITLE" desc="Title of network interception disclosure page.">
+      Monitoring Detected
+    </message>
+
+    <!-- Main message title and description -->
+    <if expr="_google_chrome">
+      <message name="IDS_KNOWN_INTERCEPTION_SUBTITLE" desc="Title of chrome://connection-monitoring-detected/ page, shows when Brave has detected known network monitoring activity">
+        Brave has detected that your connection is being monitored
+      </message>
+    </if>
+    <if expr="not _google_chrome">
+      <message name="IDS_KNOWN_INTERCEPTION_SUBTITLE" desc="Title of chrome://connection-monitoring-detected/ page, shows when Brave has detected known network monitoring activity">
+        Brave has detected that your connection is being monitored
+      </message>
+    </if>
+    <message name="IDS_KNOWN_INTERCEPTION_DESCRIPTION" desc="Summary text for chrome://connection-monitoring-detected/ page">
+      Your activity on the web and any information you enter is being watched, and content may be changed without your knowledge.
+    </message>
+
+    <!-- Subsection on what this warning means -->
+    <message name="IDS_KNOWN_INTERCEPTION_MEANING_SUBHEADING" desc="Title for the subsection explaining the risks">
+      What this means
+    </message>
+    <message name="IDS_KNOWN_INTERCEPTION_MEANING_DESCRIPTION" desc="Description for the subsection explaining the risks">
+      The network monitor can pretend to be the sites you visit, and can see your activity and any information you enter (for example, passwords, messages, or credit cards). You should take care when doing anything sensitive online, as it will be visible to the network monitor, and the network monitor can change the content on the pages you visit. This includes activity in other browsers and programs that access the Internet.
+    </message>
+
+    <!-- Subsection on why we're showing the UI -->
+    <message name="IDS_KNOWN_INTERCEPTION_CAUSE_SUBHEADING" desc="Title for the subsection explaining why the warning is shown">
+      Why this is happening
+    </message>
+    <if expr="_google_chrome">
+      <message name="IDS_KNOWN_INTERCEPTION_CAUSE_DESCRIPTION" desc="Description for the subsection explaining why the warning is shown">
+        The certificate for this connection is not trusted by Brave, because it is known to be used for network interception and monitoring. You may be seeing this error because of a certificate you installed on your device. When making secure connections, Brave trusts certificates that have been locally installed on a user's computer or mobile device. This allows users to run tools to inspect and debug their connections during website development, or for corporate environments to intercept and monitor internal traffic. For cases where this is being abused to intercept traffic on the public Internet, Brave shows a warning.
+      </message>
+    </if>
+    <if expr="not _google_chrome">
+      <message name="IDS_KNOWN_INTERCEPTION_CAUSE_DESCRIPTION" desc="Description for the subsection explaining why the warning is shown">
+        The certificate for this connection is not trusted by Brave, because it is known to be used for network interception and monitoring. You may be seeing this error because of a certificate you installed on your device. When making secure connections, Brave trusts certificates that have been locally installed on a user's computer or mobile device. This allows users to run tools to inspect and debug their connections during website development, or for corporate environments to intercept and monitor internal traffic. For cases where this is being abused to intercept traffic on the public Internet, Brave shows a warning.
+      </message>
+    </if>
+  </if>
+
+  <!-- Known interception disclosure infobar strings -->
+  <if expr="_google_chrome">
+    <message name="IDS_KNOWN_INTERCEPTION_INFOBAR_HEADING" desc="Text of the heading used to alert the user that Brave has detected that their network connnection is being intercepted.">
+      Brave has detected that your connection is being monitored.
+    </message>
+    <if expr="is_android">
+      <message name="IDS_KNOWN_INTERCEPTION_INFOBAR_DESCRIPTION" desc="Short description used to explain why the warning is shown, for the Android infobar.">
+        The certificate presented for this connection is not trusted by Brave, because it is known to be used for network interception and monitoring.
+      </message>
+    </if>
+  </if>
+  <if expr="not _google_chrome">
+    <message name="IDS_KNOWN_INTERCEPTION_INFOBAR_HEADING" desc="Text of the heading used to alert the user that Brave has detected that their network connnection is being intercepted.">
+      Brave has detected that your connection is being monitored.
+    </message>
+    <if expr="is_android">
+      <message name="IDS_KNOWN_INTERCEPTION_INFOBAR_DESCRIPTION" desc="Short description used to explain why the warning is shown, for the Android infobar.">
+        The certificate for this connection is not trusted by Brave, because it is known to be used for network interception and monitoring.
+      </message>
+    </if>
+  </if>
+  <message name="IDS_KNOWN_INTERCEPTION_INFOBAR_BUTTON_TEXT" desc="Text of the button to close the disclosure infobar and continue using Brave.">
+    Continue
   </message>
 </grit-part>
