@@ -96,17 +96,17 @@ TEST_F(AutoplayPermissionContextTests, TestInsecureQueryingUrl) {
             HostContentSettingsMapFactory::GetForProfile(profile())
                 ->GetContentSetting(
                     insecure_url.GetOrigin(), insecure_url.GetOrigin(),
-                    CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string()));
+                    ContentSettingsType::AUTOPLAY, std::string()));
   EXPECT_EQ(
       CONTENT_SETTING_BLOCK,
       HostContentSettingsMapFactory::GetForProfile(profile())
           ->GetContentSetting(secure_url.GetOrigin(), insecure_url.GetOrigin(),
-                              CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string()));
+                              ContentSettingsType::AUTOPLAY, std::string()));
   EXPECT_EQ(
       CONTENT_SETTING_BLOCK,
       HostContentSettingsMapFactory::GetForProfile(profile())
           ->GetContentSetting(insecure_url.GetOrigin(), secure_url.GetOrigin(),
-                              CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string()));
+                              ContentSettingsType::AUTOPLAY, std::string()));
 
   EXPECT_EQ(CONTENT_SETTING_BLOCK,
             permission_context
@@ -133,19 +133,19 @@ TEST_F(AutoplayPermissionContextTests, TestNonAutoRefresh) {
       web_contents()->GetMainFrame()->GetRoutingID(), -1);
 
   // non persist allow
-  HostContentSettingsMapFactory::GetForProfile(profile())->
-    SetContentSettingDefaultScope(url.GetOrigin(), url.GetOrigin(),
-                                  CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string(),
-                                  CONTENT_SETTING_ALLOW);
+  HostContentSettingsMapFactory::GetForProfile(profile())
+      ->SetContentSettingDefaultScope(url.GetOrigin(), url.GetOrigin(),
+                                      ContentSettingsType::AUTOPLAY,
+                                      std::string(), CONTENT_SETTING_ALLOW);
   permission_context.RequestPermission(
       web_contents(), id, url, true, base::DoNothing());
   EXPECT_TRUE(permission_context.no_tab_reloaded());
 
   // non persist block
-  HostContentSettingsMapFactory::GetForProfile(profile())->
-    SetContentSettingDefaultScope(url.GetOrigin(), url.GetOrigin(),
-                                  CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string(),
-                                  CONTENT_SETTING_BLOCK);
+  HostContentSettingsMapFactory::GetForProfile(profile())
+      ->SetContentSettingDefaultScope(url.GetOrigin(), url.GetOrigin(),
+                                      ContentSettingsType::AUTOPLAY,
+                                      std::string(), CONTENT_SETTING_BLOCK);
   permission_context.RequestPermission(
       web_contents(), id, url, true, base::DoNothing());
   EXPECT_TRUE(permission_context.no_tab_reloaded());

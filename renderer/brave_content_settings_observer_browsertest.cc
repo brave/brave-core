@@ -164,22 +164,22 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
   void BlockReferrers() {
     content_settings()->SetContentSettingCustomScope(
         top_level_page_pattern(), ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kReferrers,
+        ContentSettingsType::PLUGINS, brave_shields::kReferrers,
         CONTENT_SETTING_BLOCK);
     ContentSettingsForOneType settings;
     content_settings()->GetSettingsForOneType(
-        CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kReferrers, &settings);
+        ContentSettingsType::PLUGINS, brave_shields::kReferrers, &settings);
     EXPECT_EQ(settings.size(), 1u);
   }
 
   void AllowReferrers() {
     content_settings()->SetContentSettingCustomScope(
         top_level_page_pattern(), ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kReferrers,
+        ContentSettingsType::PLUGINS, brave_shields::kReferrers,
         CONTENT_SETTING_ALLOW);
     ContentSettingsForOneType settings;
     content_settings()->GetSettingsForOneType(
-        CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kReferrers, &settings);
+        ContentSettingsType::PLUGINS, brave_shields::kReferrers, &settings);
     EXPECT_EQ(settings.size(), 1u);
   }
 
@@ -293,7 +293,7 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
                        BlockThirdPartyFPByDefault) {
   ContentSettingsForOneType fp_settings;
-  content_settings()->GetSettingsForOneType(CONTENT_SETTINGS_TYPE_PLUGINS,
+  content_settings()->GetSettingsForOneType(ContentSettingsType::PLUGINS,
                                             brave_shields::kFingerprinting,
                                             &fp_settings);
   EXPECT_EQ(fp_settings.size(), 0u)
@@ -316,7 +316,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockFP) {
   BlockFingerprinting();
 
   ContentSettingsForOneType fp_settings;
-  content_settings()->GetSettingsForOneType(CONTENT_SETTINGS_TYPE_PLUGINS,
+  content_settings()->GetSettingsForOneType(ContentSettingsType::PLUGINS,
                                             brave_shields::kFingerprinting,
                                             &fp_settings);
   EXPECT_EQ(fp_settings.size(), 2u);
@@ -338,7 +338,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowFP) {
   AllowFingerprinting();
 
   ContentSettingsForOneType fp_settings;
-  content_settings()->GetSettingsForOneType(CONTENT_SETTINGS_TYPE_PLUGINS,
+  content_settings()->GetSettingsForOneType(ContentSettingsType::PLUGINS,
                                             brave_shields::kFingerprinting,
                                             &fp_settings);
   EXPECT_EQ(fp_settings.size(), 2u);
@@ -361,7 +361,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   Block3PFingerprinting();
 
   ContentSettingsForOneType fp_settings;
-  content_settings()->GetSettingsForOneType(CONTENT_SETTINGS_TYPE_PLUGINS,
+  content_settings()->GetSettingsForOneType(ContentSettingsType::PLUGINS,
                                             brave_shields::kFingerprinting,
                                             &fp_settings);
   EXPECT_EQ(fp_settings.size(), 2u);
@@ -385,7 +385,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   ShieldsDown();
 
   ContentSettingsForOneType fp_settings;
-  content_settings()->GetSettingsForOneType(CONTENT_SETTINGS_TYPE_PLUGINS,
+  content_settings()->GetSettingsForOneType(ContentSettingsType::PLUGINS,
                                             brave_shields::kFingerprinting,
                                             &fp_settings);
   EXPECT_EQ(fp_settings.size(), 2u);
@@ -408,7 +408,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   Block3PFingerprinting();
 
   ContentSettingsForOneType fp_settings;
-  content_settings()->GetSettingsForOneType(CONTENT_SETTINGS_TYPE_PLUGINS,
+  content_settings()->GetSettingsForOneType(ContentSettingsType::PLUGINS,
                                             brave_shields::kFingerprinting,
                                             &fp_settings);
   EXPECT_EQ(fp_settings.size(), 2u);
@@ -431,7 +431,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   BlockFingerprinting();
 
   ContentSettingsForOneType fp_settings;
-  content_settings()->GetSettingsForOneType(CONTENT_SETTINGS_TYPE_PLUGINS,
+  content_settings()->GetSettingsForOneType(ContentSettingsType::PLUGINS,
                                             brave_shields::kFingerprinting,
                                             &fp_settings);
   EXPECT_EQ(fp_settings.size(), 2u);
@@ -454,7 +454,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   AllowFingerprinting();
 
   ContentSettingsForOneType fp_settings;
-  content_settings()->GetSettingsForOneType(CONTENT_SETTINGS_TYPE_PLUGINS,
+  content_settings()->GetSettingsForOneType(ContentSettingsType::PLUGINS,
                                             brave_shields::kFingerprinting,
                                             &fp_settings);
   EXPECT_EQ(fp_settings.size(), 2u);
@@ -476,7 +476,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
                        BlockReferrerByDefault) {
   ContentSettingsForOneType settings;
   content_settings()->GetSettingsForOneType(
-      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kReferrers, &settings);
+      ContentSettingsType::PLUGINS, brave_shields::kReferrers, &settings);
   EXPECT_EQ(settings.size(), 0u)
       << "There should not be any visible referrer rules.";
 
@@ -610,7 +610,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
       HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   content_settings->SetContentSettingCustomScope(
       top_level_page_pattern(), ContentSettingsPattern::Wildcard(),
-      CONTENT_SETTINGS_TYPE_COOKIES, std::string(), CONTENT_SETTING_BLOCK);
+      ContentSettingsType::COOKIES, std::string(), CONTENT_SETTING_BLOCK);
 
   NavigateToPageWithIframe();
   CheckCookie(contents(), kEmptyCookie);
@@ -626,7 +626,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
       HostContentSettingsMapFactory::GetForProfile(browser()->profile());
   content_settings->SetContentSettingCustomScope(
       iframe_pattern(), ContentSettingsPattern::Wildcard(),
-      CONTENT_SETTINGS_TYPE_COOKIES, std::string(), CONTENT_SETTING_BLOCK);
+      ContentSettingsType::COOKIES, std::string(), CONTENT_SETTING_BLOCK);
 
   NavigateToPageWithIframe();
   CheckCookie(contents(), kTestCookie);
@@ -700,7 +700,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   // Block scripts in b.com.
   content_settings()->SetContentSettingCustomScope(
       iframe_pattern(), ContentSettingsPattern::Wildcard(),
-      CONTENT_SETTINGS_TYPE_JAVASCRIPT, "", CONTENT_SETTING_BLOCK);
+      ContentSettingsType::JAVASCRIPT, "", CONTENT_SETTING_BLOCK);
 
   NavigateToURLUntilLoadStop("b.com", "/load_js_from_origins.html");
   EXPECT_EQ(contents()->GetAllFrames().size(), 1u);

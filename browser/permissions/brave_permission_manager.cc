@@ -5,9 +5,10 @@
 #include "brave/browser/permissions/brave_permission_manager.h"
 
 #include "brave/browser/autoplay/autoplay_permission_context.h"
+#include "components/content_settings/core/common/content_settings_types.h"
 
 BravePermissionManager::BravePermissionManager(Profile* profile)
   : PermissionManager(profile) {
-  permission_contexts_[CONTENT_SETTINGS_TYPE_AUTOPLAY] =
+  permission_contexts_[ContentSettingsType::AUTOPLAY] =
       std::make_unique<AutoplayPermissionContext>(profile);
 }
