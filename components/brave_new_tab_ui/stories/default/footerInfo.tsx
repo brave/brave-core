@@ -27,11 +27,13 @@ interface Props {
   toggleShowStats: () => void
   toggleShowTopSites: () => void
   toggleShowRewards: () => void
+  toggleBrandedWallpaperOptIn: () => void
   showBackgroundImage: boolean
   showClock: boolean
   showStats: boolean
   showTopSites: boolean
   showRewards: boolean
+  brandedWallpaperOptIn: boolean
 }
 
 export default class FooterInfo extends React.PureComponent<Props, {}> {
@@ -49,11 +51,13 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
       toggleShowStats,
       toggleShowTopSites,
       toggleShowRewards,
+      toggleBrandedWallpaperOptIn,
       showBackgroundImage,
       showClock,
       showStats,
       showTopSites,
-      showRewards
+      showRewards,
+      brandedWallpaperOptIn
     } = this.props
 
     return (
@@ -79,11 +83,13 @@ export default class FooterInfo extends React.PureComponent<Props, {}> {
               toggleShowClock={toggleShowClock}
               toggleShowStats={toggleShowStats}
               toggleShowTopSites={toggleShowTopSites}
+              toggleBrandedWallpaperOptIn={toggleBrandedWallpaperOptIn}
               toggleShowRewards={toggleShowRewards}
               showBackgroundImage={showBackgroundImage}
               showClock={showClock}
               showStats={showStats}
               showTopSites={showTopSites}
+              brandedWallpaperOptIn={brandedWallpaperOptIn}
               showRewards={showRewards}
             />
             <IconLink><SettingsAdvancedIcon /></IconLink>

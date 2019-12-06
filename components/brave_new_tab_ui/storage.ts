@@ -15,6 +15,7 @@ const defaultState: NewTab.State = {
   showClock: false,
   showTopSites: false,
   showRewards: false,
+  brandedWallpaperOptIn: false,
   topSites: [],
   ignoredTopSites: [],
   pinnedTopSites: [],
@@ -31,7 +32,6 @@ const defaultState: NewTab.State = {
     httpsUpgradesStat: 0,
     fingerprintingBlockedStat: 0
   },
-  shouldShowBrandedWallpaper: false,
   rewardsState: {
     adsEstimatedEarnings: 0,
     balance: {

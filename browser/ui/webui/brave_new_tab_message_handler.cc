@@ -52,9 +52,10 @@ constexpr int kInitialCountToBrandedWallpaper = 1;
 constexpr int kRegularCountToBrandedWallpaper = 3;
 class NewTabPageViewCounter : public KeyedService {
  public:
-  NewTabPageViewCounter() {}
+  explicit NewTabPageViewCounter(Profile* profile): profile_(profile) {}
 
   void RegisterPageView() {
+    // Don't do any counting if we will never be showing the data
     if (!GetHasBrandedWallpaper()) {
       return;
     }
@@ -75,10 +76,17 @@ class NewTabPageViewCounter : public KeyedService {
 
  private:
   bool GetHasBrandedWallpaper() {
-    return true;
+    // If user has opted-out, never return data
+    if (!profile_->GetPrefs()->
+        GetBoolean(kNewTabPageShowBrandedBackgroundImage)) {
+      return false;
+    }
     // TODO(petemill): lookup flag to always use demo wallpaper
+    // or check real data source for actual data.
+    return true;
   }
 
+  Profile* profile_;
   int count_to_branded_wallpaper_ = kInitialCountToBrandedWallpaper;
 
   DISALLOW_COPY_AND_ASSIGN(NewTabPageViewCounter);
@@ -104,8 +112,9 @@ class NewTabPageViewCounterFactory : public BrowserContextKeyedServiceFactory {
  private:
   // BrowserContextKeyedServiceFactory:
   KeyedService* BuildServiceInstanceFor(
-      content::BrowserContext* profile) const override {
-    return new NewTabPageViewCounter();
+      content::BrowserContext* browser_context) const override {
+    return new NewTabPageViewCounter(
+        Profile::FromBrowserContext(browser_context));
   }
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override {
@@ -154,7 +163,7 @@ base::DictionaryValue GetPreferencesDictionary(PrefService* prefs) {
       "showBackgroundImage",
       prefs->GetBoolean(kNewTabPageShowBackgroundImage));
   pref_data.SetBoolean(
-      "showBrandedBackgroundImage",
+      "brandedWallpaperOptIn",
       prefs->GetBoolean(kNewTabPageShowBrandedBackgroundImage));
   pref_data.SetBoolean(
       "showClock",
@@ -352,7 +361,7 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   std::string settingsKey;
   if (settingsKeyInput == "showBackgroundImage") {
     settingsKey = kNewTabPageShowBackgroundImage;
-  } else if (settingsKeyInput == "showBrandedBackgroundImage") {
+  } else if (settingsKeyInput == "brandedWallpaperOptIn") {
     settingsKey = kNewTabPageShowBrandedBackgroundImage;
   } else if (settingsKeyInput == "showClock") {
     settingsKey = kNewTabPageShowClock;

@@ -63,6 +63,7 @@ declare namespace NewTab {
     showEmptyPage: boolean
     bookmarks: Record<string, Bookmark>
     rewardsState: RewardsWidgetState
+    dismissedBrandedWallpaperNotification: boolean
   }
 
   export interface EphemeralState {
@@ -80,10 +81,8 @@ declare namespace NewTab {
     showClock: boolean
     showTopSites: boolean
     showRewards: boolean
+    brandedWallpaperOptIn: boolean
     stats: Stats,
-    // TODO: remove word 'should' and differentiate wallpaper availability
-    // and user pref to show it
-    shouldShowBrandedWallpaper: boolean,
     brandedWallpaperData?: BrandedWallpaper
   }
 

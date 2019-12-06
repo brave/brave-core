@@ -21,10 +21,12 @@ export interface Props {
   toggleShowStats: () => void
   toggleShowTopSites: () => void
   toggleShowRewards: () => void
+  toggleBrandedWallpaperOptIn: () => void
   showBackgroundImage: boolean
   showStats: boolean
   showClock: boolean
   showTopSites: boolean
+  brandedWallpaperOptIn: boolean
   showRewards: boolean
 }
 
@@ -55,20 +57,29 @@ export default class Settings extends React.PureComponent<Props, {}> {
     }
   }
 
+  toggleShowBackgroundImage = () => {
+    this.props.toggleShowBackgroundImage()
+    // Re opt-in to branded wallpaper if re-enabling background image
+    if (!this.props.showBackgroundImage && !this.props.brandedWallpaperOptIn) {
+      this.props.toggleBrandedWallpaperOptIn()
+    }
+  }
+
   render () {
     const {
       textDirection,
       showSettingsMenu,
-      toggleShowBackgroundImage,
       toggleShowClock,
       toggleShowStats,
       toggleShowTopSites,
       toggleShowRewards,
+      toggleBrandedWallpaperOptIn,
       showBackgroundImage,
       showStats,
       showClock,
       showTopSites,
       showRewards,
+      brandedWallpaperOptIn,
       onClick
     } = this.props
     return (
@@ -80,8 +91,17 @@ export default class Settings extends React.PureComponent<Props, {}> {
             <SettingsRow>
               <SettingsText>{getLocale('showBackgroundImage')}</SettingsText>
               <Toggle
-                onChange={toggleShowBackgroundImage}
+                onChange={this.toggleShowBackgroundImage}
                 checked={showBackgroundImage}
+                size='small'
+              />
+            </SettingsRow>
+            <SettingsRow isChildSetting={true}>
+              <SettingsText>{getLocale('brandedWallpaperOptIn')}</SettingsText>
+              <Toggle
+                onChange={toggleBrandedWallpaperOptIn}
+                checked={brandedWallpaperOptIn}
+                disabled={!showBackgroundImage}
                 size='small'
               />
             </SettingsRow>

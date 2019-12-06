@@ -12,6 +12,7 @@
 
 export type Preferences = {
   showBackgroundImage: boolean
+  brandedWallpaperOptIn: boolean
   showStats: boolean
   showClock: boolean
   showTopSites: boolean
@@ -46,6 +47,10 @@ export function saveShowStats (value: boolean): void {
 
 export function saveShowRewards (value: boolean): void {
   sendSavePref('showRewards', value)
+}
+
+export function saveBrandedWallpaperOptIn (value: boolean): void {
+  sendSavePref('brandedWallpaperOptIn', value)
 }
 
 export function addChangeListener (listener: PreferencesUpdatedHandler): void {

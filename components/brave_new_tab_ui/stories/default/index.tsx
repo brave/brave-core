@@ -115,6 +115,10 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
     this.setState({ enabledMain: true })
   }
 
+  toggleBrandedWallpaperOptIn = () => {
+    this.setState({ brandedWallpaperOptIn: !this.state.brandedWallpaperOptIn })
+  }
+
   hideSiteRemovalNotification = () => {
     this.setState({ showTopSitesNotification: false })
   }
@@ -261,11 +265,13 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
               toggleShowStats={this.toggleShowStats}
               toggleShowTopSites={this.toggleShowTopSites}
               toggleShowRewards={this.toggleShowRewards}
+              toggleBrandedWallpaperOptIn={this.toggleBrandedWallpaperOptIn}
               showBackgroundImage={showBackgroundImage}
               showClock={showClock}
               showStats={showStats}
               showTopSites={showTopSites}
               showRewards={showRewards}
+              brandedWallpaperOptIn={this.state.brandedWallpaperOptIn}
             />
           </S.Footer>
         </Page>

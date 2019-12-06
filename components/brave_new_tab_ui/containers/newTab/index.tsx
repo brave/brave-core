@@ -32,6 +32,7 @@ interface Props {
   saveShowTopSites: (value: boolean) => void
   saveShowStats: (value: boolean) => void
   saveShowRewards: (value: boolean) => void
+  saveBrandedWallpaperOptIn: (value: boolean) => void
 }
 
 interface State {
@@ -44,7 +45,7 @@ function GetBackgroundImageSrc (props: Props) {
   if (!props.newTabData.showBackgroundImage) {
     return undefined
   }
-  if (props.newTabData.shouldShowBrandedWallpaper) {
+  if (props.newTabData.brandedWallpaperData) {
     const wallpaperData = props.newTabData.brandedWallpaperData
     if (wallpaperData && wallpaperData.wallpaperImageUrl) {
       return wallpaperData.wallpaperImageUrl
@@ -158,6 +159,16 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
+  disableBrandedWallpaper = () => {
+    this.props.saveBrandedWallpaperOptIn(false)
+  }
+
+  toggleShowBrandedWallpaper = () => {
+    this.props.saveBrandedWallpaperOptIn(
+      !this.props.newTabData.brandedWallpaperOptIn
+    )
+  }
+
   enableAds = () => {
     chrome.braveRewards.saveAdsSetting('adsEnabled', 'true')
   }
@@ -192,8 +203,7 @@ class NewTabPage extends React.Component<Props, State> {
     }
 
     const hasImage = this.imageSource !== undefined
-    const isShowingBrandedWallpaper = (newTabData.shouldShowBrandedWallpaper &&
-        newTabData.brandedWallpaperData) ? true : false
+    const isShowingBrandedWallpaper = newTabData.brandedWallpaperData ? true : false
 
     return (
       <App dataIsReady={newTabData.initialDataLoaded}>
@@ -300,11 +310,13 @@ class NewTabPage extends React.Component<Props, State> {
               toggleShowClock={this.toggleShowClock}
               toggleShowStats={this.toggleShowStats}
               toggleShowTopSites={this.toggleShowTopSites}
+              toggleBrandedWallpaperOptIn={this.toggleShowBrandedWallpaper}
               showBackgroundImage={newTabData.showBackgroundImage}
               showClock={newTabData.showClock}
               showStats={newTabData.showStats}
               showTopSites={newTabData.showTopSites}
               showRewards={newTabData.showRewards}
+              brandedWallpaperOptIn={newTabData.brandedWallpaperOptIn}
               toggleShowRewards={this.toggleShowRewards}
             />
           </Footer>
