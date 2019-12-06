@@ -203,6 +203,8 @@ class BraveProfileSyncServiceImpl
 
   void RecordSyncStateP3A() const;
 
+  bool IsSQSReady() const;
+
   static base::TimeDelta GetRetryExponentialWaitAmount(int retry_number);
   static std::vector<unsigned> GetExponentialWaitsForTests();
   static const std::vector<unsigned> kExponentialWaits;
