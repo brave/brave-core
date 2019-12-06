@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Pilih mesin pencari yang ingin Anda gunakan secara baku saat mencari web dari bilah alamat.</translation>
 <translation id="5804484488647369316">Atur mesin pencarian default</translation>
 <translation id="4428458837269935199">Untuk pencarian yang lebih privat, cobalah DuckDuckGo.</translation>
-<translation id="513635702954746724">Pilih warna tema</translation>
-<translation id="6842850080200126305">Atur warna bilah alat dengan menentukan pilihan terang atau gelap dari panel setelan.</translation>
-<translation id="5805868144901917207">Pilih tema</translation>
-<translation id="8131740175452115882">Konfirmasi</translation>
-<translation id="713206503018076063">Tema sistem (default)</translation>
-<translation id="1807246157184219062">Terang</translation>
-<translation id="2414886740292270097">Gelap</translation>
 <translation id="3829010735958850433">Lewati tur</translation>
 <translation id="1201402288615127009">Berikutnya</translation>
 <translation id="7954950242989581218">Ramban dengan aman dan selamat</translation>
 <translation id="2188651882929633653">Perisai Brave memblokir hal-hal menyeramkan yang mencoba melacak Anda di web termasuk berbagai iklan. Atur Perisai menjadi “turun” jika situs tampaknya tidak bekerja. Brave menggunakan <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>analitis produk yang sepenuhnya pribadi<ph name="END_LINK_P3A">&lt;/a&gt;</ph> untuk memperkirakan penggunaan keseluruhan dari fitur tertentu. Anda dapat mematikannya dalam <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Setelan<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Iklan</translation>
-<translation id="5698387814910197501">Dapatkan {{currency}} dengan melihat iklan di Brave. Iklan disajikan berdasarkan minat Anda, yang disimpulkan dari perilaku penjelajahan Anda. Tak ada data pribadi atau riwayat penjelajahan yang meninggalkan peramban Anda.</translation>
 <translation id="6112368337882254910">Kontribusi Otomatis</translation>
 <translation id="3742599705619405136">Sebuah cara otomatis untuk mendukung penerbit dan kreator konten. Atur pembayaran bulanan dan ramban seperti biasa. Situs Brave Verified yang Anda kunjungi akan menerima kontribusi Anda secara otomatis, berdasarkan atensi Anda sebagaimana diukur oleh Brave.</translation>
 <translation id="20281847067919078">Estimasi reward tertunda</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Pemberitahuan iklan yang diterima bulan ini</translation>
 <translation id="4229016885653790965">Maaf! Iklan belum tersedia di wilayah Anda.</translation>
 <translation id="2539279826042558064">Brave Rewards dan Iklan saat ini tidak tersedia di perangkat Anda.</translation>
+<translation id="5421369907811917952">Pengaturan lainnya</translation>
 <translation id="654711254769318398">Laman iklan yang dilihat</translation>
 <translation id="2532127066761785857">Jumlah maksimum iklan yang ditampilkan</translation>
 <translation id="5171071066587880677">1 iklan per jam</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">token</translation>
 <translation id="7286722244752781970">Waktu laman minimum sebelum kunjungan dicatat</translation>
 <translation id="4424486208397124985">Kunjungan minimum untuk relevansi penerbit</translation>
-<translation id="5421369907811917952">Pengaturan lainnya</translation>
 <translation id="6248554379744796526">Tampilkan situs non-terverifikasi dalam daftar</translation>
 <translation id="5875669387851353511">Izinkan kontribusi ke video</translation>
 <translation id="8933202740471878108">1 kunjungan</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Brave Rewards mengalami kendala. Silakan coba lagi nanti.</translation>
 <translation id="570208820610947248">Kami mendeteksi terjadinya masalah pada dompet Anda. Anda harus memulihkan dompet cadangan agar transaksi dapat diproses.</translation>
 <translation id="7797604753681168055">Pulihkan sekarang!</translation>
-<translation id="5549059668721746831">Tanggal tip bulanan berikutnya</translation>
 <translation id="6231182869178328516">Saya baru saja memberi tip untuk <ph name="NAME"/> melalui Brave Browser. Simak di https://brave.com/tips.</translation>
 <translation id="8404935570206006581">TipDenganBrave</translation>
 <translation id="2876191400747549936">Maaf, terjadi masalah saat memproses permintaan Anda, harap coba kembali.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Jumlah kontribusi</translation>
 <translation id="3520817231440482449">Beri Tip Bulanan untuk situs ini</translation>
 <translation id="1827184134638345603">Kirim Tip…</translation>
-<translation id="7928243298881209869">Tip bulanan pertama Anda akan dikirim pada:</translation>
-<translation id="6045860799501892362">Atur tip bulanan</translation>
 <translation id="8003573781961874199">Unduh sebagai PDF</translation>
 <translation id="298067735430872465">Pendapatan dari Iklan</translation>
 <translation id="2266556115441975588">Reward Anda dari Iklan ditampilkan di sini!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">November</translation>
 <translation id="7828956995407538686">Oktober</translation>
 <translation id="5502713021410870035">September</translation>
-<translation id="5737831580668469027">Tip Bulanan!</translation>
 <translation id="606865182719489911">Tersedia hibah token gratis.</translation>
 <translation id="2487641031722095938">Ini hari keberuntungan Anda!</translation>
 <translation id="6255773350565723852">Imbalan token Anda sedang dikirim.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Pembayaran</translation>
 <translation id="4021593982164260556">Pembayaran dilakukan setiap hari ke-{{day}} setiap bulan.</translation>
 <translation id="6104680658798556671">Pembayaran tidak dilakukan.</translation>
-<translation id="2834888581291358924">Pembayaran dilewati untuk periode ini saat saldo Anda tidak cukup untuk menutupi total dari Kontribusi Otomatis dan tip berulang Anda.</translation>
 <translation id="3138528956349114724">Situs tersemat kini</translation>
-<translation id="2337632028350283479">Berikut cara kerja tip bulanan:</translation>
-<translation id="6457273203091513039">Tip bulanan tidak dibayarkan dari pembayaran Kontribusi Otomatis Anda, melainkan secara terpisah.</translation>
 <translation id="9099396904827413228">Setiap situs mendapatkan bayaran tetap setiap bulannya.</translation>
-<translation id="5051110132941857169">Tip bulanan dibayarkan sekaligus, setiap bulan. Jika Anda menggunakan Kontribusi Otomatis, tip diberikan sekaligus dengan pembayaran Kontribusi Otomatis bulanan.</translation>
-<translation id="3374483782662414143">Anda dapat menghapus situs yang menerima tip bulanan dari dalam panel Tip.</translation>
 <translation id="5082474983463379713">Mohon perhatikan:</translation>
 <translation id="1430915738399379752">Cetak</translation>
 <translation id="135956957367307069">Permintaan Anda tengah diproses, harap menunggu.</translation>

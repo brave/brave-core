@@ -65,6 +65,7 @@
 <translation id="1928696683969751773">Ενημερώσεις</translation>
 <translation id="6064125863973209585">Ολοκληρωμένες λήψεις</translation>
 <translation id="5342314432463739672">Αιτήματα για άδειες</translation>
+<translation id="3749259744154402564">Δεν υποστηρίζεται</translation>
 <translation id="629730747756840877">Λογαριασμός</translation>
 <translation id="82609232232243542">Σύνδεση στο Brave</translation>
 <translation id="7956662517480676674">Συγχρονισμός και υπηρ. Brave Software</translation>
@@ -227,8 +228,6 @@
 <translation id="3245261285041759672">Ο Λογαριασμός σας Brave Software ενδέχεται να διαθέτει άλλες μορφές ιστορικού περιήγησης στη διεύθυνση <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="7274013316676448362">Αποκλεισμένος ιστότοπος</translation>
 <translation id="2534155362429831547">Διαγράφηκαν <ph name="NUMBER_OF_ITEMS"/> στοιχεία</translation>
-<translation id="1121094540300013208">Αναφορές χρήσης και σφαλμάτων</translation>
-<translation id="9079153198295609735">Αυτόματη αποστολή στατιστικών στοιχείων χρήσης και αναφορών σφαλμάτων στην Brave Software</translation>
 <translation id="6981982820502123353">Προσβασιμότητα</translation>
 <translation id="2387895666653383613">Κλιμάκωση κειμένου</translation>
 <translation id="2321958826496381788">Σύρετε το ρυθμιστικό έως ότου να διαβάσετε αυτό το μήνυμα άνετα. Το κείμενο θα πρέπει να είναι τουλάχιστον τόσο μεγάλο αφού πατήσετε δύο φορές σε μια παράγραφο.</translation>
@@ -243,12 +242,12 @@
 <translation id="6295158916970320988">Όλοι οι ιστότοποι</translation>
 <translation id="8380167699614421159">Αυτός ο ιστότοπος εμφανίζει παρεμβατικές ή παραπλανητικές διαφημίσεις</translation>
 <translation id="1919345977826869612">Διαφημίσεις</translation>
-<translation id="410351446219883937">Αυτ. αναπαραγωγή</translation>
 <translation id="6447842834002726250">Cookie</translation>
 <translation id="6196640612572343990">Αποκλεισμός cookie τρίτων</translation>
 <translation id="6782111308708962316">Αποτροπή αποθήκευσης και ανάγνωσης δεδομένων cookie από ιστότοπους τρίτων</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Αναδυόμενα παράθυρα και ανακατευθύνσεις</translation>
+<translation id="534295439873310000">Συσκευές NFC</translation>
 <translation id="4751476147751820511">Αισθητήρες κίνησης ή φωτός</translation>
 <translation id="1717218214683051432">Αισθητήρες κίνησης</translation>
 <translation id="2091887806945687916">Ήχος</translation>
@@ -261,7 +260,6 @@
 <translation id="6181444274883918285">Προσθήκη εξαίρεσης ιστότοπου</translation>
 <translation id="5313967007315987356">Προσθήκη ιστότοπου</translation>
 <translation id="1369915414381695676">Προστέθηκε ο ιστότοπος <ph name="SITE_NAME"/></translation>
-<translation id="7837721118676387834">Να επιτρέπεται η αυτόματη αναπαραγωγή βίντεο που έχουν τεθεί σε σίγαση για έναν συγκεκριμένο ιστότοπο.</translation>
 <translation id="2621115761605608342">Να επιτρέπεται η JavaScript για έναν συγκεκριμένο ιστότοπο.</translation>
 <translation id="8801436777607969138">Αποκλεισμός JavaScript για κάποιο συγκεκριμένο ιστότοπο.</translation>
 <translation id="8372893542064058268">Να επιτρέπεται ο Συγχρονισμός παρασκηνίου για έναν συγκεκριμένο ιστότοπο.</translation>
@@ -285,7 +283,6 @@
 <translation id="5100237604440890931">Συμπτυγμένη - Κάντε κλικ για ανάπτυξη</translation>
 <translation id="857943718398505171">Επιτρέπεται (συνιστάται)</translation>
 <translation id="2913331724188855103">Να επιτρέπεται στους ιστότοπους η αποθήκευση και η ανάγνωση δεδομένων cookie (συνιστάται)</translation>
-<translation id="7445411102860286510">Να επιτρέπεται στους ιστότοπους η αυτόματη αναπαραγωγή βίντεο σε σίγαση (συνιστάται)</translation>
 <translation id="5335288049665977812">Να επιτρέπεται στους ιστότοπους να εκτελούν JavaScript (συνιστάται)</translation>
 <translation id="5527111080432883924">Να γίνεται ερώτηση προτού επιτραπεί σε ιστοτόπους η ανάγνωση κειμένου και εικόνων από το πρόχειρο (συνιστάται)</translation>
 <translation id="6912998170423641340">Αποκλεισμός ιστοτόπων από ανάγνωση κειμένου και εικόνων από το πρόχειρο</translation>
@@ -295,6 +292,8 @@
 <translation id="2107397443965016585">Να γίνεται ερώτηση προτού επιτραπεί στους ιστοτόπους η αναπαραγωγή προστατευόμενου περιεχομένου (συνιστάται)</translation>
 <translation id="2910701580606108292">Να γίνεται ερώτηση προτού επιτραπεί στους ιστοτόπους η αναπαραγωγή προστατευόμενου περιεχομένου</translation>
 <translation id="757524316907819857">Αποκλεισμός αναπαραγωγής προστατευόμενου περιεχομένου από ιστοτόπους</translation>
+<translation id="5710871682236653961">Να γίνεται ερώτηση προτού επιτραπεί σε ιστοτόπους η αποστολή ή η λήψη πληροφοριών κατά το πάτημα συσκευών NFC (συνιστάται).</translation>
+<translation id="7572498721684305250">Αποκλεισμός ιστοτόπων από την αποστολή ή τη λήψη πληροφοριών κατά το πάτημα συσκευών NFC.</translation>
 <translation id="3277252321222022663">Να επιτρέπεται στους ιστοτόπους η πρόσβαση στους αισθητήρες (συνιστάται)</translation>
 <translation id="5048398596102334565">Να επιτρέπεται στους ιστοτόπους η πρόσβαση στους αισθητήρες κίνησης (συνιστάται)</translation>
 <translation id="8816026460808729765">Αποκλεισμός πρόσβασης στους αισθητήρες από ιστοτόπους</translation>
@@ -308,7 +307,10 @@
 <translation id="3123473560110926937">Αποκλεισμός σε ορισμένους ιστοτόπους</translation>
 <translation id="965817943346481315">Αποκλεισμός εάν ο ιστότοπος εμφανίζει παρεμβατικές ή παραπλανητικές διαφημίσεις (συνιστάται)</translation>
 <translation id="3386292677130313581">Να γίνεται ερώτηση προτού επιτραπεί η κοινοποίηση της τοποθεσίας σας σε ιστότοπους (συνιστάται)</translation>
-<translation id="9139068048179869749">Να γίνεται ερώτηση προτού επιτραπεί στους ιστότοπους να στέλνουν ειδοποιήσεις (συνιστάται)</translation>
+<translation id="6270391203985052864">Οι ιστότοποι μπορούν να ζητούν να στέλνουν ειδοποιήσεις.</translation>
+<translation id="5505264765875738116">Οι ιστότοποι δεν μπορούν να ζητούν να στέλνουν ειδοποιήσεις.</translation>
+<translation id="6561560012278703671">Χρήση πιο διακριτικών μηνυμάτων (αποκλεισμός διακοπών από τα μηνύματα ειδοποιήσεων)</translation>
+<translation id="7302486331832100261">Συνήθως αποκλείετε τις ειδοποιήσεις. Για να τις επιτρέψετε, πατήστε Λεπτομέρειες.</translation>
 <translation id="4479647676395637221">Να γίνεται ερώτηση προτού επιτραπεί στους ιστότοπους να χρησιμοποιούν την κάμερά σας (συνιστάται)</translation>
 <translation id="6992289844737586249">Να γίνεται ερώτηση προτού επιτραπεί στους ιστότοπους να χρησιμοποιήσουν το μικρόφωνό σας (συνιστάται)</translation>
 <translation id="2289270750774289114">Να γίνεται ερώτηση όταν ένας ιστότοπος επιθυμεί να εντοπίσει κοντινές συσκευες Bluetooth (συνιστάται)</translation>
@@ -507,9 +509,11 @@
 <translation id="5230560987958996918">Ο ιστότοπος <ph name="SITE"/> θέλει να κάνει σάρωση για κοντινές συσκευές Bluetooth. Βρέθηκαν οι παρακάτω συσκευές:</translation>
 <translation id="8368027906805972958">Άγνωστη ή μη υποστηριζόμενη συσκευή (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7605594153474022051">Ο συγχρονισμός δεν λειτουργεί</translation>
+<translation id="2537178555904266562">Σφάλμα κατά τον συγχρονισμό των κωδικών πρόσβασης</translation>
 <translation id="1810845389119482123">Η αρχική ρύθμιση συγχρονισμού δεν ολοκληρώθηκε</translation>
 <translation id="3235722914093408050">Ανοίξτε Ρυθμίσεις Android και ενεργοποιήστε τον συγχρ. συστ. Android για έναρξη Συγχρ. Brave</translation>
 <translation id="3367813778245106622">Συνδεθείτε ξανά για να ξεκινήσετε τον συγχρονισμό</translation>
+<translation id="3701167022068948696">Άμεση επιδιόρθωση</translation>
 <translation id="974555521953189084">Εισαγάγετε τη φράση πρόσβασης για να ξεκινήσετε τον συγχρονισμό.</translation>
 <translation id="2997266899014181325">Για να ξεκινήσετε τον συγχρονισμό, ενεργοποιήστε την επιλογή "Συγχρονισμός των δεδομένων του Brave".</translation>
 <translation id="8260126382462817229">Δοκιμάστε να συνδεθείτε ξανά</translation>
@@ -603,7 +607,7 @@
 <translation id="2317945146070194624">Άνοιγμα σε νέα καρτέλα Brave</translation>
 <translation id="7975379999046275268">Προεπισκόπηση σελίδας <ph name="BEGIN_NEW"/>Νέο<ph name="END_NEW"/></translation>
 <translation id="6112702117600201073">Ανανέωση σελίδας</translation>
-<translation id="36525718899759834">Λήψη της εφαρμογής από το Brave Software Play Store: <ph name="APP_ACTION"/></translation>
+<translation id="6990079615885386641">Λήψη της εφαρμογής από το Brave Software Play Store: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">Σκούρο</translation>
 <translation id="1807246157184219062">Ανοιχτόχρωμο</translation>
 <translation id="4056223980640387499">Σέπια</translation>
@@ -639,7 +643,6 @@
 <translation id="3810973564298564668">Διαχείριση</translation>
 <translation id="5199929503336119739">Προφίλ εργασίας</translation>
 <translation id="528192093759286357">Σύρετε από το επάνω τμήμα και αγγίξτε το κουμπί επιστροφής για έξοδο από την πλήρη οθόνη.</translation>
-<translation id="2836148919159985482">Πατήστε το κουμπί επιστροφής για έξοδο από την πλήρη οθόνη.</translation>
 <translation id="3967822245660637423">Ολοκλήρωση λήψης</translation>
 <translation id="2434158240863470628">Η λήψη ολοκληρώθηκε <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="802154636333426148">Η λήψη απέτυχε</translation>
@@ -698,6 +701,7 @@
 <translation id="3810838688059735925">Βίντεο</translation>
 <translation id="3616113530831147358">Ήχος</translation>
 <translation id="9219103736887031265">Εικόνες</translation>
+<translation id="656065428026159829">Δείτε περισσότερα</translation>
 <translation id="8250920743982581267">Έγγραφα</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# Αρχείο}other{# Αρχεία}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# Εικόνα}other{# Εικόνες}}</translation>
@@ -709,7 +713,7 @@
 <translation id="7810647596859435254">Άνοιγμα με…</translation>
 <translation id="5655963694829536461">Αναζήτηση λήψεων</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
-<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION"/></translation>
 <translation id="1883903952484604915">Τα αρχεία μου</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Εδώ εμφανίζονται άρθρα τα οποία μπορείτε να διαβάσετε ακόμη και εκτός σύνδεσης</translation>
@@ -737,7 +741,7 @@
 <translation id="673197144963363525">Συμβάλετε στη βελτίωση του Brave, στέλνοντας στην Brave Software στατιστικά στοιχεία χρήσης και αναφορές σφαλμάτων.</translation>
 <translation id="3518985090088779359">Αποδοχή και συνέχεια</translation>
 <translation id="7207456302801184289">Καλώς ήρθατε στο Brave</translation>
-<translation id="704822250101715322">Αναμονή για ολοκλήρωση της ενημέρωσης των Υπηρεσιών Brave Software Play</translation>
+<translation id="7189372733857464326">Αναμονή για ολοκλήρωση της ενημέρωσης των Υπηρεσιών Brave Software Play</translation>
 <translation id="1231733316453485619">Ενεργοποίηση συγχρονισμού;</translation>
 <translation id="5132942445612118989">Συγχρονίστε κωδικούς πρόσβασης, ιστορικό και πολλά άλλα σε όλες τις συσκευές</translation>
 <translation id="5736731321935944068">Η Brave Software μπορεί να χρησιμοποιήσει το ιστορικό σας για την εξατομίκευση της Αναζήτησης, των διαφημίσεων και άλλων υπηρεσιών Brave Software</translation>
@@ -762,7 +766,9 @@
 <translation id="4046123991198612571">Επόμενο κομμάτι</translation>
 <translation id="3859306556332390985">Αναζήτηση προς τα εμπρός</translation>
 <translation id="8441146129660941386">Αναζήτηση προς τα πίσω</translation>
-<translation id="6706288973712894588">Αυτήν τη στιγμή είστε εκτός σύνδεσης.\n<ph name="BEGIN_LINK"/>Εξερευνήστε τη ροή σας εκτός σύνδεσης.<ph name="END_LINK"/></translation>
+<translation id="6884306546558072722">Συνεχίστε την αναζήτηση εκτός σύνδεσης</translation>
+<translation id="388596076286380598">Λάβετε άρθρα, βίντεο και άλλο περιεχόμενο από τους ιστοτόπους που σας αρέσουν, ακόμη και όταν είστε εκτός σύνδεσης ή η σύνδεσή σας δεν είναι καλή.</translation>
+<translation id="1736419249208073774">Εξερεύνηση</translation>
 <translation id="572328651809341494">Πρόσφατες καρτέλες</translation>
 <translation id="8497726226069778601">Δεν υπάρχει τίποτα να δείτε εδώ…ακόμη</translation>
 <translation id="5423934151118863508">Οι πιο δημοφιλείς σελίδες σας θα εμφανίζονται εδώ</translation>
@@ -785,7 +791,6 @@
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Μάθετε περισσότερα<ph name="END_LINK"/> σχετικά με το προτεινόμενο περιεχόμενο</translation>
 <translation id="7542481630195938534">Δεν είναι δυνατή η λήψη προτάσεων</translation>
 <translation id="5013696553129441713">Δεν υπάρχουν νέες προτάσεις</translation>
-<translation id="1736419249208073774">Εξερεύνηση</translation>
 <translation id="7444811645081526538">Περισσότερες κατηγορίες</translation>
 <translation id="6709133671862442373">Ειδήσεις</translation>
 <translation id="1264974993859112054">Αθλητικά</translation>
@@ -892,6 +897,7 @@
 <translation id="584427517463557805">Επιλεγμένη  καρτέλα ανώνυμης περιήγησης</translation>
 <translation id="2268044343513325586">Περιορισμός</translation>
 <translation id="7846076177841592234">Ακύρωση επιλογής</translation>
+<translation id="6216432067784365534">Επιλογές <ph name="NAME_OF_LIST_ITEM"/></translation>
 <translation id="7087918508125750058">Επιλέχθηκαν <ph name="ITEM_COUNT"/>. Οι επιλογές είναι διαθέσιμες κοντά στο επάνω μέρος της οθόνης</translation>
 <translation id="7250468141469952378">Επιλέχθηκαν <ph name="ITEM_COUNT"/></translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Κοινοποίηση 1 επιλεγμένου στοιχείου}other{Κοινοποίηση # επιλεγμένων στοιχείων}}</translation>
@@ -966,8 +972,10 @@
 <translation id="3333961966071413176">Όλες οι επαφές</translation>
 <translation id="4994033804516042629">Δεν βρέθηκαν επαφές</translation>
 <translation id="5403592356182871684">Ονόματα</translation>
+<translation id="2903493209154104877">Διευθύνσεις</translation>
 <translation id="2717722538473713889">Διευθύνσεις ηλεκτρονικού ταχυδρομείου</translation>
 <translation id="381841723434055211">Αριθμοί τηλεφώνου</translation>
+<translation id="6689172468748959065">Φωτογραφίες προφίλ</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ 1 ακόμη)}other{(+ # ακόμη)}}</translation>
 <translation id="5197729504361054390">Οι επαφές που επιλέγετε θα κοινοποιηθούν στον ιστότοπο <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="1779089405699405702">Εργαλείο αποκωδικοποίησης εικόνων</translation>
@@ -1080,8 +1088,12 @@
 <translation id="7757787379047923882">Το κείμενο κοινοποιήθηκε από τη συσκευή <ph name="DEVICE_NAME"/></translation>
 <translation id="5193988420012215838">Αντιγράφηκε στο πρόχειρό σας</translation>
 <translation id="4696983787092045100">Αποστολή μηνύματος κειμένου στις συσκευές σας</translation>
+<translation id="5694049548840660018">Επιστρέψτε εύκολα στην αρχική σελίδα</translation>
+<translation id="1122278879166832009">Πατήστε εδώ, για γρήγορη πρόσβαση στην αρχική σας σελίδα από όπου και αν βρίσκεστε</translation>
 <translation id="1260236875608242557">Αναζήτηση και εξερεύνηση</translation>
 <translation id="6369229450655021117">Από εδώ, μπορείτε να αναζητήσετε στον ιστό, να μοιραστείτε με φίλους και να δείτε ανοικτές σελίδες</translation>
+<translation id="8758557275681689734">Δείτε όλες τις ανοιχτές καρτέλες</translation>
+<translation id="8655599981421006542">Πατήστε εδώ, για να δημιουργήσετε νέες καρτέλες και να μεταβείτε στις προηγούμενες</translation>
 <translation id="723171743924126238">Επιλέξτε εικόνες</translation>
 <translation id="8751914237388039244">Επιλογή εικόνας</translation>
 <translation id="1989112275319619282">Περιήγηση</translation>
@@ -1102,18 +1114,16 @@
 <translation id="671481426037969117">Η αντίστροφη μέτρηση <ph name="FQDN"/> εξαντλήθηκε. Θα ξεκινήσει ξανά αύριο.</translation>
 <translation id="7479104141328977413">Διαχείριση καρτέλας</translation>
 <translation id="3524138585025253783">Διεπαφή χρήση προγραμματιστή</translation>
+<translation id="4732120983431207637">Stack Unwinder</translation>
 <translation id="6036057147555329831">Επιπλέον ICU</translation>
-<translation id="9029323097866369874">Να επιτρέπεται στον τομέα <ph name="DOMAIN"/> η ενεργοποίηση της λειτουργίας VR;</translation>
-<translation id="7685301384041462804">Βεβαιωθείτε ότι εμπιστεύεστε αυτόν τον ιστότοπο προτού ενεργοποιήσετε τη λειτουργία VR.</translation>
-<translation id="5033865233969348410">Ενώ βρίσκεστε σε λειτουργία VR, αυτός ο ιστότοπος ενδέχεται να είναι σε θέση να μάθει πληροφορίες σχετικά:
-  -  τα φυσικά χαρακτηριστικά σας, όπως το ύψος σας
-
-Βεβαιωθείτε ότι εμπιστεύεστε αυτόν τον ιστότοπο προτού ενεργοποιήσετε τη λειτουργία VR.</translation>
-<translation id="5534334044554683961">Ενώ βρίσκεστε σε λειτουργία VR, αυτός ο ιστότοπος ενδέχεται να είναι σε θέση να μάθει πληροφορίες σχετικά:
-  -   τα φυσικά χαρακτηριστικά σας, όπως το ύψος σας
-  -   τη διάταξη του δωματίου σας
-
-Βεβαιωθείτε ότι εμπιστεύεστε αυτόν τον ιστότοπο προτού ενεργοποιήσετε τη λειτουργία VR.</translation>
-<translation id="4169535189173047238">Να μην επιτρέπεται</translation>
-<translation id="2170088579611075216">Αποδοχή και είσοδος σε VR</translation>
+<translation id="2175927920773552910">Κωδικός QR</translation>
+<translation id="246532703174860178">Κοινοποίηση</translation>
+<translation id="2517472476991765520">Σάρωση</translation>
+<translation id="8628973420740315031">Για να κάνετε κοινή χρήση με κοντινά άτομα, επιτρέψτε τους να σαρώσουν αυτόν τον κωδικό QR</translation>
+<translation id="7339921667754113786">Brave Software Notifications Platform</translation>
+<translation id="8516012719330875537">Πρόγραμμα επεξεργασίας εικόνας</translation>
+<translation id="4808319664292298116">Ενεργοποίηση VR από <ph name="DOMAIN"/>;</translation>
+<translation id="4353114845960720315">Ενώ βρίσκεστε σε λειτουργία VR, αυτός ο ιστότοπος ενδέχεται να είναι σε θέση να μάθει πληροφορίες σχετικά με:</translation>
+<translation id="118069123878619799">- τα φυσικά χαρακτηριστικά σας, όπως το ύψος σας</translation>
+<translation id="5819762621475381970">- τη διάταξη του δωματίου σας</translation>
 </translationbundle>

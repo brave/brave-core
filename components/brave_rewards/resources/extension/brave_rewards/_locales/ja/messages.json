@@ -182,8 +182,8 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "毎月のチップ",
-    "description": "Title for monthly tips section in wallet summary"
+    "message": "毎月の寄付額",
+    "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
     "message": "オフ",
@@ -256,7 +256,7 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "自動支援のためにスケジュールされた毎月の支払いと毎月のチップは、残高不足のため完了できませんでした。30日後に再実行します。",
+    "message": "Your scheduled monthly payment for Auto-Contribute and monthly contributions could not be completed due to insufficient funds. We’ll try again in 30 days.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -400,12 +400,12 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "あなたの毎月支払いのチップが処理されましした！",
-    "description": "Message for monthly tips processed notification"
+    "message": "Your monthly contributions have been processed!",
+    "description": "Message for monthly contributions processed notification"
   },
   "contributionTips": {
     "message": "支払いとチップ",
-    "description": "Title for monthly tips processed notification"
+    "description": "Title for monthly contributions processed notification"
   },
   "serviceTextPanelWelcome": {
     "message": "「Rewardsに加入する」をクリックすることで、次のことを理解し、同意したものと見なされます",

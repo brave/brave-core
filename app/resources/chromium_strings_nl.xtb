@@ -9,7 +9,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave-logo</translation>
 <translation id="7339898014177206373">Nieuw venster</translation>
-<translation id="5935964611177478118">inloggen bij Brave</translation>
 <translation id="5516268345616100622">Taakbeheer - Brave</translation>
 <translation id="7918740962659365265">Help ons Brave te verbeteren door crashrapporten en <ph name="UMA_LINK"/> naar Brave Software te verzenden</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -124,7 +123,6 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="1459786048951724030">Brave OS kan je gegevens niet synchroniseren door een fout tijdens het inloggen.</translation>
 <translation id="6813094029720377619">Je wist cookies wanneer je Brave sluit. Als je wilt doorgaan met synchroniseren, wijzig je deze <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">instellingen</translation>
-<translation id="380197516434040304">Verwijderen uit Brave…</translation>
 <translation id="300669147395456190">Brave-apps</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> vereist dat je de volgende Servicevoorwaarden leest en accepteert voordat je dit apparaat gebruikt. Deze voorwaarden zijn geen uitbreiding, aanpassing of beperking van de Voorwaarden van Brave OS.</translation>
 <translation id="3293668930608086049">Brave gebruikt je camera en microfoon.</translation>
@@ -188,8 +186,6 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="7798069806040634998">Brave heeft toegang tot de opslag nodig om bestanden te downloaden</translation>
 <translation id="7685904775439037072">Zodra Brave toegang heeft, kunnen websites je om toegang vragen.</translation>
 <translation id="1744365871163268756">Wacht terwijl Brave de nieuwste systeemupdates installeert.</translation>
-<translation id="8000338990735917615">Toekomstige versies van Brave worden automatisch geïnstalleerd.</translation>
-<translation id="2975476470948647918">Toekomstige versies van Brave worden automatisch geïnstalleerd. Als deze download is voltooid, start Brave opnieuw op en kun je doorgaan.</translation>
 <translation id="7808415789955822133">Voorwaarden van Brave OS</translation>
 <translation id="7207456302801184289">Welkom bij Brave</translation>
 <translation id="3507835409099344374">Ga naar instellingen voor Brave-meldingen</translation>
@@ -219,7 +215,6 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="6915252145142862992">Dit is een tweede installatie van Brave en kan niet als standaardbrowser worden ingesteld.</translation>
 <translation id="6235873178214143377">Kijk in de <ph name="LINK_BEGIN"/>instellingen van je Brave-browser<ph name="LINK_END"/> als je een instelling niet ziet op deze pagina</translation>
 <translation id="4459296183696059108">Kijk je in de <ph name="LINK_BEGIN"/>Brave OS-instellingen<ph name="LINK_END"/>als je een instelling niet ziet op deze pagina.</translation>
-<translation id="7977435741986383568">Brave kan webservices gebruiken om de browsefunctionaliteit te verbeteren. Je kunt deze services eventueel uitschakelen. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Brave verzendt de tekst die je in tekstvelden typt naar Brave Software om spelfouten te corrigeren</translation>
 <translation id="8586264863973514035">Als je de wijzigingen wilt toepassen, start je Brave opnieuw</translation>
 <translation id="7021823858304886493">Inloggen bij Brave toestaan</translation>

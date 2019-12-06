@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Choisissez le moteur de recherche que vous souhaitez utiliser par défaut lors de vos recherches sur le Web dans la barre d'adresse.</translation>
 <translation id="5804484488647369316">Définir le moteur de recherche par défaut</translation>
 <translation id="4428458837269935199">Pour une expérience de recherche plus privée, essayez DuckDuckGo.</translation>
-<translation id="513635702954746724">Choisissez votre thème coloré</translation>
-<translation id="6842850080200126305">Définissez la couleur de votre barre d'outils en sélectionnant l'option clair ou sombre dans le panneau des paramètres.</translation>
-<translation id="5805868144901917207">Sélectionnez un thème</translation>
-<translation id="8131740175452115882">Confirmer</translation>
-<translation id="713206503018076063">Thème du système (par défaut)</translation>
-<translation id="1807246157184219062">Léger</translation>
-<translation id="2414886740292270097">Sombre</translation>
 <translation id="3829010735958850433">Sauter la visite guidée</translation>
 <translation id="1201402288615127009">Suivant</translation>
 <translation id="7954950242989581218">Naviguez en toute sécurité</translation>
 <translation id="2188651882929633653">Le bouclier de Brave bloque les choses terrifiantes qui tentent de vous suivre sur le Web, y compris la plupart des publicités. Désactivez le bouclier si un site ne semble pas fonctionner. Brave utilise <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>analyse de produit entièrement privée<ph name="END_LINK_P3A">&lt;/a&gt;</ph> pour estimer l'utilisation globale de certaines fonctionnalités. Vous pouvez désactiver cette fonction dans <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Paramètres<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Annonces</translation>
-<translation id="5698387814910197501">Gagnez des {{currency}} en regardant des annonces dans Brave. Les annonces sont basées sur vos centres d'intérêts déduits de votre navigation. Aucune donnée personnelle ni aucun historique de navigation ne quittera jamais votre navigateur.</translation>
 <translation id="6112368337882254910">Auto-Contribuer</translation>
 <translation id="3742599705619405136">Un moyen automatique de soutenir les éditeurs et les créateurs de contenu. Établissez un paiement mensuel et naviguez normalement. Les sites Brave Verified que vous visitez recevront automatiquement vos contributions, en fonction de votre niveau d'attention mesuré par Brave.</translation>
 <translation id="20281847067919078">Estimation des récompenses en attente</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Notifications de publicités reçues ce mois-ci</translation>
 <translation id="4229016885653790965">Désolé ! Les publicités ne sont pas encore disponibles dans votre région.</translation>
 <translation id="2539279826042558064">Les récompenses et publicités Brave ne sont pas disponibles sur votre appareil pour le moment.</translation>
+<translation id="5421369907811917952">Autres paramètres</translation>
 <translation id="654711254769318398">Pages de publicité affichées</translation>
 <translation id="2532127066761785857">Nombre maximal de publicités affiché</translation>
 <translation id="5171071066587880677">1 publicité par heure</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">jetons</translation>
 <translation id="7286722244752781970">Temps minimum sur la page avant de considérer que c'est une visite</translation>
 <translation id="4424486208397124985">Nombre minimum de visites pour considérer l'éditeur comme pertinent</translation>
-<translation id="5421369907811917952">Autres paramètres</translation>
 <translation id="6248554379744796526">Afficher les sites non vérifiés dans la liste</translation>
 <translation id="5875669387851353511">Autoriser les contributions à des vidéos</translation>
 <translation id="8933202740471878108">1 visite</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Brave Récompenses a un problème. Veuillez réessayer plus tard.</translation>
 <translation id="570208820610947248">Nous avons détecté que quelque chose ne va pas avec votre portefeuiile. Vous devez récupérer votre portefeuille de sauvegarde avant que toute transaction puisse être traitée.</translation>
 <translation id="7797604753681168055">Récupérer maintenant!</translation>
-<translation id="5549059668721746831">Date de la prochaine contribution mensuelle</translation>
 <translation id="6231182869178328516">Je viens de faire un don à <ph name="NAME"/> avec le navigateur Brave. Pour le voir, rendez-vous sur https://brave.com/tips.</translation>
 <translation id="8404935570206006581">DonnezAvecBrave</translation>
 <translation id="2876191400747549936">Désolé, un problème s'est produit lors du traitement de votre demande. Veuillez réessayer.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Montant de la contribution</translation>
 <translation id="3520817231440482449">Donner à ce site tous les mois</translation>
 <translation id="1827184134638345603">Envoyer un don…</translation>
-<translation id="7928243298881209869">Votre premier don mensuel sera envoyé le :</translation>
-<translation id="6045860799501892362">Définir le don mensuel</translation>
 <translation id="8003573781961874199">Télécharger au format PDF</translation>
 <translation id="298067735430872465">Gains issus des Annonces</translation>
 <translation id="2266556115441975588">Vos récompenses Ads sont ici !</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">novembre</translation>
 <translation id="7828956995407538686">octobre</translation>
 <translation id="5502713021410870035">septembre</translation>
-<translation id="5737831580668469027">Dons mensuels !</translation>
 <translation id="606865182719489911">Une subvention gratuite en jetons est disponible.</translation>
 <translation id="2487641031722095938">C'est votre jour de chance !</translation>
 <translation id="6255773350565723852">Votre subvention symbolique est en route.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Paiement</translation>
 <translation id="4021593982164260556">Le paiement est effectué le {{day}} de chaque mois.</translation>
 <translation id="6104680658798556671">Paiement non effectué.</translation>
-<translation id="2834888581291358924">Quand votre solde ne suffit pas à couvrir le total des Contributions Automatiques et des dons récurrents, nous sautons ces paiements pour cette période.</translation>
 <translation id="3138528956349114724">Les sites épinglés sont maintenant</translation>
-<translation id="2337632028350283479">Voici comment fonctionnent les dons mensuels :</translation>
-<translation id="6457273203091513039">Les dons mensuels ne font pas partie de votre paiement des contributions automatiques. Ils sont indépendants.</translation>
 <translation id="9099396904827413228">Chaque site est reçoit un montant fixe mensuel.</translation>
-<translation id="5051110132941857169">Les dons mensuels sont tous réglés en même temps, tous les mois. Si vous utilisez la contribution automatique, les dons sont facturés en même temps que votre paiement mensuel de contribution automatique.</translation>
-<translation id="3374483782662414143">Vous pouvez dissocier n'importe quel site des dons mensuels depuis l'intérieur du panneau Dons.</translation>
 <translation id="5082474983463379713">Veuillez noter :</translation>
 <translation id="1430915738399379752">Imprimer</translation>
 <translation id="135956957367307069">Votre demande est toujours en cours de traitement, veuillez patienter.</translation>

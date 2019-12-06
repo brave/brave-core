@@ -6,7 +6,6 @@
 <translation id="680297041157509674">Brave-käyttöjärjestelmä</translation>
 <translation id="4847979153841887006">Brave-logo</translation>
 <translation id="7339898014177206373">Uusi ikkuna</translation>
-<translation id="5935964611177478118">Kirjaudu sisään Braveiin</translation>
 <translation id="5516268345616100622">Tehtävänhallinta - Brave</translation>
 <translation id="7918740962659365265">Auta parantamaan Braveia lähettämällä kaatumisilmoitukset ja <ph name="UMA_LINK"/> Brave Softwarelle</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -119,7 +118,6 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="1459786048951724030">Brave-käyttöjärjestelmä ei voi synkronoida tietoja kirjautumisvirheen vuoksi.</translation>
 <translation id="6813094029720377619">Tyhjennät evästeet, kun suljet Bravein. Jos haluat jatkaa synkronointia, vaihda <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">asetuksissa</translation>
-<translation id="380197516434040304">Poista Braveista…</translation>
 <translation id="300669147395456190">Brave-sovellukset</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> edellyttää, että luet ja hyväksyt seuraavat käyttöehdot ennen tämän laitteen käyttöä. Nämä ehdot eivät laajenna, muokkaa tai rajoita Brave-käyttöliittymän ehtoja.</translation>
 <translation id="3293668930608086049">Brave käyttää kameraasi ja mikrofoniasi.</translation>
@@ -180,8 +178,6 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="7798069806040634998">Brave tarvitsee tallennustilan käyttöoikeuden tiedostojen lataamiseen.</translation>
 <translation id="7685904775439037072">Kun Braveilla on käyttöoikeus, sivustot voivat pyytää sitä sinulta.</translation>
 <translation id="1744365871163268756">Odota hetki, Brave asentaa uusimpia järjestelmäpäivityksiä.</translation>
-<translation id="8000338990735917615">Bravein tulevat versiot asennetaan automaattisesti.</translation>
-<translation id="2975476470948647918">Bravein tulevat versiot asennetaan automaattisesti. Kun lataus on valmis, Brave käynnistyy uudelleen ja voit aloittaa käytön.</translation>
 <translation id="7808415789955822133">Brave-käyttöjärjestelmän käyttöehdot</translation>
 <translation id="7207456302801184289">Tervetuloa Braveiin</translation>
 <translation id="3507835409099344374">Siirry Bravein ilmoitusasetuksiin</translation>
@@ -213,7 +209,6 @@ Brave ei voi palauttaa asetuksiasi.</translation>
     Bravein selainasetuksiin<ph name="LINK_END"/>.</translation>
 <translation id="4459296183696059108">Jos asetus ei näy tällä sivulla, siirry <ph name="LINK_BEGIN"/>
     Brave-käyttöjärjestelmän asetuksiin<ph name="LINK_END"/>.</translation>
-<translation id="7977435741986383568">Brave voi käyttää verkkopalveluita selauskokemuksesi parantamiseen. Voit halutessasi poistaa nämä palvelut käytöstä. <ph name="BEGIN_LINK"/>Lisätietoja<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Brave lähettää kenttiin kirjoittamasi tekstin Brave Softwarelle oikeinkirjoitusvirheiden korjaamiseksi.</translation>
 <translation id="8586264863973514035">Ota muutokset käyttöön käynnistämällä Brave uudelleen</translation>
 <translation id="7021823858304886493">Salli Brave-kirjautuminen</translation>

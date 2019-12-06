@@ -65,6 +65,7 @@
 <translation id="1928696683969751773">अपडेट</translation>
 <translation id="6064125863973209585">पूरे हो चुके डाउनलोड</translation>
 <translation id="5342314432463739672">अनुमति से जुड़े अनुरोध</translation>
+<translation id="3749259744154402564">काम नहीं करता</translation>
 <translation id="629730747756840877">खाता</translation>
 <translation id="82609232232243542">Brave में साइन इन करें</translation>
 <translation id="7956662517480676674">सिंक और Brave Software सेवाएं</translation>
@@ -227,8 +228,6 @@
 <translation id="3245261285041759672">आपके Brave Software खाते में <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> पर अन्य प्रकार के ब्राउज़िंग इतिहास हो सकतेे हैं.</translation>
 <translation id="7274013316676448362">अवरोधित साइट</translation>
 <translation id="2534155362429831547"><ph name="NUMBER_OF_ITEMS"/> आइटम मिटाए गए</translation>
-<translation id="1121094540300013208">इस्तेमाल और खराबी रिपोर्ट</translation>
-<translation id="9079153198295609735">इस्तेमाल के आंकड़े और खराबी रिपोर्ट अपने आप Brave Software को भेजें</translation>
 <translation id="6981982820502123353">सुलभता</translation>
 <translation id="2387895666653383613">लेख स्‍केलिंग</translation>
 <translation id="2321958826496381788">इस टेक्स्ट को आसानी से पढ़ने लायक बनाने के लिए, स्‍लाइडर को आगे की ओर खींचें. पैराग्राफ़ पर डबल-टैप करने के बाद, टेक्स्ट को इतना बड़ा दिखाई देना चाहिए.</translation>
@@ -243,12 +242,12 @@
 <translation id="6295158916970320988">सभी साइटें</translation>
 <translation id="8380167699614421159">इस साइट में तंग करने वाले या गुमराह करने वाले विज्ञापन दिखाई देते हैं</translation>
 <translation id="1919345977826869612">विज्ञापन</translation>
-<translation id="410351446219883937">अपने आप चलाएं</translation>
 <translation id="6447842834002726250">कुकी</translation>
 <translation id="6196640612572343990">तीसरे पक्ष की कुकी ब्लॉक करें</translation>
 <translation id="6782111308708962316">तृतीय पक्ष वेबसाइट को कुकी डेटा सहेजने और पढ़ने से रोकें</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">पॉप-अप और रीडायरेक्ट</translation>
+<translation id="534295439873310000">NFC डिवाइस</translation>
 <translation id="4751476147751820511">गति या लाइट सेंसर</translation>
 <translation id="1717218214683051432">मोशन सेंसर</translation>
 <translation id="2091887806945687916">आवाज़</translation>
@@ -261,7 +260,6 @@
 <translation id="6181444274883918285">अपवाद वाली साइट जोड़ें</translation>
 <translation id="5313967007315987356">साइट जोड़ें</translation>
 <translation id="1369915414381695676"><ph name="SITE_NAME"/> साइट जोड़ी गई</translation>
-<translation id="7837721118676387834">किसी खास साइट पर म्यूट किए गए वीडियो को अपने आप चलाने की अनुमति दें.</translation>
 <translation id="2621115761605608342">किसी खास साइट के लिए JavaScript चलाने की अनुमति दें.</translation>
 <translation id="8801436777607969138">किसी खास साइट के लिए JavaScript पर रोक लगाएं.</translation>
 <translation id="8372893542064058268">किसी विशिष्ट साइट के लिए पृष्ठभूमि समन्वयन की अनुमति दें.</translation>
@@ -285,7 +283,6 @@
 <translation id="5100237604440890931">छोटा किया गया - पूरा खोलने के लिए क्लिक करें.</translation>
 <translation id="857943718398505171">अनुमति दी गई (सुझाया गया)</translation>
 <translation id="2913331724188855103">साइटों को कुकी डेटा सेव करने और पढ़ने की अनुमति दें (सुझाए गए)</translation>
-<translation id="7445411102860286510">साइटों को म्यूट किए गए वीडियो अपने आप चलाने की अनुमति दें (हम इस सेटिंग को चालू रखने का सुझाव देते हैं)</translation>
 <translation id="5335288049665977812">साइटों को JavaScript चलाने की अनुमति दें (हम इस सेटिंग को चालू रखने का सुझाव देते हैं)</translation>
 <translation id="5527111080432883924">साइटों को क्लिपबोर्ड से टेक्स्ट और इमेज पढ़ने की अनुमति देने से पहले पूछें (हम इस सेटिंग को चालू रखने का सुझाव देते हैं)</translation>
 <translation id="6912998170423641340">साइटों को क्लिपबोर्ड से टेक्स्ट और इमेज पढ़ने से रोकें</translation>
@@ -295,6 +292,8 @@
 <translation id="2107397443965016585">साइटों को सुरक्षित सामग्री चलाने देने से पहले पूछें (ऐसा करने का सुझाव दिया जाता है)</translation>
 <translation id="2910701580606108292">साइटों को सुरक्षित सामग्री चलाने की अनुमति देने से पहले पूछें</translation>
 <translation id="757524316907819857">साइटों को सुरक्षित सामग्री चलाने से रोकें</translation>
+<translation id="5710871682236653961">NFC डिवाइस पर टैप करने के बाद, साइटों को जानकारी भेजने और पाने की अनुमति देने से पहले पूछें (सुझाया गया)</translation>
+<translation id="7572498721684305250">NFC डिवाइस पर टैप करने के बाद, साइटों को जानकारी भेजने और पाने पर रोक लगाएं</translation>
 <translation id="3277252321222022663">साइटों को सेंसर ऐक्सेस करने दें (सुझाया गया)</translation>
 <translation id="5048398596102334565">साइटों को मोशन सेंसर ऐक्‍सेस करने दें (सुझाया गया)</translation>
 <translation id="8816026460808729765">साइटों को सेंसर ऐक्सेस करने से रोकें</translation>
@@ -308,7 +307,10 @@
 <translation id="3123473560110926937">कुछ साइटों पर ब्लॉक किए गए हैं</translation>
 <translation id="965817943346481315">अगर साइट तंग करने वाले या गुमराह करने वाले विज्ञापन दिखाई देते हैं, तो उन्हें ब्लॉक करें (सुझाव)</translation>
 <translation id="3386292677130313581">साइटों को अपनी जगह की जानकारी देने से पहले अनुमति लेना ज़रूरी बनाएं (सुझाया गया)</translation>
-<translation id="9139068048179869749">साइटों को सूचनाएं भेजने से पहले अनुमति लेना ज़रूरी बनाएं (सुझाया गया)</translation>
+<translation id="6270391203985052864">साइटें आपको सूचनाएं भेजने के लिए पूछ सकती हैं</translation>
+<translation id="5505264765875738116">साइटें आपको सूचनाएं भेजने के लिए नहीं पूछ सकती हैं</translation>
+<translation id="6561560012278703671">बिना आवाज़ के मैसेज पाएं (सूचनाओं में आवाज़ को रोकता है, ताकि आपके काम में रुकावट न आए)</translation>
+<translation id="7302486331832100261">आप आम तौर पर, सूचनाओंं पर रोक लगाते हैं. अनुमति देने के लिए, 'जानकारी' पर टैप करें.</translation>
 <translation id="4479647676395637221">साइटों को अपने कैमरे का इस्तेमाल करने देने से पहले अनुमति लेना ज़रूरी बनाएं (सुझाया गया )</translation>
 <translation id="6992289844737586249">साइटों को अपने माइक्रोफ़ोन का इस्तेमाल करने देने से पहले अनुमति लेना ज़रूरी बनाएं (सुझाया गया)</translation>
 <translation id="2289270750774289114">जब कोई साइट आस-पास के ब्लूटूथ डिवाइस को खोजना चाहे, तो इसके लिए पूछें (सुझाया गया)</translation>
@@ -507,9 +509,11 @@
 <translation id="5230560987958996918"><ph name="SITE"/> आस-पास मौजूद ब्लूटूथ वाले डिवाइस स्कैन करना चाहती है. ये डिवाइस मिले हैं:</translation>
 <translation id="8368027906805972958">अज्ञात या काम न करने वाला डिवाइस (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7605594153474022051">समन्वयन काम नहीं कर रहा है</translation>
+<translation id="2537178555904266562">पासवर्ड सिंक करने में गड़बड़ी हुई</translation>
 <translation id="1810845389119482123">शुरुआती सिंक सेट अप पूरा नहीं हुआ</translation>
 <translation id="3235722914093408050">Android सेटिंग खोलें और Brave सिंक शुरू करने के लिए Android सिस्टम सिंक फिर से चालू करें</translation>
 <translation id="3367813778245106622">सिंक शुरू करने के लिए फिर से साइन इन करें</translation>
+<translation id="3701167022068948696">अभी ठीक करें</translation>
 <translation id="974555521953189084">सिंक शुरू करने के लिए अपना 'पासफ़्रेज़' डालें</translation>
 <translation id="2997266899014181325">सिंक शुरू करने के लिए, "अपना Brave डेटा सिंक करें" को चालू करें.</translation>
 <translation id="8260126382462817229">फिर से प्रवेश करके देखें</translation>
@@ -603,7 +607,7 @@
 <translation id="2317945146070194624">नए Brave टैब में खोलें</translation>
 <translation id="7975379999046275268">पेज की झलक देखें <ph name="BEGIN_NEW"/>नया<ph name="END_NEW"/></translation>
 <translation id="6112702117600201073">पृष्‍ठ रीफ्रेश किया जा रहा है</translation>
-<translation id="36525718899759834">Brave Software Play स्‍टोर से ऐप्लिकेशन डाउनलोड करें: <ph name="APP_ACTION"/></translation>
+<translation id="6990079615885386641">Brave Software Play स्‍टोर से ऐप्लिकेशन डाउनलोड करें: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">गहरा</translation>
 <translation id="1807246157184219062">हल्का</translation>
 <translation id="4056223980640387499">Sepia</translation>
@@ -639,7 +643,6 @@
 <translation id="3810973564298564668">प्रबंधित करें</translation>
 <translation id="5199929503336119739">वर्क प्रोफ़ाइल</translation>
 <translation id="528192093759286357">फ़ुल स्क्रीन से बाहर निकलने के लिए ऊपर से खींचें और वापस जाएं स्पर्श करें.</translation>
-<translation id="2836148919159985482">फ़ुल स्क्रीन से बाहर निकलने के लिए वापस जाएं बटन स्पर्श करें.</translation>
 <translation id="3967822245660637423">डाउनलोड पूरा हुआ</translation>
 <translation id="2434158240863470628">डाउनलोड हो गया <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="802154636333426148">डाउनलोड विफल रहा</translation>
@@ -698,6 +701,7 @@
 <translation id="3810838688059735925">वीडियो</translation>
 <translation id="3616113530831147358">ऑडियो</translation>
 <translation id="9219103736887031265">इमेज</translation>
+<translation id="656065428026159829">ज़्यादा देखें</translation>
 <translation id="8250920743982581267">दस्तावेज़</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# फ़ाइल}one{# फ़ाइलें}other{# फ़ाइलें}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# इमेज}one{# इमेज}other{# इमेज}}</translation>
@@ -709,7 +713,7 @@
 <translation id="7810647596859435254">इसमें खोलें…</translation>
 <translation id="5655963694829536461">अपने डाउनलोड में खोजें</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
-<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION"/></translation>
 <translation id="1883903952484604915">मेरी फ़ाइलें</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">लेख यहां दिखाई देते हैं जिन्हें आप ऑफ़लाइन होने पर भी पढ़ सकते हैं.</translation>
@@ -737,7 +741,7 @@
 <translation id="673197144963363525">Brave Software को इस्तेमाल के आंकड़े और खराबी रिपोर्ट भेजकर Brave को बेहतर बनाने में मदद करें.</translation>
 <translation id="3518985090088779359">स्‍वीकार करें और जारी रखें</translation>
 <translation id="7207456302801184289">Brave में आपका स्वागत है</translation>
-<translation id="704822250101715322">Brave Software Play सेवाएं द्वारा अपडेट खत्म किए जाने की प्रतीक्षा की जा रही है</translation>
+<translation id="7189372733857464326">Brave Software Play सेवाएं द्वारा अपडेट खत्म किए जाने की प्रतीक्षा की जा रही है</translation>
 <translation id="1231733316453485619">क्या सिंक करना चालू करें?</translation>
 <translation id="5132942445612118989">सभी डिवाइस पर अपने पासवर्ड, इतिहास और दूसरी कई चीज़ें सिंक करें</translation>
 <translation id="5736731321935944068">खोज, विज्ञापन, और दूसरी Brave Software सेवाओं को मनमुताबिक बनाने के लिए, Brave Software आपके इतिहास का इस्तेमाल कर सकता है</translation>
@@ -762,7 +766,9 @@
 <translation id="4046123991198612571">अगला ट्रैक</translation>
 <translation id="3859306556332390985">आगे जाएं</translation>
 <translation id="8441146129660941386">पीछे जाएं</translation>
-<translation id="6706288973712894588">फ़िलहाल, आप ऑफ़लाइन हैं.\n<ph name="BEGIN_LINK"/>अपने ऑफ़लाइन फ़ीड के बारे में और जानें.<ph name="END_LINK"/></translation>
+<translation id="6884306546558072722">ऑफ़लाइन फ़ीड देखते रहें</translation>
+<translation id="388596076286380598">ऑफ़लाइन होने या खराब कनेक्शन होने पर भी, अपनी पसंद की साइटों से लेख, वीडियो, और दूसरी सामग्री पाएं.</translation>
+<translation id="1736419249208073774">बेहतर जानें</translation>
 <translation id="572328651809341494">हाल ही के टैब</translation>
 <translation id="8497726226069778601">यहां देखने के लिए…अभी तक कुछ भी नहीं है</translation>
 <translation id="5423934151118863508">सबसे ज़्यादा देखे गए पेज यहां दिखाई देंगे</translation>
@@ -785,7 +791,6 @@
 <translation id="3493531032208478708">सुझाई गई सामग्री के बारे में <ph name="BEGIN_LINK"/>ज़्यादा जानें<ph name="END_LINK"/></translation>
 <translation id="7542481630195938534">सुझाव नहीं मिल पा रहे हैं</translation>
 <translation id="5013696553129441713">कोई नया सुझाव नहीं है</translation>
-<translation id="1736419249208073774">बेहतर जानें</translation>
 <translation id="7444811645081526538">ज़्यादा श्रेणियां</translation>
 <translation id="6709133671862442373">समाचार</translation>
 <translation id="1264974993859112054">खेल-कूद</translation>
@@ -892,6 +897,7 @@
 <translation id="584427517463557805">चयनित निजी टैब</translation>
 <translation id="2268044343513325586">बेहतर बनाएं</translation>
 <translation id="7846076177841592234">चुना गया हटाएं</translation>
+<translation id="6216432067784365534"><ph name="NAME_OF_LIST_ITEM"/> विकल्प</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> चुने गए.  विकल्प, स्क्रीन के ऊपरी भाग के पास उपलब्ध हैं</translation>
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> चुने गए</translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{1 चयनित आइटम शेयर करें}one{# चयनित आइटम शेयर करें}other{# चयनित आइटम शेयर करें}}</translation>
@@ -966,8 +972,10 @@
 <translation id="3333961966071413176">सभी संपर्क</translation>
 <translation id="4994033804516042629">कोई संपर्क नहीं मिला</translation>
 <translation id="5403592356182871684">नाम</translation>
+<translation id="2903493209154104877">पते</translation>
 <translation id="2717722538473713889">ईमेल पते</translation>
 <translation id="381841723434055211">फ़ोन नंबर</translation>
+<translation id="6689172468748959065">प्रोफ़ाइल फ़ोटो</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ 1 और)}one{(+ # और)}other{(+ # और)}}</translation>
 <translation id="5197729504361054390">आप जो संपर्क चुनेंगे उन्हें <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> के साथ शेयर किया जाएगा.</translation>
 <translation id="1779089405699405702">इमेज डीकोडर</translation>
@@ -1080,8 +1088,12 @@
 <translation id="7757787379047923882"><ph name="DEVICE_NAME"/> से टेक्स्ट शेयर किया गया</translation>
 <translation id="5193988420012215838">आपके क्लिपबोर्ड पर कॉपी की गई</translation>
 <translation id="4696983787092045100">अपने डिवाइस पर मैसेज भेजें</translation>
+<translation id="5694049548840660018">होम पेज पर आसानी से वापस जाएं</translation>
+<translation id="1122278879166832009">अपने होम पेज को झटपट कहीं से भी देखने के लिए यहां टैप करें</translation>
 <translation id="1260236875608242557">खोजें और एक्सप्लोर करें</translation>
 <translation id="6369229450655021117">यहां से, आप वेब खोज सकते हैं, दोस्तों के साथ शेयर कर सकते हैं और खुले हुए पेज देख सकते हैं</translation>
+<translation id="8758557275681689734">सभी खुले हुए टैब देखें</translation>
+<translation id="8655599981421006542">नए टैब बनाने और पिछले टैब पर वापस जाने के लिए यहां टैप करें</translation>
 <translation id="723171743924126238">फ़ोटो चुनें</translation>
 <translation id="8751914237388039244">इमेज चुनें</translation>
 <translation id="1989112275319619282">ब्राउज़ करें</translation>
@@ -1102,18 +1114,16 @@
 <translation id="671481426037969117"><ph name="FQDN"/> इस्तेमाल करने का समय खत्म हो गया. यह कल फिर से शुरू होगा.</translation>
 <translation id="7479104141328977413">टैब प्रबंधन</translation>
 <translation id="3524138585025253783">डेवलपर यूज़र इंटरफ़ेस (यूआई)</translation>
+<translation id="4732120983431207637">स्टैक अनवाइंडर</translation>
 <translation id="6036057147555329831">कुछ और ICU</translation>
-<translation id="9029323097866369874"><ph name="DOMAIN"/> को वीआर में जाने की अनुमति देना चाहते हैं?</translation>
-<translation id="7685301384041462804">वीआर इस्तेमाल करने से पहले पक्का कर लें कि आप इस साइट पर भरोसा करते हैं.</translation>
-<translation id="5033865233969348410">जब आप वीआर इस्तेमाल करते हैं, तो साइट ये बातें जान सकती है:
-  -  आपकी शारीरिक बनावट, जैसे कि लंबाई
-
-वीआर इस्तेमाल करने से पहले पक्का कर लें कि आप इस साइट पर भरोसा करते हैं.</translation>
-<translation id="5534334044554683961">जब आप वीआर इस्तेमाल करते हैं, तो साइट ये बातें जान सकती है:
-  -  आपकी शारीरिक बनावट, जैसे कि लंबाई
- -  आपके कमरे का लेआउट
-
-वीआर इस्तेमाल करने से पहले पक्का कर लें कि आप इस साइट पर भरोसा करते हैं.</translation>
-<translation id="4169535189173047238">अनुमति न दें</translation>
-<translation id="2170088579611075216">अनुमति दें और VR चालू करें</translation>
+<translation id="2175927920773552910">QR कोड</translation>
+<translation id="246532703174860178">शेयर करें</translation>
+<translation id="2517472476991765520">स्कैन करें</translation>
+<translation id="8628973420740315031">आस-पास के लोगों से शेयर करने के लिए, उन्हें यह क्यूआर कोड स्कैन करने दें</translation>
+<translation id="7339921667754113786">Brave Software सूचना प्लैटफ़ॉर्म</translation>
+<translation id="8516012719330875537">इमेज एडिटर</translation>
+<translation id="4808319664292298116"><ph name="DOMAIN"/> से वीआर डालें?</translation>
+<translation id="4353114845960720315">जब आप वीआर इस्तेमाल करते हैं, तो साइट ये बातें जान सकती है:</translation>
+<translation id="118069123878619799">- आपकी शारीरिक विशेषता, जैसे कि आपकी लंबाई</translation>
+<translation id="5819762621475381970">- आपके कमरे का लेआउट</translation>
 </translationbundle>

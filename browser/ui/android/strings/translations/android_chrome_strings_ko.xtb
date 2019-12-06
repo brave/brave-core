@@ -65,6 +65,7 @@
 <translation id="1928696683969751773">업데이트</translation>
 <translation id="6064125863973209585">다운로드 완료</translation>
 <translation id="5342314432463739672">권한 요청</translation>
+<translation id="3749259744154402564">지원되지 않음</translation>
 <translation id="629730747756840877">계정</translation>
 <translation id="82609232232243542">Brave에 로그인</translation>
 <translation id="7956662517480676674">동기화 및 Brave Software 서비스</translation>
@@ -227,8 +228,6 @@
 <translation id="3245261285041759672">Brave Software 계정의 내 활동(<ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>)에는 인터넷 사용 기록이 다른 형식으로 남아 있을 수도 있습니다.</translation>
 <translation id="7274013316676448362">차단된 사이트</translation>
 <translation id="2534155362429831547"><ph name="NUMBER_OF_ITEMS"/>개 항목 삭제함</translation>
-<translation id="1121094540300013208">사용 및 비정상 종료 보고서</translation>
-<translation id="9079153198295609735">사용 통계 및 비정상 종료 보고서를 Brave Software에 자동으로 전송합니다.</translation>
 <translation id="6981982820502123353">접근성</translation>
 <translation id="2387895666653383613">텍스트 크기 조정</translation>
 <translation id="2321958826496381788">편하게 읽을 수 있을 때까지 슬라이더를 드래그하세요. 단락을 두 번 탭하면 텍스트가 이 이상의 크기로 표시됩니다.</translation>
@@ -243,12 +242,12 @@
 <translation id="6295158916970320988">모든 사이트</translation>
 <translation id="8380167699614421159">이 사이트에서는 방해가 되거나 사용자를 현혹하는 광고를 표시합니다.</translation>
 <translation id="1919345977826869612">광고</translation>
-<translation id="410351446219883937">자동재생</translation>
 <translation id="6447842834002726250">쿠키</translation>
 <translation id="6196640612572343990">타사 쿠키 차단</translation>
 <translation id="6782111308708962316">타사 웹사이트에서 쿠키 데이터를 저장하거나 읽을 수 없도록 방지</translation>
 <translation id="7521387064766892559">자바스크립트</translation>
 <translation id="4434045419905280838">팝업 및 리디렉션</translation>
+<translation id="534295439873310000">NFC 기기</translation>
 <translation id="4751476147751820511">모션 또는 조도 센서</translation>
 <translation id="1717218214683051432">움직임 감지 센서</translation>
 <translation id="2091887806945687916">소리</translation>
@@ -261,7 +260,6 @@
 <translation id="6181444274883918285">사이트 예외 추가</translation>
 <translation id="5313967007315987356">사이트 추가</translation>
 <translation id="1369915414381695676"><ph name="SITE_NAME"/> 사이트 추가됨</translation>
-<translation id="7837721118676387834">특정 사이트에서 음소거된 동영상이 자동재생되도록 허용합니다.</translation>
 <translation id="2621115761605608342">특정 사이트에서 자바스크립트를 허용합니다.</translation>
 <translation id="8801436777607969138">특정 사이트의 자바스크립트를 차단합니다.</translation>
 <translation id="8372893542064058268">특정 사이트에서 백그라운드 동기화를 허용합니다.</translation>
@@ -285,7 +283,6 @@
 <translation id="5100237604440890931">접힘 - 펼치려면 클릭</translation>
 <translation id="857943718398505171">허용(권장)</translation>
 <translation id="2913331724188855103">사이트에서 쿠키 데이터를 저장하고 읽도록 허용(권장)</translation>
-<translation id="7445411102860286510">사이트에서 음소거된 동영상을 자동재생하도록 허용(권장)</translation>
 <translation id="5335288049665977812">사이트에서 자바스크립트를 실행하도록 허용(권장)</translation>
 <translation id="5527111080432883924">사이트에서 클립보드의 텍스트 및 이미지에 액세스하도록 허용하기 전에 확인(권장)</translation>
 <translation id="6912998170423641340">사이트에서 클립보드의 텍스트 및 이미지에 액세스하지 못하도록 차단</translation>
@@ -295,6 +292,8 @@
 <translation id="2107397443965016585">사이트에서 보호된 콘텐츠를 재생하도록 허용하기 전에 확인(권장)</translation>
 <translation id="2910701580606108292">사이트에서 보호된 콘텐츠를 재생하도록 허용하기 전에 확인</translation>
 <translation id="757524316907819857">사이트에서 보호된 콘텐츠를 재생하지 못하도록 차단</translation>
+<translation id="5710871682236653961">NFC 기기를 탭하면 사이트가 정보를 주고받도록 허용할지 확인(권장)</translation>
+<translation id="7572498721684305250">NFC 기기를 탭할 때 사이트가 정보를 주고받지 못하도록 차단</translation>
 <translation id="3277252321222022663">사이트의 센서 액세스 허용(권장)</translation>
 <translation id="5048398596102334565">사이트의 움직임 감지 센서 액세스 허용(권장)</translation>
 <translation id="8816026460808729765">사이트에서 센서에 액세스하지 못하도록 차단</translation>
@@ -308,7 +307,10 @@
 <translation id="3123473560110926937">일부 사이트에서 차단됨</translation>
 <translation id="965817943346481315">사이트에서 방해가 되거나 사용자를 현혹하는 광고를 표시하는 경우 광고 차단(권장)</translation>
 <translation id="3386292677130313581">사이트에서 내 위치를 파악하도록 허용하기 전에 확인(권장)</translation>
-<translation id="9139068048179869749">사이트에서 알림을 보내도록 허용하기 전에 확인(권장)</translation>
+<translation id="6270391203985052864">사이트에서 알림 전송 허용을 요청할 수 있음</translation>
+<translation id="5505264765875738116">사이트에서 알림 전송 허용을 요청할 수 없음</translation>
+<translation id="6561560012278703671">눈에 띄지 않는 메시지 사용(방해가 되지 않도록 알림 메시지 차단)</translation>
+<translation id="7302486331832100261">기본적으로 알림을 차단하는 중입니다. 허용하려면 '세부정보'를 탭하세요.</translation>
 <translation id="4479647676395637221">사이트에서 카메라를 사용하도록 허용하기 전에 확인(권장)</translation>
 <translation id="6992289844737586249">사이트에서 마이크를 사용하기 전에 확인(권장)</translation>
 <translation id="2289270750774289114">사이트가 주변 블루투스 기기를 조회하려고 할 때 확인(권장)</translation>
@@ -507,9 +509,11 @@
 <translation id="5230560987958996918"><ph name="SITE"/>에서 주변 블루투스 기기를 검색하려고 합니다. 다음 기기가 발견되었습니다.</translation>
 <translation id="8368027906805972958">알 수 없거나 지원되지 않는 기기(<ph name="DEVICE_ID"/>)</translation>
 <translation id="7605594153474022051">동기화가 작동하지 않음</translation>
+<translation id="2537178555904266562">비밀번호 동기화 중 오류 발생</translation>
 <translation id="1810845389119482123">초기 동기화 설정이 완료되지 않음</translation>
 <translation id="3235722914093408050">Android 설정을 열고 Android 시스템 동기화를 다시 사용 설정하여 Brave 동기화를 시작합니다.</translation>
 <translation id="3367813778245106622">다시 로그인하여 동기화 시작</translation>
+<translation id="3701167022068948696">지금 해결하기</translation>
 <translation id="974555521953189084">암호를 입력하여 동기화를 시작합니다.</translation>
 <translation id="2997266899014181325">동기화를 시작하려면 'Brave 데이터 동기화'를 사용 설정하세요.</translation>
 <translation id="8260126382462817229">다시 로그인해 주세요.</translation>
@@ -603,7 +607,7 @@
 <translation id="2317945146070194624">새 Brave 탭에서 열기</translation>
 <translation id="7975379999046275268">페이지 미리보기 표시 <ph name="BEGIN_NEW"/>새로운 기능<ph name="END_NEW"/></translation>
 <translation id="6112702117600201073">페이지 새로고침</translation>
-<translation id="36525718899759834">Brave Software Play 스토어에서 앱 다운로드: <ph name="APP_ACTION"/></translation>
+<translation id="6990079615885386641">Brave Software Play 스토어에서 앱 다운로드: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">어둡게</translation>
 <translation id="1807246157184219062">밝게</translation>
 <translation id="4056223980640387499">세피아</translation>
@@ -639,7 +643,6 @@
 <translation id="3810973564298564668">관리</translation>
 <translation id="5199929503336119739">직장용 프로필</translation>
 <translation id="528192093759286357">전체화면을 종료하려면 상단에서 드래그하여 뒤로 버튼을 터치하세요.</translation>
-<translation id="2836148919159985482">전체화면을 종료하려면 뒤로 버튼을 터치하세요.</translation>
 <translation id="3967822245660637423">다운로드 완료</translation>
 <translation id="2434158240863470628">다운로드 완료: <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="802154636333426148">다운로드 실패</translation>
@@ -698,6 +701,7 @@
 <translation id="3810838688059735925">동영상</translation>
 <translation id="3616113530831147358">오디오</translation>
 <translation id="9219103736887031265">이미지</translation>
+<translation id="656065428026159829">더보기</translation>
 <translation id="8250920743982581267">문서</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{파일 #개}other{파일 #개}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{이미지 #개}other{이미지 #개}}</translation>
@@ -709,7 +713,7 @@
 <translation id="7810647596859435254">연결 프로그램...</translation>
 <translation id="5655963694829536461">다운로드 항목 검색</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
-<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION"/></translation>
 <translation id="1883903952484604915">내 파일</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">기사가 여기 표시되며 오프라인 상태에서도 읽을 수 있습니다.</translation>
@@ -737,7 +741,7 @@
 <translation id="673197144963363525">사용 통계와 비정상 종료 보고서를 Brave Software로 전송하여 Brave을 개선하는 데 동참하세요.</translation>
 <translation id="3518985090088779359">동의하고 계속</translation>
 <translation id="7207456302801184289">Brave에 오신 것을 환영합니다</translation>
-<translation id="704822250101715322">Brave Software Play 서비스 업데이트 완료 대기 중</translation>
+<translation id="7189372733857464326">Brave Software Play 서비스 업데이트 완료 대기 중</translation>
 <translation id="1231733316453485619">동기화를 사용하시겠습니까?</translation>
 <translation id="5132942445612118989">모든 기기의 비밀번호, 방문 기록 등 동기화</translation>
 <translation id="5736731321935944068">Brave Software에서 내 방문 기록을 사용하여 Brave Software 검색, 광고 및 다른 Brave Software 서비스를 맞춤설정할 수 있습니다.</translation>
@@ -762,7 +766,9 @@
 <translation id="4046123991198612571">다음 트랙</translation>
 <translation id="3859306556332390985">앞으로 탐색</translation>
 <translation id="8441146129660941386">뒤로 탐색</translation>
-<translation id="6706288973712894588">현재 오프라인 상태입니다.\n<ph name="BEGIN_LINK"/>오프라인 피드를 둘러보세요.<ph name="END_LINK"/></translation>
+<translation id="6884306546558072722">오프라인에서 계속 탐색</translation>
+<translation id="388596076286380598">오프라인 상태이거나 연결 상태가 좋지 못할 때도 좋아하는 사이트의 기사, 동영상 및 기타 콘텐츠를 볼 수 있습니다.</translation>
+<translation id="1736419249208073774">탐색</translation>
 <translation id="572328651809341494">최근 탭</translation>
 <translation id="8497726226069778601">아직 표시할 내용 없음</translation>
 <translation id="5423934151118863508">자주 방문한 페이지가 여기에 표시됩니다.</translation>
@@ -785,7 +791,6 @@
 <translation id="3493531032208478708">추천 콘텐츠 <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="7542481630195938534">추천을 받을 수 없음</translation>
 <translation id="5013696553129441713">새로운 추천 콘텐츠 없음</translation>
-<translation id="1736419249208073774">탐색</translation>
 <translation id="7444811645081526538">카테고리 더보기</translation>
 <translation id="6709133671862442373">뉴스</translation>
 <translation id="1264974993859112054">스포츠</translation>
@@ -892,6 +897,7 @@
 <translation id="584427517463557805">선택된</translation>
 <translation id="2268044343513325586">상세검색</translation>
 <translation id="7846076177841592234">선택 취소</translation>
+<translation id="6216432067784365534"><ph name="NAME_OF_LIST_ITEM"/> 옵션</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/>개 선택됨. 화면 상단에서 옵션 선택 가능</translation>
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/>개 선택됨</translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{선택한 1개 항목 공유}other{선택한 #개 항목 공유}}</translation>
@@ -966,8 +972,10 @@
 <translation id="3333961966071413176">모든 연락처</translation>
 <translation id="4994033804516042629">연락처 없음</translation>
 <translation id="5403592356182871684">이름</translation>
+<translation id="2903493209154104877">주소</translation>
 <translation id="2717722538473713889">이메일 주소</translation>
 <translation id="381841723434055211">전화번호</translation>
+<translation id="6689172468748959065">프로필 사진</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(외 1개)}other{(외 #개)}}</translation>
 <translation id="5197729504361054390">선택한 연락처가 <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>과(와) 공유됩니다.</translation>
 <translation id="1779089405699405702">이미지 디코더</translation>
@@ -1080,8 +1088,12 @@
 <translation id="7757787379047923882"><ph name="DEVICE_NAME"/>에서 공유된 텍스트</translation>
 <translation id="5193988420012215838">클립보드에 복사됨</translation>
 <translation id="4696983787092045100">기기로 SMS 전송</translation>
+<translation id="5694049548840660018">홈으로 쉽게 돌아가기</translation>
+<translation id="1122278879166832009">어디에서나 홈페이지에 빠르게 액세스하려면 여기를 탭하세요.</translation>
 <translation id="1260236875608242557">검색 및 탐색</translation>
 <translation id="6369229450655021117">여기에서 웹을 검색하고, 친구와 공유하고, 열린 페이지를 볼 수 있습니다.</translation>
+<translation id="8758557275681689734">열려 있는 탭 모두 보기</translation>
+<translation id="8655599981421006542">새 탭을 만들고 이전 탭으로 돌아가려면 여기를 탭하세요.</translation>
 <translation id="723171743924126238">이미지 선택</translation>
 <translation id="8751914237388039244">이미지 선택</translation>
 <translation id="1989112275319619282">찾아보기</translation>
@@ -1102,18 +1114,16 @@
 <translation id="671481426037969117"><ph name="FQDN"/> 타이머가 종료되었습니다. 타이머는 내일 다시 시작됩니다.</translation>
 <translation id="7479104141328977413">탭 관리</translation>
 <translation id="3524138585025253783">개발자 UI</translation>
+<translation id="4732120983431207637">스택 언와인더</translation>
 <translation id="6036057147555329831">추가 ICU</translation>
-<translation id="9029323097866369874"><ph name="DOMAIN"/>에서 VR로 들어가도록 허용하시겠습니까?</translation>
-<translation id="7685301384041462804">VR로 들어가기 전에 이 사이트를 신뢰할 수 있는지 확인하세요.</translation>
-<translation id="5033865233969348410">이 사이트에서는 VR 사용자에 대해 다음 내용을 학습할 수 있습니다.
-  -  키와 같은 신체적 특징
-
-VR로 들어가기 전에 이 사이트를 신뢰할 수 있는지 확인하세요.</translation>
-<translation id="5534334044554683961">이 사이트에서는 VR 사용자에 대해 다음 내용을 학습할 수 있습니다.
-  -   키와 같은 신체적 특징
-  -   공간의 레이아웃
-
-VR로 들어가기 전에 이 사이트를 신뢰할 수 있는지 확인하세요.</translation>
-<translation id="4169535189173047238">허용 안함</translation>
-<translation id="2170088579611075216">허용 및 VR 시작</translation>
+<translation id="2175927920773552910">QR 코드</translation>
+<translation id="246532703174860178">공유</translation>
+<translation id="2517472476991765520">검색</translation>
+<translation id="8628973420740315031">근처에 있는 사람과 공유하려면 상대방이 QR 코드를 스캔하도록 하세요.</translation>
+<translation id="7339921667754113786">Brave Software 알림 플랫폼</translation>
+<translation id="8516012719330875537">이미지 편집기</translation>
+<translation id="4808319664292298116"><ph name="DOMAIN"/>에서 VR을 시작하시겠습니까?</translation>
+<translation id="4353114845960720315">VR 사용 중 이 사이트가 다음 정보를 학습할 수 있습니다.</translation>
+<translation id="118069123878619799">- 키와 같은 신체적 특징</translation>
+<translation id="5819762621475381970">- 방 안의 구조</translation>
 </translationbundle>

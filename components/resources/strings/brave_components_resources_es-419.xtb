@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Elige el motor de búsqueda que quieres usar de forma predeterminada para navegar por Internet desde la barra de direcciones.</translation>
 <translation id="5804484488647369316">Elige el motor de búsqueda predeterminado</translation>
 <translation id="4428458837269935199">Si quieres apostar aún más por la privacidad, prueba el buscador DuckDuckGo.</translation>
-<translation id="513635702954746724">Elija una paleta de colores</translation>
-<translation id="6842850080200126305">Ajuste el color de su barra de herramientas seleccionando la opción clara u oscura desde el panel de Configuración.</translation>
-<translation id="5805868144901917207">Selecciona un tema</translation>
-<translation id="8131740175452115882">Confirmar</translation>
-<translation id="713206503018076063">Tema del sistema (predeterminado)</translation>
-<translation id="1807246157184219062">Claro</translation>
-<translation id="2414886740292270097">Oscuro</translation>
 <translation id="3829010735958850433">Salter el tour de bienvenida</translation>
 <translation id="1201402288615127009">Siguiente</translation>
 <translation id="7954950242989581218">Navega con total tranquilidad</translation>
 <translation id="2188651882929633653">Los escudos de Brave bloquean rastreadores y todo lo que intente seguirte mientras navegas, incluidos casi todos los anuncios. Puedes desactivar los escudos si algún sitio no funciona correctamente. Brave usa <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>análisis del producto totalmente privados<ph name="END_LINK_P3A">&lt;/a&gt;</ph> para calcular el uso general de determinadas funciones. Puedes desactivar esto desde <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Configuración<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Anuncios</translation>
-<translation id="5698387814910197501">Obtén {{currency}} mirando publicidades en Brave. Las publicidades presentadas se basan en tus intereses, según lo inferido a partir del comportamiento de tu navegador. Ningún dato personal ni historial de navegación jamás saldrá de tu navegador.</translation>
 <translation id="6112368337882254910">Contribución automática</translation>
 <translation id="3742599705619405136">Una forma automática de apoyar a quienes publican y crean contenido. Configura un pago mensual y navega como siempre. Los sitios verificados de Brave que visitas reciben contribuciones de manera automática en función de tu atención, que mide Brave.</translation>
 <translation id="20281847067919078">Recompensas pendientes estimadas</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Notificaciones de anuncios recibidas este mes</translation>
 <translation id="4229016885653790965">Lo sentimos. Todavía no hay anuncios disponibles en tu región.</translation>
 <translation id="2539279826042558064">Brave Rewards y Brave Ads no están disponibles en este momento en tu dispositivo.</translation>
+<translation id="5421369907811917952">Otros ajustes</translation>
 <translation id="654711254769318398">Páginas de anuncios vistas</translation>
 <translation id="2532127066761785857">Cantidad máxima de anuncios mostrados</translation>
 <translation id="5171071066587880677">1 anuncio por hora</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">tokens</translation>
 <translation id="7286722244752781970">Tiempo mínimo en una página antes de registrar una visita</translation>
 <translation id="4424486208397124985">Visitas mínimas para la relevancia de un publicador</translation>
-<translation id="5421369907811917952">Otros ajustes</translation>
 <translation id="6248554379744796526">Mostrar sitios no verificados en la lista</translation>
 <translation id="5875669387851353511">Permitir contribuciones a videos</translation>
 <translation id="8933202740471878108">1 visita</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Ha ocurrido un error en Brave Rewards. Vuelve a intentarlo más tarde.</translation>
 <translation id="570208820610947248">Detectamos problemas en su billetera. Debe recuperar la copia de seguridad de su billetera para que se puedan procesar las transacciones.</translation>
 <translation id="7797604753681168055">Recuperar ahora</translation>
-<translation id="5549059668721746831">Próxima fecha de propina mensual</translation>
 <translation id="6231182869178328516">Recién le di una propina a <ph name="NAME"/> usando el navegador Brave. Aquí hay más información: https://brave.com/tips.</translation>
 <translation id="8404935570206006581">PropinaconBrave</translation>
 <translation id="2876191400747549936">Lo sentimos, pero hubo un problema al procesar tu solicitud. Vuelve a intentarlo.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Monto de la contribución</translation>
 <translation id="3520817231440482449">Dale propina a este sitio mensualmente</translation>
 <translation id="1827184134638345603">Enviar una propina…</translation>
-<translation id="7928243298881209869">Tu primera propina mensual se enviará el:</translation>
-<translation id="6045860799501892362">Configurar propina mensual</translation>
 <translation id="8003573781961874199">Descargar como PDF</translation>
 <translation id="298067735430872465">Ingresos de las publicidades</translation>
 <translation id="2266556115441975588">¡Aquí están tus recompensas por los anuncios!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">Noviembre</translation>
 <translation id="7828956995407538686">Octubre</translation>
 <translation id="5502713021410870035">Septiembre</translation>
-<translation id="5737831580668469027">Propinas mensuales</translation>
 <translation id="606865182719489911">Hay una donación de tokens gratis disponible.</translation>
 <translation id="2487641031722095938">¡Es tu día de suerte!</translation>
 <translation id="6255773350565723852">Tu donación de tokens está en camino.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Pago</translation>
 <translation id="4021593982164260556">Pago hecho el día {{day}} de cada mes.</translation>
 <translation id="6104680658798556671">El pago no se realizó.</translation>
-<translation id="2834888581291358924">Cuando no tienes saldo suficiente para cubrir el total combinado de Autocontribuir y tus propinas recurrentes, estos pagos se omiten para este período.</translation>
 <translation id="3138528956349114724">Los sitios anclados ahora están</translation>
-<translation id="2337632028350283479">Así funcionan las propinas mensuales:</translation>
-<translation id="6457273203091513039">Las propinas mensuales no salen de su pago de autocontribución, sino que son aparte.</translation>
 <translation id="9099396904827413228">Cada sitio recibe un pago mensual fijo.</translation>
-<translation id="5051110132941857169">Las propinas mensuales se pagan todas juntas una sola vez cada mes. Si está usando Autocontribuir, las propinas se abonan junto con su pago mensual de Autocontribuir.</translation>
-<translation id="3374483782662414143">Puede eliminar los sitios que reciban propinas mensuales desde el panel de Propinas.</translation>
 <translation id="5082474983463379713">Ten en cuenta:</translation>
 <translation id="1430915738399379752">Imprimir</translation>
 <translation id="135956957367307069">Tu solicitud todavía se está procesando. Aguarda un momento.</translation>

@@ -10,6 +10,7 @@
 <translation id="7791543448312431591">Додати</translation>
 <translation id="1181037720776840403">Видалити</translation>
 <translation id="5317780077021120954">Зберегти</translation>
+<translation id="3897092660631435901">Меню</translation>
 <translation id="5300589172476337783">Показати</translation>
 <translation id="7108338896283013870">Сховати</translation>
 <translation id="780301667611848630">Ні, дякую</translation>
@@ -19,6 +20,7 @@
 <translation id="1036348656032585052">Вимкнути</translation>
 <translation id="8105368624971345109">Вимкнути</translation>
 <translation id="1175364870820465910">&amp;Друк...</translation>
+<translation id="129553762522093515">Нещодавно закриті</translation>
 <translation id="8870413625673593573">Нещодавно закриті</translation>
 <translation id="385051799172605136">Назад</translation>
 <translation id="7481312909269577407">Переслати</translation>
@@ -28,19 +30,23 @@
 <translation id="1201402288615127009">Далі</translation>
 <translation id="5713644099811900409">Обліковий запис Brave Software</translation>
 <translation id="3157931365184549694">Відновити</translation>
+<translation id="5040262127954254034">Конфіденційність</translation>
 <translation id="3061707000357573562">Служба виправлень</translation>
 <translation id="1914326953223720820">Сервіс розпакування</translation>
+<translation id="1623104350909869708">Заборонити цій сторінці створювати додаткові діалогові вікна</translation>
 <translation id="2677748264148917807">Вийти</translation>
 <translation id="5556459405103347317">Перезавантажити</translation>
 <translation id="2359808026110333948">Продовжити</translation>
-<translation id="5935964611177478118">увійдіть в обліковий запис Brave</translation>
 <translation id="4378154925671717803">Телефон</translation>
 <translation id="8131740175452115882">Підтвердити</translation>
 <translation id="8968766641738584599">Зберегти картку</translation>
+<translation id="860043288473659153">Ім’я та прізвище власника картки</translation>
+<translation id="869891660844655955">Діє до</translation>
 <translation id="5457113250005438886">Недійсний</translation>
 <translation id="6518133107902771759">Підтвердити</translation>
 <translation id="8987927404178983737">Місяць</translation>
 <translation id="6015796118275082299">Рік</translation>
+<translation id="1581080074034554886">CVC</translation>
 <translation id="9065203028668620118">Редагувати</translation>
 <translation id="5029568752722684782">Видалити копію</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -70,6 +76,7 @@
 <translation id="4522570452068850558">Деталі</translation>
 <translation id="3586931643579894722">Сховати докладні дані</translation>
 <translation id="614940544461990577">Спробуйте:</translation>
+<translation id="4943872375798546930">Не знайдено жодного результату</translation>
 <translation id="8688672835843460752">Доступно</translation>
 <translation id="4989542687859782284">Недоступний</translation>
 <translation id="59174027418879706">Увімкнено</translation>
@@ -79,7 +86,10 @@
 <translation id="1838374766361614909">Очистити поле пошуку</translation>
 <translation id="495170559598752135">Дії</translation>
 <translation id="8261506727792406068">Видалити</translation>
+<translation id="3207960819495026254">Створено закладку</translation>
 <translation id="3303855915957856445">Немає результатів</translation>
+<translation id="1209206284964581585">Приховати</translation>
+<translation id="1407135791313364759">Відкрити все</translation>
 <translation id="4880827082731008257">Пошук в історії</translation>
 <translation id="4756388243121344051">&amp;Історія</translation>
 <translation id="1644574205037202324">Історія</translation>
@@ -91,11 +101,14 @@
 <translation id="1178581264944972037">Пауза</translation>
 <translation id="1232569758102978740">Без імені</translation>
 <translation id="7514365320538308">Завантажити</translation>
+<translation id="8041089156583427627">Надіслати відгук</translation>
 <translation id="7552846755917812628">Виконайте вказівки нижче.</translation>
+<translation id="3960299545138990065">Перезапустіть Brave</translation>
 <translation id="4275830172053184480">Перезапустіть пристрій</translation>
 <translation id="413544239732274901">Дізнатись більше</translation>
 <translation id="7554791636758816595">Нова вкладка</translation>
 <translation id="2079545284768500474">Скасувати</translation>
+<translation id="17513872634828108">Відкриті вкладки</translation>
 <translation id="981121421437150478">Офлайн</translation>
 <translation id="5171045022955879922">Знайдіть або введіть URL-адресу</translation>
 <translation id="803771048473350947">Файл</translation>
@@ -108,12 +121,11 @@
 <translation id="6831043979455480757">Перекласти</translation>
 <translation id="2473195200299095979">Перекласти цю сторінку</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>", відповідь: "<ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">Ігнорувати</translation>
 <translation id="7714464543167945231">Сертифікат</translation>
 <translation id="4235360514405112390">Дійсний</translation>
 <translation id="6447842834002726250">Cookie-файли</translation>
 <translation id="1919345977826869612">Реклама</translation>
-<translation id="410351446219883937">Автоматичне відтворення</translation>
+<translation id="6612358246767739896">Захищений вміст</translation>
 <translation id="9219103736887031265">Зображення</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Спливаючі вікна й переадресація</translation>
@@ -128,6 +140,7 @@
 <translation id="7638605456503525968">Послідовні порти</translation>
 <translation id="2215727959747642672">Редагування файлу</translation>
 <translation id="6545864417968258051">Пошук пристроїв Bluetooth</translation>
+<translation id="534295439873310000">Пристрої NFC</translation>
 <translation id="5039804452771397117">Дозволити</translation>
 <translation id="7053983685419859001">Заблокувати</translation>
 <translation id="57838592816432529">Вимкнути звук</translation>
@@ -138,13 +151,17 @@
 <translation id="6979440798594660689">Без звуку (за умовчанням)</translation>
 <translation id="8037357227543935929">Запитувати (за умовчанням)</translation>
 <translation id="8763927697961133303">Пристрій USB</translation>
+<translation id="4165986682804962316">Налаштування сайту</translation>
 <translation id="9011424611726486705">Відкрити налаштування сайту</translation>
 <translation id="5932224571077948991">Сайт показує нав’язливі чи оманливі оголошення</translation>
 <translation id="7878562273885520351">Ваш пароль можуть зламати</translation>
 <translation id="1089439967362294234">Змінити пароль</translation>
+<translation id="9008201768610948239">Ігнорувати</translation>
 <translation id="1186201132766001848">Перевірити паролі</translation>
 <translation id="5979084224081478209">Перевірити паролі</translation>
+<translation id="10614374240317010">Ніколи не зберігалося</translation>
 <translation id="5869522115854928033">Збережені паролі</translation>
+<translation id="230699814587342492">Паролі Brave</translation>
 <translation id="5087580092889165836">Додати картку</translation>
 <translation id="2154484045852737596">Редагувати картку</translation>
 <translation id="4923459931733593730">Платіж</translation>
@@ -193,8 +210,11 @@
 <translation id="1974060860693918893">Розширені</translation>
 <translation id="5308380583665731573">Під’єднатися</translation>
 <translation id="2501278716633472235">Назад</translation>
+<translation id="1736420071277903564">Комп'ютер</translation>
+<translation id="3906954721959377182">Планшет</translation>
 <translation id="7029809446516969842">Паролі</translation>
 <translation id="6596325263575161958">Параметри шифрування</translation>
+<translation id="8461694314515752532">Шифрувати синхронізовані дані за допомогою власної парольної фрази</translation>
 <translation id="9050666287014529139">Парольна фраза</translation>
 <translation id="9095388113577226029">Інші мови…</translation>
 <translation id="7600965453749440009">Ніколи не перекладати з такої мови: <ph name="LANGUAGE"/></translation>
@@ -202,6 +222,7 @@
 <translation id="7378627244592794276">Ні</translation>
 <translation id="9137013805542155359">Показати оригінал</translation>
 <translation id="8725066075913043281">Повторити</translation>
+<translation id="5684874026226664614">На жаль, цю сторінку неможливо перекласти.</translation>
 <translation id="583281660410589416">невідомо</translation>
 <translation id="9170848237812810038">&amp;Скасувати</translation>
 <translation id="2972581237482394796">&amp;Повторити</translation>

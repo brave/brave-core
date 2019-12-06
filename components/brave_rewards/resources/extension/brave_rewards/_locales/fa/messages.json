@@ -182,8 +182,8 @@
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "انعام ماهانه",
-    "description": "Title for monthly tips section in wallet summary"
+    "message": "کمک‌های ماهانه",
+    "description": "Title for monthly contributions section in wallet summary"
   },
   "off": {
     "message": "خاموش",
@@ -256,7 +256,7 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "پرداخت ماهانه را برای کمک خودکار زمان‌بندی کرده‌اید و انعام ماهانه به‌دلیل سرمایه ناکافی قابل پرداخت نیست. ظرف ۳۰ روز دیگر دوباره امتحان می‌کنیم.",
+    "message": "Your scheduled monthly payment for Auto-Contribute and monthly contributions could not be completed due to insufficient funds. We’ll try again in 30 days.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -400,12 +400,12 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "انعام ماهانه شما پردازش شد!",
-    "description": "Message for monthly tips processed notification"
+    "message": "Your monthly contributions have been processed!",
+    "description": "Message for monthly contributions processed notification"
   },
   "contributionTips": {
     "message": "مشارکت و انعام",
-    "description": "Title for monthly tips processed notification"
+    "description": "Title for monthly contributions processed notification"
   },
   "serviceTextPanelWelcome": {
     "message": "با کلیک کردن روی «پیوستن به پاداش‌ها»، مشخص می‌کنید که موارد زیر را خوانده‌اید و با آن‌ها موافق هستید",

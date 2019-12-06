@@ -65,6 +65,7 @@
 <translation id="1928696683969751773">আপডেটগুলি</translation>
 <translation id="6064125863973209585">সম্পূর্ণ হয়ে যাওয়া ডাউনলোড</translation>
 <translation id="5342314432463739672">অনুমতি দেওয়ার অনুরোধ</translation>
+<translation id="3749259744154402564">কাজ করে না</translation>
 <translation id="629730747756840877">অ্যাকাউন্ট</translation>
 <translation id="82609232232243542">Brave-এ সাইন-ইন করুন</translation>
 <translation id="7956662517480676674">সিঙ্ক এবং Brave Software পরিষেবাগুলি</translation>
@@ -227,8 +228,6 @@
 <translation id="3245261285041759672"><ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>-এ আপনার Brave Software অ্যাকাউন্টের অন্যান্য ধরনের ব্রাউজিংয়ের ইতিহাস থাকতে পারে।</translation>
 <translation id="7274013316676448362">অবরুদ্ধ সাইট</translation>
 <translation id="2534155362429831547"><ph name="NUMBER_OF_ITEMS"/>টি আইটেম মোছা হয়েছে</translation>
-<translation id="1121094540300013208">ব্যবহার এবং ক্র্যাশ প্রতিবেদনগুলি</translation>
-<translation id="9079153198295609735">ব্যবহারের পরিসংখ্যান এবং ক্র্যাশ প্রতিবেদনগুলি স্বয়ংক্রিয়ভাবে Brave Software-এ পাঠান</translation>
 <translation id="6981982820502123353">ব্যবহারযোগ্যতা</translation>
 <translation id="2387895666653383613">পাঠ্য স্কেলিং</translation>
 <translation id="2321958826496381788">আপনি এটি স্বচ্ছন্দে পড়তে না পারা পর্যন্ত স্লাইডারটি টেনে আনুন৷ কোনো অনুচ্ছেদে দুবার-আলতো চাপার পরে পাঠ্যটিকে দেখতে অন্ততপক্ষে এইরকম বড় লাগা উচিত৷</translation>
@@ -243,12 +242,12 @@
 <translation id="6295158916970320988">সমস্ত সাইট</translation>
 <translation id="8380167699614421159">এই সাইট ব্যাঘাত সৃষ্টিকারী বা বিভ্রান্তিকর বিজ্ঞাপন দেখায়</translation>
 <translation id="1919345977826869612">বিজ্ঞাপন</translation>
-<translation id="410351446219883937">স্বতঃচালানো</translation>
 <translation id="6447842834002726250">কুকিজ</translation>
 <translation id="6196640612572343990">তৃতীয় পক্ষের কুকিজ অবরুদ্ধ করুন</translation>
 <translation id="6782111308708962316">কুকি ডেটা সংরক্ষণ করা এবং পড়া থেকে তৃতীয় পক্ষের ওয়েবসাইটগুলিকে আটকান</translation>
 <translation id="7521387064766892559">জাভাস্ক্রিপ্ট</translation>
 <translation id="4434045419905280838">পপ-আপ এবং রিডাইরেক্ট</translation>
+<translation id="534295439873310000">NFC ডিভাইস</translation>
 <translation id="4751476147751820511">মোশন বা হালকা সেন্সর</translation>
 <translation id="1717218214683051432">মোশন সেন্সর</translation>
 <translation id="2091887806945687916">আওয়াজ</translation>
@@ -261,7 +260,6 @@
 <translation id="6181444274883918285">ব্যতিক্রমী সাইট যোগ করুন</translation>
 <translation id="5313967007315987356">সাইট যোগ করুন</translation>
 <translation id="1369915414381695676"><ph name="SITE_NAME"/> সাইট যোগ করা হয়েছে</translation>
-<translation id="7837721118676387834">একটি নির্দিষ্ট সাইটের জন্য মিউট করে রাখা ভিডিওগুলি স্বতঃবাজানোর অনুমতি দেয়।</translation>
 <translation id="2621115761605608342">একটি নির্দিষ্ট সাইটের জন্য জাভাস্ক্রিপ্ট মঞ্জুর করুন।</translation>
 <translation id="8801436777607969138">একটি নির্দিষ্ট সাইটের জন্য জাভাস্ক্রিপ্ট ব্লক করুন।</translation>
 <translation id="8372893542064058268">একটি নির্দিষ্ট সাইটের জন্য পটভূমি সিঙ্কের অনুমতি দিন।</translation>
@@ -285,7 +283,6 @@
 <translation id="5100237604440890931">সঙ্কুচিত - প্রসারিত করতে ক্লিক করুন৷</translation>
 <translation id="857943718398505171">অনুমোদিত (প্রস্তাবিত)</translation>
 <translation id="2913331724188855103">সাইটগুলিকে কুকি ডেটা পড়ার এবং সংরক্ষণ করার অনুমতি দিন (প্রস্তাবিত)</translation>
-<translation id="7445411102860286510">সাইটগুলিকে মিউট করে রাখা ভিডিও স্বতঃবাজানোর মঞ্জুরি দেয় (প্রস্তাবিত)</translation>
 <translation id="5335288049665977812">সাইটগুলিকে JavaScript চালানোর অনুমতি দিন (প্রস্তাবিত)</translation>
 <translation id="5527111080432883924">ক্লিপবোর্ডের টেক্সট এবং ছবি পড়ার জন্য অনুমতি দেওয়ার আগে জিজ্ঞাসা করুন (প্রস্তাবিত)</translation>
 <translation id="6912998170423641340">ক্লিপবোর্ডের টেক্সট এবং ছবি পড়ার থেকে সাইটগুলিকে ব্লক করুন</translation>
@@ -295,6 +292,8 @@
 <translation id="2107397443965016585">সাইটকে সুরক্ষিত কন্টেন্ট চালানোর অনুমতি দেওয়ার আগে জিজ্ঞাসা করুন (প্রস্তাবিত)</translation>
 <translation id="2910701580606108292">কোনও সাইটে সুরক্ষিত কন্টেন্ট চালু হওয়ার আগে আমায় জিজ্ঞেস করা হোক</translation>
 <translation id="757524316907819857">সুরক্ষিত কন্টেন্ট চালানো থেকে সাইটকে ব্লক করুন</translation>
+<translation id="5710871682236653961">NFC ডিভাইসে ট্যাপ করলে (সাজেস্ট করা হয়েছে) সাইট থেকে তথ্য পাঠানো বা পাওয়ার আগে অনুমতি নিতে হবে</translation>
+<translation id="7572498721684305250">আপনি NFC ডিভাইসে ট্যাপ করলে সাইট থেকে তথ্য পাঠানো ও পাওয়া, কোনওটাই করা যাবে না</translation>
 <translation id="3277252321222022663">সাইটকে সেন্সর অ্যাক্সেস করার অনুমতি দিন (সাজেস্ট করা হয়)</translation>
 <translation id="5048398596102334565">সাইটকে মোশন সেন্সর অ্যাক্সেস করার অনুমতি দিন (সাজেস্ট করা হয়)</translation>
 <translation id="8816026460808729765">সেন্সর অ্যাক্সেস করা থেকে সাইটকে ব্লক করুন</translation>
@@ -308,7 +307,10 @@
 <translation id="3123473560110926937">কিছু সাইটে ব্লক করা হয়েছে</translation>
 <translation id="965817943346481315">সাইটে থাকা ব্যাঘাত সৃষ্টিকারী বা বিভ্রান্তিকর বিজ্ঞাপন ব্লক করুন (প্রস্তাবিত)</translation>
 <translation id="3386292677130313581">সাইটগুলিকে আপনার লোকেশন জানতে দিতে মঞ্জুরি দেওয়ার আগে জিজ্ঞাসা করুন (প্রস্তাবিত)</translation>
-<translation id="9139068048179869749">কোনও সাইটকে বিজ্ঞপ্তি পাঠানোর অনুমতি দেওয়ার আগে আমাকে জিজ্ঞেস করা হবে (প্রস্তাবিত)</translation>
+<translation id="6270391203985052864">সাইট আপনাকে বিজ্ঞপ্তি পাঠানোর আগে অনুমতি চাইতে পারে</translation>
+<translation id="5505264765875738116">সাইট আপনাকে বিজ্ঞপ্তি পাঠাতে পারবে না</translation>
+<translation id="6561560012278703671">আওয়াজ ছাড়া বিজ্ঞপ্তি (বিজ্ঞপ্তির ক্ষেত্রে আওয়াজ সহ প্রম্পট ব্লক করা হয়, যাতে কাজের সময় ব্যাঘাত না ঘটে)</translation>
+<translation id="7302486331832100261">আপনি সাধারণত বিজ্ঞপ্তি ব্লক করেন। অনুমতি দিতে, 'বিবরণ' বিকল্পে ক্লিক করুন।</translation>
 <translation id="4479647676395637221">সাইটগুলিকে আপনার ক্যামেরা ব্যবহার করতে দিতে মঞ্জুরি দেওয়ার আগে প্রথমে জিজ্ঞাসা করুন (প্রস্তাবিত)</translation>
 <translation id="6992289844737586249">সাইটগুলিকে আপনার মাইক্রোফোন ব্যবহার করতে দিতে মঞ্জুরি দেওয়ার আগে প্রথমে জিজ্ঞাসা করুন (প্রস্তাবিত)</translation>
 <translation id="2289270750774289114">কাছাকাছি ব্লুটুথ ডিভাইস আছে কিনা তা কোনও সাইট খুঁজতে চাইলে আমাকে জিজ্ঞাসা করুন (সাজেস্ট করা হচ্ছে)</translation>
@@ -509,9 +511,11 @@
 <translation id="5230560987958996918">কাছাকাছি থাকা ব্লুটুথ ডিভাইসগুলিকে <ph name="SITE"/> স্ক্যান করতে চায়, এই ডিভাইসগুলি পাওয়া গেছে:</translation>
 <translation id="8368027906805972958">অপরিচিত বা কাজ করে না এমন ডিভাইস (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7605594153474022051">সিঙ্ক কাজ করছে না</translation>
+<translation id="2537178555904266562">পাসওয়ার্ড সিঙ্ক করতে সমস্যা হচ্ছে</translation>
 <translation id="1810845389119482123">প্রারম্ভিক সিঙ্ক সেট-আপ করা সম্পূর্ণ হয়নি</translation>
 <translation id="3235722914093408050">Android সেটিংস খুলে Brave সিঙ্ক শুরু করতে Android সিস্টেমকে পুনরায় সক্ষম করুন</translation>
 <translation id="3367813778245106622">সিঙ্ক করা শুরু করতে আবার সাইন-ইন করুন</translation>
+<translation id="3701167022068948696">এখনই সমাধান করুন</translation>
 <translation id="974555521953189084">সিঙ্ক শুরু করার জন্য আপনার পাসফ্রেজ লিখুন</translation>
 <translation id="2997266899014181325">সিঙ্ক চালু করতে "আপনার Brave ডেটা সিঙ্ক করুন" বিকল্পটি চালু করুন।</translation>
 <translation id="8260126382462817229">আবার সাইন ইন করার চেষ্টা করুন</translation>
@@ -605,7 +609,7 @@
 <translation id="2317945146070194624">নতুন Brave ট্যাবে খুলুন</translation>
 <translation id="7975379999046275268"><ph name="BEGIN_NEW"/>নতুন<ph name="END_NEW"/> পৃষ্ঠার প্রিভিউ দেখুন</translation>
 <translation id="6112702117600201073">রিফ্রেশ পৃষ্ঠা</translation>
-<translation id="36525718899759834">Brave Software Play Store-এর থেকে অ্যাপ্লিকেশানটি পান: <ph name="APP_ACTION"/></translation>
+<translation id="6990079615885386641">Brave Software Play Store-এর থেকে অ্যাপ্লিকেশানটি পান: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">অন্ধকার</translation>
 <translation id="1807246157184219062">আলো</translation>
 <translation id="4056223980640387499">সেপিয়া</translation>
@@ -641,7 +645,6 @@
 <translation id="3810973564298564668">পরিচালনা</translation>
 <translation id="5199929503336119739">কর্মস্থলের প্রোফাইল</translation>
 <translation id="528192093759286357">উপর থেকে টেনে আনুন এবং পূর্ণ স্ক্রিন থেকে বেরিয়ে যেতে পিছনে ফেরার বোতাম স্পর্শ করুন।</translation>
-<translation id="2836148919159985482">পূর্ণ স্ক্রিন থেকে বেরিয়ে যেতে পিছনে ফেরার বোতাম স্পর্শ করুন।</translation>
 <translation id="3967822245660637423">ডাউনলোড সম্পূর্ণ</translation>
 <translation id="2434158240863470628"><ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/> ডাউনলোড সম্পূর্ণ হয়েছে</translation>
 <translation id="802154636333426148">ডাউনলোড করা যায়নি</translation>
@@ -700,6 +703,7 @@
 <translation id="3810838688059735925">ভিডিও</translation>
 <translation id="3616113530831147358">অডিও</translation>
 <translation id="9219103736887031265">ছবিগুলি</translation>
+<translation id="656065428026159829">আরও দেখুন</translation>
 <translation id="8250920743982581267">দস্তাবেজগুলি</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{#টি ফাইল}one{#টি ফাইল}other{#টি ফাইল}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{#টি ছবি}one{#টি ছবি}other{#টি ছবি}}</translation>
@@ -711,7 +715,7 @@
 <translation id="7810647596859435254">এর মাধ্যমে খুলুন...</translation>
 <translation id="5655963694829536461">আপনার ডাউনলোডগুলি খুঁজুন</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
-<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION"/></translation>
 <translation id="1883903952484604915">আমার ফাইল</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">নিবন্ধগুলি এখানে দেখানো হয় এবং আপনি সেগুলি অফলাইনেও পড়তে পারেন</translation>
@@ -739,7 +743,7 @@
 <translation id="673197144963363525">Brave Software-এ ব্যবহারের পরিসংখ্যান এবং ক্র্যাশ রিপোর্টগুলি পাঠিয়ে Brave-কে আরও ভাল করে তুলতে সহায়তা করুন৷</translation>
 <translation id="3518985090088779359">স্বীকার করুন ও অবিরত রাখুন</translation>
 <translation id="7207456302801184289">Brave এ স্বাগতম</translation>
-<translation id="704822250101715322">Brave Software Play পরিষেবাগুলির আপডেট শেষ হওয়ার জন্য অপেক্ষা করছে</translation>
+<translation id="7189372733857464326">Brave Software Play পরিষেবাগুলির আপডেট শেষ হওয়ার জন্য অপেক্ষা করছে</translation>
 <translation id="1231733316453485619">সিঙ্ক চালু করবেন?</translation>
 <translation id="5132942445612118989">সমস্ত ডিভাইসে আপনার পাসওয়ার্ড, ইতিহাস ও আরও অনেক কিছু সিঙ্ক করুন</translation>
 <translation id="5736731321935944068">সার্চ, বিজ্ঞাপন এবং অন্যান্য Brave Software পরিষেবাকে আপনার মতো করে সাজিয়ে নিতে Brave Software আপনার ইতিহাস ব্যবহার করতে পারে</translation>
@@ -764,7 +768,9 @@
 <translation id="4046123991198612571">পরবর্তী ট্র্যাক</translation>
 <translation id="3859306556332390985">সামনে এগোন</translation>
 <translation id="8441146129660941386">পেছনে যান</translation>
-<translation id="6706288973712894588">আপনি এখন অফলাইন আছেন।\n<ph name="BEGIN_LINK"/>আপনার অফলাইন ফিড ঘুরে দেখুন।<ph name="END_LINK"/></translation>
+<translation id="6884306546558072722">অফলাইন থাকার সময়ে খুঁজে দেখুন</translation>
+<translation id="388596076286380598">আপনি অফলাইনে থাকার সময়ে বা কানেকশন খারাপ থাকলেও আপনার পছন্দের সাইট থেকে আর্টিকেল, ভিডিও এবং অন্যান্য কন্টেন্ট দেখতে পাবেন।</translation>
+<translation id="1736419249208073774">ঘুরে দেখুন</translation>
 <translation id="572328651809341494">সাম্প্রতিক ট্যাবগুলি</translation>
 <translation id="8497726226069778601">এখানে... দেখার মতো এখনো কিছু নেই</translation>
 <translation id="5423934151118863508">আপনার সর্বাধিক দেখা পৃষ্ঠাগুলি এখানে দেখা যাবে</translation>
@@ -787,7 +793,6 @@
 <translation id="3493531032208478708">প্রস্তাবিত কন্টেন্ট সম্পর্কে <ph name="BEGIN_LINK"/>আরও জানুন<ph name="END_LINK"/></translation>
 <translation id="7542481630195938534">প্রস্তাবনা পাওয়া যাচ্ছে না</translation>
 <translation id="5013696553129441713">নতুন কোনও প্রস্তাবনা নেই</translation>
-<translation id="1736419249208073774">ঘুরে দেখুন</translation>
 <translation id="7444811645081526538">আরও বিভাগ</translation>
 <translation id="6709133671862442373">সংবাদ</translation>
 <translation id="1264974993859112054">খেলাধূলা</translation>
@@ -894,6 +899,7 @@
 <translation id="584427517463557805">নির্বাচিত ব্যক্তিগত ট্যাব</translation>
 <translation id="2268044343513325586">রিফাইন করুন</translation>
 <translation id="7846076177841592234">নির্বাচন বাতিল করুন</translation>
+<translation id="6216432067784365534"><ph name="NAME_OF_LIST_ITEM"/> এর বিকল্পগুলি</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> বেছে নেওয়া হয়েছে।  স্ক্রিনের উপরে বিকল্পগুলি পাওয়া যাবে</translation>
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/>টি বেছে নেওয়া হয়েছে</translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{১টি নির্বাচিত আইটেম শেয়ার করুন}one{#টি নির্বাচিত আইটেম শেয়ার করুন}other{#টি নির্বাচিত আইটেম শেয়ার করুন}}</translation>
@@ -968,8 +974,10 @@
 <translation id="3333961966071413176">সব পরিচিতি</translation>
 <translation id="4994033804516042629">কোনও পরিচিতি পাওয়া যায়নি</translation>
 <translation id="5403592356182871684">নাম</translation>
+<translation id="2903493209154104877">ঠিকানা</translation>
 <translation id="2717722538473713889">ইমেল আইডি</translation>
 <translation id="381841723434055211">ফোন নম্বর</translation>
+<translation id="6689172468748959065">প্রোফাইল ফটো</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(এছাড়া আরও ১টি)}one{(এছাড়া আরও #টি)}other{(এছাড়া আরও #টি)}}</translation>
 <translation id="5197729504361054390">আপনার বেছে নেওয়া পরিচিতি <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>-এর সাথে শেয়ার করা হবে।</translation>
 <translation id="1779089405699405702">ইমেজ ডিকোডার</translation>
@@ -1082,8 +1090,12 @@
 <translation id="7757787379047923882"><ph name="DEVICE_NAME"/> থেকে টেক্সট শেয়ার করা হয়েছে</translation>
 <translation id="5193988420012215838">আপনার ক্লিপবোর্ডে কপি করা হয়েছে</translation>
 <translation id="4696983787092045100">আপনার ডিভাইসে টেক্সট পাঠান</translation>
+<translation id="5694049548840660018">হোমে সহজেই ফিরে যান</translation>
+<translation id="1122278879166832009">যেকোনও জায়গা থেকে দ্রুত আপনার হোমপেজ অ্যাক্সেস করতে এখানে ট্যাপ করুন</translation>
 <translation id="1260236875608242557">সার্চ করুন, ঘুরে দেখুন</translation>
 <translation id="6369229450655021117">এখান থেকে আপনি ওয়েবে সার্চ করতে, বন্ধুদের সাথে শেয়ার করতে এবং খোলা পৃষ্ঠাগুলি দেখতে পারেন</translation>
+<translation id="8758557275681689734">আপনার সবকটি ট্যাব দেখুন</translation>
+<translation id="8655599981421006542">নতুন ট্যাব তৈরি করতে এবং আগের ট্যাবে ফিরে যেতে এখানে ট্যাপ করুন</translation>
 <translation id="723171743924126238">ছবি বেছে নিন</translation>
 <translation id="8751914237388039244">একটি ছবি বেছে নিন</translation>
 <translation id="1989112275319619282">ব্রাউজ করুন</translation>
@@ -1104,18 +1116,16 @@
 <translation id="671481426037969117">আপনার <ph name="FQDN"/> টাইমারের মেয়াদ পেরিয়ে গেছে। আগামীকাল আবার এটি শুরু হবে।</translation>
 <translation id="7479104141328977413">ট্যাব ম্যানেজমেন্ট</translation>
 <translation id="3524138585025253783">ডেভেলপার UI</translation>
+<translation id="4732120983431207637">স্ট্যাক আনউইন্ডার</translation>
 <translation id="6036057147555329831">অতিরিক্ত ICU</translation>
-<translation id="9029323097866369874"><ph name="DOMAIN"/> সাইটকে ভিআর (VR) মোড ব্যবহার করার অনুমতি দেবেন?</translation>
-<translation id="7685301384041462804">ভিআর (VR) কন্টেন্ট দেখার আগে সাইটটি বিশ্বস্ত কিনা তা ভাল করে দেখে নিন।</translation>
-<translation id="5033865233969348410">আপনি ভিআর (VR) মোডে থাকলে এই সাইট যে বিষয় সম্পর্কে জানতে পারে তা হল:
-  -  আপনার শারীরিক বৈশিষ্ট্য, যেমন উচ্চতা
-
-ভিআর (VR) ব্যবহার করার আগে সাইটটি বিশ্বস্ত কিনা ভাল করে দেখে নিন।</translation>
-<translation id="5534334044554683961">আপনি ভিআর (VR) মোডে থাকলে এই সাইট যে বিষয় সম্পর্কে হয়ত জানতে পারে, তা হল:
-  -  আপনার শারীরিক বৈশিষ্ট্য, যেমন উচ্চতার
-  -   আপনার রুমের লেআউট
-
-ভিআর (VR) ব্যবহার করার আগে সাইটটি বিশ্বস্ত কিনা ভাল করে দেখে নিন।</translation>
-<translation id="4169535189173047238">অনুমতি দেবেন না</translation>
-<translation id="2170088579611075216">ভিআর প্রেজেন্টেশন শুরু করার অনুমতি দিন</translation>
+<translation id="2175927920773552910">QR কোড</translation>
+<translation id="246532703174860178">শেয়ার করুন</translation>
+<translation id="2517472476991765520">স্ক্যান করুন</translation>
+<translation id="8628973420740315031">কাছাকাছি আছেন এমন ব্যক্তির সাথে শেয়ার করতে তাকে এই QR কোড স্ক্যান করতে দিন</translation>
+<translation id="7339921667754113786">Brave Software বিজ্ঞপ্তি প্ল্যাটফর্ম</translation>
+<translation id="8516012719330875537">ছবির এডিটর</translation>
+<translation id="4808319664292298116"><ph name="DOMAIN"/> থেকে ভিআর (VR) প্রেজেন্টেশন চালু করতে চান?</translation>
+<translation id="4353114845960720315">আপনি ভিআর (VR) মোডে থাকলে এই সাইট যে বিষয় সম্পর্কে জানতে পারে তা হল:</translation>
+<translation id="118069123878619799">- আপনার শারীরিক বৈশিষ্ট্য, যেমন উচ্চতা</translation>
+<translation id="5819762621475381970">- আপনার রুমের লেআউট</translation>
 </translationbundle>

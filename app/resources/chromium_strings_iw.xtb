@@ -6,7 +6,6 @@
 <translation id="680297041157509674">‏מערכת ההפעלה של Brave</translation>
 <translation id="4847979153841887006">‏לוגו של Brave</translation>
 <translation id="7339898014177206373">חלון חדש</translation>
-<translation id="5935964611177478118">‏היכנס אל Brave</translation>
 <translation id="5516268345616100622">‏מנהל המשימות - Brave</translation>
 <translation id="7918740962659365265">‏עזור לשפר את Brave על ידי שליחת דוחות קריסה ו-<ph name="UMA_LINK"/> אל Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -117,7 +116,6 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="1459786048951724030">‏מערכת ההפעלה של Brave לא הצליחה לסנכרן את הנתונים שלך עקב שגיאה בתהליך הכניסה.</translation>
 <translation id="6813094029720377619">‏בחרת לנקות את קובצי ה-Cookie בכל יציאה מ-Brave. כדי להמשיך בסנכרון, יש לשנות את <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">הגדרות</translation>
-<translation id="380197516434040304">‏הסר מ-Brave...</translation>
 <translation id="300669147395456190">‏יישומי Brave</translation>
 <translation id="3421950102518690868">‏<ph name="DOMAIN"/> דורש שתקרא ותקבל את התנאים וההגבלות הבאים לפני שתשתמש במכשיר הזה. תנאים אלה אינם מרחיבים, משנים או מגבילים את התנאים של מערכת ההפעלה של Brave.</translation>
 <translation id="3293668930608086049">‏Brave משתמש במצלמה ובמיקרופון שלך.</translation>
@@ -178,8 +176,6 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="7798069806040634998">‏Brave זקוק לגישה לאחסון כדי להוריד קבצים</translation>
 <translation id="7685904775439037072">‏אחרי מתן גישה ל-Brave, אתרים יוכלו לבקש ממך גישה.</translation>
 <translation id="1744365871163268756">‏המתן בזמן ש-Brave מתקין את עדכוני המערכת האחרונים.</translation>
-<translation id="8000338990735917615">‏גרסאות עתידיות של Brave יותקנו באופן אוטומטי.</translation>
-<translation id="2975476470948647918">‏גרסאות עתידיות של Brave יותקנו באופן אוטומטי. כשההורדה הזו תושלם, Brave יופעל מחדש וניתן יהיה להמשיך בעבודה.</translation>
 <translation id="7808415789955822133">‏תנאים עבור מערכת ההפעלה של Brave</translation>
 <translation id="7207456302801184289">‏ברוכים הבאים ל-Brave‏</translation>
 <translation id="3507835409099344374">‏מעבר אל הגדרות ההודעות של Brave</translation>
@@ -211,7 +207,6 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 בהגדרות של דפדפן Brave<ph name="LINK_END"/></translation>
 <translation id="4459296183696059108">‏אם הגדרה מסוימת לא מופיעה בדף הזה, אפשר לחפש אותה <ph name="LINK_BEGIN"/>
 בהגדרות ה-OS של Brave<ph name="LINK_END"/></translation>
-<translation id="7977435741986383568">‏Brave עשוי להשתמש בשירותי אינטרנט לשיפור חוויית הגלישה. ניתן להשבית את השירותים האלה. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">‏Brave שולח את הטקסט שמוקלד בשדות טקסט ל-Brave Software כדי לתקן שגיאות כתיב</translation>
 <translation id="8586264863973514035">‏כדי להחיל את השינויים שביצעת, יש להפעיל מחדש את Brave</translation>
 <translation id="7021823858304886493">‏התרת כניסה אל Brave</translation>

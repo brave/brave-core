@@ -10,6 +10,7 @@
 <translation id="7791543448312431591">Tilføj</translation>
 <translation id="1181037720776840403">Fjern</translation>
 <translation id="5317780077021120954">Gem</translation>
+<translation id="3897092660631435901">Menu</translation>
 <translation id="5300589172476337783">Vis</translation>
 <translation id="7108338896283013870">Skjul</translation>
 <translation id="780301667611848630">Nej tak</translation>
@@ -19,6 +20,7 @@
 <translation id="1036348656032585052">Deaktiver</translation>
 <translation id="8105368624971345109">Deaktiver</translation>
 <translation id="1175364870820465910">&amp;Udskriv...</translation>
+<translation id="129553762522093515">Senest lukkede</translation>
 <translation id="8870413625673593573">Senest lukkede</translation>
 <translation id="385051799172605136">Tilbage</translation>
 <translation id="7481312909269577407">Frem</translation>
@@ -28,19 +30,23 @@
 <translation id="1201402288615127009">Næste</translation>
 <translation id="5713644099811900409">Brave Software-konto</translation>
 <translation id="3157931365184549694">Gendan</translation>
+<translation id="5040262127954254034">Privatliv</translation>
 <translation id="3061707000357573562">Tjeneste til programrettelse</translation>
 <translation id="1914326953223720820">Udpakningstjeneste</translation>
+<translation id="1623104350909869708">Undgå, at denne side opretter yderligere dialogbokse</translation>
 <translation id="2677748264148917807">Forlad</translation>
 <translation id="5556459405103347317">Genindlæs</translation>
 <translation id="2359808026110333948">Fortsæt</translation>
-<translation id="5935964611177478118">log ind på Brave</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="8131740175452115882">Bekræft</translation>
 <translation id="8968766641738584599">Gem kort</translation>
+<translation id="860043288473659153">Kortholderens navn</translation>
+<translation id="869891660844655955">Udløbsdato</translation>
 <translation id="5457113250005438886">Ugyldig</translation>
 <translation id="6518133107902771759">Bekræft</translation>
 <translation id="8987927404178983737">Måned</translation>
 <translation id="6015796118275082299">År</translation>
+<translation id="1581080074034554886">CVC</translation>
 <translation id="9065203028668620118">Rediger</translation>
 <translation id="5029568752722684782">Slet kopi</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -70,6 +76,7 @@
 <translation id="4522570452068850558">Detaljer</translation>
 <translation id="3586931643579894722">Skjul oplysninger</translation>
 <translation id="614940544461990577">Prøv at:</translation>
+<translation id="4943872375798546930">Ingen resultater</translation>
 <translation id="8688672835843460752">Tilgængelig</translation>
 <translation id="4989542687859782284">Ikke tilgængelig</translation>
 <translation id="59174027418879706">Aktiveret</translation>
@@ -79,7 +86,10 @@
 <translation id="1838374766361614909">Ryd søgning</translation>
 <translation id="495170559598752135">Handlinger</translation>
 <translation id="8261506727792406068">Slet</translation>
+<translation id="3207960819495026254">Gemt som bogmærke</translation>
 <translation id="3303855915957856445">Der blev ikke fundet nogen søgeresultater</translation>
+<translation id="1209206284964581585">Skjul indtil videre</translation>
+<translation id="1407135791313364759">Åbn alle</translation>
 <translation id="4880827082731008257">Søg i historikken</translation>
 <translation id="4756388243121344051">&amp;Historik</translation>
 <translation id="1644574205037202324">Historik</translation>
@@ -91,11 +101,14 @@
 <translation id="1178581264944972037">Pause</translation>
 <translation id="1232569758102978740">Unavngivet</translation>
 <translation id="7514365320538308">Download</translation>
+<translation id="8041089156583427627">Send feedback</translation>
 <translation id="7552846755917812628">Prøv de følgende tips:</translation>
+<translation id="3960299545138990065">Genstart Brave</translation>
 <translation id="4275830172053184480">Genstart din enhed</translation>
 <translation id="413544239732274901">Lær mere</translation>
 <translation id="7554791636758816595">Ny fane</translation>
 <translation id="2079545284768500474">Fortryd</translation>
+<translation id="17513872634828108">Åbne faner</translation>
 <translation id="981121421437150478">Offline</translation>
 <translation id="5171045022955879922">Søg, eller angiv webadresse</translation>
 <translation id="803771048473350947">Fil</translation>
@@ -108,12 +121,11 @@
 <translation id="6831043979455480757">Oversæt</translation>
 <translation id="2473195200299095979">Oversæt denne side</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, svar, <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">Ignorer</translation>
 <translation id="7714464543167945231">Certifikat</translation>
 <translation id="4235360514405112390">Gyldig</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="1919345977826869612">Reklamer</translation>
-<translation id="410351446219883937">Automatisk afspilning</translation>
+<translation id="6612358246767739896">Beskyttet indhold</translation>
 <translation id="9219103736887031265">Billeder</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Pop op-vinduer og omdirigeringer</translation>
@@ -128,6 +140,7 @@
 <translation id="7638605456503525968">Serieporte</translation>
 <translation id="2215727959747642672">Filredigering</translation>
 <translation id="6545864417968258051">Bluetooth-scanning</translation>
+<translation id="534295439873310000">NFC-enheder</translation>
 <translation id="5039804452771397117">Tillad</translation>
 <translation id="7053983685419859001">Bloker</translation>
 <translation id="57838592816432529">Slå lyden fra</translation>
@@ -138,13 +151,17 @@
 <translation id="6979440798594660689">Slå lyden fra (standard)</translation>
 <translation id="8037357227543935929">Spørg (standardindstilling)</translation>
 <translation id="8763927697961133303">USB-enhed</translation>
+<translation id="4165986682804962316">Indstillinger for websites</translation>
 <translation id="9011424611726486705">Åbn indstillinger for website</translation>
 <translation id="5932224571077948991">Websitet viser påtrængende eller vildledende annoncer</translation>
 <translation id="7878562273885520351">Din adgangskode kan være kompromitteret</translation>
 <translation id="1089439967362294234">Skift adgangskode</translation>
+<translation id="9008201768610948239">Ignorer</translation>
 <translation id="1186201132766001848">Tjek adgangskoder</translation>
 <translation id="5979084224081478209">Tjek adgangskoder</translation>
+<translation id="10614374240317010">Gemmes aldrig</translation>
 <translation id="5869522115854928033">Gemte adgangskoder</translation>
+<translation id="230699814587342492">Brave-adgangskoder</translation>
 <translation id="5087580092889165836">Tilføj kort</translation>
 <translation id="2154484045852737596">Rediger kort</translation>
 <translation id="4923459931733593730">Betaling</translation>
@@ -193,8 +210,11 @@
 <translation id="1974060860693918893">Avanceret</translation>
 <translation id="5308380583665731573">Få forbindelse</translation>
 <translation id="2501278716633472235">Gå tilbage</translation>
+<translation id="1736420071277903564">Computer</translation>
+<translation id="3906954721959377182">Tablet</translation>
 <translation id="7029809446516969842">Adgangskoder</translation>
 <translation id="6596325263575161958">Krypteringsmuligheder</translation>
+<translation id="8461694314515752532">Kryptér synkroniserede data med din egen adgangssætning til synkronisering</translation>
 <translation id="9050666287014529139">Adgangssætning</translation>
 <translation id="9095388113577226029">Flere sprog...</translation>
 <translation id="7600965453749440009">Oversæt aldrig <ph name="LANGUAGE"/></translation>
@@ -202,6 +222,7 @@
 <translation id="7378627244592794276">Nej</translation>
 <translation id="9137013805542155359">Vis oprindelig</translation>
 <translation id="8725066075913043281">Prøv igen</translation>
+<translation id="5684874026226664614">Ups! Denne side kunne ikke oversættes.</translation>
 <translation id="583281660410589416">ukendt</translation>
 <translation id="9170848237812810038">&amp;Fortryd</translation>
 <translation id="2972581237482394796">&amp;Annuller fortryd</translation>

@@ -332,9 +332,18 @@
 <translation id="3615579745882581859">Nuskaitomas „<ph name="FILE_NAME"/>“.</translation>
 <translation id="7859938049767853383"><ph name="FILE_NAME"/> yra per didelis, kad jį būtų galima nuskaityti debesyje, ir buvo užblokuotas, kad nebūtų galima atidaryti.</translation>
 <translation id="2896909745808647285"><ph name="FILE_NAME"/> yra šifruotas ir užblokuotas, kad nebūtų galima atidaryti.</translation>
+<translation id="2693982916035708855">Nuskaitymas baigtas, problemų neaptikta.</translation>
+<translation id="8855501062415172277"><ph name="FILE_NAME"/> yra neskelbtino turinio.</translation>
+<translation id="1061745542578250838"><ph name="FILE_NAME"/> yra neskelbtino turinio ir failas buvo užblokuotas.</translation>
+<translation id="6651823585377804376">Atsisiųstame faile yra kenkėjiškų programų.</translation>
+<translation id="1863552924692672565">Failas „<ph name="FILE_NAME"/>“ nežinomas. Nuskaitykite failą, kad sumažintumėte riziką.</translation>
 <translation id="4907161631261076876">Šis failas atsisiunčiamas retai ir gali būti pavojingas.</translation>
 <translation id="6102043788063419338">Šį failą užblokavo Papildoma apsauga.</translation>
 <translation id="2773802008104670137">Šio tipo failas gali pažeisti kompiuterį.</translation>
+<translation id="2557378327156922632">Šiame faile yra neskelbtino turinio.</translation>
+<translation id="3952230510293296226">Šis failas buvo užblokuotas, nes jame yra neskelbtino turinio.</translation>
+<translation id="614611931938947795">Šis failas yra per didelis, kad jį būtų galima nuskaityti debesyje, ir buvo užblokuotas, kad nebūtų galima atidaryti.</translation>
+<translation id="8738766971144275885">Šis failas yra šifruotas ir buvo užblokuotas, kad nebūtų galima atidaryti.</translation>
 <translation id="7815680994978050279">Užblokuotas pavojingas atsisiuntimas</translation>
 <translation id="6141988275892716286">Atsisiuntimo patvirtinimas</translation>
 <translation id="6478248366783946499">Palikti pavojingą failą?</translation>
@@ -347,6 +356,7 @@
 <translation id="6531282281159901044">Palikti pavojingą failą</translation>
 <translation id="6434309073475700221">Atmesti</translation>
 <translation id="6148576794665275391">Atidaryti dabar</translation>
+<translation id="2517472476991765520">Nuskaityti</translation>
 <translation id="1178581264944972037">Pristabdyti</translation>
 <translation id="4475552974751346499">Ieškoti tarp atsisiustų elementų</translation>
 <translation id="2807517655263062534">Atsisiųsti failai rodomi čia</translation>
@@ -406,6 +416,7 @@
 <translation id="424726838611654458">Visada atidaryti naudojant „Adobe Reader“</translation>
 <translation id="8546930481464505581">Tinkinti lietimo juostą</translation>
 <translation id="5171045022955879922">Ieškokite ar įveskite URL</translation>
+<translation id="8323167517179506834">Įveskite URL</translation>
 <translation id="920045321358709304">Ieškoti sistemoje „<ph name="SEARCH_ENGINE"/>“</translation>
 <translation id="371300529209814631">Atgal / pirmyn</translation>
 <translation id="4756378406049221019">Stabdyti / įkelti iš naujo</translation>
@@ -430,7 +441,6 @@
 <translation id="5280426389926346830">Sukurti spartųjį klavišą?</translation>
 <translation id="7525067979554623046">Sukurti</translation>
 <translation id="3217843140356091325">Sukurti spartųjį klavišą?</translation>
-<translation id="6026047032548434446">Įdiegti programą?</translation>
 <translation id="3067198179881736288">Įdiegti programą?</translation>
 <translation id="7072010813301522126">Sparčiojo klavišo pavadinimas</translation>
 <translation id="3275778913554317645">Atidaryti kaip langą</translation>
@@ -538,6 +548,9 @@
 <translation id="2839032553903800133">Pranešimai užblokuoti</translation>
 <translation id="1195558154361252544">Pranešimai automatiškai blokuojami visose svetainėse, išskyrus svetaines, kuriose leidote rodyti</translation>
 <translation id="3575121482199441727">Leisti šioje svetainėje</translation>
+<translation id="173628468822554835">Supratau. Pagal numatytuosius nustatymus naujose svetainėse, kuriose lankysitės, nebus siunčiami pranešimai.</translation>
+<translation id="8221491193165283816">Įprastai blokuojate pranešimus. Jei norite leisti šiai svetainei siųsti pranešimus, spustelėkite čia.</translation>
+<translation id="871606814707918245">Dauguma žmonių blokuoja pranešimus šioje svetainėje</translation>
 <translation id="8108526232944491552">{COUNT,plural, =0{Nėra trečiųjų šalių slapukų}=1{1 trečiųjų šalių slapukas}one{# trečiųjų šalių slapukas}few{# trečiųjų šalių slapukai}many{# trečiųjų šalių slapuko}other{# trečiųjų šalių slapukų}}</translation>
 <translation id="561030196642865721">Šioje svetainėje leidžiami trečiųjų šalių slapukai</translation>
 <translation id="8823559166155093873">Blokuoti slapukus</translation>
@@ -546,6 +559,7 @@
 <translation id="3297560592877881986">Kai kuriose svetainėse naudojami trečiosios šalies slapukai puslapiams įkelti. Jei svetainė neveikia, galite pabandyti išjungti slapukų blokavimą.</translation>
 <translation id="1243398753772016127">Svetainės negali naudoti jūsų naršymo veiklos skirtingose svetainėse, kad galėtų suasmeninti skelbimus</translation>
 <translation id="8734674662128056360">Trečiųjų šalių slapukų blokavimas</translation>
+<translation id="2448734521821581858">Slapukai yra svetainių, kuriose lankėtės, sukurti failai. Yra dviejų tipų slapukai: pirmųjų šalių slapukus kuria svetainė, kurioje lankotės. Svetainė rodoma adreso juostoje. Trečiųjų šalių slapukus kuria kitos svetainės. Šioms svetainėms priklauso tam tikras svetainės, kurioje lankotės, rodomas turinys, pvz., skelbimai ar vaizdai.</translation>
 <translation id="5154702632169343078">Tema</translation>
 <translation id="5851868085455377790">Išdavėjas</translation>
 <translation id="2841837950101800123">Teikėjas</translation>
@@ -801,6 +815,7 @@
 <translation id="7663719505383602579">Gavėjas: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="6247802389331535091">Sistema: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="5799508265798272974">„Linux“ virtualus įrenginys: „<ph name="LINUX_VM_NAME"/>“</translation>
+<translation id="6058567592298841668">Virtualiojo įrenginio papildinys: „<ph name="PLUGIN_VM_NAME"/>“</translation>
 <translation id="7851720427268294554">IPP analizavimo įrankis</translation>
 <translation id="7171242884588191792">„Brave“ failų paslaugų programos</translation>
 <translation id="3183139917765991655">Profilio importavimo priemonė</translation>
@@ -913,6 +928,7 @@
 <translation id="6344170822609224263">Pasiekti tinklo ryšių sąrašą</translation>
 <translation id="8620765578342452535">Konfigūruoti tinklo ryšius</translation>
 <translation id="5127881134400491887">Valdyti tinklo ryšius</translation>
+<translation id="6602937173026466876">Prieiga prie spausdintuvų</translation>
 <translation id="7744047395460924128">Žr. spausdinimo istoriją</translation>
 <translation id="6384275966486438344">Pakeiskite paieškos nustatymus į: <ph name="SEARCH_HOST"/></translation>
 <translation id="1033780634303702874">Pasiekti nuosekliuosius įtaisus</translation>
@@ -998,8 +1014,6 @@
 <translation id="8272443605911821513">Tvarkykite plėtinius meniu „Daugiau įrankių“ spustelėję „Plėtiniai“.</translation>
 <translation id="2643698698624765890">„Lango“ meniu spustelėję „Plėtiniai“, tvarkykite plėtinius.</translation>
 <translation id="7953955868932471628">Valdyti sparčiuosius klavišus</translation>
-<translation id="1470811252759861213">Kad pasiektumėte plėtinius visuose įrenginiuose, <ph name="SIGN_IN_LINK"/>.</translation>
-<translation id="2490782392574942205">Jei norite naudoti plėtinius visuose kompiuteriuose, prisijunkite ir įjunkite sinchronizavimą</translation>
 <translation id="3919145445993746351">Jei norite naudoti plėtinius visuose kompiuteriuose, įjunkite sinchronizavimą</translation>
 <translation id="4977942889532008999">Patvirtinti prieigą</translation>
 <translation id="5780011244986845107">Pasirinktame aplanke yra neskelbtinų failų. Ar tikrai norite „<ph name="APP_NAME"/>“ suteikti nuolatinę šio aplanko skaitymo prieigą?</translation>
@@ -1035,7 +1049,6 @@
 <translation id="6916590542764765824">Plėtinių tvarkymas</translation>
 <translation id="6955446738988643816">Tikrinti iššokantįjį langą</translation>
 <translation id="4595560905247879544">Programas ir plėtinius gali keisti tik valdytojas (<ph name="CUSTODIAN_NAME"/>).</translation>
-<translation id="299483336428448530">Įdiegė jūsų tėvai.</translation>
 <translation id="1635033183663317347">Įdiegė jūsų prižiūrėtojas.</translation>
 <translation id="2378982052244864789">Pasirinkti plėtinio katalogą.</translation>
 <translation id="4384652540891215547">Aktyvinti plėtinį</translation>
@@ -1090,9 +1103,9 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="3288047731229977326">Kūrėjo režimu veikiantys plėtiniai gali padaryti žalos kompiuteryje. Jei nesate kūrėjai, turėtumėte išjungti šių plėtinių veikimą kūrėjo režimu, kad išliktumėte saugūs.</translation>
 <translation id="8827289157496676362">Prisegti plėtinį</translation>
 <translation id="5372579129492968947">Atsegti plėtinį</translation>
-<translation id="3021426244864538700">Prieiga prie šios svetainės duomenų</translation>
-<translation id="8213996900880218548">Nori pasiekti šios svetainės duomenis</translation>
-<translation id="1289513325360489062">Nepavyko pasiekti šios svetainės duomenų</translation>
+<translation id="3929426037718431833">Šie plėtiniai gali peržiūrėti ir keisti informaciją šioje svetainėje.</translation>
+<translation id="1435979430299962295">Norėdami suteikti prieigą šioje svetainėje, spustelėkite plėtinį.</translation>
+<translation id="6890912377247906520">Šiems plėtiniams nereikia prieigos prie šios svetainės.</translation>
 <translation id="5521078259930077036">Ar tai pagrindinis puslapis, kurį tikėjotės išvysti?</translation>
 <translation id="7760004034676677601">Ar tai paleidimo puslapis, kurį tikėjotės išvysti?</translation>
 <translation id="5956585768868398362">Ar tai paieškos puslapis, kurį tikėjotės išvysti?</translation>
@@ -1154,13 +1167,13 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="8009225694047762179">Tvarkyti slaptažodžius</translation>
 <translation id="3950820424414687140">Prisijungti</translation>
 <translation id="5624120631404540903">Tvarkyti slaptažodžius</translation>
-<translation id="3229869963989850535">Jei norite, kad slaptažodžiai būtų išsaugomi „Brave Software“ paskyroje, įjunkite sinchronizavimą.</translation>
 <translation id="328571385944182268">Išsaugoti slaptažodžius?</translation>
 <translation id="3753033997400164841">Išsaugokite vieną kartą. Naudokite visur</translation>
 <translation id="1703331064825191675">Niekada nesijaudinkite dėl slaptažodžių</translation>
 <translation id="2341030170677284705">Saugiai išsaugokite slaptažodžius „Brave Software“ paskyroje ir niekada nebereikės jų įvesti iš naujo</translation>
 <translation id="3913985461352963178">Pasiekite slaptažodžius, kai esate prisijungę prie „Brave Software“ paskyros</translation>
 <translation id="4851124464356820177">Kad slaptažodžiai būtų išsaugomi „Brave Software“ paskyroje, prisijunkite ir įjunkite sinchronizavimą.</translation>
+<translation id="3229869963989850535">Jei norite, kad slaptažodžiai būtų išsaugomi „Brave Software“ paskyroje, įjunkite sinchronizavimą.</translation>
 <translation id="1609170755653088773">Sinchronizuokite slaptažodį „iPhone“ įrenginyje</translation>
 <translation id="1712349894969001173">Gaukite šį slaptažodį „iPhone“ įrenginyje</translation>
 <translation id="8111155949205007504">Bendrinkite šį slaptažodį su „iPhone“</translation>
@@ -1303,6 +1316,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="8717864919010420084">Kopijuoti nuorodą</translation>
 <translation id="6781284683813954823">Papuošto logotipo nuoroda</translation>
 <translation id="3017079585324758401">Fonas</translation>
+<translation id="4878653975845355462">Administratorius išjungė tinkintus fonus</translation>
 <translation id="3020183492814296499">Spartieji klavišai</translation>
 <translation id="7644543211198159466">Spalva ir tema</translation>
 <translation id="8255451560461371599">Be fono</translation>
@@ -1338,6 +1352,9 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="8923880975836399332">Tamsi žalsvai mėlyna</translation>
 <translation id="7793098747275782155">Tamsiai mėlyna</translation>
 <translation id="1692210323591458290">Tamsiai violetinė</translation>
+<translation id="2947605845283690091">Žiniatinklio naršymas turėtų būti spartus. Skirkite šiek tiek laiko ir <ph name="BEGIN_LINK"/>patikrinkite plėtinius<ph name="END_LINK"/>.</translation>
+<translation id="3248902735035392926">Sauga yra svarbu. Skirkite šiek tiek laiko ir <ph name="BEGIN_LINK"/>patikrinkite plėtinius<ph name="END_LINK"/></translation>
+<translation id="4015163439792426608">Turite plėtinių? <ph name="BEGIN_LINK"/>Tvarkykite juos<ph name="END_LINK"/> vienoje paprastoje vietoje.</translation>
 <translation id="2858138569776157458">Popul. svet.</translation>
 <translation id="5376169624176189338">Spustelėkite, kad grįžtumėte, palaukite, kad pamatytumėte istoriją</translation>
 <translation id="9103868373786083162">Paspauskite, kad eitumėte atgal į kontekstinį meniu ir peržiūrėtumėte istoriją</translation>
@@ -1359,7 +1376,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="6659213950629089752">Šio puslapio mastelį pakeitė plėtinys „<ph name="NAME"/>“</translation>
 <translation id="5939518447894949180">Nustatyti iš naujo</translation>
 <translation id="5546865291508181392">Rasti</translation>
-<translation id="3547220315004609203">Perjungti skirtuko juostelę</translation>
+<translation id="7465522323587461835">{NUM_OPEN_TABS,plural, =1{# atidarytas skirtukas, paspauskite perjungdami skirtuko juostelę}one{# atidarytas skirtukas, paspauskite perjungdami skirtuko juostelę}few{# atidaryti skirtukai, paspauskite perjungdami skirtuko juostelę}many{# atidaryto skirtuko, paspauskite perjungdami skirtuko juostelę}other{# atidarytų skirtukų, paspauskite perjungdami skirtuko juostelę}}</translation>
 <translation id="833986336429795709">Kad atidarytumėte šią nuorodą, pasirinkite programą</translation>
 <translation id="192494336144674234">Atidaryti naudojant</translation>
 <translation id="9053893665344928494">Prisiminti mano pasirinkimą</translation>
@@ -1406,6 +1423,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="4908811072292128752">Jei norite naršyti iš karto dvi svetaines, atidarykite naują skirtuką</translation>
 <translation id="8966870118594285808">Atidaryti netyčia uždarytą skirtuką</translation>
 <translation id="8806680466228877631">Naudojant <ph name="SHORTCUT"/> galima iš naujo atidaryti netyčia uždarytus skirtukus</translation>
+<translation id="6611972847767394631">Čia rasite savo skirtukus</translation>
 <translation id="2963151496262057773">Šis papildinys neatsako: „<ph name="PLUGIN_NAME"/>“ Ar norite jį sustabdyti?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Puslapis nereaguoja}one{Puslapiai nereaguoja}few{Puslapiai nereaguoja}many{Puslapiai nereaguoja}other{Puslapiai nereaguoja}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Galite palaukti, kol puslapis pradės reaguoti į komandas, arba išeiti iš puslapio.}one{Galite palaukti, kol puslapiai pradės reaguoti į komandas, arba išeiti iš puslapių.}few{Galite palaukti, kol puslapiai pradės reaguoti į komandas, arba išeiti iš puslapių.}many{Galite palaukti, kol puslapiai pradės reaguoti į komandas, arba išeiti iš puslapių.}other{Galite palaukti, kol puslapiai pradės reaguoti į komandas, arba išeiti iš puslapių.}}</translation>
@@ -1450,13 +1468,14 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="6798578729981748444">Kad užbaigtumėte importuoti, uždarykite visus „Firefox“ langus.</translation>
 <translation id="6374469231428023295">Bandyti dar kartą</translation>
 <translation id="8725066075913043281">Bandyti dar kartą</translation>
-<translation id="2226720438730111184">Aprašykite problemą</translation>
+<translation id="4196805003686694274">Atsiliepimų siuntimas sistemai „Brave Software“</translation>
 <translation id="3424969259347320884">Apibūdinkite, ką darėte, kai skirtukas užstrigo</translation>
-<translation id="7788383851298063850">Aprašykite problemą</translation>
+<translation id="1892630320532151038">Atsiliepimų siuntimas sistemai „Brave Software“</translation>
 <translation id="2428510569851653187">Apibūdinkite, ką darėte, kai skirtukas užstrigo</translation>
 <translation id="5659593005791499971">El. paštas</translation>
 <translation id="2982970937345031">Pranešti anonimiškai</translation>
 <translation id="6076448957780543068">Įtraukti šią ekrano kopiją</translation>
+<translation id="2865919525181940183">Šiuo metu ekrane rodomų programų ekrano kopija</translation>
 <translation id="7052237160939977163">Siųsti našumo stebėjimo duomenis</translation>
 <translation id="5526928694260255286">Pridėti <ph name="BEGIN_LINK"/>„Bluetooth“ žurnalus<ph name="END_LINK"/> („Brave Software“ darbuotojams)</translation>
 <translation id="3047644958362961983">Ši informacija padeda mums geriau suprasti jums iškilusią Padėjėjo problemą. Ji saugoma iki 90 dienų ir ją gali pasiekti tik atitinkami inžinierių ir atsiliepimų komandų nariai.</translation>
@@ -1562,6 +1581,13 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="7353887511974462734">Pridėti prie esamos grupės</translation>
 <translation id="6964760285928603117">Pašalinti iš grupės</translation>
 <translation id="5548159762883465903">{NUM_OTHER_TABS,plural, =0{„<ph name="TAB_TITLE"/>“}=1{„<ph name="TAB_TITLE"/>“ ir dar 1 skirtukas}one{„<ph name="TAB_TITLE"/>“ ir dar # skirtukas}few{„<ph name="TAB_TITLE"/>“ ir dar # skirtukai}many{„<ph name="TAB_TITLE"/>“ ir dar # skirtuko}other{„<ph name="TAB_TITLE"/>“ ir dar # skirtukų}}</translation>
+<translation id="2894757982205307093">Naujas skirtukas grupėje</translation>
+<translation id="4460014764210899310">Išgrupuoti</translation>
+<translation id="4871719318659334896">Uždaryti grupę</translation>
+<translation id="945522503751344254">Siųsti atsiliepimą</translation>
+<translation id="8781834595282316166">Naujas skirtukas grupėje</translation>
+<translation id="1780152987505130652">Uždaryti grupę</translation>
+<translation id="8041089156583427627">Siųsti atsiliepimą</translation>
 <translation id="2278562042389100163">Atidaryti naršyklės langą</translation>
 <translation id="756445078718366910">Atidaryti naršyklės langą</translation>
 <translation id="1165039591588034296">Klaida</translation>
@@ -1593,12 +1619,12 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="3693415264595406141">Slaptažodis:</translation>
 <translation id="9111102763498581341">Atrakinti</translation>
 <translation id="2190355936436201913">(tuščias)</translation>
+<translation id="9079153198295609735">Automatiškai siųsti naudojimo statistiką ir strigčių ataskaitas „Brave Software“</translation>
 <translation id="7136984461011502314">Sveiki! Tai - <ph name="PRODUCT_NAME"/></translation>
 <translation id="1867780286110144690">„<ph name="PRODUCT_NAME"/>“ pasirengusi baigti diegimą</translation>
 <translation id="4711067597921221305">Padėkite tobulinti „<ph name="PRODUCT_NAME"/>“ automatiškai siųsdami „Brave Software“ naudojimo statistiką ir trikčių ataskaitas</translation>
 <translation id="5972826969634861500">Paleisti „<ph name="PRODUCT_NAME"/>“</translation>
 <translation id="4876273079589074638">Padėkite mūsų inžinieriams ištirti ir ištaisyti šią strigtį. Nurodykite tikslius veiksmus, jei galite. Nėra nesvarbios informacijos!</translation>
-<translation id="945522503751344254">Siųsti atsiliepimą</translation>
 <translation id="5418694430960033386">Nebėra laisvos „Brave“ atminties vietos arba tinklalapio procesas buvo nutrauktas dėl kitos priežasties. Jei norite tęsti, įkelkite iš naujo arba eikite į kitą puslapį.</translation>
 <translation id="3065041951436100775">Atsiliepimai dėl uždaryto skirtuko.</translation>
 <translation id="3941565636838060942">Jei norite paslėpti prieigą prie šios programos, ją turite pašalinti naudodami
@@ -1665,17 +1691,15 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="5944869793365969636">QR kodo nuskaitymas</translation>
 <translation id="4476659815936224889">Jei norite nuskaityti šį kodą, galite naudoti QR skaitytuvo programą telefone arba tam tikras fotoaparato programas.</translation>
 <translation id="7514365320538308">Atsisiųsti</translation>
-<translation id="1736420071277903564">Kompiuteris</translation>
-<translation id="6965978654500191972">Įrenginys</translation>
-<translation id="4378154925671717803">Telefonas</translation>
-<translation id="3906954721959377182">Planšetinis kompiuteris</translation>
+<translation id="2987620471460279764">Tekstas, bendrinamas iš kito įrenginio</translation>
+<translation id="7757787379047923882">Tekstas bendrinamas iš „<ph name="DEVICE_NAME"/>“</translation>
+<translation id="6667776121818773738">Vaizdas bendrinamas iš kito įrenginio</translation>
+<translation id="4756269098451810636">Iš „<ph name="DEVICE_NAME"/>“ bendrinamas vaizdas</translation>
+<translation id="5193988420012215838">Nukopijuota į iškarpinę</translation>
 <translation id="7489761397368794366">Skambinti iš įrenginio</translation>
 <translation id="7427798576651127129">Skambina <ph name="DEVICE_NAME"/></translation>
 <translation id="7514239104543605883">Kopijuoti į įrenginį</translation>
 <translation id="4305402730127028764">Kopijuoti į „<ph name="DEVICE_NAME"/>“</translation>
-<translation id="2987620471460279764">Tekstas, bendrinamas iš kito įrenginio</translation>
-<translation id="7757787379047923882">Tekstas bendrinamas iš „<ph name="DEVICE_NAME"/>“</translation>
-<translation id="5193988420012215838">Nukopijuota į iškarpinę</translation>
 <translation id="8275080796245127762">Skambinti iš įrenginio</translation>
 <translation id="1476088332184200792">Kopijuoti į įrenginį</translation>
 <translation id="6238767809035845642">Tekstas, bendrinamas iš kito įrenginio</translation>
@@ -1815,7 +1839,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="1338802252451106843"><ph name="ORIGIN"/> nori atidaryti šią programą.</translation>
 <translation id="5955721306465922729">Svetainė nori atidaryti šią programą.</translation>
 <translation id="2188881192257509750">Atidaryti „<ph name="APPLICATION"/>“</translation>
-<translation id="620722923698527029">Visada atidaryti šių tipų nuorodas susietoje programoje</translation>
+<translation id="6528189551082329571">Visada atidaryti šio tipo nuorodas naudojant susietą programą</translation>
 <translation id="5463275305984126951">Turinys iš <ph name="LOCATION"/></translation>
 <translation id="8877448029301136595">[parent directory]</translation>
 <translation id="8028993641010258682">Dydis</translation>
@@ -1857,6 +1881,8 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="9148126808321036104">Prisijungti dar kartą</translation>
 <translation id="2638087589890736295">Norint pradėti sinchronizuoti reikalinga slaptafrazė</translation>
 <translation id="939598580284253335">Įvesti slaptafrazę</translation>
+<translation id="5296471962619441686">Pašalinkite klaidą, kad atnaujintumėte sinchronizavimą</translation>
+<translation id="3701167022068948696">Ištaisyti dabar</translation>
 <translation id="8260126382462817229">Bandykite prisijungti dar kartą</translation>
 <translation id="2812944337881233323">Bandykite atsijungti ir vėl prisijungti</translation>
 <translation id="5222676887888702881">Atsijungti</translation>
@@ -1895,40 +1921,38 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="5990386583461751448">Išversta</translation>
 <translation id="5659833766619490117">Nepavyko išversti šio puslapio</translation>
 <translation id="969096075394517431">Pakeisti kalbas</translation>
-<translation id="9095388113577226029">Daugiau kalbų...</translation>
-<translation id="7027891519253193555">Puslapis rodomas ne <ph name="LANGUAGE"/> kalba?</translation>
+<translation id="8467326454809944210">Pasirinkti kitą kalbą</translation>
+<translation id="52895863590846877">Puslapis rodomas ne <ph name="LANGUAGE"/></translation>
 <translation id="6831043979455480757">Vertėjas</translation>
-<translation id="7378627244592794276">Ne</translation>
 <translation id="1103523840287552314">Visada versti <ph name="LANGUAGE"/></translation>
 <translation id="7600965453749440009">Niekada neversti <ph name="LANGUAGE"/></translation>
 <translation id="1285320974508926690">Niekada neversti šios svetainės</translation>
 <translation id="5782227691023083829">Verčiama...</translation>
-<translation id="8012382203418782830">Šis puslapis buvo išverstas.</translation>
+<translation id="3172808215939929606">Šis puslapis išverstas</translation>
 <translation id="9137013805542155359">Rodyti originalą</translation>
 <translation id="7898725031477653577">Visada versti</translation>
 <translation id="2175042898143291048">Visada tai atlikti</translation>
-<translation id="549673810209994709">Šio puslapio išversti nepavyko.</translation>
 <translation id="5677503058916217575">Puslapio kalba:</translation>
 <translation id="126710816202626562">Vertimo kalba:</translation>
 <translation id="3668570675727296296">Kalbos nustatymai</translation>
 <translation id="1803531841600994172">Kalba, į kurią verčiama</translation>
 <translation id="456717285308019641">Verčiama puslapio kalba</translation>
-<translation id="4297322094678649474">Keisti kalbas</translation>
-<translation id="7731119595976065702">Daugiau kalbų...</translation>
-<translation id="2444119669991608829">Puslapis rodomas ne <ph name="LANGUAGE"/> kalba?</translation>
+<translation id="3688794912214798596">Keisti kalbas...</translation>
+<translation id="6767566652486411142">Pasirinkti kitą kalbą...</translation>
+<translation id="6865598234501509159">Puslapis rodomas ne <ph name="LANGUAGE"/></translation>
 <translation id="3937734102568271121">Visada versti <ph name="LANGUAGE"/></translation>
 <translation id="4330387663455830245">Niekada neversti <ph name="LANGUAGE"/> k.</translation>
 <translation id="8797459392481275117">Niekada neversti šios svetainės</translation>
-<translation id="7591957897535945411">Šis puslapis buvo išverstas.</translation>
+<translation id="3780827508782506612">Šis puslapis išverstas</translation>
 <translation id="9037965129289936994">Rodyti originalą</translation>
 <translation id="5427278936122846523">Visada versti</translation>
 <translation id="1745520510852184940">Visada tai daryti</translation>
-<translation id="7254554697254365959">Nepavyko išversti šio puslapio.</translation>
+<translation id="3603177256297531067">Nepavyko išversti šio puslapio</translation>
 <translation id="3177909033752230686">Puslapio kalba:</translation>
 <translation id="4254813446494774748">Vertimo kalba:</translation>
 <translation id="6156960295318603523">Kalbos nustatymai</translation>
-<translation id="545426320101607695">Kalba, į kurią verčiama</translation>
-<translation id="822519928942492333">Verčiama puslapio kalba</translation>
+<translation id="975893173032473675">Kalba, į kurią verčiama</translation>
+<translation id="6818198425579322765">Verčiama puslapio kalba</translation>
 <translation id="7931318309563332511">Nežinoma</translation>
 <translation id="5426179911063097041">Svetainė <ph name="SITE"/> nori siųsti jums pranešimus</translation>
 <translation id="2482878487686419369">Pranešimai</translation>
@@ -2145,6 +2169,8 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> nori naudoti fotoaparatą</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> nori bendrinti ekrano vaizdą</translation>
 <translation id="4275663329226226506">Medija</translation>
+<translation id="131405271941274527"><ph name="URL"/> nori siųsti ir gauti informaciją, kai paliečiate telefoną ALR įrenginyje</translation>
+<translation id="6268718011101775129">ALR</translation>
 <translation id="8962918469425892674">Šioje svetainėje naudojami judesio arba šviesos jutikliai.</translation>
 <translation id="4532646538815530781">Šioje svetainėje naudojami judesio jutikliai.</translation>
 <translation id="6057381398996433816">Ši svetainė užblokuota, kad nebūtų naudojami judesio ir šviesos jutikliai.</translation>
@@ -2187,7 +2213,8 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="5432996274932278848">Ieškokite įrenginyje, programose ir žiniatinklyje. Naudokite rodyklių klavišus, kad galėtumėte naršyti programas.</translation>
 <translation id="1145532888383813076">Ieškokite įrenginyje, programose, žiniatinklyje.</translation>
 <translation id="7611008212562900400">Ieškokite įrenginyje, programose, žiniatinklyje...</translation>
-<translation id="4366956553771076218"><ph name="ACTION_NAME"/> su „<ph name="APP_NAME"/>“.</translation>
+<translation id="7541773865713908457"><ph name="ACTION_NAME"/> naudojant programą „<ph name="APP_NAME"/>“</translation>
+<translation id="5139112070765735680"><ph name="QUERY_NAME"/>, „<ph name="DEFAULT_SEARCH_ENGINE_NAME"/>“ paieška</translation>
 <translation id="5671658447180261823">Pašalinti pasiūlymą „<ph name="SUGGESTION_NAME"/>“</translation>
 <translation id="798145602633458219">Pridėti pasiūlymą „<ph name="SUGGESTION_NAME"/>“ prie paieškos laukelio</translation>
 <translation id="7339898014177206373">Naujas langas</translation>
@@ -2196,10 +2223,6 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="4471385409549756595">Naujas inkognito langas</translation>
 <translation id="8249048954461686687">OEM aplankas</translation>
 <translation id="8440630305826533614">„Linux“ programos</translation>
-<translation id="4742746985488890273">Prisegti prie lentynos</translation>
-<translation id="3925842537050977900">Atsegti nuo lentynos</translation>
-<translation id="469230890969474295">OEM aplankas</translation>
-<translation id="6201792273624501289">„Linux“ programos</translation>
 <translation id="29488703364906173">Sparti, paprasta ir saugi žiniatinklio naršyklė, sukurta moderniam žiniatinkliui.</translation>
 <translation id="8910146161325739742">Ekrano vaizdo bendrinimas</translation>
 <translation id="8621979332865976405">Viso ekrano bendrinimas</translation>
@@ -2247,6 +2270,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="3202173864863109533">Šio skirtuko garsas nutildytas.</translation>
 <translation id="5562781907504170924">Šis skirtukas susietas su „Bluetooth“ įrenginiu.</translation>
 <translation id="5884474295213649357">Šis skirtukas susietas su USB įrenginiu.</translation>
+<translation id="1875386316419689002">Šis skirtukas susietas su HID įrenginiu.</translation>
 <translation id="1010498023906173788">Šis skirtukas prijungtas prie nuosekliojo prievado.</translation>
 <translation id="8466417995783206254">Šiame skirtuke vaizdo įrašas leidžiamas vaizdo vaizde režimu.</translation>
 <translation id="2585724835339714757">Šis skirtukas bendrina jūsų ekraną.</translation>
@@ -2258,6 +2282,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="353316712352074340">„<ph name="WINDOW_TITLE"/>“ – garso įrašas nutildytas</translation>
 <translation id="9176611096776448349">„<ph name="WINDOW_TITLE"/>“ – prijungtas „Bluetooth“ įrenginys</translation>
 <translation id="6026819612896463875">„<ph name="WINDOW_TITLE"/>“ – USB įrenginys prijungtas</translation>
+<translation id="413915106327509564">„<ph name="WINDOW_TITLE"/>“ – prijungtas HID įrenginys</translation>
 <translation id="7031608529463141342">„<ph name="WINDOW_TITLE"/>“ – nuoseklusis prievadas prijungtas</translation>
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/> – tinklo klaida</translation>
 <translation id="8980951173413349704">„<ph name="WINDOW_TITLE"/>“ – užstrigo</translation>
@@ -2496,9 +2521,15 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="3637561406135221044">Failai nuskaitomi ieškant neskelbtinų duomenų...</translation>
 <translation id="2878782256107578644">Nuskaitoma. Atidaryti dabar?</translation>
 <translation id="6098793583803863900">Nuskaitoma, ar nežinomame faile nėra pavojingo turinio.</translation>
+<translation id="7584578941316704630">Nuskaityti prieš atidarant?</translation>
+<translation id="1039850285407663109">Pasirinktas failas nežinomas ir gali būti pavojingas. Apsvarstykite galimybę nuskaityti prieš atidarydami šį failą.</translation>
+<translation id="2587922766792651800">Baigėsi skirtasis laikas</translation>
+<translation id="8106661353233173262">Įvyko klaida. Baigėsi nuskaityto failo skirtasis laikas.</translation>
 <translation id="6428450836711225518">Patvirtinkite savo telefono numerį</translation>
 <translation id="8742371904523228557"><ph name="ONE_TIME_CODE"/> yra kodas, skirtas svetainei <ph name="ORIGIN"/></translation>
 <translation id="6518133107902771759">Patvirtinti</translation>
+<translation id="5678293144564424498">Programa pristabdyta</translation>
+<translation id="1282420830958964167">Pasiektas tėvų nustatytas programos „<ph name="APP_NAME"/>“ apribojimas. Rytoj galėsite ją naudoti <ph name="TIME_LIMIT"/>.</translation>
 <translation id="394984172568887996">Importuota iš „IE“</translation>
 <translation id="1543284117603151572">Importuota iš „Edge“</translation>
 <translation id="5502500733115278303">Importuota iš „Firefox“</translation>
@@ -2546,8 +2577,6 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="2815693974042551705">Žymių aplankas</translation>
 <translation id="3966072572894326936">Pasirinkti kitą aplanką...</translation>
 <translation id="3508920295779105875">Pasirinkti kitą aplanką...</translation>
-<translation id="3530305684079447434">Kad pasiektumėte žymes visuose įrenginiuose, <ph name="SIGN_IN_LINK"/>.</translation>
-<translation id="1140610710803014750">Jei norite gauti žymes visuose įrenginiuose, prisijunkite ir įjunkite sinchronizavimą.</translation>
 <translation id="168715261339224929">Jei norite gauti žymes visuose įrenginiuose, įjunkite sinchronizavimą.</translation>
 <translation id="4689421377817139245">Sinchronizuokite šią žymę „iPhone“ įrenginyje</translation>
 <translation id="1637224376458524414">Gaukite šią žymę „iPhone“ įrenginyje</translation>
@@ -2849,6 +2878,8 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="8688579245973331962">Nematote savo vardo?</translation>
 <translation id="4222772810963087151">Išsami versijos informacija</translation>
 <translation id="4382131447572146376">{COUNT,plural, =0{<ph name="EMAIL"/>}=1{<ph name="EMAIL"/> ir dar 1 paskyra}one{<ph name="EMAIL"/> ir dar <ph name="EXTRA_ACCOUNTS"/> paskyra}few{<ph name="EMAIL"/> ir dar <ph name="EXTRA_ACCOUNTS"/> paskyros}many{<ph name="EMAIL"/> ir dar <ph name="EXTRA_ACCOUNTS"/> paskyros}other{<ph name="EMAIL"/> ir dar <ph name="EXTRA_ACCOUNTS"/> paskyrų}}</translation>
+<translation id="1060881073479695738">„Play“ parduotuvės programos</translation>
+<translation id="6985607387932385770">Spausdintuvai</translation>
 <translation id="7788444488075094252">Kalbos ir įvestis</translation>
 <translation id="4181841719683918333">Kalbos</translation>
 <translation id="6340526405444716530">Suasmeninimas</translation>
@@ -2869,10 +2900,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="7456142309650173560">įreng.</translation>
 <translation id="6647838571840953560">Dabar naudojama: <ph name="CHANNEL_NAME"/></translation>
 <translation id="9057354806206861646">Tvarkaraščio atnaujinimas</translation>
-<translation id="3391459139089708789">Šiam įrenginiui bus teikiami automatiniai programinės įrangos ir saugos naujiniai iki <ph name="MONTH_AND_YEAR"/>.
-      <ph name="LINK_BEGIN"/>
-        Sužinokite daugiau
-      <ph name="LINK_END"/></translation>
+<translation id="7737456446569756884">Šiam įrenginiui bus teikiami automatiniai programinės įrangos ir saugos naujiniai iki <ph name="MONTH_AND_YEAR"/>.</translation>
 <translation id="4297219207642690536">Paleisti ir nustatyti iš naujo</translation>
 <translation id="4716483597559580346">Atlikite veiksmą „Powerwash“, kad užtikrintumėte geresnę saugą</translation>
 <translation id="4089922565956168950">Šis naujovinimas iš naujo nustato „Bravebook“ ir pašalina dabartinio naudotojo duomenis.</translation>
@@ -2940,7 +2968,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="6710213216561001401">Ankstesnis</translation>
 <translation id="2915873080513663243">Automatinis nuskaitymas</translation>
 <translation id="8912810933860534797">Įgalinti automatinį nuskaitymą</translation>
-<translation id="6617100836880592260">Nuskaitymo sparta: <ph name="SPEED_WITH_UNITS"/></translation>
+<translation id="6580203076670148210">Nuskaitymo sparta</translation>
 <translation id="1816036116994822943">Klaviatūros nuskaitymo sparta</translation>
 <translation id="7919210519031517829"><ph name="DURATION"/> sek.</translation>
 <translation id="2981113813906970160">Rodyti didelį pelės žymeklį</translation>
@@ -3006,8 +3034,8 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="7844553762889824470">Paryškinkite tai, ką norite girdėti, tada paspauskite „Ieškoti“ + S. Arba norėdami pasirinkti paspauskite ir palaikykite paieškos klavišą ar palieskite piktogramą „Teksto ištarimas“ netoli profilio vaizdo.</translation>
 <translation id="5957987129450536192">Palieskite piktogramą „Teksto ištarimas“ netoli profilio vaizdo, tada pasirinkite, ką norite išgirsti.</translation>
 <translation id="8902667442496790482">Atidaryti funkcijos „Teksto ištarimas“ nustatymus</translation>
-<translation id="3819752733757735746">Prieiga jungikliu (valdykite kompiuterį tik vienu ar dviem jungikliais)</translation>
-<translation id="1932026958134051332">Prieigos jungikliu parinktys</translation>
+<translation id="1369149969991017342">Prieiga jungikliu (valdykite kompiuterį tik vienu ar dviem jungikliais)</translation>
+<translation id="8932894639908691771">Prieigos jungikliu parinktys</translation>
 <translation id="9066782832737749352">Tekstas į kalbą</translation>
 <translation id="6002458620803359783">Pageidaujami balsai</translation>
 <translation id="7776701556330691704">Balsų nerasta</translation>
@@ -3048,17 +3076,26 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="3201422919974259695">Čia bus rodomi pasiekiami USB įrenginiai.</translation>
 <translation id="1343865611738742294">„Linux“ programoms suteikiamas leidimas pasiekti USB įrenginius. Pašalinto USB įrenginio „Linux“ neprisimins.</translation>
 <translation id="3661172646479098821">Šiuo metu palaikomi tik „Android“ įrenginiai.</translation>
+<translation id="2629227353894235473">„Android“ programų kūrimas</translation>
+<translation id="1669729672557072907">Kad galėtumėte kurti ir testuoti programas, įgalinkite „Android“ derinimo tiltą (ADB). Atminkite, kad atlikus šį veiksmą bus leidžiama įdiegti „Android“ programas, kurios nebuvo patvirtintos „Brave Software“, o norint išjungti ADB, reikės atkurti gamyklinius nustatymus.</translation>
+<translation id="4638930039313743000">Įgalinti ADB derinimą</translation>
+<translation id="2756917833575664962">Norint įgalinti ADB derinimą reikia iš naujo nustatyti gamyklinius šio „Bravebook“ nustatymus. <ph name="BEGIN_LINK_LEARN_MORE"/>Sužinokite daugiau<ph name="END_LINK_LEARN_MORE"/></translation>
+<translation id="1005333234656240382">Įgalinti ADB derinimą?</translation>
+<translation id="8081989000209387414">Išjungti ADB derinimą?</translation>
+<translation id="1327495825214193325">Jei norite įgalinti ADB derinimą, turite iš naujo paleisti šį „<ph name="DEVICE_TYPE"/>“. Išjungus reikia iš naujo nustatyti gamyklinius nustatymus.</translation>
+<translation id="8082390128630131497">Išjungus ADB derinimą bus iš naujo nustatyti šio „<ph name="DEVICE_TYPE"/>“ gamykliniai nustatymai. Bus ištrintos visos naudotojo paskyros ir vietiniai duomenys.</translation>
+<translation id="1630768113285622200">Paleisti iš naujo ir tęsti</translation>
 <translation id="1679806121152819234">Plugin VM</translation>
 <translation id="1878541307036593717">Leidimų nustatymas</translation>
 <translation id="7508054832109420082">Suteikti prieigą prie spausdintuvų</translation>
 <translation id="2258855745387252834">Jei norite bendrinti, dešiniuoju pelės klavišu spustelėkite aplanką Failų programoje, tada pasirinkite „Bendrinti su papildinio VM“.</translation>
-<translation id="2295473777859797944">„Brave Software Play“ parduotuvė</translation>
+<translation id="2714393097308983682">„Brave Software Play“ parduotuvė</translation>
 <translation id="572155275267014074">„Android“ nustatymai</translation>
-<translation id="9081422163530430821">Diekite programas ir žaidimus iš „Brave Software Play“ įrenginyje „<ph name="DEVICE_TYPE"/>“. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Sužinokite daugiau&lt;/a&gt;</translation>
+<translation id="7201042526153088083">Diekite programas ir žaidimus iš „Brave Software Play“ įrenginyje „<ph name="DEVICE_TYPE"/>“. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Sužinokite daugiau&lt;/a&gt;</translation>
 <translation id="2966937470348689686">Tvarkyti „Android“ nuostatas</translation>
-<translation id="4074367893748481070">Pašalinti „Brave Software Play“ parduotuvę</translation>
+<translation id="6398715114293939307">Pašalinti „Brave Software Play“ parduotuvę</translation>
 <translation id="2792290659606763004">Pašalinti „Android“ programas?</translation>
-<translation id="4607779957365311067">Programos, kurias atsisiuntėte iš „Brave Software Play“, bus ištrintos iš šio „Bravebook“.
+<translation id="8039595758121742506">Programos, kurias atsisiuntėte iš „Brave Software Play“, bus ištrintos iš šio „Bravebook“.
       <ph name="LINE_BREAKS1"/>
       Įsigytas turinys, pvz., filmai, TV laidos, muzika, knygos ar kiti pirkiniai programoje, taip pat gali būti ištrintas.
       <ph name="LINE_BREAKS2"/>
@@ -3088,16 +3125,19 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="6248988683584659830">Paieškos nuostatos</translation>
 <translation id="883304095704384301">Jei nerandate to, ko ieškote, eikite į <ph name="BEGIN_LINK_CHROMIUM"/>„Brave Software Brave“ pagalbos puslapį<ph name="END_LINK_CHROMIUM"/></translation>
 <translation id="6406708970972405507">Nustatymai – „<ph name="SECTION_TITLE"/>“</translation>
+<translation id="3019285239893817657">Papildomo puslapio mygtukas</translation>
 <translation id="5860033963881614850">Išjungta</translation>
 <translation id="5916664084637901428">Įjungta</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> valdo šį nustatymą</translation>
 <translation id="8465252176946159372">Negalioja</translation>
 <translation id="8647834505253004544">Netinkamas žiniatinklio adresas</translation>
 <translation id="7946586320617670168">Pradinis turinys turi būti saugus</translation>
+<translation id="2299734369537008228">Šliaužiklis: nuo <ph name="MIN_LABEL"/> iki <ph name="MAX_LABEL"/></translation>
 <translation id="2709516037105925701">Automatinis pildymas</translation>
 <translation id="7764225426217299476">Pridėti adresą</translation>
 <translation id="5595485650161345191">Adreso redagavimas</translation>
 <translation id="6207937957461833379">Šalis / regionas</translation>
+<translation id="4378154925671717803">Telefonas</translation>
 <translation id="2448312741937722512">Tipas</translation>
 <translation id="9064275926664971810">Įgalinti automatinį pildymą, kad būtų galima užpildyti žiniatinklio formas vienu paspaudimu</translation>
 <translation id="9095253524804455615">Pašalinti</translation>
@@ -3119,7 +3159,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="6644512095122093795">Siūlyti išsaugoti slaptažodžius</translation>
 <translation id="2100273922101894616">Automatinis prisijungimas</translation>
 <translation id="7513029293694390567">Automatiškai prisijungti prie svetainių naudojant išsaugotus prisijungimo duomenis. Kai funkcija išjungta, kaskart prisijungiant prie svetainės bus prašoma patvirtinti.</translation>
-<translation id="6995899638241819463">Įspėti jus, jei slaptažodžiai buvo pažeisti</translation>
+<translation id="6995899638241819463">Įspėti, jei slaptažodžiai buvo atskleisti įvykus duomenų saugos pažeidimui</translation>
 <translation id="1534287762301776620">Prisijungus prie „Brave Software“ paskyros, ši funkcija yra įjungta</translation>
 <translation id="1375321115329958930">Išsaugoti slaptažodžiai</translation>
 <translation id="152234381334907219">Niekada neišsaugota</translation>
@@ -3259,14 +3299,21 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="1563008449513980623">Nustatyti arba tvarkyti spausdintuvus naudojant „Brave Software“ spausdinimą iš debesies.</translation>
 <translation id="8185331656081929126">Rodyti pranešimus, kai nauji spausdintuvai aptinkami tinkle</translation>
 <translation id="6451180435462401570">Tvarkyti spausdinimo iš debesies įrenginius</translation>
-<translation id="6985607387932385770">Spausdintuvai</translation>
 <translation id="1815579292149538864">Nustatykite arba tvarkykite CUPS spausdintuvus.</translation>
 <translation id="8030656706657716245">Pridėti spausdintuvą</translation>
 <translation id="893254996965966411">Išsaugokite aptiktus spausdintuvus profilyje arba pridėkite naują spausdintuvą.</translation>
 <translation id="2152281589789213846">Spausdintuvų pridėjimas prie profilio</translation>
+<translation id="4940364377601827259">Galima išsaugoti <ph name="PRINTER_COUNT"/> spausdintuv.</translation>
+<translation id="5060332552815861872">Galima išsaugoti 1 spausdintuvą.</translation>
+<translation id="8059456211585183827">Nėra galimų išsaugoti spausdintuvų.</translation>
 <translation id="3571734092741541777">Nustatyti</translation>
+<translation id="8086442853986205778">Nustatyti „<ph name="PRINTER_NAME"/>“</translation>
+<translation id="8773302562181397928">Išsaugoti „<ph name="PRINTER_NAME"/>“</translation>
 <translation id="2297705863329999812">Ieškoti spausdintuvų</translation>
 <translation id="7956373551960864128">Išsaugoti spausdintuvai</translation>
+<translation id="5653154844073528838">Esate išsaugoję <ph name="PRINTER_COUNT"/> spausdintuv.</translation>
+<translation id="6938386202199793006">Esate išsaugoję 1 spausdintuvą.</translation>
+<translation id="2469259292033957819">Nėra išsaugotų spausdintuvų.</translation>
 <translation id="1472675084647422956">Rodyti daugiau</translation>
 <translation id="168991973552362966">Pridėti netoliese esantį spausdintuvą</translation>
 <translation id="3038612606416062604">Pridėti spausdintuvą neautomatiškai</translation>
@@ -3289,13 +3336,14 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="8086015605808120405">Konfigūruojamas spausdintuvas „<ph name="PRINTER_NAME"/>“...</translation>
 <translation id="4665014895760275686">Gamintojas</translation>
 <translation id="4561098487691395071">Arba nurodykite spausdintuvo PPD</translation>
+<translation id="1418954524306642206">Naršyti siekiant nurodyti spausdintuvo PPD</translation>
 <translation id="1989112275319619282">Naršyti</translation>
 <translation id="3625481642044239431">Pasirinktas netinkamas failas. Bandykite dar kartą.</translation>
 <translation id="2462752602710430187">Pridėtas „<ph name="PRINTER_NAME"/>“</translation>
 <translation id="7380768571499464492">Atnaujintas „<ph name="PRINTER_NAME"/>“</translation>
 <translation id="8002670234429879764">Spausdintuvas „<ph name="PRINTER_NAME"/>“ nebepasiekiamas.</translation>
 <translation id="3976108569178263973">Nėra pasiekiamų spausdintuvų.</translation>
-<translation id="3213187967168344806">Nepavyko pridėti spausdintuvo. Paleiskite kompiuterį iš naujo ir bandykite dar kartą.</translation>
+<translation id="217576141146192373">Nepavyko pridėti spausdintuvo. Patikrinkite spausdintuvo konfigūraciją ir bandykite dar kartą.</translation>
 <translation id="4052689580269971502">Nepavyko prijungti spausdintuvo. Patikrinkite, ar spausdintuvas yra įjungtas ir prijungtas prie „Bravebook“ naudojant „Wi-Fi“ arba USB.</translation>
 <translation id="7099337801055912064">Nepavyko įkelti didelio PPD. Didžiausias galimas dydis yra 250 KB.</translation>
 <translation id="4310139701823742692">Failas netinkamo formato. Patikrinkite PPD failą ir bandykite dar kartą.</translation>
@@ -3430,6 +3478,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="1209796539517632982">Automatiniai pavadinimų serveriai</translation>
 <translation id="4462159676511157176">Tinkintų pavadinimų serveriai</translation>
 <translation id="1981884748698699991">„Brave Software“ pavadinimų serveriai</translation>
+<translation id="6317608858038767920">Tinkintas vardų serveris <ph name="INPUT_INDEX"/></translation>
 <translation id="854655314928502177">Žiniatinklio tarpinio serverio automatinio aptikimo URL:</translation>
 <translation id="3817579325494460411">Nepateikta</translation>
 <translation id="1280820357415527819">Ieškoma mobiliojo ryšio tinklų</translation>
@@ -3442,7 +3491,6 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="3969092967100188979">Įjungta, veikia tarptinklinis ryšys</translation>
 <translation id="5804175651771201311">Tarptinklinis ryšys išjungtas</translation>
 <translation id="4720185134442950733">Mobiliojo ryšio duomenų tinklas</translation>
-<translation id="2517472476991765520">Nuskaityti</translation>
 <translation id="8386903983509584791">Nuskaitymas baigtas</translation>
 <translation id="708278670402572152">Atjunkite, kad įgalintumėte nuskaitymą</translation>
 <translation id="1056775291175587022">Nėra tinklų</translation>
@@ -3457,16 +3505,20 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="1313405956111467313">Automatinė tarpinio serverio konfigūracija</translation>
 <translation id="6327785803543103246">Automatinis žiniatinklio tarpinio serverio aptikimas</translation>
 <translation id="5158983316805876233">Naudoti tą patį visų protokolų tarpinį serverį</translation>
+<translation id="5769519078756170258">Norima išskirti priegloba arba domenas</translation>
 <translation id="5411472733320185105">Nenaudoti įgaliotojo serverio nustatymų šioms priegloboms ir domenams:</translation>
+<translation id="4218274196133425560">Pašalinti išimtį iš „<ph name="HOST_NAME"/>“</translation>
 <translation id="7857117644404132472">Pridėti išimtį</translation>
 <translation id="5814126672212206791">Ryšio tipas</translation>
 <translation id="2387458720915042159">Tarpinio serverio ryšio tipas</translation>
 <translation id="2282155092769082568">Automatinės konfigūracijos URL:</translation>
+<translation id="1515909359182093592"><ph name="INPUT_LABEL"/> – priegloba</translation>
 <translation id="2464089476039395325">HTTP tarpinis serveris</translation>
 <translation id="2534460670861217804">Saugus HTTP tarpinis serveris</translation>
 <translation id="7246947237293279874">FTP tarpinis serveris</translation>
 <translation id="3085752524577180175">SOCKS priegloba</translation>
 <translation id="6965648386495488594">Prievadas</translation>
+<translation id="8639391553632924850"><ph name="INPUT_LABEL"/> – prievadas</translation>
 <translation id="6198252989419008588">Keisti PIN kodą</translation>
 <translation id="8452135315243592079">Nėra SIM kortelės</translation>
 <translation id="2617342710774726426">SIM kortelė užrakinta</translation>
@@ -3506,15 +3558,16 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="4421167684395067330">Nepavyko prisijungti. Susisiekite su „<ph name="CARRIER_NAME"/>“, kad gautumėte pagalbos.</translation>
 <translation id="7780252971640011240">Nepavyko prisijungti. Susisiekite su operatoriumi, kad gautumėte pagalbos.</translation>
 <translation id="161460670679785907">Nepavyko aptikti telefono</translation>
-<translation id="1682335582099955045">Jei norite naudoti momentinio įrenginio kaip modemo naudojimo funkciją, įjunkite „Brave Software Play“ paslaugų pranešimus.</translation>
+<translation id="778480864305029524">Jei norite naudoti momentinio įrenginio kaip modemo naudojimo funkciją, įjunkite „Brave Software Play“ paslaugų pranešimus.</translation>
 <translation id="7696063401938172191">Jūsų telefone „<ph name="PHONE_NAME"/>“:</translation>
 <translation id="3423463006624419153">Telefonuose „<ph name="PHONE_NAME_1"/>“ ir „<ph name="PHONE_NAME_2"/>“:</translation>
 <translation id="6997707937646349884">Jūsų įrenginiuose:</translation>
 <translation id="7531779363494549572">Eikite į skiltį „Nustatymai“ &gt; „Programos ir pranešimai“ &gt; „Pranešimai“.</translation>
-<translation id="6921033294337262045">Palieskite „Programų pranešimai“ &gt; „Brave Software Play“ paslaugos“.</translation>
-<translation id="5624710179837914896">Įjunkite „Brave Software Play“ paslaugas.</translation>
+<translation id="1819721979226826163">Palieskite „Programų pranešimai“ &gt; „Brave Software Play“ paslaugos“.</translation>
+<translation id="968000525894980488">Įjunkite „Brave Software Play“ paslaugas.</translation>
 <translation id="2705736684557713153">Slinkite į ekrano apačią ir įjunkite momentinio įrenginio kaip modemo naudojimo funkciją, jei ji rodoma. Jei nerodoma, jau viską atlikote.</translation>
 <translation id="8720200012906404956">Ieškoma mobiliojo ryšio tinklo. <ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/></translation>
+<translation id="5517412723934627386"><ph name="NETWORK_TYPE"/> – „<ph name="NETWORK_DISPLAY_NAME"/>“</translation>
 <translation id="7240339475467890413">Prisijungti prie naujo viešosios interneto prieigos taško?</translation>
 <translation id="6514010653036109809">Pasiekiami įrenginiai:</translation>
 <translation id="2075474481720804517">Akumuliatorius: <ph name="BATTERY_PERCENTAGE"/> %</translation>
@@ -3585,6 +3638,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="3434107140712555581"><ph name="BATTERY_PERCENTAGE"/> proc.</translation>
 <translation id="8898840733695078011">Signalo stiprumas</translation>
 <translation id="8297006494302853456">Silpnas</translation>
+<translation id="2789486458103222910">Gerai</translation>
 <translation id="6456394469623773452">Geras</translation>
 <translation id="4917385247580444890">Stiprus</translation>
 <translation id="5866840822086176774">Labai stiprus</translation>
@@ -3659,23 +3713,16 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="8509646642152301857">Atsisiunčiant rašybos tikrinimo žodyną įvyko klaida.</translation>
 <translation id="8842834450537919370">Paklauskite tinklo administratoriaus, kad įsitikintumėte, jog užkarda neblokuoja atsisiuntimų iš „Brave Software“ serverių.</translation>
 <translation id="9042893549633094279">Privatumas ir sauga</translation>
-<translation id="654233263479157500">Naudoti žiniatinklio paslaugą, kad būtų lengviau panaikinti naršymo klaidas</translation>
 <translation id="6697492270171225480">Rodyti panašių puslapių pasiūlymus, kai nepavyksta rasti puslapio</translation>
 <translation id="4534361985432360439">Siunčia puslapio, kurį bandote pasiekti, žiniatinklio adresą „Brave Software“</translation>
-<translation id="6545834809683560467">Naudoti numatymo paslaugą, padėsiančią užbaigti adreso juostoje arba programų paleidimo priemonės paieškos laukelyje įvedamus paieškos terminus ir URL adresus</translation>
-<translation id="340485819826776184">Naudoti numanymų paslaugą, padėsiančią baigti pildyti paieškos terminus ir į adreso juostą įvedamus URL</translation>
 <translation id="7704317875155739195">Automatiškai užbaigti paieškas ir URL</translation>
 <translation id="2000419248597011803">Numatytajam paieškos varikliui siunčiami kai kurie slapukai ir į adreso juostą bei paieškos laukelį įvestos paieškos</translation>
-<translation id="9038649477754266430">Naudokite numatymo paslaugą, kad puslapiai būtų įkeliami greičiau</translation>
 <translation id="7981313251711023384">Iš anksto įkelti puslapius, kad naršymo ir paieškos procesai vyktų greičiau</translation>
 <translation id="2468205691404969808">Naudoja slapukus, kad primintų jums apie nuostatas, net jei nesilankote tuose puslapiuose</translation>
 <translation id="3181954750937456830">Saugus naršymas (apsaugo jus ir jūsų įrenginį nuo pavojingų svetainių)</translation>
 <translation id="7315322926489145388">Siunčia „Brave Software“ kai kurių puslapių, kuriuose lankotės, URL, kai kyla pavojus jūsų saugai</translation>
 <translation id="4991384657077828949">Padėkite tobulinti „Brave“ saugą</translation>
 <translation id="1943176487615318915">Tam, kad būtų aptiktos pavojingos programos ir svetainės, „Brave“ siunčia „Brave Software“ kai kurių puslapių, kuriuose lankotės, URL, ribotą sistemos informaciją ir kai kurių puslapių turinį</translation>
-<translation id="2875273286298348523">„Brave“ tekstą, kurį įvedate naršyklėje, siunčia „Brave Software“</translation>
-<translation id="9079153198295609735">Automatiškai siųsti naudojimo statistiką ir strigčių ataskaitas „Brave Software“</translation>
-<translation id="5941220456342415404">Automatiškai siųsti diagnostikos ir naudojimo duomenis į sistemą „Brave Software“</translation>
 <translation id="918192811481327695">Padėti tobulinti „Brave“ funkcijas ir našumą</translation>
 <translation id="9063160602596686558">Automatiškai siunčia naudojimo statistiką ir strigčių ataskaitas „Brave Software“</translation>
 <translation id="8438566539970814960">Tobulinti paieškas ir naršymą</translation>
@@ -3705,6 +3752,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="4275830172053184480">Iš naujo paleisti įrenginį</translation>
 <translation id="6555432686520421228">Pašalinamos visos naudotojų paskyros ir „<ph name="IDS_SHORT_PRODUCT_NAME"/>“ įrenginys nustatomas iš naujo, kad būtų kaip naujas.</translation>
 <translation id="4055023634561256217">Kad įrenginį būtų galima nustatyti iš naujo naudojant „Powerwash“, reikia paleisti iš naujo.</translation>
+<translation id="3223531857777746191">Nustatymo iš naujo mygtukas</translation>
 <translation id="1506061864768559482">Paieškos variklis</translation>
 <translation id="7807067443225230855">Paieška ir Padėjėjas</translation>
 <translation id="2203682048752833055">Paieškos variklis, naudojamas <ph name="BEGIN_LINK"/>adreso juostoje<ph name="END_LINK"/></translation>
@@ -3795,6 +3843,11 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="6840155290835956714">Klausti prieš siunčiant</translation>
 <translation id="2381756643783702095">Klausti prieš siunčiant (rekomenduojama)</translation>
 <translation id="7593653750169415785">Automatiškai blokuojama, nes keletą kartų atmetėte pranešimus</translation>
+<translation id="7128151990937044829">Rodyti indikatorių adreso juostoje, kai blokuojamas pranešimas</translation>
+<translation id="6561560012278703671">Naudoti tylesnio susirašinėjimo funkcijas (blokuojami pranešimų įspėjimai, kad jūsų neblaškytų)</translation>
+<translation id="863109444997383731">Svetainėse bus blokuojamas prašymas rodyti pranešimus. Jei svetainėje teikiamos pranešimų užklausos, adreso juostoje bus rodomas blokavimo indikatorius.</translation>
+<translation id="5505264765875738116">Svetainės negali prašyti siųsti pranešimus</translation>
+<translation id="6270391203985052864">Svetainės gali prašyti siųsti pranešimus</translation>
 <translation id="2812989263793994277">Nerodyti jokių vaizdų</translation>
 <translation id="3800806661949714323">Rodyti viską (rekomenduojama)</translation>
 <translation id="7661259717474717992">Leisti svetainėms išsaugoti ir skaityti slapukų duomenis</translation>
@@ -3852,9 +3905,16 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="4090947011087001172">Iš naujo nustatyti <ph name="SITE"/> svetainės leidimus?</translation>
 <translation id="1688867105868176567">Išvalyti svetainės duomenis?</translation>
 <translation id="4665446389743427678">Visi svetainės <ph name="SITE"/> išsaugoti duomenys bus ištrinti.</translation>
+<translation id="4077919383365622693">Visi <ph name="SITE"/> saugomi duomenys ir slapukai bus išvalyti.</translation>
+<translation id="2804667941345577550">Būsite atjungti nuo šios svetainės, įskaitant atidarytus skirtukus</translation>
+<translation id="9201023452444595544">Visi neprisijungus pasiekiami duomenys bus išvalyti</translation>
+<translation id="929117907539171075">Neprisijungus pasiekiami duomenys įdiegtoje programoje taip pat bus išvalyti</translation>
 <translation id="5300287940468717207">Iš naujo nustatyti svetainės leidimus?</translation>
 <translation id="2734760316755174687"><ph name="SITE_GROUP_NAME"/> svetainės taip pat bus nustatytos iš naujo.</translation>
 <translation id="3255355328033513170">Visi <ph name="SITE_GROUP_NAME"/> ir į ją įtrauktų svetainių saugomi duomenys bus ištrinti Tai apima slapukus. Būsite atjungti nuo šių svetainių, įskaitant atidarytus skirtukus.</translation>
+<translation id="5691180005790455277">Visi <ph name="SITE_GROUP_NAME"/> ir į ją įtrauktų svetainių saugomi duomenys ir slapukai bus išvalyti.</translation>
+<translation id="2055585478631012616">Būsite atjungti nuo šių svetainių, įskaitant atidarytus skirtukus</translation>
+<translation id="46733273239502219">Neprisijungus pasiekiami duomenys įdiegtose programose taip pat bus išvalyti</translation>
 <translation id="3127156390846601284">Bus ištrinti visi duomenys, kuriuos jūsų įrenginyje išsaugojo visos rodomos svetainės. Ar norite tęsti?</translation>
 <translation id="150411034776756821">Pašalinti <ph name="SITE"/></translation>
 <translation id="577624874850706961">Ieškoti slapukų</translation>
@@ -3890,6 +3950,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="4590324241397107707">Duomenų atmintinė</translation>
 <translation id="8016266267177410919">Laikina saugykla</translation>
 <translation id="4175737294868205930">Nuolatinė saugykla</translation>
+<translation id="8397843425685839889">Jūs ir „Brave Software“</translation>
 <translation id="3707212204259470604">Tvarkyti kitus profilius</translation>
 <translation id="8907706281008466056">„Brave“ profilio nuotrauka</translation>
 <translation id="2408955596600435184">Įveskite PIN kodą</translation>
@@ -3916,7 +3977,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="1582955169539260415">ištrinti [<ph name="FINGERPRINT_NAME"/>]</translation>
 <translation id="1927632033341042996"><ph name="NEW_FINGER_NUMBER"/> piršto antspaudas</translation>
 <translation id="7665369617277396874">Pridėti paskyrą</translation>
-<translation id="3441386002825883844">Tvarkykite paskyras, prie kurių esate prisijungę. Svetainės, programos ir plėtiniai naršyklėje „Brave“ ir „Brave Software Play“ gali naudoti šias paskyras jums teikiamoms funkcijoms tinkinti pagal jūsų leidimus.</translation>
+<translation id="3751920775577969594">Tvarkykite paskyras, prie kurių esate prisijungę. Svetainės, programos ir plėtiniai naršyklėje „Brave“ ir „Brave Software Play“ gali naudoti šias paskyras jums teikiamoms funkcijoms tinkinti pagal jūsų leidimus.</translation>
 <translation id="1987317783729300807">Paskyros</translation>
 <translation id="3953834000574892725">Mano paskyros</translation>
 <translation id="8418661265246754237">„Brave Software“ paskyros</translation>
@@ -3962,20 +4023,20 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="3608576286259426129">Naudotojo vaizdo peržiūra</translation>
 <translation id="2114896190328250491"><ph name="NAME"/> nuotrauka</translation>
 <translation id="7155171745945906037">Esama nuotrauka iš fotoaparato arba failo</translation>
+<translation id="3882165008614329320">Esamas vaizdo įrašas iš kameros ar failo</translation>
 <translation id="9125982323641182972">„Brave Software“ išm. funkc. „Brave“</translation>
 <translation id="1692115862433274081">Naudoti kitą paskyrą</translation>
 <translation id="5244474230056479698">Sinchronizavimas su <ph name="EMAIL"/></translation>
+<translation id="2537178555904266562">Sinchronizuojant slaptažodžius įvyko klaida</translation>
 <translation id="4326270470840334364">Kadangi ši paskyra tvarkoma <ph name="DOMAIN"/>, jūsų žymės, istorija, slaptažodžiai ir kiti nustatymai bus išvalyti iš šio įrenginio. Tačiau duomenys bus toliau saugomi „Brave Software“ paskyroje ir juos bus galima tvarkyti <ph name="BEGIN_LINK"/>„Brave Software“ informacijos suvestinėje<ph name="END_LINK"/>.</translation>
 <translation id="6906406176003824042">Redaguoti profilį</translation>
 <translation id="6739923123728562974">Rodyti spartųjį darbalaukio klavišą</translation>
-<translation id="2450310832094867474">Išjungti sinchronizavimą ir atsijungti?</translation>
 <translation id="3699920817649120894">Išjungti sinchronizavimą ir suasmeninimą?</translation>
 <translation id="5643620609347735571">Išvalyti ir tęsti</translation>
 <translation id="5602765853043467355">Išvalyti žymes, istoriją, slaptažodžius ir kt. iš šio įrenginio</translation>
 <translation id="4089235344645910861">Nustatymai išsaugoti. Pradėta sinchronizuoti.</translation>
 <translation id="7548737591211512046">Prisijunkite, kad žymes, istoriją, slaptažodžius ir kitus nustatymus galėtumėte naudoti visuose įrenginiuose. Be to, būsite automatiškai prijungti prie „Brave Software“ paslaugų.</translation>
 <translation id="2951604498031550705">Žymių, istorijos, slaptažodžių ir kitų nustatymų pakeitimai nebebus sinchronizuojami su „Brave Software“ paskyra. Tačiau esami duomenys toliau bus saugomi „Brave Software“ paskyroje ir juos bus galima tvarkyti <ph name="BEGIN_LINK"/>„Brave Software“ informacijos suvestinėje<ph name="END_LINK"/>.</translation>
-<translation id="138229770216285283">Būsite atjungti nuo „Brave Software“ paskyrų. Žymių, istorijos, slaptažodžių ir kitų nustatymų pakeitimai nebebus sinchronizuojami su „Brave Software“ paskyra. Tačiau esami duomenys toliau bus saugomi „Brave Software“ paskyroje ir juos bus galima tvarkyti <ph name="BEGIN_LINK"/>„Brave Software“ informacijos suvestinėje<ph name="END_LINK"/>.</translation>
 <translation id="3169352093514419465">Atlikę šį veiksmą būsite atjungti nuo „Brave Software“ paskyrų. Žymės, istorija, slaptažodžiai ir kt. nebebus sinchronizuojama.</translation>
 <translation id="8588866096426746242">Rodyti profilio statistiką</translation>
 <translation id="5535941515421698170">Taip pat pašalinkite esamus duomenis iš šio įrenginio</translation>
@@ -3983,9 +4044,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="6406506848690869874">Sinchronizavimas</translation>
 <translation id="5428209950370661546">Kitos „Brave Software“ paslaugos</translation>
 <translation id="7956662517480676674">Sinchron. ir „Brave Software“ paslaugos</translation>
-<translation id="2453021845418314664">Išplėstiniai sinchronizavimo nustatymai</translation>
 <translation id="4314815835985389558">Sinchronizavimo tvarkymas</translation>
-<translation id="659934686219830168">Sinchronizavimas bus pradėtas išėjus iš šio puslapio</translation>
 <translation id="2162155940152307086">Sinchronizavimas bus pradėtas, kai išeisite iš sinchronizavimo nustatymų</translation>
 <translation id="3143515551205905069">Atšaukti sinchronizavimą</translation>
 <translation id="4824958205181053313">Atšaukti sinchronizavimą?</translation>
@@ -4031,6 +4090,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="4138267921960073861">Rodyti naudotojų vardus ir nuotraukas prisijungimo ekrane</translation>
 <translation id="6828153365543658583">Apriboti prisijungimą šiems naudotojams:</translation>
 <translation id="7645176681409127223"><ph name="USER_NAME"/> (savininkas)</translation>
+<translation id="2357330829548294574">Pašalinti <ph name="USER_NAME"/></translation>
 <translation id="1776712937009046120">Pridėti naudotoją</translation>
 <translation id="3699624789011381381">El. pašto adresas</translation>
 <translation id="8761945298804995673">Toks naudotojas jau yra</translation>
@@ -4038,6 +4098,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="3557101512409028104">Nustatykite svetainės ir įrenginio naudojimo laiko apribojimus naudodami „Family Link“</translation>
 <translation id="7915457674565721553">Prisijunkite prie interneto, kad galėtumėte nustatyti tėvų kontrolę</translation>
 <translation id="5192062846343383368">Atidarykite programą „Family Link“ ir peržiūrėkite priežiūros nustatymus</translation>
+<translation id="2139919072249842737">Nustatymo mygtukas</translation>
 <translation id="470074695271471509">Norite atsijungti, kad užbaigtumėte?</translation>
 <translation id="3570985609317741174">Žiniatinklio turinys</translation>
 <translation id="7719367874908701697">Puslapio mastelis</translation>
@@ -4059,6 +4120,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="323803881985677942">Atidaryti plėtinių parinktis</translation>
 <translation id="2166369534954157698">Įlinkdama fechtuotojo špaga sublykčiojo ir pragręžė apvalų arbūzą</translation>
 <translation id="8911765336506423117">Reikia plėtinio iš internetinės parduotuvės</translation>
+<translation id="6965978654500191972">Įrenginys</translation>
 <translation id="8260864402787962391">Pelė</translation>
 <translation id="155865706765934889">Jutiklinis kilimėlis</translation>
 <translation id="7846634333498149051">Klaviatūra</translation>
@@ -4100,7 +4162,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="4673442866648850031">Atidaryti rašiklio įrankius, kai rašiklis pašalintas</translation>
 <translation id="5862109781435984885">Rodyti rašiklio įrankius lentynoje</translation>
 <translation id="4244238649050961491">Rasti daugiau rašiklio programų</translation>
-<translation id="1163818598439831131">Atidaryti „Brave Software Play“</translation>
+<translation id="668599234725812620">Atidaryti „Brave Software Play“</translation>
 <translation id="9116799625073598554">Užrašų programa</translation>
 <translation id="5458998536542739734">Užrašai užrakinimo ekrane</translation>
 <translation id="203574396658008164">Įgalinti užrašų rašymą užrakinimo ekrane</translation>
@@ -4140,6 +4202,10 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="4863769717153320198">Atrodo kaip <ph name="WIDTH"/> × <ph name="HEIGHT"/> (numatytasis)</translation>
 <translation id="1125550662859510761">Atrodo kaip <ph name="WIDTH"/> × <ph name="HEIGHT"/> (savasis)</translation>
 <translation id="3151786313568798007">Orientacija</translation>
+<translation id="8513108775083588393">Automatiškai pasukti</translation>
+<translation id="5806773519584576205">0° (numatytasis)</translation>
+<translation id="7067396782363924830">Aplinkos spalvos</translation>
+<translation id="3548162552723420559">Koreguojama ekrano spalva, kad atitiktų aplinką</translation>
 <translation id="55601339223879446">Sureguliuokite stalinio kompiuterio ribas pagal vaizdą</translation>
 <translation id="7974936243149753750">Sritis aplink vaizdo kraštus</translation>
 <translation id="7758450972308449809">Sureguliuokite ekrano ribas</translation>
@@ -4162,8 +4228,10 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="6547354035488017500">Atlaisvinkite bent 512 MB vietos arba jūsų įrenginys nebeatsakys. Norėdami atlaisvinti vietos, ištrinkite failus iš įrenginio saugyklos.</translation>
 <translation id="6097480669505687979">Jei neatlaisvinsite vietos, naudotojai ir duomenys gali būti automatiškai pašalinti.</translation>
 <translation id="4470957202018033307">Išorinės saugyklos nuostatos</translation>
-<translation id="4642094601013020129">Programose iš „Brave Software Play“ gali būti prašoma leidimo pasiekti visas failų sistemos funkcijas, kad būtų galima nuskaityti ir įrašyti failus išoriniuose saugyklos įrenginiuose. Įrenginyje sukurtus failus ir aplankus gali matyti visi, naudojantys išorinį diską. <ph name="LINK_BEGIN"/>Sužinokite daugiau<ph name="LINK_END"/></translation>
+<translation id="1900305421498694955">Programose iš „Brave Software Play“ gali būti prašoma leidimo pasiekti visas failų sistemos funkcijas, kad būtų galima nuskaityti ir įrašyti failus išoriniuose saugyklos įrenginiuose. Įrenginyje sukurtus failus ir aplankus gali matyti visi, naudojantys išorinį diską. <ph name="LINK_BEGIN"/>Sužinokite daugiau<ph name="LINK_END"/></translation>
 <translation id="6775163072363532304">Pasiekiami įrenginiai bus rodomi čia.</translation>
+<translation id="1041263367839475438">Pasiekiami įrenginiai</translation>
+<translation id="7479221278376295180">Saugyklos naudojimo apžvalga</translation>
 <translation id="1529891865407786369">Maitinimo šaltinis</translation>
 <translation id="354060433403403521">Kintamosios srovės adapteris</translation>
 <translation id="2127372758936585790">Mažos galios įkroviklis</translation>
@@ -4173,9 +4241,9 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="6212168817037875041">Išjungti ekraną</translation>
 <translation id="5495597166260341369">Neišjungti ekrano</translation>
 <translation id="7138678301420049075">Kitas</translation>
-<translation id="1114525161406758033">Įjungti miego būseną, kai dangtis uždarytas</translation>
-<translation id="1848219224579402567">Atsijungti, kai dangtis uždarytas</translation>
-<translation id="8781980678064919987">Išjungti, kai dangtis uždarytas</translation>
+<translation id="1802624026913571222">Įjungti miego būseną, kai dangtelis uždarytas</translation>
+<translation id="8847523528195140327">Atsijungti uždarius dangtelį</translation>
+<translation id="1942600407708803723">Išjungti, kai dangtelis uždarytas</translation>
 <translation id="3636766455281737684"><ph name="PERCENTAGE"/> % – liko <ph name="TIME"/></translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/> % – <ph name="TIME"/> iki visiško įkrovimo</translation>
 <translation id="2620436844016719705">Sistema</translation>
@@ -4243,15 +4311,14 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="8246776524656196770">Apsaugokite saugos raktą PIN kodu (asmens identifikavimo numeriu, angl. „Personal Identification Number“)</translation>
 <translation id="5973605538625120605">PIN kodo keitimas</translation>
 <translation id="6242589501614145408">Saugos rakto nustatymas iš naujo</translation>
-<translation id="1470967055429794975">Taip bus ištrinti visi saugos rakte išsaugoti duomenys, įskaitant jo PIN kodą</translation>
+<translation id="4986728572522335985">Taip bus ištrinti visi saugos rakte išsaugoti duomenys, įskaitant jo PIN kodą</translation>
 <translation id="767127784612208024">Palieskite, kad patvirtintumėte nustatymą iš naujo</translation>
-<translation id="1981544341227357861">Išimkite saugos raktą iš įrenginio, įdėkite iš naujo ir palieskite jį.</translation>
-<translation id="7255916308560539517">Palieskite saugos raktą dar kartą patvirtindami nustatymą iš naujo. Visa saugos rakte saugoma informacija, įskaitant jo PIN kodą, bus ištrinta.</translation>
+<translation id="4441147046941420429">Norėdami tęsti išimkite saugos raktą iš įrenginio, įdėkite iš naujo ir palieskite</translation>
+<translation id="3515983984924808886">Palieskite saugos raktą dar kartą patvirtindami nustatymą iš naujo. Visa saugos rakte saugoma informacija, įskaitant jo PIN kodą, bus ištrinta.</translation>
 <translation id="4120388883569225797">Šio saugos rakto nustatyti iš naujo nepavyko</translation>
 <translation id="7691077781194517083">Šio saugos rakto nustatyti iš naujo nepavyko. Klaida <ph name="ERROR_CODE"/>.</translation>
 <translation id="4124823734405044952">Jūsų saugos raktas nustatytas iš naujo.</translation>
 <translation id="8644655801811752511">Šio saugos rakto nustatyti iš naujo nepavyko. Pabandykite nustatyti raktą iš naujo iš karto jį įdėję.</translation>
-<translation id="8845164297565101021">Norėdami sukurti ar pakeisti PIN kodą įdėkite ir palieskite saugos raktą.</translation>
 <translation id="6957044667612803194">Šis saugos raktas nepalaiko PIN kodų</translation>
 <translation id="7212097698621322584">Įveskite dabartinį PIN kodą, jei norite jį pakeisti. Jei dabartinio PIN kodo nežinote, turėsite nustatyti saugos raktą iš naujo ir sukurti naują PIN kodą.</translation>
 <translation id="2637400434494156704">Neteisingas PIN kodas. Jums liko vienas bandymas.</translation>
@@ -4264,11 +4331,9 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="2699911226086014512">PIN kodo operacijos atlikti nepavyko, klaidos kodas: <ph name="RETRIES"/>.</translation>
 <translation id="3873423927483480833">Rodyti PIN kodus</translation>
 <translation id="21354425047973905">Slėpti PIN kodus</translation>
-<translation id="1901984611178952431">Tvarkyti prisijungimo duomenis</translation>
-<translation id="3286737518123001369">Peržiūrėkite ir ištrinkite prisijungimo duomenis, saugomus saugos rakte</translation>
+<translation id="4274667386947315930">Prisijungimo duomenys</translation>
+<translation id="2938845886082362843">Peržiūrimi ir ištrinami saugos rakte saugomi prisijungimo duomenys</translation>
 <translation id="2399939490305346086">Saugos rakto prisijungimo duomenys</translation>
-<translation id="6841187140911216178">Jei norite peržiūrėti prisijungimo duomenis, įdėkite ir palieskite saugos raktą</translation>
-<translation id="6013505829696424563">Jei norite peržiūrėti prisijungimo duomenis, įveskite saugos rakto PIN kodą. Jei PIN kodo nežinote, reikės iš naujo nustatyti saugos raktą.</translation>
 <translation id="3713047097299026954">Šiame saugos rakte nėra prisijungimo duomenų</translation>
 <translation id="1511997356770098059">Šiame saugos rakte negalima saugoti prisijungimo duomenų</translation>
 <translation id="579915268381781820">Saugos raktas buvo pašalintas.</translation>
@@ -4276,15 +4341,18 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="8705629851992224300">Nepavyko nuskaityti saugos rakto</translation>
 <translation id="3076977359333237641">Prisijungimo duomenys buvo ištrinti</translation>
 <translation id="3508492320654304609">Nepavyko ištrinti prisijungimo duomenų</translation>
-<translation id="8945764661949477243">Pridėkite, pervardykite ir ištrinkite įrenginyje išsaugotus kontrolinius kodus</translation>
+<translation id="5173668317844998239">Pridedami ir ištrinami saugos rate išsaugoti kontroliniai kodai</translation>
 <translation id="4836504898754963407">Kontrolinių kodų tvarkymas</translation>
-<translation id="403456802563765809">Jei norite tvarkyti kontrolinius kodus, įdėkite ir palieskite saugos raktą.</translation>
+<translation id="6028117231645531007">Pridėti piršto antspaudą</translation>
 <translation id="570302979952009979">Pavadinkite šį kontrolinį kodą</translation>
-<translation id="5639152092474119692">Jei norite tvarkyti kontrolinius kodus, įveskite saugos rakto PIN kodą. Jei PIN kodo nežinote, reikės iš naujo nustatyti saugos raktą.</translation>
-<translation id="3589845496433710431">Saugos rakte nėra išsaugota kontrolinių kodų.</translation>
+<translation id="4549791035683739768">Saugos rakte nėra išsaugota kontrolinių kodų</translation>
 <translation id="3971764089670057203">Šio saugos rakto kontroliniai kodai</translation>
-<translation id="5995884201513800557">Pakartotinai lieskite saugos raktą, kad išsaugotumėte kontrolinį kodą.</translation>
+<translation id="8557022314818157177">Lieskite saugos raktą, kol bus užfiksuotas kontrolinis kodas</translation>
+<translation id="6592808042417736307">Kontrolinis kodas užfiksuotas</translation>
 <translation id="1750172676754093297">Jūsų saugos rakte negalima išsaugoti kontrolinių kodų</translation>
+<translation id="8842594465773264717">Ištrinti šį kontrolinį kodą</translation>
+<translation id="6808039367995747522">Norėdami tęsti, įdėkite ir palieskite saugos raktą</translation>
+<translation id="5139823398361067371">Įveskite saugos rakto PIN kodą. Jei PIN kodo nežinote, reikės iš naujo nustatyti saugos raktą.</translation>
 <translation id="3341703758641437857">Leisti pasiekti failo URL</translation>
 <translation id="9003647077635673607">Leisti visose svetainėse</translation>
 <translation id="698524779381350301">Automatiškai leisti pasiekti toliau nurodytose svetainėse</translation>
@@ -4561,19 +4629,11 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="6336451774241870485">Naujas inkognito skirtukas</translation>
 <translation id="6610147964972079463">Uždaryti inkognito skirtukus</translation>
 <translation id="8076492880354921740">Skirtukai</translation>
-<translation id="9029323097866369874">Leisti <ph name="DOMAIN"/> aktyvinti VR režimą?</translation>
-<translation id="7685301384041462804">Prieš aktyvindami VR režimą, įsitikinkite, kad ši svetainė patikima.</translation>
-<translation id="5033865233969348410">VR režimu ši svetainė gali sužinoti apie jus tam tikros informacijos:
-  –  jūsų fizines savybes, pvz., ūgį.
-
-Prieš aktyvindami VR režimą įsitikinkite, kad ši svetainė patikima.</translation>
-<translation id="5534334044554683961">VR režimu ši svetainė gali sužinoti apie jus tam tikros informacijos:
-  –   jūsų fizines savybes, pvz., ūgį;
-  –   patalpos išdėstymą.
-
-Prieš aktyvindami VR, įsitikinkite, kad ši svetainė patikima.</translation>
-<translation id="4169535189173047238">Neleisti</translation>
-<translation id="2170088579611075216">Leisti ir įvesti VR</translation>
+<translation id="4808319664292298116">Pradėti VR iš <ph name="DOMAIN"/>?</translation>
+<translation id="4353114845960720315">VR režimu ši svetainė gali sužinoti apie jus tam tikros informacijos:</translation>
+<translation id="118069123878619799">- jūsų fizines savybes, pavyzdžiui, ūgį;</translation>
+<translation id="5819762621475381970">- patalpos išdėstymą;</translation>
+<translation id="1146678959555564648">Įgalinti VR</translation>
 <translation id="2794233252405721443">Svetainė užblokuota</translation>
 <translation id="1721312023322545264">Turite gauti <ph name="NAME"/> leidimą apsilankyti šioje svetainėje</translation>
 <translation id="7543525346216957623">Paprašykite vieno iš tėvų</translation>
@@ -4599,4 +4659,9 @@ Prieš aktyvindami VR, įsitikinkite, kad ši svetainė patikima.</translation>
 <translation id="5732392974455271431">Jūsų tėvai gali atblokuoti ją už jus</translation>
 <translation id="3556433843310711081">Jūsų valdytojas gali atblokuoti ją už jus</translation>
 <translation id="1254756632288991504">Pirmiausia prisijunkite prie „Brave“, kad „Brave“ galėtų patikrinti, ar jums leidžiama pasiekti šią svetainę.</translation>
+<translation id="2507397597949272797">„<ph name="NAME"/>“ pristabdyta</translation>
+<translation id="8015163965024115122">Pasiektas tėvų nustatytas „<ph name="IDS_SHORT_PRODUCT_NAME"/>“ arba „<ph name="IDS_SHORT_PRODUCT_NAME"/>“ programų apribojimas.</translation>
+<translation id="9122176249172999202">„<ph name="IDS_SHORT_PRODUCT_NAME"/>“ pristabdyta</translation>
+<translation id="3154736273843608862">Pasiektas tėvų nustatytas „<ph name="IDS_SHORT_PRODUCT_NAME"/>“ apribojimas.</translation>
+<translation id="5038022729081036555">Rytoj galėsite ją naudoti <ph name="TIME_LIMIT"/>.</translation>
 </translationbundle>

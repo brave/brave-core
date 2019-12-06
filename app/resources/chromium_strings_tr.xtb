@@ -9,7 +9,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave logosu</translation>
 <translation id="7339898014177206373">Yeni pencere</translation>
-<translation id="5935964611177478118">Brave'da oturum açın</translation>
 <translation id="5516268345616100622">Görev Yöneticisi - Brave</translation>
 <translation id="7918740962659365265">Kilitlenme raporlarını ve <ph name="UMA_LINK"/> bilgilerini Brave Software'a göndererek, Brave'u daha iyi hale getirmeye yardımcı olun</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -120,7 +119,6 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="1459786048951724030">Oturum açma sırasındaki bir hata nedeniyle Brave OS, verilerinizi senkronize edemedi.</translation>
 <translation id="6813094029720377619">Brave'dan çıktığınızda çerezleri temizlersiniz. Senkronizasyona devam etmek için çerez ayarlarını şurada değiştirin: <ph name="COOKIE_SETTINGS_LINK"/>.</translation>
 <translation id="3340978935015468852">ayarlar</translation>
-<translation id="380197516434040304">Brave'dan Kaldır...</translation>
 <translation id="300669147395456190">Brave Uygulamaları</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/>, bu cihazı kullanmadan önce aşağıdaki Hizmet Şartları'nı okuyup kabul etmenizi gerektirmektedir. Bu şartlar, Brave OS Şartları'nın kapsamını genişletmez, değiştirmez veya sınırlamaz.</translation>
 <translation id="3293668930608086049">Brave kameranızı ve mikrofonunuzu kullanıyor.</translation>
@@ -187,8 +185,6 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="7798069806040634998">Dosya indirmek için Brave'un depolama alanına erişmesi gerekiyor</translation>
 <translation id="7685904775439037072">Brave erişim izni aldıktan sonra, web siteleri de erişim için sizden izin isteyebilecek.</translation>
 <translation id="1744365871163268756">Brave en son sistem güncellemelerini yüklerken lütfen bekleyin.</translation>
-<translation id="8000338990735917615">Brave'un gelecek sürümleri otomatik olarak yüklenecektir.</translation>
-<translation id="2975476470948647918">Brave'un gelecek sürümleri otomatik olarak yüklenecektir. Bu indirme işlemi tamamlandığında Brave yeniden başlatılacak ve çalışmalarınıza devam edebileceksiniz.</translation>
 <translation id="7808415789955822133">Brave OS şartları</translation>
 <translation id="7207456302801184289">Brave'a Hoş Geldiniz</translation>
 <translation id="3507835409099344374">Brave bildirim ayarlarına git</translation>
@@ -220,7 +216,6 @@ Brave ayarlarınızı kurtaramıyor.</translation>
       Brave tarayıcı ayarlarınıza<ph name="LINK_END"/> bakın</translation>
 <translation id="4459296183696059108">Bir ayar bu sayfada görünmüyorsa <ph name="LINK_BEGIN"/>
       Brave OS ayarlarınıza<ph name="LINK_END"/> bakın</translation>
-<translation id="7977435741986383568">Brave, göz atma deneyiminizi iyileştirmek için web hizmetleri kullanabilir. İsteğe bağlı olarak bu hizmetleri devre dışı bırakabilirsiniz. <ph name="BEGIN_LINK"/>Daha fazla bilgi<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Yazım hatalarını düzeltmek için Brave, metin alanlarına yazdığınız metinleri Brave Software'a gönderir</translation>
 <translation id="8586264863973514035">Yaptığınız değişiklikleri uygulamak için Brave'u yeniden başlatın</translation>
 <translation id="7021823858304886493">Brave'da oturum açmaya izin verin</translation>

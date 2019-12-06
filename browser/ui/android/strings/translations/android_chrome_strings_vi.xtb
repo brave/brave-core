@@ -65,6 +65,7 @@
 <translation id="1928696683969751773">Số lần cập nhật</translation>
 <translation id="6064125863973209585">Đã hoàn tất quá trình tải xuống</translation>
 <translation id="5342314432463739672">Yêu cầu cấp quyền</translation>
+<translation id="3749259744154402564">Chưa hỗ trợ</translation>
 <translation id="629730747756840877">Tài khoản</translation>
 <translation id="82609232232243542">Đăng nhập vào Brave</translation>
 <translation id="7956662517480676674">Đồng bộ hóa và các dịch vụ của Brave Software</translation>
@@ -227,8 +228,6 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="3245261285041759672">Tài khoản Brave Software của bạn có thể có các dạng lịch sử duyệt web khác tại <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="7274013316676448362">Trang web bị chặn</translation>
 <translation id="2534155362429831547">Đã xóa <ph name="NUMBER_OF_ITEMS"/> mục</translation>
-<translation id="1121094540300013208">Báo cáo sử dụng và sự cố</translation>
-<translation id="9079153198295609735">Tự động gửi số liệu thống kê về việc sử dụng và báo cáo sự cố cho Brave Software</translation>
 <translation id="6981982820502123353">Hỗ trợ tiếp cận</translation>
 <translation id="2387895666653383613">Chia tỷ lệ văn bản</translation>
 <translation id="2321958826496381788">Kéo thanh trượt cho đến khi bạn có thể đọc nội dung này thoải mái. Chữ tối thiểu phải to như này sau khi bấm đúp vào một đoạn.</translation>
@@ -243,12 +242,12 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="6295158916970320988">Tất cả các trang web</translation>
 <translation id="8380167699614421159">Trang web này hiển thị quảng cáo xâm nhập hoặc quảng cáo gây hiểu nhầm</translation>
 <translation id="1919345977826869612">Quảng cáo</translation>
-<translation id="410351446219883937">Tự động phát</translation>
 <translation id="6447842834002726250">Cookie</translation>
 <translation id="6196640612572343990">Chặn cookie của bên thứ ba</translation>
 <translation id="6782111308708962316">Ngăn các trang web của bên thứ ba lưu và đọc dữ liệu cookie</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Cửa sổ bật lên và liên kết chuyển hướng</translation>
+<translation id="534295439873310000">Thiết bị dùng công nghệ NFC</translation>
 <translation id="4751476147751820511">Cảm biến chuyển động hoặc ánh sáng</translation>
 <translation id="1717218214683051432">Cảm biến chuyển động</translation>
 <translation id="2091887806945687916">Âm thanh</translation>
@@ -261,7 +260,6 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="6181444274883918285">Thêm ngoại lệ cho trang web</translation>
 <translation id="5313967007315987356">Thêm trang web</translation>
 <translation id="1369915414381695676">Đã thêm trang web <ph name="SITE_NAME"/></translation>
-<translation id="7837721118676387834">Cho phép tự động phát video bị tắt tiếng cho trang web cụ thể.</translation>
 <translation id="2621115761605608342">Cho phép JavaScript cho trang web cụ thể.</translation>
 <translation id="8801436777607969138">Chặn JavaScript cho một trang web cụ thể.</translation>
 <translation id="8372893542064058268">Cho phép Đồng bộ hóa dưới nền cho trang web cụ thể.</translation>
@@ -285,7 +283,6 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="5100237604440890931">Đã thu gọn - nhấp để mở rộng.</translation>
 <translation id="857943718398505171">Được phép (được đề xuất)</translation>
 <translation id="2913331724188855103">Cho phép trang web lưu và đọc dữ liệu cookie (được đề xuất)</translation>
-<translation id="7445411102860286510">Cho phép trang web tự động phát video tắt tiếng (được đề xuất)</translation>
 <translation id="5335288049665977812">Cho phép các trang web chạy JavaScript (được đề xuất)</translation>
 <translation id="5527111080432883924">Hỏi trước khi cho phép các trang web đọc văn bản và hình ảnh từ khay nhớ tạm (khuyên dùng)</translation>
 <translation id="6912998170423641340">Chặn trang web đọc văn bản và hình ảnh từ khay nhớ tạm</translation>
@@ -295,6 +292,8 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="2107397443965016585">Hỏi trước khi cho phép trang web phát nội dung được bảo vệ (khuyên dùng)</translation>
 <translation id="2910701580606108292">Hỏi trước khi cho phép trang web phát nội dung được bảo vệ</translation>
 <translation id="757524316907819857">Chặn không cho trang web phát nội dung được bảo vệ</translation>
+<translation id="5710871682236653961">Hỏi ý bạn trước khi cho phép các trang web gửi và nhận thông tin khi bạn nhấn vào tùy chọn thiết bị dùng công nghệ giao tiếp tầm gần (NFC) (khuyên dùng)</translation>
+<translation id="7572498721684305250">Chặn không cho các trang web gửi và nhận thông tin khi bạn nhấn vào tùy chọn thiết bị dùng công nghệ giao tiếp tầm gần (NFC)</translation>
 <translation id="3277252321222022663">Cho phép các trang web sử dụng cảm biến của thiết bị (nên dùng)</translation>
 <translation id="5048398596102334565">Cho phép trang web sử dụng cảm biến chuyển động (nên dùng)</translation>
 <translation id="8816026460808729765">Chặn không cho các trang web sử dụng cảm biến</translation>
@@ -308,7 +307,10 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="3123473560110926937">Đã chặn trên một số trang web</translation>
 <translation id="965817943346481315">Chặn nếu trang web hiển thị quảng cáo xâm nhập hoặc quảng cáo gây hiểu nhầm (khuyên dùng)</translation>
 <translation id="3386292677130313581">Hỏi trước khi cho phép các trang web biết vị trí của bạn (được đề xuất)</translation>
-<translation id="9139068048179869749">Hỏi trước khi cho phép trang web gửi thông báo (được đề xuất)</translation>
+<translation id="6270391203985052864">Các trang web có thể xin phép gửi thông báo</translation>
+<translation id="5505264765875738116">Các trang web không thể xin phép gửi thông báo</translation>
+<translation id="6561560012278703671">Dùng thông báo nhẹ nhàng hơn (chặn thông báo bật lên làm phiền bạn)</translation>
+<translation id="7302486331832100261">Bạn thường chặn các thông báo. Để cho phép, hãy nhấn vào Chi tiết.</translation>
 <translation id="4479647676395637221">Hỏi trước trước khi cho phép các trang web sử dụng máy ảnh của bạn (được đề xuất)</translation>
 <translation id="6992289844737586249">Hỏi trước trước khi cho phép các trang web sử dụng micrô của bạn (được đề xuất)</translation>
 <translation id="2289270750774289114">Hỏi khi một trang web muốn tìm các thiết bị Bluetooth ở gần (khuyên dùng)</translation>
@@ -507,9 +509,11 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="5230560987958996918"><ph name="SITE"/> muốn quét tìm các thiết bị Bluetooth ở gần và đã tìm thấy các thiết bị sau đây:</translation>
 <translation id="8368027906805972958">Thiết bị không xác định hoặc không được hỗ trợ (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7605594153474022051">Đồng bộ hóa không hoạt động</translation>
+<translation id="2537178555904266562">Lỗi khi đồng bộ hóa mật khẩu</translation>
 <translation id="1810845389119482123">Chưa hoàn tất quá trình thiết lập đồng bộ hóa ban đầu</translation>
 <translation id="3235722914093408050">Mở c.đặt Android &amp; bật lại đ.bộ hóa hệ thống Android để b.đầu đồng bộ hóa Brave</translation>
 <translation id="3367813778245106622">Đăng nhập lại để bắt đầu đồng bộ hóa</translation>
+<translation id="3701167022068948696">Khắc phục ngay</translation>
 <translation id="974555521953189084">Nhập cụm mật khẩu của bạn để bắt đầu đồng bộ hóa</translation>
 <translation id="2997266899014181325">Để bắt đầu đồng bộ hóa, hãy bật tùy chọn "Đồng bộ hóa dữ liệu của bạn trên Brave".</translation>
 <translation id="8260126382462817229">Thử đăng nhập lại</translation>
@@ -603,7 +607,7 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="2317945146070194624">Mở trong tab Brave mới</translation>
 <translation id="7975379999046275268">Xem trước trang <ph name="BEGIN_NEW"/>Mới<ph name="END_NEW"/></translation>
 <translation id="6112702117600201073">Làm mới trang</translation>
-<translation id="36525718899759834">Tải ứng dụng từ Cửa hàng Brave Software Play: <ph name="APP_ACTION"/></translation>
+<translation id="6990079615885386641">Tải ứng dụng từ Cửa hàng Brave Software Play: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">Tối</translation>
 <translation id="1807246157184219062">Sáng</translation>
 <translation id="4056223980640387499">Màu nâu đỏ</translation>
@@ -639,7 +643,6 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="3810973564298564668">Quản lý</translation>
 <translation id="5199929503336119739">Hồ sơ công việc</translation>
 <translation id="528192093759286357">Kéo từ trên xuống và chạm vào nút quay lại để thoát khỏi chế độ toàn màn hình.</translation>
-<translation id="2836148919159985482">Chạm vào nút quay lại để thoát khỏi chế độ toàn màn hình.</translation>
 <translation id="3967822245660637423">Tải xuống hoàn tất</translation>
 <translation id="2434158240863470628">Quá trình tải xuống hoàn tất <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="802154636333426148">Tải xuống không thành công</translation>
@@ -698,6 +701,7 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="3810838688059735925">Video</translation>
 <translation id="3616113530831147358">Âm thanh</translation>
 <translation id="9219103736887031265">Hình ảnh</translation>
+<translation id="656065428026159829">Xem thêm</translation>
 <translation id="8250920743982581267">Tài liệu</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# tệp}other{# tệp}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# hình ảnh}other{# hình ảnh}}</translation>
@@ -709,7 +713,7 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="7810647596859435254">Mở bằng…</translation>
 <translation id="5655963694829536461">Tìm kiếm trong các tệp đã tải xuống</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
-<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph>;</translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION"/>;</translation>
 <translation id="1883903952484604915">Tệp của tôi</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Các bài viết xuất hiện ở đây và bạn có thể đọc ngay cả khi không có kết nối mạng</translation>
@@ -737,7 +741,7 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="673197144963363525">Giúp cải thiện Brave bằng cách gửi số liệu thống kê sử dụng và báo cáo sự cố cho Brave Software.</translation>
 <translation id="3518985090088779359">Chấp nhận và tiếp tục</translation>
 <translation id="7207456302801184289">Chào mừng bạn đến với Brave</translation>
-<translation id="704822250101715322">Đợi Dịch vụ của Brave Software Play cập nhật xong</translation>
+<translation id="7189372733857464326">Đợi Dịch vụ của Brave Software Play cập nhật xong</translation>
 <translation id="1231733316453485619">Bạn muốn bật tính năng đồng bộ hóa?</translation>
 <translation id="5132942445612118989">Đồng bộ hóa mật khẩu, lịch sử và các thông tin khác của bạn trên tất cả các thiết bị</translation>
 <translation id="5736731321935944068">Brave Software có thể sử dụng lịch sử của bạn để điều chỉnh tính năng Tìm kiếm, quảng cáo và các dịch vụ khác của Brave Software cho phù hợp với bạn</translation>
@@ -762,7 +766,9 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="4046123991198612571">Bản nhạc tiếp theo</translation>
 <translation id="3859306556332390985">Tìm kiếm tiến</translation>
 <translation id="8441146129660941386">Tìm kiếm lùi</translation>
-<translation id="6706288973712894588">Bạn hiện chưa kết nối Internet.\n<ph name="BEGIN_LINK"/>Hãy khám phá nguồn cấp dữ liệu khi không có mạng.<ph name="END_LINK"/></translation>
+<translation id="6884306546558072722">Tiếp tục khám phá khi không có mạng</translation>
+<translation id="388596076286380598">Bạn có thể xem các bài viết, video và nội dung khác trên những trang web mình thích, ngay cả khi không có kết nối mạng hoặc kết nối yếu.</translation>
+<translation id="1736419249208073774">Khám phá</translation>
 <translation id="572328651809341494">Các tab gần đây</translation>
 <translation id="8497726226069778601">Chưa có gì để xem ở đây...</translation>
 <translation id="5423934151118863508">Trang bạn truy cập nhiều nhất sẽ xuất hiện ở đây</translation>
@@ -785,7 +791,6 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/> về nội dung đề xuất</translation>
 <translation id="7542481630195938534">Không thể nhận nội dung đề xuất</translation>
 <translation id="5013696553129441713">Không có nội dung đề xuất mới</translation>
-<translation id="1736419249208073774">Khám phá</translation>
 <translation id="7444811645081526538">Danh mục khác</translation>
 <translation id="6709133671862442373">Tin tức</translation>
 <translation id="1264974993859112054">Thể thao</translation>
@@ -892,6 +897,7 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="584427517463557805">Tab riêng tư đã chọn</translation>
 <translation id="2268044343513325586">Tinh chỉnh</translation>
 <translation id="7846076177841592234">Hủy chọn</translation>
+<translation id="6216432067784365534">Tùy chọn <ph name="NAME_OF_LIST_ITEM"/></translation>
 <translation id="7087918508125750058">Đã chọn <ph name="ITEM_COUNT"/> mục. Bạn có thể sử dụng các tùy chọn ở gần đầu màn hình</translation>
 <translation id="7250468141469952378">Đã chọn <ph name="ITEM_COUNT"/></translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Chia sẻ 1 mục đã chọn}other{Chia sẻ # mục đã chọn}}</translation>
@@ -966,8 +972,10 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="3333961966071413176">Tất cả người liên hệ</translation>
 <translation id="4994033804516042629">Không tìm thấy người liên hệ nào</translation>
 <translation id="5403592356182871684">Tên</translation>
+<translation id="2903493209154104877">Địa chỉ</translation>
 <translation id="2717722538473713889">Địa chỉ email</translation>
 <translation id="381841723434055211">Số điện thoại</translation>
+<translation id="6689172468748959065">Ảnh tiểu sử</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ 1 lựa chọn khác)}other{(+ # lựa chọn khác)}}</translation>
 <translation id="5197729504361054390">Những người liên hệ bạn chọn sẽ được chia sẻ với <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="1779089405699405702">Bộ giải mã hình ảnh</translation>
@@ -1080,8 +1088,12 @@ Trang web này KHÔNG có quyền truy cập vào máy ảnh. Chỉ bạn mới 
 <translation id="7757787379047923882">Văn bản được chia sẻ từ <ph name="DEVICE_NAME"/></translation>
 <translation id="5193988420012215838">Đã sao chép vào khay nhớ tạm</translation>
 <translation id="4696983787092045100">Gửi văn bản đến các thiết bị của bạn</translation>
+<translation id="5694049548840660018">Dễ dàng quay lại trang chủ</translation>
+<translation id="1122278879166832009">Nhấn vào đây để truy cập nhanh vào trang chủ từ ứng dụng bất kỳ</translation>
 <translation id="1260236875608242557">Tìm kiếm và khám phá</translation>
 <translation id="6369229450655021117">Từ đây, bạn có thể tìm kiếm trên web, chia sẻ với bạn bè và xem các trang đang mở</translation>
+<translation id="8758557275681689734">Xem tất cả các tab bạn đang mở</translation>
+<translation id="8655599981421006542">Nhấn vào đây để tạo tab mới và quay lại tab trước</translation>
 <translation id="723171743924126238">Chọn hình ảnh</translation>
 <translation id="8751914237388039244">Chọn hình ảnh</translation>
 <translation id="1989112275319619282">Duyệt qua</translation>
@@ -1102,18 +1114,16 @@ Trang web này KHÔNG có quyền truy cập vào máy ảnh. Chỉ bạn mới 
 <translation id="671481426037969117">Thời gian hẹn giờ của <ph name="FQDN"/> đã hết. Thời gian hẹn giờ sẽ bắt đầu lại vào ngày mai.</translation>
 <translation id="7479104141328977413">Quản lý tab</translation>
 <translation id="3524138585025253783">Giao diện người dùng dành cho nhà phát triển</translation>
+<translation id="4732120983431207637">Trình gỡ ngăn xếp</translation>
 <translation id="6036057147555329831">Bộ chuyển đổi giao diện (ICU) bổ sung</translation>
-<translation id="9029323097866369874">Cho phép <ph name="DOMAIN"/> vào chế độ thực tế ảo?</translation>
-<translation id="7685301384041462804">Nhớ kiểm tra xem trang web này có tin cậy không trước khi vào chế độ thực tế ảo.</translation>
-<translation id="5033865233969348410">Khi bạn ở chế độ thực tế ảo, trang web này có thể tìm hiểu về:
-  –  đặc điểm ngoại hình của bạn, chẳng hạn như chiều cao
-
-Nhớ kiểm tra xem trang web này có tin cậy không trước khi vào chế độ thực tế ảo.</translation>
-<translation id="5534334044554683961">Khi bạn ở chế độ thực tế ảo, trang web này có thể tìm hiểu về:
-  –   đặc điểm ngoại hình của bạn, chẳng hạn như chiều cao
-  –   cách bài trí phòng của bạn
-
-Nhớ kiểm tra xem trang web này có tin cậy không trước khi vào chế độ thực tế ảo.</translation>
-<translation id="4169535189173047238">Không cho phép</translation>
-<translation id="2170088579611075216">Cho phép và chuyển sang thực tế ảo</translation>
+<translation id="2175927920773552910">Mã QR</translation>
+<translation id="246532703174860178">Chia sẻ</translation>
+<translation id="2517472476991765520">Quét</translation>
+<translation id="8628973420740315031">Để chia sẻ với những người ở gần, hãy cho phép họ quét mã QR này</translation>
+<translation id="7339921667754113786">Nền tảng thông báo của Brave Software</translation>
+<translation id="8516012719330875537">Trình chỉnh sửa ảnh</translation>
+<translation id="4808319664292298116">Chuyển sang chế độ thực tế ảo trên <ph name="DOMAIN"/>?</translation>
+<translation id="4353114845960720315">Khi bạn ở chế độ thực tế ảo, trang web này có thể biết được:</translation>
+<translation id="118069123878619799">– đặc điểm hình thể của bạn, chẳng hạn như chiều cao</translation>
+<translation id="5819762621475381970">– cách bài trí phòng của bạn</translation>
 </translationbundle>

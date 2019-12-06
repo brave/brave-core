@@ -65,6 +65,7 @@
 <translation id="1928696683969751773">Aktualizace</translation>
 <translation id="6064125863973209585">Dokončená stahování</translation>
 <translation id="5342314432463739672">Žádosti o oprávnění</translation>
+<translation id="3749259744154402564">Nepodporováno</translation>
 <translation id="629730747756840877">Účet</translation>
 <translation id="82609232232243542">Přihlásit se do Chromu</translation>
 <translation id="7956662517480676674">Synchronizace a služby Brave Software</translation>
@@ -227,8 +228,6 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="3245261285041759672">Na stránce <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> mohou být k dispozici další druhy historie prohlížení zaznamenané ve vašem účtu Brave Software.</translation>
 <translation id="7274013316676448362">Blokovaný web</translation>
 <translation id="2534155362429831547">Byly smazány položky (celkem <ph name="NUMBER_OF_ITEMS"/>)</translation>
-<translation id="1121094540300013208">Zprávy o využití a selhání</translation>
-<translation id="9079153198295609735">Automaticky posílat společnosti Brave Software statistiky používání a zprávy o selhání</translation>
 <translation id="6981982820502123353">Usnadnění</translation>
 <translation id="2387895666653383613">Zvětšení/zmenšení textu</translation>
 <translation id="2321958826496381788">Přetahujte posuvník tak dlouho, dokud nebudete moci pohodlně přečíst tento text. Po dvojitém klepnutí na odstavec by měl být text alespoň takto velký.</translation>
@@ -243,12 +242,12 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="6295158916970320988">Všechny weby</translation>
 <translation id="8380167699614421159">Tento web zobrazuje rušivé nebo zavádějící reklamy</translation>
 <translation id="1919345977826869612">Reklamy</translation>
-<translation id="410351446219883937">Automatické přehrávání</translation>
 <translation id="6447842834002726250">Soubory cookie</translation>
 <translation id="6196640612572343990">Blokovat soubory cookie třetích stran</translation>
 <translation id="6782111308708962316">Zabránit webům třetích stran v ukládání a čtení dat souborů cookie</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Vyskakovací okna a přesměrování</translation>
+<translation id="534295439873310000">Zařízení NFC</translation>
 <translation id="4751476147751820511">Senzory pohybu nebo světla</translation>
 <translation id="1717218214683051432">Pohybová čidla</translation>
 <translation id="2091887806945687916">Zvuk</translation>
@@ -261,7 +260,6 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="6181444274883918285">Přidat výjimku pro konkrétní web</translation>
 <translation id="5313967007315987356">Přidat web</translation>
 <translation id="1369915414381695676">Byl přidán web <ph name="SITE_NAME"/></translation>
-<translation id="7837721118676387834">Povolit automatické přehrávání ztlumených videí na konkrétním webu.</translation>
 <translation id="2621115761605608342">Povolit JavaScript pro konkrétní web.</translation>
 <translation id="8801436777607969138">Blokovat JavaScript na konkrétním webu.</translation>
 <translation id="8372893542064058268">Povolit synchronizaci na pozadí konkrétnímu webu.</translation>
@@ -285,7 +283,6 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="5100237604440890931">Sbaleno – kliknutím rozbalíte</translation>
 <translation id="857943718398505171">Povoleno (doporučeno)</translation>
 <translation id="2913331724188855103">Povolit webům ukládat a číst data souborů cookie (doporučeno)</translation>
-<translation id="7445411102860286510">Povolit webům automaticky přehrávat ztlumená videa (doporučeno)</translation>
 <translation id="5335288049665977812">Povolit webům spouštět JavaScript (doporučeno)</translation>
 <translation id="5527111080432883924">Zeptat se, než bude webům povolen přístup k textu a obrázkům zkopírovaným do schránky (doporučeno)</translation>
 <translation id="6912998170423641340">Blokovat webům přístup k textu a obrázkům zkopírovaným do schránky</translation>
@@ -295,6 +292,8 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="2107397443965016585">Před povolením spuštění chráněného obsahu na webu se zeptat (doporučeno)</translation>
 <translation id="2910701580606108292">Před povolením spuštění chráněného obsahu na webu se zeptat</translation>
 <translation id="757524316907819857">Bránit webům v přehrávání chráněného obsahu</translation>
+<translation id="5710871682236653961">Když se dotknete zařízení NFC, nejdříve se zeptat a teprve poté webu případně povolit odesílání a příjem informací (doporučeno)</translation>
+<translation id="7572498721684305250">Blokovat webům odesílání a příjem informací, když se dotknete zařízení NFC</translation>
 <translation id="3277252321222022663">Povolit webům přístup k senzorům (doporučeno)</translation>
 <translation id="5048398596102334565">Povolit webům přístup k senzorům pohybu (doporučeno)</translation>
 <translation id="8816026460808729765">Blokovat webům přístup k senzorům</translation>
@@ -308,7 +307,10 @@ Na stránce <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/> mohou
 <translation id="3123473560110926937">Na některých webech blokováno</translation>
 <translation id="965817943346481315">Blokovat, pokud web zobrazuje rušivé nebo zavádějící reklamy (doporučeno)</translation>
 <translation id="3386292677130313581">Pokud web bude chtít znát vaši polohu, zobrazit dotaz (doporučeno)</translation>
-<translation id="9139068048179869749">Pokud web bude chtít odesílat oznámení, zobrazit dotaz (doporučeno)</translation>
+<translation id="6270391203985052864">Weby mohou žádat o oprávnění zasílat vám oznámení</translation>
+<translation id="5505264765875738116">Weby nemohou žádat o oprávnění zasílat vám oznámení</translation>
+<translation id="6561560012278703671">Použít méně rušivou zprávu (blokuje žádosti o zobrazení oznámení)</translation>
+<translation id="7302486331832100261">Obvykle oznámení blokujete. Chcete-li je povolit, klepněte na Podrobnosti.</translation>
 <translation id="4479647676395637221">Pokud web bude chtít použít vaši kameru, zobrazit dotaz (doporučeno)</translation>
 <translation id="6992289844737586249">Pokud web bude chtít použít váš mikrofon, zobrazit dotaz (doporučeno)</translation>
 <translation id="2289270750774289114">Zeptat se, když chce web objevit zařízení Bluetooth v okolí (doporučeno)</translation>
@@ -507,9 +509,11 @@ Chcete-toto nastavení změnit, <ph name="BEGIN_LINK"/>resetujte synchronizaci<p
 <translation id="5230560987958996918">Web <ph name="SITE"/> chce vyhledat zařízení Bluetooth v okolí. Byla nalezena následující zařízení:</translation>
 <translation id="8368027906805972958">Neznámé nebo nepodporované zařízení (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7605594153474022051">Synchronizace nefunguje</translation>
+<translation id="2537178555904266562">Při synchronizaci došlo k chybě</translation>
 <translation id="1810845389119482123">Počáteční nastavení synchronizace nebylo dokončeno</translation>
 <translation id="3235722914093408050">Chcete-li spustit synchronizaci Chromu, povolte synchronizaci systému Android.</translation>
 <translation id="3367813778245106622">Chcete-li zahájit synchronizaci, znovu se přihlaste.</translation>
+<translation id="3701167022068948696">Vyřešit</translation>
 <translation id="974555521953189084">Chcete-li spustit synchronizaci zadejte heslovou frázi.</translation>
 <translation id="2997266899014181325">Chcete-li synchronizaci spustit, zapněte přepínač Synchronizovat data prohlížeče Brave.</translation>
 <translation id="8260126382462817229">Zkuste se přihlásit znovu.</translation>
@@ -603,7 +607,7 @@ Chcete-toto nastavení změnit, <ph name="BEGIN_LINK"/>resetujte synchronizaci<p
 <translation id="2317945146070194624">Otevřít na nové kartě v Chromu</translation>
 <translation id="7975379999046275268">Zobrazit náhled stránky <ph name="BEGIN_NEW"/>Nové<ph name="END_NEW"/></translation>
 <translation id="6112702117600201073">Obnovování stránky</translation>
-<translation id="36525718899759834">Získat aplikaci z Obchodu Brave Software Play: <ph name="APP_ACTION"/></translation>
+<translation id="6990079615885386641">Získat aplikaci z Obchodu Brave Software Play: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">Tmavé</translation>
 <translation id="1807246157184219062">Světlé</translation>
 <translation id="4056223980640387499">Sépie</translation>
@@ -639,7 +643,6 @@ Chcete-toto nastavení změnit, <ph name="BEGIN_LINK"/>resetujte synchronizaci<p
 <translation id="3810973564298564668">Spravovat</translation>
 <translation id="5199929503336119739">Pracovní profil</translation>
 <translation id="528192093759286357">Režim celé obrazovky ukončíte přetažením z horního okraje obrazovky a klepnutím na tlačítko Zpět.</translation>
-<translation id="2836148919159985482">Režim celé obrazovky ukončíte klepnutím na tlačítko Zpět.</translation>
 <translation id="3967822245660637423">Stahování bylo dokončeno</translation>
 <translation id="2434158240863470628">Stažení bylo dokončeno <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="802154636333426148">Stažení se nezdařilo</translation>
@@ -698,6 +701,7 @@ Chcete-toto nastavení změnit, <ph name="BEGIN_LINK"/>resetujte synchronizaci<p
 <translation id="3810838688059735925">Video</translation>
 <translation id="3616113530831147358">Zvuk</translation>
 <translation id="9219103736887031265">Obrázky</translation>
+<translation id="656065428026159829">Zobrazit další</translation>
 <translation id="8250920743982581267">Dokumenty</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# soubor}few{# soubory}many{# souboru}other{# souborů}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# obrázek}few{# obrázky}many{# obrázku}other{# obrázků}}</translation>
@@ -709,7 +713,7 @@ Chcete-toto nastavení změnit, <ph name="BEGIN_LINK"/>resetujte synchronizaci<p
 <translation id="7810647596859435254">Otevřít v aplikaci…</translation>
 <translation id="5655963694829536461">Hledat ve stažených souborech</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
-<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION"/></translation>
 <translation id="1883903952484604915">Moje soubory</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Zde se zobrazují články, které si můžete číst i offline</translation>
@@ -737,7 +741,7 @@ Chcete-toto nastavení změnit, <ph name="BEGIN_LINK"/>resetujte synchronizaci<p
 <translation id="673197144963363525">Pomozte Brave zlepšovat – posílejte Googlu statistiky o využívání a zprávy o selhání.</translation>
 <translation id="3518985090088779359">PŘIJMOUT A POKRAČOVAT</translation>
 <translation id="7207456302801184289">Vítá vás Brave</translation>
-<translation id="704822250101715322">Počkejte prosím, než služby Brave Software Play dokončí aktualizaci</translation>
+<translation id="7189372733857464326">Počkejte prosím, než služby Brave Software Play dokončí aktualizaci</translation>
 <translation id="1231733316453485619">Zapnout synchronizaci?</translation>
 <translation id="5132942445612118989">Vaše hesla, historie a další údaje na všech zařízeních</translation>
 <translation id="5736731321935944068">Brave Software vaši historii může používat k personalizaci Vyhledávání, reklam a dalších služeb Brave Software</translation>
@@ -762,7 +766,9 @@ Chcete-toto nastavení změnit, <ph name="BEGIN_LINK"/>resetujte synchronizaci<p
 <translation id="4046123991198612571">Další skladba</translation>
 <translation id="3859306556332390985">Přetočit dopředu</translation>
 <translation id="8441146129660941386">Přetočit dozadu</translation>
-<translation id="6706288973712894588">Momentálně jste v režimu offline.\n<ph name="BEGIN_LINK"/>Prozkoumejte svůj offline informační kanál.<ph name="END_LINK"/></translation>
+<translation id="6884306546558072722">Pokračujte v objevování i offline</translation>
+<translation id="388596076286380598">Články, videa a další obsah z webů, které se vám líbí, může sledovat i v režimu offline nebo při nekvalitním připojení.</translation>
+<translation id="1736419249208073774">Prozkoumat</translation>
 <translation id="572328651809341494">Nedávno použité karty</translation>
 <translation id="8497726226069778601">Zatím tu nic není...</translation>
 <translation id="5423934151118863508">Zde se zobrazí vaše nejnavštěvovanější stránky.</translation>
@@ -785,7 +791,6 @@ Chcete-toto nastavení změnit, <ph name="BEGIN_LINK"/>resetujte synchronizaci<p
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Další informace<ph name="END_LINK"/> o navrhovaném obsahu</translation>
 <translation id="7542481630195938534">Návrhy nelze načíst</translation>
 <translation id="5013696553129441713">Žádné nové návrhy</translation>
-<translation id="1736419249208073774">Prozkoumat</translation>
 <translation id="7444811645081526538">Další kategorie</translation>
 <translation id="6709133671862442373">Zprávy</translation>
 <translation id="1264974993859112054">Sport</translation>
@@ -892,6 +897,7 @@ Chcete-toto nastavení změnit, <ph name="BEGIN_LINK"/>resetujte synchronizaci<p
 <translation id="584427517463557805">Vybraná soukromá karta</translation>
 <translation id="2268044343513325586">Upřesnit</translation>
 <translation id="7846076177841592234">Zrušit výběr</translation>
+<translation id="6216432067784365534"><ph name="NAME_OF_LIST_ITEM"/> – možnosti</translation>
 <translation id="7087918508125750058">Vybrané položky: <ph name="ITEM_COUNT"/>. Možnosti jsou k dispozici u horního okraje obrazovky</translation>
 <translation id="7250468141469952378">Vybráno: <ph name="ITEM_COUNT"/></translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Sdílet 1 vybranou položku}few{Sdílet # vybrané položky}many{Sdílet # vybrané položky}other{Sdílet # vybraných položek}}</translation>
@@ -966,8 +972,10 @@ Chcete-toto nastavení změnit, <ph name="BEGIN_LINK"/>resetujte synchronizaci<p
 <translation id="3333961966071413176">Všechny kontakty</translation>
 <translation id="4994033804516042629">Nebyly nalezeny žádné kontakty</translation>
 <translation id="5403592356182871684">Názvy</translation>
+<translation id="2903493209154104877">Adresy</translation>
 <translation id="2717722538473713889">E‑mailové adresy</translation>
 <translation id="381841723434055211">Telefonní čísla</translation>
+<translation id="6689172468748959065">Profilové fotky</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ 1 další)}few{(+ # další)}many{(+ # další)}other{(+ # dalších)}}</translation>
 <translation id="5197729504361054390">Vybrané kontakty budou sdíleny s webem <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="1779089405699405702">Dekodér obrázků</translation>
@@ -1080,8 +1088,12 @@ Web NEZÍSKÁ přístup k fotoaparátu. Fotky z fotoaparátu uvidíte pouze vy
 <translation id="7757787379047923882">Text sdílený ze zařízení <ph name="DEVICE_NAME"/></translation>
 <translation id="5193988420012215838">Zkopírováno do schránky</translation>
 <translation id="4696983787092045100">Odeslat text do vašich zařízení</translation>
+<translation id="5694049548840660018">Snadno se vraťte na domovskou stránku</translation>
+<translation id="1122278879166832009">Klepnutím sem kdykoliv odkudkoliv rychle otevřete svou domovskou stránku</translation>
 <translation id="1260236875608242557">Vyhledávání a prozkoumávání</translation>
 <translation id="6369229450655021117">Odsud můžete vyhledávat na webu, sdílet obsah s přáteli a zobrazovat otevřené stránky.</translation>
+<translation id="8758557275681689734">Zobrazení všech otevřených karet</translation>
+<translation id="8655599981421006542">Klepnutím sem můžete vytvořit nové karty nebo se vrátit na předchozí karty</translation>
 <translation id="723171743924126238">Vyberte fotky</translation>
 <translation id="8751914237388039244">Vybrat obrázek</translation>
 <translation id="1989112275319619282">Procházet</translation>
@@ -1102,18 +1114,16 @@ Web NEZÍSKÁ přístup k fotoaparátu. Fotky z fotoaparátu uvidíte pouze vy
 <translation id="671481426037969117">Časovač <ph name="FQDN"/> vypršel. Spustí se zase zítra.</translation>
 <translation id="7479104141328977413">Správa karet</translation>
 <translation id="3524138585025253783">Uživatelské rozhraní pro vývojáře</translation>
+<translation id="4732120983431207637">Rozbalovač zásobníku</translation>
 <translation id="6036057147555329831">Extra ICU</translation>
-<translation id="9029323097866369874">Povolit webu <ph name="DOMAIN"/> přejít do režimu virtuální reality?</translation>
-<translation id="7685301384041462804">Před přechodem do režimu virtuální reality zkontrolujte, zda tomuto webu důvěřujete</translation>
-<translation id="5033865233969348410">V režimu virtuální reality tento web může získat následující informace:
-– vaše fyzické vlastnosti, jako je výška
-
-Před přechodem do režimu virtuální reality zkontrolujte, zda tomuto webu důvěřujete.</translation>
-<translation id="5534334044554683961">V režimu virtuální reality tento web může získat následující informace:
-– vaše fyzické vlastnosti, jako je výška,
-– rozvržení vaší místnosti.
-
-Před přechodem do režimu virtuální reality zkontrolujte, zda tomuto webu důvěřujete.</translation>
-<translation id="4169535189173047238">Nepovolovat</translation>
-<translation id="2170088579611075216">Povolit a spustit virtuální realitu</translation>
+<translation id="2175927920773552910">QR kód</translation>
+<translation id="246532703174860178">Sdílet</translation>
+<translation id="2517472476991765520">Vyhledat</translation>
+<translation id="8628973420740315031">Chcete-li obsah sdílet s lidmi z okolí, nechte je naskenovat tento QR kód</translation>
+<translation id="7339921667754113786">Brave Software Notifications Platform</translation>
+<translation id="8516012719330875537">Editor obrázků</translation>
+<translation id="4808319664292298116">Spustit virtuální realitu z webu <ph name="DOMAIN"/>?</translation>
+<translation id="4353114845960720315">V režimu virtuální reality tento web může získat následující informace:</translation>
+<translation id="118069123878619799">– vaše fyzické vlastnosti, například výšku,</translation>
+<translation id="5819762621475381970">– rozvržení vaší místnosti.</translation>
 </translationbundle>

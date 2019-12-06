@@ -65,6 +65,7 @@
 <translation id="1928696683969751773">Updates</translation>
 <translation id="6064125863973209585">Completed downloads</translation>
 <translation id="5342314432463739672">Permission requests</translation>
+<translation id="3749259744154402564">Unsupported</translation>
 <translation id="629730747756840877">Account</translation>
 <translation id="82609232232243542">Sign in to Brave</translation>
 <translation id="7956662517480676674">Sync and Brave Software services</translation>
@@ -227,8 +228,6 @@ Your Brave Software Account may have other forms of browsing history such as sea
 <translation id="3245261285041759672">Your Brave Software Account may have other forms of browsing history at <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="7274013316676448362">Blocked site</translation>
 <translation id="2534155362429831547"><ph name="NUMBER_OF_ITEMS"/> items deleted</translation>
-<translation id="1121094540300013208">Usage and crash reports</translation>
-<translation id="9079153198295609735">Automatically send usage statistics and crash reports to Brave Software</translation>
 <translation id="6981982820502123353">Accessibility</translation>
 <translation id="2387895666653383613">Text scaling</translation>
 <translation id="2321958826496381788">Drag the slider until you can read this comfortably. Text should look at least this big after double-tapping on a paragraph.</translation>
@@ -243,12 +242,12 @@ Your Brave Software Account may have other forms of browsing history such as sea
 <translation id="6295158916970320988">All sites</translation>
 <translation id="8380167699614421159">This site shows intrusive or misleading ads</translation>
 <translation id="1919345977826869612">Ads</translation>
-<translation id="410351446219883937">Auto-play</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6196640612572343990">Block third-party cookies</translation>
 <translation id="6782111308708962316">Prevent third-party websites from saving and reading cookie data</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Pop-ups and redirects</translation>
+<translation id="534295439873310000">NFC devices</translation>
 <translation id="4751476147751820511">Motion or light sensors</translation>
 <translation id="1717218214683051432">Motion sensors</translation>
 <translation id="2091887806945687916">Sound</translation>
@@ -261,7 +260,6 @@ Your Brave Software Account may have other forms of browsing history such as sea
 <translation id="6181444274883918285">Add site exception</translation>
 <translation id="5313967007315987356">Add site</translation>
 <translation id="1369915414381695676">Site <ph name="SITE_NAME"/> added</translation>
-<translation id="7837721118676387834">Allow auto-play of muted videos for a specific site.</translation>
 <translation id="2621115761605608342">Allow JavaScript for a specific site.</translation>
 <translation id="8801436777607969138">Block JavaScript for a specific site.</translation>
 <translation id="8372893542064058268">Allow Background Sync for a specific site.</translation>
@@ -285,7 +283,6 @@ Your Brave Software Account may have other forms of browsing history such as sea
 <translation id="5100237604440890931">Collapsed – click to expand.</translation>
 <translation id="857943718398505171">Allowed (recommended)</translation>
 <translation id="2913331724188855103">Allow sites to save and read cookie data (recommended)</translation>
-<translation id="7445411102860286510">Allow sites to automatically play muted videos (recommended)</translation>
 <translation id="5335288049665977812">Allow sites to run JavaScript (recommended)</translation>
 <translation id="5527111080432883924">Ask before allowing sites to read text and images from the clipboard (recommended)</translation>
 <translation id="6912998170423641340">Block sites from reading text and images from the clipboard</translation>
@@ -295,6 +292,8 @@ Your Brave Software Account may have other forms of browsing history such as sea
 <translation id="2107397443965016585">Ask before allowing sites to play protected content (recommended)</translation>
 <translation id="2910701580606108292">Ask before allowing sites to play protected content</translation>
 <translation id="757524316907819857">Block sites from playing protected content</translation>
+<translation id="5710871682236653961">Ask before allowing sites to send and receive info when you tap NFC devices (recommended)</translation>
+<translation id="7572498721684305250">Block sites from sending and receiving info when you tap NFC devices</translation>
 <translation id="3277252321222022663">Allow sites to access sensors (recommended)</translation>
 <translation id="5048398596102334565">Allow sites to access motion sensors (recommended)</translation>
 <translation id="8816026460808729765">Block sites from accessing sensors</translation>
@@ -308,7 +307,10 @@ Your Brave Software Account may have other forms of browsing history such as sea
 <translation id="3123473560110926937">Blocked on some sites</translation>
 <translation id="965817943346481315">Block if site shows intrusive or misleading ads (recommended)</translation>
 <translation id="3386292677130313581">Ask before allowing sites to know your location (recommended)</translation>
-<translation id="9139068048179869749">Ask before allowing sites to send notifications (recommended)</translation>
+<translation id="6270391203985052864">Sites can ask to send notifications</translation>
+<translation id="5505264765875738116">Sites can't ask to send notifications</translation>
+<translation id="6561560012278703671">Use quieter messaging (blocks notification prompts from interrupting you)</translation>
+<translation id="7302486331832100261">You usually block notifications. To allow, tap Details.</translation>
 <translation id="4479647676395637221">Ask first before allowing sites to use your camera (recommended)</translation>
 <translation id="6992289844737586249">Ask first before allowing sites to use your microphone (recommended)</translation>
 <translation id="2289270750774289114">Ask when a site wants to discover nearby Bluetooth devices (recommended)</translation>
@@ -507,9 +509,11 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="5230560987958996918"><ph name="SITE"/> wants to scan for nearby Bluetooth devices. The following devices have been found:</translation>
 <translation id="8368027906805972958">Unknown or unsupported device (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7605594153474022051">Sync isn't working</translation>
+<translation id="2537178555904266562">Error syncing passwords</translation>
 <translation id="1810845389119482123">Initial sync setup not finished</translation>
 <translation id="3235722914093408050">Open Android settings and re-enable Android system sync to start Brave sync</translation>
 <translation id="3367813778245106622">Sign in again to start sync</translation>
+<translation id="3701167022068948696">Fix now</translation>
 <translation id="974555521953189084">Enter your passphrase to start sync</translation>
 <translation id="2997266899014181325">To start sync, turn on 'Sync your Brave data'.</translation>
 <translation id="8260126382462817229">Try signing in again</translation>
@@ -603,7 +607,7 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="2317945146070194624">Open in new Brave tab</translation>
 <translation id="7975379999046275268">Preview page <ph name="BEGIN_NEW"/>New<ph name="END_NEW"/></translation>
 <translation id="6112702117600201073">Refreshing page</translation>
-<translation id="36525718899759834">Get the app from the Brave Software Play Store: <ph name="APP_ACTION"/></translation>
+<translation id="6990079615885386641">Get the app from the Brave Software Play Store: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">Dark</translation>
 <translation id="1807246157184219062">Light</translation>
 <translation id="4056223980640387499">Sepia</translation>
@@ -639,7 +643,6 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="3810973564298564668">Manage</translation>
 <translation id="5199929503336119739">Work profile</translation>
 <translation id="528192093759286357">Drag from top and touch the back button to exit full screen.</translation>
-<translation id="2836148919159985482">Touch the back button to exit full screen.</translation>
 <translation id="3967822245660637423">Download complete</translation>
 <translation id="2434158240863470628">Download complete <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="802154636333426148">Download failed</translation>
@@ -698,6 +701,7 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="3810838688059735925">Video</translation>
 <translation id="3616113530831147358">Audio</translation>
 <translation id="9219103736887031265">Images</translation>
+<translation id="656065428026159829">See more</translation>
 <translation id="8250920743982581267">Documents</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# File}other{# Files}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# Image}other{# Images}}</translation>
@@ -709,7 +713,7 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="7810647596859435254">Open with…</translation>
 <translation id="5655963694829536461">Search your downloads</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
-<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION"/></translation>
 <translation id="1883903952484604915">My files</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Articles appear here, which you can read even when you're offline</translation>
@@ -737,7 +741,7 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="673197144963363525">Help make Brave better by sending usage statistics and crash reports to Brave Software.</translation>
 <translation id="3518985090088779359">Accept &amp; continue</translation>
 <translation id="7207456302801184289">Welcome to Brave</translation>
-<translation id="704822250101715322">Waiting for Brave Software Play Services to finish updating</translation>
+<translation id="7189372733857464326">Waiting for Brave Software Play Services to finish updating</translation>
 <translation id="1231733316453485619">Turn on sync?</translation>
 <translation id="5132942445612118989">Sync your passwords, history and more on all devices</translation>
 <translation id="5736731321935944068">Brave Software may use your history to personalise Search, ads and other Brave Software services</translation>
@@ -762,7 +766,9 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="4046123991198612571">Next track</translation>
 <translation id="3859306556332390985">Seek forward</translation>
 <translation id="8441146129660941386">Seek backward</translation>
-<translation id="6706288973712894588">You are currently offline.\n<ph name="BEGIN_LINK"/>Explore your offline feed.<ph name="END_LINK"/></translation>
+<translation id="6884306546558072722">Keep exploring offline</translation>
+<translation id="388596076286380598">Get articles, videos and other content from sites that you like, even if you’re offline or your connection is poor.</translation>
+<translation id="1736419249208073774">Explore</translation>
 <translation id="572328651809341494">Recent tabs</translation>
 <translation id="8497726226069778601">Nothing to see here… yet</translation>
 <translation id="5423934151118863508">Your most visited pages will appear here</translation>
@@ -785,7 +791,6 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Find out more<ph name="END_LINK"/> about suggested content</translation>
 <translation id="7542481630195938534">Can’t get suggestions</translation>
 <translation id="5013696553129441713">No new suggestions</translation>
-<translation id="1736419249208073774">Explore</translation>
 <translation id="7444811645081526538">More categories</translation>
 <translation id="6709133671862442373">News</translation>
 <translation id="1264974993859112054">Sports</translation>
@@ -892,6 +897,7 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="584427517463557805">Selected Private tab</translation>
 <translation id="2268044343513325586">Refine</translation>
 <translation id="7846076177841592234">Cancel selection</translation>
+<translation id="6216432067784365534"><ph name="NAME_OF_LIST_ITEM"/> Options</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> selected. Options available near top of the screen</translation>
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> selected</translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Share 1 selected item}other{Share # selected items}}</translation>
@@ -966,8 +972,10 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="3333961966071413176">All contacts</translation>
 <translation id="4994033804516042629">No contacts found</translation>
 <translation id="5403592356182871684">Names</translation>
+<translation id="2903493209154104877">Addresses</translation>
 <translation id="2717722538473713889">Email addresses</translation>
 <translation id="381841723434055211">Phone numbers</translation>
+<translation id="6689172468748959065">Profile photos</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ 1 more)}other{(+ # more)}}</translation>
 <translation id="5197729504361054390">The contacts that you select will be shared with <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="1779089405699405702">Image decoder</translation>
@@ -1080,8 +1088,12 @@ The site does NOT gain access to the camera. The camera images are only visible 
 <translation id="7757787379047923882">Text shared from <ph name="DEVICE_NAME"/></translation>
 <translation id="5193988420012215838">Copied to your clipboard</translation>
 <translation id="4696983787092045100">Send text to Your Devices</translation>
+<translation id="5694049548840660018">Get back home easily</translation>
+<translation id="1122278879166832009">Tap here to quickly access your homepage from anywhere</translation>
 <translation id="1260236875608242557">Search and explore</translation>
 <translation id="6369229450655021117">From here, you can search the web, share with friends and see open pages</translation>
+<translation id="8758557275681689734">See all your open tabs</translation>
+<translation id="8655599981421006542">Tap here to create new tabs and go back to previous ones</translation>
 <translation id="723171743924126238">Select images</translation>
 <translation id="8751914237388039244">Select an image</translation>
 <translation id="1989112275319619282">Browse</translation>
@@ -1102,18 +1114,16 @@ The site does NOT gain access to the camera. The camera images are only visible 
 <translation id="671481426037969117">Your <ph name="FQDN"/> timer ran out. It will start again tomorrow.</translation>
 <translation id="7479104141328977413">Tab management</translation>
 <translation id="3524138585025253783">Developer UI</translation>
+<translation id="4732120983431207637">Stack unwinder</translation>
 <translation id="6036057147555329831">Extra ICU</translation>
-<translation id="9029323097866369874">Allow <ph name="DOMAIN"/> to enter VR?</translation>
-<translation id="7685301384041462804">Make sure that you trust this site before entering VR.</translation>
-<translation id="5033865233969348410">While you are in VR, this site may be able to find out about:
-  -  your physical features, such as height
-
-Make sure that you trust this site before entering VR.</translation>
-<translation id="5534334044554683961">While you are in VR, this site may be able to find out about:
-  -   your physical features, such as height
-  -   the layout of your room
-
-Make sure that you trust this site before entering VR.</translation>
-<translation id="4169535189173047238">Don't allow</translation>
-<translation id="2170088579611075216">Allow and enter VR</translation>
+<translation id="2175927920773552910">QR Code</translation>
+<translation id="246532703174860178">Share</translation>
+<translation id="2517472476991765520">Scan</translation>
+<translation id="8628973420740315031">To share with people nearby, let them scan this QR code</translation>
+<translation id="7339921667754113786">Brave Software Notifications Platform</translation>
+<translation id="8516012719330875537">Image editor</translation>
+<translation id="4808319664292298116">Enter VR from <ph name="DOMAIN"/>?</translation>
+<translation id="4353114845960720315">While you're in VR, this site may be able to learn about:</translation>
+<translation id="118069123878619799">- your physical features, such as height</translation>
+<translation id="5819762621475381970">- the layout of your room</translation>
 </translationbundle>

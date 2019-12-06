@@ -10,6 +10,7 @@
 <translation id="7791543448312431591">Add</translation>
 <translation id="1181037720776840403">Remove</translation>
 <translation id="5317780077021120954">Kaydet</translation>
+<translation id="3897092660631435901">Menu</translation>
 <translation id="5300589172476337783">Göster</translation>
 <translation id="7108338896283013870">Gizle</translation>
 <translation id="780301667611848630">Hayır, teşekkürler</translation>
@@ -19,6 +20,7 @@
 <translation id="1036348656032585052">Kapat</translation>
 <translation id="8105368624971345109">Kapat</translation>
 <translation id="1175364870820465910">Ya&amp;zdır...</translation>
+<translation id="129553762522093515">Son kapatılan</translation>
 <translation id="8870413625673593573">Son Kapatılan</translation>
 <translation id="385051799172605136">Geri</translation>
 <translation id="7481312909269577407">İleri</translation>
@@ -28,19 +30,23 @@
 <translation id="1201402288615127009">Sonraki</translation>
 <translation id="5713644099811900409">Brave Software Hesabı</translation>
 <translation id="3157931365184549694">Restore</translation>
+<translation id="5040262127954254034">Gizlilik</translation>
 <translation id="3061707000357573562">Yama Hizmeti</translation>
 <translation id="1914326953223720820">Sıkıştırma Açma Hizmeti</translation>
+<translation id="1623104350909869708">Bu sayfanın daha fazla iletişim kutusu oluşturmasını önle</translation>
 <translation id="2677748264148917807">Çık</translation>
 <translation id="5556459405103347317">Yeniden Yükle</translation>
 <translation id="2359808026110333948">Devam et</translation>
-<translation id="5935964611177478118">Brave'da oturum açın</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="8131740175452115882">Onayla</translation>
 <translation id="8968766641738584599">Kartı kaydet</translation>
+<translation id="860043288473659153">Kart sahibinin adı</translation>
+<translation id="869891660844655955">Son kullanma tarihi</translation>
 <translation id="5457113250005438886">Geçersiz</translation>
 <translation id="6518133107902771759">Doğrula</translation>
 <translation id="8987927404178983737">Ay</translation>
 <translation id="6015796118275082299">Yıl</translation>
+<translation id="1581080074034554886">CVC</translation>
 <translation id="9065203028668620118">Düzenle</translation>
 <translation id="5029568752722684782">Kopyayı temizle</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -70,6 +76,7 @@
 <translation id="4522570452068850558">Ayrıntılar</translation>
 <translation id="3586931643579894722">Ayrıntıları gizle</translation>
 <translation id="614940544461990577">Aşağıdakileri deneyin:</translation>
+<translation id="4943872375798546930">Sonuç yok</translation>
 <translation id="8688672835843460752">Müsait</translation>
 <translation id="4989542687859782284">Mevcut değil</translation>
 <translation id="59174027418879706">Etkin</translation>
@@ -79,7 +86,10 @@
 <translation id="1838374766361614909">Aramayı temizle</translation>
 <translation id="495170559598752135">İşlemler</translation>
 <translation id="8261506727792406068">Delete</translation>
+<translation id="3207960819495026254">Yer işareti koyuldu</translation>
 <translation id="3303855915957856445">Arama sonucu bulunamadı</translation>
+<translation id="1209206284964581585">Şimdilik gizle</translation>
+<translation id="1407135791313364759">Tümünü aç</translation>
 <translation id="4880827082731008257">Geçmişte ara</translation>
 <translation id="4756388243121344051">&amp;Geçmiş</translation>
 <translation id="1644574205037202324">History</translation>
@@ -91,11 +101,14 @@
 <translation id="1178581264944972037">Duraklat</translation>
 <translation id="1232569758102978740">Adsız</translation>
 <translation id="7514365320538308">İndir</translation>
+<translation id="8041089156583427627">Görüş bildirin</translation>
 <translation id="7552846755917812628">Aşağıdaki ipuçlarını deneyin:</translation>
+<translation id="3960299545138990065">Brave'u yeniden başlatın</translation>
 <translation id="4275830172053184480">Cihazınızı yeniden başlatın</translation>
 <translation id="413544239732274901">Daha fazla bilgi.</translation>
 <translation id="7554791636758816595">Yeni Sekme</translation>
 <translation id="2079545284768500474">Geri al</translation>
+<translation id="17513872634828108">Açık sekmeler</translation>
 <translation id="981121421437150478">Çevrimdışı</translation>
 <translation id="5171045022955879922">Arayın veya URL'yi yazın</translation>
 <translation id="803771048473350947">Dosya</translation>
@@ -108,12 +121,11 @@
 <translation id="6831043979455480757">Çevir</translation>
 <translation id="2473195200299095979">Bu sayfayı çevir</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, yanıt, <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">Yoksay</translation>
 <translation id="7714464543167945231">Sertifika</translation>
 <translation id="4235360514405112390">Geçerli</translation>
 <translation id="6447842834002726250">Çerezler</translation>
 <translation id="1919345977826869612">Reklamlar</translation>
-<translation id="410351446219883937">Otomatik oynat</translation>
+<translation id="6612358246767739896">Korunan içerik</translation>
 <translation id="9219103736887031265">Resimler</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Pop-up'lar ve yönlendirmeler</translation>
@@ -128,6 +140,7 @@
 <translation id="7638605456503525968">Seri bağlantı noktaları</translation>
 <translation id="2215727959747642672">Dosya düzenleme</translation>
 <translation id="6545864417968258051">Bluetooth taraması</translation>
+<translation id="534295439873310000">NFC cihazları</translation>
 <translation id="5039804452771397117">İzin Ver</translation>
 <translation id="7053983685419859001">Engel</translation>
 <translation id="57838592816432529">Sesi kapat</translation>
@@ -138,13 +151,17 @@
 <translation id="6979440798594660689">Sesi kapat (varsayılan)</translation>
 <translation id="8037357227543935929">Sor (varsayılan)</translation>
 <translation id="8763927697961133303">USB cihaz</translation>
+<translation id="4165986682804962316">Site ayarları</translation>
 <translation id="9011424611726486705">Site ayarlarını aç</translation>
 <translation id="5932224571077948991">Site, araya giren veya yanıltıcı reklamlar gösteriyor</translation>
 <translation id="7878562273885520351">Şifrenizin güvenliği ihlal edilmiş olabilir</translation>
 <translation id="1089439967362294234">Şifreyi Değiştir</translation>
+<translation id="9008201768610948239">Yoksay</translation>
 <translation id="1186201132766001848">Şifreleri Kontrol Et</translation>
 <translation id="5979084224081478209">Şifreleri kontrol et</translation>
+<translation id="10614374240317010">Hiç kaydedilmeyecekler</translation>
 <translation id="5869522115854928033">Kayıtlı şifreler</translation>
+<translation id="230699814587342492">Brave Şifreleri</translation>
 <translation id="5087580092889165836">Kart ekle</translation>
 <translation id="2154484045852737596">Kartı düzenle</translation>
 <translation id="4923459931733593730">Ödeme</translation>
@@ -193,8 +210,11 @@
 <translation id="1974060860693918893">Advanced</translation>
 <translation id="5308380583665731573">Connect</translation>
 <translation id="2501278716633472235">Geri dön</translation>
+<translation id="1736420071277903564">Bilgisayar</translation>
+<translation id="3906954721959377182">Tablet</translation>
 <translation id="7029809446516969842">Şifreler</translation>
 <translation id="6596325263575161958">Şifreleme seçenekleri</translation>
+<translation id="8461694314515752532">Senkronize edilen verileri senkronizasyon parolanızı kullanarak şifrele</translation>
 <translation id="9050666287014529139">Parola</translation>
 <translation id="9095388113577226029">Diğer diller...</translation>
 <translation id="7600965453749440009"><ph name="LANGUAGE"/> dilini asla çevirme</translation>
@@ -202,6 +222,7 @@
 <translation id="7378627244592794276">Hayır</translation>
 <translation id="9137013805542155359">Orijinali göster</translation>
 <translation id="8725066075913043281">Try again</translation>
+<translation id="5684874026226664614">Hata! Bu sayfa çevrilemedi.</translation>
 <translation id="583281660410589416">Bilinmeyen</translation>
 <translation id="9170848237812810038">&amp;Geri al</translation>
 <translation id="2972581237482394796">&amp;Yinele</translation>

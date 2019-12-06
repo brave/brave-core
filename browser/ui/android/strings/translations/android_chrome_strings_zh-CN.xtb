@@ -65,6 +65,7 @@
 <translation id="1928696683969751773">更新</translation>
 <translation id="6064125863973209585">下载已完成</translation>
 <translation id="5342314432463739672">权限请求</translation>
+<translation id="3749259744154402564">不支持</translation>
 <translation id="629730747756840877">帐号</translation>
 <translation id="82609232232243542">登录 Brave</translation>
 <translation id="7956662517480676674">同步功能和 Brave Software 服务</translation>
@@ -227,8 +228,6 @@
 <translation id="3245261285041759672">您的 Brave Software 帐号在 <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> 上可能有其他形式的浏览记录。</translation>
 <translation id="7274013316676448362">禁止访问的网站</translation>
 <translation id="2534155362429831547">删除了 <ph name="NUMBER_OF_ITEMS"/> 项</translation>
-<translation id="1121094540300013208">使用情况信息和崩溃报告</translation>
-<translation id="9079153198295609735">将使用情况统计信息和崩溃报告自动发送给 Brave Software</translation>
 <translation id="6981982820502123353">无障碍</translation>
 <translation id="2387895666653383613">文字大小</translation>
 <translation id="2321958826496381788">拖动该滑块，将文字调整到适合您阅读的大小。点按两次某段落后，显示的文字至少应是这么大。</translation>
@@ -243,12 +242,12 @@
 <translation id="6295158916970320988">所有网站</translation>
 <translation id="8380167699614421159">此网站会展示侵扰性或误导性广告</translation>
 <translation id="1919345977826869612">广告</translation>
-<translation id="410351446219883937">自动播放</translation>
 <translation id="6447842834002726250">Cookie</translation>
 <translation id="6196640612572343990">阻止第三方 Cookie</translation>
 <translation id="6782111308708962316">阻止第三方网站保存和读取 Cookie 数据</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">弹出式窗口和重定向</translation>
+<translation id="534295439873310000">NFC 设备</translation>
 <translation id="4751476147751820511">动态传感器或光传感器</translation>
 <translation id="1717218214683051432">动态传感器</translation>
 <translation id="2091887806945687916">声音</translation>
@@ -261,7 +260,6 @@
 <translation id="6181444274883918285">添加例外网站</translation>
 <translation id="5313967007315987356">添加网站</translation>
 <translation id="1369915414381695676">网站 <ph name="SITE_NAME"/> 已添加</translation>
-<translation id="7837721118676387834">允许特定网站自动播放静音的视频。</translation>
 <translation id="2621115761605608342">允许特定网站运行 JavaScript。</translation>
 <translation id="8801436777607969138">禁止特定网站运行 JavaScript。</translation>
 <translation id="8372893542064058268">允许特定网站进行后台同步。</translation>
@@ -285,7 +283,6 @@
 <translation id="5100237604440890931">已收起 - 点击此处即可展开。</translation>
 <translation id="857943718398505171">允许（推荐）</translation>
 <translation id="2913331724188855103">允许网站保存和读取 Cookie 数据（推荐）</translation>
-<translation id="7445411102860286510">允许网站自动播放静音的视频（推荐）</translation>
 <translation id="5335288049665977812">允许网站运行 JavaScript（推荐）</translation>
 <translation id="5527111080432883924">网站需先询问并得到许可才能读取剪贴板中的文字和图片（推荐）</translation>
 <translation id="6912998170423641340">禁止网站读取剪贴板中的文字和图片</translation>
@@ -295,6 +292,8 @@
 <translation id="2107397443965016585">网站需先询问并得到许可才能播放受保护内容 （推荐）</translation>
 <translation id="2910701580606108292">网站需先询问并得到许可才能播放受保护内容</translation>
 <translation id="757524316907819857">禁止网站播放受保护内容</translation>
+<translation id="5710871682236653961">（推荐）网站需先询问并获得您的许可，才能在您触碰 NFC 设备时发送和接收信息</translation>
+<translation id="7572498721684305250">禁止网站在您触碰 NFC 设备时发送和接收信息</translation>
 <translation id="3277252321222022663">允许网站使用传感器（推荐）</translation>
 <translation id="5048398596102334565">允许网站使用动态传感器（推荐）</translation>
 <translation id="8816026460808729765">禁止网站使用传感器</translation>
@@ -308,7 +307,10 @@
 <translation id="3123473560110926937">已禁止部分网站显示广告</translation>
 <translation id="965817943346481315">屏蔽会展示侵扰性或误导性广告的网站（推荐）</translation>
 <translation id="3386292677130313581">网站需要先询问并得到您的许可才能获取您的位置信息（推荐）</translation>
-<translation id="9139068048179869749">网站发送通知前需先询问并获得许可（推荐）</translation>
+<translation id="6270391203985052864">网站可以询问能否向您发送通知</translation>
+<translation id="5505264765875738116">网站无法询问能否向您发送通知</translation>
+<translation id="6561560012278703671">改用静态指示方式（禁止网站发送通知，以免干扰）</translation>
+<translation id="7302486331832100261">您通常会屏蔽通知。要允许显示通知，请点按“详细信息”。</translation>
 <translation id="4479647676395637221">在允许网站使用您的摄像头前先询问（推荐）</translation>
 <translation id="6992289844737586249">在允许网站使用您的麦克风前先询问（推荐）</translation>
 <translation id="2289270750774289114">在网站想发现附近的蓝牙设备时询问您（推荐）</translation>
@@ -507,9 +509,11 @@
 <translation id="5230560987958996918"><ph name="SITE"/> 想搜索附近的蓝牙设备，并发现了以下设备：</translation>
 <translation id="8368027906805972958">未知或不支持的设备 (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7605594153474022051">同步功能无法正常运行</translation>
+<translation id="2537178555904266562">同步密码时出错</translation>
 <translation id="1810845389119482123">未完成初始同步设置</translation>
 <translation id="3235722914093408050">打开 Android 设置，重新启用 Android 系统同步功能以开始 Brave 同步</translation>
 <translation id="3367813778245106622">重新登录以开始同步</translation>
+<translation id="3701167022068948696">立即修正</translation>
 <translation id="974555521953189084">输入密码以开始同步</translation>
 <translation id="2997266899014181325">要开始同步，请开启“同步 Brave 数据”。</translation>
 <translation id="8260126382462817229">请尝试重新登录</translation>
@@ -603,7 +607,7 @@
 <translation id="2317945146070194624">在新的 Brave 标签页中打开</translation>
 <translation id="7975379999046275268">预览网页<ph name="BEGIN_NEW"/>新<ph name="END_NEW"/></translation>
 <translation id="6112702117600201073">正在刷新页面</translation>
-<translation id="36525718899759834">从 Brave Software Play 商店下载应用：<ph name="APP_ACTION"/></translation>
+<translation id="6990079615885386641">从 Brave Software Play 商店下载应用：<ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">深色调</translation>
 <translation id="1807246157184219062">浅色调</translation>
 <translation id="4056223980640387499">棕色调</translation>
@@ -639,7 +643,6 @@
 <translation id="3810973564298564668">管理</translation>
 <translation id="5199929503336119739">工作资料</translation>
 <translation id="528192093759286357">从顶部向下拖动并触摸“返回”按钮，即可退出全屏模式。</translation>
-<translation id="2836148919159985482">触摸“返回”按钮即可退出全屏模式。</translation>
 <translation id="3967822245660637423">下载完毕</translation>
 <translation id="2434158240863470628">下载完成 <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="802154636333426148">下载失败</translation>
@@ -698,6 +701,7 @@
 <translation id="3810838688059735925">视频</translation>
 <translation id="3616113530831147358">音频</translation>
 <translation id="9219103736887031265">图片</translation>
+<translation id="656065428026159829">查看更多</translation>
 <translation id="8250920743982581267">文档</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# 个文件}other{# 个文件}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# 张图片}other{# 张图片}}</translation>
@@ -709,7 +713,7 @@
 <translation id="7810647596859435254">打开方式…</translation>
 <translation id="5655963694829536461">搜索您的下载内容</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
-<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION"/></translation>
 <translation id="1883903952484604915">我的文件</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">报道会显示在此处，即使在离线状态下也可以阅读</translation>
@@ -737,7 +741,7 @@
 <translation id="673197144963363525">将使用情况统计信息和崩溃报告发送给 Brave Software，帮助我们完善 Brave。</translation>
 <translation id="3518985090088779359">接受并继续</translation>
 <translation id="7207456302801184289">欢迎使用 Brave</translation>
-<translation id="704822250101715322">正在等待 Brave Software Play 服务完成更新</translation>
+<translation id="7189372733857464326">正在等待 Brave Software Play 服务完成更新</translation>
 <translation id="1231733316453485619">开启同步功能？</translation>
 <translation id="5132942445612118989">将您的密码、历史记录等信息同步到所有设备上</translation>
 <translation id="5736731321935944068">Brave Software 可能会利用您的历史记录为您提供个性化的 Brave Software 搜索、广告和其他 Brave Software 服务</translation>
@@ -762,7 +766,9 @@
 <translation id="4046123991198612571">下一曲</translation>
 <translation id="3859306556332390985">前进</translation>
 <translation id="8441146129660941386">后退</translation>
-<translation id="6706288973712894588">您目前处于离线状态。\n<ph name="BEGIN_LINK"/>浏览您的离线版 Feed。<ph name="END_LINK"/></translation>
+<translation id="6884306546558072722">离线时也能畅享网络内容</translation>
+<translation id="388596076286380598">畅享您喜爱的网站上的文章、视频和其他内容，即使离线或网络连接状况不佳也不受影响。</translation>
+<translation id="1736419249208073774">探索</translation>
 <translation id="572328651809341494">最近打开的标签页</translation>
 <translation id="8497726226069778601">目前还未列出任何网页…</translation>
 <translation id="5423934151118863508">您最常访问的网页将列在此处</translation>
@@ -785,7 +791,6 @@
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>详细了解<ph name="END_LINK"/>推荐内容</translation>
 <translation id="7542481630195938534">无法获取建议</translation>
 <translation id="5013696553129441713">没有新建议</translation>
-<translation id="1736419249208073774">探索</translation>
 <translation id="7444811645081526538">更多类别</translation>
 <translation id="6709133671862442373">资讯</translation>
 <translation id="1264974993859112054">体育</translation>
@@ -892,6 +897,7 @@
 <translation id="584427517463557805">选定的私有标签页</translation>
 <translation id="2268044343513325586">优化</translation>
 <translation id="7846076177841592234">取消选择</translation>
+<translation id="6216432067784365534"><ph name="NAME_OF_LIST_ITEM"/>选项</translation>
 <translation id="7087918508125750058">已选择 <ph name="ITEM_COUNT"/> 项。选项位于屏幕顶部附近</translation>
 <translation id="7250468141469952378">已选择 <ph name="ITEM_COUNT"/> 项</translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{分享 1 个所选项}other{分享 # 个所选项}}</translation>
@@ -966,8 +972,10 @@
 <translation id="3333961966071413176">所有联系人</translation>
 <translation id="4994033804516042629">找不到任何联系人</translation>
 <translation id="5403592356182871684">名称</translation>
+<translation id="2903493209154104877">地址</translation>
 <translation id="2717722538473713889">电子邮件地址</translation>
 <translation id="381841723434055211">电话号码</translation>
+<translation id="6689172468748959065">个人资料照片</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{（以及另外 1 个）}other{（以及另外 # 个）}}</translation>
 <translation id="5197729504361054390">系统会将您所选联系人的详细信息分享给 <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>。</translation>
 <translation id="1779089405699405702">图片解码器</translation>
@@ -1080,8 +1088,12 @@
 <translation id="7757787379047923882">分享自“<ph name="DEVICE_NAME"/>”的文字</translation>
 <translation id="5193988420012215838">已复制到剪贴板</translation>
 <translation id="4696983787092045100">向您的多部设备发送短信</translation>
+<translation id="5694049548840660018">轻松访问主页</translation>
+<translation id="1122278879166832009">不论您正在浏览哪个网站，都可点按此处快速访问您的主页</translation>
 <translation id="1260236875608242557">搜索内容与浏览相关建议</translation>
 <translation id="6369229450655021117">您可从这里搜索网上内容、与好友分享内容以及查看已打开的网页</translation>
+<translation id="8758557275681689734">查看您已打开的所有标签页</translation>
+<translation id="8655599981421006542">点按此处可创建新标签页和返回到先前打开的标签页</translation>
 <translation id="723171743924126238">选择图片</translation>
 <translation id="8751914237388039244">选择图片</translation>
 <translation id="1989112275319619282">浏览</translation>
@@ -1102,18 +1114,16 @@
 <translation id="671481426037969117">您的 <ph name="FQDN"/> 计时器已结束计时。它将于明天重新开始。</translation>
 <translation id="7479104141328977413">标签页管理</translation>
 <translation id="3524138585025253783">开发者界面</translation>
+<translation id="4732120983431207637">堆栈展开程序</translation>
 <translation id="6036057147555329831">额外的 ICU</translation>
-<translation id="9029323097866369874">允许 <ph name="DOMAIN"/> 进入 VR 环境？</translation>
-<translation id="7685301384041462804">请确保您信任此网站，然后再进入 VR 环境。</translation>
-<translation id="5033865233969348410">当您处于 VR 环境时，此网站或许能够得知：
-  -  您的身体特征，例如身高
-
-请确保您信任此网站，然后再进入 VR 环境。</translation>
-<translation id="5534334044554683961">当您处于 VR 环境时，此网站或许能够得知：
-  -   您的身体特征，例如身高
-  -   您房间的布局
-
-请确保您信任此网站，然后再进入 VR 环境。</translation>
-<translation id="4169535189173047238">不允许</translation>
-<translation id="2170088579611075216">允许并进入 VR</translation>
+<translation id="2175927920773552910">二维码</translation>
+<translation id="246532703174860178">分享</translation>
+<translation id="2517472476991765520">扫描</translation>
+<translation id="8628973420740315031">要与附近的人分享，请让他们扫描此二维码</translation>
+<translation id="7339921667754113786">Brave Software 通知平台</translation>
+<translation id="8516012719330875537">图片编辑器</translation>
+<translation id="4808319664292298116">从 <ph name="DOMAIN"/> 进入 VR 环境？</translation>
+<translation id="4353114845960720315">当您处于 VR 环境时，此网站或许能够得知：</translation>
+<translation id="118069123878619799">- 您的身体特征，例如身高</translation>
+<translation id="5819762621475381970">- 您房间的布局</translation>
 </translationbundle>

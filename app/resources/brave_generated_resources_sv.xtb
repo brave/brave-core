@@ -20,6 +20,8 @@
 <translation id="3699882589215410581">Installera och kör Wildwine</translation>
 <translation id="8926389886865778422">Fråga inte igen.</translation>
 <translation id="4726634924419692905">Fråga när en webbplats vill installera Widevine på din dator.</translation>
+<translation id="8760415064721320867">Privat fönster med Tor</translation>
+<translation id="8762452230727230396">Tor gömmer din IP-adress från sidorna du besöker.</translation>
 <translation id="8053096063396012732">Installera Widevine</translation>
 <translation id="4840334696217618631">Starta om webbläsaren för att aktivera Widevine</translation>
 <translation id="8410111618231938546">Google Widevine är ett stycke kod för Digital Rights Management (DRM) som vi på Brave Software varken äger eller kan inspektera. Koden för Google Wideline laddas från Googles servrar, inte från våra servrar. Den laddas endast när du aktiverar det här valet. Vi avråder från användning av DRM, men vi respekterar användarens val och tillstår att vissa Brave-användare vill använda tjänster som kräver detta.
@@ -97,7 +99,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="8721331068159819483">Samma som MacOS</translation>
 <translation id="6786747875388722282">Tillägg</translation>
 <translation id="2896916411183256228">Använder WebTorrent för att visa torrenter direkt i webbläsaren. Stödjer torrentfiler och magnetlänkar.</translation>
-<translation id="5554028991651120544">Tillhandahåller en Ethereumplånbok och Dappwebbläsare inuti Brave.</translation>
+<translation id="5554028991651120544">Tillhandahåller en Ethereumplånbok och DAppläsare inuti Brave.</translation>
 <translation id="6554397389149987360">Använder komponenten Hangouts för att aktivera skärmdelning och andra funktioner i webbläsaren.</translation>
 <translation id="1765684547504191670">Använder komponenten Media Router för att aktivera Chromecast i webbläsaren.</translation>
 <translation id="9156965752763025780">Ändringarna tillämpas nästa gång du startar om Brave.</translation>
@@ -153,10 +155,10 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="5318548116565208315">Avataren Godismajs</translation>
 <translation id="1959966725083452288">Avataren Kungligt godis</translation>
 <translation id="2039034364578911089">Avataren Godisninja</translation>
-<translation id="1872784258300710671">Brave använder helt konfidentiell product analytics för att uppskatta den generella användningen av vissa funktioner.</translation>
+<translation id="1872784258300710671">Brave använder helt privat produktanalys för att uppskatta den sammanlagda användningen av vissa funktioner.</translation>
 <translation id="8712637175834984815">Uppfattat</translation>
 <translation id="4394049700291259645">Inaktivera</translation>
-<translation id="6469509880167172749">Skicka automatiskt helt konfidentiell product analytics till Brave</translation>
+<translation id="6469509880167172749">Skicka automatiskt helt privat produktanalys till Brave</translation>
 <translation id="7090566321964540749">Denna anonyma information används endast för att Brave ska kunna uppskatta generella användningen av vissa funktioner.</translation>
 <translation id="1200956479506699688">Crypto Wallets är nu tillgängligt i Brave. Du kan inte använda MetaMask och Crypto Wallets samtidigt.</translation>
 <translation id="7583735190612229830">Ställ in Crypto Wallets för att interagera med denna app och andra som den.</translation>

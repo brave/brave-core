@@ -65,6 +65,7 @@
 <translation id="1928696683969751773">Atualizações</translation>
 <translation id="6064125863973209585">Downloads concluídos</translation>
 <translation id="5342314432463739672">Solicitações de permissão</translation>
+<translation id="3749259744154402564">Incompatível</translation>
 <translation id="629730747756840877">Conta</translation>
 <translation id="82609232232243542">Fazer login no Brave Software Brave</translation>
 <translation id="7956662517480676674">Serviços do Brave Software e de sincronização</translation>
@@ -228,8 +229,6 @@ Por exemplo, alguns sites podem responder a esse pedido mostrando anúncios que 
 <translation id="3245261285041759672">Sua Conta do Brave Software pode ter outras formas de histórico de navegação em <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="7274013316676448362">Site bloqueado</translation>
 <translation id="2534155362429831547">Itens excluídos: <ph name="NUMBER_OF_ITEMS"/></translation>
-<translation id="1121094540300013208">Relatórios de uso e falhas</translation>
-<translation id="9079153198295609735">Envia estatísticas de uso e relatórios de erros ao Brave Software automaticamente</translation>
 <translation id="6981982820502123353">Acessibilidade</translation>
 <translation id="2387895666653383613">Escala do texto</translation>
 <translation id="2321958826496381788">Arraste o controle deslizante até a leitura ficar confortável. Com o toque duplo em um parágrafo, o texto ficará pelo menos deste tamanho.</translation>
@@ -244,12 +243,12 @@ Por exemplo, alguns sites podem responder a esse pedido mostrando anúncios que 
 <translation id="6295158916970320988">Todos os sites</translation>
 <translation id="8380167699614421159">Neste site, há exibição de anúncios invasivos ou enganosos</translation>
 <translation id="1919345977826869612">Anúncios</translation>
-<translation id="410351446219883937">Reprodução automática</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6196640612572343990">Bloquear cookies de terceiros</translation>
 <translation id="6782111308708962316">Impedir sites de terceiros de salvar e ler dados de cookies</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Pop-ups e redirecionamentos</translation>
+<translation id="534295439873310000">Dispositivos NFC</translation>
 <translation id="4751476147751820511">Sensores de luz ou movimento</translation>
 <translation id="1717218214683051432">Sensores de movimento</translation>
 <translation id="2091887806945687916">Som</translation>
@@ -262,7 +261,6 @@ Por exemplo, alguns sites podem responder a esse pedido mostrando anúncios que 
 <translation id="6181444274883918285">Adicionar site às exceções</translation>
 <translation id="5313967007315987356">Adicionar site</translation>
 <translation id="1369915414381695676">Site <ph name="SITE_NAME"/> adicionado</translation>
-<translation id="7837721118676387834">Permite que um determinado site mostre vídeos sem som automaticamente.</translation>
 <translation id="2621115761605608342">Permitir JavaScript para um site específico.</translation>
 <translation id="8801436777607969138">Bloquear JavaScript para um site específico.</translation>
 <translation id="8372893542064058268">Permite a sincronização em segundo plano para um site específico.</translation>
@@ -286,7 +284,6 @@ Por exemplo, alguns sites podem responder a esse pedido mostrando anúncios que 
 <translation id="5100237604440890931">Visualização recolhida. Clique para expandir</translation>
 <translation id="857943718398505171">Permitido (recomendado)</translation>
 <translation id="2913331724188855103">Permitir que os sites salvem e leiam os dados de arquivos "cookies" - que armazenam temporariamente o que você visitou na rede. (Recomendado)</translation>
-<translation id="7445411102860286510">Permite que os sites mostrem vídeos sem som automaticamente (recomendado)</translation>
 <translation id="5335288049665977812">Permitir que sites executem o JavaScript (recomendado)</translation>
 <translation id="5527111080432883924">Perguntar antes de permitir que sites leiam textos e imagens da área de transferência (recomendado)</translation>
 <translation id="6912998170423641340">Impedir que sites leiam textos e imagens da área de transferência</translation>
@@ -296,6 +293,8 @@ Por exemplo, alguns sites podem responder a esse pedido mostrando anúncios que 
 <translation id="2107397443965016585">Perguntar antes de permitir que sites reproduzam conteúdo protegido (recomendado)</translation>
 <translation id="2910701580606108292">Perguntar antes de permitir que sites reproduzam conteúdo protegido</translation>
 <translation id="757524316907819857">Impedir que sites reproduzam conteúdos protegidos</translation>
+<translation id="5710871682236653961">Perguntar antes de permitir que sites enviem e recebam informações quando você tocar em dispositivos NFC (recomendado)</translation>
+<translation id="7572498721684305250">Impedir que sites enviem e recebam informações quando você tocar em dispositivos NFC</translation>
 <translation id="3277252321222022663">Permitir que sites acessem os sensores (recomendado)</translation>
 <translation id="5048398596102334565">Permitir o acesso de sites aos seus sensores de movimento (recomendado)</translation>
 <translation id="8816026460808729765">Impedir que sites acessem os sensores</translation>
@@ -309,7 +308,10 @@ Por exemplo, alguns sites podem responder a esse pedido mostrando anúncios que 
 <translation id="3123473560110926937">Bloqueados em alguns sites</translation>
 <translation id="965817943346481315">Bloquear se o site mostrar anúncios invasivos ou enganosos (recomendado)</translation>
 <translation id="3386292677130313581">Perguntar antes de permitir que sites saibam seu local (recomendado)</translation>
-<translation id="9139068048179869749">Perguntar antes de permitir que sites enviem notificações (recomendado)</translation>
+<translation id="6270391203985052864">Os sites podem pedir para enviar notificações</translation>
+<translation id="5505264765875738116">Os sites não podem pedir para enviar notificações</translation>
+<translation id="6561560012278703671">Usar mensagens mais silenciosas (bloqueia notificações que interrompem você)</translation>
+<translation id="7302486331832100261">Você geralmente bloqueia notificações. Para permitir, toque em "Detalhes".</translation>
 <translation id="4479647676395637221">Perguntar antes de permitir que sites usem sua câmera (recomendado)</translation>
 <translation id="6992289844737586249">Perguntar antes de permitir que sites usem o microfone (recomendado)</translation>
 <translation id="2289270750774289114">Perguntar quando um site quer descobrir dispositivos Bluetooth nas proximidades (recomendado)</translation>
@@ -508,9 +510,11 @@ Para alterar essa configuração, <ph name="BEGIN_LINK"/>redefina a sincronizaç
 <translation id="5230560987958996918">Solicitação de <ph name="SITE"/> para procurar dispositivos Bluetooth próximos. Os seguintes dispositivos foram encontrados:</translation>
 <translation id="8368027906805972958">Dispositivo desconhecido ou incompatível (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7605594153474022051">A sincronização não está funcionando</translation>
+<translation id="2537178555904266562">Erro ao sincronizar senhas</translation>
 <translation id="1810845389119482123">Configuração de sincronização inicial não concluída</translation>
 <translation id="3235722914093408050">Abrir configs. Android e reativar sincronização do Android p/ sincronizar Brave</translation>
 <translation id="3367813778245106622">Faça login novamente para começar a sincronizar</translation>
+<translation id="3701167022068948696">Corrigir agora</translation>
 <translation id="974555521953189084">Digite sua senha longa para iniciar a sincronização</translation>
 <translation id="2997266899014181325">Para iniciar a sincronização, ative a opção "Sincronizar seus dados do Brave".</translation>
 <translation id="8260126382462817229">Tente fazer login novamente</translation>
@@ -604,7 +608,7 @@ Para alterar essa configuração, <ph name="BEGIN_LINK"/>redefina a sincronizaç
 <translation id="2317945146070194624">Abrir em nova guia do Brave</translation>
 <translation id="7975379999046275268">Visualizar página <ph name="BEGIN_NEW"/>Novidade<ph name="END_NEW"/></translation>
 <translation id="6112702117600201073">Atualizando página</translation>
-<translation id="36525718899759834">Comprar aplicativo na Brave Software Play Store: <ph name="APP_ACTION"/></translation>
+<translation id="6990079615885386641">Comprar aplicativo na Brave Software Play Store: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">Escuro</translation>
 <translation id="1807246157184219062">Claro</translation>
 <translation id="4056223980640387499">Sépia</translation>
@@ -640,7 +644,6 @@ Para alterar essa configuração, <ph name="BEGIN_LINK"/>redefina a sincronizaç
 <translation id="3810973564298564668">Gerenciar</translation>
 <translation id="5199929503336119739">Perfil de trabalho</translation>
 <translation id="528192093759286357">Arraste a partir da parte superior e toque no botão "Voltar" para sair da tela cheia.</translation>
-<translation id="2836148919159985482">Toque no botão "Voltar" para sair da tela cheia.</translation>
 <translation id="3967822245660637423">Download concluído</translation>
 <translation id="2434158240863470628">Download concluído <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="802154636333426148">Falha no download</translation>
@@ -699,6 +702,7 @@ Para alterar essa configuração, <ph name="BEGIN_LINK"/>redefina a sincronizaç
 <translation id="3810838688059735925">Vídeo</translation>
 <translation id="3616113530831147358">Áudio</translation>
 <translation id="9219103736887031265">Imagens</translation>
+<translation id="656065428026159829">Ver mais</translation>
 <translation id="8250920743982581267">Documentos</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# arquivo}one{# arquivo}other{# arquivos}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# imagem}one{# imagem}other{# imagens}}</translation>
@@ -710,7 +714,7 @@ Para alterar essa configuração, <ph name="BEGIN_LINK"/>redefina a sincronizaç
 <translation id="7810647596859435254">Abrir com…</translation>
 <translation id="5655963694829536461">Pesquisar seus downloads</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
-<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION"/></translation>
 <translation id="1883903952484604915">Meus arquivos</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Os artigos são exibidos aqui e podem ser lidos até quando você está off-line</translation>
@@ -738,7 +742,7 @@ Para alterar essa configuração, <ph name="BEGIN_LINK"/>redefina a sincronizaç
 <translation id="673197144963363525">Ajude a melhorar o Brave. Envie estatísticas de uso e relatórios de falhas ao Brave Software.</translation>
 <translation id="3518985090088779359">Aceitar e continuar</translation>
 <translation id="7207456302801184289">Bem-vindo ao Brave Software Brave</translation>
-<translation id="704822250101715322">Aguardando o fim da atualização do Brave Software Play Services</translation>
+<translation id="7189372733857464326">Aguardando o fim da atualização do Brave Software Play Services</translation>
 <translation id="1231733316453485619">Ativar sincronização?</translation>
 <translation id="5132942445612118989">Sincronize suas senhas, seu histórico e muito mais em todos os dispositivos</translation>
 <translation id="5736731321935944068">O Brave Software pode usar seu histórico para personalizar a Pesquisa, os anúncios e outros serviços que ele oferece</translation>
@@ -763,7 +767,9 @@ Para alterar essa configuração, <ph name="BEGIN_LINK"/>redefina a sincronizaç
 <translation id="4046123991198612571">Próxima faixa</translation>
 <translation id="3859306556332390985">Avançar</translation>
 <translation id="8441146129660941386">Retroceder</translation>
-<translation id="6706288973712894588">Não há conexão no momento.\n<ph name="BEGIN_LINK"/>Navegue no seu feed off-line.<ph name="END_LINK"/></translation>
+<translation id="6884306546558072722">Continuar explorando off-line</translation>
+<translation id="388596076286380598">Receba artigos, vídeos e outros conteúdos dos sites que você gosta, mesmo que você esteja off-line ou com uma conexão ruim.</translation>
+<translation id="1736419249208073774">Explorar</translation>
 <translation id="572328651809341494">Guias recentes</translation>
 <translation id="8497726226069778601">Não há nada para ver aqui... ainda</translation>
 <translation id="5423934151118863508">Suas páginas mais visitadas aparecerão aqui</translation>
@@ -786,7 +792,6 @@ Para alterar essa configuração, <ph name="BEGIN_LINK"/>redefina a sincronizaç
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/> sobre o conteúdo sugerido</translation>
 <translation id="7542481630195938534">Não é possível exibir as sugestões</translation>
 <translation id="5013696553129441713">Nenhuma nova sugestão</translation>
-<translation id="1736419249208073774">Explorar</translation>
 <translation id="7444811645081526538">Mais categorias</translation>
 <translation id="6709133671862442373">Notícias</translation>
 <translation id="1264974993859112054">Esportes</translation>
@@ -893,6 +898,7 @@ Para alterar essa configuração, <ph name="BEGIN_LINK"/>redefina a sincronizaç
 <translation id="584427517463557805">Aba Privada Selecionada</translation>
 <translation id="2268044343513325586">Refinar</translation>
 <translation id="7846076177841592234">Cancelar seleção</translation>
+<translation id="6216432067784365534">Opções de <ph name="NAME_OF_LIST_ITEM"/></translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> itens selecionados. Opções disponíveis perto da parte superior da tela</translation>
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> itens selecionados</translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Compartilhar 1 item selecionado}one{Compartilhar # item selecionado}other{Compartilhar # itens selecionados}}</translation>
@@ -967,8 +973,10 @@ Para alterar essa configuração, <ph name="BEGIN_LINK"/>redefina a sincronizaç
 <translation id="3333961966071413176">Todos os contatos</translation>
 <translation id="4994033804516042629">Nenhum contato encontrado</translation>
 <translation id="5403592356182871684">Nomes</translation>
+<translation id="2903493209154104877">Endereços</translation>
 <translation id="2717722538473713889">Endereços de e-mail</translation>
 <translation id="381841723434055211">Números de telefone</translation>
+<translation id="6689172468748959065">Fotos do perfil</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(mais 1)}one{(mais #)}other{(mais #)}}</translation>
 <translation id="5197729504361054390">Os contatos selecionados serão compartilhados com <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="1779089405699405702">Decodificador de imagem</translation>
@@ -1081,8 +1089,12 @@ O site NÃO terá acesso à câmera. As imagens da câmera são visíveis apenas
 <translation id="7757787379047923882">Texto compartilhado por <ph name="DEVICE_NAME"/></translation>
 <translation id="5193988420012215838">Copiado para a área de transferência</translation>
 <translation id="4696983787092045100">Enviar texto para seus dispositivos</translation>
+<translation id="5694049548840660018">Volte para o início de forma simples</translation>
+<translation id="1122278879166832009">Toque aqui para acessar sua página inicial em qualquer lugar</translation>
 <translation id="1260236875608242557">Pesquisar e explorar</translation>
 <translation id="6369229450655021117">Aqui, é possível pesquisar na Web, compartilhar itens com os amigos e ver as páginas abertas</translation>
+<translation id="8758557275681689734">Veja todas suas guias abertas</translation>
+<translation id="8655599981421006542">Toque aqui para criar novas guias e voltar para as anteriores</translation>
 <translation id="723171743924126238">Selecionar imagens</translation>
 <translation id="8751914237388039244">Selecione uma imagem</translation>
 <translation id="1989112275319619282">Procurar</translation>
@@ -1103,18 +1115,16 @@ O site NÃO terá acesso à câmera. As imagens da câmera são visíveis apenas
 <translation id="671481426037969117">Seu timer para <ph name="FQDN"/> chegou ao fim. Ele será iniciado novamente amanhã.</translation>
 <translation id="7479104141328977413">Gerenciamento de guias</translation>
 <translation id="3524138585025253783">IU do desenvolvedor</translation>
+<translation id="4732120983431207637">Recuperador de pilha</translation>
 <translation id="6036057147555329831">ICU extra</translation>
-<translation id="9029323097866369874">Permitir que <ph name="DOMAIN"/> entre na RV?</translation>
-<translation id="7685301384041462804">Verifique se você confia neste site antes de entrar na RV.</translation>
-<translation id="5033865233969348410">Enquanto você estiver em RV, o site poderá receber dados sobre:
-  -  suas características físicas, como altura
-
-Verifique se você confia neste site antes de entrar na RV.</translation>
-<translation id="5534334044554683961">Enquanto você estiver em RV, este site poderá receber dados sobre:
-  -   suas características físicas, como altura
-  -   o layout da sua sala
-
-Verifique se você confia neste site antes de entrar na RV.</translation>
-<translation id="4169535189173047238">Não permitir</translation>
-<translation id="2170088579611075216">Permitir e entrar na RV</translation>
+<translation id="2175927920773552910">Código QR</translation>
+<translation id="246532703174860178">Compartilhar</translation>
+<translation id="2517472476991765520">Verificar</translation>
+<translation id="8628973420740315031">Para compartilhar com pessoas próximas, permita que elas leiam esse código QR</translation>
+<translation id="7339921667754113786">Plataforma de notificações do Brave Software</translation>
+<translation id="8516012719330875537">Editor de imagem</translation>
+<translation id="4808319664292298116">Entrar na RV do <ph name="DOMAIN"/>?</translation>
+<translation id="4353114845960720315">Enquanto você estiver em RV, o site poderá receber dados sobre:</translation>
+<translation id="118069123878619799">- suas características físicas, como altura;</translation>
+<translation id="5819762621475381970">- o layout do ambiente.</translation>
 </translationbundle>

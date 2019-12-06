@@ -20,6 +20,8 @@
 <translation id="3699882589215410581">安装并运行 Widevine</translation>
 <translation id="8926389886865778422">不再询问</translation>
 <translation id="4726634924419692905">网站希望在计算机上安装 Widevine 时询问。</translation>
+<translation id="8760415064721320867">用Tor打开私人窗口</translation>
+<translation id="8762452230727230396">Tor 对你访问的网站隐藏了你的 IP 地址。</translation>
 <translation id="8053096063396012732">安装 Widevine</translation>
 <translation id="4840334696217618631">重新启动浏览器以启用 Widevine</translation>
 <translation id="8410111618231938546">Google Widevine 是一款数字版权管理（DRM）代码，Brave Software 不拥有这些代码，也无法检查。 Google Widevine 代码是从 Google 服务器加载的，而不是从我们的服务器加载的。仅在启用此选项时才会加载它。我们不鼓励使用 DRM，但我们尊重用户选择并了解某些 Brave 用户希望使用需要它的服务。

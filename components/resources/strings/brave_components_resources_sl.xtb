@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Izberite iskalnik, ki ga želite privzeto uporabiti pri spletnem iskanju iz naslovne vrstice.</translation>
 <translation id="5804484488647369316">Nastavi privzeti iskalnik</translation>
 <translation id="4428458837269935199">Za bolj zasebno iskanje, poskusite storitev DuckDuckGo.</translation>
-<translation id="513635702954746724">Izberite svojo barvno temo</translation>
-<translation id="6842850080200126305">Barvo v orodni vrstici izberete tako, da se odločite za svetlo ali temno možnost v plošči za nastavitve.</translation>
-<translation id="5805868144901917207">Izberite temo</translation>
-<translation id="8131740175452115882">Potrdi</translation>
-<translation id="713206503018076063">Tema sistema (privzeto)</translation>
-<translation id="1807246157184219062">Svetlo</translation>
-<translation id="2414886740292270097">Temno</translation>
 <translation id="3829010735958850433">Preskoči uvodno predstavitev</translation>
 <translation id="1201402288615127009">Naprej</translation>
 <translation id="7954950242989581218">Brskajte varno in zanesljivo</translation>
 <translation id="2188651882929633653">Ščiti Brave blokirajo nezaželene stvari, ki vam poskušajo slediti po spletu, vključno z večino oglasov. Ščite nastavite navzdol, če se zdi, da spletna stran ne deluje. Brave uporablja <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>popolnoma zasebno analizo izdelkov<ph name="END_LINK_P3A">&lt;/a&gt;</ph> za oceno splošne uporabe nekaterih funkcij. To lahko izklopite v <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>nastavitvah<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Oglasi</translation>
-<translation id="5698387814910197501">Pridobite {{currency}} z ogledom oglasov v brskalniku Brave. Oglasi so izbrani glede na vaša zanimanja oziroma vaše izbire med brskanjem. Nobeni osebni podatki ali zgodovina brskanja nikoli ne zapustijo vašega brskalnika.</translation>
 <translation id="6112368337882254910">Samodejni prispevek</translation>
 <translation id="3742599705619405136">Samodejni način, s katerim lahko podpirate osebe, ki objavljajo vsebino, in ustvarjalce vsebine. Izberite mesečno plačilo in brskajte kot običajno. Strani, preverjene s strani preverjene osebe Brave, ki jih obiščete, bodo samodejno prejele vaše prispevke na podlagi vaše pozornosti, ki jo izmeri Brave.</translation>
 <translation id="20281847067919078">Ocenjene čakajoče nagrade</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Prejeta oglasna obvestila ta mesec</translation>
 <translation id="4229016885653790965">Oprostite! Oglasi v vaši regiji še niso na voljo.</translation>
 <translation id="2539279826042558064">Nagrade Brave Rewards in oglasi trenutno niso na voljo v vaši napravi.</translation>
+<translation id="5421369907811917952">Druge nastavitve</translation>
 <translation id="654711254769318398">Ogledane oglasne strani</translation>
 <translation id="2532127066761785857">Največje število prikazanih oglasov</translation>
 <translation id="5171071066587880677">1 oglas na uro</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">žetoni</translation>
 <translation id="7286722244752781970">Čas, ki ga mora obiskovalec preživeti na strani, da je zabeležen obisk</translation>
 <translation id="4424486208397124985">Najmanjše število obiskov za relevantnost osebe, ki objavi vsebino</translation>
-<translation id="5421369907811917952">Druge nastavitve</translation>
 <translation id="6248554379744796526">Prikaži nepreverjene strani na seznamu</translation>
 <translation id="5875669387851353511">Omogoči donacije za videoposnetke</translation>
 <translation id="8933202740471878108">1 obisk</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Brave Rewards ima težave. Poskusite znova kasneje.</translation>
 <translation id="570208820610947248">Zaznali smo težave z vašo denarnico. Pred nadaljnjo obdelavo transakcij morate obnoviti svojo varnostno kopijo denarnice.</translation>
 <translation id="7797604753681168055">Obnovite zdaj!</translation>
-<translation id="5549059668721746831">Datum naslednje mesečne donacije</translation>
 <translation id="6231182869178328516">Ravnokar sem opravil donacijo <ph name="NAME"/> prek brskalnika Brave. Oglej si ga na spletnem mestu https://brave.com/tips.</translation>
 <translation id="8404935570206006581">DonirajSBrave</translation>
 <translation id="2876191400747549936">Žal je prišlo do težave pri obdelavi vaše zahteve, poskusite znova.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Znesek donacije</translation>
 <translation id="3520817231440482449">Mesečno doniraj tej spletni strani</translation>
 <translation id="1827184134638345603">Pošlji donacijo …</translation>
-<translation id="7928243298881209869">Vaša prva mesečna donacija bo poslana dne:</translation>
-<translation id="6045860799501892362">Nastavi mesečno donacijo</translation>
 <translation id="8003573781961874199">Prenesi v obliki PDF</translation>
 <translation id="298067735430872465">Zaslužek z ogledom oglasov</translation>
 <translation id="2266556115441975588">Vaše nagrade iz oglasov so tu!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">November</translation>
 <translation id="7828956995407538686">Oktober</translation>
 <translation id="5502713021410870035">September</translation>
-<translation id="5737831580668469027">Mesečne donacije</translation>
 <translation id="606865182719489911">Na voljo so brezplačna sredstva v obliki žetonov.</translation>
 <translation id="2487641031722095938">To je vaš srečni dan!</translation>
 <translation id="6255773350565723852">Vaše sredstvo v obliki žetonov je na poti.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Plačilo</translation>
 <translation id="4021593982164260556">Plačilo izvedeno vsak {{day}}. dan vsak mesec.</translation>
 <translation id="6104680658798556671">Plačilo ni bilo izvedeno.</translation>
-<translation id="2834888581291358924">Če vaše stanje ni dovolj visoko za kritje skupnega zneska samodejnih in ponavljajočih se donacij, sistem preskoči ta plačila v tem obdobju.</translation>
 <translation id="3138528956349114724">Pripeta spletna mesta so trenutno</translation>
-<translation id="2337632028350283479">Opis poteka mesečnega doniranja:</translation>
-<translation id="6457273203091513039">Mesečne donacije niso del samodejnih prispevkov, temveč so ločene.</translation>
 <translation id="9099396904827413228">Vsakemu spletnemu mestu je mesečno namenjen določen znesek.</translation>
-<translation id="5051110132941857169">Mesečna donacija je izplačana naenkrat in vsak mesec. Če ste uporabnik samodejnih prispevkov, se donacije posredujejo spletnim mestom istočasno kot vaši samodejni prispevki.</translation>
-<translation id="3374483782662414143">Mesta, ki prejemajo mesečne donacije, lahko odstranite s seznama v nadzorni plošči za donacije.</translation>
 <translation id="5082474983463379713">Opomba:</translation>
 <translation id="1430915738399379752">Natisni</translation>
 <translation id="135956957367307069">Vaša zahteva se še vedno obdeluje, počakajte.</translation>

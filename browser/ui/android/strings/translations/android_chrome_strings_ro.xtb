@@ -65,6 +65,7 @@
 <translation id="1928696683969751773">Actualizări</translation>
 <translation id="6064125863973209585">Descărcări finalizate</translation>
 <translation id="5342314432463739672">Solicitări de permisiuni</translation>
+<translation id="3749259744154402564">Nu se acceptă</translation>
 <translation id="629730747756840877">Cont</translation>
 <translation id="82609232232243542">Conectează-te la Brave</translation>
 <translation id="7956662517480676674">Sincronizarea și serviciile Brave Software</translation>
@@ -227,8 +228,6 @@ Contul Brave Software poate să ofere alte forme ale istoricului de navigare, cu
 <translation id="3245261285041759672">Contul Brave Software poate să ofere alte forme ale istoricului de navigare la <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="7274013316676448362">Site blocat</translation>
 <translation id="2534155362429831547">Elemente șterse: <ph name="NUMBER_OF_ITEMS"/></translation>
-<translation id="1121094540300013208">Statistici de utilizare și rapoarte de blocare</translation>
-<translation id="9079153198295609735">Trimite automat la Brave Software statistici de utilizare și rapoarte de blocare</translation>
 <translation id="6981982820502123353">Accesibilitate</translation>
 <translation id="2387895666653383613">Scalarea textului</translation>
 <translation id="2321958826496381788">Trage cursorul până poți citi textul cu ușurință. Textul trebuie să fie cel puțin la fel de mare ca acesta după o atingere dublă pe un paragraf.</translation>
@@ -243,12 +242,12 @@ Contul Brave Software poate să ofere alte forme ale istoricului de navigare, cu
 <translation id="6295158916970320988">Toate site-urile</translation>
 <translation id="8380167699614421159">Acest site afișează anunțuri deranjante sau înșelătoare</translation>
 <translation id="1919345977826869612">Anunțuri</translation>
-<translation id="410351446219883937">Redare automată</translation>
 <translation id="6447842834002726250">Cookie-uri</translation>
 <translation id="6196640612572343990">Blochează cookie-urile terță parte</translation>
 <translation id="6782111308708962316">Împiedică site-urile terță parte să salveze și să citească datele asociate cookie-urilor</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Ferestre pop-up și redirecționări</translation>
+<translation id="534295439873310000">Dispozitive NFC</translation>
 <translation id="4751476147751820511">Senzori de mișcare sau de lumină</translation>
 <translation id="1717218214683051432">Senzori de mișcare</translation>
 <translation id="2091887806945687916">Sunet</translation>
@@ -261,7 +260,6 @@ Contul Brave Software poate să ofere alte forme ale istoricului de navigare, cu
 <translation id="6181444274883918285">Adaugă o excepție privind site-urile</translation>
 <translation id="5313967007315987356">Adaugă un site</translation>
 <translation id="1369915414381695676">Site-ul <ph name="SITE_NAME"/> a fost adăugat</translation>
-<translation id="7837721118676387834">Permite unui anumit site să redea automat videoclipuri cu sunetul dezactivat.</translation>
 <translation id="2621115761605608342">Permite JavaScript pentru un anumit site.</translation>
 <translation id="8801436777607969138">Blochează JavaScript pentru un anumit site.</translation>
 <translation id="8372893542064058268">Permite sincronizarea în fundal pentru un anumit site.</translation>
@@ -285,7 +283,6 @@ Contul Brave Software poate să ofere alte forme ale istoricului de navigare, cu
 <translation id="5100237604440890931">Afișare restrânsă – dă clic pentru a extinde.</translation>
 <translation id="857943718398505171">Acordată (recomandat)</translation>
 <translation id="2913331724188855103">Permite site-urilor să salveze și să citească datele asociate cookie-urilor (recomandat)</translation>
-<translation id="7445411102860286510">Permite site-urilor să redea automat videoclipuri cu sunetul dezactivat (recomandat)</translation>
 <translation id="5335288049665977812">Permite site-urilor să ruleze JavaScript (recomandat)</translation>
 <translation id="5527111080432883924">Întreabă-mă înainte de a permite site-urilor să citească textul și imaginile din clipboard (recomandat)</translation>
 <translation id="6912998170423641340">Blochează accesul de citire a textului și imaginilor din clipboard pentru site-uri</translation>
@@ -295,6 +292,8 @@ Contul Brave Software poate să ofere alte forme ale istoricului de navigare, cu
 <translation id="2107397443965016585">Întreabă înainte de a permite site-urilor să redea conținut protejat (recomandat)</translation>
 <translation id="2910701580606108292">Întreabă înainte de a permite site-urilor să redea conținut protejat</translation>
 <translation id="757524316907819857">Împiedică site-urile să redea conținutul protejat</translation>
+<translation id="5710871682236653961">Întreabă înainte de a permite site-urilor să trimită și să primească informații când se ating dispozitive NFC (recomandat)</translation>
+<translation id="7572498721684305250">Blochează trimiterea și primirea informațiilor de la site-uri când se ating dispozitive NFC</translation>
 <translation id="3277252321222022663">Permite accesul site-urilor la senzori (recomandat)</translation>
 <translation id="5048398596102334565">Permite accesul site-urilor la senzorii de mișcare (recomandat)</translation>
 <translation id="8816026460808729765">Blochează întotdeauna accesul site-urilor la senzori</translation>
@@ -308,7 +307,10 @@ Contul Brave Software poate să ofere alte forme ale istoricului de navigare, cu
 <translation id="3123473560110926937">Blocate pe anumite site-uri</translation>
 <translation id="965817943346481315">Blochează dacă site-ul afișează anunțuri deranjante sau înșelătoare (recomandat)</translation>
 <translation id="3386292677130313581">Întreabă înainte de a permite site-urilor să afle locația (recomandat)</translation>
-<translation id="9139068048179869749">Întreabă înainte de a permite site-urilor să trimită notificări (recomandat)</translation>
+<translation id="6270391203985052864">Site-urile îți pot solicita să îți trimită notificări</translation>
+<translation id="5505264765875738116">Site-urile nu îți pot solicita să îți trimită notificări</translation>
+<translation id="6561560012278703671">Folosește mesageria mai discretă (împiedică solicitările de notificări astfel încât să nu te întrerupă)</translation>
+<translation id="7302486331832100261">De obicei blochezi notificările. Ca să le permiți, atinge Detalii.</translation>
 <translation id="4479647676395637221">Întreabă înainte de a permite site-urilor să folosească camera foto (recomandat)</translation>
 <translation id="6992289844737586249">Întreabă înainte de a permite site-urilor să folosească microfonul (recomandat)</translation>
 <translation id="2289270750774289114">Întreabă-mă când un site dorește să descopere dispozitive Bluetooth din apropiere (recomandat)</translation>
@@ -507,9 +509,11 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="5230560987958996918"><ph name="SITE"/> vrea să caute dispozitive Bluetooth în apropiere. Următoarele dispozitive au fost găsite:</translation>
 <translation id="8368027906805972958">Dispozitiv necunoscut sau neacceptat (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7605594153474022051">Sincronizarea nu funcționează</translation>
+<translation id="2537178555904266562">Eroare la sincronizarea parolelor</translation>
 <translation id="1810845389119482123">Configurarea inițială a sincronizării nu este finalizată</translation>
 <translation id="3235722914093408050">Deschide setările Android și reactivează sincronizarea sistemului Android pentru a porni sincronizarea Brave</translation>
 <translation id="3367813778245106622">Conectează-te din nou pentru a începe sincronizarea</translation>
+<translation id="3701167022068948696">Remediază acum</translation>
 <translation id="974555521953189084">Introdu expresia de acces pentru a începe sincronizarea</translation>
 <translation id="2997266899014181325">Pentru a porni sincronizarea, activează „Sincronizează datele din Brave”.</translation>
 <translation id="8260126382462817229">Încearcă să te conectezi din nou</translation>
@@ -603,7 +607,7 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="2317945146070194624">Deschide în filă Brave nouă</translation>
 <translation id="7975379999046275268">Previzualizează pagina <ph name="BEGIN_NEW"/>Nou<ph name="END_NEW"/></translation>
 <translation id="6112702117600201073">Se actualizează pagina</translation>
-<translation id="36525718899759834">Descarcă aplicația din Magazinul Brave Software Play: <ph name="APP_ACTION"/></translation>
+<translation id="6990079615885386641">Descarcă aplicația din Magazinul Brave Software Play: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">Întunecat</translation>
 <translation id="1807246157184219062">Luminos</translation>
 <translation id="4056223980640387499">Sepia</translation>
@@ -639,7 +643,6 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="3810973564298564668">Gestionează</translation>
 <translation id="5199929503336119739">Profilul de serviciu</translation>
 <translation id="528192093759286357">Trage din partea de sus și atinge butonul Înapoi pentru a ieși din ecranul complet.</translation>
-<translation id="2836148919159985482">Atinge butonul Înapoi pentru a ieși din ecranul complet.</translation>
 <translation id="3967822245660637423">Descărcare finalizată</translation>
 <translation id="2434158240863470628">Descărcare finalizată <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="802154636333426148">Descărcarea nu a reușit</translation>
@@ -698,6 +701,7 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="3810838688059735925">Video</translation>
 <translation id="3616113530831147358">Audio</translation>
 <translation id="9219103736887031265">Imagini</translation>
+<translation id="656065428026159829">Vezi mai multe</translation>
 <translation id="8250920743982581267">Documente</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{Un fișier}few{# fișiere}other{# de fișiere}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{O imagine}few{# imagini}other{# de imagini}}</translation>
@@ -709,7 +713,7 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="7810647596859435254">Deschide cu…</translation>
 <translation id="5655963694829536461">Caută în descărcări</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
-<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION"/></translation>
 <translation id="1883903952484604915">Fișierele mele</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Articolele apar aici și le poți citi chiar dacă ești offline</translation>
@@ -737,7 +741,7 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="673197144963363525">Contribuie la îmbunătățirea Brave trimițând statistici de utilizare și rapoarte de blocare la Brave Software.</translation>
 <translation id="3518985090088779359">Acceptă și continuă</translation>
 <translation id="7207456302801184289">Bun venit la Brave</translation>
-<translation id="704822250101715322">Se așteaptă finalizarea actualizării pentru serviciile Brave Software Play</translation>
+<translation id="7189372733857464326">Se așteaptă finalizarea actualizării pentru serviciile Brave Software Play</translation>
 <translation id="1231733316453485619">Activezi sincronizarea?</translation>
 <translation id="5132942445612118989">Sincronizează parolele, istoricul și alte date pe toate dispozitivele</translation>
 <translation id="5736731321935944068">Brave Software poate folosi istoricul pentru a personaliza Căutarea, anunțurile și alte servicii Brave Software</translation>
@@ -762,7 +766,9 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="4046123991198612571">Melodia următoare</translation>
 <translation id="3859306556332390985">Derulează înainte</translation>
 <translation id="8441146129660941386">Derulează înapoi</translation>
-<translation id="6706288973712894588">Ești offline.\n<ph name="BEGIN_LINK"/>Explorează feedul offline.<ph name="END_LINK"/></translation>
+<translation id="6884306546558072722">Explorează în continuare offline</translation>
+<translation id="388596076286380598">Descarcă articole, videoclipuri și alte tipuri de conținut de pe site-urile preferate, chiar dacă ești offline sau ai o conexiune lentă.</translation>
+<translation id="1736419249208073774">Explorează</translation>
 <translation id="572328651809341494">File recente</translation>
 <translation id="8497726226069778601">Nu este nimic de văzut aici... deocamdată</translation>
 <translation id="5423934151118863508">Cele mai accesate pagini vor apărea aici</translation>
@@ -785,7 +791,6 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Află mai multe<ph name="END_LINK"/> despre conținutul sugerat</translation>
 <translation id="7542481630195938534">Nu se pot obține sugestii</translation>
 <translation id="5013696553129441713">Nicio sugestie nouă</translation>
-<translation id="1736419249208073774">Explorează</translation>
 <translation id="7444811645081526538">Mai multe categorii</translation>
 <translation id="6709133671862442373">Știri</translation>
 <translation id="1264974993859112054">Sport</translation>
@@ -892,6 +897,7 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="584427517463557805">Filă privată selectată</translation>
 <translation id="2268044343513325586">Rafinează</translation>
 <translation id="7846076177841592234">Anulează selecția</translation>
+<translation id="6216432067784365534">Opțiuni pentru <ph name="NAME_OF_LIST_ITEM"/></translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> selectate.  Opțiunile sunt disponibile în partea de sus a ecranului</translation>
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> selectate</translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Trimite un element selectat}few{Trimite # elemente selectate}other{Trimite # de elemente selectate}}</translation>
@@ -966,8 +972,10 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="3333961966071413176">Toată agenda</translation>
 <translation id="4994033804516042629">Nu s-a găsit nicio persoană de contact</translation>
 <translation id="5403592356182871684">Nume</translation>
+<translation id="2903493209154104877">Adrese</translation>
 <translation id="2717722538473713889">Adrese de e-mail</translation>
 <translation id="381841723434055211">Numere de telefon</translation>
+<translation id="6689172468748959065">Fotografii de profil</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ încă 1)}few{(+ încă #)}other{(+ încă #)}}</translation>
 <translation id="5197729504361054390">Persoanele de contact pe care le selectezi vor fi trimise site-ului <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="1779089405699405702">Decodor de imagini</translation>
@@ -1080,8 +1088,12 @@ Acest site NU primește acces la cameră. Imaginile camerei sunt vizibile doar p
 <translation id="7757787379047923882">Text trimis de pe <ph name="DEVICE_NAME"/></translation>
 <translation id="5193988420012215838">Copiat în clipboard</translation>
 <translation id="4696983787092045100">Trimite text pe dispozitivele tale</translation>
+<translation id="5694049548840660018">Întoarce-te acasă cu ușurință</translation>
+<translation id="1122278879166832009">Atinge aici pentru a accesa rapid pagina principală de oriunde</translation>
 <translation id="1260236875608242557">Caută și explorează</translation>
 <translation id="6369229450655021117">De aici, poți să cauți pe web, să trimiți fișiere prietenilor și să vezi paginile deschise</translation>
+<translation id="8758557275681689734">Vezi toate filele deschise</translation>
+<translation id="8655599981421006542">Atinge aici pentru a crea file noi și a reveni la cele anterioare</translation>
 <translation id="723171743924126238">Selectează imagini</translation>
 <translation id="8751914237388039244">Selectează o imagine</translation>
 <translation id="1989112275319619282">Răsfoiește</translation>
@@ -1102,18 +1114,16 @@ Acest site NU primește acces la cameră. Imaginile camerei sunt vizibile doar p
 <translation id="671481426037969117">Temporizatorul pentru <ph name="FQDN"/> s-a terminat. Va reîncepe mâine.</translation>
 <translation id="7479104141328977413">Gestionarea filelor</translation>
 <translation id="3524138585025253783">IU pentru dezvoltatori</translation>
+<translation id="4732120983431207637">Instrument de derulare a stivei</translation>
 <translation id="6036057147555329831">ICU suplimentar</translation>
-<translation id="9029323097866369874">Permiți ca <ph name="DOMAIN"/> să intre în VR?</translation>
-<translation id="7685301384041462804">Asigură-te că site-ul este de încredere înainte de a intra în RV.</translation>
-<translation id="5033865233969348410">În RV, acest site ar putea afla:
-  -  trăsăturile tale fizice, cum ar fi înălțimea.
-
-Asigură-te că site-ul este de încredere înainte să intri în RV.</translation>
-<translation id="5534334044554683961">În RV, acest site ar putea afla:
-  -   trăsăturile tale fizice, cum ar fi înălțimea,
-  -   configurația camerei în care te afli.
-
-Asigură-te că site-ul este de încredere înainte să intri în RV.</translation>
-<translation id="4169535189173047238">Nu permite</translation>
-<translation id="2170088579611075216">Permite și intră în RV</translation>
+<translation id="2175927920773552910">Cod QR</translation>
+<translation id="246532703174860178">Trimite</translation>
+<translation id="2517472476991765520">Scanează</translation>
+<translation id="8628973420740315031">Ca să le permiți accesul persoanelor din apropiere, solicită-le să scaneze acest cod QR</translation>
+<translation id="7339921667754113786">Platforma de notificări Brave Software</translation>
+<translation id="8516012719330875537">Editor de imagini</translation>
+<translation id="4808319664292298116">Intri în RV din <ph name="DOMAIN"/>?</translation>
+<translation id="4353114845960720315">În RV, acest site ar putea afla:</translation>
+<translation id="118069123878619799">- trăsăturile tale fizice, cum ar fi înălțimea;</translation>
+<translation id="5819762621475381970">- aspectul camerei în care te afli;</translation>
 </translationbundle>

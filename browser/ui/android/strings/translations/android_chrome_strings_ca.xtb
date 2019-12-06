@@ -65,6 +65,7 @@
 <translation id="1928696683969751773">Actualitzacions</translation>
 <translation id="6064125863973209585">Baixades completades</translation>
 <translation id="5342314432463739672">Sol·licituds de permís</translation>
+<translation id="3749259744154402564">No s'admet</translation>
 <translation id="629730747756840877">Compte</translation>
 <translation id="82609232232243542">Inicia la sessió a Brave</translation>
 <translation id="7956662517480676674">Sincronització i serveis de Brave Software</translation>
@@ -227,8 +228,6 @@ Per exemple, és possible que alguns llocs web responguin a aquesta sol·licitud
 <translation id="3245261285041759672">A <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> trobaràs altres maneres d'explorar l'historial de navegació del teu Compte de Brave Software.</translation>
 <translation id="7274013316676448362">Lloc bloquejat</translation>
 <translation id="2534155362429831547"><ph name="NUMBER_OF_ITEMS"/> elements suprimits</translation>
-<translation id="1121094540300013208">Informes d'ús i d'error</translation>
-<translation id="9079153198295609735">Envia automàticament estadístiques d'ús i informes d'error a Brave Software</translation>
 <translation id="6981982820502123353">Accessibilitat</translation>
 <translation id="2387895666653383613">Canvia la mida del text</translation>
 <translation id="2321958826496381788">Arrossega el control lliscant fins que puguis llegir aquest text còmodament. El text ha de ser almenys així de gran després de tocar dos cops un paràgraf.</translation>
@@ -243,12 +242,12 @@ Per exemple, és possible que alguns llocs web responguin a aquesta sol·licitud
 <translation id="6295158916970320988">Tots els llocs web</translation>
 <translation id="8380167699614421159">Aquest lloc web mostra anuncis intrusius o enganyosos</translation>
 <translation id="1919345977826869612">Anuncis</translation>
-<translation id="410351446219883937">Reproducció automàtica</translation>
 <translation id="6447842834002726250">Galetes</translation>
 <translation id="6196640612572343990">Bloqueja les galetes de tercers</translation>
 <translation id="6782111308708962316">Impedeix que els llocs web de tercers desin i llegeixin les dades de les galetes</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Finestres emergents i redireccions</translation>
+<translation id="534295439873310000">Dispositius amb NFC</translation>
 <translation id="4751476147751820511">Sensors de moviment o de llum</translation>
 <translation id="1717218214683051432">Sensors de moviment</translation>
 <translation id="2091887806945687916">So</translation>
@@ -261,7 +260,6 @@ Per exemple, és possible que alguns llocs web responguin a aquesta sol·licitud
 <translation id="6181444274883918285">Afegeix excepció per a un lloc web</translation>
 <translation id="5313967007315987356">Afegeix un lloc web</translation>
 <translation id="1369915414381695676">El lloc <ph name="SITE_NAME"/> s'ha afegit</translation>
-<translation id="7837721118676387834">Permet la reproducció automàtica de vídeos silenciats d'un lloc web concret.</translation>
 <translation id="2621115761605608342">Permet JavaScript en un lloc web concret.</translation>
 <translation id="8801436777607969138">Bloqueja JavaScript en un lloc web concret.</translation>
 <translation id="8372893542064058268">Permet la sincronització en segon pla en un lloc concret.</translation>
@@ -285,7 +283,6 @@ Per exemple, és possible que alguns llocs web responguin a aquesta sol·licitud
 <translation id="5100237604440890931">Vista replegada (feu clic per desplegar-la)</translation>
 <translation id="857943718398505171">Permès (opció recomanada)</translation>
 <translation id="2913331724188855103">Permet que els llocs web desin i llegeixin les dades de les galetes (opció recomanada)</translation>
-<translation id="7445411102860286510">Permet que els llocs web reprodueixin automàticament vídeos silenciats (opció recomanada)</translation>
 <translation id="5335288049665977812">Permet que els llocs web executin JavaScript (opció recomanada)</translation>
 <translation id="5527111080432883924">Pregunta'm abans de permetre que els llocs web llegeixin el text i les imatges del porta-retalls (opció recomanada)</translation>
 <translation id="6912998170423641340">Impedeix que els llocs web llegeixin el text i les imatges del porta-retalls</translation>
@@ -295,6 +292,8 @@ Per exemple, és possible que alguns llocs web responguin a aquesta sol·licitud
 <translation id="2107397443965016585">Pregunta'm abans de permetre que els llocs web reprodueixin contingut protegit (opció recomanada)</translation>
 <translation id="2910701580606108292">Pregunta'm abans de permetre que els llocs web reprodueixin contingut protegit</translation>
 <translation id="757524316907819857">Impedeix que els llocs web reprodueixin contingut protegit</translation>
+<translation id="5710871682236653961">Pregunta'm abans de permetre que els llocs web enviïn i rebin informació quan toquis dispositius amb NFC (opció recomanada)</translation>
+<translation id="7572498721684305250">Evita que els llocs web enviïn i rebin informació quan toquis dispositius amb NFC</translation>
 <translation id="3277252321222022663">Permet que els llocs web accedeixin als sensors (opció recomanada)</translation>
 <translation id="5048398596102334565">Permet que els llocs web accedeixin als sensors de moviment (opció recomanada)</translation>
 <translation id="8816026460808729765">Impedeix que els llocs web accedeixin als sensors</translation>
@@ -308,7 +307,10 @@ Per exemple, és possible que alguns llocs web responguin a aquesta sol·licitud
 <translation id="3123473560110926937">Bloquejat en alguns llocs web</translation>
 <translation id="965817943346481315">Bloqueja els anuncis si el lloc web mostra publicitat intrusiva o enganyosa (opció recomanada)</translation>
 <translation id="3386292677130313581">Pregunta'm abans de permetre que els llocs web sàpiguen la meva ubicació (opció recomanada)</translation>
-<translation id="9139068048179869749">Pregunta'm abans de permetre que els llocs web enviïn notificacions (opció recomanada)</translation>
+<translation id="6270391203985052864">Els llocs web poden demanar-te permís per enviar-te notificacions</translation>
+<translation id="5505264765875738116">Els llocs web no poden demanar-te permís per enviar-te notificacions</translation>
+<translation id="6561560012278703671">Utilitza missatges més silenciosos (bloqueja les sol·licituds de notificacions per evitar interrupcions)</translation>
+<translation id="7302486331832100261">Normalment bloqueges les notificacions. Per permetre-les, toca Detalls.</translation>
 <translation id="4479647676395637221">Pregunta'm abans de permetre que els llocs web utilitzin la càmera (opció recomanada)</translation>
 <translation id="6992289844737586249">Pregunta'm abans de permetre que els llocs web utilitzin el micròfon (opció recomanada)</translation>
 <translation id="2289270750774289114">Pregunta'm quan un lloc web vulgui descobrir dispositius Bluetooth propers (opció recomanada)</translation>
@@ -507,9 +509,11 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="5230560987958996918"><ph name="SITE"/> vol cercar dispositius Bluetooth propers. S'han trobat els dispositius següents:</translation>
 <translation id="8368027906805972958">Dispositiu desconegut o no admès (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7605594153474022051">La sincronització no funciona</translation>
+<translation id="2537178555904266562">S'ha produït un error en sincronitzar les contrasenyes</translation>
 <translation id="1810845389119482123">La configuració de la sincronització inicial no ha finalitzat</translation>
 <translation id="3235722914093408050">Obre la configuració d'Android i torna a activar la sincronització del sistema Android per començar la sincronització de Brave</translation>
 <translation id="3367813778245106622">Torna a iniciar la sessió per començar la sincronització</translation>
+<translation id="3701167022068948696">Corregeix ara</translation>
 <translation id="974555521953189084">Introdueix la teva frase de contrasenya per iniciar la sincronització</translation>
 <translation id="2997266899014181325">Per iniciar la sincronització, activa l'opció Sincronitza les dades de Brave.</translation>
 <translation id="8260126382462817229">Torna a iniciar la sessió</translation>
@@ -603,7 +607,7 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="2317945146070194624">Obre en pestanya nova a Brave</translation>
 <translation id="7975379999046275268">Previsualitza la pàgina <ph name="BEGIN_NEW"/>Novetat<ph name="END_NEW"/></translation>
 <translation id="6112702117600201073">S'està actualitzant la pàgina</translation>
-<translation id="36525718899759834">Baixeu l'aplicació des de Brave Software Play Store: <ph name="APP_ACTION"/></translation>
+<translation id="6990079615885386641">Baixeu l'aplicació des de Brave Software Play Store: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">Fosc</translation>
 <translation id="1807246157184219062">Clar</translation>
 <translation id="4056223980640387499">Sèpia</translation>
@@ -639,7 +643,6 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="3810973564298564668">Gestiona</translation>
 <translation id="5199929503336119739">Perfil professional</translation>
 <translation id="528192093759286357">Arrossegueu la pantalla des de la part superior i toqueu el botó Enrere per sortir de la pantalla completa.</translation>
-<translation id="2836148919159985482">Toqueu el botó Enrere per sortir de la pantalla completa.</translation>
 <translation id="3967822245660637423">S'ha completat la baixada</translation>
 <translation id="2434158240863470628">S'ha completat la baixada <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="802154636333426148">Error de baixada</translation>
@@ -698,6 +701,7 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="3810838688059735925">Vídeo</translation>
 <translation id="3616113530831147358">Àudio</translation>
 <translation id="9219103736887031265">Imatges</translation>
+<translation id="656065428026159829">Mostra'n més</translation>
 <translation id="8250920743982581267">Documents</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# fitxer}other{# fitxers}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# imatge}other{# imatges}}</translation>
@@ -709,7 +713,7 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="7810647596859435254">Obre amb…</translation>
 <translation id="5655963694829536461">Cerca a les baixades</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
-<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION"/></translation>
 <translation id="1883903952484604915">Els meus fitxers</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Els articles es mostren aquí i els pots llegir fins i tot sense connexió</translation>
@@ -737,7 +741,7 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="673197144963363525">Ajuda a millorar Brave enviant estadístiques d'ús i informes d'error a Brave Software.</translation>
 <translation id="3518985090088779359">Accepta i continua</translation>
 <translation id="7207456302801184289">Et donem la benvinguda a Brave</translation>
-<translation id="704822250101715322">S'està esperant que Serveis de Brave Software Play s'acabi d'actualitzar</translation>
+<translation id="7189372733857464326">S'està esperant que Serveis de Brave Software Play s'acabi d'actualitzar</translation>
 <translation id="1231733316453485619">Vols activar la sincronització?</translation>
 <translation id="5132942445612118989">Sincronitza les contrasenyes, l'historial i altres elements en tots els dispositius</translation>
 <translation id="5736731321935944068">És possible que Brave Software utilitzi el teu historial per personalitzar la Cerca, els anuncis i altres serveis de Brave Software</translation>
@@ -762,7 +766,9 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="4046123991198612571">Pista següent</translation>
 <translation id="3859306556332390985">Avança</translation>
 <translation id="8441146129660941386">Retrocedeix</translation>
-<translation id="6706288973712894588">En aquests moments no tens connexió.\n<ph name="BEGIN_LINK"/>Explora el feed sense connexió<ph name="END_LINK"/>.</translation>
+<translation id="6884306546558072722">Continua navegant sense connexió</translation>
+<translation id="388596076286380598">Accedeix a articles, vídeos i altres continguts dels llocs web que t'agraden encara que no tinguis connexió o que la connexió sigui deficient.</translation>
+<translation id="1736419249208073774">Explora</translation>
 <translation id="572328651809341494">Pestanyes recents</translation>
 <translation id="8497726226069778601">Aquí encara no hi ha contingut per mostrar</translation>
 <translation id="5423934151118863508">Les pàgines més visitades es mostraran aquí</translation>
@@ -785,7 +791,6 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/> sobre el contingut suggerit</translation>
 <translation id="7542481630195938534">No es poden obtenir suggeriments</translation>
 <translation id="5013696553129441713">No hi ha cap suggeriment nou</translation>
-<translation id="1736419249208073774">Explora</translation>
 <translation id="7444811645081526538">Més categories</translation>
 <translation id="6709133671862442373">Notícies</translation>
 <translation id="1264974993859112054">Esports</translation>
@@ -892,6 +897,7 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="584427517463557805">Pestanya d'incògnit seleccionada</translation>
 <translation id="2268044343513325586">Restringeix</translation>
 <translation id="7846076177841592234">Cancel·la la selecció</translation>
+<translation id="6216432067784365534">Opcions per a <ph name="NAME_OF_LIST_ITEM"/></translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> elements seleccionats. Hi ha opcions disponibles a prop de la part superior de la pantalla.</translation>
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> elements seleccionats</translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Comparteix 1 element seleccionat}other{Comparteix # elements seleccionats}}</translation>
@@ -966,8 +972,10 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="3333961966071413176">Tots els contactes</translation>
 <translation id="4994033804516042629">No s'ha trobat cap contacte</translation>
 <translation id="5403592356182871684">Noms</translation>
+<translation id="2903493209154104877">Adreces</translation>
 <translation id="2717722538473713889">Adreces electròniques</translation>
 <translation id="381841723434055211">Números de telèfon</translation>
+<translation id="6689172468748959065">Fotos de perfil</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(i 1 més)}other{(i # més)}}</translation>
 <translation id="5197729504361054390">Els contactes que seleccionis es compartiran amb <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="1779089405699405702">Descodificador d'imatges</translation>
@@ -1080,8 +1088,12 @@ El lloc web NO obté accés a la càmera. Només tu pots veure les imatges de la
 <translation id="7757787379047923882">Text compartit des del dispositiu <ph name="DEVICE_NAME"/></translation>
 <translation id="5193988420012215838">S'ha copiat al porta-retalls</translation>
 <translation id="4696983787092045100">Envia text als teus dispositius</translation>
+<translation id="5694049548840660018">Torna a l'inici fàcilment</translation>
+<translation id="1122278879166832009">Toca aquí per accedir ràpidament a la pàgina d'inici des de qualsevol lloc</translation>
 <translation id="1260236875608242557">Fes cerques i explora contingut</translation>
 <translation id="6369229450655021117">Des d'aquí, pots fer cerques al web, compartir contingut amb els amics i veure les pàgines obertes</translation>
+<translation id="8758557275681689734">Mostra totes les pestanyes obertes</translation>
+<translation id="8655599981421006542">Toca aquí per crear pestanyes i per tornar a les anteriors</translation>
 <translation id="723171743924126238">Selecciona imatges</translation>
 <translation id="8751914237388039244">Selecciona una imatge</translation>
 <translation id="1989112275319619282">Examina</translation>
@@ -1102,18 +1114,16 @@ El lloc web NO obté accés a la càmera. Només tu pots veure les imatges de la
 <translation id="671481426037969117">S'ha esgotat el temps definit al temporitzador per a <ph name="FQDN"/>. Es tornarà a iniciar demà.</translation>
 <translation id="7479104141328977413">Gestió de pestanyes</translation>
 <translation id="3524138585025253783">Interfície d'usuari per a desenvolupadors</translation>
+<translation id="4732120983431207637">Anul·lador de piles</translation>
 <translation id="6036057147555329831">ICU addicional</translation>
-<translation id="9029323097866369874">Vols permetre que <ph name="DOMAIN"/> entri al mode RV?</translation>
-<translation id="7685301384041462804">Assegura't que confies en aquest lloc web abans d'entrar al mode RV.</translation>
-<translation id="5033865233969348410">Mentre estiguis en el mode RV, pot ser que aquest lloc web pugui obtenir la informació següent:
-- els teus trets físics, com ara l'alçada
-
-Assegura't que confies en aquest lloc web abans d'entrar al mode RV.</translation>
-<translation id="5534334044554683961">Mentre estiguis en el mode RV, pot ser que aquest lloc web pugui obtenir la informació següent:
-- els teus trets físics, com ara l'alçada
-- la distribució de la teva habitació
-
-Assegura't que confies en aquest lloc web abans d'entrar al mode RV.</translation>
-<translation id="4169535189173047238">No permetis</translation>
-<translation id="2170088579611075216">Permet i activa el mode RV</translation>
+<translation id="2175927920773552910">Codi QR</translation>
+<translation id="246532703174860178">Comparteix</translation>
+<translation id="2517472476991765520">Cerca</translation>
+<translation id="8628973420740315031">Per compartir contingut amb persones del teu entorn, permet-los que escanegin aquest codi QR</translation>
+<translation id="7339921667754113786">Plataforma de notificacions de Brave Software</translation>
+<translation id="8516012719330875537">Editor d'imatges</translation>
+<translation id="4808319664292298116">Vols entrar al mode RV des del domini <ph name="DOMAIN"/>?</translation>
+<translation id="4353114845960720315">Mentre estiguis en el mode RV, pot ser que aquest lloc web obtingui la informació següent:</translation>
+<translation id="118069123878619799">- els teus trets físics, com ara l'alçada</translation>
+<translation id="5819762621475381970">- la distribució de la teva habitació</translation>
 </translationbundle>

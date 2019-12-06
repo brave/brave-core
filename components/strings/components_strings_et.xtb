@@ -10,6 +10,7 @@
 <translation id="7791543448312431591">Lisa</translation>
 <translation id="1181037720776840403">Eemalda</translation>
 <translation id="5317780077021120954">Salvesta</translation>
+<translation id="3897092660631435901">Menüü</translation>
 <translation id="5300589172476337783">Kuva</translation>
 <translation id="7108338896283013870">Peida</translation>
 <translation id="780301667611848630">Ei, aitäh</translation>
@@ -19,6 +20,7 @@
 <translation id="1036348656032585052">Lülita välja</translation>
 <translation id="8105368624971345109">Lülita välja</translation>
 <translation id="1175364870820465910">&amp;Prindi...</translation>
+<translation id="129553762522093515">Viimati suletud</translation>
 <translation id="8870413625673593573">Viimati suletud</translation>
 <translation id="385051799172605136">Tagasi</translation>
 <translation id="7481312909269577407">Edasta</translation>
@@ -28,19 +30,23 @@
 <translation id="1201402288615127009">Edasi</translation>
 <translation id="5713644099811900409">Brave Software'i konto</translation>
 <translation id="3157931365184549694">Taasta</translation>
+<translation id="5040262127954254034">Privaatsus</translation>
 <translation id="3061707000357573562">Teenuse paikamine</translation>
 <translation id="1914326953223720820">Lahtipakkimisteenus</translation>
+<translation id="1623104350909869708">Keela sellel lehel lisadialoogide loomine</translation>
 <translation id="2677748264148917807">Lahku</translation>
 <translation id="5556459405103347317">Laadi uuesti</translation>
 <translation id="2359808026110333948">Jätka</translation>
-<translation id="5935964611177478118">logi Brave'i sisse</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="8131740175452115882">Kinnita</translation>
 <translation id="8968766641738584599">Salvesta kaart</translation>
+<translation id="860043288473659153">Kaardiomaniku nimi</translation>
+<translation id="869891660844655955">Aegumiskuupäev</translation>
 <translation id="5457113250005438886">Kehtetu</translation>
 <translation id="6518133107902771759">Kinnita</translation>
 <translation id="8987927404178983737">kuu</translation>
 <translation id="6015796118275082299">Aasta</translation>
+<translation id="1581080074034554886">CVC</translation>
 <translation id="9065203028668620118">Muuda</translation>
 <translation id="5029568752722684782">Kustuta koopia</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -70,6 +76,7 @@
 <translation id="4522570452068850558">Üksikasjad</translation>
 <translation id="3586931643579894722">Peida üksikasjad</translation>
 <translation id="614940544461990577">Proovige järgmist.</translation>
+<translation id="4943872375798546930">Tulemusi pole</translation>
 <translation id="8688672835843460752">Saadaval</translation>
 <translation id="4989542687859782284">Pole saadaval</translation>
 <translation id="59174027418879706">Lubatud</translation>
@@ -79,7 +86,10 @@
 <translation id="1838374766361614909">Otsingu kustutamine</translation>
 <translation id="495170559598752135">Toimingud</translation>
 <translation id="8261506727792406068">Kustuta</translation>
+<translation id="3207960819495026254">Järjehoidjatesse lisatud</translation>
 <translation id="3303855915957856445">Otsingutulemusi ei leitud</translation>
+<translation id="1209206284964581585">Peida praeguseks</translation>
+<translation id="1407135791313364759">Ava kõik</translation>
 <translation id="4880827082731008257">Otsi ajaloost</translation>
 <translation id="4756388243121344051">&amp;Ajalugu</translation>
 <translation id="1644574205037202324">Ajalugu</translation>
@@ -91,11 +101,14 @@
 <translation id="1178581264944972037">Peata</translation>
 <translation id="1232569758102978740">Pealkirjata</translation>
 <translation id="7514365320538308">Laadi alla</translation>
+<translation id="8041089156583427627">Saada tagasiside</translation>
 <translation id="7552846755917812628">Proovige järgmiseid nõuandeid.</translation>
+<translation id="3960299545138990065">Taaskäivitage Brave</translation>
 <translation id="4275830172053184480">Taaskäivitage seade</translation>
 <translation id="413544239732274901">Lisateave</translation>
 <translation id="7554791636758816595">Uus vaheleht</translation>
 <translation id="2079545284768500474">Võta tagasi</translation>
+<translation id="17513872634828108">Avatud vahelehed</translation>
 <translation id="981121421437150478">Võrguühenduseta</translation>
 <translation id="5171045022955879922">Otsige või sisestage URL</translation>
 <translation id="803771048473350947">Fail</translation>
@@ -108,12 +121,11 @@
 <translation id="6831043979455480757">Tõlgi</translation>
 <translation id="2473195200299095979">Selle lehe tõlkimine</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, vastus, <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">Eira</translation>
 <translation id="7714464543167945231">Sertifikaat</translation>
 <translation id="4235360514405112390">Kehtiv</translation>
 <translation id="6447842834002726250">Küpsised</translation>
 <translation id="1919345977826869612">Reklaamid</translation>
-<translation id="410351446219883937">Automaatesitus</translation>
+<translation id="6612358246767739896">Kaitstud sisu</translation>
 <translation id="9219103736887031265">Pildid</translation>
 <translation id="7521387064766892559">Javascript</translation>
 <translation id="4434045419905280838">Hüpikaknad ja ümbersuunamised</translation>
@@ -128,6 +140,7 @@
 <translation id="7638605456503525968">Jadapordid</translation>
 <translation id="2215727959747642672">Failide muutmine</translation>
 <translation id="6545864417968258051">Bluetoothi otsimine</translation>
+<translation id="534295439873310000">NFC-seadmed</translation>
 <translation id="5039804452771397117">Luba</translation>
 <translation id="7053983685419859001">Blokeeri</translation>
 <translation id="57838592816432529">Vaigista</translation>
@@ -138,13 +151,17 @@
 <translation id="6979440798594660689">Vaigista (vaikeseade)</translation>
 <translation id="8037357227543935929">Küsi (vaikimisi)</translation>
 <translation id="8763927697961133303">USB-seade</translation>
+<translation id="4165986682804962316">Saidi seaded</translation>
 <translation id="9011424611726486705">Avage saidi seaded</translation>
 <translation id="5932224571077948991">Sait kuvab sekkuvaid või eksitavaid reklaame</translation>
 <translation id="7878562273885520351">Teie parool võib olla ohus</translation>
 <translation id="1089439967362294234">Parooli muutmine</translation>
+<translation id="9008201768610948239">Eira</translation>
 <translation id="1186201132766001848">Kontrolli paroole</translation>
 <translation id="5979084224081478209">Kontrolli paroole</translation>
+<translation id="10614374240317010">Ei ole kunagi salvestatud</translation>
 <translation id="5869522115854928033">Salvestatud paroolid</translation>
+<translation id="230699814587342492">Brave'i paroolid</translation>
 <translation id="5087580092889165836">Lisa kaart</translation>
 <translation id="2154484045852737596">Kaardi muutmine</translation>
 <translation id="4923459931733593730">Makse</translation>
@@ -193,8 +210,11 @@
 <translation id="1974060860693918893">Täpsemad</translation>
 <translation id="5308380583665731573">Ühendamine</translation>
 <translation id="2501278716633472235">Mine tagasi</translation>
+<translation id="1736420071277903564">Arvuti</translation>
+<translation id="3906954721959377182">Tahvelarvuti</translation>
 <translation id="7029809446516969842">Paroolid</translation>
 <translation id="6596325263575161958">Krüpteerimise valikud</translation>
+<translation id="8461694314515752532">Krüpteeri sünkroonitud andmed sünkroonimisparooliga</translation>
 <translation id="9050666287014529139">Parool</translation>
 <translation id="9095388113577226029">Rohkem keeli …</translation>
 <translation id="7600965453749440009">Ära kunagi tõlgi: <ph name="LANGUAGE"/></translation>
@@ -202,6 +222,7 @@
 <translation id="7378627244592794276">Ei</translation>
 <translation id="9137013805542155359">Kuva originaal</translation>
 <translation id="8725066075913043281">Proovi uuesti</translation>
+<translation id="5684874026226664614">Vabandust. Lehte ei õnnestunud tõlkida.</translation>
 <translation id="583281660410589416">Teadmata</translation>
 <translation id="9170848237812810038">&amp;Võta tagasi</translation>
 <translation id="2972581237482394796">&amp;Tee uuesti</translation>

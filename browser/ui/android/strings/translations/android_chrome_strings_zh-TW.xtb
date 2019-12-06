@@ -65,6 +65,7 @@
 <translation id="1928696683969751773">更新</translation>
 <translation id="6064125863973209585">下載完成</translation>
 <translation id="5342314432463739672">權限要求</translation>
+<translation id="3749259744154402564">不支援</translation>
 <translation id="629730747756840877">帳戶</translation>
 <translation id="82609232232243542">登入 Brave</translation>
 <translation id="7956662517480676674">同步處理和 Brave Software 服務</translation>
@@ -227,8 +228,6 @@
 <translation id="3245261285041759672">你的 Brave Software 帳戶可能會儲存其他形式的瀏覽記錄，請參閱 <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>。</translation>
 <translation id="7274013316676448362">已封鎖網站</translation>
 <translation id="2534155362429831547">已刪除 <ph name="NUMBER_OF_ITEMS"/> 個項目</translation>
-<translation id="1121094540300013208">使用資料和當機報告</translation>
-<translation id="9079153198295609735">自動傳送使用統計資料及當機報告給 Brave Software</translation>
 <translation id="6981982820502123353">無障礙設定</translation>
 <translation id="2387895666653383613">文字大小</translation>
 <translation id="2321958826496381788">拖曳滑桿，將文字調整到適當的字體大小。當你輕觸兩下文字段落時，瀏覽器至少應呈現這樣的字體大小。</translation>
@@ -243,12 +242,12 @@
 <translation id="6295158916970320988">所有網站</translation>
 <translation id="8380167699614421159">這個網站會顯示干擾性或誤導性的廣告</translation>
 <translation id="1919345977826869612">廣告</translation>
-<translation id="410351446219883937">自動播放</translation>
 <translation id="6447842834002726250">Cookie</translation>
 <translation id="6196640612572343990">封鎖第三方 Cookie</translation>
 <translation id="6782111308708962316">禁止第三方網站儲存及讀取 Cookie 資料</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">彈出式視窗與重新導向</translation>
+<translation id="534295439873310000">NFC 裝置</translation>
 <translation id="4751476147751820511">動作或光源感應器</translation>
 <translation id="1717218214683051432">動作感應器</translation>
 <translation id="2091887806945687916">音訊</translation>
@@ -261,7 +260,6 @@
 <translation id="6181444274883918285">新增例外網站</translation>
 <translation id="5313967007315987356">新增網站</translation>
 <translation id="1369915414381695676">已新增 <ph name="SITE_NAME"/> 網站</translation>
-<translation id="7837721118676387834">允許特定網站自動播放靜音的影片。</translation>
 <translation id="2621115761605608342">允許特定網站執行 JavaScript。</translation>
 <translation id="8801436777607969138">封鎖特定網站的 JavaScript。</translation>
 <translation id="8372893542064058268">允許特定網站執行背景同步處理作業。</translation>
@@ -285,7 +283,6 @@
 <translation id="5100237604440890931">已收合 - 按一下即可展開。</translation>
 <translation id="857943718398505171">已允許 (建議)</translation>
 <translation id="2913331724188855103">允許網站儲存及讀取 Cookie 資料 (建議)</translation>
-<translation id="7445411102860286510">允許網站自動播放靜音的影片 (建議)</translation>
 <translation id="5335288049665977812">允許網站執行 JavaScript (建議)</translation>
 <translation id="5527111080432883924">允許網站讀取剪貼簿中的文字和圖片前，必須先詢問你 (建議)</translation>
 <translation id="6912998170423641340">禁止網站讀取剪貼簿中的文字和圖片</translation>
@@ -295,6 +292,8 @@
 <translation id="2107397443965016585">允許網站播放受保護的內容前，必須先詢問你 (建議)</translation>
 <translation id="2910701580606108292">允許網站播放受保護的內容前，必須先詢問你</translation>
 <translation id="757524316907819857">禁止網站播放受保護的內容</translation>
+<translation id="5710871682236653961">系統必須先詢問你，才能允許網站在你輕觸 NFC 裝置時傳送及接收資訊 (建議設定)</translation>
+<translation id="7572498721684305250">禁止網站在你輕觸 NFC 裝置時傳送及接收資訊</translation>
 <translation id="3277252321222022663">允許網站存取感應器 (建議)</translation>
 <translation id="5048398596102334565">允許網站存取動作感應器 (建議)</translation>
 <translation id="8816026460808729765">禁止網站存取感應器</translation>
@@ -308,7 +307,10 @@
 <translation id="3123473560110926937">在某些網站上設定封鎖</translation>
 <translation id="965817943346481315">封鎖干擾性或誤導性的網站廣告 (建議)</translation>
 <translation id="3386292677130313581">允許網站存取你的位置資訊前，必須先詢問你 (建議)</translation>
-<translation id="9139068048179869749">允許網站傳送通知前，必須先詢問你 (建議)</translation>
+<translation id="6270391203985052864">網站可以要求傳送通知給你</translation>
+<translation id="5505264765875738116">網站無法要求傳送通知給你</translation>
+<translation id="6561560012278703671">使用低擾式通知 (禁止網站顯示通知，以免干擾)</translation>
+<translation id="7302486331832100261">你通常會封鎖通知。如要允許通知，請輕觸 [詳細資料]。</translation>
 <translation id="4479647676395637221">允許網站使用你的攝影機前，必須先詢問你 (建議)</translation>
 <translation id="6992289844737586249">允許網站使用你的麥克風前，必須先詢問你 (建議)</translation>
 <translation id="2289270750774289114">當網站要搜尋附近的藍牙裝置時，必須先詢問你 (建議)</translation>
@@ -507,9 +509,11 @@
 <translation id="5230560987958996918"><ph name="SITE"/> 要求掃描附近的藍牙裝置。已找到下列裝置：</translation>
 <translation id="8368027906805972958">不明或不支援的裝置 (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7605594153474022051">同步處理功能無法正常運作</translation>
+<translation id="2537178555904266562">同步密碼時發生錯誤</translation>
 <translation id="1810845389119482123">尚未完成初始同步處理設定</translation>
 <translation id="3235722914093408050">如要啟動 Brave 同步功能，請開啟 Android 設定並重新啟用 Android 系統同步處理設定</translation>
 <translation id="3367813778245106622">如要開始同步處理，請重新登入</translation>
+<translation id="3701167022068948696">立即修正</translation>
 <translation id="974555521953189084">如要開始同步處理，請輸入你的通關密語</translation>
 <translation id="2997266899014181325">如要開始同步處理，請開啟「同步處理你的 Brave 資料」。</translation>
 <translation id="8260126382462817229">請嘗試重新登入</translation>
@@ -603,7 +607,7 @@
 <translation id="2317945146070194624">在新的 Brave 分頁中開啟</translation>
 <translation id="7975379999046275268">預覽網頁 <ph name="BEGIN_NEW"/>新功能<ph name="END_NEW"/></translation>
 <translation id="6112702117600201073">重新整理網頁</translation>
-<translation id="36525718899759834">從 Brave Software Play 商店取得應用程式：<ph name="APP_ACTION"/></translation>
+<translation id="6990079615885386641">從 Brave Software Play 商店取得應用程式：<ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">深色</translation>
 <translation id="1807246157184219062">淺色</translation>
 <translation id="4056223980640387499">深褐色調</translation>
@@ -639,7 +643,6 @@
 <translation id="3810973564298564668">管理</translation>
 <translation id="5199929503336119739">工作資料夾</translation>
 <translation id="528192093759286357">從頂端拖曳並輕觸返回按鈕即可結束全螢幕模式。</translation>
-<translation id="2836148919159985482">輕觸返回按鈕即可結束全螢幕模式。</translation>
 <translation id="3967822245660637423">下載完成</translation>
 <translation id="2434158240863470628">下載完成 <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="802154636333426148">下載失敗</translation>
@@ -698,6 +701,7 @@
 <translation id="3810838688059735925">影片</translation>
 <translation id="3616113530831147358">音訊</translation>
 <translation id="9219103736887031265">圖片</translation>
+<translation id="656065428026159829">顯示更多</translation>
 <translation id="8250920743982581267">文件</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# 個檔案}other{# 個檔案}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# 張圖片}other{# 張圖片}}</translation>
@@ -709,7 +713,7 @@
 <translation id="7810647596859435254">選擇開啟工具…</translation>
 <translation id="5655963694829536461">搜尋下載內容</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
-<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION"/></translation>
 <translation id="1883903952484604915">我的檔案</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">文章會顯示在這裡，並可供離線閱讀</translation>
@@ -737,7 +741,7 @@
 <translation id="673197144963363525">將使用統計資料及當機報告傳送給 Brave Software，助我們一臂之力，讓 Brave 更臻完美。</translation>
 <translation id="3518985090088779359">接受並繼續</translation>
 <translation id="7207456302801184289">歡迎使用 Brave</translation>
-<translation id="704822250101715322">正在等待 Brave Software Play 服務完成更新</translation>
+<translation id="7189372733857464326">正在等待 Brave Software Play 服務完成更新</translation>
 <translation id="1231733316453485619">要開啟同步處理功能嗎？</translation>
 <translation id="5132942445612118989">同步處理你所有裝置上的密碼、歷史記錄和其他設定</translation>
 <translation id="5736731321935944068">Brave Software 可能會使用你的歷史記錄，為你提供個人化的搜尋服務、廣告內容和其他各項 Brave Software 服務</translation>
@@ -762,7 +766,9 @@
 <translation id="4046123991198612571">下一首曲目</translation>
 <translation id="3859306556332390985">快轉到特定的播放時間點</translation>
 <translation id="8441146129660941386">倒轉到特定的播放時間點</translation>
-<translation id="6706288973712894588">你目前已離線。\n<ph name="BEGIN_LINK"/>瀏覽離線動態消息。<ph name="END_LINK"/></translation>
+<translation id="6884306546558072722">繼續探索離線內容</translation>
+<translation id="388596076286380598">即使處於離線狀態或網路訊號不良，你也可以查看喜愛網站上的文章、影片和其他內容。</translation>
+<translation id="1736419249208073774">探索</translation>
 <translation id="572328651809341494">最近開啟的分頁</translation>
 <translation id="8497726226069778601">目前還沒有任何常用網頁…</translation>
 <translation id="5423934151118863508">這裡會顯示您最常造訪的網頁</translation>
@@ -785,7 +791,6 @@
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>進一步瞭解<ph name="END_LINK"/>建議的內容</translation>
 <translation id="7542481630195938534">無法取得建議</translation>
 <translation id="5013696553129441713">沒有新的建議</translation>
-<translation id="1736419249208073774">探索</translation>
 <translation id="7444811645081526538">更多類別</translation>
 <translation id="6709133671862442373">新聞內容</translation>
 <translation id="1264974993859112054">運動資訊</translation>
@@ -892,6 +897,7 @@
 <translation id="584427517463557805">已選隱私分頁</translation>
 <translation id="2268044343513325586">修正搜尋</translation>
 <translation id="7846076177841592234">全部取消選取</translation>
+<translation id="6216432067784365534"><ph name="NAME_OF_LIST_ITEM"/>選項</translation>
 <translation id="7087918508125750058">已選取 <ph name="ITEM_COUNT"/> 個項目。選項位於畫面頂端</translation>
 <translation id="7250468141469952378">已選取 <ph name="ITEM_COUNT"/> 個項目</translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{分享 1 個選取的項目}other{分享 # 個選取的項目}}</translation>
@@ -966,8 +972,10 @@
 <translation id="3333961966071413176">所有聯絡人</translation>
 <translation id="4994033804516042629">找不到任何聯絡人</translation>
 <translation id="5403592356182871684">名稱</translation>
+<translation id="2903493209154104877">地址</translation>
 <translation id="2717722538473713889">電子郵件地址</translation>
 <translation id="381841723434055211">電話號碼</translation>
+<translation id="6689172468748959065">個人資料相片</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(還有 1 個)}other{(還有 # 個)}}</translation>
 <translation id="5197729504361054390">系統會將你選取的聯絡人資訊提供給 <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>。</translation>
 <translation id="1779089405699405702">影像解碼器</translation>
@@ -1080,8 +1088,12 @@
 <translation id="7757787379047923882">透過「<ph name="DEVICE_NAME"/>」分享的文字</translation>
 <translation id="5193988420012215838">已複製到剪貼簿</translation>
 <translation id="4696983787092045100">將文字傳送到你的裝置</translation>
+<translation id="5694049548840660018">輕鬆返回首頁</translation>
+<translation id="1122278879166832009">輕觸這裡即可從任何畫面快速存取你的首頁</translation>
 <translation id="1260236875608242557">搜尋及探索</translation>
 <translation id="6369229450655021117">在這裡，你可以搜尋網路、與好友分享內容及查看開啟的網頁</translation>
+<translation id="8758557275681689734">查看所有開啟的分頁</translation>
+<translation id="8655599981421006542">輕觸這裡即可建立新分頁，以及返回上一個分頁</translation>
 <translation id="723171743924126238">選取圖片</translation>
 <translation id="8751914237388039244">選取圖片</translation>
 <translation id="1989112275319619282">瀏覽</translation>
@@ -1102,18 +1114,16 @@
 <translation id="671481426037969117">「<ph name="FQDN"/>」計時器已結束計時，將於明天重新開始。</translation>
 <translation id="7479104141328977413">分頁管理</translation>
 <translation id="3524138585025253783">開發人員 UI</translation>
+<translation id="4732120983431207637">堆疊回溯器</translation>
 <translation id="6036057147555329831">其他 ICU</translation>
-<translation id="9029323097866369874">要允許 <ph name="DOMAIN"/> 進入 VR 模式嗎？</translation>
-<translation id="7685301384041462804">進入 VR 模式之前，請確認你信任這個網站。</translation>
-<translation id="5033865233969348410">當你處於 VR 模式時，這個網站可能會取得以下資訊：
-  -  你的身體特徵，例如身高
-
-進入 VR 模式之前，請確認你信任這個網站。</translation>
-<translation id="5534334044554683961">當你處於 VR 模式時，這個網站可能會取得以下資訊：
-  -   你的身體特徵，例如身高
-  -   你的房間配置
-
-進入 VR 模式之前，請確認你信任這個網站。.</translation>
-<translation id="4169535189173047238">不允許</translation>
-<translation id="2170088579611075216">允許並進入 VR</translation>
+<translation id="2175927920773552910">QR 碼</translation>
+<translation id="246532703174860178">分享</translation>
+<translation id="2517472476991765520">掃描</translation>
+<translation id="8628973420740315031">如要與附近的使用者分享，請讓對方掃描這個 QR 圖碼</translation>
+<translation id="7339921667754113786">Brave Software 通知平台</translation>
+<translation id="8516012719330875537">圖片編輯器</translation>
+<translation id="4808319664292298116">要從 <ph name="DOMAIN"/> 進入 VR 嗎？</translation>
+<translation id="4353114845960720315">當你進入 VR 時，這個網站可能會取得以下資訊：</translation>
+<translation id="118069123878619799">- 你的身體特徵，例如身高</translation>
+<translation id="5819762621475381970">- 你的房間配置</translation>
 </translationbundle>

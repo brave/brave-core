@@ -10,6 +10,7 @@
 <translation id="7791543448312431591">Adaugă</translation>
 <translation id="1181037720776840403">Elimină</translation>
 <translation id="5317780077021120954">Salvează</translation>
+<translation id="3897092660631435901">Meniu</translation>
 <translation id="5300589172476337783">Afișează</translation>
 <translation id="7108338896283013870">Ascunde</translation>
 <translation id="780301667611848630">Nu, mulțumesc</translation>
@@ -19,6 +20,7 @@
 <translation id="1036348656032585052">Dezactivează</translation>
 <translation id="8105368624971345109">Dezactivează</translation>
 <translation id="1175364870820465910">&amp;Printează...</translation>
+<translation id="129553762522093515">Închise recent</translation>
 <translation id="8870413625673593573">Închise recent</translation>
 <translation id="385051799172605136">Înapoi</translation>
 <translation id="7481312909269577407">Înainte</translation>
@@ -28,19 +30,23 @@
 <translation id="1201402288615127009">Înainte</translation>
 <translation id="5713644099811900409">Contul Brave Software</translation>
 <translation id="3157931365184549694">Restabilește</translation>
+<translation id="5040262127954254034">Confidențialitate</translation>
 <translation id="3061707000357573562">Serviciu de corecție</translation>
 <translation id="1914326953223720820">Serviciu de dezarhivare</translation>
+<translation id="1623104350909869708">Restricționați capacitatea acestei pagini de a crea casete de dialog suplimentare</translation>
 <translation id="2677748264148917807">Ieși</translation>
 <translation id="5556459405103347317">Reîncarcă</translation>
 <translation id="2359808026110333948">Continuă</translation>
-<translation id="5935964611177478118">conectează-te la Brave</translation>
 <translation id="4378154925671717803">Telefon</translation>
 <translation id="8131740175452115882">Confirmați</translation>
 <translation id="8968766641738584599">Salvează cardul</translation>
+<translation id="860043288473659153">Nume titular de card</translation>
+<translation id="869891660844655955">Dată de expirare</translation>
 <translation id="5457113250005438886">Invalid</translation>
 <translation id="6518133107902771759">Confirmați</translation>
 <translation id="8987927404178983737">Lună</translation>
 <translation id="6015796118275082299">An</translation>
+<translation id="1581080074034554886">CVC</translation>
 <translation id="9065203028668620118">Editează</translation>
 <translation id="5029568752722684782">Șterge copia</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
@@ -70,6 +76,7 @@
 <translation id="4522570452068850558">Detalii</translation>
 <translation id="3586931643579894722">Ascunde detaliile</translation>
 <translation id="614940544461990577">Încearcă:</translation>
+<translation id="4943872375798546930">Nu există rezultate</translation>
 <translation id="8688672835843460752">Disponibilă</translation>
 <translation id="4989542687859782284">Indisponibil</translation>
 <translation id="59174027418879706">Activat</translation>
@@ -79,7 +86,10 @@
 <translation id="1838374766361614909">Șterge căutarea</translation>
 <translation id="495170559598752135">Acțiuni</translation>
 <translation id="8261506727792406068">Șterge</translation>
+<translation id="3207960819495026254">Marcată</translation>
 <translation id="3303855915957856445">Nu s-au găsit rezultate de căutare</translation>
+<translation id="1209206284964581585">Ascunde momentan</translation>
+<translation id="1407135791313364759">Deschideți-le pe toate</translation>
 <translation id="4880827082731008257">Caută în istoric</translation>
 <translation id="4756388243121344051">&amp;Istoric</translation>
 <translation id="1644574205037202324">Istoric</translation>
@@ -91,11 +101,14 @@
 <translation id="1178581264944972037">Întrerupe</translation>
 <translation id="1232569758102978740">Fără titlu</translation>
 <translation id="7514365320538308">Descarcă</translation>
+<translation id="8041089156583427627">Trimiteți feedback</translation>
 <translation id="7552846755917812628">Încearcă următoarele sfaturi:</translation>
+<translation id="3960299545138990065">repornește Brave;</translation>
 <translation id="4275830172053184480">Reporniți gadgetul</translation>
 <translation id="413544239732274901">Aflați mai multe</translation>
 <translation id="7554791636758816595">Filă nouă</translation>
 <translation id="2079545284768500474">Anulare acțiune</translation>
+<translation id="17513872634828108">File deschise</translation>
 <translation id="981121421437150478">Offline</translation>
 <translation id="5171045022955879922">Caută sau introdu adresa URL</translation>
 <translation id="803771048473350947">Fișier</translation>
@@ -108,12 +121,11 @@
 <translation id="6831043979455480757">Tradu</translation>
 <translation id="2473195200299095979">Traduceți această pagină</translation>
 <translation id="8680536109547170164"><ph name="QUERY"/>, răspuns, <ph name="ANSWER"/></translation>
-<translation id="9008201768610948239">Ignorați</translation>
 <translation id="7714464543167945231">Certificat</translation>
 <translation id="4235360514405112390">Valid</translation>
 <translation id="6447842834002726250">Cookie-uri</translation>
 <translation id="1919345977826869612">Reclame</translation>
-<translation id="410351446219883937">Redare automată</translation>
+<translation id="6612358246767739896">Conținut protejat</translation>
 <translation id="9219103736887031265">Imagini</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Ferestre pop-up și redirecționări</translation>
@@ -128,6 +140,7 @@
 <translation id="7638605456503525968">Porturi seriale</translation>
 <translation id="2215727959747642672">Editează fișiere</translation>
 <translation id="6545864417968258051">Căutare Bluetooth</translation>
+<translation id="534295439873310000">Dispozitive NFC</translation>
 <translation id="5039804452771397117">Permite</translation>
 <translation id="7053983685419859001">Blochează</translation>
 <translation id="57838592816432529">Dezactivează sunetul</translation>
@@ -138,13 +151,17 @@
 <translation id="6979440798594660689">Dezactivează sunetul (prestabilit)</translation>
 <translation id="8037357227543935929">Solicită (în mod prestabilit)</translation>
 <translation id="8763927697961133303">Dispozitiv USB</translation>
+<translation id="4165986682804962316">Setări pentru site-uri</translation>
 <translation id="9011424611726486705">Deschide setările pentru site</translation>
 <translation id="5932224571077948991">Site-ul afișează anunțuri deranjante sau înșelătoare</translation>
 <translation id="7878562273885520351">Este posibil ca parola să fie compromisă</translation>
 <translation id="1089439967362294234">Schimbă parola</translation>
+<translation id="9008201768610948239">Ignorați</translation>
 <translation id="1186201132766001848">Verifică parolele</translation>
 <translation id="5979084224081478209">Verifică parolele</translation>
+<translation id="10614374240317010">Nu se salvează niciodată</translation>
 <translation id="5869522115854928033">Parole salvate</translation>
+<translation id="230699814587342492">Parole Brave</translation>
 <translation id="5087580092889165836">Adaugă un card</translation>
 <translation id="2154484045852737596">Editează cardul</translation>
 <translation id="4923459931733593730">Plată</translation>
@@ -193,8 +210,11 @@
 <translation id="1974060860693918893">Avansate</translation>
 <translation id="5308380583665731573">Conectează-te</translation>
 <translation id="2501278716633472235">Înapoi</translation>
+<translation id="1736420071277903564">Computer</translation>
+<translation id="3906954721959377182">Tabletă</translation>
 <translation id="7029809446516969842">Parole</translation>
 <translation id="6596325263575161958">Opțiuni de criptare</translation>
+<translation id="8461694314515752532">Criptează datele sincronizate folosind propria expresie de acces pentru sincronizare</translation>
 <translation id="9050666287014529139">Expresie de acces</translation>
 <translation id="9095388113577226029">Mai multe limbi...</translation>
 <translation id="7600965453749440009">Nu traduce niciodată din <ph name="LANGUAGE"/></translation>
@@ -202,6 +222,7 @@
 <translation id="7378627244592794276">Nu</translation>
 <translation id="9137013805542155359">Afișează originalul</translation>
 <translation id="8725066075913043281">Încearcă din nou</translation>
+<translation id="5684874026226664614">Hopa. Această pagină nu a putut fi tradusă.</translation>
 <translation id="583281660410589416">Necunoscută</translation>
 <translation id="9170848237812810038">&amp;Anulează</translation>
 <translation id="2972581237482394796">&amp;Repetă</translation>

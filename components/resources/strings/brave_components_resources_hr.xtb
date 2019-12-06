@@ -77,19 +77,11 @@
 <translation id="438216590634144114">Odaberite tražilicu koju želite upotrebljavati kao zadanu tražilicu pri pretraživanju interneta putem adresne trake.</translation>
 <translation id="5804484488647369316">Postavi zadanu tražilicu</translation>
 <translation id="4428458837269935199">Za privatnije iskustvo pretraživanja isprobajte značajku DuckDuckGo.</translation>
-<translation id="513635702954746724">Odaberite svoju temu boje</translation>
-<translation id="6842850080200126305">Postavite boju svoje alatne trake odabirom svijetle ili tamne opcije na ploči za postavke.</translation>
-<translation id="5805868144901917207">Odaberi temu</translation>
-<translation id="8131740175452115882">Potvrdi</translation>
-<translation id="713206503018076063">Tema sustava (zadano)</translation>
-<translation id="1807246157184219062">Svjetlo</translation>
-<translation id="2414886740292270097">Tama</translation>
 <translation id="3829010735958850433">Preskoči uvodno razgledavanje</translation>
 <translation id="1201402288615127009">Sljedeće</translation>
 <translation id="7954950242989581218">Sigurno pretraživanje</translation>
 <translation id="2188651882929633653">Štitom se Brave blokiraju neželjene stvari kojima se pokušava pratiti vaše pretraživanje interneta uključujući većinom oglase. Postavite Štitove prema “dolje” ako se čini da mrežno mjesto ne radi. Brave upotrebljava <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>u potpunosti privatno analiziranje proizvoda<ph name="END_LINK_P3A">&lt;/a&gt;</ph> kako bi se procijenilo ukupno korištenje određenim značajkama. Možete isključiti ovu značajku u stavci <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Postavke<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Oglasi</translation>
-<translation id="5698387814910197501">Zaradite {{currency}}gledajući oglase u pregledniku Brave. Prikazani oglasi temelje se na vašim interesima, pretpostavljenima na temelju vašeg ponašanja pri pregledavanju. Osobni podaci i povijest pregledavanja nikad ne napuštaju vaš preglednik.</translation>
 <translation id="6112368337882254910">Automatski doprinosi</translation>
 <translation id="3742599705619405136">Automatski način za pružanje podrške izdavačima i stvarateljima sadržaja. Postavite mjesečno plaćanje i nastavite uobičajeno pregledavati internet. Provjerena mrežna mjesta Brave koje posjetite automatski primaju vaše doprinose na temelju pažnje koju posvećujete, a koja se mjeri preglednikom Brave.</translation>
 <translation id="20281847067919078">Procijenjene nagrade na čekanju</translation>
@@ -97,6 +89,7 @@
 <translation id="319209088187794725">Primljene obavijesti oglasa ovog mjeseca</translation>
 <translation id="4229016885653790965">Ispričavamo se! Oglasi nisu još uvijek dostupni u vašoj regiji.</translation>
 <translation id="2539279826042558064">Nagrade Brave i oglasi trenutačno nisu dostupni na vašem uređaju.</translation>
+<translation id="5421369907811917952">Ostale postavke</translation>
 <translation id="654711254769318398">Pregledane stranice oglasa</translation>
 <translation id="2532127066761785857">Maksimalni broj prikazanih oglasa</translation>
 <translation id="5171071066587880677">1 oglas po satu</translation>
@@ -132,7 +125,6 @@
 <translation id="2726674968268546964">tokeni</translation>
 <translation id="7286722244752781970">Minimalno vrijeme provedeno na stranici prije evidentiranja posjeta</translation>
 <translation id="4424486208397124985">Minimalni broj posjeta da bi se izdavač smatrao relevantnim</translation>
-<translation id="5421369907811917952">Ostale postavke</translation>
 <translation id="6248554379744796526">Pokaži neprovjerena mrežna mjesta na popisu</translation>
 <translation id="5875669387851353511">Dopusti davanje doprinosa za videozapise</translation>
 <translation id="8933202740471878108">1 posjet</translation>
@@ -162,7 +154,6 @@
 <translation id="7210234701206674260">Imamo poteškoća sa značajkom Nagrade Brave. Pokušajte kasnije.</translation>
 <translation id="570208820610947248">Otkrili smo da nešto nije u redu s vašim novčanikom. Morate oporaviti sigurnosnu kopiju svojeg novčanika kako bi moglo doći do obrade bilo kakvih transakcija.</translation>
 <translation id="7797604753681168055">Oporaviti odmah!</translation>
-<translation id="5549059668721746831">Datum sljedeće mjesečne napojnice</translation>
 <translation id="6231182869178328516">Upravo sam dao/la napojnicu <ph name="NAME"/> korištenjem preglednika Brave. Provjerite na mrežnoj stranici: https://brave.com/tips.</translation>
 <translation id="8404935570206006581">Nagradite uslugom Brave</translation>
 <translation id="2876191400747549936">Ispričavamo se, ali nastao je problem tijekom obrađivanja vašeg zahtjeva. Pokušajte ponovo.</translation>
@@ -261,8 +252,6 @@
 <translation id="4114667046481794032">Iznos doprinosa</translation>
 <translation id="3520817231440482449">Daj napojnicu ovom mrežnom mjestu svaki mjesec</translation>
 <translation id="1827184134638345603">Pošalji napojnicu…</translation>
-<translation id="7928243298881209869">Vaša se prva mjesečna napojnica šalje dana:</translation>
-<translation id="6045860799501892362">Postavi mjesečnu napojnicu</translation>
 <translation id="8003573781961874199">Preuzmi kao PDF</translation>
 <translation id="298067735430872465">Zarada od oglasa</translation>
 <translation id="2266556115441975588">Ovdje su vaše nagrade od oglasa!</translation>
@@ -291,7 +280,6 @@
 <translation id="9115913704608474258">studeni</translation>
 <translation id="7828956995407538686">listopad</translation>
 <translation id="5502713021410870035">rujan</translation>
-<translation id="5737831580668469027">Mjesečne napojnice!</translation>
 <translation id="606865182719489911">Dostupna je besplatna dodjela tokena</translation>
 <translation id="2487641031722095938">Danas je vaš sretan dan!</translation>
 <translation id="6255773350565723852">Vaše se  odobrenje za token izdaje.</translation>
@@ -318,13 +306,8 @@
 <translation id="4923459931733593730">Plaćanje</translation>
 <translation id="4021593982164260556">Plaćanje s izvršava {{day}}. dana svakog mjeseca.</translation>
 <translation id="6104680658798556671">Plaćanje nije izvršeno.</translation>
-<translation id="2834888581291358924">Kada stanje vašeg novčanika nije dovoljno da se pokrije ukupni iznos automatskih doprinosa i ponavljajućih napojnica, ta se plaćanja preskaču za ovo razdoblje.</translation>
 <translation id="3138528956349114724">Prikvačena mrežna mjesta sada su</translation>
-<translation id="2337632028350283479">Ovako funkcioniraju mjesečne napojnice:</translation>
-<translation id="6457273203091513039">Mjesečne napojnice uzimaju se iz vaše uplate automatskog doprinosa. Te su uplate odvojene.</translation>
 <translation id="9099396904827413228">Svako mrežno mjesto mjesečno dobiva fiksni iznos.</translation>
-<translation id="5051110132941857169">Sve mjesečne napojnice plaćaju se odjednom, svaki mjesec. Ako upotrebljavate opciju automatskog doprinosa, napojnice se isplaćuju u isto vrijeme kao vaša isplata automatskog doprinosa.</translation>
-<translation id="3374483782662414143">Putem ploče s postavkama možete ukloniti bilo koje mrežno mjesto koje prima mjesečne napojnice.</translation>
 <translation id="5082474983463379713">Napomena:</translation>
 <translation id="1430915738399379752">Ispis</translation>
 <translation id="135956957367307069">Vaš se zahtjev još obrađuje. Pričekajte.</translation>

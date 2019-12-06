@@ -65,6 +65,7 @@
 <translation id="1928696683969751773">به‌روزرسانی‌ها</translation>
 <translation id="6064125863973209585">بارگیری‌های کامل‌شده</translation>
 <translation id="5342314432463739672">درخواست‌های مجوز</translation>
+<translation id="3749259744154402564">پشتیبانی‌نشده</translation>
 <translation id="629730747756840877">حساب</translation>
 <translation id="82609232232243542">‏ورود به Brave</translation>
 <translation id="7956662517480676674">‏همگام‌سازی و سرویس‌های Brave Software</translation>
@@ -227,8 +228,6 @@
 <translation id="3245261285041759672">‏ممکن است حساب Brave Software شما اشکال دیگری از سابقه مرور در <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> داشته باشد.</translation>
 <translation id="7274013316676448362">سایت مسدودشده</translation>
 <translation id="2534155362429831547"><ph name="NUMBER_OF_ITEMS"/> مورد حذف شد</translation>
-<translation id="1121094540300013208">آمار استفاده و گزارش‌های خرابی</translation>
-<translation id="9079153198295609735">‏ارسال خودکار آمار کاربرد و گزارش‌های خرابی به Brave Software</translation>
 <translation id="6981982820502123353">قابلیت دسترسی</translation>
 <translation id="2387895666653383613">اندازه قلم نوشتار</translation>
 <translation id="2321958826496381788">لغزنده را بکشید تا زمانی که بتوانید این متن را به راحتی بخوانید. بعد از دو ضربه متوالی روی یک پاراگراف، اندازه نوشتار حداقل باید به این بزرگی باشد.</translation>
@@ -243,12 +242,12 @@
 <translation id="6295158916970320988">همه سایت‌ها</translation>
 <translation id="8380167699614421159">این سایتْ آگهی‌های مزاحم یا گمراه‌کننده نشان می‌دهد</translation>
 <translation id="1919345977826869612">آگهی‌ها</translation>
-<translation id="410351446219883937">پخش خودکار</translation>
 <translation id="6447842834002726250">کوکی‌ها</translation>
 <translation id="6196640612572343990">مسدود کردن کوکی‌های شخص ثالث</translation>
 <translation id="6782111308708962316">جلوگیری از ذخیره کردن و خواندن داده‌های کوکی توسط وب‌سایت‌های شخص ثالث</translation>
 <translation id="7521387064766892559">جاوا اسکریپت</translation>
 <translation id="4434045419905280838">پنجره‌های بازشو و هدایت‌ها</translation>
+<translation id="534295439873310000">‏دستگاه‌های NFC</translation>
 <translation id="4751476147751820511">حسگرهای نوری یا حرکتی</translation>
 <translation id="1717218214683051432">حسگرهای حرکتی</translation>
 <translation id="2091887806945687916">صدا</translation>
@@ -261,7 +260,6 @@
 <translation id="6181444274883918285">افزودن سایتی به استثناها</translation>
 <translation id="5313967007315987356">افزودن سایت</translation>
 <translation id="1369915414381695676">سایت <ph name="SITE_NAME"/> اضافه شد</translation>
-<translation id="7837721118676387834">به پخش‌خودکار ویدیو‌های صامت‌شده برای سایتی خاص امکان دهید.</translation>
 <translation id="2621115761605608342">جاوااسکریپت را برای سایتی خاص مجاز کنید.</translation>
 <translation id="8801436777607969138">مسدود کردن جاوااسکریپت برای سایتی خاص.</translation>
 <translation id="8372893542064058268">«همگام‌سازی پس‌زمینه» را برای یک سایت خاص مجاز کنید.</translation>
@@ -285,7 +283,6 @@
 <translation id="5100237604440890931">کوچک شده - برای بزرگ کردن کلیک کنید.</translation>
 <translation id="857943718398505171">مجاز (توصیه می‌شود)</translation>
 <translation id="2913331724188855103">سایت‌ها مجاز به ذخیره و خواندن داده‌های کوکی باشند (توصیه می‌شود)</translation>
-<translation id="7445411102860286510">اجازه به سایت‌ها برای پخش خودکار ویدیوهای صامت‌شده (توصیه می‌شود)</translation>
 <translation id="5335288049665977812">مجاز کردن همه سایت‌ها برای اجرای جاوااسکریپت (توصیه‌ می‌شود)</translation>
 <translation id="5527111080432883924">قبل از اینکه به سایت‌ها اجازه داده شود به نوشتار و تصاویر بریده‌دان دسترسی پیدا کنند سؤال شود (توصیه می‌شود)</translation>
 <translation id="6912998170423641340">سایت‌ها از خواندن نوشتار و تصاویر بریده‌دان منع شوند</translation>
@@ -295,6 +292,8 @@
 <translation id="2107397443965016585">قبل از اجازه به سایت‌ها برای پخش محتوای محافظت‌شده سؤال شود (توصیه می‌شود)</translation>
 <translation id="2910701580606108292">قبل از اجازه دادن به سایت‌ها برای پخش محتوای محافظت‌شده سؤال شود</translation>
 <translation id="757524316907819857">مسدود کردن سایت‌ها برای پخش محتوای محافظت‌شده</translation>
+<translation id="5710871682236653961">‏وقتی روی دستگاه‌های NFC ضربه می‌زنید، قبل از ارسال و دریافت اطلاعات سؤال شود (توصیه می‌شود)</translation>
+<translation id="7572498721684305250">‏وقتی روی دستگاه‌های NFC ضربه می‌زنید، ارسال و دریافت اطلاعات در سایت‌ها مسدود شود</translation>
 <translation id="3277252321222022663">مجاز بودن دسترسی سایت‌ها به حسگرها (توصیه می‌شود)</translation>
 <translation id="5048398596102334565">مجاز بودن دسترسی سایت‌ها به حسگرهای حرکتی (توصیه می‌شود)</translation>
 <translation id="8816026460808729765">سایت‌ها نمی‌توانند به حسگرها دسترسی داشته باشند</translation>
@@ -308,7 +307,10 @@
 <translation id="3123473560110926937">در برخی سایت‌ها مسدود می‌شود</translation>
 <translation id="965817943346481315">اگر سایتْ آگهی‌های مزاحم یا گمراه‌کننده نشان می‌دهد مسدود شود (توصیه می‌شود)</translation>
 <translation id="3386292677130313581">قبل از اجازه به سایت‌ها برای اطلاع از مکانتان، ابتدا سؤال شود (توصیه می‌شود)</translation>
-<translation id="9139068048179869749">قبل از اجازه به سایت‌ها برای ارسال اعلان ابتدا سؤال شود (توصیه می‌شود)</translation>
+<translation id="6270391203985052864">سایت‌ها می‌توانند برای ارسال اعلان درخواست دهند</translation>
+<translation id="5505264765875738116">سایت‌ها نمی‌توانند برای ارسال اعلان درخواست دهند</translation>
+<translation id="6561560012278703671">استفاده از پیام‌رسانی کم‌صداتر (درخواست‌های اعلان را مسدود می‌کند تا مزاحمتان نشود)</translation>
+<translation id="7302486331832100261">معمولاً اعلان‌ها را مسدود می‌کنید. برای مجاز کردن، روی «جزئیات» ضربه بزنید.</translation>
 <translation id="4479647676395637221">قبل از اجازه به سایت‌ها برای استفاده از دوربین، ابتدا سؤال شود (توصیه می‌شود)</translation>
 <translation id="6992289844737586249">قبل از اجازه به سایت‌ها برای استفاده از میکروفون ابتدا سؤال شود (توصیه می‌شود)</translation>
 <translation id="2289270750774289114">وقتی سایتی می‌خواهد دستگا‌ه‌های بلوتوث اطراف را پیدا کند، سؤال شود (توصیه می‌شود)</translation>
@@ -507,9 +509,11 @@
 <translation id="5230560987958996918"><ph name="SITE"/> می‌خواهد دستگاه‌های «بلوتوث» اطراف را جستجو کند. دستگاه‌های زیر پیدا شدند:</translation>
 <translation id="8368027906805972958">دستگاه ناشناس یا پشتیبانی‌نشده (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7605594153474022051">همگام‌سازی کار نمی‌کند</translation>
+<translation id="2537178555904266562">خطا در همگام‌سازی گذرواژه‌ها</translation>
 <translation id="1810845389119482123">همگام‌سازی اولیه کامل نشد</translation>
 <translation id="3235722914093408050">‏برای شروع همگام‌سازی Brave، تنظیمات Android را باز کنید و همگام‌سازی سیستم Android را دوباره فعال کنید</translation>
 <translation id="3367813778245106622">دوباره به سیستم وارد شوید یا همگام‌سازی را شروع کنید</translation>
+<translation id="3701167022068948696">اکنون مشکل رفع شود</translation>
 <translation id="974555521953189084">برای شروع همگام‌سازی، عبارت عبورتان را وارد کنید</translation>
 <translation id="2997266899014181325">‏برای شروع همگام‌سازی، «همگام‌سازی داده‌های Brave» را روشن کنید.</translation>
 <translation id="8260126382462817229">دوباره سعی کنید به سیستم وارد شوید</translation>
@@ -603,7 +607,7 @@
 <translation id="2317945146070194624">‏باز کردن در برگه جدید Brave</translation>
 <translation id="7975379999046275268">پیش‌نمایش صفحه <ph name="BEGIN_NEW"/>جدید<ph name="END_NEW"/></translation>
 <translation id="6112702117600201073">درحال بازخوانی صفحه</translation>
-<translation id="36525718899759834">‏دریافت برنامه از فروشگاه Brave Software Play: ‏<ph name="APP_ACTION"/></translation>
+<translation id="6990079615885386641">‏دریافت برنامه از فروشگاه Brave Software Play: ‏<ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">تاریک</translation>
 <translation id="1807246157184219062">روشن</translation>
 <translation id="4056223980640387499">سپیا</translation>
@@ -639,7 +643,6 @@
 <translation id="3810973564298564668">مدیریت</translation>
 <translation id="5199929503336119739">نمایه کاری</translation>
 <translation id="528192093759286357">برای خروج از حالت تمام صفحه، از بالا صفحه را بکشید و دکمه برگشت را لمس کنید.</translation>
-<translation id="2836148919159985482">برای خروج از حالت تمام صفحه، دکمه برگشت را لمس کنید.</translation>
 <translation id="3967822245660637423">بارگیری کامل شد</translation>
 <translation id="2434158240863470628">بارگیری کامل شد <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="802154636333426148">بارگیری نشد</translation>
@@ -698,6 +701,7 @@
 <translation id="3810838688059735925">فیلم</translation>
 <translation id="3616113530831147358">صوتی</translation>
 <translation id="9219103736887031265">تصاویر</translation>
+<translation id="656065428026159829">موارد بیشتر</translation>
 <translation id="8250920743982581267">اسناد</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# فایل}one{# فایل}other{# فایل}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# تصویر}one{# تصویر}other{# تصویر}}</translation>
@@ -709,7 +713,7 @@
 <translation id="7810647596859435254">باز کردن با…</translation>
 <translation id="5655963694829536461">بارگیری‌هایتان را جستجو کنید</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
-<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION"/></translation>
 <translation id="1883903952484604915">فایل‌های من</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">مقاله‌ها اینجا نشان داده می‌شوند و حتی درحالت آفلاین هم می‌توانید آن‌ها را بخوانید.</translation>
@@ -737,7 +741,7 @@
 <translation id="673197144963363525">‏‫با ارسال آمار کاربرد و گزارش‌های خرابی به Brave Software، به بهتر شدن Brave کمک کنید.</translation>
 <translation id="3518985090088779359">پذیرش و ادامه</translation>
 <translation id="7207456302801184289">‏به Brave خوش آمدید</translation>
-<translation id="704822250101715322">‏در انتظار «سرویس‌های Brave Software Play» برای اتمام به‌روزرسانی است</translation>
+<translation id="7189372733857464326">‏در انتظار «سرویس‌های Brave Software Play» برای اتمام به‌روزرسانی است</translation>
 <translation id="1231733316453485619">همگام‌سازی روشن شود؟</translation>
 <translation id="5132942445612118989">همگام‌سازی گذرواژه‌ها، سابقه و موارد دیگر در همه دستگاه‌ها</translation>
 <translation id="5736731321935944068">‏Brave Software ممکن است از سابقه مرور شما برای شخصی کردن جستجو، آگهی‌ها و سایر سرویس‌های Brave Software استفاده کند</translation>
@@ -762,7 +766,9 @@
 <translation id="4046123991198612571">آهنگ بعدی</translation>
 <translation id="3859306556332390985">جستجو به جلو</translation>
 <translation id="8441146129660941386">جستجو به عقب</translation>
-<translation id="6706288973712894588">‏درحال حاضر آفلاین هستید.\n<ph name="BEGIN_LINK"/>فید آفلاین خود را کاوش کنید.<ph name="END_LINK"/></translation>
+<translation id="6884306546558072722">به‌صورت آفلاین به کاوش ادامه دهید</translation>
+<translation id="388596076286380598">حتی وقتی آفلاین هستید یا ارتباط ضعیفی دارید، مقاله، ویدیو، و محتواهای دیگر را از سایت‌های موردعلاقه دریافت کنید.</translation>
+<translation id="1736419249208073774">کاوش</translation>
 <translation id="572328651809341494">برگه‌های اخیر</translation>
 <translation id="8497726226069778601">هنوز… چیزی برای دیدن وجود ندارد</translation>
 <translation id="5423934151118863508">صفحاتی که بیشترین بازدید را از آنها داشته‌اید در اینجا نمایان می‌شوند</translation>
@@ -785,7 +791,6 @@
 <translation id="3493531032208478708">درباره محتوای پیشنهادی <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="7542481630195938534">دریافت پیشنهادها امکان‌پذیر نیست</translation>
 <translation id="5013696553129441713">هیچ پیشنهاد جدیدی نیست</translation>
-<translation id="1736419249208073774">کاوش</translation>
 <translation id="7444811645081526538">دسته‌های بیشتر</translation>
 <translation id="6709133671862442373">اخبار</translation>
 <translation id="1264974993859112054">ورزش</translation>
@@ -892,6 +897,7 @@
 <translation id="584427517463557805">برگه خصوصی انتخاب‌شده</translation>
 <translation id="2268044343513325586">فیلتر</translation>
 <translation id="7846076177841592234">لغو انتخاب</translation>
+<translation id="6216432067784365534">گزینه‌های <ph name="NAME_OF_LIST_ITEM"/></translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> مورد انتخاب شد.  گزینه‌ها در نزدیکی بالای صفحه دردسترس است</translation>
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> مورد انتخاب شد</translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{اشتراک‌گذاری ۱ مورد انتخاب‌شده}one{اشتراک‌گذاری # مورد انتخاب‌شده}other{اشتراک‌گذاری # مورد انتخاب‌شده}}</translation>
@@ -966,8 +972,10 @@
 <translation id="3333961966071413176">همه مخاطبین</translation>
 <translation id="4994033804516042629">مخاطبی پیدا نشد</translation>
 <translation id="5403592356182871684">نام‌ها</translation>
+<translation id="2903493209154104877">آدرس‌ها</translation>
 <translation id="2717722538473713889">آدرس‌های ایمیل</translation>
 <translation id="381841723434055211">شماره‌های تلفن</translation>
+<translation id="6689172468748959065">عکس‌های نمایه</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ ۱ مورد دیگر)}one{(+ # مورد دیگر)}other{(+ # مورد دیگر)}}</translation>
 <translation id="5197729504361054390">مخاطبین انتخابی شما با <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> هم‌رسانی می‌شود.</translation>
 <translation id="1779089405699405702">رمزگشای تصویر</translation>
@@ -1080,8 +1088,12 @@
 <translation id="7757787379047923882">نوشتار هم‌رسانی‌شده از <ph name="DEVICE_NAME"/></translation>
 <translation id="5193988420012215838">در بریده‌دان کپی شد</translation>
 <translation id="4696983787092045100">ارسال نوشتار به دستگاه‌های شما</translation>
+<translation id="5694049548840660018">برگشت آسان به صفحه اصلی</translation>
+<translation id="1122278879166832009">برای دسترسی سریع به صفحه اصلی از هرجایی، اینجا ضربه بزنید</translation>
 <translation id="1260236875608242557">جستجو و کاوش</translation>
 <translation id="6369229450655021117">از اینجا می‌توانید وب را جستجو کنید، با دوستان هم‌رسانی کنید و صفحات باز را ببینید</translation>
+<translation id="8758557275681689734">دیدن همه برگه‌های باز</translation>
+<translation id="8655599981421006542">برای ایجاد برگه جدید و برگشتن به برگه‌های قبلی، اینجا ضربه بزنید</translation>
 <translation id="723171743924126238">انتخاب تصاویر</translation>
 <translation id="8751914237388039244">تصویری انتخاب کنید</translation>
 <translation id="1989112275319619282">مشاهده محتوای موجود در فروشگاه ما</translation>
@@ -1102,18 +1114,16 @@
 <translation id="671481426037969117">تایمر <ph name="FQDN"/> شما متوقف شد. دوباره فردا شروع به کار می‌کند.</translation>
 <translation id="7479104141328977413">مدیریت برگه</translation>
 <translation id="3524138585025253783">رابط کاربری برنامه‌نویس</translation>
+<translation id="4732120983431207637">گره‌گشای پشته</translation>
 <translation id="6036057147555329831">‏ICU اضافی</translation>
-<translation id="9029323097866369874">‏به <ph name="DOMAIN"/> اجازه می‌دهید به حالت VR وارد شود؟</translation>
-<translation id="7685301384041462804">‏پیش از وارد شدن به حالت VR، مطمئن شوید به این سایت اعتماد دارید.</translation>
-<translation id="5033865233969348410">‏درمدتی که در حالت VR هستید، این سایت می‌تواند به این‌ها پی‌ببرد:
-  -  ویژگی‌های فیزیکی، مانند قد شما
-
-پیش از وارد شدن به VR، مطمئن شوید به این سایت اعتماد دارید.</translation>
-<translation id="5534334044554683961">‏درمدتی که در حالت VR هستید، این سایت می‌تواند به این‌ها پی‌ببرد:
-  -   ویژگی‌های فیزیکی، مانند قد شما
-  -   چیدمان اتاقتان
-
-پیش از وارد شدن به VR، مطمئن شوید به این سایت اعتماد دارید.</translation>
-<translation id="4169535189173047238">اجازه داده نشود</translation>
-<translation id="2170088579611075216">‏اجازه دادن و وارد شدن به VR</translation>
+<translation id="2175927920773552910">کد QR</translation>
+<translation id="246532703174860178">اشتراک‌گذاری</translation>
+<translation id="2517472476991765520">اسکن</translation>
+<translation id="8628973420740315031">‏برای هم‌رسانی کردن با افراد اطراف، اجازه دهید این کد QR را اسکن کنند</translation>
+<translation id="7339921667754113786">‏پلتفورم اعلان‌های Brave Software</translation>
+<translation id="8516012719330875537">ویرایشگر تصویر</translation>
+<translation id="4808319664292298116">‏VR از <ph name="DOMAIN"/> وارد شود؟</translation>
+<translation id="4353114845960720315">‏وقتی در حالت VR هستید، این سایت می‌تواند به این موارد پی ببرد:</translation>
+<translation id="118069123878619799">ویژگی‌های ظاهری شما، مانند قد</translation>
+<translation id="5819762621475381970">- چیدمان اتاق شما</translation>
 </translationbundle>

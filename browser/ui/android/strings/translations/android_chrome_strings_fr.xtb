@@ -65,6 +65,7 @@
 <translation id="1928696683969751773">Mises à jour</translation>
 <translation id="6064125863973209585">Téléchargements terminés</translation>
 <translation id="5342314432463739672">Demandes d'autorisation</translation>
+<translation id="3749259744154402564">Impossible d'effectuer cette action</translation>
 <translation id="629730747756840877">Compte</translation>
 <translation id="82609232232243542">Connectez-vous à Brave</translation>
 <translation id="7956662517480676674">Services Brave Software/Synchronisation</translation>
@@ -227,8 +228,6 @@ Votre compte Brave Software conserve peut-être d'autres contenus d'historique d
 <translation id="3245261285041759672">Votre compte Brave Software conserve peut-être d'autres formes d'historique de navigation sur la page <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="7274013316676448362">Site bloqué</translation>
 <translation id="2534155362429831547"><ph name="NUMBER_OF_ITEMS"/> éléments supprimés</translation>
-<translation id="1121094540300013208">Statistiques d'utilisation et rapports d'erreur</translation>
-<translation id="9079153198295609735">Envoie automatiquement les statistiques d'utilisation et les rapports d'erreur à Brave Software</translation>
 <translation id="6981982820502123353">Accessibilité</translation>
 <translation id="2387895666653383613">Mise à l'échelle du texte</translation>
 <translation id="2321958826496381788">Faites glisser le curseur pour lire le texte aisément. Sa taille doit être similaire à celle-ci lorsque vous appuyez deux fois sur un paragraphe.</translation>
@@ -243,12 +242,12 @@ Votre compte Brave Software conserve peut-être d'autres contenus d'historique d
 <translation id="6295158916970320988">Tous les sites</translation>
 <translation id="8380167699614421159">Ce site affiche des annonces intrusives ou trompeuses</translation>
 <translation id="1919345977826869612">Annonces</translation>
-<translation id="410351446219883937">Lecture automatique</translation>
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6196640612572343990">Bloquer les cookies tiers</translation>
 <translation id="6782111308708962316">Empêcher les sites Web tiers d'enregistrer et de lire les données des cookies</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Pop-up et redirections</translation>
+<translation id="534295439873310000">Appareils NFC</translation>
 <translation id="4751476147751820511">Capteurs de mouvement ou de lumière</translation>
 <translation id="1717218214683051432">Capteurs de mouvement</translation>
 <translation id="2091887806945687916">Son</translation>
@@ -261,7 +260,6 @@ Votre compte Brave Software conserve peut-être d'autres contenus d'historique d
 <translation id="6181444274883918285">Ajouter une exception pour un site</translation>
 <translation id="5313967007315987356">Ajouter un site</translation>
 <translation id="1369915414381695676">Site "<ph name="SITE_NAME"/>" ajouté</translation>
-<translation id="7837721118676387834">Autorisez la lecture automatique des vidéos dont le son est coupé pour un site spécifique.</translation>
 <translation id="2621115761605608342">Autorisez le langage JavaScript pour un site spécifique.</translation>
 <translation id="8801436777607969138">Bloquer JavaScript sur un site spécifique.</translation>
 <translation id="8372893542064058268">Autorise la synchronisation en arrière-plan pour un site spécifique.</translation>
@@ -285,7 +283,6 @@ Votre compte Brave Software conserve peut-être d'autres contenus d'historique d
 <translation id="5100237604440890931">Réduit – Cliquer pour développer</translation>
 <translation id="857943718398505171">Autorisé (recommandé)</translation>
 <translation id="2913331724188855103">Autoriser les sites à enregistrer et à lire les données des cookies (recommandé)</translation>
-<translation id="7445411102860286510">Autoriser les sites à lire automatiquement des vidéos dont le son est coupé (recommandé)</translation>
 <translation id="5335288049665977812">Autoriser les sites à exécuter JavaScript (recommandé)</translation>
 <translation id="5527111080432883924">Demander avant d'autoriser les sites à accéder en lecture au texte et aux images du presse-papiers (recommandé)</translation>
 <translation id="6912998170423641340">Interdire aux sites d'accéder en lecture au texte et aux images du presse-papiers</translation>
@@ -295,6 +292,8 @@ Votre compte Brave Software conserve peut-être d'autres contenus d'historique d
 <translation id="2107397443965016585">Demander avant d'autoriser les sites à lire les contenus protégés (recommandé)</translation>
 <translation id="2910701580606108292">Demander avant d'autoriser les sites à lire les contenus protégés</translation>
 <translation id="757524316907819857">Empêcher les sites de lire les contenus protégés</translation>
+<translation id="5710871682236653961">Demander avant d'autoriser les sites à envoyer et recevoir des informations lorsque vous utilisez des appareils NFC (recommandé)</translation>
+<translation id="7572498721684305250">Empêcher les sites d'envoyer et de recevoir des informations lorsque vous utilisez des appareils NFC</translation>
 <translation id="3277252321222022663">Autoriser les sites à accéder à vos capteurs (recommandé)</translation>
 <translation id="5048398596102334565">Autoriser les sites à accéder à vos capteurs de mouvement (recommandé)</translation>
 <translation id="8816026460808729765">Bloque l'accès aux capteurs pour certains sites</translation>
@@ -308,7 +307,10 @@ Votre compte Brave Software conserve peut-être d'autres contenus d'historique d
 <translation id="3123473560110926937">Bloqué sur certains sites</translation>
 <translation id="965817943346481315">Bloquer si le site affiche des annonces intrusives ou trompeuses (recommandé)</translation>
 <translation id="3386292677130313581">Demander avant d'autoriser des sites à accéder à ma position (recommandé)</translation>
-<translation id="9139068048179869749">Demander avant d'autoriser des sites à envoyer des notifications (recommandé)</translation>
+<translation id="6270391203985052864">Les sites peuvent vous demander l'autorisation d'envoyer des notifications</translation>
+<translation id="5505264765875738116">Les sites ne peuvent pas vous demander l'autorisation d'envoyer des notifications</translation>
+<translation id="6561560012278703671">Activer l'affichage discret (permet d'empêcher les invites liées aux notifications de vous interrompre)</translation>
+<translation id="7302486331832100261">Vous avez l'habitude de bloquer les notifications. Pour les autoriser, appuyez sur "Détails".</translation>
 <translation id="4479647676395637221">Demander avant d'autoriser des sites à utiliser ma caméra (recommandé)</translation>
 <translation id="6992289844737586249">Demander avant d'autoriser des sites à utiliser mon micro (recommandé)</translation>
 <translation id="2289270750774289114">Me demander lorsqu'un site souhaite accéder aux appareils Bluetooth se trouvant à proximité (recommandé)</translation>
@@ -507,9 +509,11 @@ Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>réinitialisez la synchronis
 <translation id="5230560987958996918">Le site <ph name="SITE"/> souhaite rechercher les appareils Bluetooth à proximité. Les appareils suivants ont été détectés :</translation>
 <translation id="8368027906805972958">Appareil inconnu ou non compatible (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7605594153474022051">La synchronisation ne fonctionne pas</translation>
+<translation id="2537178555904266562">Erreur lors de la synchronisation des mots de passe</translation>
 <translation id="1810845389119482123">Configuration de la synchronisation initiale non terminée</translation>
 <translation id="3235722914093408050">Ouvrez paramètres Android et réactivez synchro système Android pour démarrer synchro Brave.</translation>
 <translation id="3367813778245106622">Connectez-vous de nouveau à votre compte pour démarrer la synchronisation.</translation>
+<translation id="3701167022068948696">Corriger maintenant</translation>
 <translation id="974555521953189084">Saisissez votre phrase secrète pour lancer la synchronisation.</translation>
 <translation id="2997266899014181325">Pour lancer la synchronisation, activez l'option "Synchroniser vos données Brave".</translation>
 <translation id="8260126382462817229">Essayez de vous connecter de nouveau à votre compte.</translation>
@@ -603,7 +607,7 @@ Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>réinitialisez la synchronis
 <translation id="2317945146070194624">Ouvrir dans nouvel onglet Brave</translation>
 <translation id="7975379999046275268">Prévisualiser la page <ph name="BEGIN_NEW"/>Nouveau<ph name="END_NEW"/></translation>
 <translation id="6112702117600201073">Actualisation de la page</translation>
-<translation id="36525718899759834">Télécharger l'application sur le Brave Software Play Store : <ph name="APP_ACTION"/></translation>
+<translation id="6990079615885386641">Télécharger l'application sur le Brave Software Play Store : <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">Sombre</translation>
 <translation id="1807246157184219062">Clair</translation>
 <translation id="4056223980640387499">Sépia</translation>
@@ -639,7 +643,6 @@ Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>réinitialisez la synchronis
 <translation id="3810973564298564668">Gérer</translation>
 <translation id="5199929503336119739">Profil professionnel</translation>
 <translation id="528192093759286357">Pour quitter le mode plein écran, faites glisser un doigt du haut vers le bas, puis appuyez sur le bouton Retour.</translation>
-<translation id="2836148919159985482">Appuyez sur le bouton Retour pour quitter le mode plein écran.</translation>
 <translation id="3967822245660637423">Téléchargement terminé</translation>
 <translation id="2434158240863470628">Téléchargement terminé <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="802154636333426148">Échec du téléchargement</translation>
@@ -698,6 +701,7 @@ Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>réinitialisez la synchronis
 <translation id="3810838688059735925">Vidéo</translation>
 <translation id="3616113530831147358">Audio</translation>
 <translation id="9219103736887031265">Images</translation>
+<translation id="656065428026159829">Voir plus</translation>
 <translation id="8250920743982581267">Documents</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# fichier}one{# fichier}other{# fichiers}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# image}one{# image}other{# images}}</translation>
@@ -709,7 +713,7 @@ Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>réinitialisez la synchronis
 <translation id="7810647596859435254">Ouvrir avec…</translation>
 <translation id="5655963694829536461">Recherchez dans les téléchargements</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
-<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION"/></translation>
 <translation id="1883903952484604915">Mes fichiers</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Les articles sont affichés ici (vous pouvez les lire même lorsque vous êtes hors connexion)</translation>
@@ -737,7 +741,7 @@ Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>réinitialisez la synchronis
 <translation id="673197144963363525">Envoyer des statistiques d'utilisation et des rapports d'erreur pour améliorer Brave</translation>
 <translation id="3518985090088779359">Accepter et continuer</translation>
 <translation id="7207456302801184289">Bienvenue dans Brave</translation>
-<translation id="704822250101715322">En attente de la fin de la mise à jour des services Brave Software Play</translation>
+<translation id="7189372733857464326">En attente de la fin de la mise à jour des services Brave Software Play</translation>
 <translation id="1231733316453485619">Activer la synchronisation ?</translation>
 <translation id="5132942445612118989">Synchroniser vos mots de passe, votre historique et plus encore sur tous les appareils</translation>
 <translation id="5736731321935944068">Brave Software peut utiliser votre historique pour personnaliser la recherche, les annonces et d'autres services Brave Software</translation>
@@ -762,7 +766,9 @@ Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>réinitialisez la synchronis
 <translation id="4046123991198612571">Piste suivante</translation>
 <translation id="3859306556332390985">Avance rapide</translation>
 <translation id="8441146129660941386">Retour rapide</translation>
-<translation id="6706288973712894588">Vous êtes actuellement hors connexion.\n<ph name="BEGIN_LINK"/>Consultez votre flux hors connexion.<ph name="END_LINK"/></translation>
+<translation id="6884306546558072722">Continuer d'explorer hors connexion</translation>
+<translation id="388596076286380598">Consultez des articles, des vidéos et d'autres contenus sur les sites qui vous intéressent, même si vous êtes hors connexion ou si votre connexion est mauvaise.</translation>
+<translation id="1736419249208073774">Découvrir</translation>
 <translation id="572328651809341494">Onglets récents</translation>
 <translation id="8497726226069778601">Aucune page à afficher pour le moment</translation>
 <translation id="5423934151118863508">Les pages les plus consultées s'affichent ici.</translation>
@@ -785,7 +791,6 @@ Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>réinitialisez la synchronis
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/> sur le contenu suggéré</translation>
 <translation id="7542481630195938534">Impossible d'obtenir des suggestions</translation>
 <translation id="5013696553129441713">Aucune nouvelle suggestion</translation>
-<translation id="1736419249208073774">Découvrir</translation>
 <translation id="7444811645081526538">Autres catégories</translation>
 <translation id="6709133671862442373">Actualités</translation>
 <translation id="1264974993859112054">Sports</translation>
@@ -892,6 +897,7 @@ Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>réinitialisez la synchronis
 <translation id="584427517463557805">Onglet privé sélectionné</translation>
 <translation id="2268044343513325586">Affiner</translation>
 <translation id="7846076177841592234">Annuler la sélection</translation>
+<translation id="6216432067784365534">Options pour <ph name="NAME_OF_LIST_ITEM"/></translation>
 <translation id="7087918508125750058">Nombre d'éléments sélectionnés : <ph name="ITEM_COUNT"/>. Options disponibles dans la partie supérieure de l'écran</translation>
 <translation id="7250468141469952378">Nombre d'éléments sélectionnés : <ph name="ITEM_COUNT"/></translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Partager 1 élément sélectionné}one{Partager # élément sélectionné}other{Partager # éléments sélectionnés}}</translation>
@@ -966,8 +972,10 @@ Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>réinitialisez la synchronis
 <translation id="3333961966071413176">Tous les contacts</translation>
 <translation id="4994033804516042629">Aucun contact trouvé</translation>
 <translation id="5403592356182871684">Noms</translation>
+<translation id="2903493209154104877">Adresses</translation>
 <translation id="2717722538473713889">Adresses e-mail</translation>
 <translation id="381841723434055211">Numéros de téléphone</translation>
+<translation id="6689172468748959065">Photos de profil</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ 1 autre)}one{(+ # autre)}other{(+ # autres)}}</translation>
 <translation id="5197729504361054390">Les contacts que vous sélectionnez seront partagés avec <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="1779089405699405702">Décodage d'images</translation>
@@ -1080,8 +1088,12 @@ En revanche, le site n'a PAS accès à la caméra. Vous seul pouvez voir les ima
 <translation id="7757787379047923882">Texte partagé par <ph name="DEVICE_NAME"/></translation>
 <translation id="5193988420012215838">Copié dans le presse-papiers</translation>
 <translation id="4696983787092045100">Envoyer le SMS à vos appareils</translation>
+<translation id="5694049548840660018">Revenir facilement à l'accueil</translation>
+<translation id="1122278879166832009">Appuyez ici pour accéder rapidement à la page d'accueil depuis n'importe où</translation>
 <translation id="1260236875608242557">Rechercher et explorer</translation>
 <translation id="6369229450655021117">Ici, vous pouvez faire des recherches sur le Web, partager des contenus avec vos amis et voir les pages ouvertes</translation>
+<translation id="8758557275681689734">Afficher tous vos onglets ouverts</translation>
+<translation id="8655599981421006542">Appuyez ici pour accéder aux onglets déjà ouverts ou en créer de nouveaux</translation>
 <translation id="723171743924126238">Sélectionner des images</translation>
 <translation id="8751914237388039244">Sélectionner une image</translation>
 <translation id="1989112275319619282">Parcourir</translation>
@@ -1102,18 +1114,16 @@ En revanche, le site n'a PAS accès à la caméra. Vous seul pouvez voir les ima
 <translation id="671481426037969117">Votre minuteur <ph name="FQDN"/> a expiré. Il redémarrera demain.</translation>
 <translation id="7479104141328977413">Gestion des onglets</translation>
 <translation id="3524138585025253783">UI des développeurs</translation>
+<translation id="4732120983431207637">Dérouleur de pile</translation>
 <translation id="6036057147555329831">ICU supplémentaire</translation>
-<translation id="9029323097866369874">Autoriser le site <ph name="DOMAIN"/> à activer la RV ?</translation>
-<translation id="7685301384041462804">N'activez la RV que si vous faites confiance à ce site.</translation>
-<translation id="5033865233969348410">Lorsque vous utilisez le mode RV, le site peut retenir les informations suivantes :
-  – Vos caractéristiques physiques, telles que votre taille
-
-N'activez la RV que si vous faites confiance à ce site.</translation>
-<translation id="5534334044554683961">Lorsque vous utilisez le mode RV, le site peut retenir les informations suivantes :
-  – Vos caractéristiques physiques, telles que votre taille
-  – La disposition de la pièce
-
-N'activez la RV que si vous faites confiance à ce site.</translation>
-<translation id="4169535189173047238">Interdire</translation>
-<translation id="2170088579611075216">Autoriser et activer la RV</translation>
+<translation id="2175927920773552910">Code QR</translation>
+<translation id="246532703174860178">Partager</translation>
+<translation id="2517472476991765520">Rechercher</translation>
+<translation id="8628973420740315031">Pour partager avec des personnes à proximité, laissez-les scanner ce code QR</translation>
+<translation id="7339921667754113786">Plate-forme de notifications Brave Software</translation>
+<translation id="8516012719330875537">Éditeur d'image</translation>
+<translation id="4808319664292298116">Activer la RV à partir du site <ph name="DOMAIN"/> ?</translation>
+<translation id="4353114845960720315">En mode RV, le site pourrait accéder aux informations suivantes :</translation>
+<translation id="118069123878619799">- vos caractéristiques physiques, telles que votre taille ;</translation>
+<translation id="5819762621475381970">- la disposition de la pièce.</translation>
 </translationbundle>

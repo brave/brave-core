@@ -65,6 +65,7 @@
 <translation id="1928696683969751773">Оновлення</translation>
 <translation id="6064125863973209585">Завершені завантаження</translation>
 <translation id="5342314432463739672">Запити на дозволи</translation>
+<translation id="3749259744154402564">Не підтримується</translation>
 <translation id="629730747756840877">Обліковий запис</translation>
 <translation id="82609232232243542">Вхід у Brave</translation>
 <translation id="7956662517480676674">Синхронізація та сервіси Brave Software</translation>
@@ -227,8 +228,6 @@
 <translation id="3245261285041759672">Історія веб-перегляду може також зберігатися у вашому обліковому записі Brave Software на сторінці <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="7274013316676448362">Заблокований сайт</translation>
 <translation id="2534155362429831547">Видалено елементів: <ph name="NUMBER_OF_ITEMS"/></translation>
-<translation id="1121094540300013208">Використання та збої</translation>
-<translation id="9079153198295609735">Автоматично надсилати статистику використання та звіти про аварійне завершення роботи в Brave Software</translation>
 <translation id="6981982820502123353">Доступність</translation>
 <translation id="2387895666653383613">Масштаб тексту</translation>
 <translation id="2321958826496381788">Перетягуйте повзунок, доки розмір тексту не стане зручним для читання. Якщо двічі торкнутись абзацу, розмір тексту має стати принаймні таким, як цей.</translation>
@@ -243,12 +242,12 @@
 <translation id="6295158916970320988">Усі сайти</translation>
 <translation id="8380167699614421159">Цей сайт показує нав’язливі чи оманливі оголошення</translation>
 <translation id="1919345977826869612">Оголошення</translation>
-<translation id="410351446219883937">Автовідтворення</translation>
 <translation id="6447842834002726250">Cookie-файли</translation>
 <translation id="6196640612572343990">Блокувати сторонні файли cookie</translation>
 <translation id="6782111308708962316">Забороняти стороннім веб-сайтам зберігати та переглядати дані файлів cookie</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4434045419905280838">Спливаючі вікна й переадресація</translation>
+<translation id="534295439873310000">Пристрої NFC</translation>
 <translation id="4751476147751820511">Датчики руху та світла</translation>
 <translation id="1717218214683051432">Датчики руху</translation>
 <translation id="2091887806945687916">Сигнал</translation>
@@ -261,7 +260,6 @@
 <translation id="6181444274883918285">Додати сайт у список винятків</translation>
 <translation id="5313967007315987356">Додати сайт</translation>
 <translation id="1369915414381695676">Сайт <ph name="SITE_NAME"/> додано</translation>
-<translation id="7837721118676387834">Дозволити автоматичне відтворення відео з вимкненим звуком для певних сайтів.</translation>
 <translation id="2621115761605608342">Увімкнути Javascript на певному сайті.</translation>
 <translation id="8801436777607969138">Блокувати Javascript на певному сайті.</translation>
 <translation id="8372893542064058268">сайті.</translation>
@@ -285,7 +283,6 @@
 <translation id="5100237604440890931">Згорнуто – натисніть, щоб розгорнути.</translation>
 <translation id="857943718398505171">Дозволено (рекомендується)</translation>
 <translation id="2913331724188855103">Дозволити сайтам зберігати та розпізнавати дані файлів cookie (рекомендується)</translation>
-<translation id="7445411102860286510">Дозволити сайтам автоматично відтворювати відео з вимкненим звуком (рекомендується)</translation>
 <translation id="5335288049665977812">Дозволити сайтам запускати Javascript (рекомендується)</translation>
 <translation id="5527111080432883924">Запитувати, перш ніж дозволяти сайтам переглядати тексти й зображення в буфері обміну (рекомендовано)</translation>
 <translation id="6912998170423641340">Не дозволяти сайтам переглядати тексти й зображення в буфері обміну</translation>
@@ -295,6 +292,8 @@
 <translation id="2107397443965016585">Запитувати, перш ніж дозволяти сайтам відтворювати захищений вміст (рекомендовано)</translation>
 <translation id="2910701580606108292">Запитувати, перш ніж дозволяти сайтам відтворювати захищений вміст</translation>
 <translation id="757524316907819857">Заборонити сайтам відтворювати захищений вміст</translation>
+<translation id="5710871682236653961">Запитувати, перш ніж дозволяти сайтам обмінюватися даними з іншими пристроями через NFC (рекомендовано)</translation>
+<translation id="7572498721684305250">Заборонити сайтам обмінюватися даними з іншими пристроями через NFC</translation>
 <translation id="3277252321222022663">Надати сайтам доступ до датчиків (рекомендовано)</translation>
 <translation id="5048398596102334565">Надати сайтам доступ до датчиків руху (рекомендовано)</translation>
 <translation id="8816026460808729765">Заборонити сайтам доступ до датчиків</translation>
@@ -308,7 +307,10 @@
 <translation id="3123473560110926937">Заблоковано на деяких сайтах</translation>
 <translation id="965817943346481315">Блокувати, якщо сайт показує нав’язливі чи оманливі оголошення (рекомендовано)</translation>
 <translation id="3386292677130313581">Запитувати, перш ніж дозволити сайтам визначати ваше місцезнаходження (рекомендується)</translation>
-<translation id="9139068048179869749">Запитувати, перш ніж дозволити сайтам надсилати сповіщення (рекомендується)</translation>
+<translation id="6270391203985052864">Сайти можуть просити дозвіл надсилати сповіщення</translation>
+<translation id="5505264765875738116">Сайти не можуть просити дозвіл надсилати сповіщення</translation>
+<translation id="6561560012278703671">Показувати лише значок повідомлення (блокувати сповіщення)</translation>
+<translation id="7302486331832100261">Зазвичай ви блокуєте сповіщення. Щоб дозволити, натисніть "Деталі".</translation>
 <translation id="4479647676395637221">Запитувати, перш ніж дозволити сайтам використовувати камеру (рекомендується)</translation>
 <translation id="6992289844737586249">Запитувати, перш ніж дозволити сайтам використовувати мікрофон (рекомендується)</translation>
 <translation id="2289270750774289114">Запитувати, коли сайт хоче шукати пристрої Bluetooth поблизу (рекомендовано)</translation>
@@ -507,9 +509,11 @@
 <translation id="5230560987958996918">Сайт <ph name="SITE"/> хоче шукати пристрої Bluetooth поруч. Виявлено такі пристрої:</translation>
 <translation id="8368027906805972958">Невідомий чи непідтримуваний пристрій (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7605594153474022051">Синхронізація не працює</translation>
+<translation id="2537178555904266562">Не вдалося синхронізувати паролі</translation>
 <translation id="1810845389119482123">Початкове налаштування синхронізації не завершено</translation>
 <translation id="3235722914093408050">Щоб почати синхронізацію Brave, відкрийте параметри Android і знову ввімкніть синхронізацію системи</translation>
 <translation id="3367813778245106622">Увійдіть знову, щоб почати синхронізацію</translation>
+<translation id="3701167022068948696">Виправити зараз</translation>
 <translation id="974555521953189084">Введіть парольну фразу, щоб почати синхронізацію</translation>
 <translation id="2997266899014181325">Щоб почати синхронізацію, увімкніть параметр "Синхронізувати дані Brave".</translation>
 <translation id="8260126382462817229">Спробуйте ввійти ще раз</translation>
@@ -603,7 +607,7 @@
 <translation id="2317945146070194624">Відкрити в новій вкладці Brave</translation>
 <translation id="7975379999046275268">Переглянути сторінку <ph name="BEGIN_NEW"/>Нове<ph name="END_NEW"/></translation>
 <translation id="6112702117600201073">Оновлення сторінки</translation>
-<translation id="36525718899759834">Завантажити додаток із магазину Brave Software Play: <ph name="APP_ACTION"/></translation>
+<translation id="6990079615885386641">Завантажити додаток із магазину Brave Software Play: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">Темна</translation>
 <translation id="1807246157184219062">Світла</translation>
 <translation id="4056223980640387499">Сепія</translation>
@@ -639,7 +643,6 @@
 <translation id="3810973564298564668">Змінити</translation>
 <translation id="5199929503336119739">Робочий профіль</translation>
 <translation id="528192093759286357">Щоб вийти з повноекранного режиму, проведіть пальцем по екрану згори вниз і торкніться кнопки "Назад".</translation>
-<translation id="2836148919159985482">Щоб вийти з повноекранного режиму, торкніться кнопки "Назад".</translation>
 <translation id="3967822245660637423">Завантажено</translation>
 <translation id="2434158240863470628">Завантажено <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="802154636333426148">Не вдалося завантажити</translation>
@@ -698,6 +701,7 @@
 <translation id="3810838688059735925">Відео</translation>
 <translation id="3616113530831147358">Аудіо</translation>
 <translation id="9219103736887031265">Зображення</translation>
+<translation id="656065428026159829">Показати більше</translation>
 <translation id="8250920743982581267">Документи</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# файл}one{# файл}few{# файли}many{# файлів}other{# файлу}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# зображення}one{# зображення}few{# зображення}many{# зображень}other{# зображення}}</translation>
@@ -709,7 +713,7 @@
 <translation id="7810647596859435254">Відкрити за допомогою…</translation>
 <translation id="5655963694829536461">Пошук у завантаженнях</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
-<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION"/></translation>
 <translation id="1883903952484604915">Мої файли</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Тут з'являються статті, які можна читати навіть у режимі офлайн</translation>
@@ -737,7 +741,7 @@
 <translation id="673197144963363525">Допоможіть покращити Brave, надсилаючи статистику та звіти про збої в Brave Software.</translation>
 <translation id="3518985090088779359">Продовжити</translation>
 <translation id="7207456302801184289">Вітаємо у Brave!</translation>
-<translation id="704822250101715322">Сервіси Brave Software Play оновлюються</translation>
+<translation id="7189372733857464326">Сервіси Brave Software Play оновлюються</translation>
 <translation id="1231733316453485619">Увімкнути синхронізацію?</translation>
 <translation id="5132942445612118989">Синхронізуйте свої паролі, історію тощо на всіх пристроях</translation>
 <translation id="5736731321935944068">Brave Software може використовувати вашу історію, щоб персоналізувати Пошук, оголошення й інші сервіси Brave Software</translation>
@@ -762,7 +766,9 @@
 <translation id="4046123991198612571">Наступна композиція</translation>
 <translation id="3859306556332390985">Далі</translation>
 <translation id="8441146129660941386">Назад</translation>
-<translation id="6706288973712894588">Зараз ви в режимі офлайн.\n<ph name="BEGIN_LINK"/>Перегляньте автономну стрічку.<ph name="END_LINK"/></translation>
+<translation id="6884306546558072722">Переглядайте контент у режимі офлайн</translation>
+<translation id="388596076286380598">Отримуйте статті, відео й інший контент від сайтів, які вам подобаються, навіть у режимі офлайн або при слабкому з'єднанні.</translation>
+<translation id="1736419249208073774">Огляд</translation>
 <translation id="572328651809341494">Останні вкладки</translation>
 <translation id="8497726226069778601">Тут ще нічого немає…</translation>
 <translation id="5423934151118863508">Тут відображатимуться найчастіше відвідувані сторінки</translation>
@@ -785,7 +791,6 @@
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Докладніше<ph name="END_LINK"/> про рекомендований контент</translation>
 <translation id="7542481630195938534">Не вдається отримати пропозиції</translation>
 <translation id="5013696553129441713">Немає нових пропозицій</translation>
-<translation id="1736419249208073774">Огляд</translation>
 <translation id="7444811645081526538">Інші категорії</translation>
 <translation id="6709133671862442373">Новини</translation>
 <translation id="1264974993859112054">Спорт</translation>
@@ -892,6 +897,7 @@
 <translation id="584427517463557805">Вибрана приватна вкладка</translation>
 <translation id="2268044343513325586">Уточнити</translation>
 <translation id="7846076177841592234">Скасувати вибір</translation>
+<translation id="6216432067784365534"><ph name="NAME_OF_LIST_ITEM"/>: опції</translation>
 <translation id="7087918508125750058">Вибрано <ph name="ITEM_COUNT"/>. Панель інструментів розташовано вгорі екрана</translation>
 <translation id="7250468141469952378">Вибрано <ph name="ITEM_COUNT"/></translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Поділитись 1 вибраним елементом}one{Поділитися # вибраним елементом}few{Поділитися # вибраними елементами}many{Поділитися # вибраними елементами}other{Поділитися # вибраного елемента}}</translation>
@@ -966,8 +972,10 @@
 <translation id="3333961966071413176">Усі контакти</translation>
 <translation id="4994033804516042629">Немає контактів</translation>
 <translation id="5403592356182871684">Імена</translation>
+<translation id="2903493209154104877">Адреси</translation>
 <translation id="2717722538473713889">Електронні адреси</translation>
 <translation id="381841723434055211">Номери телефонів</translation>
+<translation id="6689172468748959065">Фотографії профілів</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(+ ще 1)}one{(+ ще #)}few{(+ ще #)}many{(+ ще #)}other{(+ ще #)}}</translation>
 <translation id="5197729504361054390">Веб-сайт <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> отримає доступ до вибраних контактів.</translation>
 <translation id="1779089405699405702">Декодер зображень</translation>
@@ -1080,8 +1088,12 @@
 <translation id="7757787379047923882">Текст, надісланий із пристрою <ph name="DEVICE_NAME"/></translation>
 <translation id="5193988420012215838">Скопійовано в буфер обміну</translation>
 <translation id="4696983787092045100">Надіслати SMS на пристрої</translation>
+<translation id="5694049548840660018">Легко повертайтеся на головну сторінку</translation>
+<translation id="1122278879166832009">Торкніться тут, щоб швидко відкривати головну сторінку на будь-якому пристрої</translation>
 <translation id="1260236875608242557">Пошук і огляд</translation>
 <translation id="6369229450655021117">Тут можна здійснювати пошук, ділитися вмістом із друзями та переглядати відкриті сторінки.</translation>
+<translation id="8758557275681689734">Як переглянути всі відкриті вкладки</translation>
+<translation id="8655599981421006542">Торкніться тут, щоб створити нові вкладки та повернутися до попередніх</translation>
 <translation id="723171743924126238">Вибрати зображення</translation>
 <translation id="8751914237388039244">Виберіть зображення</translation>
 <translation id="1989112275319619282">Переглянути</translation>
@@ -1102,18 +1114,16 @@
 <translation id="671481426037969117">Вийшов час на таймері веб-сайту <ph name="FQDN"/>. Завтра він знову запрацює.</translation>
 <translation id="7479104141328977413">Керування вкладками</translation>
 <translation id="3524138585025253783">Інтерфейс розробника</translation>
+<translation id="4732120983431207637">Stack Unwinder</translation>
 <translation id="6036057147555329831">Зайвий модуль ICU</translation>
-<translation id="9029323097866369874">Дозволити сайту <ph name="DOMAIN"/> перейти у VR?</translation>
-<translation id="7685301384041462804">Перш ніж перейти у VR, переконайтеся, що довіряєте цьому сайту.</translation>
-<translation id="5033865233969348410">Під час сеансу VR цей сайт може розпізнавати:
-  - ваші фізичні особливості, як-от зріст.
-
-Перш ніж перейти у VR, переконайтеся, що довіряєте цьому сайту.</translation>
-<translation id="5534334044554683961">Під час сеансу VR цей сайт може розпізнавати:
-  - ваші фізичні особливості, як-от зріст;
-  - вигляд вашої кімнати.
-
-Перш ніж перейти у VR, переконайтеся, що довіряєте цьому сайту.</translation>
-<translation id="4169535189173047238">Не дозволяти</translation>
-<translation id="2170088579611075216">Перейти у VR</translation>
+<translation id="2175927920773552910">QR-код</translation>
+<translation id="246532703174860178">Надіслати</translation>
+<translation id="2517472476991765520">Сканувати</translation>
+<translation id="8628973420740315031">Щоб ділитися даними з людьми поблизу, дозвольте їм зісканувати цей QR-код</translation>
+<translation id="7339921667754113786">Brave Software Notifications Platform</translation>
+<translation id="8516012719330875537">Редактор зображень</translation>
+<translation id="4808319664292298116">Увійти у VR-режим на сайті <ph name="DOMAIN"/>?</translation>
+<translation id="4353114845960720315">Під час сеансу VR цей сайт може розпізнавати:</translation>
+<translation id="118069123878619799">- ваші фізичні характеристики, такі як зріст;</translation>
+<translation id="5819762621475381970">- вигляд вашої кімнати.</translation>
 </translationbundle>

@@ -65,6 +65,7 @@
 <translation id="1928696683969751773">Актуализации</translation>
 <translation id="6064125863973209585">Завършени изтегляния</translation>
 <translation id="5342314432463739672">Искания за разрешение</translation>
+<translation id="3749259744154402564">Не се поддържа</translation>
 <translation id="629730747756840877">Профил</translation>
 <translation id="82609232232243542">Вход в Brave</translation>
 <translation id="7956662517480676674">Синхронизиране и услуги на Brave Software</translation>
@@ -227,8 +228,6 @@
 <translation id="3245261285041759672">В профила ви в Brave Software може да има други видове история на сърфиране, съхранявани на адрес <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="7274013316676448362">Блокиран сайт</translation>
 <translation id="2534155362429831547">Изтрихте <ph name="NUMBER_OF_ITEMS"/> елемента</translation>
-<translation id="1121094540300013208">Отчети за употребата и сигнали за сривове</translation>
-<translation id="9079153198295609735">Автоматично изпращане до Brave Software на статистически данни за използването на Brave и сигнали за сривове</translation>
 <translation id="6981982820502123353">Достъпност</translation>
 <translation id="2387895666653383613">Мащабиране на текста</translation>
 <translation id="2321958826496381788">Преместете плъзгача, докато можете да четете удобно това. Текстът трябва да изглежда поне толкова голям след двукратно докосване на абзац.</translation>
@@ -243,12 +242,12 @@
 <translation id="6295158916970320988">Всички сайтове</translation>
 <translation id="8380167699614421159">На този сайт се показват натрапчиви или подвеждащи реклами</translation>
 <translation id="1919345977826869612">Реклами</translation>
-<translation id="410351446219883937">Автоматично възпроизвеждане</translation>
 <translation id="6447842834002726250">„Бисквитки“</translation>
 <translation id="6196640612572343990">Блокиране на „бисквитките“ на трети страни</translation>
 <translation id="6782111308708962316">Забраняване на уебсайтовете на трети страни да запазват и четат данни в „бисквитки“</translation>
 <translation id="7521387064766892559">Javascript</translation>
 <translation id="4434045419905280838">Изскач. прозорци и пренасочвания</translation>
+<translation id="534295439873310000">Устройства с NFC</translation>
 <translation id="4751476147751820511">Сензори за движение или светлина</translation>
 <translation id="1717218214683051432">Сензори за движение</translation>
 <translation id="2091887806945687916">Звук</translation>
@@ -261,7 +260,6 @@
 <translation id="6181444274883918285">Добавяне на изключение за сайт</translation>
 <translation id="5313967007315987356">Добавяне на сайт</translation>
 <translation id="1369915414381695676">Сайтът <ph name="SITE_NAME"/> е добавен</translation>
-<translation id="7837721118676387834">Разрешаване на автоматичното възпроизвеждане на видеоклипове със заглушен звук за конкретен сайт.</translation>
 <translation id="2621115761605608342">Разрешаване на JavaScript за конкретен сайт.</translation>
 <translation id="8801436777607969138">Блокиране на JavaScript за конкретен сайт.</translation>
 <translation id="8372893542064058268">Разрешаване на синхронизирането на заден план за конкретен сайт.</translation>
@@ -285,7 +283,6 @@
 <translation id="5100237604440890931">Свито – кликнете за разгъване.</translation>
 <translation id="857943718398505171">Разрешено (препоръчително)</translation>
 <translation id="2913331724188855103">Разрешаване на сайтовете да запазват „бисквитки“ и да четат данни от такива (препоръчително)</translation>
-<translation id="7445411102860286510">Разрешаване на сайтовете автоматично да възпроизвеждат видеоклипове със заглушен звук (препоръчително)</translation>
 <translation id="5335288049665977812">Разрешаване на сайтовете да изпълняват JavaScript (препоръчително)</translation>
 <translation id="5527111080432883924">Извеждане на запитване, преди да се разреши на сайтовете да четат текста и изображенията от буферната памет (препоръчително)</translation>
 <translation id="6912998170423641340">Забраняване на сайтовете да четат текста и изображенията от буферната памет</translation>
@@ -295,6 +292,8 @@
 <translation id="2107397443965016585">Запитване преди разрешаване на сайтовете да възпроизвеждат защитено съдържание (препоръчително)</translation>
 <translation id="2910701580606108292">Запитване преди разрешаване на сайтовете да възпроизвеждат защитено съдържание</translation>
 <translation id="757524316907819857">Блокиране на възможността на сайтовете да възпроизвеждат защитено съдържание</translation>
+<translation id="5710871682236653961">Извеждане на запитване преди разрешаване на сайтовете да изпращат и получават информация при допиране на устройства с NFC (препоръчително)</translation>
+<translation id="7572498721684305250">Блокиране на сайтовете, така че да не изпращат и получават информация при допиране на устройства с NFC</translation>
 <translation id="3277252321222022663">Разрешаване на достъпа на сайтовете до сензорите (препоръчително)</translation>
 <translation id="5048398596102334565">Разрешаване на достъпа на сайтовете до сензорите за движение (препоръчително)</translation>
 <translation id="8816026460808729765">Блокиране на достъпа на сайтовете до сензорите</translation>
@@ -308,7 +307,10 @@
 <translation id="3123473560110926937">Блокиране на някои сайтове</translation>
 <translation id="965817943346481315">Блокиране, ако на сайта се показват натрапчиви или подвеждащи реклами (препоръчително)</translation>
 <translation id="3386292677130313581">Извеждане на запитване, преди на сайтовете да се разреши достъп до местоположението ви (препоръчително)</translation>
-<translation id="9139068048179869749">Извеждане на запитване, преди да се разреши на сайтовете да изпращат известия (препоръчително)</translation>
+<translation id="6270391203985052864">Сайтовете могат да извеждат подкани за изпращане на известия</translation>
+<translation id="5505264765875738116">Сайтовете не могат да извеждат подкани за изпращане на известия</translation>
+<translation id="6561560012278703671">Използване на по-малко натрапчиви съобщения (подканите за известия се блокират, така че да не ви прекъсват)</translation>
+<translation id="7302486331832100261">Обикновено блокирате известията. За да разрешите, докоснете „Подробности“.</translation>
 <translation id="4479647676395637221">Извеждане на запитване, преди да се разреши на сайтовете да използват камерата (препоръчително)</translation>
 <translation id="6992289844737586249">Извеждане на запитване, преди да се разреши на сайтовете да използват микрофона (препоръчително)</translation>
 <translation id="2289270750774289114">Извеждане на запитване, когато сайт иска да открива устройства с Bluetooth в близост (препоръчително)</translation>
@@ -507,9 +509,11 @@
 <translation id="5230560987958996918"><ph name="SITE"/> иска да сканира за устройства с Bluetooth в близост. Намерени са следните:</translation>
 <translation id="8368027906805972958">Неизвестно или неподдържано устройство (<ph name="DEVICE_ID"/>)</translation>
 <translation id="7605594153474022051">Синхронизирането не работи</translation>
+<translation id="2537178555904266562">Грешка при синхронизирането на паролите</translation>
 <translation id="1810845389119482123">Първоначалното настройване на синхронизирането не завърши</translation>
 <translation id="3235722914093408050">За старт на синхронизирането активирайте системното синхронизиране на Android</translation>
 <translation id="3367813778245106622">Влезте в профила си отново, за да започне синхронизирането</translation>
+<translation id="3701167022068948696">Коригиране сега</translation>
 <translation id="974555521953189084">Въведете своя пропуск, за да започне синхронизирането</translation>
 <translation id="2997266899014181325">За да стартирате синхронизирането, включете „Синхронизиране на данните ви в Brave“.</translation>
 <translation id="8260126382462817229">Опитайте да влезете отново</translation>
@@ -603,7 +607,7 @@
 <translation id="2317945146070194624">Отваряне в нов раздел в Brave</translation>
 <translation id="7975379999046275268">Визуализация <ph name="BEGIN_NEW"/>Ново<ph name="END_NEW"/></translation>
 <translation id="6112702117600201073">Опресняване на страницата</translation>
-<translation id="36525718899759834">Изтегляне на приложението от Brave Software Play Магазин: <ph name="APP_ACTION"/></translation>
+<translation id="6990079615885386641">Изтегляне на приложението от Brave Software Play Магазин: <ph name="APP_ACTION"/></translation>
 <translation id="2414886740292270097">Тъмно</translation>
 <translation id="1807246157184219062">Светло</translation>
 <translation id="4056223980640387499">Сепия</translation>
@@ -639,7 +643,6 @@
 <translation id="3810973564298564668">Управление</translation>
 <translation id="5199929503336119739">Служебен потребителски профил</translation>
 <translation id="528192093759286357">Плъзнете пръст от горната част на екрана и докоснете бутона за връщане назад, за да излезете от режима на цял екран.</translation>
-<translation id="2836148919159985482">Докоснете бутона за връщане назад, за да излезете от режима на цял екран.</translation>
 <translation id="3967822245660637423">Изтеглянето завърши</translation>
 <translation id="2434158240863470628">Изтеглянето завърши <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="802154636333426148">Изтеглянето не бе успешно</translation>
@@ -698,6 +701,7 @@
 <translation id="3810838688059735925">Видео</translation>
 <translation id="3616113530831147358">Аудио</translation>
 <translation id="9219103736887031265">Изображения</translation>
+<translation id="656065428026159829">Вижте още</translation>
 <translation id="8250920743982581267">Документи</translation>
 <translation id="2013642289801508067">{FILE_COUNT,plural, =1{# файл}other{# файла}}</translation>
 <translation id="6444421004082850253">{FILE_COUNT,plural, =1{# изображение}other{# изображения}}</translation>
@@ -709,7 +713,7 @@
 <translation id="7810647596859435254">Отваряне със…</translation>
 <translation id="5655963694829536461">Търсете в изтеглянията</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/><ph name="SEPARATOR"/><ph name="DESCRIPTION"/></translation>
-<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION"/></translation>
 <translation id="1883903952484604915">Моите файлове</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/><ph name="SEPARATOR"/><ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Тук се показват статии, които можете да четете дори когато сте офлайн</translation>
@@ -737,7 +741,7 @@
 <translation id="673197144963363525">Помогнете за подобряването на Brave, като изпращате до Brave Software статистически данни за употребата и сигнали за сривове.</translation>
 <translation id="3518985090088779359">Приемам и напред</translation>
 <translation id="7207456302801184289">Добре дошли в Brave</translation>
-<translation id="704822250101715322">Изчаква се актуализирането на услугите за Brave Software Play да приключи</translation>
+<translation id="7189372733857464326">Изчаква се актуализирането на услугите за Brave Software Play да приключи</translation>
 <translation id="1231733316453485619">Да се включи ли синхронизирането?</translation>
 <translation id="5132942445612118989">Синхронизиране на паролите, историята ви и др. на всички устройства</translation>
 <translation id="5736731321935944068">Възможно е да използваме историята ви, за да персонализираме търсенето, рекламите и други услуги на Brave Software</translation>
@@ -762,7 +766,9 @@
 <translation id="4046123991198612571">Следващ запис</translation>
 <translation id="3859306556332390985">Придвижване напред</translation>
 <translation id="8441146129660941386">Придвижване назад</translation>
-<translation id="6706288973712894588">Понастоящем сте офлайн.\n<ph name="BEGIN_LINK"/>Разгледайте емисията си в офлайн режим.<ph name="END_LINK"/></translation>
+<translation id="6884306546558072722">Разглеждайте офлайн</translation>
+<translation id="388596076286380598">Получавайте статии, видеоклипове и друго съдържание от сайтовете, които харесвате, дори ако сте офлайн или връзката е лоша.</translation>
+<translation id="1736419249208073774">Разглеждане</translation>
 <translation id="572328651809341494">Скорошни раздели</translation>
 <translation id="8497726226069778601">Тук няма нищо… засега</translation>
 <translation id="5423934151118863508">Най-посещаваните от вас страници ще се показват тук</translation>
@@ -785,7 +791,6 @@
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/> за предложеното съдържание</translation>
 <translation id="7542481630195938534">Предложенията не могат да бъдат показани</translation>
 <translation id="5013696553129441713">Няма нови предложения</translation>
-<translation id="1736419249208073774">Разглеждане</translation>
 <translation id="7444811645081526538">Още категории</translation>
 <translation id="6709133671862442373">Новини</translation>
 <translation id="1264974993859112054">Спорт</translation>
@@ -892,6 +897,7 @@
 <translation id="584427517463557805">Избран частен раздел</translation>
 <translation id="2268044343513325586">Прецизиране</translation>
 <translation id="7846076177841592234">Анулиране на избора</translation>
+<translation id="6216432067784365534">Опции за <ph name="NAME_OF_LIST_ITEM"/></translation>
 <translation id="7087918508125750058">Избрани: <ph name="ITEM_COUNT"/>. Налице са опции близо до горната част на екрана</translation>
 <translation id="7250468141469952378">Избрани: <ph name="ITEM_COUNT"/></translation>
 <translation id="7353894246028566792">{NUM_SELECTED,plural, =1{Споделяне на 1 избран елемент}other{Споделяне на # избрани елемента}}</translation>
@@ -966,8 +972,10 @@
 <translation id="3333961966071413176">Всички контакти</translation>
 <translation id="4994033804516042629">Няма намерени контакти</translation>
 <translation id="5403592356182871684">Имена</translation>
+<translation id="2903493209154104877">Адреси</translation>
 <translation id="2717722538473713889">Имейл адреси</translation>
 <translation id="381841723434055211">Телефонни номера</translation>
+<translation id="6689172468748959065">Снимки на потребителския профил</translation>
 <translation id="5394307150471348411">{DETAIL_COUNT,plural, =1{(и още 1)}other{(и още #)}}</translation>
 <translation id="5197729504361054390">Избраните от вас контакти ще бъдат споделени със сайта <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="1779089405699405702">Декодиране на изображения</translation>
@@ -1080,8 +1088,12 @@
 <translation id="7757787379047923882">Текст, споделен от <ph name="DEVICE_NAME"/></translation>
 <translation id="5193988420012215838">Копирано в буферната памет</translation>
 <translation id="4696983787092045100">Изпращане на текст до устройствата ви</translation>
+<translation id="5694049548840660018">Връщайте се лесно към началната си страница</translation>
+<translation id="1122278879166832009">Докоснете тук за бърз достъп до началната си страница от всяко място</translation>
 <translation id="1260236875608242557">Търсене и разглеждане</translation>
 <translation id="6369229450655021117">Оттук можете да търсите в мрежата, да споделяте с приятели и да преглеждате отворените страници</translation>
+<translation id="8758557275681689734">Преглед на всички отворени раздели</translation>
+<translation id="8655599981421006542">Докоснете тук, за да създавате нови раздели и да се връщате към предишните</translation>
 <translation id="723171743924126238">Избиране на изображения</translation>
 <translation id="8751914237388039244">Изберете изображение</translation>
 <translation id="1989112275319619282">Сърфиране</translation>
@@ -1102,18 +1114,16 @@
 <translation id="671481426037969117">Таймерът ви за <ph name="FQDN"/> изтече и ще се стартира отново утре.</translation>
 <translation id="7479104141328977413">Управление на разделите</translation>
 <translation id="3524138585025253783">ПИ за програмисти</translation>
+<translation id="4732120983431207637">Stack Unwinder</translation>
 <translation id="6036057147555329831">допълнителният ICU модул</translation>
-<translation id="9029323097866369874">Да се разреши ли на <ph name="DOMAIN"/> да стартира VR?</translation>
-<translation id="7685301384041462804">Проверете дали имате доверие на този сайт, преди да стартирате VR.</translation>
-<translation id="5033865233969348410">Когато стартирате VR, този сайт може да научи за:
-  – физическите ви черти, напр. височина.
-
-Проверете дали имате доверие на този сайт, преди да стартирате VR.</translation>
-<translation id="5534334044554683961">Когато стартирате VR, този сайт може да научи за:
-  – физическите ви черти, като височина;
-  – плана на стаята ви.
-
-Проверете дали имате доверие на този сайт, преди да стартирате VR.</translation>
-<translation id="4169535189173047238">Забраняване</translation>
-<translation id="2170088579611075216">Разрешаване и стартиране на VR</translation>
+<translation id="2175927920773552910">QR код</translation>
+<translation id="246532703174860178">Споделяне</translation>
+<translation id="2517472476991765520">Сканиране</translation>
+<translation id="8628973420740315031">За да споделите с хората в близост, те трябва да сканират този код за бърза реакция</translation>
+<translation id="7339921667754113786">Brave Software Notifications Platform</translation>
+<translation id="8516012719330875537">Редактор на изображения</translation>
+<translation id="4808319664292298116">Да се стартира ли VR от <ph name="DOMAIN"/>?</translation>
+<translation id="4353114845960720315">Когато стартирате VR, този сайт може да научи за:</translation>
+<translation id="118069123878619799">– физическите ви черти, като ръст;</translation>
+<translation id="5819762621475381970">– плана на стаята ви.</translation>
 </translationbundle>

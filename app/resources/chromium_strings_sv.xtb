@@ -9,7 +9,6 @@
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Brave-logotyp</translation>
 <translation id="7339898014177206373">Nytt fönster</translation>
-<translation id="5935964611177478118">Logga in i Brave</translation>
 <translation id="5516268345616100622">Aktivitetshanteraren – Brave</translation>
 <translation id="7918740962659365265">Hjälp oss att göra Brave bättre genom att skicka felrapporter och <ph name="UMA_LINK"/> till Brave Software</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> – Brave</translation>
@@ -124,7 +123,6 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="1459786048951724030">Det gick inte att synkronisera data med Brave OS på grund av ett inloggningsfel.</translation>
 <translation id="6813094029720377619">Cookies raderas när du avslutar Brave. Ändra <ph name="COOKIE_SETTINGS_LINK"/> om du vill fortsätta synkronisera.</translation>
 <translation id="3340978935015468852">inställningar</translation>
-<translation id="380197516434040304">Ta bort från Brave …</translation>
 <translation id="300669147395456190">Brave-appar</translation>
 <translation id="3421950102518690868"><ph name="DOMAIN"/> kräver att du läser och godkänner följande användarvillkor innan du använder enheten. Villkoren varken utökar, ändrar eller begränsar villkoren för Brave OS.</translation>
 <translation id="3293668930608086049">Brave använder din kamera och mikrofon.</translation>
@@ -152,6 +150,9 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="3599046180970731601">Brave Nightly (mDNS-In)</translation>
 <translation id="7881806463410697784">Brave Dev (mDNS-In)</translation>
 <translation id="1912973375560256099">Regel som tillåter inkommande mDNS-trafik för Brave.</translation>
+<translation id="7272074097076644710">Regel som tillåter inkommande mDNS-trafik för Brave Beta.</translation>
+<translation id="4991512282053949769">Regel som tillåter inkommande mDNS-trafik för Brave Nightly.</translation>
+<translation id="3856641371299712128">Regel som tillåter inkommande mDNS-trafik för Brave Dev.</translation>
 <translation id="8207657266087451193">Om en bild inte har någon användbar beskrivning görs ett försök att beskriva den åt dig i Brave. Bilderna skickas till Brave Software så att beskrivningen kan genereras. Du kan när som helst inaktivera den här inställningen.</translation>
 <translation id="5499063270485366718">Om en bild inte har någon användbar beskrivning görs ett försök att beskriva den åt dig i Brave. Bilderna skickas till Brave Software så att beskrivningen kan genereras.</translation>
 <translation id="215320507915280336">Detta använder samma stavningskontroll som Brave Software Sök. Text som du skriver i webbläsaren skickas till Brave Software. Du kan när som helst ändra detta i inställningarna.</translation>
@@ -188,8 +189,6 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="7798069806040634998">Du behöver ge Brave åtkomst till lagringsutrymmet om det ska gå att ladda ned filer</translation>
 <translation id="7685904775439037072">När du har gett Brave åtkomst kan webbplatser begära att få åtkomst.</translation>
 <translation id="1744365871163268756">Vänta medan de senaste systemuppdateringarna installeras av Brave.</translation>
-<translation id="8000338990735917615">Framtida versioner av Brave installeras automatiskt.</translation>
-<translation id="2975476470948647918">Framtida versioner av Brave installeras automatiskt. Brave startas om när nedladdningen är klar och sedan är du igång.</translation>
 <translation id="7808415789955822133">Villkor för Brave OS</translation>
 <translation id="7207456302801184289">Välkommen till Brave</translation>
 <translation id="3507835409099344374">Öppna aviseringsinställningarna för Brave</translation>
@@ -221,7 +220,6 @@ Brave kan inte återställa dina inställningar.</translation>
       inställningarna för webbläsaren Brave<ph name="LINK_END"/></translation>
 <translation id="4459296183696059108">Om en inställning saknas på den här sidan tittar du i <ph name="LINK_BEGIN"/>
       inställningarna för Brave OS<ph name="LINK_END"/></translation>
-<translation id="7977435741986383568">Brave kan använda webbtjänster för att förbättra din upplevelse på webben. Du kan inaktivera dessa tjänster om du vill. <ph name="BEGIN_LINK"/>Läs mer<ph name="END_LINK"/></translation>
 <translation id="2312399718665761438">Brave skickar det du skriver i textfält till Brave Software för att kontrollera stavningen</translation>
 <translation id="8586264863973514035">Ändringarna tillämpas när du startar om Brave</translation>
 <translation id="7021823858304886493">Tillåt inloggning i Brave</translation>
