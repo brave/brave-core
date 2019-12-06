@@ -75,6 +75,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/qrreader/CameraSource.java",
   "../../brave/android/java/org/chromium/chrome/browser/qrreader/CameraSourcePreview.java",
   "../../brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
+  "../../brave/android/java/org/chromium/chrome/browser/invalidation/BraveBrowserSyncAdapterService.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncService.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncServiceObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BookmarksButton.java",
