@@ -251,7 +251,7 @@ class AdsImpl : public Ads {
   void BundleUpdated();
 
   uint32_t sustained_ad_interaction_timer_id_;
-  std::string last_sustaining_ad_url_;
+  std::string last_sustained_ad_domain_;
   void StartSustainingAdInteraction(
       const uint64_t start_timer_in);
   void SustainAdInteractionIfNeeded();
@@ -308,9 +308,11 @@ class AdsImpl : public Ads {
 
   bool IsSupportedUrl(
       const std::string& url) const;
-  bool UrlHostsMatch(
+  bool DomainsMatch(
       const std::string& url_1,
       const std::string& url_2) const;
+  std::string GetDomain(
+      const std::string& url) const;
 
   std::unique_ptr<Client> client_;
   std::unique_ptr<Bundle> bundle_;

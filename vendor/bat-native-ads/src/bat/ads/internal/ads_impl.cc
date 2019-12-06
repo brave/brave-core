@@ -87,7 +87,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     collect_activity_timer_id_(0),
     delivering_notifications_timer_id_(0),
     sustained_ad_interaction_timer_id_(0),
-    last_sustaining_ad_url_(""),
+    last_sustained_ad_domain_(""),
     next_easter_egg_timestamp_in_seconds_(0),
     client_(std::make_unique<Client>(this, ads_client)),
     bundle_(std::make_unique<Bundle>(this, ads_client)),
@@ -682,19 +682,27 @@ void AdsImpl::OnPageLoaded(
     return;
   }
 
-  if (UrlHostsMatch(url, last_shown_notification_info_.url)) {
+  if (DomainsMatch(url, last_shown_notification_info_.url)) {
     BLOG(INFO) << "Site visited " << url
-        << ", URL is from last shown notification";
+        << ", domain matches the last shown ad notification for "
+            << last_shown_notification_info_.url;
 
-    if (last_sustaining_ad_url_ != url) {
-      last_sustaining_ad_url_ = url;
+    const std::string domain = GetDomain(url);
+    if (last_sustained_ad_domain_ != domain) {
+      last_sustained_ad_domain_ = domain;
 
       StartSustainingAdInteraction(kSustainAdInteractionAfterSeconds);
     } else {
-      BLOG(INFO) << "Already sustaining Ad interaction for " << url;
+      BLOG(INFO) << "Already sustaining ad interaction for " << url;
     }
 
     return;
+  }
+
+  if (!last_shown_notification_info_.url.empty()) {
+    BLOG(INFO) << "Site visited " << url
+      << ", domain does not match the last shown ad notification for "
+          << last_shown_notification_info_.url;
   }
 
   if (!IsSupportedUrl(url)) {
@@ -859,7 +867,7 @@ void AdsImpl::TestShoppingData(
     return;
   }
 
-  if (UrlHostsMatch(url, kShoppingStateUrl)) {
+  if (DomainsMatch(url, kShoppingStateUrl)) {
     client_->FlagShoppingState(url, 1.0);
   } else {
     client_->UnflagShoppingState();
@@ -963,7 +971,7 @@ void AdsImpl::CheckEasterEgg(
 
   auto now_in_seconds = Time::NowInSeconds();
 
-  if (UrlHostsMatch(url, kEasterEggUrl) &&
+  if (DomainsMatch(url, kEasterEggUrl) &&
       next_easter_egg_timestamp_in_seconds_ < now_in_seconds) {
     BLOG(INFO) << "Collect easter egg";
 
@@ -1549,7 +1557,9 @@ void AdsImpl::StartSustainingAdInteraction(
 
 void AdsImpl::SustainAdInteractionIfNeeded() {
   if (!IsStillViewingAd()) {
-    BLOG(INFO) << "Failed to Sustain ad interaction";
+    BLOG(INFO) << "Failed to sustain ad interaction, domain for the focused "
+        << "tab does not match the last shown ad notification for "
+            << last_shown_notification_info_.url;
     return;
   }
 
@@ -1578,15 +1588,7 @@ bool AdsImpl::IsSustainingAdInteraction() const {
 }
 
 bool AdsImpl::IsStillViewingAd() const {
-  if (!UrlHostsMatch(active_tab_url_, last_shown_notification_info_.url)) {
-    BLOG(INFO) << "IsStillViewingAd last_shown_notification_info_url: "
-        << last_shown_notification_info_.url
-        << " does not match last_shown_tab_url: " << active_tab_url_;
-
-    return false;
-  }
-
-  return true;
+  return DomainsMatch(active_tab_url_, last_shown_notification_info_.url);
 }
 
 void AdsImpl::ConfirmAd(
@@ -2130,10 +2132,20 @@ bool AdsImpl::IsSupportedUrl(
   return GURL(url).SchemeIsHTTPOrHTTPS();
 }
 
-bool AdsImpl::UrlHostsMatch(
+bool AdsImpl::DomainsMatch(
     const std::string& url_1,
     const std::string& url_2) const {
   return GURL(url_1).DomainIs(GURL(url_2).host_piece());
+}
+
+std::string AdsImpl::GetDomain(
+    const std::string& url) const {
+  auto host_piece = GURL(url).host_piece();
+
+  std::string domain;
+  host_piece.CopyToString(&domain);
+
+  return domain;
 }
 
 }  // namespace ads
