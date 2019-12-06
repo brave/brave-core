@@ -98,19 +98,19 @@ class AutoplayPermissionContextBrowserTest : public InProcessBrowserTest {
   void AllowAutoplay() {
     content_settings()->SetContentSettingCustomScope(
         top_level_page_pattern_, ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string(), CONTENT_SETTING_ALLOW);
+        ContentSettingsType::AUTOPLAY, std::string(), CONTENT_SETTING_ALLOW);
   }
 
   void AskAutoplay() {
     content_settings()->SetContentSettingCustomScope(
         top_level_page_pattern_, ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string(), CONTENT_SETTING_ASK);
+        ContentSettingsType::AUTOPLAY, std::string(), CONTENT_SETTING_ASK);
   }
 
   void BlockAutoplay() {
     content_settings()->SetContentSettingCustomScope(
         top_level_page_pattern_, ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string(), CONTENT_SETTING_BLOCK);
+        ContentSettingsType::AUTOPLAY, std::string(), CONTENT_SETTING_BLOCK);
   }
 
   content::WebContents* contents() {
