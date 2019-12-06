@@ -41,10 +41,11 @@ export const onNotificationAdded = (id: string, type: number, timestamp: number,
   args
 })
 
-export const onNotificationDeleted = (id: string, type: number, timestamp: number) => action(types.ON_NOTIFICATION_DELETED, {
+export const onNotificationDeleted = (id: string, type: number, timestamp: number, windows: chrome.windows.Window[]) => action(types.ON_NOTIFICATION_DELETED, {
   id,
   timestamp,
-  type
+  type,
+  windows
 })
 
 export const deleteNotification = (id: string) => action(types.DELETE_NOTIFICATION, {
