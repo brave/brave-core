@@ -628,7 +628,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                   {
                     walletState && !onlyAnonWallet
                       ? this.generateWalletButton(walletState)
-                      : <StyledTitle>{getLocale('yourBalance')}</StyledTitle>
+                      : <StyledTitle>{onlyAnonWallet ? getLocale('yourBalance') : getLocale('yourWallet')}</StyledTitle>
                   }
                   {
                     showSecActions
