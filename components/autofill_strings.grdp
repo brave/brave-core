@@ -127,6 +127,10 @@
     Postal code
   </message>
 
+  <message name="IDS_AUTOFILL_HIDE_SUGGESTIONS" desc="The text displayed at the Autofill popup to allow the user to hide the suggestions menu." meaning="Hides the suggestion list.">
+    Hide suggestions
+  </message>
+
   <message name="IDS_AUTOFILL_MANAGE" desc="The text displayed at the bottom of the Autofill popup to allow the user to manage their Autofill preferences for addresses, credit cards, and passwords. Imperative. When the user clicks on it, opens the Autofill settings page." meaning="Manage addresses, credit cards and passwords in the user profile that can be used by Brave Autofill.">
     Manage...
   </message>
@@ -227,7 +231,7 @@
           Touch ID
         </message>
         <message name="IDS_ENABLE_CREDIT_CARD_FIDO_AUTH_SUBLABEL" desc="Sublabel for a toggle that allows users to control whether or not to use FIDO authentication for credit card unmasking on macOS. Sentence-Cased.">
-          Use Touch ID to verify your saved payment methods.
+          Use Touch ID to confirm cards faster
         </message>
       </if>
       <if expr="is_win">
@@ -235,7 +239,7 @@
           Windows Hello
         </message>
         <message name="IDS_ENABLE_CREDIT_CARD_FIDO_AUTH_SUBLABEL" desc="Sublabel for a toggle that allows users to control whether or not to use FIDO authentication for credit card unmasking on Windows. Sentence-Cased.">
-          Use Windows Hello to verify your saved payment methods.
+          Use Windows Hello to confirm cards faster
         </message>
       </if>
       <if expr="is_android">
@@ -243,7 +247,7 @@
           Screen lock
         </message>
         <message name="IDS_ENABLE_CREDIT_CARD_FIDO_AUTH_SUBLABEL" desc="Sublabel for a toggle that allows users to control whether or not to use FIDO authentication for credit card unmasking for Android. Sentence-Cased.">
-          Use screen lock to verify your saved payment methods.
+          Use screen lock to confirm cards faster
         </message>
       </if>
       <if expr="not is_macosx and not is_win and not is_android">
@@ -251,7 +255,7 @@
           Biometrics
         </message>
         <message name="IDS_ENABLE_CREDIT_CARD_FIDO_AUTH_SUBLABEL" desc="Sublabel for a toggle that allows users to control whether or not to use FIDO authentication for credit card unmasking. Sentence-Cased.">
-          This feature is not available on your device.
+          This feature is not available on your device
         </message>
       </if>
     </then>

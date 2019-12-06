@@ -653,4 +653,18 @@
   <message name="IDS_PAYMENTS_ORDER_SUMMARY_ACCESSIBLE_LABEL" desc="The string used to format what the screenreader reads out for the order summary section of the Payment Sheet.">
     Order Summary, <ph name="TOTAL_LABEL">$1<ex>Total, USD $10.00</ex></ph>, More Details
   </message>
+
+  <!-- Payment Handler strings -->
+  <message name="IDS_PAYMENT_HANDLER_SHEET_DESCRIPTION" desc="Accessibility string read when the payment-handler bottom sheet is opened. It describes the payment-handler where users can fill in the payment info." formatter_data="android_java">
+    Payment handler sheet
+  </message>
+  <message name="IDS_PAYMENT_HANDLER_SHEET_OPENED_HALF" desc="Accessibility string read when the payment-handler bottom sheet is opened at half height. The sheet will occupy up to the half screen." formatter_data="android_java">
+    Payment handler sheet is half-opened
+  </message>
+  <message name="IDS_PAYMENT_HANDLER_SHEET_OPENED_FULL" desc="Accessibility string read when the payment-handler bottom sheet is opened at full height. The sheet will occupy up to the full screen." formatter_data="android_java">
+    Payment handler sheet is opened
+  </message>
+  <message name="IDS_PAYMENT_HANDLER_SHEET_CLOSED" desc="Accessibility string read when the payment-handler bottom sheet is closed." formatter_data="android_java">
+    Payment handler sheet is closed
+  </message>
 </grit-part>

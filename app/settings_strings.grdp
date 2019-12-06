@@ -56,9 +56,6 @@
     </message>
     <message name="IDS_SETTINGS_ABOUT_PAGE_END_OF_LIFE_MESSAGE" desc="Message used for End of Life section on the About Page.">
       This device will get automatic software and security updates until <ph name="MONTH_AND_YEAR">$1<ex>September 2020</ex></ph>.
-      <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>
-        Learn more
-      <ph name="LINK_END">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_SETTINGS_ABOUT_PAGE_RELAUNCH" desc="The label for the relaunch button that relaunches the browser once update is complete">
       Restart
@@ -309,7 +306,7 @@
       Enable auto-scan
     </message>
     <message name="IDS_SETTINGS_SWITCH_ACCESS_AUTO_SCAN_SPEED_LABEL" desc="Label for slider which sets the time interval for Switch Access to automatically scan to the next element.">
-      Scanning speed: <ph name="SPEED_WITH_UNITS">$1<ex>1.5s</ex></ph>
+      Scanning speed
     </message>
     <message name="IDS_SETTINGS_SWITCH_ACCESS_AUTO_SCAN_KEYBOARD_SPEED_LABEL" desc="Label for slider which sets the time interval for Switch Access to automatically scan to the next element while navigating in the keyboard. Switch Access is an alternative input method designed for users with limited mobility, where the user has as little as one switch (for example, a button) to control the computer.">
       Keyboard scanning speed
@@ -515,11 +512,11 @@
     <message name="IDS_SETTINGS_ACCESSIBILITY_SELECT_TO_SPEAK_OPTIONS_LABEL" desc="In the settings tab, the label for the button that opens the Options page for the Select-to-Speak feature.">
       Open select-to-speak settings
     </message>
-    <message name="IDS_SETTINGS_ACCESSIBILITY_SWITCH_ACCESS_DESCRIPTION" desc="In the settings tab, the text next to the checkbox to enable switch access (for users with limited motor control).">
-      Switch access (control the computer with just one or two switches)
+    <message name="IDS_SETTINGS_ACCESSIBILITY_SWITCH_ACCESS_DESCRIPTION" desc="In the settings tab, the text next to the checkbox to enable Switch Access (for users with limited motor control).">
+      Switch Access (control the computer with just one or two switches)
     </message>
     <message name="IDS_SETTINGS_ACCESSIBILITY_SWITCH_ACCESS_OPTIONS_LABEL" desc="In the settings tab, the label for the button that opens the Options page for the Switch Access feature.">
-      Switch access options
+      Switch Access options
     </message>
     <message name="IDS_SETTINGS_ACCESSIBILITY_TEXT_TO_SPEECH_HEADING" desc="In the settings tab, the heading for accessibility features that enable the computer to speak text from the computer screen.">
       Text-to-Speech
@@ -656,6 +653,33 @@
     </message>
     <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_EXTRA_DESCRIPTION" desc="Extra description for managing shared USB devices.">
        Only Android devices are currently supported.
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_TITLE" desc="Title of ARC ADB sideloading section.">
+      Develop Android apps
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_DESCRIPTION" desc="Description of ARC ADB sideloading in Settings.">
+      To create and test your apps, enable the Android Debug Bridge (ADB). Note that this action allows installation of Android apps that haven't been verified by Brave, and requires a factory reset to disable.
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_LABEL" desc="Label for enabling ADB in ARC.">
+      Enable ADB debugging
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_POWERWASH_REQUIRED_SUBLABEL" desc="Sublabel notifying user of powerwash requirement before enabling ARC ADB sideloading.">
+            A factory reset of this Bravebook is required to enable ADB debugging. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_CONFIRMATION_TITLE_ENABLE" desc="Confirmation dialog title to restart for enabling ADB.">
+      Enable ADB debugging?
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_CONFIRMATION_TITLE_DISABLE" desc="Confirmation dialog title to restart for disabling ADB.">
+      Disable ADB debugging?
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_CONFIRMATION_MESSAGE_ENABLE" desc="Describes what will happen if the user enables ADB Sideloading.">
+      To enable ADB debugging, a restart of this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> is required. Disabling it requires a reset to factory settings.
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_CONFIRMATION_MESSAGE_DISABLE" desc="Describes what will happen if the user disables ADB Sideloading.">
+      Disabling ADB debugging will reset this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> to factory settings. All user accounts and local data will be erased.
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_RESTART_BUTTON" desc="Label for the button that initiates the ADB enabling flow by restarting the device.">
+      Restart and continue
     </message>
 
     <!-- Plugin VM Page -->
@@ -832,6 +856,9 @@
   <message name="IDS_SETTINGS_ALT_PAGE_TITLE" desc="The settings page title for the about page.">
     Settings - <ph name="SECTION_TITLE">$1<ex>About Brave</ex></ph>
   </message>
+  <message name="IDS_SETTINGS_SUBPAGE_BUTTON" desc="Accessibility description for a button navigating the user from a settings page to one of the settings subpages.">
+    Subpage button
+  </message>
   <if expr="not chromeos">
     <message name="IDS_SETTINGS_RESTART" desc="Text for a button that will restart Brave.">
       Relaunch
@@ -854,13 +881,16 @@
   <message name="IDS_SETTINGS_CLEAR" desc="Label used on a menu item or button to clear an item.">
     Clear
   </message>
+  <message name="IDS_SETTINGS_DELETE" desc="Label used on a menu item or button to delete an item.">
+    Delete
+  </message>
   <message name="IDS_SETTINGS_EDIT" desc="Label used on a menu item or button, used in different contexts to edit an item.">
     Edit
   </message>
   <message name="IDS_SETTINGS_TOGGLE_ON" desc="Label used on a main settings toggle that is on.">
     On
   </message>
-  <message name="IDS_SETTINGS_TOGGLE_OFF" desc="Label used on a main settings toggle that is ooff.">
+  <message name="IDS_SETTINGS_TOGGLE_OFF" desc="Label used on a main settings toggle that is off.">
     Off
   </message>
   <message name="IDS_SETTINGS_NOT_VALID" desc="Text indicating that an input is not valid.">
@@ -874,6 +904,9 @@
   </message>
   <message name="IDS_SETTINGS_RETRY" desc="The label text of the retry button because there is an error.">
    Retry
+  </message>
+  <message name="IDS_SETTINGS_SLIDER_MIN_MAX_ARIA_ROLE_DESCRIPTION" desc="A label to be read aloud by screen readers when a user focuses on a slider. A settings slider generally has a minimum value, a maximum value, and a fixed range of values in between. This label gives the user context for what the minimum and maximum values represent for that particular slider.">
+    Slider: <ph name="MIN_LABEL">$1<ex>Slowest</ex></ph> to <ph name="MAX_LABEL">$2<ex>Fastest</ex></ph>
   </message>
 
   <!-- Autofill Page -->
@@ -1237,9 +1270,6 @@
     <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_EXPORT" desc="Label for export button in certificate manager.">
       Export
     </message>
-    <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_DELETE" desc="Label for delete button in certificate manager.">
-      Delete
-    </message>
     <message name="IDS_SETTINGS_CERTIFICATE_MANAGER_OTHERS" desc="Label for the others tab in certificate manager.">
       Others
     </message>
@@ -1488,6 +1518,15 @@
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_AVAILABLE_PRINTERS" desc="In CUPS printing settings subpage, title for the nearby printers list.">
       Add printers to your profile
     </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_AVAILABLE_PRINTERS_COUNT_MANY" desc="In CUPS printing settings subpage, this message will be read aloud to the user to inform them on the number of printers showing on the screen that are available to save.">
+      There are <ph name="PRINTER_COUNT">$1<ex>3</ex></ph> printers available to save.
+    </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_AVAILABLE_PRINTER_COUNT_ONE" desc="In CUPS printing settings subpage, this message will be read aloud to the user to inform them there is only 1 printer available to save.">
+      There is 1 printer available to save.
+    </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_AVAILABLE_PRINTER_COUNT_NONE" desc="In CUPS printing settings subpage, this message will be read aloud to the user to inform them there are no printers available to save.">
+      There are no printers available to save.
+    </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_EDIT" desc="Text for the drop down menu which allows the user to edit the printer details.">
       Edit
     </message>
@@ -1497,14 +1536,29 @@
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_SETUP_BUTTON" desc="Text for the button which allows the user to manually setup a CUPS printer.">
       Set up
     </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_SETUP_BUTTON_ARIA" desc="Label to be read aloud by the screen reader for the button which allows the user to manually setup a CUPS printer.">
+      Set up <ph name="PRINTER_NAME">$1<ex>HP OfficeJet 500</ex></ph>
+    </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_SAVE_BUTTON" desc="Text for the button which allows the user to add an automatically discovered printer to the user's saved printer list.">
       Save
+    </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_SAVE_BUTTON_ARIA" desc="Label to be read aloud by the screen reader for the button which allows the user to add an automatically discovered printer to the user's saved printer list.">
+      Save <ph name="PRINTER_NAME">$1<ex>HP OfficeJet 500</ex></ph>
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_SEARCH_LABEL" desc="The placeholder text in the printer search field.">
       Search printers
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_SAVED_PRINTERS_TITLE" desc="Text for the title of the user's saved printers list.">
       Your saved printers
+    </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_SAVED_PRINTERS_COUNT_MANY" desc="In CUPS printing settings subpage, this message will be read aloud to the user to inform them on the number of printers previously saved by the user.">
+      You have <ph name="PRINTER_COUNT">$1<ex>3</ex></ph> saved printers.
+    </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_SAVED_PRINTERS_COUNT_ONE" desc="In CUPS printing settings subpage, this message will be read aloud to the user to inform them there is only 1 printer previously saved.">
+      You have 1 saved printer.
+    </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_SAVED_PRINTERS_COUNT_NONE" desc="In CUPS printing settings subpage, this message will be read aloud to the user to inform them they have no printers previously saved.">
+      You have no saved printers.
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_SHOW_MORE" desc="Text for the button to show more printers when there are more printers than currently displayed to the user.">
       Show more
@@ -1587,6 +1641,9 @@
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_SELECT_DRIVER" desc="Label for the file selector to manually select a PPD file from the user's file system.">
       Or specify your printer PPD
     </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_BUTTON_SELECT_DRIVER_ARIA_LABEL" desc="ARIA label for the file selector button to manually select a PPD file from the user's file system. This text will not be visual on any page. It will only be spoken by screen readers.">
+      Browse to specify your printer PPD
+    </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_BUTTON_SELECT_DRIVER" desc="Text for the button which allows user to select a PPD file from the file system.">
       Browse
     </message>
@@ -1609,10 +1666,10 @@
       Searching...
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_PRINTER_ERROR_MESSAGE" desc="The message shown when a new printer is not set up successfully.">
-      Can’t add printer. Restart your computer and try again.
+      Unable to add printer. Please check your printer's configuration and try again.
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_PRINTER_FATAL_ERROR_MESSAGE" desc="The message shown when a fatal error occurs while trying to add a new printer.">
-      Can’t add printer. Restart your computer and try again.
+      Unable to add printer. Please check your printer's configuration and try again.
     </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_PRINTER_PRINTER_UNREACHABLE_MESSAGE" desc="The message shown when the printer that is to be added is unreachable for configuration.">
       Can’t connect to printer. Check that the printer is turned on and is connected to your Bravebook by Wi-Fi or USB.
@@ -2090,6 +2147,9 @@
     <message name="IDS_SETTINGS_INTERNET_NETWORK_NAMESERVERS_GOOGLE" desc="Settings &gt; Internet &gt; Network details: Label for setting Brave name servers.">
       Brave name servers
     </message>
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_NAMESERVERS_INPUT_ACCESSIBILITY_LABEL" desc="Settings &gt; Internet &gt; Network details: Accessibility only label for custom nameserver input box.">
+      Custom nameserver <ph name="INPUT_INDEX">$1<ex>1</ex></ph>
+    </message>
     <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_WPAD" desc="Settings &gt; Internet &gt; Network details: Web Proxy Auto Discovery (WPAD) label.">
       Web Proxy Auto Discovery URL:
     </message>
@@ -2183,8 +2243,14 @@
     <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_USE_SAME" desc="Settings &gt; Internet &gt; Network details: Label for checkbox indicating that a network proxy uses the same value for all protocols.">
       Use the same proxy for all protocols
     </message>
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_EXCEPTION_INPUT_ACCESSIBILITY_LABEL" desc="Settings &gt; Internet &gt; Accessibility only label for input field to add proxy exceptions.">
+      Host or domain to exclude
+    </message>
     <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_EXCEPTION_LIST" desc="Settings &gt; Internet &gt; Network details: Label for list of network proxy exceptions.">
       Do not use the proxy settings for these hosts and domains:
+    </message>
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_EXCEPT_REMOVE_ACCESSIBILITY_LABEL" desc="Settings &gt; Internet &gt; Network details: Accessibility only label for button to remove proxy exception.">
+      Remove exception for <ph name="HOST_NAME">$1<ex>example.com</ex></ph>
     </message>
     <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_ADD_EXCEPTION" desc="Settings &gt; Internet &gt; Network details: Label for button to add a network proxy exception.">
       Add exception
@@ -2201,6 +2267,9 @@
     <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_PROXY" desc="Settings &gt; Internet &gt; Network details: Label for all proxies.">
       Proxy
     </message>
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_HOST_INPUT_ACCESSIBILITY_LABEL" desc="Settings &gt; Internet &gt; Network details: Accessibility only label for proxy host input field.">
+      <ph name="INPUT_LABEL">$1<ex>HTTP Proxy</ex></ph> - Host
+    </message>
     <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_HTTP_PROXY" desc="Settings &gt; Internet &gt; Network details: Label for HTTP proxy.">
       HTTP Proxy
     </message>
@@ -2215,6 +2284,9 @@
     </message>
     <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_PORT" desc="Settings &gt; Internet &gt; Network details: Label for proxy port input.">
       Port
+    </message>
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_PROXY_PORT_INPUT_ACCESSIBILITY_LABEL" desc="Settings &gt; Internet &gt; Network details: Accessibility only label for proxy port number input field.">
+      <ph name="INPUT_LABEL">$1<ex>HTTP Proxy</ex></ph> - Port
     </message>
 
     <!-- Settings > Internet > SIM lock/unlock dialog -->
@@ -2383,6 +2455,9 @@
     </message>
     <message name="IDS_SETTINGS_INTERNET_LOOKING_FOR_MOBILE_NETWORK" desc="Text shown when viewing the Mobile data page when there are no cellular or tether networks available.">
       Looking for a mobile network. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
+    </message>
+    <message name="IDS_SETTINGS_INTERNET_SUMMARY_BUTTON_ACCESSIBILITY_LABEL" desc="Accessibility only label for network summary item button that opens network details.">
+      <ph name="NETWORK_TYPE">$1<ex>Mobile Data</ex></ph> - <ph name="NETWORK_DISPLAY_NAME">$2<ex>Verizon Wireless</ex></ph>
     </message>
     <message name="IDS_SETTINGS_INTERNET_TETHER_CONNECTION_DIALOG_TITLE" desc="Settings &gt; Internet &gt; Tether Connection Dialog &gt; Title asking the user to create a new hotspot.">
       Connect to new hotspot?
@@ -2625,7 +2700,7 @@
       Weak
     </message>
     <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH_OKAY" desc="Settings &gt; Internet &gt; Label used to describe the signal strength of a device's cellular connection when the signal is okay. The strength value is 2 on a scale from 1 (min) to 5 (max).">
-      Weak
+      Okay
     </message>
     <message name="IDS_ONC_TETHER_SIGNAL_STRENGTH_GOOD" desc="Settings &gt; Internet &gt; Label used to describe the signal strength of a device's cellular connection when the signal is good. The strength value is 3 on a scale from 1 (min) to 5 (max).">
       Fine
@@ -2899,38 +2974,25 @@
   <message name="IDS_SETTINGS_PRIVACY" desc="Name of the settings page which allows users to modify privacy and security settings.">
     Privacy and security
   </message>
-  <message name="IDS_SETTINGS_LINKDOCTOR_PREF" desc="The documentation string of the 'Use Link Doctor' preference to help with navigation errors.">
-    Use a web service to help resolve navigation errors
+  <message name="IDS_SETTINGS_PRIVACY_MORE" desc="Label on the expansion button to show more privacy settings.">
+    More
   </message>
-  <message name="IDS_SETTINGS_LINKDOCTOR_PREF_UNIFIED_CONSENT" desc="The documentation string of the 'Use Link Doctor' preference to help with navigation errors.">
+  <message name="IDS_SETTINGS_LINKDOCTOR_PREF" desc="The documentation string of the 'Use Link Doctor' preference to help with navigation errors.">
     Show suggestions for similar pages when a page can't be found
   </message>
-  <message name="IDS_SETTINGS_LINKDOCTOR_PREF_DESC_UNIFIED_CONSENT" desc="The description of the 'Use Link Doctor' preference to help with navigation errors.">
+  <message name="IDS_SETTINGS_LINKDOCTOR_PREF_DESC" desc="The description of the 'Use Link Doctor' preference to help with navigation errors.">
     Sends the web address of the page you're trying to reach to Brave
   </message>
-  <if expr="chromeos">
-    <message name="IDS_SETTINGS_SUGGEST_PREF" desc="The documentation string of the 'Use Suggest' preference">
-      Use a prediction service to help complete searches and URLs typed in the address bar or the app launcher search box
-    </message>
-  </if>
-  <if expr="not chromeos">
-    <message name="IDS_SETTINGS_SUGGEST_PREF" desc="The documentation string of the 'Use Suggest' preference">
-      Use a prediction service to help complete searches and URLs typed in the address bar
-    </message>
-  </if>
-  <message name="IDS_SETTINGS_SUGGEST_PREF_UNIFIED_CONSENT" desc="The documentation string of the 'Use Suggest' preference">
+  <message name="IDS_SETTINGS_SUGGEST_PREF" desc="The documentation string of the 'Use Suggest' preference">
     Autocomplete searches and URLs
   </message>
-  <message name="IDS_SETTINGS_SUGGEST_PREF_DESC_UNIFIED_CONSENT" desc="The description of the 'Use Suggest' preference">
+  <message name="IDS_SETTINGS_SUGGEST_PREF_DESC" desc="The description of the 'Use Suggest' preference">
     Sends some cookies and searches from the address bar and search box to your default search engine
   </message>
   <message name="IDS_SETTINGS_NETWORK_PREDICTION_ENABLED_LABEL" desc="In the advanced options tab, the text next to the checkbox that enables prediction of network actions.  Actions include browser-initiated DNS prefetching, TCP and SSL preconnection, and prerendering of webpages.">
-    Use a prediction service to load pages more quickly
-  </message>
-  <message name="IDS_SETTINGS_NETWORK_PREDICTION_ENABLED_LABEL_UNIFIED_CONSENT" desc="In the advanced options tab, the text next to the checkbox that enables prediction of network actions.  Actions include browser-initiated DNS prefetching, TCP and SSL preconnection, and prerendering of webpages.">
     Preload pages for faster browsing and searching
   </message>
-  <message name="IDS_SETTINGS_NETWORK_PREDICTION_ENABLED_DESC_UNIFIED_CONSENT" desc="In the advanced options tab, the secondary text next to the checkbox that enables prediction of network actions.">
+  <message name="IDS_SETTINGS_NETWORK_PREDICTION_ENABLED_DESC" desc="In the advanced options tab, the secondary text next to the checkbox that enables prediction of network actions.">
     Uses cookies to remember your preferences, even if you don’t visit those pages
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLEPROTECTION" desc="The section title of 'Protects you and your device from dangerous sites'">
@@ -2945,25 +3007,13 @@
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLE_REPORTING_DESC" desc="Description for extended safe browsing">
     To detect dangerous apps and sites, Brave sends URLs of some pages you visit, limited system information, and some page content to Brave
   </message>
-  <message name="IDS_SETTINGS_SPELLING_PREF" desc="Label for a setting that enhances spell check by sending the text that users type to Brave for spelling suggestions.">
-    Use enhanced spell check
-  </message>
-  <message name="IDS_SETTINGS_SPELLING_DESCRIPTION" desc="Description of using a web serviced to help resolve spelling errors. It is important to convey that what the user types will be sent to Brave.">
-    Brave sends the text you type in the browser to Brave
-  </message>
-  <message name="IDS_SETTINGS_SPELLING_PREF_UNIFIED_CONSENT" desc="The documentation string of the 'Use Spelling' preference">
+  <message name="IDS_SETTINGS_SPELLING_PREF" desc="The documentation string of the 'Use Spelling' preference">
     Enhanced spell check
   </message>
-  <message name="IDS_SETTINGS_ENABLE_LOGGING" desc="The label of the checkbox to enable/disable crash and user metrics logging">
-    Automatically send crash reports to Brave
-  </message>
-  <message name="IDS_SETTINGS_ENABLE_LOGGING_DIAGNOSTIC_AND_USAGE_DATA" desc="The label of the checkbox to enable/disable diagnostic and user metrics logging">
-    Automatically send diagnostic and usage data to Brave
-  </message>
-  <message name="IDS_SETTINGS_ENABLE_LOGGING_UNIFIED_CONSENT" desc="The label of the checkbox to enable/disable crash and user metrics logging. This string does not need a Brave counter-part because it will only be visible if Brave-branded.">
+  <message name="IDS_SETTINGS_ENABLE_LOGGING_PREF" desc="The label of the checkbox to enable/disable crash and user metrics logging. This string does not need a Brave counter-part because it will only be visible if Brave-branded.">
     Help improve Brave's features and performance
   </message>
-  <message name="IDS_SETTINGS_ENABLE_LOGGING_DESC_UNIFIED_CONSENT" desc="The description of the checkbox to enable/disable crash and user metrics logging">
+  <message name="IDS_SETTINGS_ENABLE_LOGGING_PREF_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging">
     Automatically sends crash reports to Brave
   </message>
   <message name="IDS_SETTINGS_ENABLE_URL_KEYED_ANONYMIZED_DATA_COLLECTION" desc="The label of the checkbox to enable/disable url keyed anonymized data collection.">
@@ -3061,6 +3111,9 @@
     </message>
     <message name="IDS_SETTINGS_FACTORY_RESET_BUTTON_LABEL" desc="Label for the factory reset button.">
       Reset
+    </message>
+    <message name="IDS_SETTINGS_FACTORY_RESET_BUTTON_ROLE" desc="A label to be read aloud by screen readers when the Reset button is focused. This button initiates the device factory reset flow.">
+      Reset Button
     </message>
   </if>
 
@@ -3406,6 +3459,21 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATICALLY_BLOCKED_NOTIFICATIONS" desc="The label in notifications site settings -- a setting that is automatically set when the user declines notification permission prompts a few times.">
     Automatically blocked because you declined notifications a few times
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SHOW_BLOCKED_NOTIFICATIONS_INDICATOR" desc="The label in notifications site settings -- a setting that enables showing a blocked indicator in the address bar when notifications are blocked for all sites. It can be set by the user or automatically set by Brave when a user has denied notifications several times.">
+    Show an indicator in the address bar when notification are blocked
+  </message>
+    <message name="IDS_SETTINGS_SITE_SETTINGS_ENABLE_QUIET_NOTIFICATION_PROMPTS" desc="The label of a checkbox in the Settings page for Web Notifications, controlling how prominent UI should be used to inform the user when a site asks whether it can send notifications to the user. When the checkbox is checked, the user will see a `quieter message` (a blocked indicator in the address bar) instead of the pop-up bubble. The setting can be set by the user or automatically set by Brave when a user has denied notifications several times.">
+    Use quieter messaging (blocks notification prompts from interrupting you)
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_ENABLE_QUIET_NOTIFICATION_PROMPTS_DESCRIPTION" desc="The label description for 'quiet notifications' option in notifications site settings -- if a site requests to send notifications, the request will be blocked and a blocked indicator icon will appear in the address bar.">
+    Sites will be blocked from asking to show you notifications. If a site requests notifications, a blocked indicator will appear in the address bar.
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_NOTIFICATIONS_BLOCK" desc="Label text shown in the Settings page when the default setting for Web Notifications is that new sites are blocked from asking the user if they can send notifications.">
+    Sites can't ask to send notifications
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_NOTIFICATIONS_ASK" desc="Label text shown in the Settings page when the default setting for Web Notifications is that new sites can prompt the user to ask if they want to receive notifications.">
+    Sites can ask to send notifications
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_DONT_SHOW_IMAGES" desc="Label for the global 'Do not show any images' toggle (category default) in site settings.">
     Do not show any images
   </message>
@@ -3635,6 +3703,18 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_CLEAR_STORAGE_CONFIRMATION" desc="Text for the dialog that warns about clearing storage used by a site.">
     All data stored by <ph name="SITE">$1<ex>www.example.com</ex></ph> will be deleted.
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_CLEAR_STORAGE_CONFIRMATION_NEW" desc="Text for the dialog that warns about clearing storage used by a site.">
+    All data and cookies stored by <ph name="SITE">$1<ex>www.example.com</ex></ph> will be cleared.
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_CLEAR_STORAGE_SIGN_OUT" desc="Text for the dialog that warns about being signed out of site when clearing storage used by a site.">
+    You’ll be signed out of this site, including in open tabs
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_CLEAR_STORAGE_OFFLINE_DATA" desc="Text for the dialog that warns about loss of offline data when clearing all storage data.">
+    Any offline data will be cleared
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_CLEAR_STORAGE_APPS" desc="Text for the dialog that warns about loss of offline data for installed app when clearing all storage data for site.">
+    Offline data in installed app will also be cleared
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_GROUP_RESET_DIALOG_TITLE" desc="Title of the dialog that warns about resetting all permissions for a group of sites.">
     Reset site permissions?
   </message>
@@ -3646,6 +3726,18 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_GROUP_DELETE_CONFIRMATION" desc="Text for the dialog that warns about clearing all storage data for a group of sites.">
     All data stored by <ph name="SITE_GROUP_NAME">$1<ex>google.co.uk</ex></ph> and any sites under it will be deleted. This includes cookies. You'll be signed out of these sites, including in open tabs.
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_GROUP_DELETE_CONFIRMATION_NEW" desc="Text for the dialog that warns about clearing all storage data for a group of sites.">
+    All data and cookies stored by <ph name="SITE_GROUP_NAME">$1<ex>google.co.uk</ex></ph> and any sites under it will be cleared.
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_GROUP_DELETE_SIGN_OUT" desc="Text for the dialog that warns about being signed out when clearing all storage data.">
+    You’ll be signed out of these sites, including in open tabs
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_GROUP_DELETE_OFFLINE_DATA" desc="Text for the dialog that warns about loss of offline data when clearing all storage data.">
+    Any offline data will be cleared
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SITE_GROUP_DELETE_APPS" desc="Text for the dialog that warns about installed apps losing offline data when clearing all storage data for the site group.">
+    Offline data in installed apps will also be cleared
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIE_REMOVE_MULTIPLE" desc="Text for the dialog that warns about deleting all site data.">
     This will delete any data stored on your device for all the sites shown. Do you want to continue?
@@ -3825,8 +3917,8 @@
   </message>
 
   <!-- Sync / Profiles Page -->
-  <message name="IDS_SETTINGS_PEOPLE" desc="Name of the settings page which manages Brave's signed-in Brave profile.">
-    Profiles
+  <message name="IDS_SETTINGS_PEOPLE" desc="Name of the settings page which manages the user's relationship to Brave.">
+    You and Brave
   </message>
   <message name="IDS_SETTINGS_PEOPLE_MANAGE_OTHER_PEOPLE" desc="Label for the button that opens the multi-profile user manager.">
     Manage other profiles
@@ -4070,6 +4162,9 @@
     <message name="IDS_SETTINGS_CHANGE_PICTURE_OLD_PHOTO" desc="The text on the existing photo, which was either taken by the webcam or read from a file.">
       Existing photo from camera or file
     </message>
+    <message name="IDS_SETTINGS_CHANGE_PICTURE_OLD_VIDEO" desc="The text on the existing video, which was either taken by the webcam or read from a file.">
+      Existing video from camera or file
+    </message>
   </if>
 
   <if expr="not chromeos">
@@ -4094,6 +4189,9 @@
     <message name="IDS_SETTINGS_PEOPLE_SYNC_NOT_WORKING" desc="The label informing the user that sync is currently not working.">
       Sync isn't working
     </message>
+    <message name="IDS_SETTINGS_PEOPLE_SYNC_PASSWORDS_NOT_WORKING" desc="The label informing the user that password sync is currently not working.">
+      Error syncing passwords
+    </message>
     <message name="IDS_SETTINGS_PEOPLE_SYNC_PAUSED" desc="The label informing the user that sync is currently paused.">
       Sync is paused
     </message>
@@ -4107,9 +4205,6 @@
       Show desktop shortcut
     </message>
     <message name="IDS_SETTINGS_TURN_OFF_SYNC_AND_SIGN_OUT_DIALOG_TITLE" desc="The text to display on the title of the dialog to turn off sync and sign out.">
-      Turn off sync and sign out?
-    </message>
-    <message name="IDS_SETTINGS_TURN_OFF_SYNC_AND_SIGN_OUT_DIALOG_TITLE_UNIFIED_CONSENT" desc="The text to display on the title of the dialog to turn off sync and sign out when unified consent is enabled.">
       Turn off sync and personalization?
     </message>
     <message name="IDS_SETTINGS_TURN_OFF_SYNC_DIALOG_MANAGED_CONFIRM" desc="The text to display on the confirm button of the dialog to turn off sync, when the profile is managed by admin.">
@@ -4130,9 +4225,6 @@
     Changes to your bookmarks, history, passwords, and other settings will no longer be synced to your Brave Account. However, your existing data will remain stored in your Brave Account and can be managed on <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_AND_SIGN_OUT_EXPLANATION" desc="The text to display in the Sign out of Brave dialog to stop syncing and sign-out for non-managed profiles.">
-    This will sign you out of your Brave accounts. Changes to your bookmarks, history, passwords, and other settings will no longer be synced to your Brave Account. However, your existing data will remain stored in your Brave Account and can be managed on <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
-  </message>
-  <message name="IDS_SETTINGS_SYNC_DISCONNECT_AND_SIGN_OUT_EXPLANATION_UNIFIED_CONSENT" desc="The text to display in the Sign out of Brave dialog to stop syncing and sign-out for non-managed profiles when unified consent is enabled.">
     This will sign you out of your Brave Accounts. Your bookmarks, history, passwords, and more will no longer be synced.
   </message>
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_EXPAND_ACCESSIBILITY_LABEL" desc="Label for the button in the Sign out of Brave dialog that toggles showing the profile stats. Only visible by screen reader software.">
@@ -4154,9 +4246,6 @@
   <message name="IDS_SETTINGS_SYNC_SYNC_AND_NON_PERSONALIZED_SERVICES" desc="The name of the settings page and the label of the button that takes the user to manage their sync and non-personalized services settings.">
     Sync and Brave services
   </message>
-  <message name="IDS_SETTINGS_SYNC_PAGE_TITLE" desc="Name of the settings page which manages syncing data between multiple browser instances with the same Brave profile.">
-    Advanced sync settings
-  </message>
   <message name="IDS_SETTINGS_SYNC_ADVANCED_PAGE_TITLE" desc="Name of the settings page which manages data used by sync.">
     Manage sync
   </message>
@@ -4165,9 +4254,6 @@
   </message>
   <if expr="not chromeos">
     <message name="IDS_SETTINGS_SYNC_WILL_START" desc="The message to tell users that sync will start once they leave the sync setup page.">
-      Sync will start once you leave this page
-    </message>
-    <message name="IDS_SETTINGS_SYNC_WILL_START_UNITY" desc="The message to tell users that sync will start once they leave the sync setup page when unified consent is enabled.">
       Sync will start once you leave sync settings
     </message>
     <message name="IDS_SETTINGS_SYNC_SETTINGS_CANCEL_SYNC" desc="The label of button that allows user to cancel sync.">
@@ -4356,7 +4442,7 @@
       <ph name="USER_NAME">$1<ex>John Smith</ex></ph> (owner)
     </message>
     <message name="IDS_SETTINGS_USERS_REMOVE_USER_TOOLTIP" desc="Tooltip for the button that removes a user from the list of restricted sign in users.">
-      Remove
+      Remove <ph name="USER_NAME">$1<ex>John Smith</ex></ph>
     </message>
     <message name="IDS_SETTINGS_USERS_ADD_USERS" desc="Label the dialog for adding users.">
       Add user
@@ -4385,6 +4471,9 @@
     </message>
     <message name="IDS_SETTINGS_PARENTAL_CONTROLS_SET_UP_BUTTON_LABEL" desc="Label/description of the button which launches page which enables BraveOS's parental controls.">
       Set up
+    </message>
+    <message name="IDS_SETTINGS_PARENTAL_CONTROLS_SET_UP_BUTTON_ROLE" desc="Role description of the button which launches page which enables BraveOS's parental controls. Spoken aloud by screen readers when the Set Up button is focused">
+      Set up button
     </message>
   </if>
 
@@ -4760,8 +4849,17 @@
     <message name="IDS_SETTINGS_DISPLAY_ORIENTATION" desc="In Device Settings &gt; Displays, the label for the control for changing a display's orientation.">
       Orientation
     </message>
+    <message name="IDS_SETTINGS_DISPLAY_ORIENTATION_AUTO_ROTATE" desc="In Device Settings &gt; Displays, the label for the entry that enables auto-rotation in tablet mode.">
+      Auto-rotate
+    </message>
     <message name="IDS_SETTINGS_DISPLAY_ORIENTATION_STANDARD" desc="In Device Settings &gt; Displays, the label for standard orientation (0 rotation).">
-      Standard
+      0° (Default)
+    </message>
+    <message name="IDS_SETTINGS_DISPLAY_AMBIENT_COLOR_TITLE" desc="In Device Settings &gt; Displays, the label for toggling ambient color.">
+      Ambient colors
+    </message>
+    <message name="IDS_SETTINGS_DISPLAY_AMBIENT_COLOR_SUBTITLE" desc="In Device Settings &gt; Displays, descriptive sublabel for ambient color.">
+      Adjusts the screen color to match the environment
     </message>
     <message name="IDS_SETTINGS_DISPLAY_OVERSCAN_TEXT" desc="Text explaining that this setting is used to adjust the boundaries of the selected display.">
       Adjust the boundaries of your desktop within the display
@@ -4846,8 +4944,14 @@
     <message name="IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE" desc="Label for the additional note for the subpage for setting preferences for external storage.">
       Apps from Brave Play may require full file system access to read and write files on external storage devices. Files and folders created on the device are visible to anyone who uses the external drive. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
     </message>
-    <message name="IDS_SETTINGS_STORAGE_EXTERNAL_STORAGE_LIST_HEADER" desc="Header of the list of external storage devices for the subpage for setting preferences for external storage.">
+    <message name="IDS_SETTINGS_STORAGE_EXTERNAL_STORAGE_EMPTY_LIST_HEADER" desc="Header of the list of external storage devices for the subpage for setting preferences for external storage. This is shown when the list is empty.">
       Available devices will appear here.
+    </message>
+    <message name="IDS_SETTINGS_STORAGE_EXTERNAL_STORAGE_LIST_HEADER" desc="Header of the list of external storage devices for the subpage for setting preferences for external storage. This is shown when the list is not empty.">
+      Available devices
+    </message>
+    <message name="IDS_SETTINGS_STORAGE_OVERVIEW_ARIA_LABEL" desc="The label to be read aloud by BraveVox to describe the storage usage progress bar on the Storage page">
+      Storage Usage Overview
     </message>
 
     <!-- Power -->
@@ -4884,14 +4988,14 @@
     <message name="IDS_SETTINGS_POWER_IDLE_OTHER" desc="In Device Settings &gt; Power, menu item for custom idle behavior.">
       Other
     </message>
-    <message name="IDS_SETTINGS_POWER_LID_CLOSED_SLEEP_LABEL" desc="In Device Settings &gt; Power, label for suspending when lid is closed.">
-      Sleep when lid is closed
+    <message name="IDS_SETTINGS_POWER_LID_CLOSED_SLEEP_LABEL" desc="In Device Settings &gt; Power, label for suspending when cover is closed.">
+      Sleep when cover is closed
     </message>
-    <message name="IDS_SETTINGS_POWER_LID_CLOSED_SIGN_OUT_LABEL" desc="In Device Settings &gt; Power, label for signing out when lid is closed.">
-      Sign out when lid is closed
+    <message name="IDS_SETTINGS_POWER_LID_CLOSED_SIGN_OUT_LABEL" desc="In Device Settings &gt; Power, label for signing out when cover is closed.">
+      Sign out when cover is closed
     </message>
-    <message name="IDS_SETTINGS_POWER_LID_CLOSED_SHUT_DOWN_LABEL" desc="In Device Settings &gt; Power, label for shutting down when lid is closed.">
-      Shut down when lid is closed
+    <message name="IDS_SETTINGS_POWER_LID_CLOSED_SHUT_DOWN_LABEL" desc="In Device Settings &gt; Power, label for shutting down when cover is closed.">
+      Shut down when cover is closed
     </message>
     <message name="IDS_SETTINGS_BATTERY_STATUS" desc="In Device Settings &gt; Power, the battery status while the battery is discharging, showing the battery power as a percentage and the time left until the battery is empty.">
       <ph name="percentage">$1<ex>56</ex></ph>% - <ph name="time">$2<ex>2 hours and 20 minutes</ex></ph> left
@@ -5181,7 +5285,7 @@
     Reset your security key
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_RESET_DESC" desc="A header that appears in the Settings subpage for security keys (which are external devices for user authentication). This is the description for the section about resetting them to factory settings.">
-    This will erase all data on the security key, including its PIN
+    This will delete all data on the security key, including its PIN
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_RESET_TITLE" desc="The title of a dialog for factory-resetting security keys (which are external devices for user authentication). Resetting in this context means erasing a security key and returning it to an initial, blank state.">
     Reset your security key
@@ -5190,10 +5294,10 @@
     Touch to confirm reset
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_RESET_STEP1" desc="An instruction to a user to physically unplug a security key from their computer, reinsert it, and then touch the activation button that's on the device.">
-    Remove your security key from your device, then reinsert and touch it.
+    To continue, remove your security key from your device, then reinsert and touch it
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_RESET_STEP2" desc="An instruction to a user to press the activation button on their security key a second time to confirm that they wish to reset (i.e. erase) their security key (which is an external device for user authentication).">
-    Touch your security key again to confirm reset. All information stored on the security key, including its PIN, will be erased.
+    Touch your security key again to confirm reset. All information stored on the security key, including its PIN, will be deleted.
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_NO_RESET" desc="A failure message reporting to the user that it is not possible to reset the security key that they selected because the device does not support that operation.">
     Can’t reset this security key
@@ -5206,9 +5310,6 @@
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_RESET_NOTALLOWED" desc="A message to the user that an attempt to reset (i.e. erase) their security key (an external device for user authentication) failed because the security key refused to be reset. This is usually caused because a reset is only allowed within the first few seconds after being plugged in, so the user has to perform the operation quickly.">
     Can’t reset this security key. Try resetting the key immediately after inserting it.
-  </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_TOUCH" desc="An instruction to a user to physically the activation button on their security key (which is an external device for user authentication).">
-    Insert and touch your security key to create or change a PIN.
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_NO_PIN" desc="A failure message shown to a user when they attempt to set a PIN on a security key that does not support PINs. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
     This security key doesn’t support PINs
@@ -5271,10 +5372,10 @@
     Hide PINs
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_LABEL" desc="The label for a menu item that when clicked lets the user view and erase credentials on their security key (an authentication hardware device).">
-    Manage sign-in data
+    Sign-in data
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_DESC" desc="The description for a menu item that when clicked lets the user view and erase credentials on their security key (an authentication hardware device).">
-    View and delete the sign-in data stored on your security key
+    View and delete sign-in data stored on your security key
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_DIALOG_TITLE" desc="The title of a dialog that lets users view and erase credentials on their security key (an authentication hardware device).">
     Security key sign-in data
@@ -5284,12 +5385,6 @@
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_USERNAME" desc="A column heading of a table that lists credentials stored on a security key (an authentication hardware device). This column contains the user name (e.g. exampleuser@google.com) for each credential.">
     Username
-  </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_TOUCH" desc="A label instructing the user to physically touch the activation button on their security key (an authentication hardware device).">
-    To view sign-in data, insert and touch your security key
-  </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_PIN_PROMPT" desc="A label instructing the user to enter the PIN (short, often numeric codes that are often used with, for example, ATM cards) for their security key (an authentication hardware device).">
-    To view sign-in data, enter the PIN for your security key. If you don’t know the PIN, you’ll need to reset the security key.
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_NO_CREDENTIALS" desc="An error message shown when a user attempts to view the credentials on their security key (an authentication hardware device) but no such credentials exist.">
     This security key does not have any sign-in data
@@ -5312,14 +5407,17 @@
   <message name="IDS_SETTINGS_SECURITY_KEYS_CREDENTIAL_MANAGEMENT_FAILED" desc="An error message shown when a user attempts to delete an individual credential on their security key (an authentication hardware device).">
     Your sign-in data couldn't be deleted
   </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_SUBPAGE_LABEL" desc="The label for a menu item that when clicked lets the user view, add, rename, and delete fingerprints on their security key (an authentication hardware device).">
+    Fingerprints
+  </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_SUBPAGE_DESCRIPTION" desc="The description for a menu item that when clicked lets the user view, add, rename, and delete fingerprints on their security key (an authentication hardware device).">
-    Add, rename, and delete fingerprints saved on your device
+    Add and delete fingerprints saved on your security key
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_DIALOG_TITLE" desc="The title of a dialog that lets users view, add, rename, and delete fingerprints on their security key (an authentication hardware device).">
     Manage fingerprints
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_TOUCH" desc="A label instructing the user to physically touch the activation button on their security key (an authentication hardware device).">
-    To manage your fingerprints, insert and touch your security key.
+  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_ADD_TITLE" desc="The title of a dialog instructing a user to touch their security key (an authentication hardware device) to enroll a fingerprint on it.">
+    Add fingerprint
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_CHOOSE_NAME" desc="A label instructing the user to provide a descriptive name for a fingerprint enrolled to a security key.">
     Choose a name for this fingerprint
@@ -5327,19 +5425,28 @@
   <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_NAME_LABEL" desc="A label for a text input field containing a descriptive name for a fingerprint enrolled to a security key.">
     Name
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_PIN_PROMPT" desc="A label instructing the user to enter the PIN (short, often numeric codes that are often used with, for example, ATM cards) for their security key (an authentication hardware device).">
-    To manage your fingerprints, enter the PIN for your security key. If you don’t know the PIN, you’ll need to reset the security key.
+  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_NO_ENROLLMENTS_LABEL" desc="A label informing the user that there are no fingerprints stored on their security key (authentication hardware device).">
+    Your security key has no fingerprints stored
   </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_NO_ENROLLMENTS" desc="A label informing the user that there are no fingerprints stored on their security key (authentication hardware device).">
-    Your security key has no fingerprints stored.
-  </message>
-  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_LABEL" desc="A label describing a list of fingerprints enrolled with a security key (authentication hardware device).">
+  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_ENROLLMENTS_LABEL" desc="A label describing a list of fingerprints enrolled with a security key (authentication hardware device).">
     Fingerprints on this security key
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_ENROLLING_LABEL" desc="A label instructing the user to repeatedly touch the fingerprint sensor on their security key (authentication hardware device) to take samples for a new fingerprint.">
-    Keep touching your security key to save your fingerprint.
+    Keep touching your security key until your fingerprint is captured
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_ENROLLING_COMPLETE_LABEL" desc="A label informing the user that adding a fingerprint to their security key succeeded.">
+    Your fingerprint was captured
   </message>
   <message name="IDS_SETTINGS_SECURITY_KEYS_NO_BIOMETRIC_ENROLLMENT" desc="An error message shown when a user attempts to use the fingerprint sensor on their security key (an authentication hardware device) but the security key is not capable of storing fingerprints, or does not have a fingerprint sensor.">
     Your security key can't store fingerprints
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_BIO_ENROLLMENT_DELETE" desc="The label for a button that when clicked deletes a fingerprint from a security key (an authentication hardware device) with a built-in fingerprint reader.">
+    Delete this fingerprint
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_TOUCH_TO_CONTINUE" desc="A label instructing the user to physically touch the activation button on their security key (an authentication hardware device).">
+    To continue, insert and touch your security key
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_PROMPT" desc="A label instructing the user to enter the PIN (short, often numeric codes that are often used with, for example, ATM cards) for their security key (an authentication hardware device).">
+    Enter the PIN for your security key. If you don’t know the PIN, you’ll need to reset the security key.
   </message>
 </grit-part>

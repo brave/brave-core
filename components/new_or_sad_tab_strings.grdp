@@ -134,13 +134,13 @@
       <!-- TODO(msramek): Merge with the above section once this is fully launched. -->
 
       <message name="IDS_NEW_TAB_OTR_TITLE" desc="Title of the Private new tab page. The Private mode provides private browsing experience by hiding browsing activity from other profiles using the same device. However, it does not make the user completely invisible or anonymous; please don't translate it as such." formatter_data="android_java">
-        You’ve gone private
+        You've gone private
       </message>
       <message name="IDS_NEW_TAB_OTR_SUBTITLE" desc="Subtitle of the Private new tab page, explaining to the user that the Private mode hides their browsing activity from other profiles using the same device. The second sentence clarifies that there are two important exceptions from this rule - downloaded files and added bookmarks will be persisted even after the Private session is closed." formatter_data="android_java">
-        Now you can browse privately, and other profiles who use this device won’t see your activity. However, downloads and bookmarks will be saved.
+        Now you can browse privately, and other profiles who use this device won't see your activity. However, downloads and bookmarks will be saved.
       </message>
       <message name="IDS_NEW_TAB_OTR_NOT_SAVED" desc="Bullet points listing data that are not saved in the Private mode. 'Browsing history' means a history of visited websites. 'Cookies and site data' refers to data saved by websites on the user's device (e.g. sign-in state, preferences, etc.). 'Information entered in forms' refers to names, addresses, passwords etc. that users enter into forms on the web." formatter_data="android_java">
-        Brave <ph name="BEGIN_EMPHASIS">&lt;em&gt;</ph>won’t save<ph name="END_EMPHASIS">&lt;/em&gt;</ph> the following information:
+        Brave <ph name="BEGIN_EMPHASIS">&lt;em&gt;</ph>won't save<ph name="END_EMPHASIS">&lt;/em&gt;</ph> the following information:
         <ph name="BEGIN_LIST">&lt;ul&gt;</ph>
           <ph name="LIST_ITEM">&lt;li&gt;</ph>Your browsing history
           <ph name="LIST_ITEM">&lt;li&gt;</ph>Cookies and site data
@@ -154,6 +154,9 @@
           <ph name="LIST_ITEM">&lt;li&gt;</ph>Your employer or school
           <ph name="LIST_ITEM">&lt;li&gt;</ph>Your internet service provider
         <ph name="END_LIST">&lt;/ul&gt;</ph>
+      </message>
+      <message name="IDS_NEW_TAB_OTR_COOKIE_CONTROLS_CONTROLLED_TOOLTIP_TEXT" desc="Text displayed in the settings tooltip when third-party cookie blocking is managed or turned on by the user.">
+        This setting is enforced by "<ph name="ENFORCING_SETTING">$1<ex>Block third-party cookies</ex></ph>" in "<ph name="SETTINGS_PAGE">$2<ex>Cookies and site data</ex></ph>"
       </message>
 
 </grit-part>
