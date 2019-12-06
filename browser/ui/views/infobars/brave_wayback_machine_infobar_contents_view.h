@@ -20,6 +20,7 @@ class InfoBar;
 }  // namespace infobars
 
 namespace views {
+class ImageView;
 class Label;
 class Separator;
 }  // namespace views
@@ -63,16 +64,15 @@ class BraveWaybackMachineInfoBarContentsView
 
   // Used for labels theme changing all together.
   Labels labels_;
-  views::Separator* separator_;
-
   Views views_visible_before_checking_;
   Views views_visible_after_checking_;
-
   infobars::InfoBar* infobar_;
   content::WebContents* contents_;
-  BraveWaybackMachineInfoBarButtonContainer* button_;
   WaybackMachineURLFetcher wayback_machine_url_fetcher_;
 
+  views::Separator* separator_ = nullptr;
+  BraveWaybackMachineInfoBarButtonContainer* button_ = nullptr;
+  views::ImageView* sad_folder_ = nullptr;
   bool wayback_url_fetch_requested_ = false;
 };
 

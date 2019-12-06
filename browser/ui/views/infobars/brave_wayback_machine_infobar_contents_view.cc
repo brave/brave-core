@@ -9,9 +9,11 @@
 #include <string>
 #include <utility>
 
+#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_wayback_machine/wayback_machine_url_fetcher.h"
 #include "brave/browser/ui/views/infobars/brave_wayback_machine_infobar_button_container.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/browser/themes/theme_properties.h"
@@ -24,7 +26,7 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/color_palette.h"
-#include "ui/views/background.h"
+#include "ui/gfx/paint_vector_icon.h"
 #include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/image_view.h"
 #include "ui/views/controls/label.h"
@@ -62,7 +64,7 @@ void BraveWaybackMachineInfoBarContentsView::OnThemeChanged() {
     label->SetBackgroundColor(background_color);
     label->SetEnabledColor(text_color);
   }
-
+  sad_folder_->SetImage(gfx::CreateVectorIcon(kSadFolderIcon, 20, text_color));
   separator_->SetColor(text_color);
 }
 
@@ -95,14 +97,12 @@ void BraveWaybackMachineInfoBarContentsView::OnWaybackURLFetched(
 }
 
 void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
-  // TODO(simonhong): Use real image assets.
-  views::ImageView* image_view = new views::ImageView();
-  image_view->SetImageSize(gfx::Size(100, 20));
-  image_view->SetProperty(views::kMarginsKey,
-                          gfx::Insets(12, 20, 12, 20));
-  image_view->SetBackground(
-      views::CreateSolidBackground(SkColorSetRGB(0xff, 0x76, 0x54)));
-  AddChildView(image_view);
+  ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
+  views::ImageView* wayback_spot_graphic = new views::ImageView();
+  wayback_spot_graphic->SetImage(rb.GetImageSkiaNamed(IDR_BRAVE_WAYBACK_INFOBAR));
+  wayback_spot_graphic->SetProperty(views::kMarginsKey,
+                          gfx::Insets(6, 20, 6, 20));
+  AddChildView(wayback_spot_graphic);
 
   separator_ = new views::Separator;
   separator_->SetProperty(views::kMarginsKey,
@@ -162,12 +162,10 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
                   0));
   AddChildView(label);
 
-  views::ImageView* sad_icon = new views::ImageView();
-  views_visible_after_checking_.push_back(sad_icon);
-  ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
-  sad_icon->SetImage(rb.GetImageSkiaNamed(IDR_CRASH_SAD_FAVICON));
-  sad_icon->SetProperty(views::kMarginsKey, gfx::Insets(12, 10));
-  AddChildView(sad_icon);
+  sad_folder_ = new views::ImageView();
+  views_visible_after_checking_.push_back(sad_folder_);
+  sad_folder_->SetProperty(views::kMarginsKey, gfx::Insets(12, 10));
+  AddChildView(sad_folder_);
 
   button_ = new BraveWaybackMachineInfoBarButtonContainer(this);
   views_visible_before_checking_.push_back(button_);
