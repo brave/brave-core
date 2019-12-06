@@ -24,6 +24,7 @@ class Label;
 class Separator;
 }  // namespace views
 
+class BraveWaybackMachineInfoBarButtonContainer;
 class GURL;
 
 // Includes all view controls except close button that managed by InfoBarView.
@@ -69,7 +70,10 @@ class BraveWaybackMachineInfoBarContentsView
 
   infobars::InfoBar* infobar_;
   content::WebContents* contents_;
+  BraveWaybackMachineInfoBarButtonContainer* button_;
   WaybackMachineURLFetcher wayback_machine_url_fetcher_;
+
+  bool wayback_url_fetch_requested_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_WAYBACK_MACHINE_INFOBAR_CONTENTS_VIEW_H_

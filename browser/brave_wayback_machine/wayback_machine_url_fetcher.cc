@@ -59,9 +59,9 @@ void WaybackMachineURLFetcher::Fetch(const GURL& url) {
   std::string wayback_fetch_url =
       std::string(kWaybackQueryURL) + url.spec();
   request->url = GURL(wayback_fetch_url);
-  wayback_url_fetcher_ = network::SimpleURLLoader::Create(
+  wayback_url_loader_ = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
-  wayback_url_fetcher_->DownloadToString(
+  wayback_url_loader_->DownloadToString(
       url_loader_factory_.get(),
       base::BindOnce(&WaybackMachineURLFetcher::OnWaybackURLFetched,
                      base::Unretained(this),

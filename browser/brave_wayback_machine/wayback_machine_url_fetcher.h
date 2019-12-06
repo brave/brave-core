@@ -46,7 +46,7 @@ class WaybackMachineURLFetcher final {
 
   Client* client_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  std::unique_ptr<network::SimpleURLLoader> wayback_url_fetcher_;
+  std::unique_ptr<network::SimpleURLLoader> wayback_url_loader_;
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_WAYBACK_MACHINE_WAYBACK_MACHINE_URL_FETCHER_H_

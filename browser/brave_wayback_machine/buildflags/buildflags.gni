@@ -1,5 +1,5 @@
 import("//extensions/buildflags/buildflags.gni")
 
 declare_args() {
-  enable_brave_wayback_machine = enable_extensions
+  enable_brave_wayback_machine = true
 }

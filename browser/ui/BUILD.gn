@@ -111,15 +111,6 @@ source_set("ui") {
       "views/toolbar/bookmark_button.h",
     ]
 
-    if (enable_brave_wayback_machine) {
-      sources += [
-        "views/infobars/brave_wayback_machine_infobar_contents_view.cc",
-        "views/infobars/brave_wayback_machine_infobar_contents_view.h",
-        "views/infobars/brave_wayback_machine_infobar_view.cc",
-        "views/infobars/brave_wayback_machine_infobar_view.h",
-      ]
-    }
-
     if (enable_sparkle) {
       sources += [
         "views/update_recommended_message_box_mac.h",
@@ -168,7 +159,6 @@ source_set("ui") {
 
   deps = [
     "//base",
-    "//brave/app:brave_generated_resources_grit",
     "//brave/app:command_ids",
     "//brave/app/theme:brave_theme_resources",
     "//brave/app/theme:brave_unscaled_resources",
@@ -199,7 +189,6 @@ source_set("ui") {
     "//chrome/common",
     "//components/gcm_driver:gcm_buildflags",
     "//components/prefs",
-    "//components/resources",
     "//components/sessions",
     "//content/public/browser",
     "//content/public/common",
@@ -221,9 +210,11 @@ source_set("ui") {
   }
 
   if (enable_brave_wayback_machine) {
-    deps += [
-      "//brave/browser/brave_wayback_machine",
-    ]
+    deps += [ "//brave/browser/brave_wayback_machine" ]
+
+    if (toolkit_views) {
+      deps += [ "//brave/browser/ui/views/infobars:brave_wayback_machine" ]
+    }
   }
 
   if (!is_android) {

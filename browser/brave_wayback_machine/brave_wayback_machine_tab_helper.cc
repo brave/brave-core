@@ -48,7 +48,7 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
 
   if (const net::HttpResponseHeaders* header =
           navigation_handle->GetResponseHeaders()) {
-    // Create infobar in the next loop for prevening navigation blocking.
+    // Create infobar in the next loop for not blocking navigation.
     PostTask(FROM_HERE,
              { base::CurrentThread(), base::TaskPriority::BEST_EFFORT },
              base::BindOnce(&BraveWaybackMachineTabHelper::CreateInfoBar,

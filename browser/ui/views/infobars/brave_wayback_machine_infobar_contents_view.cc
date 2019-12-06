@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "brave/browser/brave_wayback_machine/wayback_machine_url_fetcher.h"
+#include "brave/browser/ui/views/infobars/brave_wayback_machine_infobar_button_container.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/net/system_network_context_manager.h"
@@ -68,11 +69,21 @@ void BraveWaybackMachineInfoBarContentsView::OnThemeChanged() {
 void BraveWaybackMachineInfoBarContentsView::ButtonPressed(
     views::Button* sender,
     const ui::Event& event) {
+  if (wayback_url_fetch_requested_)
+    return;
+  wayback_url_fetch_requested_ = true;
+
   FetchWaybackURL();
 }
 
 void BraveWaybackMachineInfoBarContentsView::OnWaybackURLFetched(
     const GURL& latest_wayback_url) {
+  DCHECK(wayback_url_fetch_requested_);
+  wayback_url_fetch_requested_ = false;
+
+  button_->StopThrobber();
+  Layout();
+
   if (latest_wayback_url.is_empty()) {
     UpdateChildrenVisibility(false);
     return;
@@ -158,18 +169,15 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
   sad_icon->SetProperty(views::kMarginsKey, gfx::Insets(12, 10));
   AddChildView(sad_icon);
 
-  auto button = views::MdTextButton::CreateSecondaryUiBlueButton(
-      this,
-      l10n_util::GetStringUTF16(IDS_BRAVE_WAYBACK_MACHINE_CHECK_BUTTON_TEXT));
-  auto* button_ptr = button.get();
-  views_visible_before_checking_.push_back(button_ptr);
-  button->SetProperty(
+  button_ = new BraveWaybackMachineInfoBarButtonContainer(this);
+  views_visible_before_checking_.push_back(button_);
+  button_->SetProperty(
       views::kMarginsKey,
       gfx::Insets(ChromeLayoutProvider::Get()->GetDistanceMetric(
                       DISTANCE_TOAST_CONTROL_VERTICAL),
                   0));
-  button->SizeToPreferredSize();
-  AddChildView(button.release());
+  button_->SizeToPreferredSize();
+  AddChildView(button_);
 
   UpdateChildrenVisibility(true);
 }
@@ -199,7 +207,9 @@ SkColor BraveWaybackMachineInfoBarContentsView::GetColor(int id) const {
 }
 
 void BraveWaybackMachineInfoBarContentsView::FetchWaybackURL() {
+  button_->StartThrobber();
   wayback_machine_url_fetcher_.Fetch(contents_->GetVisibleURL());
+  Layout();
 }
 
 void BraveWaybackMachineInfoBarContentsView::LoadURL(const GURL& url) {
