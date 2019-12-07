@@ -1807,7 +1807,13 @@ void AdsServiceImpl::OnPrefsChanged(
   if (pref == prefs::kEnabled ||
       pref == brave_rewards::prefs::kBraveRewardsEnabled) {
     if (IsEnabled()) {
-      RemoveOnboarding();
+#if !defined(OS_ANDROID)
+      if (first_run::IsChromeFirstRun()) {
+        SetBooleanPref(prefs::kShouldShowOnboarding, false);
+      } else {
+        RemoveOnboarding();
+      }
+#endif
 
       MaybeStart(false);
     } else {
