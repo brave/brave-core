@@ -183,6 +183,10 @@ void LedgerImpl::OnSaveVisit(
 }
 
 void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
+  if (!GetRewardsMainEnabled() || !GetAutoContribute()) {
+    return;
+  }
+
   if (tab_id != last_shown_tab_id_ || last_tab_active_time_ == 0) {
     return;
   }

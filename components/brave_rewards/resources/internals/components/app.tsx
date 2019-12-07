@@ -36,15 +36,6 @@ export class RewardsInternalsPage extends React.Component<Props, {}> {
         <div id='rewardsInternalsPage'>
           <KeyInfoSeed isKeyInfoSeedValid={info.isKeyInfoSeedValid || false} />
           <WalletPaymentId walletPaymentId={info.walletPaymentId || ''} />
-          {info.currentReconciles.map((item, index) => (
-            <span>
-              <hr/>
-              <div>
-                <span i18n-content='currentReconcile'/> {index + 1}
-                <CurrentReconcile currentReconcile={item || ''} />
-              </div>
-            </span>
-          ))}
           <div>
             <span i18n-content='personaId'/>: {info.personaId}
           </div>
@@ -55,6 +46,15 @@ export class RewardsInternalsPage extends React.Component<Props, {}> {
             <span i18n-content='bootStamp'/>: {new Date(info.bootStamp * 1000).toLocaleDateString()}
           </div>
           <button type='button' style={{ marginTop: '10px' }} onClick={this.onRefresh}>{getLocale('refreshButton')}</button>
+          {info.currentReconciles.map((item, index) => (
+            <span>
+              <hr/>
+              <div>
+                <span i18n-content='currentReconcile'/> {index + 1}
+                <CurrentReconcile currentReconcile={item || ''} />
+              </div>
+            </span>
+          ))}
         </div>)
     } else {
       return (
