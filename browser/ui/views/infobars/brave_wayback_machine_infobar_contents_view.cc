@@ -11,6 +11,7 @@
 
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/brave_wayback_machine/wayback_machine_url_fetcher.h"
+#include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/views/infobars/brave_wayback_machine_infobar_button_container.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -39,6 +40,10 @@ namespace {
 // IDs of the colors to use for infobar elements.
 constexpr int kInfoBarLabelBackgroundColor = ThemeProperties::COLOR_INFOBAR;
 constexpr int kInfoBarLabelTextColor = ThemeProperties::COLOR_BOOKMARK_TEXT;
+constexpr int kInfoBarSeparatorColor =
+    BraveThemeProperties::COLOR_WAYBACK_INFOBAR_SEPARATOR;
+constexpr int kInfoBarSadFolderColor =
+    BraveThemeProperties::COLOR_WAYBACK_INFOBAR_SAD_FOLDER;
 
 constexpr int kSadFolderSize = 22;
 }  // namespace
@@ -66,8 +71,9 @@ void BraveWaybackMachineInfoBarContentsView::OnThemeChanged() {
     label->SetBackgroundColor(background_color);
     label->SetEnabledColor(text_color);
   }
-  sad_folder_->SetImage(gfx::CreateVectorIcon(kSadFolderIcon, text_color));
-  separator_->SetColor(text_color);
+  separator_->SetColor(GetColor(kInfoBarSeparatorColor));
+  sad_folder_->SetImage(
+      gfx::CreateVectorIcon(kSadFolderIcon, GetColor(kInfoBarSadFolderColor)));
 }
 
 void BraveWaybackMachineInfoBarContentsView::ButtonPressed(
