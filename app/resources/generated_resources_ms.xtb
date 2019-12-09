@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Muat turun tidak berjaya: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Muat turun dibatalkan: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">Muat turun selesai: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">Muat turun selesai: <ph name="FILE_NAME"/>. Tekan Shift+F6 untuk pergi ke kawasan bar muat turun.</translation>
 <translation id="2743387203779672305">Salin ke papan keratan</translation>
 <translation id="883911313571074303">Anotasikan imej</translation>
 <translation id="6291953229176937411">&amp;Paparkan dalam Pencari</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Nilai Tandatangan Sijil</translation>
 <translation id="4104163789986725820">E&amp;ksport...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">nomborSiri</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">MEL</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">kategoriPerniagaan</translation>
-<translation id="6561757256477115975">namaKawasanBidangKuasa</translation>
-<translation id="7150038968052501583">namaNegeriAtauWilayahBidangKuasa</translation>
-<translation id="8904360804686555987">namaNegaraBidangKuasa</translation>
-<translation id="8718098216622210506">JALAN</translation>
-<translation id="6969275223369931223">poskod</translation>
 <translation id="5434065355175441495">PKCS #1 Penyulitan RSA</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 Dengan Penyulitan RSA</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 Dengan Penyulitan RSA</translation>
@@ -1367,6 +1350,9 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="813082847718468539">Lihat maklumat tapak</translation>
 <translation id="5233638681132016545">Tab baharu</translation>
 <translation id="3915280005470252504">Cari melalui suara</translation>
+<translation id="8968766641738584599">Simpan kad</translation>
+<translation id="2408018932941436077">Menyimpan kad</translation>
+<translation id="7970882136539140748">Tidak dapat menyimpan kad sekarang</translation>
 <translation id="1593926297800505364">Simpan kaedah pembayaran</translation>
 <translation id="2473195200299095979">Terjemahkan halaman ini</translation>
 <translation id="5408750356094797285">Zum: <ph name="PERCENT"/></translation>
@@ -1759,7 +1745,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="1234808891666923653">Pekerja Perkhidmatan</translation>
 <translation id="3432762828853624962">Pekerja Kongsi</translation>
 <translation id="2927017729816812676">Storan Cache</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Apl</translation>
 <translation id="542872847390508405">Anda menyemak imbas sebagai Tetamu</translation>
 <translation id="537813040452600081">Halaman yang anda lihat dalam tetingkap ini tidak akan dipaparkan dalam sejarah penyemak imbas dan halaman ini tidak akan meninggalkan kesan lain, seperti kuki, pada komputer selepas anda log keluar. Fail yang anda muat turun dan penanda halaman yang anda buat tidak akan disimpan.</translation>
@@ -2103,7 +2088,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> mahu memainkan kandungan yang dilindungi. Identiti peranti anda akan disahkan oleh Brave Software dan mungkin diakses oleh tapak ini.</translation>
 <translation id="1746402432151920942">Pengecam Media Dilindungi</translation>
 <translation id="1322046419516468189">Lihat dan urus kata laluan yang disimpan dalam <ph name="SAVED_PASSWORDS_STORE"/> anda</translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Kata laluan disimpan. Lihat dan urus kata laluan yang disimpan dalam <ph name="SAVED_PASSWORDS_STORE"/> anda.</translation>
 <translation id="5713644099811900409">Akaun Brave Software</translation>
 <translation id="3785727820640310185">Kata laluan disimpan untuk tapak ini</translation>
@@ -2506,9 +2490,6 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="5186185447130319458">Sulit</translation>
 <translation id="7643842463591647490">{0,plural, =1{# tetingkap terbuka}other{# tetingkap terbuka}}</translation>
 <translation id="2579188629646253712">Keluar Daripada Sulit</translation>
-<translation id="479219453908726046">Jawab Survei</translation>
-<translation id="7581273696622423628">Jawab survei</translation>
-<translation id="4406504596603350105">Maklum balas anda penting buat kami.</translation>
 <translation id="4349828822184870497">Membantu</translation>
 <translation id="6876469544038980967">Tidak Membantu</translation>
 <translation id="5286194356314741248">Mengimbas</translation>
@@ -3138,7 +3119,7 @@ perubahan ini berlaku, anda mungkin tidak mahukannya.</translation>
 <translation id="6644512095122093795">Tawarkan untuk menyimpan kata laluan</translation>
 <translation id="2100273922101894616">Auto Log masuk</translation>
 <translation id="7513029293694390567">Log masuk secara automatik ke tapak web menggunakan bukti kelayakan yang disimpan. Jika dilumpuhkan, anda akan diminta memberikan pengesahan setiap kali sebelum mengelog masuk ke tapak web.</translation>
-<translation id="2330129964253841015">Beri amaran kepada anda jika kata laluan terjejas</translation>
+<translation id="6995899638241819463">Beri amaran kepada anda jika kata laluan terjejas</translation>
 <translation id="1534287762301776620">Apabila anda log masuk ke Akaun Brave Software anda, ciri ini akan dihidupkan</translation>
 <translation id="1375321115329958930">Kata Laluan Disimpan</translation>
 <translation id="152234381334907219">Tidak Pernah Disimpan</translation>

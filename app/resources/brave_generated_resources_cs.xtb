@@ -3,6 +3,7 @@
 <translationbundle lang="cs">
 <translation id="3333887201479867589">Odměny Brave</translation>
 <translation id="7942180974165298215">Blokování reklam Brave</translation>
+<translation id="4615489450165434530">Nahlásit porouchanou stránku</translation>
 <translation id="6406506848690869874">Synchronizace</translation>
 <translation id="5655621391922317800">Krypto peněženky</translation>
 <translation id="2445484935443597917">Vytvořit nový profil</translation>
@@ -39,6 +40,8 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="2814998458708016836">Použít široký adresní řádek</translation>
 <translation id="6123134130710658846">Skrýt tlačítko Brave Rewards</translation>
 <translation id="7635711399568194460">Skryje tlačítko Brave Rewards v adresním řádku, když nejsou Brave Rewards povoleny</translation>
+<translation id="1520361618554057102">Záložky ukázat vždy na stránce Nová záložka</translation>
+<translation id="5802665280774361839">V adresním řádku používat automatické doplňování</translation>
 <translation id="7965178729203412357">Nová identita Tor</translation>
 <translation id="8511502469534942133">Nové Tor připojení pro tuto stránku</translation>
 <translation id="8784924142044142231">Opustit Tor</translation>
@@ -68,6 +71,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="9075744464571452108">Rozpoznání zařízení</translation>
 <translation id="3570081523466826008">Upgradovat spojení k HTTPS</translation>
 <translation id="4824468494729001999">Blokovat skripty</translation>
+<translation id="8526521192921341404">Povolit přihlašování pomocí Google</translation>
 <translation id="863171915776379000">Povolit přihlašování na Facebook a sdílení příspěvků</translation>
 <translation id="5165042248369837294">Povolit sdílení tweetů z Twitteru</translation>
 <translation id="958971637207126733">Povolit příspěvky vložené na LinkedIn</translation>
@@ -84,6 +88,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="5825943197137337319">Pouze výchozí veřejné rozhraní</translation>
 <translation id="1689062823386843231">Deaktivujte službu UDP bez proxy</translation>
 <translation id="8502234992433094996">Používat služby Google pro zprávy push</translation>
+<translation id="3888068426966679906">Odstranění chyb na dálku</translation>
 <translation id="6645631466045614531">Přístup k synchronizaci skrze</translation>
 <translation id="1807246157184219062">Světlé</translation>
 <translation id="2414886740292270097">Tmavé</translation>
@@ -153,4 +158,13 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="4394049700291259645">Deaktivovat</translation>
 <translation id="6469509880167172749">Automaticky posílat zcela soukromé produktové analýzy společnosti Brave</translation>
 <translation id="7090566321964540749">Tyto anonymní informace prohlížeči Brave umožní pouze odhadnout celkové využití určitých funkcí.</translation>
+<translation id="1200956479506699688">V Brave jsou nyní k dispozici peněženky Crypto. Nelze současně používat MetaMask a peněženky Crypto.</translation>
+<translation id="7583735190612229830">Pro vzájemné fungování s touto aplikací a dalšími podobnými si Nastavte peněženky Crypto.</translation>
+<translation id="8337117349965899723">Použít peněženky Crypto</translation>
+<translation id="5756155765711979898">Použít MetaMask</translation>
+<translation id="6754134632841262799">NASTAVENÍ</translation>
+<translation id="191143826155037518">Brave máte k dispozici v rámci <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>veřejné licence Mozilla 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) a obsahuje <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>otevřený software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> na základě různých jiných licencí.
+        Můžete si sami přečíst <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>pokyny ke způsobu stahování a tvorby<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> specifického <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>zdrojového kódu používaného k vytváření této kopie<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Přidat do záložek všechny karty...</translation>
+<translation id="2336228925368920074">Přidat do záložek všechny karty...</translation>
 </translationbundle>

@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">ההורדה נכשלה: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">ההורדה בוטלה: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">ההורדה הושלמה: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">‏ההורדה הושלמה: <ph name="FILE_NAME"/>. אפשר להקיש על Shift+F6 כדי לעבור לאזור סרגל ההורדות.</translation>
 <translation id="2743387203779672305">העתק ללוח</translation>
 <translation id="883911313571074303">רשום הערה לתמונה</translation>
 <translation id="6291953229176937411">‏&amp;הצג ב-Finder</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">ערך חתימת אישור</translation>
 <translation id="4104163789986725820">יי&amp;צא...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">מספר סידורי</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">דואר</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">קטגוריית עסקים</translation>
-<translation id="6561757256477115975">שם יישוב מחוז</translation>
-<translation id="7150038968052501583">שם מדינה מחוז</translation>
-<translation id="8904360804686555987">שם מדינה מחוז</translation>
-<translation id="8718098216622210506">רחוב</translation>
-<translation id="6969275223369931223">מיקוד</translation>
 <translation id="5434065355175441495">‏הצפנת RSA של PKCS #1</translation>
 <translation id="1221024147024329929">‏PKCS #1 MD2 עם הצפנת RSA</translation>
 <translation id="1640283014264083726">‏PKCS #1 MD4 עם הצפנת RSA</translation>
@@ -1365,6 +1348,9 @@
 <translation id="813082847718468539">הצג נתוני אתר</translation>
 <translation id="5233638681132016545">כרטיסייה חדשה</translation>
 <translation id="3915280005470252504">חפש לפי קול</translation>
+<translation id="8968766641738584599">שמירת הכרטיס</translation>
+<translation id="2408018932941436077">שמירת הכרטיס מתבצעת</translation>
+<translation id="7970882136539140748">אי אפשר לשמור את הכרטיס עכשיו</translation>
 <translation id="1593926297800505364">שמירת אמצעי התשלום</translation>
 <translation id="2473195200299095979">תרגם את הדף הזה</translation>
 <translation id="5408750356094797285">שינוי מרחק התצוגה: <ph name="PERCENT"/></translation>
@@ -1757,7 +1743,6 @@
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">אחסון קובצי מטמון</translation>
-<translation id="3169132535805984622">סימן_ecdsa</translation>
 <translation id="2805756323405976993">אפליקציות</translation>
 <translation id="542872847390508405">אתה גולש כאורח</translation>
 <translation id="537813040452600081">‏דפים שתעיין בהם בחלון זה לא יופיעו בהיסטוריה של הדפדפן, והם לא ישאירו במחשב עקבות אחרים, כגון קובצי Cookie, לאחר שתצא. קבצים שתוריד וסימניות שתיצור לא יישמרו.</translation>
@@ -2101,7 +2086,6 @@
 <translation id="2650609753175229582">‏<ph name="URL"/> רוצה להציג תוכן מוגן. הזהות של המכשיר שלך תאומת על ידי Brave Software ולאתר תהיה גישה אליה.</translation>
 <translation id="1746402432151920942">מזהה מדיה מוגנת</translation>
 <translation id="1322046419516468189">הצגה וניהול של סיסמאות שמורות במסגרת <ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">הסיסמה נשמרה. אפשר להציג סיסמאות שמורות ולנהל אותן דרך <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">‏חשבון Brave Software</translation>
 <translation id="3785727820640310185">סיסמאות שמורות לאתר הזה</translation>
@@ -2504,9 +2488,6 @@
 <translation id="5186185447130319458">גלישה פרטית</translation>
 <translation id="7643842463591647490">{0,plural, =1{חלון אחד פתוח}two{2 חלונות פתוחים}many{# חלונות פתוחים}other{# חלונות פתוחים}}</translation>
 <translation id="2579188629646253712">יציאה ממצב גלישה בסתר</translation>
-<translation id="479219453908726046">ענו על שאלון</translation>
-<translation id="7581273696622423628">ענו על שאלון</translation>
-<translation id="4406504596603350105">המשוב שלכם חשוב לנו.</translation>
 <translation id="4349828822184870497">מועילה</translation>
 <translation id="6876469544038980967">לא מועילה</translation>
 <translation id="5286194356314741248">סורק</translation>
@@ -3124,7 +3105,7 @@
 <translation id="6644512095122093795">הצע לשמור סיסמאות</translation>
 <translation id="2100273922101894616">כניסה אוטומטית</translation>
 <translation id="7513029293694390567">היכנס באופן אוטומטי לאתרים באמצעות פרטי כניסה שמורים. כשהאפשרות הזו מושבתת, תתבקש לאשר לפני כל כניסה לאתר.</translation>
-<translation id="2330129964253841015">הצגת אזהרות כשסיסמאות בסיכון</translation>
+<translation id="6995899638241819463">הצגת אזהרות כשסיסמאות בסיכון</translation>
 <translation id="1534287762301776620">‏התכונה הזו מופעלת בעת הכניסה לחשבון Brave Software</translation>
 <translation id="1375321115329958930">סיסמאות שמורות</translation>
 <translation id="152234381334907219">פריטים שאף פעם לא נשמרו</translation>

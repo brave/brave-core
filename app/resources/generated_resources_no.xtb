@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Nedlasting mislykket: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Nedlasting avbrutt: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">Nedlastingen er fullført: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">Nedlastingen er fullført: <ph name="FILE_NAME"/>. Trykk på Shift+F6 for å gå til nedlastingsraden.</translation>
 <translation id="2743387203779672305">Kopiér til utklippstavlen</translation>
 <translation id="883911313571074303">Kommenter bildet</translation>
 <translation id="6291953229176937411">&amp;Vis i Finder</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Sertifikatets signaturverdi</translation>
 <translation id="4104163789986725820">E&amp;ksportér</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnKvalifisering</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">serienummer</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">POST</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">forretningskategori</translation>
-<translation id="6561757256477115975">jurisdiksjonLokalitetNavn</translation>
-<translation id="7150038968052501583">jurisdiksjonStatEllerProvinsNavn</translation>
-<translation id="8904360804686555987">jurisdiksjonLandNavn</translation>
-<translation id="8718098216622210506">GATE</translation>
-<translation id="6969275223369931223">postnummer</translation>
 <translation id="5434065355175441495">PKCS #1 RSA-kryptering</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 med RSA-kryptering</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 med RSA-kryptering</translation>
@@ -1366,6 +1349,9 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="813082847718468539">Vis nettstedsinformasjon</translation>
 <translation id="5233638681132016545">Ny fane</translation>
 <translation id="3915280005470252504">Søk med tale</translation>
+<translation id="8968766641738584599">Lagre kortet</translation>
+<translation id="2408018932941436077">Lagrer kortet</translation>
+<translation id="7970882136539140748">Kan ikke lagre kortet akkurat nå</translation>
 <translation id="1593926297800505364">Lagre betalingsmåten</translation>
 <translation id="2473195200299095979">Oversett denne siden</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
@@ -1756,7 +1742,6 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Delte arbeidere (SharedWorker)</translation>
 <translation id="2927017729816812676">Bufferlagring</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Apper</translation>
 <translation id="542872847390508405">Du surfer som gjest</translation>
 <translation id="537813040452600081">Sider i dette vinduet vises ikke i nettleserloggen, og de legger ikke igjen andre spor (f.eks. informasjonskapsler) på datamaskinen etter at du har logget av. Filer du laster ned og bokmerker du oppretter, lagres ikke.</translation>
@@ -2100,7 +2085,6 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="2650609753175229582"><ph name="URL"/> ber om tillatelse til å spille beskyttet innhold. Identiteten til enheten din bekreftes av Brave Software og kan bli gjort tilgjengelig for dette nettstedet.</translation>
 <translation id="1746402432151920942">Beskyttet medieidentifikator</translation>
 <translation id="1322046419516468189">Se og administrer lagrede passord i <ph name="SAVED_PASSWORDS_STORE"/> din</translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Passordet er lagret. Se og administrer lagrede passord på <ph name="SAVED_PASSWORDS_STORE"/> din.</translation>
 <translation id="5713644099811900409">Brave Software-konto</translation>
 <translation id="3785727820640310185">Lagrede passord for dette nettstedet</translation>
@@ -2503,9 +2487,6 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="5186185447130319458">Privat</translation>
 <translation id="7643842463591647490">{0,plural, =1{# åpent vindu}other{# åpne vinduer}}</translation>
 <translation id="2579188629646253712">Avslutt privat modus</translation>
-<translation id="479219453908726046">Ta undersøkelse</translation>
-<translation id="7581273696622423628">Ta undersøkelse</translation>
-<translation id="4406504596603350105">Dine tilbakemeldinger er viktige for oss.</translation>
 <translation id="4349828822184870497">Nyttig</translation>
 <translation id="6876469544038980967">Ikke nyttig</translation>
 <translation id="5286194356314741248">Skanning</translation>
@@ -3135,7 +3116,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="6644512095122093795">Tilbud om å lagre passord</translation>
 <translation id="2100273922101894616">Automatisk pålogging</translation>
 <translation id="7513029293694390567">Bruk lagret legitimasjon til å logge på nettsteder automatisk. Hvis dette er slått av, blir du bedt om bekreftelse hver gang du logger på et nettsted.</translation>
-<translation id="2330129964253841015">Advar deg hvis passord utsettes for sikkerhetsbrudd</translation>
+<translation id="6995899638241819463">Advar deg hvis passord utsettes for sikkerhetsbrudd</translation>
 <translation id="1534287762301776620">Når du logger på Brave Software-kontoen din, blir denne funksjonen slått på</translation>
 <translation id="1375321115329958930">Lagrede passord</translation>
 <translation id="152234381334907219">Aldri lagret</translation>

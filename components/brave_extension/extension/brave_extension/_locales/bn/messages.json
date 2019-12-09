@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "আপনি কোনো গোপনীয়তা এবং নিরাপত্তার সুরক্ষা ছাড়াই এই সাইটটি ব্রাউজ করছেন।",
-    "description": "Message telling the user that shields are disabled"
+    "message": "আপনি Brave-এর গোপনীয়তা এবং নিরাপত্তার সুরক্ষা ছাড়াই এই সাইটটি ব্রাউজ করছেন। এটি কি শিল্ড আপের সাথে ঠিকমত কাজ করে না?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "একটি ভাঙ্গা সাইটের প্রতিবেদন করুন",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "ব্লক করা আইটেমসমূহ",

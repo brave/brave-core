@@ -3,6 +3,7 @@
 <translationbundle lang="iw">
 <translation id="3333887201479867589">תגמולי Brave</translation>
 <translation id="7942180974165298215">Brave חוסם מודעות</translation>
+<translation id="4615489450165434530">דווח/י על אתר לא תקין</translation>
 <translation id="6406506848690869874">סנכרון</translation>
 <translation id="5655621391922317800">ארנקי קריפטו</translation>
 <translation id="2445484935443597917">יצירת פרופיל חדש</translation>
@@ -39,6 +40,8 @@
 <translation id="2814998458708016836">השתמש בשורת כתובת רחבה</translation>
 <translation id="6123134130710658846">הסתר את כפתור Brave Rewards</translation>
 <translation id="7635711399568194460">מסתיר את כפתור Brave Rewards בסרגל המיקום כש-Brave Rewards אינו זמין</translation>
+<translation id="1520361618554057102">הצג סימניות בדף כרטיסייה חדשה תמיד</translation>
+<translation id="5802665280774361839">הצג השלמה אוטומטית בשורת הכתובת</translation>
 <translation id="7965178729203412357">זהות Tor חדשה</translation>
 <translation id="8511502469534942133">חיבור Tor חדש עבור אתר זה</translation>
 <translation id="8784924142044142231">יציאה מ-Tor</translation>
@@ -69,6 +72,7 @@
 <translation id="9075744464571452108">זיהוי מכשיר</translation>
 <translation id="3570081523466826008">שדרג חיבורים ל-HTTPS</translation>
 <translation id="4824468494729001999">חסום סקריפטים</translation>
+<translation id="8526521192921341404">אפשר התחברות באמצעות גוגל</translation>
 <translation id="863171915776379000">התר/י התחברויות לפייסבוק ופוסטים מוטבעים</translation>
 <translation id="5165042248369837294">אפשר ציוצי טוויטר מוטבעים</translation>
 <translation id="958971637207126733">נא לאפשר פוסטים מוטבעים</translation>
@@ -85,6 +89,7 @@
 <translation id="5825943197137337319">ברירת המחדל של הממשק הציבורי בלבד</translation>
 <translation id="1689062823386843231">השבתת UDP ללא פרוקסי</translation>
 <translation id="8502234992433094996">השתמש בשירותי Google עבור הודעות דחיפה (Push)</translation>
+<translation id="3888068426966679906">דיבוג מרחוק</translation>
 <translation id="6645631466045614531">גישה לסנכרון באמצעות</translation>
 <translation id="1807246157184219062">אור</translation>
 <translation id="2414886740292270097">כהה</translation>
@@ -154,4 +159,12 @@
 <translation id="4394049700291259645">השבת</translation>
 <translation id="6469509880167172749">שלח באופן אוטומטי אנליטיקות מוצר פרטיות לחלוטין אל Brave</translation>
 <translation id="7090566321964540749">מידע אנונימי זה רק מאפשר ל-Brave להעריך את השימוש הכולל בתכונות מסוימות.</translation>
+<translation id="1200956479506699688">ארנקי קריפטו זמינים כעת ב-Brave. אין באפשרותך להשתמש ב-MetaMask ובארנקי קריפטו בו-זמנית.</translation>
+<translation id="7583735190612229830">הגדר/י ארנקי קריפטו כדי לקיים אינטראקציה עם אפליקציה זו ואחרות כמוה.</translation>
+<translation id="8337117349965899723">השתמש בארנקי קריפטו</translation>
+<translation id="5756155765711979898">השתמש ב-MetaMask</translation>
+<translation id="6754134632841262799">התקנה</translation>
+<translation id="191143826155037518">Brave זמין עבורך תחת <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph> הרישיון הציבורי של מוזילה 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) אשר כולל <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph> תוכנת קוד פתוח<ph name="END_LINK_OSS">&lt;/a&gt;</ph> תחת מגוון רישיונות אחרים. באפשרותך לקרוא <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph> הנחיות כיצד להוריד ולבנות בעצמך<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> את <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>קוד המקור הספציפי בו נעשה שימוש כדי ליצור עותק זה <ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">צור סימניה לכל הכרטיסיות...</translation>
+<translation id="2336228925368920074">צור סימניה לכל הכרטיסיות...</translation>
 </translationbundle>

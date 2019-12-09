@@ -3,6 +3,7 @@
 <translationbundle lang="ms">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Sekatan Iklan Brave</translation>
+<translation id="4615489450165434530">Laporkan Laman yang Terputus-putus</translation>
 <translation id="6406506848690869874">Segerak</translation>
 <translation id="5655621391922317800">Dompet Crypto</translation>
 <translation id="2445484935443597917">Buat Profil Baharu</translation>
@@ -39,6 +40,8 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="2814998458708016836">Gunakan bar alamat lebih lebar</translation>
 <translation id="6123134130710658846">Sembunyi butang Brave Rewards</translation>
 <translation id="7635711399568194460">Sembunyi butang Brave Rewards dalam bar lokasi apabila Brave Rewatds tidak diaktifkan</translation>
+<translation id="1520361618554057102">Sentiasa tunjukkan penanda buku pada halaman Tab Baharu</translation>
+<translation id="5802665280774361839">Tunjukkan autolengkap dalam bar alamat</translation>
 <translation id="7965178729203412357">Identiti Tor Baharu</translation>
 <translation id="8511502469534942133">Sambungan Tor baru Untuk Tapak Ini</translation>
 <translation id="8784924142044142231">Keluar Tor</translation>
@@ -68,6 +71,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="9075744464571452108">Pengecaman peranti</translation>
 <translation id="3570081523466826008">Naik taraf sambungan kepada HTTPS</translation>
 <translation id="4824468494729001999">Sekat skrip</translation>
+<translation id="8526521192921341404">Benarkan log masuk Google</translation>
 <translation id="863171915776379000">Benarkan log masuk Facebook dan catatan yang dimasukkan.</translation>
 <translation id="5165042248369837294">Benarkan Twitter memasukkan tweet</translation>
 <translation id="958971637207126733">Benarkan hantaran terbenam LinkedIn</translation>
@@ -84,6 +88,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="5825943197137337319">Antara muka awam asal sahaja</translation>
 <translation id="1689062823386843231">Lumpuhkan UDP bukan proksi</translation>
 <translation id="8502234992433094996">Gunakan Google Services untuk Push Messaging</translation>
+<translation id="3888068426966679906">Penyahpepijatan jauh</translation>
 <translation id="6645631466045614531">Akses ke Segerak melalui</translation>
 <translation id="1807246157184219062">Cahaya</translation>
 <translation id="2414886740292270097">Gelap</translation>
@@ -153,4 +158,13 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="4394049700291259645">Lumpuhkan</translation>
 <translation id="6469509880167172749">Hantar analitik produk persendirian secara automatik sepenuhnya kepada Brave</translation>
 <translation id="7090566321964540749">Maklumat awanama ini hanya membolehkan Brave menganggarkan penggunaan keseluruhan ciri-ciri tertentu.</translation>
+<translation id="1200956479506699688">Dompet Crypto kini tersedia dalam Brave. Anda tidak boleh menggunakan MetaMask dan Dompet Crypto pada masa yang sama.</translation>
+<translation id="7583735190612229830">Sediakan Dompet Crypto untuk berinteraksi dengan aplikasi ini dan aplikasi lain sepertinya.</translation>
+<translation id="8337117349965899723">Gunakan Dompet Cyrpto</translation>
+<translation id="5756155765711979898">Gunakan MetaMask</translation>
+<translation id="6754134632841262799">PERSEDIAAN</translation>
+<translation id="191143826155037518">Brave tersedia untuk anda di bawah <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Lesen Awam Mozilla 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) dan merangkumi <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>perisian sumber terbuka<ph name="END_LINK_OSS">&lt;/a&gt;</ph> di bawah pelbagai lesen lain.
+        Anda boleh membaca <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>arahan tentang cara  untuk memuat turun dan membina untuk diri anda sendiri<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> kod sumber <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>khusus yang digunakan untuk mencipta salinan ini<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Tanda halaman semua tab...</translation>
+<translation id="2336228925368920074">Tanda Halaman Semua Tab...</translation>
 </translationbundle>

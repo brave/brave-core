@@ -18,11 +18,9 @@
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="8992261409816268381">The Brave Authors</translation>
-<translation id="4651430425715739110">Upphovsrätt <ph name="YEAR"/> The Brave Authors. Med ensamrätt.</translation>
+<translation id="8121009781989288430">Upphovsrätt <ph name="YEAR"/> The Brave Authors. Med ensamrätt.</translation>
 <translation id="2310890394934209120">Brave OS fungerar tack vare <ph name="BEGIN_LINK_CROS_OSS"/>program med öppen källkod<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8160794320557846790">Brave OS fungerar tack vare <ph name="BEGIN_LINK_CROS_OSS"/>program med öppen källkod<ph name="END_LINK_CROS_OSS"/>, liksom <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
-<translation id="8948097099929452692">Används inte i Brave. Platshållare för att hålla resursmappningar synkade.</translation>
-<translation id="5009217320733452434">Används inte i Brave. Platshållare för att hålla resursmappningar synkade. Förväntar ett argument: <ph name="ARGUMENT"/>.</translation>
 <translation id="6913582816347128893">Brave kanske inte fungerar ordentligt eftersom den inte längre stöds på Mac OS X 10.9.</translation>
 <translation id="7977787072794666032">Brave kanske inte fungerar ordentligt eftersom den inte längre stöds på Windows XP och Windows Vista</translation>
 <translation id="189297655255130768">Brave svarar inte. Vill du starta om?</translation>
@@ -205,7 +203,6 @@ Brave kan inte återställa dina inställningar.</translation>
 <translation id="3052349005266761501">Brave startas …</translation>
 <translation id="1197672524850678392">Det gick inte att starta Brave. Försök igen.</translation>
 <translation id="5147525139567260139">Dela en flik i Brave</translation>
-<translation id="2076319850279844250">Hjälp oss förbättra Brave</translation>
 <translation id="8541922081612557424">Om Brave</translation>
 <translation id="3262506503470845422">Få hjälp med Brave</translation>
 <translation id="1864557848095568223">Brave uppdateras</translation>

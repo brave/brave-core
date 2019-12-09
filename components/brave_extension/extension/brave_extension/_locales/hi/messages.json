@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "आप किसी भी गोपनीयता और सुरक्षा उपायों के बिना इस वेबसाइट को ब्राउज़ कर रहे हैं.",
-    "description": "Message telling the user that shields are disabled"
+    "message": "आप इस साइट को Brave के गोपनीयता और सुरक्षा संरक्षण के बिना ब्राउज़ कर रहे हैं। क्या यह संरक्षण के साथ सही तरीके से काम नहीं करता है?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "एक ब्रेक हुई साइट की रिपोर्ट करें",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "अवरुद्ध की गई चीज़ें",

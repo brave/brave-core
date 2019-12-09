@@ -3,6 +3,7 @@
 <translationbundle lang="sk">
 <translation id="3333887201479867589">Odmeny Brave</translation>
 <translation id="7942180974165298215">Blokovanie reklám Brave</translation>
+<translation id="4615489450165434530">Nahlásiť nefunkčnú stránku</translation>
 <translation id="6406506848690869874">Synchronizovať</translation>
 <translation id="5655621391922317800">Krypto peňaženky</translation>
 <translation id="2445484935443597917">Vytvoriť nový profil</translation>
@@ -39,6 +40,8 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="2814998458708016836">Použite široký riadok adresy</translation>
 <translation id="6123134130710658846">Skryť tlačidlo Brave odmeny</translation>
 <translation id="7635711399568194460">Keď nie sú povolené Brave odmeny, tlačidlo Brave odmeny na paneli lokality sa skryje</translation>
+<translation id="1520361618554057102">Vždy zobrazovať záložky na Novej karte</translation>
+<translation id="5802665280774361839">Zobraziť automatické dopĺňanie na paneli s adresou</translation>
 <translation id="7965178729203412357">Nová identita Tor</translation>
 <translation id="8511502469534942133">Nové Tor pripojenie k tejto stránke</translation>
 <translation id="8784924142044142231">Opustiť Tor</translation>
@@ -68,6 +71,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="9075744464571452108">Rozpoznanie zariadenia</translation>
 <translation id="3570081523466826008">Inovujte pripojenia na HTTPS</translation>
 <translation id="4824468494729001999">Blokovať skripty</translation>
+<translation id="8526521192921341404">Povoliť prihlásenie Google</translation>
 <translation id="863171915776379000">Povoliť prihlasovanie Facebook a embedované príspevky</translation>
 <translation id="5165042248369837294">Povoliť embedované tweety pre Twitter</translation>
 <translation id="958971637207126733">Povoliť vložené príspevky z LinkedIn</translation>
@@ -84,6 +88,7 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="5825943197137337319">Iba štandardné verejné rozhranie</translation>
 <translation id="1689062823386843231">Deaktivovať nezastupované UDP</translation>
 <translation id="8502234992433094996">Pre push správy použite služby Google</translation>
+<translation id="3888068426966679906">Vzdialené debugovanie</translation>
 <translation id="6645631466045614531">Prístup k synchronizácii cez</translation>
 <translation id="1807246157184219062">Svetlý</translation>
 <translation id="2414886740292270097">Tmavý</translation>
@@ -153,4 +158,14 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="4394049700291259645">Zakázať</translation>
 <translation id="6469509880167172749">Automatické odosielanie výlučne vlastných produktových analýz do Brave</translation>
 <translation id="7090566321964540749">Táto anonymná informácia umožní Brave len odhadnúť celkové využívanie určitých funkcií .</translation>
+<translation id="1200956479506699688">V Brave je teraz k dispozícii Krypto peňaženka.
+Momentálne nemôžete používať MetaMasku a Krypto peňaženky.</translation>
+<translation id="7583735190612229830">Nastavte Krypto peňaženky na interakciu s touto aplikáciou a ďalšími podobnými.</translation>
+<translation id="8337117349965899723">Použiť Krypto peňaženky</translation>
+<translation id="5756155765711979898">Použiť MetaMasku</translation>
+<translation id="6754134632841262799">NASTAVENIA</translation>
+<translation id="191143826155037518">Brave je vám k dispozícii na <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) a zahŕňa <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> na základe rôznych iných licencií.
+        Môžete si prečítať <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>pokyny na stiahnutie a buildovanie pre sebaf<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> špecifický <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>zdrojový kód použitý na vytvorenie tejto kópie<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Všetky karty uložiť ako záložky...</translation>
+<translation id="2336228925368920074">Všetky karty uložiť ako záložky...</translation>
 </translationbundle>

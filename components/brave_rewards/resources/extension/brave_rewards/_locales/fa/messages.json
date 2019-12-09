@@ -20,7 +20,7 @@
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeDescPoints": {
-    "message": "You can now earn points for watching privacy-respecting ads.",
+    "message": "اکنون می‌توانید برای تماشای آگهی‌های رعایت‌کننده حریم خصوصی، امتیاز دریافت کنید.",
     "description": "Entry text for welcome screen in the panel, points"
   },
   "welcomeFooterTextOne": {
@@ -148,7 +148,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "$currency$ Grants",
+    "message": "$currency$ هدیه",
     "description": "Title for grant notification",
     "placeholders": {
       "currency": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Point Grants Claimed",
+    "message": "هدایای امتیاز مطالبه شد",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -210,7 +210,7 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "You've contributed $amount$ $currency$",
+    "message": "$amount$ $currency$ کمک کرده‌اید",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
@@ -474,7 +474,7 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "Your $currency$ grant is on its way.",
+    "message": "هدیه $currency$ شما در راه است.",
     "description": "Cosmetic text indicating grant funds are on the way",
     "placeholders": {
       "currency": {
@@ -488,7 +488,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Free Point Grant",
+    "message": "هدیه امتیاز رایگان",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -570,7 +570,7 @@
     "description": "Standard tokens text"
   },
   "point":  {
-    "message": "Point",
+    "message": "امتیاز",
     "description": "BAT Point text"
   },
   "token":  {
@@ -578,7 +578,7 @@
     "description": "BAT Token text"
   },
   "points":  {
-    "message": "points",
+    "message": "امتیازها",
     "description": "BAT Points text"
   },
   "tokenGrants":  {
@@ -586,7 +586,7 @@
     "description": "BAT Tokens Grant Text"
   },
   "pointGrants":  {
-    "message": "Point Grants",
+    "message": "هدایای امتیاز",
     "description": "BAT Points Grant Text"
   }
 }

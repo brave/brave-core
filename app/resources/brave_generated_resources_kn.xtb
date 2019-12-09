@@ -3,6 +3,7 @@
 <translationbundle lang="kn">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave ಜಾಹೀರಾತು ನಿರ್ಬಂಧ</translation>
+<translation id="4615489450165434530">ಬ್ರೋಕನ್ ಸೈಟ್ ಅನ್ನು ವರದಿ ಮಾಡಿ</translation>
 <translation id="6406506848690869874">ಸಿಂಕ್</translation>
 <translation id="5655621391922317800">Crypto ವ್ಯಾಲೆಟ್‌ಗಳು</translation>
 <translation id="2445484935443597917">ಹೊಸ ಪ್ರೊಫೈಲ್ ರಚಿಸಿ</translation>
@@ -39,6 +40,8 @@
 <translation id="2814998458708016836">ವೈಡ್ ಅಡ್ರೆಸ್ ಬಾರ್ ಬಳಸಿ</translation>
 <translation id="6123134130710658846">ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್‌ ಬಟನ್ ಮರೆ ಮಾಡಿ</translation>
 <translation id="7635711399568194460">ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್‌ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸದಿದ್ದಾಗ ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್ ಬಟನ್‌ ಅನ್ನು ಲೊಕೇಶನ್ ಬಾರ್‌ನಲ್ಲಿ ಮರೆ ಮಾಡಿ</translation>
+<translation id="1520361618554057102">ಯಾವಾಗಲೂ ಬುಕ್‌ಮಾರ್ಕ್ ಬಾರ್ ಅನ್ನು ಹೊಸ ಟ್ಯಾಬ್ ಪುಟದ ಮೇಲೆ ತೋರಿಸಿ</translation>
+<translation id="5802665280774361839">ಅಡ್ರೆಸ್ ಬಾರ್‌ನಲ್ಲಿ ಆಟೋ ಕಂಪ್ಲೀಟ್ ತೋರಿಸಿ</translation>
 <translation id="7965178729203412357">ಹೊಸ Tor ಗುರುತಿಸುವಿಕೆ</translation>
 <translation id="8511502469534942133">ಈ ಸೈಟ್‌ಗಾಗಿ ಹೊಸ Tor ಸಂಪರ್ಕ</translation>
 <translation id="8784924142044142231">Tor ನಿಂದ ನಿರ್ಗಮಿಸಿ</translation>
@@ -68,6 +71,7 @@
 <translation id="9075744464571452108">ಸಾಧನ ಗುರುತಿಸುವಿಕೆ</translation>
 <translation id="3570081523466826008">HTTPS ಗೆ ಸಂಪರ್ಕಗಳನ್ನು ಮೇಲ್ದರ್ಜೆಗೇರಿಸಿ</translation>
 <translation id="4824468494729001999">ನಿರ್ಬಂಧಿತ ಲಿಪಿಗಳು</translation>
+<translation id="8526521192921341404">Google ಲಾಗಿನ್‌ಗಳನ್ನು ಅನುಮತಿಸಿ</translation>
 <translation id="863171915776379000">ಫೇಸ್‌ಬುಕ್ ಲಾಗಿನ್‌ಗಳನ್ನು ಮತ್ತು ಎಂಬೆಡ್ ಮಾಡಿದ ಪೋಸ್ಟ್‌ಗಳನ್ಮು ಅನುಮತಿಸಿ</translation>
 <translation id="5165042248369837294">ಎಂಬೆಡ್ ಮಾಡಿದ ಟ್ವೀಟ್‌ಗಳನ್ನು ಟ್ವಿಟರ್‌ಗೆ ಅನುಮತಿಸಿ</translation>
 <translation id="958971637207126733">ಎಂಬೆಡ್ ಮಾಡಲಾದ ಫೋಸ್ಟ್‌ಗಳನ್ನು LinkedIn ನಲ್ಲಿ ಅನುಮತಿಸಿ</translation>
@@ -84,6 +88,7 @@
 <translation id="5825943197137337319">ಡೀಫಾಲ್ಟ್ ಸಾರ್ವಜನಿಕ ಇಂಟರ್ಫೇಸ್ ಮಾತ್ರ</translation>
 <translation id="1689062823386843231">ಪ್ರಾಕ್ಸಿಡ್-ಅಲ್ಲದ UDP ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="8502234992433094996">ಪುಶ್ ಸಂದೇಶ ಕಳುಹಿಸುವಿಕೆಗಾಗಿ Google ಸೇವೆಗಳನ್ನು ಬಳಸಿ</translation>
+<translation id="3888068426966679906">ರಿಮೋಟ್ ಡಿಬಗ್ಗಿಂಗ್</translation>
 <translation id="6645631466045614531">ಇದರ ಮೂಲಕ ಸಿಂಕ್ ಪ್ರವೇಶಿಸಿ</translation>
 <translation id="1807246157184219062">ಲೈಟ್</translation>
 <translation id="2414886740292270097">ಕಪ್ಪು</translation>
@@ -153,4 +158,13 @@
 <translation id="4394049700291259645">ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="6469509880167172749">ಸಂಪೂರ್ಣವಾಗಿ ಖಾಸಗಿ ಉತ್ಪನ್ನ ವಿಶ್ಲೇಷಣೆಯನ್ನು Brave ಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕಳುಹಿಸಿ</translation>
 <translation id="7090566321964540749">ಈ ಅನಾಮಧೇಯ ಮಾಹಿತಿಯು ಕೆಲವು ವೈಶಿಷ್ಟ್ಯಗಳ ಒಟ್ಟಾರೆ ಬಳಕೆಯನ್ನು ಅಂದಾಜು ಮಾಡಲು ಮಾತ್ರ Brave ಗೆ ಅನುಮತಿಸುತ್ತದೆ.</translation>
+<translation id="1200956479506699688">Crypto ವಾಲೆಟ್‌ಗಳು ಈಗ Brave ನಲ್ಲಿ ಲಭ್ಯ. ನೀವು MetaMask ಅನ್ನು ಮತ್ತು Crypto ವಾಲೆಟ್‌ಗಳನ್ನು ಏಕಕಾಲದಲ್ಲಿ ಬಳಸಲಾಗುವುದಿಲ್ಲ.</translation>
+<translation id="7583735190612229830">ಈ ಆ್ಯಪ್‌ನ ಜೊತೆಗೆ ಸಂವಹನ ನಡೆಸಲು Crypto ವಾಲೆಟ್‌ಗಳನ್ನು ಹೊಂದಿಸಿ ಮತ್ತು ಇತರರು ಅದನ್ನು ಇಷ್ಟಪಡುತ್ತಾರೆ.</translation>
+<translation id="8337117349965899723">Crypto ವ್ಯಾಲೆಟ್‌ಗಳನ್ನು ಬಳಸಿ</translation>
+<translation id="5756155765711979898">MetaMask ಬಳಸಿ</translation>
+<translation id="6754134632841262799">ಸೆಟಪ್</translation>
+<translation id="191143826155037518">Brave ಅನ್ನು ನಿಮಗೆ <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) ಅಡಿಯಲ್ಲಿ <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>ಲಭ್ಯಗೊಳಿಸಲಾಗಿದೆ ಮತ್ತು ಇದು ಇತರೆ ವಿಭಿನ್ನ ಲೈಸೆನ್ಸ್‌ಗಳ<ph name="END_LINK_OSS">&lt;/a&gt;</ph> ಅಡಿಯಲ್ಲಿ ಓಪನ್ ಸೋರ್ಸ್ ಸಾಫ್ಟ್‌ವೇರ್ ಅನ್ನು ಹೊಂದಿರುತ್ತದೆ.
+        ನೀವು <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>ಡೌನ್‌ಲೋಡ್ ಮಾಡುವುದು ಹೇಗೆ ಮತ್ತು ಸ್ವತಃ ನಿರ್ಮಿಸಿಕೊಳ್ಳುವುದು ಹೇಗೆ ಎಂಬುದರ ಕುರಿತು ಸೂಚನೆಗಳನ್ನು<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> ಓದಬಹುದು <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>ಈ ಕಾಪಿಯನ್ನು ರಚಿಸಲು ನಿರ್ದಿಷ್ಟ ಸೋರ್ಸ್ ಕೋಡ್ ಅನ್ನು ಬಳಸಲಾಗುತ್ತದೆ<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">ಎಲ್ಲಾ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಬುಕ್‌ಮಾರ್ಕ್ ಮಾಡು...</translation>
+<translation id="2336228925368920074">ಎಲ್ಲಾ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಬುಕ್‌ಮಾರ್ಕ್ ಮಾಡಿ...</translation>
 </translationbundle>
