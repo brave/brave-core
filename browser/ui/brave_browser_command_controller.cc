@@ -133,8 +133,10 @@ void BraveBrowserCommandController::UpdateCommandForBraveAdblock() {
 }
 
 void BraveBrowserCommandController::UpdateCommandForTor() {
-  UpdateCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE, true);
-  UpdateCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR, true);
+  const bool is_tor_enabled =
+      !brave::IsTorDisabledForProfile(browser_->profile());
+  UpdateCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE, is_tor_enabled);
+  UpdateCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR, is_tor_enabled);
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveSync() {
