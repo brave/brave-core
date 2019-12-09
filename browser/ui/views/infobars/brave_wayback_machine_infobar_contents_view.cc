@@ -107,7 +107,8 @@ void BraveWaybackMachineInfoBarContentsView::OnWaybackURLFetched(
 void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
   ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
   views::ImageView* wayback_spot_graphic = new views::ImageView();
-  wayback_spot_graphic->SetImage(rb.GetImageSkiaNamed(IDR_BRAVE_WAYBACK_INFOBAR));
+  wayback_spot_graphic->SetImage(
+      rb.GetImageSkiaNamed(IDR_BRAVE_WAYBACK_INFOBAR));
   wayback_spot_graphic->SetProperty(views::kMarginsKey,
                           gfx::Insets(6, 20, 6, 20));
   AddChildView(wayback_spot_graphic);
