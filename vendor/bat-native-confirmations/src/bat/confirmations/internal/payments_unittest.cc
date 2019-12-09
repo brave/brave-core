@@ -52,12 +52,12 @@ class ConfirmationsPaymentsTest : public ::testing::Test {
   }
 
   // Objects declared here can be used by all tests in the test case
-  base::Time GetNextPaymentDate(
+  base::Time GetNextPaymentUTCDate(
       const std::string& date,
       const std::string& next_token_redemption_date) {
-    auto current_date = DateFromString(date);
+    auto current_date = UTCDateFromString(date);
 
-    auto token_redemption_date = DateFromString(next_token_redemption_date);
+    auto token_redemption_date = UTCDateFromString(next_token_redemption_date);
     uint64_t token_redemption_date_in_seconds =
         token_redemption_date.ToDoubleT();
 
@@ -65,9 +65,12 @@ class ConfirmationsPaymentsTest : public ::testing::Test {
         token_redemption_date_in_seconds);
   }
 
-  base::Time DateFromString(const std::string& date) {
+  base::Time UTCDateFromString(
+      const std::string& date) {
+    const std::string utc_date = date + " 00:00:00 +00:00";
+
     base::Time time;
-    if (!base::Time::FromString(date.c_str(), &time)) {
+    if (!base::Time::FromString(utc_date.c_str(), &time)) {
       return base::Time();
     }
 
@@ -126,7 +129,7 @@ TEST_F(ConfirmationsPaymentsTest, InvalidJson_DefaultTransactionCount) {
   std::string json = "[{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":\"INVALID\"}]";  // NOLINT
   payments_->SetFromJson(json);
 
-  auto date = DateFromString("6 July 2019");
+  auto date = UTCDateFromString("6 July 2019");
 
   // Act
   auto transaction_count = payments_->GetTransactionCountForMonth(date);
@@ -140,7 +143,7 @@ TEST_F(ConfirmationsPaymentsTest, InvalidJsonWrongType_DefaultTransactionCount) 
   std::string json = "[{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":5}]";  // NOLINT
   payments_->SetFromJson(json);
 
-  auto date = DateFromString("6 July 2019");
+  auto date = UTCDateFromString("6 July 2019");
 
   // Act
   auto transaction_count = payments_->GetTransactionCountForMonth(date);
@@ -190,7 +193,7 @@ TEST_F(ConfirmationsPaymentsTest, TransactionCount_ForThisMonth) {
   std::string json = "[{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":\"10\"}]";  // NOLINT
   payments_->SetFromJson(json);
 
-  auto date = DateFromString("6 June 2019");
+  auto date = UTCDateFromString("6 June 2019");
 
   // Act
   auto transaction_count = payments_->GetTransactionCountForMonth(date);
@@ -204,7 +207,7 @@ TEST_F(ConfirmationsPaymentsTest, TransactionCount_ForThisMonthWithMultiplePayme
   std::string json = "[{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":\"10\"},{\"balance\":\"0.25\",\"month\":\"2019-05\",\"transactionCount\":\"5\"}]";  // NOLINT
   payments_->SetFromJson(json);
 
-  auto date = DateFromString("6 June 2019");
+  auto date = UTCDateFromString("6 June 2019");
 
   // Act
   auto transaction_count = payments_->GetTransactionCountForMonth(date);
@@ -218,7 +221,7 @@ TEST_F(ConfirmationsPaymentsTest, TransactionCount_ForThisMonthWithMultiplePayme
   std::string json = "[{\"balance\":\"0.25\",\"month\":\"2019-05\",\"transactionCount\":\"5\"},{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":\"10\"}]";  // NOLINT
   payments_->SetFromJson(json);
 
-  auto date = DateFromString("6 June 2019");
+  auto date = UTCDateFromString("6 June 2019");
 
   // Act
   auto transaction_count = payments_->GetTransactionCountForMonth(date);
@@ -236,10 +239,11 @@ TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_BeforeNextPaymentDate
   std::string next_token_redemption_date = "21 July 2019";
 
   // Act
-  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+  auto next_payment_date =
+      GetNextPaymentUTCDate(date, next_token_redemption_date);
 
   // Assert
-  auto expected_next_payment_date = DateFromString("5 July 2019");
+  auto expected_next_payment_date = UTCDateFromString("5 July 2019");
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
@@ -252,10 +256,11 @@ TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_BeforeNextPaymentDate
   std::string next_token_redemption_date = "21 July 2019";
 
   // Act
-  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+  auto next_payment_date =
+      GetNextPaymentUTCDate(date, next_token_redemption_date);
 
   // Assert
-  auto expected_next_payment_date = DateFromString("5 July 2019");
+  auto expected_next_payment_date = UTCDateFromString("5 July 2019");
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
@@ -268,10 +273,11 @@ TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_BeforeNextPaymentDate
   std::string next_token_redemption_date = "21 July 2019";
 
   // Act
-  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+  auto next_payment_date =
+      GetNextPaymentUTCDate(date, next_token_redemption_date);
 
   // Assert
-  auto expected_next_payment_date = DateFromString("5 August 2019");
+  auto expected_next_payment_date = UTCDateFromString("5 August 2019");
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
@@ -284,10 +290,11 @@ TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_BeforeNextPaymentDate
   std::string next_token_redemption_date = "21 July 2019";
 
   // Act
-  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+  auto next_payment_date =
+      GetNextPaymentUTCDate(date, next_token_redemption_date);
 
   // Assert
-  auto expected_next_payment_date = DateFromString("5 August 2019");
+  auto expected_next_payment_date = UTCDateFromString("5 August 2019");
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
@@ -300,10 +307,11 @@ TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_BeforeNextPaymentDate
   std::string next_token_redemption_date = "21 July 2019";
 
   // Act
-  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+  auto next_payment_date =
+      GetNextPaymentUTCDate(date, next_token_redemption_date);
 
   // Assert
-  auto expected_next_payment_date = DateFromString("5 August 2019");
+  auto expected_next_payment_date = UTCDateFromString("5 August 2019");
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
@@ -316,10 +324,11 @@ TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_AfterNextPaymentDate_
   std::string next_token_redemption_date = "28 July 2019";
 
   // Act
-  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+  auto next_payment_date =
+      GetNextPaymentUTCDate(date, next_token_redemption_date);
 
   // Assert
-  auto expected_next_payment_date = DateFromString("5 August 2019");
+  auto expected_next_payment_date = UTCDateFromString("5 August 2019");
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
@@ -332,10 +341,11 @@ TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_AfterNextPaymentDate_
   std::string next_token_redemption_date = "28 July 2019";
 
   // Act
-  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+  auto next_payment_date =
+      GetNextPaymentUTCDate(date, next_token_redemption_date);
 
   // Assert
-  auto expected_next_payment_date = DateFromString("5 August 2019");
+  auto expected_next_payment_date = UTCDateFromString("5 August 2019");
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
@@ -348,10 +358,11 @@ TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_AfterNextPaymentDate_
   std::string next_token_redemption_date = "15 July 2019";
 
   // Act
-  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+  auto next_payment_date =
+      GetNextPaymentUTCDate(date, next_token_redemption_date);
 
   // Assert
-  auto expected_next_payment_date = DateFromString("5 August 2019");
+  auto expected_next_payment_date = UTCDateFromString("5 August 2019");
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
@@ -364,10 +375,11 @@ TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_AfterNextPaymentDate_
   std::string next_token_redemption_date = "15 July 2019";
 
   // Act
-  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+  auto next_payment_date =
+      GetNextPaymentUTCDate(date, next_token_redemption_date);
 
   // Assert
-  auto expected_next_payment_date = DateFromString("5 August 2019");
+  auto expected_next_payment_date = UTCDateFromString("5 August 2019");
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
@@ -380,10 +392,11 @@ TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_AfterNextPaymentDate_
   std::string next_token_redemption_date = "15 July 2019";
 
   // Act
-  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+  auto next_payment_date =
+     GetNextPaymentUTCDate(date, next_token_redemption_date);
 
   // Assert
-  auto expected_next_payment_date = DateFromString("5 August 2019");
+  auto expected_next_payment_date = UTCDateFromString("5 August 2019");
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
@@ -396,10 +409,11 @@ TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_AfterNextPaymentDate_
   std::string next_token_redemption_date = "15 August 2019";
 
   // Act
-  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+  auto next_payment_date =
+      GetNextPaymentUTCDate(date, next_token_redemption_date);
 
   // Assert
-  auto expected_next_payment_date = DateFromString("5 September 2019");
+  auto expected_next_payment_date = UTCDateFromString("5 September 2019");
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
@@ -412,10 +426,11 @@ TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_AfterNextPaymentDate_
   std::string next_token_redemption_date = "15 August 2019";
 
   // Act
-  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+  auto next_payment_date =
+      GetNextPaymentUTCDate(date, next_token_redemption_date);
 
   // Assert
-  auto expected_next_payment_date = DateFromString("5 September 2019");
+  auto expected_next_payment_date = UTCDateFromString("5 September 2019");
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 

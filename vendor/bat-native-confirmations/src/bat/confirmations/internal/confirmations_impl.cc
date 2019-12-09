@@ -947,14 +947,14 @@ uint64_t ConfirmationsImpl::GetAdNotificationsReceivedThisMonthForTransactions(
 
   auto now = base::Time::Now();
   base::Time::Exploded now_exploded;
-  now.LocalExplode(&now_exploded);
+  now.UTCExplode(&now_exploded);
 
   for (const auto& transaction : transactions) {
     auto transaction_timestamp =
         Time::FromDoubleT(transaction.timestamp_in_seconds);
 
     base::Time::Exploded transaction_timestamp_exploded;
-    transaction_timestamp.LocalExplode(&transaction_timestamp_exploded);
+    transaction_timestamp.UTCExplode(&transaction_timestamp_exploded);
 
     if (transaction_timestamp_exploded.year == now_exploded.year &&
         transaction_timestamp_exploded.month == now_exploded.month &&
