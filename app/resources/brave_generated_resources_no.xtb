@@ -3,6 +3,7 @@
 <translationbundle lang="no">
 <translation id="3333887201479867589">Brave-belønninger</translation>
 <translation id="7942180974165298215">Brave annonsesporing</translation>
+<translation id="4615489450165434530">Rapporter et nettsted som ikke fungerer</translation>
 <translation id="6406506848690869874">Synkroniser</translation>
 <translation id="5655621391922317800">Kryptolommebøker</translation>
 <translation id="2445484935443597917">Opprett en ny profil</translation>
@@ -39,6 +40,8 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="2814998458708016836">Bruk vid adresselinje</translation>
 <translation id="6123134130710658846">Skjul "Brave rewards"-knapp</translation>
 <translation id="7635711399568194460">Skjuler "Brave Rewards"-knappen i plasseringslinjen når Brave Reward ikke er aktivert</translation>
+<translation id="1520361618554057102">Vis alltid bokmerker på Ny fane-siden</translation>
+<translation id="5802665280774361839">Vis autofullføring i adressefeltet</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
 <translation id="8511502469534942133">Ny Tor-tilkobling for dette nettstedet</translation>
 <translation id="8784924142044142231">Avslutt Tor</translation>
@@ -68,6 +71,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="9075744464571452108">Enhetsgjenkjennelse</translation>
 <translation id="3570081523466826008">Oppgrader tilkoblinger til HTTPS</translation>
 <translation id="4824468494729001999">Blokker skript</translation>
+<translation id="8526521192921341404">Tillat Google-pålogginger</translation>
 <translation id="863171915776379000">Tillat Facebook-innlogginger og innebygde innlegg</translation>
 <translation id="5165042248369837294">Tillatt innebygde tvitringer fra Twitter</translation>
 <translation id="958971637207126733">Tillat LinkedIn-innebygde innlegg</translation>
@@ -84,6 +88,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="5825943197137337319">Kun standard offentlig grensesnitt</translation>
 <translation id="1689062823386843231">Deaktiver ikke-proxied UDP</translation>
 <translation id="8502234992433094996">Bruk Google-tjenester til push-meldinger</translation>
+<translation id="3888068426966679906">Fjernfeilsøking</translation>
 <translation id="6645631466045614531">Tilgangssynkronisering via</translation>
 <translation id="1807246157184219062">Lyst</translation>
 <translation id="2414886740292270097">Mørkt</translation>
@@ -153,4 +158,13 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="4394049700291259645">Slå av</translation>
 <translation id="6469509880167172749">Send helt privat produktdiagnostikk til Brave automatisk</translation>
 <translation id="7090566321964540749">Denne anonyme infoen lar Brave kun beregne den totale bruken av visse funksjoner.</translation>
+<translation id="1200956479506699688">Crypto Wallets er nå tilgjengelig i Brave. Du kan ikke bruke MetaMask og Crypto Wallets samtidig.</translation>
+<translation id="7583735190612229830">Konfigurer Crypto Wallets til å fungere sammen med denne og lignende apper.</translation>
+<translation id="8337117349965899723">Bruk Crypto Wallets</translation>
+<translation id="5756155765711979898">Bruk MetaMask</translation>
+<translation id="6754134632841262799">OPPSETT</translation>
+<translation id="191143826155037518">Brave gjøres tilgjengelig for deg under <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) og inneholder <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>programvare med åpen kildekode<ph name="END_LINK_OSS">&lt;/a&gt;</ph> under en rekke andre lisenser.
+        Du kan lese <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>hvordan du laster ned <ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> den spesifikke <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>kildekoden som ble brukt til å lage dette eksemplaret<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>, og bygge den selv.</translation>
+<translation id="4474155171896946103">Bokmerk alle fanene</translation>
+<translation id="2336228925368920074">Legg inn bokmerke for alle åpne faner</translation>
 </translationbundle>

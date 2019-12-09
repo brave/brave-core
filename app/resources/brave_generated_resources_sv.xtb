@@ -3,6 +3,7 @@
 <translationbundle lang="sv">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave annonsblockerare</translation>
+<translation id="4615489450165434530">Rapportera en trasig webbplats</translation>
 <translation id="6406506848690869874">Synka</translation>
 <translation id="5655621391922317800">Kryptoplånböcker</translation>
 <translation id="2445484935443597917">Skapa en ny profil</translation>
@@ -39,6 +40,8 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="2814998458708016836">Använd brett adressfält</translation>
 <translation id="6123134130710658846">Dölj Brave Rewards-knappen</translation>
 <translation id="7635711399568194460">Döljer knappen Brave Rewards i adressfältet när Brave Rewards inte är aktiverat</translation>
+<translation id="1520361618554057102">Visa alltid bokmärken i en Ny flik</translation>
+<translation id="5802665280774361839">Visa textförslag i adressfältet</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
 <translation id="8511502469534942133">Ny Tor-anslutning för den här webbplatsen</translation>
 <translation id="8784924142044142231">Lämna Tor</translation>
@@ -68,6 +71,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="9075744464571452108">Enhetsigenkänning</translation>
 <translation id="3570081523466826008">Uppgradera anslutningar till HTTPS</translation>
 <translation id="4824468494729001999">Blockera skript</translation>
+<translation id="8526521192921341404">Tillåt Google-inloggningar</translation>
 <translation id="863171915776379000">Tillåt Facebook-inloggningar och inbäddade poster</translation>
 <translation id="5165042248369837294">Tillåt inbäddade tweets från Twitter</translation>
 <translation id="958971637207126733">Tillåt inbäddningar från LinkedIn</translation>
@@ -84,6 +88,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="5825943197137337319">Endast offentligt standardgränssnitt</translation>
 <translation id="1689062823386843231">Inaktivera icke-proxad UDP</translation>
 <translation id="8502234992433094996">Använd Google Services för pushmeddelanden</translation>
+<translation id="3888068426966679906">Fjärrfelsökning</translation>
 <translation id="6645631466045614531">Öppna synkning via</translation>
 <translation id="1807246157184219062">Ljus</translation>
 <translation id="2414886740292270097">Mörk</translation>
@@ -153,4 +158,13 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="4394049700291259645">Inaktivera</translation>
 <translation id="6469509880167172749">Skicka automatiskt helt konfidentiell product analytics till Brave</translation>
 <translation id="7090566321964540749">Denna anonyma information används endast för att Brave ska kunna uppskatta generella användningen av vissa funktioner.</translation>
+<translation id="1200956479506699688">Crypto Wallets är nu tillgängligt i Brave. Du kan inte använda MetaMask och Crypto Wallets samtidigt.</translation>
+<translation id="7583735190612229830">Ställ in Crypto Wallets för att interagera med denna app och andra som den.</translation>
+<translation id="8337117349965899723">Använd Crypto Wallets</translation>
+<translation id="5756155765711979898">Använd MetaMask</translation>
+<translation id="6754134632841262799">INSTÄLLNINGAR</translation>
+<translation id="191143826155037518">Brave görs tillgängligt för dig under <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) och inkluderar <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>öppen källkod<ph name="END_LINK_OSS">&lt;/a&gt;</ph> under flera andra licenser.
+        Du kan läsa <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instruktioner om hur du laddar ner och själv kan bygga<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> den specifika <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>källkod som använts för att skapa denna version<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Skapa bokmärken för alla flikar ...</translation>
+<translation id="2336228925368920074">Skapa bokmärken för alla flikar ...</translation>
 </translationbundle>

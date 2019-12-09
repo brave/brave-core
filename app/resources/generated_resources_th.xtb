@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">ดาวน์โหลดไม่สำเร็จ: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">ยกเลิกการดาวน์โหลดแล้ว: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">ดาวน์โหลดเสร็จสมบูรณ์: <ph name="FILE_NAME"/></translation>
+<translation id="4110490973560452005">ดาวน์โหลดเสร็จสมบูรณ์: <ph name="FILE_NAME"/> กด Shift+F6 เพื่อวนกลับไปยังบริเวณแถบดาวน์โหลด</translation>
 <translation id="2743387203779672305">คัดลอกไว้ที่คลิปบอร์ด</translation>
 <translation id="883911313571074303">ใส่หมายเหตุในรูปภาพ</translation>
 <translation id="6291953229176937411">&amp;แสดงใน Finder</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">ค่าลายเซ็นใบรับรอง</translation>
 <translation id="4104163789986725820">ส่ง&amp;ออก</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">หมายเลขซีเรียล</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">จดหมาย</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">ประเภทธุรกิจ</translation>
-<translation id="6561757256477115975">ชื่อสถานที่ตั้งของเขตอำนาจศาล</translation>
-<translation id="7150038968052501583">ชื่อรัฐหรือจังหวัดเขตอำนาจศาล</translation>
-<translation id="8904360804686555987">ชื่อประเทศ</translation>
-<translation id="8718098216622210506">ถนน</translation>
-<translation id="6969275223369931223">รหัสไปรษณีย์</translation>
 <translation id="5434065355175441495">PKCS #1 การเข้ารหัส RSA</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 พร้อมการเข้ารหัส RSA</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 พร้อมการเข้ารหัส RSA</translation>
@@ -1366,6 +1349,9 @@
 <translation id="813082847718468539">ดูข้อมูลเว็บไซต์</translation>
 <translation id="5233638681132016545">แท็บใหม่</translation>
 <translation id="3915280005470252504">ค้นหาด้วยเสียง</translation>
+<translation id="8968766641738584599">บันทึกบัตร</translation>
+<translation id="2408018932941436077">กำลังบันทึกบัตร</translation>
+<translation id="7970882136539140748">บันทึกบัตรไม่ได้ในตอนนี้</translation>
 <translation id="1593926297800505364">บันทึกวิธีการชำระเงิน</translation>
 <translation id="2473195200299095979">แปลหน้านี้</translation>
 <translation id="5408750356094797285">ซูม: <ph name="PERCENT"/></translation>
@@ -1758,7 +1744,6 @@
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">คนทำงานที่แชร์</translation>
 <translation id="2927017729816812676">พื้นที่เก็บข้อมูลแคช</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">แอป</translation>
 <translation id="542872847390508405">คุณกำลังเรียกดูในฐานะผู้เยี่ยมชม</translation>
 <translation id="537813040452600081">หน้าที่คุณดูในหน้าต่างนี้จะไม่ปรากฏในประวัติเบราว์เซอร์และจะไม่ทิ้งร่องรอยอื่นๆ เช่น คุกกี้ ไว้ในคอมพิวเตอร์หลังจากที่คุณออกจากระบบ ไฟล์ที่คุณดาวน์โหลดและบุ๊กมาร์กที่คุณสร้างจะหายไป</translation>
@@ -2102,7 +2087,6 @@
 <translation id="2650609753175229582"><ph name="URL"/> ต้องการเล่นเนื้อหาที่ได้รับความคุ้มครอง ข้อมูลประจำตัวของอุปกรณ์จะได้รับการยืนยันโดย Brave Software และเว็บไซต์นี้อาจเข้าถึงข้อมูลดังกล่าว</translation>
 <translation id="1746402432151920942">ตัวระบุสื่อที่มีการป้องกัน</translation>
 <translation id="1322046419516468189">ดูและจัดการรหัสผ่านที่บันทึกไว้ได้ใน<ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">บันทึกรหัสผ่านแล้ว ดูและจัดการรหัสผ่านที่บันทึกไว้ได้ใน<ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">บัญชี Brave Software</translation>
 <translation id="3785727820640310185">รหัสผ่านที่บันทึกไว้สำหรับเว็บไซต์นี้</translation>
@@ -2505,9 +2489,6 @@
 <translation id="5186185447130319458">ส่วนตัว</translation>
 <translation id="7643842463591647490">{0,plural, =1{หน้าต่างที่เปิดอยู่ # หน้า}other{หน้าต่างที่เปิดอยู่ # หน้า}}</translation>
 <translation id="2579188629646253712">ออกจากโหมดส่วนตัว</translation>
-<translation id="479219453908726046">ทำแบบสอบถาม</translation>
-<translation id="7581273696622423628">ทำแบบสอบถาม</translation>
-<translation id="4406504596603350105">ความคิดเห็นของคุณสำคัญสำหรับเรา</translation>
 <translation id="4349828822184870497">มีประโยชน์</translation>
 <translation id="6876469544038980967">ไม่มีประโยชน์</translation>
 <translation id="5286194356314741248">กำลังสแกน</translation>
@@ -3137,7 +3118,7 @@
 <translation id="6644512095122093795">เสนอให้บันทึกรหัสผ่าน</translation>
 <translation id="2100273922101894616">ลงชื่อเข้าใช้อัตโนมัติ</translation>
 <translation id="7513029293694390567">ลงชื่อเข้าใช้เว็บไซต์โดยอัตโนมัติโดยใช้ข้อมูลรับรองที่เก็บไว้ หากปิดใช้ฟีเจอร์นี้ ระบบจะขอให้คุณยืนยันทุกครั้งก่อนลงชื่อเข้าใช้เว็บไซต์</translation>
-<translation id="2330129964253841015">เตือนคุณหากรหัสผ่านถูกบุกรุก</translation>
+<translation id="6995899638241819463">เตือนคุณหากรหัสผ่านถูกบุกรุก</translation>
 <translation id="1534287762301776620">ฟีเจอร์นี้จะเปิดเมื่อคุณลงชื่อเข้าใช้บัญชี Brave Software</translation>
 <translation id="1375321115329958930">รหัสผ่านที่บันทึกไว้</translation>
 <translation id="152234381334907219">ไม่เคยบันทึก</translation>

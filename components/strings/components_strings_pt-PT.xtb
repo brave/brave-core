@@ -28,6 +28,7 @@
 <translation id="1201402288615127009">Seguinte</translation>
 <translation id="5713644099811900409">Conta Brave Software</translation>
 <translation id="3157931365184549694">Restaurar</translation>
+<translation id="5040262127954254034">Privacidade</translation>
 <translation id="3061707000357573562">Serviço de patch</translation>
 <translation id="1914326953223720820">Serviço de descompressão de ficheiros</translation>
 <translation id="2677748264148917807">Sair</translation>
@@ -36,6 +37,8 @@
 <translation id="5935964611177478118">inicie sessão no Brave</translation>
 <translation id="4378154925671717803">Telemóvel</translation>
 <translation id="8131740175452115882">Confirmar</translation>
+<translation id="8968766641738584599">Guardar cartão</translation>
+<translation id="860043288473659153">Nome do titular do cartão</translation>
 <translation id="5457113250005438886">Inválido</translation>
 <translation id="6518133107902771759">Verificar</translation>
 <translation id="8987927404178983737">Mês</translation>
@@ -137,13 +140,16 @@
 <translation id="6979440798594660689">Desativar som (predefinição)</translation>
 <translation id="8037357227543935929">Pedir (predefinição)</translation>
 <translation id="8763927697961133303">Dispositivo USB</translation>
+<translation id="4165986682804962316">Definições de "Site"</translation>
 <translation id="9011424611726486705">Abrir definições do site</translation>
 <translation id="5932224571077948991">O site apresenta anúncios intrusivos ou enganadores.</translation>
 <translation id="7878562273885520351">A palavra-passe pode estar comprometida</translation>
 <translation id="1089439967362294234">Alterar palavra-passe</translation>
 <translation id="1186201132766001848">Verificar palavras-passe</translation>
 <translation id="5979084224081478209">Verificar palavras-passe</translation>
+<translation id="10614374240317010">Nunca guardada</translation>
 <translation id="5869522115854928033">Palavras-passe guardadas</translation>
+<translation id="230699814587342492">Brave - Palavras-passe</translation>
 <translation id="5087580092889165836">Adicionar cartão</translation>
 <translation id="2154484045852737596">Editar cartão</translation>
 <translation id="4923459931733593730">Pagamento</translation>

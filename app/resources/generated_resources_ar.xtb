@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">تعذّر التنزيل: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">تم إلغاء التنزيل: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">اكتمل التنزيل: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">‏اكتمل التنزيل: <ph name="FILE_NAME"/>. يمكنك الضغط على Shift+F6 للانتقال إلى منطقة شريط التنزيلات.</translation>
 <translation id="2743387203779672305">نسخ إلى الحافظة</translation>
 <translation id="883911313571074303">إضافة تعليق توضيحي على الصورة</translation>
 <translation id="6291953229176937411">إ&amp;ظهار في الباحث</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">قيمة توقيع الشهادة</translation>
 <translation id="4104163789986725820">ت&amp;صدير...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">الرقم السري</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">البريد</translation>
-<translation id="7481079953250545971">المعرف الفريد</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">فئه الأعمال</translation>
-<translation id="6561757256477115975">اسم المنطقة القضائية</translation>
-<translation id="7150038968052501583">اسم الولاية القضائية أو المقاطعة</translation>
-<translation id="8904360804686555987">اسم الولاية القضائية</translation>
-<translation id="8718098216622210506">شارع</translation>
-<translation id="6969275223369931223">الرمز البريدي</translation>
 <translation id="5434065355175441495">‏تشفير PKCS #1 RSA</translation>
 <translation id="1221024147024329929">‏PKCS #1 MD2 مع تشفير RSA</translation>
 <translation id="1640283014264083726">‏PKCS #1 MD4 مع تشفير RSA</translation>
@@ -1366,6 +1349,9 @@
 <translation id="813082847718468539">عرض معلومات الموقع</translation>
 <translation id="5233638681132016545">علامة تبويب جديدة</translation>
 <translation id="3915280005470252504">البحث الصوتي</translation>
+<translation id="8968766641738584599">حفظ البطاقة</translation>
+<translation id="2408018932941436077">جارٍ حفظ البطاقة</translation>
+<translation id="7970882136539140748">يتعذّر حفظ البطاقة الآن.</translation>
 <translation id="1593926297800505364">حفظ طريقة الدفع</translation>
 <translation id="2473195200299095979">ترجم هذه الصفحة</translation>
 <translation id="5408750356094797285">تكبير/تصغير: <ph name="PERCENT"/></translation>
@@ -1755,7 +1741,6 @@
 <translation id="1234808891666923653">عمال الخدمة</translation>
 <translation id="3432762828853624962">العمال المشتركون</translation>
 <translation id="2927017729816812676">مساحة التخزين لذاكرة التخزين المؤقت</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">التطبيقات</translation>
 <translation id="542872847390508405">أنت تتصفح كضيف</translation>
 <translation id="537813040452600081">لن تظهر الصفحات التي تعرضها في هذه النافذة في سجل المتصفح، ولن تترك آثارًا أخرى، كملفات تعريف الارتباط، في الكمبيوتر بعد الخروج. كما لن يتم الحفاظ على الملفات التي تنزلها والإشارات المرجعية التي تنشئها.</translation>
@@ -2099,7 +2084,6 @@
 <translation id="2650609753175229582">‏يريد <ph name="URL"/> تشغيل المحتوى المُحمي. ستتحقَّق Brave Software من هوية جهازك ويمكن الوصول إليه من خلال هذا الموقع.</translation>
 <translation id="1746402432151920942">معرّف الوسائط المحمية</translation>
 <translation id="1322046419516468189">عرض كلمات المرور المحفوظة وإدارتها في <ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">تم حفظ كلمة المرور. يمكنك عرض كلمات المرور المحفوظة وإدارتها في <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">‏حساب Brave Software‏</translation>
 <translation id="3785727820640310185">كلمات المرور المحفوظة لهذا الموقع</translation>
@@ -2502,9 +2486,6 @@
 <translation id="5186185447130319458">خاص</translation>
 <translation id="7643842463591647490">{0,plural, =1{نافذة مفتوحة (#)}zero{# نافذة مفتوحة}two{نافذتان مفتوحتان (#)}few{# نوافذ مفتوحة}many{# نافذةً مفتوحةً}other{# نافذة مفتوحة}}</translation>
 <translation id="2579188629646253712">الخروج من الوضع الخاص</translation>
-<translation id="479219453908726046">ابدأ استطلاعاً</translation>
-<translation id="7581273696622423628">ابدأ استطلاعاً</translation>
-<translation id="4406504596603350105">ملاحظاتك مهمة بالنسبة لنا.</translation>
 <translation id="4349828822184870497">مفيد</translation>
 <translation id="6876469544038980967">غير مفيد</translation>
 <translation id="5286194356314741248">جارٍ البحث</translation>
@@ -3135,7 +3116,7 @@
 <translation id="6644512095122093795">اقتراح حفظ كلمات المرور</translation>
 <translation id="2100273922101894616">تسجيل الدخول التلقائي</translation>
 <translation id="7513029293694390567">يمكنك تسجيل الدخول تلقائيًا إلى مواقع الويب باستخدام بيانات الاعتماد المخزّنة. وفي حالة إيقاف هذا الإعداد، سيُطلب منك التأكيد في كل مرة قبل تسجيل الدخول إلى أحد مواقع الويب.</translation>
-<translation id="2330129964253841015">التحذير إذا كانت كلمات المرور مخترقة</translation>
+<translation id="6995899638241819463">التحذير إذا كانت كلمات المرور مخترقة</translation>
 <translation id="1534287762301776620">‏عند تسجيل الدخول إلى حسابك على Brave Software، يتم تفعيل هذه الميزة.</translation>
 <translation id="1375321115329958930">كلمات المرور المحفوظة</translation>
 <translation id="152234381334907219">لم يتم الحفظ مطلقًا</translation>

@@ -3,6 +3,7 @@
 <translationbundle lang="uk">
 <translation id="3333887201479867589">Винагороди Brave</translation>
 <translation id="7942180974165298215">Блокування реклами Brave</translation>
+<translation id="4615489450165434530">Повідомити про зламаний сайт</translation>
 <translation id="6406506848690869874">Синхронізувати</translation>
 <translation id="5655621391922317800">Криптогаманці</translation>
 <translation id="2445484935443597917">Створити новий профіль</translation>
@@ -38,6 +39,8 @@
 <translation id="2814998458708016836">Використовувати широкий адресний рядок</translation>
 <translation id="6123134130710658846">Сховати кнопку Brave Rewards</translation>
 <translation id="7635711399568194460">Приховує кнопку Brave Rewards в адресному рядку, коли Brave Rewards вимкнено</translation>
+<translation id="1520361618554057102">Завжди показувати закладки на сторінці нової вкладки</translation>
+<translation id="5802665280774361839">Показати автозаповнення в адресному рядку</translation>
 <translation id="7965178729203412357">Нова ідентичність Tor</translation>
 <translation id="8511502469534942133">Нове з'єднання Tor для цього сайту</translation>
 <translation id="8784924142044142231">Вийти з Tor</translation>
@@ -67,6 +70,7 @@
 <translation id="9075744464571452108">Визначення пристрою</translation>
 <translation id="3570081523466826008">Оновити зв’язки до HTTPS</translation>
 <translation id="4824468494729001999">Блокувати скрипти</translation>
+<translation id="8526521192921341404">Дозволити вхід із Google</translation>
 <translation id="863171915776379000">Дозвольте вхід через Facebook та вбудовані публікації</translation>
 <translation id="5165042248369837294">Дозволити вбудовані твіти Twitter</translation>
 <translation id="958971637207126733">Дозволити вбудовані пости LinkedIn</translation>
@@ -83,6 +87,7 @@
 <translation id="5825943197137337319">Тільки загальнодоступний інтерфейс за замовчуванням</translation>
 <translation id="1689062823386843231">Вимкнути non-proxied UDP</translation>
 <translation id="8502234992433094996">Використовувати Google Services для push-повідомлень</translation>
+<translation id="3888068426966679906">Віддалене налагодження</translation>
 <translation id="6645631466045614531">Отримати доступ до Синхронізації через</translation>
 <translation id="1807246157184219062">Світла</translation>
 <translation id="2414886740292270097">Темна</translation>
@@ -152,4 +157,13 @@
 <translation id="4394049700291259645">Вимкнути</translation>
 <translation id="6469509880167172749">Автоматично надсилати повністю конфіденційну аналітику продуктів до Brave</translation>
 <translation id="7090566321964540749">Ця анонімна інформація дозволяє Brave лише визначати загальний об'єм користування певними функціями.</translation>
+<translation id="1200956479506699688">Крипто-гаманці тепер доступні в Brave. Ви не можете використовувати MetaMask та Крипто-гаманці одночасно.</translation>
+<translation id="7583735190612229830">Налаштувати Крипто-гаманці для взаємозв'язку з цим додатком та іншими схожими.</translation>
+<translation id="8337117349965899723">Використати Крипто-гаманці</translation>
+<translation id="5756155765711979898">Скористатись MetaMask</translation>
+<translation id="6754134632841262799">НАЛАШТУВАТИ</translation>
+<translation id="191143826155037518">Brave надається вам за умовами <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Публічної Ліцензії Mozilla 2.0 <ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) та включає <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>програмне забезпечення з відкритим кодом <ph name="END_LINK_OSS">&lt;/a&gt;</ph> за умовами багатьох інших ліцензій. 
+Ви можете прочитати <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>інструкції, як завантажити та створити самостійно <ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph>конкретний <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>вихідний код, використаний для створення цієї копії<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Позначити закладками всі вкладки...</translation>
+<translation id="2336228925368920074">Позначити закладками всі вкладки...</translation>
 </translationbundle>

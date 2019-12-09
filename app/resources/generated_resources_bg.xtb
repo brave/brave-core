@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Неуспешно изтегляне: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Изтеглянето е анулирано: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">Изтеглянето завърши: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">Изтеглянето завърши: <ph name="FILE_NAME"/>. Натиснете Shift + F6, за да преминете към лентата на изтеглянето.</translation>
 <translation id="2743387203779672305">Копиране в буферната памет</translation>
 <translation id="883911313571074303">Добавяне на пояснение към изображението</translation>
 <translation id="6291953229176937411">&amp;Показване във Finder</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Стойност на подписа на сертификата</translation>
 <translation id="4104163789986725820">Екс&amp;портиране...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">serialNumber</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">ПОЩА</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">businessCategory</translation>
-<translation id="6561757256477115975">jurisdictionLocalityName</translation>
-<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
-<translation id="8904360804686555987">jurisdictionCountryName</translation>
-<translation id="8718098216622210506">УЛИЦА</translation>
-<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">PKCS 1 с RSA шифроване</translation>
 <translation id="1221024147024329929">PKCS 1 MD2 с RSA шифроване</translation>
 <translation id="1640283014264083726">PKCS 1 MD4 с RSA шифроване</translation>
@@ -1367,6 +1350,9 @@
 <translation id="813082847718468539">Преглед на информацията за сайта</translation>
 <translation id="5233638681132016545">Нов раздел</translation>
 <translation id="3915280005470252504">Търсене с глас</translation>
+<translation id="8968766641738584599">Запазване на картата</translation>
+<translation id="2408018932941436077">Картата се запазва</translation>
+<translation id="7970882136539140748">Картата не може да бъде запазена в момента</translation>
 <translation id="1593926297800505364">Запазване на начина на плащане</translation>
 <translation id="2473195200299095979">Превод на тази страница</translation>
 <translation id="5408750356094797285">Мащаб: <ph name="PERCENT"/></translation>
@@ -1759,7 +1745,6 @@
 <translation id="1234808891666923653">Изпълнители на услуги</translation>
 <translation id="3432762828853624962">Споделени изпълнители</translation>
 <translation id="2927017729816812676">Хранилище за кеш</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Приложения</translation>
 <translation id="542872847390508405">Сърфирате като гост</translation>
 <translation id="537813040452600081">Преглежданите от вас страници в този прозорец няма да се показват в историята на браузъра и няма да оставят на компютъра други следи, като „бисквитки“, след като излезете от профила си. Файловете, които изтеглите, и отметките, които създадете, няма да бъдат запазени.</translation>
@@ -2103,7 +2088,6 @@
 <translation id="2650609753175229582"><ph name="URL"/> иска разрешение за възпроизвеждане на защитено съдържание. Идентичността на устройството ви ще бъде потвърдена от Brave Software и този сайт може да осъществи достъп до нея.</translation>
 <translation id="1746402432151920942">Идентификатор на защитена мултимедия</translation>
 <translation id="1322046419516468189">Преглеждайте и управлявайте запазените пароли в <ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Паролата е запазена. Преглеждайте и управлявайте запазените пароли в <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Профил в Brave Software</translation>
 <translation id="3785727820640310185">Запазени пароли за този сайт</translation>
@@ -2506,9 +2490,6 @@
 <translation id="5186185447130319458">Поверителен</translation>
 <translation id="7643842463591647490">{0,plural, =1{# отворен прозорец}other{# отворени прозореца}}</translation>
 <translation id="2579188629646253712">Изход от поверителния режим</translation>
-<translation id="479219453908726046">Участвайте в допитването</translation>
-<translation id="7581273696622423628">Участвайте в допитването</translation>
-<translation id="4406504596603350105">Вашите отзиви са важни за нас.</translation>
 <translation id="4349828822184870497">Полезно</translation>
 <translation id="6876469544038980967">Не е полезно</translation>
 <translation id="5286194356314741248">Сканира се</translation>
@@ -3138,7 +3119,7 @@
 <translation id="6644512095122093795">Показване на предложение за запазване на паролите</translation>
 <translation id="2100273922101894616">Автоматичен вход</translation>
 <translation id="7513029293694390567">Автоматично влизане в уебсайтове посредством съхраняваните идентификационни данни. Ако е деактивирано, ще се иска потвърждение от вас преди всяко влизане в профил в уебсайт.</translation>
-<translation id="2330129964253841015">Предупреждение при компрометирани пароли</translation>
+<translation id="6995899638241819463">Предупреждение при компрометирани пароли</translation>
 <translation id="1534287762301776620">Когато влезете в профила си в Brave Software, тази функция се включва</translation>
 <translation id="1375321115329958930">Запазени пароли</translation>
 <translation id="152234381334907219">Незапазвани никога</translation>

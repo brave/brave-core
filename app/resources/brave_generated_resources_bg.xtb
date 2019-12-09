@@ -3,6 +3,7 @@
 <translationbundle lang="bg">
 <translation id="3333887201479867589">Brave награди</translation>
 <translation id="7942180974165298215">Brave Блокер на реклами</translation>
+<translation id="4615489450165434530">Да подавате сигнал за нефункциониращ сайт</translation>
 <translation id="6406506848690869874">Синхр</translation>
 <translation id="5655621391922317800">Крипто портфейли</translation>
 <translation id="2445484935443597917">Създаване на нов потребителски профил</translation>
@@ -39,6 +40,8 @@
 <translation id="2814998458708016836">Използвайте широка адресна лента</translation>
 <translation id="6123134130710658846">Скрий бутона на Brave награди</translation>
 <translation id="7635711399568194460">Скрий бутона за Brave наградите в лентата, ако Brave наградите не са активирани</translation>
+<translation id="1520361618554057102">Винаги показвайте отметки на страницата Нов раздел</translation>
+<translation id="5802665280774361839">Показване на автоматично довършване в адресната лента</translation>
 <translation id="7965178729203412357">Нова идентичност на Tor</translation>
 <translation id="8511502469534942133">Нова Tor връзка за този сайт</translation>
 <translation id="8784924142044142231">Изход от Tor</translation>
@@ -68,6 +71,7 @@
 <translation id="9075744464571452108">Разпознаване на устройството</translation>
 <translation id="3570081523466826008">Надстройване на връзките към HTTPS</translation>
 <translation id="4824468494729001999">Блокиране на скриптове</translation>
+<translation id="8526521192921341404">Разрешаване на вход в Google</translation>
 <translation id="863171915776379000">Разреши влизане с Фейсбук и вградени публикации</translation>
 <translation id="5165042248369837294">Разреши вградени туитове на Twitter</translation>
 <translation id="958971637207126733">Разреши вградени публикации на LinkedIn</translation>
@@ -84,6 +88,7 @@
 <translation id="5825943197137337319">Само публичен интерфейс пп подразбиране</translation>
 <translation id="1689062823386843231">Деактивиране на UDP без прокси</translation>
 <translation id="8502234992433094996">Използвайте Google Services за Push Messaging</translation>
+<translation id="3888068426966679906">Дистанционно отстраняване на грешки</translation>
 <translation id="6645631466045614531">Достъп до синхронизиране чрез</translation>
 <translation id="1807246157184219062">Светъл</translation>
 <translation id="2414886740292270097">Тъмен</translation>
@@ -153,4 +158,13 @@
 <translation id="4394049700291259645">Деактивиране</translation>
 <translation id="6469509880167172749">Автоматично изпращайте изцяло поверителни анализи на продукти на Brave</translation>
 <translation id="7090566321964540749">Тази анонимна информация само позволява на Brave да оцени цялостното използване на определени функции.</translation>
+<translation id="1200956479506699688">Крипто портфейлите вече се предлагат в Brave. Не можете едновременно да използвате MetaMask и крипто портфейли.</translation>
+<translation id="7583735190612229830">Настройте Крипто портфейли да взаимодействат с това приложение и други като него.</translation>
+<translation id="8337117349965899723">Използвайте крипто портфейли</translation>
+<translation id="5756155765711979898">Използвайте MetaMask</translation>
+<translation id="6754134632841262799">НАСТРОЙКА</translation>
+<translation id="191143826155037518">Brave се предоставя на разположение под <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) и включва <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>софтуер с отворен код<ph name="END_LINK_OSS">&lt;/a&gt;</ph> под множество други лицензи.
+        Можете да прочетете <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>инструкции как да изтеглите и изградите за себе си<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> конкретния <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>изходен код, използван за създаването на това копие<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Запазване на отметки към всички раздели…</translation>
+<translation id="2336228925368920074">Запазване на отметки към всички раздели...</translation>
 </translationbundle>

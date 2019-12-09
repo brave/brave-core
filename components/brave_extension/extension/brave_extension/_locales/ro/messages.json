@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Navigați pe acest site fără nicio protecție de confidențialitate și securitate.",
-    "description": "Message telling the user that shields are disabled"
+    "message": "Navigați pe acest site fără protecțiile Brave pentru confidențialitate și securitate. Nu funcționează corect cu Scuturile activate?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Raportați un site nefuncțional",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "Articole blocate",

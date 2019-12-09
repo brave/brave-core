@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">फ़ाइल डाउनलोड नहीं हो सकी: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">डाउनलोड रोका गया: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">फ़ाइल डाउनलोड हो गई: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">डाउनलोड पूरा हो गया: <ph name="FILE_NAME"/>. डाउनलोड बार वाले हिस्से पर जाने के लिए Shift+F6 दबाएं.</translation>
 <translation id="2743387203779672305">क्लिपबोर्ड में कॉपी करें</translation>
 <translation id="883911313571074303">व्याख्या चित्र</translation>
 <translation id="6291953229176937411">खोजकर्ता में &amp;दिखाएं</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">प्रमाणपत्र हस्ताक्षर मान</translation>
 <translation id="4104163789986725820">नि&amp;र्यात करें...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnविशेषक</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">क्रमांक संख्या</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">मेल</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">व्यवसाय श्रेणी</translation>
-<translation id="6561757256477115975">क्षेत्राधिकार स्थानीयता नाम</translation>
-<translation id="7150038968052501583">क्षेत्राधिकार राज्य या प्रांत का नाम</translation>
-<translation id="8904360804686555987">क्षेत्राधिकार देश नाम</translation>
-<translation id="8718098216622210506">गली</translation>
-<translation id="6969275223369931223">डाक कोड</translation>
 <translation id="5434065355175441495">PKCS #1 RSA सुरक्षित तरीका</translation>
 <translation id="1221024147024329929">RSA सुरक्षित तरीका के साथ PKCS #1 MD2</translation>
 <translation id="1640283014264083726">RSA सुरक्षित तरीका के साथ PKCS #1 MD4</translation>
@@ -1366,6 +1349,9 @@
 <translation id="813082847718468539">साइट जानकारी देखें</translation>
 <translation id="5233638681132016545">नया टैब</translation>
 <translation id="3915280005470252504">बोलकर खोजें</translation>
+<translation id="8968766641738584599">कार्ड सेव करें</translation>
+<translation id="2408018932941436077">कार्ड को सेव किया जा रहा है</translation>
+<translation id="7970882136539140748">कार्ड को अभी सेव नहीं किया जा सकता</translation>
 <translation id="1593926297800505364">भुगतान का तरीका सेव करें</translation>
 <translation id="2473195200299095979">इस पेज का अनुवाद करें</translation>
 <translation id="5408750356094797285">ज़ूम करें: <ph name="PERCENT"/></translation>
@@ -1757,7 +1743,6 @@
 <translation id="1234808891666923653">सेवा कार्यकर्ता</translation>
 <translation id="3432762828853624962">शेयर किए गए वर्कर</translation>
 <translation id="2927017729816812676">संचय मेमोरी</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">ऐप्स</translation>
 <translation id="542872847390508405">आप एक मेहमान के रूप में ब्राउज़ कर रहे हैं</translation>
 <translation id="537813040452600081">प्रस्थान करने के बाद, आपके द्वारा देखे गए पेज ब्राउज़र इतिहास में दिखाई नहीं देंगे और वे कंप्यूटर पर कुकी जैसे अन्य चिह्न नहीं छोड़ेंगे. आपके द्वारा डाउनलोड की जाने वाली फ़ाइलें और आपके द्वारा बनाए जाने वाले बुकमार्क संरक्षित नहीं किए जाएंगे.</translation>
@@ -2101,7 +2086,6 @@
 <translation id="2650609753175229582"><ph name="URL"/> सुरक्षित सामग्री चलाना चाहता है . Brave Software आपके डिवाइस की पहचान की पुष्टि कर सकता है और यह साइट उसे एक्सेस कर सकती है.</translation>
 <translation id="1746402432151920942">सुरक्षित सामग्री पहचानकर्ता</translation>
 <translation id="1322046419516468189">अपने <ph name="SAVED_PASSWORDS_STORE"/> में सेव किए गए पासवर्ड देखें और उन्हें प्रबंधित करें</translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">पासवर्ड सेव किया गया. अपने <ph name="SAVED_PASSWORDS_STORE"/> में सेव किए गए पासवर्ड देखें और उन्हें प्रबंधित करें.</translation>
 <translation id="5713644099811900409">Brave Software खाता</translation>
 <translation id="3785727820640310185">इस साइट के लिए सेव किए गए पासवर्ड</translation>
@@ -2504,9 +2488,6 @@
 <translation id="5186185447130319458">प्राइवेट</translation>
 <translation id="7643842463591647490">{0,plural, =1{# खुली विंडो}one{# खुली विंडो}other{# खुली विंडो}}</translation>
 <translation id="2579188629646253712">प्राइवेट से बाहर निकलें</translation>
-<translation id="479219453908726046">सर्वे करें</translation>
-<translation id="7581273696622423628">सर्वे करें</translation>
-<translation id="4406504596603350105">आपकी प्रतिक्रिया हमारे लिए महत्वपूर्ण है।</translation>
 <translation id="4349828822184870497">मददगार</translation>
 <translation id="6876469544038980967">मददगार नहीं है</translation>
 <translation id="5286194356314741248">स्‍कैन हो रहा है</translation>
@@ -3136,7 +3117,7 @@
 <translation id="6644512095122093795">पासवर्ड सहेजने की पेशकश करें</translation>
 <translation id="2100273922101894616">स्वतः प्रवेश करें</translation>
 <translation id="7513029293694390567">संग्रहित क्रेडेंशियल के ज़रिए वेबसाइटों में अपने आप प्रवेश करें. अक्षम होने पर, आपसे किसी वेबसाइट में प्रवेश करने से पहले हर बार पुष्टि करने के लिए कहा जाएगा.</translation>
-<translation id="2330129964253841015">अगर आपके पासवर्ड का गलत इस्तेमाल हुआ है, तो आपको चेतावनी दे</translation>
+<translation id="6995899638241819463">अगर आपके पासवर्ड का गलत इस्तेमाल हुआ है, तो आपको चेतावनी दे</translation>
 <translation id="1534287762301776620">जब आप अपने Brave Software खाते में लॉग इन करते हैं, तो यह सुविधा चालू हो जाती है</translation>
 <translation id="1375321115329958930">सहेजे गए पासवर्ड</translation>
 <translation id="152234381334907219">कभी नहीं सहेजा गया</translation>

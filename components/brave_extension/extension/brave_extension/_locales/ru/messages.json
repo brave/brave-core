@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Вы посещаете этот сайт с отключенной защитой конфиденциальности и безопасности.",
-    "description": "Message telling the user that shields are disabled"
+    "message": "Вы просматриваете этот сайт без использования средств приватности и безопасности Brave. Может быть, у вас проблемы с настройкой Защиты?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Сообщить о неисправности сайта",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "объектов заблокировано",

@@ -3,6 +3,7 @@
 <translationbundle lang="ja">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave Ad Block</translation>
+<translation id="4615489450165434530">壊れたサイトを報告</translation>
 <translation id="6406506848690869874">同期</translation>
 <translation id="5655621391922317800">仮想通貨ウォレット</translation>
 <translation id="2445484935443597917">新しいプロフィールを作成</translation>
@@ -39,6 +40,8 @@
 <translation id="2814998458708016836">ワイドアドレスバーを使用する</translation>
 <translation id="6123134130710658846">Brave Rewardsボタンを非表示にする</translation>
 <translation id="7635711399568194460">Brave Rewardsが有効になっていない場合は、ロケーションバーのBrave Rewardsボタンを非表示にします</translation>
+<translation id="1520361618554057102">常に新しいタブページにブックマークを表示します</translation>
+<translation id="5802665280774361839">アドレスバーにオートコンプリートを表示</translation>
 <translation id="7965178729203412357">新しいTorのID</translation>
 <translation id="8511502469534942133">このサイトの新たなTor接続</translation>
 <translation id="8784924142044142231">Torからログアウト</translation>
@@ -68,6 +71,7 @@
 <translation id="9075744464571452108">デバイス認識</translation>
 <translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
 <translation id="4824468494729001999">スクリプトをブロックする</translation>
+<translation id="8526521192921341404">Googleログインを許可</translation>
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
 <translation id="5165042248369837294">Twitterの埋め込みツイートを許可する</translation>
 <translation id="958971637207126733">LinkedInの埋め込みポストを許可する</translation>
@@ -84,6 +88,7 @@
 <translation id="5825943197137337319">デフォルトのパブリックインターフェイスのみ</translation>
 <translation id="1689062823386843231">非プロキシUDPを無効にする</translation>
 <translation id="8502234992433094996">プッシュメッセージにGoogleサービスを使う</translation>
+<translation id="3888068426966679906">リモートデバッグ</translation>
 <translation id="6645631466045614531">Brave Syncの設定</translation>
 <translation id="1807246157184219062">ライト</translation>
 <translation id="2414886740292270097">ダーク</translation>
@@ -153,4 +158,13 @@
 <translation id="4394049700291259645">無効にする</translation>
 <translation id="6469509880167172749">Braveに完全に匿名の製品分析を自動的に送る</translation>
 <translation id="7090566321964540749">この匿名の情報は、Braveの特定の機能が全体でどの程度使われるか、予測するためにのみ使われます。</translation>
+<translation id="1200956479506699688">仮想通貨ウォレットがBraveで利用可能になりました。メタマスクと仮想通貨ウォレットを同時に使うことはできません。</translation>
+<translation id="7583735190612229830">仮想通貨ウォレットを設定して、このアプリやそれと類似の他のアプリとやり取りをします。</translation>
+<translation id="8337117349965899723">仮想通貨ウォレットを使う</translation>
+<translation id="5756155765711979898">メタマスクを使う</translation>
+<translation id="6754134632841262799">セットアップ</translation>
+<translation id="191143826155037518">Braveは、<ph name="BEGIN_LINK_MPL">&amp;lt;a target="_blank" href="$1"&amp;gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&amp;lt;/a&amp;gt;</ph> (MPL) に基づき利用可能となっており、そこには他のさまざまなライセンスに基づく<ph name="BEGIN_LINK_OSS">&amp;lt;a target="_blank" href="$2"&amp;gt;</ph>オープンソース・ソフトウェア<ph name="END_LINK_OSS">&amp;lt;/a&amp;gt;</ph>が含まれています。
+<ph name="BEGIN_LINK_SOURCE_CODE">&amp;lt;a target="_blank" href="$4"&amp;gt;</ph>このコピーの作成に使われた特定のソースコード<ph name="END_LINK_SOURCE_CODE">&amp;lt;/a&amp;gt;</ph>を<ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&amp;lt;a target="_blank" href="$3"&amp;gt;</ph>ダウンロードして、自分で構築する方法については説明書<ph name="END_LINK_BUILD_INSTRUCTIONS">&amp;lt;/a&amp;gt;</ph>をお読みください。</translation>
+<translation id="4474155171896946103">すべてのタブをブックマークに追加...</translation>
+<translation id="2336228925368920074">すべてのタブをブックマークに追加...</translation>
 </translationbundle>

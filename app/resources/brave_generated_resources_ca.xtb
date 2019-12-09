@@ -3,6 +3,7 @@
 <translationbundle lang="ca">
 <translation id="3333887201479867589">Premis de Brave</translation>
 <translation id="7942180974165298215">Blocatge d'anuncis de Brave</translation>
+<translation id="4615489450165434530">Informa d'una pàgina web inexistent</translation>
 <translation id="6406506848690869874">Sincronització</translation>
 <translation id="5655621391922317800">Moneders Crypto</translation>
 <translation id="2445484935443597917">Crea un perfil</translation>
@@ -40,6 +41,8 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="2814998458708016836">Fer servir una barra d'adreces ampla</translation>
 <translation id="6123134130710658846">Amaga el botó de Premis de Brave</translation>
 <translation id="7635711399568194460">Amaga el botó de Premis de Brave a la barra d'ubicació quan Premis de Brave no està habilitat</translation>
+<translation id="1520361618554057102">Mostra sempre les adreces d'interès en una finestra nova</translation>
+<translation id="5802665280774361839">Mostra Autocompletar a la barra d'adreces</translation>
 <translation id="7965178729203412357">Identitat nova de Tor</translation>
 <translation id="8511502469534942133">Nova connexió Tor per a aquest lloc.</translation>
 <translation id="8784924142044142231">Surt de Tor</translation>
@@ -69,6 +72,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="9075744464571452108">Reconeixement de dispositius</translation>
 <translation id="3570081523466826008">Actualitzar connexions a HTTPS</translation>
 <translation id="4824468494729001999">Bloquejar scripts</translation>
+<translation id="8526521192921341404">Permet inicis de sessió de Google</translation>
 <translation id="863171915776379000">Permet l'inici de sessió i publicacions incrustades de Facebook</translation>
 <translation id="5165042248369837294">Permet tuits incrustats de Twitter</translation>
 <translation id="958971637207126733">Permet publicacions incrustades de LinkedIn</translation>
@@ -85,6 +89,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="5825943197137337319">Només interfície pública predeterminada</translation>
 <translation id="1689062823386843231">Desactiva UDP que no sigui a través de proxy</translation>
 <translation id="8502234992433094996">Useu els Serveis de Google per a rebre Notificacions Emergents</translation>
+<translation id="3888068426966679906">Depuració remota</translation>
 <translation id="6645631466045614531">Accedir a la sincronització a través de</translation>
 <translation id="1807246157184219062">Clar</translation>
 <translation id="2414886740292270097">Fosc</translation>
@@ -154,4 +159,13 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="4394049700291259645">Desactiva</translation>
 <translation id="6469509880167172749">Envieu analítiques de productes completament privades a Brave automàticament</translation>
 <translation id="7090566321964540749">Aquesta informació anònima només permet a Brave d'estimar l'ús global de determinades característiques.</translation>
+<translation id="1200956479506699688">Els criptomoneders ja són disponibles a Brave. No pots fer servir MetaMask i criptomoneders al mateix temps.</translation>
+<translation id="7583735190612229830">Estableix criptomoneders per interactuar amb aquesta app i d'altres similars.</translation>
+<translation id="8337117349965899723">Fes servir un criptomoneder</translation>
+<translation id="5756155765711979898">Fes servir MetaMask</translation>
+<translation id="6754134632841262799">CONFIGURACIÓ</translation>
+<translation id="191143826155037518">Pots accedir a Brave a través de <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) and includes <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> under a variety of other licenses.
+        You can read <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instructions on how to download and build for yourself<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> the specific <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>source code used to create this copy<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Afegeix totes les pestanyes a les adreces d'interès...</translation>
+<translation id="2336228925368920074">Afegeix totes les pestanyes a les adreces d'interès...</translation>
 </translationbundle>

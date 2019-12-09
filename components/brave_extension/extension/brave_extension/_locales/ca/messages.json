@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Estàs navegant en aquest lloc sense cap protecció de privadesa i seguretat.",
-    "description": "Message telling the user that shields are disabled"
+    "message": "Estàs navegant en aquesta web sense les proteccions de privacitat i seguretat de Brave. No funciona bé amb els Escuts activats?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Informa d'una pàgina web inexistent",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "Elements bloquejats",

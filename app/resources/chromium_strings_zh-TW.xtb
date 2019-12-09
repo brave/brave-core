@@ -18,11 +18,9 @@
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave 開發人員版</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary 版</translation>
 <translation id="8992261409816268381">The Brave Authors</translation>
-<translation id="4651430425715739110">Copyright <ph name="YEAR"/> The Brave Authors. 版權所有。</translation>
+<translation id="8121009781989288430">Copyright <ph name="YEAR"/> The Brave Authors. 版權所有。</translation>
 <translation id="2310890394934209120">Brave 作業系統的開發有賴其他<ph name="BEGIN_LINK_CROS_OSS"/>開放原始碼軟體<ph name="END_LINK_CROS_OSS"/>。</translation>
 <translation id="8160794320557846790">Brave 作業系統藉助了其他<ph name="BEGIN_LINK_CROS_OSS"/>開放原始碼軟體<ph name="END_LINK_CROS_OSS"/>的相關技術才得以問世，<ph name="BEGIN_LINK_LINUX_OSS"/>Linux (測試版)<ph name="END_LINK_LINUX_OSS"/> 也是如此。</translation>
-<translation id="8948097099929452692">不在 Brave 中使用。佔位標誌可使資源圖保持同步。</translation>
-<translation id="5009217320733452434">不在 Brave 中使用。佔位標誌可使資源圖保持同步。其預期有一個參數：<ph name="ARGUMENT"/>.</translation>
 <translation id="6913582816347128893">Brave 已不再支援 Mac OS X 10.9，因此部分功能可能無法正常運作。</translation>
 <translation id="7977787072794666032">Brave 已不適用於 Windows XP 或 Windows Vista，因此可能無法正常運作</translation>
 <translation id="189297655255130768">Brave 沒有回應，要立即重新啟動嗎？</translation>
@@ -206,7 +204,6 @@ Brave 無法復原你的設定。</translation>
 <translation id="3052349005266761501">正在啟動 Brave…</translation>
 <translation id="1197672524850678392">無法啟動 Brave，請再試一次。</translation>
 <translation id="5147525139567260139">分享 Brave 分頁</translation>
-<translation id="2076319850279844250">協助我們改善 Brave</translation>
 <translation id="8541922081612557424">關於 Brave</translation>
 <translation id="3262506503470845422">前往 Brave 說明頁面</translation>
 <translation id="1864557848095568223">正在更新 Brave</translation>

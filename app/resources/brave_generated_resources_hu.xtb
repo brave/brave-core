@@ -3,6 +3,7 @@
 <translationbundle lang="hu">
 <translation id="3333887201479867589">Brave jutalmak</translation>
 <translation id="7942180974165298215">Brave hirdetés blokkolása</translation>
+<translation id="4615489450165434530">Nem működő oldal jelentése</translation>
 <translation id="6406506848690869874">Szinkronizálás</translation>
 <translation id="5655621391922317800">Kriptopénztárcák</translation>
 <translation id="2445484935443597917">Új profil létrehozása</translation>
@@ -39,6 +40,8 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="2814998458708016836">Használj széles címsort</translation>
 <translation id="6123134130710658846">Brave jutalmak gomb elrejtése</translation>
 <translation id="7635711399568194460">Elrejti a Brave Jutalmak gombot a helysávban, amikor a Brave Jutalmak nincs engedélyezve.</translation>
+<translation id="1520361618554057102">Mindig mutassa a könyvjelzőket az új fül oldalon</translation>
+<translation id="5802665280774361839">Mutassa az automatikus kiegészítést a címsorban</translation>
 <translation id="7965178729203412357">Új Tor azonosító</translation>
 <translation id="8511502469534942133">Új Tor csatlakozás ehhez az oldalhoz</translation>
 <translation id="8784924142044142231">Kilépés a Tor böngészőből</translation>
@@ -68,6 +71,7 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="9075744464571452108">Eszközfelismerés</translation>
 <translation id="3570081523466826008">Kapcsolat bővítése HTTPS-re</translation>
 <translation id="4824468494729001999">Parancsfájlok letiltása</translation>
+<translation id="8526521192921341404">Google belépések engedélyezése</translation>
 <translation id="863171915776379000">Facebook belépés és beágyazott bejegyzések engedélyezése</translation>
 <translation id="5165042248369837294">Twitteren beágyazott tweetek engedélyezése</translation>
 <translation id="958971637207126733">LinkedIn beágyazott posztok engedélyezése</translation>
@@ -84,6 +88,7 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="5825943197137337319">Kizárólag alapértelmezett publikus interfész</translation>
 <translation id="1689062823386843231">Proxy nélküli UDP letiltása</translation>
 <translation id="8502234992433094996">Google Szolgáltatások használata a Push üzenetküldéshez</translation>
+<translation id="3888068426966679906">Távoli hibakeresés</translation>
 <translation id="6645631466045614531">Szinkronizálás elérési útja</translation>
 <translation id="1807246157184219062">Világos</translation>
 <translation id="2414886740292270097">Sötét</translation>
@@ -153,4 +158,13 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="4394049700291259645">Kikapcsolás</translation>
 <translation id="6469509880167172749">Teljes mértékben anonim termékanalízis automatikus küldése a Brave-hez</translation>
 <translation id="7090566321964540749">Ez az anonimizált adat mindösszesen azt teszi lehetővé, hogy a Brave megbecsülhesse egyes funkciók összesített használatát.</translation>
+<translation id="1200956479506699688">Mostantól használható a Crypto Wallets a Brave-en. A MetaMask és a Crypto Wallets nem használható egyszerre.</translation>
+<translation id="7583735190612229830">Állítsa be, hogy a Crypto Wallets együttműködjön ezzel és más hasonló alkalmazásokkal.</translation>
+<translation id="8337117349965899723">Használja a Crypto Walletset</translation>
+<translation id="5756155765711979898">Használja a MetaMaskot</translation>
+<translation id="6754134632841262799">BEÁLLÍTÁS</translation>
+<translation id="191143826155037518">A Brave-et a <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla nyilvános licenc 2.0 értelmében használhatja<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) és tartalmazza a <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>nyílt forráskódú szoftvert<ph name="END_LINK_OSS">&lt;/a&gt;</ph> különböző más licencek alatt.
+ Elolvashatja a <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>útmutatót a letöltéshez és a saját építéshez<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> the specific <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>ennek a példánynak a készítéséhez használt forráskód<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Összes lap hozzáadása a könyvjelzőkhöz...</translation>
+<translation id="2336228925368920074">Összes lap hozzáadása a könyvjelzőkhöz...</translation>
 </translationbundle>

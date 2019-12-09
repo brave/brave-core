@@ -26,7 +26,7 @@
 <translation id="4881695831933465202">Otwórz</translation>
 <translation id="6710213216561001401">Wstecz</translation>
 <translation id="1201402288615127009">Dalej</translation>
-<translation id="5713644099811900409">Konta Brave Software</translation>
+<translation id="5713644099811900409">Konta Brave</translation>
 <translation id="3157931365184549694">Przywróć</translation>
 <translation id="5040262127954254034">Prywatność</translation>
 <translation id="3061707000357573562">Zastosowanie poprawki do usługi</translation>
@@ -44,7 +44,7 @@
 <translation id="6015796118275082299">Rok</translation>
 <translation id="9065203028668620118">Edytuj</translation>
 <translation id="5029568752722684782">Usuń kopię</translation>
-<translation id="5152275065296016556">Brave Software Pay</translation>
+<translation id="5152275065296016556">Brave Pay</translation>
 <translation id="3655851112780233803">Zarządzaj...</translation>
 <translation id="2709516037105925701">Autouzupełnianie</translation>
 <translation id="370665806235115550">Ładowanie...</translation>
@@ -55,6 +55,7 @@
 <translation id="2283340219607151381">Zapisuj i automatycznie uzupełniaj adresy</translation>
 <translation id="1662550410081243962">Zapisuj i automatycznie uzupełniaj informacje o formach płatności</translation>
 <translation id="6064217302520318294">Blokada ekranu</translation>
+<translation id="5490432419156082418">Adresy i więcej</translation>
 <translation id="8820817407110198400">Zakładki</translation>
 <translation id="6404511346730675251">Edytuj zakładkę</translation>
 <translation id="939736085109172342">Nowy folder</translation>
@@ -63,6 +64,8 @@
 <translation id="397105322502079400">Obliczanie...</translation>
 <translation id="7701040980221191251">Brak</translation>
 <translation id="8428213095426709021">Ustawienia</translation>
+<translation id="765676359832457558">Ukryj ustawienia zaawansowane</translation>
+<translation id="6989763994942163495">Pokaż ustawienia zaawansowane</translation>
 <translation id="9038649477754266430">Używaj podpowiedzi, by strony ładowały się szybciej</translation>
 <translation id="4850886885716139402">Widok</translation>
 <translation id="7180611975245234373">Odśwież</translation>
@@ -100,7 +103,7 @@
 <translation id="981121421437150478">Offline</translation>
 <translation id="5171045022955879922">Wyszukaj lub wpisz URL</translation>
 <translation id="803771048473350947">Plik</translation>
-<translation id="6268185425799226387">Dysk Brave Software</translation>
+<translation id="6268185425799226387">Dysk Brave</translation>
 <translation id="2982481275546140226">Wyczyść Dane</translation>
 <translation id="8425213833346101688">Zmień</translation>
 <translation id="8009225694047762179">Zarządzaj hasłami</translation>
@@ -139,6 +142,7 @@
 <translation id="6979440798594660689">Wycisz (domyślnie)</translation>
 <translation id="8037357227543935929">Pytaj (domyślnie)</translation>
 <translation id="8763927697961133303">Urządzenie USB</translation>
+<translation id="4165986682804962316">Ustawienia</translation>
 <translation id="9011424611726486705">Otwórz ustawienia strony</translation>
 <translation id="5932224571077948991">Na tej stronie wyświetlają się uciążliwe lub wprowadzające w błąd reklamy</translation>
 <translation id="7878562273885520351">Ktoś mógł poznać Twoje hasło</translation>
