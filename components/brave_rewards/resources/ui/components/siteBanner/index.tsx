@@ -195,24 +195,34 @@ export default class SiteBanner extends React.PureComponent<Props, {}> {
   }
 
   getText (children?: React.ReactNode) {
-    if (!children) {
-      const bannerText = this.props.type === 'one-time'
-        ? 'rewardsBanner'
-        : 'rewardsBannerMonthly'
+    if (children) {
+      return children
+    }
 
+    if (this.props.type === 'one-time') {
       return (
         <>
           <p>
-            {getLocale(`${bannerText}Text1`)}
+            {getLocale(`rewardsBannerText1`)}
           </p>
           <p>
-            {getLocale(`${bannerText}Text2`)}
+            {getLocale(`rewardsBannerText2`)}
           </p>
         </>
       )
     }
 
-    return children
+    if (this.props.type === 'monthly') {
+      return (
+        <>
+          <p>
+            {getLocale(`rewardsBannerMonthlyText1`)}
+          </p>
+        </>
+      )
+    }
+
+    return null
   }
 
   onDonate = (amount: string) => {
