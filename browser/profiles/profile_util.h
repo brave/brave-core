@@ -43,6 +43,8 @@ Profile* GetParentProfile(const base::FilePath& path);
 // the guest profile by calling IsGuestSession and have to use this function.
 bool IsGuestProfile(content::BrowserContext* profile);
 
+bool IsTorDisabledForProfile(Profile* profile);
+
 }  // namespace brave
 
 namespace chrome {

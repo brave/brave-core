@@ -19,6 +19,10 @@
 #include "chrome/browser/profiles/profile_key.h"
 #include "chrome/browser/profiles/profile_manager.h"
 
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service.h"
+#endif
+
 namespace brave {
 
 namespace {
@@ -193,6 +197,15 @@ bool IsGuestProfile(content::BrowserContext* context) {
   return Profile::FromBrowserContext(context)
       ->GetOriginalProfile()
       ->IsGuestSession();
+}
+
+bool IsTorDisabledForProfile(Profile* profile) {
+#if BUILDFLAG(ENABLE_TOR)
+  return tor::TorProfileService::IsTorDisabled() ||
+         profile->IsGuestSession();
+#else
+  return true;
+#endif
 }
 
 }  // namespace brave
