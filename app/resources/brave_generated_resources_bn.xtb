@@ -3,6 +3,7 @@
 <translationbundle lang="bn">
 <translation id="3333887201479867589">Brave রিওয়ার্ডস</translation>
 <translation id="7942180974165298215">Brave বিজ্ঞাপন অবরুদ্ধকারক</translation>
+<translation id="4615489450165434530">একটি ভাঙ্গা সাইটের প্রতিবেদন করুন</translation>
 <translation id="6406506848690869874">সিঙ্ক করুন</translation>
 <translation id="5655621391922317800">Crypto ওয়ালেটগুলি</translation>
 <translation id="2445484935443597917">একটি নতুন প্রোফাইল তৈরি করুন</translation>
@@ -39,6 +40,8 @@
 <translation id="2814998458708016836">ওয়াইড অ্যাড্রেস বার ব্যবহার করুন</translation>
 <translation id="6123134130710658846">Brave পুরস্কারের বোতাম লুকান</translation>
 <translation id="7635711399568194460">Brave পুরস্কারগুলি সক্রিয় করা না থাকলে লোকেশন বারে Brave পুরস্কারের বোতামটি লুকায়</translation>
+<translation id="1520361618554057102">নতুন ট্যাব পৃষ্ঠাতে সবর্দা বুকমার্কগুলি দেখান</translation>
+<translation id="5802665280774361839">ঠিকানা বারে স্বতঃসম্পূর্ণ দেখান</translation>
 <translation id="7965178729203412357">নতুন টর পরিচিতি</translation>
 <translation id="8511502469534942133">এই সাইটের জন্য নতুন Tor Connection</translation>
 <translation id="8784924142044142231">টর থেকে প্রস্থান করুন</translation>
@@ -68,6 +71,7 @@
 <translation id="9075744464571452108">ডিভাইস শনাক্তকরণ</translation>
 <translation id="3570081523466826008">সংযোগগুলি HTTPS এ আপগ্রেড করুন</translation>
 <translation id="4824468494729001999">স্ক্রিপ্টগুলি ব্লক করুন</translation>
+<translation id="8526521192921341404">Google লগ ইন মঞ্জুর করুন</translation>
 <translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
 <translation id="5165042248369837294">Twitter সংস্থাপিত টুইটগুলির অনুমতি দিন</translation>
 <translation id="958971637207126733">LinkedIn সংস্থাপনগুলির অনুমতি দিন</translation>
@@ -84,6 +88,7 @@
 <translation id="5825943197137337319">শুধু ডিফল্ট সর্বজনীন ইন্টারফেস</translation>
 <translation id="1689062823386843231">নন-প্রক্সি UDP অক্ষম করুন</translation>
 <translation id="8502234992433094996">পুশ মেসেজিংয়ের জন্য Google পরিষেবাগুলি ব্যবহার করুন</translation>
+<translation id="3888068426966679906">রিমোট ডিবাগিং</translation>
 <translation id="6645631466045614531">এর মাধ্যমে সিঙ্ক অ্যাক্সেস করুন</translation>
 <translation id="1807246157184219062">আলো</translation>
 <translation id="2414886740292270097">অন্ধকার</translation>
@@ -153,4 +158,13 @@
 <translation id="4394049700291259645">অক্ষম</translation>
 <translation id="6469509880167172749">সম্পূর্ণভাবে ব্যক্তিগত পণ্যের বিশ্লেষকগুলি স্বয়ংক্রিয়ভাবে Brave এ পাঠান</translation>
 <translation id="7090566321964540749">এই নামহীন তথ্য Brave কে নির্দিষ্ট কিছু বৈশিষ্ট্যের সামগ্রিক ব্যবহার অনুমান করতে দেয়।</translation>
+<translation id="1200956479506699688">Crypto Wallets এখন Brave তে উপলব্ধ৷ আপনি একই সময়ে MetaMask এবং Crypto Wallets ব্যবহার করতে পারবেন না৷</translation>
+<translation id="7583735190612229830">এই অ্যাপটি এবং এটির মতন অন্যান্য অ্যাপের সাথে ইন্টারঅ্যাক্ট করতে Crypto Wallets সেট আপ করুন৷</translation>
+<translation id="8337117349965899723">Crypto Wallets ব্যবহার করুন</translation>
+<translation id="5756155765711979898">MetaMask ব্যবহার করুন</translation>
+<translation id="6754134632841262799">সেট আপ করুন</translation>
+<translation id="191143826155037518">Brave আপনার নিকট উপলভ্য করা হয়েছে <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla পাবলিক লাইসেন্স 2.0 এর অধীনে <ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) এবং এতে অন্তর্ভুক্ত আছে <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>ওপেন সোর্স সফটওয়্যারসমূহ<ph name="END_LINK_OSS">&lt;/a&gt;</ph> অন্য সব বিভিন্ন লাইসেন্সের অধীনে।
+আপনি <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>নিজের জন্য কিভাবে ডাউনলোড ও গঠন করতে হয় সে সংক্রান্ত নির্দেশনাটি পড়তে পারেন<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> সুনির্দিষ্ট <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>সোর্স কোড ব্যবহার করা হয়েছে এই কপিটি তৈরি করতে<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">সব কটি ট্যাব বুকমার্ক করুন...</translation>
+<translation id="2336228925368920074">সকল ট্যাব বুকমার্ক করুন...</translation>
 </translationbundle>

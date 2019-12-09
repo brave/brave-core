@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Sikertelen letöltés: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Letöltés megszakítva: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">A következő fájl letöltése befejeződött: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">A letöltés befejeződött: <ph name="FILE_NAME"/>. A Shift+F6 billentyűparancs lenyomásával a letöltéssáv területére léphet.</translation>
 <translation id="2743387203779672305">Másolás a vágólapra</translation>
 <translation id="883911313571074303">Megjegyzés fűzése a képhez</translation>
 <translation id="6291953229176937411">Me&amp;gjelenítés a Finderben</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Tanúsítvány aláírási értéke</translation>
 <translation id="4104163789986725820">E&amp;xportálás...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">sorozatSzám</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">LEVÉL</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">üzletKategória</translation>
-<translation id="6561757256477115975">hatáskörHelységNév</translation>
-<translation id="7150038968052501583">hatáskörÁllamVagyMegyeNév</translation>
-<translation id="8904360804686555987">hatáskörOrszágNév</translation>
-<translation id="8718098216622210506">UTCA</translation>
-<translation id="6969275223369931223">postaKód</translation>
 <translation id="5434065355175441495">PKCS #1 RSA titkosítás</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 RSA titkosítással</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 RSA titkosítással</translation>
@@ -1367,6 +1350,9 @@ A kulcsfájlt tartsa biztonságos helyen. Szüksége lesz rá ahhoz, hogy új ve
 <translation id="813082847718468539">Az oldalinformációk megtekintése</translation>
 <translation id="5233638681132016545">Új lap</translation>
 <translation id="3915280005470252504">Hangalapú keresés</translation>
+<translation id="8968766641738584599">Kártya mentése</translation>
+<translation id="2408018932941436077">Kártya mentése folyamatban</translation>
+<translation id="7970882136539140748">A kártya jelenleg nem menthető</translation>
 <translation id="1593926297800505364">Fizetési mód mentése</translation>
 <translation id="2473195200299095979">Oldal lefordítása</translation>
 <translation id="5408750356094797285">Nagyítás/kicsinyítés: <ph name="PERCENT"/></translation>
@@ -1758,7 +1744,6 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared workers</translation>
 <translation id="2927017729816812676">Gyorsítótár</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Alkalmazások</translation>
 <translation id="542872847390508405">Vendégként böngészik</translation>
 <translation id="537813040452600081">Az oldalak, melyeket ebben az ablakban megtekint, a kijelentkezést követően nem fognak megjelenni a böngészési előzmények között, és nem hagynak egyéb nyomokat a számítógépen (mint pl. cookie-k). Az Ön által letöltött fájlokat és a létrehozott könyvjelzőket a rendszer nem őrzi meg.</translation>
@@ -2102,7 +2087,6 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="2650609753175229582">A(z) <ph name="URL"/> védett tartalmat szeretne lejátszani. Miután a Brave Software azonosítja az eszközt, hozzáférést adhat a webhely számára.</translation>
 <translation id="1746402432151920942">Védett médiaelem azonosítója</translation>
 <translation id="1322046419516468189">A mentett jelszavakat itt láthatja és kezelheti: <ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Jelszó elmentve. A mentett jelszavakat itt láthatja és kezelheti: <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Brave Software Fiókjába</translation>
 <translation id="3785727820640310185">A webhelyhez mentett jelszavak</translation>
@@ -2505,9 +2489,6 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="5186185447130319458">Privát</translation>
 <translation id="7643842463591647490">{0,plural, =1{# megnyitott ablak}other{# megnyitott ablak}}</translation>
 <translation id="2579188629646253712">Kilépés privátból</translation>
-<translation id="479219453908726046">Felmérés elvégzése</translation>
-<translation id="7581273696622423628">Felmérés elvégzése</translation>
-<translation id="4406504596603350105">Visszajelzéseid értékesek számunkra.</translation>
 <translation id="4349828822184870497">Hasznos</translation>
 <translation id="6876469544038980967">Nem hasznos</translation>
 <translation id="5286194356314741248">Keresés</translation>
@@ -3137,7 +3118,7 @@ Elindítja a következőt: <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="6644512095122093795">Jelszavak mentésének felajánlása</translation>
 <translation id="2100273922101894616">Automatikus bejelentkezés</translation>
 <translation id="7513029293694390567">Automatikus bejelentkezés webhelyekre a tárolt hitelesítő adatokkal. Ha a funkció ki van kapcsolva, akkor a rendszer minden alkalommal megerősítést kér Öntől, mielőtt bejelentkezne az adott webhelyre.</translation>
-<translation id="2330129964253841015">Figyelmeztetés, ha jelszavai illetéktelen kezekbe kerülnek</translation>
+<translation id="6995899638241819463">Figyelmeztetés, ha jelszavai illetéktelen kezekbe kerülnek</translation>
 <translation id="1534287762301776620">Amikor bejelentkezik Brave Software-fiókjába, a rendszer bekapcsolja ezt a funkciót</translation>
 <translation id="1375321115329958930">Mentett jelszavak</translation>
 <translation id="152234381334907219">Soha nem került mentésre</translation>

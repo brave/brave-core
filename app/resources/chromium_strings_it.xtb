@@ -18,11 +18,9 @@
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave per gli sviluppatori</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="8992261409816268381">The Brave Authors</translation>
-<translation id="4651430425715739110">Copyright <ph name="YEAR"/> The Brave Authors. Tutti i diritti riservati.</translation>
+<translation id="8121009781989288430">Copyright <ph name="YEAR"/> The Brave Authors. Tutti i diritti riservati.</translation>
 <translation id="2310890394934209120">La realizzazione di Brave OS è stata possibile grazie a <ph name="BEGIN_LINK_CROS_OSS"/>software open source<ph name="END_LINK_CROS_OSS"/> aggiuntivi.</translation>
 <translation id="8160794320557846790">La realizzazione di Brave OS è stata possibile grazie a <ph name="BEGIN_LINK_CROS_OSS"/>software open source<ph name="END_LINK_CROS_OSS"/> aggiuntivo, come <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
-<translation id="8948097099929452692">Non usato in Brave. Segnaposto per mantenere sincronizzate le mappe della risorsa.</translation>
-<translation id="5009217320733452434">Non usato in Brave. Segnaposto per mantenere sincronizzate le mappe della risorsa. Richiede un argomento: <ph name="ARGUMENT"/>.</translation>
 <translation id="6913582816347128893">Brave potrebbe non funzionare correttamente perché non è più supportato su Mac OS X 10.9.</translation>
 <translation id="7977787072794666032">Brave potrebbe non funzionare correttamente perché non è più supportato su Windows XP o Windows Vista</translation>
 <translation id="189297655255130768">Brave non risponde. Riavviarlo ora?</translation>
@@ -206,7 +204,6 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="3052349005266761501">Avvio di Brave...</translation>
 <translation id="1197672524850678392">Impossibile avviare Brave. Riprova.</translation>
 <translation id="5147525139567260139">Condividi una scheda di Brave</translation>
-<translation id="2076319850279844250">Aiutaci a migliorare Brave</translation>
 <translation id="8541922081612557424">Informazioni su Brave</translation>
 <translation id="3262506503470845422">Ricevi assistenza per Brave</translation>
 <translation id="1864557848095568223">Aggiornamento di Brave in corso</translation>

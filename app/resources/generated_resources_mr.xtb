@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">डाउनलोड करता आले नाही: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">डाउनलोड रद्द केले: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">डाउनलोड पूर्ण झाले आहे: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">डाउनलोड पूर्ण: <ph name="FILE_NAME"/>. डाउनलोड बार भागाकडे जाण्यासाठी Shift+F6 दाबा.</translation>
 <translation id="2743387203779672305">क्लिपबोर्डवर कॉपी करा</translation>
 <translation id="883911313571074303">इमेजवर भाष्य करा</translation>
 <translation id="6291953229176937411">फाइंडर मध्ये &amp;दर्शवा</translation>
@@ -1342,6 +1343,9 @@
 <translation id="813082847718468539">साइटची माहिती पहा</translation>
 <translation id="5233638681132016545">नवीन टॅब</translation>
 <translation id="3915280005470252504">व्हॉइसनुसार शोधा</translation>
+<translation id="8968766641738584599">कार्ड सेव्ह करा</translation>
+<translation id="2408018932941436077">कार्ड सेव्ह करत आहे</translation>
+<translation id="7970882136539140748">आता कार्ड सेव्ह केले जाऊ शकत नाही</translation>
 <translation id="1593926297800505364">पेमेंट पद्धत सेव्ह करा</translation>
 <translation id="2473195200299095979">या पृष्ठाचे भाषांतर करा</translation>
 <translation id="5408750356094797285">झूम करा: <ph name="PERCENT"/></translation>
@@ -2777,6 +2781,7 @@
 <translation id="2871813825302180988">हे खाते या डिव्‍हाइसवर आधीपासूनच वापरले जात आहे.</translation>
 <translation id="7654941827281939388">हे खाते या संगणकावर याआधीच वापरण्‍यात येत आहे.</translation>
 <translation id="9022847679183471841"><ph name="AVATAR_NAME"/> या संगणकावर हे खाते आधीपासून वापरत आहे.</translation>
+<translation id="6921634551681321094">व्यक्ती जोडा</translation>
 <translation id="5389237414310520250">नवीन वापरकर्ता तयार करणे शक्य झाले नाही. कृपया तुमची हार्ड ड्राइव्ह जागा आणि परवानग्या तपासा आणि पुन्हा प्रयत्न करा.</translation>
 <translation id="2673589024369449924">या वापरकर्त्यासाठी डेस्कटॉप शॉर्टकट तयार करा</translation>
 <translation id="2731710757838467317">तुमचा पर्यवेक्षी वापरकर्ता तयार करत आहे. यास काही क्षण लागू शकतात.</translation>
@@ -3095,7 +3100,7 @@
 <translation id="6644512095122093795">पासवर्ड सेव्ह करण्यासाठी विचारा</translation>
 <translation id="2100273922101894616">स्वयं साइन इन करा</translation>
 <translation id="7513029293694390567">स्टोअर क्रेडेंशियल वापरून वेबसाइटवर आपोआप साइन इन करा. अक्षम केले असल्यास, वेबसाइटवर साइन इन करण्यापूर्वी प्रत्येकवेळी तुम्हाला पुष्टीकरणासाठी विचारले जाईल.</translation>
-<translation id="2330129964253841015">तुमचे पासवर्ड धोक्यात आल्यास तुम्हाला चेतावणी द्यायची</translation>
+<translation id="6995899638241819463">तुमचे पासवर्ड धोक्यात आल्यास तुम्हाला चेतावणी द्यायची</translation>
 <translation id="1534287762301776620">तुम्ही तुमच्या Brave Software खात्यामध्ये साइन इन केल्यावर, हे वैशिष्ट्य सुरू केले जाते</translation>
 <translation id="1375321115329958930">सेव्ह केलेले पासवर्ड</translation>
 <translation id="152234381334907219">कधीही सेव्ह न केलेले</translation>

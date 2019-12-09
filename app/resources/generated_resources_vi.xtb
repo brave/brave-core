@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Tải xuống không thành công: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Đã hủy tải xuống: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">Đã tải xuống xong: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">Đã tải xuống xong: <ph name="FILE_NAME"/>. Nhấn tổ hợp phím Shift + F6 để chuyển tới khu vực thanh Tệp đã tải xuống.</translation>
 <translation id="2743387203779672305">Sao chép vào khay nhớ tạm</translation>
 <translation id="883911313571074303">Chú thích hình ảnh</translation>
 <translation id="6291953229176937411">&amp;Hiển thị trong Trình tìm kiếm</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Giá trị Chữ ký Chứng chỉ</translation>
 <translation id="4104163789986725820">X&amp;uất...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">serialNumber</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">MAIL</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">businessCategory</translation>
-<translation id="6561757256477115975">jurisdictionLocalityName</translation>
-<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
-<translation id="8904360804686555987">jurisdictionCountryName</translation>
-<translation id="8718098216622210506">STREET</translation>
-<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">PKCS #1 Mã hóa RSA</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 Với Mã hóa RSA</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 Với Mã hóa RSA</translation>
@@ -1366,6 +1349,9 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="813082847718468539">Xem thông tin trang web</translation>
 <translation id="5233638681132016545">Tab mới</translation>
 <translation id="3915280005470252504">Tìm kiếm bằng giọng nói</translation>
+<translation id="8968766641738584599">Lưu thẻ</translation>
+<translation id="2408018932941436077">Đang lưu thẻ</translation>
+<translation id="7970882136539140748">Hệ thống không thể lưu thẻ vào lúc này</translation>
 <translation id="1593926297800505364">Lưu phương thức thanh toán</translation>
 <translation id="2473195200299095979">Dịch trang này</translation>
 <translation id="5408750356094797285">Thu phóng: <ph name="PERCENT"/></translation>
@@ -1758,7 +1744,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Bộ nhớ đệm</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Ứng dụng</translation>
 <translation id="542872847390508405">Bạn đang duyệt với tư cách khách</translation>
 <translation id="537813040452600081">Các trang bạn xem trong cửa sổ này sẽ không xuất hiện trong lịch sử trình duyệt đồng thời sẽ không để lại dấu vết khác, như cookie, trên máy tính sau khi bạn đăng xuất. Các tệp bạn tải xuống và các dấu trang bạn tạo sẽ không được lưu giữ.</translation>
@@ -2102,7 +2087,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="2650609753175229582"><ph name="URL"/> muốn phát nội dung được bảo vệ. Thông tin định danh của thiết bị sẽ được Brave Software xác minh và trang web này có thể truy cập vào thông tin đó.</translation>
 <translation id="1746402432151920942">Mã nhận dạng nội dung đa phương tiện được bảo vệ</translation>
 <translation id="1322046419516468189">Xem và quản lý mật khẩu đã lưu trong <ph name="SAVED_PASSWORDS_STORE"/> của bạn</translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Đã lưu mật khẩu. Hãy xem và quản lý mật khẩu đã lưu trong <ph name="SAVED_PASSWORDS_STORE"/> của bạn.</translation>
 <translation id="5713644099811900409">Tài khoản Brave Software</translation>
 <translation id="3785727820640310185">Đã lưu mật khẩu cho trang web này</translation>
@@ -2505,9 +2489,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="5186185447130319458">Riêng tư</translation>
 <translation id="7643842463591647490">{0,plural, =1{# cửa sổ đang mở}other{# cửa sổ đang mở}}</translation>
 <translation id="2579188629646253712">Thoát khỏi chế độ Riêng tư</translation>
-<translation id="479219453908726046">Thực hiện Khảo sát</translation>
-<translation id="7581273696622423628">Thực hiện khảo sát</translation>
-<translation id="4406504596603350105">Phản hồi của bạn rất quan trọng với chúng tôi.</translation>
 <translation id="4349828822184870497">Hữu ích</translation>
 <translation id="6876469544038980967">Không hữu ích</translation>
 <translation id="5286194356314741248">Đang quét</translation>
@@ -3137,7 +3118,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6644512095122093795">Đề xuất lưu mật khẩu</translation>
 <translation id="2100273922101894616">Tự động đăng nhập</translation>
 <translation id="7513029293694390567">Tự động đăng nhập vào các trang web bằng thông tin đăng nhập được lưu trữ. Nếu tính năng này tắt, bạn sẽ luôn được yêu cầu xác nhận trước khi đăng nhập vào trang web.</translation>
-<translation id="2330129964253841015">Cảnh báo bạn nếu mật khẩu bị lộ</translation>
+<translation id="6995899638241819463">Cảnh báo bạn nếu mật khẩu bị lộ</translation>
 <translation id="1534287762301776620">Khi bạn đăng nhập vào Tài khoản Brave Software của mình, tính năng này sẽ được bật</translation>
 <translation id="1375321115329958930">Mật khẩu đã lưu</translation>
 <translation id="152234381334907219">Không bao giờ lưu</translation>

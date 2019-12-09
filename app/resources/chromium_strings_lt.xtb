@@ -18,11 +18,9 @@
 <translation id="3943696263619956191">„<ph name="PAGE_TITLE"/>“ – „Brave Dev“</translation>
 <translation id="6236814935154483927">„<ph name="PAGE_TITLE"/>“ – „Brave Canary“</translation>
 <translation id="8992261409816268381">„Brave“ autoriai</translation>
-<translation id="4651430425715739110">Autorių teisės priklauso „Brave“ autoriams, <ph name="YEAR"/> m. Visos teisės saugomos.</translation>
+<translation id="8121009781989288430">Autorių teisės priklauso „Brave“ autoriams, <ph name="YEAR"/> m. Visos teisės saugomos.</translation>
 <translation id="2310890394934209120">„Brave“ OS pasiekiama naudojant papildomą <ph name="BEGIN_LINK_CROS_OSS"/>atvirojo šaltinio programinę įrangą<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8160794320557846790">„Brave“ OS pasiekiama naudojant papildomą <ph name="BEGIN_LINK_CROS_OSS"/>atvirojo šaltinio programinę įrangą<ph name="END_LINK_CROS_OSS"/> (kaip ir <ph name="BEGIN_LINK_LINUX_OSS"/>„Linux“ (beta versija)<ph name="END_LINK_LINUX_OSS"/>).</translation>
-<translation id="8948097099929452692">„Brave“ naršyklėje nenaudojama. Vietaženklis, palaikantis išteklių žemėlapių sinchronizavimą.</translation>
-<translation id="5009217320733452434">„Brave“ naršyklėje nenaudojama. Vietaženklis, palaikantis išteklių žemėlapių sinchronizavimą. Laukiama vieno argumento: <ph name="ARGUMENT"/>.</translation>
 <translation id="6913582816347128893">„Brave“ gali tinkamai neveikti, nes ji nebepalaikoma naudojant 10.9 versijos „Mac OS X“.</translation>
 <translation id="7977787072794666032">„Brave“ gali tinkamai neveikti, nes ji nebepalaikoma naudojant „Windows XP“ arba „Windows Vista“</translation>
 <translation id="189297655255130768">„Brave“ neatsako. Paleisti iš naujo dabar?</translation>
@@ -208,7 +206,6 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="3052349005266761501">Pristatoma „Brave“...</translation>
 <translation id="1197672524850678392">Nepavyko paleisti „Brave“. Bandykite dar kartą.</translation>
 <translation id="5147525139567260139">„Brave“ skirtuko bendrinimas</translation>
-<translation id="2076319850279844250">Padėkite mums tobulinti „Brave“</translation>
 <translation id="8541922081612557424">Apie „Brave“</translation>
 <translation id="3262506503470845422">Gaukite pagalbos dėl „Brave“</translation>
 <translation id="1864557848095568223">Atnaujinama „Brave“</translation>

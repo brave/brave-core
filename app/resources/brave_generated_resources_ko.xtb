@@ -3,6 +3,7 @@
 <translationbundle lang="ko">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave 광고 차단</translation>
+<translation id="4615489450165434530">작동이 멈춘 사이트 보고</translation>
 <translation id="6406506848690869874">동기화</translation>
 <translation id="5655621391922317800">암호화폐 월렛</translation>
 <translation id="2445484935443597917">새 프로필 만들기</translation>
@@ -39,6 +40,8 @@
 <translation id="2814998458708016836">넓은 주소 표시줄 사용</translation>
 <translation id="6123134130710658846">Brave Rewards 버튼 감추기</translation>
 <translation id="7635711399568194460">Brave Rewards가 비활성화되었을 시 로케이션 바에서 Brave Rewards를 감춥니다</translation>
+<translation id="1520361618554057102">항상 새 탭 페이지에 책갈피 표시</translation>
+<translation id="5802665280774361839">주소 표시줄에 자동 완성 표시</translation>
 <translation id="7965178729203412357">새로운 Tor 계정</translation>
 <translation id="8511502469534942133">이 사이트 대상 새 Tor 연결</translation>
 <translation id="8784924142044142231">Tor 나가기</translation>
@@ -68,6 +71,7 @@
 <translation id="9075744464571452108">기기 인식</translation>
 <translation id="3570081523466826008">HTTPS 연결 업그레이드</translation>
 <translation id="4824468494729001999">스크립트 차단</translation>
+<translation id="8526521192921341404">구글 로그인 허용</translation>
 <translation id="863171915776379000">Facebook 로그인 및 내장 포스트를 허용합니다</translation>
 <translation id="5165042248369837294">Twitter 내장 트윗을 허용합니다</translation>
 <translation id="958971637207126733">LinkedIn 내장 포스트 허용</translation>
@@ -84,6 +88,7 @@
 <translation id="5825943197137337319">기본 공개 인터페이스 전용</translation>
 <translation id="1689062823386843231">프록시가 아닌 UDP 비활성화히기</translation>
 <translation id="8502234992433094996">푸시 메시지에 Google 서비스를 사용합니다</translation>
+<translation id="3888068426966679906">원격 디버깅</translation>
 <translation id="6645631466045614531">다음을 통해 동기화 접속</translation>
 <translation id="1807246157184219062">라이트</translation>
 <translation id="2414886740292270097">어두움</translation>
@@ -153,4 +158,13 @@
 <translation id="4394049700291259645">사용 중지</translation>
 <translation id="6469509880167172749">비밀이 완전히 보장되는 제품 애널리틱스를 자동으로 Brave에 전송합니다</translation>
 <translation id="7090566321964540749">이 익명 정보는 Brave가 특정 기능의 전체 사용량을 추정하는 데만 사용됩니다.</translation>
+<translation id="1200956479506699688">Brave (브레이브)에서 지금 크립토 월렛을 이용할 수 있습니다. 메타마스크와 크립토 월렛을 동시에 사용할 수 없습니다.</translation>
+<translation id="7583735190612229830">크립토 월렛을 설정하여 이 앱 및 기타 비슷한 앱과 소통하십시오.</translation>
+<translation id="8337117349965899723">크립토 월렛 사용</translation>
+<translation id="5756155765711979898">메타마스크 사용</translation>
+<translation id="6754134632841262799">설정</translation>
+<translation id="191143826155037518">Brave (브레이브)는 <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>모질라 공용 허가서 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL)에 따라 사용자에게 제공되며, 여러 다양한 기타 허가서에 따라 <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>오픈 소스 소프트웨어<ph name="END_LINK_OSS">&lt;/a&gt;</ph>를 포함합니다. 
+        귀하는 <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>이 사본을 만드는 데 사용되는 특정 소스 코드<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>를 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>다운로드하고 구축하는 방법에 대한 지침<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph>을 읽으실 수 있습니다.</translation>
+<translation id="4474155171896946103">모든 탭 북마크...</translation>
+<translation id="2336228925368920074">모든 탭 북마크...</translation>
 </translationbundle>

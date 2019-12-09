@@ -378,6 +378,7 @@
 <translation id="1834503245783133039"><ph name="FILE_NAME"/> をダウンロードできませんでした</translation>
 <translation id="6577284282025554716"><ph name="FILE_NAME"/> のダウンロードがキャンセルされました</translation>
 <translation id="3340620525920140773"><ph name="FILE_NAME"/> のダウンロードが完了しました。</translation>
+<translation id="4110490973560452005">ダウンロードが完了しました（<ph name="FILE_NAME"/>）。ダウンロード バーの領域に切り替えるには Shift+F6 キーを押してください。</translation>
 <translation id="2743387203779672305">クリップボードにコピー</translation>
 <translation id="883911313571074303">画像に注釈を付ける</translation>
 <translation id="6291953229176937411">Finder で表示(&amp;S)</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">証明書の署名値</translation>
 <translation id="4104163789986725820">エクスポート(&amp;X)</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">serialNumber</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">MAIL</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">businessCategory</translation>
-<translation id="6561757256477115975">jurisdictionLocalityName</translation>
-<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
-<translation id="8904360804686555987">jurisdictionCountryName</translation>
-<translation id="8718098216622210506">STREET</translation>
-<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">PKCS #1 RSA 暗号化</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 with RSA 暗号化</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 with RSA 暗号化</translation>
@@ -1366,6 +1349,9 @@
 <translation id="813082847718468539">サイト情報を表示</translation>
 <translation id="5233638681132016545">新しいタブ</translation>
 <translation id="3915280005470252504">音声検索</translation>
+<translation id="8968766641738584599">カードを保存</translation>
+<translation id="2408018932941436077">カードを保存しています</translation>
+<translation id="7970882136539140748">現在、カードを保存できません</translation>
 <translation id="1593926297800505364">お支払い方法を保存</translation>
 <translation id="2473195200299095979">このページを翻訳</translation>
 <translation id="5408750356094797285">ズーム: <ph name="PERCENT"/></translation>
@@ -1758,7 +1744,6 @@
 <translation id="1234808891666923653">サービス ワーカー</translation>
 <translation id="3432762828853624962">共有ワーカー</translation>
 <translation id="2927017729816812676">キャッシュ ストレージ</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">アプリ</translation>
 <translation id="542872847390508405">ゲスト モードでブラウジング中</translation>
 <translation id="537813040452600081">このウィンドウで開いたページはブラウザ履歴には記録されません。Cookie などの記録も、ログアウトするとパソコンから消去されます。ダウンロードしたファイルや追加したブックマークは保持されません。</translation>
@@ -2102,7 +2087,6 @@
 <translation id="2650609753175229582"><ph name="URL"/> が保護されたコンテンツの再生を要求しています。デバイスの認証情報が Brave Software によって確認され、このサイトによる認証情報へのアクセスが許可されます。</translation>
 <translation id="1746402432151920942">保護されているメディア識別子</translation>
 <translation id="1322046419516468189"><ph name="SAVED_PASSWORDS_STORE"/> での保存パスワードの表示と管理</translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">パスワードが保存されました。保存パスワードの表示と管理は <ph name="SAVED_PASSWORDS_STORE"/> で行えます。</translation>
 <translation id="5713644099811900409">Brave Software アカウントを使用</translation>
 <translation id="3785727820640310185">このサイト用に保存されているパスワード</translation>
@@ -2505,9 +2489,6 @@
 <translation id="5186185447130319458">プライベート</translation>
 <translation id="7643842463591647490">{0,plural, =1{開いているウィンドウ # 個}other{開いているウィンドウ # 個}}</translation>
 <translation id="2579188629646253712">プライベートモードを離れる</translation>
-<translation id="479219453908726046">調査を受ける</translation>
-<translation id="7581273696622423628">調査を受ける</translation>
-<translation id="4406504596603350105">みなさんからのフィードバックは重要です。</translation>
 <translation id="4349828822184870497">役に立った</translation>
 <translation id="6876469544038980967">役に立たなかった</translation>
 <translation id="5286194356314741248">スキャン中</translation>
@@ -3137,7 +3118,7 @@
 <translation id="6644512095122093795">パスワードを保存できるようにする</translation>
 <translation id="2100273922101894616">自動ログイン</translation>
 <translation id="7513029293694390567">保存されている認証情報を使用してウェブサイトに自動的にログインします。この機能が無効になっている場合は、ウェブサイトにログインするときに毎回確認を求められます。</translation>
-<translation id="2330129964253841015">パスワードが危険にさらされた場合に警告する</translation>
+<translation id="6995899638241819463">パスワードが危険にさらされた場合に警告する</translation>
 <translation id="1534287762301776620">この機能は Brave Software アカウントにログインすると有効になります</translation>
 <translation id="1375321115329958930">保存したパスワード</translation>
 <translation id="152234381334907219">常に保存しない</translation>
