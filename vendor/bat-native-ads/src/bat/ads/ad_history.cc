@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/ad_history_detail.h"
+#include "bat/ads/ad_history.h"
 
 #include "bat/ads/ad_content.h"
 #include "bat/ads/category_content.h"
@@ -15,27 +15,38 @@
 
 namespace ads {
 
-AdHistoryDetail::AdHistoryDetail() :
-    timestamp_in_seconds(0),
-    uuid(""),
-    ad_content(),
-    category_content() {}
+AdHistory::AdHistory()
+    : timestamp_in_seconds(0) {}
 
-AdHistoryDetail::AdHistoryDetail(const AdHistoryDetail& detail) :
-    timestamp_in_seconds(detail.timestamp_in_seconds),
-    uuid(detail.uuid),
-    ad_content(detail.ad_content),
-    category_content(detail.category_content) {}
+AdHistory::AdHistory(
+    const AdHistory& properties)
+    : timestamp_in_seconds(properties.timestamp_in_seconds),
+      uuid(properties.uuid),
+      ad_content(properties.ad_content),
+      category_content(properties.category_content) {}
 
-AdHistoryDetail::~AdHistoryDetail() = default;
+AdHistory::~AdHistory() = default;
 
-const std::string AdHistoryDetail::ToJson() const {
+bool AdHistory::operator==(
+    const AdHistory& rhs) const {
+  return timestamp_in_seconds == rhs.timestamp_in_seconds &&
+      uuid == rhs.uuid &&
+      ad_content == rhs.ad_content &&
+      category_content == rhs.category_content;
+}
+
+bool AdHistory::operator!=(
+    const AdHistory& rhs) const {
+  return !(*this == rhs);
+}
+
+const std::string AdHistory::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
   return json;
 }
 
-Result AdHistoryDetail::FromJson(
+Result AdHistory::FromJson(
     const std::string& json,
     std::string* error_description) {
   rapidjson::Document document;
@@ -82,20 +93,20 @@ Result AdHistoryDetail::FromJson(
   return SUCCESS;
 }
 
-void SaveToJson(JsonWriter* writer, const AdHistoryDetail& detail) {
+void SaveToJson(JsonWriter* writer, const AdHistory& history) {
   writer->StartObject();
 
   writer->String("timestamp_in_seconds");
-  writer->Uint64(detail.timestamp_in_seconds);
+  writer->Uint64(history.timestamp_in_seconds);
 
   writer->String("uuid");
-  writer->String(detail.uuid.c_str());
+  writer->String(history.uuid.c_str());
 
   writer->String("ad_content");
-  SaveToJson(writer, detail.ad_content);
+  SaveToJson(writer, history.ad_content);
 
   writer->String("category_content");
-  SaveToJson(writer, detail.category_content);
+  SaveToJson(writer, history.category_content);
 
   writer->EndObject();
 }

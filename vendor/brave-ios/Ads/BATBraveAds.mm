@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <limits>
+
 #import "BATBraveAds.h"
 #import "BATAdsNotification.h"
 #import "BATBraveLedger.h"
@@ -260,20 +262,21 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
 - (NSArray<NSDate *> *)getAdsHistoryDates
 {
   if (![self isAdsServiceRunning]) { return @[]; }
-  const auto history = ads->GetAdsHistory(ads::AdsHistoryFilterType::kNone);
+  const uint64_t from_timestamp = 0;
+  const uint64_t to_timestamp = std::numeric_limits<uint64_t>::max();
+
+  const auto history = ads->GetAdsHistory(ads::AdsHistory::FilterType::kNone,
+      ads::AdsHistory::SortType::kNone, from_timestamp, to_timestamp);
+
   const auto dates = [[NSMutableArray<NSDate *> alloc] init];
-  for (auto it = history.begin(); it != history.end(); ++it) {
-    for (auto& item : it->second) {
-      for (auto& detail : item.details) {
-        const auto date = [NSDate dateWithTimeIntervalSince1970:
-                           detail.timestamp_in_seconds];
-        [dates addObject:date];
-      }
-    }
+  for (const auto& entry : history.entries) {
+    const auto date = [NSDate dateWithTimeIntervalSince1970:
+        entry.timestamp_in_seconds];
+    [dates addObject:date];
   }
+
   return dates;
 }
-
 - (BOOL)hasViewedAdsInPreviousCycle
 {
   const auto calendar = [NSCalendar calendarWithIdentifier:NSCalendarIdentifierGregorian];

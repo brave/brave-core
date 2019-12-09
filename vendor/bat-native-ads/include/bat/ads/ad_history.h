@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_AD_HISTORY_DETAIL_H_
-#define BAT_ADS_AD_HISTORY_DETAIL_H_
+#ifndef BAT_ADS_AD_HISTORY_H_
+#define BAT_ADS_AD_HISTORY_H_
 
 #include <stdint.h>
 #include <string>
@@ -16,10 +16,17 @@
 
 namespace ads {
 
-struct ADS_EXPORT AdHistoryDetail {
-  AdHistoryDetail();
-  explicit AdHistoryDetail(const AdHistoryDetail& detail);
-  ~AdHistoryDetail();
+struct ADS_EXPORT AdHistory {
+  AdHistory();
+  AdHistory(
+      const AdHistory& properties);
+  ~AdHistory();
+
+  bool operator==(
+      const AdHistory& rhs) const;
+
+  bool operator!=(
+      const AdHistory& rhs) const;
 
   const std::string ToJson() const;
   Result FromJson(
@@ -34,4 +41,4 @@ struct ADS_EXPORT AdHistoryDetail {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_AD_HISTORY_DETAIL_H_
+#endif  // BAT_ADS_AD_HISTORY_H_

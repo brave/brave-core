@@ -99,7 +99,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void CheckImported(const base::ListValue* args);
   void GetAdsData(const base::ListValue* args);
   void GetAdsHistory(const base::ListValue* args);
-  void OnGetAdsHistory(const base::ListValue& ads_history);
+  void OnGetAdsHistory(const base::ListValue& history);
   void ToggleAdThumbUp(const base::ListValue* args);
   void OnToggleAdThumbUp(const std::string& id, int action);
   void ToggleAdThumbDown(const base::ListValue* args);
@@ -277,6 +277,12 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   DISALLOW_COPY_AND_ASSIGN(RewardsDOMHandler);
 };
+
+namespace {
+
+const int kDaysOfAdsHistory = 7;
+
+}  // namespace
 
 RewardsDOMHandler::RewardsDOMHandler() : weak_factory_(this) {}
 
@@ -1125,8 +1131,17 @@ void RewardsDOMHandler::GetAdsHistory(const base::ListValue* args) {
     return;
   }
 
-  ads_service_->GetAdsHistory(base::Bind(&RewardsDOMHandler::OnGetAdsHistory,
-                                         weak_factory_.GetWeakPtr()));
+  const base::Time to_time = base::Time::Now();
+  const uint64_t to_timestamp = to_time.ToDoubleT();
+
+  const base::Time from_time = to_time -
+      base::TimeDelta::FromDays(kDaysOfAdsHistory - 1);
+  const base::Time from_time_local_midnight = from_time.LocalMidnight();
+  const uint64_t from_timestamp = from_time_local_midnight.ToDoubleT();
+
+  ads_service_->GetAdsHistory(from_timestamp, to_timestamp,
+      base::BindOnce(&RewardsDOMHandler::OnGetAdsHistory,
+          weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::OnGetAdsHistory(const base::ListValue& ads_history) {

@@ -79,7 +79,7 @@ interface BatAds {
   GetNotificationForId(string id) => (string notification_info);
   OnNotificationEvent(string id, int32 type);
   RemoveAllHistory() => (int32 result);
-  GetAdsHistory() => (map<uint64, array<string>> ads_history);
+  GetAdsHistory(uint64 from_timestamp, uint64 to_timestamp) => (string history);
   ToggleAdThumbUp(string id, string creative_set_id, int32 action) => (string id, int32 action);
   ToggleAdThumbDown(string id, string creative_set_id, int32 action) => (string id, int32 action);
   ToggleAdOptInAction(string category, int32 action) => (string id, int32 action);

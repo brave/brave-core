@@ -83,6 +83,8 @@ class BatAdsImpl :
       RemoveAllHistoryCallback callback) override;
 
   void GetAdsHistory(
+      const uint64_t from_timestamp,
+      const uint64_t to_timestamp,
       GetAdsHistoryCallback callback) override;
 
   void ToggleAdThumbUp(

@@ -149,7 +149,7 @@ export const onAdsData = (adsData: Rewards.AdsData) => action(types.ON_ADS_DATA,
 
 export const getAdsHistory = () => action(types.GET_ADS_HISTORY)
 
-export const onAdsHistory = (adsHistory: Rewards.AdsHistoryData[]) => action(types.ON_ADS_HISTORY, {
+export const onAdsHistory = (adsHistory: Rewards.AdsHistory[]) => action(types.ON_ADS_HISTORY, {
   adsHistory
 })
 

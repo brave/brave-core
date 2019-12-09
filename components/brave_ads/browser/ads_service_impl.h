@@ -93,6 +93,8 @@ class AdsServiceImpl : public AdsService,
       const SessionID& tab_id) override;
 
   void GetAdsHistory(
+      const uint64_t from_timestamp,
+      const uint64_t to_timestamp,
       OnGetAdsHistoryCallback callback) override;
 
   void ToggleAdThumbUp(
@@ -212,7 +214,7 @@ class AdsServiceImpl : public AdsService,
 
   void OnGetAdsHistory(
       OnGetAdsHistoryCallback callback,
-      const base::flat_map<uint64_t, std::vector<std::string>>& json);
+      const std::string& json);
 
   void OnRemoveAllHistory(
       const int32_t result);

@@ -13,32 +13,46 @@
 namespace ads {
 
 AdContent::AdContent() :
-    uuid(""),
-    creative_set_id(""),
-    brand(""),
-    brand_info(""),
-    brand_logo(""),
-    brand_display_url(""),
-    brand_url(""),
     like_action(AdContent::LIKE_ACTION_NONE),
     ad_action(ConfirmationType::UNKNOWN),
     saved_ad(false),
     flagged_ad(false) {}
 
-AdContent::AdContent(const AdContent& content) :
-    uuid(content.uuid),
-    creative_set_id(content.creative_set_id),
-    brand(content.brand),
-    brand_info(content.brand_info),
-    brand_logo(content.brand_logo),
-    brand_display_url(content.brand_display_url),
-    brand_url(content.brand_url),
-    like_action(content.like_action),
-    ad_action(content.ad_action),
-    saved_ad(content.saved_ad),
-    flagged_ad(content.flagged_ad) {}
+AdContent::AdContent(
+    const AdContent& properties)
+    : uuid(properties.uuid),
+      creative_set_id(properties.creative_set_id),
+      brand(properties.brand),
+      brand_info(properties.brand_info),
+      brand_logo(properties.brand_logo),
+      brand_display_url(properties.brand_display_url),
+      brand_url(properties.brand_url),
+      like_action(properties.like_action),
+      ad_action(properties.ad_action),
+      saved_ad(properties.saved_ad),
+      flagged_ad(properties.flagged_ad) {}
 
 AdContent::~AdContent() = default;
+
+bool AdContent::operator==(
+    const AdContent& rhs) const {
+  return uuid == rhs.uuid &&
+      creative_set_id == rhs.creative_set_id &&
+      brand == rhs.brand &&
+      brand_info == rhs.brand_info &&
+      brand_logo == rhs.brand_logo &&
+      brand_display_url == rhs.brand_display_url &&
+      brand_url == rhs.brand_url &&
+      like_action == rhs.like_action &&
+      ad_action == rhs.ad_action &&
+      saved_ad == rhs.saved_ad &&
+      flagged_ad == rhs.flagged_ad;
+}
+
+bool AdContent::operator!=(
+    const AdContent& rhs) const {
+  return !(*this == rhs);
+}
 
 const std::string AdContent::ToJson() const {
   std::string json;

@@ -125,7 +125,7 @@ window.cr.define('brave_rewards', function () {
     getActions().onAdsData(adsData)
   }
 
-  function adsHistory (adsHistory: Rewards.AdsHistoryData[]) {
+  function adsHistory (adsHistory: Rewards.AdsHistory[]) {
     getActions().onAdsHistory(adsHistory)
   }
 

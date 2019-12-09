@@ -19,7 +19,7 @@
 #include "base/task_runner_util.h"
 #include "base/time/time.h"
 #include "base/i18n/time_formatting.h"
-#include "bat/ads/ad_history_detail.h"
+#include "bat/ads/ad_history.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_history.h"
 #include "bat/ads/notification_info.h"
@@ -516,13 +516,16 @@ void AdsServiceImpl::OnTabClosed(
 }
 
 void AdsServiceImpl::GetAdsHistory(
+    const uint64_t from_timestamp,
+    const uint64_t to_timestamp,
     OnGetAdsHistoryCallback callback) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_->GetAdsHistory(base::BindOnce(&AdsServiceImpl::OnGetAdsHistory,
-      AsWeakPtr(), std::move(callback)));
+  bat_ads_->GetAdsHistory(from_timestamp, to_timestamp,
+      base::BindOnce(&AdsServiceImpl::OnGetAdsHistory, AsWeakPtr(),
+          std::move(callback)));
 }
 
 void AdsServiceImpl::ToggleAdThumbUp(
@@ -1032,77 +1035,64 @@ void AdsServiceImpl::OnGetAdsForCategories(
 
 void AdsServiceImpl::OnGetAdsHistory(
     OnGetAdsHistoryCallback callback,
-    const base::flat_map<uint64_t, std::vector<std::string>>& json) {
-  // Reconstitute the map of AdsHistory items from JSON
-  std::map<uint64_t, std::vector<ads::AdsHistory>> ads_history_map;
-  for (const auto& entry : json) {
-    std::vector<ads::AdsHistory> ads_history_vector;
-    for (const auto& ads_history_entry : entry.second) {
-      ads::AdsHistory ads_history;
-      ads_history.FromJson(ads_history_entry);
-      ads_history_vector.push_back(ads_history);
-    }
-    const uint64_t timestamp_in_seconds = entry.first;
-    ads_history_map[timestamp_in_seconds] = ads_history_vector;
-  }
+    const std::string& json) {
+  ads::AdsHistory ads_history;
+  ads_history.FromJson(json);
 
-  // Build the list structure required by the WebUI
-  base::ListValue ads_history_list;
+  // Build the list structure required by the webUI
   int id = 0;
+  base::ListValue list;
+  for (const auto& entry : ads_history.entries) {
+    base::DictionaryValue ad_content_dictionary;
+    ad_content_dictionary.SetKey("uuid", base::Value(entry.ad_content.uuid));
+    ad_content_dictionary.SetKey("creativeSetId",
+        base::Value(entry.ad_content.creative_set_id));
+    ad_content_dictionary.SetKey("brand", base::Value(entry.ad_content.brand));
+    ad_content_dictionary.SetKey("brandInfo",
+        base::Value(entry.ad_content.brand_info));
+    ad_content_dictionary.SetKey("brandLogo",
+        base::Value(entry.ad_content.brand_logo));
+    ad_content_dictionary.SetKey("brandDisplayUrl",
+        base::Value(entry.ad_content.brand_display_url));
+    ad_content_dictionary.SetKey("brandUrl",
+        base::Value(entry.ad_content.brand_url));
+    ad_content_dictionary.SetKey("likeAction",
+        base::Value(entry.ad_content.like_action));
+    ad_content_dictionary.SetKey(
+        "adAction", base::Value(std::string(entry.ad_content.ad_action)));
+    ad_content_dictionary.SetKey("savedAd",
+        base::Value(entry.ad_content.saved_ad));
+    ad_content_dictionary.SetKey("flaggedAd",
+        base::Value(entry.ad_content.flagged_ad));
 
-  for (const auto& entry : ads_history_map) {
-    base::DictionaryValue ads_history_dict;
-    ads_history_dict.SetKey("id", base::Value(std::to_string(id++)));
-    double timestamp_in_milliseconds = base::Time::FromDeltaSinceWindowsEpoch(
-        base::TimeDelta::FromSeconds(entry.first)).ToJsTime();
-    ads_history_dict.SetKey("timestampInMilliseconds",
-        base::Value(timestamp_in_milliseconds));
+    base::DictionaryValue category_content_dictionary;
+    category_content_dictionary.SetKey("category",
+        base::Value(entry.category_content.category));
+    category_content_dictionary.SetKey("optAction",
+        base::Value(entry.category_content.opt_action));
 
-    base::ListValue ad_history_details;
+    base::DictionaryValue ad_history_dictionary;
+    ad_history_dictionary.SetKey("id", base::Value(entry.uuid));
+    ad_history_dictionary.SetPath("adContent",
+        std::move(ad_content_dictionary));
+    ad_history_dictionary.SetPath("categoryContent",
+        std::move(category_content_dictionary));
 
-    for (const auto& ads_history_entry : entry.second) {
-      for (const auto& detail : ads_history_entry.details) {
-        base::DictionaryValue ad_content;
-        ad_content.SetKey("uuid", base::Value(detail.ad_content.uuid));
-        ad_content.SetKey("creativeSetId",
-            base::Value(detail.ad_content.creative_set_id));
-        ad_content.SetKey("brand", base::Value(detail.ad_content.brand));
-        ad_content.SetKey("brandInfo",
-            base::Value(detail.ad_content.brand_info));
-        ad_content.SetKey("brandLogo",
-            base::Value(detail.ad_content.brand_logo));
-        ad_content.SetKey("brandDisplayUrl",
-            base::Value(detail.ad_content.brand_display_url));
-        ad_content.SetKey("brandUrl", base::Value(detail.ad_content.brand_url));
-        ad_content.SetKey("likeAction",
-            base::Value(detail.ad_content.like_action));
-        ad_content.SetKey(
-            "adAction", base::Value(std::string(detail.ad_content.ad_action)));
-        ad_content.SetKey("savedAd", base::Value(detail.ad_content.saved_ad));
-        ad_content.SetKey("flaggedAd",
-            base::Value(detail.ad_content.flagged_ad));
+    base::DictionaryValue dictionary;
 
-        base::DictionaryValue category_content;
-        category_content.SetKey("category",
-            base::Value(detail.category_content.category));
-        category_content.SetKey("optAction",
-            base::Value(detail.category_content.opt_action));
+    dictionary.SetKey("id", base::Value(std::to_string(id++)));
+    auto time = base::Time::FromDoubleT(entry.timestamp_in_seconds);
+    auto js_time = time.ToJsTime();
+    dictionary.SetKey("timestampInMilliseconds", base::Value(js_time));
 
-        base::DictionaryValue ad_history_detail;
-        ad_history_detail.SetKey("id", base::Value(detail.uuid));
-        ad_history_detail.SetPath("adContent", std::move(ad_content));
-        ad_history_detail.SetPath("categoryContent",
-            std::move(category_content));
+    base::ListValue ad_history_list;
+    ad_history_list.GetList().emplace_back(std::move(ad_history_dictionary));
+    dictionary.SetPath("adDetailRows", std::move(ad_history_list));
 
-        ad_history_details.GetList().emplace_back(std::move(ad_history_detail));
-      }
-    }
-
-    ads_history_dict.SetPath("adDetailRows", std::move(ad_history_details));
-    ads_history_list.GetList().emplace_back(std::move(ads_history_dict));
+    list.GetList().emplace_back(std::move(dictionary));
   }
 
-  std::move(callback).Run(ads_history_list);
+  std::move(callback).Run(list);
 }
 
 void AdsServiceImpl::OnRemoveAllHistory(

@@ -15,11 +15,23 @@ CategoryContent::CategoryContent() :
     category(""),
     opt_action(CategoryContent::OPT_ACTION_NONE) {}
 
-CategoryContent::CategoryContent(const CategoryContent& content) :
-    category(content.category),
-    opt_action(content.opt_action) {}
+CategoryContent::CategoryContent(
+    const CategoryContent& properties)
+    : category(properties.category),
+      opt_action(properties.opt_action) {}
 
 CategoryContent::~CategoryContent() = default;
+
+bool CategoryContent::operator==(
+    const CategoryContent& rhs) const {
+  return category == rhs.category &&
+      opt_action == rhs.opt_action;
+}
+
+bool CategoryContent::operator!=(
+    const CategoryContent& rhs) const {
+  return !(*this == rhs);
+}
 
 const std::string CategoryContent::ToJson() const {
   std::string json;

@@ -28,8 +28,8 @@ class Client {
 
   void Initialize(InitializeCallback callback);
 
-  void AppendAdToAdsShownHistory(const AdHistoryDetail& ad_history_detail);
-  const std::deque<AdHistoryDetail> GetAdsShownHistory() const;
+  void AppendAdHistoryToAdsShownHistory(const AdHistory& ad_history);
+  const std::deque<AdHistory> GetAdsShownHistory() const;
   AdContent::LikeAction ToggleAdThumbUp(const std::string& id,
                                         const std::string& creative_set_id,
                                         AdContent::LikeAction action);

@@ -5,7 +5,7 @@
 
 #include "bat/ads/ads_history.h"
 
-#include "bat/ads/ad_history_detail.h"
+#include "bat/ads/ad_history.h"
 #include "bat/ads/internal/json_helper.h"
 
 #include "base/logging.h"
@@ -13,10 +13,10 @@
 namespace ads {
 
 AdsHistory::AdsHistory() :
-    details() {}
+    entries() {}
 
 AdsHistory::AdsHistory(const AdsHistory& history) :
-    details(history.details) {}
+    entries(history.entries) {}
 
 AdsHistory::~AdsHistory() = default;
 
@@ -40,14 +40,14 @@ Result AdsHistory::FromJson(
     return FAILED;
   }
 
-  if (document.HasMember("details")) {
-    for (const auto& detail : document["details"].GetArray()) {
-      AdHistoryDetail ad_history_detail;
+  if (document.HasMember("ads_history")) {
+    for (const auto& ad_history : document["ads_history"].GetArray()) {
+      AdHistory history;
       rapidjson::StringBuffer buffer;
       rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-      if (detail.Accept(writer) &&
-          ad_history_detail.FromJson(buffer.GetString()) == SUCCESS) {
-        details.push_back(ad_history_detail);
+      if (ad_history.Accept(writer) &&
+          history.FromJson(buffer.GetString()) == SUCCESS) {
+        entries.push_back(history);
       }
     }
   }
@@ -55,13 +55,15 @@ Result AdsHistory::FromJson(
   return SUCCESS;
 }
 
-void SaveToJson(JsonWriter* writer, const AdsHistory& history) {
+void SaveToJson(
+    JsonWriter* writer,
+    const AdsHistory& ads_history) {
   writer->StartObject();
 
-  writer->String("details");
+  writer->String("ads_history");
   writer->StartArray();
-  for (const auto& ad_history_detail : history.details) {
-    SaveToJson(writer, ad_history_detail);
+  for (const auto& entry : ads_history.entries) {
+    SaveToJson(writer, entry);
   }
   writer->EndArray();
 

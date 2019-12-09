@@ -14,7 +14,7 @@
 #include <memory>
 
 #include "bat/ads/ads.h"
-#include "bat/ads/ad_history_detail.h"
+#include "bat/ads/ads_history.h"
 #include "bat/ads/ad_info.h"
 #include "bat/ads/notification_event_type.h"
 #include "bat/ads/notification_info.h"
@@ -127,8 +127,12 @@ class AdsImpl : public Ads {
   void SetConfirmationsIsReady(
       const bool is_ready) override;
 
-  std::map<uint64_t, std::vector<AdsHistory>> GetAdsHistory(
-      const AdsHistoryFilterType ads_history_filter_type) override;
+  AdsHistory GetAdsHistory(
+      const AdsHistory::FilterType filter_type,
+      const AdsHistory::SortType sort_type,
+      const uint64_t from_timestamp,
+      const uint64_t to_timestamp) override;
+
   AdContent::LikeAction ToggleAdThumbUp(
       const std::string& id,
       const std::string& creative_set_id,

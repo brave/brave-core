@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-#include "bat/ads/ad_history_detail.h"
+#include "bat/ads/ad_history.h"
 #include "bat/ads/ads_client.h"
 #include "bat/ads/ads_history.h"
 #include "bat/ads/confirmation_type.h"
@@ -23,6 +23,8 @@
 #include "bat/ads/internal/static_values.h"
 #include "bat/ads/internal/time.h"
 #include "bat/ads/internal/uri_helper.h"
+#include "bat/ads/internal/filters/ads_history_filter_factory.h"
+#include "bat/ads/internal/filters/ads_history_date_range_filter.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rule.h"
 #include "bat/ads/internal/frequency_capping/frequency_capping.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/per_hour_frequency_cap.h"
@@ -32,7 +34,7 @@
 #include "bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/ads_per_day_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/ads_per_hour_frequency_cap.h"
-#include "bat/ads/internal/filters/ad_history_confirmation_filter.h"
+#include "bat/ads/internal/sorts/ads_history_sort_factory.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
@@ -58,8 +60,6 @@ using std::placeholders::_2;
 using std::placeholders::_3;
 
 namespace {
-
-const int kDaysOfAdsHistory = 7;
 
 const char kCategoryDelimiter = '-';
 
@@ -551,42 +551,34 @@ void AdsImpl::SetConfirmationsIsReady(
   is_confirmations_ready_ = is_ready;
 }
 
-std::map<uint64_t, std::vector<AdsHistory>> AdsImpl::GetAdsHistory(
-    const AdsHistoryFilterType ads_history_filter_type) {
-  std::map<uint64_t, std::vector<AdsHistory>> ads_history;
-  base::Time now = base::Time::Now().LocalMidnight();
+AdsHistory AdsImpl::GetAdsHistory(
+    const AdsHistory::FilterType filter_type,
+    const AdsHistory::SortType sort_type,
+    const uint64_t from_timestamp,
+    const uint64_t to_timestamp) {
+  auto history = client_->GetAdsShownHistory();
 
-  auto ad_history_details = client_->GetAdsShownHistory();
-
-  std::unique_ptr<AdHistoryFilter> ad_history_filter;
-  switch (ads_history_filter_type) {
-    case AdsHistoryFilterType::kNone: {
-      break;
-    }
-    case AdsHistoryFilterType::kConfirmationType: {
-      ad_history_filter = std::make_unique<AdHistoryConfirmationFilter>();
-      break;
-    }
+  const auto date_range_filter = std::make_unique<AdsHistoryDateRangeFilter>();
+  DCHECK(date_range_filter);
+  if (date_range_filter) {
+    history = date_range_filter->Apply(history, from_timestamp, to_timestamp);
   }
 
-  if (ad_history_filter) {
-    ad_history_details = ad_history_filter->ApplyFilter(ad_history_details);
+  const auto filter = AdsHistoryFilterFactory::Build(filter_type);
+  DCHECK(filter);
+  if (filter) {
+    history = filter->Apply(history);
   }
 
-  for (auto& detail_item : ad_history_details) {
-    auto history_item = std::make_unique<AdsHistory>();
-    history_item->details.push_back(detail_item);
+  const auto sort = AdsHistorySortFactory::Build(sort_type);
+  DCHECK(sort);
+  if (sort) {
+    history = sort->Apply(history);
+  }
 
-    base::Time timestamp =
-        Time::FromDoubleT(detail_item.timestamp_in_seconds).LocalMidnight();
-    base::TimeDelta time_delta = now - timestamp;
-    if (time_delta.InDays() >= kDaysOfAdsHistory) {
-      break;
-    }
-
-    const uint64_t timestamp_in_seconds =
-        static_cast<uint64_t>((timestamp - base::Time()).InSeconds());
-    ads_history[timestamp_in_seconds].push_back(*history_item);
+  AdsHistory ads_history;
+  for (const auto& entry : history) {
+    ads_history.entries.push_back(entry);
   }
 
   return ads_history;
@@ -2098,21 +2090,20 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
 void AdsImpl::GenerateAdsHistoryEntry(
     const NotificationInfo& notification_info,
     const ConfirmationType& confirmation_type) {
-  auto ad_history_detail = std::make_unique<AdHistoryDetail>();
-  ad_history_detail->timestamp_in_seconds = Time::NowInSeconds();
-  ad_history_detail->uuid = base::GenerateGUID();
-  ad_history_detail->ad_content.uuid = notification_info.uuid;
-  ad_history_detail->ad_content.creative_set_id =
-      notification_info.creative_set_id;
-  ad_history_detail->ad_content.brand = notification_info.advertiser;
-  ad_history_detail->ad_content.brand_info = notification_info.text;
-  ad_history_detail->ad_content.brand_display_url =
+  auto ad_history = std::make_unique<AdHistory>();
+  ad_history->timestamp_in_seconds = Time::NowInSeconds();
+  ad_history->uuid = base::GenerateGUID();
+  ad_history->ad_content.uuid = notification_info.uuid;
+  ad_history->ad_content.creative_set_id = notification_info.creative_set_id;
+  ad_history->ad_content.brand = notification_info.advertiser;
+  ad_history->ad_content.brand_info = notification_info.text;
+  ad_history->ad_content.brand_display_url =
       GetDisplayUrl(notification_info.url);
-  ad_history_detail->ad_content.brand_url = notification_info.url;
-  ad_history_detail->ad_content.ad_action = confirmation_type;
-  ad_history_detail->category_content.category = notification_info.category;
+  ad_history->ad_content.brand_url = notification_info.url;
+  ad_history->ad_content.ad_action = confirmation_type;
+  ad_history->category_content.category = notification_info.category;
 
-  client_->AppendAdToAdsShownHistory(*ad_history_detail);
+  client_->AppendAdHistoryToAdsShownHistory(*ad_history);
 }
 
 bool AdsImpl::IsNotificationFromSampleCatalog(
