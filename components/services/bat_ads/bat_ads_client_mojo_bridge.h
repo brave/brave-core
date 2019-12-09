@@ -12,13 +12,15 @@
 
 #include "bat/ads/ads_client.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_associated_remote.h"
 
 namespace bat_ads {
 
 class BatAdsClientMojoBridge : public ads::AdsClient {
  public:
   explicit BatAdsClientMojoBridge(
-      mojom::BatAdsClientAssociatedPtrInfo client_info);
+      mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info);
 
   ~BatAdsClientMojoBridge() override;
 
@@ -117,7 +119,7 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
  private:
   bool connected() const;
 
-  mojom::BatAdsClientAssociatedPtr bat_ads_client_;
+  mojo::AssociatedRemote<mojom::BatAdsClient> bat_ads_client_;
 
   DISALLOW_COPY_AND_ASSIGN(BatAdsClientMojoBridge);
 };

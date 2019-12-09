@@ -41,7 +41,8 @@ ads::CategoryContent::OptAction ToAdsOptAction(
 
 }  // namespace
 
-BatAdsImpl::BatAdsImpl(mojom::BatAdsClientAssociatedPtrInfo client_info) :
+BatAdsImpl::BatAdsImpl(
+    mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info) :
     bat_ads_client_mojo_proxy_(new BatAdsClientMojoBridge(
         std::move(client_info))),
     ads_(ads::Ads::CreateInstance(bat_ads_client_mojo_proxy_.get())) {

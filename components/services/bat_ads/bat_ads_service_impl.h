@@ -10,10 +10,12 @@
 #include <memory>
 
 #include "base/memory/ref_counted.h"
-#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
-#include "mojo/public/cpp/bindings/binding_set.h"
-#include "services/service_manager/public/cpp/service_context_ref.h"
 #include "bat/ads/ads.h"
+#include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
+#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
+#include "mojo/public/cpp/bindings/pending_associated_remote.h"
+#include "mojo/public/cpp/bindings/unique_associated_receiver_set.h"
+#include "services/service_manager/public/cpp/service_context_ref.h"
 
 namespace bat_ads {
 
@@ -26,8 +28,8 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
 
   // Overridden from BatAdsService:
   void Create(
-      mojom::BatAdsClientAssociatedPtrInfo client_info,
-      mojom::BatAdsAssociatedRequest bat_ads,
+      mojo::PendingAssociatedRemote<mojom::BatAdsClient> client_info,
+      mojo::PendingAssociatedReceiver<mojom::BatAds> bat_ads,
       CreateCallback callback) override;
 
   void SetEnvironment(
@@ -45,6 +47,7 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
  private:
   const std::unique_ptr<service_manager::ServiceContextRef> service_ref_;
   bool is_initialized_;
+  mojo::UniqueAssociatedReceiverSet<mojom::BatAds> receivers_;
 
   DISALLOW_COPY_AND_ASSIGN(BatAdsServiceImpl);
 };
