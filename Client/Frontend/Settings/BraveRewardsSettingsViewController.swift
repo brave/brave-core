@@ -8,6 +8,7 @@ import Shared
 import BraveShared
 import BraveRewards
 import BraveRewardsUI
+import DeviceCheck
 
 private extension ContributionRetry {
     var name: String {
@@ -77,6 +78,8 @@ class BraveRewardsSettingsViewController: TableViewController {
                             self.rewards.ledger.rewardsInternalInfo { info in
                                 guard let info = info else { return }
                                 var supportInfo = """
+                                Device Status: \(DCDevice.current.isSupported ? "Supported" : "Not supported")
+                                Enrollment State: \(DeviceCheckClient.isDeviceEnrolled() ? "Enrolled" : "Not enrolled")
                                 Key Info Seed: \(info.isKeyInfoSeedValid ? "Valid" : "Invalid")
                                 Wallet Payment ID: \(info.paymentId)
                                 Persona ID: \(info.personaId)
