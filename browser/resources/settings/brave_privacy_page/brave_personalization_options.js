@@ -57,6 +57,9 @@ Polymer({
     this.addWebUIListener('remote-debugging-enabled-changed', (enabled) => {
       this.remoteDebuggingEnabled_ = enabled
     })
+    this.addWebUIListener('p3a-enabled-changed', (enabled) => {
+      this.p3aEnabled_ = enabled
+    })
   },
 
   /**

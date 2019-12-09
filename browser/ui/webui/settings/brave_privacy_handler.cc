@@ -30,6 +30,10 @@ BravePrivacyHandler::BravePrivacyHandler() {
       kRemoteDebuggingEnabled,
       base::Bind(&BravePrivacyHandler::OnRemoteDebuggingEnabledChanged,
                  base::Unretained(this)));
+  local_state_change_registrar_.Add(
+      brave::kP3AEnabled,
+      base::Bind(&BravePrivacyHandler::OnP3AEnabledChanged,
+                 base::Unretained(this)));
 }
 
 BravePrivacyHandler::~BravePrivacyHandler() {
@@ -117,6 +121,15 @@ void BravePrivacyHandler::GetP3AEnabled(const base::ListValue* args) {
 
   AllowJavascript();
   ResolveJavascriptCallback(args->GetList()[0].Clone(), base::Value(enabled));
+}
+
+void BravePrivacyHandler::OnP3AEnabledChanged() {
+  if (IsJavascriptAllowed()) {
+    PrefService* local_state = g_browser_process->local_state();
+    bool enabled = local_state->GetBoolean(brave::kP3AEnabled);
+
+    FireWebUIListener("p3a-enabled-changed", base::Value(enabled));
+  }
 }
 
 void BravePrivacyHandler::SetRemoteDebuggingEnabled(

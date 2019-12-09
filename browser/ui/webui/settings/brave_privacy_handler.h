@@ -33,6 +33,7 @@ class BravePrivacyHandler : public settings::SettingsPageUIHandler {
 
   void SetP3AEnabled(const base::ListValue* args);
   void GetP3AEnabled(const base::ListValue* args);
+  void OnP3AEnabledChanged();
 
   void SetRemoteDebuggingEnabled(const base::ListValue* args);
   void GetRemoteDebuggingEnabled(const base::ListValue* args);
