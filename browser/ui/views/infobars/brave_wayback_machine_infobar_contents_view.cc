@@ -39,6 +39,8 @@ namespace {
 // IDs of the colors to use for infobar elements.
 constexpr int kInfoBarLabelBackgroundColor = ThemeProperties::COLOR_INFOBAR;
 constexpr int kInfoBarLabelTextColor = ThemeProperties::COLOR_BOOKMARK_TEXT;
+
+constexpr int kSadFolderSize = 22;
 }  // namespace
 
 BraveWaybackMachineInfoBarContentsView::BraveWaybackMachineInfoBarContentsView(
@@ -64,7 +66,7 @@ void BraveWaybackMachineInfoBarContentsView::OnThemeChanged() {
     label->SetBackgroundColor(background_color);
     label->SetEnabledColor(text_color);
   }
-  sad_folder_->SetImage(gfx::CreateVectorIcon(kSadFolderIcon, 20, text_color));
+  sad_folder_->SetImage(gfx::CreateVectorIcon(kSadFolderIcon, text_color));
   separator_->SetColor(text_color);
 }
 
@@ -163,6 +165,8 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
   AddChildView(label);
 
   sad_folder_ = new views::ImageView();
+  sad_folder_->SetPreferredSize(gfx::Size(kSadFolderSize, kSadFolderSize));
+  sad_folder_->SizeToPreferredSize();
   views_visible_after_checking_.push_back(sad_folder_);
   sad_folder_->SetProperty(views::kMarginsKey, gfx::Insets(12, 10));
   AddChildView(sad_folder_);
