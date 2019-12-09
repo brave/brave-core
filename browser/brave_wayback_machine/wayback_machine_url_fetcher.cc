@@ -9,6 +9,7 @@
 
 #include "base/bind.h"
 #include "base/json/json_reader.h"
+#include "brave/common/url_constants.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -17,8 +18,6 @@
 
 namespace {
 
-constexpr char kWaybackQueryURL[] =
-    "https://archive.org/wayback/available?url=";
 constexpr int kMaxBodySize = 1024 * 1024;
 
 const net::NetworkTrafficAnnotationTag& GetNetworkTrafficAnnotationTag() {
