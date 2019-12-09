@@ -1,5 +1,5 @@
 import("//extensions/buildflags/buildflags.gni")
 
 declare_args() {
-  enable_brave_wayback_machine = true
+  enable_brave_wayback_machine = is_win || is_mac || is_desktop_linux
 }
