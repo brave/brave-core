@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "بدون هیچ محافظ حریم خصوصی و امنیتی این سایت را مرور می‌کنید.",
-    "description": "Message telling the user that shields are disabled"
+    "message": "بدون محافظ حریم خصوصی و امنیتی Brave این سایت را مرور می‌کنید. آیا این سایت با فعال بودن «سپر امنیتی» به‌درستی کار نمی‌کند؟",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "گزارش خرابی سایت",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "موارد مسدودشده",

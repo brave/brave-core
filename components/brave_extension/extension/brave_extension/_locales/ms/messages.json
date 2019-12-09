@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Anda sedang melayari laman ini tanpa sebarang perlindungan privasi dan sekuriti.",
-    "description": "Message telling the user that shields are disabled"
+    "message": "Anda melayari laman ini tanpa perlindungan privasi dan keselamatan Brave. Adakah ia tidak berfungsi dengan betul dengan Shields dihidupkan?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Laporkan laman yang  terputus-putus",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "Item disekat",

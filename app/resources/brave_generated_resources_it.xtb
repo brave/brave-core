@@ -3,6 +3,7 @@
 <translationbundle lang="it">
 <translation id="3333887201479867589">Ricompense Brave</translation>
 <translation id="7942180974165298215">Ad Block Brave</translation>
+<translation id="4615489450165434530">Segnala un sito non funzionante</translation>
 <translation id="6406506848690869874">Sincronizzazione</translation>
 <translation id="5655621391922317800">Portafogli di Criptovalute</translation>
 <translation id="2445484935443597917">Crea un nuovo profilo</translation>
@@ -39,6 +40,8 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="2814998458708016836">Utilizzare la barra degli indirizzi ampia</translation>
 <translation id="6123134130710658846">Nascondi pulsante Brave Rewards</translation>
 <translation id="7635711399568194460">Nascondi il pulsante Brave Rewards nella barra degli indirizzi quando Brave Rewards non è abilitato</translation>
+<translation id="1520361618554057102">Mostra sempre i segnalibri nella pagina Nuova Scheda</translation>
+<translation id="5802665280774361839">Mostra i suggerimenti del completamento automatico nella barra dell'indirizzo</translation>
 <translation id="7965178729203412357">Nuova Identità Tor</translation>
 <translation id="8511502469534942133">Nuova Connessione Tor per questo Sito</translation>
 <translation id="8784924142044142231">Esci da Tor</translation>
@@ -68,6 +71,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="9075744464571452108">Riconoscimento del dispositivo</translation>
 <translation id="3570081523466826008">Aggiorna le connessioni a HTTPS</translation>
 <translation id="4824468494729001999">Script di blocco</translation>
+<translation id="8526521192921341404">Permetti i login di Google</translation>
 <translation id="863171915776379000">Consenti accessi a Facebook e post incorporati</translation>
 <translation id="5165042248369837294">Consenti tweet incorporati su Twitter</translation>
 <translation id="958971637207126733">Permetti i post integrati di LinkedIn</translation>
@@ -84,6 +88,7 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="5825943197137337319">Solamente l'interfaccia pubblica predefinita</translation>
 <translation id="1689062823386843231">Disabilita UDP senza proxy</translation>
 <translation id="8502234992433094996">Utilizza i servizi Google per i messaggi push</translation>
+<translation id="3888068426966679906">Debug remoto</translation>
 <translation id="6645631466045614531">Accedi a Sincronizzazione tramite</translation>
 <translation id="1807246157184219062">Chiaro</translation>
 <translation id="2414886740292270097">Scuro</translation>
@@ -153,4 +158,13 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="4394049700291259645">Disabilita</translation>
 <translation id="6469509880167172749">Invia automaticamente analisi di prodotto completamente private a Brave</translation>
 <translation id="7090566321964540749">Queste informazioni anonime consentono a Brave di stimare solo l'utilizzo complessivo di alcune funzioni.</translation>
+<translation id="1200956479506699688">Adesso i portafogli di criptovaluta sono disponibili su Brave. Non puoi usare MetaMask e i portafogli di criptovaluta in contemporanea.</translation>
+<translation id="7583735190612229830">Configura i portafogli di criptovaluta per interagire con questa app e con altre app simili.</translation>
+<translation id="8337117349965899723">Usa i portafogli di criptovalute</translation>
+<translation id="5756155765711979898">Usa MetaMask</translation>
+<translation id="6754134632841262799">CONFIGURAZIONE</translation>
+<translation id="191143826155037518">Brave ti viene fornito con la <ph name="BEGIN_LINK_MPL">&amp;lt;a target="_blank" href="$1"&amp;gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&amp;lt;/a&amp;gt;</ph> (MPL) e include <ph name="BEGIN_LINK_OSS">&amp;lt;a target="_blank" href="$2"&amp;gt;</ph>software open source<ph name="END_LINK_OSS">&amp;lt;/a&amp;gt;</ph> protetto da altre licenze.
+        Puoi consultare <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&amp;lt;a target="_blank" href="$3"&amp;gt;</ph>le istruzioni per scaricare e compilare direttamente<ph name="END_LINK_BUILD_INSTRUCTIONS">&amp;lt;/a&amp;gt;</ph><ph name="BEGIN_LINK_SOURCE_CODE">&amp;lt;a target="_blank" href="$4"&amp;gt;</ph>il codice sorgente specifico usato per creare questa copia<ph name="END_LINK_SOURCE_CODE">&amp;lt;/a&amp;gt;</ph></translation>
+<translation id="4474155171896946103">Aggiungi tutte le schede ai Preferiti...</translation>
+<translation id="2336228925368920074">Aggiungi tutte le schede ai Preferiti...</translation>
 </translationbundle>

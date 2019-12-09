@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Bina-browse mo ang site na ito nang walang anumang proteksyon sa privacy at seguridad.",
-    "description": "Message telling the user that shields are disabled"
+    "message": "Bina-browse mo ang site na ito nang  walang proteksyon sa privacy at seguridad ng Brave. Hindi ba ito gumagana nang tama nang naka-on ang Shields?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Mag-ulat ng sirang site",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "May mga na-block na item",

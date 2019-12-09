@@ -3,6 +3,7 @@
 <translationbundle lang="fr">
 <translation id="3333887201479867589">Récompenses Brave</translation>
 <translation id="7942180974165298215">Bloqueur de publicité Brave</translation>
+<translation id="4615489450165434530">Signaler une panne du site</translation>
 <translation id="6406506848690869874">Synchroniser</translation>
 <translation id="5655621391922317800">Portefeuilles de cryptomonnaies</translation>
 <translation id="2445484935443597917">Créer un profil</translation>
@@ -39,6 +40,8 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="2814998458708016836">Utiliser une barre d'adresse large</translation>
 <translation id="6123134130710658846">Masquer le bouton Brave Rewards</translation>
 <translation id="7635711399568194460">Masque le bouton Brave Rewards dans la barre d’emplacement lorsque Brave Rewards n’est pas activé.</translation>
+<translation id="1520361618554057102">Toujours afficher les signets sur la page « Nouvel onglet »</translation>
+<translation id="5802665280774361839">Afficher la saisie automatique dans la barre d'adresse</translation>
 <translation id="7965178729203412357">Nouvelle identité Tor</translation>
 <translation id="8511502469534942133">Nouvelle connexion Tor pour ce site</translation>
 <translation id="8784924142044142231">Quitter Tor</translation>
@@ -68,6 +71,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="9075744464571452108">Reconnaissance de périphérique</translation>
 <translation id="3570081523466826008">Mettre à niveau les connexions vers HTTPS</translation>
 <translation id="4824468494729001999">Bloquer les scripts</translation>
+<translation id="8526521192921341404">Autoriser les connexions Google</translation>
 <translation id="863171915776379000">Autoriser les connexions Facebook et les publications intégrées</translation>
 <translation id="5165042248369837294">Autoriser les tweets intégrés de Twitter</translation>
 <translation id="958971637207126733">Autoriser les publications LinkedIn intégrées</translation>
@@ -84,6 +88,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="5825943197137337319">Interface publique par défaut uniquement</translation>
 <translation id="1689062823386843231">Désactiver l'UDP pas en proxy</translation>
 <translation id="8502234992433094996">Utilisez les services Google pour les messages push</translation>
+<translation id="3888068426966679906">Débogage à distance</translation>
 <translation id="6645631466045614531">Accédez à la synchronisation via</translation>
 <translation id="1807246157184219062">Léger</translation>
 <translation id="2414886740292270097">Sombre</translation>
@@ -153,4 +158,13 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="4394049700291259645">Désactiver</translation>
 <translation id="6469509880167172749">Envoyez automatiquement des analyses de produits entièrement privées à Brave</translation>
 <translation id="7090566321964540749">Ces informations anonymes permettent seulement à Brave d'estimer l'utilisation globale de certaines fonctionnalités.</translation>
+<translation id="1200956479506699688">Les portefeuilles de crypto-monnaies sont maintenant disponibles chez Brave. Vous ne pouvez pas utiliser MetaMask et les portefeuilles de crypto-monnaies en même temps.</translation>
+<translation id="7583735190612229830">Configurez les portefeuilles de crypto-monnaies pour interagir avec cette application et d'autres applications similaires.</translation>
+<translation id="8337117349965899723">Utiliser des portefeuilles de crypto-monnaies</translation>
+<translation id="5756155765711979898">Utiliser MetaMask</translation>
+<translation id="6754134632841262799">CONFIGURATION</translation>
+<translation id="191143826155037518">Brave est mis à votre disposition sous la <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>licence publique Mozilla 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) et comprend <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>des logiciels libres<ph name="END_LINK_OSS">&lt;/a&gt;</ph> sous une variété d'autres licences.
+        Vous pouvez lire <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>des instructions sur la façon de télécharger et de compiler vous-même<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> le code source spécifique <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>utilisé pour créer cette copie<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Ajouter tous les onglets aux favoris...</translation>
+<translation id="2336228925368920074">Ajouter tous les onglets aux favoris...</translation>
 </translationbundle>

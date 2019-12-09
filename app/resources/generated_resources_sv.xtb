@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Nedladdningen misslyckades: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Nedladdningen avbröts: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">Nedladdningen är klar: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">Nedladdningen är klar: <ph name="FILE_NAME"/>. Stega till nedladdningsfältet med Skift+F6.</translation>
 <translation id="2743387203779672305">Kopiera till Urklipp</translation>
 <translation id="883911313571074303">Kommentera bild</translation>
 <translation id="6291953229176937411">&amp;Visa i Finder</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Certifikatets signaturvärde</translation>
 <translation id="4104163789986725820">E&amp;xportera...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">serialNumber</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">MAIL</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">businessCategory</translation>
-<translation id="6561757256477115975">jurisdictionLocalityName</translation>
-<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
-<translation id="8904360804686555987">jurisdictionCountryName</translation>
-<translation id="8718098216622210506">STREET</translation>
-<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">PKCS #1 RSA-kryptering</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 med RSA-kryptering</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 med RSA-kryptering</translation>
@@ -1366,6 +1349,9 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="813082847718468539">Visa information om webbplatsen</translation>
 <translation id="5233638681132016545">Ny flik</translation>
 <translation id="3915280005470252504">Röstsökning</translation>
+<translation id="8968766641738584599">Spara kortet</translation>
+<translation id="2408018932941436077">Kortet sparas</translation>
+<translation id="7970882136539140748">Det går inte att spara kortet just nu</translation>
 <translation id="1593926297800505364">Spara betalningsmetod</translation>
 <translation id="2473195200299095979">Översätt den här sidan</translation>
 <translation id="5408750356094797285">Zoomar: <ph name="PERCENT"/></translation>
@@ -1758,7 +1744,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1234808891666923653">ServiceWorker-funktioner</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Cachelagring</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Appar</translation>
 <translation id="542872847390508405">Du surfar som gäst</translation>
 <translation id="537813040452600081">Sidor du visar i det här fönstret syns inte i webbläsarhistoriken och de lämnar inga andra spår efter sig (till exempel cookies) på datorn när du har loggat ut till. Filer som du laddar ned och bokmärken du skapar sparas inte.</translation>
@@ -2102,7 +2087,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="2650609753175229582"><ph name="URL"/> vill spela upp skyddat innehåll. Enhetens identitet verifieras av Brave Software och kan öppnas av webbplatsen.</translation>
 <translation id="1746402432151920942">Identifierare för skyddad media</translation>
 <translation id="1322046419516468189">Visa och hantera sparade lösenord i <ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Lösenordet sparades. Visa och hantera sparade lösenord i <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Brave Software-konto</translation>
 <translation id="3785727820640310185">Sparade lösenord för den här webbplatsen</translation>
@@ -2505,9 +2489,6 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="5186185447130319458">Privat</translation>
 <translation id="7643842463591647490">{0,plural, =1{# öppet fönster}other{# öppna fönster}}</translation>
 <translation id="2579188629646253712">Avsluta privat</translation>
-<translation id="479219453908726046">Fyll i enkät</translation>
-<translation id="7581273696622423628">Fyll i enkät</translation>
-<translation id="4406504596603350105">Din feedback är viktig för oss.</translation>
 <translation id="4349828822184870497">Användbart</translation>
 <translation id="6876469544038980967">Inte användbart</translation>
 <translation id="5286194356314741248">Skannar</translation>
@@ -2708,7 +2689,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="1316495628809031177">Synkroniseringen har pausats</translation>
 <translation id="7786207843293321886">Avsluta gästsession</translation>
 <translation id="2335111415680198280">{0,plural, =1{Stäng # fönster}other{Stäng # fönster}}</translation>
-<translation id="2329597144923131178">Logga in så blir bokmärken, historik, lösenord med mera tillgängligt på alla dina enheter.</translation>
+<translation id="2329597144923131178">Logga in så att bokmärken, historik, lösenord med mera blir tillgängliga på alla dina enheter.</translation>
 <translation id="7029809446516969842">Lösenord</translation>
 <translation id="984275831282074731">Betalningsmetoder</translation>
 <translation id="8473863474539038330">Adresser och annat</translation>
@@ -3137,7 +3118,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="6644512095122093795">Erbjud att spara lösenord</translation>
 <translation id="2100273922101894616">Automatisk inloggning</translation>
 <translation id="7513029293694390567">Logga in automatiskt på webbplatser med hjälp av lagrade inloggningsuppgifter. När funktionen är inaktiverad måste du bekräfta inloggningen varje gång du besöker en webbplats.</translation>
-<translation id="2330129964253841015">En varning visas om lösenord har läckt ut</translation>
+<translation id="6995899638241819463">En varning visas om lösenord har läckt ut</translation>
 <translation id="1534287762301776620">Den här funktionen är aktiverad när du loggar in på Brave Software-kontot</translation>
 <translation id="1375321115329958930">Sparade lösenord</translation>
 <translation id="152234381334907219">Aldrig sparat</translation>
@@ -3721,7 +3702,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="2603115962224169880">Rensa upp på datorn</translation>
 <translation id="2336381494582898602">Powerwash</translation>
 <translation id="4275830172053184480">Starta om enheten</translation>
-<translation id="6555432686520421228">Ta bort alla användarkonton och återställ <ph name="IDS_SHORT_PRODUCT_NAME"/>-enheten så blir den som ny.</translation>
+<translation id="6555432686520421228">Ta bort alla användarkonton och återställ <ph name="IDS_SHORT_PRODUCT_NAME"/>-enheten så att den blir som ny.</translation>
 <translation id="4055023634561256217">En omstart krävs innan enheten kan återställas med Powerwash.</translation>
 <translation id="1506061864768559482">Sökmotor</translation>
 <translation id="7807067443225230855">Sök och Assistent</translation>
@@ -4303,7 +4284,7 @@ Spara nyckelfilen på ett säkert ställe. Den behövs om du ska skapa nya versi
 <translation id="3971764089670057203">Fingeravtryck på den här säkerhetsnyckeln</translation>
 <translation id="5995884201513800557">Fortsätt att trycka på säkerhetsnyckeln för att spara fingeravtrycket.</translation>
 <translation id="1750172676754093297">Det går inte att lagra fingeravtryck på säkerhetsnyckeln</translation>
-<translation id="3341703758641437857">Tillåt åtkomst till webbadresser i filen</translation>
+<translation id="3341703758641437857">Tillåt åtkomst via file:-protokollet</translation>
 <translation id="9003647077635673607">Tillåt på alla webbplatser</translation>
 <translation id="698524779381350301">Tillåt åtkomst automatiskt på följande webbplatser</translation>
 <translation id="2915102088417824677">Visa aktivitetslogg</translation>
