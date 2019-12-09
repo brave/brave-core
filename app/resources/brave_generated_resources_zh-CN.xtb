@@ -3,6 +3,7 @@
 <translationbundle lang="zh-CN">
 <translation id="3333887201479867589">Brave 奖励</translation>
 <translation id="7942180974165298215">Brave 广告拦截</translation>
+<translation id="4615489450165434530">报告损坏的网站</translation>
 <translation id="6406506848690869874">同步</translation>
 <translation id="5655621391922317800">Crypto Wallets</translation>
 <translation id="2445484935443597917">创建新的个人资料</translation>
@@ -39,6 +40,8 @@
 <translation id="2814998458708016836">使用宽地址栏</translation>
 <translation id="6123134130710658846">隐藏 Brave 奖励按钮</translation>
 <translation id="7635711399568194460">未启用 Brave 奖励时，隐藏位置栏中的 Brave 奖励按钮</translation>
+<translation id="1520361618554057102">始终在“新标签”页面显示书签</translation>
+<translation id="5802665280774361839">在地址栏中显示自动完成</translation>
 <translation id="7965178729203412357">新 Tor 身份</translation>
 <translation id="8511502469534942133">为此站点新建的 Tor 连接</translation>
 <translation id="8784924142044142231">退出 Tor</translation>
@@ -68,6 +71,7 @@
 <translation id="9075744464571452108">设备识别</translation>
 <translation id="3570081523466826008">升级为 HTTPS 连接</translation>
 <translation id="4824468494729001999">拦截脚本</translation>
+<translation id="8526521192921341404">允许 Google 登录</translation>
 <translation id="863171915776379000">Facebook 登录和嵌入式帖子可用</translation>
 <translation id="5165042248369837294">允许 Twitter 嵌入推文</translation>
 <translation id="958971637207126733">允许 LinkedIn 嵌入帖子</translation>
@@ -84,6 +88,7 @@
 <translation id="5825943197137337319">仅限默认公共接口</translation>
 <translation id="1689062823386843231">禁用无代理的 UDP</translation>
 <translation id="8502234992433094996">为推送消息使用 Google Services</translation>
+<translation id="3888068426966679906">远程调试</translation>
 <translation id="6645631466045614531">通过以下方式访问同步：</translation>
 <translation id="1807246157184219062">亮</translation>
 <translation id="2414886740292270097">暗</translation>
@@ -153,4 +158,13 @@
 <translation id="4394049700291259645">停用</translation>
 <translation id="6469509880167172749">将完全的隐私产品分析信息自动发送给 Brave Software</translation>
 <translation id="7090566321964540749">该匿名信息仅使 Brave 能够估计某些功能的整体使用情况。</translation>
+<translation id="1200956479506699688">Crypto Wallets 现已在 Brave 上提供。您不能同时使用 MetaMask Wallets 和 Crypto Wallets。</translation>
+<translation id="7583735190612229830">设置 Crypto Wallets 以与此应用程序以及其他类似的应用程序进行交互。</translation>
+<translation id="8337117349965899723">使用 Crypto Wallets</translation>
+<translation id="5756155765711979898">使用 MetaMask</translation>
+<translation id="6754134632841262799">设定</translation>
+<translation id="191143826155037518">根据 <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL)，您可以使用 Brave（这里有 <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>根据各种其他许可获得的开源软件）<ph name="END_LINK_OSS">&lt;/a&gt;</ph>。
+        您可以自己阅读一下 <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>有关如何自行下载和构建<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph>用来创建此副本的特定 <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>源代码的说明<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>。</translation>
+<translation id="4474155171896946103">为所有标签页添加书签...</translation>
+<translation id="2336228925368920074">为所有标签页添加书签...</translation>
 </translationbundle>

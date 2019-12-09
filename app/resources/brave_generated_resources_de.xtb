@@ -3,6 +3,7 @@
 <translationbundle lang="de">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave Werbeblocker</translation>
+<translation id="4615489450165434530">Melden Sie eine fehlerhafte Website</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="5655621391922317800">Krypto-Wallets</translation>
 <translation id="2445484935443597917">Neues Profil erstellen</translation>
@@ -39,6 +40,8 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="2814998458708016836">Breite Adressleiste verwenden</translation>
 <translation id="6123134130710658846">Brave-Rewards-Button ausblenden</translation>
 <translation id="7635711399568194460">Blendet den Brave-Rewards-Button in der Adressleiste aus, wenn Brave Rewards deaktiviert ist</translation>
+<translation id="1520361618554057102">In einem neu geöffneten Tab stets Lesezeichen anzeigen</translation>
+<translation id="5802665280774361839">Autovervollständigung in der Adressleiste anzeigen</translation>
 <translation id="7965178729203412357">Neue Tor-Identität</translation>
 <translation id="8511502469534942133">Neue Tor-Verbindung für diese Seite</translation>
 <translation id="8784924142044142231">Tor verlassen</translation>
@@ -68,6 +71,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="9075744464571452108">Identifizierung des Geräts (Fingerprinting)</translation>
 <translation id="3570081523466826008">Verbindungen auf HTTPS upgraden</translation>
 <translation id="4824468494729001999">Skripte blockieren</translation>
+<translation id="8526521192921341404">Google-Logins erlauben</translation>
 <translation id="863171915776379000">Facebook-Anmeldungen und eingebettete Posts erlauben</translation>
 <translation id="5165042248369837294">Eingebettete Twitter-Nachrichten erlauben</translation>
 <translation id="958971637207126733">In LinkedIn eingebettete Beiträge erlauben</translation>
@@ -84,6 +88,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="5825943197137337319">Nur die voreingestellte öffentliche Benutzerschnittstelle</translation>
 <translation id="1689062823386843231">Nicht-proxisiertes UDP deaktivieren</translation>
 <translation id="8502234992433094996">Verwenden Sie Google Services für Push-Nachrichtenübermittlung</translation>
+<translation id="3888068426966679906">Fern-Fehlerbehebung</translation>
 <translation id="6645631466045614531">Zugriff auf Sync via</translation>
 <translation id="1807246157184219062">Hell</translation>
 <translation id="2414886740292270097">Dunkel</translation>
@@ -153,6 +158,13 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="4394049700291259645">Deaktivieren</translation>
 <translation id="6469509880167172749">Automatisch vollständig private Produktanalysen an Brave senden</translation>
 <translation id="7090566321964540749">Mit dieser anonymen Information kann Brave nur die Gesamtnutzung bestimmter Funktionen einschätzen.</translation>
+<translation id="1200956479506699688">Krypto-Wallets ist jetzt innerhalb von Brave verfügbar. Sie können MetaMask und Krypto-Wallets allerdings nicht gleichzeitig nutzen.</translation>
+<translation id="7583735190612229830">Richten Sie Krypto-Wallets ein, um mit dieser und ähnlichen Apps zu interagieren.</translation>
+<translation id="8337117349965899723">Krypto-Wallets nutzen</translation>
+<translation id="5756155765711979898">MetaMask nutzen</translation>
+<translation id="6754134632841262799">EINRICHTUNG</translation>
 <translation id="191143826155037518">Brave wird Ihnen unter der <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) und verwendet weitere <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>Open Source Software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> die unter verschiedenen anderen Lizenzen veröffentlicht wurden.
         Lesen Sie die <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>Anleitung<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> , wie man das Brave-Projekt herunterlädt und selbst aus dem  <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>Quellcode<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph> zu erstellen.</translation>
+<translation id="4474155171896946103">Alle Tabs als Lesezeichen speichern...</translation>
+<translation id="2336228925368920074">Alle Tabs als Lesezeichen speichern...</translation>
 </translationbundle>

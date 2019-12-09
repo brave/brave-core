@@ -3,6 +3,7 @@
 <translationbundle lang="lt">
 <translation id="3333887201479867589">„Brave Rewards“</translation>
 <translation id="7942180974165298215">„Brave Ad Block“</translation>
+<translation id="4615489450165434530">Pranešti apie neveikiančią svetainę</translation>
 <translation id="6406506848690869874">Sinchronizavimas</translation>
 <translation id="5655621391922317800">Kriptovaliutų piniginės</translation>
 <translation id="2445484935443597917">Kurti naują profilį</translation>
@@ -39,6 +40,8 @@
 <translation id="2814998458708016836">Naudoti plačią adreso juostą</translation>
 <translation id="6123134130710658846">Slėpti mygtuką „Brave Rewards“</translation>
 <translation id="7635711399568194460">Jei funkcija „Brave Rewards“ neįjungta, buvimo vietos juostoje esantį mygtuką „Brave Rewards“ paslėpti</translation>
+<translation id="1520361618554057102">Visada rodyti žymes naujos kortelės puslapyje</translation>
+<translation id="5802665280774361839">Rodyti automatinį užbaigimą adreso juostoje</translation>
 <translation id="7965178729203412357">Nauja „Tor“ tapatybė</translation>
 <translation id="8511502469534942133">Nauja „Tor“ jungtis šioje svetainėje</translation>
 <translation id="8784924142044142231">Išeiti iš „Tor“</translation>
@@ -68,6 +71,7 @@
 <translation id="9075744464571452108">Įrenginio atpažinimas</translation>
 <translation id="3570081523466826008">Pakeisti ryšius į HTTPS</translation>
 <translation id="4824468494729001999">Blokuoti scenarijus</translation>
+<translation id="8526521192921341404">Leisti naudoti „Google“ prisijungimo duomenis</translation>
 <translation id="863171915776379000">Leisti rodyti prisijungimo per „Facebook“ formą ir įterptuosius įrašus</translation>
 <translation id="5165042248369837294">Leisti rodyti įterptąsias „Twitter“ žinutes</translation>
 <translation id="958971637207126733">Leisti rodyti įterptuosius „LinkedIn“ įrašus</translation>
@@ -84,6 +88,7 @@
 <translation id="5825943197137337319">Tik numatytoji vieša sąsaja</translation>
 <translation id="1689062823386843231">Išjungti neįgaliotąjį UDP</translation>
 <translation id="8502234992433094996">Naudoti „Google“ paslaugas su „Push“ pranešimais</translation>
+<translation id="3888068426966679906">Nuotolinis derinimas</translation>
 <translation id="6645631466045614531">Eiti į Sync per</translation>
 <translation id="1807246157184219062">Šviesu</translation>
 <translation id="2414886740292270097">Tamsu</translation>
@@ -153,4 +158,13 @@
 <translation id="4394049700291259645">Neleisti</translation>
 <translation id="6469509880167172749">Automatiškai siųskite visiškai privačią produktų analizę „Brave“</translation>
 <translation id="7090566321964540749">Ši anoniminė informacija leidžia „Brave“ įvertinti tik bendrą tam tikrų funkcijų naudojimą.</translation>
+<translation id="1200956479506699688">„Brave“ dabar pasiekiamos kriptovaliutų piniginės. Negalite vienu metu naudoti „MetaMask“ ir kriptovaliutų piniginių.</translation>
+<translation id="7583735190612229830">Nustatykite, kad kriptovaliutų piniginės sąveikautų su šia programa ir kitomis panašiomis programomis.</translation>
+<translation id="8337117349965899723">Naudoti kriptovaliutų pinigines</translation>
+<translation id="5756155765711979898">Naudoti „MetaMask“</translation>
+<translation id="6754134632841262799">SĄRANKA</translation>
+<translation id="191143826155037518">„Brave“ jums pasiekiama pagal <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>„Mozilla“ viešąją licenciją 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) ir apima <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>atvirojo kodo programinę įrangą<ph name="END_LINK_OSS">&lt;/a&gt;</ph> pagal įvairias kitas licencijas.
+        Galite perskaityti <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instrukcijas, kaip atsisiųsti ir sau susikurti<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> specialų <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>šaltinio kodą, naudojamą šiai kopijai sukurti<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Pažymėti visus skirtukus...</translation>
+<translation id="2336228925368920074">Žymėti visus skirtukus...</translation>
 </translationbundle>

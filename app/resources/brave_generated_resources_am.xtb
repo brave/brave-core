@@ -3,6 +3,7 @@
 <translationbundle lang="am">
 <translation id="3333887201479867589">ናይ Brave ሽልማታት</translation>
 <translation id="7942180974165298215">ብሬቭ ኣድ ብሎክ</translation>
+<translation id="4615489450165434530">የተሰበረ ገጽን ሪፖርት ያድርጉ</translation>
 <translation id="6406506848690869874">አመሳስል</translation>
 <translation id="5655621391922317800">Crypto ዋሌቶች</translation>
 <translation id="2445484935443597917">አዲስ መገለጫ ፍጠር</translation>
@@ -39,6 +40,8 @@
 <translation id="2814998458708016836">ሰፊ የአድራሻ አሞሌን ተጠቀም</translation>
 <translation id="6123134130710658846">የ Brave Rewards መምረጫ ቁልፍ ደብቅ</translation>
 <translation id="7635711399568194460">Brave Rewards  ካልበራ በአድራሻው አሞሌ ላይ ያለው የ Brave Rewards መጫኛ ይደበቃል።</translation>
+<translation id="1520361618554057102">ምንጊዜም በአዲስ የትር ገጽ ላይ አዳዲስ ዕልባቶችን አሳይ</translation>
+<translation id="5802665280774361839">በአድራሻ አሞሌው ውስጥ ራስ-ሰር ማጠናቀቅን አሳይ</translation>
 <translation id="7965178729203412357">አዲስ ቶር ተለይቷል</translation>
 <translation id="8511502469534942133">ለዚህ ድረ ገጽ አዲስ የ Tor ትስስር</translation>
 <translation id="8784924142044142231">ከቶር ይውጡ</translation>
@@ -68,6 +71,7 @@
 <translation id="9075744464571452108">መሳሪያ ማወቂያ</translation>
 <translation id="3570081523466826008">ትስስሩን ወደ HTTPS አሳድግ</translation>
 <translation id="4824468494729001999">ስክሪፕቶችን አግድ</translation>
+<translation id="8526521192921341404">የ Google በመለያ መግቢያዎችን ፍቀድ</translation>
 <translation id="863171915776379000">የ Facebook መግቢያዎች እና አካቶዎችን ፍቀድ</translation>
 <translation id="5165042248369837294">በTwitter የተከተተ ትዊት ይፍቀዱ</translation>
 <translation id="958971637207126733">LinkedIn ያካተታቸውን ልጥፎችን ፍቀድ</translation>
@@ -84,6 +88,7 @@
 <translation id="5825943197137337319">የጋራ ዲፎልት አጠቃቀም መጋራት ብቻ</translation>
 <translation id="1689062823386843231">ሮክሲ የሌለው UDP ያጥፉ</translation>
 <translation id="8502234992433094996">ለተጫን የምልእክት አገልግሎት የ Google አገልግሎቶችን ተጠቀም</translation>
+<translation id="3888068426966679906">ከርቀት ማረም</translation>
 <translation id="6645631466045614531">ሲንክን ያግኙ በ</translation>
 <translation id="1807246157184219062">ብርሀን</translation>
 <translation id="2414886740292270097">ጨለማ</translation>
@@ -153,4 +158,13 @@
 <translation id="4394049700291259645">አሰናክል</translation>
 <translation id="6469509880167172749">የግል ውጤቶችን ትንተና ወደ Brave በራስ ሰር መንገድ ላክ</translation>
 <translation id="7090566321964540749">ይህ ስም አልባ መረጃ Brave የተወሰኑ ባህርያትን አጠቃላይ አጠቃቀም እንዲገምት ብቻ ያስችለዋል።</translation>
+<translation id="1200956479506699688">የ Crypto ዋሌቶች አሁን በ Brave ውስጥ ይገኛሉ። MetaMask እና የ Crypto ዋሌቶችን በተመሳሳይ ጊዜ መጠቀም አይችሉም።</translation>
+<translation id="7583735190612229830">ከዚህ መተግበሪያና ከሌሎች ተመሳሳይ መተግበሪያዎች ጋር ለመገናኘት የ Crypto ዋሌቶችን አዘጋጅ።</translation>
+<translation id="8337117349965899723">የ Crypto ዋሌቶችን ተጠቀም</translation>
+<translation id="5756155765711979898">MetaMask ተጠቀም</translation>
+<translation id="6754134632841262799">አዘጋጅ</translation>
+<translation id="191143826155037518">Brave ለእርስዎ ዝግጁ የተደረገው በ <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla ሕዝባዊ ፈቃድ 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) ሲሆን በውስጡም <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>ምንጫቸው ክፍት የሆኑ ሶፍትዌር<ph name="END_LINK_OSS">&lt;/a&gt;</ph> በሌሎች የተለያዩ ፈቃዶች ስር ያካትታል።
+        <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>ይህን ኮፒ ለመፍጠር የዋለውን የተወሰነ f<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph>  መነሻ ኮድን  <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph> እንዴት ማውረድና ለራስዎ እንዴት መገንባት እንደሚችሉ መመሪያዎችን ማንበብ ይችላሉ<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>።</translation>
+<translation id="4474155171896946103">ለሁሉም ትሮች ዕልባት አብጅ...</translation>
+<translation id="2336228925368920074">ለሁሉም ትሮች ዕልባት አብጅ...</translation>
 </translationbundle>

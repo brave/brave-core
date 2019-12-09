@@ -3,6 +3,7 @@
 <translationbundle lang="lv">
 <translation id="3333887201479867589">Brave balvas</translation>
 <translation id="7942180974165298215">Brave reklāmu bloķētājs</translation>
+<translation id="4615489450165434530">Ziņot par bojātu vietni</translation>
 <translation id="6406506848690869874">Sinhronizācija</translation>
 <translation id="5655621391922317800">Kripto maki</translation>
 <translation id="2445484935443597917">Izveidot jaunu profilu</translation>
@@ -39,6 +40,8 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="2814998458708016836">Izmantot platu adreses joslu</translation>
 <translation id="6123134130710658846">Slēpt Brave balvu pogu</translation>
 <translation id="7635711399568194460">Slēpj Brave balvu pogu atrašanās vietas joslā, kad Brave balvas nav iespējotas</translation>
+<translation id="1520361618554057102">Vienmēr rādīt grāmatzīmes jaunas cilnes lapā</translation>
+<translation id="5802665280774361839">Parādīt automātiskās pabeigšanas ierakstus adreses joslā</translation>
 <translation id="7965178729203412357">Jauna Tor identitāte</translation>
 <translation id="8511502469534942133">Jauns Tor savienojums šai vietnei</translation>
 <translation id="8784924142044142231">Iziet no Tor</translation>
@@ -68,6 +71,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="9075744464571452108">Ierīces atpazīšana</translation>
 <translation id="3570081523466826008">Jaunināt savienojumus uz HTTPS</translation>
 <translation id="4824468494729001999">Bloķēt skriptus</translation>
+<translation id="8526521192921341404">Atļaut Google pieteikšanos</translation>
 <translation id="863171915776379000">Atļaut Facebook pieteikšanos un iegultās ziņas</translation>
 <translation id="5165042248369837294">Atļaut Twitter iegultos tvītus</translation>
 <translation id="958971637207126733">Atļaut LinkedIn iegultās ziņas</translation>
@@ -84,6 +88,7 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="5825943197137337319">Tikai noklusējuma publiskais interfeiss</translation>
 <translation id="1689062823386843231">Atspējot UDP protokolu, kam netiek izmantots starpniekserveris</translation>
 <translation id="8502234992433094996">Informatīvajiem paziņojumiem lietot Google pakalpojumus</translation>
+<translation id="3888068426966679906">Attāla atkļūdošana</translation>
 <translation id="6645631466045614531">Piekļūt pakalpojumam Sync, izmantojot</translation>
 <translation id="1807246157184219062">Gaišs</translation>
 <translation id="2414886740292270097">Tumšs</translation>
@@ -153,4 +158,13 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="4394049700291259645">Atspējot</translation>
 <translation id="6469509880167172749">Automātiski nosūtīt pilnīgi privātu produktu analīzi Brave serveriem</translation>
 <translation id="7090566321964540749">Izmantojot anonīmo informāciju, Brave var tikai novērtēt konkrētu funkciju vispārējo lietojumu.</translation>
+<translation id="1200956479506699688">Tagad Brave ir pieejami kripto maki. Jūs nevarat vienlaikus izmantot MetaMask un kripto makus.</translation>
+<translation id="7583735190612229830">Iestatiet kripto makus, lai tie mijiedarbotos ar šo lietotni un citām tai līdzīgām lietotnēm.</translation>
+<translation id="8337117349965899723">Izmantot kripto makus</translation>
+<translation id="5756155765711979898">Izmantot MetaMask</translation>
+<translation id="6754134632841262799">Iestatīšana</translation>
+<translation id="191143826155037518">Brave pieejamu padarījusi <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0 (Mozilla publiskā licence 2.0)<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) un tā ietver <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>atklātā pirmkoda programmatūras<ph name="END_LINK_OSS">&lt;/a&gt;</ph> ar daudzām citām licencēm.
+        Varat izlasīt <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>norādījumus un uzzināt, kā pašam izveidot<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> the specific <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>pirmkodu, kas izmantots šī eksemplāra izveidošanai<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Saglabāt visas cilnes kā grāmatzīmes...</translation>
+<translation id="2336228925368920074">Saglabāt visas cilnes kā grāmatzīmes...</translation>
 </translationbundle>

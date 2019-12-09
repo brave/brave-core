@@ -3,6 +3,7 @@
 <translationbundle lang="el">
 <translation id="3333887201479867589">Ανταμοιβές Brave</translation>
 <translation id="7942180974165298215">Αποκλεισμός Διαφήμισης Brave</translation>
+<translation id="4615489450165434530">Αναφέρετε Μη Λειτουργούντα Ιστότοπο</translation>
 <translation id="6406506848690869874">Συγχρονισμός</translation>
 <translation id="5655621391922317800">Κρυπτο-Πορτοφόλια</translation>
 <translation id="2445484935443597917">Δημιουργία νέου προφίλ</translation>
@@ -39,6 +40,8 @@
 <translation id="2814998458708016836">Χρησιμοποιήστε φαρδιά γραμμή διευθύνσεων</translation>
 <translation id="6123134130710658846">Απόκρυψη πλήκτρου Ανταμοιβών Brave</translation>
 <translation id="7635711399568194460">Απόκρυψη του πλήκτρου Ανταμοιβών Brave στη γραμμή τοποθεσίας όταν οι Ανταμοιβές Brave δεν είναι ενεργοποιημένες</translation>
+<translation id="1520361618554057102">Να εμφανίζονται πάντα σελιδοδείκτες στη σελίδα "Νέα Καρτέλα"</translation>
+<translation id="5802665280774361839">Εμφάνιση αυτόματης συμπλήρωσης στη γραμμή διευθύνσεων</translation>
 <translation id="7965178729203412357">Νέα Ταυτότητα Tor</translation>
 <translation id="8511502469534942133">Νέα Σύνδεση Tor Γι' Αυτήν Την Ιστοσελίδα</translation>
 <translation id="8784924142044142231">Έξοδος από Tor</translation>
@@ -68,6 +71,7 @@
 <translation id="9075744464571452108">Αναγνώριση συσκευής</translation>
 <translation id="3570081523466826008">Αναβάθμιση συνδέσεων σε HTTPS</translation>
 <translation id="4824468494729001999">Αποκλεισμός διαλόγων</translation>
+<translation id="8526521192921341404">Να επιτρέπονται οι συνδέσεις Google</translation>
 <translation id="863171915776379000">Επιτρέψτε σύνδεση με Facebook και ενσωματωμένες αναρτήσεις</translation>
 <translation id="5165042248369837294">Επιτρέψτε στο Twitter ενσωματωμένα tweet</translation>
 <translation id="958971637207126733">Να επιτρέπονται οι ενσωματωμένες αναρτήσεις LinkedIn</translation>
@@ -84,6 +88,7 @@
 <translation id="5825943197137337319">Μόνο προεπιλεγμένη δημόσια διεπαφή</translation>
 <translation id="1689062823386843231">Απενεργοποίηση UDP χωρίς διαμεσολάβηση</translation>
 <translation id="8502234992433094996">Χρησιμοποιήστε τις Υπηρεσίες Google για Μηνύματα Push</translation>
+<translation id="3888068426966679906">Εντοπισμός σφαλμάτων από απόσταση</translation>
 <translation id="6645631466045614531">Πρόσβαση Συγχρονισμού μέσω</translation>
 <translation id="1807246157184219062">Ελαφρύ</translation>
 <translation id="2414886740292270097">Σκούρο</translation>
@@ -153,4 +158,13 @@
 <translation id="4394049700291259645">Απενεργοποίηση</translation>
 <translation id="6469509880167172749">Στείλτε αυτόματα εντελώς εμπιστευτική ανάλυση προϊόντος στο Brave</translation>
 <translation id="7090566321964540749">Αυτή η ανώνυμη πληροφορία επιτρέπει στο Brave να εκτιμήσει μόνο τη συνολική χρήση ορισμένων χαρακτηριστικών.</translation>
+<translation id="1200956479506699688">Τα Crypto Wallets είναι τώρα διαθέσιμα στο Brave. Δεν μπορείτε να χρησιμοποιείστε ταυτόχρονα MetaMask και Crypto Wallets.</translation>
+<translation id="7583735190612229830">Ρυθμίστε τα Crypto Wallets για να αλληλεπιδράσετε με αυτήν την εφαρμογή και άλλες παρόμοιες.</translation>
+<translation id="8337117349965899723">Χρησιμοποιήστε Crypto Wallets</translation>
+<translation id="5756155765711979898">Χρησιμοποιήστε MetaMask</translation>
+<translation id="6754134632841262799">ΡΥΘΜΙΣΗ</translation>
+<translation id="191143826155037518">Το Brave είναι διαθέσιμο σε εσάς κάτω από το <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) and includes <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> υπό διάφορες άλλες άδειες.
+Μπορείτε να διαβάσετε <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>οδηγίες σχετικά με τον τρόπο λήψης και κατασκευής για εσάς<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> the specific <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>source code used to create this copy<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Δημιουργία σελιδοδείκτη για όλες τις καρτέλες...</translation>
+<translation id="2336228925368920074">Δημιουργία σελιδοδείκτη για όλες τις καρτέλες...</translation>
 </translationbundle>

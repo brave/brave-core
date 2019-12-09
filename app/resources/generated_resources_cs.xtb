@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Stažení se nezdařilo: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Stahování zrušeno: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">Stažení bylo dokončeno: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">Stažení bylo dokončeno: <ph name="FILE_NAME"/>. Stisknutím kombinace kláves Shift+F6 přejdete na lištu se staženými soubory.</translation>
 <translation id="2743387203779672305">Zkopírovat do schránky</translation>
 <translation id="883911313571074303">Přidat k obrázku poznámku</translation>
 <translation id="6291953229176937411">Zobrazit ve &amp;službě Finder</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Hodnota podpisu certifikátu</translation>
 <translation id="4104163789986725820">E&amp;xport...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">sériovéČíslo</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">POŠTA</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">Kategoriefirmy</translation>
-<translation id="6561757256477115975">JménoLokalityjurisdikce</translation>
-<translation id="7150038968052501583">JménoStátuNeboRegionujurisdikce</translation>
-<translation id="8904360804686555987">JménoZemějurisdikce</translation>
-<translation id="8718098216622210506">ULICE</translation>
-<translation id="6969275223369931223">PSČ</translation>
 <translation id="5434065355175441495">Šifrování PKCS #1 RSA</translation>
 <translation id="1221024147024329929">Šifrování PKCS #1 MD2 s RSA</translation>
 <translation id="1640283014264083726">Šifrování PKCS #1 MD4 s RSA</translation>
@@ -1366,6 +1349,9 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="813082847718468539">Zobrazit informace o stránkách</translation>
 <translation id="5233638681132016545">Nová karta</translation>
 <translation id="3915280005470252504">Vyhledávat hlasem</translation>
+<translation id="8968766641738584599">Uložit kartu</translation>
+<translation id="2408018932941436077">Ukládání karty</translation>
+<translation id="7970882136539140748">Kartu v tuto chvíli nelze uložit</translation>
 <translation id="1593926297800505364">Uložit platební metodu</translation>
 <translation id="2473195200299095979">Přeložit tuto stránku</translation>
 <translation id="5408750356094797285">Lupa: <ph name="PERCENT"/></translation>
@@ -1757,7 +1743,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Cache Storage</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Aplikace</translation>
 <translation id="542872847390508405">Prohlížíte si web jako host</translation>
 <translation id="537813040452600081">Stránky, které otevřete v tomto okně, nebudou uvedeny v historii prohlížeče a po odhlášení v počítači nezanechají žádné stopy, např. soubory cookie. Zachovány nezůstanou ani stažené soubory či vytvořené záložky.</translation>
@@ -2099,7 +2084,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="2650609753175229582"><ph name="URL"/> chce přehrávat chráněný obsah. Brave Software ověří identitu vašeho zařízení a tento web k ní může získat přístup.</translation>
 <translation id="1746402432151920942">Identifikátor chráněného média</translation>
 <translation id="1322046419516468189">K zobrazení a správě uložených hesel můžete použít svůj <ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Heslo bylo uloženo. K zobrazení a správě uložených hesel můžete použít svůj <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Účet Brave Software</translation>
 <translation id="3785727820640310185">Uložená hesla pro tento web</translation>
@@ -2502,9 +2486,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="5186185447130319458">Soukromé</translation>
 <translation id="7643842463591647490">{0,plural, =1{# otevřené okno}few{# otevřená okna}many{# otevřeného okna}other{# otevřených oken}}</translation>
 <translation id="2579188629646253712">Ukončit Soukromý režim</translation>
-<translation id="479219453908726046">Zúčastnit se průzkumu</translation>
-<translation id="7581273696622423628">Zúčastnit se průzkumu</translation>
-<translation id="4406504596603350105">Vaše zpětná vazba je pro nás důležitá.</translation>
 <translation id="4349828822184870497">Užitečné</translation>
 <translation id="6876469544038980967">Neužitečné</translation>
 <translation id="5286194356314741248">Skenování</translation>
@@ -3132,7 +3113,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="6644512095122093795">Nabídnout uložení hesel</translation>
 <translation id="2100273922101894616">Přihlásit se automaticky</translation>
 <translation id="7513029293694390567">Přihlašovat se na weby automaticky pomocí uložených identifikačních údajů. Když je tato funkce vypnutá, budete před každým přihlášením na web požádáni o potvrzení.</translation>
-<translation id="2330129964253841015">Upozorňovat v případě ohrožení hesel</translation>
+<translation id="6995899638241819463">Upozorňovat v případě ohrožení hesel</translation>
 <translation id="1534287762301776620">Když se přihlásíte k účtu Brave Software, je tato funkce zapnutá</translation>
 <translation id="1375321115329958930">Uložená hesla</translation>
 <translation id="152234381334907219">Neuloženo</translation>

@@ -3,6 +3,7 @@
 <translationbundle lang="pt-BR">
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="7942180974165298215">Bloqueador de Anúncios Brave</translation>
+<translation id="4615489450165434530">Relatar Site Quebrado</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="5655621391922317800">Carteiras Cripto</translation>
 <translation id="2445484935443597917">Criar um novo perfil</translation>
@@ -39,6 +40,8 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="2814998458708016836">Usar barra de endereços larga</translation>
 <translation id="6123134130710658846">Ocultar botão Recompensas do Brave</translation>
 <translation id="7635711399568194460">Oculta o botão Recompensas do Brave na barra de localização quando as Recompensas do Brave não estiverem habilitadas</translation>
+<translation id="1520361618554057102">Sempre exibir marcadores na página Nova Guia</translation>
+<translation id="5802665280774361839">Exibir preenchimento automático na barra de endereço</translation>
 <translation id="7965178729203412357">Nova Identidade Tor</translation>
 <translation id="8511502469534942133">Nova Conexão Tor para Este Site</translation>
 <translation id="8784924142044142231">Sair do Tor</translation>
@@ -68,6 +71,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="9075744464571452108">Reconhecimento de dispositivo</translation>
 <translation id="3570081523466826008">Fazer upgrade das conexões para HTTPS</translation>
 <translation id="4824468494729001999">Bloquear scripts</translation>
+<translation id="8526521192921341404">Permitir logins do Google</translation>
 <translation id="863171915776379000">Permitir logins do Facebook e publicações incorporadas</translation>
 <translation id="5165042248369837294">Permitir tuítes incorporados do Twitter</translation>
 <translation id="958971637207126733">Permitir postagens incorporadas no LinkedIn</translation>
@@ -84,6 +88,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="5825943197137337319">Apenas interface pública padrão</translation>
 <translation id="1689062823386843231">Desativar UDP não proxy</translation>
 <translation id="8502234992433094996">Use os serviços do Google para envio de mensagens push</translation>
+<translation id="3888068426966679906">Depuração remota</translation>
 <translation id="6645631466045614531">Acessar o Sync via</translation>
 <translation id="1807246157184219062">Claro</translation>
 <translation id="2414886740292270097">Escuro</translation>
@@ -153,4 +158,13 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="4394049700291259645">Desativar</translation>
 <translation id="6469509880167172749">Envie automaticamente análises de produtos completamente privadas para o Brave</translation>
 <translation id="7090566321964540749">Estas informações anônimas permitem ao Brave estimar o uso geral de determinados recursos.</translation>
+<translation id="1200956479506699688">O recurso de Carteiras Criptografadas já está disponível no Brave. Você não pode usar MetaMask e Carteiras Criptografadas ao mesmo tempo.</translation>
+<translation id="7583735190612229830">Defina Carteiras Criptografadas para interagir com este aplicativo e outros como ele.</translation>
+<translation id="8337117349965899723">Usar Carteiras Criptografadas</translation>
+<translation id="5756155765711979898">Usar MetaMask</translation>
+<translation id="6754134632841262799">DEFINIR</translation>
+<translation id="191143826155037518">O Brave é disponibilizado para você sob a <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Licença Pública da Mozilla 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) e inclui <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>software de código aberto<ph name="END_LINK_OSS">&lt;/a&gt;</ph> sob uma variedade de outras licenças.
+        Você pode ler <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instruções sobre como baixar e criar para você mesmo<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> o <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>código fonte específico usado para criar esta cópia<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Adicionar todas as guias aos favoritos...</translation>
+<translation id="2336228925368920074">Adicionar todas as guias aos favoritos...</translation>
 </translationbundle>

@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Jūs pārlūkojat šo vietni bez privātuma un drošības aizsardzības.",
-    "description": "Message telling the user that shields are disabled"
+    "message": "Jūs pārskatāt šo vietni bez Brave privātuma un drošības aizsardzības. Vai ar ieslēgtu aizsardzību tā nedarbojas pareizi?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Ziņot par bojātu vietni",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "Vienumi bloķēti",

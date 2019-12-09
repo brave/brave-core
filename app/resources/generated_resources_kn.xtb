@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">ಡೌನ್‌ಲೋಡ್‌ ವಿಫಲಗೊಂಡಿದೆ: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">ಡೌನ್‌ಲೋಡ್ ರದ್ದುಪಡಿಸಲಾಗಿದೆ: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">ಡೌನ್‌ಲೋಡ್ ಪೂರ್ಣಗೊಂಡಿದೆ: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">ಡೌನ್‌ಲೋಡ್‌‌ ಪೂರ್ಣಗೊಂಡಿದೆ: <ph name="FILE_NAME"/>. ಡೌನ್‌ಲೋಡ್‌ ಪಟ್ಟಿಯ ಜಾಗಕ್ಕೆ ಹೋಗಲು Shift+F6 ಅನ್ನು ಒತ್ತಿ.</translation>
 <translation id="2743387203779672305">ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಿ</translation>
 <translation id="883911313571074303">ಚಿತ್ರವನ್ನು ಟಿಪ್ಪಣಿ ಮಾಡಿ</translation>
 <translation id="6291953229176937411">ಫೈಂಡರ್‌ನಲ್ಲಿ &amp;ತೋರಿಸಿ</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">ಪ್ರಮಾಣಪತ್ರ ಸಹಿ ಮೌಲ್ಯ</translation>
 <translation id="4104163789986725820">ರ&amp;ಫ್ತು...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">ಕ್ರಮ ಸಂಖ್ಯೆ</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">ಮೇಲ್</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">ವ್ಯವಹಾರ ವರ್ಗ</translation>
-<translation id="6561757256477115975">ನ್ಯಾಯಾಂಗ ವ್ಯಾಪ್ತಿಯ ಸ್ಥಳದ ಹೆಸರು</translation>
-<translation id="7150038968052501583">ನ್ಯಾಯಾಂಗ ವ್ಯಾಪ್ತಿಯ ರಾಜ್ಯ ಅಥವಾ ಪ್ರಾಂತ್ಯ ಹೆಸರು</translation>
-<translation id="8904360804686555987">ನ್ಯಾಯಾಂಗ ವ್ಯಾಪ್ತಿಯ ದೇಶದ ಹೆಸರು</translation>
-<translation id="8718098216622210506">ರಸ್ತೆ</translation>
-<translation id="6969275223369931223">ಅಂಚೆ ಕೋಡ್</translation>
 <translation id="5434065355175441495">PKCS #1 RSA ಎನ್‌ಕ್ರಿಪ್ಶನ್</translation>
 <translation id="1221024147024329929">RSA ಎನ್‌ಕ್ರಿಪ್ಶನ್‌ನೊಂದಿಗೆ PKCS #1 MD2</translation>
 <translation id="1640283014264083726">RSA ಎನ್‌ಕ್ರಿಪ್ಶನ್‌ನೊಂದಿಗೆ PKCS #1 MD4</translation>
@@ -1363,6 +1346,9 @@
 <translation id="813082847718468539">ಸೈಟ್ ಮಾಹಿತಿಯನ್ನು ವೀಕ್ಷಿಸಿ</translation>
 <translation id="5233638681132016545">ಹೊಸ ಟ್ಯಾಬ್</translation>
 <translation id="3915280005470252504">ಧ್ವನಿ ಮೂಲಕ ಹುಡುಕಿ</translation>
+<translation id="8968766641738584599">ಕಾರ್ಡ್‌ ಉಳಿಸಿ</translation>
+<translation id="2408018932941436077">ಕಾರ್ಡ್ ಅನ್ನು ಉಳಿಸಲಾಗುತ್ತಿದೆ</translation>
+<translation id="7970882136539140748">ಸದ್ಯಕ್ಕೆ ಕಾರ್ಡ್ ಅನ್ನು ಉಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ</translation>
 <translation id="1593926297800505364">ಪಾವತಿ ವಿಧಾನವನ್ನು ಉಳಿಸಿ</translation>
 <translation id="2473195200299095979">ಈ ಪುಟವನ್ನು ಅನುವಾದಿಸಿ</translation>
 <translation id="5408750356094797285">ಝೂಮ್: <ph name="PERCENT"/></translation>
@@ -1755,7 +1741,6 @@
 <translation id="1234808891666923653">ಸೇವೆ ಕೆಲಸಗಾರರು</translation>
 <translation id="3432762828853624962">ಹಂಚಿಕೊಳ್ಳಲಾದ ಕೆಲಸಗಾರರು</translation>
 <translation id="2927017729816812676">ಕ್ಯಾಶ್ ಸಂಗ್ರಹಣೆ</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">ಆಪ್ಸ್‌‌</translation>
 <translation id="542872847390508405">ನೀವು ಒಬ್ಬ ಅತಿಥಿಯಂತೆ ಬ್ರೌಸ್ ಮಾಡುತ್ತಿರುವಿರಿ</translation>
 <translation id="537813040452600081">ನೀವು ಈ ವಿಂಡೋದಲ್ಲಿ ವೀಕ್ಷಿಸುವ ಪುಟಗಳು ಬ್ರೌಸರ್ ಇತಿಹಾಸದಲ್ಲಿ ಗೋಚರಿಸುವುದಿಲ್ಲ ಮತ್ತು ನೀವು ಸೈನ್ ಔಟ್ ಮಾಡಿದ ನಂತರ, ಅವುಗಳು ಕುಕೀಗಳಂತಹ ಇತರ ಗುರುತುಗಳನ್ನು ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಬಿಡುವುದಿಲ್ಲ. ನೀವು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿದ ಫೈಲ್‌ಗಳು ಮತ್ತು ನೀವು ರಚಿಸಿದ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ರಕ್ಷಿಸಲಾಗುವುದಿಲ್ಲ.</translation>
@@ -2098,7 +2083,6 @@
 <translation id="2650609753175229582"><ph name="URL"/>, ಸಂರಕ್ಷಿತ ವಿಷಯವನ್ನು ಪ್ಲೇ ಮಾಡಲು ಬಯಸುತ್ತದೆ. ನಿಮ್ಮ ಸಾಧನದ ಗುರುತನ್ನು Brave Software ಪರಿಶೀಲಿಸುತ್ತದೆ ಮತ್ತು ಅದಕ್ಕೆ ಈ ಸೈಟ್ ಪ್ರವೇಶ ಪಡೆಯಬಹುದು.</translation>
 <translation id="1746402432151920942">ಸಂರಕ್ಷಿಸಿದ ಮೀಡಿಯಾ ಗುರುತಿಸುವಿಕೆ</translation>
 <translation id="1322046419516468189">ಉಳಿಸಿದ ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು <ph name="SAVED_PASSWORDS_STORE"/> ನಲ್ಲಿ ವೀಕ್ಷಿಸಿ ಮತ್ತು ನಿರ್ವಹಿಸಿ</translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">ಪಾಸ್‌ವರ್ಡ್ ಉಳಿಸಲಾಗಿದೆ. ಉಳಿಸಿದ ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು ನಿಮ್ಮ <ph name="SAVED_PASSWORDS_STORE"/> ನಲ್ಲಿ ವೀಕ್ಷಿಸಿ ಮತ್ತು ನಿರ್ವಹಿಸಿ.</translation>
 <translation id="5713644099811900409">Brave Software ಖಾತೆ</translation>
 <translation id="3785727820640310185">ಈ ಸೈಟ್‌ಗಾಗಿ ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು ಉಳಿಸಲಾಗಿದೆ</translation>
@@ -2501,9 +2485,6 @@
 <translation id="5186185447130319458">ಖಾಸಗಿ</translation>
 <translation id="7643842463591647490">{0,plural, =1{# ತೆರೆದ ವಿಂಡೋ}one{# ತೆರೆದ ವಿಂಡೋಗಳು}other{# ತೆರೆದ ವಿಂಡೋಗಳು}}</translation>
 <translation id="2579188629646253712">ಖಾಸಗಿ ವಿಂಡೋದಿಂದ ನಿರ್ಗಮಿಸಿ</translation>
-<translation id="479219453908726046">ಸಮೀಕ್ಷೆಯಲ್ಲಿ ಭಾಗವಹಿಸಿ</translation>
-<translation id="7581273696622423628">ಸಮೀಕ್ಷೆಯಲ್ಲಿ ಭಾಗವಹಿಸಿ</translation>
-<translation id="4406504596603350105">ನಿಮ್ಮ ಪ್ರತಿಕ್ರಿಯೆ ನಮಗೆ ಪ್ರಮುಖವಾಗಿದೆ.</translation>
 <translation id="4349828822184870497">ಉಪಯುಕ್ತ</translation>
 <translation id="6876469544038980967">ಉಪಯುಕ್ತವಲ್ಲ</translation>
 <translation id="5286194356314741248">ಸ್ಕ್ಯಾನಿಂಗ್</translation>
@@ -3133,7 +3114,7 @@
 <translation id="6644512095122093795">ಪಾಸ್‌ವರ್ಡ್‌ಗಳನ್ನು ಉಳಿಸಲು ಸೂಚಿಸು</translation>
 <translation id="2100273922101894616">ಸ್ವಯಂ ಸೈನ್-ಇನ್</translation>
 <translation id="7513029293694390567">ಸಂಗ್ರಹಿಸಲಾದ ರುಜುವಾತುಗಳನ್ನು ಬಳಸಿಕೊಳ್ಳುವ ಮೂಲಕ ವೆಬ್‌ಸೈಟ್‌ಗಳಿಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸೈನ್ ಇನ್ ಮಾಡಿ. ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿದರೆ, ವೆಬ್‌ಸೈಟ್‌ಗೆ ಸೈನ್ ಇನ್ ಮಾಡುವ ಮೊದಲು ಪ್ರತಿ ಬಾರಿಯೂ ನಿಮಗೆ ದೃಢೀಕರಿಸಲು ಕೇಳಲಾಗುವುದು.</translation>
-<translation id="2330129964253841015">ಪಾಸ್‌ವರ್ಡ್‌ಗಳು ಹ್ಯಾಕ್ ಆದರೆ ನಿಮಗೆ ಎಚ್ಚರಿಕೆ ನೀಡಲಾಗುತ್ತದೆ</translation>
+<translation id="6995899638241819463">ಪಾಸ್‌ವರ್ಡ್‌ಗಳು ಹ್ಯಾಕ್ ಆದರೆ ನಿಮಗೆ ಎಚ್ಚರಿಕೆ ನೀಡಲಾಗುತ್ತದೆ</translation>
 <translation id="1534287762301776620">ನಿಮ್ಮ Brave Software ಖಾತೆಗೆ ನೀವು ಸೈನ್ ಇನ್ ಮಾಡಿದಾಗ, ಈ ವೈಶಿಷ್ಟ್ಯವು ಆನ್ ಆಗುತ್ತದೆ</translation>
 <translation id="1375321115329958930">ಉಳಿಸಿದ ಪಾಸ್‌ವರ್ಡ್‌ಗಳು</translation>
 <translation id="152234381334907219">ಎಂದಿಗೂ ಉಳಿಸಿಲ್ಲ</translation>

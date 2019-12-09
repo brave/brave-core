@@ -15,7 +15,7 @@
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Версія Brave для розробників</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="8992261409816268381">The Brave Authors</translation>
-<translation id="4651430425715739110">Авторське право <ph name="YEAR"/> Автори Brave. Усі права захищено.</translation>
+<translation id="8121009781989288430">Авторське право <ph name="YEAR"/> Автори Brave. Усі права захищено.</translation>
 <translation id="2310890394934209120">ОС Brave стала можливою завдяки додатковому <ph name="BEGIN_LINK_CROS_OSS"/>програмному забезпеченню з відкритим кодом<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8160794320557846790">ОС Brave, як і <ph name="BEGIN_LINK_LINUX_OSS"/>бета-версія Linux<ph name="END_LINK_LINUX_OSS"/>, працюють завдяки додатковому <ph name="BEGIN_LINK_CROS_OSS"/>програмному забезпеченню з відкритим кодом<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="6913582816347128893">Brave може працювати неналежним чином, оскільки вже не підтримується в ОС Mac X 10.9.</translation>
@@ -195,7 +195,6 @@ Brave не може відновити ваші налаштування.</trans
 <translation id="3052349005266761501">Запускається Brave…</translation>
 <translation id="1197672524850678392">Не вдалося запустити Brave. Повторіть спробу.</translation>
 <translation id="5147525139567260139">Поділитися вкладкою Brave</translation>
-<translation id="2076319850279844250">Допоможіть нам покращити Brave</translation>
 <translation id="8541922081612557424">Про Brave</translation>
 <translation id="3262506503470845422">Отримати довідку щодо Brave</translation>
 <translation id="1864557848095568223">Оновлення Brave</translation>

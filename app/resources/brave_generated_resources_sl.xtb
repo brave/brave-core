@@ -3,6 +3,7 @@
 <translationbundle lang="sl">
 <translation id="3333887201479867589">Storitev Brave Rewards</translation>
 <translation id="7942180974165298215">Blokiranje oglasov Brave</translation>
+<translation id="4615489450165434530">Prijavite nedelujočo spletno stran</translation>
 <translation id="6406506848690869874">Sinhronizacija</translation>
 <translation id="5655621391922317800">Kripto denarnice</translation>
 <translation id="2445484935443597917">Ustvari nov profil</translation>
@@ -39,6 +40,8 @@
 <translation id="2814998458708016836">Uporabi široko naslovno vrstico</translation>
 <translation id="6123134130710658846">Skrij gumb Brave Rewards</translation>
 <translation id="7635711399568194460">Skrije gumb Brave Rewards v vrstici z lokacijo, kadar storitev Brave Rewards ni omogočena</translation>
+<translation id="1520361618554057102">Na strani novega zavihka vedno pokaži zaznamke</translation>
+<translation id="5802665280774361839">Pokaži samodokončanje v naslovni vrstici.</translation>
 <translation id="7965178729203412357">Nova identiteta Tor</translation>
 <translation id="8511502469534942133">Nova Tor povezava za to spletno mesto</translation>
 <translation id="8784924142044142231">Izhod iz brskalnika Tor</translation>
@@ -68,6 +71,7 @@
 <translation id="9075744464571452108">Prepoznavanje naprave</translation>
 <translation id="3570081523466826008">Posodobi povezave na HTTPS</translation>
 <translation id="4824468494729001999">Blokiraj skripte</translation>
+<translation id="8526521192921341404">Dovoli prijave Google</translation>
 <translation id="863171915776379000">Dovoli prijavo v Facebook in vdelane objave nanj</translation>
 <translation id="5165042248369837294">Dovoli vdelane tvite s Twitterja</translation>
 <translation id="958971637207126733">Dovoli vdelane objave z LinkedIna</translation>
@@ -84,6 +88,7 @@
 <translation id="5825943197137337319">Samo privzeti javni vmesnik</translation>
 <translation id="1689062823386843231">Onemogoči UDP, ki ne poteka prek strežnika proxy</translation>
 <translation id="8502234992433094996">Za potisno sporočanje uporabljajte Googlove storitve</translation>
+<translation id="3888068426966679906">Oddaljeno odpravljanje napak</translation>
 <translation id="6645631466045614531">Dostop do sinhronizacije prek</translation>
 <translation id="1807246157184219062">Svetlo</translation>
 <translation id="2414886740292270097">Temno</translation>
@@ -153,4 +158,13 @@
 <translation id="4394049700291259645">Onemogoči</translation>
 <translation id="6469509880167172749">Samodejno pošlji popolnoma zasebno analizo izdelkov na Brave</translation>
 <translation id="7090566321964540749">Ta anonimna informacija programski opremi Brave samo omogoča, da oceni splošno uporabo nekaterih funkcij.</translation>
+<translation id="1200956479506699688">V Brave je zdaj na voljo kripto denarnica. Istočasno ne morete uporabljati funkcije MetaMask in kripto denarnice.</translation>
+<translation id="7583735190612229830">Nastavite kripto denarnice za interakcijo s to aplikacijo in drugimi podobnimi.</translation>
+<translation id="8337117349965899723">Uporabi kripto denarnice</translation>
+<translation id="5756155765711979898">Uporabi funkcijo MetaMask</translation>
+<translation id="6754134632841262799">NASTAVITEV</translation>
+<translation id="191143826155037518">Brave vam je na voljo na <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>javna licenca Mozilla 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) in vključuje <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>odprtokodno programsko opremo<ph name="END_LINK_OSS">&lt;/a&gt;</ph> pod različnimi drugimi licencami.
+Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>navodila o tem, kako prenesete in oblikujete<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> specifično <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>izvorno kodo, uporabljeno za ustvarjanje te kopije<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Dodaj vse zavihke med zaznamke ...</translation>
+<translation id="2336228925368920074">Dodaj vse zavihke med zaznamke ...</translation>
 </translationbundle>
