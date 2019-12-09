@@ -27,10 +27,6 @@
 #include "brave/components/brave_sync/switches.h"
 #endif
 
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/tor/tor_profile_service.h"
-#endif
-
 namespace {
 
 bool IsBraveCommands(int id) {
@@ -145,7 +141,8 @@ void BraveBrowserCommandController::UpdateCommandForWebcompatReporter() {
 
 void BraveBrowserCommandController::UpdateCommandForTor() {
 #if BUILDFLAG(ENABLE_TOR)
-  const bool is_tor_enabled = !tor::TorProfileService::IsTorDisabled();
+  const bool is_tor_enabled =
+      !brave::IsTorDisabledForProfile(browser_->profile());
   UpdateCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE, is_tor_enabled);
   UpdateCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR, is_tor_enabled);
 #endif
