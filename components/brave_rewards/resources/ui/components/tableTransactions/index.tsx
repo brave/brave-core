@@ -11,8 +11,7 @@ import {
 import Table, { Row } from 'brave-ui/components/dataTables/table/index'
 import { getLocale } from 'brave-ui/helpers'
 import Tokens, { Type as TokenType } from '../tokens'
-
-export type TransactionType = 'deposit' | 'tipOnLike' | 'donation' | 'contribute' | 'recurringDonation'
+import { SummaryType as TransactionType } from '../modalActivity'
 
 type Description = string | { publisher: string, platform: string }
 
@@ -31,11 +30,11 @@ export interface Props {
 
 export default class TableTransactions extends React.PureComponent<Props, {}> {
   private tokenColors: Record<TransactionType, TokenType> = {
-    deposit: 'earnings',
-    tipOnLike: 'donation',
-    donation: 'donation',
+    grant: 'earning',
+    ads: 'earning',
     contribute: 'contribute',
-    recurringDonation: 'donation'
+    monthly: 'contribute',
+    tip: 'contribute'
   }
 
   getHeader = () => {

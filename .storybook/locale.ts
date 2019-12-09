@@ -5,7 +5,7 @@
 const locale: Record<string, string> = {
   about: 'about',
   accept: 'Accept',
-  activityCopy: '©2016 –2018 Brave Software. Brave is a registered trademark of Brave Software. Site names may be trademarks or registered trademarks of the site owner.',
+  activityCopy: ' Brave Software. Brave is a registered trademark of Brave Software. Site names may be trademarks or registered trademarks of the site owner.',
   activityNote: 'To protect your privacy, this Brave Rewards statement is not saved, recorded or logged anywhere other than on your device (this computer). It cannot be retrieved from Brave in the event of data loss on your device.',
   addFunds: 'add funds',
   addFundsFAQ: 'the FAQ',
@@ -144,7 +144,6 @@ const locale: Record<string, string> = {
   payment: 'Payment',
   paymentMonthly: 'Payment made every {{day}}th day in each month.',
   paymentNotMade: 'Payment not made.',
-  paymentWarning: 'When your balance is not enough to cover the combined total of Auto-Contribute and the recurring donations, these payments are skipped for the period.',
   pendingContributions: 'Pending Contributions',
   pendingContributionEmpty: 'No pending contributions…',
   pendingContributionRemoveAll: 'Remove All',

@@ -30,9 +30,7 @@ const sizes: Record<Size, { token: string, tokenNum: string, text: string }> = {
 const colors: Record<Type, string> = {
   contribute: '#9752cb',
   default: '#4b4c5c',
-  donation: '#696fdc',
-  earnings: '#c12d7c',
-  notPaid: '#838391'
+  earning: '#c12d7c'
 }
 
 const getStyle = (p: Partial<Props>) => {

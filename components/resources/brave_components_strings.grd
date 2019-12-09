@@ -341,7 +341,7 @@
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>
       <message name="IDS_BRAVE_UI_ACCEPT" desc="">Accept</message>
-      <message name="IDS_BRAVE_UI_ACTIVITY_COPY" desc="">©2016–2018 Brave Software. Brave is a registered trademark of Brave Software. Site names may be trademarks or registered trademarks of the site owner.</message>
+      <message name="IDS_BRAVE_UI_ACTIVITY_COPY" desc=""> Brave Software. Brave is a registered trademark of Brave Software. Site names may be trademarks or registered trademarks of the site owner.</message>
       <message name="IDS_BRAVE_UI_ACTIVITY_NOTE" desc="">To protect your privacy, this Brave Rewards statement is not saved, recorded or logged anywhere other than on your device (this computer). It cannot be retrieved from Brave in the event of data loss on your device.</message>
       <message name="IDS_BRAVE_UI_ADD_FUNDS" desc="">add funds</message>
       <message name="IDS_BRAVE_UI_ADS" desc="">Ads</message>
@@ -473,7 +473,6 @@
       <message name="IDS_BRAVE_UI_PAYMENT" desc="">Payment</message>
       <message name="IDS_BRAVE_UI_PAYMENT_MONTHLY" desc="">Payment made every {{day}}th day in each month.</message>
       <message name="IDS_BRAVE_UI_PAYMENT_NOT_MADE" desc="">Payment not made.</message>
-      <message name="IDS_BRAVE_UI_PAYMENT_WARNING" desc="">When your balance is not enough to cover the combined total of Auto-Contribute and your monthly contributions, these payments are skipped for this period.</message>
       <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_HEADER" desc="">Pinned sites are now</message>
       <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_MSG" desc="">Here's how monthly contributions work:</message>
       <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_ONE" desc="">Monthly contributions do not come out of your Auto-Contribute payment. They're separate.</message>

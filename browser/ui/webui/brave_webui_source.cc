@@ -473,7 +473,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "payment", IDS_BRAVE_UI_PAYMENT },
         { "paymentMonthly", IDS_BRAVE_UI_PAYMENT_MONTHLY },
         { "paymentNotMade", IDS_BRAVE_UI_PAYMENT_NOT_MADE },
-        { "paymentWarning", IDS_BRAVE_UI_PAYMENT_WARNING },
         { "pendingContributions", IDS_BRAVE_UI_PENDING_CONTRIBUTIONS },
         { "pendingContributionEmpty", IDS_BRAVE_UI_PENDING_CONTRIBUTION_EMPTY },
         { "pendingContributionRemoveAll", IDS_BRAVE_UI_PENDING_CONTRIBUTION_REMOVE_ALL },        // NOLINT

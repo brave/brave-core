@@ -501,7 +501,6 @@ class PageWallet extends React.Component<Props, State> {
           converted={utils.formatConverted(this.getConversion())}
           actions={this.getActions()}
           onSettingsClick={this.onModalBackupOpen}
-          onActivityClick={this.onModalActivityToggle}
           showCopy={showCopy}
           showSecActions={true}
           grants={this.generatePromotions()}
@@ -521,6 +520,7 @@ class PageWallet extends React.Component<Props, State> {
                 reservedAmount={pendingTotal}
                 onlyAnonWallet={onlyAnonWallet}
                 reservedMoreLink={'https://brave.com/faq/#unclaimed-funds'}
+                onActivity={this.onModalActivityToggle}
                 {...this.getWalletSummary()}
               />
             : <WalletOff/>
@@ -560,9 +560,9 @@ class PageWallet extends React.Component<Props, State> {
             : null
         }
         {
-          // TODO NZ add actual data for the whole section
           this.state.modalActivity
             ? <ModalActivity
+              onlyAnonWallet={onlyAnonWallet}
               contributeRows={[
                 {
                   profile: {
@@ -583,7 +583,7 @@ class PageWallet extends React.Component<Props, State> {
               transactionRows={[
                 {
                   date: '6/1',
-                  type: 'deposit',
+                  type: 'ads',
                   description: 'Brave Ads payment for May',
                   amount: {
                     value: '5.0',
@@ -593,19 +593,17 @@ class PageWallet extends React.Component<Props, State> {
               ]}
               onClose={this.onModalActivityToggle}
               onPrint={this.onModalActivityAction.bind('onPrint')}
-              onDownloadPDF={this.onModalActivityAction.bind('onDownloadPDF')}
               onMonthChange={this.onModalActivityAction.bind('onMonthChange')}
               months={{
-                'aug-2018': 'August 2018',
-                'jul-2018': 'July 2018',
-                'jun-2018': 'June 2018',
-                'may-2018': 'May 2018',
-                'apr-2018': 'April 2018'
+                'aug-2019': 'August 2019',
+                'jul-2019': 'July 2019',
+                'jun-2019': 'June 2019',
+                'may-2019': 'May 2019',
+                'apr-2019': 'April 2019'
               }}
-              currentMonth={'aug-2018'}
+              currentMonth={'aug-2019'}
               summary={[
                 {
-                  text: 'Token Grant available',
                   type: 'grant',
                   token: {
                     value: '10.0',
@@ -613,7 +611,6 @@ class PageWallet extends React.Component<Props, State> {
                   }
                 },
                 {
-                  text: 'Earnings from Brave Ads',
                   type: 'ads',
                   token: {
                     value: '10.0',
@@ -621,39 +618,27 @@ class PageWallet extends React.Component<Props, State> {
                   }
                 },
                 {
-                  text: 'Brave Contribute',
                   type: 'contribute',
-                  notPaid: true,
                   token: {
                     value: '10.0',
-                    converted: '5.20',
-                    isNegative: true
+                    converted: '5.20'
                   }
                 },
                 {
-                  text: 'Recurring Tips',
-                  type: 'recurring',
-                  notPaid: true,
+                  type: 'monthly',
                   token: {
                     value: '2.0',
-                    converted: '1.1',
-                    isNegative: true
+                    converted: '1.1'
                   }
                 },
                 {
-                  text: 'One-timen Tips',
-                  type: 'donations',
+                  type: 'tip',
                   token: {
                     value: '19.0',
-                    converted: '10.10',
-                    isNegative: true
+                    converted: '10.10'
                   }
                 }
               ]}
-              total={{
-                value: '1.0',
-                converted: '0.5'
-              }}
               paymentDay={12}
               openBalance={{
                 value: '10.0',
