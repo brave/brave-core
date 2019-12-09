@@ -16,6 +16,7 @@ PendingContributionInfo::~PendingContributionInfo() { }
 
 PendingContributionInfo::PendingContributionInfo(
     const PendingContributionInfo& data) {
+  id = data.id;
   publisher_key = data.publisher_key;
   status = data.status;
   name = data.name;

@@ -204,6 +204,7 @@ declare namespace Rewards {
   }
 
   export interface PendingContribution {
+    id: number
     publisherKey: string
     percentage: number
     status: PublisherStatus

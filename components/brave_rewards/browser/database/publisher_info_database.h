@@ -98,9 +98,7 @@ class PublisherInfoDatabase {
   void GetPendingContributions(
       ledger::PendingContributionInfoList* list);
 
-  bool RemovePendingContributions(const std::string& publisher_key,
-                                  const std::string& viewing_id,
-                                  uint64_t added_date);
+  bool RemovePendingContributions(const uint64_t id);
 
   bool RemoveAllPendingContributions();
 
@@ -180,6 +178,8 @@ class PublisherInfoDatabase {
   bool MigrateV9toV10();
 
   bool MigrateV10toV11();
+
+  bool MigrateV11toV12();
 
   bool Migrate(int version);
 

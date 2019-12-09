@@ -760,17 +760,13 @@ void LedgerClientMojoProxy::OnRemovePendingContribution(
 }
 
 void LedgerClientMojoProxy::RemovePendingContribution(
-    const std::string& publisher_key,
-    const std::string& viewing_id,
-    uint64_t added_date,
+    const uint64_t id,
     RemovePendingContributionCallback callback) {
   // deleted in OnRemovePendingContribution
   auto* holder = new CallbackHolder<RemovePendingContributionCallback>(
       AsWeakPtr(), std::move(callback));
   ledger_client_->RemovePendingContribution(
-      publisher_key,
-      viewing_id,
-      added_date,
+      id,
       std::bind(LedgerClientMojoProxy::OnRemovePendingContribution,
                 holder,
                 _1));

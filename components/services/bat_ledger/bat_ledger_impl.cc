@@ -740,17 +740,13 @@ void BatLedgerImpl::OnRemovePendingContribution(
 }
 
 void BatLedgerImpl::RemovePendingContribution(
-    const std::string& publisher_key,
-    const std::string& viewing_id,
-    uint64_t added_date,
+    const uint64_t id,
     RemovePendingContributionCallback callback) {
   auto* holder = new CallbackHolder<RemovePendingContributionCallback>(
       AsWeakPtr(), std::move(callback));
 
   ledger_->RemovePendingContribution(
-      publisher_key,
-      viewing_id,
-      added_date,
+      id,
       std::bind(BatLedgerImpl::OnRemovePendingContribution,
                 holder,
                 _1));

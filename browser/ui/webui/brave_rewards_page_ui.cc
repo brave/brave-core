@@ -1471,6 +1471,7 @@ void RewardsDOMHandler::OnGetPendingContributions(
     for (auto const& item : *list) {
       auto contribution =
           std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+      contribution->SetKey("id", base::Value(static_cast<int>(item.id)));
       contribution->SetKey("publisherKey", base::Value(item.publisher_key));
       contribution->SetKey("status",
           base::Value(static_cast<int>(item.status)));
@@ -1495,19 +1496,13 @@ void RewardsDOMHandler::OnGetPendingContributions(
 
 void RewardsDOMHandler::RemovePendingContribution(
     const base::ListValue* args) {
-  CHECK_EQ(3U, args->GetSize());
+  CHECK_EQ(1U, args->GetSize());
   if (!rewards_service_) {
     return;
   }
 
-  const std::string publisher_key = args->GetList()[0].GetString();
-  const std::string viewing_id = args->GetList()[1].GetString();
-  const std::string temp = args->GetList()[2].GetString();
-  uint64_t added_date = std::stoull(temp);
-  rewards_service_->RemovePendingContributionUI(
-      publisher_key,
-      viewing_id,
-      added_date);
+  const uint64_t id = args->GetList()[0].GetInt();
+  rewards_service_->RemovePendingContributionUI(id);
 }
 
 void RewardsDOMHandler::RemoveAllPendingContributions(

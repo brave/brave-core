@@ -133,8 +133,7 @@ interface BatLedger {
 
   GetPendingContributions() => (array<ledger.mojom.PendingContributionInfo> list);
 
-  RemovePendingContribution(string publisher_key, string viewing_id,
-      uint64 added_date) => (ledger.mojom.Result result);
+  RemovePendingContribution(uint64 id) => (ledger.mojom.Result result);
 
   RemoveAllPendingContributions() => (ledger.mojom.Result result);
 
@@ -258,8 +257,7 @@ interface BatLedgerClient {
 
   GetPendingContributions() => (array<ledger.mojom.PendingContributionInfo> list);
 
-  RemovePendingContribution(string publisher_key, string viewing_id,
-      uint64 added_date) => (ledger.mojom.Result result);
+  RemovePendingContribution(uint64 id) => (ledger.mojom.Result result);
 
   RemoveAllPendingContributions() => (ledger.mojom.Result result);
 

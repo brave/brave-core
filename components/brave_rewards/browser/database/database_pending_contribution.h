@@ -37,10 +37,7 @@ class DatabasePendingContribution: public DatabaseTable {
       sql::Database* db,
       ledger::PendingContributionInfoList* list);
 
-  bool DeleteRecord(sql::Database* db,
-      const std::string& publisher_key,
-      const std::string& viewing_id,
-      uint64_t added_date);
+  bool DeleteRecord(sql::Database* db, const uint64_t id);
 
   bool DeleteAllRecords(sql::Database* db);
 
@@ -49,13 +46,19 @@ class DatabasePendingContribution: public DatabaseTable {
 
   bool CreateTableV8(sql::Database* db);
 
+  bool CreateTableV12(sql::Database* db);
+
   bool CreateIndexV3(sql::Database* db);
 
   bool CreateIndexV8(sql::Database* db);
 
+  bool CreateIndexV12(sql::Database* db);
+
   bool MigrateToV3(sql::Database* db);
 
   bool MigrateToV8(sql::Database* db);
+
+  bool MigrateToV12(sql::Database* db);
 };
 
 }  // namespace brave_rewards

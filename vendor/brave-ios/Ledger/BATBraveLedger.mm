@@ -1775,22 +1775,21 @@ BATLedgerBridge(BOOL,
   }];
 }
 
-- (void)removePendingContribution:(const std::string &)publisher_key viewingId:(const std::string &)viewing_id addedDate:(uint64_t)added_date callback:(ledger::RemovePendingContributionCallback)callback
+- (void)removePendingContribution:(const uint64_t)id callback:(ledger::RemovePendingContributionCallback)callback
 {
-  const auto publisherID = [NSString stringWithUTF8String:publisher_key.c_str()];
-  const auto viewingID = [NSString stringWithUTF8String:viewing_id.c_str()];
-  [BATLedgerDatabase removePendingContributionForPublisherID:publisherID
-                                                   viewingID:viewingID
-                                                   addedDate:added_date
-                                                  completion:^(BOOL success) {
-                                                    callback(success ? ledger::Result::LEDGER_OK :
-                                                             ledger::Result::LEDGER_ERROR);
-                                                    for (BATBraveLedgerObserver *observer in [self.observers copy]) {
-                                                      if (observer.pendingContributionsRemoved) {
-                                                        observer.pendingContributionsRemoved(@[publisherID]);
-                                                      }
-                                                    }
-                                                  }];
+  // TODO we need to use id when removing a record
+//  [BATLedgerDatabase removePendingContributionForPublisherID:publisherID
+//                                                   viewingID:viewingID
+//                                                   addedDate:added_date
+//                                                  completion:^(BOOL success) {
+//                                                    callback(success ? ledger::Result::LEDGER_OK :
+//                                                             ledger::Result::LEDGER_ERROR);
+//                                                    for (BATBraveLedgerObserver *observer in [self.observers copy]) {
+//                                                      if (observer.pendingContributionsRemoved) {
+//                                                        observer.pendingContributionsRemoved(@[publisherID]);
+//                                                      }
+//                                                    }
+//                                                  }];
 }
 
 - (void)onContributeUnverifiedPublishers:(ledger::Result)result publisherKey:(const std::string &)publisher_key publisherName:(const std::string &)publisher_name

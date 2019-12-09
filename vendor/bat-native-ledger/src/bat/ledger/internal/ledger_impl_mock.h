@@ -424,10 +424,8 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD1(GetPendingContributions,
       void(ledger::PendingContributionInfoListCallback));
 
-  MOCK_METHOD4(RemovePendingContribution,
-      void(const std::string&,
-          const std::string&,
-          uint64_t,
+  MOCK_METHOD2(RemovePendingContribution,
+      void(const uint64_t id,
           ledger::RemovePendingContributionCallback));
 
   MOCK_METHOD1(RemoveAllPendingContributions,

@@ -16,6 +16,7 @@ struct PendingContributionInfo {
   ~PendingContributionInfo();
   PendingContributionInfo(const PendingContributionInfo& data);
 
+  uint64_t id;
   std::string publisher_key;
   uint32_t status;
   std::string name;
