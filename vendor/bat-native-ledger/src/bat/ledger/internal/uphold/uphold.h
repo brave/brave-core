@@ -21,6 +21,12 @@ class LedgerImpl;
 
 namespace braveledger_uphold {
 
+struct Transaction {
+  std::string address;
+  double amount;
+  std::string message;
+};
+
 class UpholdTransfer;
 class UpholdCard;
 class UpholdAuthorization;
