@@ -84,6 +84,11 @@ class Client {
       const uint64_t timestamp_in_seconds);
   const std::map<std::string, std::deque<uint64_t>>
       GetCreativeSetHistory() const;
+  void AppendTimestampToConversionHistoryForUuid(
+      const std::string& creative_set_id,
+      const uint64_t timestamp_in_seconds);
+  const std::map<std::string, std::deque<uint64_t>>
+      GetConversionHistory() const;
   void AppendTimestampToCampaignHistoryForUuid(
       const std::string& uuid,
       const uint64_t timestamp_in_seconds);

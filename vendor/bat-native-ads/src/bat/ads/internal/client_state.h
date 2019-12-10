@@ -44,6 +44,7 @@ struct ClientState {
   std::string last_page_classification;
   std::deque<std::vector<double>> page_score_history;
   std::map<std::string, std::deque<uint64_t>> creative_set_history;
+  std::map<std::string, std::deque<uint64_t>> conversion_history;
   std::map<std::string, std::deque<uint64_t>> campaign_history;
   double score;
   bool search_activity;
