@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java b/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
-index 6afd8a49935f8541b94cbc69c6ce459bfbccbf84..64843c257b6f0541525c82860282b4a57c9bb144 100644
+index 1471794e1fc56768c1e0f14d169f2a539ffdef48..b066f328f572627de5540e7fbf332bd4dd2b3a44 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
-@@ -367,11 +367,13 @@ public class FeatureUtilities {
+@@ -377,11 +377,13 @@ public class FeatureUtilities {
       * @return Whether or not the bottom toolbar is enabled.
       */
      public static boolean isBottomToolbarEnabled() {
