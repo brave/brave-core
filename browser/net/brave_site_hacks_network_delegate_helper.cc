@@ -132,10 +132,14 @@ int OnBeforeStartTransaction_SiteHacksWork(
   if (IsUAWhitelisted(ctx->request_url)) {
     std::string user_agent;
     if (headers->GetHeader(kUserAgentHeader, &user_agent)) {
-      base::ReplaceFirstSubstringAfterOffset(&user_agent, 0,
-        "Chrome", "Brave Chrome");
-      headers->SetHeader(kUserAgentHeader, user_agent);
-      ctx->set_headers.insert(kUserAgentHeader);
+      // We do not want to modify the same UA multiple times - for instance,
+      // during redirects.
+      if (std::string::npos == user_agent.find("Brave")) {
+        base::ReplaceFirstSubstringAfterOffset(&user_agent, 0,
+          "Chrome", "Brave Chrome");
+        headers->SetHeader(kUserAgentHeader, user_agent);
+        ctx->set_headers.insert(kUserAgentHeader);
+      }
     }
   }
   return net::OK;
