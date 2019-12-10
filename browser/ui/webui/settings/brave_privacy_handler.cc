@@ -10,7 +10,6 @@
 #include "base/bind.h"
 #include "base/values.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/p3a/pref_names.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/pref_names.h"
@@ -24,16 +23,23 @@
 #include "brave/browser/gcm_driver/brave_gcm_channel_status.h"
 #endif
 
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
+#include "brave/components/p3a/pref_names.h"
+#endif
+
 BravePrivacyHandler::BravePrivacyHandler() {
   local_state_change_registrar_.Init(g_browser_process->local_state());
   local_state_change_registrar_.Add(
       kRemoteDebuggingEnabled,
       base::Bind(&BravePrivacyHandler::OnRemoteDebuggingEnabledChanged,
                  base::Unretained(this)));
+
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
   local_state_change_registrar_.Add(
       brave::kP3AEnabled,
       base::Bind(&BravePrivacyHandler::OnP3AEnabledChanged,
                  base::Unretained(this)));
+#endif
 }
 
 BravePrivacyHandler::~BravePrivacyHandler() {
@@ -51,12 +57,16 @@ void BravePrivacyHandler::RegisterMessages() {
       "setWebRTCPolicy",
       base::BindRepeating(&BravePrivacyHandler::SetWebRTCPolicy,
                           base::Unretained(this)));
+
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
   web_ui()->RegisterMessageCallback(
       "setP3AEnabled", base::BindRepeating(&BravePrivacyHandler::SetP3AEnabled,
                                            base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getP3AEnabled", base::BindRepeating(&BravePrivacyHandler::GetP3AEnabled,
                                            base::Unretained(this)));
+#endif
+
   web_ui()->RegisterMessageCallback(
       "setRemoteDebuggingEnabled",
       base::BindRepeating(&BravePrivacyHandler::SetRemoteDebuggingEnabled,
@@ -103,6 +113,7 @@ void BravePrivacyHandler::GetWebRTCPolicy(const base::ListValue* args) {
   ResolveJavascriptCallback(args->GetList()[0].Clone(), base::Value(policy));
 }
 
+#if BUILDFLAG(BRAVE_P3A_ENABLED)
 void BravePrivacyHandler::SetP3AEnabled(const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
 
@@ -131,6 +142,7 @@ void BravePrivacyHandler::OnP3AEnabledChanged() {
     FireWebUIListener("p3a-enabled-changed", base::Value(enabled));
   }
 }
+#endif
 
 void BravePrivacyHandler::SetRemoteDebuggingEnabled(
     const base::ListValue* args) {
