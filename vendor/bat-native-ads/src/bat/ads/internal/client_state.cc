@@ -14,53 +14,42 @@
 
 namespace ads {
 
-ClientState::ClientState() :
-    ad_prefs({}),
-    ads_shown_history({}),
-    ad_uuid(""),
-    ads_uuid_seen({}),
-    next_check_serve_ad_timestamp_in_seconds(0),
-    available(false),
-    last_search_time(0),
-    last_shop_time(0),
-    last_user_activity(0),
-    last_user_idle_stop_time(0),
-    user_model_language(kDefaultUserModelLanguage),
-    user_model_languages({}),
-    last_page_classification(""),
-    page_score_history({}),
-    creative_set_history({}),
-    campaign_history({}),
-    score(0.0),
-    search_activity(false),
-    search_url(""),
-    shop_activity(false),
-    shop_url("") {}
+ClientState::ClientState()
+    : next_check_serve_ad_timestamp_in_seconds(0),
+      available(false),
+      last_search_time(0),
+      last_shop_time(0),
+      last_user_activity(0),
+      last_user_idle_stop_time(0),
+      user_model_language(kDefaultUserModelLanguage),
+      score(0.0),
+      search_activity(false),
+      shop_activity(false) {}
 
-ClientState::ClientState(const ClientState& state) :
-  ad_prefs(state.ad_prefs),
-  ads_shown_history(state.ads_shown_history),
-  ad_uuid(state.ad_uuid),
-  ads_uuid_seen(state.ads_uuid_seen),
-  next_check_serve_ad_timestamp_in_seconds(
-      state.next_check_serve_ad_timestamp_in_seconds),
-  available(state.available),
-  last_search_time(state.last_search_time),
-  last_shop_time(state.last_shop_time),
-  last_user_activity(state.last_user_activity),
-  last_user_idle_stop_time(state.last_user_idle_stop_time),
-  user_model_language(state.user_model_language),
-  user_model_languages(state.user_model_languages),
-  last_page_classification(state.last_page_classification),
-  page_score_history(state.page_score_history),
-  creative_set_history(state.creative_set_history),
-  campaign_history(state.campaign_history),
-  score(state.score),
-  search_activity(state.search_activity),
-  search_url(state.search_url),
-  shop_activity(state.shop_activity),
-  shop_url(state.shop_url),
-  version_code(state.version_code) {}
+ClientState::ClientState(const ClientState& state)
+    : ad_prefs(state.ad_prefs),
+      ads_shown_history(state.ads_shown_history),
+      ad_uuid(state.ad_uuid),
+      ads_uuid_seen(state.ads_uuid_seen),
+      next_check_serve_ad_timestamp_in_seconds(
+          state.next_check_serve_ad_timestamp_in_seconds),
+      available(state.available),
+      last_search_time(state.last_search_time),
+      last_shop_time(state.last_shop_time),
+      last_user_activity(state.last_user_activity),
+      last_user_idle_stop_time(state.last_user_idle_stop_time),
+      user_model_language(state.user_model_language),
+      user_model_languages(state.user_model_languages),
+      last_page_classification(state.last_page_classification),
+      page_score_history(state.page_score_history),
+      creative_set_history(state.creative_set_history),
+      campaign_history(state.campaign_history),
+      score(state.score),
+      search_activity(state.search_activity),
+      search_url(state.search_url),
+      shop_activity(state.shop_activity),
+      shop_url(state.shop_url),
+      version_code(state.version_code) {}
 
 ClientState::~ClientState() = default;
 
@@ -172,7 +161,7 @@ Result ClientState::FromJson(
 
   if (client.HasMember("pageScoreHistory")) {
     for (const auto& history : client["pageScoreHistory"].GetArray()) {
-      std::vector<double> page_scores = {};
+      std::vector<double> page_scores;
 
       for (const auto& page_score : history.GetArray()) {
         page_scores.push_back(page_score.GetDouble());
@@ -184,7 +173,7 @@ Result ClientState::FromJson(
 
   if (client.HasMember("creativeSetHistory")) {
     for (const auto& creative_set : client["creativeSetHistory"].GetObject()) {
-      std::deque<uint64_t> timestamps_in_seconds = {};
+      std::deque<uint64_t> timestamps_in_seconds;
 
       for (const auto& timestamp_in_seconds : creative_set.value.GetArray()) {
         auto migrated_timestamp_in_seconds = Time::MigrateTimestampToDoubleT(
@@ -197,9 +186,22 @@ Result ClientState::FromJson(
     }
   }
 
+  if (client.HasMember("conversionHistory")) {
+    for (const auto& conversion : client["conversionHistory"].GetObject()) {
+      std::deque<uint64_t> timestamps_in_seconds;
+
+      for (const auto& timestamp_in_seconds : conversion.value.GetArray()) {
+        timestamps_in_seconds.push_back(timestamp_in_seconds.GetUint64());
+      }
+
+      std::string creative_set_id = conversion.name.GetString();
+      conversion_history.insert({creative_set_id, timestamps_in_seconds});
+    }
+  }
+
   if (client.HasMember("campaignHistory")) {
     for (const auto& campaign : client["campaignHistory"].GetObject()) {
-      std::deque<uint64_t> timestamps_in_seconds = {};
+      std::deque<uint64_t> timestamps_in_seconds;
 
       for (const auto& timestamp_in_seconds : campaign.value.GetArray()) {
         auto migrated_timestamp_in_seconds = Time::MigrateTimestampToDoubleT(
@@ -308,6 +310,18 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
   writer->String("creativeSetHistory");
   writer->StartObject();
   for (const auto& creative_set_id : state.creative_set_history) {
+    writer->String(creative_set_id.first.c_str());
+    writer->StartArray();
+    for (const auto& timestamp_in_seconds : creative_set_id.second) {
+      writer->Uint64(timestamp_in_seconds);
+    }
+    writer->EndArray();
+  }
+  writer->EndObject();
+
+  writer->String("conversionHistory");
+  writer->StartObject();
+  for (const auto& creative_set_id : state.conversion_history) {
     writer->String(creative_set_id.first.c_str());
     writer->StartArray();
     for (const auto& timestamp_in_seconds : creative_set_id.second) {
