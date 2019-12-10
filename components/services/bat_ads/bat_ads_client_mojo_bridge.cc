@@ -440,6 +440,39 @@ void BatAdsClientMojoBridge::GetAds(
       std::move(callback)));
 }
 
+void OnGetConversions(
+    const ads::OnGetConversionsCallback& callback,
+    const int32_t result,
+    const std::string& url,
+    const std::vector<std::string>& conversion_tracking_info_json_list) {
+  std::vector<ads::ConversionTrackingInfo> conversions;
+
+  for (const auto& it : conversion_tracking_info_json_list) {
+    ads::ConversionTrackingInfo conversion_tracking_info;
+    if (conversion_tracking_info.FromJson(it) == ads::Result::SUCCESS) {
+      conversions.push_back(conversion_tracking_info);
+    } else {
+      callback(ads::Result::FAILED, url, {}); // Pass URL through
+      return;
+    }
+  }
+
+  callback(ToAdsResult(result), url, conversions); // Pass URL through
+}
+
+
+void BatAdsClientMojoBridge::GetConversions(
+    const std::string& url, // Pass URL through
+    ads::OnGetConversionsCallback callback) {
+  if (!connected()) {
+    callback(ads::Result::FAILED, url, std::vector<ads::ConversionTrackingInfo>()); // Pass URL through
+    return;
+  }
+
+  bat_ads_client_->GetConversions(url, base::BindOnce(&OnGetConversions,
+      std::move(callback)));
+}
+
 void BatAdsClientMojoBridge::EventLog(
     const std::string& json) const {
   if (!connected()) {

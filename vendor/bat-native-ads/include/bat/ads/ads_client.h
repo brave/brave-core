@@ -16,6 +16,7 @@
 #include <functional>
 
 #include "bat/ads/ad_info.h"
+#include "bat/ads/conversion_tracking_info.h"
 #include "bat/ads/issuers_info.h"
 #include "bat/ads/bundle_state.h"
 #include "bat/ads/client_info.h"
@@ -50,6 +51,9 @@ using OnResetCallback = std::function<void(const Result)>;
 
 using OnGetAdsCallback = std::function<void(const Result,
     const std::vector<std::string>&, const std::vector<AdInfo>&)>;
+
+using OnGetConversionsCallback = std::function<void(const Result,
+    const std::string&, const std::vector<ConversionTrackingInfo>&)>;
 
 using OnLoadSampleBundleCallback = std::function<void(const Result,
     const std::string&)>;
@@ -231,6 +235,10 @@ class ADS_EXPORT AdsClient {
   virtual void GetAds(
       const std::vector<std::string>& categories,
       OnGetAdsCallback callback) = 0;
+
+  virtual void GetConversions(
+      const std::string& url,
+      OnGetConversionsCallback callback) = 0;
 
   // Should log an event
   virtual void EventLog(

@@ -15,7 +15,8 @@ BundleState::BundleState() :
     catalog_version(0),
     catalog_ping(0),
     catalog_last_updated_timestamp_in_seconds(0),
-    categories({}) {}
+    categories({}),
+    conversions({}) {}
 
 BundleState::BundleState(const BundleState& state):
     catalog_id(state.catalog_id),
@@ -23,7 +24,8 @@ BundleState::BundleState(const BundleState& state):
     catalog_ping(state.catalog_ping),
     catalog_last_updated_timestamp_in_seconds(
         state.catalog_last_updated_timestamp_in_seconds),
-    categories(state.categories) {}
+    categories(state.categories),
+    conversions(state.conversions) {}
 
 BundleState::~BundleState() = default;
 
@@ -109,6 +111,38 @@ Result BundleState::FromJson(
 
   categories = new_categories;
 
+  std::vector<ConversionTrackingInfo> new_conversions = {};
+
+  if (bundle.HasMember("conversions")) {
+    for (const auto& info : bundle["conversions"].GetArray()) {
+      ConversionTrackingInfo conversion_tracking_info;
+
+      if (info.HasMember("creativeSetId")) {
+        conversion_tracking_info.creative_set_id =
+            info["creativeSetId"].GetString();
+      }
+
+      if (info.HasMember("type")) {
+        conversion_tracking_info.type =
+            info["type"].GetString();
+      }
+
+      if (info.HasMember("urlPattern")) {
+        conversion_tracking_info.url_pattern =
+            info["urlPattern"].GetString();
+      }
+
+      if (info.HasMember("observationWindow")) {
+        conversion_tracking_info.observation_window =
+            info["observationWindow"].GetUint();
+      }
+
+      new_conversions.push_back(conversion_tracking_info);
+    }
+  }
+
+  conversions = new_conversions;
+
   return SUCCESS;
 }
 
@@ -171,7 +205,30 @@ void SaveToJson(JsonWriter* writer, const BundleState& state) {
     writer->EndArray();
   }
 
-  writer->EndObject();
+  writer->EndObject(); // End categories
+
+  writer->String("conversions");
+  writer->StartArray();
+  
+  for (const auto& conversion : state.conversions) {
+    writer->StartObject();
+
+    writer->String("creativeSetId");
+    writer->String(conversion.creative_set_id.c_str());
+
+    writer->String("type");
+    writer->String(conversion.type.c_str());
+
+    writer->String("urlPattern");
+    writer->String(conversion.url_pattern.c_str());
+
+    writer->String("observationWindow");
+    writer->Uint(conversion.observation_window);
+
+    writer->EndObject();
+  }
+
+  writer->EndArray(); // End conversions
 
   writer->EndObject();
 }

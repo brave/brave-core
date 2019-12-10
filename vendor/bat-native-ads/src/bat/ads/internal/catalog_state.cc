@@ -133,6 +133,20 @@ Result CatalogState::FromJson(
         creative_set_info.oses.push_back(os_info);
       }
 
+      // Conversions
+      auto conversions = creative_set["conversions"].GetArray();
+
+      for (const auto& conversion : conversions) {
+        ConversionInfo conversion_info;
+
+        conversion_info.type = conversion["type"].GetString();
+        conversion_info.url_pattern = conversion["urlPattern"].GetString();
+        conversion_info.observation_window =
+            conversion["observationWindow"].GetUint64();
+
+        creative_set_info.conversions.push_back(conversion_info);
+      }
+
       // Creatives
       for (const auto& creative : creative_set["creatives"].GetArray()) {
         CreativeInfo creative_info;

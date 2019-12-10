@@ -64,7 +64,8 @@ bool BundleStateDatabase::Init() {
   if (!CreateCategoryTable() ||
       !CreateAdInfoTable() ||
       !CreateAdInfoCategoryTable() ||
-      !CreateAdInfoCategoryNameIndex())
+      !CreateAdInfoCategoryNameIndex() ||
+      !CreateConversionsTable())
     return false;
 
   // Version check.
@@ -113,6 +114,40 @@ bool BundleStateDatabase::TruncateCategoryTable() {
   return sql.Run();
 }
 
+bool BundleStateDatabase::CreateConversionsTable() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  const char* name = "conversions";
+  if (GetDB().DoesTableExist(name))
+    return true;
+
+  std::string sql;
+  sql.append("CREATE TABLE ");
+  sql.append(name);
+  sql.append(
+      "("
+      "id INTEGER PRIMARY KEY,"
+      "creative_set_id LONGVARCHAR NOT NULL,"
+      "type LONGVARCHAR NOT NULL,"
+      "url_pattern LONGVARCHAR NOT NULL,"
+      "observation_window INTEGER NOT NULL)");
+  return GetDB().Execute(sql.c_str());
+}
+
+bool BundleStateDatabase::TruncateConversionsTable() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return false;
+
+  sql::Statement sql(
+      GetDB().GetCachedStatement(SQL_FROM_HERE,
+          "DELETE FROM conversions"));
+  return sql.Run();
+}
 
 bool BundleStateDatabase::CreateAdInfoTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -221,7 +256,8 @@ bool BundleStateDatabase::SaveBundleState(
   // we are completely replacing here so first truncate all the tables
   if (!TruncateAdInfoCategoryTable() ||
       !TruncateAdInfoTable() ||
-      !TruncateCategoryTable()) {
+      !TruncateCategoryTable() ||
+      !TruncateConversionsTable()) {
     GetDB().RollbackTransaction();
     return false;
   }
@@ -245,6 +281,19 @@ bool BundleStateDatabase::SaveBundleState(
         return false;
       }
     }
+  }
+
+  auto conversions = bundle_state.conversions;
+  for (std::vector<ads::ConversionTrackingInfo>::iterator conversion_it = 
+      conversions.begin(); conversion_it != conversions.end();
+      ++conversion_it) {
+    auto conversion_tracking_info = *conversion_it;
+
+    if (!InsertOrUpdateConversion(conversion_tracking_info)) {
+        GetDB().RollbackTransaction();
+        return false;
+    }
+
   }
 
   if (GetDB().CommitTransaction()) {
@@ -311,6 +360,34 @@ bool BundleStateDatabase::InsertOrUpdateAdInfo(const ads::AdInfo& info) {
   }
 
   return true;
+}
+
+bool BundleStateDatabase::InsertOrUpdateConversion(
+    const ads::ConversionTrackingInfo& conversion_tracking_info) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return false;
+
+  sql::Statement conversion_info_statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE,
+          "INSERT OR REPLACE INTO conversions "
+          "(creative_set_id, type, url_pattern, observation_window) "
+          "VALUES (?, ?, ?, ?)"));
+
+  conversion_info_statement.BindString(0,
+      conversion_tracking_info.creative_set_id);
+  conversion_info_statement.BindString(1,
+      conversion_tracking_info.type);
+  conversion_info_statement.BindString(2,
+      conversion_tracking_info.url_pattern);
+  conversion_info_statement.BindInt(3,
+      conversion_tracking_info.observation_window);
+
+  return conversion_info_statement.Run();
 }
 
 bool BundleStateDatabase::InsertOrUpdateAdInfoCategory(
@@ -380,6 +457,41 @@ bool BundleStateDatabase::GetAdsForCategory(
     ads->emplace_back(info);
   }
 
+  return true;
+}
+
+bool BundleStateDatabase::GetConversions(
+    const std::string& url,
+    std::vector<ads::ConversionTrackingInfo>* conversions) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized)
+    return false;
+
+  sql::Statement info_sql(
+      db_.GetUniqueStatement(
+          "SELECT c.creative_set_id, c.type, c.url_pattern, "
+          "c.observation_window "
+          "FROM conversions AS c"));
+
+  while (info_sql.Step()) {
+    ads::ConversionTrackingInfo info;
+    info.creative_set_id = info_sql.ColumnString(0);
+    info.type = info_sql.ColumnString(1);
+    info.url_pattern = info_sql.ColumnString(2);
+    info.observation_window = info_sql.ColumnInt(3);
+    conversions->emplace_back(info);
+  }
+
+  return true;
+}
+
+bool BundleStateDatabase::SaveConversion(
+    const ads::ConversionTrackingInfo& conversion) {
+  LOG(INFO) << "*** Save Conversion";
   return true;
 }
 
