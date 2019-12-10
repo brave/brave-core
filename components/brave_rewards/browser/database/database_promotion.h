@@ -35,8 +35,10 @@ class DatabasePromotion: public DatabaseTable {
   ledger::PromotionMap GetAllRecords(sql::Database* db);
 
  private:
-  const char* table_name_ = "promotion";
-  const int minimum_version_ = 10;
+  bool CreateTableV10(sql::Database* db);
+
+  bool CreateIndexV10(sql::Database* db);
+
   std::unique_ptr<DatabasePromotionCreds> creds_;
 };
 

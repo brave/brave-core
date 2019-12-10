@@ -12,6 +12,11 @@
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
+namespace {
+  const char* table_name_ = "promotion";
+  const int minimum_version_ = 10;
+}  // namespace
+
 namespace brave_rewards {
 
 DatabasePromotion::DatabasePromotion(int current_db_version) :
@@ -55,6 +60,10 @@ bool DatabasePromotion::CreateTable(sql::Database* db) {
     return true;
   }
 
+  return CreateTableV10(db);
+}
+
+bool DatabasePromotion::CreateTableV10(sql::Database* db) {
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
         "%s_id TEXT NOT NULL,"
@@ -76,6 +85,10 @@ bool DatabasePromotion::CreateTable(sql::Database* db) {
 }
 
 bool DatabasePromotion::CreateIndex(sql::Database* db) {
+  return CreateIndexV10(db);
+}
+
+bool DatabasePromotion::CreateIndexV10(sql::Database* db) {
   const std::string id = base::StringPrintf("%s_id", table_name_);
   return this->InsertIndex(db, table_name_, id);
 }
@@ -121,7 +134,6 @@ bool DatabasePromotion::InsertOrUpdate(
       return false;
     }
   }
-
 
   return transaction.Commit();
 }
