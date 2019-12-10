@@ -67,7 +67,7 @@ class ConfirmationsPaymentsTest : public ::testing::Test {
 
   base::Time UTCDateFromString(
       const std::string& date) {
-    const std::string utc_date = date + " 00:00:00 +00:00";
+    const std::string utc_date = date + " 23:59:59.999 +00:00";
 
     base::Time time;
     if (!base::Time::FromString(utc_date.c_str(), &time)) {
