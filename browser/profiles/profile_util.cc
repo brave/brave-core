@@ -195,6 +195,14 @@ bool IsGuestProfile(content::BrowserContext* context) {
       ->IsGuestSession();
 }
 
+bool IsTorDisabledForProfile(Profile* profile) {
+#if BUILDFLAG(ENABLE_TOR)
+  return profile->IsGuestSession();
+#else
+  return true;
+#endif
+}
+
 }  // namespace brave
 
 namespace chrome {
