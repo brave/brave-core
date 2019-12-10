@@ -80,6 +80,7 @@ source_set("extensions") {
     "//extensions/browser",
     "//extensions/common",
     "//third_party/re2",
+    "//url",
   ]
 
   if (brave_rewards_enabled) {

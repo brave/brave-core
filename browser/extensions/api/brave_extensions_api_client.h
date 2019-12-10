@@ -15,6 +15,8 @@ class BraveExtensionsAPIClient : public ChromeExtensionsAPIClient {
   bool ShouldHideBrowserNetworkRequest(
       content::BrowserContext* context,
       const WebRequestInfo& request) const override;
+
+  friend class BraveExtensionsAPIClientTests;
 };
 
 }  // namespace extensions
