@@ -346,8 +346,9 @@ struct Promotion {
   double approximate_value;
   PromotionStatus status;
   uint64 expires_at;
-  PromotionCreds? credentials;
+  uint64 claimed_at;
   bool legacy_claimed;
+  PromotionCreds? credentials;
 };
 
 struct PromotionCreds {

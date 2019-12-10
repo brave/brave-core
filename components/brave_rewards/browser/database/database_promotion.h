@@ -28,6 +28,8 @@ class DatabasePromotion: public DatabaseTable {
 
   bool CreateIndex(sql::Database* db) override;
 
+  bool Migrate(sql::Database* db, const int target);
+
   bool InsertOrUpdate(sql::Database* db, ledger::PromotionPtr info);
 
   ledger::PromotionPtr GetRecord(sql::Database* db, const std::string& id);
@@ -38,6 +40,14 @@ class DatabasePromotion: public DatabaseTable {
   bool CreateTableV10(sql::Database* db);
 
   bool CreateIndexV10(sql::Database* db);
+
+  bool CreateTableV13(sql::Database* db);
+
+  bool CreateIndexV13(sql::Database* db);
+
+  bool MigrateToV10(sql::Database* db);
+
+  bool MigrateToV13(sql::Database* db);
 
   std::unique_ptr<DatabasePromotionCreds> creds_;
 };
