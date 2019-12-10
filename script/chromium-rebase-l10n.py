@@ -30,6 +30,8 @@ def main():
 
     content = ''
     xml_tree = etree.parse(source_string_path)
+    # If you modify the translateable attribute then also update
+    # is_translateable_string function in brave/script/lib/transifex.py.
     if filename == 'brave_strings':
         elem1 = xml_tree.xpath('//message[@name="IDS_SXS_SHORTCUT_NAME"]')[0]
         elem1.text = 'Brave Nightly'
