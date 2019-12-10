@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Šioje svetainėje naršote be jokios privatumo ir saugumo apsaugos.",
-    "description": "Message telling the user that shields are disabled"
+    "message": "Šioje svetainėje naršote be „Brave“ privatumo ir saugumo apsaugos. Ar ji tinkamai veikia padidinus skydų apsaugą?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Pranešti apie neveikiančią svetainę",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "Užblokuoti elementai",

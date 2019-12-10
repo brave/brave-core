@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Mindenféle adatvédelem és biztonság nélkül böngészed ezt az oldalt.",
-    "description": "Message telling the user that shields are disabled"
+    "message": "A Brave adatvédelmi és biztonsági beállítási nélkül böngészik ezen az oldalon. Nem működik megfelelően a Shields alatt?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Nem működő oldal jelentése",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "Tárgyak letiltva",

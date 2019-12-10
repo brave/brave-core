@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Túto stránku si prehliadate bez akéhokoľvek zabezpečenia ochrany súkromia.  ",
-    "description": "Message telling the user that shields are disabled"
+    "message": "Prehľadávate túto stránku bez ochrany súkromia a zabezpečenia od Brave. Nefunguje to správne, keď sú Štíty hore?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Nahlásiť nefunkčnú stránku",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "Položky zablokované",

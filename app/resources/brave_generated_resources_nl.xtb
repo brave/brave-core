@@ -3,6 +3,7 @@
 <translationbundle lang="nl">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave Advertentieblokkeerder</translation>
+<translation id="4615489450165434530">Meld een gebroken site</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="5655621391922317800">Crypto Wallets</translation>
 <translation id="2445484935443597917">Een nieuw profiel maken</translation>
@@ -39,6 +40,8 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="2814998458708016836">Gebruik brede adresbalk</translation>
 <translation id="6123134130710658846">Verberg Brave Rewards-knop</translation>
 <translation id="7635711399568194460">Verbergt de Brave Rewards-knop in de locatiebalk wanneer Brave Rewards niet is ingeschakeld</translation>
+<translation id="1520361618554057102">Altijd bladwijzers tonen op nieuwe tabbladpagina</translation>
+<translation id="5802665280774361839">Autocomplete weergeven in adresbalk</translation>
 <translation id="7965178729203412357">Nieuwe Tor-identiteit</translation>
 <translation id="8511502469534942133">Nieuwe Tor-verbinding voor deze site</translation>
 <translation id="8784924142044142231">Sluit Tor af</translation>
@@ -68,6 +71,7 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="9075744464571452108">Apparaatherkenning</translation>
 <translation id="3570081523466826008">Upgrade verbindingen naar HTTPS</translation>
 <translation id="4824468494729001999">Blokkeer scripts</translation>
+<translation id="8526521192921341404">Google logins toestaan</translation>
 <translation id="863171915776379000">Sta Facebook-aanmeldingen en embedded berichten toe</translation>
 <translation id="5165042248369837294">Embedded tweets van Twitter toestaan</translation>
 <translation id="958971637207126733">Sta ingesloten berichten van LinkedIn toe</translation>
@@ -84,6 +88,7 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="5825943197137337319">Alleen standaard openbare interface</translation>
 <translation id="1689062823386843231">Deactiveer non-proxied UDP</translation>
 <translation id="8502234992433094996">Gebruik Google-services voor pushberichten</translation>
+<translation id="3888068426966679906">Foutopsporing op afstand</translation>
 <translation id="6645631466045614531">Toegang tot Sync via</translation>
 <translation id="1807246157184219062">Licht</translation>
 <translation id="2414886740292270097">Donker</translation>
@@ -153,4 +158,13 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="4394049700291259645">Uitschakelen</translation>
 <translation id="6469509880167172749">Stuur automatisch volledig privé productanalyses naar Brave</translation>
 <translation id="7090566321964540749">Met deze anonieme info kan Brave alleen het algehele gebruik van bepaalde functies schatten.</translation>
+<translation id="1200956479506699688">Crypto Wallets is nu beschikbaar in Brave. U kunt MetaMask en Crypto Wallets niet tegelijkertijd gebruiken.</translation>
+<translation id="7583735190612229830">Stel Crypto Wallets in om te communiceren met deze en vergelijkbare apps.</translation>
+<translation id="8337117349965899723">Gebruik Crypto Wallets</translation>
+<translation id="5756155765711979898">Gebruik MetaMask</translation>
+<translation id="6754134632841262799">INSTELLEN</translation>
+<translation id="191143826155037518">Brave wordt aan u beschikbaar gesteld onder de <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) en omvat <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph> onder verschillende andere licenties.
+        U kunt <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instructies lezen over het downloaden en zelf bouwen<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> de specifieke <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>broncode die wordt gebruikt om deze kopij te maken<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Bladwijzer toevoegen aan alle tabbladen...</translation>
+<translation id="2336228925368920074">Bladwijzer toevoegen aan alle tabbladen...</translation>
 </translationbundle>

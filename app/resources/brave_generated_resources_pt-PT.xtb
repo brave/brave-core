@@ -3,6 +3,7 @@
 <translationbundle lang="pt-PT">
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="7942180974165298215">Bloqueador de Anúncios Brave</translation>
+<translation id="4615489450165434530">Informar sobre um Site Danificado</translation>
 <translation id="6406506848690869874">Sincronização</translation>
 <translation id="5655621391922317800">Crypto Wallets</translation>
 <translation id="2445484935443597917">Criar um novo perfil</translation>
@@ -39,6 +40,8 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="2814998458708016836">Usar a barra de endereços grande</translation>
 <translation id="6123134130710658846">Ocultar o botão Brave Rewards</translation>
 <translation id="7635711399568194460">Esconde o botão Brave Rewards na barra de localização quando o Brave Rewards não está habilitado</translation>
+<translation id="1520361618554057102">Apresentar sempre marcadores na página Novo Separador</translation>
+<translation id="5802665280774361839">Apresentar o preenchimento automático na barra de endereços</translation>
 <translation id="7965178729203412357">Nova Identidade Tor</translation>
 <translation id="8511502469534942133">Nova Ligação Tor para este Site</translation>
 <translation id="8784924142044142231">Sair de Tor</translation>
@@ -68,6 +71,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="9075744464571452108">Reconhecimento de dispositivo</translation>
 <translation id="3570081523466826008">Atualizar ligações para HTTPS</translation>
 <translation id="4824468494729001999">Bloquear scripts</translation>
+<translation id="8526521192921341404">Autorizar logins do Google</translation>
 <translation id="863171915776379000">Permitir logins e posts incorporados do Facebook</translation>
 <translation id="5165042248369837294">Permitir tweets incorporados do Twitter</translation>
 <translation id="958971637207126733">Permitir publicações integradas LinkedIn</translation>
@@ -84,6 +88,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="5825943197137337319">Apenas pré-definida interface pública</translation>
 <translation id="1689062823386843231">Desativar UDP não-proxy</translation>
 <translation id="8502234992433094996">Utilize os Serviços da Google para o envio de notificações Push</translation>
+<translation id="3888068426966679906">Depuração remota</translation>
 <translation id="6645631466045614531">Aceder a Sync via</translation>
 <translation id="1807246157184219062">Claro</translation>
 <translation id="2414886740292270097">Escuro</translation>
@@ -153,4 +158,13 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="4394049700291259645">Desactivar</translation>
 <translation id="6469509880167172749">Envie automaticamente análises de produtos totalmente confidenciais à Brave</translation>
 <translation id="7090566321964540749">Esta informação anónima apenas permite que o Brave estime a utilização geral de certas funcionalidades.</translation>
+<translation id="1200956479506699688">As Crypto Wallets estão agora disponíveis em Brave.  O uso simultâneo de MetaMask e Crypto Wallets é impossível.</translation>
+<translation id="7583735190612229830">Configure as Crypto Wallets para que interajam com a presente aplicação e outras que lhe sejam idênticas.</translation>
+<translation id="8337117349965899723">Use Crypto Wallets</translation>
+<translation id="5756155765711979898">Use MetaMask</translation>
+<translation id="6754134632841262799">CONFIGURAÇÃO</translation>
+<translation id="191143826155037518">O Brave é-lhe disponibilizado sob o <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) e inclui <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>open source software<ph name="END_LINK_OSS">&lt;/a&gt;</ph>sob uma variedade de outras licenças.
+        Pode ler <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph> sobre como proceder ao download e fazer você mesmo<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> the specific <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>código fonte usado para a criação desta cópia<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Adicionar todos os separadores aos marcadores...</translation>
+<translation id="2336228925368920074">Adicionar todos os separadores aos marcadores...</translation>
 </translationbundle>

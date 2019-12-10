@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Преузимање није успело: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Преузимање је отказано: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">Преузимање је завршено: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">Преузимање је довршено: <ph name="FILE_NAME"/>. Притисните Shift + F6 да бисте прешли на област траке са преузимањима.</translation>
 <translation id="2743387203779672305">Копирај у меморију</translation>
 <translation id="883911313571074303">Додај напомену у слику</translation>
 <translation id="6291953229176937411">&amp;Прикажи у Finder-у</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Вредност потписа сертификата</translation>
 <translation id="4104163789986725820">И&amp;звези...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnKvalifikator</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">serijskiBroj</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DN</translation>
-<translation id="2948789661744572780">POŠTA</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">poslovnaKategorija</translation>
-<translation id="6561757256477115975">jurisdikcijaKrajIme</translation>
-<translation id="7150038968052501583">jurisdikcijaDržavaIliImeProvincije</translation>
-<translation id="8904360804686555987">jurisdikcijaImeZemlje</translation>
-<translation id="8718098216622210506">ULICA</translation>
-<translation id="6969275223369931223">poštanskiBroj</translation>
 <translation id="5434065355175441495">PKCS #1 RSA шифровање</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 са RSA шифровањем</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 са RSA шифровањем</translation>
@@ -1367,6 +1350,9 @@
 <translation id="813082847718468539">Погледајте информације о сајту</translation>
 <translation id="5233638681132016545">Нова картица</translation>
 <translation id="3915280005470252504">Претражујте гласом</translation>
+<translation id="8968766641738584599">Сачувај картицу</translation>
+<translation id="2408018932941436077">Картица се чува</translation>
+<translation id="7970882136539140748">Тренутно не можемо да сачувамо картицу</translation>
 <translation id="1593926297800505364">Сачувајте начин плаћања</translation>
 <translation id="2473195200299095979">Преведите ову страницу</translation>
 <translation id="5408750356094797285">Зумирајте: <ph name="PERCENT"/></translation>
@@ -1759,7 +1745,6 @@
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Дељени ресурси</translation>
 <translation id="2927017729816812676">Меморијски простор кеша</translation>
-<translation id="3169132535805984622">ecdsa_znak</translation>
 <translation id="2805756323405976993">Апликације</translation>
 <translation id="542872847390508405">Прегледате као гост</translation>
 <translation id="537813040452600081">Странице које видите у овом прозору се неће појављивати у историји прегледача и неће остављати друге трагове, попут колачића, на рачунару после одјављивања. Датотеке које преузмете и обележивачи које направите неће бити сачувани.</translation>
@@ -2103,7 +2088,6 @@
 <translation id="2650609753175229582"><ph name="URL"/> жели да пусти заштићени садржај. Brave Software ће потврдити идентитет уређаја и овај сајт ће моћи да му приступа.</translation>
 <translation id="1746402432151920942">Идентификатор заштићеног садржаја</translation>
 <translation id="1322046419516468189">Прегледајте сачуване лозинке и управљајте њима са <ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Лозинка је сачувана. Прегледајте сачуване лозинке и управљајте њима са <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Brave Software налога</translation>
 <translation id="3785727820640310185">Сачуване лозинке за овај сајт</translation>
@@ -2506,9 +2490,6 @@
 <translation id="5186185447130319458">Privatno</translation>
 <translation id="7643842463591647490">{0,plural, =1{# отворен прозор}one{# отворен прозор}few{# отворена прозора}other{# отворених прозора}}</translation>
 <translation id="2579188629646253712">Izađi iz Privatnog</translation>
-<translation id="479219453908726046">Uradi anketu</translation>
-<translation id="7581273696622423628">Uradi anketu</translation>
-<translation id="4406504596603350105">Vaša povratna informacija nam je važna.</translation>
 <translation id="4349828822184870497">Корисно</translation>
 <translation id="6876469544038980967">Није корисно</translation>
 <translation id="5286194356314741248">Скенирање</translation>
@@ -3138,7 +3119,7 @@
 <translation id="6644512095122093795">Понуди да сачуваш лозинке</translation>
 <translation id="2100273922101894616">Аутоматско пријављивање</translation>
 <translation id="7513029293694390567">Аутоматски се пријављујте на веб-сајтове помоћу сачуваних акредитива. Када је ова функција онемогућена, тражићемо потврду пре сваког пријављивања на веб-сајт.</translation>
-<translation id="2330129964253841015">Упозори ме ако су лозинке угрожене</translation>
+<translation id="6995899638241819463">Упозори ме ако су лозинке угрожене</translation>
 <translation id="1534287762301776620">Ова функција се укључује када се пријавите на Brave Software налог</translation>
 <translation id="1375321115329958930">Сачуване лозинке</translation>
 <translation id="152234381334907219">Никада се не чува</translation>

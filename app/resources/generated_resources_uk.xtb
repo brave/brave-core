@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Не вдалося завантажити файл "<ph name="FILE_NAME"/>"</translation>
 <translation id="6577284282025554716">Завантаження файлу "<ph name="FILE_NAME"/>" скасовано</translation>
 <translation id="3340620525920140773">Файл "<ph name="FILE_NAME"/>" завантажено.</translation>
+<translation id="4110490973560452005">Завантажено: <ph name="FILE_NAME"/>. Натисніть Shift+F6, щоб перейти на панель завантажень.</translation>
 <translation id="2743387203779672305">Копіювати в буфер</translation>
 <translation id="883911313571074303">Додати нотатку до зображення</translation>
 <translation id="6291953229176937411">&amp;Показати в програмі Finder</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Значення підпису сертифіката</translation>
 <translation id="4104163789986725820">Е&amp;кспортувати...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">serialNumber</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">Центр опрацювання даних</translation>
-<translation id="2948789661744572780">ПОШТА</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">businessCategory</translation>
-<translation id="6561757256477115975">jurisdictionLocalityName</translation>
-<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
-<translation id="8904360804686555987">jurisdictionCountryName</translation>
-<translation id="8718098216622210506">ВУЛИЦЯ</translation>
-<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">PKCS #1 шифрування RSA</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 із шифруванням RSA</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 із шифруванням RSA</translation>
@@ -1366,6 +1349,9 @@
 <translation id="813082847718468539">Перегляд інформації про сайт</translation>
 <translation id="5233638681132016545">Нова вкладка</translation>
 <translation id="3915280005470252504">Пошук голосом</translation>
+<translation id="8968766641738584599">Зберегти картку</translation>
+<translation id="2408018932941436077">Зберігання картки</translation>
+<translation id="7970882136539140748">Не вдається зберегти картку</translation>
 <translation id="1593926297800505364">Зберегти спосіб оплати</translation>
 <translation id="2473195200299095979">Перекласти цю сторінку</translation>
 <translation id="5408750356094797285">Масштаб: <ph name="PERCENT"/></translation>
@@ -1758,7 +1744,6 @@
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Кеш-пам’ять</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Додатки</translation>
 <translation id="542872847390508405">Ви переглядаєте в гостьовому режимі</translation>
 <translation id="537813040452600081">Сторінки, які ви переглядаєте в цьому вікні, не відображатимуться в історії веб-переглядача, а після вашого виходу не залишать у комп'ютері інших слідів, наприклад, файлів cookie. Завантажені вами файли та створені закладки не зберігаються.</translation>
@@ -2102,7 +2087,6 @@
 <translation id="2650609753175229582"><ph name="URL"/> хоче відтворити захищений вміст. Ми перевіримо ідентифікаційні дані вашого пристрою, і сайт зможе отримати до нього доступ.</translation>
 <translation id="1746402432151920942">Ідентифікатор захищених медіа</translation>
 <translation id="1322046419516468189">Переглядайте збережені паролі й керуйте ними на сторінці <ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Пароль збережено. Переглядайте збережені паролі й керуйте ними на сторінці <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Обліковий запис Brave Software</translation>
 <translation id="3785727820640310185">Збережені паролі для цього сайту</translation>
@@ -2505,9 +2489,6 @@
 <translation id="5186185447130319458">Приватне</translation>
 <translation id="7643842463591647490">{0,plural, =1{# відкрите вікно}one{# відкрите вікно}few{# відкриті вікна}many{# відкритих вікон}other{# відкритого вікна}}</translation>
 <translation id="2579188629646253712">Вийти з приватних</translation>
-<translation id="479219453908726046">Пройти опитування</translation>
-<translation id="7581273696622423628">Пройти опитування</translation>
-<translation id="4406504596603350105">Ваш відгук для нас важливий.</translation>
 <translation id="4349828822184870497">Корисно</translation>
 <translation id="6876469544038980967">Не корисно</translation>
 <translation id="5286194356314741248">Сканування</translation>
@@ -3137,7 +3118,7 @@
 <translation id="6644512095122093795">Пропонувати зберігати паролі</translation>
 <translation id="2100273922101894616">Автоматичний вхід</translation>
 <translation id="7513029293694390567">Автоматично входити в облікові записи на веб-сайтах за допомогою збережених облікових даних. Якщо цю функцію вимкнено, потрібно підтверджувати облікові дані під час кожного входу на веб-сайтах.</translation>
-<translation id="2330129964253841015">Попереджати, якщо паролі зламано</translation>
+<translation id="6995899638241819463">Попереджати, якщо паролі зламано</translation>
 <translation id="1534287762301776620">Ця функція вмикається, коли ви входите в обліковий запис Brave Software</translation>
 <translation id="1375321115329958930">Збережені паролі</translation>
 <translation id="152234381334907219">Ніколи не зберігалося</translation>

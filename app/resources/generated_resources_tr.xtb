@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">İndirme işlemi başarısız oldu: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">İndirme işlemi iptal edildi: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">İndirme işlemi tamamlandı: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">İndirme işlemi tamamlandı: <ph name="FILE_NAME"/>. İndirme çubuğu alanına gitmek için Üst Karakter+F6 tuşlarına basın.</translation>
 <translation id="2743387203779672305">Panoya kopyala</translation>
 <translation id="883911313571074303">Resme açıklama ekle</translation>
 <translation id="6291953229176937411">Bulucu'da &amp;Göster</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Sertifika İmza Değeri</translation>
 <translation id="4104163789986725820">&amp;Dışa Aktar...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">Seri No</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">POSTA</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">İş Kategorisi</translation>
-<translation id="6561757256477115975">Yetki Dahilindeki Muhit Adı</translation>
-<translation id="7150038968052501583">Yetki Dahilindeki Eyalet veya İl Adı</translation>
-<translation id="8904360804686555987">Yetki Dahilindeki Ülke Adı</translation>
-<translation id="8718098216622210506">CADDE</translation>
-<translation id="6969275223369931223">posta kodu</translation>
 <translation id="5434065355175441495">PKCS #1 RSA Şifrelemesi</translation>
 <translation id="1221024147024329929">PKCS #1 RSA Şifrelemeli MD2</translation>
 <translation id="1640283014264083726">PKCS #1 RSA Şifrelemeli MD4</translation>
@@ -1367,6 +1350,9 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="813082847718468539">Site bilgilerini görüntüle</translation>
 <translation id="5233638681132016545">Yeni sekme</translation>
 <translation id="3915280005470252504">Sese göre ara</translation>
+<translation id="8968766641738584599">Kartı kaydet</translation>
+<translation id="2408018932941436077">Kart kaydediliyor</translation>
+<translation id="7970882136539140748">Kart şu anda kaydedilemiyor</translation>
 <translation id="1593926297800505364">Ödeme yöntemini kaydet</translation>
 <translation id="2473195200299095979">Bu sayfayı çevir</translation>
 <translation id="5408750356094797285">Yakınlaştır: <ph name="PERCENT"/></translation>
@@ -1759,7 +1745,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="1234808891666923653">Hizmet Çalışanları</translation>
 <translation id="3432762828853624962">Ortak Çalışanlar</translation>
 <translation id="2927017729816812676">Önbellek Depolama Alanı</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Uygulamalar</translation>
 <translation id="542872847390508405">Misafir olarak göz atıyorsunuz</translation>
 <translation id="537813040452600081">Bu pencerede görüntülediğiniz sayfalar tarayıcı geçmişinde görünmez ve oturumu kapatmanızdan sonra bilgisayarda çerezler gibi başka izler bırakmaz. İndirdiğiniz dosyalar ve oluşturduğunuz yer işaretleri saklanmaz.</translation>
@@ -2103,7 +2088,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="2650609753175229582"><ph name="URL"/>, korunan içeriği oynatmak istiyor. Cihazınızın kimliği Brave Software tarafından doğrulanır ve bu site tarafından erişilebilir.</translation>
 <translation id="1746402432151920942">Korunan Medya Tanımlayıcı</translation>
 <translation id="1322046419516468189">Kayıtlı şifreleri <ph name="SAVED_PASSWORDS_STORE"/> üzerinde görüntüleyin ve yönetin</translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Şifre kaydedildi. Kayıtlı şifrelerinizi <ph name="SAVED_PASSWORDS_STORE"/> üzerinde görüntüleyebilir ve yönetebilirsiniz.</translation>
 <translation id="5713644099811900409">Brave Software Hesabı</translation>
 <translation id="3785727820640310185">Bu site için kaydedilen şifreler</translation>
@@ -2506,9 +2490,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="5186185447130319458">Kişisel</translation>
 <translation id="7643842463591647490">{0,plural, =1{# açık pencere}other{# açık pencere}}</translation>
 <translation id="2579188629646253712">Kişiselden Çık</translation>
-<translation id="479219453908726046">Ankete Katıl</translation>
-<translation id="7581273696622423628">Ankete katıl</translation>
-<translation id="4406504596603350105">Geri bildiriminiz bizim için önemli.</translation>
 <translation id="4349828822184870497">Faydalı</translation>
 <translation id="6876469544038980967">Faydalı Değil</translation>
 <translation id="5286194356314741248">Taranıyor</translation>
@@ -3138,7 +3119,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="6644512095122093795">Şifreleri kaydetmeyi öner</translation>
 <translation id="2100273922101894616">Otomatik Oturum Aç</translation>
 <translation id="7513029293694390567">Depolanmış kimlik bilgileriyle web sitelerinde otomatik olarak oturum açın. Bu özellik devre dışı bırakılırsa, bir web sitesinde oturum açmadan önce her defasında işlemi onaylamanız istenir.</translation>
-<translation id="2330129964253841015">Şifrelerinizin güvenliği ihlal edilirse sizi uyarır</translation>
+<translation id="6995899638241819463">Şifrelerinizin güvenliği ihlal edilirse sizi uyarır</translation>
 <translation id="1534287762301776620">Brave Software Hesabınızda oturum açtığınızda bu özellik devreye girer</translation>
 <translation id="1375321115329958930">Kayıtlı şifreler</translation>
 <translation id="152234381334907219">Hiç Kaydedilmeyenler</translation>

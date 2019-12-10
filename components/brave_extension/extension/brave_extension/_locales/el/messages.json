@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Περιηγήσε σε αυτή την ιστοσελίδα χωρίς καμία προστασία ασφαλείας ή απορρήτου.",
-    "description": "Message telling the user that shields are disabled"
+    "message": "Περιηγείστε σ' αυτόν τον ιστότοπο χωρίς τις προστασίες απορρήτου και ασφάλειας του Brave. Δεν λειτουργεί σωστά με τις Ασπίδες ενεργοποιημένες;",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Αναφέρετε μη λειτουργούντα ιστότοπο",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "Αποκλεισμένα στοιχεία",

@@ -603,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">憑證簽署值</translation>
 <translation id="4104163789986725820">匯出(&amp;X)...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">序號</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">MAIL</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">商業分類</translation>
-<translation id="6561757256477115975">jurisdictionLocalityName</translation>
-<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
-<translation id="8904360804686555987">jurisdictionCountryName</translation>
-<translation id="8718098216622210506">STREET</translation>
-<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">PKCS #1 RSA 加密</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 (使用 RSA 加密)</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 (使用 RSA 加密)</translation>
@@ -1761,7 +1743,6 @@
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">快取儲存空間</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">應用程式</translation>
 <translation id="542872847390508405">你目前是以訪客身分瀏覽</translation>
 <translation id="537813040452600081">你在這個視窗瀏覽的網頁不會顯示在瀏覽器記錄中，而且在你登出之後，電腦也不會留下 Cookie 等其他記錄。此外，系統不會保留你下載的檔案和建立的書籤。</translation>
@@ -2103,7 +2084,6 @@
 <translation id="2650609753175229582"><ph name="URL"/> 想要播放受到保護的內容。Brave Software 會驗證你的裝置身分，這個網站可能也會存取你的裝置身分。</translation>
 <translation id="1746402432151920942">受保護媒體 ID</translation>
 <translation id="1322046419516468189">你可以查看及管理 <ph name="SAVED_PASSWORDS_STORE"/>中儲存的密碼</translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">密碼已儲存。你可以查看及管理 <ph name="SAVED_PASSWORDS_STORE"/>中儲存的密碼。</translation>
 <translation id="5713644099811900409">Brave Software 帳戶</translation>
 <translation id="3785727820640310185">已儲存這個網站的密碼</translation>
@@ -2506,9 +2486,6 @@
 <translation id="5186185447130319458">私人</translation>
 <translation id="7643842463591647490">{0,plural, =1{# 個開啟的視窗}other{# 個開啟的視窗}}</translation>
 <translation id="2579188629646253712">結束私人</translation>
-<translation id="479219453908726046">進行調查</translation>
-<translation id="7581273696622423628">參加調查</translation>
-<translation id="4406504596603350105">您的意見對我們來說非常重要。</translation>
 <translation id="4349828822184870497">有幫助</translation>
 <translation id="6876469544038980967">沒有幫助</translation>
 <translation id="5286194356314741248">掃描中</translation>
@@ -3138,7 +3115,7 @@
 <translation id="6644512095122093795">儲存密碼</translation>
 <translation id="2100273922101894616">自動登入</translation>
 <translation id="7513029293694390567">使用已儲存的憑證自動登入網站。如果停用這項功能，每當你登入網站時，都必須向系統確認你的登入憑證。</translation>
-<translation id="2330129964253841015">當密碼遭到外洩時發出警告</translation>
+<translation id="6995899638241819463">當密碼遭到外洩時發出警告</translation>
 <translation id="1534287762301776620">登入 Brave Software 帳戶時，系統會啟用這項功能</translation>
 <translation id="1375321115329958930">已儲存的密碼</translation>
 <translation id="152234381334907219">永不儲存</translation>

@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Download unsuccessful: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Download cancelled: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">Download complete: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">Download complete: <ph name="FILE_NAME"/>. Press Shift+F6 to cycle to the downloads bar area.</translation>
 <translation id="2743387203779672305">Copy to clipboard</translation>
 <translation id="883911313571074303">Annotate image</translation>
 <translation id="6291953229176937411">&amp;Show in Finder</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Certificate Signature Value</translation>
 <translation id="4104163789986725820">E&amp;xport...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnqualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">serialnumber</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">MAIL</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">businesscategory</translation>
-<translation id="6561757256477115975">jurisdictionlocalityname</translation>
-<translation id="7150038968052501583">jurisdictionstateorprovincename</translation>
-<translation id="8904360804686555987">jurisdictioncountryname</translation>
-<translation id="8718098216622210506">STREET</translation>
-<translation id="6969275223369931223">postcode</translation>
 <translation id="5434065355175441495">PKCS #1 RSA Encryption</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 With RSA Encryption</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 With RSA Encryption</translation>
@@ -1366,6 +1349,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="813082847718468539">View site information</translation>
 <translation id="5233638681132016545">New tab</translation>
 <translation id="3915280005470252504">Search by voice</translation>
+<translation id="8968766641738584599">Save card</translation>
+<translation id="2408018932941436077">Saving card</translation>
+<translation id="7970882136539140748">Can't save card at the moment</translation>
 <translation id="1593926297800505364">Save payment method</translation>
 <translation id="2473195200299095979">Translate this page</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
@@ -1758,7 +1744,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Cache Storage</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Apps</translation>
 <translation id="542872847390508405">You’re browsing as a Guest</translation>
 <translation id="537813040452600081">Pages that you view in this window won’t appear in the browser history and they won’t leave other traces, like cookies, on the computer after you sign out. Files that you download and bookmarks that you create won’t be preserved.</translation>
@@ -2102,7 +2087,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2650609753175229582"><ph name="URL"/> wants to play protected content. Your device's identity will be verified by Brave Software and may be accessed by this site.</translation>
 <translation id="1746402432151920942">Protected media identifier</translation>
 <translation id="1322046419516468189">View and manage saved passwords in your <ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Password saved. View and manage saved passwords in your <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Brave Software Account</translation>
 <translation id="3785727820640310185">Saved passwords for this site</translation>
@@ -2505,9 +2489,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5186185447130319458">Private</translation>
 <translation id="7643842463591647490">{0,plural, =1{# open window}other{# open windows}}</translation>
 <translation id="2579188629646253712">Exit Private</translation>
-<translation id="479219453908726046">Take survey</translation>
-<translation id="7581273696622423628">Take survey</translation>
-<translation id="4406504596603350105">Your feedback is important to us.</translation>
 <translation id="4349828822184870497">Helpful</translation>
 <translation id="6876469544038980967">Not helpful</translation>
 <translation id="5286194356314741248">Scanning</translation>
@@ -3137,7 +3118,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6644512095122093795">Offer to save passwords</translation>
 <translation id="2100273922101894616">Auto Sign-in</translation>
 <translation id="7513029293694390567">Automatically sign in to websites using stored credentials. If disabled, you will be asked for confirmation every time before signing in to a website.</translation>
-<translation id="2330129964253841015">Warn you if passwords are compromised</translation>
+<translation id="6995899638241819463">Warn you if passwords are compromised</translation>
 <translation id="1534287762301776620">When you sign in to your Brave Software account, this feature is turned on</translation>
 <translation id="1375321115329958930">Saved Passwords</translation>
 <translation id="152234381334907219">Never Saved</translation>

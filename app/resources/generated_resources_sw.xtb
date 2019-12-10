@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Imeshindwa kupakua: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Imeghairi kupakua: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">Imemaliza kupakua: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">Imemaliza kupakua: <ph name="FILE_NAME"/>. Bonyeza Shift+F6 ili uende kwenye eneo la upau wa vipakuliwa.</translation>
 <translation id="2743387203779672305">Nakili kwenye ubao wa kunakili</translation>
 <translation id="883911313571074303">Eleza kuhusu picha</translation>
 <translation id="6291953229176937411">Onye&amp;sha katika Kipataji</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Thamani ya Sahihi ya Cheti</translation>
 <translation id="4104163789986725820">&amp;Hamisha...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">Sharti la dn</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">Nambari ya ufuatiliaji</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">MAIL</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">aina ya Biashara</translation>
-<translation id="6561757256477115975">jina la Eneo la Mamlaka</translation>
-<translation id="7150038968052501583">jina la Jimbo au Wilaya ya Mamlaka</translation>
-<translation id="8904360804686555987">jina la Nchi ya Mamlaka</translation>
-<translation id="8718098216622210506">MTAA</translation>
-<translation id="6969275223369931223">msimbo wa Posta</translation>
 <translation id="5434065355175441495">PKCS #1 Usimbaji wa RSA</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 Na Usimbaji wa RSA</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 Na Usimbaji wa RSA</translation>
@@ -1365,6 +1348,9 @@ Weka faili yako ya funguo mahali salama. Utaihitaji kuunda matoleo mapya ya kien
 <translation id="813082847718468539">Angalia maelezo ya tovuti</translation>
 <translation id="5233638681132016545">Kichupo kipya</translation>
 <translation id="3915280005470252504">Tafuta kwa kutamka</translation>
+<translation id="8968766641738584599">Hifadhi kadi</translation>
+<translation id="2408018932941436077">Inahifadhi kadi</translation>
+<translation id="7970882136539140748">Imeshindwa kuhifadhi kadi sasa hivi</translation>
 <translation id="1593926297800505364">Hifadhi njia ya kulipa</translation>
 <translation id="2473195200299095979">Tafsiri ukurasa huu</translation>
 <translation id="5408750356094797285">Kuza: <ph name="PERCENT"/></translation>
@@ -1757,7 +1743,6 @@ Ungependa kuanza <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="1234808891666923653">Wafanyakazi wa Huduma</translation>
 <translation id="3432762828853624962">Wafanyakazi wa Pamoja</translation>
 <translation id="2927017729816812676">Hifadhi ya Akiba</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Programu</translation>
 <translation id="542872847390508405">Unavinjari kama Mgeni</translation>
 <translation id="537813040452600081">Kurasa unazoangalia katika dirisha hili hazitaonekana katika historia ya kivinjari na hazitaacha alama nyingine, kama vile vidakuzi, kwenye kompyuta baada ya wewe kuondoka katika akaunti. Faili unazopakua na alamisho unazounda hazitahifadhiwa.</translation>
@@ -2101,7 +2086,6 @@ Ungependa kuanza <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="2650609753175229582"><ph name="URL"/> inataka kucheza maudhui yanayolindwa. Utambulisho wa kifaa chako utathibitishwa na Brave Software na kinaweza kufikiwa na tovuti hii.</translation>
 <translation id="1746402432151920942">Kitambulishi cha Maudhui Yanayolindwa</translation>
 <translation id="1322046419516468189">Angalia na udhibiti manenosiri yaliyohifadhiwa kwenye <ph name="SAVED_PASSWORDS_STORE"/> yako</translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Imehifadhi nenosiri. Angalia na udhibiti manenosiri yaliyohifadhiwa kwenye <ph name="SAVED_PASSWORDS_STORE"/> yako.</translation>
 <translation id="5713644099811900409">Akaunti ya Brave Software</translation>
 <translation id="3785727820640310185">Manenosiri ya tovuti hii yamehifadhiwa</translation>
@@ -2504,9 +2488,6 @@ Ungependa kuanza <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="5186185447130319458">Faragha</translation>
 <translation id="7643842463591647490">{0,plural, =1{Dirisha # limefunguliwa}other{Madirisha # yamefunguliwa}}</translation>
 <translation id="2579188629646253712">Ondoka katika Faragha</translation>
-<translation id="479219453908726046">Shiriki katika Utafiti</translation>
-<translation id="7581273696622423628">Shiriki katika utafiti</translation>
-<translation id="4406504596603350105">Maoni yako ni ya muhimu kwetu</translation>
 <translation id="4349828822184870497">Imenifaa</translation>
 <translation id="6876469544038980967">Haijanifaa</translation>
 <translation id="5286194356314741248">Inachanganua</translation>
@@ -3136,7 +3117,7 @@ Sidhani tovuti hii inapaswa kuzuiwa!</translation>
 <translation id="6644512095122093795">Uliza kama manenosiri yahifadhiwe</translation>
 <translation id="2100273922101894616">Ingia katika Akaunti Kiotomatiki</translation>
 <translation id="7513029293694390567">Ingia katika tovuti kiotomatiki ukitumia kitambulisho kilichohifadhiwa. Kipengele kikizimwa, utaombwa kuthibitisha kila wakati kabla ya kuingia katika tovuti.</translation>
-<translation id="2330129964253841015">Uonywe ikiwa manenosiri yako yameathiriwa</translation>
+<translation id="6995899638241819463">Uonywe ikiwa manenosiri yako yameathiriwa</translation>
 <translation id="1534287762301776620">Ukiingia katika Akaunti ya Brave Software, kipengele hiki kitawashwa</translation>
 <translation id="1375321115329958930">Manenosiri Yaliyohifadhiwa</translation>
 <translation id="152234381334907219">Hayatahifadhiwa Kamwe</translation>
