@@ -41,7 +41,7 @@ private:
   void RestorePublishers(ledger::RestorePublishersCallback callback) override;
   void OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) override;
   void RemoveAllPendingContributions(ledger::RemovePendingContributionCallback callback) override;
-  void RemovePendingContribution(const std::string & publisher_key, const std::string & viewing_id, uint64_t added_date, ledger::RemovePendingContributionCallback callback) override;
+  void RemovePendingContribution(const uint64_t id, ledger::RemovePendingContributionCallback callback) override;
   void ResetState(const std::string & name, ledger::OnResetCallback callback) override;
   void SaveActivityInfo(ledger::PublisherInfoPtr publisher_info, ledger::PublisherInfoCallback callback) override;
   void SaveContributionInfo(ledger::ContributionInfoPtr info, ledger::ResultCallback callback) override;

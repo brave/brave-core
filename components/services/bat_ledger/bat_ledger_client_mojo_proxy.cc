@@ -777,9 +777,7 @@ void OnRemovePendingContribution(
 }
 
 void BatLedgerClientMojoProxy::RemovePendingContribution(
-    const std::string& publisher_key,
-    const std::string& viewing_id,
-    uint64_t added_date,
+    const uint64_t id,
     ledger::RemovePendingContributionCallback callback) {
   if (!Connected()) {
     callback(ledger::Result::LEDGER_ERROR);
@@ -787,9 +785,7 @@ void BatLedgerClientMojoProxy::RemovePendingContribution(
   }
 
   bat_ledger_client_->RemovePendingContribution(
-      publisher_key,
-      viewing_id,
-      added_date,
+      id,
       base::BindOnce(&OnRemovePendingContribution, std::move(callback)));
 }
 

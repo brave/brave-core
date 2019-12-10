@@ -145,9 +145,7 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       ledger::PendingContributionInfoListCallback callback) override;
 
   void RemovePendingContribution(
-      const std::string& publisher_key,
-      const std::string& viewing_id,
-      uint64_t added_date,
+      const uint64_t id,
       ledger::RemovePendingContributionCallback callback) override;
 
   void RemoveAllPendingContributions(

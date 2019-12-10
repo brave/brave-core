@@ -67,9 +67,7 @@ void Unverified::OnContributeUnverifiedPublishers(
     // remove pending contribution if it's over expiration date
     if (now_seconds > item->expiration_date) {
       ledger_->RemovePendingContribution(
-          item->publisher_key,
-          item->viewing_id,
-          item->added_date,
+          item->id,
           std::bind(&Unverified::OnRemovePendingContribution,
                     this,
                     _1));
@@ -115,9 +113,7 @@ void Unverified::OnContributeUnverifiedPublishers(
     contribution_->InitReconcile(std::move(queue));
 
     ledger_->RemovePendingContribution(
-        current->publisher_key,
-        current->viewing_id,
-        current->added_date,
+        current->id,
         std::bind(&Unverified::OnRemovePendingContribution,
                   this,
                   _1));

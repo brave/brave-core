@@ -175,10 +175,8 @@ class BatLedgerImpl : public mojom::BatLedger,
     GetPendingContributionsCallback callback) override;
 
   void RemovePendingContribution(
-    const std::string& publisher_key,
-    const std::string& viewing_id,
-    uint64_t added_date,
-    RemovePendingContributionCallback callback) override;
+      const uint64_t id,
+      RemovePendingContributionCallback callback) override;
 
   void RemoveAllPendingContributions(
     RemovePendingContributionCallback callback) override;

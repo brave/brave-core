@@ -335,7 +335,7 @@ class PageWallet extends React.Component<Props, State> {
         },
         date: new Date(parseInt(item.expirationDate, 10) * 1000).toLocaleDateString(),
         onRemove: () => {
-          this.actions.removePendingContribution(item.publisherKey, item.viewingId, item.addedDate)
+          this.actions.removePendingContribution(item.id)
         }
       }
     })

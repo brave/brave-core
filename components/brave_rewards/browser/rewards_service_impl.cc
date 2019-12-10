@@ -3375,6 +3375,7 @@ ledger::PendingContributionInfoList PendingContributionsOnFileTaskRunner(
 PendingContributionInfo PendingContributionLedgerToRewards(
     const ledger::PendingContributionInfoPtr contribution) {
   PendingContributionInfo info;
+  info.id = contribution->id;
   info.publisher_key = contribution->publisher_key;
   info.type = static_cast<int>(contribution->type);
   info.status = static_cast<uint32_t>(contribution->status);
@@ -3440,45 +3441,32 @@ void RewardsServiceImpl::OnPendingContributionRemovedUI(
   }
 }
 
-void RewardsServiceImpl::RemovePendingContributionUI(
-    const std::string& publisher_key,
-    const std::string& viewing_id,
-    uint64_t added_date) {
+void RewardsServiceImpl::RemovePendingContributionUI(const uint64_t id) {
   bat_ledger_->RemovePendingContribution(
-      publisher_key,
-      viewing_id,
-      added_date,
+      id,
       base::BindOnce(&RewardsServiceImpl::OnPendingContributionRemovedUI,
                      AsWeakPtr()));
 }
 
 bool RemovePendingContributionOnFileTaskRunner(
     PublisherInfoDatabase* backend,
-    const std::string& publisher_key,
-    const std::string& viewing_id,
-    uint64_t added_date) {
+    const uint64_t id) {
   if (!backend) {
     return false;
   }
 
-  return backend->RemovePendingContributions(publisher_key,
-                                             viewing_id,
-                                             added_date);
+  return backend->RemovePendingContributions(id);
 }
 
 void RewardsServiceImpl::RemovePendingContribution(
-    const std::string& publisher_key,
-    const std::string& viewing_id,
-    uint64_t added_date,
+    const uint64_t id,
     ledger::RemovePendingContributionCallback callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(),
       FROM_HERE,
       base::Bind(&RemovePendingContributionOnFileTaskRunner,
                  publisher_info_backend_.get(),
-                 publisher_key,
-                 viewing_id,
-                 added_date),
+                 id),
       base::Bind(&RewardsServiceImpl::OnPendingContributionRemoved,
                  AsWeakPtr(),
                  callback));

@@ -57,7 +57,7 @@ bool DatabasePendingContribution::CreateTable(sql::Database* db) {
     return true;
   }
 
-  return CreateTableV8(db);
+  return CreateTableV12(db);
 }
 
 bool DatabasePendingContribution::CreateTableV3(sql::Database* db) {
@@ -98,6 +98,26 @@ bool DatabasePendingContribution::CreateTableV8(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
+bool DatabasePendingContribution::CreateTableV12(sql::Database* db) {
+  const std::string query = base::StringPrintf(
+      "CREATE TABLE %s ("
+        "pending_contribution_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+        "publisher_id LONGVARCHAR NOT NULL,"
+        "amount DOUBLE DEFAULT 0 NOT NULL,"
+        "added_date INTEGER DEFAULT 0 NOT NULL,"
+        "viewing_id LONGVARCHAR NOT NULL,"
+        "type INTEGER NOT NULL,"
+        "CONSTRAINT fk_%s_publisher_id"
+        "    FOREIGN KEY (publisher_id)"
+        "    REFERENCES publisher_info (publisher_id)"
+        "    ON DELETE CASCADE"
+      ")",
+      table_name_,
+      table_name_);
+
+  return db->Execute(query.c_str());
+}
+
 bool DatabasePendingContribution::CreateIndex(sql::Database* db) {
   return CreateIndexV8(db);
 }
@@ -110,6 +130,10 @@ bool DatabasePendingContribution::CreateIndexV8(sql::Database* db) {
   return this->InsertIndex(db, table_name_, "publisher_id");
 }
 
+bool DatabasePendingContribution::CreateIndexV12(sql::Database* db) {
+  return this->InsertIndex(db, table_name_, "publisher_id");
+}
+
 bool DatabasePendingContribution::Migrate(sql::Database* db, const int target) {
   switch (target) {
     case 3: {
@@ -117,6 +141,9 @@ bool DatabasePendingContribution::Migrate(sql::Database* db, const int target) {
     }
     case 8: {
       return MigrateToV8(db);
+    }
+    case 12: {
+      return MigrateToV12(db);
     }
     default: {
       NOTREACHED();
@@ -175,6 +202,43 @@ bool DatabasePendingContribution::MigrateToV8(sql::Database* db) {
   return true;
 }
 
+bool DatabasePendingContribution::MigrateToV12(sql::Database* db) {
+  const std::string temp_table_name = base::StringPrintf(
+      "%s_temp",
+      table_name_);
+
+  if (!RenameDBTable(db, table_name_, temp_table_name)) {
+    return false;
+  }
+
+  const std::string sql =
+      "DROP INDEX IF EXISTS pending_contribution_publisher_id_index;";
+  if (!db->Execute(sql.c_str())) {
+    return false;
+  }
+
+  if (!CreateTableV12(db)) {
+    return false;
+  }
+
+  if (!CreateIndexV12(db)) {
+    return false;
+  }
+
+  const std::map<std::string, std::string> columns = {
+    { "publisher_id", "publisher_id" },
+    { "amount", "amount" },
+    { "added_date", "added_date" },
+    { "viewing_id", "viewing_id" },
+    { "type", "type" }
+  };
+
+  if (!MigrateDBTable(db, temp_table_name, table_name_, columns, true)) {
+    return false;
+  }
+  return true;
+}
+
 bool DatabasePendingContribution::InsertOrUpdate(
     sql::Database* db,
     ledger::PendingContributionList list) {
@@ -190,19 +254,20 @@ bool DatabasePendingContribution::InsertOrUpdate(
   const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
 
   const std::string query = base::StringPrintf(
-    "INSERT INTO %s (publisher_id, amount, added_date, viewing_id, type) "
-    "VALUES (?, ?, ?, ?, ?)",
+    "INSERT INTO %s (pending_contribution_id, publisher_id, amount, "
+    "added_date, viewing_id, type) VALUES (?, ?, ?, ?, ?, ?)",
     table_name_);
 
   for (const auto& item : list) {
     sql::Statement statement(
         db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
 
-    statement.BindString(0, item->publisher_key);
-    statement.BindDouble(1, item->amount);
-    statement.BindInt64(2, now);
-    statement.BindString(3, item->viewing_id);
-    statement.BindInt(4, static_cast<int>(item->type));
+    statement.BindNull(0);
+    statement.BindString(1, item->publisher_key);
+    statement.BindDouble(2, item->amount);
+    statement.BindInt64(3, now);
+    statement.BindString(4, item->viewing_id);
+    statement.BindInt(5, static_cast<int>(item->type));
     if (!statement.Run()) {
       return false;
     }
@@ -235,8 +300,8 @@ void DatabasePendingContribution::GetAllRecords(
   }
 
   const std::string query = base::StringPrintf(
-    "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-    "spi.status, pi.provider, pc.amount, pc.added_date, "
+    "SELECT pc.pending_contribution_id, pi.publisher_id, pi.name, "
+    "pi.url, pi.favIcon, spi.status, pi.provider, pc.amount, pc.added_date, "
     "pc.viewing_id, pc.type "
     "FROM %s as pc "
     "INNER JOIN publisher_info AS pi ON pc.publisher_id = pi.publisher_id "
@@ -248,18 +313,19 @@ void DatabasePendingContribution::GetAllRecords(
 
   while (statement.Step()) {
     auto info = ledger::PendingContributionInfo::New();
-    info->publisher_key = statement.ColumnString(0);
-    info->name = statement.ColumnString(1);
-    info->url = statement.ColumnString(2);
-    info->favicon_url = statement.ColumnString(3);
+    info->id = statement.ColumnInt64(0);
+    info->publisher_key = statement.ColumnString(1);
+    info->name = statement.ColumnString(2);
+    info->url = statement.ColumnString(3);
+    info->favicon_url = statement.ColumnString(4);
     info->status =
-        static_cast<ledger::mojom::PublisherStatus>(statement.ColumnInt64(4));
-    info->provider = statement.ColumnString(5);
-    info->amount = statement.ColumnDouble(6);
-    info->added_date = statement.ColumnInt64(7);
-    info->viewing_id = statement.ColumnString(8);
+        static_cast<ledger::mojom::PublisherStatus>(statement.ColumnInt64(5));
+    info->provider = statement.ColumnString(6);
+    info->amount = statement.ColumnDouble(7);
+    info->added_date = statement.ColumnInt64(8);
+    info->viewing_id = statement.ColumnString(9);
     info->type =
-        static_cast<ledger::RewardsType>(statement.ColumnInt(9));
+        static_cast<ledger::RewardsType>(statement.ColumnInt(10));
 
     list->push_back(std::move(info));
   }
@@ -267,20 +333,15 @@ void DatabasePendingContribution::GetAllRecords(
 
 bool DatabasePendingContribution::DeleteRecord(
     sql::Database* db,
-    const std::string& publisher_key,
-    const std::string& viewing_id,
-    uint64_t added_date) {
+    const uint64_t id) {
   const std::string query = base::StringPrintf(
-    "DELETE FROM %s "
-    "WHERE publisher_id = ? AND viewing_id=? AND added_date=?",
+    "DELETE FROM %s WHERE pending_contribution_id = ?",
     table_name_);
 
   sql::Statement statement(
       db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
 
-  statement.BindString(0, publisher_key);
-  statement.BindString(1, viewing_id);
-  statement.BindInt64(2, added_date);
+  statement.BindInt64(0, id);
 
   return statement.Run();
 }

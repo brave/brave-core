@@ -24,7 +24,7 @@ namespace brave_rewards {
 
 namespace {
 
-const int kCurrentVersionNumber = 11;
+const int kCurrentVersionNumber = 12;
 const int kCompatibleVersionNumber = 1;
 
 }  // namespace
@@ -386,19 +386,12 @@ void PublisherInfoDatabase::GetPendingContributions(
   return pending_contribution_->GetAllRecords(&GetDB(), list);
 }
 
-bool PublisherInfoDatabase::RemovePendingContributions(
-    const std::string& publisher_key,
-    const std::string& viewing_id,
-    uint64_t added_date) {
+bool PublisherInfoDatabase::RemovePendingContributions(const uint64_t id) {
   if (!IsInitialized()) {
     return false;
   }
 
-  return pending_contribution_->DeleteRecord(
-      &GetDB(),
-      publisher_key,
-      viewing_id,
-      added_date);
+  return pending_contribution_->DeleteRecord(&GetDB(), id);
 }
 
 bool PublisherInfoDatabase::RemoveAllPendingContributions() {
@@ -755,6 +748,19 @@ bool PublisherInfoDatabase::MigrateV10toV11() {
   return transaction.Commit();
 }
 
+bool PublisherInfoDatabase::MigrateV11toV12() {
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    return false;
+  }
+
+  if (!pending_contribution_->Migrate(&GetDB(), 12)) {
+    return false;
+  }
+
+  return transaction.Commit();
+}
+
 bool PublisherInfoDatabase::Migrate(int version) {
   switch (version) {
     case 2: {
@@ -786,6 +792,9 @@ bool PublisherInfoDatabase::Migrate(int version) {
     }
     case 11: {
       return MigrateV10toV11();
+    }
+    case 12: {
+      return MigrateV11toV12();
     }
     default:
       return false;

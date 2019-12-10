@@ -90,8 +90,8 @@ void NativeLedgerClient::OnWalletProperties(ledger::Result result, ledger::Walle
 void NativeLedgerClient::RemoveAllPendingContributions(ledger::RemovePendingContributionCallback callback) {
   [bridge_ removeAllPendingContributions:callback];
 }
-void NativeLedgerClient::RemovePendingContribution(const std::string & publisher_key, const std::string & viewing_id, uint64_t added_date, ledger::RemovePendingContributionCallback callback) {
-  [bridge_ removePendingContribution:publisher_key viewingId:viewing_id addedDate:added_date callback:callback];
+void NativeLedgerClient::RemovePendingContribution(const uint64_t id, ledger::RemovePendingContributionCallback callback) {
+  [bridge_ removePendingContribution:id callback:callback];
 }
 void NativeLedgerClient::ResetState(const std::string & name, ledger::OnResetCallback callback) {
   [bridge_ resetState:name callback:callback];

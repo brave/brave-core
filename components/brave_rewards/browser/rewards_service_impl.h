@@ -250,9 +250,7 @@ class RewardsServiceImpl : public RewardsService,
   void GetPendingContributionsUI(
     GetPendingContributionsCallback callback) override;
 
-  void RemovePendingContributionUI(const std::string& publisher_key,
-                                 const std::string& viewing_id,
-                                 uint64_t added_date) override;
+  void RemovePendingContributionUI(const uint64_t id) override;
 
   void RemoveAllPendingContributionsUI() override;
 
@@ -661,9 +659,7 @@ class RewardsServiceImpl : public RewardsService,
     ledger::PendingContributionInfoListCallback callback) override;
 
   void RemovePendingContribution(
-    const std::string& publisher_key,
-    const std::string& viewing_id,
-    uint64_t added_date,
+    const uint64_t id,
     ledger::RemovePendingContributionCallback callback) override;
 
   void RemoveAllPendingContributions(

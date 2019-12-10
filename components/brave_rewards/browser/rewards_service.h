@@ -235,9 +235,7 @@ class RewardsService : public KeyedService {
   virtual void GetPendingContributionsUI(
     GetPendingContributionsCallback callback) = 0;
 
-  virtual void RemovePendingContributionUI(const std::string& publisher_key,
-                                         const std::string& viewing_id,
-                                         uint64_t added_date) = 0;
+  virtual void RemovePendingContributionUI(const uint64_t id) = 0;
   virtual void RemoveAllPendingContributionsUI() = 0;
   virtual void ResetTheWholeState(
       const base::Callback<void(bool)>& callback) = 0;

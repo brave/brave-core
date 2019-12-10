@@ -231,9 +231,7 @@ class LEDGER_EXPORT LedgerClient {
       ledger::PendingContributionInfoListCallback callback) = 0;
 
   virtual void RemovePendingContribution(
-      const std::string& publisher_key,
-      const std::string& viewing_id,
-      uint64_t added_date,
+      const uint64_t id,
       ledger::RemovePendingContributionCallback callback) = 0;
 
   virtual void RemoveAllPendingContributions(

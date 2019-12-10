@@ -220,10 +220,8 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD1(GetPendingContributions, void(
       ledger::PendingContributionInfoListCallback callback));
 
-  MOCK_METHOD4(RemovePendingContribution, void(
-      const std::string& publisher_key,
-      const std::string& viewing_id,
-      uint64_t added_date,
+  MOCK_METHOD2(RemovePendingContribution, void(
+      const uint64_t id,
       ledger::RemovePendingContributionCallback callback));
 
   MOCK_METHOD1(RemoveAllPendingContributions, void(

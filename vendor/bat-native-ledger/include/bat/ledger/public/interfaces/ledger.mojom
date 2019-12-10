@@ -60,6 +60,7 @@ struct PendingContribution {
 };
 
 struct PendingContributionInfo {
+  uint64 id;
   string publisher_key;
   RewardsType type;
   PublisherStatus status = PublisherStatus.NOT_VERIFIED;

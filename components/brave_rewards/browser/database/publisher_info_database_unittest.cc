@@ -763,7 +763,9 @@ TEST_F(PublisherInfoDatabaseTest, InsertPendingContribution) {
       std::move(list));
   EXPECT_TRUE(success);
 
-  std::string query = "SELECT * FROM pending_contribution";
+  std::string query =
+      "SELECT publisher_id, amount, added_date, viewing_id, type "
+      "FROM pending_contribution";
   sql::Statement info_sql(GetDB().GetUniqueStatement(query.c_str()));
 
   EXPECT_EQ(CountTableRows("pending_contribution"), 2);
@@ -1258,6 +1260,39 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv10tov11_ContributionInfo) {
   EXPECT_EQ(ac_sql.ColumnDouble(6), 0.0);
 }
 
+TEST_F(PublisherInfoDatabaseTest, Migrationv11tov12) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateMigrationDatabase(&temp_dir, &db_file, 11, 12);
+  EXPECT_TRUE(publisher_info_database_->Init());
+
+  ASSERT_EQ(publisher_info_database_->GetTableVersionNumber(), 12);
+
+  const std::string schema = publisher_info_database_->GetSchema();
+  EXPECT_EQ(schema, GetSchemaString(12));
+}
+
+TEST_F(PublisherInfoDatabaseTest, Migrationv11tov12_ContributionInfo) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateMigrationDatabase(&temp_dir, &db_file, 11, 12);
+  EXPECT_TRUE(publisher_info_database_->Init());
+  EXPECT_EQ(CountTableRows("pending_contribution"), 4);
+
+  ledger::PendingContributionInfoList list;
+  publisher_info_database_->GetPendingContributions(&list);
+  EXPECT_EQ(static_cast<int>(list.size()), 4);
+
+  EXPECT_EQ(list.at(0)->id, 1ull);
+  EXPECT_EQ(list.at(0)->publisher_key, "reddit.com");
+  EXPECT_EQ(list.at(1)->id, 2ull);
+  EXPECT_EQ(list.at(1)->publisher_key, "slo-tech.com");
+  EXPECT_EQ(list.at(2)->id, 3ull);
+  EXPECT_EQ(list.at(2)->publisher_key, "slo-tech.com");
+  EXPECT_EQ(list.at(3)->id, 4ull);
+  EXPECT_EQ(list.at(3)->publisher_key, "reddit.com");
+}
+
 TEST_F(PublisherInfoDatabaseTest, DeleteActivityInfo) {
   base::ScopedTempDir temp_dir;
   base::FilePath db_file;
@@ -1419,13 +1454,7 @@ TEST_F(PublisherInfoDatabaseTest, RemovePendingContributions) {
   /**
    * Good path
   */
-  ledger::PendingContributionInfoList select_list;
-  publisher_info_database_->GetPendingContributions(&select_list);
-  EXPECT_EQ(select_list.at(0)->publisher_key, "key1");
-  bool success = publisher_info_database_->RemovePendingContributions(
-      "key1",
-      "fsodfsdnf23r23rn",
-      select_list.at(0)->added_date);
+  bool success = publisher_info_database_->RemovePendingContributions(1);
   EXPECT_TRUE(success);
 
   ledger::PendingContributionInfoList list;
@@ -1439,10 +1468,7 @@ TEST_F(PublisherInfoDatabaseTest, RemovePendingContributions) {
   /**
    * Trying to delete not existing row
   */
-  success = publisher_info_database_->RemovePendingContributions(
-      "key0",
-      "viewing_id",
-      10);
+  success = publisher_info_database_->RemovePendingContributions(10);
   EXPECT_TRUE(success);
   EXPECT_EQ(CountTableRows("pending_contribution"), 3);
 }

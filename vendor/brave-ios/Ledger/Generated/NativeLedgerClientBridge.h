@@ -34,7 +34,7 @@
 - (void)restorePublishers:(ledger::RestorePublishersCallback)callback;
 - (void)onWalletProperties:(ledger::Result)result arg1:(ledger::WalletPropertiesPtr)arg1;
 - (void)removeAllPendingContributions:(ledger::RemovePendingContributionCallback)callback;
-- (void)removePendingContribution:(const std::string &)publisher_key viewingId:(const std::string &)viewing_id addedDate:(uint64_t)added_date callback:(ledger::RemovePendingContributionCallback )callback;
+- (void)removePendingContribution:(const uint64_t)id callback:(ledger::RemovePendingContributionCallback )callback;
 - (void)resetState:(const std::string &)name callback:(ledger::OnResetCallback)callback;
 - (void)saveActivityInfo:(ledger::PublisherInfoPtr)publisher_info callback:(ledger::PublisherInfoCallback)callback;
 - (void)saveContributionInfo:(ledger::ContributionInfoPtr)info callback:(ledger::ResultCallback)callback;

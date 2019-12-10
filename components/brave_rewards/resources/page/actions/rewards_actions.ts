@@ -253,11 +253,9 @@ export const onInlineTipSettingChange = (key: string, value: boolean) => action(
   value
 })
 
-export const removePendingContribution = (publisherKey: string, viewingId: string, addedDate: string) =>
+export const removePendingContribution = (id: number) =>
   action(types.REMOVE_PENDING_CONTRIBUTION, {
-    publisherKey,
-    viewingId,
-    addedDate
+    id
   })
 
 export const removeAllPendingContribution = () => action(types.REMOVE_ALL_PENDING_CONTRIBUTION)
