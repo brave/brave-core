@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java b/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
-index 6afd8a49935f8541b94cbc69c6ce459bfbccbf84..b2608ce57b4ac1e2fd437830150d3a57ae7978c0 100644
+index 1471794e1fc56768c1e0f14d169f2a539ffdef48..73e70053b280f9fa6cc2d30b0d56d73435f25525 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
-@@ -368,7 +368,7 @@ public class FeatureUtilities {
+@@ -378,7 +378,7 @@ public class FeatureUtilities {
       */
      public static boolean isBottomToolbarEnabled() {
          // TODO(crbug.com/944228): TabGroupsAndroid and ChromeDuet are incompatible for now.
@@ -11,7 +11,7 @@ index 6afd8a49935f8541b94cbc69c6ce459bfbccbf84..b2608ce57b4ac1e2fd437830150d3a57
                  && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(
                          ContextUtils.getApplicationContext())
                  && !isTabGroupsAndroidEnabled();
-@@ -413,7 +413,7 @@ public class FeatureUtilities {
+@@ -423,7 +423,7 @@ public class FeatureUtilities {
       *         enabled).
       */
      public static boolean isNightModeAvailable() {
