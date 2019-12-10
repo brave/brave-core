@@ -128,7 +128,7 @@ base::Time Payments::CalculateNextPaymentDate(
     const base::Time& time,
     const uint64_t next_token_redemption_date_in_seconds) const {
   base::Time::Exploded now_exploded;
-  time.LocalExplode(&now_exploded);
+  time.UTCExplode(&now_exploded);
 
   int month = now_exploded.month;
 
@@ -153,7 +153,7 @@ base::Time Payments::CalculateNextPaymentDate(
           Time::FromDoubleT(next_token_redemption_date_in_seconds);
 
       base::Time::Exploded next_token_redemption_date_exploded;
-      next_token_redemption_date.LocalExplode(
+      next_token_redemption_date.UTCExplode(
           &next_token_redemption_date_exploded);
 
       if (next_token_redemption_date_exploded.month == month) {
@@ -177,10 +177,18 @@ base::Time Payments::CalculateNextPaymentDate(
     year++;
   }
 
-  auto date = base::StringPrintf("%d-%d-%d", year, month, kNextPaymentDay);
+  base::Time::Exploded next_payment_date_exploded = now_exploded;
+  next_payment_date_exploded.year = year;
+  next_payment_date_exploded.month = month;
+  next_payment_date_exploded.day_of_month = kNextPaymentDay;
+  next_payment_date_exploded.hour = 23;
+  next_payment_date_exploded.minute = 59;
+  next_payment_date_exploded.second = 59;
+  next_payment_date_exploded.millisecond = 999;
 
   base::Time next_payment_date;
-  bool success = base::Time::FromString(date.c_str(), &next_payment_date);
+  bool success = base::Time::FromUTCExploded(next_payment_date_exploded,
+      &next_payment_date);
   DCHECK(success);
 
   return next_payment_date;
@@ -321,7 +329,7 @@ PaymentInfo Payments::GetPaymentForTransactionMonth(
 
 std::string Payments::GetTransactionMonth(const base::Time& time) const {
   base::Time::Exploded time_exploded;
-  time.LocalExplode(&time_exploded);
+  time.UTCExplode(&time_exploded);
 
   return GetFormattedTransactionMonth(time_exploded.year, time_exploded.month);
 }
@@ -329,7 +337,7 @@ std::string Payments::GetTransactionMonth(const base::Time& time) const {
 std::string Payments::GetPreviousTransactionMonth(
     const base::Time& time) const {
   base::Time::Exploded time_exploded;
-  time.LocalExplode(&time_exploded);
+  time.UTCExplode(&time_exploded);
 
   time_exploded.month--;
   if (time_exploded.month < 1) {
