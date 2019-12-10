@@ -7,13 +7,14 @@
 
 namespace confirmations {
 
-static const char kConfirmationTypeClick[] = "click";
-static const char kConfirmationTypeDismiss[] = "dismiss";
-static const char kConfirmationTypeView[] = "view";
-static const char kConfirmationTypeLanded[] = "landed";
-static const char kConfirmationTypeFlag[] = "flag";
-static const char kConfirmationTypeUpvote[] = "upvote";
-static const char kConfirmationTypeDownvote[] = "downvote";
+const char kConfirmationTypeClick[] = "click";
+const char kConfirmationTypeDismiss[] = "dismiss";
+const char kConfirmationTypeView[] = "view";
+const char kConfirmationTypeLanded[] = "landed";
+const char kConfirmationTypeFlag[] = "flag";
+const char kConfirmationTypeUpvote[] = "upvote";
+const char kConfirmationTypeDownvote[] = "downvote";
+const char kConfirmationTypeConversion[] = "conversion";
 
 ConfirmationType::ConfirmationType(const std::string& value) {
   if (value == kConfirmationTypeClick) {
