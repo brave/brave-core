@@ -3,9 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import styled from '../../../theme'
-import { Card } from '../../../components'
-import { CardProps } from '../../../components/layout/card'
+import styled from 'brave-ui/theme'
+import Card, { CardProps } from 'brave-ui/components/layout/card'
 
 export const DisabledContent = styled<{}, 'div'>('div')`
   display: flex;

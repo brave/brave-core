@@ -39,3 +39,4 @@ export {
   ThreeColumnButtonGridCol1,
   ThreeColumnButtonGridCol2
 } from './modal'
+export { Toggle } from './toggle'

@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Components
-import { Modal, AlertBox, TextAreaClipboard, Button } from '../../../../src/components'
+import { Modal, AlertBox, TextAreaClipboard, Button } from 'brave-ui'
 
 // Feature-specific components
 import {
@@ -15,7 +15,7 @@ import {
   Paragraph,
   TwoColumnButtonGrid,
   OneColumnButtonGrid
-} from '../../../../src/features/sync'
+} from '../../components'
 
 // Utils
 import { getLocale } from '../page/fakeLocale'

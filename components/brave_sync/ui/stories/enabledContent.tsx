@@ -5,10 +5,9 @@
 import * as React from 'react'
 
 // Components
-import { Toggle } from '../../../src/features/shields'
-import Button from '../../../src/components/buttonsIndicators/button'
-import { CloseCircleOIcon } from '../../../src/components/icons'
-import Table, { Cell, Row } from '../../../src/components/dataTables/table'
+import { Button } from 'brave-ui'
+import { CloseCircleOIcon } from 'brave-ui/components/icons'
+import Table, { Cell, Row } from 'brave-ui/components/dataTables/table'
 
 // Feature-specific components
 import {
@@ -23,8 +22,9 @@ import {
   TableRowRemoveButton,
   TableGrid,
   TableButtonGrid,
-  TableRowToggleButton
-} from '../../../src/features/sync'
+  TableRowToggleButton,
+  Toggle
+} from '../components'
 
 // Modals
 import RemoveMainDevice from './modals/removeMainDevice'

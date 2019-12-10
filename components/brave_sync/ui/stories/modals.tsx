@@ -19,7 +19,7 @@ const doNothing = () => {
   console.log('nothing')
 }
 
-storiesOf('Feature Components/Sync/Popups and Modals', module)
+storiesOf('Sync/Popups and Modals', module)
   .add('Reset Sync', () => <ResetSyncModal onClose={doNothing} mainDeviceName={data.device1.name} />)
   .add('Device Type', () => <DeviceTypeModal onClose={doNothing} />)
   .add('Scan Code', () => <ScanCodeModal onClose={doNothing} />)

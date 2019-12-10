@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Components
-import { Modal } from '../../../../src/components'
+import { Modal } from 'brave-ui'
 
 // Feature-specific components
 import {
@@ -14,10 +14,10 @@ import {
   DeviceGrid,
   DeviceContainer,
   Paragraph
-} from '../../../../src/features/sync'
+} from '../../components'
 
 // Images
-import { SyncMobileIcon, SyncDesktopIcon } from '../../../../src/features/sync/images'
+import { SyncMobileIcon, SyncDesktopIcon } from '../../components/images'
 
 // Modals
 import ViewSyncCode from './viewSyncCode'

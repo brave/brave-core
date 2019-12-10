@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Components
-import { Button } from '../../../src/components'
+import { Button } from 'brave-ui'
 
 // Component-specific components
 import {
@@ -17,14 +17,14 @@ import {
   DisabledContentButtonGrid,
   TableGrid,
   Paragraph
-} from '../../../src/features/sync'
+} from '../components'
 
 // Modals
 import DeviceType from './modals/deviceType'
 import EnterSyncCode from './modals/enterSyncCode'
 
 // Images
-import { SyncStartIcon } from '../../../src/features/sync/images'
+import { SyncStartIcon } from '../components/images'
 
 // Utils
 import { getLocale } from './page/fakeLocale'

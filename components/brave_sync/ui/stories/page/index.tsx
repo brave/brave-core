@@ -8,10 +8,6 @@ import * as React from 'react'
 import DisabledContent from '../disabledContent'
 import EnabledContent from '../enabledContent'
 
-// Fonts
-import '../../../assets/fonts/muli.css'
-import '../../../assets/fonts/poppins.css'
-
 interface SyncPageProps {
   // Note: this is for demonstration purposes and
   // should not be included in production

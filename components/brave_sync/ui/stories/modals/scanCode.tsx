@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Components
-import { Modal, Button } from '../../../../src/components'
+import { Modal, Button } from 'brave-ui'
 
 // Feature-specific components
 import {
@@ -15,13 +15,13 @@ import {
   Link,
   ScanGrid,
   ThreeColumnButtonGrid
-} from '../../../../src/features/sync'
+} from '../../components'
 
 // Images
-import { SyncMobilePicture, QRCode } from '../../../../src/features/sync/images'
+import { SyncMobilePicture, QRCode } from '../../components/images'
 
 // Fake QR Code
-import qrCodeImage from '../../../assets/img/fakeQRCodeImage.png'
+import qrCodeImage from '../page/fakeQRCodeImage.png'
 
 // Modals
 import ViewSyncCodeModal from './viewSyncCode'
