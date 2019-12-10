@@ -794,6 +794,30 @@ void BraveProfileSyncServiceImpl::CreateResolveList(
   }
 }
 
+bool BraveProfileSyncServiceImpl::IsSQSReady() const {
+  // During 70 sec after device connected to chain use start_at parameter
+  // of empty to force fetch from S3.
+  // We need this to handle the case:
+  // 1) deviceB connected to chain, created own queues
+  // 2) deviceB made the first fetch from S3, got the records and set own
+  //    non-empty latest_bookmark_record_time, so the next fetches would
+  //    be done through SQS
+  // 3) deviceA sends record
+  // 4) lambda enumerates queues and could not discover queues from deviceB,
+  //    because there is gap ~10~30 sec
+  // 5) record does not arrive to queue of deviceB and is lost for deviceB
+  // Any possibility of duplication will be eliminated by alreadySeenFromS3
+  // checks in brave_sync/extension/brave-sync/lib/s3Helper.js.
+  // Default Chromium fetch interval is 60 sec.
+  // So during 70 sec after device connected to chain we forcing use S3ю
+  if (tools::IsTimeEmpty(this_device_created_time_) ||
+      (base::Time::Now() - this_device_created_time_).InSeconds() >= 70u) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 void BraveProfileSyncServiceImpl::FetchSyncRecords(const bool bookmarks,
                                                    const bool history,
                                                    const bool preferences,
@@ -823,7 +847,9 @@ void BraveProfileSyncServiceImpl::FetchSyncRecords(const bool bookmarks,
     category_names.push_back(kPreferences);  // "PREFERENCES";
   }
 
-  base::Time start_at_time = brave_sync_prefs_->GetLatestRecordTime();
+  base::Time start_at_time =
+      IsSQSReady() ? brave_sync_prefs_->GetLatestRecordTime() : base::Time();
+
   brave_sync_client_->SendFetchSyncRecords(category_names, start_at_time,
                                            max_records);
 }
@@ -906,23 +932,14 @@ void BraveProfileSyncServiceImpl::FetchDevices() {
   DCHECK(sync_client_);
   brave_sync_prefs_->SetLastFetchTime(base::Time::Now());
 
-  // When we create the device, we also create a set of SQS queues
-  // For other devices' S3 put lambda hook, some amount of time is required
-  // to see our queues in the result of listQueues
-  // Default Chromium fetch interval is 60 sec.
-  // So during 70 sec after the chain creation forcing use of S3
-  // by set start_at_time to 0.
-  base::Time start_at_time;
-  if (!tools::IsTimeEmpty(this_device_created_time_) &&
-      (base::Time::Now() - this_device_created_time_).InSeconds() < 70u) {
-    start_at_time = base::Time();
-  } else {
-    start_at_time = brave_sync_prefs_->GetLatestDeviceRecordTime();
-  }
+  base::Time start_at_time =
+      IsSQSReady() ? brave_sync_prefs_->GetLatestDeviceRecordTime()
+                   : base::Time();
 
   brave_sync_client_->SendFetchSyncRecords(
       {brave_sync::jslib_const::kPreferences}, start_at_time, 1000);
 }
+
 void BraveProfileSyncServiceImpl::OnPollSyncCycle(GetRecordsCallback cb,
                                                   base::WaitableEvent* wevent) {
   if (!brave_sync_prefs_->GetSyncEnabled())
