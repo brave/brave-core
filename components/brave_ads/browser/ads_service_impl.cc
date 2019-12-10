@@ -309,6 +309,20 @@ std::vector<ads::AdInfo> GetAdsForCategoryOnFileTaskRunner(
   return ads;
 }
 
+std::vector<ads::ConversionTrackingInfo> GetConversionsOnFileTaskRunner(
+    const std::string url,
+    BundleStateDatabase* backend) {
+  std::vector<ads::ConversionTrackingInfo> conversions;
+
+  if (!backend) {
+    return conversions;
+  }
+
+  backend->GetConversions(url, &conversions);
+
+  return conversions;
+}
+
 bool ResetOnFileTaskRunner(const base::FilePath& path) {
   bool recursive;
 
@@ -1024,6 +1038,19 @@ void AdsServiceImpl::OnGetAdsForCategory(
   auto result = ads.empty() ? ads::Result::FAILED : ads::Result::SUCCESS;
 
   callback(result, category, ads);
+}
+
+void AdsServiceImpl::OnGetConversions(
+    const ads::OnGetConversionsCallback& callback,
+    const std::string& url,
+    const std::vector<ads::ConversionTrackingInfo>& conversions) {
+  if (!connected()) {
+    return;
+  }
+
+  auto result = conversions.empty() ? ads::Result::FAILED : ads::Result::SUCCESS;
+
+  callback(result, url, conversions);
 }
 
 void AdsServiceImpl::OnGetAdsHistory(
@@ -2094,6 +2121,16 @@ void AdsServiceImpl::GetAds(
           bundle_state_backend_.get()),
       base::BindOnce(&AdsServiceImpl::OnGetAdsForCategory, AsWeakPtr(),
           std::move(callback), category));
+}
+
+void AdsServiceImpl::GetConversions(
+    const std::string& url,
+    ads::OnGetConversionsCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&GetConversionsOnFileTaskRunner, url,
+          bundle_state_backend_.get()),
+      base::BindOnce(&AdsServiceImpl::OnGetConversions, AsWeakPtr(),
+          std::move(callback), url));
 }
 
 void AdsServiceImpl::EventLog(

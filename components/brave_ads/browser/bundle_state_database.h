@@ -12,6 +12,7 @@
 #include <memory>
 
 #include "bat/ads/ad_info.h"
+#include "bat/ads/conversion_tracking_info.h"
 #include "bat/ads/bundle_state.h"
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
@@ -41,6 +42,11 @@ class BundleStateDatabase {
       const std::string& category,
       std::vector<ads::AdInfo>* ads);
 
+  bool SaveConversion(const ads::ConversionTrackingInfo& conversion);
+  bool GetConversions(
+      const std::string& url,
+      std::vector<ads::ConversionTrackingInfo>* conversions);
+
   // Returns the current version of the publisher info database
   static int GetCurrentVersion();
 
@@ -56,15 +62,19 @@ class BundleStateDatabase {
       base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
 
   bool CreateCategoryTable();
+  bool CreateConversionsTable();
   bool CreateAdInfoTable();
   bool CreateAdInfoCategoryTable();
   bool CreateAdInfoCategoryNameIndex();
 
   bool TruncateCategoryTable();
+  bool TruncateConversionsTable();
   bool TruncateAdInfoTable();
   bool TruncateAdInfoCategoryTable();
 
   bool InsertOrUpdateCategory(const std::string& category);
+  bool InsertOrUpdateConversion(
+      const ads::ConversionTrackingInfo& conversion_tracking_info);
   bool InsertOrUpdateAdInfo(const ads::AdInfo& info);
   bool InsertOrUpdateAdInfoCategory(
       const ads::AdInfo& ad_info,

@@ -13,7 +13,8 @@ CreativeSetInfo::CreativeSetInfo() :
     total_max(0),
     segments({}),
     oses({}),
-    creatives({}) {}
+    creatives({}),
+    conversions({}) {}
 
 CreativeSetInfo::CreativeSetInfo(const std::string& creative_set_id) :
     creative_set_id(creative_set_id),
@@ -21,7 +22,8 @@ CreativeSetInfo::CreativeSetInfo(const std::string& creative_set_id) :
     total_max(0),
     segments({}),
     oses({}),
-    creatives({}) {}
+    creatives({}),
+    conversions({}) {}
 
 CreativeSetInfo::CreativeSetInfo(const CreativeSetInfo& info) :
     creative_set_id(info.creative_set_id),
@@ -29,7 +31,8 @@ CreativeSetInfo::CreativeSetInfo(const CreativeSetInfo& info) :
     total_max(info.total_max),
     segments(info.segments),
     oses(info.oses),
-    creatives(info.creatives) {}
+    creatives(info.creatives),
+    conversions(info.conversions) {}
 
 CreativeSetInfo::~CreativeSetInfo() {}
 

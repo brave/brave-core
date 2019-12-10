@@ -210,6 +210,11 @@ class AdsServiceImpl : public AdsService,
       const std::string& category,
       const std::vector<ads::AdInfo>& ads);
 
+  void OnGetConversions(
+      const ads::OnGetConversionsCallback& callback,
+      const std::string& url,
+      const std::vector<ads::ConversionTrackingInfo>& conversions);
+
   void OnGetAdsHistory(
       OnGetAdsHistoryCallback callback,
       const base::flat_map<uint64_t, std::vector<std::string>>& json);
@@ -412,6 +417,10 @@ class AdsServiceImpl : public AdsService,
   void GetAds(
       const std::string& category,
       ads::OnGetAdsCallback callback) override;
+
+  void GetConversions(
+      const std::string& url,
+      ads::OnGetConversionsCallback callback) override;
 
   void EventLog(
       const std::string& json) const override;
