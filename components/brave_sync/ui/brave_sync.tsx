@@ -7,7 +7,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 
 // Components
-import App from './components/app'
+import App from './containers/app'
 
 // Utils
 import store from './store'
