@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Lataus epäonnistui: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Lataus peruutettu: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">Lataus valmis: <ph name="FILE_NAME"/></translation>
+<translation id="4110490973560452005">Lataus valmis: <ph name="FILE_NAME"/>. Paina Shift + F6 siirtyäksesi latauspalkkialueelle.</translation>
 <translation id="2743387203779672305">Kopioi leikepöydälle</translation>
 <translation id="883911313571074303">Lisää kuvaan muistiinpano</translation>
 <translation id="6291953229176937411">Näytä Finderi&amp;ssä</translation>
@@ -602,24 +603,6 @@ Julkinen eksponentti (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bittiä):
 <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Varmenteen allekirjoituksen arvo</translation>
 <translation id="4104163789986725820">V&amp;ie...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">serialNumber</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">POSTI</translation>
-<translation id="7481079953250545971">Käyttäjätunnus</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">businessCategory</translation>
-<translation id="6561757256477115975">jurisdictionLocalityName</translation>
-<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
-<translation id="8904360804686555987">jurisdictionCountryName</translation>
-<translation id="8718098216622210506">KATU</translation>
-<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">PKCS #1 RSA-salaus</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 ja RSA-salaus</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 ja RSA-salaus</translation>
@@ -1365,6 +1348,9 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="813082847718468539">Näytä sivuston tiedot</translation>
 <translation id="5233638681132016545">Uusi välilehti</translation>
 <translation id="3915280005470252504">Puhehaku</translation>
+<translation id="8968766641738584599">Tallenna kortti</translation>
+<translation id="2408018932941436077">Tallennetaan korttia</translation>
+<translation id="7970882136539140748">Ei voi tallentaa korttia juuri nyt</translation>
 <translation id="1593926297800505364">Tallenna maksutapa</translation>
 <translation id="2473195200299095979">Käännä tämä sivu</translation>
 <translation id="5408750356094797285">Zoomaus: <ph name="PERCENT"/></translation>
@@ -1754,7 +1740,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">SharedWorkerit</translation>
 <translation id="2927017729816812676">Välimuistin tallennustila</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Sovellukset</translation>
 <translation id="542872847390508405">Selaat vierailijana</translation>
 <translation id="537813040452600081">Tässä ikkunassa katselemiasi sivuja ei lisätä selaushistoriaan, eikä niistä jää tietokoneelle muita jälkiä, kuten evästeitä, kirjauduttuasi ulos. Lataamiasi tiedostoja ja luomiasi kirjanmerkkejä ei tallenneta.</translation>
@@ -2098,7 +2083,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="2650609753175229582"><ph name="URL"/> haluaa toistaa suojattua sisältöä. Brave Software vahvistaa laitteesi identiteetin, ja myös sivusto voi saada pääsyn laitteesi identiteettitietoihin.</translation>
 <translation id="1746402432151920942">Suojatun median tunniste</translation>
 <translation id="1322046419516468189">Katso ja ylläpidä salasanoja: <ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Salasana tallennettu. Katso ja ylläpidä tallennettuja salasanoja: <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Brave Software-tilisi avulla</translation>
 <translation id="3785727820640310185">Tämän sivuston tallennetut salasanat</translation>
@@ -2501,9 +2485,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="5186185447130319458">Yksityinen</translation>
 <translation id="7643842463591647490">{0,plural, =1{# avoin ikkuna}other{# avointa ikkunaa}}</translation>
 <translation id="2579188629646253712">Poistu yksityisestä tilasta</translation>
-<translation id="479219453908726046">Osallistu kyselyyn</translation>
-<translation id="7581273696622423628">Osallistu kyselyyn</translation>
-<translation id="4406504596603350105">Palautteesi on tärkeää meille.</translation>
 <translation id="4349828822184870497">Hyödyllinen</translation>
 <translation id="6876469544038980967">Ei hyödyllinen</translation>
 <translation id="5286194356314741248">Etsitään</translation>
@@ -3135,7 +3116,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="6644512095122093795">Tarjoa salasanojen tallentamista</translation>
 <translation id="2100273922101894616">Automaattinen kirjautuminen</translation>
 <translation id="7513029293694390567">Kirjaudu automaattisesti verkkosivustoille käyttämällä tallennettuja kirjautumistietoja. Jos toiminto ei ole käytössä, sinua pyydetään vahvistamaan kirjautuminen aina, kun kirjaudut sivustolle.</translation>
-<translation id="2330129964253841015">Varoita, jos salasanoja vaarantuu</translation>
+<translation id="6995899638241819463">Varoita, jos salasanoja vaarantuu</translation>
 <translation id="1534287762301776620">Tämä ominaisuus otetaan käyttöön, kun kirjaudut Brave Software-tilillesi</translation>
 <translation id="1375321115329958930">Tallennetut salasanat</translation>
 <translation id="152234381334907219">Tallentamaton</translation>

@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Vaatate seda saiti ilma igasuguse privaatsuse ja turvalisuse kaitseta.",
-    "description": "Message telling the user that shields are disabled"
+    "message": "Sirvite seda veebisaiti ilma Brave’i privaatsuse ja turvalisuse kaitseta. Kas see ei tööta õigesti, kui kaitse on aktiivne?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Teata mittetoimivast veebisaidist",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "Üksused blokeeritud",

@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "ይህን ገፅ ያለግላዊነት እና ደህንነት ጥበቃዎች እያሰሱ ነው",
-    "description": "Message telling the user that shields are disabled"
+    "message": "ይህን ገፅ ያለ Brave ግላዊነት እና ደህንነት ጥበቃዎች እያሰሱ ነው። ጋሻዎቹ ወደላይ ቢሆኑ በትክክል አይሰራም?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "የተሰበረ ገጽን ሪፖርት ያድርጉ",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "ንጥሎች ታግደዋል",

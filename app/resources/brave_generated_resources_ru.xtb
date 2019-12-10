@@ -3,6 +3,7 @@
 <translationbundle lang="ru">
 <translation id="3333887201479867589">Вознаграждение Brave</translation>
 <translation id="7942180974165298215">Блокировка рекламы Brave</translation>
+<translation id="4615489450165434530">Сообщить о неисправности сайта</translation>
 <translation id="6406506848690869874">Синхронизация</translation>
 <translation id="5655621391922317800">Криптовалютные кошельки</translation>
 <translation id="2445484935443597917">Создать профиль</translation>
@@ -39,6 +40,8 @@
 <translation id="2814998458708016836">Использовать широкую адресную строку</translation>
 <translation id="6123134130710658846">Кнопка «Скрыть награды Brave»</translation>
 <translation id="7635711399568194460">Скрывает кнопку «Награды Brave» в адресной строке, когда «Награды Brave» не включены</translation>
+<translation id="1520361618554057102">Всегда показывать закладки при открытии новой вкладки</translation>
+<translation id="5802665280774361839">Показывать автозаполнение в адресной строке</translation>
 <translation id="7965178729203412357">Новый Tor-идентификатор</translation>
 <translation id="8511502469534942133">Новое подключение через Tor для этого сайта</translation>
 <translation id="8784924142044142231">Выйти из Tor</translation>
@@ -68,6 +71,7 @@
 <translation id="9075744464571452108">Распознавание устройства</translation>
 <translation id="3570081523466826008">Обновлять соединения до HTTPS</translation>
 <translation id="4824468494729001999">Блокировать скрипты</translation>
+<translation id="8526521192921341404">Разрешить вход с помощью Google</translation>
 <translation id="863171915776379000">Разрешить вход в Facebook и встроенные посты</translation>
 <translation id="5165042248369837294">Разрешить встроенные твиты Twitter</translation>
 <translation id="958971637207126733">Разрешить встроенные сообщения LinkedIn</translation>
@@ -84,6 +88,7 @@
 <translation id="5825943197137337319">Только открытый интерфейс по умолчанию</translation>
 <translation id="1689062823386843231">Отключить непроксируемый протокол UDP</translation>
 <translation id="8502234992433094996">Использовать сервисы Google для push-сообщений</translation>
+<translation id="3888068426966679906">Устранить неисправность</translation>
 <translation id="6645631466045614531">Доступ к синхронизации через</translation>
 <translation id="1807246157184219062">Светлая</translation>
 <translation id="2414886740292270097">Темная</translation>
@@ -153,4 +158,13 @@
 <translation id="4394049700291259645">Отключить</translation>
 <translation id="6469509880167172749">Автоматически отправлять полностью конфиденциальную аналитику в Brave</translation>
 <translation id="7090566321964540749">Эта анонимная информация позволяет Brave оценить, как люди используют определенные функции.</translation>
+<translation id="1200956479506699688">Теперь в Brave доступны Криптовалютные кошельки. Вы можете одновременно использовать Криптовалютные кошельки и  MetaMask.</translation>
+<translation id="7583735190612229830">Настройте Криптовалютные кошельки для взаимодействия с этим и другими похожими приложениями.</translation>
+<translation id="8337117349965899723">Использовать Криптовалютные кошельки</translation>
+<translation id="5756155765711979898">Использовать MetaMask</translation>
+<translation id="6754134632841262799">ЗАГРУЗКА</translation>
+<translation id="191143826155037518">Brave работает в соответствии с <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>лицензией Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) и включает <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>программное обеспечение с открытым кодом<ph name="END_LINK_OSS">&lt;/a&gt;</ph> под многочисленными лицензиями других компаний.
+        Вы можете прочитать <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>инструкции о том, как скачать и написать самому<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> конкретный <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>исходный код, используемый для создания этой копии<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Добавить все вкладки в закладки…</translation>
+<translation id="2336228925368920074">Добавить все вкладки в закладки…</translation>
 </translationbundle>

@@ -20,7 +20,7 @@
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeDescPoints": {
-    "message": "You can now earn points for watching privacy-respecting ads.",
+    "message": "Vous pouvez maintenant gagner des points en regardant des publicités respectueuses de la vie privée.",
     "description": "Entry text for welcome screen in the panel, points"
   },
   "welcomeFooterTextOne": {
@@ -84,7 +84,7 @@
     "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
-    "message": "Envoyer une Contribution…",
+    "message": "Envoyer un don…",
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
@@ -148,7 +148,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "$currency$ Grants",
+    "message": "Bourses en $currency$ ",
     "description": "Title for grant notification",
     "placeholders": {
       "currency": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Point Grants Claimed",
+    "message": "Attributions de points réclamées\n",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -210,7 +210,7 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "You've contributed $amount$ $currency$",
+    "message": "Vous avez apporté $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
@@ -256,7 +256,7 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "Votre paiement mensuel de vos Contributions Automatiques et de vos pourboires mensuels n'a pas pu être réalisé en raison de l'insuffisance de vos fonds. Nous réessaierons dans 30 jours.",
+    "message": "Votre paiement mensuel de vos contributions automatiques et de vos dons mensuels n'a pas pu être réalisé en raison de l'insuffisance de vos fonds. Nous réessaierons dans 30 jours.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
@@ -316,7 +316,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Ce créateur ne s'est pas encore inscrit pour recevoir les contributions des utilisateurs de Brave. Tous les pourboires que vous envoyez resteront dans votre portefeuille jusqu'à ce qu'ils soient vérifiés.\n\n",
+    "message": "Ce créateur ne s'est pas encore inscrit pour recevoir les contributions des utilisateurs de Brave. Tous les dons que vous envoyez resteront dans votre portefeuille jusqu'à ce qu'ils soient vérifiés.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -436,7 +436,7 @@
     "description": "Icon label for Twitter tips"
   },
   "redditTipsHoverText": {
-    "message": "Donner un pourboire pour cette publication",
+    "message": "Faire un don pour cette publication",
     "description": "Hover text for Reddit tips action"
   },
   "redditTipsIconLabel": {
@@ -444,7 +444,7 @@
     "description": "Icon label for Reddit tips"
   },
   "githubTipsHoverText": {
-    "message": "Envoyer un conseil",
+    "message": "Envoyer un don",
     "description": "Hover text for GitHub tips action"
   },
   "githubTipsIconLabel": {
@@ -462,7 +462,7 @@
     }
   },
   "pendingNotEnoughFundsNotification": {
-    "message": "Vous avez des pourboires en attente en raison de fonds insuffisants",
+    "message": "Vous avez des dons en attente en raison de fonds insuffisants",
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
@@ -474,7 +474,7 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "Your $currency$ grant is on its way.",
+    "message": "Votre bourse en $currency$ est en route.",
     "description": "Cosmetic text indicating grant funds are on the way",
     "placeholders": {
       "currency": {
@@ -488,7 +488,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Free Point Grant",
+    "message": "Attribution gratuite de points",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -554,7 +554,7 @@
     "description": "Title for notification when wallet is disconnected"
   },
   "connectedText":  {
-    "message": "Ce créateur vérifié de Brave n'a pas encore configuré son compte pour recevoir des contributions des utilisateurs de Brave. Tous les pourboires que vous enverrez resteront dans votre portefeuille jusqu'à ce qu'il ait terminé ce processus.",
+    "message": "Ce créateur vérifié de Brave n'a pas encore configuré son compte pour recevoir des contributions des utilisateurs de Brave. Tous les dons que vous enverrez resteront dans votre portefeuille jusqu'à ce qu'il ait terminé ce processus.",
     "description": "Text shown for connected publishers that are not fully verified in the panel"
   },
   "walletGoToVerifyPage":  {
@@ -586,7 +586,7 @@
     "description": "BAT Tokens Grant Text"
   },
   "pointGrants":  {
-    "message": "Point Grants",
+    "message": "Attributions de points",
     "description": "BAT Points Grant Text"
   }
 }

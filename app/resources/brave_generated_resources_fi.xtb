@@ -3,6 +3,7 @@
 <translationbundle lang="fi">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave-mainostenesto</translation>
+<translation id="4615489450165434530">Ilmoita toimimattomasta sivustosta</translation>
 <translation id="6406506848690869874">Synkronointi</translation>
 <translation id="5655621391922317800">Kryptokukkarot</translation>
 <translation id="2445484935443597917">Luo uusi profiili</translation>
@@ -39,6 +40,8 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="2814998458708016836">Käytä leveää osoitekenttää</translation>
 <translation id="6123134130710658846">Piilota Brave Rewards -painike</translation>
 <translation id="7635711399568194460">Piilottaa Brave Rewards -painikkeen sijaintipalkissa, kun Brave Rewards ei ole sallittu</translation>
+<translation id="1520361618554057102">Näytä aina kirjanmerkit Uusi välilehti -sivulla</translation>
+<translation id="5802665280774361839">Näytä automaattinen täydennys osoiterivillä</translation>
 <translation id="7965178729203412357">Uusi Tor-identiteetti</translation>
 <translation id="8511502469534942133">Uusi Tor-yhteys tätä sivustoa varten</translation>
 <translation id="8784924142044142231">Poistu Torista</translation>
@@ -68,6 +71,7 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="9075744464571452108">Laitteentunnistus</translation>
 <translation id="3570081523466826008">Nosta yhteystasoksi HTTPS</translation>
 <translation id="4824468494729001999">Estä komentosarjat</translation>
+<translation id="8526521192921341404">Salli Google-kirjautumiset</translation>
 <translation id="863171915776379000">Salli Facebookin sisäänkirjautumiset ja upotetut julkaisut</translation>
 <translation id="5165042248369837294">Salli Twitterin upotetut tviitit</translation>
 <translation id="958971637207126733">Salli LinkedIn-upotuksen sisältävät julkaisut</translation>
@@ -84,6 +88,7 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="5825943197137337319">Vain julkinen oletuskäyttöliittymä</translation>
 <translation id="1689062823386843231">Estä yhteydetön UDP</translation>
 <translation id="8502234992433094996">Käytä Googlen palveluja push-viestintään</translation>
+<translation id="3888068426966679906">Virheiden etäkorjaus</translation>
 <translation id="6645631466045614531">Avaa synkronointi seuraavaa kautta:</translation>
 <translation id="1807246157184219062">Kevyt</translation>
 <translation id="2414886740292270097">Pimeä</translation>
@@ -153,4 +158,13 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="4394049700291259645">Poista käytöstä</translation>
 <translation id="6469509880167172749">Lähetä Bravelle automaattisesti täysin yksityisenä pysyvää tuoteanalytiikkaa</translation>
 <translation id="7090566321964540749">Tämä anonyymi tieto sallii Braven arvioida tiettyjen ominaisuuksien kokonaiskäyttöä.</translation>
+<translation id="1200956479506699688">Kryptokukkarot ovat nyt käytettävissä Bravessa. Et voi käyttää MetaMaskia ja kryptokukkaroita samaan aikaan.</translation>
+<translation id="7583735190612229830">Asenna kryptokukkaroita ollaksesi vuorovaikutuksessa tämän sovelluksen ja muiden sen kaltaisten kanssa.</translation>
+<translation id="8337117349965899723">Käytä kryptokukkaroita</translation>
+<translation id="5756155765711979898">Käytä MetaMaskia</translation>
+<translation id="6754134632841262799">ASENNUS</translation>
+<translation id="191143826155037518">Brave on annettu käyttöösi <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0:n<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) nojalla, ja se sisältää <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>avoimen lähdekoodin ohjelmistoja<ph name="END_LINK_OSS">&lt;/a&gt;</ph> useiden muiden lisenssien nojalla.
+        Voit lukea <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>ohjeita siitä, miten voit ladata ja koota itsellesi<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> juuri sen <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>lähdekoodin, jota on käytetty tämän kappaleen luomiseen<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Lisää kaikki välilehdet kirjanmerkkeihin...</translation>
+<translation id="2336228925368920074">Lisää kaikki välilehdet kirjanmerkkeihin...</translation>
 </translationbundle>

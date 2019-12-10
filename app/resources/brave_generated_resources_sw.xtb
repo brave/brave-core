@@ -3,6 +3,7 @@
 <translationbundle lang="sw">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Kizuia Matangazo cha Brave</translation>
+<translation id="4615489450165434530">Ripoti Tovuti yenye Hitilafu</translation>
 <translation id="6406506848690869874">Oanisha</translation>
 <translation id="5655621391922317800">Pochi za Crypto</translation>
 <translation id="2445484935443597917">Unda Wasifu Mpya</translation>
@@ -39,6 +40,8 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="2814998458708016836">Tumia upao wa anwani pana</translation>
 <translation id="6123134130710658846">Ficha kitufe cha Brave Rewards</translation>
 <translation id="7635711399568194460">Huficha kitufe cha Brave Rewards kwenye kiwambo cha mahali wakati ambapo Brave Rewards haijawezeshwa</translation>
+<translation id="1520361618554057102">Onyesha maalamisho kila wakati kwenye ukurasa wa Kichupo Kipya</translation>
+<translation id="5802665280774361839">Onyesha ukamilishaji kiotomatiki kwenye upau wa anwani</translation>
 <translation id="7965178729203412357">Utambulisho Mpya wa Tor</translation>
 <translation id="8511502469534942133">Mpya Kwa muunganisho Wa Tovuti Hii</translation>
 <translation id="8784924142044142231">Ondoka kwenye Tor</translation>
@@ -68,6 +71,7 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="9075744464571452108">Utambuzi wa kifaa</translation>
 <translation id="3570081523466826008">Pandisha miunganisho kuwa HTTPS</translation>
 <translation id="4824468494729001999">Zuia maandishi</translation>
+<translation id="8526521192921341404">Ruhusu uingiaji wa Google</translation>
 <translation id="863171915776379000">Ruhusu kuingia kwenye akaunti kupitia Facebook na makala zilizoshikizwa</translation>
 <translation id="5165042248369837294">Ruhusa makala za Twitter zilizoshikizwa</translation>
 <translation id="958971637207126733">Ruhusu makala za LinkedIn zilizoshikizwa</translation>
@@ -84,6 +88,7 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="5825943197137337319">Kiolesura cha umma chaguo-msingi pekee</translation>
 <translation id="1689062823386843231">Zima UDP zisizo na usalama</translation>
 <translation id="8502234992433094996">Tumia Huduma za Google kwa Ujumbe wa Simu</translation>
+<translation id="3888068426966679906">Utatuaji hitilafu wa mbali</translation>
 <translation id="6645631466045614531">Fikia Oanisha kupitia</translation>
 <translation id="1807246157184219062">Mwanga</translation>
 <translation id="2414886740292270097">Giza</translation>
@@ -154,4 +159,13 @@ Zawadi za Avatar Paladin</translation>
 <translation id="4394049700291259645">Zima</translation>
 <translation id="6469509880167172749">Tuma kiotomatiki uchanganuzi wa bidhaa wa faragha kabisa kwa Brave</translation>
 <translation id="7090566321964540749">Taarifa hii isiyombainisha mtu huiruhusu Brave kukadiria matumizi ya jumla ya vipengele fulani.</translation>
+<translation id="1200956479506699688">Crypto Wallets sasa inapatikana katika Brave. Huwezi kutumia MetaMask na Crypto Wallets kwa wakati mmoja.</translation>
+<translation id="7583735190612229830">Weka Crypto Wallets ili kutumia programu hii na nyingine kama hiyo.</translation>
+<translation id="8337117349965899723">Tumia Crypto Wallets</translation>
+<translation id="5756155765711979898">Tumia MetaMask</translation>
+<translation id="6754134632841262799">USANIDI</translation>
+<translation id="191143826155037518">Brave inapatikana kwako chini ya <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Leseni ya Umma ya Mozilla 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) na inajumuisha <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>programu huria<ph name="END_LINK_OSS">&lt;/a&gt;</ph> chini ya leseni nyingine mbalimbali.
+        Unaweza kusoma <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>maagizo ya jinsi ya kupakua na kujiundia<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> msimbo  mahususi wa chanzo <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>uliotumiwa kuunda nakala hii<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Alamisha vichupo vyote...</translation>
+<translation id="2336228925368920074">Alamisha Vichupo Vyote...</translation>
 </translationbundle>

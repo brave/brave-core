@@ -20,7 +20,7 @@
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeDescPoints": {
-    "message": "You can now earn points for watching privacy-respecting ads.",
+    "message": "Ara pots guanyar punts visualitzant anuncis que respecten la teva privacitat.",
     "description": "Entry text for welcome screen in the panel, points"
   },
   "welcomeFooterTextOne": {
@@ -148,7 +148,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "$currency$ Grants",
+    "message": "$currency$ Subvencions",
     "description": "Title for grant notification",
     "placeholders": {
       "currency": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Point Grants Claimed",
+    "message": "Subvencions de punts rebudes",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -210,7 +210,7 @@
     "description": "Notification title when we display info about auto contribution"
   },
   "contributeNotificationSuccess": {
-    "message": "You've contributed $amount$ $currency$",
+    "message": "Has contribuït amb $amount$ $currency$",
     "description": "We show this string in the notification when contribution is successful",
     "placeholders": {
       "amount": {
@@ -416,7 +416,7 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "bap": {
-    "message": "BAP",
+    "message": "Punts BAT",
     "description": "BAT Points abbreviation text"
   },
   "turnOnAds": {
@@ -474,7 +474,7 @@
     "description": "Cosmetic text upon captcha success"
   },
   "grantFinishTextUGP": {
-    "message": "Your $currency$ grant is on its way.",
+    "message": "La teva subvenció de $currency$ ",
     "description": "Cosmetic text indicating grant funds are on the way",
     "placeholders": {
       "currency": {
@@ -488,7 +488,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Free Point Grant",
+    "message": "Subvenció de punts gratuïta",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -570,7 +570,7 @@
     "description": "Standard tokens text"
   },
   "point":  {
-    "message": "Point",
+    "message": "Punt",
     "description": "BAT Point text"
   },
   "token":  {
@@ -578,7 +578,7 @@
     "description": "BAT Token text"
   },
   "points":  {
-    "message": "points",
+    "message": "punts",
     "description": "BAT Points text"
   },
   "tokenGrants":  {
@@ -586,7 +586,7 @@
     "description": "BAT Tokens Grant Text"
   },
   "pointGrants":  {
-    "message": "Point Grants",
+    "message": "Subvencions de punts",
     "description": "BAT Points Grant Text"
   }
 }

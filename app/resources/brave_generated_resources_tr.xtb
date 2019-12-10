@@ -3,6 +3,7 @@
 <translationbundle lang="tr">
 <translation id="3333887201479867589">Brave Ödülleri</translation>
 <translation id="7942180974165298215">Brave Reklam Engelleme</translation>
+<translation id="4615489450165434530">Arızalı Bir Siteyi Bildir</translation>
 <translation id="6406506848690869874">Sync</translation>
 <translation id="5655621391922317800">Kripto Cüzdanlar</translation>
 <translation id="2445484935443597917">Yeni Profil Oluştur</translation>
@@ -39,6 +40,8 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="2814998458708016836">Geniş adres çubuğu kullan</translation>
 <translation id="6123134130710658846">Brave Ödülleri butonunu gizle</translation>
 <translation id="7635711399568194460">Brave Ödülleri etkin olmadığında konum çubuğundaki Brave Ödülleri butonunu gizler</translation>
+<translation id="1520361618554057102">Yeni Sekme sayfasında her zaman yer imlerini göster</translation>
+<translation id="5802665280774361839">Adres çubuğunda otomatik tamamlamayı göster</translation>
 <translation id="7965178729203412357">Yeni Tor Kimliği</translation>
 <translation id="8511502469534942133">Bu Site İçin Yeni Tor Bağlantısı</translation>
 <translation id="8784924142044142231">Tor'dan Çıkış</translation>
@@ -68,6 +71,7 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="9075744464571452108">Cihaz tanımlama</translation>
 <translation id="3570081523466826008">Bağlantıları HTTPS'e yükselt</translation>
 <translation id="4824468494729001999">Script'leri engelle</translation>
+<translation id="8526521192921341404">Google girişlerine izin ver</translation>
 <translation id="863171915776379000">Facebook ile giriş yapmaya ve gömülü gönderilere izin ver</translation>
 <translation id="5165042248369837294">Gömülü Twitter tweetlerine izin ver</translation>
 <translation id="958971637207126733">LinkedIn gömülü gönderilere izin ver</translation>
@@ -84,6 +88,7 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="5825943197137337319">Sadece varsayılan genel arayüz</translation>
 <translation id="1689062823386843231">Non-proxied UDP'yi devre dışı bırak</translation>
 <translation id="8502234992433094996">Anlık Mesajlaşma için Google Hizmetleri Kullan</translation>
+<translation id="3888068426966679906">Uzaktan Hata Ayıklama</translation>
 <translation id="6645631466045614531">Sync'e şu yolla eriş:</translation>
 <translation id="1807246157184219062">Açık</translation>
 <translation id="2414886740292270097">Koyu</translation>
@@ -153,4 +158,13 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="4394049700291259645">Devre dışı bırak</translation>
 <translation id="6469509880167172749">Brave'e otomatik olarak tamamıyla gizli ürün analizi gönder</translation>
 <translation id="7090566321964540749">Bu anonim bilgi, yalnızca Brave'in belirli özelliklerin genel kullanımını tahmin etmesine olanak tanır.</translation>
+<translation id="1200956479506699688">Artık Brave'de Kripto Cüzdanlar mevcut. MetaMask'i ve Kripto Cüzdanları aynı anda kullanamazsınız.</translation>
+<translation id="7583735190612229830">Bu ve bunun gibi uygulamalarla etkileşime geçebilmesi için Kripto Cüzdanları ayarla.</translation>
+<translation id="8337117349965899723">Kripto Cüzdanları Kullan</translation>
+<translation id="5756155765711979898">MetaMask Kullan</translation>
+<translation id="6754134632841262799">KURULUM</translation>
+<translation id="191143826155037518">Brave'i <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Kamu Lisansı 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) altında ve <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>açık kaynak yazılım<ph name="END_LINK_OSS">&lt;/a&gt;</ph> dahil çeşitli diğer lisanslar altında kullanabilirsiniz.
+        <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>Bu kopyayı oluşturmak için kullanılan kaynak kodunu<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph> <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>indirmek ve inşa etmek için talimatları<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> okuyabilirsiniz.</translation>
+<translation id="4474155171896946103">Tüm sekmelere yer işareti koy...</translation>
+<translation id="2336228925368920074">Tüm Sekmelere Yer İşareti Koy...</translation>
 </translationbundle>

@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "このサイトを閲覧中、プライバシーとセキュリティ保護は無効です。",
-    "description": "Message telling the user that shields are disabled"
+    "message": "Braveのプライバシーおよびセキュリティー保護なく、このサイトを閲覧しています。シールドを有効にすると、正しく機能しませんか？",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "壊れたサイトを報告",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "アイテムがブロックされました",

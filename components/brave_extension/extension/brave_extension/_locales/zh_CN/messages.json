@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "您正浏览的网站不具备任何隐私和安全保护。",
-    "description": "Message telling the user that shields are disabled"
+    "message": "您正浏览的网站不受 Brave 的隐私和安全保护。Shields 被设置为 \"up\" 时无法正常工作吗？",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "报告损坏的网站",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "已锁定项目",

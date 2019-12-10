@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Prenos ni uspel: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Prenos preklican: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">Prenos je končan: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">Prenos je končan: <ph name="FILE_NAME"/>. Pritisnite Shift + F6, če želite krožiti do območja vrstice s prenosi.</translation>
 <translation id="2743387203779672305">Kopiraj v odložišče</translation>
 <translation id="883911313571074303">Dodaj pripis sliki</translation>
 <translation id="6291953229176937411">&amp;Pokaži v Finderju</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Vrednost podpisa potrdila</translation>
 <translation id="4104163789986725820">I&amp;zvozi ...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnDoločilo</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">serijskaŠtevilka</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">POŠTA</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">poslovnaKategorija</translation>
-<translation id="6561757256477115975">imeKrajevnePristojnosti</translation>
-<translation id="7150038968052501583">imePristojneDržaveAliPokrajine</translation>
-<translation id="8904360804686555987">imePristojneDržave</translation>
-<translation id="8718098216622210506">ULICA</translation>
-<translation id="6969275223369931223">poštnaŠtevilka</translation>
 <translation id="5434065355175441495">PKCS #1 s šifriranjem RSA</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 s šifriranjem RSA</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 s šifriranjem RSA</translation>
@@ -1367,6 +1350,9 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="813082847718468539">Ogled podatkov o mestu</translation>
 <translation id="5233638681132016545">Nov zavihek</translation>
 <translation id="3915280005470252504">Glasovno iskanje</translation>
+<translation id="8968766641738584599">Shrani kartico</translation>
+<translation id="2408018932941436077">Shranjevanje kartice</translation>
+<translation id="7970882136539140748">Kartice trenutno ni mogoče shraniti</translation>
 <translation id="1593926297800505364">Shranjevanje plačilnega sredstva</translation>
 <translation id="2473195200299095979">Prevede to stran</translation>
 <translation id="5408750356094797285">Povečava: <ph name="PERCENT"/></translation>
@@ -1759,7 +1745,6 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="1234808891666923653">Komponente »service worker«</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Shramba predpomnilnika</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Aplikacije</translation>
 <translation id="542872847390508405">Brskate kot gost</translation>
 <translation id="537813040452600081">Strani, ki si jih ogledujete v tem oknu, ne bodo prikazane v zgodovini brskalnika in po odjavi v računalniku ne bodo pustile drugih sledi, na primer piškotkov. Datoteke, ki jih prenesete, in zaznamki, ki jih ustvarite, se ne bodo ohranili.</translation>
@@ -2103,7 +2088,6 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="2650609753175229582"><ph name="URL"/> želi predvajati zaščiteno vsebino. Brave Software bo preveril identiteto naprave in do nje bo morda dostopalo to spletno mesto.</translation>
 <translation id="1746402432151920942">Identifikator zaščitene predstavnosti</translation>
 <translation id="1322046419516468189">Ogled in upravljanje shranjenih gesel tukaj: <ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Geslo je shranjeno. Shranjena gesla si lahko ogledate in jih upravljate tukaj: <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Brave Software Račun</translation>
 <translation id="3785727820640310185">Shranjena gesla za to spletno mesto</translation>
@@ -2506,9 +2490,6 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="5186185447130319458">Način brez beleženja zgodovine</translation>
 <translation id="7643842463591647490">{0,plural, =1{# odprto okno}one{# odprto okno}two{# odprti okni}few{# odprta okna}other{# odprtih oken}}</translation>
 <translation id="2579188629646253712">Izhod iz načina brez beleženja zgodovine</translation>
-<translation id="479219453908726046">Sodelujte v anketi</translation>
-<translation id="7581273696622423628">Sodelujte v anketi</translation>
-<translation id="4406504596603350105">Vaše mnenje nam veliko pomeni.</translation>
 <translation id="4349828822184870497">Uporabno</translation>
 <translation id="6876469544038980967">Ni uporabno</translation>
 <translation id="5286194356314741248">Pregledovanje</translation>
@@ -3138,7 +3119,7 @@ Datoteko s ključem shranite na varnem. Potrebovali jo boste za izdelavo novih r
 <translation id="6644512095122093795">Ponudi shranjevanje gesel</translation>
 <translation id="2100273922101894616">Samodejna prijava</translation>
 <translation id="7513029293694390567">Samodejna prijava v spletna mesta s shranjenimi poverilnicami. Ko je to onemogočeno, boste morali potrditi pred vsako prijavo v spletno mesto.</translation>
-<translation id="2330129964253841015">Posvari, če so gesla ogrožena</translation>
+<translation id="6995899638241819463">Posvari, če so gesla ogrožena</translation>
 <translation id="1534287762301776620">Ko se prijavite v račun Brave Software, se ta funkcija vklopi</translation>
 <translation id="1375321115329958930">Shranjena gesla</translation>
 <translation id="152234381334907219">Nikoli shranjeno</translation>

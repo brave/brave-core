@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Не удалось скачать файл <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Скачивание файла <ph name="FILE_NAME"/> отменено</translation>
 <translation id="3340620525920140773">Скачивание файла <ph name="FILE_NAME"/> завершено</translation>
+<translation id="4110490973560452005">Скачивание завершено: <ph name="FILE_NAME"/>. Чтобы перейти к панели загрузок, нажмите Shift + F6.</translation>
 <translation id="2743387203779672305">Скопировать в буфер</translation>
 <translation id="883911313571074303">Добавить примечание к изображению</translation>
 <translation id="6291953229176937411">Показать в Finder</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Значение подписи сертификата</translation>
 <translation id="4104163789986725820">Э&amp;кспорт...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">serialNumber</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">ПОЧТА</translation>
-<translation id="7481079953250545971">ИД пользователя</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">businessCategory</translation>
-<translation id="6561757256477115975">jurisdictionLocalityName</translation>
-<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
-<translation id="8904360804686555987">jurisdictionCountryName</translation>
-<translation id="8718098216622210506">УЛИЦА</translation>
-<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">PKCS #1 шифрование RSA</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 с шифрованием RSA</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 с шифрованием RSA</translation>
@@ -1366,6 +1349,9 @@
 <translation id="813082847718468539">Сведения о сайте</translation>
 <translation id="5233638681132016545">Новая вкладка</translation>
 <translation id="3915280005470252504">Голосовой поиск</translation>
+<translation id="8968766641738584599">Сохранить карту</translation>
+<translation id="2408018932941436077">Сохранение карты</translation>
+<translation id="7970882136539140748">Не удалось сохранить карту</translation>
 <translation id="1593926297800505364">Сохранить способ оплаты</translation>
 <translation id="2473195200299095979">Перевести эту страницу</translation>
 <translation id="5408750356094797285">Масштаб: <ph name="PERCENT"/></translation>
@@ -1758,7 +1744,6 @@
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Разделяемые объекты worker</translation>
 <translation id="2927017729816812676">CacheStorage</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Приложения</translation>
 <translation id="542872847390508405">Вы вошли в гостевом режиме</translation>
 <translation id="537813040452600081">Страницы, открытые в этом окне, не сохранятся в истории браузера. Они не оставят на компьютере следов, таких как файлы cookie, после того как вы выйдете из аккаунта. Скачанные вами файлы и добавленные закладки будут удалены.</translation>
@@ -2100,7 +2085,6 @@
 <translation id="2650609753175229582">Сайт <ph name="URL"/> собирается воспроизвести защищенный контент. Ваше устройство пройдет проверку в Brave Software, и этот сайт сможет получать к нему доступ.</translation>
 <translation id="1746402432151920942">Идентификатор защищенного мультимедийного контента</translation>
 <translation id="1322046419516468189">Просматривайте сохраненные пароли и управляйте ими на странице <ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Пароль сохранен. Просматривайте сохраненные пароли и управляйте ими на странице <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Аккаунт Brave Software</translation>
 <translation id="3785727820640310185">Сохраненные пароли для этого сайта</translation>
@@ -2503,9 +2487,6 @@
 <translation id="5186185447130319458">Приватное</translation>
 <translation id="7643842463591647490">{0,plural, =1{Открыто # окно}one{Открыто # окно}few{Открыто # окна}many{Открыто # окон}other{Открыто # окна}}</translation>
 <translation id="2579188629646253712">Выйти из Приватного режима</translation>
-<translation id="479219453908726046">Принять участие в опросе</translation>
-<translation id="7581273696622423628">Принять участие в опросе</translation>
-<translation id="4406504596603350105">Ваше мнение важно для нас.</translation>
 <translation id="4349828822184870497">Полезно</translation>
 <translation id="6876469544038980967">Бесполезно</translation>
 <translation id="5286194356314741248">Сканирование...</translation>
@@ -3133,7 +3114,7 @@ other {Приватное (#)}
 <translation id="6644512095122093795">Предлагать сохранение паролей</translation>
 <translation id="2100273922101894616">Автоматический вход</translation>
 <translation id="7513029293694390567">Автоматически входить на сайты с помощью сохраненного имени пользователя и пароля. Когда функция отключена, эти данные нужно вводить при каждом входе.</translation>
-<translation id="2330129964253841015">Сообщать об утечке паролей</translation>
+<translation id="6995899638241819463">Сообщать об утечке паролей</translation>
 <translation id="1534287762301776620">Эта функция включается, когда вы входите в аккаунт Brave Software.</translation>
 <translation id="1375321115329958930">Сайты с сохраненными паролями</translation>
 <translation id="152234381334907219">Сайты, пароли для которых не сохраняются</translation>

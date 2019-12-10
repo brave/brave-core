@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "Você está navegando neste site sem nenhuma proteção de privacidade e segurança.",
-    "description": "Message telling the user that shields are disabled"
+    "message": "Você está navegando neste site sem as proteções de privacidade e segurança do Brave. Ele não funciona corretamente com o Shields?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Relate um site quebrado",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "Itens bloqueados",

@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "ನೀವು ಯಾವುದೇ ಗೌಪ್ಯತೆ ಮತ್ತು ಸುರಕ್ಷತೆ ಸಂರಕ್ಷಣೆಗಳಿಲ್ಲದೆಯೇ ನೀವು ಈ ಸೈಟ್‌ಗೆ ಭೇಟಿ ನೀಡಿರುತ್ತಿರುವಿರಿ.",
-    "description": "Message telling the user that shields are disabled"
+    "message": "Brave ನ ಗೌಪ್ಯತೆ ಮತ್ತು ಸುರಕ್ಷತಾ ರಕ್ಷಣೆಗಳಿಲ್ಲದೆ ನೀವು ಈ ಸೈಟ್‌ ಅನ್ನು ಬ್ರೌಸ್ ಮಾಡುತ್ತಿದ್ದೀರಿ. ಇದು ಶಿಲ್ಡ್ಸ್ಅಪ್ ಜೊತೆಗೆ ಸರಿಯಾಗಿ ಕಾರ್ಯನಿರ್ವಹಿಸುವುದಿಲ್ಲವೇ?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "ಬ್ರೋಕನ್ ಸೈಟ್ ಅನ್ನು ವರದಿ ಮಾಡಿ",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "ಐಟಂಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",

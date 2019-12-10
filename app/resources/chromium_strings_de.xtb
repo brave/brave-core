@@ -18,11 +18,9 @@
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> – Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="8992261409816268381">Die Brave-Autoren</translation>
-<translation id="4651430425715739110">Copyright <ph name="YEAR"/> Die Brave-Autoren. Alle Rechte vorbehalten.</translation>
+<translation id="8121009781989288430">Copyright <ph name="YEAR"/> Die Brave-Autoren. Alle Rechte vorbehalten.</translation>
 <translation id="2310890394934209120">Brave OS wird durch zusätzliche <ph name="BEGIN_LINK_CROS_OSS"/>Open-Source-Software<ph name="END_LINK_CROS_OSS"/> möglich gemacht.</translation>
 <translation id="8160794320557846790">Brave OS und <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (Beta)<ph name="END_LINK_LINUX_OSS"/> werden durch zusätzliche <ph name="BEGIN_LINK_CROS_OSS"/>Open-Source-Software<ph name="END_LINK_CROS_OSS"/> möglich gemacht.</translation>
-<translation id="8948097099929452692">Wird nicht in Brave genutzt. Platzhalter um die Ressourcenabbildung synchron zu halten.</translation>
-<translation id="5009217320733452434">Wird nicht in Brave verwendet. Platzhalter um das Ressourcen-Abbild synchron zu halten. Es benötigt ein argument: <ph name="ARGUMENT"/>.</translation>
 <translation id="6913582816347128893">Brave funktioniert unter Umständen nicht ordnungsgemäß, da Mac OS X 10.9  nicht mehr unterstützt wird.</translation>
 <translation id="7977787072794666032">Brave funktioniert unter Umständen nicht ordnungsgemäß, da es unter Windows XP und Windows Vista nicht mehr unterstützt wird</translation>
 <translation id="189297655255130768">Brave reagiert nicht. Jetzt neu starten?</translation>
@@ -206,7 +204,6 @@ Brave kann Ihre Einstellungen nicht wiederherstellen.</translation>
 <translation id="3052349005266761501">Brave wird gestartet…</translation>
 <translation id="1197672524850678392">Brave konnte nicht gestartet werden. Versuchen Sie es noch einmal.</translation>
 <translation id="5147525139567260139">Brave-Tab freigeben</translation>
-<translation id="2076319850279844250">Helfen Sie uns, Brave zu verbessern</translation>
 <translation id="8541922081612557424">Über Brave</translation>
 <translation id="3262506503470845422">Hilfe für Brave aufrufen</translation>
 <translation id="1864557848095568223">Brave wird aktualisiert</translation>

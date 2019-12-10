@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Download fehlgeschlagen: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Download abgebrochen: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">Download abgeschlossen: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">Download abgeschlossen: <ph name="FILE_NAME"/>. Drücken Sie Umschalttaste + F6, um zum Bereich mit der Downloadleiste zu wechseln.</translation>
 <translation id="2743387203779672305">In Zwischenablage kopieren</translation>
 <translation id="883911313571074303">Bild mit Anmerkung versehen</translation>
 <translation id="6291953229176937411">Im Finder &amp;zeigen</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Wert für Zertifikatsignatur</translation>
 <translation id="4104163789986725820">E&amp;xportieren...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">Seriennummer</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">MAIL</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">businessCategory</translation>
-<translation id="6561757256477115975">GerrichtsstandOrtName</translation>
-<translation id="7150038968052501583">GerichtsstandStaatOderBundeslandName</translation>
-<translation id="8904360804686555987">GerichtsstandLandesName</translation>
-<translation id="8718098216622210506">Straße</translation>
-<translation id="6969275223369931223">Postleitzahl</translation>
 <translation id="5434065355175441495">PKCS #1 RSA-Verschlüsselung</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 mit RSA-Verschlüsselung</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 mit RSA-Verschlüsselung</translation>
@@ -1366,6 +1349,9 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="813082847718468539">Website-Informationen anzeigen</translation>
 <translation id="5233638681132016545">Neuer Tab</translation>
 <translation id="3915280005470252504">Sprachsuche verwenden</translation>
+<translation id="8968766641738584599">Karte speichern</translation>
+<translation id="2408018932941436077">Karte wird gespeichert</translation>
+<translation id="7970882136539140748">Karte kann momentan nicht gespeichert werden</translation>
 <translation id="1593926297800505364">Zahlungsmethode speichern</translation>
 <translation id="2473195200299095979">Diese Seite übersetzen</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
@@ -1758,7 +1744,6 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Cache-Speicher</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Apps</translation>
 <translation id="542872847390508405">Der Gastmodus ist aktiviert.</translation>
 <translation id="537813040452600081">In diesem Fenster aufgerufene Seiten erscheinen nicht im Browserverlauf und hinterlassen auch keine anderweitigen Spuren wie Cookies auf dem Computer, nachdem Sie sich abgemeldet haben. Ihre Lesezeichen und Ihre heruntergeladenen Dateien bleiben nicht erhalten.</translation>
@@ -2100,7 +2085,6 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="2650609753175229582"><ph name="URL"/> möchte geschützten Inhalt abspielen. Die Identität Ihres Geräts wird von Brave Software überprüft, weshalb möglicherweise ein Zugriff durch diese Website erfolgt.</translation>
 <translation id="1746402432151920942">Kennzeichnung für geschützte Medien</translation>
 <translation id="1322046419516468189">Gespeicherte Passwörter in Ihrem <ph name="SAVED_PASSWORDS_STORE"/> aufrufen und verwalten</translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Passwort gespeichert. Gespeicherte Passwörter können Sie in Ihrem <ph name="SAVED_PASSWORDS_STORE"/> aufrufen und verwalten</translation>
 <translation id="5713644099811900409">Brave Software-Konto</translation>
 <translation id="3785727820640310185">Für diese Website gespeicherte Passwörter</translation>
@@ -2503,9 +2487,6 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="5186185447130319458">Privat</translation>
 <translation id="7643842463591647490">{0,plural, =1{# offenes Fenster}other{# offene Fenster}}</translation>
 <translation id="2579188629646253712">Privatmodus verlassen</translation>
-<translation id="479219453908726046">Umfrage starten</translation>
-<translation id="7581273696622423628">Umfrage starten</translation>
-<translation id="4406504596603350105">Ihr Feedback ist uns wichtig.</translation>
 <translation id="4349828822184870497">Hilfreich</translation>
 <translation id="6876469544038980967">Nicht hilfreich</translation>
 <translation id="5286194356314741248">Durchsuchen</translation>
@@ -3135,7 +3116,7 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="6644512095122093795">Speichern von Passwörtern anbieten</translation>
 <translation id="2100273922101894616">Automatisch anmelden</translation>
 <translation id="7513029293694390567">Sie werden mithilfe gespeicherter Anmeldedaten automatisch auf Websites angemeldet. Wenn diese Funktion deaktiviert ist, werden Sie bei jeder Anmeldung auf einer Website nach einer Bestätigung gefragt.</translation>
-<translation id="2330129964253841015">Warnen, wenn Passwörter nicht mehr sicher sind</translation>
+<translation id="6995899638241819463">Warnen, wenn Passwörter nicht mehr sicher sind</translation>
 <translation id="1534287762301776620">Wenn Sie sich in Ihrem Brave Software-Konto anmelden, ist diese Funktion eingeschaltet</translation>
 <translation id="1375321115329958930">Gespeicherte Passwörter</translation>
 <translation id="152234381334907219">Nie speichern für...</translation>

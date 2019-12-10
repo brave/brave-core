@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Preuzimanje nije uspjelo: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Preuzimanje otkazano: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">Preuzimanje dovršeno: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">Preuzimanje je dovršeno: <ph name="FILE_NAME"/>. Pritisnite Shift + F6 da biste došli do područja trake preuzimanja.</translation>
 <translation id="2743387203779672305">Kopiraj u međuspremnik</translation>
 <translation id="883911313571074303">Dodaj napomenu slici</translation>
 <translation id="6291953229176937411">&amp;Prikaži u programu Finder</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Vrijednost potpisa certifikata</translation>
 <translation id="4104163789986725820">I&amp;zvoz...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">Serijski broj</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">POŠTA</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">Poslovna kategorija</translation>
-<translation id="6561757256477115975">Naziv mjesta sudske nadležnosti</translation>
-<translation id="7150038968052501583">Naziv države ili provincije sudske nadležnosti</translation>
-<translation id="8904360804686555987">Naziv države sudske nadležnosti</translation>
-<translation id="8718098216622210506">ULICA</translation>
-<translation id="6969275223369931223">Poštanski broj</translation>
 <translation id="5434065355175441495">PKCS br. 1 RSA enkripcija</translation>
 <translation id="1221024147024329929">PKCS br. 1 MD2 s RSA enkripcijom</translation>
 <translation id="1640283014264083726">PKCS br. 1 MD4 s RSA enkripcijom</translation>
@@ -1366,6 +1349,9 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="813082847718468539">Prikaz informacija o web-mjestu</translation>
 <translation id="5233638681132016545">Nova kartica</translation>
 <translation id="3915280005470252504">Pretraživanje po glasu</translation>
+<translation id="8968766641738584599">Spremanje kartice</translation>
+<translation id="2408018932941436077">Spremanje kartice</translation>
+<translation id="7970882136539140748">Kartica se trenutačno ne može spremiti</translation>
 <translation id="1593926297800505364">Spremanje načina plaćanja</translation>
 <translation id="2473195200299095979">Prevedi ovu stranicu</translation>
 <translation id="5408750356094797285">Zumiranje: <ph name="PERCENT"/></translation>
@@ -1758,7 +1744,6 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Pohrana predmemorije</translation>
-<translation id="3169132535805984622">ecdsa_prijava</translation>
 <translation id="2805756323405976993">Aplikacije</translation>
 <translation id="542872847390508405">Pregledavate kao gost</translation>
 <translation id="537813040452600081">Stranice koje gledate u ovom prozoru neće se pojaviti u povijesti preglednika niti će ostaviti druge tragove, na primjer, kolačiće, na računalu nakon što se odjavite. Datoteke koje preuzmete i oznake koje stvorite neće se sačuvati.</translation>
@@ -2102,7 +2087,6 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="2650609753175229582"><ph name="URL"/> želi reproducirati zaštićeni sadržaj. Brave Software će potvrditi identitet vašeg uređaja i ta će mu web-lokacija moći pristupiti.</translation>
 <translation id="1746402432151920942">Identifikator zaštićenog medija</translation>
 <translation id="1322046419516468189">Spremljene zaporke možete pregledati i upravljati njima ovdje: <ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Zaporka je spremljena. Spremljene zaporke možete pregledati i upravljati njima ovdje: <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">Brave Software Račun</translation>
 <translation id="3785727820640310185">Spremljene zaporke za tu web-lokaciju</translation>
@@ -2505,9 +2489,6 @@ Ključnu datoteku čuvajte na sigurnom mjestu. Trebat će vam za stvaranje novih
 <translation id="5186185447130319458">Privatno</translation>
 <translation id="7643842463591647490">{0,plural, =1{# otvoreni prozor}one{# otvoreni prozor}few{# otvorena prozora}other{# otvorenih prozora}}</translation>
 <translation id="2579188629646253712">Izađi iz privatnog</translation>
-<translation id="479219453908726046">Sudjeluj u anketi</translation>
-<translation id="7581273696622423628">Sudjeluj u anketi</translation>
-<translation id="4406504596603350105">Vaše su nam povratne informacije važne.</translation>
 <translation id="4349828822184870497">Korisno</translation>
 <translation id="6876469544038980967">Nije korisno</translation>
 <translation id="5286194356314741248">Skeniranje</translation>
@@ -3137,7 +3118,7 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="6644512095122093795">Ponudi spremanje zaporki</translation>
 <translation id="2100273922101894616">Automatska prijava</translation>
 <translation id="7513029293694390567">Automatski se prijavite na web-lokacije pomoću spremljenih vjerodajnica. Ako je ta značajka onemogućena, tražit će se potvrda prije svakog prijavljivanja na web-lokaciju.</translation>
-<translation id="2330129964253841015">Upozori ako su zaporke ugrožene</translation>
+<translation id="6995899638241819463">Upozori ako su zaporke ugrožene</translation>
 <translation id="1534287762301776620">Kad se prijavite na svoj Brave Software račun, ta je značajka uključena</translation>
 <translation id="1375321115329958930">Spremljene zaporke</translation>
 <translation id="152234381334907219">Nikad spremljeno</translation>

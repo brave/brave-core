@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">다운로드 실패: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">다운로드 취소됨: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773"><ph name="FILE_NAME"/> 다운로드 완료</translation>
+<translation id="4110490973560452005">다운로드 완료: <ph name="FILE_NAME"/>. 다운로드바 영역으로 이동하려면 Shift+F6를 누르세요.</translation>
 <translation id="2743387203779672305">클립보드로 복사</translation>
 <translation id="883911313571074303">이미지에 주석 달기</translation>
 <translation id="6291953229176937411">Finder에서 보기(&amp;S)</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">인증서 서명 값</translation>
 <translation id="4104163789986725820">내보내기(&amp;X)...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">serialNumber</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">MAIL</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">businessCategory</translation>
-<translation id="6561757256477115975">jurisdictionLocalityName</translation>
-<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
-<translation id="8904360804686555987">jurisdictionCountryName</translation>
-<translation id="8718098216622210506">STREET</translation>
-<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">PKCS #1 RSA 암호화</translation>
 <translation id="1221024147024329929">PKCS #1 MD2(RSA 암호화 사용)</translation>
 <translation id="1640283014264083726">PKCS #1 MD4(RSA 암호화 사용)</translation>
@@ -1364,6 +1347,9 @@
 <translation id="813082847718468539">사이트 정보 보기</translation>
 <translation id="5233638681132016545">새 탭</translation>
 <translation id="3915280005470252504">음성 검색</translation>
+<translation id="8968766641738584599">카드 저장</translation>
+<translation id="2408018932941436077">카드 저장 중</translation>
+<translation id="7970882136539140748">지금은 카드를 저장할 수 없음</translation>
 <translation id="1593926297800505364">결제 수단 저장</translation>
 <translation id="2473195200299095979">이 페이지 번역하기</translation>
 <translation id="5408750356094797285">확대/축소: <ph name="PERCENT"/></translation>
@@ -1756,7 +1742,6 @@
 <translation id="1234808891666923653">서비스 작업자</translation>
 <translation id="3432762828853624962">공유 작업자</translation>
 <translation id="2927017729816812676">캐시 저장 공간</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">앱</translation>
 <translation id="542872847390508405">게스트로 로그인 중</translation>
 <translation id="537813040452600081">이 창에서 보는 페이지는 브라우저 기록에 나타나지 않으며 로그아웃한 후에도 컴퓨터에 쿠키와 같은 다른 흔적을 남기지 않습니다. 다운로드한 파일과 생성한 북마크는 보관되지 않습니다.</translation>
@@ -2100,7 +2085,6 @@
 <translation id="2650609753175229582"><ph name="URL"/>에서 보호된 콘텐츠를 재생하려고 합니다. Brave Software에서 이 기기의 신원을 확인하며 이 사이트에서 이 기기에 액세스할 수 있습니다.</translation>
 <translation id="1746402432151920942">보호된 미디어 식별자</translation>
 <translation id="1322046419516468189"><ph name="SAVED_PASSWORDS_STORE"/>에 저장된 비밀번호 보기 및 관리</translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">비밀번호가 저장되었습니다. <ph name="SAVED_PASSWORDS_STORE"/>에서 저장된 비밀번호를 보고 관리하세요.</translation>
 <translation id="5713644099811900409">Brave Software 계정</translation>
 <translation id="3785727820640310185">이 사이트의 저장된 비밀번호</translation>
@@ -2503,9 +2487,6 @@
 <translation id="5186185447130319458">시크릿 모드</translation>
 <translation id="7643842463591647490">{0,plural, =1{열린 창 #개}other{열린 창 #개}}</translation>
 <translation id="2579188629646253712">시크릿 모드 종료하기</translation>
-<translation id="479219453908726046">설문조사 참여하기</translation>
-<translation id="7581273696622423628">설문조사 참여하기</translation>
-<translation id="4406504596603350105">여러분의 의견은 저희에게 아주 중요합니다.</translation>
 <translation id="4349828822184870497">도움이 됨</translation>
 <translation id="6876469544038980967">도움이 되지 않음</translation>
 <translation id="5286194356314741248">검색 중</translation>
@@ -3135,7 +3116,7 @@
 <translation id="6644512095122093795">비밀번호 저장 여부 확인</translation>
 <translation id="2100273922101894616">자동 로그인</translation>
 <translation id="7513029293694390567">저장된 사용자 인증 정보를 사용하여 자동으로 웹사이트에 로그인합니다. 이 기능이 꺼져 있는 경우에는 웹사이트에 로그인할 때마다 확인 요청 메시지가 표시됩니다.</translation>
-<translation id="2330129964253841015">비밀번호가 도용된 경우 알림</translation>
+<translation id="6995899638241819463">비밀번호가 도용된 경우 알림</translation>
 <translation id="1534287762301776620">Brave Software 계정에 로그인하면 이 기능이 사용 설정됩니다.</translation>
 <translation id="1375321115329958930">저장된 비밀번호</translation>
 <translation id="152234381334907219">저장되지 않음</translation>

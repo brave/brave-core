@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Error en la baixada: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Baixada cancel·lada: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">S'ha completat la baixada: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">S'ha completat la baixada: <ph name="FILE_NAME"/>. Prem Maj+F6 per anar a l'àrea de la barra de baixades.</translation>
 <translation id="2743387203779672305">Copia al porta-retalls</translation>
 <translation id="883911313571074303">Afegeix una anotació a la imatge</translation>
 <translation id="6291953229176937411">&amp;Mostra a Finder</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Valor de la signatura del certificat</translation>
 <translation id="4104163789986725820">E&amp;xporta...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">Número de Serie</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">CORREU</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">Categoria empresarial</translation>
-<translation id="6561757256477115975">Nom de la Localitat de jurisdicció</translation>
-<translation id="7150038968052501583">Estat de jurisdicció o Nom de Provincia</translation>
-<translation id="8904360804686555987">Nom del País de jurisdicció</translation>
-<translation id="8718098216622210506">CARRER</translation>
-<translation id="6969275223369931223">Codi postal</translation>
 <translation id="5434065355175441495">PKCS #1 amb encriptació RSA</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 amb encriptació RSA</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 amb encriptació RSA</translation>
@@ -1367,6 +1350,9 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="813082847718468539">Mostra la informació del lloc</translation>
 <translation id="5233638681132016545">Pestanya nova</translation>
 <translation id="3915280005470252504">Cerca per veu</translation>
+<translation id="8968766641738584599">Desa la targeta</translation>
+<translation id="2408018932941436077">S'està desant la targeta</translation>
+<translation id="7970882136539140748">Ara mateix no es pot desar la targeta</translation>
 <translation id="1593926297800505364">Desa la forma de pagament</translation>
 <translation id="2473195200299095979">Tradueix aquesta pàgina</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
@@ -1758,7 +1744,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Treballadors compartits</translation>
 <translation id="2927017729816812676">Emmagatzematge a la memòria cau</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Aplicacions</translation>
 <translation id="542872847390508405">Esteu navegant com a convidat.</translation>
 <translation id="537813040452600081">Les pàgines que visualitzeu en aquesta finestra no es mostraran a l'historial del navegador i no deixaran cap altre rastre a l'ordinador, com ara galetes, després de tancar la sessió. No es conservaran els fitxers que baixeu ni les adreces d'interès.</translation>
@@ -2100,7 +2085,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="2650609753175229582"><ph name="URL"/> vol reproduir contingut protegit. Brave Software verificarà la identitat del teu dispositiu i aquest lloc web hi podrà accedir.</translation>
 <translation id="1746402432151920942">Identificador de contingut multimèdia protegit</translation>
 <translation id="1322046419516468189">Consulta i gestiona les contrasenyes desades al <ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com/</translation>
 <translation id="5297082477358294722">S'ha desat la contrasenya. Consulta i gestiona les contrasenyes desades al <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Compte de Brave Software</translation>
 <translation id="3785727820640310185">Contrasenyes desades per a aquest lloc web</translation>
@@ -2503,9 +2487,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="5186185447130319458">Privat</translation>
 <translation id="7643842463591647490">{0,plural, =1{# finestra oberta}other{# finestres obertes}}</translation>
 <translation id="2579188629646253712">Sortir de Privat</translation>
-<translation id="479219453908726046">Fes l'enquesta</translation>
-<translation id="7581273696622423628">Fes l'enquesta</translation>
-<translation id="4406504596603350105">La teva opinió ens importa.</translation>
 <translation id="4349828822184870497">És útil</translation>
 <translation id="6876469544038980967">No és útil</translation>
 <translation id="5286194356314741248">S'està cercant</translation>
@@ -3135,7 +3116,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6644512095122093795">Pregunta'm si vull desar les contrasenyes</translation>
 <translation id="2100273922101894616">Inici de sessió automàtic</translation>
 <translation id="7513029293694390567">Inicia la sessió automàticament als llocs web amb les credencials emmagatzemades. Si la funció està desactivada, se't demanarà sempre que confirmis les credencials per iniciar la sessió en un lloc web.</translation>
-<translation id="2330129964253841015">T'avisa si les contrasenyes es posen en perill</translation>
+<translation id="6995899638241819463">T'avisa si les contrasenyes es posen en perill</translation>
 <translation id="1534287762301776620">En iniciar la sessió al Compte de Brave Software, aquesta funció està sempre activada</translation>
 <translation id="1375321115329958930">Contrasenyes desades</translation>
 <translation id="152234381334907219">Contrasenyes que no es desen mai</translation>

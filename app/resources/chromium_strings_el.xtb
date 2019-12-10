@@ -18,11 +18,9 @@
 <translation id="3943696263619956191"><ph name="PAGE_TITLE"/> - Brave Dev</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
 <translation id="8992261409816268381">Οι συντάκτες του Brave</translation>
-<translation id="4651430425715739110">Πνευματικά δικαιώματα <ph name="YEAR"/> Οι συντάκτες του Brave. Με επιφύλαξη παντός δικαιώματος.</translation>
+<translation id="8121009781989288430">Πνευματικά δικαιώματα <ph name="YEAR"/> Οι συντάκτες του Brave. Με επιφύλαξη παντός δικαιώματος.</translation>
 <translation id="2310890394934209120">Το Brave OS υλοποιήθηκε με τη βοήθεια επιπλέον <ph name="BEGIN_LINK_CROS_OSS"/>λογισμικού ανοιχτού κώδικα<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8160794320557846790">Το Brave OS έγινε πραγματικότητα χάρη στα πρόσθετα <ph name="BEGIN_LINK_CROS_OSS"/>λογισμικά ανοικτού κώδικα<ph name="END_LINK_CROS_OSS"/>, όπως το <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (Beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
-<translation id="8948097099929452692">Δεν χρησιμοποιείται στο Brave. Διατήρηση θέσης για την κράτηση των πληροφοριών των πόρων σε συγχρονισμό.</translation>
-<translation id="5009217320733452434">Δεν χρησιμοποιείται στο Brave. Διατήρηση θέσης για την κράτηση των πληροφοριών των πόρων σε συγχρονισμό. Περιμένει ένα όρισμα: <ph name="ARGUMENT"/>.</translation>
 <translation id="6913582816347128893">Το Brave μπορεί να μην λειτουργεί σωστά επειδή δεν υποστηρίζεται πλέον στο Mac OS X 10.9.</translation>
 <translation id="7977787072794666032">Το Brave μπορεί να μην λειτουργεί σωστά, επειδή δεν υποστηρίζεται πια σε Windows XP και Windows Vista</translation>
 <translation id="189297655255130768">Το Brave δεν ανταποκρίνεται. Να γίνει επανεκκίνηση τώρα;</translation>
@@ -206,7 +204,6 @@
 <translation id="3052349005266761501">Εκκίνηση του Brave…</translation>
 <translation id="1197672524850678392">Δεν ήταν δυνατή η εκκίνηση του Brave. Προσπάθησε ξανά.</translation>
 <translation id="5147525139567260139">Μοιραστείτε μια καρτέλα του Brave</translation>
-<translation id="2076319850279844250">Βοηθήστε μας να βελτιώσουμε το Brave</translation>
 <translation id="8541922081612557424">Σχετικά με το Brave</translation>
 <translation id="3262506503470845422">Λήψη βοήθειας σχετικά με το Brave</translation>
 <translation id="1864557848095568223">Ενημέρωση του Brave</translation>
