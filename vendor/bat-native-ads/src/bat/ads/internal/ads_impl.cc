@@ -710,8 +710,70 @@ void AdsImpl::OnPageLoaded(
 
   CheckEasterEgg(url);
 
+  CheckConversion(url);
+
   BLOG(INFO) << "Site visited " << url << ", previous tab url was "
       << previous_tab_url_;
+}
+
+void AdsImpl::CheckConversion(const std::string& url) {
+  auto callback = std::bind(&AdsImpl::OnGetConversions, this, _1, _2, _3);
+  ads_client_->GetConversions(url, callback);
+}
+
+// TODO: break up into smaller bits
+void AdsImpl::OnGetConversions(
+    const Result result,
+    const std::string& url,
+    const std::vector<ConversionTrackingInfo>& conversions) {
+  for (auto& conversion: conversions) {
+    if (helper::Uri::DoesWildcardMatch(url, conversion.url_pattern)) {
+      ConfirmationType accepted_action_type;
+      if (conversion.type == "postview") {
+        accepted_action_type = ConfirmationType::VIEW;
+      } else if (conversion.type == "postclick") {
+        accepted_action_type = ConfirmationType::CLICK;
+      } else {
+        BLOG(INFO) << "Unknown conversion type: " << conversion.type;
+        continue;
+      }
+
+      auto ads_shown_history  = client_->GetAdsShownHistory();
+
+      for (const auto& ad : ads_shown_history) {
+        if (conversion.creative_set_id != ad.ad_content.creative_set_id) {
+          continue;
+        }
+
+        if (accepted_action_type != ad.ad_content.ad_action) {
+          continue;
+        }
+
+        auto conversion_history = client_->GetConversionHistory();
+        if (conversion_history.find(ad.ad_content.creative_set_id) !=
+            conversion_history.end()) {
+          continue;
+        }
+
+        // TODO: Implement time diff calculations via base::Time
+        auto observationPeriod = conversion.observation_window * 60 * 60 * 24;
+        auto now = Time::NowInSeconds();
+        if ((now - observationPeriod) > ad.timestamp_in_seconds) {
+          continue;
+        }
+        
+        client_->AppendTimestampToConversionHistoryForUuid(
+            ad.ad_content.creative_set_id, now);
+
+        // TODO: Send confirmation after random delay
+        // a la `brave_base::random::Geometric(base::Time::FromDays(24))`
+        ConfirmAction(ad.uuid, ad.ad_content.creative_set_id,
+            ConfirmationType::CONVERSION);
+        
+        // TODO: Confirm logic, should stop after first match?
+      }
+    }
+  }
 }
 
 void AdsImpl::MaybeClassifyPage(

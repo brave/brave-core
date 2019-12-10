@@ -13,6 +13,8 @@ namespace helper {
 class Uri {
  public:
   static std::string GetUri(const std::string& url);
+  static bool DoesWildcardMatch(const std::string& url,
+      const std::string& pattern);
 };
 
 }  // namespace helper

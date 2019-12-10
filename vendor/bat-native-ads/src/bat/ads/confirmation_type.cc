@@ -31,6 +31,8 @@ ConfirmationType::ConfirmationType(const std::string& value) {
     value_ = UPVOTE;
   } else if (value == kConfirmationTypeDownvote) {
     value_ = DOWNVOTE;
+  } else if (value == kConfirmationTypeConversion) {
+    value_ = CONVERSION;
   } else {
     value_ = UNKNOWN;
   }
@@ -76,6 +78,10 @@ ConfirmationType::operator std::string() const {
 
     case DOWNVOTE: {
       return kConfirmationTypeDownvote;
+    }
+
+    case CONVERSION: {
+      return kConfirmationTypeConversion;
     }
   }
 }
