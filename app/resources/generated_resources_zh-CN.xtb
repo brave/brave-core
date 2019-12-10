@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">未能成功下载“<ph name="FILE_NAME"/>”</translation>
 <translation id="6577284282025554716">已取消下载“<ph name="FILE_NAME"/>”</translation>
 <translation id="3340620525920140773">“<ph name="FILE_NAME"/>”已下载完毕。</translation>
+<translation id="4110490973560452005">下载完成：<ph name="FILE_NAME"/>。按 Shift+F6 可切换到下载内容栏区域。</translation>
 <translation id="2743387203779672305">复制到剪贴板</translation>
 <translation id="883911313571074303">为图片添加注释</translation>
 <translation id="6291953229176937411">在 Finder 中显示(&amp;S)</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">证书签名值</translation>
 <translation id="4104163789986725820">导出(&amp;X)...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">serialNumber</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">MAIL</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">businessCategory</translation>
-<translation id="6561757256477115975">jurisdictionLocalityName</translation>
-<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
-<translation id="8904360804686555987">jurisdictionCountryName</translation>
-<translation id="8718098216622210506">STREET</translation>
-<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">PKCS #1 RSA 加密</translation>
 <translation id="1221024147024329929">PKCS #1，带有 RSA 加密的 MD2</translation>
 <translation id="1640283014264083726">PKCS #1，带有 RSA 加密的 MD4</translation>
@@ -1366,6 +1349,9 @@
 <translation id="813082847718468539">查看网站信息</translation>
 <translation id="5233638681132016545">打开新的标签页</translation>
 <translation id="3915280005470252504">语音搜索</translation>
+<translation id="8968766641738584599">保存卡片</translation>
+<translation id="2408018932941436077">正在保存信用卡信息</translation>
+<translation id="7970882136539140748">此刻无法保存信用卡信息</translation>
 <translation id="1593926297800505364">保存付款方式</translation>
 <translation id="2473195200299095979">翻译此页</translation>
 <translation id="5408750356094797285">缩放比例：<ph name="PERCENT"/></translation>
@@ -1757,7 +1743,6 @@
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">缓存空间</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">应用</translation>
 <translation id="542872847390508405">您正在以访客身份浏览</translation>
 <translation id="537813040452600081">当您退出后，您在此窗口中浏览的网页将不会显示在浏览器历史记录中，也不会在计算机上留下其他痕迹（例如Cookie）。您下载的文件和创建的书签将不会保留。</translation>
@@ -2099,7 +2084,6 @@
 <translation id="2650609753175229582"><ph name="URL"/> 想播放受保护内容。Brave Software 将会验证您的设备身份，而且此网站可能会查看您的设备身份。</translation>
 <translation id="1746402432151920942">受保护的媒体标识符</translation>
 <translation id="1322046419516468189">您可以查看和管理 <ph name="SAVED_PASSWORDS_STORE"/>中保存的密码</translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">密码已保存。您可以查看和管理 <ph name="SAVED_PASSWORDS_STORE"/>中保存的密码。</translation>
 <translation id="5713644099811900409">Brave Software 帐号</translation>
 <translation id="3785727820640310185">已保存用于登录此网站的密码</translation>
@@ -2502,9 +2486,6 @@
 <translation id="5186185447130319458">私有</translation>
 <translation id="7643842463591647490">{0,plural, =1{# 个打开的窗口}other{# 个打开的窗口}}</translation>
 <translation id="2579188629646253712">退出私有窗口</translation>
-<translation id="479219453908726046">参加问卷调查</translation>
-<translation id="7581273696622423628">参加问卷调查</translation>
-<translation id="4406504596603350105">您的反馈意见对我们很重要。</translation>
 <translation id="4349828822184870497">有用</translation>
 <translation id="6876469544038980967">没用</translation>
 <translation id="5286194356314741248">正在扫描</translation>
@@ -3132,7 +3113,7 @@
 <translation id="6644512095122093795">提示保存密码</translation>
 <translation id="2100273922101894616">自动登录</translation>
 <translation id="7513029293694390567">使用存储的凭据自动登录网站。停用该功能后，系统会在您每次登录网站时要求您进行确认。</translation>
-<translation id="2330129964253841015">在密码泄露时向您发出警告</translation>
+<translation id="6995899638241819463">在密码泄露时向您发出警告</translation>
 <translation id="1534287762301776620">当您登录自己的 Brave Software 帐号后，系统即会启用此功能</translation>
 <translation id="1375321115329958930">已保存的密码</translation>
 <translation id="152234381334907219">一律不保存</translation>

@@ -24,8 +24,12 @@
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
-    "message": "현재 이 사이트를 아무런 개인정보 보호 수단이나 보안 수단 없이 보고 계십니다.",
-    "description": "Message telling the user that shields are disabled"
+    "message": "Brave (브레이브)의 개인 정보 및 보안 보호 없이 이 사이트를 둘러보고 계십니다. Shields (실드)가 나오면 제대로 작동하지 않습니까?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "작동이 멈춘 사이트 보고",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
   },
   "itemsBlocked": {
     "message": "아이템 차단됨",

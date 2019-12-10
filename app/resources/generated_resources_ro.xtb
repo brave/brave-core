@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Descărcare nereușită: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Descărcare anulată: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">Descărcare finalizată: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">Descărcare finalizată: <ph name="FILE_NAME"/>. Apasă Shift+F6 ca să revii la zona barei de descărcări.</translation>
 <translation id="2743387203779672305">Copiați în clipboard</translation>
 <translation id="883911313571074303">Adnotează imaginea</translation>
 <translation id="6291953229176937411">&amp;Afișează în Finder</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Valoare a semnăturii certificatului</translation>
 <translation id="4104163789986725820">E&amp;xportă...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">serialNumber</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">MAIL</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">businessCategory</translation>
-<translation id="6561757256477115975">jurisdictionLocalityName</translation>
-<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
-<translation id="8904360804686555987">jurisdictionCountryName</translation>
-<translation id="8718098216622210506">STRADA</translation>
-<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">Criptare RSA PKCS #1</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 cu criptare RSA</translation>
 <translation id="1640283014264083726">PKCS # 1 MD4 cu criptare RSA</translation>
@@ -1366,6 +1349,9 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="813082847718468539">Afișează informațiile privind site-ul</translation>
 <translation id="5233638681132016545">Filă nouă</translation>
 <translation id="3915280005470252504">Căutare vocală</translation>
+<translation id="8968766641738584599">Salvează cardul</translation>
+<translation id="2408018932941436077">Se salvează cardul</translation>
+<translation id="7970882136539140748">Nu se poate salva cardul în acest moment</translation>
 <translation id="1593926297800505364">Salvează metoda de plată</translation>
 <translation id="2473195200299095979">Traduceți această pagină</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
@@ -1758,7 +1744,6 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="1234808891666923653">Instrumente Service Worker</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Stocarea pentru memoria cache</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Aplicații</translation>
 <translation id="542872847390508405">Navigați ca invitat</translation>
 <translation id="537813040452600081">Paginile pe care le accesați în această fereastră nu vor apărea în istoricul browserului și nu vor lăsa alte urme pe computer (de ex., cookie-uri) după ce vă deconectați. Fișierele pe care le descărcați și marcajele pe care le creați nu se vor păstra.</translation>
@@ -2102,7 +2087,6 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="2650609753175229582"><ph name="URL"/> vrea să redea conținut protejat. Identitatea dispozitivului tău va fi verificată de Brave Software și poate fi accesată de acest site.</translation>
 <translation id="1746402432151920942">Identificator media protejat</translation>
 <translation id="1322046419516468189">Vezi și gestionează parolele salvate în <ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Parola a fost salvată. Vezi și gestionează parolele salvate în <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Contul Brave Software</translation>
 <translation id="3785727820640310185">Parolele salvate pentru acest site</translation>
@@ -2505,9 +2489,6 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="5186185447130319458">Privat</translation>
 <translation id="7643842463591647490">{0,plural, =1{# fereastră deschisă}few{# ferestre deschise}other{# de ferestre deschise}}</translation>
 <translation id="2579188629646253712">Ieși din Privat</translation>
-<translation id="479219453908726046">Efectuează Chestionar</translation>
-<translation id="7581273696622423628">Efectuează chestionar</translation>
-<translation id="4406504596603350105">Feedbackul tău este important pentru noi.</translation>
 <translation id="4349828822184870497">Utile</translation>
 <translation id="6876469544038980967">Inutile</translation>
 <translation id="5286194356314741248">Scanare</translation>
@@ -3137,7 +3118,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="6644512095122093795">Oferă salvarea parolelor</translation>
 <translation id="2100273922101894616">Conectare automată</translation>
 <translation id="7513029293694390567">Te conectezi automat la site-uri folosind datele de conectare stocate. Dacă funcția este dezactivată, ți se va solicita confirmarea de fiecare dată înainte de a te conecta la un site.</translation>
-<translation id="2330129964253841015">Avertizează-mă dacă parolele au fost compromise</translation>
+<translation id="6995899638241819463">Avertizează-mă dacă parolele au fost compromise</translation>
 <translation id="1534287762301776620">Când te conectezi la Contul Brave Software, această funcție este activată</translation>
 <translation id="1375321115329958930">Parole salvate</translation>
 <translation id="152234381334907219">Nu se salvează niciodată</translation>

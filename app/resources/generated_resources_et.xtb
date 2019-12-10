@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Allalaadimine nurjus: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Allalaadimine on tühistatud: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">Allalaadimine on lõpule viidud: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">Allalaadimine on lõpule viidud: <ph name="FILE_NAME"/>. Allalaadimiste riba valikute vahel vahetamiseks vajutage klahvikombinatsiooni Tõstuklahv + F6.</translation>
 <translation id="2743387203779672305">Kopeeri lõikelauale</translation>
 <translation id="883911313571074303">Lisa kujutisele märkused</translation>
 <translation id="6291953229176937411">&amp;Näita otsijas</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Sertifikaadi allkirja väärtus</translation>
 <translation id="4104163789986725820">&amp;Ekspordi...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">seerianumber</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">POST</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">ärikategooria</translation>
-<translation id="6561757256477115975">jurisdiktsiooni lokaadi nimi</translation>
-<translation id="7150038968052501583">jurisdiktsiooni osariigi või provintsi nimi</translation>
-<translation id="8904360804686555987">jurisdiktsiooni riigi nimi</translation>
-<translation id="8718098216622210506">TÄNAV</translation>
-<translation id="6969275223369931223">sihtnumber</translation>
 <translation id="5434065355175441495">PKCS 1 RSA krüpteerimine</translation>
 <translation id="1221024147024329929">PKCS 1 MD2 koos RSA krüpteerimisega</translation>
 <translation id="1640283014264083726">PKCS 1 MD4 koos RSA krüpteerimisega</translation>
@@ -1366,6 +1349,9 @@ Hoidke oma võtmefail kindlas kohas. Teil läheb seda oma laiendi uute versiooni
 <translation id="813082847718468539">Kuvab saidi teabe</translation>
 <translation id="5233638681132016545">Uus vaheleht</translation>
 <translation id="3915280005470252504">Häälotsing</translation>
+<translation id="8968766641738584599">Salvesta kaart</translation>
+<translation id="2408018932941436077">Kaardi salvestamine</translation>
+<translation id="7970882136539140748">Kaarti ei saa praegu salvestada</translation>
 <translation id="1593926297800505364">Salvestab makseviisi</translation>
 <translation id="2473195200299095979">Selle lehe tõlkimine</translation>
 <translation id="5408750356094797285">Suum: <ph name="PERCENT"/></translation>
@@ -1758,7 +1744,6 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Vahemälu</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Rakendused</translation>
 <translation id="542872847390508405">Sirvite külalisena</translation>
 <translation id="537813040452600081">Lehti, mida vaatate selles aknas, ei lisata teie brauseri ajalukku ja pärast väljalogimist ei jää neist arvutisse ka muid jälgi (nt küpsiseid). Allalaaditud faile ja loodud järjehoidjaid ei säilitata.</translation>
@@ -2102,7 +2087,6 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="2650609753175229582"><ph name="URL"/> soovib esitada kaitstud sisu. Brave Software kinnitab teie seadme identiteedi ning sait võib sellele juurde pääseda.</translation>
 <translation id="1746402432151920942">Kaitstud meedia identifikaator</translation>
 <translation id="1322046419516468189">Vaadake ja hallake oma salvestatud paroole siin: <ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Parool salvestati. Vaadake ja hallake salvestatud paroole siin: <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Brave Software'i konto</translation>
 <translation id="3785727820640310185">Selle saidi jaoks salvestatud paroolid</translation>
@@ -2505,9 +2489,6 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="5186185447130319458">Privaatne</translation>
 <translation id="7643842463591647490">{0,plural, =1{# avatud aken}other{# avatud akent}}</translation>
 <translation id="2579188629646253712">Välju privaatsest</translation>
-<translation id="479219453908726046">Vasta uuringule</translation>
-<translation id="7581273696622423628">Vasta uuringule</translation>
-<translation id="4406504596603350105">Teie tagasiside on meile oluline.</translation>
 <translation id="4349828822184870497">Kasulik</translation>
 <translation id="6876469544038980967">Ei ole kasulik</translation>
 <translation id="5286194356314741248">Skaneering</translation>
@@ -3137,7 +3118,7 @@ kasutades juhtpaneeli funktsiooni <ph name="CONTROL_PANEL_APPLET_NAME"/>.
 <translation id="6644512095122093795">Paku paroolide salvestamist</translation>
 <translation id="2100273922101894616">Automaatne sisselogimine</translation>
 <translation id="7513029293694390567">Teid logitakse salvestatud mandaadiga veebisaitidele automaatselt sisse. Kui see on keelatud, palutakse teilt iga kord enne veebisaidile sisselogimist kinnitust.</translation>
-<translation id="2330129964253841015">Hoiata, kui minu paroolid satuvad ohtu</translation>
+<translation id="6995899638241819463">Hoiata, kui minu paroolid satuvad ohtu</translation>
 <translation id="1534287762301776620">Kui logite oma Brave Software'i kontole sisse, lülitatakse see funktsioon sisse</translation>
 <translation id="1375321115329958930">Salvestatud paroolid</translation>
 <translation id="152234381334907219">Ei ole kunagi salvestatud</translation>

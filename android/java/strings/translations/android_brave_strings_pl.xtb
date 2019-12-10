@@ -41,6 +41,7 @@
 <translation id="5916664084637901428">Włączone</translation>
 <translation id="5860033963881614850">Wył.</translation>
 <translation id="6587448235155023666">Zmiany zostaną zastosowane po ponownym uruchomieniu Brave</translation>
+<translation id="8701563696941209024">URUCHOM PONOWNIE</translation>
 <translation id="834487290629916192">PÓŹNIEJ</translation>
 <translation id="8281886186245836920">Pomiń</translation>
 <translation id="1078265935778232285">Witaj w przeglądarce Brave</translation>
@@ -48,11 +49,9 @@
 <translation id="7053983685419859001">Zablokuj</translation>
 <translation id="5806601733251372221">Tracze Brave</translation>
 <translation id="3333887201479867589">Nagrody Brave</translation>
-<translation id="53852415493597253">Zgadzam się na nagrody Brave</translation>
 <translation id="4281844954008187215">Warunki świadczenia usługi</translation>
-<translation id="2487915095798731898">Dołącz</translation>
+<translation id="6871397658902960384">Zacznij przeglądać</translation>
 <translation id="4930714375720679147">Włącz</translation>
-<translation id="8329401903432352231">Nie zgadzam się</translation>
 <translation id="2453860139492968684">Zakończ</translation>
 <translation id="8906569594072556752">Wprowadzenie</translation>
 <translation id="2359808026110333948">Kontynuuj</translation>
@@ -67,6 +66,7 @@
 <translation id="5441565662498481293">Wysyłasz automatyczne napiwki do:</translation>
 <translation id="1166682575529520472">Miesięcznie</translation>
 <translation id="1628742278973105368">Twój pierwszy miesięczny napiwek zostanie wysłany do:</translation>
+<translation id="1910721550319506122">Witamy!</translation>
 <translation id="1704859330137112950">Jeśli chcesz, możesz zaplanować miesięczne napiwki, aby regularnie wspierać tę stronę.</translation>
 <translation id="245015745140252435">Wartość napiwka</translation>
 <translation id="3250511771491660127">Zmień na comiesięczne</translation>
@@ -82,6 +82,7 @@
 <translation id="8220228041552340594">PAŹDZIERNIK</translation>
 <translation id="8280223431922155812">LISTOPAD</translation>
 <translation id="4254029385847607686">GRUDZIEŃ</translation>
+<translation id="1327938628925645979">DOŁĄCZ DO NAGRÓD</translation>
 <translation id="5567439033041178034">DOWIEDZ SIĘ WIĘCEJ</translation>
 <translation id="3780605330121608425">Twój portfel</translation>
 <translation id="8845154268466251503">BAT</translation>
@@ -93,6 +94,8 @@
 <translation id="8772672608371898774">Zweryfikowany wydawca Brave</translation>
 <translation id="1397683270551078781">Jeszcze nie zweryfikowano</translation>
 <translation id="8918760045046434238">Wyślij napiwek...</translation>
+<translation id="1978261665418056203">Brak aktywności w tym
+miesiącu...</translation>
 <translation id="9182287025588539628">Jednorazowe napiwki</translation>
 <translation id="7577100371127227294">Miesięczne napiwki</translation>
 <translation id="3074127054582480056">Uwaga</translation>
@@ -108,6 +111,7 @@
 <translation id="3453206261112715431">Bezpłatne tokeny</translation>
 <translation id="6417420737057016607">Reklamy Brave</translation>
 <translation id="606865182719489911">Dostępne są darmowe tokeny.</translation>
+<translation id="8689997599821157251">Zarobiłeś</translation>
 <translation id="7550470870580166294">Niewystarczające środki</translation>
 <translation id="2775064702681588061">Twoje konto nagród Brave czeka na depozyt.</translation>
 <translation id="765834632354589737">Utwórz kopię zapasową portfela</translation>

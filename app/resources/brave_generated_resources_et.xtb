@@ -3,6 +3,7 @@
 <translationbundle lang="et">
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave'i reklaamiblokeerija</translation>
+<translation id="4615489450165434530">Teata mittetoimivast veebisaidist</translation>
 <translation id="6406506848690869874">Sünkroonimine</translation>
 <translation id="5655621391922317800">Krüptorahakotid</translation>
 <translation id="2445484935443597917">Loo uus profiil</translation>
@@ -39,6 +40,8 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="2814998458708016836">Kasuta laia aadressiriba</translation>
 <translation id="6123134130710658846">Peida Brave Rewards nupp</translation>
 <translation id="7635711399568194460">Peidab aadressiribalt Brave Rewards nupu, kui Brave Rewards pole lubatud</translation>
+<translation id="1520361618554057102">Näita alati järjehoidjaid lehel Uus vahekaart</translation>
+<translation id="5802665280774361839">Näita aadressiribal automaatse täitmise teavet</translation>
 <translation id="7965178729203412357">Uus Tor'i identiteet</translation>
 <translation id="8511502469534942133">Uus Tori ühendus sellel saidil</translation>
 <translation id="8784924142044142231">Sulge Tor</translation>
@@ -68,6 +71,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="9075744464571452108">Seadme tuvastamine</translation>
 <translation id="3570081523466826008">Täienda ühendused HTTPS-ile</translation>
 <translation id="4824468494729001999">Blokeeri skriptid</translation>
+<translation id="8526521192921341404">Luba Google’iga sisselogimisi</translation>
 <translation id="863171915776379000">Luba Facebooki sisselogimised ja manustatud postitused</translation>
 <translation id="5165042248369837294">Luba Twitteri manustatud säutsud</translation>
 <translation id="958971637207126733">Luba LinkedIni manustatud postitused</translation>
@@ -84,6 +88,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="5825943197137337319">Ainult vaikimisi määratud avalik liides</translation>
 <translation id="1689062823386843231">Keela puhverserverita UDP</translation>
 <translation id="8502234992433094996">Kasuta tõukesõnumite saatmiseks Google’i teenuseid</translation>
+<translation id="3888068426966679906">Kaugsilumine</translation>
 <translation id="6645631466045614531">Ava Sync siit</translation>
 <translation id="1807246157184219062">Hele</translation>
 <translation id="2414886740292270097">Tume</translation>
@@ -153,4 +158,13 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="4394049700291259645">Keela</translation>
 <translation id="6469509880167172749">Saada täielikult privaatne tooteanalüüs automaatselt Brave’ile</translation>
 <translation id="7090566321964540749">See anonüümne teave võimaldab Brave’il ainult hinnata teatud funktsioonide üldist kasutamist.</translation>
+<translation id="1200956479506699688">Krüptorahakotid on nüüd Brave’is saadaval. Te ei saa MetaMaski ja krüptorahakotte samal ajal kasutada.</translation>
+<translation id="7583735190612229830">Seadistage krüptorahakotid suhtlema selle rakenduse ja teiste sarnaste rakendustega.</translation>
+<translation id="8337117349965899723">Kasuta krüptorahakotte</translation>
+<translation id="5756155765711979898">Kasuta MetaMaski</translation>
+<translation id="6754134632841262799">SEADISTA</translation>
+<translation id="191143826155037518">Brave’i pakutakse teile <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla avaliku litsentsi 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) alusel ja see sisaldab <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>avatud lähtekoodiga tarkvara<ph name="END_LINK_OSS">&lt;/a&gt;</ph> erinevate teiste litsentside alusel.
+        Saate lugeda <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>juhiseid selle kohta, kuidas laadida alla ja luua endale<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> spetsiifiline <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>lähtekood, mida kasutati selle koopia loomiseks<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Lisa kõik vahelehed järjehoidjatesse...</translation>
+<translation id="2336228925368920074">Lisa kõik vahelehed järjehoidjatesse...</translation>
 </translationbundle>

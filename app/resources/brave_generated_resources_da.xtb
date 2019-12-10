@@ -3,6 +3,7 @@
 <translationbundle lang="da">
 <translation id="3333887201479867589">Brave Belønninger</translation>
 <translation id="7942180974165298215">Brave Annonceblokering</translation>
+<translation id="4615489450165434530">Rapporter en side der ikke virker ordentligt</translation>
 <translation id="6406506848690869874">Synkroniser</translation>
 <translation id="5655621391922317800">Crypto-tegnebøger</translation>
 <translation id="2445484935443597917">Opret en ny profil</translation>
@@ -39,6 +40,8 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="2814998458708016836">Brug bred adresselinje</translation>
 <translation id="6123134130710658846">Skjul Brave Rewards-knappen</translation>
 <translation id="7635711399568194460">Skjul Brave Rewards-knappen i placeringsbjælken, når Brave Rewards ikke er slået til</translation>
+<translation id="1520361618554057102">Altid vis mine bogmærker på Ny Fane siden</translation>
+<translation id="5802665280774361839">Vis autofuldførelse i addressefeltet</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
 <translation id="8511502469534942133">Ny Tor-forbindelse til dette websted</translation>
 <translation id="8784924142044142231">Afslut Tor</translation>
@@ -69,6 +72,7 @@ vindue med Tor</translation>
 <translation id="9075744464571452108">Enhedsgenkendelse</translation>
 <translation id="3570081523466826008">Opgrader forbindelser til HTTPS</translation>
 <translation id="4824468494729001999">Bloker scripts</translation>
+<translation id="8526521192921341404">Tillad Google logins</translation>
 <translation id="863171915776379000">Tillad Facebook-logins og indlejrede opslag</translation>
 <translation id="5165042248369837294">Tillad indlejrede tweets fra Twitter</translation>
 <translation id="958971637207126733">Tillad indlejrede LinkedIn-opslag</translation>
@@ -85,6 +89,7 @@ vindue med Tor</translation>
 <translation id="5825943197137337319">Kun standard offentlig grænseflade</translation>
 <translation id="1689062823386843231">Deaktiver UDP uden proxy</translation>
 <translation id="8502234992433094996">Brug Google-tjenester til Push-beskeder</translation>
+<translation id="3888068426966679906">Fjern-fejlfinding</translation>
 <translation id="6645631466045614531">Få Adgang til Synkronisering via</translation>
 <translation id="1807246157184219062">Lys</translation>
 <translation id="2414886740292270097">Mørk</translation>
@@ -154,4 +159,13 @@ vindue med Tor</translation>
 <translation id="4394049700291259645">Deaktiver</translation>
 <translation id="6469509880167172749">Send automatisk fuldstændig private produktanalyser til Brave</translation>
 <translation id="7090566321964540749">Disse anonyme informationer giver kun Brave tilladelse til at anslå det generelle forbrug af visse funktioner.</translation>
+<translation id="1200956479506699688">Krypto wallets er nu tilgængelige i Brave. Du kan ikke bruge MetaMask og krypto wallets samtidigt.</translation>
+<translation id="7583735190612229830">Sæt dine krypto wallets op til at interagere med denne app og andre som den</translation>
+<translation id="8337117349965899723">Brug Kryptowallet</translation>
+<translation id="5756155765711979898">Brug MetaMask</translation>
+<translation id="6754134632841262799">OPSÆTNING</translation>
+<translation id="191143826155037518">Brave bliver gjort tilgængelig for dig under <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Mozilla Public License 2.0<ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) og inkluderer <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph> open-source software <ph name="END_LINK_OSS">&lt;/a&gt;</ph> under forskellige andre licensaftaler.
+DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>instruktioner om hvordan du downloader og bygger selv<ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph> <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>den kildekode som bruges til at lave denne kopi<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
+<translation id="4474155171896946103">Tilføj alle faner som bogmærker...</translation>
+<translation id="2336228925368920074">Tilføj alle faner som bogmærker...</translation>
 </translationbundle>

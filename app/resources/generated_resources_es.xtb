@@ -60,8 +60,8 @@
 <translation id="6239558157302047471">Volver a cargar &amp;marco</translation>
 <translation id="1163931534039071049">&amp;Ver fuente del marco</translation>
 <translation id="6886871292305414135">Abrir enlace en una pes&amp;taña nueva</translation>
-<translation id="8899851313684471736">Abrir enlace en una &amp;ventana nueva</translation>
-<translation id="658539216370629794">Abrir enlace en &amp;ventana privada</translation>
+<translation id="8899851313684471736">Abrir enlace en una ventana nueva</translation>
+<translation id="658539216370629794">Abrir enlace en una ventana privada</translation>
 <translation id="3144647712221361880">Abrir enlace como</translation>
 <translation id="9137916601698928395">Abrir enlace como <ph name="USER"/></translation>
 <translation id="1137673463384776352">Abrir enlace en <ph name="APP"/></translation>
@@ -121,8 +121,8 @@
 <translation id="2114326799768592691">Volver a cargar &amp;marco</translation>
 <translation id="3021678814754966447">&amp;Ver fuente del marco</translation>
 <translation id="9027459031423301635">Abrir enlace en una &amp;pestaña nueva</translation>
-<translation id="1769104665586091481">Abrir enlace en una &amp;ventana nueva</translation>
-<translation id="1432267168815937878">Abrir Enlace en &amp;amp;Ventana Privada</translation>
+<translation id="1769104665586091481">Abrir enlace en una Nueva Ventana</translation>
+<translation id="1432267168815937878">Abrir Enlace en una Ventana Privada</translation>
 <translation id="2142328300403846845">Abrir enlace como</translation>
 <translation id="6892812721183419409">Abrir enlace como <ph name="USER"/></translation>
 <translation id="2006638907958895361">Abrir enlace en <ph name="APP"/></translation>
@@ -191,8 +191,8 @@
 <translation id="2119349053129246860">Abrir en <ph name="APP"/></translation>
 <translation id="3285322247471302225">Nueva &amp;pestaña</translation>
 <translation id="8879284080359814990">&amp;Mostrar como pestaña</translation>
-<translation id="176587472219019965">&amp;Nueva ventana</translation>
-<translation id="7973394300052703468">Nueva &amp;Ventana Privada</translation>
+<translation id="176587472219019965">Nueva Ventana</translation>
+<translation id="7973394300052703468">Nueva Ventana Privada</translation>
 <translation id="5157635116769074044">Fijar esta página a la pantalla de inicio...</translation>
 <translation id="5830720307094128296">Guardar página &amp;como...</translation>
 <translation id="4672657274720418656">Alternar a Modo Lectura</translation>
@@ -229,7 +229,7 @@
 <translation id="6723661294526996303">Importar marcadores y configuración...</translation>
 <translation id="9203398526606335860">&amp;Perfiles habilitados</translation>
 <translation id="3819800052061700452">&amp;Pantalla completa</translation>
-<translation id="6053401458108962351">&amp;Borrar datos de navegación...</translation>
+<translation id="6053401458108962351">Borrar datos de navegación...</translation>
 <translation id="7861215335140947162">&amp;amp;Descargas</translation>
 <translation id="862542460444371744">&amp;Extensiones</translation>
 <translation id="8925458182817574960">&amp;Configuración</translation>
@@ -241,8 +241,8 @@
 <translation id="3855676282923585394">Importar Marcadores y Configuración...</translation>
 <translation id="4821935166599369261">Perfiles &amp;Habilitados</translation>
 <translation id="3827774300009121996">&amp;amp;Pantalla Completa</translation>
-<translation id="3616741288025931835">&amp;amp;Borrar datos de navegación...</translation>
-<translation id="1618268899808219593">C&amp;entro de ayuda</translation>
+<translation id="3616741288025931835">Borrar Datos de Navegación</translation>
+<translation id="1618268899808219593">Centro de Ayuda</translation>
 <translation id="7324297612904500502">Foro beta</translation>
 <translation id="3705722231355495246">-</translation>
 <translation id="5912378097832178659">&amp;Editar motores de búsqueda...</translation>
@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">No se ha podido completar la descarga: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Descarga cancelada: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">Descarga completa: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">Descarga completa: <ph name="FILE_NAME"/>. Pulsa Mayús+F6 para desplazarte al área de la barra de descargas.</translation>
 <translation id="2743387203779672305">Copiar en el portapapeles</translation>
 <translation id="883911313571074303">Anotar imagen</translation>
 <translation id="6291953229176937411">&amp;Mostrar en Finder</translation>
@@ -603,24 +604,6 @@ Exponente público (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bits):
 <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Valor de firma de certificados</translation>
 <translation id="4104163789986725820">E&amp;xportar...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">serialNumber</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">CORREO</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">businessCategory</translation>
-<translation id="6561757256477115975">jurisdictionLocalityName</translation>
-<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
-<translation id="8904360804686555987">jurisdictionCountryName</translation>
-<translation id="8718098216622210506">CALLE</translation>
-<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">PKCS #1 con cifrado RSA</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 con cifrado RSA</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 con cifrado RSA</translation>
@@ -829,7 +812,7 @@ Exponente público (<ph name="PUBLIC_EXPONENT_NUM_BITS"/> bits):
 <translation id="2256115617011615191">Reiniciar ahora</translation>
 <translation id="4545028762441890696">Para volver a habilitarla, acepta los nuevos permisos:</translation>
 <translation id="3009487527589249344">Brave ha marcado "<ph name="EXTENSION_NAME"/>" como extensión maliciosa y su instalación se ha evitado</translation>
-<translation id="6790497603648687708">Se ha añadido <ph name="EXTENSION_NAME"/> de forma remota</translation>
+<translation id="6790497603648687708"><ph name="EXTENSION_NAME"/> fue añadido de forma remota</translation>
 <translation id="1841705068325380214"><ph name="EXTENSION_NAME"/> está deshabilitada</translation>
 <translation id="595959584676692139">Vuelve a cargar la página para usar esta extensión</translation>
 <translation id="5556459405103347317">Recargar</translation>
@@ -1103,7 +1086,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="2809586584051668049">y <ph name="NUMBER_ADDITIONAL_DISABLED"/> más</translation>
 <translation id="5301954838959518834">Entendido</translation>
 <translation id="8261378640211443080">Esta extensión no aparece en <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> y se podría haber añadido sin tu conocimiento.</translation>
-<translation id="4096508467498758490">Inhabilitar extensiones en modo de desarrollador</translation>
+<translation id="4096508467498758490">Deshabilitar extensiones en modo de desarrollador</translation>
 <translation id="3288047731229977326">Las extensiones que se ejecutan en modo de desarrollador pueden causar daños en el ordenador. Si no eres desarrollador, debes deshabilitar esas extensiones para mantenerte seguro.</translation>
 <translation id="8827289157496676362">Fijar extensión</translation>
 <translation id="5372579129492968947">No fijar extensión</translation>
@@ -1155,7 +1138,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="3016641847947582299">Componente actualizado</translation>
 <translation id="252219247728877310">Componente no actualizado</translation>
 <translation id="2707024448553392710">Descargando componente</translation>
-<translation id="2263497240924215535">(Inhabilitada)</translation>
+<translation id="2263497240924215535">(Deshabilitada)</translation>
 <translation id="1879000426787380528">Iniciar sesión como</translation>
 <translation id="3190558889382726167">Contraseña guardada</translation>
 <translation id="2485005079599453134">Contraseña guardada en este dispositivo</translation>
@@ -1367,6 +1350,9 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="813082847718468539">Ver información del sitio</translation>
 <translation id="5233638681132016545">Nueva pestaña</translation>
 <translation id="3915280005470252504">Búsqueda por voz</translation>
+<translation id="8968766641738584599">Guardar tarjeta</translation>
+<translation id="2408018932941436077">Guardando tarjeta</translation>
+<translation id="7970882136539140748">No se puede guardar tu tarjeta en este momento</translation>
 <translation id="1593926297800505364">Guardar el método de pago</translation>
 <translation id="2473195200299095979">Traducir esta página</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
@@ -1511,8 +1497,8 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="6828860976882136098">Se ha producido un error al configurar las actualizaciones automáticas para todos los usuarios (error de ejecución preliminar: <ph name="ERROR_NUMBER"/>)</translation>
 <translation id="3543393733900874979">Se ha producido un error durante la actualización (error: <ph name="ERROR_NUMBER"/>).</translation>
 <translation id="6361850914223837199">Detalles del error:</translation>
-<translation id="1598233202702788831">El administrador ha inhabilitado las actualizaciones.</translation>
-<translation id="2502441965851148920">Se han habilitado las actualizaciones automáticas. El administrador ha inhabilitado las actualizaciones manuales.</translation>
+<translation id="1598233202702788831">El administrador ha deshabilitado las actualizaciones.</translation>
+<translation id="2502441965851148920">Se han habilitado las actualizaciones automáticas. El administrador ha deshabilitado las actualizaciones manuales.</translation>
 <translation id="2220529011494928058">Notificar un problema</translation>
 <translation id="284805635805850872">¿Eliminar software dañino?</translation>
 <translation id="489985760463306091">Para terminar de eliminar el software dañino, reinicia el ordenador</translation>
@@ -1640,10 +1626,10 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="4980805016576257426">Esta extensión contiene software malicioso.</translation>
 <translation id="5522156646677899028">Esta extensión tiene una vulnerabilidad de seguridad grave.</translation>
 <translation id="6945695820322143954">La extensión viola la política de la Web Store</translation>
-<translation id="177808131755847449">Brave ha inhabilitado esta extensión porque es posible que no sea segura.</translation>
+<translation id="177808131755847449">Brave ha deshabilitado esta extensión porque es posible que no sea segura.</translation>
 <translation id="1434696352799406980">Se restablecerán la página de inicio, la página Nueva pestaña, el motor de búsqueda y las pestañas fijadas. También se inhabilitarán todas las extensiones y se borrarán los datos temporales como las cookies. Los marcadores, el historial y las contraseñas guardadas no se borrarán.</translation>
 <translation id="1242633766021457174"><ph name="THIRD_PARTY_TOOL_NAME"/> quiere restablecer la configuración.</translation>
-<translation id="8073477228424628709"><ph name="THIRD_PARTY_TOOL_NAME"/> quiere restablecer la configuración predeterminada original de Brave. Se restablecerá la página principal, la página Nueva pestaña y el motor de búsqueda. Asimismo, se inhabilitarán las extensiones y no se fijará ninguna pestaña. También se borrarán los datos temporales y los almacenados en la memoria caché, como las cookies, el contenido y los datos de sitios.</translation>
+<translation id="8073477228424628709"><ph name="THIRD_PARTY_TOOL_NAME"/> quiere restablecer la configuración predeterminada original de Brave. Se restablecerá la página principal, la página Nueva pestaña y el motor de búsqueda. Asimismo, se deshabilitarán las extensiones y no se fijará ninguna pestaña. También se borrarán los datos temporales y los almacenados en la memoria caché, como las cookies, el contenido y los datos de sitios.</translation>
 <translation id="7581462281756524039">Una herramienta de limpieza</translation>
 <translation id="1233721473400465416">Configuración regional</translation>
 <translation id="2907619724991574506">URLs de inicio</translation>
@@ -1758,7 +1744,6 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Almacenamiento en Caché</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Aplicaciones</translation>
 <translation id="542872847390508405">Estás navegando como invitado</translation>
 <translation id="537813040452600081">Las páginas que aparezcan en esta ventana no se mostrarán en el historial del navegador y no dejarán otros rastros, como cookies, en el ordenador después de cerrar sesión. No se conservarán los archivos que descargues ni los marcadores que crees.</translation>
@@ -1806,7 +1791,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="4736292055110123391">Sincroniza tus marcadores, tus contraseñas, tu historial y mucho más en todos tus dispositivos</translation>
 <translation id="5736731321935944068">Brave podría utilizar tu historial para personalizar la Búsqueda, los anuncios y otros servicios Brave</translation>
 <translation id="4201546031411513170">Siempre puedes seleccionar qué contenido quieres sincronizar desde Ajustes.</translation>
-<translation id="2497852260688568942">El administrador ha inhabilitado la sincronización</translation>
+<translation id="2497852260688568942">El administrador ha deshabilitado la sincronización</translation>
 <translation id="562935524653278697">Tu administrador ha deshabilitado la sincronización de tus marcadores, tu historial, tus contraseñas y otros ajustes.</translation>
 <translation id="2169062631698640254">Iniciar sesión de todas formas</translation>
 <translation id="4235965441080806197">Cancelar inicio de sesión</translation>
@@ -1881,7 +1866,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="7117247127439884114">Volver a iniciar sesión...</translation>
 <translation id="4251909665067750757">Inicia sesión para acceder a tus marcadores, tu historial, tus contraseñas y tu configuración en todos tus dispositivos. Además, iniciarás sesión automáticamente en tus servicios de Brave Software.</translation>
 <translation id="2749756011735116528">Iniciar sesión en <ph name="PRODUCT_NAME"/></translation>
-<translation id="2126167708562367080">El administrador ha inhabilitado la sincronización.</translation>
+<translation id="2126167708562367080">El administrador ha deshabilitado la sincronización.</translation>
 <translation id="5462539695964427820">La sincronización se ha detenido mediante el Panel de Control de Brave.</translation>
 <translation id="8805140816472474147">Confirma los ajustes de sincronización para iniciarla.</translation>
 <translation id="5771816112378578655">Configuración en curso...</translation>
@@ -1972,13 +1957,13 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="3315158641124845231">Ocultar <ph name="PRODUCT_NAME"/></translation>
 <translation id="881799181680267069">Ocultar otras</translation>
 <translation id="4708849949179781599">Salir de <ph name="PRODUCT_NAME"/></translation>
-<translation id="8795916974678578410">Nueva ventana</translation>
+<translation id="8795916974678578410">Nueva Ventana</translation>
 <translation id="1676595396635191120">Nueva Ventana Privada</translation>
 <translation id="406070391919917862">Aplicaciones en segundo plano</translation>
 <translation id="3335947283844343239">Volver a abrir pestaña cerrada</translation>
 <translation id="8214489666383623925">Abrir archivo...</translation>
 <translation id="7456847797759667638">Abrir ubicación...</translation>
-<translation id="3265459715026181080">Cerrar ventana</translation>
+<translation id="3265459715026181080">Cerrar Ventana</translation>
 <translation id="3551320343578183772">Cerrar Pestaña</translation>
 <translation id="4780321648949301421">Guardar página como...</translation>
 <translation id="6212752530110374741">Enviar enlace por correo electrónico</translation>
@@ -2102,7 +2087,6 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="2650609753175229582"><ph name="URL"/> solicita reproducir contenido protegido. Brave Software verificará la identidad de tu dispositivo y el sitio web podrá consultarla.</translation>
 <translation id="1746402432151920942">Identificador de contenido multimedia protegido</translation>
 <translation id="1322046419516468189">Consulta y administra las contraseñas guardadas en tu <ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Se ha guardado la contraseña. Consulta y gestiona las contraseñas guardadas en tu <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">cuenta de Brave</translation>
 <translation id="3785727820640310185">Contraseñas guardadas para este sitio web</translation>
@@ -2126,8 +2110,8 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="337920581046691015">Se va a instalar <ph name="PRODUCT_NAME"/>.</translation>
 <translation id="7014174261166285193">Instalación fallida.</translation>
 <translation id="263325223718984101"><ph name="PRODUCT_NAME"/> no ha podido completar la instalación, pero se seguirá ejecutando desde la imagen de disco.</translation>
-<translation id="8076835018653442223">Tu administrador ha inhabilitado el acceso a los archivos locales de tu dispositivo</translation>
-<translation id="9041692268811217999">Tu administrador ha inhabilitado el acceso a los archivos locales de tu equipo</translation>
+<translation id="8076835018653442223">Tu administrador ha deshabilitado el acceso a los archivos locales de tu dispositivo</translation>
+<translation id="9041692268811217999">Tu administrador ha deshabilitado el acceso a los archivos locales de tu equipo</translation>
 <translation id="494286511941020793">Ayuda para la configuración de proxy</translation>
 <translation id="8754200782896249056">&lt;p&gt;Al ejecutar <ph name="PRODUCT_NAME"/> en un entorno de escritorio compatible, se utilizará la configuración de proxy del sistema. Sin embargo, tu sistema no es compatible o ha habido algún problema al iniciar la configuración del sistema.&lt;/p&gt;
 
@@ -2144,7 +2128,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="8667328578593601900"><ph name="FULLSCREEN_ORIGIN"/> se muestra ahora en pantalla completa y ha deshabilitado el cursor del ratón.</translation>
 <translation id="2665717534925640469">Esta página se muestra ahora en pantalla completa y ha deshabilitado el cursor del ratón.</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> ha deshabilitado el cursor de tu ratón.</translation>
-<translation id="6514565641373682518">Esta página ha inhabilitado el cursor de tu ratón.</translation>
+<translation id="6514565641373682518">Esta página ha deshabilitado el cursor de tu ratón.</translation>
 <translation id="1036982837258183574">Pulsa |<ph name="ACCELERATOR"/>| para salir del modo de pantalla completa</translation>
 <translation id="6279183038361895380">Pulsa |<ph name="ACCELERATOR"/>| para mostrar el cursor</translation>
 <translation id="6049004884579590341">Mantén pulsado |<ph name="ACCELERATOR"/>| para salir del modo pantalla completa</translation>
@@ -2448,7 +2432,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="8379878387931047019">Este dispositivo no es compatible con el tipo de llave de seguridad solicitado por el sitio web</translation>
 <translation id="7135729336746831607">¿Activar Bluetooth?</translation>
 <translation id="6176043333338857209">El Bluetooth se activará temporalmente para establecer comunicación con la llave de seguridad</translation>
-<translation id="4252899949534773101">El Bluetooth está inhabilitado</translation>
+<translation id="4252899949534773101">El Bluetooth está deshabilitado</translation>
 <translation id="8188389033983459049">Comprueba los ajustes del dispositivo y actívalo para continuar</translation>
 <translation id="6022705094403139349">¿Todo listo para vincular tu llave de seguridad?</translation>
 <translation id="7704628569466676326">Si quieres iniciar sesión en tu cuenta con la llave de seguridad, vincúlala con este dispositivo</translation>
@@ -2505,9 +2489,6 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="5186185447130319458">Modo Privado</translation>
 <translation id="7643842463591647490">{0,plural, =1{# ventana abierta}other{# ventanas abiertas}}</translation>
 <translation id="2579188629646253712">Salir de Modo Privado</translation>
-<translation id="479219453908726046">Responder Encuesta</translation>
-<translation id="7581273696622423628">Responder encuesta</translation>
-<translation id="4406504596603350105">Tu opinión es importante para nosotros.</translation>
 <translation id="4349828822184870497">Es útil</translation>
 <translation id="6876469544038980967">No es útil</translation>
 <translation id="5286194356314741248">Buscando</translation>
@@ -2536,10 +2517,10 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
           =1 {Open in &amp;private window}
           other {Open all (#) in &amp;private window}}</translation>
 <translation id="3613422051106148727">&amp;Abrir en una pestaña nueva</translation>
-<translation id="4853020600495124913">Abrir en una ventana &amp;nueva</translation>
+<translation id="4853020600495124913">Abrir en una nueva ventana</translation>
 <translation id="2431625704210501303">Abrir en &amp;ventana privada</translation>
 <translation id="6702639462873609204">&amp;Editar...</translation>
-<translation id="3088325635286126843">&amp;Renombrar...</translation>
+<translation id="3088325635286126843">Renombrar...</translation>
 <translation id="713122686776214250">Añadir pá&amp;gina...</translation>
 <translation id="7690853182226561458">Añadir &amp;carpeta...</translation>
 <translation id="4620367155626060530">&amp;Mostrar barra de marcadores</translation>
@@ -2552,7 +2533,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
           other {Open All (#) in &amp;Private Window}}</translation>
 <translation id="9024127637873500333">&amp;Abrir en una Pestaña Nueva</translation>
 <translation id="665061930738760572">Abrir en una Nueva Ventana</translation>
-<translation id="1985165269306590797">Open in &amp;amp;Ventana Privada</translation>
+<translation id="1985165269306590797">Abrir en una Ventana Privada</translation>
 <translation id="8824701697284169214">Añadir pá&amp;gina...</translation>
 <translation id="2489918096470125693">Añadir &amp;carpeta...</translation>
 <translation id="4680518314108745448">&amp;Mostrar barra de marcadores</translation>
@@ -2687,7 +2668,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
       =1 {Privado}
       other {Privado (#)}
     }</translation>
-<translation id="5070556616376997776">Esta es una ventana privada</translation>
+<translation id="5070556616376997776">Esto es una ventana privada</translation>
 <translation id="2199298570273670671">Error</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: la sincronización no funciona</translation>
 <translation id="7307129035224081534">En pausa</translation>
@@ -2812,7 +2793,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="1830550083491357902">No has iniciado sesión</translation>
 <translation id="5828545842856466741">Añadir perfil...</translation>
 <translation id="9149866541089851383">Editar...</translation>
-<translation id="2836635946302913370">El administrador ha inhabilitado el inicio de sesión para este nombre de usuario.</translation>
+<translation id="2836635946302913370">El administrador ha deshabilitado el inicio de sesión para este nombre de usuario.</translation>
 <translation id="2721695630904737430">El administrador ha deshabilitado a los usuarios supervisados.</translation>
 <translation id="1468571364034902819">No se puede utilizar este perfil</translation>
 <translation id="2261323523305321874">El administrador ha hecho un cambio que afecta a todo el sistema e inhabilita algunos perfiles antiguos.</translation>
@@ -3001,7 +2982,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="2765217105034171413">Pequeño</translation>
 <translation id="7409549334477097887">Muy grande</translation>
 <translation id="1330145147221172764">Habilitar teclado en pantalla</translation>
-<translation id="1800308196794859773">Envía tu voz a Brave Software para utilizar el dictado en cualquier campo de texto.</translation>
+<translation id="1800308196794859773">Envía tu voz a Brave para utilizar el dictado en cualquier campo de texto.</translation>
 <translation id="8758418656925882523">Habilitar dictado (hablar para escribir)</translation>
 <translation id="7580671184200851182">Reproducir el mismo audio en todos los altavoces (audio mono)</translation>
 <translation id="1361872463926621533">Reproducir sonido al iniciar</translation>
@@ -3022,7 +3003,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="2755367719610958252">Administrar las funciones de accesibilidad</translation>
 <translation id="2218019600945559112">Ratón y panel táctil</translation>
 <translation id="1530838837447122178">Abrir la configuración del ratón y del panel táctil</translation>
-<translation id="2075959085554270910">Te permite habilitar/inhabilitar las funciones tocar para hacer clic y tocar y arrastrar</translation>
+<translation id="2075959085554270910">Te permite habilitar/deshabilitar las funciones tocar para hacer clic y tocar y arrastrar</translation>
 <translation id="3060379269883947824">Habilitar Enunciar Selección</translation>
 <translation id="9066773882585798925">Escuchar el texto leído en voz alta</translation>
 <translation id="7844553762889824470">Selecciona lo que quieras escuchar y pulsa la tecla de búsqueda + S. También puedes mantener pulsada la tecla de búsqueda o tocar el icono Enunciar Selección, situado junto a la imagen de tu perfil, para hacer una selección.</translation>
@@ -3140,8 +3121,8 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="379082410132524484">Tu tarjeta ha caducado</translation>
 <translation id="6644512095122093795">Preguntar si quiero guardar contraseñas</translation>
 <translation id="2100273922101894616">Iniciar sesión automáticamente</translation>
-<translation id="7513029293694390567">Permite iniciar sesión automáticamente en sitios web con credenciales almacenadas. Si esta función está inhabilitada, se te solicitará la confirmación cada vez que intentes iniciar sesión en un sitio web.</translation>
-<translation id="2330129964253841015">Avisar si se vulneran tus contraseñas</translation>
+<translation id="7513029293694390567">Permite iniciar sesión automáticamente en sitios web con credenciales almacenadas. Si esta función está deshabilitada, se te solicitará la confirmación cada vez que intentes iniciar sesión en un sitio web.</translation>
+<translation id="6995899638241819463">Avisar si se vulneran tus contraseñas</translation>
 <translation id="1534287762301776620">Esta función se activará cuando inicies sesión en tu cuenta de Brave Software</translation>
 <translation id="1375321115329958930">Contraseñas guardadas</translation>
 <translation id="152234381334907219">Contraseñas que nunca se guardan</translation>
@@ -3252,7 +3233,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
 <translation id="2187895286714876935">Error de importación del certificado de servidor</translation>
 <translation id="816055135686411707">Error al configurar el certificado de confianza</translation>
-<translation id="5541694225089836610">Tu administrador ha inhabilitado esta acción</translation>
+<translation id="5541694225089836610">Tu administrador ha deshabilitado esta acción</translation>
 <translation id="3380365263193509176">Error desconocido</translation>
 <translation id="368789413795732264">Se ha producido un error al intentar escribir el archivo: <ph name="ERROR_TEXT"/>.</translation>
 <translation id="784934925303690534">Intervalo de tiempo</translation>
@@ -3398,7 +3379,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="2059913712424898428">Zona horaria</translation>
 <translation id="4547672827276975204">Definir automáticamente</translation>
 <translation id="7690378713476594306">Elegir una opción de la lista</translation>
-<translation id="3254516606912442756">Se ha inhabilitado la detección automática de la zona horaria</translation>
+<translation id="3254516606912442756">Se ha deshabilitado la detección automática de la zona horaria</translation>
 <translation id="514575469079499857">Usar tu dirección IP para determinar la ubicación (opción predeterminada)</translation>
 <translation id="1525740877599838384">Usar solo redes Wi‑Fi para determinar la ubicación</translation>
 <translation id="1648528859488547844">Usar redes móviles o Wi‑Fi para determinar la ubicación</translation>
@@ -3432,7 +3413,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="5882919346125742463">Redes conocidas</translation>
 <translation id="2946119680249604491">Añadir conexión</translation>
 <translation id="8317671367883557781">Añadir conexión de red</translation>
-<translation id="5700836101007545240">El administrador ha inhabilitado la opción de Añadir Conexión</translation>
+<translation id="5700836101007545240">El administrador ha deshabilitado la opción de Añadir Conexión</translation>
 <translation id="216169395504480358">Añadir Wi-Fi...</translation>
 <translation id="3892414795099177503">Añadir OpenVPN / L2TP...</translation>
 <translation id="287286579981869940">Añadir <ph name="PROVIDER_NAME"/>...</translation>
@@ -3902,7 +3883,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="5052499409147950210">Editar sitio web</translation>
 <translation id="2870560284913253234">Sitio</translation>
 <translation id="4610862967073369855">Permite que Mensajes Android transmita mensajes desde tu teléfono al Bravebook</translation>
-<translation id="6742339027238151589">Accesible para secuencia de comandos</translation>
+<translation id="6742339027238151589">Accesible a script</translation>
 <translation id="361106536627977100">Datos de Flash</translation>
 <translation id="8557930019681227453">Archivo de manifiesto</translation>
 <translation id="7868378670806575181">{NUM_COOKIES,plural, =1{1 cookie}other{# cookies}}</translation>
@@ -3943,8 +3924,8 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="3953834000574892725">Mis cuentas</translation>
 <translation id="8418661265246754237">Cuentas de Brave</translation>
 <translation id="6597148444736186483">Para cerrar la sesión en la cuenta principal de este dispositivo, haz clic en la hora que aparece en la pantalla. En el menú que aparecerá, haz clic en Cerrar sesión.</translation>
-<translation id="4920274951865016604">Tu administrador ha inhabilitado la opción de añadir más cuentas de Brave Software</translation>
-<translation id="8845742957886589229">La opción para añadir más cuentas de Brave Software está inhabilitada</translation>
+<translation id="4920274951865016604">Tu administrador ha deshabilitado la opción de añadir más cuentas de Brave Software</translation>
+<translation id="8845742957886589229">La opción para añadir más cuentas de Brave Software está deshabilitada</translation>
 <translation id="5021750053540820849">Aún no se ha actualizado</translation>
 <translation id="4637083375689622795">Más acciones, <ph name="EMAIL"/></translation>
 <translation id="3448492834076427715">Actualizar cuenta</translation>
@@ -4325,7 +4306,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="1708338024780164500">(Inactiva)</translation>
 <translation id="3860292630623580294">(Privado)</translation>
 <translation id="6655190889273724601">Modo de desarrollador</translation>
-<translation id="2868746137289129307">Esta extensión está obsoleta e inhabilitada por la política de empresa. Es posible que se habilite automáticamente cuando haya una nueva versión disponible.</translation>
+<translation id="2868746137289129307">Esta extensión está obsoleta y deshabilitada por la política de empresa. Es posible que se habilite automáticamente cuando haya una nueva versión disponible.</translation>
 <translation id="6841186874966388268">Errores</translation>
 <translation id="3487007233252413104">función anónima</translation>
 <translation id="3264582393905923483">Contexto</translation>
@@ -4415,7 +4396,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="6619801788773578757">Añadir aplicación de kiosco</translation>
 <translation id="8045923671629973368">Indica la identificación de la aplicación o el URL de la tienda web</translation>
 <translation id="7059858479264779982">Establecer inicio automático</translation>
-<translation id="6325191661371220117">Inhabilitar inicio automático</translation>
+<translation id="6325191661371220117">Deshabilitar inicio automático</translation>
 <translation id="4699357559218762027">(con inicio automático)</translation>
 <translation id="8143442547342702591">La aplicación no es válida</translation>
 <translation id="720110658997053098">Mantener este dispositivo en modo kiosco de forma permanente</translation>

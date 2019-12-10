@@ -20,7 +20,7 @@
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeDescPoints": {
-    "message": "You can now earn points for watching privacy-respecting ads.",
+    "message": "Sie können jetzt Punkte für das Ansehen von Werbung verdienen, die Ihre Privatsphäre respektiert.",
     "description": "Entry text for welcome screen in the panel, points"
   },
   "welcomeFooterTextOne": {
@@ -148,7 +148,7 @@
     "description": "Month"
   },
   "tokenGrant": {
-    "message": "$currency$ Grants",
+    "message": "$currency$-Förderbeträge",
     "description": "Title for grant notification",
     "placeholders": {
       "currency": {
@@ -162,7 +162,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "pointGrantClaimed": {
-    "message": "Point Grants Claimed",
+    "message": "Punkte-Förderbeträge eingefordert",
     "description": "Title for point grant section in wallet summary"
   },
   "earningsAds": {
@@ -488,7 +488,7 @@
     "description": "Token title on success screen"
   },
   "grantFinishPointTitleUGP": {
-    "message": "Free Point Grant",
+    "message": "Kostenloser Punkte-Förderbetrag",
     "description": "Point title on success screen"
   },
   "grantFinishTitleAds": {
@@ -570,7 +570,7 @@
     "description": "Standard tokens text"
   },
   "point":  {
-    "message": "Point",
+    "message": "Punkt",
     "description": "BAT Point text"
   },
   "token":  {
@@ -578,7 +578,7 @@
     "description": "BAT Token text"
   },
   "points":  {
-    "message": "points",
+    "message": "Punkte",
     "description": "BAT Points text"
   },
   "tokenGrants":  {
@@ -586,7 +586,7 @@
     "description": "BAT Tokens Grant Text"
   },
   "pointGrants":  {
-    "message": "Point Grants",
+    "message": "Punkte-Förderbeträge",
     "description": "BAT Points Grant Text"
   }
 }

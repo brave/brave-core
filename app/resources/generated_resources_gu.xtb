@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">ડાઉનલોડ અસફળ: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">ડાઉનલોડ રદ કર્યું: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">ડાઉનલોડ પૂર્ણ થયું: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">ડાઉનલોડ પૂર્ણ થયું: <ph name="FILE_NAME"/>. ડાઉનલોડ બાર ક્ષેત્રમાં પહોંચવા માટે Shift+F6 દબાવો.</translation>
 <translation id="2743387203779672305">ક્લિપબોર્ડ પર કૉપિ કરો</translation>
 <translation id="883911313571074303">છબીમાં ટીકા કરો</translation>
 <translation id="6291953229176937411">ફાઇન્ડર માં &amp;બતાવો</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">પ્રમાણપત્ર હસ્તાક્ષર મૂલ્ય</translation>
 <translation id="4104163789986725820">નિ&amp;કાસ કરો...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">સિરિયલ નંબર</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">મેલ</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">વ્યવસાયની શ્રેણી</translation>
-<translation id="6561757256477115975">અધિકારક્ષેત્રની સ્થાનિયતાનું નામ</translation>
-<translation id="7150038968052501583">અધિકારક્ષેત્રના રાજ્ય અથવા પ્રાંતનું નામ</translation>
-<translation id="8904360804686555987">અધિકારક્ષેત્રના દેશનું નામ</translation>
-<translation id="8718098216622210506">શેરી</translation>
-<translation id="6969275223369931223">પોસ્ટલ કોડ</translation>
 <translation id="5434065355175441495">PKCS #1 RSA એન્ક્રિપ્શન</translation>
 <translation id="1221024147024329929">RSA એન્ક્રિપ્શનવાળું PKCS #1 MD2</translation>
 <translation id="1640283014264083726">RSA એન્ક્રિપ્શનવાળું PKCS #1 MD4</translation>
@@ -1360,6 +1343,9 @@
 <translation id="813082847718468539">સ્થાન માહિતી જુઓ</translation>
 <translation id="5233638681132016545">નવું ટૅબ</translation>
 <translation id="3915280005470252504">વૉઇસ દ્વારા શોધો</translation>
+<translation id="8968766641738584599">કાર્ડ સાચવો</translation>
+<translation id="2408018932941436077">કાર્ડ સાચવી રહ્યાં છીએ</translation>
+<translation id="7970882136539140748">હમણાં જ કાર્ડ સાચવી શકાતું નથી</translation>
 <translation id="1593926297800505364">ચુકવણી પદ્ધતિ સાચવો</translation>
 <translation id="2473195200299095979">આ પૃષ્ઠનો અનુવાદ કરો</translation>
 <translation id="5408750356094797285">ઝૂમ કરો: <ph name="PERCENT"/></translation>
@@ -1752,7 +1738,6 @@
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">શેર કરેલા કારીગરો</translation>
 <translation id="2927017729816812676">કેશ સ્ટોરેજ</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">એપ્સ</translation>
 <translation id="542872847390508405">તમે અતિથિ તરીકે બ્રાઉઝ કરી રહ્યાં છો</translation>
 <translation id="537813040452600081">આ વિંડોમાં તમે જે પેજ જોઈ રહ્યાં છો તે બ્રાઉઝર ઇતિહાસમાં દેખાશે નહિ અને એ તમારા સાઇન આઉટ કર્યા પછી કમ્પ્યુટર પર કૂકી જેવા કોઈ બીજા નિશાન છોડશે નહિ. તમે ડાઉનલોડ કરો છો તે ફાઇલો અને તમે બનાવો છો તે બુકમાર્ક જળવાશે નહિ.</translation>
@@ -2096,7 +2081,6 @@
 <translation id="2650609753175229582"><ph name="URL"/> સુરક્ષિત કન્ટેન્ટ ચલાવવા માગે છે. Brave Software દ્વારા તમારા ડિવાઇસની ઓળખ ચકાસવામાં આવશે અને તે આ સાઇટ દ્વારા ઍક્સેસ કરવામાં આવી શકે છે.</translation>
 <translation id="1746402432151920942">સંરક્ષિત મીડિયા ઓળખકર્તા</translation>
 <translation id="1322046419516468189">સાચવેલા પાસવર્ડ તમારા <ph name="SAVED_PASSWORDS_STORE"/>માં જુઓ અને મેનેજ કરો</translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">પાસવર્ડ સાચવ્યો. સાચવેલા પાસવર્ડ તમારા <ph name="SAVED_PASSWORDS_STORE"/>માં જુઓ અને મેનેજ કરો.</translation>
 <translation id="5713644099811900409">Brave Software એકાઉન્ટ</translation>
 <translation id="3785727820640310185">આ સાઇટ માટે પાસવર્ડ સાચવેલા છે</translation>
@@ -2500,9 +2484,6 @@ USB ડિવાઇસ</translation>
 <translation id="5186185447130319458">ખાનગી</translation>
 <translation id="7643842463591647490">{0,plural, =1{# વિંડો ખોલો}one{# વિંડો ખોલો}other{# વિંડો ખોલો}}</translation>
 <translation id="2579188629646253712">ખાનગીમાંથી બહાર નીકળો</translation>
-<translation id="479219453908726046">સર્વેમાં ભાગ લો</translation>
-<translation id="7581273696622423628">સર્વેમાં ભાગ લો</translation>
-<translation id="4406504596603350105">તમારો પ્રતિસાદ અમારા માટે મહત્વપૂર્ણ છે.</translation>
 <translation id="4349828822184870497">સહાયરૂપ</translation>
 <translation id="6876469544038980967">સહાયરૂપ નથી</translation>
 <translation id="5286194356314741248">સ્કેનિંગ</translation>
@@ -3132,7 +3113,7 @@ USB ડિવાઇસ</translation>
 <translation id="6644512095122093795">પાસવર્ડ સાચવવા સુવિધા આપો</translation>
 <translation id="2100273922101894616">સ્વતઃ સાઇન-ઇન</translation>
 <translation id="7513029293694390567">સંગ્રહિત ઓળખપત્રનો ઉપયોગ કરીને વેબસાઇટ્સમાં આપમેળે સાઇન ઇન કરો. જો અક્ષમ કરેલ હોય, તો વેબસાઇટમાં સાઇન ઇન કરતાં પહેલાં દર વખતે તમને પુષ્ટિકરણ માટે કહેવામાં આવશે.</translation>
-<translation id="2330129964253841015">જો પાસવર્ડમાં ચેડાં થાય તો તમને ચેતવણી આપવામાં આવશે</translation>
+<translation id="6995899638241819463">જો પાસવર્ડમાં ચેડાં થાય તો તમને ચેતવણી આપવામાં આવશે</translation>
 <translation id="1534287762301776620">જ્યારે તમે તમારા Brave Software એકાઉન્ટમાં સાઇન ઇન કરો છો, ત્યારે આ સુવિધા ચાલુ કરવામાં આવે છે</translation>
 <translation id="1375321115329958930">સાચવેલા પાસવર્ડ્સ</translation>
 <translation id="152234381334907219">ક્યારેય ન સચવાયેલું</translation>

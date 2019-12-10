@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">Download non riuscito: <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">Download annullato: <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">Download completato: <ph name="FILE_NAME"/>.</translation>
+<translation id="4110490973560452005">Download completato: <ph name="FILE_NAME"/>. Premi MAIUSC+F6 per passare alla parte con la barra dei download.</translation>
 <translation id="2743387203779672305">Copia negli appunti</translation>
 <translation id="883911313571074303">Annota immagine</translation>
 <translation id="6291953229176937411">Mo&amp;stra nel Finder</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Valore firma certificato</translation>
 <translation id="4104163789986725820">E&amp;sporta...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">serialNumber</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">MAIL</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">businessCategory</translation>
-<translation id="6561757256477115975">jurisdictionLocalityName</translation>
-<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
-<translation id="8904360804686555987">jurisdictionCountryName</translation>
-<translation id="8718098216622210506">STREET</translation>
-<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">PKCS #1 con crittografia RSA</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 con crittografia RSA</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 con crittografia RSA</translation>
@@ -1366,6 +1349,9 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="813082847718468539">Visualizza informazioni sul sito</translation>
 <translation id="5233638681132016545">Nuova scheda</translation>
 <translation id="3915280005470252504">Ricerca vocale</translation>
+<translation id="8968766641738584599">Salva carta</translation>
+<translation id="2408018932941436077">Salvataggio della carta</translation>
+<translation id="7970882136539140748">Impossibile salvare la carta al momento</translation>
 <translation id="1593926297800505364">Salva il metodo di pagamento</translation>
 <translation id="2473195200299095979">Traduci questa pagina</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
@@ -1758,7 +1744,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Spazio di archiviazione cache</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">App</translation>
 <translation id="542872847390508405">Stai navigando come ospite</translation>
 <translation id="537813040452600081">Le pagine visualizzate in questa finestra non verranno memorizzate nella cronologia del browser e non lasceranno altre tracce, ad esempio cookie, sul computer dopo l'uscita dall'account. I file scaricati e i Preferiti creati non verranno conservati.</translation>
@@ -2100,7 +2085,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="2650609753175229582"><ph name="URL"/> chiede di riprodurre contenuti protetti. Brave Software verificherà l'identità del tuo dispositivo e questo sito potrebbe avervi accesso.</translation>
 <translation id="1746402432151920942">Identificatore dei contenuti multimediali protetti</translation>
 <translation id="1322046419516468189">Visualizza e gestisci le password salvate in <ph name="SAVED_PASSWORDS_STORE"/></translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Password salvata. Visualizza e gestisci le password salvate in <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Brave Software Account</translation>
 <translation id="3785727820640310185">Password salvate per questo sito</translation>
@@ -2503,9 +2487,6 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="5186185447130319458">Privato</translation>
 <translation id="7643842463591647490">{0,plural, =1{# finestra aperta}other{# finestre aperte}}</translation>
 <translation id="2579188629646253712">Esci da Privato</translation>
-<translation id="479219453908726046">Partecipa al sondaggio</translation>
-<translation id="7581273696622423628">Partecipa al sondaggio</translation>
-<translation id="4406504596603350105">La tua opinione è importante per noi.</translation>
 <translation id="4349828822184870497">Utili</translation>
 <translation id="6876469544038980967">Non utili</translation>
 <translation id="5286194356314741248">Ricerca</translation>
@@ -3135,7 +3116,7 @@ Conserva il file di chiave in un luogo sicuro. Ti servirà per creare nuove vers
 <translation id="6644512095122093795">Chiedi di salvare le password</translation>
 <translation id="2100273922101894616">Accesso automatico</translation>
 <translation id="7513029293694390567">Accedi automaticamente ai siti web utilizzando credenziali memorizzate. Se la funzione non è attiva, ti viene chiesta la conferma prima di ogni accesso ai siti web.</translation>
-<translation id="2330129964253841015">Ricevi un avviso in caso di compromissione delle password</translation>
+<translation id="6995899638241819463">Ricevi un avviso in caso di compromissione delle password</translation>
 <translation id="1534287762301776620">Questa funzionalità viene attivata quando accedi al tuo Account Brave Software</translation>
 <translation id="1375321115329958930">Password salvate</translation>
 <translation id="152234381334907219">Mai salvate</translation>

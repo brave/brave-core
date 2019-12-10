@@ -378,6 +378,7 @@
 <translation id="1834503245783133039">ማውረድ አልተሳካም፦ <ph name="FILE_NAME"/></translation>
 <translation id="6577284282025554716">ማውረድ ተሰርዟል፦ <ph name="FILE_NAME"/></translation>
 <translation id="3340620525920140773">ማውረድ ተጠናቅቋል፦ <ph name="FILE_NAME"/></translation>
+<translation id="4110490973560452005">ውርድ ተጠናቅቋል፦ <ph name="FILE_NAME"/>። የውርዶች አሞሌ አካባቢውን ለመቀየር Shift+F6 ይጫኑ።</translation>
 <translation id="2743387203779672305">ወደ ቅንጥብ ሰሌዳ ገልብጥ</translation>
 <translation id="883911313571074303">ምስልን አብራራ</translation>
 <translation id="6291953229176937411">በፈላጊ ውስጥ &amp;አሳይ</translation>
@@ -602,24 +603,6 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">የሰርቲፊኬት ፊርማ እሴት</translation>
 <translation id="4104163789986725820">ወደ &amp;ውጪ ላክ...</translation>
-<translation id="2029156652561216312">CN</translation>
-<translation id="7822286184239325970">ST</translation>
-<translation id="8180262569555229595">O</translation>
-<translation id="7252376466538759696">OU</translation>
-<translation id="5734574586460918465">dnQualifier</translation>
-<translation id="964324710553558337">C</translation>
-<translation id="511291565806773566">ተራ ቁጥር</translation>
-<translation id="5912292566401425135">L</translation>
-<translation id="5725734596824080201">DC</translation>
-<translation id="2948789661744572780">ደብዳቤ</translation>
-<translation id="7481079953250545971">UID</translation>
-<translation id="4196967880387277612">E</translation>
-<translation id="5887772116581657016">የንግድ ስራ ፈርጅ</translation>
-<translation id="6561757256477115975">jurisdictionLocalityName</translation>
-<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
-<translation id="8904360804686555987">jurisdictionCountryName</translation>
-<translation id="8718098216622210506">መንገድ</translation>
-<translation id="6969275223369931223">የፖስታ ኮድ</translation>
 <translation id="5434065355175441495">PKCS #1 RSA ምስጠራ</translation>
 <translation id="1221024147024329929">PKCS #1 MD2  ከRSA ምስጠራ ጋር</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 ከRSA ምስጠራ ጋር</translation>
@@ -1369,6 +1352,9 @@ nil</translation>
 <translation id="813082847718468539">የጣቢያ መረጃን ይመልከቱ</translation>
 <translation id="5233638681132016545">አዲስ ትር</translation>
 <translation id="3915280005470252504">በድምጽ ይፈልጉ</translation>
+<translation id="8968766641738584599">ካርድ አስቀምጥ</translation>
+<translation id="2408018932941436077">ካርድን በማስቀመጥ ላይ</translation>
+<translation id="7970882136539140748">ካርድ አሁን ላይ ማስቀመጥ አይቻልም</translation>
 <translation id="1593926297800505364">የመክፈያ ዘዴን አስቀምጥ</translation>
 <translation id="2473195200299095979">ይህን ገጽ መተርጎም</translation>
 <translation id="5408750356094797285">አጉላ፦ <ph name="PERCENT"/></translation>
@@ -1761,7 +1747,6 @@ nil</translation>
 <translation id="1234808891666923653">የአገልግሎት ሰራተኛዎች</translation>
 <translation id="3432762828853624962">የተጋሩ ሠራተኞች</translation>
 <translation id="2927017729816812676">የመሸጎጫ ማከማቻ</translation>
-<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">መተግበሪያዎች</translation>
 <translation id="542872847390508405">እያሰሱ ያለው እንደ እንግዳ ነው</translation>
 <translation id="537813040452600081">በዚህ መስኮት ላይ የሚመለከቷቸውን ገጾች በአሳሽ ታሪክ ላይ የማይታዩ ሲሆን ዘግተው ከወጡ በኋላ ገጾቹ እንደ ኩኪዎች ያሉ ሌሎች መከታተያዎችን አይተዉም። የሚያወርዷቸው ፋይሎች እና ዕልባቶች አይቀመጡም።</translation>
@@ -2103,7 +2088,6 @@ nil</translation>
 <translation id="2650609753175229582"><ph name="URL"/> የተጠበቀ ይዘትን ማጫወት ይፈልጋል። የመሣሪያዎ ማንነት በBrave Software የሚረጋገጥ ሲሆን በዚህ ጣቢያ ሊደረስበት ይችላል።</translation>
 <translation id="1746402432151920942">የተጠበቀ ሚዲያ ለዪ</translation>
 <translation id="1322046419516468189">በእርስዎ <ph name="SAVED_PASSWORDS_STORE"/> ውስጥ የተቀመጡ የይለፍ ቃላትን ይመልከቱ እና ያስተዳድሩ</translation>
-<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">የይለፍ ቃል ተቀምጧል። የተቀመጡ የይለፍ ቃላትን በእርስዎ <ph name="SAVED_PASSWORDS_STORE"/> ይመልከቱ እና ያስተዳድሩ።</translation>
 <translation id="5713644099811900409">የBrave Software መለያ</translation>
 <translation id="3785727820640310185">የተቀመጡ የዚህ ጣቢያ የይለፍ ቃላት</translation>
@@ -2506,9 +2490,6 @@ nil</translation>
 <translation id="5186185447130319458">ማንነት የማያሳውቅ</translation>
 <translation id="7643842463591647490">{0,plural, =1{# ክፍት መስኮት}one{# ክፍት መስኮቶች}other{# ክፍት መስኮቶች}}</translation>
 <translation id="2579188629646253712">ማንነትን ከማያሳውቅ ይውጡ</translation>
-<translation id="479219453908726046">የዳሰሳ ጥናት ያድርጉ</translation>
-<translation id="7581273696622423628">የዳሰሳ ጥናት ያድርጉ</translation>
-<translation id="4406504596603350105">የእርስዎ ግብረ መልስ ለእኛ ወሳኝ ነው።</translation>
 <translation id="4349828822184870497">አጋዥ</translation>
 <translation id="6876469544038980967">አጋዥ አይደለም</translation>
 <translation id="5286194356314741248">በመቃኘት ላይ</translation>
@@ -3138,7 +3119,7 @@ nil</translation>
 <translation id="6644512095122093795">የይለፍ ቀላትን ለማስቀመጥ ጠይቅ</translation>
 <translation id="2100273922101894616">በራስ-ግባ</translation>
 <translation id="7513029293694390567">የተከማቹ ምስክርነቶችን በመጠቀም በራስ-ሰር ወደ ድር ጣቢያዎች ይግቡ። ከተሰናከለ ወደ አንድ ድር ጣቢያ ከመግባትዎ በፊት ሁልጊዜ ማረጋገጫ እንዲሰጡ ይጠየቃሉ።</translation>
-<translation id="2330129964253841015">የእርስዎ የይለፍ ቃላት ከተነጠቁ ማስጠንቀቂያ ያግኙ</translation>
+<translation id="6995899638241819463">የእርስዎ የይለፍ ቃላት ከተነጠቁ ማስጠንቀቂያ ያግኙ</translation>
 <translation id="1534287762301776620">ወደ የእርስዎ የ Brave Software መለያ ሲገቡ፣ ይህ ባህሪ ይበራል</translation>
 <translation id="1375321115329958930">የተቀመጡ የይለፍ ቃላት</translation>
 <translation id="152234381334907219">በጭራሽ አልተቀመጠም</translation>

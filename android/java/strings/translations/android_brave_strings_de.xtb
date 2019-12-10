@@ -1,14 +1,19 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="de">
-<translation id="6303294677342628402">Sicherheit</translation>
+<translation id="6303294677342628402">Schutz</translation>
 <translation id="6132506775968708399">Cookies von Drittanbietern blockieren</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
+<translation id="7835726359440951858">Werbung und Tracking blockieren</translation>
+<translation id="520895744850022668">HTTPS erzwingen</translation>
 <translation id="94154759592465111">Skripte blockieren</translation>
 <translation id="7458422973722236530">Fingerabdruckschutz</translation>
+<translation id="252011129655042182">Werbung und Tracker</translation>
+<translation id="6754976710186182237">Fingerabdruck-Methoden</translation>
 <translation id="2313532038420432247">HTTPS Aufwertungen</translation>
 <translation id="7461425058443653485">Script blockiert</translation>
+<translation id="6302422639282249274">Brave Rewards verwalten</translation>
 <translation id="1506061864768559482">Suchmaschine</translation>
+<translation id="3377025655491224618">Privater Tab</translation>
 <translation id="9148058034647219655">Beenden</translation>
 <translation id="4339730410920731698">Anzeigen und Tracker blockiert</translation>
 <translation id="59174027418879706">Aktiviert</translation>
@@ -34,6 +39,7 @@
 <translation id="5441565662498481293">Sie senden automatisch Trinkgeld an:</translation>
 <translation id="1166682575529520472">Monatlich</translation>
 <translation id="1628742278973105368">Das erste monatliche Trinkgeld wird gesendet am:</translation>
+<translation id="1910721550319506122">Willkommen!</translation>
 <translation id="1704859330137112950">Wenn Sie möchten, können Sie monatliche Spenden einrichten, um diese Seite durchgängig zu unterstützen.</translation>
 <translation id="245015745140252435">Höhe der Spende</translation>
 <translation id="3250511771491660127">Monatlich wiederholen</translation>
