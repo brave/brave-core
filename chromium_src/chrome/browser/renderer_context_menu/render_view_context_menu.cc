@@ -38,8 +38,9 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
   switch (id) {
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
 #if BUILDFLAG(ENABLE_TOR)
-      if (tor::TorProfileService::IsTorDisabled())
+      if (brave::IsTorDisabledForProfile(GetProfile()))
         return false;
+
       return params_.link_url.is_valid() &&
              IsURLAllowedInIncognito(params_.link_url, browser_context_) &&
              !brave::IsTorProfile(GetProfile());
