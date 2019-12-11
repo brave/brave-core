@@ -12,6 +12,7 @@ import { CustomFilters } from './customFilters'
 import { NumBlockedStat } from './numBlockedStat'
 
 // Components for playlist
+import { CloseCircleOIcon } from 'brave-ui/components/icons'
 import Table, { Cell, Row } from 'brave-ui/components/dataTables/table'
 
 // Utils
@@ -55,10 +56,8 @@ export class AdblockPage extends React.Component<Props, State> {
     }
   }
 
-  getPlaylistHeader = (): Cell[] => {
-    return [
-      { content: 'NAME' }
-    ]
+  getImgSrc = (playlistId: string) => {
+    return 'chrome://playlists-image/' + playlistId
   }
 
   get lazyButtonStyle () {
@@ -73,8 +72,13 @@ export class AdblockPage extends React.Component<Props, State> {
     return lazyButtonStyle
   }
 
-  getImgSrc = (playlistId: string) => {
-    return 'chrome://playlists-image/' + playlistId
+  getPlaylistHeader = (): Cell[] => {
+      return [
+        { content: 'INDEX' },
+        { content: 'NAME' },
+        { content: 'STATUS' },
+        { content: 'REMOVE' }
+      ]
   }
 
   getPlaylistRows = (playlist?: any): Row[] | undefined => {
@@ -85,6 +89,7 @@ export class AdblockPage extends React.Component<Props, State> {
     return playlist.map((item: any, index: any): any => {
       const cell: Row = {
         content: [
+          { content: (<div style={{ textAlign: 'center' }}>{index+1}</div>) },
           { content: (
             <div>
               <h3>{item.playlistName}</h3>
@@ -92,9 +97,11 @@ export class AdblockPage extends React.Component<Props, State> {
                 <img style={{ maxWidth: '200px' }}
                   src={this.getImgSrc(item.id)}
                 />
-              </a>
+                </a>
             </div>
-          ) }
+          ) },
+          { content: (<span>{item.videoMediaFilePath ? 'Ready' : 'Downloading'}</span>) },
+          { content: (<button style={this.lazyButtonStyle} onClick={this.onClickRemoveVideo.bind(this, item.id)}><CloseCircleOIcon /></button>) }
         ]
       }
       return cell
@@ -103,6 +110,10 @@ export class AdblockPage extends React.Component<Props, State> {
 
   onClickPlayVideo = (playlistId: string) => {
     chrome.bravePlaylists.play(playlistId)
+  }
+
+  onClickRemoveVideo = (playlistId: string) => {
+    chrome.bravePlaylists.deletePlaylist(playlistId)
   }
 
   render () {
