@@ -58,6 +58,7 @@
 		0A53F3E721E6560A0086E80C /* InMemoryDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A53F3E621E6560A0086E80C /* InMemoryDataController.swift */; };
 		0A6112AC230B00E7001BBC45 /* OnboardingNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6112AB230B00E7001BBC45 /* OnboardingNavigationController.swift */; };
 		0A6112BD230B4306001BBC45 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6112BC230B4306001BBC45 /* OnboardingViewController.swift */; };
+		0A62A355238C6F3E008902E3 /* Bookmark+Restoration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A62A354238C6F3E008902E3 /* Bookmark+Restoration.swift */; };
 		0A764F31230EE5CA003A1D9B /* OnboardingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A764F30230EE5CA003A1D9B /* OnboardingState.swift */; };
 		0A771D35218C8FDC00336E0D /* Bookmark+Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A771D34218C8FDC00336E0D /* Bookmark+Sync.swift */; };
 		0A7B5D6722689C5D00AADF22 /* AddEditHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B5D6622689C5D00AADF22 /* AddEditHeaderView.swift */; };
@@ -90,6 +91,7 @@
 		0AB7FCDC235DED0B00F1D9F5 /* NumberExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB7FCDB235DED0B00F1D9F5 /* NumberExtensions.swift */; };
 		0AB7FCDF235DEE8F00F1D9F5 /* NumberExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB7FCDE235DEE8F00F1D9F5 /* NumberExtensionTests.swift */; };
 		0ABA874320E68CF500D2694F /* SessionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C027441B2A348C001B1E88 /* SessionData.swift */; };
+		0ABE4CBB2398143100699AD2 /* BookmarkRestorationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABE4CBA2398143100699AD2 /* BookmarkRestorationTests.swift */; };
 		0AC0D388233BD7880091EFA5 /* Deferred.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7BA4A9631C4CFE840091D032 /* Deferred.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0AC0D389233BD7DA0091EFA5 /* SwiftyJSON.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3B4988CD1E42B01800A12FDA /* SwiftyJSON.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0AC0D39A233E7CAF0091EFA5 /* ObjcExceptionBridging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC0D399233E7CAF0091EFA5 /* ObjcExceptionBridging.framework */; };
@@ -1293,6 +1295,7 @@
 		0A60A1882358AF9E00953CA8 /* Fennec.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = Fennec.xctestplan; path = Client.xcodeproj/Fennec.xctestplan; sourceTree = "<group>"; };
 		0A6112AB230B00E7001BBC45 /* OnboardingNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingNavigationController.swift; sourceTree = "<group>"; };
 		0A6112BC230B4306001BBC45 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		0A62A354238C6F3E008902E3 /* Bookmark+Restoration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bookmark+Restoration.swift"; sourceTree = "<group>"; };
 		0A67500A23571F21006A6D00 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Storage.strings; sourceTree = "<group>"; };
 		0A6E095E230E05BC00AB3F19 /* onboarding-shields.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "onboarding-shields.json"; sourceTree = "<group>"; };
 		0A75A3BD23571F2B00013540 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Storage.strings"; sourceTree = "<group>"; };
@@ -1332,6 +1335,7 @@
 		0AB70C6A23571F4C00E9C2C8 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/Storage.strings; sourceTree = "<group>"; };
 		0AB7FCDB235DED0B00F1D9F5 /* NumberExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberExtensions.swift; sourceTree = "<group>"; };
 		0AB7FCDE235DEE8F00F1D9F5 /* NumberExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberExtensionTests.swift; sourceTree = "<group>"; };
+		0ABE4CBA2398143100699AD2 /* BookmarkRestorationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkRestorationTests.swift; sourceTree = "<group>"; };
 		0AC0D399233E7CAF0091EFA5 /* ObjcExceptionBridging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjcExceptionBridging.framework; path = Carthage/Build/iOS/ObjcExceptionBridging.framework; sourceTree = "<group>"; };
 		0AC0D3A9233E86E50091EFA5 /* sqlcipher.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = sqlcipher.xcodeproj; sourceTree = "<group>"; };
 		0AC0D3BF233E889D0091EFA5 /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/Storage.strings; sourceTree = "<group>"; };
@@ -3840,6 +3844,7 @@
 			children = (
 				0A38EA7F216532DB00142710 /* CRUDProtocolsTests.swift */,
 				0AF3B4EA213D8E3200695962 /* BookmarkTests.swift */,
+				0ABE4CBA2398143100699AD2 /* BookmarkRestorationTests.swift */,
 				0AF3B4E5213D8E3200695962 /* CoreDataTestCase.swift */,
 				0AF3B4E9213D8E3200695962 /* DataControllerTests.swift */,
 				0AF3B4EB213D8E3300695962 /* DeviceTests.swift */,
@@ -3863,6 +3868,7 @@
 				5D1DC54620AE004600905E5A /* Bookmark.swift */,
 				0AA029F7222E899400D6B535 /* Bookmark+Reorder.swift */,
 				0A771D34218C8FDC00336E0D /* Bookmark+Sync.swift */,
+				0A62A354238C6F3E008902E3 /* Bookmark+Restoration.swift */,
 				5D1DC54720AE004600905E5A /* FaviconMO.swift */,
 				5D1DC54820AE004600905E5A /* Domain.swift */,
 				5D1DC54920AE004600905E5A /* Device.swift */,
@@ -5894,6 +5900,7 @@
 				5D1DC55B20AE004600905E5A /* Domain.swift in Sources */,
 				0AF0411B2267C61100EBF982 /* ManagedObjectExtensions.swift in Sources */,
 				0AA4FC392109D685000B173A /* CRUDProtocols.swift in Sources */,
+				0A62A355238C6F3E008902E3 /* Bookmark+Restoration.swift in Sources */,
 				5D1DC56B20AE005400905E5A /* SyncCrypto.swift in Sources */,
 				5D1DC55F20AE004600905E5A /* Model.xcdatamodeld in Sources */,
 				5D1DC57020AE005400905E5A /* SyncRecord.swift in Sources */,
@@ -5904,6 +5911,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0ABE4CBB2398143100699AD2 /* BookmarkRestorationTests.swift in Sources */,
 				0AF3B4F0213D8E3300695962 /* FaviconMOTests.swift in Sources */,
 				A176323B20CF2AF800126F25 /* DeferredTestUtils.swift in Sources */,
 				2798E01D213EFC3F003EDBB1 /* FavoriteTests.swift in Sources */,

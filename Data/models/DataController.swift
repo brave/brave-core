@@ -49,6 +49,33 @@ public class DataController: NSObject {
         return FileManager.default.fileExists(atPath: storeURL.path)
     }
     
+    /// Returns old pre 1.12 persistent container or nil if it doesn't exist on the device.
+    public var oldDocumentStore: NSPersistentContainer? {
+        let fm = FileManager.default
+        guard let urls = fm.urls(for: FileManager.SearchPathDirectory.documentDirectory,
+                                 in: .userDomainMask).last else { return nil }
+        
+        let name = DataController.databaseName
+        let path = urls.appendingPathComponent(name).path
+        
+        if fm.fileExists(atPath: path) {
+            return migrationContainer
+        }
+        
+        return nil
+    }
+    
+    public var newStoreExists: Bool {
+        let fm = FileManager.default
+        guard let urls = fm.urls(for: FileManager.SearchPathDirectory.applicationSupportDirectory,
+                                 in: .userDomainMask).last else { return false }
+        
+        let name = DataController.databaseName
+        let path = urls.appendingPathComponent(name).path
+        
+        return fm.fileExists(atPath: path)
+    }
+    
     public func migrateToNewPathIfNeeded() throws {
         enum MigrationError: Error {
             case OldStoreMissing(String)
@@ -63,11 +90,7 @@ public class DataController: NSObject {
         // 4. Upgrading users (attempt migration, if fail, use old store, if successful delete old files)
         //      - re-attempt migration on every new app version, until they are in #2
         
-        let specificStoreExists: (URL) -> Bool = { url in
-            FileManager.default.fileExists(atPath: url.path)
-        }
-        
-        if !specificStoreExists(oldDocumentStoreURL) || specificStoreExists(supportStoreURL) {
+        if oldDocumentStore == nil || newStoreExists {
             // Old store absent, no data to migrate (#1 | #3)
             // or
             // New store already exists, do not attempt to overwrite (#2)
@@ -265,4 +288,7 @@ public class DataController: NSObject {
         backgroundContext.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump
         return backgroundContext
     }
+    
+    
 }
+
