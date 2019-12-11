@@ -1,0 +1,21 @@
+diff --git a/.vpython b/.vpython
+index c892a4928b36490a4a6bd2a45e6f3e9cb1a54490..960e12e40ae4a4a32a020ebe1185e87571b9b12e 100644
+--- a/.vpython
++++ b/.vpython
+@@ -381,3 +381,16 @@ wheel: <
+     platform: "macosx_10_6_intel"
+   >
+ >
++
++# Used by:
++#   //third_party/blink/tools/blinkpy/web_tests/port/server_process.py
++wheel: <
++  name: "infra/python/wheels/pywin32/${vpython_platform}"
++  version: "version:224"
++  match_tag: <
++    platform: "win32"
++  >
++  match_tag: <
++    platform: "win_amd64"
++  >
++>
