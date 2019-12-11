@@ -193,6 +193,8 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
 extension Bookmark {
     // MARK: Create
     
+    /// - parameter completion: Returns object id associated with this object.
+    /// IMPORTANT: this id might change after the object has been saved to persistent store. Better to use it within one context.
     class func addInternal(url: URL?,
                            title: String?,
                            customTitle: String? = nil,
@@ -202,7 +204,8 @@ extension Bookmark {
                            syncOrder: String? = nil,
                            save: Bool = true,
                            sendToSync: Bool = true,
-                           context: WriteContext = .new(inMemory: false)) {
+                           context: WriteContext = .new(inMemory: false),
+                           completion: ((NSManagedObjectID) -> Void)? = nil) {
         
         DataController.perform(context: context) { context in
             let site = SyncSite()
@@ -225,15 +228,20 @@ extension Bookmark {
             bookmark.site = site
             
             create(rootObject: bookmark, save: save, sendToSync: sendToSync,
-                   parentFolder: parentFolderOnCorrectContext, context: .existing(context))
+                   parentFolder: parentFolderOnCorrectContext, context: .existing(context)) { objectId in
+                    completion?(objectId)
+            }
         }
     }
     
+    /// - parameter completion: Returns object id associated with this object.
+    /// IMPORTANT: this id might change after the object has been saved to persistent store. Better to use it within one context.
     private class func create(rootObject root: SyncBookmark?,
                               save: Bool = true,
                               sendToSync: Bool = true,
                               parentFolder: Bookmark? = nil,
-                              context: WriteContext = .new(inMemory: false)) {
+                              context: WriteContext = .new(inMemory: false),
+                              completion: ((NSManagedObjectID) -> Void)? = nil) {
         
         DataController.perform(context: context, save: save, task: { context in
             let bookmark = root
@@ -305,6 +313,8 @@ extension Bookmark {
                 // Submit to server, must be on main thread
                 Sync.shared.sendSyncRecords(action: .create, records: [bk], context: context)
             }
+            
+            completion?(bk.objectID)
         })
     }
     

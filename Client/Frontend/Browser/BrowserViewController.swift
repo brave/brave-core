@@ -548,6 +548,10 @@ class BrowserViewController: UIViewController {
                 SKStoreReviewController.requestReview()
             }
         }
+        
+        Bookmark.restore_1_12_Bookmarks() {
+            log.info("Bookmarks from old database were successfully restored")
+        }
     }
     
     /// Initialize Sync without connecting. Sync webview needs to be in a "permanent" location
