@@ -44,8 +44,8 @@ const char kHTMLTemplate[] =
     "onplay='a=document.getElementById(\"a\");a.currentTime=this.currentTime;a."
     "play();' "
     "onpause='a=document.getElementById(\"a\");a.pause()'><source "
-    "src='video_file.mp4' type='video/mp4' /></video> <video id='a' "
-    "style='display:none'><source src='audio_file.m4a' type='audio/m4a' "
+    "src='video_file.mp4' type='video/mp4' /></video> <video id='a' autoplay "
+    "style='display:none'><source src='audio_file.m4a' type='audio/mp4' "
     "/></video>";
 
 PlaylistInfo CreatePlaylistInfo(const CreatePlaylistParams& params) {
@@ -683,7 +683,7 @@ int DoGenerateHTMLFileOnIOThread(const base::FilePath& html_file_path) {
   if (!html_file.IsValid())
     return -1;
 
-  html_file.WriteAtCurrentPos(kHTMLTemplate, 313 /*kHTMLTemplate.length()*/);
+  html_file.WriteAtCurrentPos(kHTMLTemplate, 322 /*kHTMLTemplate.length()*/);
   return 0;
 }
 
