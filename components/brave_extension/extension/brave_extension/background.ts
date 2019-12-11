@@ -43,6 +43,7 @@ if (chrome.test) {
 }
 
 function createPlaylist (url: string) {
+  console.log(url)
   const ytdItems: chrome.bravePlaylists.YTDMediaItem[] = window.youtubedown_urls(url)
   if (ytdItems.length === 0) {
     console.log(' ##### got nothing from youtubedown_urls #####')

@@ -113,6 +113,9 @@ class PlaylistsController : PlaylistsMediaFileController::Client {
                          const std::string& playlist_info_json);
 
   void DoPlay(const std::string& id, const std::string& playlist_info_json);
+  void StartHTMLFileGeneration(const std::string& id);
+  // int DoGenerateHTMLFileOnIOThread(const base::FilePath& html_file_path);
+  void OnHTMLFileGenerated(int success);
 
   base::SequencedTaskRunner* io_task_runner();
 
@@ -156,6 +159,7 @@ class PlaylistsController : PlaylistsMediaFileController::Client {
   content::BrowserContext* context_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   SimpleURLLoaderList url_loaders_;
+  base::FilePath html_file_path_;
 
   base::WeakPtrFactory<PlaylistsController> weak_factory_;
 

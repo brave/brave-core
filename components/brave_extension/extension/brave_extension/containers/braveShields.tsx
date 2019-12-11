@@ -55,23 +55,13 @@ interface State {
 export default class Shields extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
-    this.state = { url: '' }
-  }
-
-  get lazyButtonStyle () {
-    const lazyButtonStyle: any = {
-      alignItems: 'center',
-      WebkitAppearance: 'none',
-      width: '50px',
-      height: '50px',
-      display: 'flex',
-      borderRadius: '4px'
+    this.state = {
+      url: ''
     }
-    return lazyButtonStyle
   }
 
-  onClickDownloadVideo = (url: string) => {
-    chrome.bravePlaylists.requestDownload(url)
+  componentDidMount () {
+    this.getActiveTabUrl()
   }
 
   get pageHasDownloadableVideo () {
@@ -87,23 +77,21 @@ export default class Shields extends React.PureComponent<Props, State> {
     })
   }
 
+  onClickDownloadVideo = (url: string) => {
+    chrome.bravePlaylists.requestDownload(url)
+  }
+
   render () {
     const { url } = this.state
 
-    return (
-      <div>
-        <h1>This page has a video you can download</h1>
-        <button
-          style={Object.assign(
-            {},
-            this.lazyButtonStyle,
-            { width: 'fit-content', fontSize: '16px' }
-          )}
-          onClick={this.onClickDownloadVideo.bind(this, url)}
-        >
-          Click here to download
-        </button>
-      </div>
-    )
+    return this.pageHasDownloadableVideo
+      ? (
+        <div>
+          <h1>This page has a video you can download</h1>
+          <button onClick={this.onClickDownloadVideo.bind(this, url)}>Click here to download</button>
+        </div>
+      ) : (
+        <h1>Nothing to see here. Go to a YT video to see the magic</h1>
+      )
   }
 }

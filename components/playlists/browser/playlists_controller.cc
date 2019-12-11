@@ -39,6 +39,15 @@ const base::FilePath::StringType kDatabaseDirName(
 const base::FilePath::StringType kThumbnailFileName(
     FILE_PATH_LITERAL("thumbnail"));
 
+const char kHTMLTemplate[] =
+    "<video id='v' controls autoplay "
+    "onplay='a=document.getElementById(\"a\");a.currentTime=this.currentTime;a."
+    "play();' "
+    "onpause='a=document.getElementById(\"a\");a.pause()'><source "
+    "src='video_file.mp4' type='video/mp4' /></video> <video id='a' "
+    "style='display:none'><source src='audio_file.m4a' type='audio/m4a' "
+    "/></video>";
+
 PlaylistInfo CreatePlaylistInfo(const CreatePlaylistParams& params) {
   PlaylistInfo p;
   p.id = base::Token::CreateRandom().ToString();
@@ -639,31 +648,20 @@ void PlaylistsController::DoPlay(const std::string& id,
   base::Optional<base::Value> playlist_info =
       base::JSONReader::Read(playlist_info_json);
   if (!playlist_info) {
-    VLOG(1) << __func__ << ": "
-            << "Invalid playlist id for play: " << id;
+    LOG(ERROR) << __func__ << ": "
+               << "Invalid playlist id for play: " << id;
     return;
   }
 
   base::Optional<bool> partial_ready =
       playlist_info->FindBoolPath(kPlaylistsPartialReadyKey);
-  if (partial_ready != base::nullopt && !partial_ready.value()) {
-    VLOG(1) << __func__ << ": "
-            << "Playlist is not ready to play: " << id;
+  if (partial_ready != base::nullopt && partial_ready.value()) {
+    LOG(ERROR) << __func__ << ": "
+               << "Playlist is not ready to play: " << id;
     return;
   }
-  base::FilePath html_file_path = base_dir_.Append(GetPlaylistIDDirName(id))
-                                      .Append(FILE_PATH_LITERAL("index.html"));
-  // TODO(pilgrim) move this logic to browser/ui/webui/ to remove chrome/
-  // dependencies from this component
-  GURL html_file_url = net::FilePathToFileURL(html_file_path);
-  LOG(INFO) << "opening " << html_file_url.spec();
-  chrome::ScopedTabbedBrowserDisplayer browser_displayer(
-      Profile::FromBrowserContext(context_));
-  content::OpenURLParams open_url_params(
-      html_file_url, content::Referrer(),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
-  browser_displayer.browser()->OpenURL(open_url_params);
+
+  StartHTMLFileGeneration(id);
 }
 
 bool PlaylistsController::Play(const std::string& id) {
@@ -674,6 +672,50 @@ bool PlaylistsController::Play(const std::string& id) {
                      base::Unretained(db_controller_.get()), id),
       base::BindOnce(&PlaylistsController::DoPlay, weak_factory_.GetWeakPtr(),
                      id));
+}
+
+namespace {
+int DoGenerateHTMLFileOnIOThread(const base::FilePath& html_file_path) {
+  if (base::PathExists(html_file_path))
+    base::DeleteFile(html_file_path, false);
+
+  base::File html_file(html_file_path,
+                       base::File::FLAG_CREATE | base::File::FLAG_WRITE);
+  if (!html_file.IsValid())
+    return -1;
+
+  html_file.WriteAtCurrentPos(kHTMLTemplate, 313 /*kHTMLTemplate.length()*/);
+  return 0;
+}
+
+}  // namespace
+void PlaylistsController::StartHTMLFileGeneration(const std::string& id) {
+  html_file_path_ = base_dir_.Append(GetPlaylistIDDirName(id))
+                        .Append(FILE_PATH_LITERAL("index.html"));
+  base::PostTaskAndReplyWithResult(
+      io_task_runner(), FROM_HERE,
+      base::BindOnce(&DoGenerateHTMLFileOnIOThread, html_file_path_),
+      base::BindOnce(&PlaylistsController::OnHTMLFileGenerated,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void PlaylistsController::OnHTMLFileGenerated(int error_code) {
+  if (error_code) {
+    LOG(ERROR) << "couldn't create HTML file for player";
+    return;
+  }
+
+  // TODO(pilgrim) move this logic to browser/ui/webui/ to remove chrome/
+  // dependencies from this component
+  GURL html_file_url = net::FilePathToFileURL(html_file_path_);
+  // LOG(INFO) << "opening " << html_file_url.spec();
+  chrome::ScopedTabbedBrowserDisplayer browser_displayer(
+      Profile::FromBrowserContext(context_));
+  content::OpenURLParams open_url_params(
+      html_file_url, content::Referrer(),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
+  browser_displayer.browser()->OpenURL(open_url_params);
 }
 
 void PlaylistsController::AddObserver(PlaylistsControllerObserver* observer) {
