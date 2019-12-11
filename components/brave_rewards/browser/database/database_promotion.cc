@@ -12,6 +12,11 @@
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
+namespace {
+  const char* table_name_ = "promotion";
+  const int minimum_version_ = 10;
+}  // namespace
+
 namespace brave_rewards {
 
 DatabasePromotion::DatabasePromotion(int current_db_version) :
@@ -55,6 +60,21 @@ bool DatabasePromotion::CreateTable(sql::Database* db) {
     return true;
   }
 
+  const int version = GetCurrentDBVersion();
+
+  if (version >= 13) {
+    return CreateTableV13(db);
+  }
+
+  if (version >= 10) {
+    return CreateTableV10(db);
+  }
+
+  NOTREACHED();
+  return false;
+}
+
+bool DatabasePromotion::CreateTableV10(sql::Database* db) {
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
         "%s_id TEXT NOT NULL,"
@@ -75,9 +95,90 @@ bool DatabasePromotion::CreateTable(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
+bool DatabasePromotion::CreateTableV13(sql::Database* db) {
+  const std::string query = base::StringPrintf(
+      "CREATE TABLE %s ("
+        "%s_id TEXT NOT NULL,"
+        "version INTEGER NOT NULL,"
+        "type INTEGER NOT NULL,"
+        "public_keys TEXT NOT NULL,"
+        "suggestions INTEGER NOT NULL DEFAULT 0,"
+        "approximate_value DOUBLE NOT NULL DEFAULT 0,"
+        "status INTEGER NOT NULL DEFAULT 0,"
+        "expires_at TIMESTAMP NOT NULL,"
+        "claimed_at TIMESTAMP,"
+        "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"
+        "PRIMARY KEY (%s_id)"
+      ")",
+      table_name_,
+      table_name_,
+      table_name_);
+
+  return db->Execute(query.c_str());
+}
+
 bool DatabasePromotion::CreateIndex(sql::Database* db) {
+  return CreateIndexV13(db);
+}
+
+bool DatabasePromotion::CreateIndexV10(sql::Database* db) {
   const std::string id = base::StringPrintf("%s_id", table_name_);
   return this->InsertIndex(db, table_name_, id);
+}
+
+bool DatabasePromotion::CreateIndexV13(sql::Database* db) {
+  const std::string id = base::StringPrintf("%s_id", table_name_);
+  return this->InsertIndex(db, table_name_, id);
+}
+
+bool DatabasePromotion::Migrate(sql::Database* db, const int target) {
+  switch (target) {
+    case 10: {
+      return MigrateToV10(db);
+    }
+    case 13: {
+      return MigrateToV13(db);
+    }
+    default: {
+      NOTREACHED();
+      return false;
+    }
+  }
+}
+
+bool DatabasePromotion::MigrateToV10(sql::Database* db) {
+  if (!CreateTableV10(db)) {
+    return false;
+  }
+
+  if (!CreateIndexV10(db)) {
+    return false;
+  }
+
+  return true;
+}
+
+bool DatabasePromotion::MigrateToV13(sql::Database* db) {
+  if (!db->DoesTableExist(table_name_)) {
+    if (!CreateTableV13(db)) {
+      return false;
+    }
+  }
+
+  const char column[] = "claimed_at";
+  if (!db->DoesColumnExist(table_name_, column)) {
+    const std::string query = base::StringPrintf(
+        "ALTER TABLE %s ADD %s TIMESTAMP",
+        table_name_,
+        column);
+
+    sql::Statement statement(
+        db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
+
+    return statement.Run();
+  }
+
+  return true;
 }
 
 bool DatabasePromotion::InsertOrUpdate(
@@ -95,8 +196,8 @@ bool DatabasePromotion::InsertOrUpdate(
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(%s_id, version, type, public_keys, suggestions, "
-      "approximate_value, status, expires_at) "
-      "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      "approximate_value, status, expires_at, claimed_at) "
+      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
       table_name_,
       table_name_);
 
@@ -111,6 +212,7 @@ bool DatabasePromotion::InsertOrUpdate(
   statement.BindDouble(5, info->approximate_value);
   statement.BindInt(6, static_cast<int>(info->status));
   statement.BindInt64(7, info->expires_at);
+  statement.BindInt64(8, info->claimed_at);
 
   if (!statement.Run()) {
     return false;
@@ -121,7 +223,6 @@ bool DatabasePromotion::InsertOrUpdate(
       return false;
     }
   }
-
 
   return transaction.Commit();
 }
@@ -135,7 +236,7 @@ ledger::PromotionPtr DatabasePromotion::GetRecord(
 
   const std::string query = base::StringPrintf(
       "SELECT %s_id, version, type, public_keys, suggestions, "
-      "approximate_value, status, expires_at FROM %s WHERE %s_id=?",
+      "approximate_value, status, expires_at, claimed_at FROM %s WHERE %s_id=?",
       table_name_,
       table_name_,
       table_name_);
@@ -156,6 +257,7 @@ ledger::PromotionPtr DatabasePromotion::GetRecord(
   info->approximate_value = statement.ColumnDouble(5);
   info->status = static_cast<ledger::PromotionStatus>(statement.ColumnInt(6));
   info->expires_at = statement.ColumnInt64(7);
+  info->claimed_at = statement.ColumnInt64(8);
   info->credentials = creds_->GetRecord(db, info->id);
 
   return info;
@@ -164,7 +266,7 @@ ledger::PromotionPtr DatabasePromotion::GetRecord(
 ledger::PromotionMap DatabasePromotion::GetAllRecords(sql::Database* db) {
   const std::string query = base::StringPrintf(
       "SELECT %s_id, version, type, public_keys, suggestions, "
-      "approximate_value, status, expires_at FROM %s",
+      "approximate_value, status, expires_at, claimed_at FROM %s",
       table_name_,
       table_name_);
 
@@ -182,6 +284,7 @@ ledger::PromotionMap DatabasePromotion::GetAllRecords(sql::Database* db) {
     info->approximate_value = statement.ColumnDouble(5);
     info->status = static_cast<ledger::PromotionStatus>(statement.ColumnInt(6));
     info->expires_at = statement.ColumnInt64(7);
+    info->claimed_at = statement.ColumnInt64(8);
     info->credentials = creds_->GetRecord(db, info->id);
 
     map.insert(std::make_pair(info->id, std::move(info)));

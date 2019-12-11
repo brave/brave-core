@@ -1293,6 +1293,26 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv11tov12_ContributionInfo) {
   EXPECT_EQ(list.at(3)->publisher_key, "reddit.com");
 }
 
+TEST_F(PublisherInfoDatabaseTest, Migrationv12tov13) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateMigrationDatabase(&temp_dir, &db_file, 12, 13);
+  EXPECT_TRUE(publisher_info_database_->Init());
+
+  ASSERT_EQ(publisher_info_database_->GetTableVersionNumber(), 13);
+
+  const std::string schema = publisher_info_database_->GetSchema();
+  EXPECT_EQ(schema, GetSchemaString(13));
+}
+
+TEST_F(PublisherInfoDatabaseTest, Migrationv12tov13_Promotion) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateMigrationDatabase(&temp_dir, &db_file, 12, 13);
+  EXPECT_TRUE(publisher_info_database_->Init());
+  EXPECT_EQ(CountTableRows("promotion"), 1);
+}
+
 TEST_F(PublisherInfoDatabaseTest, DeleteActivityInfo) {
   base::ScopedTempDir temp_dir;
   base::FilePath db_file;

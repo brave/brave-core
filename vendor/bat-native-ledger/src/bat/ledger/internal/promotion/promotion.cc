@@ -676,7 +676,10 @@ void Promotion::FinishPromotion(
         [](const ledger::Result _){});
   }
 
+  const uint64_t current_time =
+      static_cast<uint64_t>(base::Time::Now().ToDoubleT());
   promotion->status = ledger::PromotionStatus::FINISHED;
+  promotion->claimed_at = current_time;
   ledger_->InsertOrUpdatePromotion(
         std::move(promotion),
         [](const ledger::Result _){});
