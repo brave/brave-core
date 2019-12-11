@@ -563,7 +563,7 @@ class PageWallet extends React.Component<Props, State> {
           this.state.modalActivity
             ? <ModalActivity
               onlyAnonWallet={onlyAnonWallet}
-              contributeRows={[
+              activityRows={[
                 {
                   profile: {
                     name: 'Bart Baker',
@@ -572,17 +572,16 @@ class PageWallet extends React.Component<Props, State> {
                     src: ''
                   },
                   url: 'https://brave.com',
-                  attention: 40,
-                  onRemove: this.onModalActivityRemove,
-                  token: {
-                    value: '5.0',
+                  amount: {
+                    tokens: '5.0',
                     converted: '5.00'
-                  }
+                  },
+                  type: 'monthly'
                 }
               ]}
               transactionRows={[
                 {
-                  date: '6/1',
+                  date: 1576066103000,
                   type: 'ads',
                   description: 'Brave Ads payment for May',
                   amount: {
@@ -640,14 +639,6 @@ class PageWallet extends React.Component<Props, State> {
                 }
               ]}
               paymentDay={12}
-              openBalance={{
-                value: '10.0',
-                converted: '5.20'
-              }}
-              closingBalance={{
-                value: '11.0',
-                converted: '5.30'
-              }}
             />
             : null
         }

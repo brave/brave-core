@@ -5,7 +5,6 @@
 import * as React from 'react'
 import {
   StyledTHLast,
-  StyledType,
   StyledProvider
 } from './style'
 import Table, { Row } from 'brave-ui/components/dataTables/table/index'
@@ -16,7 +15,7 @@ import { SummaryType as TransactionType } from '../modalActivity'
 type Description = string | { publisher: string, platform: string }
 
 export interface DetailRow {
-  date: string
+  date: number
   type: TransactionType
   description: Description
   amount: { value: string, converted: string, isNegative?: boolean }
@@ -40,7 +39,6 @@ export default class TableTransactions extends React.PureComponent<Props, {}> {
   getHeader = () => {
     const header: string[] = [
       getLocale('date'),
-      getLocale('type'),
       getLocale('description'),
       getLocale('amount')
     ]
@@ -75,10 +73,7 @@ export default class TableTransactions extends React.PureComponent<Props, {}> {
       const cell: Row = {
         content: [
           {
-            content: row.date
-          },
-          {
-            content: <StyledType type={row.type}>{getLocale(row.type)}</StyledType>
+            content: new Intl.DateTimeFormat('default', { month: 'short', day: 'numeric' }).format(row.date * 1000)
           },
           {
             content: this.getDescription(row.description)

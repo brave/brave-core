@@ -445,6 +445,7 @@
       <message name="IDS_BRAVE_UI_MONTH_OCT" desc="">October</message>
       <message name="IDS_BRAVE_UI_MONTH_SEP" desc="">September</message>
       <message name="IDS_BRAVE_UI_MONTHLY_TIPS" desc="">Monthly Contributions!</message>
+      <message name="IDS_BRAVE_UI_MONTHLY_CONTRIBUTIONS" desc="">Monthly Contributions</message>
       <message name="IDS_BRAVE_UI_NEW_GRANT" desc="">A free token grant is available.</message>
       <message name="IDS_BRAVE_UI_GRANT_TITLE_UGP" desc="Title for a reward grant when it has been claimed">It's your lucky day!</message>
       <message name="IDS_BRAVE_UI_GRANT_SUBTITLE_UGP" desc="Subtitle for a reward grant when it has been claimed">Your token grant is on its way.</message>

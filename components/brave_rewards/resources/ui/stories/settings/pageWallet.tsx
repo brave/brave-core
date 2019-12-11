@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Components
-import { DetailRow as ContributeDetailRow } from '../../components/tableContribute'
+import { ExtendedActivityRow as ActivityRows } from '../../components/modalActivity'
 import { DetailRow as TransactionsRow } from '../../components/tableTransactions'
 
 import {
@@ -56,7 +56,7 @@ class PageWallet extends React.Component<Props, State> {
     }
   }
 
-  get activityContributions (): ContributeDetailRow[] {
+  get activityContributions (): ActivityRows[] {
     return [
       {
         profile: {
@@ -66,12 +66,11 @@ class PageWallet extends React.Component<Props, State> {
           src: favicon
         },
         url: 'https://brave.com',
-        attention: 40,
-        onRemove: doNothing,
-        token: {
-          value: '5.0',
+        amount: {
+          tokens: '5.0',
           converted: '5.00'
-        }
+        },
+        type: 'monthly'
       },
       {
         profile: {
@@ -80,12 +79,11 @@ class PageWallet extends React.Component<Props, State> {
           src: ddgo
         },
         url: 'https://brave.com',
-        attention: 20,
-        onRemove: doNothing,
-        token: {
-          value: '4.0',
+        amount: {
+          tokens: '4.0',
           converted: '11.00'
-        }
+        },
+        type: 'monthly'
       },
       {
         profile: {
@@ -94,12 +92,11 @@ class PageWallet extends React.Component<Props, State> {
           src: buzz
         },
         url: 'https://brave.com',
-        attention: 10,
-        onRemove: doNothing,
-        token: {
-          value: '3.0',
+        amount: {
+          tokens: '3.0',
           converted: '15.00'
-        }
+        },
+        type: 'monthly'
       },
       {
         profile: {
@@ -108,12 +105,11 @@ class PageWallet extends React.Component<Props, State> {
           src: guardian
         },
         url: 'https://brave.com',
-        attention: 5,
-        onRemove: doNothing,
-        token: {
-          value: '2.0',
+        amount: {
+          tokens: '2.0',
           converted: '17.00'
-        }
+        },
+        type: 'contribute'
       },
       {
         profile: {
@@ -122,12 +118,11 @@ class PageWallet extends React.Component<Props, State> {
           src: wiki
         },
         url: 'https://brave.com',
-        attention: 4,
-        onRemove: doNothing,
-        token: {
-          value: '1.0',
+        amount: {
+          tokens: '1.0',
           converted: '11.00'
-        }
+        },
+        type: 'tip'
       }
     ]
   }
@@ -135,8 +130,8 @@ class PageWallet extends React.Component<Props, State> {
   get activityTransactions (): TransactionsRow[] {
     return [
       {
-        date: '6/1',
-        type: 'deposit',
+        date: 1576066103000,
+        type: 'ads',
         description: 'Brave Ads payment for May',
         amount: {
           value: '5.0',
@@ -144,8 +139,8 @@ class PageWallet extends React.Component<Props, State> {
         }
       },
       {
-        date: '6/9',
-        type: 'tipOnLike',
+        date: 1576066103000,
+        type: 'tip',
         description: {
           publisher: 'Jonathon Doe',
           platform: 'YouTube'
@@ -157,8 +152,8 @@ class PageWallet extends React.Component<Props, State> {
         }
       },
       {
-        date: '6/10',
-        type: 'deposit',
+        date: 1576066103000,
+        type: 'grant',
         description: 'Token grant made available or unlocked',
         amount: {
           value: '10.0',
@@ -166,8 +161,8 @@ class PageWallet extends React.Component<Props, State> {
         }
       },
       {
-        date: '6/12',
-        type: 'donation',
+        date: 1576066103000,
+        type: 'monthly',
         description: 'coinmarketcap.com',
         amount: {
           isNegative: true,
@@ -176,8 +171,8 @@ class PageWallet extends React.Component<Props, State> {
         }
       },
       {
-        date: '6/14',
-        type: 'tipOnLike',
+        date: 1576066103000,
+        type: 'tip',
         description: {
           publisher: 'BrendanEich',
           platform: 'Twitter'
@@ -189,31 +184,12 @@ class PageWallet extends React.Component<Props, State> {
         }
       },
       {
-        date: '6/26',
-        type: 'deposit',
-        description: 'Added via Uphold',
-        amount: {
-          value: '10.0',
-          converted: '15.00'
-        }
-      },
-      {
-        date: '6/31',
+        date: 1576066103000,
         type: 'contribute',
         description: 'Monthly payment',
         amount: {
           isNegative: true,
           value: '10.0',
-          converted: '15.00'
-        }
-      },
-      {
-        date: '6/31',
-        type: 'recurringDonation',
-        description: 'Monthly payment',
-        amount: {
-          isNegative: true,
-          value: '5.0',
           converted: '15.00'
         }
       }
@@ -266,7 +242,6 @@ class PageWallet extends React.Component<Props, State> {
           compact={false}
           contentPadding={false}
           onSettingsClick={this.onBackupModalOpen}
-          onActivityClick={doNothing}
           showCopy={true}
           onlyAnonWallet={false}
           showSecActions={true}
@@ -313,78 +288,55 @@ class PageWallet extends React.Component<Props, State> {
         {
           this.state.modalActivity
             ? <ModalActivity
-              contributeRows={this.activityContributions}
-              transactionRows={this.activityTransactions}
-              onClose={this.onActivityClose}
-              onPrint={doNothing}
-              onDownloadPDF={doNothing}
-              onMonthChange={doNothing}
-              months={{
-                'jun-2018': 'June 2018',
-                'may-2018': 'May 2018',
-                'apr-2018': 'April 2018'
-              }}
-              currentMonth={'jun-2018'}
-              summary={[
-                {
-                  text: 'Token Grant available',
-                  type: 'grant',
-                  token: {
-                    value: '10.0',
-                    converted: '5.20'
+                activityRows={this.activityContributions}
+                transactionRows={this.activityTransactions}
+                onClose={this.onActivityClose}
+                onPrint={doNothing}
+                onMonthChange={doNothing}
+                months={{
+                  'jun-2018': 'June 2018',
+                  'may-2018': 'May 2018',
+                  'apr-2018': 'April 2018'
+                }}
+                currentMonth={'jun-2018'}
+                summary={[
+                  {
+                    type: 'grant',
+                    token: {
+                      value: '10.0',
+                      converted: '5.20'
+                    }
+                  },
+                  {
+                    type: 'ads',
+                    token: {
+                      value: '10.0',
+                      converted: '5.20'
+                    }
+                  },
+                  {
+                    type: 'contribute',
+                    token: {
+                      value: '10.0',
+                      converted: '5.20'
+                    }
+                  },
+                  {
+                    type: 'monthly',
+                    token: {
+                      value: '2.0',
+                      converted: '1.1'
+                    }
+                  },
+                  {
+                    type: 'tip',
+                    token: {
+                      value: '19.0',
+                      converted: '10.10'
+                    }
                   }
-                },
-                {
-                  text: 'Earnings from Brave Ads',
-                  type: 'ads',
-                  token: {
-                    value: '10.0',
-                    converted: '5.20'
-                  }
-                },
-                {
-                  text: 'Brave Contribute',
-                  type: 'contribute',
-                  notPaid: true,
-                  token: {
-                    value: '10.0',
-                    converted: '5.20',
-                    isNegative: true
-                  }
-                },
-                {
-                  text: 'Recurring Donations',
-                  type: 'recurring',
-                  notPaid: true,
-                  token: {
-                    value: '2.0',
-                    converted: '1.1',
-                    isNegative: true
-                  }
-                },
-                {
-                  text: 'One-time Donations/Tips',
-                  type: 'donations',
-                  token: {
-                    value: '19.0',
-                    converted: '10.10',
-                    isNegative: true
-                  }
-                }
-              ]}
-              total={{
-                value: '1.0',
-                converted: '0.5'
-              }}
-              paymentDay={12}
-              openBalance={{
-                value: '10.0',
-                converted: '5.20'
-              }}
-              closingBalance={{
-                value: '11.0',
-                converted: '5.30'
-              }}
+                ]}
+                paymentDay={12}
             />
             : null
         }

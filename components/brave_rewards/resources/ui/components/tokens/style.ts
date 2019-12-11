@@ -28,7 +28,7 @@ const sizes: Record<Size, { token: string, tokenNum: string, text: string }> = {
 }
 
 const colors: Record<Type, string> = {
-  contribute: '#9752cb',
+  contribute: '#696fdc',
   default: '#4b4c5c',
   earning: '#c12d7c'
 }

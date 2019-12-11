@@ -88,7 +88,7 @@ declare namespace Rewards {
     year: number
     balance?: BalanceReport
     transactions?: TransactionReport[]
-    contribution?: ContributionReport[]
+    contributions?: ContributionReport[]
   }
 
   export enum ReportType {

@@ -11,7 +11,6 @@ import { withKnobs, text } from '@storybook/addon-knobs'
 import { DetailRow as AdsHistoryRow } from '../components/tableAdsHistory'
 import { DetailRow as ContributeRow } from '../components/tableContribute'
 import { DetailRow as DonationDetailRow } from '../components/tableDonation'
-import { DetailRow as TransactionsRow } from '../components/tableTransactions'
 import { DetailRow as PendingDetailRow } from '../components/tablePending'
 import {
   ModalContribute,
@@ -133,179 +132,49 @@ storiesOf('Rewards/Modal', module)
     )
   }))
   .add('Activity', () => {
-    const contributions: ContributeRow[] = [
-      {
-        profile: {
-          name: 'Jonathon Doe',
-          verified: true,
-          provider: 'youtube',
-          src: favicon
-        },
-        url: 'https://brave.com',
-        attention: 40,
-        onRemove: doNothing,
-        token: {
-          value: '5.0',
-          converted: '5.00'
-        }
-      },
-      {
-        profile: {
-          name: 'duckduckgo.com',
-          verified: true,
-          src: ddgo
-        },
-        url: 'https://brave.com',
-        attention: 20,
-        onRemove: doNothing,
-        token: {
-          value: '4.0',
-          converted: '11.00'
-        }
-      },
-      {
-        profile: {
-          name: 'buzzfeed.com',
-          verified: false,
-          src: buzz
-        },
-        url: 'https://brave.com',
-        attention: 10,
-        onRemove: doNothing,
-        token: {
-          value: '3.0',
-          converted: '15.00'
-        }
-      },
-      {
-        profile: {
-          name: 'theguardian.com',
-          verified: true,
-          src: guardian
-        },
-        url: 'https://brave.com',
-        attention: 5,
-        onRemove: doNothing,
-        token: {
-          value: '2.0',
-          converted: '17.00'
-        }
-      },
-      {
-        profile: {
-          name: 'wikipedia.org',
-          verified: false,
-          src: wiki
-        },
-        url: 'https://brave.com',
-        attention: 4,
-        onRemove: doNothing,
-        token: {
-          value: '1.0',
-          converted: '11.00'
-        }
-      }
-    ]
-
-    const transactions: TransactionsRow[] = [
-      {
-        date: '6/1',
-        type: 'deposit',
-        description: 'Brave Ads payment for May',
-        amount: {
-          value: '5.0',
-          converted: '5.00'
-        }
-      },
-      {
-        date: '6/9',
-        type: 'tipOnLike',
-        description: {
-          publisher: 'Jonathon Doe',
-          platform: 'YouTube'
-        },
-        amount: {
-          isNegative: true,
-          value: '5.0',
-          converted: '11.00'
-        }
-      },
-      {
-        date: '6/10',
-        type: 'deposit',
-        description: 'Token grant made available or unlocked',
-        amount: {
-          value: '10.0',
-          converted: '15.00'
-        }
-      },
-      {
-        date: '6/12',
-        type: 'donation',
-        description: 'coinmarketcap.com',
-        amount: {
-          isNegative: true,
-          value: '10.0',
-          converted: '15.00'
-        }
-      },
-      {
-        date: '6/14',
-        type: 'tipOnLike',
-        description: {
-          publisher: 'BrendanEich',
-          platform: 'Twitter'
-        },
-        amount: {
-          isNegative: true,
-          value: '1.0',
-          converted: '2.00'
-        }
-      },
-      {
-        date: '6/26',
-        type: 'deposit',
-        description: 'Added via Uphold',
-        amount: {
-          value: '10.0',
-          converted: '15.00'
-        }
-      },
-      {
-        date: '6/31',
-        type: 'contribute',
-        description: 'Monthly payment',
-        amount: {
-          isNegative: true,
-          value: '10.0',
-          converted: '15.00'
-        }
-      },
-      {
-        date: '6/31',
-        type: 'recurringDonation',
-        description: 'Monthly payment',
-        amount: {
-          isNegative: true,
-          value: '5.0',
-          converted: '15.00'
-        }
-      }
-    ]
-
     return (
       <ModalActivity
-        contributeRows={contributions}
-        transactionRows={transactions}
+        onlyAnonWallet={false}
+        activityRows={[
+          {
+            profile: {
+              name: 'Bart Baker',
+              verified: true,
+              provider: 'youtube',
+              src: ''
+            },
+            url: 'https://brave.com',
+            amount: {
+              tokens: '5.0',
+              converted: '5.00'
+            },
+            type: 'monthly'
+          }
+        ]}
+        transactionRows={[
+          {
+            date: 1576066103000,
+            type: 'ads',
+            description: 'Brave Ads payment for May',
+            amount: {
+              value: '5.0',
+              converted: '5.00'
+            }
+          }
+        ]}
         onClose={doNothing}
         onPrint={doNothing}
-        onDownloadPDF={doNothing}
         onMonthChange={doNothing}
-        months={{ 'jun-2018': 'June 2018', 'may-2018': 'May 2018', 'apr-2018': 'April 2018' }}
-        currentMonth={'jun-2018'}
+        months={{
+          'aug-2019': 'August 2019',
+          'jul-2019': 'July 2019',
+          'jun-2019': 'June 2019',
+          'may-2019': 'May 2019',
+          'apr-2019': 'April 2019'
+        }}
+        currentMonth={'aug-2019'}
         summary={[
           {
-            text: 'Token Grant available',
             type: 'grant',
             token: {
               value: '10.0',
@@ -313,7 +182,6 @@ storiesOf('Rewards/Modal', module)
             }
           },
           {
-            text: 'Earnings from Brave Ads',
             type: 'ads',
             token: {
               value: '10.0',
@@ -321,56 +189,28 @@ storiesOf('Rewards/Modal', module)
             }
           },
           {
-            text: 'Deposits',
-            type: 'deposit',
+            type: 'contribute',
             token: {
               value: '10.0',
               converted: '5.20'
             }
           },
           {
-            text: 'Brave Contribute',
-            type: 'contribute',
-            notPaid: true,
-            token: {
-              value: '10.0',
-              converted: '5.20',
-              isNegative: true
-            }
-          },
-          {
-            text: 'Recurring Donations',
-            type: 'recurring',
-            notPaid: true,
+            type: 'monthly',
             token: {
               value: '2.0',
-              converted: '1.10',
-              isNegative: true
+              converted: '1.1'
             }
           },
           {
-            text: 'One-time Donations/Tips',
-            type: 'donations',
+            type: 'tip',
             token: {
               value: '19.0',
-              converted: '10.10',
-              isNegative: true
+              converted: '10.10'
             }
           }
         ]}
-        total={{
-          value: '11.0',
-          converted: '0.5'
-        }}
         paymentDay={12}
-        openBalance={{
-          value: '10.0',
-          converted: '5.20'
-        }}
-        closingBalance={{
-          value: '21.0',
-          converted: '5.30'
-        }}
       />
     )
   })

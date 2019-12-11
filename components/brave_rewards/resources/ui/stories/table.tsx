@@ -165,8 +165,8 @@ storiesOf('Rewards/Table', module)
   .add('Transactions', () => {
     const rows: TransactionsRow[] = [
       {
-        date: '6/1',
-        type: 'deposit',
+        date: 1576066103000,
+        type: 'ads',
         description: 'Brave Ads payment for May',
         amount: {
           value: '5.0',
@@ -174,8 +174,8 @@ storiesOf('Rewards/Table', module)
         }
       },
       {
-        date: '6/9',
-        type: 'tipOnLike',
+        date: 1576066103000,
+        type: 'tip',
         description: {
           publisher: 'Jonathon Doe',
           platform: 'YouTube'
@@ -187,7 +187,7 @@ storiesOf('Rewards/Table', module)
         }
       },
       {
-        date: '6/31',
+        date: 1576066103000,
         type: 'contribute',
         description: 'Monthly payment',
         amount: {

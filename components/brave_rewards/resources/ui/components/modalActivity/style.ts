@@ -4,6 +4,11 @@
 
 import styled from 'brave-ui/theme'
 
+interface TabProps {
+  isFirst: boolean
+  selected: boolean
+}
+
 export const StyledWrapper = styled<{}, 'div'>('div')`
   font-family: ${p => p.theme.fontFamily.body};
 `
@@ -65,33 +70,11 @@ export const StyledIconText = styled<{}, 'div'>('div')`
   margin-left: 13px;
 `
 
-export const StyledBalance = styled<{}, 'div'>('div')`
-  margin-top: 41px;
-`
-
 export const StyledTables = styled<{}, 'div'>('div')`
   background-color: #f9f9fd;
-  margin: 0 -50px;
-  padding: 0 50px;
-`
-
-export const StyledWarning = styled<{}, 'div'>('div')`
-  display: flex;
-  justify-content: center;
+  margin: 0 -48px;
+  padding: 5px 50px;
   border-top: 1px solid #ebecf0;
-  margin: 0 -50px;
-  padding: 17px 50px 0;
-  align-items: flex-start;
-`
-
-export const StyledWarningText = styled<{}, 'div'>('div')`
-  max-width: 508px;
-  font-family: Muli, sans-serif;
-  font-size: 12px;
-  font-weight: 300;
-  line-height: 1.5;
-  color: #686978;
-  padding-left: 8px;
 `
 
 export const StyledNote = styled<{}, 'div'>('div')`
@@ -104,63 +87,43 @@ export const StyledNote = styled<{}, 'div'>('div')`
   color: #686978;
 `
 
-export const StyledTableTitle = styled<{}, 'div'>('div')`
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 2.79;
-  letter-spacing: 0.2px;
-  color: #4b4c5c;
-  text-transform: uppercase;
-  padding-top: 14px;
-  margin-top: 28px;
-`
-
-export const StyledTableSubTitle = styled<{}, 'div'>('div')`
-  font-size: 14px;
-  font-weight: 300;
-  line-height: 2.79;
-  letter-spacing: 0.2px;
-  color: #4b4c5c;
-  text-transform: none;
-`
-
-export const StyledVerified = styled<{}, 'div'>('div')`
-  display: flex;
-  font-size: 12px;
-  align-items: center;
-  line-height: 2;
-  color: #9e9fab;
-  padding: 11px 0 32px;
-`
-
-export const StyledVerifiedText = styled<{}, 'div'>('div')`
-  margin-left: 5px;
-`
-
-export const StyledClosing = styled<{}, 'div'>('div')`
-  margin-top: -10px;
-`
-
 export const StyledActionIcon = styled<{}, 'span'>('span')`
   color: #A1A8F2;
   width: 27px;
 `
 
-export const StyledAlertWrapper = styled<{}, 'div'>('div')`
-  color: #E9AB18;
-  width: 20px;
-  margin-left: 3px;
+export const Tabs = styled<{}, 'div'>('div')`
+  width: 100%;
+  justify-content: space-between;
+  display: flex;
+  margin-bottom: -10px;
 `
 
-export const StyledWarningWrapper = styled<{}, 'div'>('div')`
-  display: flex;
+export const Tab = styled<TabProps, 'button'>('button')`
+  flex: 1 1 0px
+  font-size: 16px;
+  font-weight: ${p => p.selected ? 700 : 400};
+  letter-spacing: -0.29px;
+  line-height: 44px;
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  margin: 0px 2px;
+  border:none;
+  border-left: ${p => p.isFirst ? 'none' : '1px solid rgb(223, 223, 232)'};
+  background: none;
 `
 
-export const StyledVerifiedIcon = styled<{}, 'div'>('div')`
-  display: flex;
-  color: #392DD1;
-  width: 24px;
-  height: 24px;
+export const TabContent = styled<{}, 'div'>('div')`
+`
+
+export const PaymentMonthly = styled<{}, 'p'>('p')`
+  font-size: 14px;
+  font-weight: 300;
+  letter-spacing: 0.2px;
+  color: #4b4c5c;
+  text-transform: none;
+  padding: 0px;
+  margin: -8px 0 24px;
+  display: block;
 `
