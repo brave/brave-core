@@ -117,24 +117,28 @@ const bookmarks::BookmarkNode* GetSingleNodeByUrl(
 
 bool DevicesContains(brave_sync::SyncDevices* devices,
                      const std::string& id,
+                     const std::string& id_v2,
                      const std::string& name) {
   DCHECK(devices);
   for (const auto& device : devices->devices_) {
-    if (device.device_id_ == id && device.name_ == name) {
+    if (device.device_id_ == id && device.name_ == name &&
+        device.device_id_v2_ == id_v2) {
       return true;
     }
   }
   return false;
 }
 
-MATCHER_P2(ContainsDeviceRecord,
+MATCHER_P3(ContainsDeviceRecord,
            action,
            name,
+           device_id_v2,
            "contains device sync record with params") {
   for (const auto& record : arg) {
     if (record->has_device()) {
       const auto& device = record->GetDevice();
-      if (record->action == action && device.name == name) {
+      if (record->action == action && device.name == name &&
+          device.deviceIdV2 == device_id_v2) {
         return true;
       }
     }
@@ -401,36 +405,42 @@ TEST_F(BraveSyncServiceTest, GetSeed) {
   // Service gets seed from client via BraveSyncServiceImpl::OnSaveInitData
   const auto binary_seed = brave_sync::Uint8Array(16, 77);
 
-  sync_service()->OnSaveInitData(binary_seed, {0});
+  const std::string device_id_v2 = "beef12";
+  sync_service()->OnSaveInitData(binary_seed, {0}, device_id_v2);
   std::string expected_seed = brave_sync::StrFromUint8Array(binary_seed);
   EXPECT_EQ(sync_service()->GetSeed(), expected_seed);
+  EXPECT_EQ(brave_sync_prefs()->GetThisDeviceIdV2(), device_id_v2);
 }
 
 TEST_F(BraveSyncServiceTest, OnDeleteDevice) {
   RecordsList records;
   records.push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "1", "device1"));
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "", "1", "beef01",
+                         "device1"));
   records.push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "2", "device2"));
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "", "2", "beef02",
+                         "device2"));
   records.push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "3", "device3"));
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "", "3", "beef03",
+                         "device3"));
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedPreferences(records);
 
   brave_sync_prefs()->SetThisDeviceId("1");
+  brave_sync_prefs()->SetThisDeviceIdV2("beef01");
   auto devices = brave_sync_prefs()->GetSyncDevices();
 
-  EXPECT_TRUE(DevicesContains(devices.get(), "1", "device1"));
-  EXPECT_TRUE(DevicesContains(devices.get(), "2", "device2"));
-  EXPECT_TRUE(DevicesContains(devices.get(), "3", "device3"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "1", "beef01", "device1"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "2", "beef02", "device2"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "3", "beef03", "device3"));
 
   EXPECT_CALL(*sync_client(),
               SendSyncRecords("PREFERENCES",
                               ContainsDeviceRecord(SyncRecord::Action::A_DELETE,
-                                                   "device3")))
+                                                   "device3", "beef03")))
       .Times(1);
   EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, _, _));
-  sync_service()->OnDeleteDevice("3");
+  sync_service()->OnDeleteDevice("beef03");
 
   RecordsList resolved_records;
   auto resolved_record = SyncRecord::Clone(*records.at(2));
@@ -447,29 +457,37 @@ TEST_F(BraveSyncServiceTest, OnDeleteDevice) {
   sync_service()->OnResolvedPreferences(resolved_records);
 
   auto devices_final = brave_sync_prefs()->GetSyncDevices();
-  EXPECT_TRUE(DevicesContains(devices_final.get(), "1", "device1"));
-  EXPECT_TRUE(DevicesContains(devices_final.get(), "2", "device2"));
-  EXPECT_FALSE(DevicesContains(devices_final.get(), "3", "device3"));
+  EXPECT_TRUE(DevicesContains(devices_final.get(), "1", "beef01", "device1"));
+  EXPECT_TRUE(DevicesContains(devices_final.get(), "2", "beef02", "device2"));
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "3", "beef03", "device3"));
 }
 
 TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenOneDevice) {
+  const std::string object_id_1 = "0, 0, 0, 0, 0, 0, 0, 0, "
+                                  "0, 0, 0, 0, 0, 0, 0, 1";
+  const std::string object_id_2 = "0, 0, 0, 0, 0, 0, 0, 0, "
+                                  "0, 0, 0, 0, 0, 0, 0, 2";
   brave_sync_prefs()->SetThisDeviceId("1");
+  brave_sync_prefs()->SetThisDeviceObjectId(object_id_1);
+  brave_sync_prefs()->SetThisDeviceIdV2("beef01");
   RecordsList records;
   records.push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "1", "device1"));
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, object_id_1, "1",
+                         "beef01", "device1"));
   records.push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "2", "device2"));
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, object_id_2, "2",
+                         "beef02", "device2"));
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedPreferences(records);
 
   auto devices = brave_sync_prefs()->GetSyncDevices();
 
-  EXPECT_TRUE(DevicesContains(devices.get(), "1", "device1"));
-  EXPECT_TRUE(DevicesContains(devices.get(), "2", "device2"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "1", "beef01", "device1"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "2", "beef02", "device2"));
 
   EXPECT_CALL(*sync_client(), SendSyncRecords).Times(1);
   EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, _, _));
-  sync_service()->OnDeleteDevice("2");
+  sync_service()->OnDeleteDevice("beef02");
 
   RecordsList resolved_records;
   auto resolved_record = SyncRecord::Clone(*records.at(1));
@@ -486,35 +504,45 @@ TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenOneDevice) {
   sync_service()->OnResolvedPreferences(resolved_records);
 
   auto devices_semi_final = brave_sync_prefs()->GetSyncDevices();
-  EXPECT_FALSE(DevicesContains(devices_semi_final.get(), "2", "device2"));
-  EXPECT_TRUE(DevicesContains(devices_semi_final.get(), "1", "device1"));
+  EXPECT_FALSE(DevicesContains(devices_semi_final.get(), "2", "beef02",
+                               "device2"));
+  EXPECT_TRUE(DevicesContains(devices_semi_final.get(), "1", "beef01",
+                              "device1"));
 }
 
 TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenSelfDeleted) {
+  const std::string object_id_1 = "0, 0, 0, 0, 0, 0, 0, 0, "
+                                  "0, 0, 0, 0, 0, 0, 0, 1";
+  const std::string object_id_2 = "0, 0, 0, 0, 0, 0, 0, 0, "
+                                  "0, 0, 0, 0, 0, 0, 0, 2";
   brave_sync_prefs()->SetThisDeviceId("1");
+  brave_sync_prefs()->SetThisDeviceObjectId(object_id_1);
+  brave_sync_prefs()->SetThisDeviceIdV2("beef01");
   EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   brave_sync_prefs()->SetSyncEnabled(true);
   RecordsList records;
   records.push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "1", "device1"));
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, object_id_1, "1",
+                         "beef01", "device1"));
   records.push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "2", "device2"));
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, object_id_2, "2",
+                         "beef02","device2"));
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedPreferences(records);
 
   auto devices = brave_sync_prefs()->GetSyncDevices();
 
-  EXPECT_TRUE(DevicesContains(devices.get(), "1", "device1"));
-  EXPECT_TRUE(DevicesContains(devices.get(), "2", "device2"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "1", "beef01", "device1"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "2", "beef02", "device2"));
 
   EXPECT_CALL(*sync_client(),
               SendSyncRecords("PREFERENCES",
                               ContainsDeviceRecord(SyncRecord::Action::A_DELETE,
-                                                   "device1")))
+                                                   "device1", "beef01")))
       .Times(1);
   EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, _, _));
-  sync_service()->OnDeleteDevice("1");
+  sync_service()->OnDeleteDevice("beef01");
 
   // Enabled->Disabled
   EXPECT_CALL(*sync_client(), OnSyncEnabledChanged).Times(1);
@@ -529,8 +557,8 @@ TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenSelfDeleted) {
   EXPECT_FALSE(brave_sync_prefs()->GetSyncEnabled());
 
   auto devices_final = brave_sync_prefs()->GetSyncDevices();
-  EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "device1"));
-  EXPECT_FALSE(DevicesContains(devices_final.get(), "2", "device2"));
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "beef01", "device1"));
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "2", "beef02", "device2"));
 }
 
 void BraveSyncServiceTest::VerifyResetDone() {
@@ -587,25 +615,33 @@ TEST_F(BraveSyncServiceTest, OnResetSync) {
   sync_service()->OnSetupSyncNewToSync("this_device");
   EXPECT_TRUE(
       profile()->GetPrefs()->GetBoolean(brave_sync::prefs::kSyncEnabled));
+  const std::string object_id_0 = "0, 0, 0, 0, 0, 0, 0, 0, "
+                                  "0, 0, 0, 0, 0, 0, 0, 0";
+  const std::string object_id_1 = "0, 0, 0, 0, 0, 0, 0, 0, "
+                                  "0, 0, 0, 0, 0, 0, 0, 1";
   brave_sync_prefs()->SetThisDeviceId("0");
+  brave_sync_prefs()->SetThisDeviceObjectId(object_id_0);
+  brave_sync_prefs()->SetThisDeviceIdV2("beef00");
 
   RecordsList records;
   records.push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "0", "this_device"));
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, object_id_0, "0",
+                         "beef00", "this_device"));
   records.push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "1", "device1"));
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, object_id_1, "1",
+                         "beef01", "device1"));
 
   sync_service()->OnResolvedPreferences(records);
 
   auto devices = brave_sync_prefs()->GetSyncDevices();
 
-  EXPECT_TRUE(DevicesContains(devices.get(), "0", "this_device"));
-  EXPECT_TRUE(DevicesContains(devices.get(), "1", "device1"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "0", "beef00", "this_device"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "1", "beef01", "device1"));
 
   EXPECT_CALL(*sync_client(),
               SendSyncRecords(kPreferences,
                               ContainsDeviceRecord(SyncRecord::Action::A_DELETE,
-                                                   "this_device")))
+                                                   "this_device", "beef00")))
       .Times(1);
 
   EXPECT_CALL(*sync_client(), SendFetchSyncRecords);
@@ -618,8 +654,10 @@ TEST_F(BraveSyncServiceTest, OnResetSync) {
   sync_service()->OnResolvedPreferences(resolved_records);
 
   auto devices_final = brave_sync_prefs()->GetSyncDevices();
-  EXPECT_FALSE(DevicesContains(devices_final.get(), "0", "this_device"));
-  EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "device1"));
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "0", "beef00",
+                               "this_device"));
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "beef01",
+                               "device1"));
 
   VerifyResetDone();
 }
@@ -633,24 +671,27 @@ TEST_F(BraveSyncServiceTest, OnResetSyncWhenOffline) {
   EXPECT_TRUE(
       profile()->GetPrefs()->GetBoolean(brave_sync::prefs::kSyncEnabled));
   brave_sync_prefs()->SetThisDeviceId("0");
+  brave_sync_prefs()->SetThisDeviceIdV2("beef00");
 
   RecordsList records;
   records.push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "0", "this_device"));
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "", "0", "beef00",
+                         "this_device"));
   records.push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "1", "device1"));
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "", "1", "beef01",
+                         "device1"));
 
   sync_service()->OnResolvedPreferences(records);
 
   auto devices = brave_sync_prefs()->GetSyncDevices();
 
-  EXPECT_TRUE(DevicesContains(devices.get(), "0", "this_device"));
-  EXPECT_TRUE(DevicesContains(devices.get(), "1", "device1"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "0", "beef00", "this_device"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "1", "beef01", "device1"));
 
   EXPECT_CALL(*sync_client(),
               SendSyncRecords(kPreferences,
                               ContainsDeviceRecord(SyncRecord::Action::A_DELETE,
-                                                   "this_device")))
+                                                   "this_device", "beef00")))
       .Times(1);
 
   EXPECT_CALL(*sync_client(), SendFetchSyncRecords);
@@ -663,8 +704,10 @@ TEST_F(BraveSyncServiceTest, OnResetSyncWhenOffline) {
   EXPECT_FALSE(sync_service()->pending_self_reset_);
 
   auto devices_final = brave_sync_prefs()->GetSyncDevices();
-  EXPECT_FALSE(DevicesContains(devices_final.get(), "0", "this_device"));
-  EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "device1"));
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "0", "beef00",
+                               "this_device"));
+  EXPECT_FALSE(DevicesContains(devices_final.get(), "1", "beef01",
+                               "device1"));
 
   VerifyResetDone();
 }
@@ -753,6 +796,7 @@ TEST_F(BraveSyncServiceTest, SetThisDeviceCreatedTime) {
   EXPECT_CALL(*observer(), OnSyncStateChanged);
   brave_sync_prefs()->SetSyncEnabled(true);
   brave_sync_prefs()->SetThisDeviceId("1");
+  brave_sync_prefs()->SetThisDeviceIdV2("beef01");
 
   brave_sync::GetRecordsCallback on_get_records =
       base::BindOnce(&OnGetRecordsStub);
@@ -828,22 +872,27 @@ TEST_F(BraveSyncServiceTest, OnSetupSyncHaveCode_Reset_SetupAgain) {
   brave_sync::Uint8Array seed = {1, 2,  3,  4,  5,  6,  7,  8,
                                  9, 10, 11, 12, 13, 14, 15, 16};
   brave_sync::Uint8Array device_id = {0};
-  sync_service()->OnSaveInitData(seed, device_id);
+  const std::string device_id_v2 = "beef00";
+  sync_service()->OnSaveInitData(seed, device_id, device_id_v2);
 
+  const std::string object_id = "0, 0, 0, 0, 0, 0, 0, 0, "
+                                "0, 0, 0, 0, 0, 0, 0, 0";
+  brave_sync_prefs()->SetThisDeviceObjectId(object_id);
   RecordsList records;
   records.push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "0", "this_device"));
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, object_id, "0", "beef00",
+                         "this_device"));
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedPreferences(records);
 
   auto devices = brave_sync_prefs()->GetSyncDevices();
 
   ASSERT_EQ(devices->size(), 1u);
-  EXPECT_TRUE(DevicesContains(devices.get(), "0", "this_device"));
+  EXPECT_TRUE(DevicesContains(devices.get(), "0", "beef00", "this_device"));
   EXPECT_CALL(*sync_client(),
               SendSyncRecords("PREFERENCES",
                               ContainsDeviceRecord(SyncRecord::Action::A_DELETE,
-                                                   "this_device")))
+                                                   "this_device", "beef00")))
       .Times(1);
   EXPECT_CALL(*sync_client(), SendFetchSyncRecords);
   sync_service()->OnResetSync();
@@ -976,6 +1025,7 @@ TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
   EXPECT_CALL(*observer(), OnSyncStateChanged);
   brave_sync_prefs()->SetSyncEnabled(true);
   brave_sync_prefs()->SetThisDeviceId("1");
+  brave_sync_prefs()->SetThisDeviceIdV2("beef01");
 
   // Expecting SendFetchSyncRecords will be invoked
   // after sync_service()->OnPollSyncCycle
@@ -996,7 +1046,8 @@ TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
   // Emulate we received this device
   auto records = std::make_unique<brave_sync::RecordsList>();
   records->push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "1", "device1"));
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "", "1", "beef01",
+                         "device1"));
   auto device1_timestamp = records->back()->syncTimestamp;
   EXPECT_CALL(*sync_client(), SendResolveSyncRecords(kPreferences, _)).Times(1);
   sync_service()->OnGetExistingObjects(kPreferences, std::move(records),
@@ -1008,7 +1059,8 @@ TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
   // We have moved records into OnGetExistingObjects, so fill again
   records = std::make_unique<brave_sync::RecordsList>();
   records->push_back(
-      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "1", "device1"));
+      SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "", "1", "beef01",
+                         "device1"));
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedSyncRecords(kPreferences, std::move(records));
 

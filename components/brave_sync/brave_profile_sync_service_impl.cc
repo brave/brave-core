@@ -434,7 +434,8 @@ void BraveProfileSyncServiceImpl::OnGetInitData(
 }
 
 void BraveProfileSyncServiceImpl::OnSaveInitData(
-    const Uint8Array& seed, const Uint8Array& device_id,
+    const Uint8Array& seed,
+    const Uint8Array& device_id,
     const std::string& device_id_v2) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(!brave_sync_ready_);
@@ -895,7 +896,7 @@ void BraveProfileSyncServiceImpl::SendDeleteDevice() {
   if (object_id.empty()) {
     auto sync_devices = brave_sync_prefs_->GetSyncDevices();
     std::vector<const SyncDevice*> devices =
-      sync_devices->GetByDeviceId(device_id);
+        sync_devices->GetByDeviceId(device_id);
     for (auto* device : devices) {
       if (device) {
         object_id = device->object_id_;
@@ -919,17 +920,16 @@ void BraveProfileSyncServiceImpl::SendDeviceSyncRecord(
     const std::string& device_id_v2,
     const std::string& object_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  RecordsListPtr records =
-      CreateDeviceRecord(device_name, object_id,
-                         static_cast<SyncRecord::Action>(action), device_id,
-                         device_id_v2);
+  RecordsListPtr records = CreateDeviceRecord(
+      device_name, object_id, static_cast<SyncRecord::Action>(action),
+      device_id, device_id_v2);
   SendSyncRecords(SyncRecordType_PREFERENCES, std::move(records));
 }
 
 void BraveProfileSyncServiceImpl::OnResolvedPreferences(
     const RecordsList& records) {
   const std::string this_device_object_id =
-    brave_sync_prefs_->GetThisDeviceObjectId();
+      brave_sync_prefs_->GetThisDeviceObjectId();
   bool this_device_deleted = false;
 
   auto sync_devices = brave_sync_prefs_->GetSyncDevices();
@@ -938,11 +938,10 @@ void BraveProfileSyncServiceImpl::OnResolvedPreferences(
     if (record->has_device()) {
       bool actually_merged = false;
       auto& device = record->GetDevice();
-      sync_devices->Merge(
-          SyncDevice(record->GetDevice().name, record->objectId,
-                     record->deviceId, device.deviceIdV2,
-                     record->syncTimestamp.ToJsTime()),
-          record->action, &actually_merged);
+      sync_devices->Merge(SyncDevice(record->GetDevice().name, record->objectId,
+                                     record->deviceId, device.deviceIdV2,
+                                     record->syncTimestamp.ToJsTime()),
+                          record->action, &actually_merged);
       this_device_deleted =
           this_device_deleted ||
           (record->objectId == this_device_object_id &&

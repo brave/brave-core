@@ -35,10 +35,11 @@ class MockBraveSyncClient : public BraveSyncClient {
   ~MockBraveSyncClient() override;
 
   MOCK_METHOD0(sync_message_handler, SyncMessageHandler*());
-  MOCK_METHOD3(SendGotInitData,
+  MOCK_METHOD4(SendGotInitData,
                void(const Uint8Array& seed,
                     const Uint8Array& device_id,
-                    const client_data::Config& config));
+                    const client_data::Config& config,
+                    const std::string& device_id_v2));
   MOCK_METHOD3(SendFetchSyncRecords, void(
     const std::vector<std::string>& category_names, const base::Time& startAt,
     const int max_records));
@@ -79,7 +80,9 @@ SyncRecordPtr SimpleFolderSyncRecord(
 
 SyncRecordPtr SimpleDeviceRecord(
     const int action,
+    const std::string& object_id,
     const std::string& device_id,
+    const std::string& device_id_v2,
     const std::string& name);
 
 }  // namespace brave_sync

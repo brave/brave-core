@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <utility>
+#include <string>
 #include <vector>
 
 #include "brave/common/extensions/api/brave_sync.h"
