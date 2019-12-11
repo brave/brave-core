@@ -73,6 +73,7 @@ class AutoContributeDetailViewController: UIViewController {
       $0.percent = 1 //exclude 0% sites.
       $0.orderBy = [sort]
       $0.nonVerified = state.ledger.allowUnverifiedPublishers
+      $0.reconcileStamp = state.ledger.autoContributeProps.reconcileStamp
     }
     
     state.ledger.listActivityInfo(fromStart: UInt32(start), limit: UInt32(limit), filter: filter) { publishersList in
