@@ -1189,7 +1189,7 @@ void RewardsServiceImpl::SavePublisherInfo(
     ledger::PublisherInfoCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&SavePublisherInfoOnFileTaskRunner,
-                    std::move(publisher_info),
+                    publisher_info->Clone(),
                     publisher_info_backend_.get()),
       base::BindOnce(&RewardsServiceImpl::OnPublisherInfoSaved,
                      AsWeakPtr(),
@@ -2400,29 +2400,46 @@ void RewardsServiceImpl::OnPublisherBanner(
   std::move(callback).Run(std::move(new_banner));
 }
 
-void RewardsServiceImpl::OnTipPublisherInfoSaved(const ledger::Result result,
-    ledger::PublisherInfoPtr info) {
+void RewardsServiceImpl::OnTipPublisherInfoSaved(
+    const ledger::Result result,
+    ledger::PublisherInfoPtr info,
+    const bool recurring,
+    const double amount) {
+  if (!info) {
+    return;
+  }
+
+  if (recurring) {
+    SaveRecurringTipUI(info->id, amount, base::DoNothing());
+    return;
+  }
+
+  bat_ledger_->DoDirectTip(info->id, amount, "BAT", base::DoNothing());
 }
 
 void RewardsServiceImpl::OnTip(const std::string& publisher_key,
                                double amount,
                                bool recurring,
                                ledger::PublisherInfoPtr publisher_info) {
-  if (recurring) {
-    // TODO(nejczdovc): this needs to be wired through ledger code
-    // If caller provided publisher info, save it to `publisher_info` table
-    if (publisher_info) {
-      SavePublisherInfo(std::move(publisher_info),
+  // TODO(https://github.com/brave/brave-browser/issues/7217):
+  //  this needs to be wired through ledger code
+  if (publisher_info) {
+    SavePublisherInfo(std::move(publisher_info),
         std::bind(&RewardsServiceImpl::OnTipPublisherInfoSaved,
-            this, _1, _2));
-    }
-
+            this,
+            _1,
+            _2,
+            recurring,
+            amount));
+    return;
+  } else if (recurring) {
     SaveRecurringTipUI(publisher_key, amount, base::DoNothing());
     return;
   }
 
-  if (!Connected())
+  if (!Connected()) {
     return;
+  }
 
   bat_ledger_->DoDirectTip(publisher_key, amount, "BAT", base::DoNothing());
 }
