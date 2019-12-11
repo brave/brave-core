@@ -6,9 +6,17 @@ cr.define('settings', function() {
   /** @interface */
   class BraveAppearanceBrowserProxy {
     /**
-     * @return {!Promise<string>}
+     * @return {!Promise<Array>}
      */
     getBraveThemeList() {}
+    /**
+     * @return {!Promise<Number>}
+     */
+    getBraveThemeType() {}
+    /**
+     * @param {Number} type
+     */
+    setBraveThemeType(value) {}
   }
 
   /**
@@ -18,6 +26,12 @@ cr.define('settings', function() {
     /** @override */
     getBraveThemeList() {
       return new Promise(resolve => chrome.braveTheme.getBraveThemeList(resolve))
+    }
+    getBraveThemeType() {
+      return cr.sendWithPromise('getBraveThemeType');
+    }
+    setBraveThemeType(value) {
+      chrome.send('setBraveThemeType', [value]);
     }
   }
 

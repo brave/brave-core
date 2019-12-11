@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_profile_prefs.h"
 
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
@@ -52,6 +53,8 @@ void RegisterProfilePrefsForMigration(
 #if BUILDFLAG(ENABLE_WIDEVINE)
   RegisterWidevineProfilePrefsForMigration(registry);
 #endif
+
+  dark_mode::RegisterBraveDarkModePrefsForMigration(registry);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {

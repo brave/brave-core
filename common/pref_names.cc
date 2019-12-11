@@ -28,9 +28,9 @@ const char kUseAlternativeSearchEngineProvider[] =
     "brave.use_alternate_private_search_engine";
 const char kAlternativeSearchEngineProviderInTor[] =
     "brave.alternate_private_search_engine_in_tor";
-const char kBraveThemeType[] = "brave.theme.type";
+const char kBraveThemeType[] = "brave.theme.type";  // deprecated
 const char kUseOverriddenBraveThemeType[] =
-    "brave.theme.use_overridden_brave_theme_type";
+    "brave.theme.use_overridden_brave_theme_type";  // deprecated
 const char kLocationBarIsWide[] = "brave.location_bar_is_wide";
 const char kReferralPromoCode[] = "brave.referral.promo_code";
 const char kReferralDownloadID[] = "brave.referral.download_id";
@@ -74,6 +74,7 @@ const char kAlwaysShowBookmarkBarOnNTP[] =
     "brave.always_show_bookmark_bar_on_ntp";
 const char kRemoteDebuggingEnabled[] = "brave.remote_debugging_enabled";
 const char kAutocompleteEnabled[] = "brave.autocomplete_enabled";
+const char kBraveDarkMode[] = "brave.dark_mode";
 
 #if defined(OS_ANDROID)
 const char kDesktopModeEnabled[] = "brave.desktop_mode_enabled";

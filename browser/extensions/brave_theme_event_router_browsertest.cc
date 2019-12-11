@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/extensions/brave_theme_event_router.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -14,14 +15,6 @@
 #include "testing/gmock/include/gmock/gmock.h"
 
 using BraveThemeEventRouterBrowserTest = InProcessBrowserTest;
-
-namespace {
-
-void SetBraveThemeType(Profile* profile, BraveThemeType type) {
-  profile->GetPrefs()->SetInteger(kBraveThemeType, type);
-}
-
-}  // namespace
 
 namespace extensions {
 
@@ -41,21 +34,24 @@ class MockBraveThemeEventRouter : public BraveThemeEventRouter {
 
 IN_PROC_BROWSER_TEST_F(BraveThemeEventRouterBrowserTest,
                        ThemeChangeTest) {
-  Profile* profile = browser()->profile();
-  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);
+  dark_mode::SetBraveDarkModeType(
+      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
 
   extensions::MockBraveThemeEventRouter* mock_router =
-      new extensions::MockBraveThemeEventRouter(profile);
+      new extensions::MockBraveThemeEventRouter(browser()->profile());
   BraveThemeService* service = static_cast<BraveThemeService*>(
       ThemeServiceFactory::GetForProfile(browser()->profile()));
   service->SetBraveThemeEventRouterForTesting(mock_router);
 
   EXPECT_CALL(*mock_router, Notify()).Times(1);
-  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
+  dark_mode::SetBraveDarkModeType(
+      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
 
   EXPECT_CALL(*mock_router, Notify()).Times(1);
-  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);
+  dark_mode::SetBraveDarkModeType(
+      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
 
   EXPECT_CALL(*mock_router, Notify()).Times(0);
-  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);
+  dark_mode::SetBraveDarkModeType(
+      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
 }

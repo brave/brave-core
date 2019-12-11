@@ -8,6 +8,7 @@
 #include "base/values.h"
 #include "brave/browser/brave_stats_updater.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
@@ -68,6 +69,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
   BraveWindowTracker::RegisterPrefs(registry);
   BraveUptimeTracker::RegisterPrefs(registry);
+  dark_mode::RegisterBraveDarkModeLocalStatePrefs(registry);
 #endif
 
 #if BUILDFLAG(ENABLE_WIDEVINE)

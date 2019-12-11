@@ -11,11 +11,15 @@
     </style>
     <div class="settings-box first">
       <div class="start">$i18n{appearanceSettingsBraveTheme}</div>
-      <settings-dropdown-menu id="braveThemeType"
-                              label="$i18n{appearanceSettingsBraveTheme}"
-                              pref="{{prefs.brave.theme.type}}"
-                              menu-options="[[braveThemeList_]]">
-      </settings-dropdown-menu>
+      <select id="braveThemeType" class="md-select"
+          on-change="onBraveThemeTypeChange_">
+        <template is="dom-repeat" items="[[braveThemeList_]]">
+          <option value="[[item.value]]"
+              selected="[[braveThemeTypeEqual_(item.value, braveThemeType_)]]">
+            [[item.name]]
+          </option>
+        </template>
+      </select>
     </div>
   </template>
   <script src="brave_appearance_page.js"></script>

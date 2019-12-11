@@ -69,8 +69,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kHideBraveRewardsButton] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
-  (*s_brave_whitelist)[kBraveThemeType] =
-      settings_api::PrefType::PREF_TYPE_NUMBER;
   (*s_brave_whitelist)[kAskWidevineInstall] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   // Clear browsing data on exit prefs.

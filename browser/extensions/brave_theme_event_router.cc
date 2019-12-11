@@ -9,7 +9,7 @@
 #include <string>
 #include <utility>
 
-#include "brave/browser/themes/brave_theme_service.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/extensions/api/brave_theme.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/event_router.h"
@@ -19,7 +19,6 @@ namespace extensions {
 
 BraveThemeEventRouter::BraveThemeEventRouter(Profile* profile)
     : profile_(profile),
-      using_dark_(IsDarkModeEnabled()),
       observer_(this) {
   observer_.Add(ui::NativeTheme::GetInstanceForNativeUi());
 }
@@ -29,20 +28,13 @@ BraveThemeEventRouter::~BraveThemeEventRouter() {}
 void BraveThemeEventRouter::OnNativeThemeUpdated(
     ui::NativeTheme* observed_theme) {
   DCHECK(observer_.IsObserving(observed_theme));
-
-  bool use_dark = IsDarkModeEnabled();
-  if (use_dark == using_dark_)
-    return;
-
-  using_dark_ = use_dark;
   Notify();
 }
 
 void BraveThemeEventRouter::Notify() {
-  EventRouter* event_router = EventRouter::Get(profile_);
   const std::string theme_type =
-      BraveThemeService::GetStringFromBraveThemeType(
-          BraveThemeService::GetActiveBraveThemeType(profile_));
+      dark_mode::GetStringFromBraveDarkModeType(
+          dark_mode::GetActiveBraveDarkModeType());
 
   auto event = std::make_unique<extensions::Event>(
       extensions::events::BRAVE_ON_BRAVE_THEME_TYPE_CHANGED,
@@ -50,12 +42,8 @@ void BraveThemeEventRouter::Notify() {
       api::brave_theme::OnBraveThemeTypeChanged::Create(theme_type),
       profile_);
 
-  event_router->BroadcastEvent(std::move(event));
-}
-
-bool BraveThemeEventRouter::IsDarkModeEnabled() const {
-  return BraveThemeService::GetActiveBraveThemeType(profile_) ==
-      BRAVE_THEME_TYPE_DARK;
+  if (EventRouter* event_router = EventRouter::Get(profile_))
+    event_router->BroadcastEvent(std::move(event));
 }
 
 }  // namespace extensions

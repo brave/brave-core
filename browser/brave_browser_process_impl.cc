@@ -15,8 +15,10 @@
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/component_updater/brave_component_updater_delegate.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/brave_browser_command_controller.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
@@ -109,6 +111,12 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 
 void BraveBrowserProcessImpl::Init() {
   BrowserProcessImpl::Init();
+
+  UpdateBraveDarkMode();
+  pref_change_registrar_.Add(
+      kBraveDarkMode,
+      base::Bind(&BraveBrowserProcessImpl::OnBraveDarkModeChanged,
+                 base::Unretained(this)));
 
 #if BUILDFLAG(ENABLE_TOR)
   pref_change_registrar_.Add(
@@ -250,6 +258,16 @@ BraveBrowserProcessImpl::local_data_files_service() {
         brave_component_updater::LocalDataFilesServiceFactory(
             brave_component_updater_delegate());
   return local_data_files_service_.get();
+}
+
+void BraveBrowserProcessImpl::UpdateBraveDarkMode() {
+  // Update with proper system theme to make brave theme and base ui components
+  // theme use same theme.
+  dark_mode::SetSystemDarkMode(dark_mode::GetBraveDarkModeType());
+}
+
+void BraveBrowserProcessImpl::OnBraveDarkModeChanged() {
+  UpdateBraveDarkMode();
 }
 
 #if BUILDFLAG(ENABLE_TOR)

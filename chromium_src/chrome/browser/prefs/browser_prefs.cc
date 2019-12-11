@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_local_state_prefs.h"
 #include "brave/browser/brave_profile_prefs.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "third_party/widevine/cdm/buildflags.h"
@@ -27,4 +28,7 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
 #endif
   // Added 11/2019.
   MigrateBraveSyncPrefs(profile->GetPrefs());
+
+  // Added 12/2019.
+  dark_mode::MigrateBraveDarkModePrefs(profile);
 }

@@ -8,12 +8,21 @@
 Polymer({
   is: 'settings-brave-appearance-theme',
 
+  behaviors: [
+    WebUIListenerBehavior,
+  ],
+
   properties: {
-    braveThemeList_: [],
+    braveThemeList_: Array,
+    braveThemeType_: Number,
   },
 
   /** @private {?settings.BraveAppearanceBrowserProxy} */
   browserProxy_: null,
+
+  observers: [
+    'updateSelected_(braveThemeType_, braveThemeList_)',
+  ],
 
   /** @override */
   created: function() {
@@ -22,8 +31,30 @@ Polymer({
 
   /** @override */
   ready: function() {
+    this.addWebUIListener('brave-theme-type-changed', (type) => {
+      this.braveThemeType_ = type;
+    })
     this.browserProxy_.getBraveThemeList().then(list => {
       this.braveThemeList_ = JSON.parse(list);
+    })
+    this.browserProxy_.getBraveThemeType().then(type => {
+      this.braveThemeType_ = type;
+    })
+  },
+
+  onBraveThemeTypeChange_: function() {
+    this.browserProxy_.setBraveThemeType(Number(this.$.braveThemeType.value));
+  },
+
+  braveThemeTypeEqual_: function(theme1, theme2) {
+    return theme1 === theme2;
+  },
+
+  // Wait for the dom-repeat to populate the <select> before setting
+  // <select>#value so the correct option gets selected.
+  updateSelected_: function() {
+    this.async(() => {
+      this.$.braveThemeType.value = this.braveThemeType_;
     });
   },
 });

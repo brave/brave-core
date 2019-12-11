@@ -8,7 +8,6 @@
 #include "brave/browser/brave_profile_prefs.h"
 #include "brave/browser/profiles/brave_profile_impl.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -35,11 +34,6 @@ void RegisterProfilePrefs(bool is_signin_profile,
                           const std::string& locale,
                           user_prefs::PrefRegistrySyncable* registry) {
   RegisterProfilePrefs_ChromiumImpl(is_signin_profile, locale, registry);
-
-  // appearance
-#if !defined(OS_ANDROID)
-  BraveThemeService::RegisterProfilePrefs(registry);
-#endif
 
   brave_rewards::RewardsService::RegisterProfilePrefs(registry);
 
