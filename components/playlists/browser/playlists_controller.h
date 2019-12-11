@@ -65,6 +65,8 @@ class PlaylistsController : PlaylistsMediaFileController::Client {
   void AddObserver(PlaylistsControllerObserver* observer);
   void RemoveObserver(PlaylistsControllerObserver* observer);
 
+  bool GetThumbnailPath(const std::string& id, base::FilePath* thumbnail_path);
+
  private:
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
@@ -114,7 +116,6 @@ class PlaylistsController : PlaylistsMediaFileController::Client {
 
   void DoPlay(const std::string& id, const std::string& playlist_info_json);
   void StartHTMLFileGeneration(const std::string& id);
-  // int DoGenerateHTMLFileOnIOThread(const base::FilePath& html_file_path);
   void OnHTMLFileGenerated(int success);
 
   base::SequencedTaskRunner* io_task_runner();

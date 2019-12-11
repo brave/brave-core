@@ -279,9 +279,8 @@ void PlaylistsController::DownloadThumbnail(base::Value&& playlist_value) {
   const std::string* playlist_id =
       playlist_value.FindStringKey(kPlaylistsIDKey);
   DCHECK(playlist_id);
-  base::FilePath thumbnail_path =
-      base_dir_.Append(GetPlaylistIDDirName(*playlist_id))
-          .Append(kThumbnailFileName);
+  base::FilePath thumbnail_path;
+  GetThumbnailPath(*playlist_id, &thumbnail_path);
   iter->get()->DownloadToFile(
       url_loader_factory_.get(),
       base::BindOnce(&PlaylistsController::OnThumbnailDownloaded,
@@ -838,6 +837,17 @@ void PlaylistsController::CleanUp() {
   GetAllPlaylists(
       base::BindOnce(&PlaylistsController::OnGetAllPlaylistsForCleanUp,
                      weak_factory_.GetWeakPtr()));
+}
+
+bool PlaylistsController::GetThumbnailPath(const std::string& id,
+                                           base::FilePath* thumbnail_path) {
+  *thumbnail_path =
+      base_dir_.Append(GetPlaylistIDDirName(id)).Append(kThumbnailFileName);
+  if (thumbnail_path->ReferencesParent()) {
+    thumbnail_path->clear();
+    return false;
+  }
+  return true;
 }
 
 base::SequencedTaskRunner* PlaylistsController::io_task_runner() {

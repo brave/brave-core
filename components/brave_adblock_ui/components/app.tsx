@@ -73,6 +73,10 @@ export class AdblockPage extends React.Component<Props, State> {
     return lazyButtonStyle
   }
 
+  getImgSrc = (playlistId: string) => {
+    return 'chrome://playlists-image/' + playlistId
+  }
+
   getPlaylistRows = (playlist?: any): Row[] | undefined => {
     if (playlist == null) {
       return
@@ -84,20 +88,11 @@ export class AdblockPage extends React.Component<Props, State> {
           { content: (
             <div>
               <h3>{item.playlistName}</h3>
-              <video
-                controls={true}
-                width={640}
-                poster={item.thumbnailUrl}
-                // super hack courtesy of cezar augusto
-                // TODO: this should show the poster at least
-                // or maybe just a unordered list with the video title
-                onClick={this.onClickPlayVideo.bind(this, item.id)}
-              >
-                <source src={item.videoMediaFilePath} type='video/mp4' />
-              </video>
-              {/* <video style={{ display: 'none' }}>
-                <source src={item.audioMediaFilePath} type='video/mp4' />
-              </video> */}
+              <a href='#' onClick={this.onClickPlayVideo.bind(this, item.id)}>
+                <img style={{ maxWidth: '200px' }}
+                  src={this.getImgSrc(item.id)}
+                />
+              </a>
             </div>
           ) }
         ]
@@ -107,7 +102,6 @@ export class AdblockPage extends React.Component<Props, State> {
   }
 
   onClickPlayVideo = (playlistId: string) => {
-    console.log('method called. playlist id:', playlistId)
     chrome.bravePlaylists.play(playlistId)
   }
 
@@ -118,7 +112,7 @@ export class AdblockPage extends React.Component<Props, State> {
       <div id='adblockPage'>
         <div style={{ minHeight: '600px', width: '1200px' }}>
           <Table header={this.getPlaylistHeader()} rows={this.getPlaylistRows(playlists)}>
-            YOUR PLAYLIST IS NOW EMPTY
+            YOUR PLAYLIST IS EMPTY
           </Table>
         </div>
         <hr />

@@ -24,18 +24,16 @@ PlaylistsService* PlaylistsServiceFactory::GetForProfile(Profile* profile) {
 PlaylistsServiceFactory::PlaylistsServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "PlaylistsService",
-          BrowserContextDependencyManager::GetInstance()) {
-}
+          BrowserContextDependencyManager::GetInstance()) {}
 
-PlaylistsServiceFactory::~PlaylistsServiceFactory() {
-}
+PlaylistsServiceFactory::~PlaylistsServiceFactory() {}
 
 KeyedService* PlaylistsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new PlaylistsService(Profile::FromBrowserContext(context));
+  return new PlaylistsService(context);
 }
 
 content::BrowserContext* PlaylistsServiceFactory::GetBrowserContextToUse(
-      content::BrowserContext* context) const {
+    content::BrowserContext* context) const {
   return chrome::GetBrowserContextRedirectedInIncognito(context);
 }
