@@ -26,22 +26,22 @@ UpholdTransfer::UpholdTransfer(bat_ledger::LedgerImpl* ledger, Uphold* uphold) :
 UpholdTransfer::~UpholdTransfer() {
 }
 
-void UpholdTransfer::Start(double amount,
-                           const std::string& address,
-                           ledger::ExternalWalletPtr wallet,
-                           TransactionCallback callback) {
+void UpholdTransfer::Start(
+    const Transaction& transaction,
+    ledger::ExternalWalletPtr wallet,
+    TransactionCallback callback) {
   if (!wallet) {
     callback(ledger::Result::LEDGER_ERROR, false);
     return;
   }
 
-  CreateTransaction(amount, address, std::move(wallet), callback);
+  CreateTransaction(transaction, std::move(wallet), callback);
 }
 
-void UpholdTransfer::CreateTransaction(double amount,
-                                       const std::string& address,
-                                       ledger::ExternalWalletPtr wallet,
-                                       TransactionCallback callback) {
+void UpholdTransfer::CreateTransaction(
+    const Transaction& transaction,
+    ledger::ExternalWalletPtr wallet,
+    TransactionCallback callback) {
   auto headers = RequestAuthorization(wallet->token);
 
   const std::string path = base::StringPrintf(
@@ -51,10 +51,12 @@ void UpholdTransfer::CreateTransaction(double amount,
   const std::string payload = base::StringPrintf(
       "{ "
       "  \"denomination\": { \"amount\": %f, \"currency\": \"BAT\" }, "
-      "  \"destination\": \"%s\" "
+      "  \"destination\": \"%s\", "
+      "  \"message\": \"%s\" "
       "}",
-      amount,
-      address.c_str());
+      transaction.amount,
+      transaction.address.c_str(),
+      transaction.message.c_str());
 
   auto create_callback = std::bind(&UpholdTransfer::OnCreateTransaction,
                             this,
