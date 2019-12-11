@@ -99,6 +99,29 @@ const tipRedditMedia = (mediaMetaData: RewardsTip.MediaMetaData) => {
   })
 }
 
+const makeTwitterRequest = (url: string, credentialHeaders: {}, sendResponse: any) => {
+  fetch(url, {
+    credentials: 'include',
+    headers: {
+      ...credentialHeaders
+    },
+    referrerPolicy: 'no-referrer-when-downgrade',
+    method: 'GET',
+    redirect: 'follow'
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Twitter API request failed: ${response.statusText} (${response.status})`)
+      }
+
+      return response.json()
+    })
+    .then(data => sendResponse(data))
+    .catch(error => {
+      sendResponse(error)
+    })
+}
+
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
@@ -130,6 +153,18 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         sendResponse({ enabled })
       })
       // Must return true for asynchronous calls to sendResponse
+      return true
+    }
+    case 'twitterGetTweetDetails': {
+      const url = new URL('https://api.twitter.com/1.1/statuses/show.json')
+      url.searchParams.append('id', msg.tweetId)
+      makeTwitterRequest(url.toString(), msg.credentialHeaders, sendResponse)
+      return true
+    }
+    case 'twitterGetUserDetails': {
+      const url = new URL('https://api.twitter.com/1.1/users/show.json')
+      url.searchParams.append('screen_name', msg.screenName)
+      makeTwitterRequest(url.toString(), msg.credentialHeaders, sendResponse)
       return true
     }
     default:

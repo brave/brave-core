@@ -5,6 +5,20 @@
 // Utils
 import { getMessage } from '../background/api/locale_api'
 
+interface TweetResonse {
+  text: string,
+  user: {
+    name: string,
+    screen_name: string,
+    id_str: string
+  },
+  created_at: string
+}
+
+interface UserResonse {
+  id_str: string
+}
+
 let timeout: any = null
 let newTwitter = true
 
@@ -13,37 +27,32 @@ const getTwitterAPICredentials = () => {
   return new Promise(resolve => chrome.runtime.sendMessage(msg, resolve))
 }
 
-const makeTwitterRequest = async (url: string) => {
+const getTweetDetails = async (tweetId: string) => {
   const credentialHeaders = await getTwitterAPICredentials()
   if (Object.keys(credentialHeaders).length === 0) {
     throw new Error(`Unable to make Twitter API request: no credential headers`)
   }
-  const response = await fetch(url, {
-    credentials: 'include',
-    headers: {
-      ...credentialHeaders
-    },
-    referrerPolicy: 'no-referrer-when-downgrade',
-    method: 'GET',
-    mode: 'cors',
-    redirect: 'follow'
-  })
-  if (!response.ok) {
-    throw new Error(`Twitter API request failed: ${response.statusText} (${response.status})`)
-  }
-  return response.json()
-}
 
-const getTweetDetails = async (tweetId: string) => {
-  const url = new URL('https://api.twitter.com/1.1/statuses/show.json')
-  url.searchParams.append('id', tweetId)
-  return makeTwitterRequest(url.toString())
+  const msg = {
+    type: 'twitterGetTweetDetails',
+    tweetId,
+    credentialHeaders
+  }
+  return new Promise(resolve => chrome.runtime.sendMessage(msg, resolve))
 }
 
 const getUserDetails = async (screenName: string) => {
-  const url = new URL('https://api.twitter.com/1.1/users/show.json')
-  url.searchParams.append('screen_name', screenName)
-  return makeTwitterRequest(url.toString())
+  const credentialHeaders = await getTwitterAPICredentials()
+  if (Object.keys(credentialHeaders).length === 0) {
+    throw new Error(`Unable to make Twitter API request: no credential headers`)
+  }
+
+  const msg = {
+    type: 'twitterGetUserDetails',
+    screenName,
+    credentialHeaders
+  }
+  return new Promise(resolve => chrome.runtime.sendMessage(msg, resolve))
 }
 
 function getTweetId (tweet: Element) {
@@ -67,7 +76,7 @@ const getTweetMetaData = (tweet: Element, tweetId: string): Promise<RewardsTip.M
   }
 
   return getTweetDetails(tweetId)
-    .then(tweetDetails => {
+    .then((tweetDetails: TweetResonse) => {
       const mediaMetadata: RewardsTip.MediaMetaData = {
         mediaType: 'twitter',
         twitterName: tweetDetails.user.name,
@@ -317,7 +326,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       const screenName = msg.screenName
       if (newTwitter) {
         getUserDetails(screenName)
-          .then(userDetails => {
+          .then((userDetails: UserResonse) => {
             const userId = userDetails.id_str
             const profileUrl = `https://twitter.com/intent/user?user_id=${userId}&screen_name=${screenName}`
             sendResponse({ profileUrl })
