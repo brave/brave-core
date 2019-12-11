@@ -41,6 +41,7 @@ export const StyledFlip = styled<StyleProps, 'div'>('div')`
 export const StyledContentWrapper = styled<StyleProps, 'div'>('div')`
   display: ${p => p.open ? 'flex' : 'none'};
   flex-direction: column;
+  width: 100%;
 `
 
 export const StyledTitle = styled<StyleProps, 'div'>('div')`
