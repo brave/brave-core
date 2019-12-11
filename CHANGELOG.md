@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.1](https://github.com/brave/brave-ios/releases/tag/v1.14.1)
+
+ - Added images to new tab page. ([#1782](https://github.com/brave/brave-ios/issues/1782))
+ - Fixed wallet details not being displayed for empty wallets. ([#1852](https://github.com/brave/brave-ios/issues/1852))
+ - Fixed top bar visibility when settings page is opened on iPhones with iOS 13. ([#1714](https://github.com/brave/brave-ios/issues/1714))
+ - Fixed ad notification from being stacked underneath the shield and reward panels. ([#1904](https://github.com/brave/brave-ios/issues/1904))
+
 ## [1.14](https://github.com/brave/brave-ios/releases/tag/v1.14)
 
  - Added download preview option. ([#1467](https://github.com/brave/brave-ios/issues/1467))
