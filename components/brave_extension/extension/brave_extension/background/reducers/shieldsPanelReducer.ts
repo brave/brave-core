@@ -34,6 +34,7 @@ import {
 } from '../api/shieldsAPI'
 import { reloadTab } from '../api/tabsAPI'
 import {
+  injectClassIdStylesheet,
   applyAdblockCosmeticFilters,
   applyCSSCosmeticFilters
 } from '../api/cosmeticFilterAPI'
@@ -343,6 +344,31 @@ export default function shieldsPanelReducer (
     case shieldsPanelTypes.SHIELDS_READY: {
       onShieldsPanelShown().catch(() => {
         console.error('error calling `chrome.braveShields.onShieldsPanelShown()`')
+      })
+      break
+    }
+    case shieldsPanelTypes.GENERATE_CLASS_ID_STYLESHEET: {
+      const tabData = state.tabs[action.tabId]
+      if (!tabData) {
+        console.error('Active tab not found')
+        break
+      }
+      const exceptions = tabData.cosmeticFilters.ruleExceptions
+
+      // setTimeout is used to prevent injectClassIdStylesheet from calling
+      // another Redux function immediately
+      setTimeout(() => injectClassIdStylesheet(action.tabId, action.classes, action.ids, exceptions), 0)
+      break
+    }
+    case shieldsPanelTypes.COSMETIC_FILTER_RULE_EXCEPTIONS: {
+      const tabData = state.tabs[action.tabId]
+      if (!tabData) {
+        console.error('Active tab not found')
+        break
+      }
+      state = shieldsPanelState.saveCosmeticFilterRuleExceptions(state, action.tabId, action.exceptions)
+      chrome.tabs.sendMessage(action.tabId, {
+        type: 'cosmeticFilterGenericExceptions'
       })
       break
     }

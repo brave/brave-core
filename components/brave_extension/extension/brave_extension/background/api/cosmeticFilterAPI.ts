@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import shieldsPanelActions from '../actions/shieldsPanelActions'
+
 const generateCosmeticBlockingStylesheet = (hideSelectors: string[], styleSelectors: any) => {
   let stylesheet = ''
   if (hideSelectors.length > 0) {
@@ -16,6 +18,16 @@ const generateCosmeticBlockingStylesheet = (hideSelectors: string[], styleSelect
   }
 
   return stylesheet
+}
+
+export const injectClassIdStylesheet = (tabId: number, classes: string[], ids: string[], exceptions: string[]) => {
+  chrome.braveShields.classIdStylesheet(classes, ids, exceptions, stylesheet => {
+    chrome.tabs.insertCSS(tabId, {
+      code: stylesheet,
+      cssOrigin: 'user',
+      runAt: 'document_start'
+    })
+  })
 }
 
 export const addSiteCosmeticFilter = async (origin: string, cssfilter: string) => {
@@ -54,17 +66,14 @@ export const applyAdblockCosmeticFilters = (tabId: number, hostname: string) => 
       })
     }
 
-    chrome.tabs.sendMessage(tabId, {
-      type: 'cosmeticFilterGenericExceptions',
-      exceptions: resources.exceptions
-    })
-
     if (resources.injected_script) {
       chrome.tabs.executeScript(tabId, {
         code: resources.injected_script,
         runAt: 'document_start'
       })
     }
+
+    shieldsPanelActions.cosmeticFilterRuleExceptions(tabId, resources.exceptions)
   })
 }
 

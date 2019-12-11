@@ -1,5 +1,3 @@
-let genericExceptions: Array<string> | undefined = undefined
-
 const queriedIds = new Set()
 const queriedClasses = new Set()
 const regexWhitespace = /\s/
@@ -45,8 +43,7 @@ const handleNewNodes = (newNodes: Element[]) => {
   chrome.runtime.sendMessage({
     type: 'classIdStylesheet',
     classes,
-    ids,
-    exceptions: genericExceptions
+    ids
   })
 }
 
@@ -72,8 +69,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
     case 'cosmeticFilterGenericExceptions': {
-      genericExceptions = msg.exceptions
-
       let allNodes = Array.from(document.querySelectorAll('[id],[class]'))
       handleNewNodes(allNodes)
       applyCosmeticFilterMutationObserver()

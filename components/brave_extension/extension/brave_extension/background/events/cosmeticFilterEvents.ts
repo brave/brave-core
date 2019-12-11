@@ -51,13 +51,15 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       break
     }
     case 'classIdStylesheet': {
-      chrome.braveShields.classIdStylesheet(msg.classes, msg.ids, msg.exceptions, stylesheet => {
-        chrome.tabs.insertCSS({
-          code: stylesheet,
-          cssOrigin: 'user',
-          runAt: 'document_start'
-        })
-      })
+      const tab = sender.tab
+      if (tab === undefined) {
+        break
+      }
+      const tabId = tab.id
+      if (tabId === undefined) {
+        break
+      }
+      shieldsPanelActions.generateClassIdStylesheet(tabId, msg.classes, msg.ids)
       break
     }
     case 'contentScriptsLoaded': {
