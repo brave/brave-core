@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 
@@ -34,9 +35,10 @@ public class BraveBottomToolbarCoordinator
 
     BraveBottomToolbarCoordinator(ViewStub stub, ActivityTabProvider tabProvider,
             OnClickListener homeButtonListener, OnClickListener searchAcceleratorListener,
-            OnClickListener shareButtonListener, ThemeColorProvider themeColorProvider) {
+            OnClickListener shareButtonListener, OnLongClickListener tabsSwitcherLongClickListner,
+            ThemeColorProvider themeColorProvider) {
         super(stub, tabProvider, homeButtonListener, searchAcceleratorListener, shareButtonListener,
-                themeColorProvider);
+                tabsSwitcherLongClickListner, themeColorProvider);
     }
 
     @Override

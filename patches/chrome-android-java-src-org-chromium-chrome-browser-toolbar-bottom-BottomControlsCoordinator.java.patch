@@ -1,17 +1,17 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
-index 0d3bc64d4da5e8cdf8f1cbaf14840fbc8913b1f9..b4831fca19a9f597b74cb0c57a4c1df90e1beb0a 100644
+index 4819771fdf58e526bcf30ad7442f2502e2f9e036..8e2514d14c4cbc9538580fc437cbf947613cd02d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
-@@ -102,7 +102,7 @@ public class BottomControlsCoordinator {
+@@ -106,7 +106,7 @@ public class BottomControlsCoordinator {
              mTabGroupUi = TabManagementModuleProvider.getDelegate().createTabGroupUi(
                      root.findViewById(R.id.bottom_container_slot), themeColorProvider);
          } else {
 -            mBottomToolbarCoordinator = new BottomToolbarCoordinator(
 +            mBottomToolbarCoordinator = new BraveBottomToolbarCoordinator(
                      root.findViewById(R.id.bottom_toolbar_stub), tabProvider, homeButtonListener,
-                     searchAcceleratorListener, shareButtonListener, themeColorProvider);
-         }
-@@ -231,4 +231,5 @@ public class BottomControlsCoordinator {
+                     searchAcceleratorListener, shareButtonListener, tabSwitcherLongClickListener,
+                     themeColorProvider);
+@@ -236,4 +236,5 @@ public class BottomControlsCoordinator {
          if (mTabGroupUi != null) mTabGroupUi.destroy();
          mMediator.destroy();
      }
