@@ -930,6 +930,8 @@ void BraveProfileSyncServiceImpl::OnResolvedPreferences(
     const RecordsList& records) {
   const std::string this_device_object_id =
       brave_sync_prefs_->GetThisDeviceObjectId();
+  const std::string this_device_id_v2 =
+      brave_sync_prefs_->GetThisDeviceIdV2();
   bool this_device_deleted = false;
 
   auto sync_devices = brave_sync_prefs_->GetSyncDevices();
@@ -942,9 +944,13 @@ void BraveProfileSyncServiceImpl::OnResolvedPreferences(
                                      record->deviceId, device.deviceIdV2,
                                      record->syncTimestamp.ToJsTime()),
                           record->action, &actually_merged);
+      // We check object id here specifically because device which doesn't have
+      // device id v2 also doesn't have this object id stored. So we use this
+      // trait for migration.
       this_device_deleted =
           this_device_deleted ||
           (record->objectId == this_device_object_id &&
+           device.deviceIdV2 == this_device_id_v2 &&
            record->action == SyncRecord::Action::A_DELETE && actually_merged);
     }
   }  // for each device

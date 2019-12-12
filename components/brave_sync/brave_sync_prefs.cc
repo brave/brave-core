@@ -97,8 +97,8 @@ std::string Prefs::GetThisDeviceIdV2() const {
 }
 
 void Prefs::SetThisDeviceIdV2(const std::string& device_id_v2) {
-  DCHECK(!device_id_v2.empty());
-  pref_service_->SetString(kSyncDeviceIdV2, device_id_v2);
+  if (!device_id_v2.empty())
+    pref_service_->SetString(kSyncDeviceIdV2, device_id_v2);
 }
 
 std::string Prefs::GetThisDeviceObjectId() const {
