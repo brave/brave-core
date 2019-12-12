@@ -231,6 +231,115 @@ void TestThirdParty() {
       false, "image");
 }
 
+void TestClassId() {
+  Engine engine(
+      "###element\n"
+      "##.ads\n"
+      "##.element\n"
+      "###ads > #element\n"
+      "##a[href^=\"test.com\"]\n"
+      "###block\n"
+      "###block + .child\n"
+  );
+  std::vector<std::string> classes = std::vector<std::string>();
+  std::vector<std::string> ids = std::vector<std::string>();
+  std::vector<std::string> exceptions = std::vector<std::string>();
+  std::string stylesheet = engine.classIdStylesheet(classes, ids, exceptions);
+  assert(stylesheet == "");
+
+  classes = std::vector<std::string>({"ads", "no-ads"});
+  ids = std::vector<std::string>({"element"});
+  exceptions = std::vector<std::string>();
+  stylesheet = engine.classIdStylesheet(classes, ids, exceptions);
+  assert(stylesheet == ".ads,#element{display:none !important;}");
+
+  classes = std::vector<std::string>({"element", "a"});
+  ids = std::vector<std::string>({"block", "ads", "a"});
+  exceptions = std::vector<std::string>({"#block"});
+  stylesheet = engine.classIdStylesheet(classes, ids, exceptions);
+  assert(stylesheet == ".element,#block + .child,#ads > #element{display:none !important;}");
+
+  // Classes and ids must be passed without the leading `.` or `#`, or they will not be recognized
+  classes = std::vector<std::string>({".element", ".a"});
+  ids = std::vector<std::string>({"#block", "#ads", "#a"});
+  exceptions = std::vector<std::string>({"block"});
+  stylesheet = engine.classIdStylesheet(classes, ids, exceptions);
+  assert(stylesheet == "");
+}
+
+void TestHostnameCosmetics() {
+  Engine engine(
+      "a.com###element\n"
+      "b.com##.ads\n"
+      "##.block\n"
+      "a.com#@#.block\n"
+      "##a[href=\"b.com\"]\n"
+      "b.*##div:style(background: #fff)\n"
+  );
+
+  std::string a_resources = engine.hostnameCosmeticResources("a.com");
+  std::string a_order1(R"({"hide_selectors":["a[href=\"b.com\"]","#element"],"style_selectors":{},"exceptions":[".block"],"injected_script":""})");
+  std::string a_order2(R"({"hide_selectors":["#element","a[href=\"b.com\"]"],"style_selectors":{},"exceptions":[".block"],"injected_script":""})");
+  assert(a_resources == a_order1 || a_resources == a_order2);
+
+  std::string b_resources = engine.hostnameCosmeticResources("b.com");
+  std::string b_order1(R"({"hide_selectors":["a[href=\"b.com\"]",".ads"],"style_selectors":{"div":["background: #fff"]},"exceptions":[],"injected_script":""})");
+  std::string b_order2(R"({"hide_selectors":[".ads","a[href=\"b.com\"]"],"style_selectors":{"div":["background: #fff"]},"exceptions":[],"injected_script":""})");
+  assert(b_resources == b_order1 || b_resources == b_order2);
+
+  // The hostname should not include a URL path
+  std::string bad_b_resources = engine.hostnameCosmeticResources("b.com/index.html");
+  std::string bad_b_result(R"({"hide_selectors":["a[href=\"b.com\"]"],"style_selectors":{},"exceptions":[],"injected_script":""})");
+  assert(bad_b_resources == bad_b_result);
+}
+
+void TestSubdomainHostnameCosmetics() {
+  Engine engine(
+      "a.co.uk##.element\n"
+      "good.a.*#@#.element\n"
+  );
+
+  std::string a_resources = engine.hostnameCosmeticResources("a.co.uk");
+  std::string a_result(R"({"hide_selectors":[".element"],"style_selectors":{},"exceptions":[],"injected_script":""})");
+  assert(a_resources == a_result);
+
+  std::string bad_a_resources = engine.hostnameCosmeticResources("bad.a.co.uk");
+  std::string bad_a_result(R"({"hide_selectors":[".element"],"style_selectors":{},"exceptions":[],"injected_script":""})");
+  assert(bad_a_resources == bad_a_result);
+
+  std::string good_a_resources = engine.hostnameCosmeticResources("good.a.co.uk");
+  std::string good_a_result(R"({"hide_selectors":[],"style_selectors":{},"exceptions":[".element"],"injected_script":""})");
+  assert(good_a_resources == good_a_result);
+
+  std::string still_good_a_resources = engine.hostnameCosmeticResources("still.good.a.co.uk");
+  std::string still_good_a_result(R"({"hide_selectors":[],"style_selectors":{},"exceptions":[".element"],"injected_script":""})");
+  assert(still_good_a_resources == still_good_a_result);
+}
+
+void TestCosmeticScriptletResources() {
+  Engine engine(
+      "a.com##+js(scriptlet1)\n"
+      "2.a.com##+js(scriptlet2.js, argument)\n"
+  );
+
+  std::string a_unloaded = engine.hostnameCosmeticResources("a.com");
+  std::string a_unloaded_result(R"({"hide_selectors":[],"style_selectors":{},"exceptions":[],"injected_script":""})");
+  assert(a_unloaded == a_unloaded_result);
+
+  engine.addResources(R"([
+      {"name": "basic_scriptlet", "aliases": ["scriptlet1"], "kind": { "mime": "application/javascript" }, "content": "Y29uc29sZS5sb2coIkhpIik7" },
+      {"name": "scriptlet2", "aliases": [], "kind": "template", "content": "d2luZG93LmxvY2F0aW9uLmhyZWYgPSAie3sxfX0i" }]
+  )");
+
+  std::string a_loaded = engine.hostnameCosmeticResources("a.com");
+  std::string a_loaded_result(R"({"hide_selectors":[],"style_selectors":{},"exceptions":[],"injected_script":"console.log(\"Hi\");\n"})");
+  assert(a_loaded == a_loaded_result);
+
+  std::string a2_loaded = engine.hostnameCosmeticResources("2.a.com");
+  std::string a2_loaded_result(R"({"hide_selectors":[],"style_selectors":{},"exceptions":[],"injected_script":"console.log(\"Hi\");\nwindow.location.href = \"argument\"\n"})");
+  assert(a2_loaded == a2_loaded_result);
+}
+
 void TestDefaultLists() {
   std::vector<FilterList>& default_lists = FilterList::GetDefaultLists();
   assert(default_lists.size() == 8);
@@ -280,6 +389,10 @@ int main() {
   TestThirdParty();
   TestDefaultLists();
   TestRegionalLists();
+  TestClassId();
+  TestHostnameCosmetics();
+  TestSubdomainHostnameCosmetics();
+  TestCosmeticScriptletResources();
   cout << num_passed << " passed, " <<
       num_failed << " failed" << endl;
   cout << "Success!";

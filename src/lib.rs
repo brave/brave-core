@@ -28,7 +28,7 @@ pub struct FList {
 pub unsafe extern "C" fn engine_create(rules: *const c_char) -> *mut Engine {
     let split = CStr::from_ptr(rules).to_str().unwrap().lines();
     let rules: Vec<String> = split.map(String::from).collect();
-    let engine = Engine::from_rules(rules.as_slice());
+    let engine = Engine::from_rules_parametrised(rules.as_slice(), true, true, false, true);
     Box::into_raw(Box::new(engine))
 }
 
@@ -102,7 +102,7 @@ pub unsafe extern "C" fn engine_add_resource(
     let resource = Resource {
         name: key.to_string(),
         aliases: vec![],
-        kind: ResourceType::Mime(MimeType::from(content_type)),
+        kind: ResourceType::Mime(MimeType::from(std::borrow::Cow::from(content_type))),
         content: data.to_string(),
     };
     assert!(!engine.is_null());
@@ -226,4 +226,52 @@ pub unsafe extern "C" fn filter_list_get(category: *const c_char, i: size_t) -> 
             .into_raw();
     }
     new_list
+}
+
+/// Returns a set of cosmetic filtering resources specific to the given hostname, in JSON format
+#[no_mangle]
+pub unsafe extern "C" fn engine_hostname_cosmetic_resources(
+    engine: *mut Engine,
+    hostname: *const c_char,
+) -> *mut c_char {
+    let hostname = CStr::from_ptr(hostname).to_str().unwrap();
+    assert!(!engine.is_null());
+    let engine = Box::leak(Box::from_raw(engine));
+    let ptr = CString::new(serde_json::to_string(&engine.hostname_cosmetic_resources(hostname))
+        .unwrap_or_else(|_| "".into()))
+        .expect("Error: CString::new()")
+        .into_raw();
+    std::mem::forget(ptr);
+    ptr
+}
+
+/// Returns a stylesheet containing all generic cosmetic rules that begin with any of the provided class and id selectors
+///
+/// The leading '.' or '#' character should not be provided
+#[no_mangle]
+pub unsafe extern "C" fn engine_class_id_stylesheet(
+    engine: *mut Engine,
+    classes: *const *const c_char,
+    classes_size: size_t,
+    ids: *const *const c_char,
+    ids_size: size_t,
+    exceptions: *const *const c_char,
+    exceptions_size: size_t,
+) -> *mut c_char {
+    let classes = std::slice::from_raw_parts(classes, classes_size);
+    let classes: Vec<String> = (0..classes_size)
+        .map(|index| CStr::from_ptr(classes[index]).to_str().unwrap().to_owned())
+        .collect();
+    let ids = std::slice::from_raw_parts(ids, ids_size);
+    let ids: Vec<String> = (0..ids_size)
+        .map(|index| CStr::from_ptr(ids[index]).to_str().unwrap().to_owned())
+        .collect();
+    let exceptions = std::slice::from_raw_parts(exceptions, exceptions_size);
+    let exceptions: std::collections::HashSet<String> = (0..exceptions_size)
+        .map(|index| CStr::from_ptr(exceptions[index]).to_str().unwrap().to_owned())
+        .collect();
+    assert!(!engine.is_null());
+    let engine = Box::leak(Box::from_raw(engine));
+    let stylesheet = engine.class_id_stylesheet(&classes, &ids, exceptions);
+    CString::new(stylesheet.unwrap_or_else(|| String::new())).expect("Error: CString::new()").into_raw()
 }
