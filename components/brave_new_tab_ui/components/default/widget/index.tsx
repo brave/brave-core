@@ -6,9 +6,11 @@ import * as React from 'react'
 import { StyledWidget, StyledWidgetContainer } from './styles'
 import WidgetMenu from './widgetMenu'
 
+type HideWidgetFunction = () => void
+
 export interface WidgetProps {
   menuPosition: 'right' | 'left'
-  hideWidget: () => void
+  hideWidget?: HideWidgetFunction
   textDirection: string
 }
 
@@ -36,6 +38,7 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
     render () {
       const { menuPosition, hideWidget, textDirection } = this.props
       const { widgetMenuPersist } = this.state
+
       return (
         <StyledWidgetContainer
           menuPosition={menuPosition}
@@ -44,14 +47,16 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
           <StyledWidget widgetMenuPersist={widgetMenuPersist}>
               <WrappedComponent {...this.props as P}/>
           </StyledWidget>
+          {hideWidget &&
           <WidgetMenu
             widgetMenuPersist={widgetMenuPersist}
             toggleWidgetHover={this.toggleWidgetHover}
             textDirection={textDirection}
             menuPosition={menuPosition}
-            hideWidget={hideWidget}
+            hideWidget={hideWidget as HideWidgetFunction}
             unpersistWidgetHover={this.unpersistWidgetHover}
           />
+          }
         </StyledWidgetContainer>
       )
     }

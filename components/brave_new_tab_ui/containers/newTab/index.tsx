@@ -298,7 +298,6 @@ class NewTabPage extends React.Component<Props, State> {
              <S.GridItemCredits>
               <BrandedWallpaperLogo
                 menuPosition={'right'}
-                hideWidget={() => {console.error('TODO')}}
                 textDirection={newTabData.textDirection}
                 data={newTabData.brandedWallpaperData.logo}
               />

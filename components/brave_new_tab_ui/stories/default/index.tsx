@@ -256,7 +256,6 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
             <S.GridItemCredits>
               <BrandedWallpaperLogo
                 menuPosition={'right'}
-                hideWidget={() => {console.error('TODO')}}
                 textDirection={textDirection}
                 data={this.state.brandedWallpaper.logo}
               />
