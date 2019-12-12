@@ -28,6 +28,7 @@ interface WidgetVisibilityProps {
 export const StyledWidget = styled<WidgetVisibilityProps, 'div'>('div')`
   padding: 24px;
   max-width: 100%;
+  position: relative;
 
   ${StyledWidgetContainer}:hover & {
     border-radius: 16px;
