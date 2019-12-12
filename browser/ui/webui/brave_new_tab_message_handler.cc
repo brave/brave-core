@@ -9,122 +9,19 @@
 #include <memory>
 #include <utility>
 
-#include "base/bind.h"
-#include "base/no_destructor.h"
 #include "base/values.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
+#include "brave/browser/ui/webui/new_tab_page/branded_wallpaper.h"
+#include "brave/browser/ui/webui/new_tab_page/new_tab_page_branded_view_counter.h" //  NOLINT
 #include "brave/common/pref_names.h"
-#include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
-#include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_ui_data_source.h"
-#include "components/keyed_service/content/browser_context_dependency_manager.h"
-#include "components/keyed_service/content/browser_context_keyed_service_factory.h" //  NOLINT
-#include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 
 namespace {
-
-struct BrandedWallpaperLogo {
-  std::string imageUrl;
-  std::string altText;
-  std::string companyName;
-  std::string destinationUrl;
-};
-
-struct BrandedWallpaper {
-  std::string wallpaperImageUrl;
-  struct BrandedWallpaperLogo logo;
-};
-
-const BrandedWallpaper kDemoWallpaper = {
-  "ntp-dummy-brandedwallpaper-background.jpg",
-  {
-    "ntp-dummy-brandedwallpaper-logo.png",
-    "Technikke: For music lovers.",
-    "Technikke",
-    "https://brave.com"
-  }
-};
-
-constexpr int kInitialCountToBrandedWallpaper = 1;
-constexpr int kRegularCountToBrandedWallpaper = 3;
-class NewTabPageViewCounter : public KeyedService {
- public:
-  explicit NewTabPageViewCounter(Profile* profile): profile_(profile) {}
-
-  void RegisterPageView() {
-    // Don't do any counting if we will never be showing the data
-    if (!GetHasBrandedWallpaper()) {
-      return;
-    }
-    this->count_to_branded_wallpaper_--;
-    if (this->count_to_branded_wallpaper_ < 0)
-      this->count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
-  }
-
-  bool GetShouldShowBrandedWallpaper() {
-    return GetHasBrandedWallpaper() && (
-        this->count_to_branded_wallpaper_ == 0);
-  }
-
-  const BrandedWallpaper* GetBrandedWallpaper() {
-    // TODO(petemill): lookup flag to choose between demo and real
-    return &kDemoWallpaper;
-  }
-
- private:
-  bool GetHasBrandedWallpaper() {
-    // If user has opted-out, never return data
-    if (!profile_->GetPrefs()->
-        GetBoolean(kNewTabPageShowBrandedBackgroundImage)) {
-      return false;
-    }
-    // TODO(petemill): lookup flag to always use demo wallpaper
-    // or check real data source for actual data.
-    return true;
-  }
-
-  Profile* profile_;
-  int count_to_branded_wallpaper_ = kInitialCountToBrandedWallpaper;
-
-  DISALLOW_COPY_AND_ASSIGN(NewTabPageViewCounter);
-};
-
-class NewTabPageViewCounterFactory : public BrowserContextKeyedServiceFactory {
- public:
-  // Returns the CaptivePortalService for |profile|.
-  static NewTabPageViewCounter* GetForProfile(Profile* profile) {
-    return static_cast<NewTabPageViewCounter*>(
-    GetInstance()->GetServiceForBrowserContext(profile, true));
-  }
-
-  static NewTabPageViewCounterFactory* GetInstance() {
-    static base::NoDestructor<NewTabPageViewCounterFactory> instance;
-    return instance.get();
-  }
-  NewTabPageViewCounterFactory() : BrowserContextKeyedServiceFactory(
-        "NewTabPageViewCounter",
-        BrowserContextDependencyManager::GetInstance()) { }
-  ~NewTabPageViewCounterFactory() override { }
-
- private:
-  // BrowserContextKeyedServiceFactory:
-  KeyedService* BuildServiceInstanceFor(
-      content::BrowserContext* browser_context) const override {
-    return new NewTabPageViewCounter(
-        Profile::FromBrowserContext(browser_context));
-  }
-  content::BrowserContext* GetBrowserContextToUse(
-      content::BrowserContext* context) const override {
-    return chrome::GetBrowserContextRedirectedInIncognito(context);
-  }
-
-  DISALLOW_COPY_AND_ASSIGN(NewTabPageViewCounterFactory);
-};
 
 bool IsPrivateNewTab(Profile* profile) {
   return brave::IsTorProfile(profile) || profile->IsIncognitoProfile();
@@ -135,10 +32,10 @@ base::DictionaryValue GetBrandedWallpaperDictionary(
   base::DictionaryValue data;
   data.SetString("wallpaperImageUrl", wallpaper->wallpaperImageUrl);
   auto logo_data = std::make_unique<base::DictionaryValue>();
-  logo_data->SetString("image", wallpaper->logo.imageUrl);
-  logo_data->SetString("companyName", wallpaper->logo.companyName);
-  logo_data->SetString("alt", wallpaper->logo.altText);
-  logo_data->SetString("destintationUrl", wallpaper->logo.destinationUrl);
+  logo_data->SetString("image", wallpaper->logo->imageUrl);
+  logo_data->SetString("companyName", wallpaper->logo->companyName);
+  logo_data->SetString("alt", wallpaper->logo->altText);
+  logo_data->SetString("destinationUrl", wallpaper->logo->destinationUrl);
   data.SetDictionary("logo", std::move(logo_data));
   return data;
 }
@@ -386,20 +283,21 @@ void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
   AllowJavascript();
   // Decrement original value only if there's actual branded content
 
-  NewTabPageViewCounterFactory::GetForProfile(profile_)->RegisterPageView();
+  NewTabPageBrandedViewCounter::GetForProfile(profile_)
+      ->RegisterPageView();
 }
 
 void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(
     const base::ListValue* args) {
   AllowJavascript();
 
-  auto* service = NewTabPageViewCounterFactory::GetForProfile(profile_);
-  if (!service->GetShouldShowBrandedWallpaper()) {
+  auto* service = NewTabPageBrandedViewCounter::GetForProfile(profile_);
+  if (!service->ShouldShowBrandedWallpaper()) {
     ResolveJavascriptCallback(args->GetList()[0], base::Value());
     return;
   }
   auto data = GetBrandedWallpaperDictionary(
-      service->GetBrandedWallpaper());
+      &service->GetBrandedWallpaper());
   ResolveJavascriptCallback(args->GetList()[0], data);
 }
 
