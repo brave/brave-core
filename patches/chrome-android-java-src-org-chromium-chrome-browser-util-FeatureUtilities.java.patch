@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java b/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
-index 1471794e1fc56768c1e0f14d169f2a539ffdef48..73e70053b280f9fa6cc2d30b0d56d73435f25525 100644
+index ee8d2cf102a85b446092ef87759ca13e72f8f867..340db4f2dbe9549f13db25a460d96a8889ebd64f 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/util/FeatureUtilities.java
 @@ -378,7 +378,7 @@ public class FeatureUtilities {
@@ -10,7 +10,7 @@ index 1471794e1fc56768c1e0f14d169f2a539ffdef48..73e70053b280f9fa6cc2d30b0d56d734
 +        return ChromePreferenceManager.getInstance().isBottomToolbarEnabled()
                  && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(
                          ContextUtils.getApplicationContext())
-                 && !isTabGroupsAndroidEnabled();
+                 && (isDuetTabStripIntegrationAndroidEnabled() || !isTabGroupsAndroidEnabled());
 @@ -423,7 +423,7 @@ public class FeatureUtilities {
       *         enabled).
       */
