@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "brave/browser/brave_wayback_machine/wayback_machine_url_fetcher.h"
+#include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
 #include "ui/views/controls/button/button.h"
 
 namespace content {

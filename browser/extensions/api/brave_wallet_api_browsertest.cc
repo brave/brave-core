@@ -101,8 +101,8 @@ class BraveWalletAPIBrowserTest : public InProcessBrowserTest,
     for (size_t i = 0; i < infobar_service->infobar_count(); i++) {
       InfoBarDelegate* delegate =
           infobar_service->infobar_at(i)->delegate();
-      if (delegate->GetIdentifier() == (InfoBarDelegate::InfoBarIdentifier)
-            CRYPTO_WALLETS_INFOBAR_DELEGATE) {
+      if (delegate->GetIdentifier() ==
+              InfoBarDelegate::CRYPTO_WALLETS_INFOBAR_DELEGATE) {
         ConfirmInfoBarDelegate* confirm_delegate =
             delegate->AsConfirmInfoBarDelegate();
         // Only the OK button should be present
@@ -118,8 +118,8 @@ class BraveWalletAPIBrowserTest : public InProcessBrowserTest,
     for (size_t i = 0; i < infobar_service->infobar_count(); i++) {
       InfoBarDelegate* delegate =
           infobar_service->infobar_at(i)->delegate();
-      if (delegate->GetIdentifier() == (InfoBarDelegate::InfoBarIdentifier)
-            CRYPTO_WALLETS_INFOBAR_DELEGATE) {
+      if (delegate->GetIdentifier() ==
+              InfoBarDelegate::CRYPTO_WALLETS_INFOBAR_DELEGATE) {
         ConfirmInfoBarDelegate* confirm_delegate =
             delegate->AsConfirmInfoBarDelegate();
         // Only the OK button should be present
@@ -148,8 +148,7 @@ class BraveWalletAPIBrowserTest : public InProcessBrowserTest,
   void OnInfoBarAdded(InfoBar* infobar) override {
     if (infobar_added_run_loop_ &&
         infobar->delegate()->GetIdentifier() ==
-            (InfoBarDelegate::InfoBarIdentifier)
-                CRYPTO_WALLETS_INFOBAR_DELEGATE) {
+            InfoBarDelegate::CRYPTO_WALLETS_INFOBAR_DELEGATE) {
       infobar_added_ = true;
       infobar_added_run_loop_->Quit();
     }

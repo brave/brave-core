@@ -40,7 +40,7 @@ CryptoWalletsInfoBarDelegate::~CryptoWalletsInfoBarDelegate() {}
 
 infobars::InfoBarDelegate::InfoBarIdentifier
 CryptoWalletsInfoBarDelegate::GetIdentifier() const {
-  return (InfoBarIdentifier)CRYPTO_WALLETS_INFOBAR_DELEGATE;
+  return CRYPTO_WALLETS_INFOBAR_DELEGATE;
 }
 
 const gfx::VectorIcon& CryptoWalletsInfoBarDelegate::GetVectorIcon() const {

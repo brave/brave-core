@@ -3,13 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_wayback_machine/wayback_machine_url_fetcher.h"
+#include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
 
 #include <utility>
 
 #include "base/bind.h"
 #include "base/json/json_reader.h"
-#include "brave/common/url_constants.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -19,6 +18,8 @@
 namespace {
 
 constexpr int kMaxBodySize = 1024 * 1024;
+constexpr char kWaybackQueryURL[] =
+    "https://archive.org/wayback/available?url=";
 
 const net::NetworkTrafficAnnotationTag& GetNetworkTrafficAnnotationTag() {
   static const net::NetworkTrafficAnnotationTag network_traffic_annotation_tag =

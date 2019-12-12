@@ -8,12 +8,13 @@
 #include <string>
 #include <utility>
 
-#include "brave/browser/brave_wayback_machine/brave_wayback_machine_infobar_delegate.h"
+#include "brave/browser/infobars/brave_wayback_machine_delegate_impl.h"
 #include "brave/browser/ui/views/infobars/brave_wayback_machine_infobar_contents_view.h"
+#include "brave/components/brave_wayback_machine/brave_wayback_machine_infobar_delegate.h"
 
 // static
 std::unique_ptr<infobars::InfoBar>
-BraveWaybackMachineInfoBarDelegate::CreateInfoBar(
+BraveWaybackMachineDelegateImpl::CreateInfoBar(
     std::unique_ptr<BraveWaybackMachineInfoBarDelegate> delegate,
     content::WebContents* contents) {
   return std::make_unique<BraveWaybackMachineInfoBarView>(std::move(delegate),

@@ -1,5 +1,4 @@
 import("//brave/build/config.gni")
-import("//brave/browser/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
@@ -7,6 +6,7 @@ import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//components/gcm_driver/config.gni")
@@ -624,7 +624,7 @@ test("brave_browser_tests") {
 
   if (enable_brave_wayback_machine) {
     sources += [
-      "//brave/browser/brave_wayback_machine/brave_wayback_machine_browsertest.cc",
+      "//brave/components/brave_wayback_machine/brave_wayback_machine_browsertest.cc",
     ]
   }
 

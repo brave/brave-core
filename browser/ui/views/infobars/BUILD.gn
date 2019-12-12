@@ -13,7 +13,7 @@ source_set("brave_wayback_machine") {
   deps = [
     "//brave/app:brave_generated_resources_grit",
     "//brave/app/vector_icons",
-    "//brave/browser/brave_wayback_machine",
+    "//brave/components/brave_wayback_machine",
     "//components/resources",
     "//content/public/browser",
     "//ui/base",

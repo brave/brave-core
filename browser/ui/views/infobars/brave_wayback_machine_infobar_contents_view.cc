@@ -10,9 +10,9 @@
 #include <utility>
 
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/brave_wayback_machine/wayback_machine_url_fetcher.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/views/infobars/brave_wayback_machine_infobar_button_container.h"
+#include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
 #include "chrome/browser/infobars/infobar_service.h"
