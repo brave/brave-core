@@ -11,7 +11,7 @@ import {
   SyncPage,
   mapStateToProps,
   mapDispatchToProps
-} from '../../../brave_sync/ui/components/app'
+} from '../../../brave_sync/ui/containers/app'
 
 describe('sync page component', () => {
   describe('mapStateToProps', () => {
