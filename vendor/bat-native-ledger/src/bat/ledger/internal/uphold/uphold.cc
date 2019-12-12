@@ -24,6 +24,11 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
+namespace {
+  const char kFeeMessage[] =
+      "5% transaction fee collected by Brave Software International";
+}  // namespace
+
 namespace braveledger_uphold {
 
 Uphold::Uphold(bat_ledger::LedgerImpl* ledger) :
@@ -70,10 +75,11 @@ void Uphold::StartContribution(
                             fee,
                             *wallet);
 
-  transfer_->Start(reconcile_amount,
-                   address,
-                   std::move(wallet),
-                   contribution_callback);
+  Transaction transaction;
+  transaction.address = address;
+  transaction.amount = reconcile_amount;
+
+  transfer_->Start(transaction, std::move(wallet), contribution_callback);
 }
 
 void Uphold::ContributionCompleted(
@@ -185,7 +191,10 @@ void Uphold::TransferFunds(double amount,
                            const std::string& address,
                            ledger::ExternalWalletPtr wallet,
                            TransactionCallback callback) {
-  transfer_->Start(amount, address, std::move(wallet), callback);
+  Transaction transaction;
+  transaction.address = address;
+  transaction.amount = amount;
+  transfer_->Start(transaction, std::move(wallet), callback);
 }
 
 void Uphold::WalletAuthorization(
@@ -321,11 +330,12 @@ void Uphold::TransferFee(
           _2,
           transfer_fee);
 
-      transfer_->Start(
-          transfer_fee.amount,
-          GetFeeAddress(),
-          std::move(wallet),
-          callback);
+  Transaction transaction;
+  transaction.address = GetFeeAddress();
+  transaction.amount = transfer_fee.amount;
+  transaction.message = kFeeMessage;
+
+  transfer_->Start(transaction, std::move(wallet), callback);
 }
 
 void Uphold::TransferFeeOnTimer(const uint32_t timer_id) {
