@@ -846,6 +846,13 @@ void BraveProfileSyncServiceImpl::FetchSyncRecords(const bool bookmarks,
     return;
   }
 
+  // With current logic and separate SQS queues we can do only fetch per
+  // category
+  // TODO(AlexeyBarabash): split this function into a three
+  DCHECK((bookmarks && !history && !preferences) ||
+         (!bookmarks && history && !preferences) ||
+         (!bookmarks && !history && preferences));
+
   std::vector<std::string> category_names;
   if (history) {
     category_names.push_back(kHistorySites);  // "HISTORY_SITES";
@@ -868,8 +875,16 @@ void BraveProfileSyncServiceImpl::FetchSyncRecords(const bool bookmarks,
   base::Time start_at_time =
       IsSQSReady() ? brave_sync_prefs_->GetLatestRecordTime() : base::Time();
 
+  base::Time last_fetch_time;
+  if (bookmarks) {
+    last_fetch_time = brave_sync_prefs_->GetLastFetchTime();
+    brave_sync_prefs_->SetLastFetchTime(base::Time::Now());
+  } else if (preferences) {
+    last_fetch_time = brave_sync_prefs_->GetLastPreferencesFetchTime();
+  }
+
   brave_sync_client_->SendFetchSyncRecords(category_names, start_at_time,
-                                           max_records);
+                                           max_records, last_fetch_time);
 }
 
 void BraveProfileSyncServiceImpl::SendCreateDevice() {
@@ -985,14 +1000,17 @@ bool BraveProfileSyncServiceImpl::IsBraveSyncEnabled() const {
 
 void BraveProfileSyncServiceImpl::FetchDevices() {
   DCHECK(sync_client_);
-  brave_sync_prefs_->SetLastFetchTime(base::Time::Now());
+
+  const auto last_fetch_time = brave_sync_prefs_->GetLastPreferencesFetchTime();
+  brave_sync_prefs_->SetLastPreferencesFetchTime(base::Time::Now());
 
   base::Time start_at_time =
       IsSQSReady() ? brave_sync_prefs_->GetLatestDeviceRecordTime()
                    : base::Time();
 
   brave_sync_client_->SendFetchSyncRecords(
-      {brave_sync::jslib_const::kPreferences}, start_at_time, 1000);
+      {brave_sync::jslib_const::kPreferences}, start_at_time, 1000,
+      last_fetch_time);
 }
 
 void BraveProfileSyncServiceImpl::OnPollSyncCycle(GetRecordsCallback cb,
@@ -1000,7 +1018,7 @@ void BraveProfileSyncServiceImpl::OnPollSyncCycle(GetRecordsCallback cb,
   if (!brave_sync_prefs_->GetSyncEnabled())
     return;
 
-  if (IsTimeEmpty(brave_sync_prefs_->GetLastFetchTime())) {
+  if (IsTimeEmpty(brave_sync_prefs_->GetLastPreferencesFetchTime())) {
     SendCreateDevice();
     this_device_created_time_ = base::Time::Now();
   }

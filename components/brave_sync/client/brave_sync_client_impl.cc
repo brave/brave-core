@@ -75,11 +75,12 @@ void BraveSyncClientImpl::SendGotInitData(const Uint8Array& seed,
 
 void BraveSyncClientImpl::SendFetchSyncRecords(
     const std::vector<std::string>& category_names,
-    const base::Time& startAt,
-    const int max_records) {
+    const base::Time& start_at,
+    const int max_records,
+    const base::Time& last_fetch_time) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  brave_sync_event_router_->FetchSyncRecords(category_names, startAt,
-                                             max_records);
+  brave_sync_event_router_->FetchSyncRecords(category_names, start_at,
+                                             max_records, last_fetch_time);
 }
 
 void BraveSyncClientImpl::SendResolveSyncRecords(

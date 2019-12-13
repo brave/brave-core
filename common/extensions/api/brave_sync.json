@@ -225,6 +225,10 @@
           {
             "type": "number",
             "name": "maxRecords"
+          },
+          {
+            "type": "number",
+            "name": "previousFetchTime"
           }
         ]
       },

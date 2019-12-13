@@ -58,8 +58,10 @@ extern const char kSyncHistoryEnabled[];
 extern const char kSyncLatestRecordTime[];
 // The latest time of synced device record
 extern const char kSyncLatestDeviceRecordTime[];
-// The time of latest fetch records operation
+// The time of latest fetch records operation for bookmarks
 extern const char kSyncLastFetchTime[];
+// The time of latest fetch records operation for preferences
+extern const char kSyncLastPreferencesFetchTime[];
 // the list of all known sync devices
 // TODO(bridiver) - this should be a dictionary - not raw json
 extern const char kSyncDeviceList[];
@@ -107,6 +109,8 @@ class Prefs {
   base::Time GetLatestDeviceRecordTime();
   void SetLastFetchTime(const base::Time &time);
   base::Time GetLastFetchTime();
+  void SetLastPreferencesFetchTime(const base::Time& time);
+  base::Time GetLastPreferencesFetchTime();
   void SetLastCompactTimeBookmarks(const base::Time &time);
   base::Time GetLastCompactTimeBookmarks();
 

@@ -40,10 +40,10 @@ class BraveSyncEventRouter {
                    const extensions::api::brave_sync::Config& config,
                    const std::string& device_id_v2);
 
-  void FetchSyncRecords(
-    const std::vector<std::string>& category_names,
-    const base::Time& startAt,
-    const int max_records);
+  void FetchSyncRecords(const std::vector<std::string>& category_names,
+                        const base::Time& start_at,
+                        const int max_records,
+                        const base::Time& previous_fetch_time);
 
   void ResolveSyncRecords(const std::string &category_name,
     const std::vector<RecordAndExistingObject>& records_and_existing_objects);

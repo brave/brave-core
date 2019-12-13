@@ -44,12 +44,14 @@ void BraveSyncEventRouter::GotInitData(
 
 void BraveSyncEventRouter::FetchSyncRecords(
     const std::vector<std::string>& category_names,
-    const base::Time& startAt,
-    const int max_records) {
+    const base::Time& start_at,
+    const int max_records,
+    const base::Time& previous_fetch_time) {
   std::unique_ptr<base::ListValue> args(
-     extensions::api::brave_sync::OnFetchSyncRecords::Create(category_names,
-       startAt.ToJsTime(), static_cast<double>(max_records))
-       .release());
+      extensions::api::brave_sync::OnFetchSyncRecords::Create(
+          category_names, start_at.ToJsTime(), static_cast<double>(max_records),
+          previous_fetch_time.ToJsTime())
+          .release());
   std::unique_ptr<Event> event(
      new Event(extensions::events::FOR_TEST,
        extensions::api::brave_sync::OnFetchSyncRecords::kEventName,
