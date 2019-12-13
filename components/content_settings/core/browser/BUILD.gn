@@ -9,6 +9,7 @@ source_set("browser") {
 
     deps = [
       "//base",
+      "//brave/common:network_constants",
       "//brave/common:pref_names",
       "//brave/common:shield_exceptions",
       "//brave/components/content_settings/core/common",
