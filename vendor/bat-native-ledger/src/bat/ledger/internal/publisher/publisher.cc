@@ -638,25 +638,12 @@ void Publisher::setBalanceReport(ledger::ActivityMonth month,
                                 int year,
                                 const ledger::BalanceReportInfo& report_info) {
   ledger::ReportBalanceProperties report_balance;
-  report_balance.opening_balance = report_info.opening_balance;
-  report_balance.closing_balance = report_info.closing_balance;
   report_balance.grants = report_info.grants;
-  report_balance.deposits = report_info.deposits;
   report_balance.ad_earnings = report_info.earning_from_ads;
   report_balance.recurring_donations = report_info.recurring_donation;
   report_balance.one_time_donations = report_info.one_time_donation;
   report_balance.auto_contributions = report_info.auto_contribute;
 
-  std::string total = "0";
-  total = braveledger_bat_bignum::sum(total, report_balance.grants);
-  total = braveledger_bat_bignum::sum(total, report_balance.ad_earnings);
-  total = braveledger_bat_bignum::sum(total, report_balance.deposits);
-  total = braveledger_bat_bignum::sub(total, report_balance.auto_contributions);
-  total = braveledger_bat_bignum::sub(total,
-                                      report_balance.recurring_donations);
-  total = braveledger_bat_bignum::sub(total, report_balance.one_time_donations);
-
-  report_balance.total = total;
   state_->monthly_balances[GetBalanceReportName(month, year)] = report_balance;
   saveState();
 }
@@ -683,14 +670,11 @@ ledger::Result Publisher::GetBalanceReportInternal(
 
   if (iter == state_->monthly_balances.end()) {
     ledger::BalanceReportInfo new_report_info;
-    new_report_info.opening_balance = "0";
-    new_report_info.closing_balance = "0";
     new_report_info.grants = "0";
     new_report_info.earning_from_ads = "0";
     new_report_info.auto_contribute = "0";
     new_report_info.recurring_donation = "0";
     new_report_info.one_time_donation = "0";
-    new_report_info.total = "0";
 
     setBalanceReport(month, year, new_report_info);
     ledger::Result result = GetBalanceReportInternal(month, year, report_info);
@@ -701,8 +685,6 @@ ledger::Result Publisher::GetBalanceReportInternal(
     }
   }
 
-  report_info->opening_balance = iter->second.opening_balance;
-  report_info->closing_balance = iter->second.closing_balance;
   report_info->grants = iter->second.grants;
   report_info->earning_from_ads = iter->second.ad_earnings;
   report_info->auto_contribute = iter->second.auto_contributions;
@@ -718,8 +700,6 @@ Publisher::GetAllBalanceReports() {
   for (auto const& report : state_->monthly_balances) {
     ledger::BalanceReportInfoPtr newReport = ledger::BalanceReportInfo::New();
     const ledger::ReportBalanceProperties oldReport = report.second;
-    newReport->opening_balance = oldReport.opening_balance;
-    newReport->closing_balance = oldReport.closing_balance;
     newReport->grants = oldReport.grants;
     newReport->earning_from_ads = oldReport.ad_earnings;
     newReport->auto_contribute = oldReport.auto_contributions;

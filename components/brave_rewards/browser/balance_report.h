@@ -13,16 +13,13 @@ namespace brave_rewards {
 struct BalanceReport {
   BalanceReport();
   ~BalanceReport();
-  BalanceReport(
-      const BalanceReport& properties);
+  BalanceReport(const BalanceReport& properties);
 
-  std::string deposits = "0";
   std::string grants = "0";
   std::string earning_from_ads = "0";
   std::string auto_contribute = "0";
   std::string recurring_donation = "0";
   std::string one_time_donation = "0";
-  std::string total = "0";
 };
 
 }  // namespace brave_rewards

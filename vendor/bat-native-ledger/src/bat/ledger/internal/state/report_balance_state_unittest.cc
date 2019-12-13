@@ -13,15 +13,11 @@ namespace ledger {
 TEST(ReportBalanceStateTest, ToJsonSerialization) {
   // Arrange
   ReportBalanceProperties report_balance_properties;
-  report_balance_properties.opening_balance = "OpeningBalance";
-  report_balance_properties.closing_balance = "ClosingBalance";
-  report_balance_properties.deposits = "Deposits";
   report_balance_properties.grants = "Grants";
   report_balance_properties.ad_earnings = "AdEarnings";
   report_balance_properties.auto_contributions = "AutoContributions";
   report_balance_properties.recurring_donations = "RecurringDonations";
   report_balance_properties.one_time_donations = "OneTimeDonations";
-  report_balance_properties.total = "Total";
 
   // Act
   const ReportBalanceState report_balance_state;
@@ -37,17 +33,13 @@ TEST(ReportBalanceStateTest, ToJsonSerialization) {
 TEST(ReportBalanceStateTest, FromJsonDeserialization) {
   // Arrange
   ReportBalanceProperties report_balance;
-  report_balance.opening_balance = "OpeningBalance";
-  report_balance.closing_balance = "ClosingBalance";
-  report_balance.deposits = "Deposits";
   report_balance.grants = "Grants";
   report_balance.ad_earnings = "AdEarnings";
   report_balance.auto_contributions = "AutoContributions";
   report_balance.recurring_donations = "RecurringDonations";
   report_balance.one_time_donations = "OneTimeDonations";
-  report_balance.total = "Total";
 
-  const std::string json = "{\"opening_balance\":\"OpeningBalance\",\"closing_balance\":\"ClosingBalance\",\"deposits\":\"Deposits\",\"grants\":\"Grants\",\"earning_from_ads\":\"AdEarnings\",\"auto_contribute\":\"AutoContributions\",\"recurring_donation\":\"RecurringDonations\",\"one_time_donation\":\"OneTimeDonations\",\"total\":\"Total\"}";  // NOLINT
+  const std::string json = "{\"grants\":\"Grants\",\"earning_from_ads\":\"AdEarnings\",\"auto_contribute\":\"AutoContributions\",\"recurring_donation\":\"RecurringDonations\",\"one_time_donation\":\"OneTimeDonations\"}";  // NOLINT
 
   // Act
   ReportBalanceProperties expected_report_balance;

@@ -13,14 +13,10 @@ namespace {
 
 // Do not change these values as they are required to transition legacy state
 const char kAutoContributionsKey[] = "auto_contribute";
-const char kClosingBalanceKey[] = "closing_balance";
-const char kDepositsKey[] = "deposits";
 const char kAdEarningsKey[] = "earning_from_ads";
 const char kGrantsKey[] = "grants";
 const char kOneTimeDonationsKey[] = "one_time_donation";
-const char kOpeningBalanceKey[] = "opening_balance";
 const char kRecurringDonationsKey[] = "recurring_donation";
-const char kTotalKey[] = "total";
 
 }  // namespace
 
@@ -70,30 +66,6 @@ bool ReportBalanceState::FromDict(
 
   ReportBalanceProperties report_balance_properties;
 
-  // Opening Balance
-  const auto* opening_balance = dictionary->FindStringKey(kOpeningBalanceKey);
-  if (!opening_balance) {
-    NOTREACHED();
-    return false;
-  }
-  report_balance_properties.opening_balance = *opening_balance;
-
-  // Closing Balance
-  const auto* closing_balance = dictionary->FindStringKey(kClosingBalanceKey);
-  if (!closing_balance) {
-    NOTREACHED();
-    return false;
-  }
-  report_balance_properties.closing_balance = *closing_balance;
-
-  // Deposits
-  const auto* deposits = dictionary->FindStringKey(kDepositsKey);
-  if (!deposits) {
-    NOTREACHED();
-    return false;
-  }
-  report_balance_properties.deposits = *deposits;
-
   // Grants
   const auto* grants = dictionary->FindStringKey(kGrantsKey);
   if (!grants) {
@@ -137,14 +109,6 @@ bool ReportBalanceState::FromDict(
   }
   report_balance_properties.one_time_donations = *one_time_donations;
 
-  // Total
-  const auto* total = dictionary->FindStringKey(kTotalKey);
-  if (!total) {
-    NOTREACHED();
-    return false;
-  }
-  report_balance_properties.total = *total;
-
   *properties = report_balance_properties;
 
   return true;
@@ -161,15 +125,6 @@ bool ReportBalanceState::ToJson(
 
   writer->StartObject();
 
-  writer->String(kOpeningBalanceKey);
-  writer->String(properties.opening_balance.c_str());
-
-  writer->String(kClosingBalanceKey);
-  writer->String(properties.closing_balance.c_str());
-
-  writer->String(kDepositsKey);
-  writer->String(properties.deposits.c_str());
-
   writer->String(kGrantsKey);
   writer->String(properties.grants.c_str());
 
@@ -184,9 +139,6 @@ bool ReportBalanceState::ToJson(
 
   writer->String(kOneTimeDonationsKey);
   writer->String(properties.one_time_donations.c_str());
-
-  writer->String(kTotalKey);
-  writer->String(properties.total.c_str());
 
   writer->EndObject();
 

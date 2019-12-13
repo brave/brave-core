@@ -22,15 +22,11 @@ struct ReportBalanceProperties {
   bool operator!=(
       const ReportBalanceProperties& rhs) const;
 
-  std::string opening_balance;
-  std::string closing_balance;
-  std::string deposits;
   std::string grants;
   std::string ad_earnings;
   std::string auto_contributions;
   std::string recurring_donations;
   std::string one_time_donations;
-  std::string total;
 };
 
 }  // namespace ledger
