@@ -9,8 +9,7 @@ const keyName = 'welcome-data'
 
 export const defaultState = {
   searchProviders: [],
-  browserProfiles: [],
-  browserThemes: []
+  browserProfiles: []
 }
 
 const cleanData = (state: Welcome.State) => {

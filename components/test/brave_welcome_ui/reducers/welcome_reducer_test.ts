@@ -12,7 +12,7 @@ window.open = jest.fn()
 window.close = jest.fn()
 
 describe('welcomeReducer', () => {
-  describe('Handlle initial state', () => {
+  describe('Handle initial state', () => {
     let spy: jest.SpyInstance
     beforeEach(() => {
       spy = jest.spyOn(storage, 'load')
@@ -24,8 +24,7 @@ describe('welcomeReducer', () => {
       const assertion = welcomeReducer(undefined, actions.closeTabRequested())
       expect(assertion).toEqual({
         searchProviders: [],
-        browserProfiles: [],
-        browserThemes: []
+        browserProfiles: []
       })
       expect(spy).toBeCalled()
       expect(spy.mock.calls[0][1]).toBe(undefined)
@@ -105,33 +104,11 @@ describe('welcomeReducer', () => {
     })
   })
 
-  describe('SET_BROWSER_THEME', () => {
-    let changeThemeStub: jest.SpyInstance
-
-    beforeEach(() => {
-      changeThemeStub = jest.spyOn(chrome.braveTheme, 'setBraveThemeType')
-    })
-
-    afterEach(() => {
-      changeThemeStub.mockRestore()
-    })
-
-    it('should call setBraveThemeType with the correct argument', () => {
-      welcomeReducer(undefined, {
-        type: types.SET_BROWSER_THEME,
-        payload: 'Dark'
-      })
-      expect(changeThemeStub).toBeCalledTimes(1)
-      expect(changeThemeStub).toBeCalledWith('Dark')
-    })
-  })
-
   describe('IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS', () => {
     it('should set default search provider data', () => {
       const mockState = {
         searchProviders: [],
-        browserProfiles: [],
-        browserThemes: []
+        browserProfiles: []
       }
       const result = welcomeReducer(mockState, {
         type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
@@ -149,8 +126,7 @@ describe('welcomeReducer', () => {
     it('should set import browser profile data', () => {
       const mockState = {
         searchProviders: [],
-        browserProfiles: [],
-        browserThemes: []
+        browserProfiles: []
       }
       const result = welcomeReducer(mockState, {
         type: types.IMPORT_BROWSER_PROFILES_SUCCESS,

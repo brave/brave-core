@@ -3,11 +3,6 @@ declare namespace Welcome {
     welcomeData: State | undefined
   }
 
-  export interface BrowserTheme {
-    name: string
-    index: string
-  }
-
   export interface BrowserProfile {
     autofillFormData: boolean,
     cookies: boolean,
@@ -47,6 +42,5 @@ declare namespace Welcome {
   export interface State {
     searchProviders: Array<SearchEngineEntry>
     browserProfiles: Array<BrowserProfile>
-    browserThemes: Array<BrowserTheme>
   }
 }
