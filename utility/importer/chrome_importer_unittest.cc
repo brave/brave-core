@@ -1,16 +1,19 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/utility/importer/chrome_importer.h"
-#include "brave/common/brave_paths.h"
-#include "brave/common/importer/brave_mock_importer_bridge.h"
+
+#include <string>
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/path_service.h"
+#include "base/strings/utf_string_conversions.h"
+#include "brave/common/brave_paths.h"
+#include "brave/common/importer/brave_mock_importer_bridge.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/importer/imported_bookmark_entry.h"
 #include "chrome/common/importer/importer_data_types.h"
@@ -41,7 +44,8 @@ class ChromeImporterTest : public ::testing::Test {
   void SetUpChromeProfile() {
     // Creates a new profile in a new subdirectory in the temp directory.
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    base::FilePath test_path = temp_dir_.GetPath().AppendASCII("ChromeImporterTest");
+    base::FilePath test_path =
+        temp_dir_.GetPath().AppendASCII("ChromeImporterTest");
     base::DeleteFile(test_path, true);
     base::CreateDirectory(test_path);
     profile_dir_ = test_path.AppendASCII("profile");
@@ -134,7 +138,8 @@ TEST_F(ChromeImporterTest, ImportFavicons) {
             favicons[3].favicon_url.spec());
 }
 
-// The mock keychain only works on macOS, so only run this test on macOS (for now)
+// The mock keychain only works on macOS, so only run this test on macOS (for
+// now)
 #if defined(OS_MACOSX)
 TEST_F(ChromeImporterTest, ImportPasswords) {
   // Use mock keychain on mac to prevent blocking permissions dialogs.
