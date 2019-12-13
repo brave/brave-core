@@ -261,6 +261,7 @@ def get_fingerprint_for_xtb(message_tag):
     # To avoid negative ids we strip the high-order bit
     return str(fp & 0x7fffffffffffffffL)
 
+
 def is_translateable_string(grd_file_path, message_tag):
     if message_tag.get('translateable') != 'false':
         return True
@@ -283,6 +284,7 @@ def is_translateable_string(grd_file_path, message_tag):
         if message_tag.get('name') in exceptions:
             return True
     return False
+
 
 def get_grd_strings(grd_file_path):
     """Obtains a tubple of (name, value, FP) for each string in a GRD file"""
@@ -387,6 +389,7 @@ def get_xtb_files(grd_file_path):
 
 def get_original_grd(src_root, grd_file_path):
     """Obtains the Chromium GRD file for a specified Brave GRD file."""
+    # TODO: consider passing this mapping into the script from l10nUtil.js
     grd_file_name = os.path.basename(grd_file_path)
     if grd_file_name == 'components_brave_strings.grd':
         return os.path.join(src_root, 'components',
@@ -396,6 +399,9 @@ def get_original_grd(src_root, grd_file_path):
     elif grd_file_name == 'generated_resources.grd':
         return os.path.join(src_root, 'chrome', 'app',
                             'generated_resources.grd')
+    elif grd_file_name == 'android_chrome_strings.grd':
+        return os.path.join(src_root, 'chrome', 'android', 'java', 'strings',
+                            'android_chrome_strings.grd')
 
 
 def check_for_chromium_upgrade_extra_langs(src_root, grd_file_path):
@@ -515,7 +521,7 @@ def upload_missing_translations_to_transifex(source_string_path, lang_code,
                                              chromium_grd_strings, xtb_strings,
                                              chromium_xtb_strings):
     """For each chromium translation that we don't know about, upload it."""
-    lang_code = lang_code.replace('-', '_')
+    lang_code = lang_code.replace('-', '_').replace('iw', 'he')
     for idx, (string_name, string_value,
               string_fp, desc) in enumerate(grd_strings):
         string_fp = str(string_fp)
