@@ -6,7 +6,7 @@ declare namespace RewardsExtension {
     enabledMain: boolean
     notifications: Record<string, Notification>
     publishers: Record<string, Publisher>
-    report: Report
+    report: BalanceReport
     promotions?: Promotion[]
     pendingContributionTotal: number
     walletCorrupted: boolean
@@ -116,16 +116,12 @@ declare namespace RewardsExtension {
     defaultMonthlyTipChoices: number[]
   }
 
-  export interface Report {
+  export interface BalanceReport {
     ads: string
-    closing: string
     contribute: string
-    deposit: string
     donation: string
     grant: string
     tips: string
-    opening: string
-    total: string
   }
 
   export interface Notification {

@@ -24,7 +24,6 @@ const fetchRewardsInfo = (state: Rewards.State) => {
   chrome.send('brave_rewards.getContributionList')
   chrome.send('brave_rewards.getWalletProperties', [])
   chrome.send('brave_rewards.getPendingContributionsTotal')
-  chrome.send('brave_rewards.getBalanceReports')
   chrome.send('brave_rewards.getRecurringTips')
   chrome.send('brave_rewards.getOneTimeTips')
   chrome.send('brave_rewards.getAdsData')
@@ -119,24 +118,21 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       }
       break
     }
-    case types.GET_CURRENT_REPORT: {
-      chrome.send('brave_rewards.getBalanceReports')
+    case types.GET_BALANCE_REPORT: {
+      chrome.send('brave_rewards.getBalanceReport', [
+        action.payload.month,
+        action.payload.year
+      ])
       break
     }
-    case types.ON_BALANCE_REPORTS: {
+    case types.ON_BALANCE_REPORT: {
       state = { ...state }
-      state.reports = action.payload.reports
-
-      const date = new Date()
-      const key = `${date.getFullYear()}_${date.getMonth() + 1}`
-
-      // If we have reports for the month we should
-      // show the view in the summary, regardless of balance
-      // (state.emptyWallet at this time is only used in the report summary)
-      if (state.reports &&
-          state.reports.hasOwnProperty(key)) {
-        state.ui.emptyWallet = false
+      if (!state.reports) {
+        state.reports = {}
       }
+
+      const id = `${action.payload.year}_${action.payload.month}`
+      state.reports[id] = action.payload.report
       break
     }
     case types.CHECK_WALLET_EXISTENCE: {

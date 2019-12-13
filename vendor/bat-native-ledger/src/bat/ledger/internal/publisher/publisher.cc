@@ -662,22 +662,24 @@ void Publisher::setBalanceReport(ledger::ActivityMonth month,
 }
 
 void Publisher::GetBalanceReport(
-    ledger::ActivityMonth month,
-    int year,
+    const ledger::ActivityMonth month,
+    const int year,
     ledger::GetBalanceReportCallback callback) {
   ledger::BalanceReportInfo info;
-  bool result = GetBalanceReportInternal(month, year, &info);
+  const auto result = GetBalanceReportInternal(month, year, &info);
   callback(result, info.Clone());
 }
 
-bool Publisher::GetBalanceReportInternal(ledger::ActivityMonth month,
-                                     int year,
-                                     ledger::BalanceReportInfo* report_info) {
-  std::string name = GetBalanceReportName(month, year);
-  auto iter = state_->monthly_balances.find(name);
+ledger::Result Publisher::GetBalanceReportInternal(
+    const ledger::ActivityMonth month,
+    const int year,
+    ledger::BalanceReportInfo* report_info) {
   if (!report_info) {
-    return false;
+    return ledger::Result::LEDGER_ERROR;
   }
+
+  const std::string name = GetBalanceReportName(month, year);
+  auto iter = state_->monthly_balances.find(name);
 
   if (iter == state_->monthly_balances.end()) {
     ledger::BalanceReportInfo new_report_info;
@@ -691,11 +693,11 @@ bool Publisher::GetBalanceReportInternal(ledger::ActivityMonth month,
     new_report_info.total = "0";
 
     setBalanceReport(month, year, new_report_info);
-    bool successGet = GetBalanceReportInternal(month, year, report_info);
-    if (successGet) {
+    ledger::Result result = GetBalanceReportInternal(month, year, report_info);
+    if (result == ledger::Result::LEDGER_OK) {
       iter = state_->monthly_balances.find(name);
     } else {
-      return false;
+      return ledger::Result::LEDGER_ERROR;
     }
   }
 
@@ -707,7 +709,7 @@ bool Publisher::GetBalanceReportInternal(ledger::ActivityMonth month,
   report_info->recurring_donation = iter->second.recurring_donations;
   report_info->one_time_donation = iter->second.one_time_donations;
 
-  return true;
+  return ledger::Result::LEDGER_OK;
 }
 
 std::map<std::string, ledger::BalanceReportInfoPtr>

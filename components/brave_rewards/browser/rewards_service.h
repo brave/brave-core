@@ -109,6 +109,10 @@ using AttestPromotionCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::Promotion> promotion)>;
 using GetAnonWalletStatusCallback = base::OnceCallback<void(const uint32_t)>;
 
+using GetBalanceReportCallback = base::OnceCallback<void(
+    const int32_t,
+    const brave_rewards::BalanceReport&)>;
+
 class RewardsService : public KeyedService {
  public:
   RewardsService();
@@ -180,7 +184,10 @@ class RewardsService : public KeyedService {
   virtual void SetTimer(uint64_t time_offset, uint32_t* timer_id) = 0;
   virtual void GetAllBalanceReports(
       const GetAllBalanceReportsCallback& callback) = 0;
-  virtual void GetCurrentBalanceReport() = 0;
+  virtual void GetBalanceReport(
+      const uint32_t month,
+      const uint32_t year,
+      GetBalanceReportCallback callback) = 0;
   virtual void IsWalletCreated(const IsWalletCreatedCallback& callback) = 0;
   virtual void GetPublisherActivityFromUrl(
       uint64_t windowId,

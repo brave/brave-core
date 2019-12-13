@@ -18,14 +18,10 @@ export const defaultState: RewardsExtension.State = {
   },
   report: {
     ads: '0',
-    closing: '0',
     contribute: '0',
-    deposit: '0',
     donation: '0',
     grant: '0',
-    tips: '0',
-    opening: '0',
-    total: '0'
+    tips: '0'
   },
   notifications: {},
   currentNotification: undefined,

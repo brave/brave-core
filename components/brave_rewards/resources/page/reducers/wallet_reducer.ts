@@ -121,13 +121,21 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       }
       break
     }
-    case types.GET_CURRENT_REPORT: {
-      chrome.send('brave_rewards.getBalanceReports')
+    case types.GET_BALANCE_REPORT: {
+      chrome.send('brave_rewards.getBalanceReport', [
+        action.payload.month,
+        action.payload.year
+      ])
       break
     }
-    case types.ON_BALANCE_REPORTS: {
+    case types.ON_BALANCE_REPORT: {
       state = { ...state }
-      state.reports = action.payload.reports
+      if (!state.reports) {
+        state.reports = {}
+      }
+
+      const id = `${action.payload.year}_${action.payload.month}`
+      state.reports[id] = action.payload.report
       break
     }
     case types.CHECK_WALLET_EXISTENCE: {

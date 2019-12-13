@@ -124,14 +124,19 @@ class BraveRewardsGetWalletPropertiesFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetCurrentReportFunction : public ExtensionFunction {
+class BraveRewardsGetBalanceReportFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getCurrentReport", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getBalanceReport", UNKNOWN)
 
  protected:
-  ~BraveRewardsGetCurrentReportFunction() override;
+  ~BraveRewardsGetBalanceReportFunction() override;
 
   ResponseAction Run() override;
+
+ private:
+  void OnBalanceReport(
+      const int32_t result,
+      const brave_rewards::BalanceReport& report);
 };
 
 class BraveRewardsIncludeInAutoContributionFunction : public ExtensionFunction {

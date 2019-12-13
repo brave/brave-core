@@ -66,15 +66,12 @@ declare namespace chrome.braveRewards {
   const tipRedditUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
   const tipGitHubUser: (tabId: number, githubMetaData: RewardsTip.MediaMetaData) => {}
   const getPublisherData: (windowId: number, url: string, faviconUrl: string, publisherBlob: string | undefined) => {}
-  const getCurrentReport: () => {}
+  const getBalanceReport: (month: number, year: number, callback: (properties: RewardsExtension.BalanceReport) => void) => {}
   const onWalletInitialized: {
     addListener: (callback: (result: RewardsExtension.Result) => void) => void
   }
   const onPublisherData: {
     addListener: (callback: (windowId: number, publisher: RewardsExtension.Publisher) => void) => void
-  }
-  const onCurrentReport: {
-    addListener: (callback: (properties: RewardsExtension.Report) => void) => void
   }
   const onPromotions: {
     addListener: (callback: (result: RewardsExtension.Result, promotions: RewardsExtension.Promotion[]) => void) => void
@@ -99,7 +96,7 @@ declare namespace chrome.braveRewards {
   }
   const getAdsEnabled: (callback: (enabled: boolean) => void) => {}
   const getAdsSupported: (callback: (supported: boolean) => void) => {}
-  const getBalanceReports: (callback: (reports: Record<string, Rewards.Report>) => void) => {}
+  const getBalanceReports: (callback: (reports: Record<string, Rewards.BalanceReport>) => void) => {}
   const getAdsEstimatedEarnings: (callback: (amount: number) => void) => {}
   const getRewardsMainEnabled: (callback: (enabled: boolean) => void) => {}
   const getWalletExists: (callback: (exists: boolean) => void) => {}

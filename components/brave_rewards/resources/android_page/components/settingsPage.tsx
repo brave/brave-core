@@ -85,6 +85,8 @@ class SettingsPage extends React.Component<Props, State> {
     window.addEventListener('hashchange', (e) => {
       this.isWalletUrl()
     })
+
+    this.actions.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear())
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -94,6 +96,7 @@ class SettingsPage extends React.Component<Props, State> {
     ) {
       this.actions.getContributeList()
       this.actions.getBalance()
+      this.actions.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear())
     }
 
     if (

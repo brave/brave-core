@@ -67,7 +67,11 @@ export class Panel extends React.Component<Props, State> {
     })
 
     this.actions.fetchPromotions()
-    this.actions.getCurrentReport()
+
+    chrome.braveRewards.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear(),
+      (report: RewardsExtension.BalanceReport) => {
+        this.actions.onBalanceReport(report)
+      })
 
     chrome.braveRewards.getPendingContributionsTotal(((amount: number) => {
       this.actions.OnPendingContributionsTotal(amount)

@@ -28,10 +28,8 @@ export const onWalletProperties = (properties: RewardsExtension.WalletProperties
   properties
 })
 
-export const getCurrentReport = () => action(types.GET_CURRENT_REPORT, {})
-
-export const onCurrentReport = (properties: RewardsExtension.Report) => action(types.ON_CURRENT_REPORT, {
-  properties
+export const onBalanceReport = (report: RewardsExtension.BalanceReport) => action(types.ON_BALANCE_REPORT, {
+  report
 })
 
 export const onNotificationAdded = (id: string, type: number, timestamp: number, args: string[]) => action(types.ON_NOTIFICATION_ADDED, {

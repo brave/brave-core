@@ -226,7 +226,7 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   static void OnGetBalanceReport(
       CallbackHolder<GetBalanceReportCallback>* holder,
-      const bool result,
+      const ledger::Result result,
       ledger::BalanceReportInfoPtr report_info);
 
   static void OnClaimPromotion(

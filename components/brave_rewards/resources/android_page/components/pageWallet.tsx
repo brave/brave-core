@@ -88,7 +88,7 @@ class PageWallet extends React.Component<Props, State> {
 
     const currentTime = new Date()
     const reportKey = `${currentTime.getFullYear()}_${currentTime.getMonth() + 1}`
-    const report: Rewards.Report = reports[reportKey]
+    const report: Rewards.BalanceReport = reports[reportKey]
     if (report) {
       for (let key in report) {
         const item = report[key]

@@ -1038,7 +1038,7 @@ void RewardsServiceImpl::OnReconcileComplete(
     MaybeShowNotificationTipsPaid();
   }
 
-  GetCurrentBalanceReport();
+  // TODO we need to fetch balance when reconcile complete on JS level
   for (auto& observer : observers_)
     observer.OnReconcileComplete(this,
                                  static_cast<int>(result),
@@ -2171,18 +2171,27 @@ void RewardsServiceImpl::OnTimer(uint32_t timer_id) {
   bat_ledger_->OnTimer(timer_id);
 }
 
+void LedgerToServiceBalanceReport(
+    ledger::BalanceReportInfoPtr report,
+    brave_rewards::BalanceReport* new_report) {
+  if (!report || !new_report) {
+    return;
+  }
+
+  new_report->grants = report->grants;
+  new_report->earning_from_ads = report->earning_from_ads;
+  new_report->auto_contribute = report->auto_contribute;
+  new_report->recurring_donation = report->recurring_donation;
+  new_report->one_time_donation = report->one_time_donation;
+}
+
 void RewardsServiceImpl::OnGetAllBalanceReports(
     const GetAllBalanceReportsCallback& callback,
     const base::flat_map<std::string, ledger::BalanceReportInfoPtr> reports) {
   std::map<std::string, brave_rewards::BalanceReport> newReports;
   for (auto const& report : reports) {
     brave_rewards::BalanceReport newReport;
-    newReport.grants = report.second->grants;
-    newReport.earning_from_ads = report.second->earning_from_ads;
-    newReport.auto_contribute = report.second->auto_contribute;
-    newReport.recurring_donation = report.second->recurring_donation;
-    newReport.one_time_donation = report.second->one_time_donation;
-
+    LedgerToServiceBalanceReport(report.second->Clone(), &newReport);
     newReports[report.first] = newReport;
   }
 
@@ -2200,22 +2209,31 @@ void RewardsServiceImpl::GetAllBalanceReports(
         AsWeakPtr(), callback));
 }
 
-void RewardsServiceImpl::OnGetCurrentBalanceReport(
-    bool success, ledger::BalanceReportInfoPtr report) {
-  if (success) {
-    TriggerOnGetCurrentBalanceReport(std::move(report));
-  }
-}
-
-void RewardsServiceImpl::GetCurrentBalanceReport() {
-  auto now = base::Time::Now();
-  if (!Connected()) {
+void RewardsServiceImpl::OnGetBalanceReport(
+    GetBalanceReportCallback callback,
+    const ledger::Result result,
+    ledger::BalanceReportInfoPtr report) {
+  brave_rewards::BalanceReport newReport;
+  const int32_t converted_result = static_cast<int32_t>(result);
+  if (result == ledger::Result::LEDGER_ERROR || !report) {
+    std::move(callback).Run(converted_result, newReport);
     return;
   }
 
-  bat_ledger_->GetBalanceReport(GetPublisherMonth(now), GetPublisherYear(now),
-      base::BindOnce(&RewardsServiceImpl::OnGetCurrentBalanceReport,
-        AsWeakPtr()));
+  LedgerToServiceBalanceReport(std::move(report), &newReport);
+  std::move(callback).Run(converted_result, newReport);
+}
+
+void RewardsServiceImpl::GetBalanceReport(
+    const uint32_t month,
+    const uint32_t year,
+    GetBalanceReportCallback callback) {
+  bat_ledger_->GetBalanceReport(
+      static_cast<ledger::ActivityMonth>(month),
+      year,
+      base::BindOnce(&RewardsServiceImpl::OnGetBalanceReport,
+        AsWeakPtr(),
+        std::move(callback)));
 }
 
 void RewardsServiceImpl::IsWalletCreated(
@@ -2725,19 +2743,6 @@ void RewardsServiceImpl::RemoveRecurringTip(
       base::Bind(&RewardsServiceImpl::OnRemoveRecurringTip,
                  AsWeakPtr(),
                  callback));
-}
-
-void RewardsServiceImpl::TriggerOnGetCurrentBalanceReport(
-    ledger::BalanceReportInfoPtr report) {
-  for (auto& observer : private_observers_) {
-    brave_rewards::BalanceReport balance_report;
-    balance_report.grants = report->grants;
-    balance_report.earning_from_ads = report->earning_from_ads;
-    balance_report.auto_contribute = report->auto_contribute;
-    balance_report.recurring_donation = report->recurring_donation;
-    balance_report.one_time_donation = report->one_time_donation;
-    observer.OnGetCurrentBalanceReport(this, balance_report);
-  }
 }
 
 void RewardsServiceImpl::UpdateAdsRewards() const {

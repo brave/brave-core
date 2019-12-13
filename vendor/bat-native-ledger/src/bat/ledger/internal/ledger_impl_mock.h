@@ -126,8 +126,8 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_CONST_METHOD0(GetAutoContribute, bool());
 
   MOCK_CONST_METHOD3(GetBalanceReport,
-      void(ledger::ActivityMonth,
-          int,
+      void(const ledger::ActivityMonth,
+          const int,
           const ledger::GetBalanceReportCallback));
 
   MOCK_CONST_METHOD0(GetAllBalanceReports,

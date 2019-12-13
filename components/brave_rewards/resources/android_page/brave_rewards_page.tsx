@@ -98,8 +98,8 @@ window.cr.define('brave_rewards', function () {
     getActions().getContributeList()
   }
 
-  function balanceReports (reports: Record<string, Rewards.Report>) {
-    getActions().onBalanceReports(reports)
+  function balanceReport (reports: Record<string, Rewards.BalanceReport>) {
+    getActions().onBalanceReport(reports)
   }
 
   function walletExists (exists: boolean) {
@@ -179,7 +179,7 @@ window.cr.define('brave_rewards', function () {
     reconcileStamp,
     addresses,
     contributeList,
-    balanceReports,
+    balanceReport,
     walletExists,
     contributionAmount,
     adsData,

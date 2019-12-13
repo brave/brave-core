@@ -81,7 +81,7 @@ interface BatLedger {
   GetAllBalanceReports() =>
       (map<string, ledger.mojom.BalanceReportInfo> reports);
   GetBalanceReport(ledger.mojom.ActivityMonth month, int32 year) =>
-      (bool result, ledger.mojom.BalanceReportInfo report);
+      (ledger.mojom.Result result, ledger.mojom.BalanceReportInfo report);
 
   IsWalletCreated() => (bool wallet_created);
 

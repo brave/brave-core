@@ -174,6 +174,14 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   void OnlyAnonWallet(const base::ListValue* args);
 
+  void GetBalanceReport(const base::ListValue* args);
+
+  void OnGetBalanceReport(
+      const uint32_t month,
+      const uint32_t year,
+      const int32_t result,
+      const brave_rewards::BalanceReport& report);
+
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
                        int32_t result) override;
@@ -436,6 +444,9 @@ void RewardsDOMHandler::RegisterMessages() {
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.onlyAnonWallet",
       base::BindRepeating(&RewardsDOMHandler::OnlyAnonWallet,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.getBalanceReport",
+      base::BindRepeating(&RewardsDOMHandler::GetBalanceReport,
       base::Unretained(this)));
 }
 
@@ -1708,6 +1719,49 @@ void RewardsDOMHandler::OnUnblindedTokensReady(
   }
 
   web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.unblindedTokensReady");
+}
+
+void RewardsDOMHandler::OnGetBalanceReport(
+    const uint32_t month,
+    const uint32_t year,
+    const int32_t result,
+    const brave_rewards::BalanceReport& report) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::Value report_base(base::Value::Type::DICTIONARY);
+  report_base.SetStringKey("grant", report.grants);
+  report_base.SetStringKey("ads", report.earning_from_ads);
+  report_base.SetStringKey("contribute", report.auto_contribute);
+  report_base.SetStringKey("donation", report.recurring_donation);
+  report_base.SetStringKey("tips", report.one_time_donation);
+
+  base::Value data(base::Value::Type::DICTIONARY);
+  data.SetIntKey("month", month);
+  data.SetIntKey("year", year);
+  data.SetKey("report", std::move(report_base));
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.balanceReport",
+      data);
+}
+
+void RewardsDOMHandler::GetBalanceReport(const base::ListValue* args) {
+  CHECK_EQ(2U, args->GetSize());
+  if (!rewards_service_) {
+    return;
+  }
+
+  const uint32_t month = args->GetList()[0].GetInt();
+  const uint32_t year = args->GetList()[1].GetInt();
+  rewards_service_->GetBalanceReport(
+      month,
+      year,
+      base::BindOnce(&RewardsDOMHandler::OnGetBalanceReport,
+                     weak_factory_.GetWeakPtr(),
+                     month,
+                     year));
 }
 
 }  // namespace

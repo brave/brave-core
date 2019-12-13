@@ -74,8 +74,8 @@ class Publisher : public ledger::LedgerCallbackHandler {
                         const ledger::BalanceReportInfo& report_info);
 
   void GetBalanceReport(
-      ledger::ActivityMonth month,
-      int year,
+      const ledger::ActivityMonth month,
+      const int year,
       ledger::GetBalanceReportCallback callback);
 
   std::map<std::string, ledger::BalanceReportInfoPtr> GetAllBalanceReports();
@@ -177,9 +177,9 @@ class Publisher : public ledger::LedgerCallbackHandler {
     uint64_t window_id,
     const ledger::PublisherInfoCallback callback);
 
-  bool GetBalanceReportInternal(
-      ledger::ActivityMonth month,
-      int year,
+  ledger::Result GetBalanceReportInternal(
+      const ledger::ActivityMonth month,
+      const int year,
       ledger::BalanceReportInfo* report_info);
 
   void onFetchFavIcon(const std::string& publisher_key,

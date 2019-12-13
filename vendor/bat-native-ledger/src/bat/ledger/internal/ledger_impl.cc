@@ -693,8 +693,8 @@ void LedgerImpl::OnRecoverWallet(
 }
 
 void LedgerImpl::GetBalanceReport(
-    ledger::ActivityMonth month,
-    int year,
+    const ledger::ActivityMonth month,
+    const int year,
     ledger::GetBalanceReportCallback callback) const {
   bat_publisher_->GetBalanceReport(month, year, callback);
 }

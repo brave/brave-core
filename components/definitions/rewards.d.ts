@@ -56,7 +56,7 @@ declare namespace Rewards {
     recoveryKey: string
     recurringList: Publisher[]
     recurringLoad: boolean
-    reports: Record<string, Report>
+    reports: Record<string, BalanceReport>
     safetyNetFailed?: boolean
     tipsList: Publisher[]
     tipsLoad: boolean
@@ -163,16 +163,12 @@ declare namespace Rewards {
     favIcon: string
   }
 
-  export interface Report {
+  export interface BalanceReport {
     ads: string
-    closing: string
     contribute: string
-    deposit: string
     donation: string
     grant: string
     tips: string
-    opening: string
-    total: string
   }
 
   export interface Captcha {

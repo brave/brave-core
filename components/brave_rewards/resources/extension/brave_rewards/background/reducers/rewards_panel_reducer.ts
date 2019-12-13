@@ -151,12 +151,12 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       }
       break
     }
-    case types.GET_CURRENT_REPORT:
-      chrome.braveRewards.getCurrentReport()
-      break
-    case types.ON_CURRENT_REPORT: {
+    case types.ON_BALANCE_REPORT: {
+      if (!payload.report) {
+        break
+      }
       state = { ...state }
-      state.report = payload.properties
+      state.report = payload.report
       break
     }
     case types.ON_NOTIFICATION_ADDED: {

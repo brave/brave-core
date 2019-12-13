@@ -93,8 +93,8 @@ window.cr.define('brave_rewards', function () {
     getActions().onExcludedList(list)
   }
 
-  function balanceReports (reports: Record<string, Rewards.Report>) {
-    getActions().onBalanceReports(reports)
+  function balanceReport (properties: {month: number, year: number, report: Rewards.BalanceReport}) {
+    getActions().onBalanceReport(properties)
   }
 
   function walletExists (exists: boolean) {
@@ -250,7 +250,7 @@ window.cr.define('brave_rewards', function () {
     reconcileStamp,
     contributeList,
     excludedList,
-    balanceReports,
+    balanceReport,
     walletExists,
     contributionAmount,
     recurringTips,

@@ -51,7 +51,7 @@ export const convertProbiToFixed = (probi: string, places: number = 1) => {
   return result
 }
 
-export const tipsTotal = (report: Rewards.Report) => {
+export const tipsTotal = (report: Rewards.BalanceReport) => {
   if (!report) {
     return '0.0'
   }

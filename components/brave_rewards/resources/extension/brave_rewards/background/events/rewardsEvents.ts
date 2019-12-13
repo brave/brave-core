@@ -20,10 +20,6 @@ chrome.braveRewards.onPublisherData.addListener((windowId: number, publisher: Re
   }
 })
 
-chrome.braveRewards.onCurrentReport.addListener((properties: RewardsExtension.Report) => {
-  rewardsPanelActions.onCurrentReport(properties)
-})
-
 chrome.braveRewards.onPromotions.addListener((result: number, promotions: RewardsExtension.Promotion[]) => {
   rewardsPanelActions.onPromotions(result, promotions)
 })

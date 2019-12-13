@@ -59,7 +59,7 @@ using AttestPromotionCallback =
     std::function<void(const ledger::Result, ledger::PromotionPtr promotion)>;
 
 using GetBalanceReportCallback =
-    std::function<void(bool, ledger::BalanceReportInfoPtr)>;
+    std::function<void(const ledger::Result, ledger::BalanceReportInfoPtr)>;
 
 using RecoverWalletCallback = std::function<void(
     const ledger::Result,

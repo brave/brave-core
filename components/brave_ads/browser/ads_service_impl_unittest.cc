@@ -96,7 +96,6 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD2(SetTimer, void(uint64_t, uint32_t*));
   MOCK_METHOD1(GetAllBalanceReports,
       void(const brave_rewards::GetAllBalanceReportsCallback&));
-  MOCK_METHOD0(GetCurrentBalanceReport, void());
   MOCK_METHOD1(IsWalletCreated,
       void(const brave_rewards::IsWalletCreatedCallback&));
   MOCK_METHOD4(GetPublisherActivityFromUrl, void(uint64_t,
