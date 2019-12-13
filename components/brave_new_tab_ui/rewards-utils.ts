@@ -4,22 +4,11 @@
 
 import BigNumber from 'bignumber.js'
 
-const getReportIndex = () => {
-  const currentTime = new Date()
-  const year = currentTime.getFullYear()
-  const month = (currentTime.getMonth() + 1)
-
-  return `${year}_${month}`
-}
-
-export const getTotalContributions = (reports: Record<string, NewTab.RewardsReport>) => {
-  const reportIndex = getReportIndex()
-
-  if (!reports.hasOwnProperty(reportIndex)) {
+export const getTotalContributions = (report: NewTab.RewardsBalanceReport) => {
+  if (!report) {
     return '0.0'
   }
 
-  const report = reports[reportIndex]
   const tips = new BigNumber(report.tips)
   const contribute = new BigNumber(report.contribute)
 

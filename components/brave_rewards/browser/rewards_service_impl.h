@@ -163,8 +163,6 @@ class RewardsServiceImpl : public RewardsService,
   void SaveMediaPublisherInfo(const std::string& media_key,
                               const std::string& publisher_id) override;
   void RestorePublishersUI() override;
-  void GetAllBalanceReports(
-      const GetAllBalanceReportsCallback& callback) override;
   void GetBalanceReport(
       const uint32_t month,
       const uint32_t year,
@@ -745,9 +743,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetTransactionHistory(
       GetTransactionHistoryCallback callback,
       const std::string& transactions);
-  void OnGetAllBalanceReports(
-      const GetAllBalanceReportsCallback& callback,
-      const base::flat_map<std::string, ledger::BalanceReportInfoPtr> reports);
   void OnGetAutoContributeProps(
       const GetAutoContributePropsCallback& callback,
       ledger::AutoContributePropsPtr props);

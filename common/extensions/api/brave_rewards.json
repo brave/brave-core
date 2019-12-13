@@ -733,23 +733,6 @@
         ]
       },
       {
-        "name": "getBalanceReports",
-        "type": "function",
-        "description": "Gets balance reports and contribution totals",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "data",
-                "type": "any"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "getRewardsMainEnabled",
         "type": "function",
         "description": "Gets whether rewards has been enabled explicitly",

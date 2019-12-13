@@ -100,16 +100,12 @@ declare namespace NewTab {
     WALLET_CORRUPT = 17
   }
 
-  export interface RewardsReport {
+  export interface RewardsBalanceReport {
     ads: string
-    closing: string
     contribute: string
-    deposit: string
     donation: string
     grant: string
     tips: string
-    opening: string
-    total: string
   }
 
   export enum PromotionTypes {

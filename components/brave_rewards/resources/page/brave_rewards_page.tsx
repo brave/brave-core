@@ -18,7 +18,7 @@ require('../../../../ui/webui/resources/fonts/poppins.css')
 import store from './store'
 import { ThemeProvider } from 'brave-ui/theme'
 import Theme from 'brave-ui/theme/brave-default'
-import { getActions as getUtilActions, setActions } from './utils'
+import { getActions as getUtilActions, setActions, getCurrentBalanceReport } from './utils'
 import * as rewardsActions from './actions/rewards_actions'
 
 window.cr.define('brave_rewards', function () {
@@ -203,6 +203,7 @@ window.cr.define('brave_rewards', function () {
     getActions().getContributeList()
     getActions().getBalance()
     getActions().getWalletProperties()
+    getCurrentBalanceReport()
 
     if (properties.type === 8) { // Rewards.RewardsType.ONE_TIME_TIP
       chrome.send('brave_rewards.getOneTimeTips')

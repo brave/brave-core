@@ -24,7 +24,7 @@ export type PreInitialRewardsData = {
 export type InitialRewardsData = {
   onlyAnonWallet: boolean
   adsEstimatedEarnings: number
-  reports: Record<string, NewTab.RewardsReport>
+  report: NewTab.RewardsBalanceReport
   balance: NewTab.RewardsBalance
 }
 
@@ -83,7 +83,7 @@ export async function getRewardsInitialData (): Promise<InitialRewardsData> {
     const [
       onlyAnonWallet,
       adsEstimatedEarnings,
-      reports,
+      report,
       balance
     ] = await Promise.all([
       new Promise(resolve => chrome.braveRewards.onlyAnonWallet((onlyAnonWallet: boolean) => {
@@ -92,8 +92,8 @@ export async function getRewardsInitialData (): Promise<InitialRewardsData> {
       new Promise(resolve => chrome.braveRewards.getAdsEstimatedEarnings((adsEstimatedEarnings: number) => {
         resolve(adsEstimatedEarnings)
       })),
-      new Promise(resolve => chrome.braveRewards.getBalanceReports((reports: Record<string, NewTab.RewardsReport>) => {
-        resolve(reports)
+      new Promise(resolve => chrome.braveRewards.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear(),(properties: NewTab.RewardsBalanceReport) => {
+        resolve(report)
       })),
       new Promise(resolve => chrome.braveRewards.fetchBalance((balance: NewTab.RewardsBalance) => {
         resolve(balance)
@@ -106,7 +106,7 @@ export async function getRewardsInitialData (): Promise<InitialRewardsData> {
     return {
       onlyAnonWallet,
       adsEstimatedEarnings,
-      reports,
+      report,
       balance
     } as InitialRewardsData
   } catch (err) {

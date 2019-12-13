@@ -345,14 +345,6 @@ void BatLedgerImpl::OnTimer(uint32_t timer_id) {
   ledger_->OnTimer(timer_id);
 }
 
-void BatLedgerImpl::GetAllBalanceReports(
-    GetAllBalanceReportsCallback callback) {
-  std::map<std::string, ledger::BalanceReportInfoPtr> reports =
-    ledger_->GetAllBalanceReports();
-  auto out_reports = mojo::MapToFlatMap(std::move(reports));
-  std::move(callback).Run(std::move(out_reports));
-}
-
 // static
 void BatLedgerImpl::OnGetBalanceReport(
     CallbackHolder<GetBalanceReportCallback>* holder,

@@ -2185,30 +2185,6 @@ void LedgerToServiceBalanceReport(
   new_report->one_time_donation = report->one_time_donation;
 }
 
-void RewardsServiceImpl::OnGetAllBalanceReports(
-    const GetAllBalanceReportsCallback& callback,
-    const base::flat_map<std::string, ledger::BalanceReportInfoPtr> reports) {
-  std::map<std::string, brave_rewards::BalanceReport> newReports;
-  for (auto const& report : reports) {
-    brave_rewards::BalanceReport newReport;
-    LedgerToServiceBalanceReport(report.second->Clone(), &newReport);
-    newReports[report.first] = newReport;
-  }
-
-  callback.Run(newReports);
-}
-
-void RewardsServiceImpl::GetAllBalanceReports(
-    const GetAllBalanceReportsCallback& callback) {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_->GetAllBalanceReports(
-      base::BindOnce(&RewardsServiceImpl::OnGetAllBalanceReports,
-        AsWeakPtr(), callback));
-}
-
 void RewardsServiceImpl::OnGetBalanceReport(
     GetBalanceReportCallback callback,
     const ledger::Result result,

@@ -75,6 +75,11 @@ chrome.braveRewards.onReconcileComplete.addListener((result: number, type: numbe
     chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
       rewardsPanelActions.onBalance(balance)
     })
+
+    chrome.braveRewards.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear(),
+    (report: RewardsExtension.BalanceReport) => {
+      rewardsPanelActions.onBalanceReport(report)
+    })
   }
 })
 
@@ -98,6 +103,11 @@ chrome.braveRewards.onUnblindedTokensReady.addListener(() => {
 
 chrome.braveRewards.onPromotionFinish.addListener((result: RewardsExtension.Result, promotion: RewardsExtension.Promotion) => {
   rewardsPanelActions.promotionFinished(result, promotion)
+
+  chrome.braveRewards.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear(),
+  (report: RewardsExtension.BalanceReport) => {
+    rewardsPanelActions.onBalanceReport(report)
+  })
 })
 
 chrome.braveRewards.onWalletProperties.addListener((properties: RewardsExtension.WalletProperties) => {

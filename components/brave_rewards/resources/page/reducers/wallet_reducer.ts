@@ -4,6 +4,8 @@
 
 import { Reducer } from 'redux'
 
+import { getCurrentBalanceReport } from '../utils'
+
 // Constant
 import { types } from '../constants/rewards_types'
 
@@ -102,6 +104,8 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       const result = action.payload.properties.result
       let ui = state.ui
       let balance = state.balance
+
+      getCurrentBalanceReport()
 
       // TODO NZ check why enum can't be used inside Rewards namespace
       ui.walletRecoverySuccess = result === 0

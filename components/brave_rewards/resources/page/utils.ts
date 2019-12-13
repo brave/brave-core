@@ -97,3 +97,10 @@ export const isPublisherConnectedOrVerified = (status: Rewards.PublisherStatus) 
 export const isPublisherNotVerified = (status: Rewards.PublisherStatus) => {
   return status === 0
 }
+
+export const getCurrentBalanceReport = () => {
+  chrome.send('brave_rewards.getBalanceReport', [
+    new Date().getMonth() + 1,
+    new Date().getFullYear()
+  ])
+}

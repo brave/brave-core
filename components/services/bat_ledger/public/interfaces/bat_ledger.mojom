@@ -78,8 +78,6 @@ interface BatLedger {
 
   OnTimer(uint32 timer_id);
 
-  GetAllBalanceReports() =>
-      (map<string, ledger.mojom.BalanceReportInfo> reports);
   GetBalanceReport(ledger.mojom.ActivityMonth month, int32 year) =>
       (ledger.mojom.Result result, ledger.mojom.BalanceReportInfo report);
 

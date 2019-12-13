@@ -304,10 +304,10 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       state.rewardsState.adsEstimatedEarnings = payload.amount
       break
 
-    case types.ON_BALANCE_REPORTS:
+    case types.ON_BALANCE_REPORT:
       state = { ...state }
-      const reports = payload.reports || {}
-      state.rewardsState.totalContribution = getTotalContributions(reports)
+      const report = payload.report || {}
+      state.rewardsState.totalContribution = getTotalContributions(report)
       break
 
     case types.DISMISS_NOTIFICATION:
@@ -417,7 +417,7 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       const newRewardsState = {
         onlyAnonWallet: initialRewardsDataPayload.onlyAnonWallet,
         balance: initialRewardsDataPayload.balance,
-        totalContribution: getTotalContributions(initialRewardsDataPayload.reports),
+        totalContribution: getTotalContributions(initialRewardsDataPayload.report),
         adsEstimatedEarnings: initialRewardsDataPayload.adsEstimatedEarnings
       }
 

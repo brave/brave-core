@@ -99,7 +99,6 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   void OnTimer(uint32_t timer_id) override;
 
-  void GetAllBalanceReports(GetAllBalanceReportsCallback callback) override;
   void GetBalanceReport(ledger::ActivityMonth month, int32_t year,
       GetBalanceReportCallback callback) override;
 
