@@ -86,11 +86,7 @@ void ChromeImporter::StartImport(const importer::SourceProfile& source_profile,
     bridge_->NotifyItemEnded(importer::PASSWORDS);
   }
 
-  if ((items & importer::COOKIES) && !cancelled()) {
-    bridge_->NotifyItemStarted(importer::COOKIES);
-    ImportCookies();
-    bridge_->NotifyItemEnded(importer::COOKIES);
-  }
+  // Note that we do not import cookies from Chrome (issues/7044).
 
   bridge_->NotifyEnded();
 }
