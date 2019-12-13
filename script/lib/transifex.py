@@ -261,6 +261,28 @@ def get_fingerprint_for_xtb(message_tag):
     # To avoid negative ids we strip the high-order bit
     return str(fp & 0x7fffffffffffffffL)
 
+def is_translateable_string(grd_file_path, message_tag):
+    if message_tag.get('translateable') != 'false':
+        return True
+    # Check for exceptions that aren't translateable in Chromium, but are made
+    # to be translateable in Brave. These can be found in the main function in
+    # brave/script/chromium-rebase-l10n.py
+    grd_file_name = os.path.basename(grd_file_path)
+    if grd_file_name == 'chromium_strings.grd':
+        exceptions = {'IDS_SXS_SHORTCUT_NAME',
+                      'IDS_SHORTCUT_NAME_BETA',
+                      'IDS_SHORTCUT_NAME_DEV',
+                      'IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA',
+                      'IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV',
+                      'IDS_INBOUND_MDNS_RULE_NAME_BETA',
+                      'IDS_INBOUND_MDNS_RULE_NAME_CANARY',
+                      'IDS_INBOUND_MDNS_RULE_NAME_DEV',
+                      'IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA',
+                      'IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY',
+                      'IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV'}
+        if message_tag.get('name') in exceptions:
+            return True
+    return False
 
 def get_grd_strings(grd_file_path):
     """Obtains a tubple of (name, value, FP) for each string in a GRD file"""
@@ -270,7 +292,7 @@ def get_grd_strings(grd_file_path):
     all_message_tags = get_grd_message_string_tags(grd_file_path)
     for message_tag in all_message_tags:
         # Skip translateable="false" strings
-        if message_tag.get('translateable') == 'false':
+        if not is_translateable_string(grd_file_path, message_tag):
             continue
         message_name = message_tag.get('name')
         dupe_dict[message_name] += 1
