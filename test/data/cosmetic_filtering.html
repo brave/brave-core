@@ -1,0 +1,41 @@
+<html>
+<head>
+<script>
+
+function addElementsDynamically() {
+  let root = document.documentElement;
+  for (let i = 0; i < 10; i++) {
+    const e = document.createElement('div')
+    e.className = 'blockme'
+    root.appendChild(e);
+  }
+
+  for (let i = 0; i < 10; i++) {
+    const e = document.createElement('div')
+    e.className = 'dontblockme'
+    root.appendChild(e);
+  }
+}
+
+function checkSelector(selector, property, expected) {
+  setTimeout(() => {
+    let elements = [].slice.call(document.querySelectorAll(selector));
+    let result = elements.every(e => {
+      let style = window.getComputedStyle(e);
+      return style[property] === expected;
+    })
+    window.domAutomationController.send(result)
+  }, 1500)
+}
+
+</script>
+</head>
+<body>
+    <div id="ad-banner"></div>
+    <div class="ad-banner">
+        <div class="ad"></div>
+    </div>
+    <div class="ad"></div>
+    <div class="ad"></div>
+</body>
+</html>

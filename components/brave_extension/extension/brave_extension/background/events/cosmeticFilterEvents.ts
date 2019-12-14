@@ -4,6 +4,7 @@ import {
   removeSiteFilter,
   removeAllFilters
 } from '../api/cosmeticFilterAPI'
+import shieldsPanelActions from '../actions/shieldsPanelActions'
 
 export let rule = {
   host: '',
@@ -48,6 +49,33 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     case 'contextMenuOpened': {
       rule.host = msg.baseURI
       break
+    }
+    case 'classIdStylesheet': {
+      const tab = sender.tab
+      if (tab === undefined) {
+        break
+      }
+      const tabId = tab.id
+      if (tabId === undefined) {
+        break
+      }
+      shieldsPanelActions.generateClassIdStylesheet(tabId, msg.classes, msg.ids)
+      break
+    }
+    case 'contentScriptsLoaded': {
+      const tab = sender.tab
+      if (tab === undefined) {
+        break
+      }
+      const tabId = tab.id
+      if (tabId === undefined) {
+        break
+      }
+      const url = tab.url
+      if (url === undefined) {
+        break
+      }
+      shieldsPanelActions.contentScriptsLoaded(tabId, url)
     }
   }
 })

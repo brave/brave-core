@@ -55,6 +55,7 @@ source_set("browser") {
   }
 
   deps = [
+    "//base",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/content_settings/core/browser",
     "//brave/content:common",

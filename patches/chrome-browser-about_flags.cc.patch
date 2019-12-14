@@ -21,3 +21,11 @@ index 0ab55be2f96853137cec8928621360e9f639b467..34e01378c8e413af12399bc3ca30188b
  
  const FeatureEntry::Choice kPassiveListenersChoices[] = {
      {flags_ui::kGenericExperimentChoiceDefault, "", ""},
+@@ -4688,6 +4688,7 @@ const FeatureEntry kFeatureEntries[] = {
+     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag
+     // Histograms" in tools/metrics/histograms/README.md (run the
+     // AboutFlagsHistogramTest unit test to verify this process).
++    BRAVE_FEATURE_ENTRIES
+ };
+ 
+ class FlagsStateSingleton {

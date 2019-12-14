@@ -137,3 +137,28 @@ export const shieldsReady: actions.ShieldsReady = () => {
     type: types.SHIELDS_READY
   }
 }
+
+export const generateClassIdStylesheet = (tabId: number, classes: string[], ids: string[]) => {
+  return {
+    type: types.GENERATE_CLASS_ID_STYLESHEET,
+    tabId,
+    classes,
+    ids
+  }
+}
+
+export const cosmeticFilterRuleExceptions = (tabId: number, exceptions: string[]) => {
+  return {
+    type: types.COSMETIC_FILTER_RULE_EXCEPTIONS,
+    tabId,
+    exceptions
+  }
+}
+
+export const contentScriptsLoaded: actions.ContentScriptsLoaded = (tabId: number, url: string) => {
+  return {
+    type: types.CONTENT_SCRIPTS_LOADED,
+    tabId,
+    url
+  }
+}

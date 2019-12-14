@@ -11,6 +11,26 @@
 namespace extensions {
 namespace api {
 
+class BraveShieldsHostnameCosmeticResourcesFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.hostnameCosmeticResources", UNKNOWN)
+
+ protected:
+  ~BraveShieldsHostnameCosmeticResourcesFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class BraveShieldsClassIdStylesheetFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.classIdStylesheet", UNKNOWN)
+
+ protected:
+  ~BraveShieldsClassIdStylesheetFunction() override {}
+
+  ResponseAction Run() override;
+};
+
 class BraveShieldsAllowScriptsOnceFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.allowScriptsOnce", UNKNOWN)
@@ -48,6 +68,18 @@ class BraveShieldsGetBraveShieldsEnabledFunction : public ExtensionFunction {
 
  protected:
   ~BraveShieldsGetBraveShieldsEnabledFunction() override {}
+
+  ResponseAction Run() override;
+};
+
+class BraveShieldsGetCosmeticFilteringEnabledFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.getCosmeticFilteringEnabled",
+                             UNKNOWN)
+
+ protected:
+  ~BraveShieldsGetCosmeticFilteringEnabledFunction() override {}
 
   ResponseAction Run() override;
 };

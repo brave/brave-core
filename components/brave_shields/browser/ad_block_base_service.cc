@@ -12,6 +12,7 @@
 
 #include "base/bind.h"
 #include "base/files/file_path.h"
+#include "base/json/json_reader.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -193,6 +194,19 @@ void AdBlockBaseService::AddResources(const std::string& resources) {
 
 bool AdBlockBaseService::TagExists(const std::string& tag) {
   return std::find(tags_.begin(), tags_.end(), tag) != tags_.end();
+}
+
+base::Optional<base::Value> AdBlockBaseService::HostnameCosmeticResources(
+        const std::string& hostname) {
+  return base::JSONReader::Read(
+          this->ad_block_client_->hostnameCosmeticResources(hostname));
+}
+
+std::string AdBlockBaseService::ClassIdStylesheet(
+        const std::vector<std::string>& classes,
+        const std::vector<std::string>& ids,
+        const std::vector<std::string>& exceptions) {
+  return this->ad_block_client_->classIdStylesheet(classes, ids, exceptions);
 }
 
 void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path) {
