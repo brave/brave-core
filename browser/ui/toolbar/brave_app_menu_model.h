@@ -10,20 +10,20 @@
 
 class BraveAppMenuModel : public AppMenuModel {
  public:
-  BraveAppMenuModel(ui::AcceleratorProvider* provider,
-      Browser* browser,
-      AppMenuIconController* app_menu_icon_controller = nullptr);
+  using AppMenuModel::AppMenuModel;
   ~BraveAppMenuModel() override;
+
+  BraveAppMenuModel(const BraveAppMenuModel&) = delete;
+  BraveAppMenuModel& operator=(const BraveAppMenuModel&) = delete;
 
  private:
   // AppMenuModel overrides:
   void Build() override;
 
   void InsertBraveMenuItems();
-
-  Browser* const browser_;  // weak
-
-  DISALLOW_COPY_AND_ASSIGN(BraveAppMenuModel);
+  int GetIndexOfBraveRewardsItem() const;
+  int GetIndexOfBraveAdBlockItem() const;
+  int GetIndexOfBraveSyncItem() const;
 };
 
 #endif  // BRAVE_BROWSER_UI_TOOLBAR_BRAVE_APP_MENU_MODEL_H_

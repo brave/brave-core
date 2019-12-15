@@ -141,10 +141,11 @@ void BraveBrowserCommandController::UpdateCommandForWebcompatReporter() {
 
 #if BUILDFLAG(ENABLE_TOR)
 void BraveBrowserCommandController::UpdateCommandForTor() {
-  const bool is_tor_enabled =
-      !brave::IsTorDisabledForProfile(browser_->profile());
-  UpdateCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE, is_tor_enabled);
-  UpdateCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR, is_tor_enabled);
+  // Enable new tor connection only for tor profile.
+  UpdateCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE,
+                       brave::IsTorProfile(browser_->profile()));
+  UpdateCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR,
+                       !brave::IsTorDisabledForProfile(browser_->profile()));
 }
 #endif
 
@@ -153,7 +154,9 @@ void BraveBrowserCommandController::UpdateCommandForBraveSync() {
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveWallet() {
-  UpdateCommandEnabled(IDC_SHOW_BRAVE_WALLET, true);
+  UpdateCommandEnabled(
+      IDC_SHOW_BRAVE_WALLET,
+      browser_->profile()->GetPrefs()->GetBoolean(kBraveWalletEnabled));
 }
 
 bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(

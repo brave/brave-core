@@ -52,8 +52,8 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BasicTest) {
 #if BUILDFLAG(ENABLE_TOR)
   EXPECT_NE(
       -1, normal_model.GetIndexOfCommandId(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
-  // Check tor browser commands are disabled.
-  EXPECT_TRUE(
+  // Check new tor browser command is only enabled for normal window.
+  EXPECT_FALSE(
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
   EXPECT_TRUE(
       command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
