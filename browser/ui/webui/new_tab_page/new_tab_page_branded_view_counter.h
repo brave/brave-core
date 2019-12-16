@@ -35,6 +35,7 @@ class NewTabPageBrandedViewCounter : public KeyedService {
   // is a wallpaper active. Does not consider user opt-in
   // status, or consider whether the wallpaper should be shown.
   const BrandedWallpaper& GetBrandedWallpaper();
+  size_t GetWallpaperImageIndexToDisplay();
 
  private:
   bool GetBrandedWallpaperFromDataSource();
@@ -43,6 +44,7 @@ class NewTabPageBrandedViewCounter : public KeyedService {
   // TODO(petemill): Update this when the remote data source
   // receives new data.
   std::unique_ptr<BrandedWallpaper> current_wallpaper_ = nullptr;
+  size_t current_wallpaper_image_index_ = -1;
   bool has_user_opted_in_;
   int count_to_branded_wallpaper_;
   PrefChangeRegistrar pref_change_registrar_;

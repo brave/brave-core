@@ -29,9 +29,19 @@ bool IsPrivateNewTab(Profile* profile) {
 }
 
 base::DictionaryValue GetBrandedWallpaperDictionary(
-    const BrandedWallpaper* wallpaper) {
+    const BrandedWallpaper* wallpaper, size_t wallpaper_image_index) {
   base::DictionaryValue data;
-  data.SetString("wallpaperImageUrl", wallpaper->wallpaperImageUrl);
+  size_t valid_wallpaper_image_index = 0;
+  if (wallpaper_image_index >= 0 &&
+      (size_t)wallpaper_image_index < wallpaper->wallpaperImageUrls.size()) {
+    valid_wallpaper_image_index = (size_t)wallpaper_image_index;
+  } else {
+    LOG(ERROR) << "Wallpaper image index " << wallpaper_image_index <<
+        " was beyond bounds of images available, " <<
+        wallpaper->wallpaperImageUrls.size() - 1 << "!";
+  }
+  data.SetString("wallpaperImageUrl",
+      wallpaper->wallpaperImageUrls[valid_wallpaper_image_index]);
   auto logo_data = std::make_unique<base::DictionaryValue>();
   logo_data->SetString("image", wallpaper->logo->imageUrl);
   logo_data->SetString("companyName", wallpaper->logo->companyName);
@@ -301,7 +311,8 @@ void BraveNewTabMessageHandler::HandleGetBrandedWallpaperData(
     return;
   }
   auto data = GetBrandedWallpaperDictionary(
-      &service->GetBrandedWallpaper());
+      &service->GetBrandedWallpaper(),
+      service->GetWallpaperImageIndexToDisplay());
   ResolveJavascriptCallback(args->GetList()[0], data);
 }
 

@@ -1,4 +1,4 @@
-import wallpaperImageUrl from '../../../../img/newtab/dummy-branded-wallpaper/background.jpg'
+import wallpaperImageUrl from '../../../../img/newtab/dummy-branded-wallpaper/background-1.jpg'
 import brandingImageUrl from '../../../../img/newtab/dummy-branded-wallpaper/logo.png'
 
 export default {

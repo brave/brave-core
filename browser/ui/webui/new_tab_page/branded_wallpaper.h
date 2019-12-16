@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 class BrandedWallpaperLogo {
  public:
@@ -25,7 +26,7 @@ class BrandedWallpaper {
   BrandedWallpaper();
   ~BrandedWallpaper();
 
-  std::string wallpaperImageUrl;
+  std::vector<std::string> wallpaperImageUrls;
   std::unique_ptr<BrandedWallpaperLogo> logo;
 };
 

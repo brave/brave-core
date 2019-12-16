@@ -25,7 +25,10 @@ constexpr int kRegularCountToBrandedWallpaper = 3;
 
 std::unique_ptr<BrandedWallpaper> GetDemoWallpaper() {
   auto demo = std::make_unique<BrandedWallpaper>();
-  demo->wallpaperImageUrl = "ntp-dummy-brandedwallpaper-background.jpg";
+  demo->wallpaperImageUrls = {
+      "ntp-dummy-brandedwallpaper-background-1.jpg",
+      "ntp-dummy-brandedwallpaper-background-2.jpg",
+      "ntp-dummy-brandedwallpaper-background-3.jpg"};
   demo->logo = std::make_unique<BrandedWallpaperLogo>();
   demo->logo->imageUrl = "ntp-dummy-brandedwallpaper-logo.png";
   demo->logo->altText = "Technikke: For music lovers.";
@@ -109,8 +112,20 @@ void NewTabPageBrandedViewCounter::RegisterPageView() {
     return;
   }
   this->count_to_branded_wallpaper_--;
-  if (this->count_to_branded_wallpaper_ < 0)
+  if (this->count_to_branded_wallpaper_ < 0) {
     this->count_to_branded_wallpaper_ = kRegularCountToBrandedWallpaper;
+  } else if (this->count_to_branded_wallpaper_ == 0) {
+    // When count is `0` then UI is free to show
+    // the branded wallpaper, until the next time `RegisterPageView`
+    // is called.
+    // We select the appropriate image index for the scheduled
+    // view of the branded wallpaper.
+    current_wallpaper_image_index_++;
+    size_t last_index = current_wallpaper_->wallpaperImageUrls.size() - 1;
+    if (current_wallpaper_image_index_ > last_index) {
+      current_wallpaper_image_index_ = 0;
+    }
+  }
 }
 
 bool NewTabPageBrandedViewCounter::IsBrandedWallpaperActive() {
@@ -127,6 +142,10 @@ bool NewTabPageBrandedViewCounter::ShouldShowBrandedWallpaper() {
 
 const BrandedWallpaper& NewTabPageBrandedViewCounter::GetBrandedWallpaper() {
   return *current_wallpaper_;
+}
+
+size_t NewTabPageBrandedViewCounter::GetWallpaperImageIndexToDisplay() {
+  return current_wallpaper_image_index_;
 }
 
 void NewTabPageBrandedViewCounter::SetShouldShowFromPreferences() {
