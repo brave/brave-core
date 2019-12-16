@@ -97,4 +97,6 @@ private:
   void DeleteUnblindedTokensForPromotion(const std::string& promotion_id, ledger::ResultCallback callback) override;
   ledger::ClientInfoPtr GetClientInfo() override;
   void UnblindedTokensReady() override;
+  void GetTransactionReport(const ledger::ActivityMonth month, const int year, ledger::GetTransactionReportCallback callback) override;
+  void GetContributionReport(const ledger::ActivityMonth month, const int year, ledger::GetContributionReportCallback callback) override;
 };

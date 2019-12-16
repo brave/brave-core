@@ -839,10 +839,10 @@ void Publisher::SetBalanceReportItem(
   GetBalanceReportInternal(month, year, &report_info);
 
   switch (type) {
-    case ledger::ReportType::GRANT:
+    case ledger::ReportType::GRANT_UGP:
       report_info.grants = report_info.grants + amount;
       break;
-    case ledger::ReportType::ADS:
+    case ledger::ReportType::GRANT_AD:
       report_info.earning_from_ads = report_info.earning_from_ads + amount;
       break;
     case ledger::ReportType::AUTO_CONTRIBUTION:

@@ -309,3 +309,15 @@ export const onlyAnonWallet = () => action(types.ONLY_ANON_WALLET)
 export const onOnlyAnonWallet = (only: boolean) => action(types.ON_ONLY_ANON_WALLET, {
   only
 })
+
+export const getMonthlyStatement = (month: number, year: number) => action(types.GET_MONTHLY_REPORT, {
+  month,
+  year
+})
+
+export const onMonthlyReport = (properties: { result: number, month: number, year: number, report: Rewards.MonthlyReport}) => action(types.ON_MONTHLY_REPORT, {
+  result: properties.result,
+  month: properties.month,
+  year: properties.year,
+  report: properties.report
+})

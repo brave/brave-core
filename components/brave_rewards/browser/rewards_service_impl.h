@@ -297,6 +297,11 @@ class RewardsServiceImpl : public RewardsService,
 
   void SetAutoContribute(bool enabled) override;
 
+  void GetMonthlyReport(
+      const uint32_t month,
+      const uint32_t year,
+      GetMonthlyReportCallback callback) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void StartMonthlyContributionForTest();
@@ -737,6 +742,16 @@ class RewardsServiceImpl : public RewardsService,
 
   void UnblindedTokensReady() override;
 
+  void GetTransactionReport(
+      const ledger::ActivityMonth month,
+      const int year,
+      ledger::GetTransactionReportCallback callback) override;
+
+  void GetContributionReport(
+      const ledger::ActivityMonth month,
+      const int year,
+      ledger::GetContributionReportCallback callback) override;
+
   // end ledger::LedgerClient
 
   // Mojo Proxy methods
@@ -799,6 +814,33 @@ class RewardsServiceImpl : public RewardsService,
       GetBalanceReportCallback callback,
       const ledger::Result result,
       ledger::BalanceReportInfoPtr report);
+
+  void OnGetMonthlyReportBalance(
+      const uint32_t month,
+      const uint32_t year,
+      GetMonthlyReportCallback callback,
+      const ledger::Result result,
+      ledger::BalanceReportInfoPtr report);
+
+  void OnGetMonthlyReportTransaction(
+      const uint32_t month,
+      const uint32_t year,
+      const MonthlyReport& report,
+      GetMonthlyReportCallback callback,
+      ledger::TransactionReportInfoList list);
+
+  void OnGetMonthlyReportContribution(
+      const MonthlyReport& report,
+      GetMonthlyReportCallback callback,
+      ledger::ContributionReportInfoList list);
+
+  void OnGetTransactionReport(
+      ledger::GetTransactionReportCallback callback,
+      ledger::TransactionReportInfoList list);
+
+  void OnGetContributionReport(
+      ledger::GetContributionReportCallback callback,
+      ledger::ContributionReportInfoList list);
 
 #if defined(OS_ANDROID)
   ledger::Environment GetServerEnvironmentForAndroid();

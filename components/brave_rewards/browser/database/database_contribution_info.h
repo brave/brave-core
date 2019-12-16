@@ -38,6 +38,12 @@ class DatabaseContributionInfo: public DatabaseTable {
       const ledger::ActivityMonth month,
       const int year);
 
+  bool GetContributionReport(
+      sql::Database* db,
+      ledger::ContributionReportInfoList* list,
+      const ledger::ActivityMonth month,
+      const int year);
+
  private:
   const char* table_name_ = "contribution_info";
   const int minimum_version_ = 2;
