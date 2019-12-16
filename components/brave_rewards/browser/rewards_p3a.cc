@@ -108,7 +108,7 @@ void UpdateAdsP3AOnPreferenceChange(PrefService *prefs,
 }
 
 void MaybeRecordInitialAdsP3AState(PrefService* prefs) {
-  if (not prefs->GetBoolean(brave_ads::prefs::kHasAdsP3AState)) {
+  if (!prefs->GetBoolean(brave_ads::prefs::kHasAdsP3AState)) {
     const bool ads_state = prefs->GetBoolean(brave_ads::prefs::kEnabled);
     RecordAdsState(ads_state ? AdsP3AState::kAdsEnabled
                              : AdsP3AState::kAdsDisabled);
