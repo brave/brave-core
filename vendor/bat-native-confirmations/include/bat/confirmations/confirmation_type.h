@@ -20,7 +20,8 @@ class ConfirmationType {
     LANDED,
     FLAG,
     UPVOTE,
-    DOWNVOTE
+    DOWNVOTE,
+    CONVERSION
   };
 
   ConfirmationType() = default;

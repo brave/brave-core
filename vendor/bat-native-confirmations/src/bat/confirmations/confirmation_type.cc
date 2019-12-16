@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/confirmations/confirmation_type.h"
+#include "base/logging.h"
 
 namespace confirmations {
 
@@ -16,7 +17,8 @@ const char kConfirmationTypeUpvote[] = "upvote";
 const char kConfirmationTypeDownvote[] = "downvote";
 const char kConfirmationTypeConversion[] = "conversion";
 
-ConfirmationType::ConfirmationType(const std::string& value) {
+ConfirmationType::ConfirmationType(
+    const std::string& value) {
   if (value == kConfirmationTypeClick) {
     value_ = CLICK;
   } else if (value == kConfirmationTypeDismiss) {
@@ -31,7 +33,10 @@ ConfirmationType::ConfirmationType(const std::string& value) {
     value_ = UPVOTE;
   } else if (value == kConfirmationTypeDownvote) {
     value_ = DOWNVOTE;
+  } else if (value == kConfirmationTypeConversion) {
+    value_ = CONVERSION;
   } else {
+    NOTREACHED();
     value_ = UNKNOWN;
   }
 }
@@ -46,10 +51,6 @@ int ConfirmationType::value() const {
 
 ConfirmationType::operator std::string() const {
   switch (value_) {
-    case UNKNOWN: {
-      return "";
-    }
-
     case CLICK: {
       return kConfirmationTypeClick;
     }
@@ -77,14 +78,25 @@ ConfirmationType::operator std::string() const {
     case DOWNVOTE: {
       return kConfirmationTypeDownvote;
     }
+
+    case CONVERSION: {
+      return kConfirmationTypeConversion;
+    }
+
+    case UNKNOWN: {
+      NOTREACHED();
+      return "";
+    }
   }
 }
 
-bool ConfirmationType::operator==(ConfirmationType type) const {
+bool ConfirmationType::operator==(
+    ConfirmationType type) const {
   return value_ == type.value_;
 }
 
-bool ConfirmationType::operator!=(ConfirmationType type) const {
+bool ConfirmationType::operator!=(
+    ConfirmationType type) const {
   return value_ != type.value_;
 }
 

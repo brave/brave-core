@@ -216,6 +216,7 @@ source_set("ads") {
   deps = [
     "//base",
     "//url",
+    "//third_party/re2",
     rebase_path("bat-native-usermodel", dep_base),
     rebase_path("bat-native-rapidjson", dep_base),
     rebase_path("brave_base", dep_base),
