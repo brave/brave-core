@@ -46,18 +46,6 @@ void engine_add_resources(C_Engine *engine, const char *resources);
 void engine_add_tag(C_Engine *engine, const char *tag);
 
 /**
- * Returns a stylesheet containing all generic cosmetic rules that begin with any of the provided class and id selectors
- * The leading '.' or '#' character should not be provided
- */
-char *engine_class_id_stylesheet(C_Engine *engine,
-                                 const char *const *classes,
-                                 size_t classes_size,
-                                 const char *const *ids,
-                                 size_t ids_size,
-                                 const char *const *exceptions,
-                                 size_t exceptions_size);
-
-/**
  * Create a new `Engine`.
  */
 C_Engine *engine_create(const char *rules);
@@ -71,6 +59,18 @@ bool engine_deserialize(C_Engine *engine, const char *data, size_t data_size);
  * Destroy a `Engine` once you are done with it.
  */
 void engine_destroy(C_Engine *engine);
+
+/**
+ * Returns a stylesheet containing all generic cosmetic rules that begin with any of the provided class and id selectors
+ * The leading '.' or '#' character should not be provided
+ */
+char *engine_hidden_class_id_selectors(C_Engine *engine,
+                                       const char *const *classes,
+                                       size_t classes_size,
+                                       const char *const *ids,
+                                       size_t ids_size,
+                                       const char *const *exceptions,
+                                       size_t exceptions_size);
 
 /**
  * Returns a set of cosmetic filtering resources specific to the given hostname, in JSON format

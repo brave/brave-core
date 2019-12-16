@@ -130,7 +130,7 @@ const std::string Engine::hostnameCosmeticResources(const std::string& hostname)
   return resources_json;
 }
 
-const std::string Engine::classIdStylesheet(const std::vector<std::string>& classes, const std::vector<std::string>& ids, const std::vector<std::string>& exceptions) {
+const std::string Engine::hiddenClassIdSelectors(const std::vector<std::string>& classes, const std::vector<std::string>& ids, const std::vector<std::string>& exceptions) {
   std::vector<const char*> classes_raw;
   classes_raw.reserve(classes.size());
   for(size_t i = 0; i < classes.size(); i++) {
@@ -149,7 +149,7 @@ const std::string Engine::classIdStylesheet(const std::vector<std::string>& clas
     exceptions_raw.push_back(exceptions[i].c_str());
   }
 
-  char* stylesheet_raw = engine_class_id_stylesheet(
+  char* stylesheet_raw = engine_hidden_class_id_selectors(
     raw,
     classes_raw.data(), classes.size(),
     ids_raw.data(), ids.size(),

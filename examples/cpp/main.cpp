@@ -244,27 +244,27 @@ void TestClassId() {
   std::vector<std::string> classes = std::vector<std::string>();
   std::vector<std::string> ids = std::vector<std::string>();
   std::vector<std::string> exceptions = std::vector<std::string>();
-  std::string stylesheet = engine.classIdStylesheet(classes, ids, exceptions);
-  assert(stylesheet == "");
+  std::string stylesheet = engine.hiddenClassIdSelectors(classes, ids, exceptions);
+  assert(stylesheet == "[]");
 
   classes = std::vector<std::string>({"ads", "no-ads"});
   ids = std::vector<std::string>({"element"});
   exceptions = std::vector<std::string>();
-  stylesheet = engine.classIdStylesheet(classes, ids, exceptions);
-  assert(stylesheet == ".ads,#element{display:none !important;}");
+  stylesheet = engine.hiddenClassIdSelectors(classes, ids, exceptions);
+  assert(stylesheet == "[\".ads\",\"#element\"]");
 
   classes = std::vector<std::string>({"element", "a"});
   ids = std::vector<std::string>({"block", "ads", "a"});
   exceptions = std::vector<std::string>({"#block"});
-  stylesheet = engine.classIdStylesheet(classes, ids, exceptions);
-  assert(stylesheet == ".element,#block + .child,#ads > #element{display:none !important;}");
+  stylesheet = engine.hiddenClassIdSelectors(classes, ids, exceptions);
+  assert(stylesheet == "[\".element\",\"#block + .child\",\"#ads > #element\"]");
 
   // Classes and ids must be passed without the leading `.` or `#`, or they will not be recognized
   classes = std::vector<std::string>({".element", ".a"});
   ids = std::vector<std::string>({"#block", "#ads", "#a"});
   exceptions = std::vector<std::string>({"block"});
-  stylesheet = engine.classIdStylesheet(classes, ids, exceptions);
-  assert(stylesheet == "");
+  stylesheet = engine.hiddenClassIdSelectors(classes, ids, exceptions);
+  assert(stylesheet == "[]");
 }
 
 void TestHostnameCosmetics() {
