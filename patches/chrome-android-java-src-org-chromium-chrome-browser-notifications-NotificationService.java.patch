@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationService.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationService.java
+index 07cf0852a2707fad59f35e864a8a1814234eaebd..b8822f523ae05a93224416b961bb308cbb4883be 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationService.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationService.java
+@@ -117,7 +117,7 @@ public class NotificationService extends IntentService {
+ 
+         // Now that the browser process is initialized, we pass forward the call to the
+         // NotificationPlatformBridge which will take care of delivering the appropriate events.
+-        if (!NotificationPlatformBridge.dispatchNotificationEvent(intent)) {
++        if (!BraveNotificationPlatformBridge.dispatchNotificationEvent(intent)) {
+             Log.w(TAG, "Unable to dispatch the notification event to Chrome.");
+         }
+ 
