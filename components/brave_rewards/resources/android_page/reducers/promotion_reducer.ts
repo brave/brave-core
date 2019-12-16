@@ -6,6 +6,7 @@ import { Reducer } from 'redux'
 
 // Constant
 import { types } from '../constants/rewards_types'
+import { getCurrentBalanceReport } from '../utils'
 
 const getPromotion = (id: string, promotions?: Rewards.Promotion[]) => {
   if (!promotions) {
@@ -129,6 +130,7 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
 
           chrome.send('brave_rewards.getWalletProperties')
           chrome.send('brave_rewards.fetchBalance')
+          getCurrentBalanceReport()
           break
         default:
           newPromotion.captchaStatus = 'generalError'

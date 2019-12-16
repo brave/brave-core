@@ -76,7 +76,7 @@ class MonthlyContributionBox extends React.Component<Props, State> {
         },
         contribute: {
           tokens: item.percentage.toFixed(1),
-          converted: utils.convertBalance(item.percentage.toString(), balance.rates)
+          converted: utils.convertBalance(item.percentage, balance.rates)
         },
         url: item.url,
         type: 'recurring' as any,
@@ -126,7 +126,7 @@ class MonthlyContributionBox extends React.Component<Props, State> {
           : null
         }
         <List title={getLocale('donationTotalMonthlyContribution')}>
-          <Tokens onlyAnonWallet={onlyAnonWallet} value={total} converted={converted} />
+          <Tokens onlyAnonWallet={onlyAnonWallet} value={total.toFixed(1)} converted={converted} />
         </List>
         <List title={getLocale('donationNextDate')}>
           <NextContribution>

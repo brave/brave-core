@@ -128,11 +128,11 @@ struct ExternalWallet {
 };
 
 struct BalanceReportInfo {
-  string grants;
-  string earning_from_ads;
-  string auto_contribute;
-  string recurring_donation;
-  string one_time_donation;
+  double grants;
+  double earning_from_ads;
+  double auto_contribute;
+  double recurring_donation;
+  double one_time_donation;
 };
 
 enum ExcludeFilter {

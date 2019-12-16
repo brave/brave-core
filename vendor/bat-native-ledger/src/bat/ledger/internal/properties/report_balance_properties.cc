@@ -8,11 +8,11 @@
 namespace ledger {
 
 ReportBalanceProperties::ReportBalanceProperties()
-    : grants("0"),
-      ad_earnings("0"),
-      auto_contributions("0"),
-      recurring_donations("0"),
-      one_time_donations("0") {}
+    : grants(0.0),
+      ad_earnings(0.0),
+      auto_contributions(0.0),
+      recurring_donations(0.0),
+      one_time_donations(0.0) {}
 
 ReportBalanceProperties::ReportBalanceProperties(
     const ReportBalanceProperties& properties) {

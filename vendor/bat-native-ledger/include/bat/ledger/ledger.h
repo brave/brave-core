@@ -236,12 +236,6 @@ class LEDGER_EXPORT Ledger {
       ledger::VisitDataPtr visit_data,
       const std::string& publisher_blob) = 0;
 
-  virtual void SetBalanceReportItem(
-      ledger::ActivityMonth month,
-      int year,
-      ledger::ReportType type,
-      const std::string& probi) = 0;
-
   virtual void GetPublisherBanner(
       const std::string& publisher_id,
       ledger::PublisherBannerCallback callback) = 0;

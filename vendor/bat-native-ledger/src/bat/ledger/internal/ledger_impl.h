@@ -265,10 +265,11 @@ class LedgerImpl : public ledger::Ledger,
                            ledger::PublisherInfoPtr info,
                            uint64_t windowId);
 
-  void SetBalanceReportItem(ledger::ActivityMonth month,
-                            int year,
-                            ledger::ReportType type,
-                            const std::string& probi) override;
+  void SetBalanceReportItem(
+      const ledger::ActivityMonth month,
+      const int year,
+      const ledger::ReportType type,
+      const double amount);
 
   virtual ledger::CurrentReconcileProperties GetReconcileById(
       const std::string& viewingId);

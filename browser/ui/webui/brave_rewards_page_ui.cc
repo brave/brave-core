@@ -1685,11 +1685,11 @@ void RewardsDOMHandler::OnGetBalanceReport(
   }
 
   base::Value report_base(base::Value::Type::DICTIONARY);
-  report_base.SetStringKey("grant", report.grants);
-  report_base.SetStringKey("ads", report.earning_from_ads);
-  report_base.SetStringKey("contribute", report.auto_contribute);
-  report_base.SetStringKey("donation", report.recurring_donation);
-  report_base.SetStringKey("tips", report.one_time_donation);
+  report_base.SetDoubleKey("grant", report.grants);
+  report_base.SetDoubleKey("ads", report.earning_from_ads);
+  report_base.SetDoubleKey("contribute", report.auto_contribute);
+  report_base.SetDoubleKey("donation", report.recurring_donation);
+  report_base.SetDoubleKey("tips", report.one_time_donation);
 
   base::Value data(base::Value::Type::DICTIONARY);
   data.SetIntKey("month", month);

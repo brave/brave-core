@@ -92,7 +92,7 @@ export async function getRewardsInitialData (): Promise<InitialRewardsData> {
       new Promise(resolve => chrome.braveRewards.getAdsEstimatedEarnings((adsEstimatedEarnings: number) => {
         resolve(adsEstimatedEarnings)
       })),
-      new Promise(resolve => chrome.braveRewards.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear(),(properties: NewTab.RewardsBalanceReport) => {
+      new Promise(resolve => chrome.braveRewards.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear(),(report: NewTab.RewardsBalanceReport) => {
         resolve(report)
       })),
       new Promise(resolve => chrome.braveRewards.fetchBalance((balance: NewTab.RewardsBalance) => {

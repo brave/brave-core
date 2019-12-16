@@ -24,11 +24,11 @@ TEST(PublisherSettingsStateTest, ToJsonSerialization) {
   publisher_settings_properties.allow_contribution_to_videos = true;
 
   ReportBalanceProperties report_balance_properties;
-  report_balance_properties.grants = "Grants";
-  report_balance_properties.ad_earnings = "AdEarnings";
-  report_balance_properties.auto_contributions = "AutoContributions";
-  report_balance_properties.recurring_donations = "RecurringDonations";
-  report_balance_properties.one_time_donations = "OneTimeDonations";
+  report_balance_properties.grants = 1;
+  report_balance_properties.ad_earnings = 1;
+  report_balance_properties.auto_contributions = 1;
+  report_balance_properties.recurring_donations = 1;
+  report_balance_properties.one_time_donations = 1;
   publisher_settings_properties.monthly_balances.insert({
     { "Date", report_balance_properties }
   });
@@ -61,11 +61,11 @@ TEST(PublisherSettingsStateTest, FromJsonDeserialization) {
   publisher_settings_properties.allow_contribution_to_videos = true;
 
   ReportBalanceProperties report_balance_properties;
-  report_balance_properties.grants = "Grants";
-  report_balance_properties.ad_earnings = "AdEarnings";
-  report_balance_properties.auto_contributions = "AutoContributions";
-  report_balance_properties.recurring_donations = "RecurringDonations";
-  report_balance_properties.one_time_donations = "OneTimeDonations";
+  report_balance_properties.grants = 1;
+  report_balance_properties.ad_earnings = 1;
+  report_balance_properties.auto_contributions = 1;
+  report_balance_properties.recurring_donations = 1;
+  report_balance_properties.one_time_donations = 1;
   publisher_settings_properties.monthly_balances.insert({
     { "Date", report_balance_properties }
   });
@@ -74,7 +74,7 @@ TEST(PublisherSettingsStateTest, FromJsonDeserialization) {
   publisher_settings_properties.processed_pending_publishers.push_back(
       "ProcessedPendingPublisher");
 
-  const std::string json = "{\"min_pubslisher_duration\":4294967295,\"min_visits\":4294967295,\"allow_non_verified\":true,\"allow_videos\":true,\"monthly_balances\":[{\"Date\":{\"grants\":\"Grants\",\"earning_from_ads\":\"AdEarnings\",\"auto_contribute\":\"AutoContributions\",\"recurring_donation\":\"RecurringDonations\",\"one_time_donation\":\"OneTimeDonations\"}}],\"migrate_score_2\":true,\"processed_pending_publishers\":[\"ProcessedPendingPublisher\"]}";  // NOLINT
+  const std::string json = "{\"min_pubslisher_duration\":4294967295,\"min_visits\":4294967295,\"allow_non_verified\":true,\"allow_videos\":true,\"monthly_balances\":[{\"Date\":{\"grants\":1,\"earning_from_ads\":1,\"auto_contribute\":1,\"recurring_donation\":1,\"one_time_donation\":1}}],\"migrate_score_2\":true,\"processed_pending_publishers\":[\"ProcessedPendingPublisher\"]}";  // NOLINT
 
   // Act
   PublisherSettingsProperties expected_publisher_settings_properties;

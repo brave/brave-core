@@ -206,14 +206,6 @@ void BatLedgerImpl::RestorePublishers(RestorePublishersCallback callback) {
     std::bind(BatLedgerImpl::OnRestorePublishers, holder, _1));
 }
 
-void BatLedgerImpl::SetBalanceReportItem(
-    ledger::ActivityMonth month,
-    int32_t year,
-    ledger::ReportType type,
-    const std::string& probi) {
-  ledger_->SetBalanceReportItem(month, year, type, probi);
-}
-
 void BatLedgerImpl::OnFetchPromotions(
     CallbackHolder<FetchPromotionsCallback>* holder,
     const ledger::Result result,

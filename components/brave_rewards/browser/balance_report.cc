@@ -7,15 +7,10 @@
 
 namespace brave_rewards {
 
-BalanceReport::BalanceReport() :
-    grants("0"),
-    earning_from_ads("0"),
-    auto_contribute("0"),
-    recurring_donation("0"),
-    one_time_donation("0") {
+BalanceReport::BalanceReport() {
 }
 
-BalanceReport::~BalanceReport() { }
+BalanceReport::~BalanceReport() = default;
 
 BalanceReport::BalanceReport(
     const BalanceReport &properties) {

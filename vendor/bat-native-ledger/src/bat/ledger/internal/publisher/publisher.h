@@ -106,10 +106,11 @@ class Publisher : public ledger::LedgerCallbackHandler {
   void GetPublisherBanner(const std::string& publisher_key,
                           ledger::PublisherBannerCallback callback);
 
-  void setBalanceReportItem(ledger::ActivityMonth month,
-                            int year,
-                            ledger::ReportType type,
-                            const std::string& probi);
+  void SetBalanceReportItem(
+      const ledger::ActivityMonth month,
+      const int year,
+      const ledger::ReportType type,
+      const double amount);
 
   ledger::ActivityInfoFilterPtr CreateActivityFilter(
       const std::string& publisher_id,

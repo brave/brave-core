@@ -196,6 +196,11 @@ class MockRewardsService : public RewardsService {
 
   MOCK_METHOD1(GetAnonWalletStatus,
       void(brave_rewards::GetAnonWalletStatusCallback callback));
+
+  MOCK_METHOD3(GetBalanceReport, void(
+      const uint32_t month,
+      const uint32_t year,
+      brave_rewards::GetBalanceReportCallback callback));
 };
 
 class AdsServiceTest : public testing::Test {

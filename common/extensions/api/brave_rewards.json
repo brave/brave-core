@@ -539,19 +539,19 @@
                 "type": "object",
                 "properties": {
                   "ads": {
-                    "type": "string"
+                    "type": "number"
                   },
                   "contribute": {
-                    "type": "string"
+                    "type": "number"
                   },
                   "donation": {
-                    "type": "string"
+                    "type": "number"
                   },
                   "grant": {
-                    "type": "string"
+                    "type": "number"
                   },
                   "tips": {
-                    "type": "string"
+                    "type": "number"
                   }
                 }
               }

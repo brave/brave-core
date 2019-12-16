@@ -1038,7 +1038,6 @@ void RewardsServiceImpl::OnReconcileComplete(
     MaybeShowNotificationTipsPaid();
   }
 
-  // TODO we need to fetch balance when reconcile complete on JS level
   for (auto& observer : observers_)
     observer.OnReconcileComplete(this,
                                  static_cast<int>(result),

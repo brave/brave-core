@@ -777,11 +777,12 @@ void LedgerImpl::OnPanelPublisherInfo(
   ledger_client_->OnPanelPublisherInfo(result, std::move(info), windowId);
 }
 
-void LedgerImpl::SetBalanceReportItem(ledger::ActivityMonth month,
-                                      int year,
-                                      ledger::ReportType type,
-                                      const std::string& probi) {
-  bat_publisher_->setBalanceReportItem(month, year, type, probi);
+void LedgerImpl::SetBalanceReportItem(
+    const ledger::ActivityMonth month,
+    const int year,
+    const ledger::ReportType type,
+    const double amount) {
+  bat_publisher_->SetBalanceReportItem(month, year, type, amount);
 }
 
 void LedgerImpl::FetchFavIcon(const std::string& url,

@@ -44,7 +44,7 @@ const defaultState: NewTab.State = {
     enabledMain: false,
     promotions: [],
     onlyAnonWallet: false,
-    totalContribution: '0.0',
+    totalContribution: 0.0,
     walletCreated: false,
     walletCreating: false,
     walletCreateFailed: false,
@@ -73,6 +73,22 @@ const getPersistentData = (state: NewTab.State): NewTab.PersistentState => {
   return peristantState
 }
 
+const cleanData = (state: NewTab.State) => {
+  // We need to disable linter as we defined in d.ts that this values are number,
+  // but we need this check to covert from old version to a new one
+  /* tslint:disable */
+  if (typeof state.rewardsState.adsEstimatedEarnings === 'string') {
+    state.rewardsState.adsEstimatedEarnings = 0.0
+  }
+
+  if (typeof state.rewardsState.totalContribution === 'string') {
+    state.rewardsState.totalContribution = 0.0
+  }
+  /* tslint:enable */
+
+  return state
+}
+
 export const load = (): NewTab.State => {
   const data: string | null = window.localStorage.getItem(keyName)
   let state = defaultState
@@ -89,7 +105,7 @@ export const load = (): NewTab.State => {
       console.error('Could not parse local storage data: ', e)
     }
   }
-  return state
+  return cleanData(state)
 }
 
 export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {

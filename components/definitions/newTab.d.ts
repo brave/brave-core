@@ -76,7 +76,7 @@ declare namespace NewTab {
     enabledMain: boolean
     promotions: Promotion[]
     onlyAnonWallet: boolean
-    totalContribution: string
+    totalContribution: number
     walletCreated: boolean
     walletCreating: boolean
     walletCreateFailed: boolean
@@ -101,11 +101,11 @@ declare namespace NewTab {
   }
 
   export interface RewardsBalanceReport {
-    ads: string
-    contribute: string
-    donation: string
-    grant: string
-    tips: string
+    ads: number
+    contribute: number
+    donation: number
+    grant: number
+    tips: number
   }
 
   export enum PromotionTypes {

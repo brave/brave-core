@@ -16,12 +16,12 @@ export const defaultState: RewardsExtension.State = {
   walletProperties: {
     defaultMonthlyTipChoices: []
   },
-  report: {
-    ads: '0',
-    contribute: '0',
-    donation: '0',
-    grant: '0',
-    tips: '0'
+  balanceReport: {
+    ads: 0.0,
+    contribute: 0.0,
+    donation: 0.0,
+    grant: 0.0,
+    tips: 0.0
   },
   notifications: {},
   currentNotification: undefined,

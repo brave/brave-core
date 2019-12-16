@@ -127,12 +127,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
     }
     case types.ON_BALANCE_REPORT: {
       state = { ...state }
-      if (!state.reports) {
-        state.reports = {}
-      }
-
-      const id = `${action.payload.year}_${action.payload.month}`
-      state.reports[id] = action.payload.report
+      state.balanceReport = action.payload.report
       break
     }
     case types.CHECK_WALLET_EXISTENCE: {

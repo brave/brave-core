@@ -152,11 +152,8 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       break
     }
     case types.ON_BALANCE_REPORT: {
-      if (!payload.report) {
-        break
-      }
       state = { ...state }
-      state.report = payload.report
+      state.balanceReport = payload.report
       break
     }
     case types.ON_NOTIFICATION_ADDED: {

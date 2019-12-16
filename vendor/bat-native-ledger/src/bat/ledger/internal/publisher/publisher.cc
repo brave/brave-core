@@ -11,7 +11,6 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/internal/bignum.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/properties/publisher_settings_properties.h"
 #include "bat/ledger/internal/properties/report_balance_properties.h"
@@ -670,11 +669,11 @@ ledger::Result Publisher::GetBalanceReportInternal(
 
   if (iter == state_->monthly_balances.end()) {
     ledger::BalanceReportInfo new_report_info;
-    new_report_info.grants = "0";
-    new_report_info.earning_from_ads = "0";
-    new_report_info.auto_contribute = "0";
-    new_report_info.recurring_donation = "0";
-    new_report_info.one_time_donation = "0";
+    new_report_info.grants = 0.0;
+    new_report_info.earning_from_ads = 0.0;
+    new_report_info.auto_contribute = 0.0;
+    new_report_info.recurring_donation = 0.0;
+    new_report_info.one_time_donation = 0.0;
 
     setBalanceReport(month, year, new_report_info);
     ledger::Result result = GetBalanceReportInternal(month, year, report_info);
@@ -831,33 +830,29 @@ void Publisher::OnPanelPublisherInfo(
   }
 }
 
-void Publisher::setBalanceReportItem(ledger::ActivityMonth month,
-                                         int year,
-                                         ledger::ReportType type,
-                                         const std::string& probi) {
+void Publisher::SetBalanceReportItem(
+    const ledger::ActivityMonth month,
+    const int year,
+    const ledger::ReportType type,
+    const double amount) {
   ledger::BalanceReportInfo report_info;
   GetBalanceReportInternal(month, year, &report_info);
 
   switch (type) {
     case ledger::ReportType::GRANT:
-      report_info.grants =
-          braveledger_bat_bignum::sum(report_info.grants, probi);
+      report_info.grants = report_info.grants + amount;
       break;
     case ledger::ReportType::ADS:
-      report_info.earning_from_ads =
-          braveledger_bat_bignum::sum(report_info.earning_from_ads, probi);
+      report_info.earning_from_ads = report_info.earning_from_ads + amount;
       break;
     case ledger::ReportType::AUTO_CONTRIBUTION:
-      report_info.auto_contribute =
-          braveledger_bat_bignum::sum(report_info.auto_contribute, probi);
+      report_info.auto_contribute = report_info.auto_contribute + amount;
       break;
     case ledger::ReportType::TIP:
-      report_info.one_time_donation =
-          braveledger_bat_bignum::sum(report_info.one_time_donation, probi);
+      report_info.one_time_donation = report_info.one_time_donation + amount;
       break;
     case ledger::ReportType::TIP_RECURRING:
-      report_info.recurring_donation =
-          braveledger_bat_bignum::sum(report_info.recurring_donation, probi);
+      report_info.recurring_donation = report_info.recurring_donation + amount;
       break;
     default:
       break;

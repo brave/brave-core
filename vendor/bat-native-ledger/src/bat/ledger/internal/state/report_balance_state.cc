@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ledger/internal/bat_util.h"
 #include "bat/ledger/internal/state/report_balance_state.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
@@ -17,6 +18,29 @@ const char kAdEarningsKey[] = "earning_from_ads";
 const char kGrantsKey[] = "grants";
 const char kOneTimeDonationsKey[] = "one_time_donation";
 const char kRecurringDonationsKey[] = "recurring_donation";
+
+bool GetPropertyFromDict(
+    const base::DictionaryValue* dictionary,
+    const std::string& key,
+    double* value) {
+  if (!value) {
+    return false;
+  }
+
+  const auto balance = dictionary->FindDoubleKey(key);
+  if (balance) {
+    *value = *balance;
+    return true;
+  }
+
+  const auto* balance_probi = dictionary->FindStringKey(key);
+  if (!balance_probi) {
+    return false;
+  }
+
+  *value = braveledger_bat_util::ProbiToDouble(*balance_probi);
+  return true;
+}
 
 }  // namespace
 
@@ -67,47 +91,59 @@ bool ReportBalanceState::FromDict(
   ReportBalanceProperties report_balance_properties;
 
   // Grants
-  const auto* grants = dictionary->FindStringKey(kGrantsKey);
-  if (!grants) {
+  bool result = GetPropertyFromDict(
+      dictionary,
+      kGrantsKey,
+      &report_balance_properties.grants);
+
+  if (!result) {
     NOTREACHED();
     return false;
   }
-  report_balance_properties.grants = *grants;
 
   // Earnings From Ads
-  const auto* ad_earnings = dictionary->FindStringKey(kAdEarningsKey);
-  if (!ad_earnings) {
+  result = GetPropertyFromDict(
+      dictionary,
+      kAdEarningsKey,
+      &report_balance_properties.ad_earnings);
+
+  if (!result) {
     NOTREACHED();
     return false;
   }
-  report_balance_properties.ad_earnings = *ad_earnings;
 
   // Auto Contribute
-  const auto* auto_contributions =
-      dictionary->FindStringKey(kAutoContributionsKey);
-  if (!auto_contributions) {
+  result = GetPropertyFromDict(
+      dictionary,
+      kAutoContributionsKey,
+      &report_balance_properties.auto_contributions);
+
+  if (!result) {
     NOTREACHED();
     return false;
   }
-  report_balance_properties.auto_contributions = *auto_contributions;
 
   // Recurring Donation
-  const auto* recurring_donations =
-      dictionary->FindStringKey(kRecurringDonationsKey);
-  if (!recurring_donations) {
+  result = GetPropertyFromDict(
+      dictionary,
+      kRecurringDonationsKey,
+      &report_balance_properties.recurring_donations);
+
+  if (!result) {
     NOTREACHED();
     return false;
   }
-  report_balance_properties.recurring_donations = *recurring_donations;
 
   // One Time Donation
-  const auto* one_time_donations =
-      dictionary->FindStringKey(kOneTimeDonationsKey);
-  if (!one_time_donations) {
+  result = GetPropertyFromDict(
+      dictionary,
+      kOneTimeDonationsKey,
+      &report_balance_properties.one_time_donations);
+
+  if (!result) {
     NOTREACHED();
     return false;
   }
-  report_balance_properties.one_time_donations = *one_time_donations;
 
   *properties = report_balance_properties;
 
@@ -126,19 +162,19 @@ bool ReportBalanceState::ToJson(
   writer->StartObject();
 
   writer->String(kGrantsKey);
-  writer->String(properties.grants.c_str());
+  writer->Double(properties.grants);
 
   writer->String(kAdEarningsKey);
-  writer->String(properties.ad_earnings.c_str());
+  writer->Double(properties.ad_earnings);
 
   writer->String(kAutoContributionsKey);
-  writer->String(properties.auto_contributions.c_str());
+  writer->Double(properties.auto_contributions);
 
   writer->String(kRecurringDonationsKey);
-  writer->String(properties.recurring_donations.c_str());
+  writer->Double(properties.recurring_donations);
 
   writer->String(kOneTimeDonationsKey);
-  writer->String(properties.one_time_donations.c_str());
+  writer->Double(properties.one_time_donations);
 
   writer->EndObject();
 

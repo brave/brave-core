@@ -68,12 +68,6 @@ class BatLedgerImpl : public mojom::BatLedger,
       SetPublisherExcludeCallback callback) override;
   void RestorePublishers(RestorePublishersCallback callback) override;
 
-  void SetBalanceReportItem(
-      ledger::ActivityMonth month,
-      int32_t year,
-      ledger::ReportType type,
-      const std::string& probi) override;
-
   void FetchPromotions(FetchPromotionsCallback callback) override;
   void ClaimPromotion(
       const std::string& payload,

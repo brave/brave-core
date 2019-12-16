@@ -74,7 +74,7 @@ class AdsBox extends React.Component<Props, {}> {
     let adsEnabled = false
     let adsUIEnabled = false
     let adsIsSupported = false
-    let estimatedPendingRewards = '0'
+    let estimatedPendingRewards = 0
     let nextPaymentDate = ''
     let adNotificationsReceivedThisMonth = 0
     const {
@@ -89,7 +89,7 @@ class AdsBox extends React.Component<Props, {}> {
       adsEnabled = adsData.adsEnabled
       adsUIEnabled = adsData.adsUIEnabled
       adsIsSupported = adsData.adsIsSupported
-      estimatedPendingRewards = (adsData.adsEstimatedPendingRewards || 0).toFixed(1)
+      estimatedPendingRewards = adsData.adsEstimatedPendingRewards || 0
       nextPaymentDate = adsData.adsNextPaymentDate
       adNotificationsReceivedThisMonth = adsData.adsAdNotificationsReceivedThisMonth || 0
     }
@@ -132,7 +132,7 @@ class AdsBox extends React.Component<Props, {}> {
           <StyledTotalContent>
             <Tokens
               onlyAnonWallet={onlyAnonWallet}
-              value={estimatedPendingRewards}
+              value={estimatedPendingRewards.toFixed(1)}
               converted={utils.convertBalance(estimatedPendingRewards, balance.rates)}
             />
           </StyledTotalContent>
