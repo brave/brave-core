@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_IMPL_H_
 
 #include <stdint.h>
+#include <deque>
 #include <map>
 #include <memory>
 #include <sstream>
@@ -194,6 +195,9 @@ class AdsServiceImpl : public AdsService,
   void RetryViewingAdWithId(
       const std::string& id);
   void ResetTheWholeState(const base::Callback<void(bool)>& callback) override;
+
+  void SetAdsServiceForNotificationHandler();
+  void ClearAdsServiceForNotificationHandler();
 
   void OpenNewTabWithUrl(
       const std::string& url);
@@ -460,6 +464,8 @@ class AdsServiceImpl : public AdsService,
   base::flat_set<network::SimpleURLLoader*> url_loaders_;
 
   std::unique_ptr<BundleStateDatabase> bundle_state_backend_;
+
+  std::deque<std::string> notifications_;
 
   NotificationDisplayService* display_service_;  // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED

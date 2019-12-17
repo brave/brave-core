@@ -9,13 +9,15 @@ package org.chromium.chrome.browser.notifications;
 
 import android.app.Notification;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 
+import org.chromium.base.ApplicationStatus;
+import org.chromium.base.ContextUtils;
 import org.chromium.base.annotations.CalledByNative;
 
 public class BraveNotificationPlatformBridge extends NotificationPlatformBridge {
     private @NotificationType int mNotificationType;
-    private static BraveNotificationPlatformBridge sInstance;
 
     @CalledByNative
     private static BraveNotificationPlatformBridge create(long nativeNotificationPlatformBridge) {
@@ -25,11 +27,39 @@ public class BraveNotificationPlatformBridge extends NotificationPlatformBridge 
         }
 
         sInstance = new BraveNotificationPlatformBridge(nativeNotificationPlatformBridge);
-        return sInstance;
+        return (BraveNotificationPlatformBridge) sInstance;
     }
 
     private BraveNotificationPlatformBridge(long nativeNotificationPlatformBridge) {
         super(nativeNotificationPlatformBridge);
+    }
+
+    static boolean dispatchNotificationEvent(Intent intent) {
+        if (NotificationPlatformBridge.dispatchNotificationEvent(intent)) {
+            @NotificationType
+            int notificationType = intent.getIntExtra(
+                    NotificationConstants.EXTRA_NOTIFICATION_TYPE, NotificationType.WEB_PERSISTENT);
+            if (notificationType == NotificationType.BRAVE_ADS) {
+                bringToForeground();
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    private static void bringToForeground() {
+        if (ApplicationStatus.hasVisibleActivities()) {
+            return;
+        }
+        Context context = ContextUtils.getApplicationContext();
+        Intent launchIntent =
+                context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+        if (launchIntent != null) {
+            launchIntent.setFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            context.startActivity(launchIntent);
+        }
     }
 
     @Override
