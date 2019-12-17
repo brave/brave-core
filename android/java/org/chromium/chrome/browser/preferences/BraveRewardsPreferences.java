@@ -125,7 +125,7 @@ public class BraveRewardsPreferences extends BravePreferenceFragment
     public void OnPublisherInfo(int tabId) {}
 
     @Override
-    public void OnGetCurrentBalanceReport(String[] report) {}
+    public void OnGetCurrentBalanceReport(double[] report) {}
 
     @Override
     public void OnNotificationAdded(String id, int type, long timestamp, String[] args) {}

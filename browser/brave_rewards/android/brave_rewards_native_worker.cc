@@ -309,11 +309,10 @@ void BraveRewardsNativeWorker::GetCurrentBalanceReport(JNIEnv* env,
     base::Time::Exploded exploded;
     now.LocalExplode(&exploded);
 
-    return brave_rewards_service_->GetBalanceReport(
-        (ledger::ActivityMonth)exploded.month,
-        exploded.year,
+    brave_rewards_service_->GetBalanceReport(
+        exploded.month, exploded.year,
         base::BindOnce(&BraveRewardsNativeWorker::OnGetCurrentBalanceReport,
-            base::Unretained(this)));
+                       base::Unretained(this), brave_rewards_service_));
   }
 }
 
@@ -321,7 +320,7 @@ void BraveRewardsNativeWorker::OnGetCurrentBalanceReport(
         brave_rewards::RewardsService* rewards_service,
         const int32_t result,
         const brave_rewards::BalanceReport& balance_report) {
-  std::vector<std::string> values;
+  std::vector<double> values;
   values.push_back(balance_report.grants);
   values.push_back(balance_report.earning_from_ads);
   values.push_back(balance_report.auto_contribute);
@@ -329,8 +328,8 @@ void BraveRewardsNativeWorker::OnGetCurrentBalanceReport(
   values.push_back(balance_report.one_time_donation);
 
   JNIEnv* env = base::android::AttachCurrentThread();
-  base::android::ScopedJavaLocalRef<jobjectArray> java_array =
-      base::android::ToJavaArrayOfStrings(env, values);
+  base::android::ScopedJavaLocalRef<jdoubleArray> java_array =
+      base::android::ToJavaDoubleArray(env, values);
 
   Java_BraveRewardsNativeWorker_OnGetCurrentBalanceReport(env,
         weak_java_brave_rewards_native_worker_.get(env), java_array);
