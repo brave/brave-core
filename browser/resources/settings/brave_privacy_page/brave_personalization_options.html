@@ -48,6 +48,12 @@
         </cr-button>
       </template>
     </settings-toggle-button>
+    <settings-toggle-button id="remoteDebuggingEnabled"
+        pref=""
+        checked="[[remoteDebuggingEnabled_]]"
+        label="$i18n{remoteDebuggingEnabledTitle}"
+        on-settings-boolean-control-change="onRemoteDebuggingEnabledChange_">
+    </settings-toggle-button>
   </template>
   <script src="brave_personalization_options.js"></script>
 </dom-module>
