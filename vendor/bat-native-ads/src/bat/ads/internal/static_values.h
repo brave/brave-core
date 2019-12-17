@@ -41,6 +41,11 @@ const uint64_t kSustainAdInteractionAfterSeconds = 10;
 const uint64_t kDefaultCatalogPing = 2 * base::Time::kSecondsPerHour;
 const uint64_t kDebugCatalogPing = 15 * base::Time::kSecondsPerMinute;
 
+const int kDebugAdConversionFrequency = 10 * base::Time::kSecondsPerMinute;
+const int kAdConversionFrequency =
+    base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
+const int kExpiredAdConversionFrequency = 5 * base::Time::kSecondsPerMinute;
+
 const char kDefaultLanguage[] = "en";
 const char kDefaultRegion[] = "US";
 const char kDefaultUserModelLanguage[] = "en";

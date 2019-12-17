@@ -6,6 +6,7 @@
 #ifndef BAT_ADS_AD_CONVERSION_INFO_H_
 #define BAT_ADS_AD_CONVERSION_INFO_H_
 
+#include <stdint.h>
 #include <string>
 
 #include "bat/ads/export.h"
@@ -14,20 +15,9 @@
 namespace ads {
 
 struct ADS_EXPORT AdConversionInfo {
-  AdConversionInfo();
-  AdConversionInfo(
-      const AdConversionInfo& info);
-  ~AdConversionInfo();
-
-  std::string ToJson() const;
-  Result FromJson(
-      const std::string& json,
-      std::string* error_description = nullptr);
-
+  uint64_t timestamp_in_seconds;
   std::string creative_set_id;
-  std::string type;
-  std::string url_pattern;
-  unsigned int observation_window;
+  std::string uuid;
 };
 
 }  // namespace ads

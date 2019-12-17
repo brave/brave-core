@@ -94,6 +94,8 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     ads_serve_(std::make_unique<AdsServe>(this, ads_client, bundle_.get())),
     frequency_capping_(std::make_unique<FrequencyCapping>(client_.get())),
     notifications_(std::make_unique<Notifications>(this, ads_client)),
+    ad_conversions_(std::make_unique<AdConversionTracking>(
+        this, ads_client, client_.get())),
     user_model_(nullptr),
     is_initialized_(false),
     is_confirmations_ready_(false),
@@ -142,6 +144,17 @@ void AdsImpl::InitializeStep3(
     return;
   }
 
+  auto callback = std::bind(&AdsImpl::InitializeStep4, this, _1);
+  ad_conversions_->Initialize(callback);
+}
+
+void AdsImpl::InitializeStep4(
+    const Result result) {
+  if (result != SUCCESS) {
+    initialize_callback_(FAILED);
+    return;
+  }
+
   auto user_model_languages = ads_client_->GetUserModelLanguages();
   client_->SetUserModelLanguages(user_model_languages);
 
@@ -149,7 +162,7 @@ void AdsImpl::InitializeStep3(
   ChangeLocale(locale);
 }
 
-void AdsImpl::InitializeStep4(
+void AdsImpl::InitializeStep5(
     const Result result) {
   if (result != SUCCESS) {
     initialize_callback_(FAILED);
@@ -165,6 +178,8 @@ void AdsImpl::InitializeStep4(
   ads_client_->SetIdleThreshold(kIdleThresholdInSeconds);
 
   initialize_callback_(SUCCESS);
+
+  ad_conversions_->ProcessQueue();
 
   NotificationAllowedCheck(false);
 
@@ -269,7 +284,7 @@ void AdsImpl::OnUserModelLoaded(
   InitializeUserModel(json, language);
 
   if (!IsInitialized()) {
-    InitializeStep4(SUCCESS);
+    InitializeStep5(SUCCESS);
   }
 }
 
@@ -646,7 +661,7 @@ void AdsImpl::ChangeLocale(
   if (!ShouldClassifyPagesIfTargeted()) {
     client_->SetUserModelLanguage(language);
 
-    InitializeStep4(SUCCESS);
+    InitializeStep5(SUCCESS);
     return;
   }
 
@@ -745,59 +760,53 @@ void AdsImpl::CheckAdConversion(
 void AdsImpl::OnGetAdConversions(
     const Result result,
     const std::string& url,
-    const std::vector<ConversionTrackingInfo>& conversions) {
-  auto conversion_history = client_->GetConversionHistory();
+    const std::vector<AdConversionTrackingInfo>& ad_conversions) {
+  for (const auto& ad_conversion : ad_conversions) {
+    if (!helper::Uri::MatchWildcard(url, ad_conversion.url_pattern)) {
+      continue;
+    }
 
-  for (const auto& conversion : conversions) {
-    if (helper::Uri::MatchWildcard(url, conversion.url_pattern)) {
-      ConfirmationType confirmation_type;
-      if (conversion.type == "postview") {
-        confirmation_type = ConfirmationType::VIEW;
-      } else if (conversion.type == "postclick") {
-        confirmation_type = ConfirmationType::CLICK;
-      } else {
-        NOTREACHED();
+    ConfirmationType confirmation_type;
+    if (ad_conversion.type == "postview") {
+      confirmation_type = ConfirmationType::VIEW;
+    } else if (ad_conversion.type == "postclick") {
+      confirmation_type = ConfirmationType::CLICK;
+    } else {
+      BLOG(WARNING) << "Unsupported ad conversion type: " << ad_conversion.type;
+      continue;
+    }
 
-        BLOG(INFO) << "Unknown conversion type: "
-            << std::string(conversion.type);
+    auto ads_history  = client_->GetAdsShownHistory();
+    const auto sort =
+        AdsHistorySortFactory::Build(AdsHistory::SortType::kDescendingOrder);
+    DCHECK(sort);
+    if (sort) {
+      ads_history = sort->Apply(ads_history);
+    }
 
+    for (const auto& ad : ads_history) {
+      auto ad_conversion_history = client_->GetAdConversionHistory();
+      if (ad_conversion_history.find(ad.ad_content.creative_set_id) !=
+          ad_conversion_history.end()) {
         continue;
       }
 
-      auto ads_shown_history  = client_->GetAdsShownHistory();
-
-      for (const auto& ad : ads_shown_history) {
-        if (conversion.creative_set_id != ad.ad_content.creative_set_id) {
-          continue;
-        }
-
-        if (confirmation_type != ad.ad_content.ad_action) {
-          continue;
-        }
-
-        if (conversion_history.find(ad.ad_content.creative_set_id) !=
-            conversion_history.end()) {
-          continue;
-        }
-
-        uint64_t observation_period = conversion.observation_window *
-            (base::Time::kSecondsPerHour * base::Time::kHoursPerDay);
-
-        auto now = Time::NowInSeconds();
-        if ((now - observation_period) > ad.timestamp_in_seconds) {
-          continue;
-        }
-
-        client_->AppendTimestampToConversionHistoryForUuid(
-            ad.ad_content.creative_set_id, now);
-
-        // TODO(tmancey): Send confirmation after random delay a la
-        // |brave_base::random::Geometric(base::Time::FromDays(24))|
-        ConfirmAction(ad.uuid, ad.ad_content.creative_set_id,
-            ConfirmationType::CONVERSION);
-
-        // TODO(tmancey): Confirm logic, should stop after first match?
+      if (ad_conversion.creative_set_id != ad.ad_content.creative_set_id) {
+        continue;
       }
+
+      if (confirmation_type != ad.ad_content.ad_action) {
+        continue;
+      }
+
+      const base::Time observation_window = base::Time::Now() -
+          base::TimeDelta::FromDays(ad_conversion.observation_window);
+      const base::Time time = Time::FromDoubleT(ad.timestamp_in_seconds);
+      if (observation_window > time) {
+        continue;
+      }
+
+      ad_conversions_->Add(ad.ad_content.creative_set_id, ad.ad_content.uuid);
     }
   }
 }
@@ -1717,6 +1726,8 @@ void AdsImpl::OnTimer(
     DeliverNotification();
   } else if (timer_id == sustained_ad_interaction_timer_id_) {
     SustainAdInteractionIfNeeded();
+  } else if (ad_conversions_->OnTimer(timer_id)) {
+    return;
   } else {
     BLOG(WARNING) << "Unexpected OnTimer: " << std::to_string(timer_id);
   }

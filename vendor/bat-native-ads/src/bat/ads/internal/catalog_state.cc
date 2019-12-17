@@ -135,7 +135,7 @@ Result CatalogState::FromJson(
       const auto conversions = creative_set["conversions"].GetArray();
 
       for (const auto& conversion : conversions) {
-        AdConversionInfo ad_conversion;
+        AdConversionTrackingInfo ad_conversion;
 
         ad_conversion.creative_set_id = creative_set_info.creative_set_id;
         ad_conversion.type = conversion["type"].GetString();

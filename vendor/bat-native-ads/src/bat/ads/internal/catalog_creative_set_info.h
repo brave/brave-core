@@ -12,7 +12,7 @@
 #include "bat/ads/internal/catalog_segment_info.h"
 #include "bat/ads/internal/catalog_os_info.h"
 #include "bat/ads/internal/catalog_creative_info.h"
-#include "bat/ads/ad_conversion_info.h"
+#include "bat/ads/ad_conversion_tracking_info.h"
 
 namespace ads {
 
@@ -28,7 +28,7 @@ struct CreativeSetInfo {
   std::vector<SegmentInfo> segments;
   std::vector<OsInfo> oses;
   std::vector<CreativeInfo> creatives;
-  std::vector<AdConversionInfo> ad_conversions;
+  std::vector<AdConversionTrackingInfo> ad_conversions;
 };
 
 }  // namespace ads

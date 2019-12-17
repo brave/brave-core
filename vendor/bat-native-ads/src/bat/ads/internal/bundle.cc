@@ -100,7 +100,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
   // TODO(Terry Mancey): Refactor function to use callbacks
 
   std::map<std::string, std::vector<AdInfo>> categories;
-  std::vector<AdConversionInfo> ad_conversions;
+  std::vector<AdConversionTrackingInfo> ad_conversions;
 
   // Campaigns
   for (const auto& campaign : catalog.GetCampaigns()) {
