@@ -1065,3 +1065,31 @@ TEST_F(BraveSyncServiceTest, MigratePrevSeed) {
   EXPECT_EQ(profile()->GetPrefs()->GetString(brave_sync::prefs::kSyncPrevSeed),
             "");
 }
+
+TEST_F(BraveSyncServiceTest, InitialFetchesStartWithZero) {
+  using brave_sync::jslib_const::kBookmarks;
+  EXPECT_CALL(*sync_client(), SendCompact(kBookmarks)).Times(1);
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _))
+      .Times(1);
+  sync_service()->FetchSyncRecords(true, false, false, 1000);
+
+  const auto latest_bookmark_record_time = base::Time::Now();
+  brave_sync_prefs()->SetLatestRecordTime(latest_bookmark_record_time);
+  sync_service()->this_device_created_time_ = base::Time::Now();
+
+  EXPECT_CALL(*sync_client(), SendCompact(kBookmarks)).Times(1);
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _))
+      .Times(1);
+  sync_service()->FetchSyncRecords(true, false, false, 1000);
+  sync_service()->OnCompactComplete(kBookmarks);
+
+  // Prior 70 sec we should use null start_at and after we should use
+  // the latest record time
+  {
+    auto time_override = OverrideForTimeDelta(base::TimeDelta::FromSeconds(71));
+    EXPECT_CALL(*sync_client(),
+                SendFetchSyncRecords(_, latest_bookmark_record_time, _))
+        .Times(1);
+    sync_service()->FetchSyncRecords(true, false, false, 1000);
+  }
+}
