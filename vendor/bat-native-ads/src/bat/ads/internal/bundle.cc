@@ -100,7 +100,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
   // TODO(Terry Mancey): Refactor function to use callbacks
 
   std::map<std::string, std::vector<AdInfo>> categories;
-  std::vector<ConversionTrackingInfo> conversions;
+  std::vector<AdConversionInfo> ad_conversions;
 
   // Campaigns
   for (const auto& campaign : catalog.GetCampaigns()) {
@@ -175,15 +175,9 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
       }
 
       // Conversions
-      for (const auto& conversion : creative_set.conversions) {
-        ConversionTrackingInfo conversion_tracking_info;
-        conversion_tracking_info.creative_set_id = creative_set.creative_set_id;
-        conversion_tracking_info.type = conversion.type;
-        conversion_tracking_info.url_pattern = conversion.url_pattern;
-        conversion_tracking_info.observation_window = conversion.observation_window;
-
-        conversions.push_back(conversion_tracking_info);
-      }
+      ad_conversions.insert(ad_conversions.end(),
+          creative_set.ad_conversions.begin(),
+              creative_set.ad_conversions.end());
 
       if (entries == 0) {
         BLOG(WARNING) << "creativeSet id " << creative_set.creative_set_id
@@ -198,10 +192,9 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
   state->catalog_id = catalog.GetId();
   state->catalog_version = catalog.GetVersion();
   state->catalog_ping = catalog.GetPing();
-  state->catalog_last_updated_timestamp_in_seconds =
-      Time::NowInSeconds();
+  state->catalog_last_updated_timestamp_in_seconds = Time::NowInSeconds();
   state->categories = categories;
-  state->conversions = conversions;
+  state->ad_conversions = ad_conversions;
 
   return state;
 }

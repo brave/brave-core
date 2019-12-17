@@ -242,18 +242,18 @@ std::vector<ads::AdInfo> GetAdsForCategoriesOnFileTaskRunner(
   return ads;
 }
 
-std::vector<ads::ConversionTrackingInfo> GetConversionsOnFileTaskRunner(
-    const std::string url,
+std::vector<ads::AdConversionTrackingInfo> GetAdConversionsOnFileTaskRunner(
+    const std::string& url,
     BundleStateDatabase* backend) {
-  std::vector<ads::ConversionTrackingInfo> conversions;
+  std::vector<ads::AdConversionTrackingInfo> ad_conversions;
 
   if (!backend) {
-    return conversions;
+    return ad_conversions;
   }
 
-  backend->GetConversions(url, &conversions);
+  backend->GetAdConversions(url, &ad_conversions);
 
-  return conversions;
+  return ad_conversions;
 }
 
 bool ResetOnFileTaskRunner(const base::FilePath& path) {
@@ -991,17 +991,18 @@ void AdsServiceImpl::OnGetAdsForCategories(
   callback(result, categories, ads);
 }
 
-void AdsServiceImpl::OnGetConversions(
-    const ads::OnGetConversionsCallback& callback,
+void AdsServiceImpl::OnGetAdConversions(
+    const ads::OnGetAdConversionsCallback& callback,
     const std::string& url,
-    const std::vector<ads::ConversionTrackingInfo>& conversions) {
+    const std::vector<ads::AdConversionTrackingInfo>& ad_conversions) {
   if (!connected()) {
     return;
   }
 
-  auto result = conversions.empty() ? ads::Result::FAILED : ads::Result::SUCCESS;
+  const auto result = ad_conversions.empty() ?
+      ads::Result::FAILED : ads::Result::SUCCESS;
 
-  callback(result, url, conversions);
+  callback(result, url, ad_conversions);
 }
 
 void AdsServiceImpl::OnGetAdsHistory(
@@ -2057,13 +2058,13 @@ void AdsServiceImpl::GetAds(
           std::move(callback), categories));
 }
 
-void AdsServiceImpl::GetConversions(
+void AdsServiceImpl::GetAdConversions(
     const std::string& url,
-    ads::OnGetConversionsCallback callback) {
+    ads::OnGetAdConversionsCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&GetConversionsOnFileTaskRunner, url,
+      base::BindOnce(&GetAdConversionsOnFileTaskRunner, url,
           bundle_state_backend_.get()),
-      base::BindOnce(&AdsServiceImpl::OnGetConversions, AsWeakPtr(),
+      base::BindOnce(&AdsServiceImpl::OnGetAdConversions, AsWeakPtr(),
           std::move(callback), url));
 }
 

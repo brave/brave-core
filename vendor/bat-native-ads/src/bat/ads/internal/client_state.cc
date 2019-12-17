@@ -186,8 +186,8 @@ Result ClientState::FromJson(
     }
   }
 
-  if (client.HasMember("conversionHistory")) {
-    for (const auto& conversion : client["conversionHistory"].GetObject()) {
+  if (client.HasMember("adConversionHistory")) {
+    for (const auto& conversion : client["adConversionHistory"].GetObject()) {
       std::deque<uint64_t> timestamps_in_seconds;
 
       for (const auto& timestamp_in_seconds : conversion.value.GetArray()) {
@@ -195,7 +195,7 @@ Result ClientState::FromJson(
       }
 
       std::string creative_set_id = conversion.name.GetString();
-      conversion_history.insert({creative_set_id, timestamps_in_seconds});
+      ad_conversion_history.insert({creative_set_id, timestamps_in_seconds});
     }
   }
 
@@ -319,9 +319,9 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
   }
   writer->EndObject();
 
-  writer->String("conversionHistory");
+  writer->String("adConversionHistory");
   writer->StartObject();
-  for (const auto& creative_set_id : state.conversion_history) {
+  for (const auto& creative_set_id : state.ad_conversion_history) {
     writer->String(creative_set_id.first.c_str());
     writer->StartArray();
     for (const auto& timestamp_in_seconds : creative_set_id.second) {

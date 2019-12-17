@@ -3,33 +3,31 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/conversion_tracking_info.h"
+#include "bat/ads/ad_conversion_info.h"
 
 #include "bat/ads/internal/json_helper.h"
 
 namespace ads {
 
-ConversionTrackingInfo::ConversionTrackingInfo() :
-    creative_set_id(""),
-    type(""),
-    url_pattern(""),
+AdConversionInfo::AdConversionInfo() :
     observation_window(0) {}
 
-ConversionTrackingInfo::ConversionTrackingInfo(const ConversionTrackingInfo& info) :
-    creative_set_id(info.creative_set_id),
-    type(info.type),
-    url_pattern(info.url_pattern),
-    observation_window(info.observation_window) {}
+AdConversionInfo::AdConversionInfo(
+    const AdConversionInfo& info)
+    : creative_set_id(info.creative_set_id),
+      type(info.type),
+      url_pattern(info.url_pattern),
+      observation_window(info.observation_window) {}
 
-ConversionTrackingInfo::~ConversionTrackingInfo() = default;
+AdConversionInfo::~AdConversionInfo() = default;
 
-const std::string ConversionTrackingInfo::ToJson() const {
+std::string AdConversionInfo::ToJson() const {
   std::string json;
   SaveToJson(*this, &json);
   return json;
 }
 
-Result ConversionTrackingInfo::FromJson(
+Result AdConversionInfo::FromJson(
     const std::string& json,
     std::string* error_description) {
   rapidjson::Document document;
@@ -62,7 +60,7 @@ Result ConversionTrackingInfo::FromJson(
   return SUCCESS;
 }
 
-void SaveToJson(JsonWriter* writer, const ConversionTrackingInfo& info) {
+void SaveToJson(JsonWriter* writer, const AdConversionInfo& info) {
   writer->StartObject();
 
   writer->String("creative_set_id");

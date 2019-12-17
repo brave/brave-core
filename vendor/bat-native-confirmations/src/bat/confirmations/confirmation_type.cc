@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/confirmations/confirmation_type.h"
-#include "base/logging.h"
 
 namespace confirmations {
 
@@ -36,7 +35,6 @@ ConfirmationType::ConfirmationType(
   } else if (value == kConfirmationTypeConversion) {
     value_ = CONVERSION;
   } else {
-    NOTREACHED();
     value_ = UNKNOWN;
   }
 }
@@ -84,7 +82,6 @@ ConfirmationType::operator std::string() const {
     }
 
     case UNKNOWN: {
-      NOTREACHED();
       return "";
     }
   }

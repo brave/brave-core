@@ -3,23 +3,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_CONVERSION_TRACKING_INFO_H_
-#define BAT_ADS_CONVERSION_TRACKING_INFO_H_
+#ifndef BAT_ADS_AD_CONVERSION_INFO_H_
+#define BAT_ADS_AD_CONVERSION_INFO_H_
 
 #include <string>
-#include <vector>
 
 #include "bat/ads/export.h"
 #include "bat/ads/result.h"
 
 namespace ads {
 
-struct ADS_EXPORT ConversionTrackingInfo {
-  ConversionTrackingInfo();
-  ConversionTrackingInfo(const ConversionTrackingInfo& info);
-  ~ConversionTrackingInfo();
+struct ADS_EXPORT AdConversionInfo {
+  AdConversionInfo();
+  AdConversionInfo(
+      const AdConversionInfo& info);
+  ~AdConversionInfo();
 
-  const std::string ToJson() const;
+  std::string ToJson() const;
   Result FromJson(
       const std::string& json,
       std::string* error_description = nullptr);
@@ -32,4 +32,4 @@ struct ADS_EXPORT ConversionTrackingInfo {
 
 }  // namespace ads
 
-#endif  // BAT_CONVERSION_TRACKING_INFO_H_
+#endif  // BAT_ADS_AD_CONVERSION_INFO_H_

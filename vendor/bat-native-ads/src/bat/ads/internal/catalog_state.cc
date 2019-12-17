@@ -10,10 +10,8 @@
 namespace ads {
 
 CatalogState::CatalogState() :
-    catalog_id(""),
     version(0),
     ping(0),
-    campaigns({}),
     issuers(IssuersInfo()) {}
 
 CatalogState::CatalogState(const CatalogState& state) :
@@ -134,17 +132,18 @@ Result CatalogState::FromJson(
       }
 
       // Conversions
-      auto conversions = creative_set["conversions"].GetArray();
+      const auto conversions = creative_set["conversions"].GetArray();
 
       for (const auto& conversion : conversions) {
-        ConversionInfo conversion_info;
+        AdConversionInfo ad_conversion;
 
-        conversion_info.type = conversion["type"].GetString();
-        conversion_info.url_pattern = conversion["urlPattern"].GetString();
-        conversion_info.observation_window =
-            conversion["observationWindow"].GetUint64();
+        ad_conversion.creative_set_id = creative_set_info.creative_set_id;
+        ad_conversion.type = conversion["type"].GetString();
+        ad_conversion.url_pattern = conversion["urlPattern"].GetString();
+        ad_conversion.observation_window =
+            conversion["observationWindow"].GetUint();
 
-        creative_set_info.conversions.push_back(conversion_info);
+        creative_set_info.ad_conversions.push_back(ad_conversion);
       }
 
       // Creatives

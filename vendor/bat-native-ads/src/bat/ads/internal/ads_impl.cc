@@ -669,8 +669,15 @@ void AdsImpl::ChangeLocale(
 void AdsImpl::OnPageLoaded(
     const std::string& url,
     const std::string& html) {
+  DCHECK(!url.empty());
+
   if (!IsInitialized()) {
     BLOG(WARNING) << "OnPageLoaded failed as not initialized";
+    return;
+  }
+
+  if (url.empty()) {
+    BLOG(INFO) << "Site visited, empty URL";
     return;
   }
 
@@ -713,19 +720,29 @@ void AdsImpl::OnPageLoaded(
 
   CheckEasterEgg(url);
 
-  CheckConversion(url);
+  CheckAdConversion(url);
 
   BLOG(INFO) << "Site visited " << url << ", previous tab url was "
       << previous_tab_url_;
 }
 
-void AdsImpl::CheckConversion(
+void AdsImpl::CheckAdConversion(
     const std::string& url) {
-  auto callback = std::bind(&AdsImpl::OnGetConversions, this, _1, _2, _3);
-  ads_client_->GetConversions(url, callback);
+  DCHECK(!url.empty());
+
+  if (ads_client_->ShouldOptOutOfAdConversions()) {
+    return;
+  }
+
+  if (url.empty()) {
+    return;
+  }
+
+  auto callback = std::bind(&AdsImpl::OnGetAdConversions, this, _1, _2, _3);
+  ads_client_->GetAdConversions(url, callback);
 }
 
-void AdsImpl::OnGetConversions(
+void AdsImpl::OnGetAdConversions(
     const Result result,
     const std::string& url,
     const std::vector<ConversionTrackingInfo>& conversions) {

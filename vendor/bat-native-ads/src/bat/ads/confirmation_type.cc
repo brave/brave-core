@@ -15,8 +15,10 @@ const char kConfirmationTypeFlag[] = "flag";
 const char kConfirmationTypeUpvote[] = "upvote";
 const char kConfirmationTypeDownvote[] = "downvote";
 const char kConfirmationTypeConversion[] = "conversion";
+const char kConfirmationTypeUnknown[] = "";
 
-ConfirmationType::ConfirmationType(const std::string& value) {
+ConfirmationType::ConfirmationType(
+    const std::string& value) {
   if (value == kConfirmationTypeClick) {
     value_ = CLICK;
   } else if (value == kConfirmationTypeDismiss) {
@@ -48,10 +50,6 @@ int ConfirmationType::value() const {
 
 ConfirmationType::operator std::string() const {
   switch (value_) {
-    case UNKNOWN: {
-      return "";
-    }
-
     case CLICK: {
       return kConfirmationTypeClick;
     }
@@ -83,14 +81,20 @@ ConfirmationType::operator std::string() const {
     case CONVERSION: {
       return kConfirmationTypeConversion;
     }
+
+    case UNKNOWN: {
+      return kConfirmationTypeUnknown;
+    }
   }
 }
 
-bool ConfirmationType::operator==(ConfirmationType type) const {
+bool ConfirmationType::operator==(
+    const ConfirmationType type) const {
   return value_ == type.value_;
 }
 
-bool ConfirmationType::operator!=(ConfirmationType type) const {
+bool ConfirmationType::operator!=(
+    const ConfirmationType type) const {
   return value_ != type.value_;
 }
 

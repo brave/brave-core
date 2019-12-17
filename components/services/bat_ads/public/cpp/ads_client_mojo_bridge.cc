@@ -369,14 +369,14 @@ void AdsClientMojoBridge::OnGetAds(
     CallbackHolder<GetAdsCallback>* holder,
     ads::Result result,
     const std::vector<std::string>& categories,
-    const std::vector<ads::AdInfo>& ad_info) {
+    const std::vector<ads::AdInfo>& ads) {
   if (holder->is_valid()) {
-    std::vector<std::string> ad_info_json;
-    for (const auto it : ad_info) {
-      ad_info_json.push_back(it.ToJson());
+    std::vector<std::string> ad_json_list;
+    for (const auto& ad : ads) {
+      ad_json_list.push_back(ad.ToJson());
     }
     std::move(holder->get()).Run(ToMojomResult(result), categories,
-        ad_info_json);
+        ad_json_list);
   }
   delete holder;
 }
@@ -392,30 +392,36 @@ void AdsClientMojoBridge::GetAds(
       holder, _1, _2, _3));
 }
 
-void AdsClientMojoBridge::OnGetConversions(
-    CallbackHolder<GetConversionsCallback>* holder,
-    ads::Result result,
+void AdsClientMojoBridge::OnGetAdConversions(
+    CallbackHolder<GetAdConversionsCallback>* holder,
+    const ads::Result result,
     const std::string& url,
-    const std::vector<ads::ConversionTrackingInfo>& conversion_tracking_info) {
+    const std::vector<ads::AdConversionTrackingInfo>& ad_conversions) {
+  DCHECK(holder);
+  if (!holder) {
+    return;
+  }
+
   if (holder->is_valid()) {
-    std::vector<std::string> conversion_tracking_info_json;
-    for (const auto it : conversion_tracking_info) {
-      conversion_tracking_info_json.push_back(it.ToJson());
+    std::vector<std::string> ad_conversions_json_list;
+    for (const auto& ad_conversion : ad_conversions) {
+      ad_conversions_json_list.push_back(ad_conversion.ToJson());
     }
-    std::move(holder->get()).Run(ToMojomResult(result), url, conversion_tracking_info_json);
+    std::move(holder->get()).Run(ToMojomResult(result), url,
+        ad_conversions_json_list);
   }
   delete holder;
 }
 
-void AdsClientMojoBridge::GetConversions(
-  const std::string& url,
-    GetConversionsCallback callback) {
+void AdsClientMojoBridge::GetAdConversions(
+    const std::string& url,
+    GetAdConversionsCallback callback) {
   // this gets deleted in OnSaveBundleState
-  auto* holder = new CallbackHolder<GetConversionsCallback>(
+  auto* holder = new CallbackHolder<GetAdConversionsCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ads_client_->GetConversions(url, std::bind(AdsClientMojoBridge::OnGetConversions,
-      holder, _1, _2, _3));
+  ads_client_->GetAdConversions(url, std::bind(
+      AdsClientMojoBridge::OnGetAdConversions, holder, _1, _2, _3));
 }
 
 }  // namespace bat_ads

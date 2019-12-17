@@ -515,23 +515,28 @@ const std::map<std::string, std::deque<uint64_t>>
   return client_state_->creative_set_history;
 }
 
-void Client::AppendTimestampToConversionHistoryForUuid(
+void Client::AppendTimestampToAdConversionHistoryForUuid(
     const std::string& creative_set_id,
     const uint64_t timestamp_in_seconds) {
-  if (client_state_->conversion_history.find(creative_set_id) ==
-      client_state_->conversion_history.end()) {
-    client_state_->conversion_history.insert({creative_set_id, {}});
+  DCHECK(!creative_set_id.empty());
+  if (creative_set_id.empty()) {
+    return;
   }
 
-  client_state_->conversion_history.at(
+  if (client_state_->ad_conversion_history.find(creative_set_id) ==
+      client_state_->ad_conversion_history.end()) {
+    client_state_->ad_conversion_history.insert({creative_set_id, {}});
+  }
+
+  client_state_->ad_conversion_history.at(
       creative_set_id).push_back(timestamp_in_seconds);
 
   SaveState();
 }
 
 const std::map<std::string, std::deque<uint64_t>>
-    Client::GetConversionHistory() const {
-  return client_state_->conversion_history;
+    Client::GetAdConversionHistory() const {
+  return client_state_->ad_conversion_history;
 }
 
 void Client::AppendTimestampToCampaignHistoryForUuid(

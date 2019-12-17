@@ -115,9 +115,10 @@ bool BundleStateDatabase::TruncateCategoryTable() {
 bool BundleStateDatabase::CreateConversionsTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  const char* name = "conversions";
-  if (GetDB().DoesTableExist(name))
+  const char* name = "ad_conversions";
+  if (GetDB().DoesTableExist(name)) {
     return true;
+  }
 
   std::string sql;
   sql.append("CREATE TABLE ");
@@ -135,15 +136,15 @@ bool BundleStateDatabase::CreateConversionsTable() {
 bool BundleStateDatabase::TruncateConversionsTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  bool initialized = Init();
+  const bool initialized = Init();
   DCHECK(initialized);
 
-  if (!initialized)
+  if (!initialized) {
     return false;
+  }
 
-  sql::Statement sql(
-      GetDB().GetCachedStatement(SQL_FROM_HERE,
-          "DELETE FROM conversions"));
+  sql::Statement sql(GetDB().GetCachedStatement(SQL_FROM_HERE,
+      "DELETE FROM ad_conversions"));
   return sql.Run();
 }
 
@@ -279,11 +280,8 @@ bool BundleStateDatabase::SaveBundleState(
     }
   }
 
-  auto conversions = bundle_state.conversions;
-  for (auto it = conversions.begin(); it != conversions.end(); ++it) {
-    auto ad_conversion_info = *it;
-
-    if (!InsertOrUpdateConversion(ad_conversion_info)) {
+  for (const auto& ad_conversion : bundle_state.ad_conversions) {
+    if (!InsertOrUpdateAdConversion(ad_conversion)) {
         GetDB().RollbackTransaction();
         return false;
     }
@@ -355,28 +353,29 @@ bool BundleStateDatabase::InsertOrUpdateAdInfo(const ads::AdInfo& info) {
   return true;
 }
 
-bool BundleStateDatabase::InsertOrUpdateConversion(
-    const ads::AdConversionInfo& ad_conversion_info) {
+bool BundleStateDatabase::InsertOrUpdateAdConversion(
+    const ads::AdConversionTrackingInfo& ad_conversion) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  bool initialized = Init();
+  const bool initialized = Init();
   DCHECK(initialized);
 
-  if (!initialized)
+  if (!initialized) {
     return false;
+  }
 
-  sql::Statement conversion_info_statement(
+  sql::Statement statement(
       GetDB().GetCachedStatement(SQL_FROM_HERE,
-          "INSERT OR REPLACE INTO conversions "
+          "INSERT OR REPLACE INTO ad_conversions "
           "(creative_set_id, type, url_pattern, observation_window) "
           "VALUES (?, ?, ?, ?)"));
 
-  conversion_info_statement.BindString(0, ad_conversion_info.creative_set_id);
-  conversion_info_statement.BindString(1, ad_conversion_info.type);
-  conversion_info_statement.BindString(2, ad_conversion_info.url_pattern);
-  conversion_info_statement.BindInt(3, ad_conversion_info.observation_window);
+  statement.BindString(0, ad_conversion.creative_set_id);
+  statement.BindString(1, ad_conversion.type);
+  statement.BindString(2, ad_conversion.url_pattern);
+  statement.BindInt(3, ad_conversion.observation_window);
 
-  return conversion_info_statement.Run();
+  return statement.Run();
 }
 
 bool BundleStateDatabase::InsertOrUpdateAdInfoCategory(
@@ -449,37 +448,38 @@ bool BundleStateDatabase::GetAdsForCategory(
   return true;
 }
 
-bool BundleStateDatabase::GetConversions(
+bool BundleStateDatabase::GetAdConversions(
     const std::string& url,
-    std::vector<ads::AdConversionInfo>* conversions) {
+    std::vector<ads::AdConversionTrackingInfo>* ad_conversions) {
+  DCHECK(ad_conversions);
+  if (!ad_conversions) {
+    return false;
+  }
+
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  bool initialized = Init();
+  const bool initialized = Init();
   DCHECK(initialized);
 
-  if (!initialized)
+  if (!initialized) {
     return false;
+  }
 
   sql::Statement info_sql(
       db_.GetUniqueStatement(
           "SELECT c.creative_set_id, c.type, c.url_pattern, "
           "c.observation_window "
-          "FROM conversions AS c"));
+          "FROM ad_conversions AS c"));
 
   while (info_sql.Step()) {
-    ads::AdConversionInfo info;
-    info.creative_set_id = info_sql.ColumnString(0);
-    info.type = info_sql.ColumnString(1);
-    info.url_pattern = info_sql.ColumnString(2);
-    info.observation_window = info_sql.ColumnInt(3);
-    conversions->emplace_back(info);
+    ads::AdConversionTrackingInfo ad_conversion;
+    ad_conversion.creative_set_id = info_sql.ColumnString(0);
+    ad_conversion.type = info_sql.ColumnString(1);
+    ad_conversion.url_pattern = info_sql.ColumnString(2);
+    ad_conversion.observation_window = info_sql.ColumnInt(3);
+    ad_conversions->emplace_back(ad_conversion);
   }
 
-  return true;
-}
-
-bool BundleStateDatabase::SaveConversion(
-    const ads::AdConversionInfo& conversion) {
   return true;
 }
 
@@ -572,7 +572,7 @@ bool BundleStateDatabase::Migrate() {
     return true;
   }
 
-  return true;
+  return false;
 }
 
 bool BundleStateDatabase::MigrateV1toV2() {
@@ -602,7 +602,7 @@ bool BundleStateDatabase::MigrateV1toV2() {
 bool BundleStateDatabase::MigrateV2toV3() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  const char* name = "conversions";
+  const char* name = "ad_conversions";
   if (GetDB().DoesTableExist(name))
     return true;
 
