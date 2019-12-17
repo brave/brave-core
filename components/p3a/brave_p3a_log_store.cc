@@ -26,7 +26,7 @@ void RecordP3A(uint64_t answers_count) {
     answer = 1;
   } else if (5 <= answers_count && answers_count < 10) {
     answer = 2;
-  } else {
+  } else if (10 <= answers_count) {
     answer = 3;
   }
   UMA_HISTOGRAM_COUNTS_100("Brave.P3A.SentAnswersCount", answer);
