@@ -26,7 +26,7 @@ action("sign_app") {
     rebase_path("$brave_android_keystore_path", root_out_dir),
     "$brave_android_keystore_password",
     "$brave_android_key_password",
-    "$brave_android_key_alias"
+    "$brave_android_keystore_name"
   ]
 }
 
