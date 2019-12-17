@@ -68,7 +68,7 @@ function applyCosmeticFilterMutationObserver () {
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
-    case 'cosmeticFilterGenericExceptions': {
+    case 'cosmeticFilteringEnabled': {
       let allNodes = Array.from(document.querySelectorAll('[id],[class]'))
       handleNewNodes(allNodes)
       applyCosmeticFilterMutationObserver()

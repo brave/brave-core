@@ -4,7 +4,7 @@
 
 import shieldsPanelActions from '../actions/shieldsPanelActions'
 
-const generateCosmeticBlockingStylesheet = (hideSelectors: string[], styleSelectors: any) => {
+export const generateCosmeticBlockingStylesheet = (hideSelectors: string[], styleSelectors: any) => {
   let stylesheet = ''
   if (hideSelectors.length > 0) {
     stylesheet += hideSelectors[0]
@@ -14,7 +14,7 @@ const generateCosmeticBlockingStylesheet = (hideSelectors: string[], styleSelect
     stylesheet += '{display:none !important;}\n'
   }
   for (const selector in styleSelectors) {
-    stylesheet += selector + '{' + styleSelectors[selector] + '\n'
+    stylesheet += selector + '{' + styleSelectors[selector] + '}\n'
   }
 
   return stylesheet

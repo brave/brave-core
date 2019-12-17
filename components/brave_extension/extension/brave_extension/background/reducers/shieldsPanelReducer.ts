@@ -368,7 +368,7 @@ export default function shieldsPanelReducer (
       }
       state = shieldsPanelState.saveCosmeticFilterRuleExceptions(state, action.tabId, action.exceptions)
       chrome.tabs.sendMessage(action.tabId, {
-        type: 'cosmeticFilterGenericExceptions'
+        type: 'cosmeticFilteringEnabled'
       })
       break
     }

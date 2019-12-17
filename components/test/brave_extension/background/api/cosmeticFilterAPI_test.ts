@@ -7,6 +7,50 @@ import * as sinon from 'sinon'
 import * as cosmeticFilterAPI from '../../../../brave_extension/extension/brave_extension/background/api/cosmeticFilterAPI'
 
 describe('cosmeticFilter API', () => {
+  describe('generateCosmeticBlockingStylesheet', () => {
+    it('produces an empty string when no selectors are provided', () => {
+      const hideSelectors = []
+      const styleSelectors = {}
+      const stylesheet = cosmeticFilterAPI.generateCosmeticBlockingStylesheet(hideSelectors, styleSelectors)
+      expect(stylesheet).toBe('')
+    })
+    it('hides a single selector in hideSelectors', () => {
+      const hideSelectors = ['.hideme']
+      const styleSelectors = {}
+      const stylesheet = cosmeticFilterAPI.generateCosmeticBlockingStylesheet(hideSelectors, styleSelectors)
+      expect(stylesheet).toBe('.hideme{display:none !important;}\n')
+    })
+    it('hides multiple selectors in hideSelectors', () => {
+      const hideSelectors = ['.hideme', '#content-panel > .ad', 'div#ad-header']
+      const styleSelectors = {}
+      const stylesheet = cosmeticFilterAPI.generateCosmeticBlockingStylesheet(hideSelectors, styleSelectors)
+      expect(stylesheet).toBe('.hideme,#content-panel > .ad,div#ad-header{display:none !important;}\n')
+    })
+    it('restyles a styled selector with a single rule', () => {
+      const hideSelectors = []
+      const styleSelectors = { '#page-backdrop': ['background: #fff'] }
+      const stylesheet = cosmeticFilterAPI.generateCosmeticBlockingStylesheet(hideSelectors, styleSelectors)
+      expect(stylesheet).toBe('#page-backdrop{background: #fff}\n')
+    })
+    it('restyles a styled selector with multiple rules', () => {
+      const hideSelectors = []
+      const styleSelectors = { '#darkmode div.between-paragraphs': ['background: black', 'border-bottom: 10px'] }
+      const stylesheet = cosmeticFilterAPI.generateCosmeticBlockingStylesheet(hideSelectors, styleSelectors)
+      expect(stylesheet).toBe('#darkmode div.between-paragraphs{background: black,border-bottom: 10px}\n')
+    })
+    it('restyles multiple styled selectors', () => {
+      const hideSelectors = []
+      const styleSelectors = { '#page-backdrop': ['background: #fff'], '#darkmode div.between-paragraphs': ['background: black', 'border-bottom: 10px'] }
+      const stylesheet = cosmeticFilterAPI.generateCosmeticBlockingStylesheet(hideSelectors, styleSelectors)
+      expect(stylesheet).toBe('#page-backdrop{background: #fff}\n#darkmode div.between-paragraphs{background: black,border-bottom: 10px}\n')
+    })
+    it('hides and restyles selectors together', () => {
+      const hideSelectors = ['.hideme', '#content-panel > .ad', 'div#ad-header']
+      const styleSelectors = { '#page-backdrop': ['background: #fff'], '#darkmode div.between-paragraphs': ['background: black', 'border-bottom: 10px'] }
+      const stylesheet = cosmeticFilterAPI.generateCosmeticBlockingStylesheet(hideSelectors, styleSelectors)
+      expect(stylesheet).toBe('.hideme,#content-panel > .ad,div#ad-header{display:none !important;}\n#page-backdrop{background: #fff}\n#darkmode div.between-paragraphs{background: black,border-bottom: 10px}\n')
+    })
+  })
   describe('addSiteCosmeticFilter', () => {
     const url = 'https://www.brave.com'
     const filter = '#cssFilter'
