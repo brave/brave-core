@@ -34,7 +34,7 @@ void BraveWaybackMachineTabHelper::SetInfoBarManager(
   DCHECK(manager);
   infobar_manager_ = manager;
 }
-void BraveWaybackMachineTabHelper::SetDelegate(
+void BraveWaybackMachineTabHelper::set_delegate(
     std::unique_ptr<BraveWaybackMachineDelegate> delegate) {
   DCHECK(delegate);
   delegate_ = std::move(delegate);

@@ -12,8 +12,14 @@
 
 class Profile;
 
+namespace content {
+class WebContents;
+}  // namespace content
+
 class BraveWaybackMachineDelegateImpl : public BraveWaybackMachineDelegate {
  public:
+  static void AttachTabHelperIfNeeded(content::WebContents* web_contents);
+
   explicit BraveWaybackMachineDelegateImpl(Profile* profile);
   ~BraveWaybackMachineDelegateImpl() override;
 

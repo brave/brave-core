@@ -30,7 +30,7 @@ class BraveWaybackMachineTabHelper
       const BraveWaybackMachineTabHelper&) = delete;
 
   void SetInfoBarManager(infobars::InfoBarManager* manager);
-  void SetDelegate(std::unique_ptr<BraveWaybackMachineDelegate> delegate);
+  void set_delegate(std::unique_ptr<BraveWaybackMachineDelegate> delegate);
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
  private:

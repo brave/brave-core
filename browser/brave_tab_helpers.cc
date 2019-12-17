@@ -5,18 +5,13 @@
 
 #include "brave/browser/brave_tab_helpers.h"
 
-#include <memory>
-
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
-#include "brave/browser/profiles/profile_util.h"
-#include "brave/common/brave_switches.h"
 #include "brave/components/brave_ads/browser/ads_tab_helper.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
-#include "chrome/browser/infobars/infobar_service.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
@@ -44,7 +39,6 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/browser/infobars/brave_wayback_machine_delegate_impl.h"
-#include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
 #endif
 
 namespace brave {
@@ -79,18 +73,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  auto* context = web_contents->GetBrowserContext();
-  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
-          switches::kDisableBraveWaybackMachineExtension) &&
-      !brave::IsTorProfile(context)) {
-    BraveWaybackMachineTabHelper::CreateForWebContents(web_contents);
-    auto* tab_helper =
-        BraveWaybackMachineTabHelper::FromWebContents(web_contents);
-    tab_helper->SetInfoBarManager(
-        InfoBarService::FromWebContents(web_contents));
-    tab_helper->SetDelegate(std::make_unique<BraveWaybackMachineDelegateImpl>(
-        Profile::FromBrowserContext(context)));
-  }
+  BraveWaybackMachineDelegateImpl::AttachTabHelperIfNeeded(web_contents);
 #endif
 
   brave_ads::AdsTabHelper::CreateForWebContents(web_contents);
