@@ -169,11 +169,7 @@ class ContributeBox extends React.Component<Props, State> {
               {
                 monthlyList.map((choice: MonthlyChoice) => {
                   return <div key={`choice-setting-${choice.tokens}`} data-value={choice.tokens.toString()}>
-                    <Tokens
-                      value={choice.tokens}
-                      converted={choice.converted}
-                      onlyAnonWallet={onlyAnonWallet}
-                    />
+                    {getLocale('contributionUpTo')} <Tokens value={choice.tokens} converted={choice.converted} onlyAnonWallet={onlyAnonWallet} />
                   </div>
                 })
               }
