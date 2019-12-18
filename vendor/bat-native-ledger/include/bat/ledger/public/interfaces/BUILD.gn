@@ -3,6 +3,7 @@ import("//mojo/public/tools/bindings/mojom.gni")
 mojom("interfaces") {
   sources = [
     "ledger.mojom",
+    "ledger_database.mojom",
   ]
 
   public_deps = [

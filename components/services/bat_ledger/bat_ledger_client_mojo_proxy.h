@@ -268,6 +268,10 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
 
   void ReconcileStampReset() override;
 
+  void RunDBTransaction(
+      ledger::DBTransactionPtr transaction,
+      ledger::RunDBTransactionCallback callback) override;
+
  private:
   bool Connected() const;
 

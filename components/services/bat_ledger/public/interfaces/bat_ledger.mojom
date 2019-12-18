@@ -4,6 +4,7 @@
 module bat_ledger.mojom;
 
 import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom";
+import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_database.mojom";
 
 const string kServiceName = "bat_ledger";
 
@@ -309,4 +310,6 @@ interface BatLedgerClient {
   UpdateContributionInfoContributedAmount(string contribution_id, string publisher_key) => (ledger.mojom.Result result);
 
   ReconcileStampReset();
+
+  RunDBTransaction(ledger_database.mojom.DBTransaction transaction) => (ledger_database.mojom.DBCommandResponse response);
 };
