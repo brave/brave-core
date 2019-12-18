@@ -353,14 +353,11 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(GURL* url,
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   if (url->SchemeIs(content::kChromeUIScheme) &&
       url->host() == ethereum_remote_client_host) {
-    Profile* profile = Profile::FromBrowserContext(browser_context);
-    if (profile->GetPrefs()->GetBoolean(kBraveWalletEnabled)) {
-      auto* registry = extensions::ExtensionRegistry::Get(browser_context);
-      if (registry->ready_extensions().GetByID(
-          ethereum_remote_client_extension_id)) {
-        *url = GURL(ethereum_remote_client_base_url);
-        return true;
-      }
+    auto* registry = extensions::ExtensionRegistry::Get(browser_context);
+    if (registry->ready_extensions().GetByID(
+        ethereum_remote_client_extension_id)) {
+      *url = GURL(ethereum_remote_client_base_url);
+      return true;
     }
   }
 #endif

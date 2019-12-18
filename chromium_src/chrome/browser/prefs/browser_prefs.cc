@@ -7,6 +7,7 @@
 #include "brave/browser/brave_profile_prefs.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
@@ -17,6 +18,12 @@
 #define MigrateObsoleteProfilePrefs MigrateObsoleteProfilePrefs_ChromiumImpl
 #include "../../../../chrome/browser/prefs/browser_prefs.cc"  // NOLINT
 #undef MigrateObsoleteProfilePrefs
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/common/extensions/extension_constants.h"
+#include "extensions/browser/extension_prefs.h"
+#include "brave/browser/brave_wallet/brave_wallet_utils.h"
+#endif
 
 // This method should be periodically pruned of year+ old migrations.
 void MigrateObsoleteProfilePrefs(Profile* profile) {
@@ -31,4 +38,9 @@ void MigrateObsoleteProfilePrefs(Profile* profile) {
 
   // Added 12/2019.
   dark_mode::MigrateBraveDarkModePrefs(profile);
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  // Added 1/2020
+  brave_wallet::MigrateBraveWalletPrefs(profile);
+#endif
 }

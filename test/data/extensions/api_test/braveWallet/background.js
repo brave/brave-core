@@ -48,11 +48,66 @@ function testKnownSeedValuesEndToEnd() {
   ])
 }
 
+function testProviderIsCryptoWallets() {
+  chrome.test.runTests([
+    function CryptoWalletsIsProvider() {
+      chrome.braveWallet.getWeb3Provider((provider) => {
+        if (provider === 'odbfpeeihdkbihmopkbjmoonfanlbfcl') {
+          chrome.test.succeed();
+        } else {
+          chrome.test.fail();
+        }
+      })
+    }
+  ])
+}
+
+function testProviderIsMetaMask() {
+  chrome.test.runTests([
+    function CryptoWalletsIsProvider() {
+      chrome.braveWallet.getWeb3Provider((provider) => {
+        if (provider === 'nkbihfbeogaeaoehlefnkodbefgpgknn') {
+          chrome.test.succeed();
+        } else {
+          chrome.test.fail();
+        }
+      })
+    }
+  ])
+}
+
+function testProviderIsAsk() {
+  chrome.test.runTests([
+    function CryptoWalletsIsProvider() {
+      chrome.braveWallet.getWeb3Provider((provider) => {
+        if (provider.length === 0) {
+          chrome.test.succeed();
+        } else {
+          chrome.test.fail();
+        }
+      })
+    }
+  ])
+}
+
+function testProviderIsNone() {
+  chrome.test.runTests([
+    function CryptoWalletsIsProvider() {
+      chrome.braveWallet.getWeb3Provider((provider) => {
+        if (provider.length === 0) {
+          chrome.test.succeed();
+        } else {
+          chrome.test.fail();
+        }
+      })
+    }
+  ])
+}
+
 function testBasics() {
   chrome.test.runTests([
     function braveWalletExtensionHasAccess() {
-      if (chrome.braveWallet && chrome.braveWallet.isEnabled &&
-          chrome.braveWallet && chrome.braveWallet.isInstalled &&
+      if (chrome.braveWallet && chrome.braveWallet.isInstalled &&
           chrome.braveWallet.promptToEnableWallet) {
         chrome.test.succeed();
       } else {
@@ -61,7 +116,8 @@ function testBasics() {
     },
     function braveWalletExtensionSeedFunctionHasAccess() {
       if (chrome.braveWallet && chrome.braveWallet.getWalletSeed &&
-          chrome.braveWallet.getProjectID) {
+          chrome.braveWallet.getProjectID &&
+          chrome.braveWallet.getWeb3Provider) {
         chrome.test.succeed();
       } else {
         chrome.test.fail();

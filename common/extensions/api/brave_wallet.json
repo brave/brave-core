@@ -39,16 +39,16 @@
           }
         ]
       }, {
-        "name": "isEnabled",
+        "name": "shouldCheckForDapps",
         "type": "function",
-        "description": "Called to determine if brave wallet is enabled and can be used",
+        "description": "Called to determine if dapp detection should be performed",
         "parameters": [
           {
             "type": "function",
             "name": "callback",
             "parameters": [
               {
-                "name": "enabled",
+                "name": "dappDetection",
                 "type": "boolean"
               }
             ]
@@ -96,6 +96,41 @@
         "type": "function",
         "description": "Called to restore Crypto Wallets to its original state",
         "parameters": []
+      }, {
+        "name": "getWeb3Provider",
+        "type": "function",
+        "description": "Called to get the configured web3 provider extension ID",
+        "parameters": [
+          {
+            "name": "cb",
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "extensionID",
+                "type": "string"
+              }
+            ]
+          }
+        ]
+      }, {
+        "name": "getWeb3ProviderList",
+        "type": "function",
+        "description": "Get available web3 providers",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called when brave web3 provider list is fetched",
+            "parameters": [
+              {
+                "name": "types",
+                "type": "string",
+                "description": "json stringified avalable web3 provider list"
+              }
+            ]
+          }
+        ]
       }
     ],
     "types": [

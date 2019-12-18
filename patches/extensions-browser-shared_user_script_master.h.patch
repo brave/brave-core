@@ -1,0 +1,20 @@
+diff --git a/extensions/browser/shared_user_script_master.h b/extensions/browser/shared_user_script_master.h
+index 3a5b005cafd7af8d89bf1c73a28d2e59a98d7e50..74c9bbf4678ea35624e204da170327e0684c7bad 100644
+--- a/extensions/browser/shared_user_script_master.h
++++ b/extensions/browser/shared_user_script_master.h
+@@ -19,6 +19,7 @@
+ namespace content {
+ class BrowserContext;
+ }
++class BraveWalletController;
+ 
+ namespace extensions {
+ 
+@@ -33,6 +34,7 @@ class SharedUserScriptMaster : public ExtensionRegistryObserver {
+   UserScriptLoader* script_loader() { return &loader_; }
+ 
+  private:
++  friend class ::BraveWalletController;
+   // ExtensionRegistryObserver implementation.
+   void OnExtensionLoaded(content::BrowserContext* browser_context,
+                          const Extension* extension) override;

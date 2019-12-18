@@ -1,4 +1,7 @@
 import("//brave/build/config.gni")
+import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
+
+assert(brave_wallet_enabled)
 
 source_set("browser") {
     public_deps = [
@@ -10,8 +13,6 @@ source_set("browser") {
         "brave_wallet_service.cc",
         "brave_wallet_controller.h",
         "brave_wallet_controller.cc",
-        "brave_wallet_service_factory.h",
-        "brave_wallet_service_factory.cc",        
     ]
 
     deps = [

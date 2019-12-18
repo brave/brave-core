@@ -176,6 +176,7 @@ source_set("browser_process") {
   if (brave_wallet_enabled) {
     deps += [
       "//brave/components/brave_wallet/browser",
+      "brave_wallet",
     ]
   }
 

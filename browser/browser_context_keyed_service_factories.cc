@@ -13,6 +13,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/browser/ntp_sponsored_images/view_counter_service_factory.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_GREASELION)
 #include "brave/browser/greaselion/greaselion_service_factory.h"
@@ -20,6 +21,10 @@
 
 #if !defined(OS_ANDROID)
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
+#endif
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #endif
 
 namespace brave {
@@ -38,6 +43,10 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
 #if !defined(OS_ANDROID)
   BookmarkPrefsServiceFactory::GetInstance();
+#endif
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  BraveWalletServiceFactory::GetInstance();
 #endif
 }
 

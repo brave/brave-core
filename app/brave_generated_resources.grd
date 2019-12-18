@@ -458,8 +458,20 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_WEBTORRENT_ENABLED_DESC" desc="The description for WebTorrent switch in settings">
         Uses WebTorrent to display torrents directly in the browser. Supports torrent files and magnet links.
       </message>
-      <message name="IDS_SETTINGS_BRAVE_WALLET_ENABLED_DESC" desc="The description for Brave Wallet switch in settings">
-        Provides an Ethereum wallet and Dapp browser inside Brave.
+      <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_ASK" desc="Select control value for which web3 provider to use">
+        Ask
+      </message>
+      <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_NONE" desc="Select control value for which web3 provider to use">
+        None
+      </message>
+      <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_CRYPTO_WALLETS" desc="Select control value for which web3 provider to use">
+        Crypto Wallets
+      </message>
+      <message name="IDS_BRAVE_WALLET_WEB3_PROVIDER_METAMASK" desc="Select control value for which web3 provider to use">
+        MetaMask
+      </message>
+      <message name="IDS_SETTINGS_BRAVE_WEB3_PROVIDER_DESC" desc="The description for Brave web3 provider select control in settings">
+        Web3 provider for using Dapps
       </message>
      <message name="IDS_SETTINGS_HANGOUTS_ENABLED_DESC" desc="The description for Hangouts switch in settings">
         Uses Hangouts component to enable screen sharing and other features in the browser.
@@ -658,7 +670,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <!-- Web3 detection -->
       <message name="IDS_BRAVE_CRYPTO_WALLETS_METAMASK_INFOBAR_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
-        Crypto Wallets is now available in Brave. You can't use MetaMask and Crypto Wallets at the same time.
+        Would you like to use Brave's Crypto Wallets or MetaMask for Dapps?
       </message>
       <message name="IDS_BRAVE_CRYPTO_WALLETS_INFOBAR_TEXT" desc="Text that shows on the info bar when a Dapp is detected">
         Set up Crypto Wallets to interact with this app and others like it.

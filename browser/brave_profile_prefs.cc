@@ -6,9 +6,11 @@
 #include "brave/browser/brave_profile_prefs.h"
 
 #include "brave/browser/themes/brave_dark_mode_utils.h"
+#include "brave/common/brave_wallet_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
@@ -45,6 +47,10 @@
 #include "brave/components/brave_wayback_machine/pref_names.h"
 #endif
 
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/brave_wallet/brave_wallet_utils.h"
+#endif
+
 using extensions::FeatureSwitch;
 
 namespace brave {
@@ -56,6 +62,10 @@ void RegisterProfilePrefsForMigration(
 #endif
 
   dark_mode::RegisterBraveDarkModePrefsForMigration(registry);
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  brave_wallet::RegisterBraveWalletProfilePrefsForMigration(registry);
+#endif
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -187,9 +197,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
 
   // Brave Wallet
+  registry->RegisterIntegerPref(kBraveWalletPrefVersion, 0);
   registry->RegisterStringPref(kBraveWalletAES256GCMSivNonce, "");
   registry->RegisterStringPref(kBraveWalletEncryptedSeed, "");
-  registry->RegisterBooleanPref(kBraveWalletEnabled, true);
+  registry->RegisterIntegerPref(kBraveWalletWeb3Provider,
+      static_cast<int>(BraveWalletWeb3ProviderTypes::ASK));
 
   // Autocomplete in address bar
   registry->RegisterBooleanPref(kAutocompleteEnabled, true);

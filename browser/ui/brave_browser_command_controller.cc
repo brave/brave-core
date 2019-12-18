@@ -154,9 +154,7 @@ void BraveBrowserCommandController::UpdateCommandForBraveSync() {
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveWallet() {
-  UpdateCommandEnabled(
-      IDC_SHOW_BRAVE_WALLET,
-      browser_->profile()->GetPrefs()->GetBoolean(kBraveWalletEnabled));
+  UpdateCommandEnabled(IDC_SHOW_BRAVE_WALLET, true);
 }
 
 bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
