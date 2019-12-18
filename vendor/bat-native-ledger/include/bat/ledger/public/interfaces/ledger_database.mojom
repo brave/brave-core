@@ -38,8 +38,8 @@ struct DBCommand {
   };
 
   Type type;
-  string command;
-  int32 compatible_version;
+  string command; // Move to DBTransaction
+  int32 compatible_version; // Move to DBTransaction
   int32 version;
   array<DBCommandBinding> bindings;
   array<DBRecordBinding> record_bindings;
@@ -48,6 +48,7 @@ struct DBCommand {
 struct DBTransaction {
   array<DBCommand> commands;
 };
+
 struct DBRecord {
   array<DBValue> fields;
 };

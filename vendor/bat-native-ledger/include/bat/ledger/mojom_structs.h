@@ -164,6 +164,9 @@ using DBCommandResultPtr = ledger_database::mojom::DBCommandResultPtr;
 using DBCommandResponse = ledger_database::mojom::DBCommandResponse;
 using DBCommandResponsePtr = ledger_database::mojom::DBCommandResponsePtr;
 
+using DBRecord = ledger_database::mojom::DBRecord;
+using DBRecordPtr = ledger_database::mojom::DBRecordPtr;
+
 using DBRecordBinding = ledger_database::mojom::DBRecordBinding;
 using DBRecordBindingPtr = ledger_database::mojom::DBRecordBindingPtr;
 
