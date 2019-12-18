@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { Store } from 'react-chrome-redux'
+import { Store } from 'webext-redux'
 
 import Theme from 'brave-ui/theme/brave-default'
 import { ThemeProvider } from 'brave-ui/theme'
