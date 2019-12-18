@@ -25,6 +25,8 @@ TEST(WalletStateTest, ToJsonSerialization) {
     50.0,
     100.0
   };
+  wallet_properties.default_tip_choices = { 5.0, 10.0, 15.0 };
+  wallet_properties.default_monthly_tip_choices = { 15.0, 20.0, 30.0 };
 
   // Act
   const WalletState wallet_state;
@@ -49,8 +51,10 @@ TEST(WalletStateTest, FromJsonDeserialization) {
     50.0,
     100.0
   };
+  wallet_properties.default_tip_choices = { 5.0, 10.0, 15.0 };
+  wallet_properties.default_monthly_tip_choices = { 15.0, 20.0, 30.0 };
 
-  const std::string json = "{\"fee_amount\":1.7976931348623157e308,\"parameters\":{\"adFree\":{\"fee\":{\"BAT\":1.7976931348623157e308},\"choices\":{\"BAT\":[5.0,10.0,15.0,20.0,25.0,50.0,100.0]}}}}";  // NOLINT
+  const std::string json = "{\"fee_amount\":1.7976931348623157e308,\"parameters\":{\"adFree\":{\"fee\":{\"BAT\":1.7976931348623157e308},\"choices\":{\"BAT\":[5.0,10.0,15.0,20.0,25.0,50.0,100.0]}},\"defaultTipChoices\":[\"5\",\"10\",\"15\"],\"defaultMonthlyChoices\":[\"15\",\"20\",\"30\"]}}";  // NOLINT
 
   // Act
   WalletProperties expected_wallet_properties;
