@@ -6,15 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_BRAVE_WAYBACK_MACHINE_DELEGATE_H_
 #define BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_BRAVE_WAYBACK_MACHINE_DELEGATE_H_
 
-#include <memory>
 
 namespace content {
 class WebContents;
 }  // namespace content
-
-namespace infobars {
-class InfoBar;
-}  // namespace infobars
 
 class BraveWaybackMachineInfoBarDelegate;
 
@@ -22,10 +17,7 @@ class BraveWaybackMachineDelegate {
  public:
   virtual ~BraveWaybackMachineDelegate() = default;
 
-  virtual bool IsWaybackMachineEnabled() const = 0;
-  virtual std::unique_ptr<infobars::InfoBar> CreateInfoBar(
-      std::unique_ptr<BraveWaybackMachineInfoBarDelegate> delegate,
-      content::WebContents* contents) = 0;
+  virtual void CreateInfoBar(content::WebContents* web_contents) = 0;
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_BRAVE_WAYBACK_MACHINE_DELEGATE_H_

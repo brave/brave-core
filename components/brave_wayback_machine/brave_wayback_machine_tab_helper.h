@@ -12,11 +12,8 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
-namespace infobars {
-class InfoBarManager;
-}  // namespace infobars
-
 class BraveWaybackMachineDelegate;
+class PrefService;
 
 class BraveWaybackMachineTabHelper
     : public content::WebContentsObserver,
@@ -29,7 +26,6 @@ class BraveWaybackMachineTabHelper
   BraveWaybackMachineTabHelper& operator=(
       const BraveWaybackMachineTabHelper&) = delete;
 
-  void SetInfoBarManager(infobars::InfoBarManager* manager);
   void set_delegate(std::unique_ptr<BraveWaybackMachineDelegate> delegate);
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
@@ -41,11 +37,12 @@ class BraveWaybackMachineTabHelper
       content::NavigationHandle* navigation_handle) override;
 
   void CreateInfoBar();
+  bool IsWaybackMachineEnabled() const;
 
   // virtual for test.
   virtual bool ShouldAttachWaybackMachineInfoBar(int response_code) const;
 
-  infobars::InfoBarManager* infobar_manager_ = nullptr;
+  PrefService* pref_service_ = nullptr;
   std::unique_ptr<BraveWaybackMachineDelegate> delegate_;
 
   base::WeakPtrFactory<BraveWaybackMachineTabHelper> weak_factory_;

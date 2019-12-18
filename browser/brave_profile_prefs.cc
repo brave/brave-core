@@ -39,6 +39,10 @@
 #include "brave/browser/widevine/widevine_utils.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/pref_names.h"
+#endif
+
 using extensions::FeatureSwitch;
 
 namespace brave {

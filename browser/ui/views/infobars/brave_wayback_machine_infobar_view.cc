@@ -14,7 +14,7 @@
 
 // static
 std::unique_ptr<infobars::InfoBar>
-BraveWaybackMachineDelegateImpl::CreateInfoBar(
+BraveWaybackMachineDelegateImpl::CreateInfoBarView(
     std::unique_ptr<BraveWaybackMachineInfoBarDelegate> delegate,
     content::WebContents* contents) {
   return std::make_unique<BraveWaybackMachineInfoBarView>(std::move(delegate),

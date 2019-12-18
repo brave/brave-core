@@ -10,17 +10,19 @@
 
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_delegate.h"
 
-class Profile;
-
 namespace content {
 class WebContents;
 }  // namespace content
+
+namespace infobars {
+class InfoBar;
+}  // namespace infobars
 
 class BraveWaybackMachineDelegateImpl : public BraveWaybackMachineDelegate {
  public:
   static void AttachTabHelperIfNeeded(content::WebContents* web_contents);
 
-  explicit BraveWaybackMachineDelegateImpl(Profile* profile);
+  BraveWaybackMachineDelegateImpl();
   ~BraveWaybackMachineDelegateImpl() override;
 
   BraveWaybackMachineDelegateImpl(
@@ -30,13 +32,11 @@ class BraveWaybackMachineDelegateImpl : public BraveWaybackMachineDelegate {
 
  private:
   // BraveWaybackMachineDelegate overrides:
-  bool IsWaybackMachineEnabled() const override;
+  void CreateInfoBar(content::WebContents* web_contents) override;
 
-  std::unique_ptr<infobars::InfoBar> CreateInfoBar(
+  std::unique_ptr<infobars::InfoBar> CreateInfoBarView(
       std::unique_ptr<BraveWaybackMachineInfoBarDelegate> delegate,
-      content::WebContents* contents) override;
-
-  Profile* profile_;
+      content::WebContents* contents);
 };
 
 #endif  // BRAVE_BROWSER_INFOBARS_BRAVE_WAYBACK_MACHINE_DELEGATE_IMPL_H_

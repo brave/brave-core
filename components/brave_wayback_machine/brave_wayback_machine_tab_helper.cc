@@ -13,9 +13,10 @@
 #include "base/task/post_task.h"
 #include "base/task/task_traits.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_delegate.h"
-#include "brave/components/brave_wayback_machine/brave_wayback_machine_infobar_delegate.h"
-#include "components/infobars/core/infobar.h"
-#include "components/infobars/core/infobar_manager.h"
+#include "brave/components/brave_wayback_machine/pref_names.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "net/http/http_response_headers.h"
@@ -25,15 +26,11 @@ BraveWaybackMachineTabHelper::BraveWaybackMachineTabHelper(
     content::WebContents* contents)
     : WebContentsObserver(contents),
       weak_factory_(this) {
+  pref_service_ = user_prefs::UserPrefs::Get(contents->GetBrowserContext());
 }
 
 BraveWaybackMachineTabHelper::~BraveWaybackMachineTabHelper() = default;
 
-void BraveWaybackMachineTabHelper::SetInfoBarManager(
-    infobars::InfoBarManager* manager) {
-  DCHECK(manager);
-  infobar_manager_ = manager;
-}
 void BraveWaybackMachineTabHelper::set_delegate(
     std::unique_ptr<BraveWaybackMachineDelegate> delegate) {
   DCHECK(delegate);
@@ -43,7 +40,7 @@ void BraveWaybackMachineTabHelper::set_delegate(
 void BraveWaybackMachineTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   DCHECK(delegate_);
-  if (!delegate_->IsWaybackMachineEnabled())
+  if (!IsWaybackMachineEnabled())
     return;
 
   if (!navigation_handle->IsInMainFrame() ||
@@ -65,12 +62,12 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
 }
 
 void BraveWaybackMachineTabHelper::CreateInfoBar() {
-  DCHECK(infobar_manager_);
-  infobar_manager_->AddInfoBar(
-      delegate_->CreateInfoBar(
-          std::make_unique<BraveWaybackMachineInfoBarDelegate>(),
-          web_contents()),
-      true);
+  DCHECK(delegate_);
+  delegate_->CreateInfoBar(web_contents());
+}
+
+bool BraveWaybackMachineTabHelper::IsWaybackMachineEnabled() const {
+  return pref_service_->GetBoolean(kBraveWaybackMachineEnabled);
 }
 
 bool BraveWaybackMachineTabHelper::ShouldAttachWaybackMachineInfoBar(

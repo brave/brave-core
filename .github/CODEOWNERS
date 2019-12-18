@@ -35,7 +35,7 @@ browser/net/ @iefremov
 browser/widevine @simonhong
 
 # Wayback machine
-browser/ui/views/infobars @simonhong
+browser/ui/views/infobars/brave_wayback_machine_* @simonhong
 components/brave_wayback_machine @simonhong
 
 # Licensing of third-party components

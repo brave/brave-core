@@ -21,6 +21,10 @@
 #include "components/gcm_driver/gcm_channel_status_syncer.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/pref_names.h"
+#endif
+
 using BraveProfilePrefsBrowserTest = InProcessBrowserTest;
 
 // Check download prompt preference is set to true by default.
