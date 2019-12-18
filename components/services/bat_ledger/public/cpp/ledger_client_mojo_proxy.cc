@@ -1391,4 +1391,28 @@ void LedgerClientMojoProxy::ReconcileStampReset() {
   ledger_client_->ReconcileStampReset();
 }
 
+// static
+void LedgerClientMojoProxy::OnRunDBTransaction(
+    CallbackHolder<RunDBTransactionCallback>* holder,
+    ledger::DBCommandResponsePtr response) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(std::move(response));
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::RunDBTransaction(
+    ledger::DBTransactionPtr transaction,
+    RunDBTransactionCallback callback) {
+  auto* holder = new CallbackHolder<RunDBTransactionCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->RunDBTransaction(
+      std::move(transaction),
+      std::bind(LedgerClientMojoProxy::OnRunDBTransaction,
+                holder,
+                _1));
+}
+
 }  // namespace bat_ledger

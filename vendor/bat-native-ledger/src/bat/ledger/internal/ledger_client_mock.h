@@ -406,6 +406,10 @@ class MockLedgerClient : public LedgerClient {
       ResultCallback callback));
 
   MOCK_METHOD0(ReconcileStampReset, void());
+
+  MOCK_METHOD2(RunDBTransaction, void(
+      ledger::DBTransactionPtr transaction,
+      ledger::RunDBTransactionCallback callback));
 };
 
 }  // namespace ledger

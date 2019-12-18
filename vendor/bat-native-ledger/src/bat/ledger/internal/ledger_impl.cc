@@ -1683,4 +1683,10 @@ void LedgerImpl::UpdateContributionInfoContributedAmount(
       callback);
 }
 
+void LedgerImpl::RunDBTransaction(
+    ledger::DBTransactionPtr transaction,
+    ledger::RunDBTransactionCallback callback) {
+  ledger_client_->RunDBTransaction(std::move(transaction), callback);
+}
+
 }  // namespace bat_ledger

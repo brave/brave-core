@@ -1146,4 +1146,18 @@ void BatLedgerClientMojoProxy::ReconcileStampReset() {
   bat_ledger_client_->ReconcileStampReset();
 }
 
+void OnRunDBTransaction(
+    const ledger::RunDBTransactionCallback& callback,
+    ledger::DBCommandResponsePtr response) {
+  callback(std::move(response));
+}
+
+void BatLedgerClientMojoProxy::RunDBTransaction(
+    ledger::DBTransactionPtr transaction,
+    ledger::RunDBTransactionCallback callback) {
+  bat_ledger_client_->RunDBTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnRunDBTransaction, std::move(callback)));
+}
+
 }  // namespace bat_ledger

@@ -88,6 +88,8 @@ using GetIncompleteContributionsCallback =
 using GetContributionInfoCallback =
     std::function<void(ContributionInfoPtr)>;
 
+using RunDBTransactionCallback = std::function<void(DBCommandResponsePtr)>;
+
 class LEDGER_EXPORT LedgerClient {
  public:
   virtual ~LedgerClient() = default;
@@ -365,6 +367,10 @@ class LEDGER_EXPORT LedgerClient {
       ResultCallback callback) = 0;
 
   virtual void ReconcileStampReset() = 0;
+
+  virtual void RunDBTransaction(
+      ledger::DBTransactionPtr transaction,
+      ledger::RunDBTransactionCallback callback) = 0;
 };
 
 }  // namespace ledger

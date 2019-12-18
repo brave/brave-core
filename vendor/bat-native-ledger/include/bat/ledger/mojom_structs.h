@@ -11,9 +11,12 @@
 #include <vector>
 
 #include "bat/ledger/public/interfaces/ledger.mojom.h"
+#include "bat/ledger/public/interfaces/ledger_database.mojom.h"
 
 namespace ledger {
-
+/**
+ * LEDGER
+ */
 using ActivityInfoFilter = mojom::ActivityInfoFilter;
 using ActivityInfoFilterPtr = mojom::ActivityInfoFilterPtr;
 
@@ -145,6 +148,30 @@ using WalletProperties = mojom::WalletProperties;
 using WalletPropertiesPtr = mojom::WalletPropertiesPtr;
 
 using WalletStatus = mojom::WalletStatus;
+
+/**
+ * DATABASE
+ */
+using DBCommand = ledger_database::mojom::DBCommand;
+using DBCommandPtr = ledger_database::mojom::DBCommandPtr;
+
+using DBCommandBinding = ledger_database::mojom::DBCommandBinding;
+using DBCommandBindingPtr = ledger_database::mojom::DBCommandBindingPtr;
+
+using DBCommandResult = ledger_database::mojom::DBCommandResult;
+using DBCommandResultPtr = ledger_database::mojom::DBCommandResultPtr;
+
+using DBCommandResponse = ledger_database::mojom::DBCommandResponse;
+using DBCommandResponsePtr = ledger_database::mojom::DBCommandResponsePtr;
+
+using DBRecordBinding = ledger_database::mojom::DBRecordBinding;
+using DBRecordBindingPtr = ledger_database::mojom::DBRecordBindingPtr;
+
+using DBTransaction = ledger_database::mojom::DBTransaction;
+using DBTransactionPtr = ledger_database::mojom::DBTransactionPtr;
+
+using DBValue = ledger_database::mojom::DBValue;
+using DBValuePtr = ledger_database::mojom::DBValuePtr;
 
 }  // namespace ledger
 
