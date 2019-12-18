@@ -10,12 +10,10 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/api/brave_action_api.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "brave/common/extensions/api/brave_shields.h"
 #include "brave/common/extensions/extension_constants.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
@@ -25,7 +23,6 @@
 #include "chrome/browser/extensions/chrome_extension_function_details.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/common/chrome_features.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_util.h"
 
@@ -43,40 +40,6 @@ const char kInvalidUrlError[] = "Invalid URL.";
 const char kInvalidControlTypeError[] = "Invalid ControlType.";
 
 }  // namespace
-
-
-ExtensionFunction::ResponseAction
-BraveShieldsHostnameCosmeticResourcesFunction::Run() {
-  std::unique_ptr<brave_shields::HostnameCosmeticResources::Params> params(
-      brave_shields::HostnameCosmeticResources::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  base::Optional<base::Value> resources = g_brave_browser_process->
-      ad_block_service()->HostnameCosmeticResources(params->hostname);
-
-  if (!resources || !resources->is_dict()) {
-    return RespondNow(Error(
-        "Hostname-specific cosmetic resources could not be returned"));
-  }
-  auto result_list = std::make_unique<base::ListValue>();
-
-  result_list->GetList().push_back(std::move(*resources));
-
-  return RespondNow(ArgumentList(std::move(result_list)));
-}
-
-ExtensionFunction::ResponseAction BraveShieldsClassIdStylesheetFunction::Run() {
-  std::unique_ptr<brave_shields::ClassIdStylesheet::Params> params(
-      brave_shields::ClassIdStylesheet::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  std::string stylesheet = g_brave_browser_process->
-      ad_block_service()->ClassIdStylesheet(params->classes,
-                                            params->ids,
-                                            params->exceptions);
-  return RespondNow(OneArgument(std::make_unique<base::Value>(stylesheet)));
-}
-
 
 ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
   std::unique_ptr<brave_shields::AllowScriptsOnce::Params> params(
@@ -150,14 +113,6 @@ BraveShieldsGetBraveShieldsEnabledFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto enabled = ::brave_shields::GetBraveShieldsEnabled(profile, url);
   auto result = std::make_unique<base::Value>(enabled);
-
-  return RespondNow(OneArgument(std::move(result)));
-}
-
-ExtensionFunction::ResponseAction
-BraveShieldsGetCosmeticFilteringEnabledFunction::Run() {
-  auto result = std::make_unique<base::Value>(
-      base::FeatureList::IsEnabled(features::kBraveAdblockCosmeticFiltering));
 
   return RespondNow(OneArgument(std::move(result)));
 }

@@ -6,7 +6,3 @@ export type BlockTypes = 'ads' | 'trackers' | 'httpUpgradableResources' | 'javas
 export type BlockOptions = 'allow' | 'block'
 export type BlockFPOptions = 'allow' | 'block' | 'block_third_party'
 export type BlockCookiesOptions = 'allow' | 'block' | 'block_third_party'
-
-export interface CosmeticFilteringState {
-  ruleExceptions: Array<string>
-}
