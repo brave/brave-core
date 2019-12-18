@@ -187,11 +187,12 @@ export interface GenerateClassIdStylesheet {
 interface CosmeticFilterRuleExceptionsReturn {
   type: types.COSMETIC_FILTER_RULE_EXCEPTIONS,
   tabId: number,
-  exceptions: string[]
+  exceptions: string[],
+  randomizedClassName: string
 }
 
 export interface CosmeticFilterRuleExceptions {
-  (tabId: number, exceptions: string[]): CosmeticFilterRuleExceptionsReturn
+  (tabId: number, exceptions: string[], randomizedClassName: string): CosmeticFilterRuleExceptionsReturn
 }
 
 interface ContentScriptsLoadedReturn {

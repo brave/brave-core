@@ -28,8 +28,18 @@
         "https://*/*"
       ],
       "js": [
-        "out/content.bundle.js",
         "out/content_cosmetic.bundle.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "out/content.bundle.js"
       ],
       "run_at": "document_start",
       "all_frames": true
