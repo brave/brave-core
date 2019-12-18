@@ -177,7 +177,7 @@ describe('cosmeticFilter API', () => {
       })
     })
   })
-  describe('applyCSSCosmeticFilters', () => {
+  describe('applySiteFilters', () => {
     const filter = '#cssFilter'
     const filter2 = '#cssFilter2'
 
@@ -206,7 +206,7 @@ describe('cosmeticFilter API', () => {
           'brave.com': [filter]
         }
       })
-      cosmeticFilterAPI.applyCSSCosmeticFilters(1, 'brave.com')
+      cosmeticFilterAPI.applySiteFilters(1, 'brave.com')
       expect(insertCSSStub.getCall(0).args[0]).toEqual(1)
       expect(insertCSSStub.getCall(0).args[1]).toEqual({
         code: `${filter} {display: none !important;}`,
@@ -220,7 +220,7 @@ describe('cosmeticFilter API', () => {
           'brave.com': [filter, filter2]
         }
       })
-      cosmeticFilterAPI.applyCSSCosmeticFilters(1, 'brave.com')
+      cosmeticFilterAPI.applySiteFilters(1, 'brave.com')
       expect(insertCSSStub.getCall(0).args[0]).toEqual(1)
       expect(insertCSSStub.getCall(0).args[1]).toEqual({
         code: `${filter } {display: none !important;}`,
@@ -239,7 +239,7 @@ describe('cosmeticFilter API', () => {
       getStorageStub.yields({
         cosmeticFilterList: {}
       })
-      cosmeticFilterAPI.applyCSSCosmeticFilters(1, 'brave.com')
+      cosmeticFilterAPI.applySiteFilters(1, 'brave.com')
       expect(insertCSSStub.called).toBe(false)
     })
     it('doesn\'t apply filters if storage is explicitly undefined', () => {
@@ -248,7 +248,7 @@ describe('cosmeticFilter API', () => {
           'brave.com': undefined
         }
       })
-      cosmeticFilterAPI.applyCSSCosmeticFilters(1, 'brave.com')
+      cosmeticFilterAPI.applySiteFilters(1, 'brave.com')
       expect(insertCSSStub.called).toBe(false)
     })
   })

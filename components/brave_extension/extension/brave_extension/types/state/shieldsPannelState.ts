@@ -3,11 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { BlockOptions, BlockTypes, BlockFPOptions, BlockCookiesOptions } from '../other/blockTypes'
-import { CosmeticFilteringState } from '../adblock/adblockTypes'
 import { NoScriptInfo } from '../other/noScriptInfo'
 
 export interface Tab {
-  cosmeticBlocking: boolean
   ads: BlockOptions
   adsBlocked: number
   controlsOpen: boolean
@@ -30,7 +28,6 @@ export interface Tab {
   trackersBlockedResources: Array<string>
   httpsRedirectedResources: Array<string>
   fingerprintingBlockedResources: Array<string>
-  cosmeticFilters: CosmeticFilteringState
 }
 
 export interface Tabs {
@@ -86,10 +83,6 @@ export interface UpdateTabShieldsData {
 
 export interface UpdateResourceBlocked {
   (state: State, tabId: number, blockType: BlockTypes, subresource: string): State
-}
-
-export interface SaveCosmeticFilterRuleExceptions {
-  (state: State, tabId: number, exceptions: Array<string>): State
 }
 
 export interface ResetBlockingStats {
