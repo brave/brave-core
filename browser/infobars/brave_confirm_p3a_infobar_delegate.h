@@ -12,8 +12,6 @@
 #include "components/infobars/core/confirm_infobar_delegate.h"
 #include "url/gurl.h"
 
-#include "brave/browser/infobars/brave_infobar_delegate.h"
-
 class InfoBarService;
 class PrefService;
 

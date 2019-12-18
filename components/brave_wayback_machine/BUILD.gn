@@ -1,0 +1,38 @@
+import("//build/buildflag_header.gni")
+import("buildflags/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "ENABLE_BRAVE_WAYBACK_MACHINE=$enable_brave_wayback_machine" ]
+}
+
+source_set("brave_wayback_machine") {
+  assert_no_deps = [ "//chrome/*" ]
+
+  sources = [
+    "brave_wayback_machine_delegate.h",
+    "brave_wayback_machine_infobar_delegate.cc",
+    "brave_wayback_machine_infobar_delegate.h",
+    "brave_wayback_machine_tab_helper.cc",
+    "brave_wayback_machine_tab_helper.h",
+    "pref_names.cc",
+    "pref_names.h",
+    "wayback_machine_url_fetcher.cc",
+    "wayback_machine_url_fetcher.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/infobars/core",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//net",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+
+  public_deps = [
+    ":buildflags",
+  ]
+}

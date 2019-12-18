@@ -41,6 +41,12 @@
       <structure name="IDR_SETTINGS_BRAVE_SYNC_BROWSER_PROXY_JS" file="brave_sync_page/brave_sync_browser_proxy.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_BRAVE_SYNC_PAGE_JS" file="brave_sync_page/brave_sync_page.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_BRAVE_SYNC_PAGE_HTML" file="brave_sync_page/brave_sync_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <!-- brave help and tips -->
+      <structure name="IDR_SETTINGS_BRAVE_HELP_TIPS_BROWSER_PROXY_HTML" file="brave_help_tips_page/brave_help_tips_browser_proxy.html" type="chrome_html" />
+      <structure name="IDR_SETTINGS_BRAVE_HELP_TIPS_BROWSER_PROXY_JS" file="brave_help_tips_page/brave_help_tips_browser_proxy.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_HELP_TIPS_PAGE_JS" file="brave_help_tips_page/brave_help_tips_page.js" type="chrome_html" preprocess="true" />
+      <structure name="IDR_SETTINGS_BRAVE_HELP_TIPS_PAGE_HTML" file="brave_help_tips_page/brave_help_tips_page.html" type="chrome_html" preprocess="true" allowexternalscript="true" />
+      <!-- default extensions -->
       <structure name="IDR_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_BROWSER_PROXY_HTML" file="brave_default_extensions_page/brave_default_extensions_browser_proxy.html" type="chrome_html" />
       <structure name="IDR_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_BROWSER_PROXY_JS" file="brave_default_extensions_page/brave_default_extensions_browser_proxy.js" type="chrome_html" preprocess="true" />
       <structure name="IDR_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_PAGE_JS" file="brave_default_extensions_page/brave_default_extensions_page.js" type="chrome_html" preprocess="true" />

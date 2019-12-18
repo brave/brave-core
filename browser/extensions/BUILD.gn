@@ -2,6 +2,7 @@ import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -61,6 +62,7 @@ source_set("extensions") {
   deps = [
     "//base",
     "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/tor:buildflags",
     "//brave/browser/webcompat_reporter",
     "//brave/common",
     "//brave/common:pref_names",
@@ -68,6 +70,7 @@ source_set("extensions") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_extension:generated_resources",
     "//brave/components/brave_extension:static_resources",
+    "//brave/components/brave_wayback_machine:buildflags",
     "//chrome/browser/extensions",
     "//components/gcm_driver:gcm_driver",
     "//components/gcm_driver:gcm_buildflags",
@@ -115,9 +118,9 @@ source_set("extensions") {
       "brave_webtorrent_navigation_throttle.h",
     ]
   }
-  if (enable_tor) {
+  if (enable_brave_wayback_machine) {
     deps += [
-      "//brave/browser/tor:buildflags",
+      "//brave/components/brave_wayback_machine",
     ]
   }
 }

@@ -3,6 +3,7 @@ import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
@@ -118,9 +119,9 @@ source_set("browser_process") {
     "renderer_host",
     "ui",
     "//base",
+    "//brave/browser/notifications",
     "//brave/browser/tor:buildflags",
     "//brave/browser/translate/buildflags",
-    "//brave/browser/notifications",
     "//brave/common",
     "//brave/common:pref_names",
     "//brave/components/brave_ads/browser",
@@ -130,6 +131,7 @@ source_set("browser_process") {
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_wallet/browser",
+    "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/content_settings/core/browser",
     "//brave/components/greaselion/browser/buildflags",
@@ -260,6 +262,12 @@ source_set("browser_process") {
   if (enable_brave_webtorrent) {
     deps += [
       "//brave/components/brave_webtorrent/browser",
+    ]
+  }
+
+  if (enable_brave_wayback_machine) {
+    deps += [
+      "//brave/components/brave_wayback_machine",
     ]
   }
 

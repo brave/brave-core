@@ -1,0 +1,24 @@
+source_set("brave_wayback_machine") {
+  sources = [
+    "brave_wayback_machine_infobar_button_container.cc",
+    "brave_wayback_machine_infobar_button_container.h",
+    "brave_wayback_machine_infobar_contents_view.cc",
+    "brave_wayback_machine_infobar_contents_view.h",
+    "brave_wayback_machine_infobar_throbber.cc",
+    "brave_wayback_machine_infobar_throbber.h",
+    "brave_wayback_machine_infobar_view.cc",
+    "brave_wayback_machine_infobar_view.h",
+  ]
+
+  deps = [
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/app/vector_icons",
+    "//brave/components/brave_wayback_machine",
+    "//components/resources",
+    "//content/public/browser",
+    "//ui/base",
+    "//ui/gfx",
+    "//ui/views",
+    "//url",
+  ]
+}

@@ -10,6 +10,7 @@ aggregate_vector_icons("brave_vector_icons") {
   icons = [
     "autoplay_status.icon",
     "download_unlock.icon",
+    "sad_folder.icon",
     "tor_profile.icon",
   ]
 }

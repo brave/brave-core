@@ -3,6 +3,7 @@ import("//brave/build/config.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//components/gcm_driver/config.gni")
 import("//chrome/common/features.gni")
@@ -168,6 +169,7 @@ source_set("ui") {
     "//brave/browser/profiles",
     "//brave/browser/resources/settings:resources",
     "//brave/browser/tor",
+    "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/webcompat_reporter/browser",
     "//brave/common",
     "//brave/common:pref_names",
@@ -205,6 +207,14 @@ source_set("ui") {
       "//brave/components/brave_sync:static_resources",
       "//brave/components/brave_sync:switches",
     ]
+  }
+
+  if (enable_brave_wayback_machine) {
+    deps += [ "//brave/components/brave_wayback_machine" ]
+
+    if (toolkit_views) {
+      deps += [ "//brave/browser/ui/views/infobars:brave_wayback_machine" ]
+    }
   }
 
   if (!is_android) {

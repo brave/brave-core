@@ -416,6 +416,13 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BRAVE_SYNC_LINK_LABEL" desc="Brave Sync link label">
         Access Sync via
       </message>
+      <!-- Help Tips Page -->
+      <message name="IDS_SETTINGS_HELP_TIPS" desc="Title for an item in the 'Help Tips' section of Brave Settings">
+        Help Tips
+      </message>
+      <message name="IDS_SETTINGS_HELP_TIPS_SHOW_BRAVE_WAYBACK_MACHINE_PROMPT" desc="The label describing the 'wayback machine' toggle option">
+        Show Wayback Machine prompt on 404 pages
+      </message>
       <!-- Brave Theme -->
       <message name="IDS_BRAVE_THEME_TYPE_LIGHT" desc="Text for light theme type">
         Light
@@ -664,6 +671,19 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       </message>
       <message name="IDS_BRAVE_CRYPTO_WALLETS_SETUP" desc="Use Crypto Wallets">
         SETUP
+      </message>
+      <!-- Brave Wayback Machine -->
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_PAGE_MISSING_TEXT" desc="The label for sorry message when page is not available on infobar">
+        Sorry, that page is missing.
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_ASK_ABOUT_CHECK_TEXT" desc="The label for asking to check from wayback machine">
+        Do you want to check if a saved version is available on the Wayback Machine?
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_INFOBAR_NOT_AVAILABLE_TEXT" desc="The label for wayback machine doesn't have saved version">
+        Sorry, there is no saved version available.
+      </message>
+      <message name="IDS_BRAVE_WAYBACK_MACHINE_CHECK_BUTTON_TEXT" desc="The label for check button on wayback infobar">
+        Check for saved version
       </message>
       <!-- Brave's copyright statement -->
       <message name="IDS_BRAVE_VERSION_UI_LICENSE" desc="The label below the copyright message, containing the URLs.">

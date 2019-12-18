@@ -47,7 +47,7 @@ BraveConfirmP3AInfoBarDelegate::~BraveConfirmP3AInfoBarDelegate() {}
 
 infobars::InfoBarDelegate::InfoBarIdentifier
 BraveConfirmP3AInfoBarDelegate::GetIdentifier() const {
-  return (InfoBarIdentifier)BRAVE_CONFIRM_P3A_INFOBAR_DELEGATE;
+  return BRAVE_CONFIRM_P3A_INFOBAR_DELEGATE;
 }
 
 const gfx::VectorIcon& BraveConfirmP3AInfoBarDelegate::GetVectorIcon() const {
