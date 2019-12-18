@@ -24,7 +24,7 @@ extern const char kDisableBraveWaybackMachineExtension[];
 
 extern const char kRewards[];
 
-extern const char kUiMode[];
+extern const char kDarkMode[];
 
 extern const char kUpgradeFromMuon[];
 

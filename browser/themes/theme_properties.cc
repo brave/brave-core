@@ -137,8 +137,8 @@ base::Optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
 }  // namespace
 
 // Returns a |nullopt| if the UI color is not handled by Brave.
-base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito,
-    BraveThemeType theme) {
+base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(
+    int id, bool incognito, dark_mode::BraveDarkModeType dark_mode) {
   // Consistent (and stable) values across all themes
   switch (id) {
     case ThemeProperties::COLOR_TAB_THROBBER_SPINNING:
@@ -152,10 +152,10 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito,
     return MaybeGetDefaultColorForPrivateUi(id);
   }
   // Get Dark or Light value
-  switch (theme) {
-    case BraveThemeType::BRAVE_THEME_TYPE_LIGHT:
+  switch (dark_mode) {
+    case dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT:
       return MaybeGetDefaultColorForBraveLightUi(id);
-    case BraveThemeType::BRAVE_THEME_TYPE_DARK:
+    case dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK:
       return MaybeGetDefaultColorForBraveDarkUi(id);
     default:
       NOTREACHED();

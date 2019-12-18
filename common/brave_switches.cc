@@ -31,9 +31,9 @@ const char kDisableWebTorrentExtension[] = "disable-webtorrent-extension";
 const char kDisableBraveWaybackMachineExtension[] =
     "disable-brave-wayback-machine-extension";
 
-// Specifies overriding the built-in theme setting.
+// Specifies overriding the built-in dark mode setting.
 // Valid values are: "dark" | "light".
-const char kUiMode[] = "ui-mode";
+const char kDarkMode[] = "dark-mode";
 
 // Triggers auto-import of profile data from Brave browser-laptop/Muon, if
 // available.

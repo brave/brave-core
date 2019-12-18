@@ -10,25 +10,22 @@
 
 #include "base/json/json_writer.h"
 #include "base/values.h"
-#include "brave/browser/themes/brave_theme_service.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/extensions/api/brave_theme.h"
-#include "chrome/browser/profiles/profile.h"
-
-using BTS = BraveThemeService;
 
 namespace extensions {
 namespace api {
 
 ExtensionFunction::ResponseAction BraveThemeGetBraveThemeListFunction::Run() {
   std::string json_string;
-  base::JSONWriter::Write(BTS::GetBraveThemeList(), &json_string);
+  base::JSONWriter::Write(dark_mode::GetBraveDarkModeTypeList(), &json_string);
   return RespondNow(OneArgument(std::make_unique<base::Value>(json_string)));
 }
 
 ExtensionFunction::ResponseAction BraveThemeGetBraveThemeTypeFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  const std::string theme_type = BTS::GetStringFromBraveThemeType(
-      BTS::GetActiveBraveThemeType(profile));
+  const std::string theme_type =
+      dark_mode::GetStringFromBraveDarkModeType(
+          dark_mode::GetActiveBraveDarkModeType());
   return RespondNow(OneArgument(std::make_unique<base::Value>(theme_type)));
 }
 
@@ -37,8 +34,7 @@ ExtensionFunction::ResponseAction BraveThemeSetBraveThemeTypeFunction::Run() {
       brave_theme::SetBraveThemeType::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  BTS::SetBraveThemeType(profile, params->type);
+  dark_mode::SetBraveDarkModeType(params->type);
 
   return RespondNow(NoArguments());
 }

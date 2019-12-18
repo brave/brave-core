@@ -4,24 +4,16 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/extensions/api/brave_theme_api.h"
-#include "brave/browser/themes/brave_theme_service.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/browser/extensions/extension_function_test_utils.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/common/extension_builder.h"
 
-using BTS = BraveThemeService;
 using extensions::api::BraveThemeGetBraveThemeTypeFunction;
 using extension_function_test_utils::RunFunctionAndReturnSingleResult;
 
-namespace {
-void SetBraveThemeType(Profile* profile, BraveThemeType type) {
-  profile->GetPrefs()->SetInteger(kBraveThemeType, type);
-}
-}  // namespace
 class BraveThemeAPIBrowserTest : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
@@ -39,12 +31,11 @@ class BraveThemeAPIBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(BraveThemeAPIBrowserTest,
                        BraveThemeGetBraveThemeTypeTest) {
-  Profile* profile = browser()->profile();
-
   // Change to Light type and check it from api.
-  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
-  EXPECT_EQ(BraveThemeType::BRAVE_THEME_TYPE_LIGHT,
-            BTS::GetActiveBraveThemeType(profile));
+  dark_mode::SetBraveDarkModeType(
+      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
+  EXPECT_EQ(dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT,
+            dark_mode::GetActiveBraveDarkModeType());
 
   scoped_refptr<BraveThemeGetBraveThemeTypeFunction> get_function(
       new BraveThemeGetBraveThemeTypeFunction());

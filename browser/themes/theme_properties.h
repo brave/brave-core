@@ -1,13 +1,13 @@
-// Copyright (c) 2019 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at http://mozilla.org/MPL/2.0/.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_THEMES_THEME_PROPERTIES_H_
 #define BRAVE_BROWSER_THEMES_THEME_PROPERTIES_H_
 
 #include "base/optional.h"
-#include "brave/browser/themes/brave_theme_service.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "third_party/skia/include/core/SkColor.h"
 
 namespace BraveThemeProperties {
@@ -29,6 +29,6 @@ enum ThemeProperties {
 }  // namespace BraveThemeProperties
 
 base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(
-    int id, bool incognito, BraveThemeType theme);
+    int id, bool incognito, dark_mode::BraveDarkModeType dark_mode);
 
 #endif  // BRAVE_BROWSER_THEMES_THEME_PROPERTIES_H_

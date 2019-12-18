@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -8,21 +9,13 @@
 
 #include "base/bind.h"
 #include "base/values.h"
-#include "brave/browser/themes/brave_theme_service.h"
+#include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/browser/web_contents.h"
 #include "components/prefs/pref_service.h"
-
-using BTS = BraveThemeService;
-
-namespace {
-void SetBraveThemeType(Profile* profile, BraveThemeType type) {
-  profile->GetPrefs()->SetInteger(kBraveThemeType, type);
-}
-}  // namespace
 
 class BraveDevToolsUIBindingsBrowserTest : public InProcessBrowserTest {
  public:
@@ -34,12 +27,12 @@ class BraveDevToolsUIBindingsBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(BraveDevToolsUIBindingsBrowserTest, ThemeTest) {
-  auto* profile = browser()->profile();
   auto* tab_strip_model = browser()->tab_strip_model();
   content::WebContents* web_contents = tab_strip_model->GetActiveWebContents();
   DCHECK(web_contents);
 
-  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);
+  dark_mode::SetBraveDarkModeType(
+      dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_DARK);
   auto* devtools_ui_bindings = new BraveDevToolsUIBindings(web_contents);
   DCHECK(devtools_ui_bindings);
   devtools_ui_bindings->GetPreferences(
@@ -49,7 +42,8 @@ IN_PROC_BROWSER_TEST_F(BraveDevToolsUIBindingsBrowserTest, ThemeTest) {
   // change devtools' theme explicitely.
   EXPECT_EQ(ui_theme_, "\"dark\"");
 
-  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
+  dark_mode::SetBraveDarkModeType(
+    dark_mode::BraveDarkModeType::BRAVE_DARK_MODE_TYPE_LIGHT);
   devtools_ui_bindings->GetPreferences(
       base::Bind(&BraveDevToolsUIBindingsBrowserTest::GetPreferenceCallback,
                  base::Unretained(this)));

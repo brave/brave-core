@@ -31,6 +31,9 @@ vendor/bat-native-ledger/src/bat/ledger/internal/static_values.h @gdregalo
 # Network
 browser/net/ @iefremov
 
+# Brave theme
+browser/themes @simonhong
+
 # Widevine
 browser/widevine @simonhong
 
