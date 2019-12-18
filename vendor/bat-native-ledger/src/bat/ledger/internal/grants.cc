@@ -9,6 +9,8 @@
 #include <map>
 #include <utility>
 
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
@@ -150,16 +152,43 @@ void Grants::GetGrantsCallback(
 void Grants::SetGrant(const std::string& captchaResponse,
                       const std::string& promotionId,
                       const std::string& safetynet_token) {
-  if (promotionId.empty() && safetynet_token.empty()) {
     braveledger_bat_helper::GRANT properties;
+  if (promotionId.empty() && safetynet_token.empty()) {
     ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, properties);
     return;
   }
 
-  std::string keys[2] = {"promotionId", "captchaResponse"};
-  std::string values[2] = {promotionId, captchaResponse};
-  std::string payload = braveledger_bat_helper::stringify(keys, values,
-      safetynet_token.empty() ? 2 : 1);
+  base::Value data(base::Value::Type::DICTIONARY);
+  data.SetStringKey("promotionId", promotionId);
+
+  if (safetynet_token.empty()) {
+    base::Optional<base::Value> value = base::JSONReader::Read(captchaResponse);
+    if (!value || !value->is_dict()) {
+      ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, properties);
+      return;
+    }
+
+    base::DictionaryValue* dictionary = nullptr;
+    if (!value->GetAsDictionary(&dictionary)) {
+      ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, properties);
+      return;
+    }
+    const auto x = dictionary->FindDoubleKey("x");
+    const auto y = dictionary->FindDoubleKey("y");
+
+    if (!x || !y) {
+      ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, properties);
+      return;
+    }
+
+    base::Value solution(base::Value::Type::DICTIONARY);
+    solution.SetDoubleKey("x", *x);
+    solution.SetDoubleKey("y", *y);
+    data.SetKey("captchaResponse", std::move(solution));
+  }
+
+  std::string payload;
+  base::JSONWriter::Write(data, &payload);
 
   std::vector<std::string> headers;
   if (!safetynet_token.empty()) {
