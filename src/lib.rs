@@ -272,6 +272,6 @@ pub unsafe extern "C" fn engine_class_id_stylesheet(
         .collect();
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
-    let stylesheet = engine.class_id_stylesheet(&classes, &ids, exceptions);
+    let stylesheet = engine.class_id_stylesheet(&classes, &ids, &exceptions);
     CString::new(stylesheet.unwrap_or_else(|| String::new())).expect("Error: CString::new()").into_raw()
 }
