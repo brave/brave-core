@@ -8,7 +8,7 @@ public interface BraveRewardsObserver {
   public void OnWalletInitialized(int error_code);
   public void OnWalletProperties(int error_code);
   public void OnPublisherInfo(int tabId);
-  public void OnGetCurrentBalanceReport(String[] report);
+  public void OnGetCurrentBalanceReport(double[] report);
   public void OnNotificationAdded(String id, int type, long timestamp,
         String[] args);
   public void OnNotificationsCount(int count);

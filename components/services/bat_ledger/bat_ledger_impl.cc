@@ -206,14 +206,6 @@ void BatLedgerImpl::RestorePublishers(RestorePublishersCallback callback) {
     std::bind(BatLedgerImpl::OnRestorePublishers, holder, _1));
 }
 
-void BatLedgerImpl::SetBalanceReportItem(
-    ledger::ActivityMonth month,
-    int32_t year,
-    ledger::ReportType type,
-    const std::string& probi) {
-  ledger_->SetBalanceReportItem(month, year, type, probi);
-}
-
 void BatLedgerImpl::OnFetchPromotions(
     CallbackHolder<FetchPromotionsCallback>* holder,
     const ledger::Result result,
@@ -345,25 +337,19 @@ void BatLedgerImpl::OnTimer(uint32_t timer_id) {
   ledger_->OnTimer(timer_id);
 }
 
-void BatLedgerImpl::GetAllBalanceReports(
-    GetAllBalanceReportsCallback callback) {
-  std::map<std::string, ledger::BalanceReportInfoPtr> reports =
-    ledger_->GetAllBalanceReports();
-  auto out_reports = mojo::MapToFlatMap(std::move(reports));
-  std::move(callback).Run(std::move(out_reports));
-}
-
 // static
 void BatLedgerImpl::OnGetBalanceReport(
     CallbackHolder<GetBalanceReportCallback>* holder,
-    const bool result,
+    const ledger::Result result,
     ledger::BalanceReportInfoPtr report_info) {
   DCHECK(holder);
   if (holder->is_valid())
     std::move(holder->get()).Run(result, std::move(report_info));
   delete holder;
 }
-void BatLedgerImpl::GetBalanceReport(ledger::ActivityMonth month, int32_t year,
+void BatLedgerImpl::GetBalanceReport(
+    const ledger::ActivityMonth month,
+    const int32_t year,
     GetBalanceReportCallback callback) {
   auto* holder = new CallbackHolder<GetBalanceReportCallback>(
       AsWeakPtr(), std::move(callback));

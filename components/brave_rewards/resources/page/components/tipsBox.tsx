@@ -72,8 +72,6 @@ class TipBox extends React.Component<Props, State> {
         faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
       }
 
-      const token = item.percentage.toFixed(1)
-
       return {
         profile: {
           name: item.name,
@@ -82,8 +80,8 @@ class TipBox extends React.Component<Props, State> {
           src: faviconUrl
         },
         contribute: {
-          tokens: token,
-          converted: utils.convertBalance(token, balance.rates)
+          tokens: item.percentage.toFixed(1),
+          converted: utils.convertBalance(item.percentage, balance.rates)
         },
         url: item.url,
         text: item.tipDate ? new Date(item.tipDate * 1000).toLocaleDateString() : undefined,
@@ -208,7 +206,7 @@ class TipBox extends React.Component<Props, State> {
           : null
         }
         <List title={getLocale('donationTotalDonations')}>
-          <Tokens onlyAnonWallet={onlyAnonWallet} value={total} converted={converted} />
+          <Tokens onlyAnonWallet={onlyAnonWallet} value={total.toFixed(1)} converted={converted} />
         </List>
         <TableDonation
           rows={topRows}

@@ -124,14 +124,19 @@ class BraveRewardsGetWalletPropertiesFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetCurrentReportFunction : public ExtensionFunction {
+class BraveRewardsGetBalanceReportFunction : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getCurrentReport", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getBalanceReport", UNKNOWN)
 
  protected:
-  ~BraveRewardsGetCurrentReportFunction() override;
+  ~BraveRewardsGetBalanceReportFunction() override;
 
   ResponseAction Run() override;
+
+ private:
+  void OnBalanceReport(
+      const int32_t result,
+      const brave_rewards::BalanceReport& report);
 };
 
 class BraveRewardsIncludeInAutoContributionFunction : public ExtensionFunction {
@@ -413,22 +418,6 @@ class BraveRewardsGetAdsEstimatedEarningsFunction
       const double estimated_pending_rewards,
       const uint64_t next_payment_date_in_seconds,
       const uint64_t ad_notifications_received_this_month);
-};
-
-class BraveRewardsGetBalanceReportsFunction
-    : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getBalanceReports", UNKNOWN)
-
- protected:
-  ~BraveRewardsGetBalanceReportsFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnGetBalanceReports(
-      const std::map<std::string,
-      ::brave_rewards::BalanceReport>& reports);
 };
 
 class BraveRewardsGetWalletExistsFunction

@@ -126,8 +126,8 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_CONST_METHOD0(GetAutoContribute, bool());
 
   MOCK_CONST_METHOD3(GetBalanceReport,
-      void(ledger::ActivityMonth,
-          int,
+      void(const ledger::ActivityMonth,
+          const int,
           const ledger::GetBalanceReportCallback));
 
   MOCK_CONST_METHOD0(GetAllBalanceReports,
@@ -229,11 +229,11 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD3(OnPanelPublisherInfo,
       void(ledger::Result, ledger::PublisherInfoPtr, uint64_t));
 
-  MOCK_METHOD4(SetBalanceReportItem,
-      void(ledger::ActivityMonth,
-          int,
-          ledger::ReportType,
-          const std::string&));
+  MOCK_METHOD4(SetBalanceReportItem, void(
+      const ledger::ActivityMonth,
+      const int,
+      const ledger::ReportType,
+      const double));
 
 
   MOCK_METHOD1(GetReconcileById,

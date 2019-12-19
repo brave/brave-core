@@ -404,14 +404,12 @@ void Contribution::ReconcileSuccess(
     const double amount,
     const bool delete_reconcile) {
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
-  const std::string probi =
-      braveledger_bat_util::ConvertToProbi(std::to_string(amount));
 
   ledger_->SetBalanceReportItem(
         braveledger_time_util::GetCurrentMonth(),
         braveledger_time_util::GetCurrentYear(),
         GetReportTypeFromRewardsType(reconcile.type),
-        probi);
+        amount);
 
   ledger::ContributionPublisherList publisher_list;
   for (auto& item : reconcile.directions) {

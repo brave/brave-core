@@ -46,7 +46,7 @@ class SettingsPage extends React.Component<Props, State> {
   }
 
   refreshActions () {
-    this.actions.getCurrentReport()
+    this.actions.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear())
     this.actions.getTipTable()
     this.actions.getContributeList()
     this.actions.getPendingContributions()

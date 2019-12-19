@@ -59,7 +59,7 @@ using AttestPromotionCallback =
     std::function<void(const ledger::Result, ledger::PromotionPtr promotion)>;
 
 using GetBalanceReportCallback =
-    std::function<void(bool, ledger::BalanceReportInfoPtr)>;
+    std::function<void(const ledger::Result, ledger::BalanceReportInfoPtr)>;
 
 using RecoverWalletCallback = std::function<void(
     const ledger::Result,
@@ -235,12 +235,6 @@ class LEDGER_EXPORT Ledger {
       uint64_t windowId,
       ledger::VisitDataPtr visit_data,
       const std::string& publisher_blob) = 0;
-
-  virtual void SetBalanceReportItem(
-      ledger::ActivityMonth month,
-      int year,
-      ledger::ReportType type,
-      const std::string& probi) = 0;
 
   virtual void GetPublisherBanner(
       const std::string& publisher_id,

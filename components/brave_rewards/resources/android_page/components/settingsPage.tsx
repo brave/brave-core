@@ -85,6 +85,8 @@ class SettingsPage extends React.Component<Props, State> {
     window.addEventListener('hashchange', (e) => {
       this.isWalletUrl()
     })
+
+    this.actions.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear())
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -94,6 +96,7 @@ class SettingsPage extends React.Component<Props, State> {
     ) {
       this.actions.getContributeList()
       this.actions.getBalance()
+      this.actions.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear())
     }
 
     if (
@@ -156,7 +159,7 @@ class SettingsPage extends React.Component<Props, State> {
     const { enabledMain, balance } = this.props.rewardsData
     const { onlyAnonWallet } = this.props.rewardsData.ui
     const { total } = balance
-    const convertedBalance = utils.convertBalance((total || 0).toString(), balance.rates)
+    const convertedBalance = utils.convertBalance((total || 0), balance.rates)
 
     return (
       <SettingsPageMobile>

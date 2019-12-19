@@ -40,7 +40,6 @@ export const defaultState: Rewards.State = {
     onBoardingDisplayed: false
   },
   autoContributeList: [],
-  reports: {},
   safetyNetFailed: false,
   recurringList: [],
   tipsList: [],

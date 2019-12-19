@@ -17,9 +17,6 @@ struct BalanceReport;
 class RewardsServicePrivateObserver : public base::CheckedObserver {
  public:
   ~RewardsServicePrivateObserver() override {}
-
-  virtual void OnGetCurrentBalanceReport(RewardsService* rewards_service,
-                                         const BalanceReport& balance_report) {}
   virtual void OnPanelPublisherInfo(
       RewardsService* rewards_service,
       int error_code,

@@ -7,27 +7,18 @@
 
 namespace brave_rewards {
 
-BalanceReport::BalanceReport() :
-    deposits("0"),
-    grants("0"),
-    earning_from_ads("0"),
-    auto_contribute("0"),
-    recurring_donation("0"),
-    one_time_donation("0"),
-    total("0") {
+BalanceReport::BalanceReport() {
 }
 
-BalanceReport::~BalanceReport() { }
+BalanceReport::~BalanceReport() = default;
 
 BalanceReport::BalanceReport(
     const BalanceReport &properties) {
   grants = properties.grants;
-  deposits = properties.deposits;
   earning_from_ads = properties.earning_from_ads;
   auto_contribute = properties.auto_contribute;
   recurring_donation = properties.recurring_donation;
   one_time_donation = properties.one_time_donation;
-  total = properties.total;
 }
 
 }  // namespace brave_rewards

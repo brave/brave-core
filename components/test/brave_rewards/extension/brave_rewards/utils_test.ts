@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { convertBalance, convertProbiToFixed, handleContributionAmount } from '../../../../brave_rewards/resources/extension/brave_rewards/utils'
+import { convertBalance, handleContributionAmount } from '../../../../brave_rewards/resources/extension/brave_rewards/utils'
 
 describe('Rewards Panel extension - Utils', () => {
   describe('convertBalance', () => {
@@ -25,32 +25,6 @@ describe('Rewards Panel extension - Utils', () => {
 
     it('currency is provided', () => {
       expect(convertBalance('10', { 'USD': 10, 'EUR': 4 }, 'EUR')).toBe('40.00')
-    })
-  })
-
-  describe('convertProbiToFixed', () => {
-    it('probi is not in correct format', () => {
-      expect(convertProbiToFixed('sdfs')).toBe('0.0')
-    })
-
-    it('probi is not 10^18', () => {
-      expect(convertProbiToFixed('9')).toBe('0.0')
-    })
-
-    it('we should always round down', () => {
-      expect(convertProbiToFixed('0999999999999999999')).toBe('0.9')
-    })
-
-    it('regular convert', () => {
-      expect(convertProbiToFixed('1559999999999999990')).toBe('1.5')
-    })
-
-    it('regular convert two places', () => {
-      expect(convertProbiToFixed('1559999999999999990', 2)).toBe('1.55')
-    })
-
-    it('big convert', () => {
-      expect(convertProbiToFixed('150000000000000000000000000')).toBe('150000000.0')
     })
   })
 

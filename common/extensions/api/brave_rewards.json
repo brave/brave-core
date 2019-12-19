@@ -177,47 +177,6 @@
         ]
       },
       {
-        "name": "onCurrentReport",
-        "type": "function",
-        "description": "Fired when we get current report back",
-        "parameters": [
-          {
-            "name": "properties",
-            "type": "object",
-            "properties": {
-              "ads": {
-                "type": "string",
-                "description": "balance defined in probi"
-              },
-              "contribute": {
-                "type": "string",
-                "description": "balance defined in probi"
-              },
-              "deposit": {
-                "type": "string",
-                "description": "balance defined in probi"
-              },
-              "grant": {
-                "type": "string",
-                "description": "balance defined in probi"
-              },
-              "donation": {
-                "type": "string",
-                "description": "balance defined in probi"
-              },
-              "tips": {
-                "type": "string",
-                "description": "balance defined in probi"
-              },
-              "total": {
-                "type": "string",
-                "description": "balance defined in probi"
-              }
-            }
-          }
-        ]
-      },
-      {
         "name": "onAdsEnabled",
         "type": "function",
         "description": "",
@@ -559,10 +518,46 @@
         "parameters": []
       },
       {
-        "name": "getCurrentReport",
+        "name": "getBalanceReport",
         "type": "function",
         "description": "Get current month wallet report",
-        "parameters": []
+        "parameters": [
+          {
+            "name": "month",
+            "type": "number"
+          },
+          {
+            "name": "year",
+            "type": "number"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "properties",
+                "type": "object",
+                "properties": {
+                  "ads": {
+                    "type": "number"
+                  },
+                  "contribute": {
+                    "type": "number"
+                  },
+                  "donation": {
+                    "type": "number"
+                  },
+                  "grant": {
+                    "type": "number"
+                  },
+                  "tips": {
+                    "type": "number"
+                  }
+                }
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "includeInAutoContribution",
@@ -732,23 +727,6 @@
               {
                 "name": "amount",
                 "type": "number"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "getBalanceReports",
-        "type": "function",
-        "description": "Gets balance reports and contribution totals",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "data",
-                "type": "any"
               }
             ]
           }

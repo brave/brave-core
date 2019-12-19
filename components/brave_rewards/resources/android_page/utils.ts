@@ -9,13 +9,12 @@ export let actions: any = null
 export const getActions = () => actions
 export const setActions = (newActions: any) => actions = newActions
 
-export const convertBalance = (tokens: string, rates: Record<string, number> | undefined, currency: string = 'USD'): string => {
-  const tokensNum = parseFloat(tokens)
-  if (tokensNum === 0 || !rates || !rates[currency]) {
+export const convertBalance = (tokens: number, rates: Record<string, number> | undefined, currency: string = 'USD'): string => {
+  if (tokens === 0 || !rates || !rates[currency]) {
     return '0.00'
   }
 
-  const converted = tokensNum * rates[currency]
+  const converted = tokens * rates[currency]
 
   if (isNaN(converted)) {
     return '0.00'
@@ -36,22 +35,12 @@ export const generateContributionMonthly = (list: number[], rates: Record<string
   return list.map((item: number) => {
     return {
       tokens: item.toFixed(1),
-      converted: convertBalance(item.toString(), rates)
+      converted: convertBalance(item, rates)
     }
   })
 }
 
-export const convertProbiToFixed = (probi: string, places: number = 1) => {
-  const result = new BigNumber(probi).dividedBy('1e18').toFixed(places, BigNumber.ROUND_DOWN)
-
-  if (result === 'NaN') {
-    return '0.0'
-  }
-
-  return result
-}
-
-export const tipsTotal = (report: Rewards.Report) => {
+export const tipsTotal = (report: Rewards.BalanceReport) => {
   if (!report) {
     return '0.0'
   }
@@ -60,22 +49,12 @@ export const tipsTotal = (report: Rewards.Report) => {
   return new BigNumber(report.donation).plus(tips).dividedBy('1e18').toFixed(1, BigNumber.ROUND_DOWN)
 }
 
-export const tipsListTotal = (list: Rewards.Publisher[], convertProbi = false) => {
+export const tipsListTotal = (list: Rewards.Publisher[]) => {
   if (list.length === 0) {
-    return '0.0'
+    return 0.0
   }
 
-  let tipsTotal: number = 0
-
-  list.map((item: Rewards.Publisher) => {
-    if (convertProbi) {
-      tipsTotal += parseFloat(convertProbiToFixed(item.percentage.toString()))
-    } else {
-      tipsTotal += item.percentage
-    }
-  })
-
-  return tipsTotal.toFixed(1)
+  return list.reduce((accumulator: number, item: Rewards.Publisher) => accumulator + item.percentage, 0)
 }
 
 export const constructBackupString = (backupKey: string) => {
@@ -96,4 +75,11 @@ export const isPublisherConnectedOrVerified = (status: Rewards.PublisherStatus) 
 
 export const isPublisherNotVerified = (status: Rewards.PublisherStatus) => {
   return status === 0
+}
+
+export const getCurrentBalanceReport = () => {
+  chrome.send('brave_rewards.getBalanceReport', [
+    new Date().getMonth() + 1,
+    new Date().getFullYear()
+  ])
 }

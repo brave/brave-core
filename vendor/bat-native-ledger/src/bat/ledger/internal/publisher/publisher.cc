@@ -11,7 +11,6 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/internal/bignum.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/properties/publisher_settings_properties.h"
 #include "bat/ledger/internal/properties/report_balance_properties.h"
@@ -638,76 +637,60 @@ void Publisher::setBalanceReport(ledger::ActivityMonth month,
                                 int year,
                                 const ledger::BalanceReportInfo& report_info) {
   ledger::ReportBalanceProperties report_balance;
-  report_balance.opening_balance = report_info.opening_balance;
-  report_balance.closing_balance = report_info.closing_balance;
   report_balance.grants = report_info.grants;
-  report_balance.deposits = report_info.deposits;
   report_balance.ad_earnings = report_info.earning_from_ads;
   report_balance.recurring_donations = report_info.recurring_donation;
   report_balance.one_time_donations = report_info.one_time_donation;
   report_balance.auto_contributions = report_info.auto_contribute;
 
-  std::string total = "0";
-  total = braveledger_bat_bignum::sum(total, report_balance.grants);
-  total = braveledger_bat_bignum::sum(total, report_balance.ad_earnings);
-  total = braveledger_bat_bignum::sum(total, report_balance.deposits);
-  total = braveledger_bat_bignum::sub(total, report_balance.auto_contributions);
-  total = braveledger_bat_bignum::sub(total,
-                                      report_balance.recurring_donations);
-  total = braveledger_bat_bignum::sub(total, report_balance.one_time_donations);
-
-  report_balance.total = total;
   state_->monthly_balances[GetBalanceReportName(month, year)] = report_balance;
   saveState();
 }
 
 void Publisher::GetBalanceReport(
-    ledger::ActivityMonth month,
-    int year,
+    const ledger::ActivityMonth month,
+    const int year,
     ledger::GetBalanceReportCallback callback) {
   ledger::BalanceReportInfo info;
-  bool result = GetBalanceReportInternal(month, year, &info);
+  const auto result = GetBalanceReportInternal(month, year, &info);
   callback(result, info.Clone());
 }
 
-bool Publisher::GetBalanceReportInternal(ledger::ActivityMonth month,
-                                     int year,
-                                     ledger::BalanceReportInfo* report_info) {
-  std::string name = GetBalanceReportName(month, year);
-  auto iter = state_->monthly_balances.find(name);
+ledger::Result Publisher::GetBalanceReportInternal(
+    const ledger::ActivityMonth month,
+    const int year,
+    ledger::BalanceReportInfo* report_info) {
   if (!report_info) {
-    return false;
+    return ledger::Result::LEDGER_ERROR;
   }
+
+  const std::string name = GetBalanceReportName(month, year);
+  auto iter = state_->monthly_balances.find(name);
 
   if (iter == state_->monthly_balances.end()) {
     ledger::BalanceReportInfo new_report_info;
-    new_report_info.opening_balance = "0";
-    new_report_info.closing_balance = "0";
-    new_report_info.grants = "0";
-    new_report_info.earning_from_ads = "0";
-    new_report_info.auto_contribute = "0";
-    new_report_info.recurring_donation = "0";
-    new_report_info.one_time_donation = "0";
-    new_report_info.total = "0";
+    new_report_info.grants = 0.0;
+    new_report_info.earning_from_ads = 0.0;
+    new_report_info.auto_contribute = 0.0;
+    new_report_info.recurring_donation = 0.0;
+    new_report_info.one_time_donation = 0.0;
 
     setBalanceReport(month, year, new_report_info);
-    bool successGet = GetBalanceReportInternal(month, year, report_info);
-    if (successGet) {
+    ledger::Result result = GetBalanceReportInternal(month, year, report_info);
+    if (result == ledger::Result::LEDGER_OK) {
       iter = state_->monthly_balances.find(name);
     } else {
-      return false;
+      return ledger::Result::LEDGER_ERROR;
     }
   }
 
-  report_info->opening_balance = iter->second.opening_balance;
-  report_info->closing_balance = iter->second.closing_balance;
   report_info->grants = iter->second.grants;
   report_info->earning_from_ads = iter->second.ad_earnings;
   report_info->auto_contribute = iter->second.auto_contributions;
   report_info->recurring_donation = iter->second.recurring_donations;
   report_info->one_time_donation = iter->second.one_time_donations;
 
-  return true;
+  return ledger::Result::LEDGER_OK;
 }
 
 std::map<std::string, ledger::BalanceReportInfoPtr>
@@ -716,8 +699,6 @@ Publisher::GetAllBalanceReports() {
   for (auto const& report : state_->monthly_balances) {
     ledger::BalanceReportInfoPtr newReport = ledger::BalanceReportInfo::New();
     const ledger::ReportBalanceProperties oldReport = report.second;
-    newReport->opening_balance = oldReport.opening_balance;
-    newReport->closing_balance = oldReport.closing_balance;
     newReport->grants = oldReport.grants;
     newReport->earning_from_ads = oldReport.ad_earnings;
     newReport->auto_contribute = oldReport.auto_contributions;
@@ -849,33 +830,29 @@ void Publisher::OnPanelPublisherInfo(
   }
 }
 
-void Publisher::setBalanceReportItem(ledger::ActivityMonth month,
-                                         int year,
-                                         ledger::ReportType type,
-                                         const std::string& probi) {
+void Publisher::SetBalanceReportItem(
+    const ledger::ActivityMonth month,
+    const int year,
+    const ledger::ReportType type,
+    const double amount) {
   ledger::BalanceReportInfo report_info;
   GetBalanceReportInternal(month, year, &report_info);
 
   switch (type) {
     case ledger::ReportType::GRANT:
-      report_info.grants =
-          braveledger_bat_bignum::sum(report_info.grants, probi);
+      report_info.grants = report_info.grants + amount;
       break;
     case ledger::ReportType::ADS:
-      report_info.earning_from_ads =
-          braveledger_bat_bignum::sum(report_info.earning_from_ads, probi);
+      report_info.earning_from_ads = report_info.earning_from_ads + amount;
       break;
     case ledger::ReportType::AUTO_CONTRIBUTION:
-      report_info.auto_contribute =
-          braveledger_bat_bignum::sum(report_info.auto_contribute, probi);
+      report_info.auto_contribute = report_info.auto_contribute + amount;
       break;
     case ledger::ReportType::TIP:
-      report_info.one_time_donation =
-          braveledger_bat_bignum::sum(report_info.one_time_donation, probi);
+      report_info.one_time_donation = report_info.one_time_donation + amount;
       break;
     case ledger::ReportType::TIP_RECURRING:
-      report_info.recurring_donation =
-          braveledger_bat_bignum::sum(report_info.recurring_donation, probi);
+      report_info.recurring_donation = report_info.recurring_donation + amount;
       break;
     default:
       break;

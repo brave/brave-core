@@ -37,7 +37,7 @@ export interface RewardsProps {
   enabledMain: boolean
   balance: NewTab.RewardsBalance
   promotions: NewTab.Promotion[]
-  totalContribution: string
+  totalContribution: number
   walletCreated: boolean
   walletCreating: boolean
   walletCreateFailed: boolean
@@ -145,7 +145,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
     const showEnableAds = type === AmountItemType.ADS && !enabledAds && adsSupported
     const amount = type === AmountItemType.TIPS
       ? totalContribution
-      : adsEstimatedEarnings.toFixed(1)
+      : adsEstimatedEarnings
     const converted = convertBalance(amount, rates)
     const batFormatString = onlyAnonWallet ? getLocale('rewardsWidgetBap') : getLocale('rewardsWidgetBat')
 
@@ -168,7 +168,7 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
         {
           !showEnableAds && !(type === AmountItemType.ADS && !adsSupported)
           ? <AmountInformation data-test-id={`widget-amount-total-${type}`}>
-              <Amount>{amount}</Amount>
+              <Amount>{amount.toFixed(1)}</Amount>
               <ConvertedAmount>
                 {`${batFormatString} ${converted} USD`}
               </ConvertedAmount>
