@@ -1186,9 +1186,16 @@ void RewardsServiceImpl::LoadNicewareList(
 void RewardsServiceImpl::SavePublisherInfo(
     ledger::PublisherInfoPtr publisher_info,
     ledger::PublisherInfoCallback callback) {
+  DCHECK(publisher_info);
+  if (!publisher_info) {
+    callback(ledger::Result::LEDGER_ERROR, std::move(publisher_info));
+    return;
+  }
+
+  auto copy = publisher_info->Clone();
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&SavePublisherInfoOnFileTaskRunner,
-                    publisher_info->Clone(),
+                    std::move(copy),
                     publisher_info_backend_.get()),
       base::BindOnce(&RewardsServiceImpl::OnPublisherInfoSaved,
                      AsWeakPtr(),
@@ -1209,6 +1216,12 @@ void RewardsServiceImpl::OnPublisherInfoSaved(
 void RewardsServiceImpl::SaveActivityInfo(
     ledger::PublisherInfoPtr publisher_info,
     ledger::PublisherInfoCallback callback) {
+  DCHECK(publisher_info);
+  if (!publisher_info) {
+    callback(ledger::Result::LEDGER_ERROR, std::move(publisher_info));
+    return;
+  }
+
   ledger::PublisherInfoPtr copy = publisher_info->Clone();
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&SaveActivityInfoOnFileTaskRunner,
