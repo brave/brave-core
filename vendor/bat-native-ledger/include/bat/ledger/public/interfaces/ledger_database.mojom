@@ -5,11 +5,11 @@
 module ledger_database.mojom;
 
 union DBValue {
-  string string_value;
   int32 int_value;
   int64 int64_value;
   double double_value;
   bool bool_value;
+  string string_value;
 };
 
 struct DBCommandBinding {

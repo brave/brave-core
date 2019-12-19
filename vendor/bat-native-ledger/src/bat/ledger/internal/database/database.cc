@@ -81,20 +81,16 @@ void Database::InitializeTables(ledger::DBTransaction* transaction) {
   insert_command->type = ledger::DBCommand::Type::RUN;
   insert_command->command = insert;
 
-  auto value = ledger::DBValue::New();
-  value->set_int_value(5);
-
   auto binding = ledger::DBCommandBinding::New();
   binding->index = 0;
-  binding->value = std::move(value);
+  binding->value = ledger::DBValue::New();
+  binding->value->set_int_value(5);
   insert_command->bindings.push_back(std::move(binding));
-
-  value = ledger::DBValue::New();
-  value->set_int_value(7);
 
   binding = ledger::DBCommandBinding::New();
   binding->index = 1;
-  binding->value = std::move(value);
+  binding->value = ledger::DBValue::New();
+  binding->value->set_int_value(7);
   insert_command->bindings.push_back(std::move(binding));
 
   transaction->commands.push_back(std::move(insert_command));
