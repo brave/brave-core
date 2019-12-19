@@ -11,6 +11,7 @@
 namespace gfx {
 
 constexpr SkColor kBraveGrey700 = SkColorSetRGB(0x4A, 0x4A, 0x4A);
+constexpr SkColor kBraveGrey800 = SkColorSetRGB(0x3b, 0x3e, 0x4f);
 constexpr SkColor kBraveNeutral300 = SkColorSetRGB(0xDE, 0xE2, 0xE6);
 constexpr SkColor kBraveNeutral800 = SkColorSetRGB(0x34, 0x3A, 0x40);
 
