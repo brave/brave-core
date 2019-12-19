@@ -701,9 +701,9 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)balanceReportForMonth:(BATActivityMonth)month year:(int)year completion:(void (NS_NOESCAPE ^)(BATBalanceReportInfo * _Nullable info))completion
 {
-  ledger->GetBalanceReport((ledger::ActivityMonth)month, year, ^(bool result, ledger::BalanceReportInfoPtr info) {
+  ledger->GetBalanceReport((ledger::ActivityMonth)month, year, ^(const ledger::Result result, ledger::BalanceReportInfoPtr info) {
     auto bridgedInfo = info.get() != nullptr ? [[BATBalanceReportInfo alloc] initWithBalanceReportInfo:*info.get()] : nil;
-    completion(result ? bridgedInfo : nil);
+    completion(result == ledger::Result::LEDGER_OK ? bridgedInfo : nil);
   });
 }
 

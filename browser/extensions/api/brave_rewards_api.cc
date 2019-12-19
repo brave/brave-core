@@ -418,16 +418,39 @@ BraveRewardsGetWalletPropertiesFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsGetCurrentReportFunction::~BraveRewardsGetCurrentReportFunction() {
-}
+BraveRewardsGetBalanceReportFunction::
+~BraveRewardsGetBalanceReportFunction() = default;
 
-ExtensionFunction::ResponseAction BraveRewardsGetCurrentReportFunction::Run() {
+ExtensionFunction::ResponseAction BraveRewardsGetBalanceReportFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service) {
-    rewards_service->GetCurrentBalanceReport();
+  if (!rewards_service) {
+    auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+    return RespondNow(OneArgument(std::move(data)));
   }
-  return RespondNow(NoArguments());
+
+  std::unique_ptr<brave_rewards::GetBalanceReport::Params> params(
+      brave_rewards::GetBalanceReport::Params::Create(*args_));
+
+  rewards_service->GetBalanceReport(
+      params->month,
+      params->year,
+      base::BindOnce(
+          &BraveRewardsGetBalanceReportFunction::OnBalanceReport,
+          this));
+  return RespondLater();
+}
+
+void BraveRewardsGetBalanceReportFunction::OnBalanceReport(
+    const int32_t result,
+    const ::brave_rewards::BalanceReport& report) {
+  auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+  data->SetDoubleKey("ads", report.earning_from_ads);
+  data->SetDoubleKey("contribute", report.auto_contribute);
+  data->SetDoubleKey("grant", report.grants);
+  data->SetDoubleKey("tips", report.one_time_donation);
+  data->SetDoubleKey("donation", report.recurring_donation);
+  Respond(OneArgument(std::move(data)));
 }
 
 BraveRewardsFetchPromotionsFunction::
@@ -1058,50 +1081,6 @@ void BraveRewardsGetAdsEstimatedEarningsFunction::OnAdsEstimatedEarnings(
     const uint64_t ad_notifications_received_this_month) {
   Respond(OneArgument(
       std::make_unique<base::Value>(estimated_pending_rewards)));
-}
-
-BraveRewardsGetBalanceReportsFunction::
-~BraveRewardsGetBalanceReportsFunction() {
-}
-
-ExtensionFunction::ResponseAction
-BraveRewardsGetBalanceReportsFunction::Run() {
-  Profile* profile = Profile::FromBrowserContext(browser_context());
-  auto* rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
-
-  if (!rewards_service_) {
-    return RespondNow(Error("Rewards service is not not initialized"));
-  }
-
-  rewards_service_->GetAllBalanceReports(base::Bind(
-        &BraveRewardsGetBalanceReportsFunction::OnGetBalanceReports,
-        this));
-
-  return RespondLater();
-}
-
-void BraveRewardsGetBalanceReportsFunction::OnGetBalanceReports(
-    const std::map<std::string,
-    ::brave_rewards::BalanceReport>& reports) {
-  std::unique_ptr<base::DictionaryValue> data(
-      new base::DictionaryValue());
-
-  if (!reports.empty()) {
-    for (auto const& report : reports) {
-      const ::brave_rewards::BalanceReport old_report = report.second;
-      auto new_report = std::make_unique<base::DictionaryValue>();
-      new_report->SetString("grant", old_report.grants);
-      new_report->SetString("deposit", old_report.deposits);
-      new_report->SetString("ads", old_report.earning_from_ads);
-      new_report->SetString("contribute", old_report.auto_contribute);
-      new_report->SetString("donation", old_report.recurring_donation);
-      new_report->SetString("tips", old_report.one_time_donation);
-      new_report->SetString("total", old_report.total);
-      data->SetDictionary(report.first, std::move(new_report));
-    }
-  }
-
-  Respond(OneArgument(std::move(data)));
 }
 
 BraveRewardsGetWalletExistsFunction::

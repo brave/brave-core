@@ -4,6 +4,8 @@
 
 import { Reducer } from 'redux'
 
+import { getCurrentBalanceReport } from '../utils'
+
 // Constant
 import { types } from '../constants/rewards_types'
 
@@ -109,6 +111,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         balance.total = action.payload.properties.balance
         chrome.send('brave_rewards.getWalletPassphrase')
         chrome.send('brave_rewards.fetchPromotions')
+        getCurrentBalanceReport()
         ui.emptyWallet = balance.total <= 0
         ui.modalBackup = false
         ui.walletCorrupted = false
@@ -121,13 +124,16 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       }
       break
     }
-    case types.GET_CURRENT_REPORT: {
-      chrome.send('brave_rewards.getBalanceReports')
+    case types.GET_BALANCE_REPORT: {
+      chrome.send('brave_rewards.getBalanceReport', [
+        action.payload.month,
+        action.payload.year
+      ])
       break
     }
-    case types.ON_BALANCE_REPORTS: {
+    case types.ON_BALANCE_REPORT: {
       state = { ...state }
-      state.reports = action.payload.reports
+      state.balanceReport = action.payload.report
       break
     }
     case types.CHECK_WALLET_EXISTENCE: {

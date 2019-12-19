@@ -67,7 +67,11 @@ export class Panel extends React.Component<Props, State> {
     })
 
     this.actions.fetchPromotions()
-    this.actions.getCurrentReport()
+
+    chrome.braveRewards.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear(),
+      (report: RewardsExtension.BalanceReport) => {
+        this.actions.onBalanceReport(report)
+      })
 
     chrome.braveRewards.getPendingContributionsTotal(((amount: number) => {
       this.actions.OnPendingContributionsTotal(amount)
@@ -210,20 +214,20 @@ export class Panel extends React.Component<Props, State> {
   }
 
   getWalletSummary = () => {
-    const { balance, report } = this.props.rewardsPanelData
+    const { balance, balanceReport } = this.props.rewardsPanelData
     const { rates } = balance
 
     let props = {}
 
-    if (report) {
-      for (let key in report) {
-        const item = report[key]
+    if (balanceReport) {
+      for (let key in balanceReport) {
+        const item = balanceReport[key]
 
-        if (item.length > 1 && key !== 'total') {
-          const tokens = utils.convertProbiToFixed(item)
+        if (item !== 0) {
+          const tokens = item.toFixed(1)
           props[key] = {
             tokens,
-            converted: utils.convertBalance(tokens, rates)
+            converted: utils.convertBalance(item, rates)
           }
         }
       }
@@ -528,7 +532,7 @@ export class Panel extends React.Component<Props, State> {
     return amounts.map((value: number) => {
       return {
         tokens: value.toFixed(1),
-        converted: utils.convertBalance(value.toString(), rates),
+        converted: utils.convertBalance(value, rates),
         selected: false
       }
     })
@@ -671,7 +675,7 @@ export class Panel extends React.Component<Props, State> {
     const { rates } = this.props.rewardsPanelData.balance
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const total = balance.total || 0
-    const converted = utils.convertBalance(total.toString(), rates)
+    const converted = utils.convertBalance(total, rates)
     const notification = this.getNotification()
     const notificationId = this.getNotificationProp('id', notification)
     const notificationType = this.getNotificationProp('type', notification)

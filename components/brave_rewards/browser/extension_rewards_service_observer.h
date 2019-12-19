@@ -66,8 +66,6 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
       brave_rewards::RewardsService* rewards_service) override;
 
   // RewardsServicePrivateObserver implementation
-  void OnGetCurrentBalanceReport(RewardsService* rewards_service,
-                                 const BalanceReport& balance_report) override;
   void OnPanelPublisherInfo(
       RewardsService* rewards_service,
       int error_code,

@@ -163,9 +163,10 @@ class RewardsServiceImpl : public RewardsService,
   void SaveMediaPublisherInfo(const std::string& media_key,
                               const std::string& publisher_id) override;
   void RestorePublishersUI() override;
-  void GetAllBalanceReports(
-      const GetAllBalanceReportsCallback& callback) override;
-  void GetCurrentBalanceReport() override;
+  void GetBalanceReport(
+      const uint32_t month,
+      const uint32_t year,
+      GetBalanceReportCallback callback) override;
   void IsWalletCreated(const IsWalletCreatedCallback& callback) override;
   void GetPublisherActivityFromUrl(
       uint64_t window_id,
@@ -742,11 +743,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetTransactionHistory(
       GetTransactionHistoryCallback callback,
       const std::string& transactions);
-  void OnGetAllBalanceReports(
-      const GetAllBalanceReportsCallback& callback,
-      const base::flat_map<std::string, ledger::BalanceReportInfoPtr> reports);
-  void OnGetCurrentBalanceReport(
-      bool success, ledger::BalanceReportInfoPtr report);
   void OnGetAutoContributeProps(
       const GetAutoContributePropsCallback& callback,
       ledger::AutoContributePropsPtr props);
@@ -798,6 +794,11 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetAllPromotions(
       ledger::GetAllPromotionsCallback callback,
       ledger::PromotionMap promotions);
+
+  void OnGetBalanceReport(
+      GetBalanceReportCallback callback,
+      const ledger::Result result,
+      ledger::BalanceReportInfoPtr report);
 
 #if defined(OS_ANDROID)
   ledger::Environment GetServerEnvironmentForAndroid();

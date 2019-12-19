@@ -68,12 +68,6 @@ class BatLedgerImpl : public mojom::BatLedger,
       SetPublisherExcludeCallback callback) override;
   void RestorePublishers(RestorePublishersCallback callback) override;
 
-  void SetBalanceReportItem(
-      ledger::ActivityMonth month,
-      int32_t year,
-      ledger::ReportType type,
-      const std::string& probi) override;
-
   void FetchPromotions(FetchPromotionsCallback callback) override;
   void ClaimPromotion(
       const std::string& payload,
@@ -99,7 +93,6 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   void OnTimer(uint32_t timer_id) override;
 
-  void GetAllBalanceReports(GetAllBalanceReportsCallback callback) override;
   void GetBalanceReport(ledger::ActivityMonth month, int32_t year,
       GetBalanceReportCallback callback) override;
 
@@ -226,7 +219,7 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   static void OnGetBalanceReport(
       CallbackHolder<GetBalanceReportCallback>* holder,
-      const bool result,
+      const ledger::Result result,
       ledger::BalanceReportInfoPtr report_info);
 
   static void OnClaimPromotion(

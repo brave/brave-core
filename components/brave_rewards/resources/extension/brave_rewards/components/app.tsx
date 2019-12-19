@@ -284,7 +284,7 @@ export class RewardsPanel extends React.Component<Props, State> {
     } = this.props.rewardsPanelData
 
     const total = balance.total || 0
-    const converted = utils.convertBalance(total.toString(), balance.rates)
+    const converted = utils.convertBalance(total, balance.rates)
     const claimedPromotions = utils.getClaimedPromotions(promotions || [])
 
     if (!walletCreated || walletCorrupted) {

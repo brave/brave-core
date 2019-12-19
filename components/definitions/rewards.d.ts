@@ -28,6 +28,7 @@ declare namespace Rewards {
     adsHistory: AdsHistory[]
     autoContributeList: Publisher[]
     balance: Balance
+    balanceReport?: BalanceReport
     contributeLoad: boolean
     contributionMinTime: number
     contributionMinVisits: number
@@ -56,7 +57,6 @@ declare namespace Rewards {
     recoveryKey: string
     recurringList: Publisher[]
     recurringLoad: boolean
-    reports: Record<string, Report>
     safetyNetFailed?: boolean
     tipsList: Publisher[]
     tipsLoad: boolean
@@ -163,16 +163,12 @@ declare namespace Rewards {
     favIcon: string
   }
 
-  export interface Report {
-    ads: string
-    closing: string
-    contribute: string
-    deposit: string
-    donation: string
-    grant: string
-    tips: string
-    opening: string
-    total: string
+  export interface BalanceReport {
+    ads: number
+    contribute: number
+    donation: number
+    grant: number
+    tips: number
   }
 
   export interface Captcha {

@@ -10,6 +10,7 @@
 #include <vector>
 #include <utility>
 
+#include "base/time/time.h"
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
 #include "base/android/jni_array.h"
@@ -304,25 +305,31 @@ void BraveRewardsNativeWorker::OnIsWalletCreated(bool created) {
 void BraveRewardsNativeWorker::GetCurrentBalanceReport(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& obj) {
   if (brave_rewards_service_) {
-    return brave_rewards_service_->GetCurrentBalanceReport();
+    auto now = base::Time::Now();
+    base::Time::Exploded exploded;
+    now.LocalExplode(&exploded);
+
+    brave_rewards_service_->GetBalanceReport(
+        exploded.month, exploded.year,
+        base::BindOnce(&BraveRewardsNativeWorker::OnGetCurrentBalanceReport,
+                       base::Unretained(this), brave_rewards_service_));
   }
 }
 
 void BraveRewardsNativeWorker::OnGetCurrentBalanceReport(
         brave_rewards::RewardsService* rewards_service,
+        const int32_t result,
         const brave_rewards::BalanceReport& balance_report) {
-  std::vector<std::string> values;
-  values.push_back(balance_report.deposits);
+  std::vector<double> values;
   values.push_back(balance_report.grants);
   values.push_back(balance_report.earning_from_ads);
   values.push_back(balance_report.auto_contribute);
   values.push_back(balance_report.recurring_donation);
   values.push_back(balance_report.one_time_donation);
-  values.push_back(balance_report.total);
 
   JNIEnv* env = base::android::AttachCurrentThread();
-  base::android::ScopedJavaLocalRef<jobjectArray> java_array =
-      base::android::ToJavaArrayOfStrings(env, values);
+  base::android::ScopedJavaLocalRef<jdoubleArray> java_array =
+      base::android::ToJavaDoubleArray(env, values);
 
   Java_BraveRewardsNativeWorker_OnGetCurrentBalanceReport(env,
         weak_java_brave_rewards_native_worker_.get(env), java_array);

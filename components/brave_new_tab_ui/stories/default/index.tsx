@@ -29,7 +29,7 @@ interface State {
   promotions: NewTab.Promotion[]
   enabledAds: boolean
   enabledMain: boolean
-  totalContribution: string
+  totalContribution: number
   walletCreated: boolean
   walletCreating: boolean
   walletCreateFailed: boolean
@@ -59,7 +59,7 @@ export default class NewTabPage extends React.PureComponent<Props, State> {
         rates: {},
         wallets: {}
       },
-      totalContribution: '0.0',
+      totalContribution: 0.0,
       walletCreated: false,
       walletCreating: false,
       walletCreateFailed: false,

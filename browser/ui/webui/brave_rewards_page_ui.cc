@@ -67,7 +67,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void RegisterMessages() override;
 
  private:
-  void GetAllBalanceReports();
   void HandleCreateWalletRequested(const base::ListValue* args);
   void GetWalletProperties(const base::ListValue* args);
   void FetchPromotions(const base::ListValue* args);
@@ -84,9 +83,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnExcludedSiteList(
       std::unique_ptr<brave_rewards::ContentSiteList>,
       uint32_t record);
-  void OnGetAllBalanceReports(
-      const std::map<std::string, brave_rewards::BalanceReport>& reports);
-  void GetBalanceReports(const base::ListValue* args);
   void ExcludePublisher(const base::ListValue* args);
   void RestorePublishers(const base::ListValue* args);
   void RestorePublisher(const base::ListValue* args);
@@ -173,6 +169,14 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void DisconnectWallet(const base::ListValue* args);
 
   void OnlyAnonWallet(const base::ListValue* args);
+
+  void GetBalanceReport(const base::ListValue* args);
+
+  void OnGetBalanceReport(
+      const uint32_t month,
+      const uint32_t year,
+      const int32_t result,
+      const brave_rewards::BalanceReport& report);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -331,9 +335,6 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.updateAdsRewards",
       base::BindRepeating(&RewardsDOMHandler::UpdateAdsRewards,
       base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.getBalanceReports",
-      base::BindRepeating(&RewardsDOMHandler::GetBalanceReports,
-      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.excludePublisher",
       base::BindRepeating(&RewardsDOMHandler::ExcludePublisher,
       base::Unretained(this)));
@@ -437,6 +438,9 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.onlyAnonWallet",
       base::BindRepeating(&RewardsDOMHandler::OnlyAnonWallet,
       base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.getBalanceReport",
+      base::BindRepeating(&RewardsDOMHandler::GetBalanceReport,
+      base::Unretained(this)));
 }
 
 void RewardsDOMHandler::Init() {
@@ -448,37 +452,6 @@ void RewardsDOMHandler::Init() {
 
   if (rewards_service_)
     rewards_service_->AddObserver(this);
-}
-
-void RewardsDOMHandler::OnGetAllBalanceReports(
-    const std::map<std::string, brave_rewards::BalanceReport>& reports) {
-  if (web_ui()->CanCallJavascript()) {
-    base::DictionaryValue newReports;
-    if (!reports.empty()) {
-      for (auto const& report : reports) {
-        const brave_rewards::BalanceReport oldReport = report.second;
-        auto newReport = std::make_unique<base::DictionaryValue>();
-        newReport->SetString("grant", oldReport.grants);
-        newReport->SetString("deposit", oldReport.deposits);
-        newReport->SetString("ads", oldReport.earning_from_ads);
-        newReport->SetString("contribute", oldReport.auto_contribute);
-        newReport->SetString("donation", oldReport.recurring_donation);
-        newReport->SetString("tips", oldReport.one_time_donation);
-        newReport->SetString("total", oldReport.total);
-        newReports.SetDictionary(report.first, std::move(newReport));
-      }
-    }
-
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.balanceReports",
-        newReports);
-  }
-}
-
-void RewardsDOMHandler::GetAllBalanceReports() {
-  if (rewards_service_)
-    rewards_service_->GetAllBalanceReports(
-        base::Bind(&RewardsDOMHandler::OnGetAllBalanceReports,
-          weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::HandleCreateWalletRequested(
@@ -680,7 +653,6 @@ void RewardsDOMHandler::OnAttestPromotion(
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards.promotionFinish",
       finish);
-  GetAllBalanceReports();
 }
 
 void RewardsDOMHandler::OnPromotionFinished(
@@ -726,7 +698,6 @@ void RewardsDOMHandler::OnRecoverWallet(
     brave_rewards::RewardsService* rewards_service,
     unsigned int result,
     double balance) {
-  GetAllBalanceReports();
   if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue recover;
     recover.SetInteger("result", result);
@@ -853,7 +824,6 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
     if (key == "contributionMonthly") {
       rewards_service_->SetUserChangedContribution();
       rewards_service_->SetContributionAmount(std::stod(value));
-      GetAllBalanceReports();
     }
 
     if (key == "contributionMinTime") {
@@ -959,10 +929,6 @@ void RewardsDOMHandler::OnExcludedSiteList(
   }
 }
 
-void RewardsDOMHandler::GetBalanceReports(const base::ListValue* args) {
-  GetAllBalanceReports();
-}
-
 void RewardsDOMHandler::OnIsWalletCreated(bool created) {
   if (web_ui()->CanCallJavascript())
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.walletExists",
@@ -1004,7 +970,6 @@ void RewardsDOMHandler::OnReconcileComplete(
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.reconcileComplete",
                                            complete);
   }
-  GetAllBalanceReports();
 }
 
 void RewardsDOMHandler::RemoveRecurringTip(const base::ListValue *args) {
@@ -1708,6 +1673,49 @@ void RewardsDOMHandler::OnUnblindedTokensReady(
   }
 
   web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.unblindedTokensReady");
+}
+
+void RewardsDOMHandler::OnGetBalanceReport(
+    const uint32_t month,
+    const uint32_t year,
+    const int32_t result,
+    const brave_rewards::BalanceReport& report) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::Value report_base(base::Value::Type::DICTIONARY);
+  report_base.SetDoubleKey("grant", report.grants);
+  report_base.SetDoubleKey("ads", report.earning_from_ads);
+  report_base.SetDoubleKey("contribute", report.auto_contribute);
+  report_base.SetDoubleKey("donation", report.recurring_donation);
+  report_base.SetDoubleKey("tips", report.one_time_donation);
+
+  base::Value data(base::Value::Type::DICTIONARY);
+  data.SetIntKey("month", month);
+  data.SetIntKey("year", year);
+  data.SetKey("report", std::move(report_base));
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.balanceReport",
+      data);
+}
+
+void RewardsDOMHandler::GetBalanceReport(const base::ListValue* args) {
+  CHECK_EQ(2U, args->GetSize());
+  if (!rewards_service_) {
+    return;
+  }
+
+  const uint32_t month = args->GetList()[0].GetInt();
+  const uint32_t year = args->GetList()[1].GetInt();
+  rewards_service_->GetBalanceReport(
+      month,
+      year,
+      base::BindOnce(&RewardsDOMHandler::OnGetBalanceReport,
+                     weak_factory_.GetWeakPtr(),
+                     month,
+                     year));
 }
 
 }  // namespace

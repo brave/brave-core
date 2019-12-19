@@ -103,8 +103,6 @@ source_set("ledger") {
     "src/bat/ledger/internal/bat_helper.h",
     "src/bat/ledger/internal/bat_state.cc",
     "src/bat/ledger/internal/bat_state.h",
-    "src/bat/ledger/internal/bignum.cc",
-    "src/bat/ledger/internal/bignum.h",
     "src/bat/ledger/internal/common/bind_util.cc",
     "src/bat/ledger/internal/common/bind_util.h",
     "src/bat/ledger/internal/common/security_helper.cc",

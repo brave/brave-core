@@ -52,8 +52,6 @@ class RewardsServicePrivateObserver;
 using GetContentSiteListCallback =
     base::Callback<void(std::unique_ptr<ContentSiteList>,
         uint32_t /* next_record */)>;
-using GetAllBalanceReportsCallback = base::Callback<void(
-    const std::map<std::string, brave_rewards::BalanceReport>&)>;
 using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
 using GetContributionAmountCallback = base::Callback<void(double)>;
 using GetAutoContributePropsCallback = base::Callback<void(
@@ -108,6 +106,10 @@ using AttestPromotionCallback = base::OnceCallback<void(
     const int32_t,
     std::unique_ptr<brave_rewards::Promotion> promotion)>;
 using GetAnonWalletStatusCallback = base::OnceCallback<void(const uint32_t)>;
+
+using GetBalanceReportCallback = base::OnceCallback<void(
+    const int32_t,
+    const brave_rewards::BalanceReport&)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -178,9 +180,10 @@ class RewardsService : public KeyedService {
   virtual void SetAutoContribute(bool enabled) = 0;
   virtual void UpdateAdsRewards() const = 0;
   virtual void SetTimer(uint64_t time_offset, uint32_t* timer_id) = 0;
-  virtual void GetAllBalanceReports(
-      const GetAllBalanceReportsCallback& callback) = 0;
-  virtual void GetCurrentBalanceReport() = 0;
+  virtual void GetBalanceReport(
+      const uint32_t month,
+      const uint32_t year,
+      GetBalanceReportCallback callback) = 0;
   virtual void IsWalletCreated(const IsWalletCreatedCallback& callback) = 0;
   virtual void GetPublisherActivityFromUrl(
       uint64_t windowId,

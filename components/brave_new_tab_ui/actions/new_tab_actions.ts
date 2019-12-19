@@ -98,8 +98,10 @@ export const onAdsEstimatedEarnings = (amount: number) => action(types.ON_ADS_ES
   amount
 })
 
-export const onBalanceReports = (reports: Record<string, NewTab.RewardsReport>) => action(types.ON_BALANCE_REPORTS, {
-  reports
+export const onBalanceReport = (properties: {month: number, year: number, report: NewTab.RewardsBalanceReport}) => action(types.ON_BALANCE_REPORT, {
+  month: properties.month,
+  year: properties.year,
+  report: properties.report
 })
 
 export const onPromotions = (result: number, promotions: NewTab.Promotion[]) => action(types.ON_PROMOTIONS, {

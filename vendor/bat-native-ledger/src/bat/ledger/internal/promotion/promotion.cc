@@ -275,14 +275,12 @@ void Promotion::Complete(
     ledger::AttestPromotionCallback callback) {
   auto promotion_ptr =
       braveledger_bind_util::FromStringToPromotion(promotion_string);
-  const std::string probi = braveledger_bat_util::ConvertToProbi(
-      std::to_string(promotion_ptr->approximate_value));
   if (result == ledger::Result::LEDGER_OK) {
     ledger_->SetBalanceReportItem(
-      braveledger_time_util::GetCurrentMonth(),
-      braveledger_time_util::GetCurrentYear(),
-      ConvertPromotionTypeToReportType(promotion_ptr->type),
-      probi);
+        braveledger_time_util::GetCurrentMonth(),
+        braveledger_time_util::GetCurrentYear(),
+        ConvertPromotionTypeToReportType(promotion_ptr->type),
+        promotion_ptr->approximate_value);
   }
 
   callback(result, std::move(promotion_ptr));

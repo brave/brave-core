@@ -90,32 +90,6 @@ void ExtensionRewardsServiceObserver::OnWalletProperties(
   event_router->BroadcastEvent(std::move(event));
 }
 
-void ExtensionRewardsServiceObserver::OnGetCurrentBalanceReport(
-    RewardsService* rewards_service,
-    const BalanceReport& balance_report) {
-  auto* event_router = extensions::EventRouter::Get(profile_);
-  if (event_router) {
-    extensions::api::brave_rewards::OnCurrentReport::Properties properties;
-
-    properties.ads = balance_report.earning_from_ads;
-    properties.contribute = balance_report.auto_contribute;
-    properties.deposit = balance_report.deposits;
-    properties.grant = balance_report.grants;
-    properties.tips = balance_report.one_time_donation;
-    properties.total = balance_report.total;
-    properties.donation = balance_report.recurring_donation;
-
-    std::unique_ptr<base::ListValue> args(
-        extensions::api::brave_rewards::OnCurrentReport::Create(properties)
-            .release());
-    std::unique_ptr<extensions::Event> event(new extensions::Event(
-        extensions::events::BRAVE_ON_CURRENT_REPORT,
-        extensions::api::brave_rewards::OnCurrentReport::kEventName,
-        std::move(args)));
-    event_router->BroadcastEvent(std::move(event));
-  }
-}
-
 void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
     RewardsService* rewards_service,
     int error_code,

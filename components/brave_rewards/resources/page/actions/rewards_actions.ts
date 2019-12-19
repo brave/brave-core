@@ -93,11 +93,16 @@ export const onExcludedList = (list: Rewards.ExcludedPublisher[]) => action(type
   list
 })
 
-export const onBalanceReports = (reports: Record<string, Rewards.Report>) => action(types.ON_BALANCE_REPORTS, {
-  reports
+export const onBalanceReport = (properties: {month: number, year: number, report: Rewards.BalanceReport}) => action(types.ON_BALANCE_REPORT, {
+  month: properties.month,
+  year: properties.year,
+  report: properties.report
 })
 
-export const getCurrentReport = () => action(types.GET_CURRENT_REPORT, {})
+export const getBalanceReport = (month: number, year: number) => action(types.GET_BALANCE_REPORT, {
+  month,
+  year
+})
 
 export const excludePublisher = (publisherKey: string) => action(types.ON_EXCLUDE_PUBLISHER, {
   publisherKey

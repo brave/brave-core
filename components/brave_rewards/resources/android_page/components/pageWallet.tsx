@@ -46,7 +46,7 @@ class PageWallet extends React.Component<Props, State> {
 
   getConversion = () => {
     const balance = this.props.rewardsData.balance
-    return utils.convertBalance(balance.total.toString(), balance.rates)
+    return utils.convertBalance(balance.total, balance.rates)
   }
 
   generatePromotions = () => {
@@ -82,22 +82,19 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   getWalletSummary = () => {
-    const { balance, reports } = this.props.rewardsData
+    const { balance, balanceReport } = this.props.rewardsData
 
     let props = {}
 
-    const currentTime = new Date()
-    const reportKey = `${currentTime.getFullYear()}_${currentTime.getMonth() + 1}`
-    const report: Rewards.Report = reports[reportKey]
-    if (report) {
-      for (let key in report) {
-        const item = report[key]
+    if (balanceReport) {
+      for (let key in balanceReport) {
+        const item = balanceReport[key]
 
-        if (item.length > 1 && key !== 'total') {
-          const tokens = utils.convertProbiToFixed(item)
+        if (item !== 0) {
+          const tokens = item.toFixed(1)
           props[key] = {
             tokens,
-            converted: utils.convertBalance(tokens, balance.rates)
+            converted: utils.convertBalance(item, balance.rates)
           }
         }
       }
