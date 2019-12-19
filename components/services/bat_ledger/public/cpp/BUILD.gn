@@ -18,6 +18,7 @@ source_set("manifest") {
 
   deps = [
     "//base",
+    "//brave/base",
     "//services/service_manager/public/cpp",
     "//brave/components/services/bat_ledger/public/interfaces",
   ]
