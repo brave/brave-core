@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Išplėstiniai</translation>
 <translation id="1146678959555564648">Įgalinti VR</translation>
 <translation id="987264212798334818">Bendra</translation>
+<translation id="5186185447130319458">Inkognito</translation>
 <translation id="4275663329226226506">Medija</translation>
 <translation id="4759238208242260848">Atsisiuntimai</translation>
 <translation id="218608176142494674">Bendrinimas</translation>
@@ -356,6 +357,7 @@ Adresu <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> gali b�
 <translation id="2131665479022868825">Išsaugota: <ph name="DATA"/></translation>
 <translation id="8569404424186215731">nuo <ph name="DATE"/></translation>
 <translation id="3252158532344029638">Kai įjungtas supaprastintasis režimas, sistemoje „Brave“ puslapiai įkeliami sparčiau ir naudojama iki 60 proc. mažiau duomenų.</translation>
+<translation id="1438581767753657407">Kai įjungtas supaprastintasis režimas, „Brave“ naudoja „Brave“ serverius, kad puslapiai būtų įkeliami greičiau. Supaprastintuoju režimu labai lėtai veikiantys puslapiai perrašomi, kad būtų įkeliamas tik svarbiausias turinys. Supaprastintasis režimas netaikomas inkognito skirtukams.</translation>
 <translation id="6159335304067198720">Sutaupyta duomenų: <ph name="PERCENT"/></translation>
 <translation id="7494974237137038751">sutaupyti duomenys</translation>
 <translation id="6111020039983847643">išnaudoti duomenys</translation>
@@ -520,7 +522,9 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="7947953824732555851">Sutikti ir prisij.</translation>
 <translation id="8583805026567836021">Valomi paskyros duomenys</translation>
 <translation id="8310344678080805313">Įprasti skirtukai</translation>
+<translation id="2633278372998075009">Inkognito skirtukai</translation>
 <translation id="5748802427693696783">Perjungta į įprastus skirtukus</translation>
+<translation id="6099151465289169210">Įjungti inkognito skirtukai</translation>
 <translation id="7998918019931843664">Iš naujo atidarykite uždarytą skirtuko lapą</translation>
 <translation id="8853345339104747198">„<ph name="TAB_TITLE"/>“, skirtukas</translation>
 <translation id="4452411734226507615">Uždaryti skirtuką „<ph name="TAB_TITLE"/>“</translation>
@@ -578,6 +582,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="8942627711005830162">Atidaryti kitame lange</translation>
 <translation id="4195643157523330669">Atidaryti naujame skirtuke</translation>
 <translation id="1100066534610197918">Atidar. naujame grup. skirtuke</translation>
+<translation id="4243710787042215766">Atidaryti inkognito skirtuke</translation>
 <translation id="4860895144060829044">Skambinti</translation>
 <translation id="6896758677409633944">Kopijuoti</translation>
 <translation id="8393700583063109961">Siųsti pranešimą</translation>
@@ -642,6 +647,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="1671236975893690980">Laukiama atsisiuntimo...</translation>
 <translation id="5561549206367097665">Laukiama tinklo…</translation>
 <translation id="5864419784173784555">Laukiama kito atsisiuntimo…</translation>
+<translation id="3110967157686007724">Inkognito skirtukas</translation>
 <translation id="6461962085415701688">Nepavyksta atidaryti failo</translation>
 <translation id="1178581264944972037">Pristabdyti</translation>
 <translation id="8200772114523450471">Atnaujinti</translation>
@@ -703,6 +709,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="7810647596859435254">Atidaryti naudojant...</translation>
 <translation id="5655963694829536461">Ieškokite atsisiųstų elementų</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">Mano failai</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Čia rodomi straipsniai, kuriuos galima skaityti net neprisijungus</translation>
@@ -717,6 +724,8 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="968900484120156207">Jūsų aplankomi puslapiai rodomi čia</translation>
 <translation id="7882131421121961860">Nerasta istorijos</translation>
 <translation id="3549657413697417275">Ieškokite savo istorijoje</translation>
+<translation id="4526803704855831732">Inkognito skirtukai</translation>
+<translation id="7465104139234185284">Uždaryti visus inkognito skirtukus</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">MM</translation>
@@ -790,6 +799,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="8364299278605033898">Žr. populiarias svetaines</translation>
 <translation id="1171770572613082465">Žr. populiarias svetaines palietę mygtuką „Populiariausios svetainės“</translation>
 <translation id="5233638681132016545">Naujas skirtukas</translation>
+<translation id="6336451774241870485">Naujas inkognito skirtukas</translation>
 <translation id="4521874409998847950">Nuo <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>pateikė „Brave Software“<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">Pasiekiama naujesnė versija</translation>
 <translation id="4058091506841967397">Nepav. atnauj. „Brave“</translation>
@@ -802,12 +812,14 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="6437478888915024427">Puslapio informacija</translation>
 <translation id="7180611975245234373">Atnaujinti</translation>
 <translation id="4913169188695071480">Sustabdyti atnaujinimą</translation>
+<translation id="3234355010754616171">Naujas inkognito skirtukas</translation>
 <translation id="1829244130665387512">Surasti puslapyje</translation>
 <translation id="6593061639179217415">Svetainė kompiuteriams</translation>
 <translation id="9063523880881406963">Išjungti stalinio kompiuterio svetainės užklausą</translation>
 <translation id="2038563949887743358">Įjungti stalinio kompiuterio svetainės užklausą</translation>
 <translation id="2433507940547922241">Išvaizda</translation>
 <translation id="983192555821071799">Uždar. visų skirtukų lapus</translation>
+<translation id="6610147964972079463">Uždaryti inkognito skirtukus</translation>
 <translation id="1310482092992808703">Grupuoti skirtukus</translation>
 <translation id="7725024127233776428">Pažymėti puslapiai rodomi čia</translation>
 <translation id="4404568932422911380">Nėra jokių žymių</translation>
@@ -864,6 +876,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="6963642900430330478">Šis puslapis yra pavojingas. Svetainės informacija</translation>
 <translation id="9070377983101773829">Pradėti paiešką balsu</translation>
 <translation id="8676374126336081632">Išvalyti įvestą tekstą</translation>
+<translation id="4968908871398201967">Inkognito režimas</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> atidarytas skirtukas; palieskite, kad perjungtumėte skirtukus}one{<ph name="OPEN_TABS_MANY"/> atidarytas skirtukas; palieskite, kad perjungtumėte skirtukus}few{<ph name="OPEN_TABS_MANY"/> atidaryti skirtukai; palieskite, kad perjungtumėte skirtukus}many{<ph name="OPEN_TABS_MANY"/> atidaryto skirtuko; palieskite, kad perjungtumėte skirtukus}other{<ph name="OPEN_TABS_MANY"/> atidarytų skirtukų; palieskite, kad perjungtumėte skirtukus}}</translation>
 <translation id="2369533728426058518">atidaryti skirtukus</translation>
 <translation id="7071521146534760487">Tvarkyti paskyrą</translation>
@@ -871,8 +884,12 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="2707726405694321444">Atnaujinti puslapį</translation>
 <translation id="2891154217021530873">Sustabdyti puslapio įkėlimą</translation>
 <translation id="6710213216561001401">Ankstesnis</translation>
+<translation id="9080642952018487277">Įjungti inkognito režimą</translation>
+<translation id="4883379392681899581">Išeiti iš inkognito režimo</translation>
 <translation id="6659594942844771486">Skirtukas</translation>
 <translation id="1933845786846280168">Pasirinktas skirtukas</translation>
+<translation id="3377025655491224618">Inkognito skirtukas</translation>
+<translation id="584427517463557805">Pasirinktas inkognito skirtukas</translation>
 <translation id="2268044343513325586">Patikslinti</translation>
 <translation id="7846076177841592234">Atšaukti pasirinkimą</translation>
 <translation id="7087918508125750058">Pasirinkta: <ph name="ITEM_COUNT"/>. Parinktys pasiekiamos netoli ekrano viršaus</translation>
@@ -973,6 +990,7 @@ Jei norite pakeisti šį nustatymą, <ph name="BEGIN_LINK"/>iš naujo nustatykit
 <translation id="4878404682131129617">Nepavyko užmegzti tunelinio ryšio per tarpinį serverį</translation>
 <translation id="4749960740855309258">Atidaryti naują skirtuką</translation>
 <translation id="8788968922598763114">Iš naujo atidaryti paskutinį uždarytą skirtuką</translation>
+<translation id="2280910239864711607">Atidaryti naują skirtuką inkognito režimu</translation>
 <translation id="7929962904089429003">Atidaryti meniu</translation>
 <translation id="6039379616847168523">Pereiti prie kito skirtuko</translation>
 <translation id="5210286577605176222">Pereiti prie ankstesnio skirtuko</translation>

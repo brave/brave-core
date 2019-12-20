@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Lanjutan</translation>
 <translation id="1146678959555564648">Masuki VR</translation>
 <translation id="987264212798334818">Umum</translation>
+<translation id="5186185447130319458">Pribadi</translation>
 <translation id="4275663329226226506">Media</translation>
 <translation id="4759238208242260848">Download</translation>
 <translation id="218608176142494674">Berbagi</translation>
@@ -356,6 +357,7 @@ Akun Brave Software Anda mungkin memiliki bentuk histori penjelajahan lain seper
 <translation id="2131665479022868825"><ph name="DATA"/> dihemat</translation>
 <translation id="8569404424186215731">sejak <ph name="DATE"/></translation>
 <translation id="3252158532344029638">Dalam mode Ringan, Brave memuat halaman lebih cepat dan menghemat data hingga 60 persen.</translation>
+<translation id="1438581767753657407">Saat mode Lite aktif, Brave menggunakan server Brave supaya halaman lebih cepat dimuat. Mode Lite menulis ulang halaman-halaman yang sangat lambat dan hanya memuat konten yang mendasar. Mode Lite tidak bisa digunakan di tab Privat.</translation>
 <translation id="6159335304067198720">Penghematan kuota <ph name="PERCENT"/></translation>
 <translation id="7494974237137038751">data dihemat</translation>
 <translation id="6111020039983847643">data digunakan</translation>
@@ -520,7 +522,9 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph n
 <translation id="7947953824732555851">Terima dan masuk</translation>
 <translation id="8583805026567836021">Menghapus data akun</translation>
 <translation id="8310344678080805313">Tab standar</translation>
+<translation id="2633278372998075009">Tab pribadi</translation>
 <translation id="5748802427693696783">Beralih ke tab standar</translation>
+<translation id="6099151465289169210">Beralih ke tab pribadi</translation>
 <translation id="7998918019931843664">Buka kembali tab yang ditutup</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, tab</translation>
 <translation id="4452411734226507615">Tutup tab <ph name="TAB_TITLE"/></translation>
@@ -578,6 +582,7 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph n
 <translation id="8942627711005830162">Buka di jendela lain</translation>
 <translation id="4195643157523330669">Buka di tab baru</translation>
 <translation id="1100066534610197918">Buka pada tab baru di grup</translation>
+<translation id="4243710787042215766">Buka di tab pribadi</translation>
 <translation id="4860895144060829044">Telepon</translation>
 <translation id="6896758677409633944">Salin</translation>
 <translation id="8393700583063109961">Kirim pesan</translation>
@@ -642,6 +647,7 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph n
 <translation id="1671236975893690980">Proses download tertunda...</translation>
 <translation id="5561549206367097665">Menunggu jaringan…</translation>
 <translation id="5864419784173784555">Menunggu proses download lain…</translation>
+<translation id="3110967157686007724">Tab pribadi</translation>
 <translation id="6461962085415701688">Tidak dapat membuka file</translation>
 <translation id="1178581264944972037">Jeda</translation>
 <translation id="8200772114523450471">Lanjutkan</translation>
@@ -703,6 +709,7 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph n
 <translation id="7810647596859435254">Buka dengan...</translation>
 <translation id="5655963694829536461">Telusuri file download</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">File Saya</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Artikel ditampilkan di sini, yang dapat Anda baca bahkan saat offline</translation>
@@ -717,6 +724,8 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph n
 <translation id="968900484120156207">Halaman yang Anda kunjungi akan muncul di sini</translation>
 <translation id="7882131421121961860">Tidak ada histori</translation>
 <translation id="3549657413697417275">Telusuri histori penggunaan</translation>
+<translation id="4526803704855831732">Tab Pribadi</translation>
+<translation id="7465104139234185284">Tutup semua tab pribadi</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">BB</translation>
 <translation id="605721222689873409">TT</translation>
@@ -790,6 +799,7 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph n
 <translation id="8364299278605033898">Lihat situs yang populer</translation>
 <translation id="1171770572613082465">Lihat situs populer dengan mengetuk tombol "Situs populer"</translation>
 <translation id="5233638681132016545">Tab baru</translation>
+<translation id="6336451774241870485">Tab privat baru</translation>
 <translation id="4521874409998847950">Dari <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>dikirim oleh Brave Software<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">Versi baru telah tersedia</translation>
 <translation id="4058091506841967397">Brave tak bisa diupdate</translation>
@@ -802,12 +812,14 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph n
 <translation id="6437478888915024427">Info halaman</translation>
 <translation id="7180611975245234373">Perbarui</translation>
 <translation id="4913169188695071480">Hentikan refresh</translation>
+<translation id="3234355010754616171">Tab pribadi baru</translation>
 <translation id="1829244130665387512">Cari di halaman</translation>
 <translation id="6593061639179217415">Situs desktop</translation>
 <translation id="9063523880881406963">Nonaktifkan Ubah situs desktop</translation>
 <translation id="2038563949887743358">Aktifkan Ubah situs desktop</translation>
 <translation id="2433507940547922241">Tampilan</translation>
 <translation id="983192555821071799">Tutup semua tab</translation>
+<translation id="6610147964972079463">Tutup tab pribadi</translation>
 <translation id="1310482092992808703">Kelompokkan tab</translation>
 <translation id="7725024127233776428">Halaman yang Anda bookmark muncul di sini</translation>
 <translation id="4404568932422911380">Tidak ada bookmark</translation>
@@ -864,6 +876,7 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph n
 <translation id="6963642900430330478">Halaman ini berbahaya. Informasi situs</translation>
 <translation id="9070377983101773829">Mulai penelusuran suara</translation>
 <translation id="8676374126336081632">Hapus masukan</translation>
+<translation id="4968908871398201967">Mode pribadi</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> tab terbuka, ketuk untuk beralih tab}other{<ph name="OPEN_TABS_MANY"/> tab terbuka, ketuk untuk beralih tab}}</translation>
 <translation id="2369533728426058518">tab terbuka</translation>
 <translation id="7071521146534760487">Kelola akun</translation>
@@ -871,8 +884,12 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph n
 <translation id="2707726405694321444">Segarkan halaman</translation>
 <translation id="2891154217021530873">Hentikan pemuatan halaman</translation>
 <translation id="6710213216561001401">Sebelumnya</translation>
+<translation id="9080642952018487277">Masuk ke mode pribadi</translation>
+<translation id="4883379392681899581">Keluar dari mode privat</translation>
 <translation id="6659594942844771486">Tab</translation>
 <translation id="1933845786846280168">Tab yang Dipilih</translation>
+<translation id="3377025655491224618">Tab Pribadi</translation>
+<translation id="584427517463557805">Tab Pribadi Yang Dipilih</translation>
 <translation id="2268044343513325586">Saring</translation>
 <translation id="7846076177841592234">Batalkan pilihan</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> dipilih. Opsi yang tersedia di dekat bagian atas layar</translation>
@@ -973,6 +990,7 @@ Untuk mengubah setelan ini, <ph name="BEGIN_LINK"/>setel ulang sinkronisasi<ph n
 <translation id="4878404682131129617">Gagal membentuk saluran melalui server proxy</translation>
 <translation id="4749960740855309258">Membuka tab baru</translation>
 <translation id="8788968922598763114">Membuka ulang tab yang terakhir ditutup</translation>
+<translation id="2280910239864711607">Buka tab baru pada mode Pribadi</translation>
 <translation id="7929962904089429003">Membuka menu</translation>
 <translation id="6039379616847168523">Beralih ke tab berikutnya</translation>
 <translation id="5210286577605176222">Beralih ke tab sebelumnya</translation>

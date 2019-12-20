@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Mipangilio ya kina</translation>
 <translation id="1146678959555564648">Tumia hali ya VR</translation>
 <translation id="987264212798334818">Jumla</translation>
+<translation id="5186185447130319458">Faragha</translation>
 <translation id="4275663329226226506">Vyombo vya Habari</translation>
 <translation id="4759238208242260848">Vipakuliwa</translation>
 <translation id="218608176142494674">Inashiriki</translation>
@@ -356,6 +357,7 @@ Huenda akaunti yako ya Brave Software ina aina nyingine za historia ya kuvinjari
 <translation id="2131665479022868825"><ph name="DATA"/> imeokolewa</translation>
 <translation id="8569404424186215731">tangu <ph name="DATE"/></translation>
 <translation id="3252158532344029638">Katika Hali nyepesi, Brave hupakia kurasa haraka zaidi na huokoa data kwa hadi asilimia 60.</translation>
+<translation id="1438581767753657407">Wakati hali ya Lite imewashwa, Brave hutumia seva za Brave kuwezesha kurasa kupakia haraka. Hali ya Lite huandika upya kurasa zinazopakia polepole sana zipakie maudhui muhimu tu. Hali ya Lite haitumiki kwa vichupo vya Faragha.</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> ya data imeokolewa</translation>
 <translation id="7494974237137038751">data iliyookolewa</translation>
 <translation id="6111020039983847643">data iliyotumiwa</translation>
@@ -520,7 +522,9 @@ Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph
 <translation id="7947953824732555851">Kubali na uingie</translation>
 <translation id="8583805026567836021">Inafuta data ya akaunti</translation>
 <translation id="8310344678080805313">Vichupo muundo-msingi</translation>
+<translation id="2633278372998075009">Vichupo vya faragha</translation>
 <translation id="5748802427693696783">Imebadilisha kwenda vichupo muundo-msingi</translation>
+<translation id="6099151465289169210">Umebadilisha utumie vichupo vya faragha</translation>
 <translation id="7998918019931843664">Fungua tena kichupo kilichofungwa</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, kichupo</translation>
 <translation id="4452411734226507615">Funga kichupo cha <ph name="TAB_TITLE"/></translation>
@@ -578,6 +582,7 @@ Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph
 <translation id="8942627711005830162">Fungua katika dirisha jingine</translation>
 <translation id="4195643157523330669">Fungua katika kichupo kipya</translation>
 <translation id="1100066534610197918">Fungua katika kichupo kipya cha kikundi</translation>
+<translation id="4243710787042215766">Fungia katika kichupo cha faragha</translation>
 <translation id="4860895144060829044">Piga simu</translation>
 <translation id="6896758677409633944">Nakili</translation>
 <translation id="8393700583063109961">Tuma ujumbe</translation>
@@ -642,6 +647,7 @@ Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph
 <translation id="1671236975893690980">Inasubiri kupakua...</translation>
 <translation id="5561549206367097665">Inasubiri intaneti…</translation>
 <translation id="5864419784173784555">Inasubiri kipakuliwa kingine…</translation>
+<translation id="3110967157686007724">Kichupo cha faragha</translation>
 <translation id="6461962085415701688">Imeshindwa kufungua faili</translation>
 <translation id="1178581264944972037">Sitisha</translation>
 <translation id="8200772114523450471">Endelea</translation>
@@ -703,6 +709,7 @@ Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph
 <translation id="7810647596859435254">Fungua ukitumia...</translation>
 <translation id="5655963694829536461">Tafuta vipakuliwa vyako</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">Faili Zangu</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Makala yanaonekana hapa na unaweza kuyasoma hata ukiwa nje ya mtandao</translation>
@@ -717,6 +724,8 @@ Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph
 <translation id="968900484120156207">Kurasa unazotembelea zitaonekana hapa</translation>
 <translation id="7882131421121961860">Hakuna historia iliyopatikana</translation>
 <translation id="3549657413697417275">Tafuta katika historia yako</translation>
+<translation id="4526803704855831732">Vichupo vya Faragha</translation>
+<translation id="7465104139234185284">Funga vichupo vyote vya faragha</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">MW</translation>
 <translation id="605721222689873409">MK</translation>
@@ -790,6 +799,7 @@ Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph
 <translation id="8364299278605033898">Ona tovuti maarufu</translation>
 <translation id="1171770572613082465">Ona tovuti maarufu kwa kugusa kitufe cha "Tovuti maarufu"</translation>
 <translation id="5233638681132016545">Kichupo kipya</translation>
+<translation id="6336451774241870485">Kichupo kipya cha faragha</translation>
 <translation id="4521874409998847950">Kutoka <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>imesafirishwa na Brave Software<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">Toleo jipya linapatikana.</translation>
 <translation id="4058091506841967397">Brave haiwezi kusasisha</translation>
@@ -802,12 +812,14 @@ Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph
 <translation id="6437478888915024427">Maelezo ya ukurasa</translation>
 <translation id="7180611975245234373">Onyesha upya</translation>
 <translation id="4913169188695071480">Acha kuonyesha upya</translation>
+<translation id="3234355010754616171">Kichupo kipya cha faragha</translation>
 <translation id="1829244130665387512">Tafuta katika ukurasa</translation>
 <translation id="6593061639179217415">Tovuti ya kompyuta ya mezani</translation>
 <translation id="9063523880881406963">Zima Omba Tovuti ya Eneo-kazi</translation>
 <translation id="2038563949887743358">Washa Omba Tovuti ya Eneo-kazi</translation>
 <translation id="2433507940547922241">Sura</translation>
 <translation id="983192555821071799">Funga vichupo vyote</translation>
+<translation id="6610147964972079463">Funga vichupo vya faragha</translation>
 <translation id="1310482092992808703">Weka vichupo pamoja</translation>
 <translation id="7725024127233776428">Kurasa unazoalamisha zitaonekana hapa</translation>
 <translation id="4404568932422911380">Hakuna alamisho</translation>
@@ -864,6 +876,7 @@ Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph
 <translation id="6963642900430330478">Ukurasa huu ni hatari. Maelezo ya tovuti</translation>
 <translation id="9070377983101773829">Anza kutafuta kwa kutamka</translation>
 <translation id="8676374126336081632">Futa uingizaji wa maandishi</translation>
+<translation id="4968908871398201967">Hali ya faragha</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{Umefungua kichupo <ph name="OPEN_TABS_ONE"/>, gusa ili ubadilishe vichupo}other{Umefungua vichupo <ph name="OPEN_TABS_MANY"/>, gusa ili ubadilishe vichupo}}</translation>
 <translation id="2369533728426058518">vichupo vilivyo wazi</translation>
 <translation id="7071521146534760487">Dhibiti akaunti</translation>
@@ -871,8 +884,12 @@ Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph
 <translation id="2707726405694321444">Onyesha upya ukurasa</translation>
 <translation id="2891154217021530873">Simamisha upakiaji wa ukurasa</translation>
 <translation id="6710213216561001401">Iliyotangulia</translation>
+<translation id="9080642952018487277">Ingia katika hali ya faragha</translation>
+<translation id="4883379392681899581">Ondoka kwenye kichupo cha faragha</translation>
 <translation id="6659594942844771486">Kichupo</translation>
 <translation id="1933845786846280168">Kichupo Kilichochaguliwa</translation>
+<translation id="3377025655491224618">Kichupo cha Faragha</translation>
+<translation id="584427517463557805">Umechagua Kichupo cha Faragha</translation>
 <translation id="2268044343513325586">Chuja</translation>
 <translation id="7846076177841592234">Ghairi uchaguzi</translation>
 <translation id="7087918508125750058">Imechagua <ph name="ITEM_COUNT"/>. Chaguo zinapatikana karibu na sehemu ya juu ya skrini</translation>
@@ -973,6 +990,7 @@ Ili ubadilishe mipangilio hii, <ph name="BEGIN_LINK"/>fanya usawazishaji upya<ph
 <translation id="4878404682131129617">Imeshindwa kuanzisha mkondo kupitia seva mbadala</translation>
 <translation id="4749960740855309258">Fungua kichupo kipya</translation>
 <translation id="8788968922598763114">Fungua tena kichupo kilichofungwa mwisho</translation>
+<translation id="2280910239864711607">Fungua kichupo kipya katika hali ya Faragha</translation>
 <translation id="7929962904089429003">Fungua menyu</translation>
 <translation id="6039379616847168523">Nenda kwenye kichupo kinachofuata</translation>
 <translation id="5210286577605176222">Rudi kwenye kichupo cha awali</translation>

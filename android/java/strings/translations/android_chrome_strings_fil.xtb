@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Advanced</translation>
 <translation id="1146678959555564648">Pumasok sa VR</translation>
 <translation id="987264212798334818">Pangkalahatan</translation>
+<translation id="5186185447130319458">Pribado</translation>
 <translation id="4275663329226226506">Media</translation>
 <translation id="4759238208242260848">Mga Download</translation>
 <translation id="218608176142494674">Pagbabahagi</translation>
@@ -356,6 +357,7 @@ Maaaring may ibang uri ng history ng pag-browse ang iyong Brave Software account
 <translation id="2131665479022868825"><ph name="DATA"/> ang natipid</translation>
 <translation id="8569404424186215731">simula noong <ph name="DATE"/></translation>
 <translation id="3252158532344029638">Sa Lite mode, mas mabilis na nilo-load ng Brave ang mga page at mas kaunti nang 60 porsyento ang ginagamit nitong data.</translation>
+<translation id="1438581767753657407">Kapag naka-on ang Lite mode, ginagamit ng Brave ang mga server ng Brave para mapabilis ang pag-load ng mga page. Nire-rewrite ng Lite mode ang mga napakabagal na page para i-load lang ang mahalagang content. Hindi nagagamit ang Lite mode sa Mga pribadong tab.</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> ang natipid sa data</translation>
 <translation id="7494974237137038751">natipid na data</translation>
 <translation id="6111020039983847643">nagamit na data</translation>
@@ -520,7 +522,9 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="7947953824732555851">I-accept, mag-sign in</translation>
 <translation id="8583805026567836021">Kini-clear ang data ng account</translation>
 <translation id="8310344678080805313">Mga karaniwang tab</translation>
+<translation id="2633278372998075009">Mga pribadong tab</translation>
 <translation id="5748802427693696783">Lumipat sa mga karaniwang tab</translation>
+<translation id="6099151465289169210">Lumipat sa mga pribadong tab</translation>
 <translation id="7998918019931843664">Muling buksan ang isinarang tab</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, tab</translation>
 <translation id="4452411734226507615">Isara ang tab na <ph name="TAB_TITLE"/></translation>
@@ -578,6 +582,7 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="8942627711005830162">Buksan sa ibang window</translation>
 <translation id="4195643157523330669">Buksan sa bagong tab</translation>
 <translation id="1100066534610197918">Buksan sa bagong tab sa grupo</translation>
+<translation id="4243710787042215766">Buksan sa pribadong tab</translation>
 <translation id="4860895144060829044">Tawagan</translation>
 <translation id="6896758677409633944">Copy</translation>
 <translation id="8393700583063109961">Ipadala ang mensahe</translation>
@@ -642,6 +647,7 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="1671236975893690980">Nakabinbin ang pag-download...</translation>
 <translation id="5561549206367097665">Naghihintay ng network…</translation>
 <translation id="5864419784173784555">Naghihintay ng isa pang download…</translation>
+<translation id="3110967157686007724">Pribadong tab</translation>
 <translation id="6461962085415701688">Hindi mabuksan ang file</translation>
 <translation id="1178581264944972037">I-pause</translation>
 <translation id="8200772114523450471">Resume</translation>
@@ -703,6 +709,7 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="7810647596859435254">Buksan gamit ang…</translation>
 <translation id="5655963694829536461">Maghanap sa iyong mga download</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">Aking Mga File</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Lalabas dito ang mga artikulong mababasa mo kahit offline ka</translation>
@@ -717,6 +724,8 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="968900484120156207">Lalabas dito ang mga page na binibisita mo</translation>
 <translation id="7882131421121961860">Walang nakitang history</translation>
 <translation id="3549657413697417275">Hanapin sa iyong history</translation>
+<translation id="4526803704855831732">Mga Pribadong Tab</translation>
+<translation id="7465104139234185284">Isara ang lahat ng pribadong tab</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">YY</translation>
@@ -790,6 +799,7 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="8364299278605033898">Tingnan ang mga sikat na website</translation>
 <translation id="1171770572613082465">Tingnan ang mga sikat na website sa pamamagitan ng pag-tap sa button na "Mga nangungunang site"</translation>
 <translation id="5233638681132016545">Bagong tab</translation>
+<translation id="6336451774241870485">Bagong pribadong tab</translation>
 <translation id="4521874409998847950">Mula sa <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>ihinatid ng Brave Software<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">May available na mas bagong bersyon</translation>
 <translation id="4058091506841967397">Hindi ma-update: Brave</translation>
@@ -802,12 +812,14 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="6437478888915024427">Impormasyon ng page</translation>
 <translation id="7180611975245234373">I-refresh</translation>
 <translation id="4913169188695071480">Ihinto ang pag-refresh</translation>
+<translation id="3234355010754616171">Bagong pribadong tab</translation>
 <translation id="1829244130665387512">Hanapin sa page</translation>
 <translation id="6593061639179217415">Desktop site</translation>
 <translation id="9063523880881406963">I-off ang Hilingin ang site sa desktop</translation>
 <translation id="2038563949887743358">I-on ang Hilingin ang site sa desktop</translation>
 <translation id="2433507940547922241">Hitsura</translation>
 <translation id="983192555821071799">Isara ang lahat ng tab</translation>
+<translation id="6610147964972079463">Isara ang mga pribadong tab</translation>
 <translation id="1310482092992808703">Igrupo ang mga tab</translation>
 <translation id="7725024127233776428">Lalabas dito ang mga page na iyong.na-bookmark</translation>
 <translation id="4404568932422911380">Walang bookmark</translation>
@@ -864,6 +876,7 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="6963642900430330478">Mapanganib ang page na ito. Impormasyon ng site</translation>
 <translation id="9070377983101773829">Simulan ang paghahanap gamit ang boses</translation>
 <translation id="8676374126336081632">I-clear ang input</translation>
+<translation id="4968908871398201967">Private mode</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> nakabukas na tab, i-tap para lumipat ng tab}one{<ph name="OPEN_TABS_MANY"/> nakabukas na tab, i-tap para lumipat ng tab}other{<ph name="OPEN_TABS_MANY"/> na nakabukas na tab, i-tap para lumipat ng tab}}</translation>
 <translation id="2369533728426058518">magbukas ng mga tab</translation>
 <translation id="7071521146534760487">Pamahalaan ang account</translation>
@@ -871,8 +884,12 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="2707726405694321444">I-refresh ang page</translation>
 <translation id="2891154217021530873">Ihinto ang pag-load ng page</translation>
 <translation id="6710213216561001401">Nakaraan</translation>
+<translation id="9080642952018487277">Pumasok sa private mode</translation>
+<translation id="4883379392681899581">Umalis sa private mode</translation>
 <translation id="6659594942844771486">Tab</translation>
 <translation id="1933845786846280168">Napiling Tab</translation>
+<translation id="3377025655491224618">Pribadong Tab</translation>
+<translation id="584427517463557805">Napiling Pribadong Tab</translation>
 <translation id="2268044343513325586">Pinuhin</translation>
 <translation id="7846076177841592234">Kanselahin ang pinili</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> ang napili.  Available ang mga opsyon malapit sa itaas ng screen</translation>
@@ -973,6 +990,7 @@ Para baguhin ang setting na ito, <ph name="BEGIN_LINK"/>i-reset ang pag-sync<ph 
 <translation id="4878404682131129617">Hindi nakagawa ng tunnel sa pamamagitan ng proxy server</translation>
 <translation id="4749960740855309258">Magbukas ng bagong tab</translation>
 <translation id="8788968922598763114">Muling buksan ang huling isinarang tab</translation>
+<translation id="2280910239864711607">Magbukas ng bagong tab sa Private mode</translation>
 <translation id="7929962904089429003">Buksan ang menu</translation>
 <translation id="6039379616847168523">Pumunta sa susunod na tab</translation>
 <translation id="5210286577605176222">Pumunta sa nakaraang tab</translation>

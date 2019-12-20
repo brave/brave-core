@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Напредне опције</translation>
 <translation id="1146678959555564648">Уђи у ВР</translation>
 <translation id="987264212798334818">Опште</translation>
+<translation id="5186185447130319458">Privatno</translation>
 <translation id="4275663329226226506">Медији</translation>
 <translation id="4759238208242260848">Преузимања</translation>
 <translation id="218608176142494674">Дељење</translation>
@@ -356,6 +357,7 @@ Brave Software налог можда има друге облике истори
 <translation id="2131665479022868825">Сачувано: <ph name="DATA"/></translation>
 <translation id="8569404424186215731">од <ph name="DATE"/></translation>
 <translation id="3252158532344029638">У Lite режиму Brave учитава странице брже и користи и до 60 процената мање података.</translation>
+<translation id="1438581767753657407">Kada je Laki režim omogućen, Brave koristi Brave servere da bi učinio da se stranice brže učitavaju. Laki režim ponovo napiše svaku sporu stranicu da bi učitao osnovni sadržaj. Laki režim se ne odnosi na Privatne kartice.</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> уштеде података</translation>
 <translation id="7494974237137038751">уштеђених података</translation>
 <translation id="6111020039983847643">искоришћених података</translation>
@@ -520,7 +522,9 @@ Brave Software налог можда има друге облике истори
 <translation id="7947953824732555851">Прихвати и пријави ме</translation>
 <translation id="8583805026567836021">Брисање података о налогу</translation>
 <translation id="8310344678080805313">Стандардне картице</translation>
+<translation id="2633278372998075009">Privatne kartice</translation>
 <translation id="5748802427693696783">Пребацили сте на стандардне картице</translation>
+<translation id="6099151465289169210">Prešli ste na privatne kartice</translation>
 <translation id="7998918019931843664">Поново отворите затворену картицу</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, картица</translation>
 <translation id="4452411734226507615">Затвори картицу <ph name="TAB_TITLE"/></translation>
@@ -578,6 +582,7 @@ Brave Software налог можда има друге облике истори
 <translation id="8942627711005830162">Отвори у другом прозору</translation>
 <translation id="4195643157523330669">Отвори на новој картици</translation>
 <translation id="1100066534610197918">Отвори у новој картици у групи</translation>
+<translation id="4243710787042215766">Otvori u privatnoj kartici</translation>
 <translation id="4860895144060829044">Позовите</translation>
 <translation id="6896758677409633944">Копирај</translation>
 <translation id="8393700583063109961">Пошаљите поруку</translation>
@@ -642,6 +647,7 @@ Brave Software налог можда има друге облике истори
 <translation id="1671236975893690980">Преузимање је на чекању…</translation>
 <translation id="5561549206367097665">Чека се мрежа...</translation>
 <translation id="5864419784173784555">Чека се друго преузимање...</translation>
+<translation id="3110967157686007724">Privatna kartica</translation>
 <translation id="6461962085415701688">Не можете да отворите датотеку</translation>
 <translation id="1178581264944972037">Паузирај</translation>
 <translation id="8200772114523450471">Настави</translation>
@@ -703,6 +709,7 @@ Brave Software налог можда има друге облике истори
 <translation id="7810647596859435254">Отвори помоћу…</translation>
 <translation id="5655963694829536461">Претражите преузимања</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">Моје датотеке</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Овде се појављују чланци, које можете да читате чак и када сте офлајн</translation>
@@ -717,6 +724,8 @@ Brave Software налог можда има друге облике истори
 <translation id="968900484120156207">Странице које посећујете се приказују овде</translation>
 <translation id="7882131421121961860">Историја није пронађена</translation>
 <translation id="3549657413697417275">Претражите своју историју</translation>
+<translation id="4526803704855831732">Privatne kartice</translation>
+<translation id="7465104139234185284">Zatvori sve privatne kartice</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">ММ</translation>
 <translation id="605721222689873409">ГГ</translation>
@@ -790,6 +799,7 @@ Brave Software налог можда има друге облике истори
 <translation id="8364299278605033898">Погледајте популарне веб-сајтове</translation>
 <translation id="1171770572613082465">Додирните дугме „Најпопуларнији веб-сајтови“ и видите те веб-сајтове</translation>
 <translation id="5233638681132016545">Нова картица</translation>
+<translation id="6336451774241870485">Nova privatna kartica</translation>
 <translation id="4521874409998847950">Од објављивача <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>приказује Brave Software<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">Доступна је новија верзија</translation>
 <translation id="4058091506841967397">Brave се неће ажурирати</translation>
@@ -802,12 +812,14 @@ Brave Software налог можда има друге облике истори
 <translation id="6437478888915024427">Информације о страници</translation>
 <translation id="7180611975245234373">Освежи</translation>
 <translation id="4913169188695071480">Заустави освежавање</translation>
+<translation id="3234355010754616171">Nova privatna kartica</translation>
 <translation id="1829244130665387512">Пронађи на страници</translation>
 <translation id="6593061639179217415">Верзија сајта за рачунар</translation>
 <translation id="9063523880881406963">Искључи захтевање верзије сајта за рачунаре</translation>
 <translation id="2038563949887743358">Укључи захтевање верзије сајта за рачунаре</translation>
 <translation id="2433507940547922241">Изглед</translation>
 <translation id="983192555821071799">Затвори све картице</translation>
+<translation id="6610147964972079463">Zatvori privatne katrice</translation>
 <translation id="1310482092992808703">Групиши картице</translation>
 <translation id="7725024127233776428">Странице које обележите се приказују овде</translation>
 <translation id="4404568932422911380">Нема обележивача</translation>
@@ -864,6 +876,7 @@ Brave Software налог можда има друге облике истори
 <translation id="6963642900430330478">Ова страница је опасна. Информације о сајту</translation>
 <translation id="9070377983101773829">Започни гласовну претрагу</translation>
 <translation id="8676374126336081632">Обриши унос</translation>
+<translation id="4968908871398201967">Privatni režim</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> отворена картица, додирните да бисте прешли на другу картицу}one{<ph name="OPEN_TABS_MANY"/> отворена картица, додирните да бисте прешли на другу картицу}few{<ph name="OPEN_TABS_MANY"/> отворене картице, додирните да бисте прешли на другу картицу}other{<ph name="OPEN_TABS_MANY"/> отворених картица, додирните да бисте прешли на другу картицу}}</translation>
 <translation id="2369533728426058518">отворене картице</translation>
 <translation id="7071521146534760487">Управљајте налогом</translation>
@@ -871,8 +884,12 @@ Brave Software налог можда има друге облике истори
 <translation id="2707726405694321444">Освежи страницу</translation>
 <translation id="2891154217021530873">Заустави учитавање странице</translation>
 <translation id="6710213216561001401">Претходно</translation>
+<translation id="9080642952018487277">Uđi u privatni režim</translation>
+<translation id="4883379392681899581">Napusti privatni režim</translation>
 <translation id="6659594942844771486">Tab</translation>
 <translation id="1933845786846280168">Изабране картице</translation>
+<translation id="3377025655491224618">Privatna kartica</translation>
+<translation id="584427517463557805">Izabrana privatna kartica</translation>
 <translation id="2268044343513325586">Прецизирај</translation>
 <translation id="7846076177841592234">Откажи избор</translation>
 <translation id="7087918508125750058">Изабрали сте <ph name="ITEM_COUNT"/>. Опције су доступне при врху екрана</translation>
@@ -973,6 +990,7 @@ Brave Software налог можда има друге облике истори
 <translation id="4878404682131129617">Успостављање тунела преко прокси сервера није успело</translation>
 <translation id="4749960740855309258">Отворите нову картицу</translation>
 <translation id="8788968922598763114">Поновно отварање последње затворене картице</translation>
+<translation id="2280910239864711607">Otvori novu karticu u Privatnom režimu</translation>
 <translation id="7929962904089429003">Отворите мени</translation>
 <translation id="6039379616847168523">Прелазак на следећу картицу</translation>
 <translation id="5210286577605176222">Прелазак на претходну картицу</translation>

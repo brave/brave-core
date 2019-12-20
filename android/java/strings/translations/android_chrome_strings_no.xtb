@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Avansert</translation>
 <translation id="1146678959555564648">Slå på VR-modus</translation>
 <translation id="987264212798334818">Generelt</translation>
+<translation id="5186185447130319458">Privat</translation>
 <translation id="4275663329226226506">Medier</translation>
 <translation id="4759238208242260848">Nedlastinger</translation>
 <translation id="218608176142494674">Deling</translation>
@@ -356,6 +357,7 @@ Brave Software-kontoen din kan ha andre former for nettleserlogger, for eksempel
 <translation id="2131665479022868825"><ph name="DATA"/> spart</translation>
 <translation id="8569404424186215731">siden <ph name="DATE"/></translation>
 <translation id="3252158532344029638">I forenklet modus laster Brave inn sider raskere og bruker opptil 60 prosent mindre data.</translation>
+<translation id="1438581767753657407">Når forenklet modus er på, brukes Brave-tjenerne til å laste inn sider raskere. Forenklet modus omskriver svært trege sider, slik at kun essensielt innhold lastes inn. Forenklet modus brukes ikke på private faner.</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> datasparing</translation>
 <translation id="7494974237137038751">data spart</translation>
 <translation id="6111020039983847643">data brukt</translation>
@@ -520,7 +522,9 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="7947953824732555851">Godta og logg på</translation>
 <translation id="8583805026567836021">Fjerner kontodata …</translation>
 <translation id="8310344678080805313">Standardfaner</translation>
+<translation id="2633278372998075009">Private faner</translation>
 <translation id="5748802427693696783">Byttet til standardfaner</translation>
+<translation id="6099151465289169210">Byttet til private faner</translation>
 <translation id="7998918019931843664">Åpne lukkede faner igjen</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/> – fane</translation>
 <translation id="4452411734226507615">Lukk <ph name="TAB_TITLE"/>-fanen</translation>
@@ -578,6 +582,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="8942627711005830162">Åpne i et annet vindu</translation>
 <translation id="4195643157523330669">Åpne i ny fane</translation>
 <translation id="1100066534610197918">Åpne i en ny fane i en gruppe</translation>
+<translation id="4243710787042215766">Åpne i privat fane</translation>
 <translation id="4860895144060829044">Ring</translation>
 <translation id="6896758677409633944">Kopiér</translation>
 <translation id="8393700583063109961">Send melding</translation>
@@ -642,6 +647,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="1671236975893690980">Nedlasting venter</translation>
 <translation id="5561549206367097665">Venter på nettverket …</translation>
 <translation id="5864419784173784555">Venter på en annen nedlasting …</translation>
+<translation id="3110967157686007724">Privat fane</translation>
 <translation id="6461962085415701688">Kan ikke åpne filen</translation>
 <translation id="1178581264944972037">Stans midlertidig</translation>
 <translation id="8200772114523450471">Fortsett</translation>
@@ -703,6 +709,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="7810647596859435254">Åpne med…</translation>
 <translation id="5655963694829536461">Søk i nedlastingene dine</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">Mine filer</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Her vises artikler, som du kan lese selv om du er uten nett</translation>
@@ -717,6 +724,8 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="968900484120156207">Sider du besøker, vises her</translation>
 <translation id="7882131421121961860">Fant ingen logg</translation>
 <translation id="3549657413697417275">Søk i loggen</translation>
+<translation id="4526803704855831732">Private faner</translation>
+<translation id="7465104139234185284">Lukk alle private faner</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">ÅÅ</translation>
@@ -790,6 +799,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="8364299278605033898">Se populære nettsteder</translation>
 <translation id="1171770572613082465">Se populære nettsteder ved å trykke på «Populært»-knappen</translation>
 <translation id="5233638681132016545">Ny fane</translation>
+<translation id="6336451774241870485">Ny privat fane</translation>
 <translation id="4521874409998847950">Fra <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>levert av Brave Software<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">En nyere versjon er tilgjengelig</translation>
 <translation id="4058091506841967397">Kan ikke oppdatere Brave</translation>
@@ -802,12 +812,14 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="6437478888915024427">Sideinformasjon</translation>
 <translation id="7180611975245234373">Last inn på nytt</translation>
 <translation id="4913169188695071480">Slutt å laste inn på nytt</translation>
+<translation id="3234355010754616171">Ny privat fane</translation>
 <translation id="1829244130665387512">Finn på side</translation>
 <translation id="6593061639179217415">Side for datamaskiner</translation>
 <translation id="9063523880881406963">Slå av Bruk skrivebordsversjon</translation>
 <translation id="2038563949887743358">Slå på Bruk skrivebordsversjon</translation>
 <translation id="2433507940547922241">Utseende</translation>
 <translation id="983192555821071799">Lukk alle faner</translation>
+<translation id="6610147964972079463">Lukk private faner</translation>
 <translation id="1310482092992808703">Gruppér faner</translation>
 <translation id="7725024127233776428">Sider du setter som bokmerker, vises her</translation>
 <translation id="4404568932422911380">Ingen bokmerker</translation>
@@ -864,6 +876,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="6963642900430330478">Denne siden er farlig. Informasjon om nettstedet</translation>
 <translation id="9070377983101773829">Start talesøk</translation>
 <translation id="8676374126336081632">Slett teksten</translation>
+<translation id="4968908871398201967">Privat modus</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> åpen fane – trykk for å bytte fane}other{<ph name="OPEN_TABS_MANY"/> åpne faner – trykk for å bytte fane}}</translation>
 <translation id="2369533728426058518">åpne faner</translation>
 <translation id="7071521146534760487">Administrer kontoen</translation>
@@ -871,8 +884,12 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="2707726405694321444">Last inn siden på nytt</translation>
 <translation id="2891154217021530873">Stopp innlastingen av siden</translation>
 <translation id="6710213216561001401">Forrige</translation>
+<translation id="9080642952018487277">Gå inn i privat modus</translation>
+<translation id="4883379392681899581">Gå ut av privat modus</translation>
 <translation id="6659594942844771486">Tab</translation>
 <translation id="1933845786846280168">Valgt fane</translation>
+<translation id="3377025655491224618">Privat fane</translation>
+<translation id="584427517463557805">Valgt privat fane</translation>
 <translation id="2268044343513325586">Finstem</translation>
 <translation id="7846076177841592234">Opphev valget</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> er valgt. Du finner alternativer oppe på skjermen</translation>
@@ -973,6 +990,7 @@ For å endre denne innstillingen, <ph name="BEGIN_LINK"/>tilbakestill synkronise
 <translation id="4878404682131129617">Kunne ikke opprette tunnel via proxy-tjener.</translation>
 <translation id="4749960740855309258">Åpne en ny fane</translation>
 <translation id="8788968922598763114">Åpne den sist lukkede fanen på nytt</translation>
+<translation id="2280910239864711607">Åpne en ny fane i privat modus</translation>
 <translation id="7929962904089429003">Åpne menyen</translation>
 <translation id="6039379616847168523">Gå til den neste fanen</translation>
 <translation id="5210286577605176222">Gå til den forrige fanen</translation>

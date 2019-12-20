@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Papildu</translation>
 <translation id="1146678959555564648">Ieiet virtuālajā realitātē</translation>
 <translation id="987264212798334818">Vispārīgi</translation>
+<translation id="5186185447130319458">Inkognito</translation>
 <translation id="4275663329226226506">Multivide</translation>
 <translation id="4759238208242260848">Lejupielādes</translation>
 <translation id="218608176142494674">Kopīgošana</translation>
@@ -356,6 +357,7 @@ Jūsu Brave Software kontam vietnē <ph name="BEGIN_LINK"/>myactivity.google.com
 <translation id="2131665479022868825">Ietaupījums: <ph name="DATA"/></translation>
 <translation id="8569404424186215731">kopš šāda datuma: <ph name="DATE"/></translation>
 <translation id="3252158532344029638">Vienkāršotajā režīmā Brave ielādē lapas ātrāk un patērē pat par 60 procentiem mazāk datu.</translation>
+<translation id="1438581767753657407">Kad ir aktivizēts vienkāršotais režīms, Brave izmanto Brave serverus, lai panāktu ātrāku lapu ielādi. Vienkāršotais režīms ļoti lēnām pārraksta lapas, lai atvērtu tikai būtisko saturu. Vienkāršotais režīms nedarbojas inkognito cilnēm.</translation>
 <translation id="6159335304067198720">Datu lietojuma samazinājums: <ph name="PERCENT"/></translation>
 <translation id="7494974237137038751">Saglabātie dati</translation>
 <translation id="6111020039983847643">Izmantotie dati</translation>
@@ -520,7 +522,9 @@ Lai mainītu šo iestatījumu, <ph name="BEGIN_LINK"/>atiestatiet sinhronizācij
 <translation id="7947953824732555851">Pieņemt un pierakst.</translation>
 <translation id="8583805026567836021">Konta datu dzēšana</translation>
 <translation id="8310344678080805313">Standarta cilnes</translation>
+<translation id="2633278372998075009">Inkognito cilnes</translation>
 <translation id="5748802427693696783">Notika pārslēgšanās uz standarta cilnēm</translation>
+<translation id="6099151465289169210">Notika pārslēgšanās uz inkognito cilnēm</translation>
 <translation id="7998918019931843664">Vēlreiz atvērt aizvērto cilni</translation>
 <translation id="8853345339104747198">Cilne <ph name="TAB_TITLE"/></translation>
 <translation id="4452411734226507615">Aizvērt cilni <ph name="TAB_TITLE"/></translation>
@@ -578,6 +582,7 @@ Lai mainītu šo iestatījumu, <ph name="BEGIN_LINK"/>atiestatiet sinhronizācij
 <translation id="8942627711005830162">Atvērt citā logā</translation>
 <translation id="4195643157523330669">Atvērt jaunā cilnē</translation>
 <translation id="1100066534610197918">Atvērt jaunu cilni grupā</translation>
+<translation id="4243710787042215766">Atvērt inkognito cilnē</translation>
 <translation id="4860895144060829044">Zvanīt</translation>
 <translation id="6896758677409633944">Kopēt</translation>
 <translation id="8393700583063109961">Sūtīt ziņojumu</translation>
@@ -642,6 +647,7 @@ Lai mainītu šo iestatījumu, <ph name="BEGIN_LINK"/>atiestatiet sinhronizācij
 <translation id="1671236975893690980">Lejupielāde tiek gaidīta...</translation>
 <translation id="5561549206367097665">Tiek gaidīts savienojums ar tīklu…</translation>
 <translation id="5864419784173784555">Tiek gaidīta cita lejupielāde…</translation>
+<translation id="3110967157686007724">Inkognito cilne</translation>
 <translation id="6461962085415701688">Nevar atvērt failu.</translation>
 <translation id="1178581264944972037">Pauzēt</translation>
 <translation id="8200772114523450471">Kopsavilkums</translation>
@@ -703,6 +709,7 @@ Lai mainītu šo iestatījumu, <ph name="BEGIN_LINK"/>atiestatiet sinhronizācij
 <translation id="7810647596859435254">Atvērt ar…</translation>
 <translation id="5655963694829536461">Meklējiet savas lejupielādes</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">Mani faili</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Šeit tiek rādīti raksti, kurus varat lasīt arī bezsaistē</translation>
@@ -717,6 +724,8 @@ Lai mainītu šo iestatījumu, <ph name="BEGIN_LINK"/>atiestatiet sinhronizācij
 <translation id="968900484120156207">Šeit tiek rādītas jūsu apmeklētās lapas</translation>
 <translation id="7882131421121961860">Vēsture nav atrasta</translation>
 <translation id="3549657413697417275">Meklēt savā vēsturē</translation>
+<translation id="4526803704855831732">Inkognito cilnes</translation>
+<translation id="7465104139234185284">Aizvērt visas inkognito cilnes</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">GG</translation>
@@ -790,6 +799,7 @@ Lai mainītu šo iestatījumu, <ph name="BEGIN_LINK"/>atiestatiet sinhronizācij
 <translation id="8364299278605033898">Skatīt populāras vietnes</translation>
 <translation id="1171770572613082465">Lai skatītu populāras tīmekļa vietnes, pieskarieties pogai “Populāras”</translation>
 <translation id="5233638681132016545">Jauna cilne</translation>
+<translation id="6336451774241870485">Jauna inkognito cilne</translation>
 <translation id="4521874409998847950">No izdevēja <ph name="PUBLISHER_ORIGIN"/> — <ph name="BEGIN_DEEMPHASIZED"/>nodrošina Brave Software<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">Pieejama jaunāka versija</translation>
 <translation id="4058091506841967397">Nevar atjaunināt Brave</translation>
@@ -802,12 +812,14 @@ Lai mainītu šo iestatījumu, <ph name="BEGIN_LINK"/>atiestatiet sinhronizācij
 <translation id="6437478888915024427">Lapas informācija</translation>
 <translation id="7180611975245234373">Atsvaidzināt</translation>
 <translation id="4913169188695071480">Pārtraukt atsvaidzināšanu</translation>
+<translation id="3234355010754616171">Jauna inkognito cilne</translation>
 <translation id="1829244130665387512">Atrast lapā</translation>
 <translation id="6593061639179217415">Vietne datoriem</translation>
 <translation id="9063523880881406963">Izslēgt iestatījumu “Pieprasīt datora vietni”</translation>
 <translation id="2038563949887743358">Ieslēgt iestatījumu “Pieprasīt datora vietni”</translation>
 <translation id="2433507940547922241">Izskats</translation>
 <translation id="983192555821071799">Aizvērt visas cilnes</translation>
+<translation id="6610147964972079463">Aizvērt inkognito cilnes</translation>
 <translation id="1310482092992808703">Grupēt cilnes</translation>
 <translation id="7725024127233776428">Šeit tiek rādītas ar grāmatzīmēm atzīmētās lapas</translation>
 <translation id="4404568932422911380">Nav grāmatzīmju</translation>
@@ -864,6 +876,7 @@ Lai mainītu šo iestatījumu, <ph name="BEGIN_LINK"/>atiestatiet sinhronizācij
 <translation id="6963642900430330478">Šī lapa ir bīstama. Vietnes informācija</translation>
 <translation id="9070377983101773829">Sākt meklēšanu ar balsi</translation>
 <translation id="8676374126336081632">Notīrīt ievadi</translation>
+<translation id="4968908871398201967">Inkognito režīms</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> atvērta cilne. Pieskarieties, lai pārslēgtu cilnes.}zero{<ph name="OPEN_TABS_MANY"/> atvērtu ciļņu. Pieskarieties, lai pārslēgtu cilnes.}one{<ph name="OPEN_TABS_MANY"/> atvērta cilne. Pieskarieties, lai pārslēgtu cilnes.}other{<ph name="OPEN_TABS_MANY"/> atvērtas cilnes. Pieskarieties, lai pārslēgtu cilnes.}}</translation>
 <translation id="2369533728426058518">atvērt cilnes</translation>
 <translation id="7071521146534760487">Pārvaldīt kontu</translation>
@@ -871,8 +884,12 @@ Lai mainītu šo iestatījumu, <ph name="BEGIN_LINK"/>atiestatiet sinhronizācij
 <translation id="2707726405694321444">Atsvaidzināt lapu</translation>
 <translation id="2891154217021530873">Pārtraukt lapas ielādi</translation>
 <translation id="6710213216561001401">Iepriekšējais</translation>
+<translation id="9080642952018487277">Aktivizēt inkognito režīmu</translation>
+<translation id="4883379392681899581">Iziet no inkognito režīma</translation>
 <translation id="6659594942844771486">Cilne</translation>
 <translation id="1933845786846280168">Atlasītā cilne</translation>
+<translation id="3377025655491224618">Inkognito cilne</translation>
+<translation id="584427517463557805">Atlasītā inkognito cilne</translation>
 <translation id="2268044343513325586">Uzlabot</translation>
 <translation id="7846076177841592234">Atcelt atlasi</translation>
 <translation id="7087918508125750058">Atlasīti vienumi: <ph name="ITEM_COUNT"/>. Opcijas ir pieejamas ekrāna augšdaļā.</translation>
@@ -973,6 +990,7 @@ Lai mainītu šo iestatījumu, <ph name="BEGIN_LINK"/>atiestatiet sinhronizācij
 <translation id="4878404682131129617">Neizdevās iestatīt porta pārsūtīšanu, izmantojot starpniekserveri.</translation>
 <translation id="4749960740855309258">Atvērt jaunu cilni</translation>
 <translation id="8788968922598763114">Atkārtoti atvērt pēdējo aizvērto cilni</translation>
+<translation id="2280910239864711607">Atvērt jaunu cilni inkognito režīmā</translation>
 <translation id="7929962904089429003">Atvērt izvēlni</translation>
 <translation id="6039379616847168523">Pāriet uz nākamo cilni</translation>
 <translation id="5210286577605176222">Pāriet uz iepriekšējo cilni</translation>

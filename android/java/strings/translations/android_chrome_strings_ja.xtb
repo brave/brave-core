@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">詳細設定</translation>
 <translation id="1146678959555564648">VR を入力</translation>
 <translation id="987264212798334818">全般</translation>
+<translation id="5186185447130319458">プライベート</translation>
 <translation id="4275663329226226506">メディア</translation>
 <translation id="4759238208242260848">ダウンロード</translation>
 <translation id="218608176142494674">共有</translation>
@@ -356,6 +357,7 @@
 <translation id="2131665479022868825"><ph name="DATA"/> 削減しました</translation>
 <translation id="8569404424186215731">（<ph name="DATE"/>以降）</translation>
 <translation id="3252158532344029638">ライトモードを使用すると、Brave でページの読み込みが高速化され、データ使用量も最大 60 パーセント抑えることができます。</translation>
+<translation id="1438581767753657407">Liteモードがオンの場合、BraveはBraveサーバーを使用してページの読み込みを高速化します。Liteモードは、非常に遅いページを書き換えて、重要なコンテンツのみを読み込みます。Liteモードは、プライベートタブには適用されません。</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> のデータを削減</translation>
 <translation id="7494974237137038751">データ削減量</translation>
 <translation id="6111020039983847643">データ使用量</translation>
@@ -520,7 +522,9 @@
 <translation id="7947953824732555851">同意してログイン</translation>
 <translation id="8583805026567836021">アカウント データをクリア中</translation>
 <translation id="8310344678080805313">標準のタブ</translation>
+<translation id="2633278372998075009">プライベートタブ</translation>
 <translation id="5748802427693696783">標準のタブに切り替えました</translation>
+<translation id="6099151465289169210">プライベートタブに切り替えました</translation>
 <translation id="7998918019931843664">閉じたタブを開く</translation>
 <translation id="8853345339104747198">「<ph name="TAB_TITLE"/>」タブ</translation>
 <translation id="4452411734226507615">「<ph name="TAB_TITLE"/>」タブを閉じます</translation>
@@ -578,6 +582,7 @@
 <translation id="8942627711005830162">別のウィンドウで開く</translation>
 <translation id="4195643157523330669">新しいタブで開く</translation>
 <translation id="1100066534610197918">新しいタブをグループで開く</translation>
+<translation id="4243710787042215766">プライベートタブで開きます</translation>
 <translation id="4860895144060829044">通話</translation>
 <translation id="6896758677409633944">コピー</translation>
 <translation id="8393700583063109961">メッセージを送信</translation>
@@ -642,6 +647,7 @@
 <translation id="1671236975893690980">ダウンロードを待機しています...</translation>
 <translation id="5561549206367097665">ネットワーク接続を待機しています…</translation>
 <translation id="5864419784173784555">別のダウンロードの完了待ちです…</translation>
+<translation id="3110967157686007724">プライベートタブ</translation>
 <translation id="6461962085415701688">ファイルを開けません</translation>
 <translation id="1178581264944972037">一時停止</translation>
 <translation id="8200772114523450471">再開</translation>
@@ -703,6 +709,7 @@
 <translation id="7810647596859435254">アプリで開く…</translation>
 <translation id="5655963694829536461">ダウンロードしたアイテムを検索</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">マイファイル</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">記事がここに表示されます。これらの記事はオフラインでも読むことができます</translation>
@@ -717,6 +724,8 @@
 <translation id="968900484120156207">アクセスしたページがここに表示されます</translation>
 <translation id="7882131421121961860">履歴が見つかりません</translation>
 <translation id="3549657413697417275">履歴を検索</translation>
+<translation id="4526803704855831732">プライベートタブ</translation>
+<translation id="7465104139234185284">すべてのプライベートタブを閉じます</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">YY</translation>
@@ -790,6 +799,7 @@
 <translation id="8364299278605033898">人気のウェブサイトを表示します</translation>
 <translation id="1171770572613082465">人気のウェブサイトを表示するには、[上位のサイト] ボタンをタップします</translation>
 <translation id="5233638681132016545">新しいタブ</translation>
+<translation id="6336451774241870485">新しいプライベートタブ</translation>
 <translation id="4521874409998847950"><ph name="PUBLISHER_ORIGIN"/> のコンテンツ - <ph name="BEGIN_DEEMPHASIZED"/>Brave Software により配信<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">新しいバージョンをご利用いただけます</translation>
 <translation id="4058091506841967397">Brave を更新できません</translation>
@@ -802,12 +812,14 @@
 <translation id="6437478888915024427">ページ情報</translation>
 <translation id="7180611975245234373">更新</translation>
 <translation id="4913169188695071480">更新を停止</translation>
+<translation id="3234355010754616171">新しいプライベートタブ</translation>
 <translation id="1829244130665387512">ページ内検索</translation>
 <translation id="6593061639179217415">PC 版サイト</translation>
 <translation id="9063523880881406963">[PC 版サイトを見る] をオフにします</translation>
 <translation id="2038563949887743358">[PC 版サイトを見る] をオンにします</translation>
 <translation id="2433507940547922241">デザイン</translation>
 <translation id="983192555821071799">すべてのタブを閉じる</translation>
+<translation id="6610147964972079463">プライベートタブを閉じます</translation>
 <translation id="1310482092992808703">タブをグループ化</translation>
 <translation id="7725024127233776428">ブックマークしたページがここに表示されます</translation>
 <translation id="4404568932422911380">ブックマークがありません</translation>
@@ -864,6 +876,7 @@
 <translation id="6963642900430330478">このページは危険です。サイト情報</translation>
 <translation id="9070377983101773829">音声検索を開始</translation>
 <translation id="8676374126336081632">入力内容を消去</translation>
+<translation id="4968908871398201967">プライベートモード</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> 個のタブが開いています。タブを切り替えるにはタップします}other{<ph name="OPEN_TABS_MANY"/> 個のタブが開いています。タブを切り替えるにはタップします}}</translation>
 <translation id="2369533728426058518">開いているタブ</translation>
 <translation id="7071521146534760487">アカウントを管理</translation>
@@ -871,8 +884,12 @@
 <translation id="2707726405694321444">ページを更新</translation>
 <translation id="2891154217021530873">ページの読み込みを停止</translation>
 <translation id="6710213216561001401">前へ</translation>
+<translation id="9080642952018487277">プライベートモードに入ります</translation>
+<translation id="4883379392681899581">プライベートモードを終了します</translation>
 <translation id="6659594942844771486">Tab</translation>
 <translation id="1933845786846280168">選択したタブ</translation>
+<translation id="3377025655491224618">プライベートタブ</translation>
+<translation id="584427517463557805">選択されたプライベートタブ</translation>
 <translation id="2268044343513325586">絞り込み</translation>
 <translation id="7846076177841592234">選択解除</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> 件選択されています。オプションは画面上部にあります</translation>
@@ -973,6 +990,7 @@
 <translation id="4878404682131129617">プロキシ サーバー経由のトンネルを確立できませんでした</translation>
 <translation id="4749960740855309258">新しいタブを開く</translation>
 <translation id="8788968922598763114">最後に閉じたタブを開く</translation>
+<translation id="2280910239864711607">プライベートモードで新しいタブを開きます</translation>
 <translation id="7929962904089429003">メニューを開く</translation>
 <translation id="6039379616847168523">次のタブに移動する</translation>
 <translation id="5210286577605176222">前のタブに移動する</translation>

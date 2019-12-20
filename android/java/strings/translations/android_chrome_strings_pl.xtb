@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Zaawansowane</translation>
 <translation id="1146678959555564648">Włącz tryb VR</translation>
 <translation id="987264212798334818">Ogólne</translation>
+<translation id="5186185447130319458">Prywatny</translation>
 <translation id="4275663329226226506">Multimedia</translation>
 <translation id="4759238208242260848">Pobrane pliki</translation>
 <translation id="218608176142494674">Udostępnianie</translation>
@@ -356,6 +357,7 @@ Na stronie <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> na 
 <translation id="2131665479022868825">Zaoszczędzono <ph name="DATA"/></translation>
 <translation id="8569404424186215731">od <ph name="DATE"/></translation>
 <translation id="3252158532344029638">Brave szybciej ładuje strony w wersji uproszczonej, przesyłając nawet o 60 procent mniej danych.</translation>
+<translation id="1438581767753657407">Po włączeniu trybu Lite Brave korzysta z serwerów Brave, aby strony wczytywały się szybciej. Tryb Lite sprawia, że bardzo wolne strony wczytują tylko niezbędną zawartość. Tryb Lite nie ma zastosowania do kart prywatnych.</translation>
 <translation id="6159335304067198720">Oszczędność danych: <ph name="PERCENT"/></translation>
 <translation id="7494974237137038751">zaoszczędzonych danych</translation>
 <translation id="6111020039983847643">użytych danych</translation>
@@ -520,7 +522,9 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="7947953824732555851">Zaakceptuj i zaloguj się</translation>
 <translation id="8583805026567836021">Usuwam dane konta</translation>
 <translation id="8310344678080805313">Karty standardowe</translation>
+<translation id="2633278372998075009">Karty prywatne</translation>
 <translation id="5748802427693696783">Przełączono na karty standardowe</translation>
+<translation id="6099151465289169210">Przełączono na karty prywatne</translation>
 <translation id="7998918019931843664">Otwórz ponownie zamkniętą kartę</translation>
 <translation id="8853345339104747198">Karta <ph name="TAB_TITLE"/></translation>
 <translation id="4452411734226507615">Zamknij kartę <ph name="TAB_TITLE"/></translation>
@@ -578,6 +582,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="8942627711005830162">Otwórz w innym oknie</translation>
 <translation id="4195643157523330669">Otwórz w nowej karcie</translation>
 <translation id="1100066534610197918">Otwórz w nowej karcie w grupie</translation>
+<translation id="4243710787042215766">Otwórz w karcie prywatnej</translation>
 <translation id="4860895144060829044">Zadzwoń</translation>
 <translation id="6896758677409633944">Kopiuj</translation>
 <translation id="8393700583063109961">Wyślij wiadomość</translation>
@@ -642,6 +647,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="1671236975893690980">Oczekuję na pobranie…</translation>
 <translation id="5561549206367097665">Czekam na sieć…</translation>
 <translation id="5864419784173784555">Czekam na inny plik do pobrania…</translation>
+<translation id="3110967157686007724">Karta prywatna</translation>
 <translation id="6461962085415701688">Nie można otworzyć pliku</translation>
 <translation id="1178581264944972037">Wstrzymaj</translation>
 <translation id="8200772114523450471">Wznów</translation>
@@ -703,6 +709,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="7810647596859435254">Otwórz za pomocą…</translation>
 <translation id="5655963694829536461">Przeszukaj pobrane pliki</translation>
 <translation id="8485434340281759656"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">Moje pliki</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Tutaj pojawiają się artykuły, które możesz czytać, nawet gdy jesteś offline</translation>
@@ -717,6 +724,8 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="968900484120156207">Tutaj pojawią się strony, które odwiedzisz</translation>
 <translation id="7882131421121961860">Brak historii</translation>
 <translation id="3549657413697417275">Przeszukaj historię</translation>
+<translation id="4526803704855831732">Karty prywatne</translation>
+<translation id="7465104139234185284">Zamknij wszystkie karty prywatne</translation>
 <translation id="6820686453637990663">Kod CVC</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">RR</translation>
@@ -790,6 +799,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="8364299278605033898">Zobacz najpopularniejsze strony</translation>
 <translation id="1171770572613082465">Zobacz najpopularniejsze strony, klikając przycisk „Popularne”</translation>
 <translation id="5233638681132016545">Nowa karta</translation>
+<translation id="6336451774241870485">Nowa karta prywatna</translation>
 <translation id="4521874409998847950">Opublikowane na <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>wyświetlone przez Brave Software<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">Dostępna jest nowsza wersja</translation>
 <translation id="4058091506841967397">Nie można zaktualizować</translation>
@@ -802,12 +812,14 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="6437478888915024427">Informacje o stronie</translation>
 <translation id="7180611975245234373">Odśwież</translation>
 <translation id="4913169188695071480">Zatrzymaj odświeżanie</translation>
+<translation id="3234355010754616171">Nowa karta prywatna</translation>
 <translation id="1829244130665387512">Znajdź na stronie</translation>
 <translation id="6593061639179217415">Wersja na komputer</translation>
 <translation id="9063523880881406963">Wyłącz opcję „Wersja na komputer”</translation>
 <translation id="2038563949887743358">Włącz opcję „Wersja na komputer”</translation>
 <translation id="2433507940547922241">Wygląd</translation>
 <translation id="983192555821071799">Zamknij wszystkie karty</translation>
+<translation id="6610147964972079463">Zamknij karty prywatne</translation>
 <translation id="1310482092992808703">Grupuj karty</translation>
 <translation id="7725024127233776428">Tutaj pojawią się strony, które dodasz do zakładek</translation>
 <translation id="4404568932422911380">Brak zakładek</translation>
@@ -864,6 +876,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="6963642900430330478">Ta strona jest niebezpieczna. Informacje o witrynie</translation>
 <translation id="9070377983101773829">Rozpocznij wyszukiwanie głosowe</translation>
 <translation id="8676374126336081632">Wyczyść wpisany tekst</translation>
+<translation id="4968908871398201967">Tryb prywatny</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> otwarta karta. Kliknij, by przełączyć się między kartami}few{<ph name="OPEN_TABS_MANY"/> otwarte karty. Kliknij, by przełączyć się między kartami}many{<ph name="OPEN_TABS_MANY"/> otwartych kart. Kliknij, by przełączyć się między kartami}other{<ph name="OPEN_TABS_MANY"/> otwartej karty. Kliknij, by przełączyć się między kartami}}</translation>
 <translation id="2369533728426058518">otwarte karty</translation>
 <translation id="7071521146534760487">Zarządzaj kontem</translation>
@@ -871,8 +884,12 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="2707726405694321444">Odśwież stronę</translation>
 <translation id="2891154217021530873">Zatrzymaj wczytywanie strony</translation>
 <translation id="6710213216561001401">Wstecz</translation>
+<translation id="9080642952018487277">Włącz tryb prywatny</translation>
+<translation id="4883379392681899581">Opuść tryb prywatny</translation>
 <translation id="6659594942844771486">Tab</translation>
 <translation id="1933845786846280168">Wybrana karta</translation>
+<translation id="3377025655491224618">Karta prywatna</translation>
+<translation id="584427517463557805">Wybrane karty prywatne</translation>
 <translation id="2268044343513325586">Zawęź</translation>
 <translation id="7846076177841592234">Anuluj wybór</translation>
 <translation id="7087918508125750058">Wybrano <ph name="ITEM_COUNT"/>. Opcje dostępne na górze ekranu</translation>
@@ -973,6 +990,7 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="4878404682131129617">Nie udało się utworzyć tunelu przez serwer proxy</translation>
 <translation id="4749960740855309258">Otwórz nową kartę</translation>
 <translation id="8788968922598763114">Ponownie otwórz ostatnio zamknięte karty</translation>
+<translation id="2280910239864711607">Otwórz nową kartę w trybie prywatnym</translation>
 <translation id="7929962904089429003">Otwórz menu</translation>
 <translation id="6039379616847168523">Przejdź do następnej karty</translation>
 <translation id="5210286577605176222">Przejdź do poprzedniej karty</translation>

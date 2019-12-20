@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Erweitert</translation>
 <translation id="1146678959555564648">VR aktivieren</translation>
 <translation id="987264212798334818">Allgemein</translation>
+<translation id="5186185447130319458">Privat</translation>
 <translation id="4275663329226226506">Medien</translation>
 <translation id="4759238208242260848">Downloads</translation>
 <translation id="218608176142494674">Freigabe</translation>
@@ -356,6 +357,7 @@ Eventuell finden Sie unter <ph name="BEGIN_LINK"/>history.google.com<ph name="EN
 <translation id="2131665479022868825"><ph name="DATA"/> eingespart</translation>
 <translation id="8569404424186215731">seit <ph name="DATE"/></translation>
 <translation id="3252158532344029638">Im Lite-Modus werden Seiten schneller in Brave geladen und es werden bis zu 60 Prozent weniger Daten verbraucht.</translation>
+<translation id="1438581767753657407">Wenn der Lite-Modus aktiviert ist, verwendet Brave Brave-Server, die das Laden von Seiten beschleunigen. Im Lite-Modus werden sehr langsame Seiten neu geschrieben, um nur die wichtigsten Inhalte zu laden. Der Lite-Modus gilt nicht für private Registerkarten.</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> Einsparungen bei der Datennutzung</translation>
 <translation id="7494974237137038751">eingesparte Datenmenge</translation>
 <translation id="6111020039983847643">genutzte Datenmenge</translation>
@@ -520,7 +522,9 @@ Wenn Sie diese Einstellung ändern möchten, <ph name="BEGIN_LINK"/>setzen Sie d
 <translation id="7947953824732555851">Akzeptieren und anmelden</translation>
 <translation id="8583805026567836021">Kontodaten werden gelöscht</translation>
 <translation id="8310344678080805313">Standard-Tabs</translation>
+<translation id="2633278372998075009">Private Registerkarten</translation>
 <translation id="5748802427693696783">Zu Standard-Tabs gewechselt</translation>
+<translation id="6099151465289169210">Zu privaten Registerkarten gewechselt</translation>
 <translation id="7998918019931843664">Geschlossenen Tab wieder öffnen</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/></translation>
 <translation id="4452411734226507615">Tab "<ph name="TAB_TITLE"/>" schließen</translation>
@@ -578,6 +582,7 @@ Wenn Sie diese Einstellung ändern möchten, <ph name="BEGIN_LINK"/>setzen Sie d
 <translation id="8942627711005830162">In anderem Fenster öffnen</translation>
 <translation id="4195643157523330669">In neuem Tab öffnen</translation>
 <translation id="1100066534610197918">In neuem Tab in Gruppe öffnen</translation>
+<translation id="4243710787042215766">In privater Registerkarte öffnen</translation>
 <translation id="4860895144060829044">Anrufen</translation>
 <translation id="6896758677409633944">Kopieren</translation>
 <translation id="8393700583063109961">Nachricht senden</translation>
@@ -642,6 +647,7 @@ Wenn Sie diese Einstellung ändern möchten, <ph name="BEGIN_LINK"/>setzen Sie d
 <translation id="1671236975893690980">Download ausstehend...</translation>
 <translation id="5561549206367097665">Warten auf Netzwerk…</translation>
 <translation id="5864419784173784555">Warten auf weiteren Download…</translation>
+<translation id="3110967157686007724">Private Registerkarte</translation>
 <translation id="6461962085415701688">Datei kann nicht geöffnet werden</translation>
 <translation id="1178581264944972037">Anhalten</translation>
 <translation id="8200772114523450471">Fortsetzen</translation>
@@ -703,6 +709,7 @@ Wenn Sie diese Einstellung ändern möchten, <ph name="BEGIN_LINK"/>setzen Sie d
 <translation id="7810647596859435254">Öffnen mit…</translation>
 <translation id="5655963694829536461">In Downloads suchen</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">Meine Dateien</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Artikel erscheinen hier und können auch gelesen werden, wenn Sie offline sind</translation>
@@ -717,6 +724,8 @@ Wenn Sie diese Einstellung ändern möchten, <ph name="BEGIN_LINK"/>setzen Sie d
 <translation id="968900484120156207">Von Ihnen besuchte Seiten werden hier angezeigt</translation>
 <translation id="7882131421121961860">Kein Verlauf gefunden</translation>
 <translation id="3549657413697417275">Im Verlauf suchen</translation>
+<translation id="4526803704855831732">Private Registerkarten</translation>
+<translation id="7465104139234185284">Alle privaten Registerkarten schließen</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">JJ</translation>
@@ -790,6 +799,7 @@ Wenn Sie diese Einstellung ändern möchten, <ph name="BEGIN_LINK"/>setzen Sie d
 <translation id="8364299278605033898">Beliebte Websites ansehen</translation>
 <translation id="1171770572613082465">Tippen Sie auf die Schaltfläche "Top-Websites", um beliebte Websites zu sehen</translation>
 <translation id="5233638681132016545">Neuer Tab</translation>
+<translation id="6336451774241870485">Neue private Registerkarte</translation>
 <translation id="4521874409998847950">Von <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>bereitgestellt durch Brave Software<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">Neuere Version verfügbar</translation>
 <translation id="4058091506841967397">Update nicht möglich</translation>
@@ -802,12 +812,14 @@ Wenn Sie diese Einstellung ändern möchten, <ph name="BEGIN_LINK"/>setzen Sie d
 <translation id="6437478888915024427">Seiteninfo</translation>
 <translation id="7180611975245234373">Aktualisieren</translation>
 <translation id="4913169188695071480">Aktualisierung anhalten</translation>
+<translation id="3234355010754616171">Neuer privater Tab</translation>
 <translation id="1829244130665387512">Auf Seite suchen</translation>
 <translation id="6593061639179217415">Desktopwebsite</translation>
 <translation id="9063523880881406963">"Desktopversion ansehen" deaktivieren</translation>
 <translation id="2038563949887743358">"Desktopversion ansehen" aktivieren</translation>
 <translation id="2433507940547922241">Darstellung</translation>
 <translation id="983192555821071799">Alle Tabs schließen</translation>
+<translation id="6610147964972079463">Private Registerkarten schließen</translation>
 <translation id="1310482092992808703">Tabs gruppieren</translation>
 <translation id="7725024127233776428">Seiten, die Sie als Lesezeichen speichern, werden hier angezeigt</translation>
 <translation id="4404568932422911380">Keine Lesezeichen</translation>
@@ -864,6 +876,7 @@ Wenn Sie diese Einstellung ändern möchten, <ph name="BEGIN_LINK"/>setzen Sie d
 <translation id="6963642900430330478">Diese Seite ist gefährlich. Websiteinformationen</translation>
 <translation id="9070377983101773829">Sprachsuche starten</translation>
 <translation id="8676374126336081632">Eingabe löschen</translation>
+<translation id="4968908871398201967">Privatmodus</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> geöffneter Tab, zum Wechseln der Tabs tippen}other{<ph name="OPEN_TABS_MANY"/> geöffnete Tabs, zum Wechseln der Tabs tippen}}</translation>
 <translation id="2369533728426058518">Tabs öffnen</translation>
 <translation id="7071521146534760487">Konto verwalten</translation>
@@ -871,8 +884,12 @@ Wenn Sie diese Einstellung ändern möchten, <ph name="BEGIN_LINK"/>setzen Sie d
 <translation id="2707726405694321444">Seite aktualisieren</translation>
 <translation id="2891154217021530873">Laden der Seite anhalten</translation>
 <translation id="6710213216561001401">Zurück</translation>
+<translation id="9080642952018487277">Privatmodus</translation>
+<translation id="4883379392681899581">Privatmodus verlassen</translation>
 <translation id="6659594942844771486">Tab</translation>
 <translation id="1933845786846280168">Ausgewählter Tab</translation>
+<translation id="3377025655491224618">Private Registerkarte</translation>
+<translation id="584427517463557805">Ausgewählte private Registerkarte</translation>
 <translation id="2268044343513325586">Verfeinern</translation>
 <translation id="7846076177841592234">Auswahl aufheben</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> ausgewählt. Optionen sind oben auf dem Bildschirm verfügbar</translation>
@@ -973,6 +990,7 @@ Wenn Sie diese Einstellung ändern möchten, <ph name="BEGIN_LINK"/>setzen Sie d
 <translation id="4878404682131129617">Tunnelerstellung via Proxyserver ist fehlgeschlagen</translation>
 <translation id="4749960740855309258">Neuen Tab öffnen</translation>
 <translation id="8788968922598763114">Zuletzt geschlossenen Tab öffnen</translation>
+<translation id="2280910239864711607">Öffnen Sie eine neue Registerkarte im Privatmodus</translation>
 <translation id="7929962904089429003">Menü öffnen</translation>
 <translation id="6039379616847168523">Zum nächsten Tab wechseln</translation>
 <translation id="5210286577605176222">Zum vorherigen Tab wechseln</translation>

@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">ขั้นสูง</translation>
 <translation id="1146678959555564648">เข้าสู่ VR</translation>
 <translation id="987264212798334818">ทั่วไป</translation>
+<translation id="5186185447130319458">ส่วนตัว</translation>
 <translation id="4275663329226226506">สื่อ</translation>
 <translation id="4759238208242260848">ดาวน์โหลด</translation>
 <translation id="218608176142494674">การแชร์</translation>
@@ -356,6 +357,7 @@
 <translation id="2131665479022868825">ประหยัดไป <ph name="DATA"/></translation>
 <translation id="8569404424186215731">ตั้งแต่วันที่ <ph name="DATE"/></translation>
 <translation id="3252158532344029638">ในโหมด Lite เบราว์เซอร์ Brave จะโหลดหน้าเว็บได้เร็วขึ้นและใช้เน็ตน้อยลงสูงสุดถึง 60 เปอร์เซ็นต์</translation>
+<translation id="1438581767753657407">เมื่อเปิดโหมด Lite เบราว์เซอร์ Brave จะใช้เซิร์ฟเวอร์ของ Brave เพื่อทำให้หน้าเพจโหลดเร็วขึ้น โหมดนี้จะเขียนทับหน้าเพจที่ช้ามากๆ ให้โหลดเฉพาะเนื้อหาที่จำเป็น โหมด Lite จะใช้งานไม่ได้กับแท็บส่วนตัว</translation>
 <translation id="6159335304067198720">ประหยัดอินเทอร์เน็ต <ph name="PERCENT"/></translation>
 <translation id="7494974237137038751">อินเทอร์เน็ตที่ประหยัดได้</translation>
 <translation id="6111020039983847643">อินเทอร์เน็ตที่ใช้</translation>
@@ -520,7 +522,9 @@
 <translation id="7947953824732555851">ยอมรับและลงชื่อเข้าใช้</translation>
 <translation id="8583805026567836021">กำลังล้างข้อมูลบัญชี</translation>
 <translation id="8310344678080805313">แท็บมาตรฐาน</translation>
+<translation id="2633278372998075009">แท็บส่วนตัว</translation>
 <translation id="5748802427693696783">สลับเป็นแท็บมาตรฐานแล้ว</translation>
+<translation id="6099151465289169210">เปลี่ยนเป็นแท็บส่วนตัว</translation>
 <translation id="7998918019931843664">เปิดแท็บที่ปิดไปแล้วขึ้นใหม่</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/> เป็นแท็บ</translation>
 <translation id="4452411734226507615">ปิดแท็บ <ph name="TAB_TITLE"/></translation>
@@ -578,6 +582,7 @@
 <translation id="8942627711005830162">เปิดในหน้าต่างอื่น</translation>
 <translation id="4195643157523330669">เปิดในแท็บใหม่</translation>
 <translation id="1100066534610197918">เปิดในแท็บใหม่ในกลุ่ม</translation>
+<translation id="4243710787042215766">เปิดในแท็บส่วนตัว</translation>
 <translation id="4860895144060829044">โทร</translation>
 <translation id="6896758677409633944">คัดลอก</translation>
 <translation id="8393700583063109961">ส่งข้อความ</translation>
@@ -642,6 +647,7 @@
 <translation id="1671236975893690980">การดาวน์โหลดรอดำเนินการ…</translation>
 <translation id="5561549206367097665">กำลังรอเครือข่าย…</translation>
 <translation id="5864419784173784555">กำลังรอการดาวน์โหลดรายการอื่น…</translation>
+<translation id="3110967157686007724">แท็บส่วนตัว</translation>
 <translation id="6461962085415701688">เปิดไฟล์ไม่ได้</translation>
 <translation id="1178581264944972037">หยุดชั่วคราว</translation>
 <translation id="8200772114523450471">ทำต่อ</translation>
@@ -703,6 +709,7 @@
 <translation id="7810647596859435254">เปิดด้วย…</translation>
 <translation id="5655963694829536461">ค้นหาการดาวน์โหลด</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">ไฟล์ของฉัน</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">บทความจะแสดงที่นี่ ซึ่งคุณจะอ่านได้แม้ในขณะออฟไลน์</translation>
@@ -717,6 +724,8 @@
 <translation id="968900484120156207">หน้าที่คุณเข้าชมจะปรากฏที่นี่</translation>
 <translation id="7882131421121961860">ไม่พบประวัติการเข้าชม</translation>
 <translation id="3549657413697417275">ค้นหาประวัติการเข้าชม</translation>
+<translation id="4526803704855831732">แท็บส่วนตัว</translation>
+<translation id="7465104139234185284">ปิดแท็บส่วนตัวทั้งหมด</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">ดด</translation>
 <translation id="605721222689873409">ปป</translation>
@@ -790,6 +799,7 @@
 <translation id="8364299278605033898">ดูเว็บไซต์ยอดนิยม</translation>
 <translation id="1171770572613082465">ดูเว็บไซต์ยอดนิยมโดยการแตะปุ่ม "เว็บไซต์อันดับสูงสุด"</translation>
 <translation id="5233638681132016545">แท็บใหม่</translation>
+<translation id="6336451774241870485">แท็บส่วนตัวใหม่</translation>
 <translation id="4521874409998847950">จาก <ph name="PUBLISHER_ORIGIN"/> - <ph name="BEGIN_DEEMPHASIZED"/>แสดงโดย Brave Software<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">มีเวอร์ชันใหม่กว่าให้ใช้งาน</translation>
 <translation id="4058091506841967397">อัปเดต Brave ไม่ได้</translation>
@@ -802,12 +812,14 @@
 <translation id="6437478888915024427">ข้อมูลหน้าเว็บ</translation>
 <translation id="7180611975245234373">รีเฟรช</translation>
 <translation id="4913169188695071480">หยุดรีเฟรช</translation>
+<translation id="3234355010754616171">แท็บส่วนตัวใหม่</translation>
 <translation id="1829244130665387512">ค้นหาในหน้าเว็บ</translation>
 <translation id="6593061639179217415">เว็บไซต์เวอร์ชันเดสก์ท็อป</translation>
 <translation id="9063523880881406963">ปิดการขอเว็บไซต์เดสก์ท็อป</translation>
 <translation id="2038563949887743358">เปิดการขอเว็บไซต์เดสก์ท็อป</translation>
 <translation id="2433507940547922241">ลักษณะที่ปรากฏ</translation>
 <translation id="983192555821071799">ปิดแท็บทั้งหมด</translation>
+<translation id="6610147964972079463">ปิดแท็บส่วนตัว</translation>
 <translation id="1310482092992808703">จับกลุ่มแท็บ</translation>
 <translation id="7725024127233776428">หน้าที่คุณบุ๊กมาร์กไว้จะปรากฏที่นี่</translation>
 <translation id="4404568932422911380">ไม่มีบุ๊กมาร์ก</translation>
@@ -864,6 +876,7 @@
 <translation id="6963642900430330478">หน้านี้อันตราย ข้อมูลเว็บไซต์</translation>
 <translation id="9070377983101773829">เริ่มค้นหาด้วยเสียง</translation>
 <translation id="8676374126336081632">ล้างข้อมูลที่ป้อน</translation>
+<translation id="4968908871398201967">โหมดส่วนตัว</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{เปิดแท็บไว้ <ph name="OPEN_TABS_ONE"/> แท็บ แตะเพื่อเปลี่ยนแท็บ}other{เปิดแท็บไว้ <ph name="OPEN_TABS_MANY"/> แท็บ แตะเพื่อเปลี่ยนแท็บ}}</translation>
 <translation id="2369533728426058518">แท็บที่เปิดอยู่</translation>
 <translation id="7071521146534760487">จัดการบัญชี</translation>
@@ -871,8 +884,12 @@
 <translation id="2707726405694321444">รีเฟรชหน้า</translation>
 <translation id="2891154217021530873">หยุดการโหลดหน้า</translation>
 <translation id="6710213216561001401">ก่อนหน้า</translation>
+<translation id="9080642952018487277">เข้าสู่โหมดส่วนตัว</translation>
+<translation id="4883379392681899581">ออกจากโหมดส่วนตัว</translation>
 <translation id="6659594942844771486">แท็บ</translation>
 <translation id="1933845786846280168">แท็บที่เลือก</translation>
+<translation id="3377025655491224618">แท็บส่วนตัว</translation>
+<translation id="584427517463557805">แท็บส่วนตัวที่เลือก</translation>
 <translation id="2268044343513325586">ปรับแต่ง</translation>
 <translation id="7846076177841592234">ยกเลิกการเลือก</translation>
 <translation id="7087918508125750058">เลือกไว้ <ph name="ITEM_COUNT"/> รายการ ตัวเลือกอยู่ตรงบริเวณด้านบนของหน้าจอ</translation>
@@ -973,6 +990,7 @@
 <translation id="4878404682131129617">สร้างช่องทางผ่านพร็อกซีเซิร์ฟเวอร์ไม่ได้</translation>
 <translation id="4749960740855309258">เปิดแท็บใหม่</translation>
 <translation id="8788968922598763114">เปิดแท็บที่เพิ่งปิดอีกครั้ง</translation>
+<translation id="2280910239864711607">เปิดแท็บใหม่ในโหมดส่วนตัว</translation>
 <translation id="7929962904089429003">เปิดเมนู</translation>
 <translation id="6039379616847168523">ข้ามไปยังแท็บถัดไป</translation>
 <translation id="5210286577605176222">ข้ามไปยังแท็บก่อนหน้า</translation>

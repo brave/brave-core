@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Avanzate</translation>
 <translation id="1146678959555564648">Entra nella VR</translation>
 <translation id="987264212798334818">Generali</translation>
+<translation id="5186185447130319458">Privato</translation>
 <translation id="4275663329226226506">Multimediali</translation>
 <translation id="4759238208242260848">Download</translation>
 <translation id="218608176142494674">Condivisione</translation>
@@ -356,6 +357,7 @@ Il tuo Account Brave Software potrebbe avere altre forme di cronologia di naviga
 <translation id="2131665479022868825">Dati risparmiati: <ph name="DATA"/></translation>
 <translation id="8569404424186215731">dal giorno <ph name="DATE"/></translation>
 <translation id="3252158532344029638">Nella modalità Lite, Brave carica le pagine più rapidamente e utilizza fino al 60 percento di dati in meno.</translation>
+<translation id="1438581767753657407">Quando la modalità Lite è attiva, Brave utilizza i server Brave per rendere più veloce il caricamento delle pagine. La modalità Lite riscrive pagine molto lente per caricare solo contenuti essenziali. La modalità Lite non si applica alle schede private.</translation>
 <translation id="6159335304067198720">Riduzioni dei dati: <ph name="PERCENT"/></translation>
 <translation id="7494974237137038751">di dati risparmiati</translation>
 <translation id="6111020039983847643">di dati utilizzati</translation>
@@ -520,7 +522,9 @@ Per cambiare questa impostazione, <ph name="BEGIN_LINK"/>reimposta la sincronizz
 <translation id="7947953824732555851">Accetta e accedi</translation>
 <translation id="8583805026567836021">Cancellazione dati dell'account</translation>
 <translation id="8310344678080805313">Schede standard</translation>
+<translation id="2633278372998075009">Schede private</translation>
 <translation id="5748802427693696783">Schede standard attivate</translation>
+<translation id="6099151465289169210">Passato alle schede private</translation>
 <translation id="7998918019931843664">Riapri la scheda chiusa</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, scheda</translation>
 <translation id="4452411734226507615">Chiudi la scheda <ph name="TAB_TITLE"/></translation>
@@ -578,6 +582,7 @@ Per cambiare questa impostazione, <ph name="BEGIN_LINK"/>reimposta la sincronizz
 <translation id="8942627711005830162">Apri nell'altra finestra</translation>
 <translation id="4195643157523330669">Apri in un'altra scheda</translation>
 <translation id="1100066534610197918">Apri in nuova scheda in gruppo</translation>
+<translation id="4243710787042215766">Apri in una scheda privata</translation>
 <translation id="4860895144060829044">Chiama</translation>
 <translation id="6896758677409633944">Copia</translation>
 <translation id="8393700583063109961">Invia messaggio</translation>
@@ -642,6 +647,7 @@ Per cambiare questa impostazione, <ph name="BEGIN_LINK"/>reimposta la sincronizz
 <translation id="1671236975893690980">Download in attesa...</translation>
 <translation id="5561549206367097665">In attesa della rete…</translation>
 <translation id="5864419784173784555">In attesa di un altro download…</translation>
+<translation id="3110967157686007724">Scheda privata</translation>
 <translation id="6461962085415701688">Impossibile aprire il file.</translation>
 <translation id="1178581264944972037">Pausa</translation>
 <translation id="8200772114523450471">Riprendi</translation>
@@ -703,6 +709,7 @@ Per cambiare questa impostazione, <ph name="BEGIN_LINK"/>reimposta la sincronizz
 <translation id="7810647596859435254">Apri con…</translation>
 <translation id="5655963694829536461">Ricerca nei download</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">I miei file</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Qui vengono visualizzati gli articoli che potrai leggere anche offline</translation>
@@ -717,6 +724,8 @@ Per cambiare questa impostazione, <ph name="BEGIN_LINK"/>reimposta la sincronizz
 <translation id="968900484120156207">Le pagine visitate saranno mostrate qui</translation>
 <translation id="7882131421121961860">Nessuna cronologia trovata</translation>
 <translation id="3549657413697417275">Cerca nella cronologia</translation>
+<translation id="4526803704855831732">Schede private</translation>
+<translation id="7465104139234185284">Chiudi tutte le schede private</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">AA</translation>
@@ -790,6 +799,7 @@ Per cambiare questa impostazione, <ph name="BEGIN_LINK"/>reimposta la sincronizz
 <translation id="8364299278605033898">Scopri i siti web più visitati</translation>
 <translation id="1171770572613082465">Scopri i siti web più visitati toccando il pulsante "Siti principali"</translation>
 <translation id="5233638681132016545">Nuova scheda</translation>
+<translation id="6336451774241870485">Nuova scheda privata</translation>
 <translation id="4521874409998847950">Di <ph name="PUBLISHER_ORIGIN"/> - <ph name="BEGIN_DEEMPHASIZED"/>pubblicata da Brave Software<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">Nuova versione disponibile</translation>
 <translation id="4058091506841967397">Imp. aggiornare Brave</translation>
@@ -802,12 +812,14 @@ Per cambiare questa impostazione, <ph name="BEGIN_LINK"/>reimposta la sincronizz
 <translation id="6437478888915024427">Informazioni sulla pagina</translation>
 <translation id="7180611975245234373">Aggiorna</translation>
 <translation id="4913169188695071480">Interrompi aggiornamento</translation>
+<translation id="3234355010754616171">Nuova scheda privata</translation>
 <translation id="1829244130665387512">Trova nella pagina</translation>
 <translation id="6593061639179217415">Sito desktop</translation>
 <translation id="9063523880881406963">Disattiva Richiedi sito desktop</translation>
 <translation id="2038563949887743358">Attiva Richiedi sito desktop</translation>
 <translation id="2433507940547922241">Aspetto</translation>
 <translation id="983192555821071799">Chiudi tutte le schede</translation>
+<translation id="6610147964972079463">Chiudi le schede private</translation>
 <translation id="1310482092992808703">Raggruppa schede</translation>
 <translation id="7725024127233776428">Le pagine aggiunte ai preferiti saranno mostrate qui</translation>
 <translation id="4404568932422911380">Nessun segnalibro</translation>
@@ -864,6 +876,7 @@ Per cambiare questa impostazione, <ph name="BEGIN_LINK"/>reimposta la sincronizz
 <translation id="6963642900430330478">Questa pagina è pericolosa Informazioni sul sito</translation>
 <translation id="9070377983101773829">Avvia la ricerca vocale</translation>
 <translation id="8676374126336081632">Cancella testo inserito</translation>
+<translation id="4968908871398201967">Modalità privata</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> scheda aperta, tocca per cambiare scheda}other{<ph name="OPEN_TABS_MANY"/> schede aperte, tocca per cambiare scheda}}</translation>
 <translation id="2369533728426058518">schede aperte</translation>
 <translation id="7071521146534760487">Gestisci account</translation>
@@ -871,8 +884,12 @@ Per cambiare questa impostazione, <ph name="BEGIN_LINK"/>reimposta la sincronizz
 <translation id="2707726405694321444">Aggiorna la pagina</translation>
 <translation id="2891154217021530873">Interrompe il caricamento della pagina</translation>
 <translation id="6710213216561001401">Indietro</translation>
+<translation id="9080642952018487277">Entra in modalità privata</translation>
+<translation id="4883379392681899581">Esci dalla modalità privata</translation>
 <translation id="6659594942844771486">TAB</translation>
 <translation id="1933845786846280168">Scheda selezionata</translation>
+<translation id="3377025655491224618">Scheda privata</translation>
+<translation id="584427517463557805">Scheda privata selezionata</translation>
 <translation id="2268044343513325586">Perfeziona</translation>
 <translation id="7846076177841592234">Annulla selezione</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> elementi selezionati. Opzioni disponibili nella parte superiore dello schermo</translation>
@@ -973,6 +990,7 @@ Per cambiare questa impostazione, <ph name="BEGIN_LINK"/>reimposta la sincronizz
 <translation id="4878404682131129617">Creazione di un tunnel tramite server proxy non riuscita</translation>
 <translation id="4749960740855309258">Apri una nuova scheda</translation>
 <translation id="8788968922598763114">Riapri l'ultima scheda chiusa</translation>
+<translation id="2280910239864711607">Apri una nuova scheda in modalità privata</translation>
 <translation id="7929962904089429003">Apri il menu</translation>
 <translation id="6039379616847168523">Vai alla scheda successiva</translation>
 <translation id="5210286577605176222">Vai alla scheda precedente</translation>

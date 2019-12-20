@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Rozšírené</translation>
 <translation id="1146678959555564648">Zadať VR</translation>
 <translation id="987264212798334818">Všeobecné</translation>
+<translation id="5186185447130319458">Súkromný</translation>
 <translation id="4275663329226226506">Médiá</translation>
 <translation id="4759238208242260848">Stiahnuté</translation>
 <translation id="218608176142494674">Zdieľanie</translation>
@@ -356,6 +357,7 @@ Váš účet Brave Software môže mať na adrese <ph name="BEGIN_LINK"/>myactiv
 <translation id="2131665479022868825">Uložené: <ph name="DATA"/></translation>
 <translation id="8569404424186215731">od <ph name="DATE"/></translation>
 <translation id="3252158532344029638">V zjednodušenom režime načítava Brave stránky rýchlejšie a využíva až o 60 percent menej dát.</translation>
+<translation id="1438581767753657407">Keď je zapnutý režim Lite, prehliadač Brave používa servery Brave na rýchlejšie načítanie stránok. Režim Lite prepíše veľmi pomalé stránky, aby sa načítal iba ich podstatný obsah. Režim Lite sa nevzťahuje na súkromné ​​karty.</translation>
 <translation id="6159335304067198720">Úspora dát: <ph name="PERCENT"/></translation>
 <translation id="7494974237137038751">uložené dáta</translation>
 <translation id="6111020039983847643">využité dáta</translation>
@@ -520,7 +522,9 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="7947953824732555851">Prijať a prihl. sa</translation>
 <translation id="8583805026567836021">Prebieha vymazávanie údajov účtu</translation>
 <translation id="8310344678080805313">Štandardné karty</translation>
+<translation id="2633278372998075009">Súkromné karty</translation>
 <translation id="5748802427693696783">Prepnuté na štandardné karty</translation>
+<translation id="6099151465289169210">Prepnuté na prehliadanie v súkromných ​​kartách</translation>
 <translation id="7998918019931843664">Znova otvoriť zavretú kartu</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, karta</translation>
 <translation id="4452411734226507615">Zavrieť kartu <ph name="TAB_TITLE"/></translation>
@@ -578,6 +582,7 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="8942627711005830162">Otvoriť v ďalšom okne</translation>
 <translation id="4195643157523330669">Otvoriť na novej karte</translation>
 <translation id="1100066534610197918">Otvoriť v skupine na novej karte</translation>
+<translation id="4243710787042215766">Otvoriť v súkromnej karte</translation>
 <translation id="4860895144060829044">Volajte</translation>
 <translation id="6896758677409633944">Kopírovať</translation>
 <translation id="8393700583063109961">Odoslať správu</translation>
@@ -642,6 +647,7 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="1671236975893690980">Čaká sa na stiahnutie…</translation>
 <translation id="5561549206367097665">Čaká sa na sieť…</translation>
 <translation id="5864419784173784555">Čaká sa na ďalší sťahovaný súbor…</translation>
+<translation id="3110967157686007724">Súkromná karta</translation>
 <translation id="6461962085415701688">Súbor sa nedá otvoriť</translation>
 <translation id="1178581264944972037">Pozastaviť</translation>
 <translation id="8200772114523450471">Pokračovať</translation>
@@ -703,6 +709,7 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="7810647596859435254">Otvoriť pomocou…</translation>
 <translation id="5655963694829536461">Prehľadať stiahnuté</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">Moje súbory</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Tu sa zobrazia články, ktoré môžete čítať dokonca aj offline</translation>
@@ -717,6 +724,8 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="968900484120156207">Tu sa zobrazia vami navštívené stránky</translation>
 <translation id="7882131421121961860">Nenašla sa žiadna história</translation>
 <translation id="3549657413697417275">Prehľadať históriu</translation>
+<translation id="4526803704855831732">Súkromné karty</translation>
+<translation id="7465104139234185284">Zatvoriť všetky súkromné karty</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">RR</translation>
@@ -790,6 +799,7 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="8364299278605033898">Prezrite si obľúbené weby</translation>
 <translation id="1171770572613082465">Klepnutím na tlačidlo Hlavné weby zobrazíte obľúbené webové stránky</translation>
 <translation id="5233638681132016545">Nová karta</translation>
+<translation id="6336451774241870485">Nová súkromná karta</translation>
 <translation id="4521874409998847950">Od: <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>doručené Googlom<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">Je dostupná novšia verzia</translation>
 <translation id="4058091506841967397">Brave sa nedá aktualizovať</translation>
@@ -802,12 +812,14 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="6437478888915024427">Informácie o stránke</translation>
 <translation id="7180611975245234373">Obnoviť</translation>
 <translation id="4913169188695071480">Zastaviť obnovovanie</translation>
+<translation id="3234355010754616171">Nová súkromná karta</translation>
 <translation id="1829244130665387512">Nájsť na stránke</translation>
 <translation id="6593061639179217415">Web pre počítače</translation>
 <translation id="9063523880881406963">Vypnutie žiadosti o verziu stránok pre počítače</translation>
 <translation id="2038563949887743358">Zapnutie žiadosti o verziu stránok pre počítače</translation>
 <translation id="2433507940547922241">Vzhľad</translation>
 <translation id="983192555821071799">Zavrieť všetky karty</translation>
+<translation id="6610147964972079463">Zatvoriť súkromné karty</translation>
 <translation id="1310482092992808703">Zoskupiť karty</translation>
 <translation id="7725024127233776428">Tu sa zobrazia vaše stránky uložené ako záložky</translation>
 <translation id="4404568932422911380">Žiadne záložky</translation>
@@ -864,6 +876,7 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="6963642900430330478">Táto stránka je nebezpečná. Informácie o webe</translation>
 <translation id="9070377983101773829">Spustiť hlasové vyhľadávanie</translation>
 <translation id="8676374126336081632">Vymazať vstup</translation>
+<translation id="4968908871398201967">Súkromné prehliadanie</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> otvorená karta, karty prepnete klepnutím}few{<ph name="OPEN_TABS_MANY"/> otvorené karty, karty prepnete klepnutím}many{<ph name="OPEN_TABS_MANY"/> open tabs, tap to switch tabs}other{<ph name="OPEN_TABS_MANY"/> otvorených kariet, karty prepnete klepnutím}}</translation>
 <translation id="2369533728426058518">otvorené karty</translation>
 <translation id="7071521146534760487">Spravovať účet</translation>
@@ -871,8 +884,12 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="2707726405694321444">Obnoviť stránku</translation>
 <translation id="2891154217021530873">Zastaviť načítavanie stránky</translation>
 <translation id="6710213216561001401">Dozadu</translation>
+<translation id="9080642952018487277">Otvoriť súkromné prehliadanie</translation>
+<translation id="4883379392681899581">Opustiť súkromný režim</translation>
 <translation id="6659594942844771486">Tab</translation>
 <translation id="1933845786846280168">Vybratá karta</translation>
+<translation id="3377025655491224618">Súkromná karta</translation>
+<translation id="584427517463557805">Vybraná súkromná karta</translation>
 <translation id="2268044343513325586">Upraviť</translation>
 <translation id="7846076177841592234">Zrušiť výber</translation>
 <translation id="7087918508125750058">Vybrané: <ph name="ITEM_COUNT"/>.  Možnosti sú k dispozícii v hornej časti obrazovky.</translation>
@@ -973,6 +990,7 @@ Ak chcete toto nastavenie zmeniť, <ph name="BEGIN_LINK"/>resetujte synchronizá
 <translation id="4878404682131129617">Vytvorenie tunela prostredníctvom proxy servera zlyhalo</translation>
 <translation id="4749960740855309258">Otvorenie novej karty</translation>
 <translation id="8788968922598763114">Opätovné otvorenie poslednej zavretej karty</translation>
+<translation id="2280910239864711607">Otvoriť novú kartu v súkromnom režime</translation>
 <translation id="7929962904089429003">Otvorenie ponuky</translation>
 <translation id="6039379616847168523">Prechod na ďalšiu kartu</translation>
 <translation id="5210286577605176222">Prechod na predchádzajúcu kartu</translation>
