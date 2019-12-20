@@ -39,8 +39,8 @@ base::string16 BraveDownloadItemModel::GetTooltipText(
       tooltip_extra = l10n_util::GetStringUTF16(IDS_NOT_SECURE_VERBOSE_STATE) +
                       base::char16(' ');
     tooltip_extra += origin_url;
-    tooltip += gfx::ElideText(tooltip_extra, font_list, max_width,
-                              gfx::ELIDE_TAIL, gfx::Typesetter::NATIVE);
+    tooltip +=
+        gfx::ElideText(tooltip_extra, font_list, max_width, gfx::ELIDE_TAIL);
   }
 
   return tooltip;
