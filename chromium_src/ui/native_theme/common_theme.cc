@@ -21,7 +21,7 @@ SkColor GetAuraColor(NativeTheme::ColorId color_id,
                     const NativeTheme* base_theme,
                     NativeTheme::ColorScheme color_scheme) {
   if (color_scheme == NativeTheme::ColorScheme::kDefault)
-    color_scheme = base_theme->GetSystemColorScheme();
+    color_scheme = base_theme->GetDefaultSystemColorScheme();
   const bool is_dark = (color_scheme == NativeTheme::ColorScheme::kDark);
   switch (color_id) {
     case NativeTheme::kColorId_ButtonEnabledColor:
