@@ -4,44 +4,34 @@
 
 import { Reducer } from 'redux'
 
+import { getCurrentBalanceReport } from '../utils'
+
 // Constant
 import { types } from '../constants/rewards_types'
 
 const createWallet = (state: Rewards.State) => {
   state.walletCreated = true
   state.enabledMain = true
+  state.enabledAds = true
   state.enabledContribute = true
   state.createdTimestamp = new Date().getTime()
-  chrome.send('brave_rewards.getReconcileStamp', [])
-  chrome.send('brave_rewards.saveSetting', ['enabledMain', 'true'])
-  chrome.send('brave_rewards.saveSetting', ['enabledContribute', 'true'])
-  chrome.send('brave_rewards.getContributionAmount', [])
+
+  chrome.send('brave_rewards.getReconcileStamp')
 
   return state
-}
-
-const fetchRewardsInfo = (state: Rewards.State) => {
-  chrome.send('brave_rewards.getContributionList')
-  chrome.send('brave_rewards.getWalletProperties', [])
-  chrome.send('brave_rewards.getPendingContributionsTotal')
-  chrome.send('brave_rewards.getRecurringTips')
-  chrome.send('brave_rewards.getOneTimeTips')
-  chrome.send('brave_rewards.getAdsData')
-
-  if (!state.safetyNetFailed) {
-    chrome.send('brave_rewards.fetchPromotions')
-  }
 }
 
 const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   switch (action.type) {
     case types.CREATE_WALLET:
-      chrome.send('brave_rewards.createWalletRequested', [])
+      state = { ...state }
+      state.walletCreateFailed = false
+      state.walletCreated = false
+      chrome.send('brave_rewards.createWalletRequested')
       break
     case types.WALLET_CREATED:
       state = { ...state }
       state = createWallet(state)
-      fetchRewardsInfo(state)
       chrome.send('brave_rewards.saveAdsSetting', ['adsEnabled', 'true'])
       break
     case types.WALLET_CREATE_FAILED:
@@ -49,7 +39,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state.walletCreateFailed = true
       break
     case types.GET_WALLET_PROPERTIES:
-      chrome.send('brave_rewards.getWalletProperties', [])
+      chrome.send('brave_rewards.getWalletProperties')
       break
     case types.ON_WALLET_PROPERTIES: {
       state = { ...state }
@@ -58,11 +48,13 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       // TODO NZ check why enum can't be used inside Rewards namespace
       if (action.payload.properties.status === 1) {
         ui.walletServerProblem = true
+      } else if (action.payload.properties.status === 17) {
+        ui.walletCorrupted = true
       } else {
-        // TODO NZ don't just assign directly
         state.contributionMonthly = action.payload.properties.monthlyAmount
         state.walletInfo = action.payload.properties.wallet
         ui.walletServerProblem = false
+        ui.walletCorrupted = false
       }
 
       state = {
@@ -72,17 +64,27 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       break
     }
     case types.GET_WALLLET_PASSPHRASE:
-      chrome.send('brave_rewards.getWalletPassphrase', [])
+      chrome.send('brave_rewards.getWalletPassphrase')
       break
     case types.ON_WALLLET_PASSPHRASE:
       const value = action.payload.pass
       if (value && value.length > 0) {
         state = { ...state }
+        let ui = state.ui
         state.recoveryKey = value
+        ui.paymentIdCheck = true
+
+        state = {
+          ...state,
+          ui
+        }
       }
       break
-    case types.RECOVER_WALLET:
-      if (!action.payload.key || action.payload.key.length === 0) {
+    case types.RECOVER_WALLET: {
+      let key = action.payload.key
+      key = key.trim()
+
+      if (!key || key.length === 0) {
         let ui = state.ui
         ui.walletRecoverySuccess = false
 
@@ -94,27 +96,31 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         break
       }
 
-      chrome.send('brave_rewards.recoverWallet', [action.payload.key])
+      chrome.send('brave_rewards.recoverWallet', [key])
       break
+    }
     case types.ON_RECOVER_WALLET_DATA: {
       state = { ...state }
       const result = action.payload.properties.result
-      const balance = action.payload.properties.balance
       let ui = state.ui
-      let walletInfo = state.walletInfo
+      let balance = state.balance
 
       // TODO NZ check why enum can't be used inside Rewards namespace
       ui.walletRecoverySuccess = result === 0
       if (result === 0) {
-        chrome.send('brave_rewards.getWalletPassphrase', [])
-        ui.emptyWallet = balance <= 0
+        balance.total = action.payload.properties.balance
+        chrome.send('brave_rewards.getWalletPassphrase')
+        chrome.send('brave_rewards.fetchPromotions')
+        getCurrentBalanceReport()
+        ui.emptyWallet = balance.total <= 0
         ui.modalBackup = false
+        ui.walletCorrupted = false
       }
 
       state = {
         ...state,
         ui,
-        walletInfo
+        balance
       }
       break
     }
@@ -134,7 +140,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       chrome.send('brave_rewards.checkWalletExistence')
       break
     }
-    case types.ON_WALLET_EXISTS:
+    case types.ON_WALLET_EXISTS: {
       if (!action.payload.exists || state.walletCreated) {
         break
       }
@@ -142,18 +148,38 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state = createWallet(state)
       state.firstLoad = false
       break
+    }
     case types.ON_CONTRIBUTION_AMOUNT: {
       state = { ...state }
       state.contributionMonthly = action.payload.amount
       break
     }
-    case types.GET_PENDING_CONTRIBUTION_TOTAL: {
-      chrome.send('brave_rewards.getPendingContributionsTotal')
+    case types.GET_RECONCILE_STAMP: {
+      chrome.send('brave_rewards.getReconcileStamp')
       break
     }
-    case types.ON_PENDING_CONTRIBUTION_TOTAL: {
+    case types.GET_PENDING_CONTRIBUTIONS: {
+      chrome.send('brave_rewards.getPendingContributions')
+      break
+    }
+    case types.ON_PENDING_CONTRIBUTIONS: {
       state = { ...state }
-      state.pendingContributionTotal = action.payload.amount
+      state.pendingContributions = action.payload.list
+      const total = state.pendingContributions
+        .reduce((accumulator: number, item: Rewards.PendingContribution) => {
+          return accumulator + item.amount
+        }, 0)
+      state.pendingContributionTotal = total
+      break
+    }
+    case types.REMOVE_PENDING_CONTRIBUTION: {
+      chrome.send('brave_rewards.removePendingContribution', [
+        action.payload.id
+      ])
+      break
+    }
+    case types.REMOVE_ALL_PENDING_CONTRIBUTION: {
+      chrome.send('brave_rewards.removeAllPendingContribution')
       break
     }
     case types.GET_BALANCE: {
@@ -173,6 +199,8 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         }
       } else if (status === 1) { // on ledger::Result::LEDGER_ERROR
         ui.walletServerProblem = true
+      } else if (status === 24) { // on ledger::Result::EXPIRED_TOKEN
+        chrome.send('brave_rewards.getExternalWallet', ['uphold'])
       }
 
       state = {
@@ -180,6 +208,20 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         ui
       }
       break
+    }
+    case types.GET_EXTERNAL_WALLET: {
+      chrome.send('brave_rewards.getExternalWallet', [action.payload.type])
+      break
+    }
+    case types.ON_EXTERNAL_WALLET: {
+      state = { ...state }
+
+      if (action.payload.result === 24) { // on ledger::Result::EXPIRED_TOKEN
+        chrome.send('brave_rewards.getExternalWallet', ['uphold'])
+        break
+      }
+
+      state.externalWallet = action.payload.wallet
     }
   }
 
