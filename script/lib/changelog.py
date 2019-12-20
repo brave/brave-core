@@ -27,7 +27,7 @@ def render_markdown(changelog_txt, version, logging):
                 version_changes = output['children'][pos+1]
         pos = pos + 1
     if version_heading and version_changes:
-        heading = reconstruct_heading(version_heading)
+        heading = '# Release Notes'
         s = heading + '\n'
         s = s + '\n'
         changes = reconstruct_brave_changelog_list(version_changes)
@@ -47,17 +47,6 @@ def render_html(changelog_txt, version, logging):
 
     rendered = mistletoe.markdown(render_markdown(changelog_txt, version, logging))
     return rendered
-
-
-def reconstruct_heading(heading):
-    """
-    heading is a dict
-    """
-
-    if heading['type'] is "Heading":
-        return ("{} [{}]({})".format('#'*heading['level'],
-                                     heading['children'][0]['children'][0]['content'],
-                                     heading['children'][0]['target']))
 
 
 def reconstruct_brave_changelog_list(li):
