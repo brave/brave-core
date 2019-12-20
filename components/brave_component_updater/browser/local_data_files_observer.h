@@ -10,10 +10,9 @@
 
 #include "base/files/file_path.h"
 #include "base/scoped_observer.h"
+#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 
 namespace brave_component_updater {
-
-class LocalDataFilesService;
 
 // The abstract base class for observers of the local data files service,
 // which is the component that arbitrates access to various DAT files
