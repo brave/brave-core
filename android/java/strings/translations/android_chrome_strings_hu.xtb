@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Speciális</translation>
 <translation id="1146678959555564648">Virtuális valóság – belépés</translation>
 <translation id="987264212798334818">Általános</translation>
+<translation id="5186185447130319458">Privát</translation>
 <translation id="4275663329226226506">Média</translation>
 <translation id="4759238208242260848">Letöltések</translation>
 <translation id="218608176142494674">Megosztás</translation>
@@ -356,6 +357,7 @@ Előfordulhat, hogy Brave Software-fiókjában (a <ph name="BEGIN_LINK"/>myactiv
 <translation id="2131665479022868825"><ph name="DATA"/> megtakarítva</translation>
 <translation id="8569404424186215731"><ph name="DATE"/> óta</translation>
 <translation id="3252158532344029638">Lite módban a Brave gyorsabban betölti az oldalakat, és akár 60 százalékkal kisebb adatforgalmat generál.</translation>
+<translation id="1438581767753657407">Lite módban a Brave saját szervereit használja, hogy az oldalak betöltése gyorsabb legyen. A Lite mód átírja a nagyon lassú oldalakat, hogy csak a lényeges tartalmakat töltse be. A Lite mód nem vonatkozik privát fülekre.</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/>-os adatmegtakarítás</translation>
 <translation id="7494974237137038751">megtakarított adatmennyiség</translation>
 <translation id="6111020039983847643">használt adatmennyiség</translation>
@@ -520,7 +522,9 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>állítsa vissza a szink
 <translation id="7947953824732555851">Elfogadás és bejelentkezés</translation>
 <translation id="8583805026567836021">Fiókadatok törlése</translation>
 <translation id="8310344678080805313">Szabványos lapok</translation>
+<translation id="2633278372998075009">Privát fülek</translation>
 <translation id="5748802427693696783">Szabványos lapokra váltva</translation>
+<translation id="6099151465289169210">Átváltva privát fülekre</translation>
 <translation id="7998918019931843664">Bezárt lap megnyitása</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/> lap</translation>
 <translation id="4452411734226507615"><ph name="TAB_TITLE"/> lap bezárása</translation>
@@ -578,6 +582,7 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>állítsa vissza a szink
 <translation id="8942627711005830162">Megnyitás másik ablakban</translation>
 <translation id="4195643157523330669">Megnyitás új lapon</translation>
 <translation id="1100066534610197918">Megnyitás új lapon, csoportban</translation>
+<translation id="4243710787042215766">Megnyitás privát fülben</translation>
 <translation id="4860895144060829044">Hívás</translation>
 <translation id="6896758677409633944">Másolás</translation>
 <translation id="8393700583063109961">Üzenet küldése</translation>
@@ -642,6 +647,7 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>állítsa vissza a szink
 <translation id="1671236975893690980">Letöltés függőben…</translation>
 <translation id="5561549206367097665">Várakozás a hálózatra…</translation>
 <translation id="5864419784173784555">Várakozás a másik letöltésre…</translation>
+<translation id="3110967157686007724">Privát fül</translation>
 <translation id="6461962085415701688">A fájlt nem lehet megnyitni</translation>
 <translation id="1178581264944972037">Szünet</translation>
 <translation id="8200772114523450471">Folytatás</translation>
@@ -703,6 +709,7 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>állítsa vissza a szink
 <translation id="7810647596859435254">Megnyitás ezzel:</translation>
 <translation id="5655963694829536461">Keresés a letöltések között</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">Saját fájlok</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Itt jelennek meg a cikkek, amelyeket offline állapotban is olvashat</translation>
@@ -717,6 +724,8 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>állítsa vissza a szink
 <translation id="968900484120156207">Itt jelennek meg a felkeresett oldalak</translation>
 <translation id="7882131421121961860">Nincsenek előzmények</translation>
 <translation id="3549657413697417275">Keresés az előzményekben</translation>
+<translation id="4526803704855831732">Privát fülek</translation>
+<translation id="7465104139234185284">Összes privát ablak bezárása</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">HH</translation>
 <translation id="605721222689873409">ÉÉ</translation>
@@ -790,6 +799,7 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>állítsa vissza a szink
 <translation id="8364299278605033898">Tekintse meg a népszerű webhelyeket</translation>
 <translation id="1171770572613082465">A „Népszerűek” gombra koppintva megtekintheti a népszerű webhelyeket</translation>
 <translation id="5233638681132016545">Új lap</translation>
+<translation id="6336451774241870485">Új privát fül</translation>
 <translation id="4521874409998847950">A következőtől: <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>megjelenítette a Brave Software<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">Rendelkezésre áll új verzió</translation>
 <translation id="4058091506841967397">A Brave nem frissíthető</translation>
@@ -802,12 +812,14 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>állítsa vissza a szink
 <translation id="6437478888915024427">Oldaladatok</translation>
 <translation id="7180611975245234373">Frissítés</translation>
 <translation id="4913169188695071480">Frissítés leállítása</translation>
+<translation id="3234355010754616171">Új privát fül</translation>
 <translation id="1829244130665387512">Keresés ezen az oldalon</translation>
 <translation id="6593061639179217415">Asztali webhely</translation>
 <translation id="9063523880881406963">Kapcsolja ki az Asztali webhely kérése funkciót</translation>
 <translation id="2038563949887743358">Kapcsolja be az Asztali webhely kérése funkciót</translation>
 <translation id="2433507940547922241">Megjelenés</translation>
 <translation id="983192555821071799">Az összes lap bezárása</translation>
+<translation id="6610147964972079463">Privát fülek bezárása</translation>
 <translation id="1310482092992808703">Lapok csoportosítása</translation>
 <translation id="7725024127233776428">Itt jelennek meg a könyvjelzőként mentett oldalak</translation>
 <translation id="4404568932422911380">Nincsenek könyvjelzők</translation>
@@ -864,6 +876,7 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>állítsa vissza a szink
 <translation id="6963642900430330478">Ez az oldal veszélyes. Webhelyadatok</translation>
 <translation id="9070377983101773829">Hangalapú keresés indítása</translation>
 <translation id="8676374126336081632">Beírt szöveg törlése</translation>
+<translation id="4968908871398201967">Privát mód</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> megnyitott lap. A lapok között koppintással válthat.}other{<ph name="OPEN_TABS_MANY"/> megnyitott lap. A lapok között koppintással válthat.}}</translation>
 <translation id="2369533728426058518">megnyitott lapok</translation>
 <translation id="7071521146534760487">Fiók kezelése</translation>
@@ -871,8 +884,12 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>állítsa vissza a szink
 <translation id="2707726405694321444">Oldal frissítése</translation>
 <translation id="2891154217021530873">Oldal betöltésének leállítása</translation>
 <translation id="6710213216561001401">Előző</translation>
+<translation id="9080642952018487277">Belépés privát módba</translation>
+<translation id="4883379392681899581">Kilépés privát módból</translation>
 <translation id="6659594942844771486">Lap</translation>
 <translation id="1933845786846280168">Kiválasztott lap</translation>
+<translation id="3377025655491224618">Privát fül</translation>
+<translation id="584427517463557805">Kiválasztott privát fül</translation>
 <translation id="2268044343513325586">Pontosítás</translation>
 <translation id="7846076177841592234">Kijelölés törlése</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> elem kiválasztva. A lehetőségek a képernyő tetején találhatók.</translation>
@@ -973,6 +990,7 @@ A beállítás módosításához <ph name="BEGIN_LINK"/>állítsa vissza a szink
 <translation id="4878404682131129617">Nem sikerült a proxyszerveren keresztüli alagút kialakítása</translation>
 <translation id="4749960740855309258">Új lap megnyitása</translation>
 <translation id="8788968922598763114">A legutóbb bezárt lap újranyitása</translation>
+<translation id="2280910239864711607">Új fül megnyitása privát módban</translation>
 <translation id="7929962904089429003">A menü megnyitása</translation>
 <translation id="6039379616847168523">Ugrás a következő lapra</translation>
 <translation id="5210286577605176222">Ugrás az előző lapra</translation>

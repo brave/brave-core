@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">बेहतर</translation>
 <translation id="1146678959555564648">VR डालें</translation>
 <translation id="987264212798334818">सामान्य</translation>
+<translation id="5186185447130319458">निजी</translation>
 <translation id="4275663329226226506">मीडिया</translation>
 <translation id="4759238208242260848">डाउनलोड</translation>
 <translation id="218608176142494674">शेयर किया जा रहा है</translation>
@@ -356,6 +357,7 @@
 <translation id="2131665479022868825"><ph name="DATA"/> बचाया गया</translation>
 <translation id="8569404424186215731"><ph name="DATE"/> से</translation>
 <translation id="3252158532344029638">'लाइट मोड' में, Brave पेजों को ज़्यादा तेज़ी से लोड करता है और 60 प्रतिशत तक कम डेटा इस्तेमाल करता है.</translation>
+<translation id="1438581767753657407">जब लाइट मोड चालू होता है, तो Brave पेज लोड को तेज करने के लिए Brave सर्वर का उपयोग करता है। लाइट मोड केवल आवश्यक सामग्री लोड करने के लिए बहुत धीमे पृष्ठों को फिर से लिखता है। लाइट मोड निजी टैब पर लागू नहीं होता है।</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> डेटा बचत</translation>
 <translation id="7494974237137038751">डेटा बचाया गया</translation>
 <translation id="6111020039983847643">डेटा इस्तेमाल किया गया</translation>
@@ -520,7 +522,9 @@
 <translation id="7947953824732555851">स्वीकार करें और साइन इन करें</translation>
 <translation id="8583805026567836021">खाते का डेटा साफ़ हो रहा है</translation>
 <translation id="8310344678080805313">मानक टैब</translation>
+<translation id="2633278372998075009">प्राइवेट टैब</translation>
 <translation id="5748802427693696783">मानक टैब पर स्विच कर दिया गया</translation>
+<translation id="6099151465289169210">निजी टैब पर स्विच किया गया</translation>
 <translation id="7998918019931843664">बंद टैब फिर से खोलें</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, टैब</translation>
 <translation id="4452411734226507615"><ph name="TAB_TITLE"/> टैब बंद करें</translation>
@@ -578,6 +582,7 @@
 <translation id="8942627711005830162">दूसरी विंडो में खोलें</translation>
 <translation id="4195643157523330669">नए टैब में खोलें</translation>
 <translation id="1100066534610197918">समूह में नए टैब में खोलें</translation>
+<translation id="4243710787042215766">निजी टैब में खोलें</translation>
 <translation id="4860895144060829044">कॉल करें</translation>
 <translation id="6896758677409633944">कॉपी बनाएं</translation>
 <translation id="8393700583063109961">संदेश भेजें</translation>
@@ -642,6 +647,7 @@
 <translation id="1671236975893690980">डाउनलोड लंबित…</translation>
 <translation id="5561549206367097665">नेटवर्क का इंतज़ार किया जा रहा है…</translation>
 <translation id="5864419784173784555">दूसरे डाउनलोड का इंतज़ार किया जा रहा है…</translation>
+<translation id="3110967157686007724">निजी टैब</translation>
 <translation id="6461962085415701688">फ़ाइल नहीं खोली जा सकती</translation>
 <translation id="1178581264944972037">रोकें</translation>
 <translation id="8200772114523450471">फिर से शुरू करें</translation>
@@ -703,6 +709,7 @@
 <translation id="7810647596859435254">इसमें खोलें…</translation>
 <translation id="5655963694829536461">अपने डाउनलोड में खोजें</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">मेरी फ़ाइलें</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">लेख यहां दिखाई देते हैं जिन्हें आप ऑफ़लाइन होने पर भी पढ़ सकते हैं.</translation>
@@ -717,6 +724,8 @@
 <translation id="968900484120156207">आप जिन पेजों पर जाएंगे वे यहां दिखाई देंगे</translation>
 <translation id="7882131421121961860">कोई इतिहास नहीं मिला</translation>
 <translation id="3549657413697417275">अपने इतिहास में खोजें</translation>
+<translation id="4526803704855831732">निजी टैब</translation>
+<translation id="7465104139234185284">सभी निजी टैब बंद करें</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">YY</translation>
@@ -790,6 +799,7 @@
 <translation id="8364299278605033898">लोकप्रिय वेबसाइटें देखें</translation>
 <translation id="1171770572613082465">"मुख्य साइटें" बटन पर टैप करके लोकप्रिय साइटें देखें</translation>
 <translation id="5233638681132016545">नया टैब</translation>
+<translation id="6336451774241870485">नया निजी टैब</translation>
 <translation id="4521874409998847950">प्रकाशक: <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>Brave Software की ओर से डिलीवर किया गया<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">नया वर्शन उपलब्ध है</translation>
 <translation id="4058091506841967397">Brave अपडेट संभव नहीं</translation>
@@ -802,12 +812,14 @@
 <translation id="6437478888915024427">पेज की जानकारी</translation>
 <translation id="7180611975245234373">रीफ्रेश करें</translation>
 <translation id="4913169188695071480">रीफ्रेश करना बंद करें</translation>
+<translation id="3234355010754616171">नया निजी टैब</translation>
 <translation id="1829244130665387512">पेज में ढूंढें</translation>
 <translation id="6593061639179217415">डेस्कटॉप साइट</translation>
 <translation id="9063523880881406963">अनुरोध डेस्कटॉप साइट बंद करें</translation>
 <translation id="2038563949887743358">अनुरोध डेस्कटॉप साइट चालू करें</translation>
 <translation id="2433507940547922241">प्रकटन</translation>
 <translation id="983192555821071799">सभी टैब बंद करें</translation>
+<translation id="6610147964972079463">निजी टैब बंद करें</translation>
 <translation id="1310482092992808703">टैब को समूह में लगाएं</translation>
 <translation id="7725024127233776428">आप जो पेज बुकमार्क करते हैं वे यहां दिखाई देंगे</translation>
 <translation id="4404568932422911380">कोई बुकमार्क नहीं</translation>
@@ -864,6 +876,7 @@
 <translation id="6963642900430330478">यह पेज खतरनाक है. साइट की जानकारी</translation>
 <translation id="9070377983101773829">बोलकर खोज चालू करें</translation>
 <translation id="8676374126336081632">इनपुट साफ़ करें</translation>
+<translation id="4968908871398201967">निजी मोड</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> टैब खुला है, एक टैब से दूसरे टैब पर जाने के लिए टैप करें}one{<ph name="OPEN_TABS_MANY"/> टैब खुले हैं, एक टैब से दूसरे टैब पर जाने के लिए टैप करें}other{<ph name="OPEN_TABS_MANY"/> टैब खुले हैं, एक टैब से दूसरे टैब पर जाने के लिए टैप करें}}</translation>
 <translation id="2369533728426058518">खुले टैब</translation>
 <translation id="7071521146534760487">खाता प्रबंधित करें</translation>
@@ -871,8 +884,12 @@
 <translation id="2707726405694321444">पेज रीफ्रेश करें</translation>
 <translation id="2891154217021530873">पेज को लोड करना रोकें</translation>
 <translation id="6710213216561001401">पिछला</translation>
+<translation id="9080642952018487277">निजी मोड में प्रवेश करें</translation>
+<translation id="4883379392681899581">प्राइवेट मोड छोड़ें</translation>
 <translation id="6659594942844771486">टैब</translation>
 <translation id="1933845786846280168">चयनित टैब</translation>
+<translation id="3377025655491224618">प्राइवेट टैब</translation>
+<translation id="584427517463557805">चयनित निजी टैब</translation>
 <translation id="2268044343513325586">बेहतर बनाएं</translation>
 <translation id="7846076177841592234">चुना गया हटाएं</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> चुने गए.  विकल्प, स्क्रीन के ऊपरी भाग के पास उपलब्ध हैं</translation>
@@ -973,6 +990,7 @@
 <translation id="4878404682131129617">प्रॉक्सी सर्वर के ज़रिए सुरंग बनाना विफल रहा</translation>
 <translation id="4749960740855309258">नया टैब खोलें</translation>
 <translation id="8788968922598763114">अभी बंद किया हुआ टैब खोलें</translation>
+<translation id="2280910239864711607">निजी मोड में एक नया टैब खोलें</translation>
 <translation id="7929962904089429003">मेन्यू खोलें</translation>
 <translation id="6039379616847168523">सीधे अगले टैब पर जाएं</translation>
 <translation id="5210286577605176222">सीधे पिछले टैब पर जाएं</translation>

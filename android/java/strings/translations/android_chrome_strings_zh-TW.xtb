@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">進階</translation>
 <translation id="1146678959555564648">進入 VR</translation>
 <translation id="987264212798334818">一般</translation>
+<translation id="5186185447130319458">隱私</translation>
 <translation id="4275663329226226506">媒體</translation>
 <translation id="4759238208242260848">下載</translation>
 <translation id="218608176142494674">共用</translation>
@@ -356,6 +357,7 @@
 <translation id="2131665479022868825">已節省 <ph name="DATA"/></translation>
 <translation id="8569404424186215731">(<ph name="DATE"/>起)</translation>
 <translation id="3252158532344029638">使用精簡模式時，Brave 可加快網頁載入速度，並可節省多達百分之 60 的數據用量。</translation>
+<translation id="1438581767753657407">啟用精簡模式後，Brave 會使用 Brave 伺服器來加快頁面載入速度。在精簡模式下，載入緩慢的頁面會被重寫，改為只載入基本內容。精簡模式不適用於隱私分頁。</translation>
 <translation id="6159335304067198720">節省 <ph name="PERCENT"/> 的數據流量</translation>
 <translation id="7494974237137038751">(已節省的數據量)</translation>
 <translation id="6111020039983847643">(已使用的數據量)</translation>
@@ -520,7 +522,9 @@
 <translation id="7947953824732555851">接受並登入</translation>
 <translation id="8583805026567836021">正在清除帳戶資料</translation>
 <translation id="8310344678080805313">標準分頁</translation>
+<translation id="2633278372998075009">隱私分頁</translation>
 <translation id="5748802427693696783">已切換成標準分頁</translation>
+<translation id="6099151465289169210">已切換至隱私分頁</translation>
 <translation id="7998918019931843664">重新開啟先前關閉的分頁</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/> (分頁)</translation>
 <translation id="4452411734226507615">關閉 [<ph name="TAB_TITLE"/>] 分頁</translation>
@@ -578,6 +582,7 @@
 <translation id="8942627711005830162">在其他視窗中開啟</translation>
 <translation id="4195643157523330669">在新分頁中開啟</translation>
 <translation id="1100066534610197918">在群組的新分頁中開啟</translation>
+<translation id="4243710787042215766">用隱私分頁開啟</translation>
 <translation id="4860895144060829044">撥號</translation>
 <translation id="6896758677409633944">複製</translation>
 <translation id="8393700583063109961">傳送訊息</translation>
@@ -642,6 +647,7 @@
 <translation id="1671236975893690980">正在等候下載…</translation>
 <translation id="5561549206367097665">正在等待網路連線…</translation>
 <translation id="5864419784173784555">正在等待其他下載程序完成…</translation>
+<translation id="3110967157686007724">隱私分頁</translation>
 <translation id="6461962085415701688">無法開啟檔案</translation>
 <translation id="1178581264944972037">暫停</translation>
 <translation id="8200772114523450471">繼續</translation>
@@ -703,6 +709,7 @@
 <translation id="7810647596859435254">選擇開啟工具…</translation>
 <translation id="5655963694829536461">搜尋下載內容</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">我的檔案</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">文章會顯示在這裡，並可供離線閱讀</translation>
@@ -717,6 +724,8 @@
 <translation id="968900484120156207">你曾造訪的頁面會顯示在這裡</translation>
 <translation id="7882131421121961860">找不到瀏覽記錄</translation>
 <translation id="3549657413697417275">搜尋你的記錄</translation>
+<translation id="4526803704855831732">隱私分頁</translation>
+<translation id="7465104139234185284">關閉所有隱私分頁</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">月</translation>
 <translation id="605721222689873409">年</translation>
@@ -790,6 +799,7 @@
 <translation id="8364299278605033898">查看熱門網站</translation>
 <translation id="1171770572613082465">輕觸 [熱門網站] 按鈕，即可查看熱門網站</translation>
 <translation id="5233638681132016545">新增分頁</translation>
+<translation id="6336451774241870485">新隱私分頁</translation>
 <translation id="4521874409998847950">發布者：<ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>由 Brave Software 所提供<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">已推出新版本</translation>
 <translation id="4058091506841967397">無法更新 Brave</translation>
@@ -802,12 +812,14 @@
 <translation id="6437478888915024427">頁面資訊</translation>
 <translation id="7180611975245234373">重新整理</translation>
 <translation id="4913169188695071480">停止重新整理</translation>
+<translation id="3234355010754616171">新隱私分頁</translation>
 <translation id="1829244130665387512">在網頁中尋找</translation>
 <translation id="6593061639179217415">電腦版網站</translation>
 <translation id="9063523880881406963">關閉「要求電腦版網站」</translation>
 <translation id="2038563949887743358">開啟「要求電腦版網站」</translation>
 <translation id="2433507940547922241">外觀</translation>
 <translation id="983192555821071799">關閉所有分頁</translation>
+<translation id="6610147964972079463">關閉隱私分頁</translation>
 <translation id="1310482092992808703">將分頁加入群組</translation>
 <translation id="7725024127233776428">加入書籤的頁面會顯示在這裡</translation>
 <translation id="4404568932422911380">沒有書籤</translation>
@@ -864,6 +876,7 @@
 <translation id="6963642900430330478">這個網頁不安全。網站資訊</translation>
 <translation id="9070377983101773829">開始語音搜尋</translation>
 <translation id="8676374126336081632">清除輸入</translation>
+<translation id="4968908871398201967">隱私模式</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{已開啟 <ph name="OPEN_TABS_ONE"/> 個分頁，輕觸即可切換分頁}other{已開啟 <ph name="OPEN_TABS_MANY"/> 個分頁，輕觸即可切換分頁}}</translation>
 <translation id="2369533728426058518">開啟的分頁</translation>
 <translation id="7071521146534760487">管理帳戶</translation>
@@ -871,8 +884,12 @@
 <translation id="2707726405694321444">重新整理頁面</translation>
 <translation id="2891154217021530873">停止載入網頁</translation>
 <translation id="6710213216561001401">返回</translation>
+<translation id="9080642952018487277">進入隱私模式</translation>
+<translation id="4883379392681899581">離開隱私模式</translation>
 <translation id="6659594942844771486">Tab</translation>
 <translation id="1933845786846280168">選取的分頁</translation>
+<translation id="3377025655491224618">隱私分頁</translation>
+<translation id="584427517463557805">已選隱私分頁</translation>
 <translation id="2268044343513325586">修正搜尋</translation>
 <translation id="7846076177841592234">全部取消選取</translation>
 <translation id="7087918508125750058">已選取 <ph name="ITEM_COUNT"/> 個項目。選項位於畫面頂端</translation>
@@ -973,6 +990,7 @@
 <translation id="4878404682131129617">無法透過 Proxy 伺服器建立通道</translation>
 <translation id="4749960740855309258">開啟新分頁</translation>
 <translation id="8788968922598763114">重新開啟最近關閉的分頁</translation>
+<translation id="2280910239864711607">在隱私模式下開啟新分頁</translation>
 <translation id="7929962904089429003">開啟選單</translation>
 <translation id="6039379616847168523">跳至下一個分頁</translation>
 <translation id="5210286577605176222">跳至上一個分頁</translation>

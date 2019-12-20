@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Nâng cao</translation>
 <translation id="1146678959555564648">Nhập VR</translation>
 <translation id="987264212798334818">Chung</translation>
+<translation id="5186185447130319458">Riêng tư</translation>
 <translation id="4275663329226226506">Truyền thông</translation>
 <translation id="4759238208242260848">Tệp đã tải xuống</translation>
 <translation id="218608176142494674">Chia sẻ</translation>
@@ -356,6 +357,7 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="2131665479022868825">Đã tiết kiệm <ph name="DATA"/></translation>
 <translation id="8569404424186215731">kể từ <ph name="DATE"/></translation>
 <translation id="3252158532344029638">Ở Chế độ thu gọn, Brave tải trang nhanh hơn và sử dụng ít dữ liệu hơn lên tới 60 phần trăm.</translation>
+<translation id="1438581767753657407">Khi chế độ Lite đang bật, Brave sử dụng các máy chủ Brave để đẩy nhanh tốc độ tải các trang. Chế độ Lite sẽ viết lại các trang tải rất chậm để chỉ tải nội dung thiết yếu. Chế độ Lite không áp dụng cho các tab Riêng tư.</translation>
 <translation id="6159335304067198720">Đã tiết kiệm được <ph name="PERCENT"/> dữ liệu</translation>
 <translation id="7494974237137038751">dữ liệu đã tiết kiệm</translation>
 <translation id="6111020039983847643">dữ liệu đã dùng</translation>
@@ -520,7 +522,9 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="7947953824732555851">Chấp nhận &amp; đăng nhập</translation>
 <translation id="8583805026567836021">Xóa dữ liệu tài khoản</translation>
 <translation id="8310344678080805313">Tab chuẩn</translation>
+<translation id="2633278372998075009">Tab riêng tư</translation>
 <translation id="5748802427693696783">Đã chuyển sang tab chuẩn</translation>
+<translation id="6099151465289169210">Đã chuyển sang tab riêng tư</translation>
 <translation id="7998918019931843664">Mở lại tab đã đóng</translation>
 <translation id="8853345339104747198">Tab <ph name="TAB_TITLE"/></translation>
 <translation id="4452411734226507615">Đóng tab <ph name="TAB_TITLE"/></translation>
@@ -578,6 +582,7 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="8942627711005830162">Mở trong cửa sổ khác</translation>
 <translation id="4195643157523330669">Mở trong tab mới</translation>
 <translation id="1100066534610197918">Mở trong tab mới trong nhóm</translation>
+<translation id="4243710787042215766">Mở trong tab riêng tư</translation>
 <translation id="4860895144060829044">Gọi</translation>
 <translation id="6896758677409633944">Sao chép</translation>
 <translation id="8393700583063109961">Gửi tin nhắn</translation>
@@ -642,6 +647,7 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="1671236975893690980">Đang chờ tải xuống...</translation>
 <translation id="5561549206367097665">Đang chờ mạng…</translation>
 <translation id="5864419784173784555">Đang chờ đến lần tải xuống tiếp theo…</translation>
+<translation id="3110967157686007724">Tab riêng tư</translation>
 <translation id="6461962085415701688">Không thể mở tệp</translation>
 <translation id="1178581264944972037">Tạm dừng</translation>
 <translation id="8200772114523450471">Tiếp tục</translation>
@@ -703,6 +709,7 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="7810647596859435254">Mở bằng…</translation>
 <translation id="5655963694829536461">Tìm kiếm trong các tệp đã tải xuống</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph>;</translation>
 <translation id="1883903952484604915">Tệp của tôi</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Các bài viết xuất hiện ở đây và bạn có thể đọc ngay cả khi không có kết nối mạng</translation>
@@ -717,6 +724,8 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="968900484120156207">Các trang mà bạn truy cập sẽ xuất hiện tại đây</translation>
 <translation id="7882131421121961860">Không tìm thấy nội dung nào khớp</translation>
 <translation id="3549657413697417275">Tìm kiếm trong lịch sử duyệt web</translation>
+<translation id="4526803704855831732">Tab riêng tư</translation>
+<translation id="7465104139234185284">Đóng mọi tab riêng tư</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">YY</translation>
@@ -790,6 +799,7 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="8364299278605033898">Xem các trang web phổ biến</translation>
 <translation id="1171770572613082465">Xem các trang web phổ biến bằng cách nhấn vào nút "Trang web hàng đầu"</translation>
 <translation id="5233638681132016545">Tab mới</translation>
+<translation id="6336451774241870485">Tab riêng tư mới</translation>
 <translation id="4521874409998847950">Từ <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>Do Brave Software phân phối<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">Đã có phiên bản mới hơn</translation>
 <translation id="4058091506841967397">Brave không thể cập nhật</translation>
@@ -802,12 +812,14 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="6437478888915024427">Thông tin trang</translation>
 <translation id="7180611975245234373">Làm mới</translation>
 <translation id="4913169188695071480">Ngừng làm mới</translation>
+<translation id="3234355010754616171">Tab riêng tư mới</translation>
 <translation id="1829244130665387512">Tìm trong trang</translation>
 <translation id="6593061639179217415">Trang web cho máy tính</translation>
 <translation id="9063523880881406963">Tắt Yêu cầu trang web cho máy tính</translation>
 <translation id="2038563949887743358">Bật Yêu cầu trang web cho máy tính</translation>
 <translation id="2433507940547922241">Hình thức</translation>
 <translation id="983192555821071799">Đóng tất cả các tab</translation>
+<translation id="6610147964972079463">Đóng các tab riêng tư</translation>
 <translation id="1310482092992808703">Nhóm các tab</translation>
 <translation id="7725024127233776428">Các trang mà bạn đánh dấu sẽ xuất hiện tại đây</translation>
 <translation id="4404568932422911380">Không có dấu trang nào</translation>
@@ -864,6 +876,7 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="6963642900430330478">Trang này nguy hiểm. Thông tin trang web</translation>
 <translation id="9070377983101773829">Bắt đầu tìm kiếm bằng giọng nói</translation>
 <translation id="8676374126336081632">Xóa văn bản nhập</translation>
+<translation id="4968908871398201967">Chế độ riêng tư</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> tab đang mở, nhấn để chuyển tab}other{<ph name="OPEN_TABS_MANY"/> tab đang mở, nhấn để chuyển tab}}</translation>
 <translation id="2369533728426058518">tab đang mở</translation>
 <translation id="7071521146534760487">Quản lý tài khoản</translation>
@@ -871,8 +884,12 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="2707726405694321444">Làm mới trang</translation>
 <translation id="2891154217021530873">Ngừng tải trang</translation>
 <translation id="6710213216561001401">Trước đó</translation>
+<translation id="9080642952018487277">Sử dụng chế độ riêng tư</translation>
+<translation id="4883379392681899581">Rời chế độ riêng tư</translation>
 <translation id="6659594942844771486">Tab</translation>
 <translation id="1933845786846280168">Tab được chọn</translation>
+<translation id="3377025655491224618">Tab riêng tư</translation>
+<translation id="584427517463557805">Tab riêng tư đã chọn</translation>
 <translation id="2268044343513325586">Tinh chỉnh</translation>
 <translation id="7846076177841592234">Hủy chọn</translation>
 <translation id="7087918508125750058">Đã chọn <ph name="ITEM_COUNT"/> mục. Bạn có thể sử dụng các tùy chọn ở gần đầu màn hình</translation>
@@ -973,6 +990,7 @@ Tài khoản Brave Software của bạn có thể có các dạng lịch sử du
 <translation id="4878404682131129617">Thiết lập đường hầm qua máy chủ proxy không thành công</translation>
 <translation id="4749960740855309258">Mở tab mới</translation>
 <translation id="8788968922598763114">Mở lại tab đóng sau cùng</translation>
+<translation id="2280910239864711607">Mở một tab mới ở chế độ Riêng tư</translation>
 <translation id="7929962904089429003">Mở menu</translation>
 <translation id="6039379616847168523">Chuyển sang tab tiếp theo</translation>
 <translation id="5210286577605176222">Quay về tab trước</translation>

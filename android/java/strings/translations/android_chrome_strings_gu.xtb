@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">વિગતવાર</translation>
 <translation id="1146678959555564648">VR માં દાખલ થાઓ</translation>
 <translation id="987264212798334818">સામાન્ય</translation>
+<translation id="5186185447130319458">ખાનગી</translation>
 <translation id="4275663329226226506">મીડિયા</translation>
 <translation id="4759238208242260848">ડાઉનલોડ્સ</translation>
 <translation id="218608176142494674">શેરિંગ</translation>
@@ -356,6 +357,7 @@
 <translation id="2131665479022868825"><ph name="DATA"/> સાચવ્યો</translation>
 <translation id="8569404424186215731"><ph name="DATE"/> થી</translation>
 <translation id="3252158532344029638">લાઇટ મોડમાં, Brave પેજને વધુ ઝડપથી લોડ કરે છે અને તે 60 ટકા ઓછા ડેટાનો ઉપયોગ કરે છે.</translation>
+<translation id="1438581767753657407">જ્યારે Lite મોડ ચાલુ હોય ત્યારે, પૃષ્ઠોને વધુ ઝડપથી લોડ કરવા માટે Brave Brave સર્વરોનો ઉપયોગ કરે છે. Lite મોડ ફક્ત આવશ્યક સામગ્રીને લોડ કરવા માટે ખૂબ ધીમું પૃષ્ઠો ફરીથી લખે છે. Lite મોડ ખાનગી ટૅબ્સ પર લાગુ પડતું નથી.</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> ડેટા બચત</translation>
 <translation id="7494974237137038751">ડેટા બચત</translation>
 <translation id="6111020039983847643">ડેટા વપરાશ</translation>
@@ -520,7 +522,9 @@
 <translation id="7947953824732555851">સ્વીકારો અને સાઇન ઇન કરો</translation>
 <translation id="8583805026567836021">એકાઉન્ટ ડેટા સાફ કરી રહ્યું છે</translation>
 <translation id="8310344678080805313">માનક ટેબ્સ</translation>
+<translation id="2633278372998075009">ખાનગી ટૅબ્સ</translation>
 <translation id="5748802427693696783">માનક ટૅબ્સ પર સ્વિચ કરેલ છે</translation>
+<translation id="6099151465289169210">ખાનગી ટૅબ્સ પર સ્વિચ કરો</translation>
 <translation id="7998918019931843664">બંધ કરેલ ટેબ ફરીથી ખોલો</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, ટેબ</translation>
 <translation id="4452411734226507615"><ph name="TAB_TITLE"/> ટૅબ બંધ કરો</translation>
@@ -578,6 +582,7 @@
 <translation id="8942627711005830162">અન્ય વિંડોમાં ખોલો</translation>
 <translation id="4195643157523330669">નવા ટૅબમાં ખોલો</translation>
 <translation id="1100066534610197918">ગ્રૂપમાં નવા ટૅબમાં ખોલો</translation>
+<translation id="4243710787042215766">ખાનગી ટૅબમાં ખોલો</translation>
 <translation id="4860895144060829044">કૉલ કરો</translation>
 <translation id="6896758677409633944">કૉપિ કરો</translation>
 <translation id="8393700583063109961">સંદેશ મોકલો</translation>
@@ -642,6 +647,7 @@
 <translation id="1671236975893690980">ડાઉનલોડ બાકી…</translation>
 <translation id="5561549206367097665">નેટવર્કની રાહ જોઈ રહ્યાં છે…</translation>
 <translation id="5864419784173784555">બીજા ડાઉનલોડ માટે રાહ જોઈ રહ્યાં છે…</translation>
+<translation id="3110967157686007724">ખાનગી ટૅબ</translation>
 <translation id="6461962085415701688">ફાઇલ ખોલી શકતાં નથી</translation>
 <translation id="1178581264944972037">થોભો</translation>
 <translation id="8200772114523450471">રિઝ્યુમે</translation>
@@ -703,6 +709,7 @@
 <translation id="7810647596859435254">આની સાથે ખોલો…</translation>
 <translation id="5655963694829536461">તમારા ડાઉનલોડમાં શોધો</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">મારી ફાઇલો</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">લેખો અહીં દેખાય છે, જે તમે ઑફલાઇન હો ત્યારે પણ વાંચી શકો છો</translation>
@@ -717,6 +724,8 @@
 <translation id="968900484120156207">તમે મુલાકાત લીધેલા પેજ અહીં દેખાય છે</translation>
 <translation id="7882131421121961860">કોઈ ઇતિહાસ મળ્યો નથી</translation>
 <translation id="3549657413697417275">તમારો ઇતિહાસ શોધો</translation>
+<translation id="4526803704855831732">ખાનગી ટૅબ્સ</translation>
+<translation id="7465104139234185284">તમામ ખાનગી ટૅબ્સ બંધ કરો</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">YY</translation>
@@ -790,6 +799,7 @@
 <translation id="8364299278605033898">લોકપ્રિય વેબસાઇટ જુઓ</translation>
 <translation id="1171770572613082465">"લોકપ્રિય સાઇટ" બટન પર ટૅપ કરીને લોકપ્રિય વેબસાઇટ જુઓ</translation>
 <translation id="5233638681132016545">નવું ટૅબ</translation>
+<translation id="6336451774241870485">નવું ખાનગી ટૅબ</translation>
 <translation id="4521874409998847950"><ph name="PUBLISHER_ORIGIN"/> તરફથી - <ph name="BEGIN_DEEMPHASIZED"/>Brave Software દ્વારા વિતરિત <ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">નવું વર્ઝન ઉપલબ્ધ છે</translation>
 <translation id="4058091506841967397">Brave અપડેટ કરી શકતા નથી</translation>
@@ -802,12 +812,14 @@
 <translation id="6437478888915024427">પેજ વિશે માહિતી</translation>
 <translation id="7180611975245234373">રિફ્રેશ કરો</translation>
 <translation id="4913169188695071480">તાજું કરવાનું રોકો</translation>
+<translation id="3234355010754616171">નવું ખાનગી ટૅબ</translation>
 <translation id="1829244130665387512">આ પૃષ્ઠમાં શોધો</translation>
 <translation id="6593061639179217415">ડેસ્કટૉપ સાઇટ</translation>
 <translation id="9063523880881406963">વિનંતી ડેસ્કટૉપ સાઇટ બંધ કરો</translation>
 <translation id="2038563949887743358">વિનંતી ડેસ્કટૉપ સાઇટ ચાલુ કરો</translation>
 <translation id="2433507940547922241">દેખાવ</translation>
 <translation id="983192555821071799">બધા ટેબ્સ બંધ કરો</translation>
+<translation id="6610147964972079463">ખાનગી ટૅબ્સ બંધ કરો</translation>
 <translation id="1310482092992808703">ટૅબનું ગ્રૂપ બનાવો</translation>
 <translation id="7725024127233776428">બુકમાર્ક કરેલા પેજ અહીં દેખાય છે</translation>
 <translation id="4404568932422911380">કોઈ બુકમાર્ક નથી</translation>
@@ -864,6 +876,7 @@
 <translation id="6963642900430330478">આ પેજ જોખમી છે. સાઇટની માહિતી</translation>
 <translation id="9070377983101773829">વૉઇસ શોધ પ્રારંભ કરો</translation>
 <translation id="8676374126336081632">ઇનપુટ સાફ કરો</translation>
+<translation id="4968908871398201967">ખાનગી મોડ</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> ખુલ્લી ટૅબ, ટૅબને સ્વિચ કરવા માટે ટૅપ કરો}one{<ph name="OPEN_TABS_MANY"/> ખુલ્લી ટૅબ, ટૅબને સ્વિચ કરવા માટે ટૅપ કરો}other{<ph name="OPEN_TABS_MANY"/> ખુલ્લી ટૅબ, ટૅબને સ્વિચ કરવા માટે ટૅપ કરો}}</translation>
 <translation id="2369533728426058518">ટૅબ્સ ખોલો</translation>
 <translation id="7071521146534760487">એકાઉન્ટને મેનેજ કરો</translation>
@@ -871,8 +884,12 @@
 <translation id="2707726405694321444">પેજ રિફ્રેશ કરો</translation>
 <translation id="2891154217021530873">પૃષ્ઠ લોડ કરવાનું રોકો</translation>
 <translation id="6710213216561001401">પાછલી</translation>
+<translation id="9080642952018487277">ખાનગી મોડ દાખલ કરો</translation>
+<translation id="4883379392681899581">ખાનગી મોડ છોડો</translation>
 <translation id="6659594942844771486">ટૅબ</translation>
 <translation id="1933845786846280168">પસંદ કરેલ ટૅબ</translation>
+<translation id="3377025655491224618">ખાનગી મોડ</translation>
+<translation id="584427517463557805">ખાનગી મોડ પસંદ થઈ ગયું</translation>
 <translation id="2268044343513325586">સુધારો</translation>
 <translation id="7846076177841592234">પસંદગી રદ કરો</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/>ની પસંદગી કરી. સ્ક્રીનના ટોચની નજીક વિકલ્પો ઉપલબ્ધ છે</translation>
@@ -973,6 +990,7 @@
 <translation id="4878404682131129617">પ્રૉક્સી સર્વર મારફતે એક ટનલને સ્થાપિત કરવું નિષ્ફળ થયું</translation>
 <translation id="4749960740855309258">એક નવું ટૅબ ખોલો</translation>
 <translation id="8788968922598763114">છેલ્લે બંધ કરેલ ટૅબ ફરીથી ખોલો</translation>
+<translation id="2280910239864711607">ખાનગી મોડમાં નવી મોડ ખોલો</translation>
 <translation id="7929962904089429003">મેનૂ ખોલો</translation>
 <translation id="6039379616847168523">આગલા ટૅબ પર જાઓ</translation>
 <translation id="5210286577605176222">પાછલી ટૅબ પર જાઓ</translation>

@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">উন্নত</translation>
 <translation id="1146678959555564648">(ভিআর)VR লিখুন</translation>
 <translation id="987264212798334818">সাধারণ</translation>
+<translation id="5186185447130319458">ব্যক্তিগত</translation>
 <translation id="4275663329226226506">মাধ্যম</translation>
 <translation id="4759238208242260848">ডাউনলোডগুলি</translation>
 <translation id="218608176142494674">শেয়ার করা সংক্রান্ত বিজ্ঞপ্তি</translation>
@@ -356,6 +357,7 @@
 <translation id="2131665479022868825"><ph name="DATA"/> সংরক্ষণ করা হয়েছে</translation>
 <translation id="8569404424186215731"><ph name="DATE"/> তারিখ থেকে</translation>
 <translation id="3252158532344029638">লাইট মোডে, Brave আরও দ্রুত পৃষ্ঠা লোড করে এবং ৬০ শতাংশ পর্যন্ত কম ডেটা ব্যবহার করে।</translation>
+<translation id="1438581767753657407">লাইট মোড চালু থাকলে, Brave পৃষ্ঠাগুলি আরও দ্রুত লোড করতে Brave সার্ভারগুলি ব্যবহার করে। লাইট মোডে কেবলমাত্র প্রয়োজনীয় সামগ্রী লোড করতে খুব ধীরে পৃষ্ঠাগুলি পুনর্লিখন করে। লাইট মোড ব্যক্তিগত ট্যাবগুলিতে প্রয়োগ হয় না।</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> ডেটা সঞ্চয়</translation>
 <translation id="7494974237137038751">সেভ করা ডেটা</translation>
 <translation id="6111020039983847643">ব্যবহৃত ডেটা</translation>
@@ -522,7 +524,9 @@
 <translation id="7947953824732555851">সম্মত হয়ে সাইন-ইন করুন</translation>
 <translation id="8583805026567836021">অ্যাকাউন্টের ডেটা সাফ করা হচ্ছে</translation>
 <translation id="8310344678080805313">স্ট্যান্ডার্ড ট্যাব</translation>
+<translation id="2633278372998075009">ব্যক্তিগত ট্যাবগুলি</translation>
 <translation id="5748802427693696783">স্ট্যান্ডার্ড ট্যাবে পাল্টানো হয়েছে</translation>
+<translation id="6099151465289169210">ব্যক্তিগত ট্যাবগুলিতে পাল্টানো হয়েছে</translation>
 <translation id="7998918019931843664">বন্ধ হওয়া ট্যাব আবার খুলুন</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, ট্যাব</translation>
 <translation id="4452411734226507615"><ph name="TAB_TITLE"/> ট্যাবটি বন্ধ করুন</translation>
@@ -580,6 +584,7 @@
 <translation id="8942627711005830162">অন্য উইন্ডোতে খুলুন</translation>
 <translation id="4195643157523330669">নতুন ট্যাবে খুলুন</translation>
 <translation id="1100066534610197918">গ্রুপে একটি নতুন ট্যাব খুলুন</translation>
+<translation id="4243710787042215766">ব্যক্তিগত ট্যাবে খুলুন</translation>
 <translation id="4860895144060829044">কল করুন</translation>
 <translation id="6896758677409633944">কপি</translation>
 <translation id="8393700583063109961">বার্তা পাঠান</translation>
@@ -644,6 +649,7 @@
 <translation id="1671236975893690980">ডাউনলোড মুলতবি হয়ে আছে...</translation>
 <translation id="5561549206367097665">নেটওয়ার্কের জন্য অপেক্ষা করা হচ্ছে...</translation>
 <translation id="5864419784173784555">অন্য ডাউনলোডের জন্য অপেক্ষা করা হচ্ছে…</translation>
+<translation id="3110967157686007724">ব্যক্তিগত ট্যাব</translation>
 <translation id="6461962085415701688">ফাইল খোলা যাচ্ছে না</translation>
 <translation id="1178581264944972037">বিরতি</translation>
 <translation id="8200772114523450471">আবার চালু করা</translation>
@@ -705,6 +711,7 @@
 <translation id="7810647596859435254">এর মাধ্যমে খুলুন...</translation>
 <translation id="5655963694829536461">আপনার ডাউনলোডগুলি খুঁজুন</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">আমার ফাইল</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">নিবন্ধগুলি এখানে দেখানো হয় এবং আপনি সেগুলি অফলাইনেও পড়তে পারেন</translation>
@@ -719,6 +726,8 @@
 <translation id="968900484120156207">আপনি যে পৃষ্ঠাগুলিতে যান সেগুলি এখানে দেখানো হয়</translation>
 <translation id="7882131421121961860">কোনো ইতিহাস পাওয়া যায়নি</translation>
 <translation id="3549657413697417275">আপনার ইতিহাস খুঁজুন</translation>
+<translation id="4526803704855831732">ব্যক্তিগত ট্যাবগুলি</translation>
+<translation id="7465104139234185284">সমস্ত ব্যক্তিগত ট্যাব বন্ধ করুন</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">মিমি</translation>
 <translation id="605721222689873409">YY</translation>
@@ -792,6 +801,7 @@
 <translation id="8364299278605033898">জনপ্রিয় ওয়েবসাইট দেখুন</translation>
 <translation id="1171770572613082465">"সেরা সাইট" বোতামে ট্যাপ করে জনপ্রিয় ওয়েবসাইটগুলি দেখুন</translation>
 <translation id="5233638681132016545">নতুন ট্যাব</translation>
+<translation id="6336451774241870485">নতুন ব্যক্তিগত ট্যাব</translation>
 <translation id="4521874409998847950"><ph name="PUBLISHER_ORIGIN"/> থেকে – <ph name="BEGIN_DEEMPHASIZED"/>Brave Software এর মাধ্যমে ডেলিভারি দেওয়া হয়েছে<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">নতুন ভার্সন উপলভ্য</translation>
 <translation id="4058091506841967397">Brave আপডেট হচ্ছে না</translation>
@@ -804,12 +814,14 @@
 <translation id="6437478888915024427">পৃষ্ঠার তথ্য</translation>
 <translation id="7180611975245234373">রিফ্রেশ করুন</translation>
 <translation id="4913169188695071480">রিফ্রেশ করা বন্ধ করুন</translation>
+<translation id="3234355010754616171">নতুন ব্যক্তিগত ট্যাব</translation>
 <translation id="1829244130665387512">পৃষ্ঠাতে খুঁজুন</translation>
 <translation id="6593061639179217415">ডেস্কটপ সাইট</translation>
 <translation id="9063523880881406963">ডেস্কটপ সাইটের অনুরোধ বন্ধ করুন</translation>
 <translation id="2038563949887743358">ডেস্কটপ সাইটের অনুরোধ চালু করুন</translation>
 <translation id="2433507940547922241">উপস্থিতি</translation>
 <translation id="983192555821071799">সমস্ত ট্যাবগুলি বন্ধ করুন</translation>
+<translation id="6610147964972079463">ব্যক্তিগত ট্যাবগুলি বন্ধ করুন</translation>
 <translation id="1310482092992808703">ট্যাবগুলি গ্রুপ করুন</translation>
 <translation id="7725024127233776428">আপনার বুকমার্ক করা পৃষ্ঠা এখানে দেখানো হয়</translation>
 <translation id="4404568932422911380">কোনও বুকমার্ক নেই</translation>
@@ -866,6 +878,7 @@
 <translation id="6963642900430330478">এই পৃষ্ঠাটি বিপজ্জনক। সাইটের তথ্য</translation>
 <translation id="9070377983101773829">ভয়েস সার্চ শুরু করুন</translation>
 <translation id="8676374126336081632">ইনপুট সাফ করুন</translation>
+<translation id="4968908871398201967">ব্যক্তিগত মোড</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/>টি খোলা ট্যাব, এক ট্যাব থেকে অন্য ট্যাবে যেতে ট্যাপ করুন}one{<ph name="OPEN_TABS_MANY"/>টি খোলা ট্যাব, এক ট্যাব থেকে অন্য ট্যাবে যেতে ট্যাপ করুন}other{<ph name="OPEN_TABS_MANY"/>টি খোলা ট্যাব, এক ট্যাব থেকে অন্য ট্যাবে যেতে ট্যাপ করুন}}</translation>
 <translation id="2369533728426058518">খোলা ট্যাবগুলি</translation>
 <translation id="7071521146534760487">অ্যাকাউন্ট ম্যানেজ করুন</translation>
@@ -873,8 +886,12 @@
 <translation id="2707726405694321444">পৃষ্ঠা রিফ্রেশ করুন</translation>
 <translation id="2891154217021530873">পৃষ্ঠা লোড করা বন্ধ করুন</translation>
 <translation id="6710213216561001401">পূর্ববর্তী</translation>
+<translation id="9080642952018487277">ব্যক্তিগত মোড লিখুন</translation>
+<translation id="4883379392681899581">ব্যক্তিগত মোড ছেড়ে যান</translation>
 <translation id="6659594942844771486">ট্যাব</translation>
 <translation id="1933845786846280168">নির্বাচিত ট্যাবগুলি</translation>
+<translation id="3377025655491224618">ব্যক্তিগত ট্যাব</translation>
+<translation id="584427517463557805">নির্বাচিত ব্যক্তিগত ট্যাব</translation>
 <translation id="2268044343513325586">রিফাইন করুন</translation>
 <translation id="7846076177841592234">নির্বাচন বাতিল করুন</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> বেছে নেওয়া হয়েছে।  স্ক্রিনের উপরে বিকল্পগুলি পাওয়া যাবে</translation>
@@ -975,6 +992,7 @@
 <translation id="4878404682131129617">প্রক্সি সার্ভারের মাধ্যমে টানেল তৈরি করা যায়নি</translation>
 <translation id="4749960740855309258">একটি নতুন ট্যাব খুলুন</translation>
 <translation id="8788968922598763114">সব শেষে বন্ধ করা ট্যাবটি পুনরায় খুলুন</translation>
+<translation id="2280910239864711607">ব্যক্তিগত মোডে একটি নতুন ট্যাব খুলুন</translation>
 <translation id="7929962904089429003">মেনুটি খুলুন</translation>
 <translation id="6039379616847168523">পরবর্তী ট্যাবে চলে যান</translation>
 <translation id="5210286577605176222">পূর্ববর্তী ট্যাবে চলে যান</translation>

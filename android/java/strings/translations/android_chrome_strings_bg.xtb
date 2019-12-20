@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Разширени</translation>
 <translation id="1146678959555564648">Вход във VR</translation>
 <translation id="987264212798334818">Общи</translation>
+<translation id="5186185447130319458">Поверителен</translation>
 <translation id="4275663329226226506">Медия</translation>
 <translation id="4759238208242260848">Изтегляния</translation>
 <translation id="218608176142494674">Споделяне</translation>
@@ -356,6 +357,7 @@
 <translation id="2131665479022868825">Спестихте <ph name="DATA"/></translation>
 <translation id="8569404424186215731">от <ph name="DATE"/></translation>
 <translation id="3252158532344029638">В олекотения режим на Brave страниците се зареждат по-бързо и се използват до 60 процента по-малко данни.</translation>
+<translation id="1438581767753657407">Когато режимът Lite е включен, Brave използва сървърите на Brave, за да зарежда страниците по-бързо. Режимът Lite пренаписва много бавни страници, за да зареди само съществено съдържание. Режимът Lite не се прилага за поверителни раздели.</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> икономия на данни</translation>
 <translation id="7494974237137038751">спестени данни</translation>
 <translation id="6111020039983847643">използвани данни</translation>
@@ -520,7 +522,9 @@
 <translation id="7947953824732555851">Приемам и влизам</translation>
 <translation id="8583805026567836021">Данните от профила се изчистват</translation>
 <translation id="8310344678080805313">Стандартни раздели</translation>
+<translation id="2633278372998075009">Частни раздели</translation>
 <translation id="5748802427693696783">Превключихте към стандартните раздели</translation>
+<translation id="6099151465289169210">Превключено към поверителни раздели</translation>
 <translation id="7998918019931843664">Повторно отваряне на затворения раздел</translation>
 <translation id="8853345339104747198">„<ph name="TAB_TITLE"/>“ – раздел</translation>
 <translation id="4452411734226507615">Затваряне на раздела „<ph name="TAB_TITLE"/>“</translation>
@@ -578,6 +582,7 @@
 <translation id="8942627711005830162">Отваряне в другия прозорец</translation>
 <translation id="4195643157523330669">Отваряне в нов раздел</translation>
 <translation id="1100066534610197918">Отваряне в нов раздел в група</translation>
+<translation id="4243710787042215766">Отваряне в частен раздел</translation>
 <translation id="4860895144060829044">Обаждане</translation>
 <translation id="6896758677409633944">Копиране</translation>
 <translation id="8393700583063109961">Изпратете съобщение</translation>
@@ -642,6 +647,7 @@
 <translation id="1671236975893690980">Предстои изтегляне…</translation>
 <translation id="5561549206367097665">Изчаква се връзка с мрежата…</translation>
 <translation id="5864419784173784555">Изчаква се друго изтегляне…</translation>
+<translation id="3110967157686007724">Частен раздел</translation>
 <translation id="6461962085415701688">Файлът не може да бъде отворен</translation>
 <translation id="1178581264944972037">Пауза</translation>
 <translation id="8200772114523450471">Възобновяване</translation>
@@ -703,6 +709,7 @@
 <translation id="7810647596859435254">Отваряне със…</translation>
 <translation id="5655963694829536461">Търсете в изтеглянията</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/><ph name="SEPARATOR"/><ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">Моите файлове</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/><ph name="SEPARATOR"/><ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Тук се показват статии, които можете да четете дори когато сте офлайн</translation>
@@ -717,6 +724,8 @@
 <translation id="968900484120156207">Посетените от вас страници се показват тук</translation>
 <translation id="7882131421121961860">Няма намерена история</translation>
 <translation id="3549657413697417275">Търсене в историята ви</translation>
+<translation id="4526803704855831732">Частни раздели</translation>
+<translation id="7465104139234185284">Затворете всички частни раздели</translation>
 <translation id="6820686453637990663">Код за сигурност</translation>
 <translation id="3244271242291266297">ММ</translation>
 <translation id="605721222689873409">ГГ</translation>
@@ -790,6 +799,7 @@
 <translation id="8364299278605033898">Вижте популярните уебсайтове</translation>
 <translation id="1171770572613082465">Вижте популярните уебсайтове, като докоснете бутона „Водещи сайтове“</translation>
 <translation id="5233638681132016545">Нов раздел</translation>
+<translation id="6336451774241870485">Нов частен раздел</translation>
 <translation id="4521874409998847950">От <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>показва се от Brave Software<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">Налице е по-нова версия</translation>
 <translation id="4058091506841967397">Не може да се актуализира</translation>
@@ -802,12 +812,14 @@
 <translation id="6437478888915024427">Информация за страницата</translation>
 <translation id="7180611975245234373">Опресняване</translation>
 <translation id="4913169188695071480">Спиране на опресняването</translation>
+<translation id="3234355010754616171">Нов поверителен раздел</translation>
 <translation id="1829244130665387512">Търсене в страницата</translation>
 <translation id="6593061639179217415">Настолен сайт</translation>
 <translation id="9063523880881406963">Изключване на функцията за заявяване на настолни сайтове</translation>
 <translation id="2038563949887743358">Включване на функцията за заявяване на настолни сайтове</translation>
 <translation id="2433507940547922241">Облик</translation>
 <translation id="983192555821071799">Затваряне на всички раздели</translation>
+<translation id="6610147964972079463">Затворете поверителните раздели</translation>
 <translation id="1310482092992808703">Групиране на раздели</translation>
 <translation id="7725024127233776428">Запазените от вас отметки към страници се показват тук</translation>
 <translation id="4404568932422911380">Няма отметки</translation>
@@ -864,6 +876,7 @@
 <translation id="6963642900430330478">Тази страница е опасна. Информация за сайта</translation>
 <translation id="9070377983101773829">Стартиране на гласово търсене</translation>
 <translation id="8676374126336081632">Изчистване на въведеното</translation>
+<translation id="4968908871398201967">Поверителен режим</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> отворен раздел. Докоснете за превключване между разделите}other{<ph name="OPEN_TABS_MANY"/> отворени раздела. Докоснете за превключване между тях}}</translation>
 <translation id="2369533728426058518">отваряне на раздели</translation>
 <translation id="7071521146534760487">Управление на профила</translation>
@@ -871,8 +884,12 @@
 <translation id="2707726405694321444">Опресняване на страницата</translation>
 <translation id="2891154217021530873">Спиране на зареждането на страницата</translation>
 <translation id="6710213216561001401">Предишна</translation>
+<translation id="9080642952018487277">Влезте в частен режим</translation>
+<translation id="4883379392681899581">Излезте от поверителния режим</translation>
 <translation id="6659594942844771486">Раздел</translation>
 <translation id="1933845786846280168">Избран раздел</translation>
+<translation id="3377025655491224618">Частен раздел</translation>
+<translation id="584427517463557805">Избран частен раздел</translation>
 <translation id="2268044343513325586">Прецизиране</translation>
 <translation id="7846076177841592234">Анулиране на избора</translation>
 <translation id="7087918508125750058">Избрани: <ph name="ITEM_COUNT"/>. Налице са опции близо до горната част на екрана</translation>
@@ -973,6 +990,7 @@
 <translation id="4878404682131129617">Създаването на тунел през прокси сървъра не бе успешно</translation>
 <translation id="4749960740855309258">Отваряне на нов раздел</translation>
 <translation id="8788968922598763114">Повторно отваряне на последно затворения раздел</translation>
+<translation id="2280910239864711607">Отворете нов раздел в Поверителен режим</translation>
 <translation id="7929962904089429003">Отваряне на менюто</translation>
 <translation id="6039379616847168523">Преминаване към следващия раздел</translation>
 <translation id="5210286577605176222">Преминаване към предишния раздел</translation>

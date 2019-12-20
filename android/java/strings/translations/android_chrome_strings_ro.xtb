@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Avansate</translation>
 <translation id="1146678959555564648">Intră în RV</translation>
 <translation id="987264212798334818">General</translation>
+<translation id="5186185447130319458">Privat</translation>
 <translation id="4275663329226226506">Media</translation>
 <translation id="4759238208242260848">Descărcări</translation>
 <translation id="218608176142494674">Trimitere</translation>
@@ -356,6 +357,7 @@ Contul Brave Software poate să ofere alte forme ale istoricului de navigare, cu
 <translation id="2131665479022868825">Date economisite: <ph name="DATA"/></translation>
 <translation id="8569404424186215731">începând cu <ph name="DATE"/></translation>
 <translation id="3252158532344029638">În modul Lite, Brave încarcă mai repede paginile și folosește cu până la 60 de procente mai puține date.</translation>
+<translation id="1438581767753657407">Când este pornit modul Lite, Brave folosește serverele Brave pentru ca paginile să se încarce mai rapid. Modul Lite rescrie paginile foarte lente pentru a încărca doar conținutul esențial. Modul Lite nu se aplică paginilor private.</translation>
 <translation id="6159335304067198720">Economie de date de <ph name="PERCENT"/></translation>
 <translation id="7494974237137038751">date economisite</translation>
 <translation id="6111020039983847643">date utilizate</translation>
@@ -520,7 +522,9 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="7947953824732555851">Accept și conectare</translation>
 <translation id="8583805026567836021">Se șterg datele contului</translation>
 <translation id="8310344678080805313">File standard</translation>
+<translation id="2633278372998075009">Pagini private</translation>
 <translation id="5748802427693696783">Ai comutat la filele standard</translation>
+<translation id="6099151465289169210">S-a efectuat comutarea la filele private</translation>
 <translation id="7998918019931843664">Redeschideți fila închisă</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, filă</translation>
 <translation id="4452411734226507615">Închide fila <ph name="TAB_TITLE"/></translation>
@@ -578,6 +582,7 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="8942627711005830162">Deschide în altă fereastră</translation>
 <translation id="4195643157523330669">Deschide în filă nouă</translation>
 <translation id="1100066534610197918">Deschide în filă nouă în grup</translation>
+<translation id="4243710787042215766">Deschideți în pagină privată</translation>
 <translation id="4860895144060829044">Apelează</translation>
 <translation id="6896758677409633944">Copiază</translation>
 <translation id="8393700583063109961">Trimite un mesaj</translation>
@@ -642,6 +647,7 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="1671236975893690980">Descărcare în așteptare…</translation>
 <translation id="5561549206367097665">Se așteaptă rețeaua…</translation>
 <translation id="5864419784173784555">Se așteaptă altă descărcare…</translation>
+<translation id="3110967157686007724">Pagină privată</translation>
 <translation id="6461962085415701688">Fișierul nu poate fi deschis</translation>
 <translation id="1178581264944972037">Întrerupe</translation>
 <translation id="8200772114523450471">Reia</translation>
@@ -703,6 +709,7 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="7810647596859435254">Deschide cu…</translation>
 <translation id="5655963694829536461">Caută în descărcări</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">Fișierele mele</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Articolele apar aici și le poți citi chiar dacă ești offline</translation>
@@ -717,6 +724,8 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="968900484120156207">Paginile pe care le accesezi apar aici</translation>
 <translation id="7882131421121961860">Nu s-a găsit niciun istoric</translation>
 <translation id="3549657413697417275">Caută în istoricul tău</translation>
+<translation id="4526803704855831732">File private</translation>
+<translation id="7465104139234185284">Închide toate filele private</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">LL</translation>
 <translation id="605721222689873409">AA</translation>
@@ -790,6 +799,7 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="8364299278605033898">Vezi site-urile populare</translation>
 <translation id="1171770572613082465">Vezi site-uri populare atingând butonul „Site-uri de top”</translation>
 <translation id="5233638681132016545">Filă nouă</translation>
+<translation id="6336451774241870485">Pagină privată nouă</translation>
 <translation id="4521874409998847950">De la <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>livrată de Brave Software<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">Este disponibilă o versiune mai nouă</translation>
 <translation id="4058091506841967397">Brave nu se poate actualiza</translation>
@@ -802,12 +812,14 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="6437478888915024427">Informații despre pagină</translation>
 <translation id="7180611975245234373">Actualizați</translation>
 <translation id="4913169188695071480">Oprește actualizarea</translation>
+<translation id="3234355010754616171">Pagină nouă privată</translation>
 <translation id="1829244130665387512">Găsește în pagină</translation>
 <translation id="6593061639179217415">Versiune site desktop</translation>
 <translation id="9063523880881406963">Dezactivează opțiunea Versiune site pentru desktop</translation>
 <translation id="2038563949887743358">Activează opțiunea Versiune site pentru desktop</translation>
 <translation id="2433507940547922241">Aspect</translation>
 <translation id="983192555821071799">Închide toate filele</translation>
+<translation id="6610147964972079463">Închideți paginile private</translation>
 <translation id="1310482092992808703">Grupează file</translation>
 <translation id="7725024127233776428">Paginile pe care le marchezi apar aici</translation>
 <translation id="4404568932422911380">Niciun marcaj</translation>
@@ -864,6 +876,7 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="6963642900430330478">Această pagină este periculoasă. Informații despre site</translation>
 <translation id="9070377983101773829">Începe căutarea vocală</translation>
 <translation id="8676374126336081632">Șterge textul introdus</translation>
+<translation id="4968908871398201967">Mod privat</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> filă deschisă, atinge pentru a comuta filele}few{<ph name="OPEN_TABS_MANY"/> file deschise, atinge pentru a comuta filele}other{<ph name="OPEN_TABS_MANY"/> de file deschise, atinge pentru a comuta filele}}</translation>
 <translation id="2369533728426058518">file deschise</translation>
 <translation id="7071521146534760487">Gestionează contul</translation>
@@ -871,8 +884,12 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="2707726405694321444">Actualizează pagina</translation>
 <translation id="2891154217021530873">Oprește încărcarea paginii</translation>
 <translation id="6710213216561001401">Înapoi</translation>
+<translation id="9080642952018487277">Intrați în modul privat</translation>
+<translation id="4883379392681899581">Ieșiți din modul privat</translation>
 <translation id="6659594942844771486">Filă</translation>
 <translation id="1933845786846280168">Fila selectată</translation>
+<translation id="3377025655491224618">Pagină privată</translation>
+<translation id="584427517463557805">Filă privată selectată</translation>
 <translation id="2268044343513325586">Rafinează</translation>
 <translation id="7846076177841592234">Anulează selecția</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> selectate.  Opțiunile sunt disponibile în partea de sus a ecranului</translation>
@@ -973,6 +990,7 @@ Pentru a modifica această setare, <ph name="BEGIN_LINK"/>resetează sincronizar
 <translation id="4878404682131129617">Nu s-a putut stabili un tunel prin serverul proxy</translation>
 <translation id="4749960740855309258">Deschide o filă nouă</translation>
 <translation id="8788968922598763114">Redeschide ultima filă închisă</translation>
+<translation id="2280910239864711607">Deschideți o pagină nouă în modul privat</translation>
 <translation id="7929962904089429003">Deschide meniul</translation>
 <translation id="6039379616847168523">Accesează fila următoare</translation>
 <translation id="5210286577605176222">Accesează fila anterioară</translation>

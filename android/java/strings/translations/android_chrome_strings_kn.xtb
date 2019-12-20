@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">ಸುಧಾರಿತ</translation>
 <translation id="1146678959555564648">VR ನಮೂದಿಸಿ</translation>
 <translation id="987264212798334818">ಸಾಮಾನ್ಯ</translation>
+<translation id="5186185447130319458">ಖಾಸಗಿ</translation>
 <translation id="4275663329226226506">ಮಾದ್ಯಮ</translation>
 <translation id="4759238208242260848">ಡೌನ್‌ಲೋಡ್‌ಗಳು</translation>
 <translation id="218608176142494674">ಹಂಚಿಕೆ</translation>
@@ -356,6 +357,7 @@
 <translation id="2131665479022868825"><ph name="DATA"/> ಉಳಿತಾಯ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="8569404424186215731"><ph name="DATE"/> ರಿಂದ</translation>
 <translation id="3252158532344029638">ಲೈಟ್ ಮೋಡ್‍ನಲ್ಲಿ, Brave ವೇಗವಾಗಿ ಪುಟಗಳನ್ನು ಲೋಡ್ ಮಾಡುತ್ತದೆ, ಮತ್ತು ಡೇಟಾವನ್ನು ಸುಮಾರು ಶೇಕಡಾ 60 ರಷ್ಟು ಕಡಿಮೆ ಬಳಸುತ್ತದೆ.</translation>
+<translation id="1438581767753657407">ಲೈಟ್ ಮೋಡ್ ಆನ್ ಆಗಿರುವಾಗ, ಪುಟಗಳನ್ನು ವೇಗವಾಗಿ ಲೋಡ್ ಮಾಡಲು ಬ್ರೇವ್‌ ಸರ್ವರ್‌ಗಳನ್ನು ಬಳಸುತ್ತದೆ. ಅಗತ್ಯ ವಿಷಯವನ್ನು ಮಾತ್ರ ಲೋಡ್ ಮಾಡಲು ಲೈಟ್ ಮೋಡ್ ಬಹಳ ನಿಧಾನವಾದ ಪುಟಗಳನ್ನು ಪುನಃ ಬರೆಯುತ್ತದೆ. ಖಾಸಗಿ ಟ್ಯಾಬ್‌ಗಳಿಗೆ ಲೈಟ್ ಮೋಡ್ ಅನ್ವಯಿಸುವುದಿಲ್ಲ</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> ಡೇಟಾ ಉಳಿತಾಯಗಳು</translation>
 <translation id="7494974237137038751">ಉಳಿತಾಯವಾದ ಡೇಟಾ</translation>
 <translation id="6111020039983847643">Brave ನಿಂದ ಬಳಕೆಯಾಗಿರುವ ಡೇಟಾ</translation>
@@ -521,7 +523,9 @@
 <translation id="7947953824732555851">ಸಮ್ಮತಿಸಿ ಮತ್ತು ಸೈನ್‌ ಇನ್‌ ಮಾಡಿ</translation>
 <translation id="8583805026567836021">ಖಾತೆಯ ಡೇಟಾವನ್ನು ತೆರವುಗೊಳಿಸಲಾಗುತ್ತಿದೆ</translation>
 <translation id="8310344678080805313">ಪ್ರಮಾಣಿತ ಟ್ಯಾಬ್‌ಗಳು</translation>
+<translation id="2633278372998075009">ಖಾಸಗಿ ಟ್ಯಾಬ್‌</translation>
 <translation id="5748802427693696783">ಪ್ರಮಾಣಿತ ಟ್ಯಾಬ್‌ಗಳಿಗೆ ಬದಲಾಯಿಸಲಾಗಿದೆ</translation>
+<translation id="6099151465289169210">ಖಾಸಗಿ ಟ್ಯಾಬ್‌ಗೆ ಸ್ವಿಚ್‌ ಆಗಿದೆ</translation>
 <translation id="7998918019931843664">ಮುಚ್ಚಿದ ಟ್ಯಾಬ್ ಮತ್ತೆ ತೆರೆಯಿರಿ</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, ಟ್ಯಾಬ್</translation>
 <translation id="4452411734226507615"><ph name="TAB_TITLE"/> ಟ್ಯಾಬ್‌ ಮುಚ್ಚಿ</translation>
@@ -579,6 +583,7 @@
 <translation id="8942627711005830162">ಇತರ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
 <translation id="4195643157523330669">ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
 <translation id="1100066534610197918">ಗುಂಪಿನ ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆ</translation>
+<translation id="4243710787042215766">ಖಾಸಗಿ ಟ್ಯಾಬ್‌ ಓಪನ್‌ ಮಾಡಿ</translation>
 <translation id="4860895144060829044">ಕರೆ</translation>
 <translation id="6896758677409633944">ನಕಲಿಸು</translation>
 <translation id="8393700583063109961">ಸಂದೇಶ ಕಳುಹಿಸು</translation>
@@ -643,6 +648,7 @@
 <translation id="1671236975893690980">ಡೌನ್‌ಲೋಡ್ ಬಾಕಿ ಉಳಿದಿದೆ...</translation>
 <translation id="5561549206367097665">ನೆಟ್‌ವರ್ಕ್‌ಗಾಗಿ ನಿರೀಕ್ಷಿಸಲಾಗುತ್ತಿದೆ…</translation>
 <translation id="5864419784173784555">ಇನ್ನೊಂದು ಡೌನ್‌ಲೋಡ್‌ಗಾಗಿ ಕಾಯಲಾಗುತ್ತಿದೆ…</translation>
+<translation id="3110967157686007724">ಖಾಸಗಿ ಟ್ಯಾಬ್‌</translation>
 <translation id="6461962085415701688">ಫೈಲ್ ತೆರೆಯಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
 <translation id="1178581264944972037">ವಿರಾಮ</translation>
 <translation id="8200772114523450471">ಪುನರಾರಂಭಿಸು</translation>
@@ -704,6 +710,7 @@
 <translation id="7810647596859435254">ಇದರೊಂದಿಗೆ ತೆರೆಯಿರಿ...</translation>
 <translation id="5655963694829536461">ನಿಮ್ಮ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಹುಡುಕಿ</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">ನನ್ನ ಫೈಲ್‌ಗಳು</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">ಲೇಖನಗಳು ಇಲ್ಲಿ ಗೋಚರಿಸುತ್ತವೆ, ಅವುಗಳನ್ನು ನೀವು ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿರುವಾಗಲೂ ಸಹ ಓದಬಹುದಾಗಿದೆ</translation>
@@ -718,6 +725,8 @@
 <translation id="968900484120156207">ನೀವು ಭೇಟಿ ನೀಡುವ ಪುಟಗಳು ಇಲ್ಲಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತವೆ</translation>
 <translation id="7882131421121961860">ಯಾವುದೇ ಇತಿಹಾಸ ಕಂಡುಬಂದಿಲ್ಲ</translation>
 <translation id="3549657413697417275">ನಿಮ್ಮ ಇತಿಹಾಸವನ್ನು ಹುಡುಕಿ</translation>
+<translation id="4526803704855831732">ಖಾಸಗಿ ಟ್ಯಾಬ್‌</translation>
+<translation id="7465104139234185284">ಎಲ್ಲ ಖಾಸಗಿ ಟ್ಯಾಬ್‌ ಮುಚ್ಚಿರಿ</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">ಮಿಮೀ</translation>
 <translation id="605721222689873409">YY</translation>
@@ -791,6 +800,7 @@
 <translation id="8364299278605033898">ಜನಪ್ರಿಯ ವೆಬ್‌ಸೈಟ್‌ಗಳನ್ನು ನೋಡಿ</translation>
 <translation id="1171770572613082465">"ಉನ್ನತ ಸೈಟ್‌ಗಳು" ಬಟನ್ ಟ್ಯಾಪ್ ಮಾಡುವ ಮೂಲಕ ಜನಪ್ರಿಯ ವೆಬ್‌ಸೈಟ್‌ಗಳನ್ನು ನೋಡಿ</translation>
 <translation id="5233638681132016545">ಹೊಸ ಟ್ಯಾಬ್</translation>
+<translation id="6336451774241870485">ಹೊಸ ಖಾಸಗಿ ಟ್ಯಾಬ್‌</translation>
 <translation id="4521874409998847950"><ph name="PUBLISHER_ORIGIN"/> ಅವರಿಂದ – <ph name="BEGIN_DEEMPHASIZED"/>Brave Software ನಿಂದ ವಿತರಿಸಲಾಗಿದೆ<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">ಹೊಸ ಆವೃತ್ತಿಯು ಲಭ್ಯವಿದೆ</translation>
 <translation id="4058091506841967397">Brave ಅಪ್‌ಡೇಟ್ ಮಾಡಲಾಗದು</translation>
@@ -803,12 +813,14 @@
 <translation id="6437478888915024427">ಪುಟದ ಮಾಹಿತಿ</translation>
 <translation id="7180611975245234373">ರಿಫ್ರೆಶ್ ಮಾಡಿ</translation>
 <translation id="4913169188695071480">ರಿಫ್ರೆಶ್ ಮಾಡುವಿಕೆ ನಿಲ್ಲಿಸಿ</translation>
+<translation id="3234355010754616171">ಹೊಸ ಖಾಸಗಿ ಟ್ಯಾಬ್‌</translation>
 <translation id="1829244130665387512">ಪುಟದಲ್ಲಿ ಹುಡುಕಿ</translation>
 <translation id="6593061639179217415">ಡೆಸ್ಕ್‌ಟಾಪ್‌ ಸೈಟ್‌</translation>
 <translation id="9063523880881406963">ಡೆಸ್ಕ್‌ಟಾಪ್ ಸೈಟ್ ವಿನಂತಿಯನ್ನು ಆಫ್ ಮಾಡಿ</translation>
 <translation id="2038563949887743358">ಡೆಸ್ಕ್‌ಟಾಪ್ ಸೈಟ್ ವಿನಂತಿಯನ್ನು ಆನ್ ಮಾಡಿ</translation>
 <translation id="2433507940547922241">ಗೋಚರತೆ</translation>
 <translation id="983192555821071799">ಎಲ್ಲ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮುಚ್ಚಿ</translation>
+<translation id="6610147964972079463">ಖಾಸಗಿ ಟ್ಯಾಬ್‌ ಮುಚ್ಚಿ</translation>
 <translation id="1310482092992808703">ಟ್ಯಾಬ್‌ಗಳನ್ನು ಗುಂಪು ಮಾಡಿ</translation>
 <translation id="7725024127233776428">ನೀವು ಬುಕ್‌ಮಾರ್ಕ್ ಮಾಡುವ ಪುಟಗಳು ಇಲ್ಲಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತವೆ</translation>
 <translation id="4404568932422911380">ಯಾವುದೇ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳು ಲಭ್ಯವಿಲ್ಲ</translation>
@@ -865,6 +877,7 @@
 <translation id="6963642900430330478">ಈ ಪುಟವು ಅಪಾಯಕಾರಿಯಾಗಿದೆ. ಸೈಟ್ ಮಾಹಿತಿ</translation>
 <translation id="9070377983101773829">ಧ್ವನಿ ಹುಡುಕಾಟವನ್ನು ಪ್ರಾರಂಭಿಸಿ</translation>
 <translation id="8676374126336081632">ಇನ್‌ಪುಟ್‌‌ ತೆರವುಗೊಳಿಸು</translation>
+<translation id="4968908871398201967">ಖಾಸಗಿ ಮೋಡ್‌</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> ಟ್ಯಾಬ್ ತೆರೆದಿದೆ, ಟ್ಯಾಬ್‌ಗಳನ್ನು ಬದಲಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ}one{<ph name="OPEN_TABS_MANY"/> ಟ್ಯಾಬ್‌ಗಳು ತೆರೆದಿವೆ, ಟ್ಯಾಬ್‌ಗಳನ್ನು ಬದಲಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ}other{<ph name="OPEN_TABS_MANY"/> ಟ್ಯಾಬ್‌ಗಳು ತೆರೆದಿವೆ, ಟ್ಯಾಬ್‌ಗಳನ್ನು ಬದಲಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ}}</translation>
 <translation id="2369533728426058518">ತೆರೆದ ಟ್ಯಾಬ್‌ಗಳು</translation>
 <translation id="7071521146534760487">ಖಾತೆಯನ್ನು ನಿರ್ವಹಿಸಿ</translation>
@@ -872,8 +885,12 @@
 <translation id="2707726405694321444">ಪುಟವನ್ನು ರಿಫ್ರೆಶ್ ಮಾಡಿ</translation>
 <translation id="2891154217021530873">ಪುಟ ಲೋಡ್ ಮಾಡುವುದನ್ನು ನಿಲ್ಲಿಸಿ</translation>
 <translation id="6710213216561001401">ಹಿಂದೆ</translation>
+<translation id="9080642952018487277">ಖಾಸಗಿ ಮೋಡ್‌ ನಮೂದಿಸಿ</translation>
+<translation id="4883379392681899581">ಖಾಸಗಿ ಟ್ಯಾಬ್‌ ಬಿಡಿ</translation>
 <translation id="6659594942844771486">ಟ್ಯಾಬ್</translation>
 <translation id="1933845786846280168">ಟ್ಯಾಬ್ ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ</translation>
+<translation id="3377025655491224618">ಖಾಸಗಿ ಟ್ಯಾಬ್‌</translation>
+<translation id="584427517463557805">ಖಾಸಗಿ ಟ್ಯಾಬ್‌ ಆಯ್ಕೆ ಮಾಡಿ</translation>
 <translation id="2268044343513325586">ಪರಿಷ್ಕರಿಸು</translation>
 <translation id="7846076177841592234">ಆಯ್ಕೆ ರದ್ದುಮಾಡಿ</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> ಅನ್ನು ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ. ಪರದೆಯ ಮೇಲ್ಭಾಗದಲ್ಲಿ ಲಭ್ಯವಿರುವ ಆಯ್ಕೆಗಳು</translation>
@@ -974,6 +991,7 @@
 <translation id="4878404682131129617">ಪ್ರಾಕ್ಸಿ ಸರ್ವರ್ ಮೂಲಕ ಟ್ಯೂನಲ್ ಅನ್ನು ಸ್ಥಾಪಿಸುವುದು ವಿಫಲವಾಗಿದೆ</translation>
 <translation id="4749960740855309258">ಹೊಸ ಟ್ಯಾಬ್ ತೆರೆಯಿರಿ</translation>
 <translation id="8788968922598763114">ಕೊನೆಯದಾಗಿ ಮುಚ್ಚಿದ ಟ್ಯಾಬ್ ಮರುತೆರೆಯಿರಿ</translation>
+<translation id="2280910239864711607">ಖಾಸಗಿ ಮೋಡ್‌ನಲ್ಲಿ ಹೊಸ ಖಾಸಗಿ ಟ್ಯಾಬ್‌ ತೆರೆಯಿರಿ</translation>
 <translation id="7929962904089429003">ಮೆನು ತೆರೆಯಿರಿ</translation>
 <translation id="6039379616847168523">ಮುಂದಿನ ಟ್ಯಾಬ್‌ಗೆ ಹೋಗಿ</translation>
 <translation id="5210286577605176222">ಹಿಂದಿನ ಟ್ಯಾಬ್‌ಗೆ ಹೋಗಿ</translation>

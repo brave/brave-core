@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Geavanceerd</translation>
 <translation id="1146678959555564648">VR activeren</translation>
 <translation id="987264212798334818">Algemeen</translation>
+<translation id="5186185447130319458">Privé</translation>
 <translation id="4275663329226226506">Media</translation>
 <translation id="4759238208242260848">Downloads</translation>
 <translation id="218608176142494674">Delen</translation>
@@ -356,6 +357,7 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="2131665479022868825"><ph name="DATA"/> bespaard</translation>
 <translation id="8569404424186215731">sinds <ph name="DATE"/></translation>
 <translation id="3252158532344029638">In de Lite-versie van Brave worden pagina's sneller geladen en wordt tot wel 60 procent minder data verbruikt.</translation>
+<translation id="1438581767753657407">Wanneer de Lite-modus is ingeschakeld, gebruikt Brave Brave-servers om pagina's sneller te laden. De eenvoudige modus herschrijft zeer trage pagina's om alleen essentiële inhoud te laden. De eenvoudige modus is niet van toepassing op privétabbladen.</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> data bespaard</translation>
 <translation id="7494974237137038751">data bespaard</translation>
 <translation id="6111020039983847643">data gebruikt</translation>
@@ -520,7 +522,9 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="7947953824732555851">Accepteren en inloggen</translation>
 <translation id="8583805026567836021">Accountgegevens wissen</translation>
 <translation id="8310344678080805313">Standaardtabbladen</translation>
+<translation id="2633278372998075009">Privé-tabbladen</translation>
 <translation id="5748802427693696783">Overgeschakeld naar standaardtabbladen</translation>
+<translation id="6099151465289169210">Overgeschakeld naar privétabbladen</translation>
 <translation id="7998918019931843664">Gesloten tabblad opnieuw openen</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, tabblad</translation>
 <translation id="4452411734226507615">Tabblad <ph name="TAB_TITLE"/> sluiten</translation>
@@ -578,6 +582,7 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="8942627711005830162">Openen in een ander venster</translation>
 <translation id="4195643157523330669">Openen op nieuw tabblad</translation>
 <translation id="1100066534610197918">Open in nieuw tabblad in groep</translation>
+<translation id="4243710787042215766">Openen in privé-tabblad</translation>
 <translation id="4860895144060829044">Bellen</translation>
 <translation id="6896758677409633944">Kopieer</translation>
 <translation id="8393700583063109961">Bericht verzenden</translation>
@@ -642,6 +647,7 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="1671236975893690980">Download in behandeling…</translation>
 <translation id="5561549206367097665">Wachten op netwerk…</translation>
 <translation id="5864419784173784555">Wachten op andere download…</translation>
+<translation id="3110967157686007724">Privétabblad</translation>
 <translation id="6461962085415701688">Kan bestand niet openen</translation>
 <translation id="1178581264944972037">Onderbreken</translation>
 <translation id="8200772114523450471">Doorgaan</translation>
@@ -703,6 +709,7 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="7810647596859435254">Openen met…</translation>
 <translation id="5655963694829536461">Zoek in je downloads</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">Mijn bestanden</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Hier worden artikelen weergegeven die je zelfs kunt lezen wanneer je offline bent</translation>
@@ -717,6 +724,8 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="968900484120156207">Pagina's die je bezoekt, worden hier weergegeven</translation>
 <translation id="7882131421121961860">Geen geschiedenis gevonden</translation>
 <translation id="3549657413697417275">Zoek in je geschiedenis</translation>
+<translation id="4526803704855831732">Privétabbladen</translation>
+<translation id="7465104139234185284">Sluit alle privétabbladen</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">JJ</translation>
@@ -790,6 +799,7 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="8364299278605033898">Bekijk populaire websites</translation>
 <translation id="1171770572613082465">Bekijk populaire websites door op de knop Topsites te tikken</translation>
 <translation id="5233638681132016545">Nieuw tabblad</translation>
+<translation id="6336451774241870485">Nieuw privétabblad</translation>
 <translation id="4521874409998847950">Van <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>geleverd door Brave Software<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">Nieuwere versie beschikbaar</translation>
 <translation id="4058091506841967397">Brave kan niet updaten</translation>
@@ -802,12 +812,14 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="6437478888915024427">Pagina-informatie</translation>
 <translation id="7180611975245234373">Vernieuwen</translation>
 <translation id="4913169188695071480">Vernieuwen stopzetten</translation>
+<translation id="3234355010754616171">Nieuw privétabblad</translation>
 <translation id="1829244130665387512">Zoeken op pagina</translation>
 <translation id="6593061639179217415">Desktopsite</translation>
 <translation id="9063523880881406963">'Desktopsite opvragen' uitschakelen</translation>
 <translation id="2038563949887743358">'Desktopsite aanvragen' inschakelen</translation>
 <translation id="2433507940547922241">Vormgeving</translation>
 <translation id="983192555821071799">Alle tabbladen sluiten</translation>
+<translation id="6610147964972079463">Sluit privé-tabbladen</translation>
 <translation id="1310482092992808703">Tabbladen groeperen</translation>
 <translation id="7725024127233776428">Pagina's waaraan je een bladwijzer toevoegt, worden hier weergegeven</translation>
 <translation id="4404568932422911380">Geen bladwijzers</translation>
@@ -864,6 +876,7 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="6963642900430330478">Deze pagina is gevaarlijk. Site-informatie</translation>
 <translation id="9070377983101773829">Gesproken zoekopdracht starten</translation>
 <translation id="8676374126336081632">Invoer wissen</translation>
+<translation id="4968908871398201967">Privé-mode</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> geopend tabblad, tik om tussen tabbladen te schakelen}other{<ph name="OPEN_TABS_MANY"/> geopende tabbladen, tik om tussen tabbladen te schakelen}}</translation>
 <translation id="2369533728426058518">geopende tabbladen</translation>
 <translation id="7071521146534760487">Account beheren</translation>
@@ -871,8 +884,12 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="2707726405694321444">Pagina vernieuwen</translation>
 <translation id="2891154217021530873">Stoppen met het laden van de pagina</translation>
 <translation id="6710213216561001401">Vorige</translation>
+<translation id="9080642952018487277">Ga naar de privémodus</translation>
+<translation id="4883379392681899581">De privémodus verlaten</translation>
 <translation id="6659594942844771486">Tabblad</translation>
 <translation id="1933845786846280168">Geselecteerd tabblad</translation>
+<translation id="3377025655491224618">Privétabblad</translation>
+<translation id="584427517463557805">Selecteer privétabblad</translation>
 <translation id="2268044343513325586">Verfijnen</translation>
 <translation id="7846076177841592234">Selectie opheffen</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> geselecteerd. Opties beschikbaar bovenaan het scherm.</translation>
@@ -973,6 +990,7 @@ Voor je Brave Software-account kunnen andere vormen van browsegeschiedenis (zoal
 <translation id="4878404682131129617">Kan geen tunnel tot stand brengen via de proxyserver</translation>
 <translation id="4749960740855309258">Een nieuw tabblad openen</translation>
 <translation id="8788968922598763114">Het laatst gesloten tabblad opnieuw openen</translation>
+<translation id="2280910239864711607">Open een nieuw tabblad in de privémodus</translation>
 <translation id="7929962904089429003">Het menu openen</translation>
 <translation id="6039379616847168523">Naar het volgende tabblad gaan</translation>
 <translation id="5210286577605176222">Naar het vorige tabblad gaan</translation>

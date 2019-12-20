@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">高级</translation>
 <translation id="1146678959555564648">进入 VR</translation>
 <translation id="987264212798334818">常规</translation>
+<translation id="5186185447130319458">私有</translation>
 <translation id="4275663329226226506">媒体</translation>
 <translation id="4759238208242260848">下载内容</translation>
 <translation id="218608176142494674">共享</translation>
@@ -356,6 +357,7 @@
 <translation id="2131665479022868825">节省了 <ph name="DATA"/></translation>
 <translation id="8569404424186215731">自 <ph name="DATE"/>以来</translation>
 <translation id="3252158532344029638">在精简模式下，Brave 可更快速地加载网页，并可节省多达百分之 60 的流量。</translation>
+<translation id="1438581767753657407">启用精简模式后，Brave 使用 Brave 服务器来提高页面加载速度。精简模式重写非常慢的页面以仅加载基本内容。精简模式不适用于私有标签页。</translation>
 <translation id="6159335304067198720">节省 <ph name="PERCENT"/> 的数据流量</translation>
 <translation id="7494974237137038751">已节省的流量</translation>
 <translation id="6111020039983847643">已耗用的流量</translation>
@@ -520,7 +522,9 @@
 <translation id="7947953824732555851">接受并登录</translation>
 <translation id="8583805026567836021">清除帐号数据</translation>
 <translation id="8310344678080805313">标准标签页</translation>
+<translation id="2633278372998075009">私有标签页</translation>
 <translation id="5748802427693696783">已切换到标准标签页</translation>
+<translation id="6099151465289169210">切换到私有标签页</translation>
 <translation id="7998918019931843664">重新打开关闭的标签页</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>，标签页</translation>
 <translation id="4452411734226507615">关闭“<ph name="TAB_TITLE"/>”标签页</translation>
@@ -578,6 +582,7 @@
 <translation id="8942627711005830162">在其他窗口中打开</translation>
 <translation id="4195643157523330669">在新标签页中打开</translation>
 <translation id="1100066534610197918">在群组内的新标签页中打开</translation>
+<translation id="4243710787042215766">在私有标签页中打开</translation>
 <translation id="4860895144060829044">拨打</translation>
 <translation id="6896758677409633944">复制</translation>
 <translation id="8393700583063109961">发送消息</translation>
@@ -642,6 +647,7 @@
 <translation id="1671236975893690980">正在等待下载…</translation>
 <translation id="5561549206367097665">正在等待连接到网络…</translation>
 <translation id="5864419784173784555">正在等待完成另一项下载…</translation>
+<translation id="3110967157686007724">私有标签页</translation>
 <translation id="6461962085415701688">无法打开文件</translation>
 <translation id="1178581264944972037">暂停</translation>
 <translation id="8200772114523450471">继续</translation>
@@ -703,6 +709,7 @@
 <translation id="7810647596859435254">打开方式…</translation>
 <translation id="5655963694829536461">搜索您的下载内容</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">我的文件</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">报道会显示在此处，即使在离线状态下也可以阅读</translation>
@@ -717,6 +724,8 @@
 <translation id="968900484120156207">您访问的网页会显示在此处</translation>
 <translation id="7882131421121961860">未找到任何记录</translation>
 <translation id="3549657413697417275">搜索您的历史记录</translation>
+<translation id="4526803704855831732">私有标签页</translation>
+<translation id="7465104139234185284">关闭所有的私有标签页</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">YY</translation>
@@ -790,6 +799,7 @@
 <translation id="8364299278605033898">查看热门网站</translation>
 <translation id="1171770572613082465">点按“热门网站”按钮可查看热门网站</translation>
 <translation id="5233638681132016545">打开新的标签页</translation>
+<translation id="6336451774241870485">新的私有标签页</translation>
 <translation id="4521874409998847950">来自 <ph name="PUBLISHER_ORIGIN"/> - <ph name="BEGIN_DEEMPHASIZED"/>由 Brave Software 提供<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">新版本已推出</translation>
 <translation id="4058091506841967397">Brave 无法更新</translation>
@@ -802,12 +812,14 @@
 <translation id="6437478888915024427">网页信息</translation>
 <translation id="7180611975245234373">刷新</translation>
 <translation id="4913169188695071480">停止刷新</translation>
+<translation id="3234355010754616171">新的私有标签页</translation>
 <translation id="1829244130665387512">在网页中查找</translation>
 <translation id="6593061639179217415">桌面版网站</translation>
 <translation id="9063523880881406963">关闭“请求切换到桌面版网站”</translation>
 <translation id="2038563949887743358">开启“请求切换到桌面版网站”</translation>
 <translation id="2433507940547922241">外观</translation>
 <translation id="983192555821071799">关闭所有标签页</translation>
+<translation id="6610147964972079463">关闭私有模式</translation>
 <translation id="1310482092992808703">组合标签页</translation>
 <translation id="7725024127233776428">您添加书签的网页会显示在此处</translation>
 <translation id="4404568932422911380">没有书签</translation>
@@ -864,6 +876,7 @@
 <translation id="6963642900430330478">此网页存在危险。网站信息</translation>
 <translation id="9070377983101773829">开始语音搜索</translation>
 <translation id="8676374126336081632">清除输入的内容</translation>
+<translation id="4968908871398201967">私有模式</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> 个打开的标签页，点按即可切换标签页}other{<ph name="OPEN_TABS_MANY"/> 个打开的标签页，点按即可切换标签页}}</translation>
 <translation id="2369533728426058518">打开的标签页</translation>
 <translation id="7071521146534760487">管理帐号</translation>
@@ -871,8 +884,12 @@
 <translation id="2707726405694321444">刷新网页</translation>
 <translation id="2891154217021530873">停止加载网页</translation>
 <translation id="6710213216561001401">上一个</translation>
+<translation id="9080642952018487277">输入私有模式</translation>
+<translation id="4883379392681899581">离开私有标签页</translation>
 <translation id="6659594942844771486">Tab</translation>
 <translation id="1933845786846280168">所选的标签页</translation>
+<translation id="3377025655491224618">私有标签页</translation>
+<translation id="584427517463557805">选定的私有标签页</translation>
 <translation id="2268044343513325586">优化</translation>
 <translation id="7846076177841592234">取消选择</translation>
 <translation id="7087918508125750058">已选择 <ph name="ITEM_COUNT"/> 项。选项位于屏幕顶部附近</translation>
@@ -973,6 +990,7 @@
 <translation id="4878404682131129617">未能成功通过代理服务器建立隧道</translation>
 <translation id="4749960740855309258">打开新标签页</translation>
 <translation id="8788968922598763114">重新打开上次关闭的标签页</translation>
+<translation id="2280910239864711607">在私有模式下打开一个新标签页</translation>
 <translation id="7929962904089429003">打开菜单</translation>
 <translation id="6039379616847168523">跳转到下一个标签页</translation>
 <translation id="5210286577605176222">跳转到上一个标签页</translation>

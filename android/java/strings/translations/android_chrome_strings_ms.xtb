@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Lanjutan</translation>
 <translation id="1146678959555564648">Masukkan VR</translation>
 <translation id="987264212798334818">Umum</translation>
+<translation id="5186185447130319458">Sulit</translation>
 <translation id="4275663329226226506">Media</translation>
 <translation id="4759238208242260848">Muat turun</translation>
 <translation id="218608176142494674">Perkongsian</translation>
@@ -356,6 +357,7 @@ Akaun Brave Software anda mungkin mempunyai sejarah penyemakan imbas dalam bentu
 <translation id="2131665479022868825"><ph name="DATA"/> disimpan</translation>
 <translation id="8569404424186215731">sejak <ph name="DATE"/></translation>
 <translation id="3252158532344029638">Dalam mod Ringkas, Brave memuatkan halaman lebih pantas dan mengurangkan penggunaan data sehingga 60 peratus.</translation>
+<translation id="1438581767753657407">Semasa di dalam mod Ringan, Brave menggunakan pelayan Brave untuk memuatkan halaman dengan lebih pantas. Mod Ringan menulis semula halaman yang terlalu perlahan agar memuatkan kandungan yang penting sahaja. Mod Ringan tidak terpakai untuk tab Sulit.</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> penjimatan data</translation>
 <translation id="7494974237137038751">data disimpan</translation>
 <translation id="6111020039983847643">data digunakan</translation>
@@ -520,7 +522,9 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="7947953824732555851">Terima dan log masuk</translation>
 <translation id="8583805026567836021">Menghapuskan data akaun</translation>
 <translation id="8310344678080805313">Tab standard</translation>
+<translation id="2633278372998075009">Tab sulit</translation>
 <translation id="5748802427693696783">Beralih ke tab standard</translation>
+<translation id="6099151465289169210">Beralih kepada tab sulit</translation>
 <translation id="7998918019931843664">Buka semula tab yang ditutup</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, tab</translation>
 <translation id="4452411734226507615">Tutup tab <ph name="TAB_TITLE"/></translation>
@@ -578,6 +582,7 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="8942627711005830162">Buka dalam tetingkap lain</translation>
 <translation id="4195643157523330669">Buka dalam tab baharu</translation>
 <translation id="1100066534610197918">Buka dlm tab baru dlm kumpulan</translation>
+<translation id="4243710787042215766">Buka di dalam tab sulit</translation>
 <translation id="4860895144060829044">Hubungi</translation>
 <translation id="6896758677409633944">Salin</translation>
 <translation id="8393700583063109961">Hantar mesej</translation>
@@ -642,6 +647,7 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="1671236975893690980">Muat turun belum selesai...</translation>
 <translation id="5561549206367097665">Menunggu rangkaian…</translation>
 <translation id="5864419784173784555">Menunggu muat turun lain…</translation>
+<translation id="3110967157686007724">Tab sulit</translation>
 <translation id="6461962085415701688">Tidak dapat membuka fail</translation>
 <translation id="1178581264944972037">Jeda</translation>
 <translation id="8200772114523450471">Sambung semula</translation>
@@ -703,6 +709,7 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="7810647596859435254">Buka dengan...</translation>
 <translation id="5655963694829536461">Cari muat turun anda</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">Fail Saya</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Artikel dipaparkan di sini, yang boleh anda baca walaupun semasa anda luar talian</translation>
@@ -717,6 +724,8 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="968900484120156207">Halaman yang anda lawati dipaparkan di sini</translation>
 <translation id="7882131421121961860">Tiada sejarah ditemui</translation>
 <translation id="3549657413697417275">Cari sejarah anda</translation>
+<translation id="4526803704855831732">Tab Sulit</translation>
+<translation id="7465104139234185284">Tutup semua tab sulit</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">BB</translation>
 <translation id="605721222689873409">TT</translation>
@@ -790,6 +799,7 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="8364299278605033898">Lihat tapak web popular</translation>
 <translation id="1171770572613082465">Lihat tapak web popular dengan mengetik butang "Tapak popular"</translation>
 <translation id="5233638681132016545">Tab baharu</translation>
+<translation id="6336451774241870485">Tab sulit baru</translation>
 <translation id="4521874409998847950">Daripada <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>disampaikan oleh Brave Software<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">Versi lebih baharu tersedia</translation>
 <translation id="4058091506841967397">Gagal kemas kini Brave</translation>
@@ -802,12 +812,14 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="6437478888915024427">Maklumat halaman</translation>
 <translation id="7180611975245234373">Muat semula</translation>
 <translation id="4913169188695071480">Berhenti memuat semula</translation>
+<translation id="3234355010754616171">Tab sulit baru</translation>
 <translation id="1829244130665387512">Cari dalam halaman</translation>
 <translation id="6593061639179217415">Tapak desktop</translation>
 <translation id="9063523880881406963">Matikan Minta tapak desktop</translation>
 <translation id="2038563949887743358">Hidupkan Minta tapak desktop</translation>
 <translation id="2433507940547922241">Tampilan</translation>
 <translation id="983192555821071799">Tutup semua tab</translation>
+<translation id="6610147964972079463">Tutup tab sulit</translation>
 <translation id="1310482092992808703">Himpunkan tab.</translation>
 <translation id="7725024127233776428">Halaman yang anda tandai halaman dipaparkan di sini</translation>
 <translation id="4404568932422911380">Tiada penanda halaman</translation>
@@ -864,6 +876,7 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="6963642900430330478">Halaman ini berbahaya. Maklumat tapak</translation>
 <translation id="9070377983101773829">Mulakan carian suara</translation>
 <translation id="8676374126336081632">Kosongkan input</translation>
+<translation id="4968908871398201967">Mod sulit</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> tab terbuka, ketik untuk beralih antara tab}other{<ph name="OPEN_TABS_MANY"/> tab terbuka, ketik untuk beralih antara tab}}</translation>
 <translation id="2369533728426058518">tab terbuka</translation>
 <translation id="7071521146534760487">Urus akaun</translation>
@@ -871,8 +884,12 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="2707726405694321444">Muat semula halaman</translation>
 <translation id="2891154217021530873">Hentikan pemuatan halaman</translation>
 <translation id="6710213216561001401">Sebelumnya</translation>
+<translation id="9080642952018487277">Masuk ke mod sulit</translation>
+<translation id="4883379392681899581">Tinggalkan mod sulit</translation>
 <translation id="6659594942844771486">Tab</translation>
 <translation id="1933845786846280168">Tab yang Dipilih</translation>
+<translation id="3377025655491224618">Tab Sulit</translation>
+<translation id="584427517463557805">Tab Sulit yang Dipilih</translation>
 <translation id="2268044343513325586">Perhalusi</translation>
 <translation id="7846076177841592234">Batalkan pilihan</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> dipilih. Pilihan tersedia berhampiran bahagian atas skrin</translation>
@@ -973,6 +990,7 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="4878404682131129617">Gagal mewujudkan terowong melalui pelayan proksi</translation>
 <translation id="4749960740855309258">Buka tab baharu</translation>
 <translation id="8788968922598763114">Buka semula tab yang terakhir ditutup</translation>
+<translation id="2280910239864711607">Buka tab baru di dalam mod Sulit</translation>
 <translation id="7929962904089429003">Buka menu</translation>
 <translation id="6039379616847168523">Lompat ke tab seterusnya</translation>
 <translation id="5210286577605176222">Lompat ke halaman sebelumnya</translation>

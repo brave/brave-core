@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Configuración avanzada</translation>
 <translation id="1146678959555564648">Entrar al modo RV</translation>
 <translation id="987264212798334818">General</translation>
+<translation id="5186185447130319458">Incógnito</translation>
 <translation id="4275663329226226506">Multimedia</translation>
 <translation id="4759238208242260848">Descargas</translation>
 <translation id="218608176142494674">Uso compartido</translation>
@@ -356,6 +357,7 @@ Es posible que tu cuenta de Brave Software tenga otros formularios de historial 
 <translation id="2131665479022868825">Datos ahorrados: <ph name="DATA"/></translation>
 <translation id="8569404424186215731">desde el <ph name="DATE"/></translation>
 <translation id="3252158532344029638">En el modo lite, Brave carga las páginas más rápido y usa hasta un 60 por ciento menos de datos.</translation>
+<translation id="1438581767753657407">Cuando el modo Lite está activado, Brave usa los servidores de Brave para cargar las páginas con mayor rapidez. El modo Lite reescribe páginas muy lentas para cargar solo el contenido esencial. El modo Lite no funciona en pestañas de incógnito.</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> de ahorro de datos</translation>
 <translation id="7494974237137038751">de datos ahorrados</translation>
 <translation id="6111020039983847643">de datos utilizados</translation>
@@ -520,7 +522,9 @@ Para cambiar esta configuración, <ph name="BEGIN_LINK"/>restablece la sincroniz
 <translation id="7947953824732555851">Aceptar y acceder</translation>
 <translation id="8583805026567836021">Borrando datos de cuenta</translation>
 <translation id="8310344678080805313">Pestañas estándar</translation>
+<translation id="2633278372998075009">Pestañas de incógnito</translation>
 <translation id="5748802427693696783">Se seleccionaron las pestañas estándar</translation>
+<translation id="6099151465289169210">Cambio a pestañas de incógnito</translation>
 <translation id="7998918019931843664">Volver a abrir la pestaña cerrada</translation>
 <translation id="8853345339104747198">Pestaña <ph name="TAB_TITLE"/></translation>
 <translation id="4452411734226507615">Cierra la pestaña <ph name="TAB_TITLE"/></translation>
@@ -578,6 +582,7 @@ Para cambiar esta configuración, <ph name="BEGIN_LINK"/>restablece la sincroniz
 <translation id="8942627711005830162">Abrir en otra ventana</translation>
 <translation id="4195643157523330669">Abrir en una pestaña nueva</translation>
 <translation id="1100066534610197918">Abrir pestaña nueva en grupo</translation>
+<translation id="4243710787042215766">Abrir en pestaña de incógnito</translation>
 <translation id="4860895144060829044">Llamar</translation>
 <translation id="6896758677409633944">Copiar</translation>
 <translation id="8393700583063109961">Enviar mensaje</translation>
@@ -642,6 +647,7 @@ Para cambiar esta configuración, <ph name="BEGIN_LINK"/>restablece la sincroniz
 <translation id="1671236975893690980">Descarga pendiente…</translation>
 <translation id="5561549206367097665">Esperando red…</translation>
 <translation id="5864419784173784555">Esperando que finalice otra descarga…</translation>
+<translation id="3110967157686007724">Pestaña de incógnito</translation>
 <translation id="6461962085415701688">No se puede abrir el archivo</translation>
 <translation id="1178581264944972037">Detener</translation>
 <translation id="8200772114523450471">Reanudar</translation>
@@ -703,6 +709,7 @@ Para cambiar esta configuración, <ph name="BEGIN_LINK"/>restablece la sincroniz
 <translation id="7810647596859435254">Abrir con…</translation>
 <translation id="5655963694829536461">Buscar tus descargas</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">Mis archivos</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Los artículos aparecen aquí, y puedes leerlos incluso cuando estás sin conexión</translation>
@@ -717,6 +724,8 @@ Para cambiar esta configuración, <ph name="BEGIN_LINK"/>restablece la sincroniz
 <translation id="968900484120156207">Las páginas que visites aparecerán aquí</translation>
 <translation id="7882131421121961860">No se encontraron entradas en el historial</translation>
 <translation id="3549657413697417275">Buscar en el historial</translation>
+<translation id="4526803704855831732">Pestañas de incógnito</translation>
+<translation id="7465104139234185284">Cerrar todas las pestañas de incógnito</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">AA</translation>
@@ -790,6 +799,7 @@ Para cambiar esta configuración, <ph name="BEGIN_LINK"/>restablece la sincroniz
 <translation id="8364299278605033898">Ver sitios populares</translation>
 <translation id="1171770572613082465">Presiona el botón "Populares" para ver los sitios web más conocidos</translation>
 <translation id="5233638681132016545">Nueva pestaña</translation>
+<translation id="6336451774241870485">Nueva pestaña de incógnito</translation>
 <translation id="4521874409998847950">De <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>publicado por Brave Software<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">Nueva versión disponible</translation>
 <translation id="4058091506841967397">No se actualiza Brave</translation>
@@ -802,12 +812,14 @@ Para cambiar esta configuración, <ph name="BEGIN_LINK"/>restablece la sincroniz
 <translation id="6437478888915024427">Información de la página</translation>
 <translation id="7180611975245234373">Actualizar</translation>
 <translation id="4913169188695071480">Detener actualización</translation>
+<translation id="3234355010754616171">Nueva pestaña de incógnito</translation>
 <translation id="1829244130665387512">Buscar en la página</translation>
 <translation id="6593061639179217415">Sitio de escritorio</translation>
 <translation id="9063523880881406963">Desactivar la opción para solicitar versión de escritorio</translation>
 <translation id="2038563949887743358">Activar la opción para solicitar versión de escritorio</translation>
 <translation id="2433507940547922241">Diseño</translation>
 <translation id="983192555821071799">Cerrar todas las pestañas</translation>
+<translation id="6610147964972079463">Cerrar pestañas de incógnito</translation>
 <translation id="1310482092992808703">Agrupar pestañas</translation>
 <translation id="7725024127233776428">Las páginas que agregues a favoritos aparecerán aquí</translation>
 <translation id="4404568932422911380">No hay favoritos</translation>
@@ -864,6 +876,7 @@ Para cambiar esta configuración, <ph name="BEGIN_LINK"/>restablece la sincroniz
 <translation id="6963642900430330478">Esta página es peligrosa. Consulta la información del sitio.</translation>
 <translation id="9070377983101773829">Iniciar búsqueda por voz</translation>
 <translation id="8676374126336081632">Borrar entrada</translation>
+<translation id="4968908871398201967">Modo incógnito</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> pestaña abierta; presiona para cambiar de pestaña}other{<ph name="OPEN_TABS_MANY"/> pestañas abiertas; presiona para cambiar de pestaña}}</translation>
 <translation id="2369533728426058518">pestañas abiertas</translation>
 <translation id="7071521146534760487">Administrar cuenta</translation>
@@ -871,8 +884,12 @@ Para cambiar esta configuración, <ph name="BEGIN_LINK"/>restablece la sincroniz
 <translation id="2707726405694321444">Actualizar página</translation>
 <translation id="2891154217021530873">Detener la carga de la página</translation>
 <translation id="6710213216561001401">Anterior</translation>
+<translation id="9080642952018487277">Pasar a modo incógnito</translation>
+<translation id="4883379392681899581">Salir del modo incógnito</translation>
 <translation id="6659594942844771486">Pestaña</translation>
 <translation id="1933845786846280168">Pestaña seleccionada</translation>
+<translation id="3377025655491224618">Pestaña de incógnito</translation>
+<translation id="584427517463557805">Pestaña de incógnito seleccionada</translation>
 <translation id="2268044343513325586">Definir mejor</translation>
 <translation id="7846076177841592234">Cancelar la selección</translation>
 <translation id="7087918508125750058">Elementos seleccionados: <ph name="ITEM_COUNT"/>. Opciones disponibles cerca de la parte superior de la pantalla</translation>
@@ -973,6 +990,7 @@ Para cambiar esta configuración, <ph name="BEGIN_LINK"/>restablece la sincroniz
 <translation id="4878404682131129617">Se produjo un error al establecer conexión a través del servidor proxy</translation>
 <translation id="4749960740855309258">Abrir una pestaña nueva</translation>
 <translation id="8788968922598763114">Volver a abrir la última pestaña cerrada</translation>
+<translation id="2280910239864711607">Abrir una pestaña nueva en modo de incógnito</translation>
 <translation id="7929962904089429003">Abrir el menú</translation>
 <translation id="6039379616847168523">Ir a la pestaña siguiente</translation>
 <translation id="5210286577605176222">Ir a la pestaña anterior</translation>

@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Avancerat</translation>
 <translation id="1146678959555564648">Kliv in i VR</translation>
 <translation id="987264212798334818">Allmänt</translation>
+<translation id="5186185447130319458">Privat</translation>
 <translation id="4275663329226226506">Media</translation>
 <translation id="4759238208242260848">Nedladdningar</translation>
 <translation id="218608176142494674">Delar</translation>
@@ -356,6 +357,7 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="2131665479022868825"><ph name="DATA"/> har sparats</translation>
 <translation id="8569404424186215731">sedan <ph name="DATE"/></translation>
 <translation id="3252158532344029638">I begränsat läge läses sidorna in snabbare och dataförbrukningen minskar med upp till 60 procent.</translation>
+<translation id="1438581767753657407">När Lite-läget är på använder Brave sina servrar för att få sidorna att laddas snabbare. Lite-läget skriver om väldigt långsamma sidor så att endast viktigt innehåll laddas. Lite-läget gäller inte för privata flikar.</translation>
 <translation id="6159335304067198720">Sparat utrymme: <ph name="PERCENT"/></translation>
 <translation id="7494974237137038751">Sparad data</translation>
 <translation id="6111020039983847643">Använd data</translation>
@@ -520,7 +522,9 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="7947953824732555851">Godkänn och logga in</translation>
 <translation id="8583805026567836021">Rensar kontouppgifter</translation>
 <translation id="8310344678080805313">Standardflikar</translation>
+<translation id="2633278372998075009">Privata flikar</translation>
 <translation id="5748802427693696783">Bytte till standardflikar</translation>
+<translation id="6099151465289169210">Bytt till privata flikar</translation>
 <translation id="7998918019931843664">Öppna en stängd flik på nytt</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, flik</translation>
 <translation id="4452411734226507615">Stäng fliken <ph name="TAB_TITLE"/></translation>
@@ -578,6 +582,7 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="8942627711005830162">Öppna i ett annat fönster</translation>
 <translation id="4195643157523330669">Öppna i ny flik</translation>
 <translation id="1100066534610197918">Öppna på en ny flik i gruppen</translation>
+<translation id="4243710787042215766">Öppna i privat flik</translation>
 <translation id="4860895144060829044">Ring</translation>
 <translation id="6896758677409633944">Kopiera</translation>
 <translation id="8393700583063109961">Skicka meddelande</translation>
@@ -642,6 +647,7 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="1671236975893690980">Nedladdning väntar …</translation>
 <translation id="5561549206367097665">Väntar på nätverket …</translation>
 <translation id="5864419784173784555">Väntar på nästa nedladdning …</translation>
+<translation id="3110967157686007724">Privat flik</translation>
 <translation id="6461962085415701688">Det går inte att öppna filen</translation>
 <translation id="1178581264944972037">Paus</translation>
 <translation id="8200772114523450471">Återuppta</translation>
@@ -703,6 +709,7 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="7810647596859435254">Öppna med …</translation>
 <translation id="5655963694829536461">Sök i dina nedladdningar</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">Mina filer</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Artiklar som du kan läsa även när du är offline visas här</translation>
@@ -717,6 +724,8 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="968900484120156207">Sidor som du besöker visas här</translation>
 <translation id="7882131421121961860">Ingen historik hittades</translation>
 <translation id="3549657413697417275">Sök i historik</translation>
+<translation id="4526803704855831732">Privata flikar</translation>
+<translation id="7465104139234185284">Stäng alla privata flikar</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">ÅÅ</translation>
@@ -790,6 +799,7 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="8364299278605033898">Visa populära webbplatser</translation>
 <translation id="1171770572613082465">Visa populära webbplatser genom att trycka på Populärt</translation>
 <translation id="5233638681132016545">Ny flik</translation>
+<translation id="6336451774241870485">Ny privat flik</translation>
 <translation id="4521874409998847950">Från <ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>via Brave Software<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">Det finns en nyare version</translation>
 <translation id="4058091506841967397">Uppdatering inte möjlig</translation>
@@ -802,12 +812,14 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="6437478888915024427">Sidinformation</translation>
 <translation id="7180611975245234373">Uppdatera</translation>
 <translation id="4913169188695071480">Sluta uppdatera</translation>
+<translation id="3234355010754616171">Ny privat flik</translation>
 <translation id="1829244130665387512">Hitta på sida</translation>
 <translation id="6593061639179217415">Datoranpassad webbplats</translation>
 <translation id="9063523880881406963">Inaktivera begäran av webbplats för stationär dator</translation>
 <translation id="2038563949887743358">Aktivera begäran av skrivbordsversion</translation>
 <translation id="2433507940547922241">Utseende</translation>
 <translation id="983192555821071799">Stäng alla flikar</translation>
+<translation id="6610147964972079463">Stäng privata flikar</translation>
 <translation id="1310482092992808703">Gruppera flikar</translation>
 <translation id="7725024127233776428">Sidor som infogats som bokmärke visas här</translation>
 <translation id="4404568932422911380">Inga bokmärken</translation>
@@ -864,6 +876,7 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="6963642900430330478">Sidan är farlig. Webbplatsinformation</translation>
 <translation id="9070377983101773829">Starta röstsökning</translation>
 <translation id="8676374126336081632">Radera inmatning</translation>
+<translation id="4968908871398201967">Privat läge</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> flik öppen, tryck här om du vill byta flik}other{<ph name="OPEN_TABS_MANY"/> flikar öppna, tryck här om du vill byta flik}}</translation>
 <translation id="2369533728426058518">öppna flikar</translation>
 <translation id="7071521146534760487">Hantera konto</translation>
@@ -871,8 +884,12 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="2707726405694321444">Uppdatera sidan</translation>
 <translation id="2891154217021530873">Avbryt inläsningen av sidan</translation>
 <translation id="6710213216561001401">Föregående</translation>
+<translation id="9080642952018487277">Byt till privat läge</translation>
+<translation id="4883379392681899581">Lämna privat läge</translation>
 <translation id="6659594942844771486">Flik</translation>
 <translation id="1933845786846280168">Vald flik</translation>
+<translation id="3377025655491224618">Privat flik</translation>
+<translation id="584427517463557805">Vald privat flik</translation>
 <translation id="2268044343513325586">Finjustera</translation>
 <translation id="7846076177841592234">Rensa val</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> har valts. Alternativ finns högt upp på skärmen</translation>
@@ -973,6 +990,7 @@ Det kan finnas andra former av webbhistorik i Brave Software-kontot på <ph name
 <translation id="4878404682131129617">Det gick inte att upprätta en tunnel via proxyserver</translation>
 <translation id="4749960740855309258">Öppna en ny flik</translation>
 <translation id="8788968922598763114">Öppna den senast stängda fliken igen</translation>
+<translation id="2280910239864711607">Öppna en ny flik i privat läge</translation>
 <translation id="7929962904089429003">Öppna menyn</translation>
 <translation id="6039379616847168523">Hoppa till nästa flik</translation>
 <translation id="5210286577605176222">Hoppa till föregående flik</translation>

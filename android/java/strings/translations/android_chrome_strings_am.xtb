@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">የላቀ</translation>
 <translation id="1146678959555564648">ምናባዊ ዕውነታ አስገባ</translation>
 <translation id="987264212798334818">አጠቃላይ</translation>
+<translation id="5186185447130319458">ማንነት የማያሳውቅ</translation>
 <translation id="4275663329226226506">ማህደረ መረጃ</translation>
 <translation id="4759238208242260848">የወረዱ</translation>
 <translation id="218608176142494674">ማጋራት</translation>
@@ -356,6 +357,7 @@
 <translation id="2131665479022868825"><ph name="DATA"/> ተቀምጧል</translation>
 <translation id="8569404424186215731">ከ<ph name="DATE"/> ጀምሮ</translation>
 <translation id="3252158532344029638">በቀላል ሁነታ ላይ Brave ገጾችን በበለጠ ፍጥነት የሚጭን ሲሆን እስከ 60 በመቶ ያነሰ ውሂብ ይጠቀማል።</translation>
+<translation id="1438581767753657407">ቀላል ሁነታ ሲበራ Brave ገጾች በበለጠ ፍጥነት እንዲጭኑ ለማድረግ የ Brave አገልጋዮችን ይጠቀማል። ቀላል ሁነታ በጣም ቀርፋፋ የሆኑ ገጾች መሠረታዊ ይዘትን ብቻ እንዲጭኑ አድርጎ ዳግም ይጽፋቸዋል። ቀላል ሁነታ በግል ትሮች ላይ አይተገበርም።</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> የውሂብ ቁጠባዎች</translation>
 <translation id="7494974237137038751">የተቆጠበው ውሂብ</translation>
 <translation id="6111020039983847643">ጥቅም ላይ የዋለው ውሂብ</translation>
@@ -520,7 +522,9 @@
 <translation id="7947953824732555851">ተቀበል እና ግባ</translation>
 <translation id="8583805026567836021">የመለያ ውሂብን በማጽዳት ላይ</translation>
 <translation id="8310344678080805313">መደበኛ ትሮች</translation>
+<translation id="2633278372998075009">ማንነት የማያሳውቁ ትሮች</translation>
 <translation id="5748802427693696783">ወደ መደበኛ ትሮች ቀይር</translation>
+<translation id="6099151465289169210">ወደ ማንነት የማያሳውቁ ትሮች ተቀይሯል</translation>
 <translation id="7998918019931843664">የተዘጋውን ትር ዳግም ይክፈቱ</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>፣ ትር</translation>
 <translation id="4452411734226507615">የ<ph name="TAB_TITLE"/> ትር ዝጋ</translation>
@@ -578,6 +582,7 @@
 <translation id="8942627711005830162">በሌላ መስኮት ውስጥ ክፈት</translation>
 <translation id="4195643157523330669">በአዲስ ትር ክፈት</translation>
 <translation id="1100066534610197918">በቡድን ውስጥ አዲስ ትር ይክፈቱ</translation>
+<translation id="4243710787042215766">ማንነትን በማያሳውቅ ትር ክፈት</translation>
 <translation id="4860895144060829044">ደውል</translation>
 <translation id="6896758677409633944">ቅዳ</translation>
 <translation id="8393700583063109961">መልዕክት ይላኩ</translation>
@@ -642,6 +647,7 @@
 <translation id="1671236975893690980">ውርድ በመጠባበቅ ላይ...</translation>
 <translation id="5561549206367097665">አውታረ መረብን በመጠበቅ ላይ…</translation>
 <translation id="5864419784173784555">ሌላ ውርድን በመጠበቅ ላይ…</translation>
+<translation id="3110967157686007724">ማንነት የማያሳውቅ ትር</translation>
 <translation id="6461962085415701688">ፋይሉን መክፈት አይቻልም</translation>
 <translation id="1178581264944972037">ለአፍታ አቁም</translation>
 <translation id="8200772114523450471">ከቆመበት ቀጥል</translation>
@@ -703,6 +709,7 @@
 <translation id="7810647596859435254">ክፈት በ…</translation>
 <translation id="5655963694829536461">የእርስዎን ውርዶች ይፈልጉ</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">የእኔ ፋይሎች</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">እርስዎ ከመስመር ውጭ ሆነውም እንኳ ሊያነብቧቸው የሚችሏቸውን ጽሑፎች እዚህ ይመጣሉ</translation>
@@ -717,6 +724,8 @@
 <translation id="968900484120156207">እርስዎ የሚጎበኟቸው ገጾች እዚህ ላይ ብቅ ይላሉ</translation>
 <translation id="7882131421121961860">ምንም ታሪክ አልተገኘም</translation>
 <translation id="3549657413697417275">የራስዎን ታሪክ ይፈልጉ</translation>
+<translation id="4526803704855831732">ማንነት የማያሳውቁ ትሮች</translation>
+<translation id="7465104139234185284">ሁሉንም ማንነት የማያሳውቁ ትሮችን ይዝጉ</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">ወወ</translation>
 <translation id="605721222689873409">ዓዓ</translation>
@@ -790,6 +799,7 @@
 <translation id="8364299278605033898">ታዋቂ ድር ጣቢያዎችን ይመልከቱ</translation>
 <translation id="1171770572613082465">የ«ከፍተኛ ጣቢያዎች» አዝራሩን መታ በማድረግ ታዋቂ ድር ጣቢያዎችን ይመልከቱ</translation>
 <translation id="5233638681132016545">አዲስ ትር</translation>
+<translation id="6336451774241870485">አዲስ የግል ትር</translation>
 <translation id="4521874409998847950">ከ<ph name="PUBLISHER_ORIGIN"/> – <ph name="BEGIN_DEEMPHASIZED"/>በBrave Software የተላከ<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">አዲስ ስሪት ይገኛል</translation>
 <translation id="4058091506841967397">Braveን ማዘመን አይቻልም</translation>
@@ -802,12 +812,14 @@
 <translation id="6437478888915024427">የገጽ መረጃ</translation>
 <translation id="7180611975245234373">አድስ</translation>
 <translation id="4913169188695071480">ማደስ አቁም</translation>
+<translation id="3234355010754616171">አዲስ የግል ትር</translation>
 <translation id="1829244130665387512">በዚህ ገጽ ውስጥ የተገኘ</translation>
 <translation id="6593061639179217415">የዴስክቶፕ ጣቢያ</translation>
 <translation id="9063523880881406963">የዴስክቶፕ ጣቢያ ጠይቅን አጥፋ</translation>
 <translation id="2038563949887743358">የዴስክቶፕ ጣቢያን ጠይቅን አብራ</translation>
 <translation id="2433507940547922241">ገጽታ</translation>
 <translation id="983192555821071799">ሁሉንም ትሮች ይዝጉ</translation>
+<translation id="6610147964972079463">የግል ትሮችን ዝጋ</translation>
 <translation id="1310482092992808703">ትሮችን ይሰብስቡ</translation>
 <translation id="7725024127233776428">እርስዎ ዕልባት ያደረጉባቸው ገጾች እዚህ ላይ ብቅ ይላሉ</translation>
 <translation id="4404568932422911380">ምንም ዕልባቶች የሉም</translation>
@@ -864,6 +876,7 @@
 <translation id="6963642900430330478">ይህ ገጽ አደገኛ ነው። የጣቢያ መረጃ</translation>
 <translation id="9070377983101773829">የድምጽ ፍለጋን ጀምር</translation>
 <translation id="8676374126336081632">ግቤቱን አጽዳ</translation>
+<translation id="4968908871398201967">ማንነት የማያሳውቅ ሁነታ</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> ትርን ይክፈቱ፣ ትሮችን ለመቀየር መታ ያድርጉ}one{<ph name="OPEN_TABS_MANY"/> ትሮችን ይክፈቱ፣ ትሮችን ለመቀየር መታ ያድርጉ}other{<ph name="OPEN_TABS_MANY"/> ትሮችን ይክፈቱ፣ ትሮችን ለመቀየር መታ ያድርጉ}}</translation>
 <translation id="2369533728426058518">ክፍት ትሮች</translation>
 <translation id="7071521146534760487">መለያን አቀናብር</translation>
@@ -871,8 +884,12 @@
 <translation id="2707726405694321444">ገጹን አድስ</translation>
 <translation id="2891154217021530873">ገጹን መጫን አቁም</translation>
 <translation id="6710213216561001401">ቀዳሚ</translation>
+<translation id="9080642952018487277">የግል ኩነት አስገባ</translation>
+<translation id="4883379392681899581">ማንነት ከማያሳውቅ ሁነታ ይውጡ</translation>
 <translation id="6659594942844771486">ትር</translation>
 <translation id="1933845786846280168">የተመረጠው ትር</translation>
+<translation id="3377025655491224618">የግል ትር</translation>
+<translation id="584427517463557805">የተመረጠ የግል ትር</translation>
 <translation id="2268044343513325586">አጽዳ</translation>
 <translation id="7846076177841592234">ምርጫ ሰርዝ</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> ተመርጠዋል።  አማራጮች ከማያ ገጹ አናት አጠገብ ይገኛሉ</translation>
@@ -973,6 +990,7 @@
 <translation id="4878404682131129617">በተኪ አገልጋይ በኩል ዋሻን መመስረት አልተሳካም</translation>
 <translation id="4749960740855309258">አዲስ ትር ክፈት</translation>
 <translation id="8788968922598763114">መጨረሻ ላይ የተዘጋውን ትር ዳግም ክፈት</translation>
+<translation id="2280910239864711607">በግል ኩነት አዲስ ትር ክፈት</translation>
 <translation id="7929962904089429003">ምናሌውን ክፈት</translation>
 <translation id="6039379616847168523">ወደ ቀጣዩ ትር ዝለል</translation>
 <translation id="5210286577605176222">ወደ ቀዳሚው ትር ዝለል</translation>

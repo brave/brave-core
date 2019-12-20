@@ -52,6 +52,7 @@
 <translation id="1974060860693918893">Configuració avançada</translation>
 <translation id="1146678959555564648">Activa el mode RV</translation>
 <translation id="987264212798334818">General</translation>
+<translation id="5186185447130319458">Incògnit</translation>
 <translation id="4275663329226226506">Multimèdia</translation>
 <translation id="4759238208242260848">Baixades</translation>
 <translation id="218608176142494674">S'estan compartint</translation>
@@ -356,6 +357,7 @@ Per exemple, és possible que alguns llocs web responguin a aquesta sol·licitud
 <translation id="2131665479022868825">Dades estalviades: <ph name="DATA"/></translation>
 <translation id="8569404424186215731">des del dia <ph name="DATE"/></translation>
 <translation id="3252158532344029638">En el mode bàsic, Brave carrega les pàgines més ràpidament i utilitza fins a un 60 per cent menys de dades.</translation>
+<translation id="1438581767753657407">Quan el mode bàsic estigui activat, Brave utilitzarà els servidors de Brave perquè les pàgines es carreguin més de pressa. El mode bàsic reescriu les pàgines molt lentes per carregar només el contingut essencial. El mode bàsic no s'aplica a les pestanyes d'incògnit.</translation>
 <translation id="6159335304067198720"><ph name="PERCENT"/> de reducció de dades</translation>
 <translation id="7494974237137038751">dades estalviades</translation>
 <translation id="6111020039983847643">dades utilitzades</translation>
@@ -520,7 +522,9 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="7947953824732555851">Acc. i inicia sessió</translation>
 <translation id="8583805026567836021">S'estan esborrant les dades del compte</translation>
 <translation id="8310344678080805313">Pestanyes estàndard</translation>
+<translation id="2633278372998075009">Pestanyes d'incògnit</translation>
 <translation id="5748802427693696783">S'ha canviat a les pestanyes estàndard</translation>
+<translation id="6099151465289169210">S'ha canviat a pestanyes d'incògnit</translation>
 <translation id="7998918019931843664">Torna a obrir la pestanya tancada</translation>
 <translation id="8853345339104747198"><ph name="TAB_TITLE"/>, pestanya</translation>
 <translation id="4452411734226507615">Tanca la pestanya <ph name="TAB_TITLE"/></translation>
@@ -578,6 +582,7 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="8942627711005830162">Obre en una altra finestra</translation>
 <translation id="4195643157523330669">Obre en una pestanya nova</translation>
 <translation id="1100066534610197918">Obre en una pestanya d'un grup</translation>
+<translation id="4243710787042215766">Obre en una pestanya d'incògnit</translation>
 <translation id="4860895144060829044">Truca</translation>
 <translation id="6896758677409633944">Copia</translation>
 <translation id="8393700583063109961">Envia el missatge</translation>
@@ -642,6 +647,7 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="1671236975893690980">Baixada pendent…</translation>
 <translation id="5561549206367097665">S'està esperant la xarxa…</translation>
 <translation id="5864419784173784555">S'està esperant que finalitzi una altra baixada…</translation>
+<translation id="3110967157686007724">Pestanya d'incògnit</translation>
 <translation id="6461962085415701688">El fitxer no es pot obrir</translation>
 <translation id="1178581264944972037">Posa en pausa</translation>
 <translation id="8200772114523450471">Reprèn</translation>
@@ -703,6 +709,7 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="7810647596859435254">Obre amb…</translation>
 <translation id="5655963694829536461">Cerca a les baixades</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
+<translation id="3871488358748532257"><ph name="DESCRIPTION">%1$s</ph></translation>
 <translation id="1883903952484604915">Els meus fitxers</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="766587987807204883">Els articles es mostren aquí i els pots llegir fins i tot sense connexió</translation>
@@ -717,6 +724,8 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="968900484120156207">Les pàgines que visitis es mostraran aquí</translation>
 <translation id="7882131421121961860">No s'ha trobat l'element que cerques a l'historial</translation>
 <translation id="3549657413697417275">Cerca a l'historial</translation>
+<translation id="4526803704855831732">Pestanyes d'incògnit</translation>
+<translation id="7465104139234185284">Tanca totes les pestanyes d'incògnit</translation>
 <translation id="6820686453637990663">CVC</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="605721222689873409">AA</translation>
@@ -790,6 +799,7 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="8364299278605033898">Mostra llocs web populars</translation>
 <translation id="1171770572613082465">Toca el botó Llocs populars per veure les tendències en llocs web</translation>
 <translation id="5233638681132016545">Pestanya nova</translation>
+<translation id="6336451774241870485">Nova pestanya d'incògnit</translation>
 <translation id="4521874409998847950">Publicada originalment per <ph name="PUBLISHER_ORIGIN"/>, <ph name="BEGIN_DEEMPHASIZED"/>oferida per Brave Software<ph name="END_DEEMPHASIZED"/></translation>
 <translation id="2587052924345400782">Versió nova disponible</translation>
 <translation id="4058091506841967397">Brave no actualitzable</translation>
@@ -802,12 +812,14 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="6437478888915024427">Informació de la pàgina</translation>
 <translation id="7180611975245234373">Actualitza</translation>
 <translation id="4913169188695071480">Deixa d'actualitzar</translation>
+<translation id="3234355010754616171">Nova pestanya d'incògnit</translation>
 <translation id="1829244130665387512">Cerca a la pàgina</translation>
 <translation id="6593061639179217415">Lloc web per a ordinador</translation>
 <translation id="9063523880881406963">Desactiva Mostra com a ordinador</translation>
 <translation id="2038563949887743358">Activa Mostra com a ordinador</translation>
 <translation id="2433507940547922241">Aparença</translation>
 <translation id="983192555821071799">Tanca totes les pestanyes</translation>
+<translation id="6610147964972079463">Tanca pestanyes d'incògnit</translation>
 <translation id="1310482092992808703">Agrupa les pestanyes</translation>
 <translation id="7725024127233776428">Les pàgines que afegeixis a les adreces d'interès es mostraran aquí</translation>
 <translation id="4404568932422911380">Cap adreça d'interès</translation>
@@ -864,6 +876,7 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="6963642900430330478">Aquesta pàgina és perillosa. Informació del lloc web</translation>
 <translation id="9070377983101773829">Inicia la cerca per veu</translation>
 <translation id="8676374126336081632">Esborra l'entrada</translation>
+<translation id="4968908871398201967">Mode d'incògnit</translation>
 <translation id="5368958499335451666">{OPEN_TABS,plural, =1{<ph name="OPEN_TABS_ONE"/> pestanya oberta; toca per canviar de pestanya}other{<ph name="OPEN_TABS_MANY"/> pestanyes obertes; toca per canviar de pestanya}}</translation>
 <translation id="2369533728426058518">pestanyes obertes</translation>
 <translation id="7071521146534760487">Gestiona el compte</translation>
@@ -871,8 +884,12 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="2707726405694321444">Actualitza la pàgina</translation>
 <translation id="2891154217021530873">Atura la càrrega de la pàgina</translation>
 <translation id="6710213216561001401">Anterior</translation>
+<translation id="9080642952018487277">Entra al mode d'incògnit</translation>
+<translation id="4883379392681899581">Surt del mode d'incògnit</translation>
 <translation id="6659594942844771486">Pestanya</translation>
 <translation id="1933845786846280168">Pestanya seleccionada</translation>
+<translation id="3377025655491224618">Pestanya d'incògnit</translation>
+<translation id="584427517463557805">Pestanya d'incògnit seleccionada</translation>
 <translation id="2268044343513325586">Restringeix</translation>
 <translation id="7846076177841592234">Cancel·la la selecció</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> elements seleccionats. Hi ha opcions disponibles a prop de la part superior de la pantalla.</translation>
@@ -973,6 +990,7 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="4878404682131129617">S'ha produït un error en establir un túnel mitjançant el servidor intermediari</translation>
 <translation id="4749960740855309258">Obre una pestanya nova</translation>
 <translation id="8788968922598763114">Torna a obrir l'última pestanya tancada</translation>
+<translation id="2280910239864711607">Obre una pestanya nova en mode d'incògnit</translation>
 <translation id="7929962904089429003">Obre el menú</translation>
 <translation id="6039379616847168523">Ves a la pestanya següent</translation>
 <translation id="5210286577605176222">Ves a la pestanya anterior</translation>
