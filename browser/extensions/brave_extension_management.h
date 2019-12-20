@@ -8,11 +8,10 @@
 
 #include "base/scoped_observer.h"
 #include "chrome/browser/extensions/extension_management.h"
+#include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_observer.h"
 
 namespace extensions {
-
-class ExtensionRegistry;
 
 class BraveExtensionManagement : public ExtensionManagement,
                                  public ExtensionRegistryObserver {
