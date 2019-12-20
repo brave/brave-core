@@ -19,12 +19,6 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
   const payload = action.payload
   const startingState = state
   switch (action.type) {
-    case types.IMPORT_BROWSER_THEMES_SUCCESS:
-      state = { ...state, browserThemes: payload }
-      break
-    case types.SET_BROWSER_THEME:
-      chrome.braveTheme.setBraveThemeType(payload)
-      break
     case types.IMPORT_BROWSER_DATA_REQUESTED:
       chrome.send('importData', [payload])
       break

@@ -5,8 +5,7 @@
 import { Dispatch } from 'redux'
 import {
   getSearchEngineProvidersSuccess,
-  getBrowserProfilesSuccess,
-  getBrowserThemesSuccess
+  getBrowserProfilesSuccess
 } from './actions/welcome_actions'
 import { State as ImportBoxState } from './containers/screens/importBox'
 
@@ -54,17 +53,3 @@ export const getSourceBrowserProfileIndex = (state: ImportBoxState): number => {
 
 export const isValidBrowserProfiles = (browserProfiles: Array<Welcome.BrowserProfile>) =>
   browserProfiles && Array.isArray(browserProfiles) && browserProfiles.length > 0
-
-// Theme box
-
-export const getBrowserThemes = () => {
-  return (dispatch: Dispatch) => {
-    new Promise(resolve => chrome.braveTheme.getBraveThemeList(resolve))
-      .then((response: string) => {
-        dispatch(getBrowserThemesSuccess(JSON.parse(response)))
-      })
-      .catch((error: any) => {
-        console.error('Could not load browser themes', error)
-      })
-  }
-}

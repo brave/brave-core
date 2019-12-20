@@ -203,13 +203,6 @@
       <message name="IDS_BRAVE_WELCOME_PAGE_SEARCH_DESC" desc="Explainer text about search engines in Brave">Choose the search engine you would like to use by default when searching the web from the address bar.</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SEARCH_TITLE" desc="Welcome message title for search engines">Set default search engine</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_PRIVATE_EXPERIENCE_DESC" desc="Explainer text about a more private search option">For a more private search experience, try DuckDuckGo.</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_THEME_TITLE" desc="Welcome message title for theming">Choose your color theme</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_THEME_DESC" desc="Explainer text about theming in Brave">Set the color of your toolbar by selecting the light or dark option from the settings panel.</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_SELECT_THEME_DESC" desc="Dropdown option text prompting user to select a theme">Select a theme</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_CONFIRM_THEME_BUTTON" desc="Button to confirm the theme">Confirm</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_SYSTEM_THEME_DESC" desc="Dropdown option text for default system theme ">System theme (default)</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_LIGHT_THEME_DESC" desc="Dropdown option text for light theme ">Light</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_DARK_THEME_DESC" desc="Dropdown option text for dark theme ">Dark</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SKIP_BUTTON" desc="Button to skip the welcome tour and go to the new tab page">Skip welcome tour</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_NEXT_BUTTON" desc="Button to move to the next slide of the welcome tour">Next</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_DONE_BUTTON" desc="Button that ends the welcome tour and moves the user to the new tab page">Done</message>

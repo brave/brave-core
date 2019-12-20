@@ -12,8 +12,7 @@ describe('welcomePage component', () => {
       expect(mapStateToProps(welcomeInitialState)).toEqual({
         welcomeData: {
           searchProviders: [],
-          browserProfiles: [],
-          browserThemes: []
+          browserProfiles: []
         }
       })
     })

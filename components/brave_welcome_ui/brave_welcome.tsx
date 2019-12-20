@@ -25,7 +25,6 @@ window.cr.define('brave_welcome', function () {
     const actions = bindActionCreators(welcomeActions, store.dispatch.bind(store))
     actions.getSearchEngineProviders()
     actions.getBrowserProfiles()
-    actions.getBrowserThemes()
   }
 
   function initialize () {
