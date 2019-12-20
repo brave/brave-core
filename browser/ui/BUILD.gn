@@ -8,6 +8,22 @@ import("//build/config/features.gni")
 import("//components/gcm_driver/config.gni")
 import("//chrome/common/features.gni")
 
+source_set("favicon_source") {
+  sources = [
+    "//chrome/browser/ui/webui/favicon_source.cc",
+    "//chrome/browser/ui/webui/favicon_source.h",
+  ]
+
+  deps = [
+    "//components/favicon/core",
+    "//components/favicon_base",
+    "//components/history/core/browser",
+    "//net",
+    "//ui/native_theme",
+    "//url",
+  ]
+}
+
 source_set("ui") {
   sources = [
     "webui/basic_ui.cc",
@@ -201,6 +217,14 @@ source_set("ui") {
     "//ui/gfx",
     "//ui/resources",
   ]
+
+  # This is no longer compiled into Chromium on Android, but we still
+  # need it
+  if (is_android) {
+    deps += [
+      ":favicon_source",
+    ]
+  }
 
   if (enable_brave_sync) {
     deps += [
