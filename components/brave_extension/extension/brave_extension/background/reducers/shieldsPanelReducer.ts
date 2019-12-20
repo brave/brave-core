@@ -33,7 +33,11 @@ import {
   reportBrokenSite
 } from '../api/shieldsAPI'
 import { reloadTab } from '../api/tabsAPI'
-import { applySiteFilters } from '../api/cosmeticFilterAPI'
+import {
+  injectClassIdStylesheet,
+  applyAdblockCosmeticFilters,
+  applyCSSCosmeticFilters
+} from '../api/cosmeticFilterAPI'
 
 // Helpers
 import { getAllowedScriptsOrigins } from '../../helpers/noScriptUtils'
@@ -58,7 +62,7 @@ export default function shieldsPanelReducer (
         state = shieldsPanelState.resetBlockingResources(state, action.tabId)
         state = noScriptState.resetNoScriptInfo(state, action.tabId, new window.URL(action.url).origin)
       }
-      applySiteFilters(action.tabId, getHostname(action.url))
+      applyCSSCosmeticFilters(action.tabId, getHostname(action.url))
       break
     }
     case windowTypes.WINDOW_REMOVED: {
@@ -105,6 +109,9 @@ export default function shieldsPanelReducer (
     case shieldsPanelTypes.SHIELDS_PANEL_DATA_UPDATED: {
       state = shieldsPanelState.updateTabShieldsData(state, action.details.id, action.details)
       shieldsPanelState.updateShieldsIcon(state)
+      if (chrome.test && shieldsPanelState.getActiveTabData(state)) {
+        chrome.test.sendMessage('brave-extension-shields-data-ready')
+      }
       break
     }
     case shieldsPanelTypes.SHIELDS_TOGGLED: {
@@ -338,6 +345,47 @@ export default function shieldsPanelReducer (
       onShieldsPanelShown().catch(() => {
         console.error('error calling `chrome.braveShields.onShieldsPanelShown()`')
       })
+      break
+    }
+    case shieldsPanelTypes.GENERATE_CLASS_ID_STYLESHEET: {
+      const tabData = state.tabs[action.tabId]
+      if (!tabData) {
+        console.error('Active tab not found')
+        break
+      }
+      const exceptions = tabData.cosmeticFilters.ruleExceptions
+
+      // setTimeout is used to prevent injectClassIdStylesheet from calling
+      // another Redux function immediately
+      setTimeout(() => injectClassIdStylesheet(action.tabId, action.classes, action.ids, exceptions), 0)
+      break
+    }
+    case shieldsPanelTypes.COSMETIC_FILTER_RULE_EXCEPTIONS: {
+      const tabData = state.tabs[action.tabId]
+      if (!tabData) {
+        console.error('Active tab not found')
+        break
+      }
+      state = shieldsPanelState.saveCosmeticFilterRuleExceptions(state, action.tabId, action.exceptions)
+      chrome.tabs.sendMessage(action.tabId, {
+        type: 'cosmeticFilterGenericExceptions'
+      })
+      break
+    }
+    case shieldsPanelTypes.CONTENT_SCRIPTS_LOADED: {
+      const tabData = state.tabs[action.tabId]
+      if (!tabData) {
+        console.error('Active tab not found')
+        break
+      }
+      const cosmeticBlockingEnabled = tabData.cosmeticBlocking
+      chrome.braveShields.getBraveShieldsEnabledAsync(action.url)
+        .then((braveShieldsEnabled: boolean) => {
+          const doCosmeticBlocking = braveShieldsEnabled && cosmeticBlockingEnabled
+          if (doCosmeticBlocking) {
+            applyAdblockCosmeticFilters(action.tabId, getHostname(action.url))
+          }
+        })
       break
     }
   }

@@ -199,6 +199,7 @@ declare namespace chrome.braveShields {
   const allowScriptsOnce: any
   const setBraveShieldsEnabledAsync: any
   const getBraveShieldsEnabledAsync: any
+  const getCosmeticFilteringEnabledAsync: any
   const setAdControlTypeAsync: any
   const getAdControlTypeAsync: any
   const setCookieControlTypeAsync: any
@@ -211,6 +212,15 @@ declare namespace chrome.braveShields {
   const getNoScriptControlTypeAsync: any
   const onShieldsPanelShown: any
   const reportBrokenSite: any
+
+  interface HostnameSpecificResources {
+    hide_selectors: string[]
+    style_selectors: any
+    exceptions: string[]
+    injected_script: string
+  }
+  const hostnameCosmeticResources: (hostname: string, callback: (resources: HostnameSpecificResources) => void) => void
+  const hiddenClassIdSelectors: (classes: string[], ids: string[], exceptions: string[], callback: (selectorsJson: string) => void) => void
 
   type BraveShieldsViewPreferences = {
     showAdvancedView: boolean
