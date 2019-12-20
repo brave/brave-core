@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_EXTENSIONS_BRAVE_THEME_EVENT_ROUTER_H_
 
 #include "base/scoped_observer.h"
+#include "ui/native_theme/native_theme.h"
 #include "ui/native_theme/native_theme_observer.h"
 
 class Profile;
@@ -29,7 +30,7 @@ class BraveThemeEventRouter : public ui::NativeThemeObserver {
 
   ui::NativeTheme* current_native_theme_for_testing_ = nullptr;
   Profile* profile_;
-  ScopedObserver<ui::NativeTheme, BraveThemeEventRouter> observer_;
+  ScopedObserver<ui::NativeTheme, ui::NativeThemeObserver> observer_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveThemeEventRouter);
 };
