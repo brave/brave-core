@@ -26,9 +26,9 @@ class BraveRewardsSource : public content::URLDataSource {
   // content::URLDataSource implementation.
   std::string GetSource() override;
   void StartDataRequest(
-      const std::string& path,
+      const GURL& url,
       const content::WebContents::Getter& wc_getter,
-      const content::URLDataSource::GotDataCallback& got_data_callback)
+      content::URLDataSource::GotDataCallback got_data_callback)
       override;
   std::string GetMimeType(const std::string&) override;
   bool AllowCaching() override;
@@ -39,13 +39,13 @@ class BraveRewardsSource : public content::URLDataSource {
 
  private:
   void OnBitmapFetched(
-      const content::URLDataSource::GotDataCallback& got_data_callback,
+      content::URLDataSource::GotDataCallback got_data_callback,
       BitmapFetcherService::RequestId request_id,
       const GURL& url,
       const SkBitmap& bitmap);
 
   Profile* profile_;
-  std::vector<std::string> resource_fetchers_;
+  std::vector<GURL> resource_fetchers_;
   std::vector<BitmapFetcherService::RequestId> request_ids_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveRewardsSource);
