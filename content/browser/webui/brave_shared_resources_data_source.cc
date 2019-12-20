@@ -197,11 +197,4 @@ BraveSharedResourcesDataSource::GetAccessControlAllowOriginForOrigin(
   return origin;
 }
 
-bool BraveSharedResourcesDataSource::IsGzipped(const std::string& path) {
-  // Cannot access GetContentClient() from here as that is //content/public
-  // only. Therefore cannot access ContentClient::IsDataResourceGzipped, so go
-  // to the bundle directly.
-  return ui::ResourceBundle::GetSharedInstance().IsGzipped(GetIdrForPath(path));
-}
-
 }  // namespace brave_content
