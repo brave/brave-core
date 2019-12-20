@@ -44,10 +44,15 @@ std::string NTPSponsoredImageSource::GetSource() {
 }
 
 void NTPSponsoredImageSource::StartDataRequest(
-    const std::string& path,
+    const GURL& url,
     const content::WebContents::Getter& wc_getter,
-    const GotDataCallback& callback) {
+    GotDataCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  std::string path = url.path();
+  if (!path.empty()) {
+    path.erase(0,1);
+  }
 
   if (!IsValidPath(path)) {
     scoped_refptr<base::RefCountedMemory> bytes;
@@ -69,7 +74,8 @@ void NTPSponsoredImageSource::StartDataRequest(
   } else {
     DCHECK(IsWallpaperPath(path));
     image_file_path =
-        images_data->wallpaper_image_files[GetWallpaperIndexFromPath(path)];
+        images_data
+            ->wallpaper_image_files[GetWallpaperIndexFromPath(path)];
   }
 
   base::PostTaskAndReplyWithResult(
@@ -77,11 +83,11 @@ void NTPSponsoredImageSource::StartDataRequest(
       base::BindOnce(&ReadFileToString, image_file_path),
       base::BindOnce(&NTPSponsoredImageSource::OnGotImageFile,
                      weak_factory_.GetWeakPtr(),
-                     callback));
+                     std::move(callback)));
 }
 
 void NTPSponsoredImageSource::OnGotImageFile(
-    const GotDataCallback& callback,
+    GotDataCallback callback,
     base::Optional<std::string> input) {
   if (!input)
     return;

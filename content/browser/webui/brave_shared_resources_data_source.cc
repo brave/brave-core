@@ -108,9 +108,10 @@ std::string BraveSharedResourcesDataSource::GetSource() {
 }
 
 void BraveSharedResourcesDataSource::StartDataRequest(
-    const std::string& path,
+    const GURL& url,
     const content::WebContents::Getter& wc_getter,
-    const content::URLDataSource::GotDataCallback& callback) {
+    content::URLDataSource::GotDataCallback callback) {
+  const std::string path = URLDataSource::URLToRequestPath(url);
   int idr = GetIdrForPath(path);
   DCHECK_NE(-1, idr) << " path: " << path;
   scoped_refptr<base::RefCountedMemory> bytes;
@@ -118,9 +119,9 @@ void BraveSharedResourcesDataSource::StartDataRequest(
   // Cannot access GetContentClient() from here as that is //content/public
   // only. Therefore, cannot access ContentClient::GetDataResourceBytes,
   // so go to the bundle directly. This will work for all content clients apart
-  // from in a test environment, where this shoudl be mocked.
+  // from in a test environment, where this should be mocked.
   bytes = ui::ResourceBundle::GetSharedInstance().LoadDataResourceBytes(idr);
-  callback.Run(bytes.get());
+  std::move(callback).Run(bytes.get());
 }
 
 bool BraveSharedResourcesDataSource::AllowCaching() {

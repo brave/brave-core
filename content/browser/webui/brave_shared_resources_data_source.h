@@ -24,9 +24,9 @@ class BraveSharedResourcesDataSource : public content::URLDataSource {
   // URLDataSource implementation.
   std::string GetSource() override;
   void StartDataRequest(
-      const std::string& path,
+      const GURL& url,
       const content::WebContents::Getter& wc_getter,
-      const content::URLDataSource::GotDataCallback& callback) override;
+      content::URLDataSource::GotDataCallback callback) override;
   bool AllowCaching() override;
   std::string GetMimeType(const std::string& path) override;
   bool ShouldServeMimeTypeAsContentTypeHeader() override;
