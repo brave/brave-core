@@ -34,7 +34,6 @@ class BraveSharedResourcesDataSource : public content::URLDataSource {
       const std::string& path) override;
   std::string GetAccessControlAllowOriginForOrigin(
       const std::string& origin) override;
-  bool IsGzipped(const std::string& path) override;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveSharedResourcesDataSource);
