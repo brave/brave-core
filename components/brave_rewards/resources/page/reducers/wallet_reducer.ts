@@ -222,6 +222,28 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       }
 
       state.externalWallet = action.payload.wallet
+      break
+    }
+    case types.GET_MONTHLY_REPORT: {
+      chrome.send('brave_rewards.getMonthlyReport', [
+        action.payload.month,
+        action.payload.year
+      ])
+      break
+    }
+    case types.ON_MONTHLY_REPORT: {
+      state = { ...state }
+      state.monthlyReport = {
+        month: action.payload.month,
+        year: action.payload.year
+      }
+
+      if (!action.payload.report) {
+        break
+      }
+
+      state.monthlyReport = Object.assign(state.monthlyReport, action.payload.report)
+      break
     }
   }
 

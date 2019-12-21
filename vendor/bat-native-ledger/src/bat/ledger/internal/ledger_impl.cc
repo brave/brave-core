@@ -1559,4 +1559,18 @@ void LedgerImpl::GetAnonWalletStatus(ledger::ResultCallback callback) {
   bat_wallet_->GetAnonWalletStatus(callback);
 }
 
+void LedgerImpl::GetTransactionReport(
+    const ledger::ActivityMonth month,
+    const int year,
+    ledger::GetTransactionReportCallback callback) {
+  ledger_client_->GetTransactionReport(month, year, callback);
+}
+
+void LedgerImpl::GetContributionReport(
+    const ledger::ActivityMonth month,
+    const int year,
+    ledger::GetContributionReportCallback callback) {
+  ledger_client_->GetContributionReport(month, year, callback);
+}
+
 }  // namespace bat_ledger

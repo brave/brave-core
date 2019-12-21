@@ -258,3 +258,9 @@ void NativeLedgerClient::GetAllPromotions(ledger::GetAllPromotionsCallback callb
 void NativeLedgerClient::DeleteUnblindedTokensForPromotion(const std::string& promotion_id, ledger::ResultCallback callback) {
   [bridge_ deleteUnblindedTokensForPromotion:promotion_id callback:callback];
 }
+void NativeLedgerClient::GetTransactionReport(const ledger::ActivityMonth month, const int year, ledger::GetTransactionReportCallback callback) {
+  [bridge_ getTransactionReport:month year:year callback:callback];
+}
+void NativeLedgerClient::GetContributionReport(const ledger::ActivityMonth month, const int year, ledger::GetContributionReportCallback callback) {
+  [bridge_ getContributionReport:month year:year callback:callback];
+}

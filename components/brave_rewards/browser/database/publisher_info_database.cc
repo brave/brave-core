@@ -27,6 +27,22 @@ namespace {
 const int kCurrentVersionNumber = 13;
 const int kCompatibleVersionNumber = 1;
 
+
+ledger::ReportType ConvertPromotionTypeToReportType(const int type) {
+  switch (type) {
+    case 0: {
+      return ledger::ReportType::GRANT_UGP;
+    }
+    case 1: {
+      return ledger::ReportType::GRANT_AD;
+    }
+    default: {
+      NOTREACHED();
+      return ledger::ReportType::GRANT_UGP;
+    }
+  }
+}
+
 }  // namespace
 
 PublisherInfoDatabase::PublisherInfoDatabase(
@@ -173,6 +189,18 @@ void PublisherInfoDatabase::GetOneTimeTips(
   }
 
   contribution_info_->GetOneTimeTips(&GetDB(), list, month, year);
+}
+
+void PublisherInfoDatabase::GetContributionReport(
+    ledger::ContributionReportInfoList* list,
+    const ledger::ActivityMonth month,
+    const int year) {
+  DCHECK(list);
+  if (!IsInitialized() || !list) {
+    return;
+  }
+
+  contribution_info_->GetContributionReport(&GetDB(), list, month, year);
 }
 
 /**
@@ -529,6 +557,47 @@ bool PublisherInfoDatabase::DeleteUnblindedTokensForPromotion(
   return DatabaseUnblindedToken::DeleteRecordsForPromotion(
       &GetDB(),
       promotion_id);
+}
+
+/**
+ *
+ * GENERAL
+ *
+ */
+void PublisherInfoDatabase::GetTransactionReport(
+    ledger::TransactionReportInfoList* list,
+    const ledger::ActivityMonth month,
+    const int year) {
+  DCHECK(list);
+  if (!list) {
+    return;
+  }
+
+  auto promotions = promotion_->GetAllRecords(&GetDB());
+  const auto converted_month = static_cast<int>(month);
+
+  for (const auto& promotion : promotions) {
+    if (!promotion.second ||
+        promotion.second->status != ledger::PromotionStatus::FINISHED ||
+        promotion.second->claimed_at == 0) {
+      continue;
+    }
+
+    base::Time time = base::Time::FromDoubleT(promotion.second->claimed_at);
+    base::Time::Exploded exploded;
+    time.LocalExplode(&exploded);
+    if (exploded.year != year ||
+        exploded.month != converted_month) {
+      continue;
+    }
+
+    auto report = ledger::TransactionReportInfo::New();
+    report->type = ConvertPromotionTypeToReportType(
+        static_cast<int>(promotion.second->type));
+    report->amount = promotion.second->approximate_value;
+    report->created_at = promotion.second->claimed_at;
+    list->push_back(std::move(report));
+  }
 }
 
 // Other -------------------------------------------------------------------

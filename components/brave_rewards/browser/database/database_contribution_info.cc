@@ -25,6 +25,25 @@ namespace {
 
     return std::stod(amount);
   }
+
+ledger::ReportType ConvertRewardsTypeToReportType(const int type) {
+  switch (type) {
+    case 2: {
+      return ledger::ReportType::AUTO_CONTRIBUTION;
+    }
+    case 8: {
+      return ledger::ReportType::TIP;
+    }
+    case 16: {
+      return ledger::ReportType::TIP_RECURRING;
+    }
+    default: {
+      NOTREACHED();
+      return ledger::ReportType::TIP;
+    }
+  }
+}
+
 }  // namespace
 
 namespace brave_rewards {
@@ -394,6 +413,45 @@ bool DatabaseContributionInfo::GetOneTimeTips(
     publisher->provider = statement.ColumnString(7);
 
     list->push_back(std::move(publisher));
+  }
+
+  return true;
+}
+
+bool DatabaseContributionInfo::GetContributionReport(
+    sql::Database* db,
+    ledger::ContributionReportInfoList* list,
+    const ledger::ActivityMonth month,
+    const int year) {
+  DCHECK(list);
+  if (!list) {
+    return false;
+  }
+
+  const std::string query =
+    "SELECT ci.contribution_id, ci.amount, ci.type, ci.created_at "
+    "FROM contribution_info as ci "
+    "WHERE strftime('%m',  datetime(ci.created_at, 'unixepoch')) = ? AND "
+    "strftime('%Y', datetime(ci.created_at, 'unixepoch')) = ?";
+
+  sql::Statement statement(db->GetUniqueStatement(query.c_str()));
+
+  const std::string formatted_month = base::StringPrintf("%02d", month);
+
+  statement.BindString(0, formatted_month);
+  statement.BindString(1, std::to_string(year));
+
+  while (statement.Step()) {
+    auto report = ledger::ContributionReportInfo::New();
+    report->amount = statement.ColumnDouble(1);
+    report->type = ConvertRewardsTypeToReportType(statement.ColumnInt64(2));
+    report->created_at = statement.ColumnInt64(3);
+    publishers_->GetPublisherInfoList(
+        db,
+        statement.ColumnString(0),
+        &report->publishers);
+
+    list->push_back(std::move(report));
   }
 
   return true;

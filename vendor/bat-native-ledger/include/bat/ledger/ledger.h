@@ -319,6 +319,16 @@ class LEDGER_EXPORT Ledger {
   virtual void GetAllPromotions(ledger::GetAllPromotionsCallback callback) = 0;
 
   virtual void GetAnonWalletStatus(ledger::ResultCallback callback) = 0;
+
+  virtual void GetTransactionReport(
+      const ledger::ActivityMonth month,
+      const int year,
+      ledger::GetTransactionReportCallback callback) = 0;
+
+  virtual void GetContributionReport(
+      const ledger::ActivityMonth month,
+      const int year,
+      ledger::GetContributionReportCallback callback) = 0;
 };
 
 }  // namespace ledger

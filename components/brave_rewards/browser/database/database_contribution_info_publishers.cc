@@ -175,4 +175,43 @@ bool DatabaseContributionInfoPublishers::GetRecords(
   return true;
 }
 
+bool DatabaseContributionInfoPublishers::GetPublisherInfoList(
+    sql::Database* db,
+    const std::string& contribution_id,
+    ledger::PublisherInfoList* list) {
+  DCHECK(list && db);
+  if (contribution_id.empty() || !list) {
+    return false;
+  }
+
+  const std::string query = base::StringPrintf(
+    "SELECT cip.publisher_key, cip.total_amount, pi.name, pi.url, pi.favIcon, "
+    "spi.status, pi.provider FROM %s as cip "
+    "INNER JOIN publisher_info AS pi ON cip.publisher_key = pi.publisher_id "
+    "LEFT JOIN server_publisher_info AS spi "
+    "ON spi.publisher_key = cip.publisher_key "
+    "WHERE cip.contribution_id = ?",
+    table_name_);
+
+  sql::Statement statement(db->GetUniqueStatement(query.c_str()));
+  statement.BindString(0, contribution_id);
+
+  while (statement.Step()) {
+    auto publisher = ledger::PublisherInfo::New();
+
+    publisher->id = statement.ColumnString(0);
+    publisher->weight = statement.ColumnDouble(1);
+    publisher->name = statement.ColumnString(2);
+    publisher->url = statement.ColumnString(3);
+    publisher->favicon_url = statement.ColumnString(4);
+    publisher->status =
+        static_cast<ledger::mojom::PublisherStatus>(statement.ColumnInt64(5));
+    publisher->provider = statement.ColumnString(6);
+
+    list->push_back(std::move(publisher));
+  }
+
+  return true;
+}
+
 }  // namespace brave_rewards

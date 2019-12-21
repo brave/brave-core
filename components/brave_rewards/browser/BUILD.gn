@@ -46,6 +46,12 @@ source_set("browser") {
     "rewards_protocol_handler.h",
     "rewards_protocol_handler.cc",
     "static_values.h",
+    "monthly_report.cc",
+    "monthly_report.h",
+    "transaction_report_info.cc",
+    "transaction_report_info.h",
+    "contribution_report_info.cc",
+    "contribution_report_info.h",
   ]
 
   deps = [
