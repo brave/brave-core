@@ -195,6 +195,16 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   void GetAnonWalletStatus(GetAnonWalletStatusCallback callback) override;
 
+  void GetTransactionReport(
+      const ledger::ActivityMonth month,
+      const int year,
+      GetTransactionReportCallback callback) override;
+
+  void GetContributionReport(
+      const ledger::ActivityMonth month,
+      const int year,
+      GetContributionReportCallback callback) override;
+
  private:
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;
@@ -359,6 +369,14 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnGetAnonWalletStatus(
       CallbackHolder<GetAnonWalletStatusCallback>* holder,
       const ledger::Result result);
+
+  static void OnGetTransactionReport(
+      CallbackHolder<GetTransactionReportCallback>* holder,
+      ledger::TransactionReportInfoList list);
+
+  static void OnGetContributionReport(
+      CallbackHolder<GetContributionReportCallback>* holder,
+      ledger::ContributionReportInfoList list);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

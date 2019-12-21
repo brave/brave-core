@@ -38,6 +38,11 @@ class DatabaseContributionInfoPublishers: public DatabaseTable {
     const std::string& contribution_id,
     ledger::ContributionPublisherList* list);
 
+  bool GetPublisherInfoList(
+    sql::Database* db,
+    const std::string& contribution_id,
+    ledger::PublisherInfoList* list);
+
  private:
   const char* table_name_ = "contribution_info_publishers";
   const int minimum_version_ = 11;

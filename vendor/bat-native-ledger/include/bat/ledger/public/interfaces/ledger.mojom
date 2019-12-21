@@ -251,10 +251,10 @@ enum RewardsType {
 };
 
 enum ReportType {
-  GRANT = 0,
+  GRANT_UGP = 0,
   AUTO_CONTRIBUTION = 1,
   DEPOSIT = 2,
-  ADS = 3,
+  GRANT_AD = 3,
   TIP_RECURRING = 4,
   TIP = 5,
 };
@@ -384,5 +384,18 @@ struct ClientInfo {
 struct RecurringTip {
   string publisher_key;
   double amount;
+  uint64 created_at;
+};
+
+struct TransactionReportInfo {
+  double amount;
+  ReportType type;
+  uint64 created_at;
+};
+
+struct ContributionReportInfo {
+  double amount;
+  ReportType type;
+  array<PublisherInfo> publishers;
   uint64 created_at;
 };

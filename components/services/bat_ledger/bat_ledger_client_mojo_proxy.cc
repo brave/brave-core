@@ -1044,4 +1044,36 @@ void BatLedgerClientMojoProxy::UnblindedTokensReady() {
   bat_ledger_client_->UnblindedTokensReady();
 }
 
+void OnGetTransactionReport(
+    ledger::GetTransactionReportCallback callback,
+    ledger::TransactionReportInfoList list) {
+  callback(std::move(list));
+}
+
+void BatLedgerClientMojoProxy::GetTransactionReport(
+    const ledger::ActivityMonth month,
+    const int year,
+    ledger::GetTransactionReportCallback callback) {
+  bat_ledger_client_->GetTransactionReport(
+      month,
+      year,
+      base::BindOnce(&OnGetTransactionReport, std::move(callback)));
+}
+
+void OnGetContributionReport(
+    ledger::GetContributionReportCallback callback,
+    ledger::ContributionReportInfoList list) {
+  callback(std::move(list));
+}
+
+void BatLedgerClientMojoProxy::GetContributionReport(
+    const ledger::ActivityMonth month,
+    const int year,
+    ledger::GetContributionReportCallback callback) {
+  bat_ledger_client_->GetContributionReport(
+      month,
+      year,
+      base::BindOnce(&OnGetContributionReport, std::move(callback)));
+}
+
 }  // namespace bat_ledger

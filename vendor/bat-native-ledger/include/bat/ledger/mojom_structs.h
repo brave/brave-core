@@ -42,6 +42,10 @@ using ContributionPublisherPtr = mojom::ContributionPublisherPtr;
 using ContributionPublisherList =
     std::vector<ledger::mojom::ContributionPublisherPtr>;
 
+using ContributionReportInfo = mojom::ContributionReportInfo;
+using ContributionReportInfoPtr = mojom::ContributionReportInfoPtr;
+using ContributionReportInfoList = std::vector<ContributionReportInfoPtr>;
+
 using ContributionQueue = ledger::mojom::ContributionQueue;
 using ContributionQueuePtr = ledger::mojom::ContributionQueuePtr;
 using ContributionQueueList = std::vector<ledger::mojom::ContributionQueuePtr>;
@@ -120,6 +124,10 @@ using ServerPublisherInfoList = std::vector<ServerPublisherInfoPtr>;
 using TransferFee = mojom::TransferFee;
 using TransferFeePtr = mojom::TransferFeePtr;
 using TransferFeeList = std::map<std::string, TransferFeePtr>;
+
+using TransactionReportInfo = mojom::TransactionReportInfo;
+using TransactionReportInfoPtr = mojom::TransactionReportInfoPtr;
+using TransactionReportInfoList = std::vector<TransactionReportInfoPtr>;
 
 using UnblindedToken = mojom::UnblindedToken;
 using UnblindedTokenPtr = mojom::UnblindedTokenPtr;

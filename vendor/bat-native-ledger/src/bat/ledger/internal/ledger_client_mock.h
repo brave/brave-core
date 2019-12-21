@@ -374,6 +374,16 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_METHOD2(DeleteUnblindedTokensForPromotion,
       void(const std::string& promotion_id, ledger::ResultCallback));
+
+  MOCK_METHOD3(GetTransactionReport, void(
+      const ledger::ActivityMonth month,
+      const int year,
+      ledger::GetTransactionReportCallback callback));
+
+  MOCK_METHOD3(GetContributionReport, void(
+      const ledger::ActivityMonth month,
+      const int year,
+      ledger::GetContributionReportCallback callback));
 };
 
 }  // namespace ledger

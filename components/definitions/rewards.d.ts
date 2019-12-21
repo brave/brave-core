@@ -50,6 +50,7 @@ declare namespace Rewards {
     }
     excludedList: ExcludedPublisher[]
     firstLoad: boolean | null
+    monthlyReport: MonthlyReport
     promotions?: Promotion[]
     pendingContributions: PendingContribution[]
     pendingContributionTotal: number
@@ -80,6 +81,36 @@ declare namespace Rewards {
   export interface ComponentProps {
     rewardsData: State
     actions: any
+  }
+
+  export interface MonthlyReport {
+    month: number
+    year: number
+    balance?: BalanceReport
+    transactions?: TransactionReport[]
+    contribution?: ContributionReport[]
+  }
+
+  export enum ReportType {
+    GRANT_UGP = 0,
+    AUTO_CONTRIBUTION = 1,
+    DEPOSIT = 2,
+    GRANT_AD = 3,
+    TIP_RECURRING = 4,
+    TIP = 5
+  }
+
+  export interface TransactionReport {
+    amount: number
+    type: ReportType
+    created_at: number
+  }
+
+  export interface ContributionReport {
+    amount: number
+    type: ReportType
+    created_at: number
+    publishers: Publisher[]
   }
 
   export type CaptchaStatus = 'start' | 'wrongPosition' | 'generalError' | 'finished' | null

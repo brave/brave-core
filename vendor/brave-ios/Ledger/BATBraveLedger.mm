@@ -2002,4 +2002,14 @@ BATLedgerBridge(BOOL,
   // TODO please implement
 }
 
+- (void)getTransactionReport:(const ledger::ActivityMonth)month year:(const uint32_t)year callback:(ledger::GetTransactionReportCallback)callback
+{
+  // TODO please implement
+}
+
+- (void)getContributionReport:(const ledger::ActivityMonth)month year:(const uint32_t)year callback:(ledger::GetContributionReportCallback)callback
+{
+  // TODO please implement
+}
+
 @end

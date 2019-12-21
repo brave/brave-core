@@ -22,6 +22,7 @@
 #include "brave/components/brave_rewards/browser/promotion.h"
 #include "brave/components/brave_rewards/browser/rewards_internals_info.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
+#include "brave/components/brave_rewards/browser/monthly_report.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -110,6 +111,9 @@ using GetAnonWalletStatusCallback = base::OnceCallback<void(const uint32_t)>;
 using GetBalanceReportCallback = base::OnceCallback<void(
     const int32_t,
     const brave_rewards::BalanceReport&)>;
+
+using GetMonthlyReportCallback = base::OnceCallback<void(
+    const MonthlyReport&)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -288,6 +292,11 @@ class RewardsService : public KeyedService {
   virtual bool OnlyAnonWallet() = 0;
 
   virtual void GetAnonWalletStatus(GetAnonWalletStatusCallback callback) = 0;
+
+  virtual void GetMonthlyReport(
+      const uint32_t month,
+      const uint32_t year,
+      GetMonthlyReportCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

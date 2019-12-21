@@ -73,14 +73,14 @@ ledger::ReportType ConvertPromotionTypeToReportType(
     const ledger::PromotionType type) {
   switch (static_cast<int>(type)) {
     case static_cast<int>(ledger::PromotionType::UGP): {
-      return ledger::ReportType::GRANT;
+      return ledger::ReportType::GRANT_UGP;
     }
     case static_cast<int>(ledger::PromotionType::ADS): {
-      return ledger::ReportType::ADS;
+      return ledger::ReportType::GRANT_AD;
     }
     default: {
       NOTREACHED();
-      return ledger::ReportType::GRANT;
+      return ledger::ReportType::GRANT_UGP;
     }
   }
 }

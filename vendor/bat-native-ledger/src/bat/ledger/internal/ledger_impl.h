@@ -601,6 +601,16 @@ class LedgerImpl : public ledger::Ledger,
 
   void GetAnonWalletStatus(ledger::ResultCallback callback) override;
 
+  void GetTransactionReport(
+      const ledger::ActivityMonth month,
+      const int year,
+      ledger::GetTransactionReportCallback callback) override;
+
+  void GetContributionReport(
+      const ledger::ActivityMonth month,
+      const int year,
+      ledger::GetContributionReportCallback callback) override;
+
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;

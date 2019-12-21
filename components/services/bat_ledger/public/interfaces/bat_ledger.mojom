@@ -144,6 +144,10 @@ interface BatLedger {
   DisconnectWallet(string wallet_type) => (ledger.mojom.Result result);
 
   GetAnonWalletStatus() => (ledger.mojom.Result result);
+
+  GetTransactionReport(ledger.mojom.ActivityMonth month, int32 year) => (array<ledger.mojom.TransactionReportInfo> list);
+
+  GetContributionReport(ledger.mojom.ActivityMonth month, int32 year) => (array<ledger.mojom.ContributionReportInfo> list);
 };
 
 interface BatLedgerClient {
@@ -292,4 +296,9 @@ interface BatLedgerClient {
   [Sync]
   GetClientInfo() => (ledger.mojom.ClientInfo info);
   UnblindedTokensReady();
+
+  GetTransactionReport(ledger.mojom.ActivityMonth month, int32 year) => (array<ledger.mojom.TransactionReportInfo> list);
+
+  GetContributionReport(ledger.mojom.ActivityMonth month, int32 year) => (array<ledger.mojom.ContributionReportInfo> list);
+
 };
