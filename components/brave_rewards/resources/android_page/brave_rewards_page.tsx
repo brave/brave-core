@@ -65,16 +65,8 @@ window.cr.define('brave_rewards', function () {
     getActions().onPromotions(properties)
   }
 
-  function claimPromotion (properties: Rewards.Captcha) {
-    getActions().onClaimPromotion(properties)
-  }
-
   function walletPassphrase (pass: string) {
     getActions().onWalletPassphrase(pass)
-  }
-
-  function recoverWalletData (properties: Rewards.RecoverWallet) {
-    getActions().onRecoverWalletData(properties)
   }
 
   function promotionFinish (properties: Rewards.PromotionFinish) {
@@ -123,34 +115,6 @@ window.cr.define('brave_rewards', function () {
 
   function adsData (adsData: Rewards.AdsData) {
     getActions().onAdsData(adsData)
-  }
-
-  function adsHistory (adsHistory: Rewards.AdsHistory[]) {
-    getActions().onAdsHistory(adsHistory)
-  }
-
-  function onToggleAdThumbUp (result: Rewards.ToggleLikeAction) {
-    getActions().onToggleAdThumbUp(result)
-  }
-
-  function onToggleAdThumbDown (result: Rewards.ToggleLikeAction) {
-    getActions().onToggleAdThumbDown(result)
-  }
-
-  function onToggleAdOptInAction (result: Rewards.ToggleOptAction) {
-    getActions().onToggleAdOptInAction(result)
-  }
-
-  function onToggleAdOptOutAction (result: Rewards.ToggleOptAction) {
-    getActions().onToggleAdOptOutAction(result)
-  }
-
-  function onToggleSaveAd (result: Rewards.ToggleSaveAd) {
-    getActions().onToggleSaveAd(result)
-  }
-
-  function onToggleFlagAd (result: Rewards.ToggleFlagAd) {
-    getActions().onToggleFlagAd(result)
   }
 
   function onPendingContributionSaved (result: number) {
@@ -208,26 +172,6 @@ window.cr.define('brave_rewards', function () {
     if (properties.type === 8) { // Rewards.RewardsType.ONE_TIME_TIP
       chrome.send('brave_rewards.getOneTimeTips')
     }
-
-    // EXPIRED TOKEN
-    if (properties.result === 24) {
-      getActions().getExternalWallet('uphold')
-    }
-  }
-
-  function externalWallet (properties: {result: number, wallet: Rewards.ExternalWallet}) {
-    getActions().onExternalWallet(properties.result, properties.wallet)
-  }
-
-  function processRewardsPageUrl (data: Rewards.ProcessRewardsPageUrl) {
-    getActions().onProcessRewardsPageUrl(data)
-  }
-
-  function disconnectWallet (properties: {walletType: string, result: number}) {
-    if (properties.result === 0) {
-      getActions().getExternalWallet(properties.walletType)
-      getActions().getBalance()
-    }
   }
 
   function onlyAnonWallet (only: boolean) {
@@ -244,9 +188,7 @@ window.cr.define('brave_rewards', function () {
     walletCreateFailed,
     walletProperties,
     promotions,
-    claimPromotion,
     walletPassphrase,
-    recoverWalletData,
     promotionFinish,
     reconcileStamp,
     contributeList,
@@ -259,13 +201,6 @@ window.cr.define('brave_rewards', function () {
     initAutoContributeSettings,
     imported,
     adsData,
-    adsHistory,
-    onToggleAdThumbUp,
-    onToggleAdThumbDown,
-    onToggleAdOptInAction,
-    onToggleAdOptOutAction,
-    onToggleSaveAd,
-    onToggleFlagAd,
     pendingContributions,
     onPendingContributionSaved,
     rewardsEnabled,
@@ -277,9 +212,6 @@ window.cr.define('brave_rewards', function () {
     excludedSiteChanged,
     balance,
     reconcileComplete,
-    externalWallet,
-    processRewardsPageUrl,
-    disconnectWallet,
     onlyAnonWallet,
     unblindedTokensReady
   }

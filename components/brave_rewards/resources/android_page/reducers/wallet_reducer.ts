@@ -4,8 +4,6 @@
 
 import { Reducer } from 'redux'
 
-import { getCurrentBalanceReport } from '../utils'
-
 // Constant
 import { types } from '../constants/rewards_types'
 
@@ -80,50 +78,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         }
       }
       break
-    case types.RECOVER_WALLET: {
-      let key = action.payload.key
-      key = key.trim()
-
-      if (!key || key.length === 0) {
-        let ui = state.ui
-        ui.walletRecoverySuccess = false
-
-        state = {
-          ...state,
-          ui
-        }
-
-        break
-      }
-
-      chrome.send('brave_rewards.recoverWallet', [key])
-      break
-    }
-    case types.ON_RECOVER_WALLET_DATA: {
-      state = { ...state }
-      const result = action.payload.properties.result
-      let ui = state.ui
-      let balance = state.balance
-
-      // TODO NZ check why enum can't be used inside Rewards namespace
-      ui.walletRecoverySuccess = result === 0
-      if (result === 0) {
-        balance.total = action.payload.properties.balance
-        chrome.send('brave_rewards.getWalletPassphrase')
-        chrome.send('brave_rewards.fetchPromotions')
-        getCurrentBalanceReport()
-        ui.emptyWallet = balance.total <= 0
-        ui.modalBackup = false
-        ui.walletCorrupted = false
-      }
-
-      state = {
-        ...state,
-        ui,
-        balance
-      }
-      break
-    }
     case types.GET_BALANCE_REPORT: {
       chrome.send('brave_rewards.getBalanceReport', [
         action.payload.month,
@@ -199,8 +153,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         }
       } else if (status === 1) { // on ledger::Result::LEDGER_ERROR
         ui.walletServerProblem = true
-      } else if (status === 24) { // on ledger::Result::EXPIRED_TOKEN
-        chrome.send('brave_rewards.getExternalWallet', ['uphold'])
       }
 
       state = {
@@ -208,20 +160,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         ui
       }
       break
-    }
-    case types.GET_EXTERNAL_WALLET: {
-      chrome.send('brave_rewards.getExternalWallet', [action.payload.type])
-      break
-    }
-    case types.ON_EXTERNAL_WALLET: {
-      state = { ...state }
-
-      if (action.payload.result === 24) { // on ledger::Result::EXPIRED_TOKEN
-        chrome.send('brave_rewards.getExternalWallet', ['uphold'])
-        break
-      }
-
-      state.externalWallet = action.payload.wallet
     }
   }
 

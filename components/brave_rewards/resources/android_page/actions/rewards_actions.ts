@@ -37,22 +37,8 @@ export const claimPromotion = (promotionId: string) => action(types.CLAIM_PROMOT
   promotionId
 })
 
-export const onClaimPromotion = (properties: Rewards.Captcha) => action(types.ON_CLAIM_PROMOTION, {
-  properties
-})
-
-export const attestPromotion = (promotionId: string, x: number, y: number) => action(types.ATTEST_PROMOTION, {
-  promotionId,
-  x,
-  y
-})
-
 export const onPromotionFinish = (properties: Rewards.PromotionFinish) => action(types.ON_PROMOTION_FINISH, {
   properties
-})
-
-export const resetPromotion = (promotionId: string) => action(types.RESET_PROMOTION, {
-  promotionId
 })
 
 export const deletePromotion = (promotionId: string) => action(types.DELETE_PROMOTION, {
@@ -63,14 +49,6 @@ export const getWalletPassphrase = () => action(types.GET_WALLLET_PASSPHRASE)
 
 export const onWalletPassphrase = (pass: string) => action(types.ON_WALLLET_PASSPHRASE, {
   pass
-})
-
-export const recoverWallet = (key: string) => action(types.RECOVER_WALLET, {
-  key
-})
-
-export const onRecoverWalletData = (properties: Rewards.RecoverWallet) => action(types.ON_RECOVER_WALLET_DATA, {
-  properties
 })
 
 export const onModalBackupClose = () => action(types.ON_MODAL_BACKUP_CLOSE)
@@ -152,70 +130,6 @@ export const onAdsData = (adsData: Rewards.AdsData) => action(types.ON_ADS_DATA,
   adsData
 })
 
-export const getAdsHistory = () => action(types.GET_ADS_HISTORY)
-
-export const onAdsHistory = (adsHistory: Rewards.AdsHistory[]) => action(types.ON_ADS_HISTORY, {
-  adsHistory
-})
-
-export const toggleAdThumbUp = (uuid: string, creativeSetId: string, likeAction: number) => action(types.TOGGLE_AD_THUMB_UP, {
-  uuid,
-  creativeSetId,
-  likeAction
-})
-
-export const onToggleAdThumbUp = (result: Rewards.ToggleLikeAction) => action(types.ON_TOGGLE_AD_THUMB_UP, {
-  result
-})
-
-export const toggleAdThumbDown = (uuid: string, creativeSetId: string, likeAction: number) => action(types.TOGGLE_AD_THUMB_DOWN, {
-  uuid,
-  creativeSetId,
-  likeAction
-})
-
-export const onToggleAdThumbDown = (result: Rewards.ToggleLikeAction) => action(types.ON_TOGGLE_AD_THUMB_DOWN, {
-  result
-})
-
-export const toggleAdOptInAction = (category: string, optAction: number) => action(types.TOGGLE_AD_OPT_IN_ACTION, {
-  category,
-  optAction
-})
-
-export const onToggleAdOptInAction = (result: Rewards.ToggleOptAction) => action(types.ON_TOGGLE_AD_OPT_IN_ACTION, {
-  result
-})
-
-export const toggleAdOptOutAction = (category: string, optAction: number) => action(types.TOGGLE_AD_OPT_OUT_ACTION, {
-  category,
-  optAction
-})
-
-export const onToggleAdOptOutAction = (result: Rewards.ToggleOptAction) => action(types.ON_TOGGLE_AD_OPT_OUT_ACTION, {
-  result
-})
-
-export const toggleSaveAd = (uuid: string, creativeSetId: string, savedAd: boolean) => action(types.TOGGLE_SAVE_AD, {
-  uuid,
-  creativeSetId,
-  savedAd
-})
-
-export const onToggleSaveAd = (result: Rewards.ToggleSaveAd) => action(types.ON_TOGGLE_SAVE_AD, {
-  result
-})
-
-export const toggleFlagAd = (uuid: string, creativeSetId: string, flaggedAd: boolean) => action(types.TOGGLE_FLAG_AD, {
-  uuid,
-  creativeSetId,
-  flaggedAd
-})
-
-export const onToggleFlagAd = (result: Rewards.ToggleFlagAd) => action(types.ON_TOGGLE_FLAG_AD, {
-  result
-})
-
 export const onAdsSettingSave = (key: string, value: any) => action(types.ON_ADS_SETTING_SAVE, {
   key,
   value
@@ -276,32 +190,6 @@ export const getBalance = () => action(types.GET_BALANCE)
 export const onBalance = (status: number, balance: Rewards.Balance) => action(types.ON_BALANCE, {
   status,
   balance
-})
-
-export const getExternalWallet = (type: Rewards.WalletType) => action(types.GET_EXTERNAL_WALLET, {
-  type
-})
-
-export const onExternalWallet = (result: number, wallet: Rewards.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
-  result,
-  wallet
-})
-
-export const onOnBoardingDisplayed = () => action(types.ON_ON_BOARDING_DISPLAYED)
-
-export const processRewardsPageUrl = (path: string, query: string) => action(types.PROCESS_REWARDS_PAGE_URL, {
-  path,
-  query
-})
-
-export const onProcessRewardsPageUrl = (data: Rewards.ProcessRewardsPageUrl) => action(types.ON_PROCESS_REWARDS_PAGE_URL, {
-  data
-})
-
-export const hideRedirectModal = () => action(types.HIDE_REDIRECT_MODAL)
-
-export const disconnectWallet = (walletType: string) => action(types.DISCONNECT_WALLET, {
-  walletType
 })
 
 export const onlyAnonWallet = () => action(types.ONLY_ANON_WALLET)
