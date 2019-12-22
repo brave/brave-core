@@ -768,7 +768,7 @@ until they verify, or until 90 days have passed.
         I'm in!
       </message>
       <message name="IDS_BRAVE_ADS_OFFER_TEXT" desc="Text for Brave Ads offer.">
-        Earn Basic Attention Token for viewing privacy preserving ads in Brave Rewards.
+        Earn Basic Attention Token for viewing privacy preserving Brave Rewards ads.
       </message>
       <message name="IDS_RESET_BRAVE_REWARDS_ERROR_TITLE" desc="Title for Brave Rewards reset error dialog.">
         Reset Error
