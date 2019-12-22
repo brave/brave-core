@@ -29,6 +29,10 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
       bool* out_is_enabled) override;
   void IsEnabled(
       IsEnabledCallback callback) override;
+  bool ShouldAllowAdConversionTracking(
+      bool* should_allow) override;
+  void ShouldAllowAdConversionTracking(
+      ShouldAllowAdConversionTrackingCallback callback) override;
   bool IsForeground(
       bool* out_is_foreground) override;
   void IsForeground(

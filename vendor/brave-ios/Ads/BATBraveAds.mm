@@ -25,10 +25,12 @@
   + (__type)__objc_getter { return ads::__cpp_var; } \
   + (void)__objc_setter:(__type)newValue { ads::__cpp_var = newValue; }
 
+static const NSInteger kDefaultAllowAdConversionTracking = YES;
 static const NSInteger kDefaultNumberOfAdsPerDay = 20;
 static const NSInteger kDefaultNumberOfAdsPerHour = 2;
 
 static NSString * const kAdsEnabledPrefKey = @"BATAdsEnabled";
+static NSString * const kShouldAllowAdConversionTrackingPrefKey = @"BATShouldAllowAdConversionTracking";
 static NSString * const kNumberOfAdsPerDayKey = @"BATNumberOfAdsPerDay";
 static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
 
@@ -63,6 +65,7 @@ static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
     self.prefs = [[NSMutableDictionary alloc] initWithContentsOfFile:[self prefsPath]];
     if (!self.prefs) {
       self.prefs = [[NSMutableDictionary alloc] init];
+      self.allowAdConversionTracking = kDefaultAllowAdConversionTracking;
       self.numberOfAllowableAdsPerDay = kDefaultNumberOfAdsPerDay;
       self.numberOfAllowableAdsPerHour = kDefaultNumberOfAdsPerHour;
     }
@@ -169,6 +172,17 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
   } else {
     [self shutdown];
   }
+}
+
+- (BOOL)shouldAllowAdConversionTracking
+{
+  return [(NSNumber *)self.prefs[kShouldAllowAdConversionTrackingPrefKey] boolValue];
+}
+
+- (void)setAllowAdConversionTracking:(BOOL)shouldAllowAdConversionTracking
+{
+  self.prefs[kShouldAllowAdConversionTrackingPrefKey] = @(shouldAllowAdConversionTracking);
+  [self savePrefs];
 }
 
 - (NSInteger)numberOfAllowableAdsPerDay
@@ -380,6 +394,14 @@ BATClassAdsBridge(BOOL, isTesting, setTesting, _is_testing)
   }
 
   callback(ads::Result::SUCCESS, categories, found_ads);
+}
+
+- (void)getAdConversions:(const std::string &)url callback:(ads::OnGetAdConversionsCallback)callback
+{
+  // TODO(khickinson): To be implemented
+  if (![self isAdsServiceRunning]) { return; }
+
+  callback(ads::Result::SUCCESS, url, {});
 }
 
 - (void)setCatalogIssuers:(std::unique_ptr<ads::IssuersInfo>)info

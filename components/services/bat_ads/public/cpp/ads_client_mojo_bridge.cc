@@ -56,6 +56,20 @@ void AdsClientMojoBridge::IsEnabled(IsEnabledCallback callback) {
   std::move(callback).Run(ads_client_->IsEnabled());
 }
 
+bool AdsClientMojoBridge::ShouldAllowAdConversionTracking(bool* should_allow) {
+  if (!should_allow) {
+    return false;
+  }
+
+  *should_allow = ads_client_->ShouldAllowAdConversionTracking();
+  return true;
+}
+
+void AdsClientMojoBridge::ShouldAllowAdConversionTracking(
+    ShouldAllowAdConversionTrackingCallback callback) {
+  std::move(callback).Run(ads_client_->ShouldAllowAdConversionTracking());
+}
+
 bool AdsClientMojoBridge::IsForeground(bool* is_foreground) {
   *is_foreground = ads_client_->IsForeground();
   return true;

@@ -42,6 +42,8 @@ class MockAdsClient : public AdsClient {
 
   MOCK_CONST_METHOD0(IsEnabled, bool());
 
+  MOCK_CONST_METHOD0(ShouldAllowAdConversionTracking, bool());
+
   MOCK_CONST_METHOD0(GetLocale, const std::string());
 
   MOCK_CONST_METHOD0(GetAdsPerHour, uint64_t());
@@ -123,6 +125,10 @@ class MockAdsClient : public AdsClient {
   MOCK_METHOD2(GetAds, void(
       const std::vector<std::string>& categories,
       OnGetAdsCallback callback));
+
+  MOCK_METHOD2(GetAdConversions, void(
+      const std::string& url,
+      OnGetAdConversionsCallback callback));
 
   MOCK_CONST_METHOD1(EventLog, void(
       const std::string& json));

@@ -96,6 +96,16 @@ bool BatAdsClientMojoBridge::IsEnabled() const {
   return is_enabled;
 }
 
+bool BatAdsClientMojoBridge::ShouldAllowAdConversionTracking() const {
+  if (!connected()) {
+    return false;
+  }
+
+  bool should_allow;
+  bat_ads_client_->ShouldAllowAdConversionTracking(&should_allow);
+  return should_allow;
+}
+
 bool BatAdsClientMojoBridge::CanShowBackgroundNotifications() const {
   if (!connected())
     return false;

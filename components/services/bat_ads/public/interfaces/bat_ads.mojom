@@ -20,6 +20,8 @@ interface BatAdsClient {
   [Sync]
   IsEnabled() => (bool is_enabled);
   [Sync]
+  ShouldAllowAdConversionTracking() => (bool should_allow);
+  [Sync]
   GetLocale() => (string locale);
   [Sync]
   GetAdsPerHour() => (uint64 ads_per_hour);

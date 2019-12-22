@@ -744,12 +744,11 @@ void AdsImpl::OnPageLoaded(
 void AdsImpl::CheckAdConversion(
     const std::string& url) {
   DCHECK(!url.empty());
-
-  if (ads_client_->ShouldOptOutOfAdConversions()) {
+  if (url.empty()) {
     return;
   }
 
-  if (url.empty()) {
+  if (!ads_client_->ShouldAllowAdConversionTracking()) {
     return;
   }
 

@@ -68,6 +68,9 @@ class AdsServiceImpl : public AdsService,
   void SetEnabled(
       const bool is_enabled) override;
 
+  void SetAllowAdConversionTracking(
+      const bool should_allow) override;
+
   void SetAdsPerHour(
       const uint64_t ads_per_hour) override;
 
@@ -129,6 +132,8 @@ class AdsServiceImpl : public AdsService,
 
   // AdsClient implementation
   bool IsEnabled() const override;
+
+  bool ShouldAllowAdConversionTracking() const override;
 
   uint64_t GetAdsPerHour() const override;
   uint64_t GetAdsPerDay() const override;

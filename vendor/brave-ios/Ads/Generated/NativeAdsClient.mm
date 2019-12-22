@@ -19,6 +19,10 @@ bool NativeAdsClient::IsEnabled() const {
   return [bridge_ isAdsEnabled];
 }
 
+bool NativeAdsClient::ShouldAllowAdConversionTracking() const {
+  return [bridge_ shouldAllowAdConversionTracking];
+}
+
 uint64_t NativeAdsClient::GetAdsPerDay() const {
   return [bridge_ getAdsPerDay];
 }
@@ -121,6 +125,10 @@ void NativeAdsClient::SaveBundleState(std::unique_ptr<ads::BundleState> state, a
 
 void NativeAdsClient::GetAds(const std::vector<std::string> & categories, ads::OnGetAdsCallback callback) {
   [bridge_ getAds:categories callback:callback];
+}
+
+void NativeAdsClient::GetAdConversions(const std::string & url, ads::OnGetAdConversionsCallback callback) {
+  [bridge_ getAdConversions:url callback:callback];
 }
 
 void NativeAdsClient::EventLog(const std::string & json) const {
