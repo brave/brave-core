@@ -32,6 +32,8 @@ source_set("browser") {
     "//components/domain_reliability",
     "//content/public/browser",
     "//content/public/common",
+    # for session_tab_helper.h
+    "//chrome/common",
   ]
 
   if (brave_ads_enabled) {
@@ -83,6 +85,10 @@ source_set("browser") {
         "notification_helper_mac.h",
         "notification_helper_mac.mm",
       ]
+
+      deps += [
+        "//chrome/common",
+      ]
     }
 
     if (is_win) {
@@ -108,6 +114,8 @@ source_set("browser") {
       "//sql",
       "//ui/base",
       "//ui/message_center/public/cpp",
+      # for browser_process.h
+      "//chrome/common",
     ]
 
     if (is_win) {

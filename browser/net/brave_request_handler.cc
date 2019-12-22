@@ -31,7 +31,7 @@
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-#include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
+#include "brave/browser/net/brave_rewards_network_delegate_helper.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)

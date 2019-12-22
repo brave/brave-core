@@ -12,11 +12,10 @@
 
 #include "base/mac/mac_util.h"
 #include "base/feature_list.h"
-#include "chrome/common/chrome_features.h"
 #include "base/logging.h"
-
 #include "brave/components/brave_ads/browser/notification_helper_mac.h"
 #include "chrome/browser/fullscreen.h"
+#include "chrome/common/chrome_features.h"
 
 namespace brave_ads {
 

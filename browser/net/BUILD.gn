@@ -1,5 +1,6 @@
 import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
@@ -51,6 +52,7 @@ source_set("net") {
     "//brave/browser/translate/buildflags",
     "//brave/common",
     "//brave/components/brave_referrals/buildflags",
+    "//brave/components/brave_rewards/browser/buildflags",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/extensions:common",
@@ -67,6 +69,21 @@ source_set("net") {
     "//third_party/re2",
     "//url",
   ]
+
+  if (brave_rewards_enabled) {
+    sources += [
+      "brave_rewards_network_delegate_helper.cc",
+      "brave_rewards_network_delegate_helper.h",
+    ]
+
+    deps += [
+      "//base",
+      "//brave/browser/brave_rewards",
+      "//brave/components/brave_rewards/browser",
+      "//content/public/browser",
+      "//url",
+    ]
+  }
 
   if (enable_brave_referrals) {
     sources += [

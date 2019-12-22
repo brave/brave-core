@@ -5,7 +5,7 @@
 
 #include <memory>
 
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/common/pref_names.h"

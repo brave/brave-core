@@ -20,6 +20,10 @@
 
 class PrefRegistrySimple;
 
+namespace network {
+class SharedURLLoaderFactory;
+}
+
 namespace brave {
 
 class BraveP3AScheduler;
@@ -41,7 +45,8 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   void InitCallbacks();
 
   // Needs a living browser process to complete the initialization.
-  void Init();
+  void Init(
+      scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory);
 
   // BraveP3ALogStore::LogSerializer
   std::string Serialize(base::StringPiece histogram_name,
@@ -75,7 +80,7 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
 
   // General prefs:
   bool initialized_ = false;
-  PrefService* local_state_ = nullptr;
+  PrefService* local_state_;
 
   // The average interval between uploading different values.
   base::TimeDelta average_upload_interval_;

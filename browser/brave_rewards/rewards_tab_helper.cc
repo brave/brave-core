@@ -5,8 +5,8 @@
 
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
 
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/session_tab_helper.h"
 #if !defined(OS_ANDROID)

@@ -4,10 +4,10 @@
 
 #include "brave/browser/extensions/api/rewards_notifications_api.h"
 
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/common/extensions/api/rewards_notifications.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 
 using brave_rewards::RewardsNotificationService;

@@ -24,8 +24,6 @@ source_set("browser") {
     "rewards_p3a.h",
     "rewards_service.cc",
     "rewards_service.h",
-    "rewards_service_factory.cc",
-    "rewards_service_factory.h",
     "rewards_service_observer.h",
     "wallet_properties.cc",
     "wallet_properties.h",
@@ -110,8 +108,6 @@ source_set("browser") {
       "database/database_util.h",
       "database/publisher_info_database.cc",
       "database/publisher_info_database.h",
-      "net/network_delegate_helper.cc",
-      "net/network_delegate_helper.h",
       "rewards_service_impl.cc",
       "rewards_service_impl.h",
       "publisher_info_backend.cc",
@@ -131,11 +127,12 @@ source_set("browser") {
       ]
     }
 
+    public_deps += [ "//brave/vendor/bat-native-ledger" ]
+
     deps += [
       "//brave/components/brave_ads/browser/buildflags",
       "//brave/components/resources",
       "//brave/components/services/bat_ledger/public/cpp",
-      "//brave/vendor/bat-native-ledger",
       "//mojo/public/cpp/bindings",
       "//net",
       "//services/network/public/cpp",

@@ -1,0 +1,61 @@
+import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
+
+source_set("brave_rewards") {
+  sources = [
+    "rewards_service_factory.cc",
+    "rewards_service_factory.h",
+    "rewards_tab_helper.cc",
+    "rewards_tab_helper.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/common",
+    "//brave/components/brave_rewards/browser",
+    "//brave/components/brave_rewards/common",
+    "//components/keyed_service/content",
+    "//components/prefs",
+    "//content/public/browser",
+    "//extensions/buildflags",
+  ]
+
+  if (enable_extensions) {
+    deps += [
+      "//extensions/browser",
+    ]
+  }
+
+  if (!is_android) {
+    sources += [
+      "tip_dialog.cc",
+      "tip_dialog.h",
+    ]
+
+    deps += [
+      "//components/guest_view/browser",
+      "//components/web_modal",
+      "//ui/web_dialogs",
+    ]
+  } else {
+    if (brave_rewards_enabled) {
+      sources += [
+        "android/brave_rewards_native_worker.cc",
+        "android/brave_rewards_native_worker.h",
+      ]
+
+      deps += [
+        "//base/android",
+        "//brave/build/android:jni_headers",
+        "//chrome/android:jni_headers",
+      ]
+
+      if (brave_ads_enabled) {
+        deps += [
+          "//brave/components/brave_ads/browser",
+        ]
+      }
+    }
+  }
+}

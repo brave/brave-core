@@ -5,12 +5,12 @@
 
 #include "brave/browser/browser_context_keyed_service_factories.h"
 
+#include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_shields/ad_block_pref_service_factory.h"
 #include "brave/browser/brave_shields/cookie_pref_service_factory.h"
 #include "brave/browser/search_engines/search_engine_provider_service_factory.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_GREASELION)

@@ -20,5 +20,7 @@ source_set("brave_wayback_machine") {
     "//ui/gfx",
     "//ui/views",
     "//url",
+    # for theme_properties.h
+    "//chrome/common",
   ]
 }
