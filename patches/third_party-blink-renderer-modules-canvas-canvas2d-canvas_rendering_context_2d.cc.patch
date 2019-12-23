@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
-index 4c192f7ebf4f7235655a67b380877953b05c8ac5..78d972aaff54e34ac1ababcb7aadb88250dd5f7f 100644
+index 41dc3431667b9b799155e993e4900aed20ef335b..1a6a5cf6d3908c829241ba76da9a4978e85ce638 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
 @@ -35,6 +35,7 @@
  
  #include "base/metrics/histogram_functions.h"
  #include "base/rand_util.h"
-+#include "brave/renderer/brave_content_settings_observer_helper.h"
++#include "brave/renderer/brave_content_settings_agent_impl_helper.h"
  #include "third_party/blink/public/common/features.h"
  #include "third_party/blink/public/platform/platform.h"
  #include "third_party/blink/public/platform/task_type.h"

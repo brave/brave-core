@@ -27,7 +27,7 @@ const char kVideoPlayingDetect[] =
   "window.domAutomationController.send(document.getElementById('status')."
   "textContent);";
 
-class BraveContentSettingsObserverAutoplayTest : public InProcessBrowserTest {
+class BraveContentSettingsAgentImplAutoplayTest : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
       InProcessBrowserTest::SetUpOnMainThread();
@@ -105,7 +105,7 @@ class BraveContentSettingsObserverAutoplayTest : public InProcessBrowserTest {
 };
 
 // Allow autoplay on whitelisted URL by default
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverAutoplayTest,
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplAutoplayTest,
                        AllowAutoplay) {
   std::string result;
   PermissionRequestManager* manager = PermissionRequestManager::FromWebContents(
@@ -128,7 +128,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverAutoplayTest,
 
 // Block autoplay, even on whitelisted URL, if user has a blocklist pattern that
 // matches the whitelisted URL
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverAutoplayTest,
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplAutoplayTest,
                        BlockAutoplay) {
   std::string result;
   BlockAutoplay();
