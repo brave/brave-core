@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
-index 612247de3915296bc746d31cc52d811676903ef2..a8dfacefde41645910d546e2a5db1d6a3c6e265a 100644
+index 612247de3915296bc746d31cc52d811676903ef2..a62cfe5529178f9c83f32ebf8c180b366cc86d77 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.cc
 @@ -37,6 +37,7 @@
  #include "base/location.h"
  #include "base/metrics/histogram_macros.h"
  #include "base/numerics/checked_math.h"
-+#include "brave/renderer/brave_content_settings_observer_helper.h"
++#include "brave/renderer/brave_content_settings_agent_impl_helper.h"
  #include "build/build_config.h"
  #include "third_party/blink/public/common/features.h"
  #include "third_party/blink/public/platform/task_type.h"

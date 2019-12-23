@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/renderer/brave_content_settings_observer.h"
+#include "brave/renderer/brave_content_settings_agent_impl.h"
 
 #include <string>
 #include <utility>
@@ -29,45 +29,45 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "url/url_constants.h"
 
-BraveContentSettingsObserver::BraveContentSettingsObserver(
+BraveContentSettingsAgentImpl::BraveContentSettingsAgentImpl(
     content::RenderFrame* render_frame,
     bool should_whitelist,
     service_manager::BinderRegistry* registry)
-    : ContentSettingsObserver(render_frame, should_whitelist, registry) {
+    : ContentSettingsAgentImpl(render_frame, should_whitelist, registry) {
 }
 
-BraveContentSettingsObserver::~BraveContentSettingsObserver() {
+BraveContentSettingsAgentImpl::~BraveContentSettingsAgentImpl() {
 }
 
-bool BraveContentSettingsObserver::OnMessageReceived(
+bool BraveContentSettingsAgentImpl::OnMessageReceived(
     const IPC::Message& message) {
   bool handled = true;
-  IPC_BEGIN_MESSAGE_MAP(BraveContentSettingsObserver, message)
+  IPC_BEGIN_MESSAGE_MAP(BraveContentSettingsAgentImpl, message)
     IPC_MESSAGE_HANDLER(BraveFrameMsg_AllowScriptsOnce, OnAllowScriptsOnce)
     IPC_MESSAGE_UNHANDLED(handled = false)
   IPC_END_MESSAGE_MAP()
 
   if (handled) return true;
-  return ContentSettingsObserver::OnMessageReceived(message);
+  return ContentSettingsAgentImpl::OnMessageReceived(message);
 }
 
-void BraveContentSettingsObserver::OnAllowScriptsOnce(
+void BraveContentSettingsAgentImpl::OnAllowScriptsOnce(
     const std::vector<std::string>& origins) {
   preloaded_temporarily_allowed_scripts_ = std::move(origins);
 }
 
-void BraveContentSettingsObserver::DidCommitProvisionalLoad(
+void BraveContentSettingsAgentImpl::DidCommitProvisionalLoad(
     bool is_same_document_navigation, ui::PageTransition transition) {
   if (!is_same_document_navigation) {
     temporarily_allowed_scripts_ =
       std::move(preloaded_temporarily_allowed_scripts_);
   }
 
-  ContentSettingsObserver::DidCommitProvisionalLoad(
+  ContentSettingsAgentImpl::DidCommitProvisionalLoad(
       is_same_document_navigation, transition);
 }
 
-bool BraveContentSettingsObserver::IsScriptTemporilyAllowed(
+bool BraveContentSettingsAgentImpl::IsScriptTemporilyAllowed(
     const GURL& script_url) {
   // Check if scripts from this origin are temporily allowed or not.
   // Also matches the full script URL to support data URL cases which we use
@@ -77,12 +77,12 @@ bool BraveContentSettingsObserver::IsScriptTemporilyAllowed(
     base::Contains(temporarily_allowed_scripts_, script_url.spec());
 }
 
-void BraveContentSettingsObserver::BraveSpecificDidBlockJavaScript(
+void BraveContentSettingsAgentImpl::BraveSpecificDidBlockJavaScript(
     const base::string16& details) {
   Send(new BraveViewHostMsg_JavaScriptBlocked(routing_id(), details));
 }
 
-bool BraveContentSettingsObserver::AllowScript(
+bool BraveContentSettingsAgentImpl::AllowScript(
     bool enabled_per_settings) {
   // clear cached url for other flow like directly calling `DidNotAllowScript`
   // without calling `AllowScriptFromSource` first
@@ -92,7 +92,7 @@ bool BraveContentSettingsObserver::AllowScript(
   const GURL secondary_url(
       url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
 
-  bool allow = ContentSettingsObserver::AllowScript(enabled_per_settings);
+  bool allow = ContentSettingsAgentImpl::AllowScript(enabled_per_settings);
   allow = allow ||
     IsBraveShieldsDown(frame, secondary_url) ||
     IsScriptTemporilyAllowed(secondary_url);
@@ -100,21 +100,21 @@ bool BraveContentSettingsObserver::AllowScript(
   return allow;
 }
 
-void BraveContentSettingsObserver::DidNotAllowScript() {
+void BraveContentSettingsAgentImpl::DidNotAllowScript() {
   if (!blocked_script_url_.is_empty()) {
     BraveSpecificDidBlockJavaScript(
       base::UTF8ToUTF16(blocked_script_url_.spec()));
     blocked_script_url_ = GURL::EmptyGURL();
   }
-  ContentSettingsObserver::DidNotAllowScript();
+  ContentSettingsAgentImpl::DidNotAllowScript();
 }
 
-bool BraveContentSettingsObserver::AllowScriptFromSource(
+bool BraveContentSettingsAgentImpl::AllowScriptFromSource(
     bool enabled_per_settings,
     const blink::WebURL& script_url) {
   const GURL secondary_url(script_url);
 
-  bool allow = ContentSettingsObserver::AllowScriptFromSource(
+  bool allow = ContentSettingsAgentImpl::AllowScriptFromSource(
       enabled_per_settings, script_url);
 
   // scripts with whitelisted protocols, such as chrome://extensions should
@@ -135,12 +135,12 @@ bool BraveContentSettingsObserver::AllowScriptFromSource(
   return allow;
 }
 
-void BraveContentSettingsObserver::DidBlockFingerprinting(
+void BraveContentSettingsAgentImpl::DidBlockFingerprinting(
     const base::string16& details) {
   Send(new BraveViewHostMsg_FingerprintingBlocked(routing_id(), details));
 }
 
-GURL BraveContentSettingsObserver::GetOriginOrURL(
+GURL BraveContentSettingsAgentImpl::GetOriginOrURL(
     const blink::WebFrame* frame) {
   url::Origin top_origin = url::Origin(frame->Top()->GetSecurityOrigin());
   // The |top_origin| is unique ("null") e.g., for file:// URLs. Use the
@@ -153,7 +153,7 @@ GURL BraveContentSettingsObserver::GetOriginOrURL(
   return top_origin.GetURL();
 }
 
-ContentSetting BraveContentSettingsObserver::GetFPContentSettingFromRules(
+ContentSetting BraveContentSettingsAgentImpl::GetFPContentSettingFromRules(
     const ContentSettingsForOneType& rules,
     const blink::WebFrame* frame,
     const GURL& secondary_url) {
@@ -183,7 +183,7 @@ ContentSetting BraveContentSettingsObserver::GetFPContentSettingFromRules(
   return CONTENT_SETTING_BLOCK;
 }
 
-bool BraveContentSettingsObserver::IsBraveShieldsDown(
+bool BraveContentSettingsAgentImpl::IsBraveShieldsDown(
     const blink::WebFrame* frame,
     const GURL& secondary_url) {
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
@@ -202,7 +202,7 @@ bool BraveContentSettingsObserver::IsBraveShieldsDown(
   return setting == CONTENT_SETTING_BLOCK;
 }
 
-bool BraveContentSettingsObserver::AllowFingerprinting(
+bool BraveContentSettingsAgentImpl::AllowFingerprinting(
     bool enabled_per_settings) {
   if (!enabled_per_settings)
     return false;
@@ -240,14 +240,14 @@ bool BraveContentSettingsObserver::AllowFingerprinting(
   return allow;
 }
 
-bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
+bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
   auto origin = frame->GetDocument().GetSecurityOrigin();
   // default allow local files
   if (origin.IsNull() || origin.Protocol().Ascii() == url::kFileScheme)
     return true;
 
-  bool allow = ContentSettingsObserver::AllowAutoplay(default_value);
+  bool allow = ContentSettingsAgentImpl::AllowAutoplay(default_value);
   if (allow)
     return true;
 

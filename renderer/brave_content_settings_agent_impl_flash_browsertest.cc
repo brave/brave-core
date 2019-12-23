@@ -47,7 +47,7 @@ class PageReloadWaiter {
 
 }  // namespace
 
-class BraveContentSettingsObserverFlashBrowserTest : public InProcessBrowserTest {
+class BraveContentSettingsAgentImplFlashBrowserTest : public InProcessBrowserTest {
   public:
     void SetUpOnMainThread() override {
       InProcessBrowserTest::SetUpOnMainThread();
@@ -139,7 +139,7 @@ class BraveContentSettingsObserverFlashBrowserTest : public InProcessBrowserTest
 };
 
 // Flash is blocked by default
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverFlashBrowserTest,
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplFlashBrowserTest,
     BlockFlashByDefault) {
   NavigateToURLUntilLoadStop(url());
   int len;
@@ -149,7 +149,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverFlashBrowserTest,
 }
 
 // Flash is unblocked and click to play eventually allows
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverFlashBrowserTest,
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplFlashBrowserTest,
     UnblockFlash) {
   UnblockFlash();
   NavigateToURLUntilLoadStop(url());
@@ -187,7 +187,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverFlashBrowserTest,
 }
 
 // Flash is explicitly allowed
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverFlashBrowserTest,
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplFlashBrowserTest,
     AllowFlashExplicitAllows) {
   AllowFlash();
   NavigateToURLUntilLoadStop(url());

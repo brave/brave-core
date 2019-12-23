@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
-index 1ce8a34cb9f43e65b1dd3976df7b2c2272d87855..4b12e75234e6f204ace1992d36b19f991ed1c625 100644
+index 1ce8a34cb9f43e65b1dd3976df7b2c2272d87855..27e7be757f30dbce134c282a4f34d485195c294f 100644
 --- a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
 +++ b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
 @@ -31,6 +31,7 @@
  #include "base/feature_list.h"
  #include "base/numerics/checked_math.h"
  #include "base/stl_util.h"
-+#include "brave/renderer/brave_content_settings_observer_helper.h"
++#include "brave/renderer/brave_content_settings_agent_impl_helper.h"
  #include "build/build_config.h"
  #include "gpu/GLES2/gl2extchromium.h"
  #include "gpu/command_buffer/client/gles2_interface.h"
