@@ -778,6 +778,7 @@ WALLET_PROPERTIES_ST::WALLET_PROPERTIES_ST(
   fee_amount_ = properties.fee_amount_;
   parameters_choices_ = properties.parameters_choices_;
   grants_ = properties.grants_;
+  user_funds_present_ = properties.user_funds_present_;
 }
 
 bool WALLET_PROPERTIES_ST::loadFromJson(const std::string & json) {
@@ -821,6 +822,12 @@ bool WALLET_PROPERTIES_ST::loadFromJson(const std::string & json) {
       }
     } else {
       grants_.clear();
+    }
+
+    if (d.HasMember("userFundsPresent") && d["userFundsPresent"].IsBool()) {
+      user_funds_present_ = d["userFundsPresent"].GetBool();
+    } else {
+      user_funds_present_ = false;
     }
   }
   return !error;

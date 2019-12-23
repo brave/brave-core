@@ -105,7 +105,7 @@ storiesOf('Rewards/Concepts/Desktop', module)
       content,
       walletState
     }
-    return (<Settings {...{ walletProps }}/>)
+    return (<Settings showBanner={boolean('Show grant banner', true)} {...{ walletProps }}/>)
   })
   .add('Welcome Page', () => (
     <WelcomePage
@@ -144,6 +144,10 @@ storiesOf('Rewards/Concepts/Desktop', module)
       store.set({ showBanner: false })
     }
 
+    const onTweet = () => {
+      console.log('onTweet')
+    }
+
     return (
       <div style={{ background: `url(${siteScreen}) no-repeat top center / cover`, width: '100%', height: '100vh' }}>
         <button onClick={showBanner}>Show banner</button>
@@ -168,6 +172,7 @@ storiesOf('Rewards/Concepts/Desktop', module)
                 onAmountSelection={onAmountSelection}
                 currentAmount={store.state.currentAmount}
                 onClose={onClose}
+                onTweet={onTweet}
                 provider={mediaProvider}
                 nextContribution={'07/08/2019'}
                 social={[

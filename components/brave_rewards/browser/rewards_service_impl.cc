@@ -943,6 +943,7 @@ void RewardsServiceImpl::OnWalletProperties(
       wallet_properties.reset(new brave_rewards::WalletProperties);
       wallet_properties->parameters_choices = properties->parameters_choices;
       wallet_properties->monthly_amount = properties->fee_amount;
+      wallet_properties->user_funds_present = properties->user_funds_present;
 
       for (size_t i = 0; i < properties->grants.size(); i ++) {
         brave_rewards::Grant grant;
@@ -3550,6 +3551,7 @@ void RewardsServiceImpl::OnFetchBalance(FetchBalanceCallback callback,
     new_balance->total = balance->total;
     new_balance->rates = mojo::FlatMapToMap(balance->rates);
     new_balance->wallets = mojo::FlatMapToMap(balance->wallets);
+    new_balance->user_funds = balance->user_funds;
 
     if (balance->total > 0) {
       profile_->GetPrefs()->SetBoolean(prefs::kRewardsUserHasFunded, true);

@@ -86,6 +86,7 @@ struct WalletProperties {
   double fee_amount;
   array<double> parameters_choices;
   array<Grant> grants;
+  bool user_funds_present;
 };
 
 struct Balance {

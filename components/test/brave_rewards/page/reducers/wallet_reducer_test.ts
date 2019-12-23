@@ -133,6 +133,7 @@ describe('wallet reducer', () => {
         },
         balance: {
           total: 5,
+          userFunds: '0.0',
           rates: {},
           wallets: {}
         }

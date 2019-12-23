@@ -19,6 +19,7 @@ struct Balance {
   double total;
   std::map<std::string, double> rates;
   std::map<std::string, double> wallets;
+  std::string user_funds;
 };
 
 }  // namespace brave_rewards

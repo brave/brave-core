@@ -552,6 +552,9 @@
       <message name="IDS_BRAVE_UI_TOKEN_GRANTS" desc="">Token Grants</message>
       <message name="IDS_BRAVE_UI_POINT_GRANTS" desc="">Point Grants</message>
       <message name="IDS_BRAVE_UI_TRANSACTIONS" desc="">Transactions</message>
+      <message name="IDS_BRAVE_UI_TRANSITION_BANNER_READ" desc="">Please read:</message>
+      <message name="IDS_BRAVE_UI_TRANSITION_BANNER_BODY" desc="">Due to our system change, your deposited funds {{ amount }} BAT <ph name="BEGIN_BOLD_TEXT">&lt;b &gt;</ph>must be used by February 4th, 2020<ph name="END_BOLD_TEXT">&lt;/b&gt;</ph> or you need to <ph name="BEGIN_BOLD_TEXT_2">&lt;b &gt;</ph>verify your wallet via Uphold<ph name="END_BOLD_TEXT_2">&lt;/b&gt;</ph> so the funds can be transferred to it. Please complete this action before February 25th.</message>
+      <message name="IDS_BRAVE_UI_TRANSITION_BANNER_CTA" desc="">Verify wallet</message>
       <message name="IDS_BRAVE_UI_TURN_ON_ADS" desc="">Turn on Brave Ads</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_DESC" desc="">This enables both ads and automatic contributions. You can turn them on or off separately at any time.</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_TITLE" desc="">Activate Rewards</message>

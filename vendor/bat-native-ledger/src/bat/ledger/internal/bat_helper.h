@@ -168,6 +168,7 @@ struct WALLET_PROPERTIES_ST {
   double fee_amount_;
   std::vector<double> parameters_choices_;
   std::vector<GRANT> grants_;
+  bool user_funds_present_;
 };
 
 struct REPORT_BALANCE_ST {

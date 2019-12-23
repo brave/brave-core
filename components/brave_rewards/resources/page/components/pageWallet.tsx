@@ -36,6 +36,8 @@ interface State {
 }
 
 interface Props extends Rewards.ComponentProps {
+  handleUpholdLink: boolean
+  upholdLinkHandled: () => void
 }
 
 class PageWallet extends React.Component<Props, State> {
@@ -57,6 +59,16 @@ class PageWallet extends React.Component<Props, State> {
   componentDidMount () {
     this.isBackupUrl()
     this.isVerifyUrl()
+  }
+
+  componentDidUpdate (prevProps: Props, prevState: State) {
+    if (
+      !prevProps.handleUpholdLink &&
+      this.props.handleUpholdLink
+    ) {
+      this.props.upholdLinkHandled()
+      this.onVerifyClick(false)
+    }
   }
 
   onModalBackupClose = () => {
