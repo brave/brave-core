@@ -38,10 +38,17 @@ PhaseOne::~PhaseOne() {
 }
 
 void PhaseOne::Start(const std::string& viewing_id) {
+  const std::string user_id = ledger_->GetUserId();
+  if (user_id.empty()) {
+    auto reconcile = ledger_->GetReconcileById(viewing_id);
+    Complete(ledger::Result::LEDGER_ERROR, viewing_id, reconcile.type);
+    return;
+  }
+
   ledger_->AddReconcileStep(viewing_id,
                             ledger::ContributionRetry::STEP_RECONCILE);
   std::string url = braveledger_request_util::BuildUrl(
-      (std::string)RECONCILE_CONTRIBUTION + ledger_->GetUserId(), PREFIX_V2);
+      (std::string)RECONCILE_CONTRIBUTION + user_id, PREFIX_V2);
 
   auto callback = std::bind(&PhaseOne::ReconcileCallback,
                             this,

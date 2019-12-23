@@ -285,6 +285,8 @@ class Contribution {
                   bool created,
                   const std::string& viewing_id);
 
+  void OnDeleteContributionQueue(const ledger::Result result);
+
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<PhaseOne> phase_one_;
   std::unique_ptr<PhaseTwo> phase_two_;
@@ -294,6 +296,7 @@ class Contribution {
   uint32_t last_reconcile_timer_id_;
   std::map<std::string, uint32_t> retry_timers_;
   uint32_t queue_timer_id_;
+  bool queue_in_progress_ = false;
 
   // For testing purposes
   friend class ContributionTest;
