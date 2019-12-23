@@ -1,0 +1,14 @@
+source_set("cpp") {
+  visibility = [ "//services/network/public/cpp:cpp" ]
+
+  sources = [
+    "system_request_handler.cc",
+    "system_request_handler.h",
+  ]
+
+  deps = [
+    "//services/network/public/cpp:cpp_base",
+  ]
+
+  defines = [ "IS_NETWORK_CPP_IMPL" ]
+}

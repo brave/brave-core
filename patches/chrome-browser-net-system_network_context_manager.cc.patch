@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/net/system_network_context_manager.cc b/chrome/browser/net/system_network_context_manager.cc
-index d3abdb5cfb4d3b6377a6a696201bbdc5739fb5be..5f329b7612c2bed0dc0fa92403e2b64a16c212c6 100644
+index d3abdb5cfb4d3b6377a6a696201bbdc5739fb5be..332ffeb3e1692e101a790e6703e7e1c150322616 100644
 --- a/chrome/browser/net/system_network_context_manager.cc
 +++ b/chrome/browser/net/system_network_context_manager.cc
 @@ -295,7 +295,7 @@ class SystemNetworkContextManager::URLLoaderFactoryForSystem
@@ -7,7 +7,7 @@ index d3abdb5cfb4d3b6377a6a696201bbdc5739fb5be..5f329b7612c2bed0dc0fa92403e2b64a
        return;
      manager_->GetURLLoaderFactory()->CreateLoaderAndStart(
 -        std::move(request), routing_id, request_id, options, url_request,
-+        std::move(request), routing_id, request_id, options, brave::OnBeforeSystemRequest(url_request),
++        std::move(request), routing_id, request_id, options, network::SystemRequestHandler::GetInstance()->OnBeforeSystemRequest(url_request),
          std::move(client), traffic_annotation);
    }
  
