@@ -80,19 +80,27 @@ void Balance::OnWalletProperties(
     return;
   }
 
-  auto* total = dictionary->FindKey("balance");
-  double total_anon = 0.0;
-  if (total) {
-    total_anon = std::stod(total->GetString());
-  }
-  balance->total = total_anon;
-
-  auto* funds = dictionary->FindKey("cardBalance");
+  const auto* funds = dictionary->FindStringKey("cardBalance");
   std::string user_funds = "0";
   if (funds) {
-    user_funds = funds->GetString();
+    user_funds = *funds;
   }
   balance->user_funds = user_funds;
+
+  const auto* total = dictionary->FindStringKey("balance");
+  double total_anon = 0.0;
+  if (total) {
+    total_anon = std::stod(*total);
+  }
+
+  const auto user_funds_present = dictionary->FindBoolKey("userFundsPresent");
+  if (user_funds_present && *user_funds_present) {
+      const double user_funds_double = std::stod(user_funds);
+      if (total_anon >= user_funds_double) {
+        total_anon -= user_funds_double;
+    }
+  }
+  balance->total = total_anon;
 
   auto* local_rates = dictionary->FindKey("rates");
   if (local_rates) {

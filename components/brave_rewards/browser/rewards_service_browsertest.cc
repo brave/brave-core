@@ -136,6 +136,12 @@ bool URLMatches(const std::string& url,
   return (url.find(target_url) == 0);
 }
 
+enum class WalletPropertiesResponse {
+  kRegular,
+  kUserFundsPresentTrue,
+  kUserFundsPresentFalse
+};
+
 }  // namespace
 
 namespace brave_test_resp {
@@ -146,6 +152,8 @@ namespace brave_test_resp {
   std::string promotion_tokens_;
   std::string captcha_;
   std::string wallet_properties_;
+  std::string wallet_properties_present_true_;
+  std::string wallet_properties_present_false_;
   std::string uphold_auth_resp_;
   std::string uphold_transactions_resp_;
   std::string uphold_commit_resp_;
@@ -293,7 +301,20 @@ class BraveRewardsBrowserTest
       *response = brave_test_resp::verification_;
     } else if (URLMatches(url, WALLET_PROPERTIES, PREFIX_V2,
                           ServerTypes::BALANCE)) {
-      *response = brave_test_resp::wallet_properties_;
+      switch (wallet_properties_response_) {
+        case WalletPropertiesResponse::kRegular: {
+          *response = brave_test_resp::wallet_properties_;
+          break;
+        }
+        case WalletPropertiesResponse::kUserFundsPresentTrue: {
+          *response = brave_test_resp::wallet_properties_present_true_;
+          break;
+        }
+        case WalletPropertiesResponse::kUserFundsPresentFalse: {
+          *response = brave_test_resp::wallet_properties_present_false_;
+          break;
+        }
+      }
     } else if (URLMatches(url, "/promotions?", PREFIX_V1,
                           ServerTypes::kPromotion)) {
       *response = brave_test_resp::promotions_;
@@ -829,6 +850,12 @@ class BraveRewardsBrowserTest
     ASSERT_TRUE(
         base::ReadFileToString(path.AppendASCII("wallet_properties_resp.json"),
                                &brave_test_resp::wallet_properties_));
+    ASSERT_TRUE(base::ReadFileToString(
+        path.AppendASCII("wallet_properties_present_true_resp.json"),
+        &brave_test_resp::wallet_properties_present_true_));
+    ASSERT_TRUE(base::ReadFileToString(
+        path.AppendASCII("wallet_properties_present_false_resp.json"),
+        &brave_test_resp::wallet_properties_present_false_));
     ASSERT_TRUE(base::ReadFileToString(
         path.AppendASCII("uphold_auth_resp.json"),
         &brave_test_resp::uphold_auth_resp_));
@@ -1627,6 +1654,8 @@ class BraveRewardsBrowserTest
   const std::string external_wallet_address_ =
       "abe5f454-fedd-4ea9-9203-470ae7315bb3";
   bool first_url_ac_called_ = false;
+  WalletPropertiesResponse wallet_properties_response_ =
+      WalletPropertiesResponse::kRegular;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
@@ -3162,6 +3191,43 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowMonthlyIfACOff) {
   ASSERT_TRUE(popup_contents);
 
   WaitForSelector(popup_contents, "#panel-donate-monthly");
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TransitionBannerShow) {
+  wallet_properties_response_ = WalletPropertiesResponse::kUserFundsPresentTrue;
+
+  // Observe the Rewards service
+  rewards_service_->AddObserver(this);
+
+  // Enable Rewards
+  EnableRewards();
+
+  WaitForSelector(contents(), "#transition-banner");
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TransitionBannerDoNotShow) {
+  wallet_properties_response_ =
+      WalletPropertiesResponse::kUserFundsPresentFalse;
+
+  // Observe the Rewards service
+  rewards_service_->AddObserver(this);
+
+  // Enable Rewards
+  EnableRewards();
+
+  content::EvalJsResult js_result =
+      EvalJs(
+          contents(),
+          "document.querySelector(\"#transition-banner\") == null;",
+          content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+          content::ISOLATED_WORLD_ID_CONTENT_END);
+  EXPECT_TRUE(js_result.ExtractBool());
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
 }
 
 struct BraveAdsUpgradePathParamInfo {

@@ -105,7 +105,7 @@ storiesOf('Rewards/Concepts/Desktop', module)
       content,
       walletState
     }
-    return (<Settings {...{ walletProps }}/>)
+    return (<Settings showBanner={boolean('Show grant banner', true)} {...{ walletProps }}/>)
   })
   .add('Welcome Page', () => (
     <WelcomePage

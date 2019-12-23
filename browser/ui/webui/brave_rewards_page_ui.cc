@@ -535,6 +535,9 @@ void RewardsDOMHandler::OnGetAutoContributeProps(
         choices->AppendDouble(choice);
       }
       walletInfo->SetList("choices", std::move(choices));
+      walletInfo->SetBoolean(
+          "userFundsPresent",
+          wallet_properties->user_funds_present);
 
       result.SetDouble("monthlyAmount", wallet_properties->monthly_amount);
     }
@@ -1536,6 +1539,7 @@ void RewardsDOMHandler::OnFetchBalance(
 
     if (result == 0 && balance) {
       balance_value.SetDoubleKey("total", balance->total);
+      balance_value.SetStringKey("userFunds", balance->user_funds);
 
       base::Value rates(base::Value::Type::DICTIONARY);
       for (auto const& rate : balance->rates) {

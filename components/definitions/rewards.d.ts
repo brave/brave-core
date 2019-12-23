@@ -117,6 +117,7 @@ declare namespace Rewards {
 
   export interface WalletProperties {
     choices: number[]
+    userFundsPresent: boolean
   }
 
   export interface RecoverWallet {
@@ -221,6 +222,7 @@ declare namespace Rewards {
   export interface Balance {
     total: number
     rates: Record<string, number>
+    userFunds: string
     wallets: Record<string, number>
   }
 

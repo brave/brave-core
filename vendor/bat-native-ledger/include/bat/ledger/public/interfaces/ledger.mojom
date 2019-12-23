@@ -87,6 +87,7 @@ struct VisitData {
 struct WalletProperties {
   double fee_amount;
   array<double> parameters_choices;
+  bool user_funds_present;
 };
 
 struct Balance {

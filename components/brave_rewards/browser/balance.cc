@@ -11,10 +11,6 @@ Balance::Balance() : total(0.0) {}
 
 Balance::~Balance() {}
 
-Balance::Balance(const Balance& properties) {
-  total = properties.total;
-  rates = properties.rates;
-  wallets = properties.wallets;
-}
+Balance::Balance(const Balance& properties) = default;
 
 }  // namespace brave_rewards

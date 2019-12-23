@@ -19,6 +19,7 @@ struct WalletProperties {
 
   double monthly_amount;
   std::vector<double> parameters_choices;
+  bool user_funds_present;
 };
 
 }  // namespace brave_rewards

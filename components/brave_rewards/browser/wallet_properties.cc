@@ -11,8 +11,7 @@ namespace brave_rewards {
 
   WalletProperties::~WalletProperties() = default;
 
-  WalletProperties::WalletProperties(const WalletProperties &properties) {
-    parameters_choices = properties.parameters_choices;
-  }
+  WalletProperties::WalletProperties(
+      const WalletProperties &properties) = default;
 
 }  // namespace brave_rewards

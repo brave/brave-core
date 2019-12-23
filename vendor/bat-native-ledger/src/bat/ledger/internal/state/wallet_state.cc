@@ -20,6 +20,7 @@ const char kBatKey[] = "BAT";
 const char kChoicesKey[] = "choices";
 const char kChoicesBatPath[] = "parameters.adFree.choices.BAT";
 const char kFeeBatPath[] = "parameters.adFree.fee.BAT";
+const char kUserFundsPresentPath[] = "userFundsPresent";
 
 }  // namespace
 
@@ -87,6 +88,15 @@ bool WalletState::FromDict(
   for (const auto&choices_bat_value : choices_bat_list->GetList()) {
     const double bat = choices_bat_value.GetDouble();
     wallet_properties.parameters_choices.push_back(bat);
+  }
+
+  // User funds present
+  const auto user_funds_present =
+      dictionary->FindBoolPath(kUserFundsPresentPath);
+  if (!user_funds_present) {
+    wallet_properties.user_funds_present = false;
+  } else {
+    wallet_properties.user_funds_present = *user_funds_present;
   }
 
   *properties = wallet_properties;

@@ -103,6 +103,8 @@ ledger::WalletPropertiesPtr Wallet::WalletPropertiesToWalletInfo(
   ledger::WalletPropertiesPtr wallet = ledger::WalletProperties::New();
   wallet->parameters_choices = properties.parameters_choices;
   wallet->fee_amount = ledger_->GetContributionAmount();
+  wallet->user_funds_present = properties.user_funds_present;
+
   return wallet;
 }
 
