@@ -231,22 +231,9 @@ bool BraveUpdateClientConfig::IsPerUserInstall() const {
   return component_updater::IsPerUserInstall();
 }
 
-std::vector<uint8_t> BraveUpdateClientConfig::GetRunActionKeyHash() const {
-  return impl_.GetRunActionKeyHash();
-}
-
-std::string BraveUpdateClientConfig::GetAppGuid() const {
-  return impl_.GetAppGuid();
-}
-
 std::unique_ptr<update_client::ProtocolHandlerFactory>
 BraveUpdateClientConfig::GetProtocolHandlerFactory() const {
   return impl_.GetProtocolHandlerFactory();
-}
-
-update_client::RecoveryCRXElevator
-BraveUpdateClientConfig::GetRecoveryCRXElevator() const {
-  return {};
 }
 
 BraveUpdateClientConfig::~BraveUpdateClientConfig() {}
