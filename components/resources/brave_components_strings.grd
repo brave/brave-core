@@ -352,6 +352,7 @@
       <message name="IDS_BRAVE_UI_ADS_HISTORY_FILTER_SAVED" desc="">Saved</message>
       <message name="IDS_BRAVE_UI_ADS_HISTORY_SUBTITLE" desc="">Ads you've received in the past {{totalDays}} days</message>
       <message name="IDS_BRAVE_UI_ADS_HISTORY_TITLE" desc="">Ads History</message>
+      <message name="IDS_BRAVE_UI_ADS_GRANT_RECEIVED" desc="">Ads rewards received</message>
       <message name="IDS_BRAVE_UI_ADS_MARK_AS_INAPPROPRIATE" desc="">Mark As Inappropriate</message>
       <message name="IDS_BRAVE_UI_ADS_MARK_AS_INAPPROPRIATE_CHECKED" desc="">Mark As Inappropriate ✓</message>
       <message name="IDS_BRAVE_UI_ADS_NO_ADS_HISTORY" desc="">There is currently no Brave Ads history</message>
@@ -472,7 +473,7 @@
       <message name="IDS_BRAVE_UI_OPEN_BALANCE" desc="">Opening Balance</message>
       <message name="IDS_BRAVE_UI_OPEN_ADS_HISTORY" desc="">7-day Ads History</message>
       <message name="IDS_BRAVE_UI_PAYMENT" desc="">Payment</message>
-      <message name="IDS_BRAVE_UI_PAYMENT_MONTHLY" desc="">Payment made every {{day}}th day in each month.</message>
+      <message name="IDS_BRAVE_UI_PAYMENT_MONTHLY" desc="">Payment made every {{day}}th each month.</message>
       <message name="IDS_BRAVE_UI_PAYMENT_NOT_MADE" desc="">Payment not made.</message>
       <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_HEADER" desc="">Pinned sites are now</message>
       <message name="IDS_BRAVE_UI_PAYMENT_PINNED_SITES_MSG" desc="">Here's how monthly contributions work:</message>
@@ -555,6 +556,7 @@
       <message name="IDS_BRAVE_UI_TITLE_ETH" desc="">Ethereum (ETH)</message>
       <message name="IDS_BRAVE_UI_TITLE_LTC" desc="">Litecoin (LTC)</message>
       <message name="IDS_BRAVE_UI_TOKEN_GRANT_CLAIMED" desc="">Token Grants Claimed</message>
+      <message name="IDS_BRAVE_UI_TOKEN_GRANT_RECEIVED" desc="">Token grant received</message>
       <message name="IDS_BRAVE_UI_POINT_GRANT_CLAIMED" desc="">Point Grants Claimed</message>
       <message name="IDS_BRAVE_UI_POINTS" desc="">points</message>
       <message name="IDS_BRAVE_UI_TOKENS" desc="">tokens</message>

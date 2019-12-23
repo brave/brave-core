@@ -298,7 +298,6 @@ class PageWallet extends React.Component<Props, State> {
                   'may-2018': 'May 2018',
                   'apr-2018': 'April 2018'
                 }}
-                currentMonth={'jun-2018'}
                 summary={[
                   {
                     type: 'grant',

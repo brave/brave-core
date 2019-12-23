@@ -56,7 +56,6 @@ export interface Props {
   onPrint?: () => void
   onMonthChange: (value: string, child: React.ReactNode) => void
   months: Record<string, string>
-  currentMonth: string
   transactionRows: TransactionRow[]
   id?: string
   summary: SummaryItem[]
@@ -66,13 +65,15 @@ export interface Props {
 
 interface State {
   currentTab: number
+  currentMonth: string
 }
 
 export default class ModalActivity extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      currentTab: 0
+      currentTab: 0,
+      currentMonth: ''
     }
   }
 
@@ -151,14 +152,13 @@ export default class ModalActivity extends React.PureComponent<Props, State> {
     const {
       id,
       onMonthChange,
-      currentMonth,
       months
     } = this.props
 
     return (
       <ControlWrapper text={this.modalTitle}>
         <Select
-          value={currentMonth}
+          value={this.state.currentMonth}
           onChange={onMonthChange}
         >
           {

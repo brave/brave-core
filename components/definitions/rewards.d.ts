@@ -183,6 +183,7 @@ declare namespace Rewards {
     favIcon: string
     id: string
     tipDate?: number
+    weight: number
   }
 
   export interface ExcludedPublisher {

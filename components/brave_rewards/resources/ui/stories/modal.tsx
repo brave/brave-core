@@ -172,7 +172,6 @@ storiesOf('Rewards/Modal', module)
           'may-2019': 'May 2019',
           'apr-2019': 'April 2019'
         }}
-        currentMonth={'aug-2019'}
         summary={[
           {
             type: 'grant',

@@ -1787,6 +1787,7 @@ void RewardsDOMHandler::OnGetMonthlyReport(
       base::Value publisher(base::Value::Type::DICTIONARY);
       publisher.SetStringKey("id", item.id);
       publisher.SetDoubleKey("percentage", item.percentage);
+      publisher.SetDoubleKey("weight", item.weight);
       publisher.SetStringKey("publisherKey", item.id);
       publisher.SetIntKey("status", item.status);
       publisher.SetStringKey("name", item.name);
