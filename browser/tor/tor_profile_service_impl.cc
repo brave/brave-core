@@ -26,10 +26,12 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
+#include "net/base/network_isolation_key.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
 #include "net/url_request/url_request_context.h"
 #include "services/network/public/mojom/network_context.mojom.h"
 #include "services/network/public/mojom/proxy_lookup_client.mojom.h"
+#include "url/origin.h"
 
 using content::BrowserContext;
 using content::BrowserThread;
@@ -173,8 +175,10 @@ void TorProfileServiceImpl::SetNewTorCircuit(WebContents* tab) {
   }
   auto proxy_lookup_client =
       TorProxyLookupClient::CreateTorProxyLookupClient(std::move(callback));
+  url::Origin origin = url::Origin::Create(url);
+  net::NetworkIsolationKey network_isolation_key(origin, origin);
   storage_partition->GetNetworkContext()->LookUpProxyForURL(
-      url, std::move(proxy_lookup_client));
+      url, network_isolation_key, std::move(proxy_lookup_client));
 }
 
 void TorProfileServiceImpl::KillTor() {
