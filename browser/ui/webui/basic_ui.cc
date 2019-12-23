@@ -72,10 +72,10 @@ BasicUI::BasicUI(content::WebUI* web_ui,
 BasicUI::~BasicUI() {
 }
 
-content::RenderViewHost* BasicUI::GetRenderViewHost() {
+content::RenderFrameHost* BasicUI::GetRenderFrameHost() {
   auto* web_contents = web_ui()->GetWebContents();
   if (web_contents) {
-    return web_contents->GetRenderViewHost();
+    return web_contents->GetMainFrame();
   }
   return nullptr;
 }

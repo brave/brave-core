@@ -124,12 +124,12 @@ BraveAdblockUI::~BraveAdblockUI() {
 }
 
 void BraveAdblockUI::CustomizeWebUIProperties(
-    content::RenderViewHost* render_view_host) {
+    content::RenderFrameHost* render_frame_host) {
   DCHECK(IsSafeToSetWebUIProperties());
   Profile* profile = Profile::FromWebUI(web_ui());
   PrefService* prefs = profile->GetPrefs();
-  if (render_view_host) {
-    render_view_host->SetWebUIProperty(
+  if (render_frame_host) {
+    render_frame_host->SetWebUIProperty(
         "adsBlockedStat", std::to_string(prefs->GetUint64(kAdsBlocked) +
             prefs->GetUint64(kTrackersBlocked)));
   }
@@ -137,7 +137,7 @@ void BraveAdblockUI::CustomizeWebUIProperties(
 
 void BraveAdblockUI::UpdateWebUIProperties() {
   if (IsSafeToSetWebUIProperties()) {
-    CustomizeWebUIProperties(GetRenderViewHost());
+    CustomizeWebUIProperties(GetRenderFrameHost());
     web_ui()->CallJavascriptFunctionUnsafe("brave_adblock.statsUpdated");
   }
 }
