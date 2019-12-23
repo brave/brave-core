@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/mediastream/media_devices.cc b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-index fe48c57e455f55ceaffab849fa47e338f1144ada..c03b6ac3df65fcc81dd6e0def2de7ffb716f789d 100644
+index fe48c57e455f55ceaffab849fa47e338f1144ada..3c4b3359dc1ee3b04cd2f468d4b56394e20d5c03 100644
 --- a/third_party/blink/renderer/modules/mediastream/media_devices.cc
 +++ b/third_party/blink/renderer/modules/mediastream/media_devices.cc
 @@ -6,6 +6,7 @@
  
  #include <utility>
  
-+#include "brave/renderer/brave_content_settings_observer_helper.h"
++#include "brave/renderer/brave_content_settings_agent_impl_helper.h"
  #include "mojo/public/cpp/bindings/remote.h"
  #include "third_party/blink/public/common/browser_interface_broker_proxy.h"
  #include "third_party/blink/public/platform/task_type.h"

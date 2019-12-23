@@ -6,7 +6,7 @@ index 4c192f7ebf4f7235655a67b380877953b05c8ac5..78d972aaff54e34ac1ababcb7aadb882
  
  #include "base/metrics/histogram_functions.h"
  #include "base/rand_util.h"
-+#include "brave/renderer/brave_content_settings_observer_helper.h"
++#include "brave/renderer/brave_content_settings_agent_impl_helper.h"
  #include "third_party/blink/public/common/features.h"
  #include "third_party/blink/public/platform/platform.h"
  #include "third_party/blink/public/platform/task_type.h"

@@ -6,7 +6,7 @@ index f5c04766b8a28cddb64302a51f295677cca5e1af..a9f65b3444050675eb6a263a74ec8fdb
  #include "base/feature_list.h"
  #include "base/numerics/checked_math.h"
  #include "base/stl_util.h"
-+#include "brave/renderer/brave_content_settings_observer_helper.h"
++#include "brave/renderer/brave_content_settings_agent_impl_helper.h"
  #include "build/build_config.h"
  #include "gpu/GLES2/gl2extchromium.h"
  #include "gpu/command_buffer/client/gles2_interface.h"

@@ -2,11 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_RENDERER_CONTENT_SETTINGS_OBSERVER_H_
-#define BRAVE_RENDERER_CONTENT_SETTINGS_OBSERVER_H_
+#ifndef BRAVE_RENDERER_CONTENT_SETTINGS_AGENT_IMPL_H_
+#define BRAVE_RENDERER_CONTENT_SETTINGS_AGENT_IMPL_H_
 
 #include "base/strings/string16.h"
-#include "chrome/renderer/content_settings_observer.h"
+#include "chrome/renderer/content_settings_agent_impl.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 
@@ -15,13 +15,13 @@ class WebLocalFrame;
 }
 
 // Handles blocking content per content settings for each RenderFrame.
-class BraveContentSettingsObserver
-    : public ContentSettingsObserver {
+class BraveContentSettingsAgentImpl
+    : public ContentSettingsAgentImpl {
  public:
-  BraveContentSettingsObserver(content::RenderFrame* render_frame,
+  BraveContentSettingsAgentImpl(content::RenderFrame* render_frame,
       bool should_whitelist,
       service_manager::BinderRegistry* registry);
-  ~BraveContentSettingsObserver() override;
+  ~BraveContentSettingsAgentImpl() override;
 
  protected:
   bool AllowScript(bool enabled_per_settings) override;
@@ -69,7 +69,7 @@ class BraveContentSettingsObserver
   // temporary allowed script origins we preloaded for the next load
   base::flat_set<std::string> preloaded_temporarily_allowed_scripts_;
 
-  DISALLOW_COPY_AND_ASSIGN(BraveContentSettingsObserver);
+  DISALLOW_COPY_AND_ASSIGN(BraveContentSettingsAgentImpl);
 };
 
-#endif  // BRAVE_RENDERER_CONTENT_SETTINGS_OBSERVER_H_
+#endif  // BRAVE_RENDERER_CONTENT_SETTINGS_AGENT_IMPL_H_
