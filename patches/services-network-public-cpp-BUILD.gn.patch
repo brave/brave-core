@@ -1,12 +1,11 @@
 diff --git a/services/network/public/cpp/BUILD.gn b/services/network/public/cpp/BUILD.gn
-index f782138e84925676717c6c8990ae8d57b806a0c2..ce49d158a969cfa220ea1b8f04e9e61a12e9cc28 100644
+index f782138e84925676717c6c8990ae8d57b806a0c2..3042220cddf31845768e14841aca0222982203ac 100644
 --- a/services/network/public/cpp/BUILD.gn
 +++ b/services/network/public/cpp/BUILD.gn
-@@ -104,7 +104,7 @@ jumbo_component("cpp") {
-     "//ipc",
+@@ -105,6 +105,7 @@ jumbo_component("cpp") {
      "//services/proxy_resolver/public/mojom",
    ]
--
+ 
 +  deps += [ "//brave/services/network/public/cpp" ]
    defines = [ "IS_NETWORK_CPP_IMPL" ]
  

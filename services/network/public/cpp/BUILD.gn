@@ -1,5 +1,8 @@
 source_set("cpp") {
-  visibility = [ "//services/network/public/cpp:cpp" ]
+  visibility = [
+    "//brave/browser:browser_process",
+    "//services/network/public/cpp:cpp",
+  ]
 
   sources = [
     "system_request_handler.cc",
@@ -7,6 +10,7 @@ source_set("cpp") {
   ]
 
   deps = [
+    "//base",
     "//services/network/public/cpp:cpp_base",
   ]
 

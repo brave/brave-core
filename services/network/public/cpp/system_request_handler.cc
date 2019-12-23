@@ -5,7 +5,6 @@
 
 #include "brave/services/network/public/cpp/system_request_handler.h"
 
-#include "base/memory/singleton.h"
 #include "services/network/public/cpp/resource_request.h"
 
 namespace network {
