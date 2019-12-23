@@ -105,6 +105,7 @@ ledger::WalletPropertiesPtr Wallet::WalletPropertiesToWalletInfo(
   wallet->fee_amount = ledger_->GetContributionAmount();
   wallet->default_tip_choices = properties.default_tip_choices;
   wallet->default_monthly_tip_choices = properties.default_monthly_tip_choices;
+  wallet->user_funds_present = properties.user_funds_present;
 
   return wallet;
 }
@@ -125,7 +126,7 @@ void Wallet::WalletPropertiesCallback(
   ledger::WalletPropertiesPtr wallet;
 
   const ledger::WalletState wallet_state;
-  bool ok = wallet_state.FromJson(response, &properties);
+  bool ok = wallet_state.FromJson("{\"altcurrency\":\"BAT\",\"probi\":\"32400000000000000000\",\"cardBalance\":\"32.4\",\"balance\":\"32.4000\",\"unconfirmed\":\"0.0000\",\"rates\":{\"AED\":0.707201196,\"ARS\":11.9341511029,\"AUD\":0.294936707,\"BAT\":1,\"BCH\":0.0007007225615,\"BRL\":0.8908343847,\"BTC\":0.0000243280908,\"BTG\":0.021273352061,\"CAD\":0.262668679,\"CHF\":0.1783886715,\"CNY\":1.336389236,\"DASH\":0.0026313537172,\"DKK\":1.2624500148,\"ETH\":0.000940502299450695,\"EUR\":0.1689797304,\"GBP\":0.1474510258,\"HKD\":1.4955634135,\"ILS\":0.6710844933,\"INR\":14.249626625,\"JPY\":19.776970395,\"KES\":19.7736319248,\"LBA\":11.24591121495327,\"LTC\":0.0038452418901,\"MXN\":4.0806579476,\"NOK\":1.8393584586,\"NZD\":0.3076494629,\"PHP\":9.757516665,\"PLN\":0.7293132665,\"SEK\":1.8040099506,\"SGD\":0.2668350282,\"USD\":0.1910397613525885,\"XAG\":0.0115398669906,\"XAU\":0.0001164325175,\"XPD\":0.0000823046497,\"XPT\":0.0002168754185,\"XRP\":0.92669425238},\"parameters\":{\"adFree\":{\"currency\":\"BAT\",\"fee\":{\"BAT\":20},\"choices\":{\"BAT\":[5,10,15,20,25,50,100]},\"range\":{\"BAT\":[5,100]},\"days\":30},\"defaultTipChoices\":[\"1\",\"10\",\"100\"],\"defaultMonthlyChoices\":[\"1\",\"10\",\"100\"]},\"userFundsPresent\":true}", &properties);
 
   if (!ok) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<

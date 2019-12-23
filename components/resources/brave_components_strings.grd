@@ -566,6 +566,9 @@
       <message name="IDS_BRAVE_UI_TOKEN_GRANTS" desc="">Token Grants</message>
       <message name="IDS_BRAVE_UI_POINT_GRANTS" desc="">Point Grants</message>
       <message name="IDS_BRAVE_UI_TRANSACTIONS" desc="">Transactions</message>
+      <message name="IDS_BRAVE_UI_TRANSITION_BANNER_READ" desc="">Please read:</message>
+      <message name="IDS_BRAVE_UI_TRANSITION_BANNER_BODY" desc="">Due to a change in our anonymous wallet system, your deposited funds of {{amount}} BAT are no longer reflected in your Brave Rewards wallet balance, and need to be claimed before you can contribute or withdraw them. Please follow the claim process to reclaim your funds by verifying your wallet with Uphold.</message>
+      <message name="IDS_BRAVE_UI_TRANSITION_BANNER_CTA" desc="">Claim My Deposit</message>
       <message name="IDS_BRAVE_UI_TURN_ON_ADS" desc="">Turn on Brave Ads</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_DESC" desc="">This enables both ads and automatic contributions. You can turn them on or off separately at any time.</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_TITLE" desc="">Activate Rewards</message>

@@ -16,6 +16,7 @@ import GrantCaptcha from './grantCaptcha'
 import GrantClaim from './grantClaim'
 import GrantComplete from './grantComplete'
 import GrantError from './grantError'
+import GrantTransitionBanner from './grantTransitionBanner'
 import GrantWrapper from './grantWrapper'
 import InfoCard from './infoCard'
 import List from './list'
@@ -74,6 +75,7 @@ export {
   GrantClaim,
   GrantComplete,
   GrantError,
+  GrantTransitionBanner,
   GrantWrapper,
   InfoCard,
   List,

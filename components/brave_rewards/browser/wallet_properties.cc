@@ -15,6 +15,7 @@ namespace brave_rewards {
     parameters_choices = properties.parameters_choices;
     default_tip_choices = properties.default_tip_choices;
     default_monthly_tip_choices = properties.default_monthly_tip_choices;
+    user_funds_present = properties.user_funds_present;
   }
 
 }  // namespace brave_rewards

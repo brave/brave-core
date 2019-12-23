@@ -101,6 +101,7 @@ struct WalletProperties {
   array<double> parameters_choices;
   array<double> default_tip_choices;
   array<double> default_monthly_tip_choices;
+  bool user_funds_present;
 };
 
 struct Balance {

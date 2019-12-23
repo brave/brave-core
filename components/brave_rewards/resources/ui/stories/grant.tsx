@@ -13,6 +13,7 @@ import GrantError from '../components/grantError'
 import GrantWrapper from '../components/grantWrapper'
 import GrantCaptcha from '../components/grantCaptcha'
 import GrantComplete from '../components/grantComplete'
+import GrantTransitionBanner from '../components/grantTransitionBanner'
 
 const captchaDrop = require('./img/captchaDrop.png')
 
@@ -74,6 +75,16 @@ storiesOf('Rewards/Grant', module)
           onButtonClick={dummyClick}
           buttonText={'ok'}
           text={'The period for claiming this grant has ended'}
+        />
+      </div>
+    )
+  })
+  .add('Grant Transiton Banner', () => {
+    return (
+      <div style={{ width: '1024px', position: 'relative' }}>
+        <GrantTransitionBanner
+          onAction={dummyClick}
+          amount={'10'}
         />
       </div>
     )

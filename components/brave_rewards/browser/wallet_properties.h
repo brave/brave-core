@@ -21,6 +21,7 @@ struct WalletProperties {
   std::vector<double> parameters_choices;
   std::vector<double> default_tip_choices;
   std::vector<double> default_monthly_tip_choices;
+  bool user_funds_present;
 };
 
 }  // namespace brave_rewards

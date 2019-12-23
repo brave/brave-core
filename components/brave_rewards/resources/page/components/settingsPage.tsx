@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 
 // Components
 import { Column, Grid } from 'brave-ui/components'
-import { DisabledBox, MainToggle, SettingsPage as Page, ModalRedirect } from '../../ui/components'
+import { DisabledBox, MainToggle, SettingsPage as Page, ModalRedirect, GrantTransitionBanner } from '../../ui/components'
 import PageWallet from './pageWallet'
 import AdsBox from './adsBox'
 import ContributeBox from './contributeBox'
@@ -19,12 +19,14 @@ import MonthlyContributionBox from './monthlyContributionBox'
 import * as rewardsActions from '../actions/rewards_actions'
 import Promotion from './promotion'
 import { getLocale } from '../../../../common/locale'
+import { WalletState } from '../../ui/components/walletWrapper'
 
 interface Props extends Rewards.ComponentProps {
 }
 
 interface State {
   redirectModalDisplayed: 'hide' | 'show'
+  handleUpholdLink: boolean
 }
 
 class SettingsPage extends React.Component<Props, State> {
@@ -33,7 +35,8 @@ class SettingsPage extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      redirectModalDisplayed: 'hide'
+      redirectModalDisplayed: 'hide',
+      handleUpholdLink: false
     }
   }
 
@@ -223,11 +226,64 @@ class SettingsPage extends React.Component<Props, State> {
     return null
   }
 
+  getWalletStatus = (): WalletState | undefined => {
+    const { externalWallet, ui } = this.props.rewardsData
+
+    if (ui.onlyAnonWallet) {
+      return undefined
+    }
+
+    if (!externalWallet) {
+      return 'unverified'
+    }
+
+    switch (externalWallet.status) {
+      // ledger::WalletStatus::CONNECTED
+      case 1:
+        return 'connected'
+      // WalletStatus::VERIFIED
+      case 2:
+        return 'verified'
+      // WalletStatus::DISCONNECTED_NOT_VERIFIED
+      case 3:
+        return 'disconnected_unverified'
+      // WalletStatus::DISCONNECTED_VERIFIED
+      case 4:
+        return 'disconnected_verified'
+      default:
+        return 'unverified'
+    }
+  }
+
+  onGrantTransitionAction = () => {
+    this.setState({
+      handleUpholdLink: true
+    })
+  }
+
+  upholdLinkHandled = () => {
+    this.setState({
+      handleUpholdLink: false
+    })
+  }
+
   render () {
-    const { enabledMain } = this.props.rewardsData
+    const { enabledMain, walletInfo, ui, balance } = this.props.rewardsData
+    const walletStatus = this.getWalletStatus()
+    const shouldShowBanner = walletInfo.userFundsPresent &&
+      !ui.onlyAnonWallet &&
+      walletStatus !== 'verified'
 
     return (
       <Page>
+        {
+          shouldShowBanner
+          ? <GrantTransitionBanner
+            onAction={this.onGrantTransitionAction}
+            amount={(balance && balance.userFunds) || '0.0'}
+          />
+          : null
+        }
         <Grid columns={3} customStyle={{ gridGap: '32px' }}>
           <Column size={2} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
             {
@@ -258,7 +314,10 @@ class SettingsPage extends React.Component<Props, State> {
               ? this.getPromotionsClaims()
               : null
             }
-            <PageWallet />
+            <PageWallet
+              handleUpholdLink={this.state.handleUpholdLink}
+              upholdLinkHandled={this.upholdLinkHandled}
+            />
           </Column>
         </Grid>
       </Page>

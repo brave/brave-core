@@ -805,6 +805,7 @@ void RewardsServiceImpl::OnWalletProperties(
       wallet_properties->default_tip_choices = properties->default_tip_choices;
       wallet_properties->default_monthly_tip_choices =
           properties->default_monthly_tip_choices;
+      wallet_properties->user_funds_present = properties->user_funds_present;
     }
     // webui
     observer.OnWalletProperties(this,
@@ -2830,6 +2831,7 @@ void RewardsServiceImpl::OnFetchBalance(FetchBalanceCallback callback,
     new_balance->total = balance->total;
     new_balance->rates = base::FlatMapToMap(balance->rates);
     new_balance->wallets = base::FlatMapToMap(balance->wallets);
+    new_balance->user_funds = balance->user_funds;
 
     if (balance->total > 0) {
       profile_->GetPrefs()->SetBoolean(prefs::kRewardsUserHasFunded, true);

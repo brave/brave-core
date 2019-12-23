@@ -24,6 +24,7 @@ const char kDefaultTipChoiceKey[] = "defaultTipChoices";
 const char kDefaultTipChoicePath[] = "parameters.defaultTipChoices";
 const char kDefaultMonthlyChoiceKey[] = "defaultMonthlyChoices";
 const char kDefaultMonthlyChoicePath[] = "parameters.defaultMonthlyChoices";
+const char kUserFundsPresentPath[] = "userFundsPresent";
 
 }  // namespace
 
@@ -107,6 +108,13 @@ bool WalletState::FromDict(
       wallet_properties.default_monthly_tip_choices.push_back(
           std::stod(amount));
     }
+  }
+
+  // User funds present
+  const auto user_funds_present =
+      dictionary->FindBoolPath(kUserFundsPresentPath);
+  if (user_funds_present) {
+    wallet_properties.user_funds_present = *user_funds_present;
   }
 
   *properties = wallet_properties;

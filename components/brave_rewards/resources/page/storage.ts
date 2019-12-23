@@ -24,7 +24,8 @@ export const defaultState: Rewards.State = {
   donationAbilityYT: true,
   donationAbilityTwitter: true,
   walletInfo: {
-    choices: [5.0, 7.5, 10.0, 17.5, 25.0, 50.0, 75.0, 100.0]
+    choices: [5.0, 7.5, 10.0, 17.5, 25.0, 50.0, 75.0, 100.0],
+    userFundsPresent: false
   },
   recoveryKey: '',
   reconcileStamp: 0,
@@ -68,6 +69,7 @@ export const defaultState: Rewards.State = {
   balance: {
     total: 0,
     rates: {},
+    userFunds: '0.0',
     wallets: {}
   },
   monthlyReport: {

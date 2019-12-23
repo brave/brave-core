@@ -11,10 +11,11 @@ import DonationsBox from './donationsBox'
 import Grant from './grant'
 import PageWallet, { Props as WalletProps } from './pageWallet'
 import { Grid, Column } from 'brave-ui/components'
-import { DisabledBox, MainToggle, SettingsPage } from '../../components'
+import { DisabledBox, GrantTransitionBanner, MainToggle, SettingsPage } from '../../components'
 
 export interface Props {
-  walletProps: WalletProps
+  walletProps: WalletProps,
+  showBanner: boolean
 }
 
 interface State {
@@ -38,9 +39,17 @@ class Settings extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { walletProps } = this.props
+    const { walletProps, showBanner } = this.props
     return (
       <SettingsPage>
+        {
+          showBanner
+          ? <GrantTransitionBanner
+            onAction={this.doNothing}
+            amount={'10'}
+          />
+          : null
+        }
         <Grid columns={3} customStyle={{ gridGap: '24px' }}>
           <Column size={2} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
             <MainToggle
