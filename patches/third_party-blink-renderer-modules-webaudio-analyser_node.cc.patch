@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/analyser_node.cc b/third_party/blink/renderer/modules/webaudio/analyser_node.cc
-index 4df218da56b5f4db4bf40d5ca19c1ab24d9e50fd..faa82c862f0c83815c149049f25049eff9930932 100644
+index 4df218da56b5f4db4bf40d5ca19c1ab24d9e50fd..ddd9cadb6a50dbc24ae52bb59e4b80c4a3661d05 100644
 --- a/third_party/blink/renderer/modules/webaudio/analyser_node.cc
 +++ b/third_party/blink/renderer/modules/webaudio/analyser_node.cc
 @@ -25,6 +25,7 @@
  
  #include "third_party/blink/renderer/modules/webaudio/analyser_node.h"
  
-+#include "brave/renderer/brave_content_settings_observer_helper.h"
++#include "brave/renderer/brave_content_settings_agent_impl_helper.h"
  #include "third_party/blink/renderer/modules/webaudio/analyser_options.h"
  #include "third_party/blink/renderer/modules/webaudio/audio_node_input.h"
  #include "third_party/blink/renderer/modules/webaudio/audio_node_output.h"

@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc b/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc
-index 6a70d3ba1f3c4ea263f07584110860265ff35162..51bc9a58598f6b8c4f7ac85e8bcf610513e87fbe 100644
+index 6a70d3ba1f3c4ea263f07584110860265ff35162..f171a7cbfcacaebcc2d283e6e0c784a92ceb343a 100644
 --- a/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc
 +++ b/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc
 @@ -39,6 +39,7 @@
  #include "base/memory/ptr_util.h"
  #include "base/metrics/histogram_macros.h"
  #include "base/optional.h"
-+#include "brave/renderer/brave_content_settings_observer_helper.h"
++#include "brave/renderer/brave_content_settings_agent_impl_helper.h"
  #include "services/metrics/public/cpp/ukm_builders.h"
  #include "third_party/blink/public/common/features.h"
  #include "third_party/blink/public/platform/platform.h"
