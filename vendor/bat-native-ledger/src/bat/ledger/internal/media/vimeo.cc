@@ -11,6 +11,7 @@
 #include "base/json/json_reader.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/vimeo.h"
 #include "bat/ledger/internal/static_values.h"
@@ -99,7 +100,14 @@ std::string Vimeo::GetNameFromVideoPage(const std::string& data) {
     return "";
   }
 
-  return braveledger_media::ExtractData(data, ",\"display_name\":\"", "\"");
+  std::string publisher_name;
+  const std::string publisher_json_name =
+      braveledger_media::ExtractData(data, "\"display_name\":\"", "\"");
+  const std::string publisher_json = "{\"brave_publisher\":\"" +
+      publisher_json_name + "\"}";
+  braveledger_bat_helper::getJSONValue(
+      "brave_publisher", publisher_json, &publisher_name);
+  return publisher_name;
 }
 
 // static
@@ -250,9 +258,12 @@ std::string Vimeo::GetNameFromPublisherPage(const std::string& data) {
   if (data.empty()) {
     return "";
   }
-
-  return braveledger_media::ExtractData(data,
+  std::string publisher_name = GetNameFromVideoPage(data);
+  if (publisher_name == "") {
+    return braveledger_media::ExtractData(data,
       "<meta property=\"og:title\" content=\"", "\"");
+  }
+  return publisher_name;
 }
 
 // static

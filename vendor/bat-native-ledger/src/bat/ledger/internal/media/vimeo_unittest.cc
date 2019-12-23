@@ -66,7 +66,8 @@ const char publisher_page[] =
     "<div class=\"app_banner_cta\">Watch in our app</div><a "
     "class=\"app_banner_button js-app_banner_open_app\" "
     "data-deep-link=\"users/97518779\" data-source-context=\"profile\"><span "
-    "class=\"app_banner_button_text\">Open in app</span></a></div>";
+    "class=\"app_banner_button_text\">Open in app</span></a></div> "
+    "<script name=\"jsonBlob\">profile = { \"display_name\":\"Nejc\"}";
 
 const char video_page[] =
     "<link rel=\"pingback\" href=\"https://vimeo.com/_pingback\">"
