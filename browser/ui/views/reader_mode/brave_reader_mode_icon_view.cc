@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/views/reader_mode/brave_reader_mode_icon_view.h"
 
-bool BraveReaderModeIconView::Update() {
+void BraveReaderModeIconView::UpdateImpl() {
   SetVisible(false);
-  return false;
 }

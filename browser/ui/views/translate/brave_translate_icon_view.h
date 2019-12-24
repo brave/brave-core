@@ -26,7 +26,7 @@ class BraveTranslateIconView : public TranslateIconView {
                          PageActionIconView::Delegate* delegate);
   ~BraveTranslateIconView() override;
 
-  bool Update() override;
+  void UpdateImpl() override;
 
   void InstallGoogleTranslate();
 
