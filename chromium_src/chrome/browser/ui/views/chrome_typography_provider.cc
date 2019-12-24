@@ -24,8 +24,9 @@ SkColor ChromeTypographyProvider::GetColor(const views::View& view,
   const ui::NativeTheme* native_theme = view.GetNativeTheme();
   DCHECK(native_theme);
   if (ShouldIgnoreHarmonySpec(*native_theme)) {
-    return GetHarmonyTextColorForNonStandardNativeTheme(context, style,
-                                                        *native_theme);
+    return ChromeTypographyProvider_ChromiumImpl::GetColor(view,
+                                                           context,
+                                                           style);
   }
   // Override button text colors
   if (context == views::style::CONTEXT_BUTTON_MD) {
