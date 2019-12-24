@@ -171,7 +171,8 @@ void BraveClearBrowsingData::ClearOnExit() {
   TRACE_EVENT0("browser", "BraveClearBrowsingData::ClearOnExit");
   // Do not clear browsing data when the OS is ending session (logout/reboot/
   // shutdown) to avoid corrupting data if the process is killed.
-  if (browser_shutdown::GetShutdownType() == browser_shutdown::END_SESSION) {
+  if (browser_shutdown::GetShutdownType() ==
+      browser_shutdown::ShutdownType::kEndSession) {
     LOG(INFO) << "Will not clear browsing data on exit due to session ending.";
     return;
   }
