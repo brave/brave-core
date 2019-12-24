@@ -652,6 +652,7 @@ void BraveProfileSyncServiceImpl::ResetSyncInternal() {
   brave_sync_ready_ = false;
 
   ProfileSyncService::GetUserSettings()->SetSyncRequested(false);
+  ProfileSyncService::StopAndClear();
 
   // brave sync doesn't support pause sync so treating every new sync chain as
   // first time setup
