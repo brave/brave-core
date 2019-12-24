@@ -92,10 +92,6 @@ void BraveAlertIndicator::OnMouseReleased(const ui::MouseEvent& event) {
   auto* tab_strip_model = static_cast<BrowserTabStripController*>(
       tab_strip->controller())->model();
   auto* web_contents = tab_strip_model->GetWebContentsAt(tab_index);
-
-  if (!chrome::CanToggleAudioMute(web_contents))
-    return AlertIndicator::OnMouseReleased(event);
-
   chrome::SetTabAudioMuted(web_contents,
                            !web_contents->IsAudioMuted(),
                            TabMutedReason::CONTEXT_MENU,
