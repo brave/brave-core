@@ -87,7 +87,7 @@ void BraveAlertIndicator::OnMouseReleased(const ui::MouseEvent& event) {
     return AlertIndicator::OnMouseReleased(event);
 
   auto* tab_strip = static_cast<TabStrip*>(parent_tab_->controller());
-  const int tab_index = tab_strip->GetModelIndexOfTab(parent_tab_);
+  const int tab_index = tab_strip->GetModelIndexOf(parent_tab_);
   auto* tab_strip_model = static_cast<BrowserTabStripController*>(
       tab_strip->controller())->model();
   auto* web_contents = tab_strip_model->GetWebContentsAt(tab_index);
