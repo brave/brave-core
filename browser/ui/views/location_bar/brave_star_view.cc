@@ -5,8 +5,6 @@
 
 #include "brave/browser/ui/views/location_bar/brave_star_view.h"
 
-bool BraveStarView::Update() {
-  bool was_visible = GetVisible();
+void BraveStarView::UpdateImpl() {
   SetVisible(false);
-  return was_visible != GetVisible();
 }
