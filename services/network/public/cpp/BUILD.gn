@@ -1,0 +1,18 @@
+source_set("cpp") {
+  visibility = [
+    "//brave/browser:browser_process",
+    "//services/network/public/cpp:cpp",
+  ]
+
+  sources = [
+    "system_request_handler.cc",
+    "system_request_handler.h",
+  ]
+
+  deps = [
+    "//base",
+    "//services/network/public/cpp:cpp_base",
+  ]
+
+  defines = [ "IS_NETWORK_CPP_IMPL" ]
+}
