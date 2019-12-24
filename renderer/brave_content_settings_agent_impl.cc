@@ -240,6 +240,7 @@ bool BraveContentSettingsAgentImpl::AllowFingerprinting(
   return allow;
 }
 
+/*
 bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
   auto origin = frame->GetDocument().GetSecurityOrigin();
@@ -300,3 +301,4 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
 
   return allow;
 }
+*/

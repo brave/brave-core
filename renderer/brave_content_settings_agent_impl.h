@@ -31,7 +31,7 @@ class BraveContentSettingsAgentImpl
 
   bool AllowFingerprinting(bool enabled_per_settings) override;
 
-  bool AllowAutoplay(bool default_value) override;
+  //bool AllowAutoplay(bool default_value) override;
 
   void BraveSpecificDidBlockJavaScript(
     const base::string16& details);

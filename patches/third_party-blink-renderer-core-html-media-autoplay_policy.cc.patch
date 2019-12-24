@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/html/media/autoplay_policy.cc b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-index ad5f2bf069270b6ed411e937e762d4d87580a9a7..7dbc643c09c374b9f7db116eb5f309a60da1622f 100644
+index ad5f2bf069270b6ed411e937e762d4d87580a9a7..ce5df0ef613c7854a1f8abe235cd74e15fd0a02a 100644
 --- a/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 +++ b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 @@ -137,6 +137,10 @@ bool AutoplayPolicy::DocumentHasUserExceptionFlag(const Document& document) {
@@ -18,8 +18,8 @@ index ad5f2bf069270b6ed411e937e762d4d87580a9a7..7dbc643c09c374b9f7db116eb5f309a6
      return false;
  
 +#if defined(BRAVE_CHROMIUM_BUILD)
-+  if (IsAutoplayAllowedPerSettings())
-+    return false;
++//  if (IsAutoplayAllowedPerSettings())
++//    return false;
 +#endif
    // We want to allow muted video to autoplay if the element is allowed to
    // autoplay muted.
