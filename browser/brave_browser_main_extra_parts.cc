@@ -6,12 +6,9 @@
 #include "brave/browser/brave_browser_main_extra_parts.h"
 
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/net/brave_system_request_handler.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/brave_p3a_service.h"
-#include "brave/services/network/public/cpp/system_request_handler.h"
-#include "services/network/public/cpp/resource_request.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if !defined(OS_ANDROID)
@@ -38,14 +35,6 @@ void RecordInitialP3AValues() {
 
   brave_shields::MaybeRecordShieldsUsageP3A(brave_shields::kNeverClicked,
                                             g_browser_process->local_state());
-}
-
-// Initializes callback for SystemRequestHandler
-void InitSystemRequestHandlerCallback() {
-  network::SystemRequestHandler::OnBeforeSystemRequestCallback
-      before_system_request_callback = base::Bind(brave::OnBeforeSystemRequest);
-  network::SystemRequestHandler::GetInstance()
-      ->RegisterOnBeforeSystemRequestCallback(before_system_request_callback);
 }
 
 }  // namespace
@@ -79,8 +68,6 @@ void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
 #endif  // BUILDFLAG(BRAVE_P3A_ENABLED)
 
   RecordInitialP3AValues();
-
-  InitSystemRequestHandlerCallback();
 
   // The code below is not supported on android.
 #if !defined(OS_ANDROID)
