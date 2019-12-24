@@ -172,10 +172,11 @@ class BraveProfileSyncServiceImpl
   friend class ::BraveSyncServiceTest;
 
   void SignalWaitableEvent();
-  void FetchSyncRecords(const bool bookmarks,
-                        const bool history,
-                        const bool preferences,
-                        int max_records);
+
+  void FetchBookmarks(int max_records);
+  void FetchHistory(int max_records);
+  void FetchPreferences(int max_records);
+
   void FetchDevices();
   void SendCreateDevice();
   void SendDeleteDevice();

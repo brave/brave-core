@@ -836,54 +836,38 @@ bool BraveProfileSyncServiceImpl::IsSQSReady() const {
   }
 }
 
-void BraveProfileSyncServiceImpl::FetchSyncRecords(const bool bookmarks,
-                                                   const bool history,
-                                                   const bool preferences,
-                                                   int max_records) {
+void BraveProfileSyncServiceImpl::FetchBookmarks(int max_records) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(bookmarks || history || preferences);
-  if (!(bookmarks || history || preferences)) {
-    return;
-  }
 
-  // With current logic and separate SQS queues we can do only fetch per
-  // category
-  // TODO(AlexeyBarabash): split this function into a three
-  DCHECK((bookmarks && !history && !preferences) ||
-         (!bookmarks && history && !preferences) ||
-         (!bookmarks && !history && preferences));
-
-  std::vector<std::string> category_names;
-  if (history) {
-    category_names.push_back(kHistorySites);  // "HISTORY_SITES";
-  }
-  if (bookmarks) {
-    category_names.push_back(kBookmarks);  // "BOOKMARKS";
-
-    base::Time last_compact_time =
-        brave_sync_prefs_->GetLastCompactTimeBookmarks();
-    if (tools::IsTimeEmpty(last_compact_time) ||
-        base::Time::Now() - last_compact_time >
-            base::TimeDelta::FromDays(kCompactPeriodInDays)) {
-      brave_sync_client_->SendCompact(kBookmarks);
-    }
-  }
-  if (preferences) {
-    category_names.push_back(kPreferences);  // "PREFERENCES";
+  base::Time last_compact_time =
+      brave_sync_prefs_->GetLastCompactTimeBookmarks();
+  if (tools::IsTimeEmpty(last_compact_time) ||
+      base::Time::Now() - last_compact_time >
+          base::TimeDelta::FromDays(kCompactPeriodInDays)) {
+    brave_sync_client_->SendCompact(kBookmarks);
   }
 
   base::Time start_at_time =
       IsSQSReady() ? brave_sync_prefs_->GetLatestRecordTime() : base::Time();
 
-  base::Time last_fetch_time;
-  if (bookmarks) {
-    last_fetch_time = brave_sync_prefs_->GetLastFetchTime();
-    brave_sync_prefs_->SetLastFetchTime(base::Time::Now());
-  } else if (preferences) {
-    last_fetch_time = brave_sync_prefs_->GetLastPreferencesFetchTime();
-  }
+  base::Time last_fetch_time = brave_sync_prefs_->GetLastFetchTime();
+  brave_sync_prefs_->SetLastFetchTime(base::Time::Now());
 
-  brave_sync_client_->SendFetchSyncRecords(category_names, start_at_time,
+  brave_sync_client_->SendFetchSyncRecords({kBookmarks}, start_at_time,
+                                           max_records, last_fetch_time);
+}
+
+void BraveProfileSyncServiceImpl::FetchHistory(int max_records) {
+  NOTIMPLEMENTED();
+}
+
+void BraveProfileSyncServiceImpl::FetchPreferences(int max_records) {
+  // For now "PREFERENCES" category stores only devices list
+  base::Time start_at_time =
+      IsSQSReady() ? brave_sync_prefs_->GetLatestDeviceRecordTime()
+                   : base::Time();
+  base::Time last_fetch_time = brave_sync_prefs_->GetLastPreferencesFetchTime();
+  brave_sync_client_->SendFetchSyncRecords({kPreferences}, start_at_time,
                                            max_records, last_fetch_time);
 }
 
@@ -1043,9 +1027,20 @@ void BraveProfileSyncServiceImpl::OnPollSyncCycle(GetRecordsCallback cb,
   wevent_ = wevent;
 
   const bool bookmarks = brave_sync_prefs_->GetSyncBookmarksEnabled();
+  if (bookmarks) {
+    FetchBookmarks(1000);
+  }
+
   const bool history = brave_sync_prefs_->GetSyncHistoryEnabled();
+  if (history) {
+    FetchHistory(1000);
+  }
+
   const bool preferences = brave_sync_prefs_->GetSyncSiteSettingsEnabled();
-  FetchSyncRecords(bookmarks, history, preferences, 1000);
+  if (preferences) {
+    FetchPreferences(1000);
+  }
+
   ResendSyncRecords(jslib_const::SyncRecordType_BOOKMARKS);
 }
 
