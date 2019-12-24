@@ -56,7 +56,7 @@ namespace {
 
 AccountInfo GetDummyAccountInfo() {
   AccountInfo account_info;
-  account_info.account_id = "dummy_account_id";
+  account_info.account_id = CoreAccountId::FromString("dummy_account_id");
   return account_info;
 }
 
