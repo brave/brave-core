@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_style_views.h"
 #include "content/public/browser/web_contents.h"
+#include "third_party/skia/include/core/SkPathTypes.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/views/background.h"
 
@@ -40,7 +41,7 @@ class BraveAlertIndicator::BraveAlertBackground : public views::Background {
 
     gfx::Point center = host_view_->GetContentsBounds().CenterPoint();
     SkPath path;
-    path.setFillType(SkPath::kEvenOdd_FillType);
+    path.setFillType(SkPathFillType::kEvenOdd);
     path.addCircle(center.x(), center.y(), host_view_->width() / 2);
     cc::PaintFlags flags;
     flags.setAntiAlias(true);
