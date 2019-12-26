@@ -439,7 +439,8 @@ TEST_F(BraveSyncServiceTest, OnDeleteDevice) {
                               ContainsDeviceRecord(SyncRecord::Action::A_DELETE,
                                                    "device3", "beef03")))
       .Times(1);
-  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, _, _));
+
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, _, _, _));
   sync_service()->OnDeleteDevice("beef03");
 
   RecordsList resolved_records;
@@ -486,7 +487,7 @@ TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenOneDevice) {
   EXPECT_TRUE(DevicesContains(devices.get(), "2", "beef02", "device2"));
 
   EXPECT_CALL(*sync_client(), SendSyncRecords).Times(1);
-  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, _, _));
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, _, _, _));
   sync_service()->OnDeleteDevice("beef02");
 
   RecordsList resolved_records;
@@ -541,7 +542,8 @@ TEST_F(BraveSyncServiceTest, OnDeleteDeviceWhenSelfDeleted) {
                               ContainsDeviceRecord(SyncRecord::Action::A_DELETE,
                                                    "device1", "beef01")))
       .Times(1);
-  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, _, _));
+
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, _, _, _));
   sync_service()->OnDeleteDevice("beef01");
 
   // Enabled->Disabled
@@ -1029,7 +1031,7 @@ TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
 
   // Expecting SendFetchSyncRecords will be invoked
   // after sync_service()->OnPollSyncCycle
-  EXPECT_EQ(brave_sync_prefs()->GetLastFetchTime(), base::Time());
+  EXPECT_EQ(brave_sync_prefs()->GetLastPreferencesFetchTime(), base::Time());
   EXPECT_EQ(brave_sync_prefs()->GetLatestDeviceRecordTime(), base::Time());
 
   using brave_sync::tools::IsTimeEmpty;
@@ -1039,7 +1041,7 @@ TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
       base::BindOnce(&OnGetRecordsStub);
   base::WaitableEvent we;
   EXPECT_CALL(*sync_client(), SendSyncRecords("PREFERENCES", _));
-  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _));
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _, _));
   sync_service()->OnPollSyncCycle(std::move(on_get_records), &we);
   EXPECT_FALSE(IsTimeEmpty(sync_service()->this_device_created_time_));
 
@@ -1053,7 +1055,7 @@ TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
   sync_service()->OnGetExistingObjects(kPreferences, std::move(records),
                                        device1_timestamp, false);
 
-  EXPECT_NE(brave_sync_prefs()->GetLastFetchTime(), base::Time());
+  EXPECT_NE(brave_sync_prefs()->GetLastPreferencesFetchTime(), base::Time());
   EXPECT_EQ(brave_sync_prefs()->GetLatestDeviceRecordTime(), device1_timestamp);
 
   // We have moved records into OnGetExistingObjects, so fill again
@@ -1069,7 +1071,7 @@ TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
   // Less than 70 seconds have passed, we should fetch with empty start_at
   {
     auto time_override = OverrideForTimeDelta(base::TimeDelta::FromSeconds(65));
-    EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _))
+    EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _, _))
         .Times(1);
     sync_service()->FetchDevices();
   }
@@ -1078,7 +1080,7 @@ TEST_F(BraveSyncServiceTest, GetDevicesWithFetchSyncRecords) {
   {
     auto time_override = OverrideForTimeDelta(base::TimeDelta::FromSeconds(75));
     EXPECT_CALL(*sync_client(),
-                SendFetchSyncRecords(_, base::Time(device1_timestamp), _))
+                SendFetchSyncRecords(_, base::Time(device1_timestamp), _, _))
         .Times(1);
     sync_service()->FetchDevices();
   }
@@ -1089,26 +1091,26 @@ TEST_F(BraveSyncServiceTest, SendCompact) {
   EXPECT_EQ(brave_sync_prefs()->GetLastCompactTimeBookmarks(), base::Time());
   EXPECT_CALL(*sync_client(), SendCompact(kBookmarks)).Times(1);
   EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
-  sync_service()->FetchSyncRecords(true, false, true, 1000);
+  sync_service()->FetchBookmarks(1000);
   // timestamp is not writtend until we get CompactedSyncCategory
   EXPECT_CALL(*sync_client(), SendCompact(kBookmarks)).Times(1);
   EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
-  sync_service()->FetchSyncRecords(true, false, true, 1000);
+  sync_service()->FetchBookmarks(1000);
   sync_service()->OnCompactComplete(kBookmarks);
   EXPECT_CALL(*sync_client(), SendCompact(kBookmarks)).Times(0);
   EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
-  sync_service()->FetchSyncRecords(true, false, true, 1000);
+  sync_service()->FetchBookmarks(1000);
   {
     auto time_override = OverrideForTimeDelta(base::TimeDelta::FromDays(
         sync_service()->GetCompactPeriodInDaysForTests()));
     EXPECT_CALL(*sync_client(), SendCompact(kBookmarks)).Times(1);
     EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
-    sync_service()->FetchSyncRecords(true, false, true, 1000);
+    sync_service()->FetchBookmarks(1000);
     sync_service()->OnCompactComplete(kBookmarks);
   }
   EXPECT_CALL(*sync_client(), SendCompact(kBookmarks)).Times(0);
   EXPECT_CALL(*sync_client(), SendFetchSyncRecords).Times(1);
-  sync_service()->FetchSyncRecords(true, false, true, 1000);
+  sync_service()->FetchBookmarks(1000);
 }
 
 TEST_F(BraveSyncServiceTest, MigratePrevSeed) {
@@ -1121,18 +1123,18 @@ TEST_F(BraveSyncServiceTest, MigratePrevSeed) {
 TEST_F(BraveSyncServiceTest, InitialFetchesStartWithZero) {
   using brave_sync::jslib_const::kBookmarks;
   EXPECT_CALL(*sync_client(), SendCompact(kBookmarks)).Times(1);
-  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _))
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _, _))
       .Times(1);
-  sync_service()->FetchSyncRecords(true, false, false, 1000);
+  sync_service()->FetchBookmarks(1000);
 
   const auto latest_bookmark_record_time = base::Time::Now();
   brave_sync_prefs()->SetLatestRecordTime(latest_bookmark_record_time);
   sync_service()->this_device_created_time_ = base::Time::Now();
 
   EXPECT_CALL(*sync_client(), SendCompact(kBookmarks)).Times(1);
-  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _))
+  EXPECT_CALL(*sync_client(), SendFetchSyncRecords(_, base::Time(), _, _))
       .Times(1);
-  sync_service()->FetchSyncRecords(true, false, false, 1000);
+  sync_service()->FetchBookmarks(1000);
   sync_service()->OnCompactComplete(kBookmarks);
 
   // Prior 70 sec we should use null start_at and after we should use
@@ -1140,9 +1142,9 @@ TEST_F(BraveSyncServiceTest, InitialFetchesStartWithZero) {
   {
     auto time_override = OverrideForTimeDelta(base::TimeDelta::FromSeconds(71));
     EXPECT_CALL(*sync_client(),
-                SendFetchSyncRecords(_, latest_bookmark_record_time, _))
+                SendFetchSyncRecords(_, latest_bookmark_record_time, _, _))
         .Times(1);
-    sync_service()->FetchSyncRecords(true, false, false, 1000);
+    sync_service()->FetchBookmarks(1000);
   }
 }
 
@@ -1171,7 +1173,7 @@ TEST_F(BraveSyncServiceTest, DeviceIdV2Migration) {
       SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "", "1", "",
                          "device1"));
   sync_service()->OnResolvedPreferences(records);
-  brave_sync_prefs()->SetLastFetchTime(base::Time::Now());
+  brave_sync_prefs()->SetLastPreferencesFetchTime(base::Time::Now());
 
   auto devices = brave_sync_prefs()->GetSyncDevices();
 
@@ -1228,7 +1230,7 @@ TEST_F(BraveSyncServiceTest, DeviceIdV2MigrationDupDeviceId) {
       SimpleDeviceRecord(SyncRecord::Action::A_CREATE, "", "1", "",
                          "device2"));
   sync_service()->OnResolvedPreferences(records);
-  brave_sync_prefs()->SetLastFetchTime(base::Time::Now());
+  brave_sync_prefs()->SetLastPreferencesFetchTime(base::Time::Now());
 
   auto devices = brave_sync_prefs()->GetSyncDevices();
 
@@ -1258,4 +1260,41 @@ TEST_F(BraveSyncServiceTest, DeviceIdV2MigrationDupDeviceId) {
   brave_sync::GetRecordsCallback on_get_records =
       base::BindOnce(&OnGetRecordsStub);
   sync_service()->OnPollSyncCycle(std::move(on_get_records), &we);
+}
+
+TEST_F(BraveSyncServiceTest, LastFetchBookmarksTime) {
+  using brave_sync::jslib_const::kBookmarks;
+
+  EXPECT_EQ(brave_sync_prefs()->GetLastFetchTime(), base::Time());
+
+  EXPECT_CALL(*sync_client(), SendCompact(kBookmarks)).Times(1);
+  EXPECT_CALL(*sync_client(),
+              SendFetchSyncRecords(_, base::Time(), _, base::Time()))
+      .Times(1);
+  sync_service()->FetchBookmarks(1000);
+  sync_service()->OnCompactComplete(kBookmarks);
+
+  auto first_fetch_time = brave_sync_prefs()->GetLastFetchTime();
+  EXPECT_NE(first_fetch_time, base::Time());
+
+  EXPECT_CALL(*sync_client(),
+              SendFetchSyncRecords(_, base::Time(), _, first_fetch_time))
+      .Times(1);
+  sync_service()->FetchBookmarks(1000);
+}
+
+TEST_F(BraveSyncServiceTest, LastPreferencesFetchTime) {
+  EXPECT_EQ(brave_sync_prefs()->GetLastPreferencesFetchTime(), base::Time());
+
+  EXPECT_CALL(*sync_client(),
+              SendFetchSyncRecords(_, base::Time(), _, base::Time()));
+
+  sync_service()->FetchDevices();
+
+  auto first_fetch_time = brave_sync_prefs()->GetLastPreferencesFetchTime();
+  EXPECT_NE(first_fetch_time, base::Time());
+
+  EXPECT_CALL(*sync_client(),
+              SendFetchSyncRecords(_, base::Time(), _, first_fetch_time));
+  sync_service()->FetchDevices();
 }
