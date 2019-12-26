@@ -428,7 +428,7 @@ void BraveProfileSyncServiceImpl::OnGetInitData(
 
   client_data::Config config;
   config.api_version = brave_sync_prefs_->GetApiVersion();
-  config.server_url = "https://sync-staging.brave.com";
+  config.server_url = BRAVE_SYNC_ENDPOINT;
   config.debug = true;
   brave_sync_client_->SendGotInitData(seed, device_id, config, device_id_v2);
 }
