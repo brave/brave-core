@@ -203,6 +203,12 @@ class BatLedgerImpl : public mojom::BatLedger,
       const int year,
       GetContributionReportCallback callback) override;
 
+  void OnTip(const std::string& publisher_key,
+             double amount,
+             bool recurring,
+             ledger::PublisherInfoPtr publisher_info,
+             uint64_t timestamp,
+             SaveRecurringTipCallback callback) override;
  private:
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;
@@ -375,6 +381,10 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnGetContributionReport(
       CallbackHolder<GetContributionReportCallback>* holder,
       ledger::ContributionReportInfoList list);
+
+  static void OnTipComplete(
+      CallbackHolder<SaveRecurringTipCallback>* holder,
+      const ledger::Result result);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

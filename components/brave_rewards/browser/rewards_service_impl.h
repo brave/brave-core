@@ -362,15 +362,6 @@ class RewardsServiceImpl : public RewardsService,
                      const std::string& value);
   void OnResetState(ledger::OnResetCallback callback,
                                  bool success);
-  void OnTipPublisherInfoSaved(
-      const ledger::Result result,
-      ledger::PublisherInfoPtr info,
-      const bool recurring,
-      const double amount);
-  void OnTip(const std::string& publisher_key,
-             double amount,
-             bool recurring,
-             ledger::PublisherInfoPtr publisher_info);
   void OnResetTheWholeState(base::Callback<void(bool)> callback,
                                  bool success);
   void OnContributionInfoSaved(

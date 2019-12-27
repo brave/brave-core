@@ -46,6 +46,7 @@ using DisconnectWalletCallback = std::function<void(ledger::Result)>;
 using TransferAnonToExternalWalletCallback =
     std::function<void(ledger::Result)>;
 using DoDirectTipCallback = std::function<void(ledger::Result)>;
+using OnTipCallback = std::function<void(ledger::Result)>;
 using FetchPromotionCallback =
     std::function<void(ledger::Result, ledger::PromotionList)>;
 using SetPublisherExcludeCallback = std::function<void(ledger::Result)>;
@@ -90,7 +91,12 @@ class LEDGER_EXPORT Ledger {
                            double amount,
                            const std::string& currency,
                            ledger::DoDirectTipCallback callback) = 0;
-
+  virtual void OnTip(const std::string& publisher_key,
+                     double amount,
+                     bool recurring,
+                     ledger::PublisherInfoPtr publisher_info,
+                     uint64_t timestamp,
+                     OnTipCallback callback) = 0;
   virtual void OnLoad(VisitDataPtr visit_data,
                       const uint64_t& current_time) = 0;
 

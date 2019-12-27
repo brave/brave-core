@@ -717,6 +717,67 @@ void LedgerImpl::DoDirectTip(const std::string& publisher_key,
   bat_contribution_->DoDirectTip(publisher_key, amount, currency, callback);
 }
 
+void LedgerImpl::OnTip(const std::string& publisher_key,
+                     double amount,
+                     bool recurring,
+                     ledger::PublisherInfoPtr publisher_info,
+                     uint64_t timestamp,
+                     ledger::OnTipCallback callback) {
+  if (publisher_info) {
+    // process flow for when publisher_info is present
+    ledger_client_->SavePublisherInfo(
+        std::move(publisher_info),
+        std::bind(&LedgerImpl::OnTipPublisherInfoSaved,
+            this,
+            _1,
+            _2,
+            recurring,
+            amount,
+            timestamp,
+            callback));
+    return;
+  }
+
+  // shorted recurring or direct for publisher_info == null
+  if (recurring) {
+    ledger::RecurringTipPtr info = ledger::RecurringTip::New();
+    info->publisher_key = publisher_key;
+    info->amount = amount;
+    info->created_at = timestamp;
+
+    SaveRecurringTip(
+        std::move(info),
+        callback);
+    return;
+  }
+
+  DoDirectTip(publisher_key, amount, "BAT", callback);
+}
+
+void LedgerImpl::OnTipPublisherInfoSaved(
+    ledger::Result result,
+    ledger::PublisherInfoPtr publisher_info,
+    bool recurring,
+    double amount,
+    uint64_t timestamp,
+    ledger::OnTipCallback callback) {
+  // publisher_info was present, now handle for recurring or direct
+  if (recurring) {
+    ledger::RecurringTipPtr info = ledger::RecurringTip::New();
+    info->publisher_key = publisher_info->id;
+    info->amount = amount;
+    info->created_at = timestamp;
+    SaveRecurringTip(
+        std::move(info),
+        callback);
+  } else {
+    DoDirectTip(publisher_info->id,
+                amount,
+                "BAT",
+                static_cast<ledger::DoDirectTipCallback>(callback));
+  }
+}
+
 void LedgerImpl::OnTimer(uint32_t timer_id) {
   if (bat_confirmations_->OnTimer(timer_id)) {
     return;
@@ -729,7 +790,7 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
 
 void LedgerImpl::SaveRecurringTip(
     ledger::RecurringTipPtr info,
-    ledger::SaveRecurringTipCallback callback) {
+    ledger::OnTipCallback callback) {
   ledger_client_->SaveRecurringTip(
       std::move(info),
       callback);

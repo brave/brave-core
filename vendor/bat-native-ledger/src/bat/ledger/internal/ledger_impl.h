@@ -112,6 +112,13 @@ class LedgerImpl : public ledger::Ledger,
                    const std::string& currency,
                    ledger::DoDirectTipCallback callback) override;
 
+  void OnTip(const std::string& publisher_key,
+             double amount,
+             bool recurring,
+             ledger::PublisherInfoPtr publisher_info,
+             uint64_t timestamp,
+             ledger::OnTipCallback callback) override;
+
   void SetRewardsMainEnabled(bool enabled) override;
 
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) override;
@@ -285,7 +292,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void SaveRecurringTip(
       ledger::RecurringTipPtr info,
-      ledger::SaveRecurringTipCallback callback) override;
+      ledger::OnTipCallback callback) override;
 
   void GetRecurringTips(ledger::PublisherInfoListCallback callback) override;
 
@@ -678,6 +685,14 @@ class LedgerImpl : public ledger::Ledger,
       const std::map<std::string, std::string>& headers,
       const std::string& publisher_key,
       ledger::OnRefreshPublisherCallback callback);
+
+  void OnTipPublisherInfoSaved(
+      ledger::Result result,
+      ledger::PublisherInfoPtr info,
+      bool recurring,
+      double amount,
+      uint64_t timestamp,
+      ledger::OnTipCallback callback);
 
   ledger::LedgerClient* ledger_client_;
   std::unique_ptr<braveledger_promotion::Promotion> bat_promotion_;

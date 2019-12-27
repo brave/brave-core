@@ -62,7 +62,7 @@ interface BatLedger {
   AttestPromotion(string promotion_id, string solution) => (ledger.mojom.Result result, ledger.mojom.Promotion? promotion);
   GetWalletPassphrase() => (string wallet_passphrase);
   RecoverWallet(string passPhrase) => (ledger.mojom.Result result, double balance);
-  
+
   SetRewardsMainEnabled(bool enabled);
   SetPublisherMinVisitTime(uint64 duration_in_seconds);
   SetPublisherMinVisits(uint32 visits);
@@ -86,6 +86,13 @@ interface BatLedger {
   GetContributionAmount() => (double contribution_amount);
   GetPublisherBanner(string publisher_id) =>
       (ledger.mojom.PublisherBanner? banner);
+
+  OnTip(string publisher_key,
+      double amount,
+      bool recurring,
+      ledger.mojom.PublisherInfo? publisher_info,
+      uint64 timestamp) =>
+        (ledger.mojom.Result result);
 
   DoDirectTip(string publisher_id,
               double amount,
