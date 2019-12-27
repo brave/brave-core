@@ -5,10 +5,6 @@ import("//tools/grit/repack.gni")
 import("buildflags/buildflags.gni")
 
 declare_args() {
-  brave_sync_endpoint = "https://sync-staging.brave.com"
-}
-
-if (is_official_build) {
   brave_sync_endpoint = "https://sync.brave.com"
 }
 
