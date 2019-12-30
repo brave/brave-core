@@ -41,6 +41,7 @@ std::unique_ptr<brave_sync::jslib::Device> FromExtDevice(
     const extensions::api::brave_sync::Device &ext_device) {
   auto device = std::make_unique<brave_sync::jslib::Device>();
   device->name = ext_device.name;
+  device->deviceIdV2 = ext_device.device_id_v2;
   return device;
 }
 
@@ -204,6 +205,7 @@ std::unique_ptr<extensions::api::brave_sync::Device> FromLibDevice(
     const jslib::Device &lib_device) {
   auto ext_device = std::make_unique<extensions::api::brave_sync::Device>();
   ext_device->name = lib_device.name;
+  ext_device->device_id_v2 = lib_device.deviceIdV2;
   return ext_device;
 }
 

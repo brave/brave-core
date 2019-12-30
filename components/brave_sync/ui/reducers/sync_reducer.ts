@@ -34,6 +34,7 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
         return {
           name: device.name,
           id: device.device_id,
+          id_v2: device.device_id_v2,
           lastActive: (new Date(device.last_active)).toDateString()
         }
       })
@@ -44,6 +45,7 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
         isSyncConfigured: payload.settings.sync_configured,
         thisDeviceName: payload.settings.this_device_name,
         thisDeviceId: payload.settings.this_device_id,
+        thisDeviceIdV2: payload.settings.this_device_id_v2,
         syncBookmarks: payload.settings.sync_bookmarks,
         syncSavedSiteSettings: payload.settings.sync_settings,
         syncBrowsingHistory: payload.settings.sync_history
@@ -90,10 +92,10 @@ const syncReducer: Reducer<Sync.State | undefined> = (state: Sync.State | undefi
       break
 
     case types.SYNC_ON_REMOVE_DEVICE:
-      if (typeof payload.id === 'undefined' || typeof payload.deviceName === 'undefined') {
+      if (typeof payload.idv2 === 'undefined' || typeof payload.deviceName === 'undefined') {
         break
       }
-      chrome.send('deleteDevice', [payload.id])
+      chrome.send('deleteDevice', [payload.idv2])
       break
 
     case types.SYNC_BOOKMARKS:

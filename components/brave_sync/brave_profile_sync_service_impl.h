@@ -47,6 +47,8 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest, SetSyncDisabled);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, IsSyncReadyOnNewProfile);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, SetThisDeviceCreatedTime);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, InitialFetchesStartWithZero);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, DeviceIdV2Migration);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, DeviceIdV2MigrationDupDeviceId);
 
 class BraveSyncServiceTest;
 
@@ -70,7 +72,7 @@ class BraveProfileSyncServiceImpl
   void OnSetupSyncHaveCode(const std::string& sync_words,
                            const std::string& device_name) override;
   void OnSetupSyncNewToSync(const std::string& device_name) override;
-  void OnDeleteDevice(const std::string& device_id) override;
+  void OnDeleteDevice(const std::string& device_id_v2) override;
   void OnResetSync() override;
   void GetSettingsAndDevices(
       const GetSettingsAndDevicesCallback& callback) override;
@@ -88,7 +90,8 @@ class BraveProfileSyncServiceImpl
   void OnSyncSetupError(const std::string& error) override;
   void OnGetInitData(const std::string& sync_version) override;
   void OnSaveInitData(const brave_sync::Uint8Array& seed,
-                      const brave_sync::Uint8Array& device_id) override;
+                      const brave_sync::Uint8Array& device_id,
+                      const std::string& device_id_v2) override;
   void OnSyncReady() override;
   void OnGetExistingObjects(const std::string& category_name,
                             std::unique_ptr<brave_sync::RecordsList> records,
@@ -162,6 +165,9 @@ class BraveProfileSyncServiceImpl
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, IsSyncReadyOnNewProfile);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, SetThisDeviceCreatedTime);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, InitialFetchesStartWithZero);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, DeviceIdV2Migration);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
+                           DeviceIdV2MigrationDupDeviceId);
 
   friend class ::BraveSyncServiceTest;
 
@@ -172,9 +178,11 @@ class BraveProfileSyncServiceImpl
                         int max_records);
   void FetchDevices();
   void SendCreateDevice();
+  void SendDeleteDevice();
   void SendDeviceSyncRecord(const int action,
                             const std::string& device_name,
                             const std::string& device_id,
+                            const std::string& device_id_v2,
                             const std::string& object_id);
   void OnResolvedPreferences(const brave_sync::RecordsList& records);
   void OnBraveSyncPrefsChanged(const std::string& pref);
@@ -226,6 +234,8 @@ class BraveProfileSyncServiceImpl
   // Prevent two sequential calls OnSetupSyncHaveCode or OnSetupSyncNewToSync
   // while being initializing
   bool brave_sync_initializing_ = false;
+
+  bool send_device_id_v2_update_ = false;
 
   Uint8Array seed_;
 

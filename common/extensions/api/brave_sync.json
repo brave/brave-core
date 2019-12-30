@@ -94,7 +94,8 @@
         "type": "object",
         "description": "Represents sync device",
         "properties": {
-          "name" : {"type": "string"}
+          "name" : {"type": "string"},
+          "deviceIdV2" : {"type": "string"}
         }
       },
       {
@@ -200,6 +201,11 @@
           {
             "$ref": "Config",
             "name": "config"
+          },
+          {
+            "type": "string",
+            "name": "device_id_v2",
+            "optional": true
           }
         ]
       },
@@ -355,6 +361,11 @@
           {
             "type": "binary",
             "name": "device_id",
+            "optional": true
+          },
+          {
+            "type": "string",
+            "name": "device_id_v2",
             "optional": true
           }
         ]
