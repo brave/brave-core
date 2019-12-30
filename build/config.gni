@@ -26,7 +26,7 @@ declare_args() {
   build_omaha = false
   tag_ap =""
   target_apk_base=""
-  brave_android_keystore_path = ""
+  brave_android_keystore_path = "."
   brave_android_keystore_name = ""
   brave_android_keystore_password = ""
   brave_android_key_password = ""
