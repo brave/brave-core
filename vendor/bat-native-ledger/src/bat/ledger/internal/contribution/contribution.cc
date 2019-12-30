@@ -58,7 +58,8 @@ void Contribution::Initialize() {
   for (const auto& value : currentReconciles) {
     ledger::CurrentReconcileProperties reconcile = value.second;
 
-    if (reconcile.retry_step == ledger::ContributionRetry::STEP_FINAL) {
+    if (reconcile.retry_step == ledger::ContributionRetry::STEP_FINAL ||
+        reconcile.retry_step == ledger::ContributionRetry::STEP_NO) {
       ledger_->RemoveReconcileById(reconcile.viewing_id);
     } else {
       DoRetry(reconcile.viewing_id);
