@@ -89,4 +89,4 @@ void AddAdditionalWidevineViewControlsIfNeeded(
 #endif
 }  // namespace
 
-#include "../../../../../../../chrome/browser/ui/views/permission_bubble/permission_prompt_impl.cc"  // NOLINT
+#include "../../../../../../../chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc"  // NOLINT
