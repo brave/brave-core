@@ -29,7 +29,6 @@
 #include "components/feed/feed_feature_list.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
-#include "components/unified_consent/feature.h"
 #include "components/sync/driver/sync_driver_switches.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/content_switches.h"
@@ -172,7 +171,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #if defined(OS_ANDROID)
       feed::kInterestFeedContentSuggestions.name,
 #endif
-      unified_consent::kUnifiedConsent.name,
   };
   command_line.AppendFeatures(enabled_features, disabled_features);
 

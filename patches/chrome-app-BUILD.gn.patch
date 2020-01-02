@@ -1,5 +1,5 @@
 diff --git a/chrome/app/BUILD.gn b/chrome/app/BUILD.gn
-index b6739b6344be552d0b4cca287947115b9db822bf..8d6e958decda0af622aaaeb7dea4278cb2fcdc53 100644
+index b6739b6344be552d0b4cca287947115b9db822bf..659a63b9aac2a84e5a435bf95c959f001a4ee08f 100644
 --- a/chrome/app/BUILD.gn
 +++ b/chrome/app/BUILD.gn
 @@ -135,6 +135,8 @@ grit("generated_resources") {
@@ -20,11 +20,3 @@ index b6739b6344be552d0b4cca287947115b9db822bf..8d6e958decda0af622aaaeb7dea4278c
    defines = chrome_grit_defines
    output_dir = "$root_gen_dir/chrome"
    outputs = [
-@@ -296,6 +298,7 @@ static_library("test_support") {
-     "//components/gwp_asan/buildflags",
-     "//components/nacl/common:buildflags",
-     "//components/startup_metric_utils/browser:lib",
-+    "//components/unified_consent",
-     "//content/public/app:both",
-     "//content/public/common",
-     "//content/public/common:service_names",
