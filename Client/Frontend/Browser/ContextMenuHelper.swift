@@ -23,7 +23,7 @@ class ContextMenuHelper: NSObject {
 
     fileprivate var nativeHighlightLongPressRecognizer: UILongPressGestureRecognizer?
 
-    lazy var gestureRecognizer: UILongPressGestureRecognizer = {
+    fileprivate lazy var gestureRecognizer: UILongPressGestureRecognizer = {
         let g = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressGestureDetected))
         g.delegate = self
         return g
@@ -47,6 +47,10 @@ extension ContextMenuHelper: UIGestureRecognizerDelegate {
     // As of iOS 12, WKContentView gesture setup is async, but it has been called by the time
     // the webview is ready to load an URL. After this has happened, we can override the gesture.
     func replaceGestureHandlerIfNeeded() {
+        if #available(iOS 13, *) {
+            return
+        }
+        
         DispatchQueue.main.async {
             if self.gestureRecognizerWithDescriptionFragment("ContextMenuHelper") == nil {
                 self.replaceWebViewLongPress()
@@ -55,6 +59,10 @@ extension ContextMenuHelper: UIGestureRecognizerDelegate {
     }
 
     private func replaceWebViewLongPress() {
+        if #available(iOS 13, *) {
+            return
+        }
+        
         // WebKit installs gesture handlers async. If `replaceWebViewLongPress` is called after a wkwebview in most cases a small delay is sufficient
         // See also https://bugs.webkit.org/show_bug.cgi?id=193366
 
@@ -109,6 +117,10 @@ extension ContextMenuHelper: TabContentScript {
     }
 
     func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage) {
+        if #available(iOS 13, *) {
+            return
+        }
+        
         guard let data = message.body as? [String: AnyObject] else {
             return
         }
