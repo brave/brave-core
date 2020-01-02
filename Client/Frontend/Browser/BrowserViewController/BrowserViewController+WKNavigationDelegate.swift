@@ -32,16 +32,22 @@ extension URL {
 
 extension BrowserViewController {
     fileprivate func handleExternalURL(_ url: URL, openedURLCompletionHandler: ((Bool) -> Void)? = nil) {
-        let alertController = UIAlertController(
+        self.view.endEditing(true)
+        let popup = AlertPopupView(
+            imageView: nil,
             title: Strings.OpenExternalAppURLTitle,
             message: String(format: Strings.OpenExternalAppURLMessage, url.relativeString),
-            preferredStyle: .alert
+            titleWeight: .semibold,
+            titleSize: 21
         )
-        alertController.addAction(UIAlertAction(title: Strings.OpenExternalAppURLDontAllow, style: .cancel))
-        alertController.addAction(UIAlertAction(title: Strings.OpenExternalAppURLAllow, style: .default) { result in
+        popup.addButton(title: Strings.OpenExternalAppURLDontAllow, fontSize: 16) { () -> PopupViewDismissType in
+            return .flyDown
+        }
+        popup.addButton(title: Strings.OpenExternalAppURLAllow, type: .primary, fontSize: 16) { () -> PopupViewDismissType in
             UIApplication.shared.open(url, options: [:], completionHandler: openedURLCompletionHandler)
-        })
-        self.present(alertController, animated: true)
+            return .flyDown
+        }
+        popup.showWithType(showType: .flyUp)
     }
 }
 
