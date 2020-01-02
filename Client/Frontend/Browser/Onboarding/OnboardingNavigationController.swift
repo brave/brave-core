@@ -41,9 +41,9 @@ class OnboardingNavigationController: UINavigationController {
     weak var onboardingDelegate: OnboardingControllerDelegate?
     
     enum OnboardingType {
-        case newUser
-        case existingUserRewardsOff
-        case existingUserRewardsOn
+        case newUser(OnboardingProgress)
+        case existingUserRewardsOff(OnboardingProgress)
+        case existingUserRewardsOn(OnboardingProgress)
         
         /// Returns a list of onboarding screens for given type.
         /// Screens should be sorted in order of which they are presented to the user.
@@ -55,9 +55,24 @@ class OnboardingNavigationController: UINavigationController {
             }
             #else
             switch self {
-            case .newUser: return BraveAds.isCurrentLocaleSupported() ? [.searchEnginePicker, .shieldsInfo, .rewardsAgreement, .adsCountdown] : [.searchEnginePicker, .shieldsInfo, .rewardsAgreement]
-            case .existingUserRewardsOff: return BraveAds.isCurrentLocaleSupported() ? [.rewardsAgreement, .adsCountdown] : [.rewardsAgreement]
-            case .existingUserRewardsOn: return BraveAds.isCurrentLocaleSupported() ? [.existingRewardsTurnOnAds, .adsCountdown] : []
+            case .newUser(let progress):
+                //The user already made it to rewards and agreed so they should only see ads countdown
+                if progress == .rewards || progress == .ads {
+                    return BraveAds.isCurrentLocaleSupported() ? [.adsCountdown] : [.rewardsAgreement]
+                }
+                return BraveAds.isCurrentLocaleSupported() ? [.searchEnginePicker, .shieldsInfo, .rewardsAgreement, .adsCountdown] : [.searchEnginePicker, .shieldsInfo, .rewardsAgreement]
+            case .existingUserRewardsOff(let progress):
+                //The user already made it to rewards and agreed so they should only see ads countdown
+                if progress == .rewards || progress == .ads {
+                    return BraveAds.isCurrentLocaleSupported() ? [.adsCountdown] : []
+                }
+                return BraveAds.isCurrentLocaleSupported() ? [.rewardsAgreement, .adsCountdown] : [.rewardsAgreement]
+            case .existingUserRewardsOn(let progress):
+                //The user already made it to rewards and agreed so they should only see ads countdown
+                if progress == .rewards || progress == .ads {
+                    return BraveAds.isCurrentLocaleSupported() ? [.adsCountdown] : []
+                }
+                return BraveAds.isCurrentLocaleSupported() ? [.existingRewardsTurnOnAds, .adsCountdown] : []
             }
             #endif
         }
