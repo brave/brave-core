@@ -1505,6 +1505,11 @@ class BrowserViewController: UIViewController {
             // forward/backward. Strange, but LayoutChanged fixes that.
             UIAccessibility.post(notification: .layoutChanged, argument: nil)
         } else if let webView = tab.webView {
+            // Ref #2016: Keyboard auto hides while typing
+            // For some reason the web view will steal first responder as soon
+            // as its added to the view heirarchy below. This line fixes that...
+            // somehow...
+            webView.resignFirstResponder()
             // To Screenshot a tab that is hidden we must add the webView,
             // then wait enough time for the webview to render.
             view.insertSubview(webView, at: 0)
