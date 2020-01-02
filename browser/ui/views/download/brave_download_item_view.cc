@@ -76,8 +76,8 @@ gfx::Size BraveDownloadItemView::CalculatePreferredSize() const {
                      origin_url_font_list_.GetHeight() +
                      kBraveVerticalTextPadding + status_font_list_.GetHeight();
   if (IsShowingWarningDialog()) {
-    child_height =
-        std::max({child_height, GetButtonSize().height(), kWarningIconSize});
+    child_height = std::max(
+        {child_height, GetButtonSize().height(), GetWarningIconSize()});
   }
   size.set_height(
       std::max(kDefaultHeight, 2 * kMinimumVerticalPadding + child_height));
@@ -142,7 +142,7 @@ int BraveDownloadItemView::GetYForFilenameText() const {
   if (!origin_url_text_.empty())
     text_height +=
         kBraveVerticalTextPadding + origin_url_font_list_.GetHeight();
-  if (!status_text_.empty())
+  if (status_label_ && !status_label_->GetText().empty())
     text_height += kBraveVerticalTextPadding + status_font_list_.GetHeight();
   return (height() - text_height) / 2;
 }
