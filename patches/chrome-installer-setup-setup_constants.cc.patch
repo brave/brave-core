@@ -1,0 +1,13 @@
+diff --git a/chrome/installer/setup/setup_constants.cc b/chrome/installer/setup/setup_constants.cc
+index 68c1c32565f540cebdd83fa6ac0fa0eaee7b5605..afb3a8d8ae1f9dc3dc818f9bce3c838e6973368e 100644
+--- a/chrome/installer/setup/setup_constants.cc
++++ b/chrome/installer/setup/setup_constants.cc
+@@ -10,7 +10,7 @@ namespace installer {
+ const wchar_t kChromeArchive[] = L"chrome.7z";
+ const wchar_t kChromeCompressedArchive[] = L"chrome.packed.7z";
+ const wchar_t kVisualElements[] = L"VisualElements";
+-const wchar_t kVisualElementsManifest[] = L"chrome.VisualElementsManifest.xml";
++const wchar_t kVisualElementsManifest[] = L"brave.VisualElementsManifest.xml";
+ 
+ // Sub directory of install source package under install temporary directory.
+ const wchar_t kInstallSourceDir[] = L"source";
