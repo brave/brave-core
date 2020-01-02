@@ -23,7 +23,10 @@ class OnboardingRewardsAgreementViewController: OnboardingViewController {
         let isAdsRegionSupported = BraveAds.isCurrentLocaleSupported()
         
         let adSupportedRegionText = Preferences.Rewards.isUsingBAP.value == true ? Strings.OBRewardsDetailInAdRegionJapan : Strings.OBRewardsDetailInAdRegion
-        contentView.updateSubtitleText(isAdsRegionSupported ? adSupportedRegionText : Strings.OBRewardsDetailOutsideAdRegion, boldWords: isAdsRegionSupported ? 2 : 1)
+        contentView.updateSubtitleText(isAdsRegionSupported ?
+            adSupportedRegionText : Strings.OBRewardsDetailOutsideAdRegion,
+                                       boldWords: isAdsRegionSupported ? 2 : 1,
+                                       for: theme)
         
         contentView.turnOnButton.addTarget(self, action: #selector(onTurnOn), for: .touchUpInside)
         contentView.skipButton.addTarget(self, action: #selector(skipTapped), for: .touchUpInside)

@@ -103,10 +103,10 @@ extension OnboardingRewardsAgreementViewController {
             $0.spacing = 15.0
         }
         
-        private func updateDescriptionLabel() {
+        private func updateDescriptionLabel(for theme: Theme) {
             descriptionLabel.attributedText = {
                 let fontSize: CGFloat = 14.0
-                let titleLabelColor = titleLabel.textColor ?? .black
+                let titleLabelColor = theme.colors.tints.home
                 
                 let text = NSMutableAttributedString(string: Strings.OBRewardsAgreementDetail, attributes: [
                     .font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular),
@@ -144,8 +144,12 @@ extension OnboardingRewardsAgreementViewController {
             descriptionLabel.isAccessibilityElement = true
         }
         
-        func updateSubtitleText(_ text: String, boldWords: Int) {
-            self.subtitleLabel.attributedText = text.boldWords(with: self.subtitleLabel.font, amount: boldWords)
+        func updateSubtitleText(_ text: String, boldWords: Int, for theme: Theme) {
+            let subTitle = text.boldWords(with: self.subtitleLabel.font, amount: boldWords)
+            subTitle.addAttribute(.foregroundColor,
+                                  value: theme.colors.tints.home,
+                                  range: NSRange(location: 0, length: subTitle.length))
+            self.subtitleLabel.attributedText = subTitle
         }
         
         init(theme: Theme) {
@@ -182,7 +186,14 @@ extension OnboardingRewardsAgreementViewController {
         func applyTheme(_ theme: Theme) {
             descriptionView.backgroundColor = OnboardingViewController.colorForTheme(theme)
             titleLabel.appearanceTextColor = theme.colors.tints.home
-            updateDescriptionLabel()
+            updateDescriptionLabel(for: theme)
+            
+            if let text = (subtitleLabel.attributedText?.mutableCopy() as? NSMutableAttributedString) {
+                text.addAttribute(.foregroundColor,
+                                  value: theme.colors.tints.home,
+                                  range: NSRange(location: 0, length: text.length))
+                subtitleLabel.attributedText = text
+            }
         }
         
         override func layoutSubviews() {
