@@ -1184,6 +1184,9 @@ class BrowserViewController: UIViewController {
                 if tab === tabManager.selectedTab && !tab.restoring {
                     updateUIForReaderHomeStateForTab(tab)
                 }
+                // Catch history pushState navigation, but ONLY for same origin navigation,
+                // for reasons above about URL spoofing risk.
+                navigateInTab(tab: tab)
             }
         case .title:
             // Ensure that the tab title *actually* changed to prevent repeated calls
@@ -2123,10 +2126,6 @@ extension BrowserViewController: TabDelegate {
 
         tab.addContentScript(LocalRequestHelper(), name: LocalRequestHelper.name())
 
-        let historyStateHelper = HistoryStateHelper(tab: tab)
-        historyStateHelper.delegate = self
-        tab.addContentScript(historyStateHelper, name: HistoryStateHelper.name())
-
         tab.contentBlocker.setupTabTrackingProtection()
         tab.addContentScript(tab.contentBlocker, name: ContentBlockerHelper.name())
 
@@ -3010,13 +3009,6 @@ extension BrowserViewController: ContextMenuHelperDelegate {
         displayedPopoverController?.dismiss(animated: true) {
             self.displayedPopoverController = nil
         }
-    }
-}
-
-extension BrowserViewController: HistoryStateHelperDelegate {
-    func historyStateHelper(_ historyStateHelper: HistoryStateHelper, didPushOrReplaceStateInTab tab: Tab) {
-        navigateInTab(tab: tab)
-        tabManager.saveTab(tab)
     }
 }
 
