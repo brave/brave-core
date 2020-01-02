@@ -135,7 +135,7 @@ class SyncAddDeviceViewController: SyncViewController {
         }
     }
     
-    func setupVisuals() {
+    private func setupVisuals() {
         modeControl = UISegmentedControl(items: [Strings.QRCode, Strings.CodeWords])
         modeControl.translatesAutoresizingMaskIntoConstraints = false
         modeControl.selectedSegmentIndex = 0
@@ -220,11 +220,14 @@ class SyncAddDeviceViewController: SyncViewController {
         if deviceType == .computer {
             SEL_showCodewords()
         }
-        
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         updateLabels()
     }
     
-    func updateLabels() {
+    private func updateLabels() {
         let isFirstIndex = modeControl.selectedSegmentIndex == 0
         
         titleLabel.text = isFirstIndex ? Strings.SyncAddDeviceScan : Strings.SyncAddDeviceWords
