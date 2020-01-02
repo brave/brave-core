@@ -2090,13 +2090,9 @@ extension BrowserViewController: TabDelegate {
             tab.addContentScript(logins, name: LoginsHelper.name())
         }
 
-        if #available(iOS 13, *) {
-            // Do nothing, native API is used.
-        } else {
-            let contextMenuHelper = ContextMenuHelper(tab: tab)
-            contextMenuHelper.delegate = self
-            tab.addContentScript(contextMenuHelper, name: ContextMenuHelper.name())
-        }
+        let contextMenuHelper = ContextMenuHelper(tab: tab)
+        contextMenuHelper.delegate = self
+        tab.addContentScript(contextMenuHelper, name: ContextMenuHelper.name())
 
         let errorHelper = ErrorPageHelper()
         tab.addContentScript(errorHelper, name: ErrorPageHelper.name())
