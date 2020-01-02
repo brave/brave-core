@@ -2861,6 +2861,27 @@ extension BrowserViewController: ReaderModeBarViewDelegate {
 }
 
 extension BrowserViewController: ContextMenuHelperDelegate {
+    @objc
+    private func image(image: UIImage, didFinishSavingwithError error: NSError?, contextInfo: UnsafeRawPointer?) {
+        
+        if error == nil {
+            return
+        }
+        
+        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+        
+        let accessDenied = UIAlertController(title: Strings.AccessPhotoDeniedAlertTitle, message: Strings.AccessPhotoDeniedAlertMessage, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .default, handler: nil)
+        accessDenied.addAction(dismissAction)
+        let settingsAction = UIAlertAction(title: Strings.OpenPhoneSettingsActionTitle, style: .default ) { _ in
+            UIApplication.shared.open(settingsUrl, options: [:])
+        }
+        accessDenied.addAction(settingsAction)
+        self.present(accessDenied, animated: true, completion: nil)
+    }
+    
     func contextMenuHelper(_ contextMenuHelper: ContextMenuHelper, didLongPressElements elements: ContextMenuHelper.Elements, gestureRecognizer: UIGestureRecognizer) {
         // locationInView can return (0, 0) when the long press is triggered in an invalid page
         // state (e.g., long pressing a link before the document changes, then releasing after a
@@ -2915,23 +2936,13 @@ extension BrowserViewController: ContextMenuHelperDelegate {
             }
             actionSheetController.addAction(openInNewTabAction, accessibilityIdentifier: "linkContextMenu.openImageInNewTab")
 
-            let photoAuthorizeStatus = PHPhotoLibrary.authorizationStatus()
             let saveImageAction = UIAlertAction(title: Strings.SaveImageActionTitle, style: .default) { _ in
-                if photoAuthorizeStatus == .authorized || photoAuthorizeStatus == .notDetermined {
-                    self.getData(url) { data in
-                        PHPhotoLibrary.shared().performChanges({
-                            PHAssetCreationRequest.forAsset().addResource(with: .photo, data: data, options: nil)
-                        }, completionHandler: nil)
+                self.getData(url) { [weak self] data in
+                    guard let self = self, let image = UIImage(data: data, scale: UIScreen.main.scale) else {
+                        return
                     }
-                } else {
-                    let accessDenied = UIAlertController(title: Strings.AccessPhotoDeniedAlertTitle, message: Strings.AccessPhotoDeniedAlertMessage, preferredStyle: .alert)
-                    let dismissAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .default, handler: nil)
-                    accessDenied.addAction(dismissAction)
-                    let settingsAction = UIAlertAction(title: Strings.OpenPhoneSettingsActionTitle, style: .default ) { _ in
-                        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:])
-                    }
-                    accessDenied.addAction(settingsAction)
-                    self.present(accessDenied, animated: true, completion: nil)
+                    
+                    UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.image(image:didFinishSavingwithError:contextInfo:)), nil)
                 }
             }
             actionSheetController.addAction(saveImageAction, accessibilityIdentifier: "linkContextMenu.saveImage")
