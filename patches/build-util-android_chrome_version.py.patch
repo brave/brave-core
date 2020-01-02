@@ -1,0 +1,13 @@
+diff --git a/build/util/android_chrome_version.py b/build/util/android_chrome_version.py
+index eb58b2f97e9129a52e2b9f67b7534cf7e8cc199a..37969e5812bb105011edb60ba83c8de88c4e2020 100644
+--- a/build/util/android_chrome_version.py
++++ b/build/util/android_chrome_version.py
+@@ -142,7 +142,7 @@ def GenerateVersionCodes(version_values, arch, is_next_build):
+   Thus, this method is responsible for the final two digits of versionCode.
+   """
+ 
+-  base_version_code = '%s%03d00' % (version_values['BUILD'],
++  base_version_code = '%02d%02d%03d00' % (int(version_values['MINOR']) + 40, int(version_values['BUILD']),
+                                     int(version_values['PATCH']))
+   new_version_code = int(base_version_code)
+ 
