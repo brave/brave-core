@@ -368,7 +368,7 @@ class SettingsViewController: TableViewController {
     
     private lazy var shieldsSection: Section = {
         var shields = Section(
-            header: .title(Strings.Brave_Shield_Defaults),
+            header: .title(Strings.Shields_Defaults),
             rows: [
                 BoolRow(title: Strings.Block_Ads_and_Tracking, option: Preferences.Shields.blockAdsAndTracking),
                 BoolRow(title: Strings.HTTPS_Everywhere, option: Preferences.Shields.httpsEverywhere),
