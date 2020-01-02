@@ -28,6 +28,16 @@
 
 using BraveAppMenuBrowserTest = InProcessBrowserTest;
 
+void CheckCommandsAreDisabledInMenuModel(
+    Browser* browser,
+    const std::vector<int>& disabled_commands) {
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  BraveAppMenuModel model(browser_view->toolbar(), browser);
+  model.Init();
+  for (int id : disabled_commands)
+    EXPECT_EQ(-1, model.GetIndexOfCommandId(id));
+}
+
 void CheckCommandsAreInOrderInMenuModel(
     Browser* browser,
     const std::vector<int>& commands_in_order) {
@@ -80,6 +90,8 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
   };
   CheckCommandsAreInOrderInMenuModel(browser(),
                                      commands_in_order_for_normal_profile);
+  CheckCommandsAreDisabledInMenuModel(browser(),
+                                      commands_disabled_for_normal_profile);
 
   auto* private_browser = CreateIncognitoBrowser();
   std::vector<int> commands_in_order_for_private_profile = {
@@ -112,6 +124,8 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
   };
   CheckCommandsAreInOrderInMenuModel(private_browser,
                                      commands_in_order_for_private_profile);
+  CheckCommandsAreDisabledInMenuModel(private_browser,
+                                      commands_disabled_for_private_profile);
 
   content::WindowedNotificationObserver browser_creation_observer(
       chrome::NOTIFICATION_BROWSER_OPENED,
@@ -138,6 +152,28 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
   };
   CheckCommandsAreInOrderInMenuModel(guest_browser,
                                      commands_in_order_for_guest_profile);
+  std::vector<int> commands_disabled_for_guest_profile = {
+    IDC_NEW_INCOGNITO_WINDOW,
+#if BUILDFLAG(ENABLE_TOR)
+    IDC_NEW_OFFTHERECORD_WINDOW_TOR,
+#endif
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+    IDC_SHOW_BRAVE_REWARDS,
+#endif
+    IDC_RECENT_TABS_MENU,
+    IDC_BOOKMARKS_MENU,
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+    IDC_SHOW_BRAVE_WALLET,
+#endif
+    IDC_MANAGE_EXTENSIONS,
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+    IDC_SHOW_BRAVE_SYNC,
+#endif
+    IDC_ADD_NEW_PROFILE,
+    IDC_OPEN_GUEST_PROFILE,
+  };
+  CheckCommandsAreDisabledInMenuModel(guest_browser,
+                                      commands_disabled_for_guest_profile);
 
   content::WindowedNotificationObserver tor_browser_creation_observer(
       chrome::NOTIFICATION_BROWSER_OPENED,
@@ -177,9 +213,10 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, MenuOrderTest) {
     IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER
   };
   std::vector<int> commands_disabled_for_tor_profile = {
-    IDC_NEW_TOR_CONNECTION_FOR_SITE,
     IDC_RECENT_TABS_MENU,
   };
   CheckCommandsAreInOrderInMenuModel(tor_browser,
                                      commands_in_order_for_tor_profile);
+  CheckCommandsAreDisabledInMenuModel(tor_browser,
+                                      commands_disabled_for_tor_profile);
 }
