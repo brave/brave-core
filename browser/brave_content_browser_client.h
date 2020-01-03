@@ -13,6 +13,7 @@
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "third_party/blink/public/mojom/referrer.mojom.h"
 
 class PrefChangeRegistrar;
@@ -40,7 +41,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       ui::PageTransition page_transition,
       bool has_user_gesture,
       const base::Optional<url::Origin>& initiating_origin,
-      network::mojom::URLLoaderFactoryPtr* out_factory) override;
+      mojo::PendingRemote<network::mojom::URLLoaderFactory>* out_factory)
+      override;
 
   content::ContentBrowserClient::AllowWebBluetoothResult AllowWebBluetooth(
       content::BrowserContext* browser_context,
