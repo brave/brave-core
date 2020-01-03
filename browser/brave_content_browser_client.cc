@@ -155,7 +155,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     ui::PageTransition page_transition,
     bool has_user_gesture,
     const base::Optional<url::Origin>& initiating_origin,
-    network::mojom::URLLoaderFactoryPtr* out_factory) {
+    mojo::PendingRemote<network::mojom::URLLoaderFactory>* out_factory) {
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   if (webtorrent::IsMagnetProtocol(url)) {
     webtorrent::HandleMagnetProtocol(url, std::move(web_contents_getter),
