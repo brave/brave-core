@@ -229,10 +229,12 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
     int render_process_id,
     URLLoaderFactoryType type,
     const url::Origin& request_initiator,
+    base::Optional<int64_t> navigation_id,
     mojo::PendingReceiver<network::mojom::URLLoaderFactory>* factory_receiver,
     mojo::PendingRemote<network::mojom::TrustedURLLoaderHeaderClient>*
         header_client,
-    bool* bypass_redirect_checks) {
+    bool* bypass_redirect_checks,
+    network::mojom::URLLoaderFactoryOverridePtr* factory_override) {
   bool use_proxy = false;
   // TODO(iefremov): Skip proxying for certain requests?
   use_proxy = BraveProxyingURLLoaderFactory::MaybeProxyRequest(
@@ -242,7 +244,8 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
 
   use_proxy |= ChromeContentBrowserClient::WillCreateURLLoaderFactory(
       browser_context, frame, render_process_id, type, request_initiator,
-      factory_receiver, header_client, bypass_redirect_checks);
+      std::move(navigation_id), factory_receiver, header_client,
+      bypass_redirect_checks, factory_override);
 
   return use_proxy;
 }
