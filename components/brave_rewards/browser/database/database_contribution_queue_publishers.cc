@@ -13,6 +13,10 @@
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
+namespace {
+  const char kCorruptedForeignKey[] = "publisher_info_old";
+}  // namespace
+
 namespace brave_rewards {
 
 DatabaseContributionQueuePublishers::DatabaseContributionQueuePublishers(
@@ -119,6 +123,58 @@ DatabaseContributionQueuePublishers::GetRecords(
   }
 
   return list;
+}
+
+bool DatabaseContributionQueuePublishers::DeleteRecordsByQueueId(
+    sql::Database* db,
+    const uint64_t queue_id) {
+  DCHECK(db);
+  if (queue_id == 0 || !db) {
+    return false;
+  }
+
+  const std::string query = base::StringPrintf(
+      "DELETE FROM %s WHERE %s_id = ?",
+      table_name_,
+      parent_table_name_);
+
+  sql::Statement statement(db->GetUniqueStatement(query.c_str()));
+  statement.BindInt64(0, queue_id);
+
+  return statement.Run();
+}
+
+bool DatabaseContributionQueuePublishers::HasCorruptedForeignKey(
+    sql::Database* db) {
+  DCHECK(db);
+  if (!db) {
+    return false;
+  }
+
+  const std::string query = base::StringPrintf(
+      "PRAGMA foreign_key_list(%s)",
+      table_name_);
+
+  sql::Statement statement(db->GetUniqueStatement(query.c_str()));
+
+  while (statement.Step()) {
+    if (statement.ColumnString(2) == kCorruptedForeignKey) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+bool DatabaseContributionQueuePublishers::DeleteAllRecords(sql::Database* db) {
+  DCHECK(db);
+  if (!db) {
+    return false;
+  }
+
+  const std::string query = base::StringPrintf("DELETE FROM %s", table_name_);
+  sql::Statement statement(db->GetUniqueStatement(query.c_str()));
+  return statement.Run();
 }
 
 }  // namespace brave_rewards

@@ -49,6 +49,14 @@ bool DatabaseContributionQueue::Init(sql::Database* db) {
     return false;
   }
 
+  // We need to clear queue if user has corrupted foreign key
+  // more info: https://github.com/brave/brave-browser/issues/7579
+  if (publishers_->HasCorruptedForeignKey(db)) {
+    if (!DeleteAllRecords(db)) {
+      return false;
+    }
+  }
+
   return transaction.Commit();
 }
 
@@ -148,8 +156,13 @@ ledger::ContributionQueuePtr DatabaseContributionQueue::GetFirstRecord(
 bool DatabaseContributionQueue::DeleteRecord(
     sql::Database* db,
     const uint64_t id) {
-  if (!db->Execute("PRAGMA foreign_keys=1;")) {
-    LOG(ERROR) << "Error: deleting record for contribution queue with id" << id;
+  DCHECK(db);
+  if (id == 0 || !db) {
+    return false;
+  }
+
+  sql::Transaction transaction(db);
+  if (!transaction.Begin()) {
     return false;
   }
 
@@ -163,11 +176,41 @@ bool DatabaseContributionQueue::DeleteRecord(
 
   bool success = statement.Run();
 
-  if (!db->Execute("PRAGMA foreign_keys=0;")) {
+  if (!success) {
     return false;
   }
 
-  return success;
+  if (!publishers_->DeleteRecordsByQueueId(db, id)) {
+    return false;
+  }
+
+  return transaction.Commit();
+}
+
+bool DatabaseContributionQueue::DeleteAllRecords(sql::Database* db) {
+  DCHECK(db);
+  if (!db) {
+    return false;
+  }
+
+  sql::Transaction transaction(db);
+  if (!transaction.Begin()) {
+    return false;
+  }
+
+  const std::string query = base::StringPrintf("DELETE FROM %s", table_name_);
+  sql::Statement statement(db->GetUniqueStatement(query.c_str()));
+  bool success = statement.Run();
+
+  if (!success) {
+    return false;
+  }
+
+  if (!publishers_->DeleteAllRecords(db)) {
+    return false;
+  }
+
+  return transaction.Commit();
 }
 
 }  // namespace brave_rewards
