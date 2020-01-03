@@ -171,7 +171,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       features::kSmsReceiver.name,
       features::kWebXr.name,
       features::kWebXrGamepadModule.name,
-      switches::kSyncUSSBookmarks.name,
   };
   command_line.AppendFeatures(enabled_features, disabled_features);
 
