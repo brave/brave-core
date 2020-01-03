@@ -50,6 +50,10 @@ void RecordAdsState(AdsP3AState state);
 void UpdateAdsP3AOnPreferenceChange(PrefService* prefs,
                                     const std::string& pref);
 
+// Records an initial metric state ("disabled" or "enabled") if it was not done
+// before. Intended to be called if the user has already created a wallet.
+void MaybeRecordInitialAdsP3AState(PrefService* local_state);
+
 void RecordNoWalletCreatedForAllMetrics();
 
 double CalcWalletBalanceForP3A(base::flat_map<std::string, double> wallets,
