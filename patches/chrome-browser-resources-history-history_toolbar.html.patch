@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/history/history_toolbar.html b/chrome/browser/resources/history/history_toolbar.html
-index 9357ef7446d8a800a69d029fc86374395db41fc1..0626601b11280c52b96dd8257318a4b6565ea015 100644
+index 68cf4bc6690df3db0594c15677dfa1cf74fd4d1e..12eafe302c9f2d76bffe79a70ca37ef701b1825d 100644
 --- a/chrome/browser/resources/history/history_toolbar.html
 +++ b/chrome/browser/resources/history/history_toolbar.html
 @@ -1,6 +1,6 @@

@@ -39,7 +39,7 @@ bool BraveEphemeralProvider::SetWebsiteSetting(
     const ResourceIdentifier& resource_identifier,
     std::unique_ptr<base::Value>&& in_value) {
   // Prevent this handle shields configuration.
-  if (content_type == CONTENT_SETTINGS_TYPE_PLUGINS &&
+  if (content_type == ContentSettingsType::PLUGINS &&
       IsShieldsResourceID(resource_identifier)) {
     return false;
   }

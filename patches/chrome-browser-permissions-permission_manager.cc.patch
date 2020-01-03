@@ -1,19 +1,19 @@
 diff --git a/chrome/browser/permissions/permission_manager.cc b/chrome/browser/permissions/permission_manager.cc
-index 6673d1591ab95d937a0c208d3ce4fce935329072..da3727e240f130c92304dee854d3522ff4e202f3 100644
+index 1bc9a3799ccd90700ec1ff6d3e76e1c054756bf5..cc4b0028af13f41b355cb5a92ca39504e0127e74 100644
 --- a/chrome/browser/permissions/permission_manager.cc
 +++ b/chrome/browser/permissions/permission_manager.cc
-@@ -106,7 +106,7 @@ ContentSetting PermissionStatusToContentSetting(PermissionStatus status) {
+@@ -107,7 +107,7 @@ ContentSetting PermissionStatusToContentSetting(PermissionStatus status) {
  // Helper method to convert PermissionType to ContentSettingType.
  // If PermissionType is not supported or found, returns
- // CONTENT_SETTINGS_TYPE_DEFAULT.
+ // ContentSettingsType::DEFAULT.
 -ContentSettingsType PermissionTypeToContentSettingSafe(
 +ContentSettingsType PermissionTypeToContentSettingSafe_ChromiumImpl(
      PermissionType permission) {
    switch (permission) {
      case PermissionType::MIDI:
-@@ -154,6 +154,7 @@ ContentSettingsType PermissionTypeToContentSettingSafe(
-     case PermissionType::WAKE_LOCK_SYSTEM:
-       return CONTENT_SETTINGS_TYPE_WAKE_LOCK_SYSTEM;
+@@ -157,6 +157,7 @@ ContentSettingsType PermissionTypeToContentSettingSafe(
+     case PermissionType::NFC:
+       return ContentSettingsType::NFC;
      case PermissionType::NUM:
 +    default:
        break;

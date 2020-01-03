@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/download/download_item_view.h b/chrome/browser/ui/views/download/download_item_view.h
-index 4a244e00022ca9e0b8af0f5fc862125c05174e94..d9d08a113665d2e8135569c720f862699a2ad71f 100644
+index 8f6277ff2939bb8f394d3a369a560ff51f4d9e46..edd4bd6fec3f0bcdfd0f77881742311d978083c4 100644
 --- a/chrome/browser/ui/views/download/download_item_view.h
 +++ b/chrome/browser/ui/views/download/download_item_view.h
-@@ -123,6 +123,7 @@ class DownloadItemView : public views::InkDropHostView,
+@@ -128,6 +128,7 @@ class DownloadItemView : public views::InkDropHostView,
    void OnThemeChanged() override;
  
   private:
@@ -10,7 +10,7 @@ index 4a244e00022ca9e0b8af0f5fc862125c05174e94..d9d08a113665d2e8135569c720f86269
    FRIEND_TEST_ALL_PREFIXES(DownloadItemViewDangerousDownloadLabelTest,
                             AdjustTextAndGetSize);
  
-@@ -179,6 +180,7 @@ class DownloadItemView : public views::InkDropHostView,
+@@ -178,6 +179,7 @@ class DownloadItemView : public views::InkDropHostView,
  
    // This function calculates the vertical coordinate to draw the file name text
    // relative to local bounds.
@@ -18,7 +18,7 @@ index 4a244e00022ca9e0b8af0f5fc862125c05174e94..d9d08a113665d2e8135569c720f86269
    int GetYForFilenameText() const;
  
    void DrawIcon(gfx::Canvas* canvas);
-@@ -267,6 +269,7 @@ class DownloadItemView : public views::InkDropHostView,
+@@ -270,6 +272,7 @@ class DownloadItemView : public views::InkDropHostView,
    // so that screenreaders can access the filename, status text, and
    // dangerous download warning message (if any). The name will be presented
    // when the download item receives focus.

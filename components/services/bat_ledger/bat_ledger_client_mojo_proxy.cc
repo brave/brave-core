@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/logging.h"
-#include "mojo/public/cpp/bindings/map.h"
+#include "brave/base/containers/utils.h"
 
 namespace bat_ledger {
 
@@ -81,7 +81,7 @@ void OnResetState(const ledger::OnSaveCallback& callback,
 void OnGetExternalWallets(
     ledger::GetExternalWalletsCallback callback,
     base::flat_map<std::string, ledger::ExternalWalletPtr> wallets) {
-  callback(mojo::FlatMapToMap(std::move(wallets)));
+  callback(base::FlatMapToMap(std::move(wallets)));
 }
 
 }  // namespace
@@ -106,7 +106,7 @@ std::string BatLedgerClientMojoProxy::GenerateGUID() const {
 void OnLoadURL(const ledger::LoadURLCallback& callback,
     int32_t response_code, const std::string& response,
     const base::flat_map<std::string, std::string>& headers) {
-  callback(response_code, response, mojo::FlatMapToMap(headers));
+  callback(response_code, response, base::FlatMapToMap(headers));
 }
 
 void BatLedgerClientMojoProxy::LoadURL(
@@ -924,7 +924,7 @@ ledger::TransferFeeList BatLedgerClientMojoProxy::GetTransferFees(
     const std::string& wallet_type) {
   base::flat_map<std::string, ledger::TransferFeePtr> list;
   bat_ledger_client_->GetTransferFees(wallet_type, &list);
-  return mojo::FlatMapToMap(std::move(list));
+  return base::FlatMapToMap(std::move(list));
 }
 
 void BatLedgerClientMojoProxy::RemoveTransferFee(
@@ -985,7 +985,7 @@ void BatLedgerClientMojoProxy::GetPromotion(
 void OnGetAllPromotions(
     const ledger::GetAllPromotionsCallback& callback,
     base::flat_map<std::string, ledger::PromotionPtr> promotions) {
-  callback(mojo::FlatMapToMap(std::move(promotions)));
+  callback(base::FlatMapToMap(std::move(promotions)));
 }
 
 void BatLedgerClientMojoProxy::GetAllPromotions(

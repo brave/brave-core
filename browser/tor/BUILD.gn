@@ -42,7 +42,9 @@ source_set("tor") {
       "//brave/components/services/tor/public/interfaces",
       "//content/public/common",
       "//extensions/common:common_constants",
+      "//net",
       "//services/service_manager",
+      "//url",
     ]
   }
 }

@@ -1,12 +1,12 @@
 diff --git a/ui/base/BUILD.gn b/ui/base/BUILD.gn
-index 5cb540dcb099941f0301eabf130c3bcb66b14a1d..99cd26d2a85517d12b3b5235ee7f16749968b2bb 100644
+index 224ced89a4280f411788024a516e7576aa7dcd44..90da1b8c9ed3577a418fe559e194fe1033b689a2 100644
 --- a/ui/base/BUILD.gn
 +++ b/ui/base/BUILD.gn
-@@ -423,6 +423,7 @@ jumbo_component("base") {
+@@ -442,6 +442,7 @@ jumbo_component("base") {
      "//ui/strings",
      "//url",
    ]
 +  deps += [ "//brave/ui/base:chromium_deps" ]
  
-   if (!is_ios) {
-     # iOS does not use Chromium-specific code for event handling.
+   if (is_debug || dcheck_always_on) {
+     deps += [ "//third_party/re2" ]

@@ -1,14 +1,14 @@
 diff --git a/chrome/browser/resources/settings/site_settings_page/site_settings_page.js b/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
-index 588b6d078aaf967da93eeb52c7b422a8e1fecd71..0a4a3369dc35940ab19d655b1791b9ea85f2215b 100644
+index 3296308fd50aee8c73ab3544b958ea0f1639f0f5..b2ca9713f56bf53f58867918bffe729730b17ffa 100644
 --- a/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
 +++ b/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
-@@ -113,7 +113,9 @@ Polymer({
-       [R.SITE_SETTINGS_UNSANDBOXED_PLUGINS, 'unsandboxed-plugins'],
-       [R.SITE_SETTINGS_HANDLERS, 'protocol-handlers'],
-       [R.SITE_SETTINGS_MIDI_DEVICES, 'midi-devices'],
+@@ -98,7 +98,9 @@ Polymer({
+     // elements residing in this element's Shadow DOM.
+     const R = settings.routes;
+     const pairs = [
 +      // <if expr="_google_chrome">
        [R.SITE_SETTINGS_ADS, 'ads'],
 +      // </if>
-       [R.SITE_SETTINGS_ZOOM_LEVELS, 'zoom-levels'],
-       [R.SITE_SETTINGS_USB_DEVICES, 'usb-devices'],
-       [R.SITE_SETTINGS_PDF_DOCUMENTS, 'pdf-documents'],
+       [R.SITE_SETTINGS_ALL, 'all-sites'],
+       [R.SITE_SETTINGS_AUTOMATIC_DOWNLOADS, 'automatic-downloads'],
+       [R.SITE_SETTINGS_BACKGROUND_SYNC, 'background-sync'],

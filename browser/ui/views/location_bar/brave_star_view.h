@@ -14,7 +14,7 @@ class BraveStarView : public StarView {
 
  protected:
   // views::View:
-  bool Update() override;
+  void UpdateImpl() override;
 
   DISALLOW_COPY_AND_ASSIGN(BraveStarView);
 };

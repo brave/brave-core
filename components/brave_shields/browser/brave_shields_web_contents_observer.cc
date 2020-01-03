@@ -55,11 +55,11 @@ namespace {
 // Content Settings are only sent to the main frame currently.
 // Chrome may fix this at some point, but for now we do this as a work-around.
 // You can verify if this is fixed by running the following test:
-// npm run test -- brave_browser_tests --filter=BraveContentSettingsObserverBrowserTest.*  // NOLINT
+// npm run test -- brave_browser_tests --filter=BraveContentSettingsAgentImplBrowserTest.*  // NOLINT
 // Chrome seems to also have a bug with RenderFrameHostChanged not updating
 // the content settings so this is fixed here too. That case is covered in
 // tests by:
-// npm run test -- brave_browser_tests --filter=BraveContentSettingsObserverBrowserTest.*  // NOLINT
+// npm run test -- brave_browser_tests --filter=BraveContentSettingsAgentImplBrowserTest.*  // NOLINT
 void UpdateContentSettingsToRendererFrames(content::WebContents* web_contents) {
   for (content::RenderFrameHost* frame : web_contents->GetAllFrames()) {
     Profile* profile =

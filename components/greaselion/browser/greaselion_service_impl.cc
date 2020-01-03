@@ -45,7 +45,7 @@ namespace {
 
 // Wraps a Greaselion rule in a component. The component is stored as an
 // unpacked extension in the system temp dir. Returns a valid extension that the
-// caller should take ownership of, or NULL.
+// caller should take ownership of, or nullptr.
 //
 // NOTE: This function does file IO and should not be called on the UI thread.
 // NOTE: The caller takes ownership of the directory at extension->path() on the
@@ -57,13 +57,13 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
       extensions::file_util::GetInstallTempDir(extensions_dir);
   if (install_temp_dir.empty()) {
     LOG(ERROR) << "Could not get path to profile temp directory";
-    return NULL;
+    return nullptr;
   }
 
   base::ScopedTempDir temp_dir;
   if (!temp_dir.CreateUniqueTempDirUnderPath(install_temp_dir)) {
     LOG(ERROR) << "Could not create Greaselion temp directory";
-    return NULL;
+    return nullptr;
   }
 
   // Create the manifest
@@ -121,14 +121,14 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
   // files to disk.
   if (!serializer.Serialize(*root)) {
     LOG(ERROR) << "Could not write Greaselion manifest";
-    return NULL;
+    return nullptr;
   }
 
   // Copy the script files to our extension directory.
   for (auto script : rule->scripts()) {
     if (!base::CopyFile(script, temp_dir.GetPath().Append(script.BaseName()))) {
       LOG(ERROR) << "Could not copy Greaselion script";
-      return NULL;
+      return nullptr;
     }
   }
 
@@ -138,7 +138,7 @@ scoped_refptr<Extension> ConvertGreaselionRuleToExtensionOnTaskRunner(
   if (!extension.get()) {
     LOG(ERROR) << "Could not load Greaselion extension";
     LOG(ERROR) << error;
-    return NULL;
+    return nullptr;
   }
 
   temp_dir.Take();  // The caller takes ownership of the directory.

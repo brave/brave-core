@@ -5,6 +5,7 @@
 
 #include "bat/ledger/internal/wallet/wallet.h"
 
+#include <map>
 #include <utility>
 
 #include "base/json/json_writer.h"
@@ -24,7 +25,6 @@
 #include "bat/ledger/internal/wallet/recover.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
 #include "bat/ledger/internal/uphold/uphold.h"
-#include "mojo/public/cpp/bindings/map.h"
 #include "net/http/http_status_code.h"
 
 #include "wally_bip39.h"  // NOLINT

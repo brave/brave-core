@@ -1,5 +1,5 @@
 diff --git a/chrome/common/importer/BUILD.gn b/chrome/common/importer/BUILD.gn
-index 4a1d01f645c78a5326eaa4a6277c0cf84c3b9524..afeedc5ae2b397ab9c79dbfb33d6a8466c2c59b4 100644
+index 9dffb6e3625f4d4b75afc406209636b8f4d25099..8741eb4f41e8e1756ada4b2ceecf03621b698c4d 100644
 --- a/chrome/common/importer/BUILD.gn
 +++ b/chrome/common/importer/BUILD.gn
 @@ -12,6 +12,7 @@ mojom("interfaces") {

@@ -1,16 +1,16 @@
 diff --git a/third_party/blink/public/mojom/permissions/permission.mojom b/third_party/blink/public/mojom/permissions/permission.mojom
-index 0dcfed5761a3e2ddaa6ff1dd11c897ff306b6bcb..ffecd04e4294c7f3b7c8aa358a3252c15168cadf 100644
+index cbd5d28c52e220e41356c704aa4b1fde018da370..231ead27186ce5a55b3de8707e0be8fe95af18a6 100644
 --- a/third_party/blink/public/mojom/permissions/permission.mojom
 +++ b/third_party/blink/public/mojom/permissions/permission.mojom
-@@ -24,6 +24,7 @@ enum PermissionName {
-   IDLE_DETECTION,
+@@ -25,6 +25,7 @@ enum PermissionName {
    PERIODIC_BACKGROUND_SYNC,
    WAKE_LOCK,
+   NFC,
 +  AUTOPLAY,
  };
  
  // This is similar to WakeLockType in modules/wake_lock/wake_lock.idl.
-@@ -69,6 +70,7 @@ interface PermissionObserver {
+@@ -70,6 +71,7 @@ interface PermissionObserver {
  // methods to check, request, and revoke permissions. It also allows a client to
  // start listening to permission changes.
  interface PermissionService {
