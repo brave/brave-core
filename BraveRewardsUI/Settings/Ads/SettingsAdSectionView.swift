@@ -17,17 +17,28 @@ class SettingsAdSectionView: SettingsSectionView {
     
     if animated {
       if enabled {
-        viewDetailsButton.alpha = 0.0
+        if viewDetailsButton.isHidden {
+          viewDetailsButton.alpha = 0.0
+        }
+      } else {
+        if disabledView.isHidden {
+          disabledView.alpha = 0.0
+        }
       }
       UIView.animate(withDuration: 0.15) {
         if self.viewDetailsButton.isHidden == enabled { // UIStackView bug, have to check first
           self.viewDetailsButton.isHidden = !enabled
         }
+        if self.disabledView.isHidden != enabled {
+          self.disabledView.isHidden = enabled
+        }
         self.viewDetailsButton.alpha = enabled ? 1.0 : 0.0
+        self.disabledView.alpha = enabled ? 0.0 : 1.0
         self.toggleSwitch.alpha = hidesToggle ? 0.0 : 1.0
       }
     } else {
       viewDetailsButton.isHidden = !enabled
+      disabledView.isHidden = enabled
       self.toggleSwitch.alpha = hidesToggle ? 0.0 : 1.0
     }
   }
@@ -59,6 +70,7 @@ class SettingsAdSectionView: SettingsSectionView {
       unsupportedView.reason = status.reason
       unsupportedView.isHidden = isSupported
       viewDetailsButton.isHidden = !isSupported
+      disabledView.isHidden = !isSupported
       toggleSwitch.isHidden = !isSupported
       
       let alpha: CGFloat = isSupported ? 1.0 : 0.5
@@ -74,6 +86,12 @@ class SettingsAdSectionView: SettingsSectionView {
   }
   
   let viewDetailsButton = SettingsViewDetailsButton(type: .system)
+  private let disabledView = DisabledSettingGraphicView(
+    image: UIImage(frameworkResourceNamed: "ads-disabled-icon"),
+    text: Strings.DisabledAdsMessage
+  ).then {
+    $0.isHidden = true
+  }
   
   let toggleSwitch = UISwitch().then {
     $0.onTintColor = BraveUX.switchOnColor
@@ -94,6 +112,7 @@ class SettingsAdSectionView: SettingsSectionView {
     contentStackView.addArrangedSubview(toggleStackView)
     contentStackView.addArrangedSubview(bodyLabel)
     contentStackView.addArrangedSubview(viewDetailsButton)
+    contentStackView.addArrangedSubview(disabledView)
     toggleStackView.addArrangedSubview(titleLabel)
     toggleStackView.addArrangedSubview(toggleSwitch)
     

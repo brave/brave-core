@@ -154,6 +154,7 @@
 		0BF42D4F1A7CD09600889E28 /* TestFavicons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF42D4E1A7CD09600889E28 /* TestFavicons.swift */; };
 		27187808216526090006036E /* AlertPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187807216526090006036E /* AlertPopupView.swift */; };
 		2718780A216526240006036E /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187809216526240006036E /* PopupView.swift */; };
+		2718B26E2391BB8E00F378BF /* DisabledSettingGraphicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2718B26D2391BB8E00F378BF /* DisabledSettingGraphicView.swift */; };
 		271DEC2B234CC760009DAC37 /* BraveRewardsUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 271DEC1B234CC75F009DAC37 /* BraveRewardsUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		271DEC2E234CC760009DAC37 /* BraveRewardsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 271DEC19234CC75F009DAC37 /* BraveRewardsUI.framework */; };
 		271DEC2F234CC760009DAC37 /* BraveRewardsUI.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 271DEC19234CC75F009DAC37 /* BraveRewardsUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -1393,6 +1394,7 @@
 		0BF42D4E1A7CD09600889E28 /* TestFavicons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestFavicons.swift; sourceTree = "<group>"; };
 		27187807216526090006036E /* AlertPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPopupView.swift; sourceTree = "<group>"; };
 		27187809216526240006036E /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
+		2718B26D2391BB8E00F378BF /* DisabledSettingGraphicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisabledSettingGraphicView.swift; sourceTree = "<group>"; };
 		271DEC19234CC75F009DAC37 /* BraveRewardsUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BraveRewardsUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		271DEC1B234CC75F009DAC37 /* BraveRewardsUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BraveRewardsUI.h; sourceTree = "<group>"; };
 		271DEC1C234CC75F009DAC37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -3082,6 +3084,7 @@
 				271DEC90234CC7EF009DAC37 /* Auto-Contribute */,
 				271DEC97234CC7EF009DAC37 /* Rewards Toggle */,
 				271DEC9A234CC7EF009DAC37 /* SettingsViewController.swift */,
+				2718B26D2391BB8E00F378BF /* DisabledSettingGraphicView.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -5697,6 +5700,7 @@
 				271DED1B234CC7EF009DAC37 /* QRCode.swift in Sources */,
 				271DED11234CC7EF009DAC37 /* PopoverNavigationController.swift in Sources */,
 				271DECFE234CC7EF009DAC37 /* WalletDetailsView.swift in Sources */,
+				2718B26E2391BB8E00F378BF /* DisabledSettingGraphicView.swift in Sources */,
 				271DECFB234CC7EF009DAC37 /* TipsSummaryTableCell.swift in Sources */,
 				271DECC8234CC7EF009DAC37 /* AddFundsView.swift in Sources */,
 				271DED1E234CC7EF009DAC37 /* GradientView.swift in Sources */,
