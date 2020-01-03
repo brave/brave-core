@@ -68,21 +68,27 @@ public final class Domain: NSManagedObject, CRUD {
     }
     
     /// Whether or not a given shield should be enabled based on domain exceptions and the users global preference
-    public func isShieldExpected(_ shield: BraveShield) -> Bool {
-        switch shield {
-        case .AllOff:
-            return self.shield_allOff?.boolValue ?? false
-        case .AdblockAndTp:
-            return self.shield_adblockAndTp?.boolValue ?? Preferences.Shields.blockAdsAndTracking.value
-        case .HTTPSE:
-            return self.shield_httpse?.boolValue ?? Preferences.Shields.httpsEverywhere.value
-        case .SafeBrowsing:
-            return self.shield_safeBrowsing?.boolValue ?? Preferences.Shields.blockPhishingAndMalware.value
-        case .FpProtection:
-            return self.shield_fpProtection?.boolValue ?? Preferences.Shields.fingerprintingProtection.value
-        case .NoScript:
-            return self.shield_noScript?.boolValue ?? Preferences.Shields.blockScripts.value
+    public func isShieldExpected(_ shield: BraveShield, considerAllShieldsOption: Bool) -> Bool {
+        let isShieldOn = { () -> Bool in
+            switch shield {
+            case .AllOff:
+                return self.shield_allOff?.boolValue ?? false
+            case .AdblockAndTp:
+                return self.shield_adblockAndTp?.boolValue ?? Preferences.Shields.blockAdsAndTracking.value
+            case .HTTPSE:
+                return self.shield_httpse?.boolValue ?? Preferences.Shields.httpsEverywhere.value
+            case .SafeBrowsing:
+                return self.shield_safeBrowsing?.boolValue ?? Preferences.Shields.blockPhishingAndMalware.value
+            case .FpProtection:
+                return self.shield_fpProtection?.boolValue ?? Preferences.Shields.fingerprintingProtection.value
+            case .NoScript:
+                return self.shield_noScript?.boolValue ?? Preferences.Shields.blockScripts.value
+            }
         }
+        
+        let isAllShieldsOff = Bool(truncating: shield_allOff ?? NSNumber(value: 0))
+        let isSpecificShieldOn = isShieldOn()
+        return considerAllShieldsOption ? !isAllShieldsOff && isSpecificShieldOn : isSpecificShieldOn
     }
     
     public static func migrateShieldOverrides() {

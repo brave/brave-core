@@ -28,7 +28,7 @@ class FaviconHandler {
             return deferMaybe(FaviconError())
         }
 
-        let deferred = Deferred<Maybe<(Favicon, Data?)>>()
+        let deferred = Deferred<Maybe<(Favicon, Data?)>>(value: nil, defaultQueue: .main)
 
         var imageOperation: SDWebImageOperation?
 

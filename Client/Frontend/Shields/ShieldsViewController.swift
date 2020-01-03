@@ -67,7 +67,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
             
             if let domain = domain {
                 // site-specific shield has been overridden, update
-                view.toggleSwitch.isOn = domain.isShieldExpected(shield)
+                view.toggleSwitch.isOn = domain.isShieldExpected(shield, considerAllShieldsOption: false)
                 if shield == .AllOff {
                     // Reverse, as logic is inverted
                     view.toggleSwitch.isOn.toggle()
