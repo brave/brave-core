@@ -927,7 +927,7 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
     RecordWalletBalanceP3A(true, 0);
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
     const bool ads_enabled =
-      profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled);
+        profile_->GetPrefs()->GetBoolean(brave_ads::prefs::kEnabled);
     RecordAdsState(ads_enabled ? AdsP3AState::kAdsEnabled
                                : AdsP3AState::kAdsDisabled);
 #endif
@@ -1069,6 +1069,7 @@ void RewardsServiceImpl::OnLedgerStateLoaded(
     }
     // Record stats.
     RecordBackendP3AStats();
+    MaybeRecordInitialAdsP3AState(profile_->GetPrefs());
   }
   if (state.first.empty()) {
     RecordNoWalletCreatedForAllMetrics();
