@@ -51,11 +51,13 @@ constexpr uint64_t kDefaultUploadIntervalSeconds = 60 * 60;  // 1 hour.
 constexpr const char* kCollectedHistograms[] = {
     "Brave.P3A.SentAnswersCount",
     "Brave.Sync.Status",
-    "DefaultBrowser.State",
+    // Deprecated:
+    // "DefaultBrowser.State",
     "Brave.Importer.ImporterSource",
     "Brave.Shields.UsageStatus",
     // Do not gather detailed info regarding TOR usage for now.
     // "Brave.Core.LastTimeTorUsed",
+    "Brave.Core.IsDefault",
     "Brave.Core.TorEverUsed",
     "Brave.Core.LastTimeIncognitoUsed",
     "Brave.Core.NumberOfExtensions",
@@ -203,6 +205,14 @@ std::string BraveP3AService::Serialize(base::StringPiece histogram_name,
   prochlo::GenerateP3AMessage(histogram_name_hash, value, pyxis_meta_,
                               &message);
   return message.SerializeAsString();
+}
+
+bool
+BraveP3AService::IsActualMetric(base::StringPiece histogram_name) const {
+  static const base::NoDestructor<base::flat_set<base::StringPiece>>
+      metric_names {std::begin(kCollectedHistograms),
+                    std::end(kCollectedHistograms)};
+  return metric_names->contains(histogram_name);
 }
 
 void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
