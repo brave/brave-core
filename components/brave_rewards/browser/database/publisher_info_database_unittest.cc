@@ -61,6 +61,16 @@ class PublisherInfoDatabaseTest : public ::testing::Test {
                                int end_version) {
     const std::string file_name = "publisher_info_db_v" +
         std::to_string(start_version);
+
+    LoadDatabaseFile(temp_dir, db_file, file_name, "migration", end_version);
+  }
+
+  void LoadDatabaseFile(
+      base::ScopedTempDir* temp_dir,
+      base::FilePath* db_file,
+      const std::string& file_name,
+      const std::string& folder,
+      int end_version) {
     ASSERT_TRUE(temp_dir->CreateUniqueTempDir());
     *db_file = temp_dir->GetPath().AppendASCII(file_name);
 
@@ -69,7 +79,7 @@ class PublisherInfoDatabaseTest : public ::testing::Test {
     ASSERT_TRUE(base::PathService::Get(brave::DIR_TEST_DATA, &path));
     path = path.AppendASCII("rewards-data");
     ASSERT_TRUE(base::PathExists(path));
-    path = path.AppendASCII("migration");
+    path = path.AppendASCII(folder);
     ASSERT_TRUE(base::PathExists(path));
     path = path.AppendASCII(file_name);
     ASSERT_TRUE(base::PathExists(path));
@@ -1461,6 +1471,38 @@ TEST_F(PublisherInfoDatabaseTest, RemoveAllPendingContributions) {
   bool success = publisher_info_database_->RemoveAllPendingContributions();
   EXPECT_TRUE(success);
   EXPECT_EQ(CountTableRows("pending_contribution"), 0);
+}
+
+TEST_F(PublisherInfoDatabaseTest,
+    ContributionQueueKeyCorrupted) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  LoadDatabaseFile(
+      &temp_dir,
+      &db_file,
+      "contribution_queue_key_corrupted",
+      "database",
+      9);
+  EXPECT_TRUE(publisher_info_database_->Init());
+
+  EXPECT_EQ(CountTableRows("contribution_queue"), 0);
+  EXPECT_EQ(CountTableRows("contribution_queue_publishers"), 0);
+}
+
+TEST_F(PublisherInfoDatabaseTest,
+    ContributionQueueKeyOk) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  LoadDatabaseFile(
+      &temp_dir,
+      &db_file,
+      "contribution_queue_key_ok",
+      "database",
+      9);
+  EXPECT_TRUE(publisher_info_database_->Init());
+
+  EXPECT_EQ(CountTableRows("contribution_queue"), 1);
+  EXPECT_EQ(CountTableRows("contribution_queue_publishers"), 1);
 }
 
 }  // namespace brave_rewards

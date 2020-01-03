@@ -33,6 +33,12 @@ class DatabaseContributionQueuePublishers: public DatabaseTable {
       sql::Database* db,
       const uint64_t queue_id);
 
+  bool DeleteRecordsByQueueId(sql::Database* db, const uint64_t queue_id);
+
+  bool HasCorruptedForeignKey(sql::Database* db);
+
+  bool DeleteAllRecords(sql::Database* db);
+
  private:
   const char* table_name_ = "contribution_queue_publishers";
   const int minimum_version_ = 9;
