@@ -45,6 +45,17 @@ group("brave_ios_tests") {
   ]
 }
 
+source_set("rewards_db") {
+    sources = [
+      "//brave/components/brave_rewards/browser/rewards_database.h",
+      "//brave/components/brave_rewards/browser/rewards_database.cc",
+    ]
+    deps = [
+      "//brave/vendor/bat-native-ledger",
+      "//sql",
+    ]
+}
+
 ios_framework_bundle("brave_rewards_ios_framework") {
   output_name = "BraveRewards"
   output_dir = root_out_dir
@@ -59,6 +70,7 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "//brave/vendor/bat-native-ledger",
     "//brave/vendor/bat-native-ads",
     "//url",
+    ":rewards_db",
     ":resources",
     ":coredata",
     ":mojo_gen_wrappers",

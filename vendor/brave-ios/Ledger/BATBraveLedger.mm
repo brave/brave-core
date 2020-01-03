@@ -28,6 +28,7 @@
 #import "url/gurl.h"
 #import "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #import "base/strings/sys_string_conversions.h"
+#import "brave/components/brave_rewards/browser/rewards_database.h"
 
 #define BLOG(__severity) RewardsLogStream(__FILE__, __LINE__, __severity).stream()
 
@@ -86,6 +87,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 @interface BATBraveLedger () <NativeLedgerClientBridge> {
   NativeLedgerClient *ledgerClient;
   ledger::Ledger *ledger;
+  brave_rewards::RewardsDatabase *rewardsDatabase;
 }
 @property (nonatomic, copy) NSString *storagePath;
 @property (nonatomic) BATWalletProperties *walletInfo;
@@ -103,6 +105,8 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 
 @property (nonatomic, getter=isLoadingPublisherList) BOOL loadingPublisherList;
 @property (nonatomic, getter=isInitializingWallet) BOOL initializingWallet;
+
+@property (nonatomic) dispatch_queue_t databaseQueue;
 
 /// Notifications
 
@@ -139,6 +143,11 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
       self.prefs[kUserHasFundedKey] = @(NO);
       [self savePrefs];
     }
+    
+    self.databaseQueue = dispatch_queue_create("com.rewards.db-transactions", DISPATCH_QUEUE_SERIAL);
+    
+    const auto dbPath = [self.storagePath stringByAppendingPathComponent:@"Rewards.db"].UTF8String;
+    rewardsDatabase = new brave_rewards::RewardsDatabase(base::FilePath(dbPath));
 
     ledgerClient = new NativeLedgerClient(self);
     ledger = ledger::Ledger::CreateInstance(ledgerClient);
@@ -172,6 +181,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 
   delete ledger;
   delete ledgerClient;
+  delete rewardsDatabase;
 }
 
 - (NSString *)randomStatePath
@@ -2209,6 +2219,25 @@ BATLedgerBridge(BOOL,
 - (void)reconcileStampReset
 {
   // TODO please implement
+}
+
+- (void)runDBTransaction:(ledger::DBTransactionPtr)transaction
+                callback:(ledger::RunDBTransactionCallback)callback
+{
+  if (!rewardsDatabase || transaction.get() == nullptr) {
+    auto response = ledger::DBCommandResponse::New();
+    response->status = ledger::DBCommandResponse::Status::RESPONSE_ERROR;
+    callback(std::move(response));
+  } else {
+    __block auto transactionClone = transaction->Clone();
+    dispatch_async(self.databaseQueue, ^{
+      __block auto response = ledger::DBCommandResponse::New();
+      rewardsDatabase->RunTransaction(std::move(transactionClone), response.get());
+      dispatch_async(dispatch_get_main_queue(), ^{
+        callback(std::move(response));
+      });
+    });
+  }
 }
 
 @end
