@@ -9,17 +9,28 @@ class SettingsAutoContributeSectionView: SettingsSectionView {
   func setSectionEnabled(_ enabled: Bool, hidesToggle: Bool, animated: Bool = false) {
     if animated {
       if enabled {
-        viewDetailsButton.alpha = 0.0
+        if viewDetailsButton.isHidden {
+          viewDetailsButton.alpha = 0.0
+        }
+      } else {
+        if disabledView.isHidden {
+          disabledView.alpha = 0.0
+        }
       }
       UIView.animate(withDuration: 0.15) {
         if self.viewDetailsButton.isHidden == enabled { // UIStackView bug, have to check first
           self.viewDetailsButton.isHidden = !enabled
         }
+        if self.disabledView.isHidden != enabled {
+          self.disabledView.isHidden = enabled
+        }
         self.viewDetailsButton.alpha = enabled ? 1.0 : 0.0
+        self.disabledView.alpha = enabled ? 0.0 : 1.0
         self.toggleSwitch.alpha = hidesToggle ? 0.0 : 1.0
       }
     } else {
       viewDetailsButton.isHidden = !enabled
+      disabledView.isHidden = enabled
       self.toggleSwitch.alpha = hidesToggle ? 0.0 : 1.0
     }
   }
@@ -30,6 +41,12 @@ class SettingsAutoContributeSectionView: SettingsSectionView {
   }
   
   let viewDetailsButton = SettingsViewDetailsButton(type: .system)
+  private let disabledView = DisabledSettingGraphicView(
+    image: UIImage(frameworkResourceNamed: "ac-disabled-icon"),
+    text: Strings.DisabledAutoContributeMessage
+  ).then {
+    $0.isHidden = true
+  }
   
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -40,6 +57,7 @@ class SettingsAutoContributeSectionView: SettingsSectionView {
     stackView.addArrangedSubview(toggleStackView)
     stackView.addArrangedSubview(bodyLabel)
     stackView.addArrangedSubview(viewDetailsButton)
+    stackView.addArrangedSubview(disabledView)
     toggleStackView.addArrangedSubview(titleLabel)
     toggleStackView.addArrangedSubview(toggleSwitch)
     

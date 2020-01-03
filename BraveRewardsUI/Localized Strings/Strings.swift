@@ -189,7 +189,7 @@ internal extension Strings {
   static let TipsTotalThisMonth = NSLocalizedString("BraveRewardsTipsTotalThisMonth", bundle: Bundle.RewardsUI, value: "Total tips this month", comment: "")
   static let TippingTitle = NSLocalizedString("BraveRewardsTippingTitle", bundle: Bundle.RewardsUI, value: "Send a tip", comment: "")
   static let GrantsClaimedExpirationDateTitle = NSLocalizedString("BraveRewardsGrantsClaimedExpirationDateTitle", bundle: Bundle.RewardsUI, value: "Grant Expiration Date", comment: "")
-  static let SettingsAutoContributeBody = NSLocalizedString("BraveRewardsSettingsAutoContributeBody", bundle: Bundle.RewardsUI, value: "An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The sites you visit receive your contributions automatically, based on your attention as measured by Brave.", comment: "")
+  static let SettingsAutoContributeBody = NSLocalizedString("BraveRewardsSettingsAutoContributeBody", bundle: Bundle.RewardsUI, value: "An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The Brave Verified sites you visit will receive your contributions automatically, based on your attention as measured by Brave.", comment: "")
   static var GrantsClaimedAmountTitle: String {
     if Preferences.Rewards.isUsingBAP.value == true {
       return NSLocalizedString("BraveRewardsGrantsClaimedAmountTitleJapan", bundle: Bundle.RewardsUI, value: "Free Points Grant", comment: "")
@@ -265,5 +265,8 @@ internal extension Strings {
   static let GenericErrorBody = NSLocalizedString("WalletCreationErrorBody", bundle: Bundle.RewardsUI, value: "Oops! Something went wrong. Please try again.", comment: "")
   static let BATPointsDisclaimer = NSLocalizedString("BATPointsDisclaimer", bundle: Bundle.RewardsUI, value: "BAT Points can be used to contribute to your favorite content creators. BAT Points cannot be exchanged for BAT.", comment: "Disclaimer about BAT Points for JP users")
   static let BATPointsDisclaimerBoldedWords = NSLocalizedString("BATPointsBoldedWords", bundle: Bundle.RewardsUI, value: "BAT Points", comment: "Words that should be bolded in the BAT Points disclaimer")
+  
+  static let DisabledAutoContributeMessage = NSLocalizedString("DisabledAutoContributeMessage", bundle: Bundle.RewardsUI, value: "Reward creators for the content you love. Your monthly payment gets distributed across the sites you visit.", comment: "Message that is displayed when user disables auto-contribute")
+  static let DisabledAdsMessage = NSLocalizedString("DisabledAdsMessage", bundle: Bundle.RewardsUI, value: "Earnings are paid every month. Set your desired frequency to increase or decrease earnings.", comment: "Message that is displayed when user disables ads")
 }
 
