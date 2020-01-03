@@ -45,6 +45,8 @@ class BraveComponent {
                                 const base::FilePath& install_dir,
                                 const std::string& manifest);
 
+  std::string component_id() const { return component_id_; }
+
  private:
   static void OnComponentRegistered(Delegate* delegate,
                                     const std::string& component_id);

@@ -1,0 +1,40 @@
+if (is_component_build) {
+  component("ntp_sponsored_images_component") {
+    public_deps = [ ":ntp_sponsored_images_impl" ]
+  }
+}
+
+group("ntp_sponsored_images") {
+  if (is_component_build) {
+    public_deps = [ ":ntp_sponsored_images_component" ]
+  } else {
+    public_deps = [ ":ntp_sponsored_images_impl" ]
+  }
+}
+
+source_set("ntp_sponsored_images_impl") {
+  visibility = [ ":*" ]
+  assert_no_deps = [ "//chrome/*" ]
+
+  if (is_component_build) {
+    defines = [ "IS_BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_IMPL" ]
+  }
+
+  sources = [
+    "ntp_sponsored_images_data.cc",
+    "ntp_sponsored_images_data.h",
+    "ntp_sponsored_images_service.cc",
+    "ntp_sponsored_images_service.h",
+    "ntp_sponsored_image_source.cc",
+    "ntp_sponsored_image_source.h",
+    "url_constants.cc",
+    "url_constants.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_component_updater/browser",
+    "//components/component_updater",
+    "//content/public/browser",
+  ]
+}

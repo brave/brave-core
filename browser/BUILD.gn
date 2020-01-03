@@ -135,6 +135,7 @@ source_set("browser_process") {
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/content_settings/core/browser",
     "//brave/components/greaselion/browser/buildflags",
+    "//brave/components/ntp_sponsored_images",
     "//brave/components/ntp_tiles",
     "//brave/components/p3a",
     "//brave/components/resources",
