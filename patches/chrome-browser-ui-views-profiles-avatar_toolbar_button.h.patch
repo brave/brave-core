@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-index bfa8ac343582b3345f90de87d015798485b53a57..71b59088d7c204653413b1a477b840192d33e192 100644
+index 60638f89e6aa890effa80642a3be8264f3b1613f..7cd22615b6de3a3fe00910eba48ee96c30f9b673 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-@@ -52,6 +52,7 @@ class AvatarToolbarButton : public ToolbarButton,
-   void RemoveObserver(Observer* observer);
+@@ -57,6 +57,7 @@ class AvatarToolbarButton : public ToolbarButton,
+   static const char kAvatarToolbarButtonClassName[];
  
   private:
 +  friend class BraveAvatarToolbarButton;

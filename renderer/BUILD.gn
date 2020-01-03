@@ -11,8 +11,8 @@ source_set("renderer") {
   sources = [
     "brave_content_renderer_client.cc",
     "brave_content_renderer_client.h",
-    "brave_content_settings_observer.cc",
-    "brave_content_settings_observer.h",
+    "brave_content_settings_agent_impl.cc",
+    "brave_content_settings_agent_impl.h",
   ]
 
   deps = [

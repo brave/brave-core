@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/renderer/core/svg/svg_path_element.cc b/third_party/blink/renderer/core/svg/svg_path_element.cc
-index 497baf56704b1f4c0910b1c3af46000f164bb8f0..340b6609ff193f00c67027c4dd4c043607a582b2 100644
+index 04f61a23f1c3769f972a420db8046bdb50f04efc..a93034e1b103f254a8d87b149d46344d143960b5 100644
 --- a/third_party/blink/renderer/core/svg/svg_path_element.cc
 +++ b/third_party/blink/renderer/core/svg/svg_path_element.cc
 @@ -20,6 +20,7 @@
  
  #include "third_party/blink/renderer/core/svg/svg_path_element.h"
  
-+#include "brave/renderer/brave_content_settings_observer_helper.h"
++#include "brave/renderer/brave_content_settings_agent_impl_helper.h"
  #include "third_party/blink/renderer/core/layout/layout_object.h"
  #include "third_party/blink/renderer/core/svg/svg_mpath_element.h"
  #include "third_party/blink/renderer/core/svg/svg_path_query.h"

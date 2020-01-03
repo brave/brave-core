@@ -10,32 +10,20 @@ found in the LICENSE file.
 <grit-part>
   <!-- XR consent dialog. -->
   <message name="IDS_XR_CONSENT_DIALOG_TITLE" desc="Title of the user consent dialog displayed before allowing a website to start a VR presentation">
-    Allow <ph name="DOMAIN">$1<ex>example.com</ex></ph> to enter VR?
+    Enter VR from <ph name="DOMAIN">$1<ex>example.com</ex></ph>?
   </message>
-  <message name="IDS_XR_CONSENT_DIALOG_DESCRIPTION_DEFAULT" desc="Body of the user consent dialog displayed before allowing a website to start a VR presentation">
-    Make sure you trust this site before entering VR.
+  <message name="IDS_XR_CONSENT_DIALOG_DESCRIPTION_DEFAULT" desc="This is the header for a bulleted list of potential concerns that we want to ensure the user is aware of before entering VR. This header and the appended items of the bulleted list make up the body of the user consent dialog displayed before a website may start a VR presentation.">
+    While you're in VR, this site may be able to learn about:
   </message>
-  <!-- NOTE for the below: It seems as though the leading whitespace from the
-       first line will be removed. However, leading whitespace on subsequent
-       lines isn't. This is aligned it's current way to ensure proper alignment
-       when displayed. -->
-  <message name="IDS_XR_CONSENT_DIALOG_DESCRIPTION_PHYSICAL_FEATURES" desc="Body of the user consent dialog displayed before allowing a website to start a VR presentation, when physical features may be exposed. The 'make sure you trust this site' line is intended to align with the 'while you are in VR' line, and as such no additional indentation is currently applied.">
-While you are in VR, this site may be able to learn about:
-  -  your physical features, such as height
-
-Make sure you trust this site before entering VR.
+  <message name="IDS_XR_CONSENT_DIALOG_DESCRIPTION_PHYSICAL_FEATURES" desc="Item for the bulleted list of potential concerns in the consent dialog indicating that physical features may be exposed. Preceded with a newline and then two spaces to allow for being appended to the bulleted list at runtime.">
+'''
+  - your physical features, such as height
   </message>
-  <message name="IDS_XR_CONSENT_DIALOG_DESCRIPTION_FLOOR_PLAN" desc="Body of the user consent dialog displayed before allowing a website to start a VR presentation, when both physical features and room layout may be exposed. The 'make sure you trust this site' line is intended to align with the 'while you are in VR' line, and as such no additional indentation is currently applied.">
-While you are in VR, this site may be able to learn about:
-  -   your physical features, such as height
-  -   the layout of your room
-
-Make sure you trust this site before entering VR.
-  </message>
-  <message name="IDS_XR_CONSENT_DIALOG_BUTTON_DENY_VR" desc="Text on the button of a user consent dialog which denies a website from starting a VR presentation">
-    Don't allow
+  <message name="IDS_XR_CONSENT_DIALOG_DESCRIPTION_FLOOR_PLAN" desc="Item for the bulleted list of potential concerns in the consent dialog indicating that phyiscal features may be exposed. Preceded with a newline and then two spaces to allow for being appended to the bulleted list at runtime.">
+'''
+  - the layout of your room
   </message>
   <message name="IDS_XR_CONSENT_DIALOG_BUTTON_ALLOW_AND_ENTER_VR" desc="Text on the button of a user consent dialog which allows a website to start a VR presentation">
-    Allow &amp; enter VR
+    Enter VR
   </message>
 </grit-part>

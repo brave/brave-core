@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/people_page/people_page.html b/chrome/browser/resources/settings/people_page/people_page.html
-index d6891e8da9341639b5e897314cf68e66d2ca6453..652d7054668b06ea475da27879546b8dd93b0e51 100644
+index a7be27ce69b5fee9f6445e0e80f769f08a6fbb8b..4079b69775f64626046ee30fd7da287709d28db8 100644
 --- a/chrome/browser/resources/settings/people_page/people_page.html
 +++ b/chrome/browser/resources/settings/people_page/people_page.html
-@@ -189,6 +189,7 @@
+@@ -158,6 +158,7 @@
  </if>
                </div>
  <if expr="not chromeos">
@@ -10,7 +10,7 @@ index d6891e8da9341639b5e897314cf68e66d2ca6453..652d7054668b06ea475da27879546b8d
                <template is="dom-if" if="[[showSignin_(syncStatus)]]">
                  <div class="separator"></div>
                  <cr-button class="action-button" on-click="onSigninTap_"
-@@ -203,6 +204,7 @@
+@@ -172,6 +173,7 @@
                    $i18n{syncDisconnect}
                  </cr-button>
                </template>
@@ -18,7 +18,7 @@ index d6891e8da9341639b5e897314cf68e66d2ca6453..652d7054668b06ea475da27879546b8d
  </if>
              </template>
            </div>
-@@ -214,6 +216,7 @@
+@@ -183,6 +185,7 @@
  <if expr="not chromeos">
            <template is="dom-if" if="[[!diceEnabled_]]">
  </if>
@@ -26,7 +26,7 @@ index d6891e8da9341639b5e897314cf68e66d2ca6453..652d7054668b06ea475da27879546b8d
              <div class="settings-box two-line" id="sync-overview"
                  hidden="[[!syncStatus.signinAllowed]]">
                <div class="start settings-box-text">
-@@ -223,6 +226,7 @@
+@@ -192,6 +195,7 @@
                  </a>
                </div>
              </div>

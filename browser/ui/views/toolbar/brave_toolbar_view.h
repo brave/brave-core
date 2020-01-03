@@ -47,7 +47,7 @@ class BraveToolbarView : public ToolbarView,
   // Whether this toolbar has been initialized.
   bool brave_initialized_ = false;
   // Tracks profile count to determine whether profile switcher should be shown.
-  ScopedObserver<ProfileAttributesStorage, BraveToolbarView>
+  ScopedObserver<ProfileAttributesStorage, ProfileAttributesStorage::Observer>
       profile_observer_;
 };
 

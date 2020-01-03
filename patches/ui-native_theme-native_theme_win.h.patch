@@ -1,10 +1,10 @@
 diff --git a/ui/native_theme/native_theme_win.h b/ui/native_theme/native_theme_win.h
-index 9c2cd881afd24e9271297bd1519cfac4609a275c..e32c805bc5f016235ceada1d10257b1b2204d6c4 100644
+index df029cfc275706f0e900f1fecd6e21ca6013e57b..2cd10d36162a1874aac26fade5138d3c840b9244 100644
 --- a/ui/native_theme/native_theme_win.h
 +++ b/ui/native_theme/native_theme_win.h
-@@ -73,6 +73,7 @@ class NATIVE_THEME_EXPORT NativeThemeWin : public NativeTheme,
-   bool SystemDarkModeSupported() const override;
+@@ -75,6 +75,7 @@ class NATIVE_THEME_EXPORT NativeThemeWin : public NativeTheme,
    PreferredColorScheme CalculatePreferredColorScheme() const override;
+   ColorScheme GetDefaultSystemColorScheme() const override;
  
 +  BRAVE_UI_NATIVE_THEME_NATIVE_THEME_WIN_H_
   protected:

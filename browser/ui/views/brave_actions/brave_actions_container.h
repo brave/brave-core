@@ -17,6 +17,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/extensions/api/extension_action/extension_action_api.h"
 #include "components/prefs/pref_member.h"
+#include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_observer.h"
 #include "extensions/common/extension.h"
 #include "ui/views/view.h"
@@ -31,7 +32,6 @@ class BraveRewardsBrowserTest;
 
 namespace extensions {
 class ExtensionActionManager;
-class ExtensionRegistry;
 }
 
 namespace views {

@@ -1,20 +1,17 @@
 diff --git a/chrome/browser/resources/extensions/sidebar.html b/chrome/browser/resources/extensions/sidebar.html
-index 4024fb27744c1435d5349f9b51704cd6ed2d818d..fcb385deea6e984a4cc8d7f07e8925d52c708bb0 100644
+index 3aa0c7849321ec52238991e0148524f55597d6dc..a1d589572fdf6a80756fbde443bfd825bcd645cf 100644
 --- a/chrome/browser/resources/extensions/sidebar.html
 +++ b/chrome/browser/resources/extensions/sidebar.html
-@@ -80,6 +80,7 @@
-         <paper-ripple></paper-ripple>
-       </a>
-     </iron-selector>
+@@ -69,6 +69,7 @@
+     <paper-ripple></paper-ripple>
+   </a>
+ </iron-selector>
 +<!--
-     <div hidden="[[isSupervised]]">
-       <div class="separator"></div>
-       <a class="section-item" id="more-extensions" target="_blank"
-@@ -89,6 +90,7 @@
-         <paper-ripple></paper-ripple>
-       </a>
-     </div>
+ <div hidden="[[isSupervised]]">
+   <div class="separator"></div>
+   <a class="section-item" id="more-extensions" target="_blank"
+@@ -78,3 +79,4 @@
+     <paper-ripple></paper-ripple>
+   </a>
+ </div>
 +-->
-   </template>
-   <script src="sidebar.js"></script>
- </dom-module>

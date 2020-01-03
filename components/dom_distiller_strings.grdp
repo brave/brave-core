@@ -26,9 +26,6 @@
   <message name="IDS_DOM_DISTILLER_WEBUI_FETCHING_ENTRIES" desc="The text to show while fetching the list of entries on the DOM Distiller debug page.">
     Fetching entries...
   </message>
-  <message name="IDS_DOM_DISTILLER_VIEWER_CLOSE_READER_VIEW" desc="The text to show on a button at the bottom of the page to close reader view.">
-    Close
-  </message>
   <message name="IDS_DOM_DISTILLER_VIEWER_FAILED_TO_FIND_ARTICLE_TITLE" desc="The text to show in place of a reading list article title if the article is not found.">
     Failed to find article
   </message>

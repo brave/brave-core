@@ -13,8 +13,8 @@ namespace {
 bool BraveShouldShowPermission(
     const PageInfoUI::PermissionInfo& info,
     content::WebContents* web_contents) {
-  if ((info.type == CONTENT_SETTINGS_TYPE_PLUGINS ||
-       info.type == CONTENT_SETTINGS_TYPE_GEOLOCATION) &&
+  if ((info.type == ContentSettingsType::PLUGINS ||
+       info.type == ContentSettingsType::GEOLOCATION) &&
       brave::IsTorProfile(
           Profile::FromBrowserContext(web_contents->GetBrowserContext()))) {
     return false;

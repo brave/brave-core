@@ -1,10 +1,10 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/preferences/ChromePreferenceManager.java b/chrome/android/java/src/org/chromium/chrome/browser/preferences/ChromePreferenceManager.java
-index e1572513249fe7e7676505f11db4504036404fb4..30ea6db50f2c93befc2b9d3bd11c2e25349b2d3e 100644
+index 0d6f6b2d17a62954d7558ae5023340846ee55af4..e40842339336fd65df072907162464c21ea20287 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/preferences/ChromePreferenceManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/preferences/ChromePreferenceManager.java
-@@ -22,7 +22,7 @@ import java.util.Set;
- /**
-  * ChromePreferenceManager stores and retrieves various values in Android shared preferences.
+@@ -15,7 +15,7 @@ import java.util.Set;
+  *
+  * TODO(crbug.com/1022102): Finish moving feature-specific methods out of this class and delete it.
   */
 -public class ChromePreferenceManager {
 +public class ChromePreferenceManager extends BravePreferenceManager {

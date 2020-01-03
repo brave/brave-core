@@ -4,6 +4,7 @@
 
 #include "brave/browser/ui/views/rounded_separator.h"
 
+#include "ui/accessibility/ax_enums.mojom.h"
 #include "ui/accessibility/ax_node_data.h"
 #include "ui/gfx/canvas.h"
 #include "ui/native_theme/native_theme.h"
