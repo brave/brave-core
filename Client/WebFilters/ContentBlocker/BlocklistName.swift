@@ -61,7 +61,7 @@ class BlocklistName: CustomStringConvertible, ContentBlocker {
         
         var onList = Set<BlocklistName>()
         
-        if domain.isShieldExpected(.AdblockAndTp) {
+        if domain.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true) {
             onList.formUnion([.ad, .tracker])
             
             if Preferences.Shields.useRegionAdBlock.value, let regionalBlocker = regionalBlocker {
@@ -73,7 +73,7 @@ class BlocklistName: CustomStringConvertible, ContentBlocker {
         
         // TODO #159: Setup image shield
         
-        if domain.isShieldExpected(.HTTPSE) {
+        if domain.isShieldExpected(.HTTPSE, considerAllShieldsOption: true) {
             onList.insert(.https)
         }
         
