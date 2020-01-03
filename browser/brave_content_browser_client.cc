@@ -148,7 +148,7 @@ BraveContentBrowserClient::AllowWebBluetooth(
 
 bool BraveContentBrowserClient::HandleExternalProtocol(
     const GURL& url,
-    content::WebContents::Getter web_contents_getter,
+    content::WebContents::OnceGetter web_contents_getter,
     int child_id,
     content::NavigationUIData* navigation_data,
     bool is_main_frame,
@@ -157,23 +157,26 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     const base::Optional<url::Origin>& initiating_origin,
     network::mojom::URLLoaderFactoryPtr* out_factory) {
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  if (webtorrent::HandleMagnetProtocol(url, web_contents_getter,
-                                       page_transition, has_user_gesture,
-                                       initiating_origin)) {
+  if (webtorrent::IsMagnetProtocol(url)) {
+    webtorrent::HandleMagnetProtocol(url, std::move(web_contents_getter),
+                                     page_transition, has_user_gesture,
+                                     initiating_origin);
     return true;
   }
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  if (brave_rewards::HandleRewardsProtocol(
-      url, web_contents_getter, page_transition, has_user_gesture)) {
+  if (brave_rewards::IsRewardsProtocol(url)) {
+    brave_rewards::HandleRewardsProtocol(url, std::move(web_contents_getter),
+                                         page_transition, has_user_gesture);
     return true;
   }
 #endif
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
-      url, web_contents_getter, child_id, navigation_data, is_main_frame,
-      page_transition, has_user_gesture, initiating_origin, out_factory);
+      url, std::move(web_contents_getter), child_id, navigation_data,
+      is_main_frame, page_transition, has_user_gesture, initiating_origin,
+      out_factory);
 }
 
 base::Optional<service_manager::Manifest>

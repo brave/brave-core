@@ -80,11 +80,11 @@ static bool HandleTorrentURLRewrite(GURL* url,
 
 static void LoadOrLaunchMagnetURL(
     const GURL& url,
-    const content::WebContents::Getter& web_contents_getter,
+    content::WebContents::OnceGetter web_contents_getter,
     ui::PageTransition page_transition,
     bool has_user_gesture,
     const base::Optional<url::Origin>& initiating_origin) {
-  content::WebContents* web_contents = web_contents_getter.Run();
+  content::WebContents* web_contents = std::move(web_contents_getter).Run();
   if (!web_contents)
     return;
 
@@ -109,21 +109,21 @@ static bool HandleMagnetURLRewrite(GURL* url,
   return false;
 }
 
-static bool HandleMagnetProtocol(
+static void HandleMagnetProtocol(
     const GURL& url,
-    content::WebContents::Getter web_contents_getter,
+    content::WebContents::OnceGetter web_contents_getter,
     ui::PageTransition page_transition,
     bool has_user_gesture,
     const base::Optional<url::Origin>& initiating_origin) {
-  if (url.SchemeIs(kMagnetScheme)) {
-    base::PostTask(
-        FROM_HERE, {content::BrowserThread::UI},
-        base::BindOnce(&LoadOrLaunchMagnetURL, url, web_contents_getter,
-                       page_transition, has_user_gesture, initiating_origin));
-    return true;
-  }
+  DCHECK(url.SchemeIs(kMagnetScheme));
+  base::PostTask(FROM_HERE, {content::BrowserThread::UI},
+                 base::BindOnce(&LoadOrLaunchMagnetURL, url,
+                                std::move(web_contents_getter), page_transition,
+                                has_user_gesture, initiating_origin));
+}
 
-  return false;
+static bool IsMagnetProtocol(const GURL& url) {
+  return url.SchemeIs(kMagnetScheme);
 }
 
 }  // namespace webtorrent
