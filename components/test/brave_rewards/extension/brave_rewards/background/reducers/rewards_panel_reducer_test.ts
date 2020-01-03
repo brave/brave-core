@@ -41,6 +41,10 @@ describe('rewards panel reducer', () => {
           ...defaultState,
           walletCreated: true,
           enabledMain: true,
+          pendingPublisherData: {
+            tabUrl: 'https://clifton.io',
+            windowId: 1
+          },
           publishers: {
             id_1: {
               tabUrl: 'https://clifton.io'
@@ -153,6 +157,10 @@ describe('rewards panel reducer', () => {
           ...defaultState,
           walletCreated: true,
           enabledMain: true,
+          pendingPublisherData: {
+            tabUrl: 'https://clifton.io',
+            windowId: 1
+          },
           publishers: {
             id_1: {
               tabUrl: 'https://clifton.io'
@@ -188,6 +196,10 @@ describe('rewards panel reducer', () => {
           ...defaultState,
           walletCreated: true,
           enabledMain: true,
+          pendingPublisherData: {
+            tabUrl: 'https://brave.com',
+            windowId: 1
+          },
           publishers: {
             id_1: {
               tabUrl: 'https://brave.com'
@@ -255,6 +267,10 @@ describe('rewards panel reducer', () => {
           ...defaultState,
           walletCreated: true,
           enabledMain: true,
+          pendingPublisherData: {
+            tabUrl: 'https://clifton.io',
+            windowId: 1
+          },
           publishers: {
             id_1: {
               tabUrl: 'https://clifton.io'

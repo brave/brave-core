@@ -53,7 +53,6 @@ class Publisher : public ledger::LedgerCallbackHandler {
   void SaveVisit(const std::string& publisher_key,
                  const ledger::VisitData& visit_data,
                  const uint64_t& duration,
-                 uint64_t window_id,
                  const ledger::PublisherInfoCallback callback);
 
   void setPublisherMinVisitTime(const uint64_t& duration);  // In seconds
@@ -99,9 +98,9 @@ class Publisher : public ledger::LedgerCallbackHandler {
       ParsePublisherListCallback callback);
 
   void getPublisherActivityFromUrl(
-      uint64_t windowId,
       const ledger::VisitData& visit_data,
-      const std::string& publisher_blob);
+      const std::string& publisher_blob,
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
   void GetPublisherBanner(const std::string& publisher_key,
                           ledger::PublisherBannerCallback callback);
@@ -165,7 +164,6 @@ class Publisher : public ledger::LedgerCallbackHandler {
       const std::string& publisher_key,
       const ledger::VisitData& visit_data,
       uint64_t duration,
-      uint64_t window_id,
       const ledger::PublisherInfoCallback callback,
       ledger::Result result,
       ledger::PublisherInfoPtr publisher_info);
@@ -175,7 +173,6 @@ class Publisher : public ledger::LedgerCallbackHandler {
     const std::string& publisher_key,
     const ledger::VisitData& visit_data,
     uint64_t duration,
-    uint64_t window_id,
     const ledger::PublisherInfoCallback callback);
 
   ledger::Result GetBalanceReportInternal(
@@ -184,14 +181,12 @@ class Publisher : public ledger::LedgerCallbackHandler {
       ledger::BalanceReportInfo* report_info);
 
   void onFetchFavIcon(const std::string& publisher_key,
-                      uint64_t window_id,
                       bool success,
                       const std::string& favicon_url);
 
   void onFetchFavIconDBResponse(ledger::Result result,
                                 ledger::PublisherInfoPtr info,
-                                const std::string& favicon_url,
-                                uint64_t window_id);
+                                const std::string& favicon_url);
 
   void OnSetPublisherExclude(
     ledger::PublisherExclude exclude,
@@ -223,13 +218,14 @@ class Publisher : public ledger::LedgerCallbackHandler {
 
   void OnSaveVisitInternal(
     ledger::Result result,
-    ledger::PublisherInfoPtr info);
+    ledger::PublisherInfoPtr info,
+    ledger::GetPublisherActivityFromUrlCallback callback);
 
   void OnPanelPublisherInfo(
       ledger::Result result,
       ledger::PublisherInfoPtr publisher_info,
-      uint64_t windowId,
-      const ledger::VisitData& visit_data);
+      const ledger::VisitData& visit_data,
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
   void OnGetPublisherBanner(
       ledger::ServerPublisherInfoPtr info,

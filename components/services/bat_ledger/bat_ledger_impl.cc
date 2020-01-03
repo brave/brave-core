@@ -127,39 +127,138 @@ void BatLedgerImpl::OnLoad(ledger::VisitDataPtr visit_data,
   ledger_->OnLoad(std::move(visit_data), current_time);
 }
 
-void BatLedgerImpl::OnUnload(uint32_t tab_id, uint64_t current_time) {
-  ledger_->OnUnload(tab_id, current_time);
+void BatLedgerImpl::OnUnloadComplete(
+    CallbackHolder<OnUnloadCallback>* holder,
+    const ledger::Result result,
+    ledger::PublisherInfoPtr publisher_info) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result, std::move(publisher_info));
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::OnUnload(
+    uint32_t tab_id,
+    uint64_t current_time,
+    OnUnloadCallback callback) {
+  auto* holder = new CallbackHolder<OnUnloadCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->OnUnload(
+      tab_id,
+      current_time,
+      std::bind(BatLedgerImpl::OnUnloadComplete, holder, _1, _2));
 }
 
 void BatLedgerImpl::OnShow(uint32_t tab_id, uint64_t current_time) {
   ledger_->OnShow(tab_id, current_time);
 }
 
-void BatLedgerImpl::OnHide(uint32_t tab_id, uint64_t current_time) {
-  ledger_->OnHide(tab_id, current_time);
+void BatLedgerImpl::OnHideComplete(
+    CallbackHolder<OnHideCallback>* holder,
+    const ledger::Result result,
+    ledger::PublisherInfoPtr publisher_info) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result, std::move(publisher_info));
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::OnHide(
+    uint32_t tab_id,
+    uint64_t current_time,
+    OnHideCallback callback) {
+  auto* holder = new CallbackHolder<OnHideCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->OnHide(tab_id,
+                  current_time,
+                  std::bind(BatLedgerImpl::OnHideComplete, holder, _1, _2));
 }
 
 void BatLedgerImpl::OnForeground(uint32_t tab_id, uint64_t current_time) {
   ledger_->OnForeground(tab_id, current_time);
 }
 
-void BatLedgerImpl::OnBackground(uint32_t tab_id, uint64_t current_time) {
-  ledger_->OnBackground(tab_id, current_time);
+void BatLedgerImpl::OnBackgroundComplete(
+    CallbackHolder<OnBackgroundCallback>* holder,
+    const ledger::Result result,
+    ledger::PublisherInfoPtr publisher_info) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result, std::move(publisher_info));
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::OnBackground(
+    uint32_t tab_id,
+    uint64_t current_time,
+    OnBackgroundCallback callback) {
+  auto* holder = new CallbackHolder<OnBackgroundCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->OnBackground(
+      tab_id,
+      current_time,
+      std::bind(BatLedgerImpl::OnBackgroundComplete, holder, _1, _2));
+}
+
+void BatLedgerImpl::OnPostDataComplete(
+    CallbackHolder<OnPostDataCallback>* holder,
+    const ledger::Result result,
+    ledger::PublisherInfoPtr publisher_info) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result, std::move(publisher_info));
+  }
+  delete holder;
 }
 
 void BatLedgerImpl::OnPostData(const std::string& url,
     const std::string& first_party_url, const std::string& referrer,
-    const std::string& post_data, ledger::VisitDataPtr visit_data) {
+    const std::string& post_data, ledger::VisitDataPtr visit_data,
+    OnPostDataCallback callback) {
+  auto* holder = new CallbackHolder<OnPostDataCallback>(
+      AsWeakPtr(), std::move(callback));
   ledger_->OnPostData(
-      url, first_party_url, referrer, post_data, std::move(visit_data));
+      url,
+      first_party_url,
+      referrer,
+      post_data,
+      std::move(visit_data),
+      std::bind(BatLedgerImpl::OnPostDataComplete, holder, _1, _2));
 }
 
-void BatLedgerImpl::OnXHRLoad(uint32_t tab_id, const std::string& url,
-    const base::flat_map<std::string, std::string>& parts,
-    const std::string& first_party_url, const std::string& referrer,
-    ledger::VisitDataPtr visit_data) {
-    ledger_->OnXHRLoad(tab_id, url, mojo::FlatMapToMap(parts),
-        first_party_url, referrer, std::move(visit_data));
+void BatLedgerImpl::OnXHRLoadComplete(
+    CallbackHolder<OnXHRLoadCallback>* holder,
+    const ledger::Result result,
+    ledger::PublisherInfoPtr publisher_info) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result, std::move(publisher_info));
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::OnXHRLoad(
+    uint32_t tab_id,
+    const std::string& url,
+    const base::flat_map<std::string,
+    std::string>& parts,
+    const std::string& first_party_url,
+    const std::string& referrer,
+    ledger::VisitDataPtr visit_data,
+    OnXHRLoadCallback callback) {
+    auto* holder = new CallbackHolder<OnXHRLoadCallback>(
+        AsWeakPtr(), std::move(callback));
+    ledger_->OnXHRLoad(
+        tab_id,
+        url,
+        mojo::FlatMapToMap(parts),
+        first_party_url,
+        referrer,
+        std::move(visit_data),
+        std::bind(BatLedgerImpl::OnXHRLoadComplete, holder, _1, _2));
 }
 
 // static
@@ -363,12 +462,30 @@ void BatLedgerImpl::IsWalletCreated(IsWalletCreatedCallback callback) {
   std::move(callback).Run(ledger_->IsWalletCreated());
 }
 
+void BatLedgerImpl::OnGetPublisherActivityFromUrl(
+    CallbackHolder<GetPublisherActivityFromUrlCallback>* holder,
+    const ledger::Result result,
+    ledger::PublisherInfoPtr publisher_info) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result, std::move(publisher_info));
+  }
+  delete holder;
+}
+
 void BatLedgerImpl::GetPublisherActivityFromUrl(
-    uint64_t window_id,
     ledger::VisitDataPtr visit_data,
-    const std::string& publisher_blob) {
+    const std::string& publisher_blob,
+    GetPublisherActivityFromUrlCallback callback) {
+  auto* holder = new CallbackHolder<GetPublisherActivityFromUrlCallback>(
+      AsWeakPtr(), std::move(callback));
   ledger_->GetPublisherActivityFromUrl(
-      window_id, std::move(visit_data), publisher_blob);
+      std::move(visit_data),
+      publisher_blob,
+      std::bind(BatLedgerImpl::OnGetPublisherActivityFromUrl,
+                holder,
+                _1,
+                _2));
 }
 
 // static

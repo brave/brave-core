@@ -163,8 +163,11 @@ void LedgerImpl::OnLoad(ledger::VisitDataPtr visit_data,
   }
 }
 
-void LedgerImpl::OnUnload(uint32_t tab_id, const uint64_t& current_time) {
-  OnHide(tab_id, current_time);
+void LedgerImpl::OnUnload(
+    uint32_t tab_id,
+    const uint64_t& current_time,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
+  OnHide(tab_id, current_time, callback);
   visit_data_iter iter = current_pages_.find(tab_id);
   if (iter != current_pages_.end()) {
     current_pages_.erase(iter);
@@ -177,12 +180,16 @@ void LedgerImpl::OnShow(uint32_t tab_id, const uint64_t& current_time) {
 }
 
 void LedgerImpl::OnSaveVisit(
+    ledger::GetPublisherActivityFromUrlCallback callback,
     ledger::Result result,
     ledger::PublisherInfoPtr info) {
-  // TODO(nejczdovc): handle if needed
+  callback(result, std::move(info));
 }
 
-void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
+void LedgerImpl::OnHide(
+    uint32_t tab_id,
+    const uint64_t& current_time,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   if (!GetRewardsMainEnabled() || !GetAutoContribute()) {
     return;
   }
@@ -203,12 +210,13 @@ void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
   if (type == GITHUB_MEDIA_TYPE) {
       std::map<std::string, std::string> parts;
       parts["duration"] = std::to_string(duration);
-      bat_media_->ProcessMedia(parts, type, iter->second.Clone());
+      bat_media_->ProcessMedia(parts, type, iter->second.Clone(), callback);
     return;
   }
 
-  auto callback = std::bind(&LedgerImpl::OnSaveVisit,
+  auto visit_callback = std::bind(&LedgerImpl::OnSaveVisit,
       this,
+      callback,
       _1,
       _2);
 
@@ -216,8 +224,7 @@ void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
       iter->second.tld,
       iter->second,
       duration,
-      0,
-      callback);
+      visit_callback);
 }
 
 void LedgerImpl::OnForeground(uint32_t tab_id, const uint64_t& current_time) {
@@ -228,9 +235,12 @@ void LedgerImpl::OnForeground(uint32_t tab_id, const uint64_t& current_time) {
   OnShow(tab_id, current_time);
 }
 
-void LedgerImpl::OnBackground(uint32_t tab_id, const uint64_t& current_time) {
+void LedgerImpl::OnBackground(
+    uint32_t tab_id,
+    const uint64_t& current_time,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   // TODO(anyone) media resources could stay and be active in the background
-  OnHide(tab_id, current_time);
+  OnHide(tab_id, current_time, callback);
 }
 
 void LedgerImpl::OnXHRLoad(
@@ -239,7 +249,8 @@ void LedgerImpl::OnXHRLoad(
     const std::map<std::string, std::string>& parts,
     const std::string& first_party_url,
     const std::string& referrer,
-    ledger::VisitDataPtr visit_data) {
+    ledger::VisitDataPtr visit_data,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   std::string type = bat_media_->GetLinkType(url,
                                                  first_party_url,
                                                  referrer);
@@ -247,7 +258,11 @@ void LedgerImpl::OnXHRLoad(
     // It is not a media supported type
     return;
   }
-  bat_media_->ProcessMedia(parts, type, std::move(visit_data));
+  bat_media_->ProcessMedia(
+      parts,
+      type,
+      std::move(visit_data),
+      callback);
 }
 
 void LedgerImpl::OnPostData(
@@ -255,7 +270,8 @@ void LedgerImpl::OnPostData(
       const std::string& first_party_url,
       const std::string& referrer,
       const std::string& post_data,
-      ledger::VisitDataPtr visit_data) {
+      ledger::VisitDataPtr visit_data,
+      ledger::GetPublisherActivityFromUrlCallback callback) {
   std::string type = bat_media_->GetLinkType(url,
                                                  first_party_url,
                                                  referrer);
@@ -268,7 +284,11 @@ void LedgerImpl::OnPostData(
     std::vector<std::map<std::string, std::string>> twitchParts;
     braveledger_media::GetTwitchParts(post_data, &twitchParts);
     for (size_t i = 0; i < twitchParts.size(); i++) {
-      bat_media_->ProcessMedia(twitchParts[i], type, std::move(visit_data));
+      bat_media_->ProcessMedia(
+          twitchParts[i],
+          type,
+          std::move(visit_data),
+          callback);
     }
     return;
   }
@@ -278,7 +298,11 @@ void LedgerImpl::OnPostData(
     braveledger_media::GetVimeoParts(post_data, &parts);
 
     for (auto part = parts.begin(); part != parts.end(); part++) {
-      bat_media_->ProcessMedia(*part, type, std::move(visit_data));
+      bat_media_->ProcessMedia(
+          *part,
+          type,
+          std::move(visit_data),
+          callback);
     }
     return;
   }
@@ -458,7 +482,6 @@ void LedgerImpl::SetMediaPublisherInfo(const std::string& media_key,
 void LedgerImpl::SaveMediaVisit(const std::string& publisher_id,
                                 const ledger::VisitData& visit_data,
                                 const uint64_t& duration,
-                                const uint64_t window_id,
                                 const ledger::PublisherInfoCallback callback) {
   uint64_t new_duration = duration;
   if (!bat_publisher_->getPublisherAllowVideos()) {
@@ -468,7 +491,6 @@ void LedgerImpl::SaveMediaVisit(const std::string& publisher_id,
   bat_publisher_->SaveVisit(publisher_id,
                              visit_data,
                              new_duration,
-                             window_id,
                              callback);
 }
 
@@ -750,31 +772,24 @@ bool LedgerImpl::IsWalletCreated() const {
 }
 
 void LedgerImpl::GetPublisherActivityFromUrl(
-    uint64_t windowId,
     ledger::VisitDataPtr visit_data,
-    const std::string& publisher_blob) {
+    const std::string& publisher_blob,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   bat_publisher_->getPublisherActivityFromUrl(
-      windowId,
       *visit_data,
-      publisher_blob);
+      publisher_blob,
+      callback);
 }
 
 void LedgerImpl::GetMediaActivityFromUrl(
-    uint64_t windowId,
     ledger::VisitDataPtr visit_data,
     const std::string& providerType,
-    const std::string& publisher_blob) {
-  bat_media_->GetMediaActivityFromUrl(windowId,
-                                          std::move(visit_data),
-                                          providerType,
-                                          publisher_blob);
-}
-
-void LedgerImpl::OnPanelPublisherInfo(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info,
-    uint64_t windowId) {
-  ledger_client_->OnPanelPublisherInfo(result, std::move(info), windowId);
+    const std::string& publisher_blob,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
+  bat_media_->GetMediaActivityFromUrl(std::move(visit_data),
+                                      providerType,
+                                      publisher_blob,
+                                      callback);
 }
 
 void LedgerImpl::SetBalanceReportItem(

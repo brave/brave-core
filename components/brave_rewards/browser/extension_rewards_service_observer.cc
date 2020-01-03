@@ -90,38 +90,6 @@ void ExtensionRewardsServiceObserver::OnWalletProperties(
   event_router->BroadcastEvent(std::move(event));
 }
 
-void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
-    RewardsService* rewards_service,
-    int error_code,
-    const ledger::PublisherInfo* info,
-    uint64_t windowId) {
-  auto* event_router = extensions::EventRouter::Get(profile_);
-  if (!event_router || !info) {
-    return;
-  }
-
-  extensions::api::brave_rewards::OnPublisherData::Publisher publisher;
-
-  publisher.percentage = info->percent;
-  publisher.status = static_cast<int>(info->status);
-  publisher.excluded = info->excluded == ledger::PublisherExclude::EXCLUDED;
-  publisher.name = info->name;
-  publisher.url = info->url;
-  publisher.provider = info->provider;
-  publisher.favicon_url = info->favicon_url;
-  publisher.publisher_key = info->id;
-  std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnPublisherData::Create(windowId,
-                                                              publisher)
-          .release());
-
-  std::unique_ptr<extensions::Event> event(new extensions::Event(
-      extensions::events::BRAVE_ON_PUBLISHER_DATA,
-      extensions::api::brave_rewards::OnPublisherData::kEventName,
-      std::move(args)));
-  event_router->BroadcastEvent(std::move(event));
-}
-
 void ExtensionRewardsServiceObserver::OnFetchPromotions(
     RewardsService* rewards_service,
     const uint32_t result,

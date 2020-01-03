@@ -28,12 +28,15 @@ class Vimeo : public ledger::LedgerCallbackHandler {
 
   ~Vimeo() override;
 
-  void ProcessMedia(const std::map<std::string, std::string>& parts);
+  void ProcessMedia(
+      const std::map<std::string, std::string>& parts,
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
   static std::string GetLinkType(const std::string& url);
 
-  void ProcessActivityFromUrl(uint64_t window_id,
-                              const ledger::VisitData& visit_data);
+  void ProcessActivityFromUrl(
+      const ledger::VisitData& visit_data,
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
  private:
   static std::string GetVideoUrl(const std::string& video_id);
@@ -68,11 +71,12 @@ class Vimeo : public ledger::LedgerCallbackHandler {
     const std::string& url,
     braveledger_media::FetchDataFromUrlCallback callback);
 
-  void OnMediaActivityError(uint64_t window_id = 0);
+  void OnMediaActivityError(
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
   void OnEmbedResponse(
     const ledger::VisitData& visit_data,
-    const uint64_t window_id,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers);
@@ -82,50 +86,53 @@ class Vimeo : public ledger::LedgerCallbackHandler {
     const std::string& publisher_url,
     const std::string& publisher_name,
     const ledger::VisitData& visit_data,
-    const uint64_t window_id,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers);
 
   void OnUnknownPage(
     const ledger::VisitData& visit_data,
-    const uint64_t window_id,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers);
 
-  void OnPublisherPanleInfo(
+  void OnPublisherPanelInfo(
     const std::string& media_key,
-    uint64_t window_id,
     const std::string& publisher_url,
     const std::string& publisher_name,
     const std::string& user_id,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     ledger::Result result,
     ledger::PublisherInfoPtr info);
 
-  void GetPublisherPanleInfo(
+  void GetPublisherPanelInfo(
     const std::string& media_key,
-    uint64_t window_id,
     const std::string& publisher_url,
     const std::string& publisher_key,
     const std::string& publisher_name,
-    const std::string& user_id);
+    const std::string& user_id,
+    ledger::GetPublisherActivityFromUrlCallback callback);
 
   void OnMediaPublisherInfo(
     const std::string& media_id,
     const std::string& media_key,
     const ledger::MediaEventInfo& event_info,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     ledger::Result result,
     ledger::PublisherInfoPtr publisher_info);
 
   void OnPublisherVideoPage(
     const std::string& media_key,
     ledger::MediaEventInfo event_info,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers);
 
   void OnSaveMediaVisit(
+    ledger::GetPublisherActivityFromUrlCallback callback,
     ledger::Result result,
     ledger::PublisherInfoPtr info);
 
@@ -135,7 +142,7 @@ class Vimeo : public ledger::LedgerCallbackHandler {
     const std::string& user_id,
     const std::string& publisher_name,
     const std::string& publisher_url,
-    const uint64_t window_id,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     const std::string& publisher_key = "",
     const std::string& publisher_favicon = "");
 

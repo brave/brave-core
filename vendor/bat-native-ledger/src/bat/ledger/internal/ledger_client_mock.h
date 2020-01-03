@@ -129,11 +129,6 @@ class MockLedgerClient : public LedgerClient {
       ledger::Result result,
       double balance));
 
-  MOCK_METHOD3(OnPanelPublisherInfo, void(
-      ledger::Result result,
-      ledger::PublisherInfoPtr,
-      uint64_t windowId));
-
   MOCK_METHOD3(FetchFavIcon, void(
       const std::string& url,
       const std::string& favicon_key,

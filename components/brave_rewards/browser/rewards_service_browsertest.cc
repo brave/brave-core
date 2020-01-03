@@ -2126,7 +2126,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   rewards_service_->AddObserver(this);
 
   // Enable Rewards
-  EnableRewardsViaCode();
+  EnableRewards();
 
   // Navigate to a verified site in a new tab
   const std::string publisher = "duckduckgo.com";
@@ -3421,7 +3421,8 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PanelDontDoRequests) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowMonthlyIfACOff) {
-  EnableRewardsViaCode();
+  rewards_service_->AddObserver(this);
+  EnableRewards();
   rewards_service_->SetAutoContribute(false);
 
   GURL url = https_server()->GetURL("3zsistemi.si", "/");
@@ -3434,6 +3435,8 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, ShowMonthlyIfACOff) {
   ASSERT_TRUE(popup_contents);
 
   WaitForSelector(popup_contents, "#panel-donate-monthly");
+
+  rewards_service_->RemoveObserver(this);
 }
 
 struct BraveAdsUpgradePathParamInfo {

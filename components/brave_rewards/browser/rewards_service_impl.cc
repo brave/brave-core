@@ -710,7 +710,10 @@ void RewardsServiceImpl::OnUnload(SessionID tab_id) {
   if (!Connected())
     return;
 
-  bat_ledger_->OnUnload(tab_id.id(), GetCurrentTimestamp());
+  bat_ledger_->OnUnload(
+      tab_id.id(),
+      GetCurrentTimestamp(),
+      base::DoNothing());
 }
 
 void RewardsServiceImpl::OnShow(SessionID tab_id) {
@@ -724,7 +727,10 @@ void RewardsServiceImpl::OnHide(SessionID tab_id) {
   if (!Connected())
     return;
 
-  bat_ledger_->OnHide(tab_id.id(), GetCurrentTimestamp());
+  bat_ledger_->OnHide(
+      tab_id.id(),
+      GetCurrentTimestamp(),
+      base::DoNothing());
 }
 
 void RewardsServiceImpl::OnForeground(SessionID tab_id) {
@@ -738,7 +744,10 @@ void RewardsServiceImpl::OnBackground(SessionID tab_id) {
   if (!Connected())
     return;
 
-  bat_ledger_->OnBackground(tab_id.id(), GetCurrentTimestamp());
+  bat_ledger_->OnBackground(
+      tab_id.id(),
+      GetCurrentTimestamp(),
+      base::DoNothing());
 }
 
 void RewardsServiceImpl::OnPostData(SessionID tab_id,
@@ -769,7 +778,8 @@ void RewardsServiceImpl::OnPostData(SessionID tab_id,
                           first_party_url.spec(),
                           referrer.spec(),
                           output,
-                          std::move(data));
+                          std::move(data),
+                          base::DoNothing());
 }
 
 void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
@@ -794,7 +804,8 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
                          mojo::MapToFlatMap(parts),
                          first_party_url.spec(),
                          referrer.spec(),
-                         std::move(data));
+                         std::move(data),
+                         base::DoNothing());
 }
 
 void RewardsServiceImpl::LoadPublisherInfo(
@@ -2235,10 +2246,10 @@ void RewardsServiceImpl::IsWalletCreated(
 }
 
 void RewardsServiceImpl::GetPublisherActivityFromUrl(
-    uint64_t windowId,
     const std::string& url,
     const std::string& favicon_url,
-    const std::string& publisher_blob) {
+    const std::string& publisher_blob,
+    GetPublisherActivityFromUrlCallback callback) {
   GURL parsedUrl(url);
 
   if (!parsedUrl.is_valid()) {
@@ -2250,13 +2261,20 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
       GetDomainAndRegistry(origin.host(), INCLUDE_PRIVATE_REGISTRIES);
 
   if (baseDomain == "") {
-    ledger::PublisherInfoPtr info;
-    OnPanelPublisherInfo(ledger::Result::NOT_FOUND, std::move(info), windowId);
+    std::move(callback).Run(
+        static_cast<int32_t>(ledger::Result::NOT_FOUND),
+        std::make_unique<ContentSite>(
+            PublisherInfoToContentSite(*ledger::PublisherInfo::New())));
     return;
   }
 
-  if (!Connected())
+  if (!Connected()) {
+    std::move(callback).Run(
+        static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
+        std::make_unique<ContentSite>(
+            PublisherInfoToContentSite(*ledger::PublisherInfo::New())));
     return;
+  }
 
   ledger::VisitDataPtr visit_data = ledger::VisitData::New();
   visit_data->domain = visit_data->name = baseDomain;
@@ -2265,25 +2283,23 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
   visit_data->favicon_url = favicon_url;
 
   bat_ledger_->GetPublisherActivityFromUrl(
-        windowId,
         std::move(visit_data),
-        publisher_blob);
+        publisher_blob,
+        base::BindOnce(&RewardsServiceImpl::OnGetPublisherActivityFromUrl,
+            AsWeakPtr(),
+            std::move(callback)));
 }
 
-void RewardsServiceImpl::OnPanelPublisherInfo(
+void RewardsServiceImpl::OnGetPublisherActivityFromUrl(
+    GetPublisherActivityFromUrlCallback callback,
     const ledger::Result result,
-    ledger::PublisherInfoPtr info,
-    uint64_t windowId) {
-  if (result != ledger::Result::LEDGER_OK &&
-      result != ledger::Result::NOT_FOUND) {
-    return;
+    ledger::PublisherInfoPtr info) {
+  std::unique_ptr<brave_rewards::ContentSite> site;
+  if (result == ledger::Result::LEDGER_OK) {
+    site = std::make_unique<brave_rewards::ContentSite>(
+        PublisherInfoToContentSite(*info));
   }
-
-  for (auto& observer : private_observers_)
-    observer.OnPanelPublisherInfo(this,
-                                  static_cast<int>(result),
-                                  info.get(),
-                                  windowId);
+  std::move(callback).Run(static_cast<int32_t>(result), std::move(site));
 }
 
 void RewardsServiceImpl::GetContributionAmount(

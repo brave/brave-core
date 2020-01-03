@@ -136,10 +136,6 @@ class LEDGER_EXPORT LedgerClient {
                                    ActivityInfoFilterPtr filter,
                                    PublisherInfoListCallback callback) = 0;
 
-  virtual void OnPanelPublisherInfo(Result result,
-                                   ledger::PublisherInfoPtr publisher_info,
-                                   uint64_t windowId) = 0;
-
   virtual void FetchFavIcon(const std::string& url,
                             const std::string& favicon_key,
                             FetchIconCallback callback) = 0;

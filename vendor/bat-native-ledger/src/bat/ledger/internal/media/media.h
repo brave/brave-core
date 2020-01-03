@@ -36,12 +36,14 @@ class Media {
 
   void ProcessMedia(const std::map<std::string, std::string>& parts,
                     const std::string& type,
-                    ledger::VisitDataPtr visit_data);
+                    ledger::VisitDataPtr visit_data,
+                    ledger::GetPublisherActivityFromUrlCallback callback);
 
-  void GetMediaActivityFromUrl(uint64_t windowId,
-                               ledger::VisitDataPtr visit_data,
-                               const std::string& type,
-                               const std::string& publisher_blob);
+  void GetMediaActivityFromUrl(
+      ledger::VisitDataPtr visit_data,
+      const std::string& type,
+      const std::string& publisher_blob,
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
   void SaveMediaInfo(const std::string& type,
                      const std::map<std::string, std::string>& data,
@@ -52,9 +54,10 @@ class Media {
       const std::map<std::string, std::string>& args);
 
  private:
-  void OnMediaActivityError(ledger::VisitDataPtr visit_data,
-                          const std::string& type,
-                          uint64_t windowId);
+  void OnMediaActivityError(
+      ledger::VisitDataPtr visit_data,
+      const std::string& type,
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<braveledger_media::YouTube> media_youtube_;

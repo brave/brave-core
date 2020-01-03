@@ -328,20 +328,6 @@ void BatLedgerClientMojoProxy::KillTimer(const uint32_t timer_id) {
   bat_ledger_client_->KillTimer(timer_id);  // sync
 }
 
-void BatLedgerClientMojoProxy::OnPanelPublisherInfo(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info,
-    uint64_t windowId) {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_client_->OnPanelPublisherInfo(
-      result,
-      std::move(info),
-      windowId);
-}
-
 void OnFetchFavIcon(const ledger::FetchIconCallback& callback,
     bool success, const std::string& favicon_url) {
   callback(success, favicon_url);

@@ -34,8 +34,9 @@ class Twitter : public ledger::LedgerCallbackHandler {
   static std::string GetShareURL(
       const std::map<std::string, std::string>& args);
 
-  void ProcessActivityFromUrl(uint64_t window_id,
-                              const ledger::VisitData& visit_data);
+  void ProcessActivityFromUrl(
+      const ledger::VisitData& visit_data,
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
  private:
   static std::string GetProfileURL(const std::string& screen_name,
@@ -56,7 +57,6 @@ class Twitter : public ledger::LedgerCallbackHandler {
   static std::string GetPublisherName(const std::string& response);
 
   void OnMediaPublisherInfo(
-      uint64_t window_id,
       const std::string& user_id,
       const std::string& screen_name,
       const std::string& publisher_name,
@@ -69,14 +69,15 @@ class Twitter : public ledger::LedgerCallbackHandler {
       const std::string& user_id,
       const std::string& screen_name,
       const std::string& publisher_name,
-      const uint64_t window_id,
       ledger::PublisherInfoCallback callback);
 
-  void OnSaveMediaVisit(ledger::Result result,
+  void OnSaveMediaVisit(ledger::GetPublisherActivityFromUrlCallback callback,
+                        ledger::Result result,
                         ledger::PublisherInfoPtr info);
 
-  void OnMediaActivityError(const ledger::VisitData& visit_data,
-                            uint64_t window_id);
+  void OnMediaActivityError(
+      const ledger::VisitData& visit_data,
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
   void FetchDataFromUrl(
       const std::string& url,
@@ -85,25 +86,25 @@ class Twitter : public ledger::LedgerCallbackHandler {
   void OnMediaPublisherActivity(
       ledger::Result result,
       ledger::PublisherInfoPtr info,
-      uint64_t window_id,
       const ledger::VisitData& visit_data,
-      const std::string& media_key);
+      const std::string& media_key,
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
   void GetPublisherPanelInfo(
-      uint64_t window_id,
-      const ledger::VisitData& visit_data,
-      const std::string& publisher_key);
-
-  void OnPublisherPanelInfo(
-      uint64_t window_id,
       const ledger::VisitData& visit_data,
       const std::string& publisher_key,
+      ledger::GetPublisherActivityFromUrlCallback callback);
+
+  void OnPublisherPanelInfo(
+      const ledger::VisitData& visit_data,
+      const std::string& publisher_key,
+      ledger::GetPublisherActivityFromUrlCallback callback,
       ledger::Result result,
       ledger::PublisherInfoPtr info);
 
   void OnUserPage(
-      uint64_t window_id,
       const ledger::VisitData& visit_data,
+      ledger::GetPublisherActivityFromUrlCallback callback,
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);

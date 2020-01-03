@@ -114,6 +114,8 @@ using GetBalanceReportCallback = base::OnceCallback<void(
 
 using GetMonthlyReportCallback = base::OnceCallback<void(
     const MonthlyReport&)>;
+using GetPublisherActivityFromUrlCallback = base::OnceCallback<void(
+    const int32_t, std::unique_ptr<brave_rewards::ContentSite>)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -190,10 +192,10 @@ class RewardsService : public KeyedService {
       GetBalanceReportCallback callback) = 0;
   virtual void IsWalletCreated(const IsWalletCreatedCallback& callback) = 0;
   virtual void GetPublisherActivityFromUrl(
-      uint64_t windowId,
       const std::string& url,
       const std::string& favicon_url,
-      const std::string& publisher_blob) = 0;
+      const std::string& publisher_blob,
+      GetPublisherActivityFromUrlCallback callback) = 0;
   virtual void GetContributionAmount(
       const GetContributionAmountCallback& callback) = 0;
   virtual void GetPublisherBanner(const std::string& publisher_id,

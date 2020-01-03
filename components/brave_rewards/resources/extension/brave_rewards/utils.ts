@@ -167,3 +167,8 @@ export const getClaimedPromotions = (promotions: RewardsExtension.Promotion[]) =
     return promotion.status === 4 // PromotionStatus::FINISHED
   })
 }
+
+export const isTwitchUrl = (tabUrl: string) => {
+  let url = new URL(tabUrl)
+  return url && url.host.endsWith('.twitch.tv')
+}

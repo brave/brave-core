@@ -5,6 +5,8 @@
 
 #include "brave/browser/extensions/api/brave_rewards_api.h"
 
+#include <stdint.h>
+
 #include <map>
 #include <memory>
 #include <string>
@@ -369,9 +371,6 @@ void BraveRewardsTipGitHubUserFunction::OnGitHubPublisherInfoSaved(
 }
 //////////////////
 
-BraveRewardsGetPublisherDataFunction::~BraveRewardsGetPublisherDataFunction() {
-}
-
 BraveRewardsIncludeInAutoContributionFunction::
   ~BraveRewardsIncludeInAutoContributionFunction() {
 }
@@ -391,18 +390,46 @@ ExtensionFunction::ResponseAction
   return RespondNow(NoArguments());
 }
 
+BraveRewardsGetPublisherDataFunction::
+  ~BraveRewardsGetPublisherDataFunction() = default;
+
 ExtensionFunction::ResponseAction BraveRewardsGetPublisherDataFunction::Run() {
   std::unique_ptr<brave_rewards::GetPublisherData::Params> params(
       brave_rewards::GetPublisherData::Params::Create(*args_));
   Profile* profile = Profile::FromBrowserContext(browser_context());
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service) {
-    rewards_service->GetPublisherActivityFromUrl(params->window_id,
-                                                  params->url,
-                                                  params->favicon_url,
-                                                  params->publisher_blob);
+  if (!rewards_service) {
+    auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+    data->SetIntKey("result", 1);
+    return RespondNow(OneArgument(std::move(data)));
   }
-  return RespondNow(NoArguments());
+  rewards_service->GetPublisherActivityFromUrl(
+      params->url,
+      params->favicon_url,
+      params->publisher_blob,
+      base::BindOnce(
+        &BraveRewardsGetPublisherDataFunction::OnGetPublisherData,
+        this));
+  return RespondLater();
+}
+
+void BraveRewardsGetPublisherDataFunction::OnGetPublisherData(
+    const int32_t result,
+    std::unique_ptr<::brave_rewards::ContentSite> publisher_info) {
+    auto data = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+    if (publisher_info) {
+      data->SetIntKey("percentage", publisher_info->percentage);
+      data->SetIntKey("status", publisher_info->status);
+      data->SetBoolKey("excluded", publisher_info->excluded == 1);
+      data->SetStringKey("name", publisher_info->name);
+      data->SetStringKey("url", publisher_info->url);
+      data->SetStringKey("provider", publisher_info->provider);
+      data->SetStringKey("publisher_key", publisher_info->id);
+      data->SetStringKey("favicon_url", publisher_info->favicon_url);
+    }
+    Respond(TwoArguments(
+        std::make_unique<base::Value>(result),
+        std::move(data)));
 }
 
 BraveRewardsGetWalletPropertiesFunction::

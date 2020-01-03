@@ -96,10 +96,11 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD2(SetTimer, void(uint64_t, uint32_t*));
   MOCK_METHOD1(IsWalletCreated,
       void(const brave_rewards::IsWalletCreatedCallback&));
-  MOCK_METHOD4(GetPublisherActivityFromUrl, void(uint64_t,
-                                                 const std::string&,
-                                                 const std::string&,
-                                                 const std::string&));
+  MOCK_METHOD4(GetPublisherActivityFromUrl,
+        void(const std::string&,
+             const std::string&,
+             const std::string&,
+             brave_rewards::GetPublisherActivityFromUrlCallback));
   MOCK_METHOD1(GetContributionAmount,
       void(const brave_rewards::GetContributionAmountCallback&));
   MOCK_METHOD2(GetPublisherBanner,

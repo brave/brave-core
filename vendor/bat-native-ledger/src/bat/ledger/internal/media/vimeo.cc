@@ -278,7 +278,8 @@ void Vimeo::FetchDataFromUrl(
                    callback);
 }
 
-void Vimeo::OnMediaActivityError(uint64_t window_id) {
+void Vimeo::OnMediaActivityError(
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   const std::string url = VIMEO_TLD;
   const std::string name = VIMEO_MEDIA_TYPE;
 
@@ -290,12 +291,14 @@ void Vimeo::OnMediaActivityError(uint64_t window_id) {
   new_data.path = "/";
   new_data.name = name;
 
-  ledger_->GetPublisherActivityFromUrl(window_id,
-                                       ledger::VisitData::New(new_data),
-                                       "");
+  ledger_->GetPublisherActivityFromUrl(ledger::VisitData::New(new_data),
+                                       "",
+                                       callback);
 }
 
-void Vimeo::ProcessMedia(const std::map<std::string, std::string>& parts) {
+void Vimeo::ProcessMedia(
+    const std::map<std::string, std::string>& parts,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   auto iter = parts.find("video_id");
   std::string media_id;
   if (iter != parts.end()) {
@@ -336,15 +339,17 @@ void Vimeo::ProcessMedia(const std::map<std::string, std::string>& parts) {
                 media_id,
                 media_key,
                 event_info,
+                callback,
                 _1,
                 _2));
 }
 
-void Vimeo::ProcessActivityFromUrl(uint64_t window_id,
-                                        const ledger::VisitData& visit_data) {
+void Vimeo::ProcessActivityFromUrl(
+    const ledger::VisitData& visit_data,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   // not all url's are publisher specific
   if (IsExcludedPath(visit_data.path)) {
-    OnMediaActivityError(window_id);
+    OnMediaActivityError(callback);
     return;
   }
 
@@ -352,49 +357,49 @@ void Vimeo::ProcessActivityFromUrl(uint64_t window_id,
         "?url=" +
         ledger_->URIEncode(visit_data.url);
 
-  auto callback = std::bind(&Vimeo::OnEmbedResponse,
+  auto embed_callback = std::bind(&Vimeo::OnEmbedResponse,
                             this,
                             visit_data,
-                            window_id,
+                            callback,
                             _1,
                             _2,
                             _3);
 
-  FetchDataFromUrl(url, callback);
+  FetchDataFromUrl(url, embed_callback);
 }
 
 void Vimeo::OnEmbedResponse(
     const ledger::VisitData& visit_data,
-    const uint64_t window_id,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (response_status_code != net::HTTP_OK) {
-    auto callback = std::bind(&Vimeo::OnUnknownPage,
+    auto unknown_page_callback = std::bind(&Vimeo::OnUnknownPage,
                               this,
                               visit_data,
-                              window_id,
+                              callback,
                               _1,
                               _2,
                               _3);
 
-    FetchDataFromUrl(visit_data.url, callback);
+    FetchDataFromUrl(visit_data.url, unknown_page_callback);
     return;
   }
 
   base::Optional<base::Value> data = base::JSONReader::Read(response);
   if (!data || !data->is_dict()) {
-    auto callback = std::bind(&Vimeo::OnUnknownPage,
+    auto unknown_page_callback = std::bind(&Vimeo::OnUnknownPage,
                               this,
                               visit_data,
-                              window_id,
+                              callback,
                               _1,
                               _2,
                               _3);
 
-    FetchDataFromUrl(visit_data.url, callback);
+    FetchDataFromUrl(visit_data.url, unknown_page_callback);
     return;
   }
 
@@ -409,15 +414,15 @@ void Vimeo::OnEmbedResponse(
   }
 
   if (publisher_url.empty() || video_id == 0) {
-    auto callback = std::bind(&Vimeo::OnUnknownPage,
+    auto unknown_page_callback = std::bind(&Vimeo::OnUnknownPage,
                               this,
                               visit_data,
-                              window_id,
+                              callback,
                               _1,
                               _2,
                               _3);
 
-    FetchDataFromUrl(visit_data.url, callback);
+    FetchDataFromUrl(visit_data.url, unknown_page_callback);
     return;
   }
 
@@ -429,18 +434,18 @@ void Vimeo::OnEmbedResponse(
   const std::string media_key = GetMediaKey(std::to_string(video_id),
                                             "vimeo-vod");
 
-  auto callback = std::bind(&Vimeo::OnPublisherPage,
+  auto publisher_page_callback = std::bind(&Vimeo::OnPublisherPage,
                             this,
                             media_key,
                             publisher_url,
                             publisher_name,
                             visit_data,
-                            window_id,
+                            callback,
                             _1,
                             _2,
                             _3);
 
-  FetchDataFromUrl(publisher_url, callback);
+  FetchDataFromUrl(publisher_url, publisher_page_callback);
 }
 
 void Vimeo::OnPublisherPage(
@@ -448,7 +453,7 @@ void Vimeo::OnPublisherPage(
     const std::string& publisher_url,
     const std::string& publisher_name,
     const ledger::VisitData& visit_data,
-    const uint64_t window_id,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
@@ -459,24 +464,24 @@ void Vimeo::OnPublisherPage(
       headers);
 
   if (response_status_code != net::HTTP_OK) {
-    OnMediaActivityError(window_id);
+    OnMediaActivityError(callback);
     return;
   }
 
   const std::string user_id = GetIdFromPublisherPage(response);
   const std::string publisher_key = GetPublisherKey(user_id);
 
-  GetPublisherPanleInfo(media_key,
-                        window_id,
+  GetPublisherPanelInfo(media_key,
                         publisher_url,
                         publisher_key,
                         publisher_name,
-                        user_id);
+                        user_id,
+                        callback);
 }
 
 void Vimeo::OnUnknownPage(
     const ledger::VisitData& visit_data,
-    const uint64_t window_id,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
@@ -487,7 +492,7 @@ void Vimeo::OnUnknownPage(
       headers);
 
   if (response_status_code != net::HTTP_OK) {
-    OnMediaActivityError(window_id);
+    OnMediaActivityError(callback);
     return;
   }
 
@@ -501,7 +506,7 @@ void Vimeo::OnUnknownPage(
     user_id = GetIdFromVideoPage(response);
 
     if (user_id.empty()) {
-      OnMediaActivityError(window_id);
+      OnMediaActivityError(callback);
       return;
     }
 
@@ -512,25 +517,25 @@ void Vimeo::OnUnknownPage(
   }
 
   if (publisher_name.empty()) {
-    OnMediaActivityError(window_id);
+    OnMediaActivityError(callback);
     return;
   }
 
   const std::string publisher_key = GetPublisherKey(user_id);
-  GetPublisherPanleInfo(media_key,
-                        window_id,
+  GetPublisherPanelInfo(media_key,
                         visit_data.url,
                         publisher_key,
                         publisher_name,
-                        user_id);
+                        user_id,
+                        callback);
 }
 
-void Vimeo::OnPublisherPanleInfo(
+void Vimeo::OnPublisherPanelInfo(
     const std::string& media_key,
-    uint64_t window_id,
     const std::string& publisher_url,
     const std::string& publisher_name,
     const std::string& user_id,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     ledger::Result result,
     ledger::PublisherInfoPtr info) {
   if (!info || result == ledger::Result::NOT_FOUND) {
@@ -539,19 +544,19 @@ void Vimeo::OnPublisherPanleInfo(
                       user_id,
                       publisher_name,
                       publisher_url,
-                      window_id);
+                      callback);
   } else {
-    ledger_->OnPanelPublisherInfo(result, std::move(info), window_id);
+    callback(result, std::move(info));
   }
 }
 
-void Vimeo::GetPublisherPanleInfo(
+void Vimeo::GetPublisherPanelInfo(
     const std::string& media_key,
-    uint64_t window_id,
     const std::string& publisher_url,
     const std::string& publisher_key,
     const std::string& publisher_name,
-    const std::string& user_id) {
+    const std::string& user_id,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   auto filter = ledger_->CreateActivityFilter(
     publisher_key,
     ledger::ExcludeFilter::FILTER_ALL,
@@ -560,13 +565,13 @@ void Vimeo::GetPublisherPanleInfo(
     true,
     false);
   ledger_->GetPanelPublisherInfo(std::move(filter),
-    std::bind(&Vimeo::OnPublisherPanleInfo,
+    std::bind(&Vimeo::OnPublisherPanelInfo,
               this,
               media_key,
-              window_id,
               publisher_url,
               publisher_name,
               user_id,
+              callback,
               _1,
               _2));
 }
@@ -575,26 +580,28 @@ void Vimeo::OnMediaPublisherInfo(
     const std::string& media_id,
     const std::string& media_key,
     const ledger::MediaEventInfo& event_info,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     ledger::Result result,
     ledger::PublisherInfoPtr publisher_info) {
   if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
-    OnMediaActivityError();
+    OnMediaActivityError(callback);
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
         << "Failed to get publisher info";
     return;
   }
 
   if (!publisher_info && !publisher_info.get()) {
-    auto callback = std::bind(&Vimeo::OnPublisherVideoPage,
+    auto video_page_callback = std::bind(&Vimeo::OnPublisherVideoPage,
                             this,
                             media_key,
                             event_info,
+                            callback,
                             _1,
                             _2,
                             _3);
 
-    FetchDataFromUrl(GetVideoUrl(media_id), callback);
+    FetchDataFromUrl(GetVideoUrl(media_id), video_page_callback);
     return;
   }
 
@@ -612,7 +619,7 @@ void Vimeo::OnMediaPublisherInfo(
                     "",
                     publisher_info->name,
                     publisher_info->url,
-                    0,
+                    callback,
                     publisher_info->id,
                     publisher_info->favicon_url);
 }
@@ -620,6 +627,7 @@ void Vimeo::OnMediaPublisherInfo(
 void Vimeo::OnPublisherVideoPage(
     const std::string& media_key,
     ledger::MediaEventInfo event_info,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
@@ -630,14 +638,14 @@ void Vimeo::OnPublisherVideoPage(
       headers);
 
   if (response_status_code != net::HTTP_OK) {
-    OnMediaActivityError();
+    OnMediaActivityError(callback);
     return;
   }
 
   const std::string user_id = GetIdFromVideoPage(response);
 
   if (user_id.empty()) {
-    OnMediaActivityError();
+    OnMediaActivityError(callback);
     return;
   }
 
@@ -655,12 +663,15 @@ void Vimeo::OnPublisherVideoPage(
                     user_id,
                     GetNameFromVideoPage(response),
                     GetUrlFromVideoPage(response),
+                    callback,
                     0);
 }
 
 void Vimeo::OnSaveMediaVisit(
+    ledger::GetPublisherActivityFromUrlCallback callback,
     ledger::Result result,
     ledger::PublisherInfoPtr info) {
+  callback(result, std::move(info));
 }
 
 void Vimeo::SavePublisherInfo(
@@ -669,18 +680,19 @@ void Vimeo::SavePublisherInfo(
     const std::string& user_id,
     const std::string& publisher_name,
     const std::string& publisher_url,
-    const uint64_t window_id,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     const std::string& publisher_key,
     const std::string& publisher_favicon) {
   if (user_id.empty() && publisher_key.empty()) {
-    OnMediaActivityError(window_id);
+    OnMediaActivityError(callback);
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
       "User id is missing for: " << media_key;
     return;
   }
 
-  auto callback = std::bind(&Vimeo::OnSaveMediaVisit,
+  auto save_callback = std::bind(&Vimeo::OnSaveMediaVisit,
                             this,
+                            callback,
                             _1,
                             _2);
 
@@ -690,7 +702,7 @@ void Vimeo::SavePublisherInfo(
   }
 
   if (key.empty()) {
-    OnMediaActivityError(window_id);
+    OnMediaActivityError(callback);
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
       "Publisher key is missing for: " << media_key;
     return;
@@ -710,7 +722,6 @@ void Vimeo::SavePublisherInfo(
   ledger_->SaveMediaVisit(key,
                           visit_data,
                           duration,
-                          window_id,
                           callback);
 
   if (!media_key.empty()) {

@@ -30,18 +30,18 @@ Reddit::~Reddit() {
 }
 
 void Reddit::ProcessActivityFromUrl(
-    uint64_t window_id,
-    const ledger::VisitData& visit_data) {
+    const ledger::VisitData& visit_data,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   if (visit_data.path.find("/user/") != std::string::npos) {
-    UserPath(window_id, visit_data);
+    UserPath(visit_data, callback);
     return;
   }
-  OnMediaActivityError(visit_data, window_id);
+  OnMediaActivityError(visit_data, callback);
 }
 
 void Reddit::OnMediaActivityError(
     const ledger::VisitData& visit_data,
-    uint64_t window_id) {
+    ledger::GetPublisherActivityFromUrlCallback callback) {
 
   ledger::VisitData new_visit_data;
   new_visit_data.domain = REDDIT_TLD;
@@ -50,16 +50,18 @@ void Reddit::OnMediaActivityError(
   new_visit_data.name = REDDIT_MEDIA_TYPE;
 
   ledger_->GetPublisherActivityFromUrl(
-      window_id, ledger::VisitData::New(new_visit_data), std::string());
+      ledger::VisitData::New(new_visit_data),
+      "",
+      callback);
 }
 
 void Reddit::UserPath(
-    uint64_t window_id,
-    const ledger::VisitData& visit_data) {
+    const ledger::VisitData& visit_data,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   const std::string user = GetUserNameFromUrl(visit_data.path);
 
   if (user.empty()) {
-    OnMediaActivityError(visit_data, window_id);
+    OnMediaActivityError(visit_data, callback);
     return;
   }
 
@@ -67,15 +69,15 @@ void Reddit::UserPath(
   ledger_->GetMediaPublisherInfo(media_key,
       std::bind(&Reddit::OnUserActivity,
           this,
-          window_id,
           visit_data,
+          callback,
           _1,
           _2));
 }
 
 void Reddit::OnUserActivity(
-    uint64_t window_id,
     const ledger::VisitData& visit_data,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     ledger::Result result,
     ledger::PublisherInfoPtr publisher_info) {
   if (!publisher_info || result == ledger::Result::NOT_FOUND) {
@@ -84,16 +86,16 @@ void Reddit::OnUserActivity(
     FetchDataFromUrl(visit_data.url,
         std::bind(&Reddit::OnUserPage,
             this,
-            window_id,
             visit_data,
+            callback,
             _1,
             _2,
             _3));
   } else {
     GetPublisherPanelInfo(
-        window_id,
         visit_data,
-        publisher_info->id);
+        publisher_info->id,
+        callback);
   }
 }
 
@@ -109,7 +111,6 @@ void Reddit::OnPageDataFetched(
   }
 
   SavePublisherInfo(
-      0,
       user_name,
       callback,
       response);
@@ -166,9 +167,9 @@ std::string Reddit::GetProfileUrl(const std::string& screen_name) {
 }
 
 void Reddit::GetPublisherPanelInfo(
-    uint64_t window_id,
     const ledger::VisitData& visit_data,
-    const std::string& publisher_key) {
+    const std::string& publisher_key,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   auto filter = ledger_->CreateActivityFilter(
     publisher_key,
     ledger::ExcludeFilter::FILTER_ALL,
@@ -179,30 +180,30 @@ void Reddit::GetPublisherPanelInfo(
   ledger_->GetPanelPublisherInfo(std::move(filter),
     std::bind(&Reddit::OnPublisherPanelInfo,
               this,
-              window_id,
               visit_data,
               publisher_key,
+              callback,
               _1,
               _2));
 }
 
 void Reddit::OnPublisherPanelInfo(
-    uint64_t window_id,
     const ledger::VisitData& visit_data,
     const std::string& publisher_key,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     ledger::Result result,
     ledger::PublisherInfoPtr info) {
   if (!info || result == ledger::Result::NOT_FOUND) {
     FetchDataFromUrl(visit_data.url,
                      std::bind(&Reddit::OnUserPage,
                                this,
-                               window_id,
                                visit_data,
+                               callback,
                                _1,
                                _2,
                                _3));
   } else {
-    ledger_->OnPanelPublisherInfo(result, std::move(info), window_id);
+    callback(result, std::move(info));
   }
 }
 
@@ -240,27 +241,29 @@ std::string Reddit::GetPublisherName(const std::string& response) {
 }
 
 void Reddit::OnRedditSaved(
+    ledger::GetPublisherActivityFromUrlCallback callback,
     ledger::Result result,
     ledger::PublisherInfoPtr publisher_info) {
+  callback(result, std::move(publisher_info));
 }
 
 void Reddit::OnUserPage(
-    uint64_t window_id,
     const ledger::VisitData& visit_data,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
   if (response_status_code != net::HTTP_OK) {
-    OnMediaActivityError(visit_data, window_id);
+    OnMediaActivityError(visit_data, callback);
     return;
   }
 
   const std::string user_name = GetUserNameFromUrl(visit_data.path);
   SavePublisherInfo(
-      window_id,
       user_name,
       std::bind(&Reddit::OnRedditSaved,
           this,
+          callback,
           _1,
           _2),
           response);
@@ -316,7 +319,6 @@ void Reddit::OnMediaPublisherInfo(
 }
 
 void Reddit::SavePublisherInfo(
-    uint64_t window_id,
     const std::string& user_name,
     ledger::PublisherInfoCallback callback,
     const std::string& data) {
@@ -343,7 +345,6 @@ if (publisher_key.empty()) {
   ledger_->SaveMediaVisit(publisher_key,
                           *visit_data,
                           0,
-                          window_id,
                           callback);
 
   if (!media_key.empty()) {

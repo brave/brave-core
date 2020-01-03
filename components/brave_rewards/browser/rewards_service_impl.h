@@ -169,10 +169,10 @@ class RewardsServiceImpl : public RewardsService,
       GetBalanceReportCallback callback) override;
   void IsWalletCreated(const IsWalletCreatedCallback& callback) override;
   void GetPublisherActivityFromUrl(
-      uint64_t window_id,
       const std::string& url,
       const std::string& favicon_url,
-      const std::string& publisher_blob) override;
+      const std::string& publisher_blob,
+      GetPublisherActivityFromUrlCallback callback) override;
   void GetContributionAmount(
       const GetContributionAmountCallback& callback) override;
   void GetPublisherBanner(const std::string& publisher_id,
@@ -579,9 +579,6 @@ class RewardsServiceImpl : public RewardsService,
       GetTransactionHistoryCallback callback) override;
   void ConfirmationsTransactionHistoryDidChange() override;
 
-  void OnPanelPublisherInfo(const ledger::Result result,
-                            ledger::PublisherInfoPtr info,
-                            uint64_t window_id) override;
   void FetchFavIcon(const std::string& url,
                     const std::string& favicon_key,
                     ledger::FetchIconCallback callback) override;
@@ -841,6 +838,11 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetContributionReport(
       ledger::GetContributionReportCallback callback,
       ledger::ContributionReportInfoList list);
+
+  void OnGetPublisherActivityFromUrl(
+      GetPublisherActivityFromUrlCallback callback,
+      const ledger::Result result,
+      ledger::PublisherInfoPtr info);
 
 #if defined(OS_ANDROID)
   ledger::Environment GetServerEnvironmentForAndroid();

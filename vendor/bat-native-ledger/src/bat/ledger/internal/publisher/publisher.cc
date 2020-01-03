@@ -138,7 +138,6 @@ void Publisher::SaveVisit(
     const std::string& publisher_key,
     const ledger::VisitData& visit_data,
     const uint64_t& duration,
-    uint64_t window_id,
     const ledger::PublisherInfoCallback callback) {
   if (!ledger_->GetRewardsMainEnabled() || publisher_key.empty()) {
     return;
@@ -151,7 +150,6 @@ void Publisher::SaveVisit(
                 publisher_key,
                 visit_data,
                 duration,
-                window_id,
                 callback);
 
   ledger_->GetServerPublisherInfo(publisher_key, server_callback);
@@ -186,7 +184,6 @@ void Publisher::OnSaveVisitServerPublisher(
     const std::string& publisher_key,
     const ledger::VisitData& visit_data,
     uint64_t duration,
-    uint64_t window_id,
     const ledger::PublisherInfoCallback callback) {
   auto filter = CreateActivityFilter(
       publisher_key,
@@ -212,7 +209,6 @@ void Publisher::OnSaveVisitServerPublisher(
           publisher_key,
           visit_data,
           duration,
-          window_id,
           callback,
           _1,
           _2);
@@ -226,7 +222,6 @@ void Publisher::SaveVisitInternal(
     const std::string& publisher_key,
     const ledger::VisitData& visit_data,
     uint64_t duration,
-    uint64_t window_id,
     const ledger::PublisherInfoCallback callback,
     ledger::Result result,
     ledger::PublisherInfoPtr publisher_info) {
@@ -254,7 +249,6 @@ void Publisher::SaveVisitInternal(
                           std::bind(&Publisher::onFetchFavIcon,
                                     this,
                                     publisher_info->id,
-                                    window_id,
                                     _1,
                                     _2));
     } else {
@@ -322,18 +316,10 @@ void Publisher::SaveVisitInternal(
 
     auto callback_info = panel_info->Clone();
     callback(ledger::Result::LEDGER_OK, std::move(callback_info));
-
-    if (window_id > 0) {
-      OnPanelPublisherInfo(ledger::Result::LEDGER_OK,
-                           std::move(panel_info),
-                           window_id,
-                           visit_data);
-    }
   }
 }
 
 void Publisher::onFetchFavIcon(const std::string& publisher_key,
-                                   uint64_t window_id,
                                    bool success,
                                    const std::string& favicon_url) {
   if (!success || favicon_url.empty()) {
@@ -347,29 +333,19 @@ void Publisher::onFetchFavIcon(const std::string& publisher_key,
                 this,
                 _1,
                 _2,
-                favicon_url,
-                window_id));
+                favicon_url));
 }
 
 void Publisher::onFetchFavIconDBResponse(
     ledger::Result result,
     ledger::PublisherInfoPtr info,
-    const std::string& favicon_url,
-    uint64_t window_id) {
+    const std::string& favicon_url) {
   if (result == ledger::Result::LEDGER_OK && !favicon_url.empty()) {
     info->favicon_url = favicon_url;
 
     ledger::PublisherInfoPtr panel_info = info->Clone();
 
     ledger_->SetPublisherInfo(std::move(info));
-
-    if (window_id > 0) {
-      ledger::VisitData visit_data;
-      OnPanelPublisherInfo(ledger::Result::LEDGER_OK,
-                          std::move(panel_info),
-                          window_id,
-                          visit_data);
-    }
   } else {
     BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
       "Missing or corrupted favicon file";
@@ -738,10 +714,11 @@ void Publisher::OnPublisherStateSaved(ledger::Result result) {
 }
 
 void Publisher::getPublisherActivityFromUrl(
-    uint64_t windowId,
     const ledger::VisitData& visit_data,
-    const std::string& publisher_blob) {
+    const std::string& publisher_blob,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   if (!ledger_->GetRewardsMainEnabled()) {
+    callback(ledger::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
@@ -775,10 +752,10 @@ void Publisher::getPublisherActivityFromUrl(
 
     new_visit_data->url += new_visit_data->path;
 
-    ledger_->GetMediaActivityFromUrl(windowId,
-                                     std::move(new_visit_data),
+    ledger_->GetMediaActivityFromUrl(std::move(new_visit_data),
                                      type,
-                                     publisher_blob);
+                                     publisher_blob,
+                                     callback);
     return;
   }
 
@@ -801,32 +778,34 @@ void Publisher::getPublisherActivityFromUrl(
                   this,
                   _1,
                   _2,
-                  windowId,
-                  new_data));
+                  new_data,
+                  callback));
 }
 
 void Publisher::OnSaveVisitInternal(
     ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  // TODO(nejczdovc): handle if needed
+    ledger::PublisherInfoPtr info,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
+  callback(result, std::move(info));
 }
 
 void Publisher::OnPanelPublisherInfo(
     ledger::Result result,
     ledger::PublisherInfoPtr info,
-    uint64_t windowId,
-    const ledger::VisitData& visit_data) {
+    const ledger::VisitData& visit_data,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   if (result == ledger::Result::LEDGER_OK) {
-    ledger_->OnPanelPublisherInfo(result, std::move(info), windowId);
+    callback(result, std::move(info));
   }
 
   if (result == ledger::Result::NOT_FOUND && !visit_data.domain.empty()) {
-    auto callback = std::bind(&Publisher::OnSaveVisitInternal,
+    auto visit_callback = std::bind(&Publisher::OnSaveVisitInternal,
                               this,
                               _1,
-                              _2);
+                              _2,
+                              callback);
 
-    SaveVisit(visit_data.domain, visit_data, 0, windowId, callback);
+    SaveVisit(visit_data.domain, visit_data, 0, visit_callback);
   }
 }
 

@@ -27,8 +27,8 @@ class Reddit : public ledger::LedgerCallbackHandler {
   ~Reddit() override;
 
   void ProcessActivityFromUrl(
-      uint64_t window_id,
-      const ledger::VisitData& visit_data);
+      const ledger::VisitData& visit_data,
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
   void SaveMediaInfo(
       const std::map<std::string, std::string>& data,
@@ -37,15 +37,15 @@ class Reddit : public ledger::LedgerCallbackHandler {
  private:
   void OnMediaActivityError(
       const ledger::VisitData& visit_data,
-      uint64_t window_id);
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
   void UserPath(
-      uint64_t window_id,
-      const ledger::VisitData& visit_data);
+      const ledger::VisitData& visit_data,
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
   void OnUserActivity(
-      uint64_t window_id,
       const ledger::VisitData& visit_data,
+      ledger::GetPublisherActivityFromUrlCallback callback,
       ledger::Result result,
       ledger::PublisherInfoPtr publisher_info);
 
@@ -54,21 +54,21 @@ class Reddit : public ledger::LedgerCallbackHandler {
       braveledger_media::FetchDataFromUrlCallback callback);
 
   void GetPublisherPanelInfo(
-      uint64_t window_id,
       const ledger::VisitData& visit_data,
-      const std::string& publisher_key);
+      const std::string& publisher_key,
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
   void OnUserPage(
-      uint64_t window_id,
       const ledger::VisitData& visit_data,
+      ledger::GetPublisherActivityFromUrlCallback callback,
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
   void OnPublisherPanelInfo(
-      uint64_t window_id,
       const ledger::VisitData& visit_data,
       const std::string& publisher_key,
+      ledger::GetPublisherActivityFromUrlCallback callback,
       ledger::Result result,
       ledger::PublisherInfoPtr info);
 
@@ -79,12 +79,12 @@ class Reddit : public ledger::LedgerCallbackHandler {
       ledger::PublisherInfoPtr publisher_info);
 
   void SavePublisherInfo(
-      uint64_t window_id,
       const std::string& user_name,
       ledger::PublisherInfoCallback callback,
       const std::string& data);
 
   void OnRedditSaved(
+      ledger::GetPublisherActivityFromUrlCallback callback,
       ledger::Result result,
       ledger::PublisherInfoPtr publisher_info);
 

@@ -216,18 +216,15 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_CONST_METHOD0(IsWalletCreated, bool());
 
   MOCK_METHOD3(GetPublisherActivityFromUrl,
-      void(uint64_t,
-          ledger::VisitDataPtr,
-          const std::string&));
+      void(ledger::VisitDataPtr visit_data,
+           const std::string& publisher_blob,
+           ledger::GetPublisherActivityFromUrlCallback callback));
 
   MOCK_METHOD4(GetMediaActivityFromUrl,
       void(uint64_t,
           ledger::VisitDataPtr,
           const std::string&,
           const std::string&));
-
-  MOCK_METHOD3(OnPanelPublisherInfo,
-      void(ledger::Result, ledger::PublisherInfoPtr, uint64_t));
 
   MOCK_METHOD4(SetBalanceReportItem, void(
       const ledger::ActivityMonth,

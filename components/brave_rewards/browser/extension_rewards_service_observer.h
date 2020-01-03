@@ -65,12 +65,6 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   void OnUnblindedTokensReady(
       brave_rewards::RewardsService* rewards_service) override;
 
-  // RewardsServicePrivateObserver implementation
-  void OnPanelPublisherInfo(
-      RewardsService* rewards_service,
-      int error_code,
-      const ledger::PublisherInfo* info,
-      uint64_t windowId) override;
   void OnFetchPromotions(
       RewardsService* rewards_service,
       const uint32_t result,

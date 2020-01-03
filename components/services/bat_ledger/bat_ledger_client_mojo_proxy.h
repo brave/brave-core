@@ -58,9 +58,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const ledger::UrlMethod method,
       ledger::LoadURLCallback callback) override;
 
-  void OnPanelPublisherInfo(ledger::Result result,
-                            ledger::PublisherInfoPtr info,
-                            uint64_t windowId) override;
   void FetchFavIcon(const std::string& url,
                     const std::string& favicon_key,
                     ledger::FetchIconCallback callback) override;

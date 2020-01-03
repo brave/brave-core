@@ -76,6 +76,17 @@ export class RewardsPanel extends React.Component<Props, State> {
       chrome.windows.getCurrent({}, this.onWindowCallback)
       this.getBalance()
     }
+
+    if (this.props.rewardsPanelData.pendingPublisherData) {
+      const { tabUrl, tabFaviconUrl, windowId, tabId } = this.props.rewardsPanelData.pendingPublisherData
+      if (tabUrl && windowId) {
+        if (utils.isTwitchUrl(tabUrl) && tabId) {
+          this.pollTwitchPage(tabUrl, tabFaviconUrl || '', tabId, windowId)
+        } else {
+          this.getPublisherData(tabUrl, tabFaviconUrl || '', windowId)
+        }
+      }
+    }
   }
 
   getBalance () {
@@ -129,66 +140,52 @@ export class RewardsPanel extends React.Component<Props, State> {
       if (!tabs || !tabs.length) {
         return
       }
-      const pollTwitchPage = (tab: chrome.tabs.Tab, tabId: number) => {
-        // use an interval here to monitor when the DOM has finished
-        // generating. clear after the data is present.
-        // Check every second no more than 'limit' times
-        // clear the interval if panel closes
+      rewardsPanelActions.onTabRetrieved(tabs[0], false)
+    })
+  }
 
-        const markupMatch = 'channel-header'
-        let itr = 0
-        const limit = 5
-        let interval = setInterval(poll, 1000)
-        function poll () {
-          chrome.tabs.executeScript(tabId, {
-            code: 'document.body.outerHTML'
-          }, function (result: string[]) {
-            if (result[0].includes(markupMatch)) {
-              clearInterval(interval)
-              const rewardsPanelActions = require('../background/actions/rewardsPanelActions').default
-              rewardsPanelActions.onTabRetrieved(tab, false, result[0])
-            } else {
-              chrome.storage.local.get(['rewards_panel_open'], function (result) {
-                if (result['rewards_panel_open'] === 'false') {
-                  // panel was closed. give up
-                  clearInterval(interval)
-                }
-              })
-              itr++
-              if (itr === limit) {
-                // give up
-                clearInterval(interval)
-
-                const rewardsPanelActions = require('../background/actions/rewardsPanelActions').default
-                rewardsPanelActions.onTabRetrieved(tab)
-              }
-            }
-          })
-        }
-        poll()
-      }
-
-      const pollData = (tab: chrome.tabs.Tab, tabId: number, url: URL) => {
-        if (url && url.href.startsWith('https://www.twitch.tv/')) {
-          chrome.storage.local.get(['rewards_panel_open'], function (result) {
-            if (result['rewards_panel_open'] === 'true') {
-              pollTwitchPage(tab, tabId)
-            }
-          })
-        } else {
-          this.props.actions.onTabRetrieved(tab)
-        }
-      }
-      let tab = tabs[0]
-      if (tab.url && tab.id) {
-        let url = new URL(tab.url)
-        if (url && url.host.endsWith('.twitch.tv')) {
-          pollData(tab, tab.id, url)
-        } else {
-          this.props.actions.onTabRetrieved(tab)
-        }
+  poll = (interval: ReturnType<typeof setTimeout>, tabId: number, tabUrl: string, tabFaviconUrl: string, windowId: number) => {
+    const markupMatch = 'channel-header'
+    let itr = 0
+    const limit = 5
+    chrome.tabs.executeScript(tabId, {
+      code: 'document.body.outerHTML'
+    }, (result: string[]) => {
+      if (result[0].includes(markupMatch)) {
+        clearInterval(interval)
+        this.getPublisherData(tabUrl, tabFaviconUrl, windowId, result[0])
       } else {
-        this.props.actions.onTabRetrieved(tab)
+        itr++
+        if (itr === limit) {
+          // give up
+          clearInterval(interval)
+          this.getPublisherData(tabUrl, tabFaviconUrl, windowId)
+        }
+      }
+    })
+  }
+
+  pollTwitchPage = (tabUrl: string, tabFaviconUrl: string, tabId: number, windowId: number) => {
+    // use an interval here to monitor when the DOM has finished
+    // generating. clear after the data is present.
+    // Check every second no more than 'limit' times
+    // clear the interval if panel closes
+    let interval = setInterval(this.poll, 1000)
+    this.poll(interval, tabId, tabUrl, tabFaviconUrl, windowId)
+  }
+
+  getPublisherData = (tabUrl: string, tabFaviconUrl: string, windowId: number, publisherBlob: string = 'ignore') => {
+    chrome.braveRewards.getPublisherData(
+    tabUrl,
+    tabFaviconUrl || '',
+    publisherBlob, (result: RewardsExtension.Result, publisher: RewardsExtension.Publisher) => {
+      if (result === RewardsExtension.Result.LEDGER_OK) {
+        this.props.actions.onPublisherData(windowId, publisher)
+      }
+      if (publisher && publisher.publisher_key) {
+        chrome.braveRewards.getPublisherBanner(publisher.publisher_key, ((banner: RewardsExtension.PublisherBanner) => {
+          rewardsPanelActions.onPublisherBanner(banner)
+        }))
       }
     })
   }

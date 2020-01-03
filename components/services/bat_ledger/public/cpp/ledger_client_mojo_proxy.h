@@ -67,10 +67,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   void SetTimer(uint64_t time_offset, SetTimerCallback callback) override;
   void KillTimer(const uint32_t timer_id) override;
-  void OnPanelPublisherInfo(
-      const ledger::Result result,
-      ledger::PublisherInfoPtr info,
-      uint64_t window_id) override;
 
   void SaveContributionInfo(
       ledger::ContributionInfoPtr info,

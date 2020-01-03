@@ -242,16 +242,6 @@ void LedgerClientMojoProxy::KillTimer(const uint32_t timer_id) {
   ledger_client_->KillTimer(timer_id);
 }
 
-void LedgerClientMojoProxy::OnPanelPublisherInfo(
-    const ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info,
-    uint64_t window_id) {
-  ledger_client_->OnPanelPublisherInfo(
-      result,
-      std::move(publisher_info),
-      window_id);
-}
-
 // static
 void LedgerClientMojoProxy::OnFetchFavIcon(
     CallbackHolder<FetchFavIconCallback>* holder,

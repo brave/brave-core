@@ -34,20 +34,6 @@ chrome.tabs.query({
   rewardsPanelActions.init(tabs)
 })
 
-chrome.runtime.onStartup.addListener(function () {
-  chrome.runtime.onConnect.addListener(function (externalPort) {
-    chrome.storage.local.set({
-      'rewards_panel_open': 'true'
-    })
-
-    externalPort.onDisconnect.addListener(function () {
-      chrome.storage.local.set({
-        'rewards_panel_open': 'false'
-      })
-    })
-  })
-})
-
 const tipTwitterMedia = (mediaMetaData: RewardsTip.MediaMetaData) => {
   mediaMetaData.mediaType = 'twitter'
   chrome.tabs.query({

@@ -32,12 +32,14 @@ class GitHub : public ledger::LedgerCallbackHandler {
       const std::map<std::string, std::string>& data,
       ledger::PublisherInfoCallback callback);
 
-  void ProcessActivityFromUrl(uint64_t window_id,
-                              const ledger::VisitData& visit_data);
+  void ProcessActivityFromUrl(
+      const ledger::VisitData& visit_data,
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
   void ProcessMedia(
       const std::map<std::string, std::string> parts,
-      const ledger::VisitData& visit_data);
+      const ledger::VisitData& visit_data,
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
   ~GitHub() override;
 
@@ -45,9 +47,9 @@ class GitHub : public ledger::LedgerCallbackHandler {
   void OnMediaPublisherActivity(
       ledger::Result result,
       ledger::PublisherInfoPtr info,
-      uint64_t window_id,
       const ledger::VisitData& visit_data,
-      const std::string& media_key);
+      const std::string& media_key,
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
   void FetchDataFromUrl(
       const std::string& url,
@@ -55,13 +57,14 @@ class GitHub : public ledger::LedgerCallbackHandler {
 
   void OnUserPage(
       const uint64_t duration,
-      uint64_t window_id,
       const ledger::VisitData& visit_data,
+      ledger::GetPublisherActivityFromUrlCallback callback,
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
   void OnSaveMediaVisit(
+      ledger::GetPublisherActivityFromUrlCallback callback,
       ledger::Result result,
       ledger::PublisherInfoPtr info);
 
@@ -71,23 +74,22 @@ class GitHub : public ledger::LedgerCallbackHandler {
       const std::string& user_name,
       const std::string& publisher_name,
       const std::string& profile_picture,
-      const uint64_t window_id,
       ledger::PublisherInfoCallback callback);
 
   void GetPublisherPanelInfo(
-      uint64_t window_id,
-      const ledger::VisitData& visit_data,
-      const std::string& publisher_key);
-
-  void OnPublisherPanelInfo(
-      uint64_t window_id,
       const ledger::VisitData& visit_data,
       const std::string& publisher_key,
+      ledger::GetPublisherActivityFromUrlCallback callback);
+
+  void OnPublisherPanelInfo(
+      const ledger::VisitData& visit_data,
+      const std::string& publisher_key,
+      ledger::GetPublisherActivityFromUrlCallback callback,
       ledger::Result result,
       ledger::PublisherInfoPtr info);
 
   void OnMediaActivityError(
-      uint64_t window_id);
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
 void OnMetaDataGet(
       ledger::PublisherInfoCallback callback,
@@ -96,7 +98,6 @@ void OnMetaDataGet(
       const std::map<std::string, std::string>& headers);
 
 void OnMediaPublisherInfo(
-    uint64_t window_id,
     const std::string& user_id,
     const std::string& screen_name,
     const std::string& publisher_name,

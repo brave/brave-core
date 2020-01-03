@@ -199,10 +199,11 @@ bool GitHub::IsExcludedPath(const std::string& path) {
 
   return false;
 }
-void GitHub::ProcessActivityFromUrl(uint64_t window_id,
-    const ledger::VisitData& visit_data) {
+void GitHub::ProcessActivityFromUrl(
+    const ledger::VisitData& visit_data,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   if (IsExcludedPath(visit_data.path)) {
-    OnMediaActivityError(window_id);
+    OnMediaActivityError(callback);
     return;
   }
 
@@ -210,7 +211,7 @@ void GitHub::ProcessActivityFromUrl(uint64_t window_id,
   const std::string media_key = GetMediaKey(user_name);
 
   if (media_key.empty()) {
-    OnMediaActivityError(window_id);
+    OnMediaActivityError(callback);
     return;
   }
 
@@ -220,15 +221,16 @@ void GitHub::ProcessActivityFromUrl(uint64_t window_id,
                 this,
                 _1,
                 _2,
-                window_id,
                 visit_data,
-                media_key));
+                media_key,
+                callback));
 }
 
 
 void GitHub::ProcessMedia(
     const std::map<std::string, std::string> parts,
-    const ledger::VisitData& visit_data) {
+    const ledger::VisitData& visit_data,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   const std::string user_name = GetUserNameFromURL(visit_data.path);
   const std::string url = GetProfileAPIURL(user_name);
   auto iter = parts.find("duration");
@@ -238,27 +240,27 @@ void GitHub::ProcessMedia(
     return;
   }
 
-  const auto callback = std::bind(&GitHub::OnUserPage,
+  const auto user_page_callback = std::bind(&GitHub::OnUserPage,
       this,
       duration,
-      0,
       visit_data,
+      callback,
       _1,
       _2,
       _3);
 
-  FetchDataFromUrl(url, callback);
+  FetchDataFromUrl(url, user_page_callback);
 }
 
 void GitHub::OnMediaPublisherActivity(
     ledger::Result result,
     ledger::PublisherInfoPtr info,
-    uint64_t window_id,
     const ledger::VisitData& visit_data,
-    const std::string& media_key) {
+    const std::string& media_key,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
-    OnMediaActivityError(window_id);
+    OnMediaActivityError(callback);
     return;
   }
 
@@ -270,19 +272,20 @@ void GitHub::OnMediaPublisherActivity(
                      std::bind(&GitHub::OnUserPage,
                                this,
                                0,
-                               window_id,
                                visit_data,
+                               callback,
                                _1,
                                _2,
                                _3));
   } else {
-    GetPublisherPanelInfo(window_id,
-                          visit_data,
-                          info->id);
+    GetPublisherPanelInfo(visit_data,
+                          info->id,
+                          callback);
   }
 }
 
-void GitHub::OnMediaActivityError(uint64_t window_id) {
+void GitHub::OnMediaActivityError(
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   std::string url = GITHUB_TLD;
   std::string name = GITHUB_MEDIA_TYPE;
 
@@ -295,14 +298,16 @@ void GitHub::OnMediaActivityError(uint64_t window_id) {
   new_visit_data.name = name;
 
   ledger_->GetPublisherActivityFromUrl(
-      window_id, ledger::VisitData::New(new_visit_data), "");
+      ledger::VisitData::New(new_visit_data),
+      "",
+      callback);
 }
 
 // Gets publisher panel info where we know that publisher info exists
 void GitHub::GetPublisherPanelInfo(
-    uint64_t window_id,
     const ledger::VisitData& visit_data,
-    const std::string& publisher_key) {
+    const std::string& publisher_key,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   auto filter = ledger_->CreateActivityFilter(
     publisher_key,
     ledger::ExcludeFilter::FILTER_ALL,
@@ -313,17 +318,17 @@ void GitHub::GetPublisherPanelInfo(
   ledger_->GetPanelPublisherInfo(std::move(filter),
     std::bind(&GitHub::OnPublisherPanelInfo,
               this,
-              window_id,
               visit_data,
               publisher_key,
+              callback,
               _1,
               _2));
 }
 
 void GitHub::OnPublisherPanelInfo(
-    uint64_t window_id,
     const ledger::VisitData& visit_data,
     const std::string& publisher_key,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     ledger::Result result,
     ledger::PublisherInfoPtr info) {
   if (!info || result == ledger::Result::NOT_FOUND) {
@@ -333,13 +338,13 @@ void GitHub::OnPublisherPanelInfo(
                      std::bind(&GitHub::OnUserPage,
                                this,
                                0,
-                               window_id,
                                visit_data,
+                               callback,
                                _1,
                                _2,
                                _3));
   } else {
-    ledger_->OnPanelPublisherInfo(result, std::move(info), window_id);
+    callback(result, std::move(info));
   }
 }
 
@@ -356,13 +361,13 @@ void GitHub::FetchDataFromUrl(
 
 void GitHub::OnUserPage(
     const uint64_t duration,
-    uint64_t window_id,
     const ledger::VisitData& visit_data,
+    ledger::GetPublisherActivityFromUrlCallback callback,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
   if (response_status_code != net::HTTP_OK) {
-    OnMediaActivityError(window_id);
+    OnMediaActivityError(callback);
     return;
   }
 
@@ -371,8 +376,9 @@ void GitHub::OnUserPage(
   const std::string publisher_name = GetPublisherName(response);
   const std::string profile_picture = GetProfileImageURL(response);
 
-  auto callback = std::bind(&GitHub::OnSaveMediaVisit,
+  auto visit_callback = std::bind(&GitHub::OnSaveMediaVisit,
                             this,
+                            callback,
                             _1,
                             _2);
 
@@ -381,13 +387,14 @@ void GitHub::OnUserPage(
                     user_name,
                     publisher_name,
                     profile_picture,
-                    window_id,
-                    callback);
+                    visit_callback);
 }
 
 void GitHub::OnSaveMediaVisit(
+    ledger::GetPublisherActivityFromUrlCallback callback,
     ledger::Result result,
     ledger::PublisherInfoPtr info) {
+  callback(result, std::move(info));
 }
 
 void GitHub::SavePublisherInfo(
@@ -396,7 +403,6 @@ void GitHub::SavePublisherInfo(
     const std::string& screen_name,
     const std::string& publisher_name,
     const std::string& profile_picture,
-    const uint64_t window_id,
     ledger::PublisherInfoCallback callback) {
   const std::string publisher_key = GetPublisherKey(user_id);
   const std::string media_key = GetMediaKey(screen_name);
@@ -418,7 +424,6 @@ void GitHub::SavePublisherInfo(
   ledger_->SaveMediaVisit(publisher_key,
                           visit_data,
                           duration,
-                          window_id,
                           callback);
 
   if (!media_key.empty()) {
@@ -427,7 +432,6 @@ void GitHub::SavePublisherInfo(
 }
 
 void GitHub::OnMediaPublisherInfo(
-    uint64_t window_id,
     const std::string& user_id,
     const std::string& screen_name,
     const std::string& publisher_name,
@@ -447,7 +451,6 @@ void GitHub::OnMediaPublisherInfo(
                       screen_name,
                       publisher_name,
                       profile_picture,
-                      window_id,
                       callback);
   } else {
     // TODO(nejczdovc): we need to check if user is verified,
@@ -476,7 +479,6 @@ void GitHub::OnMetaDataGet(
           media_key,
           std::bind(&GitHub::OnMediaPublisherInfo,
                     this,
-                    0,
                     user_id,
                     user_name,
                     publisher_name,

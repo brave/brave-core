@@ -9,17 +9,6 @@ chrome.braveRewards.onWalletInitialized.addListener((result: RewardsExtension.Re
   rewardsPanelActions.onWalletInitialized(result)
 })
 
-chrome.braveRewards.onPublisherData.addListener((windowId: number, publisher: RewardsExtension.Publisher) => {
-  rewardsPanelActions.onPublisherData(windowId, publisher)
-
-  // Get publisher amounts
-  if (publisher && publisher.publisher_key) {
-    chrome.braveRewards.getPublisherBanner(publisher.publisher_key, ((banner: RewardsExtension.PublisherBanner) => {
-      rewardsPanelActions.onPublisherBanner(banner)
-    }))
-  }
-})
-
 chrome.braveRewards.onPromotions.addListener((result: number, promotions: RewardsExtension.Promotion[]) => {
   rewardsPanelActions.onPromotions(result, promotions)
 })

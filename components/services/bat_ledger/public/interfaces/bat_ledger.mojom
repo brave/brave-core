@@ -37,23 +37,28 @@ interface BatLedger {
   GetReconcileStamp() => (uint64 reconcile_stamp);
 
   OnLoad(ledger.mojom.VisitData visit_data, uint64 current_time);
-  OnUnload(uint32 tab_id, uint64 current_time);
+  OnUnload(uint32 tab_id, uint64 current_time) =>
+      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? info);
   OnShow(uint32 tab_id, uint64 current_time);
-  OnHide(uint32 tab_id, uint64 current_time);
+  OnHide(uint32 tab_id, uint64 current_time) =>
+      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? info);
   OnForeground(uint32 tab_id, uint64 current_time);
-  OnBackground(uint32 tab_id, uint64 current_time);
+  OnBackground(uint32 tab_id, uint64 current_time) =>
+      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? info);
 
   OnPostData(string url,
              string first_party_url,
              string referrer,
              string post_data,
-             ledger.mojom.VisitData visit_data);
+             ledger.mojom.VisitData visit_data) =>
+             (ledger.mojom.Result result, ledger.mojom.PublisherInfo? info);
   OnXHRLoad(uint32 tab_id,
             string url,
             map<string, string> parts,
             string first_party_url,
             string referrer,
-            ledger.mojom.VisitData visit_data);
+            ledger.mojom.VisitData visit_data) =>
+            (ledger.mojom.Result result, ledger.mojom.PublisherInfo? info);
 
   SetPublisherExclude(string publisher_key, ledger.mojom.PublisherExclude exclude) => (ledger.mojom.Result result);
   RestorePublishers() => (ledger.mojom.Result result);
@@ -62,7 +67,7 @@ interface BatLedger {
   AttestPromotion(string promotion_id, string solution) => (ledger.mojom.Result result, ledger.mojom.Promotion? promotion);
   GetWalletPassphrase() => (string wallet_passphrase);
   RecoverWallet(string passPhrase) => (ledger.mojom.Result result, double balance);
-  
+
   SetRewardsMainEnabled(bool enabled);
   SetPublisherMinVisitTime(uint64 duration_in_seconds);
   SetPublisherMinVisits(uint32 visits);
@@ -80,9 +85,10 @@ interface BatLedger {
 
   IsWalletCreated() => (bool wallet_created);
 
-  GetPublisherActivityFromUrl(uint64 window_id,
-      ledger.mojom.VisitData visit_data,
-      string publisher_blob);
+  GetPublisherActivityFromUrl(ledger.mojom.VisitData visit_data,
+      string publisher_blob) =>
+      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? info);
+
   GetContributionAmount() => (double contribution_amount);
   GetPublisherBanner(string publisher_id) =>
       (ledger.mojom.PublisherBanner? banner);
@@ -170,9 +176,6 @@ interface BatLedgerClient {
   LoadMediaPublisherInfo(string media_key) =>
       (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
 
-  OnPanelPublisherInfo(ledger.mojom.Result result,
-                       ledger.mojom.PublisherInfo publisher_info,
-                       uint64 window_id);
   FetchFavIcon(string url, string favicon_key) => (bool success,
       string favicon_url);
   SaveRecurringTip(ledger.mojom.RecurringTip info) => (ledger.mojom.Result result);

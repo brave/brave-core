@@ -5,7 +5,7 @@
 import { types } from '../../constants/rewards_panel_types'
 import * as storage from '../storage'
 import { setBadgeText } from '../browserAction'
-import { isPublisherConnectedOrVerified } from '../../utils'
+import { isPublisherConnectedOrVerified, isTwitchUrl } from '../../utils'
 
 const getWindowId = (id: number) => {
   return `id_${id}`
@@ -95,14 +95,16 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       const publishers: Record<string, RewardsExtension.Publisher> = state.publishers
       const publisher = publishers[id]
       const validKey = publisher && publisher.publisher_key && publisher.publisher_key.length > 0
-
-      if (!publisher || (publisher.tabUrl !== tab.url || !validKey)) {
+      let pendingPublisherData
+      if (!publisher || (publisher.tabUrl !== tab.url || !validKey) ||
+        (isTwitchUrl(tab.url) && publisher.favicon_url !== tab.favIconUrl)) {
         // Invalid publisher for tab, re-fetch publisher.
-        chrome.braveRewards.getPublisherData(
-          tab.windowId,
-          tab.url,
-          tab.favIconUrl || '',
-          payload.publisherBlob || '')
+        pendingPublisherData = {
+          tabUrl: tab.url,
+          tabFaviconUrl: tab.favIconUrl,
+          windowId: tab.windowId,
+          tabId: tab.id
+        }
 
         if (publisher) {
           delete publishers[id]
@@ -125,13 +127,15 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
 
       state = {
         ...state,
-        publishers
+        publishers,
+        pendingPublisherData
       }
       break
     }
     case types.ON_PUBLISHER_DATA: {
       const publisher = payload.publisher
       let publishers: Record<string, RewardsExtension.Publisher> = state.publishers
+      let pendingPublisherData = state.pendingPublisherData
       const id = getWindowId(payload.windowId)
 
       if (publisher && !publisher.publisher_key) {
@@ -144,10 +148,14 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
           setBadgeText(state, isPublisherConnectedOrVerified(newPublisher.status), newPublisher.tabId)
         }
       }
+      if (pendingPublisherData) {
+        pendingPublisherData = {}
+      }
 
       state = {
         ...state,
-        publishers
+        publishers,
+        pendingPublisherData
       }
       break
     }

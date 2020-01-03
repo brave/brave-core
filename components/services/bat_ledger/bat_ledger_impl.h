@@ -48,19 +48,33 @@ class BatLedgerImpl : public mojom::BatLedger,
   void GetReconcileStamp(GetReconcileStampCallback callback) override;
 
   void OnLoad(ledger::VisitDataPtr visit_data, uint64_t current_time) override;
-  void OnUnload(uint32_t tab_id, uint64_t current_time) override;
+  void OnUnload(
+      uint32_t tab_id,
+      uint64_t current_time,
+      OnUnloadCallback callback) override;
   void OnShow(uint32_t tab_id, uint64_t current_time) override;
-  void OnHide(uint32_t tab_id, uint64_t current_time) override;
+  void OnHide(uint32_t tab_id,
+              uint64_t current_time,
+              OnHideCallback callback) override;
   void OnForeground(uint32_t tab_id, uint64_t current_time) override;
-  void OnBackground(uint32_t tab_id, uint64_t current_time) override;
+  void OnBackground(
+      uint32_t tab_id,
+      uint64_t current_time,
+      OnBackgroundCallback callback) override;
 
   void OnPostData(const std::string& url,
-      const std::string& first_party_url, const std::string& referrer,
-      const std::string& post_data, ledger::VisitDataPtr visit_data) override;
-  void OnXHRLoad(uint32_t tab_id, const std::string& url,
-      const base::flat_map<std::string, std::string>& parts,
-      const std::string& first_party_url, const std::string& referrer,
-      ledger::VisitDataPtr visit_data) override;
+                  const std::string& first_party_url,
+                  const std::string& referrer,
+                  const std::string& post_data,
+                  ledger::VisitDataPtr visit_data,
+                  OnPostDataCallback callback) override;
+  void OnXHRLoad(uint32_t tab_id,
+                 const std::string& url,
+                 const base::flat_map<std::string, std::string>& parts,
+                 const std::string& first_party_url,
+                 const std::string& referrer,
+                 ledger::VisitDataPtr visit_data,
+                 OnXHRLoadCallback callback) override;
 
   void SetPublisherExclude(
       const std::string& publisher_key,
@@ -99,9 +113,9 @@ class BatLedgerImpl : public mojom::BatLedger,
   void IsWalletCreated(IsWalletCreatedCallback callback) override;
 
   void GetPublisherActivityFromUrl(
-      uint64_t window_id,
       ledger::VisitDataPtr visit_data,
-      const std::string& publisher_blob) override;
+      const std::string& publisher_blob,
+      GetPublisherActivityFromUrlCallback callback) override;
 
   void GetContributionAmount(
       GetContributionAmountCallback callback) override;
@@ -375,6 +389,36 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnGetContributionReport(
       CallbackHolder<GetContributionReportCallback>* holder,
       ledger::ContributionReportInfoList list);
+
+  static void OnGetPublisherActivityFromUrl(
+      CallbackHolder<GetPublisherActivityFromUrlCallback>* holder,
+      const ledger::Result result,
+      ledger::PublisherInfoPtr publisher_info);
+
+  static void OnXHRLoadComplete(
+      CallbackHolder<OnXHRLoadCallback>* holder,
+      const ledger::Result result,
+      ledger::PublisherInfoPtr publisher_info);
+
+  static void OnHideComplete(
+      CallbackHolder<OnHideCallback>* holder,
+      const ledger::Result result,
+      ledger::PublisherInfoPtr publisher_info);
+
+  static void OnPostDataComplete(
+      CallbackHolder<OnPostDataCallback>* holder,
+      const ledger::Result result,
+      ledger::PublisherInfoPtr publisher_info);
+
+  static void OnBackgroundComplete(
+      CallbackHolder<OnBackgroundCallback>* holder,
+      const ledger::Result result,
+      ledger::PublisherInfoPtr publisher_info);
+
+  static void OnUnloadComplete(
+      CallbackHolder<OnUnloadCallback>* holder,
+      const ledger::Result result,
+      ledger::PublisherInfoPtr publisher_info);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

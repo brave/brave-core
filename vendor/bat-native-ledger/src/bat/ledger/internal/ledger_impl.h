@@ -227,7 +227,6 @@ class LedgerImpl : public ledger::Ledger,
   void SaveMediaVisit(const std::string& publisher_id,
                       const ledger::VisitData& visit_data,
                       const uint64_t& duration,
-                      const uint64_t window_id,
                       const ledger::PublisherInfoCallback callback);
 
   void SetPublisherExclude(
@@ -251,19 +250,15 @@ class LedgerImpl : public ledger::Ledger,
   bool IsWalletCreated() const override;
 
   void GetPublisherActivityFromUrl(
-      uint64_t windowId,
       ledger::VisitDataPtr visit_data,
-      const std::string& publisher_blob) override;
+      const std::string& publisher_blob,
+      ledger::GetPublisherActivityFromUrlCallback callback) override;
 
   void GetMediaActivityFromUrl(
-      uint64_t windowId,
       ledger::VisitDataPtr visit_data,
       const std::string& providerType,
-      const std::string& publisher_blob);
-
-  void OnPanelPublisherInfo(ledger::Result result,
-                           ledger::PublisherInfoPtr info,
-                           uint64_t windowId);
+      const std::string& publisher_blob,
+      ledger::GetPublisherActivityFromUrlCallback callback);
 
   void SetBalanceReportItem(
       const ledger::ActivityMonth month,
@@ -613,18 +608,28 @@ class LedgerImpl : public ledger::Ledger,
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;
 
-  void OnUnload(uint32_t tab_id, const uint64_t& current_time) override;
+  void OnUnload(
+      uint32_t tab_id,
+      const uint64_t& current_time,
+      ledger::GetPublisherActivityFromUrlCallback callback) override;
 
   void OnShow(uint32_t tab_id, const uint64_t& current_time) override;
 
-  void OnSaveVisit(ledger::Result result,
+  void OnSaveVisit(ledger::GetPublisherActivityFromUrlCallback callback,
+                   ledger::Result result,
                    ledger::PublisherInfoPtr info);
 
-  void OnHide(uint32_t tab_id, const uint64_t& current_time) override;
+  void OnHide(
+      uint32_t tab_id,
+      const uint64_t& current_time,
+      ledger::GetPublisherActivityFromUrlCallback callback) override;
 
   void OnForeground(uint32_t tab_id, const uint64_t& current_time) override;
 
-  void OnBackground(uint32_t tab_id, const uint64_t& current_time) override;
+  void OnBackground(
+      uint32_t tab_id,
+      const uint64_t& current_time,
+      ledger::GetPublisherActivityFromUrlCallback callback) override;
 
   void OnXHRLoad(
       uint32_t tab_id,
@@ -632,14 +637,16 @@ class LedgerImpl : public ledger::Ledger,
       const std::map<std::string, std::string>& parts,
       const std::string& first_party_url,
       const std::string& referrer,
-      ledger::VisitDataPtr visit_data) override;
+      ledger::VisitDataPtr visit_data,
+      ledger::GetPublisherActivityFromUrlCallback callback) override;
 
   void OnPostData(
       const std::string& url,
       const std::string& first_party_url,
       const std::string& referrer,
       const std::string& post_data,
-      ledger::VisitDataPtr visit_data) override;
+      ledger::VisitDataPtr visit_data,
+      ledger::GetPublisherActivityFromUrlCallback callback) override;
 
   void OnTimer(uint32_t timer_id) override;
 

@@ -54,62 +54,69 @@ std::string Media::GetLinkType(
   return type;
 }
 
-void Media::ProcessMedia(const std::map<std::string, std::string>& parts,
-                               const std::string& type,
-                               ledger::VisitDataPtr visit_data) {
+void Media::ProcessMedia(
+    const std::map<std::string, std::string>& parts,
+    const std::string& type,
+    ledger::VisitDataPtr visit_data,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   if (parts.size() == 0 || !ledger_->GetRewardsMainEnabled() || !visit_data) {
     return;
   }
 
   if (type == YOUTUBE_MEDIA_TYPE) {
-    media_youtube_->ProcessMedia(parts, *visit_data);
+    media_youtube_->ProcessMedia(parts, *visit_data, callback);
     return;
   }
 
   if (type == TWITCH_MEDIA_TYPE) {
-    media_twitch_->ProcessMedia(parts, *visit_data);
+    media_twitch_->ProcessMedia(parts, *visit_data, callback);
     return;
   }
 
   if (type == VIMEO_MEDIA_TYPE) {
-    media_vimeo_->ProcessMedia(parts);
+    media_vimeo_->ProcessMedia(parts, callback);
     return;
   }
 
   if (type == GITHUB_MEDIA_TYPE) {
-    media_github_->ProcessMedia(parts, *visit_data);
+    media_github_->ProcessMedia(parts, *visit_data, callback);
     return;
   }
 }
 
 void Media::GetMediaActivityFromUrl(
-    uint64_t window_id,
     ledger::VisitDataPtr visit_data,
     const std::string& type,
-    const std::string& publisher_blob) {
+    const std::string& publisher_blob,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   if (type == YOUTUBE_MEDIA_TYPE) {
-    media_youtube_->ProcessActivityFromUrl(window_id, *visit_data);
+    media_youtube_->ProcessActivityFromUrl(*visit_data, callback);
   } else if (type == TWITCH_MEDIA_TYPE) {
-    media_twitch_->ProcessActivityFromUrl(window_id,
-                                          *visit_data,
-                                          publisher_blob);
+    media_twitch_->ProcessActivityFromUrl(
+        *visit_data,
+        publisher_blob,
+        callback);
   } else if (type == TWITTER_MEDIA_TYPE) {
-    media_twitter_->ProcessActivityFromUrl(window_id,
-                                           *visit_data);
+    media_twitter_->ProcessActivityFromUrl(*visit_data,
+                                           callback);
   } else if (type == REDDIT_MEDIA_TYPE) {
-    media_reddit_->ProcessActivityFromUrl(window_id, *visit_data);
+    media_reddit_->ProcessActivityFromUrl(*visit_data,
+                                          callback);
   } else if (type == VIMEO_MEDIA_TYPE) {
-    media_vimeo_->ProcessActivityFromUrl(window_id, *visit_data);
+    media_vimeo_->ProcessActivityFromUrl(*visit_data,
+                                         callback);
   } else if (type == GITHUB_MEDIA_TYPE) {
-    media_github_->ProcessActivityFromUrl(window_id, *visit_data);
+    media_github_->ProcessActivityFromUrl(*visit_data,
+                                          callback);
   } else {
-    OnMediaActivityError(std::move(visit_data), type, window_id);
+    OnMediaActivityError(std::move(visit_data), type, callback);
   }
 }
 
-void Media::OnMediaActivityError(ledger::VisitDataPtr visit_data,
-                                       const std::string& type,
-                                       uint64_t window_id) {
+void Media::OnMediaActivityError(
+    ledger::VisitDataPtr visit_data,
+    const std::string& type,
+    ledger::GetPublisherActivityFromUrlCallback callback) {
   std::string url;
   std::string name;
   if (type == YOUTUBE_MEDIA_TYPE) {
@@ -133,6 +140,7 @@ void Media::OnMediaActivityError(ledger::VisitDataPtr visit_data,
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
       << "Media activity error for url: "
       << visit_data->url;
+    callback(ledger::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
@@ -141,7 +149,7 @@ void Media::OnMediaActivityError(ledger::VisitDataPtr visit_data,
   visit_data->path = "/";
   visit_data->name = name;
 
-  ledger_->GetPublisherActivityFromUrl(window_id, std::move(visit_data), "");
+  ledger_->GetPublisherActivityFromUrl(std::move(visit_data), "", callback);
 }
 
 void Media::SaveMediaInfo(const std::string& type,

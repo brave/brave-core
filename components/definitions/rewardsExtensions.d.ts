@@ -17,6 +17,14 @@ declare namespace RewardsExtension {
     recurringTips: Record<string, number>[]
     tipAmounts: Record<string, number[]>
     externalWallet?: ExternalWallet
+    pendingPublisherData?: PendingPublisherData
+  }
+
+  interface PendingPublisherData {
+    tabUrl?: string
+    tabFaviconUrl?: string
+    windowId?: number
+    tabId?: number
   }
 
   interface ApplicationState {

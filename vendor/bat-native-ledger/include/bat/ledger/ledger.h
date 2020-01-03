@@ -64,6 +64,9 @@ using GetBalanceReportCallback =
 using RecoverWalletCallback = std::function<void(
     const ledger::Result,
     const double balance)>;
+using GetPublisherActivityFromUrlCallback = std::function<void(
+    const ledger::Result,
+    ledger::PublisherInfoPtr)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -94,15 +97,24 @@ class LEDGER_EXPORT Ledger {
   virtual void OnLoad(VisitDataPtr visit_data,
                       const uint64_t& current_time) = 0;
 
-  virtual void OnUnload(uint32_t tab_id, const uint64_t& current_time) = 0;
+  virtual void OnUnload(
+      uint32_t tab_id,
+      const uint64_t& current_time,
+      ledger::GetPublisherActivityFromUrlCallback callback) = 0;
 
   virtual void OnShow(uint32_t tab_id, const uint64_t& current_time) = 0;
 
-  virtual void OnHide(uint32_t tab_id, const uint64_t& current_time) = 0;
+  virtual void OnHide(
+      uint32_t tab_id,
+      const uint64_t& current_time,
+      ledger::GetPublisherActivityFromUrlCallback callback) = 0;
 
   virtual void OnForeground(uint32_t tab_id, const uint64_t& current_time) = 0;
 
-  virtual void OnBackground(uint32_t tab_id, const uint64_t& current_time) = 0;
+  virtual void OnBackground(
+      uint32_t tab_id,
+      const uint64_t& current_time,
+      ledger::GetPublisherActivityFromUrlCallback callback) = 0;
 
   virtual void OnXHRLoad(
       uint32_t tab_id,
@@ -110,7 +122,8 @@ class LEDGER_EXPORT Ledger {
       const std::map<std::string, std::string>& parts,
       const std::string& first_party_url,
       const std::string& referrer,
-      VisitDataPtr visit_data) = 0;
+      VisitDataPtr visit_data,
+      ledger::GetPublisherActivityFromUrlCallback callback) = 0;
 
 
   virtual void OnPostData(
@@ -118,7 +131,8 @@ class LEDGER_EXPORT Ledger {
       const std::string& first_party_url,
       const std::string& referrer,
       const std::string& post_data,
-      VisitDataPtr visit_data) = 0;
+      VisitDataPtr visit_data,
+      ledger::GetPublisherActivityFromUrlCallback callback) = 0;
 
   virtual void OnTimer(uint32_t timer_id) = 0;
 
@@ -128,8 +142,8 @@ class LEDGER_EXPORT Ledger {
                                 PublisherInfoCallback callback) = 0;
 
   virtual void GetActivityInfoList(uint32_t start, uint32_t limit,
-                                    ledger::ActivityInfoFilterPtr filter,
-                                    PublisherInfoListCallback callback) = 0;
+                                  ledger::ActivityInfoFilterPtr filter,
+                                  PublisherInfoListCallback callback) = 0;
 
   virtual void SetRewardsMainEnabled(bool enabled) = 0;
 
@@ -232,9 +246,9 @@ class LEDGER_EXPORT Ledger {
   virtual bool IsWalletCreated() const = 0;
 
   virtual void GetPublisherActivityFromUrl(
-      uint64_t windowId,
       ledger::VisitDataPtr visit_data,
-      const std::string& publisher_blob) = 0;
+      const std::string& publisher_blob,
+      ledger::GetPublisherActivityFromUrlCallback callback) = 0;
 
   virtual void GetPublisherBanner(
       const std::string& publisher_id,

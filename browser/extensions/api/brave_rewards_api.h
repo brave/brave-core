@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_EXTENSIONS_API_BRAVE_REWARDS_API_H_
 #define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_REWARDS_API_H_
 
+#include <stdint.h>
+
 #include <map>
 #include <memory>
 #include <string>
@@ -112,6 +114,11 @@ class BraveRewardsGetPublisherDataFunction : public ExtensionFunction {
   ~BraveRewardsGetPublisherDataFunction() override;
 
   ResponseAction Run() override;
+
+ private:
+  void OnGetPublisherData(
+    const int32_t result,
+    std::unique_ptr<::brave_rewards::ContentSite> publisher_info);
 };
 
 class BraveRewardsGetWalletPropertiesFunction : public ExtensionFunction {

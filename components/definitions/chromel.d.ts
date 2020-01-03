@@ -65,13 +65,10 @@ declare namespace chrome.braveRewards {
   const tipTwitterUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
   const tipRedditUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
   const tipGitHubUser: (tabId: number, githubMetaData: RewardsTip.MediaMetaData) => {}
-  const getPublisherData: (windowId: number, url: string, faviconUrl: string, publisherBlob: string | undefined) => {}
+  const getPublisherData: (url: string, faviconUrl: string, publisherBlob: string, callback: (result: RewardsExtension.Result, publisher: RewardsExtension.Publisher) => void) => {}
   const getBalanceReport: (month: number, year: number, callback: (properties: RewardsExtension.BalanceReport) => void) => {}
   const onWalletInitialized: {
     addListener: (callback: (result: RewardsExtension.Result) => void) => void
-  }
-  const onPublisherData: {
-    addListener: (callback: (windowId: number, publisher: RewardsExtension.Publisher) => void) => void
   }
   const onPromotions: {
     addListener: (callback: (result: RewardsExtension.Result, promotions: RewardsExtension.Promotion[]) => void) => void
