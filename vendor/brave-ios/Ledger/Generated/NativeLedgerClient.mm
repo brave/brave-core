@@ -282,3 +282,6 @@ void NativeLedgerClient::UpdateContributionInfoContributedAmount(const std::stri
 void NativeLedgerClient::ReconcileStampReset() {
   [bridge_ reconcileStampReset];
 }
+void NativeLedgerClient::RunDBTransaction(ledger::DBTransactionPtr transaction, ledger::RunDBTransactionCallback callback) {
+  [bridge_ runDBTransaction:std::move(transaction) callback:callback];
+}
