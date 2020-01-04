@@ -181,16 +181,14 @@ void BraveProxyingWebSocket::ContinueToHeadersReceived() {
 void BraveProxyingWebSocket::OnConnectionEstablished(
     mojo::PendingRemote<network::mojom::WebSocket> websocket,
     mojo::PendingReceiver<network::mojom::WebSocketClient> client_receiver,
-    const std::string& selected_protocol,
-    const std::string& extensions,
     network::mojom::WebSocketHandshakeResponsePtr response,
     mojo::ScopedDataPipeConsumerHandle readable) {
   DCHECK(forwarding_handshake_client_);
   DCHECK(!is_done_);
   remote_endpoint_ = response->remote_endpoint;
   forwarding_handshake_client_->OnConnectionEstablished(
-      std::move(websocket), std::move(client_receiver), selected_protocol,
-      extensions, std::move(response), std::move(readable));
+      std::move(websocket), std::move(client_receiver), std::move(response),
+      std::move(readable));
 
   OnError(net::ERR_FAILED);
 }
