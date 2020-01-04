@@ -116,7 +116,7 @@ class BraveProxyingWebSocket : public network::mojom::WebSocketHandshakeClient,
   void OnHeadersReceivedCompleteFromProxy(
       int error_code,
       const base::Optional<std::string>& headers,
-      const GURL& url);
+      const base::Optional<GURL>& url);
 
   void PauseIncomingMethodCallProcessing();
   void ResumeIncomingMethodCallProcessing();
