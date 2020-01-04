@@ -627,9 +627,10 @@ bool AdsServiceImpl::StartService() {
   }
 
   connection->GetConnector()->BindInterface(
-      bat_ads::mojom::kServiceName, &bat_ads_service_);
+      bat_ads::mojom::kServiceName,
+      bat_ads_service_.BindNewPipeAndPassReceiver());
 
-  bat_ads_service_.set_connection_error_handler(
+  bat_ads_service_.set_disconnect_handler(
       base::Bind(&AdsServiceImpl::MaybeStart, AsWeakPtr(), true));
 
   SetEnvironment();
