@@ -1871,7 +1871,7 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
 
   auto& resource_bundle = ui::ResourceBundle::GetSharedInstance();
   if (resource_bundle.IsGzipped(id)) {
-    data_resource = resource_bundle.DecompressDataResource(id);
+    data_resource = resource_bundle.LoadDataResourceString(id);
   } else {
     data_resource = resource_bundle.GetRawDataResource(id).as_string();
   }
