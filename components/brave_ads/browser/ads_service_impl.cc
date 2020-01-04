@@ -563,6 +563,7 @@ void AdsServiceImpl::Shutdown() {
 
   bat_ads_.reset();
   bat_ads_client_binding_.Close();
+  bat_ads_service_.reset();
 
   is_initialized_ = false;
 }
@@ -626,11 +627,14 @@ bool AdsServiceImpl::StartService() {
     return false;
   }
 
-  connection->GetConnector()->BindInterface(
-      bat_ads::mojom::kServiceName, &bat_ads_service_);
+  if (!bat_ads_service_.is_bound()) {
+    connection->GetConnector()->BindInterface(
+        bat_ads::mojom::kServiceName,
+        bat_ads_service_.BindNewPipeAndPassReceiver());
 
-  bat_ads_service_.set_connection_error_handler(
-      base::Bind(&AdsServiceImpl::MaybeStart, AsWeakPtr(), true));
+    bat_ads_service_.set_disconnect_handler(
+        base::Bind(&AdsServiceImpl::MaybeStart, AsWeakPtr(), true));
+  }
 
   SetEnvironment();
   UpdateIsDebugFlag();

@@ -502,9 +502,14 @@ void RewardsServiceImpl::StartLedger() {
     return;
   }
 
+  if (bat_ledger_service_.is_bound()) {
+    bat_ledger_service_.reset();
+  }
+
   connection->GetConnector()->BindInterface(
-      bat_ledger::mojom::kServiceName, &bat_ledger_service_);
-  bat_ledger_service_.set_connection_error_handler(
+      bat_ledger::mojom::kServiceName,
+      bat_ledger_service_.BindNewPipeAndPassReceiver());
+  bat_ledger_service_.set_disconnect_handler(
       base::Bind(&RewardsServiceImpl::ConnectionClosed, AsWeakPtr()));
 
   ledger::Environment environment = ledger::Environment::STAGING;
