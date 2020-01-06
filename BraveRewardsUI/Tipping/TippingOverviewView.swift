@@ -46,6 +46,10 @@ class TippingOverviewView: UIView {
   
   let socialStackView = UIStackView().then {
     $0.spacing = 20.0
+    // Hide these icons until a later date (ref: https://github.com/brave/brave-ios/issues/2147) when we
+    // can make the icons actual buttons that lead to their social media sites (ref:
+    // https://github.com/brave/brave-ios/issues/1712)
+    $0.isHidden = true
   }
   
   private let bodyStackView = UIStackView().then {
