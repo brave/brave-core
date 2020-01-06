@@ -69,20 +69,12 @@ window.cr.define('brave_rewards', function () {
     getActions().onWalletPassphrase(pass)
   }
 
-  function recoverWalletData (properties: Rewards.RecoverWallet) {
-    getActions().onRecoverWalletData(properties)
-  }
-
   function promotionFinish (properties: Rewards.PromotionFinish) {
     getActions().onPromotionFinish(properties)
   }
 
   function reconcileStamp (stamp: number) {
     getActions().onReconcileStamp(stamp)
-  }
-
-  function addresses (addresses: Record<string, string>) {
-    getActions().onAddresses(addresses)
   }
 
   function contributeList (list: Rewards.Publisher[]) {
@@ -93,13 +85,8 @@ window.cr.define('brave_rewards', function () {
     getActions().onExcludedList(list)
   }
 
-  function excludedSiteChanged () {
-    getActions().getExcludedSites()
-    getActions().getContributeList()
-  }
-
-  function balanceReport (reports: Record<string, Rewards.BalanceReport>) {
-    getActions().onBalanceReport(reports)
+  function balanceReport (properties: {month: number, year: number, report: Rewards.BalanceReport}) {
+    getActions().onBalanceReport(properties)
   }
 
   function walletExists (exists: boolean) {
@@ -110,38 +97,34 @@ window.cr.define('brave_rewards', function () {
     getActions().onContributionAmount(amount)
   }
 
-  function adsData (adsData: Rewards.AdsData) {
-    getActions().onAdsData(adsData)
-  }
-
-  function initAutoContributeSettings (properties: any) {
-    getActions().onInitAutoContributeSettings(properties)
-  }
-
   function recurringTips (list: Rewards.Publisher[]) {
-    getActions().onRecurringDonationUpdate(list)
+    getActions().onRecurringTips(list)
   }
 
   function currentTips (list: Rewards.Publisher[]) {
     getActions().onCurrentTips(list)
   }
 
-  function rewardsEnabled (enabled: boolean) {
-    getActions().onRewardsEnabled(enabled)
+  function initAutoContributeSettings (properties: any) {
+    getActions().onInitAutoContributeSettings(properties)
   }
 
-  function pendingContributionTotal (amount: number) {
-    getActions().onPendingContributionTotal(amount)
+  function imported (imported: boolean) {
+    getActions().onImportedCheck(imported)
+  }
+
+  function adsData (adsData: Rewards.AdsData) {
+    getActions().onAdsData(adsData)
   }
 
   function onPendingContributionSaved (result: number) {
     if (result === 0) {
-      getActions().getPendingContributionsTotal()
+      getActions().getPendingContributions()
     }
   }
 
-  function recurringTipRemoved (success: boolean) {
-    getActions().onRecurringTipRemoved(success)
+  function rewardsEnabled (enabled: boolean) {
+    getActions().onRewardsEnabled(enabled)
   }
 
   function transactionHistory (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsNotificationsReceivedThisMonth: number}) {
@@ -152,20 +135,51 @@ window.cr.define('brave_rewards', function () {
     getActions().onTransactionHistoryChanged()
   }
 
+  function recurringTipSaved (success: boolean) {
+    getActions().onRecurringTipSaved(success)
+  }
+
+  function recurringTipRemoved (success: boolean) {
+    getActions().onRecurringTipRemoved(success)
+  }
+
+  function pendingContributions (list: Rewards.PendingContribution[]) {
+    getActions().onPendingContributions(list)
+  }
+
+  function onRemovePendingContribution (result: number) {
+    if (result === 0) {
+      getActions().getPendingContributions()
+    }
+  }
+
+  function excludedSiteChanged () {
+    getActions().getExcludedSites()
+    getActions().getContributeList()
+  }
+
   function balance (properties: {status: number, balance: Rewards.Balance}) {
     getActions().onBalance(properties.status, properties.balance)
   }
 
-  function reconcileComplete (properties: {category: number, result: number}) {
+  function reconcileComplete (properties: {type: number, result: number}) {
     chrome.send('brave_rewards.getReconcileStamp')
     getActions().getContributeList()
     getActions().getBalance()
     getActions().getWalletProperties()
     getCurrentBalanceReport()
+
+    if (properties.type === 8) { // Rewards.RewardsType.ONE_TIME_TIP
+      chrome.send('brave_rewards.getOneTimeTips')
+    }
   }
 
   function onlyAnonWallet (only: boolean) {
     getActions().onOnlyAnonWallet(only)
+  }
+
+  function unblindedTokensReady () {
+    getActions().getBalance()
   }
 
   return {
@@ -175,36 +189,32 @@ window.cr.define('brave_rewards', function () {
     walletProperties,
     promotions,
     walletPassphrase,
-    recoverWalletData,
     promotionFinish,
     reconcileStamp,
-    addresses,
     contributeList,
+    excludedList,
     balanceReport,
     walletExists,
     contributionAmount,
-    adsData,
-    initAutoContributeSettings,
     recurringTips,
     currentTips,
-    rewardsEnabled,
-    pendingContributionTotal,
-    recurringTipRemoved,
+    initAutoContributeSettings,
+    imported,
+    adsData,
+    pendingContributions,
     onPendingContributionSaved,
+    rewardsEnabled,
     transactionHistory,
     transactionHistoryChanged,
-    excludedList,
+    recurringTipSaved,
+    recurringTipRemoved,
+    onRemovePendingContribution,
     excludedSiteChanged,
     balance,
     reconcileComplete,
-    onlyAnonWallet
+    onlyAnonWallet,
+    unblindedTokensReady
   }
 })
 
-if (document.readyState === 'complete'
-    || document.readyState === 'interactive') {
-  // document has at least been parsed
-  window.brave_rewards.initialize()
-} else {
-  document.addEventListener('DOMContentLoaded', window.brave_rewards.initialize)
-}
+document.addEventListener('DOMContentLoaded', window.brave_rewards.initialize)

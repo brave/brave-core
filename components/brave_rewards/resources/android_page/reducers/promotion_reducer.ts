@@ -5,6 +5,7 @@
 import { Reducer } from 'redux'
 
 // Constant
+// Temporary (ryanml)
 import { types } from '../constants/rewards_types'
 import { getCurrentBalanceReport } from '../utils'
 
@@ -61,8 +62,9 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
         break
       }
 
+      const toMilliseconds = 1000
       promotions = promotions.map((promotion: Rewards.Promotion) => {
-        promotion.expiresAt = promotion.expiresAt * 1000
+        promotion.expiresAt = promotion.expiresAt * toMilliseconds
         return updatePromotion(promotion, state.promotions || [])
       })
 
@@ -118,9 +120,15 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
       let promotionId = payload.properties.promotion.promotionId
       newPromotion.promotionId = promotionId
 
+      const currentPromotion = getPromotion(promotionId, state.promotions)
+
       switch (result) {
         case 0:
           let ui = state.ui
+          if (currentPromotion) {
+            newPromotion.status = 4
+          }
+
           ui.emptyWallet = false
 
           state = {
@@ -133,7 +141,6 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
           getCurrentBalanceReport()
           break
         default:
-          newPromotion.captchaStatus = 'generalError'
           break
       }
 
@@ -149,7 +156,6 @@ const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.Sta
       break
     }
   }
-
   return state
 }
 

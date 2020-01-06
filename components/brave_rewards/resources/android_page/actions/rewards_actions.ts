@@ -18,6 +18,8 @@ export const onSettingSave = (key: string, value: any) => action(types.ON_SETTIN
   value
 })
 
+export const updateAdsRewards = () => action(types.UPDATE_ADS_REWARDS)
+
 export const getWalletProperties = () => action(types.GET_WALLET_PROPERTIES)
 
 export const onWalletProperties = (properties: {status: number, wallet: Rewards.WalletProperties, monthlyAmount: number}) =>
@@ -49,14 +51,6 @@ export const onWalletPassphrase = (pass: string) => action(types.ON_WALLLET_PASS
   pass
 })
 
-export const recoverWallet = (key: string) => action(types.RECOVER_WALLET, {
-  key
-})
-
-export const onRecoverWalletData = (properties: Rewards.RecoverWallet) => action(types.ON_RECOVER_WALLET_DATA, {
-  properties
-})
-
 export const onModalBackupClose = () => action(types.ON_MODAL_BACKUP_CLOSE)
 
 export const onModalBackupOpen = () => action(types.ON_MODAL_BACKUP_OPEN)
@@ -69,21 +63,23 @@ export const onReconcileStamp = (stamp: number) => action(types.ON_RECONCILE_STA
   stamp
 })
 
-export const getContributeList = () => action(types.GET_CONTRIBUTE_LIST)
-
 export const onContributeList = (list: Rewards.Publisher[]) => action(types.ON_CONTRIBUTE_LIST, {
   list
 })
 
-export const getBalanceReport = (month: number, year: number) => action(types.GET_BALANCE_REPORT, {
-  month,
-  year
+export const onExcludedList = (list: Rewards.ExcludedPublisher[]) => action(types.ON_EXCLUDED_LIST, {
+  list
 })
 
 export const onBalanceReport = (properties: {month: number, year: number, report: Rewards.BalanceReport}) => action(types.ON_BALANCE_REPORT, {
   month: properties.month,
   year: properties.year,
   report: properties.report
+})
+
+export const getBalanceReport = (month: number, year: number) => action(types.GET_BALANCE_REPORT, {
+  month,
+  year
 })
 
 export const excludePublisher = (publisherKey: string) => action(types.ON_EXCLUDE_PUBLISHER, {
@@ -102,6 +98,32 @@ export const onContributionAmount = (amount: number) => action(types.ON_CONTRIBU
   amount
 })
 
+export const onRecurringTips = (list: Rewards.Publisher[]) => action(types.ON_RECURRING_TIPS, {
+  list
+})
+
+export const removeRecurringTip = (publisherKey: string) => action(types.REMOVE_RECURRING_TIP, {
+  publisherKey
+})
+
+export const onCurrentTips = (list: Rewards.Publisher[]) => action(types.ON_CURRENT_TIPS, {
+  list
+})
+
+export const getTipTable = () => action(types.GET_TIP_TABLE)
+
+export const getContributeList = () => action(types.GET_CONTRIBUTE_LIST)
+
+export const onInitAutoContributeSettings = (properties: any) => action(types.INIT_AUTOCONTRIBUTE_SETTINGS, {
+  properties
+})
+
+export const checkImported = () => action(types.CHECK_IMPORTED)
+
+export const onImportedCheck = (imported: boolean) => action(types.ON_IMPORTED_CHECK, {
+  imported
+})
+
 export const getAdsData = () => action(types.GET_ADS_DATA)
 
 export const onAdsData = (adsData: Rewards.AdsData) => action(types.ON_ADS_DATA, {
@@ -113,6 +135,19 @@ export const onAdsSettingSave = (key: string, value: any) => action(types.ON_ADS
   value
 })
 
+export const getReconcileStamp = () => action(types.GET_RECONCILE_STAMP)
+
+export const getPendingContributions = () => action(types.GET_PENDING_CONTRIBUTIONS)
+
+export const onPendingContributions = (list: Rewards.PendingContribution[]) =>
+  action(types.ON_PENDING_CONTRIBUTIONS, {
+    list
+  })
+
+export const onRewardsEnabled = (enabled: boolean) => action(types.ON_REWARDS_ENABLED, {
+  enabled
+})
+
 export const onTransactionHistory = (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsNotificationsReceivedThisMonth: number}) =>
   action(types.ON_TRANSACTION_HISTORY, {
     data
@@ -122,34 +157,10 @@ export const getTransactionHistory = () => action(types.GET_TRANSACTION_HISTORY)
 
 export const onTransactionHistoryChanged = () => action(types.ON_TRANSACTION_HISTORY_CHANGED)
 
-export const onInitAutoContributeSettings = (properties: any) => action(types.INIT_AUTOCONTRIBUTE_SETTINGS, {
-  properties
-})
+export const getRewardsMainEnabled = () => action(types.GET_REWARDS_MAIN_ENABLED)
 
-export const getDonationTable = () => action(types.GET_DONATION_TABLE)
-
-export const onRecurringDonationUpdate = (list: Rewards.Publisher[]) => action(types.ON_RECURRING_DONATION_UPDATE, {
-  list
-})
-
-export const onCurrentTips = (list: Rewards.Publisher[]) => action(types.ON_CURRENT_TIPS, {
-  list
-})
-
-export const removeRecurring = (publisherKey: string) => action(types.ON_REMOVE_RECURRING, {
-  publisherKey
-})
-
-export const getRewardsEnabled = () => action(types.GET_REWARDS_ENABLED)
-
-export const onRewardsEnabled = (enabled: boolean) => action(types.ON_REWARDS_ENABLED, {
-  enabled
-})
-
-export const getPendingContributionsTotal = () => action(types.GET_PENDING_CONTRIBUTION_TOTAL)
-
-export const onPendingContributionTotal = (amount: number) => action(types.ON_PENDING_CONTRIBUTION_TOTAL, {
-  amount
+export const onRecurringTipSaved = (success: boolean) => action(types.ON_RECURRING_TIP_SAVED, {
+  success
 })
 
 export const onRecurringTipRemoved = (success: boolean) => action(types.ON_RECURRING_TIP_REMOVED, {
@@ -161,11 +172,18 @@ export const onInlineTipSettingChange = (key: string, value: boolean) => action(
   value
 })
 
-export const getExcludedSites = () => action(types.GET_EXCLUDED_SITES)
+export const removePendingContribution = (id: number) =>
+  action(types.REMOVE_PENDING_CONTRIBUTION, {
+    id
+  })
 
-export const onExcludedList = (list: Rewards.ExcludedPublisher[]) => action(types.ON_EXCLUDED_LIST, {
-  list
+export const removeAllPendingContribution = () => action(types.REMOVE_ALL_PENDING_CONTRIBUTION)
+
+export const restorePublisher = (publisherKey: string) => action(types.ON_RESTORE_PUBLISHER, {
+  publisherKey
 })
+
+export const getExcludedSites = () => action(types.GET_EXCLUDED_SITES)
 
 export const getBalance = () => action(types.GET_BALANCE)
 
