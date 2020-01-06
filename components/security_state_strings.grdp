@@ -18,10 +18,10 @@
     Data was entered in a field on a non-secure page. A warning has been added to the URL bar.
   </message>
   <message name="IDS_SAFEBROWSING_WARNING" desc="Main summary for page when it has been deemed unsafe by the SafeBrowsing service." translateable="false">
-    This page is dangerous (flagged by Brave Safe Browsing).
+    This page is dangerous (flagged by Google Safe Browsing).
   </message>
   <message name="IDS_SAFEBROWSING_WARNING_SUMMARY" desc="Summary phrase for a security problem where the site is deemed unsafe by the SafeBrowsing service." translateable="false">
-    Flagged by Brave Safe Browsing
+    Flagged by Google Safe Browsing
   </message>
   <message name="IDS_SAFEBROWSING_WARNING_DESCRIPTION" desc="Description of a security problem where the site is deemed unsafe by the SafeBrowsing service." translateable="false">
     To check this page's status, visit g.co/safebrowsingstatus.
