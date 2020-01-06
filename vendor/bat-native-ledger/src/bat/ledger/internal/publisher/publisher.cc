@@ -240,43 +240,59 @@ void Publisher::SaveVisitInternal(
     publisher_info = ledger::PublisherInfo::New();
     publisher_info->id = publisher_key;
   }
-
-  std::string fav_icon = visit_data.favicon_url;
-  if (is_verified && !fav_icon.empty()) {
-    if (fav_icon.find(".invalid") == std::string::npos) {
-    ledger_->FetchFavIcon(fav_icon,
-                          "https://" + ledger_->GenerateGUID() + ".invalid",
-                          std::bind(&Publisher::onFetchFavIcon,
-                                    this,
-                                    publisher_info->id,
-                                    _1,
-                                    _2));
-    } else {
-        publisher_info->favicon_url = fav_icon;
-    }
-  } else {
-    publisher_info->favicon_url = ledger::kClearFavicon;
-  }
-
   publisher_info->name = visit_data.name;
   publisher_info->provider = visit_data.provider;
   publisher_info->url = visit_data.url;
   publisher_info->status = status;
-
   bool excluded = IsExcluded(
       publisher_info->id,
       server_excluded,
       static_cast<ledger::PublisherExclude>(publisher_info->excluded));
+  if (excluded) {
+    publisher_info->excluded = ledger::PublisherExclude::EXCLUDED;
+  }
+
+  std::string fav_icon = visit_data.favicon_url;
+  if (is_verified && !fav_icon.empty()) {
+    if (fav_icon.find(".invalid") == std::string::npos) {
+      ledger_->FetchFavIcon(
+          fav_icon,
+          "https://" + ledger_->GenerateGUID() + ".invalid",
+          std::bind(&Publisher::onFetchFavIcon,
+                    this,
+                    *publisher_info->Clone(),
+                    duration,
+                    is_verified,
+                    new_visit,
+                    publisher_key,
+                    callback,
+                    _1,
+                    _2));
+      return;
+    }
+  }
+  publisher_info->favicon_url = fav_icon;
+  SaveVisitInternalContinued(
+        std::move(publisher_info),
+        duration,
+        is_verified,
+        new_visit,
+        publisher_key,
+        callback);
+}
+
+void Publisher::SaveVisitInternalContinued(
+    ledger::PublisherInfoPtr publisher_info,
+    uint64_t duration,
+    bool is_verified,
+    bool new_visit,
+    const std::string& publisher_key,
+    const ledger::PublisherInfoCallback callback) {
   bool ignore_time = ignoreMinTime(publisher_key);
   if (duration == 0) {
     ignore_time = false;
   }
 
-  ledger::PublisherInfoPtr panel_info = nullptr;
-
-  if (excluded) {
-    publisher_info->excluded = ledger::PublisherExclude::EXCLUDED;
-  }
 
   // for new visits that are excluded or are not long enough or ac is off
   bool min_duration_new = duration < getPublisherMinVisitTime() &&
@@ -286,16 +302,16 @@ void Publisher::SaveVisitInternal(
   bool verified_old = (
       (!ledger_->GetPublisherAllowNonVerified() && is_verified) ||
       ledger_->GetPublisherAllowNonVerified());
-
+  ledger::PublisherInfoPtr panel_info = nullptr;
   if (new_visit &&
-      (excluded ||
+      (publisher_info->excluded == ledger::PublisherExclude::EXCLUDED ||
        !ledger_->GetAutoContribute() ||
        min_duration_new ||
        verified_new)) {
     panel_info = publisher_info->Clone();
 
     ledger_->SetPublisherInfo(std::move(publisher_info));
-  } else if (!excluded &&
+  } else if (publisher_info->excluded != ledger::PublisherExclude::EXCLUDED &&
              ledger_->GetAutoContribute() &&
              min_duration_ok &&
              verified_old) {
@@ -311,45 +327,35 @@ void Publisher::SaveVisitInternal(
 
   if (panel_info) {
     if (panel_info->favicon_url == ledger::kClearFavicon) {
-      panel_info->favicon_url = std::string();
+      panel_info->favicon_url = "";
     }
 
-    auto callback_info = panel_info->Clone();
-    callback(ledger::Result::LEDGER_OK, std::move(callback_info));
+    callback(ledger::Result::LEDGER_OK, std::move(panel_info));
   }
 }
 
-void Publisher::onFetchFavIcon(const std::string& publisher_key,
-                                   bool success,
-                                   const std::string& favicon_url) {
+void Publisher::onFetchFavIcon(
+    ledger::PublisherInfo publisher_info_value,
+    uint64_t duration,
+    bool is_verified,
+    bool new_visit,
+    const std::string& publisher_key,
+    ledger::PublisherInfoCallback callback,
+    bool success,
+    const std::string& favicon_url) {
   if (!success || favicon_url.empty()) {
     BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
       "Missing or corrupted favicon file for: " << publisher_key;
     return;
   }
-
-  ledger_->GetPublisherInfo(publisher_key,
-      std::bind(&Publisher::onFetchFavIconDBResponse,
-                this,
-                _1,
-                _2,
-                favicon_url));
-}
-
-void Publisher::onFetchFavIconDBResponse(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info,
-    const std::string& favicon_url) {
-  if (result == ledger::Result::LEDGER_OK && !favicon_url.empty()) {
-    info->favicon_url = favicon_url;
-
-    ledger::PublisherInfoPtr panel_info = info->Clone();
-
-    ledger_->SetPublisherInfo(std::move(info));
-  } else {
-    BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
-      "Missing or corrupted favicon file";
-  }
+  publisher_info_value.favicon_url = favicon_url;
+  SaveVisitInternalContinued(
+      ledger::PublisherInfo::New(publisher_info_value),
+      duration,
+      is_verified,
+      new_visit,
+      publisher_key,
+      callback);
 }
 
 void Publisher::OnPublisherInfoSaved(

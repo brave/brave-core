@@ -168,6 +168,14 @@ class Publisher : public ledger::LedgerCallbackHandler {
       ledger::Result result,
       ledger::PublisherInfoPtr publisher_info);
 
+  void SaveVisitInternalContinued(
+      ledger::PublisherInfoPtr publisher_info,
+      uint64_t duration,
+      bool is_verified,
+      bool new_visit,
+      const std::string& publisher_key,
+      const ledger::PublisherInfoCallback callback);
+
   void OnSaveVisitServerPublisher(
     ledger::ServerPublisherInfoPtr server_info,
     const std::string& publisher_key,
@@ -180,13 +188,15 @@ class Publisher : public ledger::LedgerCallbackHandler {
       const int year,
       ledger::BalanceReportInfo* report_info);
 
-  void onFetchFavIcon(const std::string& publisher_key,
-                      bool success,
-                      const std::string& favicon_url);
-
-  void onFetchFavIconDBResponse(ledger::Result result,
-                                ledger::PublisherInfoPtr info,
-                                const std::string& favicon_url);
+  void onFetchFavIcon(
+      ledger::PublisherInfo publisher_info,
+      uint64_t duration,
+      bool is_verified,
+      bool new_visit,
+      const std::string& publisher_key,
+      ledger::PublisherInfoCallback callback,
+      bool success,
+      const std::string& favicon_url);
 
   void OnSetPublisherExclude(
     ledger::PublisherExclude exclude,
