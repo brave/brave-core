@@ -70,8 +70,7 @@ def main():
     logging.debug("Release body before update: \n\'{}\'".format(release['body']))
 
     logging.info("Merging original release body with changelog")
-    new_body = release['body'] + '\n\n### Release Notes' + '\n\n' + \
-        tag_changelog_txt
+    new_body = release['body'] + '\n\n' + tag_changelog_txt
     logging.debug("release body is now: \n\'{}\'".format(new_body))
 
     data = dict(tag_name=tag, name=release['name'], body=new_body)
