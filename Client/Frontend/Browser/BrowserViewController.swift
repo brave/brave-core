@@ -1287,8 +1287,6 @@ class BrowserViewController: UIViewController {
                 tabManager.selectedTab?.reportPageNaviagtion(to: rewards)
                 tabManager.selectedTab?.reportPageLoad(to: rewards)
             }
-        } else {
-            self.topToolbar.locationView.rewardsButton.isVerified = false
         }
         
         updateRewardsButtonState()
