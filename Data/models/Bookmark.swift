@@ -531,7 +531,8 @@ extension Bookmark {
                 removeFolderAndSendSyncRecords(uuid: syncUUID)
             } else {
                 DataController.perform(context: context) { context in
-                    Sync.shared.sendSyncRecords(action: .delete, records: [self], context: context)
+                    guard let objectOnContext = context.object(with: self.objectID) as? Bookmark else { return }
+                    Sync.shared.sendSyncRecords(action: .delete, records: [objectOnContext], context: context)
                 }
             }
         }
