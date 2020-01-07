@@ -39,7 +39,7 @@ class UnblindedTest : public ::testing::Test {
       .WillByDefault(
         Invoke([](const std::string& viewing_id) {
           ledger::CurrentReconcileProperties reconcile;
-          reconcile.fee = 5.0;
+          reconcile.fee = 1.0;
           return reconcile;
         }));
   }
@@ -53,10 +53,6 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
   EXPECT_CALL(*mock_ledger_impl_,
       ReconcileComplete(ledger::Result::NOT_ENOUGH_FUNDS, _, _, _, _));
 
-  std::vector<std::string> delete_list;
-  delete_list.push_back("1");
-  EXPECT_CALL(*mock_ledger_impl_, DeleteUnblindedTokens(delete_list, _));
-
   ON_CALL(*mock_ledger_impl_, GetAllUnblindedTokens(_))
     .WillByDefault(
       Invoke([](ledger::GetAllUnblindedTokensCallback callback) {
@@ -65,8 +61,8 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
           auto info = ledger::UnblindedToken::New();
           info->id = 1;
           info->token_value = "asdfasdfasdfsad=";
-          info->value = 2;
-          info->expires_at = 1574133178;
+          info->value = 0.25;
+          info->expires_at = 32574133178;
           list.push_back(info->Clone());
 
         callback(std::move(list));
@@ -93,12 +89,24 @@ TEST_F(UnblindedTest, PromotionExpiredDeleteToken) {
           auto info = ledger::UnblindedToken::New();
           info->id = 1;
           info->token_value = "asdfasdfasdfsad=";
-          info->value = 5;
+          info->value = 0.25;
           info->expires_at = 1574133178;
           list.push_back(info->Clone());
 
           info->id = 2;
-          info->expires_at = 22574133178;
+          info->expires_at = 32574133178;
+          list.push_back(info->Clone());
+
+          info->id = 3;
+          list.push_back(info->Clone());
+
+          info->id = 4;
+          list.push_back(info->Clone());
+
+          info->id = 5;
+          list.push_back(info->Clone());
+
+          info->id = 6;
           list.push_back(info->Clone());
 
           callback(std::move(list));
@@ -125,7 +133,7 @@ TEST_F(UnblindedTest, PromotionExpiredDeleteTokensNotEnoughFunds) {
           auto info = ledger::UnblindedToken::New();
           info->id = 1;
           info->token_value = "asdfasdfasdfsad=";
-          info->value = 3;
+          info->value = 0.25;
           info->expires_at = 1574133178;
           list.push_back(info->Clone());
 

@@ -54,6 +54,11 @@ void HandleExpiredPromotions(
       static_cast<uint64_t>(base::Time::Now().ToDoubleT());
 
   for (auto& item : *promotions) {
+    // we shouldn't expire ad grant
+    if (item.second->type == ledger::PromotionType::ADS) {
+      continue;
+    }
+
     if (item.second->expires_at > 0 &&
         item.second->expires_at <= current_time)  {
       item.second->status = ledger::PromotionStatus::OVER;
@@ -170,6 +175,11 @@ void Promotion::OnGetAllPromotions(
 
   if (list.size() > 0) {
     for (auto & item : list) {
+      // if the server return expiration for ads we need to set it to 0
+      if (item->type == ledger::PromotionType::ADS) {
+        item->expires_at = 0;
+      }
+
       if (item->legacy_claimed) {
         item->status = ledger::PromotionStatus::CLAIMED;
         ClaimTokens(item->Clone(), [](const ledger::Result _){});
