@@ -187,6 +187,9 @@ const char kSafetyTipHelpCenterURL[] =
 const char kSettingsSearchHelpURL[] =
     "https://support.brave.com/";
 
+const char kSymantecSupportUrl[] =
+    "https://support.brave.com/";
+
 const char kSyncAndGoogleServicesLearnMoreURL[] =
     "https://support.brave.com/";
 
