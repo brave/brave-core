@@ -50,7 +50,7 @@ Result CatalogState::FromJson(
   new_catalog_id = catalog["catalogId"].GetString();
 
   new_version = catalog["version"].GetUint64();
-  if (new_version != 1) {
+  if (new_version != kCatalogVersion) {
     // TODO(Terry Mancey): Implement Log (#44)
     // 'patch invalid', { reason: 'unsupported version', version: version }
     return SUCCESS;
