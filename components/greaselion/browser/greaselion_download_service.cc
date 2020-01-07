@@ -10,6 +10,7 @@
 
 #include "base/base_paths.h"
 #include "base/bind.h"
+#include "base/files/file_path_watcher.h"
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
@@ -122,11 +123,30 @@ GreaselionDownloadService::GreaselionDownloadService(
     is_dev_mode_ = true;
     resource_dir_ = forced_local_path;
     LoadDirectlyFromResourcePath();
+    dev_mode_path_watcher_ = std::make_unique<base::FilePathWatcher>();
+    if (!dev_mode_path_watcher_->Watch(resource_dir_,
+        true /*recursive*/,
+        base::Bind(&GreaselionDownloadService::OnDevModeLocalFileChanged,
+            weak_factory_.GetWeakPtr()))) {
+      LOG(ERROR) << "Greaselion could not watch filesystem for changes"
+          << " at path " << resource_dir_.LossyDisplayName();
+    }
   }
 #endif
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
+void GreaselionDownloadService::OnDevModeLocalFileChanged(
+    const base::FilePath& path, bool error) {
+  if (error) {
+    LOG(ERROR) << "Greaselion got an error watching for file changes."
+        << " Stopping watching.";
+    dev_mode_path_watcher_.reset();
+    return;
+  }
+  LOG(INFO) << "Greaselion found a file change and will now reload all rules.";
+  LoadDirectlyFromResourcePath();
+}
 
 void GreaselionDownloadService::LoadDirectlyFromResourcePath() {
   base::FilePath dat_file_path =

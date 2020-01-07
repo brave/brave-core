@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "base/files/file_path_watcher.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "base/sequence_checker.h"
@@ -99,6 +100,7 @@ class GreaselionDownloadService : public LocalDataFilesObserver {
   friend class ::GreaselionServiceTest;
 
   void OnDATFileDataReady(std::string contents);
+  void OnDevModeLocalFileChanged(const base::FilePath& path, bool error);
   void LoadOnTaskRunner();
   void LoadDirectlyFromResourcePath();
 
@@ -106,6 +108,7 @@ class GreaselionDownloadService : public LocalDataFilesObserver {
   std::vector<std::unique_ptr<GreaselionRule>> rules_;
   base::FilePath resource_dir_;
   bool is_dev_mode_ = false;
+  std::unique_ptr<base::FilePathWatcher> dev_mode_path_watcher_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<GreaselionDownloadService> weak_factory_;
