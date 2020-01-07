@@ -8,13 +8,18 @@ import BraveRewards
 
 /// A controller for displaying BATValue options with their equivalent dollar value.
 /// When the user selects an option, the selected index is returned in the completion block.
+/// If you pass false for `isSelectionPrecise`, the value will be prefixed with "Up to"
 class BATValueOptionsSelectionViewController: OptionsSelectionViewController<BATValue> {
   
   private let ledger: BraveLedger?
+  private var isSelectionPrecise: Bool
   
-  init(ledger: BraveLedger, options: [BATValue],
+  init(ledger: BraveLedger,
+       options: [BATValue],
+       isSelectionPrecise: Bool = true,
        selectedOptionIndex: Int = 0,
        optionSelected: @escaping (_ selectedIndex: Int) -> Void) {
+    self.isSelectionPrecise = isSelectionPrecise
     self.ledger = ledger
     super.init(options: options, selectedOptionIndex: selectedOptionIndex, optionSelected: optionSelected)
   }
@@ -26,7 +31,10 @@ class BATValueOptionsSelectionViewController: OptionsSelectionViewController<BAT
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = super.tableView(tableView, cellForRowAt: indexPath)
 
-    let displayString = options[indexPath.row].displayString
+    var displayString = options[indexPath.row].displayString
+    if !isSelectionPrecise {
+      displayString = String.localizedStringWithFormat(Strings.SettingsAutoContributeUpToValue, displayString)
+    }
     let dollarAmount = ledger?.dollarStringForBATAmount(options[indexPath.row].doubleValue) ?? ""
     
     let attributedText = NSMutableAttributedString(string: displayString, attributes: [
