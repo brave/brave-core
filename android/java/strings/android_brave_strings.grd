@@ -788,6 +788,12 @@ until they verify, or until 90 days have passed.
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BOOKMARK" desc="Content description for the bookmark button.">
         Create a bookmark
       </message>
+      <message name="IDS_SYNC_REQUIRES_CORRECT_TIME" desc="The message for the dialog where the user notified about sync setup failure.">
+        Your computer's clock may be set to the wrong time, or to the wrong time-zone. Check your clock settings
+      </message>
+      <message name="IDS_SYNC_DEVICE_FAILURE" desc="The message for the dialog where the user notified about sync setup failure.">
+        Sync could not be setup
+      </message>
     </messages>
   </release>
 </grit>

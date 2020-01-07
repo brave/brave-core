@@ -1,0 +1,35 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkUndoController.java b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkUndoController.java
+index fad6de96cf7bd17a9eb7ab828cc97544cc94e422..5595446fab060195d2f3e958c84b6c51e4d88522 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkUndoController.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkUndoController.java
+@@ -25,6 +25,7 @@ public class BookmarkUndoController extends BookmarkModelObserver implements
+     private final BookmarkModel mBookmarkModel;
+     private final SnackbarManager mSnackbarManager;
+     private final Context mContext;
++    private java.util.List<BookmarkItem> mBookmarks;
+ 
+     /**
+      * Creates an instance of {@link BookmarkUndoController}.
+@@ -56,6 +57,7 @@ public class BookmarkUndoController extends BookmarkModelObserver implements
+ 
+     @Override
+     public void onDismissNoAction(Object actionData) {
++        BraveBookmarkWorker.syncDeletedBookmarks(mBookmarks); if (mBookmarks != null) mBookmarks.clear();
+     }
+ 
+     // Overriding BookmarkModelObserver
+@@ -76,11 +78,13 @@ public class BookmarkUndoController extends BookmarkModelObserver implements
+ 
+     // Implement BookmarkDeleteObserver
+     @Override
+-    public void onDeleteBookmarks(String[] titles, boolean isUndoable) {
++    public void onDeleteBookmarks(String[] titles, java.util.List<BookmarkItem> bookmarks, boolean isUndoable) {
+         assert titles != null && titles.length >= 1;
+ 
++        BraveBookmarkWorker.syncDeletedBookmarks(mBookmarks); if (mBookmarks != null) mBookmarks.clear();
+         if (!isUndoable) return;
+ 
++        mBookmarks = bookmarks;
+         if (titles.length == 1) {
+             mSnackbarManager.showSnackbar(
+                     Snackbar.make(titles[0], this, Snackbar.TYPE_ACTION,
