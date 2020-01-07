@@ -4,6 +4,20 @@
 
 import UIKit
 
+enum UserWalletStatus {
+  /// The user should not see anything user wallet related. This shows the old
+  /// "Your wallet"/"Your balance" UI
+  case hidden
+  /// The user is not currently connected at all
+  case notConnected
+  /// The user has connected their wallet but they're not KYC'd on Uphold
+  case connectedNotVerified
+  /// The user is verified with Uphold
+  case verified
+  /// The users wallet has been disconnected
+  case disconnected
+}
+
 class WalletHeaderView: UIView {
   
   private let backgroundImageView = UIImageView().then {
@@ -11,11 +25,19 @@ class WalletHeaderView: UIView {
     $0.clipsToBounds = true
   }
   
+  /// Contains the title or the user wallet buttons
+  let titleContainerGuide = UILayoutGuide()
+  
   let titleLabel = UILabel().then {
     $0.font = .systemFont(ofSize: 16.0, weight: .medium)
     $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.65)
     $0.text = Strings.WalletHeaderTitle
   }
+  
+  let connectUserWalletButton = ConnectUserWalletButton()
+  let verifyUserWalletButton = VerifyUserWalletButton()
+  let disconnectedUserWalletButton = DisconnectedUserWalletButton()
+  let verifiedUserWalletButton = VerifiedUserWalletButton()
   
   private let altcurrencyContainerView = UIStackView().then {
     $0.spacing = 4.0
@@ -48,23 +70,24 @@ class WalletHeaderView: UIView {
     $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10.0)
   }
   
-  let addFundsButton = UIButton(type: .system).then {
-    $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.75)
+  let addFundsButton = Button(type: .system).then {
+    $0.appearanceTintColor = UIColor(white: 1.0, alpha: 0.75)
     $0.setTitle(Strings.AddFunds, for: .normal)
-    $0.setImage(UIImage(frameworkResourceNamed: "wallet-icon").alwaysOriginal, for: .normal)
-    $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8.0)
-    $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -8.0)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5.0, bottom: 0, right: 5.0)
+    $0.setImage(UIImage(frameworkResourceNamed: "add-funds-icon").alwaysTemplate, for: .normal)
+    $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
+    $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
+    $0.contentEdgeInsets = UIEdgeInsets(top: 10, left: 5.0, bottom: 10, right: 5.0)
     $0.titleLabel?.font = .systemFont(ofSize: 14.0)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+    $0.isHidden = true
   }
   
-  let settingsButton = UIButton(type: .system).then {
+  let settingsButton = Button(type: .system).then {
     $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.75)
     $0.setTitle(Strings.Settings, for: .normal)
     $0.setImage(UIImage(frameworkResourceNamed: "bat-small").alwaysOriginal, for: .normal)
     $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8.0)
-    $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -8.0)
+    $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
     $0.contentEdgeInsets = UIEdgeInsets(top: 10.0, left: 5.0, bottom: 10.0, right: 5.0)
     $0.titleLabel?.font = .systemFont(ofSize: 14.0)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -90,7 +113,7 @@ class WalletHeaderView: UIView {
     
     addSubview(backgroundImageView)
     addSubview(stackView)
-    addSubview(titleLabel)
+    addLayoutGuide(titleContainerGuide)
     stackView.addArrangedSubview(altcurrencyContainerView)
     altcurrencyContainerView.addArrangedSubview(balanceLabel)
     altcurrencyContainerView.addArrangedSubview(altcurrencyTypeLabel)
@@ -99,14 +122,16 @@ class WalletHeaderView: UIView {
     stackView.setCustomSpacing(12.0, after: usdBalanceLabel)
     stackView.addArrangedSubview(grantsButton)
     stackView.addArrangedSubview(buttonsContainerView)
+    buttonsContainerView.addArrangedSubview(addFundsButton)
     buttonsContainerView.addArrangedSubview(settingsButton)
     
-    titleLabel.snp.makeConstraints {
+    titleContainerGuide.snp.makeConstraints {
       $0.top.equalTo(self).inset(15.0 + PopoverArrowHeight)
-      $0.leading.trailing.equalTo(self).inset(15.0)
+      $0.leading.equalTo(self).inset(15.0)
+      $0.trailing.lessThanOrEqualTo(self).inset(15)
     }
     stackView.snp.makeConstraints {
-      $0.top.equalTo(titleLabel.snp.bottom).offset(10.0)
+      $0.top.equalTo(titleContainerGuide.snp.bottom).offset(10.0)
       $0.leading.trailing.bottom.equalTo(self.layoutMarginsGuide).inset(15.0)
     }
     grantsButton.snp.makeConstraints {
@@ -124,6 +149,18 @@ class WalletHeaderView: UIView {
     
     backgroundImageView.frame = bounds
   }
+  
+  private var activeWalletTitleView: UIView? {
+    didSet {
+      oldValue?.removeFromSuperview()
+      if let activeWalletTitleView = activeWalletTitleView {
+        addSubview(activeWalletTitleView)
+        activeWalletTitleView.snp.makeConstraints {
+          $0.edges.equalTo(titleContainerGuide)
+        }
+      }
+    }
+  }
 }
 
 extension WalletHeaderView {
@@ -131,6 +168,20 @@ extension WalletHeaderView {
     balanceLabel.text = value
     altcurrencyTypeLabel.text = crypto
     usdBalanceLabel.text = dollarValue
+  }
+  func setUserWalletStatus(_ status: UserWalletStatus) {
+    switch status {
+    case .hidden:
+      activeWalletTitleView = titleLabel
+    case .notConnected:
+      activeWalletTitleView = connectUserWalletButton
+    case .connectedNotVerified:
+      activeWalletTitleView = verifyUserWalletButton
+    case .verified:
+      activeWalletTitleView = verifiedUserWalletButton
+    case .disconnected:
+      activeWalletTitleView = disconnectedUserWalletButton
+    }
   }
 }
 

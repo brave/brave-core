@@ -6,7 +6,7 @@ class SettingsWalletSectionView: SettingsSectionView {
   enum ButtonType {
     case none
     case viewDetails
-    case addFunds
+    case manageFunds
   }
   
   func setWalletBalance(_ value: String, crypto: String, dollarValue: String) {
@@ -15,20 +15,40 @@ class SettingsWalletSectionView: SettingsSectionView {
     usdBalanceLabel.text = dollarValue
   }
   
-  private(set) lazy var viewDetailsButton = SettingsViewDetailsButton(type: .system).then {
+  let viewDetailsButton = SettingsViewDetailsButton(type: .system).then {
     $0.tintColor = .white
     $0.appearanceTextColor = .white
+    $0.isHidden = true
   }
   
-  private(set) lazy var addFundsButton = Button(type: .system).then {
-    $0.appearanceTextColor = .white
+  let addFundsButton = Button(type: .system).then {
+    $0.appearanceTintColor = UIColor(white: 1.0, alpha: 0.75)
     $0.setTitle(Strings.AddFunds, for: .normal)
-    $0.setImage(UIImage(frameworkResourceNamed: "wallet-icon").alwaysOriginal, for: .normal)
-    $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8.0)
-    $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -8.0)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5.0, bottom: 0, right: 5.0)
+    $0.setImage(UIImage(frameworkResourceNamed: "add-funds-icon").alwaysTemplate, for: .normal)
+    $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
+    $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
+    $0.contentEdgeInsets = UIEdgeInsets(top: 10, left: 5.0, bottom: 10, right: 5.0)
     $0.titleLabel?.font = .systemFont(ofSize: 14.0)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+  }
+  
+  let withdrawFundsButton = Button(type: .system).then {
+    $0.appearanceTintColor = UIColor(white: 1.0, alpha: 0.75)
+    $0.setTitle(Strings.WithdrawFunds, for: .normal)
+    $0.setImage(UIImage(frameworkResourceNamed: "withdraw-funds-icon").alwaysTemplate, for: .normal)
+    $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
+    $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
+    $0.contentEdgeInsets = UIEdgeInsets(top: 10, left: 5.0, bottom: 10, right: 5.0)
+    $0.titleLabel?.font = .systemFont(ofSize: 14.0)
+    $0.setContentCompressionResistancePriority(.required, for: .horizontal)
+  }
+  
+  private lazy var buttonsStackView = UIStackView().then {
+    $0.spacing = 10
+    $0.alignment = .center
+    $0.isHidden = true
+    $0.addArrangedSubview(self.addFundsButton)
+    $0.addArrangedSubview(self.withdrawFundsButton)
   }
   
   private let backgroundView = GradientView().then {
@@ -73,6 +93,37 @@ class SettingsWalletSectionView: SettingsSectionView {
     $0.font = .systemFont(ofSize: 12.0)
   }
   
+  private var activeButtonTypeView: UIView? {
+    didSet {
+      oldValue?.isHidden = true
+      if let view = activeButtonTypeView {
+        view.isHidden = false
+      }
+    }
+  }
+  
+  private func viewForButtonType(_ buttonType: ButtonType) -> UIView? {
+    switch buttonType {
+    case .none: return nil
+    case .manageFunds: return buttonsStackView
+    case .viewDetails: return viewDetailsButton
+    }
+  }
+  
+  func setButtonType(_ type: ButtonType, animated: Bool = false) {
+    if !animated {
+      activeButtonTypeView = viewForButtonType(type)
+    } else {
+      let view = viewForButtonType(type)
+      view?.alpha = 0.0
+      UIView.animate(withDuration: 0.25) {
+        self.activeButtonTypeView?.alpha = 0.0
+        self.activeButtonTypeView = view
+        view?.alpha = 1.0
+      }
+    }
+  }
+  
   init(buttonType: ButtonType) {
     super.init(frame: .zero)
     
@@ -86,17 +137,10 @@ class SettingsWalletSectionView: SettingsSectionView {
     altcurrencyContainerView.addArrangedSubview(balanceLabel)
     altcurrencyContainerView.addArrangedSubview(altcurrencyTypeLabel)
     
-    switch buttonType {
-    case .none:
-      break
-    case .viewDetails:
-      stackView.addArrangedSubview(viewDetailsButton)
-    case .addFunds:
-      stackView.addArrangedSubview(addFundsButton)
-      addFundsButton.snp.makeConstraints {
-        $0.height.equalTo(38)
-      }
-    }
+    stackView.addArrangedSubview(viewDetailsButton)
+    stackView.addArrangedSubview(buttonsStackView)
+    
+    setButtonType(buttonType)
     
     backgroundView.snp.makeConstraints {
       $0.edges.equalTo(self)

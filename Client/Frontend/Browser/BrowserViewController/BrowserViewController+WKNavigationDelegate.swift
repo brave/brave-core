@@ -7,6 +7,7 @@ import WebKit
 import Shared
 import Data
 import BraveShared
+import BraveRewards
 
 private let log = Logger.browserLogger
 private let rewardsLog = Logger.rewardsLogger
@@ -100,6 +101,10 @@ extension BrowserViewController: WKNavigationDelegate {
     // This is the place where we decide what to do with a new navigation action. There are a number of special schemes
     // and http(s) urls that need to be handled in a different way. All the logic for that is inside this delegate
     // method.
+    
+    fileprivate func isUpholdOAuthAuthorization(_ url: URL) -> Bool {
+        return url.scheme == "rewards" && url.host == "uphold"
+    }
 
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let url = navigationAction.request.url else {
@@ -139,6 +144,19 @@ extension BrowserViewController: WKNavigationDelegate {
         if let safeBrowsing = safeBrowsing, safeBrowsing.shouldBlock(url) {
             safeBrowsing.showMalwareWarningPage(forUrl: url, inWebView: webView)
             decisionHandler(.cancel)
+            return
+        }
+        
+        if isUpholdOAuthAuthorization(url) {
+            decisionHandler(.cancel)
+            guard let tab = tabManager[webView], let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems else {
+                return
+            }
+            var items: [String: String] = [:]
+            for query in queryItems {
+                items[query.name] = query.value
+            }
+            authorizeUpholdWallet(from: tab, queryItems: items)
             return
         }
 

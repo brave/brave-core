@@ -609,3 +609,13 @@ extension Strings {
     public static let RestoredBookmarksFolderName = NSLocalizedString("RestoredBookmarksFolderName", bundle: Bundle.braveShared, value: "Restored Bookmarks", comment: "Name of folder where restored bookmarks are retrieved")
     public static let RestoredFavoritesFolderName = NSLocalizedString("RestoredFavoritesFolderName", bundle: Bundle.braveShared, value: "Restored Favorites", comment: "Name of folder where restored favorites are retrieved")
 }
+
+// MARK: - User Wallet
+extension Strings {
+    public static let UserWalletBATNotAllowedTitle = NSLocalizedString("UserWalletDetailsDisconnectButtonTitle", bundle: Bundle.braveShared, value: "Region not supported", comment: "")
+    public static let UserWalletBATNotAllowedMessage = NSLocalizedString("UserWalletBATNotAllowedMessage", bundle: Bundle.braveShared, value: "BAT is not currently supported in your region based on the location your account is opened. Check back later for availability.", comment: "")
+    public static let UserWalletBATNotAllowedLearnMore = NSLocalizedString("UserWalletBATNotAllowedLearnMore", bundle: Bundle.braveShared, value: "Learn more", comment: "")
+    public static let UserWalletCloseButtonTitle = NSLocalizedString("UserWalletCloseButtonTitle", bundle: Bundle.braveShared, value: "Close", comment: "")
+    public static let UserWalletGenericErrorTitle = NSLocalizedString("UserWalletGenericErrorTitle", bundle: Bundle.braveShared, value: "Sorry, something went wrong", comment: "")
+    public static let UserWalletGenericErrorMessage = NSLocalizedString("UserWalletGenericErrorMessage", bundle: Bundle.braveShared, value: "There was a problem logging into your Uphold account. Please try again", comment: "")
+}

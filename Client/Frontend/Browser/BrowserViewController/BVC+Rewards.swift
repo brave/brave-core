@@ -96,6 +96,57 @@ extension BrowserViewController {
         // Fetch new promotions
         rewards.ledger.fetchPromotions(nil)
     }
+    
+    func authorizeUpholdWallet(from tab: Tab, queryItems items: [String: String]) {
+        rewards.ledger.authorizeExternalWallet(
+            ofType: .uphold,
+            queryItems: items) { result, redirectURL in
+                switch result {
+                case .ledgerOk:
+                    if let redirectURL = redirectURL {
+                        // Requires verification
+                        let request = URLRequest(url: redirectURL)
+                        tab.loadRequest(request)
+                    } else {
+                        // Done
+                        self.tabManager.removeTab(tab)
+                        self.showBraveRewardsPanel()
+                    }
+                case .batNotAllowed:
+                    // Uphold account doesn't support BAT...
+                    let popup = AlertPopupView(
+                        imageView: nil,
+                        title: Strings.UserWalletBATNotAllowedTitle,
+                        message: Strings.UserWalletBATNotAllowedMessage,
+                        titleWeight: .semibold,
+                        titleSize: 18.0
+                    )
+                    popup.addButton(title: Strings.UserWalletBATNotAllowedLearnMore, type: .link, fontSize: 14.0) { () -> PopupViewDismissType in
+                        if let url = URL(string: "https://uphold.com/en/brave/support") {
+                            tab.loadRequest(URLRequest(url: url))
+                        }
+                        return .flyDown
+                    }
+                    popup.addButton(title: Strings.UserWalletCloseButtonTitle, type: .primary, fontSize: 14.0) { () -> PopupViewDismissType in
+                        return .flyDown
+                    }
+                    popup.showWithType(showType: .flyUp)
+                default:
+                    // Some other issue occured with authorization
+                    let popup = AlertPopupView(
+                        imageView: nil,
+                        title: Strings.UserWalletGenericErrorTitle,
+                        message: Strings.UserWalletGenericErrorMessage,
+                        titleWeight: .semibold,
+                        titleSize: 18.0
+                    )
+                    popup.addButton(title: Strings.UserWalletCloseButtonTitle, type: .primary, fontSize: 14.0) { () -> PopupViewDismissType in
+                        return .flyDown
+                    }
+                    popup.showWithType(showType: .flyUp)
+                }
+        }
+    }
 }
 
 extension BrowserViewController: RewardsUIDelegate {
