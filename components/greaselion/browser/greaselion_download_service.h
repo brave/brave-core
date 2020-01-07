@@ -45,7 +45,7 @@ class GreaselionRule {
   void Parse(base::DictionaryValue* preconditions_value,
              base::ListValue* urls_value,
              base::ListValue* scripts_value,
-             const base::FilePath& root_dir);
+             const base::FilePath& resource_dir);
   ~GreaselionRule();
 
   bool Matches(GreaselionFeatures state) const;
@@ -100,10 +100,12 @@ class GreaselionDownloadService : public LocalDataFilesObserver {
 
   void OnDATFileDataReady(std::string contents);
   void LoadOnTaskRunner();
+  void LoadDirectlyFromResourcePath();
 
   base::ObserverList<Observer> observers_;
   std::vector<std::unique_ptr<GreaselionRule>> rules_;
-  base::FilePath install_dir_;
+  base::FilePath resource_dir_;
+  bool is_dev_mode_ = false;
 
   SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<GreaselionDownloadService> weak_factory_;
