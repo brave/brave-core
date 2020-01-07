@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/database/database_unblinded_token.h"
-
 #include <string>
 #include <utility>
 
 #include "base/bind.h"
 #include "base/strings/stringprintf.h"
 #include "base/strings/string_util.h"
+#include "brave/components/brave_rewards/browser/database/database_unblinded_token.h"
+#include "brave/components/brave_rewards/browser/database/database_util.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
@@ -20,6 +20,15 @@ namespace  {
 
 const char* table_name_ = "unblinded_tokens";
 const int minimum_version_ = 10;
+
+int64_t GetExpirationDate(const int32_t type, const int64_t stamp) {
+  const auto promotion_type = static_cast<ledger::PromotionType>(type);
+  if (promotion_type == ledger::PromotionType::ADS) {
+    return 0;
+  }
+
+  return stamp;
+}
 
 }  // namespace
 
@@ -126,7 +135,7 @@ ledger::UnblindedTokenList DatabaseUnblindedToken::GetAllRecords(
   ledger::UnblindedTokenList list;
   const std::string query = base::StringPrintf(
       "SELECT u.token_id, u.token_value, u.public_key, u.value, "
-      "u.promotion_id, p.expires_at FROM %s as u "
+      "u.promotion_id, p.expires_at, p.type FROM %s as u "
       "LEFT JOIN promotion as p ON p.promotion_id = u.promotion_id",
       table_name_);
 
@@ -139,7 +148,8 @@ ledger::UnblindedTokenList DatabaseUnblindedToken::GetAllRecords(
     info->public_key = statement.ColumnString(2);
     info->value = statement.ColumnDouble(3);
     info->promotion_id = statement.ColumnString(4);
-    info->expires_at = statement.ColumnInt64(5);
+    info->expires_at =
+        GetExpirationDate(statement.ColumnInt(6), statement.ColumnInt64(5));
 
     list.push_back(std::move(info));
   }

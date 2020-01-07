@@ -157,11 +157,11 @@ void Unblinded::OnUnblindedTokens(
       continue;
     }
 
-    if (item->value + current_amount > reconcile.fee) {
+    if (current_amount >= reconcile.fee) {
       break;
     }
 
-    current_amount += item->value;
+    current_amount += 0.25;
     token_list.push_back(std::move(item));
   }
 
