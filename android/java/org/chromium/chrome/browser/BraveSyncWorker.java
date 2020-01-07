@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser;
 
@@ -994,9 +995,9 @@ public class BraveSyncWorker {
                             String toLoad = "<script type='text/javascript'>";
                             try {
                                 String script = convertStreamToString(mContext.getAssets().open(ANDROID_SYNC_JS));
-                                toLoad += script.replace("%", "%25").replace("\n", "%0A") + "</script><script type='text/javascript'>";
+                                toLoad += script.replace("%", "%25").replace("\n", "%0A").replace("#", "%23") + "</script><script type='text/javascript'>";
                                 script = convertStreamToString(mContext.getAssets().open(BUNDLE_JS));
-                                toLoad += script.replace("%", "%25").replace("\n", "%0A") + "</script>";
+                                toLoad += script.replace("%", "%25").replace("\n", "%0A").replace("#", "%23") + "</script>";
                             } catch (IOException exc) {
                                 Log.e(TAG, "Load script exception: " + exc);
                             }
@@ -2980,9 +2981,9 @@ public class BraveSyncWorker {
                             String toLoad = "<script type='text/javascript'>";
                             try {
                                 String script = convertStreamToString(mContext.getAssets().open(ANDROID_SYNC_WORDS_JS));
-                                toLoad += script.replace("%", "%25").replace("\n", "%0A") + "</script><script type='text/javascript'>";
+                                toLoad += script.replace("%", "%25").replace("\n", "%0A").replace("#", "%23") + "</script><script type='text/javascript'>";
                                 script = convertStreamToString(mContext.getAssets().open(CRYPTO_JS));
-                                toLoad += script.replace("%", "%25").replace("\n", "%0A") + "</script>";
+                                toLoad += script.replace("%", "%25").replace("\n", "%0A").replace("#", "%23") + "</script>";
                             } catch (IOException exc) {}
                             LoadUrlParams loadUrlParams = LoadUrlParams.createLoadDataParamsWithBaseUrl(toLoad, "text/html", false, "file:///android_asset/", null);
                             loadUrlParams.setCanLoadLocalResources(true);

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_ANDROID_BRAVE_SYNC_STORAGE_H_
-#define BRAVE_BROWSER_ANDROID_BRAVE_SYNC_STORAGE_H_
+#ifndef BRAVE_BROWSER_ANDROID_BRAVE_SYNC_WORKER_H_
+#define BRAVE_BROWSER_ANDROID_BRAVE_SYNC_WORKER_H_
 
 #include <jni.h>
 #include "base/android/jni_weak_ref.h"
@@ -24,4 +24,4 @@ class BraveSyncWorker {
 }  // namespace android
 }  // namespace chrome
 
-#endif  // BRAVE_BROWSER_ANDROID_BRAVE_SYNC_STORAGE_H_
+#endif  // BRAVE_BROWSER_ANDROID_BRAVE_SYNC_WORKER_H_

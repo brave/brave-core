@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.bookmarks;
 
 import org.chromium.components.bookmarks.BookmarkId;
 
+
 public class BraveBookmarkModel extends BookmarkModel {
 
   public void deleteBookmarkSilently(BookmarkId bookmark) {
@@ -26,5 +27,4 @@ public class BraveBookmarkModel extends BookmarkModel {
       int appendedIndex = getChildCount(newParentId);
       moveBookmark(bookmarkId, newParentId, appendedIndex);
   }
-
 }

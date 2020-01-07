@@ -27,7 +27,10 @@ import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.annotations.JNINamespace;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.ChromeSwitches;
+import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
+import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 import org.chromium.chrome.browser.onboarding.OnboardingActivity;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
@@ -41,6 +44,8 @@ import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.tabmodel.TabSelectionType;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout;
 import org.chromium.chrome.browser.util.UrlConstants;
+import org.chromium.components.bookmarks.BookmarkId;
+import org.chromium.components.bookmarks.BookmarkType;
 import org.chromium.ui.widget.Toast;
 
 /**
@@ -62,6 +67,9 @@ public abstract class BraveActivity extends ChromeActivity {
     public static final String ANDROID_SETUPWIZARD_PACKAGE_NAME = "com.google.android.setupwizard";
     public static final String ANDROID_PACKAGE_NAME = "android";
     public static final String BRAVE_BLOG_URL = "http://www.brave.com/blog";
+
+    // Sync worker
+    public BraveSyncWorker mBraveSyncWorker;
 
     @Override
     public void onResumeWithNative() {
@@ -149,6 +157,11 @@ public abstract class BraveActivity extends ChromeActivity {
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
+        Context app = ContextUtils.getApplicationContext();
+        if (null != app && (this instanceof ChromeTabbedActivity)) {
+            mBraveSyncWorker = new BraveSyncWorker(app);
+        }
+
         OnboardingActivity onboardingActivity = null;
         for (Activity ref : ApplicationStatus.getRunningActivities()) {
             if (!(ref instanceof OnboardingActivity)) continue;
@@ -159,6 +172,29 @@ public abstract class BraveActivity extends ChromeActivity {
         if (onboardingActivity == null) {
             OnboardingPrefManager.getInstance().showOnboarding(this, false);
         }
+    }
+
+    @Override
+    public void addOrEditBookmark(final Tab tabToBookmark) {
+        long tempBookmarkId = BookmarkBridge.getUserBookmarkIdForTab(tabToBookmark);
+        final boolean bCreateBookmark = (BookmarkId.INVALID_ID == tempBookmarkId);
+
+        super.addOrEditBookmark(tabToBookmark);
+
+        final long bookmarkId = BookmarkBridge.getUserBookmarkIdForTab(tabToBookmark);
+        final BookmarkModel bookmarkModel = new BookmarkModel();
+
+        bookmarkModel.finishLoadingBookmarkModel(() -> {
+            // Gives up the bookmarking if the tab is being destroyed.
+            BookmarkId newBookmarkId = new BookmarkId(bookmarkId, BookmarkType.NORMAL);
+            if (!tabToBookmark.isClosing() && tabToBookmark.isInitialized()) {
+                if (null != mBraveSyncWorker && null != newBookmarkId) {
+                    mBraveSyncWorker.CreateUpdateBookmark(bCreateBookmark, bookmarkModel.getBookmarkById(newBookmarkId));
+                    bookmarkModel.destroy();
+                }
+            }
+            bookmarkModel.destroy();
+        });
     }
 
     private void createNotificationChannel() {

@@ -26,6 +26,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/appmenu/BraveShieldsMenuObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkModel.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkWorker.java",
   "../../brave/android/java/org/chromium/chrome/browser/document/BraveLauncherActivity.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationPlatformBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationSettingsBridge.java",

@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave_sync_worker.h"
+#include "brave/browser/android/brave_sync_worker.h"
+
+#include <string>
 
 #include "base/android/jni_android.h"
 #include "base/android/jni_string.h"
@@ -17,7 +19,7 @@ namespace android {
 
 #define DB_FILE_NAME      "brave_sync_db"
 
-leveldb::DB* g_level_db;
+leveldb::DB* g_level_db = nullptr;
 static std::mutex* g_pLevel_db_init_mutex = new std::mutex();
 
 BraveSyncWorker::BraveSyncWorker(JNIEnv* env, jobject obj):
@@ -87,8 +89,8 @@ base::android::ScopedJavaLocalRef<jstring>
     return base::android::ConvertUTF8ToJavaString(env, value);
 }
 
-void JNI_BraveSyncWorker_SaveObjectId(JNIEnv* env, const
-      base::android::JavaParamRef<jobject>& jcaller,
+void JNI_BraveSyncWorker_SaveObjectId(JNIEnv* env,
+      const base::android::JavaParamRef<jobject>& jcaller,
       const base::android::JavaParamRef<jstring>& localId,
       const base::android::JavaParamRef<jstring>& objectIdJSON,
       const base::android::JavaParamRef<jstring>& objectId) {
