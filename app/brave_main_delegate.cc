@@ -163,6 +163,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     // this feature.
       features::kWebUIDarkMode.name,
       omnibox::kSimplifyHttpsIndicator.name,
+      features::kDnsOverHttps.name,
   };
 
   // Disabled features.
