@@ -174,23 +174,20 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
         // Monthly payment
         guard let wallet = state.ledger.walletInfo else { break }
         let monthlyPayment = state.ledger.contributionAmount
-        let choices = wallet.parametersChoices.map { $0.doubleValue }
-        let selectedIndex = choices.firstIndex(of: monthlyPayment) ?? 0
-        let stringChoices = choices.map { choice -> String in
-          var amount = "\(choice) \(Strings.BAT)"
-          if let dollarRate = state.ledger.dollarStringForBATAmount(choice) {
-            amount.append(" (\(dollarRate))")
+        let choices = wallet.parametersChoices.map { BATValue($0.doubleValue) }
+        let selectedIndex = choices.map({ $0.doubleValue }).firstIndex(of: monthlyPayment) ?? 0
+        
+        let controller = BATValueOptionsSelectionViewController(
+          ledger: state.ledger,
+          options: choices,
+          isSelectionPrecise: false,
+          selectedOptionIndex: selectedIndex
+        ) { [weak self] selectedIndex in
+          guard let self = self else { return }
+          if selectedIndex < choices.count {
+            self.state.ledger.contributionAmount = choices[selectedIndex].doubleValue
           }
-          return amount
-        }
-        let controller = OptionsSelectionViewController(
-          options: stringChoices,
-          selectedOptionIndex: selectedIndex) { [weak self] (selectedIndex) in
-            guard let self = self else { return }
-            if selectedIndex < choices.count {
-              self.state.ledger.contributionAmount = choices[selectedIndex]
-            }
-            self.navigationController?.popViewController(animated: true)
+          self.navigationController?.popViewController(animated: true)
         }
         controller.title = Strings.AutoContributeMonthlyPaymentTitle
         navigationController?.pushViewController(controller, animated: true)

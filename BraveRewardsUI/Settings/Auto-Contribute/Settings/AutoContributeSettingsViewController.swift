@@ -99,7 +99,12 @@ extension AutoContributeSettingsViewController: UITableViewDelegate, UITableView
       let choices = wallet.parametersChoices.map { BATValue($0.doubleValue) }
       let selectedIndex = choices.map({ $0.doubleValue }).firstIndex(of: monthlyPayment) ?? 0
       
-      let controller = BATValueOptionsSelectionViewController(ledger: ledger, options: choices, selectedOptionIndex: selectedIndex) { [weak self] (selectedIndex) in
+      let controller = BATValueOptionsSelectionViewController(
+        ledger: ledger,
+        options: choices,
+        isSelectionPrecise: false,
+        selectedOptionIndex: selectedIndex
+      ) { [weak self] selectedIndex in
         guard let self = self else { return }
         if selectedIndex < choices.count {
           self.ledger.contributionAmount = choices[selectedIndex].doubleValue
