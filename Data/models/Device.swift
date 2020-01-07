@@ -63,7 +63,12 @@ extension Device {
             return device
         }
         
-        return context.object(with: deviceId) as? Device
+        do {
+            return try context.existingObject(with: deviceId) as? Device
+        } catch {
+            log.error("Failed to fetch device: \(error)")
+            return nil
+        }
     }
     
     class func add(name: String?, isCurrent: Bool = false) {
