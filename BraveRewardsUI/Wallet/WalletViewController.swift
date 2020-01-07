@@ -6,6 +6,7 @@ import UIKit
 import SnapKit
 import BraveRewards
 import Network
+import BraveShared
 
 protocol WalletContentView: AnyObject {
   var innerScrollView: UIScrollView? { get }
@@ -19,6 +20,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
   weak var currentNotification: RewardsNotification?
   private var recurringTipAmount: Double = 0.0
   private var publisher: PublisherInfo?
+  private var userWallet: ExternalWallet?
   
   init(state: RewardsState) {
     self.state = state
@@ -93,6 +95,10 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
     walletView.headerView.addFundsButton.addTarget(self, action: #selector(tappedAddFunds), for: .touchUpInside)
     walletView.headerView.settingsButton.addTarget(self, action: #selector(tappedSettings), for: .touchUpInside)
     walletView.headerView.grantsButton.addTarget(self, action: #selector(tappedGrantsButton), for: .touchUpInside)
+    walletView.headerView.connectUserWalletButton.addTarget(self, action: #selector(tappedConnectWalletButton), for: .touchUpInside)
+    walletView.headerView.verifyUserWalletButton.addTarget(self, action: #selector(tappedVerifyWalletButton), for: .touchUpInside)
+    walletView.headerView.disconnectedUserWalletButton.addTarget(self, action: #selector(tappedDisconnectWalletButton), for: .touchUpInside)
+    walletView.headerView.verifiedUserWalletButton.addTarget(self, action: #selector(tappedVerifiedUserWalletButton), for: .touchUpInside)
 
     updateWalletHeader()
     updateWalletState()
@@ -368,9 +374,8 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
   }
   
   @objc private func tappedAddFunds() {
-    let controller = AddFundsViewController(state: state)
-    let container = PopoverNavigationController(rootViewController: controller)
-    present(container, animated: true)
+    guard let wallet = userWallet, let url = URL(string: wallet.addUrl) else { return }
+    state.delegate?.loadNewTabWithURL(url)
   }
   
   @objc private func tappedSettings() {
@@ -480,6 +485,49 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
       assertionFailure()
     }
   }
+  
+  @objc private func tappedConnectWalletButton() {
+    let verifyOnboarding = VerifyUserWalletViewController {
+      self.dismiss(animated: true, completion: {
+        guard let wallet = self.userWallet,
+            let percentEncoded = wallet.verifyUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+            let upholdURL = URL(string: percentEncoded) else { return }
+          self.state.delegate?.loadNewTabWithURL(upholdURL)
+      })
+    }
+    self.present(verifyOnboarding, animated: true)
+  }
+  
+  private func showUserWalletDetails() {
+    guard let wallet = userWallet else { return }
+    let details = UserWalletDetailsViewController(state: state, wallet: wallet) {
+      self.state.ledger.disconnectWallet(ofType: .uphold) { result in
+        if result == .ledgerOk {
+          // Disconnected
+          self.updateWalletHeader()
+          self.navigationController?.popViewController(animated: true)
+        }
+      }
+    }
+    self.navigationController?.pushViewController(details, animated: true)
+  }
+  
+  @objc private func tappedVerifyWalletButton() {
+    showUserWalletDetails()
+  }
+  
+  @objc private func tappedDisconnectWalletButton() {
+    dismiss(animated: true, completion: {
+      guard let wallet = self.userWallet,
+        let percentEncoded = wallet.verifyUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+        let upholdURL = URL(string: percentEncoded) else { return }
+      self.state.delegate?.loadNewTabWithURL(upholdURL)
+    })
+  }
+  
+  @objc private func tappedVerifiedUserWalletButton() {
+    showUserWalletDetails()
+  }
 }
 
 extension WalletViewController {
@@ -580,6 +628,33 @@ extension WalletViewController {
       crypto: Strings.WalletBalanceType,
       dollarValue: state.ledger.usdBalanceString
     )
+    // Hidden by default
+    walletView.headerView.setUserWalletStatus(.hidden)
+    if Preferences.Rewards.isUsingBAP.value != true {
+      // If we can show Uphold, grab verification status of the wallet
+      state.ledger.externalWallet(forType: .uphold) { wallet in
+        guard let wallet = wallet else { return }
+        
+        self.userWallet = wallet
+        
+        switch wallet.status {
+        case .notConnected:
+          self.walletView.headerView.setUserWalletStatus(.notConnected)
+        case .connected,
+             .pending:
+          self.walletView.headerView.setUserWalletStatus(.connectedNotVerified)
+        case .disconnectedVerified,
+             .disconnectedNotVerified:
+          self.walletView.headerView.setUserWalletStatus(.disconnected)
+        case .verified:
+          self.walletView.headerView.setUserWalletStatus(.verified)
+        @unknown default:
+          break
+        }
+        
+        self.walletView.headerView.addFundsButton.isHidden = wallet.status != .verified
+      }
+    }
   }
   
   func setupLedgerObservers() {
@@ -605,6 +680,9 @@ extension WalletViewController {
     ledgerObserver.activityRemoved = { [weak self] publisherKey in
       guard let self = self, publisherKey == self.publisher?.id else { return }
       self.fetchPublisherActivity()
+    }
+    ledgerObserver.externalWalletAuthorized = { [weak self] _ in
+      self?.updateWalletHeader()
     }
     ledgerObserver.balanceReportUpdated = { [weak self] in
       guard let self = self, self.isViewLoaded else {

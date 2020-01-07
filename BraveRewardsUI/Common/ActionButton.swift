@@ -32,3 +32,22 @@ class ActionButton: Button {
     }
   }
 }
+
+class FilledActionButton: Button {
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    
+    tintColor = .white
+  }
+  
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
+  
+  override func layoutSubviews() {
+    super.layoutSubviews()
+    
+    layer.cornerRadius = bounds.height / 2.0
+  }
+}

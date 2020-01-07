@@ -45,5 +45,5 @@ struct BraveUX {
   static let autoContributeTintColor = UIColor(hex: 0x90329C) // No close color in Brave palette
   static let tipsTintColor = UIColor(hex: 0x6A71D5)  // No close color in Brave palette
   static let adsTintColor = UIColor(hex: 0xB13677) // No close color in Brave palette
-  
+  static let upholdGreen = UIColor(hex: 0x1bba6a)
 }

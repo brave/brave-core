@@ -13,7 +13,7 @@ struct RewardsNotificationViewBuilder {
       return RewardsNotificationViewBuilder.getAutoContribute(notification: notification)
     case .grant, .grantAds, .tipsProcessed, .verifiedPublisher:
       return RewardsNotificationViewBuilder.get(actionNotification: notification)
-    case .insufficientFunds, .pendingNotEnoughFunds:
+    case .insufficientFunds, .pendingNotEnoughFunds, .generalLedger:
       return get(alertNotification: notification)
     default:
       return nil
@@ -119,6 +119,23 @@ struct RewardsNotificationViewBuilder {
         return nil
       }
       return WalletAlertNotificationView(notification: model)
+    case .generalLedger:
+      let kind = GeneralLedgerNotificationID(rawValue: alertNotification.id)
+      switch kind {
+      case .walletDisconnected:
+        alertType = .error
+        title = Strings.UserWalletNotificationWalletDisconnectedTitle
+        body = Strings.UserWalletNotificationWalletDisconnectedBody
+      case .walletNowVerified:
+        alertType = .success
+        title = Strings.UserWalletNotificationNowVerifiedTitle
+        // Wallet name will be the first arg in the user info dictionary
+        let userWalletName = alertNotification.userInfo[0] as? String ?? ""
+        body = String.localizedStringWithFormat(Strings.UserWalletNotificationNowVerifiedBody, userWalletName)
+      default:
+        assertionFailure("Unknown ledger notification identifier: \(alertNotification.id)")
+        return nil
+      }
     default:
       assertionFailure("Undefined case for alert notification")
       return nil

@@ -8,15 +8,24 @@ class DismissButton: Button {
   
   private struct UX {
     static let dismissButtonSize = CGSize(width: 28.0, height: 28.0)
+    static let defaultBackgroundColor = UIColor(white: 1.0, alpha: 0.8)
+    static let defaultImageTintColor = Colors.grey400
   }
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  var defaultBackgroundColor: UIColor
+  var defaultImageTintColor: UIColor
+  
+  init(defaultBackgroundColor: UIColor = UX.defaultBackgroundColor,
+       defaultImageTintColor: UIColor = UX.defaultImageTintColor) {
+    self.defaultBackgroundColor = defaultBackgroundColor
+    self.defaultImageTintColor = defaultImageTintColor
+    
+    super.init(frame: .zero)
     
     setImage(UIImage(frameworkResourceNamed: "close-icon").alwaysTemplate, for: .normal)
-    imageView?.tintColor = Colors.grey400
+    imageView?.tintColor = defaultImageTintColor
     adjustsImageWhenHighlighted = false
-    backgroundColor = UIColor(white: 1.0, alpha: 0.8)
+    backgroundColor = defaultBackgroundColor
     layer.cornerRadius = UX.dismissButtonSize.width / 2.0
     hitTestSlop = UIEdgeInsets(top: -10.0, left: -10.0, bottom: -10.0, right: -10.0)
     clipsToBounds = true
@@ -33,8 +42,8 @@ class DismissButton: Button {
         imageView?.tintColor = .white
         backgroundColor = BraveUX.braveOrange
       } else {
-        imageView?.tintColor = Colors.grey400
-        backgroundColor = UIColor(white: 1.0, alpha: 0.8)
+        imageView?.tintColor = defaultImageTintColor
+        backgroundColor = defaultBackgroundColor
       }
     }
   }
