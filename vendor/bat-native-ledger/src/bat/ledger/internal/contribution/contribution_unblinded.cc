@@ -157,7 +157,7 @@ void Unblinded::OnUnblindedTokens(
       continue;
     }
 
-    if (item->value + current_amount > reconcile.fee) {
+    if (current_amount >= reconcile.fee) {
       break;
     }
 

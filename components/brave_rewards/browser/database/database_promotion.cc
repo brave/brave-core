@@ -139,6 +139,9 @@ bool DatabasePromotion::Migrate(sql::Database* db, const int target) {
     case 13: {
       return MigrateToV13(db);
     }
+    case 14: {
+      return MigrateToV14(db);
+    }
     default: {
       NOTREACHED();
       return false;
@@ -179,6 +182,26 @@ bool DatabasePromotion::MigrateToV13(sql::Database* db) {
   }
 
   return true;
+}
+
+bool DatabasePromotion::MigrateToV14(sql::Database* db) {
+  DCHECK(db);
+  if (!db) {
+    return false;
+  }
+
+  const std::string query = base::StringPrintf(
+      "UPDATE %s SET approximate_value = "
+      "(SELECT (suggestions * 0.25) FROM %s as ps "
+      "WHERE ps.promotion_id = %s.promotion_id)",
+      table_name_,
+      table_name_,
+      table_name_);
+
+  sql::Statement statement(
+    db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
+
+  return statement.Run();
 }
 
 bool DatabasePromotion::InsertOrUpdate(
