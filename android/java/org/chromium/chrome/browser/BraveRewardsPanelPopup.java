@@ -113,13 +113,11 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     private static final String ERROR_CONVERT_PROBI = "ERROR";
 
     // Balance report codes
-    private static final int BALANCE_REPORT_DEPOSITS = 0;
-    private static final int BALANCE_REPORT_GRANTS = 1;
-    private static final int BALANCE_REPORT_EARNING_FROM_ADS = 2;
-    private static final int BALANCE_REPORT_AUTO_CONTRIBUTE = 3;
-    private static final int BALANCE_REPORT_RECURRING_DONATION = 4;
-    private static final int BALANCE_REPORT_ONE_TIME_DONATION = 5;
-    private static final int BALANCE_REPORT_TOTAL = 6;
+    private static final int BALANCE_REPORT_GRANTS = 0;
+    private static final int BALANCE_REPORT_EARNING_FROM_ADS = 1;
+    private static final int BALANCE_REPORT_AUTO_CONTRIBUTE = 2;
+    private static final int BALANCE_REPORT_RECURRING_DONATION = 3;
+    private static final int BALANCE_REPORT_ONE_TIME_DONATION = 4;
 
     protected final View anchor;
     private final PopupWindow window;
@@ -1212,8 +1210,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
           }
 
           switch (i) {
-            case BALANCE_REPORT_DEPOSITS:
-              break;
             case BALANCE_REPORT_GRANTS:
               tvTitle = (TextView)root.findViewById(R.id.br_grants_claimed_title);
               tv = (TextView)root.findViewById(R.id.br_grants_claimed_bat);
@@ -1248,8 +1244,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
               tvUSD = (TextView)root.findViewById(R.id.br_one_time_donation_usd);
               text = "<font color=#392DD1>" + value + "</font><font color=#000000> BAT</font>";
               textUSD = usdValue;
-              break;
-            case BALANCE_REPORT_TOTAL:
               break;
           }
           if (tvTitle != null && tv != null && tvUSD != null &&
