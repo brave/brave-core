@@ -1,17 +1,16 @@
 diff --git a/components/sync_bookmarks/bookmark_remote_updates_handler.cc b/components/sync_bookmarks/bookmark_remote_updates_handler.cc
-index 8b81f03c143f4f036d56d92c62f2c15ded7ec81d..85c6bcaf6d4c14c71b7f17426f415e2d1aa32f87 100644
+index 8b81f03c143f4f036d56d92c62f2c15ded7ec81d..b0a4daf7354d7ac7e3505745a884131ae55f1658 100644
 --- a/components/sync_bookmarks/bookmark_remote_updates_handler.cc
 +++ b/components/sync_bookmarks/bookmark_remote_updates_handler.cc
-@@ -144,7 +144,7 @@ void ApplyRemoteUpdate(
+@@ -144,6 +144,7 @@ void ApplyRemoteUpdate(
    // Compute index information before updating the |tracker|.
    const size_t old_index = size_t{old_parent->GetIndexOf(node)};
    const size_t new_index =
--      ComputeChildNodeIndex(new_parent, update_entity.unique_position, tracker);
-+      ComputeChildNodeIndex(new_parent, update_entity.unique_position, tracker) BRAVE_APPLY_REMOTE_UPDATE;
++    BRAVE_APPLY_REMOTE_UPDATE
+       ComputeChildNodeIndex(new_parent, update_entity.unique_position, tracker);
    tracker->Update(update_entity.id, update.response_version,
                    update_entity.modification_time,
-                   update_entity.unique_position, update_entity.specifics);
-@@ -428,11 +428,12 @@ bool BookmarkRemoteUpdatesHandler::ProcessCreate(
+@@ -428,9 +429,11 @@ bool BookmarkRemoteUpdatesHandler::ProcessCreate(
      LogProblematicBookmark(RemoteBookmarkUpdateError::kMissingParentNode);
      return false;
    }
@@ -19,9 +18,7 @@ index 8b81f03c143f4f036d56d92c62f2c15ded7ec81d..85c6bcaf6d4c14c71b7f17426f415e2d
    const bookmarks::BookmarkNode* bookmark_node =
        CreateBookmarkNodeFromSpecifics(
            update_entity.specifics.bookmark(), parent_node,
++          BRAVE_PROCESS_CREATE_2
            ComputeChildNodeIndex(parent_node, update_entity.unique_position,
--                                bookmark_tracker_),
-+                                bookmark_tracker_) BRAVE_PROCESS_CREATE_2,
+                                 bookmark_tracker_),
            update_entity.is_folder, bookmark_model_, favicon_service_);
-   if (!bookmark_node) {
-     // We ignore bookmarks we can't add.

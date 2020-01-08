@@ -5,9 +5,7 @@
 
 #include "brave/components/brave_sync/syncer_helper.h"
 
-#define BRAVE_APPLY_REMOTE_UPDATE          \
-  ? brave_sync::GetIndex(new_parent, node) \
-  : brave_sync::GetIndex(new_parent, node)
+#define BRAVE_APPLY_REMOTE_UPDATE true ? brave_sync::GetIndex(new_parent, node):
 
 #define BRAVE_PROCESS_CREATE_1                                              \
   std::string order;                                                        \
@@ -22,9 +20,9 @@
     }                                                                       \
   }
 
-#define BRAVE_PROCESS_CREATE_2                          \
-  ? brave_sync::GetIndex(parent_node, order, object_id) \
-  : brave_sync::GetIndex(parent_node, order, object_id)
+#define BRAVE_PROCESS_CREATE_2 \
+  true ? brave_sync::GetIndex(parent_node, order, object_id):
 #include "../../../../components/sync_bookmarks/bookmark_remote_updates_handler.cc"
+#undef BRAVE_APPLY_REMOTE_UPDATE
 #undef BRAVE_PROCESS_CREATE_1
 #undef BRAVE_PROCESS_CREATE_2
