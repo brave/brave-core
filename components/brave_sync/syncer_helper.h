@@ -16,16 +16,16 @@ class BookmarkNode;
 
 namespace brave_sync {
 
+// Get index to insert by comparing order or object_id of the node
+size_t GetIndex(const bookmarks::BookmarkNode* parent,
+                const std::string& order,
+                const std::string& object_id);
+
+size_t GetIndex(const bookmarks::BookmarkNode* parent,
+                const bookmarks::BookmarkNode* node);
+
 void AddBraveMetaInfo(const bookmarks::BookmarkNode* node,
                       bookmarks::BookmarkModel* bookmark_model);
-
-// |src| is the node which is about to be inserted into |parent|
-size_t GetIndex(const bookmarks::BookmarkNode* parent,
-                const bookmarks::BookmarkNode* src);
-
-size_t GetIndexByCompareOrderStartFrom(const bookmarks::BookmarkNode* parent,
-                                       const bookmarks::BookmarkNode* src,
-                                       size_t index);
 
 }  // namespace brave_sync
 

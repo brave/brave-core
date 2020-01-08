@@ -1,0 +1,27 @@
+diff --git a/components/sync_bookmarks/bookmark_remote_updates_handler.cc b/components/sync_bookmarks/bookmark_remote_updates_handler.cc
+index 8b81f03c143f4f036d56d92c62f2c15ded7ec81d..85c6bcaf6d4c14c71b7f17426f415e2d1aa32f87 100644
+--- a/components/sync_bookmarks/bookmark_remote_updates_handler.cc
++++ b/components/sync_bookmarks/bookmark_remote_updates_handler.cc
+@@ -144,7 +144,7 @@ void ApplyRemoteUpdate(
+   // Compute index information before updating the |tracker|.
+   const size_t old_index = size_t{old_parent->GetIndexOf(node)};
+   const size_t new_index =
+-      ComputeChildNodeIndex(new_parent, update_entity.unique_position, tracker);
++      ComputeChildNodeIndex(new_parent, update_entity.unique_position, tracker) BRAVE_APPLY_REMOTE_UPDATE;
+   tracker->Update(update_entity.id, update.response_version,
+                   update_entity.modification_time,
+                   update_entity.unique_position, update_entity.specifics);
+@@ -428,11 +428,12 @@ bool BookmarkRemoteUpdatesHandler::ProcessCreate(
+     LogProblematicBookmark(RemoteBookmarkUpdateError::kMissingParentNode);
+     return false;
+   }
++  BRAVE_PROCESS_CREATE_1
+   const bookmarks::BookmarkNode* bookmark_node =
+       CreateBookmarkNodeFromSpecifics(
+           update_entity.specifics.bookmark(), parent_node,
+           ComputeChildNodeIndex(parent_node, update_entity.unique_position,
+-                                bookmark_tracker_),
++                                bookmark_tracker_) BRAVE_PROCESS_CREATE_2,
+           update_entity.is_folder, bookmark_model_, favicon_service_);
+   if (!bookmark_node) {
+     // We ignore bookmarks we can't add.
