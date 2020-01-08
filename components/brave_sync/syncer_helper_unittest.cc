@@ -40,7 +40,7 @@ namespace {
 void RepositionRespectOrder(bookmarks::BookmarkModel* bookmark_model,
                             const bookmarks::BookmarkNode* node) {
   const bookmarks::BookmarkNode* parent = node->parent();
-  int index = GetIndexByCompareOrderStartFrom(parent, node, 0);
+  int index = GetIndex(parent, node);
   bookmark_model->Move(node, parent, index);
 }
 
@@ -276,6 +276,7 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoNodeMovedReordered) {
 
 TEST_F(SyncerHelperTest, GetIndexInPermanentNodes) {
   BookmarkNode node(/*id=*/0, base::GenerateGUID(), GURL("https://brave.com"));
+  node.SetMetaInfo("object_id", "notused");
   node.SetMetaInfo("order", "1.0.1.1");
   EXPECT_EQ(GetIndex(model()->bookmark_bar_node(), &node), 0u);
 
@@ -285,6 +286,7 @@ TEST_F(SyncerHelperTest, GetIndexInPermanentNodes) {
   const auto* node_a =
       model()->AddURL(model()->bookmark_bar_node(), 0,
                       base::ASCIIToUTF16("a.com"), GURL("https://a.com/"));
+  model()->SetNodeMetaInfo(node_a, "object_id", "notused");
   // compare device id
   model()->SetNodeMetaInfo(node_a, "order", "1.1.1.1");
   node.SetMetaInfo("order", "1.0.1.1");
@@ -307,15 +309,18 @@ TEST_F(SyncerHelperTest, GetIndexMoreChildren) {
     const auto* node_a =
         model()->AddURL(model()->bookmark_bar_node(), i,
                         base::ASCIIToUTF16("a.com"), GURL("https://a.com/"));
-    std::string order = "1.1.1." + base::NumberToString(i);
+    std::string order = "1.1.1." + base::NumberToString(i == 9 ? i + 2 : i + 1);
     model()->SetNodeMetaInfo(node_a, "order", order);
+    model()->SetNodeMetaInfo(node_a, "object_id", "notused");
   }
-  // inserted as 10th child
+  // inserted as first child
   BookmarkNode node(/*id=*/9, base::GenerateGUID(), GURL("https://brave.com"));
+  node.SetMetaInfo("object_id", "notused");
   node.SetMetaInfo("order", "1.0.1.10");
-  EXPECT_EQ(GetIndex(model()->bookmark_bar_node(), &node), 9u);
+  EXPECT_EQ(GetIndex(model()->bookmark_bar_node(), &node), 0u);
+  // inserted as 10th child
   node.SetMetaInfo("order", "1.1.1.10");
-  EXPECT_EQ(GetIndex(model()->bookmark_bar_node(), &node), 10u);
+  EXPECT_EQ(GetIndex(model()->bookmark_bar_node(), &node), 9u);
 }
 
 TEST_F(SyncerHelperTest, GetIndexInFolder) {
@@ -323,6 +328,7 @@ TEST_F(SyncerHelperTest, GetIndexInFolder) {
                                            base::ASCIIToUTF16("Folder1"));
   model()->SetNodeMetaInfo(folder1, "order", "1.0.1.1");
   BookmarkNode node(/*id=*/1, base::GenerateGUID(), GURL("https://brave.com"));
+  node.SetMetaInfo("object_id", "notused");
   node.SetMetaInfo("order", "1.0.1.1.1");
   EXPECT_EQ(GetIndex(folder1, &node), 0u);
 
@@ -330,6 +336,7 @@ TEST_F(SyncerHelperTest, GetIndexInFolder) {
   const auto* node_a = model()->AddURL(folder1, 0, base::ASCIIToUTF16("a.com"),
                                        GURL("https://a.com/"));
   model()->SetNodeMetaInfo(node_a, "order", "1.0.1.1.1");
+  model()->SetNodeMetaInfo(node_a, "object_id", "notused");
   node.SetMetaInfo("order", "1.0.1.1.2");
   EXPECT_EQ(GetIndex(folder1, &node), 1u);
 }
@@ -364,11 +371,11 @@ TEST_F(SyncerHelperTest, SameOrderBookmarksSordetByObjectIdFull3) {
 
   // Expect b1 and b2 no need to move
   uint64_t index_to_move_b1 =
-      GetIndexByCompareOrderStartFrom(model()->bookmark_bar_node(), node_b1, 0);
+    GetIndex(model()->bookmark_bar_node(), node_b1);
   EXPECT_EQ(index_to_move_b1, 2u);
 
   uint64_t index_to_move_b2 =
-      GetIndexByCompareOrderStartFrom(model()->bookmark_bar_node(), node_b2, 0);
+    GetIndex(model()->bookmark_bar_node(), node_b2);
   EXPECT_EQ(index_to_move_b2, 3u);
 
   const auto* node_a3 =
