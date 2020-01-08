@@ -49,14 +49,6 @@ bool DatabaseContributionQueue::Init(sql::Database* db) {
     return false;
   }
 
-  // We need to clear queue if user has corrupted foreign key
-  // more info: https://github.com/brave/brave-browser/issues/7579
-  if (publishers_->HasCorruptedForeignKey(db)) {
-    if (!DeleteAllRecords(db)) {
-      return false;
-    }
-  }
-
   return transaction.Commit();
 }
 

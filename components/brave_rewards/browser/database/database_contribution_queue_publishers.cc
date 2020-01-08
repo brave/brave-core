@@ -13,10 +13,6 @@
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
-namespace {
-  const char kCorruptedForeignKey[] = "publisher_info_old";
-}  // namespace
-
 namespace brave_rewards {
 
 DatabaseContributionQueuePublishers::DatabaseContributionQueuePublishers(
@@ -142,28 +138,6 @@ bool DatabaseContributionQueuePublishers::DeleteRecordsByQueueId(
   statement.BindInt64(0, queue_id);
 
   return statement.Run();
-}
-
-bool DatabaseContributionQueuePublishers::HasCorruptedForeignKey(
-    sql::Database* db) {
-  DCHECK(db);
-  if (!db) {
-    return false;
-  }
-
-  const std::string query = base::StringPrintf(
-      "PRAGMA foreign_key_list(%s)",
-      table_name_);
-
-  sql::Statement statement(db->GetUniqueStatement(query.c_str()));
-
-  while (statement.Step()) {
-    if (statement.ColumnString(2) == kCorruptedForeignKey) {
-      return true;
-    }
-  }
-
-  return false;
 }
 
 bool DatabaseContributionQueuePublishers::DeleteAllRecords(sql::Database* db) {

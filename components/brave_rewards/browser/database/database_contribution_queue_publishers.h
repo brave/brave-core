@@ -35,8 +35,6 @@ class DatabaseContributionQueuePublishers: public DatabaseTable {
 
   bool DeleteRecordsByQueueId(sql::Database* db, const uint64_t queue_id);
 
-  bool HasCorruptedForeignKey(sql::Database* db);
-
   bool DeleteAllRecords(sql::Database* db);
 
  private:
