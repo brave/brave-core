@@ -25,7 +25,6 @@ class BraveWebView: WKWebView {
         if isPrivate {
             configuration.websiteDataStore = BraveWebView.sharedNonPersistentStore()
         } else {
-            BraveWebView.nonPersistentDataStore = nil
             configuration.websiteDataStore = WKWebsiteDataStore.default()
         }
         
