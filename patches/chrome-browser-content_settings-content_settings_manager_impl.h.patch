@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/content_settings/content_settings_manager_impl.h b/chrome/browser/content_settings/content_settings_manager_impl.h
+index e425821bcfa8d0334d655796d7c5b2da38b57e59..fab18696dbb6555ee5dd5c976ebda6aa8f67a443 100644
+--- a/chrome/browser/content_settings/content_settings_manager_impl.h
++++ b/chrome/browser/content_settings/content_settings_manager_impl.h
+@@ -38,6 +38,7 @@ class ContentSettingsManagerImpl : public mojom::ContentSettingsManager {
+   void OnContentBlocked(int32_t render_frame_id,
+                         ContentSettingsType type) override;
+ 
++  CONTENT_SETTINGS_MANAGER_IMPL_H_
+  private:
+   explicit ContentSettingsManagerImpl(
+       content::RenderProcessHost* render_process_host);
