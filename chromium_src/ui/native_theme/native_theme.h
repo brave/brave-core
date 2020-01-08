@@ -6,9 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_UI_NATIVE_THEME_NATIVE_THEME_H_
 #define BRAVE_CHROMIUM_SRC_UI_NATIVE_THEME_NATIVE_THEME_H_
 
-#define BRAVE_UI_NATIVE_THEME_NATIVE_THEME_H_ \
-  friend void SetUseDarkColors(bool dark_mode); \
-  friend void ReCalcAndSetPreferredColorScheme();
+#define BRAVE_UI_NATIVE_THEME_NATIVE_THEME_H_     \
+  friend void SetUseDarkColors(bool dark_mode);   \
+  friend void ReCalcAndSetPreferredColorScheme(); \
+  static NativeTheme* BraveGetInstanceForNativeUi();
 
 #include "../../../../ui/native_theme/native_theme.h"
 #undef BRAVE_UI_NATIVE_THEME_NATIVE_THEME_H_
