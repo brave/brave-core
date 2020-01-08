@@ -63,7 +63,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
 
 #if BUILDFLAG(BRAVE_STP_ENABLED)
-  if (TrackingProtectionService::IsSmartTrackingProtectionEnabled()) {
+  if (brave_shields::TrackingProtectionService::
+          IsSmartTrackingProtectionEnabled()) {
     brave_shields::TrackingProtectionHelper::CreateForWebContents(web_contents);
   }
 #endif
