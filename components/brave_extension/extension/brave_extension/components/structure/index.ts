@@ -476,6 +476,7 @@ export const Overlay = styled<{}, 'div'>('div')`
 export const WarningText = styled<{}, 'p'>('p')`
   margin: 0 0 24px;
   line-height: 18px;
+  color: ${p => p.theme.color.text};
 `
 
 export const WarningModal = styled<{}, 'div'>('div')`
