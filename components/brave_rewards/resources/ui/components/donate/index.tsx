@@ -52,6 +52,7 @@ export interface Props {
 interface State {
   missingFunds: boolean
   amountChanged: boolean
+  displayedAmounts: Donation[]
 }
 
 export default class Donate extends React.PureComponent<Props, State> {
@@ -61,7 +62,8 @@ export default class Donate extends React.PureComponent<Props, State> {
     super(props)
     this.state = {
       missingFunds: false,
-      amountChanged: false
+      amountChanged: false,
+      displayedAmounts: props.donationAmounts
     }
     this.sendButton = null
   }
@@ -70,15 +72,46 @@ export default class Donate extends React.PureComponent<Props, State> {
     if (this.sendButton) {
       this.sendButton.focus()
     }
+
+    this.donationAmountsDidChange()
+  }
+
+  donationAmountsAreEqual = (a: Donation[], b: Donation[]) => {
+    if (a.length !== b.length) {
+      return false
+    }
+
+    return a.every(({}, index) => a[index].tokens === b[index].tokens && a[index].converted === b[index].converted)
   }
 
   componentDidUpdate (prevProps: Props) {
-    if (
-      this.props.balance !== prevProps.balance ||
-      this.props.donationAmounts !== prevProps.donationAmounts ||
-      this.props.currentAmount !== prevProps.currentAmount
-    ) {
+    if (!this.donationAmountsAreEqual(this.props.donationAmounts, prevProps.donationAmounts)) {
+      this.donationAmountsDidChange()
+      return
+    }
+
+    if (this.props.balance !== prevProps.balance ||
+        this.props.currentAmount !== prevProps.currentAmount) {
       this.validateAmount(this.props.balance)
+    }
+  }
+
+  donationAmountsDidChange = () => {
+    // If the user has already made a selection, don't change the UI.
+    if (this.state.amountChanged) {
+      return
+    }
+
+    const amounts = this.props.donationAmounts
+    this.setState({ displayedAmounts: amounts })
+
+    // If there are 3 options, select the middle one.
+    if (amounts.length === 3) {
+      const amountToSelect = amounts[1].tokens
+      this.validateAmount(this.props.balance, amountToSelect)
+      if (this.props.onAmountSelection) {
+        this.props.onAmountSelection(amountToSelect)
+      }
     }
   }
 
@@ -150,7 +183,6 @@ export default class Donate extends React.PureComponent<Props, State> {
   render () {
     const {
       id,
-      donationAmounts,
       actionText,
       children,
       title,
@@ -160,6 +192,8 @@ export default class Donate extends React.PureComponent<Props, State> {
       nextContribution,
       onlyAnonWallet
     } = this.props
+
+    const { displayedAmounts } = this.state
 
     const isMonthly = type === 'monthly'
     const disabled = parseInt(currentAmount, 10) === 0
@@ -171,7 +205,7 @@ export default class Donate extends React.PureComponent<Props, State> {
           <StyledDonationTitle>{title}</StyledDonationTitle>
             <StyledAmountsWrapper>
               {
-                donationAmounts && donationAmounts.map((donation: Donation, index: number) => {
+                displayedAmounts && displayedAmounts.map((donation: Donation, index: number) => {
                   const isCurrentAmount = donation.tokens === currentAmount.toString()
                   const isDefaultAmount = index === 1 && !this.state.amountChanged
 

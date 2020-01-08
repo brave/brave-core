@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "base/strings/utf_string_conversions.h"
@@ -177,6 +178,15 @@ void RewardsTipDOMHandler::GetWalletProperties(const base::ListValue* args) {
   rewards_service_->FetchWalletProperties();
 }
 
+static std::unique_ptr<base::ListValue> CreateListOfDoubles(
+    const std::vector<double>& items) {
+  auto result = std::make_unique<base::ListValue>();
+  for (double const& item : items) {
+    result->AppendDouble(item);
+  }
+  return result;
+}
+
 void RewardsTipDOMHandler::OnWalletProperties(
     brave_rewards::RewardsService* rewards_service,
     int error_code,
@@ -191,11 +201,12 @@ void RewardsTipDOMHandler::OnWalletProperties(
   auto walletInfo = std::make_unique<base::DictionaryValue>();
 
   if (error_code == 0 && wallet_properties) {
-    auto choices = std::make_unique<base::ListValue>();
-    for (double const& choice : wallet_properties->parameters_choices) {
-      choices->AppendDouble(choice);
-    }
-    walletInfo->SetList("choices", std::move(choices));
+    walletInfo->SetList("choices",
+        CreateListOfDoubles(wallet_properties->parameters_choices));
+    walletInfo->SetList("defaultTipChoices",
+        CreateListOfDoubles(wallet_properties->default_tip_choices));
+    walletInfo->SetList("defaultMonthlyTipChoices",
+        CreateListOfDoubles(wallet_properties->default_monthly_tip_choices));
   }
 
   result.SetDictionary("wallet", std::move(walletInfo));

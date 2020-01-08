@@ -71,6 +71,8 @@ declare namespace RewardsTip {
 
   export interface WalletProperties {
     choices: number[]
+    defaultTipChoices: number[]
+    defaultMonthlyTipChoices: number[]
   }
 
   export interface Grant {

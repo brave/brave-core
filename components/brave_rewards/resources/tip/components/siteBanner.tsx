@@ -30,6 +30,7 @@ interface State {
 }
 
 class Banner extends React.Component<Props, State> {
+  readonly defaultTipAmounts = [1, 5, 10]
   constructor (props: Props) {
     super(props)
     this.state = {
@@ -54,12 +55,23 @@ class Banner extends React.Component<Props, State> {
   }
 
   generateAmounts = () => {
-    const { balance } = this.props.rewardsDonateData
+    const { monthly } = this.props
+    const { balance, walletInfo } = this.props.rewardsDonateData
 
-    let amounts = [1, 5, 10]
-    const amount = this.props.publisher.amounts
-    if (amount && amount.length) {
-      amounts = amount
+    const publisherAmounts = this.props.publisher.amounts
+
+    // Prefer the publisher amounts, then the wallet's defaults. Fall back to defaultTipAmounts.
+    let amounts = this.defaultTipAmounts
+    if (publisherAmounts && publisherAmounts.length) {
+      amounts = publisherAmounts
+    } else if (walletInfo) {
+      const walletAmounts = monthly
+        ? walletInfo.defaultMonthlyTipChoices
+        : walletInfo.defaultTipChoices
+
+      if (walletAmounts.length) {
+        amounts = walletAmounts
+      }
     }
 
     return amounts.map((value: number) => {
