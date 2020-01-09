@@ -17,7 +17,7 @@ sync_pb::EntitySpecifics CreateSpecificsFromBookmarkNode(
     const bookmarks::BookmarkNode* node,
     bookmarks::BookmarkModel* model,
     bool force_favicon_load) {
-  brave_sync::AddBraveMetaInfo(node, model);
+  brave_sync::AddBraveMetaInfo(node);
   return CreateSpecificsFromBookmarkNodeChromiumImpl(node, model,
                                                      force_favicon_load);
 }

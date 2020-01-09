@@ -10,7 +10,6 @@
 #include <string>
 
 namespace bookmarks {
-class BookmarkModel;
 class BookmarkNode;
 }  // namespace bookmarks
 
@@ -24,8 +23,7 @@ size_t GetIndex(const bookmarks::BookmarkNode* parent,
 size_t GetIndex(const bookmarks::BookmarkNode* parent,
                 const bookmarks::BookmarkNode* node);
 
-void AddBraveMetaInfo(const bookmarks::BookmarkNode* node,
-                      bookmarks::BookmarkModel* bookmark_model);
+void AddBraveMetaInfo(const bookmarks::BookmarkNode* node);
 
 }  // namespace brave_sync
 

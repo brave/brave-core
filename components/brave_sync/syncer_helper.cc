@@ -8,13 +8,17 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_sync/bookmark_order_util.h"
 #include "brave/components/brave_sync/tools.h"
-#include "components/bookmarks/browser/bookmark_model.h"
+#include "components/bookmarks/browser/bookmark_node.h"
 
 namespace brave_sync {
 namespace {
 
-void SetOrder(bookmarks::BookmarkModel* model,
-              const bookmarks::BookmarkNode* node,
+// Get mutable node to prevent BookmarkMetaInfoChanged from being triggered
+bookmarks::BookmarkNode* AsMutable(const bookmarks::BookmarkNode* node) {
+  return const_cast<bookmarks::BookmarkNode*>(node);
+}
+
+void SetOrder(const bookmarks::BookmarkNode* node,
               const std::string& parent_order) {
   DCHECK(!parent_order.empty());
   int index = node->parent()->GetIndexOf(node);
@@ -37,7 +41,7 @@ void SetOrder(bookmarks::BookmarkModel* model,
 
   std::string order =
       brave_sync::GetOrder(prev_order, next_order, parent_order);
-  model->SetNodeMetaInfo(node, "order", order);
+  AsMutable(node)->SetMetaInfo("order", order);
 }
 
 }  // namespace
@@ -75,11 +79,10 @@ size_t GetIndex(const bookmarks::BookmarkNode* parent,
   return GetIndex(parent, order, object_id);
 }
 
-void AddBraveMetaInfo(const bookmarks::BookmarkNode* node,
-                      bookmarks::BookmarkModel* model) {
+void AddBraveMetaInfo(const bookmarks::BookmarkNode* node) {
   std::string parent_order;
   node->parent()->GetMetaInfo("order", &parent_order);
-  SetOrder(model, node, parent_order);
+  SetOrder(node, parent_order);
 
   std::string object_id;
   node->GetMetaInfo("object_id", &object_id);
@@ -87,17 +90,17 @@ void AddBraveMetaInfo(const bookmarks::BookmarkNode* node,
   if (object_id.empty()) {
     object_id = tools::GenerateObjectId();
   }
-  model->SetNodeMetaInfo(node, "object_id", object_id);
+  AsMutable(node)->SetMetaInfo("object_id", object_id);
 
   std::string parent_object_id;
   node->parent()->GetMetaInfo("object_id", &parent_object_id);
-  model->SetNodeMetaInfo(node, "parent_object_id", parent_object_id);
+  AsMutable(node)->SetMetaInfo("parent_object_id", parent_object_id);
 
   std::string sync_timestamp;
   node->GetMetaInfo("sync_timestamp", &sync_timestamp);
   if (sync_timestamp.empty()) {
     sync_timestamp = std::to_string(base::Time::Now().ToJsTime());
-    model->SetNodeMetaInfo(node, "sync_timestamp", sync_timestamp);
+    AsMutable(node)->SetMetaInfo("sync_timestamp", sync_timestamp);
   }
   DCHECK(!sync_timestamp.empty());
 }

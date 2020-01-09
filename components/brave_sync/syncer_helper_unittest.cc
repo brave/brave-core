@@ -94,7 +94,7 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoCreateOrUpdate) {
   std::string sync_timestamp;
   const auto* folder1 = model()->AddFolder(model()->bookmark_bar_node(), 0,
                                            base::ASCIIToUTF16("Folder1"));
-  AddBraveMetaInfo(folder1, model());
+  AddBraveMetaInfo(folder1);
   folder1->GetMetaInfo("order", &order);
   EXPECT_EQ(order, "1.0.1.1");
   std::string folder1_id;
@@ -110,7 +110,7 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoCreateOrUpdate) {
       folder1, 0, base::ASCIIToUTF16("A.com - title"), GURL("https://a.com/"));
   order.clear();
   sync_timestamp.clear();
-  AddBraveMetaInfo(node_a, model());
+  AddBraveMetaInfo(node_a);
   node_a->GetMetaInfo("order", &order);
   EXPECT_EQ(order, "1.0.1.1.1");
   std::string node_a_id;
@@ -127,7 +127,7 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoCreateOrUpdate) {
   node_a_id.clear();
   node_a_parent_id.clear();
   model()->SetURL(node_a, GURL("https://a-m.com/"));
-  AddBraveMetaInfo(node_a, model());
+  AddBraveMetaInfo(node_a);
   node_a->GetMetaInfo("order", &order);
   EXPECT_EQ(order, "1.0.1.1.1");
   node_a->GetMetaInfo("object_id", &node_a_id);
@@ -142,12 +142,12 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoCreateOrUpdate) {
 TEST_F(SyncerHelperTest, AddBraveMetaInfoNodeMoved) {
   const auto* folder1 = model()->AddFolder(model()->bookmark_bar_node(), 0,
                                            base::ASCIIToUTF16("Folder1"));
-  AddBraveMetaInfo(folder1, model());
+  AddBraveMetaInfo(folder1);
   const auto* node_a = model()->AddURL(
       folder1, 0, base::ASCIIToUTF16("A.com - title"), GURL("https://a.com/"));
-  AddBraveMetaInfo(node_a, model());
+  AddBraveMetaInfo(node_a);
   model()->Move(node_a, model()->bookmark_bar_node(), 1);
-  AddBraveMetaInfo(node_a, model());
+  AddBraveMetaInfo(node_a);
 
   std::string order;
   node_a->GetMetaInfo("order", &order);
@@ -167,15 +167,15 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoNodeChildrenReordered) {
   const auto* node_a = model()->AddURL(model()->bookmark_bar_node(), 0,
                                        base::ASCIIToUTF16("A.com - title"),
                                        GURL("https://a.com/"));
-  AddBraveMetaInfo(node_a, model());
+  AddBraveMetaInfo(node_a);
   const auto* node_b = model()->AddURL(model()->bookmark_bar_node(), 1,
                                        base::ASCIIToUTF16("B.com - title"),
                                        GURL("https://b.com/"));
-  AddBraveMetaInfo(node_b, model());
+  AddBraveMetaInfo(node_b);
   const auto* node_c = model()->AddURL(model()->bookmark_bar_node(), 2,
                                        base::ASCIIToUTF16("C.com - title"),
                                        GURL("https://c.com/"));
-  AddBraveMetaInfo(node_c, model());
+  AddBraveMetaInfo(node_c);
 
   // Expecting to have initially:
   // 'Bookmarks Bar'   1.0.1
@@ -194,7 +194,7 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoNodeChildrenReordered) {
   EXPECT_EQ(order_c, "1.0.1.3");
 
   model()->Move(node_c, model()->bookmark_bar_node(), 0);
-  AddBraveMetaInfo(node_c, model());
+  AddBraveMetaInfo(node_c);
 
   // After move to have:
   // 'Bookmarks Bar'   1.0.1
@@ -218,16 +218,16 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoNodeMovedReordered) {
   const auto* node_a = model()->AddURL(model()->bookmark_bar_node(), 0,
                                        base::ASCIIToUTF16("A.com - title"),
                                        GURL("https://a.com/"));
-  AddBraveMetaInfo(node_a, model());
+  AddBraveMetaInfo(node_a);
   const auto* folder1 = model()->AddFolder(model()->bookmark_bar_node(), 1,
                                            base::ASCIIToUTF16("Folder1"));
-  AddBraveMetaInfo(folder1, model());
+  AddBraveMetaInfo(folder1);
   const auto* node_b = model()->AddURL(
       folder1, 0, base::ASCIIToUTF16("B.com - title"), GURL("https://b.com/"));
-  AddBraveMetaInfo(node_b, model());
+  AddBraveMetaInfo(node_b);
   const auto* node_c = model()->AddURL(
       folder1, 1, base::ASCIIToUTF16("C.com - title"), GURL("https://c.com/"));
-  AddBraveMetaInfo(node_c, model());
+  AddBraveMetaInfo(node_c);
 
   // Expecting here to have:
   // 'Bookmarks Bar'   1.0.1
@@ -250,7 +250,7 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoNodeMovedReordered) {
   EXPECT_EQ(order_folder1, "1.0.1.2");
 
   model()->Move(node_a, folder1, 0);
-  AddBraveMetaInfo(node_a, model());
+  AddBraveMetaInfo(node_a);
 
   order_a.clear();
   order_b.clear();
@@ -355,19 +355,19 @@ TEST_F(SyncerHelperTest, SameOrderBookmarksSordetByObjectIdFull3) {
   const auto* node_a1 =
       model()->AddURL(model()->bookmark_bar_node(), 0,
                       base::ASCIIToUTF16("A1.com"), GURL("https://a1.com/"));
-  AddBraveMetaInfo(node_a1, model());
+  AddBraveMetaInfo(node_a1);
   const auto* node_a2 =
       model()->AddURL(model()->bookmark_bar_node(), 1,
                       base::ASCIIToUTF16("A2.com"), GURL("https://a2.com/"));
-  AddBraveMetaInfo(node_a2, model());
+  AddBraveMetaInfo(node_a2);
   const auto* node_b1 =
       model()->AddURL(model()->bookmark_bar_node(), 2,
                       base::ASCIIToUTF16("B1.com"), GURL("https://b1.com/"));
-  AddBraveMetaInfo(node_b1, model());
+  AddBraveMetaInfo(node_b1);
   const auto* node_b2 =
       model()->AddURL(model()->bookmark_bar_node(), 3,
                       base::ASCIIToUTF16("B2.com"), GURL("https://b2.com/"));
-  AddBraveMetaInfo(node_b2, model());
+  AddBraveMetaInfo(node_b2);
 
   // Expect b1 and b2 no need to move
   uint64_t index_to_move_b1 =
@@ -381,15 +381,15 @@ TEST_F(SyncerHelperTest, SameOrderBookmarksSordetByObjectIdFull3) {
   const auto* node_a3 =
       model()->AddURL(model()->bookmark_bar_node(), 4,
                       base::ASCIIToUTF16("A3.com"), GURL("https://a3.com/"));
-  AddBraveMetaInfo(node_a3, model());
+  AddBraveMetaInfo(node_a3);
   const auto* node_b3 =
       model()->AddURL(model()->bookmark_bar_node(), 5,
                       base::ASCIIToUTF16("B3.com"), GURL("https://b3.com/"));
-  AddBraveMetaInfo(node_b3, model());
+  AddBraveMetaInfo(node_b3);
   const auto* node_c3 =
       model()->AddURL(model()->bookmark_bar_node(), 6,
                       base::ASCIIToUTF16("C3.com"), GURL("https://c3.com/"));
-  AddBraveMetaInfo(node_c3, model());
+  AddBraveMetaInfo(node_c3);
 
   std::string a3_order;
   node_a3->GetMetaInfo("order", &a3_order);
