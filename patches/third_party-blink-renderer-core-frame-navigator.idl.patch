@@ -2,11 +2,12 @@ diff --git a/third_party/blink/renderer/core/frame/navigator.idl b/third_party/b
 index f13febb148e9..b8e0bbc2b66e 100644
 --- a/third_party/blink/renderer/core/frame/navigator.idl
 +++ b/third_party/blink/renderer/core/frame/navigator.idl
-@@ -36,7 +36,6 @@
+@@ -36,7 +36,7 @@
  
  Navigator includes NavigatorConcurrentHardware;
  Navigator includes NavigatorCookies;
 -Navigator includes NavigatorDeviceMemory;
++// Navigator includes NavigatorDeviceMemory;
  Navigator includes NavigatorID;
  Navigator includes NavigatorLanguage;
  Navigator includes NavigatorOnLine;
