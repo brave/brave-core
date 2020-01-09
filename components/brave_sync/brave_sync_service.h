@@ -35,7 +35,7 @@ class BraveSyncService {
       const std::string& sync_words,
       const std::string& device_name) = 0;
   virtual void OnSetupSyncNewToSync(const std::string& device_name) = 0;
-  virtual void OnDeleteDevice(const std::string& device_id) = 0;
+  virtual void OnDeleteDevice(const std::string& device_id_v2) = 0;
   virtual void OnResetSync() = 0;
   virtual void GetSettingsAndDevices(
       const GetSettingsAndDevicesCallback& callback) = 0;

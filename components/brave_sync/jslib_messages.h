@@ -113,6 +113,7 @@ class Device {
   ~Device();
   static std::unique_ptr<Device> Clone(const Device& device);
   std::string name;
+  std::string deviceIdV2;
 };
 
 

@@ -20,6 +20,8 @@ interface BatAdsClient {
   [Sync]
   IsEnabled() => (bool is_enabled);
   [Sync]
+  ShouldAllowAdConversionTracking() => (bool should_allow);
+  [Sync]
   GetLocale() => (string locale);
   [Sync]
   GetAdsPerHour() => (uint64 ads_per_hour);
@@ -57,6 +59,7 @@ interface BatAdsClient {
   LoadSampleBundle() => (int32 result, string value);
   Reset(string name) => (int32 result);
   GetAds(array<string> categories) => (int32 result, array<string> categories, array<string> ad_info);
+  GetAdConversions(string url) => (int32 result, string url, array<string> ad_conversions);
   EventLog(string json);
 };
 

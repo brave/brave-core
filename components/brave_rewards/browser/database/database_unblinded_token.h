@@ -27,6 +27,8 @@ class DatabaseUnblindedToken: public DatabaseTable {
 
   bool CreateIndex(sql::Database* db) override;
 
+  bool Migrate(sql::Database* db, const int target);
+
   bool InsertOrUpdate(sql::Database* db, ledger::UnblindedTokenPtr info);
 
   ledger::UnblindedTokenList GetAllRecords(sql::Database* db);
@@ -38,6 +40,15 @@ class DatabaseUnblindedToken: public DatabaseTable {
   static bool DeleteRecordsForPromotion(
       sql::Database* db,
       const std::string& promotion_id);
+
+ private:
+  bool CreateTableV10(sql::Database* db);
+
+  bool CreateIndexV10(sql::Database* db);
+
+  bool MigrateToV10(sql::Database* db);
+
+  bool MigrateToV14(sql::Database* db);
 };
 
 }  // namespace brave_rewards

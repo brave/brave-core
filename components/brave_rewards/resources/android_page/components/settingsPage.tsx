@@ -63,6 +63,14 @@ class SettingsPage extends React.Component<Props, State> {
     this.setState({ walletShown: !this.state.walletShown })
   }
 
+  refreshActions () {
+    this.actions.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear())
+    this.actions.getContributeList()
+    this.actions.getTransactionHistory()
+    this.actions.getAdsData()
+    this.actions.getExcludedSites()
+  }
+
   componentDidMount () {
     if (this.props.rewardsData.firstLoad === null) {
       // First load ever
@@ -73,8 +81,16 @@ class SettingsPage extends React.Component<Props, State> {
       this.actions.onSettingSave('firstLoad', false)
     }
 
-    if (this.props.rewardsData.adsData.adsEnabled) {
-      this.actions.getTransactionHistory()
+    this.actions.getWalletProperties()
+    this.actions.getBalance()
+    this.balanceTimerId = setInterval(() => {
+      this.actions.getBalance()
+    }, 60000)
+
+    if (this.props.rewardsData.firstLoad === false) {
+      this.refreshActions()
+    } else {
+      this.actions.getAdsData()
     }
 
     this.isWalletUrl()
@@ -85,8 +101,6 @@ class SettingsPage extends React.Component<Props, State> {
     window.addEventListener('hashchange', (e) => {
       this.isWalletUrl()
     })
-
-    this.actions.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear())
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -94,9 +108,7 @@ class SettingsPage extends React.Component<Props, State> {
       !prevProps.rewardsData.enabledMain &&
       this.props.rewardsData.enabledMain
     ) {
-      this.actions.getContributeList()
-      this.actions.getBalance()
-      this.actions.getBalanceReport(new Date().getMonth() + 1, new Date().getFullYear())
+      this.refreshActions()
     }
 
     if (

@@ -49,6 +49,8 @@ class DatabasePromotion: public DatabaseTable {
 
   bool MigrateToV13(sql::Database* db);
 
+  bool MigrateToV14(sql::Database* db);
+
   std::unique_ptr<DatabasePromotionCreds> creds_;
 };
 

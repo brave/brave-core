@@ -96,6 +96,16 @@ bool BatAdsClientMojoBridge::IsEnabled() const {
   return is_enabled;
 }
 
+bool BatAdsClientMojoBridge::ShouldAllowAdConversionTracking() const {
+  if (!connected()) {
+    return false;
+  }
+
+  bool should_allow;
+  bat_ads_client_->ShouldAllowAdConversionTracking(&should_allow);
+  return should_allow;
+}
+
 bool BatAdsClientMojoBridge::CanShowBackgroundNotifications() const {
   if (!connected())
     return false;
@@ -415,14 +425,14 @@ void OnGetAds(
     const std::vector<std::string>& ad_info_json_list) {
   std::vector<ads::AdInfo> ads;
 
-  for (const auto& it : ad_info_json_list) {
+  for (const auto& json : ad_info_json_list) {
     ads::AdInfo ad_info;
-    if (ad_info.FromJson(it) == ads::Result::SUCCESS) {
-      ads.push_back(ad_info);
-    } else {
+    if (ad_info.FromJson(json) != ads::Result::SUCCESS) {
       callback(ads::Result::FAILED, categories, {});
       return;
     }
+
+    ads.push_back(ad_info);
   }
 
   callback(ToAdsResult(result), categories, ads);
@@ -437,6 +447,39 @@ void BatAdsClientMojoBridge::GetAds(
   }
 
   bat_ads_client_->GetAds(categories, base::BindOnce(&OnGetAds,
+      std::move(callback)));
+}
+
+void OnGetAdConversions(
+    const ads::OnGetAdConversionsCallback& callback,
+    const int32_t result,
+    const std::string& url,
+    const std::vector<std::string>& ad_conversion_json_list) {
+  std::vector<ads::AdConversionTrackingInfo> ad_conversions;
+
+  for (const auto& json : ad_conversion_json_list) {
+    ads::AdConversionTrackingInfo ad_conversion;
+    if (ad_conversion.FromJson(json) != ads::Result::SUCCESS) {
+      callback(ads::Result::FAILED, url, {});
+      return;
+    }
+
+    ad_conversions.push_back(ad_conversion);
+  }
+
+  callback(ToAdsResult(result), url, ad_conversions);
+}
+
+void BatAdsClientMojoBridge::GetAdConversions(
+    const std::string& url,
+    ads::OnGetAdConversionsCallback callback) {
+  if (!connected()) {
+    callback(ads::Result::FAILED, url,
+        std::vector<ads::AdConversionTrackingInfo>());
+    return;
+  }
+
+  bat_ads_client_->GetAdConversions(url, base::BindOnce(&OnGetAdConversions,
       std::move(callback)));
 }
 

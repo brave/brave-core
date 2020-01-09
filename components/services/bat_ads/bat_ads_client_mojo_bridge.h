@@ -25,6 +25,8 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
   // AdsClient implementation
   bool IsEnabled() const override;
 
+  bool ShouldAllowAdConversionTracking() const override;
+
   bool CanShowBackgroundNotifications() const override;
   uint64_t GetAdsPerHour() const override;
   uint64_t GetAdsPerDay() const override;
@@ -99,6 +101,10 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
   void GetAds(
       const std::vector<std::string>& categories,
       ads::OnGetAdsCallback callback) override;
+
+  void GetAdConversions(
+      const std::string& url,
+      ads::OnGetAdConversionsCallback callback) override;
 
   void EventLog(
       const std::string& json) const override;

@@ -1,0 +1,12 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkAddEditFolderActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkAddEditFolderActivity.java
+index 87c256649aefd9cf0863dcfb84bb314d8bb8160d..2fd2f618a1dbf2fc64da5adf6a0acd0d4556ebc9 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkAddEditFolderActivity.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkAddEditFolderActivity.java
+@@ -212,6 +212,7 @@ public class BookmarkAddEditFolderActivity extends SynchronousInitializationActi
+             }
+ 
+             BookmarkId newFolder = mModel.addFolder(mParentId, 0, mFolderTitle.getTrimmedText());
++            BraveBookmarkWorker.CreateUpdateBookmark(mIsAddMode, mModel.getBookmarkById(newFolder));
+             Intent intent = new Intent();
+             intent.putExtra(INTENT_CREATED_BOOKMARK, newFolder.toString());
+             setResult(RESULT_OK, intent);

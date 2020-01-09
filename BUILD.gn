@@ -76,6 +76,10 @@ if (is_android) {
     sources = [
       "$root_build_dir/brave_resources.pak",
       "$root_build_dir/brave_100_percent.pak",
+      "//brave/android/sync/android_sync.js",
+      "//brave/android/sync/android_sync_words.js",
+      "//brave/android/sync/crypto.js",
+      "//brave/components/brave_sync/extension/brave-sync/bundles/bundle.js",
     ]
     deps = [
       "//brave:browser_dependencies",

@@ -4,6 +4,16 @@ import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
 import("buildflags/buildflags.gni")
 
+declare_args() {
+  brave_sync_endpoint = "https://sync.brave.com"
+}
+
+config("brave_sync_config") {
+  defines = [
+    "BRAVE_SYNC_ENDPOINT=\"$brave_sync_endpoint\""
+  ]
+}
+
 if (enable_brave_sync) {
   source_set("js_sync_lib_impl") {
     sources = [
@@ -18,6 +28,7 @@ if (enable_brave_sync) {
       "client/client_ext_impl_data.h",
     ]
 
+    configs += [ ":brave_sync_config" ]
     deps = [
       ":core",
       ":crypto",

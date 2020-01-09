@@ -80,7 +80,9 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
         content: [
           { content: (
             <TableRowDevice>
-              {device.name} {device.id === this.props.syncData.thisDeviceId ? getLocale('thisDevice') : null}
+              {device.name} {
+                  device.id_v2 === this.props.syncData.thisDeviceIdV2 ? getLocale('thisDevice') : null
+              }
             </TableRowDevice>
           )},
           { content: device.lastActive },
@@ -88,6 +90,7 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
             content: (
               <TableRowRemoveButton
                 data-id={device.id}
+                data-idv2={device.id_v2}
                 data-name={device.name}
                 onClick={this.onClickRemoveDeviceButton}
               >
@@ -143,7 +146,7 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
     const target = event.currentTarget as HTMLButtonElement
     this.setState({
       deviceToRemoveName: target.dataset.name,
-      deviceToRemoveId: target.dataset.id,
+      deviceToRemoveId: target.dataset.idv2,
       removeDevice: true
     })
   }
@@ -221,7 +224,7 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
                 <RemoveDeviceModal
                   syncData={syncData}
                   deviceName={deviceToRemoveName}
-                  deviceId={deviceToRemoveId}
+                  deviceIdV2={deviceToRemoveId}
                   actions={actions}
                   onClose={this.onClickCancelRemoveDeviceButton}
                 />

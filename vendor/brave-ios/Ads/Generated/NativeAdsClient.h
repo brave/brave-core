@@ -18,6 +18,7 @@ class NativeAdsClient : public ads::AdsClient {
   __unsafe_unretained id<NativeAdsClientBridge> bridge_;
 
   bool IsEnabled() const override;
+  bool ShouldAllowAdConversionTracking() const override;
   uint64_t GetAdsPerDay() const override;
   uint64_t GetAdsPerHour() const override;
   void GetClientInfo(ads::ClientInfo * info) const override;
@@ -44,6 +45,7 @@ class NativeAdsClient : public ads::AdsClient {
   void LoadSampleBundle(ads::OnLoadSampleBundleCallback callback) override;
   void SaveBundleState(std::unique_ptr<ads::BundleState> state, ads::OnSaveCallback callback) override;
   void GetAds(const std::vector<std::string> & categories, ads::OnGetAdsCallback callback) override;
+  void GetAdConversions(const std::string & url, ads::OnGetAdConversionsCallback callback) override;
   void EventLog(const std::string & json) const override;
   std::unique_ptr<ads::LogStream> Log(const char * file, const int line, const ads::LogLevel log_level) const override;
 };

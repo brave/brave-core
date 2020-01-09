@@ -56,11 +56,11 @@ export const onGenerateQRCodeImageSource = (imageSource: string) => {
 
 /**
  * Dispatches a message telling the back-end that the user removed a given device
- * @param {number} id - The device ID
+ * @param {number} id - The device ID V2
  * @param {string} deviceName - The device name
  */
-export const onRemoveDevice = (id: number, deviceName: string) => {
-  return action(types.SYNC_ON_REMOVE_DEVICE, { id, deviceName })
+export const onRemoveDevice = (idv2: number, deviceName: string) => {
+  return action(types.SYNC_ON_REMOVE_DEVICE, { idv2, deviceName })
 }
 
 /**

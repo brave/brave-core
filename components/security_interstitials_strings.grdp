@@ -217,10 +217,10 @@
     </message>
   </if>
   <message name="IDS_MALWARE_V3_EXPLANATION_PARAGRAPH" desc="The explanation of why Safe Browsing has blocked the page.">
-    Brave Safe Browsing recently <ph name="BEGIN_LINK">&lt;a href="#" id="diagnostic-link"&gt;</ph>detected malware<ph name="END_LINK">&lt;/a&gt;</ph> on <ph name="SITE">$1<ex>example.com</ex></ph>. Websites that are normally safe are sometimes infected with malware.
+    Google Safe Browsing recently <ph name="BEGIN_LINK">&lt;a href="#" id="diagnostic-link"&gt;</ph>detected malware<ph name="END_LINK">&lt;/a&gt;</ph> on <ph name="SITE">$1<ex>example.com</ex></ph>. Websites that are normally safe are sometimes infected with malware.
   </message>
   <message name="IDS_MALWARE_V3_EXPLANATION_PARAGRAPH_SUBRESOURCE" desc="The explanation of why Safe Browsing has blocked the page.">
-    Brave Safe Browsing recently <ph name="BEGIN_LINK">&lt;a href="#" id="diagnostic-link"&gt;</ph>detected malware<ph name="END_LINK">&lt;/a&gt;</ph> on <ph name="SITE">$1<ex>example.com</ex></ph>. Websites that are normally safe are sometimes infected with malware. The malicious content comes from <ph name="SUBRESOURCE_HOST">$2<ex>evil.com</ex></ph>, a known malware distributor.
+    Google Safe Browsing recently <ph name="BEGIN_LINK">&lt;a href="#" id="diagnostic-link"&gt;</ph>detected malware<ph name="END_LINK">&lt;/a&gt;</ph> on <ph name="SITE">$1<ex>example.com</ex></ph>. Websites that are normally safe are sometimes infected with malware. The malicious content comes from <ph name="SUBRESOURCE_HOST">$2<ex>evil.com</ex></ph>, a known malware distributor.
   </message>
   <message name="IDS_MALWARE_V3_PROCEED_PARAGRAPH" desc="The paragraph that lets the user skip the warning.">
     If you understand the risks to your security, you may <ph name="BEGIN_LINK">&lt;a href="#" id="proceed-link"&gt;</ph>visit this unsafe site<ph name="END_LINK">&lt;/a&gt;</ph> before the dangerous programs have been removed.
@@ -243,7 +243,7 @@
     </message>
 
     <message name="IDS_HARMFUL_V3_EXPLANATION_PARAGRAPH" desc="The explanation of why Safe Browsing has blocked the page.">
-      Brave Safe Browsing recently <ph name="BEGIN_LINK">&lt;a href="#" id="diagnostic-link"&gt;</ph>found harmful apps<ph name="END_LINK">&lt;/a&gt;</ph> on <ph name="SITE">$1<ex>example.com</ex></ph>.
+      Google Safe Browsing recently <ph name="BEGIN_LINK">&lt;a href="#" id="diagnostic-link"&gt;</ph>found harmful apps<ph name="END_LINK">&lt;/a&gt;</ph> on <ph name="SITE">$1<ex>example.com</ex></ph>.
     </message>
 
     <message name="IDS_HARMFUL_V3_PROCEED_PARAGRAPH" desc="The paragraph that lets the user skip the warning.">
@@ -260,7 +260,7 @@
     </message>
 
     <message name="IDS_HARMFUL_V3_EXPLANATION_PARAGRAPH" desc="The explanation of why Safe Browsing has blocked the page.">
-      Brave Safe Browsing recently <ph name="BEGIN_LINK">&lt;a href="#" id="diagnostic-link"&gt;</ph>found harmful programs<ph name="END_LINK">&lt;/a&gt;</ph> on <ph name="SITE">$1<ex>example.com</ex></ph>.
+      Google Safe Browsing recently <ph name="BEGIN_LINK">&lt;a href="#" id="diagnostic-link"&gt;</ph>found harmful programs<ph name="END_LINK">&lt;/a&gt;</ph> on <ph name="SITE">$1<ex>example.com</ex></ph>.
     </message>
 
     <message name="IDS_HARMFUL_V3_PROCEED_PARAGRAPH" desc="The paragraph that lets the user skip the warning.">
@@ -276,7 +276,7 @@
     Attackers on <ph name="BEGIN_BOLD">&lt;strong&gt;</ph><ph name="SITE">$1<ex>example.com</ex></ph><ph name="END_BOLD">&lt;/strong&gt;</ph> may trick you into doing something dangerous like installing software or revealing your personal information (for example, passwords, phone numbers, or credit cards). <ph name="BEGIN_LEARN_MORE_LINK">&lt;a href="#" id="learn-more-link"&gt;</ph>Learn more<ph name="END_LEARN_MORE_LINK">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_PHISHING_V4_EXPLANATION_PARAGRAPH" desc="The explanation of why Safe Browsing has blocked the page.">
-  Brave Safe Browsing recently <ph name="BEGIN_LINK">&lt;a href="#" id="diagnostic-link"&gt;</ph>detected phishing<ph name="END_LINK">&lt;/a&gt;</ph> on <ph name="SITE">$1<ex>example.com</ex></ph>. Phishing sites pretend to be other websites to trick you.
+  Google Safe Browsing recently <ph name="BEGIN_LINK">&lt;a href="#" id="diagnostic-link"&gt;</ph>detected phishing<ph name="END_LINK">&lt;/a&gt;</ph> on <ph name="SITE">$1<ex>example.com</ex></ph>. Phishing sites pretend to be other websites to trick you.
   </message>
   <message name="IDS_PHISHING_V4_PROCEED_AND_REPORT_PARAGRAPH" desc="The paragraph that lets the user skip the warning.">
     You can <ph name="BEGIN_ERROR_LINK">&lt;a href="#" id="report-error-link"&gt;</ph>report a detection problem<ph name="END_ERROR_LINK">&lt;/a&gt;</ph> or, if you understand the risks to your security, <ph name="BEGIN_LINK">&lt;a href="#" id="proceed-link"&gt;</ph>visit this unsafe site<ph name="END_LINK">&lt;/a&gt;</ph>.

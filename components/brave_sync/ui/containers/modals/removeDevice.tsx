@@ -28,7 +28,7 @@ interface Props {
   onClose: (event?: React.MouseEvent<HTMLButtonElement>) => void
   actions: any
   deviceName: string | undefined
-  deviceId: string | undefined
+  deviceIdV2: string | undefined
 }
 
 interface State {
@@ -59,13 +59,13 @@ export default class RemoveMainDeviceModal extends React.PureComponent<Props, St
   }
 
   onClickConfirmRemoveDeviceButton = () => {
-    const { deviceName, deviceId } = this.props
-    this.props.actions.onRemoveDevice(Number(deviceId), deviceName)
+    const { deviceName, deviceIdV2 } = this.props
+    this.props.actions.onRemoveDevice(deviceIdV2, deviceName)
     this.setState({ willRemoveDevice: true })
   }
 
   render () {
-    const { syncData, deviceName, deviceId } = this.props
+    const { syncData, deviceName, deviceIdV2 } = this.props
     const { willRemoveDevice } = this.state
 
     return (
@@ -75,7 +75,7 @@ export default class RemoveMainDeviceModal extends React.PureComponent<Props, St
         </ModalHeader>
         <ModalContent>
           {
-            deviceId === syncData.thisDeviceId
+            deviceIdV2 === syncData.thisDeviceIdV2
             ? <div>
                 <Paragraph>{getLocale('thisDeviceRemovalDescription')}</Paragraph>
                 <Paragraph>{getLocale('joinSyncChain')}</Paragraph>

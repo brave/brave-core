@@ -20,23 +20,29 @@ class ConfirmationType {
     LANDED,
     FLAG,
     UPVOTE,
-    DOWNVOTE
+    DOWNVOTE,
+    CONVERSION
   };
 
   ConfirmationType() = default;
 
   // Allow implicit conversion of the enum value to this wrapper
-  constexpr ConfirmationType(const Value& value) : value_(value) {}  // NOLINT
+  constexpr ConfirmationType(
+      const Value& value)
+      : value_(value) {}
 
-  explicit ConfirmationType(const std::string& value);
+  explicit ConfirmationType(
+      const std::string& value);
 
   bool IsSupported() const;
 
   int value() const;
   operator std::string() const;
 
-  bool operator==(ConfirmationType type) const;
-  bool operator!=(ConfirmationType type) const;
+  bool operator==(
+      const ConfirmationType type) const;
+  bool operator!=(
+      const ConfirmationType type) const;
 
  private:
   Value value_;

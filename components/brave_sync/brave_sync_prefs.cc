@@ -21,6 +21,8 @@ namespace brave_sync {
 namespace prefs {
 
 const char kSyncDeviceId[] = "brave_sync.device_id";
+const char kSyncDeviceIdV2[] = "brave_sync.device_id_v2";
+const char kSyncDeviceObjectId[] = "brave_sync.device_object_id";
 const char kSyncSeed[] = "brave_sync.seed";
 const char kSyncPrevSeed[] = "brave_sync.previous_seed";
 const char kSyncDeviceName[] = "brave_sync.device_name";
@@ -46,6 +48,8 @@ Prefs::Prefs(PrefService* pref_service) : pref_service_(pref_service) {}
 
 void Prefs::RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(prefs::kSyncDeviceId, std::string());
+  registry->RegisterStringPref(prefs::kSyncDeviceIdV2, std::string());
+  registry->RegisterStringPref(prefs::kSyncDeviceObjectId, std::string());
   registry->RegisterStringPref(prefs::kSyncSeed, std::string());
   registry->RegisterStringPref(prefs::kSyncPrevSeed, std::string());
   registry->RegisterStringPref(prefs::kSyncDeviceName, std::string());
@@ -86,6 +90,24 @@ std::string Prefs::GetThisDeviceId() const {
 void Prefs::SetThisDeviceId(const std::string& device_id) {
   DCHECK(!device_id.empty());
   pref_service_->SetString(kSyncDeviceId, device_id);
+}
+
+std::string Prefs::GetThisDeviceIdV2() const {
+  return pref_service_->GetString(kSyncDeviceIdV2);
+}
+
+void Prefs::SetThisDeviceIdV2(const std::string& device_id_v2) {
+  if (!device_id_v2.empty())
+    pref_service_->SetString(kSyncDeviceIdV2, device_id_v2);
+}
+
+std::string Prefs::GetThisDeviceObjectId() const {
+  return pref_service_->GetString(kSyncDeviceObjectId);
+}
+
+void Prefs::SetThisDeviceObjectId(const std::string& device_object_id) {
+  DCHECK(!device_object_id.empty());
+  pref_service_->SetString(kSyncDeviceObjectId, device_object_id);
 }
 
 std::string Prefs::GetThisDeviceName() const {
@@ -141,6 +163,7 @@ std::unique_ptr<brave_sync::Settings> Prefs::GetBraveSyncSettings() const {
 
   settings->this_device_name_ = GetThisDeviceName();
   settings->this_device_id_ = GetThisDeviceId();
+  settings->this_device_id_v2_ = GetThisDeviceIdV2();
   settings->sync_this_device_ = GetSyncEnabled();
   settings->sync_bookmarks_ = GetSyncBookmarksEnabled();
   settings->sync_settings_ = GetSyncSiteSettingsEnabled();
@@ -254,6 +277,8 @@ void Prefs::SetRecordToResendMeta(const std::string& object_id,
 
 void Prefs::Clear() {
   pref_service_->ClearPref(kSyncDeviceId);
+  pref_service_->ClearPref(kSyncDeviceIdV2);
+  pref_service_->ClearPref(kSyncDeviceObjectId);
   pref_service_->ClearPref(kSyncSeed);
   pref_service_->ClearPref(kSyncDeviceName);
   pref_service_->ClearPref(kSyncEnabled);

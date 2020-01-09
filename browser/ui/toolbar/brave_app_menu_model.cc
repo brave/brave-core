@@ -53,6 +53,8 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
   ui::SimpleMenuModel* model = static_cast<ui::SimpleMenuModel*>(
       GetSubmenuModelAt(GetIndexOfCommandId(IDC_MORE_TOOLS_MENU)));
   DCHECK(model);
+  // More tools menu adds extensions item always.
+  DCHECK_NE(-1, model->GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS));
   model->RemoveItemAt(model->GetIndexOfCommandId(IDC_MANAGE_EXTENSIONS));
 
   if (IsCommandIdEnabled(IDC_MANAGE_EXTENSIONS)) {

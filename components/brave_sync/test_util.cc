@@ -123,7 +123,9 @@ SyncRecordPtr SimpleFolderSyncRecord(
 
 SyncRecordPtr SimpleDeviceRecord(
     const int action,
+    const std::string& object_id,
     const std::string& device_id,
+    const std::string& device_id_v2,
     const std::string& name) {
   auto record = std::make_unique<brave_sync::jslib::SyncRecord>();
   record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(action,
@@ -131,12 +133,13 @@ SyncRecordPtr SimpleDeviceRecord(
     brave_sync::jslib::SyncRecord::Action::A_MAX,
     brave_sync::jslib::SyncRecord::Action::A_INVALID);
   record->deviceId = device_id;
-  record->objectId = tools::GenerateObjectId();
+  record->objectId = object_id.empty() ? tools::GenerateObjectId() : object_id;
   record->objectData = "device";
   record->syncTimestamp = base::Time::Now();
 
   auto device = std::make_unique<brave_sync::jslib::Device>();
   device->name = name;
+  device->deviceIdV2 = device_id_v2;
   record->SetDevice(std::move(device));
 
   return record;

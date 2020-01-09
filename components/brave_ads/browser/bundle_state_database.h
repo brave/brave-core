@@ -12,6 +12,7 @@
 #include <memory>
 
 #include "bat/ads/ad_info.h"
+#include "bat/ads/ad_conversion_tracking_info.h"
 #include "bat/ads/bundle_state.h"
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
@@ -37,9 +38,13 @@ class BundleStateDatabase {
   }
 
   bool SaveBundleState(const ads::BundleState& bundle_state);
+
   bool GetAdsForCategory(
       const std::string& category,
       std::vector<ads::AdInfo>* ads);
+  bool GetAdConversions(
+      const std::string& url,
+      std::vector<ads::AdConversionTrackingInfo>* ad_conversions);
 
   // Returns the current version of the publisher info database
   static int GetCurrentVersion();
@@ -56,16 +61,22 @@ class BundleStateDatabase {
       base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
 
   bool CreateCategoryTable();
+  bool CreateConversionsTable();
   bool CreateAdInfoTable();
   bool CreateAdInfoCategoryTable();
   bool CreateAdInfoCategoryNameIndex();
 
   bool TruncateCategoryTable();
+  bool TruncateConversionsTable();
   bool TruncateAdInfoTable();
   bool TruncateAdInfoCategoryTable();
 
-  bool InsertOrUpdateCategory(const std::string& category);
-  bool InsertOrUpdateAdInfo(const ads::AdInfo& info);
+  bool InsertOrUpdateCategory(
+      const std::string& category);
+  bool InsertOrUpdateAdConversion(
+      const ads::AdConversionTrackingInfo& ad_conversion);
+  bool InsertOrUpdateAdInfo(
+      const ads::AdInfo& info);
   bool InsertOrUpdateAdInfoCategory(
       const ads::AdInfo& ad_info,
       const std::string& category);
@@ -73,8 +84,9 @@ class BundleStateDatabase {
   sql::Database& GetDB();
   sql::MetaTable& GetMetaTable();
 
+  bool Migrate();
   bool MigrateV1toV2();
-  sql::InitStatus EnsureCurrentVersion();
+  bool MigrateV2toV3();
 
   sql::Database db_;
   sql::MetaTable meta_table_;

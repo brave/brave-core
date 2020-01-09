@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <utility>
+#include <string>
 #include <vector>
 
 #include "brave/common/extensions/api/brave_sync.h"
@@ -88,7 +89,8 @@ ExtensionFunction::ResponseAction BraveSyncSaveInitDataFunction::Run() {
   DCHECK(sync_service);
   sync_service->GetBraveSyncClient()->sync_message_handler()->OnSaveInitData(
       params->seed ? *params->seed : std::vector<uint8_t>(),
-      params->device_id ? *params->device_id : std::vector<uint8_t>());
+      params->device_id ? *params->device_id : std::vector<uint8_t>(),
+      params->device_id_v2 ? *params->device_id_v2 : std::string());
 
   return RespondNow(NoArguments());
 }

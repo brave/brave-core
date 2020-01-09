@@ -22,8 +22,8 @@ namespace brave_ads {
 
 namespace {
 
-const int kCurrentVersionNumber = 2;
-const int kCompatibleVersionNumber = 2;
+const int kCurrentVersionNumber = 3;
+const int kCompatibleVersionNumber = 3;
 
 }  // namespace
 
@@ -64,12 +64,11 @@ bool BundleStateDatabase::Init() {
   if (!CreateCategoryTable() ||
       !CreateAdInfoTable() ||
       !CreateAdInfoCategoryTable() ||
-      !CreateAdInfoCategoryNameIndex())
+      !CreateAdInfoCategoryNameIndex() ||
+      !CreateConversionsTable())
     return false;
 
-  // Version check.
-  sql::InitStatus version_status = EnsureCurrentVersion();
-  if (version_status != sql::INIT_OK)
+  if (!Migrate())
     return false;
 
   if (!committer.Commit())
@@ -113,6 +112,41 @@ bool BundleStateDatabase::TruncateCategoryTable() {
   return sql.Run();
 }
 
+bool BundleStateDatabase::CreateConversionsTable() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  const char* name = "ad_conversions";
+  if (GetDB().DoesTableExist(name)) {
+    return true;
+  }
+
+  std::string sql;
+  sql.append("CREATE TABLE ");
+  sql.append(name);
+  sql.append(
+      "("
+      "id INTEGER PRIMARY KEY,"
+      "creative_set_id LONGVARCHAR NOT NULL,"
+      "type LONGVARCHAR NOT NULL,"
+      "url_pattern LONGVARCHAR NOT NULL,"
+      "observation_window INTEGER NOT NULL)");
+  return GetDB().Execute(sql.c_str());
+}
+
+bool BundleStateDatabase::TruncateConversionsTable() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  const bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
+  sql::Statement sql(GetDB().GetCachedStatement(SQL_FROM_HERE,
+      "DELETE FROM ad_conversions"));
+  return sql.Run();
+}
 
 bool BundleStateDatabase::CreateAdInfoTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -221,14 +255,14 @@ bool BundleStateDatabase::SaveBundleState(
   // we are completely replacing here so first truncate all the tables
   if (!TruncateAdInfoCategoryTable() ||
       !TruncateAdInfoTable() ||
-      !TruncateCategoryTable()) {
+      !TruncateCategoryTable() ||
+      !TruncateConversionsTable()) {
     GetDB().RollbackTransaction();
     return false;
   }
 
   auto categories = bundle_state.categories;
-  for (std::map<std::string, std::vector<ads::AdInfo>>::iterator it =
-      categories.begin();  it != categories.end(); ++it) {
+  for (auto it = categories.begin(); it != categories.end(); ++it) {
     auto category = it->first;
     if (!InsertOrUpdateCategory(category)) {
       GetDB().RollbackTransaction();
@@ -236,14 +270,20 @@ bool BundleStateDatabase::SaveBundleState(
     }
 
     auto ads = it->second;
-    for (std::vector<ads::AdInfo>::iterator ad_it = ads.begin();
-        ad_it != ads.end(); ++ad_it) {
-      auto ad_info = *ad_it;
+    for (auto it = ads.begin(); it != ads.end(); ++it) {
+      auto ad_info = *it;
       if (!InsertOrUpdateAdInfo(ad_info) ||
           !InsertOrUpdateAdInfoCategory(ad_info, category)) {
         GetDB().RollbackTransaction();
         return false;
       }
+    }
+  }
+
+  for (const auto& ad_conversion : bundle_state.ad_conversions) {
+    if (!InsertOrUpdateAdConversion(ad_conversion)) {
+        GetDB().RollbackTransaction();
+        return false;
     }
   }
 
@@ -311,6 +351,31 @@ bool BundleStateDatabase::InsertOrUpdateAdInfo(const ads::AdInfo& info) {
   }
 
   return true;
+}
+
+bool BundleStateDatabase::InsertOrUpdateAdConversion(
+    const ads::AdConversionTrackingInfo& ad_conversion) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  const bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
+  sql::Statement statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE,
+          "INSERT OR REPLACE INTO ad_conversions "
+          "(creative_set_id, type, url_pattern, observation_window) "
+          "VALUES (?, ?, ?, ?)"));
+
+  statement.BindString(0, ad_conversion.creative_set_id);
+  statement.BindString(1, ad_conversion.type);
+  statement.BindString(2, ad_conversion.url_pattern);
+  statement.BindInt(3, ad_conversion.observation_window);
+
+  return statement.Run();
 }
 
 bool BundleStateDatabase::InsertOrUpdateAdInfoCategory(
@@ -383,6 +448,41 @@ bool BundleStateDatabase::GetAdsForCategory(
   return true;
 }
 
+bool BundleStateDatabase::GetAdConversions(
+    const std::string& url,
+    std::vector<ads::AdConversionTrackingInfo>* ad_conversions) {
+  DCHECK(ad_conversions);
+  if (!ad_conversions) {
+    return false;
+  }
+
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  const bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
+  sql::Statement info_sql(
+      db_.GetUniqueStatement(
+          "SELECT c.creative_set_id, c.type, c.url_pattern, "
+          "c.observation_window "
+          "FROM ad_conversions AS c"));
+
+  while (info_sql.Step()) {
+    ads::AdConversionTrackingInfo ad_conversion;
+    ad_conversion.creative_set_id = info_sql.ColumnString(0);
+    ad_conversion.type = info_sql.ColumnString(1);
+    ad_conversion.url_pattern = info_sql.ColumnString(2);
+    ad_conversion.observation_window = info_sql.ColumnInt(3);
+    ad_conversions->emplace_back(ad_conversion);
+  }
+
+  return true;
+}
+
 // static
 int BundleStateDatabase::GetCurrentVersion() {
   return kCurrentVersionNumber;
@@ -421,35 +521,51 @@ sql::MetaTable& BundleStateDatabase::GetMetaTable() {
   return meta_table_;
 }
 
-bool BundleStateDatabase::MigrateV1toV2() {
+bool BundleStateDatabase::Migrate() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (!GetDB().BeginTransaction())
-    return false;
-
-  std::string sql = "ALTER TABLE ad_info ADD campaign_id LONGVARCHAR;";
-  if (!GetDB().Execute(sql.c_str())) {
-    GetDB().RollbackTransaction();
+  if (!GetDB().BeginTransaction()) {
     return false;
   }
 
-  sql = "ALTER TABLE ad_info ADD daily_cap INTEGER DEFAULT 0 NOT NULL;";
-  if (!GetDB().Execute(sql.c_str())) {
-    GetDB().RollbackTransaction();
+  // We can't read databases newer than we were designed for.
+  if (meta_table_.GetCompatibleVersionNumber() > GetCurrentVersion()) {
+    LOG(WARNING) << "Bundle state database is too new";
     return false;
   }
 
-  sql = "ALTER TABLE ad_info ADD per_day INTEGER DEFAULT 0 NOT NULL;";
-  if (!GetDB().Execute(sql.c_str())) {
-    GetDB().RollbackTransaction();
-    return false;
+  const int source_version = meta_table_.GetVersionNumber();
+  const int dest_version = GetCurrentVersion();
+
+  // Migration database
+  for (int i = source_version; i < dest_version; i++) {
+    switch (i) {
+      case 1: {
+        if (!MigrateV1toV2()) {
+          LOG(ERROR) << "DB: Error migrating database from v1 to v2";
+          return false;
+        }
+
+        break;
+      }
+
+      case 2: {
+        if (!MigrateV2toV3()) {
+          LOG(ERROR) << "DB: Error migrating database from v2 to v3";
+          return false;
+        }
+
+        break;
+      }
+
+      default: {
+        NOTREACHED();
+        return false;
+      }
+    }
   }
 
-  sql = "ALTER TABLE ad_info ADD total_max INTEGER DEFAULT 0 NOT NULL;";
-  if (!GetDB().Execute(sql.c_str())) {
-    GetDB().RollbackTransaction();
-    return false;
-  }
+  meta_table_.SetVersionNumber(dest_version);
 
   if (GetDB().CommitTransaction()) {
     Vacuum();
@@ -459,28 +575,49 @@ bool BundleStateDatabase::MigrateV1toV2() {
   return false;
 }
 
-sql::InitStatus BundleStateDatabase::EnsureCurrentVersion() {
+bool BundleStateDatabase::MigrateV1toV2() {
+  std::string sql = "ALTER TABLE ad_info ADD campaign_id LONGVARCHAR;";
+  if (!GetDB().Execute(sql.c_str())) {
+    return false;
+  }
+
+  sql = "ALTER TABLE ad_info ADD daily_cap INTEGER DEFAULT 0 NOT NULL;";
+  if (!GetDB().Execute(sql.c_str())) {
+    return false;
+  }
+
+  sql = "ALTER TABLE ad_info ADD per_day INTEGER DEFAULT 0 NOT NULL;";
+  if (!GetDB().Execute(sql.c_str())) {
+    return false;
+  }
+
+  sql = "ALTER TABLE ad_info ADD total_max INTEGER DEFAULT 0 NOT NULL;";
+  if (!GetDB().Execute(sql.c_str())) {
+    return false;
+  }
+
+  return false;
+}
+
+bool BundleStateDatabase::MigrateV2toV3() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  // We can't read databases newer than we were designed for.
-  if (meta_table_.GetCompatibleVersionNumber() > GetCurrentVersion()) {
-    LOG(WARNING) << "Publisher info database is too new.";
-    return sql::INIT_TOO_NEW;
-  }
+  const char* name = "ad_conversions";
+  if (GetDB().DoesTableExist(name))
+    return true;
 
-  const int old_version = meta_table_.GetVersionNumber();
-  const int cur_version = GetCurrentVersion();
+  std::string sql;
+  sql.append("CREATE TABLE ");
+  sql.append(name);
+  sql.append(
+      "("
+      "id INTEGER PRIMARY KEY,"
+      "creative_set_id LONGVARCHAR NOT NULL,"
+      "type LONGVARCHAR NOT NULL,"
+      "url_pattern LONGVARCHAR NOT NULL,"
+      "observation_window INTEGER NOT NULL)");
 
-  // Migration from version 1 to version 2
-  if (old_version == 1 && cur_version == 2) {
-    if (!MigrateV1toV2()) {
-      LOG(ERROR) << "DB: Error with MigrateV1toV2";
-    }
-
-    meta_table_.SetVersionNumber(cur_version);
-  }
-
-  return sql::INIT_OK;
+  return GetDB().Execute(sql.c_str());
 }
 
 }  // namespace brave_ads

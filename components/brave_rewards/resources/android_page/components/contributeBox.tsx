@@ -9,11 +9,9 @@ import { connect } from 'react-redux'
 // Components
 import {
   StyledListContent,
-  StyledSitesNum,
-  StyledTotalContent,
-  StyledSitesLink
+  StyledTotalContent
 } from './style'
-import { List, NextContribution, TableContribute, Tokens } from '../../ui/components'
+import { List, ModalContribute, NextContribution, TableContribute, Tokens } from '../../ui/components'
 import { BoxMobile, SelectMobile } from '../../ui/components/mobile'
 import { Column, Grid, ControlWrapper, Checkbox } from 'brave-ui/components'
 import { Provider } from '../../ui/components/profile'
@@ -24,7 +22,9 @@ import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
 
 interface State {
-  allSitesShown: boolean
+  modalContribute: boolean
+  settings: boolean
+  activeTabId: number
 }
 
 interface MonthlyChoice {
@@ -39,7 +39,18 @@ class ContributeBox extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      allSitesShown: false
+      modalContribute: false,
+      settings: false,
+      activeTabId: 0
+    }
+  }
+
+  componentDidUpdate (prevProps: Props) {
+    if (
+      prevProps.rewardsData.enabledMain &&
+      !this.props.rewardsData.enabledMain
+    ) {
+      this.setState({ settings: false })
     }
   }
 
@@ -65,6 +76,40 @@ class ContributeBox extends React.Component<Props, State> {
     })
   }
 
+  getExcludedRows = (list?: Rewards.ExcludedPublisher[]) => {
+    if (!list) {
+      return []
+    }
+
+    return list.map((item: Rewards.ExcludedPublisher) => {
+      const verified = utils.isPublisherConnectedOrVerified(item.status)
+      let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
+      if (item.favIcon && verified) {
+        faviconUrl = `chrome://favicon/size/48@1x/${item.favIcon}`
+      }
+
+      return {
+        profile: {
+          name: item.name,
+          verified,
+          provider: (item.provider ? item.provider : undefined) as Provider,
+          src: faviconUrl
+        },
+        url: item.url,
+        attention: 0,
+        onRemove: () => { this.actions.restorePublisher(item.id) }
+      }
+    })
+  }
+
+  onTabChange = () => {
+    const newId = this.state.activeTabId === 0 ? 1 : 0
+
+    this.setState({
+      activeTabId: newId
+    })
+  }
+
   get actions () {
     return this.props.actions
   }
@@ -77,18 +122,18 @@ class ContributeBox extends React.Component<Props, State> {
     this.actions.onSettingSave('enabledContribute', !this.props.rewardsData.enabledContribute)
   }
 
+  onModalContributeToggle = () => {
+    this.setState({
+      modalContribute: !this.state.modalContribute
+    })
+  }
+
   onSelectSettingChange = (key: string, value: string) => {
     this.actions.onSettingSave(key, +value)
   }
 
   onCheckSettingChange = (key: string, selected: boolean) => {
     this.actions.onSettingSave(key, selected)
-  }
-
-  onSitesShownToggle = () => {
-    this.setState({
-      allSitesShown: !this.state.allSitesShown
-    })
   }
 
   getAmountOptions = (monthlyList: MonthlyChoice[]) => {
@@ -108,9 +153,10 @@ class ContributeBox extends React.Component<Props, State> {
       contributionNonVerified,
       contributionVideos,
       contributionMonthly,
-      enabledMain
+      enabledMain,
+      ui
     } = this.props.rewardsData
-    const { onlyAnonWallet } = this.props.rewardsData.ui
+    const { onlyAnonWallet } = ui
 
     if (!enabledMain) {
       return null
@@ -122,9 +168,9 @@ class ContributeBox extends React.Component<Props, State> {
           <ControlWrapper text={getLocale('contributionMonthly')}>
             <SelectMobile
               onlyAnonWallet={onlyAnonWallet}
-              amountOptions={this.getAmountOptions(monthlyList)}
               onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
               value={parseFloat((contributionMonthly.toString() || '0')).toFixed(1)}
+              amountOptions={this.getAmountOptions(monthlyList)}
             />
           </ControlWrapper>
           <ControlWrapper text={getLocale('contributionMinTime')}>
@@ -185,24 +231,30 @@ class ContributeBox extends React.Component<Props, State> {
     )
   }
 
+  onSettingsToggle = () => {
+    this.setState({ settings: !this.state.settings })
+  }
+
   render () {
     const {
+      enabledMain,
       walletInfo,
       contributionMonthly,
-      enabledMain,
+      enabledContribute,
       reconcileStamp,
       autoContributeList,
-      enabledContribute,
       excludedList,
-      balance
+      balance,
+      ui
     } = this.props.rewardsData
-    const { onlyAnonWallet } = this.props.rewardsData.ui
-    const prefix = this.state.allSitesShown ? 'Hide all' : 'Show all'
     const monthlyList: MonthlyChoice[] = utils.generateContributionMonthly(walletInfo.choices, balance.rates)
     const contributeRows = this.getContributeRows(autoContributeList)
-    const shownRows = this.state.allSitesShown ? contributeRows : contributeRows.slice(0, 5)
+    const excludedRows = this.getExcludedRows(excludedList)
+    const topRows = contributeRows.slice(0, 5)
     const numRows = contributeRows && contributeRows.length
-    const numExcludedRows = excludedList && excludedList.length
+    const numExcludedRows = excludedRows && excludedRows.length
+    const allSites = !(excludedRows.length > 0 || numRows > 5)
+    const { onlyAnonWallet } = ui
 
     return (
       <BoxMobile
@@ -210,18 +262,30 @@ class ContributeBox extends React.Component<Props, State> {
         type={'contribute'}
         description={getLocale('contributionDesc')}
         toggle={enabledMain}
-        checked={enabledMain && enabledContribute}
+        checked={enabledMain ? enabledContribute : false}
         settingsChild={this.contributeSettings(monthlyList)}
         toggleAction={this.onToggleContribution}
       >
+        {
+          this.state.modalContribute
+          ? <ModalContribute
+            rows={contributeRows}
+            onRestore={this.onRestore}
+            excludedRows={excludedRows}
+            activeTabId={this.state.activeTabId}
+            onTabChange={this.onTabChange}
+            onClose={this.onModalContributeToggle}
+          />
+          : null
+        }
         <List title={<StyledListContent>{getLocale('contributionMonthly')}</StyledListContent>}>
           <StyledListContent>
             <SelectMobile
               floating={true}
-              onlyAnonWallet={onlyAnonWallet}
-              amountOptions={this.getAmountOptions(monthlyList)}
               onChange={this.onSelectSettingChange.bind(this, 'contributionMonthly')}
               value={parseFloat((contributionMonthly.toString() || '0')).toFixed(1)}
+              onlyAnonWallet={onlyAnonWallet}
+              amountOptions={this.getAmountOptions(monthlyList)}
             />
           </StyledListContent>
         </List>
@@ -246,27 +310,20 @@ class ContributeBox extends React.Component<Props, State> {
               getLocale('site'),
               getLocale('rewardsContributeAttention')
             ]}
-            rows={shownRows}
-            allSites={true}
+            testId={'autoContribute'}
+            rows={topRows}
+            allSites={allSites}
             numSites={numRows}
+            onShowAll={this.onModalContributeToggle}
             headerColor={true}
             showRemove={true}
+            numExcludedSites={numExcludedRows}
             showRowAmount={true}
             isMobile={true}
-            numExcludedSites={numExcludedRows}
           >
             {getLocale('contributionVisitSome')}
           </TableContribute>
         </StyledListContent>
-        {
-          numRows > 5
-          ? <StyledSitesNum>
-              <StyledSitesLink onClick={this.onSitesShownToggle}>
-                {prefix} {numRows} sites
-              </StyledSitesLink>
-            </StyledSitesNum>
-          : null
-        }
       </BoxMobile>
     )
   }

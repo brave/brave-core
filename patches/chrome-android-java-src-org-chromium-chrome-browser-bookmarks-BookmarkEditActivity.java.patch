@@ -1,0 +1,23 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkEditActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkEditActivity.java
+index 84476fc9ccf66d3cfb9a377ed421087a7135586a..8414dd00ad2014a1f2191c59d1000e99a452297d 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkEditActivity.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/bookmarks/BookmarkEditActivity.java
+@@ -140,6 +140,7 @@ public class BookmarkEditActivity extends SynchronousInitializationActivity {
+                     mModel.getBookmarkById(mBookmarkId).getUrl();
+             final String title = mTitleEditText.getTrimmedText();
+             final String url = mUrlEditText.getTrimmedText();
++            final String originalTitle = mModel.getBookmarkById(mBookmarkId).getTitle(); boolean sendToSyncWorker = !mTitleEditText.isEmpty() && !title.equals(originalTitle);
+ 
+             if (!mTitleEditText.isEmpty()) {
+                 mModel.setBookmarkTitle(mBookmarkId, title);
+@@ -150,8 +151,10 @@ public class BookmarkEditActivity extends SynchronousInitializationActivity {
+                 String fixedUrl = UrlFormatter.fixupUrl(url);
+                 if (fixedUrl != null && !fixedUrl.equals(originalUrl)) {
+                     mModel.setBookmarkUrl(mBookmarkId, fixedUrl);
++                    sendToSyncWorker = true;
+                 }
+             }
++            if (sendToSyncWorker) BraveBookmarkWorker.CreateUpdateBookmark(false, mModel.getBookmarkById(mBookmarkId));
+         }
+ 
+         super.onStop();

@@ -64,11 +64,13 @@ SyncMessageHandler* BraveSyncClientImpl::sync_message_handler() {
 
 void BraveSyncClientImpl::SendGotInitData(const Uint8Array& seed,
                                           const Uint8Array& device_id,
-                                          const client_data::Config& config) {
+                                          const client_data::Config& config,
+                                          const std::string& device_id_v2) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   extensions::api::brave_sync::Config config_extension;
   ConvertConfig(config, &config_extension);
-  brave_sync_event_router_->GotInitData(seed, device_id, config_extension);
+  brave_sync_event_router_->GotInitData(seed, device_id, config_extension,
+                                        device_id_v2);
 }
 
 void BraveSyncClientImpl::SendFetchSyncRecords(

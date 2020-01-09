@@ -1561,10 +1561,10 @@ Your Brave account may have other forms of browsing history like searches and ac
         Brave Privacy Notice
       </message>
       <message name="IDS_CHROME_PRIVACY_NOTICE_URL" desc="URL for the Brave privacy notice" translateable="false">
-        https://www.google.com/intl/$LOCALE/chrome/browser/privacy/
+        https://brave.com/privacy_android
       </message>
       <message name="IDS_CHROME_TERMS_OF_SERVICE_URL" desc="URL for Brave Terms of Service" translateable="false">
-        https://www.google.com/intl/$LOCALE/chrome/browser/privacy/eula_text.html
+        https://brave.com/terms_of_use
       </message>
       <message name="IDS_FAMILY_LINK_PRIVACY_POLICY_URL" desc="URL for the Family Link privacy policy" translateable="false">
         https://families.google.com/intl/$LOCALE/familylink/privacy/child-policy/

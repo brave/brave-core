@@ -80,11 +80,14 @@ void AdsServiceFactory::RegisterProfilePrefs(
 
   registry->RegisterBooleanPref(prefs::kEnabled, false);
 
+  registry->RegisterBooleanPref(prefs::kShouldAllowAdConversionTracking, true);
+
   registry->RegisterUint64Pref(prefs::kAdsPerHour, 2);
   registry->RegisterUint64Pref(prefs::kAdsPerDay, 20);
 
   registry->RegisterIntegerPref(prefs::kIdleThreshold, 15);
-  registry->RegisterBooleanPref(prefs::kBraveAdsWereDisabled, false);
+  registry->RegisterBooleanPref(prefs::kAdsWereDisabled, false);
+  registry->RegisterBooleanPref(prefs::kHasAdsP3AState, false);
 
   registry->RegisterBooleanPref(prefs::kShouldShowMyFirstAdNotification, true);
 

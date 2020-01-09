@@ -63,6 +63,7 @@ source_set("headers") {
 
   sources = [
     "include/bat/ads/ad_content.h",
+    "include/bat/ads/ad_conversion_tracking_info.h",
     "include/bat/ads/ad_history.h",
     "include/bat/ads/ad_info.h",
     "include/bat/ads/ads_client.h",
@@ -93,6 +94,7 @@ source_set("ads") {
 
   sources = [
     "src/bat/ads/ad_content.cc",
+    "src/bat/ads/ad_conversion_tracking_info.cc",
     "src/bat/ads/ad_history.cc",
     "src/bat/ads/ad_info.cc",
     "src/bat/ads/ads.cc",
@@ -104,6 +106,9 @@ source_set("ads") {
     "src/bat/ads/issuer_info.cc",
     "src/bat/ads/issuers_info.cc",
     "src/bat/ads/notification_info.cc",
+    "src/bat/ads/internal/ad_conversion_info.h",
+    "src/bat/ads/internal/ad_conversion_tracking.cc",
+    "src/bat/ads/internal/ad_conversion_tracking.h",
     "src/bat/ads/internal/ad_preferences.cc",
     "src/bat/ads/internal/ad_preferences.h",
     "src/bat/ads/internal/ads_impl.cc",
@@ -212,6 +217,7 @@ source_set("ads") {
   deps = [
     "//base",
     "//url",
+    "//third_party/re2",
     rebase_path("bat-native-usermodel", dep_base),
     rebase_path("bat-native-rapidjson", dep_base),
     rebase_path("brave_base", dep_base),

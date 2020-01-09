@@ -6,6 +6,9 @@
 #include "build/build_config.h"
 
 #if defined(OS_ANDROID)
+#include "ui/native_theme/native_theme.h"
+
+#define GetInstanceForNativeUi BraveGetInstanceForNativeUi
 #define IDR_DEFAULT_FAVICON_32 IDR_DEFAULT_FAVICON
 #define IDR_DEFAULT_FAVICON_64 IDR_DEFAULT_FAVICON
 #define IDR_DEFAULT_FAVICON_DARK_32 IDR_DEFAULT_FAVICON_DARK

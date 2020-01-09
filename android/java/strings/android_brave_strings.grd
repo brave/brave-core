@@ -768,7 +768,7 @@ until they verify, or until 90 days have passed.
         I'm in!
       </message>
       <message name="IDS_BRAVE_ADS_OFFER_TEXT" desc="Text for Brave Ads offer.">
-        Earn Basic Attention Token for viewing privacy preserving ads in Brave Rewards.
+        Earn Basic Attention Token for viewing privacy preserving Brave Rewards ads.
       </message>
       <message name="IDS_RESET_BRAVE_REWARDS_ERROR_TITLE" desc="Title for Brave Rewards reset error dialog.">
         Reset Error
@@ -799,6 +799,12 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_PHOTO_BY" desc="Text for image credit for background images on NTP">
         Photo by <ph name="PHOTO_BY">%1$s</ph>
+      </message>
+      <message name="IDS_SYNC_REQUIRES_CORRECT_TIME" desc="The message for the dialog where the user notified about sync setup failure.">
+        Your computer's clock may be set to the wrong time, or to the wrong time-zone. Check your clock settings
+      </message>
+      <message name="IDS_SYNC_DEVICE_FAILURE" desc="The message for the dialog where the user notified about sync setup failure.">
+        Sync could not be setup
       </message>
     </messages>
   </release>

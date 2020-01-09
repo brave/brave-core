@@ -14,6 +14,7 @@
 #include "brave/browser/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/component_updater/brave_component_updater_delegate.h"
+#include "brave/browser/net/brave_system_request_handler.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/tor/buildflags.h"
@@ -30,12 +31,14 @@
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/brave_histogram_rewrite.h"
 #include "brave/components/p3a/brave_p3a_service.h"
+#include "brave/services/network/public/cpp/system_request_handler.h"
 #include "chrome/browser/ui/browser_list.h"
 #include "chrome/common/buildflags.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/component_updater/timer_update_scheduler.h"
 #include "content/public/browser/browser_thread.h"
+#include "services/network/public/cpp/resource_request.h"
 
 #if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
 #include "chrome/browser/notifications/notification_platform_bridge.h"
@@ -70,6 +73,18 @@
 #else
 #include "chrome/browser/ui/browser.h"
 #endif
+
+namespace {
+
+// Initializes callback for SystemRequestHandler
+void InitSystemRequestHandlerCallback() {
+  network::SystemRequestHandler::OnBeforeSystemRequestCallback
+      before_system_request_callback = base::Bind(brave::OnBeforeSystemRequest);
+  network::SystemRequestHandler::GetInstance()
+      ->RegisterOnBeforeSystemRequestCallback(before_system_request_callback);
+}
+
+}  // namespace
 
 BraveBrowserProcessImpl* g_brave_browser_process = nullptr;
 
@@ -124,6 +139,8 @@ void BraveBrowserProcessImpl::Init() {
       base::Bind(&BraveBrowserProcessImpl::OnTorEnabledChanged,
                  base::Unretained(this)));
 #endif
+
+  InitSystemRequestHandlerCallback();
 }
 
 brave_component_updater::BraveComponent::Delegate*

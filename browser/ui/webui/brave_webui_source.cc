@@ -63,22 +63,21 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "314e7529efec41c8867019815f4d8dad.svg", IDR_BRAVE_NEW_TAB_IMG4 },
         { "6c337c63662ee0ba4e57f6f8156d69ce.svg", IDR_BRAVE_NEW_TAB_IMG2 },
         // New tab Backgrounds
-        { "ntp-1.webp", IDR_BRAVE_NEW_TAB_BACKGROUND1 },
-        { "ntp-2.webp", IDR_BRAVE_NEW_TAB_BACKGROUND2 },
-        { "ntp-3.webp", IDR_BRAVE_NEW_TAB_BACKGROUND3 },
-        { "ntp-4.webp", IDR_BRAVE_NEW_TAB_BACKGROUND4 },
-        { "ntp-5.webp", IDR_BRAVE_NEW_TAB_BACKGROUND5 },
-        { "ntp-6.webp", IDR_BRAVE_NEW_TAB_BACKGROUND6 },
-        { "ntp-7.webp", IDR_BRAVE_NEW_TAB_BACKGROUND7 },
-        { "ntp-8.webp", IDR_BRAVE_NEW_TAB_BACKGROUND8 },
-        { "ntp-9.webp", IDR_BRAVE_NEW_TAB_BACKGROUND9 },
-        { "ntp-10.webp", IDR_BRAVE_NEW_TAB_BACKGROUND10 },
-        { "ntp-11.webp", IDR_BRAVE_NEW_TAB_BACKGROUND11 },
-        { "ntp-12.webp", IDR_BRAVE_NEW_TAB_BACKGROUND12 },
-        { "ntp-13.webp", IDR_BRAVE_NEW_TAB_BACKGROUND13 },
-        { "ntp-14.webp", IDR_BRAVE_NEW_TAB_BACKGROUND14 },
-        { "ntp-15.webp", IDR_BRAVE_NEW_TAB_BACKGROUND15 },
-        { "ntp-16.webp", IDR_BRAVE_NEW_TAB_BACKGROUND16 },
+        { "anders-jilden.webp", IDR_BRAVE_NEW_TAB_BACKGROUND1 },
+        { "andreas-gucklhorn.webp", IDR_BRAVE_NEW_TAB_BACKGROUND2 },
+        { "andy-mai.webp", IDR_BRAVE_NEW_TAB_BACKGROUND3 },
+        { "annie-spratt.webp", IDR_BRAVE_NEW_TAB_BACKGROUND4 },
+        { "anton-repponen.webp", IDR_BRAVE_NEW_TAB_BACKGROUND5 },
+        { "ben-karpinski.webp", IDR_BRAVE_NEW_TAB_BACKGROUND6 },
+        { "dc-cavalleri.webp", IDR_BRAVE_NEW_TAB_BACKGROUND7 },
+        { "joe-gardner.webp", IDR_BRAVE_NEW_TAB_BACKGROUND8 },
+        { "louis-kim.webp", IDR_BRAVE_NEW_TAB_BACKGROUND9 },
+        { "matt-palmer.webp", IDR_BRAVE_NEW_TAB_BACKGROUND10 },
+        { "oliwier-gesla.webp", IDR_BRAVE_NEW_TAB_BACKGROUND11 },
+        { "svalbard-jerol-soibam.webp", IDR_BRAVE_NEW_TAB_BACKGROUND12 },
+        { "will-christiansen-glacier-peak.webp", IDR_BRAVE_NEW_TAB_BACKGROUND13 },
+        { "will-christiansen-ice.webp", IDR_BRAVE_NEW_TAB_BACKGROUND14 },
+        { "xavier-balderas-cejudo.webp", IDR_BRAVE_NEW_TAB_BACKGROUND15 },
 
         // private tab
         { "c168145d6bf1abf2c0322636366f7dbe.svg", IDR_BRAVE_PRIVATE_TAB_TOR_IMG },               // NOLINT
@@ -245,6 +244,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
       }
     }, {
       std::string("rewards"), {
+        { "adsAllowConversionTracking",  IDS_BRAVE_REWARDS_LOCAL_ADS_ALLOW_CONVERSION_TRACKING },  // NOLINT
+        { "adsAllowConversionTrackingDescription",  IDS_BRAVE_REWARDS_LOCAL_ADS_ALLOW_CONVERSION_TRACKING_DESCRIPTION },  // NOLINT
         { "adsCurrentEarnings",  IDS_BRAVE_REWARDS_LOCAL_ADS_CURRENT_EARNINGS },
         { "adsDesc",  IDS_BRAVE_REWARDS_LOCAL_ADS_DESC },
         { "adsDisabledTextOne",  IDS_BRAVE_REWARDS_LOCAL_ADS_DISABLED_TEXT_ONE },                // NOLINT
@@ -254,6 +255,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "adsNotSupportedDevice", IDS_BRAVE_REWARDS_LOCAL_ADS_NOT_SUPPORTED_DEVICE },           // NOLINT
         { "adsPaymentDate",  IDS_BRAVE_REWARDS_LOCAL_ADS_PAYMENT_DATE },
         { "adsPagesViewed",  IDS_BRAVE_REWARDS_LOCAL_ADS_PAGES_VIEWED },
+        { "adsOtherSettings",  IDS_BRAVE_REWARDS_LOCAL_ADS_OTHER_SETTINGS },
         { "adsPerHour",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR },
         { "adsPerHour1",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_1 },
         { "adsPerHour2",  IDS_BRAVE_REWARDS_LOCAL_ADS_PER_HOUR_2 },

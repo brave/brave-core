@@ -24,7 +24,7 @@ namespace brave_rewards {
 
 namespace {
 
-const int kCurrentVersionNumber = 13;
+const int kCurrentVersionNumber = 14;
 const int kCompatibleVersionNumber = 1;
 
 
@@ -843,6 +843,23 @@ bool PublisherInfoDatabase::MigrateV12toV13() {
   return transaction.Commit();
 }
 
+bool PublisherInfoDatabase::MigrateV13toV14() {
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    return false;
+  }
+
+  if (!promotion_->Migrate(&GetDB(), 14)) {
+    return false;
+  }
+
+  if (!unblinded_token_->Migrate(&GetDB(), 14)) {
+    return false;
+  }
+
+  return transaction.Commit();
+}
+
 bool PublisherInfoDatabase::Migrate(int version) {
   switch (version) {
     case 2: {
@@ -880,6 +897,9 @@ bool PublisherInfoDatabase::Migrate(int version) {
     }
     case 13: {
       return MigrateV12toV13();
+    }
+    case 14: {
+      return MigrateV13toV14();
     }
     default:
       NOTREACHED();

@@ -7,15 +7,18 @@
 
 namespace ads {
 
-static const char kConfirmationTypeClick[] = "click";
-static const char kConfirmationTypeDismiss[] = "dismiss";
-static const char kConfirmationTypeView[] = "view";
-static const char kConfirmationTypeLanded[] = "landed";
-static const char kConfirmationTypeFlag[] = "flag";
-static const char kConfirmationTypeUpvote[] = "upvote";
-static const char kConfirmationTypeDownvote[] = "downvote";
+const char kConfirmationTypeClick[] = "click";
+const char kConfirmationTypeDismiss[] = "dismiss";
+const char kConfirmationTypeView[] = "view";
+const char kConfirmationTypeLanded[] = "landed";
+const char kConfirmationTypeFlag[] = "flag";
+const char kConfirmationTypeUpvote[] = "upvote";
+const char kConfirmationTypeDownvote[] = "downvote";
+const char kConfirmationTypeConversion[] = "conversion";
+const char kConfirmationTypeUnknown[] = "";
 
-ConfirmationType::ConfirmationType(const std::string& value) {
+ConfirmationType::ConfirmationType(
+    const std::string& value) {
   if (value == kConfirmationTypeClick) {
     value_ = CLICK;
   } else if (value == kConfirmationTypeDismiss) {
@@ -30,6 +33,8 @@ ConfirmationType::ConfirmationType(const std::string& value) {
     value_ = UPVOTE;
   } else if (value == kConfirmationTypeDownvote) {
     value_ = DOWNVOTE;
+  } else if (value == kConfirmationTypeConversion) {
+    value_ = CONVERSION;
   } else {
     value_ = UNKNOWN;
   }
@@ -45,10 +50,6 @@ int ConfirmationType::value() const {
 
 ConfirmationType::operator std::string() const {
   switch (value_) {
-    case UNKNOWN: {
-      return "";
-    }
-
     case CLICK: {
       return kConfirmationTypeClick;
     }
@@ -76,14 +77,24 @@ ConfirmationType::operator std::string() const {
     case DOWNVOTE: {
       return kConfirmationTypeDownvote;
     }
+
+    case CONVERSION: {
+      return kConfirmationTypeConversion;
+    }
+
+    case UNKNOWN: {
+      return kConfirmationTypeUnknown;
+    }
   }
 }
 
-bool ConfirmationType::operator==(ConfirmationType type) const {
+bool ConfirmationType::operator==(
+    const ConfirmationType type) const {
   return value_ == type.value_;
 }
 
-bool ConfirmationType::operator!=(ConfirmationType type) const {
+bool ConfirmationType::operator!=(
+    const ConfirmationType type) const {
   return value_ != type.value_;
 }
 
