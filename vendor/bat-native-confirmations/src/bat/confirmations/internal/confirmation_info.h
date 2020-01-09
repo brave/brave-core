@@ -21,7 +21,8 @@ namespace confirmations {
 
 struct ConfirmationInfo {
   ConfirmationInfo();
-  explicit ConfirmationInfo(const ConfirmationInfo& info);
+  ConfirmationInfo(
+      const ConfirmationInfo& info);
   ~ConfirmationInfo();
 
   std::string id;
