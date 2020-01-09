@@ -58,6 +58,7 @@ static NSString * const kContributionQueueAutoincrementID = @"BATContributionQue
 static NSString * const kUnblindedTokenAutoincrementID = @"BATUnblindedTokenAutoincrementID";
 
 static NSString * const kExternalWalletsPrefKey = @"external_wallets";
+static NSString * const kTransferFeesPrefKey = @"transfer_fees";
 
 static const auto kOneDay = base::Time::kHoursPerDay * base::Time::kSecondsPerHour;
 
@@ -440,6 +441,60 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   [self savePrefs];
 }
 
+- (void)setTransferFee:(const std::string &)wallet_type transfer_fee:(ledger::TransferFeePtr)transfer_fee
+{
+  if (transfer_fee.get() == nullptr) {
+    return;
+  }
+  const auto bridgedType = [NSString stringWithUTF8String:wallet_type.c_str()];
+  const auto feeID = [NSString stringWithUTF8String:transfer_fee->id.c_str()];
+  const auto feeDict = @{
+    @"id": feeID,
+    @"amount": @(transfer_fee->amount),
+    @"execution_timestamp": @(transfer_fee->execution_timestamp),
+    @"execution_id": @(transfer_fee->execution_id)
+  };
+
+  NSMutableDictionary *transferFees = [self.prefs[kTransferFeesPrefKey] mutableCopy] ?: [[NSMutableDictionary alloc] init];
+  NSMutableDictionary *feesForWalletType = [transferFees[bridgedType] mutableCopy] ?: [[NSMutableDictionary alloc] init];
+  feesForWalletType[feeID] = feeDict;
+  transferFees[bridgedType] = feesForWalletType;
+  self.prefs[kTransferFeesPrefKey] = transferFees;
+  [self savePrefs];
+}
+
+- (ledger::TransferFeeList)getTransferFees:(const std::string &)wallet_type
+{
+  const auto bridgedType = [NSString stringWithUTF8String:wallet_type.c_str()];
+  ledger::TransferFeeList list;
+  NSDictionary *transferFees = self.prefs[kTransferFeesPrefKey] ?: [[NSDictionary alloc] init];
+  NSDictionary *walletFees = transferFees[bridgedType];
+  if (!walletFees || walletFees.count == 0) {
+    return list;
+  }
+  for (NSString *feeID in walletFees) {
+    NSDictionary* feeDict = walletFees[feeID];
+    auto fee = ledger::TransferFee::New();
+    fee->id = feeID.UTF8String;
+    fee->amount = [feeDict[@"amount"] doubleValue];
+    fee->execution_id = [feeDict[@"execution_id"] longValue];
+    fee->execution_timestamp = [feeDict[@"execution_timestamp"] longLongValue];
+    list.insert(std::make_pair(feeID.UTF8String, std::move(fee)));
+  }
+  return list;
+}
+
+- (void)removeTransferFee:(const std::string &)wallet_type id:(const std::string &)id
+{
+  const auto bridgedType = [NSString stringWithUTF8String:wallet_type.c_str()];
+  const auto bridgedID = [NSString stringWithUTF8String:id.c_str()];
+  NSMutableDictionary *transferFees = [self.prefs[kTransferFeesPrefKey] mutableCopy] ?: [[NSMutableDictionary alloc] init];
+  NSMutableDictionary *feesForWalletType = [transferFees[bridgedType] mutableCopy] ?: [[NSMutableDictionary alloc] init];
+  [feesForWalletType removeObjectForKey:bridgedID];
+  transferFees[bridgedType] = feesForWalletType;
+  self.prefs[kTransferFeesPrefKey] = transferFees;
+  [self savePrefs];
+}
 
 #pragma mark - Publishers
 
@@ -1974,23 +2029,6 @@ BATLedgerBridge(BOOL,
       }
     }
   }];
-}
-
-- (void)setTransferFee:(const std::string &)wallet_type transfer_fee:(ledger::TransferFeePtr)transfer_fee
-{
-  // FIXME: Add implementation
-}
-
-- (ledger::TransferFeeList)getTransferFees:(const std::string &)wallet_type
-{
-  // FIXME: Add implementation
-  ledger::TransferFeeList list;
-  return list;
-}
-
-- (void)removeTransferFee:(const std::string &)wallet_type id:(const std::string &)id
-{
-  // FIXME: Add implementation
 }
 
 - (void)insertOrUpdateContributionQueue:(ledger::ContributionQueuePtr)info callback:(ledger::ResultCallback)callback
