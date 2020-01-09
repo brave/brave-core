@@ -69,7 +69,7 @@ public class BraveReferrer implements InstallReferrerStateListener {
                             outputStreamWriter.write(urpc.getBytes());
                             outputStreamWriter.close();
                         } catch (IOException e) {
-                            Log.e(TAG, "Could not write to file: " + e.getMessage());
+                            Log.e(TAG, "Could not write to file (" + promoCodeFilePath + "): " + e.getMessage());
                         }
                     }
                     referrerClient.endConnection();
