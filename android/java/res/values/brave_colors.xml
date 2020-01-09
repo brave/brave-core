@@ -35,4 +35,6 @@
     <!-- Theme colors -->
     <color name="brave_theme_color">#fb542b</color>
     <color name="brave_rewards_theme_color">#392DD1</color>
+
+    <color name="black_alpha_50">#80000000</color>
 </resources>

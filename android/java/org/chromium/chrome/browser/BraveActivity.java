@@ -41,6 +41,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelUtils;
 import org.chromium.chrome.browser.tabmodel.TabSelectionType;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayout;
 import org.chromium.chrome.browser.util.UrlConstants;
+import org.chromium.chrome.browser.preferences.BackgroundImagesPreferences;
 import org.chromium.ui.widget.Toast;
 
 /**
@@ -148,6 +149,9 @@ public abstract class BraveActivity extends ChromeActivity {
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
+
+        int appOpenCount = ContextUtils.getAppSharedPreferences().getInt(BackgroundImagesPreferences.PREF_APP_OPEN_COUNT, 0);
+        BackgroundImagesPreferences.setOnPreferenceValue(BackgroundImagesPreferences.PREF_APP_OPEN_COUNT , appOpenCount+1);
 
         OnboardingActivity onboardingActivity = null;
         for (Activity ref : ApplicationStatus.getRunningActivities()) {

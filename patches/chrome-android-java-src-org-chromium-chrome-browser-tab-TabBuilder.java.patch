@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tab/TabBuilder.java b/chrome/android/java/src/org/chromium/chrome/browser/tab/TabBuilder.java
+index 8caa84c7bd695722d022f485c203cace04360779..b5fb9fc0d311fcc2c5367229fd950021c853c05b 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/tab/TabBuilder.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/tab/TabBuilder.java
+@@ -146,7 +146,7 @@ public class TabBuilder {
+             if (mFromFrozenState) assert mLaunchType == TabLaunchType.FROM_RESTORE;
+         }
+ 
+-        Tab tab = new Tab(mId, mParent, mIncognito, mLaunchType);
++        Tab tab = new BraveTab(mId, mParent, mIncognito, mLaunchType);
+         tab.updateWindowAndroid(mWindow);
+ 
+         // Initializes Tab. Its user data objects are also initialized through the event

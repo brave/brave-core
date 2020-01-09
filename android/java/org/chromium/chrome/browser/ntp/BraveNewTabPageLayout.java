@@ -11,6 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.content.SharedPreferences;
+
+import org.chromium.base.ContextUtils;
+import org.chromium.chrome.browser.preferences.BackgroundImagesPreferences;
+
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ntp.NewTabPageLayout;
 
@@ -34,6 +39,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         insertBraveStatsLayout();
+        insertImageCreditLayout();
     }
 
     private void insertBraveStatsLayout() {
@@ -42,5 +48,21 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         ViewGroup logo = (ViewGroup) findViewById(R.id.search_provider_logo);
         int insertionPoint = indexOfChild(logo) + 1;
         addView(mBraveStatsLayout, insertionPoint);
+    }
+
+    private void insertImageCreditLayout() {
+        ViewGroup imageCreditLayout = (ViewGroup) LayoutInflater.from(getContext())
+                .inflate(R.layout.image_credit_layout, this, false);
+        addView(imageCreditLayout);
+    }
+
+    @Override
+    public int getMaxTileRows() {
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        if(sharedPreferences.getBoolean(BackgroundImagesPreferences.PREF_SHOW_BACKGROUND_IMAGES, true)) {
+            return 1;
+        } else {
+            return 2;
+        }
     }
 }

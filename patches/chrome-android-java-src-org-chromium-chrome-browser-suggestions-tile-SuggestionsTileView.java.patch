@@ -1,0 +1,20 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java
+index a00bb6ece2d6af0c4fa83c9e86e47578cf7aefa7..cf790d1ed19799d121316f5cf94cd24788fce7d2 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/tile/SuggestionsTileView.java
+@@ -11,13 +11,13 @@ import android.util.AttributeSet;
+ import org.chromium.chrome.R;
+ import org.chromium.chrome.browser.ntp.TitleUtil;
+ import org.chromium.chrome.browser.suggestions.SiteSuggestion;
+-import org.chromium.chrome.browser.widget.tile.TileWithTextView;
++import org.chromium.chrome.browser.widget.tile.BraveTileWithTextView;
+ 
+ /**
+  * The view for a site suggestion tile. Displays the title of the site beneath a large icon. If a
+  * large icon isn't available, displays a rounded rectangle with a single letter in its place.
+  */
+-public class SuggestionsTileView extends TileWithTextView {
++public class SuggestionsTileView extends BraveTileWithTextView {
+     /** The data currently associated to this tile. */
+     private SiteSuggestion mData;
+ 

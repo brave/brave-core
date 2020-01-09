@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/widget/tile/TileWithTextView.java b/chrome/android/java/src/org/chromium/chrome/browser/widget/tile/TileWithTextView.java
+index 9dd12a76a97a866a492591dde95cf7c4ac6c88f2..cf6ed664528c21f961561bbeeb34d8720bdc5e72 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/widget/tile/TileWithTextView.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/widget/tile/TileWithTextView.java
+@@ -17,7 +17,7 @@ import org.chromium.chrome.R;
+  * Displays the title of the site beneath a large icon.
+  */
+ public class TileWithTextView extends TileView {
+-    private TextView mTitleView;
++    protected TextView mTitleView;
+ 
+     /**
+      * Constructor for inflating from XML.

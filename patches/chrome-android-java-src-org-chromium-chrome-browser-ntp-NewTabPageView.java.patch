@@ -1,0 +1,21 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageView.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageView.java
+index 82fbf8bcfeb3590461f83dd13706be1d1acd8799..6120af239c7fdd4ac1d522e4f80c291c652fd80a 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageView.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/NewTabPageView.java
+@@ -197,11 +197,11 @@ public class NewTabPageView extends HistoryNavigationLayout {
+         mRecyclerView.setAdapter(newTabPageAdapter);
+         mRecyclerView.getLinearLayoutManager().scrollToPosition(scrollPosition);
+ 
+-        mRecyclerViewResizer = ViewResizer.createAndAttach(mRecyclerView, mUiConfig,
+-                mRecyclerView.getResources().getDimensionPixelSize(
+-                        R.dimen.content_suggestions_card_modern_margin),
+-                mRecyclerView.getResources().getDimensionPixelSize(
+-                        R.dimen.ntp_wide_card_lateral_margins));
++        // mRecyclerViewResizer = ViewResizer.createAndAttach(mRecyclerView, mUiConfig,
++        //         mRecyclerView.getResources().getDimensionPixelSize(
++        //                 R.dimen.content_suggestions_card_modern_margin),
++        //         mRecyclerView.getResources().getDimensionPixelSize(
++        //                 R.dimen.ntp_wide_card_lateral_margins));
+ 
+         setupScrollHandling();
+ 
