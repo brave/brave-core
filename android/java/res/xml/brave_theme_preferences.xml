@@ -4,7 +4,7 @@
      License, v. 2.0. If a copy of the MPL was not distributed with this file,
      You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <org.chromium.chrome.browser.preferences.themes.BraveRadioButtonGroupThemePreference
-        android:fragment="org.chromium.chrome.browser.preferences.themes.BraveThemePreferences"
+    <org.chromium.chrome.browser.settings.themes.BraveRadioButtonGroupThemePreference
+        android:fragment="org.chromium.chrome.browser.settings.themes.BraveThemePreferences"
         android:key="ui_theme_pref" />
 </PreferenceScreen>

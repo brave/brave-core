@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.preferences;
+package org.chromium.chrome.browser.settings;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,8 +22,8 @@ import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.ChromeFeatureList;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.privacy.BravePrivacyPreferences;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
+import org.chromium.chrome.browser.settings.privacy.BravePrivacyPreferences;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 
@@ -54,7 +54,7 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
         // Add brave's additional preferences here because |onCreatePreference| is not called
         // by subclass (MainPreference::onCreatePreferences()).
         // But, calling here has same effect because |onCreatePreferences()| is called by onCreate().
-        PreferenceUtils.addPreferencesFromResource(this, R.xml.brave_main_preferences);
+        SettingsUtils.addPreferencesFromResource(this, R.xml.brave_main_preferences);
 
         overrideChromiumPreferences();
         initWelcomeTourPreference();

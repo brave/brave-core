@@ -5,20 +5,20 @@
      You can obtain one at http://mozilla.org/MPL/2.0/. -->
 <android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <org.chromium.chrome.browser.preferences.ChromeSwitchPreference
+    <org.chromium.chrome.browser.settings.ChromeSwitchPreference
       android:key="hide_brave_rewards_icon"
       android:title="@string/hide_brave_rewards_icon_title"
       android:summaryOn="@string/hide_brave_rewards_icon_description"
       android:summaryOff="@string/hide_brave_rewards_icon_description" />
 
-    <org.chromium.chrome.browser.preferences.ChromeSwitchPreference
+    <org.chromium.chrome.browser.settings.ChromeSwitchPreference
         android:key="brave_bottom_toolbar_enabled"
         android:title="@string/bottom_toolbar_enable"
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off" />
 
     <Preference
-        android:fragment="org.chromium.chrome.browser.preferences.themes.BraveThemePreferences"
+        android:fragment="org.chromium.chrome.browser.settings.themes.BraveThemePreferences"
         android:key="ui_theme"
         android:title="@string/prefs_themes" />
 
