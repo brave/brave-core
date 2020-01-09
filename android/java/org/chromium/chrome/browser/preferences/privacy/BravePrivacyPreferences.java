@@ -14,6 +14,9 @@ import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.ChromeBaseCheckBoxPreference;
+import org.chromium.chrome.browser.preferences.ChromeSwitchPreference;
+import org.chromium.chrome.browser.preferences.ManagedPreferenceDelegate;
+import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 import org.chromium.chrome.browser.preferences.PreferenceUtils;
 import org.chromium.chrome.browser.preferences.privacy.PrivacyPreferences;
 
@@ -22,6 +25,14 @@ public class BravePrivacyPreferences extends PrivacyPreferences {
     private static final String PREF_AD_BLOCK = "ad_block";
     private static final String PREF_FINGERPRINTING_PROTECTION = "fingerprinting_protection";
     private static final String PREF_CLOSE_TABS_ON_EXIT = "close_tabs_on_exit";
+    private static final String PREF_SYNC_AND_SERVICES_LINK = "sync_and_services_link";
+    private static final String PREF_SEARCH_SUGGESTIONS = "search_suggestions";
+    private static final String PREF_CLEAR_BROWSING_DATA = "clear_browsing_data";
+
+    private final PrefServiceBridge mPrefServiceBridge = PrefServiceBridge.getInstance();
+    private final ManagedPreferenceDelegate mManagedPreferenceDelegate =
+            createManagedPreferenceDelegate();
+    private ChromeSwitchPreference mSearchSuggestions;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -44,6 +55,12 @@ public class BravePrivacyPreferences extends PrivacyPreferences {
         ChromeBaseCheckBoxPreference closeTabsOnExitPref =
                 (ChromeBaseCheckBoxPreference) findPreference(PREF_CLOSE_TABS_ON_EXIT);
         closeTabsOnExitPref.setOnPreferenceChangeListener(this);
+
+        mSearchSuggestions = (ChromeSwitchPreference) findPreference(PREF_SEARCH_SUGGESTIONS);
+        mSearchSuggestions.setOnPreferenceChangeListener(this);
+        mSearchSuggestions.setManagedPreferenceDelegate(mManagedPreferenceDelegate);
+
+        updatePreferences();
     }
 
     @Override
@@ -63,8 +80,39 @@ public class BravePrivacyPreferences extends PrivacyPreferences {
                     ContextUtils.getAppSharedPreferences().edit();
             sharedPreferencesEditor.putBoolean(PREF_CLOSE_TABS_ON_EXIT, (boolean) newValue);
             sharedPreferencesEditor.apply();
+        } else if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
+            mPrefServiceBridge.setSearchSuggestEnabled((boolean) newValue);
         }
 
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updatePreferences();
+    }
+
+    private void updatePreferences() {
+        removePreferenceIfPresent(PREF_SYNC_AND_SERVICES_LINK);
+        mSearchSuggestions.setChecked(mPrefServiceBridge.isSearchSuggestEnabled());
+        mSearchSuggestions.setOrder(findPreference(PREF_CLEAR_BROWSING_DATA).getOrder() + 1);
+    }
+
+    private void removePreferenceIfPresent(String key) {
+        Preference preference = getPreferenceScreen().findPreference(key);
+        if (preference != null) {
+            getPreferenceScreen().removePreference(preference);
+        }
+    }
+
+    private ManagedPreferenceDelegate createManagedPreferenceDelegate() {
+        return preference -> {
+            String key = preference.getKey();
+            if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
+                return mPrefServiceBridge.isSearchSuggestManaged();
+            }
+            return false;
+        };
     }
 }

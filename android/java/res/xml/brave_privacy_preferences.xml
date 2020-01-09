@@ -27,4 +27,9 @@
         android:title="@string/fingerprinting_protection_title"
         android:summary="@string/fingerprinting_protection_summary"
         android:defaultValue="false" />
+    <org.chromium.chrome.browser.preferences.ChromeSwitchPreference
+        android:key="search_suggestions"
+        android:title="@string/autocomplete_searches_and_urls_title"
+        android:summary="@string/autocomplete_searches_and_urls_summary"
+        android:persistent="false"/>
 </android.support.v7.preference.PreferenceScreen>
