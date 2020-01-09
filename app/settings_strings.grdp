@@ -688,25 +688,25 @@
     </message>
 
     <!-- Android Apps Page -->
-    <message name="IDS_SETTINGS_ANDROID_APPS_TITLE" desc="The title of Brave Play Store (Arc++ / Android Apps) section.">
-      Brave Play Store
+    <message name="IDS_SETTINGS_ANDROID_APPS_TITLE" desc="The title of Google Play Store (Arc++ / Android Apps) section.">
+      Google Play Store
     </message>
     <message name="IDS_SETTINGS_ANDROID_SETTINGS_TITLE" desc="The title of Android settings section in case Play Store app is not available.">
       Android settings
     </message>
     <message name="IDS_SETTINGS_ANDROID_APPS_LABEL" desc="The text associated with the primary section setting.">
-      Brave Play Store
+      Google Play Store
     </message>
-    <message name="IDS_SETTINGS_ANDROID_APPS_SUBTEXT" desc="Description for the section for enabling and managing Brave Play Store (Android) apps.">
-      Install apps and games from Brave Play on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. &lt;a target="_blank" href="<ph name="URL">$2<ex>https://google.com/</ex></ph>"&gt;Learn more&lt;/a&gt;
+    <message name="IDS_SETTINGS_ANDROID_APPS_SUBTEXT" desc="Description for the section for enabling and managing Google Play Store (Android) apps.">
+      Install apps and games from Google Play on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. &lt;a target="_blank" href="<ph name="URL">$2<ex>https://google.com/</ex></ph>"&gt;Learn more&lt;/a&gt;
     </message>
     <message name="IDS_SETTINGS_ANDROID_APPS_MANAGE_APPS" desc="Label for launching Android apps settings.">
       Manage Android preferences
     </message>
-    <message name="IDS_SETTINGS_ANDROID_APPS_REMOVE" desc="Label for the control to open a dialog confirming removal of the Brave Play Store.">
-      Remove Brave Play Store
+    <message name="IDS_SETTINGS_ANDROID_APPS_REMOVE" desc="Label for the control to open a dialog confirming removal of the Google Play Store.">
+      Remove Google Play Store
     </message>
-    <message name="IDS_SETTINGS_ANDROID_APPS_REMOVE_BUTTON" desc="Label for the button for the removal of the Brave Play Store">
+    <message name="IDS_SETTINGS_ANDROID_APPS_REMOVE_BUTTON" desc="Label for the button for the removal of the Google Play Store">
       Remove
     </message>
 
@@ -716,7 +716,7 @@
     <!-- TODO(jamescook): Use device type instead of "Bravebook", which may
          require changing ArcPlayTermsOfServiceConsent resource id handling. -->
     <message name="IDS_SETTINGS_ANDROID_APPS_DISABLE_DIALOG_MESSAGE" desc="Describes what will happen if the user opts out of android apps.">
-      Apps you’ve downloaded from Brave Play will be deleted from this Bravebook.
+      Apps you’ve downloaded from Google Play will be deleted from this Bravebook.
       <ph name="LINE_BREAKS1">&lt;br&gt;&lt;br&gt;</ph>
       Content you’ve purchased such as movies, TV shows, music, books, or other in-app purchases may also be deleted.
       <ph name="LINE_BREAKS2">&lt;br&gt;&lt;br&gt;</ph>
@@ -2357,28 +2357,28 @@
     <message name="IDS_SETTINGS_INTERNET_TETHER_PHONE_OUT_OF_RANGE" desc="Text shown when viewing the Tether network detail page when the currently-viewed Tether network has been lost (e.g., has gone out of range). Because Tether networks are provided by Android phones, we use the word 'phone' here instead of 'network'.">
       Unable to detect your phone
     </message>
-    <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_TITLE" desc="Title of the section which explains how to enable Brave Play Services notifications on an Android phone in order to use Instant Tethering.">
-      To use Instant Tethering, turn on notifications for Brave Play Services.
+    <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_TITLE" desc="Title of the section which explains how to enable Google Play Services notifications on an Android phone in order to use Instant Tethering.">
+      To use Instant Tethering, turn on notifications for Google Play Services.
     </message>
-    <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_ONE_DEVICE_SUBTITLE" desc="Subtitle of the section which explains how to enable Brave Play Services notifications. This subtitle is used when only one phone needs to have its notifications enabled.">
+    <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_ONE_DEVICE_SUBTITLE" desc="Subtitle of the section which explains how to enable Google Play Services notifications. This subtitle is used when only one phone needs to have its notifications enabled.">
       On your '<ph name="PHONE_NAME">$1<ex>Brave Pixel</ex></ph>':
     </message>
-    <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_TWO_DEVICES_SUBTITLE" desc="Subtitle of the section which explains how to enable Brave Play Services notifications. This subtitle is used when two phones need to have their notifications enabled.">
+    <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_TWO_DEVICES_SUBTITLE" desc="Subtitle of the section which explains how to enable Google Play Services notifications. This subtitle is used when two phones need to have their notifications enabled.">
       On your '<ph name="PHONE_NAME_1">$1<ex>Brave Pixel</ex></ph>' and '<ph name="PHONE_NAME_2">$2<ex>Brave Pixel 2</ex></ph>':
     </message>
-    <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_MANY_DEVICES_SUBTITLE" desc="Subtitle of the section which explains how to enable Brave Play Services notifications. This subtitle is used when three or more phones need to have their notifications enabled.">
+    <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_MANY_DEVICES_SUBTITLE" desc="Subtitle of the section which explains how to enable Google Play Services notifications. This subtitle is used when three or more phones need to have their notifications enabled.">
       On your devices:
     </message>
-    <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_FIRST_STEP" desc="First instruction for how to enable Brave Play Services notifications on an Android phone. This step teaches the user how to look at notification settings.">
+    <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_FIRST_STEP" desc="First instruction for how to enable Google Play Services notifications on an Android phone. This step teaches the user how to look at notification settings.">
       Go to Settings &gt; Apps &amp; notifications &gt; Notifications.
     </message>
-    <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_SECOND_STEP" desc="Second instruction for how to enable Brave Play Services notifications on an Android phone. This step teaches the user how to look at notification settings for the Brave Play Services app.">
-      Tap App notifications &gt; Brave Play services.
+    <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_SECOND_STEP" desc="Second instruction for how to enable Google Play Services notifications on an Android phone. This step teaches the user how to look at notification settings for the Google Play Services app.">
+      Tap App notifications &gt; Google Play services.
     </message>
-    <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_THIRD_STEP" desc="Third instruction for how to enable Brave Play Services notifications on an Android phone. This step teaches the user how to enable notifications when already viewing noticiations settings for Brave Play Services.">
-      Turn on Brave Play services.
+    <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_THIRD_STEP" desc="Third instruction for how to enable Google Play Services notifications on an Android phone. This step teaches the user how to enable notifications when already viewing noticiations settings for Google Play Services.">
+      Turn on Google Play services.
     </message>
-    <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_FOURTH_STEP" desc="Fourth instruction for how to enable Brave Play Services notifications on an Android phone. This step teaches the user how to enable the Instant Tethering notification channel for Brave Play Services.">
+    <message name="IDS_SETTINGS_INTERNET_GMSCORE_NOTIFICATIONS_FOURTH_STEP" desc="Fourth instruction for how to enable Google Play Services notifications on an Android phone. This step teaches the user how to enable the Instant Tethering notification channel for Google Play Services.">
       Scroll to the bottom of the screen and turn on Instant Tethering, if it appears. If it doesn't, you're all set.
     </message>
     <message name="IDS_SETTINGS_INTERNET_LOOKING_FOR_MOBILE_NETWORK" desc="Text shown when viewing the Mobile data page when there are no cellular or tether networks available.">
@@ -3921,7 +3921,7 @@
       Add account
     </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_DESCRIPTION" desc="Description of the Account Manager Settings page. Shown just below the title of the page.">
-      Manage your signed-in accounts. Websites, apps, and extensions in Brave and Brave Play may use these accounts to customize your experience, depending on permissions.
+      Manage your signed-in accounts. Websites, apps, and extensions in Brave and Google Play may use these accounts to customize your experience, depending on permissions.
     </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_LIST_HEADER" desc="List header for Account List in Account Manager Settings page.">
       Accounts
@@ -4624,7 +4624,7 @@
       Find more stylus apps
     </message>
     <message name="IDS_SETTINGS_STYLUS_FIND_MORE_APPS_SECONDARY" desc="Secondary (below the primary) URL label that opens up the Play Store to a curated list of stylus applications.">
-      Open Brave Play
+      Open Google Play
     </message>
     <message name="IDS_SETTINGS_STYLUS_NOTE_TAKING_APP_LABEL" desc="Label describing a dropdown that lets the user pick their default note-taking applications. The dropdown contains a list of all available choices. The user can install additional apps, so the contents of the dropdown is dynamic.">
       Note-taking app
@@ -4844,7 +4844,7 @@
       External storage preferences
     </message>
     <message name="IDS_SETTINGS_STORAGE_ANDROID_APPS_ACCESS_EXTERNAL_DRIVES_NOTE" desc="Label for the additional note for the subpage for setting preferences for external storage.">
-      Apps from Brave Play may require full file system access to read and write files on external storage devices. Files and folders created on the device are visible to anyone who uses the external drive. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+      Apps from Google Play may require full file system access to read and write files on external storage devices. Files and folders created on the device are visible to anyone who uses the external drive. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_SETTINGS_STORAGE_EXTERNAL_STORAGE_LIST_HEADER" desc="Header of the list of external storage devices for the subpage for setting preferences for external storage.">
       Available devices will appear here.

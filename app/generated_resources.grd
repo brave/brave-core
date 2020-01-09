@@ -3829,7 +3829,7 @@ are declared in tools/grit/grit_rule.gni.
         Unable to import extension "<ph name="IMPORT_NAME">$1<ex>Gmail</ex></ph>" because it is not a shared module
       </message>
       <message name="IDS_EXTENSION_INSTALL_DEPENDENCY_NOT_WHITELISTED" desc="Error displayed during installation of an extension which tries to imports resources from an extension, but it is not whitelisted to do so.">
-        Unable to install "<ph name="APP_NAME">$1<ex>Brave Play Movies &amp; TV</ex></ph>" because it is not allowed by "<ph name="IMPORT_NAME">$2<ex>Brave Cast API</ex></ph>"
+        Unable to install "<ph name="APP_NAME">$1<ex>Google Play Movies &amp; TV</ex></ph>" because it is not allowed by "<ph name="IMPORT_NAME">$2<ex>Brave Cast API</ex></ph>"
       </message>
       <message name="IDS_EXTENSION_INSTALL_GALLERY_ONLY" desc="Error displayed when an app or extension that has an update URL used by the gallery is installed when not directly downloaded from the gallery.">
         This can only be added from the <ph name="CHROME_WEB_STORE">$1<ex>Web Store</ex></ph>
@@ -9000,11 +9000,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_TAB_AX_LABEL_PIP_PLAYING_FORMAT" desc="Accessibility label text, when the tab is playing a persistent video in Picture-in-Picture. Example: 'Brave Hangouts - Video playing in picture-in-picture mode'">
         <ph name="WINDOW_TITLE">$1<ex>Brave Hangouts</ex></ph> - Video playing in picture-in-picture mode
       </message>
-      <message name="IDS_TAB_AX_LABEL_AUDIO_PLAYING_FORMAT" desc="Accessibility label text, when the tab is playing audio. Example: 'Brave Play Music - Audio playing'">
-        <ph name="WINDOW_TITLE">$1<ex>Brave Play Music</ex></ph> - Audio playing
+      <message name="IDS_TAB_AX_LABEL_AUDIO_PLAYING_FORMAT" desc="Accessibility label text, when the tab is playing audio. Example: 'Google Play Music - Audio playing'">
+        <ph name="WINDOW_TITLE">$1<ex>Google Play Music</ex></ph> - Audio playing
       </message>
-      <message name="IDS_TAB_AX_LABEL_AUDIO_MUTING_FORMAT" desc="Accessibility label text, when all tab audio output is muted. Example: 'Brave Play Music - Audio muted'">
-        <ph name="WINDOW_TITLE">$1<ex>Brave Play Music</ex></ph> - Audio muted
+      <message name="IDS_TAB_AX_LABEL_AUDIO_MUTING_FORMAT" desc="Accessibility label text, when all tab audio output is muted. Example: 'Google Play Music - Audio muted'">
+        <ph name="WINDOW_TITLE">$1<ex>Google Play Music</ex></ph> - Audio muted
       </message>
       <message name="IDS_TAB_AX_LABEL_BLUETOOTH_CONNECTED_FORMAT" desc="Accessibility label text, when a tab is connected to and has access to a Bluetooth device. Example: 'Brave Photos - Bluetooth device connected'">
         <ph name="WINDOW_TITLE">$1<ex>Brave Photos</ex></ph> - Bluetooth device connected

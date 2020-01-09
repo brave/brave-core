@@ -2145,7 +2145,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
 
       <!-- App banner accessibility strings, used for touch exploration -->
       <message name="IDS_APP_BANNER_VIEW_NATIVE_APP_INSTALL_ACCESSIBILITY" desc="Accessibility text: Indicates that clicking on the button will either purchase the app or install it.">
-        Get the app from the Brave Play Store: <ph name="APP_ACTION">%s<ex>Install</ex></ph>
+        Get the app from the Google Play Store: <ph name="APP_ACTION">%s<ex>Install</ex></ph>
       </message>
 
       <!-- DOM Distiller strings -->
@@ -2599,8 +2599,8 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SIGNIN_ADD_ACCOUNT" desc="Text for adding another Brave Account">
         Add account
       </message>
-      <message name="IDS_SIGNIN_GMS_UPDATING" desc="Message notifying user that Brave Play Services is still updating.">
-        Waiting for Brave Play Services to finish updating
+      <message name="IDS_SIGNIN_GMS_UPDATING" desc="Message notifying user that Google Play Services is still updating.">
+        Waiting for Google Play Services to finish updating
       </message>
 
       <!-- Strings for Streamlined Signin and Unified Consent. -->
