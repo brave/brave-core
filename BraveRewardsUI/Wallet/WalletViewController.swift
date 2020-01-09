@@ -628,31 +628,33 @@ extension WalletViewController {
       crypto: Strings.WalletBalanceType,
       dollarValue: state.ledger.usdBalanceString
     )
-    // Hidden by default
-    walletView.headerView.setUserWalletStatus(.hidden)
-    if Preferences.Rewards.isUsingBAP.value != true {
-      // If we can show Uphold, grab verification status of the wallet
-      state.ledger.externalWallet(forType: .uphold) { wallet in
-        guard let wallet = wallet else { return }
-        
-        self.userWallet = wallet
-        
-        switch wallet.status {
-        case .notConnected:
-          self.walletView.headerView.setUserWalletStatus(.notConnected)
-        case .connected,
-             .pending:
-          self.walletView.headerView.setUserWalletStatus(.connectedNotVerified)
-        case .disconnectedVerified,
-             .disconnectedNotVerified:
-          self.walletView.headerView.setUserWalletStatus(.disconnected)
-        case .verified:
-          self.walletView.headerView.setUserWalletStatus(.verified)
-        @unknown default:
-          break
+    if userWallet == nil {
+      // Hidden by default
+      walletView.headerView.setUserWalletStatus(.hidden)
+      if Preferences.Rewards.isUsingBAP.value != true {
+        // If we can show Uphold, grab verification status of the wallet
+        state.ledger.externalWallet(forType: .uphold) { wallet in
+          guard let wallet = wallet else { return }
+          
+          self.userWallet = wallet
+          
+          switch wallet.status {
+          case .notConnected:
+            self.walletView.headerView.setUserWalletStatus(.notConnected)
+          case .connected,
+               .pending:
+            self.walletView.headerView.setUserWalletStatus(.connectedNotVerified)
+          case .disconnectedVerified,
+               .disconnectedNotVerified:
+            self.walletView.headerView.setUserWalletStatus(.disconnected)
+          case .verified:
+            self.walletView.headerView.setUserWalletStatus(.verified)
+          @unknown default:
+            break
+          }
+          
+          self.walletView.headerView.addFundsButton.isHidden = wallet.status != .verified
         }
-        
-        self.walletView.headerView.addFundsButton.isHidden = wallet.status != .verified
       }
     }
   }
