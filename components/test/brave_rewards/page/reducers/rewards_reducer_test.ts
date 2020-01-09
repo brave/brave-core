@@ -95,6 +95,7 @@ describe('rewards reducer', () => {
         const initState: Rewards.State = { ...defaultState }
         initState.adsData = {
           adsEnabled: false,
+          shouldAllowAdConversionTracking: true,
           adsPerHour: 2,
           adsUIEnabled: false,
           adsIsSupported: false,
@@ -106,6 +107,7 @@ describe('rewards reducer', () => {
         const expectedState: Rewards.State = { ...defaultState }
         expectedState.adsData = {
           adsEnabled: true,
+          shouldAllowAdConversionTracking: true,
           adsPerHour: 5,
           adsUIEnabled: true,
           adsIsSupported: true,
@@ -121,6 +123,7 @@ describe('rewards reducer', () => {
           payload: {
             adsData: {
               adsEnabled: true,
+              shouldAllowAdConversionTracking: true,
               adsPerHour: 5,
               adsUIEnabled: true,
               adsIsSupported: true
@@ -139,6 +142,7 @@ describe('rewards reducer', () => {
         const expectedState: Rewards.State = { ...defaultState }
         expectedState.adsData = {
           adsEnabled: false,
+          shouldAllowAdConversionTracking: true,
           adsPerHour: 2,
           adsUIEnabled: true,
           adsIsSupported: true,
@@ -154,6 +158,7 @@ describe('rewards reducer', () => {
           payload: {
             adsData: {
               adsEnabled: false,
+              shouldAllowAdConversionTracking: true,
               adsPerHour: 2,
               adsUIEnabled: true,
               adsIsSupported: true
@@ -172,6 +177,7 @@ describe('rewards reducer', () => {
       const initState: Rewards.State = { }
       initState.adsData = {
         adsEnabled: false,
+        shouldOptOutfAdConversions: true,
         adsPerHour: 2,
         adsUIEnabled: false,
         adsIsSupported: false,

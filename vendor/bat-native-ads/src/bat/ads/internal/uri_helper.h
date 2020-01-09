@@ -12,7 +12,12 @@ namespace helper {
 
 class Uri {
  public:
-  static std::string GetUri(const std::string& url);
+  static std::string GetUri(
+      const std::string& url);
+
+  static bool MatchWildcard(
+      const std::string& url,
+      const std::string& pattern);
 };
 
 }  // namespace helper

@@ -61,12 +61,14 @@
 {
   const auto expect = [self expectationWithDescription:@"File IO"];
   self.ads.enabled = NO;
+  self.ads.allowAdConversionTracking = YES;
   self.ads.numberOfAllowableAdsPerDay = 10;
   self.ads.numberOfAllowableAdsPerHour = 6;
   
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     BATBraveAds *secondAds = [[BATBraveAds alloc] initWithStateStoragePath:[self stateStoragePath]];
     XCTAssertEqual(self.ads.enabled, secondAds.enabled);
+    XCTAssertEqual(self.ads.shouldAllowAdConversionTracking, secondAds.shouldAllowAdConversionTracking);
     XCTAssertEqual(self.ads.numberOfAllowableAdsPerDay, secondAds.numberOfAllowableAdsPerDay);
     XCTAssertEqual(self.ads.numberOfAllowableAdsPerHour, secondAds.numberOfAllowableAdsPerHour);
     

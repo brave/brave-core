@@ -22,6 +22,7 @@
 #include "bat/ads/internal/ads_serve.h"
 #include "bat/ads/internal/bundle.h"
 #include "bat/ads/internal/client.h"
+#include "bat/ads/internal/ad_conversion_tracking.h"
 #include "bat/ads/internal/event_type_blur_info.h"
 #include "bat/ads/internal/event_type_destroy_info.h"
 #include "bat/ads/internal/event_type_focus_info.h"
@@ -37,6 +38,7 @@ class Client;
 class Bundle;
 class AdsServe;
 class Notifications;
+class AdConversionTracking;
 class FrequencyCapping;
 class ExclusionRule;
 class PermissionRule;
@@ -56,6 +58,8 @@ class AdsImpl : public Ads {
   void InitializeStep3(
       const Result result);
   void InitializeStep4(
+      const Result result);
+  void InitializeStep5(
       const Result result);
   bool IsInitialized();
 
@@ -193,6 +197,9 @@ class AdsImpl : public Ads {
   void CheckEasterEgg(
       const std::string& url);
 
+  void CheckAdConversion(
+      const std::string& url);
+
   void CheckReadyAdServe(
       const bool forced);
   void ServeAdFromCategories(
@@ -208,6 +215,10 @@ class AdsImpl : public Ads {
       const Result result,
       const std::vector<std::string>& categories,
       const std::vector<AdInfo>& ads);
+  void OnGetAdConversions(
+      const Result result,
+      const std::string& url,
+      const std::vector<AdConversionTrackingInfo>& ad_conversions);
   void ServeAd(
       const std::vector<AdInfo>& ads);
 
@@ -323,6 +334,7 @@ class AdsImpl : public Ads {
   std::unique_ptr<AdsServe> ads_serve_;
   std::unique_ptr<FrequencyCapping> frequency_capping_;
   std::unique_ptr<Notifications> notifications_;
+  std::unique_ptr<AdConversionTracking> ad_conversions_;
   std::unique_ptr<usermodel::UserModel> user_model_;
 
  private:

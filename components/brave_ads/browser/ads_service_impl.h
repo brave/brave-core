@@ -68,6 +68,9 @@ class AdsServiceImpl : public AdsService,
   void SetEnabled(
       const bool is_enabled) override;
 
+  void SetAllowAdConversionTracking(
+      const bool should_allow) override;
+
   void SetAdsPerHour(
       const uint64_t ads_per_hour) override;
 
@@ -129,6 +132,8 @@ class AdsServiceImpl : public AdsService,
 
   // AdsClient implementation
   bool IsEnabled() const override;
+
+  bool ShouldAllowAdConversionTracking() const override;
 
   uint64_t GetAdsPerHour() const override;
   uint64_t GetAdsPerDay() const override;
@@ -215,6 +220,11 @@ class AdsServiceImpl : public AdsService,
       const ads::OnGetAdsCallback& callback,
       const std::vector<std::string>& categories,
       const std::vector<ads::AdInfo>& ads);
+
+  void OnGetAdConversions(
+      const ads::OnGetAdConversionsCallback& callback,
+      const std::string& url,
+      const std::vector<ads::AdConversionTrackingInfo>& ad_conversions);
 
   void OnGetAdsHistory(
       OnGetAdsHistoryCallback callback,
@@ -418,6 +428,10 @@ class AdsServiceImpl : public AdsService,
   void GetAds(
       const std::vector<std::string>& categories,
       ads::OnGetAdsCallback callback) override;
+
+  void GetAdConversions(
+      const std::string& url,
+      ads::OnGetAdConversionsCallback callback) override;
 
   void EventLog(
       const std::string& json) const override;

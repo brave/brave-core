@@ -242,6 +242,20 @@ std::vector<ads::AdInfo> GetAdsForCategoriesOnFileTaskRunner(
   return ads;
 }
 
+std::vector<ads::AdConversionTrackingInfo> GetAdConversionsOnFileTaskRunner(
+    const std::string& url,
+    BundleStateDatabase* backend) {
+  std::vector<ads::AdConversionTrackingInfo> ad_conversions;
+
+  if (!backend) {
+    return ad_conversions;
+  }
+
+  backend->GetAdConversions(url, &ad_conversions);
+
+  return ad_conversions;
+}
+
 bool ResetOnFileTaskRunner(const base::FilePath& path) {
   bool recursive;
 
@@ -364,6 +378,11 @@ void AdsServiceImpl::SetEnabled(
     const bool is_enabled) {
   SetBooleanPref(prefs::kEnabled, is_enabled);
   rewards_service_->OnAdsEnabled(is_enabled);
+}
+
+void AdsServiceImpl::SetAllowAdConversionTracking(
+    const bool should_allow) {
+  SetBooleanPref(prefs::kShouldAllowAdConversionTracking, should_allow);
 }
 
 void AdsServiceImpl::SetAdsPerHour(
@@ -516,6 +535,10 @@ bool AdsServiceImpl::IsEnabled() const {
       GetBooleanPref(brave_rewards::prefs::kBraveRewardsEnabled);
 
   return is_enabled && is_rewards_enabled;
+}
+
+bool AdsServiceImpl::ShouldAllowAdConversionTracking() const {
+  return GetBooleanPref(prefs::kShouldAllowAdConversionTracking);
 }
 
 uint64_t AdsServiceImpl::GetAdsPerHour() const {
@@ -975,6 +998,20 @@ void AdsServiceImpl::OnGetAdsForCategories(
   auto result = ads.empty() ? ads::Result::FAILED : ads::Result::SUCCESS;
 
   callback(result, categories, ads);
+}
+
+void AdsServiceImpl::OnGetAdConversions(
+    const ads::OnGetAdConversionsCallback& callback,
+    const std::string& url,
+    const std::vector<ads::AdConversionTrackingInfo>& ad_conversions) {
+  if (!connected()) {
+    return;
+  }
+
+  const auto result = ad_conversions.empty() ?
+      ads::Result::FAILED : ads::Result::SUCCESS;
+
+  callback(result, url, ad_conversions);
 }
 
 void AdsServiceImpl::OnGetAdsHistory(
@@ -2028,6 +2065,16 @@ void AdsServiceImpl::GetAds(
           bundle_state_backend_.get()),
       base::BindOnce(&AdsServiceImpl::OnGetAdsForCategories, AsWeakPtr(),
           std::move(callback), categories));
+}
+
+void AdsServiceImpl::GetAdConversions(
+    const std::string& url,
+    ads::OnGetAdConversionsCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&GetAdConversionsOnFileTaskRunner, url,
+          bundle_state_backend_.get()),
+      base::BindOnce(&AdsServiceImpl::OnGetAdConversions, AsWeakPtr(),
+          std::move(callback), url));
 }
 
 void AdsServiceImpl::EventLog(

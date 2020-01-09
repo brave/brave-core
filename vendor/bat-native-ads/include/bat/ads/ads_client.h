@@ -16,6 +16,7 @@
 #include <functional>
 
 #include "bat/ads/ad_info.h"
+#include "bat/ads/ad_conversion_tracking_info.h"
 #include "bat/ads/issuers_info.h"
 #include "bat/ads/bundle_state.h"
 #include "bat/ads/client_info.h"
@@ -51,6 +52,9 @@ using OnResetCallback = std::function<void(const Result)>;
 using OnGetAdsCallback = std::function<void(const Result,
     const std::vector<std::string>&, const std::vector<AdInfo>&)>;
 
+using OnGetAdConversionsCallback = std::function<void(const Result,
+    const std::string&, const std::vector<AdConversionTrackingInfo>&)>;
+
 using OnLoadSampleBundleCallback = std::function<void(const Result,
     const std::string&)>;
 
@@ -63,6 +67,10 @@ class ADS_EXPORT AdsClient {
 
   // Should return |true| if ads is enabled; otherwise, should return |false|
   virtual bool IsEnabled() const = 0;
+
+  // Should return |true| if allow ad conversion tracking is enabled; otherwise,
+  // should return |false|
+  virtual bool ShouldAllowAdConversionTracking() const = 0;
 
   // Should return the locale of the operating system using one of the following
   // formats:
@@ -231,6 +239,15 @@ class ADS_EXPORT AdsClient {
   virtual void GetAds(
       const std::vector<std::string>& categories,
       OnGetAdsCallback callback) = 0;
+
+  // Should fetch all ad conversions for the specified |url| from the previously
+  // persisted bundle state. The callback takes 3 arguments — |Result| should be
+  // set to |SUCCESS| if successful; otherwise, should be set to |FAILED|. |url|
+  // should contain the url. |ad_conversions| should contain an array of ad
+  // conversions
+  virtual void GetAdConversions(
+      const std::string& url,
+      OnGetAdConversionsCallback callback) = 0;
 
   // Should log an event
   virtual void EventLog(

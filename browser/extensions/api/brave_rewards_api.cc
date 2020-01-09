@@ -606,6 +606,8 @@ ExtensionFunction::ResponseAction BraveRewardsSaveAdsSettingFunction::Run() {
   if (ads_service_) {
     if (params->key == "adsEnabled") {
       ads_service_->SetEnabled(params->value == "true");
+    } else if (params->key == "shouldAllowAdConversionTracking") {
+      ads_service_->SetAllowAdConversionTracking(params->value == "true");
     }
   }
   return RespondNow(NoArguments());

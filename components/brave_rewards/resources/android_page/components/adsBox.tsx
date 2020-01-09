@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 // Components
 import BoxMobile, { Props as BoxMobileProps } from '../../ui/components/mobile/boxMobile'
 import { List, NextContribution, Tokens } from '../../ui/components'
-import { Column, Grid, Select, ControlWrapper } from 'brave-ui/components'
+import { Grid, Column, Select, ControlWrapper, Checkbox } from 'brave-ui/components'
 import AdsOnboarding from './adsOnboarding'
 import {
   StyledListContent,
@@ -29,12 +29,14 @@ class AdsBox extends React.Component<Props, {}> {
     super(props)
   }
 
-  onAdsSettingChange = (key: string, value: string) => {
+  onAdsSettingChange = (key: string, value: boolean) => {
     let newValue: any = value
-    const { adsEnabled } = this.props.rewardsData.adsData
+    const { adsEnabled, shouldAllowAdConversionTracking } = this.props.rewardsData.adsData
 
     if (key === 'adsEnabled') {
       newValue = !adsEnabled
+    } else if (key === 'shouldAllowAdConversionTracking') {
+      newValue = !shouldAllowAdConversionTracking
     }
 
     this.props.actions.onAdsSettingSave(key, newValue)
@@ -45,7 +47,7 @@ class AdsBox extends React.Component<Props, {}> {
       return null
     }
 
-    const { adsPerHour } = this.props.rewardsData.adsData
+    const { adsPerHour, shouldAllowAdConversionTracking } = this.props.rewardsData.adsData
 
     return (
       <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
@@ -63,6 +65,18 @@ class AdsBox extends React.Component<Props, {}> {
                 )
               })}
             </Select>
+          </ControlWrapper>
+          <ControlWrapper text={getLocale('adsOtherSettings')}>
+            <Checkbox
+              value={{
+                shouldAllowAdConversionTracking: shouldAllowAdConversionTracking
+              }}
+              multiple={true}
+              onChange={this.onAdsSettingChange}
+            >
+              <div data-key='shouldAllowAdConversionTracking'>{getLocale('adsAllowConversionTracking')}</div>
+            </Checkbox>
+            <div>{getLocale('adsAllowConversionTrackingDescription')}</div>
           </ControlWrapper>
         </Column>
       </Grid>

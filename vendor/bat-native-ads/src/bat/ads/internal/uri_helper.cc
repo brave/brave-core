@@ -3,9 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/uri_helper.h"
+#include <algorithm>
 
+#include "bat/ads/internal/uri_helper.h"
 #include "url/url_constants.h"
+#include "url/gurl.h"
+#include "third_party/re2/src/re2/re2.h"
 
 namespace helper {
 
@@ -22,6 +25,30 @@ std::string Uri::GetUri(const std::string& url) {
   }
 
   return url;
+}
+
+bool Uri::MatchWildcard(
+    const std::string& url,
+    const std::string& pattern) {
+  DCHECK(!url.empty());
+  DCHECK(!pattern.empty());
+
+  if (url.empty() || pattern.empty()) {
+    return false;
+  }
+
+  std::string lowercase_url = url;
+  std::transform(lowercase_url.begin(), lowercase_url.end(),
+      lowercase_url.begin(), ::tolower);
+
+  std::string lowercase_pattern = pattern;
+  std::transform(lowercase_pattern.begin(), lowercase_pattern.end(),
+      lowercase_pattern.begin(), ::tolower);
+
+  auto quoted_lowercase_pattern = RE2::QuoteMeta(lowercase_pattern);
+  RE2::GlobalReplace(&quoted_lowercase_pattern, "\\\\\\*", ".*");
+
+  return RE2::FullMatch(lowercase_url, quoted_lowercase_pattern);
 }
 
 }  // namespace helper

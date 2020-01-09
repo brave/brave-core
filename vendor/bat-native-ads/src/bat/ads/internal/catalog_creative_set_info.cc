@@ -8,20 +8,13 @@
 namespace ads {
 
 CreativeSetInfo::CreativeSetInfo() :
-    creative_set_id(""),
     per_day(0),
-    total_max(0),
-    segments({}),
-    oses({}),
-    creatives({}) {}
+    total_max(0) {}
 
 CreativeSetInfo::CreativeSetInfo(const std::string& creative_set_id) :
     creative_set_id(creative_set_id),
     per_day(0),
-    total_max(0),
-    segments({}),
-    oses({}),
-    creatives({}) {}
+    total_max(0) {}
 
 CreativeSetInfo::CreativeSetInfo(const CreativeSetInfo& info) :
     creative_set_id(info.creative_set_id),
@@ -29,8 +22,9 @@ CreativeSetInfo::CreativeSetInfo(const CreativeSetInfo& info) :
     total_max(info.total_max),
     segments(info.segments),
     oses(info.oses),
-    creatives(info.creatives) {}
+    creatives(info.creatives),
+    ad_conversions(info.ad_conversions) {}
 
-CreativeSetInfo::~CreativeSetInfo() {}
+CreativeSetInfo::~CreativeSetInfo() = default;
 
 }  // namespace ads

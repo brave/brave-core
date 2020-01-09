@@ -100,6 +100,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
   // TODO(Terry Mancey): Refactor function to use callbacks
 
   std::map<std::string, std::vector<AdInfo>> categories;
+  std::vector<AdConversionTrackingInfo> ad_conversions;
 
   // Campaigns
   for (const auto& campaign : catalog.GetCampaigns()) {
@@ -173,6 +174,11 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
         }
       }
 
+      // Conversions
+      ad_conversions.insert(ad_conversions.end(),
+          creative_set.ad_conversions.begin(),
+              creative_set.ad_conversions.end());
+
       if (entries == 0) {
         BLOG(WARNING) << "creativeSet id " << creative_set.creative_set_id
             << " has an invalid creative";
@@ -186,9 +192,9 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
   state->catalog_id = catalog.GetId();
   state->catalog_version = catalog.GetVersion();
   state->catalog_ping = catalog.GetPing();
-  state->catalog_last_updated_timestamp_in_seconds =
-      Time::NowInSeconds();
+  state->catalog_last_updated_timestamp_in_seconds = Time::NowInSeconds();
   state->categories = categories;
+  state->ad_conversions = ad_conversions;
 
   return state;
 }
