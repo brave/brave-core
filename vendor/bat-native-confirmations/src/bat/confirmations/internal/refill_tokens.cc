@@ -307,11 +307,6 @@ void RefillTokens::OnGetSignedTokens(
 void RefillTokens::OnRefill(
     const Result result,
     const bool should_retry) {
-  blinded_tokens_.clear();
-  tokens_.clear();
-
-  confirmations_->SaveState();
-
   if (result != SUCCESS) {
     BLOG(ERROR) << "Failed to refill tokens";
 
@@ -322,6 +317,10 @@ void RefillTokens::OnRefill(
 
     return;
   }
+
+  blinded_tokens_.clear();
+  tokens_.clear();
+  confirmations_->SaveState();
 
   BLOG(INFO) << "Successfully refilled tokens";
 }
