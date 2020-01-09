@@ -188,6 +188,7 @@ bundle_data("resources") {
     "$ads_dir/resources/sample_bundle.json",
     "$ads_dir/resources/user_models",
     "$ledger_dir/niceware/wordlist",
+    "Ledger/Data/migrate.sql"
   ]
   outputs = [
     "{{bundle_resources_dir}}/{{source_file_part}}",

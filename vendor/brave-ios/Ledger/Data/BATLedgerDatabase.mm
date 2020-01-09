@@ -12,6 +12,7 @@
 
 #define BLOG(__severity) RewardsLogStream(__FILE__, __LINE__, __severity).stream()
 
+// TO BE REMOVED:
 NS_INLINE DataControllerCompletion _Nullable
 WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable completion) {
   if (!completion) {
@@ -25,6 +26,256 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
 }
 
 @implementation BATLedgerDatabase
+
++ (nullable NSString *)migrateCoreDataToSQLTransaction
+{
+  const auto bundlePath = [[NSBundle bundleForClass:BATLedgerDatabase.class] pathForResource:@"migrate" ofType:@"sql"];
+  NSError *error = nil;
+  const auto migrationScript = [NSString stringWithContentsOfFile:bundlePath encoding:NSUTF8StringEncoding error:&error];
+  if (error) {
+    BLOG(ledger::LogLevel::LOG_ERROR) << "Failed to load migration script from path: " << bundlePath.UTF8String << std::endl;
+    return nil;
+  }
+  
+  const auto statements = [[NSMutableArray alloc] init];
+  
+  // activity_info
+  const auto activityInfoInsert =
+    @"INSERT INTO \"activity_info\" "
+     "(publisher_id, duration, visits, score, percent, weight, reconcile_stamp) VALUES ("
+     "%@,"   // publisher_id LONGVARCHAR NOT NULL
+     "%lld," // duration INTEGER DEFAULT 0 NOT NULL,
+     "%d,"   // visits INTEGER DEFAULT 0 NOT NULL,
+     "%f,"   // score DOUBLE DEFAULT 0 NOT NULL
+     "%d,"   // percent INTEGER DEFAULT 0 NOT NULL
+     "%f,"   // weight DOUBLE DEFAULT 0 NOT NULL,
+     "%lld"  // reconcile_stamp INTEGER DEFAULT 0 NOT NULL
+     ");";
+  
+  [statements addObjectsFromArray:
+   MapFetchedObjectsToInsertsForClass(ActivityInfo.class, ^(ActivityInfo *info){
+    return [NSString stringWithFormat:activityInfoInsert,
+            SQLString(info.publisherID), info.duration, info.visits, info.score,
+            info.percent, info.weight, info.reconcileStamp];
+  })];
+  
+  // contribution_info
+  const auto contributionInfoInsert =
+    @"INSERT INTO \"contribution_info\" "
+     "(publisher_id, probi, date, type, month, year) VALUES ("
+     "%@,"   // publisher_id LONGVARCHAR
+     "%@,"   // probi TEXT "0"  NOT NULL
+     "%lld," // date INTEGER NOT NULL
+     "%d,"   // type INTEGER NOT NULL
+     "%d,"   // month INTEGER NOT NULL
+     "%d"    // year INTEGER NOT NULL
+     ");";
+  
+  [statements addObjectsFromArray:
+   MapFetchedObjectsToInsertsForClass(ContributionInfo.class, ^(ContributionInfo *info){
+    return [NSString stringWithFormat:contributionInfoInsert,
+            SQLString(info.publisherID), SQLString(info.probi), info.date,
+            info.type, info.month, info.year];
+  })];
+  
+  // contribution_queue
+  const auto contributionQueueInsert =
+    @"INSERT INTO \"contribution_queue\" "
+     "(contribution_queue_id, type, amount, partial) VALUES ("
+     "%lld," // contribution_queue_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
+     "%d,"   // type INTEGER NOT NULL
+     "%f,"   // amount DOUBLE NOT NULL
+     "%d"    // partial INTEGER NOT NULL DEFAULT 0
+     ");";
+  
+  __block int64_t contributionQueueMaxID = 0;
+  [statements addObjectsFromArray:
+   MapFetchedObjectsToInsertsForClass(ContributionQueue.class, ^(ContributionQueue *obj){
+    contributionQueueMaxID = MAX(obj.id, contributionQueueMaxID);
+    return [NSString stringWithFormat:contributionQueueInsert,
+            obj.id, obj.type, obj.amount, obj.partial];
+  })];
+  [statements addObject:
+   [NSString stringWithFormat:@"UPDATE SQLITE_SEQUENCE SET seq = %lld WHERE name = 'contribution_queue';", contributionQueueMaxID]
+   ];
+  
+  // contribution_queue_publishers
+  const auto contributionQueuePublisherInsert =
+   @"INSERT INTO \"contribution_queue_publishers\" "
+    "(contribution_queue_id, publisher_key, amount_percent) VALUES ("
+    "%lld," // contribution_queue_id INTEGER NOT NULL
+    "%@,"   // publisher_key TEXT NOT NULL
+    "%f"    // amount_percent DOUBLE NOT NULL
+    ");";
+  [statements addObjectsFromArray:
+   MapFetchedObjectsToInsertsForClass(ContributionPublisher.class, ^(ContributionPublisher *obj){
+    return [NSString stringWithFormat:contributionQueuePublisherInsert,
+            obj.queue.id, SQLString(obj.publisherKey), obj.amountPercent];
+  })];
+  
+  // media_publisher_info
+  const auto mediaPublisherInfoInsert =
+    @"INSERT INTO \"media_publisher_info\" "
+     "(media_key, publisher_id) VALUES ("
+     "%@," // media_key TEXT NOT NULL PRIMARY KEY UNIQUE
+     "%@"  // publisher_id LONGVARCHAR NOT NULL
+     ");";
+  [statements addObjectsFromArray:
+   MapFetchedObjectsToInsertsForClass(MediaPublisherInfo.class, ^(MediaPublisherInfo *obj){
+    return [NSString stringWithFormat:mediaPublisherInfoInsert,
+            SQLString(obj.mediaKey), SQLString(obj.publisherID)];
+  })];
+  
+  // pending_contribution
+  const auto pendingContributionInsert =
+    @"INSERT INTO \"pending_contribution\" "
+     "(publisher_id, amount, added_date, viewing_id, type) VALUES ("
+     "%@,"   // publisher_id LONGVARCHAR NOT NULL
+     "%f,"   // amount DOUBLE DEFAULT 0 NOT NULL
+     "%lld," // added_date INTEGER DEFAULT 0 NOT NULL
+     "%@,"   // viewing_id LONGVARCHAR NOT NULL
+     "%d"    // type INTEGER NOT NULL
+     ");";
+  [statements addObjectsFromArray:
+   MapFetchedObjectsToInsertsForClass(PendingContribution.class, ^(PendingContribution *obj){
+    return [NSString stringWithFormat:pendingContributionInsert,
+            SQLString(obj.publisherID), obj.amount, obj.addedDate,
+            SQLString(obj.viewingID), obj.type];
+  })];
+  
+  // promotion
+  const auto promotionInsert =
+    @"INSERT INTO \"promotion\" "
+     "(promotion_id, version, type, public_keys, suggestions, "
+     "approximate_value, status, expires_at) VALUES ("
+     "%@,"  // promotion_id TEXT NOT NULL
+     "%d,"  // version INTEGER NOT NULL
+     "%d,"  // type INTEGER NOT NULL
+     "%@,"  // public_keys TEXT NOT NULL
+     "%d,"  // suggestions INTEGER NOT NULL DEFAULT 0
+     "%f,"  // approximate_value DOUBLE NOT NULL DEFAULT 0
+     "%d,"  // status INTEGER NOT NULL DEFAULT 0
+     "%lld" // expires_at TIMESTAMP NOT NULL
+     ");";
+  [statements addObjectsFromArray:
+   MapFetchedObjectsToInsertsForClass(Promotion.class, ^(Promotion *obj){
+    return [NSString stringWithFormat:promotionInsert,
+            SQLString(obj.promotionID), obj.version, obj.type, SQLString(obj.publicKeys),
+            obj.suggestions, obj.approximateValue, obj.status,
+            static_cast<int64_t>(obj.expiryDate.timeIntervalSince1970)];
+  })];
+  
+  // promotion_creds
+  const auto promotionCredsInsert =
+    @"INSERT INTO \"promotion_creds\" "
+     "(promotion_id, tokens, blinded_creds, signed_creds, public_key, "
+     "batch_proof, claim_id) VALUES ("
+     "%@,"  // promotion_id TEXT UNIQUE NOT NULL
+     "%@,"  // tokens TEXT NOT NULL
+     "%@,"  // blinded_creds TEXT NOT NULL
+     "%@,"  // signed_creds TEXT
+     "%@,"  // public_key TEXT
+     "%@,"  // batch_proof TEXT
+     "%@"   // claim_id TEXT
+     ");";
+  [statements addObjectsFromArray:
+   MapFetchedObjectsToInsertsForClass(PromotionCredentials.class, ^(PromotionCredentials *obj){
+    return [NSString stringWithFormat:promotionCredsInsert,
+            SQLString(obj.promotionID), SQLString(obj.tokens), SQLString(obj.blindedCredentials),
+            SQLNullableString(obj.signedCredentials), SQLNullableString(obj.publicKey),
+            SQLNullableString(obj.batchProof), SQLNullableString(obj.claimID)];
+  })];
+  
+  // publisher_info
+  const auto publisherInfoInsert =
+    @"INSERT INTO \"publisher_info\" "
+     "(publisher_id, excluded, name, favIcon, url, provider) VALUES ("
+     "%@,"  // publisher_id LONGVARCHAR PRIMARY KEY NOT NULL UNIQUE
+     "%d,"  // excluded INTEGER DEFAULT 0 NOT NULL
+     "%@,"  // name TEXT NOT NULL
+     "%@,"  // favIcon TEXT NOT NULL
+     "%@,"  // url TEXT NOT NULL
+     "%@"   // provider TEXT NOT NULL
+     ");";
+  [statements addObjectsFromArray:
+   MapFetchedObjectsToInsertsForClass(PublisherInfo.class, ^(PublisherInfo *obj){
+    return [NSString stringWithFormat:publisherInfoInsert,
+            SQLString(obj.publisherID), obj.excluded, SQLString(obj.name),
+            SQLString(obj.faviconURL), SQLString(obj.url), SQLString(obj.provider)];
+  })];
+  
+  // recurring_donation
+  const auto recurringDonationInsert =
+    @"INSERT INTO \"recurring_donation\" "
+     "(publisher_id, amount, added_date) VALUES ("
+     "%@,"  // publisher_id LONGVARCHAR NOT NULL PRIMARY KEY UNIQUE
+     "%f,"  // amount DOUBLE DEFAULT 0 NOT NULL
+     "%lld" // added_date INTEGER DEFAULT 0 NOT NULL
+     ");";
+  [statements addObjectsFromArray:
+   MapFetchedObjectsToInsertsForClass(RecurringDonation.class, ^(RecurringDonation *obj){
+    return [NSString stringWithFormat:recurringDonationInsert,
+            SQLString(obj.publisherID), obj.amount, obj.addedDate];
+  })];
+  
+  // unblinded_tokens
+  const auto unblindedTokenInsert =
+    @"INSERT INTO \"unblinded_tokens\" "
+     "(token_id, token_value, public_key, value, url, promotion_id) VALUES ("
+     "%lld," // token_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
+     "%@,"   // token_value TEXT
+     "%@,"   // public_key TEXT
+     "%f,"   // value DOUBLE NOT NULL DEFAULT 0
+     "%@"    // promotion_id TEXT
+     ");";
+  __block int64_t unblindedTokenMaxID = 0;
+  [statements addObjectsFromArray:
+   MapFetchedObjectsToInsertsForClass(UnblindedToken.class, ^(UnblindedToken *obj){
+    unblindedTokenMaxID = MAX(obj.tokenID, unblindedTokenMaxID);
+    return [NSString stringWithFormat:unblindedTokenInsert,
+            obj.tokenID, SQLNullableString(obj.tokenValue),
+            SQLNullableString(obj.publicKey), obj.value,
+            SQLNullableString(obj.promotionID)];
+  })];
+  [statements addObject:
+   [NSString stringWithFormat:@"UPDATE SQLITE_SEQUENCE SET seq = %lld WHERE name = 'unblinded_tokens';", unblindedTokenMaxID]
+   ];
+  
+  return [migrationScript stringByReplacingOccurrencesOfString:@"# {statements}" withString:[statements componentsJoinedByString:@"\n"]];
+}
+
+NS_INLINE NSString *SQLNullableString(NSString * _Nullable value) {
+  return (value == nil ? @"NULL" : SQLString(value));
+}
+
+NS_INLINE NSString *SQLString(NSString * _Nonnull value) {
+  // Have to make sure to escape any apostrophies
+  return [NSString stringWithFormat:@"'%@'",
+          [value stringByReplacingOccurrencesOfString:@"'" withString:@"''"]];
+}
+
+static NSArray<NSString *> *
+MapFetchedObjectsToInsertsForClass(Class clazz,
+                                   NSString * (NS_NOESCAPE ^block)(__kindof NSManagedObject* obj))
+{
+  const auto context = DataController.viewContext;
+  const auto fetchRequest = [clazz fetchRequest];
+  fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(clazz)
+                                    inManagedObjectContext:context];
+  NSError *error;
+  const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+  if (error) {
+    return @[];
+  }
+  const auto statements = [[NSMutableArray<NSString *> alloc] init];
+  [fetchedObjects enumerateObjectsUsingBlock:^(NSManagedObject *_Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    if (![obj isKindOfClass:clazz]) { return; }
+    [statements addObject:block(obj)];
+  }];
+  return statements;
+}
+
+// TO BE REMOVED:
 
 + (nullable __kindof NSManagedObject *)firstOfClass:(Class)clazz
                                          predicates:(NSArray<NSPredicate *> *)predicates

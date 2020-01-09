@@ -16,6 +16,15 @@ typedef void (^BATLedgerDatabaseWriteCompletion)(BOOL success);
 /// likely be removed at a future date when database managment happens in the ledger library
 @interface BATLedgerDatabase : NSObject
 
+/// Generates a SQL migration transaction that will move all data in the users
+/// CoreData storage into version 10 of the brave-core's database schema to
+/// then run and have ledger take over
+///
+/// Return's nil if the migration template cannot be found
++ (nullable NSString *)migrateCoreDataToSQLTransaction;
+
+// TO BE REMOVED:
+
 #pragma mark - Publisher Info
 
 /// Get bare bones publisher info based on a publisher ID

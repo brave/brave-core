@@ -106,4 +106,5 @@ private:
   void UpdateContributionInfoContributedAmount(const std::string& contribution_id, const std::string& publisher_key, ledger::ResultCallback callback) override;
   void ReconcileStampReset() override;
   void RunDBTransaction(ledger::DBTransactionPtr transaction, ledger::RunDBTransactionCallback callback) override;
+  void GetCreateScript(ledger::GetCreateScriptCallback callback) override;
 };
