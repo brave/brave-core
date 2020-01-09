@@ -20,6 +20,10 @@ extern NSString * const BATBraveLedgerErrorDomain NS_SWIFT_NAME(BraveLedgerError
 
 extern NSNotificationName const BATBraveLedgerNotificationAdded NS_SWIFT_NAME(BraveLedger.NotificationAdded);
 
+typedef NSString *BATBraveGeneralLedgerNotificationID NS_SWIFT_NAME(GeneralLedgerNotificationID) NS_STRING_ENUM;
+extern BATBraveGeneralLedgerNotificationID const BATBraveGeneralLedgerNotificationIDWalletNowVerified;
+extern BATBraveGeneralLedgerNotificationID const BATBraveGeneralLedgerNotificationIDWalletDisconnected;
+
 NS_SWIFT_NAME(BraveLedger)
 @interface BATBraveLedger : NSObject
 
@@ -93,6 +97,18 @@ NS_SWIFT_NAME(BraveLedger)
 
 /// Returns reserved amount of pending contributions to publishers.
 @property (nonatomic, readonly) double reservedAmount;
+
+#pragma mark - User Wallets
+
+- (void)externalWalletForType:(BATExternalWalletType)walletType
+                   completion:(void (^)(BATExternalWallet * _Nullable wallet))completion;
+
+- (void)disconnectWalletOfType:(BATExternalWalletType)walletType
+                    completion:(nullable void (^)(BATResult result))completion;
+
+- (void)authorizeExternalWalletOfType:(BATExternalWalletType)walletType
+                           queryItems:(NSDictionary<NSString *, NSString *> *)queryItems
+                           completion:(void (^)(BATResult result, NSURL * _Nullable redirectURL))completion;
 
 #pragma mark - Publishers
 
