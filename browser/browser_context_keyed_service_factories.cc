@@ -18,6 +18,7 @@
 #endif
 
 #if !defined(OS_ANDROID)
+#include "brave/browser/ntp_sponsored_images/ntp_sponsored_images_service_factory.h"
 #include "brave/browser/ui/bookmark/bookmark_prefs_service_factory.h"
 #endif
 
@@ -36,6 +37,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
 #if !defined(OS_ANDROID)
   BookmarkPrefsServiceFactory::GetInstance();
+  NTPSponsoredImagesServiceFactory::GetInstance();
 #endif
 }
 
