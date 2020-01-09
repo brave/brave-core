@@ -53,22 +53,22 @@ protocol SearchViewControllerDelegate: class {
 class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, LoaderListener {
     var searchDelegate: SearchViewControllerDelegate?
 
-    fileprivate let tabType: TabType
-    fileprivate var suggestClient: SearchSuggestClient?
+    private let tabType: TabType
+    private var suggestClient: SearchSuggestClient?
 
     // Views for displaying the bottom scrollable search engine list. searchEngineScrollView is the
     // scrollable container; searchEngineScrollViewContent contains the actual set of search engine buttons.
-    fileprivate let searchEngineScrollView = ButtonScrollView()
-    fileprivate let searchEngineScrollViewContent = UIView()
+    private let searchEngineScrollView = ButtonScrollView()
+    private let searchEngineScrollViewContent = UIView()
 
-    fileprivate lazy var bookmarkedBadge: UIImage = {
+    private lazy var bookmarkedBadge: UIImage = {
         return #imageLiteral(resourceName: "bookmarked_passive")
     }()
 
     // Cell for the suggestion flow layout. Since heightForHeaderInSection is called *before*
     // cellForRowAtIndexPath, we create the cell to find its height before it's added to the table.
-    fileprivate let suggestionCell = SuggestionCell(style: .default, reuseIdentifier: nil)
-    fileprivate var suggestionPrompt: SearchSuggestionPromptView?
+    private let suggestionCell = SuggestionCell(style: .default, reuseIdentifier: nil)
+    private var suggestionPrompt: SearchSuggestionPromptView?
     
     static var userAgent: String?
 
@@ -86,8 +86,33 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
         view.addSubview(blur)
 
         super.viewDidLoad()
+        setupSearchEngineScrollViewIfNeeded()
 
         KeyboardHelper.defaultHelper.addDelegate(self)
+
+        blur.snp.makeConstraints { make in
+            make.edges.equalTo(self.view)
+        }
+
+        suggestionCell.delegate = self
+
+        NotificationCenter.default.addObserver(self, selector: #selector(dynamicFontChanged), name: .DynamicFontChanged, object: nil)
+    }
+
+    @objc func dynamicFontChanged(_ notification: Notification) {
+        if notification.name == .DynamicFontChanged {
+            reloadData()
+        }
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        reloadSearchEngines()
+        reloadData()
+    }
+    
+    private func setupSearchEngineScrollViewIfNeeded() {
+        if !hasQuickSearchEngines { return }
 
         searchEngineScrollView.layer.shadowRadius = 0
         searchEngineScrollView.layer.shadowOpacity = 100
@@ -106,7 +131,7 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
 
         searchEngineScrollViewContent.snp.makeConstraints { make in
             make.center.equalTo(self.searchEngineScrollView).priority(10)
-            //left-align the engines on iphones, center on ipad
+            // Left-align the engines on iphones, center on ipad
             if UIScreen.main.traitCollection.horizontalSizeClass == .compact {
                 make.left.equalTo(self.searchEngineScrollView).priority(1000)
             } else {
@@ -114,29 +139,11 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
             }
             make.bottom.right.top.equalTo(self.searchEngineScrollView)
         }
-
-        blur.snp.makeConstraints { make in
-            make.edges.equalTo(self.view)
-        }
-
-        suggestionCell.delegate = self
-
-        NotificationCenter.default.addObserver(self, selector: #selector(dynamicFontChanged), name: .DynamicFontChanged, object: nil)
     }
 
-    @objc func dynamicFontChanged(_ notification: Notification) {
-        guard notification.name == .DynamicFontChanged else { return }
-
-        reloadData()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        reloadSearchEngines()
-        reloadData()
-    }
-
-    fileprivate func layoutSearchEngineScrollView() {
+    private func layoutSearchEngineScrollView() {
+        if !hasQuickSearchEngines { return }
+        
         let keyboardHeight = KeyboardHelper.defaultHelper.currentState?.intersectionHeightForView(self.view) ?? 0
         searchEngineScrollView.snp.remakeConstraints { make in
             make.left.right.equalTo(self.view)
@@ -165,7 +172,7 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
         }
     }
 
-    fileprivate var quickSearchEngines: [OpenSearchEngine] {
+    private var quickSearchEngines: [OpenSearchEngine] {
         var engines = searchEngines.quickSearchEngines
 
         // If we're not showing search suggestions, the default search engine won't be visible
@@ -177,7 +184,13 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
         return engines!
     }
     
-    fileprivate func layoutSuggestionsOptInPrompt() {
+    // If the user only has a single quick search engine, it is also their default one.
+    // In that case, we count it as if there are no quick suggestions to show.
+    private var hasQuickSearchEngines: Bool {
+        return quickSearchEngines.count > 1
+    }
+    
+    private func layoutSuggestionsOptInPrompt() {
         if tabType.isPrivate || !searchEngines.shouldShowSearchSuggestionsOptIn {
             // Make sure any pending layouts are drawn so they don't get coupled
             // with the "slide up" animation below.
@@ -236,15 +249,15 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
         querySuggestClient()
     }
 
-    fileprivate func layoutTable() {
+    private func layoutTable() {
         tableView.snp.remakeConstraints { make in
             make.top.equalTo(self.suggestionPrompt?.snp.bottom ?? self.view.snp.top)
             make.leading.trailing.equalTo(self.view)
-            make.bottom.equalTo(self.searchEngineScrollView.snp.top)
+            make.bottom.equalTo(hasQuickSearchEngines ? self.searchEngineScrollView.snp.top : self.view)
         }
     }
 
-    fileprivate func reloadSearchEngines() {
+    private func reloadSearchEngines() {
         searchEngineScrollViewContent.subviews.forEach { $0.removeFromSuperview() }
         var leftEdge = searchEngineScrollViewContent.snp.left
 
@@ -340,7 +353,7 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
         }, completion: nil)
     }
 
-    fileprivate func animateSearchEnginesWithKeyboard(_ keyboardState: KeyboardState) {
+    private func animateSearchEnginesWithKeyboard(_ keyboardState: KeyboardState) {
         layoutSearchEngineScrollView()
 
         UIView.animate(withDuration: keyboardState.animationDuration, animations: {
@@ -349,7 +362,7 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
         })
     }
 
-    fileprivate func querySuggestClient() {
+    private func querySuggestClient() {
         suggestClient?.cancelPendingRequest()
 
         if searchQuery.isEmpty || !searchEngines.shouldShowSearchSuggestions || searchQuery.looksLikeAURL() {
@@ -596,7 +609,7 @@ extension SearchViewController: SuggestionCellDelegate {
 /**
  * Private extension containing string operations specific to this view controller
  */
-fileprivate extension String {
+private extension String {
     func looksLikeAURL() -> Bool {
         // The assumption here is that if the user is typing in a forward slash and there are no spaces
         // involved, it's going to be a URL. If we type a space, any url would be invalid.
@@ -608,13 +621,13 @@ fileprivate extension String {
 /**
  * UIScrollView that prevents buttons from interfering with scroll.
  */
-fileprivate class ButtonScrollView: UIScrollView {
+private class ButtonScrollView: UIScrollView {
     fileprivate override func touchesShouldCancel(in view: UIView) -> Bool {
         return true
     }
 }
 
-fileprivate protocol SuggestionCellDelegate: class {
+private protocol SuggestionCellDelegate: class {
     func suggestionCell(_ suggestionCell: SuggestionCell, didSelectSuggestion suggestion: String)
     func suggestionCell(_ suggestionCell: SuggestionCell, didLongPressSuggestion suggestion: String)
 }
@@ -622,7 +635,7 @@ fileprivate protocol SuggestionCellDelegate: class {
 /**
  * Cell that wraps a list of search suggestion buttons.
  */
-fileprivate class SuggestionCell: UITableViewCell {
+private class SuggestionCell: UITableViewCell {
     weak var delegate: SuggestionCellDelegate?
     let container = UIView()
 
@@ -758,7 +771,7 @@ fileprivate class SuggestionCell: UITableViewCell {
 /**
  * Rounded search suggestion button that highlights when selected.
  */
-fileprivate class SuggestionButton: InsetButton {
+private class SuggestionButton: InsetButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
