@@ -19,6 +19,7 @@
 #include "components/component_updater/component_updater_service.h"
 
 struct NTPSponsoredImagesData;
+struct NTPSponsoredImagesInternalData;
 
 namespace content {
 class BrowserContext;
@@ -79,7 +80,7 @@ NTPSponsoredImagesComponentManager
   base::FilePath photo_json_file_path_;
   component_updater::ComponentUpdateService* cus_ = nullptr;
   base::ObserverList<Observer>::Unchecked observer_list_;
-  std::unique_ptr<NTPSponsoredImagesData> ntp_sponsored_images_data_;
+  std::unique_ptr<NTPSponsoredImagesInternalData> ntp_sponsored_images_data_;
   base::WeakPtrFactory<NTPSponsoredImagesComponentManager> weak_factory_;
 };
 

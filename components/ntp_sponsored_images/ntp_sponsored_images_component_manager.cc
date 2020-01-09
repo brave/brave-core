@@ -13,6 +13,7 @@
 #include "base/task/post_task.h"
 #include "base/values.h"
 #include "brave/components/ntp_sponsored_images/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_sponsored_images/ntp_sponsored_images_internal_data.h"
 #include "content/public/browser/browser_context.h"
 
 namespace {
@@ -93,23 +94,23 @@ void NTPSponsoredImagesComponentManager::AddDataSources(
   if (!ntp_sponsored_images_data_)
     return;
 
-  if (!ntp_sponsored_images_data_->logo_image_url.empty()) {
+  if (!ntp_sponsored_images_data_->logo_image_file.empty()) {
     content::URLDataSource::Add(
         browser_context,
         std::make_unique<NTPSponsoredImageSource>(
             weak_factory_.GetWeakPtr(),
-            ntp_sponsored_images_data_->logo_image_url,
+            ntp_sponsored_images_data_->logo_image_file,
             0,
             NTPSponsoredImageSource::Type::TYPE_LOGO));
   }
 
-  size_t count = ntp_sponsored_images_data_->wallpaper_image_urls.size();
+  size_t count = ntp_sponsored_images_data_->wallpaper_image_files.size();
   for (size_t i = 0; i < count; ++i) {
     content::URLDataSource::Add(
         browser_context,
         std::make_unique<NTPSponsoredImageSource>(
             weak_factory_.GetWeakPtr(),
-            ntp_sponsored_images_data_->wallpaper_image_urls[i],
+            ntp_sponsored_images_data_->wallpaper_image_files[i],
             i,
             NTPSponsoredImageSource::Type::TYPE_WALLPAPER));
   }
@@ -118,7 +119,7 @@ void NTPSponsoredImagesComponentManager::AddDataSources(
 base::Optional<NTPSponsoredImagesData>
 NTPSponsoredImagesComponentManager::GetLatestSponsoredImagesData() const {
   if (ntp_sponsored_images_data_)
-    return *ntp_sponsored_images_data_;
+    return NTPSponsoredImagesData(*ntp_sponsored_images_data_);
 
   return base::nullopt;
 }
@@ -130,10 +131,12 @@ bool NTPSponsoredImagesComponentManager::IsValidImage(
     return false;
 
   if (type == NTPSponsoredImageSource::Type::TYPE_LOGO)
-    return !ntp_sponsored_images_data_->logo_image_url.empty();
+    return !ntp_sponsored_images_data_->logo_image_file.empty();
 
   // If |wallpaper_index| is bigger than url vector size, it's invalid one.
-  return ntp_sponsored_images_data_->wallpaper_image_urls.size() < wallpaper_index;
+  const size_t wallpaper_image_files_count =
+      ntp_sponsored_images_data_->wallpaper_image_files.size();
+  return wallpaper_image_files_count > wallpaper_index;
 }
 
 void NTPSponsoredImagesComponentManager::ReadPhotoJsonFileAndNotify() {
@@ -170,14 +173,14 @@ void NTPSponsoredImagesComponentManager::OnGetPhotoJsonData(
 void NTPSponsoredImagesComponentManager::ParseAndCachePhotoJsonData(
     const std::string& photo_json) {
   base::Optional<base::Value> photo_value = base::JSONReader::Read(photo_json);
-  ntp_sponsored_images_data_.reset(new NTPSponsoredImagesData);
+  ntp_sponsored_images_data_.reset(new NTPSponsoredImagesInternalData);
   if (photo_value) {
     // Resources are stored with json file in the same directory.
     base::FilePath base_dir = photo_json_file_path_.DirName();
 
     if (auto* logo_image_url = photo_value->FindStringPath(kLogoImageURLKey)) {
-      ntp_sponsored_images_data_->logo_image_url =
-          base_dir.AppendASCII(*logo_image_url).AsUTF8Unsafe();
+      ntp_sponsored_images_data_->logo_image_file =
+          base_dir.AppendASCII(*logo_image_url);
     }
 
     if (auto* logo_alt_text = photo_value->FindStringPath(kLogoAltTextKey)) {
@@ -198,8 +201,8 @@ void NTPSponsoredImagesComponentManager::ParseAndCachePhotoJsonData(
     if (auto* wallpaper_image_urls =
             photo_value->FindListPath(kWallpaperImageURLsKey)) {
       for (const auto& value : wallpaper_image_urls->GetList()) {
-        ntp_sponsored_images_data_->wallpaper_image_urls.push_back(
-            base_dir.AppendASCII(value.GetString()).AsUTF8Unsafe());
+        ntp_sponsored_images_data_->wallpaper_image_files.push_back(
+            base_dir.AppendASCII(value.GetString()));
       }
     }
   }
@@ -207,5 +210,5 @@ void NTPSponsoredImagesComponentManager::ParseAndCachePhotoJsonData(
 
 void NTPSponsoredImagesComponentManager::NotifyObservers() {
   for (auto& observer : observer_list_)
-    observer.OnUpdated(*ntp_sponsored_images_data_);
+    observer.OnUpdated(NTPSponsoredImagesData(*ntp_sponsored_images_data_));
 }

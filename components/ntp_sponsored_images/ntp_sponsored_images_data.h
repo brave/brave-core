@@ -10,21 +10,21 @@
 #include <vector>
 
 #include "base/component_export.h"
+#include "base/files/file_path.h"
+
+struct NTPSponsoredImagesInternalData;
 
 struct COMPONENT_EXPORT(BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES)
 NTPSponsoredImagesData {
-  NTPSponsoredImagesData();
-  NTPSponsoredImagesData(const NTPSponsoredImagesData& data);
+  explicit NTPSponsoredImagesData(
+      const NTPSponsoredImagesInternalData& internal_data);
+  explicit NTPSponsoredImagesData(const NTPSponsoredImagesData& data);
   ~NTPSponsoredImagesData();
 
-  void Print() const;
-
-  std::string logo_image_url;
   std::string logo_alt_text;
   std::string logo_destination_url;
   std::string logo_company_name;
-
-  std::vector<std::string> wallpaper_image_urls;
+  int wallpaper_image_count;
 };
 
 #endif  // BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_NTP_SPONSORED_IMAGES_DATA_H_

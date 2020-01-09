@@ -5,24 +5,37 @@
 
 #include "brave/components/ntp_sponsored_images/ntp_sponsored_image_source.h"
 
+#include "base/bind.h"
+#include "base/files/file_util.h"
+#include "base/memory/ref_counted_memory.h"
 #include "base/strings/stringprintf.h"
+#include "base/task/post_task.h"
 #include "brave/components/ntp_sponsored_images/ntp_sponsored_images_component_manager.h"
 #include "brave/components/ntp_sponsored_images/url_constants.h"
 #include "content/public/browser/browser_thread.h"
 
 namespace {
 constexpr char kInvalidSource[] = "";
+
+base::Optional<std::string> ReadFileToString(const base::FilePath& path) {
+  std::string contents;
+  if (!base::ReadFileToString(path, &contents))
+    return base::Optional<std::string>();
+  return contents;
+}
+
 }  // namespace
 
 NTPSponsoredImageSource::NTPSponsoredImageSource(
     base::WeakPtr<NTPSponsoredImagesComponentManager> manager,
-    const std::string& image_file_path,
+    const base::FilePath& image_file_path,
     size_t wallpaper_index,
     Type type)
     : manager_(manager),
       image_file_path_(image_file_path),
       wallpaper_index_(wallpaper_index),
-      type_(type) {
+      type_(type),
+      weak_factory_(this) {
 }
 
 NTPSponsoredImageSource::~NTPSponsoredImageSource() = default;
@@ -39,8 +52,24 @@ void NTPSponsoredImageSource::StartDataRequest(
     const content::WebContents::Getter& wc_getter,
     const GotDataCallback& callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  // TODO(simonhong): Read |image_file_path| and run |callback|.
-  NOTIMPLEMENTED();
+  base::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::ThreadPool(), base::MayBlock()},
+      base::BindOnce(&ReadFileToString, image_file_path_),
+      base::BindOnce(&NTPSponsoredImageSource::OnGotImageFile,
+                     weak_factory_.GetWeakPtr(),
+                     callback));
+}
+
+void NTPSponsoredImageSource::OnGotImageFile(
+    const GotDataCallback& callback,
+    base::Optional<std::string> input) {
+  if (!input)
+    return;
+
+  scoped_refptr<base::RefCountedMemory> bytes;
+  bytes = new base::RefCountedBytes(
+       reinterpret_cast<const unsigned char*>(input->c_str()), input->length());
+  std::move(callback).Run(std::move(bytes));
 }
 
 std::string NTPSponsoredImageSource::GetMimeType(const std::string& path) {
@@ -52,8 +81,8 @@ bool NTPSponsoredImageSource::IsLogoType() const {
 }
 
 std::string NTPSponsoredImageSource::GetWallpaperPath() const {
-  DCHECK_EQ(type_, Type::TYPE_LOGO);
+  DCHECK_NE(type_, Type::TYPE_LOGO);
   // Assemble path like branded-wallpaper-2.jpg
-  return base::StringPrintf("%s-%zu.jpg",
+  return base::StringPrintf("%s%zu.jpg",
                             kBrandedWallpaperPathPrefix, wallpaper_index_);
 }

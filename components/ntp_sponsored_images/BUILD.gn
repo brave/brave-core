@@ -25,6 +25,8 @@ source_set("ntp_sponsored_images_impl") {
     "ntp_sponsored_images_component_manager.h",
     "ntp_sponsored_images_data.cc",
     "ntp_sponsored_images_data.h",
+    "ntp_sponsored_images_internal_data.cc",
+    "ntp_sponsored_images_internal_data.h",
     "ntp_sponsored_images_service.cc",
     "ntp_sponsored_images_service.h",
     "ntp_sponsored_image_source.cc",

@@ -6,18 +6,16 @@
 #include "brave/components/ntp_sponsored_images/ntp_sponsored_images_data.h"
 
 #include "base/logging.h"
+#include "brave/components/ntp_sponsored_images/ntp_sponsored_images_internal_data.h"
 
-NTPSponsoredImagesData::NTPSponsoredImagesData() = default;
+NTPSponsoredImagesData::NTPSponsoredImagesData(
+    const NTPSponsoredImagesInternalData& internal_data) {
+  logo_alt_text = internal_data.logo_alt_text;
+  logo_destination_url = internal_data.logo_destination_url;
+  logo_company_name = internal_data.logo_company_name;
+  wallpaper_image_count = internal_data.wallpaper_image_files.size();
+}
+
 NTPSponsoredImagesData::NTPSponsoredImagesData(
     const NTPSponsoredImagesData& data) = default;
 NTPSponsoredImagesData::~NTPSponsoredImagesData() = default;
-
-void NTPSponsoredImagesData::Print() const {
-  LOG(ERROR) << "Logo url: " << logo_image_url;
-  LOG(ERROR) << "Logo alt text: " << logo_alt_text;
-  LOG(ERROR) << "Logo destination url: " << logo_destination_url;
-  LOG(ERROR) << "Logo company name: " << logo_company_name;
-
-  for (const auto& url : wallpaper_image_urls)
-    LOG(ERROR) << "Wallpaper image urls: " << url;
-}

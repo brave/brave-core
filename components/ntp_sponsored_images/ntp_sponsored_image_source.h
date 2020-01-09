@@ -8,7 +8,9 @@
 
 #include <string>
 
+#include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
+#include "base/optional.h"
 #include "content/public/browser/url_data_source.h"
 
 class NTPSponsoredImagesComponentManager;
@@ -24,7 +26,7 @@ class NTPSponsoredImageSource : public content::URLDataSource {
 
   explicit NTPSponsoredImageSource(
       base::WeakPtr<NTPSponsoredImagesComponentManager> manager,
-      const std::string& image_file_path,
+      const base::FilePath& image_file_path,
       size_t wallpaper_index,
       Type type);
   ~NTPSponsoredImageSource() override;
@@ -43,11 +45,15 @@ class NTPSponsoredImageSource : public content::URLDataSource {
 
   bool IsLogoType() const;
   std::string GetWallpaperPath() const;
+  void OnGotImageFile(const GotDataCallback& callback,
+                      base::Optional<std::string> input);
 
   base::WeakPtr<NTPSponsoredImagesComponentManager> manager_;
-  const std::string image_file_path_;
+  const base::FilePath image_file_path_;
   size_t wallpaper_index_;  // Only used for wallpaper type.
   Type type_;
+
+  base::WeakPtrFactory<NTPSponsoredImageSource> weak_factory_;
 };
 
 #endif  // BRAVE_COMPONENTS_NTP_SPONSORED_IMAGES_NTP_SPONSORED_IMAGE_SOURCE_H_
