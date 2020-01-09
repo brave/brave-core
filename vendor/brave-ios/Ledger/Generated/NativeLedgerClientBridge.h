@@ -99,5 +99,6 @@
 - (void)updateContributionInfoContributedAmount:(const std::string&)contribution_id publisher_key:(const std::string&)publisher_key callback:(ledger::ResultCallback)callback;
 - (void)reconcileStampReset;
 - (void)runDBTransaction:(ledger::DBTransactionPtr)transaction callback:(ledger::RunDBTransactionCallback)callback;
+- (void)getCreateScript:(ledger::GetCreateScriptCallback)callback;
 
 @end

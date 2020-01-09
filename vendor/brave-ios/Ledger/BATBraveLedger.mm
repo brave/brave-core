@@ -54,6 +54,7 @@ static NSString * const kBackupNotificationIntervalKey = @"BATBackupNotification
 static NSString * const kBackupNotificationFrequencyKey = @"BATBackupNotificationFrequency";
 static NSString * const kUserHasFundedKey = @"BATRewardsUserHasFunded";
 static NSString * const kBackupSucceededKey = @"BATRewardsBackupSucceeded";
+static NSString * const kMigrationSucceeded = @"BATRewardsMigrationSucceeded";
 
 static NSString * const kContributionQueueAutoincrementID = @"BATContributionQueueAutoincrementID";
 static NSString * const kUnblindedTokenAutoincrementID = @"BATUnblindedTokenAutoincrementID";
@@ -103,6 +104,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 
 @property (nonatomic) NSHashTable<BATBraveLedgerObserver *> *observers;
 
+@property (nonatomic, getter=isInitialized) BOOL initialized;
 @property (nonatomic, getter=isLoadingPublisherList) BOOL loadingPublisherList;
 @property (nonatomic, getter=isInitializingWallet) BOOL initializingWallet;
 
@@ -119,6 +121,11 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 @end
 
 @implementation BATBraveLedger
+
++ (NSString *)migrateString
+{
+  return [BATLedgerDatabase migrateCoreDataToSQLTransaction];
+}
 
 - (instancetype)initWithStateStoragePath:(NSString *)path
 {
@@ -141,6 +148,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
       self.prefs[kBackupNotificationIntervalKey] = @(7 * kOneDay); // 7 days
       self.prefs[kBackupSucceededKey] = @(NO);
       self.prefs[kUserHasFundedKey] = @(NO);
+      self.prefs[kMigrationSucceeded] = @(NO);
       [self savePrefs];
     }
     
@@ -151,14 +159,21 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 
     ledgerClient = new NativeLedgerClient(self);
     ledger = ledger::Ledger::CreateInstance(ledgerClient);
-    ledger->Initialize(^(ledger::Result result){
+
+    BOOL needsMigration = ![self.prefs[kMigrationSucceeded] boolValue];
+    ledger->Initialize(needsMigration, ^(ledger::Result result){
+      self.initialized = result == ledger::Result::LEDGER_OK;
+      if (self.initialized && needsMigration) {
+        self.prefs[kMigrationSucceeded] = @(YES);
+        [self savePrefs];
+      }
       for (BATBraveLedgerObserver *observer in [self.observers copy]) {
         if (observer.walletInitalized) {
           observer.walletInitalized(static_cast<BATResult>(result));
         }
       }
     });
-
+    
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -182,6 +197,11 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
   delete ledger;
   delete ledgerClient;
   delete rewardsDatabase;
+}
+
+- (void)getCreateScript:(ledger::GetCreateScriptCallback)callback
+{
+  callback([BATLedgerDatabase migrateCoreDataToSQLTransaction].UTF8String, 10);
 }
 
 - (NSString *)randomStatePath
@@ -991,6 +1011,8 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)setSelectedTabId:(UInt32)selectedTabId
 {
+  if (!self.initialized) { return; }
+  
   if (_selectedTabId != selectedTabId) {
     ledger->OnHide(_selectedTabId, [[NSDate date] timeIntervalSince1970]);
   }
@@ -1002,6 +1024,8 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)applicationDidBecomeActive
 {
+  if (!self.initialized) { return; }
+  
   ledger->OnForeground(self.selectedTabId, [[NSDate date] timeIntervalSince1970]);
 
   // Check if the last notification check was more than a day ago
@@ -1012,11 +1036,15 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)applicationDidBackground
 {
+  if (!self.initialized) { return; }
+  
   ledger->OnBackground(self.selectedTabId, [[NSDate date] timeIntervalSince1970]);
 }
 
 - (void)reportLoadedPageWithURL:(NSURL *)url tabId:(UInt32)tabId
 {
+  if (!self.initialized) { return; }
+  
   GURL parsedUrl(url.absoluteString.UTF8String);
   auto origin = parsedUrl.GetOrigin();
   const std::string baseDomain =
@@ -1040,6 +1068,8 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)reportXHRLoad:(NSURL *)url tabId:(UInt32)tabId firstPartyURL:(NSURL *)firstPartyURL referrerURL:(NSURL *)referrerURL
 {
+  if (!self.initialized) { return; }
+  
   std::map<std::string, std::string> partsMap;
   const auto urlComponents = [[NSURLComponents alloc] initWithURL:url resolvingAgainstBaseURL:NO];
   for (NSURLQueryItem *item in urlComponents.queryItems) {
@@ -1064,6 +1094,8 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)reportPostData:(NSData *)postData url:(NSURL *)url tabId:(UInt32)tabId firstPartyURL:(NSURL *)firstPartyURL referrerURL:(NSURL *)referrerURL
 {
+  if (!self.initialized) { return; }
+  
   GURL parsedUrl(url.absoluteString.UTF8String);
   if (!parsedUrl.is_valid()) {
     return;
@@ -1087,6 +1119,8 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)reportTabNavigationOrClosedWithTabId:(UInt32)tabId
 {
+  if (!self.initialized) { return; }
+  
   ledger->OnUnload(tabId, [[NSDate date] timeIntervalSince1970]);
 }
 
