@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.preferences.website;
+package org.chromium.chrome.browser.settings.website;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.preferences.PreferenceUtils;
-import org.chromium.chrome.browser.preferences.website.SiteSettingsCategory.Type;
+import org.chromium.chrome.browser.settings.SettingsUtils;
+import org.chromium.chrome.browser.settings.website.SiteSettingsCategory.Type;
 
 import java.util.HashMap;
 
@@ -36,7 +36,7 @@ public class BraveSiteSettingsPreferencesBase extends PreferenceFragmentCompat {
         // Add brave's additional preferences here because |onCreatePreference| is not called
         // by subclass (SiteSettingsPreferences::onCreatePreferences()).
         // But, calling here has same effect because |onCreatePreferences()| is called by onCreate().
-        PreferenceUtils.addPreferencesFromResource(this, R.xml.brave_site_settings_preferences);
+        SettingsUtils.addPreferencesFromResource(this, R.xml.brave_site_settings_preferences);
         if (getArguments() != null) {
             String category =
                     getArguments().getString(SingleCategoryPreferences.EXTRA_CATEGORY, "");

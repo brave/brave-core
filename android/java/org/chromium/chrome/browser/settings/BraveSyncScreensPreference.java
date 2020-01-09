@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.preferences;
+package org.chromium.chrome.browser.settings;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -93,11 +93,12 @@ import org.chromium.chrome.browser.BraveSyncWorker;
 // that pref calls should be called from UI thread only. It would lead
 // to significant changes in the current javascript based BraveSyncWorker
 // import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.BravePreferenceFragment;
+import org.chromium.chrome.browser.preferences.BraveSyncScreensObserver;
 import org.chromium.chrome.browser.qrreader.BarcodeTracker;
 import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
 import org.chromium.chrome.browser.qrreader.CameraSource;
 import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
+import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.sync.BraveSyncService;
 import org.chromium.chrome.browser.sync.BraveSyncServiceObserver;
 import org.chromium.ui.KeyboardVisibilityDelegate;
@@ -1639,8 +1640,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                       Log.w(TAG, "No need to load devices for other pages");
                                       return;
                                   }
-                                  String currentDeviceId = BravePrefServiceBridge.getInstance().getSyncDeviceId();
                                   // TODO(sergz): Uncomment sync service impl when we fully migrate on sync v2
+                                  // String currentDeviceId = BravePrefServiceBridge.getInstance().getSyncDeviceId();
                                   // Load other devices in chain
                                   // if (null != mSyncService) {
                                   //     new Thread(new Runnable() {

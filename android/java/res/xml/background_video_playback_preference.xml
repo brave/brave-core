@@ -6,7 +6,7 @@
 
 <android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <org.chromium.chrome.browser.preferences.ChromeSwitchPreference
+    <org.chromium.chrome.browser.settings.ChromeSwitchPreference
         android:key="background_video_playback"
         android:title="@string/prefs_background_video_playback"
         android:summaryOn="@string/prefs_background_video_playback_on"

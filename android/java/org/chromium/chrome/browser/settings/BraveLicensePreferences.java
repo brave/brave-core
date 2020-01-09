@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.preferences;
+package org.chromium.chrome.browser.settings;
 
 import android.os.Bundle;
 
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
-import org.chromium.chrome.browser.preferences.BravePreferenceFragment;
-import org.chromium.chrome.browser.preferences.TextMessagePreference;
+import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.chrome.browser.settings.TextMessagePreference;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,7 +28,7 @@ public class BraveLicensePreferences extends BravePreferenceFragment {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String s) {
-        PreferenceUtils.addPreferencesFromResource(this, R.xml.brave_license_preferences);
+        SettingsUtils.addPreferencesFromResource(this, R.xml.brave_license_preferences);
         getActivity().setTitle(R.string.brave_license_text);
         TextMessagePreference licenseText =
                 (TextMessagePreference) findPreference(PREF_BRAVE_LICENSE_TEXT);

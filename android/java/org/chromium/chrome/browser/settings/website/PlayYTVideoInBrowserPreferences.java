@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.preferences.website;
+package org.chromium.chrome.browser.settings.website;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,8 +13,8 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.ChromeSwitchPreference;
-import org.chromium.chrome.browser.preferences.PreferenceUtils;
+import org.chromium.chrome.browser.settings.ChromeSwitchPreference;
+import org.chromium.chrome.browser.settings.SettingsUtils;
 
 public class PlayYTVideoInBrowserPreferences
         extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
@@ -23,7 +23,7 @@ public class PlayYTVideoInBrowserPreferences
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         getActivity().setTitle(R.string.settings_play_yt_video_in_browser_title);
-        PreferenceUtils.addPreferencesFromResource(this, R.xml.play_yt_video_in_browser_preferences);
+        SettingsUtils.addPreferencesFromResource(this, R.xml.play_yt_video_in_browser_preferences);
 
         ChromeSwitchPreference pref =
                 (ChromeSwitchPreference) findPreference(PLAY_YT_VIDEO_IN_BROWSER_KEY);

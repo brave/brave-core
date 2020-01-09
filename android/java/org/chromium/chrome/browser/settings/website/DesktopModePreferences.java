@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.preferences.website;
+package org.chromium.chrome.browser.settings.website;
 
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
@@ -11,8 +11,8 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.ChromeSwitchPreference;
-import org.chromium.chrome.browser.preferences.PreferenceUtils;
+import org.chromium.chrome.browser.settings.ChromeSwitchPreference;
+import org.chromium.chrome.browser.settings.SettingsUtils;
 
 public class DesktopModePreferences
         extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
@@ -21,7 +21,7 @@ public class DesktopModePreferences
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         getActivity().setTitle(R.string.settings_desktop_mode_title);
-        PreferenceUtils.addPreferencesFromResource(this, R.xml.desktop_mode_preferences);
+        SettingsUtils.addPreferencesFromResource(this, R.xml.desktop_mode_preferences);
 
         ChromeSwitchPreference desktopModePref =
                 (ChromeSwitchPreference) findPreference(DESKTOP_MODE_KEY);

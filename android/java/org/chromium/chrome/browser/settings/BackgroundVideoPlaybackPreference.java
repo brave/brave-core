@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.preferences;
+package org.chromium.chrome.browser.settings;
 
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
@@ -11,7 +11,8 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
-import org.chromium.chrome.browser.preferences.ChromeSwitchPreference;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.settings.ChromeSwitchPreference;
 
 public class BackgroundVideoPlaybackPreference
         extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
@@ -20,7 +21,7 @@ public class BackgroundVideoPlaybackPreference
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         getActivity().setTitle(R.string.prefs_background_video_playback);
-        PreferenceUtils.addPreferencesFromResource(this, R.xml.background_video_playback_preference);
+        SettingsUtils.addPreferencesFromResource(this, R.xml.background_video_playback_preference);
 
         ChromeSwitchPreference playbackPref =
                 (ChromeSwitchPreference) findPreference(BACKGROUND_VIDEO_PLAYBACK_KEY);

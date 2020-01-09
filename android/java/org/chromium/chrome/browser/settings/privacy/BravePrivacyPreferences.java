@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.preferences.privacy;
+package org.chromium.chrome.browser.settings.privacy;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,12 +13,12 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.ChromeBaseCheckBoxPreference;
-import org.chromium.chrome.browser.preferences.ChromeSwitchPreference;
-import org.chromium.chrome.browser.preferences.ManagedPreferenceDelegate;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
-import org.chromium.chrome.browser.preferences.PreferenceUtils;
-import org.chromium.chrome.browser.preferences.privacy.PrivacyPreferences;
+import org.chromium.chrome.browser.settings.ChromeBaseCheckBoxPreference;
+import org.chromium.chrome.browser.settings.ChromeSwitchPreference;
+import org.chromium.chrome.browser.settings.ManagedPreferenceDelegate;
+import org.chromium.chrome.browser.settings.privacy.PrivacyPreferences;
+import org.chromium.chrome.browser.settings.SettingsUtils;
 
 public class BravePrivacyPreferences extends PrivacyPreferences {
     private static final String PREF_HTTPSE = "httpse";
@@ -36,7 +36,7 @@ public class BravePrivacyPreferences extends PrivacyPreferences {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        PreferenceUtils.addPreferencesFromResource(this, R.xml.brave_privacy_preferences);
+        SettingsUtils.addPreferencesFromResource(this, R.xml.brave_privacy_preferences);
 
         super.onCreatePreferences(savedInstanceState, rootKey);
 

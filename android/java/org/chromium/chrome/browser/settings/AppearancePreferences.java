@@ -3,9 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.preferences;
+package org.chromium.chrome.browser.settings;
 
-import static org.chromium.chrome.browser.preferences.MainPreferences.PREF_UI_THEME;
+import static org.chromium.chrome.browser.settings.MainPreferences.PREF_UI_THEME;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.NightModeUtils;
 import org.chromium.chrome.browser.preferences.ChromePreferenceManager;
-import org.chromium.chrome.browser.preferences.ChromeSwitchPreference;
+import org.chromium.chrome.browser.settings.ChromeSwitchPreference;
 import org.chromium.chrome.browser.flags.FeatureUtilities;
 import org.chromium.ui.base.DeviceFormFactor;
 
@@ -31,7 +31,7 @@ public class AppearancePreferences
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.prefs_appearance);
-        PreferenceUtils.addPreferencesFromResource(this, R.xml.appearance_preferences);
+        SettingsUtils.addPreferencesFromResource(this, R.xml.appearance_preferences);
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(
                 ContextUtils.getApplicationContext());
         if (isTablet) {

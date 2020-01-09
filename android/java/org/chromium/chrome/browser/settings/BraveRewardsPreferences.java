@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.preferences;
+package org.chromium.chrome.browser.settings;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,6 +25,7 @@ import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.BraveRewardsPanelPopup;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 
 /**
  * Fragment to keep track of all Brave Rewards related preferences.
@@ -41,7 +42,7 @@ public class BraveRewardsPreferences extends BravePreferenceFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivity().setTitle(R.string.brave_ui_brave_rewards);
-        PreferenceUtils.addPreferencesFromResource(this, R.xml.brave_rewards_preferences);
+        SettingsUtils.addPreferencesFromResource(this, R.xml.brave_rewards_preferences);
     }
 
     @Override

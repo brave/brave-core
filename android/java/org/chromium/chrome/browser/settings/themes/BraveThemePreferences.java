@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.preferences.themes;
+package org.chromium.chrome.browser.settings.themes;
 
 import static org.chromium.chrome.browser.preferences.ChromePreferenceManager.DARKEN_WEBSITES_ENABLED_KEY;
 import static org.chromium.chrome.browser.preferences.ChromePreferenceManager.UI_THEME_SETTING_KEY;
@@ -16,12 +16,12 @@ import org.chromium.base.BuildInfo;
 import org.chromium.chrome.browser.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.preferences.ChromePreferenceManager;
-import org.chromium.chrome.browser.preferences.PreferenceUtils;
+import org.chromium.chrome.browser.settings.SettingsUtils;
 
 public class BraveThemePreferences extends ThemePreferences {
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, String rootKey) {
-        PreferenceUtils.addPreferencesFromResource(this, R.xml.brave_theme_preferences);
+        SettingsUtils.addPreferencesFromResource(this, R.xml.brave_theme_preferences);
         getActivity().setTitle(getResources().getString(R.string.prefs_themes));
 
         ChromePreferenceManager chromePreferenceManager = ChromePreferenceManager.getInstance();
