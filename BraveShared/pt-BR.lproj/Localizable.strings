@@ -88,6 +88,12 @@
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "Pular";
 
+/* Name of folder where restored bookmarks are retrieved */
+"RestoredBookmarksFolderName" = "Favoritos restaurados";
+
+/* Name of folder where restored favorites are retrieved */
+"RestoredFavoritesFolderName" = "Favoritos em destaque restaurados";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Ativar as sugestões de pesquisa?";
 

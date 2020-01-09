@@ -190,9 +190,6 @@
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
 
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"BraveShieldDefaults" = "Brave Shield 기본값";
-
 /* Sync page title */
 "BraveSync" = "동기화";
 

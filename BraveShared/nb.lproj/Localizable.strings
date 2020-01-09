@@ -88,6 +88,12 @@
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "Hopp over";
 
+/* Name of folder where restored bookmarks are retrieved */
+"RestoredBookmarksFolderName" = "Gjenopprettede bokmerker";
+
+/* Name of folder where restored favorites are retrieved */
+"RestoredFavoritesFolderName" = "Gjenopprettede favoritter";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Slå på søkeforslag?";
 

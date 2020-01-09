@@ -65,7 +65,7 @@
 "OBSaveButton" = "保存";
 
 /* Detail text for search engine onboarding screen */
-"OBSearchEngineDetail" = "デフフォルトの検索エンジンを設定する";
+"OBSearchEngineDetail" = "デフォルトの検索エンジンを設定する";
 
 /* Title for search engine onboarding screen */
 "OBSearchEngineTitle" = "Braveブラウザにようこそ！";
@@ -87,6 +87,12 @@
 
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "スキップ";
+
+/* Name of folder where restored bookmarks are retrieved */
+"RestoredBookmarksFolderName" = "復元されたブックマーク";
+
+/* Name of folder where restored favorites are retrieved */
+"RestoredFavoritesFolderName" = "復元されたお気に入り";
 
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "検索候補をオンにしますか？";

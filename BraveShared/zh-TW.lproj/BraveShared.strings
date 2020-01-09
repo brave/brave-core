@@ -190,9 +190,6 @@
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
 
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"BraveShieldDefaults" = "Brave Shield 預設";
-
 /* Sync page title */
 "BraveSync" = "同步";
 
@@ -1136,7 +1133,7 @@
 "VersionTemplate" = "%1$@ 版 (%2$@)";
 
 /* Label that says where to view an item. '%@' is a placeholder and will include things like 'Instagram', 'unsplash'. The full label will look like 'View  on Instagram'. */
-"ViewOn" = "瀏覽於 ％@";
+"ViewOn" = "瀏覽於 %@";
 
 /* The date your wallet was created */
 "WalletCreationDate" = "錢包建立日期";

@@ -98,7 +98,7 @@
 "BraveRewardsAutoContributeNextDate" = "下一次捐款日期";
 
 /* No comment provided by engineer. */
-"BraveRewardsAutoContributeRestoreExcludedSites" = "恢复 ％ld 个排除的站点";
+"BraveRewardsAutoContributeRestoreExcludedSites" = "恢复 %ld 个排除的站点";
 
 /* No comment provided by engineer. */
 "BraveRewardsAutoContributeSupportedSites" = "支持的网站";
@@ -113,7 +113,7 @@
 "BraveRewardsCheckAgain" = "刷新状态";
 
 /* No comment provided by engineer. */
-"BraveRewardsContributingToUnverifiedSites" = "您已将 ％@ 指定给尚未注册要接收捐款的创建者。您的浏览器会继续尝试进行捐款，直到他们通过验证或直到90天为止。";
+"BraveRewardsContributingToUnverifiedSites" = "您已将 %@ 指定给尚未注册要接收捐款的创建者。您的浏览器会继续尝试进行捐款，直到他们通过验证或直到90天为止。";
 
 /* No comment provided by engineer. */
 "BraveRewardsCreatingWallet" = "创建钱包";
@@ -158,7 +158,7 @@
 "BraveRewardsFourAdsPerHour" = "每小时 4 个广告";
 
 /* No comment provided by engineer. */
-"BraveRewardsGrantListExpiresOn" = "％@到期";
+"BraveRewardsGrantListExpiresOn" = "%@到期";
 
 /* No comment provided by engineer. */
 "BraveRewardsGrants" = "赠款";
@@ -314,7 +314,7 @@
 "BraveRewardsSettingsAdsComingSoonText" = "即将推出。";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsGrantAmountText" = "您的广告收入，％@ 可用。";
+"BraveRewardsSettingsAdsGrantAmountText" = "您的广告收入，%@ 可用。";
 
 /* Example: <10 BAT> earned from ads */
 "BraveRewardsSettingsAdsGrantText" = "广告收入";
@@ -437,7 +437,7 @@
 "BraveRewardsTotalGrantsClaimedJapan" = "赠予的积分已被领取";
 
 /* No comment provided by engineer. */
-"BraveRewardsTotalSites" = "总计％ld";
+"BraveRewardsTotalSites" = "总计%ld";
 
 /* No comment provided by engineer. */
 "BraveRewardsTwoAdsPerHour" = "每小时 2 个广告";
@@ -497,7 +497,7 @@
 "NotificationContributeNotificationError" = "处理您的捐款时出现问题。";
 
 /* We show this string in the notification when contribution is successful */
-"NotificationContributeSuccess" = "您已捐赠了 ％@。";
+"NotificationContributeSuccess" = "您已捐赠了 %@。";
 
 /* We show this string in notification when tip fails */
 "NotificationContributeTipError" = "无法发送您的酬谢费。请稍后再试。";
@@ -527,7 +527,7 @@
 "NotificationTipsProcessedBody" = "您的每月酬谢费已处理！";
 
 /* Notification text that tells user which publisher just verified */
-"NotificationVerifiedPublisherBody" = "创作者 ％@ 最近已通过验证。";
+"NotificationVerifiedPublisherBody" = "创作者 %@ 最近已通过验证。";
 
 /* No comment provided by engineer. */
 "OK" = "好";
@@ -536,7 +536,7 @@
 "OneTimeText" = "一次性";
 
 /* This is a suffix statement. example: SomeChannel on Twitter */
-"OnProviderText" = "日期：％@";
+"OnProviderText" = "日期：%@";
 
 /* No comment provided by engineer. */
 "PrivacyPolicyURL" = "隐私政策";

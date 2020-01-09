@@ -88,6 +88,12 @@
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "Пропустити";
 
+/* Name of folder where restored bookmarks are retrieved */
+"RestoredBookmarksFolderName" = "Відновлені закладки";
+
+/* Name of folder where restored favorites are retrieved */
+"RestoredFavoritesFolderName" = "Відновлений список вибраного";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Увімкнути пошукові підказки?";
 
