@@ -2,16 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-const uuidv4 = require('uuid/v4')
-
 import shieldsPanelActions from '../actions/shieldsPanelActions'
 
-const informTabOfCosmeticRulesToConsider = (tabId: number, hideRules: string[], customStyleRules: any) => {
-  if (hideRules.length !== 0 || (customStyleRules && customStyleRules !== {})) {
+const informTabOfCosmeticRulesToConsider = (tabId: number, hideRules: string[]) => {
+  if (hideRules.length !== 0) {
     const message = {
       type: 'cosmeticFilterConsiderNewRules',
-      hideRules,
-      customStyleRules
+      hideRules
     }
     const options = {
       frameId: 0
@@ -23,7 +20,7 @@ const informTabOfCosmeticRulesToConsider = (tabId: number, hideRules: string[], 
 export const injectClassIdStylesheet = (tabId: number, classes: string[], ids: string[], exceptions: string[]) => {
   chrome.braveShields.hiddenClassIdSelectors(classes, ids, exceptions, (jsonSelectors) => {
     const hideSelectors = JSON.parse(jsonSelectors)
-    informTabOfCosmeticRulesToConsider(tabId, hideSelectors, null)
+    informTabOfCosmeticRulesToConsider(tabId, hideSelectors)
   })
 }
 
@@ -34,7 +31,17 @@ export const applyAdblockCosmeticFilters = (tabId: number, hostname: string) => 
       return
     }
 
-    informTabOfCosmeticRulesToConsider(tabId, resources.hide_selectors, resources.style_selectors)
+    informTabOfCosmeticRulesToConsider(tabId, resources.hide_selectors)
+
+    let styledStylesheet = ''
+    for (const selector in resources.style_selectors) {
+      styledStylesheet += selector + '{' + resources.style_selectors[selector].join(';') + ';}\n'
+    }
+    chrome.tabs.insertCSS(tabId, {
+      code: styledStylesheet,
+      cssOrigin: 'user',
+      runAt: 'document_start'
+    })
 
     if (resources.injected_script) {
       chrome.tabs.executeScript(tabId, {
@@ -43,15 +50,15 @@ export const applyAdblockCosmeticFilters = (tabId: number, hostname: string) => 
       })
     }
 
-    const randomizedClassName = 'b' + uuidv4().split('-').slice(0, 2).join('')
+    shieldsPanelActions.cosmeticFilterRuleExceptions(tabId, resources.exceptions)
+  })
+}
 
-    chrome.tabs.insertCSS(tabId, {
-      code: `.${randomizedClassName} {display: none !important;}`,
-      cssOrigin: 'user',
-      runAt: 'document_start'
-    })
-
-    shieldsPanelActions.cosmeticFilterRuleExceptions(tabId, resources.exceptions, randomizedClassName)
+export const hideThirdPartySelectors = (tabId: number, selectors: string[]) => {
+  chrome.tabs.insertCSS(tabId, {
+    code: `${selectors.join(',')}{display:none!important;}`,
+    cssOrigin: 'user',
+    runAt: 'document_start'
   })
 }
 

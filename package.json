@@ -345,7 +345,6 @@
     "redux-thunk": "^2.3.0",
     "throttleit": "^1.0.0",
     "unique-selector": "^0.4.1",
-    "uuid": "^3.3.2",
     "webext-redux": "^2.1.4",
     "webtorrent": "^0.107.16"
   }

@@ -147,12 +147,11 @@ export const generateClassIdStylesheet = (tabId: number, classes: string[], ids:
   }
 }
 
-export const cosmeticFilterRuleExceptions = (tabId: number, exceptions: string[], randomizedClassName: string) => {
+export const cosmeticFilterRuleExceptions = (tabId: number, exceptions: string[]) => {
   return {
     type: types.COSMETIC_FILTER_RULE_EXCEPTIONS,
     tabId,
-    exceptions,
-    randomizedClassName
+    exceptions
   }
 }
 

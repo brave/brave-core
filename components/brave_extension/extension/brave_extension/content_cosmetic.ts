@@ -16,56 +16,78 @@ const queriedClasses = new Set()
 let notYetQueriedClasses: string[] = []
 let notYetQueriedIds: string[] = []
 
-let randomizedClassName: string | undefined = undefined
+let backgroundReady: boolean = false
+
+const fetchNewClassIdRules = function () {
+  // Only let the backend know that we've found new classes and id attributes
+  // if  the back end has told us its ready to go and we have at least one new
+  // class or id to query for.
+  if (backgroundReady) {
+    if (notYetQueriedClasses.length !== 0 || notYetQueriedIds.length !== 0) {
+      chrome.runtime.sendMessage({
+        type: 'hiddenClassIdSelectors',
+        classes: notYetQueriedClasses,
+        ids: notYetQueriedIds
+      })
+      notYetQueriedClasses = []
+      notYetQueriedIds = []
+    }
+  } else {
+    setTimeout(fetchNewClassIdRules, 100)
+  }
+}
 
 const handleMutations = function (mutations: any[]) {
   for (const aMutation of mutations) {
-    if (aMutation.type !== 'attributes') {
-      continue
-    }
+    if (aMutation.type === 'attribute') {
+      // Since we're filtering for attribute modifications, we can be certain
+      // that the targets are always HTMLElements, and never TextNode.
+      const changedElm = aMutation.target
+      switch (aMutation.attributeName) {
+        case 'class':
+          for (const aClassName of changedElm.classList.values()) {
+            if (queriedClasses.has(aClassName) === false) {
+              notYetQueriedClasses.push(aClassName)
+              queriedClasses.add(aClassName)
+            }
+          }
+          break
 
-    // Since we're filtering for attribute modifications, we can be certain
-    // that the targets are always HTMLElements, and never TextNode.
-    const changedElm = aMutation.target
-    switch (aMutation.attributeName) {
-      case 'class':
-        for (const aClassName of changedElm.classList.values()) {
-          if (queriedClasses.has(aClassName) === false) {
-            notYetQueriedClasses.push(aClassName)
-            queriedClasses.add(aClassName)
+        case 'id':
+          const mutatedId = changedElm.id
+          if (queriedIds.has(mutatedId) === false) {
+            notYetQueriedIds.push(mutatedId)
+            queriedIds.add(mutatedId)
+          }
+          break
+      }
+    } else if (aMutation.addedNodes.length > 0) {
+      for (const element of aMutation.addedNodes) {
+        const id = element.id
+        if (id && !queriedIds.has(id)) {
+          notYetQueriedIds.push(id)
+          queriedIds.add(id)
+        }
+        const classList: any = element.classList
+        if (classList) {
+          for (const className of classList.values()) {
+            if (className && !queriedClasses.has(className)) {
+              notYetQueriedClasses.push(className)
+              queriedClasses.add(className)
+            }
           }
         }
-        break
-
-      case 'id':
-        const mutatedId = changedElm.id
-        if (queriedIds.has(mutatedId) === false) {
-          notYetQueriedIds.push(mutatedId)
-          queriedIds.add(mutatedId)
-        }
-        break
+      }
     }
   }
 
-  // Only let the backend know that we've found new classes and id attributes
-  // if (1) the back end has told us its ready to go
-  // (e.g. randomizedClassName has been set) and we have at least one
-  // new class or id to query for.
-  if (randomizedClassName !== undefined &&
-      (notYetQueriedClasses.length !== 0 || notYetQueriedIds.length !== 0)) {
-    chrome.runtime.sendMessage({
-      type: 'hiddenClassIdSelectors',
-      classes: notYetQueriedClasses,
-      ids: notYetQueriedIds
-    })
-    notYetQueriedClasses = []
-    notYetQueriedIds = []
-  }
+  fetchNewClassIdRules()
 }
 
 const cosmeticObserver = new MutationObserver(handleMutations)
 let observerConfig = {
   subtree: true,
+  childList: true,
   attributeFilter: ['id', 'class']
 }
 cosmeticObserver.observe(document.documentElement, observerConfig)
@@ -210,18 +232,18 @@ const isSubTreeFirstParty = (elm: Element, possibleQueryResult?: IsFirstPartyQue
   )
 }
 
-const hideSubtree = (elm: HTMLElement) => {
-  if (elm.classList) {
-    if (randomizedClassName) {
-      elm.classList.add(randomizedClassName)
-    } else {
-      console.error('Random class name was not initialized yet')
-    }
-  } else if (elm.parentNode) {
-    (elm.parentNode as HTMLElement).removeChild(elm)
+const hideSelectors = (selectors: string[]) => {
+  if (selectors.length === 0) {
+    return
   }
+
+  chrome.runtime.sendMessage({
+    type: 'hideThirdPartySelectors',
+    selectors
+  })
 }
 
+const alreadyHiddenSelectors = new Set()
 const alreadyHiddenThirdPartySubTrees = new WeakSet()
 const allSelectorsSet = new Set()
 const firstRunQueue = new Set()
@@ -249,16 +271,25 @@ const pumpCosmeticFilterQueues = () => {
     const currentWorkLoad = Array.from(currentQueue.values()).slice(0, maxWorkSize)
     const comboSelector = currentWorkLoad.join(',')
     const matchingElms = document.querySelectorAll(comboSelector)
+    const selectorsToHide = []
+
     for (const aMatchingElm of Array.from(matchingElms)) {
       if (alreadyHiddenThirdPartySubTrees.has(aMatchingElm)) {
         continue
       }
       const elmSubtreeIsFirstParty = isSubTreeFirstParty(aMatchingElm)
       if (elmSubtreeIsFirstParty === false) {
-        hideSubtree(aMatchingElm as HTMLElement)
+        for (const selector of currentWorkLoad) {
+          if (aMatchingElm.matches(selector) && !alreadyHiddenSelectors.has(selector)) {
+            selectorsToHide.push(selector)
+            alreadyHiddenSelectors.add(selector)
+          }
+        }
         alreadyHiddenThirdPartySubTrees.add(aMatchingElm)
       }
     }
+
+    hideSelectors(selectorsToHide)
 
     for (const aUsedSelector of currentWorkLoad) {
       currentQueue.delete(aUsedSelector)
@@ -283,9 +314,8 @@ const pumpCosmeticFilterQueues = () => {
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
-    case 'cosmeticFilterGenericExceptions': {
-      randomizedClassName = msg.randomizedClassName
-      sendResponse(null)
+    case 'cosmeticFilteringBackgroundReady': {
+      backgroundReady = true
       break
     }
 
@@ -299,6 +329,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         firstRunQueue.add(aHideRule)
       }
       pumpCosmeticFilterQueues()
+      break
     }
   }
 })

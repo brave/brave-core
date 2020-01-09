@@ -5,7 +5,8 @@
 function addElementsDynamically() {
   let root = document.documentElement;
   for (let i = 0; i < 10; i++) {
-    const e = document.createElement('div')
+    const e = document.createElement('img')
+    e.src = 'https://example.com/logo.png'
     e.className = 'blockme'
     root.appendChild(e);
   }
@@ -25,17 +26,18 @@ function checkSelector(selector, property, expected) {
       return style[property] === expected;
     })
     window.domAutomationController.send(result)
-  }, 1500)
+  }, 3000)
 }
 
 </script>
 </head>
 <body>
-    <div id="ad-banner"></div>
+    <div class="fpsponsored"><img src="b.com/sponsored/640x820.png"></div>
+    <div id="ad-banner"><img src="https://example.com/logo.png" alt=""></div>
     <div class="ad-banner">
-        <div class="ad"><img src="third-party.example.com"></img></div>
+        <div class="ad" style="background: url(example.com)"><img src="https://example.com/logo.png" alt=""></div>
     </div>
-    <div class="ad"></div>
-    <div class="ad"></div>
+    <div class="ad" style="background: url(example.com)"><img src="https://example.com/logo.png" alt=""></div>
+    <div class="ad" style="background: url(example.com)"><img src="https://example.com/logo.png" alt=""></div>
 </body>
 </html>

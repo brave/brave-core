@@ -873,6 +873,28 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest, CosmeticFilteringSimple) {
   EXPECT_TRUE(as_expected);
 }
 
+// Test cosmetic filtering ignores content determined to be 1st party
+IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest,
+                       CosmeticFilteringProtect1p) {
+  UpdateAdBlockInstanceWithRules("b.com##.fpsponsored\n");
+
+  WaitForBraveExtensionShieldsDataReady();
+
+  GURL tab_url = embedded_test_server()->GetURL("b.com",
+                                                "/cosmetic_filtering.html");
+  ui_test_utils::NavigateToURL(browser(), tab_url);
+
+  content::WebContents* contents =
+    browser()->tab_strip_model()->GetActiveWebContents();
+
+  bool as_expected = false;
+  ASSERT_TRUE(ExecuteScriptAndExtractBool(
+              contents,
+              "checkSelector('.fpsponsored', 'display', 'block')",
+              &as_expected));
+  EXPECT_TRUE(as_expected);
+}
+
 // Test cosmetic filtering on elements added dynamically
 IN_PROC_BROWSER_TEST_F(CosmeticFilteringEnabledTest, CosmeticFilteringDynamic) {
   UpdateAdBlockInstanceWithRules("##.blockme");
