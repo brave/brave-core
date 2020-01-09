@@ -64,6 +64,9 @@ NTPSponsoredImagesComponentManager
                     size_t wallpaper_index) const;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(NTPSponsoredImagesComponentManagerTest,
+                           InternalDataTest);
+
   // BraveComponent overrides:
   void OnComponentReady(const std::string& component_id,
                         const base::FilePath& installed_dir,
@@ -77,10 +80,12 @@ NTPSponsoredImagesComponentManager
   void ParseAndCachePhotoJsonData(const std::string& photo_json);
   void NotifyObservers();
 
+  void ResetInternalImagesDataForTest();
+
   base::FilePath photo_json_file_path_;
   component_updater::ComponentUpdateService* cus_ = nullptr;
   base::ObserverList<Observer>::Unchecked observer_list_;
-  std::unique_ptr<NTPSponsoredImagesInternalData> ntp_sponsored_images_data_;
+  std::unique_ptr<NTPSponsoredImagesInternalData> internal_images_data_;
   base::WeakPtrFactory<NTPSponsoredImagesComponentManager> weak_factory_;
 };
 

@@ -156,6 +156,7 @@ test("brave_unit_tests") {
       "//brave/common/importer/brave_mock_importer_bridge.cc",
       "//brave/common/importer/brave_mock_importer_bridge.h",
       "//brave/components/invalidation/push_client_channel_unittest.cc",
+      "//brave/components/ntp_sponsored_images/ntp_sponsored_images_component_manager_unittest.cc",
       "//chrome/browser/push_messaging/push_messaging_app_identifier_unittest.cc",
       "//chrome/browser/push_messaging/push_messaging_notification_manager_unittest.cc",
       "//chrome/browser/push_messaging/push_messaging_service_unittest.cc",

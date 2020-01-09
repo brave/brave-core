@@ -8,6 +8,8 @@
 #include "base/logging.h"
 #include "brave/components/ntp_sponsored_images/ntp_sponsored_images_internal_data.h"
 
+NTPSponsoredImagesData::NTPSponsoredImagesData() = default;
+
 NTPSponsoredImagesData::NTPSponsoredImagesData(
     const NTPSponsoredImagesInternalData& internal_data) {
   logo_alt_text = internal_data.logo_alt_text;

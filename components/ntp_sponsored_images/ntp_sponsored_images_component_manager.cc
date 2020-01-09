@@ -67,6 +67,10 @@ NTPSponsoredImagesComponentManager::NTPSponsoredImagesComponentManager(
     const std::string& locale)
     : BraveComponent(delegate),
       weak_factory_(this) {
+  // Early return for test.
+  if (!cus)
+    return;
+
   if (const auto& data = GetRegionalComponentData(locale)) {
     Register(kComponentName,
              data->component_id,
@@ -91,26 +95,26 @@ void NTPSponsoredImagesComponentManager::RemoveObserver(Observer* observer) {
 
 void NTPSponsoredImagesComponentManager::AddDataSources(
     content::BrowserContext* browser_context) {
-  if (!ntp_sponsored_images_data_)
+  if (!internal_images_data_)
     return;
 
-  if (!ntp_sponsored_images_data_->logo_image_file.empty()) {
+  if (!internal_images_data_->logo_image_file.empty()) {
     content::URLDataSource::Add(
         browser_context,
         std::make_unique<NTPSponsoredImageSource>(
             weak_factory_.GetWeakPtr(),
-            ntp_sponsored_images_data_->logo_image_file,
+            internal_images_data_->logo_image_file,
             0,
             NTPSponsoredImageSource::Type::TYPE_LOGO));
   }
 
-  size_t count = ntp_sponsored_images_data_->wallpaper_image_files.size();
+  size_t count = internal_images_data_->wallpaper_image_files.size();
   for (size_t i = 0; i < count; ++i) {
     content::URLDataSource::Add(
         browser_context,
         std::make_unique<NTPSponsoredImageSource>(
             weak_factory_.GetWeakPtr(),
-            ntp_sponsored_images_data_->wallpaper_image_files[i],
+            internal_images_data_->wallpaper_image_files[i],
             i,
             NTPSponsoredImageSource::Type::TYPE_WALLPAPER));
   }
@@ -118,8 +122,8 @@ void NTPSponsoredImagesComponentManager::AddDataSources(
 
 base::Optional<NTPSponsoredImagesData>
 NTPSponsoredImagesComponentManager::GetLatestSponsoredImagesData() const {
-  if (ntp_sponsored_images_data_)
-    return NTPSponsoredImagesData(*ntp_sponsored_images_data_);
+  if (internal_images_data_)
+    return NTPSponsoredImagesData(*internal_images_data_);
 
   return base::nullopt;
 }
@@ -127,19 +131,22 @@ NTPSponsoredImagesComponentManager::GetLatestSponsoredImagesData() const {
 bool NTPSponsoredImagesComponentManager::IsValidImage(
     NTPSponsoredImageSource::Type type,
     size_t wallpaper_index) const {
-  if (!ntp_sponsored_images_data_)
+  if (!internal_images_data_)
     return false;
 
   if (type == NTPSponsoredImageSource::Type::TYPE_LOGO)
-    return !ntp_sponsored_images_data_->logo_image_file.empty();
+    return !internal_images_data_->logo_image_file.empty();
 
   // If |wallpaper_index| is bigger than url vector size, it's invalid one.
   const size_t wallpaper_image_files_count =
-      ntp_sponsored_images_data_->wallpaper_image_files.size();
+      internal_images_data_->wallpaper_image_files.size();
   return wallpaper_image_files_count > wallpaper_index;
 }
 
 void NTPSponsoredImagesComponentManager::ReadPhotoJsonFileAndNotify() {
+  // Reset previous data.
+  internal_images_data_.reset();
+
   base::PostTaskAndReplyWithResult(
       FROM_HERE, {base::ThreadPool(), base::MayBlock()},
       base::BindOnce(&ReadPhotoJsonData, photo_json_file_path_),
@@ -173,35 +180,35 @@ void NTPSponsoredImagesComponentManager::OnGetPhotoJsonData(
 void NTPSponsoredImagesComponentManager::ParseAndCachePhotoJsonData(
     const std::string& photo_json) {
   base::Optional<base::Value> photo_value = base::JSONReader::Read(photo_json);
-  ntp_sponsored_images_data_.reset(new NTPSponsoredImagesInternalData);
   if (photo_value) {
+    internal_images_data_.reset(new NTPSponsoredImagesInternalData);
+
     // Resources are stored with json file in the same directory.
     base::FilePath base_dir = photo_json_file_path_.DirName();
 
     if (auto* logo_image_url = photo_value->FindStringPath(kLogoImageURLKey)) {
-      ntp_sponsored_images_data_->logo_image_file =
+      internal_images_data_->logo_image_file =
           base_dir.AppendASCII(*logo_image_url);
     }
 
     if (auto* logo_alt_text = photo_value->FindStringPath(kLogoAltTextKey)) {
-      ntp_sponsored_images_data_->logo_alt_text = *logo_alt_text;
+      internal_images_data_->logo_alt_text = *logo_alt_text;
     }
 
     if (auto* logo_company_name =
             photo_value->FindStringPath(kLogoCompanyNameKey)) {
-      ntp_sponsored_images_data_->logo_company_name = *logo_company_name;
+      internal_images_data_->logo_company_name = *logo_company_name;
     }
 
     if (auto* logo_destination_url =
             photo_value->FindStringPath(kLogoDestinationURLKey)) {
-      ntp_sponsored_images_data_->logo_destination_url =
-          *logo_destination_url;
+      internal_images_data_->logo_destination_url = *logo_destination_url;
     }
 
     if (auto* wallpaper_image_urls =
             photo_value->FindListPath(kWallpaperImageURLsKey)) {
       for (const auto& value : wallpaper_image_urls->GetList()) {
-        ntp_sponsored_images_data_->wallpaper_image_files.push_back(
+        internal_images_data_->wallpaper_image_files.push_back(
             base_dir.AppendASCII(value.GetString()));
       }
     }
@@ -209,6 +216,14 @@ void NTPSponsoredImagesComponentManager::ParseAndCachePhotoJsonData(
 }
 
 void NTPSponsoredImagesComponentManager::NotifyObservers() {
-  for (auto& observer : observer_list_)
-    observer.OnUpdated(NTPSponsoredImagesData(*ntp_sponsored_images_data_));
+  for (auto& observer : observer_list_) {
+    if (internal_images_data_)
+      observer.OnUpdated(NTPSponsoredImagesData(*internal_images_data_));
+    else
+      observer.OnUpdated(NTPSponsoredImagesData());
+  }
+}
+
+void NTPSponsoredImagesComponentManager::ResetInternalImagesDataForTest() {
+  internal_images_data_.reset();
 }
