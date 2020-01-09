@@ -190,9 +190,6 @@
 /* Brave Rewards settings title */
 "BraveRewardsTitle" = "Brave Rewards";
 
-/* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
-"BraveShieldDefaults" = "Opciones por defecto de Brave Shield";
-
 /* Sync page title */
 "BraveSync" = "Sincronización";
 

@@ -88,6 +88,12 @@
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "跳过";
 
+/* Name of folder where restored bookmarks are retrieved */
+"RestoredBookmarksFolderName" = "恢复的书签";
+
+/* Name of folder where restored favorites are retrieved */
+"RestoredFavoritesFolderName" = "恢复的收藏夹";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "开启搜索建议功能？";
 

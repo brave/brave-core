@@ -88,6 +88,12 @@
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "건너뛰기";
 
+/* Name of folder where restored bookmarks are retrieved */
+"RestoredBookmarksFolderName" = "복원된 북마크";
+
+/* Name of folder where restored favorites are retrieved */
+"RestoredFavoritesFolderName" = "복원된 즐겨찾기";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "추천 검색어를 사용하시겠습니까?";
 

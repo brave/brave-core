@@ -88,6 +88,12 @@
 /* Skip button to skip onboarding and start using the app. */
 "OnboardingSkipButton" = "Lewati";
 
+/* Name of folder where restored bookmarks are retrieved */
+"RestoredBookmarksFolderName" = "Penanda Halaman Dikembalikan";
+
+/* Name of folder where restored favorites are retrieved */
+"RestoredFavoritesFolderName" = "Pilihan Favorit Dikembalikan";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Aktifkan saran pencarian?";
 
