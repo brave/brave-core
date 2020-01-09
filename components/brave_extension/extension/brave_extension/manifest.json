@@ -91,30 +91,6 @@
       "js": [
         "assets/siteHack-glennbeck.com.js"
       ]
-    }, {
-      "run_at": "document_start",
-      "all_frames": false,
-      "matches": ["https://*.washingtonpost.com/*"],
-      "js": [
-        "out/batsense/content/washingtonpost.bundle.js"
-      ]
-    }, {
-      "run_at": "document_start",
-      "all_frames": false,
-      "matches": ["https://*.marketwatch.com/*"],
-      "js": [
-        "out/batsense/content/marketwatch.bundle.js"
-      ]
-    }, {
-      "run_at": "document_start",
-      "all_frames": false,
-      "matches": [
-        "https://*.wsj.com/*",
-        "https://*.barrons.com/*"
-      ],
-      "js": [
-        "out/batsense/content/wsjgroup.bundle.js"
-      ]
     }
   ],
   "permissions": [ "contentSettings", "settingsPrivate", "management", "tabs", "storage", "webNavigation", "contextMenus", "cookies", "*://*/*", "chrome://favicon/*" ],

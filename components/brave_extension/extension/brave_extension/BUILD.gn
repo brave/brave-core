@@ -12,9 +12,6 @@ transpile_web_ui("brave_extension") {
     ["content_cosmetic", rebase_path("content_cosmetic.ts")],
     ["webstore", rebase_path("webstore.ts")],
     ["batsense/background", rebase_path("batsense/background.js")],
-    ["batsense/content/washingtonpost", rebase_path("batsense/content/washingtonpost.js")],
-    ["batsense/content/marketwatch", rebase_path("batsense/content/marketwatch.js")],
-    ["batsense/content/wsjgroup", rebase_path("batsense/content/wsjgroup.js")],
   ]
 
   # what is the directory / pack name
