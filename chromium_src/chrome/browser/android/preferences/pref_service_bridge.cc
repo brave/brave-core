@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/version_info.h"
-#include "chrome/android/chrome_jni_headers/PrefServiceBridge_jni.h"
+#include "chrome/browser/preferences/jni_headers/PrefServiceBridge_jni.h"
 
 #define JNI_PrefServiceBridge_GetAboutVersionStrings \
   JNI_PrefServiceBridge_GetAboutVersionStrings_ChromiumImpl
