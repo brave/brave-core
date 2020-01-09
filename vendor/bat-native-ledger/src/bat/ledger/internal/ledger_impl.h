@@ -179,7 +179,7 @@ class LedgerImpl : public ledger::Ledger,
   void OnWalletInitializedInternal(ledger::Result result,
                                    ledger::InitializeCallback callback);
 
-  void OnWalletProperties(ledger::Result result,
+  virtual void OnWalletProperties(ledger::Result result,
                           const ledger::WalletProperties&);
 
   void FetchWalletProperties(
@@ -207,7 +207,7 @@ class LedgerImpl : public ledger::Ledger,
       double balance,
       ledger::RecoverWalletCallback callback);
 
-  void LoadURL(
+  virtual void LoadURL(
       const std::string& url,
       const std::vector<std::string>& headers,
       const std::string& content,
@@ -318,7 +318,7 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& viewing_id,
       const ledger::CurrentReconcileProperties& reconcile);
 
-  const std::string& GetPaymentId() const;
+  virtual const std::string& GetPaymentId() const;
 
   const std::string& GetPersonaId() const;
 
@@ -336,7 +336,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetPreFlight(const std::string& pre_flight);
 
-  const ledger::WalletInfoProperties& GetWalletInfo() const;
+  virtual const ledger::WalletInfoProperties& GetWalletInfo() const;
 
   void SetWalletInfo(const ledger::WalletInfoProperties& info);
 
@@ -390,7 +390,7 @@ class LedgerImpl : public ledger::Ledger,
       const ledger::PublisherInfoList* list,
       uint32_t /* next_record */);
 
-  void SetTimer(uint64_t time_offset, uint32_t* timer_id) const;
+  virtual void SetTimer(uint64_t time_offset, uint32_t* timer_id) const;
 
   bool AddReconcileStep(const std::string& viewing_id,
                         ledger::ContributionRetry step,

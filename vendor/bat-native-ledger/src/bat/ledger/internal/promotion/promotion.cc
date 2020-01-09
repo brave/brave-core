@@ -535,6 +535,7 @@ void Promotion::OnFetchSignedTokens(
   }
 
   std::string json_creds;
+  // TODO(masparrow): this derefences pointers without guarding
   base::JSONWriter::Write(
       *parsed_response.FindListKey("signed_creds"),
       &json_creds);
