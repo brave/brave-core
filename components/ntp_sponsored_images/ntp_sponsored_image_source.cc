@@ -5,6 +5,8 @@
 
 #include "brave/components/ntp_sponsored_images/ntp_sponsored_image_source.h"
 
+#include <utility>
+
 #include "base/bind.h"
 #include "base/files/file_util.h"
 #include "base/memory/ref_counted_memory.h"

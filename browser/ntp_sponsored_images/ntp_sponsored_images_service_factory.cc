@@ -44,6 +44,6 @@ bool NTPSponsoredImagesServiceFactory::ServiceIsNULLWhileTesting() const {
 bool
 NTPSponsoredImagesServiceFactory::ServiceIsCreatedWithBrowserContext() const {
   // Service should be initialized when profile is created to set proper
-  // provider to TemplateURLService.
+  // URLDataSource whenever ntp sponsored component is updated.
   return true;
 }
