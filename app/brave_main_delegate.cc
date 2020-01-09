@@ -173,7 +173,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       feed::kInterestFeedContentSuggestions.name,
 #endif
       unified_consent::kUnifiedConsent.name,
-      switches::kSyncUSSBookmarks.name,
   };
   command_line.AppendFeatures(enabled_features, disabled_features);
 
