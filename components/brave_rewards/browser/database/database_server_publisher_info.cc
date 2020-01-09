@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
 #include <utility>
 
 #include "base/bind.h"
@@ -15,7 +14,6 @@
 
 namespace {
   const char table_name_[] = "server_publisher_info";
-  const int minimum_version_ = 7;
 }  // namespace
 
 namespace brave_rewards {
@@ -30,42 +28,6 @@ DatabaseServerPublisherInfo::DatabaseServerPublisherInfo(
 DatabaseServerPublisherInfo::~DatabaseServerPublisherInfo() {
 }
 
-bool DatabaseServerPublisherInfo::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  success = banner_->Init(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabaseServerPublisherInfo::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
-  return CreateTableV7(db);
-}
-
 bool DatabaseServerPublisherInfo::CreateTableV7(sql::Database* db) {
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s "
@@ -78,10 +40,6 @@ bool DatabaseServerPublisherInfo::CreateTableV7(sql::Database* db) {
       table_name_);
 
   return db->Execute(query.c_str());
-}
-
-bool DatabaseServerPublisherInfo::CreateIndex(sql::Database* db) {
-  return this->InsertIndex(db, table_name_, "publisher_key");
 }
 
 bool DatabaseServerPublisherInfo::CreateIndexV7(sql::Database* db) {
@@ -115,6 +73,10 @@ bool DatabaseServerPublisherInfo::MigrateToV7(sql::Database* db) {
   }
 
   if (!CreateIndexV7(db)) {
+    return false;
+  }
+
+  if (!banner_->Migrate(db, 7)) {
     return false;
   }
 

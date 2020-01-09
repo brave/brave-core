@@ -15,7 +15,6 @@
 
 namespace {
   const char table_name_[] = "contribution_info";
-  const int minimum_version_ = 2;
 
   double ProbiToDouble(const std::string& probi) {
     const int32_t probi_size = 18;
@@ -58,41 +57,6 @@ DatabaseContributionInfo::DatabaseContributionInfo(int current_db_version) :
 }
 
 DatabaseContributionInfo::~DatabaseContributionInfo() = default;
-
-bool DatabaseContributionInfo::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = publishers_->Init(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabaseContributionInfo::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
-  return CreateTableV11(db);
-}
-
-bool DatabaseContributionInfo::CreateIndex(sql::Database* db) {
-  return true;
-}
 
 bool DatabaseContributionInfo::CreateTableV2(sql::Database* db) {
   const std::string query = base::StringPrintf(

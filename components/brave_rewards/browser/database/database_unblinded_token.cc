@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
+#include <map>
 #include <utility>
 
 #include "base/bind.h"
@@ -19,7 +19,6 @@ namespace brave_rewards {
 namespace  {
 
 const char* table_name_ = "unblinded_tokens";
-const int minimum_version_ = 10;
 
 int64_t GetExpirationDate(const int32_t type, const int64_t stamp) {
   const auto promotion_type = static_cast<ledger::PromotionType>(type);
@@ -38,37 +37,6 @@ DatabaseUnblindedToken::DatabaseUnblindedToken(
 }
 
 DatabaseUnblindedToken::~DatabaseUnblindedToken() {
-}
-
-bool DatabaseUnblindedToken::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabaseUnblindedToken::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
-  return CreateTableV15(db);
 }
 
 bool DatabaseUnblindedToken::CreateTableV10(sql::Database* db) {
@@ -103,10 +71,6 @@ bool DatabaseUnblindedToken::CreateTableV15(sql::Database* db) {
       table_name_);
 
   return db->Execute(query.c_str());
-}
-
-bool DatabaseUnblindedToken::CreateIndex(sql::Database* db) {
-  return CreateIndexV15(db);
 }
 
 bool DatabaseUnblindedToken::CreateIndexV10(sql::Database* db) {

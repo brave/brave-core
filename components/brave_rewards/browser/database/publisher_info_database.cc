@@ -19,7 +19,6 @@
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/database/publisher_info_database.h"
 #include "brave/components/brave_rewards/browser/database/database_util.h"
-#include "publisher_info_database.h"
 
 namespace brave_rewards {
 
@@ -100,62 +99,23 @@ bool PublisherInfoDatabase::Init() {
   }
 
   // TODO(brave): Add error delegate
-  sql::Transaction committer(&db_);
+  sql::Transaction committer(&GetDB());
   if (!committer.Begin()) {
     return false;
   }
 
-  if (!meta_table_.Init(&db_, GetCurrentVersion(), kCompatibleVersionNumber)) {
-    return false;
-  }
+  int table_version = 0;
+  if (GetMetaTable().DoesTableExist(&GetDB())) {
+    if (!InitMetaTable(GetCurrentVersion())) {
+      return false;
+    }
 
-  if (!publisher_info_->Init(&GetDB())) {
-    return false;
-  }
-
-  if (!server_publisher_info_->Init(&GetDB())) {
-    return false;
-  }
-
-  if (!contribution_queue_->Init(&GetDB())) {
-    return false;
-  }
-
-  if (!promotion_->Init(&GetDB())) {
-    return false;
-  }
-
-  if (!unblinded_token_->Init(&GetDB())) {
-    return false;
-  }
-
-  if (!contribution_info_->Init(&GetDB())) {
-    return false;
-  }
-
-  if (!pending_contribution_->Init(&GetDB())) {
-    return false;
-  }
-
-  if (!media_publisher_info_->Init(&GetDB())) {
-    return false;
-  }
-
-  if (!recurring_tip_->Init(&GetDB())) {
-    return false;
-  }
-
-  if (!activity_info_->Init(&GetDB())) {
-    return false;
+    table_version = GetTableVersionNumber();
   }
 
   // Version check.
-  sql::InitStatus version_status = EnsureCurrentVersion();
-  if (version_status != sql::INIT_OK) {
-    return version_status;
-  }
-
-  if (!committer.Commit()) {
+  sql::InitStatus version_status = EnsureCurrentVersion(table_version);
+  if (version_status != sql::INIT_OK || !committer.Commit()) {
     return false;
   }
 
@@ -570,7 +530,7 @@ void PublisherInfoDatabase::GetTransactionReport(
     const ledger::ActivityMonth month,
     const int year) {
   DCHECK(list);
-  if (!list) {
+  if (!list || !IsInitialized()) {
     return;
   }
 
@@ -693,12 +653,19 @@ sql::Database& PublisherInfoDatabase::GetDB() {
   return db_;
 }
 
+bool PublisherInfoDatabase::InitMetaTable(const int version) {
+  return GetMetaTable().Init(
+      &GetDB(),
+      version,
+      kCompatibleVersionNumber);
+}
+
 sql::MetaTable& PublisherInfoDatabase::GetMetaTable() {
   return meta_table_;
 }
 
 int PublisherInfoDatabase::GetTableVersionNumber() {
-  return meta_table_.GetVersionNumber();
+  return GetMetaTable().GetVersionNumber();
 }
 
 std::string PublisherInfoDatabase::GetSchema() {
@@ -707,6 +674,23 @@ std::string PublisherInfoDatabase::GetSchema() {
 
 // Migration -------------------------------------------------------------------
 
+bool PublisherInfoDatabase::MigrateV0toV1() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  if (!activity_info_->Migrate(&GetDB(), 1)) {
+    return false;
+  }
+
+  if (!media_publisher_info_->Migrate(&GetDB(), 1)) {
+    return false;
+  }
+
+  if (!publisher_info_->Migrate(&GetDB(), 1)) {
+    return false;
+  }
+
+  return true;
+}
 bool PublisherInfoDatabase::MigrateV1toV2() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -773,6 +757,10 @@ bool PublisherInfoDatabase::MigrateV6toV7() {
     return false;
   }
 
+  if (!server_publisher_info_->Migrate(&GetDB(), 7)) {
+    return false;
+  }
+
   return transaction.Commit();
 }
 
@@ -794,15 +782,33 @@ bool PublisherInfoDatabase::MigrateV7toV8() {
 }
 
 bool PublisherInfoDatabase::MigrateV8toV9() {
-  // no need to call any script as database has min version
-  // contribution queue tables
-  return true;
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    return false;
+  }
+
+  if (!contribution_queue_->Migrate(&GetDB(), 9)) {
+    return false;
+  }
+
+  return transaction.Commit();
 }
 
 bool PublisherInfoDatabase::MigrateV9toV10() {
-  // no need to call any script as database has min version for
-  // promotion and unblinded token tables
-  return true;
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    return false;
+  }
+
+  if (!promotion_->Migrate(&GetDB(), 10)) {
+    return false;
+  }
+
+  if (!unblinded_token_->Migrate(&GetDB(), 10)) {
+    return false;
+  }
+
+  return transaction.Commit();
 }
 
 bool PublisherInfoDatabase::MigrateV10toV11() {
@@ -908,6 +914,9 @@ bool PublisherInfoDatabase::MigrateV14toV15() {
 
 bool PublisherInfoDatabase::Migrate(int version) {
   switch (version) {
+    case 1: {
+      return MigrateV0toV1();
+    }
     case 2: {
       return MigrateV1toV2();
     }
@@ -956,16 +965,10 @@ bool PublisherInfoDatabase::Migrate(int version) {
   }
 }
 
-sql::InitStatus PublisherInfoDatabase::EnsureCurrentVersion() {
+sql::InitStatus PublisherInfoDatabase::EnsureCurrentVersion(
+    const int old_version) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  // We can't read databases newer than we were designed for.
-  if (meta_table_.GetCompatibleVersionNumber() > GetCurrentVersion()) {
-    LOG(WARNING) << "Publisher info database is too new.";
-    return sql::INIT_TOO_NEW;
-  }
-
-  const int old_version = GetTableVersionNumber();
   const int current_version = GetCurrentVersion();
   const int start_version = old_version + 1;
 
@@ -976,10 +979,17 @@ sql::InitStatus PublisherInfoDatabase::EnsureCurrentVersion() {
       break;
     }
 
+    if (i == 1) {
+      if (!InitMetaTable(i)) {
+        return sql::INIT_FAILURE;
+      }
+    }
+
     migrated_version = i;
   }
 
-  meta_table_.SetVersionNumber(migrated_version);
+
+  GetMetaTable().SetVersionNumber(migrated_version);
   return sql::INIT_OK;
 }
 

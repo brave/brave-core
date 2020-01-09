@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <map>
 #include <utility>
 
 #include "base/bind.h"
@@ -14,7 +15,6 @@
 
 namespace {
   const char table_name_[] = "server_publisher_banner";
-  const int minimum_version_ = 7;
 }  // namespace
 
 namespace brave_rewards {
@@ -28,47 +28,6 @@ DatabaseServerPublisherBanner::DatabaseServerPublisherBanner(
 }
 
 DatabaseServerPublisherBanner::~DatabaseServerPublisherBanner() {
-}
-
-bool DatabaseServerPublisherBanner::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  success = links_->Init(db);
-  if (!success) {
-    return false;
-  }
-
-  success = amounts_->Init(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabaseServerPublisherBanner::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
-  return CreateTableV15(db);
 }
 
 bool DatabaseServerPublisherBanner::CreateTableV7(sql::Database* db) {
@@ -102,10 +61,6 @@ bool DatabaseServerPublisherBanner::CreateTableV15(sql::Database* db) {
       table_name_);
 
   return db->Execute(query.c_str());
-}
-
-bool DatabaseServerPublisherBanner::CreateIndex(sql::Database* db) {
-  return CreateIndexV15(db);
 }
 
 bool DatabaseServerPublisherBanner::CreateIndexV7(sql::Database* db) {
@@ -144,6 +99,14 @@ bool DatabaseServerPublisherBanner::MigrateToV7(sql::Database* db) {
   }
 
   if (!CreateIndexV7(db)) {
+    return false;
+  }
+
+  if (!links_->Migrate(db, 7)) {
+    return false;
+  }
+
+  if (!amounts_->Migrate(db, 7)) {
     return false;
   }
 

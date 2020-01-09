@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
+#include <map>
 #include <utility>
 
 #include "base/bind.h"
@@ -15,7 +15,6 @@
 
 namespace {
   const char table_name_[] = "contribution_queue_publishers";
-  const int minimum_version_ = 9;
   const char parent_table_name_[] = "contribution_queue";
 }  // namespace
 
@@ -26,23 +25,6 @@ DatabaseContributionQueuePublishers::DatabaseContributionQueuePublishers(
 }
 
 DatabaseContributionQueuePublishers::~DatabaseContributionQueuePublishers() {
-}
-
-bool DatabaseContributionQueuePublishers::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  bool success = CreateTable(db);
-  return success;
-}
-
-bool DatabaseContributionQueuePublishers::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
-  return CreateTableV9(db);
 }
 
 bool DatabaseContributionQueuePublishers::CreateTableV9(sql::Database* db) {
@@ -81,10 +63,6 @@ bool DatabaseContributionQueuePublishers::CreateTableV15(sql::Database* db) {
       parent_table_name_);
 
   return db->Execute(query.c_str());
-}
-
-bool DatabaseContributionQueuePublishers::CreateIndex(sql::Database* db) {
-  return CreateIndexV15(db);
 }
 
 bool DatabaseContributionQueuePublishers::CreateIndexV15(sql::Database* db) {

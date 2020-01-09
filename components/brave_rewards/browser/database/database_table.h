@@ -17,11 +17,7 @@ class DatabaseTable {
   explicit DatabaseTable(int current_db_version);
   virtual ~DatabaseTable();
 
-  virtual bool Init(sql::Database* db) = 0;
-
-  virtual bool CreateTable(sql::Database* db) = 0;
-
-  virtual bool CreateIndex(sql::Database* db) = 0;
+  virtual bool Migrate(sql::Database* db, const int target) = 0;
 
  protected:
   bool InsertIndex(

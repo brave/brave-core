@@ -20,13 +20,7 @@ class DatabasePromotionCreds: public DatabaseTable {
   explicit DatabasePromotionCreds(int current_db_version);
   ~DatabasePromotionCreds() override;
 
-  bool Init(sql::Database* db) override;
-
-  bool CreateTable(sql::Database* db) override;
-
-  bool CreateIndex(sql::Database* db) override;
-
-  bool Migrate(sql::Database* db, const int target);
+  bool Migrate(sql::Database* db, const int target) override;
 
   bool InsertOrUpdate(
       sql::Database* db,

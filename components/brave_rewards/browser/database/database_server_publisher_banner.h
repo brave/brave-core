@@ -21,13 +21,7 @@ class DatabaseServerPublisherBanner: public DatabaseTable {
   explicit DatabaseServerPublisherBanner(int current_db_version);
   ~DatabaseServerPublisherBanner() override;
 
-  bool Init(sql::Database* db) override;
-
-  bool CreateTable(sql::Database* db) override;
-
-  bool CreateIndex(sql::Database* db) override;
-
-  bool Migrate(sql::Database* db, const int target);
+  bool Migrate(sql::Database* db, const int target) override;
 
   bool InsertOrUpdate(sql::Database* db, ledger::ServerPublisherInfoPtr info);
 
@@ -47,7 +41,7 @@ class DatabaseServerPublisherBanner: public DatabaseTable {
   bool MigrateToV7(sql::Database* db);
 
   bool MigrateToV15(sql::Database* db);
-  
+
   std::unique_ptr<DatabaseServerPublisherLinks> links_;
   std::unique_ptr<DatabaseServerPublisherAmounts> amounts_;
 };

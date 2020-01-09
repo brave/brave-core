@@ -21,13 +21,7 @@ class DatabaseContributionInfoPublishers: public DatabaseTable {
   explicit DatabaseContributionInfoPublishers(int current_db_version);
   ~DatabaseContributionInfoPublishers() override;
 
-  bool Init(sql::Database* db) override;
-
-  bool CreateTable(sql::Database* db) override;
-
-  bool CreateIndex(sql::Database* db) override;
-
-  bool Migrate(sql::Database* db, const int target);
+  bool Migrate(sql::Database* db, const int target) override;
 
   bool InsertOrUpdate(
       sql::Database* db,

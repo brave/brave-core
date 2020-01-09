@@ -167,7 +167,11 @@ class PublisherInfoDatabase {
   void OnMemoryPressure(
     base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
 
+  bool InitMetaTable(const int version);
+
   sql::MetaTable& GetMetaTable();
+
+  bool MigrateV0toV1();
 
   bool MigrateV1toV2();
 
@@ -199,7 +203,7 @@ class PublisherInfoDatabase {
 
   bool Migrate(int version);
 
-  sql::InitStatus EnsureCurrentVersion();
+  sql::InitStatus EnsureCurrentVersion(const int table_version);
 
   sql::Database db_;
   sql::MetaTable meta_table_;

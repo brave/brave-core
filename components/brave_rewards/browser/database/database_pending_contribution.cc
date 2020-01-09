@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <map>
-#include <string>
 #include <utility>
 
 #include "base/bind.h"
@@ -19,7 +18,6 @@ namespace brave_rewards {
 
 namespace {
   const char* table_name_ = "pending_contribution";
-  const int minimum_version_ = 3;
 }  // namespace
 
 DatabasePendingContribution::DatabasePendingContribution(
@@ -28,37 +26,6 @@ DatabasePendingContribution::DatabasePendingContribution(
 }
 
 DatabasePendingContribution::~DatabasePendingContribution() = default;
-
-bool DatabasePendingContribution::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabasePendingContribution::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
-  return CreateTableV15(db);
-}
 
 bool DatabasePendingContribution::CreateTableV3(sql::Database* db) {
   const std::string query = base::StringPrintf(
@@ -131,10 +98,6 @@ bool DatabasePendingContribution::CreateTableV15(sql::Database* db) {
       table_name_);
 
   return db->Execute(query.c_str());
-}
-
-bool DatabasePendingContribution::CreateIndex(sql::Database* db) {
-  return CreateIndexV15(db);
 }
 
 bool DatabasePendingContribution::CreateIndexV3(sql::Database* db) {

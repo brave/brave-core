@@ -14,7 +14,6 @@
 
 namespace {
   const char* table_name_ = "promotion";
-  const int minimum_version_ = 10;
 }  // namespace
 
 namespace brave_rewards {
@@ -25,53 +24,6 @@ DatabasePromotion::DatabasePromotion(int current_db_version) :
 }
 
 DatabasePromotion::~DatabasePromotion() {
-}
-
-bool DatabasePromotion::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  success = creds_->Init(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabasePromotion::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
-  const int version = GetCurrentDBVersion();
-
-  if (version >= 13) {
-    return CreateTableV13(db);
-  }
-
-  if (version >= 10) {
-    return CreateTableV10(db);
-  }
-
-  NOTREACHED();
-  return false;
 }
 
 bool DatabasePromotion::CreateTableV10(sql::Database* db) {
@@ -117,10 +69,6 @@ bool DatabasePromotion::CreateTableV13(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
-bool DatabasePromotion::CreateIndex(sql::Database* db) {
-  return CreateIndexV13(db);
-}
-
 bool DatabasePromotion::CreateIndexV10(sql::Database* db) {
   const std::string id = base::StringPrintf("%s_id", table_name_);
   return this->InsertIndex(db, table_name_, id);
@@ -162,6 +110,10 @@ bool DatabasePromotion::MigrateToV10(sql::Database* db) {
   }
 
   if (!CreateIndexV10(db)) {
+    return false;
+  }
+
+  if (!creds_->Migrate(db, 10)) {
     return false;
   }
 

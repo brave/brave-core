@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
 #include <utility>
 
 #include "base/bind.h"
@@ -16,7 +15,6 @@
 
 namespace {
   const char table_name_[] = "contribution_queue";
-  const int minimum_version_ = 9;
 }  // namespace
 
 namespace brave_rewards {
@@ -34,37 +32,6 @@ std::string DatabaseContributionQueue::GetIdColumnName() {
   return base::StringPrintf("%s_id", table_name_);
 }
 
-bool DatabaseContributionQueue::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = publishers_->Init(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabaseContributionQueue::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
-  return CreateTableV9(db);
-}
-
 bool DatabaseContributionQueue::CreateTableV9(sql::Database* db) {
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
@@ -78,10 +45,6 @@ bool DatabaseContributionQueue::CreateTableV9(sql::Database* db) {
       GetIdColumnName().c_str());
 
   return db->Execute(query.c_str());
-}
-
-bool DatabaseContributionQueue::CreateIndex(sql::Database* db) {
-  return true;
 }
 
 bool DatabaseContributionQueue::Migrate(
@@ -107,6 +70,10 @@ bool DatabaseContributionQueue::MigrateToV9(sql::Database* db) {
   }
 
   if (!CreateTableV9(db)) {
+    return false;
+  }
+
+  if (!publishers_->Migrate(db, 9)) {
     return false;
   }
 

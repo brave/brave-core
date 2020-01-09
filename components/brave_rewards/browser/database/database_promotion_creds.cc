@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
+#include <map>
 #include <utility>
 
 #include "base/bind.h"
@@ -15,7 +15,6 @@
 
 namespace {
   const char table_name_[] = "promotion_creds";
-  const int minimum_version_ = 10;
   const char parent_table_name_[] = "promotion";
 }  // namespace
 
@@ -27,37 +26,6 @@ DatabasePromotionCreds::DatabasePromotionCreds(
 }
 
 DatabasePromotionCreds::~DatabasePromotionCreds() {
-}
-
-bool DatabasePromotionCreds::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabasePromotionCreds::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
-  return CreateTableV15(db);
 }
 
 bool DatabasePromotionCreds::CreateTableV10(sql::Database* db) {
@@ -100,10 +68,6 @@ bool DatabasePromotionCreds::CreateTableV15(sql::Database* db) {
       parent_table_name_);
 
   return db->Execute(query.c_str());
-}
-
-bool DatabasePromotionCreds::CreateIndex(sql::Database* db) {
-  return CreateIndexV15(db);
 }
 
 bool DatabasePromotionCreds::CreateIndexV10(sql::Database* db) {

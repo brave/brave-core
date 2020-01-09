@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <map>
-#include <string>
 #include <utility>
 
 #include "base/bind.h"
@@ -18,7 +17,6 @@ namespace brave_rewards {
 
 namespace {
   const char* table_name_ = "activity_info";
-  const int minimum_version_ = 1;
 }  // namespace
 
 std::string GenerateActivityFilterQuery(
@@ -132,37 +130,6 @@ DatabaseActivityInfo::DatabaseActivityInfo(
 
 DatabaseActivityInfo::~DatabaseActivityInfo() = default;
 
-bool DatabaseActivityInfo::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabaseActivityInfo::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
-  return CreateTableV15(db);
-}
-
 bool DatabaseActivityInfo::CreateTableV1(sql::Database* db) {
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
@@ -274,10 +241,6 @@ bool DatabaseActivityInfo::CreateTableV15(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
-bool DatabaseActivityInfo::CreateIndex(sql::Database* db) {
-  return CreateIndexV15(db);
-}
-
 bool DatabaseActivityInfo::CreateIndexV2(sql::Database* db) {
   return this->InsertIndex(db, table_name_, "publisher_id");
 }
@@ -296,6 +259,9 @@ bool DatabaseActivityInfo::CreateIndexV15(sql::Database* db) {
 
 bool DatabaseActivityInfo::Migrate(sql::Database* db, const int target) {
   switch (target) {
+    case 1: {
+      return MigrateToV1(db);
+    }
     case 2: {
       return MigrateToV2(db);
     }
@@ -316,6 +282,18 @@ bool DatabaseActivityInfo::Migrate(sql::Database* db, const int target) {
       return false;
     }
   }
+}
+
+bool DatabaseActivityInfo::MigrateToV1(sql::Database* db) {
+  if (db->DoesTableExist(table_name_)) {
+    DropTable(db, table_name_);
+  }
+
+  if (!CreateTableV1(db)) {
+    return false;
+  }
+
+  return true;
 }
 
 bool DatabaseActivityInfo::MigrateToV2(sql::Database* db) {

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
+#include <map>
 #include <utility>
 
 #include "base/bind.h"
@@ -17,7 +17,6 @@ namespace brave_rewards {
 
 namespace {
   const char* table_name_ = "media_publisher_info";
-  const int minimum_version_ = 1;
 }  // namespace
 
 DatabaseMediaPublisherInfo::DatabaseMediaPublisherInfo(
@@ -26,37 +25,6 @@ DatabaseMediaPublisherInfo::DatabaseMediaPublisherInfo(
 }
 
 DatabaseMediaPublisherInfo::~DatabaseMediaPublisherInfo() = default;
-
-bool DatabaseMediaPublisherInfo::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabaseMediaPublisherInfo::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
-  return CreateTableV15(db);
-}
 
 bool DatabaseMediaPublisherInfo::CreateTableV1(sql::Database* db) {
   const std::string query = base::StringPrintf(
@@ -83,10 +51,6 @@ bool DatabaseMediaPublisherInfo::CreateTableV15(sql::Database* db) {
       table_name_);
 
   return db->Execute(query.c_str());
-}
-
-bool DatabaseMediaPublisherInfo::CreateIndex(sql::Database* db) {
-  return CreateIndexV15(db);
 }
 
 bool DatabaseMediaPublisherInfo::CreateIndexV15(sql::Database* db) {
