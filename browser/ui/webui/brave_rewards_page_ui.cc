@@ -612,10 +612,16 @@ void RewardsDOMHandler::ClaimPromotion(const base::ListValue* args) {
   }
 
   const std::string promotion_id = args->GetList()[0].GetString();
+
+#if !defined(OS_ANDROID)
   rewards_service_->ClaimPromotion(
       base::Bind(&RewardsDOMHandler::OnClaimPromotion,
           weak_factory_.GetWeakPtr(),
           promotion_id));
+#else
+  // No need for a callback. The UI receives "brave_rewards.promotionFinish".
+  rewards_service_->ClaimPromotion(promotion_id, base::DoNothing());
+#endif
 }
 
 
