@@ -26,6 +26,7 @@
 #include "chrome/common/chrome_switches.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
+#include "components/feed/feed_feature_list.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/unified_consent/feature.h"
@@ -172,6 +173,9 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       features::kSmsReceiver.name,
       features::kWebXr.name,
       features::kWebXrGamepadModule.name,
+#if defined(OS_ANDROID)
+      feed::kInterestFeedContentSuggestions.name,
+#endif
       unified_consent::kUnifiedConsent.name,
       switches::kSyncUSSBookmarks.name,
   };
