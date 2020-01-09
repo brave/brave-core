@@ -21,10 +21,10 @@ source_set("ntp_sponsored_images_impl") {
   }
 
   sources = [
+    "ntp_sponsored_images_component_manager.cc",
+    "ntp_sponsored_images_component_manager.h",
     "ntp_sponsored_images_data.cc",
     "ntp_sponsored_images_data.h",
-    "ntp_sponsored_images_service.cc",
-    "ntp_sponsored_images_service.h",
     "ntp_sponsored_image_source.cc",
     "ntp_sponsored_image_source.h",
     "url_constants.cc",

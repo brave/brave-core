@@ -11,7 +11,7 @@
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/url_data_source.h"
 
-class NTPSponsoredImagesService;
+class NTPSponsoredImagesComponentManager;
 
 // This serves branded image data.
 // This referes with weak ptr because both can have different life cycle.
@@ -23,7 +23,7 @@ class NTPSponsoredImageSource : public content::URLDataSource {
   };
 
   explicit NTPSponsoredImageSource(
-      base::WeakPtr<NTPSponsoredImagesService> service,
+      base::WeakPtr<NTPSponsoredImagesComponentManager> manager,
       const std::string& image_file_path,
       size_t wallpaper_index,
       Type type);
@@ -44,7 +44,7 @@ class NTPSponsoredImageSource : public content::URLDataSource {
   bool IsLogoType() const;
   std::string GetWallpaperPath() const;
 
-  base::WeakPtr<NTPSponsoredImagesService> service_;
+  base::WeakPtr<NTPSponsoredImagesComponentManager> manager_;
   const std::string image_file_path_;
   size_t wallpaper_index_;  // Only used for wallpaper type.
   Type type_;

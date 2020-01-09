@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_sponsored_images/ntp_sponsored_images_service.h"
+#include "brave/components/ntp_sponsored_images/ntp_sponsored_images_component_manager.h"
 
 #include <algorithm>
 
@@ -60,7 +60,7 @@ std::string ReadPhotoJsonData(const base::FilePath& photo_json_file_path) {
 
 }  // namespace
 
-NTPSponsoredImagesService::NTPSponsoredImagesService(
+NTPSponsoredImagesComponentManager::NTPSponsoredImagesComponentManager(
     BraveComponent::Delegate* delegate,
     component_updater::ComponentUpdateService* cus,
     const std::string& locale)
@@ -75,20 +75,20 @@ NTPSponsoredImagesService::NTPSponsoredImagesService(
   }
 }
 
-NTPSponsoredImagesService::~NTPSponsoredImagesService() {
+NTPSponsoredImagesComponentManager::~NTPSponsoredImagesComponentManager() {
   if (cus_)
     cus_->RemoveObserver(this);
 }
 
-void NTPSponsoredImagesService::AddObserver(Observer* observer) {
+void NTPSponsoredImagesComponentManager::AddObserver(Observer* observer) {
   observer_list_.AddObserver(observer);
 }
 
-void NTPSponsoredImagesService::RemoveObserver(Observer* observer) {
+void NTPSponsoredImagesComponentManager::RemoveObserver(Observer* observer) {
   observer_list_.RemoveObserver(observer);
 }
 
-void NTPSponsoredImagesService::AddDataSources(
+void NTPSponsoredImagesComponentManager::AddDataSources(
     content::BrowserContext* browser_context) {
   if (!ntp_sponsored_images_data_)
     return;
@@ -116,15 +116,16 @@ void NTPSponsoredImagesService::AddDataSources(
 }
 
 base::Optional<NTPSponsoredImagesData>
-NTPSponsoredImagesService::GetLatestSponsoredImagesData() const {
+NTPSponsoredImagesComponentManager::GetLatestSponsoredImagesData() const {
   if (ntp_sponsored_images_data_)
     return *ntp_sponsored_images_data_;
 
   return base::nullopt;
 }
 
-bool NTPSponsoredImagesService::IsValidImage(NTPSponsoredImageSource::Type type,
-                                             size_t wallpaper_index) const {
+bool NTPSponsoredImagesComponentManager::IsValidImage(
+    NTPSponsoredImageSource::Type type,
+    size_t wallpaper_index) const {
   if (!ntp_sponsored_images_data_)
     return false;
 
@@ -135,15 +136,15 @@ bool NTPSponsoredImagesService::IsValidImage(NTPSponsoredImageSource::Type type,
   return ntp_sponsored_images_data_->wallpaper_image_urls.size() < wallpaper_index;
 }
 
-void NTPSponsoredImagesService::ReadPhotoJsonFileAndNotify() {
+void NTPSponsoredImagesComponentManager::ReadPhotoJsonFileAndNotify() {
   base::PostTaskAndReplyWithResult(
       FROM_HERE, {base::ThreadPool(), base::MayBlock()},
       base::BindOnce(&ReadPhotoJsonData, photo_json_file_path_),
-      base::BindOnce(&NTPSponsoredImagesService::OnGetPhotoJsonData,
+      base::BindOnce(&NTPSponsoredImagesComponentManager::OnGetPhotoJsonData,
                      weak_factory_.GetWeakPtr()));
 }
 
-void NTPSponsoredImagesService::OnComponentReady(
+void NTPSponsoredImagesComponentManager::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& installed_dir,
     const std::string& manifest) {
@@ -151,7 +152,8 @@ void NTPSponsoredImagesService::OnComponentReady(
   ReadPhotoJsonFileAndNotify();
 }
 
-void NTPSponsoredImagesService::OnEvent(Events event, const std::string& id) {
+void NTPSponsoredImagesComponentManager::OnEvent(Events event,
+                                                 const std::string& id) {
   if (!id.empty() &&
       id == component_id() &&
       event == Events::COMPONENT_UPDATED) {
@@ -159,13 +161,13 @@ void NTPSponsoredImagesService::OnEvent(Events event, const std::string& id) {
   }
 }
 
-void NTPSponsoredImagesService::OnGetPhotoJsonData(
+void NTPSponsoredImagesComponentManager::OnGetPhotoJsonData(
     const std::string& photo_json) {
   ParseAndCachePhotoJsonData(photo_json);
   NotifyObservers();
 }
 
-void NTPSponsoredImagesService::ParseAndCachePhotoJsonData(
+void NTPSponsoredImagesComponentManager::ParseAndCachePhotoJsonData(
     const std::string& photo_json) {
   base::Optional<base::Value> photo_value = base::JSONReader::Read(photo_json);
   ntp_sponsored_images_data_.reset(new NTPSponsoredImagesData);
@@ -203,7 +205,7 @@ void NTPSponsoredImagesService::ParseAndCachePhotoJsonData(
   }
 }
 
-void NTPSponsoredImagesService::NotifyObservers() {
+void NTPSponsoredImagesComponentManager::NotifyObservers() {
   for (auto& observer : observer_list_)
     observer.OnUpdated(*ntp_sponsored_images_data_);
 }
