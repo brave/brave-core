@@ -26,6 +26,8 @@ class DatabaseContributionQueue: public DatabaseTable {
 
   bool CreateIndex(sql::Database* db) override;
 
+  bool Migrate(sql::Database* db, const int target);
+
   bool InsertOrUpdate(sql::Database* db, ledger::ContributionQueuePtr info);
 
   ledger::ContributionQueuePtr GetFirstRecord(sql::Database* db);
@@ -35,10 +37,14 @@ class DatabaseContributionQueue: public DatabaseTable {
   bool DeleteAllRecords(sql::Database* db);
 
  private:
+  bool CreateTableV9(sql::Database* db);
+
+  bool MigrateToV9(sql::Database* db);
+
+  bool MigrateToV15(sql::Database* db);
+
   std::string GetIdColumnName();
 
-  const char* table_name_ = "contribution_queue";
-  const int minimum_version_ = 9;
   std::unique_ptr<DatabaseContributionQueuePublishers> publishers_;
 };
 

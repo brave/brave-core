@@ -64,18 +64,14 @@ bool DatabaseUnblindedToken::Init(sql::Database* db) {
 }
 
 bool DatabaseUnblindedToken::CreateTable(sql::Database* db) {
-  return CreateTableV10(db);
-}
-
-bool DatabaseUnblindedToken::CreateIndex(sql::Database* db) {
-  return CreateIndexV10(db);
-}
-
-bool DatabaseUnblindedToken::CreateTableV10(sql::Database* db) {
   if (db->DoesTableExist(table_name_)) {
     return true;
   }
 
+  return CreateTableV15(db);
+}
+
+bool DatabaseUnblindedToken::CreateTableV10(sql::Database* db) {
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
         "token_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
@@ -94,8 +90,31 @@ bool DatabaseUnblindedToken::CreateTableV10(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
+bool DatabaseUnblindedToken::CreateTableV15(sql::Database* db) {
+  const std::string query = base::StringPrintf(
+      "CREATE TABLE %s ("
+        "token_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+        "token_value TEXT,"
+        "public_key TEXT,"
+        "value DOUBLE NOT NULL DEFAULT 0,"
+        "promotion_id TEXT,"
+        "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"
+      ")",
+      table_name_);
+
+  return db->Execute(query.c_str());
+}
+
+bool DatabaseUnblindedToken::CreateIndex(sql::Database* db) {
+  return CreateIndexV15(db);
+}
+
 bool DatabaseUnblindedToken::CreateIndexV10(sql::Database* db) {
   return this->InsertIndex(db, table_name_, "token_id");
+}
+
+bool DatabaseUnblindedToken::CreateIndexV15(sql::Database* db) {
+  return this->InsertIndex(db, table_name_, "promotion_id");
 }
 
 bool DatabaseUnblindedToken::Migrate(sql::Database* db, const int target) {
@@ -105,6 +124,9 @@ bool DatabaseUnblindedToken::Migrate(sql::Database* db, const int target) {
     }
     case 14: {
       return MigrateToV14(db);
+    }
+    case 15: {
+      return MigrateToV15(db);
     }
     default: {
       NOTREACHED();
@@ -143,6 +165,45 @@ bool DatabaseUnblindedToken::MigrateToV14(sql::Database* db) {
     db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
 
   return statement.Run();
+}
+
+bool DatabaseUnblindedToken::MigrateToV15(sql::Database* db) {
+  const std::string temp_table_name = base::StringPrintf(
+      "%s_temp",
+      table_name_);
+
+  if (!RenameDBTable(db, table_name_, temp_table_name)) {
+    return false;
+  }
+
+  const std::string sql =
+      "DROP INDEX IF EXISTS unblinded_tokens_token_id_index;";
+  if (!db->Execute(sql.c_str())) {
+    return false;
+  }
+
+  if (!CreateTableV15(db)) {
+    return false;
+  }
+
+  if (!CreateIndexV15(db)) {
+    return false;
+  }
+
+  const std::map<std::string, std::string> columns = {
+    { "token_id", "token_id" },
+    { "token_value", "token_value" },
+    { "public_key", "public_key" },
+    { "value", "value" },
+    { "promotion_id", "promotion_id" },
+    { "created_at", "created_at" }
+  };
+
+  if (!MigrateDBTable(db, temp_table_name, table_name_, columns, true)) {
+    return false;
+  }
+
+  return true;
 }
 
 bool DatabaseUnblindedToken::InsertOrUpdate(

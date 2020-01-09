@@ -19,12 +19,13 @@
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/database/publisher_info_database.h"
 #include "brave/components/brave_rewards/browser/database/database_util.h"
+#include "publisher_info_database.h"
 
 namespace brave_rewards {
 
 namespace {
 
-const int kCurrentVersionNumber = 14;
+const int kCurrentVersionNumber = 15;
 const int kCompatibleVersionNumber = 1;
 
 
@@ -860,6 +861,51 @@ bool PublisherInfoDatabase::MigrateV13toV14() {
   return transaction.Commit();
 }
 
+bool PublisherInfoDatabase::MigrateV14toV15() {
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    return false;
+  }
+
+  if (!activity_info_->Migrate(&GetDB(), 15)) {
+    return false;
+  }
+
+  if (!contribution_info_->Migrate(&GetDB(), 15)) {
+    return false;
+  }
+
+  if (!contribution_queue_->Migrate(&GetDB(), 15)) {
+    return false;
+  }
+
+  if (!media_publisher_info_->Migrate(&GetDB(), 15)) {
+    return false;
+  }
+
+  if (!pending_contribution_->Migrate(&GetDB(), 15)) {
+    return false;
+  }
+
+  if (!promotion_->Migrate(&GetDB(), 15)) {
+    return false;
+  }
+
+  if (!recurring_tip_->Migrate(&GetDB(), 15)) {
+    return false;
+  }
+
+  if (!server_publisher_info_->Migrate(&GetDB(), 15)) {
+    return false;
+  }
+
+  if (!unblinded_token_->Migrate(&GetDB(), 15)) {
+    return false;
+  }
+
+  return transaction.Commit();
+}
+
 bool PublisherInfoDatabase::Migrate(int version) {
   switch (version) {
     case 2: {
@@ -900,6 +946,9 @@ bool PublisherInfoDatabase::Migrate(int version) {
     }
     case 14: {
       return MigrateV13toV14();
+    }
+    case 15: {
+      return MigrateV14toV15();
     }
     default:
       NOTREACHED();

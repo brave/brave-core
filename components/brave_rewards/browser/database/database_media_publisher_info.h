@@ -25,6 +25,8 @@ class DatabaseMediaPublisherInfo: public DatabaseTable {
 
   bool CreateIndex(sql::Database* db) override;
 
+  bool Migrate(sql::Database* db, const int target);
+
   bool InsertOrUpdate(
       sql::Database* db,
       const std::string& media_key,
@@ -36,6 +38,14 @@ class DatabaseMediaPublisherInfo: public DatabaseTable {
 
  private:
   bool CreateTableV1(sql::Database* db);
+
+  bool CreateTableV15(sql::Database* db);
+
+  bool CreateIndexV15(sql::Database* db);
+
+  bool MigrateToV1(sql::Database* db);
+
+  bool MigrateToV15(sql::Database* db);
 };
 
 }  // namespace brave_rewards

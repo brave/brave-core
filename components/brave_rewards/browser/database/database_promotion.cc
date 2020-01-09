@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/database/database_promotion.h"
-
 #include <utility>
 
 #include "base/bind.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/browser/database/database_promotion.h"
+#include "brave/components/brave_rewards/browser/database/database_util.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
@@ -142,6 +142,9 @@ bool DatabasePromotion::Migrate(sql::Database* db, const int target) {
     case 14: {
       return MigrateToV14(db);
     }
+    case 15: {
+      return MigrateToV15(db);
+    }
     default: {
       NOTREACHED();
       return false;
@@ -150,6 +153,10 @@ bool DatabasePromotion::Migrate(sql::Database* db, const int target) {
 }
 
 bool DatabasePromotion::MigrateToV10(sql::Database* db) {
+  if (db->DoesTableExist(table_name_)) {
+    DropTable(db, table_name_);
+  }
+
   if (!CreateTableV10(db)) {
     return false;
   }
@@ -202,6 +209,15 @@ bool DatabasePromotion::MigrateToV14(sql::Database* db) {
     db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
 
   return statement.Run();
+}
+
+bool DatabasePromotion::MigrateToV15(sql::Database* db) {
+  DCHECK(db);
+  if (!db) {
+    return false;
+  }
+
+  return creds_->Migrate(db, 15);
 }
 
 bool DatabasePromotion::InsertOrUpdate(

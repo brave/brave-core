@@ -48,17 +48,23 @@ class DatabasePendingContribution: public DatabaseTable {
 
   bool CreateTableV12(sql::Database* db);
 
+  bool CreateTableV15(sql::Database* db);
+
   bool CreateIndexV3(sql::Database* db);
 
   bool CreateIndexV8(sql::Database* db);
 
   bool CreateIndexV12(sql::Database* db);
 
+  bool CreateIndexV15(sql::Database* db);
+
   bool MigrateToV3(sql::Database* db);
 
   bool MigrateToV8(sql::Database* db);
 
   bool MigrateToV12(sql::Database* db);
+
+  bool MigrateToV15(sql::Database* db);
 };
 
 }  // namespace brave_rewards

@@ -3,14 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/database/database_server_publisher_banner.h"
-
 #include <utility>
 
 #include "base/bind.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/browser/database/database_server_publisher_banner.h"
+#include "brave/components/brave_rewards/browser/database/database_util.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
+
+namespace {
+  const char table_name_[] = "server_publisher_banner";
+  const int minimum_version_ = 7;
+}  // namespace
 
 namespace brave_rewards {
 
@@ -63,6 +68,10 @@ bool DatabaseServerPublisherBanner::CreateTable(sql::Database* db) {
     return true;
   }
 
+  return CreateTableV15(db);
+}
+
+bool DatabaseServerPublisherBanner::CreateTableV7(sql::Database* db) {
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
       "publisher_key LONGVARCHAR PRIMARY KEY NOT NULL UNIQUE,"
@@ -81,8 +90,110 @@ bool DatabaseServerPublisherBanner::CreateTable(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
+bool DatabaseServerPublisherBanner::CreateTableV15(sql::Database* db) {
+  const std::string query = base::StringPrintf(
+      "CREATE TABLE %s ("
+      "publisher_key LONGVARCHAR PRIMARY KEY NOT NULL UNIQUE,"
+      "title TEXT,"
+      "description TEXT,"
+      "background TEXT,"
+      "logo TEXT"
+      ")",
+      table_name_);
+
+  return db->Execute(query.c_str());
+}
+
 bool DatabaseServerPublisherBanner::CreateIndex(sql::Database* db) {
+  return CreateIndexV15(db);
+}
+
+bool DatabaseServerPublisherBanner::CreateIndexV7(sql::Database* db) {
   return this->InsertIndex(db, table_name_, "publisher_key");
+}
+
+bool DatabaseServerPublisherBanner::CreateIndexV15(sql::Database* db) {
+  return this->InsertIndex(db, table_name_, "publisher_key");
+}
+
+bool DatabaseServerPublisherBanner::Migrate(
+    sql::Database* db,
+    const int target) {
+  switch (target) {
+    case 7: {
+      return MigrateToV7(db);
+    }
+    case 15: {
+      return MigrateToV15(db);
+    }
+    default: {
+      NOTREACHED();
+      return false;
+    }
+  }
+}
+
+
+bool DatabaseServerPublisherBanner::MigrateToV7(sql::Database* db) {
+  if (db->DoesTableExist(table_name_)) {
+    DropTable(db, table_name_);
+  }
+
+  if (!CreateTableV7(db)) {
+    return false;
+  }
+
+  if (!CreateIndexV7(db)) {
+    return false;
+  }
+
+  return true;
+}
+
+bool DatabaseServerPublisherBanner::MigrateToV15(sql::Database* db) {
+  const std::string temp_table_name = base::StringPrintf(
+      "%s_temp",
+      table_name_);
+
+  if (!RenameDBTable(db, table_name_, temp_table_name)) {
+    return false;
+  }
+
+  const std::string sql =
+      "DROP INDEX IF EXISTS server_publisher_banner_publisher_key_index;";
+  if (!db->Execute(sql.c_str())) {
+    return false;
+  }
+
+  if (!CreateTableV15(db)) {
+    return false;
+  }
+
+  if (!CreateIndexV15(db)) {
+    return false;
+  }
+
+  const std::map<std::string, std::string> columns = {
+    { "publisher_key", "publisher_key" },
+    { "title", "title" },
+    { "description", "description" },
+    { "background", "background" },
+    { "logo", "logo" }
+  };
+
+  if (!MigrateDBTable(db, temp_table_name, table_name_, columns, true)) {
+    return false;
+  }
+
+  if (!links_->Migrate(db, 15)) {
+    return false;
+  }
+
+  if (!amounts_->Migrate(db, 15)) {
+    return false;
+  }
+
+  return true;
 }
 
 bool DatabaseServerPublisherBanner::InsertOrUpdate(

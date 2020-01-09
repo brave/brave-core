@@ -38,9 +38,15 @@ class DatabaseRecurringTip: public DatabaseTable {
  private:
   bool CreateTableV2(sql::Database* db);
 
+  bool CreateTableV15(sql::Database* db);
+
   bool CreateIndexV2(sql::Database* db);
 
+  bool CreateIndexV15(sql::Database* db);
+
   bool MigrateToV2(sql::Database* db);
+
+  bool MigrateToV15(sql::Database* db);
 };
 
 }  // namespace brave_rewards

@@ -3,15 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/database/database_contribution_queue_publishers.h"
-
 #include <string>
 #include <utility>
 
 #include "base/bind.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/browser/database/database_contribution_queue_publishers.h"
+#include "brave/components/brave_rewards/browser/database/database_util.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
+
+namespace {
+  const char table_name_[] = "contribution_queue_publishers";
+  const int minimum_version_ = 9;
+  const char parent_table_name_[] = "contribution_queue";
+}  // namespace
 
 namespace brave_rewards {
 
@@ -36,6 +42,10 @@ bool DatabaseContributionQueuePublishers::CreateTable(sql::Database* db) {
     return true;
   }
 
+  return CreateTableV9(db);
+}
+
+bool DatabaseContributionQueuePublishers::CreateTableV9(sql::Database* db) {
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
       "%s_id INTEGER NOT NULL,"
@@ -60,7 +70,91 @@ bool DatabaseContributionQueuePublishers::CreateTable(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
+bool DatabaseContributionQueuePublishers::CreateTableV15(sql::Database* db) {
+  const std::string query = base::StringPrintf(
+      "CREATE TABLE %s ("
+      "%s_id INTEGER NOT NULL,"
+      "publisher_key TEXT NOT NULL,"
+      "amount_percent DOUBLE NOT NULL"
+      ")",
+      table_name_,
+      parent_table_name_);
+
+  return db->Execute(query.c_str());
+}
+
 bool DatabaseContributionQueuePublishers::CreateIndex(sql::Database* db) {
+  return CreateIndexV15(db);
+}
+
+bool DatabaseContributionQueuePublishers::CreateIndexV15(sql::Database* db) {
+  const std::string key = base::StringPrintf("%s_id", parent_table_name_);
+  bool success = this->InsertIndex(db, table_name_, key);
+
+  if (!success) {
+    return false;
+  }
+
+  return this->InsertIndex(db, table_name_, "publisher_key");
+}
+
+bool DatabaseContributionQueuePublishers::Migrate(
+    sql::Database* db,
+    const int target) {
+  switch (target) {
+    case 9: {
+      return MigrateToV9(db);
+    }
+    case 15: {
+      return MigrateToV15(db);
+    }
+    default: {
+      NOTREACHED();
+      return false;
+    }
+  }
+}
+
+bool DatabaseContributionQueuePublishers::MigrateToV9(sql::Database* db) {
+  if (db->DoesTableExist(table_name_)) {
+    DropTable(db, table_name_);
+  }
+
+  if (!CreateTableV9(db)) {
+    return false;
+  }
+
+  return true;
+}
+
+bool DatabaseContributionQueuePublishers::MigrateToV15(sql::Database* db) {
+  const std::string temp_table_name = base::StringPrintf(
+      "%s_temp",
+      table_name_);
+
+  if (!RenameDBTable(db, table_name_, temp_table_name)) {
+    return false;
+  }
+
+  if (!CreateTableV15(db)) {
+    return false;
+  }
+
+  if (!CreateIndexV15(db)) {
+    return false;
+  }
+
+  const std::string key = base::StringPrintf("%s_id", parent_table_name_);
+  const std::map<std::string, std::string> columns = {
+    { key, key },
+    { "publisher_key", "publisher_key" },
+    { "amount_percent", "amount_percent" }
+  };
+
+  if (!MigrateDBTable(db, temp_table_name, table_name_, columns, true)) {
+    return false;
+  }
+
   return true;
 }
 

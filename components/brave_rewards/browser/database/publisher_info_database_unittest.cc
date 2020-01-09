@@ -1355,6 +1355,18 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv13tov14_UnblindedToken) {
   EXPECT_EQ(promotion->approximate_value, 1.25);
 }
 
+TEST_F(PublisherInfoDatabaseTest, Migrationv14tov15) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateMigrationDatabase(&temp_dir, &db_file, 14, 15);
+  EXPECT_TRUE(publisher_info_database_->Init());
+
+  ASSERT_EQ(publisher_info_database_->GetTableVersionNumber(), 15);
+
+  const std::string schema = publisher_info_database_->GetSchema();
+  EXPECT_EQ(schema, GetSchemaString(15));
+}
+
 TEST_F(PublisherInfoDatabaseTest, DeleteActivityInfo) {
   base::ScopedTempDir temp_dir;
   base::FilePath db_file;

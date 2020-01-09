@@ -25,6 +25,8 @@ class DatabaseContributionQueuePublishers: public DatabaseTable {
 
   bool CreateIndex(sql::Database* db) override;
 
+  bool Migrate(sql::Database* db, const int target);
+
   bool InsertOrUpdate(
       sql::Database* db,
       ledger::ContributionQueuePtr info);
@@ -38,9 +40,15 @@ class DatabaseContributionQueuePublishers: public DatabaseTable {
   bool DeleteAllRecords(sql::Database* db);
 
  private:
-  const char* table_name_ = "contribution_queue_publishers";
-  const int minimum_version_ = 9;
-  const char* parent_table_name_ = "contribution_queue";
+  bool CreateTableV9(sql::Database* db);
+
+  bool CreateTableV15(sql::Database* db);
+
+  bool CreateIndexV15(sql::Database* db);
+
+  bool MigrateToV9(sql::Database* db);
+
+  bool MigrateToV15(sql::Database* db);
 };
 
 }  // namespace brave_rewards

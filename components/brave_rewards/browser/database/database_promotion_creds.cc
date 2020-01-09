@@ -3,15 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/database/database_promotion_creds.h"
-
 #include <string>
 #include <utility>
 
 #include "base/bind.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/browser/database/database_promotion_creds.h"
+#include "brave/components/brave_rewards/browser/database/database_util.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
+
+namespace {
+  const char table_name_[] = "promotion_creds";
+  const int minimum_version_ = 10;
+  const char parent_table_name_[] = "promotion";
+}  // namespace
 
 namespace brave_rewards {
 
@@ -51,6 +57,10 @@ bool DatabasePromotionCreds::CreateTable(sql::Database* db) {
     return true;
   }
 
+  return CreateTableV15(db);
+}
+
+bool DatabasePromotionCreds::CreateTableV10(sql::Database* db) {
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
         "%s_id TEXT UNIQUE NOT NULL,"
@@ -75,9 +85,105 @@ bool DatabasePromotionCreds::CreateTable(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
+bool DatabasePromotionCreds::CreateTableV15(sql::Database* db) {
+  const std::string query = base::StringPrintf(
+      "CREATE TABLE %s ("
+        "%s_id TEXT UNIQUE NOT NULL,"
+        "tokens TEXT NOT NULL,"
+        "blinded_creds TEXT NOT NULL,"
+        "signed_creds TEXT,"
+        "public_key TEXT,"
+        "batch_proof TEXT,"
+        "claim_id TEXT"
+      ")",
+      table_name_,
+      parent_table_name_);
+
+  return db->Execute(query.c_str());
+}
+
 bool DatabasePromotionCreds::CreateIndex(sql::Database* db) {
+  return CreateIndexV15(db);
+}
+
+bool DatabasePromotionCreds::CreateIndexV10(sql::Database* db) {
   const std::string id = base::StringPrintf("%s_id", parent_table_name_);
   return this->InsertIndex(db, table_name_, id);
+}
+
+bool DatabasePromotionCreds::CreateIndexV15(sql::Database* db) {
+  const std::string id = base::StringPrintf("%s_id", parent_table_name_);
+  return this->InsertIndex(db, table_name_, id);
+}
+
+bool DatabasePromotionCreds::Migrate(sql::Database* db, const int target) {
+  switch (target) {
+    case 10: {
+      return MigrateToV10(db);
+    }
+    case 15: {
+      return MigrateToV15(db);
+    }
+    default: {
+      NOTREACHED();
+      return false;
+    }
+  }
+}
+
+bool DatabasePromotionCreds::MigrateToV10(sql::Database* db) {
+  if (db->DoesTableExist(table_name_)) {
+    DropTable(db, table_name_);
+  }
+
+  if (!CreateTableV10(db)) {
+    return false;
+  }
+
+  if (!CreateIndexV10(db)) {
+    return false;
+  }
+
+  return true;
+}
+
+bool DatabasePromotionCreds::MigrateToV15(sql::Database* db) {
+  const std::string temp_table_name = base::StringPrintf(
+      "%s_temp",
+      table_name_);
+
+  if (!RenameDBTable(db, table_name_, temp_table_name)) {
+    return false;
+  }
+
+  const std::string sql =
+      "DROP INDEX IF EXISTS promotion_creds_promotion_id_index;";
+  if (!db->Execute(sql.c_str())) {
+    return false;
+  }
+
+  if (!CreateTableV15(db)) {
+    return false;
+  }
+
+  if (!CreateIndexV15(db)) {
+    return false;
+  }
+
+  const std::map<std::string, std::string> columns = {
+    { "promotion_id", "promotion_id" },
+    { "tokens", "tokens" },
+    { "blinded_creds", "blinded_creds" },
+    { "signed_creds", "signed_creds" },
+    { "public_key", "public_key" },
+    { "batch_proof", "batch_proof" },
+    { "claim_id", "claim_id" }
+  };
+
+  if (!MigrateDBTable(db, temp_table_name, table_name_, columns, true)) {
+    return false;
+  }
+  return true;
 }
 
 bool DatabasePromotionCreds::InsertOrUpdate(

@@ -50,6 +50,8 @@ class DatabaseActivityInfo: public DatabaseTable {
 
   bool CreateTableV6(sql::Database* db);
 
+  bool CreateTableV15(sql::Database* db);
+
   bool CreateIndexV1(sql::Database* db);
 
   bool CreateIndexV2(sql::Database* db);
@@ -58,6 +60,8 @@ class DatabaseActivityInfo: public DatabaseTable {
 
   bool CreateIndexV6(sql::Database* db);
 
+  bool CreateIndexV15(sql::Database* db);
+
   bool MigrateToV2(sql::Database* db);
 
   bool MigrateToV4(sql::Database* db);
@@ -65,6 +69,8 @@ class DatabaseActivityInfo: public DatabaseTable {
   bool MigrateToV5(sql::Database* db);
 
   bool MigrateToV6(sql::Database* db);
+
+  bool MigrateToV15(sql::Database* db);
 };
 
 }  // namespace brave_rewards

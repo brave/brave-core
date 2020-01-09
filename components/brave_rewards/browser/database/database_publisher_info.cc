@@ -111,6 +111,10 @@ bool DatabasePublisherInfo::Migrate(sql::Database* db, const int target) {
 }
 
 bool DatabasePublisherInfo::MigrateToV1(sql::Database* db) {
+  if (db->DoesTableExist(table_name_)) {
+    DropTable(db, table_name_);
+  }
+
   if (!CreateTableV1(db)) {
     return false;
   }
