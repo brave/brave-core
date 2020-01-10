@@ -15,10 +15,13 @@ import org.chromium.base.Log;
 import org.chromium.base.ObservableSupplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
+import org.chromium.chrome.browser.ChromeFeatureList;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
 
@@ -51,7 +54,10 @@ public class BraveAppMenuPropertiesDelegateImpl extends AppMenuPropertiesDelegat
         menu.findItem(R.id.help_id).setVisible(false).setEnabled(false);
 
         menu.add(Menu.NONE, R.id.set_default_browser, 0, R.string.menu_set_default_browser);
-        menu.add(Menu.NONE, R.id.brave_rewards_id, 0, R.string.menu_brave_rewards);
+        if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) &&
+                !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
+            menu.add(Menu.NONE, R.id.brave_rewards_id, 0, R.string.menu_brave_rewards);
+        }
         menu.add(Menu.NONE, R.id.exit_id, 0, R.string.menu_exit);
 
         if (BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(mContext)) {
