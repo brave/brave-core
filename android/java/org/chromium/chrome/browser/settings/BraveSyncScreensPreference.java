@@ -99,6 +99,7 @@ import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
 import org.chromium.chrome.browser.qrreader.CameraSource;
 import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
+import org.chromium.chrome.browser.settings.SettingsActivity;
 import org.chromium.chrome.browser.sync.BraveSyncService;
 import org.chromium.chrome.browser.sync.BraveSyncServiceObserver;
 import org.chromium.ui.KeyboardVisibilityDelegate;
@@ -115,7 +116,7 @@ import java.util.TimerTask;
  * Settings fragment that allows to control Sync functionality.
  */
 public class BraveSyncScreensPreference extends BravePreferenceFragment
-      implements View.OnClickListener, Preferences.OnBackPressedListener,
+      implements View.OnClickListener, SettingsActivity.OnBackPressedListener,
       CompoundButton.OnCheckedChangeListener, BarcodeTracker.BarcodeGraphicTrackerCallback,
       BraveSyncService.GetSettingsAndDevicesCallback {
 
