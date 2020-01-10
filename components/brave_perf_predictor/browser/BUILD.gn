@@ -8,6 +8,8 @@ source_set("browser") {
   sources = [
     "bandwidth_savings_predictor.cc",
     "bandwidth_savings_predictor.h",
+    "perf_predictor_p3a.cc",
+    "perf_predictor_p3a.h",
     "perf_predictor_page_metrics_observer.cc",
     "perf_predictor_page_metrics_observer.h",
     "perf_predictor_tab_helper.cc",
@@ -29,7 +31,7 @@ source_set("browser") {
     "//content/public/browser",
     "//content/public/common",
     "//net/base/registry_controlled_domains",
-    "//services/metrics/public/cpp:metrics_cpp"
+    "//services/metrics/public/cpp:metrics_cpp",
     "//third_party/re2",
     "//url"
   ]

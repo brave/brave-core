@@ -21,6 +21,7 @@
 
 #include "brave/components/brave_perf_predictor/browser/bandwidth_savings_predictor.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_p3a.h"
 
 namespace brave_perf_predictor {
 
@@ -56,6 +57,7 @@ class PerfPredictorTabHelper : public content::WebContentsObserver,
   int64_t navigation_id_;
   GURL main_frame_url_;
   BandwidthSavingsPredictor* bandwidth_predictor_;
+  BandwidthSavingsTracker* bandwidth_tracker_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
   DISALLOW_COPY_AND_ASSIGN(PerfPredictorTabHelper);

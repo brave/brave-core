@@ -50,6 +50,7 @@ constexpr uint64_t kDefaultUploadIntervalSeconds = 60 * 60;  // 1 hour.
 // updating on the fly.
 constexpr const char* kCollectedHistograms[] = {
     "Brave.P3A.SentAnswersCount",
+    "Brave.Savings.BandwidthSavingsMB",
     "Brave.Sync.Status",
     // Deprecated:
     // "DefaultBrowser.State",

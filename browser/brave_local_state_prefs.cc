@@ -11,6 +11,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_perf_predictor/browser/buildflags/buildflags.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
@@ -36,6 +37,10 @@
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
 #include "brave/browser/widevine/widevine_utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_p3a.h"
 #endif
 
 namespace brave {
@@ -74,6 +79,10 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
   RegisterWidevineLocalstatePrefs(registry);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_PERF_PREDICTOR)
+  brave_perf_predictor::BandwidthSavingsTracker::RegisterPrefs(registry);
 #endif
 }
 

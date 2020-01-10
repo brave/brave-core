@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -28,6 +29,8 @@ PerfPredictorTabHelper::PerfPredictorTabHelper(
     extractor->load_entities(static_third_party_config);
   }
   bandwidth_predictor_ = new BandwidthSavingsPredictor(extractor);
+  bandwidth_tracker_ = new BandwidthSavingsTracker(
+    g_browser_process->local_state());
 }
 
 PerfPredictorTabHelper::~PerfPredictorTabHelper() {
@@ -81,6 +84,7 @@ void PerfPredictorTabHelper::RecordSaving() {
       prefs->SetUint64(
         kBandwidthSavedBytes,
         prefs->GetUint64(kBandwidthSavedBytes) + saving);
+      bandwidth_tracker_->RecordSaving(saving);
     }
   }
 }
