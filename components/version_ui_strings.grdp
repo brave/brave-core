@@ -23,8 +23,8 @@
     OS
   </message>
   <if expr="is_android">
-    <message name="IDS_VERSION_UI_GMS" desc="label for the Brave Play services info on the about:version page">
-      Brave Play services
+    <message name="IDS_VERSION_UI_GMS" desc="label for the Google Play services info on the about:version page">
+      Google Play services
     </message>
   </if>
   <message name="IDS_VERSION_UI_USER_AGENT" desc="label for the user agent on the about:version page">
