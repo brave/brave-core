@@ -21,13 +21,7 @@ class DatabaseContributionInfoPublishers: public DatabaseTable {
   explicit DatabaseContributionInfoPublishers(int current_db_version);
   ~DatabaseContributionInfoPublishers() override;
 
-  bool Init(sql::Database* db) override;
-
-  bool CreateTable(sql::Database* db) override;
-
-  bool CreateIndex(sql::Database* db) override;
-
-  bool Migrate(sql::Database* db, const int target);
+  bool Migrate(sql::Database* db, const int target) override;
 
   bool InsertOrUpdate(
       sql::Database* db,
@@ -44,14 +38,17 @@ class DatabaseContributionInfoPublishers: public DatabaseTable {
     ledger::PublisherInfoList* list);
 
  private:
-  const char* table_name_ = "contribution_info_publishers";
-  const int minimum_version_ = 11;
+  bool CreateTableV11(sql::Database* db);
+
+  bool CreateTableV15(sql::Database* db);
+
+  bool CreateIndexV11(sql::Database* db);
+
+  bool CreateIndexV15(sql::Database* db);
 
   bool MigrateToV11(sql::Database* db);
 
-  bool CreateTable11(sql::Database* db);
-
-  bool CreateIndex11(sql::Database* db);
+  bool MigrateToV15(sql::Database* db);
 };
 
 }  // namespace brave_rewards

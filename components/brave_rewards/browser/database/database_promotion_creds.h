@@ -20,11 +20,7 @@ class DatabasePromotionCreds: public DatabaseTable {
   explicit DatabasePromotionCreds(int current_db_version);
   ~DatabasePromotionCreds() override;
 
-  bool Init(sql::Database* db) override;
-
-  bool CreateTable(sql::Database* db) override;
-
-  bool CreateIndex(sql::Database* db) override;
+  bool Migrate(sql::Database* db, const int target) override;
 
   bool InsertOrUpdate(
       sql::Database* db,
@@ -36,9 +32,17 @@ class DatabasePromotionCreds: public DatabaseTable {
       const std::string& promotion_id);
 
  private:
-  const char* table_name_ = "promotion_creds";
-  const int minimum_version_ = 10;
-  const char* parent_table_name_ = "promotion";
+  bool CreateTableV10(sql::Database* db);
+
+  bool CreateIndexV10(sql::Database* db);
+
+  bool CreateTableV15(sql::Database* db);
+
+  bool CreateIndexV15(sql::Database* db);
+
+  bool MigrateToV10(sql::Database* db);
+
+  bool MigrateToV15(sql::Database* db);
 };
 
 }  // namespace brave_rewards

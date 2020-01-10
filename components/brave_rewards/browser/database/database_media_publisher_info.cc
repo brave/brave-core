@@ -3,12 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
+#include <map>
 #include <utility>
 
 #include "base/bind.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/browser/database/database_media_publisher_info.h"
+#include "brave/components/brave_rewards/browser/database/database_util.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
@@ -16,7 +17,6 @@ namespace brave_rewards {
 
 namespace {
   const char* table_name_ = "media_publisher_info";
-  const int minimum_version_ = 1;
 }  // namespace
 
 DatabaseMediaPublisherInfo::DatabaseMediaPublisherInfo(
@@ -25,37 +25,6 @@ DatabaseMediaPublisherInfo::DatabaseMediaPublisherInfo(
 }
 
 DatabaseMediaPublisherInfo::~DatabaseMediaPublisherInfo() = default;
-
-bool DatabaseMediaPublisherInfo::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabaseMediaPublisherInfo::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
-  return CreateTableV1(db);
-}
 
 bool DatabaseMediaPublisherInfo::CreateTableV1(sql::Database* db) {
   const std::string query = base::StringPrintf(
@@ -73,7 +42,82 @@ bool DatabaseMediaPublisherInfo::CreateTableV1(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
-bool DatabaseMediaPublisherInfo::CreateIndex(sql::Database* db) {
+bool DatabaseMediaPublisherInfo::CreateTableV15(sql::Database* db) {
+  const std::string query = base::StringPrintf(
+      "CREATE TABLE %s ("
+        "media_key TEXT NOT NULL PRIMARY KEY UNIQUE,"
+        "publisher_id LONGVARCHAR NOT NULL"
+      ")",
+      table_name_);
+
+  return db->Execute(query.c_str());
+}
+
+bool DatabaseMediaPublisherInfo::CreateIndexV15(sql::Database* db) {
+  bool success = this->InsertIndex(db, table_name_, "media_key");
+
+  if (!success) {
+    return false;
+  }
+
+  return this->InsertIndex(db, table_name_, "publisher_id");
+}
+
+bool DatabaseMediaPublisherInfo::Migrate(
+    sql::Database* db,
+    const int target) {
+  switch (target) {
+    case 1: {
+      return MigrateToV1(db);
+    }
+    case 15: {
+      return MigrateToV15(db);
+    }
+    default: {
+      NOTREACHED();
+      return false;
+    }
+  }
+}
+
+bool DatabaseMediaPublisherInfo::MigrateToV1(sql::Database* db) {
+  if (db->DoesTableExist(table_name_)) {
+    DropTable(db, table_name_);
+  }
+
+  if (!CreateTableV1(db)) {
+    return false;
+  }
+
+  return true;
+}
+
+bool DatabaseMediaPublisherInfo::MigrateToV15(sql::Database* db) {
+  const std::string temp_table_name = base::StringPrintf(
+      "%s_temp",
+      table_name_);
+
+  if (!RenameDBTable(db, table_name_, temp_table_name)) {
+    return false;
+  }
+
+  if (!CreateTableV15(db)) {
+    return false;
+  }
+
+  if (!CreateIndexV15(db)) {
+    return false;
+  }
+
+  const std::map<std::string, std::string> columns = {
+    { "media_key", "media_key" },
+    { "publisher_id", "publisher_id" }
+  };
+
+  if (!MigrateDBTable(db, temp_table_name, table_name_, columns, true)) {
+    return false;
+  }
+
   return true;
 }
 

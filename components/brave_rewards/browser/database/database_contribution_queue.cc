@@ -3,16 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/database/database_contribution_queue.h"
-
-#include <string>
 #include <utility>
 
 #include "base/bind.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/browser/database/database_contribution_queue.h"
+#include "brave/components/brave_rewards/browser/database/database_util.h"
 #include "base/time/time.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
+
+namespace {
+  const char table_name_[] = "contribution_queue";
+}  // namespace
 
 namespace brave_rewards {
 
@@ -29,42 +32,7 @@ std::string DatabaseContributionQueue::GetIdColumnName() {
   return base::StringPrintf("%s_id", table_name_);
 }
 
-bool DatabaseContributionQueue::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = publishers_->Init(db);
-  if (!success) {
-    return false;
-  }
-
-  // We need to clear queue if user has corrupted foreign key
-  // more info: https://github.com/brave/brave-browser/issues/7579
-  if (publishers_->HasCorruptedForeignKey(db)) {
-    if (!DeleteAllRecords(db)) {
-      return false;
-    }
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabaseContributionQueue::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
+bool DatabaseContributionQueue::CreateTableV9(sql::Database* db) {
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
       "%s INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
@@ -79,8 +47,41 @@ bool DatabaseContributionQueue::CreateTable(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
-bool DatabaseContributionQueue::CreateIndex(sql::Database* db) {
+bool DatabaseContributionQueue::Migrate(
+    sql::Database* db,
+    const int target) {
+  switch (target) {
+    case 9: {
+      return MigrateToV9(db);
+    }
+    case 15: {
+      return MigrateToV15(db);
+    }
+    default: {
+      NOTREACHED();
+      return false;
+    }
+  }
+}
+
+bool DatabaseContributionQueue::MigrateToV9(sql::Database* db) {
+  if (db->DoesTableExist(table_name_)) {
+    DropTable(db, table_name_);
+  }
+
+  if (!CreateTableV9(db)) {
+    return false;
+  }
+
+  if (!publishers_->Migrate(db, 9)) {
+    return false;
+  }
+
   return true;
+}
+
+bool DatabaseContributionQueue::MigrateToV15(sql::Database* db) {
+  return publishers_->Migrate(db, 15);
 }
 
 bool DatabaseContributionQueue::InsertOrUpdate(

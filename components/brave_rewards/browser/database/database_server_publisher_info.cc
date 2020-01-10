@@ -3,15 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/database/database_server_publisher_info.h"
-
-#include <string>
 #include <utility>
 
 #include "base/bind.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/browser/database/database_server_publisher_info.h"
+#include "brave/components/brave_rewards/browser/database/database_util.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
+
+namespace {
+  const char table_name_[] = "server_publisher_info";
+}  // namespace
 
 namespace brave_rewards {
 
@@ -25,39 +28,7 @@ DatabaseServerPublisherInfo::DatabaseServerPublisherInfo(
 DatabaseServerPublisherInfo::~DatabaseServerPublisherInfo() {
 }
 
-bool DatabaseServerPublisherInfo::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  success = banner_->Init(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabaseServerPublisherInfo::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
+bool DatabaseServerPublisherInfo::CreateTableV7(sql::Database* db) {
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s "
       "("
@@ -71,8 +42,49 @@ bool DatabaseServerPublisherInfo::CreateTable(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
-bool DatabaseServerPublisherInfo::CreateIndex(sql::Database* db) {
+bool DatabaseServerPublisherInfo::CreateIndexV7(sql::Database* db) {
   return this->InsertIndex(db, table_name_, "publisher_key");
+}
+
+bool DatabaseServerPublisherInfo::Migrate(
+    sql::Database* db,
+    const int target) {
+  switch (target) {
+    case 7: {
+      return MigrateToV7(db);
+    }
+    case 15: {
+      return MigrateToV15(db);
+    }
+    default: {
+      NOTREACHED();
+      return false;
+    }
+  }
+}
+
+bool DatabaseServerPublisherInfo::MigrateToV7(sql::Database* db) {
+  if (db->DoesTableExist(table_name_)) {
+    DropTable(db, table_name_);
+  }
+
+  if (!CreateTableV7(db)) {
+    return false;
+  }
+
+  if (!CreateIndexV7(db)) {
+    return false;
+  }
+
+  if (!banner_->Migrate(db, 7)) {
+    return false;
+  }
+
+  return true;
+}
+
+bool DatabaseServerPublisherInfo::MigrateToV15(sql::Database* db) {
+  return banner_->Migrate(db, 15);
 }
 
 bool DatabaseServerPublisherInfo::InsertOrUpdate(

@@ -19,13 +19,7 @@ class DatabaseRecurringTip: public DatabaseTable {
 
   ~DatabaseRecurringTip() override;
 
-  bool Init(sql::Database* db) override;
-
-  bool CreateTable(sql::Database* db) override;
-
-  bool CreateIndex(sql::Database* db) override;
-
-  bool Migrate(sql::Database* db, const int target);
+  bool Migrate(sql::Database* db, const int target) override;
 
   bool InsertOrUpdate(sql::Database* db, ledger::RecurringTipPtr info);
 
@@ -38,9 +32,15 @@ class DatabaseRecurringTip: public DatabaseTable {
  private:
   bool CreateTableV2(sql::Database* db);
 
+  bool CreateTableV15(sql::Database* db);
+
   bool CreateIndexV2(sql::Database* db);
 
+  bool CreateIndexV15(sql::Database* db);
+
   bool MigrateToV2(sql::Database* db);
+
+  bool MigrateToV15(sql::Database* db);
 };
 
 }  // namespace brave_rewards

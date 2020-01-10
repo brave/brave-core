@@ -53,6 +53,7 @@ class PublisherInfoDatabaseTest : public ::testing::Test {
     publisher_info_database_ =
         std::make_unique<PublisherInfoDatabase>(*db_file);
     ASSERT_NE(publisher_info_database_, nullptr);
+    ASSERT_TRUE(publisher_info_database_->Init());
   }
 
   void CreateMigrationDatabase(base::ScopedTempDir* temp_dir,
@@ -1355,6 +1356,18 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv13tov14_UnblindedToken) {
   EXPECT_EQ(promotion->approximate_value, 1.25);
 }
 
+TEST_F(PublisherInfoDatabaseTest, Migrationv14tov15) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateMigrationDatabase(&temp_dir, &db_file, 14, 15);
+  EXPECT_TRUE(publisher_info_database_->Init());
+
+  ASSERT_EQ(publisher_info_database_->GetTableVersionNumber(), 15);
+
+  const std::string schema = publisher_info_database_->GetSchema();
+  EXPECT_EQ(schema, GetSchemaString(15));
+}
+
 TEST_F(PublisherInfoDatabaseTest, DeleteActivityInfo) {
   base::ScopedTempDir temp_dir;
   base::FilePath db_file;
@@ -1549,22 +1562,6 @@ TEST_F(PublisherInfoDatabaseTest, RemoveAllPendingContributions) {
   bool success = publisher_info_database_->RemoveAllPendingContributions();
   EXPECT_TRUE(success);
   EXPECT_EQ(CountTableRows("pending_contribution"), 0);
-}
-
-TEST_F(PublisherInfoDatabaseTest,
-    ContributionQueueKeyCorrupted) {
-  base::ScopedTempDir temp_dir;
-  base::FilePath db_file;
-  LoadDatabaseFile(
-      &temp_dir,
-      &db_file,
-      "contribution_queue_key_corrupted",
-      "database",
-      9);
-  EXPECT_TRUE(publisher_info_database_->Init());
-
-  EXPECT_EQ(CountTableRows("contribution_queue"), 0);
-  EXPECT_EQ(CountTableRows("contribution_queue_publishers"), 0);
 }
 
 TEST_F(PublisherInfoDatabaseTest,

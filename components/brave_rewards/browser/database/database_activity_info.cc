@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <map>
-#include <string>
 #include <utility>
 
 #include "base/bind.h"
@@ -18,7 +17,6 @@ namespace brave_rewards {
 
 namespace {
   const char* table_name_ = "activity_info";
-  const int minimum_version_ = 1;
 }  // namespace
 
 std::string GenerateActivityFilterQuery(
@@ -132,37 +130,6 @@ DatabaseActivityInfo::DatabaseActivityInfo(
 
 DatabaseActivityInfo::~DatabaseActivityInfo() = default;
 
-bool DatabaseActivityInfo::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabaseActivityInfo::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
-  return CreateTableV6(db);
-}
-
 bool DatabaseActivityInfo::CreateTableV1(sql::Database* db) {
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
@@ -256,8 +223,22 @@ bool DatabaseActivityInfo::CreateTableV6(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
-bool DatabaseActivityInfo::CreateIndex(sql::Database* db) {
-  return CreateIndexV6(db);
+bool DatabaseActivityInfo::CreateTableV15(sql::Database* db) {
+  const std::string query = base::StringPrintf(
+      "CREATE TABLE %s ("
+        "publisher_id LONGVARCHAR NOT NULL,"
+        "duration INTEGER DEFAULT 0 NOT NULL,"
+        "visits INTEGER DEFAULT 0 NOT NULL,"
+        "score DOUBLE DEFAULT 0 NOT NULL,"
+        "percent INTEGER DEFAULT 0 NOT NULL,"
+        "weight DOUBLE DEFAULT 0 NOT NULL,"
+        "reconcile_stamp INTEGER DEFAULT 0 NOT NULL,"
+        "CONSTRAINT activity_unique "
+        "UNIQUE (publisher_id, reconcile_stamp)"
+      ")",
+      table_name_);
+
+  return db->Execute(query.c_str());
 }
 
 bool DatabaseActivityInfo::CreateIndexV2(sql::Database* db) {
@@ -272,8 +253,15 @@ bool DatabaseActivityInfo::CreateIndexV6(sql::Database* db) {
   return this->InsertIndex(db, table_name_, "publisher_id");
 }
 
+bool DatabaseActivityInfo::CreateIndexV15(sql::Database* db) {
+  return this->InsertIndex(db, table_name_, "publisher_id");
+}
+
 bool DatabaseActivityInfo::Migrate(sql::Database* db, const int target) {
   switch (target) {
+    case 1: {
+      return MigrateToV1(db);
+    }
     case 2: {
       return MigrateToV2(db);
     }
@@ -286,11 +274,26 @@ bool DatabaseActivityInfo::Migrate(sql::Database* db, const int target) {
     case 6: {
       return MigrateToV6(db);
     }
+    case 15: {
+      return MigrateToV15(db);
+    }
     default: {
       NOTREACHED();
       return false;
     }
   }
+}
+
+bool DatabaseActivityInfo::MigrateToV1(sql::Database* db) {
+  if (db->DoesTableExist(table_name_)) {
+    DropTable(db, table_name_);
+  }
+
+  if (!CreateTableV1(db)) {
+    return false;
+  }
+
+  return true;
 }
 
 bool DatabaseActivityInfo::MigrateToV2(sql::Database* db) {
@@ -437,6 +440,46 @@ bool DatabaseActivityInfo::MigrateToV6(sql::Database* db) {
       columns,
       true,
       group_by)) {
+    return false;
+  }
+
+  return true;
+}
+
+bool DatabaseActivityInfo::MigrateToV15(sql::Database* db) {
+  const std::string temp_table_name = base::StringPrintf(
+      "%s_temp",
+      table_name_);
+
+  if (!RenameDBTable(db, table_name_, temp_table_name)) {
+    return false;
+  }
+
+  const std::string sql =
+      "DROP INDEX IF EXISTS activity_info_publisher_id_index;";
+  if (!db->Execute(sql.c_str())) {
+    return false;
+  }
+
+  if (!CreateTableV15(db)) {
+    return false;
+  }
+
+  if (!CreateIndexV15(db)) {
+    return false;
+  }
+
+  const std::map<std::string, std::string> columns = {
+    { "publisher_id", "publisher_id" },
+    { "duration", "duration" },
+    { "visits", "visits" },
+    { "score", "score" },
+    { "percent", "percent" },
+    { "weight", "weight" },
+    { "reconcile_stamp", "reconcile_stamp" }
+  };
+
+  if (!MigrateDBTable(db, temp_table_name, table_name_, columns, true)) {
     return false;
   }
 

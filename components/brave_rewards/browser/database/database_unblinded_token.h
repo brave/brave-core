@@ -21,13 +21,7 @@ class DatabaseUnblindedToken: public DatabaseTable {
   explicit DatabaseUnblindedToken(int current_db_version);
   ~DatabaseUnblindedToken() override;
 
-  bool Init(sql::Database* db) override;
-
-  bool CreateTable(sql::Database* db) override;
-
-  bool CreateIndex(sql::Database* db) override;
-
-  bool Migrate(sql::Database* db, const int target);
+  bool Migrate(sql::Database* db, const int target) override;
 
   bool InsertOrUpdate(sql::Database* db, ledger::UnblindedTokenPtr info);
 
@@ -44,11 +38,17 @@ class DatabaseUnblindedToken: public DatabaseTable {
  private:
   bool CreateTableV10(sql::Database* db);
 
+  bool CreateTableV15(sql::Database* db);
+
   bool CreateIndexV10(sql::Database* db);
+
+  bool CreateIndexV15(sql::Database* db);
 
   bool MigrateToV10(sql::Database* db);
 
   bool MigrateToV14(sql::Database* db);
+
+  bool MigrateToV15(sql::Database* db);
 };
 
 }  // namespace brave_rewards

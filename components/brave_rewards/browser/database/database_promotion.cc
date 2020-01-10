@@ -3,18 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/database/database_promotion.h"
-
 #include <utility>
 
 #include "base/bind.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/browser/database/database_promotion.h"
+#include "brave/components/brave_rewards/browser/database/database_util.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
 namespace {
   const char* table_name_ = "promotion";
-  const int minimum_version_ = 10;
 }  // namespace
 
 namespace brave_rewards {
@@ -25,53 +24,6 @@ DatabasePromotion::DatabasePromotion(int current_db_version) :
 }
 
 DatabasePromotion::~DatabasePromotion() {
-}
-
-bool DatabasePromotion::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  success = creds_->Init(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabasePromotion::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
-  const int version = GetCurrentDBVersion();
-
-  if (version >= 13) {
-    return CreateTableV13(db);
-  }
-
-  if (version >= 10) {
-    return CreateTableV10(db);
-  }
-
-  NOTREACHED();
-  return false;
 }
 
 bool DatabasePromotion::CreateTableV10(sql::Database* db) {
@@ -117,10 +69,6 @@ bool DatabasePromotion::CreateTableV13(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
-bool DatabasePromotion::CreateIndex(sql::Database* db) {
-  return CreateIndexV13(db);
-}
-
 bool DatabasePromotion::CreateIndexV10(sql::Database* db) {
   const std::string id = base::StringPrintf("%s_id", table_name_);
   return this->InsertIndex(db, table_name_, id);
@@ -142,6 +90,9 @@ bool DatabasePromotion::Migrate(sql::Database* db, const int target) {
     case 14: {
       return MigrateToV14(db);
     }
+    case 15: {
+      return MigrateToV15(db);
+    }
     default: {
       NOTREACHED();
       return false;
@@ -150,11 +101,19 @@ bool DatabasePromotion::Migrate(sql::Database* db, const int target) {
 }
 
 bool DatabasePromotion::MigrateToV10(sql::Database* db) {
+  if (db->DoesTableExist(table_name_)) {
+    DropTable(db, table_name_);
+  }
+
   if (!CreateTableV10(db)) {
     return false;
   }
 
   if (!CreateIndexV10(db)) {
+    return false;
+  }
+
+  if (!creds_->Migrate(db, 10)) {
     return false;
   }
 
@@ -202,6 +161,15 @@ bool DatabasePromotion::MigrateToV14(sql::Database* db) {
     db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
 
   return statement.Run();
+}
+
+bool DatabasePromotion::MigrateToV15(sql::Database* db) {
+  DCHECK(db);
+  if (!db) {
+    return false;
+  }
+
+  return creds_->Migrate(db, 15);
 }
 
 bool DatabasePromotion::InsertOrUpdate(

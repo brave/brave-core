@@ -19,11 +19,7 @@ class DatabaseMediaPublisherInfo: public DatabaseTable {
 
   ~DatabaseMediaPublisherInfo() override;
 
-  bool Init(sql::Database* db) override;
-
-  bool CreateTable(sql::Database* db) override;
-
-  bool CreateIndex(sql::Database* db) override;
+  bool Migrate(sql::Database* db, const int target) override;
 
   bool InsertOrUpdate(
       sql::Database* db,
@@ -36,6 +32,14 @@ class DatabaseMediaPublisherInfo: public DatabaseTable {
 
  private:
   bool CreateTableV1(sql::Database* db);
+
+  bool CreateTableV15(sql::Database* db);
+
+  bool CreateIndexV15(sql::Database* db);
+
+  bool MigrateToV1(sql::Database* db);
+
+  bool MigrateToV15(sql::Database* db);
 };
 
 }  // namespace brave_rewards

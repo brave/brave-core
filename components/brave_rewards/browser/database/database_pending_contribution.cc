@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <map>
-#include <string>
 #include <utility>
 
 #include "base/bind.h"
@@ -19,7 +18,6 @@ namespace brave_rewards {
 
 namespace {
   const char* table_name_ = "pending_contribution";
-  const int minimum_version_ = 3;
 }  // namespace
 
 DatabasePendingContribution::DatabasePendingContribution(
@@ -28,37 +26,6 @@ DatabasePendingContribution::DatabasePendingContribution(
 }
 
 DatabasePendingContribution::~DatabasePendingContribution() = default;
-
-bool DatabasePendingContribution::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabasePendingContribution::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
-  return CreateTableV12(db);
-}
 
 bool DatabasePendingContribution::CreateTableV3(sql::Database* db) {
   const std::string query = base::StringPrintf(
@@ -118,8 +85,19 @@ bool DatabasePendingContribution::CreateTableV12(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
-bool DatabasePendingContribution::CreateIndex(sql::Database* db) {
-  return CreateIndexV8(db);
+bool DatabasePendingContribution::CreateTableV15(sql::Database* db) {
+  const std::string query = base::StringPrintf(
+      "CREATE TABLE %s ("
+        "pending_contribution_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+        "publisher_id LONGVARCHAR NOT NULL,"
+        "amount DOUBLE DEFAULT 0 NOT NULL,"
+        "added_date INTEGER DEFAULT 0 NOT NULL,"
+        "viewing_id LONGVARCHAR NOT NULL,"
+        "type INTEGER NOT NULL"
+      ")",
+      table_name_);
+
+  return db->Execute(query.c_str());
 }
 
 bool DatabasePendingContribution::CreateIndexV3(sql::Database* db) {
@@ -134,6 +112,10 @@ bool DatabasePendingContribution::CreateIndexV12(sql::Database* db) {
   return this->InsertIndex(db, table_name_, "publisher_id");
 }
 
+bool DatabasePendingContribution::CreateIndexV15(sql::Database* db) {
+  return this->InsertIndex(db, table_name_, "publisher_id");
+}
+
 bool DatabasePendingContribution::Migrate(sql::Database* db, const int target) {
   switch (target) {
     case 3: {
@@ -145,6 +127,9 @@ bool DatabasePendingContribution::Migrate(sql::Database* db, const int target) {
     case 12: {
       return MigrateToV12(db);
     }
+    case 15: {
+      return MigrateToV15(db);
+    }
     default: {
       NOTREACHED();
       return false;
@@ -153,6 +138,10 @@ bool DatabasePendingContribution::Migrate(sql::Database* db, const int target) {
 }
 
 bool DatabasePendingContribution::MigrateToV3(sql::Database* db) {
+  if (db->DoesTableExist(table_name_)) {
+    DropTable(db, table_name_);
+  }
+
   if (!CreateTableV3(db)) {
     return false;
   }
@@ -226,6 +215,44 @@ bool DatabasePendingContribution::MigrateToV12(sql::Database* db) {
   }
 
   const std::map<std::string, std::string> columns = {
+    { "publisher_id", "publisher_id" },
+    { "amount", "amount" },
+    { "added_date", "added_date" },
+    { "viewing_id", "viewing_id" },
+    { "type", "type" }
+  };
+
+  if (!MigrateDBTable(db, temp_table_name, table_name_, columns, true)) {
+    return false;
+  }
+  return true;
+}
+
+bool DatabasePendingContribution::MigrateToV15(sql::Database* db) {
+  const std::string temp_table_name = base::StringPrintf(
+      "%s_temp",
+      table_name_);
+
+  if (!RenameDBTable(db, table_name_, temp_table_name)) {
+    return false;
+  }
+
+  const std::string sql =
+      "DROP INDEX IF EXISTS pending_contribution_publisher_id_index;";
+  if (!db->Execute(sql.c_str())) {
+    return false;
+  }
+
+  if (!CreateTableV15(db)) {
+    return false;
+  }
+
+  if (!CreateIndexV15(db)) {
+    return false;
+  }
+
+  const std::map<std::string, std::string> columns = {
+    { "pending_contribution_id", "pending_contribution_id" },
     { "publisher_id", "publisher_id" },
     { "amount", "amount" },
     { "added_date", "added_date" },

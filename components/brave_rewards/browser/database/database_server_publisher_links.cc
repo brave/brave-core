@@ -3,15 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/database/database_server_publisher_links.h"
-
-#include <string>
+#include <map>
 #include <utility>
 
 #include "base/bind.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/browser/database/database_server_publisher_links.h"
+#include "brave/components/brave_rewards/browser/database/database_util.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
+
+namespace {
+  const char table_name_[] = "server_publisher_links";
+}  // namespace
 
 namespace brave_rewards {
 
@@ -23,34 +27,7 @@ DatabaseServerPublisherLinks::DatabaseServerPublisherLinks(
 DatabaseServerPublisherLinks::~DatabaseServerPublisherLinks() {
 }
 
-bool DatabaseServerPublisherLinks::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabaseServerPublisherLinks::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
+bool DatabaseServerPublisherLinks::CreateTableV7(sql::Database* db) {
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
       "publisher_key LONGVARCHAR NOT NULL,"
@@ -70,8 +47,97 @@ bool DatabaseServerPublisherLinks::CreateTable(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
-bool DatabaseServerPublisherLinks::CreateIndex(sql::Database* db) {
+bool DatabaseServerPublisherLinks::CreateTableV15(sql::Database* db) {
+  const std::string query = base::StringPrintf(
+      "CREATE TABLE %s ("
+      "publisher_key LONGVARCHAR NOT NULL,"
+      "provider TEXT,"
+      "link TEXT,"
+      "CONSTRAINT %s_unique "
+      "    UNIQUE (publisher_key, provider)"
+      ")",
+      table_name_,
+      table_name_);
+
+  return db->Execute(query.c_str());
+}
+
+bool DatabaseServerPublisherLinks::CreateIndexV7(sql::Database* db) {
   return this->InsertIndex(db, table_name_, "publisher_key");
+}
+
+bool DatabaseServerPublisherLinks::CreateIndexV15(sql::Database* db) {
+  return this->InsertIndex(db, table_name_, "publisher_key");
+}
+
+bool DatabaseServerPublisherLinks::Migrate(
+    sql::Database* db,
+    const int target) {
+  switch (target) {
+    case 7: {
+      return MigrateToV7(db);
+    }
+    case 15: {
+      return MigrateToV15(db);
+    }
+    default: {
+      NOTREACHED();
+      return false;
+    }
+  }
+}
+
+
+bool DatabaseServerPublisherLinks::MigrateToV7(sql::Database* db) {
+  if (db->DoesTableExist(table_name_)) {
+    DropTable(db, table_name_);
+  }
+
+  if (!CreateTableV7(db)) {
+    return false;
+  }
+
+  if (!CreateIndexV7(db)) {
+    return false;
+  }
+
+  return true;
+}
+
+bool DatabaseServerPublisherLinks::MigrateToV15(sql::Database* db) {
+  const std::string temp_table_name = base::StringPrintf(
+      "%s_temp",
+      table_name_);
+
+  if (!RenameDBTable(db, table_name_, temp_table_name)) {
+    return false;
+  }
+
+  const std::string sql =
+      "DROP INDEX IF EXISTS server_publisher_links_publisher_key_index;";
+  if (!db->Execute(sql.c_str())) {
+    return false;
+  }
+
+  if (!CreateTableV15(db)) {
+    return false;
+  }
+
+  if (!CreateIndexV15(db)) {
+    return false;
+  }
+
+  const std::map<std::string, std::string> columns = {
+    { "publisher_key", "publisher_key" },
+    { "provider", "provider" },
+    { "link", "link" }
+  };
+
+  if (!MigrateDBTable(db, temp_table_name, table_name_, columns, true)) {
+    return false;
+  }
+
+  return true;
 }
 
 bool DatabaseServerPublisherLinks::InsertOrUpdate(

@@ -13,6 +13,10 @@
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
+namespace {
+  const char table_name_[] = "contribution_info_publishers";
+}  // namespace
+
 namespace brave_rewards {
 
 DatabaseContributionInfoPublishers::DatabaseContributionInfoPublishers
@@ -22,37 +26,7 @@ DatabaseContributionInfoPublishers::DatabaseContributionInfoPublishers
 DatabaseContributionInfoPublishers::
 ~DatabaseContributionInfoPublishers()= default;
 
-bool DatabaseContributionInfoPublishers::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-bool DatabaseContributionInfoPublishers::CreateTable(sql::Database* db) {
-  return CreateTable11(db);
-}
-
-bool DatabaseContributionInfoPublishers::CreateTable11(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
+bool DatabaseContributionInfoPublishers::CreateTableV11(sql::Database* db) {
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
         "contribution_id TEXT NOT NULL,"
@@ -72,11 +46,30 @@ bool DatabaseContributionInfoPublishers::CreateTable11(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
-bool DatabaseContributionInfoPublishers::CreateIndex(sql::Database* db) {
-  return CreateIndex11(db);
+bool DatabaseContributionInfoPublishers::CreateTableV15(sql::Database* db) {
+  const std::string query = base::StringPrintf(
+      "CREATE TABLE %s ("
+        "contribution_id TEXT NOT NULL,"
+        "publisher_key TEXT NOT NULL,"
+        "total_amount DOUBLE NOT NULL,"
+        "contributed_amount DOUBLE"
+      ")",
+      table_name_);
+
+  return db->Execute(query.c_str());
 }
 
-bool DatabaseContributionInfoPublishers::CreateIndex11(sql::Database* db) {
+bool DatabaseContributionInfoPublishers::CreateIndexV11(sql::Database* db) {
+  bool success = this->InsertIndex(db, table_name_, "contribution_id");
+
+  if (!success) {
+    return false;
+  }
+
+  return this->InsertIndex(db, table_name_, "publisher_key");
+}
+
+bool DatabaseContributionInfoPublishers::CreateIndexV15(sql::Database* db) {
   bool success = this->InsertIndex(db, table_name_, "contribution_id");
 
   if (!success) {
@@ -93,6 +86,9 @@ bool DatabaseContributionInfoPublishers::Migrate(
     case 11: {
       return MigrateToV11(db);
     }
+    case 15: {
+      return MigrateToV15(db);
+    }
     default: {
       NOTREACHED();
       return false;
@@ -101,11 +97,53 @@ bool DatabaseContributionInfoPublishers::Migrate(
 }
 
 bool DatabaseContributionInfoPublishers::MigrateToV11(sql::Database* db) {
-  if (!CreateTable11(db)) {
+  if (db->DoesTableExist(table_name_)) {
+    DropTable(db, table_name_);
+  }
+
+  if (!CreateTableV11(db)) {
     return false;
   }
 
-  if (!CreateIndex11(db)) {
+  if (!CreateIndexV11(db)) {
+    return false;
+  }
+
+  return true;
+}
+
+bool DatabaseContributionInfoPublishers::MigrateToV15(sql::Database* db) {
+  const std::string temp_table_name = base::StringPrintf(
+      "%s_temp",
+      table_name_);
+
+  if (!RenameDBTable(db, table_name_, temp_table_name)) {
+    return false;
+  }
+
+  const std::string sql =
+      "DROP INDEX IF EXISTS contribution_info_publishers_contribution_id_index;"
+      " DROP INDEX IF EXISTS contribution_info_publishers_publisher_key_index;";
+  if (!db->Execute(sql.c_str())) {
+    return false;
+  }
+
+  if (!CreateTableV15(db)) {
+    return false;
+  }
+
+  if (!CreateIndexV15(db)) {
+    return false;
+  }
+
+  const std::map<std::string, std::string> columns = {
+    { "contribution_id", "contribution_id" },
+    { "publisher_key", "publisher_key" },
+    { "total_amount", "total_amount" },
+    { "contributed_amount", "contributed_amount" }
+  };
+
+  if (!MigrateDBTable(db, temp_table_name, table_name_, columns, true)) {
     return false;
   }
 

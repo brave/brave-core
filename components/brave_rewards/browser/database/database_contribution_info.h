@@ -22,13 +22,7 @@ class DatabaseContributionInfo: public DatabaseTable {
   explicit DatabaseContributionInfo(int current_db_version);
   ~DatabaseContributionInfo() override;
 
-  bool Init(sql::Database* db) override;
-
-  bool CreateTable(sql::Database* db) override;
-
-  bool CreateIndex(sql::Database* db) override;
-
-  bool Migrate(sql::Database* db, const int target);
+  bool Migrate(sql::Database* db, const int target) override;
 
   bool InsertOrUpdate(sql::Database* db, ledger::ContributionInfoPtr info);
 
@@ -45,10 +39,6 @@ class DatabaseContributionInfo: public DatabaseTable {
       const int year);
 
  private:
-  const char* table_name_ = "contribution_info";
-  const int minimum_version_ = 2;
-  std::unique_ptr<DatabaseContributionInfoPublishers> publishers_;
-
   bool CreateTableV2(sql::Database* db);
 
   bool CreateTableV8(sql::Database* db);
@@ -64,6 +54,10 @@ class DatabaseContributionInfo: public DatabaseTable {
   bool MigrateToV8(sql::Database* db);
 
   bool MigrateToV11(sql::Database* db);
+
+  bool MigrateToV15(sql::Database* db);
+
+  std::unique_ptr<DatabaseContributionInfoPublishers> publishers_;
 };
 
 }  // namespace brave_rewards

@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <map>
-#include <string>
 #include <utility>
 
 #include "base/bind.h"
@@ -19,7 +18,6 @@ namespace brave_rewards {
 
 namespace {
   const char* table_name_ = "publisher_info";
-  const int minimum_version_ = 1;
 }  // namespace
 
 DatabasePublisherInfo::DatabasePublisherInfo(
@@ -28,37 +26,6 @@ DatabasePublisherInfo::DatabasePublisherInfo(
 }
 
 DatabasePublisherInfo::~DatabasePublisherInfo() = default;
-
-bool DatabasePublisherInfo::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabasePublisherInfo::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
-  return CreateTableV7(db);
-}
 
 bool DatabasePublisherInfo::CreateTableV1(sql::Database* db) {
   const std::string query = base::StringPrintf(
@@ -91,10 +58,6 @@ bool DatabasePublisherInfo::CreateTableV7(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
-bool DatabasePublisherInfo::CreateIndex(sql::Database* db) {
-  return true;
-}
-
 bool DatabasePublisherInfo::Migrate(sql::Database* db, const int target) {
   switch (target) {
     case 1: {
@@ -111,6 +74,10 @@ bool DatabasePublisherInfo::Migrate(sql::Database* db, const int target) {
 }
 
 bool DatabasePublisherInfo::MigrateToV1(sql::Database* db) {
+  if (db->DoesTableExist(table_name_)) {
+    DropTable(db, table_name_);
+  }
+
   if (!CreateTableV1(db)) {
     return false;
   }

@@ -14,6 +14,8 @@
 #include "sql/transaction.h"
 
 namespace {
+  const char table_name_[] = "contribution_info";
+
   double ProbiToDouble(const std::string& probi) {
     const int32_t probi_size = 18;
     const size_t size = probi.size();
@@ -56,42 +58,7 @@ DatabaseContributionInfo::DatabaseContributionInfo(int current_db_version) :
 
 DatabaseContributionInfo::~DatabaseContributionInfo() = default;
 
-bool DatabaseContributionInfo::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = publishers_->Init(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabaseContributionInfo::CreateTable(sql::Database* db) {
-  return CreateTableV11(db);
-}
-
-bool DatabaseContributionInfo::CreateIndex(sql::Database* db) {
-  return true;
-}
-
 bool DatabaseContributionInfo::CreateTableV2(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
         "publisher_id LONGVARCHAR,"
@@ -111,10 +78,6 @@ bool DatabaseContributionInfo::CreateTableV2(sql::Database* db) {
 }
 
 bool DatabaseContributionInfo::CreateTableV8(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
         "publisher_id LONGVARCHAR,"
@@ -134,10 +97,6 @@ bool DatabaseContributionInfo::CreateTableV8(sql::Database* db) {
 }
 
 bool DatabaseContributionInfo::CreateTableV11(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
   const std::string query = base::StringPrintf(
       "CREATE TABLE %s ("
         "contribution_id TEXT NOT NULL,"
@@ -171,6 +130,9 @@ bool DatabaseContributionInfo::Migrate(sql::Database* db, const int target) {
     }
     case 11: {
       return MigrateToV11(db);
+    }
+    case 15: {
+      return MigrateToV15(db);
     }
     default: {
       NOTREACHED();
@@ -323,6 +285,10 @@ bool DatabaseContributionInfo::MigrateToV11(sql::Database* db) {
   }
 
   return true;
+}
+
+bool DatabaseContributionInfo::MigrateToV15(sql::Database* db) {
+  return publishers_->Migrate(db, 15);
 }
 
 bool DatabaseContributionInfo::InsertOrUpdate(

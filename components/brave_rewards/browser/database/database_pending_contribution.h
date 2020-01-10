@@ -21,13 +21,7 @@ class DatabasePendingContribution: public DatabaseTable {
 
   ~DatabasePendingContribution() override;
 
-  bool Init(sql::Database* db) override;
-
-  bool CreateTable(sql::Database* db) override;
-
-  bool CreateIndex(sql::Database* db) override;
-
-  bool Migrate(sql::Database* db, const int target);
+  bool Migrate(sql::Database* db, const int target) override;
 
   bool InsertOrUpdate(sql::Database* db, ledger::PendingContributionList list);
 
@@ -48,17 +42,23 @@ class DatabasePendingContribution: public DatabaseTable {
 
   bool CreateTableV12(sql::Database* db);
 
+  bool CreateTableV15(sql::Database* db);
+
   bool CreateIndexV3(sql::Database* db);
 
   bool CreateIndexV8(sql::Database* db);
 
   bool CreateIndexV12(sql::Database* db);
 
+  bool CreateIndexV15(sql::Database* db);
+
   bool MigrateToV3(sql::Database* db);
 
   bool MigrateToV8(sql::Database* db);
 
   bool MigrateToV12(sql::Database* db);
+
+  bool MigrateToV15(sql::Database* db);
 };
 
 }  // namespace brave_rewards

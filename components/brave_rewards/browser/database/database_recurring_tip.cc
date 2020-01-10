@@ -3,12 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
+#include <map>
 #include <utility>
 
 #include "base/bind.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/browser/database/database_recurring_tip.h"
+#include "brave/components/brave_rewards/browser/database/database_util.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
@@ -18,7 +19,6 @@ namespace {
   // TODO(https://github.com/brave/brave-browser/issues/7144):
   //  rename to recurring_tip
   const char* table_name_ = "recurring_donation";
-  const int minimum_version_ = 2;
 }  // namespace
 
 DatabaseRecurringTip::DatabaseRecurringTip(
@@ -27,37 +27,6 @@ DatabaseRecurringTip::DatabaseRecurringTip(
 }
 
 DatabaseRecurringTip::~DatabaseRecurringTip() = default;
-
-bool DatabaseRecurringTip::Init(sql::Database* db) {
-  if (GetCurrentDBVersion() < minimum_version_) {
-    return true;
-  }
-
-  sql::Transaction transaction(db);
-  if (!transaction.Begin()) {
-    return false;
-  }
-
-  bool success = CreateTable(db);
-  if (!success) {
-    return false;
-  }
-
-  success = CreateIndex(db);
-  if (!success) {
-    return false;
-  }
-
-  return transaction.Commit();
-}
-
-bool DatabaseRecurringTip::CreateTable(sql::Database* db) {
-  if (db->DoesTableExist(table_name_)) {
-    return true;
-  }
-
-  return CreateTableV2(db);
-}
 
 bool DatabaseRecurringTip::CreateTableV2(sql::Database* db) {
   const std::string query = base::StringPrintf(
@@ -76,11 +45,23 @@ bool DatabaseRecurringTip::CreateTableV2(sql::Database* db) {
   return db->Execute(query.c_str());
 }
 
-bool DatabaseRecurringTip::CreateIndex(sql::Database* db) {
-  return CreateIndexV2(db);
+bool DatabaseRecurringTip::CreateTableV15(sql::Database* db) {
+  const std::string query = base::StringPrintf(
+      "CREATE TABLE %s ("
+        "publisher_id LONGVARCHAR NOT NULL PRIMARY KEY UNIQUE,"
+        "amount DOUBLE DEFAULT 0 NOT NULL,"
+        "added_date INTEGER DEFAULT 0 NOT NULL"
+      ")",
+      table_name_);
+
+  return db->Execute(query.c_str());
 }
 
 bool DatabaseRecurringTip::CreateIndexV2(sql::Database* db) {
+  return this->InsertIndex(db, table_name_, "publisher_id");
+}
+
+bool DatabaseRecurringTip::CreateIndexV15(sql::Database* db) {
   return this->InsertIndex(db, table_name_, "publisher_id");
 }
 
@@ -88,6 +69,9 @@ bool DatabaseRecurringTip::Migrate(sql::Database* db, const int target) {
   switch (target) {
     case 2: {
       return MigrateToV2(db);
+    }
+    case 15: {
+      return MigrateToV15(db);
     }
     default: {
       NOTREACHED();
@@ -97,6 +81,10 @@ bool DatabaseRecurringTip::Migrate(sql::Database* db, const int target) {
 }
 
 bool DatabaseRecurringTip::MigrateToV2(sql::Database* db) {
+  if (db->DoesTableExist(table_name_)) {
+    DropTable(db, table_name_);
+  }
+
   if (!CreateTableV2(db)) {
     return false;
   }
@@ -105,6 +93,41 @@ bool DatabaseRecurringTip::MigrateToV2(sql::Database* db) {
     return false;
   }
 
+  return true;
+}
+
+bool DatabaseRecurringTip::MigrateToV15(sql::Database* db) {
+  const std::string temp_table_name = base::StringPrintf(
+      "%s_temp",
+      table_name_);
+
+  if (!RenameDBTable(db, table_name_, temp_table_name)) {
+    return false;
+  }
+
+  const std::string sql =
+      "DROP INDEX IF EXISTS recurring_donation_publisher_id_index;";
+  if (!db->Execute(sql.c_str())) {
+    return false;
+  }
+
+  if (!CreateTableV15(db)) {
+    return false;
+  }
+
+  if (!CreateIndexV15(db)) {
+    return false;
+  }
+
+  const std::map<std::string, std::string> columns = {
+    { "publisher_id", "publisher_id" },
+    { "amount", "amount" },
+    { "added_date", "added_date" }
+  };
+
+  if (!MigrateDBTable(db, temp_table_name, table_name_, columns, true)) {
+    return false;
+  }
   return true;
 }
 
