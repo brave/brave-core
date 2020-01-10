@@ -700,6 +700,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
           Bookmark All Tabs...
         </message>
       </if>
+      <message name="IDS_BRAVE_BOOKMARK_MANAGER_EMPTY_LIST" desc="">
+        To add a bookmark, click the bookmark button next to the address bar
+      </message>
     </messages>
   </release>
 </grit>
