@@ -342,7 +342,7 @@ void TestCosmeticScriptletResources() {
 
 void TestDefaultLists() {
   std::vector<FilterList>& default_lists = FilterList::GetDefaultLists();
-  assert(default_lists.size() == 8);
+  assert(default_lists.size() == 9);
   FilterList& l = default_lists[0];
   assert(l.uuid == "67F880F5-7602-4042-8A3D-01481FD7437A");
   assert(l.url == "https://easylist.to/easylist/easylist.txt");
