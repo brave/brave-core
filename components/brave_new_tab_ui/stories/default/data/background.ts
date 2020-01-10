@@ -2,96 +2,102 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Image1 from '../../../../img/newtab/backgrounds/anders-jilden.webp'
-import Image2 from '../../../../img/newtab/backgrounds/andreas-gucklhorn.webp'
-import Image3 from '../../../../img/newtab/backgrounds/andy-mai.webp'
-import Image4 from '../../../../img/newtab/backgrounds/annie-spratt.webp'
-import Image5 from '../../../../img/newtab/backgrounds/anton-repponen.webp'
-import Image6 from '../../../../img/newtab/backgrounds/ben-karpinski.webp'
-import Image7 from '../../../../img/newtab/backgrounds/dc-cavalleri.webp'
-import Image8 from '../../../../img/newtab/backgrounds/joe-gardner.webp'
-import Image9 from '../../../../img/newtab/backgrounds/louis-kim.webp'
-import Image10 from '../../../../img/newtab/backgrounds/matt-palmer.webp'
-import Image11 from '../../../../img/newtab/backgrounds/oliwier-gesla.webp'
-import Image12 from '../../../../img/newtab/backgrounds/svalbard-jerol-soibam.webp'
-import Image13 from '../../../../img/newtab/backgrounds/will-christiansen-glacier-peak.webp'
-import Image14 from '../../../../img/newtab/backgrounds/will-christiansen-ice.webp'
-import Image15 from '../../../../img/newtab/backgrounds/xavier-balderas-cejudo.webp'
+import Image1 from '../../../../img/newtab/ntp-1.webp'
+import Image2 from '../../../../img/newtab/ntp-2.webp'
+import Image3 from '../../../../img/newtab/ntp-3.webp'
+import Image4 from '../../../../img/newtab/ntp-4.webp'
+import Image5 from '../../../../img/newtab/ntp-5.webp'
+import Image6 from '../../../../img/newtab/ntp-6.webp'
+import Image7 from '../../../../img/newtab/ntp-7.webp'
+import Image8 from '../../../../img/newtab/ntp-8.webp'
+import Image9 from '../../../../img/newtab/ntp-9.webp'
+import Image10 from '../../../../img/newtab/ntp-10.webp'
+import Image11 from '../../../../img/newtab/ntp-11.webp'
+import Image12 from '../../../../img/newtab/ntp-12.webp'
+import Image13 from '../../../../img/newtab/ntp-13.webp'
+import Image14 from '../../../../img/newtab/ntp-14.webp'
+import Image15 from '../../../../img/newtab/ntp-15.webp'
+import Image16 from '../../../../img/newtab/ntp-16.webp'
 
 export const images = [
   {
     'source': Image1,
-    'author': 'Anders Jildén',
-    'link': 'https://unsplash.com/@andersjilden?utm_source=unsplash&utm_medium=referral&utm_content=credit'
+    'author': 'Pok Rie',
+    'link': 'https://www.pexels.com/@pok-rie-33563'
   },
   {
     'source': Image2,
-    'author': 'Andreas Gücklhorn',
-    'link': 'https://unsplash.com/@draufsicht?utm_source=unsplash&utm_medium=referral&utm_content=credit'
+    'author': 'Jack Millard',
+    'link': 'https://unsplash.com/@millarjb'
   },
   {
     'source': Image3,
-    'author': 'Andy Mai',
-    'link': 'https://unsplash.com/@veroz?utm_source=unsplash&utm_medium=referral&utm_content=credit'
+    'author': 'Buzz Andersen',
+    'link': 'https://unsplash.com/@ldandersen'
   },
   {
     'source': Image4,
-    'author': 'Annie Spratt',
-    'link': 'https://unsplash.com/@anniespratt?utm_source=unsplash&utm_medium=referral&utm_content=credit'
+    'author': 'Frank McKenna',
+    'link': 'https://unsplash.com/@frankiefoto'
   },
   {
     'source': Image5,
-    'author': 'Anton Repponen',
-    'link': 'https://unsplash.com/@repponen?utm_source=unsplash&utm_medium=referral&utm_content=credit'
+    'author': 'SpaceX',
+    'link': 'https://www.flickr.com/photos/spacex/'
   },
   {
     'source': Image6,
-    'author': 'Ben Karpinski',
-    'link': 'https://www.benkarpinski.com/landscapes'
+    'author': 'SpaceX',
+    'link': 'https://www.flickr.com/photos/spacex/'
   },
   {
     'source': Image7,
-    'author': 'D.C. Cavalleri',
-    'link': 'https://gradivis.com'
+    'author': 'SpaceX',
+    'link': 'https://www.flickr.com/photos/spacex/'
   },
   {
     'source': Image8,
-    'author': 'Joe Gardner',
-    'link': 'https://unsplash.com/@josephgardnerphotography?utm_source=unsplash&utm_medium=referral&utm_content=credit'
+    'author': 'Will Christiansen',
+    'link': 'https://www.theskyfolk.com'
   },
   {
     'source': Image9,
-    'author': 'Louis Kim',
-    'link': 'http://louiskimphotography.com'
+    'author': 'Will Christiansen',
+    'link': 'https://www.theskyfolk.com'
   },
   {
     'source': Image10,
-    'author': 'Matt Palmer',
-    'link': 'https://unsplash.com/@mattpalmer?utm_source=unsplash&utm_medium=referral&utm_content=credit'
+    'author': 'Will Christiansen',
+    'link': 'https://www.theskyfolk.com'
   },
   {
     'source': Image11,
-    'author': 'Oliwier Gesla',
-    'link': 'https://www.instagram.com/oliwiergesla/'
+    'author': 'Will Christiansen',
+    'link': 'http://www.noutgons.nl/'
   },
   {
     'source': Image12,
-    'author': 'Jerol Soibam',
-    'link': 'https://www.instagram.com/jerol_soibam'
+    'author': 'Artem Bali',
+    'link': 'https://www.pexels.com/@belart84'
   },
   {
     'source': Image13,
-    'author': 'Will Christiansen',
-    'link': 'www.theskyfolk.com'
+    'author': 'Hristo Fidanov',
+    'link': 'https://www.pexels.com/@hristo-fidanov-520662'
   },
   {
     'source': Image14,
-    'author': 'Will Christiansen',
-    'link': 'www.theskyfolk.com'
+    'author': 'Life of Pix',
+    'link': 'https://www.pexels.com/@life-of-pix'
   },
   {
     'source': Image15,
-    'author': 'Xavier Balderas Cejudo',
-    'link': 'https://unsplash.com/@xavibalderas?utm_source=unsplash&utm_medium=referral&utm_content=credit'
+    'author': 'Cassie Boca',
+    'link': 'https://unsplash.com/@cassieboca'
+  },
+  {
+    'source': Image16,
+    'author': 'Braden Jarvis',
+    'link': 'https://unsplash.com/@jarvisphoto'
   }
 ]
