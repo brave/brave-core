@@ -249,7 +249,7 @@ pub unsafe extern "C" fn engine_hostname_cosmetic_resources(
 ///
 /// The leading '.' or '#' character should not be provided
 #[no_mangle]
-pub unsafe extern "C" fn engine_class_id_stylesheet(
+pub unsafe extern "C" fn engine_hidden_class_id_selectors(
     engine: *mut Engine,
     classes: *const *const c_char,
     classes_size: size_t,
@@ -272,6 +272,6 @@ pub unsafe extern "C" fn engine_class_id_stylesheet(
         .collect();
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
-    let stylesheet = engine.class_id_stylesheet(&classes, &ids, &exceptions);
-    CString::new(stylesheet.unwrap_or_else(|| String::new())).expect("Error: CString::new()").into_raw()
+    let stylesheet = engine.hidden_class_id_selectors(&classes, &ids, &exceptions);
+    CString::new(serde_json::to_string(&stylesheet).unwrap_or_else(|_| "".into())).expect("Error: CString::new()").into_raw()
 }
