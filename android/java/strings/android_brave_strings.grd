@@ -794,6 +794,15 @@ until they verify, or until 90 days have passed.
       <message name="IDS_SYNC_DEVICE_FAILURE" desc="The message for the dialog where the user notified about sync setup failure.">
         Sync could not be setup
       </message>
+      <message name="IDS_BRAVE_PRIVACY_NOTICE_URL" desc="URL for the Brave privacy notice" translateable="false">
+        https://brave.com/privacy_android
+      </message>
+      <message name="IDS_BRAVE_TERMS_OF_SERVICE_URL" desc="URL for Brave Terms of Service" translateable="false">
+        https://brave.com/terms_of_use
+      </message>
+      <message name="IDS_BRAVE_LICENSE_TEXT" desc="Title for Brave License">
+        Brave License
+      </message>
     </messages>
   </release>
 </grit>

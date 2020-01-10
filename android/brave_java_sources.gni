@@ -51,6 +51,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/partnercustomizations/CloseBraveManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/AppearancePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BackgroundVideoPlaybackPreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/preferences/BraveLicensePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BraveMainPreferencesBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePreferenceFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/preferences/BravePreferenceManager.java",
