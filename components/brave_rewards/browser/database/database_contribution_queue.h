@@ -32,6 +32,8 @@ class DatabaseContributionQueue: public DatabaseTable {
 
   bool DeleteRecord(sql::Database* db, const uint64_t id);
 
+  bool DeleteAllRecords(sql::Database* db);
+
  private:
   std::string GetIdColumnName();
 
