@@ -7,8 +7,12 @@
 #define BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_BROWSER_PERF_PREDICTOR_TAB_HELPER_H_
 
 #include <string>
+#include <memory>
 
 #include "base/macros.h"
+#include "brave/components/brave_perf_predictor/browser/bandwidth_savings_predictor.h"
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_p3a.h"
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "components/page_load_metrics/common/page_load_metrics.mojom.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "content/public/browser/navigation_handle.h"
@@ -19,10 +23,6 @@
 #include "content/public/common/resource_load_info.mojom.h"
 #include "url/gurl.h"
 
-#include "brave/components/brave_perf_predictor/browser/bandwidth_savings_predictor.h"
-#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
-#include "brave/components/brave_perf_predictor/browser/perf_predictor_p3a.h"
-
 namespace brave_perf_predictor {
 
 class PerfPredictorTabHelper : public content::WebContentsObserver,
@@ -32,7 +32,7 @@ class PerfPredictorTabHelper : public content::WebContentsObserver,
   ~PerfPredictorTabHelper() override;
   void OnBlockedSubresource(const std::string& subresource);
   void OnPageLoadTimingUpdated(
-    const page_load_metrics::mojom::PageLoadTiming& timing);
+      const page_load_metrics::mojom::PageLoadTiming& timing);
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
  protected:
@@ -56,8 +56,8 @@ class PerfPredictorTabHelper : public content::WebContentsObserver,
   friend class content::WebContentsUserData<PerfPredictorTabHelper>;
   int64_t navigation_id_;
   GURL main_frame_url_;
-  BandwidthSavingsPredictor* bandwidth_predictor_;
-  BandwidthSavingsTracker* bandwidth_tracker_;
+  std::unique_ptr<BandwidthSavingsPredictor> bandwidth_predictor_;
+  std::unique_ptr<BandwidthSavingsTracker> bandwidth_tracker_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
   DISALLOW_COPY_AND_ASSIGN(PerfPredictorTabHelper);

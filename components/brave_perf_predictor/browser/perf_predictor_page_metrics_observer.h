@@ -11,12 +11,11 @@
 
 #include "base/macros.h"
 #include "base/sequence_checker.h"
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "components/page_load_metrics/browser/page_load_metrics_observer.h"
 #include "components/page_load_metrics/common/page_load_metrics.mojom.h"
 #include "content/public/browser/navigation_handle.h"
 #include "services/metrics/public/cpp/ukm_source_id.h"
-
-#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 
 namespace brave_perf_predictor {
 // Observer responsible for recording per site performance metrics.

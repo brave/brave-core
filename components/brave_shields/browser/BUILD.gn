@@ -74,9 +74,11 @@ source_set("browser") {
     "//url",
   ]
 
-  deps += [
-    "//brave/components/brave_perf_predictor/browser",
-  ]
+  if (enable_brave_perf_predictor) {
+    deps += [
+      "//brave/components/brave_perf_predictor/browser",
+    ]
+  }
 }
 
 if (is_mac) {

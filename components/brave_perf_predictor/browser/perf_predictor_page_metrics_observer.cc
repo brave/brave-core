@@ -5,10 +5,9 @@
 
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_page_metrics_observer.h"
 
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
-
-#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 
 namespace brave_perf_predictor {
 

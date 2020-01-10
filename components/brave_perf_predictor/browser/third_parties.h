@@ -10,7 +10,7 @@
 
 namespace brave_perf_predictor {
 
-const std::string static_third_party_config = R"--(
+const char static_third_party_config[] = R"--(
 [
   {
     "name": "Google Analytics",
@@ -4358,6 +4358,6 @@ const std::string static_third_party_config = R"--(
 ]
 )--";
 
-}
+}  // namespace brave_perf_predictor
 
 #endif  // BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_BROWSER_THIRD_PARTIES_H_

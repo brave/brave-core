@@ -67,6 +67,9 @@ uint64_t SavingPermanentState::GetTotalSaving() const {
 
 void SavingPermanentState::LoadSavings() {
   DCHECK(daily_savings_.empty());
+  if (!local_state_) {
+    return;
+  }
   const base::ListValue* list =
       local_state_->GetList(kSavingsDailyListPrefName);
   if (!list) {
@@ -97,7 +100,7 @@ void SavingPermanentState::SaveSavings() {
   for (const auto& u : daily_savings_) {
     base::DictionaryValue value;
     value.SetKey("day", base::Value(u.day.ToDoubleT()));
-    value.SetKey("saving", base::Value((double) u.saving));
+    value.SetKey("saving", base::Value(static_cast<double>(u.saving)));
     list->GetList().push_back(std::move(value));
   }
 }
@@ -105,9 +108,10 @@ void SavingPermanentState::SaveSavings() {
 void SavingPermanentState::RecordP3A() {
   int answer = 0;
   if (daily_savings_.size() == kNumOfSavedDailyUptimes) {
-    const uint64_t total = GetTotalSaving() / 1024 / 1024;
+    const uint64_t total = static_cast<uint64_t>(
+      GetTotalSaving() / 1024 / 1024);
     DCHECK_GE(total, 0ULL);
-    int counter=0;
+    int counter = 0;
     for (auto* it = BandwidthSavingsBuckets.begin();
         it != BandwidthSavingsBuckets.end();
         ++it, ++counter) {
@@ -127,6 +131,7 @@ void BandwidthSavingsTracker::RecordSaving(uint64_t saving) {
   if (saving > 0) {
     auto* permanent_state = new SavingPermanentState(local_state_);
     permanent_state->AddSaving(saving);
+    delete permanent_state;
   }
 }
 

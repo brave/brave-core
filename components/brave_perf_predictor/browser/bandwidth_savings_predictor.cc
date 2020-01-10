@@ -6,10 +6,9 @@
 #include "brave/components/brave_perf_predictor/browser/bandwidth_savings_predictor.h"
 
 #include "base/logging.h"
+#include "brave/components/brave_perf_predictor/browser/predictor.h"
 #include "content/public/common/resource_type.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-
-#include "brave/components/brave_perf_predictor/browser/predictor.h"
 
 namespace brave_perf_predictor {
 
@@ -23,7 +22,7 @@ void BandwidthSavingsPredictor::OnPageLoadTimingUpdated(
     const page_load_metrics::mojom::PageLoadTiming& timing) {
   // First meaningful paint
   if (timing.paint_timing->first_meaningful_paint.has_value()) {
-    feature_map_["metrics.firstMeaningfulPaint"] = 
+    feature_map_["metrics.firstMeaningfulPaint"] =
       timing.paint_timing->first_meaningful_paint.value().InMillisecondsF();
   }
   // DOM Content Loaded
@@ -72,15 +71,15 @@ void BandwidthSavingsPredictor::OnResourceLoadComplete(
     return;
   }
   main_frame_url_ = main_frame_url;
-  
+
   bool is_third_party = !net::registry_controlled_domains::SameDomainOrHost(
       main_frame_url, resource_load_info.url,
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  
+
   if (is_third_party) {
     feature_map_["resources.third-party.requestCount"] += 1;
     feature_map_["resources.third-party.size"] +=
-      resource_load_info.raw_body_bytes;    
+      resource_load_info.raw_body_bytes;
   }
 
   feature_map_["resources.total.requestCount"] += 1;
@@ -88,7 +87,7 @@ void BandwidthSavingsPredictor::OnResourceLoadComplete(
   feature_map_["transfer.total.size"] +=
     resource_load_info.total_received_bytes;
   std::string resource_type;
-  switch(resource_load_info.resource_type) {
+  switch (resource_load_info.resource_type) {
     case content::ResourceType::kMainFrame:
       resource_type = "document";
       break;
@@ -126,7 +125,7 @@ double BandwidthSavingsPredictor::predict() {
     return 0;
   }
   if (feature_map_["transfer.total.size"] > 0) {
-    VLOG(2) << main_frame_url_ << " total download size " 
+    VLOG(2) << main_frame_url_ << " total download size "
       << feature_map_["transfer.total.size"] << " bytes";
   }
 
@@ -138,7 +137,7 @@ double BandwidthSavingsPredictor::predict() {
   if (VLOG_IS_ON(3)) {
     VLOG(2) << "Predicting on feature map:";
     auto it = feature_map_.begin();
-    while(it != feature_map_.end()) {
+    while (it != feature_map_.end()) {
       VLOG(2) << it->first << " :: " << it->second;
       it++;
     }
@@ -154,4 +153,4 @@ void BandwidthSavingsPredictor::Reset() {
   feature_map_.clear();
 }
 
-}
+}  // namespace brave_perf_predictor

@@ -12,7 +12,6 @@
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "brave/components/brave_wayback_machine/buildflags.h"
-#include "brave/components/brave_savings/browser/perf_predictor_web_contents_observer.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/widevine/cdm/buildflags.h"

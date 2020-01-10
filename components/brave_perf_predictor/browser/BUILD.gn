@@ -23,11 +23,12 @@ source_set("browser") {
 
   deps = [
     "//base",
-    "//brave/vendor/bat-native-rapidjson",
+    "//brave/common:pref_names",
     "//components/page_load_metrics/browser",
     "//components/page_load_metrics/common",
     "//components/prefs",
     "//components/sessions",
+    "//components/user_prefs",
     "//content/public/browser",
     "//content/public/common",
     "//net/base/registry_controlled_domains",

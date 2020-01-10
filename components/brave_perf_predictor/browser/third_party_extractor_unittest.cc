@@ -6,14 +6,13 @@
 #include <fstream>
 #include <streambuf>
 
-#include "testing/gtest/include/gtest/gtest.h"
 #include "base/files/file_path.h"
-
 #include "brave/components/brave_perf_predictor/browser/third_party_extractor.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_perf_predictor {
 
-const std::string test_mapping = R"(
+const char test_mapping[] = R"(
 [
 {
     "name":"Google Analytics",
@@ -32,7 +31,7 @@ const std::string test_mapping = R"(
 
 // Test data directory, relative to source root
 const base::FilePath::CharType kTestDataRelativePath[] =
-  FILE_PATH_LITERAL("components/brave_perf_predictor/resources");
+  FILE_PATH_LITERAL("brave/components/brave_perf_predictor/resources");
 
 
 class ThirdPartyExtractorTest : public ::testing::Test {
@@ -74,8 +73,6 @@ class ThirdPartyExtractorTest : public ::testing::Test {
 
     return value;
   }
-
-
 };
 
 TEST_F(ThirdPartyExtractorTest, HandlesEmptyJSON) {
@@ -107,9 +104,9 @@ TEST_F(ThirdPartyExtractorTest, ExtractsThirdPartyURLTest) {
   ThirdPartyExtractor* extractor = ThirdPartyExtractor::GetInstance();
   auto dataset = LoadFile("entities-httparchive-nostats.json");
   extractor->load_entities(dataset);
-  
+
   auto entity = extractor->get_entity("https://google-analytics.com/ga.js");
-  EXPECT_TRUE(entity.has_value());
+  ASSERT_TRUE(entity.has_value());
   EXPECT_EQ(entity.value(), "Google Analytics");
 }
 
@@ -118,16 +115,16 @@ TEST_F(ThirdPartyExtractorTest, ExtractsThirdPartyHostnameTest) {
   auto dataset = LoadFile("entities-httparchive-nostats.json");
   extractor->load_entities(dataset);
   auto entity = extractor->get_entity("google-analytics.com");
-  EXPECT_TRUE(entity.has_value());
+  ASSERT_TRUE(entity.has_value());
   EXPECT_EQ(entity.value(), "Google Analytics");
-} 
+}
 
 TEST_F(ThirdPartyExtractorTest, ExtractsThirdPartyRootDomainTest) {
   ThirdPartyExtractor* extractor = ThirdPartyExtractor::GetInstance();
   auto dataset = LoadFile("entities-httparchive-nostats.json");
   extractor->load_entities(dataset);
   auto entity = extractor->get_entity("https://test.m.facebook.com");
-  EXPECT_TRUE(entity.has_value());
+  ASSERT_TRUE(entity.has_value());
   EXPECT_EQ(entity.value(), "Facebook");
 }
 
@@ -139,4 +136,4 @@ TEST_F(ThirdPartyExtractorTest, HandlesUnrecognisedThirdPartyTest) {
   EXPECT_TRUE(!entity.has_value());
 }
 
-} // namespace brave_perf_predictor
+}  // namespace brave_perf_predictor

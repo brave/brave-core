@@ -11,7 +11,6 @@
 
 #include "base/macros.h"
 #include "base/timer/timer.h"
-
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_p3a.h"
 
 class PrefRegistrySimple;
@@ -22,19 +21,21 @@ namespace brave_perf_predictor {
 // Note: append-only enumeration! Never remove any existing values, as this enum
 // is used to bucket a UMA histogram, and removing values breaks that.
 constexpr std::array<uint64_t, 7> BandwidthSavingsBuckets {
-  0,  // 0
-  50, // >0-50mb
-  100, // 51-100mb
-  200, // 101-200mb
-  400, // 201-400mb
-  700, // 401-700mb
-  1500 // 701-1500mb
+  0,      // 0
+  50,     // >0-50mb
+  100,    // 51-100mb
+  200,    // 101-200mb
+  400,    // 201-400mb
+  700,    // 401-700mb
+  1500    // 701-1500mb
   // >1501 => bucket 7
 };
 
 constexpr size_t kNumOfSavedDailyUptimes = 7;
-constexpr char kSavingsDailyListPrefName[] = "brave_perf_predictor_daily_savings";
-constexpr char kSavingsDailyUMAHistogramName[] = "Brave.Savings.BandwidthSavingsMB";
+constexpr char kSavingsDailyListPrefName[] =
+  "brave_perf_predictor_daily_savings";
+constexpr char kSavingsDailyUMAHistogramName[] =
+  "Brave.Savings.BandwidthSavingsMB";
 
 class SavingPermanentState {
  public:

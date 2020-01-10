@@ -5,15 +5,13 @@
 
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_perf_predictor/browser/third_parties.h"
+#include "brave/components/brave_perf_predictor/browser/third_party_extractor.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents_user_data.h"
-
-#include "brave/components/brave_perf_predictor/browser/third_party_extractor.h"
-#include "brave/components/brave_perf_predictor/browser/third_parties.h"
 
 namespace brave_perf_predictor {
 
@@ -28,20 +26,17 @@ PerfPredictorTabHelper::PerfPredictorTabHelper(
   if (!extractor->is_initialized()) {
     extractor->load_entities(static_third_party_config);
   }
-  bandwidth_predictor_ = new BandwidthSavingsPredictor(extractor);
-  bandwidth_tracker_ = new BandwidthSavingsTracker(
-    g_browser_process->local_state());
+  bandwidth_predictor_ = std::make_unique<BandwidthSavingsPredictor>(extractor);
+  PrefService* prefs = user_prefs::UserPrefs::Get(
+    web_contents->GetBrowserContext());
+  bandwidth_tracker_ = std::make_unique<BandwidthSavingsTracker>(prefs);
 }
 
-PerfPredictorTabHelper::~PerfPredictorTabHelper() {
-  if (bandwidth_predictor_) {
-    delete bandwidth_predictor_;
-  }
-}
+PerfPredictorTabHelper::~PerfPredictorTabHelper() = default;
 
 void PerfPredictorTabHelper::DidStartNavigation(
     content::NavigationHandle* handle) {
-  if (!handle->IsInMainFrame() || handle->IsDownload()) {
+  if (!handle || !handle->IsInMainFrame() || handle->IsDownload()) {
     return;
   }
   // Gather prediction of the _previous_ navigation
@@ -52,19 +47,19 @@ void PerfPredictorTabHelper::DidStartNavigation(
 
 void PerfPredictorTabHelper::ReadyToCommitNavigation(
     content::NavigationHandle* handle) {
-  if (!handle->IsInMainFrame() || handle->IsDownload()) {
+  if (!handle || !handle->IsInMainFrame() || handle->IsDownload()) {
     return;
   }
   // Reset predictor state when we're committed to this navigation
-  bandwidth_predictor_->Reset();
-  navigation_id_ = handle->GetNavigationId();
-  VLOG(2) << "Committed navigation ID " << navigation_id_
-    << " to " << handle->GetURL().GetContent();
+  if (bandwidth_predictor_) {
+    bandwidth_predictor_->Reset();
+  }
 }
 
 void PerfPredictorTabHelper::DidFinishNavigation(
     content::NavigationHandle* handle) {
-  if (!handle->IsInMainFrame() ||
+  if (!handle ||
+      !handle->IsInMainFrame() ||
       !handle->HasCommitted() ||
       handle->IsDownload()) {
     return;
@@ -77,14 +72,21 @@ void PerfPredictorTabHelper::RecordSaving() {
   if (bandwidth_predictor_ && web_contents()) {
     uint64_t saving = (uint64_t)bandwidth_predictor_->predict();
     if (saving > 0) {
-      PrefService* prefs = user_prefs::UserPrefs::Get(
-        web_contents()->GetBrowserContext());
+      // BrowserContenxt can be null in tests
+      auto* browser_context = web_contents()->GetBrowserContext();
+      if (!browser_context) {
+        return;
+      }
+      PrefService* prefs = user_prefs::UserPrefs::Get(browser_context);
 
-      VLOG(2) << "Store bandwidth saving of " << saving << " Bytes to prefs";
-      prefs->SetUint64(
-        kBandwidthSavedBytes,
-        prefs->GetUint64(kBandwidthSavedBytes) + saving);
-      bandwidth_tracker_->RecordSaving(saving);
+      if (prefs) {
+        prefs->SetUint64(
+          kBandwidthSavedBytes,
+          prefs->GetUint64(kBandwidthSavedBytes) + saving);
+      }
+      if (bandwidth_tracker_) {
+        bandwidth_tracker_->RecordSaving(saving);
+      }
     }
   }
 }

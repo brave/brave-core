@@ -28,6 +28,6 @@ double predict(const std::array<double, feature_count> &features);
 // any extra features.
 double predict(const std::unordered_map<std::string, double> &features);
 
-}
+}  // namespace brave_perf_predictor
 
 #endif  // BRAVE_COMPONENTS_BRAVE_PERF_PREDICTOR_BROWSER_PREDICTOR_H_

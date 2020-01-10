@@ -7,19 +7,22 @@
 
 #include <numeric>
 #include <cmath>
+#include <utility>
+#include <algorithm>
 
 namespace brave_perf_predictor {
 
-bool standardise_features_no_outliers(
-    std::array<double, standardise_feature_count> &features,
-    const std::array<double, standardise_feature_count> &means,
-    const std::array<double, standardise_feature_count> &scale) {
-  for (unsigned int i = 0; i < standardise_feature_count; i++) {
-    features[i] = (features[i] - means[i])/scale[i];
+bool standardise_feats_no_outliers(
+    std::array<double, standardise_feat_count>* features,
+    const std::array<double, standardise_feat_count> &means,
+    const std::array<double, standardise_feat_count> &scale) {
+  for (unsigned int i = 0; i < standardise_feat_count; i++) {
+    features->at(i) = (features->at(i) - means[i])/scale[i];
   }
   double outlier_threshold = 3;
-  for (unsigned int i = 0; i < standardise_feature_count; i++) {
-    if (features[i] > outlier_threshold || features[i] < -outlier_threshold)
+  for (unsigned int i = 0; i < standardise_feat_count; i++) {
+    if (features->at(i) > outlier_threshold ||
+        features->at(i) < -outlier_threshold)
       return true;
   }
   return false;
@@ -27,12 +30,13 @@ bool standardise_features_no_outliers(
 
 double predict(const std::array<double, feature_count> &features) {
   // Standardise numeric features
-  std::array<double, standardise_feature_count> numeric_features;
-  std::copy(features.begin(), features.begin() + standardise_feature_count,
+  std::array<double, standardise_feat_count> numeric_features;
+  std::copy(features.begin(), features.begin() + standardise_feat_count,
     numeric_features.begin());
-  bool has_outliers = standardise_features_no_outliers(
-    numeric_features, standardise_feature_means,
-    standardise_feature_scale);
+  bool has_outliers = standardise_feats_no_outliers(
+    &numeric_features,
+    standardise_feat_means,
+    standardise_feat_scale);
   if (has_outliers) {
     return 0;
   }
@@ -42,9 +46,9 @@ double predict(const std::array<double, feature_count> &features) {
   std::move(numeric_features.begin(), numeric_features.end(),
     standardised_features.begin());
   // Just copy the rest of the features as-is
-  std::copy(features.begin() + standardise_feature_count, features.end(),
-    standardised_features.begin() + standardise_feature_count);
-  
+  std::copy(features.begin() + standardise_feat_count, features.end(),
+    standardised_features.begin() + standardise_feat_count);
+
   // Calculate the prediction
   double log_prediction = std::inner_product(standardised_features.begin(),
     standardised_features.end(), model_coefficients.begin(), model_intercept);
@@ -63,4 +67,4 @@ double predict(const std::unordered_map<std::string, double> &features) {
   return predict(feature_vector);
 }
 
-}
+}  // namespace brave_perf_predictor
