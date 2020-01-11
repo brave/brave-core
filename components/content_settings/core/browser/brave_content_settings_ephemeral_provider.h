@@ -18,6 +18,9 @@ class BraveEphemeralProvider : public EphemeralProvider {
   using EphemeralProvider::EphemeralProvider;
   ~BraveEphemeralProvider() override {}
 
+  // Method for clearing flash plugins type.
+  void ClearFlashPluginContentSettings();
+
  private:
   // EphemeralProvider overrides:
   bool SetWebsiteSetting(const ContentSettingsPattern& primary_pattern,

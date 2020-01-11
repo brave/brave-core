@@ -46,6 +46,8 @@ class BravePrefProvider : public PrefProvider,
       const ResourceIdentifier& resource_identifier,
       bool incognito) const override;
 
+  void ClearAllShieldsContentSettings();
+
  private:
   void UpdateCookieRules(ContentSettingsType content_type, bool incognito);
   void OnCookieSettingsChanged(ContentSettingsType content_type);

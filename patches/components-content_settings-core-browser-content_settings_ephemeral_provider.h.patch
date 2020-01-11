@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/core/browser/content_settings_ephemeral_provider.h b/components/content_settings/core/browser/content_settings_ephemeral_provider.h
+index 6be17c12d65862b74390c766afa280fb56f6e4b0..de5984904da1200aa89227a0584f7892f82c1440 100644
+--- a/components/content_settings/core/browser/content_settings_ephemeral_provider.h
++++ b/components/content_settings/core/browser/content_settings_ephemeral_provider.h
+@@ -49,6 +49,7 @@ class EphemeralProvider : public UserModifiableProvider {
+   size_t GetCountForTesting() { return content_settings_rules_.size(); }
+ 
+  private:
++  friend class BraveEphemeralProvider;
+   bool store_last_modified_;
+ 
+   OriginIdentifierValueMap content_settings_rules_;

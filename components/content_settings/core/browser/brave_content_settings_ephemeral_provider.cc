@@ -8,27 +8,7 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
-
-namespace {
-
-bool IsShieldsResourceID(
-    const content_settings::ResourceIdentifier& resource_identifier) {
-  if (resource_identifier == brave_shields::kAds ||
-      resource_identifier == brave_shields::kTrackers ||
-      resource_identifier == brave_shields::kHTTPUpgradableResources ||
-      resource_identifier == brave_shields::kJavaScript ||
-      resource_identifier == brave_shields::kFingerprinting ||
-      resource_identifier == brave_shields::kBraveShields ||
-      resource_identifier == brave_shields::kReferrers ||
-      resource_identifier == brave_shields::kCookies) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-}  // namespace
+#include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 
 namespace content_settings {
 
@@ -50,6 +30,15 @@ bool BraveEphemeralProvider::SetWebsiteSetting(
   return EphemeralProvider::SetWebsiteSetting(
       primary_pattern, secondary_pattern, content_type, resource_identifier,
       std::move(in_value));
+}
+
+void BraveEphemeralProvider::ClearFlashPluginContentSettings() {
+  DCHECK(CalledOnValidThread());
+  // Empty ResourceIdentifier() means flash resource.
+  content_settings_rules_.DeleteValues(ContentSettingsType::PLUGINS,
+                                       ResourceIdentifier());
+  NotifyObservers(ContentSettingsPattern(), ContentSettingsPattern(),
+                  ContentSettingsType::PLUGINS, ResourceIdentifier());
 }
 
 }  // namespace content_settings

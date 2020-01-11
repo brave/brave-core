@@ -359,4 +359,10 @@ void BravePrefProvider::OnContentSettingChanged(
   }
 }
 
+void BravePrefProvider::ClearAllShieldsContentSettings() {
+  DCHECK(CalledOnValidThread());
+  GetPref(ContentSettingsType::PLUGINS)->ClearAllContentSettingsRules();
+  // TODO(simonhong):: Notify changes for all shields resource ids?
+}
+
 }  // namespace content_settings

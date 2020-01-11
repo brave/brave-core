@@ -1,10 +1,13 @@
 diff --git a/chrome/browser/content_settings/host_content_settings_map_factory.cc b/chrome/browser/content_settings/host_content_settings_map_factory.cc
-index 47b1443298ec6ab9aed0f6525245487b02d6cba2..8c50e4cb89c03dc706c847907657cc469d8e83e2 100644
+index 47b1443298ec6ab9aed0f6525245487b02d6cba2..563f6f70021763652eaed097dbcaa67dc9cd4b41 100644
 --- a/chrome/browser/content_settings/host_content_settings_map_factory.cc
 +++ b/chrome/browser/content_settings/host_content_settings_map_factory.cc
-@@ -81,6 +81,7 @@ scoped_refptr<RefcountedKeyedService>
+@@ -79,8 +79,9 @@ scoped_refptr<RefcountedKeyedService>
+   if (profile->IsIncognitoProfile())
+     GetForProfile(profile->GetOriginalProfile());
  
-   scoped_refptr<HostContentSettingsMap> settings_map(new HostContentSettingsMap(
+-  scoped_refptr<HostContentSettingsMap> settings_map(new HostContentSettingsMap(
++  scoped_refptr<HostContentSettingsMap> settings_map(new BraveHostContentSettingsMap(
        profile->GetPrefs(),
 +      BRAVE_BUILD_SERVICE_INSTANCE_FOR
        profile->IsIncognitoProfile() || profile->IsGuestSession(),
