@@ -158,5 +158,9 @@ void JNI_BravePrefServiceBridge_SetSafetynetCheckFailed(
   GetOriginalProfile()->GetPrefs()->SetBoolean(kSafetynetCheckFailed, value);
 }
 
+jboolean JNI_BravePrefServiceBridge_GetSafetynetCheckFailed(JNIEnv* env) {
+  return GetOriginalProfile()->GetPrefs()->GetBoolean(kSafetynetCheckFailed);
+}
+
 }  // namespace android
 }  // namespace chrome

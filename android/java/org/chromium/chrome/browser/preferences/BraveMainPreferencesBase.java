@@ -18,7 +18,10 @@ import android.util.DisplayMetrics;
 import android.widget.TextView;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveFeatureList;
+import org.chromium.chrome.browser.ChromeFeatureList;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.privacy.BravePrivacyPreferences;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.components.search_engines.TemplateUrl;
@@ -83,6 +86,11 @@ public class BraveMainPreferencesBase extends PreferenceFragmentCompat {
         updateControlSectionPreferences();
 
         rearrangePreferenceOrders();
+
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) ||
+                BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
+            removePreferenceIfPresent(PREF_BRAVE_REWARDS);
+        }
     }
 
     /**

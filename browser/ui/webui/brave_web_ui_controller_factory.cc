@@ -7,10 +7,12 @@
 
 #include <memory>
 
+#include "base/feature_list.h"
 #include "base/memory/ptr_util.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 #include "brave/browser/ui/webui/webcompat_reporter_ui.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
+#include "brave/common/brave_features.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
@@ -130,9 +132,10 @@ WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
       content::BrowserContext* browser_context, const GURL& url) {
 #if defined(OS_ANDROID)
   Profile* profile = Profile::FromBrowserContext(browser_context);
-  if (profile &&
+  if (!base::FeatureList::IsEnabled(features::kBraveRewards) ||
+      (profile &&
       profile->GetPrefs() &&
-      profile->GetPrefs()->GetBoolean(kSafetynetCheckFailed)) {
+      profile->GetPrefs()->GetBoolean(kSafetynetCheckFailed))) {
     return WebUI::kNoWebUI;
   }
 #endif  // defined(OS_ANDROID)
