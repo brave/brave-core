@@ -27,6 +27,20 @@
 #include "crypto/symmetric_key.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_util.h"
+#include "base/files/file_util.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service_factory.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_controller.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+
+namespace {
+
+BraveWalletController* GetBraveWalletController(content::BrowserContext* context) {
+  return BraveWalletServiceFactory::GetInstance()
+      ->GetForProfile(Profile::FromBrowserContext(context))
+      ->controller();
+}
+
+}  // namespace
 
 namespace extensions {
 namespace api {
@@ -239,6 +253,28 @@ BraveWalletGetProjectIDFunction::Run() {
   }
   return RespondNow(OneArgument(
       std::make_unique<base::Value>(project_id)));
+}
+
+ExtensionFunction::ResponseAction
+BraveWalletResetWalletFunction::Run() {
+  auto* controller = GetBraveWalletController(browser_context());
+  controller->ResetCryptoWallets(
+      base::BindOnce(
+          &BraveWalletResetWalletFunction::OnCryptoWalletsReset,
+          this));
+  return RespondLater();
+}
+
+void BraveWalletResetWalletFunction::OnCryptoWalletsReset(
+    bool success) {
+  Respond(OneArgument(std::make_unique<base::Value>(success)));
+}
+
+ExtensionFunction::ResponseAction
+BraveWalletRestartBrowserFunction::Run() {
+  auto* controller = GetBraveWalletController(browser_context());
+  controller->RestartBrowser();
+  return RespondNow(NoArguments());
 }
 
 }  // namespace api

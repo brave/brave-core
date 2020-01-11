@@ -81,6 +81,29 @@ class BraveWalletGetProjectIDFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveWalletResetWalletFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.resetWallet", UNKNOWN)
+
+ protected:
+  ~BraveWalletResetWalletFunction() override {}
+
+  ResponseAction Run() override;
+
+ private:
+  void OnCryptoWalletsReset(bool success);
+};
+
+class BraveWalletRestartBrowserFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveWallet.restartBrowser", UNKNOWN)
+
+ protected:
+  ~BraveWalletRestartBrowserFunction() override {}
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 
