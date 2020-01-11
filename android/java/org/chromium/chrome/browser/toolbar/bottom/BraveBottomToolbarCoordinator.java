@@ -18,10 +18,10 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.ThemeColorProvider;
-import org.chromium.chrome.browser.appmenu.AppMenuButtonHelper;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.toolbar.IncognitoStateProvider;
 import org.chromium.chrome.browser.toolbar.TabCountProvider;
+import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
 import org.chromium.ui.widget.Toast;
 
 public class BraveBottomToolbarCoordinator
