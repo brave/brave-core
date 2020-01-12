@@ -16,7 +16,7 @@ class NTPSponsoredImagesServiceFactory
 
   NTPSponsoredImagesServiceFactory(
       const NTPSponsoredImagesServiceFactory&) = delete;
-  NTPSponsoredImagesServiceFactory operator=(
+  NTPSponsoredImagesServiceFactory& operator=(
       const NTPSponsoredImagesServiceFactory&) = delete;
 
  private:

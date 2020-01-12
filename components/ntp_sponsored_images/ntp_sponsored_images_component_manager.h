@@ -49,7 +49,7 @@ NTPSponsoredImagesComponentManager
 
   NTPSponsoredImagesComponentManager(
       const NTPSponsoredImagesComponentManager&) = delete;
-  NTPSponsoredImagesComponentManager operator=(
+  NTPSponsoredImagesComponentManager& operator=(
       const NTPSponsoredImagesComponentManager&) = delete;
 
   void AddObserver(Observer* observer);

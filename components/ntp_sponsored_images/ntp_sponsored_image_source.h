@@ -32,7 +32,7 @@ class NTPSponsoredImageSource : public content::URLDataSource {
   ~NTPSponsoredImageSource() override;
 
   NTPSponsoredImageSource(const NTPSponsoredImageSource&) = delete;
-  NTPSponsoredImageSource operator=(
+  NTPSponsoredImageSource& operator=(
       const NTPSponsoredImageSource&) = delete;
 
  private:

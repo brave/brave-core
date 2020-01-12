@@ -24,7 +24,7 @@ NTPSponsoredImagesService
   ~NTPSponsoredImagesService() override;
 
   NTPSponsoredImagesService(const NTPSponsoredImagesService&) = delete;
-  NTPSponsoredImagesService operator=(
+  NTPSponsoredImagesService& operator=(
       const NTPSponsoredImagesService&) = delete;
 
  private:
