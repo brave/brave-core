@@ -1,19 +1,22 @@
 diff --git a/components/content_settings/core/browser/content_settings_utils.cc b/components/content_settings/core/browser/content_settings_utils.cc
-index a66ca0ac3f01cc6a92c54bbaaef031b7e6414510..259023be6103322c999fe781e1033c8f1f66c75e 100644
+index a66ca0ac3f01cc6a92c54bbaaef031b7e6414510..cd4cb9a38eb298218c7c36da83ff058c4b46a5b8 100644
 --- a/components/content_settings/core/browser/content_settings_utils.cc
 +++ b/components/content_settings/core/browser/content_settings_utils.cc
-@@ -148,6 +148,14 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
+@@ -143,11 +143,17 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
+ #endif
+   map->GetSettingsForOneType(ContentSettingsType::JAVASCRIPT,
+                              ResourceIdentifier(), &(rules->script_rules));
++  map->GetSettingsForOneType(ContentSettingsType::AUTOPLAY,
++                             ResourceIdentifier(), &(rules->autoplay_rules));
+   map->GetSettingsForOneType(ContentSettingsType::CLIENT_HINTS,
+                              ResourceIdentifier(),
                               &(rules->client_hints_rules));
    map->GetSettingsForOneType(ContentSettingsType::POPUPS, ResourceIdentifier(),
                               &(rules->popup_redirect_rules));
-+  map->GetSettingsForOneType(
-+      ContentSettingsType::PLUGINS,
-+      "fingerprinting",
-+      &(rules->fingerprinting_rules));
-+  map->GetSettingsForOneType(
-+      ContentSettingsType::PLUGINS,
-+      "braveShields",
-+      &(rules->brave_shields_rules));
++  map->GetSettingsForOneType(ContentSettingsType::PLUGINS, "fingerprinting",
++                             &(rules->fingerprinting_rules));
++  map->GetSettingsForOneType(ContentSettingsType::PLUGINS, "braveShields",
++                             &(rules->brave_shields_rules));
  }
  
  bool IsMorePermissive(ContentSetting a, ContentSetting b) {

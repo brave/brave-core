@@ -1,0 +1,15 @@
+diff --git a/third_party/blink/renderer/core/html/media/autoplay_policy.h b/third_party/blink/renderer/core/html/media/autoplay_policy.h
+index 683f8e176d7d0b2cd477ae36870f1a3c625e35b2..f4bc1d79d696a1f1ec9019dc859b57c5e09ee480 100644
+--- a/third_party/blink/renderer/core/html/media/autoplay_policy.h
++++ b/third_party/blink/renderer/core/html/media/autoplay_policy.h
+@@ -131,6 +131,10 @@ class CORE_EXPORT AutoplayPolicy final
+   // should use, if checking to see if an action is allowed.
+   bool IsLockedPendingUserGesture() const;
+ 
++  // Return true if and only if the settings allow autoplay of media on this
++  // frame.
++  bool IsAutoplayAllowedPerSettings() const;
++
+   bool IsAutoplayingMutedInternal(bool muted) const;
+   bool IsOrWillBeAutoplayingMutedInternal(bool muted) const;
+ 

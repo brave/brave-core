@@ -1,8 +1,20 @@
 diff --git a/components/content_settings/core/common/content_settings_mojom_traits.h b/components/content_settings/core/common/content_settings_mojom_traits.h
-index d342c755a42eb660b24a5fd514a5254b679471ac..70d221f00a5aee38d02826f58f85d7b7e90be3b1 100644
+index d342c755a42eb660b24a5fd514a5254b679471ac..61c587170582566737eaf570527bd43e08e24f06 100644
 --- a/components/content_settings/core/common/content_settings_mojom_traits.h
 +++ b/components/content_settings/core/common/content_settings_mojom_traits.h
-@@ -145,6 +145,16 @@ struct StructTraits<
+@@ -130,6 +130,11 @@ struct StructTraits<
+     return r.script_rules;
+   }
+ 
++  static const std::vector<ContentSettingPatternSource>& autoplay_rules(
++      const RendererContentSettingRules& r) {
++    return r.autoplay_rules;
++  }
++
+   static const std::vector<ContentSettingPatternSource>& client_hints_rules(
+       const RendererContentSettingRules& r) {
+     return r.client_hints_rules;
+@@ -145,6 +150,16 @@ struct StructTraits<
      return r.mixed_content_rules;
    }
  
