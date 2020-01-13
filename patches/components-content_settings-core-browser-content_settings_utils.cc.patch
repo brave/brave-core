@@ -1,19 +1,72 @@
 diff --git a/components/content_settings/core/browser/content_settings_utils.cc b/components/content_settings/core/browser/content_settings_utils.cc
-index a66ca0ac3f01cc6a92c54bbaaef031b7e6414510..259023be6103322c999fe781e1033c8f1f66c75e 100644
+index a66ca0ac3f01cc6a92c54bbaaef031b7e6414510..af095d036fbf05a575e86bb1da00bc7eaf040d0e 100644
 --- a/components/content_settings/core/browser/content_settings_utils.cc
 +++ b/components/content_settings/core/browser/content_settings_utils.cc
-@@ -148,6 +148,14 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
+@@ -43,12 +43,9 @@ static_assert(base::size(kContentSettingsStringMapping) ==
+ // belong between ALLOW and ASK. DEFAULT should never be used and is therefore
+ // not part of this array.
+ const ContentSetting kContentSettingOrder[] = {
+-    CONTENT_SETTING_ALLOW,
+-    CONTENT_SETTING_SESSION_ONLY,
+-    CONTENT_SETTING_DETECT_IMPORTANT_CONTENT,
+-    CONTENT_SETTING_ASK,
+-    CONTENT_SETTING_BLOCK
+-};
++    CONTENT_SETTING_ALLOW, CONTENT_SETTING_SESSION_ONLY,
++    CONTENT_SETTING_DETECT_IMPORTANT_CONTENT, CONTENT_SETTING_ASK,
++    CONTENT_SETTING_BLOCK};
+ 
+ static_assert(base::size(kContentSettingOrder) ==
+                   CONTENT_SETTING_NUM_SETTINGS - 1,
+@@ -82,15 +79,14 @@ bool ContentSettingFromString(const std::string& name,
+ std::string CreatePatternString(
+     const ContentSettingsPattern& item_pattern,
+     const ContentSettingsPattern& top_level_frame_pattern) {
+-  return item_pattern.ToString()
+-         + std::string(kPatternSeparator)
+-         + top_level_frame_pattern.ToString();
++  return item_pattern.ToString() + std::string(kPatternSeparator) +
++         top_level_frame_pattern.ToString();
+ }
+ 
+ PatternPair ParsePatternString(const std::string& pattern_str) {
+-  std::vector<std::string> pattern_str_list = base::SplitString(
+-      pattern_str, std::string(1, kPatternSeparator[0]),
+-      base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
++  std::vector<std::string> pattern_str_list =
++      base::SplitString(pattern_str, std::string(1, kPatternSeparator[0]),
++                        base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+ 
+   // If the |pattern_str| is an empty string then the |pattern_string_list|
+   // contains a single empty string. In this case the empty string will be
+@@ -105,10 +101,8 @@ PatternPair ParsePatternString(const std::string& pattern_str) {
+     }
+   }
+ 
+-  if (pattern_str_list.size() > 2 ||
+-      pattern_str_list.size() == 0) {
+-    return PatternPair(ContentSettingsPattern(),
+-                       ContentSettingsPattern());
++  if (pattern_str_list.size() > 2 || pattern_str_list.size() == 0) {
++    return PatternPair(ContentSettingsPattern(), ContentSettingsPattern());
+   }
+ 
+   PatternPair pattern_pair;
+@@ -143,11 +137,17 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
+ #endif
+   map->GetSettingsForOneType(ContentSettingsType::JAVASCRIPT,
+                              ResourceIdentifier(), &(rules->script_rules));
++  map->GetSettingsForOneType(ContentSettingsType::AUTOPLAY,
++                             ResourceIdentifier(), &(rules->autoplay_rules));
+   map->GetSettingsForOneType(ContentSettingsType::CLIENT_HINTS,
+                              ResourceIdentifier(),
                               &(rules->client_hints_rules));
    map->GetSettingsForOneType(ContentSettingsType::POPUPS, ResourceIdentifier(),
                               &(rules->popup_redirect_rules));
-+  map->GetSettingsForOneType(
-+      ContentSettingsType::PLUGINS,
-+      "fingerprinting",
-+      &(rules->fingerprinting_rules));
-+  map->GetSettingsForOneType(
-+      ContentSettingsType::PLUGINS,
-+      "braveShields",
-+      &(rules->brave_shields_rules));
++  map->GetSettingsForOneType(ContentSettingsType::PLUGINS, "fingerprinting",
++                             &(rules->fingerprinting_rules));
++  map->GetSettingsForOneType(ContentSettingsType::PLUGINS, "braveShields",
++                             &(rules->brave_shields_rules));
  }
  
  bool IsMorePermissive(ContentSetting a, ContentSetting b) {

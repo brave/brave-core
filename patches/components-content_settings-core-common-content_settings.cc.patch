@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/core/common/content_settings.cc b/components/content_settings/core/common/content_settings.cc
+index ae7ff7f5867f385955a414a75366f4b4c6a925f6..7c2521529be8bff48b7b6f1bd8ddd4306c985750 100644
+--- a/components/content_settings/core/common/content_settings.cc
++++ b/components/content_settings/core/common/content_settings.cc
+@@ -159,6 +159,7 @@ bool RendererContentSettingRules::IsRendererContentSetting(
+     ContentSettingsType content_type) {
+   return content_type == ContentSettingsType::IMAGES ||
+          content_type == ContentSettingsType::JAVASCRIPT ||
++         content_type == ContentSettingsType::AUTOPLAY ||
+          content_type == ContentSettingsType::CLIENT_HINTS ||
+          content_type == ContentSettingsType::POPUPS ||
+          content_type == ContentSettingsType::MIXEDSCRIPT;

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/public/platform/web_content_settings_client.h b/third_party/blink/public/platform/web_content_settings_client.h
-index 3f98347f168943b98f9397629d9b046e2bd85a4b..b425394f37c08c1ad79d89b5d547775338a57527 100644
+index 3f98347f168943b98f9397629d9b046e2bd85a4b..523a03e365022fb047e90b8a0644dd97f66c006f 100644
 --- a/third_party/blink/public/platform/web_content_settings_client.h
 +++ b/third_party/blink/public/platform/web_content_settings_client.h
 @@ -62,6 +62,11 @@ class WebContentSettingsClient {
@@ -14,3 +14,13 @@ index 3f98347f168943b98f9397629d9b046e2bd85a4b..b425394f37c08c1ad79d89b5d5477753
    // Retrieves the client hints that should be attached to the request for the
    // given URL.
    virtual void GetAllowedClientHintsFromSource(const blink::WebURL& url,
+@@ -97,6 +102,9 @@ class WebContentSettingsClient {
+   // interface.
+   virtual bool AllowMutationEvents(bool default_value) { return default_value; }
+ 
++  // Controls whether autoplay is allowed for this frame.
++  virtual bool AllowAutoplay(bool default_value) { return default_value; }
++
+   virtual bool AllowPopupsAndRedirects(bool default_value) {
+     return default_value;
+   }
