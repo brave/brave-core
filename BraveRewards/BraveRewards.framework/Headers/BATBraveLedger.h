@@ -100,8 +100,11 @@ NS_SWIFT_NAME(BraveLedger)
 
 #pragma mark - User Wallets
 
-- (void)externalWalletForType:(BATExternalWalletType)walletType
-                   completion:(void (^)(BATExternalWallet * _Nullable wallet))completion;
+/// The last updated external wallet if a user has hooked one up
+@property (nonatomic, readonly) NSDictionary<BATExternalWalletType, BATExternalWallet *> *externalWallets;
+
+- (void)fetchExternalWalletForType:(BATExternalWalletType)walletType
+                        completion:(void (^)(BATExternalWallet * _Nullable wallet))completion;
 
 - (void)disconnectWalletOfType:(BATExternalWalletType)walletType
                     completion:(nullable void (^)(BATResult result))completion;
