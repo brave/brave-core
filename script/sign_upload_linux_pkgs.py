@@ -337,7 +337,7 @@ def parse_args():
     parser.add_argument('-k', '--gpg_full_key_id', help='GPG full key id to use for signing '
                         'packages', required=True)
     parser.add_argument(
-        '-t', '--tag', help='The branch (actually tag) to download packages from GitHub. (i.e. v0.58.18)',
+        '-t', '--tag', help='The branch (actually tag) to download packages from GitHub. (i.e. v1.5.18)',
         required=True)
     parser.add_argument('-p', '--gpg_passphrase',
                         help='GPG passphrase to unlock signing keychain')

@@ -3,8 +3,6 @@
 import errno
 import json
 import os
-import platform
-import re
 import sys
 
 PLATFORM = {
@@ -32,14 +30,24 @@ SHALLOW_BRAVE_BROWSER_ROOT = os.path.abspath(
 verbose_mode = False
 
 
-def dist_dir():
-    return os.path.join(output_dir(), 'dist')
+def dist_dir(target_os, target_arch):
+    return os.path.join(output_dir(target_os, target_arch), 'dist')
 
 
-def output_dir():
-    if get_target_arch() == 'x64':
-        return os.path.join(CHROMIUM_ROOT, 'out', 'Release')
-    return os.path.join(CHROMIUM_ROOT, 'out', 'Release_x86')
+def output_dir(target_os, target_arch):
+    if target_os in ['android', 'ios']:
+        target_os_prefix = target_os + '_'
+    else:
+        target_os_prefix = ''
+
+    if target_os_prefix:
+        target_arch_suffix = '_' + target_arch
+    elif target_arch != 'x64':
+        target_arch_suffix = '_' + target_arch
+    else:
+        target_os_prefix = ''
+
+    return os.path.join(CHROMIUM_ROOT, 'out', target_os_prefix + 'Release' + target_arch_suffix)
 
 
 # Use brave-browser/package.json version for canonical version definition
@@ -103,11 +111,6 @@ def get_platform_key():
         return PLATFORM
 
 
-def get_target_arch():
-    return (os.environ['TARGET_ARCH'] if 'TARGET_ARCH' in os.environ
-            else 'x64')
-
-
 def get_env_var(name):
     return (os.environ.get('BRAVE_' + name) or
             os.environ.get('npm_config_BRAVE_' + name, ''))
@@ -121,14 +124,3 @@ def enable_verbose_mode():
 
 def is_verbose_mode():
     return verbose_mode
-
-
-def get_zip_name(name, version, suffix=''):
-    arch = get_target_arch()
-    if arch == 'arm':
-        arch += 'v7l'
-    zip_name = '{0}-{1}-{2}-{3}'.format(name, version, get_platform_key(),
-                                        arch)
-    if suffix:
-        zip_name += '-' + suffix
-    return zip_name + '.zip'

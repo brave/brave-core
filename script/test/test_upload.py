@@ -8,6 +8,7 @@ import sys
 import unittest
 import os
 import upload
+import shutil
 from githubmock import Repo, Release, Asset
 from mock import MagicMock
 
@@ -22,62 +23,69 @@ class TestGetBravePackages(unittest.TestCase):
 
     def setUp(self):
         if not self._is_setup:
+            shutil.rmtree(self.get_pkgs_dir)
+            os.mkdir(self.get_pkgs_dir)
+            android_dir = os.path.join(self.get_pkgs_dir, 'android')
             darwin_dir = os.path.join(self.get_pkgs_dir, 'darwin')
             linux_dir = os.path.join(self.get_pkgs_dir, 'linux')
-            win32_dir = os.path.join(self.get_pkgs_dir, 'win32')
-            if not os.path.isdir(self.get_pkgs_dir):
-                os.mkdir(self.get_pkgs_dir)
+            windows_dir = os.path.join(self.get_pkgs_dir, 'win32')
+            if not os.path.isdir(android_dir):
+                os.mkdir(android_dir)
             if not os.path.isdir(darwin_dir):
                 os.mkdir(darwin_dir)
             if not os.path.isdir(linux_dir):
                 os.mkdir(linux_dir)
-            if not os.path.isdir(win32_dir):
-                os.mkdir(win32_dir)
+            if not os.path.isdir(windows_dir):
+                os.mkdir(windows_dir)
+            for arch in ['Modernarm', 'Modernx86', 'Monoarm', 'Monoarm64', 'Monox64', 'Monox86', 'arm', 'x86']:
+                name_android = 'Brave' + arch + '.apk'
+                with open(os.path.join(android_dir, name_android), 'w') as f:
+                    f.write(name_android + '\n')
             for channel in ['nightly', 'dev', 'beta', 'release']:
                 channel_capitalized = channel.capitalize()
                 channel_dashed = '' if (
                     channel == 'release') else ('-' + channel)
                 name_darwin = 'Brave Browser ' + channel_capitalized + '.dmg'
                 name_darwin_pkg = 'Brave Browser ' + channel_capitalized + '.pkg'
-                name_linux_deb = 'brave-browser' + channel_dashed + '_0.50.8_amd64.deb'
-                name_linux_rpm = 'brave-browser' + channel_dashed + '-0.50.8-1.x86_64.rpm'
-                with open(os.path.join(self.get_pkgs_dir, 'darwin', name_darwin), 'w') as f:
+                name_linux_deb = 'brave-browser' + channel_dashed + '_1.5.8_amd64.deb'
+                name_linux_rpm = 'brave-browser' + channel_dashed + '-1.5.8-1.x86_64.rpm'
+                with open(os.path.join(darwin_dir, name_darwin), 'w') as f:
                     f.write(name_darwin + '\n')
-                with open(os.path.join(self.get_pkgs_dir, 'darwin', name_darwin_pkg), 'w') as f:
+                with open(os.path.join(darwin_dir, name_darwin_pkg), 'w') as f:
                     f.write(name_darwin_pkg + '\n')
-                with open(os.path.join(self.get_pkgs_dir, 'linux', name_linux_deb), 'w') as f:
+                with open(os.path.join(linux_dir, name_linux_deb), 'w') as f:
                     f.write(name_linux_deb + '\n')
-                with open(os.path.join(self.get_pkgs_dir, 'linux', name_linux_rpm), 'w') as f:
+                with open(os.path.join(linux_dir, name_linux_rpm), 'w') as f:
                     f.write(name_linux_rpm + '\n')
                 for mode in ['Stub', 'Silent', 'Untagged', 'Standalone', 'StandaloneSilent', 'StandaloneUntagged']:
-                    name = 'BraveBrowser{}{}Setup_70_0_56_8.exe'.format(
+                    name = 'BraveBrowser{}{}Setup_70_1_5_8.exe'.format(
                         mode if mode not in 'Stub' else '', channel_capitalized if channel != 'release' else '')
-                    name32 = 'BraveBrowser{}{}Setup32_70_0_56_8.exe'.format(
+                    name32 = 'BraveBrowser{}{}Setup32_70_1_5_8.exe'.format(
                         mode if mode not in 'Stub' else '', channel_capitalized if channel != 'release' else '')
-                    with open(os.path.join(self.get_pkgs_dir, 'win32', name), 'w') as f:
+                    with open(os.path.join(windows_dir, name), 'w') as f:
                         f.write(name + '\n')
-                    with open(os.path.join(self.get_pkgs_dir, 'win32', name32), 'w') as f:
+                    with open(os.path.join(windows_dir, name32), 'w') as f:
                         f.write(name32 + '\n')
         self.__class__._is_setup = True
 
     def test_only_returns_nightly_darwin_packages(self):
         upload.PLATFORM = 'darwin'
         pkgs = list(upload.get_brave_packages(os.path.join(
-            self.get_pkgs_dir, upload.PLATFORM), 'nightly', '0.50.8'))
+            self.get_pkgs_dir, upload.PLATFORM), 'nightly', '1.5.8', 'darwin'))
         self.assertEquals(pkgs, sorted(
             ['Brave-Browser-Nightly.dmg', 'Brave-Browser-Nightly.pkg']))
 
     def test_only_returns_dev_darwin_package(self):
         upload.PLATFORM = 'darwin'
         pkgs = list(upload.get_brave_packages(os.path.join(
-            self.get_pkgs_dir, upload.PLATFORM), 'dev', '0.50.8'))
+            self.get_pkgs_dir, upload.PLATFORM), 'dev', '1.5.8', 'darwin'))
         self.assertEquals(pkgs, sorted(
             ['Brave-Browser-Dev.dmg', 'Brave-Browser-Dev.pkg']))
 
     def test_only_returns_beta_darwin_package(self):
         upload.PLATFORM = 'darwin'
         pkgs = list(upload.get_brave_packages(
-            os.path.join(self.get_pkgs_dir, upload.PLATFORM), 'beta', '0.50.8'))
+            os.path.join(self.get_pkgs_dir, upload.PLATFORM), 'beta', '1.5.8', 'darwin'))
         self.assertEquals(pkgs, sorted(
             ['Brave-Browser-Beta.dmg', 'Brave-Browser-Beta.pkg']))
 
@@ -85,7 +93,7 @@ class TestGetBravePackages(unittest.TestCase):
         upload.PLATFORM = 'darwin'
         pkgs = list(upload.get_brave_packages(
             os.path.join(self.get_pkgs_dir, upload.PLATFORM),
-            'release', '0.50.8'))
+            'release', '1.5.8', 'darwin'))
         self.assertEquals(pkgs, sorted(
             ['Brave-Browser.dmg', 'Brave-Browser.pkg']))
 
@@ -93,43 +101,42 @@ class TestGetBravePackages(unittest.TestCase):
         upload.PLATFORM = 'linux'
         pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
                                                            upload.PLATFORM),
-                                              'nightly', '0.50.8'))
+                                              'nightly', '1.5.8', 'darwin'))
         self.assertEquals(pkgs,
-                          sorted(['brave-browser-nightly-0.50.8-1.x86_64.rpm',
-                                  'brave-browser-nightly_0.50.8_amd64.deb']))
+                          sorted(['brave-browser-nightly-1.5.8-1.x86_64.rpm',
+                                  'brave-browser-nightly_1.5.8_amd64.deb']))
 
     def test_only_returns_dev_linux_packages(self):
         upload.PLATFORM = 'linux'
         pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
                                                            upload.PLATFORM),
-                                              'dev', '0.50.8'))
+                                              'dev', '1.5.8', 'linux'))
         self.assertEquals(pkgs,
-                          sorted(['brave-browser-dev-0.50.8-1.x86_64.rpm',
-                                  'brave-browser-dev_0.50.8_amd64.deb']))
+                          sorted(['brave-browser-dev-1.5.8-1.x86_64.rpm',
+                                  'brave-browser-dev_1.5.8_amd64.deb']))
 
     def test_only_returns_beta_linux_packages(self):
         upload.PLATFORM = 'linux'
         pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
                                                            upload.PLATFORM),
-                                              'beta', '0.50.8'))
+                                              'beta', '1.5.8', 'linux'))
         self.assertEquals(pkgs,
-                          sorted(['brave-browser-beta-0.50.8-1.x86_64.rpm',
-                                  'brave-browser-beta_0.50.8_amd64.deb']))
+                          sorted(['brave-browser-beta-1.5.8-1.x86_64.rpm',
+                                  'brave-browser-beta_1.5.8_amd64.deb']))
 
     def test_only_returns_release_linux_packages(self):
         upload.PLATFORM = 'linux'
         pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
                                                            upload.PLATFORM),
-                                              'release', '0.50.8'))
+                                              'release', '1.5.8', 'linux'))
         self.assertEquals(pkgs,
-                          sorted(['brave-browser-0.50.8-1.x86_64.rpm',
-                                  'brave-browser_0.50.8_amd64.deb']))
+                          sorted(['brave-browser-1.5.8-1.x86_64.rpm',
+                                  'brave-browser_1.5.8_amd64.deb']))
 
     def test_only_returns_nightly_win_x64_packages(self):
         upload.PLATFORM = 'win32'
-        os.environ['TARGET_ARCH'] = 'x64'
         pkgs = list(upload.get_brave_packages(os.path.join(
-            self.get_pkgs_dir, upload.PLATFORM), 'nightly', '0.56.8'))
+            self.get_pkgs_dir, upload.PLATFORM), 'nightly', '1.5.8', 'win32'))
         self.assertEquals(
             pkgs, sorted(['BraveBrowserNightlySetup.exe',
                           'BraveBrowserSilentNightlySetup.exe',
@@ -140,9 +147,8 @@ class TestGetBravePackages(unittest.TestCase):
 
     def test_only_returns_nightly_win_ia32_packages(self):
         upload.PLATFORM = 'win32'
-        os.environ['TARGET_ARCH'] = 'ia32'
         pkgs = list(upload.get_brave_packages(
-            os.path.join(self.get_pkgs_dir, upload.PLATFORM), 'nightly', '0.56.8'))
+            os.path.join(self.get_pkgs_dir, upload.PLATFORM), 'nightly', '1.5.8', 'win32', 'ia32'))
         self.assertEquals(
             pkgs, sorted(['BraveBrowserNightlySetup32.exe',
                           'BraveBrowserSilentNightlySetup32.exe',
@@ -153,9 +159,8 @@ class TestGetBravePackages(unittest.TestCase):
 
     def test_only_returns_dev_win_x64_packages(self):
         upload.PLATFORM = 'win32'
-        os.environ['TARGET_ARCH'] = 'x64'
         pkgs = list(upload.get_brave_packages(os.path.join(
-            self.get_pkgs_dir, upload.PLATFORM), 'dev', '0.56.8'))
+            self.get_pkgs_dir, upload.PLATFORM), 'dev', '1.5.8', 'win32'))
         self.assertEquals(
             pkgs, sorted(['BraveBrowserDevSetup.exe',
                           'BraveBrowserSilentDevSetup.exe',
@@ -166,9 +171,8 @@ class TestGetBravePackages(unittest.TestCase):
 
     def test_only_returns_dev_win_ia32_packages(self):
         upload.PLATFORM = 'win32'
-        os.environ['TARGET_ARCH'] = 'ia32'
         pkgs = list(upload.get_brave_packages(
-            os.path.join(self.get_pkgs_dir, upload.PLATFORM), 'dev', '0.56.8'))
+            os.path.join(self.get_pkgs_dir, upload.PLATFORM), 'dev', '1.5.8', 'win32', 'ia32'))
         self.assertEquals(
             pkgs, sorted(['BraveBrowserDevSetup32.exe',
                           'BraveBrowserSilentDevSetup32.exe',
@@ -179,10 +183,9 @@ class TestGetBravePackages(unittest.TestCase):
 
     def test_only_returns_beta_win_x64_packages(self):
         upload.PLATFORM = 'win32'
-        os.environ['TARGET_ARCH'] = 'x64'
         pkgs = list(upload.get_brave_packages(
             os.path.join(self.get_pkgs_dir, upload.PLATFORM),
-            'beta', '0.56.8'))
+            'beta', '1.5.8', 'win32'))
         self.assertEquals(
             pkgs, sorted(['BraveBrowserBetaSetup.exe',
                           'BraveBrowserSilentBetaSetup.exe',
@@ -193,10 +196,9 @@ class TestGetBravePackages(unittest.TestCase):
 
     def test_only_returns_beta_win_ia32_packages(self):
         upload.PLATFORM = 'win32'
-        os.environ['TARGET_ARCH'] = 'ia32'
         pkgs = list(upload.get_brave_packages(
             os.path.join(self.get_pkgs_dir, upload.PLATFORM),
-            'beta', '0.56.8'))
+            'beta', '1.5.8', 'win32', 'ia32'))
         self.assertEquals(
             pkgs, sorted(['BraveBrowserBetaSetup32.exe',
                           'BraveBrowserSilentBetaSetup32.exe',
@@ -207,10 +209,9 @@ class TestGetBravePackages(unittest.TestCase):
 
     def test_only_returns_release_win_x64_packages(self):
         upload.PLATFORM = 'win32'
-        os.environ['TARGET_ARCH'] = 'x64'
         pkgs = list(upload.get_brave_packages(
             os.path.join(self.get_pkgs_dir, upload.PLATFORM),
-            'release', '0.56.8'))
+            'release', '1.5.8', 'win32'))
         self.assertEquals(pkgs, sorted(['BraveBrowserSetup.exe',
                                         'BraveBrowserSilentSetup.exe',
                                         'BraveBrowserStandaloneSetup.exe',
@@ -220,10 +221,9 @@ class TestGetBravePackages(unittest.TestCase):
 
     def test_only_returns_release_win_ia32_packages(self):
         upload.PLATFORM = 'win32'
-        os.environ['TARGET_ARCH'] = 'ia32'
         pkgs = list(upload.get_brave_packages(
             os.path.join(self.get_pkgs_dir, upload.PLATFORM),
-            'release', '0.56.8'))
+            'release', '1.5.8', 'win32', 'ia32'))
         self.assertEquals(pkgs, sorted(['BraveBrowserSetup32.exe',
                                         'BraveBrowserSilentSetup32.exe',
                                         'BraveBrowserStandaloneSetup32.exe',
@@ -231,8 +231,60 @@ class TestGetBravePackages(unittest.TestCase):
                                         'BraveBrowserStandaloneUntaggedSetup32.exe',
                                         'BraveBrowserUntaggedSetup32.exe']))
 
+    def test_only_returns_android_packages(self):
+        upload.PLATFORM = 'linux'
+        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
+                                                           'android'),
+                                              'nightly', '1.5.8', 'android'))
+        self.assertEquals(pkgs,
+                          sorted(['BraveModernarm.apk',
+                                  'BraveModernx86.apk',
+                                  'BraveMonoarm.apk',
+                                  'BraveMonoarm64.apk',
+                                  'BraveMonox64.apk',
+                                  'BraveMonox86.apk',
+                                  'Bravearm.apk',
+                                  'Bravex86.apk']))
+
+    def test_only_returns_android_packages_arm(self):
+        upload.PLATFORM = 'linux'
+        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
+                                                           'android'),
+                                              'nightly', '1.5.8', 'android', 'arm'))
+        self.assertEquals(pkgs,
+                          sorted(['BraveModernarm.apk',
+                                  'BraveMonoarm.apk',
+                                  'Bravearm.apk']))
+
+    def test_only_returns_android_packages_arm64(self):
+        upload.PLATFORM = 'linux'
+        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
+                                                           'android'),
+                                              'nightly', '1.5.8', 'android', 'arm64'))
+        self.assertEquals(pkgs,
+                          sorted(['BraveMonoarm64.apk']))
+
+    def test_only_returns_android_packages(self):
+        upload.PLATFORM = 'linux'
+        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
+                                                           'android'),
+                                              'nightly', '1.5.8', 'android', 'x86'))
+        self.assertEquals(pkgs,
+                          sorted(['BraveModernx86.apk',
+                                  'BraveMonox86.apk',
+                                  'Bravex86.apk']))
+
+    def test_only_returns_android_packages(self):
+        upload.PLATFORM = 'linux'
+        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
+                                                           'android'),
+                                              'nightly', '1.5.8', 'android', 'x64'))
+        self.assertEquals(pkgs,
+                          sorted(['BraveMonox64.apk']))
 
 # get an existing release (in draft status) from GitHub given a tag name
+
+
 class TestGetDraft(unittest.TestCase):
     def setUp(self):
         self.repo = Repo()

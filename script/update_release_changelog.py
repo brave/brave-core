@@ -115,7 +115,7 @@ def parse_args():
     parser.add_argument('-d', '--debug', action='store_true',
                         help='Print debug statements')
     parser.add_argument('-t', '--tag',
-                        help='Brave version tag (allowed format: "v0.60.45" or "refs/tags/v0.60.45") (required)',
+                        help='Brave version tag (allowed format: "v1.5.45" or "refs/tags/v1.5.45") (required)',
                         required=True)
     parser.add_argument('-u', '--url', help='URL for Brave Browser raw markdown file (required)', required=True)
     return parser.parse_args()

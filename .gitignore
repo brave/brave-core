@@ -5,6 +5,8 @@
 /components/brave_rewards/resources/extension/brave_rewards/out/
 /components/brave_sync/extension/brave-sync/
 /components/brave_sync/extension/brave-crypto/
+/components/third_party/adblock/LICENSE
+/components/third_party/local-data/LICENSE
 /dist/
 /out/
 /vendor/*
@@ -40,3 +42,4 @@ venv/
 *.rpm
 *.exe
 .storybook-out
+test_get_pkgs

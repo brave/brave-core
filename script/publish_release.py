@@ -7,18 +7,15 @@ import argparse
 import json
 import logging
 import os
+import requests
 import sys
+from argparse import RawTextHelpFormatter
 from lib.github import GitHub
-from lib.config import (PLATFORM, get_target_arch,
-                        get_env_var,
-                        get_zip_name, product_name,
-                        project_name, SOURCE_ROOT, dist_dir,
+from lib.helpers import *
+from lib.config import (PLATFORM, get_env_var, product_name,
+                        project_name, SOURCE_ROOT,
                         output_dir, get_brave_version,
                         get_raw_version)
-from lib.helpers import *
-import requests
-
-from argparse import RawTextHelpFormatter
 
 
 def main():

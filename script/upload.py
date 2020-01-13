@@ -5,7 +5,6 @@
 
 import argparse
 import errno
-import hashlib
 import logging
 import os
 import requests
@@ -14,27 +13,36 @@ import shutil
 import subprocess
 import sys
 import tempfile
-
-from lib.config import (PLATFORM, get_target_arch,
-                        get_env_var,
-                        get_zip_name, product_name, project_name,
-                        SOURCE_ROOT, dist_dir, output_dir, get_brave_version,
-                        get_raw_version)
-from lib.util import execute, parse_version, scoped_cwd, s3put
-from lib.helpers import *
-
 from lib.github import GitHub
+from lib.helpers import *
+from lib.config import (PLATFORM, get_env_var, product_name,
+                        project_name, SOURCE_ROOT, dist_dir, output_dir,
+                        get_brave_version, get_platform_key, get_raw_version)
+from lib.util import execute, parse_version, scoped_cwd, s3put
 
-DIST_NAME = get_zip_name(project_name(), get_brave_version())
-SYMBOLS_NAME = get_zip_name(project_name(), get_brave_version(), 'symbols')
-DSYM_NAME = get_zip_name(project_name(), get_brave_version(), 'dsym')
-PDB_NAME = get_zip_name(project_name(), get_brave_version(), 'pdb')
 
 if os.environ.get('DEBUG_HTTP_HEADERS') == 'true':
     try:
         from http.client import HTTPConnection  # python3
     except ImportError:
         from httplib import HTTPConnection  # python2
+
+
+def get_zip_name(name, version, target_arch='x64', suffix=''):
+    arch = target_arch
+    if arch == 'arm':
+        arch += 'v7l'
+    zip_name = '{0}-{1}-{2}-{3}'.format(name, version, get_platform_key(),
+                                        arch)
+    if suffix:
+        zip_name += '-' + suffix
+    return zip_name + '.zip'
+
+
+DIST_NAME = get_zip_name(project_name(), get_brave_version())
+SYMBOLS_NAME = get_zip_name(project_name(), get_brave_version(), 'symbols')
+DSYM_NAME = get_zip_name(project_name(), get_brave_version(), 'dsym')
+PDB_NAME = get_zip_name(project_name(), get_brave_version(), 'pdb')
 
 
 def main():
@@ -61,39 +69,44 @@ def main():
 
     print('[INFO] Uploading release {}'.format(release['tag_name']))
     # Upload Brave with GitHub Releases API.
-    upload_brave(repo, release, os.path.join(dist_dir(), DIST_NAME), force=args.force)
-    upload_brave(repo, release, os.path.join(dist_dir(), SYMBOLS_NAME), force=args.force)
+    upload_brave(repo, release, os.path.join(dist_dir, DIST_NAME), force=args.force)
+    upload_brave(repo, release, os.path.join(dist_dir, SYMBOLS_NAME), force=args.force)
     # if PLATFORM == 'darwin':
-    #     upload_brave(repo, release, os.path.join(dist_dir(), DSYM_NAME))
+    #     upload_brave(repo, release, os.path.join(dist_dir, DSYM_NAME))
     # elif PLATFORM == 'win32':
-    #     upload_brave(repo, release, os.path.join(dist_dir(), PDB_NAME))
+    #     upload_brave(repo, release, os.path.join(dist_dir, PDB_NAME))
 
-    pkgs = get_brave_packages(output_dir(), release_channel(), get_raw_version())
+    out_dir = output_dir(args.target_os, args.target_arch)
+    dist_dir = dist_dir(args.target_os, args.target_arch)
+    pkgs = get_brave_packages(out_dir, release_channel(), get_raw_version(), args.target_os, args.target_arch, args.target_apk_base)
 
     if PLATFORM == 'darwin':
         for pkg in pkgs:
-            upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
+            upload_brave(repo, release, os.path.join(out_dir, pkg), force=args.force)
     elif PLATFORM == 'win32':
-        if get_target_arch() == 'x64':
-            upload_brave(repo, release, os.path.join(output_dir(), 'brave_installer.exe'),
+        if args.target_arch == 'x64':
+            upload_brave(repo, release, os.path.join(out_dir, 'brave_installer.exe'),
                          'brave_installer-x64.exe', force=args.force)
             for pkg in pkgs:
-                upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
+                upload_brave(repo, release, os.path.join(out_dir, pkg), force=args.force)
         else:
-            upload_brave(repo, release, os.path.join(output_dir(), 'brave_installer.exe'),
+            upload_brave(repo, release, os.path.join(out_dir, 'brave_installer.exe'),
                          'brave_installer-ia32.exe', force=args.force)
             for pkg in pkgs:
-                upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
+                upload_brave(repo, release, os.path.join(out_dir, pkg), force=args.force)
     else:
-        if get_target_arch() == 'x64':
+        if args.target_os == 'android':
             for pkg in pkgs:
-                upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
+                upload_brave(repo, release, os.path.join(out_dir, pkg), force=args.force)
+        if args.target_arch == 'x64':
+            for pkg in pkgs:
+                upload_brave(repo, release, os.path.join(out_dir, pkg), force=args.force)
         else:
-            upload_brave(repo, release, os.path.join(output_dir(), 'brave-i386.rpm'), force=args.force)
-            upload_brave(repo, release, os.path.join(output_dir(), 'brave-i386.deb'), force=args.force)
+            upload_brave(repo, release, os.path.join(out_dir, 'brave-i386.rpm'), force=args.force)
+            upload_brave(repo, release, os.path.join(out_dir, 'brave-i386.deb'), force=args.force)
 
     # mksnapshot = get_zip_name('mksnapshot', get_brave_version())
-    # upload_brave(repo, release, os.path.join(dist_dir(), mksnapshot))
+    # upload_brave(repo, release, os.path.join(dist_dir, mksnapshot))
 
     # if PLATFORM == 'win32' and not tag_exists:
     #     # Upload PDBs to Windows symbol server.
@@ -126,7 +139,7 @@ def debug_requests_off():
     requests_log.setLevel(logging.WARNING)
 
 
-def get_brave_packages(dir, channel, version):
+def get_brave_packages(dir, channel, version, target_os, target_arch='x64', target_apk_base=''):
     pkgs = []
 
     def filecopy(file_path, file_desired):
@@ -136,8 +149,7 @@ def get_brave_packages(dir, channel, version):
             shutil.copy(file_path, file_desired_path)
         return file_desired_path
 
-    channel_capitalized = '' if (
-        channel == 'release') else channel.capitalize()
+    channel_capitalized = '' if (channel == 'release') else channel.capitalize()
     for file in os.listdir(dir):
         if os.path.isfile(os.path.join(dir, file)):
             file_path = os.path.join(dir, file)
@@ -146,7 +158,6 @@ def get_brave_packages(dir, channel, version):
                 channel_capitalized_spaced = '' if (channel == 'release') else (' ' + channel_capitalized)
                 file_dmg = 'Brave-Browser' + channel_capitalized_dashed + '.dmg'
                 file_pkg = 'Brave-Browser' + channel_capitalized_dashed + '.pkg'
-
                 if re.match(r'Brave Browser' + channel_capitalized_spaced + r'.*\.dmg$', file):
                     filecopy(file_path, file_dmg)
                     pkgs.append(file_dmg)
@@ -163,8 +174,43 @@ def get_brave_packages(dir, channel, version):
                     pkgs.append(file)
                 elif re.match(r'brave-browser' + channel_dashed + '-' + version + r'.*\.rpm$', file):
                     pkgs.append(file)
+                elif target_os == 'android':
+                    if target_arch == 'arm':
+                        if not target_apk_base:
+                            if re.match(r'Brave.*arm.apk$', file):
+                                pkgs.append(file)
+                        else:
+                            if target_apk_base == 'classic':
+                                if file == 'Bravearm.apk':
+                                    pkgs.append(file)
+                            elif target_apk_base == 'modern':
+                                if file == 'BraveModernarm.apk':
+                                    pkgs.append(file)
+                            elif target_apk_base == 'mono':
+                                if file == 'BraveMonoarm.apk':
+                                    pkgs.append(file)
+                    elif target_arch == 'arm64':
+                        if file == 'BraveMonoarm64.apk':
+                            pkgs.append(file)
+                    elif target_arch == 'x86':
+                        if not target_apk_base:
+                            if re.match(r'Brave.*x86.apk$', file):
+                                pkgs.append(file)
+                        else:
+                            if target_apk_base == 'classic':
+                                if file == 'Bravex86.apk':
+                                    pkgs.append(file)
+                            elif target_apk_base == 'modern':
+                                if file == 'BraveModernx86.apk':
+                                    pkgs.append(file)
+                            elif target_apk_base == 'mono':
+                                if file == 'BraveMonox86.apk':
+                                    pkgs.append(file)
+                    elif target_arch == 'x64':
+                        if file == 'BraveMonox64.apk':
+                            pkgs.append(file)
             elif PLATFORM == 'win32':
-                arch = '32' if (get_target_arch() == 'ia32') else ''
+                arch = '32' if (target_arch == 'ia32') else ''
                 channel_arch_extension = channel_capitalized + 'Setup' + arch + '.exe'
                 file_stub = 'BraveBrowser' + channel_arch_extension
                 file_stub_silent = 'BraveBrowserSilent' + channel_arch_extension
@@ -205,27 +251,21 @@ def parse_args():
     parser.add_argument('-v', '--version',
                         help='Specify the version',
                         default=get_brave_version())
+    parser.add_argument('--target_os',
+                        help='Specify the target OS',
+                        default='')
+    parser.add_argument('--target_arch',
+                        help='Specify the target OS',
+                        default='x64')
+    parser.add_argument('--target_apk_base',
+                        help='Specify the target APK base',
+                        default='classic')
     return parser.parse_args()
 
 
 def run_python_script(script, *args):
     script_path = os.path.join(SOURCE_ROOT, 'script', script)
     return execute([sys.executable, script_path] + list(args))
-
-
-def dist_newer_than_head():
-    with scoped_cwd(SOURCE_ROOT):
-        try:
-            head_time = subprocess.check_output(['git', 'log',
-                                                 '--pretty=format:%at',
-                                                 '-n', '1']).strip()
-            dist_time = os.path.getmtime(os.path.join(dist_dir(), DIST_NAME))
-        except OSError as e:
-            if e.errno != errno.ENOENT:
-                raise
-            return False
-
-    return dist_time > int(head_time)
 
 
 def get_text_with_editor(name):
