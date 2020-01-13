@@ -118,7 +118,7 @@
 <translation id="5567439033041178034">अधिक जानें</translation>
 <translation id="3780605330121608425">आपका वॉलेट</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">अनुदान</translation>
 <translation id="1165667598801520610">फंड्स जोड़ें</translation>
 <translation id="8428213095426709021">सेटिंग</translation>
@@ -143,8 +143,8 @@
 <translation id="7335371657242627509">ऑटो-योगदान को शामिल करें</translation>
 <translation id="5463954686005964104">इस साइट को मासिक टिप करें</translation>
 <translation id="7530570094705720669">वॉलेट बन रहा है</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">आपने <ph name="BAT_VALUE">%1$s</ph> BAT का योगदान दिया है।</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">आपने <ph name="BAT_VALUE"/> BAT का योगदान दिया है।</translation>
 <translation id="7997676409547731821">स्वतः-योगदान और मासिक टिप्स के लिए आपका निर्धारित मासिक भुगतान अपर्याप्त धन के कारण पूरा नहीं हो सका। हम 30 दिनों में दोबारा प्रयास करेंगे।</translation>
 <translation id="5306913077198665897">आपके टिप को संसाधित करने में कुछ गड़बड़ हुई, कृपया दोबारा प्रयास करें।</translation>
 <translation id="2429828319207652823">आपके योगदान को प्रोसैस करने में एक समस्या थी।</translation>
@@ -159,11 +159,11 @@
 <translation id="2323069945529668668">उह ओह!</translation>
 <translation id="7510166204621526816">ब्रेव इनाम सर्वर जवाब नहीं दे रहा है. हम इसे जल्द से जल्द ठीक करने का प्रयास करेंगे.</translation>
 <translation id="2626799779920242286">कृपया बाद में दोबारा प्रयास करें।</translation>
-<translation id="3068742524072211213"><ph name="DATE">%1$s</ph> पर समाप्त</translation>
+<translation id="3068742524072211213"><ph name="DATE"/> पर समाप्त</translation>
 <translation id="4292832015778676417">विज्ञापनों द्वारा कमाया हुआ</translation>
 <translation id="683765328936486920">YouTube पर</translation>
 <translation id="8969049974285901797">ट्विच पर</translation>
-<translation id="3692362746128814480">आपने उन निर्माताओं के लिए <ph name="BAT_VALUE">%1$s</ph> BAT निर्धारित किया है, जिन्होंने अभी तक योगदान प्राप्त करने के लिए साइन अप नहीं किया है। आपका ब्राउज़र योगदान करने का प्रयास करता रहेगा जब तक वे सत्यापित नहीं करते हैं, या 90 दिन बीत नहीं जाते हैं।</translation>
+<translation id="3692362746128814480">आपने उन निर्माताओं के लिए <ph name="BAT_VALUE"/> BAT निर्धारित किया है, जिन्होंने अभी तक योगदान प्राप्त करने के लिए साइन अप नहीं किया है। आपका ब्राउज़र योगदान करने का प्रयास करता रहेगा जब तक वे सत्यापित नहीं करते हैं, या 90 दिन बीत नहीं जाते हैं।</translation>
 <translation id="853714875140407133">पर्याप्त टोकन नहीं है</translation>
 <translation id="6940273954212603510">कृपया</translation>
 <translation id="1036277985068412734">फंड्स जोड़ें</translation>
@@ -175,7 +175,7 @@
 <translation id="222883304157347087">(यह डिवाइस)</translation>
 <translation id="8193724030871339658">चेन पर अन्य डिवाइस</translation>
 <translation id="279635009973773843">डिवाइस लोड हो रही हैं...</translation>
-<translation id="2569646144216067185">शब्द गणना:  <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">शब्द गणना:  <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">शब्दों की गलत संख्या</translation>
 <translation id="6779408765480516895">कुछ गड़बड़ी हो गयी है, ऐसा लगता है जैसे आपका अनुरोध टाइम आउट हो गया है।</translation>
 <translation id="3149880132460839085">Brave सिंक</translation>
@@ -186,7 +186,7 @@
 <translation id="5817918615728894473">युग्‍मित करें</translation>
 <translation id="9154490620151093733">डिलीट अनुरोध भेज दिया गया है।  डिवाइस को जल्द ही हटा दिया जाएगा</translation>
 <translation id="2004365171440701679">इस डिवाइस को हटाएं</translation>
-<translation id="1178128181015923849">क्या आप वास्तव में डिवाइस '<ph name="DEVICE_NAME">%1$s</ph>' को हटाना चाहते हैं?</translation>
+<translation id="1178128181015923849">क्या आप वास्तव में डिवाइस '<ph name="DEVICE_NAME"/>' को हटाना चाहते हैं?</translation>
 <translation id="7745082336226088126">सिंक कोड को स्कैन या दर्ज करें</translation>
 <translation id="1602067095281698985">नया सिंक चेन शुरू करें</translation>
 <translation id="1475223680121592371">मोबाइल डिवाइस जोड़ें</translation>
@@ -217,7 +217,7 @@
 <translation id="327726072512457161">सेटिंग्स से बाहर निकलें</translation>
 <translation id="8050847734948770789">Brave रिवार्ड्स को सक्षम करें</translation>
 <translation id="9187185473011056079">मैं शामिल हूँ!</translation>
-<translation id="2980493584149453310">Brave रिवार्ड्स में गोपनीयता संरक्षण विज्ञापनों को देखने के लिए बेसिक अटेंशन टोकन प्राप्त करें।</translation>
+<translation id="8185825081026121627">Brave रिवार्ड्स में गोपनीयता संरक्षण विज्ञापनों को देखने के लिए बेसिक अटेंशन टोकन प्राप्त करें।</translation>
 <translation id="5321518976657560663">एरर रीसेट करें</translation>
 <translation id="4114170343590425996">Brave रिवार्ड्स को रीसेट करने में त्रुटि हुई। कृपया Brave को पुनः लॉन्च करें और दोबारा प्रयास करें।</translation>
 <translation id="6393502589311632553">विज्ञापन तब दिखाएं जब Brave उपयोग में नहीं हो</translation>

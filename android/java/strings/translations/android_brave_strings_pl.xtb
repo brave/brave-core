@@ -18,7 +18,7 @@
 <translation id="1506061864768559482">Wyszukiwarka</translation>
 <translation id="1468415711258933398">Karta standardowa</translation>
 <translation id="3377025655491224618">Karta prywatna</translation>
-<translation id="9148058034647219655">Zakończ</translation>
+<translation id="9148058034647219655">Wyjście</translation>
 <translation id="8710614491157212477">Otwiera obsługiwane witryny za pomocą HTTPS zamiast HTTP, kiedy to możliwe</translation>
 <translation id="8387201461264842096">Blokada reklam</translation>
 <translation id="1934885595886623674">Zapobiega wczytywaniu reklam</translation>
@@ -40,13 +40,13 @@
 <translation id="1580125697191336644">Funkcja eksperymentalna. Umożliwia odtwarzanie audio z klipu wideo w tle, kiedy karta jest nieaktywna lub gdy ekran urządzenia jest wyłączony. Jeśli funkcja nie działa, spróbuj przełączyć do trybu desktopowego.</translation>
 <translation id="59174027418879706">Włączone</translation>
 <translation id="4176463684765177261">Wyłączone</translation>
-<translation id="4150201353443180367">Wyświetlacz</translation>
+<translation id="4150201353443180367">Wygląd</translation>
 <translation id="2433507940547922241">Wygląd</translation>
 <translation id="2804710924397009224">Ukryj przycisk nagród Brave</translation>
 <translation id="7358991116457217836">Ukryj ikonę nagród Brave, kiedy nie są włączone.</translation>
 <translation id="8495235435594442882">Włącz dolny pasek narzędzi</translation>
 <translation id="5916664084637901428">Włączone</translation>
-<translation id="5860033963881614850">Wył.</translation>
+<translation id="5860033963881614850">Wyłączone</translation>
 <translation id="6587448235155023666">Zmiany zostaną zastosowane po ponownym uruchomieniu Brave</translation>
 <translation id="8701563696941209024">URUCHOM PONOWNIE</translation>
 <translation id="834487290629916192">PÓŹNIEJ</translation>
@@ -62,13 +62,13 @@
 <translation id="3333887201479867589">Nagrody Brave</translation>
 <translation id="1789842587755069541">za oglądanie reklam szanujących prywatność. Używaj ich, aby wspierać ulubione witryny i twórców.</translation>
 <translation id="821707262661492716">za oglądanie reklam szanujących prywatność.</translation>
-<translation id="7396091471805549630">Włączając Rewards, akceptujesz</translation>
+<translation id="7396091471805549630">Włączając nagrody, akceptujesz</translation>
 <translation id="4281844954008187215">Warunki świadczenia usługi</translation>
 <translation id="6871397658902960384">Zacznij przeglądać</translation>
 <translation id="454386012157232640">Nie było reklamy</translation>
 <translation id="1448877943847791441">Brave pokaże Twoją pierwszą reklamę za</translation>
-<translation id="7414844564462429821">Aby oglądać reklamy w ramach Brave Rewards, upewnij się, że Brave może pokazywać Ci powiadomienia.</translation>
-<translation id="6511854390690723657">To Twoja pierwsza reklama Brave. Stuknij, aby dowiedzieć się więcej.</translation>
+<translation id="7414844564462429821">Aby oglądać reklamy w ramach nagród Brave, upewnij się, że Brave może pokazywać Ci powiadomienia.</translation>
+<translation id="6511854390690723657">To Twoja pierwsza reklama Brave. Kliknij, aby dowiedzieć się więcej.</translation>
 <translation id="4930714375720679147">Włącz</translation>
 <translation id="2453860139492968684">Zakończ</translation>
 <translation id="8906569594072556752">Wprowadzenie</translation>
@@ -76,7 +76,7 @@
 <translation id="2359808026110333948">Kontynuuj</translation>
 <translation id="7658239707568436148">Anuluj</translation>
 <translation id="3570367516044491911">Ustaw jako domyślną przeglądarkę</translation>
-<translation id="7493053924837150477">Wybierz przeglądarkę Brave z listy i stuknij Zawsze</translation>
+<translation id="7493053924837150477">Wybierz przeglądarkę Brave z listy i kliknij Zawsze</translation>
 <translation id="3546439402724649282">Brave jest już ustawiona jako Twoja domyślna przeglądarka.</translation>
 <translation id="8389661903259423907">Domyślna przeglądarka jest już ustawiona. Możesz zmienić domyślną przeglądarkę w ustawieniach aplikacji.</translation>
 <translation id="7091885296442320770">Brave jest szybka jak błyskawica</translation>
@@ -92,8 +92,8 @@
 <translation id="5441565662498481293">Wysyłasz automatyczne napiwki do:</translation>
 <translation id="1166682575529520472">Miesięcznie</translation>
 <translation id="1628742278973105368">Twój pierwszy miesięczny napiwek zostanie wysłany do:</translation>
-<translation id="298349922412901215">UWAGA: Ten twórca jeszcze nie zarejestrował się, aby otrzymywać darowizny od użytkowników Brave. Będziemy próbowali przekazać darowiznę do czasu, aż zostanie zweryfikowany lub upłynie 90 dni.</translation>
-<translation id="1910721550319506122">Witamy!</translation>
+<translation id="298349922412901215">UWAGA: Ten twórca jeszcze nie zarejestrował się, aby otrzymywać wsparcie od użytkowników Brave. Będziemy próbowali przekazać wsparcie do czasu, aż zostanie zweryfikowany lub upłynie 90 dni.</translation>
+<translation id="1910721550319506122">Witaj!</translation>
 <translation id="3165726837666415756">Możesz wesprzeć tę witrynę, przekazując napiwek. To forma podziękowania za tworzenie świetnych treści. Zweryfikowani twórcy treści otrzymują pieniądze za napiwki w pierwszym tygodniu każdego miesiąca kalendarzowego.</translation>
 <translation id="1704859330137112950">Jeśli chcesz, możesz zaplanować miesięczne napiwki, aby regularnie wspierać tę stronę.</translation>
 <translation id="245015745140252435">Wartość napiwka</translation>
@@ -120,7 +120,7 @@ oglądanie reklam szanujących prywatność.</translation>
 <translation id="5567439033041178034">DOWIEDZ SIĘ WIĘCEJ</translation>
 <translation id="3780605330121608425">Twój portfel</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Przyznane środki</translation>
 <translation id="1165667598801520610">Dodaj środki</translation>
 <translation id="8428213095426709021">Ustawienia</translation>
@@ -148,8 +148,8 @@ miesiącu...</translation>
 <translation id="7335371657242627509">Uwzględnij w wsparciu automatycznym</translation>
 <translation id="5463954686005964104">Ustaw comiesięczne napiwki dla tej strony</translation>
 <translation id="7530570094705720669">Tworzenie portfela</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">Przekazano <ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">Przekazano <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Ze względu na brak wystarczającej ilości środków nie można było zrealizować wyznaczonej comiesięcznej płatności w ramach automatycznej darowizny i comiesięcznych napiwków. Spróbujemy ponownie za 30 dni.</translation>
 <translation id="5306913077198665897">Podczas przetwarzania Twojego napiwku wystąpił błąd, spróbuj ponownie.</translation>
 <translation id="2429828319207652823">Wystąpił problem przy przetwarzaniu Twojego wsparcia.</translation>
@@ -164,24 +164,24 @@ miesiącu...</translation>
 <translation id="2323069945529668668">O nie!</translation>
 <translation id="7510166204621526816">Serwer Nagród Brave nie odpowiada. Naprawimy to tak szybko, jak to możliwe.</translation>
 <translation id="2626799779920242286">Spróbuj ponownie później.</translation>
-<translation id="3068742524072211213">wygasa dnia <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">wygasa dnia <ph name="DATE"/></translation>
 <translation id="4292832015778676417">zarobione z reklam</translation>
 <translation id="683765328936486920">na YouTube</translation>
 <translation id="8969049974285901797">na Twitch</translation>
-<translation id="3692362746128814480">Przekazano <ph name="BAT_VALUE">%1$s</ph> BAT dla twórców, którzy
+<translation id="3692362746128814480">Przekazano <ph name="BAT_VALUE"/> BAT dla twórców, którzy
 jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka będzie próbowała przekazać darowiznę do czasu, aż zostaną zweryfikowani lub upłynie 90 dni.</translation>
 <translation id="853714875140407133">za mało tokenów</translation>
 <translation id="6940273954212603510">proszę</translation>
 <translation id="1036277985068412734">dodaj środki</translation>
 <translation id="3492491948683276944">ustaw comiesięczny napiwek</translation>
-<translation id="4162066325465825185">Przepraszamy, wygląda na to, że funkcja Brave Rewards jest niedostępna na Twoim urządzeniu</translation>
+<translation id="4162066325465825185">Przepraszamy, wygląda na to, że funkcja nagród Brave jest niedostępna na Twoim urządzeniu</translation>
 <translation id="8038539967102225446">Oto reklamy Brave!</translation>
 <translation id="230829157901335313">Zegar Twojego komputera może wskazywać nieprawidłową godzinę lub strefę czasową. Sprawdź ustawienia zegara</translation>
 <translation id="8985635554450124959">Nie można skonfigurować synchronizacji</translation>
 <translation id="222883304157347087">(to urządzenie)</translation>
 <translation id="8193724030871339658">INNE URZĄDZENIA W ŁAŃCUCHU</translation>
 <translation id="279635009973773843">WCZYTYWANIE URZĄDZEŃ...</translation>
-<translation id="2569646144216067185">Liczba słów: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Liczba słów: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Nieprawidłowa liczba słów</translation>
 <translation id="6779408765480516895">Coś poszło nie tak, wygląda na to, że czas żądania został przekroczony.</translation>
 <translation id="3149880132460839085">Synchronizacja Brave</translation>
@@ -192,7 +192,7 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="5817918615728894473">Sparuj</translation>
 <translation id="9154490620151093733">Wysłano żądanie usunięcia. Urządzenie zostanie wkrótce usunięte.</translation>
 <translation id="2004365171440701679">Usuń to urządzenie</translation>
-<translation id="1178128181015923849">Czy na pewno chcesz usunąć urządzenie „<ph name="DEVICE_NAME">%1$s</ph>”?</translation>
+<translation id="1178128181015923849">Czy na pewno chcesz usunąć urządzenie „<ph name="DEVICE_NAME"/>”?</translation>
 <translation id="7745082336226088126">Zeskanuj lub wprowadź kod synchronizacji</translation>
 <translation id="1602067095281698985">Rozpocznij nowy łańcuch synchronizacji</translation>
 <translation id="1475223680121592371">Dodaj urządzenie przenośne</translation>
@@ -223,11 +223,11 @@ jeszcze nie zarejestrowali się, aby otrzymywać darowizny. Twoja przeglądarka 
 <translation id="327726072512457161">Wyjdź z ustawień</translation>
 <translation id="8050847734948770789">Włącz Nagrody Brave</translation>
 <translation id="9187185473011056079">Wchodzę w to!</translation>
-<translation id="2980493584149453310">Otrzymuj Basic Attention Token za oglądanie reklam zachowujących prywatność w ramach Brave Rewards.</translation>
+<translation id="8185825081026121627">Otrzymuj tokeny BAT za oglądanie reklam szanujących prywatność w ramach nagród Brave.</translation>
 <translation id="5321518976657560663">Błąd resetowania</translation>
-<translation id="4114170343590425996">Podczas resetowania Brave Rewards wystąpił błąd. Zrestartuj Brave i spróbuj ponownie.</translation>
+<translation id="4114170343590425996">Podczas resetowania nagród Brave wystąpił błąd. Zrestartuj Brave i spróbuj ponownie.</translation>
 <translation id="6393502589311632553">Pokazuj reklamy, kiedy Brave nie jest używana</translation>
-<translation id="3349204812119681938">Zresetuj Brave Rewards</translation>
-<translation id="8782039523249932839">Spowoduje to usunięcie Twojego portfela Brave i zresetuje wszystkie Twoje dane Brave Rewards</translation>
+<translation id="3349204812119681938">Zresetuj nagrody Brave</translation>
+<translation id="8782039523249932839">Spowoduje to usunięcie Twojego portfela Brave i zresetuje wszystkie Twoje dane nagród Brave</translation>
 <translation id="6810078320346589989">Utwórz zakładkę</translation>
 </translationbundle>

@@ -119,7 +119,7 @@ advertenties te bekijken die privacy respecteren.</translation>
 <translation id="5567439033041178034">LEER MEER</translation>
 <translation id="3780605330121608425">Je wallet</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Donaties</translation>
 <translation id="1165667598801520610">Voeg geld toe</translation>
 <translation id="8428213095426709021">instellingen</translation>
@@ -147,8 +147,8 @@ deze maand...</translation>
 <translation id="7335371657242627509">Deelname aan Auto-Contribute</translation>
 <translation id="5463954686005964104">Tip deze site maandelijks</translation>
 <translation id="7530570094705720669">Wallet aanmaken</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">Jij hebt <ph name="BAT_VALUE">%1$s</ph> BAT bijgedragen.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">Jij hebt <ph name="BAT_VALUE"/> BAT bijgedragen.</translation>
 <translation id="7997676409547731821">Je geplande maandelijkse betaling voor Automatische Deelname en maandelijkse fooi konden niet worden voltooid vanwege onvoldoende saldo. We proberen het over 30 dagen opnieuw.</translation>
 <translation id="5306913077198665897">Er is een probleem opgetreden bij het verwerken van je fooi. Probeer het opnieuw.</translation>
 <translation id="2429828319207652823">Er is een probleem opgetreden bij het verwerken van je bijdrage.</translation>
@@ -163,11 +163,11 @@ deze maand...</translation>
 <translation id="2323069945529668668">Oh jee!</translation>
 <translation id="7510166204621526816">De server van het Brave Beloningssysteem reageert niet. We zullen dit zo snel mogelijk oplossen.</translation>
 <translation id="2626799779920242286">Probeer het later opnieuw.</translation>
-<translation id="3068742524072211213">verloopt op <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">verloopt op <ph name="DATE"/></translation>
 <translation id="4292832015778676417">verdiend</translation>
 <translation id="683765328936486920">op Youtube</translation>
 <translation id="8969049974285901797">op Twitch</translation>
-<translation id="3692362746128814480">Je hebt <ph name="BAT_VALUE">%1$s</ph> BAT aangewezen voor makers die dat zich nog niet hebben aangemeld om bijdragen te ontvangen. Je browser blijft proberen bij te dragen totdat ze verifiëren of tot 90 dagen zijn verstreken.</translation>
+<translation id="3692362746128814480">Je hebt <ph name="BAT_VALUE"/> BAT aangewezen voor makers die dat zich nog niet hebben aangemeld om bijdragen te ontvangen. Je browser blijft proberen bij te dragen totdat ze verifiëren of tot 90 dagen zijn verstreken.</translation>
 <translation id="853714875140407133">niet genoeg tokens</translation>
 <translation id="6940273954212603510">alsjeblieft</translation>
 <translation id="1036277985068412734">voeg geld toe</translation>
@@ -179,7 +179,7 @@ deze maand...</translation>
 <translation id="222883304157347087">(dit apparaat)</translation>
 <translation id="8193724030871339658">ANDERE APPARATEN IN DE REEKS</translation>
 <translation id="279635009973773843">APPARATEN LADEN...</translation>
-<translation id="2569646144216067185">Aantal woorden: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Aantal woorden: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Onjuist aantal woorden</translation>
 <translation id="6779408765480516895">Er is iets misgegaan, het lijkt erop dat je verzoek is verlopen.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -190,7 +190,7 @@ deze maand...</translation>
 <translation id="5817918615728894473">Koppelen</translation>
 <translation id="9154490620151093733">Verwijderverzoek is verzonden. Apparaat wordt binnenkort verwijderd.</translation>
 <translation id="2004365171440701679">Verwijder dit apparaat</translation>
-<translation id="1178128181015923849">Weet je zeker dat je het apparaat wilt verwijderen '<ph name="DEVICE_NAME">%1$s</ph>'?</translation>
+<translation id="1178128181015923849">Weet je zeker dat je het apparaat wilt verwijderen '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Scan of voer de synchronisatiecode in</translation>
 <translation id="1602067095281698985">Een nieuwe synchronisatieketen starten</translation>
 <translation id="1475223680121592371">Voeg een mobiel apparaat toe</translation>
@@ -221,7 +221,7 @@ deze maand...</translation>
 <translation id="327726072512457161">Instellingen afsluiten</translation>
 <translation id="8050847734948770789">Brave Beloningen inschakelen</translation>
 <translation id="9187185473011056079">Ik doe mee!</translation>
-<translation id="2980493584149453310">Verdien Basic Attention Token voor het bekijken van advertenties die je privacy behouden in Brave Rewards.</translation>
+<translation id="8185825081026121627">Verdien Basic Attention Token voor het bekijken van advertenties die je privacy behouden in Brave Rewards.</translation>
 <translation id="5321518976657560663">Resetfout</translation>
 <translation id="4114170343590425996">Er is een fout opgetreden bij het opnieuw instellen van Brave Rewards. Start Brave opnieuw en probeer het opnieuw.</translation>
 <translation id="6393502589311632553">Advertenties weergeven wanneer Brave niet in gebruik is</translation>

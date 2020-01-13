@@ -120,7 +120,7 @@
 <translation id="5567439033041178034">વધુ જાણો</translation>
 <translation id="3780605330121608425">તમારું વૉલેટ</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> યુએસ ડૉલર</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> યુએસ ડૉલર</translation>
 <translation id="2104073734684466851">અનુદાનો</translation>
 <translation id="1165667598801520610">ભંડોળ ઉમેરો</translation>
 <translation id="8428213095426709021">સેટિંગ્સ</translation>
@@ -147,8 +147,8 @@
 <translation id="7335371657242627509">આપમેળે-ફાળામાં સામેલ કરો</translation>
 <translation id="5463954686005964104">આ સાઇટને માસિક ટીપ આપો</translation>
 <translation id="7530570094705720669">વૉલેટ બનાવી રહ્યા છીએ</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">તમે <ph name="BAT_VALUE">%1$s</ph> BAT નો ફાળો આપ્યો છે.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">તમે <ph name="BAT_VALUE"/> BAT નો ફાળો આપ્યો છે.</translation>
 <translation id="7997676409547731821">અપૂરતા ભંડોળને કારણે આપમેળે-ફાળો અને માસિક ટીપ્સ માટે તમારું શેડ્યૂલ કરેલ માસિક ચુકવણી પૂર્ણ થઈ શક્યું નથી. અમે 30 દિવસમાં ફરી પ્રયાસ કરીશું.</translation>
 <translation id="5306913077198665897">તમારી ટીપ પર પ્રક્રિયા કરવામાં સમસ્યા આવી, કૃપયા ફરી પ્રયાસ કરો.</translation>
 <translation id="2429828319207652823">તમારા યોગદાન પર પ્રક્રિયા કરવામાં સમસ્યા આવી.</translation>
@@ -163,12 +163,12 @@
 <translation id="2323069945529668668">ઉહ-ઓહ!</translation>
 <translation id="7510166204621526816">Brave પુરસ્કારો સર્વર પ્રતિસાદ આપતું નથી. અમે તેને શક્ય તેટલી વહેલી તકે ઠીક કરીશું.</translation>
 <translation id="2626799779920242286">કૃપયા પછીથી ફરી પ્રયાસ કરો</translation>
-<translation id="3068742524072211213"><ph name="DATE">%1$s</ph> ના સમાપ્ત થાય છે</translation>
+<translation id="3068742524072211213"><ph name="DATE"/> ના સમાપ્ત થાય છે</translation>
 <translation id="4292832015778676417">જાહેરાતો દ્વારા કમાયા</translation>
 <translation id="683765328936486920">YouTube પર</translation>
 <translation id="8969049974285901797">Twitch પર</translation>
 <translation id="3692362746128814480">તમે યોગદાન પ્રાપ્ત કરવા માટે હજી સુધી સાઇન અપ કર્યા નથી 
-તેવા નિર્માતાઓ માટે <ph name="BAT_VALUE">%1$s</ph> BAT નિયુક્ત કર્યા છે. તમારું બ્રાઉઝર તેઓની ચકાસણી કરે ત્યાં સુધી 
+તેવા નિર્માતાઓ માટે <ph name="BAT_VALUE"/> BAT નિયુક્ત કર્યા છે. તમારું બ્રાઉઝર તેઓની ચકાસણી કરે ત્યાં સુધી 
 અથવા 90 દિવસ પસાર ન થાય ત્યાં સુધી યોગદાન આપવાનો પ્રયત્ન કરશે.</translation>
 <translation id="853714875140407133">પર્યાપ્ત ટોકન નથી</translation>
 <translation id="6940273954212603510">કૃપયા કરીને</translation>
@@ -181,7 +181,7 @@
 <translation id="222883304157347087">(આ ઉપકરણ)</translation>
 <translation id="8193724030871339658">ચેન પર અન્ય  ઉપકરણો</translation>
 <translation id="279635009973773843">ઉપકરણો લોડ થઈ રહ્યા છીએ...</translation>
-<translation id="2569646144216067185">શબ્દ ગણના: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">શબ્દ ગણના: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">શબ્દોની ખોટી સંખ્યા</translation>
 <translation id="6779408765480516895">કંઈક ખોટું થયું, એવું લાગે છે કે તમારી વિનંતિનો સમય સમાપ્ત થઈ ગયો છે.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -192,7 +192,7 @@
 <translation id="5817918615728894473">જોડી કરો</translation>
 <translation id="9154490620151093733">હટાવી નાખવા માટે વિનંતી મોકલવામાં આવી છે. ઉપકરણ ટૂંક સમયમાં દૂર કરવામાં આવશે.</translation>
 <translation id="2004365171440701679">આ ઉપકરણ કાઢી નાખો</translation>
-<translation id="1178128181015923849">શું તમે ખરેખર ઉપકરણ '<ph name="DEVICE_NAME">%1$s</ph>' ને હટાવી નાખવા માંગો છો?</translation>
+<translation id="1178128181015923849">શું તમે ખરેખર ઉપકરણ '<ph name="DEVICE_NAME"/>' ને હટાવી નાખવા માંગો છો?</translation>
 <translation id="7745082336226088126">સિંક્રનાઇઝ કોડ સ્કૅન અથવા દાખલ કરો</translation>
 <translation id="1602067095281698985">નવી સિંક્રનાઇઝ ચેન પ્રારંભ કરો</translation>
 <translation id="1475223680121592371">તમારું મોબાઈલ ઉપકરણ ઉમેરો</translation>
@@ -223,7 +223,7 @@
 <translation id="327726072512457161">સેટિંગમાંથી બહાર નીકળો</translation>
 <translation id="8050847734948770789">Brave પુરસ્કારો સક્ષમ કરો</translation>
 <translation id="9187185473011056079">હું સંમત છું!</translation>
-<translation id="2980493584149453310">Brave પુરસ્કારોમાં ગોપનીયતા સાચવવાની જાહેરાતો જોવા માટે બેસિક અટેનશન ટોકન કમાઓ.</translation>
+<translation id="8185825081026121627">Brave પુરસ્કારોમાં ગોપનીયતા સાચવવાની જાહેરાતો જોવા માટે બેસિક અટેનશન ટોકન કમાઓ.</translation>
 <translation id="5321518976657560663">ત્રુટિ રીસેટ કરો</translation>
 <translation id="4114170343590425996">Brave પુરસ્કારોને રીસેટ કરવામાં ભૂલ આવી હતી. કૃપયા Brave ને ફરીથી લોંચ કરો અને ફરીથી પ્રયાસ કરો.</translation>
 <translation id="6393502589311632553">Brave ઉપયોગમાં ન હોય ત્યારે જાહેરાતો દર્શાવો</translation>

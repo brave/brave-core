@@ -120,7 +120,7 @@ par konfidencialitāti cienošu reklāmu skatīšanos.</translation>
 <translation id="5567439033041178034">UZZINĀT VAIRĀK</translation>
 <translation id="3780605330121608425">Jūsu maks</translation>
 <translation id="8845154268466251503">Pamata uzmanības marķieris (BAT)</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Piešķīrumi</translation>
 <translation id="1165667598801520610">Pievienot līdzekļus</translation>
 <translation id="8428213095426709021">Iestatījumi</translation>
@@ -148,8 +148,8 @@ mēnesī...</translation>
 <translation id="7335371657242627509">Iekļaut automātiskajā ziedošanā</translation>
 <translation id="5463954686005964104">Dot dzeramnaudu šai vietnei katru mēnesi</translation>
 <translation id="7530570094705720669">Maka izveide</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">Jūs ziedojāt <ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">Jūs ziedojāt <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Jūsu ieplānotais ikmēneša automātiskās ziedošanas un ikmēneša dzeramnauda maksājums netika izpildīts nepietiekamu līdzekļu dēļ. Mēs mēģināsim vēlreiz pēc 30 dienām.</translation>
 <translation id="5306913077198665897">Apstrādājot jūsu dzeramnaudas maksājumu, radās kļūda. Lūdzu, mēģiniet vēlreiz.</translation>
 <translation id="2429828319207652823">Apstrādājot jūsu ieguldījumu, radās kļūda.</translation>
@@ -164,11 +164,11 @@ mēnesī...</translation>
 <translation id="2323069945529668668">Ak vai!</translation>
 <translation id="7510166204621526816">Brave balvu serveris nereaģē. Mēs to salabosim, cik vien drīz iespējams.</translation>
 <translation id="2626799779920242286">Lūdzu, vēlāk mēģiniet vēlreiz.</translation>
-<translation id="3068742524072211213">beidzas <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">beidzas <ph name="DATE"/></translation>
 <translation id="4292832015778676417">nopelnīts no reklāmām</translation>
 <translation id="683765328936486920">vietnē YouTube</translation>
 <translation id="8969049974285901797">vietnē Twitch</translation>
-<translation id="3692362746128814480">Jūs atvēlējāt <ph name="BAT_VALUE">%1$s</ph> BAT satura veidotājiem, kuri
+<translation id="3692362746128814480">Jūs atvēlējāt <ph name="BAT_VALUE"/> BAT satura veidotājiem, kuri
 vēl nav reģistrējušies ziedojumu saņemšanai. Jūsu pārlūks turpinās mēģināt
 veikt ziedojumu, līdz viņi to apstiprinās vai būs pagājušas 90 dienas.</translation>
 <translation id="853714875140407133">nepietiek marķieru</translation>
@@ -182,7 +182,7 @@ veikt ziedojumu, līdz viņi to apstiprinās vai būs pagājušas 90 dienas.</tr
 <translation id="222883304157347087">(šī ierīce)</translation>
 <translation id="8193724030871339658">CITAS ĶĒDĒ ESOŠĀS IERĪCES</translation>
 <translation id="279635009973773843">IELĀDĒ IERĪCES...</translation>
-<translation id="2569646144216067185">Vārdu skaits: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Vārdu skaits: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Neatbilstošs vārdu skaits</translation>
 <translation id="6779408765480516895">Diemžēl, radās problēma. Jūsu pieprasījumam iestājās noilgums.</translation>
 <translation id="3149880132460839085">Brave sinhronizācija</translation>
@@ -193,7 +193,7 @@ veikt ziedojumu, līdz viņi to apstiprinās vai būs pagājušas 90 dienas.</tr
 <translation id="5817918615728894473">Savienot pārī</translation>
 <translation id="9154490620151093733">Dzēšanas pieprasījums ir nosūtīts. Ierīce drīzumā tiks noņemta.</translation>
 <translation id="2004365171440701679">Noņemt šo ierīci</translation>
-<translation id="1178128181015923849">Vai tiešām vēlaties dzēst ierīci '<ph name="DEVICE_NAME">%1$s</ph>'?</translation>
+<translation id="1178128181015923849">Vai tiešām vēlaties dzēst ierīci '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Noskenējiet vai ievadiet sinhronizācijas kodu</translation>
 <translation id="1602067095281698985">Sākt jaunu sinhronizācijas ķēdi</translation>
 <translation id="1475223680121592371">Pievienot mobilo ierīci</translation>
@@ -224,7 +224,7 @@ veikt ziedojumu, līdz viņi to apstiprinās vai būs pagājušas 90 dienas.</tr
 <translation id="327726072512457161">Aizvērt iestatījumus</translation>
 <translation id="8050847734948770789">Iespējot Brave balvas</translation>
 <translation id="9187185473011056079">Es piekrītu!</translation>
-<translation id="2980493584149453310">Nopelniet pamata uzmanības marķierus par konfidencialitāti saglabājošu reklāmu skatīšanos Brave balvu sadaļā.</translation>
+<translation id="8185825081026121627">Nopelniet pamata uzmanības marķierus par konfidencialitāti saglabājošu reklāmu skatīšanos Brave balvu sadaļā.</translation>
 <translation id="5321518976657560663">Atiestates kļūda</translation>
 <translation id="4114170343590425996">Radās kļūda, kas atiestatīja Brave balvas. Lūdzu, vēlreiz atveriet Brave un mēģiniet vēlreiz.</translation>
 <translation id="6393502589311632553">Radīt reklāmas, kad nelietojat Brave</translation>

@@ -120,7 +120,7 @@ Anzeigen ansehen, die die Privatsphäre respektieren.</translation>
 <translation id="5567439033041178034">MEHR ERFAHREN</translation>
 <translation id="3780605330121608425">Ihre Wallet</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Zuschüsse</translation>
 <translation id="1165667598801520610">Konto aufladen</translation>
 <translation id="8428213095426709021">Einstellungen</translation>
@@ -145,8 +145,8 @@ Anzeigen ansehen, die die Privatsphäre respektieren.</translation>
 <translation id="7335371657242627509">Automatisch unterstützen</translation>
 <translation id="5463954686005964104">Dieser Seite monatlich ein Trinkgeld spendieren</translation>
 <translation id="7530570094705720669">Wallet wird erstellt</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">Sie haben <ph name="BAT_VALUE">%1$s</ph> BAT gegeben.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">Sie haben <ph name="BAT_VALUE"/> BAT gegeben.</translation>
 <translation id="7997676409547731821">Ihre geplante monatliche Zahlung für Auto-Contribute und monatliche Spenden konnte aufgrund unzureichender Mittel nicht ausgeführt werden. Wir werden es in 30 Tagen erneut versuchen.</translation>
 <translation id="5306913077198665897">Es gab ein Problem bei der Verarbeitung Ihres Trinkgelds, bitte versuchen Sie es erneut.</translation>
 <translation id="2429828319207652823">Bei der Verarbeitung Ihres Beitrags ist ein Fehler aufgetreten.</translation>
@@ -161,11 +161,11 @@ Anzeigen ansehen, die die Privatsphäre respektieren.</translation>
 <translation id="2323069945529668668">Hoppla!</translation>
 <translation id="7510166204621526816">Der Brave-Rewards-Server antwortet nicht. Wir werden dieses Problem schnellstmöglich beheben.</translation>
 <translation id="2626799779920242286">Bitte versuchen Sie es später erneut.</translation>
-<translation id="3068742524072211213">läuft ab am <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">läuft ab am <ph name="DATE"/></translation>
 <translation id="4292832015778676417">durch Werbung verdient</translation>
 <translation id="683765328936486920">auf YouTube</translation>
 <translation id="8969049974285901797">auf Twitch</translation>
-<translation id="3692362746128814480">Sie haben Creators, die sich noch nicht für den Erhalt von Beiträgen registriert haben, <ph name="BAT_VALUE">%1$s</ph> BAT zugewiesen.  Ihr Browser wird weiter versuchen, Beiträge weiterzugeben, bis der Creator sich registriert hat oder bis 90 Tage vergangen sind.</translation>
+<translation id="3692362746128814480">Sie haben Creators, die sich noch nicht für den Erhalt von Beiträgen registriert haben, <ph name="BAT_VALUE"/> BAT zugewiesen.  Ihr Browser wird weiter versuchen, Beiträge weiterzugeben, bis der Creator sich registriert hat oder bis 90 Tage vergangen sind.</translation>
 <translation id="853714875140407133">keine ausreichenden Tokens</translation>
 <translation id="6940273954212603510">bitte</translation>
 <translation id="1036277985068412734">Konto aufladen</translation>
@@ -177,7 +177,7 @@ Anzeigen ansehen, die die Privatsphäre respektieren.</translation>
 <translation id="222883304157347087">(dieses Gerät)</translation>
 <translation id="8193724030871339658">ANDERE GERÄTE IN DER KETTE</translation>
 <translation id="279635009973773843">LÄDT GERÄTE ...</translation>
-<translation id="2569646144216067185">Anzahl der Wörter: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Anzahl der Wörter: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Falsche Anzahl der Wörter</translation>
 <translation id="6779408765480516895">Es ist ein Fehler aufgetreten. Es sieht so aus, als sei Ihre Anfrage abgelaufen.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -188,7 +188,7 @@ Anzeigen ansehen, die die Privatsphäre respektieren.</translation>
 <translation id="5817918615728894473">Koppeln</translation>
 <translation id="9154490620151093733">Löschanforderung wurde gesendet. Gerät wird in Kürze entfernt.</translation>
 <translation id="2004365171440701679">Dieses Gerät entfernen</translation>
-<translation id="1178128181015923849">Sind Sie sicher, dass Sie das Gerät '<ph name="DEVICE_NAME">%1$s</ph>' entfernen möchten?</translation>
+<translation id="1178128181015923849">Sind Sie sicher, dass Sie das Gerät '<ph name="DEVICE_NAME"/>' entfernen möchten?</translation>
 <translation id="7745082336226088126">Geben Sie einen Sychronisierungscode ein oder scannen Sie ihn</translation>
 <translation id="1602067095281698985">Eine neue Sync-Kette beginnen</translation>
 <translation id="1475223680121592371">Mobilgerät hinzufügen</translation>
@@ -219,7 +219,7 @@ Anzeigen ansehen, die die Privatsphäre respektieren.</translation>
 <translation id="327726072512457161">Einstellungen verlassen</translation>
 <translation id="8050847734948770789">Brave Rewards aktivieren</translation>
 <translation id="9187185473011056079">Ich bin dabei!</translation>
-<translation id="2980493584149453310">Verdienen Sie Basic Attention Token, wenn Sie in Brave Rewards Werbung ansehen, die nicht in die Privatsphäre eingreift.</translation>
+<translation id="8185825081026121627">Verdienen Sie Basic Attention Token, wenn Sie in Brave Rewards Werbung ansehen, die nicht in die Privatsphäre eingreift.</translation>
 <translation id="5321518976657560663">Rücksetzungsfehler</translation>
 <translation id="4114170343590425996">Beim Zurücksetzen von Brave Rewards ist ein Fehler aufgetreten. Bitte starten Sie Brave neu und versuchen Sie es erneut.</translation>
 <translation id="6393502589311632553">Anzeigen zeigen, wenn Brave nicht verwendet wird</translation>

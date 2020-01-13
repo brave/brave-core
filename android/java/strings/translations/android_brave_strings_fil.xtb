@@ -120,7 +120,7 @@ panonood ng mga ad na nagpapahalaga sa privacy.</translation>
 <translation id="5567439033041178034">MATUTO PA</translation>
 <translation id="3780605330121608425">Ang iyong wallet</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Mga grant</translation>
 <translation id="1165667598801520610">Magdagdag ng Mga Pondo</translation>
 <translation id="8428213095426709021">Mga Setting</translation>
@@ -148,8 +148,8 @@ buwang ito...</translation>
 <translation id="7335371657242627509">Isama sa Awtomatikong Pag-ambag</translation>
 <translation id="5463954686005964104">Nagbigay ng tip sa site na ito buwan-buwan</translation>
 <translation id="7530570094705720669">Ginagawa ang wallet</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">Nag-ambag ka ng <ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">Nag-ambag ka ng <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Hindi makumpleto ang iyong nakaiskedyul na buwan-buwang pagbabayad para sa Awtomatikong Pag-ambag at mga buwan-buwang tip dahil sa hindi sapat na mga pondo. Susubukan naming muli pagkalipas ng 30 araw.</translation>
 <translation id="5306913077198665897">Nagkaproblema sa pagpoproseso sa iyong tip, pakisubukang muli.</translation>
 <translation id="2429828319207652823">Nagkaroon ng problema sa pagproseso sa iyong pag-ambag.</translation>
@@ -164,11 +164,11 @@ buwang ito...</translation>
 <translation id="2323069945529668668">Naku!</translation>
 <translation id="7510166204621526816">Hindi tumutugon ang server ng Brave Rewards. Aayusin namin ito sa lalong madaling panahon.</translation>
 <translation id="2626799779920242286">Pakisubukang muli sa ibang pagkakataon.</translation>
-<translation id="3068742524072211213">mag-e-expire sa <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">mag-e-expire sa <ph name="DATE"/></translation>
 <translation id="4292832015778676417">kinita sa ads</translation>
 <translation id="683765328936486920">sa YouTube</translation>
 <translation id="8969049974285901797">sa Twitch</translation>
-<translation id="3692362746128814480">Nagtakda ka ng <ph name="BAT_VALUE">%1$s</ph> BAT para sa mga creator na hindi 
+<translation id="3692362746128814480">Nagtakda ka ng <ph name="BAT_VALUE"/> BAT para sa mga creator na hindi 
 pa nagsa-sign up para makatanggap ng mga ambag. Patuloy na susubukan ng iyong browser na mag-ambag
 hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="853714875140407133">hindi sapat na mga token</translation>
@@ -182,7 +182,7 @@ hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="222883304157347087">(ang device na ito)</translation>
 <translation id="8193724030871339658">IBA PANG DEVICE SA CHAIN</translation>
 <translation id="279635009973773843">NILO-LOAD ANG MGA DEVICE...</translation>
-<translation id="2569646144216067185">Dami ng salita: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Dami ng salita: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Hindi wastong bilang ng mga salita</translation>
 <translation id="6779408765480516895">Nagkaproblema, mukhang nag-time out ang iyong kahilingan.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -193,7 +193,7 @@ hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="5817918615728894473">Ipares</translation>
 <translation id="9154490620151093733">Naipadala na ang kahilingan sa pag-delete. Aalisin ang device sa ilang sandali.</translation>
 <translation id="2004365171440701679">Alisin ang device na ito</translation>
-<translation id="1178128181015923849">Sigurado ka bang gusto mong i-delete ang device na '<ph name="DEVICE_NAME">%1$s</ph>'?</translation>
+<translation id="1178128181015923849">Sigurado ka bang gusto mong i-delete ang device na '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">I-scan o ilagay ang code ng pag-sync</translation>
 <translation id="1602067095281698985">Magsimula ng bagong chain ng pag-sync</translation>
 <translation id="1475223680121592371">Magdagdag ng Mobile Device</translation>
@@ -224,7 +224,7 @@ hanggang sa mag-verify sila o hanggang sa lumipas ang 90 araw.</translation>
 <translation id="327726072512457161">Lumabas sa Mga Setting</translation>
 <translation id="8050847734948770789">I-enable ang Mga Reward ng Brave</translation>
 <translation id="9187185473011056079">OK!</translation>
-<translation id="2980493584149453310">Magkaroon ng Basic Attention na Token sa pamamagitan ng pagtingin sa mga ads na nagpapanatili sa privacy sa Brave Rewards.</translation>
+<translation id="8185825081026121627">Magkaroon ng Basic Attention na Token sa pamamagitan ng pagtingin sa mga ads na nagpapanatili sa privacy sa Brave Rewards.</translation>
 <translation id="5321518976657560663">Error sa Pag-reset</translation>
 <translation id="4114170343590425996">Nagka-error sa pag-reset sa Brave Rewards. Pakilunsad muli ang Brave at subukang muli.</translation>
 <translation id="6393502589311632553">Ipakita ang Mga Ad kapag hindi ginagamit ang Brave</translation>

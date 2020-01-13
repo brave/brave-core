@@ -120,7 +120,7 @@
 <translation id="5567439033041178034">আরও জানুন</translation>
 <translation id="3780605330121608425">আপনার ওয়ালেট</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">মঞ্জুরিসমূহ</translation>
 <translation id="1165667598801520610">অর্থ যোগ করুন</translation>
 <translation id="8428213095426709021">সেটিংস</translation>
@@ -148,8 +148,8 @@
 <translation id="7335371657242627509">স্বয়ংক্রিয়ভাবে অবদান রাখায় অন্তর্ভুক্ত করুন</translation>
 <translation id="5463954686005964104">প্রতি মাসে সাইটে টিপ দিন</translation>
 <translation id="7530570094705720669">ওয়ালেট তৈরি করা হচ্ছে</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">আপনি <ph name="BAT_VALUE">%1$s</ph> BAT এ অবদান রেখেছেন।</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">আপনি <ph name="BAT_VALUE"/> BAT এ অবদান রেখেছেন।</translation>
 <translation id="7997676409547731821">স্বতঃ-অবদান এবং মাসিক পরামর্শের জন্য আপনার সময়সূচিত মাসিক পেমেন্ট পর্যাপ্ত ফান্ড না থাকায় সম্পূর্ণ করা যাবে না। আমরা 30 দিনের মধ্যে আবার চেষ্টা করব।</translation>
 <translation id="5306913077198665897">আপনার পরামর্শ প্রক্রিয়া করার সময় একটি সমস্যা হয়েছে, অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
 <translation id="2429828319207652823">আপনার অনুদান প্রক্রিয়া করার সময় একটি সমস্যা হয়েছে।</translation>
@@ -164,11 +164,11 @@
 <translation id="2323069945529668668">ওহহো!</translation>
 <translation id="7510166204621526816">Brave পুরস্কারের সার্ভারটি কাজ করছে না। আমরা যত তাড়াতাড়ি সম্ভব এটির সমাধান করব।</translation>
 <translation id="2626799779920242286">অনুগ্রহ করে পরে আবার চেষ্টা করুন।</translation>
-<translation id="3068742524072211213"><ph name="DATE">%1$s</ph> এ মেয়াদ শেষ হয়</translation>
+<translation id="3068742524072211213"><ph name="DATE"/> এ মেয়াদ শেষ হয়</translation>
 <translation id="4292832015778676417">বিজ্ঞাপন থেকে অর্জিত</translation>
 <translation id="683765328936486920">YouTube এ</translation>
 <translation id="8969049974285901797">Twitch এ</translation>
-<translation id="3692362746128814480">আপনি অবদানগুলি গ্রহণ করতে এখনও পর্যন্ত সাইন আপ করেননি এমন নির্মাতার জন্য <ph name="BAT_VALUE">%1$s</ph> BAT
+<translation id="3692362746128814480">আপনি অবদানগুলি গ্রহণ করতে এখনও পর্যন্ত সাইন আপ করেননি এমন নির্মাতার জন্য <ph name="BAT_VALUE"/> BAT
 ডিজাইন করেছেন। আপনার ব্রাউজার অবদান রাখার চেষ্টা চালিয়ে যাবে
 যতক্ষণ না তারা যাচাই করে বা 90 দিন কেটে যায়।</translation>
 <translation id="853714875140407133">পর্যাপ্ত টোকেন নেই</translation>
@@ -182,7 +182,7 @@
 <translation id="222883304157347087">(এই ডিভাইসটি)</translation>
 <translation id="8193724030871339658">চেইনে অন্য ডিভাইস</translation>
 <translation id="279635009973773843">ডিভাইস লোড করা হচ্ছে...</translation>
-<translation id="2569646144216067185">শব্দ সংখ্যা: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">শব্দ সংখ্যা: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">ভুল শব্দ সংখ্যা</translation>
 <translation id="6779408765480516895">কিছু ভুল হয়েছে, এটি দেখে মনে হচ্ছে আপনার অনুরোধের সময় শেষ হয়েছে।</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -193,7 +193,7 @@
 <translation id="5817918615728894473">যুক্ত করুন</translation>
 <translation id="9154490620151093733">মুছে ফেলার অনুরোধ পাঠানো হয়েছে। শীঘ্রই ডিভাইসটি মুছে ফেলা হবে।</translation>
 <translation id="2004365171440701679">এই ডিভাইসটি অপসারণ করুন</translation>
-<translation id="1178128181015923849">আপনি কি ডিভাইস '<ph name="DEVICE_NAME">%1$s</ph>' মুছে ফেলতে চাওয়ার ব্যাপারে নিশ্চিত?</translation>
+<translation id="1178128181015923849">আপনি কি ডিভাইস '<ph name="DEVICE_NAME"/>' মুছে ফেলতে চাওয়ার ব্যাপারে নিশ্চিত?</translation>
 <translation id="7745082336226088126">আপনার সিঙ্ক কোড স্ক্যান করুন বা লিখুন</translation>
 <translation id="1602067095281698985">একটি নতুন sync শৃঙ্খল শুরু করুন</translation>
 <translation id="1475223680121592371">একটি মোবাইল ডিভাইস যোগ করুন</translation>
@@ -224,7 +224,7 @@
 <translation id="327726072512457161">সেটিংস থেকে প্রস্থান করুন</translation>
 <translation id="8050847734948770789">Brave রিওয়ার্ডস সক্ষম করুন</translation>
 <translation id="9187185473011056079">আমি এতে রয়েছি</translation>
-<translation id="2980493584149453310">Brave রিওয়ার্ডে থাকা গোপনীয়তা সংরক্ষণ বিজ্ঞাপনগুলি দেখার জন্য বেসিক অ্যাটেনশন টোকেন অর্জন করুন।</translation>
+<translation id="8185825081026121627">Brave রিওয়ার্ডে থাকা গোপনীয়তা সংরক্ষণ বিজ্ঞাপনগুলি দেখার জন্য বেসিক অ্যাটেনশন টোকেন অর্জন করুন।</translation>
 <translation id="5321518976657560663">রিসেট সংক্রান্ত ত্রুটি</translation>
 <translation id="4114170343590425996">Brave রিওয়ার্ড পুনরায় সেট করার সময় এখানে একটি ত্রুটি ঘটেছে। অনুগ্রহ করে Brave পুনরায় চালু করে আবার চেষ্টা করুন।</translation>
 <translation id="6393502589311632553">Brave ব্যবহার না করার সময় বিজ্ঞাপনগুলি প্রদর্শন করুন</translation>

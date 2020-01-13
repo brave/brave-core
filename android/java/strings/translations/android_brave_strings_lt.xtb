@@ -120,7 +120,7 @@ galite gauti žetonų</translation>
 <translation id="5567439033041178034">SUŽINOTI DAUGIAU</translation>
 <translation id="3780605330121608425">Jūsų piniginė</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Išmokos</translation>
 <translation id="1165667598801520610">Pridėti lėšų</translation>
 <translation id="8428213095426709021">Nustatymai</translation>
@@ -148,8 +148,8 @@ dar nebuvo...</translation>
 <translation id="7335371657242627509">Įtraukti į automatinį indėlį</translation>
 <translation id="5463954686005964104">Duoti arbatpinigių šiai svetainei kas mėnesį</translation>
 <translation id="7530570094705720669">Kuriama piniginė</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">Paaukojote <ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">Paaukojote <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Jūsų suplanuotas automatinio indėlio mėnesinis mokėjimas ir mėnesiniai arbatpinigiai nesumokėti, nes nepakako lėšų. Bandysime dar kartą po 30 dienų.</translation>
 <translation id="5306913077198665897">Apdorojant jūsų arbatpinigius iškilo problema, bandykite dar kartą.</translation>
 <translation id="2429828319207652823">Apdorojant jūsų indėlį iškilo problema.</translation>
@@ -164,11 +164,11 @@ dar nebuvo...</translation>
 <translation id="2323069945529668668">Oi!</translation>
 <translation id="7510166204621526816">„Brave Rewards“ serveris neatsako. Išspręsime tai kuo greičiau.</translation>
 <translation id="2626799779920242286">Bandykite dar kartą vėliau.</translation>
-<translation id="3068742524072211213">baigia galioti <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">baigia galioti <ph name="DATE"/></translation>
 <translation id="4292832015778676417">uždirbta iš reklamos</translation>
 <translation id="683765328936486920">per „YouTube“</translation>
 <translation id="8969049974285901797">per „Twitch“</translation>
-<translation id="3692362746128814480">Paskyrėte <ph name="BAT_VALUE">%1$s</ph> BAT kūrėjams, kurie dar neužsiregistravo, kad gautų aukas.
+<translation id="3692362746128814480">Paskyrėte <ph name="BAT_VALUE"/> BAT kūrėjams, kurie dar neužsiregistravo, kad gautų aukas.
 Jūsų naršyklė mėgins paaukoti, kol jie patvirtins,
 arba ne ilgiau nei 90 dienų.</translation>
 <translation id="853714875140407133">nepakanka žetonų</translation>
@@ -182,7 +182,7 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="222883304157347087">(šis įrenginys)</translation>
 <translation id="8193724030871339658">KITI GRANDINĖS ĮRENGINIAI</translation>
 <translation id="279635009973773843">ĮKELIAMI ĮRENGINIAI...</translation>
-<translation id="2569646144216067185">Žodžių skaičius: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Žodžių skaičius: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Klaidingas žodžių skaičius</translation>
 <translation id="6779408765480516895">Kažkas negerai, atrodo, kad jūsų užklausos skirtasis laikas baigėsi.</translation>
 <translation id="3149880132460839085">„Brave Sync“</translation>
@@ -193,7 +193,7 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="5817918615728894473">Susieti</translation>
 <translation id="9154490620151093733">Naikinimo prašymas išsiųstas. Įrenginys netrukus bus pašalintas.</translation>
 <translation id="2004365171440701679">Pašalinti šį įrenginį</translation>
-<translation id="1178128181015923849">Ar tikrai norite panaikinti įrenginį „<ph name="DEVICE_NAME">%1$s</ph>“?</translation>
+<translation id="1178128181015923849">Ar tikrai norite panaikinti įrenginį „<ph name="DEVICE_NAME"/>“?</translation>
 <translation id="7745082336226088126">Nuskaitykite arba įveskite sinchronizavimo kodą</translation>
 <translation id="1602067095281698985">Sudaryti naują sinchronizavimo grandinę</translation>
 <translation id="1475223680121592371">Pridėti mobilųjį įrenginį</translation>
@@ -224,7 +224,7 @@ arba ne ilgiau nei 90 dienų.</translation>
 <translation id="327726072512457161">Išeiti iš nuostatų</translation>
 <translation id="8050847734948770789">Aktyvinti „Brave Rewards“</translation>
 <translation id="9187185473011056079">Sutinku!</translation>
-<translation id="2980493584149453310">Gaukite „Basic Attention Token“ už privatumo nepažeidžiančių reklamų peržiūrą per „Brave Rewards“.</translation>
+<translation id="8185825081026121627">Gaukite „Basic Attention Token“ už privatumo nepažeidžiančių reklamų peržiūrą per „Brave Rewards“.</translation>
 <translation id="5321518976657560663">Nustatymo iš naujo klaida</translation>
 <translation id="4114170343590425996">Iš naujo nustatant „Brave Rewards“ įvyko klaida. Iš naujo paleiskite „Brave“ ir bandykite dar kartą.</translation>
 <translation id="6393502589311632553">Rodyti reklamą, kai „Brave“ nenaudojama</translation>

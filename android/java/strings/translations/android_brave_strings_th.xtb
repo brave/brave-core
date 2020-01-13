@@ -120,7 +120,7 @@
 <translation id="5567439033041178034">เรียนรู้เพิ่มเติม</translation>
 <translation id="3780605330121608425">กระเป๋าเงินของคุณ</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Grants</translation>
 <translation id="1165667598801520610">เพิ่มเงิน</translation>
 <translation id="8428213095426709021">การตั้งค่า</translation>
@@ -148,8 +148,8 @@
 <translation id="7335371657242627509">รวมไว้ในการบริจาคแบบอัตโนมัติ</translation>
 <translation id="5463954686005964104">เคล็ดลับประจำเดือนในเว็บไซต์นี้</translation>
 <translation id="7530570094705720669">การสร้างกระเป๋าสตางค์</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">คุณได้สนับสนุน <ph name="BAT_VALUE">%1$s</ph> BAT</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">คุณได้สนับสนุน <ph name="BAT_VALUE"/> BAT</translation>
 <translation id="7997676409547731821">คุณได้ตั้งการชำระเงินรายเดือนสำหรับฟีเจอร์สนับสนุนอัตโนมัติเอาไว้ และไม่สามารถให้ทิปรายเดือนได้สำเร็จเนื่องจากมียอดเงินไม่เพียงพอ เราจะลองใหม่อีกครั้งในอีก 30 วัน</translation>
 <translation id="5306913077198665897">มีปัญหาเกิดขึ้นขณะประมวลผลทิปของคุณ โปรดลองใหม่อีกครั้ง</translation>
 <translation id="2429828319207652823">มีปัญหาในการประมวลผลการบริจาคของคุณ</translation>
@@ -164,11 +164,11 @@
 <translation id="2323069945529668668">โอ๊ะโอ!</translation>
 <translation id="7510166204621526816">เซิร์ฟเวอร์ Brave Rewards ไม่ตอบสนอง เราจะทำการแก้ไขให้โดยเร็วที่สุด</translation>
 <translation id="2626799779920242286">โปรดลองใหม่ในภายหลัง</translation>
-<translation id="3068742524072211213">หมดอายุวันที่ <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">หมดอายุวันที่ <ph name="DATE"/></translation>
 <translation id="4292832015778676417">ได้รับจากโฆษณาแล้ว</translation>
 <translation id="683765328936486920">บน YouTube</translation>
 <translation id="8969049974285901797">บน Twitch</translation>
-<translation id="3692362746128814480">คุณได้กำหนด <ph name="BAT_VALUE">%1$s</ph> BAT ให้กับผู้สร้างที่ยังไม่ได้
+<translation id="3692362746128814480">คุณได้กำหนด <ph name="BAT_VALUE"/> BAT ให้กับผู้สร้างที่ยังไม่ได้
 ลงทะเบียนเพื่อรับการสนับสนุน เบราว์เซอร์ของคุณจะพยายามที่จะส่งการสนับสนุนให้ต่อไป
 จนกว่าผู้สร้างจะยืนยันตัวตน หรือจนเมื่อผ่านไปครบ 90 วัน</translation>
 <translation id="853714875140407133">โทเค็นไม่พอ</translation>
@@ -182,7 +182,7 @@
 <translation id="222883304157347087">(อุปกรณ์นี้)</translation>
 <translation id="8193724030871339658">อุปกรณ์อื่นๆ ในลูกโซ่</translation>
 <translation id="279635009973773843">กำลังโหลดอุปกรณ์...</translation>
-<translation id="2569646144216067185">จำนวนคำ: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">จำนวนคำ: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">จำนวนคำไม่ถูกต้อง</translation>
 <translation id="6779408765480516895">มีบางสิ่งผิดปกติ ดูเหมือนว่าคำขอของคุณหมดเวลาแล้ว</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -193,7 +193,7 @@
 <translation id="5817918615728894473">จับคู่</translation>
 <translation id="9154490620151093733">ส่งคำขอลบเรียบร้อยแล้ว อุปกรณ์จะถูกลบออกในไม่ช้า</translation>
 <translation id="2004365171440701679">ลบอุปกรณ์นี้</translation>
-<translation id="1178128181015923849">คุณแน่ใจหรือไม่ว่าต้องการลบอุปกรณ์ "<ph name="DEVICE_NAME">%1$s</ph>"?</translation>
+<translation id="1178128181015923849">คุณแน่ใจหรือไม่ว่าต้องการลบอุปกรณ์ "<ph name="DEVICE_NAME"/>"?</translation>
 <translation id="7745082336226088126">สแกนหรือใส่ซิงค์โค้ด</translation>
 <translation id="1602067095281698985">เริ่มกลุ่มการซิงค์ใหม่</translation>
 <translation id="1475223680121592371">เพิ่มอุปกรณ์มือถือ</translation>
@@ -224,7 +224,7 @@
 <translation id="327726072512457161">การตั้งค่าการออกจากโปรแกรม</translation>
 <translation id="8050847734948770789">เปิด Brave Rewards</translation>
 <translation id="9187185473011056079">ฉันเอาด้วย!</translation>
-<translation id="2980493584149453310">รับ Basic Attention Token เมื่อรับชมโฆษณาที่รักษาความเป็นส่วนตัวใน Brave Rewards</translation>
+<translation id="8185825081026121627">รับ Basic Attention Token เมื่อรับชมโฆษณาที่รักษาความเป็นส่วนตัวใน Brave Rewards</translation>
 <translation id="5321518976657560663">ข้อผิดพลาดในการรีเซ็ต</translation>
 <translation id="4114170343590425996">มีข้อผิดพลาดเกิดขึ้นขณะรีเซ็ต Brave Rewards โปรดเปิดใช้งาน Brave ใหม่แล้วลองอีกครั้ง</translation>
 <translation id="6393502589311632553">แสดงโฆษณาเมื่อไม่ได้ใช้งาน Brave</translation>

@@ -119,7 +119,7 @@ il nuovo Internet.</translation>
 <translation id="5567439033041178034">SCOPRI DI PIÙ</translation>
 <translation id="3780605330121608425">Il tuo portafoglio</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Contributi</translation>
 <translation id="1165667598801520610">Aggiungi fondi</translation>
 <translation id="8428213095426709021">Impostazioni</translation>
@@ -145,8 +145,8 @@ attività in questo mese...</translation>
 <translation id="7335371657242627509">Includi in Auto-contributo</translation>
 <translation id="5463954686005964104">Fai una donazione a questo sito ogni mese</translation>
 <translation id="7530570094705720669">Creazione del portafoglio</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">Hai contribuito con <ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">Hai contribuito con <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Il tuo pagamento mensile programmato per il contributo automatico e le mance mensili non hanno potuto essere completati a causa di fondi insufficienti. Proveremo di nuovo in 30 giorni.</translation>
 <translation id="5306913077198665897">C'è stato un problema nell'elaborazione della tua mancia, prova di nuovo.</translation>
 <translation id="2429828319207652823">Si è verificato un problema nell'elaborazione del tuo contributo.</translation>
@@ -161,11 +161,11 @@ attività in questo mese...</translation>
 <translation id="2323069945529668668">Uh oh!</translation>
 <translation id="7510166204621526816">Il server di Brave Rewards non risponde. Sistemeremo il problema il prima possibile.</translation>
 <translation id="2626799779920242286">Per favore, riprova più tardi.</translation>
-<translation id="3068742524072211213">scade il <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">scade il <ph name="DATE"/></translation>
 <translation id="4292832015778676417">guadagnati dagli annunci pubblicitari</translation>
 <translation id="683765328936486920">su YouTube</translation>
 <translation id="8969049974285901797">su Twitch</translation>
-<translation id="3692362746128814480">Hai designato <ph name="BAT_VALUE">%1$s</ph> BAT per i creatori che non si sono 
+<translation id="3692362746128814480">Hai designato <ph name="BAT_VALUE"/> BAT per i creatori che non si sono 
 ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di contribuire fino a quando non avranno effettuato la verifica, o fino a quando non saranno trascorsi 90 giorni.</translation>
 <translation id="853714875140407133">token non sufficienti</translation>
 <translation id="6940273954212603510">per favore</translation>
@@ -178,7 +178,7 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="222883304157347087">(questo dispositivo)</translation>
 <translation id="8193724030871339658">ALTRI DISPOSITIVI SULLA CATENA</translation>
 <translation id="279635009973773843">CARICAMENTO DEI DISPOSITIVI...</translation>
-<translation id="2569646144216067185">Conteggio delle parole: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Conteggio delle parole: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Numero di parole errato</translation>
 <translation id="6779408765480516895">Qualcosa è andato storto, sembra che la tua richiesta sia scaduta.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -189,7 +189,7 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="5817918615728894473">Accoppia</translation>
 <translation id="9154490620151093733">La richiesta di cancellazione è stata inviata. Il dispositivo verrà rimosso a breve.</translation>
 <translation id="2004365171440701679">Rimuovi questo dispositivo</translation>
-<translation id="1178128181015923849">Sei sicuro di voler eliminare il dispositivo '<ph name="DEVICE_NAME">%1$s</ph>'?</translation>
+<translation id="1178128181015923849">Sei sicuro di voler eliminare il dispositivo '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Scansiona o inserisci il codice di sincronizzazione</translation>
 <translation id="1602067095281698985">Inizia una nuova catena di sincronizzazione</translation>
 <translation id="1475223680121592371">Aggiungi un dispositivo mobile</translation>
@@ -220,7 +220,7 @@ ancora iscritti per ricevere contributi. Il tuo browser continuerà a cercare di
 <translation id="327726072512457161">Esci dalle impostazioni</translation>
 <translation id="8050847734948770789">Attiva Ricompense Brave</translation>
 <translation id="9187185473011056079">Ci sto!</translation>
-<translation id="2980493584149453310">Guadagna il gettone di attenzione di base per visualizzare annunci che rispettano la privacy in Ricompense di Brave.</translation>
+<translation id="8185825081026121627">Guadagna il gettone di attenzione di base per visualizzare annunci che rispettano la privacy in Ricompense di Brave.</translation>
 <translation id="5321518976657560663">Errore di ripristino</translation>
 <translation id="4114170343590425996">C'è stato un errore di reimpostazione delle ricompense di Brave. Rilancia Brave e riprova.</translation>
 <translation id="6393502589311632553">Mostra annunci quando Brave non è in uso</translation>

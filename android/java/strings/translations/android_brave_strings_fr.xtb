@@ -120,7 +120,7 @@ respectueuses de la vie privée.</translation>
 <translation id="5567439033041178034">EN SAVOIR PLUS</translation>
 <translation id="3780605330121608425">Votre porte-monnaie</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Subventions</translation>
 <translation id="1165667598801520610">Ajouter des Fonds</translation>
 <translation id="8428213095426709021">Paramètres</translation>
@@ -146,8 +146,8 @@ mois-ci...</translation>
 <translation id="7335371657242627509">Inclure à la Contribution Automatique</translation>
 <translation id="5463954686005964104">Subventionner ce site chaque mois</translation>
 <translation id="7530570094705720669">Création du porte-monnaie</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">Vous avez apporté une contribution de <ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">Vous avez apporté une contribution de <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Votre paiement mensuel prévu pour la contribution automatique et les pourboires mensuels n'a pu être effectué en raison d'une insuffisance de fonds. On réessaiera dans 30 jours.</translation>
 <translation id="5306913077198665897">Il y a eu un problème lors du traitement de votre pourboire, veuillez réessayer.</translation>
 <translation id="2429828319207652823">Un problème s'est produit lors du traitement de votre contribution.</translation>
@@ -162,11 +162,11 @@ mois-ci...</translation>
 <translation id="2323069945529668668">Ouh là !</translation>
 <translation id="7510166204621526816">Le serveur des Récompenses Brave ne répond pas. On va régler ça le plus vite possible.</translation>
 <translation id="2626799779920242286">Veuillez réessayer plus tard.</translation>
-<translation id="3068742524072211213">expire le <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">expire le <ph name="DATE"/></translation>
 <translation id="4292832015778676417">gagné grâce à la publicité</translation>
 <translation id="683765328936486920">sur YouTube</translation>
 <translation id="8969049974285901797">sur Twitch</translation>
-<translation id="3692362746128814480">Vous avez assigné <ph name="BAT_VALUE">%1$s</ph> BAT aux créateurs qui ne se sont pas encore inscrits pour recevoir des contributions. Votre navigateur continuera d'essayer de contribuer jusqu'à ce qu'ils vérifient, ou jusqu'à ce que 90 jours se soient écoulés.</translation>
+<translation id="3692362746128814480">Vous avez assigné <ph name="BAT_VALUE"/> BAT aux créateurs qui ne se sont pas encore inscrits pour recevoir des contributions. Votre navigateur continuera d'essayer de contribuer jusqu'à ce qu'ils vérifient, ou jusqu'à ce que 90 jours se soient écoulés.</translation>
 <translation id="853714875140407133">pas assez de jetons</translation>
 <translation id="6940273954212603510">s'il vous plaît</translation>
 <translation id="1036277985068412734">ajouter des fonds</translation>
@@ -178,7 +178,7 @@ mois-ci...</translation>
 <translation id="222883304157347087">(cet appareil)</translation>
 <translation id="8193724030871339658">AUTRES PÉRIPHÉRIQUES SUR LA CHAÎNE</translation>
 <translation id="279635009973773843">CHARGEMENT DES APPAREILS...</translation>
-<translation id="2569646144216067185">Nombre de mots : <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Nombre de mots : <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Nombre de mots incorrect</translation>
 <translation id="6779408765480516895">Quelque chose s'est mal passé, on dirait que votre demande a expiré.</translation>
 <translation id="3149880132460839085">Synchronisation Brave</translation>
@@ -189,7 +189,7 @@ mois-ci...</translation>
 <translation id="5817918615728894473">Associer</translation>
 <translation id="9154490620151093733">La demande de suppression a été envoyée. L'appareil sera retiré sous peu.</translation>
 <translation id="2004365171440701679">Supprimer cet appareil</translation>
-<translation id="1178128181015923849">Êtes-vous sûr de vouloir supprimer l'appareil '<ph name="DEVICE_NAME">%1$s</ph>' ?</translation>
+<translation id="1178128181015923849">Êtes-vous sûr de vouloir supprimer l'appareil '<ph name="DEVICE_NAME"/>' ?</translation>
 <translation id="7745082336226088126">Scannez ou saisissez le code de synchro</translation>
 <translation id="1602067095281698985">Commencer une nouvelle chaîne de synchronisation</translation>
 <translation id="1475223680121592371">Ajouter un appareil mobile</translation>
@@ -220,7 +220,7 @@ mois-ci...</translation>
 <translation id="327726072512457161">Quitter les réglages</translation>
 <translation id="8050847734948770789">Activer les Récompenses Brave</translation>
 <translation id="9187185473011056079">Je participe !</translation>
-<translation id="2980493584149453310">Obtenez un jeton d'attention de base pour avoir visionné des publicités préservant la confidentialité dans Brave Rewards.</translation>
+<translation id="8185825081026121627">Obtenez un jeton d'attention de base pour avoir visionné des publicités préservant la confidentialité dans Brave Rewards.</translation>
 <translation id="5321518976657560663">Erreur de réinitialisation</translation>
 <translation id="4114170343590425996">Il y a eu une erreur de réinitialisation de Brave Rewards. Relancez Brave et réessayez.</translation>
 <translation id="6393502589311632553">Montrer les publicités lorsque Brave n'est pas utilisé</translation>

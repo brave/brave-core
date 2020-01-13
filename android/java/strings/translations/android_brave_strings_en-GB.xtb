@@ -120,7 +120,7 @@ watching privacy-respecting ads.</translation>
 <translation id="5567439033041178034">LEARN MORE</translation>
 <translation id="3780605330121608425">Your wallet</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Grants</translation>
 <translation id="1165667598801520610">Add Funds</translation>
 <translation id="8428213095426709021">Settings</translation>
@@ -148,8 +148,8 @@ month ...</translation>
 <translation id="7335371657242627509">Include in Auto-Contribute</translation>
 <translation id="5463954686005964104">Tip this site monthly</translation>
 <translation id="7530570094705720669">Creating wallet</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">You've contributed <ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">You've contributed <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Your scheduled monthly payment for Auto-Contribute and monthly tips could not be completed due to insufficient funds. We'll try again in 30 days.</translation>
 <translation id="5306913077198665897">There was a problem processing your tip, please try again.</translation>
 <translation id="2429828319207652823">There was a problem processing your contribution.</translation>
@@ -164,11 +164,11 @@ month ...</translation>
 <translation id="2323069945529668668">Uh oh!</translation>
 <translation id="7510166204621526816">The Brave Rewards server is not responding. We will fix this as soon as possible.</translation>
 <translation id="2626799779920242286">Please try again later.</translation>
-<translation id="3068742524072211213">expires on <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">expires on <ph name="DATE"/></translation>
 <translation id="4292832015778676417">earned from ads</translation>
 <translation id="683765328936486920">on YouTube</translation>
 <translation id="8969049974285901797">on Twitch</translation>
-<translation id="3692362746128814480">You've designated <ph name="BAT_VALUE">%1$s</ph> BAT for creators who haven't
+<translation id="3692362746128814480">You've designated <ph name="BAT_VALUE"/> BAT for creators who haven't
 yet signed up to receive contributions. Your browser will keep trying to contribute
 until they verify, or until 90 days have passed.</translation>
 <translation id="853714875140407133">not enough tokens</translation>
@@ -182,7 +182,7 @@ until they verify, or until 90 days have passed.</translation>
 <translation id="222883304157347087">(this device)</translation>
 <translation id="8193724030871339658">OTHER DEVICES ON CHAIN</translation>
 <translation id="279635009973773843">LOADING DEVICES ...</translation>
-<translation id="2569646144216067185">Word count: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Word count: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Incorrect number of words</translation>
 <translation id="6779408765480516895">Something went wrong, looks like your request timed out.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -193,7 +193,7 @@ until they verify, or until 90 days have passed.</translation>
 <translation id="5817918615728894473">Pair</translation>
 <translation id="9154490620151093733">Delete request has been sent. Device will be removed shortly.</translation>
 <translation id="2004365171440701679">Remove this device</translation>
-<translation id="1178128181015923849">Are you sure you want to delete device '<ph name="DEVICE_NAME">%1$s</ph>'?</translation>
+<translation id="1178128181015923849">Are you sure you want to delete device '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Scan or enter sync code</translation>
 <translation id="1602067095281698985">Start a new sync chain</translation>
 <translation id="1475223680121592371">Add a mobile device</translation>
@@ -224,7 +224,7 @@ until they verify, or until 90 days have passed.</translation>
 <translation id="327726072512457161">Settings exit</translation>
 <translation id="8050847734948770789">Enable Brave Rewards</translation>
 <translation id="9187185473011056079">I'm in!</translation>
-<translation id="2980493584149453310">Earn Basic Attention Token for viewing privacy preserving ads in Brave Rewards.</translation>
+<translation id="8185825081026121627">Earn Basic Attention Token for viewing privacy preserving ads in Brave Rewards.</translation>
 <translation id="5321518976657560663">Reset error</translation>
 <translation id="4114170343590425996">There was an error resetting Brave Rewards. Please relaunch Brave and try again.</translation>
 <translation id="6393502589311632553">Show ads when Brave is not in use</translation>
