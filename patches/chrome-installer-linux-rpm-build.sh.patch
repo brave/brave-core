@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/rpm/build.sh b/chrome/installer/linux/rpm/build.sh
-index 0bcd8689d45850ad539f99423fa211785db4f343..cec0813f491a570fb499e7de5adb9d13e950e7e4 100755
+index 0bcd8689d45850ad539f99423fa211785db4f343..176a8a3edef6825d38664d22a1b50f0ccdd59b7e 100755
 --- a/chrome/installer/linux/rpm/build.sh
 +++ b/chrome/installer/linux/rpm/build.sh
 @@ -15,8 +15,9 @@ gen_spec() {
@@ -26,8 +26,11 @@ index 0bcd8689d45850ad539f99423fa211785db4f343..cec0813f491a570fb499e7de5adb9d13
    gen_spec
  
    # Create temporary rpmbuild dirs.
-@@ -108,7 +115,10 @@ do_package() {
+@@ -106,9 +113,13 @@ do_package() {
+   log_cmd fakeroot rpmbuild -bb --target="$ARCHITECTURE" --rmspec \
+     --define "_topdir $RPMBUILD_DIR" \
      --define "${COMPRESSION_OPT}" \
++    --define "_buildhost brave-build" \
      --define "__os_install_post  %{nil}" \
      "${SPEC}"
 -  PKGNAME="${PACKAGE}-${CHANNEL}-${VERSION}-${PACKAGE_RELEASE}"
@@ -38,7 +41,7 @@ index 0bcd8689d45850ad539f99423fa211785db4f343..cec0813f491a570fb499e7de5adb9d13
    mv "$RPMBUILD_DIR/RPMS/$ARCHITECTURE/${PKGNAME}.${ARCHITECTURE}.rpm" \
       "${OUTPUTDIR}"
    # Make sure the package is world-readable, otherwise it causes problems when
-@@ -145,7 +155,10 @@ verify_channel() {
+@@ -145,7 +156,10 @@ verify_channel() {
        CHANNEL=stable
        ;;
      unstable|dev|alpha )
