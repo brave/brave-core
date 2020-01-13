@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import org.chromium.chrome.browser.preferences.BravePreferenceKeys;
 import static org.chromium.chrome.browser.settings.MainPreferences.PREF_UI_THEME;
 
 import android.content.SharedPreferences;
@@ -18,7 +19,7 @@ import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.NightModeUtils;
-import org.chromium.chrome.browser.preferences.ChromePreferenceManager;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.settings.ChromeSwitchPreference;
 import org.chromium.chrome.browser.flags.FeatureUtilities;
 import org.chromium.ui.base.DeviceFormFactor;
@@ -35,7 +36,7 @@ public class AppearancePreferences
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(
                 ContextUtils.getApplicationContext());
         if (isTablet) {
-            removePreferenceIfPresent(ChromePreferenceManager.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
+            removePreferenceIfPresent(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
         }
 
         if (!NightModeUtils.isNightModeSupported() || !FeatureUtilities.isNightModeAvailable()) {
@@ -60,7 +61,7 @@ public class AppearancePreferences
         super.onActivityCreated(savedInstanceState);
 
         Preference enableBottomToolbar =
-                findPreference(ChromePreferenceManager.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
+                findPreference(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
         if (enableBottomToolbar == null) return;
 
         enableBottomToolbar.setOnPreferenceChangeListener(this);
@@ -83,11 +84,11 @@ public class AppearancePreferences
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         String key = preference.getKey();
-        if (ChromePreferenceManager.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY.equals(key)) {
+        if (BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY.equals(key)) {
             SharedPreferences prefs = ContextUtils.getAppSharedPreferences();
             Boolean originalStatus = FeatureUtilities.isBottomToolbarEnabled();
             prefs.edit()
-                    .putBoolean(ChromePreferenceManager.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
+                    .putBoolean(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
                             !originalStatus)
                     .apply();
             BraveRelaunchUtils.askForRelaunch(getActivity());
