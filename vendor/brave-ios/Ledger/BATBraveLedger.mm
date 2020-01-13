@@ -90,6 +90,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 @property (nonatomic, copy) NSString *storagePath;
 @property (nonatomic) BATWalletProperties *walletInfo;
 @property (nonatomic) BATBalance *balance;
+@property (nonatomic) NSMutableDictionary<BATExternalWalletType, BATExternalWallet *> *mExternalWallets;
 @property (nonatomic) dispatch_queue_t fileWriteThread;
 @property (nonatomic) NSMutableDictionary<NSString *, NSString *> *state;
 @property (nonatomic) BATCommonOperations *commonOps;
@@ -124,6 +125,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
     self.fileWriteThread = dispatch_queue_create("com.rewards.file-write", DISPATCH_QUEUE_SERIAL);
     self.mPendingPromotions = [[NSMutableArray alloc] init];
     self.mFinishedPromotions = [[NSMutableArray alloc] init];
+    self.mExternalWallets = [[NSMutableDictionary alloc] init];
     self.observers = [NSHashTable weakObjectsHashTable];
 
     self.prefs = [[NSMutableDictionary alloc] initWithContentsOfFile:[self prefsPath]];
@@ -365,12 +367,18 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 #pragma mark - User Wallets
 
-- (void)externalWalletForType:(BATExternalWalletType)walletType
-                   completion:(void (^)(BATExternalWallet * _Nullable wallet))completion
+- (NSDictionary<BATExternalWalletType, BATExternalWallet *> *)externalWallets
+{
+  return [self.mExternalWallets copy];
+}
+
+- (void)fetchExternalWalletForType:(BATExternalWalletType)walletType
+                        completion:(void (^)(BATExternalWallet * _Nullable wallet))completion
 {
   ledger->GetExternalWallet(walletType.UTF8String, ^(ledger::Result result, ledger::ExternalWalletPtr walletPtr) {
     if (result == ledger::Result::LEDGER_OK && walletPtr.get() != nullptr) {
       const auto bridgedWallet = [[BATExternalWallet alloc] initWithExternalWallet:*walletPtr];
+      self.mExternalWallets[walletType] = bridgedWallet;
       completion(bridgedWallet);
     } else {
       completion(nil);
