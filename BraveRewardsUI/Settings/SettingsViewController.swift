@@ -44,15 +44,11 @@ class SettingsViewController: UIViewController {
     
     settingsView.do {
       $0.rewardsToggleSection.toggleSwitch.addTarget(self, action: #selector(rewardsSwitchValueChanged), for: .valueChanged)
-      $0.walletSection.viewDetailsButton.addTarget(self, action: #selector(tappedWalletViewDetails), for: .touchUpInside)
       $0.adsSection.viewDetailsButton.addTarget(self, action: #selector(tappedAdsViewDetails), for: .touchUpInside)
       $0.adsSection.toggleSwitch.addTarget(self, action: #selector(adsToggleValueChanged), for: .valueChanged)
       $0.tipsSection.viewDetailsButton.addTarget(self, action: #selector(tappedTipsViewDetails), for: .touchUpInside)
       $0.autoContributeSection.viewDetailsButton.addTarget(self, action: #selector(tappedAutoContributeViewDetails), for: .touchUpInside)
       $0.autoContributeSection.toggleSwitch.addTarget(self, action: #selector(autoContributeToggleValueChanged), for: .valueChanged)
-      
-      let dollarString = state.ledger.dollarStringForBATAmount(state.ledger.balance?.total ?? 0) ?? ""
-      $0.walletSection.setWalletBalance(state.ledger.balanceString, crypto: Strings.WalletBalanceType, dollarValue: dollarString)
       
       if !BraveAds.isCurrentLocaleSupported() {
          $0.adsSection.status = .unsupportedRegion
@@ -118,12 +114,6 @@ class SettingsViewController: UIViewController {
     navigationController?.pushViewController(controller, animated: true)
   }
   
-  @objc private func tappedWalletViewDetails() {
-    let controller = WalletDetailsViewController(state: state)
-    controller.preferredContentSize = preferredContentSize
-    navigationController?.pushViewController(controller, animated: true)
-  }
-  
   @objc private func tappedTipsViewDetails() {
     let controller = TipsDetailViewController(state: state)
     controller.preferredContentSize = preferredContentSize
@@ -152,14 +142,6 @@ class SettingsViewController: UIViewController {
   }
   
   func setupLedgerObservers() {
-    ledgerObserver.fetchedBalance = { [weak self] in
-      guard let self = self else { return }
-      self.settingsView.walletSection.setWalletBalance(
-        self.state.ledger.balanceString,
-        crypto: Strings.WalletBalanceType,
-        dollarValue: self.state.ledger.usdBalanceString
-      )
-    }
     ledgerObserver.promotionsAdded = { [weak self] _ in
       self?.updateGrantsSection()
     }

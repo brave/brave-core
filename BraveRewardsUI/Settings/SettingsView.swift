@@ -8,7 +8,6 @@ extension SettingsViewController {
   class View: UIView {
     
     let rewardsToggleSection = SettingsRewardsSectionView()
-    let walletSection = SettingsWalletSectionView(buttonType: .viewDetails)
     let adsSection = SettingsAdSectionView()
     let autoContributeSection = SettingsAutoContributeSectionView()
     let tipsSection = SettingsTipsSectionView()
@@ -18,7 +17,7 @@ extension SettingsViewController {
         grantsSections.forEach { $0.removeFromSuperview() }
       }
       didSet {
-        if let index = stackView.arrangedSubviews.firstIndex(of: walletSection) {
+        if let index = stackView.arrangedSubviews.firstIndex(of: adsSection) {
           grantsSections.reversed().forEach {
             stackView.insertArrangedSubview($0, at: index)
           }
@@ -34,7 +33,6 @@ extension SettingsViewController {
       addSubview(scrollView)
       scrollView.addSubview(stackView)
       stackView.addArrangedSubview(rewardsToggleSection)
-      stackView.addArrangedSubview(walletSection)
       stackView.addArrangedSubview(adsSection)
       stackView.addArrangedSubview(autoContributeSection)
       stackView.addArrangedSubview(tipsSection)
