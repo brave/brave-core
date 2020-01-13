@@ -1323,6 +1323,38 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv12tov13_Promotion) {
   EXPECT_EQ(CountTableRows("promotion"), 1);
 }
 
+TEST_F(PublisherInfoDatabaseTest, Migrationv13tov14) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateMigrationDatabase(&temp_dir, &db_file, 13, 14);
+  EXPECT_TRUE(publisher_info_database_->Init());
+
+  ASSERT_EQ(publisher_info_database_->GetTableVersionNumber(), 14);
+
+  const std::string schema = publisher_info_database_->GetSchema();
+  EXPECT_EQ(schema, GetSchemaString(14));
+}
+
+TEST_F(PublisherInfoDatabaseTest, Migrationv13tov14_UnblindedToken) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateMigrationDatabase(&temp_dir, &db_file, 13, 14);
+  EXPECT_TRUE(publisher_info_database_->Init());
+  EXPECT_EQ(CountTableRows("unblinded_tokens"), 5);
+
+  ledger::UnblindedTokenList list =
+      publisher_info_database_->GetAllUnblindedTokens();
+  EXPECT_EQ(list.at(0)->value, 0.25);
+  EXPECT_EQ(list.at(1)->value, 0.25);
+  EXPECT_EQ(list.at(2)->value, 0.25);
+  EXPECT_EQ(list.at(3)->value, 0.25);
+  EXPECT_EQ(list.at(4)->value, 0.25);
+
+  ledger::PromotionPtr promotion = publisher_info_database_->GetPromotion(
+      "36baa4c3-f92d-4121-b6d9-db44cb273a02");
+  EXPECT_EQ(promotion->approximate_value, 1.25);
+}
+
 TEST_F(PublisherInfoDatabaseTest, DeleteActivityInfo) {
   base::ScopedTempDir temp_dir;
   base::FilePath db_file;

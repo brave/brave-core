@@ -193,6 +193,8 @@ class PublisherInfoDatabase {
 
   bool MigrateV12toV13();
 
+  bool MigrateV13toV14();
+
   bool Migrate(int version);
 
   sql::InitStatus EnsureCurrentVersion();
