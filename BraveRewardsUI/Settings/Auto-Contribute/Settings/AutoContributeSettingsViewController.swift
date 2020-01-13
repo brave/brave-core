@@ -165,7 +165,8 @@ extension AutoContributeSettingsViewController: UITableViewDelegate, UITableView
     case .monthlyPayment:
       cell.label.text = Strings.AutoContributeMonthlyPayment
       if let dollarAmount = ledger.dollarStringForBATAmount(ledger.contributionAmount) {
-        cell.accessoryLabel?.text = "\(ledger.contributionAmount) \(Strings.BAT) (\(dollarAmount))"
+        let amount = "\(ledger.contributionAmount) \(Strings.BAT) (\(dollarAmount))"
+        cell.accessoryLabel?.text = String(format: Strings.SettingsAutoContributeUpToValue, amount)
       }
     case .minimumLength:
       cell.label.text = Strings.AutoContributeMinimumLengthMessage
