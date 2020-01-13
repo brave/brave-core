@@ -37,11 +37,28 @@ final class UserWalletDetailsViewController: UIViewController {
     let view = self.view as! View // swiftlint:disable:this force_cast
     view.summaryView.nameLabel.text = wallet.userName
     view.summaryView.verifiedLabel.isHidden = wallet.status != .verified
+    view.summaryView.manageFundsStackView.isHidden = wallet.status != .verified
     view.summaryView.continueVerificationStackView.isHidden = wallet.status == .verified
     
     view.summaryView.upholdAccountButton.addTarget(self, action: #selector(tappedUpholdAccountButton), for: .touchUpInside)
     view.summaryView.completeVerificationButton.addTarget(self, action: #selector(tappedCompleteVerificationButton), for: .touchUpInside)
+    view.summaryView.addFundsButton.addTarget(self, action: #selector(tappedAddFundsButton), for: .touchUpInside)
+    view.summaryView.withdrawFundsButton.addTarget(self, action: #selector(tappedWithdrawFundsButton), for: .touchUpInside)
     view.disconnectFromRewardsButton.addTarget(self, action: #selector(tappedDisconnectButton), for: .touchUpInside)
+  }
+  
+  @objc private func tappedAddFundsButton() {
+    dismiss(animated: true) {
+      guard let url = URL(string: self.wallet.addUrl) else { return }
+      self.state.delegate?.loadNewTabWithURL(url)
+    }
+  }
+  
+  @objc private func tappedWithdrawFundsButton() {
+    dismiss(animated: true) {
+      guard let url = URL(string: self.wallet.withdrawUrl) else { return }
+      self.state.delegate?.loadNewTabWithURL(url)
+    }
   }
   
   @objc private func tappedUpholdAccountButton() {
@@ -140,6 +157,17 @@ private class UserWalletSummarySectionView: SettingsSectionView {
     )
   }
   
+  lazy var manageFundsStackView = UIStackView().then {
+    $0.axis = .vertical
+    $0.isHidden = true
+    $0.addStackViewItems(
+      .view(self.addFundsButton),
+      .view(SeparatorView()),
+      .view(self.withdrawFundsButton),
+      .view(SeparatorView())
+    )
+  }
+  
   let verifiedLabel = UILabel().then {
     $0.text = Strings.UserWalletDetailsVerified
     $0.font = .systemFont(ofSize: 15.0)
@@ -155,6 +183,14 @@ private class UserWalletSummarySectionView: SettingsSectionView {
   
   let completeVerificationButton = UserWalletButton(type: .system).then {
     $0.setTitle(Strings.UserWalletDetailsCompleteVerificationButtonTitle, for: .normal)
+  }
+  
+  let addFundsButton = UserWalletButton(type: .system).then {
+    $0.setTitle(Strings.AddFunds, for: .normal)
+  }
+  
+  let withdrawFundsButton = UserWalletButton(type: .system).then {
+    $0.setTitle(Strings.WithdrawFunds, for: .normal)
   }
   
   override init(frame: CGRect) {
@@ -181,6 +217,7 @@ private class UserWalletSummarySectionView: SettingsSectionView {
       .view(nameStackView),
       .view(SeparatorView()),
       .view(continueVerificationStackView),
+      .view(manageFundsStackView),
       .view(upholdAccountButton)
     )
     

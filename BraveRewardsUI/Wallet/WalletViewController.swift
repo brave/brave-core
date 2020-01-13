@@ -504,7 +504,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
       self.state.ledger.disconnectWallet(ofType: .uphold) { result in
         if result == .ledgerOk {
           // Disconnected
-          self.updateWalletHeader()
+          self.updateWalletHeader(forceUpdateUserWallet: true)
           self.navigationController?.popViewController(animated: true)
         }
       }
@@ -622,13 +622,13 @@ extension WalletViewController {
     }
   }
   
-  func updateWalletHeader() {
+  func updateWalletHeader(forceUpdateUserWallet: Bool = false) {
     walletView.headerView.setWalletBalance(
       state.ledger.balanceString,
       crypto: Strings.WalletBalanceType,
       dollarValue: state.ledger.usdBalanceString
     )
-    if userWallet == nil {
+    if userWallet == nil || forceUpdateUserWallet {
       // Hidden by default
       walletView.headerView.setUserWalletStatus(.hidden)
       if Preferences.Rewards.isUsingBAP.value != true {

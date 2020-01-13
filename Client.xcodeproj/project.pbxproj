@@ -216,10 +216,6 @@
 		271DECFA234CC7EF009DAC37 /* TipsTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC87234CC7EF009DAC37 /* TipsTableCell.swift */; };
 		271DECFB234CC7EF009DAC37 /* TipsSummaryTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC88234CC7EF009DAC37 /* TipsSummaryTableCell.swift */; };
 		271DECFC234CC7EF009DAC37 /* SettingsTipsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC89234CC7EF009DAC37 /* SettingsTipsSectionView.swift */; };
-		271DECFD234CC7EF009DAC37 /* WalletDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC8B234CC7EF009DAC37 /* WalletDetailsViewController.swift */; };
-		271DECFE234CC7EF009DAC37 /* WalletDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC8C234CC7EF009DAC37 /* WalletDetailsView.swift */; };
-		271DECFF234CC7EF009DAC37 /* WalletActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC8D234CC7EF009DAC37 /* WalletActivityView.swift */; };
-		271DED00234CC7EF009DAC37 /* WalletSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC8E234CC7EF009DAC37 /* WalletSummaryView.swift */; };
 		271DED01234CC7EF009DAC37 /* SettingsUX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC8F234CC7EF009DAC37 /* SettingsUX.swift */; };
 		271DED02234CC7EF009DAC37 /* AutoContributeSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC92234CC7EF009DAC37 /* AutoContributeSettingsViewController.swift */; };
 		271DED03234CC7EF009DAC37 /* AutoContributeDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DEC94234CC7EF009DAC37 /* AutoContributeDetailsViewController.swift */; };
@@ -1462,10 +1458,6 @@
 		271DEC87234CC7EF009DAC37 /* TipsTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipsTableCell.swift; sourceTree = "<group>"; };
 		271DEC88234CC7EF009DAC37 /* TipsSummaryTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TipsSummaryTableCell.swift; sourceTree = "<group>"; };
 		271DEC89234CC7EF009DAC37 /* SettingsTipsSectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTipsSectionView.swift; sourceTree = "<group>"; };
-		271DEC8B234CC7EF009DAC37 /* WalletDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletDetailsViewController.swift; sourceTree = "<group>"; };
-		271DEC8C234CC7EF009DAC37 /* WalletDetailsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletDetailsView.swift; sourceTree = "<group>"; };
-		271DEC8D234CC7EF009DAC37 /* WalletActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletActivityView.swift; sourceTree = "<group>"; };
-		271DEC8E234CC7EF009DAC37 /* WalletSummaryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletSummaryView.swift; sourceTree = "<group>"; };
 		271DEC8F234CC7EF009DAC37 /* SettingsUX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsUX.swift; sourceTree = "<group>"; };
 		271DEC92234CC7EF009DAC37 /* AutoContributeSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoContributeSettingsViewController.swift; sourceTree = "<group>"; };
 		271DEC94234CC7EF009DAC37 /* AutoContributeDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoContributeDetailsViewController.swift; sourceTree = "<group>"; };
@@ -3155,10 +3147,6 @@
 		271DEC8A234CC7EF009DAC37 /* Wallet */ = {
 			isa = PBXGroup;
 			children = (
-				271DEC8B234CC7EF009DAC37 /* WalletDetailsViewController.swift */,
-				271DEC8C234CC7EF009DAC37 /* WalletDetailsView.swift */,
-				271DEC8D234CC7EF009DAC37 /* WalletActivityView.swift */,
-				271DEC8E234CC7EF009DAC37 /* WalletSummaryView.swift */,
 				27353FF1235F4E7300E42EBB /* WalletDisclaimerView.swift */,
 			);
 			path = Wallet;
@@ -5640,7 +5628,6 @@
 				2713AF0923984C6B00E3ACAA /* VerifiedUserWalletButton.swift in Sources */,
 				271DECE3234CC7EF009DAC37 /* EmptyWalletSummaryView.swift in Sources */,
 				271DED0E234CC7EF009DAC37 /* TableHeaderRowView.swift in Sources */,
-				271DECFD234CC7EF009DAC37 /* WalletDetailsViewController.swift in Sources */,
 				271DECFA234CC7EF009DAC37 /* TipsTableCell.swift in Sources */,
 				271DECC6234CC7EF009DAC37 /* PublisherSummaryView.swift in Sources */,
 				271DECE5234CC7EF009DAC37 /* WalletActionNotificationView.swift in Sources */,
@@ -5650,7 +5637,6 @@
 				271DECD0234CC7EF009DAC37 /* AdSwipeButton.swift in Sources */,
 				271DECD4234CC7EF009DAC37 /* Strings.swift in Sources */,
 				271DECEF234CC7EF009DAC37 /* RewardsState.swift in Sources */,
-				271DECFF234CC7EF009DAC37 /* WalletActivityView.swift in Sources */,
 				271DED05234CC7EF009DAC37 /* SettingsAutoContributeSectionView.swift in Sources */,
 				2713AF052396EA8F00E3ACAA /* VerifyUserWalletViewController.swift in Sources */,
 				271DED04234CC7EF009DAC37 /* AutoContributeCell.swift in Sources */,
@@ -5713,7 +5699,6 @@
 				271DED19234CC7EF009DAC37 /* LoaderView.swift in Sources */,
 				271DED1B234CC7EF009DAC37 /* QRCode.swift in Sources */,
 				271DED11234CC7EF009DAC37 /* PopoverNavigationController.swift in Sources */,
-				271DECFE234CC7EF009DAC37 /* WalletDetailsView.swift in Sources */,
 				2718B26E2391BB8E00F378BF /* DisabledSettingGraphicView.swift in Sources */,
 				271DECFB234CC7EF009DAC37 /* TipsSummaryTableCell.swift in Sources */,
 				271DED1E234CC7EF009DAC37 /* GradientView.swift in Sources */,
@@ -5725,7 +5710,6 @@
 				271DED24234CC7EF009DAC37 /* ArrayExtensions.swift in Sources */,
 				271DECD7234CC7EF009DAC37 /* TippingViewController.swift in Sources */,
 				271DECF5234CC7EF009DAC37 /* SettingsGrantSectionView.swift in Sources */,
-				271DED00234CC7EF009DAC37 /* WalletSummaryView.swift in Sources */,
 				271DECE2234CC7EF009DAC37 /* WalletViewController.swift in Sources */,
 				271DED1F234CC7EF009DAC37 /* FaviconData.swift in Sources */,
 				271DECF4234CC7EF009DAC37 /* SettingsView.swift in Sources */,
