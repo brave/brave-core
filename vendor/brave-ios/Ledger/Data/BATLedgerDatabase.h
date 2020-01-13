@@ -25,27 +25,6 @@ typedef void (^BATLedgerDatabaseWriteCompletion)(BOOL success);
 
 // TO BE REMOVED:
 
-#pragma mark - Publisher Info
-
-/// Get bare bones publisher info based on a publisher ID
-+ (nullable BATPublisherInfo *)publisherInfoWithPublisherID:(NSString *)publisherID;
-
-/// Get the publisher that will be displayed on the main brave rewards panel
-+ (BATPublisherInfo *)panelPublisherWithFilter:(BATActivityInfoFilter *)filter;
-
-/// Insert or update publisher info in the database given a BATPublisherInfo object
-+ (void)insertOrUpdatePublisherInfo:(BATPublisherInfo *)info
-                         completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-/// Get a list of all excluded publishers
-+ (NSArray<BATPublisherInfo *> *)excludedPublishers;
-
-/// Restores all of the publishers to default excluded state
-+ (void)restoreExcludedPublishers:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-/// Get the number of publishers the user has excluded from Auto-Contribute
-+ (NSUInteger)excludedPublishersCount;
-
 #pragma mark - Contribution Info
 
 /// Insert or update contribution info into the database given all the information for a contribution
@@ -70,27 +49,6 @@ typedef void (^BATLedgerDatabaseWriteCompletion)(BOOL success);
 
 + (void)deleteQueueWithID:(int64_t)queueID
                completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-#pragma mark - Activity Info
-
-/// Insert or update activity info from a publisher
-+ (void)insertOrUpdateActivityInfoFromPublisher:(BATPublisherInfo *)info
-                                     completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-/// Insert or update a set of activity info based on a set of publishers
-+ (void)insertOrUpdateActivitiesInfoFromPublishers:(NSArray<BATPublisherInfo *> *)publishers
-                                        completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
-
-/// Get a list of publishers with activity info given some start, limit and
-/// filter
-+ (NSArray<BATPublisherInfo *> *)publishersWithActivityFromOffset:(uint32_t)start
-                                                            limit:(uint32_t)limit
-                                                           filter:(nullable BATActivityInfoFilter *)filter;
-
-/// Delete activity info for a publisher with a given ID and reconcile stamp
-+ (void)deleteActivityInfoWithPublisherID:(NSString *)publisherID
-                           reconcileStamp:(uint64_t)reconcileStamp
-                               completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
 
 #pragma mark - Media Publisher Info
 

@@ -548,9 +548,14 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 {
   auto cppFilter = filter ? filter.cppObjPtr : ledger::ActivityInfoFilter::New();
   if (filter.excluded == BATExcludeFilterFilterExcluded) {
-    completion([BATLedgerDatabase excludedPublishers]);
+    ledger->GetExcludedList(^(ledger::PublisherInfoList list) {
+      const auto publishers = NSArrayFromVector(&list, ^BATPublisherInfo *(const ledger::PublisherInfoPtr& info){
+        return [[BATPublisherInfo alloc] initWithPublisherInfo:*info];
+      });
+      completion(publishers);
+    });
   } else {
-    ledger->GetActivityInfoList(start, limit, std::move(cppFilter), ^(const ledger::PublisherInfoList& list, uint32_t nextRecord) {
+    ledger->GetActivityInfoList(start, limit, std::move(cppFilter), ^(ledger::PublisherInfoList list) {
       const auto publishers = NSArrayFromVector(&list, ^BATPublisherInfo *(const ledger::PublisherInfoPtr& info){
         return [[BATPublisherInfo alloc] initWithPublisherInfo:*info];
       });
@@ -630,12 +635,14 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   });
 }
 
-- (NSUInteger)numberOfExcludedPublishers
+- (void)numberOfExcludedPublishers:(void (^)(NSUInteger count))completion
 {
-  return [BATLedgerDatabase excludedPublishersCount];
+  ledger->GetExcludedList(^(ledger::PublisherInfoList list) {
+    completion(static_cast<NSUInteger>(list.size()));
+  });
 }
 
-- (void)publisherBannerForId:(NSString *)publisherId completion:(void (NS_NOESCAPE ^)(BATPublisherBanner * _Nullable banner))completion
+- (void)publisherBannerForId:(NSString *)publisherId completion:(void (^)(BATPublisherBanner * _Nullable banner))completion
 {
   ledger->GetPublisherBanner(std::string(publisherId.UTF8String), ^(ledger::PublisherBannerPtr banner) {
     auto bridgedBanner = banner.get() != nullptr ? [[BATPublisherBanner alloc] initWithPublisherBanner:*banner] : nil;
@@ -645,16 +652,6 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
     bridgedBanner.logo = [bridgedBanner.logo stringByReplacingOccurrencesOfString:imagePrefix withString:@""];
     completion(bridgedBanner);
   });
-}
-
-- (nullable BATPublisherInfo *)currentActivityInfoWithPublisherId:(NSString *)publisherId
-{
-  const auto stamp = ledger->GetReconcileStamp();
-  const auto filter = [[BATActivityInfoFilter alloc] init];
-  filter.id = publisherId;
-  filter.reconcileStamp = stamp;
-
-  return [[BATLedgerDatabase publishersWithActivityFromOffset:0 limit:1 filter:filter] firstObject];
 }
 
 - (void)refreshPublisherWithId:(NSString *)publisherId completion:(void (^)(BATPublisherStatus status))completion
@@ -670,9 +667,9 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 #pragma mark - Tips
 
-- (void)listRecurringTips:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion
+- (void)listRecurringTips:(void (^)(NSArray<BATPublisherInfo *> *))completion
 {
-  ledger->GetRecurringTips(^(const ledger::PublisherInfoList& list, uint32_t){
+  ledger->GetRecurringTips(^(ledger::PublisherInfoList list){
     const auto publishers = NSArrayFromVector(&list, ^BATPublisherInfo *(const ledger::PublisherInfoPtr& info){
       return [[BATPublisherInfo alloc] initWithPublisherInfo:*info];
     });
@@ -712,9 +709,9 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   });
 }
 
-- (void)listOneTimeTips:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion
+- (void)listOneTimeTips:(void (^)(NSArray<BATPublisherInfo *> *))completion
 {
-  ledger->GetOneTimeTips(^(const ledger::PublisherInfoList& list, uint32_t){
+  ledger->GetOneTimeTips(^(ledger::PublisherInfoList list){
     const auto publishers = NSArrayFromVector(&list, ^BATPublisherInfo *(const ledger::PublisherInfoPtr& info){
       return [[BATPublisherInfo alloc] initWithPublisherInfo:*info];
     });
@@ -1733,14 +1730,9 @@ BATLedgerBridge(BOOL,
 
 - (void)handlePublisherListing:(NSArray<BATPublisherInfo *> *)publishers start:(uint32_t)start limit:(uint32_t)limit callback:(ledger::PublisherInfoListCallback)callback
 {
-  uint32_t next_record = 0;
-  if (publishers.count == limit) {
-    next_record = start + limit + 1;
-  }
-
   callback(VectorFromNSArray(publishers, ^ledger::PublisherInfoPtr(BATPublisherInfo *info){
     return info.cppObjPtr;
-  }), next_record);
+  }));
 }
 
 - (void)getOneTimeTips:(ledger::PublisherInfoListCallback)callback
@@ -1808,7 +1800,7 @@ BATLedgerBridge(BOOL,
 
 - (void)publisherListNormalized:(ledger::PublisherInfoList)list
 {
-  const auto list_converted = NSArrayFromVector(&normalized_list, ^BATPublisherInfo *(const ledger::PublisherInfoPtr& info) {
+  const auto list_converted = NSArrayFromVector(&list, ^BATPublisherInfo *(const ledger::PublisherInfoPtr& info) {
     return [[BATPublisherInfo alloc] initWithPublisherInfo:*info];
   });
 
