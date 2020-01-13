@@ -104,13 +104,6 @@ private extension VerifyUserWalletViewController {
           $0.textAlignment = .center
           $0.numberOfLines = 0
         }),
-        .view(UILabel().then {
-          $0.text = Strings.UserWalletOnboardingSubtitle
-          $0.font = .systemFont(ofSize: 12)
-          $0.appearanceTextColor = .white
-          $0.textAlignment = .center
-          $0.numberOfLines = 0
-        }),
         .customSpace(38),
         .view(UILabel().then {
           $0.text = Strings.UserWalletOnboardingBenefitsTitle
