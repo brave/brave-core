@@ -22,8 +22,7 @@ open class UserAgent {
     
     // Currently our UA version numbers are hardcoded to match Firefoxes UA.
     // TODO: Make it dynamic(#838)
-    private static let appVersion = "14.0" // AppInfo.appVersion
-    private static let buildNumber = "12646" // AppInfo.buildNumber
+    private static let appVersion = "21.0" // AppInfo.appVersion
 
     /**
      * Use this if you know that a value must have been computed before your
@@ -33,15 +32,12 @@ open class UserAgent {
         let currentiOSVersion = UIDevice.current.systemVersion
         let lastiOSVersion = defaults.string(forKey: "LastDeviceSystemVersionNumber")
 
-        let currentFirefoxBuildNumber = buildNumber
         let currentFirefoxVersion = appVersion
         let lastFirefoxVersion = defaults.string(forKey: "LastFirefoxVersionNumber")
-        let lastFirefoxBuildNumber = defaults.string(forKey: "LastFirefoxBuildNumber")
         
         if let firefoxUA = defaults.string(forKey: "UserAgent") {
             if (!checkiOSVersion || (lastiOSVersion == currentiOSVersion))
-                && (!checkFirefoxVersion || (lastFirefoxVersion == currentFirefoxVersion)
-                && (!checkFirefoxBuildNumber || (lastFirefoxBuildNumber == currentFirefoxBuildNumber))) {
+                && (!checkFirefoxVersion || (lastFirefoxVersion == currentFirefoxVersion)) {
                 return firefoxUA
             }
         }
@@ -59,7 +55,6 @@ open class UserAgent {
         let currentiOSVersion = UIDevice.current.systemVersion
         defaults.set(currentiOSVersion, forKey: "LastDeviceSystemVersionNumber")
         defaults.set(appVersion, forKey: "LastFirefoxVersionNumber")
-        defaults.set(buildNumber, forKey: "LastFirefoxBuildNumber")
 
         let userAgent = UserAgentBuilder().build()
 
@@ -80,7 +75,7 @@ open class UserAgent {
         }
 
         let mutableUA = NSMutableString(string: userAgent)
-        mutableUA.insert("FxiOS/\(appVersion)b\(buildNumber) ", at: mobileRange.location)
+        mutableUA.insert("FxiOS/\(appVersion) ", at: mobileRange.location)
 
         let firefoxUA = "\(mutableUA) Safari/\(webKitVersion)"
 
