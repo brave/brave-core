@@ -44,6 +44,7 @@ import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettin
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.AppearancePreferences;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabObserver;
 import org.chromium.chrome.browser.tabmodel.TabSelectionType;
@@ -241,7 +242,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                   return;
               }
               mBraveShieldsMenuHandler.show(mBraveShieldsButton, currentTab.getUrl(),
-                  url.getHost(), currentTab.getId(), currentTab.getProfile());
+                  url.getHost(), currentTab.getId(), ((TabImpl)currentTab).getProfile());
           } catch (Exception e) {
               // Do nothing if url is invalid.
               // Just return w/o showing shields popup.
@@ -360,7 +361,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           assert false;
           return false;
       }
-      return BraveShieldsContentSettings.getShields(tab.getProfile(), tab.getUrl(),
+      return BraveShieldsContentSettings.getShields(((TabImpl)tab).getProfile(), tab.getUrl(),
           BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS);
   }
 

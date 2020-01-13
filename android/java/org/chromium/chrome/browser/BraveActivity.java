@@ -38,6 +38,7 @@ import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tabmodel.TabLaunchType;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
@@ -189,7 +190,7 @@ public abstract class BraveActivity extends ChromeActivity {
         bookmarkModel.finishLoadingBookmarkModel(() -> {
             // Gives up the bookmarking if the tab is being destroyed.
             BookmarkId newBookmarkId = new BookmarkId(bookmarkId, BookmarkType.NORMAL);
-            if (!tabToBookmark.isClosing() && tabToBookmark.isInitialized()) {
+            if (!((TabImpl)tabToBookmark).isClosing() && ((TabImpl)tabToBookmark).isInitialized()) {
                 if (null != mBraveSyncWorker && null != newBookmarkId) {
                     mBraveSyncWorker.CreateUpdateBookmark(bCreateBookmark, bookmarkModel.getBookmarkById(newBookmarkId));
                     bookmarkModel.destroy();
