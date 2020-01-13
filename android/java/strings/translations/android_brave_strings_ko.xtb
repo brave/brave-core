@@ -119,7 +119,7 @@
 <translation id="5567439033041178034">더 알아보기</translation>
 <translation id="3780605330121608425">귀하의 월렛</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">보조금</translation>
 <translation id="1165667598801520610">자금 추가</translation>
 <translation id="8428213095426709021">설정</translation>
@@ -147,8 +147,8 @@
 <translation id="7335371657242627509">자동 기부에 포함하기</translation>
 <translation id="5463954686005964104">이 사이트에 매월 팁 주기</translation>
 <translation id="7530570094705720669">월렛 생성 중</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607"><ph name="BAT_VALUE">%1$s</ph> BAT를 후원했습니다.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607"><ph name="BAT_VALUE"/> BAT를 후원했습니다.</translation>
 <translation id="7997676409547731821">예약된 자동 후원 및 월간 팁의 월간 결제가 잔액 부족으로 처리되지 못했습니다. 30일 뒤 다시 시도하겠습니다.</translation>
 <translation id="5306913077198665897">팁을 처리하는 중에 문제가 발생했습니다. 다시 시도해 주세요.</translation>
 <translation id="2429828319207652823">기부금 처리 중 문제가 생겼습니다.</translation>
@@ -163,11 +163,11 @@
 <translation id="2323069945529668668">이런!</translation>
 <translation id="7510166204621526816">Brave 보상 서버가 응답하지 않습니다. 가능한 한 신속히 이 문제를 해결하겠습니다.</translation>
 <translation id="2626799779920242286">나중에 다시 시도하세요.</translation>
-<translation id="3068742524072211213">만료일 <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">만료일 <ph name="DATE"/></translation>
 <translation id="4292832015778676417">광고로부터 수입</translation>
 <translation id="683765328936486920">YouTube에서 활동</translation>
 <translation id="8969049974285901797">Twitch에서 활동</translation>
-<translation id="3692362746128814480">아직 후원금 수령을 위한 등록을 하지 않은 크리에이터에게 <ph name="BAT_VALUE">%1$s</ph>를 지정했습니다. 브라우저는 크리에이터가 인증될 때까지 또는 90일이 경과할 때까지 계속해서 후원을 시도합니다.</translation>
+<translation id="3692362746128814480">아직 후원금 수령을 위한 등록을 하지 않은 크리에이터에게 <ph name="BAT_VALUE"/>를 지정했습니다. 브라우저는 크리에이터가 인증될 때까지 또는 90일이 경과할 때까지 계속해서 후원을 시도합니다.</translation>
 <translation id="853714875140407133">토큰이 부족합니다</translation>
 <translation id="6940273954212603510">부탁드려요</translation>
 <translation id="1036277985068412734">자금 추가히기</translation>
@@ -179,7 +179,7 @@
 <translation id="222883304157347087">(이 기기)</translation>
 <translation id="8193724030871339658">체인에 있는 다른 기기</translation>
 <translation id="279635009973773843">기기 불러오는 중...</translation>
-<translation id="2569646144216067185">글자 수: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">글자 수: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">글자 수가 올바르지 않습니다</translation>
 <translation id="6779408765480516895">문제가 발생했습니다. 요청 시간이 초과된 것 같습니다.</translation>
 <translation id="3149880132460839085">Brave 동기화</translation>
@@ -190,7 +190,7 @@
 <translation id="5817918615728894473">페어링</translation>
 <translation id="9154490620151093733">삭제 요청이 전송되었습니다. 기기가 곧 제거됩니다.</translation>
 <translation id="2004365171440701679">이 기기 제거</translation>
-<translation id="1178128181015923849">정말 '<ph name="DEVICE_NAME">%1$s</ph>' 장치를 삭제하시겠습니까?</translation>
+<translation id="1178128181015923849">정말 '<ph name="DEVICE_NAME"/>' 장치를 삭제하시겠습니까?</translation>
 <translation id="7745082336226088126">동기화 코드를 스캔하거나 입력하세요</translation>
 <translation id="1602067095281698985">새로운 동기화 체인 시작</translation>
 <translation id="1475223680121592371">모바일 기기에 추가</translation>
@@ -221,7 +221,7 @@
 <translation id="327726072512457161">설정 나가기</translation>
 <translation id="8050847734948770789">Brave 리워드 사용</translation>
 <translation id="9187185473011056079">좋아요!</translation>
-<translation id="2980493584149453310">Brave Rewards에서 개인 정보를 보호하는 광고를 시청하고 Basic Attention 토큰을 받으세요.</translation>
+<translation id="8185825081026121627">Brave Rewards에서 개인 정보를 보호하는 광고를 시청하고 Basic Attention 토큰을 받으세요.</translation>
 <translation id="5321518976657560663">오류 초기화</translation>
 <translation id="4114170343590425996">Brave Rewards 초기화 중 오류가 발생했습니다. Brave를 재실행하고 다시 시도하세요.</translation>
 <translation id="6393502589311632553">Brave를 사용하지 않을 때 광고 보이기</translation>

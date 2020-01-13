@@ -118,7 +118,7 @@
 <translation id="5567439033041178034">了解更多</translation>
 <translation id="3780605330121608425">您的錢包</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">授權</translation>
 <translation id="1165667598801520610">增加資金</translation>
 <translation id="8428213095426709021">設定</translation>
@@ -143,8 +143,8 @@
 <translation id="7335371657242627509">包含在自動捐獻中</translation>
 <translation id="5463954686005964104">每月給此網站小費</translation>
 <translation id="7530570094705720669">創造錢包</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph><ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">你已打賞<ph name="BAT_VALUE">%1$s</ph> BAT。</translation>
+<translation id="937392350501765664"><ph name="MONTH"/><ph name="YEAR"/></translation>
+<translation id="4781696154289395607">你已打賞<ph name="BAT_VALUE"/> BAT。</translation>
 <translation id="7997676409547731821">由於資金不足，我們無法處理原定安排的每月自動付款和每月打賞。我們會在 30 天後再嘗試。</translation>
 <translation id="5306913077198665897">處理打賞時出現問題，請重試。</translation>
 <translation id="2429828319207652823">處理您的捐贈時出現問題。</translation>
@@ -159,11 +159,11 @@
 <translation id="2323069945529668668">哦哦！</translation>
 <translation id="7510166204621526816">Brave Rewards 伺服器沒有回應。我們將會盡快修復。</translation>
 <translation id="2626799779920242286">請稍後再試。</translation>
-<translation id="3068742524072211213">到期日：<ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">到期日：<ph name="DATE"/></translation>
 <translation id="4292832015778676417">從廣告賺取</translation>
 <translation id="683765328936486920">YouTube 使用者</translation>
 <translation id="8969049974285901797">Twitch 使用者</translation>
-<translation id="3692362746128814480">你已打賞<ph name="BAT_VALUE">%1$s</ph> BAT 給尚未註冊接受打賞的內容創造者。你的瀏覽器將繼續嘗試打賞，直到他們完成認證為止，否則打賞將在  90 天後停止。</translation>
+<translation id="3692362746128814480">你已打賞<ph name="BAT_VALUE"/> BAT 給尚未註冊接受打賞的內容創造者。你的瀏覽器將繼續嘗試打賞，直到他們完成認證為止，否則打賞將在  90 天後停止。</translation>
 <translation id="853714875140407133">通證獎勵不足</translation>
 <translation id="6940273954212603510">請</translation>
 <translation id="1036277985068412734">增加資金</translation>
@@ -175,7 +175,7 @@
 <translation id="222883304157347087">（此裝置）</translation>
 <translation id="8193724030871339658">同步鏈上的其他裝置</translation>
 <translation id="279635009973773843">正在載入裝置……</translation>
-<translation id="2569646144216067185">字數：<ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">字數：<ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">字數不正確</translation>
 <translation id="6779408765480516895">發生錯誤，看來請求已超時。</translation>
 <translation id="3149880132460839085">Brave 同步</translation>
@@ -186,7 +186,7 @@
 <translation id="5817918615728894473">配對</translation>
 <translation id="9154490620151093733">成功發送刪除請求，裝置將很快被移除。</translation>
 <translation id="2004365171440701679">移除此裝置</translation>
-<translation id="1178128181015923849">確定要刪除裝置「<ph name="DEVICE_NAME">%1$s</ph>」？</translation>
+<translation id="1178128181015923849">確定要刪除裝置「<ph name="DEVICE_NAME"/>」？</translation>
 <translation id="7745082336226088126">掃描或輸入同步碼</translation>
 <translation id="1602067095281698985">開始全新同步鏈結</translation>
 <translation id="1475223680121592371">添加行動裝置</translation>
@@ -217,7 +217,7 @@
 <translation id="327726072512457161">設定退出</translation>
 <translation id="8050847734948770789">啟用 Brave Rewards</translation>
 <translation id="9187185473011056079">我想加入！</translation>
-<translation id="2980493584149453310">在 Brave 獎賞查看保護使用者隱私的廣告，賺取基本注意力通證 (BAT) 獎勵。</translation>
+<translation id="8185825081026121627">在 Brave 獎賞查看保護使用者隱私的廣告，賺取基本注意力通證 (BAT) 獎勵。</translation>
 <translation id="5321518976657560663">重設錯誤</translation>
 <translation id="4114170343590425996">重設 Brave 獎賞時發生問題，請重新啟動 Brave，然後再試。</translation>
 <translation id="6393502589311632553">在未有使用 Brave 時顯示廣告</translation>

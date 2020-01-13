@@ -118,7 +118,7 @@
 <translation id="5567439033041178034">ДІЗНАТИСЬ БІЛЬШЕ</translation>
 <translation id="3780605330121608425">Ваш гаманець</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Пожертвування</translation>
 <translation id="1165667598801520610">Додати кошти</translation>
 <translation id="8428213095426709021">Налаштування</translation>
@@ -143,8 +143,8 @@
 <translation id="7335371657242627509">Включити в автоматичний внесок</translation>
 <translation id="5463954686005964104">Давайте цьому сайту гроші щомісяця</translation>
 <translation id="7530570094705720669">Створюємо гаманець</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">Ви зробили свій внесок <ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">Ви зробили свій внесок <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Вашу заплановану оплату автоматичного внеску та щомісячні чайові не вдалось переказати через нестачу коштів. Ми спробуємо знову за 30 діб.</translation>
 <translation id="5306913077198665897">При обробці вашого переказу чайових виникла проблема. Будь ласка, спробуйте знову пізніше.</translation>
 <translation id="2429828319207652823">Під час обробки вашого внеску виникла проблема.</translation>
@@ -159,11 +159,11 @@
 <translation id="2323069945529668668">Йой!</translation>
 <translation id="7510166204621526816">Сервер Brave Rewards не відповідає. Ми полагодимо його так швидко, як зможемо.</translation>
 <translation id="2626799779920242286">Будь ласка, спробуйте знову пізніше.</translation>
-<translation id="3068742524072211213">спливає <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">спливає <ph name="DATE"/></translation>
 <translation id="4292832015778676417">зароблено за рекламні оголошення</translation>
 <translation id="683765328936486920">на YouTube</translation>
 <translation id="8969049974285901797">на Twitch</translation>
-<translation id="3692362746128814480">Ви виділили <ph name="BAT_VALUE">%1$s</ph> BAT творцям, що ще не зареєструвались для отримання внесків. Ваш веб-переглядач і далі намагатиметься переказати внесок, поки вони не підтвердять свою особу чи поки не спливе 90 діб.</translation>
+<translation id="3692362746128814480">Ви виділили <ph name="BAT_VALUE"/> BAT творцям, що ще не зареєструвались для отримання внесків. Ваш веб-переглядач і далі намагатиметься переказати внесок, поки вони не підтвердять свою особу чи поки не спливе 90 діб.</translation>
 <translation id="853714875140407133">недостатньо токенів</translation>
 <translation id="6940273954212603510">будь ласка</translation>
 <translation id="1036277985068412734">додати кошти</translation>
@@ -175,7 +175,7 @@
 <translation id="222883304157347087">(цей пристрій)</translation>
 <translation id="8193724030871339658">ІНШІ ПРИСТРОЇ В ЛАНЦЮЗІ</translation>
 <translation id="279635009973773843">ЗАВАНТАЖЕННЯ ПРИСТРОЇВ...</translation>
-<translation id="2569646144216067185">Кількість слів: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Кількість слів: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Невірна кількість слів</translation>
 <translation id="6779408765480516895">Щось пішло не так. Схоже, час вашого запиту сплив.</translation>
 <translation id="3149880132460839085">Синхронізація Brave</translation>
@@ -186,7 +186,7 @@
 <translation id="5817918615728894473">Підключити</translation>
 <translation id="9154490620151093733">Запит на видалення надіслано. Пристрій буде незабаром видалено.</translation>
 <translation id="2004365171440701679">Видалити цей пристрій</translation>
-<translation id="1178128181015923849">Ви певні, що хочете видалити пристрій '<ph name="DEVICE_NAME">%1$s</ph>'?</translation>
+<translation id="1178128181015923849">Ви певні, що хочете видалити пристрій '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Відскануйте чи введіть код синхронізації</translation>
 <translation id="1602067095281698985">Новий ланцюжок синхронізації</translation>
 <translation id="1475223680121592371">Додати мобільний пристрій</translation>
@@ -217,7 +217,7 @@
 <translation id="327726072512457161">Вихід з налаштувань</translation>
 <translation id="8050847734948770789">Увімкнути винагороди Brave</translation>
 <translation id="9187185473011056079">Ще б пак!</translation>
-<translation id="2980493584149453310">Заробляйте базовий токен уваги у нагородах Brave за перегляд реклами, що не порушує конфіденційність.</translation>
+<translation id="8185825081026121627">Заробляйте базовий токен уваги у нагородах Brave за перегляд реклами, що не порушує конфіденційність.</translation>
 <translation id="5321518976657560663">Помилка скидання</translation>
 <translation id="4114170343590425996">При скиданні нагород Brave виникла помилка. Будь ласка, перезапустіть Brave і спробуйте знову.</translation>
 <translation id="6393502589311632553">Показувати рекламу, коли Brave не використовується</translation>

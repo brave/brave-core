@@ -119,7 +119,7 @@ deneyimlemeye hazır olun.</translation>
 <translation id="5567439033041178034">DAHA FAZLA BİLGİ ALIN</translation>
 <translation id="3780605330121608425">Cüzdanınız</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Yardımlar</translation>
 <translation id="1165667598801520610">Sermaye Ekle</translation>
 <translation id="8428213095426709021">Ayarlar</translation>
@@ -145,8 +145,8 @@ yok...</translation>
 <translation id="7335371657242627509">Otomatik-Katkıya Dahil</translation>
 <translation id="5463954686005964104">Bu siteye aylık bahşiş verin</translation>
 <translation id="7530570094705720669">Cüzdan oluşturmak</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607"><ph name="BAT_VALUE">%1$s</ph> BAT katkıda bulundunuz.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607"><ph name="BAT_VALUE"/> BAT katkıda bulundunuz.</translation>
 <translation id="7997676409547731821">Otomatik Katkı ve aylık bahşişler için programlanan aylık ödemeniz, yetersiz kaynak nedeniyle tamamlanamadı. 30 gün içinde yeniden deneyeceğiz.</translation>
 <translation id="5306913077198665897">Bahşişiniz işlenirken bir sorun oluştu, lütfen yeniden deneyin.</translation>
 <translation id="2429828319207652823">Katkınızın işleme sokulması esnasında bir sorunla karşılaşıldı.</translation>
@@ -161,11 +161,11 @@ yok...</translation>
 <translation id="2323069945529668668">Uh oh!</translation>
 <translation id="7510166204621526816">Brave Rewards sunucusu yanıt vermiyor. Bunu mümkün olan en kısa sürede düzelteceğiz.</translation>
 <translation id="2626799779920242286">Lütfen daha sonra yeniden deneyin.</translation>
-<translation id="3068742524072211213"><ph name="DATE">%1$s</ph> tarihinde süresi doluyor</translation>
+<translation id="3068742524072211213"><ph name="DATE"/> tarihinde süresi doluyor</translation>
 <translation id="4292832015778676417">reklamlardan kazanıldı</translation>
 <translation id="683765328936486920">YouTube'da</translation>
 <translation id="8969049974285901797">Twitch'te</translation>
-<translation id="3692362746128814480">Katkılar almak üzere henüz kaydolmamış oluşturucular için <ph name="BAT_VALUE">%1$s</ph> BAT'i belirlediniz. Tarayıcınız onlar doğrulayana kadar veya 90 gün geçene kadar katkıda bulunmaya çalışmaya devam eder.</translation>
+<translation id="3692362746128814480">Katkılar almak üzere henüz kaydolmamış oluşturucular için <ph name="BAT_VALUE"/> BAT'i belirlediniz. Tarayıcınız onlar doğrulayana kadar veya 90 gün geçene kadar katkıda bulunmaya çalışmaya devam eder.</translation>
 <translation id="853714875140407133">yeterli andaç yok</translation>
 <translation id="6940273954212603510">lütfen</translation>
 <translation id="1036277985068412734">para ekle</translation>
@@ -177,7 +177,7 @@ yok...</translation>
 <translation id="222883304157347087">(bu cihaz)</translation>
 <translation id="8193724030871339658">ZİNCİRDEKİ DİĞER CİHAZLAR</translation>
 <translation id="279635009973773843">CİHAZLAR YÜKLENİYOR...</translation>
-<translation id="2569646144216067185">Sözcük sayısı: <ph name="WORD_COUNT">%1$d</ph> yok</translation>
+<translation id="2569646144216067185">Sözcük sayısı: <ph name="WORD_COUNT"/> yok</translation>
 <translation id="4282642752844565114">Yanlış sözcük sayısı</translation>
 <translation id="6779408765480516895">Bir şeyler ters gitti, görünüşe bakılırsa isteğiniz zaman aşımına uğradı.</translation>
 <translation id="3149880132460839085">Brave Senkronizasyonu</translation>
@@ -188,7 +188,7 @@ yok...</translation>
 <translation id="5817918615728894473">Eşle</translation>
 <translation id="9154490620151093733">Silme isteği gönderildi. Cihaz kısa süre içinde kaldırılacak.</translation>
 <translation id="2004365171440701679">Bu cihazı kaldır</translation>
-<translation id="1178128181015923849">'<ph name="DEVICE_NAME">%1$s</ph>' adlı cihazı silmek istediğinizden emin misiniz?</translation>
+<translation id="1178128181015923849">'<ph name="DEVICE_NAME"/>' adlı cihazı silmek istediğinizden emin misiniz?</translation>
 <translation id="7745082336226088126">Eşitleme kodunu tarayın veya girin</translation>
 <translation id="1602067095281698985">Yeni bir senkronizasyon zinciri başlat</translation>
 <translation id="1475223680121592371">Mobil Bir Cihaz Ekle</translation>
@@ -219,7 +219,7 @@ yok...</translation>
 <translation id="327726072512457161">Ayarlardan çıkış</translation>
 <translation id="8050847734948770789">Brave Ödülleri'ni Etkinleştir</translation>
 <translation id="9187185473011056079">Ben varım!</translation>
-<translation id="2980493584149453310">Brave Ödüllerinde gizlilik koruyan reklamları görüntüleyerek Temel İlgi Andacı kazanın.</translation>
+<translation id="8185825081026121627">Brave Ödüllerinde gizlilik koruyan reklamları görüntüleyerek Temel İlgi Andacı kazanın.</translation>
 <translation id="5321518976657560663">Sıfırlama Hatası</translation>
 <translation id="4114170343590425996">Brave Ödülleri sıfırlanırken bir hata oluştu. Lütfen Brave'i yeniden başlatın ve tekrar deneyin.</translation>
 <translation id="6393502589311632553">Brave kullanımda olmadığında reklamları göster</translation>

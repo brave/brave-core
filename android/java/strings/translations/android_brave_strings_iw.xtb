@@ -120,7 +120,7 @@
 <translation id="5567439033041178034">למד/י עוד</translation>
 <translation id="3780605330121608425">הארנק שלך</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph>דולר</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/>דולר</translation>
 <translation id="2104073734684466851">מענקים</translation>
 <translation id="1165667598801520610">הוספת כספים</translation>
 <translation id="8428213095426709021">הגדרות</translation>
@@ -146,8 +146,8 @@
 <translation id="7335371657242627509">כלול בתרומות העצמיות</translation>
 <translation id="5463954686005964104">תגמלו אתר זה מדי חודש</translation>
 <translation id="7530570094705720669">יצירת ארנק</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">תרמת <ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">תרמת <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">לא ניתן היה להשלים את התשלום החודשי המתוכנן שלך עבור Auto-Contribute ואת הטיפים החודשיים בגלל מחסור בכסף. אנו ננסה שוב בעוד 30 יום.</translation>
 <translation id="5306913077198665897">אירעה בעיה בעיבוד הטיפ שלך, נא לנסות שוב.</translation>
 <translation id="2429828319207652823">אירעה תקלה בעיבוד התרומה שלכם.</translation>
@@ -162,11 +162,11 @@
 <translation id="2323069945529668668">אוי לא!</translation>
 <translation id="7510166204621526816">שרת Brave Rewards אינו מגיב. אנו נתקן זאת בהקדם האפשרי.</translation>
 <translation id="2626799779920242286">נא לנסות שוב מאוחר יותר.</translation>
-<translation id="3068742524072211213">פג תוקף בתאריך <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">פג תוקף בתאריך <ph name="DATE"/></translation>
 <translation id="4292832015778676417">סכום שהתקבל מפרסומות</translation>
 <translation id="683765328936486920">ביוטיוב</translation>
 <translation id="8969049974285901797">ב-Twitch</translation>
-<translation id="3692362746128814480">ייעדת <ph name="BAT_VALUE">%1$s</ph> BAT עבור יוצרים שלא נרשמו עדיין לקבלת תרומות. הדפדפן שלך ימשיך לנסות ולתרום 
+<translation id="3692362746128814480">ייעדת <ph name="BAT_VALUE"/> BAT עבור יוצרים שלא נרשמו עדיין לקבלת תרומות. הדפדפן שלך ימשיך לנסות ולתרום 
 עד אשר הם יאומתו, או עד שיחלפו 90 יום.</translation>
 <translation id="853714875140407133">אין מפסיק אסימונים</translation>
 <translation id="6940273954212603510">אנא</translation>
@@ -179,7 +179,7 @@
 <translation id="222883304157347087">(מכשיר זה)</translation>
 <translation id="8193724030871339658">מכשירים אחרים ברשת</translation>
 <translation id="279635009973773843">טוען מכשירים...</translation>
-<translation id="2569646144216067185">ספירת מילים: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">ספירת מילים: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">מספר המילים שגוי</translation>
 <translation id="6779408765480516895">משהו השתבש, נראה כי תוקף בקשתך פג.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -190,7 +190,7 @@
 <translation id="5817918615728894473">התאם</translation>
 <translation id="9154490620151093733">בקשת המחיקה נשלחה. המכשיר יוסר בקרוב.</translation>
 <translation id="2004365171440701679">הסר מכשיר זה</translation>
-<translation id="1178128181015923849">הנך בטוח/ה שברצונך למחוק את מכשיר <ph name="DEVICE_NAME">%1$s</ph>'?</translation>
+<translation id="1178128181015923849">הנך בטוח/ה שברצונך למחוק את מכשיר '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">סרק/י או הזנ/י קוד סנכרון</translation>
 <translation id="1602067095281698985">התחילו שרשרת סנכרון חדשה</translation>
 <translation id="1475223680121592371">הוסף מכשיר נייד</translation>
@@ -221,7 +221,7 @@
 <translation id="327726072512457161">יציאה מהגדרות</translation>
 <translation id="8050847734948770789">הפעל תגמולי גלישה</translation>
 <translation id="9187185473011056079">אני בפנים!</translation>
-<translation id="2980493584149453310">הרווח/י טוקן קשב בסיסי עבור צפייה במודעות המשמרות פרטיות ב-Brave Rewards.</translation>
+<translation id="8185825081026121627">הרווח/י טוקן קשב בסיסי עבור צפייה במודעות המשמרות פרטיות ב-Brave Rewards.</translation>
 <translation id="5321518976657560663">איפוס שגיאה</translation>
 <translation id="4114170343590425996">אירעה שגיאה באיפוס Brave Reward.
 נא להפעיל מחדש את Brave ולנסות שוב.</translation>

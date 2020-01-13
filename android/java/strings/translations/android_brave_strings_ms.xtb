@@ -120,7 +120,7 @@ menonton iklan yang menghormati privasi.</translation>
 <translation id="5567439033041178034">KETAHUI LEBIH LANJUT</translation>
 <translation id="3780605330121608425">Dompet anda</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Pemberian</translation>
 <translation id="1165667598801520610">Tambah Dana</translation>
 <translation id="8428213095426709021">Tetapan</translation>
@@ -148,8 +148,8 @@ bulan ini...</translation>
 <translation id="7335371657242627509">Masukkan dalam Sumbangan Automatik</translation>
 <translation id="5463954686005964104">Tip laman ini secara bulanan</translation>
 <translation id="7530570094705720669">Mencipta dompet</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">Anda telah menyumbang <ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">Anda telah menyumbang <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Pembayaran bulanan anda yang dijadualkan untuk Sumbangan Automatik dan tip bulanan tidak dapat disempurnakan kerana dana tidak mencukupi. Kami akan cuba semula dalam masa 30 hari.</translation>
 <translation id="5306913077198665897">Terdapat masalah semasa hendak memproses tip anda, sila cuba semula.</translation>
 <translation id="2429828319207652823">Terdapat beberapa masalah memproses sumbangan anda.</translation>
@@ -164,11 +164,11 @@ bulan ini...</translation>
 <translation id="2323069945529668668">Oh oh!</translation>
 <translation id="7510166204621526816">Pelayar Ganjaran Brave tidak memberi respons. Kami akan baiki secepat mungkin.</translation>
 <translation id="2626799779920242286">Sila cuba semula nanti.</translation>
-<translation id="3068742524072211213">luput pada <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">luput pada <ph name="DATE"/></translation>
 <translation id="4292832015778676417">diperoleh daripada iklan</translation>
 <translation id="683765328936486920">di YouTube</translation>
 <translation id="8969049974285901797">di Twitch</translation>
-<translation id="3692362746128814480">Anda telah memperuntukkan <ph name="BAT_VALUE">%1$s</ph> BAT untuk pencipta yang belum
+<translation id="3692362746128814480">Anda telah memperuntukkan <ph name="BAT_VALUE"/> BAT untuk pencipta yang belum
 lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang hinggalah mereka mengesahkan akaun, atau hinggalah 90 hari telah berlalu.</translation>
 <translation id="853714875140407133">tidak cukup token</translation>
 <translation id="6940273954212603510">tolong</translation>
@@ -181,7 +181,7 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="222883304157347087">(peranti ini)</translation>
 <translation id="8193724030871339658">PERANTI LAIN DI RANTAIAN</translation>
 <translation id="279635009973773843">MEMUATKAN PERANTI...</translation>
-<translation id="2569646144216067185">Jumlah perkataan: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Jumlah perkataan: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Bilangan perkataan tidak betul</translation>
 <translation id="6779408765480516895">Sesuatu tidak kena berlaku, nampaknya permintaan anda telah tamat masa.</translation>
 <translation id="3149880132460839085">Segerak Brave</translation>
@@ -192,7 +192,7 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="5817918615728894473">Gandingkan</translation>
 <translation id="9154490620151093733">Permintaan pemadaman telah dihantar. Peranti akan dibuang sebentar lagi.</translation>
 <translation id="2004365171440701679">Buang peranti ini</translation>
-<translation id="1178128181015923849">Anda pasti anda ingin padamkan peranti '<ph name="DEVICE_NAME">%1$s</ph>'?</translation>
+<translation id="1178128181015923849">Anda pasti anda ingin padamkan peranti '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Imbas atau masukkan kod penyegerakan</translation>
 <translation id="1602067095281698985">Mulakan rantaian segerak baharu</translation>
 <translation id="1475223680121592371">Tambah Peranti Mudah Alih</translation>
@@ -223,7 +223,7 @@ lagi mendaftar untuk menerima sumbangan. Pelayar anda akan terus cuba menyumbang
 <translation id="327726072512457161">Keluar Tetapan</translation>
 <translation id="8050847734948770789">Aktifkan Brave Rewards</translation>
 <translation id="9187185473011056079">Saya ingin turut serta!</translation>
-<translation id="2980493584149453310">Dapatkan Token Perhatian Asas dengan melihat iklan yang menjaga privasi dalam Ganjaran Brave.</translation>
+<translation id="8185825081026121627">Dapatkan Token Perhatian Asas dengan melihat iklan yang menjaga privasi dalam Ganjaran Brave.</translation>
 <translation id="5321518976657560663">Set Semula Ralat</translation>
 <translation id="4114170343590425996">Terdapat ralat semasa mengeset semula Ganjaran Brave. Sila lancarkan semula Brave dan cuba semula.</translation>
 <translation id="6393502589311632553">Tunjukkan Iklan apabila Brave tidak digunakan</translation>

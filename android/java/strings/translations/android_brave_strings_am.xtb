@@ -120,7 +120,7 @@
 <translation id="5567439033041178034">ተጨማሪ መረጃ ያግኙ</translation>
 <translation id="3780605330121608425">ኪስዎ</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">ብድሮች</translation>
 <translation id="1165667598801520610">የማስታወቅያ ፈንድ</translation>
 <translation id="8428213095426709021">ቅንብሮች</translation>
@@ -148,8 +148,8 @@
 <translation id="7335371657242627509">ራስን አስተዋጽኦ ማድረግ መጨመር</translation>
 <translation id="5463954686005964104">ይህን ገፅ በወር ምክር ይስጡ</translation>
 <translation id="7530570094705720669">ቋት መፍጠር</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607"><ph name="BAT_VALUE">%1$s</ph> BAT አስተዋጽኦ አድርገዋል።</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607"><ph name="BAT_VALUE"/> BAT አስተዋጽኦ አድርገዋል።</translation>
 <translation id="7997676409547731821">በቂ ገንዘብ ባለመኖሩ ምክንያት የእርስዎ ወርሐዊ የክፍያ መርሃ ግብር ለራስ-አስተዋፅኦ እና ለወርሃዊ ምክሮች ወርሃዊ ክፍያዎ መጠናቀቅ አልቻለም። በ 30 ቀናት ውስጥ እንደገና እንሞክራለን።</translation>
 <translation id="5306913077198665897">ጠቃሚ ምክርዎን ለማስኬድ ችግር ነበር፣ እባከዎ እንደገና ይሞክሩ።</translation>
 <translation id="2429828319207652823">የእርስዎን አስተዋፅኦ በማካሄድ ላይ ችግር ነበር</translation>
@@ -164,11 +164,11 @@
 <translation id="2323069945529668668">ውይ!</translation>
 <translation id="7510166204621526816">የብሬቭ ሽልማት ሰርቨር እየሰራ አይደለም፡፡ ይህንን በተቻለን ፍጥነት እናስተካክላለን፡፡</translation>
 <translation id="2626799779920242286">እባክዎ ቆይተው እንደገና ይሞክሩ።</translation>
-<translation id="3068742524072211213">የሚያበቃበት ቀን <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">የሚያበቃበት ቀን <ph name="DATE"/></translation>
 <translation id="4292832015778676417">ከማስታወቂያዎች የተገኘ</translation>
 <translation id="683765328936486920">YouTube ላይ</translation>
 <translation id="8969049974285901797">Twitch ላይ</translation>
-<translation id="3692362746128814480"><ph name="BAT_VALUE">%1$s </ph> BAT የሚያክል መጠንን መዋጮ
+<translation id="3692362746128814480"><ph name="BAT_VALUE"/> BAT የሚያክል መጠንን መዋጮ
 ለመቀበል ላልተመዘገቡ ፈጣሪዎች ሰይመዋል። አሳሽዎ እነርሱ እስከሚያረጋግጡ ድረስ 
 ወይም 90 ቀናት እስከሚያልፍ ድረስ ለማዋጣት ይሞክራል።</translation>
 <translation id="853714875140407133">በቂ ቶክንስ የሉም</translation>
@@ -182,7 +182,7 @@
 <translation id="222883304157347087">(ይህ መሳሪያ)</translation>
 <translation id="8193724030871339658">በሰንሰለቱ ውስጥ ያሉ ሌሎች መሳሪያዎች</translation>
 <translation id="279635009973773843">መሳሪያዎችን በመጫን ላይ...</translation>
-<translation id="2569646144216067185">የቃላት ብዛት፡<ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">የቃላት ብዛት፡<ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">የተሳሳተ የቃላት ብዛት</translation>
 <translation id="6779408765480516895">የተሳሳተ ነገር አለ፣ የጥያቄዎት የጊዜ ገደብ ሳያልቅ አልቀረም።</translation>
 <translation id="3149880132460839085">የብሬቭ ማመሳሰል</translation>
@@ -193,7 +193,7 @@
 <translation id="5817918615728894473">አጣምር</translation>
 <translation id="9154490620151093733">የሰርዝ ጥያቄ ተልኳል። መሳሪያው በአጭር ጊዜ ውስጥ ይወገዳል።</translation>
 <translation id="2004365171440701679">ይህን መሳሪያ አስወግድ</translation>
-<translation id="1178128181015923849">'<ph name="DEVICE_NAME">%1$s</ph>' መሳሪያን ለመዘረዝ እንደሚፈልግ እርግጠኛ ነዎት?</translation>
+<translation id="1178128181015923849">'<ph name="DEVICE_NAME"/>' መሳሪያን ለመዘረዝ እንደሚፈልግ እርግጠኛ ነዎት?</translation>
 <translation id="7745082336226088126">የማመሳሰያ ኮድ ስካን ያድርጉ ወይም ያስገቡ</translation>
 <translation id="1602067095281698985">አዲስ የማመሳሰል ሰንሰለት ይጀምሩ</translation>
 <translation id="1475223680121592371">የሞባይል መሳሪያ አክል</translation>
@@ -224,7 +224,7 @@
 <translation id="327726072512457161">ከቅንብሮች መውጫ</translation>
 <translation id="8050847734948770789">የብሬቭ ሽልማት ያብሩ</translation>
 <translation id="9187185473011056079">ገብቻለሁ!</translation>
-<translation id="2980493584149453310">በ Brave ሽልማቶች ውስጥ ግላዊነትን የሚጠብቁ ማስታወቂያዎችን በማየትዎ የመሰረታዊ ትኩረት ቶክን ያግኙ።</translation>
+<translation id="8185825081026121627">በ Brave ሽልማቶች ውስጥ ግላዊነትን የሚጠብቁ ማስታወቂያዎችን በማየትዎ የመሰረታዊ ትኩረት ቶክን ያግኙ።</translation>
 <translation id="5321518976657560663">ስህተተን እንደገና ሙላ</translation>
 <translation id="4114170343590425996">የ Brave ሽልማቶች ሲዘጋጁ የተፈጠረ ስህተት አለ። እባክዎ Brave ን እንደገና በማስጀመር ደግመው ይሞክሩ።</translation>
 <translation id="6393502589311632553">Brave አገልግሎት በማይሰጥበት ጊዜ ማስታወቂያዎችን አሳይ</translation>

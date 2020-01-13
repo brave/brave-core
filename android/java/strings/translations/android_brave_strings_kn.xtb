@@ -17,7 +17,7 @@
 <translation id="6302422639282249274">ಬ್ರೇವ್‌ ರಿವಾರ್ಡ್‌ ನಿರ್ವಹಣೆ</translation>
 <translation id="1506061864768559482">ಹುಡುಕಾಟ ಎಂಜಿನ್</translation>
 <translation id="1468415711258933398">ಸ್ಟಾಂಡರ್ಡ್‌ ಟ್ಯಾಬ್‌</translation>
-<translation id="3377025655491224618">ಅದೃಶ್ಯ ಟ್ಯಾಬ್‌</translation>
+<translation id="3377025655491224618">ಖಾಸಗಿ ಟ್ಯಾಬ್‌</translation>
 <translation id="9148058034647219655">ನಿರ್ಗಮಿಸಿ</translation>
 <translation id="8710614491157212477">ಸಾಧ್ಯವಿದ್ದಾಗ HTTP ಬದಲಿಗೆ  HTTPS  ಬಳಸಿಕೊಂಡು ಬೆಂಬಲಿತ ಸೈಟ್‌ಗಳು ತೆರೆದುಕೊಳ್ಳುತ್ತವೆ</translation>
 <translation id="8387201461264842096">ಜಾಹೀರಾತು ನಿಷೇಧ</translation>
@@ -119,7 +119,7 @@
 <translation id="5567439033041178034">ಹೆಚ್ಚು ಕಲಿಯಿರಿ</translation>
 <translation id="3780605330121608425">ನಿಮ್ಮ ವಾಲೆಟ್</translation>
 <translation id="8845154268466251503">ಬಿಎಟಿ</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> ಅಮೆರಿಕನ್‌ ಡಾಲರ್‌</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> ಅಮೆರಿಕನ್‌ ಡಾಲರ್‌</translation>
 <translation id="2104073734684466851">ಅನುದಾನಗಳು</translation>
 <translation id="1165667598801520610">ಹಣ ಜಮೆಮಾಡಿ</translation>
 <translation id="8428213095426709021">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
@@ -129,15 +129,15 @@
 ಮತ್ತು ನೀವು ಇಷ್ಟಪಡುವ ಕಂಟೆಂಟ್‌ ಸೃಷ್ಟಿಕರ್ತರ ಬೆಂಬಲಕ್ಕೆ 
 ಪಾವತಿಸಿ.</translation>
 <translation id="5148719990624240755">ಬ್ರೇವ್‌ ರಿವಾರ್ಡ್‌ ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
-<translation id="8772672608371898774">Brave ಪರಿಶೀಲಿಸಿದ ಪ್ರಕಾಶಕರು</translation>
+<translation id="8772672608371898774">ಬ್ರೇವ್  ಪರಿಶೀಲಿಸಿದ ಪ್ರಕಾಶಕರು</translation>
 <translation id="1397683270551078781">ಇನ್ನೂ ಪರಿಶೀಲಿಸಿಲ್ಲ</translation>
 <translation id="5727208111992260840">ಬ್ರೇವ್ ಬಳಕೆದಾರರಿಂದ ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಈ ಕ್ರಿಯೇಟರ್‌ ಇನ್ನೂ ಸೈನ್ ಅಪ್ ಆಗಿಲ್ಲ.  
 ನೀವು ಕಳುಹಿಸುವ ಯಾವುದೇ ಉಡುಗೊರೆಗಳು ಅವರು ಪರಿಶೀಲಿಸುವವರೆಗೆ ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‌ನಲ್ಲಿಯೇ ಉಳಿಯುತ್ತವೆ.</translation>
 <translation id="8918760045046434238">ಒಂದು ಟಿಪ್‌ ಕಳುಹಿಸಿ</translation>
 <translation id="1978261665418056203">ಈ ತಿಂಗಳಲ್ಲಿ 
 ಯಾವುದೇ ಚಟುವಟಿಕೆಗಳಿಲ್ಲ</translation>
-<translation id="9182287025588539628">ಒಂದು ಬಾರಿಯ ಸಲಹೆಗಳು</translation>
-<translation id="7577100371127227294">ಮಾಸಿಕ ಸಲಹೆಗಳು</translation>
+<translation id="9182287025588539628">ಒಂದು ಬಾರಿಯ ಇನಾಮು</translation>
+<translation id="7577100371127227294">ಮಾಸಿಕ ಇನಾಮು</translation>
 <translation id="3074127054582480056">ಗಮನ</translation>
 <translation id="4914597931214386232">ಟೋಕನ್ ಅನುದಾನಗಳು ಕ್ಲೈಮ್ ಮಾಡಿರುವುದು</translation>
 <translation id="298067735430872465">ಜಾಹೀರಾತುಗಳಿಂದ ಸಂಪಾದನೆಗಳು</translation>
@@ -147,8 +147,8 @@
 <translation id="7335371657242627509">ಸ್ವಯಂ-ಕೊಡುಗೆಯಲ್ಲಿ ಸೇರಿ</translation>
 <translation id="5463954686005964104">ಈ ಸೈಟ್‌ಗೆ ಮಾಸಿಕವಾಗಿ ಟಿಪ್ ನೀಡಿ</translation>
 <translation id="7530570094705720669">ವಾಲೆಟ್ ರಚಿಸಲಾಗುತ್ತಿದೆ</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">ನೀವು ಕೊಡುಗೆ ನೀಡಿರುವಿರಿ ಅದು<ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">ನೀವು ಕೊಡುಗೆ ನೀಡಿರುವಿರಿ ಅದು<ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">ಸಾಕಷ್ಟು ಹಣವಿಲ್ಲದ ಕಾರಣ ಸ್ವಯಂ-ಕೊಡುಗೆ ಮತ್ತು ಮಾಸಿಕ ಉಡುಗೊರೆಗಳಿಗಾಗಿ ನಿಮ್ಮ ನಿಗದಿತ ಮಾಸಿಕ ಪಾವತಿಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಲಾಗಲಿಲ್ಲ. ನಾವು 30 ದಿನಗಳಲ್ಲಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸುತ್ತೇವೆ</translation>
 <translation id="5306913077198665897">ನಿಮ್ಮ ಉಡುಗೊರೆ ಸಕ್ರಿಯಗೊಳಿಸುವಲ್ಲಿ ಸಮಸ್ಯೆಯಿದೆ, ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="2429828319207652823">ನಿಮ್ಮ ಕೊಡುಗೆಯನ್ನು ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವಲ್ಲಿ ಸಮಸ್ಯೆ ಎದುರಾಗಿದೆ.</translation>
@@ -163,11 +163,11 @@
 <translation id="2323069945529668668">ಓಹೋ!</translation>
 <translation id="7510166204621526816">Brave Rewards ಸರ್ವರ್ ಪ್ರತಿಕ್ರಿಯೆ ನೀಡುತ್ತಿಲ್ಲ. ನಾವು ಈ ಸಮಸ್ಯೆಯನ್ನು ಆದಷ್ಟು ಬೇಗ ಸರಿಪಡಿಸುತ್ತೇವೆ.</translation>
 <translation id="2626799779920242286">ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ</translation>
-<translation id="3068742524072211213">ಮುಗಿಯುತ್ತಿದೆ <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">ಮುಗಿಯುತ್ತಿದೆ <ph name="DATE"/></translation>
 <translation id="4292832015778676417">ಜಾಹೀರಾತುಗಳಿಂದ ಗಳಿಸಲಾಗಿದೆ</translation>
 <translation id="683765328936486920">ಯೂಟ್ಯೂಬ್‌ನಲ್ಲಿ</translation>
 <translation id="8969049974285901797">ಟ್ವಿಚ್‌ ಮೇಲೆ</translation>
-<translation id="3692362746128814480">ನೀವು ಗೊತ್ತುಪಡಿಸಿದ <ph name="BAT_VALUE">%1$s</ph> ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಸೈನ್ ಅಪ್ ಮಾಡದ ಕ್ರಿಯೇಟರ್‌ಗೆ ಬ್ಯಾಟ್‌. 
+<translation id="3692362746128814480">ನೀವು ಗೊತ್ತುಪಡಿಸಿದ <ph name="BAT_VALUE"/> ಕೊಡುಗೆಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಸೈನ್ ಅಪ್ ಮಾಡದ ಕ್ರಿಯೇಟರ್‌ಗೆ ಬ್ಯಾಟ್‌. 
 ನಿಮ್ಮ ಬ್ರೌಸರ್ ಅವರು ಪರಿಶೀಲಿಸುವ ಕೊಡುಗೆಯನ್ನು ನೀಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಿದೆ 
 ಅಥವಾ 90 ದಿನಗಳು ಕಳೆದುಹೋಗುವವರೆಗೆ.</translation>
 <translation id="853714875140407133">ಬೇಕಾದಷ್ಟು ಟೋಕನ್‌ ಇಲ್ಲ</translation>
@@ -181,10 +181,10 @@
 <translation id="222883304157347087">(ಈ ಸಾಧನ)</translation>
 <translation id="8193724030871339658">ಸರಣಿಯಲ್ಲಿನ ಇತರೆ ಸಾಧನ</translation>
 <translation id="279635009973773843">ಸಾಧನ ಲೋಡಿಂಗ್‌ ಆಗುತ್ತಿದೆ</translation>
-<translation id="2569646144216067185">ಪದಗಳ ಸಂಖ್ಯೆ: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">ಪದಗಳ ಸಂಖ್ಯೆ: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">ಪದಗಳ ಸಂಖ್ಯೆ ತಪ್ಪಾಗಿದೆ</translation>
 <translation id="6779408765480516895">ಏನೋ ದೋಷವಿದ್ದಂತಿದೆ, ನಿಮ್ಮ ಕೋರಿಕೆ ಸಮಯ ಮುಗಿದಂತೆ ಕಾಣುತ್ತಿದೆ</translation>
-<translation id="3149880132460839085">Brave ಸಿಂಕ್</translation>
+<translation id="3149880132460839085">ಬ್ರೇವ್‌  ಸಿಂಕ್</translation>
 <translation id="3680755684186855422">ನಿಮ್ಮ ವಿವಿಧ ಸಾಧನಗಳಲ್ಲಿರುವ ನಿಮ್ಮ Brave ಬ್ರೌಸರ್‌ಗಳ ನಡುವೆ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಡೇಟಾವನ್ನು ಖಾಸಗಿಯಾಗಿ ಸಿಂಕ್ ಮಾಡಲು ನಿಮಗೆ Brave ಸಿಂಕ್ ಅನುಮತಿಸುತ್ತದೆ.</translation>
 <translation id="3735228155296883311">ನೀವು ಇನ್ನೊಂದು ಸಾಧನದಲ್ಲಿ ರಚಿಸಿದ ನಿಮ್ಮ ಸಿಂಕ್ ಚೈನ್‌ನಿಂದ ಕೋಡ್ ಅನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಿ. ಅಥವಾ ಹೊಸ ಸಿಂಕ್ ಚೈನ್‌ ಅನ್ನು ಪ್ರಾರಂಭಿಸಿ.</translation>
 <translation id="4690880825349994619">ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ಸಿಂಕ್ ಸಾಧನವನ್ನು ಬಳಸಿ, ಬ್ರೇವ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ ಮತ್ತು ಸೆಟ್ಟಿಂಗ್‌ಗಳಿಗೆ ನ್ಯಾವಿಗೇಟ್ ಮಾಡಿ &amp;gt; ಸಿಂಕ್‌. ಆಯ್ಕೆ "ಸಾಧನವನ್ನು ಸೇರಿಸಿ" ಮತ್ತು ಪರದೆಯ ಮೇಲೆ ಪ್ರದರ್ಶಿತವಾಗುವ ಕ್ಯೂಆರ್‌ ಕೋಡ್‌ ಸ್ಕ್ಯಾನ್‌ ಮಾಡಿ</translation>
@@ -192,7 +192,7 @@
 <translation id="5817918615728894473">ಜೋಡಿಸು</translation>
 <translation id="9154490620151093733">ಡಿಲೀಟ್‌ ಕೋರಿಕೆಯನ್ನು ಕಳುಹಿಸಲಾಗಿದೆ. ಸಾಧನವನ್ನು ಸದ್ಯದಲ್ಲಿಯೇ ತೆಗೆದು ಹಾಕಲಾಗುವುದು.</translation>
 <translation id="2004365171440701679">ಈ ಸಾಧನವನ್ನು ತೆಗೆದು ಹಾಕಿ</translation>
-<translation id="1178128181015923849">ನೀವು ಸಾಧನವನ್ನು ಡಿಲೀಟ್‌ ಮಾಡಲು ಖಾತ್ರಿ ಹೊಂದಿರುವಿರೆ '<ph name="DEVICE_NAME">%1$s</ph>'</translation>
+<translation id="1178128181015923849">ನೀವು ಸಾಧನವನ್ನು ಡಿಲೀಟ್‌ ಮಾಡಲು ಖಾತ್ರಿ ಹೊಂದಿರುವಿರೆ '<ph name="DEVICE_NAME"/>'</translation>
 <translation id="7745082336226088126">ಸಿಂಕ್‌ ಕೋಡ್‌ ಸ್ಕ್ಯಾನ್‌ ಅಥವಾ ಎಂಟರ್‌ ಮಾಡಿ</translation>
 <translation id="1602067095281698985">ಹೊಸ ಸಿಂಕ್ ಚೈನ್ ಅನ್ನು ಪ್ರಾರಂಭಿಸಿ</translation>
 <translation id="1475223680121592371">ಒಂದು ಮೊಬೈಲ್‌ ಸಾಧನವನ್ನು ಸೇರಿಸಿ</translation>
@@ -223,7 +223,7 @@
 <translation id="327726072512457161">ಸೆಟ್ಟಿಂಗ್ಸ್‌ ನಿರ್ಗಮನ</translation>
 <translation id="8050847734948770789">Brave Rewards ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="9187185473011056079">ನಾನು ಬಂದಿರುವೆ!</translation>
-<translation id="2980493584149453310">ಬ್ರೇವ್‌ ರಿವಾರ್ಡ್‌ನಲ್ಲಿ ಗೌಪ್ಯತೆ ಗೌರವಿಸುವ ಜಾಹೀರಾತು ನೋಡಿ ಬೇಸಿಕ್‌ ಅಟೆಂಷನ್‌ ಟೋಕನ್‌ ಗಳಿಸಿ</translation>
+<translation id="8185825081026121627">ಬ್ರೇವ್‌ ರಿವಾರ್ಡ್‌ನಲ್ಲಿ ಗೌಪ್ಯತೆ ಗೌರವಿಸುವ ಜಾಹೀರಾತು ನೋಡಿ ಬೇಸಿಕ್‌ ಅಟೆಂಷನ್‌ ಟೋಕನ್‌ ಗಳಿಸಿ</translation>
 <translation id="5321518976657560663">ಎರರ್‌ ರಿಸೆಟ್‌ ಮಾಡಿ</translation>
 <translation id="4114170343590425996">ಬ್ರೇವ್‌ ರಿವಾರ್ಡ್‌ ಮರು ಸೆಟ್ಟಿಂಗ್‌ನಲ್ಲಿ ದೋಷವಿದೆ.  ಬ್ರೇವ್‌ ರೀಲಾಂಚ್‌ ಮಾಡಿ ಮತ್ತು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="6393502589311632553">ಬ್ರೇವ್‌ ಬಳಕೆಯಲ್ಲಿ ಇಲ್ಲದಾಗ ಜಾಹೀರಾತು ಪ್ರದರ್ಶಿಸುತ್ತದೆ</translation>

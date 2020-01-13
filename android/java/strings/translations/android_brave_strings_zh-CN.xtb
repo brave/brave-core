@@ -120,7 +120,7 @@
 <translation id="5567439033041178034">了解更多</translation>
 <translation id="3780605330121608425">您的钱包</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> 美元</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> 美元</translation>
 <translation id="2104073734684466851">授权</translation>
 <translation id="1165667598801520610">添加资金</translation>
 <translation id="8428213095426709021">设置</translation>
@@ -148,8 +148,8 @@
 <translation id="7335371657242627509">包含在自动贡献中</translation>
 <translation id="5463954686005964104">每月打赏本网站</translation>
 <translation id="7530570094705720669">正在创建钱包</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">您已捐赠了 <ph name="BAT_VALUE">%1$s</ph> 个 基本注意力代币 (BAT)。</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">您已捐赠了 <ph name="BAT_VALUE"/> 个 基本注意力代币 (BAT)。</translation>
 <translation id="7997676409547731821">由于资金不足，您无法完成预定的每月自动付款和每月打赏。我们会在 30 天后重试。</translation>
 <translation id="5306913077198665897">处理您的酬谢金时出现问题，请重试。</translation>
 <translation id="2429828319207652823">处理您的贡献时出现问题。</translation>
@@ -164,11 +164,11 @@
 <translation id="2323069945529668668">糟糕！</translation>
 <translation id="7510166204621526816">Brave Rewards 服务器未响应。我们将尽快修复这个问题。</translation>
 <translation id="2626799779920242286">请稍后再试。</translation>
-<translation id="3068742524072211213">到期日期：<ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">到期日期：<ph name="DATE"/></translation>
 <translation id="4292832015778676417">从广告中赚取</translation>
 <translation id="683765328936486920">在 YouTube 上</translation>
 <translation id="8969049974285901797">在 Twitch 上</translation>
-<translation id="3692362746128814480">您已指定将 <ph name="BAT_VALUE">%1$s</ph> 个 BAT 发送给尚未注册接受捐款的创建者。您的浏览器将继续尝试捐赠
+<translation id="3692362746128814480">您已指定将 <ph name="BAT_VALUE"/> 个 BAT 发送给尚未注册接受捐款的创建者。您的浏览器将继续尝试捐赠
 直到他们通过验证或直到 90 天以后为止。</translation>
 <translation id="853714875140407133">代币不足</translation>
 <translation id="6940273954212603510">请</translation>
@@ -223,7 +223,7 @@
 <translation id="327726072512457161">设置退出</translation>
 <translation id="8050847734948770789">启用 Brave 奖励</translation>
 <translation id="9187185473011056079">算我一个！</translation>
-<translation id="2980493584149453310">通过查看“Brave 奖励”计划中的隐私保护广告来赚取基本注意力代币。</translation>
+<translation id="8185825081026121627">通过查看“Brave 奖励”计划中的隐私保护广告来赚取基本注意力代币。</translation>
 <translation id="5321518976657560663">重置错误</translation>
 <translation id="4114170343590425996">重置 Brave 奖励时出错。请重新启动 Brave，然后重试。</translation>
 <translation id="6393502589311632553">在没使用 Brave 时显示广告</translation>

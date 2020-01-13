@@ -118,7 +118,7 @@
 <translation id="5567439033041178034">さらに詳しく</translation>
 <translation id="3780605330121608425">あなたのウォレット</translation>
 <translation id="8845154268466251503">BAP</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph>米ドル</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/>米ドル</translation>
 <translation id="2104073734684466851">付与ポイント</translation>
 <translation id="1165667598801520610">資金を追加する</translation>
 <translation id="8428213095426709021">設定</translation>
@@ -144,8 +144,8 @@
 <translation id="7335371657242627509">自動支援の対象にする</translation>
 <translation id="5463954686005964104">毎月このサイトにチップを払う</translation>
 <translation id="7530570094705720669">ウォレットの作成</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph><ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">あなたは<ph name="BAT_VALUE">%1$s</ph> BATを寄付しました。</translation>
+<translation id="937392350501765664"><ph name="MONTH"/><ph name="YEAR"/></translation>
+<translation id="4781696154289395607">あなたは<ph name="BAT_VALUE"/> BATを寄付しました。</translation>
 <translation id="7997676409547731821">「Auto-Contribute」のために予定された毎月のお支払いと毎月のチップは、残高不足のため完了できませんでした。30日後に再試行します。</translation>
 <translation id="5306913077198665897">チップの処理中に問題が発生しました。もう一度お試しください。</translation>
 <translation id="2429828319207652823">支援の処理中に問題が発生しました。</translation>
@@ -160,11 +160,11 @@
 <translation id="2323069945529668668">おっと！</translation>
 <translation id="7510166204621526816">Brave Rewardsサーバーが応答しません。可能な限り早く回復いたします。</translation>
 <translation id="2626799779920242286">後で再試行してください。</translation>
-<translation id="3068742524072211213"><ph name="DATE">%1$s</ph>に期限が切れます</translation>
+<translation id="3068742524072211213"><ph name="DATE"/>に期限が切れます</translation>
 <translation id="4292832015778676417">広告からの収入</translation>
 <translation id="683765328936486920">YouTubeで</translation>
 <translation id="8969049974285901797">Twitchで</translation>
-<translation id="3692362746128814480">あなたは、寄付を受け取るためにまだサインアップしていないクリエイターに対して<ph name="BAT_VALUE">%1$s</ph>BATを指定しました。あなたのブラウザーは、クリエイターたちが確認するまで、または90日が経過するまで寄付の実行を試み続けます。</translation>
+<translation id="3692362746128814480">あなたは、寄付を受け取るためにまだサインアップしていないクリエイターに対して<ph name="BAT_VALUE"/>BATを指定しました。あなたのブラウザーは、クリエイターたちが確認するまで、または90日が経過するまで寄付の実行を試み続けます。</translation>
 <translation id="853714875140407133">十分なトークンがありません</translation>
 <translation id="6940273954212603510">お願いします</translation>
 <translation id="1036277985068412734">資金を追加する</translation>
@@ -176,7 +176,7 @@
 <translation id="222883304157347087">（このデバイス）</translation>
 <translation id="8193724030871339658">チェーン上の他のデバイス</translation>
 <translation id="279635009973773843">デバイスを読み込んでいます…</translation>
-<translation id="2569646144216067185">単語の合計数：<ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">単語の合計数：<ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">間違ったワード数</translation>
 <translation id="6779408765480516895">不具合が発生しました。リクエストがタイムアウトしたようです。</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -187,7 +187,7 @@
 <translation id="5817918615728894473">ペア設定</translation>
 <translation id="9154490620151093733">削除リクエストが送信されました。デバイスは間もなく削除されます。</translation>
 <translation id="2004365171440701679">このデバイスを削除します</translation>
-<translation id="1178128181015923849">本当にこの機器を削除してもよろしいですか  '<ph name="DEVICE_NAME">%1$s</ph>'。</translation>
+<translation id="1178128181015923849">本当にこの機器を削除してもよろしいですか  '<ph name="DEVICE_NAME"/>'。</translation>
 <translation id="7745082336226088126">同期コードをスキャンまたは入力します</translation>
 <translation id="1602067095281698985">新しい同期チェーンを始める</translation>
 <translation id="1475223680121592371">モバイルデバイスを追加します</translation>
@@ -218,7 +218,7 @@
 <translation id="327726072512457161">設定終了</translation>
 <translation id="8050847734948770789">Brave Rewardsを有効にする</translation>
 <translation id="9187185473011056079">参加します！</translation>
-<translation id="2980493584149453310">「Brave Rewards」でプライバシーを保護する広告を表示することに対するBasic Attention Token（BAT）を獲得します。</translation>
+<translation id="8185825081026121627">「Brave Rewards」でプライバシーを保護する広告を表示することに対するBasic Attention Token（BAT）を獲得します。</translation>
 <translation id="5321518976657560663">エラーをリセットします</translation>
 <translation id="4114170343590425996">「Brave Rewards」のリセット中にエラーが発生しました。Braveを再起動してもう一度お試しください。</translation>
 <translation id="6393502589311632553">Braveが使用されていないときに広告を表示します</translation>

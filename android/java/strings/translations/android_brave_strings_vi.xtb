@@ -119,7 +119,7 @@ mạng Internet mới.</translation>
 <translation id="5567439033041178034">TÌM HIỂU THÊM</translation>
 <translation id="3780605330121608425">Ví của bạn</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Cấp</translation>
 <translation id="1165667598801520610">Thêm Nguồn tiền</translation>
 <translation id="8428213095426709021">Cài đặt</translation>
@@ -145,8 +145,8 @@ tháng này...</translation>
 <translation id="7335371657242627509">Bao gồm trong Tự động Đóng góp</translation>
 <translation id="5463954686005964104">Gửi tiền boa cho trang web này hàng tháng</translation>
 <translation id="7530570094705720669">Tạo ví</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">Bạn đã đóng góp <ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">Bạn đã đóng góp <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Giao dịch thanh toán hàng tháng đã lên lịch của bạn cho Đóng góp tự động và tip hàng tháng không thể được hoàn thành do không đủ tiền. Chúng tôi sẽ thử lại sau 30 ngày.</translation>
 <translation id="5306913077198665897">Có vấn đề xảy ra khi xử lý tip của bạn, vui lòng thử lại.</translation>
 <translation id="2429828319207652823">Đã xảy ra lỗi khi xử lý khoản đóng góp của bạn.</translation>
@@ -161,11 +161,11 @@ tháng này...</translation>
 <translation id="2323069945529668668">Ối trời!</translation>
 <translation id="7510166204621526816">Máy chủ Phần Thưởng Brave không phản hồi. Chúng tôi sẽ khắc phục vấn đề này càng sớm càng tốt.</translation>
 <translation id="2626799779920242286">Vui lòng thử lại sau.</translation>
-<translation id="3068742524072211213">hết hạn vào <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">hết hạn vào <ph name="DATE"/></translation>
 <translation id="4292832015778676417">thu được từ quảng cáo</translation>
 <translation id="683765328936486920">trên YouTube</translation>
 <translation id="8969049974285901797">trên Twitch</translation>
-<translation id="3692362746128814480">Bạn đã chỉ định <ph name="BAT_VALUE">%1$s</ph> BAT cho những người sáng tạo nội dung chưa đăng ký nhận đóng góp. Trình duyệt của bạn sẽ tiếp tục cố đóng góp cho đến khi họ xác thực, hoặc cho đến khi hết 90 ngày.</translation>
+<translation id="3692362746128814480">Bạn đã chỉ định <ph name="BAT_VALUE"/> BAT cho những người sáng tạo nội dung chưa đăng ký nhận đóng góp. Trình duyệt của bạn sẽ tiếp tục cố đóng góp cho đến khi họ xác thực, hoặc cho đến khi hết 90 ngày.</translation>
 <translation id="853714875140407133">không đủ token</translation>
 <translation id="6940273954212603510">vui lòng</translation>
 <translation id="1036277985068412734">thêm tiền</translation>
@@ -177,7 +177,7 @@ tháng này...</translation>
 <translation id="222883304157347087">(thiết bị này)</translation>
 <translation id="8193724030871339658">CÁC THIẾT BỊ KHÁC TRONG CHUỖI</translation>
 <translation id="279635009973773843">ĐANG TẢI THIẾT BỊ...</translation>
-<translation id="2569646144216067185">Số từ: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Số từ: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Số từ không chính xác</translation>
 <translation id="6779408765480516895">Có lỗi xảy ra. Có vẻ như yêu cầu của bạn đã quá thời gian xử lý.</translation>
 <translation id="3149880132460839085">Đồng bộ Brave</translation>
@@ -188,7 +188,7 @@ tháng này...</translation>
 <translation id="5817918615728894473">Ghép nối</translation>
 <translation id="9154490620151093733">Yêu cầu xóa đã được gửi. Thiết bị sẽ sớm bị xóa.</translation>
 <translation id="2004365171440701679">Xóa thiết bị này</translation>
-<translation id="1178128181015923849">Bạn có chắc là bạn muốn xóa thiết bị '<ph name="DEVICE_NAME">%1$s</ph>'?</translation>
+<translation id="1178128181015923849">Bạn có chắc là bạn muốn xóa thiết bị '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Quét hoặc nhập mã đồng bộ hóa</translation>
 <translation id="1602067095281698985">Bắt đầu một chuỗi đồng bộ mới</translation>
 <translation id="1475223680121592371">Thêm thiết bị di động</translation>
@@ -219,7 +219,7 @@ tháng này...</translation>
 <translation id="327726072512457161">Thoát Cài đặt</translation>
 <translation id="8050847734948770789">Kích hoạt Phần thưởng của Brave</translation>
 <translation id="9187185473011056079">Tôi đồng ý!</translation>
-<translation id="2980493584149453310">Kiếm Token chú ý cơ bản nhờ xem các quảng cáo bảo toàn quyền riêng tư trong Phần thưởng Brave.</translation>
+<translation id="8185825081026121627">Kiếm Token chú ý cơ bản nhờ xem các quảng cáo bảo toàn quyền riêng tư trong Phần thưởng Brave.</translation>
 <translation id="5321518976657560663">Lỗi đặt lại</translation>
 <translation id="4114170343590425996">Có lỗi xảy ra khi đặt lại Phần thưởng Brave. Vui lòng khởi chạy lại Brave và thử lại.</translation>
 <translation id="6393502589311632553">Hiển thị quảng cáo khi không dùng Brave</translation>

@@ -120,7 +120,7 @@ se på annonser som respekterer personvernet.</translation>
 <translation id="5567439033041178034">FINN UT MER</translation>
 <translation id="3780605330121608425">Lommeboken din</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Tilskudd</translation>
 <translation id="1165667598801520610">Legg til midler</translation>
 <translation id="8428213095426709021">Innstillinger</translation>
@@ -147,8 +147,8 @@ innholdsskaperne du elsker.</translation>
 <translation id="7335371657242627509">Inkluder i auto-bidrag</translation>
 <translation id="5463954686005964104">Gi tips til denne siden hver måned</translation>
 <translation id="7530570094705720669">Opprett lommebok</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">Du har bidratt med <ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">Du har bidratt med <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Den planlagte månedlige betalingen din for autobidrag og månedlig tips kunne ikke fullføres på grunn av utilstrekkelige midler. Vi prøver igjen om 30 dager.</translation>
 <translation id="5306913077198665897">Det var problemer med å behandle tipsen din. Prøv på nytt.</translation>
 <translation id="2429828319207652823">Det oppstod et problem under behandlingen av bidraget ditt.</translation>
@@ -163,11 +163,11 @@ innholdsskaperne du elsker.</translation>
 <translation id="2323069945529668668">Oisann!</translation>
 <translation id="7510166204621526816">Brave-serveren svarer ikke. Vi vil rette opp i dette så raskt som mulig.</translation>
 <translation id="2626799779920242286">Prøv igjen senere.</translation>
-<translation id="3068742524072211213">utløper <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">utløper <ph name="DATE"/></translation>
 <translation id="4292832015778676417">opptjent fra annonser</translation>
 <translation id="683765328936486920">på YouTube</translation>
 <translation id="8969049974285901797">på Twitch</translation>
-<translation id="3692362746128814480">Du har tildelt <ph name="BAT_VALUE">%1$s</ph> BAT til skapere som ikke har
+<translation id="3692362746128814480">Du har tildelt <ph name="BAT_VALUE"/> BAT til skapere som ikke har
 registrert seg for å motta bidrag ennå. Nettleseren din kommer til å fortsette å prøve å bidra
 helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</translation>
 <translation id="853714875140407133">ikke nok tokener</translation>
@@ -181,7 +181,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="222883304157347087">(denne enheten)</translation>
 <translation id="8193724030871339658">ANDRE ENHETER I KJEDEN</translation>
 <translation id="279635009973773843">LASTER INN ENHETER …</translation>
-<translation id="2569646144216067185">Antall ord: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Antall ord: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Feil antall ord</translation>
 <translation id="6779408765480516895">Noe gikk galt – ser ut til at forespørselen ble tidsavbrutt.</translation>
 <translation id="3149880132460839085">Brave-synkronisering</translation>
@@ -192,7 +192,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="5817918615728894473">Koble sammen</translation>
 <translation id="9154490620151093733">Forespørselen om sletting er sendt. Enheten blir snart fjernet.</translation>
 <translation id="2004365171440701679">Fjern denne enheten</translation>
-<translation id="1178128181015923849">Er du sikker på at du vil slette enheten «<ph name="DEVICE_NAME">%1$s</ph>»?</translation>
+<translation id="1178128181015923849">Er du sikker på at du vil slette enheten «<ph name="DEVICE_NAME"/>»?</translation>
 <translation id="7745082336226088126">Skann eller skriv inn synkroniseringskode</translation>
 <translation id="1602067095281698985">Start en ny synkroniseringskjede</translation>
 <translation id="1475223680121592371">Legg til en mobilenhet</translation>
@@ -223,7 +223,7 @@ helt til vedkommende verifiserer bidraget, eller til det har gått 90 dager.</tr
 <translation id="327726072512457161">Avslutt innstillinger</translation>
 <translation id="8050847734948770789">Aktiver Brave-belønninger</translation>
 <translation id="9187185473011056079">Jeg er med!</translation>
-<translation id="2980493584149453310">Tjen grunnleggende oppmerksomhetstoken for å vise annonser som ivaretar personvernet i Brave Rewards.</translation>
+<translation id="8185825081026121627">Tjen grunnleggende oppmerksomhetstoken for å vise annonser som ivaretar personvernet i Brave Rewards.</translation>
 <translation id="5321518976657560663">Tilbakestillingsfeil</translation>
 <translation id="4114170343590425996">En feil oppsto under tilbakestilling av Brave Rewards. Start Brave på nytt, og prøv igjen.</translation>
 <translation id="6393502589311632553">Vis annonser når Brave ikke er i bruk</translation>

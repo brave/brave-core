@@ -120,7 +120,7 @@ kutazama matangazo yanayozingatia faragha.</translation>
 <translation id="5567439033041178034">PATA MAELEZO ZAIDI</translation>
 <translation id="3780605330121608425">Waleti yako</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Ruzuku</translation>
 <translation id="1165667598801520610">Ongeza Fedha</translation>
 <translation id="8428213095426709021">Mipangilio</translation>
@@ -148,8 +148,8 @@ mwezi huu...</translation>
 <translation id="7335371657242627509">Jumuisha kwenye Auto-Contribute</translation>
 <translation id="5463954686005964104">Changia tovuti hii kila Mwezi</translation>
 <translation id="7530570094705720669">Kutengeneza waleti</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">Umechangia <ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">Umechangia <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Malipo yako ya kila mwezi yaliyoratibiwa ya Kutuma Michango Kiotomatiki na bakshishi za kila mwezi hayakutumwa kwa sababu huna fedha za kutosha. Tutajaribu tena ndani ya siku 30.</translation>
 <translation id="5306913077198665897">Hitilafu imetokea wakati wa kuchakata bakshihi yako, tafadhali jaribu tena.</translation>
 <translation id="2429828319207652823">Kulikuwa na tatizo kuchakatata mchango wako.</translation>
@@ -164,11 +164,11 @@ mwezi huu...</translation>
 <translation id="2323069945529668668">Ah oh!</translation>
 <translation id="7510166204621526816">Seva ya Zawadi za Brave haitoi majibu. Tutaishughulikia mapema iwezekanavyo.</translation>
 <translation id="2626799779920242286">Tafadhali jaribu tena baadaye.</translation>
-<translation id="3068742524072211213">muda wake unakwisha tarehe <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">muda wake unakwisha tarehe <ph name="DATE"/></translation>
 <translation id="4292832015778676417">mapato yaliyotokana na matangazo</translation>
 <translation id="683765328936486920">kwenye YouTube</translation>
 <translation id="8969049974285901797">kwenye Twitch</translation>
-<translation id="3692362746128814480">Umeunda <ph name="BAT_VALUE">%1$s</ph> BAT kwa waundaji ambao
+<translation id="3692362746128814480">Umeunda <ph name="BAT_VALUE"/> BAT kwa waundaji ambao
 hawajajisajili kupokea michango. Kivinjari chako kitaendelea kujaribu kuchangia
 hadi wathibitishe, au hadi baada ya siku 90.</translation>
 <translation id="853714875140407133">vocha hazitoshi</translation>
@@ -182,7 +182,7 @@ hadi wathibitishe, au hadi baada ya siku 90.</translation>
 <translation id="222883304157347087">(kifaa hiki)</translation>
 <translation id="8193724030871339658">VIFAA VINGINE VILIVYO KATIKA MSURURU</translation>
 <translation id="279635009973773843">VIFAA VINAPAKIWA...</translation>
-<translation id="2569646144216067185">Idadi ya maneno <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Idadi ya maneno <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Idadi ya maneno si sahihi</translation>
 <translation id="6779408765480516895">Hitilafu imetokea, inaonekana muda wa ombi lako umekwisha.</translation>
 <translation id="3149880132460839085">Brave Kuoanisha</translation>
@@ -193,7 +193,7 @@ hadi wathibitishe, au hadi baada ya siku 90.</translation>
 <translation id="5817918615728894473">Oanisha</translation>
 <translation id="9154490620151093733">Ombi la kufuta limetumwa. Kifaa kitaondolewa hivi punde.</translation>
 <translation id="2004365171440701679">Ondoa kifaa hiki</translation>
-<translation id="1178128181015923849">Una uhakika ungependa kufuta kifaa cha '<ph name="DEVICE_NAME">%1$s</ph>'?</translation>
+<translation id="1178128181015923849">Una uhakika ungependa kufuta kifaa cha '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Changanua au uweke msimbo wa kusawazisha</translation>
 <translation id="1602067095281698985">Anza mnyororo mpya wa kuoanisha</translation>
 <translation id="1475223680121592371">Weka Kifaa cha Mkononi</translation>
@@ -224,7 +224,7 @@ hadi wathibitishe, au hadi baada ya siku 90.</translation>
 <translation id="327726072512457161">Kufunga mipangilio</translation>
 <translation id="8050847734948770789">Wezesha Zawadi za Brave</translation>
 <translation id="9187185473011056079">Nakubali!</translation>
-<translation id="2980493584149453310">Jipatie Vocha ya Umakinifu wa Kimsingi kwa kutazama matangazo yanayozingatia faragha katika Zawadi za Brave.</translation>
+<translation id="8185825081026121627">Jipatie Vocha ya Umakinifu wa Kimsingi kwa kutazama matangazo yanayozingatia faragha katika Zawadi za Brave.</translation>
 <translation id="5321518976657560663">Hitilafu ya Kuweka Upya</translation>
 <translation id="4114170343590425996">Hitilafu imetokea wakati wa kuweka upya Zawadi za Brave. Tafadhali fungua upya Brave kisha ujaribu tena.</translation>
 <translation id="6393502589311632553">Onyesha Matangazo wakati Brave haitumiki</translation>

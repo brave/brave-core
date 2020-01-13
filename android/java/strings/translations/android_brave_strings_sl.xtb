@@ -120,7 +120,7 @@ ogledom oglasov, ki spoštujejo vašo zasebnost.</translation>
 <translation id="5567439033041178034">PREBERITE VEČ</translation>
 <translation id="3780605330121608425">Vaša denarnica</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> dolarjev</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> dolarjev</translation>
 <translation id="2104073734684466851">Sredstva</translation>
 <translation id="1165667598801520610">Dodaj sredstva</translation>
 <translation id="8428213095426709021">Nastavitve</translation>
@@ -148,8 +148,8 @@ dejavnosti ...</translation>
 <translation id="7335371657242627509">Vključi v samodejno doniranje</translation>
 <translation id="5463954686005964104">Doniraj tej spletni strani vsak mesec</translation>
 <translation id="7530570094705720669">Ustvari denarnico</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">Prispevali ste <ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">Prispevali ste <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Vaših načrtovanih mesečnih plačil za samodejne donacije in mesečne donacije ni bilo mogoče izvesti zaradi nezadostnih sredstev. Poskusili bomo znova čez 30 dni.</translation>
 <translation id="5306913077198665897">Prišlo je do težave pri obdelavi vaše donacije, poskusite znova.</translation>
 <translation id="2429828319207652823">Pri obdelavi vaše donacije je prišlo do težave.</translation>
@@ -164,11 +164,11 @@ dejavnosti ...</translation>
 <translation id="2323069945529668668">Ojoj!</translation>
 <translation id="7510166204621526816">Strežnik Brave Rewards se ne odziva. Težavo bomo rešili takoj, ko bo mogoče.</translation>
 <translation id="2626799779920242286">Poskusite znova pozneje.</translation>
-<translation id="3068742524072211213">poteče dne <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">poteče dne <ph name="DATE"/></translation>
 <translation id="4292832015778676417">zasluženo z ogledom oglasov</translation>
 <translation id="683765328936486920">na platformi YouTube</translation>
 <translation id="8969049974285901797">na platformi Twitch</translation>
-<translation id="3692362746128814480">Namenili ste <ph name="BAT_VALUE">%1$s</ph> BAT za ustvarjalce, ki se še niso
+<translation id="3692362746128814480">Namenili ste <ph name="BAT_VALUE"/> BAT za ustvarjalce, ki se še niso
 prijavili za prejemanje donacij. Vaš brskalnik bo še naprej poskušal prispevati,
 dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="853714875140407133">ni dovolj žetonov</translation>
@@ -182,7 +182,7 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="222883304157347087">(ta naprava)</translation>
 <translation id="8193724030871339658">DRUGE NAPRAVE V VERIGI</translation>
 <translation id="279635009973773843">NALAGANJE NAPRAV ...</translation>
-<translation id="2569646144216067185">Število besed: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Število besed: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Nepravilno število besed</translation>
 <translation id="6779408765480516895">Nekaj je šlo narobe, očitno je vaša zahteva potekla.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -193,7 +193,7 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="5817918615728894473">Seznani</translation>
 <translation id="9154490620151093733">Zahteva za izbris je bila poslana. Naprava bo kmalu odstranjena.</translation>
 <translation id="2004365171440701679">Odstrani to napravo</translation>
-<translation id="1178128181015923849">Ali ste prepričani, da želite izbrisati napravo '<ph name="DEVICE_NAME">%1$s</ph>'?</translation>
+<translation id="1178128181015923849">Ali ste prepričani, da želite izbrisati napravo '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Optično preberite ali vnesite sinhronizacijsko kodo</translation>
 <translation id="1602067095281698985">Začni novo sinhronizacijsko verigo</translation>
 <translation id="1475223680121592371">Dodaj novo napravo</translation>
@@ -224,7 +224,7 @@ dokler se ne potrdijo ali dokler ne mine 90 dni.</translation>
 <translation id="327726072512457161">Izhod iz nastavitev</translation>
 <translation id="8050847734948770789">Omogoči storitev Brave Rewards</translation>
 <translation id="9187185473011056079">Želim sodelovati!</translation>
-<translation id="2980493584149453310">Zaslužite žeton Basic Attention Token za ogled oglasov, ki ohranjajo zasebnost, v storitvi Brave Rewards.</translation>
+<translation id="8185825081026121627">Zaslužite žeton Basic Attention Token za ogled oglasov, ki ohranjajo zasebnost, v storitvi Brave Rewards.</translation>
 <translation id="5321518976657560663">Napaka ponastavitve</translation>
 <translation id="4114170343590425996">Pri ponastavitvi storitve Brave Rewards je prišlo do napake. Ponovno zaženite brskalnik Brave in poskusite znova.</translation>
 <translation id="6393502589311632553">Prikazuj oglase, ko se storitev Brave Rewards ne uporablja</translation>

@@ -119,7 +119,7 @@ sledovanie reklám, ktoré zachovávajú súkromie.</translation>
 <translation id="5567439033041178034">ZISTIŤ VIAC</translation>
 <translation id="3780605330121608425">Vaša peňaženka</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Príspevky</translation>
 <translation id="1165667598801520610">Pridať finančný príspevok</translation>
 <translation id="8428213095426709021">Nastavení</translation>
@@ -144,8 +144,8 @@ sledovanie reklám, ktoré zachovávajú súkromie.</translation>
 <translation id="7335371657242627509">Zapojte do automatického prispievania</translation>
 <translation id="5463954686005964104">Podporiť túto stránku každý mesiac</translation>
 <translation id="7530570094705720669">Vytváranie peňaženky</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">Prispeli ste <ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">Prispeli ste <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Vaša naplánovaná mesačná platba za automatické prispievanie a mesačné finančné príspevky nemohla byť uskutočnená z dôvodu nedostatočných prostriedkov. Skúsime to znova o 30 dní.</translation>
 <translation id="5306913077198665897">Pri spracovaní vášho finančného príspevku sa vyskytol problém. Skúste to znova.</translation>
 <translation id="2429828319207652823">Pri spracovávaní vášho príspevku vznikol problém.</translation>
@@ -160,11 +160,11 @@ sledovanie reklám, ktoré zachovávajú súkromie.</translation>
 <translation id="2323069945529668668">Ou!</translation>
 <translation id="7510166204621526816">Server odmien Brave neodpovedá. Opravíme to čo najskôr.</translation>
 <translation id="2626799779920242286">Prosím skúste znovu neskôr.</translation>
-<translation id="3068742524072211213">vyprší <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">vyprší <ph name="DATE"/></translation>
 <translation id="4292832015778676417">zarobené na reklamách</translation>
 <translation id="683765328936486920">na YouTube</translation>
 <translation id="8969049974285901797">na Twitch.tv</translation>
-<translation id="3692362746128814480">Určili ste <ph name="BAT_VALUE">%1$s</ph> žetón pozornosti (BAT) pre tvorcov, ktorí zatiaľ nepožiadali o získanie finančných príspevkov. Váš prehliadač sa bude naďalej snažiť prispieť, kým nebudú overení 
+<translation id="3692362746128814480">Určili ste <ph name="BAT_VALUE"/> žetón pozornosti (BAT) pre tvorcov, ktorí zatiaľ nepožiadali o získanie finančných príspevkov. Váš prehliadač sa bude naďalej snažiť prispieť, kým nebudú overení 
 alebo kým neuplynie 90 dní.</translation>
 <translation id="853714875140407133">málo žetónov</translation>
 <translation id="6940273954212603510">prosím</translation>
@@ -177,7 +177,7 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="222883304157347087">(toto zariadenie)</translation>
 <translation id="8193724030871339658">OSTATNÉ ZARIADENIA V REŤAZCI</translation>
 <translation id="279635009973773843">NAČÍTANIE ZARIADENÍ ...</translation>
-<translation id="2569646144216067185">Počet slov: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Počet slov: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Nesprávny počet slov</translation>
 <translation id="6779408765480516895">Vyskytla sa chyba, zdá sa, že vypršala platnosť vašej žiadosti.</translation>
 <translation id="3149880132460839085">Synchronizácia Brave</translation>
@@ -188,7 +188,7 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="5817918615728894473">Párovať</translation>
 <translation id="9154490620151093733">Žiadosť o odstránenie bola odoslaná. Zariadenie bude čoskoro odstránené.</translation>
 <translation id="2004365171440701679">Odstrániť toto zariadenie</translation>
-<translation id="1178128181015923849">Naozaj chcete odstrániť toto zariadenie ’<ph name="DEVICE_NAME">%1$s</ph>'?</translation>
+<translation id="1178128181015923849">Naozaj chcete odstrániť toto zariadenie ’<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Naskenovať alebo zadať synchronizačný kód</translation>
 <translation id="1602067095281698985">Spustiť nový synchronizačný reťazec</translation>
 <translation id="1475223680121592371">Pridať mobilné zariadenie</translation>
@@ -219,7 +219,7 @@ alebo kým neuplynie 90 dní.</translation>
 <translation id="327726072512457161">Ukončiť nastavenia</translation>
 <translation id="8050847734948770789">Povoliť odmeny Brave</translation>
 <translation id="9187185473011056079">Chcem sa zapojiť!</translation>
-<translation id="2980493584149453310">Získajte žetón pozornosti (BAT) sledovaním reklám, ktoré zachovávajú vaše súkromie v Brave odmenách.</translation>
+<translation id="8185825081026121627">Získajte žetón pozornosti (BAT) sledovaním reklám, ktoré zachovávajú vaše súkromie v Brave odmenách.</translation>
 <translation id="5321518976657560663">Resetovať chybu</translation>
 <translation id="4114170343590425996">Pri resetovaní Brave odmien sa vyskytla chyba. Znova spustite prehliadač Brave a skúste to znova.</translation>
 <translation id="6393502589311632553">Zobraziť reklamy, keď sa prehliadač Brave nepoužíva</translation>

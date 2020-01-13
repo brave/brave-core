@@ -120,7 +120,7 @@
 <translation id="5567439033041178034">НАУЧЕТЕ ПОВЕЧЕ</translation>
 <translation id="3780605330121608425">Вашето портмоне</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Дарения</translation>
 <translation id="1165667598801520610">Добавяне на средства</translation>
 <translation id="8428213095426709021">Настройки</translation>
@@ -148,8 +148,8 @@
 <translation id="7335371657242627509">Включено в автоматичния принос</translation>
 <translation id="5463954686005964104">Дарявайте на този сайт ежемесечно</translation>
 <translation id="7530570094705720669">Създаване на портфейл</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">Вие допринесохте с <ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">Вие допринесохте с <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Планираното Ви месечно плащане за Auto-Contribute и месечни бакшиши не можа да бъде извършено поради недостатъчни средства. Ще опитаме отново след 30 дни.</translation>
 <translation id="5306913077198665897">При обработката на бакшиша Ви възникна проблем, моля, опитайте отново.</translation>
 <translation id="2429828319207652823">Възникна проблем при обработката на дарението Ви.</translation>
@@ -164,11 +164,11 @@
 <translation id="2323069945529668668">Упс!</translation>
 <translation id="7510166204621526816">Сървърът на Brave Rewards не отговаря. Ще поправим това възможно най-скоро.</translation>
 <translation id="2626799779920242286">Моля, опитайте отново по-късно.</translation>
-<translation id="3068742524072211213">изтича на <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">изтича на <ph name="DATE"/></translation>
 <translation id="4292832015778676417">спечелено от реклами</translation>
 <translation id="683765328936486920">в YouTube</translation>
 <translation id="8969049974285901797">в Twitch</translation>
-<translation id="3692362746128814480">Определили сте <ph name="BAT_VALUE">%1$s</ph> BAT за създатели, които все още не са се
+<translation id="3692362746128814480">Определили сте <ph name="BAT_VALUE"/> BAT за създатели, които все още не са се
 регистрирали да получават приноси. Вашият браузър ще продължава да се опитва да даде своя принос, докато те не потвърдят, или до изтичането на 90 дни.</translation>
 <translation id="853714875140407133">няма достатъчно маркери</translation>
 <translation id="6940273954212603510">моля</translation>
@@ -181,7 +181,7 @@
 <translation id="222883304157347087">(това устройство)</translation>
 <translation id="8193724030871339658">ДРУГИ УСТРОЙСТВА ВЪВ ВЕРИГА</translation>
 <translation id="279635009973773843">ЗАРЕЖДАНЕ НА УСТРОЙСТВА...</translation>
-<translation id="2569646144216067185">Брой думи: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Брой думи: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Неправилен брой думи</translation>
 <translation id="6779408765480516895">Нещо се обърка, изглежда, че заявката ви е изтекла.</translation>
 <translation id="3149880132460839085">Синхронизиране на Brave</translation>
@@ -192,7 +192,7 @@
 <translation id="5817918615728894473">Сдвояване</translation>
 <translation id="9154490620151093733">Заявката за изтриване е изпратена. Устройството ще бъде премахнато скоро.</translation>
 <translation id="2004365171440701679">Премахнете това устройство</translation>
-<translation id="1178128181015923849">Сигурни ли сте, че искате да изтриете устройството '<ph name="DEVICE_NAME">%1$s</ph>'?</translation>
+<translation id="1178128181015923849">Сигурни ли сте, че искате да изтриете устройството '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Сканирайте или въведетен кода за синхронизиране</translation>
 <translation id="1602067095281698985">Стартиране на нова верига за синхронизиране</translation>
 <translation id="1475223680121592371">Добавете мобилно устройство</translation>
@@ -224,7 +224,7 @@
 <translation id="327726072512457161">Изход от Настройки</translation>
 <translation id="8050847734948770789">Активирайте Brave награди</translation>
 <translation id="9187185473011056079">Ще участвам!</translation>
-<translation id="2980493584149453310">Печелете Basic Attention Token за гледане на запазващи поверителността реклами в Brave Rewards.</translation>
+<translation id="8185825081026121627">Печелете Basic Attention Token за гледане на запазващи поверителността реклами в Brave Rewards.</translation>
 <translation id="5321518976657560663">Грешка при нулиране</translation>
 <translation id="4114170343590425996">Възникна грешка при нулирането на Награди в Brave. Моля, стартирайте отново Brave и опитайте отново.</translation>
 <translation id="6393502589311632553">Показвайте реклами, когато Brave не се използва</translation>

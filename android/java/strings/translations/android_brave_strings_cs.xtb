@@ -118,7 +118,7 @@
 <translation id="5567439033041178034">VÍCE INFORMACÍ</translation>
 <translation id="3780605330121608425">Vaše peněženka</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Udělení</translation>
 <translation id="1165667598801520610">Přidat prostředky</translation>
 <translation id="8428213095426709021">Nastavení</translation>
@@ -143,8 +143,8 @@ Dokud nedokončí ověření, jakékoliv odeslané příspěvky zůstanou ve va�
 <translation id="7335371657242627509">Zahrnout automatický příspěvek</translation>
 <translation id="5463954686005964104">Přispívat této stránce měsíčně</translation>
 <translation id="7530570094705720669">Vytváření peněženky</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">Přispěli jste <ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">Přispěli jste <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Vaše naplánovaná měsíční platba za automatický příspěvek a měsíční příspěvky nemohly být dokončeny z důvodu nedostatku prostředků. Zkusíme to znovu za 30 dní.</translation>
 <translation id="5306913077198665897">Při zpracování vašeho příspěvku došlo k problému. Zkuste to znovu.</translation>
 <translation id="2429828319207652823">Při zpracování vašeho příspěvku došlo k problému.</translation>
@@ -159,11 +159,11 @@ Dokud nedokončí ověření, jakékoliv odeslané příspěvky zůstanou ve va�
 <translation id="2323069945529668668">Jejda!</translation>
 <translation id="7510166204621526816">Server Brave Rewards neodpovídá. Opravíme to co nejdříve.</translation>
 <translation id="2626799779920242286">Zkuste to znovu později.</translation>
-<translation id="3068742524072211213">vyprší <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">vyprší <ph name="DATE"/></translation>
 <translation id="4292832015778676417">výdělek z reklam</translation>
 <translation id="683765328936486920">na YouTube</translation>
 <translation id="8969049974285901797">na Twitch</translation>
-<translation id="3692362746128814480">Nastavili jste  <ph name="BAT_VALUE">%1$s</ph> BAT pro tvůrce, kteří se ještě nepřihlásili k přijímání příspěvků. Váš prohlížeč se bude i nadále snažit přispět dokud neprovedou ověření nebo dokud neuplyne 90 dní.</translation>
+<translation id="3692362746128814480">Nastavili jste  <ph name="BAT_VALUE"/> BAT pro tvůrce, kteří se ještě nepřihlásili k přijímání příspěvků. Váš prohlížeč se bude i nadále snažit přispět dokud neprovedou ověření nebo dokud neuplyne 90 dní.</translation>
 <translation id="853714875140407133">nedostatek tokenů</translation>
 <translation id="6940273954212603510">prosím</translation>
 <translation id="1036277985068412734">přidat prostředky</translation>
@@ -175,7 +175,7 @@ Dokud nedokončí ověření, jakékoliv odeslané příspěvky zůstanou ve va�
 <translation id="222883304157347087">(toto zařízení)</translation>
 <translation id="8193724030871339658">DALŠÍ ZAŘÍZENÍ V ŘETĚZCI</translation>
 <translation id="279635009973773843">NAČÍTÁNÍ ZAŘÍZENÍ...</translation>
-<translation id="2569646144216067185">Počet slov: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Počet slov: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Nesprávný počet slov</translation>
 <translation id="6779408765480516895">Něco se pokazilo. Zdá se, že váš požadavek vypršel.</translation>
 <translation id="3149880132460839085">Synchronizace prohlížeče Brave</translation>
@@ -186,7 +186,7 @@ Dokud nedokončí ověření, jakékoliv odeslané příspěvky zůstanou ve va�
 <translation id="5817918615728894473">Spárovat</translation>
 <translation id="9154490620151093733">Byl odeslán požadavek na odstranění. Zařízení bude brzy odstraněno.</translation>
 <translation id="2004365171440701679">Odstranit z tohoto zařízení</translation>
-<translation id="1178128181015923849">Opravdu chcete toto zařízení „<ph name="DEVICE_NAME">%1$s</ph>“ odstranit?</translation>
+<translation id="1178128181015923849">Opravdu chcete toto zařízení „<ph name="DEVICE_NAME"/>“ odstranit?</translation>
 <translation id="7745082336226088126">Naskenujte nebo zadejte synchronizační kód</translation>
 <translation id="1602067095281698985">Vytvořit novou synchronizační skupinu</translation>
 <translation id="1475223680121592371">Přidat mobilní zařízení</translation>
@@ -217,7 +217,7 @@ Dokud nedokončí ověření, jakékoliv odeslané příspěvky zůstanou ve va�
 <translation id="327726072512457161">Opustit nastavení</translation>
 <translation id="8050847734948770789">Povolit Brave Rewards</translation>
 <translation id="9187185473011056079">Jdu do toho!</translation>
-<translation id="2980493584149453310">Získejte základní token pozornosti za sledování reklam o zachování soukromí v Brave Rewards.</translation>
+<translation id="8185825081026121627">Získejte základní token pozornosti za sledování reklam o zachování soukromí v Brave Rewards.</translation>
 <translation id="5321518976657560663">Chyba obnovení</translation>
 <translation id="4114170343590425996">Během obnovování odměn Brave došlo k chybě. Spusťte Brave znovu a pokus opakujte.</translation>
 <translation id="6393502589311632553">Zobrazovat reklamy, když Brave nepoužíváte</translation>

@@ -125,12 +125,12 @@ def get_transifex_translation_file_content(source_file_path, filename,
 
 
 def trim_ph_tags_in_xtb_file_content(xml_content):
-    """Removes all children of <ph> tags including $X text inside ph tag"""
+    """Removes all children of <ph> tags including $X and %X text inside ph tag"""
     xml = lxml.etree.fromstring(xml_content)
     phs = xml.findall('.//ph')
     for ph in phs:
         lxml.etree.strip_elements(ph, '*', with_tail=False)
-        if ph.text is not None and ph.text.startswith('$'):
+        if ph.text is not None and (ph.text.startswith('$') or ph.text.startswith('%')):
             ph.text = ''
     return lxml.etree.tostring(xml)
 

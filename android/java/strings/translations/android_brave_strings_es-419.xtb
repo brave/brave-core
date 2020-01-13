@@ -12,17 +12,17 @@
 <translation id="6754976710186182237">Métodos de huella digital</translation>
 <translation id="2313532038420432247">Actualizaciones de HTTPS</translation>
 <translation id="7461425058443653485">Scripts bloqueados</translation>
-<translation id="3834924998750356151">Monitor de Bloqueo</translation>
+<translation id="3834924998750356151">Monitor de bloqueos</translation>
 <translation id="1713450908129883784">Controles individuales</translation>
 <translation id="6302422639282249274">Administrar Recompensas Brave</translation>
 <translation id="1506061864768559482">Motor de búsqueda</translation>
 <translation id="1468415711258933398">Pestaña estándar</translation>
 <translation id="3377025655491224618">Pestaña de incógnito</translation>
 <translation id="9148058034647219655">Salir</translation>
-<translation id="8710614491157212477">Abre sitios soportados que utilicen HTTPS en lugar de HTTP cuando es posible</translation>
+<translation id="8710614491157212477">Abre sitios compatibles que usan HTTPS en lugar de HTTP si es posible</translation>
 <translation id="8387201461264842096">Bloqueo de anuncios</translation>
 <translation id="1934885595886623674">Evita que se carguen anuncios</translation>
-<translation id="5787084571334399599">Evita navegar con huella dactilar</translation>
+<translation id="5787084571334399599">No permite que el navegador use técnicas de huella digital</translation>
 <translation id="7459000603787995422">Cierra las pestañas al salir</translation>
 <translation id="1680858055899097121">No recuperar las pestañas al abrir una nueva sesión de navegación</translation>
 <translation id="4339730410920731698">Publicidades y rastreadores bloqueados</translation>
@@ -51,13 +51,13 @@
 <translation id="8701563696941209024">REINICIAR AHORA</translation>
 <translation id="834487290629916192">DESPUÉS</translation>
 <translation id="8281886186245836920">Omitir</translation>
-<translation id="316832010181763471">Incorporación de motor de Búsqueda</translation>
-<translation id="986879628471635371">Integración de Resolución de Problemas</translation>
+<translation id="316832010181763471">Ajustes del motor de búsqueda</translation>
+<translation id="986879628471635371">Ajustes de solución de problemas</translation>
 <translation id="1078265935778232285">Te damos la bienvenida a Brave</translation>
 <translation id="8867511707771147258">Elige el motor de búsqueda predeterminado</translation>
-<translation id="7053983685419859001">Bloquear</translation>
+<translation id="7053983685419859001">Bloquea</translation>
 <translation id="5806601733251372221">Escudos de Brave</translation>
-<translation id="2880356288762235261">publicidad invasora de privacidad y rastreadores para que puedas navegar sin ser seguido en la red.</translation>
+<translation id="2880356288762235261">anuncios y rastreadores que invaden tu privacidad para que puedas navegar sin que nadie te persiga.</translation>
 <translation id="6980054221517850750">Gana tokens</translation>
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="1789842587755069541">mirando anuncios que respetan la privacidad. Úsalos para apoyar a tus creadores y sitios favoritos.</translation>
@@ -120,7 +120,7 @@ ver anuncios que respetan la privacidad.</translation>
 <translation id="5567439033041178034">MÁS INFORMACIÓN</translation>
 <translation id="3780605330121608425">Tu billetera</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7760215798627399379"><ph name="VALUE">%1$s</ph> USD</translation>
+<translation id="7760215798627399379"><ph name="VALUE"/> USD</translation>
 <translation id="2104073734684466851">Donaciones</translation>
 <translation id="1165667598801520610">Agregar fondos</translation>
 <translation id="8428213095426709021">Configuración</translation>
@@ -148,8 +148,8 @@ mes...</translation>
 <translation id="7335371657242627509">Incluir en Autocontribuir</translation>
 <translation id="5463954686005964104">Envíe propinas a este sitio mensualmente</translation>
 <translation id="7530570094705720669">Cómo crear una billetera</translation>
-<translation id="937392350501765664"><ph name="MONTH">%1$s</ph> <ph name="YEAR">%2$s</ph></translation>
-<translation id="4781696154289395607">Has aportado <ph name="BAT_VALUE">%1$s</ph> BAT.</translation>
+<translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4781696154289395607">Has aportado <ph name="BAT_VALUE"/> BAT.</translation>
 <translation id="7997676409547731821">Tu pago mensual programado de contribución automática y las propinas mensuales no pudieron enviarse debido a fondos insuficientes. Lo intentaremos de nuevo en 30 días.</translation>
 <translation id="5306913077198665897">Hubo un problema al procesar tu propina. Vuelve a intentarlo.</translation>
 <translation id="2429828319207652823">Hubo un problema al procesar su contribución.</translation>
@@ -164,11 +164,11 @@ mes...</translation>
 <translation id="2323069945529668668">¡Uy!</translation>
 <translation id="7510166204621526816">El servidor de Brave Rewards no responde. Solucionaremos este inconveniente lo antes posible.</translation>
 <translation id="2626799779920242286">Vuelve a intentarlo más tarde.</translation>
-<translation id="3068742524072211213">Caduca el <ph name="DATE">%1$s</ph></translation>
+<translation id="3068742524072211213">Caduca el <ph name="DATE"/></translation>
 <translation id="4292832015778676417">ingresos de publicidades</translation>
 <translation id="683765328936486920">en YouTube</translation>
 <translation id="8969049974285901797">en Twitch</translation>
-<translation id="3692362746128814480">Has designado <ph name="BAT_VALUE">%1$s</ph> BAT para creadores que
+<translation id="3692362746128814480">Has designado <ph name="BAT_VALUE"/> BAT para creadores que
 todavía no se han registrado para recibir contribuciones. Tu navegador seguirá intentando contribuir
 hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 días.</translation>
 <translation id="853714875140407133">No tienes suficientes tokens</translation>
@@ -181,7 +181,7 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="222883304157347087">(este dispositivo)</translation>
 <translation id="8193724030871339658">OTROS DISPOSITIVOS EN CADENA</translation>
 <translation id="279635009973773843">CARGANDO DISPOSITIVOS...</translation>
-<translation id="2569646144216067185">Recuento de palabras: <ph name="WORD_COUNT">%1$d</ph></translation>
+<translation id="2569646144216067185">Recuento de palabras: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Cantidad incorrecta de palabras</translation>
 <translation id="6779408765480516895">Se produjo un error. Parece que se ha agotado el tiempo de espera de tu solicitud.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
@@ -192,7 +192,7 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="5817918615728894473">Sincronizar</translation>
 <translation id="9154490620151093733">Solicitud de eliminación enviada. El dispositivo se quitará en breve.</translation>
 <translation id="2004365171440701679">Quitar este dispositivo</translation>
-<translation id="1178128181015923849">¿Seguro que quieres borrar el dispositivo "<ph name="DEVICE_NAME">%1$s</ph>"?</translation>
+<translation id="1178128181015923849">¿Seguro que quieres borrar el dispositivo "<ph name="DEVICE_NAME"/>"?</translation>
 <translation id="7745082336226088126">Escanea o ingresa un código de sincronización</translation>
 <translation id="1602067095281698985">Iniciar una nueva cadena de sincronización</translation>
 <translation id="1475223680121592371">Agregar un dispositivo móvil</translation>
@@ -220,10 +220,10 @@ hasta que ellos confirmen la titularidad o hasta que hayan transcurrido 90 día
 <translation id="326454632686131209">Sincronizar dispositivo</translation>
 <translation id="3082265116777145081">Agregar nombre del dispositivo</translation>
 <translation id="9024091168371687561">Ingresa un nombre opcional para este dispositivo</translation>
-<translation id="327726072512457161">Ajustes de salida</translation>
+<translation id="327726072512457161">Salir de Configuración</translation>
 <translation id="8050847734948770789">Activar las Recompensas Brave</translation>
 <translation id="9187185473011056079">Sí, acepto</translation>
-<translation id="2980493584149453310">Gana Basic Attention Token por ver anuncios que respetan la privacidad en Recompensas Brave.</translation>
+<translation id="8185825081026121627">Gana Basic Attention Token por ver anuncios que respetan la privacidad en Recompensas Brave.</translation>
 <translation id="5321518976657560663">Error de restablecimiento</translation>
 <translation id="4114170343590425996">Hubo un error al restablecer las Recompensas Brave. Reinicia Brave y vuelve a intentarlo.</translation>
 <translation id="6393502589311632553">Mostrar anuncios cuando Brave no está en uso</translation>
