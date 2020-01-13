@@ -37,6 +37,11 @@ class DatabaseContributionInfoPublishers: public DatabaseTable {
     const std::string& contribution_id,
     ledger::PublisherInfoList* list);
 
+  bool UpdateContributedAmount(
+      sql::Database* db,
+      const std::string& contribution_id,
+      const std::string& publisher_key);
+
  private:
   bool CreateTableV11(sql::Database* db);
 

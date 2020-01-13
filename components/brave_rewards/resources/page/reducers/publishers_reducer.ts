@@ -81,6 +81,9 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
     case types.GET_EXCLUDED_SITES:
       chrome.send('brave_rewards.getExcludedSites')
       break
+    case types.ON_RECONCILE_STAMP_RESET:
+      chrome.send('brave_rewards.getContributionList')
+      break
   }
 
   return state

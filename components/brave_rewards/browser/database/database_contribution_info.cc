@@ -316,7 +316,7 @@ bool DatabaseContributionInfo::InsertOrUpdate(
   statement.BindString(0, info->contribution_id);
   statement.BindDouble(1, info->amount);
   statement.BindInt(2, static_cast<int>(info->type));
-  statement.BindInt(3, info->step);
+  statement.BindInt(3, static_cast<int>(info->step));
   statement.BindInt(4, info->retry_count);
 
   if (info->created_at == 0) {
@@ -345,17 +345,18 @@ bool DatabaseContributionInfo::GetOneTimeTips(
     return false;
   }
 
-  const std::string query =
+  const std::string query = base::StringPrintf(
     "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
     "ci.amount, ci.created_at, spi.status, pi.provider "
-    "FROM contribution_info as ci "
+    "FROM %s as ci "
     "INNER JOIN contribution_info_publishers AS cp "
     "ON cp.contribution_id = ci.contribution_id "
     "INNER JOIN publisher_info AS pi ON cp.publisher_key = pi.publisher_id "
     "LEFT JOIN server_publisher_info AS spi "
     "ON spi.publisher_key = pi.publisher_id "
-    "WHERE strftime('%m',  datetime(ci.created_at, 'unixepoch')) = ? AND "
-    "strftime('%Y', datetime(ci.created_at, 'unixepoch')) = ? AND ci.type = ?";
+    "WHERE strftime('%%m',  datetime(ci.created_at, 'unixepoch')) = ? AND "
+    "strftime('%%Y', datetime(ci.created_at, 'unixepoch')) = ? AND ci.type = ?",
+    table_name_);
 
   sql::Statement statement(db->GetUniqueStatement(query.c_str()));
 
@@ -394,11 +395,12 @@ bool DatabaseContributionInfo::GetContributionReport(
     return false;
   }
 
-  const std::string query =
+  const std::string query = base::StringPrintf(
     "SELECT ci.contribution_id, ci.amount, ci.type, ci.created_at "
-    "FROM contribution_info as ci "
-    "WHERE strftime('%m',  datetime(ci.created_at, 'unixepoch')) = ? AND "
-    "strftime('%Y', datetime(ci.created_at, 'unixepoch')) = ?";
+    "FROM %s as ci "
+    "WHERE strftime('%%m',  datetime(ci.created_at, 'unixepoch')) = ? AND "
+    "strftime('%%Y', datetime(ci.created_at, 'unixepoch')) = ?",
+    table_name_);
 
   sql::Statement statement(db->GetUniqueStatement(query.c_str()));
 
@@ -421,6 +423,109 @@ bool DatabaseContributionInfo::GetContributionReport(
   }
 
   return true;
+}
+
+bool DatabaseContributionInfo::GetNotCompletedRecords(
+    sql::Database* db,
+    ledger::ContributionInfoList* list) {
+  DCHECK(list && db);
+  if (!list || !db) {
+    return false;
+  }
+
+  const std::string query = base::StringPrintf(
+    "SELECT ci.contribution_id, ci.amount, ci.type, ci.step, ci.retry_count "
+    "FROM %s as ci WHERE ci.step > 0",
+    table_name_);
+
+  sql::Statement statement(db->GetUniqueStatement(query.c_str()));
+
+  while (statement.Step()) {
+    auto info = ledger::ContributionInfo::New();
+    info->contribution_id = statement.ColumnString(0);
+    info->amount = statement.ColumnDouble(1);
+    info->type = static_cast<ledger::RewardsType>(statement.ColumnInt64(2));
+    info->step = static_cast<ledger::ContributionStep>(statement.ColumnInt(3));
+    info->retry_count = statement.ColumnInt(4);
+    publishers_->GetRecords(
+        db,
+        info->contribution_id,
+        &info->publishers);
+
+    list->push_back(std::move(info));
+  }
+
+  return true;
+}
+
+ledger::ContributionInfoPtr DatabaseContributionInfo::GetRecord(
+    sql::Database* db,
+    const std::string& contribution_id) {
+  DCHECK(db);
+  if (!db || contribution_id.empty()) {
+    return nullptr;
+  }
+
+  const std::string query = base::StringPrintf(
+    "SELECT ci.contribution_id, ci.amount, ci.type, ci.step, ci.retry_count "
+    "FROM %s as ci "
+    "WHERE ci.contribution_id = ?",
+    table_name_);
+
+  sql::Statement statement(db->GetUniqueStatement(query.c_str()));
+
+  statement.BindString(0, contribution_id);
+
+  if (!statement.Step()) {
+    return nullptr;
+  }
+
+  auto info = ledger::ContributionInfo::New();
+  info->contribution_id = statement.ColumnString(0);
+  info->amount = statement.ColumnDouble(1);
+  info->type = static_cast<ledger::RewardsType>(statement.ColumnInt64(2));
+  info->step = static_cast<ledger::ContributionStep>(statement.ColumnInt(3));
+  info->retry_count = statement.ColumnInt(4);
+  publishers_->GetRecords(
+      db,
+      info->contribution_id,
+      &info->publishers);
+
+  return info;
+}
+
+bool DatabaseContributionInfo::UpdateStepAndCount(
+    sql::Database* db,
+    const std::string& contribution_id,
+    const ledger::ContributionStep step,
+    const int32_t retry_count) {
+  DCHECK(db);
+  if (!db || contribution_id.empty()) {
+    return false;
+  }
+
+  const std::string query = base::StringPrintf(
+    "UPDATE %s SET step=?, retry_count=? WHERE contribution_id = ?;",
+    table_name_);
+
+  sql::Statement statement(
+      db->GetCachedStatement(SQL_FROM_HERE, query.c_str()));
+
+  statement.BindInt(0, static_cast<int>(step));
+  statement.BindInt(1, retry_count);
+  statement.BindString(2, contribution_id);
+
+  return statement.Run();
+}
+
+bool DatabaseContributionInfo::UpdateContributedAmount(
+    sql::Database* db,
+    const std::string& contribution_id,
+    const std::string& publisher_key) {
+  return publishers_->UpdateContributedAmount(
+      db,
+      contribution_id,
+      publisher_key);
 }
 
 }  // namespace brave_rewards
