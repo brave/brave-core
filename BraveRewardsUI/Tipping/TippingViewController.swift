@@ -132,7 +132,9 @@ class TippingViewController: UIViewController, UIViewControllerTransitioningDele
       
       self.tippingView.overviewView.disclaimerView.isHidden = banner.status == .verified
       
-      let bannerAmounts = banner.amounts.isEmpty ? TippingViewController.defaultTippingAmounts : banner.amounts.compactMap({ $0.doubleValue })
+      let bannerAmounts = banner.amounts.isEmpty ?
+        TippingViewController.defaultTippingAmounts :
+        banner.amounts.compactMap { $0.doubleValue }.sorted(by: <)
       self.tippingView.optionSelectionView.options = bannerAmounts.map {
         TippingOption.batAmount(BATValue($0), dollarValue: self.state.ledger.dollarStringForBATAmount($0) ?? "")
       }
