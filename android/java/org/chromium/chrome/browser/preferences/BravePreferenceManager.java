@@ -27,12 +27,12 @@ public class BravePreferenceManager {
         if (sharedPreferences.getBoolean(BRAVE_BOTTOM_TOOLBAR_SET_KEY, false)) {
             return sharedPreferences.getBoolean(BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, true);
         } else {
-            ChromePreferenceManager.getInstance().writeBoolean(BRAVE_BOTTOM_TOOLBAR_SET_KEY, true);
+            SharedPreferencesManager.getInstance().writeBoolean(BRAVE_BOTTOM_TOOLBAR_SET_KEY, true);
             boolean enable = true;
             if (isSmallScreen()) {
                 enable = false;
             }
-            ChromePreferenceManager.getInstance().writeBoolean(
+            SharedPreferencesManager.getInstance().writeBoolean(
                     BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, enable);
 
             return enable;
