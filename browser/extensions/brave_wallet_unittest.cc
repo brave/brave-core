@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/extensions/api/brave_wallet_api.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_controller.h"
 
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -13,8 +13,6 @@
 #include "content/public/test/browser_task_environment.h"
 #include "extensions/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-using extensions::api::BraveWalletGetWalletSeedFunction;
 
 class BraveWalletUnitTest : public testing::Test {
  public:
@@ -39,13 +37,13 @@ class BraveWalletUnitTest : public testing::Test {
 };
 
 TEST_F(BraveWalletUnitTest, TestGetRandomNonce) {
-  std::string nonce = BraveWalletGetWalletSeedFunction::GetRandomNonce();
-  ASSERT_EQ(nonce.size(), BraveWalletGetWalletSeedFunction::kNonceByteLength);
+  std::string nonce = BraveWalletController::GetRandomNonce();
+  ASSERT_EQ(nonce.size(), BraveWalletController::kNonceByteLength);
 }
 
 TEST_F(BraveWalletUnitTest, TestGetRandomSeed) {
-  std::string seed = BraveWalletGetWalletSeedFunction::GetRandomSeed();
-  ASSERT_EQ(seed.size(), BraveWalletGetWalletSeedFunction::kSeedByteLength);
+  std::string seed = BraveWalletController::GetRandomSeed();
+  ASSERT_EQ(seed.size(), BraveWalletController::kSeedByteLength);
 }
 
 TEST_F(BraveWalletUnitTest, TestGetEthereumRemoteClientSeedFromRootSeed) {
@@ -62,7 +60,7 @@ TEST_F(BraveWalletUnitTest, TestGetEthereumRemoteClientSeedFromRootSeed) {
     52, 76, 223, 24, 183, 138, 244, 72
   };
   std::string derived =
-    BraveWalletGetWalletSeedFunction::GetEthereumRemoteClientSeedFromRootSeed(
+    BraveWalletController::GetEthereumRemoteClientSeedFromRootSeed(
         std::string(seed, base::size(seed)));
   ASSERT_EQ(derived, std::string(expected_derived_seed,
       base::size(expected_derived_seed)));
@@ -93,7 +91,7 @@ TEST_F(BraveWalletUnitTest, TestSealSeed) {
     222, 231, 48, 93, 132, 131, 178, 177
   };
   std::string cipher_seed;
-  ASSERT_TRUE(BraveWalletGetWalletSeedFunction::SealSeed(
+  ASSERT_TRUE(BraveWalletController::SealSeed(
      std::string(seed, base::size(seed)), std::string(key, base::size(key)),
      std::string(nonce, base::size(nonce)), &cipher_seed));
   ASSERT_EQ(cipher_seed, std::string(expected_cipher_seed,
@@ -125,7 +123,7 @@ TEST_F(BraveWalletUnitTest, TestOpenSeed) {
     232, 187, 188, 220, 160, 187, 212, 28
   };
   std::string seed;
-  ASSERT_TRUE(BraveWalletGetWalletSeedFunction::OpenSeed(
+  ASSERT_TRUE(BraveWalletController::OpenSeed(
        std::string(cipher_seed, base::size(cipher_seed)),
        std::string(key, base::size(key)),
        std::string(nonce, base::size(nonce)), &seed));
@@ -139,7 +137,7 @@ TEST_F(BraveWalletUnitTest, TestLoadFromPrefs) {
 
   std::string cipher_seed;
   std::string nonce;
-  ASSERT_TRUE(BraveWalletGetWalletSeedFunction::LoadFromPrefs(
+  ASSERT_TRUE(BraveWalletController::LoadFromPrefs(
       ProfileManager::GetActiveUserProfile(), &cipher_seed, &nonce));
 
   const char expected_nonce[12] = {
@@ -170,7 +168,7 @@ TEST_F(BraveWalletUnitTest, TestSaveToPrefs) {
     6, 128, 179, 64, 55, 160, 219, 8,
     222, 231, 48, 93, 132, 131, 178, 177
   };
-  BraveWalletGetWalletSeedFunction::SaveToPrefs(
+  BraveWalletController::SaveToPrefs(
       ProfileManager::GetActiveUserProfile(),
       std::string(cipher_seed, base::size(cipher_seed)),
       std::string(nonce, base::size(nonce)));

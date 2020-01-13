@@ -95,24 +95,7 @@
         "name": "resetWallet",
         "type": "function",
         "description": "Called to restore Crypto Wallets to its original state",
-        "parameters": [
-          {
-            "name": "cb",
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "success",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
-      }, {
-        "name": "restartBrowser",
-        "type": "function",
-        "description": "Called to relaunch Brave after a successful reset",
-        "parameters": []        
+        "parameters": []
       }
     ],
     "types": [

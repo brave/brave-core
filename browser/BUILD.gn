@@ -131,7 +131,6 @@ source_set("browser_process") {
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_shields/browser",
-    "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/content_settings/core/browser",
@@ -171,6 +170,12 @@ source_set("browser_process") {
     "//third_party/widevine/cdm:buildflags",
     "//ui/base",
   ]
+
+  if (brave_wallet_enabled) {
+    deps += [
+      "//brave/components/brave_wallet/browser",
+    ]
+  }
 
   if (enable_greaselion) {
     deps += [

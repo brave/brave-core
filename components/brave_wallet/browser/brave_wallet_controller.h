@@ -20,6 +20,7 @@
 #include "base/observer_list.h"
 #include "base/values.h"
 #include "url/gurl.h"
+#include "chrome/browser/profiles/profile.h"
 
 namespace base {
 class FilePath;
@@ -30,25 +31,37 @@ namespace content {
 class BrowserContext;
 }  // namespace content
 
-
 class BraveWalletController {
  public:
   explicit BraveWalletController(content::BrowserContext* context);
   ~BraveWalletController();
 
-  using ResetCryptoWalletsCallback = base::OnceCallback<void(bool)>;
+  void ResetCryptoWallets();
+  void CloseTabsAndRestart();
+  std::string GetWalletSeed(
+      std::vector<uint8_t> key);
 
-  void ResetCryptoWallets(
-    ResetCryptoWalletsCallback callback);
-  void RestartBrowser();
+  static std::string GetEthereumRemoteClientSeedFromRootSeed(
+      const std::string& seed);
+  static bool SealSeed(const std::string& seed, const std::string& key,
+      const std::string& nonce, std::string* cipher_seed);
+  static bool OpenSeed(const std::string& cipher_seed,
+      const std::string& key, const std::string& nonce, std::string* seed);
+  static void SaveToPrefs(Profile* profile, const std::string& cipher_seed,
+      const std::string& nonce);
+  static bool LoadFromPrefs(Profile* profile, std::string* cipher_seed,
+      std::string* nonce);
+  static std::string GetRandomNonce();
+  static std::string GetRandomSeed();
+  static const size_t kNonceByteLength;
+  static const size_t kSeedByteLength;
 
  private:
   content::BrowserContext* context_;
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   base::WeakPtrFactory<BraveWalletController> weak_factory_;
 
-  void OnCryptoWalletsReset(
-    ResetCryptoWalletsCallback callback, bool success);
+  void OnCryptoWalletsReset(bool success);
 
   DISALLOW_COPY_AND_ASSIGN(BraveWalletController);
 };
