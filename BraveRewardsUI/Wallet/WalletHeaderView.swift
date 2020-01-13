@@ -72,6 +72,7 @@ class WalletHeaderView: UIView {
   
   let addFundsButton = Button(type: .system).then {
     $0.appearanceTintColor = UIColor(white: 1.0, alpha: 0.75)
+    $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.75)
     $0.setTitle(Strings.AddFunds, for: .normal)
     $0.setImage(UIImage(frameworkResourceNamed: "add-funds-icon").alwaysTemplate, for: .normal)
     $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
