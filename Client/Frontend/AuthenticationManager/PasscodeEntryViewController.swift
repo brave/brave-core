@@ -121,3 +121,4 @@ extension PasscodeEntryViewController: PasscodeInputViewDelegate {
         passcodePane.codeInputView.resetCode()
     }
 }
+
