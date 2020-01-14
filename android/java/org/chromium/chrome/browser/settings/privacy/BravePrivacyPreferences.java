@@ -13,6 +13,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 import org.chromium.chrome.browser.settings.ChromeBaseCheckBoxPreference;
 import org.chromium.chrome.browser.settings.ChromeSwitchPreference;
@@ -81,7 +82,7 @@ public class BravePrivacyPreferences extends PrivacyPreferences {
             sharedPreferencesEditor.putBoolean(PREF_CLOSE_TABS_ON_EXIT, (boolean) newValue);
             sharedPreferencesEditor.apply();
         } else if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
-            mPrefServiceBridge.setSearchSuggestEnabled((boolean) newValue);
+            mPrefServiceBridge.setBoolean(Pref.SEARCH_SUGGEST_ENABLED, (boolean) newValue);
         }
 
         return true;
@@ -95,7 +96,7 @@ public class BravePrivacyPreferences extends PrivacyPreferences {
 
     private void updatePreferences() {
         removePreferenceIfPresent(PREF_SYNC_AND_SERVICES_LINK);
-        mSearchSuggestions.setChecked(mPrefServiceBridge.isSearchSuggestEnabled());
+        mSearchSuggestions.setChecked(mPrefServiceBridge.getBoolean(Pref.SEARCH_SUGGEST_ENABLED));
         mSearchSuggestions.setOrder(findPreference(PREF_CLEAR_BROWSING_DATA).getOrder() + 1);
     }
 
@@ -110,7 +111,7 @@ public class BravePrivacyPreferences extends PrivacyPreferences {
         return preference -> {
             String key = preference.getKey();
             if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
-                return mPrefServiceBridge.isSearchSuggestManaged();
+                return mPrefServiceBridge.isManagedPreference(Pref.SEARCH_SUGGEST_ENABLED);
             }
             return false;
         };
