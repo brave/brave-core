@@ -57,7 +57,7 @@ class ConfirmationsImpl : public Confirmations {
 
   // Transaction history
   void GetTransactionHistory(
-      OnGetTransactionHistory callback) override;
+      OnGetTransactionHistoryCallback callback) override;
   void AddUnredeemedTransactionsToPendingRewards();
   void AddTransactionsToPendingRewards(
       const std::vector<TransactionInfo>& transactions);

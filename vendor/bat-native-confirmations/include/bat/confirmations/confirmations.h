@@ -24,7 +24,7 @@ namespace confirmations {
 using TransactionInfo = ::ledger::TransactionInfo;
 using TransactionsInfo = ::ledger::TransactionsInfo;
 
-using OnGetTransactionHistory = ::ledger::GetTransactionHistoryCallback;
+using OnGetTransactionHistoryCallback = ::ledger::GetTransactionHistoryCallback;
 
 // |_environment| indicates that URL requests should use production, staging or
 // development servers but can be overridden via command-line arguments
@@ -63,7 +63,7 @@ class CONFIRMATIONS_EXPORT Confirmations {
   // argument — |TransactionsInfo| which contains a list of |TransactionInfo|
   // transactions and associated earned ads rewards
   virtual void GetTransactionHistory(
-      OnGetTransactionHistory callback) = 0;
+      OnGetTransactionHistoryCallback callback) = 0;
 
   // Should be called to confirm an ad was viewed, clicked, dismissed or landed
   virtual void ConfirmAd(
