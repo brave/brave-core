@@ -1,19 +1,28 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarCoordinator.java
-index a55fcdd16cd09c2d4ac1369235b21fa9b588d11f..7b82d4a2fd385819427e770a7a3e80d5dd09bd91 100644
+index af1900e473a261b701943b8e9c49bfab26737118..b333179917757bb10acbaa5935e4db20fc8a4cce 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BrowsingModeBottomToolbarCoordinator.java
-@@ -41,7 +41,7 @@ public class BrowsingModeBottomToolbarCoordinator {
+@@ -42,7 +42,7 @@ public class BrowsingModeBottomToolbarCoordinator {
      private final HomeButton mHomeButton;
  
      /** The share button that lives in the bottom toolbar. */
 -    private final ShareButton mShareButton;
 +    private final BookmarksButton mShareButton;
  
-     /** The search accelerator that lives in the bottom toolbar. */
-     private final SearchAccelerator mSearchAccelerator;
-@@ -276,4 +276,5 @@ public class BrowsingModeBottomToolbarCoordinator {
+     /** The new tab button that lives in the bottom toolbar. */
+     private final BottomToolbarNewTabButton mNewTabButton;
+@@ -248,7 +248,7 @@ public class BrowsingModeBottomToolbarCoordinator {
+     /**
+      * @return The browsing mode bottom toolbar's share button.
+      */
+-    ShareButton getShareButton() {
++    BookmarksButton getShareButton() {
+         return mShareButton;
+     }
+ 
+@@ -286,4 +286,5 @@ public class BrowsingModeBottomToolbarCoordinator {
+         mSearchAccelerator.destroy();
          mTabSwitcherButtonCoordinator.destroy();
-         mMenuButton.destroy();
      }
 +    public void updateBookmarkButton(boolean isBookmarked, boolean editingAllowed) {if (mShareButton != null) {mShareButton.updateBookmarkButton(isBookmarked, editingAllowed);}}
  }
