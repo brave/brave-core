@@ -265,7 +265,7 @@ public class BraveShieldsMenuHandler {
         ViewGroup list = mPopup.getListView();
         for (int i = 0; i < list.getChildCount(); i++) {
             View view = list.getChildAt(i);
-            Object animatorObject = view.getTag(R.id.menu_item_enter_anim_id);
+            Object animatorObject = null;/* = view.getTag(R.id.menu_item_enter_anim_id);*/
             if (animatorObject != null) {
                 if (builder == null) {
                     builder = mMenuItemEnterAnimator.play((Animator) animatorObject);
