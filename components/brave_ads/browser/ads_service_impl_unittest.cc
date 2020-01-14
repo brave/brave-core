@@ -6,19 +6,18 @@
 #include <map>
 
 #include "base/files/scoped_temp_dir.h"
-#include "extensions/browser/test_event_router.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 #include "brave/components/brave_ads/browser/test_util.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
-#include "components/prefs/pref_service.h"
 
 // npm run test -- brave_unit_tests --filter=AdsServiceTest.*
 
