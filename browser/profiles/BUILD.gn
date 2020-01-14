@@ -1,6 +1,10 @@
 import("//components/gcm_driver/config.gni")
 
 source_set("profiles") {
+  visibility = [
+    "//brave/browser/*",
+  ]
+
   sources = [
     "brave_bookmark_model_loaded_observer.cc",
     "brave_bookmark_model_loaded_observer.h",

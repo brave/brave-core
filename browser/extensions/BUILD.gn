@@ -12,6 +12,11 @@ declare_args() {
 }
 
 source_set("extensions") {
+  visibility = [
+    "//brave/browser/*",
+    "//brave/test:*",
+  ]
+
   sources = [
     "api/brave_action_api.cc",
     "api/brave_action_api.h",

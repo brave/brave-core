@@ -1,4 +1,8 @@
 source_set("devtools") {
+  visibility = [
+    "//brave/browser/*",
+  ]
+
   if (!is_android) {
     sources = [
       "brave_devtools_ui_bindings.cc",

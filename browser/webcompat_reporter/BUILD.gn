@@ -1,6 +1,10 @@
 import("//build/config/features.gni")
 
 source_set("webcompat_reporter") {
+  visibility = [
+    "//brave/browser/*",
+  ]
+
   sources = [
     "webcompat_reporter_dialog.cc",
     "webcompat_reporter_dialog.h",

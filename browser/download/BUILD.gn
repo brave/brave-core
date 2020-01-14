@@ -1,6 +1,10 @@
 import("//build/config/features.gni")
 
 source_set("download") {
+  visibility = [
+    "//brave/browser/*",
+  ]
+
   sources = [
     "brave_download_item_model.cc",
     "brave_download_item_model.h",

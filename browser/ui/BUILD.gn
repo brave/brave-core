@@ -9,6 +9,10 @@ import("//components/gcm_driver/config.gni")
 import("//chrome/common/features.gni")
 
 source_set("favicon_source") {
+  visibility = [
+    ":*",
+  ]
+
   sources = [
     "//chrome/browser/ui/webui/favicon_source.cc",
     "//chrome/browser/ui/webui/favicon_source.h",
@@ -25,6 +29,11 @@ source_set("favicon_source") {
 }
 
 source_set("ui") {
+  visibility = [
+    "//brave/browser/*",
+    "//chrome/browser/ui:ui",
+  ]
+
   sources = [
     "webui/basic_ui.cc",
     "webui/basic_ui.h",

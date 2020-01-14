@@ -1,4 +1,8 @@
 source_set("brave_wayback_machine") {
+  visibility = [
+    "//brave/browser/*",
+  ]
+
   sources = [
     "brave_wayback_machine_infobar_button_container.cc",
     "brave_wayback_machine_infobar_button_container.h",

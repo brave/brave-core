@@ -3,6 +3,11 @@ import("//chrome/common/features.gni")
 import("//tools/grit/grit_rule.gni")
 
 grit("resources") {
+  visibility = [
+    "//brave/browser/*",
+    "//brave:packed_resources_extra__repack",
+  ]
+
   source = "extensions_resources.grd"
 
   source_is_generated = optimize_webui
@@ -19,12 +24,21 @@ grit("resources") {
 }
 
 group("unpak") {
+  visibility = [
+    "//brave/browser/*",
+    "//chrome/browser/resources/*",
+  ]
+
   deps = [
     ":unpak_brave_extensions_resources",
   ]
 }
 
 action("unpak_brave_extensions_resources") {
+  visibility = [
+    "//brave/browser/*",
+  ]
+
   script = "//chrome/browser/resources/unpack_pak.py"
 
   pak_file = "brave_extensions_resources.pak"

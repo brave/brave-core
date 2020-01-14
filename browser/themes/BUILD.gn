@@ -1,4 +1,8 @@
 source_set("themes") {
+  visibility = [
+    "//brave/browser/*",
+  ]
+
   sources = [
     "brave_dark_mode_utils.h",
     "brave_dark_mode_utils_android.cc",

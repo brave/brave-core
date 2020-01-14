@@ -1,4 +1,8 @@
 source_set("notifications") {
+  visibility = [
+    "//brave/browser/*",
+  ]
+
   if (is_mac) {
     sources = [
       "brave_alert_dispatcher_mac.mm",

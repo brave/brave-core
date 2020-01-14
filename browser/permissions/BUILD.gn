@@ -1,6 +1,10 @@
 import("//build/config/features.gni")
 
 source_set("permissions") {
+  visibility = [
+    "//brave/browser/*",
+  ]
+
   sources = [
     "brave_permission_manager.cc",
     "brave_permission_manager.h",

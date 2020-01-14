@@ -1,6 +1,10 @@
 import("//build/config/features.gni")
 
 source_set("autoplay") {
+  visibility = [
+    "//brave/browser/*",
+  ]
+
   sources = [
     "autoplay_permission_context.cc",
     "autoplay_permission_context.h",

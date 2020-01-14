@@ -1,6 +1,10 @@
 import("//brave/components/brave_shields/browser/buildflags/buildflags.gni")
 
 source_set("renderer_host") {
+  visibility = [
+    "//brave/browser/*",
+  ]
+
   if (brave_stp_enabled) {
     sources += [
       "brave_render_message_filter.cc",

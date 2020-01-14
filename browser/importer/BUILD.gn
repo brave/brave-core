@@ -1,6 +1,10 @@
 import("//build/config/features.gni")
 
 source_set("importer") {
+  visibility = [
+    "//brave/browser/*",
+  ]
+
   sources = [
     "brave_external_process_importer_client.cc",
     "brave_external_process_importer_client.h",

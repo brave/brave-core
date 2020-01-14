@@ -1,4 +1,8 @@
 source_set("renderer_context_menu") {
+  visibility = [
+    "//brave/browser/*",
+  ]
+
   if (is_win || is_linux) {
     sources = [
       "brave_spelling_options_submenu_observer.cc",

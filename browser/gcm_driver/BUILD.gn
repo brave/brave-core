@@ -2,6 +2,10 @@ import("//build/buildflag_header.gni")
 import("//components/gcm_driver/config.gni")
 
 source_set("gcm_driver") {
+  visibility = [
+    "//brave/browser/*",
+  ]
+
   if (!use_gcm_from_platform) {
     sources = [
       "brave_gcm_channel_status.cc",
