@@ -177,43 +177,21 @@ void RedeemToken::OnCreateConfirmation(
     BLOG(INFO) << "    " << header.first << ": " << header.second;
   }
 
-  if (response_status_code != net::HTTP_CREATED) {
-    BLOG(ERROR) << "Failed to create confirmation";
-    OnRedeem(FAILED, confirmation);
+  // FetchPaymentToken and OnFetchPaymentToken will handle all other HTTP
+  // response status codes
+  if (response_status_code == net::HTTP_BAD_REQUEST) {
+    BLOG(WARNING) << "Duplicate confirmation";
+    OnRedeem(FAILED, confirmation, false);
+
+    // Duplicate confirmation so redeem a new token
+    Redeem(confirmation.creative_instance_id, confirmation.type);
     return;
   }
 
-  // Parse JSON response
-  base::Optional<base::Value> dictionary = base::JSONReader::Read(response);
-  if (!dictionary || !dictionary->is_dict()) {
-    BLOG(ERROR) << "Failed to parse response: " << response;
-    OnRedeem(FAILED, confirmation);
-    return;
-  }
+  ConfirmationInfo new_confirmation = confirmation;
+  new_confirmation.created = true;
 
-  // Get id
-  auto* id_value = dictionary->FindKey("id");
-  if (!id_value) {
-    BLOG(ERROR) << "Response missing id";
-    OnRedeem(FAILED, confirmation);
-    return;
-  }
-
-  auto id = id_value->GetString();
-
-  // Validate id
-  if (id != confirmation.id) {
-    BLOG(ERROR) << "Response id: " << id
-        << " does not match confirmation id: " << confirmation.id;
-    OnRedeem(FAILED, confirmation);
-    return;
-  }
-
-  ConfirmationInfo created_confirmation(confirmation);
-  created_confirmation.created = true;
-
-  // Fetch payment token
-  FetchPaymentToken(created_confirmation);
+  FetchPaymentToken(new_confirmation);
 }
 
 void RedeemToken::FetchPaymentToken(const ConfirmationInfo& confirmation) {
@@ -255,13 +233,18 @@ void RedeemToken::OnFetchPaymentToken(
   }
 
   if (response_status_code == net::HTTP_NOT_FOUND) {
+    BLOG(WARNING) << "Confirmation not found";
+
     if (!Verify(confirmation)) {
       BLOG(ERROR) << "Failed to verify confirmation";
       OnRedeem(FAILED, confirmation, false);
       return;
     }
 
-    Redeem(confirmation.creative_instance_id, confirmation.type);
+    ConfirmationInfo new_confirmation = confirmation;
+    new_confirmation.created = false;
+
+    OnRedeem(FAILED, new_confirmation);
     return;
   }
 
@@ -289,6 +272,14 @@ void RedeemToken::OnFetchPaymentToken(
 
   auto id = id_value->GetString();
 
+  // Validate id
+  if (id != confirmation.id) {
+    BLOG(ERROR) << "Response id: " << id
+        << " does not match confirmation id: " << confirmation.id;
+    OnRedeem(FAILED, confirmation, false);
+    return;
+  }
+
   // Get payment token
   auto* payment_token_value = dictionary->FindKey("paymentToken");
   if (!payment_token_value) {
@@ -301,7 +292,10 @@ void RedeemToken::OnFetchPaymentToken(
   base::DictionaryValue* payment_token_dictionary;
   if (!payment_token_value->GetAsDictionary(&payment_token_dictionary)) {
     BLOG(ERROR) << "Response missing paymentToken dictionary";
-    OnRedeem(FAILED, confirmation);
+    OnRedeem(FAILED, confirmation, false);
+
+    // Token is in a bad state so redeem a new token
+    Redeem(confirmation.creative_instance_id, confirmation.type);
     return;
   }
 
