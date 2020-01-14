@@ -33,7 +33,7 @@ class ConfirmationsImpl : public Confirmations {
   explicit ConfirmationsImpl(ConfirmationsClient* confirmations_client);
   ~ConfirmationsImpl() override;
 
-  void Initialize() override;
+  void Initialize(OnInitializeCallback callback) override;
 
   // Wallet
   void SetWalletInfo(std::unique_ptr<WalletInfo> info) override;
@@ -98,6 +98,8 @@ class ConfirmationsImpl : public Confirmations {
 
  private:
   bool is_initialized_;
+  OnInitializeCallback initialize_callback_;
+
   void MaybeStart();
 
   // Wallet

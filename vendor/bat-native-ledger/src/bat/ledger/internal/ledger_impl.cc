@@ -98,14 +98,51 @@ void LedgerImpl::OnWalletInitializedInternal(
     bat_promotion_->Refresh(false);
     bat_contribution_->Initialize();
     bat_promotion_->Initialize();
+
+    // Set wallet info for Confirmations when launching the browser or creating
+    // a wallet for the first time
+    auto wallet_info = bat_state_->GetWalletInfo();
+    SetConfirmationsWalletInfo(wallet_info);
   } else {
     BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to initialize wallet";
   }
 }
 
-void LedgerImpl::Initialize(ledger::InitializeCallback callback) {
+void LedgerImpl::Initialize(
+    ledger::InitializeCallback callback) {
   DCHECK(!initializing_);
+  if (initializing_) {
+    BLOG(this, ledger::LogLevel::LOG_ERROR) <<
+        "Already initializing ledger";
+    return;
+  }
+
   initializing_ = true;
+
+  InitializeConfirmations(callback);
+}
+
+void LedgerImpl::InitializeConfirmations(
+    ledger::InitializeCallback callback) {
+  confirmations::_environment = ledger::_environment;
+  confirmations::_is_debug = ledger::is_debug;
+
+  bat_confirmations_.reset(
+      confirmations::Confirmations::CreateInstance(ledger_client_));
+
+  auto initialized_callback = std::bind(&LedgerImpl::OnConfirmationsInitialized,
+      this, _1, callback);
+  bat_confirmations_->Initialize(initialized_callback);
+}
+
+void LedgerImpl::OnConfirmationsInitialized(
+    const bool success,
+    ledger::InitializeCallback callback) {
+  if (!success) {
+    BLOG(this, ledger::LogLevel::LOG_ERROR) <<
+        "Failed to initialize confirmations";
+  }
+
   ledger::InitializeCallback on_wallet =
       std::bind(&LedgerImpl::OnWalletInitializedInternal,
                 this,
@@ -302,7 +339,6 @@ void LedgerImpl::OnLedgerStateLoaded(
       callback(ledger::Result::INVALID_LEDGER_STATE);
     } else {
       auto wallet_info = bat_state_->GetWalletInfo();
-      SetConfirmationsWalletInfo(wallet_info);
       auto on_pub_load = std::bind(
           &LedgerImpl::OnPublisherStateLoaded,
           this,
@@ -324,16 +360,9 @@ void LedgerImpl::OnLedgerStateLoaded(
 
 void LedgerImpl::SetConfirmationsWalletInfo(
     const ledger::WalletInfoProperties& wallet_info) {
-  if (!bat_confirmations_) {
-    confirmations::_environment = ledger::_environment;
-    confirmations::_is_debug = ledger::is_debug;
-
-    bat_confirmations_.reset(
-        confirmations::Confirmations::CreateInstance(ledger_client_));
-    bat_confirmations_->Initialize();
-  }
-
   auto confirmations_wallet_info = GetConfirmationsWalletInfo(wallet_info);
+  DCHECK(confirmations_wallet_info.IsValid());
+
   bat_confirmations_->SetWalletInfo(
       std::make_unique<confirmations::WalletInfo>(confirmations_wallet_info));
 }
@@ -937,7 +966,13 @@ void LedgerImpl::SetWalletInfo(
     const ledger::WalletInfoProperties& info) {
   bat_state_->SetWalletInfo(info);
 
-  SetConfirmationsWalletInfo(info);
+  if (!initializing_) {
+    // Only update wallet info for Confirmations if |SetWalletInfo| was not
+    // called when launching the browser or creating a wallet for the first time
+    // (i.e. recovering a wallet), as these scenarios are covered in
+    // |OnWalletInitializedInternal|
+    SetConfirmationsWalletInfo(info);
+  }
 }
 
 const confirmations::WalletInfo LedgerImpl::GetConfirmationsWalletInfo(
@@ -1140,9 +1175,7 @@ void LedgerImpl::SetCatalogIssuers(const std::string& info) {
     issuers_info->issuers.push_back(issuer_info);
   }
 
-  if (bat_confirmations_) {
-    bat_confirmations_->SetCatalogIssuers(std::move(issuers_info));
-  }
+  bat_confirmations_->SetCatalogIssuers(std::move(issuers_info));
 }
 
 void LedgerImpl::ConfirmAd(const std::string& info) {

@@ -17,7 +17,7 @@ struct CONFIRMATIONS_EXPORT WalletInfo {
   WalletInfo(const WalletInfo& info);
   ~WalletInfo();
 
-  bool IsValid();
+  bool IsValid() const;
 
   bool operator==(const WalletInfo& info) const;
 

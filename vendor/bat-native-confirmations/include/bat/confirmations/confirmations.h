@@ -25,6 +25,7 @@ using TransactionInfo = ::ledger::TransactionInfo;
 using TransactionsInfo = ::ledger::TransactionsInfo;
 
 using OnGetTransactionHistoryCallback = ::ledger::GetTransactionHistoryCallback;
+using OnInitializeCallback = std::function<void(bool)>;
 
 // |_environment| indicates that URL requests should use production, staging or
 // development servers but can be overridden via command-line arguments
@@ -46,8 +47,11 @@ class CONFIRMATIONS_EXPORT Confirmations {
   static Confirmations* CreateInstance(
       ConfirmationsClient* confirmations_client);
 
-  // Should be called from Ledger to initialize Confirmations
-  virtual void Initialize() = 0;
+  // Should be called from Ledger to initialize Confirmations. The callback
+  // takes one argument - |true| if Confirmations was successfully initialized;
+  // otherwise |false|
+  virtual void Initialize(
+      OnInitializeCallback callback) = 0;
 
   // Should be called when the wallet |payment_id| and |private_key| are set in
   // the Ledger library, e.g. initializing a wallet, creating a new wallet or
