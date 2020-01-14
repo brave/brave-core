@@ -14,19 +14,19 @@ protocol LoginTableViewCellDelegate: class {
 
 private struct LoginTableViewCellUX {
     static let highlightedLabelFont = UIFont.systemFont(ofSize: 12)
-    static let highlightedLabelTextColor = UIConstants.SystemBlueColor
-    static let highlightedLabelEditingTextColor = SettingsUX.TableViewHeaderTextColor
+    static let highlightedLabelTextColor = UIConstants.systemBlueColor
+    static let highlightedLabelEditingTextColor = SettingsUX.tableViewHeaderTextColor
 
     static let descriptionLabelFont = UIFont.systemFont(ofSize: 16)
     static let descriptionLabelTextColor = UIColor.black
 
-    static let HorizontalMargin: CGFloat = 14
-    static let IconImageSize: CGFloat = 34
+    static let horizontalMargin: CGFloat = 14
+    static let iconImageSize: CGFloat = 34
 
     static let indentWidth: CGFloat = 44
-    static let IndentAnimationDuration: TimeInterval = 0.2
+    static let indentAnimationDuration: TimeInterval = 0.2
 
-    static let editingDescriptionIndent: CGFloat = IconImageSize + HorizontalMargin
+    static let editingDescriptionIndent: CGFloat = iconImageSize + horizontalMargin
 }
 
 enum LoginTableViewCellStyle {
@@ -53,18 +53,18 @@ class LoginTableViewCell: UITableViewCell {
 
         // Menu actions for password
         if item == .passwordItem {
-            let showRevealOption = self.descriptionLabel.isSecureTextEntry ? (action == MenuHelper.SelectorReveal) : (action == MenuHelper.SelectorHide)
-            return action == MenuHelper.SelectorCopy || showRevealOption
+            let showRevealOption = self.descriptionLabel.isSecureTextEntry ? (action == MenuHelper.selectorReveal) : (action == MenuHelper.selectorHide)
+            return action == MenuHelper.selectorCopy || showRevealOption
         }
 
         // Menu actions for Website
         if item == .websiteItem {
-            return action == MenuHelper.SelectorCopy || action == MenuHelper.SelectorOpenAndFill
+            return action == MenuHelper.selectorCopy || action == MenuHelper.selectorOpenAndFill
         }
 
         // Menu actions for Username
         if item == .usernameItem {
-            return action == MenuHelper.SelectorCopy
+            return action == MenuHelper.selectorCopy
         }
         
         return false
@@ -74,7 +74,7 @@ class LoginTableViewCell: UITableViewCell {
         let label = UITextField()
         label.font = LoginTableViewCellUX.descriptionLabelFont
         label.textColor = LoginTableViewCellUX.descriptionLabelTextColor
-        label.backgroundColor = UIColor.Photon.White100
+        label.backgroundColor = UIColor.Photon.white100
         label.isUserInteractionEnabled = false
         label.autocapitalizationType = .none
         label.autocorrectionType = .no
@@ -92,14 +92,14 @@ class LoginTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = LoginTableViewCellUX.highlightedLabelFont
         label.textColor = LoginTableViewCellUX.highlightedLabelTextColor
-        label.backgroundColor = UIColor.Photon.White100
+        label.backgroundColor = UIColor.Photon.white100
         label.numberOfLines = 1
         return label
     }()
 
     fileprivate lazy var iconImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = UIColor.Photon.White100
+        imageView.backgroundColor = UIColor.Photon.white100
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
@@ -180,8 +180,8 @@ class LoginTableViewCell: UITableViewCell {
         indentationWidth = 0
         selectionStyle = .none
 
-        contentView.backgroundColor = UIColor.Photon.White100
-        labelContainer.backgroundColor = UIColor.Photon.White100
+        contentView.backgroundColor = UIColor.Photon.white100
+        labelContainer.backgroundColor = UIColor.Photon.white100
 
         labelContainer.addSubview(highlightedLabel)
         labelContainer.addSubview(descriptionLabel)
@@ -232,14 +232,14 @@ class LoginTableViewCell: UITableViewCell {
         case .iconAndBothLabels:
             iconImageView.snp.remakeConstraints { make in
                 make.centerY.equalTo(contentView)
-                make.leading.equalTo(contentView).offset(LoginTableViewCellUX.HorizontalMargin)
-                make.height.width.equalTo(LoginTableViewCellUX.IconImageSize)
+                make.leading.equalTo(contentView).offset(LoginTableViewCellUX.horizontalMargin)
+                make.height.width.equalTo(LoginTableViewCellUX.iconImageSize)
             }
 
             labelContainer.snp.remakeConstraints { make in
                 make.centerY.equalTo(contentView)
-                make.trailing.equalTo(contentView).offset(-LoginTableViewCellUX.HorizontalMargin)
-                make.leading.equalTo(iconImageView.snp.trailing).offset(LoginTableViewCellUX.HorizontalMargin)
+                make.trailing.equalTo(contentView).offset(-LoginTableViewCellUX.horizontalMargin)
+                make.leading.equalTo(iconImageView.snp.trailing).offset(LoginTableViewCellUX.horizontalMargin)
             }
 
             highlightedLabel.snp.remakeConstraints { make in
@@ -256,14 +256,14 @@ class LoginTableViewCell: UITableViewCell {
         case .iconAndDescriptionLabel:
             iconImageView.snp.remakeConstraints { make in
                 make.centerY.equalTo(contentView)
-                make.leading.equalTo(contentView).offset(LoginTableViewCellUX.HorizontalMargin)
-                make.height.width.equalTo(LoginTableViewCellUX.IconImageSize)
+                make.leading.equalTo(contentView).offset(LoginTableViewCellUX.horizontalMargin)
+                make.height.width.equalTo(LoginTableViewCellUX.iconImageSize)
             }
 
             labelContainer.snp.remakeConstraints { make in
                 make.centerY.equalTo(contentView)
-                make.trailing.equalTo(contentView).offset(-LoginTableViewCellUX.HorizontalMargin)
-                make.leading.equalTo(iconImageView.snp.trailing).offset(LoginTableViewCellUX.HorizontalMargin)
+                make.trailing.equalTo(contentView).offset(-LoginTableViewCellUX.horizontalMargin)
+                make.leading.equalTo(iconImageView.snp.trailing).offset(LoginTableViewCellUX.horizontalMargin)
             }
 
             highlightedLabel.snp.remakeConstraints { make in
@@ -281,13 +281,13 @@ class LoginTableViewCell: UITableViewCell {
 
             iconImageView.snp.remakeConstraints { make in
                 make.centerY.equalTo(contentView)
-                make.leading.equalTo(contentView).offset(LoginTableViewCellUX.HorizontalMargin)
+                make.leading.equalTo(contentView).offset(LoginTableViewCellUX.horizontalMargin)
                 make.height.width.equalTo(0)
             }
 
             labelContainer.snp.remakeConstraints { make in
                 make.centerY.equalTo(contentView)
-                make.trailing.equalTo(contentView).offset(-LoginTableViewCellUX.HorizontalMargin)
+                make.trailing.equalTo(contentView).offset(-LoginTableViewCellUX.horizontalMargin)
                 make.leading.equalTo(iconImageView.snp.trailing).offset(editingOffset)
             }
 
@@ -323,7 +323,7 @@ class LoginTableViewCell: UITableViewCell {
             self.customIndentView.frame = indentFrame
         }
 
-        animated ? UIView.animate(withDuration: LoginTableViewCellUX.IndentAnimationDuration, animations: adjustConstraints) : adjustConstraints()
+        animated ? UIView.animate(withDuration: LoginTableViewCellUX.indentAnimationDuration, animations: adjustConstraints) : adjustConstraints()
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

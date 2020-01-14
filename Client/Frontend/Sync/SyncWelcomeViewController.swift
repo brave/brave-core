@@ -43,7 +43,7 @@ class SyncWelcomeViewController: SyncViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.semibold)
-        label.text = Strings.BraveSync
+        label.text = Strings.braveSync
         label.textAlignment = .center
         return label
     }()
@@ -55,7 +55,7 @@ class SyncWelcomeViewController: SyncViewController {
         label.numberOfLines = 0
         label.lineBreakMode = .byWordWrapping
         label.textAlignment = .center
-        label.text = Strings.BraveSyncWelcome
+        label.text = Strings.braveSyncWelcome
         label.setContentHuggingPriority(UILayoutPriority(rawValue: 250), for: .horizontal)
 
         return label
@@ -71,10 +71,10 @@ class SyncWelcomeViewController: SyncViewController {
     lazy var newToSyncButton: RoundInterfaceButton = {
         let button = RoundInterfaceButton(type: .roundedRect)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(Strings.NewSyncCode, for: .normal)
+        button.setTitle(Strings.newSyncCode, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.bold)
         button.appearanceTextColor = .white
-        button.backgroundColor = BraveUX.BraveOrange
+        button.backgroundColor = BraveUX.braveOrange
         button.addTarget(self, action: #selector(newToSyncAction), for: .touchUpInside)
 
         button.snp.makeConstraints { make in
@@ -87,9 +87,9 @@ class SyncWelcomeViewController: SyncViewController {
     lazy var existingUserButton: RoundInterfaceButton = {
         let button = RoundInterfaceButton(type: .roundedRect)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle(Strings.ScanSyncCode, for: .normal)
+        button.setTitle(Strings.scanSyncCode, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
-        button.setTitleColor(BraveUX.GreyH, for: .normal)
+        button.setTitleColor(BraveUX.greyH, for: .normal)
         button.addTarget(self, action: #selector(existingUserAction), for: .touchUpInside)
         return button
     }()
@@ -97,7 +97,7 @@ class SyncWelcomeViewController: SyncViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = Strings.Sync
+        title = Strings.sync
 
         view.addSubview(mainStackView)
         mainStackView.snp.makeConstraints { make in
@@ -149,7 +149,7 @@ class SyncWelcomeViewController: SyncViewController {
             func pushAddDeviceVC() {
                 guard Sync.shared.isInSyncGroup else {
                     addDevice.disableNavigationPrevention()
-                    let alert = UIAlertController(title: Strings.SyncUnsuccessful, message: Strings.SyncUnableCreateGroup, preferredStyle: .alert)
+                    let alert = UIAlertController(title: Strings.syncUnsuccessful, message: Strings.syncUnableCreateGroup, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
                     addDevice.present(alert, animated: true, completion: nil)
                     return

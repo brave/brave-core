@@ -68,7 +68,7 @@ private extension VerifyUserWalletViewController {
     
     let verifyWalletButton = FilledActionButton(type: .system).then {
       $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 40, bottom: 12, right: 40)
-      $0.setTitle(Strings.UserWalletOnboardingVerifyButtonTitle, for: .normal)
+      $0.setTitle(Strings.userWalletOnboardingVerifyButtonTitle, for: .normal)
       $0.titleLabel?.font = .systemFont(ofSize: 14, weight: .bold)
       $0.appearanceBackgroundColor = BraveUX.braveOrange
       $0.setTitleColor(.white, for: .normal)
@@ -84,9 +84,9 @@ private extension VerifyUserWalletViewController {
         $0.layoutMargins = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
       }
       benefitsStackView.addStackViewItems(
-        .view(BenefitItemView(text: Strings.UserWalletOnboardingBenefitsOne)),
-        .view(BenefitItemView(text: Strings.UserWalletOnboardingBenefitsTwo)),
-        .view(BenefitItemView(text: Strings.UserWalletOnboardingBenefitsThree))
+        .view(BenefitItemView(text: Strings.userWalletOnboardingBenefitsOne)),
+        .view(BenefitItemView(text: Strings.userWalletOnboardingBenefitsTwo)),
+        .view(BenefitItemView(text: Strings.userWalletOnboardingBenefitsThree))
       )
       
       addSubview(gradientView)
@@ -98,7 +98,7 @@ private extension VerifyUserWalletViewController {
         .view(UIImageView(image: UIImage(frameworkResourceNamed: "verify-wallet-graphic"))),
         .customSpace(24),
         .view(UILabel().then {
-          $0.text = Strings.UserWalletOnboardingTitle
+          $0.text = Strings.userWalletOnboardingTitle
           $0.font = .systemFont(ofSize: 22, weight: .semibold)
           $0.appearanceTextColor = .white
           $0.textAlignment = .center
@@ -106,7 +106,7 @@ private extension VerifyUserWalletViewController {
         }),
         .customSpace(38),
         .view(UILabel().then {
-          $0.text = Strings.UserWalletOnboardingBenefitsTitle
+          $0.text = Strings.userWalletOnboardingBenefitsTitle
           $0.font = .systemFont(ofSize: 17, weight: .semibold)
           $0.appearanceTextColor = .white
           $0.textAlignment = .center
@@ -120,7 +120,7 @@ private extension VerifyUserWalletViewController {
         .view(PoweredByUpholdView()),
         .customSpace(16),
         .view(UILabel().then {
-          $0.text = Strings.UserWalletOnboardingUpholdDisclosure
+          $0.text = Strings.userWalletOnboardingUpholdDisclosure
           $0.font = .systemFont(ofSize: 12)
           $0.appearanceTextColor = .white
           $0.textAlignment = .left
@@ -190,8 +190,8 @@ private extension VerifyUserWalletViewController {
         .view(UILabel().then {
           $0.appearanceTextColor = nil
           $0.attributedText = {
-            let string = NSMutableAttributedString(string: Strings.UserWalletOnboardingPoweredByUphold, attributes: [.font: UIFont.systemFont(ofSize: 12), .foregroundColor: UIColor.white])
-            if let upholdRange = string.string.range(of: Strings.UserWalletOnboardingPoweredByUpholdBoldedWord) {
+            let string = NSMutableAttributedString(string: Strings.userWalletOnboardingPoweredByUphold, attributes: [.font: UIFont.systemFont(ofSize: 12), .foregroundColor: UIColor.white])
+            if let upholdRange = string.string.range(of: Strings.userWalletOnboardingPoweredByUpholdBoldedWord) {
               let nsRange = NSRange(upholdRange, in: string.string)
               string.addAttribute(.font, value: UIFont.systemFont(ofSize: 12, weight: .bold), range: nsRange)
             }

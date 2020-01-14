@@ -9,21 +9,21 @@ import WebKit
 import Shared
 
 struct MIMEType {
-    static let Bitmap = "image/bmp"
+    static let bitmap = "image/bmp"
     static let CSS = "text/css"
     static let GIF = "image/gif"
-    static let JavaScript = "text/javascript"
+    static let javaScript = "text/javascript"
     static let JPEG = "image/jpeg"
     static let HTML = "text/html"
-    static let OctetStream = "application/octet-stream"
-    static let Passbook = "application/vnd.apple.pkpass"
+    static let octetStream = "application/octet-stream"
+    static let passbook = "application/vnd.apple.pkpass"
     static let PDF = "application/pdf"
-    static let PlainText = "text/plain"
+    static let plainText = "text/plain"
     static let PNG = "image/png"
-    static let WebP = "image/webp"
+    static let webP = "image/webp"
     static let xHTML = "application/xhtml+xml"
 
-    private static let webViewViewableTypes: [String] = [MIMEType.Bitmap, MIMEType.GIF, MIMEType.JPEG, MIMEType.HTML, MIMEType.PDF, MIMEType.PlainText, MIMEType.PNG, MIMEType.WebP, MIMEType.xHTML]
+    private static let webViewViewableTypes: [String] = [MIMEType.bitmap, MIMEType.GIF, MIMEType.JPEG, MIMEType.HTML, MIMEType.PDF, MIMEType.plainText, MIMEType.PNG, MIMEType.webP, MIMEType.xHTML]
 
     static func canShowInWebView(_ mimeType: String) -> Bool {
         return webViewViewableTypes.contains(mimeType.lowercased())
@@ -34,7 +34,7 @@ struct MIMEType {
             return mimeType as String
         }
 
-        return MIMEType.OctetStream
+        return MIMEType.octetStream
     }
 }
 
@@ -60,8 +60,8 @@ class DownloadHelper: NSObject, OpenInHelper {
         }
 
         let contentDisposition = (response as? HTTPURLResponse)?.allHeaderFields["Content-Disposition"] as? String
-        let mimeType = response.mimeType ?? MIMEType.OctetStream
-        let isAttachment = contentDisposition?.starts(with: "attachment") ?? (mimeType == MIMEType.OctetStream)
+        let mimeType = response.mimeType ?? MIMEType.octetStream
+        let isAttachment = contentDisposition?.starts(with: "attachment") ?? (mimeType == MIMEType.octetStream)
 
         guard isAttachment || !canShowInWebView || forceDownload else {
             return nil
@@ -85,7 +85,7 @@ class DownloadHelper: NSObject, OpenInHelper {
         
         let alert = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         
-        var downloadActionText = Strings.Download
+        var downloadActionText = Strings.download
         // The download can be of undetermined size, adding expected size only if it's available.
         if let expectedSize = expectedSize {
             downloadActionText += " (\(expectedSize))"
@@ -95,7 +95,7 @@ class DownloadHelper: NSObject, OpenInHelper {
             self.browserViewController.downloadQueue.enqueue(download)
         }
         
-        let cancelAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel)
+        let cancelAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel)
         
         alert.addAction(okAction)
         alert.addAction(cancelAction)
@@ -117,7 +117,7 @@ class OpenPassBookHelper: NSObject, OpenInHelper {
     fileprivate let browserViewController: BrowserViewController
 
     required init?(request: URLRequest?, response: URLResponse, canShowInWebView: Bool, forceDownload: Bool, browserViewController: BrowserViewController) {
-        guard let mimeType = response.mimeType, mimeType == MIMEType.Passbook, PKAddPassesViewController.canAddPasses(),
+        guard let mimeType = response.mimeType, mimeType == MIMEType.passbook, PKAddPassesViewController.canAddPasses(),
             let responseURL = response.url, !forceDownload else { return nil }
         self.url = responseURL
         self.browserViewController = browserViewController
@@ -139,11 +139,11 @@ class OpenPassBookHelper: NSObject, OpenInHelper {
         } catch {
             // display an error
             let alertController = UIAlertController(
-                title: Strings.UnableToAddPassErrorTitle,
-                message: Strings.UnableToAddPassErrorMessage,
+                title: Strings.unableToAddPassErrorTitle,
+                message: Strings.unableToAddPassErrorMessage,
                 preferredStyle: .alert)
             alertController.addAction(
-                UIAlertAction(title: Strings.UnableToAddPassErrorDismiss, style: .cancel) { (action) in
+                UIAlertAction(title: Strings.unableToAddPassErrorDismiss, style: .cancel) { (action) in
                     // Do nothing.
                 })
             browserViewController.present(alertController, animated: true, completion: nil)

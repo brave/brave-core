@@ -55,13 +55,13 @@ class Theme: Equatable, Decodable {
                 // continue
             } else if self == .system {
                 // iOS 12 .system is treated as .light
-                return Strings.ThemesLightOption
+                return Strings.themesLightOption
             }
             
             switch self {
-            case .system: return Strings.ThemesAutomaticOption
-            case .light: return Strings.ThemesLightOption
-            case .dark: return Strings.ThemesDarkOption
+            case .system: return Strings.themesAutomaticOption
+            case .light: return Strings.themesLightOption
+            case .dark: return Strings.themesDarkOption
                 
             // Should not be visible, but making explicit so compiler will capture any `DefaultTheme` modifications
             case .private: return "<invalid>"
@@ -69,7 +69,7 @@ class Theme: Equatable, Decodable {
         }
     }
     
-    fileprivate static let ThemeDirectory = Bundle.main.resourceURL!.appendingPathComponent("Themes")
+    fileprivate static let themeDirectory = Bundle.main.resourceURL!.appendingPathComponent("Themes")
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: ThemeCodingKeys.self)
@@ -233,7 +233,7 @@ class Theme: Equatable, Decodable {
             return inMemoryTheme
         }
         
-        let themePath = Theme.ThemeDirectory.appendingPathComponent(id).appendingPathExtension("json").path
+        let themePath = Theme.themeDirectory.appendingPathComponent(id).appendingPathExtension("json").path
         guard
             let themeData = FileManager.default.contents(atPath: themePath),
             let theme = try? JSONDecoder().decode(Theme.self, from: themeData) else {
@@ -258,7 +258,7 @@ class Theme: Equatable, Decodable {
     
     static let allThemes: [Theme] = {
         do {
-            let filenames = try FileManager.default.contentsOfDirectory(at: Theme.ThemeDirectory, includingPropertiesForKeys: [])
+            let filenames = try FileManager.default.contentsOfDirectory(at: Theme.themeDirectory, includingPropertiesForKeys: [])
             
             let final = filenames.filter {
                 $0.pathExtension == "json"

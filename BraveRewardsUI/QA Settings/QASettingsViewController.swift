@@ -97,7 +97,7 @@ public class QASettingsViewController: TableViewController {
     
     title = "Rewards QA Settings"
     
-    let isDefaultEnvironmentProd = AppConstants.BuildChannel != .developer
+    let isDefaultEnvironmentProd = AppConstants.buildChannel != .developer
     
     let override: EnvironmentOverride = EnvironmentOverride(rawValue: Preferences.Rewards.environmentOverride.value) ?? .none
     segmentedControl.selectedSegmentIndex = EnvironmentOverride.sortedCases.firstIndex(of: override) ?? 0

@@ -79,9 +79,9 @@ public class Sync: JSInjector {
         public static let didLeaveSyncGroup = Notification.Name(rawValue: "NotificationLeftSyncGroup")
     }
     
-    public static let SeedByteLength = 32
+    public static let seedByteLength = 32
     /// Number of records that is considered a fetch limit as opposed to full data set
-    static let RecordFetchAmount = 300
+    static let recordFetchAmount = 300
     public static let shared = Sync()
     
     /// This must be public so it can be added into the view hierarchy
@@ -111,7 +111,7 @@ public class Sync: JSInjector {
     /// Please note that sync initialization also happens on app launch, not only on first connection to Sync.
     public var syncSetupFailureCallback: (() -> Void)?
     
-    fileprivate lazy var isDebug: Bool = { return AppConstants.BuildChannel == .developer }()
+    fileprivate lazy var isDebug: Bool = { return AppConstants.buildChannel == .developer }()
     
     fileprivate lazy var serverUrl: String = {
         return isDebug ? "https://sync-staging.brave.com" : "https://sync.brave.com"
@@ -209,7 +209,7 @@ public class Sync: JSInjector {
     /// Notice:: seed will be ignored if the keychain already has one, a user must disconnect from existing sync group prior to joining a new one
     public func initializeSync(seed: [Int]? = nil, deviceName: String? = nil) {
         
-        if let joinedSeed = seed, joinedSeed.count == Sync.SeedByteLength {
+        if let joinedSeed = seed, joinedSeed.count == Sync.seedByteLength {
             // Always attempt seed write, setter prevents bad overwrites
             syncSeed = "\(joinedSeed)"
         }
@@ -272,7 +272,7 @@ public class Sync: JSInjector {
     public var syncSeedArray: [Int]? {
         let splitBytes = syncSeed?.components(separatedBy: CharacterSet(charactersIn: "[], ")).filter { !$0.isEmpty }
         let seed = splitBytes?.compactMap { Int($0) }
-        return seed?.count == Sync.SeedByteLength ? seed : nil
+        return seed?.count == Sync.seedByteLength ? seed : nil
     }
     
     // Same abstraction note as above
@@ -446,7 +446,7 @@ extension Sync {
         executeBlockOnReady() {
             
             // Pass in `lastFetch` to get records since that time
-            let evaluate = "callbackList['\(self.syncFetchMethod)'](null, ['\(type.rawValue)'], \(type.lastFetchTimeStamp), \(Sync.RecordFetchAmount))"
+            let evaluate = "callbackList['\(self.syncFetchMethod)'](null, ['\(type.rawValue)'], \(type.lastFetchTimeStamp), \(Sync.recordFetchAmount))"
             self.webView.evaluateJavaScript(evaluate,
                                             completionHandler: { (result, error) in
                                                 completion?(error)
@@ -607,7 +607,7 @@ extension Sync {
             let seed = seedJSON.compactMap({ $0.int })
             
             // TODO: Move to constant
-            if seed.count < Sync.SeedByteLength {
+            if seed.count < Sync.seedByteLength {
                 // Error
                 return
             }

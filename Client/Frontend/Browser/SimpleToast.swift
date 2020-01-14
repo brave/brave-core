@@ -6,13 +6,13 @@ import Foundation
 import Shared
 
 struct SimpleToastUX {
-    static let ToastHeight = BottomToolbarHeight
-    static let ToastAnimationDuration = 0.5
-    static let ToastDefaultColor = UIColor.Photon.Blue50
-    static let ToastFont = UIFont.systemFont(ofSize: 15)
-    static let ToastDismissAfter = DispatchTimeInterval.milliseconds(4500) // 4.5 seconds.
-    static let ToastDelayBefore = DispatchTimeInterval.milliseconds(0) // 0 seconds
-    static let BottomToolbarHeight = CGFloat(45)
+    static let toastHeight = bottomToolbarHeight
+    static let toastAnimationDuration = 0.5
+    static let toastDefaultColor = UIColor.Photon.blue50
+    static let toastFont = UIFont.systemFont(ofSize: 15)
+    static let toastDismissAfter = DispatchTimeInterval.milliseconds(4500) // 4.5 seconds.
+    static let toastDelayBefore = DispatchTimeInterval.milliseconds(0) // 0 seconds
+    static let bottomToolbarHeight = CGFloat(45)
 }
 
 struct SimpleToast {
@@ -23,7 +23,7 @@ struct SimpleToast {
         toast.snp.makeConstraints { (make) in
             make.width.equalTo(bottomContainer)
             make.left.equalTo(bottomContainer)
-            make.height.equalTo(SimpleToastUX.ToastHeight)
+            make.height.equalTo(SimpleToastUX.toastHeight)
             make.bottom.equalTo(bottomContainer)
         }
         animate(toast)
@@ -31,18 +31,18 @@ struct SimpleToast {
 
     fileprivate func createView() -> UILabel {
         let toast = UILabel()
-        toast.textColor = UIColor.Photon.White100
-        toast.backgroundColor = SimpleToastUX.ToastDefaultColor
-        toast.font = SimpleToastUX.ToastFont
+        toast.textColor = UIColor.Photon.white100
+        toast.backgroundColor = SimpleToastUX.toastDefaultColor
+        toast.font = SimpleToastUX.toastFont
         toast.textAlignment = .center
         return toast
     }
 
     fileprivate func dismiss(_ toast: UIView) {
-        UIView.animate(withDuration: SimpleToastUX.ToastAnimationDuration,
+        UIView.animate(withDuration: SimpleToastUX.toastAnimationDuration,
             animations: {
                 var frame = toast.frame
-                frame.origin.y = frame.origin.y + SimpleToastUX.ToastHeight
+                frame.origin.y = frame.origin.y + SimpleToastUX.toastHeight
                 frame.size.height = 0
                 toast.frame = frame
             },
@@ -53,15 +53,15 @@ struct SimpleToast {
     }
 
     fileprivate func animate(_ toast: UIView) {
-        UIView.animate(withDuration: SimpleToastUX.ToastAnimationDuration,
+        UIView.animate(withDuration: SimpleToastUX.toastAnimationDuration,
             animations: {
                 var frame = toast.frame
-                frame.origin.y = frame.origin.y - SimpleToastUX.ToastHeight
-                frame.size.height = SimpleToastUX.ToastHeight
+                frame.origin.y = frame.origin.y - SimpleToastUX.toastHeight
+                frame.size.height = SimpleToastUX.toastHeight
                 toast.frame = frame
             },
             completion: { finished in
-                let dispatchTime = DispatchTime.now() + SimpleToastUX.ToastDismissAfter
+                let dispatchTime = DispatchTime.now() + SimpleToastUX.toastDismissAfter
 
                 DispatchQueue.main.asyncAfter(deadline: dispatchTime, execute: {
                     self.dismiss(toast)

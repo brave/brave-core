@@ -18,7 +18,7 @@ class SearchSettingsTableViewController: UITableViewController {
     fileprivate let NumberOfItemsInSectionDefault = 3
     fileprivate let SectionOrder = 1
     fileprivate let NumberOfSections = 2
-    fileprivate let IconSize = CGSize(width: OpenSearchEngine.PreferredIconSize, height: OpenSearchEngine.PreferredIconSize)
+    fileprivate let IconSize = CGSize(width: OpenSearchEngine.preferredIconSize, height: OpenSearchEngine.preferredIconSize)
     fileprivate let SectionHeaderIdentifier = "SectionHeaderIdentifier"
     
     fileprivate var showDeletion = false
@@ -31,7 +31,7 @@ class SearchSettingsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = Strings.SearchSettingNavTitle
+        navigationItem.title = Strings.searchSettingNavTitle
 
         // To allow re-ordering the list of search engines at all times.
         tableView.isEditing = true
@@ -42,7 +42,7 @@ class SearchSettingsTableViewController: UITableViewController {
 
         // Insert Done button if being presented outside of the Settings Nav stack
         if !(self.navigationController is SettingsNavigationController) {
-            self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.SettingsSearchDoneButton, style: .done, target: self, action: #selector(self.dismissAnimated))
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.settingsSearchDoneButton, style: .done, target: self, action: #selector(self.dismissAnimated))
         }
 
         let footer = SettingsTableSectionHeaderFooterView(frame: CGRect(width: tableView.bounds.width, height: 44))
@@ -63,7 +63,7 @@ class SearchSettingsTableViewController: UITableViewController {
                 cell = configureSearchEngineCell(type: .privateMode, engineName: engine.shortName)
             case ItemDefaultSuggestions:
                 cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-                cell.textLabel?.text = Strings.SearchSettingSuggestionCellTitle
+                cell.textLabel?.text = Strings.searchSettingSuggestionCellTitle
                 let toggle = UISwitch()
                 toggle.addTarget(self, action: #selector(didToggleSearchSuggestions), for: .valueChanged)
                 toggle.isOn = model.shouldShowSearchSuggestions
@@ -108,9 +108,9 @@ class SearchSettingsTableViewController: UITableViewController {
         
         switch type {
         case .standard:
-            text = Strings.StandardTabSearch
+            text = Strings.standardTabSearch
         case .privateMode:
-            text = Strings.PrivateTabSearch
+            text = Strings.privateTabSearch
         }
         
         let cell = UITableViewCell(style: UITableViewCell.CellStyle.value1, reuseIdentifier: nil)
@@ -192,7 +192,7 @@ class SearchSettingsTableViewController: UITableViewController {
         let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: SectionHeaderIdentifier) as! SettingsTableSectionHeaderFooterView
         
         let sectionTitle = section == SectionDefault ?
-            Strings.CurrentlyUsedSearchEngines : Strings.QuickSearchEngines
+            Strings.currentlyUsedSearchEngines : Strings.quickSearchEngines
         
         headerView.titleLabel.text = sectionTitle
         return headerView

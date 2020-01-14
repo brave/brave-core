@@ -20,7 +20,7 @@ class FavoritesDataSource: NSObject, UICollectionViewDataSource {
                 // We need to post notification here to inform all cells to show the edit button.
                 // collectionView.reloadData() can't be used, it stops InteractiveMovementForItem,
                 // requiring user to long press again if he wants to reorder a tile.
-                let name = isEditing ? Notification.Name.ThumbnailEditOn : Notification.Name.ThumbnailEditOff
+                let name = isEditing ? Notification.Name.thumbnailEditOn : Notification.Name.thumbnailEditOff
                 NotificationCenter.default.post(name: name, object: nil)
             }
         }

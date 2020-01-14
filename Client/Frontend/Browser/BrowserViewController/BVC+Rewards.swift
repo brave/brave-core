@@ -119,18 +119,18 @@ extension BrowserViewController {
                     // Uphold account doesn't support BAT...
                     let popup = AlertPopupView(
                         imageView: nil,
-                        title: Strings.UserWalletBATNotAllowedTitle,
-                        message: Strings.UserWalletBATNotAllowedMessage,
+                        title: Strings.userWalletBATNotAllowedTitle,
+                        message: Strings.userWalletBATNotAllowedMessage,
                         titleWeight: .semibold,
                         titleSize: 18.0
                     )
-                    popup.addButton(title: Strings.UserWalletBATNotAllowedLearnMore, type: .link, fontSize: 14.0) { () -> PopupViewDismissType in
+                    popup.addButton(title: Strings.userWalletBATNotAllowedLearnMore, type: .link, fontSize: 14.0) { () -> PopupViewDismissType in
                         if let url = URL(string: "https://uphold.com/en/brave/support") {
                             tab.loadRequest(URLRequest(url: url))
                         }
                         return .flyDown
                     }
-                    popup.addButton(title: Strings.UserWalletCloseButtonTitle, type: .primary, fontSize: 14.0) { () -> PopupViewDismissType in
+                    popup.addButton(title: Strings.userWalletCloseButtonTitle, type: .primary, fontSize: 14.0) { () -> PopupViewDismissType in
                         return .flyDown
                     }
                     popup.showWithType(showType: .flyUp)
@@ -138,12 +138,12 @@ extension BrowserViewController {
                     // Some other issue occured with authorization
                     let popup = AlertPopupView(
                         imageView: nil,
-                        title: Strings.UserWalletGenericErrorTitle,
-                        message: Strings.UserWalletGenericErrorMessage,
+                        title: Strings.userWalletGenericErrorTitle,
+                        message: Strings.userWalletGenericErrorMessage,
                         titleWeight: .semibold,
                         titleSize: 18.0
                     )
-                    popup.addButton(title: Strings.UserWalletCloseButtonTitle, type: .primary, fontSize: 14.0) { () -> PopupViewDismissType in
+                    popup.addButton(title: Strings.userWalletCloseButtonTitle, type: .primary, fontSize: 14.0) { () -> PopupViewDismissType in
                         return .flyDown
                     }
                     popup.showWithType(showType: .flyUp)

@@ -39,7 +39,7 @@ class AutoContributeDetailViewController: UIViewController {
     contentView.tableView.delegate = self
     contentView.tableView.dataSource = self
     
-    title = Strings.AutoContribute
+    title = Strings.autoContribute
     
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(tappedEditButton))
     
@@ -82,7 +82,7 @@ class AutoContributeDetailViewController: UIViewController {
   }
   
   private func totalSitesAttributedString(from total: Int) -> NSAttributedString {
-    let format = String(format: Strings.TotalSites, total)
+    let format = String(format: Strings.totalSites, total)
     let s = NSMutableAttributedString(string: format)
     guard let range = format.range(of: String(total)) else { return s }
     s.addAttribute(.font, value: UIFont.systemFont(ofSize: 14.0, weight: .semibold), range: NSRange(range, in: format))
@@ -92,11 +92,11 @@ class AutoContributeDetailViewController: UIViewController {
   private let headerView = TableHeaderRowView(
     columns: [
       TableHeaderRowView.Column(
-        title: Strings.Site.uppercased(),
+        title: Strings.site.uppercased(),
         width: .percentage(0.7)
       ),
       TableHeaderRowView.Column(
-        title: Strings.Attention.uppercased(),
+        title: Strings.attention.uppercased(),
         width: .percentage(0.3),
         align: .right
       ),
@@ -132,7 +132,7 @@ class AutoContributeDetailViewController: UIViewController {
   private var nextContributionDateView: LabelAccessoryView {
     let view = LabelAccessoryView()
     let dateFormatter = DateFormatter().then {
-      $0.dateFormat = Strings.AutoContributeDateFormat
+      $0.dateFormat = Strings.autoContributeDateFormat
     }
     let reconcileDate = Date(timeIntervalSince1970: TimeInterval(state.ledger.autoContributeProps.reconcileStamp))
     view.label.text = dateFormatter.string(from: reconcileDate)
@@ -189,7 +189,7 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
           }
           self.navigationController?.popViewController(animated: true)
         }
-        controller.title = Strings.AutoContributeMonthlyPaymentTitle
+        controller.title = Strings.autoContributeMonthlyPaymentTitle
         navigationController?.pushViewController(controller, animated: true)
       case SummaryRows.excludedSites.rawValue:
         let numberOfExcludedSites = state.ledger.numberOfExcludedPublishers
@@ -199,10 +199,10 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
           presenter.sourceRect = cell.bounds
           presenter.permittedArrowDirections = [.up, .down]
         }
-        alert.addAction(UIAlertAction(title: String(format: Strings.AutoContributeRestoreExcludedSites, numberOfExcludedSites), style: .default, handler: { _ in
+        alert.addAction(UIAlertAction(title: String(format: Strings.autoContributeRestoreExcludedSites, numberOfExcludedSites), style: .default, handler: { _ in
           self.state.ledger.restoreAllExcludedPublishers()
         }))
-        alert.addAction(UIAlertAction(title: Strings.Cancel, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: Strings.cancel, style: .cancel, handler: nil))
         present(alert, animated: true)
       default:
         break
@@ -257,7 +257,7 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
   }
   
   func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-    return Strings.Exclude
+    return Strings.exclude
   }
   
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -286,28 +286,28 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
       cell.selectionStyle = .none
       switch row {
       case .settings:
-        cell.label.text = Strings.Settings
+        cell.label.text = Strings.settings
         cell.imageView?.image = UIImage(frameworkResourceNamed: "settings").alwaysTemplate
         cell.imageView?.tintColor = BraveUX.autoContributeTintColor
         cell.accessoryType = .disclosureIndicator
         cell.selectionStyle = .default
       case .monthlyPayment:
-        cell.label.text = Strings.AutoContributeMonthlyPayment
+        cell.label.text = Strings.autoContributeMonthlyPayment
         cell.accessoryType = .disclosureIndicator
         if let dollarAmount = state.ledger.dollarStringForBATAmount(state.ledger.contributionAmount) {
           let amount = "\(state.ledger.contributionAmount) \(Strings.BAT) (\(dollarAmount))"
-          cell.accessoryLabel?.text = String(format: Strings.SettingsAutoContributeUpToValue, amount)
+          cell.accessoryLabel?.text = String(format: Strings.settingsAutoContributeUpToValue, amount)
         }
         cell.selectionStyle = .default
       case .nextContribution:
-        cell.label.text = Strings.AutoContributeNextDate
+        cell.label.text = Strings.autoContributeNextDate
         cell.accessoryView = nextContributionDateView
       case .supportedSites:
-        cell.label.text = Strings.AutoContributeSupportedSites
+        cell.label.text = Strings.autoContributeSupportedSites
         cell.accessoryLabel?.attributedText = totalSitesAttributedString(from: publishers.count)
       case .excludedSites:
         let numberOfExcludedSites = state.ledger.numberOfExcludedPublishers
-        cell.label.text = String(format: Strings.AutoContributeRestoreExcludedSites, numberOfExcludedSites)
+        cell.label.text = String(format: Strings.autoContributeRestoreExcludedSites, numberOfExcludedSites)
         cell.label.appearanceTextColor = Colors.blurple400
         cell.selectionStyle = .default
       }
@@ -315,7 +315,7 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
     case .contributions:
       if publishers.isEmpty {
         let cell = tableView.dequeueReusableCell(for: indexPath) as EmptyTableCell
-        cell.label.text = Strings.EmptyAutoContribution
+        cell.label.text = Strings.emptyAutoContribution
         return cell
       }
       guard let publisher = publishers[safe: indexPath.row] else {
@@ -333,7 +333,7 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
       }
       
       cell.verifiedStatusImageView.isHidden = publisher.status == .notVerified
-      let provider = " \(publisher.provider.isEmpty ? "" : String(format: Strings.OnProviderText, publisher.providerDisplayString))"
+      let provider = " \(publisher.provider.isEmpty ? "" : String(format: Strings.onProviderText, publisher.providerDisplayString))"
       let attrName = NSMutableAttributedString(string: publisher.name).then {
         $0.append(NSMutableAttributedString(string: provider, attributes: [.font: UIFont.boldSystemFont(ofSize: 14.0),
                                                                            .foregroundColor: UIColor.gray]))

@@ -12,9 +12,9 @@ private let log = Logger.syncLogger
 open class SQLiteLogins: BrowserLogins {
 
     fileprivate let db: BrowserDB
-    fileprivate static let MainColumns: String = "guid, username, password, hostname, httpRealm, formSubmitURL, usernameField, passwordField"
-    fileprivate static let MainWithLastUsedColumns: String = MainColumns + ", timeLastUsed, timesUsed"
-    fileprivate static let LoginColumns: String = MainColumns + ", timeCreated, timeLastUsed, timePasswordChanged, timesUsed"
+    fileprivate static let mainColumns: String = "guid, username, password, hostname, httpRealm, formSubmitURL, usernameField, passwordField"
+    fileprivate static let mainWithLastUsedColumns: String = mainColumns + ", timeLastUsed, timesUsed"
+    fileprivate static let loginColumns: String = mainColumns + ", timeCreated, timeLastUsed, timePasswordChanged, timesUsed"
 
     public init(db: BrowserDB) {
         self.db = db
@@ -76,7 +76,7 @@ open class SQLiteLogins: BrowserLogins {
         return login
     }
 
-    class func LocalLoginFactory(_ row: SDRow) -> LocalLogin {
+    class func localLoginFactory(_ row: SDRow) -> LocalLogin {
         let login = self.constructLogin(row, c: LocalLogin.self)
 
         login.localModified = row.getTimestamp("local_modified") ?? 0
@@ -86,7 +86,7 @@ open class SQLiteLogins: BrowserLogins {
         return login
     }
 
-    class func MirrorLoginFactory(_ row: SDRow) -> MirrorLogin {
+    class func mirrorLoginFactory(_ row: SDRow) -> MirrorLogin {
         let login = self.constructLogin(row, c: MirrorLogin.self)
 
         login.serverModified = row.getTimestamp("server_modified")!
@@ -95,16 +95,16 @@ open class SQLiteLogins: BrowserLogins {
         return login
     }
 
-    fileprivate class func LoginFactory(_ row: SDRow) -> Login {
+    fileprivate class func loginFactory(_ row: SDRow) -> Login {
         return self.constructLogin(row, c: Login.self)
     }
 
-    fileprivate class func LoginDataFactory(_ row: SDRow) -> LoginData {
-        return LoginFactory(row) as LoginData
+    fileprivate class func loginDataFactory(_ row: SDRow) -> LoginData {
+        return loginFactory(row) as LoginData
     }
 
-    fileprivate class func LoginUsageDataFactory(_ row: SDRow) -> LoginUsageData {
-        return LoginFactory(row) as LoginUsageData
+    fileprivate class func loginUsageDataFactory(_ row: SDRow) -> LoginUsageData {
+        return loginFactory(row) as LoginUsageData
     }
 
     func notifyLoginDidChange() {
@@ -112,11 +112,11 @@ open class SQLiteLogins: BrowserLogins {
 
         // For now we don't care about the contents.
         // This posts immediately to the shared notification center.
-        NotificationCenter.default.post(name: .DataLoginDidChange, object: nil)
+        NotificationCenter.default.post(name: .dataLoginDidChange, object: nil)
     }
 
     open func getUsageDataForLoginByGUID(_ guid: GUID) -> Deferred<Maybe<LoginUsageData>> {
-        let projection = SQLiteLogins.LoginColumns
+        let projection = SQLiteLogins.loginColumns
         let sql = """
             SELECT \(projection)
             FROM loginsL
@@ -129,14 +129,14 @@ open class SQLiteLogins: BrowserLogins {
             """
 
         let args: Args = [guid, guid]
-        return db.runQuery(sql, args: args, factory: SQLiteLogins.LoginUsageDataFactory)
+        return db.runQuery(sql, args: args, factory: SQLiteLogins.loginUsageDataFactory)
             >>== { value in
             deferMaybe(value[0]!)
         }
     }
 
     open func getLoginDataForGUID(_ guid: GUID) -> Deferred<Maybe<Login>> {
-        let projection = SQLiteLogins.LoginColumns
+        let projection = SQLiteLogins.loginColumns
         let sql = """
             SELECT \(projection)
             FROM loginsL
@@ -150,7 +150,7 @@ open class SQLiteLogins: BrowserLogins {
             """
 
         let args: Args = [guid, guid]
-        return db.runQuery(sql, args: args, factory: SQLiteLogins.LoginFactory)
+        return db.runQuery(sql, args: args, factory: SQLiteLogins.loginFactory)
             >>== { value in
             if let login = value[0] {
                 return deferMaybe(login)
@@ -161,7 +161,7 @@ open class SQLiteLogins: BrowserLogins {
     }
 
     open func getLoginsForProtectionSpace(_ protectionSpace: URLProtectionSpace) -> Deferred<Maybe<Cursor<LoginData>>> {
-        let projection = SQLiteLogins.MainWithLastUsedColumns
+        let projection = SQLiteLogins.mainWithLastUsedColumns
 
         let sql = """
             SELECT \(projection)
@@ -184,12 +184,12 @@ open class SQLiteLogins: BrowserLogins {
         if Logger.logPII {
             log.debug("Looking for login: \(protectionSpace.urlString()) && \(protectionSpace.host)")
         }
-        return db.runQuery(sql, args: args, factory: SQLiteLogins.LoginDataFactory)
+        return db.runQuery(sql, args: args, factory: SQLiteLogins.loginDataFactory)
     }
 
     // username is really Either<String, NULL>; we explicitly match no username.
     open func getLoginsForProtectionSpace(_ protectionSpace: URLProtectionSpace, withUsername username: String?) -> Deferred<Maybe<Cursor<LoginData>>> {
-        let projection = SQLiteLogins.MainWithLastUsedColumns
+        let projection = SQLiteLogins.mainWithLastUsedColumns
 
         let args: Args
         let usernameMatch: String
@@ -222,7 +222,7 @@ open class SQLiteLogins: BrowserLogins {
             ORDER BY timeLastUsed DESC
             """
 
-        return db.runQuery(sql, args: args, factory: SQLiteLogins.LoginDataFactory)
+        return db.runQuery(sql, args: args, factory: SQLiteLogins.loginDataFactory)
     }
 
     open func getAllLogins() -> Deferred<Maybe<Cursor<Login>>> {
@@ -230,7 +230,7 @@ open class SQLiteLogins: BrowserLogins {
     }
 
     open func searchLoginsWithQuery(_ query: String?) -> Deferred<Maybe<Cursor<Login>>> {
-        let projection = SQLiteLogins.LoginColumns
+        let projection = SQLiteLogins.loginColumns
         var searchClauses = [String]()
         var args: Args?
         if let query = query, !query.isEmpty {
@@ -257,7 +257,7 @@ open class SQLiteLogins: BrowserLogins {
             ORDER BY hostname ASC
             """
 
-        return db.runQuery(sql, args: args, factory: SQLiteLogins.LoginFactory)
+        return db.runQuery(sql, args: args, factory: SQLiteLogins.loginFactory)
     }
 
     open func addLogin(_ login: LoginData) -> Success {
@@ -475,7 +475,7 @@ open class SQLiteLogins: BrowserLogins {
 
     open func removeLoginsWithGUIDs(_ guids: [GUID]) -> Success {
         let timestamp = Date.now()
-        return db.run(chunk(guids, by: BrowserDB.MaxVariableNumber).flatMap {
+        return db.run(chunk(guids, by: BrowserDB.maxVariableNumber).flatMap {
             self.getDeletionStatementsForGUIDs($0, nowMillis: timestamp)
         }) >>> effect(self.notifyLoginDidChange)
     }
@@ -534,13 +534,13 @@ extension SQLiteLogins: SyncableLogins {
     func getExistingMirrorRecordByGUID(_ guid: GUID) -> Deferred<Maybe<MirrorLogin?>> {
         let sql = "SELECT * FROM loginsM WHERE guid = ? LIMIT 1"
         let args: Args = [guid]
-        return self.db.runQuery(sql, args: args, factory: SQLiteLogins.MirrorLoginFactory) >>== { deferMaybe($0[0]) }
+        return self.db.runQuery(sql, args: args, factory: SQLiteLogins.mirrorLoginFactory) >>== { deferMaybe($0[0]) }
     }
 
     func getExistingLocalRecordByGUID(_ guid: GUID) -> Deferred<Maybe<LocalLogin?>> {
         let sql = "SELECT * FROM loginsL WHERE guid = ? LIMIT 1"
         let args: Args = [guid]
-        return self.db.runQuery(sql, args: args, factory: SQLiteLogins.LocalLoginFactory) >>== { deferMaybe($0[0]) }
+        return self.db.runQuery(sql, args: args, factory: SQLiteLogins.localLoginFactory) >>== { deferMaybe($0[0]) }
     }
 
     fileprivate func storeReconciledLogin(_ login: Login) -> Success {
@@ -755,7 +755,7 @@ extension SQLiteLogins: SyncableLogins {
             }
         }
 
-        return self.db.runQuery(sql, args: args, factory: SQLiteLogins.LocalLoginFactory)
+        return self.db.runQuery(sql, args: args, factory: SQLiteLogins.localLoginFactory)
           >>== { cursor in
             switch cursor.count {
             case 0:
@@ -821,7 +821,7 @@ extension SQLiteLogins: SyncableLogins {
             "SELECT * FROM loginsL WHERE sync_status IS NOT \(SyncStatus.synced.rawValue) AND is_deleted = 0"
 
         // Swift 2.0: use Cursor.asArray directly.
-        return self.db.runQuery(sql, args: nil, factory: SQLiteLogins.LoginFactory)
+        return self.db.runQuery(sql, args: nil, factory: SQLiteLogins.loginFactory)
           >>== { deferMaybe($0.asArray()) }
     }
 
@@ -845,7 +845,7 @@ extension SQLiteLogins: SyncableLogins {
         // local overlay that we just uploaded with another DELETE.
         log.debug("Marking \(guids.count) GUIDs as synchronized.")
 
-        let queries: [(String, Args?)] = chunkCollection(guids, by: BrowserDB.MaxVariableNumber) { guids in
+        let queries: [(String, Args?)] = chunkCollection(guids, by: BrowserDB.maxVariableNumber) { guids in
             let args: Args = guids.map { $0 }
             let inClause = BrowserDB.varlist(args.count)
 
@@ -881,7 +881,7 @@ extension SQLiteLogins: SyncableLogins {
     public func markAsDeleted<T: Collection>(_ guids: T) -> Success where T.Iterator.Element == GUID {
         log.debug("Marking \(guids.count) GUIDs as deleted.")
 
-        let queries: [(String, Args?)] = chunkCollection(guids, by: BrowserDB.MaxVariableNumber) { guids in
+        let queries: [(String, Args?)] = chunkCollection(guids, by: BrowserDB.maxVariableNumber) { guids in
             let args: Args = guids.map { $0 }
             let inClause = BrowserDB.varlist(args.count)
             return [("DELETE FROM loginsM WHERE guid IN \(inClause)", args),

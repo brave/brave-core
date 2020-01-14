@@ -43,7 +43,7 @@ class SettingsAutoContributeSectionView: SettingsSectionView {
   let viewDetailsButton = SettingsViewDetailsButton(type: .system)
   private let disabledView = DisabledSettingGraphicView(
     image: UIImage(frameworkResourceNamed: "ac-disabled-icon"),
-    text: Strings.DisabledAutoContributeMessage
+    text: Strings.disabledAutoContributeMessage
   ).then {
     $0.isHidden = true
   }
@@ -76,13 +76,13 @@ class SettingsAutoContributeSectionView: SettingsSectionView {
   }
   
   private let titleLabel = UILabel().then {
-    $0.text = Strings.SettingsAutoContributeTitle
+    $0.text = Strings.settingsAutoContributeTitle
     $0.appearanceTextColor = BraveUX.autoContributeTintColor
     $0.font = SettingsUX.titleFont
   }
   
   private let bodyLabel = UILabel().then {
-    $0.text = Strings.SettingsAutoContributeBody
+    $0.text = Strings.settingsAutoContributeBody
     $0.appearanceTextColor = SettingsUX.bodyTextColor
     $0.numberOfLines = 0
     $0.font = SettingsUX.bodyFont

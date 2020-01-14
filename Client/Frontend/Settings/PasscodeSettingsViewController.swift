@@ -25,8 +25,8 @@ class PasscodeSettingsViewController: TableViewController {
         updateTitleForTouchIDState()
         
         tableView.accessibilityIdentifier = "PasscodeSettingsViewController.tableView"
-        tableView.separatorColor = UIConstants.TableViewSeparatorColor
-        tableView.backgroundColor = UIConstants.TableViewHeaderBackgroundColor
+        tableView.separatorColor = UIConstants.tableViewSeparatorColor
+        tableView.backgroundColor = UIConstants.tableViewHeaderBackgroundColor
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,7 +38,7 @@ class PasscodeSettingsViewController: TableViewController {
             // Passcode
             dataSource.sections = [
                 Section(rows: [
-                    Row(text: Strings.AuthenticationTurnOffPasscode,
+                    Row(text: Strings.authenticationTurnOffPasscode,
                         selection: { [unowned self] in
                             let setupPasscodeController = RemovePasscodeViewController()
                             setupPasscodeController.completion = self.reloadSections
@@ -47,7 +47,7 @@ class PasscodeSettingsViewController: TableViewController {
                         },
                         cellClass: ButtonCell.self
                     ),
-                    Row(text: Strings.AuthenticationChangePasscode,
+                    Row(text: Strings.authenticationChangePasscode,
                         selection: { [unowned self] in
                             let changePasscodeController = ChangePasscodeViewController()
                             changePasscodeController.completion = self.reloadSections
@@ -70,7 +70,7 @@ class PasscodeSettingsViewController: TableViewController {
             ])
             
             if deviceBiometryType != .none {
-                let title = deviceBiometryType == .faceID ? Strings.UseFaceID : Strings.UseTouchID
+                let title = deviceBiometryType == .faceID ? Strings.useFaceID : Strings.useTouchID
                 otherSection.rows.append(Row(text: title, accessory: .switchToggle(value: authenticationInfo.useTouchID, { authenticationInfo.useTouchID = $0; KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(authenticationInfo) })))
             }
             
@@ -79,7 +79,7 @@ class PasscodeSettingsViewController: TableViewController {
             // No Passcode
             dataSource.sections = [
                 Section(rows: [
-                    Row(text: Strings.AuthenticationTurnOnPasscode,
+                    Row(text: Strings.authenticationTurnOnPasscode,
                         selection: { [unowned self] in
                             let setupPasscodeController = SetupPasscodeViewController()
                             setupPasscodeController.completion = self.reloadSections
@@ -88,7 +88,7 @@ class PasscodeSettingsViewController: TableViewController {
                         },
                         cellClass: ButtonCell.self
                     ),
-                    Row(text: Strings.AuthenticationChangePasscode, cellClass: DisabledCell.self)
+                    Row(text: Strings.authenticationChangePasscode, cellClass: DisabledCell.self)
                 ]),
                 Section(rows: [
                     // TODO: Need localized copy of this
@@ -109,11 +109,11 @@ class PasscodeSettingsViewController: TableViewController {
     func updateTitleForTouchIDState() {
         switch deviceBiometryType {
         case .faceID:
-            navigationItem.title = Strings.AuthenticationFaceIDPasscodeSetting
+            navigationItem.title = Strings.authenticationFaceIDPasscodeSetting
         case .touchID:
-            navigationItem.title = Strings.AuthenticationTouchIDPasscodeSetting
+            navigationItem.title = Strings.authenticationTouchIDPasscodeSetting
         case .none:
-            navigationItem.title = Strings.AuthenticationPasscode
+            navigationItem.title = Strings.authenticationPasscode
         @unknown default:
             assertionFailure()
         }

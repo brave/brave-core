@@ -8,18 +8,18 @@ import BraveShared
 import Data
 
 private struct TopToolbarViewUX {
-    static let LocationPadding: CGFloat = 8
-    static let SmallPadding: CGFloat = 2
-    static let NormalPadding: CGFloat = 10
-    static let LocationHeight: CGFloat = 34
-    static let ButtonHeight: CGFloat = 44
-    static let LocationContentOffset: CGFloat = 8
-    static let TextFieldCornerRadius: CGFloat = 8
-    static let ProgressBarHeight: CGFloat = 3
+    static let locationPadding: CGFloat = 8
+    static let smallPadding: CGFloat = 2
+    static let normalPadding: CGFloat = 10
+    static let locationHeight: CGFloat = 34
+    static let buttonHeight: CGFloat = 44
+    static let locationContentOffset: CGFloat = 8
+    static let textFieldCornerRadius: CGFloat = 8
+    static let progressBarHeight: CGFloat = 3
     
-    static let TabsButtonRotationOffset: CGFloat = 1.5
-    static let TabsButtonHeight: CGFloat = 18.0
-    static let ToolbarButtonInsets = UIEdgeInsets(equalInset: NormalPadding)
+    static let tabsButtonRotationOffset: CGFloat = 1.5
+    static let tabsButtonHeight: CGFloat = 18.0
+    static let toolbarButtonInsets = UIEdgeInsets(equalInset: normalPadding)
 }
 
 protocol TopToolbarDelegate: class {
@@ -121,8 +121,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
     
     fileprivate lazy var cancelButton: UIButton = {
         let cancelButton = InsetButton()
-        cancelButton.setTitle(Strings.CancelButtonTitle, for: .normal)
-        cancelButton.setTitleColor(BraveUX.CancelTextColor, for: .normal)
+        cancelButton.setTitle(Strings.cancelButtonTitle, for: .normal)
+        cancelButton.setTitleColor(BraveUX.cancelTextColor, for: .normal)
         cancelButton.accessibilityIdentifier = "topToolbarView-cancel"
         cancelButton.addTarget(self, action: #selector(didClickCancel), for: .touchUpInside)
         cancelButton.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -138,7 +138,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
     lazy var bookmarkButton = ToolbarButton(top: true).then {
         $0.setImage(#imageLiteral(resourceName: "menu_bookmarks").template, for: .normal)
-        $0.accessibilityLabel = Strings.BookmarksMenuItem
+        $0.accessibilityLabel = Strings.bookmarksMenuItem
         $0.addTarget(self, action: #selector(didClickBookmarkButton), for: .touchUpInside)
     }
     
@@ -238,7 +238,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     
     private func setupConstraints() {
         locationContainer.snp.remakeConstraints {
-            $0.height.equalTo(TopToolbarViewUX.LocationHeight)
+            $0.height.equalTo(TopToolbarViewUX.locationHeight)
         }
         
         mainStackView.snp.remakeConstraints { make in
@@ -258,8 +258,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
         }
         
         progressBar.snp.makeConstraints { make in
-            make.top.equalTo(self.snp.bottom).inset(TopToolbarViewUX.ProgressBarHeight / 2)
-            make.height.equalTo(TopToolbarViewUX.ProgressBarHeight)
+            make.top.equalTo(self.snp.bottom).inset(TopToolbarViewUX.progressBarHeight / 2)
+            make.height.equalTo(TopToolbarViewUX.progressBarHeight)
             make.left.right.equalTo(self)
         }
         
@@ -271,8 +271,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
     private var topToolbarPadding: CGFloat {
         // The only case where we want small padding is on iPads and iPhones in landscape.
         // Instead of padding we give extra tap area for buttons on the toolbar.
-        if !inOverlayMode && toolbarIsShowing { return TopToolbarViewUX.SmallPadding }
-        return TopToolbarViewUX.NormalPadding
+        if !inOverlayMode && toolbarIsShowing { return TopToolbarViewUX.smallPadding }
+        return TopToolbarViewUX.normalPadding
     }
     
     private func updateMargins() {
@@ -300,14 +300,14 @@ class TopToolbarView: UIView, ToolbarProtocol {
         locationTextField.returnKeyType = .go
         locationTextField.clearButtonMode = .whileEditing
         locationTextField.textAlignment = .left
-        locationTextField.font = UIConstants.DefaultChromeFont
+        locationTextField.font = UIConstants.defaultChromeFont
         locationTextField.accessibilityIdentifier = "address"
         locationTextField.accessibilityLabel = Strings.URLBarViewLocationTextViewAccessibilityLabel
         locationTextField.attributedPlaceholder = self.locationView.placeholder
         locationContainer.addSubview(locationTextField)
         locationTextField.snp.remakeConstraints { make in
-            let insets = UIEdgeInsets(top: 0, left: TopToolbarViewUX.LocationPadding,
-                                      bottom: 0, right: TopToolbarViewUX.LocationPadding)
+            let insets = UIEdgeInsets(top: 0, left: TopToolbarViewUX.locationPadding,
+                                      bottom: 0, right: TopToolbarViewUX.locationPadding)
             make.edges.equalTo(self.locationView).inset(insets)
         }
         

@@ -14,11 +14,11 @@ import Shared
 }
 
 open class MenuHelper: NSObject {
-    public static let SelectorCopy: Selector = #selector(MenuHelperInterface.menuHelperCopy)
-    public static let SelectorHide: Selector = #selector(MenuHelperInterface.menuHelperSecure)
-    public static let SelectorOpenAndFill: Selector = #selector(MenuHelperInterface.menuHelperOpenAndFill)
-    public static let SelectorReveal: Selector = #selector(MenuHelperInterface.menuHelperReveal)
-    public static let SelectorFindInPage: Selector = #selector(MenuHelperInterface.menuHelperFindInPage)
+    public static let selectorCopy: Selector = #selector(MenuHelperInterface.menuHelperCopy)
+    public static let selectorHide: Selector = #selector(MenuHelperInterface.menuHelperSecure)
+    public static let selectorOpenAndFill: Selector = #selector(MenuHelperInterface.menuHelperOpenAndFill)
+    public static let selectorReveal: Selector = #selector(MenuHelperInterface.menuHelperReveal)
+    public static let selectorFindInPage: Selector = #selector(MenuHelperInterface.menuHelperFindInPage)
 
     open class var defaultHelper: MenuHelper {
         struct Singleton {
@@ -28,11 +28,11 @@ open class MenuHelper: NSObject {
     }
 
     open func setItems() {
-        let revealPasswordItem = UIMenuItem(title: Strings.MenuItemRevealPasswordTitle, action: MenuHelper.SelectorReveal)
-        let hidePasswordItem = UIMenuItem(title: Strings.MenuItemHidePasswordTitle, action: MenuHelper.SelectorHide)
-        let copyItem = UIMenuItem(title: Strings.MenuItemCopyTitle, action: MenuHelper.SelectorCopy)
-        let openAndFillItem = UIMenuItem(title: Strings.MenuItemOpenAndFillTitle, action: MenuHelper.SelectorOpenAndFill)
-        let findInPageItem = UIMenuItem(title: Strings.Find_in_Page, action: MenuHelper.SelectorFindInPage)
+        let revealPasswordItem = UIMenuItem(title: Strings.menuItemRevealPasswordTitle, action: MenuHelper.selectorReveal)
+        let hidePasswordItem = UIMenuItem(title: Strings.menuItemHidePasswordTitle, action: MenuHelper.selectorHide)
+        let copyItem = UIMenuItem(title: Strings.menuItemCopyTitle, action: MenuHelper.selectorCopy)
+        let openAndFillItem = UIMenuItem(title: Strings.menuItemOpenAndFillTitle, action: MenuHelper.selectorOpenAndFill)
+        let findInPageItem = UIMenuItem(title: Strings.findInPage, action: MenuHelper.selectorFindInPage)
 
         UIMenuController.shared.menuItems = [copyItem, revealPasswordItem, hidePasswordItem, openAndFillItem, findInPageItem]
     }

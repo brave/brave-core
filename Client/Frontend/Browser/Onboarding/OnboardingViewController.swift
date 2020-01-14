@@ -66,7 +66,7 @@ class OnboardingViewController: UIViewController, Themeable {
         static func primaryButton(text: String = Strings.OBContinueButton) -> UIButton {
             let button = RoundInterfaceButton().then {
                 $0.setTitle(text, for: .normal)
-                $0.backgroundColor = BraveUX.BraveOrange
+                $0.backgroundColor = BraveUX.braveOrange
                 $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 25, bottom: 12, right: 25)
             }
             

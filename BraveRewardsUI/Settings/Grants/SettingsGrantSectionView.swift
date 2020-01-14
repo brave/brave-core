@@ -26,7 +26,7 @@ class SettingsGrantSectionView: SettingsSectionView {
     $0.backgroundColor = BraveUX.braveOrange
     $0.tintColor = .white
     $0.titleLabel?.font = .systemFont(ofSize: 13.0, weight: .bold)
-    $0.setTitle(Strings.SettingsGrantClaimButtonTitle.uppercased(), for: .normal)
+    $0.setTitle(Strings.settingsGrantClaimButtonTitle.uppercased(), for: .normal)
     $0.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
     $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -52,13 +52,13 @@ class SettingsGrantSectionView: SettingsSectionView {
       iconImageView.image = UIImage(frameworkResourceNamed: "icn-ads")
       
       if let amount = amount {
-        textLabel.text = "\(amount) \(Strings.BAT) \(Strings.SettingsAdsGrantText)"
+        textLabel.text = "\(amount) \(Strings.BAT) \(Strings.settingsAdsGrantText)"
       } else {
-        textLabel.text = Strings.NotificationEarningsClaimDefault
+        textLabel.text = Strings.notificationEarningsClaimDefault
       }
     case .ugp:
       iconImageView.image = UIImage(frameworkResourceNamed: "icn-grant")
-      textLabel.text = Strings.SettingsGrantText
+      textLabel.text = Strings.settingsGrantText
     }
     
     clippedContentView.addSubview(claimGrantButton)

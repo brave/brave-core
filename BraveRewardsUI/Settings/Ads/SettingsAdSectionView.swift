@@ -56,9 +56,9 @@ class SettingsAdSectionView: SettingsSectionView {
       case .supported:
         return nil
       case .unsupportedRegion:
-        return Strings.AdsUnsupportedRegion
+        return Strings.adsUnsupportedRegion
       case .unsupportedDevice:
-        return Strings.AdsUnsupportedDevice
+        return Strings.adsUnsupportedDevice
       }
     }
   }
@@ -88,7 +88,7 @@ class SettingsAdSectionView: SettingsSectionView {
   let viewDetailsButton = SettingsViewDetailsButton(type: .system)
   private let disabledView = DisabledSettingGraphicView(
     image: UIImage(frameworkResourceNamed: "ads-disabled-icon"),
-    text: Strings.DisabledAdsMessage
+    text: Strings.disabledAdsMessage
   ).then {
     $0.isHidden = true
   }
@@ -137,13 +137,13 @@ class SettingsAdSectionView: SettingsSectionView {
   }
   
   private let titleLabel = UILabel().then {
-    $0.text = Strings.SettingsAdsTitle
+    $0.text = Strings.settingsAdsTitle
     $0.appearanceTextColor = BraveUX.adsTintColor
     $0.font = SettingsUX.titleFont
   }
 
   private let bodyLabel = UILabel().then {
-    $0.text = Strings.SettingsAdsBody
+    $0.text = Strings.settingsAdsBody
     $0.appearanceTextColor = SettingsUX.bodyTextColor
     $0.numberOfLines = 0
     $0.font = SettingsUX.bodyFont

@@ -28,7 +28,7 @@ class SyncSettingsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = Strings.Sync
+        title = Strings.sync
         
         frc = Device.frc()
         frc?.delegate = self
@@ -40,11 +40,11 @@ class SyncSettingsTableViewController: UITableViewController {
         }
         
         let text = UITextView().then {
-            $0.text = Strings.SyncSettingsHeader
+            $0.text = Strings.syncSettingsHeader
             $0.textContainerInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
             $0.isEditable = false
             $0.isSelectable = false
-            $0.textColor = BraveUX.GreyH
+            $0.textColor = BraveUX.greyH
             $0.textAlignment = .center
             $0.font = UIFont.systemFont(ofSize: 15)
             $0.isScrollEnabled = false
@@ -87,9 +87,9 @@ class SyncSettingsTableViewController: UITableViewController {
     }
     
     private func removeDeviceAction() {
-        let alert = UIAlertController(title: Strings.SyncRemoveThisDeviceQuestion, message: Strings.SyncRemoveThisDeviceQuestionDesc, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: Strings.RemoveDevice, style: .destructive) { action in
+        let alert = UIAlertController(title: Strings.syncRemoveThisDeviceQuestion, message: Strings.syncRemoveThisDeviceQuestionDesc, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: Strings.removeDevice, style: .destructive) { action in
             Sync.shared.leaveSyncGroup()
             self.navigationController?.popToRootViewController(animated: true)
         })
@@ -118,7 +118,7 @@ class SyncSettingsTableViewController: UITableViewController {
             actionSheet.popoverPresentationController?.permittedArrowDirections = [.up, .down]
         }
         
-        let removeAction = UIAlertAction(title: Strings.SyncRemoveDeviceAction, style: .destructive) { _ in
+        let removeAction = UIAlertAction(title: Strings.syncRemoveDeviceAction, style: .destructive) { _ in
             if !DeviceInfo.hasConnectivity() {
                 self.present(SyncAlerts.noConnection, animated: true)
                 return
@@ -135,7 +135,7 @@ class SyncSettingsTableViewController: UITableViewController {
             self.presentAlertPopup(for: alertType, device: device)
         }
         
-        let cancelAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil)
         
         actionSheet.addAction(removeAction)
         actionSheet.addAction(cancelAction)
@@ -147,21 +147,21 @@ class SyncSettingsTableViewController: UITableViewController {
         var title: String?
         var message: String?
         var removeButtonName: String?
-        let deviceName = device.name ?? Strings.SyncRemoveDeviceDefaultName
+        let deviceName = device.name ?? Strings.syncRemoveDeviceDefaultName
         
         switch type {
         case .lastDeviceLeft:
-            title = String(format: Strings.SyncRemoveLastDeviceTitle, deviceName)
-            message = Strings.SyncRemoveLastDeviceMessage
-            removeButtonName = Strings.SyncRemoveLastDeviceRemoveButtonName
+            title = String(format: Strings.syncRemoveLastDeviceTitle, deviceName)
+            message = Strings.syncRemoveLastDeviceMessage
+            removeButtonName = Strings.syncRemoveLastDeviceRemoveButtonName
         case .currentDevice:
-            title = String(format: Strings.SyncRemoveCurrentDeviceTitle, "\(deviceName) (\(Strings.SyncThisDevice))")
-            message = Strings.SyncRemoveCurrentDeviceMessage
-            removeButtonName = Strings.RemoveDevice
+            title = String(format: Strings.syncRemoveCurrentDeviceTitle, "\(deviceName) (\(Strings.syncThisDevice))")
+            message = Strings.syncRemoveCurrentDeviceMessage
+            removeButtonName = Strings.removeDevice
         case .otherDevice:
-            title = String(format: Strings.SyncRemoveOtherDeviceTitle, deviceName)
-            message = Strings.SyncRemoveOtherDeviceMessage
-            removeButtonName = Strings.RemoveDevice
+            title = String(format: Strings.syncRemoveOtherDeviceTitle, deviceName)
+            message = Strings.syncRemoveOtherDeviceMessage
+            removeButtonName = Strings.removeDevice
         }
         
         guard let popupTitle = title, let popupMessage = message, let popupButtonName = removeButtonName else { fatalError() }
@@ -169,7 +169,7 @@ class SyncSettingsTableViewController: UITableViewController {
         let popup = AlertPopupView(imageView: nil, title: popupTitle, message: popupMessage)
         let fontSize: CGFloat = 15
         
-        popup.addButton(title: Strings.CancelButtonTitle, fontSize: fontSize) { return .flyDown }
+        popup.addButton(title: Strings.cancelButtonTitle, fontSize: fontSize) { return .flyDown }
         popup.addButton(title: popupButtonName, type: .destructive, fontSize: fontSize) {
             switch type {
             case .lastDeviceLeft, .currentDevice:
@@ -212,7 +212,7 @@ class SyncSettingsTableViewController: UITableViewController {
         case Sections.deviceList.rawValue:
             let device = frc.object(at: indexPath)
             guard let name = device.name else { break }
-            let deviceName = device.isCurrentDevice ? "\(name) (\(Strings.SyncThisDevice))" : name
+            let deviceName = device.isCurrentDevice ? "\(name) (\(Strings.syncThisDevice))" : name
             
             cell.textLabel?.text = deviceName
         case Sections.buttons.rawValue:
@@ -230,9 +230,9 @@ class SyncSettingsTableViewController: UITableViewController {
         cell.layoutMargins = UIEdgeInsets.zero
         
         cell.textLabel?.do {
-            $0.text = Strings.SyncAddAnotherDevice
+            $0.text = Strings.syncAddAnotherDevice
             $0.textAlignment = .center
-            $0.appearanceTextColor = BraveUX.BraveOrange
+            $0.appearanceTextColor = BraveUX.braveOrange
             $0.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular)
         }
     }
@@ -241,7 +241,7 @@ class SyncSettingsTableViewController: UITableViewController {
         
         switch section {
         case Sections.deviceList.rawValue:
-            return Strings.Devices.uppercased()
+            return Strings.devices.uppercased()
         default:
             return nil
         }

@@ -37,7 +37,7 @@ class GrantsItemView: SettingsSectionView {
         $0.font = .systemFont(ofSize: 14.0)
         $0.numberOfLines = 0
         $0.text = String(
-          format: Strings.GrantListExpiresOn,
+          format: Strings.grantListExpiresOn,
           dateFormatter.string(from: date)
         )
       }

@@ -10,9 +10,9 @@ private struct SearchInputViewUX {
 
     static let horizontalSpacing: CGFloat = 16
     static let titleFont: UIFont = UIFont.systemFont(ofSize: 16)
-    static let titleColor: UIColor = UIColor.Photon.Grey40
-    static let inputColor: UIColor = UIConstants.HighlightBlue
-    static let borderColor: UIColor = UIConstants.SeparatorColor
+    static let titleColor: UIColor = UIColor.Photon.grey40
+    static let inputColor: UIColor = UIConstants.highlightBlue
+    static let borderColor: UIColor = UIConstants.separatorColor
     static let borderLineWidth: CGFloat = 0.5
     static let closeButtonSize: CGFloat = 36
 }
@@ -42,7 +42,7 @@ class SearchInputView: UIView {
         textField.textColor = SearchInputViewUX.inputColor
         textField.tintColor = SearchInputViewUX.inputColor
         textField.addTarget(self, action: #selector(inputTextDidChange), for: .editingChanged)
-        textField.accessibilityLabel = Strings.SearchInputViewTextFieldAccessibilityLabel
+        textField.accessibilityLabel = Strings.searchInputViewTextFieldAccessibilityLabel
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
         return textField
@@ -50,7 +50,7 @@ class SearchInputView: UIView {
 
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = Strings.SearchInputViewTitle
+        label.text = Strings.searchInputViewTitle
         label.font = SearchInputViewUX.titleFont
         label.textColor = SearchInputViewUX.titleColor
         return label
@@ -64,7 +64,7 @@ class SearchInputView: UIView {
         let button = UIButton()
         button.addTarget(self, action: #selector(tappedClose), for: .touchUpInside)
         button.setImage(#imageLiteral(resourceName: "clear"), for: [])
-        button.accessibilityLabel = Strings.SearchInputViewClearButtonTitle
+        button.accessibilityLabel = Strings.searchInputViewClearButtonTitle
         return button
     }()
 
@@ -78,11 +78,11 @@ class SearchInputView: UIView {
 
     fileprivate lazy var overlay: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.Photon.White100
+        view.backgroundColor = UIColor.Photon.white100
         view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedSearch)))
 
         view.isAccessibilityElement = true
-        view.accessibilityLabel = Strings.SearchInputViewOverlayAccessibilityLabel
+        view.accessibilityLabel = Strings.searchInputViewOverlayAccessibilityLabel
         return view
     }()
 
@@ -107,7 +107,7 @@ class SearchInputView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        backgroundColor = UIColor.Photon.White100
+        backgroundColor = UIColor.Photon.white100
         isUserInteractionEnabled = true
 
         addSubview(inputField)

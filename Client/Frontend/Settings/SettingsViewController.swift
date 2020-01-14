@@ -17,9 +17,9 @@ import BraveRewardsUI
 extension TabBarVisibility: RepresentableOptionType {
     public var displayString: String {
         switch self {
-        case .always: return Strings.Always_show
-        case .landscapeOnly: return Strings.Show_in_landscape_only
-        case .never: return Strings.Never_show
+        case .always: return Strings.alwaysShow
+        case .landscapeOnly: return Strings.showInLandscapeOnly
+        case .never: return Strings.neverShow
         }
     }
 }
@@ -67,7 +67,7 @@ class SettingsViewController: TableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.title = Strings.Settings
+        navigationItem.title = Strings.settings
         tableView.accessibilityIdentifier = "SettingsViewController.tableView"
         dataSource.sections = sections
         
@@ -108,21 +108,21 @@ class SettingsViewController: TableViewController {
     
     private lazy var generalSection: Section = {
         var general = Section(
-            header: .title(Strings.SettingsGeneralSectionTitle),
+            header: .title(Strings.settingsGeneralSectionTitle),
             rows: [
-                Row(text: Strings.SearchEngines, selection: {
+                Row(text: Strings.searchEngines, selection: {
                     let viewController = SearchSettingsTableViewController()
                     viewController.model = self.profile.searchEngines
                     viewController.profile = self.profile
                     self.navigationController?.pushViewController(viewController, animated: true)
                 }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
-                BoolRow(title: Strings.Save_Logins, option: Preferences.General.saveLogins),
-                BoolRow(title: Strings.Block_Popups, option: Preferences.General.blockPopups)
+                .boolRow(title: Strings.saveLogins, option: Preferences.General.saveLogins),
+                .boolRow(title: Strings.blockPopups, option: Preferences.General.blockPopups)
             ]
         )
         
         if #available(iOS 13.0, *), UIDevice.isIpad {
-            general.rows.append(BoolRow(title: Strings.AlwaysRequestDesktopSite,
+            general.rows.append(.boolRow(title: Strings.alwaysRequestDesktopSite,
             option: Preferences.General.alwaysRequestDesktopSite))
         }
         
@@ -131,7 +131,7 @@ class SettingsViewController: TableViewController {
     
     private lazy var displaySection: Section = {
         var display = Section(
-            header: .title(Strings.DisplaySettingsSection),
+            header: .title(Strings.displaySettingsSection),
             rows: []
         )
         
@@ -142,7 +142,7 @@ class SettingsViewController: TableViewController {
         }
         
         let themeSubtitle = Theme.DefaultTheme(rawValue: Preferences.General.themeNormalMode.value)?.displayString
-        var row = Row(text: Strings.ThemesDisplayBrightness, detailText: themeSubtitle, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
+        var row = Row(text: Strings.themesDisplayBrightness, detailText: themeSubtitle, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
         row.selection = { [unowned self] in
             let optionsViewController = OptionSelectionViewController<Theme.DefaultTheme>(
                 options: Theme.DefaultTheme.normalThemesOptions,
@@ -153,13 +153,13 @@ class SettingsViewController: TableViewController {
                     self.applyTheme(self.theme)
                 }
             )
-            optionsViewController.headerText = Strings.ThemesDisplayBrightness
-            optionsViewController.footerText = Strings.ThemesDisplayBrightnessFooter
+            optionsViewController.headerText = Strings.themesDisplayBrightness
+            optionsViewController.footerText = Strings.themesDisplayBrightnessFooter
             self.navigationController?.pushViewController(optionsViewController, animated: true)
         }
         display.rows.append(row)
         
-        display.rows.append(Row(text: Strings.NewTabPageSettingsTitle,
+        display.rows.append(Row(text: Strings.newTabPageSettingsTitle,
             selection: { [unowned self] in
                 self.navigationController?.pushViewController(NewTabPageTableViewController(), animated: true)
             },
@@ -169,10 +169,10 @@ class SettingsViewController: TableViewController {
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             display.rows.append(
-                Row(text: Strings.Show_Tabs_Bar, accessory: .switchToggle(value: Preferences.General.tabBarVisibility.value == TabBarVisibility.always.rawValue, { Preferences.General.tabBarVisibility.value = $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue }), cellClass: MultilineValue1Cell.self)
+                Row(text: Strings.showTabsBar, accessory: .switchToggle(value: Preferences.General.tabBarVisibility.value == TabBarVisibility.always.rawValue, { Preferences.General.tabBarVisibility.value = $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue }), cellClass: MultilineValue1Cell.self)
             )
         } else {
-            var row = Row(text: Strings.Show_Tabs_Bar, detailText: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value)?.displayString, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
+            var row = Row(text: Strings.showTabsBar, detailText: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value)?.displayString, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
             row.selection = { [unowned self] in
                 // Show options for tab bar visibility
                 let optionsViewController = OptionSelectionViewController<TabBarVisibility>(
@@ -183,14 +183,15 @@ class SettingsViewController: TableViewController {
                         reloadCell(row, option.displayString)
                     }
                 )
-                optionsViewController.headerText = Strings.Show_Tabs_Bar
+                optionsViewController.headerText = Strings.showTabsBar
                 self.navigationController?.pushViewController(optionsViewController, animated: true)
             }
             display.rows.append(row)
         }
         
         display.rows.append(
-            BoolRow(title: Strings.Show_Bookmark_Button_In_Top_Toolbar, option: Preferences.General.showBookmarkToolbarShortcut)
+            .boolRow(title: Strings.showBookmarkButtonInTopToolbar,
+                     option: Preferences.General.showBookmarkToolbarShortcut)
         )
         
         return display
@@ -198,11 +199,11 @@ class SettingsViewController: TableViewController {
     
     private lazy var otherSettingsSection: Section = {
         // BRAVE TODO: Change it once we finalize our decision how to name the section.(#385)
-        var section = Section(header: .title(Strings.OtherSettingsSection))
+        var section = Section(header: .title(Strings.otherSettingsSection))
         #if !NO_REWARDS
         if let rewards = rewards {
             section.rows += [
-                Row(text: Strings.BraveRewardsTitle, selection: { [unowned self] in
+                Row(text: Strings.braveRewardsTitle, selection: { [unowned self] in
                     let rewardsVC = BraveRewardsSettingsViewController(rewards)
                     self.navigationController?.pushViewController(rewardsVC, animated: true)
                 }, accessory: .disclosureIndicator),
@@ -210,7 +211,7 @@ class SettingsViewController: TableViewController {
         }
         #endif
         section.rows += [
-            Row(text: Strings.Sync, selection: { [unowned self] in
+            Row(text: Strings.sync, selection: { [unowned self] in
                 if Sync.shared.isInSyncGroup {
                     let syncSettingsVC = SyncSettingsTableViewController(style: .grouped)
                     syncSettingsVC.dismissHandler = {
@@ -229,17 +230,17 @@ class SettingsViewController: TableViewController {
                    cellClass: MultilineValue1Cell.self),
             
             //Disabled until 1.13
-            //BoolRow(title: Strings.Media_Auto_Plays, option: Preferences.General.mediaAutoPlays)
+            //.boolRow(title: Strings.mediaAutoPlays, option: Preferences.General.mediaAutoPlays)
         ]
         return section
     }()
     
     private lazy var privacySection: Section = {
         var privacy = Section(
-            header: .title(Strings.Privacy)
+            header: .title(Strings.privacy)
         )
         privacy.rows = [
-            Row(text: Strings.ClearPrivateData,
+            Row(text: Strings.clearPrivateData,
                 selection: { [unowned self] in
                     // Show Clear private data screen
                     let clearPrivateData = ClearPrivateDataTableViewController().then {
@@ -251,7 +252,7 @@ class SettingsViewController: TableViewController {
                 accessory: .disclosureIndicator,
                 cellClass: MultilineValue1Cell.self
             ),
-            BoolRow(title: Strings.Block_all_cookies, option: Preferences.Privacy.blockAllCookies, onValueChange: { [unowned self] in
+            .boolRow(title: Strings.blockAllCookies, option: Preferences.Privacy.blockAllCookies, onValueChange: { [unowned self] in
                 func toggleCookieSetting(with status: Bool) {
                     // Lock/Unlock Cookie Folder
                     let completionBlock: (Bool) -> Void = { _ in
@@ -270,7 +271,7 @@ class SettingsViewController: TableViewController {
                             self.toggleSwitch(on: false, section: self.privacySection, rowUUID: Preferences.Privacy.blockAllCookies.key)
                             
                             // TODO: Throw Alert to user to try again?
-                            let alert = UIAlertController(title: nil, message: Strings.Block_all_cookies_failed_alert_msg, preferredStyle: .alert)
+                            let alert = UIAlertController(title: nil, message: Strings.blockAllCookiesFailedAlertMsg, preferredStyle: .alert)
                             alert.addAction(UIAlertAction(title: Strings.OKString, style: .default))
                             self.present(alert, animated: true)
                         }
@@ -281,13 +282,13 @@ class SettingsViewController: TableViewController {
                 if $0 {
                     let status = $0
                     // THROW ALERT to inform user of the setting
-                    let alert = UIAlertController(title: Strings.Block_all_cookies_alert_title, message: Strings.Block_all_cookies_alert_info, preferredStyle: .alert)
-                    let okAction = UIAlertAction(title: Strings.Block_all_cookies_action, style: .destructive, handler: { (action) in
+                    let alert = UIAlertController(title: Strings.blockAllCookiesAlertTitle, message: Strings.blockAllCookiesAlertInfo, preferredStyle: .alert)
+                    let okAction = UIAlertAction(title: Strings.blockAllCookiesAction, style: .destructive, handler: { (action) in
                         toggleCookieSetting(with: status)
                     })
                     alert.addAction(okAction)
                     
-                    let cancelAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: { (action) in
+                    let cancelAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: { (action) in
                         self.toggleSwitch(on: false, section: self.privacySection, rowUUID: Preferences.Privacy.blockAllCookies.key)
                     })
                     alert.addAction(cancelAction)
@@ -298,8 +299,8 @@ class SettingsViewController: TableViewController {
             })
         ]
         privacy.rows.append(
-            BoolRow(
-                title: Strings.Private_Browsing_Only,
+            .boolRow(
+                title: Strings.privateBrowsingOnly,
                 option: Preferences.Privacy.privateBrowsingOnly,
                 onValueChange: { value in
                     
@@ -316,8 +317,8 @@ class SettingsViewController: TableViewController {
                     }
 
                     if value {
-                        let alert = UIAlertController(title: Strings.Private_Browsing_Only, message: Strings.Private_Browsing_Only_Warning, preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: { _ in
+                        let alert = UIAlertController(title: Strings.privateBrowsingOnly, message: Strings.privateBrowsingOnlyWarning, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: { _ in
                             DispatchQueue.main.async {
                                 self.toggleSwitch(on: false, section: self.privacySection, rowUUID: Preferences.Privacy.privateBrowsingOnly.key)
                             }
@@ -345,17 +346,17 @@ class SettingsViewController: TableViewController {
             if localAuthContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
                 let title: String
                 if localAuthContext.biometryType == .faceID {
-                    return Strings.AuthenticationFaceIDPasscodeSetting
+                    return Strings.authenticationFaceIDPasscodeSetting
                 } else {
-                    return Strings.AuthenticationTouchIDPasscodeSetting
+                    return Strings.authenticationTouchIDPasscodeSetting
                 }
             } else {
-                return Strings.AuthenticationPasscode
+                return Strings.authenticationPasscode
             }
         }()
         
         return Section(
-            header: .title(Strings.Security),
+            header: .title(Strings.security),
             rows: [
                 Row(text: passcodeTitle, selection: { [unowned self] in
                     let passcodeSettings = PasscodeSettingsViewController()
@@ -367,32 +368,32 @@ class SettingsViewController: TableViewController {
     
     private lazy var shieldsSection: Section = {
         var shields = Section(
-            header: .title(Strings.Shields_Defaults),
+            header: .title(Strings.shieldsDefaults),
             rows: [
-                BoolRow(title: Strings.Block_Ads_and_Tracking, option: Preferences.Shields.blockAdsAndTracking),
-                BoolRow(title: Strings.HTTPS_Everywhere, option: Preferences.Shields.httpsEverywhere),
-                BoolRow(title: Strings.Block_Phishing_and_Malware, option: Preferences.Shields.blockPhishingAndMalware),
-                BoolRow(title: Strings.Block_Scripts, option: Preferences.Shields.blockScripts),
-                BoolRow(title: Strings.Fingerprinting_Protection, option: Preferences.Shields.fingerprintingProtection),
+                .boolRow(title: Strings.blockAdsAndTracking, option: Preferences.Shields.blockAdsAndTracking),
+                .boolRow(title: Strings.HTTPSEverywhere, option: Preferences.Shields.httpsEverywhere),
+                .boolRow(title: Strings.blockPhishingAndMalware, option: Preferences.Shields.blockPhishingAndMalware),
+                .boolRow(title: Strings.blockScripts, option: Preferences.Shields.blockScripts),
+                .boolRow(title: Strings.fingerprintingProtection, option: Preferences.Shields.fingerprintingProtection),
             ]
         )
         if let locale = Locale.current.languageCode, let _ = ContentBlockerRegion.with(localeCode: locale) {
-            shields.rows.append(BoolRow(title: Strings.Use_regional_adblock, option: Preferences.Shields.useRegionAdBlock))
+            shields.rows.append(.boolRow(title: Strings.useRegionalAdblock, option: Preferences.Shields.useRegionAdBlock))
         }
         return shields
     }()
     
     private lazy var supportSection: Section = {
         return Section(
-            header: .title(Strings.Support),
+            header: .title(Strings.support),
             rows: [
-                Row(text: Strings.Report_a_bug,
+                Row(text: Strings.reportABug,
                     selection: { [unowned self] in
-                        self.settingsDelegate?.settingsOpenURLInNewTab(BraveUX.BraveCommunityURL)
+                        self.settingsDelegate?.settingsOpenURLInNewTab(BraveUX.braveCommunityURL)
                         self.dismiss(animated: true)
                     },
                     cellClass: MultilineButtonCell.self),
-                Row(text: Strings.Rate_Brave,
+                Row(text: Strings.rateBrave,
                     selection: { [unowned self] in
                         // Rate Brave
                         guard let writeReviewURL = URL(string: "https://itunes.apple.com/app/id1052879175?action=write-review")
@@ -401,17 +402,17 @@ class SettingsViewController: TableViewController {
                         self.dismiss(animated: true)
                     },
                     cellClass: MultilineValue1Cell.self),
-                Row(text: Strings.Privacy_Policy,
+                Row(text: Strings.privacyPolicy,
                     selection: { [unowned self] in
                         // Show privacy policy
-                        let privacy = SettingsContentViewController().then { $0.url = BraveUX.BravePrivacyURL }
+                        let privacy = SettingsContentViewController().then { $0.url = BraveUX.bravePrivacyURL }
                         self.navigationController?.pushViewController(privacy, animated: true)
                     },
                     accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
-                Row(text: Strings.Terms_of_Use,
+                Row(text: Strings.termsOfUse,
                     selection: { [unowned self] in
                         // Show terms of use
-                        let toc = SettingsContentViewController().then { $0.url = BraveUX.BraveTermsOfUseURL }
+                        let toc = SettingsContentViewController().then { $0.url = BraveUX.braveTermsOfUseURL }
                         self.navigationController?.pushViewController(toc, animated: true)
                     },
                     accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
@@ -420,11 +421,11 @@ class SettingsViewController: TableViewController {
     }()
     
     private lazy var aboutSection: Section = {
-        let version = String(format: Strings.Version_template,
+        let version = String(format: Strings.versionTemplate,
                              Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "",
                              Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "")
         return Section(
-            header: .title(Strings.About),
+            header: .title(Strings.about),
             rows: [
                 Row(text: version, selection: { [unowned self] in
                     let device = UIDevice.current
@@ -433,16 +434,16 @@ class SettingsViewController: TableViewController {
                     actionSheet.popoverPresentationController?.sourceRect = self.view.bounds
                     let iOSVersion = "\(device.systemName) \(UIDevice.current.systemVersion)"
                     
-                    let deviceModel = String(format: Strings.Device_template, device.modelName, iOSVersion)
-                    let copyDebugInfoAction = UIAlertAction(title: Strings.Copy_app_info_to_clipboard, style: .default) { _ in
+                    let deviceModel = String(format: Strings.deviceTemplate, device.modelName, iOSVersion)
+                    let copyDebugInfoAction = UIAlertAction(title: Strings.copyAppInfoToClipboard, style: .default) { _ in
                         UIPasteboard.general.strings = [version, deviceModel]
                     }
                     
                     actionSheet.addAction(copyDebugInfoAction)
-                    actionSheet.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil))
+                    actionSheet.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
                     self.navigationController?.present(actionSheet, animated: true, completion: nil)
                 }, cellClass: MultilineValue1Cell.self),
-                Row(text: Strings.SettingsLicenses, selection: { [unowned self] in
+                Row(text: Strings.settingsLicenses, selection: { [unowned self] in
                     guard let url = URL(string: WebServer.sharedInstance.base) else { return }
                     
                     let licenses = SettingsContentViewController().then {
@@ -455,7 +456,7 @@ class SettingsViewController: TableViewController {
     }()
     
     private lazy var debugSection: Section? = {
-        if AppConstants.BuildChannel.isPublic { return nil }
+        if AppConstants.buildChannel.isPublic { return nil }
         
         return Section(
             rows: [

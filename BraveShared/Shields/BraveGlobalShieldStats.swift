@@ -9,7 +9,7 @@ import SwiftyJSON
 
 open class BraveGlobalShieldStats {
     public static let shared = BraveGlobalShieldStats()
-    public static let DidUpdateNotification = "BraveGlobalShieldStatsDidUpdate"
+    public static let didUpdateNotification = "BraveGlobalShieldStatsDidUpdate"
     
     public var adblock: Int = 0 {
         didSet {
@@ -61,7 +61,7 @@ open class BraveGlobalShieldStats {
     }
     
     private func postUpdateNotification() {
-        NotificationCenter.default.post(name: Notification.Name(rawValue: BraveGlobalShieldStats.DidUpdateNotification), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: BraveGlobalShieldStats.didUpdateNotification), object: nil)
     }
 
     fileprivate init() {

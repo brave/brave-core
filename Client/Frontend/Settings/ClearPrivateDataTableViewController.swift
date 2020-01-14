@@ -48,7 +48,7 @@ class ClearPrivateDataTableViewController: UITableViewController {
     
     fileprivate var clearButtonEnabled = true {
         didSet {
-            clearButton?.textLabel?.textColor = clearButtonEnabled ? UIConstants.DestructiveRed : UIColor.lightGray
+            clearButton?.textLabel?.textColor = clearButtonEnabled ? UIConstants.destructiveRed : UIColor.lightGray
         }
     }
     
@@ -64,7 +64,7 @@ class ClearPrivateDataTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = Strings.ClearPrivateData
+        title = Strings.clearPrivateData
         
         tableView.register(SettingsTableSectionHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: SectionHeaderFooterIdentifier)
     }
@@ -82,9 +82,9 @@ class ClearPrivateDataTableViewController: UITableViewController {
             control.tag = indexPath.item
         } else {
             assert(indexPath.section == SectionButton)
-            cell.textLabel?.text = Strings.ClearPrivateData
+            cell.textLabel?.text = Strings.clearPrivateData
             cell.textLabel?.textAlignment = .center
-            cell.textLabel?.textColor = UIConstants.DestructiveRed
+            cell.textLabel?.textColor = UIConstants.destructiveRed
             cell.accessibilityTraits = UIAccessibilityTraits.button
             cell.accessibilityIdentifier = "ClearPrivateData"
             clearButton = cell
@@ -207,7 +207,7 @@ class ClearPrivateDataTableViewController: UITableViewController {
             actionSheet.popoverPresentationController?.sourceRect = cell?.bounds ?? .zero
             actionSheet.popoverPresentationController?.permittedArrowDirections = [.up, .down]
         }
-        let clearAction = UIAlertAction(title: Strings.ClearPrivateData, style: .destructive) { (_) in
+        let clearAction = UIAlertAction(title: Strings.clearPrivateData, style: .destructive) { (_) in
             Preferences.Privacy.clearPrivateDataToggles.value = self.toggles
             self.clearButtonEnabled = false
             self.tabManager.removeAll()
@@ -218,7 +218,7 @@ class ClearPrivateDataTableViewController: UITableViewController {
             })
         }
         actionSheet.addAction(clearAction)
-        actionSheet.addAction(.init(title: Strings.CancelButtonTitle, style: .cancel, handler: nil))
+        actionSheet.addAction(.init(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
         present(actionSheet, animated: true, completion: nil)
     }
     

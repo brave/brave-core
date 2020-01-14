@@ -32,7 +32,7 @@ final class UserWalletDetailsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    title = Strings.UserWalletDetailsTitle
+    title = Strings.userWalletDetailsTitle
     
     let view = self.view as! View // swiftlint:disable:this force_cast
     view.summaryView.nameLabel.text = wallet.userName
@@ -87,7 +87,7 @@ private extension UserWalletDetailsViewController {
     fileprivate let summaryView = UserWalletSummarySectionView()
     fileprivate let disconnectFromRewardsButton = UserWalletButton(type: .system).then {
       $0.appearanceTintColor = Colors.red300
-      $0.setTitle(Strings.UserWalletDetailsDisconnectButtonTitle, for: .normal)
+      $0.setTitle(Strings.userWalletDetailsDisconnectButtonTitle, for: .normal)
     }
     
     override init(frame: CGRect) {
@@ -169,7 +169,7 @@ private class UserWalletSummarySectionView: SettingsSectionView {
   }
   
   let verifiedLabel = UILabel().then {
-    $0.text = Strings.UserWalletDetailsVerified
+    $0.text = Strings.userWalletDetailsVerified
     $0.font = .systemFont(ofSize: 15.0)
     $0.appearanceTextColor = BraveUX.upholdGreen
     $0.isHidden = true
@@ -178,19 +178,19 @@ private class UserWalletSummarySectionView: SettingsSectionView {
   }
   
   let upholdAccountButton = UserWalletButton(type: .system).then {
-    $0.setTitle(Strings.UserWalletDetailsAccountButtonTitle, for: .normal)
+    $0.setTitle(Strings.userWalletDetailsAccountButtonTitle, for: .normal)
   }
   
   let completeVerificationButton = UserWalletButton(type: .system).then {
-    $0.setTitle(Strings.UserWalletDetailsCompleteVerificationButtonTitle, for: .normal)
+    $0.setTitle(Strings.userWalletDetailsCompleteVerificationButtonTitle, for: .normal)
   }
   
   let addFundsButton = UserWalletButton(type: .system).then {
-    $0.setTitle(Strings.AddFunds, for: .normal)
+    $0.setTitle(Strings.addFunds, for: .normal)
   }
   
   let withdrawFundsButton = UserWalletButton(type: .system).then {
-    $0.setTitle(Strings.WithdrawFunds, for: .normal)
+    $0.setTitle(Strings.withdrawFunds, for: .normal)
   }
   
   override init(frame: CGRect) {

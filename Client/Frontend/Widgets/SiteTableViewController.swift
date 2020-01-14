@@ -6,13 +6,13 @@ import UIKit
 import Storage
 
 struct SiteTableViewControllerUX {
-    static let HeaderHeight = CGFloat(32)
-    static let RowHeight = CGFloat(44)
-    static let HeaderBorderColor = UIColor.Photon.Grey30.withAlphaComponent(0.8)
-    static let HeaderTextColor = UIAccessibility.isDarkerSystemColorsEnabled ? UIColor.black : UIColor.Photon.Grey80
-    static let HeaderBackgroundColor = UIColor.Photon.Grey10
-    static let HeaderFont = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.medium)
-    static let HeaderTextMargin = CGFloat(16)
+    static let headerHeight = CGFloat(32)
+    static let rowHeight = CGFloat(44)
+    static let headerBorderColor = UIColor.Photon.grey30.withAlphaComponent(0.8)
+    static let headerTextColor = UIAccessibility.isDarkerSystemColorsEnabled ? UIColor.black : UIColor.Photon.grey80
+    static let headerBackgroundColor = UIColor.Photon.grey10
+    static let headerFont = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.medium)
+    static let headerTextMargin = CGFloat(16)
 }
 
 class SiteTableViewHeader: UITableViewHeaderFooterView {
@@ -29,12 +29,12 @@ class SiteTableViewHeader: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
 
-        topBorder.backgroundColor = SiteTableViewControllerUX.HeaderBorderColor
-        bottomBorder.backgroundColor = SiteTableViewControllerUX.HeaderBorderColor
-        contentView.backgroundColor = SiteTableViewControllerUX.HeaderBackgroundColor
+        topBorder.backgroundColor = SiteTableViewControllerUX.headerBorderColor
+        bottomBorder.backgroundColor = SiteTableViewControllerUX.headerBorderColor
+        contentView.backgroundColor = SiteTableViewControllerUX.headerBackgroundColor
 
         titleLabel.font = DynamicFontHelper.defaultHelper.DeviceFontMediumBold
-        titleLabel.textColor = SiteTableViewControllerUX.HeaderTextColor
+        titleLabel.textColor = SiteTableViewControllerUX.headerTextColor
 
         addSubview(topBorder)
         addSubview(bottomBorder)
@@ -54,8 +54,8 @@ class SiteTableViewHeader: UITableViewHeaderFooterView {
         // A table view will initialize the header with CGSizeZero before applying the actual size. Hence, the label's constraints
         // must not impose a minimum width on the content view.
         titleLabel.snp.makeConstraints { make in
-            make.left.equalTo(contentView).offset(SiteTableViewControllerUX.HeaderTextMargin).priority(999)
-            make.right.equalTo(contentView).offset(-SiteTableViewControllerUX.HeaderTextMargin).priority(999)
+            make.left.equalTo(contentView).offset(SiteTableViewControllerUX.headerTextMargin).priority(999)
+            make.right.equalTo(contentView).offset(-SiteTableViewControllerUX.headerTextMargin).priority(999)
             make.left.greaterThanOrEqualTo(contentView) // Fallback for when the left space constraint breaks
             make.right.lessThanOrEqualTo(contentView) // Fallback for when the right space constraint breaks
             make.centerY.equalTo(contentView)
@@ -98,8 +98,8 @@ class SiteTableViewController: UIViewController, UITableViewDelegate, UITableVie
         tableView.register(SiteTableViewHeader.self, forHeaderFooterViewReuseIdentifier: HeaderIdentifier)
         tableView.layoutMargins = .zero
         tableView.keyboardDismissMode = .onDrag
-        tableView.backgroundColor = UIConstants.PanelBackgroundColor
-        tableView.separatorColor = UIConstants.SeparatorColor
+        tableView.backgroundColor = UIConstants.panelBackgroundColor
+        tableView.separatorColor = UIConstants.separatorColor
         tableView.accessibilityIdentifier = "SiteTable"
         tableView.cellLayoutMarginsFollowReadableWidth = false
 
@@ -135,11 +135,11 @@ class SiteTableViewController: UIViewController, UITableViewDelegate, UITableVie
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return SiteTableViewControllerUX.HeaderHeight
+        return SiteTableViewControllerUX.headerHeight
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return SiteTableViewControllerUX.RowHeight
+        return SiteTableViewControllerUX.rowHeight
     }
 
     func tableView(_ tableView: UITableView, hasFullWidthSeparatorForRowAtIndexPath indexPath: IndexPath) -> Bool {

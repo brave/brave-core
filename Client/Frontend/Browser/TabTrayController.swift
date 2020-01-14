@@ -9,29 +9,29 @@ import Shared
 import BraveShared
 
 struct TabTrayControllerUX {
-    static let CornerRadius = CGFloat(6.0)
-    static let DefaultBorderWidth = 1.0 / UIScreen.main.scale
-    static let ToolbarFont = UIFont.systemFont(ofSize: 17.0, weight: .medium)
-    static let TextBoxHeight = CGFloat(32.0)
-    static let FaviconSize = CGFloat(20)
-    static let Margin = CGFloat(15)
-    static let CloseButtonSize = CGFloat(32)
-    static let CloseButtonMargin = CGFloat(6.0)
-    static let CloseButtonEdgeInset = CGFloat(7)
+    static let cornerRadius = CGFloat(6.0)
+    static let defaultBorderWidth = 1.0 / UIScreen.main.scale
+    static let toolbarFont = UIFont.systemFont(ofSize: 17.0, weight: .medium)
+    static let textBoxHeight = CGFloat(32.0)
+    static let faviconSize = CGFloat(20)
+    static let margin = CGFloat(15)
+    static let closeButtonSize = CGFloat(32)
+    static let closeButtonMargin = CGFloat(6.0)
+    static let closeButtonEdgeInset = CGFloat(7)
 
-    static let NumberOfColumnsThin = 1
-    static let NumberOfColumnsWide = 3
-    static let CompactNumberOfColumnsThin = 2
+    static let numberOfColumnsThin = 1
+    static let numberOfColumnsWide = 3
+    static let compactNumberOfColumnsThin = 2
 
-    static let MenuFixedWidth: CGFloat = 320
+    static let menuFixedWidth: CGFloat = 320
 }
 
 private struct LightTabCellUX {
-    static let TabTitleTextColor = UIColor.black
+    static let tabTitleTextColor = UIColor.black
 }
 
 private struct DarkTabCellUX {
-    static let TabTitleTextColor = UIColor.Photon.White100
+    static let tabTitleTextColor = UIColor.Photon.white100
 }
 
 protocol TabCellDelegate: class {
@@ -39,8 +39,8 @@ protocol TabCellDelegate: class {
 }
 
 class TabCell: UICollectionViewCell, Themeable {
-    static let Identifier = "TabCellIdentifier"
-    static let BorderWidth: CGFloat = 3
+    static let identifier = "TabCellIdentifier"
+    static let borderWidth: CGFloat = 3
 
     let backgroundHolder = UIView()
     let screenshotView = UIImageViewAligned()
@@ -63,7 +63,7 @@ class TabCell: UICollectionViewCell, Themeable {
 
     override init(frame: CGRect) {
         self.backgroundHolder.backgroundColor = .white
-        self.backgroundHolder.layer.cornerRadius = TabTrayControllerUX.CornerRadius
+        self.backgroundHolder.layer.cornerRadius = TabTrayControllerUX.cornerRadius
         self.backgroundHolder.clipsToBounds = true
 
         self.screenshotView.contentMode = .scaleAspectFill
@@ -71,7 +71,7 @@ class TabCell: UICollectionViewCell, Themeable {
         self.screenshotView.isUserInteractionEnabled = false
         self.screenshotView.alignLeft = true
         self.screenshotView.alignTop = true
-        screenshotView.backgroundColor = UIConstants.AppBackgroundColor
+        screenshotView.backgroundColor = UIConstants.appBackgroundColor
 
         self.favicon.backgroundColor = UIColor.clear
         self.favicon.layer.cornerRadius = 2.0
@@ -81,23 +81,23 @@ class TabCell: UICollectionViewCell, Themeable {
         self.titleText.isUserInteractionEnabled = false
         self.titleText.numberOfLines = 1
         self.titleText.font = DynamicFontHelper.defaultHelper.DefaultSmallFontBold
-        self.titleText.textColor = LightTabCellUX.TabTitleTextColor
+        self.titleText.textColor = LightTabCellUX.tabTitleTextColor
         self.titleText.backgroundColor = .clear
 
         self.closeButton = UIButton()
         self.closeButton.setImage(#imageLiteral(resourceName: "tab_close"), for: [])
         self.closeButton.imageView?.contentMode = .scaleAspectFit
         self.closeButton.contentMode = .center
-        self.closeButton.imageEdgeInsets = UIEdgeInsets(equalInset: TabTrayControllerUX.CloseButtonEdgeInset)
+        self.closeButton.imageEdgeInsets = UIEdgeInsets(equalInset: TabTrayControllerUX.closeButtonEdgeInset)
 
         super.init(frame: frame)
         
         self.animator = SwipeAnimator(animatingView: self)
         self.closeButton.addTarget(self, action: #selector(close), for: .touchUpInside)
 
-        layer.borderColor = UIColor.Photon.Grey90A20.cgColor
-        layer.borderWidth = TabTrayControllerUX.DefaultBorderWidth
-        layer.cornerRadius = TabTrayControllerUX.CornerRadius
+        layer.borderColor = UIColor.Photon.grey90A20.cgColor
+        layer.borderWidth = TabTrayControllerUX.defaultBorderWidth
+        layer.cornerRadius = TabTrayControllerUX.cornerRadius
         
         contentView.addSubview(backgroundHolder)
         backgroundHolder.addSubview(self.screenshotView)
@@ -108,19 +108,19 @@ class TabCell: UICollectionViewCell, Themeable {
         titleBackgroundView.addSubview(self.favicon)
 
         self.accessibilityCustomActions = [
-            UIAccessibilityCustomAction(name: Strings.TabAccessibilityCloseActionLabel, target: self.animator, selector: #selector(SwipeAnimator.closeWithoutGesture))
+            UIAccessibilityCustomAction(name: Strings.tabAccessibilityCloseActionLabel, target: self.animator, selector: #selector(SwipeAnimator.closeWithoutGesture))
         ]
     }
 
     func setTabSelected(_ tab: Tab) {
-        layer.shadowColor = UIConstants.SystemBlueColor.cgColor
+        layer.shadowColor = UIConstants.systemBlueColor.cgColor
         layer.shadowOpacity = 1
         layer.shadowRadius = 0 // A 0 radius creates a solid border instead of a gradient blur
         layer.masksToBounds = false
         // create a frame that is "BorderWidth" size bigger than the cell
-        layer.shadowOffset = CGSize(width: -TabCell.BorderWidth, height: -TabCell.BorderWidth)
-        let shadowPath = CGRect(width: layer.frame.width + (TabCell.BorderWidth * 2), height: layer.frame.height + (TabCell.BorderWidth * 2))
-        layer.shadowPath = UIBezierPath(roundedRect: shadowPath, cornerRadius: TabTrayControllerUX.CornerRadius+TabCell.BorderWidth).cgPath
+        layer.shadowOffset = CGSize(width: -TabCell.borderWidth, height: -TabCell.borderWidth)
+        let shadowPath = CGRect(width: layer.frame.width + (TabCell.borderWidth * 2), height: layer.frame.height + (TabCell.borderWidth * 2))
+        layer.shadowPath = UIBezierPath(roundedRect: shadowPath, cornerRadius: TabTrayControllerUX.cornerRadius+TabCell.borderWidth).cgPath
         layer.borderWidth = 0.0
     }
 
@@ -136,13 +136,13 @@ class TabCell: UICollectionViewCell, Themeable {
 
         titleBackgroundView.snp.makeConstraints { (make) in
             make.top.left.right.equalTo(backgroundHolder)
-            make.height.equalTo(TabTrayControllerUX.TextBoxHeight + 15.0)
+            make.height.equalTo(TabTrayControllerUX.textBoxHeight + 15.0)
         }
 
         favicon.snp.makeConstraints { make in
             make.leading.equalTo(titleBackgroundView).offset(6)
-            make.top.equalTo((TabTrayControllerUX.TextBoxHeight - TabTrayControllerUX.FaviconSize) / 2)
-            make.size.equalTo(TabTrayControllerUX.FaviconSize)
+            make.top.equalTo((TabTrayControllerUX.textBoxHeight - TabTrayControllerUX.faviconSize) / 2)
+            make.size.equalTo(TabTrayControllerUX.faviconSize)
         }
 
         titleText.snp.makeConstraints { (make) in
@@ -152,13 +152,13 @@ class TabCell: UICollectionViewCell, Themeable {
         }
 
         closeButton.snp.makeConstraints { make in
-            make.size.equalTo(TabTrayControllerUX.CloseButtonSize)
+            make.size.equalTo(TabTrayControllerUX.closeButtonSize)
             make.trailing.equalTo(titleBackgroundView)
             make.centerY.equalTo(favicon)
         }
 
-        let shadowPath = CGRect(width: layer.frame.width + (TabCell.BorderWidth * 2), height: layer.frame.height + (TabCell.BorderWidth * 2))
-        layer.shadowPath = UIBezierPath(roundedRect: shadowPath, cornerRadius: TabTrayControllerUX.CornerRadius+TabCell.BorderWidth).cgPath
+        let shadowPath = CGRect(width: layer.frame.width + (TabCell.borderWidth * 2), height: layer.frame.height + (TabCell.borderWidth * 2))
+        layer.shadowPath = UIBezierPath(roundedRect: shadowPath, cornerRadius: TabTrayControllerUX.cornerRadius+TabCell.borderWidth).cgPath
     }
 
     override func prepareForReuse() {
@@ -169,7 +169,7 @@ class TabCell: UICollectionViewCell, Themeable {
         layer.shadowOffset = .zero
         layer.shadowPath = nil
         layer.shadowOpacity = 0
-        layer.borderWidth = TabTrayControllerUX.DefaultBorderWidth
+        layer.borderWidth = TabTrayControllerUX.defaultBorderWidth
     }
 
     override func accessibilityScroll(_ direction: UIAccessibilityScrollDirection) -> Bool {
@@ -290,7 +290,7 @@ class TabTrayController: UIViewController, Themeable {
     }
 
     @objc func dynamicFontChanged(_ notification: Notification) {
-        guard notification.name == .DynamicFontChanged else { return }
+        guard notification.name == .dynamicFontChanged else { return }
 
         self.collectionView.reloadData()
     }
@@ -299,14 +299,14 @@ class TabTrayController: UIViewController, Themeable {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.accessibilityLabel = Strings.TabTrayAccessibilityLabel
+        view.accessibilityLabel = Strings.tabTrayAccessibilityLabel
         
         collectionView = UICollectionView(frame: view.frame, collectionViewLayout: UICollectionViewFlowLayout())
         
         collectionView.dataSource = tabDataSource
         collectionView.delegate = tabLayoutDelegate
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: UIConstants.BottomToolbarHeight, right: 0)
-        collectionView.register(TabCell.self, forCellWithReuseIdentifier: TabCell.Identifier)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: UIConstants.bottomToolbarHeight, right: 0)
+        collectionView.register(TabCell.self, forCellWithReuseIdentifier: TabCell.identifier)
 
         collectionView.dragInteractionEnabled = true
         collectionView.dragDelegate = tabDataSource
@@ -339,7 +339,7 @@ class TabTrayController: UIViewController, Themeable {
 
         NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActiveNotification), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActiveNotification), name: UIApplication.didBecomeActiveNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(dynamicFontChanged), name: .DynamicFontChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(dynamicFontChanged), name: .dynamicFontChanged, object: nil)
         
         applyTheme(Theme.of(tabManager.selectedTab))
     }
@@ -393,7 +393,7 @@ class TabTrayController: UIViewController, Themeable {
         toolbar.snp.makeConstraints { make in
             make.left.right.equalTo(view.safeAreaLayoutGuide)
             make.bottom.equalTo(view)
-            make.height.equalTo(UIConstants.BottomToolbarHeight)
+            make.height.equalTo(UIConstants.bottomToolbarHeight)
         }
     }
     
@@ -712,7 +712,7 @@ extension TabTrayController: UIScrollViewAccessibilityDelegate {
         }
 
         if indexPaths.count == 0 {
-            return Strings.TabTrayEmptyVoiceOverText
+            return Strings.tabTrayEmptyVoiceOverText
         }
 
         let firstTab = indexPaths.first!.row + 1
@@ -720,9 +720,9 @@ extension TabTrayController: UIScrollViewAccessibilityDelegate {
         let tabCount = collectionView.numberOfItems(inSection: 0)
 
         if firstTab == lastTab {
-            return String(format: Strings.TabTraySingleTabPositionFormatVoiceOverText, NSNumber(value: firstTab as Int), NSNumber(value: tabCount as Int))
+            return String(format: Strings.tabTraySingleTabPositionFormatVoiceOverText, NSNumber(value: firstTab as Int), NSNumber(value: tabCount as Int))
         } else {
-            return String(format: Strings.TabTrayMultiTabPositionFormatVoiceOverText, NSNumber(value: firstTab as Int), NSNumber(value: lastTab as Int), NSNumber(value: tabCount as Int))
+            return String(format: Strings.tabTrayMultiTabPositionFormatVoiceOverText, NSNumber(value: firstTab as Int), NSNumber(value: lastTab as Int), NSNumber(value: tabCount as Int))
         }
     }
 }
@@ -733,7 +733,7 @@ extension TabTrayController: SwipeAnimatorDelegate {
 
         let tab = tabManager.tabsForCurrentMode[indexPath.item]
         tabManager.removeTab(tab)
-        UIAccessibility.post(notification: .announcement, argument: Strings.TabTrayClosingTabAccessibilityNotificationText)
+        UIAccessibility.post(notification: .announcement, argument: Strings.tabTrayClosingTabAccessibilityNotificationText)
     }
 }
 
@@ -785,7 +785,7 @@ fileprivate class TabManagerDataSource: NSObject, UICollectionViewDataSource {
     }
 
     @objc func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let tabCell = collectionView.dequeueReusableCell(withReuseIdentifier: TabCell.Identifier, for: indexPath) as? TabCell else { return UICollectionViewCell() }
+        guard let tabCell = collectionView.dequeueReusableCell(withReuseIdentifier: TabCell.identifier, for: indexPath) as? TabCell else { return UICollectionViewCell() }
         tabCell.animator.delegate = cellDelegate
         tabCell.delegate = cellDelegate
 
@@ -799,7 +799,7 @@ fileprivate class TabManagerDataSource: NSObject, UICollectionViewDataSource {
             tabCell.accessibilityLabel = tab.url?.aboutComponent ?? "" // If there is no title we are most likely on a home panel.
         }
         tabCell.isAccessibilityElement = true
-        tabCell.accessibilityHint = Strings.TabTrayCellCloseAccessibilityHint
+        tabCell.accessibilityHint = Strings.tabTrayCellCloseAccessibilityHint
 
         if let favIcon = tab.displayFavicon, let url = URL(string: favIcon.url) {
             tabCell.favicon.setIcon(favIcon, forURL: url)
@@ -906,9 +906,9 @@ fileprivate class TabLayoutDelegate: NSObject, UICollectionViewDelegateFlowLayou
     fileprivate var numberOfColumns: Int {
         // iPhone 4-6+ portrait
         if traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular {
-            return TabTrayControllerUX.CompactNumberOfColumnsThin
+            return TabTrayControllerUX.compactNumberOfColumnsThin
         } else {
-            return TabTrayControllerUX.NumberOfColumnsWide
+            return TabTrayControllerUX.numberOfColumnsWide
         }
     }
 
@@ -919,32 +919,32 @@ fileprivate class TabLayoutDelegate: NSObject, UICollectionViewDelegateFlowLayou
     }
 
     fileprivate func cellHeightForCurrentDevice() -> CGFloat {
-        let shortHeight = TabTrayControllerUX.TextBoxHeight * 6
+        let shortHeight = TabTrayControllerUX.textBoxHeight * 6
 
         if self.traitCollection.verticalSizeClass == .compact {
             return shortHeight
         } else if self.traitCollection.horizontalSizeClass == .compact {
             return shortHeight
         } else {
-            return TabTrayControllerUX.TextBoxHeight * 8
+            return TabTrayControllerUX.textBoxHeight * 8
         }
     }
 
     @objc func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return TabTrayControllerUX.Margin
+        return TabTrayControllerUX.margin
     }
 
     @objc func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellWidth = floor((collectionView.bounds.width - TabTrayControllerUX.Margin * CGFloat(numberOfColumns + 1)) / CGFloat(numberOfColumns))
+        let cellWidth = floor((collectionView.bounds.width - TabTrayControllerUX.margin * CGFloat(numberOfColumns + 1)) / CGFloat(numberOfColumns))
         return CGSize(width: cellWidth, height: self.cellHeightForCurrentDevice())
     }
 
     @objc func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(equalInset: TabTrayControllerUX.Margin)
+        return UIEdgeInsets(equalInset: TabTrayControllerUX.margin)
     }
 
     @objc func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return TabTrayControllerUX.Margin
+        return TabTrayControllerUX.margin
     }
 
     @objc func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -953,14 +953,14 @@ fileprivate class TabLayoutDelegate: NSObject, UICollectionViewDelegateFlowLayou
 }
 
 private struct EmptyPrivateTabsViewUX {
-    static let TitleColor = UIColor.Photon.Grey10
-    static let TitleFont = UIFont.systemFont(ofSize: 20, weight: .semibold)
-    static let DescriptionColor = UIColor.Photon.Grey20
-    static let DescriptionFont = UIFont.systemFont(ofSize: 14)
-    static let LearnMoreFont = UIFont.systemFont(ofSize: 17, weight: .medium)
-    static let TextMargin: CGFloat = 40
-    static let MinBottomMargin: CGFloat = 15
-    static let StackViewSpacing: CGFloat = 15.0
+    static let titleColor = UIColor.Photon.grey10
+    static let titleFont = UIFont.systemFont(ofSize: 20, weight: .semibold)
+    static let descriptionColor = UIColor.Photon.grey20
+    static let descriptionFont = UIFont.systemFont(ofSize: 14)
+    static let learnMoreFont = UIFont.systemFont(ofSize: 17, weight: .medium)
+    static let textMargin: CGFloat = 40
+    static let minBottomMargin: CGFloat = 15
+    static let stackViewSpacing: CGFloat = 15.0
 }
 
 // View we display when there are no private tabs created
@@ -974,35 +974,35 @@ private struct EmptyPrivateTabsViewUX {
     
     let stackView = UIStackView().then {
         $0.axis = .vertical
-        $0.spacing = EmptyPrivateTabsViewUX.StackViewSpacing
+        $0.spacing = EmptyPrivateTabsViewUX.stackViewSpacing
     }
     
     let titleLabel = UILabel().then {
-        $0.textColor = EmptyPrivateTabsViewUX.TitleColor
-        $0.font = EmptyPrivateTabsViewUX.TitleFont
+        $0.textColor = EmptyPrivateTabsViewUX.titleColor
+        $0.font = EmptyPrivateTabsViewUX.titleFont
         $0.textAlignment = .center
-        $0.text = Strings.Private_Browsing
+        $0.text = Strings.privateBrowsing
     }
 
     let descriptionLabel = UILabel().then {
-        $0.textColor = EmptyPrivateTabsViewUX.DescriptionColor
-        $0.font = EmptyPrivateTabsViewUX.DescriptionFont
-        $0.text = Strings.Private_Tab_Body
+        $0.textColor = EmptyPrivateTabsViewUX.descriptionColor
+        $0.font = EmptyPrivateTabsViewUX.descriptionFont
+        $0.text = Strings.privateTabBody
         $0.numberOfLines = 0
     }
     
     let detailsLabel = UILabel().then {
-        $0.textColor = EmptyPrivateTabsViewUX.DescriptionColor
-        $0.font = EmptyPrivateTabsViewUX.DescriptionFont
-        $0.text = Strings.Private_Tab_Details
+        $0.textColor = EmptyPrivateTabsViewUX.descriptionColor
+        $0.font = EmptyPrivateTabsViewUX.descriptionFont
+        $0.text = Strings.privateTabDetails
         $0.isHidden = true
         $0.numberOfLines = 0
     }
 
     let learnMoreButton = UIButton(type: .system).then {
-        $0.setTitle(Strings.Private_Tab_Link, for: [])
-        $0.setTitleColor(UIConstants.PrivateModeTextHighlightColor, for: [])
-        $0.titleLabel?.font = EmptyPrivateTabsViewUX.LearnMoreFont
+        $0.setTitle(Strings.privateTabLink, for: [])
+        $0.setTitleColor(UIConstants.privateModeTextHighlightColor, for: [])
+        $0.titleLabel?.font = EmptyPrivateTabsViewUX.learnMoreFont
         $0.titleLabel?.numberOfLines = 0
     }
 
@@ -1023,18 +1023,18 @@ private struct EmptyPrivateTabsViewUX {
         stackView.addArrangedSubview(detailsLabel)
         stackView.addArrangedSubview(learnMoreButton)
         
-        stackView.setCustomSpacing(EmptyPrivateTabsViewUX.StackViewSpacing * 2.0, after: iconImageView)
+        stackView.setCustomSpacing(EmptyPrivateTabsViewUX.stackViewSpacing * 2.0, after: iconImageView)
         
         scrollView.snp.makeConstraints {
             $0.edges.equalTo(self.snp.edges)
         }
         scrollView.contentLayoutGuide.snp.makeConstraints {
             $0.width.equalTo(self)
-            $0.top.equalTo(self.stackView).offset(-EmptyPrivateTabsViewUX.MinBottomMargin)
-            $0.bottom.equalTo(self.stackView).offset(EmptyPrivateTabsViewUX.MinBottomMargin)
+            $0.top.equalTo(self.stackView).offset(-EmptyPrivateTabsViewUX.minBottomMargin)
+            $0.bottom.equalTo(self.stackView).offset(EmptyPrivateTabsViewUX.minBottomMargin)
         }
         stackView.snp.makeConstraints {
-            $0.left.right.equalTo(self).inset(EmptyPrivateTabsViewUX.TextMargin)
+            $0.left.right.equalTo(self).inset(EmptyPrivateTabsViewUX.textMargin)
         }
     }
     
@@ -1118,20 +1118,20 @@ class TrayToolbar: UIView, Themeable {
 
     let addTabButton = UIButton(type: .system).then {
         $0.setImage(#imageLiteral(resourceName: "add_tab").template, for: .normal)
-        $0.accessibilityLabel = Strings.TabTrayAddTabAccessibilityLabel
+        $0.accessibilityLabel = Strings.tabTrayAddTabAccessibilityLabel
         $0.accessibilityIdentifier = "TabTrayController.addTabButton"
     }
     
     let doneButton = UIButton(type: .system).then {
-        $0.setTitle(Strings.Done, for: .normal)
-        $0.titleLabel?.font = TabTrayControllerUX.ToolbarFont
-        $0.accessibilityLabel = Strings.Done
+        $0.setTitle(Strings.done, for: .normal)
+        $0.titleLabel?.font = TabTrayControllerUX.toolbarFont
+        $0.accessibilityLabel = Strings.done
         $0.accessibilityIdentifier = "TabTrayController.doneButton"
     }
 
     let privateModeButton = PrivateModeButton().then {
-        $0.titleLabel?.font = TabTrayControllerUX.ToolbarFont
-        $0.setTitle(Strings.Private, for: .normal)
+        $0.titleLabel?.font = TabTrayControllerUX.toolbarFont
+        $0.setTitle(Strings.private, for: .normal)
     }
     
     fileprivate let sideOffset: CGFloat = 22

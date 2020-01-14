@@ -27,14 +27,14 @@ class FaviconFetcherErrorType: MaybeErrorType {
  */
 open class FaviconFetcher: NSObject, XMLParserDelegate {
     public static var userAgent: String = ""
-    static let ExpirationTime = TimeInterval(60*60*24*7) // Only check for icons once a week
+    static let expirationTime = TimeInterval(60*60*24*7) // Only check for icons once a week
     fileprivate static var characterToFaviconCache = [String: UIImage]()
     static var defaultFavicon: UIImage = {
         return #imageLiteral(resourceName: "defaultFavicon")
     }()
 
     // An in-Memory data store that stores background colors domains. Stored using url.baseDomain.
-    static var colors: [String: UIColor] = ["brave.com": UIColor.Photon.White100]
+    static var colors: [String: UIColor] = ["brave.com": UIColor.Photon.white100]
 
     // Sites can be accessed via their baseDomain.
     static var defaultIcons: [String: (color: UIColor, url: String)] = {
@@ -177,7 +177,7 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
             var imageOperation: SDWebImageOperation?
 
             let onProgress: ImageCacheProgress = { receivedSize, expectedSize, _ in
-                if receivedSize > FaviconHandler.MaximumFaviconSize || expectedSize > FaviconHandler.MaximumFaviconSize {
+                if receivedSize > FaviconHandler.maximumFaviconSize || expectedSize > FaviconHandler.maximumFaviconSize {
                     imageOperation?.cancel()
                 }
             }
@@ -242,7 +242,7 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
         faviconLabel.text = faviconLetter
         faviconLabel.textAlignment = .center
         faviconLabel.font = UIFont.systemFont(ofSize: 40, weight: .regular)
-        faviconLabel.textColor = UIColor.Photon.White100
+        faviconLabel.textColor = UIColor.Photon.white100
         UIGraphicsBeginImageContextWithOptions(faviconLabel.bounds.size, false, 0.0)
         faviconLabel.layer.render(in: UIGraphicsGetCurrentContext()!)
         faviconImage = UIGraphicsGetImageFromCurrentImageContext()!
@@ -255,10 +255,10 @@ open class FaviconFetcher: NSObject, XMLParserDelegate {
     // Returns a color based on the url's hash
     class func getDefaultColor(_ url: URL) -> UIColor {
         guard let hash = url.baseDomain?.hashValue else {
-            return UIColor.Photon.Grey50
+            return UIColor.Photon.grey50
         }
-        let index = abs(hash) % (UIConstants.DefaultColorStrings.count - 1)
-        let colorHex = UIConstants.DefaultColorStrings[index]
+        let index = abs(hash) % (UIConstants.defaultColorStrings.count - 1)
+        let colorHex = UIConstants.defaultColorStrings[index]
         return UIColor(colorString: colorHex)
     }
 

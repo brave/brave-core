@@ -29,8 +29,8 @@ class SearchEnginePicker: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = Strings.SearchEnginePickerNavTitle
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.CancelButtonTitle, style: .plain, target: self, action: #selector(cancel))
+        navigationItem.title = Strings.searchEnginePickerNavTitle
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.cancelButtonTitle, style: .plain, target: self, action: #selector(cancel))
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -41,7 +41,8 @@ class SearchEnginePicker: UITableViewController {
         let engine = engines[indexPath.item]
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
         cell.textLabel?.text = engine.shortName
-        cell.imageView?.image = engine.image.createScaled(CGSize(width: OpenSearchEngine.PreferredIconSize, height: OpenSearchEngine.PreferredIconSize))
+        cell.imageView?.image = engine.image.createScaled(CGSize(width: OpenSearchEngine.preferredIconSize,
+                                                                 height: OpenSearchEngine.preferredIconSize))
         if engine.shortName == selectedSearchEngineName {
             cell.accessoryType = .checkmark
         }

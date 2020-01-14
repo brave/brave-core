@@ -31,11 +31,11 @@ class QuickActions: NSObject {
 
     fileprivate let log = Logger.browserLogger
 
-    static let QuickActionsVersion = "1.0"
-    static let QuickActionsVersionKey = "dynamicQuickActionsVersion"
+    static let quickActionsVersion = "1.0"
+    static let quickActionsVersionKey = "dynamicQuickActionsVersion"
 
-    static let TabURLKey = "url"
-    static let TabTitleKey = "title"
+    static let tabURLKey = "url"
+    static let tabTitleKey = "title"
 
     static var sharedInstance = QuickActions()
 

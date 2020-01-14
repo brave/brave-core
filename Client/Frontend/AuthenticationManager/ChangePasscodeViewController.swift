@@ -13,11 +13,11 @@ class ChangePasscodeViewController: PagingPasscodeViewController, PasscodeInputV
 
     override init() {
         super.init()
-        self.title = Strings.AuthenticationChangePasscode
+        self.title = Strings.authenticationChangePasscode
         self.panes = [
-            PasscodePane(title: Strings.AuthenticationEnterPasscode, passcodeSize: authenticationInfo?.passcode?.count ?? 6),
-            PasscodePane(title: Strings.AuthenticationEnterNewPasscode, passcodeSize: 6),
-            PasscodePane(title: Strings.AuthenticationReenterPasscode, passcodeSize: 6),
+            PasscodePane(title: Strings.authenticationEnterPasscode, passcodeSize: authenticationInfo?.passcode?.count ?? 6),
+            PasscodePane(title: Strings.authenticationEnterNewPasscode, passcodeSize: 6),
+            PasscodePane(title: Strings.authenticationReenterPasscode, passcodeSize: 6),
         ]
     }
     
@@ -86,6 +86,6 @@ class ChangePasscodeViewController: PagingPasscodeViewController, PasscodeInputV
         authenticationInfo?.updatePasscode(code)
         KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(authenticationInfo)
         let notificationCenter = NotificationCenter.default
-        notificationCenter.post(name: .PasscodeDidChange, object: nil)
+        notificationCenter.post(name: .passcodeDidChange, object: nil)
     }
 }

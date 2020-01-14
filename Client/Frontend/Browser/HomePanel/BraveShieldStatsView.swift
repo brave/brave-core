@@ -21,19 +21,19 @@ class BraveShieldStatsView: UIView, Themeable {
     
     lazy var adsStatView: StatView = {
         let statView = StatView(frame: CGRect.zero)
-        statView.title = Strings.ShieldsAdAndTrackerStats
+        statView.title = Strings.shieldsAdAndTrackerStats
         return statView
     }()
 
     lazy var httpsStatView: StatView = {
         let statView = StatView(frame: CGRect.zero)
-        statView.title = Strings.ShieldsHttpsStats
+        statView.title = Strings.shieldsHttpsStats
         return statView
     }()
     
     lazy var timeStatView: StatView = {
         let statView = StatView(frame: CGRect.zero)
-        statView.title = Strings.ShieldsTimeStats
+        statView.title = Strings.shieldsTimeStats
         return statView
     }()
     
@@ -50,7 +50,7 @@ class BraveShieldStatsView: UIView, Themeable {
         
         update()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(update), name: NSNotification.Name(rawValue: BraveGlobalShieldStats.DidUpdateNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(update), name: NSNotification.Name(rawValue: BraveGlobalShieldStats.didUpdateNotification), object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -94,29 +94,29 @@ class BraveShieldStatsView: UIView, Themeable {
             
             if seconds {
                 counter = ceil(Double(estimatedMillisecondsSaved / 1000))
-                text = Strings.ShieldsTimeStatsSeconds
+                text = Strings.shieldsTimeStatsSeconds
             } else if minutes {
                 counter = ceil(Double(estimatedMillisecondsSaved / 1000 / 60))
-                text = Strings.ShieldsTimeStatsMinutes
+                text = Strings.shieldsTimeStatsMinutes
             } else if hours {
                 counter = ceil(Double(estimatedMillisecondsSaved / 1000 / 60 / 60))
-                text = Strings.ShieldsTimeStatsHour
+                text = Strings.shieldsTimeStatsHour
             } else {
                 counter = ceil(Double(estimatedMillisecondsSaved / 1000 / 60 / 60 / 24))
-                text = Strings.ShieldsTimeStatsDays
+                text = Strings.shieldsTimeStatsDays
             }
             
             if let counterLocaleStr = Int(counter).decimalFormattedString {
                 return counterLocaleStr + text
             } else {
-                return "0" + Strings.ShieldsTimeStatsSeconds     // If decimalFormattedString returns nil, default to "0s"
+                return "0" + Strings.shieldsTimeStatsSeconds     // If decimalFormattedString returns nil, default to "0s"
             }
         }
     }
 }
 
 class StatView: UIView {
-    var color: UIColor = UX.GreyJ {
+    var color: UIColor = UX.greyJ {
         didSet {
             statLabel.appearanceTextColor = color
         }

@@ -28,7 +28,7 @@ extension ToolbarUrlActionsProtocol {
             return
         }
         
-        let cancelAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil)
         alert.addAction(cancelAction)
         
         // If we're showing an arrow popup, set the anchor to the long press location.
@@ -46,18 +46,18 @@ extension ToolbarUrlActionsProtocol {
         
         typealias Action = (title: String, action: () -> Void)
         
-        let newTabAction = Action(title: Strings.OpenNewTabButtonTitle,
+        let newTabAction = Action(title: Strings.openNewTabButtonTitle,
                                   action: { delegate.openInNewTab(url, isPrivate: currentTabIsPrivate) })
         
         let newPrivateTabAction = currentTabIsPrivate ? nil :
-            Action(title: Strings.OpenNewPrivateTabButtonTitle, action: {
+            Action(title: Strings.openNewPrivateTabButtonTitle, action: {
                 delegate.openInNewTab(url, isPrivate: true)
             })
         
-        let copyAction = Action(title: Strings.CopyLinkActionTitle,
+        let copyAction = Action(title: Strings.copyLinkActionTitle,
                                 action: { delegate.copy(url) })
         
-        let shareAction = Action(title: Strings.ShareLinkActionTitle,
+        let shareAction = Action(title: Strings.shareLinkActionTitle,
                                  action: { delegate.share(url) })
         
         return [newTabAction, newPrivateTabAction, copyAction, shareAction].compactMap { $0 }.map { action in

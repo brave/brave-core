@@ -18,7 +18,7 @@ extension BrowserViewController: DownloadQueueDelegate {
                 if buttonPressed, !downloadQueue.isEmpty {
                     downloadQueue.cancelAll()
 
-                    let downloadCancelledToast = ButtonToast(labelText: Strings.DownloadCancelledToastLabelText, backgroundColor: UIColor.Photon.Grey60, textAlignment: .center)
+                    let downloadCancelledToast = ButtonToast(labelText: Strings.downloadCancelledToastLabelText, backgroundColor: UIColor.Photon.grey60, textAlignment: .center)
 
                     self.show(toast: downloadCancelledToast)
                 }
@@ -49,7 +49,7 @@ extension BrowserViewController: DownloadQueueDelegate {
             downloadToast.dismiss(false)
 
             if error == nil {
-                let downloadCompleteToast = ButtonToast(labelText: download.filename, imageName: "check", buttonText: Strings.DownloadsButtonTitle, completion: { buttonPressed in
+                let downloadCompleteToast = ButtonToast(labelText: download.filename, imageName: "check", buttonText: Strings.downloadsButtonTitle, completion: { buttonPressed in
                     guard buttonPressed else { return }
                     
                     let downloadsPanel = DownloadsPanel(profile: self.profile)
@@ -64,7 +64,7 @@ extension BrowserViewController: DownloadQueueDelegate {
 
                 self.show(toast: downloadCompleteToast, duration: DispatchTimeInterval.seconds(8))
             } else {
-                let downloadFailedToast = ButtonToast(labelText: Strings.DownloadFailedToastLabelText, backgroundColor: UIColor.Photon.Grey60, textAlignment: .center)
+                let downloadFailedToast = ButtonToast(labelText: Strings.downloadFailedToastLabelText, backgroundColor: UIColor.Photon.grey60, textAlignment: .center)
 
                 self.show(toast: downloadFailedToast, duration: nil)
             }

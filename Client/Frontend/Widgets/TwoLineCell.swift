@@ -5,15 +5,15 @@
 import UIKit
 
 struct TwoLineCellUX {
-    static let ImageSize: CGFloat = 29
-    static let ImageCornerRadius: CGFloat = 8
-    static let BorderViewMargin: CGFloat = 16
-    static let BadgeSize: CGFloat = 16
-    static let BadgeMargin: CGFloat = 16
-    static let BorderFrameSize: CGFloat = 32
-    static let TextColor = UIAccessibility.isDarkerSystemColorsEnabled ? UIColor.black : UIColor.Photon.Grey80
-    static let DetailTextColor = UIAccessibility.isDarkerSystemColorsEnabled ? UIColor.Photon.Grey60 : UIColor.Photon.Grey50
-    static let DetailTextTopMargin: CGFloat = 0
+    static let imageSize: CGFloat = 29
+    static let imageCornerRadius: CGFloat = 8
+    static let borderViewMargin: CGFloat = 16
+    static let badgeSize: CGFloat = 16
+    static let badgeMargin: CGFloat = 16
+    static let borderFrameSize: CGFloat = 32
+    static let textColor = UIAccessibility.isDarkerSystemColorsEnabled ? UIColor.black : UIColor.Photon.grey80
+    static let detailTextColor = UIAccessibility.isDarkerSystemColorsEnabled ? UIColor.Photon.grey60 : UIColor.Photon.grey50
+    static let detailTextTopMargin: CGFloat = 0
 }
 
 class TwoLineTableViewCell: UITableViewCell {
@@ -42,7 +42,7 @@ class TwoLineTableViewCell: UITableViewCell {
         indentationWidth = 0
         layoutMargins = .zero
 
-        separatorInset = UIEdgeInsets(top: 0, left: TwoLineCellUX.ImageSize + 2 * TwoLineCellUX.BorderViewMargin, bottom: 0, right: 0)
+        separatorInset = UIEdgeInsets(top: 0, left: TwoLineCellUX.imageSize + 2 * TwoLineCellUX.borderViewMargin, bottom: 0, right: 0)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -59,7 +59,7 @@ class TwoLineTableViewCell: UITableViewCell {
         self.textLabel!.alpha = 1
         self.imageView!.alpha = 1
         self.selectionStyle = .default
-        separatorInset = UIEdgeInsets(top: 0, left: TwoLineCellUX.ImageSize + 2 * TwoLineCellUX.BorderViewMargin, bottom: 0, right: 0)
+        separatorInset = UIEdgeInsets(top: 0, left: TwoLineCellUX.imageSize + 2 * TwoLineCellUX.borderViewMargin, bottom: 0, right: 0)
         twoLineHelper.setupDynamicFonts()
     }
 
@@ -185,8 +185,8 @@ private class TwoLineCellHelper {
             self.container?.backgroundColor = UIColor.clear
         }
 
-        textLabel.textColor = TwoLineCellUX.TextColor
-        detailTextLabel.textColor = TwoLineCellUX.DetailTextColor
+        textLabel.textColor = TwoLineCellUX.textColor
+        detailTextLabel.textColor = TwoLineCellUX.detailTextColor
         setupDynamicFonts()
 
         imageView.contentMode = .scaleAspectFill
@@ -204,30 +204,30 @@ private class TwoLineCellHelper {
             return
         }
         let height = container.frame.height
-        let textLeft = TwoLineCellUX.ImageSize + 2 * TwoLineCellUX.BorderViewMargin
+        let textLeft = TwoLineCellUX.imageSize + 2 * TwoLineCellUX.borderViewMargin
         let textLabelHeight = textLabel.intrinsicContentSize.height
         let detailTextLabelHeight = detailTextLabel.intrinsicContentSize.height
         var contentHeight = textLabelHeight
         if detailTextLabelHeight > 0 {
-            contentHeight += detailTextLabelHeight + TwoLineCellUX.DetailTextTopMargin
+            contentHeight += detailTextLabelHeight + TwoLineCellUX.detailTextTopMargin
         }
 
-        let textRightInset: CGFloat = hasRightBadge ? (TwoLineCellUX.BadgeSize + TwoLineCellUX.BadgeMargin) : 0
+        let textRightInset: CGFloat = hasRightBadge ? (TwoLineCellUX.badgeSize + TwoLineCellUX.badgeMargin) : 0
 
         textLabel.frame = CGRect(x: textLeft, y: (height - contentHeight) / 2,
-                                 width: container.frame.width - textLeft - TwoLineCellUX.BorderViewMargin - textRightInset, height: textLabelHeight)
-        detailTextLabel.frame = CGRect(x: textLeft, y: textLabel.frame.maxY + TwoLineCellUX.DetailTextTopMargin,
-                                       width: container.frame.width - textLeft - TwoLineCellUX.BorderViewMargin - textRightInset, height: detailTextLabelHeight)
+                                 width: container.frame.width - textLeft - TwoLineCellUX.borderViewMargin - textRightInset, height: textLabelHeight)
+        detailTextLabel.frame = CGRect(x: textLeft, y: textLabel.frame.maxY + TwoLineCellUX.detailTextTopMargin,
+                                       width: container.frame.width - textLeft - TwoLineCellUX.borderViewMargin - textRightInset, height: detailTextLabelHeight)
 
         // Like the comment above, this is not ideal. This code should probably be refactored to use autolayout. That will remove a lot of the pixel math and remove code duplication.
 
         if UIApplication.shared.userInterfaceLayoutDirection == .leftToRight {
-            imageView.frame = CGRect(x: TwoLineCellUX.BorderViewMargin, y: (height - TwoLineCellUX.ImageSize) / 2, width: TwoLineCellUX.ImageSize, height: TwoLineCellUX.ImageSize)
+            imageView.frame = CGRect(x: TwoLineCellUX.borderViewMargin, y: (height - TwoLineCellUX.imageSize) / 2, width: TwoLineCellUX.imageSize, height: TwoLineCellUX.imageSize)
         } else {
-            imageView.frame = CGRect(x: container.frame.width - TwoLineCellUX.ImageSize - TwoLineCellUX.BorderViewMargin, y: (height - TwoLineCellUX.ImageSize) / 2, width: TwoLineCellUX.ImageSize, height: TwoLineCellUX.ImageSize)
+            imageView.frame = CGRect(x: container.frame.width - TwoLineCellUX.imageSize - TwoLineCellUX.borderViewMargin, y: (height - TwoLineCellUX.imageSize) / 2, width: TwoLineCellUX.imageSize, height: TwoLineCellUX.imageSize)
 
-            textLabel.frame = textLabel.frame.offsetBy(dx: -(TwoLineCellUX.ImageSize + TwoLineCellUX.BorderViewMargin - textRightInset), dy: 0)
-            detailTextLabel.frame = detailTextLabel.frame.offsetBy(dx: -(TwoLineCellUX.ImageSize + TwoLineCellUX.BorderViewMargin - textRightInset), dy: 0)
+            textLabel.frame = textLabel.frame.offsetBy(dx: -(TwoLineCellUX.imageSize + TwoLineCellUX.borderViewMargin - textRightInset), dy: 0)
+            detailTextLabel.frame = detailTextLabel.frame.offsetBy(dx: -(TwoLineCellUX.imageSize + TwoLineCellUX.borderViewMargin - textRightInset), dy: 0)
 
             // If the cell has an accessory, shift them all to the left even more. Only required on RTL.
             if accessoryWidth != 0 {

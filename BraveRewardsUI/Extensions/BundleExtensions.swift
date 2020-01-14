@@ -7,5 +7,5 @@ import Foundation
 private class _RewardsUIClass {}
 
 extension Bundle {
-  public static let RewardsUI: Bundle = Bundle(for: _RewardsUIClass.self)
+  public static let rewardsUI: Bundle = Bundle(for: _RewardsUIClass.self)
 }

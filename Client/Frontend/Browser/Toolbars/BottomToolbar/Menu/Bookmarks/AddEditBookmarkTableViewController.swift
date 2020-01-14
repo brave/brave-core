@@ -38,7 +38,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
         let button = UIBarButtonItem().then {
             $0.target = self
             $0.action = #selector(save)
-            $0.title = Strings.SaveButtonTitle
+            $0.title = Strings.saveButtonTitle
         }
         
         return button
@@ -78,7 +78,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
     
     private var rootLevelFolderCell: IndentedImageTableViewCell {
         let cell = IndentedImageTableViewCell(image: #imageLiteral(resourceName: "menu_bookmarks")).then {
-            $0.folderName.text = Strings.BookmarkRootLevelCellTitle
+            $0.folderName.text = Strings.bookmarkRootLevelCellTitle
             $0.tag = SpecialCell.rootLevel.rawValue
             if case .rootLevel = saveLocation, presentationMode == .folderHierarchy {
                 $0.accessoryType = .checkmark
@@ -90,7 +90,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
     
     private var favoritesCell: IndentedImageTableViewCell {
         let cell = IndentedImageTableViewCell(image: #imageLiteral(resourceName: "menu_favorites")).then {
-            $0.folderName.text = Strings.FavoritesRootLevelCellTitle
+            $0.folderName.text = Strings.favoritesRootLevelCellTitle
             $0.tag = SpecialCell.favorites.rawValue
             if case .favorites = saveLocation, presentationMode == .folderHierarchy {
                 $0.accessoryType = .checkmark
@@ -103,7 +103,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
     private var addNewFolderCell: IndentedImageTableViewCell {
         let cell = IndentedImageTableViewCell(image: #imageLiteral(resourceName: "menu_new_folder"))
         
-        cell.folderName.text = Strings.AddFolderActionCellTitle
+        cell.folderName.text = Strings.addFolderActionCellTitle
         cell.accessoryType = .disclosureIndicator
         cell.tag = SpecialCell.addFolder.rawValue
         
@@ -328,13 +328,13 @@ class AddEditBookmarkTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         switch saveLocation {
-        case .favorites: return Strings.FavoritesLocationFooterText
+        case .favorites: return Strings.favoritesLocationFooterText
         default: return nil
         }
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return Strings.EditBookmarkTableLocationHeader
+        return Strings.editBookmarkTableLocationHeader
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -366,7 +366,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
     }
     
     private func showNewFolderVC() {
-        let vc = AddEditBookmarkTableViewController(mode: .addFolder(title: Strings.NewFolderDefaultName))
+        let vc = AddEditBookmarkTableViewController(mode: .addFolder(title: Strings.newFolderDefaultName))
         navigationController?.pushViewController(vc, animated: true)
     }
 

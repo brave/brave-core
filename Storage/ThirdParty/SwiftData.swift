@@ -103,14 +103,14 @@ open class SwiftData {
     let schema: Schema
     let files: FileAccessor
 
-    static var EnableWAL = true
-    static var EnableForeignKeys = true
+    static var enableWAL = true
+    static var enableForeignKeys = true
 
     /// Used to keep track of the corrupted databases we've logged.
     static var corruptionLogsWritten = Set<String>()
 
     /// Used for testing.
-    static var ReuseConnections = true
+    static var reuseConnections = true
 
     /// For thread-safe access to the shared connection.
     fileprivate let sharedConnectionQueue: DispatchQueue
@@ -163,7 +163,7 @@ open class SwiftData {
                 self.sharedConnection = ConcreteSQLiteDBConnection(filename: self.filename, flags: SwiftData.Flags.readWriteCreate.toSQL(), key: self.key, prevKey: self.prevKey, schema: self.schema, files: self.files)
             }
 
-            guard let connection = SwiftData.ReuseConnections ? self.sharedConnection :
+            guard let connection = SwiftData.reuseConnections ? self.sharedConnection :
                 ConcreteSQLiteDBConnection(filename: self.filename, flags: flags.toSQL(), key: self.key, prevKey: self.prevKey, schema: self.schema, files: self.files) else {
                     do {
                         _ = try callback(FailedSQLiteDBConnection())
@@ -200,7 +200,7 @@ open class SwiftData {
      * The code block can return true if the transaction should be committed. False if we should roll back.
      */
     func transaction<T>(synchronous: Bool = false, _ transactionClosure: @escaping (_ connection: SQLiteDBConnection) throws -> T) -> Deferred<Maybe<T>> {
-        return withConnection(SwiftData.Flags.readWriteCreate, synchronous: synchronous) { connection in
+        return withConnection(.readWriteCreate, synchronous: synchronous) { connection in
             try connection.transaction(transactionClosure)
         }
     }
@@ -409,11 +409,11 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
     }
 
     open var version: Int {
-        return pragma("user_version", factory: IntFactory) ?? 0
+        return pragma("user_version", factory: intFactory) ?? 0
     }
 
     open var cipherVersion: String? {
-        return pragma("cipher_version", factory: StringFactory)
+        return pragma("cipher_version", factory: stringFactory)
     }
 
     fileprivate var sqliteDB: OpaquePointer?
@@ -499,7 +499,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
             // reset Sync and start over in the case of corruption.
             defer {
                 let baseFilename = URL(fileURLWithPath: self.filename).lastPathComponent
-                NotificationCenter.default.post(name: .DatabaseWasRecreated, object: baseFilename)
+                NotificationCenter.default.post(name: .databaseWasRecreated, object: baseFilename)
             }
 
             // Now that we've got a brand new database file, let's call `prepareSchema()` on
@@ -524,7 +524,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
 
     fileprivate func setKey(_ key: String?) -> NSError? {
         sqlite3_key(sqliteDB, key ?? "", Int32((key ?? "").count))
-        let cursor = executeQuery("SELECT count(*) FROM sqlite_master;", factory: IntFactory, withArgs: nil as Args?)
+        let cursor = executeQuery("SELECT count(*) FROM sqlite_master;", factory: intFactory, withArgs: nil as Args?)
         if cursor.status != .success {
             return NSError(domain: "mozilla", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid key"])
         }
@@ -536,7 +536,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
         sqlite3_rekey(sqliteDB, newKey ?? "", Int32((newKey ?? "").count))
         // Check that the new key actually works
         sqlite3_key(sqliteDB, newKey ?? "", Int32((newKey ?? "").count))
-        let cursor = executeQuery("SELECT count(*) FROM sqlite_master;", factory: IntFactory, withArgs: nil as Args?)
+        let cursor = executeQuery("SELECT count(*) FROM sqlite_master;", factory: intFactory, withArgs: nil as Args?)
         if cursor.status != .success {
             return NSError(domain: "mozilla", code: 0, userInfo: [NSLocalizedDescriptionKey: "Rekey failed"])
         }
@@ -568,8 +568,8 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
     }
 
     fileprivate func prepareShared() {
-        if SwiftData.EnableForeignKeys {
-            let _ = pragma("foreign_keys=ON", factory: IntFactory)
+        if SwiftData.enableForeignKeys {
+            let _ = pragma("foreign_keys=ON", factory: intFactory)
         }
 
         // Retry queries before returning locked errors.
@@ -594,10 +594,10 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
             }
         }
 
-        if SwiftData.EnableWAL {
+        if SwiftData.enableWAL {
             log.info("Enabling WAL mode.")
             try pragma("journal_mode=WAL", expected: "wal",
-                       factory: StringFactory, message: "WAL journal mode set")
+                       factory: stringFactory, message: "WAL journal mode set")
         }
 
         self.prepareShared()
@@ -613,17 +613,17 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
         // because it needs to be set from day one.
 
         let desiredPageSize = 32 * 1024
-        let _ = pragma("page_size=\(desiredPageSize)", factory: IntFactory)
+        let _ = pragma("page_size=\(desiredPageSize)", factory: intFactory)
 
-        let currentPageSize = pragma("page_size", factory: IntFactory)
+        let currentPageSize = pragma("page_size", factory: intFactory)
 
         // This has to be done without WAL, so we always hop into rollback/delete journal mode.
         if currentPageSize != desiredPageSize {
             try pragma("journal_mode=DELETE", expected: "delete",
-                       factory: StringFactory, message: "delete journal mode set")
+                       factory: stringFactory, message: "delete journal mode set")
 
             try pragma("page_size=\(desiredPageSize)", expected: nil,
-                       factory: IntFactory, message: "Page size set")
+                       factory: intFactory, message: "Page size set")
 
             log.info("Vacuuming to alter database page size from \(currentPageSize ?? 0) to \(desiredPageSize).")
 
@@ -635,7 +635,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
             }
         }
 
-        if SwiftData.EnableWAL {
+        if SwiftData.enableWAL {
             log.info("Enabling WAL mode.")
 
             let desiredPagesPerJournal = 16
@@ -655,15 +655,15 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
 
             try withExtendedLifetime(journalModeQuery, {
                 try pragma(journalModeQuery, expected: "wal",
-                           factory: StringFactory, message: "WAL journal mode set")
+                           factory: stringFactory, message: "WAL journal mode set")
             })
             try withExtendedLifetime(autoCheckpointQuery, {
                 try pragma(autoCheckpointQuery, expected: desiredPagesPerJournal,
-                           factory: IntFactory, message: "WAL autocheckpoint set")
+                           factory: intFactory, message: "WAL autocheckpoint set")
             })
             try withExtendedLifetime(journalSizeQuery, {
                 try pragma(journalSizeQuery, expected: desiredJournalSizeLimit,
-                           factory: IntFactory, message: "WAL journal size limit set")
+                           factory: intFactory, message: "WAL journal size limit set")
             })
         }
 
@@ -760,7 +760,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
                 if connection.version == 0 {
                     // Query for the existence of the `tableList` table to determine if we are
                     // migrating from an older DB version.
-                    let sqliteMasterCursor = connection.executeQueryUnsafe("SELECT count(*) AS number FROM sqlite_master WHERE type = 'table' AND name = 'tableList'", factory: IntFactory, withArgs: [] as Args)
+                    let sqliteMasterCursor = connection.executeQueryUnsafe("SELECT count(*) AS number FROM sqlite_master WHERE type = 'table' AND name = 'tableList'", factory: intFactory, withArgs: [] as Args)
                     
                     let tableListTableExists = sqliteMasterCursor[0] == 1
                     sqliteMasterCursor.close()
@@ -905,7 +905,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
         var msg = SDError.errorMessageFromCode(status)
 
         if debug_enabled {
-            log.debug("SwiftData Error -> \(description)")
+            log.debug("SwiftData.error -> \(description)")
             log.debug("                -> Code: \(status) - \(msg)")
         }
 
@@ -1080,7 +1080,7 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
             logger.error("Integrity check:")
 
             let args: [Any?]? = nil
-            let messages = self.executeQueryUnsafe("PRAGMA integrity_check", factory: StringFactory, withArgs: args)
+            let messages = self.executeQueryUnsafe("PRAGMA integrity_check", factory: stringFactory, withArgs: args)
             defer { messages.close() }
 
             if messages.status == CursorStatus.success {
@@ -1178,12 +1178,12 @@ open class ConcreteSQLiteDBConnection: SQLiteDBConnection {
 }
 
 /// Helper for queries that return a single integer result.
-func IntFactory(_ row: SDRow) -> Int {
+func intFactory(_ row: SDRow) -> Int {
     return row[0] as! Int
 }
 
 /// Helper for queries that return a single String result.
-func StringFactory(_ row: SDRow) -> String {
+func stringFactory(_ row: SDRow) -> String {
     return row[0] as! String
 }
 
@@ -1227,7 +1227,7 @@ open class SDRow: Sequence {
         case SQLITE_FLOAT:
             ret = Double(sqlite3_column_double(statement.pointer, i))
         default:
-            log.warning("SwiftData Warning -> Column: \(index) is of an unrecognized type, returning nil")
+            log.warning("SwiftData.warning -> Column: \(index) is of an unrecognized type, returning nil")
         }
 
         return ret

@@ -9,10 +9,10 @@ import Shared
 class WebServer {
     private let log = Logger.browserLogger
 
-    static let WebServerSharedInstance = WebServer()
+    static let webServerSharedInstance = WebServer()
 
     class var sharedInstance: WebServer {
-        return WebServerSharedInstance
+        return webServerSharedInstance
     }
 
     let server: GCDWebServer = GCDWebServer()

@@ -51,7 +51,7 @@ extension Deletable where Self: NSManagedObject {
                     let inMemoryCoordinator = DataController.viewContextInMemory.persistentStoreCoordinator {
                     isInMemoryContext = currentCoordinator == inMemoryCoordinator
                 }
-                if AppConstants.IsRunningTest || isInMemoryContext {
+                if AppConstants.isRunningTest || isInMemoryContext {
                     let results = try context.fetch(request) as? [NSManagedObject]
                     results?.forEach {
                         context.delete($0)

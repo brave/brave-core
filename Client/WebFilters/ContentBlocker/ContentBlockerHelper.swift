@@ -19,19 +19,19 @@ enum BlockerStatus: String {
 
 struct ContentBlockingConfig {
     struct Prefs {
-        static let NormalBrowsingEnabledKey = "prefkey.trackingprotection.normalbrowsing"
-        static let PrivateBrowsingEnabledKey = "prefkey.trackingprotection.privatebrowsing"
+        static let normalBrowsingEnabledKey = "prefkey.trackingprotection.normalbrowsing"
+        static let privateBrowsingEnabledKey = "prefkey.trackingprotection.privatebrowsing"
     }
 
     struct Defaults {
-        static let NormalBrowsing = true
-        static let PrivateBrowsing = true
+        static let normalBrowsing = true
+        static let privateBrowsing = true
     }
 }
 
 struct NoImageModeDefaults {
-    static let Script = "[{'trigger':{'url-filter':'.*','resource-type':['image']},'action':{'type':'block'}}]".replacingOccurrences(of: "'", with: "\"")
-    static let ScriptName = "images"
+    static let script = "[{'trigger':{'url-filter':'.*','resource-type':['image']},'action':{'type':'block'}}]".replacingOccurrences(of: "'", with: "\"")
+    static let scriptName = "images"
 }
 
 enum BlockingStrength: String {
@@ -81,12 +81,12 @@ class ContentBlockerHelper {
     init(tab: Tab) {
         self.tab = tab
 
-        NotificationCenter.default.addObserver(self, selector: #selector(setupTabTrackingProtection), name: .ContentBlockerTabSetupRequired, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setupTabTrackingProtection), name: .contentBlockerTabSetupRequired, object: nil)
     }
 
     class func prefsChanged() {
         // This class func needs to notify all the active instances of ContentBlockerHelper to update.
-        NotificationCenter.default.post(name: .ContentBlockerTabSetupRequired, object: nil)
+        NotificationCenter.default.post(name: .contentBlockerTabSetupRequired, object: nil)
     }
 
     deinit {
@@ -162,9 +162,9 @@ extension ContentBlockerHelper {
 
         switch selectedTab.type {
         case .regular:
-            key = ContentBlockingConfig.Prefs.NormalBrowsingEnabledKey
+            key = ContentBlockingConfig.Prefs.normalBrowsingEnabledKey
         case .private:
-            key = ContentBlockingConfig.Prefs.PrivateBrowsingEnabledKey
+            key = ContentBlockingConfig.Prefs.privateBrowsingEnabledKey
         }
 
         prefs.setBool(enabled, forKey: key)

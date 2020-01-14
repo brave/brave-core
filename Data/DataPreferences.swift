@@ -39,7 +39,7 @@ public extension Preferences {
                 = Option<String?>(key: "database.document-to-support-directory-migration.previous-attempted-version", default: nil)
         }
         
-        public static let Bookmark_v1_12_1RestorationCompleted
+        public static let bookmark_v1_12_1RestorationCompleted
             = Option<Bool>(key: "database.1_12_1-bookmark-restoration-completed", default: false)
     }
 }

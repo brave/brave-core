@@ -264,7 +264,7 @@ extension DownloadQueue: DownloadDelegate {
         downloads.remove(at: index)
         delegate?.downloadQueue(self, download: download, didFinishDownloadingTo: location)
 
-        NotificationCenter.default.post(name: .FileDidDownload, object: location)
+        NotificationCenter.default.post(name: .fileDidDownload, object: location)
 
         if downloads.isEmpty {
             delegate?.downloadQueue(self, didCompleteWithError: lastDownloadError)

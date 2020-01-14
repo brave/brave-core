@@ -13,7 +13,7 @@ class PublisherSummaryView: UIView {
   }
   
   lazy var monthlyTipView = DetailActionableRow().then {
-    $0.textLabel.text = Strings.TipSiteMonthly
+    $0.textLabel.text = Strings.tipSiteMonthly
   }
   
   private let scrollView = UIScrollView().then {
@@ -33,13 +33,13 @@ class PublisherSummaryView: UIView {
   let publisherView = PublisherView()
   let attentionView = PublisherAttentionView()
   private let autoContributeRow = SwitchRow().then {
-    $0.textLabel.text = Strings.AutoContributeSwitchLabel
+    $0.textLabel.text = Strings.autoContributeSwitchLabel
     $0.toggleSwitch.isOn = true
   }
   let tipButton = ActionButton(type: .system).then {
     $0.tintColor = Colors.blurple400
     $0.titleLabel?.font = .systemFont(ofSize: 14.0, weight: .bold)
-    $0.setTitle(Strings.PublisherSendTip.uppercased(), for: .normal)
+    $0.setTitle(Strings.publisherSendTip.uppercased(), for: .normal)
   }
   
   @available(*, unavailable)

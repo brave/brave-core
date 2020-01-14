@@ -9,7 +9,7 @@ class SendTipButton: UIControl {
   /// Whether or not the tip is a monthly tip
   var isMonthly: Bool = false {
     didSet {
-      textLabel.text = (isMonthly ? Strings.TippingSendMonthlyTip : Strings.TippingSendTip).uppercased()
+      textLabel.text = (isMonthly ? Strings.tippingSendMonthlyTip : Strings.tippingSendTip).uppercased()
     }
   }
   
@@ -25,7 +25,7 @@ class SendTipButton: UIControl {
   private let textLabel = UILabel().then {
     $0.appearanceTextColor = .white
     $0.font = .systemFont(ofSize: 13.0, weight: .semibold)
-    $0.text = Strings.TippingSendTip.uppercased()
+    $0.text = Strings.tippingSendTip.uppercased()
   }
   
   @available(*, unavailable)

@@ -31,7 +31,7 @@ class GrantsListViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    title = Strings.Grants
+    title = Strings.grants
   
     ledger.finishedPromotions.forEach {
       let value = BATValue($0.approximateValue)

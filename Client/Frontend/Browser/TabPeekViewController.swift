@@ -32,7 +32,7 @@ class TabPeekViewController: UIViewController, WKNavigationDelegate {
         let urlIsTooLongToSave = self.tab?.urlIsTooLong ?? false
         if !self.ignoreURL && !urlIsTooLongToSave {
             if !self.isBookmarked {
-                actions.append(UIPreviewAction(title: Strings.PreviewActionAddToBookmarksActionTitle, style: .default) { previewAction, viewController in
+                actions.append(UIPreviewAction(title: Strings.previewActionAddToBookmarksActionTitle, style: .default) { previewAction, viewController in
                     guard let tab = self.tab else { return }
                     self.delegate?.tabPeekDidAddBookmark(tab)
                     })
@@ -40,14 +40,14 @@ class TabPeekViewController: UIViewController, WKNavigationDelegate {
             // only add the copy URL action if we don't already have 3 items in our list
             // as we are only allowed 4 in total and we always want to display close tab
             if actions.count < 3 {
-                actions.append(UIPreviewAction(title: Strings.PreviewActionCopyURLActionTitle, style: .default) { previewAction, viewController in
+                actions.append(UIPreviewAction(title: Strings.previewActionCopyURLActionTitle, style: .default) { previewAction, viewController in
                     guard let url = self.tab?.canonicalURL else { return }
                     UIPasteboard.general.url = url
-                    SimpleToast().showAlertWithText(Strings.AppMenuCopyURLConfirmMessage, bottomContainer: self.view)
+                    SimpleToast().showAlertWithText(Strings.appMenuCopyURLConfirmMessage, bottomContainer: self.view)
                 })
             }
         }
-        actions.append(UIPreviewAction(title: Strings.PreviewActionCloseTabActionTitle, style: .destructive) { previewAction, viewController in
+        actions.append(UIPreviewAction(title: Strings.previewActionCloseTabActionTitle, style: .destructive) { previewAction, viewController in
             guard let tab = self.tab else { return }
             self.delegate?.tabPeekDidCloseTab(tab)
             })
@@ -68,7 +68,7 @@ class TabPeekViewController: UIViewController, WKNavigationDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         if let webViewAccessibilityLabel = tab?.webView?.accessibilityLabel {
-            previewAccessibilityLabel = String(format: Strings.PreviewFormatAccessibilityLabel, webViewAccessibilityLabel)
+            previewAccessibilityLabel = String(format: Strings.previewFormatAccessibilityLabel, webViewAccessibilityLabel)
         }
         // if there is no screenshot, load the URL in a web page
         // otherwise just show the screenshot

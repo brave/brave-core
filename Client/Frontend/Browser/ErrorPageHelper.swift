@@ -11,11 +11,11 @@ import Storage
 private let log = Logger.browserLogger
 
 class ErrorPageHelper {
-    static let MozDomain = "mozilla"
-    static let MozErrorDownloadsNotEnabled = 100
+    static let mozDomain = "mozilla"
+    static let mozErrorDownloadsNotEnabled = 100
 
-    fileprivate static let MessageOpenInSafari = "openInSafari"
-    fileprivate static let MessageCertVisitOnce = "certVisitOnce"
+    fileprivate static let messageOpenInSafari = "openInSafari"
+    fileprivate static let messageCertVisitOnce = "certVisitOnce"
 
     // When an error page is intentionally loaded, its added to this set. If its in the set, we show
     // it as an error page. If its not, we assume someone is trying to reload this page somehow, and
@@ -26,7 +26,7 @@ class ErrorPageHelper {
 
     // Regardless of cause, NSURLErrorServerCertificateUntrusted is currently returned in all cases.
     // Check the other cases in case this gets fixed in the future.
-    fileprivate static let CertErrors = [
+    fileprivate static let certErrors = [
         NSURLErrorServerCertificateUntrusted,
         NSURLErrorServerCertificateHasBadDate,
         NSURLErrorServerCertificateHasUnknownRoot,
@@ -35,7 +35,7 @@ class ErrorPageHelper {
 
     // Error codes copied from Gecko. The ints corresponding to these codes were determined
     // by inspecting the NSError in each of these cases.
-    fileprivate static let CertErrorCodes = [
+    fileprivate static let certErrorCodes = [
         -9813: "SEC_ERROR_UNKNOWN_ISSUER",
         -9814: "SEC_ERROR_EXPIRED_CERTIFICATE",
         -9843: "SSL_ERROR_BAD_CERT_DOMAIN",
@@ -161,35 +161,35 @@ class ErrorPageHelper {
                 "short_description": errDomain,
             ]
 
-            var actions = "<button onclick='webkit.messageHandlers.localRequestHelper.postMessage({ type: \"reload\" })'>\(Strings.ErrorPageReloadButtonTitle)</button>"
+            var actions = "<button onclick='webkit.messageHandlers.localRequestHelper.postMessage({ type: \"reload\" })'>\(Strings.errorPageReloadButtonTitle)</button>"
 
             if errDomain == kCFErrorDomainCFNetwork as String {
                 if let code = CFNetworkErrors(rawValue: Int32(errCode)) {
                     errDomain = self.cfErrorToName(code)
                 }
-            } else if errDomain == ErrorPageHelper.MozDomain {
-                if errCode == ErrorPageHelper.MozErrorDownloadsNotEnabled {
+            } else if errDomain == ErrorPageHelper.mozDomain {
+                if errCode == ErrorPageHelper.mozErrorDownloadsNotEnabled {
                     // Overwrite the normal try-again action.
-                    actions = "<button onclick='webkit.messageHandlers.errorPageHelperMessageManager.postMessage({type: \"\(MessageOpenInSafari)\"})'>\(Strings.ErrorPageOpenInSafariButtonTitle)</button>"
+                    actions = "<button onclick='webkit.messageHandlers.errorPageHelperMessageManager.postMessage({type: \"\(messageOpenInSafari)\"})'>\(Strings.errorPageOpenInSafariButtonTitle)</button>"
                 }
                 errDomain = ""
-            } else if CertErrors.contains(errCode) {
+            } else if certErrors.contains(errCode) {
                 guard let query = request?.query, let certError = query["certerror"],
                     let errURLDomain = URL(string: errURLString)?.host else {
                     return GCDWebServerResponse(statusCode: 404)
                 }
 
                 asset = Bundle.main.path(forResource: "CertError", ofType: "html")
-                actions = "<button onclick='history.back()'>\(Strings.ErrorPagesGoBackButton)</button>"
-                variables["error_title"] = Strings.ErrorPagesCertWarningTitle
+                actions = "<button onclick='history.back()'>\(Strings.errorPagesGoBackButton)</button>"
+                variables["error_title"] = Strings.errorPagesCertWarningTitle
                 variables["cert_error"] = certError
-                variables["long_description"] = String(format: Strings.ErrorPagesCertWarningDescription, "<b>\(errURLDomain)</b>")
-                variables["advanced_button"] = Strings.ErrorPagesAdvancedButton
-                variables["warning_description"] = Strings.ErrorPagesCertWarningDescription
-                variables["warning_advanced1"] = Strings.ErrorPagesAdvancedWarning1
-                variables["warning_advanced2"] = Strings.ErrorPagesAdvancedWarning2
+                variables["long_description"] = String(format: Strings.errorPagesCertWarningDescription, "<b>\(errURLDomain)</b>")
+                variables["advanced_button"] = Strings.errorPagesAdvancedButton
+                variables["warning_description"] = Strings.errorPagesCertWarningDescription
+                variables["warning_advanced1"] = Strings.errorPagesAdvancedWarning1
+                variables["warning_advanced2"] = Strings.errorPagesAdvancedWarning2
                 variables["warning_actions"] =
-                    "<p><a href='javascript:webkit.messageHandlers.errorPageHelperMessageManager.postMessage({type: \"\(MessageCertVisitOnce)\"})'>\(Strings.ErrorPagesVisitOnceButton)</button></p>"
+                    "<p><a href='javascript:webkit.messageHandlers.errorPageHelperMessageManager.postMessage({type: \"\(messageCertVisitOnce)\"})'>\(Strings.errorPagesVisitOnceButton)</button></p>"
             }
 
             variables["actions"] = actions
@@ -265,7 +265,7 @@ class ErrorPageHelper {
         // user to go back or continue. The certificate itself is encoded and added as
         // a query parameter to the error page URL; we then read the certificate from
         // the URL if the user wants to continue.
-        if ErrorPageHelper.CertErrors.contains(error.code),
+        if ErrorPageHelper.certErrors.contains(error.code),
            let certChain = error.userInfo["NSErrorPeerCertificateChainKey"] as? [SecCertificate],
            let cert = certChain.first,
            let underlyingError = error.userInfo[NSUnderlyingErrorKey] as? NSError,
@@ -273,7 +273,7 @@ class ErrorPageHelper {
             let encodedCert = (SecCertificateCopyData(cert) as Data).base64EncodedString
             queryItems.append(URLQueryItem(name: "badcert", value: encodedCert))
 
-            let certError = ErrorPageHelper.CertErrorCodes[certErrorCode] ?? ""
+            let certError = ErrorPageHelper.certErrorCodes[certErrorCode] ?? ""
             queryItems.append(URLQueryItem(name: "certerror", value: String(certError)))
         }
 
@@ -298,9 +298,9 @@ extension ErrorPageHelper: TabContentScript {
            let type = res["type"] {
 
             switch type {
-            case ErrorPageHelper.MessageOpenInSafari:
+            case ErrorPageHelper.messageOpenInSafari:
                 UIApplication.shared.open(originalURL, options: [:])
-            case ErrorPageHelper.MessageCertVisitOnce:
+            case ErrorPageHelper.messageCertVisitOnce:
                 if let cert = certFromErrorURL(errorURL),
                    let host = originalURL.host {
                     let origin = "\(host):\(originalURL.port ?? 443)"

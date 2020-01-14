@@ -40,14 +40,14 @@ class TipsDetailViewController: UIViewController {
     tipsView.tableView.delegate = self
     tipsView.tableView.dataSource = self
 
-    title = Strings.Tips
+    title = Strings.tips
     loadData()
   }
   
   private var nextContributionDateView: LabelAccessoryView {
     let view = LabelAccessoryView()
     let dateFormatter = DateFormatter().then {
-      $0.dateFormat = Strings.AutoContributeDateFormat
+      $0.dateFormat = Strings.autoContributeDateFormat
     }
     let date = Date(timeIntervalSince1970: TimeInterval(state.ledger.autoContributeProps.reconcileStamp))
     view.label.text = dateFormatter.string(from: date)
@@ -85,11 +85,11 @@ class TipsDetailViewController: UIViewController {
   private let headerView = TableHeaderRowView(
     columns: [
       TableHeaderRowView.Column(
-        title: Strings.Site.uppercased(),
+        title: Strings.site.uppercased(),
         width: .percentage(0.7)
       ),
       TableHeaderRowView.Column(
-        title: Strings.Tokens.uppercased(),
+        title: Strings.tokens.uppercased(),
         width: .percentage(0.3),
         align: .right
       ),
@@ -172,20 +172,20 @@ extension TipsDetailViewController: UITableViewDataSource, UITableViewDelegate {
       // Next Contribution Row
       let cell = tableView.dequeueReusableCell(for: indexPath) as TableViewCell
       cell.label.font = SettingsUX.bodyFont
-      cell.label.text = Strings.MonthlyTippingNextDate
+      cell.label.text = Strings.monthlyTippingNextDate
       cell.accessoryView = nextContributionDateView
       cell.selectionStyle = .none
       return cell
     case .tips:
       if tipsList.isEmpty {
         let cell = tableView.dequeueReusableCell(for: indexPath) as EmptyTableCell
-        cell.label.text = Strings.EmptyTipsText
+        cell.label.text = Strings.emptyTipsText
         cell.selectionStyle = .none
         return cell
       }
       let cell = tableView.dequeueReusableCell(for: indexPath) as TipsTableCell
       let tip = tipsList[indexPath.row]
-      let provider = " \(tip.provider.isEmpty ? "" : String(format: Strings.OnProviderText, tip.providerDisplayString))"
+      let provider = " \(tip.provider.isEmpty ? "" : String(format: Strings.onProviderText, tip.providerDisplayString))"
       
       let attrName = NSMutableAttributedString(string: tip.name).then {
         $0.append(NSMutableAttributedString(string: provider, attributes: [.font: UIFont.boldSystemFont(ofSize: 14.0),
@@ -200,13 +200,13 @@ extension TipsDetailViewController: UITableViewDataSource, UITableViewDelegate {
       switch tip.rewardsCategory {
       case .oneTimeTip:
         let value = BATValue(probi: "\(contribution)")
-        cell.typeNameLabel.text = Strings.OneTimeText + Date.stringFrom(reconcileStamp: tip.reconcileStamp)
+        cell.typeNameLabel.text = Strings.oneTimeText + Date.stringFrom(reconcileStamp: tip.reconcileStamp)
         cell.tokenView.batContainer.amountLabel.text = value?.displayString
         cell.tokenView.usdContainer.amountLabel.text = state.ledger.dollarStringForBATAmount(value?.doubleValue ?? 0, includeCurrencyCode: false)
       case .recurringTip:
         cell.tokenView.batContainer.amountLabel.text = BATValue(contribution).displayString
         cell.tokenView.usdContainer.amountLabel.text = state.ledger.dollarStringForBATAmount(contribution, includeCurrencyCode: false)
-        cell.typeNameLabel.text = Strings.RecurringText
+        cell.typeNameLabel.text = Strings.recurringText
       default:
         cell.tokenView.batContainer.amountLabel.text = ""
         cell.tokenView.usdContainer.amountLabel.text = ""
@@ -231,7 +231,7 @@ extension TipsDetailViewController: UITableViewDataSource, UITableViewDelegate {
   }
   
   func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-    return Strings.Remove
+    return Strings.remove
   }
   
   func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

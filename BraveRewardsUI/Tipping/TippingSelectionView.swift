@@ -104,7 +104,7 @@ class TippingSelectionView: UIView {
   private let titleLabel = UILabel().then {
     $0.appearanceTextColor = .white
     $0.font = .systemFont(ofSize: 18.0, weight: .bold)
-    $0.text = Strings.TippingAmountTitle
+    $0.text = Strings.tippingAmountTitle
   }
   
   private let walletBalanceView = WalletBalanceView()
@@ -115,7 +115,7 @@ class TippingSelectionView: UIView {
   }
   
   private let monthlyToggleButton = Button(type: .system).then {
-    $0.setTitle(Strings.TippingMakeMonthly, for: .normal)
+    $0.setTitle(Strings.tippingMakeMonthly, for: .normal)
     $0.setImage(UIImage(frameworkResourceNamed: "checkbox"), for: .normal)
     $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
     $0.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
@@ -217,7 +217,7 @@ extension TippingSelectionView {
     let titleLabel = UILabel().then {
       $0.appearanceTextColor = Colors.blurple700
       $0.font = .systemFont(ofSize: 12.0)
-      $0.text = Strings.TippingWalletBalanceTitle
+      $0.text = Strings.tippingWalletBalanceTitle
     }
     let valueLabel = UILabel().then {
       $0.appearanceTextColor = .white

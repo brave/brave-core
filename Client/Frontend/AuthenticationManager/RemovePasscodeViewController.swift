@@ -10,9 +10,9 @@ import Shared
 class RemovePasscodeViewController: PagingPasscodeViewController, PasscodeInputViewDelegate {
     override init() {
         super.init()
-        self.title = Strings.AuthenticationTurnOffPasscode
+        self.title = Strings.authenticationTurnOffPasscode
         self.panes = [
-            PasscodePane(title: Strings.AuthenticationEnterPasscode, passcodeSize: authenticationInfo?.passcode?.count ?? 6),
+            PasscodePane(title: Strings.authenticationEnterPasscode, passcodeSize: authenticationInfo?.passcode?.count ?? 6),
         ]
     }
     
@@ -48,6 +48,6 @@ class RemovePasscodeViewController: PagingPasscodeViewController, PasscodeInputV
 
     fileprivate func removePasscode() {
         KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(nil)
-        NotificationCenter.default.post(name: .PasscodeDidRemove, object: nil)
+        NotificationCenter.default.post(name: .passcodeDidRemove, object: nil)
     }
 }

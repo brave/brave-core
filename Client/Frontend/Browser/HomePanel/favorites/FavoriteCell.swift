@@ -54,10 +54,10 @@ class FavoriteCell: UICollectionViewCell {
         $0.isExclusiveTouch = true
         let removeButtonImage = #imageLiteral(resourceName: "edit-small").template
         $0.setImage(removeButtonImage, for: .normal)
-        $0.accessibilityLabel = Strings.Edit_Bookmark
+        $0.accessibilityLabel = Strings.editBookmark
         $0.isHidden = true
-        $0.backgroundColor = UX.GreyC
-        $0.tintColor = UX.GreyI
+        $0.backgroundColor = UX.greyC
+        $0.tintColor = UX.greyI
         $0.frame.size = CGSize(width: 28, height: 28)
         let xOffset: CGFloat = 5
         let buttonCenterX = floor($0.bounds.width/2) + xOffset
@@ -104,13 +104,13 @@ class FavoriteCell: UICollectionViewCell {
         
         editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(showEditMode), name: Notification.Name.ThumbnailEditOn, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(hideEditMode), name: Notification.Name.ThumbnailEditOff, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(showEditMode), name: .thumbnailEditOn, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(hideEditMode), name: .thumbnailEditOff, object: nil)
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.ThumbnailEditOn, object: nil)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.ThumbnailEditOff, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .thumbnailEditOn, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .thumbnailEditOff, object: nil)
     }
     
     @objc func showEditMode() {

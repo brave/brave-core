@@ -27,12 +27,12 @@ protocol TabLocationViewDelegate {
 }
 
 private struct TabLocationViewUX {
-    static let HostFontColor = UIColor.black
-    static let BaseURLFontColor = UIColor.Photon.Grey50
-    static let Spacing: CGFloat = 8
-    static let StatusIconSize: CGFloat = 18
+    static let hostFontColor = UIColor.black
+    static let baseURLFontColor = UIColor.Photon.grey50
+    static let spacing: CGFloat = 8
+    static let statusIconSize: CGFloat = 18
     static let TPIconSize: CGFloat = 24
-    static let ButtonSize = CGSize(width: 44, height: 34.0)
+    static let buttonSize = CGSize(width: 44, height: 34.0)
     static let URLBarPadding = 4
 }
 
@@ -43,7 +43,7 @@ class TabLocationView: UIView {
     var contentView: UIStackView!
     private var tabObservers: TabObservers!
 
-    @objc dynamic var baseURLFontColor: UIColor = TabLocationViewUX.BaseURLFontColor {
+    @objc dynamic var baseURLFontColor: UIColor = TabLocationViewUX.baseURLFontColor {
         didSet { updateTextWithURL() }
     }
 
@@ -65,10 +65,10 @@ class TabLocationView: UIView {
         didSet {
             if loading {
                 reloadButton.setImage(#imageLiteral(resourceName: "nav-stop").template, for: .normal)
-                reloadButton.accessibilityLabel = Strings.TabToolbarStopButtonAccessibilityLabel
+                reloadButton.accessibilityLabel = Strings.tabToolbarStopButtonAccessibilityLabel
             } else {
                 reloadButton.setImage(#imageLiteral(resourceName: "nav-refresh").template, for: .normal)
-                reloadButton.accessibilityLabel = Strings.TabToolbarReloadButtonAccessibilityLabel
+                reloadButton.accessibilityLabel = Strings.tabToolbarReloadButtonAccessibilityLabel
             }
         }
     }
@@ -101,7 +101,7 @@ class TabLocationView: UIView {
                     if !readerModeButton.isHidden {
                         // Delay the Reader Mode accessibility announcement briefly to prevent interruptions.
                         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
-                            UIAccessibility.post(notification: .announcement, argument: Strings.ReaderModeAvailableVoiceOverAnnouncement)
+                            UIAccessibility.post(notification: .announcement, argument: Strings.readerModeAvailableVoiceOverAnnouncement)
                         }
                     }
                 }
@@ -113,7 +113,7 @@ class TabLocationView: UIView {
     }
 
     lazy var placeholder: NSAttributedString = {
-        return NSAttributedString(string: Strings.TabToolbarSearchAddressPlaceholderText, attributes: [NSAttributedString.Key.foregroundColor: UIColor.Photon.Grey40])
+        return NSAttributedString(string: Strings.tabToolbarSearchAddressPlaceholderText, attributes: [NSAttributedString.Key.foregroundColor: UIColor.Photon.grey40])
     }()
 
     lazy var urlTextField: UITextField = {
@@ -124,7 +124,7 @@ class TabLocationView: UIView {
         urlTextField.attributedPlaceholder = self.placeholder
         urlTextField.accessibilityIdentifier = "url"
         urlTextField.accessibilityActionsSource = self
-        urlTextField.font = UIConstants.DefaultChromeFont
+        urlTextField.font = UIConstants.defaultChromeFont
         urlTextField.backgroundColor = .clear
         urlTextField.clipsToBounds = true
         // Remove the default drop interaction from the URL text field so that our
@@ -142,7 +142,7 @@ class TabLocationView: UIView {
         lockImageView.tintColor = #colorLiteral(red: 0.3764705882, green: 0.3843137255, blue: 0.4, alpha: 1)
         lockImageView.isAccessibilityElement = true
         lockImageView.contentMode = .center
-        lockImageView.accessibilityLabel = Strings.TabToolbarLockImageAccessibilityLabel
+        lockImageView.accessibilityLabel = Strings.tabToolbarLockImageAccessibilityLabel
         lockImageView.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         return lockImageView
     }()
@@ -155,17 +155,17 @@ class TabLocationView: UIView {
         readerModeButton.isHidden = true
         readerModeButton.imageView?.contentMode = .scaleAspectFit
         readerModeButton.contentHorizontalAlignment = .center
-        readerModeButton.accessibilityLabel = Strings.TabToolbarReaderViewButtonAccessibilityLabel
+        readerModeButton.accessibilityLabel = Strings.tabToolbarReaderViewButtonAccessibilityLabel
         readerModeButton.accessibilityIdentifier = "TabLocationView.readerModeButton"
-        readerModeButton.accessibilityCustomActions = [UIAccessibilityCustomAction(name: Strings.TabToolbarReaderViewButtonTitle, target: self, selector: #selector(readerModeCustomAction))]
+        readerModeButton.accessibilityCustomActions = [UIAccessibilityCustomAction(name: Strings.tabToolbarReaderViewButtonTitle, target: self, selector: #selector(readerModeCustomAction))]
         return readerModeButton
     }()
     
     lazy var reloadButton = ToolbarButton(top: true).then {
         $0.accessibilityIdentifier = "TabToolbar.stopReloadButton"
-        $0.accessibilityLabel = Strings.TabToolbarReloadButtonAccessibilityLabel
+        $0.accessibilityLabel = Strings.tabToolbarReloadButtonAccessibilityLabel
         $0.setImage(#imageLiteral(resourceName: "nav-refresh").template, for: .normal)
-        $0.tintColor = UIColor.Photon.Grey30
+        $0.tintColor = UIColor.Photon.grey30
         let longPressGestureStopReloadButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressStopReload(_:)))
         $0.addGestureRecognizer(longPressGestureStopReloadButton)
         $0.addTarget(self, action: #selector(didClickStopReload), for: .touchUpInside)
@@ -176,7 +176,7 @@ class TabLocationView: UIView {
         button.setImage(UIImage(imageLiteralResourceName: "shields-menu-icon"), for: .normal)
         button.addTarget(self, action: #selector(didClickBraveShieldsButton), for: .touchUpInside)
         button.imageView?.contentMode = .center
-        button.accessibilityLabel = Strings.Brave_Panel
+        button.accessibilityLabel = Strings.bravePanel
         button.accessibilityIdentifier = "urlBar-shieldsButton"
         return button
     }()
@@ -225,7 +225,7 @@ class TabLocationView: UIView {
         contentView = UIStackView(arrangedSubviews: subviews)
         contentView.distribution = .fill
         contentView.alignment = .center
-        contentView.layoutMargins = UIEdgeInsets(top: 0, left: TabLocationViewUX.Spacing, bottom: 0, right: 0)
+        contentView.layoutMargins = UIEdgeInsets(top: 0, left: TabLocationViewUX.spacing, bottom: 0, right: 0)
         contentView.isLayoutMarginsRelativeArrangement = true
         contentView.insetsLayoutMarginsFromSafeArea = false
         contentView.spacing = 10

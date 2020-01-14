@@ -29,14 +29,16 @@ class SwitchAccessoryView: UISwitch {
     }
 }
 
-/// Just creates a switch toggle `Row` which updates a `Preferences.Option<Bool>`
-func BoolRow(title: String, option: Preferences.Option<Bool>, onValueChange: SwitchAccessoryView.ValueChange? = nil) -> Row {
-    return Row(
-        text: title,
-        accessory: .view(SwitchAccessoryView(initialValue: option.value, valueChange: onValueChange ?? { option.value = $0 })),
-        cellClass: MultilineValue1Cell.self,
-        uuid: option.key
-    )
+extension Row {
+    /// Creates a switch toggle `Row` which updates a `Preferences.Option<Bool>`
+    static func boolRow(title: String, option: Preferences.Option<Bool>, onValueChange: SwitchAccessoryView.ValueChange? = nil) -> Row {
+        return Row(
+            text: title,
+            accessory: .view(SwitchAccessoryView(initialValue: option.value, valueChange: onValueChange ?? { option.value = $0 })),
+            cellClass: MultilineValue1Cell.self,
+            uuid: option.key
+        )
+    }
 }
 
 class MultilineButtonCell: ButtonCell {

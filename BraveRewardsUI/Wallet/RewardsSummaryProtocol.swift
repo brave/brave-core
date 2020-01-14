@@ -53,11 +53,11 @@ extension RewardsSummaryProtocol {
     ledger.balanceReport(for: activityMonth, year: Int32(now.currentYear)) { balance in
       guard let balance = balance else { return }
       activities = [
-        Activity(balance.grants, title: Strings.TotalGrantsClaimed, color: BraveUX.adsTintColor),
-        Activity(balance.earningFromAds, title: Strings.EarningFromAds, color: BraveUX.adsTintColor),
-        Activity(balance.autoContribute, title: Strings.AutoContribute, color: BraveUX.autoContributeTintColor),
-        Activity(balance.oneTimeDonation, title: Strings.OneTimeTips, color: BraveUX.tipsTintColor),
-        Activity(balance.recurringDonation, title: Strings.MonthlyTips, color: BraveUX.tipsTintColor)
+        Activity(balance.grants, title: Strings.totalGrantsClaimed, color: BraveUX.adsTintColor),
+        Activity(balance.earningFromAds, title: Strings.earningFromAds, color: BraveUX.adsTintColor),
+        Activity(balance.autoContribute, title: Strings.autoContribute, color: BraveUX.autoContributeTintColor),
+        Activity(balance.oneTimeDonation, title: Strings.oneTimeTips, color: BraveUX.tipsTintColor),
+        Activity(balance.recurringDonation, title: Strings.monthlyTips, color: BraveUX.tipsTintColor)
       ].compactMap { $0 }
     }
     return activities.map {
@@ -92,13 +92,13 @@ extension RewardsSummaryProtocol {
     // Don't show the view if there's no pending contributions.
     if reservedAmount.doubleValue > 0 {
       let batAmountText = "\(reservedAmount.displayString) \(Strings.BAT)"
-      let text = String(format: Strings.ContributingToUnverifiedSites, batAmountText)
+      let text = String(format: Strings.contributingToUnverifiedSites, batAmountText)
       
       labels.append(LinkLabel().then {
         $0.appearanceTextColor = Colors.grey200
         $0.font = UIFont.systemFont(ofSize: 12.0)
-        $0.text = "\(text) \(Strings.DisclaimerLearnMore)"
-        $0.setURLInfo([Strings.DisclaimerLearnMore: "learn-more"])
+        $0.text = "\(text) \(Strings.disclaimerLearnMore)"
+        $0.setURLInfo([Strings.disclaimerLearnMore: "learn-more"])
       })
     }
     

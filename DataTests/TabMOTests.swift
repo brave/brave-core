@@ -21,7 +21,7 @@ class TabMOTests: CoreDataTestCase {
         XCTAssertNotNil(object.syncUUID)
         XCTAssertNotNil(object.imageUrl)
         XCTAssertNil(object.url)
-        XCTAssertEqual(object.title, Strings.New_Tab)
+        XCTAssertEqual(object.title, Strings.new_Tab)
         
         // Testing default values
         XCTAssertEqual(object.order, 0)

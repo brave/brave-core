@@ -22,7 +22,7 @@ public extension Logger {
         let logger = RollingFileLogger(filenameRoot: "rewards", logDirectoryPath: nil)
         logger.identifier = "BraveRewards"
         
-        if !AppConstants.BuildChannel.isPublic {
+        if !AppConstants.buildChannel.isPublic {
             // For rewards logs we want to show it only using the Apple System Log to make it visible
             // via console.app
             logger.destinations.removeAll()

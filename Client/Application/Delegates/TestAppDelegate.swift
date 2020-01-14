@@ -20,13 +20,13 @@ class TestAppDelegate: AppDelegate {
         let launchArguments = ProcessInfo.processInfo.arguments
 
         launchArguments.forEach { arg in
-            if arg.starts(with: LaunchArguments.LoadDatabasePrefix) {
-                if launchArguments.contains(LaunchArguments.ClearProfile) {
+            if arg.starts(with: LaunchArguments.loadDatabasePrefix) {
+                if launchArguments.contains(LaunchArguments.clearProfile) {
                     fatalError("Clearing profile and loading a test database is not a supported combination.")
                 }
 
                 // Grab the name of file in the bundle's test-fixtures dir, and copy it to the runtime app dir.
-                let filename = arg.replacingOccurrences(of: LaunchArguments.LoadDatabasePrefix, with: "")
+                let filename = arg.replacingOccurrences(of: LaunchArguments.loadDatabasePrefix, with: "")
                 let input = URL(fileURLWithPath: Bundle(for: TestAppDelegate.self).path(forResource: filename, ofType: nil, inDirectory: "test-fixtures")!)
                 let profileDir = "\(appRootDir())/profile.testProfile"
                 try? FileManager.default.createDirectory(atPath: profileDir, withIntermediateDirectories: false, attributes: nil)
@@ -42,7 +42,7 @@ class TestAppDelegate: AppDelegate {
             }
         }
 
-        if launchArguments.contains(LaunchArguments.ClearProfile) {
+        if launchArguments.contains(LaunchArguments.clearProfile) {
             // Use a clean profile for each test session.
             log.debug("Deleting all files in 'Documents' directory to clear the profile")
             profile = BrowserProfile(localName: "testProfile", clear: true)
@@ -51,7 +51,7 @@ class TestAppDelegate: AppDelegate {
         }
 
         // Don't show the What's New page.
-        if launchArguments.contains(LaunchArguments.SkipWhatsNew) {
+        if launchArguments.contains(LaunchArguments.skipWhatsNew) {
             profile.prefs.setString(AppInfo.appVersion, forKey: LatestAppVersionProfileKey)
         }
 
@@ -61,7 +61,7 @@ class TestAppDelegate: AppDelegate {
 
     override func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // If the app is running from a XCUITest reset all settings in the app
-        if ProcessInfo.processInfo.arguments.contains(LaunchArguments.ClearProfile) {
+        if ProcessInfo.processInfo.arguments.contains(LaunchArguments.clearProfile) {
             resetApplication()
         }
 

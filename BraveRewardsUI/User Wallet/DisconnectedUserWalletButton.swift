@@ -33,7 +33,7 @@ class DisconnectedUserWalletButton: UIControl {
         }
       }),
       .view(UILabel().then {
-        $0.text = Strings.UserWalletDisconnectedButtonTitle
+        $0.text = Strings.userWalletDisconnectedButtonTitle
         $0.font = .systemFont(ofSize: 12, weight: .semibold)
         $0.appearanceTextColor = .white
       })

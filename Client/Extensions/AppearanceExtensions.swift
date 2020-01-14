@@ -75,11 +75,11 @@ extension Theme {
             // iOS 12 does not allow in-line color overrides :/
             // These UI components are currently non-themed
             // AlertPopupView
-            UILabel.appearance(whenContainedInInstancesOf: [AlertPopupView.self]).appearanceTextColor = BraveUX.GreyJ
+            UILabel.appearance(whenContainedInInstancesOf: [AlertPopupView.self]).appearanceTextColor = BraveUX.greyJ
             UIButton.appearance(whenContainedInInstancesOf: [AlertPopupView.self]).tintColor = .white
             
             // EmptyPrivateTabsView
-            UILabel.appearance(whenContainedInInstancesOf: [EmptyPrivateTabsView.self]).appearanceTextColor = UIColor.Photon.Grey10
+            UILabel.appearance(whenContainedInInstancesOf: [EmptyPrivateTabsView.self]).appearanceTextColor = UIColor.Photon.grey10
             
             // See #1548.
             // Using tint color of iOS 13 UISwitch to match better with our light theme

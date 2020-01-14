@@ -42,7 +42,7 @@ class BraveRewardsToggleView: UIView {
   
   private let titleLabel = UILabel().then {
     $0.appearanceTextColor = Colors.grey100
-    $0.text = Strings.BraveRewards
+    $0.text = Strings.braveRewards
   }
   
   // MARK: - Accessibility

@@ -10,9 +10,9 @@ import Data
 import CoreData
 
 private struct HistoryViewControllerUX {
-  static let WelcomeScreenPadding: CGFloat = 15
-  static let WelcomeScreenItemTextColor = UIColor.gray
-  static let WelcomeScreenItemWidth = 170
+  static let welcomeScreenPadding: CGFloat = 15
+  static let welcomeScreenItemTextColor = UIColor.gray
+  static let welcomeScreenItemWidth = 170
 }
 
 class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol {
@@ -27,7 +27,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     
     super.init(nibName: nil, bundle: nil)
     
-    NotificationCenter.default.addObserver(self, selector: #selector(HistoryViewController.notificationReceived(_:)), name: .DynamicFontChanged, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(HistoryViewController.notificationReceived(_:)), name: .dynamicFontChanged, object: nil)
   }
   
   required init?(coder aDecoder: NSCoder) {
@@ -35,7 +35,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
   }
   
   deinit {
-    NotificationCenter.default.removeObserver(self, name: .DynamicFontChanged, object: nil)
+    NotificationCenter.default.removeObserver(self, name: .dynamicFontChanged, object: nil)
   }
   
   override func viewDidLoad() {
@@ -43,14 +43,14 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     frc!.delegate = self
     super.viewDidLoad()
     self.tableView.accessibilityIdentifier = "History List"
-    title = Strings.HistoryScreenTitle
+    title = Strings.historyScreenTitle
     
     reloadData()
   }
   
   @objc func notificationReceived(_ notification: Notification) {
     switch notification.name {
-    case .DynamicFontChanged:
+    case .dynamicFontChanged:
       if emptyStateOverlayView.superview != nil {
         emptyStateOverlayView.removeFromSuperview()
       }

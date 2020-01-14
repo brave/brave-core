@@ -28,12 +28,12 @@ class JSPromptAlertController: UIAlertController {
     override func viewDidLoad() {
         super.viewDidLoad()
         if let handler = info?.suppressHandler {
-            self.addAction(UIAlertAction(title: Strings.SuppressAlertsActionTitle, style: .default, handler: { _ in
+            self.addAction(UIAlertAction(title: Strings.suppressAlertsActionTitle, style: .default, handler: { _ in
                 handler(true)
             }))
         }
         if showsCancel {
-            self.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: { _ in
+            self.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: { _ in
                 self.info?.cancel()
             }))
         }

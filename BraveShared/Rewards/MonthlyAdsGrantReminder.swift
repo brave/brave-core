@@ -105,8 +105,8 @@ final public class MonthlyAdsGrantReminder {
                 }
                 
                 let content = UNMutableNotificationContent()
-                content.title = Strings.MonthlyAdsClaimNotificationTitle
-                content.body = Strings.MonthlyAdsClaimNotificationBody
+                content.title = Strings.monthlyAdsClaimNotificationTitle
+                content.body = Strings.monthlyAdsClaimNotificationBody
                 
                 let trigger = UNCalendarNotificationTrigger(
                     dateMatching: .init(calendar: self.calendar, month: month, day: 7, hour: 13, minute: 21),

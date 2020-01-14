@@ -261,7 +261,7 @@ private extension TabScrollingController {
     }
 
     func checkScrollHeightIsLargeEnoughForScrolling() -> Bool {
-        return (UIScreen.main.bounds.size.height + 2 * UIConstants.ToolbarHeight) < scrollView?.contentSize.height ?? 0
+        return (UIScreen.main.bounds.size.height + 2 * UIConstants.toolbarHeight) < scrollView?.contentSize.height ?? 0
     }
 }
 

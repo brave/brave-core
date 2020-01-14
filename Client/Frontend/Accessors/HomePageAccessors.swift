@@ -12,7 +12,7 @@ import XCGLogger
 class HomePageAccessors {
 
     static func getHomePage(_ prefs: Prefs) -> URL? {
-        let string = prefs.stringForKey(HomePageConstants.HomePageURLPrefKey)
+        let string = prefs.stringForKey(HomePageConstants.homePageURLPrefKey)
         guard let urlString = string else {
             return nil
         }

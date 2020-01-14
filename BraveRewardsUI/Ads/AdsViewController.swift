@@ -118,7 +118,7 @@ public class AdsViewController: UIViewController {
       timer.invalidate()
     }
     var dismissInterval = automaticDismissalInterval
-    if !AppConstants.BuildChannel.isPublic, let override = Preferences.Rewards.adsDurationOverride.value, override > 0 {
+    if !AppConstants.buildChannel.isPublic, let override = Preferences.Rewards.adsDurationOverride.value, override > 0 {
       dismissInterval = TimeInterval(override)
     }
     dismissTimers[adView] = Timer.scheduledTimer(withTimeInterval: dismissInterval, repeats: false, block: { [weak self] _ in
@@ -334,8 +334,8 @@ extension AdsViewController {
     }
     
     let notification = AdsNotification.customAd(
-      title: Strings.MyFirstAdTitle,
-      body: Strings.MyFirstAdBody,
+      title: Strings.myFirstAdTitle,
+      body: Strings.myFirstAdBody,
       url: URL(string: "https://brave.com/my-first-ad")!
     )
     

@@ -10,7 +10,7 @@ class SettingsViewDetailsButton: Button {
     super.init(frame: frame)
     
     tintColor = Colors.purple300
-    setTitle(Strings.SettingsViewDetails, for: .normal)
+    setTitle(Strings.settingsViewDetails, for: .normal)
     appearanceTextColor = Colors.purple300
     setImage(UIImage(frameworkResourceNamed: "right-arrow").alwaysTemplate, for: .normal)
     titleLabel?.font = .systemFont(ofSize: 14.0, weight: .medium)

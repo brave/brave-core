@@ -8,10 +8,10 @@ import XCGLogger
 
 /// Accessors to find what a new tab should do when created without a URL.
 struct NewTabAccessors {
-    static let Default = NewTabPage.topSites
+    static let `default` = NewTabPage.topSites
 
     static func getNewTabPage() -> NewTabPage {
-        return Default
+        return `default`
     }
 }
 
@@ -24,11 +24,11 @@ enum NewTabPage: String {
     var settingTitle: String {
         switch self {
         case .blankPage:
-            return Strings.SettingsNewTabBlankPage
+            return Strings.settingsNewTabBlankPage
         case .homePage:
-            return Strings.SettingsNewTabHomePage
+            return Strings.settingsNewTabHomePage
         case .topSites:
-            return Strings.SettingsNewTabTopSites
+            return Strings.settingsNewTabTopSites
         }
     }
 
@@ -37,7 +37,7 @@ enum NewTabPage: String {
         //       probably best to remove `NewTabPage` all-together in the future and refactor out its usages.
         
         // For now, we are going to just default to 0 which used to be `HomePanelType.topSites`
-        return URL(string: "#panel=0", relativeTo: UIConstants.AboutHomePage as URL)!
+        return URL(string: "#panel=0", relativeTo: UIConstants.aboutHomePage as URL)!
     }
 
     static let allValues = [blankPage, topSites, homePage]

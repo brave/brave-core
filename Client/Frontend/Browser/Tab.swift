@@ -204,7 +204,7 @@ class Tab: NSObject {
             webView.delegate = self
             configuration = nil
 
-            webView.accessibilityLabel = Strings.WebContentAccessibilityLabel
+            webView.accessibilityLabel = Strings.webContentAccessibilityLabel
             webView.allowsBackForwardNavigationGestures = true
             if #available(iOS 13, *) {
                 webView.allowsLinkPreview = true
@@ -326,7 +326,7 @@ class Tab: NSObject {
         if let title = webView?.title, !title.isEmpty {
             return title.contains("localhost") ? "" : title
         } else if let url = webView?.url ?? self.url, url.isAboutHomeURL {
-            return Strings.NewTabTitle
+            return Strings.newTabTitle
         }
         
         guard let lastTitle = lastTitle, !lastTitle.isEmpty else {
@@ -592,7 +592,7 @@ class TabWebView: BraveWebView, MenuHelperInterface {
     fileprivate weak var delegate: TabWebViewDelegate?
 
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
-        return super.canPerformAction(action, withSender: sender) || action == MenuHelper.SelectorFindInPage
+        return super.canPerformAction(action, withSender: sender) || action == MenuHelper.selectorFindInPage
     }
 
     @objc func menuHelperFindInPage() {

@@ -13,7 +13,7 @@ class AddToFavoritesActivity: UIActivity {
     }
 
     override var activityTitle: String? {
-        return Strings.Add_to_favorites
+        return Strings.addToFavorites
     }
 
     override var activityImage: UIImage? {

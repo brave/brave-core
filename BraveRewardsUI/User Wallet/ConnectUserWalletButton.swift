@@ -28,7 +28,7 @@ class ConnectUserWalletButton: UIControl {
     stackView.isUserInteractionEnabled = false
     stackView.addStackViewItems(
       .view(UILabel().then {
-        $0.text = Strings.UserWalletUnverifiedButtonTitle
+        $0.text = Strings.userWalletUnverifiedButtonTitle
         $0.font = .systemFont(ofSize: 12, weight: .semibold)
         $0.appearanceTextColor = .white
       }),

@@ -28,7 +28,7 @@ class PasscodeEntryViewController: BasePasscodeViewController {
         
         passcodePane.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(passcodeCheckSetup)))
         passcodePane.isUserInteractionEnabled = true
-        passcodePane.accessibilityLabel = Strings.AuthenticationTouchForKeyboard
+        passcodePane.accessibilityLabel = Strings.authenticationTouchForKeyboard
         passcodePane.accessibilityTraits = [.allowsDirectInteraction]
     }
     
@@ -38,7 +38,7 @@ class PasscodeEntryViewController: BasePasscodeViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = Strings.AuthenticationEnterPasscodeTitle
+        title = Strings.authenticationEnterPasscodeTitle
         view.addSubview(passcodePane)
         passcodePane.snp.makeConstraints { make in
             make.bottom.left.right.equalTo(self.view)

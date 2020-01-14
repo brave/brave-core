@@ -68,7 +68,7 @@ public final class TabMO: NSManagedObject, CRUD {
             let tab = TabMO(entity: entity(context), insertInto: context)
             // TODO: replace with logic to create sync uuid then buble up new uuid to browser.
             tab.syncUUID = uuidString
-            tab.title = Strings.New_Tab
+            tab.title = Strings.newTab
         })
         
         return uuidString

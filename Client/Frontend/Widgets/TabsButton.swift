@@ -7,14 +7,14 @@ import SnapKit
 import Shared
 
 private struct TabsButtonUX {
-    static let CornerRadius: CGFloat = 2
-    static let TitleFont: UIFont = UIConstants.DefaultChromeSmallFontBold
-    static let BorderStrokeWidth: CGFloat = 1.5
+    static let cornerRadius: CGFloat = 2
+    static let titleFont: UIFont = UIConstants.defaultChromeSmallFontBold
+    static let borderStrokeWidth: CGFloat = 1.5
 }
 
 class TabsButton: UIButton {
 
-    var textColor = UIColor.Photon.White100 {
+    var textColor = UIColor.Photon.white100 {
         didSet {
             updateButtonVisuals()
         }
@@ -40,8 +40,8 @@ class TabsButton: UIButton {
 
     lazy var countLabel: UILabel = {
         let label = UILabel()
-        label.font = TabsButtonUX.TitleFont
-        label.layer.cornerRadius = TabsButtonUX.CornerRadius
+        label.font = TabsButtonUX.titleFont
+        label.layer.cornerRadius = TabsButtonUX.cornerRadius
         label.textAlignment = .center
         label.isUserInteractionEnabled = false
         return label
@@ -56,7 +56,7 @@ class TabsButton: UIButton {
 
     fileprivate lazy var labelBackground: UIView = {
         let background = UIView()
-        background.layer.cornerRadius = TabsButtonUX.CornerRadius
+        background.layer.cornerRadius = TabsButtonUX.cornerRadius
         background.isUserInteractionEnabled = false
         background.backgroundColor = .clear
         return background
@@ -64,8 +64,8 @@ class TabsButton: UIButton {
 
     fileprivate lazy var borderView: InnerStrokedView = {
         let border = InnerStrokedView()
-        border.strokeWidth = TabsButtonUX.BorderStrokeWidth
-        border.cornerRadius = TabsButtonUX.CornerRadius
+        border.strokeWidth = TabsButtonUX.borderStrokeWidth
+        border.cornerRadius = TabsButtonUX.cornerRadius
         border.isUserInteractionEnabled = false
         return border
     }()
@@ -77,7 +77,7 @@ class TabsButton: UIButton {
         addSubview(insideButton)
         isAccessibilityElement = true
         accessibilityTraits.insert(.button)
-        self.accessibilityLabel = Strings.Show_Tabs
+        self.accessibilityLabel = Strings.showTabs
     }
     
     override init(frame: CGRect) {

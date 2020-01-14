@@ -43,7 +43,7 @@ struct ClearableErrorType: MaybeErrorType {
 class CookiesAndCacheClearable: Clearable {
     
     var label: String {
-        return Strings.Cookies
+        return Strings.cookies
     }
     
     func clear() -> Success {
@@ -65,7 +65,7 @@ class CookiesAndCacheClearable: Clearable {
 class CacheClearable: Clearable {
     
     var label: String {
-        return Strings.Cache
+        return Strings.cache
     }
     
     func clear() -> Success {
@@ -93,13 +93,13 @@ class HistoryClearable: Clearable {
     }
     
     var label: String {
-        return Strings.Browsing_History
+        return Strings.browsingHistory
     }
     
     func clear() -> Success {
         let result = Success()
         History.deleteAll {
-            NotificationCenter.default.post(name: .PrivateDataClearedHistory, object: nil)
+            NotificationCenter.default.post(name: .privateDataClearedHistory, object: nil)
             result.fill(Maybe<()>(success: ()))
         }
         return result
@@ -114,7 +114,7 @@ class PasswordsClearable: Clearable {
     }
     
     var label: String {
-        return Strings.Saved_Logins
+        return Strings.savedLogins
     }
     
     func clear() -> Success {
@@ -135,7 +135,7 @@ class PasswordsClearable: Clearable {
 /// Clears all files in Downloads folder.
 class DownloadsClearable: Clearable {
     var label: String {
-        return Strings.DownloadedFiles
+        return Strings.downloadedFiles
     }
     
     func clear() -> Success {

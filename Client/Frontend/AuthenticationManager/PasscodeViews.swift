@@ -6,10 +6,10 @@ import Foundation
 import SnapKit
 
 private struct PasscodeUX {
-    static let TitleVerticalSpacing: CGFloat = 32
-    static let DigitSize: CGFloat = 30
-    static let TopMargin: CGFloat = 80
-    static let PasscodeFieldSize: CGSize = CGSize(width: 160, height: 32)
+    static let titleVerticalSpacing: CGFloat = 32
+    static let digitSize: CGFloat = 30
+    static let topMargin: CGFloat = 80
+    static let passcodeFieldSize: CGSize = CGSize(width: 160, height: 32)
 }
 
 @objc protocol PasscodeInputViewDelegate: class {
@@ -20,7 +20,7 @@ private struct PasscodeUX {
 class PasscodeInputView: UIView, UIKeyInput {
     weak var delegate: PasscodeInputViewDelegate?
 
-    var digitFont: UIFont = UIConstants.PasscodeEntryFont
+    var digitFont: UIFont = UIConstants.passcodeEntryFont
 
     let blankCharacter: Character = "-"
 
@@ -95,8 +95,8 @@ class PasscodeInputView: UIView, UIKeyInput {
         guard let context = UIGraphicsGetCurrentContext() else { return }
 
         context.setLineWidth(1)
-        context.setStrokeColor(UIConstants.PasscodeDotColor.cgColor)
-        context.setFillColor(UIConstants.PasscodeDotColor.cgColor)
+        context.setStrokeColor(UIConstants.passcodeDotColor.cgColor)
+        context.setFillColor(UIConstants.passcodeDotColor.cgColor)
 
         (0..<passcodeSize).forEach { index in
             let offset = floor(rect.width / CGFloat(passcodeSize))
@@ -121,7 +121,7 @@ class PasscodePane: UIView {
 
     fileprivate lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = UIConstants.DefaultChromeFont
+        label.font = UIConstants.defaultChromeFont
         label.isAccessibilityElement = true
         return label
     }()
@@ -156,13 +156,13 @@ class PasscodePane: UIView {
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalTo(centerContainer)
             make.top.equalTo(centerContainer)
-            make.bottom.equalTo(codeInputView.snp.top).offset(-PasscodeUX.TitleVerticalSpacing)
+            make.bottom.equalTo(codeInputView.snp.top).offset(-PasscodeUX.titleVerticalSpacing)
         }
 
         codeInputView.snp.makeConstraints { make in
             codeViewCenterConstraint = make.centerX.equalTo(centerContainer).constraint
             make.bottom.equalTo(centerContainer)
-            make.size.equalTo(PasscodeUX.PasscodeFieldSize)
+            make.size.equalTo(PasscodeUX.passcodeFieldSize)
         }
         layoutIfNeeded()
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)

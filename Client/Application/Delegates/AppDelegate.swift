@@ -57,7 +57,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         self.application = application
         self.launchOptions = launchOptions
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        self.window!.backgroundColor = UIColor.Photon.White100
+        self.window!.backgroundColor = UIColor.Photon.white100
         
         SceneObserver.setupApplication(window: self.window!)
 
@@ -111,7 +111,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         
         var imageStore: DiskImageStore?
         do {
-            imageStore = try DiskImageStore(files: profile.files, namespace: "TabManagerScreenshots", quality: UIConstants.ScreenshotQuality)
+            imageStore = try DiskImageStore(files: profile.files, namespace: "TabManagerScreenshots", quality: UIConstants.screenshotQuality)
         } catch {
             log.error("Failed to create an image store for files: \(profile.files) and namespace: \"TabManagerScreenshots\": \(error.localizedDescription)")
             assertionFailure()
@@ -119,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         
         // Temporary fix for Bug 1390871 - NSInvalidArgumentException: -[WKContentView menuHelperFindInPage]: unrecognized selector
         if let clazz = NSClassFromString("WKCont" + "ent" + "View"), let swizzledMethod = class_getInstanceMethod(TabWebViewMenuHelper.self, #selector(TabWebViewMenuHelper.swizzledMenuHelperFindInPage)) {
-            class_addMethod(clazz, MenuHelper.SelectorFindInPage, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
+            class_addMethod(clazz, MenuHelper.selectorFindInPage, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
         }
 
         self.tabManager = TabManager(prefs: profile.prefs, imageStore: imageStore)
@@ -129,7 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         
         // Don't track crashes if we're building the development environment due to the fact that terminating/stopping
         // the simulator via Xcode will count as a "crash" and lead to restore popups in the subsequent launch
-        let crashedLastSession = !Preferences.AppState.backgroundedCleanly.value && AppConstants.BuildChannel != .developer
+        let crashedLastSession = !Preferences.AppState.backgroundedCleanly.value && AppConstants.buildChannel != .developer
         Preferences.AppState.backgroundedCleanly.value = false
         browserViewController = BrowserViewController(profile: self.profile!, tabManager: self.tabManager, crashedLastSession: crashedLastSession)
         browserViewController.edgesForExtendedLayout = []
@@ -185,13 +185,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     
     func updateShortcutItems(_ application: UIApplication) {
         let newTabItem = UIMutableApplicationShortcutItem(type: "\(Bundle.main.bundleIdentifier ?? "").NewTab",
-            localizedTitle: Strings.QuickActionNewTab,
+            localizedTitle: Strings.quickActionNewTab,
             localizedSubtitle: nil,
             icon: UIApplicationShortcutIcon(templateImageName: "quick_action_new_tab"),
             userInfo: [:])
         
         let privateTabItem = UIMutableApplicationShortcutItem(type: "\(Bundle.main.bundleIdentifier ?? "").NewPrivateTab",
-            localizedTitle: Strings.QuickActionNewPrivateTab,
+            localizedTitle: Strings.quickActionNewPrivateTab,
             localizedSubtitle: nil,
             icon: UIApplicationShortcutIcon(templateImageName: "quick_action_new_private_tab"),
             userInfo: [:])
@@ -326,11 +326,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         // BRAVE TODO: Decide whether or not we want to use this for our own sync down the road
 
         var taskId: UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
-        taskId = application.beginBackgroundTask (expirationHandler: {
+        taskId = application.beginBackgroundTask {
             print("Running out of background time, but we have a profile shutdown pending.")
             self.shutdownProfileWhenNotActive(application)
             application.endBackgroundTask(taskId)
-        })
+        }
 
 //        if profile.hasSyncableAccount() {
 //            profile.syncManager.syncEverything(why: .backgrounded).uponQueue(.main) { _ in

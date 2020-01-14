@@ -77,43 +77,43 @@ open class ItemSources {
 
 public struct BookmarkRoots {
     // These match Places on desktop.
-    public static let RootGUID =               "root________"
-    public static let MobileFolderGUID =       "mobile______"
-    public static let MenuFolderGUID =         "menu________"
-    public static let ToolbarFolderGUID =      "toolbar_____"
-    public static let UnfiledFolderGUID =      "unfiled_____"
+    public static let rootGUID =               "root________"
+    public static let mobileFolderGUID =       "mobile______"
+    public static let menuFolderGUID =         "menu________"
+    public static let toolbarFolderGUID =      "toolbar_____"
+    public static let unfiledFolderGUID =      "unfiled_____"
 
-    public static let FakeDesktopFolderGUID =  "desktop_____"   // Pseudo. Never mentioned in a real record.
+    public static let fakeDesktopFolderGUID =  "desktop_____"   // Pseudo. Never mentioned in a real record.
 
     // This is the order we use.
-    public static let RootChildren: [GUID] = [
-        BookmarkRoots.MenuFolderGUID,
-        BookmarkRoots.ToolbarFolderGUID,
-        BookmarkRoots.UnfiledFolderGUID,
-        BookmarkRoots.MobileFolderGUID,
+    public static let rootChildren: [GUID] = [
+        BookmarkRoots.menuFolderGUID,
+        BookmarkRoots.toolbarFolderGUID,
+        BookmarkRoots.unfiledFolderGUID,
+        BookmarkRoots.mobileFolderGUID,
     ]
 
-    public static let DesktopRoots: [GUID] = [
-        BookmarkRoots.MenuFolderGUID,
-        BookmarkRoots.ToolbarFolderGUID,
-        BookmarkRoots.UnfiledFolderGUID,
+    public static let desktopRoots: [GUID] = [
+        BookmarkRoots.menuFolderGUID,
+        BookmarkRoots.toolbarFolderGUID,
+        BookmarkRoots.unfiledFolderGUID,
     ]
 
-    public static let Real = Set<GUID>([
-        BookmarkRoots.RootGUID,
-        BookmarkRoots.MobileFolderGUID,
-        BookmarkRoots.MenuFolderGUID,
-        BookmarkRoots.ToolbarFolderGUID,
-        BookmarkRoots.UnfiledFolderGUID,
+    public static let real = Set<GUID>([
+        BookmarkRoots.rootGUID,
+        BookmarkRoots.mobileFolderGUID,
+        BookmarkRoots.menuFolderGUID,
+        BookmarkRoots.toolbarFolderGUID,
+        BookmarkRoots.unfiledFolderGUID,
     ])
 
-    public static let All = Set<GUID>([
-        BookmarkRoots.RootGUID,
-        BookmarkRoots.MobileFolderGUID,
-        BookmarkRoots.MenuFolderGUID,
-        BookmarkRoots.ToolbarFolderGUID,
-        BookmarkRoots.UnfiledFolderGUID,
-        BookmarkRoots.FakeDesktopFolderGUID,
+    public static let all = Set<GUID>([
+        BookmarkRoots.rootGUID,
+        BookmarkRoots.mobileFolderGUID,
+        BookmarkRoots.menuFolderGUID,
+        BookmarkRoots.toolbarFolderGUID,
+        BookmarkRoots.unfiledFolderGUID,
+        BookmarkRoots.fakeDesktopFolderGUID,
     ])
 
     /**
@@ -139,35 +139,35 @@ public struct BookmarkRoots {
      */
     public static func translateIncomingRootGUID(_ guid: GUID) -> GUID {
         return [
-            "places": RootGUID,
-            "root": RootGUID,
-            "mobile": MobileFolderGUID,
-            "menu": MenuFolderGUID,
-            "toolbar": ToolbarFolderGUID,
-            "unfiled": UnfiledFolderGUID
+            "places": rootGUID,
+            "root": rootGUID,
+            "mobile": mobileFolderGUID,
+            "menu": menuFolderGUID,
+            "toolbar": toolbarFolderGUID,
+            "unfiled": unfiledFolderGUID
         ][guid] ?? guid
     }
 
     public static func translateOutgoingRootGUID(_ guid: GUID) -> GUID {
         return [
-            RootGUID: "places",
-            MobileFolderGUID: "mobile",
-            MenuFolderGUID: "menu",
-            ToolbarFolderGUID: "toolbar",
-            UnfiledFolderGUID: "unfiled"
+            rootGUID: "places",
+            mobileFolderGUID: "mobile",
+            menuFolderGUID: "menu",
+            toolbarFolderGUID: "toolbar",
+            unfiledFolderGUID: "unfiled"
         ][guid] ?? guid
     }
 
     /*
-    public static let TagsFolderGUID =         "tags________"
-    public static let PinnedFolderGUID =       "pinned______"
+    public static let tagsFolderGUID =         "tags________"
+    public static let pinnedFolderGUID =       "pinned______"
      */
 
-    static let RootID =    0
-    static let MobileID =  1
-    static let MenuID =    2
-    static let ToolbarID = 3
-    static let UnfiledID = 4
+    static let rootID =    0
+    static let mobileID =  1
+    static let menuID =    2
+    static let toolbarID = 3
+    static let unfiledID = 4
 }
 
 /**
@@ -388,7 +388,7 @@ public struct BookmarkMirrorItem: Equatable {
             take("title", titleForSpecialGUID(self.guid) ?? self.title)
             take("description", self.description)
             if let children = children {
-                if BookmarkRoots.RootGUID == self.guid {
+                if BookmarkRoots.rootGUID == self.guid {
                     // Only the root contains roots, and so only its children
                     // need to be translated.
                     out["children"] = children.map(BookmarkRoots.translateOutgoingRootGUID)

@@ -34,7 +34,7 @@ class SettingsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    title = Strings.SettingsTitle
+    title = Strings.settingsTitle
     
     navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tappedDone))
     
@@ -156,8 +156,8 @@ class SettingsViewController: UIViewController {
       guard let self = self else { return }
       section.claimGrantButton.isLoading = false
       if !success {
-        let alert = UIAlertController(title: Strings.GenericErrorTitle, message: Strings.GenericErrorBody, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Strings.OK, style: .default, handler: nil))
+        let alert = UIAlertController(title: Strings.genericErrorTitle, message: Strings.genericErrorBody, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Strings.ok, style: .default, handler: nil))
         self.present(alert, animated: true)
         return
       }

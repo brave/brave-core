@@ -28,7 +28,7 @@ class TipsSummaryTableCell: UITableViewCell, TableViewReusable {
     backgroundColor = .white
     
     let totalTipsThisMonthLabel = UILabel().then {
-      $0.text = Strings.TipsTotalThisMonth
+      $0.text = Strings.tipsTotalThisMonth
       $0.appearanceTextColor = Colors.neutral200
       $0.font = .systemFont(ofSize: 14.0, weight: .medium)
       $0.numberOfLines = 0

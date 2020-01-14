@@ -42,7 +42,7 @@ open class DefaultSuggestedSites {
                 imageUrl: "asset://suggestedsites_youtube",
                 faviconUrl: "asset://defaultFavicon",
                 trackingId: 631,
-                title: Strings.YoutubeDisplayTitle
+                title: Strings.youtubeDisplayTitle
             ),
             SuggestedSiteData(
                 url: "https://www.amazon.com/",
@@ -50,7 +50,7 @@ open class DefaultSuggestedSites {
                 imageUrl: "asset://suggestedsites_amazon",
                 faviconUrl: "asset://defaultFavicon",
                 trackingId: 630,
-                title: Strings.AmazonDisplayTitle
+                title: Strings.amazonDisplayTitle
             ),
             SuggestedSiteData(
                 url: "https://www.wikipedia.org/",
@@ -58,7 +58,7 @@ open class DefaultSuggestedSites {
                 imageUrl: "asset://suggestedsites_wikipedia",
                 faviconUrl: "asset://defaultFavicon",
                 trackingId: 629,
-                title: Strings.WikipediaDisplayTitle
+                title: Strings.wikipediaDisplayTitle
             ),
             SuggestedSiteData(
                 url: "https://mobile.twitter.com/",
@@ -66,7 +66,7 @@ open class DefaultSuggestedSites {
                 imageUrl: "asset://suggestedsites_twitter",
                 faviconUrl: "asset://defaultFavicon",
                 trackingId: 628,
-                title: Strings.TwitterDisplayTitle
+                title: Strings.twitterDisplayTitle
             ),
             SuggestedSiteData(
                 url: "https://reddit.com/",
@@ -74,7 +74,7 @@ open class DefaultSuggestedSites {
                 imageUrl: "asset://suggestedsites_reddit",
                 faviconUrl: "asset://defaultFavicon",
                 trackingId: 632,
-                title: Strings.RedditDisplayTitle
+                title: Strings.redditDisplayTitle
             ),
             SuggestedSiteData(
                 url: "https://coinmarketcap.com/",
@@ -82,7 +82,7 @@ open class DefaultSuggestedSites {
                 imageUrl: "asset://suggestedsites_coinmarketcap",
                 faviconUrl: "asset://defaultFavicon",
                 trackingId: 633,
-                title: Strings.CoinmarketcapDisplayTitle
+                title: Strings.coinmarketcapDisplayTitle
             )
         ],
         "zh_CN": [
@@ -140,10 +140,10 @@ open class DefaultSuggestedSites {
 
 
 extension Strings {
-    public static let YoutubeDisplayTitle = ""
-    public static let AmazonDisplayTitle = ""
-    public static let WikipediaDisplayTitle = ""
-    public static let TwitterDisplayTitle = ""
-    public static let RedditDisplayTitle = ""
-    public static let CoinmarketcapDisplayTitle = ""
+    public static let youtubeDisplayTitle = ""
+    public static let amazonDisplayTitle = ""
+    public static let wikipediaDisplayTitle = ""
+    public static let twitterDisplayTitle = ""
+    public static let redditDisplayTitle = ""
+    public static let coinmarketcapDisplayTitle = ""
 }

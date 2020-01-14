@@ -8,8 +8,8 @@ import Storage
 import QuickLook
 
 private struct DownloadsPanelUX {
-    static let WelcomeScreenPadding: CGFloat = 15
-    static let WelcomeScreenItemWidth = 170
+    static let welcomeScreenPadding: CGFloat = 15
+    static let welcomeScreenItemWidth = 170
 }
 
 private let log = Logger.browserLogger
@@ -49,7 +49,7 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
     var tableView = UITableView()
     
     private let events: [Notification.Name] =
-        [.FileDidDownload, .PrivateDataClearedDownloadedFiles, .DynamicFontChanged]
+        [.fileDidDownload, .privateDataClearedDownloadedFiles, .dynamicFontChanged]
     
     private lazy var emptyStateOverlayView: UIView = self.createEmptyStateOverlayView()
     
@@ -90,15 +90,15 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.register(TwoLineTableViewCell.self, forCellReuseIdentifier: "TwoLineTableViewCell")
         tableView.layoutMargins = .zero
         tableView.keyboardDismissMode = .onDrag
-        tableView.backgroundColor = UIColor.Photon.White100
-        tableView.separatorColor = UIColor.Photon.Grey30
+        tableView.backgroundColor = UIColor.Photon.white100
+        tableView.separatorColor = UIColor.Photon.grey30
         tableView.accessibilityIdentifier = "DownloadsTable"
         tableView.cellLayoutMarginsFollowReadableWidth = false
         
         // Set an empty footer to prevent empty cells from appearing in the list.
         tableView.tableFooterView = UIView()
         
-        title = Strings.DownloadsMenuItem
+        title = Strings.downloadsMenuItem
     }
     
     deinit {
@@ -113,9 +113,9 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
             self.reloadData()
             
             switch notification.name {
-            case .FileDidDownload, .PrivateDataClearedDownloadedFiles:
+            case .fileDidDownload, .privateDataClearedDownloadedFiles:
                 break
-            case .DynamicFontChanged:
+            case .dynamicFontChanged:
                 if self.emptyStateOverlayView.superview != nil {
                     self.emptyStateOverlayView.removeFromSuperview()
                 }
@@ -210,7 +210,7 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     private func roundRectImageWithLabel(_ label: String, width: CGFloat, height: CGFloat,
                                          radius: CGFloat = 5.0, strokeWidth: CGFloat = 1.0,
-                                         strokeColor: UIColor = UIColor.Photon.Grey60,
+                                         strokeColor: UIColor = UIColor.Photon.grey60,
                                          fontSize: CGFloat = 9.0) -> UIImage? {
         UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, 0.0)
         let context = UIGraphicsGetCurrentContext()
@@ -252,7 +252,7 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     fileprivate func createEmptyStateOverlayView() -> UIView {
-        overlayView.backgroundColor = UIColor.Photon.White100
+        overlayView.backgroundColor = UIColor.Photon.white100
         
         overlayView.addSubview(logoImageView)
         logoImageView.snp.makeConstraints { make in
@@ -266,17 +266,17 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
         overlayView.addSubview(welcomeLabel)
-        welcomeLabel.text = Strings.DownloadsPanelEmptyStateTitle
+        welcomeLabel.text = Strings.downloadsPanelEmptyStateTitle
         welcomeLabel.textAlignment = .center
         welcomeLabel.font = DynamicFontHelper.defaultHelper.DeviceFontLight
-        welcomeLabel.textColor = UIColor.Photon.Grey50
+        welcomeLabel.textColor = UIColor.Photon.grey50
         welcomeLabel.numberOfLines = 0
         welcomeLabel.adjustsFontSizeToFitWidth = true
         
         welcomeLabel.snp.makeConstraints { make in
             make.centerX.equalTo(overlayView)
-            make.top.equalTo(logoImageView.snp.bottom).offset(DownloadsPanelUX.WelcomeScreenPadding)
-            make.width.equalTo(DownloadsPanelUX.WelcomeScreenItemWidth)
+            make.top.equalTo(logoImageView.snp.bottom).offset(DownloadsPanelUX.welcomeScreenPadding)
+            make.width.equalTo(DownloadsPanelUX.welcomeScreenItemWidth)
         }
         
         return overlayView
@@ -300,10 +300,10 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
         guard groupedDownloadedFiles.numberOfItemsForSection(section) > 0 else { return nil }
         
         switch section {
-        case 0: return Strings.Today
-        case 1: return Strings.Yesterday
-        case 2: return Strings.Last_week
-        case 3: return Strings.Last_month
+        case 0: return Strings.today
+        case 1: return Strings.yesterday
+        case 2: return Strings.lastWeek
+        case 3: return Strings.lastMonth
         default: log.error("Invalid Downloads section \(section)")
         }
         
@@ -354,7 +354,7 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let delete = UITableViewRowAction(style: .destructive, title: Strings.Delete,
+        let delete = UITableViewRowAction(style: .destructive, title: Strings.delete,
                                           handler: { action, indexPath in
             if let downloadedFile = self.downloadedFileForIndexPath(indexPath) {
                 if self.deleteDownloadedFile(downloadedFile) {
@@ -366,7 +366,7 @@ class DownloadsPanel: UIViewController, UITableViewDelegate, UITableViewDataSour
                 }
             }
         })
-        let share = UITableViewRowAction(style: .normal, title: Strings.Share,
+        let share = UITableViewRowAction(style: .normal, title: Strings.share,
                                          handler: { action, indexPath in
             if let downloadedFile = self.downloadedFileForIndexPath(indexPath) {
                 self.shareDownloadedFile(downloadedFile, indexPath: indexPath)

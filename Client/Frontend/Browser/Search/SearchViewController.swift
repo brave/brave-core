@@ -14,31 +14,31 @@ private enum SearchListSection: Int, CaseIterable {
 }
 
 private struct SearchViewControllerUX {
-    static let SearchEngineScrollViewBackgroundColor = UIColor.Photon.White100.withAlphaComponent(0.8).cgColor
-    static let SearchEngineScrollViewBorderColor = UIColor.black.withAlphaComponent(0.2).cgColor
+    static let searchEngineScrollViewBackgroundColor = UIColor.Photon.white100.withAlphaComponent(0.8).cgColor
+    static let searchEngineScrollViewBorderColor = UIColor.black.withAlphaComponent(0.2).cgColor
 
     // TODO: This should use ToolbarHeight in BVC. Fix this when we create a shared theming file.
-    static let EngineButtonHeight: Float = 44
-    static let EngineButtonWidth = EngineButtonHeight * 1.4
-    static let EngineButtonBackgroundColor = UIColor.clear.cgColor
+    static let engineButtonHeight: Float = 44
+    static let engineButtonWidth = engineButtonHeight * 1.4
+    static let engineButtonBackgroundColor = UIColor.clear.cgColor
 
-    static let SearchEngineTopBorderWidth = 0.5
-    static let SearchImageHeight: Float = 44
-    static let SearchImageWidth: Float = 24
+    static let searchEngineTopBorderWidth = 0.5
+    static let searchImageHeight: Float = 44
+    static let searchImageWidth: Float = 24
 
-    static let SuggestionBackgroundColor = UIColor.Photon.White100
-    static let SuggestionBorderColor = UIConstants.HighlightBlue
-    static let SuggestionBorderWidth: CGFloat = 1
-    static let SuggestionCornerRadius: CGFloat = 4
-    static let SuggestionInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
-    static let SuggestionMargin: CGFloat = 8
-    static let SuggestionCellVerticalPadding: CGFloat = 10
-    static let SuggestionCellMaxRows = 2
+    static let suggestionBackgroundColor = UIColor.Photon.white100
+    static let suggestionBorderColor = UIConstants.highlightBlue
+    static let suggestionBorderWidth: CGFloat = 1
+    static let suggestionCornerRadius: CGFloat = 4
+    static let suggestionInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
+    static let suggestionMargin: CGFloat = 8
+    static let suggestionCellVerticalPadding: CGFloat = 10
+    static let suggestionCellMaxRows = 2
 
-    static let IconSize: CGFloat = 23
-    static let FaviconSize: CGFloat = 29
-    static let IconBorderColor = UIColor(white: 0, alpha: 0.1)
-    static let IconBorderWidth: CGFloat = 0.5
+    static let iconSize: CGFloat = 23
+    static let faviconSize: CGFloat = 29
+    static let iconBorderColor = UIColor(white: 0, alpha: 0.1)
+    static let iconBorderWidth: CGFloat = 0.5
 }
 
 protocol SearchViewControllerDelegate: class {
@@ -96,11 +96,11 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
 
         suggestionCell.delegate = self
 
-        NotificationCenter.default.addObserver(self, selector: #selector(dynamicFontChanged), name: .DynamicFontChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(dynamicFontChanged), name: .dynamicFontChanged, object: nil)
     }
 
     @objc func dynamicFontChanged(_ notification: Notification) {
-        if notification.name == .DynamicFontChanged {
+        if notification.name == .dynamicFontChanged {
             reloadData()
         }
     }
@@ -116,8 +116,8 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
 
         searchEngineScrollView.layer.shadowRadius = 0
         searchEngineScrollView.layer.shadowOpacity = 100
-        searchEngineScrollView.layer.shadowOffset = CGSize(width: 0, height: -SearchViewControllerUX.SearchEngineTopBorderWidth)
-        searchEngineScrollView.layer.shadowColor = SearchViewControllerUX.SearchEngineScrollViewBorderColor
+        searchEngineScrollView.layer.shadowOffset = CGSize(width: 0, height: -SearchViewControllerUX.searchEngineTopBorderWidth)
+        searchEngineScrollView.layer.shadowColor = SearchViewControllerUX.searchEngineScrollViewBorderColor
         searchEngineScrollView.clipsToBounds = false
 
         searchEngineScrollView.decelerationRate = UIScrollView.DecelerationRate.fast
@@ -148,7 +148,7 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
         searchEngineScrollView.snp.remakeConstraints { make in
             make.left.right.equalTo(self.view)
             make.bottom.equalTo(self.view).offset(-keyboardHeight)
-            make.height.equalTo(SearchViewControllerUX.EngineButtonHeight)
+            make.height.equalTo(SearchViewControllerUX.engineButtonHeight)
         }
     }
     
@@ -265,22 +265,22 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
         let searchButton = UIButton()
         searchButton.setImage(#imageLiteral(resourceName: "quickSearch"), for: [])
         searchButton.imageView?.contentMode = .center
-        searchButton.layer.backgroundColor = SearchViewControllerUX.EngineButtonBackgroundColor
+        searchButton.layer.backgroundColor = SearchViewControllerUX.engineButtonBackgroundColor
         searchButton.addTarget(self, action: #selector(didClickSearchButton), for: .touchUpInside)
-        searchButton.accessibilityLabel = Strings.SearchSettingsButtonTitle
+        searchButton.accessibilityLabel = Strings.searchSettingsButtonTitle
 
         searchButton.imageView?.snp.makeConstraints { make in
-            make.width.height.equalTo(SearchViewControllerUX.SearchImageWidth)
+            make.width.height.equalTo(SearchViewControllerUX.searchImageWidth)
             return
         }
 
         searchEngineScrollViewContent.addSubview(searchButton)
         searchButton.snp.makeConstraints { make in
-            make.size.equalTo(SearchViewControllerUX.FaviconSize)
+            make.size.equalTo(SearchViewControllerUX.faviconSize)
             //offset the left edge to align with search results
-            make.left.equalTo(leftEdge).offset(SearchViewControllerUX.SuggestionMargin * 2)
-            make.top.equalTo(self.searchEngineScrollViewContent).offset(SearchViewControllerUX.SuggestionMargin)
-            make.bottom.equalTo(self.searchEngineScrollViewContent).offset(-SearchViewControllerUX.SuggestionMargin)
+            make.left.equalTo(leftEdge).offset(SearchViewControllerUX.suggestionMargin * 2)
+            make.top.equalTo(self.searchEngineScrollViewContent).offset(SearchViewControllerUX.suggestionMargin)
+            make.bottom.equalTo(self.searchEngineScrollViewContent).offset(-SearchViewControllerUX.suggestionMargin)
         }
 
         //search engines
@@ -289,18 +289,18 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
             let engineButton = UIButton()
             engineButton.setImage(engine.image, for: [])
             engineButton.imageView?.contentMode = .scaleAspectFit
-            engineButton.layer.backgroundColor = SearchViewControllerUX.EngineButtonBackgroundColor
+            engineButton.layer.backgroundColor = SearchViewControllerUX.engineButtonBackgroundColor
             engineButton.addTarget(self, action: #selector(didSelectEngine), for: .touchUpInside)
-            engineButton.accessibilityLabel = String(format: Strings.SearchEngineFormatText, engine.shortName)
+            engineButton.accessibilityLabel = String(format: Strings.searchEngineFormatText, engine.shortName)
 
             engineButton.imageView?.snp.makeConstraints { make in
-                make.width.height.equalTo(SearchViewControllerUX.FaviconSize)
+                make.width.height.equalTo(SearchViewControllerUX.faviconSize)
                 return
             }
 
             searchEngineScrollViewContent.addSubview(engineButton)
             engineButton.snp.makeConstraints { make in
-                make.width.equalTo(SearchViewControllerUX.EngineButtonWidth)
+                make.width.equalTo(SearchViewControllerUX.engineButtonWidth)
                 make.left.equalTo(leftEdge)
                 make.top.equalTo(self.searchEngineScrollViewContent)
                 make.bottom.equalTo(self.searchEngineScrollViewContent)
@@ -439,8 +439,8 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
         
         switch searchSection {
         case .searchSuggestions: return nil
-        case .findInPage: return Strings.FindOnPageSectionHeader
-        case .bookmarksAndHistory: return Strings.SearchHistorySectionHeader
+        case .findInPage: return Strings.findOnPageSectionHeader
+        case .bookmarksAndHistory: return Strings.searchHistorySectionHeader
         }
         
     }
@@ -465,12 +465,12 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
         case .searchSuggestions:
             suggestionCell.imageView?.image = searchEngines.defaultEngine().image
             suggestionCell.imageView?.isAccessibilityElement = true
-            suggestionCell.imageView?.accessibilityLabel = String(format: Strings.SearchSuggestionFromFormatText, searchEngines.defaultEngine().shortName)
+            suggestionCell.imageView?.accessibilityLabel = String(format: Strings.searchSuggestionFromFormatText, searchEngines.defaultEngine().shortName)
             return suggestionCell
             
         case .findInPage:
             let cell = TwoLineTableViewCell()
-            cell.textLabel?.text = String(format: Strings.FindInPageFormat, searchQuery)
+            cell.textLabel?.text = String(format: Strings.findInPageFormat, searchQuery)
             cell.imageView?.image = #imageLiteral(resourceName: "search_bar_find_in_page_icon")
             cell.imageView?.contentMode = .center
             
@@ -484,9 +484,9 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
                 cell.setLines(site.title, detailText: site.url)
                 cell.setRightBadge(isBookmark ? self.bookmarkedBadge : nil)
                 cell.imageView?.contentMode = .scaleAspectFit
-                cell.imageView?.layer.borderColor = SearchViewControllerUX.IconBorderColor.cgColor
-                cell.imageView?.layer.borderWidth = SearchViewControllerUX.IconBorderWidth
-                cell.imageView?.setIcon(site.icon, forURL: site.tileURL, scaledDefaultIconSize: CGSize(width: SearchViewControllerUX.IconSize, height: SearchViewControllerUX.IconSize), completed: { (color, url) in
+                cell.imageView?.layer.borderColor = SearchViewControllerUX.iconBorderColor.cgColor
+                cell.imageView?.layer.borderWidth = SearchViewControllerUX.iconBorderWidth
+                cell.imageView?.setIcon(site.icon, forURL: site.tileURL, scaledDefaultIconSize: CGSize(width: SearchViewControllerUX.iconSize, height: SearchViewControllerUX.iconSize), completed: { (color, url) in
                     if site.tileURL == url {
                         cell.imageView?.backgroundColor = color
                     }
@@ -710,14 +710,14 @@ private class SuggestionCell: UITableViewCell {
         // The maximum width of the container, after which suggestions will wrap to the next line.
         let maxWidth = contentView.frame.width
 
-        let imageSize = CGFloat(SearchViewControllerUX.FaviconSize)
+        let imageSize = CGFloat(SearchViewControllerUX.faviconSize)
 
         // The height of the suggestions container (minus margins), used to determine the frame.
         // We set it to imageSize.height as a minimum since we don't want the cell to be shorter than the icon
         var height: CGFloat = imageSize
 
         var currentLeft = textLeft
-        var currentTop = SearchViewControllerUX.SuggestionCellVerticalPadding
+        var currentTop = SearchViewControllerUX.suggestionCellVerticalPadding
         var currentRow = 0
 
         for view in container.subviews.compactMap({ $0 as? UIButton }) {
@@ -730,35 +730,35 @@ private class SuggestionCell: UITableViewCell {
                 height = max(buttonSize.height, imageSize)
             }
 
-            var width = currentLeft + buttonSize.width + SearchViewControllerUX.SuggestionMargin
+            var width = currentLeft + buttonSize.width + SearchViewControllerUX.suggestionMargin
             if width > maxWidth {
                 // Only move to the next row if there's already a suggestion on this row.
                 // Otherwise, the suggestion is too big to fit and will be resized below.
                 if currentLeft > textLeft {
                     currentRow += 1
-                    if currentRow >= SearchViewControllerUX.SuggestionCellMaxRows {
+                    if currentRow >= SearchViewControllerUX.suggestionCellMaxRows {
                         // Don't draw this button if it doesn't fit on the row.
                         button.frame = .zero
                         continue
                     }
 
                     currentLeft = textLeft
-                    currentTop += buttonSize.height + SearchViewControllerUX.SuggestionMargin
-                    height += buttonSize.height + SearchViewControllerUX.SuggestionMargin
-                    width = currentLeft + buttonSize.width + SearchViewControllerUX.SuggestionMargin
+                    currentTop += buttonSize.height + SearchViewControllerUX.suggestionMargin
+                    height += buttonSize.height + SearchViewControllerUX.suggestionMargin
+                    width = currentLeft + buttonSize.width + SearchViewControllerUX.suggestionMargin
                 }
 
                 // If the suggestion is too wide to fit on its own row, shrink it.
                 if width > maxWidth {
-                    buttonSize.width = maxWidth - currentLeft - SearchViewControllerUX.SuggestionMargin
+                    buttonSize.width = maxWidth - currentLeft - SearchViewControllerUX.suggestionMargin
                 }
             }
 
             button.frame = CGRect(x: currentLeft, y: currentTop, width: buttonSize.width, height: buttonSize.height)
-            currentLeft += buttonSize.width + SearchViewControllerUX.SuggestionMargin
+            currentLeft += buttonSize.width + SearchViewControllerUX.suggestionMargin
         }
 
-        frame.size.height = height + 2 * SearchViewControllerUX.SuggestionCellVerticalPadding
+        frame.size.height = height + 2 * SearchViewControllerUX.suggestionCellVerticalPadding
         contentView.frame = bounds
         container.frame = bounds
 
@@ -775,14 +775,14 @@ private class SuggestionButton: InsetButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        setTitleColor(UIConstants.HighlightBlue, for: [])
+        setTitleColor(UIConstants.highlightBlue, for: [])
         titleLabel?.font = DynamicFontHelper.defaultHelper.DefaultMediumFont
-        layer.borderWidth = SearchViewControllerUX.SuggestionBorderWidth
-        layer.cornerRadius = SearchViewControllerUX.SuggestionCornerRadius
-        layer.borderColor = UIConstants.HighlightBlue.cgColor
-        contentEdgeInsets = SearchViewControllerUX.SuggestionInsets
+        layer.borderWidth = SearchViewControllerUX.suggestionBorderWidth
+        layer.cornerRadius = SearchViewControllerUX.suggestionCornerRadius
+        layer.borderColor = UIConstants.highlightBlue.cgColor
+        contentEdgeInsets = SearchViewControllerUX.suggestionInsets
 
-        accessibilityHint = Strings.SearchesForSuggestionButtonAccessibilityText
+        accessibilityHint = Strings.searchesForSuggestionButtonAccessibilityText
     }
 
     required init?(coder aDecoder: NSCoder) {

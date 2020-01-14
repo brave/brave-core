@@ -10,7 +10,7 @@ class CreateWalletButton: ActionButton {
     didSet {
       isLoading = isCreatingWallet
       if isCreatingWallet {
-        setTitle(Strings.CreatingWallet.uppercased(), for: .normal)
+        setTitle(Strings.creatingWallet.uppercased(), for: .normal)
         // Make the load start when the new title label is in place (since its animated)
       } else {
         setTitle(titleText, for: .normal)

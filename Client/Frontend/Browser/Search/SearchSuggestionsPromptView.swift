@@ -11,11 +11,11 @@ class SearchSuggestionPromptView: UIView {
     private let optionSelected: (Bool) -> Void
     
     private struct UX {
-        static let PromptColor = UIConstants.PanelBackgroundColor
-        static let PromptFont = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
-        static let PromptYesFont = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.bold)
-        static let PromptNoFont = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
-        static let PromptInsets = UIEdgeInsets(top: 15, left: 12, bottom: 15, right: 12)
+        static let promptColor = UIConstants.panelBackgroundColor
+        static let promptFont = UIFont.systemFont(ofSize: 12, weight: UIFont.Weight.regular)
+        static let promptYesFont = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.bold)
+        static let promptNoFont = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
+        static let promptInsets = UIEdgeInsets(top: 15, left: 12, bottom: 15, right: 12)
     }
     
     init(optionSelected: @escaping (Bool) -> Void) {
@@ -24,25 +24,25 @@ class SearchSuggestionPromptView: UIView {
         super.init(frame: .zero)
         
         let promptBottomBorder = UIView()
-        promptBottomBorder.backgroundColor = BraveUX.GreyD
+        promptBottomBorder.backgroundColor = BraveUX.greyD
         addSubview(promptBottomBorder)
         
         let promptImage = UIImageView()
         promptImage.image = #imageLiteral(resourceName: "search").template
-        promptImage.tintColor = UIColor.Photon.Grey70
+        promptImage.tintColor = UIColor.Photon.grey70
         addSubview(promptImage)
         
         let promptLabel = UILabel()
-        promptLabel.text = Strings.Turn_on_search_suggestions
-        promptLabel.font = UX.PromptFont
+        promptLabel.text = Strings.turnOnSearchSuggestions
+        promptLabel.font = UX.promptFont
         promptLabel.numberOfLines = 0
         promptLabel.lineBreakMode = .byWordWrapping
         addSubview(promptLabel)
         
         let promptYesButton = InsetButton()
-        promptYesButton.setTitle(Strings.Yes, for: .normal)
-        promptYesButton.titleLabel?.font = UX.PromptYesFont
-        promptYesButton.titleEdgeInsets = UX.PromptInsets
+        promptYesButton.setTitle(Strings.yes, for: .normal)
+        promptYesButton.titleLabel?.font = UX.promptYesFont
+        promptYesButton.titleEdgeInsets = UX.promptInsets
         // If the prompt message doesn't fit, this prevents it from pushing the buttons
         // off the row and makes it wrap instead.
         promptYesButton.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -50,9 +50,9 @@ class SearchSuggestionPromptView: UIView {
         addSubview(promptYesButton)
         
         let promptNoButton = InsetButton()
-        promptNoButton.setTitle(Strings.No, for: .normal)
-        promptNoButton.titleLabel?.font = UX.PromptNoFont
-        promptNoButton.titleEdgeInsets = UX.PromptInsets
+        promptNoButton.setTitle(Strings.no, for: .normal)
+        promptNoButton.titleLabel?.font = UX.promptNoFont
+        promptNoButton.titleEdgeInsets = UX.promptInsets
         // If the prompt message doesn't fit, this prevents it from pushing the buttons
         // off the row and makes it wrap instead.
         promptNoButton.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -63,13 +63,13 @@ class SearchSuggestionPromptView: UIView {
         accessibilityElements = [promptImage, promptLabel, promptYesButton, promptNoButton]
         
         promptImage.snp.makeConstraints { make in
-            make.left.equalTo(self).offset(UX.PromptInsets.left)
+            make.left.equalTo(self).offset(UX.promptInsets.left)
             make.centerY.equalTo(self)
         }
         
         promptLabel.snp.makeConstraints { make in
-            make.left.equalTo(promptImage.snp.right).offset(UX.PromptInsets.left)
-            let insets = UX.PromptInsets
+            make.left.equalTo(promptImage.snp.right).offset(UX.promptInsets.left)
+            let insets = UX.promptInsets
             make.top.equalTo(self).inset(insets.top)
             make.bottom.equalTo(self).inset(insets.bottom)
             make.right.lessThanOrEqualTo(promptYesButton.snp.left)
@@ -77,12 +77,12 @@ class SearchSuggestionPromptView: UIView {
         }
         
         promptNoButton.snp.makeConstraints { make in
-            make.right.equalTo(self).inset(UX.PromptInsets.right)
+            make.right.equalTo(self).inset(UX.promptInsets.right)
             make.centerY.equalTo(self)
         }
         
         promptYesButton.snp.makeConstraints { make in
-            make.right.equalTo(promptNoButton.snp.left).inset(UX.PromptInsets.right)
+            make.right.equalTo(promptNoButton.snp.left).inset(UX.promptInsets.right)
             make.centerY.equalTo(self)
         }
         

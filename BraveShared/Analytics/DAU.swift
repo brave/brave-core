@@ -35,7 +35,7 @@ public class DAU {
     /// Sends ping to server and returns a boolean whether a timer for the server call was scheduled.
     /// A user needs to be active for a certain amount of time before we ping the server.
     @discardableResult public func sendPingToServer() -> Bool {
-        if AppConstants.BuildChannel == .developer {
+        if AppConstants.buildChannel == .developer {
             log.info("Development build detected, no server ping.")
             return false
         }
@@ -145,7 +145,7 @@ public class DAU {
         return ParamsAndPrefs(queryParams: params, lastLaunchInfoPreference: lastPingTimestamp)
     }
     
-    func channelParam(for channel: AppBuildChannel = AppConstants.BuildChannel) -> URLQueryItem {
+    func channelParam(for channel: AppBuildChannel = AppConstants.buildChannel) -> URLQueryItem {
         return URLQueryItem(name: "channel", value: channel.serverChannelParam)
     }
     
@@ -221,7 +221,7 @@ public class DAU {
     /// Returns nil if no dau changes detected.
     func dauStatParams(_ dauStat: [Int?]? = Preferences.DAU.lastLaunchInfo.value,
                        firstPing: Bool,
-                       channel: AppBuildChannel = AppConstants.BuildChannel) -> [URLQueryItem]? {
+                       channel: AppBuildChannel = AppConstants.buildChannel) -> [URLQueryItem]? {
         
         func dauParams(_ daily: Bool, _ weekly: Bool, _ monthly: Bool) -> [URLQueryItem] {
             return ["daily": daily, "weekly": weekly, "monthly": monthly].map {

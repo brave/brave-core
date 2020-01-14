@@ -288,7 +288,5 @@ public class DataController: NSObject {
         backgroundContext.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump
         return backgroundContext
     }
-    
-    
 }
 

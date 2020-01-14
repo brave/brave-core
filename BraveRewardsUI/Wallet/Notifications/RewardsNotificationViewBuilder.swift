@@ -24,8 +24,8 @@ struct RewardsNotificationViewBuilder {
     return WalletAlertNotificationView(
       notification: WalletAlertNotification(
         category: .error,
-        title: Strings.NoNetworkTitle,
-        body: Strings.NoNetworkBody
+        title: Strings.noNetworkTitle,
+        body: Strings.noNetworkBody
       )
     )
   }
@@ -38,7 +38,7 @@ struct RewardsNotificationViewBuilder {
       switch batResult {
       case .ledgerOk:
         let batAmount = "\(amount) \(Strings.BAT)"
-        return RewardsNotificationViewBuilder.get(actionNotification: notification, bodyText: String.localizedStringWithFormat(Strings.NotificationContributeSuccess, batAmount))
+        return RewardsNotificationViewBuilder.get(actionNotification: notification, bodyText: String.localizedStringWithFormat(Strings.notificationContributeSuccess, batAmount))
       default:
         let model = RewardsNotificationViewBuilder.alertModel(contributeResult: batResult)
         return RewardsNotificationViewBuilder.get(alertNotification: notification, model: model)
@@ -52,11 +52,11 @@ struct RewardsNotificationViewBuilder {
   private static func alertModel(contributeResult: Result) -> WalletAlertNotification {
     switch contributeResult {
     case .notEnoughFunds:
-      return WalletAlertNotification(category: .warning, title: nil, body: Strings.NotificationAutoContributeNotEnoughFundsBody)
+      return WalletAlertNotification(category: .warning, title: nil, body: Strings.notificationAutoContributeNotEnoughFundsBody)
     case .tipError:
-      return WalletAlertNotification(category: .error, title: Strings.NotificationErrorTitle, body: Strings.NotificationContributeTipError)
+      return WalletAlertNotification(category: .error, title: Strings.notificationErrorTitle, body: Strings.notificationContributeTipError)
     default:
-      return WalletAlertNotification(category: .error, title: Strings.NotificationErrorTitle, body: Strings.NotificationContributeError)
+      return WalletAlertNotification(category: .error, title: Strings.notificationErrorTitle, body: Strings.notificationContributeError)
     }
   }
   
@@ -66,17 +66,17 @@ struct RewardsNotificationViewBuilder {
     
     switch actionNotification.kind {
     case .grant:
-      body = Strings.NotificationGrantNotification
+      body = Strings.notificationGrantNotification
       category = .grant
     case .grantAds:
-      body = Strings.NotificationEarningsClaimDefault
+      body = Strings.notificationEarningsClaimDefault
       category = .adGrant
     case .tipsProcessed:
-      body = Strings.NotificationTipsProcessedBody
+      body = Strings.notificationTipsProcessedBody
       category = .tipsProcessed
     case .verifiedPublisher:
       if let name = actionNotification.userInfo["publisher_name"] as? String {
-        body = String.localizedStringWithFormat(Strings.NotificationVerifiedPublisherBody, name)// publisher name"
+        body = String.localizedStringWithFormat(Strings.notificationVerifiedPublisherBody, name)// publisher name"
         category = .verifiedPublisher
       } else {
         assertionFailure("Verified publisher notification has invalid userInfo")
@@ -107,11 +107,11 @@ struct RewardsNotificationViewBuilder {
     var title: String?
     switch alertNotification.kind {
     case .insufficientFunds:
-      body = Strings.NotificationInsufficientFunds
+      body = Strings.notificationInsufficientFunds
       alertType = .warning
-      title = Strings.NotificationInsufficientFundsTitle
+      title = Strings.notificationInsufficientFundsTitle
     case .pendingNotEnoughFunds:
-      body = Strings.NotificationPendingNotEnoughFunds
+      body = Strings.notificationPendingNotEnoughFunds
       alertType = .warning
     case .autoContribute:
       guard let model = model else {
@@ -124,14 +124,14 @@ struct RewardsNotificationViewBuilder {
       switch kind {
       case .walletDisconnected:
         alertType = .error
-        title = Strings.UserWalletNotificationWalletDisconnectedTitle
-        body = Strings.UserWalletNotificationWalletDisconnectedBody
+        title = Strings.userWalletNotificationWalletDisconnectedTitle
+        body = Strings.userWalletNotificationWalletDisconnectedBody
       case .walletNowVerified:
         alertType = .success
-        title = Strings.UserWalletNotificationNowVerifiedTitle
+        title = Strings.userWalletNotificationNowVerifiedTitle
         // Wallet name will be the first arg in the user info dictionary
         let userWalletName = alertNotification.userInfo[0] as? String ?? ""
-        body = String.localizedStringWithFormat(Strings.UserWalletNotificationNowVerifiedBody, userWalletName)
+        body = String.localizedStringWithFormat(Strings.userWalletNotificationNowVerifiedBody, userWalletName)
       default:
         assertionFailure("Unknown ledger notification identifier: \(alertNotification.id)")
         return nil
