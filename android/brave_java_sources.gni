@@ -10,6 +10,7 @@ import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 
 brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/BraveActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/BraveAppHooks.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveBadge.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveFeatureList.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveRelaunchUtils.java",
@@ -28,6 +29,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/bookmarks/BraveBookmarkWorker.java",
   "../../brave/android/java/org/chromium/chrome/browser/document/BraveLauncherActivity.java",
+  "../../brave/android/java/org/chromium/chrome/browser/help/BraveHelpAndFeedback.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationPlatformBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationSettingsBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveOnboardingNotification.java",
