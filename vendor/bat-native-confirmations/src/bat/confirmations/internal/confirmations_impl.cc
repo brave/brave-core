@@ -887,7 +887,7 @@ void ConfirmationsImpl::UpdateAdsRewards(
 }
 
 void ConfirmationsImpl::GetTransactionHistory(
-    OnGetTransactionHistory callback) {
+    OnGetTransactionHistoryCallback callback) {
   auto unredeemed_transactions = GetUnredeemedTransactions();
   double unredeemed_estimated_pending_rewards =
       GetEstimatedPendingRewardsForTransactions(unredeemed_transactions);
