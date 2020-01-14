@@ -2996,6 +2996,58 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   rewards_service()->RemoveObserver(this);
 }
 
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+                       MultipleTipsProduceMultipleFeesWithVerifiedWallet) {
+  rewards_service()->AddObserver(this);
+  verified_wallet_ = true;
+  external_balance_ = 50.0;
+
+  auto wallet = ledger::ExternalWallet::New();
+  wallet->token = "token";
+  wallet->address = external_wallet_address_;
+  wallet->status = ledger::WalletStatus::VERIFIED;
+  wallet->one_time_string = "";
+  wallet->user_name = "Brave Test";
+  wallet->transferred = true;
+  rewards_service()->SaveExternalWallet("uphold", std::move(wallet));
+
+  // Enable Rewards
+  EnableRewards();
+
+  double total_amount = 0.0;
+  const double amount = 5.0;
+  const double fee_percentage = 0.05;
+  const double tip_fee = amount * fee_percentage;
+  const bool should_contribute = true;
+  TipViaCode(
+      "duckduckgo.com",
+      amount,
+      ledger::PublisherStatus::VERIFIED,
+      should_contribute);
+  total_amount += amount;
+
+  TipViaCode(
+      "laurenwags.github.io",
+      amount,
+      ledger::PublisherStatus::VERIFIED,
+      should_contribute);
+  total_amount += amount;
+
+  VerifyTip(total_amount, should_contribute, false, true);
+
+  ledger::TransferFeeList transfer_fees =
+      rewards_service()->GetTransferFeesForTesting("uphold");
+
+  ASSERT_EQ(transfer_fees.size(), 2UL);
+
+  for (auto const& value : transfer_fees) {
+    ASSERT_EQ(value.second->amount, tip_fee);
+  }
+
+  // Stop observing the Rewards service
+  rewards_service()->RemoveObserver(this);
+}
+
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipConnectedPublisherAnon) {
   // Observe the Rewards service
   rewards_service_->AddObserver(this);
