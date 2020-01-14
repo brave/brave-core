@@ -28,7 +28,7 @@ class VerifiedUserWalletButton: UIControl {
         }
       }),
       .view(UILabel().then {
-        $0.text = Strings.UserWalletVerifiedButtonTitle
+        $0.text = Strings.userWalletVerifiedButtonTitle
         $0.font = .systemFont(ofSize: 13, weight: .regular)
         $0.appearanceTextColor = .white
       }),

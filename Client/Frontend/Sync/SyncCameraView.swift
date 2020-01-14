@@ -11,7 +11,7 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
     var cameraOverlayView: UIImageView!
     private lazy var cameraAccessButton: RoundInterfaceButton = {
         let button = self.createCameraButton()
-        button.setTitle(Strings.GrantCameraAccess, for: .normal)
+        button.setTitle(Strings.grantCameraAccess, for: .normal)
         button.tintColor = .white
         button.appearanceTextColor = .white
         button.addTarget(self, action: #selector(SEL_cameraAccess), for: .touchUpInside)
@@ -20,7 +20,7 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
 
     private lazy var openSettingsButton: RoundInterfaceButton = {
         let button = self.createCameraButton()
-        button.setTitle(Strings.OpenPhoneSettingsActionTitle, for: .normal)
+        button.setTitle(Strings.openPhoneSettingsActionTitle, for: .normal)
         button.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
         return button
     }()

@@ -35,9 +35,9 @@ private let KVOs: [KVOConstants] = [
 ]
 
 private struct BrowserViewControllerUX {
-    fileprivate static let ShowHeaderTapAreaHeight: CGFloat = 32
-    fileprivate static let BookmarkStarAnimationDuration: Double = 0.5
-    fileprivate static let BookmarkStarAnimationOffset: CGFloat = 80
+    fileprivate static let showHeaderTapAreaHeight: CGFloat = 32
+    fileprivate static let bookmarkStarAnimationDuration: Double = 0.5
+    fileprivate static let bookmarkStarAnimationOffset: CGFloat = 80
 }
 
 class BrowserViewController: UIViewController {
@@ -150,7 +150,7 @@ class BrowserViewController: UIViewController {
         
         RewardsHelper.configureRewardsLogs()
         let configuration: BraveRewardsConfiguration
-        if AppConstants.BuildChannel.isPublic {
+        if AppConstants.buildChannel.isPublic {
             configuration = .production
         } else {
             if let override = Preferences.Rewards.EnvironmentOverride(rawValue: Preferences.Rewards.environmentOverride.value), override != .none {
@@ -165,7 +165,7 @@ class BrowserViewController: UIViewController {
                     configuration = .staging
                 }
             } else {
-                configuration = AppConstants.BuildChannel == .developer ? .staging : .production
+                configuration = AppConstants.buildChannel == .developer ? .staging : .production
             }
         }
         rewards = BraveRewards(configuration: configuration)
@@ -452,7 +452,7 @@ class BrowserViewController: UIViewController {
         KeyboardHelper.defaultHelper.addDelegate(self)
 
         webViewContainerBackdrop = UIView()
-        webViewContainerBackdrop.backgroundColor = UIColor.Photon.Grey50
+        webViewContainerBackdrop.backgroundColor = UIColor.Photon.grey50
         webViewContainerBackdrop.alpha = 0
         view.addSubview(webViewContainerBackdrop)
 
@@ -490,14 +490,14 @@ class BrowserViewController: UIViewController {
         tabsBar.didMove(toParent: self)
 
         // UIAccessibilityCustomAction subclass holding an AccessibleAction instance does not work, thus unable to generate AccessibleActions and UIAccessibilityCustomActions "on-demand" and need to make them "persistent" e.g. by being stored in BVC
-        pasteGoAction = AccessibleAction(name: Strings.PasteAndGoTitle, handler: { () -> Bool in
+        pasteGoAction = AccessibleAction(name: Strings.pasteAndGoTitle, handler: { () -> Bool in
             if let pasteboardContents = UIPasteboard.general.string {
                 self.topToolbar(self.topToolbar, didSubmitText: pasteboardContents)
                 return true
             }
             return false
         })
-        pasteAction = AccessibleAction(name: Strings.PasteTitle, handler: { () -> Bool in
+        pasteAction = AccessibleAction(name: Strings.pasteTitle, handler: { () -> Bool in
             if let pasteboardContents = UIPasteboard.general.string {
                 // Enter overlay mode and make the search controller appear.
                 self.topToolbar.enterOverlayMode(pasteboardContents, pasted: true, search: true)
@@ -506,7 +506,7 @@ class BrowserViewController: UIViewController {
             }
             return false
         })
-        copyAddressAction = AccessibleAction(name: Strings.CopyAddressTitle, handler: { () -> Bool in
+        copyAddressAction = AccessibleAction(name: Strings.copyAddressTitle, handler: { () -> Bool in
             if let url = self.topToolbar.currentURL {
                 UIPasteboard.general.url = url as URL
             }
@@ -542,7 +542,7 @@ class BrowserViewController: UIViewController {
         
         initializeSyncWebView()
         
-        if AppConstants.BuildChannel.isPublic && AppReview.shouldRequestReview() {
+        if AppConstants.buildChannel.isPublic && AppReview.shouldRequestReview() {
             // Request Review when the main-queue is free or on the next cycle.
             DispatchQueue.main.async {
                 SKStoreReviewController.requestReview()
@@ -606,7 +606,7 @@ class BrowserViewController: UIViewController {
         }
         
         topToolbar.snp.makeConstraints { make in
-            make.height.equalTo(UIConstants.TopToolbarHeight)
+            make.height.equalTo(UIConstants.topToolbarHeight)
         }
         
         tabsBar.view.snp.makeConstraints { make in
@@ -619,7 +619,7 @@ class BrowserViewController: UIViewController {
         
         topTouchArea.snp.makeConstraints { make in
             make.top.left.right.equalTo(self.view)
-            make.height.equalTo(BrowserViewControllerUX.ShowHeaderTapAreaHeight)
+            make.height.equalTo(BrowserViewControllerUX.showHeaderTapAreaHeight)
         }
 
     }
@@ -706,7 +706,7 @@ class BrowserViewController: UIViewController {
 
         if let toast = self.pendingToast {
             self.pendingToast = nil
-            show(toast: toast, afterWaiting: ButtonToastUX.ToastDelay)
+            show(toast: toast, afterWaiting: ButtonToastUX.toastDelay)
         }
         showQueuedAlertIfAvailable()
         
@@ -892,14 +892,14 @@ class BrowserViewController: UIViewController {
             
             webViewContainerTopOffset = make.top.equalTo(readerModeBar?.snp.bottom ?? self.header.snp.bottom).constraint
 
-            let findInPageHeight = (findInPageBar == nil) ? 0 : UIConstants.ToolbarHeight
+            let findInPageHeight = (findInPageBar == nil) ? 0 : UIConstants.toolbarHeight
             make.bottom.equalTo(self.footer.snp.top).offset(-findInPageHeight)
         }
 
         footer.snp.remakeConstraints { make in
             scrollController.footerBottomConstraint = make.bottom.equalTo(self.view.snp.bottom).constraint
             make.leading.trailing.equalTo(self.view)
-            let height = self.toolbar == nil ? 0 : UIConstants.BottomToolbarHeight
+            let height = self.toolbar == nil ? 0 : UIConstants.bottomToolbarHeight
             make.height.equalTo(height)
         }
         
@@ -1262,10 +1262,10 @@ class BrowserViewController: UIViewController {
         if let url = tab.url {
             if url.isReaderModeURL {
                 showReaderModeBar(animated: false)
-                NotificationCenter.default.addObserver(self, selector: #selector(dynamicFontChanged), name: .DynamicFontChanged, object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(dynamicFontChanged), name: .dynamicFontChanged, object: nil)
             } else {
                 hideReaderModeBar(animated: false)
-                NotificationCenter.default.removeObserver(self, name: .DynamicFontChanged, object: nil)
+                NotificationCenter.default.removeObserver(self, name: .dynamicFontChanged, object: nil)
             }
 
             updateInContentHomePanel(url as URL)
@@ -1442,7 +1442,7 @@ class BrowserViewController: UIViewController {
                 findInPageBar.applyTheme(Theme.of(tabManager.selectedTab))
 
                 findInPageBar.snp.makeConstraints { make in
-                    make.height.equalTo(UIConstants.ToolbarHeight)
+                    make.height.equalTo(UIConstants.toolbarHeight)
                     make.edges.equalTo(alertStackView)
                 }
 
@@ -1551,14 +1551,14 @@ class BrowserViewController: UIViewController {
         
         topToolbar.leaveOverlayMode()
         
-        let popup = AlertPopupView(imageView: UIImageView(image: #imageLiteral(resourceName: "browser_lock_popup")), title: Strings.Browser_lock_callout_title, message: Strings.Browser_lock_callout_message)
-        popup.addButton(title: Strings.Browser_lock_callout_not_now) { () -> PopupViewDismissType in
+        let popup = AlertPopupView(imageView: UIImageView(image: #imageLiteral(resourceName: "browser_lock_popup")), title: Strings.browserLockCalloutTitle, message: Strings.browserLockCalloutMessage)
+        popup.addButton(title: Strings.browserLockCalloutNotNow) { () -> PopupViewDismissType in
             Preferences.Popups.browserLock.value = true
             self.browserLockPopup = nil
             return .flyDown
         }
         
-        popup.addButton(title: Strings.Browser_lock_callout_enable, type: .primary) { [weak self] () -> PopupViewDismissType in
+        popup.addButton(title: Strings.browserLockCalloutEnable, type: .primary) { [weak self] () -> PopupViewDismissType in
             Preferences.Popups.browserLock.value = true
             self?.browserLockPopup = nil
             
@@ -1598,16 +1598,16 @@ class BrowserViewController: UIViewController {
         
         topToolbar.leaveOverlayMode()
         
-        let popup = AlertPopupView(imageView: UIImageView(image: #imageLiteral(resourceName: "duckduckgo")), title: Strings.DDG_callout_title, message: Strings.DDG_callout_message)
+        let popup = AlertPopupView(imageView: UIImageView(image: #imageLiteral(resourceName: "duckduckgo")), title: Strings.DDGCalloutTitle, message: Strings.DDGCalloutMessage)
         popup.dismissHandler = { [weak self] in
             self?.presentBrowserLockCallout()
         }
-        popup.addButton(title: Strings.DDG_callout_no) {
+        popup.addButton(title: Strings.DDGCalloutNo) {
             Preferences.Popups.duckDuckGoPrivateSearch.value = true
             self.duckDuckGoPopup = nil
             return .flyDown
         }
-        popup.addButton(title: Strings.DDG_callout_enable, type: .primary) { [weak self] in
+        popup.addButton(title: Strings.DDGCalloutEnable, type: .primary) { [weak self] in
             self?.duckDuckGoPopup = nil
             
             if self?.profile == nil {
@@ -1628,7 +1628,7 @@ class BrowserViewController: UIViewController {
 
 extension BrowserViewController: ClipboardBarDisplayHandlerDelegate {
     func shouldDisplay(clipboardBar bar: ButtonToast) {
-        show(toast: bar, duration: ClipboardBarToastUX.ToastDelay)
+        show(toast: bar, duration: ClipboardBarToastUX.toastDelay)
     }
 }
 
@@ -1705,9 +1705,9 @@ extension BrowserViewController: TopToolbarDelegate {
     func topToolbarDidLongPressReloadButton(_ topToolbar: TopToolbarView, from button: UIButton) {
         guard let tab = tabManager.selectedTab else { return }
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
         
-        let toggleActionTitle = tab.desktopSite ? Strings.AppMenuViewMobileSiteTitleString : Strings.AppMenuViewDesktopSiteTitleString
+        let toggleActionTitle = tab.desktopSite ? Strings.appMenuViewMobileSiteTitleString : Strings.appMenuViewDesktopSiteTitleString
         alert.addAction(UIAlertAction(title: toggleActionTitle, style: .default, handler: { _ in
             tab.toggleDesktopSite()
         }))
@@ -1774,7 +1774,7 @@ extension BrowserViewController: TopToolbarDelegate {
             alert.addAction(action.alertAction(style: .default))
         }
         
-        alert.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
         
         let setupPopover = { [unowned self] in
             if let popoverPresentationController = alert.popoverPresentationController {
@@ -1972,14 +1972,14 @@ extension BrowserViewController: ToolbarDelegate {
     private func addTabAlertActions() -> [UIAlertAction] {
         var actions: [UIAlertAction] = []
         if !PrivateBrowsingManager.shared.isPrivateBrowsing {
-            let newPrivateTabAction = UIAlertAction(title: Strings.NewPrivateTabTitle, style: .default, handler: { [unowned self] _ in
+            let newPrivateTabAction = UIAlertAction(title: Strings.newPrivateTabTitle, style: .default, handler: { [unowned self] _ in
                 // BRAVE TODO: Add check for DuckDuckGo popup (and based on 1.6, whether the browser lock is enabled?)
                 // before focusing on the url bar
                 self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: true)
             })
             actions.append(newPrivateTabAction)
         }
-        let bottomActionTitle = PrivateBrowsingManager.shared.isPrivateBrowsing ? Strings.NewPrivateTabTitle : Strings.NewTabTitle
+        let bottomActionTitle = PrivateBrowsingManager.shared.isPrivateBrowsing ? Strings.newPrivateTabTitle : Strings.newTabTitle
         actions.append(UIAlertAction(title: bottomActionTitle, style: .default, handler: { [unowned self] _ in
             self.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
         }))
@@ -1988,7 +1988,7 @@ extension BrowserViewController: ToolbarDelegate {
     
     func showAddTabContextMenu(sourceView: UIView, button: UIButton) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
         addTabAlertActions().forEach(alertController.addAction)
         alertController.popoverPresentationController?.sourceView = sourceView
         alertController.popoverPresentationController?.sourceRect = button.frame
@@ -2019,16 +2019,16 @@ extension BrowserViewController: ToolbarDelegate {
         }
         
         if tabManager.tabsForCurrentMode.count > 1 {
-            controller.addAction(UIAlertAction(title: String(format: Strings.CloseAllTabsTitle, tabManager.tabsForCurrentMode.count), style: .destructive, handler: { _ in
+            controller.addAction(UIAlertAction(title: String(format: Strings.closeAllTabsTitle, tabManager.tabsForCurrentMode.count), style: .destructive, handler: { _ in
                 self.tabManager.removeAll()
             }), accessibilityIdentifier: "toolbarTabButtonLongPress.closeTab")
         }
-        controller.addAction(UIAlertAction(title: Strings.CloseTabTitle, style: .destructive, handler: { _ in
+        controller.addAction(UIAlertAction(title: Strings.closeTabTitle, style: .destructive, handler: { _ in
             if let tab = self.tabManager.selectedTab {
                 self.tabManager.removeTab(tab)
             }
         }), accessibilityIdentifier: "toolbarTabButtonLongPress.closeTab")
-        controller.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil), accessibilityIdentifier: "toolbarTabButtonLongPress.cancel")
+        controller.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil), accessibilityIdentifier: "toolbarTabButtonLongPress.cancel")
         controller.popoverPresentationController?.sourceView = toolbar ?? topToolbar
         controller.popoverPresentationController?.sourceRect = button.frame
         let generator = UIImpactFeedbackGenerator(style: .heavy)
@@ -2264,7 +2264,7 @@ extension BrowserViewController: TabManagerDelegate {
             webView.snp.makeConstraints { make in
                 make.left.right.top.bottom.equalTo(self.webViewContainer)
             }
-            webView.accessibilityLabel = Strings.WebContentAccessibilityLabel
+            webView.accessibilityLabel = Strings.webContentAccessibilityLabel
             webView.accessibilityIdentifier = "contentView"
             webView.accessibilityElementsHidden = false
 
@@ -2359,7 +2359,7 @@ extension BrowserViewController: TabManagerDelegate {
         updateTabCountUsingTabManager(tabManager)
     }
 
-    func show(toast: Toast, afterWaiting delay: DispatchTimeInterval = SimpleToastUX.ToastDelayBefore, duration: DispatchTimeInterval? = SimpleToastUX.ToastDismissAfter) {
+    func show(toast: Toast, afterWaiting delay: DispatchTimeInterval = SimpleToastUX.toastDelayBefore, duration: DispatchTimeInterval? = SimpleToastUX.toastDismissAfter) {
         if let downloadToast = toast as? DownloadToast {
             self.downloadToast = downloadToast
         }
@@ -2380,7 +2380,7 @@ extension BrowserViewController: TabManagerDelegate {
         guard let toast = toast, !tabTrayController.privateMode else {
             return
         }
-        show(toast: toast, afterWaiting: ButtonToastUX.ToastDelay)
+        show(toast: toast, afterWaiting: ButtonToastUX.toastDelay)
     }
 
     fileprivate func updateTabCountUsingTabManager(_ tabManager: TabManager) {
@@ -2478,9 +2478,9 @@ extension BrowserViewController: WKUIDelegate {
                     completionHandler()
                 }
                 // Show confirm alert here.
-                let suppressSheet = UIAlertController(title: nil, message: Strings.SuppressAlertsActionMessage, preferredStyle: .actionSheet)
-                suppressSheet.addAction(UIAlertAction(title: Strings.SuppressAlertsActionTitle, style: .destructive, handler: suppressDialogues))
-                suppressSheet.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: { _ in
+                let suppressSheet = UIAlertController(title: nil, message: Strings.suppressAlertsActionMessage, preferredStyle: .actionSheet)
+                suppressSheet.addAction(UIAlertAction(title: Strings.suppressAlertsActionTitle, style: .destructive, handler: suppressDialogues))
+                suppressSheet.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: { _ in
                     completionHandler()
                 }))
                 if UIDevice.current.userInterfaceIdiom == .pad, let popoverController = suppressSheet.popoverPresentationController {
@@ -2566,7 +2566,7 @@ extension BrowserViewController: WKUIDelegate {
                 let tabType = currentTab.type
                 
                 if !tabType.isPrivate {
-                    let openNewTabAction = UIAction(title: Strings.OpenNewTabButtonTitle,
+                    let openNewTabAction = UIAction(title: Strings.openNewTabButtonTitle,
                                                     image: UIImage(systemName: "plus")) { _ in
                         self.addTab(url: url, inPrivateMode: false, currentTab: currentTab)
                     }
@@ -2576,7 +2576,7 @@ extension BrowserViewController: WKUIDelegate {
                     actions.append(openNewTabAction)
                 }
                 
-                let openNewPrivateTabAction = UIAction(title: Strings.OpenNewPrivateTabButtonTitle,
+                let openNewPrivateTabAction = UIAction(title: Strings.openNewPrivateTabButtonTitle,
                                                        image: #imageLiteral(resourceName: "private_glasses").template) { _ in
                     self.addTab(url: url, inPrivateMode: true, currentTab: currentTab)
                 }
@@ -2584,7 +2584,7 @@ extension BrowserViewController: WKUIDelegate {
                 
                 actions.append(openNewPrivateTabAction)
                 
-                let copyAction = UIAction(title: Strings.CopyLinkActionTitle,
+                let copyAction = UIAction(title: Strings.copyLinkActionTitle,
                                           image: UIImage(systemName: "doc.on.doc")) { _ in
                     UIPasteboard.general.url = url
                 }
@@ -2593,7 +2593,7 @@ extension BrowserViewController: WKUIDelegate {
                 actions.append(copyAction)
                 
                 if let braveWebView = webView as? BraveWebView {
-                    let shareAction = UIAction(title: Strings.ShareLinkActionTitle,
+                    let shareAction = UIAction(title: Strings.shareLinkActionTitle,
                                                image: UIImage(systemName: "square.and.arrow.up")) { _ in
                         let touchPoint = braveWebView.lastHitPoint
                         let touchSize = CGSize(width: 0, height: 16)
@@ -2612,7 +2612,7 @@ extension BrowserViewController: WKUIDelegate {
                 let linkPreview = Preferences.General.enableLinkPreview.value
                 
                 let linkPreviewTitle = linkPreview ?
-                    Strings.HideLinkPreviewsActionTitle : Strings.ShowLinkPreviewsActionTitle
+                    Strings.hideLinkPreviewsActionTitle : Strings.showLinkPreviewsActionTitle
                 let linkPreviewAction = UIAction(title: linkPreviewTitle, image: UIImage(systemName: "eye.fill")) { _ in
                     Preferences.General.enableLinkPreview.value.toggle()
                 }
@@ -2646,7 +2646,7 @@ extension BrowserViewController: WKUIDelegate {
             self.tabManager.selectTab(tab)
         } else {
             // We're not showing the top tabs; show a toast to quick switch to the fresh new tab.
-            let toast = ButtonToast(labelText: Strings.ContextMenuButtonToastNewTabOpenedLabelText, buttonText: Strings.ContextMenuButtonToastNewTabOpenedButtonText, completion: { buttonPressed in
+            let toast = ButtonToast(labelText: Strings.contextMenuButtonToastNewTabOpenedLabelText, buttonText: Strings.contextMenuButtonToastNewTabOpenedButtonText, completion: { buttonPressed in
                 if buttonPressed {
                     self.tabManager.selectTab(tab)
                 }
@@ -2729,7 +2729,7 @@ extension BrowserViewController {
             
             readerModeBar.snp.makeConstraints { make in
                 make.top.equalTo(self.header.snp.bottom)
-                make.height.equalTo(UIConstants.ToolbarHeight)
+                make.height.equalTo(UIConstants.toolbarHeight)
                 make.leading.trailing.equalTo(self.view)
             }
         }
@@ -2805,7 +2805,7 @@ extension BrowserViewController {
     }
 
     @objc func dynamicFontChanged(_ notification: Notification) {
-        guard notification.name == .DynamicFontChanged else { return }
+        guard notification.name == .dynamicFontChanged else { return }
 
         var readerModeStyle = DefaultReaderModeStyle
         if let dict = profile.prefs.dictionaryForKey(ReaderModeProfileKeyStyle) {
@@ -2837,10 +2837,10 @@ extension BrowserViewController: ReaderModeBarViewDelegate {
 
                 let setupPopover = { [unowned self] in
                     if let popoverPresentationController = readerModeStyleViewController.popoverPresentationController {
-                        popoverPresentationController.backgroundColor = UIColor.Photon.White100
+                        popoverPresentationController.backgroundColor = UIColor.Photon.white100
                         popoverPresentationController.delegate = self
                         popoverPresentationController.sourceView = readerModeBar
-                        popoverPresentationController.sourceRect = CGRect(x: readerModeBar.frame.width/2, y: UIConstants.ToolbarHeight, width: 1, height: 1)
+                        popoverPresentationController.sourceRect = CGRect(x: readerModeBar.frame.width/2, y: UIConstants.toolbarHeight, width: 1, height: 1)
                         popoverPresentationController.permittedArrowDirections = .up
                     }
                 }
@@ -2870,10 +2870,10 @@ extension BrowserViewController: ContextMenuHelperDelegate {
             return
         }
         
-        let accessDenied = UIAlertController(title: Strings.AccessPhotoDeniedAlertTitle, message: Strings.AccessPhotoDeniedAlertMessage, preferredStyle: .alert)
-        let dismissAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .default, handler: nil)
+        let accessDenied = UIAlertController(title: Strings.accessPhotoDeniedAlertTitle, message: Strings.accessPhotoDeniedAlertMessage, preferredStyle: .alert)
+        let dismissAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .default, handler: nil)
         accessDenied.addAction(dismissAction)
-        let settingsAction = UIAlertAction(title: Strings.OpenPhoneSettingsActionTitle, style: .default ) { _ in
+        let settingsAction = UIAlertAction(title: Strings.openPhoneSettingsActionTitle, style: .default ) { _ in
             UIApplication.shared.open(settingsUrl, options: [:])
         }
         accessDenied.addAction(settingsAction)
@@ -2897,23 +2897,23 @@ extension BrowserViewController: ContextMenuHelperDelegate {
             let tabType = currentTab.type
 
             if !tabType.isPrivate {
-                let openNewTabAction =  UIAlertAction(title: Strings.OpenNewTabButtonTitle, style: .default) { _ in
+                let openNewTabAction =  UIAlertAction(title: Strings.openNewTabButtonTitle, style: .default) { _ in
                     self.addTab(url: url, inPrivateMode: false, currentTab: currentTab)
                 }
                 actionSheetController.addAction(openNewTabAction, accessibilityIdentifier: "linkContextMenu.openInNewTab")
             }
            
-            let openNewPrivateTabAction =  UIAlertAction(title: Strings.OpenNewPrivateTabButtonTitle, style: .default) { _ in
+            let openNewPrivateTabAction =  UIAlertAction(title: Strings.openNewPrivateTabButtonTitle, style: .default) { _ in
                 self.addTab(url: url, inPrivateMode: true, currentTab: currentTab)
             }
             actionSheetController.addAction(openNewPrivateTabAction, accessibilityIdentifier: "linkContextMenu.openInNewPrivateTab")
 
-            let copyAction = UIAlertAction(title: Strings.CopyLinkActionTitle, style: .default) { _ in
+            let copyAction = UIAlertAction(title: Strings.copyLinkActionTitle, style: .default) { _ in
                 UIPasteboard.general.url = url as URL
             }
             actionSheetController.addAction(copyAction, accessibilityIdentifier: "linkContextMenu.copyLink")
 
-            let shareAction = UIAlertAction(title: Strings.ShareLinkActionTitle, style: .default) { _ in
+            let shareAction = UIAlertAction(title: Strings.shareLinkActionTitle, style: .default) { _ in
                 self.presentActivityViewController(url as URL, sourceView: self.view, sourceRect: CGRect(origin: touchPoint, size: touchSize), arrowDirection: .any)
             }
             actionSheetController.addAction(shareAction, accessibilityIdentifier: "linkContextMenu.share")
@@ -2927,14 +2927,14 @@ extension BrowserViewController: ContextMenuHelperDelegate {
             // Too long text can make the action sheet to cover whole screen, therefore it needs to be truncated.
             dialogTitle = "\(urlText)\(imageText)".truncate(length: 200)
             
-            let openInNewTabAction = UIAlertAction(title: Strings.OpenImageInNewTabActionTitle, style: .default) { _ in
+            let openInNewTabAction = UIAlertAction(title: Strings.openImageInNewTabActionTitle, style: .default) { _ in
                 let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
                 self.tabManager.addTab(URLRequest(url: url), afterTab: self.tabManager.selectedTab, isPrivate: isPrivate)
                 self.scrollController.showToolbars(animated: true)
             }
             actionSheetController.addAction(openInNewTabAction, accessibilityIdentifier: "linkContextMenu.openImageInNewTab")
 
-            let saveImageAction = UIAlertAction(title: Strings.SaveImageActionTitle, style: .default) { _ in
+            let saveImageAction = UIAlertAction(title: Strings.saveImageActionTitle, style: .default) { _ in
                 self.getData(url) { [weak self] data in
                     guard let self = self, let image = UIImage(data: data, scale: UIScreen.main.scale) else {
                         return
@@ -2945,7 +2945,7 @@ extension BrowserViewController: ContextMenuHelperDelegate {
             }
             actionSheetController.addAction(saveImageAction, accessibilityIdentifier: "linkContextMenu.saveImage")
 
-            let copyAction = UIAlertAction(title: Strings.CopyImageActionTitle, style: .default) { _ in
+            let copyAction = UIAlertAction(title: Strings.copyImageActionTitle, style: .default) { _ in
                 // put the actual image on the clipboard
                 // do this asynchronously just in case we're in a low bandwidth situation
                 let pasteboard = UIPasteboard.general
@@ -2995,7 +2995,7 @@ extension BrowserViewController: ContextMenuHelperDelegate {
         }
 
         actionSheetController.title = dialogTitle
-        let cancelAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil)
         actionSheetController.addAction(cancelAction)
         self.present(actionSheetController, animated: true, completion: nil)
     }
@@ -3036,10 +3036,10 @@ extension BrowserViewController {
         let domain = webView.url?.domainURL.host
         let matches = self.profile.searchEngines.orderedEngines.filter {$0.shortName == domain}
         if !matches.isEmpty {
-            self.customSearchEngineButton.tintColor = UIColor.Photon.Grey50
+            self.customSearchEngineButton.tintColor = UIColor.Photon.grey50
             self.customSearchEngineButton.isUserInteractionEnabled = false
         } else {
-            self.customSearchEngineButton.tintColor = UIConstants.SystemBlueColor
+            self.customSearchEngineButton.tintColor = UIConstants.systemBlueColor
             self.customSearchEngineButton.isUserInteractionEnabled = true
         }
 
@@ -3106,7 +3106,7 @@ extension BrowserViewController {
                 return
             }
             self.addSearchEngine(searchQuery, favicon: favicon)
-            self.customSearchEngineButton.tintColor = UIColor.Photon.Grey50
+            self.customSearchEngineButton.tintColor = UIColor.Photon.grey50
             self.customSearchEngineButton.isUserInteractionEnabled = false
         }
     }
@@ -3122,7 +3122,7 @@ extension BrowserViewController {
         }
 
         let alert = ThirdPartySearchAlerts.addThirdPartySearchEngine { alert in
-            self.customSearchEngineButton.tintColor = UIColor.Photon.Grey50
+            self.customSearchEngineButton.tintColor = UIColor.Photon.grey50
             self.customSearchEngineButton.isUserInteractionEnabled = false
 
             WebImageCacheManager.shared.load(from: iconURL) { (image, _, _, _, _) in
@@ -3134,7 +3134,7 @@ extension BrowserViewController {
 
                 self.profile.searchEngines.addSearchEngine(OpenSearchEngine(engineID: nil, shortName: shortName, image: image, searchTemplate: searchQuery, suggestTemplate: nil, isCustomEngine: true))
                 let Toast = SimpleToast()
-                Toast.showAlertWithText(Strings.ThirdPartySearchEngineAdded, bottomContainer: self.webViewContainer)
+                Toast.showAlertWithText(Strings.thirdPartySearchEngineAdded, bottomContainer: self.webViewContainer)
             }
         }
 
@@ -3321,7 +3321,7 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
                     return
                 }
                 // We're not showing the top tabs; show a toast to quick switch to the fresh new tab.
-                let toast = ButtonToast(labelText: Strings.ContextMenuButtonToastNewTabOpenedLabelText, buttonText: Strings.ContextMenuButtonToastNewTabOpenedButtonText, completion: { buttonPressed in
+                let toast = ButtonToast(labelText: Strings.contextMenuButtonToastNewTabOpenedLabelText, buttonText: Strings.contextMenuButtonToastNewTabOpenedButtonText, completion: { buttonPressed in
                     if buttonPressed {
                         self.tabManager.selectTab(tab)
                     }

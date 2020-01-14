@@ -6,8 +6,8 @@ import Foundation
 
 public struct PrefsKeys {
     //Activity Stream
-    public static let KeyTopSitesCacheIsValid = "topSitesCacheIsValid"
-    public static let KeyTopSitesCacheSize = "topSitesCacheSize"
+    public static let keyTopSitesCacheIsValid = "topSitesCacheIsValid"
+    public static let keyTopSitesCacheSize = "topSitesCacheSize"
 }
 
 public protocol Prefs {

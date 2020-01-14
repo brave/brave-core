@@ -48,7 +48,7 @@ New strings should be statically added to the Strings.swift file in the `en_US` 
 
 ```
 extension Strings {
-    public static let SomeString = NSLocalizedString("SomeString", value: "Some String", comment: "Comments are used to bring context to the string to aide others")
+    public static let someString = NSLocalizedString("SomeString", value: "Some String", comment: "Comments are used to bring context to the string to aide others")
 }
 ```
 
@@ -71,7 +71,7 @@ Please check [what happens when you update files](https://docs.transifex.com/pro
 Inside your Swift code, you can get the localized values like so:
 
 ```
-let someString = Strings.SomeString
+let someString = Strings.someString
 ```
 
 ### Importing the latest translations

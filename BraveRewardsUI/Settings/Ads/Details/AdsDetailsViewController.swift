@@ -40,7 +40,7 @@ class AdsDetailsViewController: UIViewController {
     contentView.tableView.delegate = self
     contentView.tableView.dataSource = self
     
-    title = Strings.SettingsAdsTitle
+    title = Strings.settingsAdsTitle
     
     fetchAdsDetails()
   }
@@ -56,7 +56,7 @@ class AdsDetailsViewController: UIViewController {
     self.estimatedEarnings = estimatedEarnings
     if let date = nextPaymentDate {
       let formatter = DateFormatter().then {
-        $0.dateFormat = Strings.AdsPayoutDateFormat
+        $0.dateFormat = Strings.adsPayoutDateFormat
       }
       nextPaymentDateView.label.text = formatter.string(from: date)
     } else {
@@ -75,11 +75,11 @@ class AdsDetailsViewController: UIViewController {
   private let nextPaymentDateView = LabelAccessoryView()
   
   private let adsPerHourOptions = [
-    Strings.OneAdPerHour,
-    Strings.TwoAdsPerHour,
-    Strings.ThreeAdsPerHour,
-    Strings.FourAdsPerHour,
-    Strings.FiveAdsPerHour
+    Strings.oneAdPerHour,
+    Strings.twoAdsPerHour,
+    Strings.threeAdsPerHour,
+    Strings.fourAdsPerHour,
+    Strings.fiveAdsPerHour
   ]
   
   private var adsReceived: Int = 0
@@ -111,7 +111,7 @@ extension AdsDetailsViewController: UITableViewDelegate, UITableViewDataSource {
           }
           self.navigationController?.popViewController(animated: true)
       }
-      controller.title = Strings.NumberOfAdsPerHourOptionsTitle
+      controller.title = Strings.numberOfAdsPerHourOptionsTitle
       navigationController?.pushViewController(controller, animated: true)
     }
   }
@@ -132,13 +132,13 @@ extension AdsDetailsViewController: UITableViewDelegate, UITableViewDataSource {
     switch row {
     case .adsPerHour:
       cell.accessoryType = .disclosureIndicator
-      cell.label.text = Strings.AdsMaxPerHour
+      cell.label.text = Strings.adsMaxPerHour
       let adsPerHour = state.ads.adsPerHour
       if adsPerHour - 1 < adsPerHourOptions.count {
         cell.accessoryLabel?.text = adsPerHourOptions[adsPerHour - 1]
       }
     case .currentEarnings:
-      cell.label.text = Strings.AdsEstimatedEarnings
+      cell.label.text = Strings.adsEstimatedEarnings
       cell.selectionStyle = .none
       cell.accessoryView = BATUSDPairView().then {
         $0.batContainer.amountLabel.text = BATValue(estimatedEarnings).displayString
@@ -146,11 +146,11 @@ extension AdsDetailsViewController: UITableViewDelegate, UITableViewDataSource {
         $0.bounds = CGRect(origin: .zero, size: $0.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize))
       }
     case .nextPayment:
-      cell.label.text = Strings.NextPaymentDate
+      cell.label.text = Strings.nextPaymentDate
       cell.selectionStyle = .none
       cell.accessoryView = nextPaymentDateView
     case .numberOfAdsReceived:
-      cell.label.text = Strings.AdNotificationsReceived
+      cell.label.text = Strings.adNotificationsReceived
       cell.selectionStyle = .none
       cell.accessoryLabel?.text = "\(adsReceived)"
     }

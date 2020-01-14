@@ -72,7 +72,7 @@ extension GrantClaimedViewController {
     let okButton = ActionButton(type: .system).then {
       $0.backgroundColor = BraveUX.braveOrange
       $0.layer.borderWidth = 0
-      $0.setTitle(Strings.OK, for: .normal)
+      $0.setTitle(Strings.ok, for: .normal)
     }
     
     init(kind: GrantClaimedViewController.GrantKind) {
@@ -99,14 +99,14 @@ extension GrantClaimedViewController {
       let titleLabel = UILabel().then {
         $0.numberOfLines = 0
         $0.appearanceTextColor = BraveUX.braveOrange
-        $0.text = isAdsGrant ? Strings.AdsGrantsClaimedTitle : Strings.GrantsClaimedTitle
+        $0.text = isAdsGrant ? Strings.adsGrantsClaimedTitle : Strings.grantsClaimedTitle
         $0.font = .systemFont(ofSize: 20.0)
         $0.textAlignment = .center
       }
       let subtitleLabel = UILabel().then {
         $0.numberOfLines = 0
         $0.appearanceTextColor = SettingsUX.subtitleTextColor
-        $0.text = isAdsGrant ? Strings.AdsGrantsClaimedSubtitle : Strings.GrantsClaimedSubtitle
+        $0.text = isAdsGrant ? Strings.adsGrantsClaimedSubtitle : Strings.grantsClaimedSubtitle
         $0.font = .systemFont(ofSize: 12.0)
         $0.textAlignment = .center
       }
@@ -157,7 +157,7 @@ extension GrantClaimedViewController {
     let expirationDateLabel: UILabel
     
     let expirationDateTitleLabel = UILabel().then {
-      $0.text = Strings.GrantsClaimedExpirationDateTitle
+      $0.text = Strings.grantsClaimedExpirationDateTitle
       $0.appearanceTextColor = SettingsUX.subtitleTextColor
       $0.font = .systemFont(ofSize: 13.0)
     }
@@ -180,7 +180,7 @@ extension GrantClaimedViewController {
       
       let isAdsGrant = kind.isAdsGrant
       
-      amountTitleLabel.text = isAdsGrant ? Strings.AdsGrantsClaimedAmountTitle : Strings.GrantsClaimedAmountTitle
+      amountTitleLabel.text = isAdsGrant ? Strings.adsGrantsClaimedAmountTitle : Strings.grantsClaimedAmountTitle
       
       backgroundColor = Colors.neutral800
       

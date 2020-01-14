@@ -13,7 +13,7 @@ class FindInPageActivity: UIActivity {
     }
 
     override var activityTitle: String? {
-        return Strings.Find_in_Page
+        return Strings.findInPage
     }
 
     override var activityImage: UIImage? {

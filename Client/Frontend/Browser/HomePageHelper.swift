@@ -9,7 +9,7 @@ import XCGLogger
 private let log = Logger.browserLogger
 
 struct HomePageConstants {
-    static let HomePageURLPrefKey = "HomePageURLPref"
+    static let homePageURLPrefKey = "HomePageURLPref"
 }
 
 class HomePageHelper {
@@ -22,9 +22,9 @@ class HomePageHelper {
         }
         set {
             if let url = newValue, url.isWebPage(includeDataURIs: false) && !url.isLocal {
-                prefs.setString(url.absoluteString, forKey: HomePageConstants.HomePageURLPrefKey)
+                prefs.setString(url.absoluteString, forKey: HomePageConstants.homePageURLPrefKey)
             } else {
-                prefs.removeObjectForKey(HomePageConstants.HomePageURLPrefKey)
+                prefs.removeObjectForKey(HomePageConstants.homePageURLPrefKey)
             }
         }
     }
@@ -54,11 +54,11 @@ class HomePageHelper {
 
     func setHomePage(toTab tab: Tab, presentAlertOn viewController: UIViewController?) {
         let alertController = UIAlertController(
-            title: Strings.SetHomePageDialogTitle,
-            message: Strings.SetHomePageDialogMessage,
+            title: Strings.setHomePageDialogTitle,
+            message: Strings.setHomePageDialogMessage,
             preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: Strings.SetHomePageDialogNo, style: .cancel, handler: nil))
-        alertController.addAction(UIAlertAction(title: Strings.SetHomePageDialogYes, style: .default) { _ in
+        alertController.addAction(UIAlertAction(title: Strings.setHomePageDialogNo, style: .cancel, handler: nil))
+        alertController.addAction(UIAlertAction(title: Strings.setHomePageDialogYes, style: .default) { _ in
             self.currentURL = tab.url as URL?
         })
         viewController?.present(alertController, animated: true, completion: nil)

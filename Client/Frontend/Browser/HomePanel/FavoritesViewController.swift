@@ -56,7 +56,7 @@ class FavoritesViewController: UIViewController, Themeable {
     private lazy var favoritesOverflowButton = RoundInterfaceView().then {
         let blur = UIVisualEffectView(effect: UIBlurEffect(style: .light))
         let button = UIButton(type: .system).then {
-            $0.setTitle(Strings.NewTabPageShowMoreFavorites, for: .normal)
+            $0.setTitle(Strings.newTabPageShowMoreFavorites, for: .normal)
             $0.appearanceTextColor = .white
             $0.titleLabel?.font = UIFont.systemFont(ofSize: 12.0, weight: .medium)
             $0.addTarget(self, action: #selector(showFavorites), for: .touchUpInside)
@@ -100,9 +100,9 @@ class FavoritesViewController: UIViewController, Themeable {
     
     private let ddgLabel = UILabel().then {
         $0.numberOfLines = 0
-        $0.textColor = BraveUX.GreyD
+        $0.textColor = BraveUX.greyD
         $0.font = UIFont.systemFont(ofSize: 14, weight: UIFont.Weight.regular)
-        $0.text = Strings.DDG_promotion
+        $0.text = Strings.DDGPromotion
     }
     
     private lazy var ddgButton = RoundInterfaceView().then {
@@ -141,9 +141,9 @@ class FavoritesViewController: UIViewController, Themeable {
         super.init(nibName: nil, bundle: nil)
         NotificationCenter.default.do {
             $0.addObserver(self, selector: #selector(existingUserTopSitesConversion), 
-                           name: Notification.Name.TopSitesConversion, object: nil)
+                           name: .topSitesConversion, object: nil)
             $0.addObserver(self, selector: #selector(privateBrowsingModeChanged), 
-                           name: Notification.Name.PrivacyModeChanged, object: nil)
+                           name: .privacyModeChanged, object: nil)
         }
     }
     
@@ -158,8 +158,8 @@ class FavoritesViewController: UIViewController, Themeable {
     
     deinit {
         NotificationCenter.default.do {
-            $0.removeObserver(self, name: Notification.Name.TopSitesConversion, object: nil)
-            $0.removeObserver(self, name: Notification.Name.PrivacyModeChanged, object: nil)
+            $0.removeObserver(self, name: .topSitesConversion, object: nil)
+            $0.removeObserver(self, name: .privacyModeChanged, object: nil)
         }
     }
     
@@ -307,7 +307,7 @@ class FavoritesViewController: UIViewController, Themeable {
         let alert = UIAlertController(title: credit.name, message: nil, preferredStyle: .actionSheet)
         
         if let creditWebsite = credit.url, let creditURL = URL(string: creditWebsite) {
-            let websiteTitle = String(format: Strings.ViewOn, creditURL.hostSLD.capitalizeFirstLetter)
+            let websiteTitle = String(format: Strings.viewOn, creditURL.hostSLD.capitalizeFirstLetter)
             alert.addAction(UIAlertAction(title: websiteTitle, style: .default) { [weak self] _ in
                 self?.delegate?.didSelect(input: creditWebsite)
             })
@@ -316,7 +316,7 @@ class FavoritesViewController: UIViewController, Themeable {
         alert.popoverPresentationController?.sourceView = view
         alert.popoverPresentationController?.sourceRect = CGRect(origin: view.center, size: .zero)
         alert.popoverPresentationController?.permittedArrowDirections = [.down, .up]
-        alert.addAction(UIAlertAction(title: Strings.Close, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: Strings.close, style: .cancel, handler: nil))
         
         present(alert, animated: true, completion: nil)
     }
@@ -388,7 +388,7 @@ class FavoritesViewController: UIViewController, Themeable {
         guard let info = backgroundImage.info, let name = info.credit?.name else { return }
         
         hideImageCredit = info.isSponsored
-        let photoByText = String(format: Strings.PhotoBy, name)
+        let photoByText = String(format: Strings.photoBy, name)
         imageCreditInternalButton.setTitle(photoByText, for: .normal)
     }
     
@@ -523,7 +523,7 @@ extension FavoritesViewController: FavoriteCellDelegate {
         
         let actionSheet = UIAlertController(title: fav.displayTitle, message: nil, preferredStyle: .actionSheet)
         
-        let deleteAction = UIAlertAction(title: Strings.Remove_Favorite, style: .destructive) { _ in
+        let deleteAction = UIAlertAction(title: Strings.removeFavorite, style: .destructive) { _ in
             fav.delete()
             
             // Remove cached icon.
@@ -534,10 +534,10 @@ extension FavoritesViewController: FavoriteCellDelegate {
             self.dataSource.isEditing = false
         }
         
-        let editAction = UIAlertAction(title: Strings.Edit_Favorite, style: .default) { _ in
+        let editAction = UIAlertAction(title: Strings.editFavorite, style: .default) { _ in
             guard let title = fav.displayTitle, let urlString = fav.url else { return }
             
-            let editPopup = UIAlertController.userTextInputAlert(title: Strings.Edit_Bookmark, message: urlString,
+            let editPopup = UIAlertController.userTextInputAlert(title: Strings.editBookmark, message: urlString,
                                                                  startingText: title, startingText2: fav.url,
                                                                  placeholder2: urlString,
                                                                  keyboardType2: .URL) { callbackTitle, callbackUrl in
@@ -552,7 +552,7 @@ extension FavoritesViewController: FavoriteCellDelegate {
             self.present(editPopup, animated: true)
         }
         
-        let cancelAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil)
         
         actionSheet.addAction(editAction)
         actionSheet.addAction(deleteAction)

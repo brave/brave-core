@@ -16,7 +16,7 @@ open class BrowserDB {
 
     // SQLITE_MAX_VARIABLE_NUMBER = 999 by default. This controls how many ?s can
     // appear in a query string.
-    public static let MaxVariableNumber = 999
+    public static let maxVariableNumber = 999
 
     public init(filename: String, secretKey: String? = nil, schema: Schema, files: FileAccessor) {
         log.debug("Initializing BrowserDB: \(filename).")
@@ -25,7 +25,7 @@ open class BrowserDB {
         // swiftlint:disable:next force_try
         let file = URL(fileURLWithPath: (try! files.getAndEnsureDirectory())).appendingPathComponent(filename).path
 
-        if AppConstants.BuildChannel == .developer && secretKey != nil {
+        if AppConstants.buildChannel == .developer && secretKey != nil {
             log.debug("Will attempt to use encrypted DB: \(file) with secret = \(secretKey ?? "nil")")
         }
 
@@ -143,7 +143,7 @@ open class BrowserDB {
         }
 
         let rowCount = values.count
-        if (variablesPerRow * rowCount) < BrowserDB.MaxVariableNumber {
+        if (variablesPerRow * rowCount) < BrowserDB.maxVariableNumber {
             return insertChunk(values)
         }
 

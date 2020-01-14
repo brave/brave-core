@@ -44,10 +44,10 @@ public final class History: NSManagedObject, WebsitePresentable, CRUD {
     @NSManaged public var domain: Domain?
     @NSManaged public var sectionIdentifier: String?
     
-    static let Today = getDate(0)
-    static let Yesterday = getDate(-1)
-    static let ThisWeek = getDate(-7)
-    static let ThisMonth = getDate(-31)
+    static let today = getDate(0)
+    static let yesterday = getDate(-1)
+    static let thisWeek = getDate(-7)
+    static let thisMonth = getDate(-31)
     
     // MARK: - Public interface
     
@@ -56,14 +56,14 @@ public final class History: NSManagedObject, WebsitePresentable, CRUD {
             return
         }
         
-        if visitedOn?.compare(History.Today) == ComparisonResult.orderedDescending {
-            sectionIdentifier = Strings.Today
-        } else if visitedOn?.compare(History.Yesterday) == ComparisonResult.orderedDescending {
-            sectionIdentifier = Strings.Yesterday
-        } else if visitedOn?.compare(History.ThisWeek) == ComparisonResult.orderedDescending {
-            sectionIdentifier = Strings.Last_week
+        if visitedOn?.compare(History.today) == ComparisonResult.orderedDescending {
+            sectionIdentifier = Strings.today
+        } else if visitedOn?.compare(History.yesterday) == ComparisonResult.orderedDescending {
+            sectionIdentifier = Strings.yesterday
+        } else if visitedOn?.compare(History.thisWeek) == ComparisonResult.orderedDescending {
+            sectionIdentifier = Strings.lastWeek
         } else {
-            sectionIdentifier = Strings.Last_month
+            sectionIdentifier = Strings.lastMonth
         }
     }
 
@@ -90,7 +90,7 @@ public final class History: NSManagedObject, WebsitePresentable, CRUD {
         fetchRequest.fetchBatchSize = 20
         fetchRequest.fetchLimit = 200
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "visitedOn", ascending: false)]
-        fetchRequest.predicate = NSPredicate(format: "visitedOn >= %@", History.ThisMonth as CVarArg)
+        fetchRequest.predicate = NSPredicate(format: "visitedOn >= %@", History.thisMonth as CVarArg)
 
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: "sectionIdentifier", cacheName: nil)
     }
@@ -132,7 +132,7 @@ extension History: Frecencyable {
         let urlKeyPath = #keyPath(History.url)
         let visitedOnKeyPath = #keyPath(History.visitedOn)
         
-        var predicate = NSPredicate(format: "\(visitedOnKeyPath) > %@", History.ThisWeek as CVarArg)
+        var predicate = NSPredicate(format: "\(visitedOnKeyPath) > %@", History.thisWeek as CVarArg)
         if let query = query {
             predicate = NSPredicate(format: predicate.predicateFormat + " AND \(urlKeyPath) CONTAINS %@", query)
         }

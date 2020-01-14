@@ -82,7 +82,7 @@ open class Reach {
         SCNetworkReachabilitySetCallback(reachability, { (_, flags, _) in
             let status = ReachabilityStatus(reachabilityFlags: flags)
 
-            NotificationCenter.default.post(name: .ReachabilityStatusChanged,
+            NotificationCenter.default.post(name: .reachabilityStatusChanged,
                 object: nil,
                 userInfo: ["Status": status.description])
 

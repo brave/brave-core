@@ -26,7 +26,7 @@ public enum BookmarkTreeNode: Comparable {
     }
 
     public var isRoot: Bool {
-        return BookmarkRoots.All.contains(self.recordGUID)
+        return BookmarkRoots.all.contains(self.recordGUID)
     }
 
     public var isUnknown: Bool {
@@ -185,7 +185,7 @@ public struct BookmarkTree {
 
     // If this tree contains the root, return it.
     public var root: BookmarkTreeNode? {
-        return self.find(BookmarkRoots.RootGUID)
+        return self.find(BookmarkRoots.rootGUID)
     }
 
     // Recursively process an input set of structure pairs to yield complete subtrees,
@@ -262,17 +262,17 @@ public struct BookmarkTree {
 
             // Note that we don't check whether the input already contained the roots; we
             // never change them, so it's safe to do this unconditionally.
-            setVirtual(BookmarkRoots.RootGUID)
-            BookmarkRoots.RootChildren.forEach {
+            setVirtual(BookmarkRoots.rootGUID)
+            BookmarkRoots.rootChildren.forEach {
                 setVirtual($0)
             }
 
-            pseudoTree[BookmarkRoots.RootGUID] = BookmarkRoots.RootChildren
-            tops.insert(BookmarkRoots.RootGUID)
-            notTops.formUnion(Set(BookmarkRoots.RootChildren))
-            remainingFolders.formUnion(BookmarkRoots.All)
-            BookmarkRoots.RootChildren.forEach {
-                parents[$0] = BookmarkRoots.RootGUID
+            pseudoTree[BookmarkRoots.rootGUID] = BookmarkRoots.rootChildren
+            tops.insert(BookmarkRoots.rootGUID)
+            notTops.formUnion(Set(BookmarkRoots.rootChildren))
+            remainingFolders.formUnion(BookmarkRoots.all)
+            BookmarkRoots.rootChildren.forEach {
+                parents[$0] = BookmarkRoots.rootGUID
             }
         }
 

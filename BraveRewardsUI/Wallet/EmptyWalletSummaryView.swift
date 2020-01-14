@@ -11,7 +11,7 @@ class EmptyWalletSummaryView: UIView {
     super.init(frame: frame)
     
     let label = UILabel().then {
-      $0.text = Strings.NoActivitiesYet
+      $0.text = Strings.noActivitiesYet
       $0.textAlignment = .center
       $0.appearanceTextColor = Colors.grey400
       $0.font = .systemFont(ofSize: 20.0)

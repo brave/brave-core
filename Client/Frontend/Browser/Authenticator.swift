@@ -10,11 +10,11 @@ import Deferred
 private let log = Logger.browserLogger
 
 class Authenticator {
-    fileprivate static let MaxAuthenticationAttempts = 3
+    fileprivate static let maxAuthenticationAttempts = 3
 
     static func handleAuthRequest(_ viewController: UIViewController, challenge: URLAuthenticationChallenge, loginsHelper: LoginsHelper?) -> Deferred<Maybe<LoginData>> {
         // If there have already been too many login attempts, we'll just fail.
-        if challenge.previousFailureCount >= Authenticator.MaxAuthenticationAttempts {
+        if challenge.previousFailureCount >= Authenticator.maxAuthenticationAttempts {
             return deferMaybe(LoginDataError(description: "Too many attempts to open site"))
         }
 
@@ -105,16 +105,16 @@ class Authenticator {
         let alert: AlertController
         
         if !(protectionSpace.realm?.isEmpty ?? true) {
-            let formatted = String(format: Strings.AuthPromptAlertFormatRealmMessageText, protectionSpace.host, protectionSpace.realm ?? "")
-            alert = AlertController(title: Strings.AuthPromptAlertTitle, message: formatted, preferredStyle: .alert)
+            let formatted = String(format: Strings.authPromptAlertFormatRealmMessageText, protectionSpace.host, protectionSpace.realm ?? "")
+            alert = AlertController(title: Strings.authPromptAlertTitle, message: formatted, preferredStyle: .alert)
         } else {
             
-            let formatted = String(format: Strings.AuthPromptAlertMessageText, protectionSpace.host)
-            alert = AlertController(title: Strings.AuthPromptAlertTitle, message: formatted, preferredStyle: .alert)
+            let formatted = String(format: Strings.authPromptAlertMessageText, protectionSpace.host)
+            alert = AlertController(title: Strings.authPromptAlertTitle, message: formatted, preferredStyle: .alert)
         }
 
         // Add a button to log in.
-        let action = UIAlertAction(title: Strings.AuthPromptAlertLogInButtonTitle,
+        let action = UIAlertAction(title: Strings.authPromptAlertLogInButtonTitle,
             style: .default) { (action) -> Void in
                 guard let user = alert.textFields?[0].text, let pass = alert.textFields?[1].text else { deferred.fill(Maybe(failure: LoginDataError(description: "Username and Password required"))); return }
 
@@ -125,20 +125,20 @@ class Authenticator {
         alert.addAction(action, accessibilityIdentifier: "authenticationAlert.loginRequired")
 
         // Add a cancel button.
-        let cancel = UIAlertAction(title: Strings.AuthPromptAlertCancelButtonTitle, style: .cancel) { (action) -> Void in
+        let cancel = UIAlertAction(title: Strings.authPromptAlertCancelButtonTitle, style: .cancel) { (action) -> Void in
             deferred.fill(Maybe(failure: LoginDataError(description: "Save password cancelled")))
         }
         alert.addAction(cancel, accessibilityIdentifier: "authenticationAlert.cancel")
 
         // Add a username textfield.
         alert.addTextField { (textfield) -> Void in
-            textfield.placeholder = Strings.AuthPromptAlertUsernamePlaceholderText
+            textfield.placeholder = Strings.authPromptAlertUsernamePlaceholderText
             textfield.text = credentials?.user
         }
 
         // Add a password textfield.
         alert.addTextField { (textfield) -> Void in
-            textfield.placeholder = Strings.AuthPromptAlertPasswordPlaceholderText
+            textfield.placeholder = Strings.authPromptAlertPasswordPlaceholderText
             textfield.isSecureTextEntry = true
             textfield.text = credentials?.password
         }

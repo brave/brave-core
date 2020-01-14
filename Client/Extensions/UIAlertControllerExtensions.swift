@@ -26,25 +26,25 @@ extension UIAlertController {
         dontSendCallback: @escaping UIAlertActionCallback) -> UIAlertController {
         
         let alert = UIAlertController(
-            title: Strings.SendCrashReportAlertTitle,
-            message: Strings.SendCrashReportAlertMessage,
+            title: Strings.sendCrashReportAlertTitle,
+            message: Strings.sendCrashReportAlertMessage,
             preferredStyle: .alert
         )
         
         let sendReport = UIAlertAction(
-            title: Strings.SendReportButtonTitle,
+            title: Strings.sendReportButtonTitle,
             style: .default,
             handler: sendReportCallback
         )
         
         let alwaysSend = UIAlertAction(
-            title: Strings.AlwaysSendButtonTitle,
+            title: Strings.alwaysSendButtonTitle,
             style: .default,
             handler: alwaysSendCallback
         )
         
         let dontSend = UIAlertAction(
-            title: Strings.DontSendButtonTitle,
+            title: Strings.dontSendButtonTitle,
             style: .default,
             handler: dontSendCallback
         )
@@ -66,19 +66,19 @@ extension UIAlertController {
      */
     class func restoreTabsAlert(okayCallback: @escaping UIAlertActionCallback, noCallback: @escaping UIAlertActionCallback) -> UIAlertController {
         let alert = UIAlertController(
-            title: Strings.RestoreTabOnCrashAlertTitle,
-            message: Strings.RestoreTabOnCrashAlertMessage,
+            title: Strings.restoreTabOnCrashAlertTitle,
+            message: Strings.restoreTabOnCrashAlertMessage,
             preferredStyle: .alert
         )
         
         let noOption = UIAlertAction(
-            title: Strings.RestoreTabNegativeButtonTitle,
+            title: Strings.restoreTabNegativeButtonTitle,
             style: .cancel,
             handler: noCallback
         )
         
         let okayOption = UIAlertAction(
-            title: Strings.RestoreTabAffirmativeButtonTitle,
+            title: Strings.restoreTabAffirmativeButtonTitle,
             style: .default,
             handler: okayCallback
         )
@@ -91,18 +91,18 @@ extension UIAlertController {
     class func clearPrivateDataAlert(okayCallback: @escaping (UIAlertAction) -> Void) -> UIAlertController {
         let alert = UIAlertController(
             title: "",
-            message: Strings.ClearPrivateDataAlertMessage,
+            message: Strings.clearPrivateDataAlertMessage,
             preferredStyle: .alert
         )
         
         let noOption = UIAlertAction(
-            title: Strings.ClearPrivateDataAlertCancelButtonTitle,
+            title: Strings.clearPrivateDataAlertCancelButtonTitle,
             style: .cancel,
             handler: nil
         )
         
         let okayOption = UIAlertAction(
-            title: Strings.ClearPrivateDataAlertOkButtonTitle,
+            title: Strings.clearPrivateDataAlertOkButtonTitle,
             style: .destructive,
             handler: okayCallback
         )
@@ -123,18 +123,18 @@ extension UIAlertController {
     class func clearSyncedHistoryAlert(okayCallback: @escaping (UIAlertAction) -> Void) -> UIAlertController {
         let alert = UIAlertController(
             title: "",
-            message: Strings.ClearSyncedHistoryAlertMessage,
+            message: Strings.clearSyncedHistoryAlertMessage,
             preferredStyle: .alert
         )
         
         let noOption = UIAlertAction(
-            title: Strings.ClearSyncedHistoryAlertCancelButtoTitle,
+            title: Strings.clearSyncedHistoryAlertCancelButtoTitle,
             style: .cancel,
             handler: nil
         )
         
         let okayOption = UIAlertAction(
-            title: Strings.ClearSyncedHistoryAlertOkButtoTitle,
+            title: Strings.clearSyncedHistoryAlertOkButtoTitle,
             style: .destructive,
             handler: okayCallback
         )
@@ -159,13 +159,13 @@ extension UIAlertController {
         
         let deleteAlert: UIAlertController
         if hasSyncedLogins {
-            deleteAlert = UIAlertController(title: Strings.DeleteLoginAlertTitle, message: Strings.DeleteLoginAlertSyncedDevicesMessage, preferredStyle: .alert)
+            deleteAlert = UIAlertController(title: Strings.deleteLoginAlertTitle, message: Strings.deleteLoginAlertSyncedDevicesMessage, preferredStyle: .alert)
         } else {
-            deleteAlert = UIAlertController(title: Strings.DeleteLoginAlertTitle, message: Strings.DeleteLoginAlertLocalMessage, preferredStyle: .alert)
+            deleteAlert = UIAlertController(title: Strings.deleteLoginAlertTitle, message: Strings.deleteLoginAlertLocalMessage, preferredStyle: .alert)
         }
         
-        let cancelAction = UIAlertAction(title: Strings.DeleteLoginAlertCancelActionTitle, style: .cancel, handler: nil)
-        let deleteAction = UIAlertAction(title: Strings.DeleteLoginButtonTitle, style: .destructive, handler: deleteCallback)
+        let cancelAction = UIAlertAction(title: Strings.deleteLoginAlertCancelActionTitle, style: .cancel, handler: nil)
+        let deleteAction = UIAlertAction(title: Strings.deleteLoginButtonTitle, style: .destructive, handler: deleteCallback)
         
         deleteAlert.addAction(cancelAction)
         deleteAlert.addAction(deleteAction)
@@ -193,10 +193,10 @@ extension UIAlertController {
     class func userTextInputAlert(title: String,
                                   message: String,
                                   startingText: String? = nil,
-                                  placeholder: String? = Strings.Name,
+                                  placeholder: String? = Strings.name,
                                   keyboardType: UIKeyboardType? = nil,
                                   startingText2: String? = nil,
-                                  placeholder2: String? = Strings.Name,
+                                  placeholder2: String? = Strings.name,
                                   keyboardType2: UIKeyboardType? = nil,
                                   forcedInput: Bool = true,
                                   callbackOnMain: @escaping (_ input: String?, _ input2: String?) -> Void) -> UIAlertController {
@@ -245,7 +245,7 @@ class UserTextInputAlert {
         }
         okAction = okAlertAction
         
-        let cancelAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel) { (alertA: UIAlertAction!) in
+        let cancelAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel) { (alertA: UIAlertAction!) in
             actionSelected(input: nil, input2: nil)
         }
         

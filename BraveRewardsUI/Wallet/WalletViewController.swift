@@ -78,7 +78,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
     super.viewDidLoad()
     
     // Not actually visible from this controller
-    title = Strings.PanelTitle
+    title = Strings.panelTitle
     
     walletView.headerView.grantsButton.isHidden = state.ledger.finishedPromotions.isEmpty
     
@@ -292,7 +292,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
         return
       }
       
-      let provider = " \(publisher.provider.isEmpty ? "" : String(format: Strings.OnProviderText, publisher.providerDisplayString))"
+      let provider = " \(publisher.provider.isEmpty ? "" : String(format: Strings.onProviderText, publisher.providerDisplayString))"
       publisherView.updatePublisherName(publisher.name, provider: provider)
       
       publisherView.setStatus(publisher.status)
@@ -352,8 +352,8 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
       sender.isEnabled = true
       sender.isLoading = false
       if !success {
-        let alert = UIAlertController(title: Strings.GenericErrorTitle, message: Strings.GenericErrorBody, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Strings.OK, style: .default, handler: nil))
+        let alert = UIAlertController(title: Strings.genericErrorTitle, message: Strings.genericErrorBody, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Strings.ok, style: .default, handler: nil))
         self.present(alert, animated: true)
         return
       }
@@ -421,7 +421,7 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
         }
       })
       
-      optionsVC.title = Strings.RecurringTipTitle
+      optionsVC.title = Strings.recurringTipTitle
       self.navigationController?.pushViewController(optionsVC, animated: true)
     })
   }
@@ -626,7 +626,7 @@ extension WalletViewController {
   func updateWalletHeader() {
     walletView.headerView.setWalletBalance(
       state.ledger.balanceString,
-      crypto: Strings.WalletBalanceType,
+      crypto: Strings.walletBalanceType,
       dollarValue: state.ledger.usdBalanceString
     )
     if let wallet = state.ledger.externalWallets[.uphold] {

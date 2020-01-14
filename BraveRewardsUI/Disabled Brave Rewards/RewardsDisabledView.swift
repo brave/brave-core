@@ -77,7 +77,7 @@ extension RewardsDisabledView {
       $0.font = .systemFont(ofSize: 28.0)
       $0.appearanceTextColor = UX.titleColor
       $0.textAlignment = .center
-      $0.text = Strings.DisabledTitle
+      $0.text = Strings.disabledTitle
     }
     
     let subtitleLabel = UILabel().then {
@@ -85,7 +85,7 @@ extension RewardsDisabledView {
       $0.appearanceTextColor = UX.subtitleColor
       $0.textAlignment = .center
       $0.numberOfLines = 0
-      $0.text = Strings.DisabledSubtitle
+      $0.text = Strings.disabledSubtitle
     }
     
     let bodyLabel = UILabel().then {
@@ -93,11 +93,11 @@ extension RewardsDisabledView {
       $0.appearanceTextColor = UX.bodyColor
       $0.textAlignment = .center
       $0.numberOfLines = 0
-      $0.text = Strings.DisabledBody
+      $0.text = Strings.disabledBody
     }
     
     let enableRewardsButton = ActionButton(type: .system).then {
-      $0.setTitle(Strings.DisabledEnableButton.uppercased(), for: .normal)
+      $0.setTitle(Strings.disabledEnableButton.uppercased(), for: .normal)
       $0.setImage(UIImage(frameworkResourceNamed: "continue-button-arrow").alwaysOriginal, for: .normal)
       $0.titleLabel?.font = .systemFont(ofSize: 12.0, weight: .semibold)
       $0.tintColor = UX.rewardsButtonTintColor
@@ -110,8 +110,8 @@ extension RewardsDisabledView {
       $0.font = .systemFont(ofSize: 12.0)
       $0.appearanceTextColor = Colors.grey100
       $0.textAlignment = .center
-      $0.text = Strings.DisclaimerInformation
-      $0.setURLInfo([Strings.TermsOfServiceURL: "terms", Strings.PrivacyPolicyURL: "policy"])
+      $0.text = Strings.disclaimerInformation
+      $0.setURLInfo([Strings.termsOfServiceURL: "terms", Strings.privacyPolicyURL: "policy"])
     }
     
     @available(*, unavailable)

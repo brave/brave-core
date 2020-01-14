@@ -7,7 +7,7 @@ import Shared
 import BraveShared
 
 public struct ClipboardBarToastUX {
-    static let ToastDelay = DispatchTimeInterval.milliseconds(4000)
+    static let toastDelay = DispatchTimeInterval.milliseconds(4000)
 }
 
 protocol ClipboardBarDisplayHandlerDelegate: class {
@@ -32,7 +32,7 @@ class ClipboardBarDisplayHandler: NSObject, URLChangeDelegate {
 
         NotificationCenter.default.addObserver(self, selector: #selector(UIPasteboardChanged), name: UIPasteboard.changedNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(appWillEnterForegroundNotification), name: UIApplication.willEnterForegroundNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didRestoreSession), name: .DidRestoreSession, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didRestoreSession), name: .didRestoreSession, object: nil)
     }
     
     @objc private func UIPasteboardChanged() {
@@ -76,7 +76,7 @@ class ClipboardBarDisplayHandler: NSObject, URLChangeDelegate {
                 firstTabLoaded = true
             }
 
-            NotificationCenter.default.removeObserver(self, name: .DidRestoreSession, object: nil)
+            NotificationCenter.default.removeObserver(self, name: .didRestoreSession, object: nil)
 
             sessionRestored = true
             checkIfShouldDisplayBar()
@@ -143,9 +143,9 @@ class ClipboardBarDisplayHandler: NSObject, URLChangeDelegate {
 
             self.clipboardToast =
                 ButtonToast(
-                    labelText: Strings.GoToCopiedLink,
+                    labelText: Strings.goToCopiedLink,
                     descriptionText: url.absoluteDisplayString,
-                    buttonText: Strings.GoButtonTittle,
+                    buttonText: Strings.goButtonTittle,
                     completion: { buttonPressed in
                         if buttonPressed {
                             self.delegate?.settingsOpenURLInNewTab(url)

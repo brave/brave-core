@@ -7,33 +7,33 @@ import Shared
 
 private struct ReaderModeStyleViewControllerUX {
     // TODO Erica can't find this to visually test
-    static let RowHeight = 50
+    static let rowHeight = 50
 
-    static let Width = 270
-    static let Height = 4 * RowHeight
+    static let width = 270
+    static let height = 4 * rowHeight
 
-    static let FontTypeRowBackground = UIColor.Photon.Grey10
+    static let fontTypeRowBackground = UIColor.Photon.grey10
 
-    static let FontTypeTitleSelectedColor = UIColor.Photon.Grey70
-    static let FontTypeTitleNormalColor = UIColor.Photon.Grey40
+    static let fontTypeTitleSelectedColor = UIColor.Photon.grey70
+    static let fontTypeTitleNormalColor = UIColor.Photon.grey40
 
-    static let FontSizeRowBackground = UIColor.Photon.Grey20
-    static let FontSizeLabelColor = UIColor.Photon.Grey70
-    static let FontSizeButtonTextColorEnabled = UIColor.Photon.Grey70
-    static let FontSizeButtonTextColorDisabled = UIColor.Photon.Grey40
+    static let fontSizeRowBackground = UIColor.Photon.grey20
+    static let fontSizeLabelColor = UIColor.Photon.grey70
+    static let fontSizeButtonTextColorEnabled = UIColor.Photon.grey70
+    static let fontSizeButtonTextColorDisabled = UIColor.Photon.grey40
 
-    static let ThemeRowBackgroundColor = UIColor.Photon.White100
-    static let ThemeTitleColorLight = UIColor.Photon.Grey70
-    static let ThemeTitleColorDark = UIColor.Photon.White100
-    static let ThemeTitleColorSepia = UIColor.Photon.Grey70
-    static let ThemeBackgroundColorLight = UIColor.Photon.White100
-    static let ThemeBackgroundColorDark = UIColor.Photon.Grey70
-    static let ThemeBackgroundColorSepia = UIColor.Defaults.LightBeige
+    static let themeRowBackgroundColor = UIColor.Photon.white100
+    static let themeTitleColorLight = UIColor.Photon.grey70
+    static let themeTitleColorDark = UIColor.Photon.white100
+    static let themeTitleColorSepia = UIColor.Photon.grey70
+    static let themeBackgroundColorLight = UIColor.Photon.white100
+    static let themeBackgroundColorDark = UIColor.Photon.grey70
+    static let themeBackgroundColorSepia = UIColor.Defaults.lightBeige
 
-    static let BrightnessRowBackground = UIColor.Photon.Grey20
-    static let BrightnessSliderTintColor = UIColor.Photon.Orange60
-    static let BrightnessSliderWidth = 140
-    static let BrightnessIconOffset = 10
+    static let brightnessRowBackground = UIColor.Photon.grey20
+    static let brightnessSliderTintColor = UIColor.Photon.orange60
+    static let brightnessSliderWidth = 140
+    static let brightnessIconOffset = 10
 }
 
 // MARK: -
@@ -56,20 +56,20 @@ class ReaderModeStyleViewController: UIViewController {
     override func viewDidLoad() {
         // Our preferred content size has a fixed width and height based on the rows + padding
 
-        preferredContentSize = CGSize(width: ReaderModeStyleViewControllerUX.Width, height: ReaderModeStyleViewControllerUX.Height)
+        preferredContentSize = CGSize(width: ReaderModeStyleViewControllerUX.width, height: ReaderModeStyleViewControllerUX.height)
 
-        popoverPresentationController?.backgroundColor = ReaderModeStyleViewControllerUX.FontTypeRowBackground
+        popoverPresentationController?.backgroundColor = ReaderModeStyleViewControllerUX.fontTypeRowBackground
 
         // Font type row
 
         let fontTypeRow = UIView()
         view.addSubview(fontTypeRow)
-        fontTypeRow.backgroundColor = ReaderModeStyleViewControllerUX.FontTypeRowBackground
+        fontTypeRow.backgroundColor = ReaderModeStyleViewControllerUX.fontTypeRowBackground
 
         fontTypeRow.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(self.view)
             make.left.right.equalTo(self.view)
-            make.height.equalTo(ReaderModeStyleViewControllerUX.RowHeight)
+            make.height.equalTo(ReaderModeStyleViewControllerUX.rowHeight)
         }
 
         fontTypeButtons = [
@@ -83,12 +83,12 @@ class ReaderModeStyleViewController: UIViewController {
 
         let fontSizeRow = UIView()
         view.addSubview(fontSizeRow)
-        fontSizeRow.backgroundColor = ReaderModeStyleViewControllerUX.FontSizeRowBackground
+        fontSizeRow.backgroundColor = ReaderModeStyleViewControllerUX.fontSizeRowBackground
 
         fontSizeRow.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(fontTypeRow.snp.bottom)
             make.left.right.equalTo(self.view)
-            make.height.equalTo(ReaderModeStyleViewControllerUX.RowHeight)
+            make.height.equalTo(ReaderModeStyleViewControllerUX.rowHeight)
         }
 
         fontSizeLabel = FontSizeLabel()
@@ -115,7 +115,7 @@ class ReaderModeStyleViewController: UIViewController {
         themeRow.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(fontSizeRow.snp.bottom)
             make.left.right.equalTo(self.view)
-            make.height.equalTo(ReaderModeStyleViewControllerUX.RowHeight)
+            make.height.equalTo(ReaderModeStyleViewControllerUX.rowHeight)
         }
 
         themeButtons = [
@@ -130,23 +130,23 @@ class ReaderModeStyleViewController: UIViewController {
 
         let brightnessRow = UIView()
         view.addSubview(brightnessRow)
-        brightnessRow.backgroundColor = ReaderModeStyleViewControllerUX.BrightnessRowBackground
+        brightnessRow.backgroundColor = ReaderModeStyleViewControllerUX.brightnessRowBackground
 
         brightnessRow.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(themeRow.snp.bottom)
             make.left.right.equalTo(self.view)
-            make.height.equalTo(ReaderModeStyleViewControllerUX.RowHeight)
+            make.height.equalTo(ReaderModeStyleViewControllerUX.rowHeight)
         }
 
         let slider = UISlider()
         brightnessRow.addSubview(slider)
-        slider.accessibilityLabel = Strings.ReaderModeBrightSliderAccessibilityLabel
-        slider.tintColor = ReaderModeStyleViewControllerUX.BrightnessSliderTintColor
+        slider.accessibilityLabel = Strings.readerModeBrightSliderAccessibilityLabel
+        slider.tintColor = ReaderModeStyleViewControllerUX.brightnessSliderTintColor
         slider.addTarget(self, action: #selector(changeBrightness), for: .valueChanged)
 
         slider.snp.makeConstraints { make in
             make.center.equalTo(brightnessRow)
-            make.width.equalTo(ReaderModeStyleViewControllerUX.BrightnessSliderWidth)
+            make.width.equalTo(ReaderModeStyleViewControllerUX.brightnessSliderWidth)
         }
 
         let brightnessMinImageView = UIImageView(image: #imageLiteral(resourceName: "brightnessMin"))
@@ -154,7 +154,7 @@ class ReaderModeStyleViewController: UIViewController {
 
         brightnessMinImageView.snp.makeConstraints { (make) -> Void in
             make.centerY.equalTo(slider)
-            make.right.equalTo(slider.snp.left).offset(-ReaderModeStyleViewControllerUX.BrightnessIconOffset)
+            make.right.equalTo(slider.snp.left).offset(-ReaderModeStyleViewControllerUX.brightnessIconOffset)
         }
 
         let brightnessMaxImageView = UIImageView(image: #imageLiteral(resourceName: "brightnessMax"))
@@ -162,7 +162,7 @@ class ReaderModeStyleViewController: UIViewController {
 
         brightnessMaxImageView.snp.makeConstraints { (make) -> Void in
             make.centerY.equalTo(slider)
-            make.left.equalTo(slider.snp.right).offset(ReaderModeStyleViewControllerUX.BrightnessIconOffset)
+            make.left.equalTo(slider.snp.right).offset(ReaderModeStyleViewControllerUX.brightnessIconOffset)
         }
 
         selectFontType(readerModeStyle.fontType)
@@ -255,17 +255,17 @@ class FontTypeButton: UIButton {
     convenience init(fontType: ReaderModeFontType) {
         self.init(frame: .zero)
         self.fontType = fontType
-        setTitleColor(ReaderModeStyleViewControllerUX.FontTypeTitleSelectedColor, for: .selected)
-        setTitleColor(ReaderModeStyleViewControllerUX.FontTypeTitleNormalColor, for: [])
-        backgroundColor = ReaderModeStyleViewControllerUX.FontTypeRowBackground
-        accessibilityHint = Strings.ReaderModeFontTypeButtonAccessibilityHint
+        setTitleColor(ReaderModeStyleViewControllerUX.fontTypeTitleSelectedColor, for: .selected)
+        setTitleColor(ReaderModeStyleViewControllerUX.fontTypeTitleNormalColor, for: [])
+        backgroundColor = ReaderModeStyleViewControllerUX.fontTypeRowBackground
+        accessibilityHint = Strings.readerModeFontTypeButtonAccessibilityHint
         switch fontType {
         case .sansSerif:
-            setTitle(Strings.ReaderModeFontButtonSansSerifTitle, for: [])
+            setTitle(Strings.readerModeFontButtonSansSerifTitle, for: [])
             let f = UIFont(name: "FiraSans-Book", size: DynamicFontHelper.defaultHelper.ReaderStandardFontSize)
             titleLabel?.font = f
         case .serif:
-            setTitle(Strings.ReaderModeFontButtonSerifTitle, for: [])
+            setTitle(Strings.readerModeFontButtonSerifTitle, for: [])
             let f = UIFont(name: "Charis SIL", size: DynamicFontHelper.defaultHelper.ReaderStandardFontSize)
             titleLabel?.font = f
         }
@@ -287,18 +287,18 @@ class FontSizeButton: UIButton {
         self.init(frame: .zero)
         self.fontSizeAction = fontSizeAction
 
-        setTitleColor(ReaderModeStyleViewControllerUX.FontSizeButtonTextColorEnabled, for: .normal)
-        setTitleColor(ReaderModeStyleViewControllerUX.FontSizeButtonTextColorDisabled, for: .disabled)
+        setTitleColor(ReaderModeStyleViewControllerUX.fontSizeButtonTextColorEnabled, for: .normal)
+        setTitleColor(ReaderModeStyleViewControllerUX.fontSizeButtonTextColorDisabled, for: .disabled)
 
         switch fontSizeAction {
         case .smaller:
-            setTitle(Strings.ReaderModeSmallerFontButtonTitle, for: [])
-            accessibilityLabel = Strings.ReaderModeSmallerFontButtonAccessibilityLabel
+            setTitle(Strings.readerModeSmallerFontButtonTitle, for: [])
+            accessibilityLabel = Strings.readerModeSmallerFontButtonAccessibilityLabel
         case .bigger:
-            setTitle(Strings.ReaderModeBiggerFontButtonTitle, for: [])
-            accessibilityLabel = Strings.ReaderModeBiggerFontButtonAccessibilityLabel
+            setTitle(Strings.readerModeBiggerFontButtonTitle, for: [])
+            accessibilityLabel = Strings.readerModeBiggerFontButtonAccessibilityLabel
         case .reset:
-            accessibilityLabel = Strings.ReaderModeResetFontSizeAccessibilityLabel
+            accessibilityLabel = Strings.readerModeResetFontSizeAccessibilityLabel
         }
 
         // TODO Does this need to change with the selected font type? Not sure if makes sense for just +/-
@@ -311,7 +311,7 @@ class FontSizeButton: UIButton {
 class FontSizeLabel: UILabel {
     override init(frame: CGRect) {
         super.init(frame: frame)
-        text = Strings.ReaderModeFontSizeLabelText
+        text = Strings.readerModeFontSizeLabelText
         isAccessibilityElement = false
     }
 
@@ -343,21 +343,21 @@ class ThemeButton: UIButton {
 
         setTitle(theme.rawValue, for: [])
 
-        accessibilityHint = Strings.ReaderModeThemeButtonAccessibilityHint
+        accessibilityHint = Strings.readerModeThemeButtonAccessibilityHint
 
         switch theme {
         case .light:
-            setTitle(Strings.ReaderModeThemeButtonTitleLight, for: [])
-            setTitleColor(ReaderModeStyleViewControllerUX.ThemeTitleColorLight, for: .normal)
-            backgroundColor = ReaderModeStyleViewControllerUX.ThemeBackgroundColorLight
+            setTitle(Strings.readerModeThemeButtonTitleLight, for: [])
+            setTitleColor(ReaderModeStyleViewControllerUX.themeTitleColorLight, for: .normal)
+            backgroundColor = ReaderModeStyleViewControllerUX.themeBackgroundColorLight
         case .dark:
-            setTitle(Strings.ReaderModeThemeButtonTitleDark, for: [])
-            setTitleColor(ReaderModeStyleViewControllerUX.ThemeTitleColorDark, for: [])
-            backgroundColor = ReaderModeStyleViewControllerUX.ThemeBackgroundColorDark
+            setTitle(Strings.readerModeThemeButtonTitleDark, for: [])
+            setTitleColor(ReaderModeStyleViewControllerUX.themeTitleColorDark, for: [])
+            backgroundColor = ReaderModeStyleViewControllerUX.themeBackgroundColorDark
         case .sepia:
-            setTitle(Strings.ReaderModeThemeButtonTitleSepia, for: [])
-            setTitleColor(ReaderModeStyleViewControllerUX.ThemeTitleColorSepia, for: .normal)
-            backgroundColor = ReaderModeStyleViewControllerUX.ThemeBackgroundColorSepia
+            setTitle(Strings.readerModeThemeButtonTitleSepia, for: [])
+            setTitleColor(ReaderModeStyleViewControllerUX.themeTitleColorSepia, for: .normal)
+            backgroundColor = ReaderModeStyleViewControllerUX.themeBackgroundColorSepia
         }
     }
 

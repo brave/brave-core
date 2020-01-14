@@ -55,10 +55,10 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         switch mode {
         case .bookmarks(let folder):
             self.currentFolder = folder
-            self.title = folder?.displayTitle ?? Strings.Bookmarks
+            self.title = folder?.displayTitle ?? Strings.bookmarks
             self.bookmarksFRC = Bookmark.frc(parentFolder: folder)
         case .favorites:
-            title = Strings.FavoritesRootLevelCellTitle
+            title = Strings.favoritesRootLevelCellTitle
             bookmarksFRC = Bookmark.frc(forFavorites: true, parentFolder: nil)
             addFolderButton = nil
         }
@@ -149,7 +149,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   }
   
   func updateEditBookmarksButton(_ tableIsEditing: Bool) {
-    self.editBookmarksButton?.title = tableIsEditing ? Strings.Done : Strings.Edit
+    self.editBookmarksButton?.title = tableIsEditing ? Strings.done : Strings.edit
     self.editBookmarksButton?.style = tableIsEditing ? .done : .plain
   }
   
@@ -163,7 +163,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   }
   
   @objc private func onAddBookmarksFolderButton() {
-    let alert = UIAlertController.userTextInputAlert(title: Strings.NewFolder, message: Strings.EnterFolderName) {
+    let alert = UIAlertController.userTextInputAlert(title: Strings.newFolder, message: Strings.enterFolderName) {
       input, _ in
       if let input = input, !input.isEmpty {
         self.addFolder(titled: input)
@@ -267,7 +267,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         
         return [
             UIAlertAction(
-                title: String(format: Strings.Open_All_Bookmarks, children.count),
+                title: String(format: Strings.openAllBookmarks, children.count),
                 style: .default,
                 handler: { [weak self] _ in
                     self?.toolbarUrlActionsDelegate?.batchOpen(urls)
@@ -348,13 +348,13 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
     guard let item = bookmarksFRC?.object(at: indexPath) else { return nil }
     
-    let deleteAction = UITableViewRowAction(style: UITableViewRowAction.Style.destructive, title: Strings.Delete,
+    let deleteAction = UITableViewRowAction(style: UITableViewRowAction.Style.destructive, title: Strings.delete,
                                             handler: { action, indexPath in
       
       if let children = item.children, !children.isEmpty {
-        let alert = UIAlertController(title: Strings.DeleteBookmarksFolderAlertTitle, message: Strings.DeleteBookmarksFolderAlertMessage, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel))
-        alert.addAction(UIAlertAction(title: Strings.YesDeleteButtonTitle, style: .destructive) { _ in
+        let alert = UIAlertController(title: Strings.deleteBookmarksFolderAlertTitle, message: Strings.deleteBookmarksFolderAlertMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel))
+        alert.addAction(UIAlertAction(title: Strings.yesDeleteButtonTitle, style: .destructive) { _ in
           item.delete()
         })
         
@@ -364,7 +364,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
       }
     })
     
-    let editAction = UITableViewRowAction(style: UITableViewRowAction.Style.normal, title: Strings.Edit, handler: { (action, indexPath) in
+    let editAction = UITableViewRowAction(style: UITableViewRowAction.Style.normal, title: Strings.edit, handler: { (action, indexPath) in
         self.showEditBookmarkController(bookmark: item)
     })
     

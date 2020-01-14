@@ -61,7 +61,7 @@ class TippingViewController: UIViewController, UIViewControllerTransitioningDele
     super.viewDidLoad()
     
     // Not actually visible, but good for accessibility
-    title = Strings.TippingTitle
+    title = Strings.tippingTitle
     
     tippingView.overviewView.dismissButton.addTarget(self, action: #selector(tappedDismissButton), for: .touchUpInside)
     tippingView.optionSelectionView.sendTipButton.addTarget(self, action: #selector(tappedSendTip), for: .touchUpInside)
@@ -83,7 +83,7 @@ class TippingViewController: UIViewController, UIViewControllerTransitioningDele
     }
     
     tippingView.overviewView.disclaimerView.isHidden = publisherInfo.status == .verified
-    tippingView.optionSelectionView.setWalletBalance(state.ledger.balanceString, crypto: Strings.WalletBalanceType)
+    tippingView.optionSelectionView.setWalletBalance(state.ledger.balanceString, crypto: Strings.walletBalanceType)
     tippingView.optionSelectionView.options = TippingViewController.defaultTippingAmounts.map {
       TippingOption.batAmount(BATValue($0), dollarValue: state.ledger.dollarStringForBATAmount($0) ?? "")
     }
@@ -99,11 +99,11 @@ class TippingViewController: UIViewController, UIViewControllerTransitioningDele
       if publisherInfo.provider.isEmpty {
         self.tippingView.overviewView.publisherNameLabel.text = publisherInfo.name
       } else {
-        self.tippingView.overviewView.publisherNameLabel.text = "\(publisherInfo.name) \(String(format: Strings.OnProviderText, publisherInfo.providerDisplayString))"
+        self.tippingView.overviewView.publisherNameLabel.text = "\(publisherInfo.name) \(String(format: Strings.onProviderText, publisherInfo.providerDisplayString))"
       }
       self.tippingView.overviewView.verifiedImageView.isHidden = publisherInfo.status == .notVerified
-      self.tippingView.overviewView.titleLabel.text = banner.title.isEmpty ? Strings.TippingOverviewTitle : banner.title
-      self.tippingView.overviewView.bodyLabel.text = banner.desc.isEmpty ? Strings.TippingOverviewBody : banner.desc
+      self.tippingView.overviewView.titleLabel.text = banner.title.isEmpty ? Strings.tippingOverviewTitle : banner.title
+      self.tippingView.overviewView.bodyLabel.text = banner.desc.isEmpty ? Strings.tippingOverviewBody : banner.desc
       
       self.downloadImage(url: banner.background, { image in
         self.tippingView.overviewView.headerView.image = image
@@ -183,7 +183,7 @@ class TippingViewController: UIViewController, UIViewControllerTransitioningDele
       }
       
       let displayConfirmationView = { (recurringDate: String?) in
-        let provider = " \(self.publisherInfo.provider.isEmpty ? "" : String(format: Strings.OnProviderText, self.publisherInfo.providerDisplayString))"
+        let provider = " \(self.publisherInfo.provider.isEmpty ? "" : String(format: Strings.onProviderText, self.publisherInfo.providerDisplayString))"
         
         self.tippingView.updateConfirmationInfo(name: "\(self.publisherInfo.name)\(provider)", tipAmount: amount, recurringDate: recurringDate)
         self.tippingView.setTippingConfirmationVisible(true, animated: true)

@@ -46,10 +46,10 @@ class BraveRewardsSettingsViewController: TableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = Strings.BraveRewardsTitle
+        title = Strings.braveRewardsTitle
         
-        var hideIconRow = BoolRow(title: Strings.HideRewardsIcon, option: Preferences.Rewards.hideRewardsIcon)
-        hideIconRow.detailText = Strings.HideRewardsIconSubtitle
+        var hideIconRow = Row.boolRow(title: Strings.hideRewardsIcon, option: Preferences.Rewards.hideRewardsIcon)
+        hideIconRow.detailText = Strings.hideRewardsIconSubtitle
         hideIconRow.cellClass = MultilineSubtitleCell.self
         
         dataSource.sections = [
@@ -70,11 +70,11 @@ class BraveRewardsSettingsViewController: TableViewController {
             
             dataSource.sections += [
                 Section(rows: [
-                    Row(text: Strings.WalletCreationDate, detailText: walletCreatedDate, selection: {
+                    Row(text: Strings.walletCreationDate, detailText: walletCreatedDate, selection: {
                         let sheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
                         sheet.popoverPresentationController?.sourceView = self.view
                         sheet.popoverPresentationController?.sourceRect = self.view.bounds
-                        sheet.addAction(UIAlertAction(title: Strings.CopyWalletSupportInfo, style: .default, handler: { [unowned self] _ in
+                        sheet.addAction(UIAlertAction(title: Strings.copyWalletSupportInfo, style: .default, handler: { [unowned self] _ in
                             self.rewards.ledger.rewardsInternalInfo { info in
                                 guard let info = info else { return }
                                 var supportInfo = """
@@ -101,7 +101,7 @@ class BraveRewardsSettingsViewController: TableViewController {
                                 UIPasteboard.general.string = supportInfo
                             }
                         }))
-                        sheet.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil))
+                        sheet.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
                         self.present(sheet, animated: true)
                     })
                 ])

@@ -7,10 +7,10 @@ import UIKit
 extension CreateWalletViewController {
   class View: UIView {
     
-    let createWalletButton = CreateWalletButton(titleText: Strings.RewardsOptInJoinTitle.uppercased())
+    let createWalletButton = CreateWalletButton(titleText: Strings.rewardsOptInJoinTitle.uppercased())
     
     let learnMoreButton = UIButton(type: .system).then {
-      $0.setTitle(Strings.RewardsOptInLearnMore.uppercased(), for: .normal)
+      $0.setTitle(Strings.rewardsOptInLearnMore.uppercased(), for: .normal)
       $0.tintColor = UX.learnMoreTextColor
       $0.titleLabel?.font = .systemFont(ofSize: 14.0, weight: .medium)
     }
@@ -32,7 +32,7 @@ extension CreateWalletViewController {
       $0.appearanceTextColor = UX.prefixTextColor
       $0.font = .systemFont(ofSize: 16.0)
       $0.textAlignment = .center
-      $0.text = Strings.RewardsOptInPrefix
+      $0.text = Strings.rewardsOptInPrefix
       $0.numberOfLines = 0
     }
     
@@ -43,7 +43,7 @@ extension CreateWalletViewController {
       $0.font = .systemFont(ofSize: 28.0, weight: .medium)
       $0.textAlignment = .center
       $0.attributedText = {
-        let title = NSMutableAttributedString(string: Strings.BraveRewards)
+        let title = NSMutableAttributedString(string: Strings.braveRewards)
         if let trademarkRange = title.string.range(of: "™") {
           title.addAttributes(
             [
@@ -61,7 +61,7 @@ extension CreateWalletViewController {
       $0.appearanceTextColor = UX.bodyTextColor
       $0.font = .systemFont(ofSize: 16.0)
       $0.textAlignment = .center
-      $0.text = Strings.RewardsOptInDescription
+      $0.text = Strings.rewardsOptInDescription
       $0.numberOfLines = 0
     }
     
@@ -69,8 +69,8 @@ extension CreateWalletViewController {
       $0.font = .systemFont(ofSize: 12.0)
       $0.appearanceTextColor = Colors.grey900
       $0.textAlignment = .center
-      $0.text = Strings.DisclaimerInformation
-      $0.setURLInfo([Strings.TermsOfServiceURL: "terms", Strings.PrivacyPolicyURL: "policy"])
+      $0.text = Strings.disclaimerInformation
+      $0.setURLInfo([Strings.termsOfServiceURL: "terms", Strings.privacyPolicyURL: "policy"])
     }
     
     override init(frame: CGRect) {

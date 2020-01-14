@@ -13,7 +13,7 @@ extension OnboardingAdsCountdownViewController {
         /// A negative spacing is needed to make rounded corners for details view visible.
         static let negativeSpacing: CGFloat = -16
         static let descriptionContentInset: CGFloat = 32
-        static let linkColor: UIColor = BraveUX.BraveOrange
+        static let linkColor: UIColor = BraveUX.braveOrange
         static let animationContentInset: CGFloat = 50.0
         static let animationContentSize = 156.0
     }
@@ -38,7 +38,7 @@ extension OnboardingAdsCountdownViewController {
         let finishedButton = CommonViews.primaryButton(text: Strings.OBFinishButton).then {
             $0.accessibilityIdentifier = "OnboardingAdsCountdownViewController.StartBrowsing"
             $0.titleLabel?.minimumScaleFactor = 0.75
-            $0.backgroundColor = BraveUX.BraveOrange
+            $0.backgroundColor = BraveUX.braveOrange
             $0.isExclusiveTouch = true
         }
         

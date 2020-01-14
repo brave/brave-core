@@ -27,7 +27,7 @@ class TippingConfirmationView: UIView {
   }
   
   let titleLabel = UILabel().then {
-    $0.text = Strings.TippingConfirmation
+    $0.text = Strings.tippingConfirmation
     $0.appearanceTextColor = UX.confirmationTextColor
     $0.font = .systemFont(ofSize: 28.0, weight: .bold)
     $0.textAlignment = .center

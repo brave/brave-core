@@ -20,7 +20,7 @@ class SyncPairCameraViewController: SyncViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = Strings.Scan
+        title = Strings.scan
 
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -50,14 +50,14 @@ class SyncPairCameraViewController: SyncViewController {
             // TODO: Check data against sync api
 
             // TODO: Functional, but needs some cleanup
-            struct Scanner { static var Lock = false }
+            struct Scanner { static var lock = false }
             if let bytes = SyncCrypto().splitBytes(fromJoinedBytes: data) {
-                if Scanner.Lock {
+                if Scanner.lock {
                     // Have internal, so camera error does not show
                     return
                 }
                 
-                Scanner.Lock = true
+                Scanner.lock = true
                 self.cameraView.cameraOverlaySucess()
                 // Freezing the camera frame after QR has been scanned.
                 self.cameraView.captureSession?.stopRunning()
@@ -67,7 +67,7 @@ class SyncPairCameraViewController: SyncViewController {
 
                 // Forced timeout
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(25.0) * Int64(NSEC_PER_SEC)) / Double(NSEC_PER_SEC), execute: {
-                    Scanner.Lock = false
+                    Scanner.lock = false
                     self.cameraView.cameraOverlayError()
                 })
                 
@@ -91,7 +91,7 @@ class SyncPairCameraViewController: SyncViewController {
         titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = UIFont.systemFont(ofSize: 20, weight: UIFont.Weight.semibold)
-        titleLabel.text = Strings.SyncToDevice
+        titleLabel.text = Strings.syncToDevice
         titleDescriptionStackView.addArrangedSubview(titleLabel)
 
         descriptionLabel = UILabel()
@@ -100,7 +100,7 @@ class SyncPairCameraViewController: SyncViewController {
         descriptionLabel.numberOfLines = 0
         descriptionLabel.lineBreakMode = .byWordWrapping
         descriptionLabel.textAlignment = .center
-        descriptionLabel.text = Strings.SyncToDeviceDescription
+        descriptionLabel.text = Strings.syncToDeviceDescription
         titleDescriptionStackView.addArrangedSubview(descriptionLabel)
 
         let textStackView = UIStackView(arrangedSubviews: [UIView.spacer(.horizontal, amount: 16),
@@ -111,7 +111,7 @@ class SyncPairCameraViewController: SyncViewController {
 
         enterWordsButton = RoundInterfaceButton(type: .roundedRect)
         enterWordsButton.translatesAutoresizingMaskIntoConstraints = false
-        enterWordsButton.setTitle(Strings.EnterCodeWords, for: .normal)
+        enterWordsButton.setTitle(Strings.enterCodeWords, for: .normal)
         enterWordsButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
         enterWordsButton.addTarget(self, action: #selector(SEL_enterWords), for: .touchUpInside)
         stackView.addArrangedSubview(enterWordsButton)

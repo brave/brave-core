@@ -15,34 +15,34 @@ struct UX {
     }
     
     struct UrlBar {
-        static let height: CGFloat = UIConstants.TopToolbarHeight
+        static let height: CGFloat = UIConstants.topToolbarHeight
     }
     
     struct HomePanel {
-        static let BackgroundColorPBM = GreyJ
-        static let BackgroundColor = UIColor.white
-        static let StatTitleColor = UIColor(rgb: 0x8C9094)
+        static let backgroundColorPBM = greyJ
+        static let backgroundColor = UIColor.white
+        static let statTitleColor = UIColor(rgb: 0x8C9094)
     }
 
-    static let BraveOrange = UIColor(rgb: 0xfb542b)
+    static let braveOrange = UIColor(rgb: 0xfb542b)
     
-    static let Blue = UIColor(rgb: 0x424acb)
-    static let LightBlue = UIColor(rgb: 0x4A90E2)
-    static let Purple = UIColor(rgb: 0x8236b9)
-    static let Green = UIColor(rgb: 0x1bc760)
-    static let Red = UIColor(rgb: 0xE2052A)
+    static let blue = UIColor(rgb: 0x424acb)
+    static let lightBlue = UIColor(rgb: 0x4A90E2)
+    static let purple = UIColor(rgb: 0x8236b9)
+    static let green = UIColor(rgb: 0x1bc760)
+    static let red = UIColor(rgb: 0xE2052A)
     
-    static let White = UIColor.white
-    static let Black = UIColor.black
+    static let white = UIColor.white
+    static let black = UIColor.black
     
-    static let GreyA = UIColor(rgb: 0xF7F8F9)
-    static let GreyB = UIColor(rgb: 0xE7EBEE)
-    static let GreyC = UIColor(rgb: 0xDBDFE3)
-    static let GreyD = UIColor(rgb: 0xCDD1D5)
-    static let GreyE = UIColor(rgb: 0xA7ACB2)
-    static let GreyF = UIColor(rgb: 0x999EA2)
-    static let GreyG = UIColor(rgb: 0x818589)
-    static let GreyH = UIColor(rgb: 0x606467)
-    static let GreyI = UIColor(rgb: 0x484B4E)
-    static let GreyJ = UIColor(rgb: 0x222326)
+    static let greyA = UIColor(rgb: 0xF7F8F9)
+    static let greyB = UIColor(rgb: 0xE7EBEE)
+    static let greyC = UIColor(rgb: 0xDBDFE3)
+    static let greyD = UIColor(rgb: 0xCDD1D5)
+    static let greyE = UIColor(rgb: 0xA7ACB2)
+    static let greyF = UIColor(rgb: 0x999EA2)
+    static let greyG = UIColor(rgb: 0x818589)
+    static let greyH = UIColor(rgb: 0x606467)
+    static let greyI = UIColor(rgb: 0x484B4E)
+    static let greyJ = UIColor(rgb: 0x222326)
 }

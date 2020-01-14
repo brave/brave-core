@@ -343,12 +343,12 @@ open class MockMemoryBookmarksStore: BookmarksModelFactory, ShareToDestination {
     public init() {
         let res = [BookmarkItem]()
 
-        mobile = MemoryBookmarkFolder(guid: BookmarkRoots.MobileFolderGUID, title: "Mobile Bookmarks", children: res)
+        mobile = MemoryBookmarkFolder(guid: BookmarkRoots.mobileFolderGUID, title: "Mobile Bookmarks", children: res)
 
-        unsorted = MemoryBookmarkFolder(guid: BookmarkRoots.UnfiledFolderGUID, title: "Unsorted Bookmarks", children: [])
+        unsorted = MemoryBookmarkFolder(guid: BookmarkRoots.unfiledFolderGUID, title: "Unsorted Bookmarks", children: [])
         sink = MemoryBookmarksSink()
 
-        root = MemoryBookmarkFolder(guid: BookmarkRoots.RootGUID, title: "Root", children: [mobile, unsorted])
+        root = MemoryBookmarkFolder(guid: BookmarkRoots.rootGUID, title: "Root", children: [mobile, unsorted])
     }
 
     public func factoryForIndex(_ index: Int, inFolder folder: BookmarkFolder) -> BookmarksModelFactory {
@@ -366,14 +366,14 @@ open class MockMemoryBookmarksStore: BookmarksModelFactory, ShareToDestination {
     open func modelForFolder(_ guid: GUID, title: String) -> Deferred<Maybe<BookmarksModel>> {
         var m: BookmarkFolder
         switch guid {
-        case BookmarkRoots.MobileFolderGUID:
+        case BookmarkRoots.mobileFolderGUID:
             // Transparently merges in any queued items.
             m = self.mobile.append(self.sink.queue)
             break
-        case BookmarkRoots.RootGUID:
+        case BookmarkRoots.rootGUID:
             m = self.root
             break
-        case BookmarkRoots.UnfiledFolderGUID:
+        case BookmarkRoots.unfiledFolderGUID:
             m = self.unsorted
             break
         default:
@@ -391,7 +391,7 @@ open class MockMemoryBookmarksStore: BookmarksModelFactory, ShareToDestination {
     * This class could return the full data immediately. We don't, because real DB-backed code won't.
     */
     open var nullModel: BookmarksModel {
-        let f = MemoryBookmarkFolder(guid: BookmarkRoots.RootGUID, title: "Root", children: [])
+        let f = MemoryBookmarkFolder(guid: BookmarkRoots.rootGUID, title: "Root", children: [])
         return BookmarksModel(modelFactory: self, root: f)
     }
 

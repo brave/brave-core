@@ -43,11 +43,11 @@ enum BookmarkEditMode {
     /// Returns a title for view controller.
     var title: String {
         switch self {
-        case .addBookmark(_, _): return Strings.NewBookmarkTitle
-        case .addFolder(_): return  Strings.NewFolderTitle
-        case .editBookmark(_): return  Strings.EditBookmarkTitle
-        case .editFolder(_): return  Strings.EditFolderTitle
-        case .editFavorite(_): return  Strings.EditFavoriteTitle
+        case .addBookmark(_, _): return Strings.newBookmarkTitle
+        case .addFolder(_): return  Strings.newFolderTitle
+        case .editBookmark(_): return  Strings.editBookmarkTitle
+        case .editFolder(_): return  Strings.editFolderTitle
+        case .editFavorite(_): return  Strings.editFavoriteTitle
         }
     }
     

@@ -36,15 +36,15 @@ extension BrowserViewController {
         self.view.endEditing(true)
         let popup = AlertPopupView(
             imageView: nil,
-            title: Strings.OpenExternalAppURLTitle,
-            message: String(format: Strings.OpenExternalAppURLMessage, url.relativeString),
+            title: Strings.openExternalAppURLTitle,
+            message: String(format: Strings.openExternalAppURLMessage, url.relativeString),
             titleWeight: .semibold,
             titleSize: 21
         )
-        popup.addButton(title: Strings.OpenExternalAppURLDontAllow, fontSize: 16) { () -> PopupViewDismissType in
+        popup.addButton(title: Strings.openExternalAppURLDontAllow, fontSize: 16) { () -> PopupViewDismissType in
             return .flyDown
         }
-        popup.addButton(title: Strings.OpenExternalAppURLAllow, type: .primary, fontSize: 16) { () -> PopupViewDismissType in
+        popup.addButton(title: Strings.openExternalAppURLAllow, type: .primary, fontSize: 16) { () -> PopupViewDismissType in
             UIApplication.shared.open(url, options: [:], completionHandler: openedURLCompletionHandler)
             return .flyDown
         }
@@ -270,7 +270,7 @@ extension BrowserViewController: WKNavigationDelegate {
         if navigationAction.navigationType == .linkActivated {
             handleExternalURL(url) { didOpenURL in
                 if !didOpenURL {
-                    let alert = UIAlertController(title: Strings.UnableToOpenURLErrorTitle, message: Strings.UnableToOpenURLError, preferredStyle: .alert)
+                    let alert = UIAlertController(title: Strings.unableToOpenURLErrorTitle, message: Strings.unableToOpenURLError, preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
                     self.present(alert, animated: true, completion: nil)
                 }

@@ -60,7 +60,7 @@ public enum NonCommutativeLoginField: Indexable {
         }
     }
 
-    static let Entries: Int = 8
+    static let entries: Int = 8
 }
 
 // We don't care about these, because they're slated for removal at some point --
@@ -80,7 +80,7 @@ public enum NonConflictingLoginField: Indexable {
         }
     }
 
-    static let Entries: Int = 2
+    static let entries: Int = 2
 }
 
 public typealias LoginDeltas = (
@@ -445,7 +445,7 @@ open class Login: CustomStringConvertible, LoginData, LoginUsageData, Equatable 
         } else if bNonCommutative.isEmpty {
             nonCommutative = aNonCommutative
         } else {
-            nonCommutative = mergeDeltaFields(NonCommutativeLoginField.Entries, a: aNonCommutative, b: bNonCommutative, preferBToA: bLatest)
+            nonCommutative = mergeDeltaFields(NonCommutativeLoginField.entries, a: aNonCommutative, b: bNonCommutative, preferBToA: bLatest)
         }
 
         if aNonConflicting.isEmpty {
@@ -453,7 +453,7 @@ open class Login: CustomStringConvertible, LoginData, LoginUsageData, Equatable 
         } else if bNonCommutative.isEmpty {
             nonConflicting = aNonConflicting
         } else {
-            nonConflicting = mergeDeltaFields(NonConflictingLoginField.Entries, a: aNonConflicting, b: bNonConflicting, preferBToA: bLatest)
+            nonConflicting = mergeDeltaFields(NonConflictingLoginField.entries, a: aNonConflicting, b: bNonConflicting, preferBToA: bLatest)
         }
 
         return (

@@ -13,13 +13,13 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
     weak var delegate: BookmarkDetailsViewDelegate?
     
     let titleTextField = UITextField().then {
-        $0.placeholder = Strings.BookmarkTitlePlaceholderText
+        $0.placeholder = Strings.bookmarkTitlePlaceholderText
         $0.clearButtonMode = .whileEditing
         $0.translatesAutoresizingMaskIntoConstraints = false
     }
     
     let urlTextField: UITextField? = UITextField().then {
-        $0.placeholder = Strings.BookmarkUrlPlaceholderText
+        $0.placeholder = Strings.bookmarkUrlPlaceholderText
         $0.keyboardType = .URL
         $0.autocorrectionType = .no
         $0.autocapitalizationType = .none
@@ -78,8 +78,8 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
             faviconImageView.setIcon(nil, forURL: favUrl)
         }
         
-        titleTextField.text = title ?? Strings.NewBookmarkDefaultName
-        urlTextField.text = url ?? Strings.NewFolderDefaultName
+        titleTextField.text = title ?? Strings.newBookmarkDefaultName
+        urlTextField.text = url ?? Strings.newFolderDefaultName
         
         setupTextFieldTargets()
     }

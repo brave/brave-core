@@ -8,13 +8,13 @@ import XCGLogger
 //// A rolling file logger that saves to a different log file based on given timestamp.
 open class RollingFileLogger: XCGLogger {
 
-    public static let TwoMBsInBytes: Int64 = 2 * 100000
+    public static let twoMBsInBytes: Int64 = 2 * 100000
     fileprivate let sizeLimit: Int64
     fileprivate let logDirectoryPath: String?
 
     let fileLogIdentifierPrefix = "com.mozilla.firefox.filelogger."
 
-    fileprivate static let DateFormatter: DateFormatter = {
+    fileprivate static let dateFormatter: DateFormatter = {
         let formatter = Foundation.DateFormatter()
         formatter.dateFormat = "yyyyMMdd'T'HHmmssZ"
         return formatter
@@ -22,7 +22,7 @@ open class RollingFileLogger: XCGLogger {
 
     let root: String
 
-    public init(filenameRoot: String, logDirectoryPath: String?, sizeLimit: Int64 = TwoMBsInBytes) {
+    public init(filenameRoot: String, logDirectoryPath: String?, sizeLimit: Int64 = twoMBsInBytes) {
         root = filenameRoot
         self.sizeLimit = sizeLimit
         self.logDirectoryPath = logDirectoryPath
@@ -103,7 +103,7 @@ open class RollingFileLogger: XCGLogger {
 
     fileprivate func filenameWithRoot(_ root: String, withDate date: Date) -> String? {
         if let dir = logDirectoryPath {
-            return "\(dir)/\(root).\(RollingFileLogger.DateFormatter.string(from: date)).log"
+            return "\(dir)/\(root).\(RollingFileLogger.dateFormatter.string(from: date)).log"
         }
 
         return nil

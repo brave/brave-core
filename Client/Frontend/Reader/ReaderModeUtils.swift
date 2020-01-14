@@ -6,10 +6,10 @@ import Foundation
 
 struct ReaderModeUtils {
 
-    static let DomainPrefixesToSimplify = ["www.", "mobile.", "m.", "blog."]
+    static let domainPrefixesToSimplify = ["www.", "mobile.", "m.", "blog."]
 
     static func simplifyDomain(_ domain: String) -> String {
-        return DomainPrefixesToSimplify.first { domain.hasPrefix($0) }.map {
+        return domainPrefixesToSimplify.first { domain.hasPrefix($0) }.map {
             String($0.suffix(from: $0.index($0.startIndex, offsetBy: $0.count)))
         } ?? domain
     }

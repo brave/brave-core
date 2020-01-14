@@ -31,9 +31,9 @@ class SyncAddDeviceViewController: SyncViewController {
     
     lazy var copyPasteButton: UIButton = {
         let button = UIButton()
-        button.setTitle(Strings.CopyToClipboard, for: .normal)
+        button.setTitle(Strings.copyToClipboard, for: .normal)
         button.addTarget(self, action: #selector(SEL_copy), for: .touchUpInside)
-        button.setTitleColor(BraveUX.BraveOrange, for: .normal)
+        button.setTitleColor(BraveUX.braveOrange, for: .normal)
         button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
         button.isHidden = true
         return button
@@ -46,14 +46,14 @@ class SyncAddDeviceViewController: SyncViewController {
     var descriptionLabel: UILabel!
     var doneButton: RoundInterfaceButton!
     var enterWordsButton: RoundInterfaceButton!
-    var pageTitle: String = Strings.Sync
+    var pageTitle: String = Strings.sync
     var deviceType: DeviceType = .mobile
     var didCopy = false {
         didSet {
             if didCopy {
-                copyPasteButton.setTitle(Strings.CopiedToClipboard, for: .normal)
+                copyPasteButton.setTitle(Strings.copiedToClipboard, for: .normal)
             } else {
-                copyPasteButton.setTitle(Strings.CopyToClipboard, for: .normal)
+                copyPasteButton.setTitle(Strings.copyToClipboard, for: .normal)
             }
         }
     }
@@ -78,7 +78,7 @@ class SyncAddDeviceViewController: SyncViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = deviceType == .computer ? Strings.SyncAddComputerTitle : Strings.SyncAddTabletOrPhoneTitle
+        title = deviceType == .computer ? Strings.syncAddComputerTitle : Strings.syncAddTabletOrPhoneTitle
 
         view.addSubview(stackView)
         stackView.snp.makeConstraints { make in
@@ -136,7 +136,7 @@ class SyncAddDeviceViewController: SyncViewController {
     }
     
     private func setupVisuals() {
-        modeControl = UISegmentedControl(items: [Strings.QRCode, Strings.CodeWords])
+        modeControl = UISegmentedControl(items: [Strings.QRCode, Strings.codeWords])
         modeControl.translatesAutoresizingMaskIntoConstraints = false
         modeControl.selectedSegmentIndex = 0
         modeControl.addTarget(self, action: #selector(SEL_changeMode), for: .valueChanged)
@@ -144,9 +144,9 @@ class SyncAddDeviceViewController: SyncViewController {
         modeControl.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
         
         if #available(iOS 13.0, *) {
-            modeControl.selectedSegmentTintColor = BraveUX.BraveOrange
+            modeControl.selectedSegmentTintColor = BraveUX.braveOrange
         } else {
-            modeControl.tintColor = BraveUX.BraveOrange
+            modeControl.tintColor = BraveUX.braveOrange
         }
         stackView.addArrangedSubview(modeControl)
         
@@ -186,19 +186,19 @@ class SyncAddDeviceViewController: SyncViewController {
 
         doneButton = RoundInterfaceButton(type: .roundedRect)
         doneButton.translatesAutoresizingMaskIntoConstraints = false
-        doneButton.setTitle(Strings.Done, for: .normal)
+        doneButton.setTitle(Strings.done, for: .normal)
         doneButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.bold)
         doneButton.appearanceTextColor = .white
-        doneButton.backgroundColor = BraveUX.BraveOrange
+        doneButton.backgroundColor = BraveUX.braveOrange
         doneButton.addTarget(self, action: #selector(SEL_done), for: .touchUpInside)
 
         doneEnterWordsStackView.addArrangedSubview(doneButton)
 
         enterWordsButton = RoundInterfaceButton(type: .roundedRect)
         enterWordsButton.translatesAutoresizingMaskIntoConstraints = false
-        enterWordsButton.setTitle(Strings.ShowCodeWords, for: .normal)
+        enterWordsButton.setTitle(Strings.showCodeWords, for: .normal)
         enterWordsButton.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.semibold)
-        enterWordsButton.setTitleColor(BraveUX.GreyH, for: .normal)
+        enterWordsButton.setTitleColor(BraveUX.greyH, for: .normal)
         enterWordsButton.addTarget(self, action: #selector(SEL_showCodewords), for: .touchUpInside)
 
         doneEnterWordsStackView.setContentCompressionResistancePriority(.required, for: .vertical)
@@ -230,21 +230,21 @@ class SyncAddDeviceViewController: SyncViewController {
     private func updateLabels() {
         let isFirstIndex = modeControl.selectedSegmentIndex == 0
         
-        titleLabel.text = isFirstIndex ? Strings.SyncAddDeviceScan : Strings.SyncAddDeviceWords
+        titleLabel.text = isFirstIndex ? Strings.syncAddDeviceScan : Strings.syncAddDeviceWords
         
         if isFirstIndex {
-            let description = Strings.SyncAddDeviceScanDescription
+            let description = Strings.syncAddDeviceScanDescription
             let attributedDescription = NSMutableAttributedString(string: description)
             
             if let lastSentenceRange = lastSentenceRange(text: description) {
-                attributedDescription.addAttribute(.foregroundColor, value: BraveUX.Red, range: lastSentenceRange)
+                attributedDescription.addAttribute(.foregroundColor, value: BraveUX.red, range: lastSentenceRange)
             }
             
             descriptionLabel.attributedText = attributedDescription
         } else {
             // The button name should be the same as in codewords instructions.
-            let buttonName = Strings.ScanSyncCode
-            let addDeviceWords = String(format: Strings.SyncAddDeviceWordsDescription, buttonName)
+            let buttonName = Strings.scanSyncCode
+            let addDeviceWords = String(format: Strings.syncAddDeviceWordsDescription, buttonName)
             let description = NSMutableAttributedString(string: addDeviceWords)
             let fontSize = descriptionLabel.font.pointSize
             
@@ -252,7 +252,7 @@ class SyncAddDeviceViewController: SyncViewController {
             description.addAttribute(.font, value: UIFont.boldSystemFont(ofSize: fontSize), range: boldRange)
             
             if let lastSentenceRange = lastSentenceRange(text: addDeviceWords) {
-                description.addAttribute(.foregroundColor, value: BraveUX.Red, range: lastSentenceRange)
+                description.addAttribute(.foregroundColor, value: BraveUX.red, range: lastSentenceRange)
             }
             
             descriptionLabel.attributedText = description

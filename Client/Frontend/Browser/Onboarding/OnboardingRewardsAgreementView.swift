@@ -14,7 +14,7 @@ extension OnboardingRewardsAgreementViewController {
         /// A negative spacing is needed to make rounded corners for details view visible.
         static let negativeSpacing: CGFloat = -16
         static let descriptionContentInset: CGFloat = 25
-        static let linkColor: UIColor = BraveUX.BraveOrange
+        static let linkColor: UIColor = BraveUX.braveOrange
         static let animationContentInset: CGFloat = 50.0
         static let checkboxInsets: CGFloat = -44.0
     }
@@ -25,7 +25,7 @@ extension OnboardingRewardsAgreementViewController {
         
         let turnOnButton = CommonViews.primaryButton(text: Strings.OBTurnOnButton).then {
             $0.accessibilityIdentifier = "OnboardingRewardsAgreementViewController.OBTurnOnButton"
-            $0.backgroundColor = BraveUX.BraveOrange
+            $0.backgroundColor = BraveUX.braveOrange
             $0.titleLabel?.minimumScaleFactor = 0.75
         }
         

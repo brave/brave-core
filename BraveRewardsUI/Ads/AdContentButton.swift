@@ -21,7 +21,7 @@ class AdContentButton: UIControl {
   private let appNameLabel = UILabel().then {
     $0.appearanceTextColor = UIColor.black.withAlphaComponent(0.5)
     $0.font = .systemFont(ofSize: 14.0, weight: .regular)
-    $0.text = Strings.AdNotificationTitle.uppercased()
+    $0.text = Strings.adNotificationTitle.uppercased()
   }
   
   private let backgroundView: UIVisualEffectView = {

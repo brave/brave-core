@@ -79,7 +79,7 @@ private extension TrayToBrowserAnimator {
             bvc.tabTrayDidDismiss(tabTray)
             UIApplication.shared.windows.first?.backgroundColor = tabTray.collectionView.backgroundColor
             tabTray.navigationController?.setNeedsStatusBarAppearanceUpdate()
-            tabTray.toolbar.transform = CGAffineTransform(translationX: 0, y: UIConstants.BottomToolbarHeight)
+            tabTray.toolbar.transform = CGAffineTransform(translationX: 0, y: UIConstants.bottomToolbarHeight)
             tabCollectionViewSnapshot.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
             tabCollectionViewSnapshot.alpha = 0
         }, completion: { finished in
@@ -165,7 +165,7 @@ private extension BrowserToTrayAnimator {
         // Build a tab cell that we will use to animate the scaling of the browser to the tab
         let expandedFrame = calculateExpandedCellFrameFromBVC(bvc)
         let cell = createTransitionCellFromTab(bvc.tabManager.selectedTab, withFrame: expandedFrame)
-        cell.backgroundHolder.layer.cornerRadius = TabTrayControllerUX.CornerRadius
+        cell.backgroundHolder.layer.cornerRadius = TabTrayControllerUX.cornerRadius
 
         // Take a snapshot of the collection view to perform the scaling/alpha effect
         let tabCollectionViewSnapshot = tabTray.collectionView.snapshotView(afterScreenUpdates: true)!
@@ -197,7 +197,7 @@ private extension BrowserToTrayAnimator {
             tabTray.collectionView.isHidden = true
             let finalFrame = calculateCollapsedCellFrameUsingCollectionView(tabTray.collectionView,
                 atIndex: scrollToIndex)
-            tabTray.toolbar.transform = CGAffineTransform(translationX: 0, y: UIConstants.BottomToolbarHeight)
+            tabTray.toolbar.transform = CGAffineTransform(translationX: 0, y: UIConstants.bottomToolbarHeight)
 
             UIView.animate(withDuration: self.transitionDuration(using: transitionContext),
                 delay: 0, usingSpringWithDamping: 1,
@@ -210,7 +210,7 @@ private extension BrowserToTrayAnimator {
                 UIApplication.shared.windows.first?.backgroundColor = tabTray.collectionView.backgroundColor
                 tabTray.navigationController?.setNeedsStatusBarAppearanceUpdate()
                     
-                cell.layer.borderWidth = TabTrayControllerUX.DefaultBorderWidth
+                cell.layer.borderWidth = TabTrayControllerUX.defaultBorderWidth
                 
                 transformHeaderFooterForBVC(bvc, toFrame: finalFrame, container: container)
 
@@ -292,7 +292,7 @@ private func calculateExpandedCellFrameFromBVC(_ bvc: BrowserViewController) -> 
     if !bvc.shouldShowFooterForTraitCollection(bvc.traitCollection) {
         return frame
     } else if let url = bvc.tabManager.selectedTab?.url, url.isAboutURL && bvc.toolbar == nil {
-        frame.size.height += UIConstants.BottomToolbarHeight
+        frame.size.height += UIConstants.bottomToolbarHeight
     }
 
     return frame

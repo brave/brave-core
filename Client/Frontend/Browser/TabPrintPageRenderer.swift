@@ -5,16 +5,16 @@
 import Foundation
 
 private struct PrintedPageUX {
-    static let PageInsets = CGFloat(36.0)
-    static let PageTextFont = DynamicFontHelper.defaultHelper.DefaultSmallFont
-    static let PageMarginScale = CGFloat(0.5)
+    static let pageInsets = CGFloat(36.0)
+    static let pageTextFont = DynamicFontHelper.defaultHelper.DefaultSmallFont
+    static let pageMarginScale = CGFloat(0.5)
 }
 
 class TabPrintPageRenderer: UIPrintPageRenderer {
     private weak var tab: Tab?
     private let displayTitle: String
     
-    let textAttributes = [NSAttributedString.Key.font: PrintedPageUX.PageTextFont]
+    let textAttributes = [NSAttributedString.Key.font: PrintedPageUX.pageTextFont]
     let dateString: String
 
     required init(tab: Tab) {
@@ -28,18 +28,18 @@ class TabPrintPageRenderer: UIPrintPageRenderer {
 
         super.init()
 
-        self.footerHeight = PrintedPageUX.PageMarginScale * PrintedPageUX.PageInsets
-        self.headerHeight = PrintedPageUX.PageMarginScale * PrintedPageUX.PageInsets
+        self.footerHeight = PrintedPageUX.pageMarginScale * PrintedPageUX.pageInsets
+        self.headerHeight = PrintedPageUX.pageMarginScale * PrintedPageUX.pageInsets
 
         if let tab = self.tab {
             let formatter = tab.webView!.viewPrintFormatter()
-            formatter.perPageContentInsets = UIEdgeInsets(top: PrintedPageUX.PageInsets, left: PrintedPageUX.PageInsets, bottom: PrintedPageUX.PageInsets, right: PrintedPageUX.PageInsets)
+            formatter.perPageContentInsets = UIEdgeInsets(top: PrintedPageUX.pageInsets, left: PrintedPageUX.pageInsets, bottom: PrintedPageUX.pageInsets, right: PrintedPageUX.pageInsets)
             addPrintFormatter(formatter, startingAtPageAt: 0)
         }
     }
 
     override func drawFooterForPage(at pageIndex: Int, in headerRect: CGRect) {
-        let headerInsets = UIEdgeInsets(top: headerRect.minY, left: PrintedPageUX.PageInsets, bottom: paperRect.maxY - headerRect.maxY, right: PrintedPageUX.PageInsets)
+        let headerInsets = UIEdgeInsets(top: headerRect.minY, left: PrintedPageUX.pageInsets, bottom: paperRect.maxY - headerRect.maxY, right: PrintedPageUX.pageInsets)
         let headerRect = paperRect.inset(by: headerInsets)
 
         // url on left
@@ -51,7 +51,7 @@ class TabPrintPageRenderer: UIPrintPageRenderer {
     }
 
     override func drawHeaderForPage(at pageIndex: Int, in headerRect: CGRect) {
-        let headerInsets = UIEdgeInsets(top: headerRect.minY, left: PrintedPageUX.PageInsets, bottom: paperRect.maxY - headerRect.maxY, right: PrintedPageUX.PageInsets)
+        let headerInsets = UIEdgeInsets(top: headerRect.minY, left: PrintedPageUX.pageInsets, bottom: paperRect.maxY - headerRect.maxY, right: PrintedPageUX.pageInsets)
         let headerRect = paperRect.inset(by: headerInsets)
 
         // page title on left

@@ -10,7 +10,7 @@ final class PrivateBrowsingManager {
     var isPrivateBrowsing = false {
         didSet {
             if oldValue != isPrivateBrowsing {
-                NotificationCenter.default.post(name: .PrivacyModeChanged, object: nil)
+                NotificationCenter.default.post(name: .privacyModeChanged, object: nil)
                 if !isPrivateBrowsing {
                     Domain.clearInMemoryDomains()
                 }

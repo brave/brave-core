@@ -654,7 +654,7 @@ extension Bookmark: Frecencyable {
         fetchRequest.fetchLimit = 5
         fetchRequest.entity = Bookmark.entity(context: context)
         
-        var predicate = NSPredicate(format: "lastVisited > %@", History.ThisWeek as CVarArg)
+        var predicate = NSPredicate(format: "lastVisited > %@", History.thisWeek as CVarArg)
         if let query = query {
             predicate = NSPredicate(format: predicate.predicateFormat + " AND url CONTAINS %@", query)
         }

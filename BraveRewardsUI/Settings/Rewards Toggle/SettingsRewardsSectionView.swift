@@ -80,25 +80,25 @@ private class DisabledRewardsLabelsView: UIView {
   let labels = [
     UILabel().then {
       $0.appearanceTextColor = SettingsUX.headerTextColor
-      $0.text = Strings.SettingsDisabledTitle1
+      $0.text = Strings.settingsDisabledTitle1
       $0.numberOfLines = 0
       $0.font = .systemFont(ofSize: 15.0)
     },
     UILabel().then {
       $0.appearanceTextColor = SettingsUX.bodyTextColor
-      $0.text = Strings.SettingsDisabledBody1
+      $0.text = Strings.settingsDisabledBody1
       $0.numberOfLines = 0
       $0.font = .systemFont(ofSize: 13.0)
     },
     UILabel().then {
       $0.appearanceTextColor = SettingsUX.headerTextColor
-      $0.text = Strings.SettingsDisabledTitle2
+      $0.text = Strings.settingsDisabledTitle2
       $0.numberOfLines = 0
       $0.font = .systemFont(ofSize: 15.0)
     },
     UILabel().then {
       $0.appearanceTextColor = SettingsUX.bodyTextColor
-      $0.text = Strings.SettingsDisabledBody2
+      $0.text = Strings.settingsDisabledBody2
       $0.numberOfLines = 0
       $0.font = .systemFont(ofSize: 13.0)
     },

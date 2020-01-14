@@ -11,7 +11,7 @@ private let TypeSearch = "text/html"
 private let TypeSuggest = "application/x-suggestions+json"
 
 class OpenSearchEngine: NSObject, NSSecureCoding {
-    static let PreferredIconSize = 30
+    static let preferredIconSize = 30
     
     struct EngineNames {
         static let duckDuckGo = "DuckDuckGo"
@@ -136,7 +136,7 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
     }
 
     fileprivate func getURLFromTemplate(_ searchTemplate: String, query: String, locale: Locale) -> URL? {
-        guard let escapedQuery = query.addingPercentEncoding(withAllowedCharacters: .SearchTermsAllowed) else {
+        guard let escapedQuery = query.addingPercentEncoding(withAllowedCharacters: .searchTermsAllowed) else {
             return nil
         }
         

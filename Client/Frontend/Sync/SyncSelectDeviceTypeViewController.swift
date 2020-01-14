@@ -14,7 +14,7 @@ class SyncDeviceTypeButton: UIControl {
     var type: DeviceType!
     
     // Color for the opposite state of `pressed`
-    private var pressedReversedColor = BraveUX.BraveOrange
+    private var pressedReversedColor = BraveUX.braveOrange
     var pressed: Bool = false {
         didSet {
             if pressed == oldValue {
@@ -45,14 +45,14 @@ class SyncDeviceTypeButton: UIControl {
         
         clipsToBounds = false
         layer.cornerRadius = 12
-        layer.shadowColor = BraveUX.GreyJ.cgColor
+        layer.shadowColor = BraveUX.greyJ.cgColor
         layer.shadowRadius = 3
         layer.shadowOpacity = 0.1
         layer.shadowOffset = CGSize(width: 0, height: 1)
         
         imageView.image = UIImage(named: image)
         imageView.contentMode = .center
-        imageView.tintColor = BraveUX.GreyJ
+        imageView.tintColor = BraveUX.greyJ
         addSubview(imageView)
         
         label.text = title
@@ -104,7 +104,7 @@ class SyncSelectDeviceTypeViewController: SyncViewController {
 
     let loadingView = UIView()
     let chooseDeviceLabel = UILabel().then {
-        $0.text = Strings.SyncChooseDeviceHeader
+        $0.text = Strings.syncChooseDeviceHeader
         $0.textAlignment = .center
         $0.numberOfLines = 0
         $0.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
@@ -116,13 +116,13 @@ class SyncSelectDeviceTypeViewController: SyncViewController {
         $0.spacing = 16
     }
     
-    let mobileButton = SyncDeviceTypeButton(image: "sync-mobile", title: Strings.SyncTabletOrMobileDevice, type: .mobile)
-    let computerButton = SyncDeviceTypeButton(image: "sync-computer", title: Strings.SyncComputerDevice, type: .computer)
+    let mobileButton = SyncDeviceTypeButton(image: "sync-mobile", title: Strings.syncTabletOrMobileDevice, type: .mobile)
+    let computerButton = SyncDeviceTypeButton(image: "sync-computer", title: Strings.syncComputerDevice, type: .computer)
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = Strings.SyncChooseDevice
+        title = Strings.syncChooseDevice
         
         let chooseDeviceStackView = UIStackView(arrangedSubviews: [UIView.spacer(.horizontal, amount: 24),
                                                                    chooseDeviceLabel,

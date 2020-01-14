@@ -19,7 +19,7 @@ class RequestDesktopSiteActivity: UIActivity {
     }
     
     override var activityTitle: String? {
-        return isDesktopSite ? Strings.AppMenuViewMobileSiteTitleString : Strings.AppMenuViewDesktopSiteTitleString
+        return isDesktopSite ? Strings.appMenuViewMobileSiteTitleString : Strings.appMenuViewDesktopSiteTitleString
     }
 
     override var activityImage: UIImage? {

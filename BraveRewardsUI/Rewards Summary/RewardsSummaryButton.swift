@@ -13,7 +13,7 @@ import UIKit
     }
     
     let titleLabel = UILabel().then {
-      $0.text = Strings.SummaryTitle.uppercased()
+      $0.text = Strings.summaryTitle.uppercased()
       $0.appearanceTextColor = UX.titleTextColor
       $0.font = .systemFont(ofSize: 14.0, weight: .bold)
     }

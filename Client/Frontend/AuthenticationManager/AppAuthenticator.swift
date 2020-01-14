@@ -97,7 +97,7 @@ class AppAuthenticator {
         showBackgroundBlur()
         AppAuthenticator.presentAuthenticationUsingInfo(
             authInfo,
-            touchIDReason: Strings.AuthenticationLoginsTouchReason,
+            touchIDReason: Strings.authenticationLoginsTouchReason,
             success: {
                 self.dismissPrompt()
             },
@@ -135,7 +135,7 @@ extension AppAuthenticator {
     private static func presentAuthenticationUsingInfo(_ authenticationInfo: AuthenticationKeychainInfo, touchIDReason: String, success: (() -> Void)?, cancel: (() -> Void)?, fallback: (() -> Void)?) {
         if authenticationInfo.useTouchID {
             let localAuthContext = LAContext()
-            localAuthContext.localizedFallbackTitle = Strings.AuthenticationEnterPasscode
+            localAuthContext.localizedFallbackTitle = Strings.authenticationEnterPasscode
             localAuthContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: touchIDReason) { didSucceed, error in
                 if didSucceed {
                     // Update our authentication info's last validation timestamp so we don't ask again based

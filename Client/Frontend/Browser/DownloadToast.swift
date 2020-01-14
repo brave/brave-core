@@ -7,14 +7,14 @@ import Shared
 import SnapKit
 
 struct DownloadToastUX {
-    static let ToastBackgroundColor = UIColor.Photon.Blue40
-    static let ToastProgressColor = UIColor.Photon.Blue50
+    static let toastBackgroundColor = UIColor.Photon.blue40
+    static let toastProgressColor = UIColor.Photon.blue50
 }
 
 class DownloadToast: Toast {
     lazy var progressView: UIView = {
         let progressView = UIView()
-        progressView.backgroundColor = DownloadToastUX.ToastProgressColor
+        progressView.backgroundColor = DownloadToastUX.toastProgressColor
         return progressView
     }()
 
@@ -43,15 +43,15 @@ class DownloadToast: Toast {
     var descriptionText: String {
         let downloadedSize = ByteCountFormatter.string(fromByteCount: combinedBytesDownloaded, countStyle: .file)
         let expectedSize = combinedTotalBytesExpected != nil ? ByteCountFormatter.string(fromByteCount: combinedTotalBytesExpected!, countStyle: .file) : nil
-        let descriptionText = expectedSize != nil ? String(format: Strings.DownloadProgressToastDescriptionText, downloadedSize, expectedSize!) : downloadedSize
+        let descriptionText = expectedSize != nil ? String(format: Strings.downloadProgressToastDescriptionText, downloadedSize, expectedSize!) : downloadedSize
 
         guard downloads.count > 1 else {
             return descriptionText
         }
 
-        let fileCountDescription = String(format: Strings.DownloadMultipleFilesToastDescriptionText, downloads.count)
+        let fileCountDescription = String(format: Strings.downloadMultipleFilesToastDescriptionText, downloads.count)
 
-        return String(format: Strings.DownloadMultipleFilesAndProgressToastDescriptionText, fileCountDescription, descriptionText)
+        return String(format: Strings.downloadMultipleFilesAndProgressToastDescriptionText, fileCountDescription, descriptionText)
     }
 
     var downloads: [Download] = []
@@ -73,11 +73,11 @@ class DownloadToast: Toast {
 
         self.toastView.snp.makeConstraints { make in
             make.left.right.height.equalTo(self)
-            self.animationConstraint = make.top.equalTo(self).offset(ButtonToastUX.ToastHeight).constraint
+            self.animationConstraint = make.top.equalTo(self).offset(ButtonToastUX.toastHeight).constraint
         }
 
         self.snp.makeConstraints { make in
-            make.height.equalTo(ButtonToastUX.ToastHeight)
+            make.height.equalTo(ButtonToastUX.toastHeight)
         }
     }
 
@@ -112,10 +112,10 @@ class DownloadToast: Toast {
         let horizontalStackView = UIStackView()
         horizontalStackView.axis = .horizontal
         horizontalStackView.alignment = .center
-        horizontalStackView.spacing = ButtonToastUX.ToastPadding
+        horizontalStackView.spacing = ButtonToastUX.toastPadding
 
         let icon = UIImageView(image: #imageLiteral(resourceName: "download").template)
-        icon.tintColor = UIColor.Photon.White100
+        icon.tintColor = UIColor.Photon.white100
         horizontalStackView.addArrangedSubview(icon)
 
         let labelStackView = UIStackView()
@@ -123,16 +123,16 @@ class DownloadToast: Toast {
         labelStackView.alignment = .leading
 
         let label = UILabel()
-        label.textColor = UIColor.Photon.White100
-        label.font = ButtonToastUX.ToastLabelFont
+        label.textColor = UIColor.Photon.white100
+        label.font = ButtonToastUX.toastLabelFont
         label.text = labelText
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 1
         label.adjustsFontSizeToFitWidth = true
         labelStackView.addArrangedSubview(label)
 
-        descriptionLabel.textColor = UIColor.Photon.White100
-        descriptionLabel.font = ButtonToastUX.ToastDescriptionFont
+        descriptionLabel.textColor = UIColor.Photon.white100
+        descriptionLabel.font = ButtonToastUX.toastDescriptionFont
         descriptionLabel.text = descriptionText
         descriptionLabel.lineBreakMode = .byTruncatingTail
         labelStackView.addArrangedSubview(descriptionLabel)
@@ -140,12 +140,12 @@ class DownloadToast: Toast {
         horizontalStackView.addArrangedSubview(labelStackView)
 
         let cancel = UIImageView(image: #imageLiteral(resourceName: "close-medium").template)
-        cancel.tintColor = UIColor.Photon.White100
+        cancel.tintColor = UIColor.Photon.white100
         cancel.isUserInteractionEnabled = true
         cancel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buttonPressed)))
         horizontalStackView.addArrangedSubview(cancel)
 
-        toastView.backgroundColor = DownloadToastUX.ToastBackgroundColor
+        toastView.backgroundColor = DownloadToastUX.toastBackgroundColor
 
         toastView.addSubview(progressView)
         toastView.addSubview(horizontalStackView)
@@ -160,16 +160,16 @@ class DownloadToast: Toast {
         horizontalStackView.snp.makeConstraints { make in
             make.centerX.equalTo(toastView)
             make.centerY.equalTo(toastView)
-            make.width.equalTo(toastView.snp.width).offset(-2 * ButtonToastUX.ToastPadding)
+            make.width.equalTo(toastView.snp.width).offset(-2 * ButtonToastUX.toastPadding)
         }
 
         return toastView
     }
 
     @objc func buttonPressed(_ gestureRecognizer: UIGestureRecognizer) {
-        let alert = AlertController(title: Strings.CancelDownloadDialogTitle, message: Strings.CancelDownloadDialogMessage, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: Strings.CancelDownloadDialogResume, style: .cancel, handler: nil), accessibilityIdentifier: "cancelDownloadAlert.resume")
-        alert.addAction(UIAlertAction(title: Strings.CancelDownloadDialogCancel, style: .default, handler: { action in
+        let alert = AlertController(title: Strings.cancelDownloadDialogTitle, message: Strings.cancelDownloadDialogMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Strings.cancelDownloadDialogResume, style: .cancel, handler: nil), accessibilityIdentifier: "cancelDownloadAlert.resume")
+        alert.addAction(UIAlertAction(title: Strings.cancelDownloadDialogCancel, style: .default, handler: { action in
             self.completionHandler?(true)
             self.dismiss(true)
         }), accessibilityIdentifier: "cancelDownloadAlert.cancel")

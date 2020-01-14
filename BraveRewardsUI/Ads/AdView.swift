@@ -7,7 +7,7 @@ import pop
 
 public class AdView: UIView {
   let adContentButton = AdContentButton()
-  let openSwipeButton = AdSwipeButton(contentType: .text(Strings.Open, textColor: .white)).then {
+  let openSwipeButton = AdSwipeButton(contentType: .text(Strings.open, textColor: .white)).then {
     $0.backgroundColor = Colors.blurple400
   }
   let dislikeSwipeButton = AdSwipeButton(contentType: .image(UIImage(frameworkResourceNamed: "thumbsdown"))).then {

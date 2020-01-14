@@ -44,7 +44,7 @@ class SyncCodewordList: UIStackView {
         let label = UILabel()
         label.text = "\(order). \(word)"
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        label.textColor = BraveUX.GreyJ
+        label.textColor = BraveUX.greyJ
 
         return label
     }

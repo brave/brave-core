@@ -12,7 +12,7 @@ class FolderDetailsViewTableViewCell: AddEditHeaderView, BookmarkFormFieldsProto
     weak var delegate: BookmarkDetailsViewDelegate?
     
     let titleTextField = UITextField().then {
-        $0.placeholder = Strings.BookmarkTitlePlaceholderText
+        $0.placeholder = Strings.bookmarkTitlePlaceholderText
         $0.clearButtonMode = .whileEditing
         $0.translatesAutoresizingMaskIntoConstraints = false
         
@@ -27,7 +27,7 @@ class FolderDetailsViewTableViewCell: AddEditHeaderView, BookmarkFormFieldsProto
         [UIView.separatorLine, titleTextField, UIView.separatorLine]
             .forEach(mainStackView.addArrangedSubview)
 
-        titleTextField.text = title ?? Strings.NewFolderDefaultName
+        titleTextField.text = title ?? Strings.newFolderDefaultName
         
         mainStackView.snp.remakeConstraints {
             $0.edges.equalTo(self)

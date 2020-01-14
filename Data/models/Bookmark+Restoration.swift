@@ -30,7 +30,7 @@ extension Bookmark {
     ///
     /// Restoration must happen after Brave Sync is initialized.
     public static func restore_1_12_Bookmarks(completion: @escaping () -> Void) {
-        let restorationCompleted = Preferences.Database.Bookmark_v1_12_1RestorationCompleted
+        let restorationCompleted = Preferences.Database.bookmark_v1_12_1RestorationCompleted
         
         if restorationCompleted.value { return }
         
@@ -109,7 +109,7 @@ extension Bookmark {
                                            context: context)
             } else if !oldFavoritesData.isEmpty {
                 log.debug("Existing favorites found, adding restored favorites to 'Restored Favorites' folder.")
-                Bookmark.addInternal(url: nil, title: nil, customTitle: Strings.RestoredFavoritesFolderName,
+                Bookmark.addInternal(url: nil, title: nil, customTitle: Strings.restoredFavoritesFolderName,
                                      isFolder: true, context: .existing(context)) { objectId in
                     
                     guard let restoredFavoritesFolder = context.object(with: objectId) as? Bookmark else {
@@ -136,7 +136,7 @@ extension Bookmark {
                                            context: context)
             } else if !oldBookmarksData.isEmpty {
                 log.debug("No existing favorites found, adding restored bookmarks to 'Restored Bookmarks' folder.")
-                Bookmark.addInternal(url: nil, title: nil, customTitle: Strings.RestoredBookmarksFolderName, isFolder: true, context: .existing(context)) { objectId in
+                Bookmark.addInternal(url: nil, title: nil, customTitle: Strings.restoredBookmarksFolderName, isFolder: true, context: .existing(context)) { objectId in
                     
                     guard let restoredBookmarksFolder = context.object(with: objectId) as? Bookmark else {
                         return

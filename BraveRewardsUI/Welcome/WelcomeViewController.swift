@@ -75,8 +75,8 @@ class WelcomeViewController: UIViewController {
   }
   
   func showFailureAlert() {
-    let alertController = UIAlertController(title: Strings.GenericErrorTitle, message: Strings.GenericErrorBody, preferredStyle: .alert)
-    alertController.addAction(UIAlertAction(title: Strings.OK, style: .default, handler: nil))
+    let alertController = UIAlertController(title: Strings.genericErrorTitle, message: Strings.genericErrorBody, preferredStyle: .alert)
+    alertController.addAction(UIAlertAction(title: Strings.ok, style: .default, handler: nil))
     self.present(alertController, animated: true)
   }
   

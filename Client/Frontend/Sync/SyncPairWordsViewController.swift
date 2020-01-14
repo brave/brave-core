@@ -17,8 +17,8 @@ class SyncPairWordsViewController: SyncViewController {
     lazy var wordCountLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular)
-        label.appearanceTextColor = BraveUX.GreyE
-        label.text = String(format: Strings.WordCount, 0)
+        label.appearanceTextColor = BraveUX.greyE
+        label.text = String(format: Strings.wordCount, 0)
         return label
     }()
     
@@ -30,9 +30,9 @@ class SyncPairWordsViewController: SyncViewController {
     }()
     
     let useCameraButton = UIButton().then {
-        $0.setTitle(Strings.SyncSwitchBackToCameraButton, for: .normal)
+        $0.setTitle(Strings.syncSwitchBackToCameraButton, for: .normal)
         $0.addTarget(self, action: #selector(useCameraButtonTapped), for: .touchDown)
-        $0.setTitleColor(BraveUX.GreyH, for: .normal)
+        $0.setTitleColor(BraveUX.greyH, for: .normal)
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
     }
     
@@ -42,7 +42,7 @@ class SyncPairWordsViewController: SyncViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = Strings.SyncAddDeviceWordsTitle
+        title = Strings.syncAddDeviceWordsTitle
         
         scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -59,7 +59,7 @@ class SyncPairWordsViewController: SyncViewController {
         
         codewordsView = SyncCodewordsView(data: [])
         codewordsView.wordCountChangeCallback = { (count) in
-            self.wordCountLabel.text = String(format: Strings.WordCount, count)
+            self.wordCountLabel.text = String(format: Strings.wordCount, count)
         }
         containerView.addSubview(codewordsView)
         containerView.addSubview(wordCountLabel)
@@ -75,7 +75,7 @@ class SyncPairWordsViewController: SyncViewController {
         view.addSubview(loadingView)
         view.addSubview(useCameraButton)
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.Confirm, style: .done, target: self, action: #selector(SEL_done))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.confirm, style: .done, target: self, action: #selector(SEL_done))
         
         edgesForExtendedLayout = UIRectEdge()
         
@@ -157,8 +157,8 @@ class SyncPairWordsViewController: SyncViewController {
                 // No alert
                 return
             }
-            let title = title ?? Strings.UnableToConnectTitle
-            let message = message ?? Strings.UnableToConnectDescription
+            let title = title ?? Strings.unableToConnectTitle
+            let message = message ?? Strings.unableToConnectDescription
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
             self.present(alert, animated: true, completion: nil)
@@ -167,8 +167,8 @@ class SyncPairWordsViewController: SyncViewController {
         let codes = self.codewordsView.codeWords()
 
         // Maybe temporary validation, sync server has issues without this validation
-        if codes.count < Sync.SeedByteLength / 2 {
-            alert(title: Strings.NotEnoughWordsTitle, message: Strings.NotEnoughWordsDescription)
+        if codes.count < Sync.seedByteLength / 2 {
+            alert(title: Strings.notEnoughWordsTitle, message: Strings.notEnoughWordsDescription)
             return
         }
         

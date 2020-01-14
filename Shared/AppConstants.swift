@@ -51,10 +51,10 @@ public enum KVOConstants: String {
 }
 
 public struct AppConstants {
-    public static let IsRunningTest = NSClassFromString("XCTestCase") != nil || ProcessInfo.processInfo.arguments.contains(LaunchArguments.Test)
+    public static let isRunningTest = NSClassFromString("XCTestCase") != nil || ProcessInfo.processInfo.arguments.contains(LaunchArguments.test)
 
     /// Build Channel.
-    public static let BuildChannel: AppBuildChannel = {
+    public static let buildChannel: AppBuildChannel = {
         #if MOZ_CHANNEL_RELEASE
             return AppBuildChannel.release
         #elseif MOZ_CHANNEL_BETA
@@ -78,7 +78,7 @@ public struct AppConstants {
         return scheme
     }()
 
-    public static let PrefSendUsageData = "settings.sendUsageData"
+    public static let prefSendUsageData = "settings.sendUsageData"
 
     /// Whether we just mirror (false) or actively do a full bookmark merge and upload (true).
     public static var shouldMergeBookmarks = false

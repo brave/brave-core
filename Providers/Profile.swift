@@ -153,7 +153,7 @@ open class BrowserProfile: Profile {
         // Always start by needing invalidation.
         // This is the same as self.history.setTopSitesNeedsInvalidation, but without the
         // side-effect of instantiating SQLiteHistory (and thus BrowserDB) on the main thread.
-        prefs.setBool(false, forKey: PrefsKeys.KeyTopSitesCacheIsValid)
+        prefs.setBool(false, forKey: PrefsKeys.keyTopSitesCacheIsValid)
     }
 
     func reopen() {

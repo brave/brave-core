@@ -38,7 +38,7 @@ class AlertPopupView: PopupView {
         }
         
         titleLabel = UILabel(frame: CGRect.zero)
-        titleLabel.textColor = BraveUX.GreyJ
+        titleLabel.textColor = BraveUX.greyJ
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont.systemFont(ofSize: titleSize, weight: titleWeight)
         titleLabel.text = title
@@ -46,7 +46,7 @@ class AlertPopupView: PopupView {
         containerView.addSubview(titleLabel)
         
         messageLabel = UILabel(frame: CGRect.zero)
-        messageLabel.textColor = BraveUX.GreyH
+        messageLabel.textColor = BraveUX.greyH
         messageLabel.textAlignment = .center
         messageLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
         messageLabel.text = message
@@ -74,7 +74,7 @@ class AlertPopupView: PopupView {
         
         setPopupContentView(view: containerView)
         setStyle(popupStyle: .dialog)
-        setDialogColor(color: BraveUX.PopupDialogColorLight)
+        setDialogColor(color: BraveUX.popupDialogColorLight)
     }
     
     func update(title: String) {

@@ -6,7 +6,7 @@
 import XCTest
 
 class FeatureSwitchTests: XCTestCase {
-    let buildChannel = AppConstants.BuildChannel
+    let buildChannel = AppConstants.buildChannel
 
     func testPersistent() {
         let featureSwitch = FeatureSwitch(named: "test-persistent-over-restarts", allowPercentage: 50, buildChannel: buildChannel)

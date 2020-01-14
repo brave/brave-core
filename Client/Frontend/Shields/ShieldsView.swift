@@ -23,7 +23,7 @@ extension ShieldsViewController {
         
         // Global Shields Override
         let shieldOverrideControl: ToggleView = {
-            let toggleView = ToggleView(title: Strings.Site_shield_settings, toggleSide: .right)
+            let toggleView = ToggleView(title: Strings.siteShieldSettings, toggleSide: .right)
             toggleView.titleLabel.font = .systemFont(ofSize: 17.0, weight: .medium)
             return toggleView
         }()
@@ -88,7 +88,7 @@ extension ShieldsViewController {
             let label = UILabel()
             label.numberOfLines = 0
             label.font = .systemFont(ofSize: 15.0)
-            label.text = Strings.Shields_Overview
+            label.text = Strings.shieldsOverview
             return label
         }()
         
@@ -96,7 +96,7 @@ extension ShieldsViewController {
             let label = UILabel()
             label.numberOfLines = 0
             label.font = .systemFont(ofSize: 15.0)
-            label.text = Strings.Shields_Overview_Footer
+            label.text = Strings.shieldsOverviewFooter
             return label
         }()
         
@@ -126,7 +126,7 @@ extension ShieldsViewController {
         
         private class func dividerView() -> UIView {
             let divider = UIView()
-            divider.backgroundColor = BraveUX.ColorForSidebarLineSeparators
+            divider.backgroundColor = BraveUX.colorForSidebarLineSeparators
             divider.snp.makeConstraints { $0.height.equalTo(1.0 / UIScreen.main.scale) }
             return divider
         }
@@ -142,20 +142,20 @@ extension ShieldsViewController {
         }()
         
         // Stats
-        let statsHeaderLabel = headerLabel(title: Strings.Blocking_Monitor)
-        let adsTrackersStatView = StatView(title: Strings.Ads_and_Trackers)
-        let httpsUpgradesStatView = StatView(title: Strings.HTTPS_Upgrades)
-        let scriptsBlockedStatView = StatView(title: Strings.Scripts_Blocked)
-        let fingerprintingStatView = StatView(title: Strings.Fingerprinting_Methods)
+        let statsHeaderLabel = headerLabel(title: Strings.blockingMonitor)
+        let adsTrackersStatView = StatView(title: Strings.adsAndTrackers)
+        let httpsUpgradesStatView = StatView(title: Strings.HTTPSUpgrades)
+        let scriptsBlockedStatView = StatView(title: Strings.scriptsBlocked)
+        let fingerprintingStatView = StatView(title: Strings.fingerprintingMethods)
         
         // Settings
         let settingsDivider = dividerView()
-        let settingsHeaderLabel = headerLabel(title: Strings.Individual_Controls)
-        let adsTrackersControl = ToggleView(title: Strings.Block_Ads_and_Tracking)
-        let httpsUpgradesControl = ToggleView(title: Strings.HTTPS_Everywhere)
-        let blockMalwareControl = ToggleView(title: Strings.Block_Phishing)
-        let blockScriptsControl = ToggleView(title: Strings.Block_Scripts)
-        let fingerprintingControl = ToggleView(title: Strings.Fingerprinting_Protection_wrapped)
+        let settingsHeaderLabel = headerLabel(title: Strings.individualControls)
+        let adsTrackersControl = ToggleView(title: Strings.blockAdsAndTracking)
+        let httpsUpgradesControl = ToggleView(title: Strings.HTTPSEverywhere)
+        let blockMalwareControl = ToggleView(title: Strings.blockPhishing)
+        let blockScriptsControl = ToggleView(title: Strings.blockScripts)
+        let fingerprintingControl = ToggleView(title: Strings.fingerprintingProtectionWrapped)
         
         override init(frame: CGRect) {
             super.init(frame: frame)

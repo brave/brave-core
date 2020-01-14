@@ -88,7 +88,7 @@ class LoginsHelper: TabContentScript {
 
         var attributes = [NSAttributedString.Key: AnyObject]()
         attributes[NSAttributedString.Key.font] = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular)
-        attributes[NSAttributedString.Key.foregroundColor] = UIColor.Photon.Grey60
+        attributes[NSAttributedString.Key.foregroundColor] = UIColor.Photon.grey60
         let attr = NSMutableAttributedString(string: string, attributes: attributes)
         let font: UIFont = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.medium)
         for range in ranges {
@@ -140,9 +140,9 @@ class LoginsHelper: TabContentScript {
 
         let promptMessage: String
         if let username = login.username {
-            promptMessage = String(format: Strings.SaveLoginUsernamePrompt, username, login.hostname)
+            promptMessage = String(format: Strings.saveLoginUsernamePrompt, username, login.hostname)
         } else {
-            promptMessage = String(format: Strings.SaveLoginPrompt, login.hostname)
+            promptMessage = String(format: Strings.saveLoginPrompt, login.hostname)
         }
 
         if let existingPrompt = self.snackBar {
@@ -150,12 +150,12 @@ class LoginsHelper: TabContentScript {
         }
 
         snackBar = TimerSnackBar(text: promptMessage, img: #imageLiteral(resourceName: "shields-menu-icon"))
-        let dontSave = SnackButton(title: Strings.LoginsHelperDontSaveButtonTitle, accessibilityIdentifier: "SaveLoginPrompt.dontSaveButton") { bar in
+        let dontSave = SnackButton(title: Strings.loginsHelperDontSaveButtonTitle, accessibilityIdentifier: "SaveLoginPrompt.dontSaveButton") { bar in
             self.tab?.removeSnackbar(bar)
             self.snackBar = nil
             return
         }
-        let save = SnackButton(title: Strings.LoginsHelperSaveLoginButtonTitle, accessibilityIdentifier: "SaveLoginPrompt.saveLoginButton") { bar in
+        let save = SnackButton(title: Strings.loginsHelperSaveLoginButtonTitle, accessibilityIdentifier: "SaveLoginPrompt.saveLoginButton") { bar in
             self.tab?.removeSnackbar(bar)
             self.snackBar = nil
             self.profile.logins.addLogin(login)
@@ -174,9 +174,9 @@ class LoginsHelper: TabContentScript {
 
         let formatted: String
         if let username = new.username {
-            formatted = String(format: Strings.UpdateLoginUsernamePrompt, username, new.hostname)
+            formatted = String(format: Strings.updateLoginUsernamePrompt, username, new.hostname)
         } else {
-            formatted = String(format: Strings.UpdateLoginPrompt, new.hostname)
+            formatted = String(format: Strings.updateLoginPrompt, new.hostname)
         }
 
         if let existingPrompt = self.snackBar {
@@ -184,12 +184,12 @@ class LoginsHelper: TabContentScript {
         }
 
         snackBar = TimerSnackBar(text: formatted, img: #imageLiteral(resourceName: "key"))
-        let dontSave = SnackButton(title: Strings.LoginsHelperDontUpdateButtonTitle, accessibilityIdentifier: "UpdateLoginPrompt.donttUpdateButton") { bar in
+        let dontSave = SnackButton(title: Strings.loginsHelperDontUpdateButtonTitle, accessibilityIdentifier: "UpdateLoginPrompt.donttUpdateButton") { bar in
             self.tab?.removeSnackbar(bar)
             self.snackBar = nil
             return
         }
-        let update = SnackButton(title: Strings.LoginsHelperUpdateButtonTitle, accessibilityIdentifier: "UpdateLoginPrompt.updateButton") { bar in
+        let update = SnackButton(title: Strings.loginsHelperUpdateButtonTitle, accessibilityIdentifier: "UpdateLoginPrompt.updateButton") { bar in
             self.tab?.removeSnackbar(bar)
             self.snackBar = nil
             self.profile.logins.updateLoginByGUID(guid, new: new, significant: new.isSignificantlyDifferentFrom(old))

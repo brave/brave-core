@@ -20,9 +20,9 @@ enum InfoItem: Int {
 }
 
 private struct LoginDetailUX {
-    static let InfoRowHeight: CGFloat = 58
-    static let DeleteRowHeight: CGFloat = 44
-    static let SeparatorHeight: CGFloat = 44
+    static let infoRowHeight: CGFloat = 58
+    static let deleteRowHeight: CGFloat = 44
+    static let separatorHeight: CGFloat = 44
 }
 
 class LoginDetailViewController: UIViewController {
@@ -90,8 +90,8 @@ class LoginDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        tableView.separatorColor = SettingsUX.TableViewSeparatorColor
-        tableView.backgroundColor = SettingsUX.TableViewHeaderBackgroundColor
+        tableView.separatorColor = SettingsUX.tableViewSeparatorColor
+        tableView.backgroundColor = SettingsUX.tableViewHeaderBackgroundColor
         tableView.accessibilityIdentifier = "Login Detail List"
         tableView.delegate = self
         tableView.dataSource = self
@@ -101,7 +101,7 @@ class LoginDetailViewController: UIViewController {
 
         // Add a line on top of the table view so when the user pulls down it looks 'correct'.
         let topLine = UIView(frame: CGRect(width: tableView.frame.width, height: 0.5))
-        topLine.backgroundColor = SettingsUX.TableViewSeparatorColor
+        topLine.backgroundColor = SettingsUX.tableViewSeparatorColor
         tableView.tableHeaderView = topLine
 
         // Normally UITableViewControllers handle responding to content inset changes from keyboard events when editing
@@ -146,7 +146,7 @@ extension LoginDetailViewController: UITableViewDataSource {
         case .usernameItem:
             let loginCell = dequeueLoginCellForIndexPath(indexPath)
             loginCell.style = .noIconAndBothLabels
-            loginCell.highlightedLabelTitle = Strings.LoginDetailUsernameCellTitle
+            loginCell.highlightedLabelTitle = Strings.loginDetailUsernameCellTitle
             loginCell.descriptionLabel.text = login.username
             loginCell.descriptionLabel.keyboardType = .emailAddress
             loginCell.descriptionLabel.returnKeyType = .next
@@ -158,7 +158,7 @@ extension LoginDetailViewController: UITableViewDataSource {
         case .passwordItem:
             let loginCell = dequeueLoginCellForIndexPath(indexPath)
             loginCell.style = .noIconAndBothLabels
-            loginCell.highlightedLabelTitle = Strings.LoginDetailPasswordCellTitle
+            loginCell.highlightedLabelTitle = Strings.loginDetailPasswordCellTitle
             loginCell.descriptionLabel.text = login.password
             loginCell.descriptionLabel.returnKeyType = .default
             loginCell.displayDescriptionAsPassword = true
@@ -170,7 +170,7 @@ extension LoginDetailViewController: UITableViewDataSource {
         case .websiteItem:
             let loginCell = dequeueLoginCellForIndexPath(indexPath)
             loginCell.style = .noIconAndBothLabels
-            loginCell.highlightedLabelTitle = Strings.LoginDetailWebsiteCellTitle
+            loginCell.highlightedLabelTitle = Strings.loginDetailWebsiteCellTitle
             loginCell.descriptionLabel.text = login.hostname
             websiteField = loginCell.descriptionLabel
             websiteField?.accessibilityIdentifier = "websiteField"
@@ -180,7 +180,7 @@ extension LoginDetailViewController: UITableViewDataSource {
             // swiftlint:disable:next force_cast
             let footer = tableView.dequeueReusableHeaderFooterView(withIdentifier: SeparatorIdentifier) as! SettingsTableSectionHeaderFooterView
             footer.titleAlignment = .top
-            let lastModified = Strings.LoginDetailLastModifiedCellFormatTitle
+            let lastModified = Strings.loginDetailLastModifiedCellFormatTitle
             let formattedLabel = String(format: lastModified, Date.fromMicrosecondTimestamp(login.timePasswordChanged).toRelativeTimeString())
             footer.titleLabel.text = formattedLabel
             let cell = wrapFooter(footer, withCellFromTableView: tableView, atIndexPath: indexPath)
@@ -188,9 +188,9 @@ extension LoginDetailViewController: UITableViewDataSource {
 
         case .deleteItem:
             let deleteCell = tableView.dequeueReusableCell(withIdentifier: DefaultCellIdentifier, for: indexPath)
-            deleteCell.textLabel?.text = Strings.DeleteLoginButtonTitle
+            deleteCell.textLabel?.text = Strings.deleteLoginButtonTitle
             deleteCell.textLabel?.textAlignment = .center
-            deleteCell.textLabel?.textColor = UIConstants.DestructiveRed
+            deleteCell.textLabel?.textColor = UIConstants.destructiveRed
             deleteCell.accessibilityTraits = UIAccessibilityTraits.button
             return deleteCell
         }
@@ -248,11 +248,11 @@ extension LoginDetailViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         switch InfoItem(rawValue: indexPath.row)! {
         case .usernameItem, .passwordItem, .websiteItem:
-            return LoginDetailUX.InfoRowHeight
+            return LoginDetailUX.infoRowHeight
         case .lastModifiedSeparator:
-            return LoginDetailUX.SeparatorHeight
+            return LoginDetailUX.separatorHeight
         case .deleteItem:
-            return LoginDetailUX.DeleteRowHeight
+            return LoginDetailUX.deleteRowHeight
         }
     }
 }

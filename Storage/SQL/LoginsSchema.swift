@@ -19,10 +19,10 @@ private let AllTables: [String] = [
 private let log = Logger.syncLogger
 
 open class LoginsSchema: Schema {
-    static let DefaultVersion = 3
+    static let defaultVersion = 3
     
     public var name: String { return "LOGINS" }
-    public var version: Int { return LoginsSchema.DefaultVersion }
+    public var version: Int { return LoginsSchema.defaultVersion }
 
     public init() {}
 

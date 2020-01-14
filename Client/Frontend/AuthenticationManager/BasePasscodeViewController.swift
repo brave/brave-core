@@ -65,22 +65,22 @@ extension BasePasscodeViewController {
         if let timeLeft = authenticationInfo?.lockoutTimeLeft {
             let inMinutes = Int(ceil(timeLeft / 60))
             if inMinutes == 1 {
-                displayError(Strings.AuthenticationMaximumAttemptsReachedOneMinute)
+                displayError(Strings.authenticationMaximumAttemptsReachedOneMinute)
             } else {
-                displayError(String.localizedStringWithFormat(Strings.AuthenticationMaximumAttemptsReached, inMinutes))
+                displayError(String.localizedStringWithFormat(Strings.authenticationMaximumAttemptsReached, inMinutes))
             }
         } else {
-            displayError(Strings.AuthenticationMaximumAttemptsReachedNoTime)
+            displayError(Strings.authenticationMaximumAttemptsReachedNoTime)
         }
     }
 
     func failMismatchPasscode() {
-        displayError(Strings.PasscodeConfirmMisMatchErrorText)
+        displayError(Strings.passcodeConfirmMisMatchErrorText)
     }
 
     func failMustBeDifferent() {
         
-        displayError(Strings.PasscodeMatchOldErrorText)
+        displayError(Strings.passcodeMatchOldErrorText)
     }
 
     func failIncorrectPasscode(_ inputView: PasscodeInputView) {
@@ -88,11 +88,11 @@ extension BasePasscodeViewController {
         let numberOfAttempts = authenticationInfo?.failedAttempts ?? 0
         if numberOfAttempts == AllowedPasscodeFailedAttempts {
             authenticationInfo?.lockOutUser()
-            displayError(Strings.AuthenticationMaximumAttemptsReachedNoTime)
+            displayError(Strings.authenticationMaximumAttemptsReachedNoTime)
             inputView.isUserInteractionEnabled = false
             resignFirstResponder()
         } else {
-            displayError(String(format: Strings.AuthenticationIncorrectAttemptsRemaining, (AllowedPasscodeFailedAttempts - numberOfAttempts)))
+            displayError(String(format: Strings.authenticationIncorrectAttemptsRemaining, (AllowedPasscodeFailedAttempts - numberOfAttempts)))
         }
 
         inputView.resetCode()

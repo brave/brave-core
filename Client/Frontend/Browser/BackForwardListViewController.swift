@@ -10,8 +10,8 @@ import Storage
 import SnapKit
 
 private struct BackForwardViewUX {
-    static let RowHeight: CGFloat = 50
-    static let BackgroundColor = UIColor.Photon.Grey10A40
+    static let rowHeight: CGFloat = 50
+    static let backgroundColor = UIColor.Photon.grey10A40
 }
 
 class BackForwardListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate {
@@ -30,7 +30,7 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
         tableView.delegate = self
         tableView.alwaysBounceVertical = false
         tableView.register(BackForwardTableViewCell.self, forCellReuseIdentifier: self.BackForwardListCellIdentifier)
-        tableView.backgroundColor = BackForwardViewUX.BackgroundColor
+        tableView.backgroundColor = BackForwardViewUX.backgroundColor
         let blurEffect = UIBlurEffect(style: .regular)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         tableView.backgroundView = blurEffectView
@@ -52,7 +52,7 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
     var tableHeight: CGFloat {
         get {
             assert(Thread.isMainThread, "tableHeight interacts with UIKit components - cannot call from background thread.")
-            return min(BackForwardViewUX.RowHeight * CGFloat(listData.count), self.view.frame.height/2)
+            return min(BackForwardViewUX.rowHeight * CGFloat(listData.count), self.view.frame.height/2)
         }
     }
     
@@ -133,7 +133,7 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
         super.viewWillTransition(to: size, with: coordinator)
         let correctHeight = {
             self.tableView.snp.updateConstraints { make in
-                make.height.equalTo(min(BackForwardViewUX.RowHeight * CGFloat(self.listData.count), size.height / 2))
+                make.height.equalTo(min(BackForwardViewUX.rowHeight * CGFloat(self.listData.count), size.height / 2))
             }
         }
         coordinator.animate(alongsideTransition: nil) { _ in
@@ -211,7 +211,7 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
         cell.connectingForwards = indexPath.item != 0
 
         guard let url = urlString, !item.url.isAboutHomeURL else {
-            cell.site = Site(url: item.url.absoluteString, title: Strings.Home)
+            cell.site = Site(url: item.url.absoluteString, title: Strings.home)
             return cell
         }
 
@@ -227,6 +227,6 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt  indexPath: IndexPath) -> CGFloat {
-        return BackForwardViewUX.RowHeight
+        return BackForwardViewUX.rowHeight
     }
 }

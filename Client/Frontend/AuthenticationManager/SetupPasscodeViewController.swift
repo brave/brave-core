@@ -12,10 +12,10 @@ class SetupPasscodeViewController: PagingPasscodeViewController, PasscodeInputVi
 
     override init() {
         super.init()
-        self.title = Strings.AuthenticationSetPasscode
+        self.title = Strings.authenticationSetPasscode
         self.panes = [
-            PasscodePane(title: Strings.AuthenticationEnterAPasscode, passcodeSize: 6),
-            PasscodePane(title: Strings.AuthenticationReenterPasscode, passcodeSize: 6),
+            PasscodePane(title: Strings.authenticationEnterAPasscode, passcodeSize: 6),
+            PasscodePane(title: Strings.authenticationReenterPasscode, passcodeSize: 6),
         ]
     }
     
@@ -61,6 +61,6 @@ class SetupPasscodeViewController: PagingPasscodeViewController, PasscodeInputVi
     fileprivate func createPasscodeWithCode(_ code: String) {
         KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(AuthenticationKeychainInfo(passcode: code))
 
-        NotificationCenter.default.post(name: .PasscodeDidCreate, object: nil)
+        NotificationCenter.default.post(name: .passcodeDidCreate, object: nil)
     }
 }

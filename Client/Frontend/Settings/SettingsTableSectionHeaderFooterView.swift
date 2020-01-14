@@ -6,16 +6,16 @@ import Shared
 import UIKit
 
 struct SettingsUX {
-    static let TableViewHeaderBackgroundColor = UIConstants.AppBackgroundColor
-    static let TableViewHeaderTextColor = UIColor.Photon.Grey50
-    static let TableViewRowTextColor = UIColor.Photon.Grey90
-    static let TableViewDisabledRowTextColor = UIColor.Photon.Grey40
-    static let TableViewSeparatorColor = UIColor.Photon.Grey30
-    static let TableViewHeaderFooterHeight = CGFloat(44)
-    static let TableViewRowErrorTextColor = UIColor.Photon.Red50
-    static let TableViewRowWarningTextColor = UIColor.Photon.Orange50
-    static let TableViewRowActionAccessoryColor = UIColor.Photon.Blue50
-    static let TableViewRowSyncTextColor = UIColor.Photon.Grey80
+    static let tableViewHeaderBackgroundColor = UIConstants.appBackgroundColor
+    static let tableViewHeaderTextColor = UIColor.Photon.grey50
+    static let tableViewRowTextColor = UIColor.Photon.grey90
+    static let tableViewDisabledRowTextColor = UIColor.Photon.grey40
+    static let tableViewSeparatorColor = UIColor.Photon.grey30
+    static let tableViewHeaderFooterHeight = CGFloat(44)
+    static let tableViewRowErrorTextColor = UIColor.Photon.red50
+    static let tableViewRowWarningTextColor = UIColor.Photon.orange50
+    static let tableViewRowActionAccessoryColor = UIColor.Photon.blue50
+    static let tableViewRowSyncTextColor = UIColor.Photon.grey80
 }
 
 private struct SettingsTableSectionHeaderFooterViewUX {

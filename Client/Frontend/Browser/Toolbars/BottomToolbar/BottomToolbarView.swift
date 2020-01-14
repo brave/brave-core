@@ -65,7 +65,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
         addTabButton.accessibilityIdentifier = "TabToolbar.addTabButton"
         searchButton.accessibilityIdentifier = "TabToolbar.searchButton"
         accessibilityNavigationStyle = .combined
-        accessibilityLabel = Strings.TabToolbarAccessibilityLabel
+        accessibilityLabel = Strings.tabToolbarAccessibilityLabel
     }
 
     required init(coder aDecoder: NSCoder) {

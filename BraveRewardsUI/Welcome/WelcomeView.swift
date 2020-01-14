@@ -8,7 +8,7 @@ extension WelcomeViewController {
   
   private class HeaderView: UIView {
     
-    let createWalletButton = CreateWalletButton(titleText: Strings.LearnMoreCreateWallet1.uppercased()).then {
+    let createWalletButton = CreateWalletButton(titleText: Strings.learnMoreCreateWallet1.uppercased()).then {
       $0.titleLabel?.font = .systemFont(ofSize: 14.0, weight: .semibold)
       $0.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
     }
@@ -17,8 +17,8 @@ extension WelcomeViewController {
       $0.font = .systemFont(ofSize: 12.0)
       $0.appearanceTextColor = Colors.grey900
       $0.textAlignment = .center
-      $0.text = Strings.WelcomeDisclaimerInformation
-      $0.setURLInfo([Strings.TermsOfServiceURL: "terms", Strings.PrivacyPolicyURL: "policy"])
+      $0.text = Strings.welcomeDisclaimerInformation
+      $0.setURLInfo([Strings.termsOfServiceURL: "terms", Strings.privacyPolicyURL: "policy"])
     }
     
     let backgroundView = GradientView.purpleRewardsGradientView()
@@ -43,7 +43,7 @@ extension WelcomeViewController {
           $0.font = .systemFont(ofSize: 28.0, weight: .medium)
           $0.textAlignment = .center
           $0.attributedText = {
-            let title = NSMutableAttributedString(string: Strings.BraveRewards)
+            let title = NSMutableAttributedString(string: Strings.braveRewards)
             if let trademarkRange = title.string.range(of: "™") {
               title.addAttributes(
                 [
@@ -61,7 +61,7 @@ extension WelcomeViewController {
           $0.font = .systemFont(ofSize: 22.0)
           $0.textAlignment = .center
           $0.numberOfLines = 0
-          $0.text = Strings.LearnMoreSubtitle
+          $0.text = Strings.learnMoreSubtitle
         }),
         .customSpace(15.0),
         .view(UILabel().then {
@@ -69,7 +69,7 @@ extension WelcomeViewController {
           $0.font = .systemFont(ofSize: 16.0)
           $0.textAlignment = .center
           $0.numberOfLines = 0
-          $0.text = Strings.LearnMoreBody
+          $0.text = Strings.learnMoreBody
         }),
         .customSpace(25.0),
         .view(createWalletButton),
@@ -77,7 +77,7 @@ extension WelcomeViewController {
         .view(termsOfServiceLabel),
         .customSpace(25.0),
         .view(UILabel().then {
-          $0.text = Strings.LearnMoreHowItWorks
+          $0.text = Strings.learnMoreHowItWorks
           $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.5)
           $0.textAlignment = .center
           $0.font = .systemFont(ofSize: 16.0)
@@ -179,7 +179,7 @@ extension WelcomeViewController {
   
   class View: UIView {
     
-    let createWalletButton = CreateWalletButton(titleText: Strings.LearnMoreCreateWallet2.uppercased()).then {
+    let createWalletButton = CreateWalletButton(titleText: Strings.learnMoreCreateWallet2.uppercased()).then {
       $0.titleLabel?.font = .systemFont(ofSize: 14.0, weight: .semibold)
       $0.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
       $0.backgroundColor = BraveUX.braveOrange
@@ -191,8 +191,8 @@ extension WelcomeViewController {
       $0.appearanceTextColor = Colors.grey200
       $0.linkColor = .black
       $0.textAlignment = .center
-      $0.text = Strings.WelcomeDisclaimerInformation
-      $0.setURLInfo([Strings.TermsOfServiceURL: "terms", Strings.PrivacyPolicyURL: "policy"])
+      $0.text = Strings.welcomeDisclaimerInformation
+      $0.setURLInfo([Strings.termsOfServiceURL: "terms", Strings.privacyPolicyURL: "policy"])
     }
     
     private let headerView = HeaderView()
@@ -237,14 +237,14 @@ extension WelcomeViewController {
       
       contentStackView.addStackViewItems(
         .view(UILabel().then {
-          $0.text = Strings.LearnMoreWhyTitle
+          $0.text = Strings.learnMoreWhyTitle
           $0.font = .systemFont(ofSize: 24.0)
           $0.appearanceTextColor = .black
           $0.numberOfLines = 0
         }),
         .customSpace(10.0),
         .view(UILabel().then {
-          $0.text = Strings.LearnMoreWhyBody
+          $0.text = Strings.learnMoreWhyBody
           $0.font = .systemFont(ofSize: 16.0)
           $0.appearanceTextColor = Colors.grey200
           $0.numberOfLines = 0
@@ -252,22 +252,22 @@ extension WelcomeViewController {
         .customSpace(20.0),
         .view(FeatureBlockView(
           icon: UIImage(frameworkResourceNamed: "turn-on-rewards"),
-          title: Strings.LearnMoreTurnOnRewardsTitle,
-          body: Strings.LearnMoreTurnOnRewardsBody
+          title: Strings.learnMoreTurnOnRewardsTitle,
+          body: Strings.learnMoreTurnOnRewardsBody
         )),
         .view(FeatureBlockView(
           icon: UIImage(frameworkResourceNamed: "ads-graphic"),
-          title: Strings.LearnMoreBraveAdsTitle,
-          body: Strings.LearnMoreBraveAdsBody
+          title: Strings.learnMoreBraveAdsTitle,
+          body: Strings.learnMoreBraveAdsBody
         )),
         .view(FeatureBlockView(
           icon: UIImage(frameworkResourceNamed: "send-tips"),
-          title: Strings.LearnMoreTipsTitle,
-          body: Strings.LearnMoreTipsBody
+          title: Strings.learnMoreTipsTitle,
+          body: Strings.learnMoreTipsBody
         )),
         .customSpace(40.0),
         .view(UILabel().then {
-          $0.text = Strings.LearnMoreReady
+          $0.text = Strings.learnMoreReady
           $0.font = .systemFont(ofSize: 20.0)
           $0.textAlignment = .center
           $0.appearanceTextColor = Colors.blurple400

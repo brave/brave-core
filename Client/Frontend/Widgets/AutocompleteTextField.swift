@@ -18,7 +18,7 @@ protocol AutocompleteTextFieldDelegate: class {
 }
 
 private struct AutocompleteTextFieldUX {
-       static let HighlightColor = UIColor.Defaults.iOSHighlightBlue
+       static let highlightColor = UIColor.Defaults.iOSHighlightBlue
 }
 
 class AutocompleteTextField: UITextField, UITextFieldDelegate {
@@ -43,7 +43,7 @@ class AutocompleteTextField: UITextField, UITextFieldDelegate {
     fileprivate var notifyTextChanged: (() -> Void)?
     private var lastReplacement: String?
 
-    var highlightColor = AutocompleteTextFieldUX.HighlightColor
+    var highlightColor = AutocompleteTextFieldUX.highlightColor
 
     override var text: String? {
         didSet {

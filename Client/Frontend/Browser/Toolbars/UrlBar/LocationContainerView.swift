@@ -9,13 +9,13 @@ import UIKit
 class LocationContainerView: UIView {
     
     private struct LocationContainerUX {
-        static let CornerRadius: CGFloat = 8.0
+        static let cornerRadius: CGFloat = 8.0
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         let layer = self.layer
-        layer.cornerRadius = LocationContainerUX.CornerRadius
+        layer.cornerRadius = LocationContainerUX.cornerRadius
         layer.masksToBounds = true
     }
     

@@ -21,7 +21,7 @@ class Toast: UIView {
 
     lazy var toastView: UIView = {
         let toastView = UIView()
-        toastView.backgroundColor = SimpleToastUX.ToastDefaultColor
+        toastView.backgroundColor = SimpleToastUX.toastDefaultColor
         return toastView
     }()
 
@@ -39,7 +39,7 @@ class Toast: UIView {
             self.snp.makeConstraints(makeConstraints)
             self.layoutIfNeeded()
 
-            UIView.animate(withDuration: SimpleToastUX.ToastAnimationDuration, animations: {
+            UIView.animate(withDuration: SimpleToastUX.toastAnimationDuration, animations: {
                 self.animationConstraint?.update(offset: 0)
                 self.layoutIfNeeded()
             }) { finished in
@@ -57,8 +57,8 @@ class Toast: UIView {
         dismissed = true
         superview?.removeGestureRecognizer(gestureRecognizer)
 
-        UIView.animate(withDuration: SimpleToastUX.ToastAnimationDuration, animations: {
-            self.animationConstraint?.update(offset: SimpleToastUX.ToastHeight)
+        UIView.animate(withDuration: SimpleToastUX.toastAnimationDuration, animations: {
+            self.animationConstraint?.update(offset: SimpleToastUX.toastHeight)
             self.layoutIfNeeded()
         }) { finished in
             self.removeFromSuperview()

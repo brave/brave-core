@@ -17,7 +17,7 @@ struct SessionRestoreHandler {
                     let sessionRestoreString = try String(contentsOfFile: sessionRestorePath)
 
                     defer {
-                        NotificationCenter.default.post(name: .DidRestoreSession, object: self)
+                        NotificationCenter.default.post(name: .didRestoreSession, object: self)
                     }
 
                     return GCDWebServerDataResponse(html: sessionRestoreString)

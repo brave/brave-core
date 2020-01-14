@@ -29,7 +29,7 @@ public class UserReferralProgram {
             return Bundle.main.infoDictionary?[key] as? String
         }
         
-        let host = AppConstants.BuildChannel == .developer ? HostUrl.staging : HostUrl.prod
+        let host = AppConstants.buildChannel == .developer ? HostUrl.staging : HostUrl.prod
         
         guard let apiKey = getPlistString(for: UserReferralProgram.apiKeyPlistKey)?.trimmingCharacters(in: .whitespacesAndNewlines) else {
                 log.error("Urp init error, failed to get values from Brave.plist.")
@@ -81,7 +81,7 @@ public class UserReferralProgram {
     }
     
     private func initRetryPingConnection(numberOfTimes: Int32) {
-        if AppConstants.BuildChannel.isPublic {
+        if AppConstants.buildChannel.isPublic {
             // Adding some time offset to be extra safe.
             let offset = 1.hours
             let _30daysFromToday = Date().timeIntervalSince1970 + 30.days + offset
@@ -171,7 +171,7 @@ public class UserReferralProgram {
             // Appending ref code to dau ping if user used installed the app via user referral program.
             if Preferences.URP.referralCodeDeleteDate.value == nil {
                 UrpLog.log("Setting new date for deleting referral code.")
-                let timeToDelete = AppConstants.BuildChannel.isPublic ? 90.days : 20.minutes
+                let timeToDelete = AppConstants.buildChannel.isPublic ? 90.days : 20.minutes
                 Preferences.URP.referralCodeDeleteDate.value = Date().timeIntervalSince1970 + timeToDelete
             }
             

@@ -57,11 +57,11 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
         var backgroundColor: UIColor {
             switch self {
             case .primary:
-                return BraveUX.Blue
+                return BraveUX.blue
             case .secondary:
-                return BraveUX.GreyE
+                return BraveUX.greyE
             case .destructive:
-                return BraveUX.Red
+                return BraveUX.red
             case .link:
                 return .clear
             }
@@ -69,7 +69,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
         
         var titleColor: UIColor {
             if self == .link {
-                return BraveUX.Blue
+                return BraveUX.blue
             }
             return .white
         }
@@ -140,7 +140,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
         
         overlayView = UIView(frame: bounds)
         overlayView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        overlayView.backgroundColor = BraveUX.GreyJ
+        overlayView.backgroundColor = BraveUX.greyJ
         overlayView.alpha = kPopupBackgroundAlpha
         overlayView.addGestureRecognizer(touchRecognizer)
         addSubview(overlayView)

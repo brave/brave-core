@@ -41,7 +41,7 @@ class ActivityStreamDataObserver: DataObserver {
     let invalidationTime: UInt64
     weak var delegate: DataObserverDelegate?
 
-    fileprivate let events: [Notification.Name] = [.ProfileDidFinishSyncing, .PrivateDataClearedHistory]
+    fileprivate let events: [Notification.Name] = [.profileDidFinishSyncing, .privateDataClearedHistory]
 
     init(profile: Profile) {
         self.profile = profile
@@ -60,7 +60,7 @@ class ActivityStreamDataObserver: DataObserver {
 
     @objc func notificationReceived(_ notification: Notification) {
         switch notification.name {
-        case .ProfileDidFinishSyncing, .PrivateDataClearedHistory:
+        case .profileDidFinishSyncing, .privateDataClearedHistory:
              refreshIfNeeded(forceHighlights: true, forceTopSites: true)
         default:
             log.warning("Received unexpected notification \(notification.name)")

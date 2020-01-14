@@ -8,20 +8,20 @@ import Storage
 class BackForwardTableViewCell: UITableViewCell {
     
     private struct BackForwardViewCellUX {
-        static let bgColor = UIColor.Photon.Grey50
+        static let bgColor = UIColor.Photon.grey50
         static let faviconWidth = 29
         static let faviconPadding: CGFloat = 20
         static let labelPadding = 20
         static let borderSmall = 2
         static let borderBold = 5
-        static let IconSize = 23
+        static let iconSize = 23
         static let fontSize: CGFloat = 12.0
-        static let textColor = UIColor.Photon.Grey80
+        static let textColor = UIColor.Photon.grey80
     }
     
     lazy var faviconView: UIImageView = {
         let faviconView = UIImageView(image: FaviconFetcher.defaultFavicon)
-        faviconView.backgroundColor = UIColor.Photon.White100
+        faviconView.backgroundColor = UIColor.Photon.white100
         faviconView.layer.cornerRadius = 6
         faviconView.layer.borderWidth = 0.5
         faviconView.layer.borderColor = UIColor(white: 0, alpha: 0.1).cgColor
@@ -55,12 +55,12 @@ class BackForwardTableViewCell: UITableViewCell {
                 faviconView.setFavicon(forSite: s, onCompletion: { [weak self] (color, url) in
                     if s.tileURL.isLocal {
                         self?.faviconView.image = #imageLiteral(resourceName: "faviconFox")
-                        self?.faviconView.image = self?.faviconView.image?.createScaled(CGSize(width: BackForwardViewCellUX.IconSize, height: BackForwardViewCellUX.IconSize))
-                        self?.faviconView.backgroundColor = UIColor.Photon.White100
+                        self?.faviconView.image = self?.faviconView.image?.createScaled(CGSize(width: BackForwardViewCellUX.iconSize, height: BackForwardViewCellUX.iconSize))
+                        self?.faviconView.backgroundColor = UIColor.Photon.white100
                         return
                     }
                     
-                    self?.faviconView.image = self?.faviconView.image?.createScaled(CGSize(width: BackForwardViewCellUX.IconSize, height: BackForwardViewCellUX.IconSize))
+                    self?.faviconView.image = self?.faviconView.image?.createScaled(CGSize(width: BackForwardViewCellUX.iconSize, height: BackForwardViewCellUX.iconSize))
                     self?.faviconView.backgroundColor = color == .clear ? .white : color
                 })
                 var title = s.title

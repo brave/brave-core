@@ -17,9 +17,9 @@ extension TippingViewController {
       
       confirmationView.faviconImageView.image = overviewView.faviconImageView.image
       confirmationView.faviconImageView.backgroundColor = overviewView.faviconImageView.backgroundColor
-      confirmationView.subtitleLabel.text = isMonthly ? Strings.TippingMonthlyTitle : Strings.TippingOneTimeTitle
+      confirmationView.subtitleLabel.text = isMonthly ? Strings.tippingMonthlyTitle : Strings.tippingOneTimeTitle
       
-      confirmationView.infoLabel.text = "\(name)\n\(tipAmount) \(Strings.BAT)\(isMonthly ? ", \(Strings.TippingRecurring)" : "")"
+      confirmationView.infoLabel.text = "\(name)\n\(tipAmount) \(Strings.BAT)\(isMonthly ? ", \(Strings.tippingRecurring)" : "")"
       
       if isMonthly, let recurringDate = recurringDate {
         confirmationView.monthlyTipLabel.attributedText = {
@@ -28,7 +28,7 @@ extension TippingViewController {
           paragraphStyle.lineBreakMode = .byWordWrapping
           paragraphStyle.lineSpacing = 8.0
           
-          let text = NSMutableAttributedString(string: "\(Strings.TippingRecurringDetails)\n", attributes: [
+          let text = NSMutableAttributedString(string: "\(Strings.tippingRecurringDetails)\n", attributes: [
             .font: UIFont.systemFont(ofSize: 14.0, weight: .medium),
             .foregroundColor: Colors.grey600
           ])

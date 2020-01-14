@@ -10,13 +10,13 @@ import SwiftKeychainWrapper
 import Deferred
 
 private struct LoginListUX {
-    static let RowHeight: CGFloat = 58
-    static let SearchHeight: CGFloat = 58
+    static let rowHeight: CGFloat = 58
+    static let searchHeight: CGFloat = 58
     static let selectionButtonFont = UIFont.systemFont(ofSize: 16)
-    static let selectionButtonTextColor = UIColor.Photon.White100
-    static let selectionButtonBackground = UIConstants.HighlightBlue
-    static let NoResultsFont: UIFont = UIFont.systemFont(ofSize: 16)
-    static let NoResultsTextColor: UIColor = UIColor.Photon.Grey40
+    static let selectionButtonTextColor = UIColor.Photon.white100
+    static let selectionButtonBackground = UIConstants.highlightBlue
+    static let noResultsFont: UIFont = UIFont.systemFont(ofSize: 16)
+    static let noResultsTextColor: UIColor = UIColor.Photon.grey40
 }
 
 private extension UITableView {
@@ -54,7 +54,7 @@ class LoginListViewController: UIViewController {
     fileprivate lazy var selectionButton: UIButton = {
         let button = UIButton()
         button.titleLabel?.font = LoginListUX.selectionButtonFont
-        button.setTitle(Strings.LoginListSelectAllButtonTitle, for: [])
+        button.setTitle(Strings.loginListSelectAllButtonTitle, for: [])
         button.setTitleColor(LoginListUX.selectionButtonTextColor, for: [])
         button.backgroundColor = LoginListUX.selectionButtonBackground
         button.addTarget(self, action: #selector(tappedSelectionButton), for: .touchUpInside)
@@ -81,15 +81,15 @@ class LoginListViewController: UIViewController {
         super.viewDidLoad()
 
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(remoteLoginsDidChange), name: .DataRemoteLoginChangesWereApplied, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(remoteLoginsDidChange), name: .dataRemoteLoginChangesWereApplied, object: nil)
         notificationCenter.addObserver(self, selector: #selector(dismissAlertController), name: UIApplication.didEnterBackgroundNotification, object: nil)
 
         tableView.contentInsetAdjustmentBehavior = .never
 
-        self.view.backgroundColor = UIColor.Photon.White100
+        self.view.backgroundColor = UIColor.Photon.white100
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(beginEditing))
 
-        self.title = Strings.LoginListScreenTitle
+        self.title = Strings.loginListScreenTitle
 
         searchView.delegate = self
         tableView.register(LoginTableViewCell.self, forCellReuseIdentifier: LoginCellIdentifier)
@@ -104,7 +104,7 @@ class LoginListViewController: UIViewController {
         searchView.snp.makeConstraints { make in
             make.top.equalTo(view.safeArea.top)
             make.leading.trailing.equalTo(self.view)
-            make.height.equalTo(LoginListUX.SearchHeight)
+            make.height.equalTo(LoginListUX.searchHeight)
         }
 
         tableView.snp.makeConstraints { make in
@@ -152,8 +152,8 @@ class LoginListViewController: UIViewController {
         // Show delete bar button item if we have selected any items
         if loginSelectionController.selectedCount > 0 {
             if navigationItem.rightBarButtonItem == nil {
-                navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.DeleteLoginButtonTitle, style: .plain, target: self, action: #selector(tappedDelete))
-                navigationItem.rightBarButtonItem?.tintColor = UIColor.Photon.Red50
+                navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.deleteLoginButtonTitle, style: .plain, target: self, action: #selector(tappedDelete))
+                navigationItem.rightBarButtonItem?.tintColor = UIColor.Photon.red50
             }
         } else {
             navigationItem.rightBarButtonItem = nil
@@ -162,9 +162,9 @@ class LoginListViewController: UIViewController {
 
     fileprivate func toggleSelectionTitle() {
         if loginSelectionController.selectedCount == loginDataSource.count {
-            selectionButton.setTitle(Strings.LoginListDeselectAllButtonTitle, for: [])
+            selectionButton.setTitle(Strings.loginListDeselectAllButtonTitle, for: [])
         } else {
-            selectionButton.setTitle(Strings.LoginListSelectAllButtonTitle, for: [])
+            selectionButton.setTitle(Strings.loginListSelectAllButtonTitle, for: [])
         }
     }
 
@@ -203,7 +203,7 @@ private extension LoginListViewController {
     @objc func beginEditing() {
         navigationItem.rightBarButtonItem = nil
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelSelection))
-        selectionButtonHeightConstraint?.update(offset: UIConstants.ToolbarHeight)
+        selectionButtonHeightConstraint?.update(offset: UIConstants.toolbarHeight)
         self.view.layoutIfNeeded()
         tableView.setEditing(true, animated: true)
     }
@@ -290,7 +290,7 @@ extension LoginListViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return LoginListUX.RowHeight
+        return LoginListUX.rowHeight
     }
 
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
@@ -571,9 +571,9 @@ fileprivate class NoLoginsView: UIView {
 
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = LoginListUX.NoResultsFont
-        label.textColor = LoginListUX.NoResultsTextColor
-        label.text = Strings.LoginListNoLoginTitle
+        label.font = LoginListUX.noResultsFont
+        label.textColor = LoginListUX.noResultsTextColor
+        label.text = Strings.loginListNoLoginTitle
         return label
     }()
 
@@ -613,7 +613,7 @@ fileprivate class LoadingLoginsView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(indicator)
-        backgroundColor = UIColor.Photon.White100
+        backgroundColor = UIColor.Photon.white100
         indicator.startAnimating()
     }
 

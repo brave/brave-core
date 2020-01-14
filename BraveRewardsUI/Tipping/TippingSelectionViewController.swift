@@ -33,7 +33,7 @@ class BATValueOptionsSelectionViewController: OptionsSelectionViewController<BAT
 
     var displayString = options[indexPath.row].displayString
     if !isSelectionPrecise {
-      displayString = String.localizedStringWithFormat(Strings.SettingsAutoContributeUpToValue, displayString)
+      displayString = String.localizedStringWithFormat(Strings.settingsAutoContributeUpToValue, displayString)
     }
     let dollarAmount = ledger?.dollarStringForBATAmount(options[indexPath.row].doubleValue) ?? ""
     

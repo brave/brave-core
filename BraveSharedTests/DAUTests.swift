@@ -248,7 +248,7 @@ class DAUTests: XCTestCase {
     }
     
     func testNoPingOnDevelopmentBuild() {
-        XCTAssertTrue(AppConstants.BuildChannel == .developer)
+        XCTAssertTrue(AppConstants.buildChannel == .developer)
         
         let dau = DAU()
         XCTAssertFalse(dau.sendPingToServer())

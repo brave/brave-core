@@ -12,7 +12,7 @@ import XCTest
 
 extension BrowserDB {
     func assertQueryReturns(_ query: String, int: Int) {
-        XCTAssertEqual(int, self.runQuery(query, args: nil, factory: IntFactory).value.successValue![0])
+        XCTAssertEqual(int, self.runQuery(query, args: nil, factory: intFactory).value.successValue![0])
     }
 }
 

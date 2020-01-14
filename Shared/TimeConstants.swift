@@ -63,7 +63,7 @@ extension Date {
         }
 
         if components.month == 1 {
-            return String(format: Strings.TimeConstantMoreThanMonthAgoText)
+            return String(format: Strings.timeConstantMoreThanMonthAgoText)
         }
 
         if components.month! > 1 {
@@ -71,23 +71,23 @@ extension Date {
         }
 
         if components.weekOfYear! > 0 {
-            return String(format: Strings.TimeConstantMoreThanWeekAgoText)
+            return String(format: Strings.timeConstantMoreThanWeekAgoText)
         }
 
         if components.day == 1 {
-            return String(format: Strings.TimeConstantYesterdayText)
+            return String(format: Strings.timeConstantYesterdayText)
         }
 
         if components.day! > 1 {
-            return String(format: Strings.TimeConstantThisWeekText, String(describing: components.day))
+            return String(format: Strings.timeConstantThisWeekText, String(describing: components.day))
         }
 
         if components.hour! > 0 || components.minute! > 0 {
             let absoluteTime = DateFormatter.localizedString(from: self, dateStyle: .none, timeStyle: .short)
-            return String(format: Strings.TimeConstantTodayAtFormat, absoluteTime)
+            return String(format: Strings.timeConstantTodayAtFormat, absoluteTime)
         }
 
-        return String(format: Strings.TimeConstantJustNowText)
+        return String(format: Strings.timeConstantJustNowText)
     }
 
     public func toRFC822String() -> String {
@@ -168,10 +168,10 @@ public func millisecondsToDecimalSeconds(_ input: Timestamp) -> String {
 
 // PRAGMA MARK: TimeConstants.swift
 extension Strings {
-    public static let TimeConstantMoreThanMonthAgoText = NSLocalizedString("TimeConstantMoreThanMonthAgoText", tableName: "Shared", bundle: Bundle.shared, value: "more than a month ago", comment: "Relative date for dates older than a month and less than two months.")
-    public static let TimeConstantMoreThanWeekAgoText = NSLocalizedString("TimeConstantMoreThanWeekAgoText", tableName: "Shared", bundle: Bundle.shared, value: "more than a week ago", comment: "Description for a date more than a week ago, but less than a month ago.")
-    public static let TimeConstantYesterdayText = NSLocalizedString("TimeConstantYesterdayText", tableName: "Shared", bundle: Bundle.shared, value: "yesterday", comment: "Relative date for yesterday.")
-    public static let TimeConstantThisWeekText = NSLocalizedString("TimeConstantThisWeekText", tableName: "Shared", bundle: Bundle.shared, value: "this week", comment: "Relative date for date in past week.")
-    public static let TimeConstantTodayAtFormat = NSLocalizedString("TimeConstantTodayAtFormat", tableName: "Shared", bundle: Bundle.shared, value: "today at %@", comment: "Relative date for date older than a minute.")
-    public static let TimeConstantJustNowText = NSLocalizedString("TimeConstantJustNowText", tableName: "Shared", bundle: Bundle.shared, value: "just now", comment: "Relative time for a tab that was visited within the last few moments.")
+    public static let timeConstantMoreThanMonthAgoText = NSLocalizedString("TimeConstantMoreThanMonthAgoText", tableName: "Shared", bundle: Bundle.shared, value: "more than a month ago", comment: "Relative date for dates older than a month and less than two months.")
+    public static let timeConstantMoreThanWeekAgoText = NSLocalizedString("TimeConstantMoreThanWeekAgoText", tableName: "Shared", bundle: Bundle.shared, value: "more than a week ago", comment: "Description for a date more than a week ago, but less than a month ago.")
+    public static let timeConstantYesterdayText = NSLocalizedString("TimeConstantYesterdayText", tableName: "Shared", bundle: Bundle.shared, value: "yesterday", comment: "Relative date for yesterday.")
+    public static let timeConstantThisWeekText = NSLocalizedString("TimeConstantThisWeekText", tableName: "Shared", bundle: Bundle.shared, value: "this week", comment: "Relative date for date in past week.")
+    public static let timeConstantTodayAtFormat = NSLocalizedString("TimeConstantTodayAtFormat", tableName: "Shared", bundle: Bundle.shared, value: "today at %@", comment: "Relative date for date older than a minute.")
+    public static let timeConstantJustNowText = NSLocalizedString("TimeConstantJustNowText", tableName: "Shared", bundle: Bundle.shared, value: "just now", comment: "Relative time for a tab that was visited within the last few moments.")
 }

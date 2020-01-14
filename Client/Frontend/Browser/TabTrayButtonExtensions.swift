@@ -8,7 +8,7 @@ import Shared
 class PrivateModeButton: InsetButton, Themeable {
     override var isSelected: Bool {
         didSet {
-            accessibilityValue = isSelected ? Strings.TabPrivateModeToggleAccessibilityValueOn : Strings.TabPrivateModeToggleAccessibilityValueOff
+            accessibilityValue = isSelected ? Strings.tabPrivateModeToggleAccessibilityValueOn : Strings.tabPrivateModeToggleAccessibilityValueOff
             backgroundColor = isSelected ? selectedBackgroundColor : .clear
         }
     }
@@ -23,8 +23,8 @@ class PrivateModeButton: InsetButton, Themeable {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        accessibilityLabel = Strings.TabPrivateModeToggleAccessibilityLabel
-        accessibilityHint = Strings.TabPrivateModeToggleAccessibilityHint
+        accessibilityLabel = Strings.tabPrivateModeToggleAccessibilityLabel
+        accessibilityHint = Strings.tabPrivateModeToggleAccessibilityHint
         
         titleEdgeInsets = UIEdgeInsets(top: -3, left: 6, bottom: -3, right: 6)
         layer.cornerRadius = 4.0
@@ -47,7 +47,7 @@ extension UIButton {
     static func newTabButton() -> UIButton {
         let newTab = UIButton()
         newTab.setImage(#imageLiteral(resourceName: "quick_action_new_tab").template, for: .normal)
-        newTab.accessibilityLabel = Strings.TabTrayNewTabButtonAccessibilityLabel
+        newTab.accessibilityLabel = Strings.tabTrayNewTabButtonAccessibilityLabel
         return newTab
     }
 }
