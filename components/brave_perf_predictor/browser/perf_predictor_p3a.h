@@ -11,6 +11,7 @@
 
 #include "base/macros.h"
 #include "base/timer/timer.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_p3a.h"
 
 class PrefRegistrySimple;
@@ -32,14 +33,12 @@ constexpr std::array<uint64_t, 7> BandwidthSavingsBuckets {
 };
 
 constexpr size_t kNumOfSavedDailyUptimes = 7;
-constexpr char kSavingsDailyListPrefName[] =
-  "brave_perf_predictor_daily_savings";
 constexpr char kSavingsDailyUMAHistogramName[] =
   "Brave.Savings.BandwidthSavingsMB";
 
 class SavingPermanentState {
  public:
-  explicit SavingPermanentState(PrefService* local_state);
+  explicit SavingPermanentState(PrefService* user_prefs);
   ~SavingPermanentState();
 
   void AddSaving(uint64_t delta);
@@ -55,18 +54,18 @@ class SavingPermanentState {
   void RecordP3A();
 
   std::list<DailySaving> daily_savings_;
-  PrefService* local_state_ = nullptr;
+  PrefService* user_prefs_ = nullptr;
 };
 
 class BandwidthSavingsTracker {
  public:
-  explicit BandwidthSavingsTracker(PrefService* local_state);
+  explicit BandwidthSavingsTracker(PrefService* user_prefs);
   ~BandwidthSavingsTracker();
   static void RegisterPrefs(PrefRegistrySimple* registry);
   void RecordSaving(uint64_t saving);
 
  private:
-  PrefService* local_state_;
+  PrefService* user_prefs_;
 
   DISALLOW_COPY_AND_ASSIGN(BandwidthSavingsTracker);
 };

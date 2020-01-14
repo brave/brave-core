@@ -16,9 +16,9 @@
 
 namespace brave_perf_predictor {
 
-SavingPermanentState::SavingPermanentState(PrefService* local_state)
-    : local_state_(local_state) {
-  if (local_state) {
+SavingPermanentState::SavingPermanentState(PrefService* user_prefs)
+    : user_prefs_(user_prefs) {
+  if (user_prefs) {
     LoadSavings();
   }
 }
@@ -67,11 +67,8 @@ uint64_t SavingPermanentState::GetTotalSaving() const {
 
 void SavingPermanentState::LoadSavings() {
   DCHECK(daily_savings_.empty());
-  if (!local_state_) {
-    return;
-  }
   const base::ListValue* list =
-      local_state_->GetList(kSavingsDailyListPrefName);
+      user_prefs_->GetList(kBandwidthSavedDailyBytes);
   if (!list) {
     return;
   }
@@ -94,7 +91,7 @@ void SavingPermanentState::SaveSavings() {
   DCHECK(!daily_savings_.empty());
   DCHECK_LE(daily_savings_.size(), kNumOfSavedDailyUptimes);
 
-  ListPrefUpdate update(local_state_, kSavingsDailyListPrefName);
+  ListPrefUpdate update(user_prefs_, kBandwidthSavedDailyBytes);
   base::ListValue* list = update.Get();
   list->Clear();
   for (const auto& u : daily_savings_) {
@@ -124,12 +121,12 @@ void SavingPermanentState::RecordP3A() {
 }
 
 
-BandwidthSavingsTracker::BandwidthSavingsTracker(PrefService* local_state)
-    : local_state_(local_state) {}
+BandwidthSavingsTracker::BandwidthSavingsTracker(PrefService* user_prefs)
+    : user_prefs_(user_prefs) {}
 
 void BandwidthSavingsTracker::RecordSaving(uint64_t saving) {
   if (saving > 0) {
-    auto* permanent_state = new SavingPermanentState(local_state_);
+    auto* permanent_state = new SavingPermanentState(user_prefs_);
     permanent_state->AddSaving(saving);
     delete permanent_state;
   }
@@ -139,7 +136,7 @@ BandwidthSavingsTracker::~BandwidthSavingsTracker() = default;
 
 // static
 void BandwidthSavingsTracker::RegisterPrefs(PrefRegistrySimple* registry) {
-  registry->RegisterListPref(kSavingsDailyListPrefName);
+  registry->RegisterListPref(kBandwidthSavedDailyBytes);
 }
 
 }  // namespace brave_perf_predictor

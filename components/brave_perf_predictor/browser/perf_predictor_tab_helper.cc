@@ -27,9 +27,8 @@ PerfPredictorTabHelper::PerfPredictorTabHelper(
     extractor->load_entities(static_third_party_config);
   }
   bandwidth_predictor_ = std::make_unique<BandwidthSavingsPredictor>(extractor);
-  PrefService* prefs = user_prefs::UserPrefs::Get(
-    web_contents->GetBrowserContext());
-  bandwidth_tracker_ = std::make_unique<BandwidthSavingsTracker>(prefs);
+  bandwidth_tracker_ = std::make_unique<BandwidthSavingsTracker>(
+    user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()));
 }
 
 PerfPredictorTabHelper::~PerfPredictorTabHelper() = default;
