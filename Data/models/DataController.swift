@@ -45,6 +45,11 @@ public class DataController: NSObject {
     public static var shared: DataController = DataController()
     public static var sharedInMemory: DataController = InMemoryDataController()
     
+    /// A possible hacky solution to prevent  #2185 crashes.
+    public func lazyInitialization() {
+        _ = DataController.shared.container
+    }
+    
     public func storeExists() -> Bool {
         return FileManager.default.fileExists(atPath: storeURL.path)
     }
