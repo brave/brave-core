@@ -67,6 +67,10 @@ def AddBravePartsForSigning(parts, config):
 
     development = True if config.provisioning_profile_basename is None else False
 
+    full_hardened_runtime_options = (
+        CodeSignOptions.HARDENED_RUNTIME + CodeSignOptions.RESTRICT +
+        CodeSignOptions.LIBRARY_VALIDATION + CodeSignOptions.KILL)
+
     # Add libs
     brave_dylibs = (
         'libchallenge_bypass_ristretto.dylib',
@@ -86,10 +90,26 @@ def AddBravePartsForSigning(parts, config):
             '{.framework_dir}/Frameworks/Sparkle.framework'.format(config),
             'org.sparkle-project.Sparkle',
             verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
+        parts['sparkle-framework'].options = full_hardened_runtime_options
 
     # Overwrite to avoid TeamID mismatch with widevine dylib.
     parts['helper-app'].entitlements = 'helper-entitlements.plist'
     parts['helper-app'].options = CodeSignOptions.RESTRICT + CodeSignOptions.KILL + CodeSignOptions.HARDENED_RUNTIME
+
+    # Add Sparkle binaries
+    parts['sparkle-framework-fileop'] = CodeSignedProduct(
+        '{.framework_dir}/Versions/{.version}/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/fileop'  # noqa: E501
+        .format(config, config),
+        'org.sparkle-project.Sparkle.fileop',
+        verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
+    parts['sparkle-framework-fileop'].options = full_hardened_runtime_options
+
+    parts['sparkle-framework-Autoupdate'] = CodeSignedProduct(
+        '{.framework_dir}/Versions/{.version}/Frameworks/Sparkle.framework/Versions/A/Resources/Autoupdate.app/Contents/MacOS/Autoupdate'  # noqa: E501
+        .format(config, config),
+        'org.sparkle-project.Sparkle.Autoupdate',
+        verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT)
+    parts['sparkle-framework-Autoupdate'].options = full_hardened_runtime_options
 
 
 def GetBraveSigningConfig(config_class, development, mac_provisioning_profile=None):
