@@ -25,6 +25,8 @@
 using ::testing::_;
 using ::testing::Invoke;
 
+using std::placeholders::_1;
+
 namespace confirmations {
 
 class ConfirmationsRedeemPaymentTokensRequestTest : public ::testing::Test {
@@ -82,7 +84,13 @@ class ConfirmationsRedeemPaymentTokensRequestTest : public ::testing::Test {
               callback(SUCCESS);
             }));
 
-    confirmations_->Initialize();
+    auto callback = std::bind(
+        &ConfirmationsRedeemPaymentTokensRequestTest::OnInitialize, this, _1);
+    confirmations_->Initialize(callback);
+  }
+
+  void OnInitialize(const bool success) {
+    EXPECT_EQ(true, success);
   }
 
   void TearDown() override {

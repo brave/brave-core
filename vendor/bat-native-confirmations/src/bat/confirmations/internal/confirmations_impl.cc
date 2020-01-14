@@ -56,12 +56,16 @@ ConfirmationsImpl::~ConfirmationsImpl() {
   StopPayingOutRedeemedTokens();
 }
 
-void ConfirmationsImpl::Initialize() {
+void ConfirmationsImpl::Initialize(
+    OnInitializeCallback callback) {
   BLOG(INFO) << "Initializing confirmations";
+
+  initialize_callback_ = callback;
 
   if (is_initialized_) {
     BLOG(INFO) << "Already initialized confirmations";
 
+    initialize_callback_(false);
     return;
   }
 
@@ -69,8 +73,9 @@ void ConfirmationsImpl::Initialize() {
 }
 
 void ConfirmationsImpl::MaybeStart() {
+  DCHECK(state_has_loaded_);
+
   if (is_initialized_ ||
-      !state_has_loaded_ ||
       !wallet_info_.IsValid() ||
       catalog_issuers_.empty()) {
     return;
@@ -88,11 +93,15 @@ void ConfirmationsImpl::MaybeStart() {
 }
 
 void ConfirmationsImpl::NotifyAdsIfConfirmationsIsReady() {
+  DCHECK(state_has_loaded_);
+
   bool is_ready = unblinded_tokens_->IsEmpty() ? false : true;
   confirmations_client_->SetConfirmationsIsReady(is_ready);
 }
 
 std::string ConfirmationsImpl::ToJSON() const {
+  DCHECK(state_has_loaded_);
+
   base::Value dictionary(base::Value::Type::DICTIONARY);
 
   // Catalog issuers
@@ -234,6 +243,8 @@ base::Value ConfirmationsImpl::GetTransactionHistoryAsDictionary(
 }
 
 bool ConfirmationsImpl::FromJSON(const std::string& json) {
+  DCHECK(state_has_loaded_);
+
   base::Optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     BLOG(ERROR) << "Failed to parse JSON: " << json;
@@ -283,6 +294,9 @@ bool ConfirmationsImpl::FromJSON(const std::string& json) {
 bool ConfirmationsImpl::ParseCatalogIssuersFromJSON(
     base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
+  if (!dictionary) {
+    return false;
+  }
 
   auto* catalog_issuers_value = dictionary->FindKey("catalog_issuers");
   if (!catalog_issuers_value) {
@@ -312,8 +326,19 @@ bool ConfirmationsImpl::GetCatalogIssuersFromDictionary(
     std::string* public_key,
     std::map<std::string, std::string>* issuers) const {
   DCHECK(dictionary);
+  if (!dictionary) {
+    return false;
+  }
+
   DCHECK(public_key);
+  if (!public_key) {
+    return false;
+  }
+
   DCHECK(issuers);
+  if (!issuers) {
+    return false;
+  }
 
   // Public key
   auto* public_key_value = dictionary->FindKey("public_key");
@@ -359,6 +384,9 @@ bool ConfirmationsImpl::GetCatalogIssuersFromDictionary(
 bool ConfirmationsImpl::ParseNextTokenRedemptionDateInSecondsFromJSON(
     base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
+  if (!dictionary) {
+    return false;
+  }
 
   auto* next_token_redemption_date_in_seconds_value =
       dictionary->FindKey("next_token_redemption_date_in_seconds");
@@ -378,6 +406,9 @@ bool ConfirmationsImpl::ParseNextTokenRedemptionDateInSecondsFromJSON(
 bool ConfirmationsImpl::ParseConfirmationsFromJSON(
     base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
+  if (!dictionary) {
+    return false;
+  }
 
   auto* confirmations_value = dictionary->FindKey("confirmations");
   if (!confirmations_value) {
@@ -405,7 +436,14 @@ bool ConfirmationsImpl::GetConfirmationsFromDictionary(
     base::DictionaryValue* dictionary,
     std::vector<ConfirmationInfo>* confirmations) {
   DCHECK(dictionary);
+  if (!dictionary) {
+    return false;
+  }
+
   DCHECK(confirmations);
+  if (!confirmations) {
+    return false;
+  }
 
   // Confirmations
   auto* confirmations_value = dictionary->FindKey("failed_confirmations");
@@ -562,6 +600,9 @@ bool ConfirmationsImpl::GetConfirmationsFromDictionary(
 bool ConfirmationsImpl::ParseTransactionHistoryFromJSON(
     base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
+  if (!dictionary) {
+    return false;
+  }
 
   auto* transaction_history_value = dictionary->FindKey("transaction_history");
   if (!transaction_history_value) {
@@ -589,7 +630,14 @@ bool ConfirmationsImpl::GetTransactionHistoryFromDictionary(
     base::DictionaryValue* dictionary,
     std::vector<TransactionInfo>* transaction_history) {
   DCHECK(dictionary);
+  if (!dictionary) {
+    return false;
+  }
+
   DCHECK(transaction_history);
+  if (!transaction_history) {
+    return false;
+  }
 
   // Transaction
   auto* transactions_value = dictionary->FindKey("transactions");
@@ -654,6 +702,9 @@ bool ConfirmationsImpl::GetTransactionHistoryFromDictionary(
 bool ConfirmationsImpl::ParseUnblindedTokensFromJSON(
     base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
+  if (!dictionary) {
+    return false;
+  }
 
   auto* unblinded_tokens_value = dictionary->FindKey("unblinded_tokens");
   if (!unblinded_tokens_value) {
@@ -670,6 +721,9 @@ bool ConfirmationsImpl::ParseUnblindedTokensFromJSON(
 bool ConfirmationsImpl::ParseUnblindedPaymentTokensFromJSON(
     base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
+  if (!dictionary) {
+    return false;
+  }
 
   auto* unblinded_payment_tokens_value =
       dictionary->FindKey("unblinded_payment_tokens");
@@ -687,9 +741,12 @@ bool ConfirmationsImpl::ParseUnblindedPaymentTokensFromJSON(
 }
 
 void ConfirmationsImpl::SaveState() {
-  BLOG(INFO) << "Saving confirmations state";
+  if (!state_has_loaded_) {
+    NOTREACHED();
+    return;
+  }
 
-  DCHECK(state_has_loaded_);
+  BLOG(INFO) << "Saving confirmations state";
 
   std::string json = ToJSON();
   auto callback = std::bind(&ConfirmationsImpl::OnStateSaved, this, _1);
@@ -727,27 +784,29 @@ void ConfirmationsImpl::OnStateLoaded(
         << " values";
 
     confirmations_json = ToJSON();
+  } else {
+    BLOG(INFO) << "Successfully loaded confirmations state";
   }
 
   if (!FromJSON(confirmations_json)) {
+    state_has_loaded_ = false;
+
     BLOG(ERROR) << "Failed to parse confirmations state: "
         << confirmations_json;
 
     confirmations_client_->ConfirmationsTransactionHistoryDidChange();
 
+    initialize_callback_(false);
+
     return;
   }
 
-  BLOG(INFO) << "Successfully loaded confirmations state";
-
-  confirmations_client_->ConfirmationsTransactionHistoryDidChange();
-
-  NotifyAdsIfConfirmationsIsReady();
-
-  MaybeStart();
+  initialize_callback_(true);
 }
 
 void ConfirmationsImpl::ResetState() {
+  DCHECK(state_has_loaded_);
+
   BLOG(INFO) << "Resetting confirmations to default state";
 
   auto callback = std::bind(&ConfirmationsImpl::OnStateReset, this, _1);
@@ -765,7 +824,14 @@ void ConfirmationsImpl::OnStateReset(const Result result) {
 }
 
 void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
+  if (!state_has_loaded_) {
+    return;
+  }
+
   if (!info->IsValid()) {
+    BLOG(ERROR) << "SetWalletInfo (Invalid wallet):";
+    BLOG(ERROR) << "  Payment id: " << info->payment_id;
+    BLOG(ERROR) << "  Private key: " << info->private_key;
     return;
   }
 
@@ -787,6 +853,13 @@ void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
 }
 
 void ConfirmationsImpl::SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) {
+  DCHECK(state_has_loaded_);
+  if (!state_has_loaded_) {
+    BLOG(ERROR) <<
+        "Unable to set catalog issuers as Confirmations state is not ready";
+    return;
+  }
+
   BLOG(INFO) << "SetCatalogIssuers:";
   BLOG(INFO) << "  Public key: " << info->public_key;
   BLOG(INFO) << "  Issuers:";
@@ -810,11 +883,15 @@ void ConfirmationsImpl::SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) {
 
 std::map<std::string, std::string> ConfirmationsImpl::GetCatalogIssuers()
     const {
+  DCHECK(state_has_loaded_);
+
   return catalog_issuers_;
 }
 
 bool ConfirmationsImpl::IsValidPublicKeyForCatalogIssuers(
     const std::string& public_key) const {
+  DCHECK(state_has_loaded_);
+
   auto it = catalog_issuers_.find(public_key);
   if (it == catalog_issuers_.end()) {
     return false;
@@ -825,6 +902,8 @@ bool ConfirmationsImpl::IsValidPublicKeyForCatalogIssuers(
 
 void ConfirmationsImpl::AppendConfirmationToQueue(
     const ConfirmationInfo& confirmation_info) {
+  DCHECK(state_has_loaded_);
+
   confirmations_.push_back(confirmation_info);
 
   SaveState();
@@ -841,6 +920,8 @@ void ConfirmationsImpl::AppendConfirmationToQueue(
 
 void ConfirmationsImpl::RemoveConfirmationFromQueue(
     const ConfirmationInfo& confirmation_info) {
+  DCHECK(state_has_loaded_);
+
   auto it = std::find_if(confirmations_.begin(), confirmations_.end(),
       [=](const ConfirmationInfo& info) {
         return (info.id == confirmation_info.id);
@@ -866,17 +947,21 @@ void ConfirmationsImpl::RemoveConfirmationFromQueue(
 }
 
 void ConfirmationsImpl::UpdateAdsRewards(const bool should_refresh) {
+  DCHECK(state_has_loaded_);
+  if (!state_has_loaded_) {
+    BLOG(ERROR) <<
+        "Unable to update ads rewards as Confirmations state is not ready";
+  }
+
+  DCHECK(wallet_info_.IsValid());
+
   ads_rewards_->Update(wallet_info_, should_refresh);
 }
 
 void ConfirmationsImpl::UpdateAdsRewards(
     const double estimated_pending_rewards,
     const uint64_t next_payment_date_in_seconds) {
-  if (!state_has_loaded_) {
-    // We should not update ads rewards until state has successfully loaded
-    // otherwise our values will be overwritten
-    return;
-  }
+  DCHECK(state_has_loaded_);
 
   estimated_pending_rewards_ = estimated_pending_rewards;
   next_payment_date_in_seconds_ = next_payment_date_in_seconds;
@@ -888,6 +973,13 @@ void ConfirmationsImpl::UpdateAdsRewards(
 
 void ConfirmationsImpl::GetTransactionHistory(
     OnGetTransactionHistoryCallback callback) {
+  DCHECK(state_has_loaded_);
+  if (!state_has_loaded_) {
+    BLOG(ERROR) <<
+        "Unable to get transaction history as Confirmations state is not ready";
+    return;
+  }
+
   auto unredeemed_transactions = GetUnredeemedTransactions();
   double unredeemed_estimated_pending_rewards =
       GetEstimatedPendingRewardsForTransactions(unredeemed_transactions);
@@ -969,6 +1061,8 @@ uint64_t ConfirmationsImpl::GetAdNotificationsReceivedThisMonthForTransactions(
 std::vector<TransactionInfo> ConfirmationsImpl::GetTransactionHistory(
     const uint64_t from_timestamp_in_seconds,
     const uint64_t to_timestamp_in_seconds) {
+  DCHECK(state_has_loaded_);
+
   std::vector<TransactionInfo> transactions(transaction_history_.size());
 
   auto it = std::copy_if(transaction_history_.begin(),
@@ -984,10 +1078,14 @@ std::vector<TransactionInfo> ConfirmationsImpl::GetTransactionHistory(
 }
 
 std::vector<TransactionInfo> ConfirmationsImpl::GetTransactions() const {
+  DCHECK(state_has_loaded_);
+
   return transaction_history_;
 }
 
 std::vector<TransactionInfo> ConfirmationsImpl::GetUnredeemedTransactions() {
+  DCHECK(state_has_loaded_);
+
   auto count = unblinded_payment_tokens_->Count();
   if (count == 0) {
     // There are no outstanding unblinded payment tokens to redeem
@@ -1003,6 +1101,8 @@ std::vector<TransactionInfo> ConfirmationsImpl::GetUnredeemedTransactions() {
 
 double ConfirmationsImpl::GetEstimatedRedemptionValue(
     const std::string& public_key) const {
+  DCHECK(state_has_loaded_);
+
   double estimated_redemption_value = 0.0;
 
   auto it = catalog_issuers_.find(public_key);
@@ -1022,6 +1122,8 @@ double ConfirmationsImpl::GetEstimatedRedemptionValue(
 void ConfirmationsImpl::AppendTransactionToHistory(
     const double estimated_redemption_value,
     const ConfirmationType confirmation_type) {
+  DCHECK(state_has_loaded_);
+
   TransactionInfo info;
   info.timestamp_in_seconds = Time::NowInSeconds();
   info.estimated_redemption_value = estimated_redemption_value;
@@ -1035,6 +1137,12 @@ void ConfirmationsImpl::AppendTransactionToHistory(
 }
 
 void ConfirmationsImpl::ConfirmAd(std::unique_ptr<NotificationInfo> info) {
+  DCHECK(state_has_loaded_);
+  if (!state_has_loaded_) {
+    BLOG(ERROR) << "Unable to confirm ad as Confirmations state is not ready";
+    return;
+  }
+
   BLOG(INFO) << "Confirm ad:"
       << std::endl << "  id: " << info->id
       << std::endl << "  creative_set_id: " << info->creative_set_id
@@ -1052,6 +1160,13 @@ void ConfirmationsImpl::ConfirmAction(
     const std::string& uuid,
     const std::string& creative_set_id,
     const ConfirmationType& type) {
+  DCHECK(state_has_loaded_);
+  if (!state_has_loaded_) {
+    BLOG(ERROR) <<
+        "Unable to confirm action as Confirmations state is not ready";
+    return;
+  }
+
   BLOG(INFO) << "Confirm action:"
       << std::endl << "  creative_set_id: " << creative_set_id
       << std::endl << "  uuid: " << uuid
@@ -1061,6 +1176,17 @@ void ConfirmationsImpl::ConfirmAction(
 }
 
 bool ConfirmationsImpl::OnTimer(const uint32_t timer_id) {
+  DCHECK(state_has_loaded_);
+  if (!state_has_loaded_) {
+    BLOG(ERROR) <<
+        "Unable to trigger event as Confirmations state is not ready";
+    return false;
+  }
+
+  if (!is_initialized_) {
+    return false;
+  }
+
   BLOG(INFO) << "OnTimer:" << std::endl
       << "  timer_id: "
       << timer_id << std::endl
@@ -1084,10 +1210,14 @@ bool ConfirmationsImpl::OnTimer(const uint32_t timer_id) {
 }
 
 void ConfirmationsImpl::RefillTokensIfNecessary() const {
+  DCHECK(wallet_info_.IsValid());
+
   refill_tokens_->Refill(wallet_info_, public_key_);
 }
 
 uint64_t ConfirmationsImpl::CalculateTokenRedemptionTimeInSeconds() {
+  DCHECK(state_has_loaded_);
+
   if (next_token_redemption_date_in_seconds_ == 0) {
     UpdateNextTokenRedemptionDate();
   }
@@ -1109,10 +1239,14 @@ uint64_t ConfirmationsImpl::CalculateTokenRedemptionTimeInSeconds() {
 }
 
 uint64_t ConfirmationsImpl::GetNextTokenRedemptionDateInSeconds() {
+  DCHECK(state_has_loaded_);
+
   return next_token_redemption_date_in_seconds_;
 }
 
 void ConfirmationsImpl::UpdateNextTokenRedemptionDate() {
+  DCHECK(state_has_loaded_);
+
   next_token_redemption_date_in_seconds_ = Time::NowInSeconds();
 
   if (!_is_debug) {
@@ -1151,6 +1285,8 @@ void ConfirmationsImpl::StartRetryingFailedConfirmations(
 }
 
 void ConfirmationsImpl::RetryFailedConfirmations() {
+  DCHECK(state_has_loaded_);
+
   StopRetryingFailedConfirmations();
 
   if (confirmations_.size() == 0) {
@@ -1202,6 +1338,8 @@ void ConfirmationsImpl::StartPayingOutRedeemedTokens(
 }
 
 void ConfirmationsImpl::PayoutRedeemedTokens() const {
+  DCHECK(wallet_info_.IsValid());
+
   payout_tokens_->Payout(wallet_info_);
 }
 
