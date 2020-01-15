@@ -35,17 +35,13 @@ def dist_dir(target_os, target_arch):
 
 
 def output_dir(target_os, target_arch):
+    target_os_prefix = ''
     if target_os in ['android', 'ios']:
         target_os_prefix = target_os + '_'
-    else:
-        target_os_prefix = ''
 
-    if target_os_prefix:
+    target_arch_suffix = ''
+    if target_arch != 'x64':
         target_arch_suffix = '_' + target_arch
-    elif target_arch != 'x64':
-        target_arch_suffix = '_' + target_arch
-    else:
-        target_arch_suffix = ''
 
     return os.path.join(CHROMIUM_ROOT, 'out', target_os_prefix + 'Release' + target_arch_suffix)
 

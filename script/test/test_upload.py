@@ -71,6 +71,105 @@ class TestGetBravePackages(unittest.TestCase):
                         f.write(name32 + '\n')
         self.__class__._is_setup = True
 
+    def test_only_returns_android_packages(self):
+        upload.PLATFORM = 'linux'
+        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
+                                                           'android'),
+                                              'nightly', '1.5.8', 'android', ''))
+        self.assertEquals(pkgs,
+                          sorted(['BraveModernarm.apk',
+                                  'BraveModernx86.apk',
+                                  'BraveMonoarm.apk',
+                                  'BraveMonoarm64.apk',
+                                  'BraveMonox64.apk',
+                                  'BraveMonox86.apk',
+                                  'Bravearm.apk',
+                                  'Bravex86.apk']))
+
+    def test_only_returns_android_packages_arm(self):
+        upload.PLATFORM = 'linux'
+        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
+                                                           'android'),
+                                              'nightly', '1.5.8', 'android', 'arm'))
+        self.assertEquals(pkgs,
+                          sorted(['BraveModernarm.apk',
+                                  'BraveMonoarm.apk',
+                                  'Bravearm.apk']))
+
+    def test_only_returns_android_packages_arm_classic(self):
+        upload.PLATFORM = 'linux'
+        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
+                                                           'android'),
+                                              'nightly', '1.5.8', 'android', 'arm', 'classic'))
+        self.assertEquals(pkgs,
+                          sorted(['Bravearm.apk']))
+
+    def test_only_returns_android_packages_arm_modern(self):
+        upload.PLATFORM = 'linux'
+        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
+                                                           'android'),
+                                              'nightly', '1.5.8', 'android', 'arm', 'modern'))
+        self.assertEquals(pkgs,
+                          sorted(['BraveModernarm.apk']))
+
+    def test_only_returns_android_packages_arm_mono(self):
+        upload.PLATFORM = 'linux'
+        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
+                                                           'android'),
+                                              'nightly', '1.5.8', 'android', 'arm', 'mono'))
+        self.assertEquals(pkgs,
+                          sorted(['BraveMonoarm.apk']))
+
+    def test_only_returns_android_packages_arm64(self):
+        upload.PLATFORM = 'linux'
+        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
+                                                           'android'),
+                                              'nightly', '1.5.8', 'android', 'arm64'))
+        self.assertEquals(pkgs,
+                          sorted(['BraveMonoarm64.apk']))
+
+    def test_only_returns_android_packages_x86(self):
+        upload.PLATFORM = 'linux'
+        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
+                                                           'android'),
+                                              'nightly', '1.5.8', 'android', 'x86'))
+        self.assertEquals(pkgs,
+                          sorted(['BraveModernx86.apk',
+                                  'BraveMonox86.apk',
+                                  'Bravex86.apk']))
+
+    def test_only_returns_android_packages_x86_classic(self):
+        upload.PLATFORM = 'linux'
+        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
+                                                           'android'),
+                                              'nightly', '1.5.8', 'android', 'x86', 'classic'))
+        self.assertEquals(pkgs,
+                          sorted(['Bravex86.apk']))
+
+    def test_only_returns_android_packages_x86_modern(self):
+        upload.PLATFORM = 'linux'
+        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
+                                                           'android'),
+                                              'nightly', '1.5.8', 'android', 'x86', 'modern'))
+        self.assertEquals(pkgs,
+                          sorted(['BraveModernx86.apk']))
+
+    def test_only_returns_android_packages_x86_mono(self):
+        upload.PLATFORM = 'linux'
+        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
+                                                           'android'),
+                                              'nightly', '1.5.8', 'android', 'x86', 'mono'))
+        self.assertEquals(pkgs,
+                          sorted(['BraveMonox86.apk']))
+
+    def test_only_returns_android_packages_x64(self):
+        upload.PLATFORM = 'linux'
+        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
+                                                           'android'),
+                                              'nightly', '1.5.8', 'android', 'x64'))
+        self.assertEquals(pkgs,
+                          sorted(['BraveMonox64.apk']))
+
     def test_only_returns_nightly_darwin_packages(self):
         upload.PLATFORM = 'darwin'
         pkgs = list(upload.get_brave_packages(os.path.join(
@@ -294,105 +393,6 @@ class TestGetBravePackages(unittest.TestCase):
                                         'BraveBrowserStandaloneSilentSetup32.exe',
                                         'BraveBrowserStandaloneUntaggedSetup32.exe',
                                         'BraveBrowserUntaggedSetup32.exe']))
-
-    def test_only_returns_android_packages(self):
-        upload.PLATFORM = 'linux'
-        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
-                                                           'android'),
-                                              'nightly', '1.5.8', 'android', ''))
-        self.assertEquals(pkgs,
-                          sorted(['BraveModernarm.apk',
-                                  'BraveModernx86.apk',
-                                  'BraveMonoarm.apk',
-                                  'BraveMonoarm64.apk',
-                                  'BraveMonox64.apk',
-                                  'BraveMonox86.apk',
-                                  'Bravearm.apk',
-                                  'Bravex86.apk']))
-
-    def test_only_returns_android_packages_arm(self):
-        upload.PLATFORM = 'linux'
-        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
-                                                           'android'),
-                                              'nightly', '1.5.8', 'android', 'arm'))
-        self.assertEquals(pkgs,
-                          sorted(['BraveModernarm.apk',
-                                  'BraveMonoarm.apk',
-                                  'Bravearm.apk']))
-
-    def test_only_returns_android_packages_arm_classic(self):
-        upload.PLATFORM = 'linux'
-        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
-                                                           'android'),
-                                              'nightly', '1.5.8', 'android', 'arm', 'classic'))
-        self.assertEquals(pkgs,
-                          sorted(['Bravearm.apk']))
-
-    def test_only_returns_android_packages_arm_modern(self):
-        upload.PLATFORM = 'linux'
-        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
-                                                           'android'),
-                                              'nightly', '1.5.8', 'android', 'arm', 'modern'))
-        self.assertEquals(pkgs,
-                          sorted(['BraveModernarm.apk']))
-
-    def test_only_returns_android_packages_arm_mono(self):
-        upload.PLATFORM = 'linux'
-        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
-                                                           'android'),
-                                              'nightly', '1.5.8', 'android', 'arm', 'mono'))
-        self.assertEquals(pkgs,
-                          sorted(['BraveMonoarm.apk']))
-
-    def test_only_returns_android_packages_arm64(self):
-        upload.PLATFORM = 'linux'
-        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
-                                                           'android'),
-                                              'nightly', '1.5.8', 'android', 'arm64'))
-        self.assertEquals(pkgs,
-                          sorted(['BraveMonoarm64.apk']))
-
-    def test_only_returns_android_packages_x86(self):
-        upload.PLATFORM = 'linux'
-        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
-                                                           'android'),
-                                              'nightly', '1.5.8', 'android', 'x86'))
-        self.assertEquals(pkgs,
-                          sorted(['BraveModernx86.apk',
-                                  'BraveMonox86.apk',
-                                  'Bravex86.apk']))
-
-    def test_only_returns_android_packages_x86_classic(self):
-        upload.PLATFORM = 'linux'
-        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
-                                                           'android'),
-                                              'nightly', '1.5.8', 'android', 'x86', 'classic'))
-        self.assertEquals(pkgs,
-                          sorted(['Bravex86.apk']))
-
-    def test_only_returns_android_packages_x86_modern(self):
-        upload.PLATFORM = 'linux'
-        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
-                                                           'android'),
-                                              'nightly', '1.5.8', 'android', 'x86', 'modern'))
-        self.assertEquals(pkgs,
-                          sorted(['BraveModernx86.apk']))
-
-    def test_only_returns_android_packages_x86_mono(self):
-        upload.PLATFORM = 'linux'
-        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
-                                                           'android'),
-                                              'nightly', '1.5.8', 'android', 'x86', 'mono'))
-        self.assertEquals(pkgs,
-                          sorted(['BraveMonox86.apk']))
-
-    def test_only_returns_android_packages_x64(self):
-        upload.PLATFORM = 'linux'
-        pkgs = list(upload.get_brave_packages(os.path.join(self.get_pkgs_dir,
-                                                           'android'),
-                                              'nightly', '1.5.8', 'android', 'x64'))
-        self.assertEquals(pkgs,
-                          sorted(['BraveMonox64.apk']))
 
 # get an existing release (in draft status) from GitHub given a tag name
 
